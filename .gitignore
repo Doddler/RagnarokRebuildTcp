@@ -10,6 +10,8 @@ RebuildClient/*.suo
 RebuildClient/*.DotSettings
 RoRebuild/RebuildZoneServer/obj/
 RoRebuild/RebuildZoneServer/bin/
+RoRebuild/RebuildData.Database/obj/
+RoRebuild/RebuildData.Database/bin/
 RoRebuild/RebuildData.Server/obj/
 RoRebuild/RebuildData.Server/bin/
 RoRebuild/RebuildData.Shared/obj/
@@ -35,3 +37,4 @@ RebuildClient/Assets/Music/
 RoRebuild/RebuildZoneServer/log/profiler.csv
 RebuildClient/.idea/
 RebuildClient/ServerData/
+RebuildClient/Assets/Effects/
