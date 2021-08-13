@@ -181,12 +181,14 @@ namespace RebuildZoneServer.EntityComponents
                 if (monster.CurrentAiState == MonsterAiState.StateAttacking && monster.Target.IsAlive())
                 {
                     newTarget = monster.Target;
-                    return true;
+                    EntityListPool.Return(list);
+					return true;
                 }
             }
 
-            //allyScanTimeout = Time.ElapsedTimeFloat + 0.25f; //don't scan for allies in combat more than 4 times a second. It's slow.
-            return false;
+            EntityListPool.Return(list);
+			//allyScanTimeout = Time.ElapsedTimeFloat + 0.25f; //don't scan for allies in combat more than 4 times a second. It's slow.
+			return false;
         }
 
 		private bool FindRandomTargetInRange(int distance, out EcsEntity newTarget)
