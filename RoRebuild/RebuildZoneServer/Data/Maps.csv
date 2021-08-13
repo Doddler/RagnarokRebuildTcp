@@ -1,0 +1,95 @@
+﻿Name,Code,WalkData,Music
+Geffen Field 0,gef_fild00,gef_fild00.walk,25.mp3
+Geffen Field 1,gef_fild01,gef_fild01.walk,23.mp3
+Geffen Field 2,gef_fild02,gef_fild02.walk,35.mp3
+Geffen Field 3,gef_fild03,gef_fild03.walk,35.mp3
+Geffen Field 4,gef_fild04,gef_fild04.walk,25.mp3
+Geffen Field 5,gef_fild05,gef_fild05.walk,23.mp3
+Geffen Field 6,gef_fild06,gef_fild06.walk,23.mp3
+Geffen Field 7,gef_fild07,gef_fild07.walk,25.mp3
+Geffen Field 8,gef_fild08,gef_fild08.walk,23.mp3
+Geffen Field 9,gef_fild09,gef_fild09.walk,23.mp3
+Geffen Field 10,gef_fild10,gef_fild10.walk,35.mp3
+Geffen Field 11,gef_fild11,gef_fild11.walk,04.mp3
+Geffen Field 12,gef_fild12,gef_fild12.walk,64.mp3
+Geffen Field 13,gef_fild13,gef_fild13.walk,66.mp3
+Geffen Field 14,gef_fild14,gef_fild14.walk,64.mp3
+Geffen,geffen,geffen.walk,13.mp3
+Izlude,izlude,izlude.walk,26.mp3
+Juperos 1F,juperos_01,juperos_01.walk,89.mp3
+Mt. Mjolnir 1,mjolnir_01,mjolnir_01.walk,31.mp3
+Mt. Mjolnir 2,mjolnir_02,mjolnir_02.walk,33.mp3
+Mt. Mjolnir 3,mjolnir_03,mjolnir_03.walk,33.mp3
+Mt. Mjolnir 4,mjolnir_04,mjolnir_04.walk,33.mp3
+Mt. Mjolnir 5,mjolnir_05,mjolnir_05.walk,34.mp3
+Mt. Mjolnir 6,mjolnir_06,mjolnir_06.walk,31.mp3
+Mt. Mjolnir 7,mjolnir_07,mjolnir_07.walk,31.mp3
+Mt. Mjolnir 8,mjolnir_08,mjolnir_08.walk,33.mp3
+Mt. Mjolnir 9,mjolnir_09,mjolnir_09.walk,31.mp3
+Mt. Mjolnir 10,mjolnir_10,mjolnir_10.walk,34.mp3
+Mt. Mjolnir 11,mjolnir_11,mjolnir_11.walk,34.mp3
+Mt. Mjolnir 12,mjolnir_12,mjolnir_12.walk,34.mp3
+Morroc Field 1,moc_fild01,moc_fild01.walk,24.mp3
+Morroc Field 2,moc_fild02,moc_fild02.walk,03.mp3
+Morroc Field 3,moc_fild03,moc_fild03.walk,03.mp3
+Morroc Field 4,moc_fild04,moc_fild04.walk,24.mp3
+Morroc Field 5,moc_fild05,moc_fild05.walk,24.mp3
+Morroc Field 6,moc_fild06,moc_fild06.walk,24.mp3
+Morroc Field 7,moc_fild07,moc_fild07.walk,24.mp3
+Morroc Field 8,moc_fild08,moc_fild08.walk,37.mp3
+Morroc Field 9,moc_fild09,moc_fild09.walk,37.mp3
+Morroc Field 10,moc_fild10,moc_fild10.walk,37.mp3
+Morroc Field 11,moc_fild11,moc_fild11.walk,37.mp3
+Morroc Field 12,moc_fild12,moc_fild12.walk,37.mp3
+Morroc Field 13,moc_fild13,moc_fild13.walk,03.mp3
+Morroc Field 14,moc_fild14,moc_fild14.walk,37.mp3
+Morroc Field 15,moc_fild15,moc_fild15.walk,37.mp3
+Morroc Field 16,moc_fild16,moc_fild16.walk,45.mp3
+Morroc Field 17,moc_fild17,moc_fild17.walk,37.mp3
+Morroc Field 18,moc_fild18,moc_fild18.walk,37.mp3
+Morroc Field 19,moc_fild19,moc_fild19.walk,37.mp3
+Morroc,morocc,morocc.walk,11.mp3
+Morroc Pyramids,moc_ruins,moc_ruins.walk,
+Payon Field 1,pay_fild01,pay_fild01.walk,03.mp3
+Payon Field 2,pay_fild02,pay_fild02.walk,03.mp3
+Payon Field 3,pay_fild03,pay_fild03.walk,03.mp3
+Payon Field 4,pay_fild04,pay_fild04.walk,03.mp3
+Payon Field 5,pay_fild05,pay_fild05.walk,36.mp3
+Payon Field 6,pay_fild06,pay_fild06.walk,36.mp3
+Payon Field 7,pay_fild07,pay_fild07.walk,36.mp3
+Payon Field 8,pay_fild08,pay_fild08.walk,03.mp3
+Payon Field 9,pay_fild09,pay_fild09.walk,36.mp3
+Payon Field 10,pay_fild10,pay_fild10.walk,36.mp3
+Payon Field 11,pay_fild11,pay_fild11.walk,03.mp3
+Payon,payon,payon.walk,14.mp3
+Payon Archer Village,pay_arche,pay_arche.walk,14.mp3
+Payon Guild Castles,pay_gld,pay_gld.walk,66.mp3
+Prontera,prontera,prontera.walk,08.mp3
+Prontera Field 0,prt_fild00,prt_fild00.walk,05.mp3
+Prontera Field 1,prt_fild01,prt_fild01.walk,12.mp3
+Prontera Field 2,prt_fild02,prt_fild02.walk,05.mp3
+Prontera Field 3,prt_fild03,prt_fild03.walk,05.mp3
+Prontera Field 4,prt_fild04,prt_fild04.walk,05.mp3
+Prontera Field 5,prt_fild05,prt_fild05.walk,12.mp3
+Prontera Field 6,prt_fild06,prt_fild06.walk,12.mp3
+Prontera Field 7,prt_fild07,prt_fild07.walk,05.mp3
+Prontera Field 8,prt_fild08,prt_fild08.walk,12.mp3
+Prontera Field 9,prt_fild09,prt_fild09.walk,04.mp3
+Prontera Field 10,prt_fild10,prt_fild10.walk,04.mp3
+Prontera Field 11,prt_fild11,prt_fild11.walk,04.mp3
+Prontera Culverts B1F,prt_sewb1,prt_sewb1.walk,19.mp3
+Alberta,alberta,alberta.walk,15.mp3
+Pyramids 1F,moc_pryd01,moc_pryd01.walk,22.mp3
+Pyramids 2F,moc_pryd02,moc_pryd02.walk,22.mp3
+Pyramids 3F,moc_pryd03,moc_pryd03.walk,22.mp3
+Pyramids 4F,moc_pryd04,moc_pryd04.walk,22.mp3
+Pyramids Passageway,moc_prydb1,moc_prydb1.walk,22.mp3
+Pyramids B1F,moc_pryd05,moc_pryd05.walk,22.mp3
+Pyramids B2F,moc_pryd06,moc_pryd06.walk,22.mp3
+Aldebaran,aldebaran,aldebaran.walk,39.mp3
+Arena Room,2009rwc_03,2009rwc_03.walk,
+Payon Dungeon 1F,pay_dun00,pay_dun00.walk,20.mp3
+Payon Dungeon 2F,pay_dun01,pay_dun01.walk,20.mp3
+Payon Dungeon 3F,pay_dun02,pay_dun02.walk,20.mp3
+Payon Dungeon 4F,pay_dun03,pay_dun03.walk,47.mp3
+Payon Dungeon 5F,pay_dun04,pay_dun04.walk,47.mp3

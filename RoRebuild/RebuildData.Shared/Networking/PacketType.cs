@@ -1,0 +1,36 @@
+﻿namespace RebuildData.Shared.Networking
+{
+	public enum PacketType : byte
+	{
+		ConnectionApproved,
+		ConnectionDenied,
+		PlayerReady,
+		EnterServer,
+		EnterServerSpecificMap,
+		Ping,
+		CreateEntity,
+		StartMove,
+		Move,
+		Attack,
+		LookTowards,
+		SitStand,
+		RemoveEntity,
+		RemoveAllEntities,
+		Disconnect,
+		ChangeMaps,
+		StopAction,
+		StopImmediate,
+		RandomTeleport,
+		UnhandledPacket,
+		HitTarget,
+		Skill,
+		ChangeTarget,
+		GainExp,
+		LevelUp,
+		Death,
+		HpRecovery,
+		Respawn,
+		RequestMove,
+		RequestFailed,
+	}
+}

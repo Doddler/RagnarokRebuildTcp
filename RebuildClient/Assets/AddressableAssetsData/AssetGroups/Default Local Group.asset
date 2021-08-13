@@ -1,0 +1,1699 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 5f474784577dcf644a3c480fd3b9e282
+  m_SerializeEntries:
+  - m_GUID: 013f99d427ee2df43b9a77044ccd9ede
+    m_Address: Assets/Sprites/Monsters/amon_ra.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 04fd9a5fbf7ba2544b5291784fd1b54c
+    m_Address: Assets/Sprites/Monsters/ghostring.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 050af5427c05ee445a8daf2911875138
+    m_Address: Assets/Sprites/Monsters/frilldora.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 054866f48927b5a4597c1fffa0081a27
+    m_Address: "Assets/Sprites/Characters/BodyMale/\uC0C1\uC778_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 05676c1aa47c5ca47a03cfb361f140a3
+    m_Address: Assets/Sprites/Monsters/farmiliar.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 070707860ca8c71449b712adb4be56e8
+    m_Address: Assets/Sprites/Monsters/picky_.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0759502e5de3a744f8b10ea1ead97605
+    m_Address: Assets/Sprites/Monsters/goblin_2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0915409ae1403d54da1a6069ae0c778f
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uC131\uC9C1\uC790_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0a3ee882c5e8bb4459436dd8e66a14b6
+    m_Address: Assets/Sprites/Monsters/wild_rose.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0af8a5abecd2e23449df59218f62617e
+    m_Address: Assets/Sprites/Monsters/wolf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0bad18a9d97788d4d99640233c41a733
+    m_Address: Assets/Sprites/Monsters/am_mut.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0c07465723628e04d9065259ddb97c05
+    m_Address: "Assets/Sprites/Characters/HeadFemale/4_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0ed87179b8d9f374ca0843f73a5f3c60
+    m_Address: Assets/Sprites/Monsters/isis.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0f18e4744deff184b94ff5b390b5780d
+    m_Address: Assets/Sprites/Monsters/mistress.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 117386d8969497149833c0bbbaa4e949
+    m_Address: Assets/Sprites/Monsters/caramel.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 11b9299f6408f874d885274282c6414e
+    m_Address: Assets/Sprites/Monsters/thief_bug_male.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 123020b311b4781438a0a3cbc02102f0
+    m_Address: Assets/Sprites/Monsters/coco.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 124295caa4473cd4c929011de38aef9e
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uC0C1\uC778_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 148208e6b2063514ca14ce7d37ac6ac9
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uB9C8\uBC95\uC0AC_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 16c1094d636bf9346aaaf648b69c47c2
+    m_Address: "Assets/Sprites/Characters/HeadMale/7_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1777ae685267c174588921c1b66a4207
+    m_Address: Assets/Sprites/Monsters/phreeoni.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1c042f2e97eca224d9138dcb28f63dc3
+    m_Address: Assets/Sprites/Monsters/eggyra.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1c44842404a4b3545b8c6bef8e14da9b
+    m_Address: Assets/Sprites/Monsters/wander_man.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1ca813a62720b894eba7c02579d505cf
+    m_Address: Assets/Sprites/Monsters/skel_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1ca9c57fffd0f6248a0f5b4c442fee05
+    m_Address: "Assets/Sprites/Characters/HeadFemale/18_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1d34bf615bfb4c24b84aca0e2807de79
+    m_Address: Assets/Sprites/Monsters/sand_man.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1d9ae7f42c01682479282e59e5768343
+    m_Address: Assets/Sprites/Monsters/poring.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1dd585578bb978248b86664e88acd29e
+    m_Address: "Assets/Sprites/Characters/HeadFemale/29_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 238a1bbf3e9e0ef4f83f48e7063d0fb6
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uB3C4\uB451_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2583ee4b91694d147856ea56b5afbfad
+    m_Address: Assets/Sprites/Monsters/cat_o_nine_tail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 28f96bbdec499f743a089d4d0f90860e
+    m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_1207.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 293df452191638b4a9b6e973464042b5
+    m_Address: Assets/Sprites/Monsters/thief_bug.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2a09e065a866cf2438a62712f00ccdf8
+    m_Address: Assets/Sprites/Monsters/golem.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2a1f7acd8bcc5b14ead83cc3989048c2
+    m_Address: Assets/Sprites/Monsters/thief_bug_egg.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2b1871b4d8d18f543a2c4c9ffd2ca745
+    m_Address: Assets/Sprites/Monsters/spore.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2c1b7bba405045f46905a14908df5b86
+    m_Address: Assets/Sprites/Monsters/orc_baby.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2c648da71610a5647a1ab14858a2e5dc
+    m_Address: Assets/Sprites/Monsters/moonlight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2cf92b824b92fb041a38e7ea84e29a90
+    m_Address: "Assets/Sprites/Characters/HeadMale/27_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2eba3bff6f7725c4a8c4303b198b7be9
+    m_Address: "Assets/Sprites/Characters/HeadFemale/9_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 31e8c3616f3418d4b9ef02db104e06cf
+    m_Address: Assets/Sprites/Monsters/stainer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 329714ac8d37b604cb231f4d5cd089d8
+    m_Address: Assets/Sprites/Monsters/greatest_general.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 332cd52d09b00334694ec16875bdd46f
+    m_Address: "Assets/Sprites/Characters/HeadMale/11_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 335656a9e90939a45b5f988fad83a0f3
+    m_Address: "Assets/Sprites/Characters/HeadMale/13_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 342c76b605d9a284d8b5527af0011e3a
+    m_Address: "Assets/Sprites/Headgear/Female/\uC5EC_\uC120\uAE00\uB798\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 36a7a27989817c54f8cead4cce99ebf7
+    m_Address: Assets/Sprites/Monsters/desert_wolf_b.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 36ce427242b01d24092fa619fff814a3
+    m_Address: Assets/Sprites/Monsters/red_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 36f12b0bfba2a894ea54a4278e754fd1
+    m_Address: Assets/Sprites/Monsters/lunatic.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 36f48683280b51543878b5964d0ab5d4
+    m_Address: Assets/Sprites/Monsters/creamy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 37f383dd5ed5b3a45a5003443646d299
+    m_Address: Assets/Sprites/Monsters/eddga.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 3c56b1906213cef4ba5192c229698c1d
+    m_Address: Assets/Sprites/Monsters/goblin_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 3ce7d15e92302e84499b9e4bad20aa23
+    m_Address: Assets/Sprites/Monsters/metaller.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 3d65691cb21357942a53f231b3326302
+    m_Address: Assets/Sprites/Monsters/savage_babe.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 3f9c3647eb2929d428f3fac2c594dfd9
+    m_Address: Assets/Sprites/Monsters/orc_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 402fe7cbf1ccc454083158122781ed9c
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uD504\uB9AC\uC2A4\uD2B8_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4057673bee612a54eb73657118fe9f26
+    m_Address: Assets/Sprites/Monsters/matyr.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 406068c3f6cf6034296da0d36362487a
+    m_Address: Assets/Sprites/Monsters/skel_soldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 408d8f7a768455744939dc59aee64f56
+    m_Address: "Assets/Sprites/Characters/HeadFemale/23_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 41bffcf39daf93a44b987709cb1a0a24
+    m_Address: Assets/Sprites/Monsters/yellow_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 44d04b7b90d808a4d914d1cf47ff6d85
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uAD81\uC218_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 452ea763b6dfd8d4aba5451e64105dc8
+    m_Address: Assets/Sprites/Monsters/kobold_3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 463535e9beb3d1d43b43bec401931321
+    m_Address: "Assets/Sprites/Characters/BodyMale/\uAD81\uC218_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 463e7de72f44f6b46be1233a1d7d9c31
+    m_Address: Assets/Sprites/Monsters/side_winder.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 464881348891ba94e9093ff48c98e71c
+    m_Address: "Assets/Sprites/Headgear/Female/\uC5EC_\uB808\uAE34\uB808\uC774\uBE0C\uC758\uB0A0\uAC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 47b5c6a7d0428fe4793cf386d6c7bb50
+    m_Address: "Assets/Sprites/Characters/HeadFemale/21_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 47fcb79880b2a61469bb15b942dd1f6f
+    m_Address: Assets/Sprites/Monsters/orc_lord.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 49799781a6ab3224680ef043f491d832
+    m_Address: Assets/Sprites/Monsters/marin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4982b8efcbcba774fa0d969af10bbab2
+    m_Address: Assets/Sprites/Monsters/nine_tail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4ad214ea3f1a0c6419b2e2c0680ccdfe
+    m_Address: Assets/Sprites/Monsters/poison_spore.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4adecddeef45625459b08134874db6ff
+    m_Address: "Assets/Sprites/Characters/HeadMale/4_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4b7e0e91d1983fb42bcaf6109c352b7b
+    m_Address: "Assets/Sprites/Characters/HeadFemale/13_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4d3992a1017e92542bc7eb6926559041
+    m_Address: "Assets/Sprites/Characters/HeadFemale/15_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4d8aefdabf2b33744811a9ab66255cf0
+    m_Address: "Assets/Sprites/Characters/HeadMale/14_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4fc20fae7512b1f458b688eccbe0d440
+    m_Address: Assets/Sprites/Monsters/blue_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 512f92f6d2f8c3d4f8d0ebae2e1c2236
+    m_Address: "Assets/Sprites/Weapons/SuperNovice/Female/\uC288\uD37C\uB178\uBE44\uC2A4_\uC5EC_1207.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 539f6c1ab81b91f468330bba368224c2
+    m_Address: "Assets/Sprites/Characters/HeadMale/6_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5598d9ccb9d2c6c49a94d5866eda18de
+    m_Address: Assets/Sprites/Monsters/hode.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 59c9814cc3506f945aad370f89af9048
+    m_Address: Assets/Sprites/Monsters/panzer_goblin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5c40fa90b02375b42a1b9f8ff89ab4b9
+    m_Address: "Assets/Sprites/Characters/HeadMale/29_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5d72933ca66da094cb37171d1208153f
+    m_Address: Assets/Sprites/Monsters/picky.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5d860c52a248656499e78e739dd0dec6
+    m_Address: Assets/Sprites/Monsters/sohee.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5de40bacdafb8b24aae5477ad02c6274
+    m_Address: Assets/Sprites/Monsters/dragon_fly.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5eda30ee2e0ad0f4aa5c135f92c58c8a
+    m_Address: Assets/Sprites/Monsters/drainliar.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5f680446e4cd8e94b925f467a3e9ee14
+    m_Address: Assets/Sprites/Monsters/rotar_zairo.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 60226fcbde62a9341a4c872992ef3561
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uC544\uD06C\uBE44\uC20D_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6071e3e76f6e7ab40b9706a7660c9473
+    m_Address: Assets/Sprites/Monsters/chocho.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 613835a2b778adf4a8f69325558c48ed
+    m_Address: Assets/Sprites/Monsters/rocker.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6152ba466efabe74a9337a6ee732f223
+    m_Address: Assets/Sprites/Monsters/bon_gun.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6453c35c31634d24bbe53ba5e7ec7840
+    m_Address: Assets/Sprites/Monsters/roda_frog.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6533881c1c829134aabdfa2fdca755d9
+    m_Address: Assets/Sprites/Monsters/bigfoot.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 65bd35e4398371a40b0b7e014551775c
+    m_Address: Assets/Sprites/Monsters/goblin_4.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6851dc897d42df84da03110d8503e784
+    m_Address: Assets/Sprites/Monsters/kobold_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 68f4c9c0d60f8d2489c8adb7b1cf6a8d
+    m_Address: Assets/Sprites/Monsters/andre.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 69024c46ba78f0341b960dcb1c3fba3a
+    m_Address: Assets/Sprites/Monsters/munak.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6912eba073f2122479e10b8a093539a2
+    m_Address: Assets/Sprites/Monsters/whisper_boss.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6981bfc3e27aec24d810ca3bdbf8459a
+    m_Address: Assets/Sprites/Monsters/dustiness.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6aa287f20573ea94c90503b32f796d36
+    m_Address: Assets/Textures/WaterTemp.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6dff7b4db96db184dab4b5fa6ab157b4
+    m_Address: gridiconYellow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 700578ae829ad6d4d8957508583ad3d9
+    m_Address: Assets/Sprites/Monsters/desert_wolf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 71a2427aad72cb44d813d89814e37216
+    m_Address: "Assets/Sprites/Characters/HeadFemale/22_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 728a90d870f40764d83c3e097a586cc7
+    m_Address: "Assets/Sprites/Characters/HeadMale/12_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 72b3e2dbf7692544980e5d28abee817a
+    m_Address: "Assets/Sprites/Characters/HeadFemale/16_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 768e41e93f017b34abdda0630a7d3cf7
+    m_Address: Assets/Sprites/Monsters/anacondaq.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 772fd4f8ebdc84248af69bf614c96bc8
+    m_Address: Assets/Sprites/Monsters/thief_bug_female.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 77a3140241d06234aadbc91a79d32849
+    m_Address: Assets/Sprites/Monsters/kobold_2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 77a8dc9d3b76ca347bb69309ade8ca60
+    m_Address: "Assets/Sprites/Characters/BodyMale/\uCD08\uBCF4\uC790_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7965b352fc3de6346964193d6646db5f
+    m_Address: Assets/Sprites/damagenumbers.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 79c986b394188a2429a428089734f252
+    m_Address: Assets/Sprites/Monsters/mantis.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7a3993df44573374894f81ef56d0b79e
+    m_Address: shadow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7ac02a464c7577a40aef26b17a523eb4
+    m_Address: "Assets/Sprites/Characters/HeadMale/1_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7b501e839f0dc4549b1ae7f2d60d45b3
+    m_Address: Assets/Sprites/Monsters/pupa.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7b70df724e10d7e47ab902ffca952975
+    m_Address: Assets/Sprites/Monsters/fabre.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7f4675cf5ec26d24d9c72f077a5ddb44
+    m_Address: "Assets/Sprites/Characters/BodyMale/\uAC80\uC0AC_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7fec758c0097d024898b5f926a4130bb
+    m_Address: "Assets/Sprites/Characters/HeadFemale/28_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8053c7a53d510ca4db83d6a3787cffe0
+    m_Address: Assets/Data/playerclass.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 80b5492fdd3a35d418406c2146a9a20e
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uAE30\uC0AC_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 81791a529a380e044b5191421ff2d8db
+    m_Address: "Assets/Sprites/Characters/HeadMale/28_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 81e103d37c03c774d8a84c7e9804b7a2
+    m_Address: Assets/Sprites/Monsters/hydra.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 82503c37046c3b445912dc1ca0c8e056
+    m_Address: Assets/Sprites/Monsters/skeleton_general.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 830c7fb987df2524e86ebc40803f330f
+    m_Address: Assets/Sprites/Monsters/mimic.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 83110798c9532a943ba55fab5f32b1d1
+    m_Address: Assets/Sprites/Monsters/scorpion.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8348b476a15847f4682ba65011d77395
+    m_Address: Assets/Sprites/Monsters/goblin_1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8486344c02e6b69438e3640afef1cf1d
+    m_Address: Assets/Sprites/Monsters/magnolia.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 85a046cf5ff9c3c4ca7cfa953949de71
+    m_Address: Assets/Sprites/Monsters/yoyo.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8606dba797efc47498f0e82bd1ca2dc6
+    m_Address: Assets/Sprites/Monsters/petit.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 88028cdc71f138144add8a4eac076751
+    m_Address: Assets/Sprites/Monsters/angeling.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8a74d2072e51cec49a25566c66ec28bd
+    m_Address: "Assets/Sprites/Characters/HeadFemale/8_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8b7f6252ec0427943b632970768f84ec
+    m_Address: "Assets/Sprites/Characters/HeadMale/22_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8bf126e83c8eed24eb0e14faff814146
+    m_Address: "Assets/Sprites/Characters/HeadFemale/10_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8c412c4ee5450e0429677716be0daf13
+    m_Address: Assets/Sprites/Monsters/minorous.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8c4241145e734d144bc7bd4a96648e74
+    m_Address: Assets/Sprites/Monsters/pecopeco.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8d57c22da426ba545b0c1c04bd9b18e1
+    m_Address: Assets/Sprites/Monsters/mastering.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8d5e05a6a306af94f90414d9d6988c36
+    m_Address: "Assets/Sprites/Shields/SuperNovice/Female/\uC288\uD37C\uB178\uBE44\uC2A4_\uC5EC_\uAC00\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 90cc54bcb314ac741a3000aaedca74f3
+    m_Address: Assets/Sprites/Monsters/hornet.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 917246dc63a6660419eae17a99b5ec5e
+    m_Address: "Assets/Sprites/Characters/HeadMale/26_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9259f73a4f695ac4a96a96cba2c8c385
+    m_Address: "Assets/Sprites/Headgear/Female/\uC5EC_\uC655\uB9AC\uBCF8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9407fc38ddfc5684b8ffac84a520d0e2
+    m_Address: "Assets/Sprites/Headgear/Female/\uC5EC_\uC635\uC800\uBC84.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 94267bdd7454d1741b55d3b8896990d4
+    m_Address: Assets/Sprites/Monsters/shining_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 942f39b0af30db54aac01eab075a4fcc
+    m_Address: "Assets/Sprites/Characters/BodyMale/\uC131\uC9C1\uC790_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 96ce79ee5e749364d82d6bea6f1fb269
+    m_Address: Assets/Sprites/Monsters/wilow.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 993e8fba08425cd46a927f8e903cd47a
+    m_Address: Assets/Sprites/Monsters/high_orc.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9e0ac5d3a6b6d8b4fac73f48e5679ee2
+    m_Address: "Assets/Sprites/Headgear/Female/\uC5EC_3d\uC548\uACBD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9ea810e06864a3344b3009a59d08eea4
+    m_Address: "Assets/Sprites/Characters/HeadFemale/11_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9f1de5b135a57e642bcb21dfe0866442
+    m_Address: Assets/Sprites/Monsters/stem_worm.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9f6aeee9f2e167042bbf3aff226d7e01
+    m_Address: Assets/Sprites/Monsters/arclouse.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9fd46c9d0b43e9c4dbcb6f99e7037acb
+    m_Address: Assets/Sprites/Monsters/goblin_leader.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9fdca880a1ec8414a936f52bd639376a
+    m_Address: gridicon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a0430e3d11d2bf14f86b7f12101929de
+    m_Address: PortalPlaceholder
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a28208c8c1752084f806e7a777da178a
+    m_Address: Assets/Sprites/Monsters/horn.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a2c51b3a6440495458a341e7a65c70b5
+    m_Address: Assets/Sprites/Monsters/peco_egg.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a301ddaa363e899468eb49f81aaa4d49
+    m_Address: Assets/Sprites/Monsters/condor.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a354a8cfe2924fa48b84d7f6ed627680
+    m_Address: Assets/Sprites/Monsters/flora.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a46fb516112bdc94488ef2185c4c1f4e
+    m_Address: "Assets/Sprites/Characters/BodyMale/\uB9C8\uBC95\uC0AC_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a57c959c63ec031428bb92f239360c49
+    m_Address: Assets/Sprites/Monsters/goblin_5.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a58b1f764ade7de4eaced27ae5f7ed60
+    m_Address: Assets/Sprites/Monsters/choco.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a6e5733189e267c49b251b08f862904e
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uAC80\uC0AC_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a7378642dfd006e4fbb9376d4888949f
+    m_Address: "Assets/Sprites/Characters/BodyMale/\uB3C4\uB451_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a80e528b51dd1cf49bb48ff109723f9a
+    m_Address: "Assets/Sprites/Characters/HeadMale/9_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a90834bbd606eeb42b560c1a6d093007
+    m_Address: "Assets/Sprites/Characters/HeadMale/10_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: aa25cb017f6275c41b818986fea42136
+    m_Address: Assets/Sprites/Monsters/green_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ab318b88f7e6aed469706e75a4c5275d
+    m_Address: Assets/Sprites/Monsters/red_mushroom.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ab333e907991597478d71b30446b2e26
+    m_Address: Assets/Sprites/Monsters/verit.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ab4a042a88fba9b4982dda2bb627fd25
+    m_Address: Assets/Sprites/Monsters/worm_tail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ad96ee404ba35504abb7516cde853fa4
+    m_Address: Assets/Sprites/Monsters/steam_goblin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ae69c957c4c7a844eb3fb8dfa946af89
+    m_Address: Assets/Sprites/Monsters/black_mushroom.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: aea182be5704759448374acf4c24ca38
+    m_Address: "Assets/Sprites/Characters/HeadFemale/17_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: af683cad54ce01f4586c3ab0a14872e6
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uCD08\uBCF4\uC790_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b0a20af02afafe44e82f893d26a9ae8d
+    m_Address: Assets/Sprites/Monsters/mummy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b132ef155af6f314abe448bafd55004e
+    m_Address: Assets/Sprites/Monsters/dragon_tail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b14672f987f89204a8e064f04949b2f4
+    m_Address: Assets/Sprites/Monsters/kobold_1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b38a7e199200a7a4dac306e68cf6561b
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uC288\uD37C\uB178\uBE44\uC2A4_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b4616493a2aba7c448ab59f62406baec
+    m_Address: Assets/Sprites/Monsters/vagabond_wolf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b551522ea5512534e8c6ce21b2cfb035
+    m_Address: Assets/Sprites/Monsters/smokie.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b578e15c38d7978488bdd4ddaed93e24
+    m_Address: Assets/Sprites/Monsters/ancient_mummy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b796df2c7adcd2340bf46a0e8b4516ba
+    m_Address: "Assets/Sprites/Characters/HeadFemale/27_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b79a5557c65c7374fb55fa00168701e2
+    m_Address: "Assets/Sprites/Characters/HeadMale/15_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b8eab5deb1a90f94db9e10ea4546c2ad
+    m_Address: "Assets/Sprites/Characters/HeadFemale/26_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: bdc28155fff3bd24baa074cac5b0b45c
+    m_Address: "Assets/Sprites/Characters/HeadMale/24_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: be31741a526453a42851f3cd563a677b
+    m_Address: "Assets/Sprites/Characters/HeadFemale/25_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: bf44e3aa8f36a1d43bb3a98730dd9fff
+    m_Address: "Assets/Sprites/Characters/HeadFemale/3_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c045d72f7facb1c4ba481477f0ce7768
+    m_Address: Assets/Sprites/cursors.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c1b2bf3cb2ee90d4a9141fcea1aad346
+    m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_1207.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c559ee07bb810e44f800efcc59c2fcac
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uD558\uC774\uC704\uC800\uB4DC_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c5e8380a4231d744babed1ef972ca795
+    m_Address: Assets/Sprites/Monsters/goblin_3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c644a44ea79e5844c80830888855745e
+    m_Address: "Assets/Sprites/Characters/HeadFemale/14_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c69b5f995b26ab2498e9327348de1508
+    m_Address: Assets/Sprites/Monsters/drops.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c6d20db51b5ab694fa0d5f48ffc766ca
+    m_Address: Assets/Sprites/Monsters/argiope.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c98bcab14dfd2834893bb78937aeee46
+    m_Address: "Assets/Sprites/Characters/HeadMale/20_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: cad382922d8fa6e4797a169c18b7ddf7
+    m_Address: Assets/Sprites/Monsters/toad.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: cb54b87dc5d18e14babc02c2bfc6ffad
+    m_Address: "Assets/Sprites/Characters/HeadFemale/7_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: cc8f291e45c82b440a58ed9abcbbd841
+    m_Address: Assets/Sprites/Monsters/kobolt_leader.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: cdc71d84b87f37c49bb32aa504d06994
+    m_Address: Assets/Sprites/Monsters/zombie.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: cddf8b54252b7844d8dd44ee34c6c05e
+    m_Address: "Assets/Sprites/Characters/HeadMale/5_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ce310b71ac54e2b408411be52bf52af8
+    m_Address: "Assets/Sprites/Characters/HeadMale/17_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d00e74e9c4c5e6f48a572814ce963ef8
+    m_Address: "Assets/Sprites/Characters/HeadMale/2_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d136f9cfcba22854a9240998e8d2c464
+    m_Address: Assets/Sprites/Monsters/argos.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d2594482139b4d942bac92178bef6016
+    m_Address: Assets/Sprites/Monsters/ant_egg.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d2a5c75b35144fd4b9a3fb1efad24791
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uB85C\uB4DC\uD398\uCF54_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d33cc581c7aff1641a5e7723c8a22799
+    m_Address: Assets/Sprites/Monsters/eclipse.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d5c455adfeff0204894a6791a28f0ab3
+    m_Address: Assets/Sprites/Monsters/hunter_fly.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d6fed4c4e5f44984dbbade6495b49674
+    m_Address: "Assets/Sprites/Characters/HeadMale/8_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d844eb068ca49e04089a9a8e740d65ba
+    m_Address: "Assets/Sprites/Characters/HeadFemale/1_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: db2b7fac5be63624aa19adc36e0c5042
+    m_Address: Assets/Sprites/Monsters/elder_wilow.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: db65e2e08a28cdf42a844e8784ca7c0d
+    m_Address: "Assets/Sprites/Headgear/Female/\uC5EC_\uC0C8\uB07C\uC545\uB9C8\uBAA8\uC790.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: dbf3cc80f251e174eb9bddcc0fefc13c
+    m_Address: Assets/Sprites/Monsters/piere.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: dc68a60a9fb079b4a9fd0582e96e030a
+    m_Address: "Assets/Sprites/Characters/HeadFemale/12_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: dce7aab367c5cdd4c81471cae21e7b9e
+    m_Address: Assets/Sprites/Monsters/orc_lady.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: dcf27d08fb6d14848a2da5a718d9638b
+    m_Address: Assets/Sprites/Monsters/muka.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: dd460e764a9976542be2aee593e91daa
+    m_Address: Assets/Sprites/Monsters/petit_.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: df5b806d79a97d641a8a61632f8934f2
+    m_Address: Assets/Sprites/Monsters/deviling.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e0c5d308ddfaed943b4f15253b831d00
+    m_Address: "Assets/Sprites/Characters/HeadMale/23_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e10cd867d0d16774caf159a7e2929c53
+    m_Address: Assets/Sprites/Monsters/osiris.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e19af5bb017602b4e89a2e2326b4817f
+    m_Address: "Assets/Sprites/Headgear/Female/\uB0A8_c\uACE0\uC591\uC774\uADC0\uBAA8\uC790.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e2324b78df4f51d4a9501b6142b02a60
+    m_Address: "Assets/Sprites/Characters/BodyMale/\uC6B4\uC601\uC790_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e29f6f2d0cdd91646bdbb7ecbc71c0f0
+    m_Address: "Assets/Sprites/Characters/HeadFemale/2_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e3ede6f4a8baf6044b6fb54f10a2c298
+    m_Address: "Assets/Sprites/Characters/HeadMale/18_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e5eb0f2352d86bf4cb0fcfd49692fc42
+    m_Address: "Assets/Sprites/Characters/HeadFemale/19_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e6ba6dac1bd174045af2cc5d8984257f
+    m_Address: "Assets/Sprites/Characters/HeadFemale/24_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e7e976062319def47ad89309a6bda749
+    m_Address: Assets/Sprites/Monsters/ork_warrior.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e810c6d403b5d834ea23c2eba10105b6
+    m_Address: "Assets/Sprites/Characters/HeadFemale/20_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ebd7933485500a348a3d7edf24638f16
+    m_Address: Assets/Sprites/Monsters/skeleton.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ec4e60dd3207676448d99529465ec7bc
+    m_Address: Assets/Sprites/Monsters/dokebi.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ec9e3d34d560170499b30434ba01ab72
+    m_Address: "Assets/Sprites/Characters/HeadMale/19_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ecb712e38a75db045a8344633eebbc6f
+    m_Address: "Assets/Sprites/Characters/HeadMale/21_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ecc7f6fd062685f4c840ad9d7fb3e734
+    m_Address: Assets/Sprites/Monsters/ork_hero.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ed5c33172f3a8f540ae982125733fc34
+    m_Address: Assets/Sprites/Monsters/steel_chocho.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ed986867d24c7c24ab32a7e8f20295b3
+    m_Address: "Assets/Sprites/Characters/HeadMale/3_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ee946c200f3337b4581929a4fc872817
+    m_Address: Assets/Sprites/Monsters/horong.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ef79cef2cc41fe2468066aabe94709fe
+    m_Address: Assets/Sprites/Monsters/ambernite.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f0aa0da9cacd0f54c9cf8e4ffb023b0f
+    m_Address: Assets/Sprites/Monsters/mandragora.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f1f79889bab451244bd8bdfa777520cb
+    m_Address: "Assets/Sprites/Characters/HeadFemale/6_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f21dd90a66e2ea9438c024cd757260fb
+    m_Address: Assets/Sprites/Monsters/deniro.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f2b672c7e4475324aad380dab1d77060
+    m_Address: "Assets/Sprites/Characters/BodyFemale/\uC6B4\uC601\uC790_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f33206e2bf063d440b915d610ebd166d
+    m_Address: "Assets/Sprites/Characters/HeadFemale/5_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f3dad21b8dbf41849a3103cca89c7724
+    m_Address: Assets/Sprites/Monsters/white_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f3e6c521e960daf4ab628adaf1d33ed2
+    m_Address: "Assets/Sprites/Characters/HeadMale/16_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f41c4cfd20b09e6468d0123a05acd836
+    m_Address: "Assets/Sprites/Characters/HeadMale/25_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f434250607a67ef4d87a72056efb7a36
+    m_Address: Assets/Sprites/Monsters/savage.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f642d0831c9eb024dadd3a9afff32838
+    m_Address: Assets/Sprites/Monsters/poporing.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f6de46f8fd415d0449e16151284ea472
+    m_Address: Assets/Sprites/Monsters/whisper.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: fd43242ff762c4242bdd6db01b11cc77
+    m_Address: Assets/Sprites/Monsters/snake.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: a4c256568422d0b42bf91bf44f076eee, type: 2}
+    - {fileID: 11400000, guid: 5dd561bfc980f0940964133ca851a014, type: 2}

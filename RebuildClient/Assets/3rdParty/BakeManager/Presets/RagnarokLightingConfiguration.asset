@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 11500000, guid: c85d31d06d4354721899b091ca4d982b, type: 3}
+  m_Name: RagnarokLightingConfiguration
+  m_EditorClassIdentifier: 
+  _lightmapperBackend: 2
+  _mixedLightingMode: 2
+  UpdateAmbientLight: 0
+  _ambientMode: 3
+  _ambientIntensity: 1
+  _ambientSkyColor: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
+  _ambientEquatorColor: {r: 0, g: 0.12710404, b: 1, a: 1}
+  _ambientGroundColor: {r: 0.9556836, g: 1, b: 0, a: 1}
+  _ambientProbe:
+    sh[ 0]: 0
+    sh[ 1]: 0
+    sh[ 2]: 0
+    sh[ 3]: 0
+    sh[ 4]: 0
+    sh[ 5]: 0
+    sh[ 6]: 0
+    sh[ 7]: 0
+    sh[ 8]: 0
+    sh[ 9]: 0
+    sh[10]: 0
+    sh[11]: 0
+    sh[12]: 0
+    sh[13]: 0
+    sh[14]: 0
+    sh[15]: 0
+    sh[16]: 0
+    sh[17]: 0
+    sh[18]: 0
+    sh[19]: 0
+    sh[20]: 0
+    sh[21]: 0
+    sh[22]: 0
+    sh[23]: 0
+    sh[24]: 0
+    sh[25]: 0
+    sh[26]: 0
+  _GIAmbientOverrideMode: 0
+  _defaultReflectionMode: 0
+  _defaultReflectionResolution: 128
+  _reflectionBounces: 1
+  _reflectionIntensity: 1
+  _enableAmbientOcclusion: 1
+  _aoExponentDirect: 1
+  _aoExponentIndirect: 2
+  _aoMaxDistance: 8
+  _bakedGI: 1
+  _directSamples: 32
+  _indirectSamples: 256
+  _environmentSamples: 256
+  _bakeResolution: 5
+  _padding: 2
+  _maxAtlasSize: 1024
+  _realtimeGI: 0
+  _realtimeResolution: 2
+  _reflectionCubemapCompression: 2
+  _textureCompression: 1
+  _bounceBoost: 1
+  _indirectOutputScale: 1
+  _giWorkflowMode: 1
+  _lightmapsMode: 0
+  _subtractiveShadowColor: {r: 0, g: 0.57831025, b: 1, a: 1}

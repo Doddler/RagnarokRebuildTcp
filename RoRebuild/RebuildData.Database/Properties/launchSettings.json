@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "RebuildData.Database": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

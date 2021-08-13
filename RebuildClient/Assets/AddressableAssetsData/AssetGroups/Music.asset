@@ -1,0 +1,214 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Music
+  m_EditorClassIdentifier: 
+  m_GroupName: Music
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 185a24a1a4e2521418929e36ae46a180
+  m_SerializeEntries:
+  - m_GUID: 0045531259c8243468ad0abe1f3b6264
+    m_Address: Assets/Music/26.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 00cf9270fd5a15f4e971f40cef676f18
+    m_Address: Assets/Music/19.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0421e61843ac84f45a227212ad92cbb0
+    m_Address: Assets/Music/39.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 09ce5418dbf450f4f9590c0ceef3af5d
+    m_Address: Assets/Music/24.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1eff6777c7d9c9e44adbef97790d22d8
+    m_Address: Assets/Music/11.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 21004e150d4b05048943f9183466eb51
+    m_Address: Assets/Music/36.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2203293f0ea43e14d876871e1c924bf9
+    m_Address: Assets/Music/66.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2aca1e8f1cb646949add8c1065030a90
+    m_Address: Assets/Music/12.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2d59f464574f10346beac896986051a0
+    m_Address: Assets/Music/45.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2f07f242c8a76144ab304b6bc86b3a5a
+    m_Address: Assets/Music/08.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 32be85722809a77469097c955006d35b
+    m_Address: Assets/Music/05.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 42fb8bf32177d294b80fc6e034f3f720
+    m_Address: Assets/Music/31.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 45c796b840288be4a8bfe8abdb332494
+    m_Address: Assets/Music/25.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7c27c59f5b686174e972ce818260d779
+    m_Address: Assets/Music/47.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9e91c56e413eedb41b081851d5156100
+    m_Address: Assets/Music/22.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ba51756b6adcfd14088df944523c2b83
+    m_Address: Assets/Music/20.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: bf05e12e333a42f439dd08f3feabe798
+    m_Address: Assets/Music/33.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c56cb90dfa226d84f9a6956a6a95bea2
+    m_Address: Assets/Music/04.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c968b0984bd7e5b41b9d993edf333e24
+    m_Address: Assets/Music/03.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ce3d2bd4752b97e4c95f4e294793c546
+    m_Address: Assets/Music/37.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d099a141167fcfc4da266360315f8b18
+    m_Address: Assets/Music/14.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: dc7e6f54a3e2bd343a41030adf5c976a
+    m_Address: Assets/Music/15.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: dd326ef0181b13642aac04bcf99c9e90
+    m_Address: Assets/Music/35.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f37d31878994d0241a02289866c774e8
+    m_Address: Assets/Music/13.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f972aed514626b14398ef2df35be3415
+    m_Address: Assets/Music/64.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: fb55bb614a583c14bb0d12e7ad7f540c
+    m_Address: Assets/Music/23.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: fe8d939f801e2d844b21616851745bd4
+    m_Address: Assets/Music/34.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 4ad073d9d47012845950b26de91524cb, type: 2}
+    - {fileID: 11400000, guid: 80db256a8177f3c48a6fb97e490a69e4, type: 2}
