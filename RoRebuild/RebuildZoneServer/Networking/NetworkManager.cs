@@ -261,10 +261,6 @@ namespace RebuildZoneServer.Networking
                             ServerLogger.LogWarning($"Client {client.Entity} failed to receive packet.");
                             await disconnectList.Writer.WriteAsync(client);
                         }
-                        finally
-                        {
-                            RetireOutboundMessage(message);
-                        }
                     }
                 }
             }
