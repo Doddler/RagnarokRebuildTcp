@@ -66,7 +66,8 @@ namespace RebuildZoneServer.Networking
 #if DEBUG
 			State.DebugMode = true;
 #else
-            ServerLogger.LogWarning("Server is started using debug mode config flag! Be sure this is what you want.");
+            if(State.DebugMode)
+                ServerLogger.LogWarning("Server is started using debug mode config flag! Be sure this is what you want.");
 #endif
 
             ServerLogger.Log(
@@ -259,6 +260,10 @@ namespace RebuildZoneServer.Networking
                         {
                             ServerLogger.LogWarning($"Client {client.Entity} failed to receive packet.");
                             await disconnectList.Writer.WriteAsync(client);
+                        }
+                        finally
+                        {
+                            RetireOutboundMessage(message);
                         }
                     }
                 }

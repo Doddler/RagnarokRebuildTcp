@@ -14,7 +14,7 @@ namespace RebuildZoneServer.Networking
 
         public List<NetworkConnection> Clients;
         public byte[] Message;
-        public int Length => (position + 7) / 8;
+        public int Length => (position + 7) / 8; //convert position in bits to bytes
 
         private int position;
 
