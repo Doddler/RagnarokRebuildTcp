@@ -77,8 +77,8 @@ namespace RebuildZoneServer.Networking
             outboundChannel = new NetQueue<OutboundMessage>(100);
             disconnectList = Channel.CreateUnbounded<NetworkConnection>(new UnboundedChannelOptions
             { SingleReader = true, SingleWriter = false });
-
-            outboundPool = new DefaultObjectPool<OutboundMessage>(new DefaultPooledObjectPolicy<OutboundMessage>(), 10);
+            
+            outboundPool = new DefaultObjectPool<OutboundMessage>(new OutboundMessagePooledObjectPolicy(), 10);
             inboundPool = new DefaultObjectPool<InboundMessage>(new DefaultPooledObjectPolicy<InboundMessage>(), 10);
 
             if (!IsSingleThreadMode)
@@ -194,7 +194,7 @@ namespace RebuildZoneServer.Networking
 
         public static void RetireOutboundMessage(OutboundMessage message)
         {
-            message.Clear();
+            //message.Clear();
             outboundPool.Return(message);
         }
         
@@ -263,6 +263,8 @@ namespace RebuildZoneServer.Networking
                         }
                     }
                 }
+
+                RetireOutboundMessage(message);
             }
 
         }

@@ -5,13 +5,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lidgren.Network;
+using Microsoft.Extensions.ObjectPool;
 using RebuildData.Shared.Networking;
 
 namespace RebuildZoneServer.Networking
 {
+    public class OutboundMessagePooledObjectPolicy : IPooledObjectPolicy<OutboundMessage>
+    {
+        public OutboundMessage Create()
+        {
+            return new OutboundMessage();
+        }
+
+        public bool Return(OutboundMessage obj)
+        {
+            obj.Clear();
+            return true;
+        }
+    }
+
     public class OutboundMessage
     {
-
         public List<NetworkConnection> Clients;
         public byte[] Message;
         public int Length => (position + 7) / 8; //convert position in bits to bytes
