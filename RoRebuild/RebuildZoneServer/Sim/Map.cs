@@ -458,7 +458,7 @@ namespace RebuildZoneServer.Sim
             return false;
         }
 
-		public void GatherPlayersInRange(Character character, int distance, EntityList list, bool checkImmunity = false)
+		public void GatherPlayersInRange(Character character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
 		{
 			Profiler.Event(ProfilerEvent.MapGatherPlayers);
 
@@ -477,8 +477,12 @@ namespace RebuildZoneServer.Sim
                     }
 
                     if (character.Position.InRange(ch.Position, distance))
-						list.Add(p);
-				}
+                    {
+                        if (checkLineOfSight && !WalkData.HasLineOfSight(character.Position, ch.Position))
+                            continue;
+                        list.Add(p);
+                    }
+                }
 			}
 		}
 

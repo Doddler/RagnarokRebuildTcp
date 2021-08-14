@@ -195,7 +195,7 @@ namespace RebuildZoneServer.EntityComponents
 		{
 			var list = EntityListPool.Get();
 
-			Character.Map.GatherPlayersInRange(Character, distance, list, true);
+			Character.Map.GatherPlayersInRange(Character, distance, list, true, true);
 
 			if (list.Count == 0)
 			{

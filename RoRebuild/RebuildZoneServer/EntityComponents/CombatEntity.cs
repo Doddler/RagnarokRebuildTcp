@@ -81,7 +81,7 @@ namespace RebuildZoneServer.EntityComponents
             var mon = Character.Entity.Get<Monster>();
             var exp = mon.MonsterBase.Exp;
 			
-			Character.Map.GatherPlayersInRange(Character, 18, list);
+			Character.Map.GatherPlayersInRange(Character, 18, list, false);
 			foreach (var e in list)
 			{
 				if (e.IsNull() || !e.IsAlive())
