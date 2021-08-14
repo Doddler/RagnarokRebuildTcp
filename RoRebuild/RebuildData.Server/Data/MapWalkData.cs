@@ -9,39 +9,114 @@ using RebuildZoneServer.Data.Management;
 
 namespace RebuildData.Shared.Data
 {
-	public enum CellType
+	[Flags]
+    public enum CellType
 	{
 		None = 0,
 		Walkable = 1,
 		Water = 2,
-		Snipable = 4
+		Snipable = 4,
+		SeeThrough = Walkable | Snipable,
 	}
 
 	public class MapWalkData
 	{
 		public int Width;
 		public int Height;
+        public Area Bounds;
 		private byte[] cellData;
-
+		
         public bool IsPositionInBounds(Position p) => p.X >= 0 && p.X < Width && p.Y >= 0 && p.Y < Height;
         public bool IsPositionInBounds(int x, int y) => x >= 0 && x < Width && y >= 0 && y < Height;
         public bool IsCellWalkable(int x, int y) => (cellData[x + y * Width] & 1) == 1;
 		public bool IsCellWalkable(Position p) => (cellData[p.X + p.Y * Width] & 1) == 1;
-		public bool IsCellSnipable(int x, int y) => (cellData[x + y * Width] & 2) == 2;
-		public bool IsCellSnipable(Position p) => (cellData[p.X + p.Y * Width] & 2) == 2;
-        public bool DoesCellBlockLos(int x, int y) => (cellData[x + y * Width] & 2) == 0;
-        public bool DoesCellBlockLos(Position p) => (cellData[p.X + p.Y * Width] & 2) == 0;
-
-		public Position FindWalkdableCellOnMap()
+		public bool IsCellSnipable(int x, int y) => (cellData[x + y * Width] & 4) == 4;
+		public bool IsCellSnipable(Position p) => (cellData[p.X + p.Y * Width] & 4) == 4;
+        public bool DoesCellBlockLos(int x, int y) => (cellData[x + y * Width] & (byte)CellType.SeeThrough) == 0;
+        public bool DoesCellBlockLos(Position p) => (cellData[p.X + p.Y * Width] & (byte)CellType.SeeThrough) == 0;
+        
+        public Position FindWalkdableCellOnMap(int tries)
         {
             var pos = Position.Invalid;
-			
+            var count = 0;
+
+            do
+            {
+                if (count > tries)
+                    break;
+                pos = new Position(GameRandom.Next(0, Width - 1), GameRandom.Next(0, Height - 1));
+                count++;
+            } while (!IsCellWalkable(pos));
+
+            return pos;
+        }
+
+        public Position FindWalkableCellOnMap()
+        {
+            //we assume we will find a walkable cell on a map, so we have no max attempts specified.
+            //If we have a map with no of few walkable cells this could hard lock the server however.
+
+            var pos = Position.Invalid; 
+
             do
             {
                 pos = new Position(GameRandom.Next(0, Width - 1), GameRandom.Next(0, Height - 1));
             } while (!IsCellWalkable(pos));
 
             return pos;
+        }
+        
+        public bool FindWalkableCellInArea(Area area, out Position p, int maxAttempts = 100)
+        {
+            p = new Position();
+
+            area = area.ClipAndNormalize(Bounds);
+
+            var attempt = 0;
+
+            do
+            {
+                p = new Position(GameRandom.Next(area.MinX, area.MaxX), GameRandom.Next(area.MinY, area.MaxY));
+                if (attempt > maxAttempts)
+                    return false;
+                attempt++;
+            } while (!IsCellWalkable(p));
+
+            return true;
+		}
+
+        /// <summary>
+        /// Starting from a random point within an area, scans tiles one at a time until a walkable tile is found.
+        /// </summary>
+        /// <param name="area">The area you want to find a walkable cell in.</param>
+        /// <param name="p">The output area.</param>
+        /// <returns>If a walkable tile was found.</returns>
+        public bool ScanForWalkableCell(Area area, out Position p)
+        {
+            area = area.ClipAndNormalize(Bounds);
+
+            var max = area.Width * area.Height;
+            var start = GameRandom.Next(0, max - 1);
+            var pos = start+1;
+
+            while (start != pos)
+            {
+                pos = pos % max;
+
+                var x = pos % area.Width;
+                var y = (pos - x) / area.Height;
+
+                if (IsCellWalkable(x, y))
+                {
+                    p = new Position(x, y);
+                    return true;
+                }
+
+                pos++;
+            }
+
+            p = Position.Invalid;
+            return false;
         }
 
         public bool HasLineOfSight(Position pos1, Position pos2)
@@ -85,6 +160,8 @@ namespace RebuildData.Shared.Data
 
 				Width = br.ReadInt32();
 				Height = br.ReadInt32();
+
+                Bounds = new Area(0, 0, Width-1, Height-1);
 
 				cellData = br.ReadBytes(Width * Height);
 			}

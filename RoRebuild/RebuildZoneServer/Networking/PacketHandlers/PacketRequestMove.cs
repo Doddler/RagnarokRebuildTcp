@@ -56,7 +56,7 @@ namespace RebuildZoneServer.Networking.PacketHandlers
                 }
             }
             else
-                pos = map.WalkData.FindWalkdableCellOnMap(); //find a random cell if one wasn't requested
+                pos = map.WalkData.FindWalkableCellOnMap(); //find a random cell if one wasn't requested
 
             //CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
 

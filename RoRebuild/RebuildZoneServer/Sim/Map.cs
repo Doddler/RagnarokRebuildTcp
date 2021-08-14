@@ -571,29 +571,19 @@ namespace RebuildZoneServer.Sim
 		}
 
 		public bool FindPositionInRange(Area area, out Position p)
-		{
-			p = new Position();
-			
-			if (area.MinX > area.MaxX)
-				area.MinX = area.MaxX;
-			if (area.MaxX < area.MinX)
-				area.MaxX = area.MinX;
-			if (area.MinY > area.MaxY)
-				area.MinY = area.MaxY;
-			if (area.MaxY < area.MinY)
-				area.MaxY = area.MinY;
+        {
+            if (WalkData.FindWalkableCellInArea(area, out p))
+                return true;
 
-			var attempt = 0;
-			do
-			{
-				p = new Position(GameRandom.Next(area.MinX, area.MaxX), GameRandom.Next(area.MinY, area.MaxY));
-				if (attempt > 100)
-					return false;
-				attempt++;
-			} while (!WalkData.IsCellWalkable(p));
+            ServerLogger.Debug($"Could not find walkable tile in {area} on map {Name} within 100 checks. Falling back to tile scan.");
 
-			return true;
-		}
+			if (WalkData.ScanForWalkableCell(area, out p))
+                return true;
+
+			ServerLogger.LogWarning($"Attempted to find walkable cell in area {area} on map {Name}, but there are no walkable cells in the zone.");
+			p = Position.Invalid;
+            return false;
+        }
 
 		public Map(World world, string name, string walkData)
 		{

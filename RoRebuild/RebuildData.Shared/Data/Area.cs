@@ -94,17 +94,34 @@ namespace RebuildData.Shared.Data
 				MaxX = clippingArea.MaxX;
 			if (MaxY > clippingArea.MaxY)
 				MaxY = clippingArea.MaxY;
-
-			//if (MinX > MaxX)
-			//	MinX = MaxX;
-			//if (MaxX < MinX)
-			//	MaxX = MinX;
-			//if (MinY > MaxY)
-			//	MinY = MaxY;
-			//if (MaxY < MinY)
-			//	MaxY = MinY;
-
+			
 			return this;
+		}
+
+        public Area ClipAndNormalize(Area clippingArea)
+        {
+			clippingArea.Normalize();
+            return ClipArea(clippingArea);
+        }
+
+		/// <summary>
+		/// Adjusts the area in case the min and max bounds are flipped.
+		/// </summary>
+        public void Normalize()
+        {
+            if (MinX > MaxX || MaxX < MinX)
+            {
+                var minx = MinX;
+                MinX = MaxX;
+				MaxX = minx;
+            }
+
+            if (MinY > MaxY || MaxY < MinY)
+            {
+                var miny = MinY;
+                MinY = MaxY;
+				MaxY = miny;
+            }
 		}
 
 		public static Area CreateAroundPoint(Position position, int distance)
