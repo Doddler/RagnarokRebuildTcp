@@ -56,37 +56,42 @@ namespace RebuildZoneServer.Networking
 				}
 			}
 		}
+
+        private static void AddFullEntityData(OutboundMessage packet, Character c, bool isSelf = false)
+        {
+            packet.Write(c.Id);
+            packet.Write((byte)c.Type);
+            packet.Write((short)c.ClassId);
+            packet.Write(c.Position);
+            packet.Write((byte)c.FacingDirection);
+            packet.Write((byte)c.State);
+            if (c.Type == CharacterType.Monster || c.Type == CharacterType.Player)
+            {
+                var ce = c.Entity.Get<CombatEntity>();
+                packet.Write((byte)ce.BaseStats.Level);
+                packet.Write((ushort)ce.Stats.MaxHp);
+                packet.Write((ushort)ce.Stats.Hp);
+            }
+            if (c.Type == CharacterType.Player)
+            {
+                var player = c.Entity.Get<Player>();
+                packet.Write((byte)player.HeadFacing);
+                packet.Write(player.HeadId);
+                packet.Write(player.IsMale);
+                packet.Write(player.Name);
+            }
+            if (c.State == CharacterState.Moving)
+            {
+                WriteMoveData(c, packet);
+            }
+		}
 		
 		private static OutboundMessage BuildCreateEntity(Character c, bool isSelf = false)
 		{
 			var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity;
 			var packet = NetworkManager.StartPacket(type, 256);
 
-			packet.Write(c.Id);
-			packet.Write((byte)c.Type);
-			packet.Write((short)c.ClassId);
-			packet.Write(c.Position);
-			packet.Write((byte)c.FacingDirection);
-			packet.Write((byte)c.State);
-            if (c.Type == CharacterType.Monster || c.Type == CharacterType.Player)
-            {
-                var ce = c.Entity.Get<CombatEntity>();
-				packet.Write((byte)ce.BaseStats.Level);
-				packet.Write((ushort)ce.Stats.MaxHp);
-				packet.Write((ushort)ce.Stats.Hp);
-            }
-			if (c.Type == CharacterType.Player)
-			{
-				var player = c.Entity.Get<Player>();
-				packet.Write((byte)player.HeadFacing);
-				packet.Write(player.HeadId);
-				packet.Write(player.IsMale);
-				packet.Write(player.Name);
-			}
-			if (c.State == CharacterState.Moving)
-			{
-				WriteMoveData(c, packet);
-			}
+			AddFullEntityData(packet, c, isSelf);
 
 			return packet;
 		}
@@ -137,8 +142,7 @@ namespace RebuildZoneServer.Networking
 
 			NetworkManager.SendMessageMulti(packet, recipients);
 		}
-
-
+		
 		public static void CharacterStopImmediateMulti(Character c)
 		{
 			if (recipients.Count <= 0)

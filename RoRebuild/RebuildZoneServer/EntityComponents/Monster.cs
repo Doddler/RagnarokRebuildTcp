@@ -178,7 +178,11 @@ namespace RebuildZoneServer.EntityComponents
             {
                 var entity = list[i];
                 var monster = entity.Get<Monster>();
-                if (monster.CurrentAiState == MonsterAiState.StateAttacking && monster.Target.IsAlive())
+
+				//check if their ally is attacking, the target is alive, and they can see their ally
+                if (monster.CurrentAiState == MonsterAiState.StateAttacking 
+                    && monster.Target.IsAlive()
+                    && Character.Map.WalkData.HasLineOfSight(Character.Position, monster.Character.Position))
                 {
                     newTarget = monster.Target;
                     EntityListPool.Return(list);

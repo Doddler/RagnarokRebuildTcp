@@ -32,8 +32,7 @@ namespace RebuildZoneServer.Sim
 		private int chunkHeight;
 
 		private int chunkCheckId;
-
-
+		
 		private int _playerCount;
 		public int PlayerCount
 		{
@@ -475,7 +474,7 @@ namespace RebuildZoneServer.Sim
                         if(ch.SpawnImmunity > 0 || ch.State == CharacterState.Dead)
                             continue;
                     }
-
+					
                     if (character.Position.InRange(ch.Position, distance))
                     {
                         if (checkLineOfSight && !WalkData.HasLineOfSight(character.Position, ch.Position))
@@ -574,8 +573,7 @@ namespace RebuildZoneServer.Sim
 		public bool FindPositionInRange(Area area, out Position p)
 		{
 			p = new Position();
-
-
+			
 			if (area.MinX > area.MaxX)
 				area.MinX = area.MaxX;
 			if (area.MaxX < area.MinX)

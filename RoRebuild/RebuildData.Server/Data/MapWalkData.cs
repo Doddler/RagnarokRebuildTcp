@@ -29,8 +29,10 @@ namespace RebuildData.Shared.Data
 		public bool IsCellWalkable(Position p) => (cellData[p.X + p.Y * Width] & 1) == 1;
 		public bool IsCellSnipable(int x, int y) => (cellData[x + y * Width] & 2) == 2;
 		public bool IsCellSnipable(Position p) => (cellData[p.X + p.Y * Width] & 2) == 2;
+        public bool DoesCellBlockLos(int x, int y) => (cellData[x + y * Width] & 2) == 0;
+        public bool DoesCellBlockLos(Position p) => (cellData[p.X + p.Y * Width] & 2) == 0;
 
-        public Position FindWalkdableCellOnMap()
+		public Position FindWalkdableCellOnMap()
         {
             var pos = Position.Invalid;
 			
@@ -56,7 +58,7 @@ namespace RebuildData.Shared.Data
             for (; ; )
             {
                 if (x0 == x1 && y0 == y1) break;
-                if (!IsCellWalkable(x0,y0) && !IsCellSnipable(x0, y0))
+                if (DoesCellBlockLos(x0, y0))
                     return false;
 				var e2 = err;
                 if (e2 > -dx) { err -= dy; x0 += sx; }
