@@ -23,7 +23,7 @@
 4085,CHONCHON,Chonchon,4,67,1,5,4,12,10,2,10,13,1,10,0,35,4,10,12,Small,Insect,Wind1,1076,480,576,200,Normal,AiPassive,300,chocho.spr,0,0.25,1
 4027,CONDOR,Condor,5,92,1,0,5,13,13,10,11,14,1,0,0,48,5,10,12,Medium,Beast,Wind1,1148,480,648,150,Normal,AiAssist,375,condor.spr,0,0.5,1
 4101,RODA_FROG,Roda Frog,5,133,1,5,5,10,5,5,11,14,1,0,5,48,5,10,12,Medium,Aquatic,Water1,2016,288,816,200,Normal,AiPassive,350,roda_frog.spr,0,0.5,1
-4007,THIEF_BUG,Thief Bug,6,12600,1,0,6,11,6,0,18,24,1,5,0,63,5,10,12,Small,Insect,Neutral3,1288,768,288,150,Normal,AiAssist,500,thief_bug.spr,0,0.5,1
+4007,THIEF_BUG,Thief Bug,6,126,1,0,6,11,6,0,18,24,1,5,0,63,5,10,12,Small,Insect,Neutral3,1288,768,288,150,Normal,AiAssist,500,thief_bug.spr,0,0.5,1
 4019,ECLIPSE,Eclipse,25,1800,1,0,6,11,36,80,20,26,1,0,40,3400,55,10,12,Medium,Beast,Neutral3,1456,336,456,200,Boss,AiAggressive,275,eclipse.spr,0,0.5,1
 4023,SAVAGE_BABE,Savage Babe,7,182,1,5,14,12,7,35,20,25,1,0,0,80,12,10,12,Small,Beast,Earth1,1624,576,624,400,Normal,AiPassive,325,savage_babe.spr,0,0.25,1
 4009,HORNET,Hornet,8,169,6,10,8,17,20,5,22,27,1,5,5,99,15,10,12,Small,Insect,Wind1,1292,216,792,150,Normal,AiAssist,600,hornet.spr,0,0.5,1
