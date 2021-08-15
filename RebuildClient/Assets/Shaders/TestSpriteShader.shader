@@ -78,7 +78,7 @@ Shader "Unlit/TestSpriteShader"
 				#pragma multi_compile_fog
 				#pragma multi_compile _ PIXELSNAP_ON
 				#include "UnityCG.cginc"
-				//#include "Billboard.cginc"
+				#include "Billboard.cginc"
 
 				struct appdata_t
 				{
@@ -113,11 +113,11 @@ Shader "Unlit/TestSpriteShader"
 
 					IN.vertex = Rotate(IN.vertex);
 
-					//OUT.vertex = Billboard2(IN.vertex, _Offset); // _Offset);
+					OUT.vertex = Billboard2(IN.vertex, _Offset); // _Offset);
 
-					float3 forward = normalize(ObjSpaceViewDir(IN.vertex));
-					IN.vertex.xyz += forward * 0.5; // _Offset;
-					OUT.vertex = UnityObjectToClipPos(IN.vertex);
+					//float3 forward = normalize(ObjSpaceViewDir(IN.vertex));
+					//IN.vertex.xyz += forward * 0.5; // _Offset;
+					//OUT.vertex = UnityObjectToClipPos(IN.vertex);
 
 					OUT.texcoord = IN.texcoord;
 					OUT.color = IN.color * _Color;

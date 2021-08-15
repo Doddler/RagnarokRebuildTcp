@@ -38,7 +38,14 @@ fixed4 Billboard2(float4 pos, float offset)
 	
 	float4 view = mul(UNITY_MATRIX_VP, float4(worldPos, 1));
 
-	view.z -= abs(UNITY_NEAR_CLIP_VALUE - view.z) * decRate;
+	#if UNITY_UV_STARTS_AT_TOP
+		// Windows - DirectX
+		view.z -= abs(UNITY_NEAR_CLIP_VALUE - view.z) * decRate;
+	#else
+		// WebGL - OpenGL
+		view.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate;
+	#endif
+
 
 	return view;
 
