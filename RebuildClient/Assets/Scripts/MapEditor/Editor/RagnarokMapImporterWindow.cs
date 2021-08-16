@@ -218,13 +218,15 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 //Debug.Log($"Assets/Scenes/Maps/{map.Code}.unity");
 
-                var scene = SceneManager.GetSceneByPath($"Assets/Scenes/Maps/{map.Code}.unity");
-				if(scene.IsValid())
-					continue;
+                //var scene = SceneManager.GetSceneByPath($"Assets/Scenes/Maps/{map.Code}.unity");
+                if (File.Exists($"Assets/Scenes/Maps/{map.Code}.unity"))
+                    continue;
 
-				//Debug.Log(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
+                Debug.Log("No scene found for: " + $"Assets/Scenes/Maps/{map.Code}.unity");
 
-				ImportMap(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
+                //Debug.Log(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
+
+                ImportMap(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
             }
 
 		}

@@ -93,3 +93,11 @@ Payon Dungeon 2F,pay_dun01,pay_dun01.walk,20.mp3
 Payon Dungeon 3F,pay_dun02,pay_dun02.walk,20.mp3
 Payon Dungeon 4F,pay_dun03,pay_dun03.walk,47.mp3
 Payon Dungeon 5F,pay_dun04,pay_dun04.walk,47.mp3
+Clock Tower B1f,alde_dun01,alde_dun01.walk,61.mp3
+Clock Tower B2f,alde_dun02,alde_dun02.walk,61.mp3
+Clock Tower B3f,alde_dun03,alde_dun03.walk,61.mp3
+Clock Tower B4f,alde_dun04,alde_dun04.walk,61.mp3
+Clock Tower 1f,c_tower1,c_tower1.walk,60.mp3
+Clock Tower 2f,c_tower2,c_tower2.walk,60.mp3
+Clock Tower 3f,c_tower3,c_tower3.walk,60.mp3
+Clock Tower 4f,c_tower4,c_tower4.walk,60.mp3

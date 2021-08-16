@@ -294,14 +294,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.00045394897
-      value: 2.9984627
-      inSlope: -0.037509155
-      outSlope: -0.037509155
+      time: -0.0009186715
+      value: 5.0193124
+      inSlope: -14.1374855
+      outSlope: -14.1374855
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.35308582
+      outWeight: 0.10517638
     - serializedVersion: 3
       time: 0.3964636
       value: 0.99757385
@@ -357,6 +357,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   FliesAwayFromTarget: 1
+  HeightMultiplier: 6
+  TweenTime: 1
 --- !u!210 &5200160050705169390
 SortingGroup:
   m_ObjectHideFlags: 0
