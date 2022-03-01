@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Assets.Scripts.MapEditor.Editor.ObjectEditors;
 using B83.Image.BMP;
-using RebuildData.Shared.ClientTypes;
+using RebuildSharedData.ClientTypes;
 using SFB;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
@@ -36,15 +36,21 @@ namespace Assets.Scripts.MapEditor.Editor
 			{
 				var path = AssetDatabase.GUIDToAssetPath(guids[i]);
 				var asset = AssetDatabase.LoadAssetAtPath<RoSpriteData>(path);
+                var name = asset.Name;
 				if (asset.Type != SpriteType.Monster && asset.Type != SpriteType.Monster2 && asset.Type != SpriteType.Pet)
 					continue;
-				
-				var actionId = RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack1);
+
+                if (asset.Name.ToUpper() == "GOLDEN_BUG")
+                {
+                    Debug.Log("AAAA" + RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack1));
+                }
+
+                var actionId = RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack1);
 				if (actionId == -1)
 					actionId = RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack2);
 				if (actionId == -1)
 					continue;
-
+				
 				var frames = asset.Actions[actionId].Frames;
 				var found = false;
 				for (var j = 0; j < frames.Length; j++)
@@ -52,15 +58,18 @@ namespace Assets.Scripts.MapEditor.Editor
 					if (frames[j].IsAttackFrame)
 					{
 						var time = j * asset.Actions[actionId].Delay;
-						output.Add($"{asset.Name}:{time}");
+						output.Add($"{name}:{time}");
 						found = true;
 						break;
 					}
 				}
 
-				if (found)
-					continue;
-			}
+                if (!found)
+                {
+					var time = frames.Length * asset.Actions[actionId].Delay;
+                    output.Add($"{name}:{time}");
+				}
+            }
 
 			File.WriteAllLines(@"Assets/Sprites/AttackTiming.txt", output);
 		}
@@ -287,17 +296,24 @@ namespace Assets.Scripts.MapEditor.Editor
 
 					if (!File.Exists(prefabPath))
 					{
-						var modelLoader = new RagnarokModelLoader();
+                        try
+                        {
+                            var modelLoader = new RagnarokModelLoader();
 
-						modelLoader.LoadModel(modelPath, relative);
-						var obj = modelLoader.Compile();
+                            modelLoader.LoadModel(modelPath, relative);
+                            var obj = modelLoader.Compile();
 
-						PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
+                            PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
 
-						var prefabRef = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
-						DestroyImmediate(obj);
+                            var prefabRef = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+                            DestroyImmediate(obj);
+                        }
+                        catch (Exception e)
+                        {
+							Debug.LogError($"Failed to load model {Path.GetFileName(modelPath)}! Exception:\r\n{e}");
+                        }
 
-					}
+                    }
 
 				}
 

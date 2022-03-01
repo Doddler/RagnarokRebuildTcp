@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts.Objects;
-using RebuildData.Shared.ClientTypes;
+using RebuildSharedData.ClientTypes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -38,7 +38,9 @@ namespace Assets.Scripts.Utility
 		public void Start()
 		{
 			Instance = this;
-		}
+			BlackoutImage.gameObject.SetActive(true);
+			LoadingImage.gameObject.SetActive(true);
+        }
 
 		private void LoadMaps()
 		{

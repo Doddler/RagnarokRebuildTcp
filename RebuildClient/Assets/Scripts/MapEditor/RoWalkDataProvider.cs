@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Utility;
-using RebuildData.Shared.Config;
+using RebuildSharedData.Config;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 

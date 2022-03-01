@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Network;
-using RebuildData.Shared.Enum;
+using RebuildSharedData.Enum;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;

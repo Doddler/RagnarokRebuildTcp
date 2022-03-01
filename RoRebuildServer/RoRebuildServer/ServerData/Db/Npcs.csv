@@ -1,0 +1,11 @@
+﻿Id,Code,Name,ClientSprite,ClientOffset,ClientShadow,ClientSize
+1000,WARP,Warp,PortalPlaceholder.prefab,0,-1,1
+1001,4_F_KAFRA1,Kafra Staff,4_f_kafra1.spr,0,0.5,1
+1002,4_F_KAFRA2,Kafra Staff,4_f_kafra2.spr,0,0.5,1
+1003,4_F_KAFRA3,Kafra Staff,4_f_kafra3.spr,0,0.5,1
+1004,4_F_KAFRA4,Kafra Staff,4_f_kafra4.spr,0,0.5,1
+1005,4_F_KAFRA5,Kafra Staff,4_f_kafra5.spr,0,0.5,1
+1006,4_F_KAFRA6,Kafra Staff,4_f_kafra6.spr,0,0.5,1
+1007,4_F_KAFRA7,Kafra Staff,4_f_kafra7.spr,0,0.5,1
+1008,4_F_KAFRA8,Kafra Staff,4_f_kafra8.spr,0,0.5,1
+1009,4_F_KAFRA9,Kafra Staff,4_f_kafra9.spr,0,0.5,1

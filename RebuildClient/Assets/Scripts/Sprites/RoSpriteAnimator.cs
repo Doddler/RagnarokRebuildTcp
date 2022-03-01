@@ -4,8 +4,8 @@ using System.Linq;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
-using RebuildData.Shared.Data;
-using RebuildData.Shared.Enum;
+using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
@@ -632,7 +632,7 @@ namespace Assets.Scripts.Sprites
             //    DoSpin();
             //}
 
-            if (Attack || Input.GetKeyDown(KeyCode.F))
+            if (Attack) // || Input.GetKeyDown(KeyCode.F))
             {
                 ChangeMotion(SpriteMotion.Attack1);
                 Attack = false;

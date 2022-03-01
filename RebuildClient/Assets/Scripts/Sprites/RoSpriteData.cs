@@ -1,5 +1,5 @@
 ﻿using System;
-using RebuildData.Shared.Enum;
+using RebuildSharedData.Enum;
 using UnityEngine;
 
 namespace Assets.Scripts

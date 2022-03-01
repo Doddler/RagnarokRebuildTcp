@@ -24,6 +24,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 0400ece11e8fd2042a31794a121ace04
+    m_Address: Assets/Sprites/Monsters/clock.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 04fd9a5fbf7ba2544b5291784fd1b54c
     m_Address: Assets/Sprites/Monsters/ghostring.spr
     m_ReadOnly: 0
@@ -66,6 +73,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 075f8e02c81afa047a2d2f7f569d4041
+    m_Address: Assets/Sprites/Monsters/brilight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 0915409ae1403d54da1a6069ae0c778f
     m_Address: "Assets/Sprites/Characters/BodyFemale/\uC131\uC9C1\uC790_\uC5EC.spr"
     m_ReadOnly: 0
@@ -75,6 +89,13 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: 0a3ee882c5e8bb4459436dd8e66a14b6
     m_Address: Assets/Sprites/Monsters/wild_rose.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0ab732d66aae8b3448dd9eb8f12efe69
+    m_Address: Assets/Sprites/Monsters/sasquatch.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -213,6 +234,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 210aa90eb87874d40bbee2c8e72f042d
+    m_Address: Assets/Sprites/Monsters/penomena.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 238a1bbf3e9e0ef4f83f48e7063d0fb6
     m_Address: "Assets/Sprites/Characters/BodyFemale/\uB3C4\uB451_\uC5EC.spr"
     m_ReadOnly: 0
@@ -262,6 +290,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 2b566dc2a2eb9cc47a6b131ee527fab2
+    m_Address: Assets/Sprites/Npcs/4_f_kafra4.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 2c1b7bba405045f46905a14908df5b86
     m_Address: Assets/Sprites/Monsters/orc_baby.spr
     m_ReadOnly: 0
@@ -285,6 +320,13 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: 2eba3bff6f7725c4a8c4303b198b7be9
     m_Address: "Assets/Sprites/Characters/HeadFemale/9_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2f72430bf05dde74d8bbc27eec53e0cf
+    m_Address: Assets/Sprites/Monsters/alarm.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -360,6 +402,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 3b3fd51c28824b34dae3043623eb2ff0
+    m_Address: Assets/Sprites/Monsters/elder.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 3c56b1906213cef4ba5192c229698c1d
     m_Address: Assets/Sprites/Monsters/goblin_archer.spr
     m_ReadOnly: 0
@@ -376,6 +425,20 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: 3d65691cb21357942a53f231b3326302
     m_Address: Assets/Sprites/Monsters/savage_babe.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 3d9bb92ee7535924883f236f62c7efdf
+    m_Address: Assets/Sprites/Monsters/orc_zombie.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 3f53db95b8b2aaa4983da8ad7ef43342
+    m_Address: Assets/Sprites/Monsters/mysteltainn.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -418,6 +481,13 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: 41bffcf39daf93a44b987709cb1a0a24
     m_Address: Assets/Sprites/Monsters/yellow_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4289a6954fe306a4b9691681898646c9
+    m_Address: Assets/Sprites/Monsters/martin.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -486,6 +556,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 4a89d72252fe4f14c96fc286e5b32e0f
+    m_Address: Assets/Sprites/Npcs/4_f_kafra6.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 4ad214ea3f1a0c6419b2e2c0680ccdfe
     m_Address: Assets/Sprites/Monsters/poison_spore.spr
     m_ReadOnly: 0
@@ -521,8 +598,22 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 4e8632736d5ceaa409b656e6e1b11ab8
+    m_Address: Assets/Sprites/Monsters/owl_baron.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 4fc20fae7512b1f458b688eccbe0d440
     m_Address: Assets/Sprites/Monsters/blue_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 50e1baf32089e63479bf5bc0c54e6412
+    m_Address: Assets/Sprites/Monsters/thanatos.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -626,8 +717,22 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 61c583cbb961ff5459b13475d170dca4
+    m_Address: Assets/Sprites/Monsters/joker.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 6453c35c31634d24bbe53ba5e7ec7840
     m_Address: Assets/Sprites/Monsters/roda_frog.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 652b1014b29934a4295c9df929e72ae4
+    m_Address: Assets/Sprites/Monsters/punk.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -688,6 +793,13 @@ MonoBehaviour:
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 6c726cb74d82f394ea30b71e4d54cfc3
+    m_Address: Assets/Sprites/Monsters/baphomet_.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 6dff7b4db96db184dab4b5fa6ab157b4
     m_Address: gridiconYellow
     m_ReadOnly: 0
@@ -717,6 +829,13 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: 72b3e2dbf7692544980e5d28abee817a
     m_Address: "Assets/Sprites/Characters/HeadFemale/16_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 731eb76a2a0e12a409440c6e00ca0860
+    m_Address: Assets/Sprites/Npcs/4_f_kafra3.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -923,6 +1042,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 8cc5b06c167b1db4989eabb8bb708877
+    m_Address: Assets/Sprites/Monsters/ice_titan.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 8d57c22da426ba545b0c1c04bd9b18e1
     m_Address: Assets/Sprites/Monsters/mastering.spr
     m_ReadOnly: 0
@@ -932,6 +1058,13 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: 8d5e05a6a306af94f90414d9d6988c36
     m_Address: "Assets/Sprites/Shields/SuperNovice/Female/\uC288\uD37C\uB178\uBE44\uC2A4_\uC5EC_\uAC00\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8d73bf905caffde4cb4c788dc181b2a7
+    m_Address: Assets/Sprites/Monsters/baphomet.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1028,6 +1161,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 9fd5bdfb90e20024b81eb9b96c615b62
+    m_Address: Assets/Sprites/Monsters/c_tower_manager.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 9fdca880a1ec8414a936f52bd639376a
     m_Address: gridicon
     m_ReadOnly: 0
@@ -1075,6 +1215,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: a4e8adae65ec2ab4792406575d74c56d
+    m_Address: Assets/Sprites/Monsters/zenorc.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: a57c959c63ec031428bb92f239360c49
     m_Address: Assets/Sprites/Monsters/goblin_5.spr
     m_ReadOnly: 0
@@ -1117,6 +1264,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: a97f7d01e35c9814888fa138ca058e5d
+    m_Address: Assets/Sprites/Monsters/bathory.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: aa25cb017f6275c41b818986fea42136
     m_Address: Assets/Sprites/Monsters/green_plant.spr
     m_ReadOnly: 0
@@ -1140,6 +1294,13 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: ab4a042a88fba9b4982dda2bb627fd25
     m_Address: Assets/Sprites/Monsters/worm_tail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ac28158d1d42cc346bb00744447899fc
+    m_Address: Assets/Sprites/Monsters/owl_duke.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1278,8 +1439,22 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: c210ce0eab982144a943168f213232f8
+    m_Address: Assets/Sprites/Monsters/rideword.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: c559ee07bb810e44f800efcc59c2fcac
     m_Address: "Assets/Sprites/Characters/BodyFemale/\uD558\uC774\uC704\uC800\uB4DC_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c5c0bc18a4ec88348ac8c117c827824c
+    m_Address: Assets/Sprites/Monsters/leib_olmai.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1315,6 +1490,13 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: c98bcab14dfd2834893bb78937aeee46
     m_Address: "Assets/Sprites/Characters/HeadMale/20_\uB0A8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c9954b9dc4d53fd47884ed6d3f08edf9
+    m_Address: Assets/Sprites/Monsters/tirfing.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1362,6 +1544,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: ce54439df34779b48afa36e2a1fa1a70
+    m_Address: Assets/Sprites/Monsters/killer_mantis.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: d00e74e9c4c5e6f48a572814ce963ef8
     m_Address: "Assets/Sprites/Characters/HeadMale/2_\uB0A8.spr"
     m_ReadOnly: 0
@@ -1390,6 +1579,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: d2a7298012207ce40beeb3a129270597
+    m_Address: Assets/Sprites/Npcs/4_f_kafra9.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: d33cc581c7aff1641a5e7723c8a22799
     m_Address: Assets/Sprites/Monsters/eclipse.spr
     m_ReadOnly: 0
@@ -1399,6 +1595,20 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: d5c455adfeff0204894a6791a28f0ab3
     m_Address: Assets/Sprites/Monsters/hunter_fly.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d5d93d73713c4b148b27a2fe7d8770fc
+    m_Address: Assets/Sprites/Npcs/4_f_kafra7.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d5db31a2b39c2cb439eb51fa4152ea99
+    m_Address: Assets/Sprites/Npcs/4_f_kafra5.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1474,6 +1684,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: e072fd358d9ac814a8d040245a0b17d1
+    m_Address: Assets/Sprites/Monsters/randgris.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: e0c5d308ddfaed943b4f15253b831d00
     m_Address: "Assets/Sprites/Characters/HeadMale/23_\uB0A8.spr"
     m_ReadOnly: 0
@@ -1483,6 +1700,13 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: e10cd867d0d16774caf159a7e2929c53
     m_Address: Assets/Sprites/Monsters/osiris.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e111eb492e2c4484c939922c86c33723
+    m_Address: Assets/Sprites/Npcs/4_f_kafra2.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1523,6 +1747,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: e643c0aab4fef5d4e9e7b08be09c1025
+    m_Address: Assets/Sprites/Npcs/4_f_kafra1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: e6ba6dac1bd174045af2cc5d8984257f
     m_Address: "Assets/Sprites/Characters/HeadFemale/24_\uC5EC.spr"
     m_ReadOnly: 0
@@ -1539,6 +1770,27 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: e810c6d403b5d834ea23c2eba10105b6
     m_Address: "Assets/Sprites/Characters/HeadFemale/20_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e840a4817325bb04b9169fa01f5756b9
+    m_Address: Assets/Sprites/Monsters/cramp.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ea907dbe9fa757b449ea2b41bd6c164f
+    m_Address: Assets/Sprites/Monsters/orc_skeleton.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: eb6dae5fc39b449419934189e476a2bb
+    m_Address: Assets/Sprites/Monsters/tarou.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1670,6 +1922,13 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: f62fb350cadd7214395b2f6779222db1
+    m_Address: Assets/Sprites/Npcs/4_f_kafra8.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: f642d0831c9eb024dadd3a9afff32838
     m_Address: Assets/Sprites/Monsters/poporing.spr
     m_ReadOnly: 0
@@ -1684,8 +1943,29 @@ MonoBehaviour:
     - Sprite
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: f7a27934271e08d4b87309bb88e877cc
+    m_Address: Assets/Sprites/Monsters/executioner.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f7b2161e869bdc445b916b1927f69455
+    m_Address: Assets/Sprites/Monsters/thara_frog.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: fd43242ff762c4242bdd6db01b11cc77
     m_Address: Assets/Sprites/Monsters/snake.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: fe27e56b7a9d1204f9fa42ca6aabae69
+    m_Address: Assets/Sprites/Monsters/golden_bug.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite

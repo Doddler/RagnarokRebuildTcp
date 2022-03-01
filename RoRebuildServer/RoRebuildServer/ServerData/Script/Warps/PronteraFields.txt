@@ -1,0 +1,426 @@
+﻿
+Npc("prt_fild00", "pronterafieldwarp001", "WARP", 18, 129, N, 2, 6)
+{
+OnTouch:
+	MoveTo("gef_fild00", 376, 140);
+}
+
+Npc("prt_fild00", "pronterafieldwarp002", "WARP", 159, 383, N, 4, 2)
+{
+OnTouch:
+	MoveTo("mjolnir_07", 156, 19);
+}
+
+Npc("prt_fild00", "pronterafieldwarp003", "WARP", 165, 18, N, 9, 3)
+{
+OnTouch:
+	MoveTo("prt_fild04", 158, 384);
+}
+
+Npc("prt_fild00", "pronterafieldwarp004", "WARP", 317, 18, N, 8, 2)
+{
+OnTouch:
+	MoveTo("prt_fild04", 323, 384);
+}
+
+Npc("prt_fild00", "pronterafieldwarp005", "WARP", 383, 249, N, 2, 4)
+{
+OnTouch:
+	MoveTo("mjolnir_09", 33, 248);
+}
+
+Npc("prt_fild01", "pronterafieldwarp006", "WARP", 20, 292, N, 2, 3)
+{
+OnTouch:
+	MoveTo("mjolnir_09", 370, 288);
+}
+
+Npc("prt_fild01", "pronterafieldwarp007", "WARP", 66, 373, N, 2, 2)
+{
+OnTouch:
+	MoveTo("mjolnir_10", 66, 18);
+}
+
+Npc("prt_fild01", "pronterafieldwarp008", "WARP", 136, 373, N, 2, 2)
+{
+OnTouch:
+	MoveTo("prt_maze01", 99, 31);
+}
+	
+Npc("prt_fild01", "pronterafieldwarp009", "WARP", 199, 24, N, 3, 2)
+{
+OnTouch:
+	MoveTo("prt_gld", 159, 293);
+}
+
+Npc("prt_fild01", "pronterafieldwarp010", "WARP", 261, 373, N, 6, 2)
+{
+OnTouch:
+	MoveTo("mjolnir_10", 265, 16);
+}
+
+Npc("prt_fild01", "pronterafieldwarp011", "WARP", 380, 243, N, 2, 5)
+{
+OnTouch:
+	MoveTo("prt_fild02", 20, 242);
+}
+
+Npc("prt_fild01", "pronterafieldwarp012", "WARP", 382, 304, N, 2, 10)
+{
+OnTouch:
+	MoveTo("prt_fild02", 20, 305);
+}
+
+Npc("prt_fild01", "pronterafieldwarp013", "WARP", 382, 351, N, 2, 8)
+{
+OnTouch:
+	MoveTo("prt_fild02", 20, 350);
+}
+
+Npc("prt_fild02", "pronterafieldwarp014", "WARP", 17, 242, N, 2, 5)
+{
+OnTouch:
+	MoveTo("prt_fild01", 377, 243);
+}
+
+Npc("prt_fild02", "pronterafieldwarp015", "WARP", 17, 305, N, 2, 5)
+{
+OnTouch:
+	MoveTo("prt_fild01", 379, 302);
+}
+
+Npc("prt_fild02", "pronterafieldwarp016", "WARP", 17, 350, N, 2, 7)
+{
+OnTouch:
+	MoveTo("prt_fild01", 379, 351);
+}
+
+Npc("prt_fild02", "pronterafieldwarp017", "WARP", 173, 382, N, 4, 2)
+{
+OnTouch:
+	MoveTo("mjolnir_11", 174, 23);
+}
+
+Npc("prt_fild02", "pronterafieldwarp018", "WARP", 305, 17, N, 10, 2)
+{
+OnTouch:
+	MoveTo("prt_fild06", 277, 315);
+}
+
+Npc("prt_fild02", "pronterafieldwarp019", "WARP", 380, 347, N, 2, 10)
+{
+OnTouch:
+	MoveTo("prt_fild03", 23, 249);
+}
+
+Npc("prt_fild03", "pronterafieldwarp020", "WARP", 16, 249, N, 2, 10)
+{
+OnTouch:
+	MoveTo("prt_fild02", 373, 353);
+}
+
+Npc("prt_fild03", "pronterafieldwarp021", "WARP", 371, 256, N, 2, 2)
+{
+OnTouch:
+	MoveTo("prt_monk", 25, 248);
+}
+
+Npc("prt_fild04", "pronterafieldwarp022", "WARP", 17, 114, N, 2, 10)
+{
+OnTouch:
+	MoveTo("gef_fild01", 375, 111);
+}
+
+Npc("prt_fild04", "pronterafieldwarp023", "WARP", 160, 387, N, 10, 2)
+{
+OnTouch:
+	MoveTo("prt_fild00", 164, 24);
+}
+
+Npc("prt_fild04", "pronterafieldwarp024", "WARP", 323, 387, N, 7, 2)
+{
+OnTouch:
+	MoveTo("prt_fild00", 315, 21);
+}
+
+Npc("prt_fild04", "pronterafieldwarp025", "WARP", 378, 72, N, 2, 6)
+{
+OnTouch:
+	MoveTo("prt_fild05", 17, 59);
+}
+
+Npc("prt_fild04", "pronterafieldwarp026", "WARP", 384, 155, N, 2, 7)
+{
+OnTouch:
+	MoveTo("prt_fild05", 20, 134);
+}
+
+Npc("prt_fild04", "pronterafieldwarp027", "WARP", 384, 334, N, 2, 6)
+{
+OnTouch:
+	MoveTo("prt_fild05", 20, 333);
+}
+
+Npc("prt_fild05", "pronterafieldwarp028", "WARP", 13, 63, N, 2, 15)
+{
+OnTouch:
+	MoveTo("prt_fild04", 374, 73);
+}
+
+Npc("prt_fild05", "pronterafieldwarp029", "WARP", 14, 141, N, 2, 18)
+{
+OnTouch:
+	MoveTo("prt_fild04", 380, 158); 
+}
+
+Npc("prt_fild05", "pronterafieldwarp030", "WARP", 15, 333, N, 2, 8)
+{
+OnTouch:
+	MoveTo("prt_fild04", 380, 332);
+}
+
+Npc("prt_fild05", "pronterafieldwarp031", "WARP", 105, 381, N, 5, 2)
+{
+OnTouch:
+	MoveTo("mjolnir_09", 106, 34);
+}
+
+Npc("prt_fild05", "pronterafieldwarp032", "WARP", 134, 14, N, 14, 3)
+{
+OnTouch:
+	MoveTo("prt_fild07", 129, 374);
+}
+
+Npc("prt_fild05", "pronterafieldwarp033", "WARP", 255, 14, N, 12, 2)
+{
+OnTouch:
+	MoveTo("prt_fild07", 248, 369);
+}
+
+Npc("prt_fild05", "pronterafieldwarp034", "WARP", 292, 385, N, 4, 2)
+{
+OnTouch:
+	MoveTo("mjolnir_09", 305, 33);
+}
+
+Npc("prt_fild05", "pronterafieldwarp035", "WARP", 373, 205, N, 3, 3)
+{
+OnTouch:
+	MoveTo("prontera", 26, 203); 
+}
+
+Npc("prt_fild06", "pronterafieldwarp036", "WARP", 23, 193, N, 2, 3)
+{
+OnTouch:
+	MoveTo("prontera", 285, 203);
+}
+
+Npc("prt_fild06", "pronterafieldwarp037", "WARP", 277, 320, N, 10, 2)
+{
+OnTouch:
+	MoveTo("prt_fild02", 305, 22);
+}
+
+Npc("prt_fild07", "pronterafieldwarp038", "WARP", 13, 64, N, 3, 8)
+{
+OnTouch:
+	MoveTo("gef_fild02", 376, 69); 
+}
+
+Npc("prt_fild07", "pronterafieldwarp039", "WARP", 14, 289, N, 3, 10)
+{
+OnTouch:
+	MoveTo("gef_fild02", 375, 292);
+}
+
+Npc("prt_fild07", "pronterafieldwarp040", "WARP", 17, 145, N, 3, 12)
+{
+OnTouch:
+	MoveTo("gef_fild02", 376, 156);
+}
+
+Npc("prt_fild07", "pronterafieldwarp041", "WARP", 84, 13, N, 4, 2)
+{
+OnTouch:
+	MoveTo("prt_fild09", 87, 377);
+}
+
+Npc("prt_fild07", "pronterafieldwarp042", "WARP", 132, 381, N, 9, 3)
+{
+OnTouch:
+	MoveTo("prt_fild05", 142, 18);
+}
+
+Npc("prt_fild07", "pronterafieldwarp043", "WARP", 206, 12, N, 4, 2)
+{
+OnTouch:
+	MoveTo("prt_fild09", 224, 377);
+}
+
+Npc("prt_fild07", "pronterafieldwarp044", "WARP", 248, 376, N, 8, 2)
+{
+OnTouch:
+	MoveTo("prt_fild05", 257, 18);
+}
+
+Npc("prt_fild07", "pronterafieldwarp045", "WARP", 383, 239, N, 3, 20)
+{
+OnTouch:
+	MoveTo("prt_fild08", 20, 239);
+}
+
+Npc("prt_fild07", "pronterafieldwarp046", "WARP", 385, 186, N, 3, 20)
+{
+OnTouch:
+	MoveTo("prt_fild08", 20, 186);
+}
+
+Npc("prt_fild08", "pronterafieldwarp047", "WARP", 16, 187, N, 3, 17)
+{
+OnTouch:
+	MoveTo("prt_fild07", 380, 186);
+}
+
+Npc("prt_fild08", "pronterafieldwarp048", "WARP", 16, 239, N, 3, 15)
+{
+OnTouch:
+	MoveTo("prt_fild07", 379, 239);
+}
+
+Npc("prt_fild08", "pronterafieldwarp049", "WARP", 55, 21, N, 4, 2)
+{
+OnTouch:
+	MoveTo("moc_fild01", 56, 380);
+}
+
+Npc("prt_fild08", "pronterafieldwarp050", "WARP", 170, 378, N, 3, 2)
+{
+OnTouch:
+	MoveTo("prontera", 156, 26);
+}
+
+Npc("prt_fild08", "pronterafieldwarp051", "WARP", 218, 16, N, 12, 1)
+{
+OnTouch:
+	MoveTo("moc_fild01", 238, 378);
+}
+
+Npc("prt_fild08", "pronterafieldwarp052", "WARP", 228, 16, N, 12, 1)
+{
+OnTouch:
+	MoveTo("moc_fild01", 238, 378);
+}
+
+Npc("prt_fild08", "pronterafieldwarp053", "WARP", 238, 16, N, 12, 1)
+{
+OnTouch:
+	MoveTo("moc_fild01", 238, 378);
+}
+
+Npc("prt_fild08", "pronterafieldwarp054", "WARP", 371, 212, N, 3, 3)
+{
+OnTouch:
+	MoveTo("izlude", 35, 78);
+}
+
+Npc("prt_fild09", "pronterafieldwarp055", "WARP", 14, 124, N, 2, 6)
+{
+OnTouch:
+	MoveTo("prt_fild10", 336, 126);
+}
+
+Npc("prt_fild09", "pronterafieldwarp056", "WARP", 14, 139, N, 2, 8)
+{
+OnTouch:
+	MoveTo("prt_fild10", 336, 126);
+}
+
+Npc("prt_fild09", "pronterafieldwarp057", "WARP", 87, 380, N, 5, 2)
+{
+OnTouch:
+	MoveTo("prt_fild07", 84, 16);
+}
+
+Npc("prt_fild09", "pronterafieldwarp058", "WARP", 95, 16, N, 7, 2)
+{
+OnTouch:
+	MoveTo("moc_fild05", 325, 379);
+}
+
+Npc("prt_fild09", "pronterafieldwarp059", "WARP", 224, 380, N, 4, 2)
+{
+OnTouch:
+	MoveTo("prt_fild07", 206, 15);
+}
+
+Npc("prt_fild09", "pronterafieldwarp060", "WARP", 246, 16, N, 7, 2)
+{
+OnTouch:
+	MoveTo("moc_fild04", 92, 378);
+}
+
+Npc("prt_fild09", "pronterafieldwarp061", "WARP", 383, 223, N, 2, 15)
+{
+OnTouch:
+	MoveTo("moc_fild01", 25, 242);
+}
+
+Npc("prt_fild09", "pronterafieldwarp062", "WARP", 383, 251, N, 2, 15)
+{
+OnTouch:
+	MoveTo("moc_fild01", 25, 242);
+}
+
+Npc("prt_fild10", "pronterafieldwarp063", "WARP", 20, 122, N, 2, 4)
+{
+OnTouch:
+	MoveTo("prt_fild11", 359, 111);
+}
+
+Npc("prt_fild10", "pronterafieldwarp064", "WARP", 20, 196, N, 2, 4)
+{
+OnTouch:
+	MoveTo("prt_fild11", 358, 184);
+}
+
+Npc("prt_fild10", "pronterafieldwarp065", "WARP", 227, 299, N, 5, 2)
+{
+OnTouch:
+	MoveTo("gef_fild02", 266, 21);
+}
+
+Npc("prt_fild10", "pronterafieldwarp066", "WARP", 263, 20, N, 6, 2)
+{
+OnTouch:
+	MoveTo("moc_fild05", 144, 372);
+}
+
+Npc("prt_fild10", "pronterafieldwarp067", "WARP", 339, 126, N, 2, 8)
+{
+OnTouch:
+	MoveTo("prt_fild09", 17, 133);
+}
+
+Npc("prt_fild11", "pronterafieldwarp068", "WARP", 17, 281, N, 2, 4)
+{
+OnTouch:
+	MoveTo("gef_fild11", 374, 293);
+}
+
+Npc("prt_fild11", "pronterafieldwarp069", "WARP", 302, 301, N, 5, 2)
+{
+OnTouch:
+	MoveTo("gef_fild03", 312, 19);
+}
+
+Npc("prt_fild11", "pronterafieldwarp070", "WARP", 361, 184, N, 2, 5)
+{
+OnTouch:
+	MoveTo("prt_fild10", 23, 196);
+}
+
+Npc("prt_fild11", "pronterafieldwarp071", "WARP", 362, 111, N, 2, 6)
+{
+OnTouch:
+	MoveTo("prt_fild10", 23, 122);
+}

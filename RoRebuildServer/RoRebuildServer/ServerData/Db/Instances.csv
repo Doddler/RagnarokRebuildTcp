@@ -1,0 +1,6 @@
+﻿Name,IsWorldInstance,Maps
+Towns,true,prontera,morocc,geffen,izlude,alberta,payon,pay_arche,aldebaran
+Prontera Fields,true,prt_fild00,prt_fild01,prt_fild02,prt_fild03,prt_fild04,prt_fild05,prt_fild06,prt_fild07,prt_fild08,prt_fild09,prt_fild10,prt_fild11
+Geffen Fields,true,gef_fild00,gef_fild01,gef_fild02,gef_fild03,gef_fild04,gef_fild05,gef_fild06,gef_fild07,gef_fild08,gef_fild09,gef_fild10,gef_fild11,gef_fild12,gef_fild13,gef_fild14
+Payon Fields,true,pay_fild01,pay_fild02,pay_fild03,pay_fild04,pay_fild05,pay_fild06,pay_fild07,pay_fild08,pay_fild09,pay_fild10,pay_fild11
+Forest Labyrinth,true,prt_maze01,prt_maze02,prt_maze03

@@ -1,5 +1,5 @@
 ﻿using System;
-using RebuildData.Shared.Enum;
+using RebuildSharedData.Enum;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions.Comparers;

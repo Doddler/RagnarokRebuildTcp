@@ -15,3 +15,93 @@ C# parse time         : 917ms
 candidates check time : 69ms
 console write time    : 35ms
 
+[api-updater (non-obsolete-error-filter)] 2021/08/14 16:55:42 : Starting G:/Programs/Unity/2020.3.14f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 1266.1365ms
+moved types parse time: 60ms
+candidates parse time : 1ms
+C# parse time         : 812ms
+candidates check time : 87ms
+console write time    : 161ms
+
+[api-updater (non-obsolete-error-filter)] 2021/11/29 7:20:47 : Starting G:/Programs/Unity/2020.3.14f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 1358.4419ms
+moved types parse time: 88ms
+candidates parse time : 16ms
+C# parse time         : 948ms
+candidates check time : 74ms
+console write time    : 173ms
+
+[api-updater (non-obsolete-error-filter)] 2022/02/18 6:11:07 : Starting G:/Programs/Unity/2020.3.14f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 1363.2415ms
+moved types parse time: 109ms
+candidates parse time : 1ms
+C# parse time         : 1041ms
+candidates check time : 77ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 2022/02/18 6:19:27 : Starting G:/Programs/Unity/2020.3.14f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 222.7702ms
+moved types parse time: 54ms
+candidates parse time : 1ms
+C# parse time         : 217ms
+candidates check time : 72ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 2022/02/18 6:22:07 : Starting G:/Programs/Unity/2020.3.14f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 403.5858ms
+moved types parse time: 70ms
+candidates parse time : 1ms
+C# parse time         : 286ms
+candidates check time : 385ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 2022/02/22 15:47:45 : Starting G:/Programs/Unity/2020.3.14f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 1727.2303ms
+moved types parse time: 69ms
+candidates parse time : 1ms
+C# parse time         : 1083ms
+candidates check time : 80ms
+console write time    : 216ms
+
+[api-updater (non-obsolete-error-filter)] 2022/02/22 17:15:00 : Starting G:/Programs/Unity/2020.3.14f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 1017.9563ms
+moved types parse time: 55ms
+candidates parse time : 1ms
+C# parse time         : 269ms
+candidates check time : 44ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 2022/02/22 17:39:25 : Starting G:/Programs/Unity/2020.3.14f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 425.5634ms
+moved types parse time: 55ms
+candidates parse time : 1ms
+C# parse time         : 213ms
+candidates check time : 73ms
+console write time    : 37ms
+
+[api-updater (non-obsolete-error-filter)] 2022/02/22 17:40:46 : Starting G:/Programs/Unity/2020.3.14f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 99.2095ms
+moved types parse time: 56ms
+candidates parse time : 1ms
+C# parse time         : 211ms
+candidates check time : 70ms
+console write time    : 37ms
+

@@ -38,3 +38,13 @@ RoRebuild/RebuildZoneServer/log/profiler.csv
 RebuildClient/.idea/
 RebuildClient/ServerData/
 RebuildClient/Assets/Effects/
+RoRebuildServer/RebuildSharedData/obj/Release/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
+RoRebuildServer/RebuildSharedData/obj/
+RoRebuildServer/RoRebuildServer/bin/
+RoRebuildServer/RoRebuildServer/obj/
+RoRebuildServer/RoRebuildServer/temp/
+RoRebuildServer/RoServerScript/bin/
+RoRebuildServer/RoServerScript/obj/
+RoRebuildServer/DataToClientUtility/obj/
+RoRebuildServer/DataToClientUtility/bin/
+RoRebuildServer/RebuildSharedData/bin/

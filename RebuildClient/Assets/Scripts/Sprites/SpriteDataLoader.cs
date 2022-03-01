@@ -2,9 +2,9 @@
 using System.Linq;
 using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
-using RebuildData.Shared.ClientTypes;
-using RebuildData.Shared.Data;
-using RebuildData.Shared.Enum;
+using RebuildSharedData.ClientTypes;
+using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering;
@@ -32,13 +32,15 @@ namespace Assets.Scripts.Sprites
 	{
 		public int ServerId;
 		public int ClassId;
+        public string Name;
 		public Direction Facing;
 		public CharacterState State;
 		public Vector2Int Position;
         public int Level;
         public int Hp;
         public int MaxHp;
-	}
+        public bool Interactable;
+    }
 
 	public class SpriteDataLoader : MonoBehaviour
 	{
@@ -190,7 +192,7 @@ namespace Assets.Scripts.Sprites
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
             loader.Completed += ah =>
             {
-                if (obj.activeInHierarchy)
+                if (obj != null && obj.activeInHierarchy)
                 {
                     var obj2 = GameObject.Instantiate(ah.Result, obj.transform, false);
                     obj2.transform.localPosition = Vector3.zero;
@@ -233,8 +235,12 @@ namespace Assets.Scripts.Sprites
 			go.layer = LayerMask.NameToLayer("Characters");
 			go.transform.localScale = new Vector3(1.5f * mData.Size, 1.5f * mData.Size, 1.5f * mData.Size);
 			var control = go.AddComponent<ServerControllable>();
-			control.CharacterType = CharacterType.Monster;
+			if(param.ClassId < 4000)
+			    control.CharacterType = CharacterType.NPC;
+			else
+			    control.CharacterType = CharacterType.Monster;
 			control.SpriteMode = ClientSpriteType.Sprite;
+            control.IsInteractable = param.Interactable;
 			go.AddComponent<Billboard>();
 
 			var child = new GameObject("Sprite");
@@ -253,8 +259,13 @@ namespace Assets.Scripts.Sprites
             control.Name = mData.Name;
 
 			control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            
-			AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/Monsters/" + mData.SpriteName, control.SpriteAnimator.OnSpriteDataLoad);
+
+            var basePath = "Assets/Sprites/Monsters/";
+			if(param.ClassId < 4000)
+                basePath = "Assets/Sprites/Npcs/";
+
+
+			AddressableUtility.LoadRoSpriteData(go, basePath + mData.SpriteName, control.SpriteAnimator.OnSpriteDataLoad);
 			if (mData.ShadowSize > 0)
 				AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
 

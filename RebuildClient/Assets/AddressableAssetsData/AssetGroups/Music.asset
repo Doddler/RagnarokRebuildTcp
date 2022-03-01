@@ -108,8 +108,22 @@ MonoBehaviour:
     - Music
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 70e9639dae4b43b44ab8d45cd4fdc0d3
+    m_Address: Assets/Music/61.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 7c27c59f5b686174e972ce818260d779
     m_Address: Assets/Music/47.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 942fdc04354ce2a4ab54cd24802c11e3
+    m_Address: Assets/Music/60.mp3
     m_ReadOnly: 0
     m_SerializedLabels:
     - Music
@@ -173,6 +187,13 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: dd326ef0181b13642aac04bcf99c9e90
     m_Address: Assets/Music/35.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: edfb0f32d112e194e877d38bd2d9ae0f
+    m_Address: Assets/Music/16.mp3
     m_ReadOnly: 0
     m_SerializedLabels:
     - Music

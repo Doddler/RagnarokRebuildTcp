@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts.MapEditor;
-using RebuildData.Shared.Enum;
+using RebuildSharedData.Enum;
 using UnityEngine;
 
 namespace Assets.Scripts

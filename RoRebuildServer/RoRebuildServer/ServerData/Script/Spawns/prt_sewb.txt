@@ -1,0 +1,40 @@
+MapConfig("prt_sewb1")
+{
+	CreateSpawn("THIEF_BUG_EGG", 90);
+	CreateSpawn("THIEF_BUG", 40);
+	CreateSpawn("FARMILIAR", 20);
+	CreateSpawn("TAROU", 20);
+}
+
+MapConfig("prt_sewb2")
+{
+	CreateSpawn("THIEF_BUG_EGG", 20);
+	CreateSpawn("THIEF_BUG", 70);
+	CreateSpawn("FARMILIAR", 10);
+	CreateSpawn("SPORE", 20);
+	CreateSpawn("PLANKTON", 30);
+	CreateSpawn("THIEF_BUG_", 10);
+	CreateSpawn("TAROU", 60);
+}
+
+MapConfig("prt_sewb3")
+{
+	CreateSpawn("THIEF_BUG_EGG", 10);
+	CreateSpawn("THIEF_BUG", 20);
+	CreateSpawn("THIEF_BUG_", 65);
+	CreateSpawn("THIEF_BUG__", 65);
+	CreateSpawn("TAROU", 15);
+	CreateSpawn("POISON_SPORE", 15);
+	CreateSpawn("FARMILIAR", 20);
+}
+
+MapConfig("prt_sewb4")
+{
+	CreateSpawn("THIEF_BUG_EGG", 10);
+	CreateSpawn("THIEF_BUG", 20);
+	CreateSpawn("THIEF_BUG_", 20);
+	CreateSpawn("THIEF_BUG__", 70);
+	CreateSpawn("DRAINLIAR", 20);
+	CreateSpawn("CRAMP", 5);
+	CreateSpawn("GOLDEN_BUG", 1, 3600000, 1800000);
+}

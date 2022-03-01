@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lidgren.Network;
-using RebuildData.Shared.Networking;
+using RebuildSharedData.Networking;
 
 namespace Assets.Scripts.Network
 {

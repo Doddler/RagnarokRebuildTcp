@@ -1,0 +1,12 @@
+[
+  {
+    "Name": "Prontera",
+    "Code": "prontera", 
+    "WalkData": "prontera.walk"
+  },
+  {
+    "Name": "Prontera Field 8",
+    "Code": "prt_fild08",
+    "WalkData": "prt_fild08.walk"
+  }
+]

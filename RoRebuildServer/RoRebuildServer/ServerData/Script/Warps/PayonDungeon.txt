@@ -1,0 +1,35 @@
+﻿
+Warp("pay_dun00", "payondunwarp001", 21, 186, 2, 2, "pay_arche", 39, 131);
+Warp("pay_dun00", "payondunwarp002", 184, 33, 2, 7, "pay_dun01", 19, 33);
+Warp("pay_dun01", "payondunwarp003", 15, 33, 2, 6, "pay_dun00", 181, 33);
+Warp("pay_dun01", "payondunwarp004", 286, 25, 2, 7, "pay_dun02", 19, 63);
+Warp("pay_dun02", "payondunwarp005", 16, 63, 2, 7, "pay_dun01", 283, 28);
+Warp("pay_dun02", "payondunwarp006", 137, 128, 4, 1, "pay_dun03", 155, 159);
+
+//entrance to payon 5 takes you to 1 of 4 entrances
+Npc("pay_dun03", "payondunwarp007", "WARP", 127, 62, N, 1, 2)
+{
+OnTouch:
+    //use minutes since startup as the hash source to get a number between 1-4
+    var rnd = DeterministicRandom(MinutesSinceStartup, 4);
+    switch (rnd)
+    {
+        case 0:
+            MoveTo("pay_dun04", 43, 40);
+        case 1:
+            MoveTo("pay_dun04", 34, 202);
+        case 2:
+            MoveTo("pay_dun04", 201, 204);
+        case 3:
+            MoveTo("pay_dun04", 189, 43);
+    }
+}
+
+Warp("pay_dun03", "payondunwarp008", 155, 161, 2, 1, "pay_dun02", 137, 126);
+Warp("pay_dun04", "payondunwarp009", 32, 204, 2, 1, "pay_dun03", 125, 62);
+Warp("pay_dun04", "payondunwarp010", 40, 37, 2, 2, "pay_dun03", 125, 62);
+Warp("pay_dun04", "payondunwarp011", 191, 41, 1, 1, "pay_dun03", 125, 62);
+Warp("pay_dun04", "payondunwarp012", 202, 206, 1, 1, "pay_dun03", 125, 62);
+
+
+

@@ -1,0 +1,91 @@
+MapConfig("prt_maze01")
+{
+	CreateSpawn("SHINING_PLANT", 5, 1800000, 900000);
+	CreateSpawn("RED_PLANT", 5, 180000, 90000);
+	CreateSpawn("BLUE_PLANT", 5, 180000, 90000);
+	CreateSpawn("PORING", 5, %(179, 20, 21, 21), 120000, 40000);
+	CreateSpawn("LUNATIC", 5, %(139, 20, 21, 21), 120000, 40000);
+	CreateSpawn("FABRE", 5, %(99, 20, 21, 21), 120000, 40000);
+	CreateSpawn("CREAMY", 1, %(99, 20, 21, 21), 120000, 40000);
+	CreateSpawn("PUPA", 5, %(59, 20, 21, 21), 120000, 40000);
+	CreateSpawn("POPORING", 5, %(19, 20, 21, 21), 120000, 40000);
+	CreateSpawn("ROCKER", 5, %(179, 60, 21, 21), 120000, 40000);
+	CreateSpawn("BIGFOOT", 5, %(139, 60, 21, 21), 120000, 40000);
+	CreateSpawn("SMOKIE", 5, %(99, 60, 21, 21), 120000, 40000);
+	CreateSpawn("SNAKE", 5, %(59, 60, 21, 21), 120000, 40000);
+	CreateSpawn("WOLF", 5, %(19, 60, 21, 21), 120000, 40000);
+	CreateSpawn("ARGIOPE", 3, %(179, 100, 21, 21), 120000, 40000);
+	CreateSpawn("ARGOS", 3, %(139, 100, 21, 21), 120000, 40000);
+	CreateSpawn("CHONCHON", 5, %(99, 100, 21, 21), 120000, 40000);
+	CreateSpawn("HORN", 5, %(59, 100, 21, 21), 120000, 40000);
+	CreateSpawn("HUNTER_FLY", 3, %(19, 100, 21, 21), 120000, 40000);
+	CreateSpawn("MANTIS", 3, %(179, 140, 21, 21), 120000, 40000);
+	CreateSpawn("STAINER", 5, %(139, 140, 21, 21), 120000, 40000);
+	CreateSpawn("SIDE_WINDER", 3, %(99, 140, 21, 21), 120000, 40000);
+	CreateSpawn("YOYO", 4, %(59, 140, 21, 21), 120000, 40000);
+	CreateSpawn("CHOCO", 2, %(59, 140, 21, 21), 120000, 40000);
+	CreateSpawn("STEEL_CHONCHON", 5, %(19, 140, 21, 21), 120000, 40000);
+	CreateSpawn("COCO", 5, %(179, 180, 21, 21), 120000, 40000);
+	CreateSpawn("CARAMEL", 5, %(139, 180, 21, 21), 120000, 40000);
+	CreateSpawn("DUSTINESS", 5, %(99, 180, 21, 21), 120000, 40000);
+	CreateSpawn("MARTIN", 5, %(59, 180, 21, 21), 120000, 40000);
+	CreateSpawn("SAVAGE", 3, %(19, 180, 21, 21), 120000, 40000);
+	CreateSpawn("SAVAGE", 5, %(19, 180, 21, 21), 120000, 40000);
+	CreateSpawn("HUNTER_FLY", 1);
+	CreateSpawn("VAGABOND_WOLF", 1, 3600000, 1800000);
+	CreateSpawn("SHINING_PLANT", 1, %(101, 138, 5, 5), 1800000, 900000);
+	CreateSpawn("WHITE_PLANT", 1, %(101, 138, 5, 5), 1800000, 900000);
+	CreateSpawn("WHITE_PLANT", 2, %(99, 181, 5, 5), 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 1, %(60, 140, 10, 15), 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 1, %(61, 101, 10, 10), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 1, %(141, 100, 10, 10), 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 1, %(141, 100, 10, 10), 1800000, 900000);
+	CreateSpawn("RED_PLANT", 5, 180000, 90000);
+	CreateSpawn("BLUE_PLANT", 1, %(100, 100, 10, 10), 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 1, %(100, 100, 10, 10), 1800000, 900000);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(176, 132, 5, 5), 180000, 90000);
+	CreateSpawn("BLACK_MUSHROOM", 2, %(181, 149, 3, 3), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 3, %(178, 60, 10, 10), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 2, %(168, 60, 3, 3), 180000, 90000);
+}
+
+MapConfig("prt_maze02")
+{
+	CreateSpawn("POPORING", 25);
+	CreateSpawn("BIGFOOT", 5);
+	CreateSpawn("SASQUATCH", 1, 900000, 40000);
+	CreateSpawn("LEIB_OLMAI", 1, 1800000, 900000);
+}
+
+MapConfig("prt_maze03")
+{
+	CreateSpawn("POPORING", 45);
+	CreateSpawn("SIDE_WINDER", 30);
+	CreateSpawn("HUNTER_FLY", 30);
+	CreateSpawn("GHOSTRING", 1, 6800000, 3400000);
+	CreateSpawn("KILLER_MANTIS", 1);
+	CreateSpawn("SIDE_WINDER", 20, %(150, 50, 70, 70), 300000, 150000);
+	CreateSpawn("VOCAL", 1, %(150, 50, 70, 70), 1920000, 1500000);
+	CreateSpawn("STEM_WORM", 20, %(50, 150, 70, 70), 300000, 150000);
+	CreateSpawn("VAGABOND_WOLF", 1, %(50, 150, 70, 70), 1920000, 150000);
+	CreateSpawn("MANTIS", 30, %(170, 170, 70, 70), 60000, 30000);
+	CreateSpawn("ECLIPSE", 1, %(170, 170, 70, 70), 1920000, 150000);
+	CreateSpawn("MASTERING", 1, %(23, 23, 70, 70), 1920000, 150000);
+	CreateSpawn("BAPHOMET_", 25, %(100, 100, 80, 80));
+	CreateSpawn("BAPHOMET", 1, 7200000, 3600000);
+	CreateSpawn("SHINING_PLANT", 1, %(61, 98, 10, 10), 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 1, %(61, 98, 10, 10), 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 1, %(61, 98, 10, 10), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 1, %(57, 56, 10, 10), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 1, %(15, 15, 10, 10), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 1, %(137, 140, 3, 3), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 1, %(17, 58, 10, 10), 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 1, %(17, 58, 10, 10), 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 2, %(99, 141, 10, 10), 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 1, %(99, 21, 10, 10), 1800000, 900000);
+	CreateSpawn("RED_PLANT", 5, 180000, 90000);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(99, 21, 10, 10), 180000, 90000);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(54, 15, 10, 10), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 2, %(171, 180, 3, 3), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 3, %(174, 187, 3, 3), 180000, 90000);
+}

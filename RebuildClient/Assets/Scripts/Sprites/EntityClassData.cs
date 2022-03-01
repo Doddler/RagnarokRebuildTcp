@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RebuildData.Shared.ClientTypes;
+using RebuildSharedData.ClientTypes;
 
 namespace Assets.Scripts.Sprites
 {

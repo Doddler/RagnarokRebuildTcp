@@ -1,0 +1,214 @@
+MapConfig("gef_fild00")
+{
+	CreateSpawn("PORING", 80);
+	CreateSpawn("FABRE", 80);
+	CreateSpawn("PUPA", 20);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("BLUE_PLANT", 1, %(95, 128, 0, 0), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 1, %(124, 321, 0, 0), 900000, 450000);
+	CreateSpawn("GREEN_PLANT", 3, %(54, 212, 5, 5), 360000, 180000);
+	CreateSpawn("GREEN_PLANT", 3, %(54, 186, 5, 5), 360000, 180000);
+}
+
+MapConfig("gef_fild01")
+{
+	CreateSpawn("RODA_FROG", 50);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("TOAD", 1, 3600000, 1800000);
+	CreateSpawn("GREEN_PLANT", 5, %(215, 225, 10, 10), 360000, 180000);
+}
+
+MapConfig("gef_fild02")
+{
+	CreateSpawn("YOYO", 10);
+	CreateSpawn("ORK_WARRIOR", 50);
+	CreateSpawn("COCO", 20);
+	CreateSpawn("SMOKIE", 20);
+	CreateSpawn("CHOCO", 1);
+	CreateSpawn("GREEN_PLANT", 8, %(227, 316, 6, 6), 360000, 180000);
+	CreateSpawn("RED_MUSHROOM", 5, %(87, 48, 6, 6), 360000, 180000);
+	CreateSpawn("BLUE_PLANT", 2, %(215, 209, 2, 1), 360000, 180000);
+	CreateSpawn("BLUE_PLANT", 1, %(207, 214, 1, 1), 360000, 180000);
+	CreateSpawn("BLUE_PLANT", 1, %(220, 214, 1, 1), 360000, 180000);
+	CreateSpawn("SHINING_PLANT", 1, %(164, 194, 1, 1), 1800000, 900000);
+}
+
+MapConfig("gef_fild03")
+{
+	CreateSpawn("ORK_WARRIOR", 30);
+	CreateSpawn("HIGH_ORC", 10);
+	CreateSpawn("SAVAGE", 40);
+	CreateSpawn("POPORING", 30);
+	CreateSpawn("GREEN_PLANT", 1, %(45, 350, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(66, 300, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(80, 252, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(118, 281, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(135, 344, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(210, 363, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(215, 345, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(359, 316, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(350, 247, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(304, 202, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(285, 223, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(282, 192, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(316, 143, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(337, 104, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(348, 42, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(326, 79, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(280, 92, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(216, 135, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(169, 92, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(45, 93, 3, 3), 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 1, %(44, 133, 3, 3), 180000, 90000);
+}
+
+MapConfig("gef_fild04")
+{
+	CreateSpawn("PORING", 40);
+	CreateSpawn("CHONCHON", 40);
+	CreateSpawn("PUPA", 60);
+	CreateSpawn("FABRE", 30);
+	CreateSpawn("RODA_FROG", 30);
+	CreateSpawn("GREEN_PLANT", 3, %(224, 82, 5, 2), 360000, 180000);
+	CreateSpawn("GREEN_PLANT", 3, %(152, 82, 5, 2), 360000, 180000);
+}
+
+MapConfig("gef_fild05")
+{
+	CreateSpawn("PORING", 30);
+	CreateSpawn("KOBOLD_ARCHER", 15);
+	CreateSpawn("WILD_ROSE", 50);
+	CreateSpawn("DUSTINESS", 30);
+	CreateSpawn("RED_PLANT", 1, %(235, 322, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(238, 326, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(170, 337, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(108, 317, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(56, 285, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(65, 256, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(74, 228, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(50, 189, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(51, 166, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(146, 161, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(153, 180, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(124, 207, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(187, 249, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(187, 265, 0, 0), 180000, 90000);
+	CreateSpawn("RED_PLANT", 1, %(130, 293, 0, 0), 180000, 90000);
+}
+
+MapConfig("gef_fild06")
+{
+	CreateSpawn("PETIT_", 35);
+	CreateSpawn("POPORING", 30);
+	CreateSpawn("MANTIS", 20);
+	CreateSpawn("KOBOLD_1", 30);
+	CreateSpawn("KOBOLD_1", 20);
+	CreateSpawn("KOBOLD_1", 20);
+	CreateSpawn("SHINING_PLANT", 4, 1800000, 900000);
+}
+
+MapConfig("gef_fild07")
+{
+	CreateSpawn("PORING", 70);
+	CreateSpawn("CHONCHON", 50);
+	CreateSpawn("PUPA", 10);
+	CreateSpawn("FABRE", 70);
+	CreateSpawn("GREEN_PLANT", 3, %(122, 221, 0, 0), 360000, 180000);
+	CreateSpawn("SHINING_PLANT", 1, %(185, 247, 0, 0), 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 1, %(269, 289, 0, 0), 900000, 450000);
+	CreateSpawn("GREEN_PLANT", 3, %(269, 289, 3, 3), 360000, 180000);
+}
+
+MapConfig("gef_fild08")
+{
+	CreateSpawn("KOBOLD_1", 20);
+	CreateSpawn("KOBOLD_2", 40);
+	CreateSpawn("KOBOLD_3", 20);
+	CreateSpawn("GOLEM", 40);
+	CreateSpawn("STEEL_CHONCHON", 20);
+	CreateSpawn("POISON_SPORE", 20);
+	CreateSpawn("BLUE_PLANT", 1, %(65, 341, 0, 0), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 1, %(111, 319, 0, 0), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 1, %(59, 91, 0, 0), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 1, %(70, 80, 0, 0), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 1, %(144, 140, 0, 0), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 1, %(344, 78, 0, 0), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 1, %(325, 311, 0, 0), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 1, %(162, 247, 0, 0), 900000, 450000);
+}
+
+MapConfig("gef_fild09")
+{
+	CreateSpawn("AMBERNITE", 70);
+	CreateSpawn("POPORING", 10);
+	CreateSpawn("POISON_SPORE", 20);
+	CreateSpawn("RED_MUSHROOM", 1, %(51, 43, 0, 0), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(125, 53, 0, 0), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(148, 74, 0, 0), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(184, 66, 0, 0), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(207, 54, 0, 0), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(245, 62, 0, 0), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(268, 45, 0, 0), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(258, 24, 0, 0), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(325, 36, 0, 0), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(344, 51, 0, 0), 180000, 90000);
+	CreateSpawn("BLUE_PLANT", 3, %(277, 201, 5, 5), 900000, 450000);
+}
+
+MapConfig("gef_fild10")
+{
+	CreateSpawn("ORC_LORD", 1, 7200000, 3600000);
+	CreateSpawn("ORK_WARRIOR", 15);
+	CreateSpawn("ORC_LADY", 75);
+	CreateSpawn("POPORING", 15);
+	CreateSpawn("ORC_BABY", 15);
+	CreateSpawn("BLUE_PLANT", 3, %(46, 350, 5, 5), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 3, %(287, 61, 5, 5), 900000, 450000);
+	CreateSpawn("GREEN_PLANT", 3, %(300, 253, 5, 5), 360000, 180000);
+}
+
+MapConfig("gef_fild11")
+{
+	CreateSpawn("GOBLIN_LEADER", 1, 1800000, 1200000);
+	CreateSpawn("GOBLIN_1", 30);
+	CreateSpawn("GOBLIN_2", 25);
+	CreateSpawn("GOBLIN_3", 25);
+	CreateSpawn("GOBLIN_4", 25);
+	CreateSpawn("GOBLIN_5", 25);
+	CreateSpawn("GOBLIN_ARCHER", 20);
+	CreateSpawn("POPORING", 15);
+	CreateSpawn("ROTAR_ZAIRO", 10);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(101, 277, 4, 1), 360000, 180000);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(176, 288, 1, 4), 360000, 180000);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(253, 357, 1, 4), 360000, 180000);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(247, 249, 1, 4), 360000, 180000);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(257, 209, 1, 4), 360000, 180000);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(174, 240, 1, 3), 360000, 180000);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(283, 100, 4, 1), 360000, 180000);
+}
+
+MapConfig("gef_fild12")
+{
+	CreateSpawn("KOBOLD_1", 20);
+	CreateSpawn("KOBOLD_2", 30);
+	CreateSpawn("KOBOLD_3", 30);
+	CreateSpawn("KOBOLD_ARCHER", 40);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("KOBOLD_LEADER", 1, 1800000, 1200000);
+}
+
+MapConfig("gef_fild13")
+{
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("CREAMY", 30);
+	CreateSpawn("AMBERNITE", 15);
+}
+
+MapConfig("gef_fild14")
+{
+	CreateSpawn("ORC_LADY", 40);
+	CreateSpawn("ORK_HERO", 1, 3600000, 1800000);
+	CreateSpawn("ORK_WARRIOR", 20);
+	CreateSpawn("ORC_ARCHER", 30);
+	CreateSpawn("HIGH_ORC", 60);
+}

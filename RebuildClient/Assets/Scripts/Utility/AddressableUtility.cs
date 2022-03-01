@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Assets.Scripts.Utility
 {
@@ -12,8 +13,11 @@ namespace Assets.Scripts.Utility
 	{
 		public static void LoadRoSpriteData(GameObject owner, string spritePath, Action<RoSpriteData> onComplete)
 		{
-			Addressables.LoadAssetAsync<RoSpriteData>(spritePath).Completed += handle =>
+			var load = Addressables.LoadAssetAsync<RoSpriteData>(spritePath);
+			load.Completed += handle =>
 			{
+				if(handle.Status == AsyncOperationStatus.Failed)
+					Debug.LogError("Could not load sprite name " + spritePath);
 				if (owner != null)
 					onComplete(handle.Result);
 			};
@@ -23,6 +27,8 @@ namespace Assets.Scripts.Utility
 		{
 			Addressables.LoadAssetAsync<Sprite>(spritePath).Completed += handle =>
 			{
+                if (handle.Status == AsyncOperationStatus.Failed)
+                    Debug.LogError("Could not load sprite name " + spritePath);
 				if (owner != null)
 					onComplete(handle.Result);
 			};

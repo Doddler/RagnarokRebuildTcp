@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RebuildData.Shared.Enum;
+using RebuildSharedData.Enum;
 using UnityEngine;
 
 namespace Assets.Scripts.Utility

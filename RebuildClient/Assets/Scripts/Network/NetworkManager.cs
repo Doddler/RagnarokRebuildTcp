@@ -8,10 +8,10 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using HybridWebSocket;
 using Lidgren.Network;
-using RebuildData.Shared.ClientTypes;
-using RebuildData.Shared.Data;
-using RebuildData.Shared.Enum;
-using RebuildData.Shared.Networking;
+using RebuildSharedData.ClientTypes;
+using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
+using RebuildSharedData.Networking;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -27,6 +27,7 @@ namespace Assets.Scripts.Network
         public CameraFollower CameraFollower;
         public GameObject DamagePrefab;
         public GameObject HealPrefab;
+        public GameObject TargetNoticePrefab;
         public Dictionary<int, ServerControllable> entityList = new Dictionary<int, ServerControllable>();
         public int PlayerId;
         public NetQueue<ClientInboundMessage> InboundMessages = new NetQueue<ClientInboundMessage>(30);
@@ -40,7 +41,7 @@ namespace Assets.Scripts.Network
 
         public Color FakeAmbient = Color.white;
 
-        private string currentMap = "";
+        public string CurrentMap = "";
 
         private List<Vector2Int> pathData = new List<Vector2Int>(20);
 
@@ -88,7 +89,7 @@ namespace Assets.Scripts.Network
 
         private IEnumerator GetServerPath()
         {
-            var www = new WWW("http://www.dodsrv.com/ragnarok/serverconfig.txt");
+            var www = new WWW("http://www.dodsrv.com/ragnarokdev/serverconfig.txt");
             yield return www;
 
             if (www.error != null)
@@ -257,6 +258,8 @@ namespace Assets.Scripts.Network
             }
             else
             {
+                var interactable = false;
+                var name = string.Empty;
 
                 if (type == CharacterType.Monster)
                 {
@@ -265,16 +268,24 @@ namespace Assets.Scripts.Network
                     hp = (int)msg.ReadUInt16();
                 }
 
+                if (type == CharacterType.NPC)
+                {
+                    name = msg.ReadString();
+                    interactable = msg.ReadBoolean();
+                }
+
                 var monData = new MonsterSpawnParameters()
                 {
                     ServerId = id,
                     ClassId = classId,
+                    Name = name,
                     Facing = facing,
                     Position = pos,
                     State = state,
                     Level = lvl,
                     MaxHp = maxHp,
                     Hp = hp,
+                    Interactable = interactable
                 };
                 controllable = SpriteDataLoader.Instance.InstantiateMonster(ref monData);
             }
@@ -383,11 +394,11 @@ namespace Assets.Scripts.Network
 
             entityList.Clear();
 
-            currentMap = mapName;
+            CurrentMap = mapName;
             //var mapLoad = SceneManager.LoadSceneAsync(mapName, LoadSceneMode.Additive);
             //mapLoad.completed += OnMapLoad;
 
-            SceneTransitioner.Instance.DoTransitionToScene(currentScene, currentMap, OnMapLoad);
+            SceneTransitioner.Instance.DoTransitionToScene(currentScene, CurrentMap, OnMapLoad);
 
             //SceneManager.UnloadSceneAsync(currentScene);
         }
@@ -399,14 +410,14 @@ namespace Assets.Scripts.Network
 
             Debug.Log($"We're id {id} on map {mapName}");
 
-            currentMap = mapName;
+            CurrentMap = mapName;
 
             //var mapLoad = SceneManager.LoadSceneAsync(mapName, LoadSceneMode.Additive);
             //mapLoad.completed += OnMapLoad;
 
             PlayerId = id;
 
-            SceneTransitioner.Instance.LoadScene(currentMap, OnMapLoad);
+            SceneTransitioner.Instance.LoadScene(CurrentMap, OnMapLoad);
         }
 
         private void OnMessageRemoveEntity(ClientInboundMessage msg)
@@ -635,7 +646,11 @@ namespace Assets.Scripts.Network
 
             var go = GameObject.Instantiate(HealPrefab, controllable.transform.localPosition, Quaternion.identity);
             var di = go.GetComponent<DamageIndicator>();
-            var height = controllable.SpriteAnimator.SpriteData.Size / 50f;
+            var height = 72f / 50f;
+
+            if(controllable.SpriteAnimator != null)
+                height = controllable.SpriteAnimator.SpriteData.Size / 50f;
+
             di.DoDamage($"<color=yellow>+{exp} Exp", controllable.gameObject.transform.localPosition, height, Direction.None, false, false);
         }
 
@@ -695,6 +710,71 @@ namespace Assets.Scripts.Network
 
             if (id == PlayerId)
                 CameraFollower.UpdatePlayerHP(hp, maxHp);
+        }
+
+        public void OnMessageMonsterTarget(ClientInboundMessage msg)
+        {
+            var id = msg.ReadInt32();
+
+            //Debug.Log("TARGET! " + id);
+
+            if (!entityList.TryGetValue(id, out var controllable))
+                return;
+
+            var targetIcon = GameObject.Instantiate(TargetNoticePrefab);
+            targetIcon.transform.SetParent(controllable.transform);
+            targetIcon.transform.localPosition = Vector3.zero;
+        }
+
+        public void OnMessageSay(ClientInboundMessage msg)
+        {
+            var id = msg.ReadInt32();
+            var text = msg.ReadString();
+
+            if (!entityList.TryGetValue(id, out var controllable))
+            {
+                CameraFollower.AppendChatText("Unknown: " + text);
+                return;
+            }
+            controllable.DialogBox(text);
+
+            CameraFollower.AppendChatText(controllable.Name + ": " + text);
+        }
+
+        public void OnMessageChangeName(ClientInboundMessage msg)
+        {
+            var id = msg.ReadInt32();
+            var text = msg.ReadString();
+
+            if (!entityList.TryGetValue(id, out var controllable))
+                return;
+
+            CameraFollower.AppendChatText($"{controllable.Name} has changed their name to {text}.");
+            controllable.Name = text;
+        }
+
+        public void OnMessageRequestFailed(ClientInboundMessage msg)
+        {
+            var error = (ClientErrorType)msg.ReadByte();
+
+            switch (error)
+            {
+                case ClientErrorType.InvalidCoordinates:
+                    CameraFollower.Instance.AppendChatText("<color=#FF3030>Error</color>: Coordinates were invalid.");
+                    break;
+                case ClientErrorType.TooManyRequests:
+                    CameraFollower.Instance.AppendChatText("<color=yellow>Warning</color>: Too many actions or requests.");
+                    break;
+                case ClientErrorType.UnknownMap:
+                    CameraFollower.Instance.AppendChatText("<color=#FF3030>Error</color>: Could not find map.");
+                    break;
+                case ClientErrorType.MalformedRequest:
+                    CameraFollower.Instance.AppendChatText("<color=#FF3030>Error</color>: Request could not be completed due to malformed data.");
+                    break;
+                case ClientErrorType.RequestTooLong:
+                    CameraFollower.Instance.AppendChatText("<color=#FF3030>Error</color>: The request data was too long.");
+                    break;
+            }
         }
 
         void HandleDataPacket(ClientInboundMessage msg)
@@ -762,6 +842,18 @@ namespace Assets.Scripts.Network
                 case PacketType.HpRecovery:
                     OnMessageHpRecovery(msg);
                     break;
+                case PacketType.Targeted:
+                    OnMessageMonsterTarget(msg);
+                    break;
+                case PacketType.RequestFailed:
+                    OnMessageRequestFailed(msg);
+                    break;
+                case PacketType.Say:
+                    OnMessageSay(msg);
+                    break;
+                case PacketType.ChangeName:
+                    OnMessageChangeName(msg);
+                    break;
                 default:
                     Debug.LogWarning($"Failed to handle packet type: {type}");
                     break;
@@ -800,7 +892,7 @@ namespace Assets.Scripts.Network
 
             msg.Write((byte)PacketType.PlayerReady);
 
-            currentScene = SceneManager.GetSceneByName(currentMap);
+            currentScene = SceneManager.GetSceneByName(CurrentMap);
             SceneManager.SetActiveScene(currentScene);
 
             SendMessage(msg);
@@ -892,14 +984,44 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendSay(string text)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.Say);
+            msg.Write(text);
+
+            SendMessage(msg);
+        }
+
+        public void SendChangeName(string text)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.ChangeName);
+            msg.Write(text);
+
+            SendMessage(msg);
+        }
+
         public void SendMoveRequest(string map, int x = -999, int y = -999)
         {
             var msg = StartMessage();
 
-            msg.Write((byte)PacketType.RequestMove);
+            msg.Write((byte)PacketType.AdminRequestMove);
             msg.Write(map);
             msg.Write((short)x);
             msg.Write((short)y);
+
+            SendMessage(msg);
+        }
+
+        public void SendAdminLevelUpRequest(int level)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.AdminLevelUp);
+            msg.Write((byte)level);
 
             SendMessage(msg);
         }

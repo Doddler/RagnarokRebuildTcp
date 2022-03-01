@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using Assets.Scripts;
 using Assets.Scripts.Utility;
-using RebuildData.Shared.Enum;
+using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 
@@ -23,7 +24,8 @@ public class DamageIndicator : MonoBehaviour
 	private Vector3 end;
 	
 	public void DoDamage(string value, Vector3 startPosition, float height, Direction direction, bool isRed, bool isCrit)
-	{
+    {
+        direction = direction.GetIntercardinalDirection();
 		var text = value.ToString();
 
 		if (isRed)

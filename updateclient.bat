@@ -1,9 +1,9 @@
-cd RoRebuild\RebuildData.Shared
+cd RoRebuildServer\RebuildSharedData
 dotnet build -c Release
 cd ../..
-xcopy "RoRebuild\RebuildData.Shared\bin\Release\netstandard2.0\RebuildData.Shared.dll" "RebuildClient\Assets\Data\RebuildData.Shared.dll" /s /y
-cd RoRebuild\DataToClientUtility
+xcopy "RoRebuildServer\RebuildSharedData\bin\Release\netstandard2.0\RebuildSharedData.dll" "RebuildClient\Assets\Data\RebuildSharedData.dll" /s /y
+cd RoRebuildServer\DataToClientUtility
 dotnet build -c Release
-cd "bin\Release\netcoreapp3.1\"
+cd "bin\Release\net6.0\"
 DataToClientUtility.exe
 pause

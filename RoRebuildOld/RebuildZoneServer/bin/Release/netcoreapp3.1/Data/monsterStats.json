@@ -1,0 +1,68 @@
+[
+  {
+    "Id": 4000,
+    "Name": "Poring",
+    "MoveSpeed": 0.4
+  },
+  {
+    "Id": 4001,
+    "Name": "Fabre",
+    "MoveSpeed": 0.4
+  },
+  {
+    "Id": 4002,
+    "Name": "Lunatic",
+    "MoveSpeed": 0.2
+  },
+  {
+    "Id": 4003,
+    "Name": "Pupa",
+    "MoveSpeed": 2,
+    "Immobile": true
+  },
+  {
+    "Id": 4004,
+    "Name": "Green Plant",
+    "MoveSpeed": 2,
+    "Immobile": true
+  },
+  {
+    "Id": 4005,
+    "Name": "Black Mushroom",
+    "MoveSpeed": 2,
+    "Immobile": true
+  },
+  {
+    "Id": 4006,
+    "Name": "Rocker",
+    "MoveSpeed": 0.2
+  },
+  {
+    "Id": 4007,
+    "Name": "Creamy",
+    "MoveSpeed": 0.15
+  },
+  {
+    "Id": 4008,
+    "Name": "Poporing",
+    "MoveSpeed": 0.3
+  },
+  {
+    "Id": 4009,
+    "Name": "Thief Bug",
+    "MoveSpeed": 0.15
+  },
+  {
+    "Id": 4010,
+    "Name": "Thief Bug Egg",
+    "MoveSpeed": 2,
+    "Immobile": true
+  },
+  {
+    "Id": 4011,
+    "Name": "Hornet",
+    "MoveSpeed": 0.15
+  }
+]
+
+

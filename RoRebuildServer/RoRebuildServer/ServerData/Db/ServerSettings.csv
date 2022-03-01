@@ -1,0 +1,12 @@
+﻿Key,Value
+IP,127.0.0.1
+Port,14248
+Url,ws://127.0.0.1:5000/ws
+MaxConnections,100
+Debug,0
+WalkPathData,..\..\RebuildClient\Assets\Maps\exportdata
+//MaxSpawnTime,60000
+QuickMoveEnabled,1
+//SingleThread,1
+//SingleMobTest,HORNET
+SingleMobCount,10

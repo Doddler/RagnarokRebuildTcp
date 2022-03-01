@@ -1,0 +1,128 @@
+MapConfig("prt_fild00")
+{
+	CreateSpawn("CREAMY", 10);
+	CreateSpawn("FABRE", 20);
+	CreateSpawn("PUPA", 50);
+	CreateSpawn("LUNATIC", 30);
+	CreateSpawn("PORING", 40);
+	CreateSpawn("HORNET", 40);
+	CreateSpawn("SHINING_PLANT", 1, %(227, 212, 0, 0), 1800000, 900000);
+	CreateSpawn("GREEN_PLANT", 5, %(285, 138, 10, 10), 360000, 180000);
+}
+
+MapConfig("prt_fild01")
+{
+	CreateSpawn("THIEF_BUG", 30);
+	CreateSpawn("FABRE", 20);
+	CreateSpawn("PUPA", 10);
+	CreateSpawn("LUNATIC", 80);
+	CreateSpawn("PORING", 30);
+	CreateSpawn("GREEN_PLANT", 3, %(199, 266, 3, 3), 360000, 180000);
+	CreateSpawn("BLUE_PLANT", 1, %(199, 266, 3, 3), 900000, 450000);
+}
+
+MapConfig("prt_fild02")
+{
+	CreateSpawn("MANDRAGORA", 75);
+	CreateSpawn("FABRE", 50);
+	CreateSpawn("PUPA", 20);
+	CreateSpawn("LUNATIC", 60);
+	CreateSpawn("PORING", 30);
+	CreateSpawn("ECLIPSE", 1, 1800000, 1200000);
+	CreateSpawn("SHINING_PLANT", 1, %(339, 309, 3, 3), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 2, 1800000, 900000);
+}
+
+MapConfig("prt_fild03")
+{
+	CreateSpawn("YOYO", 70);
+	CreateSpawn("SMOKIE", 50);
+	CreateSpawn("CHOCO", 3, 1800000, 900000);
+	CreateSpawn("FABRE", 10);
+	CreateSpawn("PORING", 30);
+	CreateSpawn("GREEN_PLANT", 5, %(296, 58, 15, 15), 180000, 90000);
+	CreateSpawn("BLUE_PLANT", 2, %(296, 58, 15, 15), 900000, 450000);
+	CreateSpawn("GREEN_PLANT", 5, %(307, 75, 5, 5), 360000, 180000);
+	CreateSpawn("GREEN_PLANT", 5, %(147, 319, 5, 5), 360000, 180000);
+	CreateSpawn("GREEN_PLANT", 5, %(148, 107, 5, 5), 360000, 180000);
+}
+
+MapConfig("prt_fild04")
+{
+	CreateSpawn("ROCKER", 70);
+	CreateSpawn("CREAMY", 40);
+	CreateSpawn("PUPA", 10);
+	CreateSpawn("PORING", 30);
+	CreateSpawn("VOCAL", 1, 1800000, 1200000);
+	CreateSpawn("GREEN_PLANT", 5, %(350, 114, 10, 10), 900000, 450000);
+}
+
+MapConfig("prt_fild05")
+{
+	CreateSpawn("PORING", 70);
+	CreateSpawn("THIEF_BUG_EGG", 20);
+	CreateSpawn("LUNATIC", 30);
+	CreateSpawn("PUPA", 30);
+	CreateSpawn("THIEF_BUG", 10);
+	CreateSpawn("GREEN_PLANT", 6, %(208, 37, 10, 10), 900000, 450000);
+	CreateSpawn("BLUE_PLANT", 1, %(208, 37, 10, 10), 900000, 450000);
+}
+
+MapConfig("prt_fild06")
+{
+	CreateSpawn("LUNATIC", 60);
+	CreateSpawn("THIEF_BUG_EGG", 20);
+	CreateSpawn("THIEF_BUG", 10);
+	CreateSpawn("PUPA", 20);
+	CreateSpawn("PORING", 60);
+	CreateSpawn("GREEN_PLANT", 15, %(222, 30, 40, 10), 900000, 450000);
+}
+
+MapConfig("prt_fild07")
+{
+	CreateSpawn("ROCKER", 120);
+	CreateSpawn("POPORING", 30);
+	CreateSpawn("BLACK_MUSHROOM", 3, %(225, 110, 5, 5), 360000, 180000);
+}
+
+MapConfig("prt_fild08")
+{
+	CreateSpawn("LUNATIC", 40);
+	CreateSpawn("PUPA", 20);
+	CreateSpawn("PORING", 100);
+	CreateSpawn("DROPS", 10);
+	CreateSpawn("GREEN_PLANT", 5, %(350, 114, 10, 10), 900000, 450000);
+}
+
+MapConfig("prt_fild09")
+{
+	CreateSpawn("SAVAGE_BABE", 70);
+	CreateSpawn("DESERT_WOLF_B", 20);
+	CreateSpawn("PECOPECO_EGG", 20);
+	CreateSpawn("PICKY", 20);
+	CreateSpawn("CONDOR", 10);
+	CreateSpawn("YELLOW_PLANT", 3, %(237, 115, 5, 5), 360000, 180000);
+}
+
+MapConfig("prt_fild10")
+{
+	CreateSpawn("SAVAGE", 70);
+	CreateSpawn("SAVAGE_BABE", 40);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("THIEF_BUG", 10);
+	CreateSpawn("RED_MUSHROOM", 15, %(99, 114, 20, 5), 360000, 180000);
+	CreateSpawn("SHINING_PLANT", 1, %(155, 179, 10, 10), 1800000, 900000);
+}
+
+MapConfig("prt_fild11")
+{
+	CreateSpawn("GOBLIN_1", 20);
+	CreateSpawn("GOBLIN_2", 30);
+	CreateSpawn("GOBLIN_3", 30);
+	CreateSpawn("GOBLIN_4", 30);
+	CreateSpawn("GOBLIN_5", 30);
+	CreateSpawn("GOBLIN_ARCHER", 20);
+	CreateSpawn("PANZER_GOBLIN", 1, 1800000, 1200000);
+	CreateSpawn("STEAM_GOBLIN", 30);
+	CreateSpawn("RED_MUSHROOM", 10, 180000, 90000);
+}

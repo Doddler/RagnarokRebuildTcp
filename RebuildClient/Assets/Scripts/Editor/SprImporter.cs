@@ -89,6 +89,7 @@ public class SprImporter : UnityEditor.AssetImporters.ScriptedImporter
                     asset.Type = SpriteType.ActionNpc;
                     break;
                 case 40:
+                case 41: //zerom for some reason
                     asset.Type = SpriteType.Monster;
                     break;
                 case 48:

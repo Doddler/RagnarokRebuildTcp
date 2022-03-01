@@ -2,11 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.MapEditor;
+using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
-using RebuildData.Shared.Enum;
+using RebuildSharedData.Enum;
+using TMPro;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.Network
@@ -15,7 +18,7 @@ namespace Assets.Scripts.Network
 	{
 		private RoWalkDataProvider walkProvider;
 
-		public CharacterType CharacterType;
+        public CharacterType CharacterType;
 		public RoSpriteAnimator SpriteAnimator;
 		public int Id;
 		public Vector2Int Position;
@@ -23,12 +26,15 @@ namespace Assets.Scripts.Network
 		public float ShadowSize;
 		public bool IsAlly;
 		public bool IsMale;
+        public bool IsInteractable;
         public int Level;
         public string Name;
         public int Hp;
         public int MaxHp;
 
-        public string DisplayName => $"Lv.{Level} {Name}";
+        public GameObject PopupDialog;
+
+        public string DisplayName => CharacterType == CharacterType.NPC ? Name : $"Lv.{Level} {Name}";
 
         public Vector3 CounterHitDir;
 
@@ -45,8 +51,40 @@ namespace Assets.Scripts.Network
 		private Material shadowMaterial;
 
 		private float hitDelay = 0f;
+        private float dialogCountdown = 0f;
 
 		public bool IsWalking => movePath != null && movePath.Count > 1;
+
+        public void DialogBox(string text)
+        {
+            if(PopupDialog == null)
+				PopupDialog = GameObject.Instantiate(Resources.Load<GameObject>("Dialog"));
+
+			PopupDialog.transform.SetParent(CameraFollower.Instance.UiCanvas.transform);
+
+            PopupDialog.GetComponent<CharacterChat>().SetText(text);
+            //textObject.text = text;
+
+			SnapDialog();
+            dialogCountdown = 10f;
+        }
+
+        public void SnapDialog()
+        {
+            if (PopupDialog == null)
+                return;
+
+            var rect = PopupDialog.transform as RectTransform;
+
+            var screenPos = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0f, 4f, 0f));
+
+			//Debug.Log(screenPos);
+
+            var reverseScale = 1f / CameraFollower.Instance.CanvasScaler.scaleFactor;
+
+			rect.anchoredPosition = new Vector2(screenPos.x * reverseScale,
+                ((screenPos.y - CameraFollower.Instance.UiCanvas.pixelRect.height) + 0) * reverseScale);
+		}
 		
 		public void ConfigureEntity(int id, Vector2Int worldPos, Direction direction)
 		{
@@ -362,7 +400,16 @@ namespace Assets.Scripts.Network
 		}
 		private void Update()
 		{
-			if (SpriteMode == ClientSpriteType.Prefab)
+            if (PopupDialog != null)
+            {
+                dialogCountdown -= Time.deltaTime;
+				if(dialogCountdown < 0)
+					GameObject.Destroy(PopupDialog);
+				else
+                    SnapDialog();
+            }
+
+            if (SpriteMode == ClientSpriteType.Prefab)
 				return;
 
 			hitDelay -= Time.deltaTime;
