@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Effects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
+using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Config;
@@ -27,6 +28,8 @@ namespace Assets.Scripts
         public Texture2D TalkCursorTexture;
         public RoSpriteData TargetSprite;
         public GameObject LevelUpPrefab;
+        public GameObject ResurrectPrefab;
+        public GameObject DeathPrefab;
 
         private static CameraFollower _instance;
         private RoWalkDataProvider WalkProvider;
@@ -40,6 +43,11 @@ namespace Assets.Scripts
 
         public ScrollRect TextBoxScrollRect;
         public TextMeshProUGUI TextBoxText;
+
+        public Camera WaterCamera;
+        public RenderTexture WaterTexture;
+        public RenderTexture WaterDepthTexture;
+        public Shader WaterDepthShader;
 
         private Texture2D currentCursor;
 
@@ -641,7 +649,15 @@ namespace Assets.Scripts
 
                 if (s[0] == "/warp" && s.Length > 1)
                 {
-                    NetworkManager.Instance.SendMoveRequest(s[1]);
+                    if (s.Length == 4)
+                    {
+                        if(int.TryParse(s[2], out var x) && int.TryParse(s[3], out var y))
+                            NetworkManager.Instance.SendMoveRequest(s[1], x, y);
+                        else
+                            NetworkManager.Instance.SendMoveRequest(s[1]);
+                    }
+                    else
+                        NetworkManager.Instance.SendMoveRequest(s[1]);
                 }
 
                 if (s[0] == "/where")
@@ -664,8 +680,10 @@ namespace Assets.Scripts
                         NetworkManager.Instance.SendAdminLevelUpRequest(0);
                     else
                         NetworkManager.Instance.SendAdminLevelUpRequest(level);
-
                 }
+
+                if (s[0] == "/bgm")
+                    AudioManager.Instance.ToggleMute();
             }
             else
             {
@@ -683,6 +701,40 @@ namespace Assets.Scripts
             lastMessage = text;
         }
 
+        public void UpdateWaterTexture()
+        {
+            Camera.depthTextureMode = DepthTextureMode.Depth;
+
+            if (WaterTexture == null)
+            {
+                WaterTexture = new RenderTexture(Screen.width, Screen.height, 8, RenderTextureFormat.Default);
+                WaterDepthTexture = new RenderTexture(Screen.width, Screen.height, 8, RenderTextureFormat.Depth);
+
+                WaterCamera.SetTargetBuffers(WaterTexture.colorBuffer, WaterDepthTexture.depthBuffer);
+
+                Shader.SetGlobalTexture("_WaterDepth", WaterDepthTexture);
+            }
+
+            if (WaterTexture.width != Screen.width || WaterTexture.height != Screen.height)
+            {
+                WaterTexture.Release();
+                WaterDepthTexture.Release();
+
+                WaterTexture = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.Default);
+                WaterDepthTexture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.Depth);
+
+                WaterCamera.SetTargetBuffers(WaterTexture.colorBuffer, WaterDepthTexture.depthBuffer);
+
+                Shader.SetGlobalTexture("_WaterDepth", WaterDepthTexture);
+            }
+        }
+
+        public void OnPostRender()
+        {
+            //WaterCamera.RenderWithShader(WaterDepthShader, "WaterDepth");
+            //WaterCamera.Render();
+        }
+        
         public void Update()
         {
             if (Target == null)
@@ -703,6 +755,8 @@ namespace Assets.Scripts
 
             if (Screen.height != lastHeight)
                 UpdateCameraSize();
+
+            UpdateWaterTexture();
             
             var pointerOverUi = EventSystem.current.IsPointerOverGameObject();
             var inTextBox = EventSystem.current.currentSelectedGameObject != null;
@@ -755,7 +809,7 @@ namespace Assets.Scripts
             if (!inTextBox && Input.GetKeyDown(KeyCode.R))
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Dead)
-                    NetworkManager.Instance.SendRespawn();
+                    NetworkManager.Instance.SendRespawn(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             }
 
             if (!inTextBox && Input.GetKeyDown(KeyCode.Insert))
@@ -764,6 +818,11 @@ namespace Assets.Scripts
                     NetworkManager.Instance.ChangePlayerSitStand(true);
                 if (controllable.SpriteAnimator.State == SpriteState.Sit)
                     NetworkManager.Instance.ChangePlayerSitStand(false);
+            }
+
+            if (!inTextBox && Input.GetKeyDown(KeyCode.M))
+            {
+                AudioManager.Instance.ToggleMute();
             }
 
             //if (Input.GetKeyDown(KeyCode.S))

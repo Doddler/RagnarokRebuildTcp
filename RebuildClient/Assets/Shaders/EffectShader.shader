@@ -72,7 +72,10 @@
 
                 // apply fog
                 //UNITY_APPLY_FOG(i.fogCoord, col);
-                return col * _Color * _Color.a;
+            
+            float4 c = _Color * float4(0.5, 0.5, 0.5, 0.5);
+
+                return col * c * _Color.a;
             }
             ENDCG
         }

@@ -310,14 +310,22 @@ namespace RoRebuildServer.Networking
 			NetworkManager.SendMessage(packet, p.Connection);
 		}
 
-		public static void SendPlayerDeath(WorldObject c)
-		{
-			var packet = NetworkManager.StartPacket(PacketType.Death, 16);
-			packet.Write(c.Id);
-			packet.Write(c.Position);
+        public static void SendPlayerDeath(WorldObject c)
+        {
+            var packet = NetworkManager.StartPacket(PacketType.Death, 16);
+            packet.Write(c.Id);
+            packet.Write(c.Position);
 
-			NetworkManager.SendMessageMulti(packet, recipients);
+            NetworkManager.SendMessageMulti(packet, recipients);
 		}
+        public static void SendPlayerResurrection(WorldObject c)
+        {
+            var packet = NetworkManager.StartPacket(PacketType.Resurrection, 16);
+            packet.Write(c.Id);
+            packet.Write(c.Position);
+
+            NetworkManager.SendMessageMulti(packet, recipients);
+        }
 
 		public static void SendHitMulti(WorldObject c, float delayTime, int damage)
 		{

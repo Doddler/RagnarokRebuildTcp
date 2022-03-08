@@ -64,7 +64,7 @@ public class NpcInteractionState
 
     public void MoveTo(string mapName, int x, int y, int width, int height)
     {
-        ServerLogger.Log("Warp to " + mapName);
+        //ServerLogger.Log("Warp to " + mapName);
         if (Player == null)
             return;
 
@@ -73,6 +73,8 @@ public class NpcInteractionState
 
         if (ch.Map == null)
             return;
+
+        ServerLogger.Log($"Moving player {Player.Name} via npc or warp to map {mapName} {x},{y}");
 
         if (!Player.WarpPlayer(mapName, x, y, 1, 1, false))
             ServerLogger.LogWarning($"Failed to move player to {mapName}!");
@@ -103,10 +105,11 @@ public class NpcInteractionState
 
     public int DeterministicRandom(int seed, int max)
     {
-        var calcBase = (DateTime.Now.ToFileTimeUtc() / 86400) * 100 + seed;
+        var calcBase = (DateTime.Today.ToFileTimeUtc() / 86400) * 100 + seed;
 
         var step1 = (calcBase << 11) ^ calcBase;
         var step2 = (step1.RotateRight(8)) ^ step1;
+        step2 = Math.Abs(step2);
 
         return (int)(step2 % max);
     }

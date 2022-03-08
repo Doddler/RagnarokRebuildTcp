@@ -122,8 +122,14 @@ public class NetworkManager
         {
             if (PacketHandlers[i] == null)
             {
+                var type = typeof(PacketType);
+                var ptype = (PacketType)i;
+                var member = type.GetMember(ptype.ToString());
 
-                ServerLogger.Debug($"No packet handler for packet type PacketType.{(PacketType)i} exists.");
+                //only complain about packets not marked with ServerOnlyPacket
+                if(member[0].GetCustomAttribute<ServerOnlyPacketAttribute>() == null)
+                    ServerLogger.Debug($"No packet handler for packet type PacketType.{(PacketType)i} exists.");
+
                 PacketHandlers[i] = PacketHandlers[(int)PacketType.UnhandledPacket];
             }
         }
@@ -199,10 +205,10 @@ public class NetworkManager
         {
             if (connection.Entity.IsAlive())
             {
-                var player = connection.Entity.Get<Player>();
-                var combatEntity = connection.Entity.Get<CombatEntity>();
+                //var player = connection.Entity.Get<Player>();
+                //var combatEntity = connection.Entity.Get<CombatEntity>();
 
-                connection.Character.Map?.RemoveEntity(ref connection.Entity, CharacterRemovalReason.Disconnect, true);
+                //connection.Character.Map?.RemoveEntity(ref connection.Entity, CharacterRemovalReason.Disconnect, true);
 
                 //connection.ClientConnection.Disconnect("Thanks for playing!");
 
@@ -337,9 +343,9 @@ public class NetworkManager
         var type = (PacketType)msg.ReadByte();
 #if DEBUG
         if (ConnectionLookup.TryGetValue(msg.Client.Socket, out var connection) && connection.Entity.IsAlive())
-            ServerLogger.Debug($"Received message of type: {System.Enum.GetName(typeof(PacketType), type)} from entity {connection.Entity}.");
+            ServerLogger.LogVerbose($"Received message of type: {System.Enum.GetName(typeof(PacketType), type)} from entity {connection.Entity}.");
         else
-            ServerLogger.Debug($"Received message of type: {System.Enum.GetName(typeof(PacketType), type)} from entity-less connection.");
+            ServerLogger.LogVerbose($"Received message of type: {System.Enum.GetName(typeof(PacketType), type)} from entity-less connection.");
 
         LastPacketType = type;
 

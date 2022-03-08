@@ -15,7 +15,13 @@ Geffen Field 12,gef_fild12,gef_fild12.walk,64.mp3
 Geffen Field 13,gef_fild13,gef_fild13.walk,66.mp3
 Geffen Field 14,gef_fild14,gef_fild14.walk,64.mp3
 Geffen,geffen,geffen.walk,13.mp3
+Geffen Indoors,geffen_in,geffen_in.walk,13.mp3
+Geffen Tower,gef_tower,gef_tower.walk,13.mp3
+Geffen Dungeon 1F,gef_dun00,gef_dun00.walk,21.mp3
+Geffen Dungeon 2F,gef_dun01,gef_dun01.walk,21.mp3
+Geffenia,gef_dun02,gef_dun02.walk,50.mp3
 Izlude,izlude,izlude.walk,26.mp3
+Izlude Indoors,izlude_in,izlude_in.walk,26.mp3
 Juperos 1F,juperos_01,juperos_01.walk,89.mp3
 Mt. Mjolnir 1,mjolnir_01,mjolnir_01.walk,31.mp3
 Mt. Mjolnir 2,mjolnir_02,mjolnir_02.walk,33.mp3
@@ -49,7 +55,23 @@ Morroc Field 17,moc_fild17,moc_fild17.walk,37.mp3
 Morroc Field 18,moc_fild18,moc_fild18.walk,37.mp3
 Morroc Field 19,moc_fild19,moc_fild19.walk,37.mp3
 Morroc,morocc,morocc.walk,11.mp3
+Morroc Castle,moc_castle,moc_castle.walk,11.mp3
+Morroc Indoors,morocc_in,morocc_in.walk,11.mp3
 Morroc Pyramids,moc_ruins,moc_ruins.walk,
+Pyramids 1F,moc_pryd01,moc_pryd01.walk,22.mp3
+Pyramids 2F,moc_pryd02,moc_pryd02.walk,22.mp3
+Pyramids 3F,moc_pryd03,moc_pryd03.walk,22.mp3
+Pyramids 4F,moc_pryd04,moc_pryd04.walk,22.mp3
+Pyramids Passageway,moc_prydb1,moc_prydb1.walk,22.mp3
+Pyramids B1F,moc_pryd05,moc_pryd05.walk,22.mp3
+Pyramids B2F,moc_pryd06,moc_pryd06.walk,22.mp3
+Sphinx B1F,in_sphinx1,in_sphinx1.walk,38.mp3
+Sphinx B2F,in_sphinx2,in_sphinx2.walk,38.mp3
+Sphinx B3F,in_sphinx3,in_sphinx3.walk,38.mp3
+Sphinx B4F,in_sphinx4,in_sphinx4.walk,38.mp3
+Sphinx B5F,in_sphinx5,in_sphinx5.walk,38.mp3
+Ant Hell 1F,anthell01,anthell01.walk,46.mp3
+Ant Hell 2F,anthell02,anthell02.walk,46.mp3
 Payon Field 1,pay_fild01,pay_fild01.walk,03.mp3
 Payon Field 2,pay_fild02,pay_fild02.walk,03.mp3
 Payon Field 3,pay_fild03,pay_fild03.walk,03.mp3
@@ -62,8 +84,16 @@ Payon Field 9,pay_fild09,pay_fild09.walk,36.mp3
 Payon Field 10,pay_fild10,pay_fild10.walk,36.mp3
 Payon Field 11,pay_fild11,pay_fild11.walk,03.mp3
 Payon,payon,payon.walk,14.mp3
+Payon Indoors,payon_in01,payon_in01.walk,14.mp3
+Payon Indoors,payon_in02,payon_in02.walk,14.mp3
+Payon Indoors,payon_in03,payon_in03.walk,14.mp3
 Payon Archer Village,pay_arche,pay_arche.walk,14.mp3
 Payon Guild Castles,pay_gld,pay_gld.walk,66.mp3
+Payon Dungeon 1F,pay_dun00,pay_dun00.walk,20.mp3
+Payon Dungeon 2F,pay_dun01,pay_dun01.walk,20.mp3
+Payon Dungeon 3F,pay_dun02,pay_dun02.walk,20.mp3
+Payon Dungeon 4F,pay_dun03,pay_dun03.walk,47.mp3
+Payon Dungeon 5F,pay_dun04,pay_dun04.walk,47.mp3
 Prontera,prontera,prontera.walk,08.mp3
 Prontera Indoors,prt_in,prt_in.walk,08.mp3
 Prontera Castle,prt_castle,prt_castle.walk,09.mp3
@@ -85,20 +115,10 @@ Forest Labyrinth 2F,prt_maze02,prt_maze02.walk,16.mp3
 Forest Labyrinth 3F,prt_maze03,prt_maze03.walk,16.mp3
 Prontera Culverts B1F,prt_sewb1,prt_sewb1.walk,19.mp3
 Alberta,alberta,alberta.walk,15.mp3
-Pyramids 1F,moc_pryd01,moc_pryd01.walk,22.mp3
-Pyramids 2F,moc_pryd02,moc_pryd02.walk,22.mp3
-Pyramids 3F,moc_pryd03,moc_pryd03.walk,22.mp3
-Pyramids 4F,moc_pryd04,moc_pryd04.walk,22.mp3
-Pyramids Passageway,moc_prydb1,moc_prydb1.walk,22.mp3
-Pyramids B1F,moc_pryd05,moc_pryd05.walk,22.mp3
-Pyramids B2F,moc_pryd06,moc_pryd06.walk,22.mp3
+Alberta Indoors,alberta_in,alberta_in.walk,15.mp3
 Aldebaran,aldebaran,aldebaran.walk,39.mp3
+Aldebaran Indoors,aldeba_in,aldeba_in.walk,39.mp3
 Arena Room,2009rwc_03,2009rwc_03.walk,
-Payon Dungeon 1F,pay_dun00,pay_dun00.walk,20.mp3
-Payon Dungeon 2F,pay_dun01,pay_dun01.walk,20.mp3
-Payon Dungeon 3F,pay_dun02,pay_dun02.walk,20.mp3
-Payon Dungeon 4F,pay_dun03,pay_dun03.walk,47.mp3
-Payon Dungeon 5F,pay_dun04,pay_dun04.walk,47.mp3
 Clock Tower B1f,alde_dun01,alde_dun01.walk,61.mp3
 Clock Tower B2f,alde_dun02,alde_dun02.walk,61.mp3
 Clock Tower B3f,alde_dun03,alde_dun03.walk,61.mp3
@@ -107,3 +127,4 @@ Clock Tower 1f,c_tower1,c_tower1.walk,60.mp3
 Clock Tower 2f,c_tower2,c_tower2.walk,60.mp3
 Clock Tower 3f,c_tower3,c_tower3.walk,60.mp3
 Clock Tower 4f,c_tower4,c_tower4.walk,60.mp3
+Valkyrie Realm,prt_gld,prt_gld.walk,66.mp3

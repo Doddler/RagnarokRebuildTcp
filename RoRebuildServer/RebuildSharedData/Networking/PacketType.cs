@@ -1,23 +1,27 @@
 ﻿namespace RebuildSharedData.Networking;
 
+public class ServerOnlyPacketAttribute : Attribute
+{
+
+}
+
 public enum PacketType : byte
 {
-    ConnectionApproved,
-    ConnectionDenied,
+    [ServerOnlyPacket] ConnectionApproved,
+    [ServerOnlyPacket] ConnectionDenied,
     PlayerReady,
     EnterServer,
-    EnterServerSpecificMap,
     Ping,
     CreateEntity,
     StartMove,
-    Move,
+    [ServerOnlyPacket] Move,
     Attack,
     LookTowards,
     SitStand,
-    RemoveEntity,
-    RemoveAllEntities,
+    [ServerOnlyPacket] RemoveEntity,
+    [ServerOnlyPacket] RemoveAllEntities,
     Disconnect,
-    ChangeMaps,
+    [ServerOnlyPacket] ChangeMaps,
     StopAction,
     StopImmediate,
     RandomTeleport,
@@ -25,23 +29,26 @@ public enum PacketType : byte
     HitTarget,
     Skill,
     ChangeTarget,
-    GainExp,
-    LevelUp,
-    Death,
-    HpRecovery,
+    [ServerOnlyPacket] GainExp,
+    [ServerOnlyPacket] LevelUp,
+    [ServerOnlyPacket] Death,
+    [ServerOnlyPacket] HpRecovery,
     Respawn,
-    RequestFailed,
-    Targeted,
+    [ServerOnlyPacket] RequestFailed,
+    [ServerOnlyPacket] Targeted,
     Say,
     ChangeName,
+    [ServerOnlyPacket] Resurrection,
 
     AdminRequestMove,
     AdminLevelUp,
+    AdminEnterServerSpecificMap,
 
     NpcClick,
     NpcShowSprite,
     NpcDialog,
     NpcOption,
     NpcAdvance,
-    NpcSelectOption
+    NpcSelectOption,
+    
 }

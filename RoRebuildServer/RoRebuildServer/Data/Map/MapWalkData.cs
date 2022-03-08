@@ -70,6 +70,9 @@ public class MapWalkData
 
         do
         {
+            if(area.MaxX < area.MinX || area.MaxY < area.MinY)
+                ServerLogger.LogError("WAAAA");
+
             p = new Position(GameRandom.Next(area.MinX, area.MaxX), GameRandom.Next(area.MinY, area.MaxY));
             if (attempt > maxAttempts)
                 return false;

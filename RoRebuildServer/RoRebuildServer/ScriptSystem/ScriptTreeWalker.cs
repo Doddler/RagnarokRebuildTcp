@@ -410,7 +410,7 @@ internal class ScriptTreeWalker
             case LogicalAndContext logicalAndContext: VisitOperator(logicalAndContext.left, logicalAndContext.right, logicalAndContext.type.Text); break;
             case ComparisonContext comparisonContext: VisitOperator(comparisonContext.left, comparisonContext.right, comparisonContext.comparison_operator().GetText()); break;
             case ExpressionEntityContext entityContext: VisitEntity(entityContext.entity()); break;
-            case FunctionCallContext functionCallContext: VisitFunctionCall(functionCallContext); break;
+            case FunctionCallExpressionContext functionCallContext: VisitFunctionCall((FunctionCallContext)functionCallContext.function()); break;
             case AreaTypeContext areaTypeContext: VisitAreaType(areaTypeContext); break;
             case VarDeclarationContext varDeclarationContext: VisitVarDeclaration(varDeclarationContext); break;
             case LocalDeclarationContext context: VisitLocalDeclaration(context); break;
@@ -470,32 +470,45 @@ internal class ScriptTreeWalker
         builder.OutputRaw(")");
     }
 
-    private void VisitFunctionCall(FunctionCallContext functionContext)
+
+    private void VisitFunctionCall(FunctionCallContext functionContext, bool isChained = false)
     {
-        var id = functionContext.IDENTIFIER().GetText();
-        var fparam = functionContext.functionparam();
-
-        builder.FunctionCall(id);
-
-        if (fparam != null)
+        while (true)
         {
-            var p = fparam.expression();
+            var id = functionContext.IDENTIFIER().GetText();
+            var fparam = functionContext.functionparam();
 
-            var pos = 0;
+            builder.FunctionCall(id, isChained);
 
-            foreach (var t in p)
+            if (fparam != null)
             {
-                if (pos > 0)
-                    builder.AddComma();
+                var p = fparam.expression();
 
-                VisitExpression(t);
+                var pos = 0;
 
-                pos++;
+                foreach (var t in p)
+                {
+                    if (pos > 0) builder.AddComma();
+
+                    VisitExpression(t);
+
+                    pos++;
+                }
             }
 
-        }
+            builder.FunctionCallEnd();
 
-        builder.FunctionCallEnd();
+            var dotFunction = functionContext.function();
+
+            if (dotFunction != null)
+            {
+                functionContext = (FunctionCallContext)dotFunction;
+                isChained = true;
+                continue;
+            }
+
+            break;
+        }
     }
 
     public void VisitLocalDeclaration(LocalDeclarationContext localDeclarationContext)

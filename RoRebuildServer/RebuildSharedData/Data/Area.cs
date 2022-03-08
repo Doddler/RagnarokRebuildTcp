@@ -20,6 +20,8 @@ public struct Area
     public int MidX => MinX + (MaxX - MinX) / 2;
     public int MidY => MinY + (MaxY - MinY) / 2;
 
+    public int Size => Width * Height;
+
     //public static Area AreaAroundPoint(int x, int y, int w, int h) => new Area(x - w, y - h, x + w, y + h);
 
     public Area(int minX, int minY, int maxX, int maxY)
@@ -92,6 +94,11 @@ public struct Area
             MaxX = clippingArea.MaxX;
         if (MaxY > clippingArea.MaxY)
             MaxY = clippingArea.MaxY;
+
+        if (MinX > MaxX)
+            MaxX = MinX;
+        if(MinY > MaxY)
+            MaxY = MinY;
 			
         return this;
     }
@@ -142,5 +149,15 @@ public struct Area
     public override string ToString()
     {
         return $"{MinX.ToString()}/{MinY.ToString()}/{MaxX.ToString()}/{MaxY.ToString()}";
+    }
+
+    public static bool operator ==(Area left, Area right)
+    {
+        return left.MinX == right.MinX && left.MaxX == right.MaxX && left.MinY == right.MinY && left.MaxY == right.MaxY;
+    }
+
+    public static bool operator !=(Area left, Area right)
+    {
+        return !(left == right);
     }
 }

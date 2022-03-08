@@ -120,7 +120,7 @@ namespace Assets.Scripts.Sprites
 			return mesh;
 		}
 
-		public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex, int currentFrame)
+		public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex, int currentFrame, float alpha = 1)
 		{
 			var frame = spriteData.Actions[currentActionIndex + currentAngleIndex].Frames[currentFrame];
 
@@ -158,7 +158,10 @@ namespace Assets.Scripts.Sprites
 					var v = rotation * (verts[j] * scale);
 					outVertices.Add(v + new Vector3(layer.Position.x - offsetX, -(layer.Position.y) + offsetY) / 50f);
 					outUvs.Add(uvs[j]);
-					outColors.Add(layer.Color);
+
+                    var c = new Color(layer.Color.r, layer.Color.g, layer.Color.b, layer.Color.a * alpha);
+
+					outColors.Add(c);
 					outNormals.Add(new Vector3(0, 0, -1));
 				}
 

@@ -46,7 +46,6 @@ fixed4 Billboard2(float4 pos, float offset)
 		view.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate;
 	#endif
 
-
 	return view;
 
 	//return mul(UNITY_MATRIX_P, view);

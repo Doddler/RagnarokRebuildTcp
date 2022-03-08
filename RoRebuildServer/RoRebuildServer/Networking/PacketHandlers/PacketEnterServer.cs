@@ -15,8 +15,8 @@ public class PacketEnterServer : IClientPacketHandler
         if (connection.Character != null)
             return;
 
-        //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prt_fild08", Area.CreateAroundPoint(new Position(170, 367), 5));
-        var playerEntity = NetworkManager.World.CreatePlayer(connection, "prontera", Area.CreateAroundPoint(new Position(248, 42), 5));
+        var playerEntity = NetworkManager.World.CreatePlayer(connection, "prt_fild08", Area.CreateAroundPoint(new Position(170, 367), 5));
+        //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prontera", Area.CreateAroundPoint(new Position(248, 42), 5));
         connection.Entity = playerEntity;
         connection.LastKeepAlive = Time.ElapsedTime;
         connection.Character = playerEntity.Get<WorldObject>();

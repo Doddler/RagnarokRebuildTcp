@@ -89,6 +89,10 @@ namespace Assets.Scripts.Sprites
         private bool isDirty;
 
         private Material mat;
+        private Material mat2;
+        private Material[] materialArray;
+
+        public Color CurrentColor => mat.color;
 
         //private float deadResetTime = 0;
 
@@ -196,16 +200,34 @@ namespace Assets.Scripts.Sprites
                 Debug.LogError("Could not find shader Unlit/TestSpriteShader");
 
             mat = new Material(shader);
+            mat.renderQueue -= 2;
+            mat.EnableKeyword("WATER_BELOW");
             mat.mainTexture = SpriteData.Atlas;
-
-            SpriteData.Atlas.filterMode = !nextUseSmoothRender ? FilterMode.Bilinear : FilterMode.Point;
-
+            
             if (Mathf.Approximately(0, SpriteOffset))
                 mat.SetFloat("_Offset", SpriteData.Size / 125f);
             else
                 mat.SetFloat("_Offset", SpriteOffset);
 
-            MeshRenderer.material = mat;
+            materialArray = new Material[2];
+            
+            materialArray[0] = mat;
+
+            mat2 = new Material(shader);
+            mat2.EnableKeyword("WATER_ABOVE");
+            mat2.mainTexture = SpriteData.Atlas;
+
+            if (Mathf.Approximately(0, SpriteOffset))
+                mat2.SetFloat("_Offset", SpriteData.Size / 125f);
+            else
+                mat2.SetFloat("_Offset", SpriteOffset);
+
+            materialArray[1] = mat2;
+
+            MeshRenderer.sharedMaterials = materialArray;
+
+            SpriteData.Atlas.filterMode = !nextUseSmoothRender ? FilterMode.Bilinear : FilterMode.Point;
+
 
             if (Parent != null)
                 mat.SetFloat("_Offset", Parent.SpriteData.Size / 125f);
@@ -251,7 +273,7 @@ namespace Assets.Scripts.Sprites
 
             isDirty = true;
         }
-
+        
         private Mesh GetColliderForFrame()
         {
             var id = ((currentActionIndex + currentAngleIndex) << 8) + currentFrame;
@@ -268,9 +290,14 @@ namespace Assets.Scripts.Sprites
             return newMesh;
         }
 
-        private Mesh GetMeshForFrame()
+        public Mesh GetMeshForFrame()
         {
             var id = ((currentActionIndex + currentAngleIndex) << 8) + currentFrame;
+
+            if (meshCache == null)
+            {
+                Debug.Log("Meshcache is not initialized! But how? isInitialized status is " + isInitialized);
+            }
 
             if (meshCache.TryGetValue(id, out var mesh))
                 return mesh;
@@ -518,12 +545,13 @@ namespace Assets.Scripts.Sprites
             else
                 TargetShade = 1f;
         }
-
+        
         public void UpdateColor()
         {
             var c = new Color(Color.r * CurrentShade, Color.g * CurrentShade, Color.b * CurrentShade, Alpha);
 
             mat.color = c;
+            mat2.color = c;
         }
 
         public void UpdateChildColor()
@@ -531,6 +559,7 @@ namespace Assets.Scripts.Sprites
             var c = new Color(Parent.Color.r * Parent.CurrentShade, Parent.Color.g * Parent.CurrentShade, Parent.Color.b * Parent.CurrentShade, Parent.Alpha);
 
             mat.color = c;
+            mat2.color = c;
         }
 
         public void LateUpdate()
@@ -559,7 +588,19 @@ namespace Assets.Scripts.Sprites
             //SortingGroup.sortingOrder = sortLayerNum;
             //if (ShadowSortingGroup != null)
             //	ShadowSortingGroup.sortingOrder = -20001;
+
+
+            //trailCountdown -= Time.deltaTime;
+            //if (trailCountdown < 0)
+            //{
+            //    trailCountdown += 0.1f;
+            //    if (trailCountdown < 0)
+            //        trailCountdown = 0;
+            //    SpriteDataLoader.Instance.CloneObjectForTrail(this);
+            //}
         }
+
+        private float trailCountdown = 0.1f;
 
         public void Update()
         {
@@ -580,6 +621,7 @@ namespace Assets.Scripts.Sprites
 
             if (Parent != null)
                 return;
+
 
             UpdateShade();
             CurrentShade = Mathf.Lerp(CurrentShade, TargetShade, Time.deltaTime * 10f);

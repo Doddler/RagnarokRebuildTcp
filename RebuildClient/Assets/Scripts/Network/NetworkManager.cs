@@ -251,7 +251,7 @@ namespace Assets.Scripts.Network
                     Hp = hp,
                 };
 
-                if(id == PlayerId)
+                if (id == PlayerId)
                     CameraFollower.UpdatePlayerHP(hp, maxHp);
 
                 controllable = SpriteDataLoader.Instance.InstantiatePlayer(ref playerData);
@@ -648,7 +648,7 @@ namespace Assets.Scripts.Network
             var di = go.GetComponent<DamageIndicator>();
             var height = 72f / 50f;
 
-            if(controllable.SpriteAnimator != null)
+            if (controllable.SpriteAnimator != null)
                 height = controllable.SpriteAnimator.SpriteData.Size / 50f;
 
             di.DoDamage($"<color=yellow>+{exp} Exp", controllable.gameObject.transform.localPosition, height, Direction.None, false, false);
@@ -673,6 +673,27 @@ namespace Assets.Scripts.Network
             controllable.Level = lvl;
         }
 
+
+        public void OnMessageResurrection(ClientInboundMessage msg)
+        {
+            var id = msg.ReadInt32();
+            var pos = ReadPosition(msg);
+
+            if (!entityList.TryGetValue(id, out var controllable))
+            {
+                //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
+                return;
+            }
+
+            var go = GameObject.Instantiate(CameraFollower.ResurrectPrefab);
+            go.transform.SetParent(controllable.transform, true);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+
+            controllable.SpriteAnimator.State = SpriteState.Idle;
+            controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Idle, true);
+        }
+
         public void OnMessageDeath(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -686,9 +707,20 @@ namespace Assets.Scripts.Network
 
             Debug.Log($"{controllable.Name} is dead!");
 
+            if (id == PlayerId)
+                CameraFollower.AppendChatText("You have died! Press R key to respawn, or press shift + R to resurrect in place.");
+
             controllable.StopImmediate(pos);
             controllable.SpriteAnimator.State = SpriteState.Dead;
             controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
+
+            if (id == PlayerId)
+            {
+                var go = GameObject.Instantiate(CameraFollower.DeathPrefab);
+                go.transform.SetParent(controllable.transform, true);
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localRotation = Quaternion.identity;
+            }
         }
 
         public void OnMessageHpRecovery(ClientInboundMessage msg)
@@ -736,7 +768,7 @@ namespace Assets.Scripts.Network
                 CameraFollower.AppendChatText("Unknown: " + text);
                 return;
             }
-            controllable.DialogBox(text);
+            controllable.DialogBox(controllable.Name + ": " + text);
 
             CameraFollower.AppendChatText(controllable.Name + ": " + text);
         }
@@ -835,6 +867,9 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.LevelUp:
                     OnMessageLevelUp(msg);
+                    break;
+                case PacketType.Resurrection:
+                    OnMessageResurrection(msg);
                     break;
                 case PacketType.Death:
                     OnMessageDeath(msg);
@@ -975,11 +1010,12 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendRespawn()
+        public void SendRespawn(bool inPlace)
         {
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.Respawn);
+            msg.Write((byte)(inPlace ? 1 : 0));
 
             SendMessage(msg);
         }
@@ -1050,7 +1086,7 @@ namespace Assets.Scripts.Network
 #if DEBUG
                 if (!string.IsNullOrWhiteSpace(SpawnMap))
                 {
-                    msg.Write((byte)PacketType.EnterServerSpecificMap);
+                    msg.Write((byte)PacketType.AdminEnterServerSpecificMap);
                     msg.Write(SpawnMap);
 
                     var prefx = PlayerPrefs.GetInt("DebugStartX", -1);

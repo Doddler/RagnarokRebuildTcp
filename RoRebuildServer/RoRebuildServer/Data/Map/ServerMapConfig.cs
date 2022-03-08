@@ -23,41 +23,50 @@ public class ServerMapConfig
     {
 
     }
+    
+    public void ApplySpawnsToMap()
+    {
+        for (var i = 0; i < SpawnRules.Count; i++)
+        {
+            var spawn = SpawnRules[i];
 
-    public int CreateSpawn(string mobName, int count, Area area, int respawn = 0, int respawn2 = 0)
+            for (var j = 0; j < spawn.Count; j++)
+            {
+                Map.World.CreateMonster(Map, spawn.MonsterDatabaseInfo, spawn.SpawnArea, spawn);
+            }
+        }
+    }
+
+    public MapSpawnRule? CreateSpawn(string mobName, int count, Area area, int respawn = 0, int respawn2 = 0)
     {
         if (!DataManager.MonsterCodeLookup.TryGetValue(mobName.Replace(" ", "_").ToUpper(), out var mobStats))
         {
             ServerLogger.LogError($"Could not spawn monster with name of '{mobName}', name not found.");
-            return -1;
+            return null;
         }
 
-        var spawn = new MapSpawnRule(mobStats, area, count, respawn, respawn + respawn2);
+        area = area.ClipArea(Map.MapBounds);
+
+        var spawn = new MapSpawnRule(SpawnRules.Count, mobStats, area, count, respawn, respawn + respawn2);
         SpawnRules.Add(spawn);
-
-        for (var i = 0; i < count; i++)
-            Map.World.CreateMonster(Map, mobStats, 0, 0, 0, 0, spawn);
-
+        
         //Console.WriteLine(mobName + "  BBB");
-        return SpawnRules.Count - 1;
+        return spawn;
     }
 
-    public int CreateSpawn(string mobName, int count, int respawn = 0, int variance = 0)
+    public MapSpawnRule? CreateSpawn(string mobName, int count, int respawn = 0, int variance = 0)
     {
         if (!DataManager.MonsterCodeLookup.TryGetValue(mobName.ToUpper(), out var mobStats))
         {
             ServerLogger.LogError($"Could not spawn monster with name of '{mobName}', name not found.");
-            return -1;
+            return null;
         }
 
-        var spawn = new MapSpawnRule(mobStats, count, respawn, respawn + variance);
+        var spawn = new MapSpawnRule(SpawnRules.Count, mobStats, count, respawn, respawn + variance);
         SpawnRules.Add(spawn);
-
-        for(var i = 0; i < count; i++)
-            Map.World.CreateMonster(Map, mobStats, 0, 0, 0, 0, spawn);
-
+        
         //Console.WriteLine(mobName + "  BBB");
-        return SpawnRules.Count - 1;
+        return spawn;
     }
     
 }

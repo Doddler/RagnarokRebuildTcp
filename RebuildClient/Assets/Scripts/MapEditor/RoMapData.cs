@@ -107,6 +107,19 @@ namespace Assets.Scripts.MapEditor
         }
     }
 
+    [Serializable]
+    public class MapWater
+    {
+        public float Level;
+        public int Type;
+        public float WaveHeight;
+        public float WaveSpeed;
+        public float WavePitch;
+        public int AnimSpeed;
+        public Texture2D[] Images;
+
+    }
+
     public class MapDataContainer : ScriptableObject
     {
         public Cell[] CellData;
@@ -153,7 +166,9 @@ namespace Assets.Scripts.MapEditor
         public bool IsWalkTable;
         public RoMapData WalkData;
         public RagnarokWalkData WalkCellData;
-        
+
+        public MapWater Water;
+
         private Dictionary<string, int> TextureLookup = new Dictionary<string, int>();
         private RoMapChangeTracker ChangeTracker = new RoMapChangeTracker();
 

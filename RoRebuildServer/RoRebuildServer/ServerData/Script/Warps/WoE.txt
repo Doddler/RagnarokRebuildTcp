@@ -1,0 +1,2 @@
+Warp("prt_gld", "pronteraguildwarp004", 159, 25, 3, 2, "prt_castle", 102, 178);
+Warp("prt_gld", "pronteraguildwarp005", 159, 298, 3, 2, "prt_fild01", 199, 30);

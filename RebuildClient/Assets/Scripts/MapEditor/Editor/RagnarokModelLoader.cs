@@ -101,7 +101,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				node.Faces.Add(face);
 			}
 
-			if (model.Version >= 15)
+			if (model.Version > 15)
 			{
 				var posKeyFrames = br.ReadInt32();
 				for (var i = 0; i < posKeyFrames; i++)
@@ -425,89 +425,105 @@ namespace Assets.Scripts.MapEditor.Editor
 			fs = new FileStream(filename, FileMode.Open);
 			br = new BinaryReader(fs);
 
-			var header = new string(br.ReadChars(4));
-			if (header != "GRSM")
-				throw new Exception("Not model file");
+            try
+            {
 
-			model = new RsmModel();
+                var header = new string(br.ReadChars(4));
+                if (header != "GRSM")
+                    throw new Exception("Not model file");
 
-			model.Name = baseName;
+                model = new RsmModel();
 
-			var majorVersion = br.ReadByte();
-			var minorVersion = br.ReadByte();
-			model.Version = majorVersion * 10 + minorVersion;
+                model.Name = baseName;
 
-			var animLen = br.ReadInt32();
-			model.ShadingType = (RsmShadingType)br.ReadInt32();
+                var majorVersion = br.ReadByte();
+                var minorVersion = br.ReadByte();
+                model.Version = majorVersion * 10 + minorVersion;
 
-			model.Alpha = 1f;
-			if (model.Version >= 14)
-				model.Alpha = br.ReadByte() / 255f;
+                var animLen = br.ReadInt32();
+                model.ShadingType = (RsmShadingType)br.ReadInt32();
 
-			fs.Seek(16, SeekOrigin.Current);
+                model.Alpha = 1f;
+                if (model.Version >= 14)
+                    model.Alpha = br.ReadByte() / 255f;
 
-			LoadTextures(savePath);
+                fs.Seek(16, SeekOrigin.Current);
 
-			model.Name = br.ReadKoreanString(40);
+                LoadTextures(savePath);
 
-			var nodeCount = br.ReadInt32();
+                model.Name = br.ReadKoreanString(40);
 
-			model.RsmNodes = new List<RsmNode>();
+                var nodeCount = br.ReadInt32();
 
-			for (var i = 0; i < nodeCount; i++)
-			{
-				var node = LoadNode();
-				model.RsmNodes.Add(node);
-				if (node.Name == model.Name)
-					model.RootNode = node;
+                model.RsmNodes = new List<RsmNode>();
+
+                for (var i = 0; i < nodeCount; i++)
+                {
+                    var node = LoadNode();
+                    model.RsmNodes.Add(node);
+                    if (node.Name == model.Name)
+                        model.RootNode = node;
+                }
+
+                if (model.RootNode == null)
+                    model.RootNode = model.RsmNodes[0];
+
+                if (model.Version <= 15)
+                {
+                    var posKeyFrames = br.ReadInt32();
+
+                    for (var i = 0; i < posKeyFrames; i++)
+                    {
+                        model.PosKeyFrames.Add(new RsmPosKeyframe()
+                            { Frame = br.ReadInt32(), Position = br.ReadRoPosition() });
+                    }
+                }
+
+                var volumeBoxes = br.ReadInt32();
+                for (var i = 0; i < volumeBoxes; i++)
+                {
+                    model.VolumeBoxes.Add(new RsmVolumeBox
+                    {
+                        Scale = br.ReadVector3(), Position = br.ReadRoPosition(), Rotation = br.ReadVector3(),
+                        Flag = (model.Version >= 13 ? br.ReadInt32() : 0)
+                    });
+                }
+
+                for (var i = 0; i < model.RsmNodes.Count; i++)
+                {
+                    var node = model.RsmNodes[i];
+                    if (string.IsNullOrWhiteSpace(node.ParentName) || node.ParentName == node.Name)
+                        continue;
+
+                    var parent = model.RsmNodes.FirstOrDefault(n => n.Name == node.ParentName);
+                    if (parent != null)
+                    {
+                        parent.Children.Add(node);
+                        node.Parent = parent;
+                    }
+                }
+
+                if (model.PosKeyFrames.Count > 0)
+                {
+                    EditorApplication.Beep();
+                    Debug.LogWarning("POSITIONAL KEYFRAMES");
+                }
+
+
+                //var jsonData = SerializationUtility.SerializeValue(model, DataFormat.JSON);
+                //File.WriteAllBytes(@"G:\Projects2\test.txt", jsonData);
+
+                //Debug.Log("Done!");
+            }
+            catch (Exception e)
+            {
+				Debug.LogError($"Could not load model {Path.GetFileName(filename)} due to exception: {e}");
+                throw;
+            }
+            finally
+            {
+                fs.Close();
 			}
-
-			if (model.RootNode == null)
-				model.RootNode = model.RsmNodes[0];
-
-			if (model.Version >= 15)
-			{
-				var posKeyFrames = br.ReadInt32();
-
-				for (var i = 0; i < posKeyFrames; i++)
-				{
-					model.PosKeyFrames.Add(new RsmPosKeyframe() { Frame = br.ReadInt32(), Position = br.ReadRoPosition() });
-				}
-			}
-
-			var volumeBoxes = br.ReadInt32();
-			for (var i = 0; i < volumeBoxes; i++)
-			{
-				model.VolumeBoxes.Add(new RsmVolumeBox { Scale = br.ReadVector3(), Position = br.ReadRoPosition(), Rotation = br.ReadVector3(), Flag = (model.Version >= 13 ? br.ReadInt32() : 0) });
-			}
-
-			for (var i = 0; i < model.RsmNodes.Count; i++)
-			{
-				var node = model.RsmNodes[i];
-				if (string.IsNullOrWhiteSpace(node.ParentName) || node.ParentName == node.Name)
-					continue;
-
-				var parent = model.RsmNodes.FirstOrDefault(n => n.Name == node.ParentName);
-				if (parent != null)
-				{
-					parent.Children.Add(node);
-					node.Parent = parent;
-				}
-			}
-
-			if (model.PosKeyFrames.Count > 0)
-			{
-				EditorApplication.Beep();
-				Debug.LogWarning("POSITIONAL KEYFRAMES");
-			}
-
-
-			//var jsonData = SerializationUtility.SerializeValue(model, DataFormat.JSON);
-			//File.WriteAllBytes(@"G:\Projects2\test.txt", jsonData);
-
-			//Debug.Log("Done!");
-
-			fs.Close();
 		}
 
 		public void Dispose()

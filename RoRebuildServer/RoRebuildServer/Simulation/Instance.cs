@@ -30,7 +30,7 @@ public class Instance
                 continue;
                 
             }
-
+            
             var map = new Map(world, this, md.Code, md.WalkData);
             Maps.Add(map);
             MapNameLookup.Add(md.Code, map);

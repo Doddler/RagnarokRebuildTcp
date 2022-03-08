@@ -1,0 +1,20 @@
+
+Warp("izlude_in", "izludewarp001", 63, 165, 1, 1, "izlude_in", 68, 165);
+Warp("izlude_in", "izludewarp002", 65, 84, 5, 2, "izlude", 113, 147);
+Warp("izlude_in", "izludewarp003", 74, 158, 3, 2, "izlude", 52, 136);
+Warp("izlude_in", "izludewarp004", 87, 169, 2, 3, "izlude_in", 111, 169);
+Warp("izlude_in", "izludewarp005", 108, 169, 2, 3, "izlude_in", 84, 169);
+Warp("izlude_in", "izludewarp006", 116, 46, 3, 2, "izlude", 145, 145);
+Warp("izlude_in", "izludewarp007", 148, 127, 2, 5, "izlude", 212, 129);
+Warp("izlude_in", "izludewarp008", 171, 97, 3, 2, "izlude_in", 172, 119);
+Warp("izlude_in", "izludewarp009", 172, 116, 3, 2, "izlude_in", 172, 94);
+Warp("izlude_in", "izludewarp010", 172, 139, 3, 2, "izlude_in", 172, 161);
+Warp("izlude_in", "izludewarp011", 172, 158, 3, 2, "izlude_in", 172, 136);
+Warp("izlude", "izludewarp012", 30, 78, 3, 3, "prt_fild08", 367, 212);
+Warp("izlude", "izludewarp013", 52, 140, 2, 2, "izlude_in", 74, 161);
+Warp("izlude", "izludewarp014", 109, 151, 3, 3, "izlude_in", 65, 87);
+Warp("izlude", "izludewarp015", 128, 226, 2, 2, "arena_room", 100, 30);
+Warp("izlude", "izludewarp016", 148, 148, 2, 2, "izlude_in", 116, 49);
+Warp("izlude", "izludewarp017", 216, 129, 3, 2, "izlude_in", 151, 127);
+Warp("izlude", "izludewarp018", 149, 40, 2, 2, "izlude", 182, 56);
+Warp("izlude", "izludewarp019", 176, 56, 2, 2, "izlude", 145, 40);

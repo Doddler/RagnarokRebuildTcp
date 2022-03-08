@@ -10,6 +10,10 @@ public class Chunk
     public int X;
     public int Y;
     public int WalkableTiles;
+
+    public int MapX => X * 8;
+    public int MapY => Y * 8;
+
     public EntityList AllEntities { get; set; } = new EntityList(32);
     public EntityList Players { get; set; } = new EntityList(16);
     public EntityList Monsters { get; set; } = new EntityList(16);
@@ -43,20 +47,18 @@ public class Chunk
         }
     }
 
-    public void RemoveEntity(ref Entity entity, CharacterType type)
+    public bool RemoveEntity(ref Entity entity, CharacterType type)
     {
         AllEntities.Remove(ref entity);
 
         switch (type)
         {
             case CharacterType.Player:
-                Players.Remove(ref entity);
-                break;
+                return Players.Remove(ref entity);
             case CharacterType.Monster:
-                Monsters.Remove(ref entity);
-                break;
+                return Monsters.Remove(ref entity);
             case CharacterType.NPC:
-                break;
+                return true;
             default:
                 throw new Exception("Unhandled character type: " + type);
         }

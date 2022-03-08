@@ -226,11 +226,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Shared\\RebuildData.Shared.csproj",
+      "projectUniqueName": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Shared\\RebuildData.Shared.csproj",
       "projectName": "RebuildData.Shared",
-      "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Shared\\RebuildData.Shared.csproj",
+      "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Shared\\RebuildData.Shared.csproj",
       "packagesPath": "C:\\Users\\doddl\\.nuget\\packages\\",
-      "outputPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Shared\\obj\\",
+      "outputPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Shared\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -283,7 +283,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

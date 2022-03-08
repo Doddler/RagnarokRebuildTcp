@@ -66,6 +66,9 @@ public class World
         ch.Map?.RemoveEntity(ref entity, reason, true);
         ch.Map?.Instance.RemoveEntity(ref entity);
         ch.IsActive = false;
+        ch.Map = null;
+
+        EntityManager.Recycle(entity);
     }
 
     public void Update()
@@ -193,29 +196,26 @@ public class World
         return e;
     }
 
-    public void CreateMonster(Map map, MonsterDatabaseInfo monsterDef, int x, int y, int width, int height, MapSpawnRule spawnRule)
+    public void CreateMonster(Map map, MonsterDatabaseInfo monsterDef, Area spawnArea, MapSpawnRule spawnRule)
     {
         var e = EntityManager.New(EntityType.Monster);
         var ch = e.Get<WorldObject>();
         var ce = e.Get<CombatEntity>();
         var m = e.Get<Monster>();
-
+        
         Position p;
-        if (width == 0 && height == 0 && x != 0 && y != 0)
+        if (!spawnArea.IsZero && spawnArea.Size <= 1)
         {
-            p = new Position(x, y);
+            p = new Position(spawnArea.MinX, spawnArea.MinY);
         }
         else
         {
-            var area = Area.CreateAroundPoint(new Position(x, y), width, height);
-            area.ClipArea(map.MapBounds);
+            if (spawnArea.IsZero)
+                spawnArea = map.MapBounds;
 
-            if (x == 0 && y == 0 && width == 0 && height == 0)
-                area = map.MapBounds;
-
-            if (!map.FindPositionInRange(area, out p))
+            if (!map.FindPositionInRange(spawnArea, out p))
             {
-                ServerLogger.LogWarning($"Failed to spawn {monsterDef.Name} on map {map.Name}, could not find spawn location around {x},{y}. Spawning randomly on map.");
+                ServerLogger.LogWarning($"Failed to spawn {monsterDef.Name} on map {map.Name}, could not find spawn location around {spawnArea}. Spawning randomly on map.");
                 map.FindPositionInRange(map.MapBounds, out p);
             }
         }
@@ -237,7 +237,7 @@ public class World
 
         ce.Init(ref e, ch);
         m.Initialize(ref e, ch, ce, monsterDef, monsterDef.AiType, spawnRule, map.Name);
-
+        
         map.AddEntity(ref e);
     }
 

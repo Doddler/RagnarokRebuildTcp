@@ -79,6 +79,16 @@ namespace Assets.Scripts.Objects
 			}
 		}
 
+        public void ToggleMute()
+        {
+            if (muteBgm)
+                Mixer.SetFloat("Music", bgmLevel);
+            else
+                Mixer.SetFloat("Music", -80);
+            muteBgm = !muteBgm;
+		}
+
+
 		public void PlayBgm(string name)
 		{
 			AddressableUtility.Load<AudioClip>(gameObject, "Assets/Music/" + name, OnLoad);
@@ -87,14 +97,7 @@ namespace Assets.Scripts.Objects
 		public void Update()
 		{
 
-			if (Input.GetKeyDown(KeyCode.M))
-			{
-				if (muteBgm)
-					Mixer.SetFloat("Music", bgmLevel);
-				else
-					Mixer.SetFloat("Music", -80);
-				muteBgm = !muteBgm;
-			}
+
 		}
 	}
 }

@@ -1,0 +1,26 @@
+
+Warp("moc_pryd01", "pyramidwarp001", 10, 195, 5, 2, "moc_pryd02", 10, 192);
+Warp("moc_pryd01", "pyramidwarp002", 90, 109, 1, 2, "moc_prydb1", 100, 185);
+Warp("moc_pryd01", "pyramidwarp003", 195, 9, 2, 5, "moc_ruins", 60, 161);
+Warp("moc_pryd02", "pyramidwarp004", 10, 195, 5, 2, "moc_pryd01", 10, 192);
+Warp("moc_pryd02", "pyramidwarp005", 100, 99, 3, 2, "moc_pryd03", 100, 92);
+Warp("moc_pryd03", "pyramidwarp006", 12, 15, 3, 2, "moc_pryd04", 12, 18);
+Warp("moc_pryd03", "pyramidwarp007", 15, 187, 2, 3, "moc_pryd04", 18, 187);
+Warp("moc_pryd03", "pyramidwarp008", 100, 97, 3, 2, "moc_pryd02", 100, 92);
+Warp("moc_pryd03", "pyramidwarp009", 184, 11, 2, 3, "moc_pryd04", 181, 11);
+Warp("moc_pryd03", "pyramidwarp010", 188, 184, 3, 2, "moc_pryd04", 188, 181);
+Warp("moc_pryd04", "pyramidwarp011", 12, 15, 3, 2, "moc_pryd03", 12, 18);
+Warp("moc_pryd04", "pyramidwarp012", 15, 187, 2, 3, "moc_pryd03", 18, 187);
+Warp("moc_pryd04", "pyramidwarp013", 184, 11, 2, 3, "moc_pryd03", 181, 11);
+Warp("moc_pryd04", "pyramidwarp014", 188, 184, 3, 2, "moc_pryd03", 188, 181);
+Warp("moc_pryd05", "pyramidwarp015", 94, 98, 2, 1, "moc_prydb1", 100, 57);
+Warp("moc_pryd05", "pyramidwarp016", 223, 9, 2, 2, "moc_pryd06", 192, 8);
+Warp("moc_pryd06", "pyramidwarp017", 195, 8, 2, 3, "moc_pryd05", 220, 9);
+Warp("moc_prydb1", "pyramidwarp018", 59, 115, 2, 6, "moc_prydb1", 90, 115);
+Warp("moc_prydb1", "pyramidwarp019", 87, 115, 2, 6, "moc_prydb1", 56, 115);
+Warp("moc_prydb1", "pyramidwarp020", 100, 55, 2, 1, "moc_pryd05", 94, 96);
+Warp("moc_prydb1", "pyramidwarp021", 100, 77, 5, 2, "moc_prydb1", 100, 107);
+Warp("moc_prydb1", "pyramidwarp022", 100, 104, 5, 2, "moc_prydb1", 100, 74);
+Warp("moc_prydb1", "pyramidwarp023", 100, 191, 2, 2, "moc_pryd01", 90, 105);
+Warp("moc_prydb1", "pyramidwarp024", 111, 115, 2, 6, "moc_prydb1", 145, 115);
+Warp("moc_prydb1", "pyramidwarp025", 142, 115, 2, 6, "moc_prydb1", 108, 115);

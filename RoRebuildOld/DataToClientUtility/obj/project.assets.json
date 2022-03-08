@@ -3865,11 +3865,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\DataToClientUtility\\DataToClientUtility.csproj",
+      "projectUniqueName": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\DataToClientUtility\\DataToClientUtility.csproj",
       "projectName": "DataToClientUtility",
-      "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\DataToClientUtility\\DataToClientUtility.csproj",
+      "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\DataToClientUtility\\DataToClientUtility.csproj",
       "packagesPath": "C:\\Users\\doddl\\.nuget\\packages\\",
-      "outputPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\DataToClientUtility\\obj\\",
+      "outputPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\DataToClientUtility\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -3889,11 +3889,11 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Server\\RebuildData.Server.csproj": {
-              "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Server\\RebuildData.Server.csproj"
+            "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Server\\RebuildData.Server.csproj": {
+              "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Server\\RebuildData.Server.csproj"
             },
-            "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Shared\\RebuildData.Shared.csproj": {
-              "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Shared\\RebuildData.Shared.csproj"
+            "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Shared\\RebuildData.Shared.csproj": {
+              "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Shared\\RebuildData.Shared.csproj"
             }
           }
         }
@@ -3935,18 +3935,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[3.1.22, 3.1.22]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   },

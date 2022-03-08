@@ -42,6 +42,8 @@ public partial class Monster : IEntityAutoReset
     private MonsterAiType aiType;
     private List<MonsterAiEntry> aiEntries;
 
+    public bool LockMovementToSpawn;
+
     public MonsterAiState CurrentAiState;
 
     private WorldObject searchTarget;
@@ -49,7 +51,7 @@ public partial class Monster : IEntityAutoReset
     private float deadTimeout;
     private float allyScanTimeout;
 
-    public static float MaxSpawnTimeInSeconds = 60000; //1 minute // 604800; //one week
+    public static float MaxSpawnTimeInSeconds = 180;
 
 	public void Reset()
     {
@@ -66,7 +68,7 @@ public partial class Monster : IEntityAutoReset
         Target = Entity.Null;
     }
     
-    public void Initialize(ref Entity e, WorldObject character, CombatEntity combat, MonsterDatabaseInfo monData, MonsterAiType type, MapSpawnRule spawnEntry, string mapName)
+    public void Initialize(ref Entity e, WorldObject character, CombatEntity combat, MonsterDatabaseInfo monData, MonsterAiType type, MapSpawnRule? spawnEntry, string mapName)
     {
         Entity = e;
         Character = character;
@@ -77,6 +79,11 @@ public partial class Monster : IEntityAutoReset
         SpawnMap = mapName;
         aiEntries = DataManager.GetAiStateMachine(aiType);
         nextAiUpdate = Time.ElapsedTimeFloat + 1f;
+
+        if (SpawnRule != null)
+        {
+            LockMovementToSpawn = SpawnRule.LockToSpawn;
+        }
 
         if (Character.ClassId >= 4000 && spawnEntry == null)
             throw new Exception("Monster created without spawn entry"); //remove when arbitrary monster spawning is added

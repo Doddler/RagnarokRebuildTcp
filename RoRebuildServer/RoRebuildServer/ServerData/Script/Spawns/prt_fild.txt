@@ -43,7 +43,7 @@ MapConfig("prt_fild03")
 	CreateSpawn("GREEN_PLANT", 5, %(296, 58, 15, 15), 180000, 90000);
 	CreateSpawn("BLUE_PLANT", 2, %(296, 58, 15, 15), 900000, 450000);
 	CreateSpawn("GREEN_PLANT", 5, %(307, 75, 5, 5), 360000, 180000);
-	CreateSpawn("GREEN_PLANT", 5, %(147, 319, 5, 5), 360000, 180000);
+	CreateSpawn("GREEN_PLANT", 5, 360000, 180000);
 	CreateSpawn("GREEN_PLANT", 5, %(148, 107, 5, 5), 360000, 180000);
 }
 
@@ -75,7 +75,7 @@ MapConfig("prt_fild06")
 	CreateSpawn("THIEF_BUG", 10);
 	CreateSpawn("PUPA", 20);
 	CreateSpawn("PORING", 60);
-	CreateSpawn("GREEN_PLANT", 15, %(222, 30, 40, 10), 900000, 450000);
+	CreateSpawn("GREEN_PLANT", 15, 900000, 450000);
 }
 
 MapConfig("prt_fild07")

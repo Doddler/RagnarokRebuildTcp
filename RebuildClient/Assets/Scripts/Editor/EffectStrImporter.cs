@@ -14,7 +14,7 @@ namespace Assets.Scripts.Editor
         public static void Import()
         {
             var loader = new RagnarokEffectLoader();
-            loader.Load(@"G:\Projects2\Ragnarok\Resources\data\texture\effect\pneuma1.str");
+            loader.Load(@"G:\Projects2\Ragnarok\Resources\data\texture\effect\devil.str");
             loader.MakeAtlas(@"Assets/Effects/Atlas/");
         }
     }

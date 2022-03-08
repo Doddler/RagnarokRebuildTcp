@@ -1,0 +1,60 @@
+MapConfig("tur_dun01")
+{
+	CreateSpawn("DRAGON_TAIL", 25);
+	CreateSpawn("SPRING_RABBIT", 25);
+	CreateSpawn("THARA_FROG", 10);
+	CreateSpawn("PERMETER", 10);
+	CreateSpawn("PEST", 15);
+}
+
+MapConfig("tur_dun02")
+{
+	CreateSpawn("PERMETER", 40);
+	CreateSpawn("SOLIDER", 40);
+	CreateSpawn("FREEZER", 20);
+	CreateSpawn("PEST", 15);
+}
+
+MapConfig("tur_dun03")
+{
+	CreateSpawn("PERMETER", 15);
+	CreateSpawn("FREEZER", 40);
+	CreateSpawn("ASSULTER", 35);
+	CreateSpawn("HEATER", 10, 50000);
+}
+
+MapConfig("tur_dun04")
+{
+	CreateSpawn("WANDER_MAN", 1, %(99, 92, 10, 10), 60000, 30000);
+	CreateSpawn("TURTLE_GENERAL", 1, %(99, 93, 20, 20), 3600000, 720000);
+	CreateSpawn("HEATER", 3, %(100, 93, 20, 20), 120000, 60000);
+	CreateSpawn("ASSULTER", 10, %(100, 93, 20, 20), 120000, 60000);
+	CreateSpawn("FREEZER", 5, %(100, 93, 20, 20), 120000, 60000);
+	CreateSpawn("WANDER_MAN", 1, %(171, 159, 3, 3), 300000, 150000);
+	CreateSpawn("ASSULTER", 1, %(171, 155, 3, 3), 310000, 160000);
+	CreateSpawn("ASSULTER", 1, %(171, 149, 3, 3), 320000, 170000);
+	CreateSpawn("WANDER_MAN", 1, %(28, 159, 3, 3), 300000, 150000);
+	CreateSpawn("ASSULTER", 1, %(28, 155, 3, 3), 310000, 160000);
+	CreateSpawn("ASSULTER", 1, %(28, 149, 3, 3), 320000, 170000);
+	CreateSpawn("WANDER_MAN", 1, %(174, 26, 3, 3), 300000, 150000);
+	CreateSpawn("ASSULTER", 1, %(174, 29, 3, 3), 310000, 160000);
+	CreateSpawn("ASSULTER", 1, %(174, 32, 3, 3), 320000, 170000);
+	CreateSpawn("WANDER_MAN", 1, %(26, 26, 3, 3), 300000, 150000);
+	CreateSpawn("ASSULTER", 1, %(26, 29, 3, 3), 310000, 160000);
+	CreateSpawn("ASSULTER", 1, %(26, 32, 3, 3), 320000, 170000);
+	CreateSpawn("WANDER_MAN", 2);
+	CreateSpawn("HEATER", 10, 300000, 150000);
+	CreateSpawn("HEATER", 20, 620000, 310000);
+	CreateSpawn("ASSULTER", 23);
+	CreateSpawn("FREEZER", 5, 300000, 150000);
+	CreateSpawn("FREEZER", 5, 600000, 300000);
+	CreateSpawn("PERMETER", 2, 300000, 150000);
+	CreateSpawn("PERMETER", 2, 640000, 320000);
+}
+
+MapConfig("tur_dun05")
+{
+	CreateSpawn("PERMETER", 3, 20000);
+	CreateSpawn("FREEZER", 5, 30000);
+	CreateSpawn("ASSULTER", 1, 20000);
+}

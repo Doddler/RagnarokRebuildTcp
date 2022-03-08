@@ -1,0 +1,22 @@
+
+Warp("in_sphinx1", "sphinxwarp001", 80, 191, 2, 1, "in_sphinx2", 149, 81);
+Warp("in_sphinx1", "sphinxwarp002", 288, 6, 5, 1, "moc_fild19", 100, 99);
+Warp("in_sphinx2", "sphinxwarp003", 149, 77, 3, 2, "in_sphinx1", 80, 189);
+Warp("in_sphinx2", "sphinxwarp004", 276, 272, 1, 3, "in_sphinx3", 210, 54);
+Warp("in_sphinx3", "sphinxwarp005", 12, 69, 4, 1, "in_sphinx4", 10, 222);
+Warp("in_sphinx3", "sphinxwarp006", 35, 227, 2, 4, "in_sphinx3", 62, 227);
+Warp("in_sphinx3", "sphinxwarp007", 60, 227, 1, 4, "in_sphinx3", 32, 227);
+Warp("in_sphinx3", "sphinxwarp008", 70, 83, 4, 1, "in_sphinx3", 70, 113);
+Warp("in_sphinx3", "sphinxwarp009", 70, 111, 1, 1, "in_sphinx3", 70, 81);
+Warp("in_sphinx3", "sphinxwarp010", 210, 57, 4, 1, "in_sphinx2", 274, 272);
+Warp("in_sphinx4", "sphinxwarp011", 10, 224, 2, 1, "in_sphinx3", 12, 71);
+Warp("in_sphinx4", "sphinxwarp012", 120, 113, 4, 2, "in_sphinx5", 100, 99);
+Warp("in_sphinx5", "sphinxwarp013", 11, 16, 3, 1, "in_sphinx5", 189, 181);
+Warp("in_sphinx5", "sphinxwarp014", 11, 183, 3, 1, "in_sphinx5", 11, 18);
+Warp("in_sphinx5", "sphinxwarp015", 16, 10, 1, 3, "in_sphinx5", 181, 10);
+Warp("in_sphinx5", "sphinxwarp016", 16, 188, 1, 3, "in_sphinx5", 181, 188);
+Warp("in_sphinx5", "sphinxwarp017", 100, 96, 4, 2, "in_sphinx4", 120, 116);
+Warp("in_sphinx5", "sphinxwarp018", 183, 10, 1, 3, "in_sphinx5", 18, 188);
+Warp("in_sphinx5", "sphinxwarp019", 183, 188, 1, 3, "in_sphinx5", 18, 10);
+Warp("in_sphinx5", "sphinxwarp020", 189, 16, 3, 1, "in_sphinx5", 11, 181);
+Warp("in_sphinx5", "sphinxwarp021", 189, 183, 3, 1, "in_sphinx5", 189, 18);

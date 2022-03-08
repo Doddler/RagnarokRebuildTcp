@@ -88,12 +88,15 @@ public class Player : IEntityAutoReset
         if (bs.Level < 50)
             Character.MoveSpeed -= 0.0006f;
 
-        var atk = (bs.Level / 2f) * (bs.Level / 2f) + bs.Level * (bs.Level / 10) + 7 + bs.Level;
+        var atk = (bs.Level / 2f) * (bs.Level / 2f) + bs.Level * (bs.Level / 10) + 12 + bs.Level;
         s.Atk = (short)(atk * 0.90f - 1);
         s.Atk2 = (short)(atk * 1.10f + 1);
-        s.Def++;
-        s.Vit++;
+        s.Def = (short)(bs.Level * 0.7f);
+        //s.Vit++;
         s.MaxHp = 50 + 100 * bs.Level;
+        s.Vit = (short)(3 + bs.Level * 1.5f);
+        if (s.Def > 90)
+            s.Def = 90;
 
         var multiplier = 0.1f + bs.Level / 10f;
         if (multiplier > 1f)

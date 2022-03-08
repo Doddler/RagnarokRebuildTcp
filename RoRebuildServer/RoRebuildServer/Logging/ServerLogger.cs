@@ -8,7 +8,7 @@ namespace RoRebuildServer.Logging;
 public static class ServerLogger
 {
 #if DEBUG
-    private static Logger logger = new LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Console(theme: SystemConsoleTheme.Colored).CreateLogger();
+    private static Logger logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console(theme: SystemConsoleTheme.Colored).CreateLogger();
 #else
     private static Logger logger = new LoggerConfiguration().MinimumLevel.Information().WriteTo.Console(theme: SystemConsoleTheme.Colored).CreateLogger();
 #endif
@@ -24,4 +24,5 @@ public static class ServerLogger
     public static void Log(string message) => logger.Information(message);
     public static void LogWarning(string error) => logger.Warning(error);
     public static void LogError(string error) => logger.Error(error);
+    public static void LogVerbose(string error) => logger.Verbose(error);
 }

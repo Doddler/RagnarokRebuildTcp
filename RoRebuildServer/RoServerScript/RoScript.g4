@@ -27,6 +27,9 @@ statementblock : statement									#SingleStatement
 
 functionparam : expression (COMMA expression)*
 			  ;
+			  
+function : IDENTIFIER LPAREN functionparam? RPAREN (DOT function)?				#FunctionCall
+		 ;
 		  
 expression : IDENTIFIER type=(INC|DEC)											#ExpressionUnary
 		   | left=expression type=(MULT|DIV|MOD) right=expression				#ArithmeticMult
@@ -35,7 +38,7 @@ expression : IDENTIFIER type=(INC|DEC)											#ExpressionUnary
 		   | left=expression type=(BAND|BOR) right=expression					#BitwiseAnd
 		   | left=expression type=(AND|OR) right=expression						#LogicalAnd
 		   | LPAREN expression RPAREN											#ArithmeticParens
-		   | IDENTIFIER LPAREN functionparam? RPAREN							#FunctionCall
+		   | function															#FunctionCallExpression
 		   | PER LPAREN functionparam? RPAREN									#AreaType
 		   | VAR assignment														#VarDeclaration
 		   | LOCAL assignment													#LocalDeclaration
@@ -72,6 +75,7 @@ CASE : 'case';
 RETURN : 'return';
 LOCAL : 'local';
 GLOBAL : 'global';
+DOT : '.';
 
 
 AND : '&&' ;

@@ -66,7 +66,7 @@ namespace Assets.Scripts.Network
             //textObject.text = text;
 
 			SnapDialog();
-            dialogCountdown = 10f;
+            dialogCountdown = 8f;
         }
 
         public void SnapDialog()
@@ -441,8 +441,11 @@ namespace Assets.Scripts.Network
 		private void OnDestroy()
 		{
 			if(shadowMaterial != null)
-				Object.Destroy(shadowMaterial);
+				Destroy(shadowMaterial);
 			LeanTween.cancel(gameObject);
+
+			if(PopupDialog != null)
+				Destroy(PopupDialog);
 		}
 	}
 }

@@ -185,11 +185,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\Libraries\\Libraries.csproj",
+      "projectUniqueName": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\Libraries\\Libraries.csproj",
       "projectName": "Libraries",
-      "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\Libraries\\Libraries.csproj",
+      "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\Libraries\\Libraries.csproj",
       "packagesPath": "C:\\Users\\doddl\\.nuget\\packages\\",
-      "outputPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\Libraries\\obj\\",
+      "outputPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\Libraries\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -238,7 +238,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

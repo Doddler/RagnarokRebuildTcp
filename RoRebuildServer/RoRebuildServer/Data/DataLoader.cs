@@ -157,7 +157,7 @@ internal class DataLoader
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ServerData/Script/");
             foreach (var file in Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories))
             {
-                ServerLogger.Debug("Compiling script " + file);
+                ServerLogger.Debug("Compiling script " + Path.GetRelativePath(path, file));
                 compiler.Compile(file);
             }
 

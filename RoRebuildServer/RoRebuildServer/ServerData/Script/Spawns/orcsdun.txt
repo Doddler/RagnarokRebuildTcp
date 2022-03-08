@@ -1,0 +1,29 @@
+MapConfig("orcsdun01")
+{
+	CreateSpawn("STEEL_CHONCHON", 10);
+	CreateSpawn("FARMILIAR", 15);
+	CreateSpawn("DRAINLIAR", 5);
+	CreateSpawn("ORC_ZOMBIE", 10, 3000, 5000);
+	CreateSpawn("ORC_ZOMBIE", 30, 60000, 30000);
+	CreateSpawn("ORC_ZOMBIE", 40, 120000, 60000);
+	CreateSpawn("ORC_SKELETON", 10, 180000, 60000);
+	CreateSpawn("BLACK_MUSHROOM", 5, %(167, 133, 5, 5), 900000, 450000);
+	CreateSpawn("BLACK_MUSHROOM", 5, %(67, 34, 5, 5), 900000, 450000);
+	CreateSpawn("WHITE_PLANT", 2, %(83, 50, 5, 5), 180000, 90000);
+	CreateSpawn("WHITE_PLANT", 3, %(58, 67, 10, 10), 180000, 90000);
+}
+
+MapConfig("orcsdun02")
+{
+	CreateSpawn("STEEL_CHONCHON", 20);
+	CreateSpawn("DRAINLIAR", 20);
+	CreateSpawn("ORC_SKELETON", 10, 3000, 5000);
+	CreateSpawn("ORC_SKELETON", 20, 60000, 30000);
+	CreateSpawn("ORC_SKELETON", 20, 120000, 60000);
+	CreateSpawn("ZENORC", 30, 3000, 5000);
+	CreateSpawn("ZENORC", 20, 60000, 30000);
+	CreateSpawn("ORC_ARCHER", 5, 1800000, 900000);
+	CreateSpawn("BLACK_MUSHROOM", 5, 180000, 90000);
+	CreateSpawn("WHITE_PLANT", 2, %(105, 37, 10, 10), 180000, 90000);
+	CreateSpawn("WHITE_PLANT", 3, %(37, 44, 10, 10), 180000, 90000);
+}

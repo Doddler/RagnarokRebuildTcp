@@ -1,0 +1,276 @@
+
+Warp("c_tower1", "clocktowerwarp001", 122, 21, 2, 2, "alde_dun01", 297, 25);
+Warp("c_tower1", "clocktowerwarp002", 200, 157, 2, 2, "aldebaran", 139, 131);
+Warp("c_tower1", "clocktowerwarp003", 235, 226, 2, 2,  "c_tower2", 268, 26);
+
+Npc("c_tower2", "clocktowerwarp004", "WARP", 13, 288, N, 2, 2)
+{
+OnTouch:
+	var ht1 = Random(3);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 13, 282);
+	case 1:
+		MoveTo("alde_dun03", 175, 131);
+	case 2:
+		MoveTo("c_tower3", 235, 7);
+	}
+}
+
+Warp("c_tower2", "clocktowerwarp005", 23, 23, 2, 2, "alde_dun03", 277, 178);
+Warp("c_tower3", "clocktowerwarp006", 60, 147, 1, 1, "c_tower2", 148, 283);
+Warp("c_tower2", "clocktowerwarp007", 142, 283, 2, 2, "c_tower3", 65, 147);
+
+Npc("c_tower2", "clocktowerwarp008", "WARP", 223, 267, N, 2, 2)
+{
+OnTouch:
+	var ht1 = Random(3);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 228, 267);
+	case 1:
+		MoveTo("alde_dun03", 130, 130);
+	case 2:
+		MoveTo("c_tower3", 252, 29);
+	}
+}
+
+Warp("c_tower2", "clocktowerwarp009", 274, 26, 2, 2, "c_tower1", 235, 223);
+Warp("c_tower3", "clocktowerwarp010", 7, 40, 4, 1, "alde_dun01", 171, 158);
+Warp("c_tower3", "clocktowerwarp011", 42, 41, 2, 2, "alde_dun02", 127, 169);
+Warp("c_tower3", "clocktowerwarp012", 145, 8, 2, 2, "c_tower1", 235, 223);
+
+Npc("c_tower3", "clocktowerwarp013", "WARP", 163, 252, N, 1, 3)
+{
+OnTouch:
+	var ht1 = Random(2);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower3", 168, 252);
+	case 1:
+		MoveTo("alde_dun02", 262, 41);
+	}
+}
+
+Warp("c_tower3", "clocktowerwarp014", 212, 159, 1, 1, "alde_dun03", 276, 53);
+
+Npc("c_tower3", "clocktowerwarp015", "WARP", 240, 7, N, 2, 2)
+{
+OnTouch:
+	var ht1 = Random(3);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 13, 282);
+	case 1:
+		MoveTo("alde_dun03", 175, 131);
+	case 2:
+		MoveTo("c_tower3", 235, 7);
+	}
+}
+
+Npc("c_tower3", "clocktowerwarp016", "WARP", 252, 23, N, 2, 2)
+{
+OnTouch:
+	var ht1 = Random(3);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 228, 267);
+	case 1:
+		MoveTo("alde_dun03", 130, 130);
+	case 2:
+		MoveTo("c_tower3", 252, 29);
+	}
+}
+
+Warp("c_tower4", "clocktowerwarp017", 37, 70, 2, 2, "alde_dun03", 277, 54);
+Warp("c_tower4", "clocktowerwarp018", 51, 156, 1, 1, "alde_dun01", 171, 158);
+Warp("c_tower4", "clocktowerwarp019", 68, 46, 1, 1, "c_tower4", 73, 154);
+
+Npc("c_tower4", "clocktowerwarp020", "WARP", 68, 79, N, 1, 1)
+{
+OnTouch:
+	var ht1 = Random(5);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 13, 282);
+	case 1:
+		MoveTo("alde_dun03", 175, 131);
+	case 2:
+		MoveTo("c_tower3", 235, 7);
+	case 3:
+		MoveTo("alde_dun04", 84, 36);
+	case 4:
+		MoveTo("c_tower4", 65, 779);
+	}
+}
+
+Warp("c_tower4", "clocktowerwarp021", 70, 19, 2, 2, "c_tower3", 151, 8);
+
+Npc("c_tower4", "clocktowerwarp022", "WARP", 75, 156, N, 1, 1)
+{
+OnTouch:
+	var ht1 = Random(4);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower3", 168, 252);
+	case 1:
+		MoveTo("alde_dun02", 262, 41);
+	case 2:
+		MoveTo("c_tower4", 73, 154);
+	case 3:
+		MoveTo("c_tower4", 140, 149);
+	}
+}
+
+Warp("c_tower4", "clocktowerwarp023", 79, 49, 2, 2, "c_tower4", 204, 60);
+Warp("c_tower4", "clocktowerwarp024", 133, 202, 1, 1, "c_tower4", 140, 149);
+
+Npc("c_tower4", "clocktowerwarp025", "WARP", 142, 151, N, 0, 0)
+{
+OnTouch:
+	var ht1 = Random(4);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower3", 168, 252);
+	case 1:
+		MoveTo("alde_dun02", 262, 41);
+	case 2:
+		MoveTo("c_tower4", 73, 154);
+	case 3:
+		MoveTo("c_tower4", 140, 149);
+	}
+}
+
+Npc("c_tower4", "clocktowerwarp026", "WARP", 151, 96, N, 0, 0)
+{
+OnTouch:
+	var ht1 = Random(4);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 228, 267);
+	case 1:
+		MoveTo("alde_dun03", 130, 130);
+	case 2:
+		MoveTo("c_tower3", 252, 29);
+	case 3:
+		MoveTo("c_tower4", 152, 95);
+	}
+}
+
+
+Warp("c_tower4", "clocktowerwarp027", 153, 107, 1, 1, "c_tower2", 228, 267);
+Warp("c_tower4", "clocktowerwarp028", 171, 179, 1, 1, "alde_dun03", 276, 53);
+
+Npc("c_tower4", "clocktowerwarp029", "WARP", 189, 40, N, 2, 2)
+{
+OnTouch:
+	var ht1 = Random(4);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 228, 267);
+	case 1:
+		MoveTo("alde_dun03", 130, 130);
+	case 2:
+		MoveTo("c_tower3", 252, 29);
+	case 3:
+		MoveTo("c_tower4", 152, 95);
+	}
+}
+
+Warp("c_tower4", "clocktowerwarp030", 198, 59, 1, 1, "c_tower4", 152, 98);
+Warp("c_tower4", "clocktowerwarp031", 204, 57, 1, 1, "c_tower4", 65, 77);
+Warp("alde_dun01", "aldedunwarp001", 167, 158, 2, 2, "c_tower2", 148, 283);
+Warp("alde_dun01", "aldedunwarp002", 292, 306, 5, 2, "alde_dun02", 43, 24);
+Warp("alde_dun01", "aldedunwarp003", 302, 25, 2, 2, "c_tower1", 125, 22);
+Warp("alde_dun02", "aldedunwarp004", 43, 20, 4, 2, "alde_dun01", 292, 300);
+Warp("alde_dun02", "aldedunwarp005", 122, 169, 2, 2, "c_tower3", 47, 41);
+Warp("alde_dun02", "aldedunwarp006", 187, 233, 2, 2, "c_tower3", 65, 147);
+
+Npc("alde_dun02", "aldedunwarp007", "WARP", 267, 41, N, 2, 2)
+{
+OnTouch:
+	var ht1 = Random(2);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower3", 168, 252);
+	case 1:
+		MoveTo("alde_dun02", 262, 41);
+	}
+}
+
+Warp("alde_dun02", "aldedunwarp008", 279, 250, 2, 4, "alde_dun03", 18, 267);
+Warp("alde_dun03", "aldedunwarp009", 12, 267, 2, 4, "alde_dun02", 273, 250);
+
+
+Npc("alde_dun03", "aldedunwarp010", "WARP", 130, 125, N, 2, 2)
+{
+OnTouch:
+	var ht1 = Random(3);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 228, 267);
+	case 1:
+		MoveTo("alde_dun03", 130, 130);
+	case 2:
+		MoveTo("c_tower3", 252, 29);
+	}
+}
+
+
+Npc("alde_dun03", "aldedunwarp011", "WARP", 171, 127, N, 2, 2)
+{
+OnTouch:
+	var ht1 = Random(3);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 13, 282);
+	case 1:
+		MoveTo("alde_dun03", 175, 131);
+	case 2:
+		MoveTo("c_tower3", 235, 7);
+	}
+}
+
+
+Warp("alde_dun03", "aldedunwarp012", 191, 31, 2, 2, "c_tower3", 217, 159);
+Warp("alde_dun03", "aldedunwarp013", 276, 48, 2, 2, "c_tower1", 235, 223);
+Warp("alde_dun03", "aldedunwarp014", 277, 183, 2, 2, "c_tower2", 27, 27);
+Warp("alde_dun04", "aldedunwarp015", 31, 73, 2, 2, "alde_dun02", 187, 239);
+Warp("alde_dun04", "aldedunwarp016", 80, 273, 2, 2, "alde_dun03", 263, 26);
+
+Npc("alde_dun04", "aldedunwarp017", "WARP", 89, 34, N, 2, 2)
+{
+OnTouch:
+	var ht1 = Random(5);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("c_tower2", 13, 282);
+	case 1:
+		MoveTo("alde_dun03", 175, 131);
+	case 2:
+		MoveTo("c_tower3", 235, 7);
+	case 3:
+		MoveTo("alde_dun04", 84, 36);
+	case 4:
+		MoveTo("c_tower4", 65, 779);
+	}
+}
+
+Warp("alde_dun04", "aldedunwarp018", 207, 225, 2, 2, "c_tower3", 7, 34);
+Warp("alde_dun04", "aldedunwarp019", 208, 58, 2, 2, "alde_dun04", 268, 74);
+Warp("alde_dun04", "aldedunwarp020", 215, 192, 2, 2, "c_tower2", 148, 283);
+Warp("alde_dun04", "aldedunwarp021", 273, 73, 2, 2, "alde_dun04", 204, 62);

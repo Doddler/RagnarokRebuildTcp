@@ -261,14 +261,16 @@ public class ScriptBuilder
         }
     }
 
-    public void FunctionCall(string name)
+    public void FunctionCall(string name, bool isChained)
     {
-        if (functionBaseClasses.TryGetValue(name, out var src))
-            lineBuilder.Append($"{src}.{name}(");
+        if (isChained)
+            lineBuilder.Append($".{name}(");
         else
         {
-            throw new Exception($"Error in {className} line {lineNumber}: Function name {name} could not be found.");
-            //lineBuilder.Append($"{name}(");
+            if (functionBaseClasses.TryGetValue(name, out var src))
+                lineBuilder.Append($"{src}.{name}(");
+            else
+                throw new Exception($"Error in {className} line {lineNumber}: Function name {name} could not be found.");
         }
 
         if (UseStateMachine && waitingFunctions.TryGetValue(name, out var res))

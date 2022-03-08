@@ -18,7 +18,7 @@ OnClick:
 			Dialog("Kafra Employee", "You don't have enough money. The storage useage fee is 40 Zeny.");
 			return;
 		}
-		Dialog("Kafra Employee", "Here, let me open your Storage for you. Thank you for using the Kafra Service.").
+		Dialog("Kafra Employee", "Here, let me open your Storage for you. Thank you for using the Kafra Service.");
 		DropZeny(40);
 		OpenStorage();
 		return;

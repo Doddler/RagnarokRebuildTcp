@@ -85,7 +85,100 @@ namespace Assets.Scripts.Sprites
 			isInitialized = true;
 		}
 
-		public ServerControllable InstantiatePlayer(ref PlayerSpawnParameters param)
+        private GameObject CloneAnimatorForTrail(RoSpriteAnimator src, RoSpriteTrail trail, int order)
+        {
+            if (!src.IsInitialized)
+                return null;
+
+            var go = new GameObject(src.gameObject.name);
+            var mf = go.AddComponent<MeshFilter>();
+            var mr = go.AddComponent<MeshRenderer>();
+
+			if(order > 0)
+                mr.sortingOrder = order;
+
+            mr.receiveShadows = false;
+            mr.lightProbeUsage = LightProbeUsage.Off;
+            mr.shadowCastingMode = ShadowCastingMode.Off;
+
+			trail.Renderers.Add(mr);
+
+			mf.mesh = src.GetMeshForFrame();
+
+            var mats = new Material[src.MeshRenderer.sharedMaterials.Length];
+
+            for (var i = 0; i < src.MeshRenderer.sharedMaterials.Length; i++)
+            {
+                var srcMat = src.MeshRenderer.sharedMaterials[i];
+
+                var shader = srcMat.shader;
+				//Debug.Log(shader);
+                var mat = new Material(shader);
+                //Debug.Log(mat);
+				mat.shader = shader;
+                mat.mainTexture = srcMat.mainTexture;
+                mat.renderQueue = srcMat.renderQueue;
+                mat.shaderKeywords = srcMat.shaderKeywords;
+
+
+				mats[i] = mat;
+			}
+
+            mr.sharedMaterials = mats;
+
+			//Debug.Log(mr.material);
+
+            return go;
+        }
+		
+        public void CloneObjectForTrail(RoSpriteAnimator src)
+        {
+            if (!isInitialized)
+                Initialize();
+
+			if(src.Parent != null)
+				Debug.LogError("Cannot clone sprite animator for trail as it is not the parent animator!");
+
+            var go = new GameObject("Trail");
+            go.layer = LayerMask.NameToLayer("Characters");
+            go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            go.transform.position = src.transform.position;
+            var bb =go.AddComponent<Billboard>();
+
+
+            var trail = go.AddComponent<RoSpriteTrail>();
+            trail.Color = src.CurrentColor;
+            trail.Duration = 0.6f;
+            trail.LifeTime = 0.5f;
+            trail.StartTime = 0.49f;
+            trail.Renderers = new List<MeshRenderer>();
+
+			var main = CloneAnimatorForTrail(src, trail, 0);
+			main.transform.SetParent(go.transform);
+            main.transform.localPosition = src.transform.localPosition + new Vector3(0, 0, 0.05f);
+            main.transform.localScale = src.transform.localScale;
+            trail.SortingGroup = main.AddComponent<SortingGroup>();
+			
+			var order = 1;
+
+            foreach (var c in src.ChildrenSprites)
+            {
+                var sub = CloneAnimatorForTrail(c, trail, order);
+                if (sub == null)
+                    continue;
+				sub.transform.SetParent(main.transform);
+                sub.transform.localScale = c.transform.localScale;
+				sub.transform.localPosition = c.transform.localPosition;
+
+                order++;
+            }
+
+			//call lateupdate directly in case we are too late to update in time
+			bb.LateUpdate();
+			trail.Init();
+        }
+		
+        public ServerControllable InstantiatePlayer(ref PlayerSpawnParameters param)
 		{
 			if (!isInitialized)
 				Initialize();

@@ -1,0 +1,24 @@
+MapConfig("mjo_dun01")
+{
+	CreateSpawn("FARMILIAR", 20);
+	CreateSpawn("TAROU", 80);
+	CreateSpawn("MARTIN", 40);
+}
+
+MapConfig("mjo_dun02")
+{
+	CreateSpawn("MARTIN", 60);
+	CreateSpawn("DRAINLIAR", 20);
+	CreateSpawn("SKEL_WORKER", 20);
+	CreateSpawn("GIEARTH", 35, 30000, 10000);
+}
+
+MapConfig("mjo_dun03")
+{
+	CreateSpawn("MARTIN", 5);
+	CreateSpawn("SKEL_WORKER", 70);
+	CreateSpawn("GIEARTH", 5);
+	CreateSpawn("MYST", 35);
+	CreateSpawn("CRAMP", 2, 300000, 150000);
+	CreateSpawn("CRAMP", 1, 50000, 25000);
+}

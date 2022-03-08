@@ -250,8 +250,8 @@ public class WorldObject : IEntityAutoReset
         if (hasOld)
             MoveCooldown = oldCooldown;
 
-        if (Type == CharacterType.Player)
-            ServerLogger.Log("Player moving! Starting from : " + WalkPath[0] + " speed is " + MoveSpeed);
+        //if (Type == CharacterType.Player)
+        //    ServerLogger.Log("Player moving! Starting from : " + WalkPath[0] + " speed is " + MoveSpeed);
 
         Map.StartMove(ref entity, this);
         ChangeToActionState();

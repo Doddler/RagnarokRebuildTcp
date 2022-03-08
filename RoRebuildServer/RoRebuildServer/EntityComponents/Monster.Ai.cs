@@ -206,24 +206,35 @@ public partial class Monster
 		return true;
 	}
 
+    private bool FindSpawnPointInArea(Area area, Position startPos, int distance, int attempts)
+    {
+        var moveArea = Area.CreateAroundPoint(startPos, distance).ClipArea(area);
+        var newPos = Position.RandomPosition(moveArea);
+
+		for (var i = 0; i < attempts; i++)
+        {
+            if (newPos != Character.Position && Character.TryMove(ref Entity, newPos, 0))
+                return true;
+
+            newPos = Position.RandomPosition(moveArea);
+        }
+
+        return false;
+    }
+
 	private bool OutRandomMoveStart()
 	{
 		if (MonsterBase.MoveSpeed < 0)
 			return false;
 
-		var moveArea = Area.CreateAroundPoint(Character.Position, 9).ClipArea(Character.Map.MapBounds);
-		var newPos = Position.RandomPosition(moveArea);
+        if (LockMovementToSpawn && SpawnRule != null)
+        {
+            if (FindSpawnPointInArea(SpawnRule.SpawnArea, Character.Position, 9, 10))
+                return true;
+        }
 
-		for (var i = 0; i < 20; i++)
-		{
-			if (newPos != Character.Position && Character.TryMove(ref Entity, newPos, 0))
-				return true;
-
-			newPos = Position.RandomPosition(moveArea);
-		}
-
-		return false;
-	}
+        return FindSpawnPointInArea(Character.Map!.MapBounds, Character.Position, 9, 20);
+    }
 
 	private bool OutSearch()
 	{

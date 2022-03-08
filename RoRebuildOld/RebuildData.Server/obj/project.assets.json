@@ -4294,11 +4294,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Server\\RebuildData.Server.csproj",
+      "projectUniqueName": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Server\\RebuildData.Server.csproj",
       "projectName": "RebuildData.Server",
-      "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Server\\RebuildData.Server.csproj",
+      "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Server\\RebuildData.Server.csproj",
       "packagesPath": "C:\\Users\\doddl\\.nuget\\packages\\",
-      "outputPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Server\\obj\\",
+      "outputPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -4318,11 +4318,11 @@
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
           "projectReferences": {
-            "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\Libraries\\Libraries.csproj": {
-              "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\Libraries\\Libraries.csproj"
+            "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\Libraries\\Libraries.csproj": {
+              "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\Libraries\\Libraries.csproj"
             },
-            "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Shared\\RebuildData.Shared.csproj": {
-              "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuild\\RebuildData.Shared\\RebuildData.Shared.csproj"
+            "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Shared\\RebuildData.Shared.csproj": {
+              "projectPath": "F:\\ProjectsSSD\\RagnarokRebuildTcp\\RoRebuildOld\\RebuildData.Shared\\RebuildData.Shared.csproj"
             }
           }
         }
@@ -4378,7 +4378,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   },

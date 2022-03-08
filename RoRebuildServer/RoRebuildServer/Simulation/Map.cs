@@ -534,6 +534,8 @@ public class Map
         MapConfig = new ServerMapConfig(this);
 
         action(MapConfig);
+
+        MapConfig.ApplySpawnsToMap();
     }
     
     public void RemoveEntity(ref Entity entity, CharacterRemovalReason reason, bool removeFromInstance)
@@ -549,7 +551,10 @@ public class Map
         var hasRemoved = false;
 
         var charChunk = GetChunkForPosition(ch.Position);
-        charChunk.RemoveEntity(ref entity, ch.Type);
+        var removal = charChunk.RemoveEntity(ref entity, ch.Type);
+
+        if(!removal)
+            ServerLogger.LogWarning($"Attempting to remove entity {entity} from map, but it appears to already be gone.");
 
         //Entities.Remove(ref entity);
         //removeList.Add(entity);
@@ -562,7 +567,9 @@ public class Map
         if (hasRemoved)
             entityCount--;
 
-        
+        if (entity.Type == EntityType.Player)
+            PlayerCount--;
+
     }
 
     //private void RunEntityUpdates()
@@ -685,6 +692,14 @@ public class Map
 
     public bool FindPositionInRange(Area area, out Position p)
     {
+#if DEBUG
+        if (area.ClipArea(MapBounds) != area)
+        {
+            ServerLogger.LogWarning($"Attempting to find position in an area that exceeds map bounds! You should clip the area first.");
+        }
+
+#endif
+
         if (WalkData.FindWalkableCellInArea(area, out p))
             return true;
 

@@ -261,6 +261,8 @@ namespace Assets.Scripts.MapEditor.Editor
             mapData.Height = realHeight;
             mapData.Textures = textureData.ToList();
 
+            mapData.Water = new MapWater();
+
             mapData.SaveCellDataToFile(cells, Path.Combine(outPath, "mapinfo", basename + ".bytes").Replace("\\", "/"));
 
             //ctx.AddObjectToAsset(basename, mapData);

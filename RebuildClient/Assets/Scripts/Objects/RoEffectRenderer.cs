@@ -10,6 +10,7 @@ namespace Assets.Scripts.Objects
 
 	public class RoEffectRenderer : MonoBehaviour
     {
+        public AudioSource AudioSource;
         public StrAnimationFile Anim;
         private bool isInit;
 
@@ -30,6 +31,8 @@ namespace Assets.Scripts.Objects
 
         private float time;
         private int frame;
+
+        private bool hasAudio;
 
         private Material GetEffectMaterial(int layer, int srcBlend, int destBlend)
         {
@@ -85,6 +88,10 @@ namespace Assets.Scripts.Objects
         {
             if(Anim != null)
                 Initialize(Anim);
+
+            AudioSource = GetComponent<AudioSource>();
+            if (AudioSource.clip != null)
+                hasAudio = true;
         }
 
         private void UpdateMesh(MeshFilter mf, Mesh mesh, Vector2[] pos, Vector2[] uvs, float angle, int imageId)
@@ -269,6 +276,14 @@ namespace Assets.Scripts.Objects
 
             if (frame > Anim.MaxKey)
             {
+                if (hasAudio && AudioSource.isPlaying)
+                {
+                    for (var i = 0; i < layerObjects.Count; i++)
+                        layerObjects[i].SetActive(false);
+
+                    return;
+                }
+
                 Destroy(gameObject);
                 return;
             }

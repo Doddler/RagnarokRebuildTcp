@@ -129,8 +129,8 @@ namespace Assets.Scripts.MapEditor.Editor
 	        RenderSettings.fog = true;
 	        RenderSettings.fogMode = FogMode.Linear;
 	        RenderSettings.fogColor = world.FogSetup.FogColor;
-	        RenderSettings.fogStartDistance = world.FogSetup.NearPlane * 100f;
-	        RenderSettings.fogEndDistance = world.FogSetup.FarPlane * 1000f;
+	        RenderSettings.fogStartDistance = world.FogSetup.NearPlane * 45f;
+	        RenderSettings.fogEndDistance = world.FogSetup.FarPlane * 450f;
         }
 
         private void LoadWater()
@@ -138,47 +138,49 @@ namespace Assets.Scripts.MapEditor.Editor
 	        if (world.Water == null)
 		        return;
 
-            var waterContainer = new GameObject("water");
-            waterContainer.transform.SetParent(baseObject.transform, false);
 
-            var mb = new MeshBuilder();
 
-            mb.AddVertex(new Vector3(-data.InitialSize.x, -world.Water.Level, data.InitialSize.y));
-            mb.AddVertex(new Vector3(data.InitialSize.x, -world.Water.Level, data.InitialSize.y));
-            mb.AddVertex(new Vector3(-data.InitialSize.x, -world.Water.Level, -data.InitialSize.y));
-            mb.AddVertex(new Vector3(data.InitialSize.x, -world.Water.Level, -data.InitialSize.y));
+            //var waterContainer = new GameObject("water");
+            //waterContainer.transform.SetParent(baseObject.transform, false);
 
-            mb.AddNormal(Vector3.up);
-            mb.AddNormal(Vector3.up);
-            mb.AddNormal(Vector3.up);
-            mb.AddNormal(Vector3.up);
+            //var mb = new MeshBuilder();
 
-            mb.AddUV(new Vector2(0, data.InitialSize.y/2f));
-            mb.AddUV(new Vector2(data.InitialSize.x/2f, data.InitialSize.y/2f));
-            mb.AddUV(new Vector2(0, 0));
-            mb.AddUV(new Vector2(data.InitialSize.x/2f, 0));
+            //mb.AddVertex(new Vector3(-data.InitialSize.x, -world.Water.Level, data.InitialSize.y));
+            //mb.AddVertex(new Vector3(data.InitialSize.x, -world.Water.Level, data.InitialSize.y));
+            //mb.AddVertex(new Vector3(-data.InitialSize.x, -world.Water.Level, -data.InitialSize.y));
+            //mb.AddVertex(new Vector3(data.InitialSize.x, -world.Water.Level, -data.InitialSize.y));
 
-            mb.AddTriangle(0);
-            mb.AddTriangle(1);
-            mb.AddTriangle(3);
-            mb.AddTriangle(0);
-            mb.AddTriangle(3);
-            mb.AddTriangle(2);
+            //mb.AddNormal(Vector3.up);
+            //mb.AddNormal(Vector3.up);
+            //mb.AddNormal(Vector3.up);
+            //mb.AddNormal(Vector3.up);
 
-            var mesh = mb.Build("Water");
+            //mb.AddUV(new Vector2(0, data.InitialSize.y/2f));
+            //mb.AddUV(new Vector2(data.InitialSize.x/2f, data.InitialSize.y/2f));
+            //mb.AddUV(new Vector2(0, 0));
+            //mb.AddUV(new Vector2(data.InitialSize.x/2f, 0));
 
-            var mf = waterContainer.AddComponent<MeshFilter>();
-            var mr = waterContainer.AddComponent<MeshRenderer>();
+            //mb.AddTriangle(0);
+            //mb.AddTriangle(1);
+            //mb.AddTriangle(3);
+            //mb.AddTriangle(0);
+            //mb.AddTriangle(3);
+            //mb.AddTriangle(2);
 
-            var material = AssetDatabase.LoadAssetAtPath<Material>("Assets/Textures/WaterTemp.mat");
-            mr.material = material;
+            //var mesh = mb.Build("Water");
 
-            mr.shadowCastingMode = ShadowCastingMode.Off;
-            mr.receiveShadows = false;
-            mr.reflectionProbeUsage = ReflectionProbeUsage.Off;
-            mr.lightProbeUsage = LightProbeUsage.Off;
+            //var mf = waterContainer.AddComponent<MeshFilter>();
+            //var mr = waterContainer.AddComponent<MeshRenderer>();
+
+            //var material = AssetDatabase.LoadAssetAtPath<Material>("Assets/Textures/WaterTemp.mat");
+            //mr.material = material;
+
+            //mr.shadowCastingMode = ShadowCastingMode.Off;
+            //mr.receiveShadows = false;
+            //mr.reflectionProbeUsage = ReflectionProbeUsage.Off;
+            //mr.lightProbeUsage = LightProbeUsage.Off;
             
-            mf.sharedMesh = mesh;
+            //mf.sharedMesh = mesh;
         }
 
         public void LoadEffectPlaceholders(RoMapData mapData, RagnarokWorld worldData)

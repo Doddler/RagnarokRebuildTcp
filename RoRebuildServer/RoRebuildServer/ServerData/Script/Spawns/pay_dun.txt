@@ -21,8 +21,8 @@ MapConfig("pay_dun01")
 MapConfig("pay_dun02")
 {
 	CreateSpawn("SOLDIER_SKELETON", 15, 180000, 90000);
-	CreateSpawn("MUNAK", 40);
-	CreateSpawn("BON_GUN", 30);
+	CreateSpawn("MUNAK", 60);
+	CreateSpawn("BON_GUN", 40);
 	CreateSpawn("POPORING", 10);
 	CreateSpawn("ARCHER_SKELETON", 20, 180000, 90000);
 	CreateSpawn("HYDRA", 1, %(116, 205, 0, 0), 345000, 100000);
@@ -72,8 +72,8 @@ MapConfig("pay_dun02")
 MapConfig("pay_dun03")
 {
 	CreateSpawn("SOHEE", 50);
-	CreateSpawn("MUNAK", 3);
-	CreateSpawn("BON_GUN", 3);
+	CreateSpawn("MUNAK", 30);
+	CreateSpawn("BON_GUN", 20);
 	CreateSpawn("NINE_TAIL", 1);
 	CreateSpawn("NINE_TAIL", 1, 3600000, 1800000);
 	CreateSpawn("WHISPER_", 1, %(154, 112, 0, 0), 1800000);
@@ -122,7 +122,7 @@ MapConfig("pay_dun03")
 	CreateSpawn("MANDRAGORA", 1, %(179, 132, 0, 0), 300000, 100000);
 	CreateSpawn("MANDRAGORA", 1, %(179, 131, 0, 0), 300000, 100000);
 	CreateSpawn("MANDRAGORA", 1, %(179, 130, 0, 0), 300000, 100000);
-	CreateSpawn("GREATEST_GENERAL", 3);
+	CreateSpawn("GREATEST_GENERAL", 5);
 	CreateSpawn("RED_PLANT", 15, 180000, 90000);
 	CreateSpawn("WHITE_PLANT", 3, %(246, 56, 20, 20), 180000, 90000);
 	CreateSpawn("WHITE_PLANT", 2, %(52, 262, 10, 4), 180000, 90000);
@@ -131,19 +131,19 @@ MapConfig("pay_dun03")
 MapConfig("pay_dun04")
 {
 	CreateSpawn("DOKEBI", 40);
-	CreateSpawn("SOHEE", 5);
+	CreateSpawn("SOHEE", 3);
 	CreateSpawn("HORONG", 30);
-	CreateSpawn("MOONLIGHT", 1, 3600000, 7200000);
+	CreateSpawn("MOONLIGHT", 1, %(120, 120, 27, 27), 3600000, 7200000).LockToSpawnZone();
 	CreateSpawn("GREATEST_GENERAL", 11);
 	CreateSpawn("GREATEST_GENERAL", 1, %(123, 99, 0, 0), 3600000, 1800000);
 	CreateSpawn("GREATEST_GENERAL", 1, %(140, 114, 0, 0), 3600000, 1800000);
 	CreateSpawn("GREATEST_GENERAL", 1, %(154, 75, 0, 0), 600000, 300000);
 	CreateSpawn("GREATEST_GENERAL", 1, %(77, 163, 0, 0), 600000, 300000);
 	CreateSpawn("ARCHER_SKELETON", 15);
-	CreateSpawn("NINE_TAIL", 20, 800000, 400000);
-	CreateSpawn("SKELETON_GENERAL", 1, %(120, 115, 5, 5), 1800000, 1200000);
-	CreateSpawn("AM_MUT", 1, %(120, 115, 5, 5), 1800000, 1200000);
-	CreateSpawn("CAT_O_NINE_TAIL", 1, %(120, 115, 0, 0), 3600000, 7200000);
+	CreateSpawn("NINE_TAIL", 50, 60000, 90000);
+	CreateSpawn("SKELETON_GENERAL", 1, 120000, 180000);
+	CreateSpawn("AM_MUT", 1, 120000, 180000);
+	CreateSpawn("CAT_O_NINE_TAIL", 1, 300000, 1200000);
 	CreateSpawn("SOLDIER_SKELETON", 10);
 	CreateSpawn("SHINING_PLANT", 1, %(120, 120, 10, 10), 1800000, 900000);
 	CreateSpawn("SHINING_PLANT", 1, %(28, 110, 5, 5), 1800000, 900000);

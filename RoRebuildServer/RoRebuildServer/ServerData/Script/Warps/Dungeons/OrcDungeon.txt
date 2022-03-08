@@ -1,0 +1,12 @@
+
+Warp("orcsdun01", "orcdunwarp001", 32, 172, 3, 1, "in_orcs01", 30, 180);
+Warp("orcsdun01", "orcdunwarp002", 183, 8, 4, 2, "orcsdun02", 21, 185);
+Warp("orcsdun02", "orcdunwarp003", 21, 188, 8, 2, "orcsdun01", 183, 11);
+Warp("orcsdun02", "orcdunwarp004", 180, 15, 3, 1, "in_orcs01", 108, 112);
+Warp("in_orcs01", "orcdunwarp005", 29, 116, 4, 1, "gef_fild10", 137, 286);
+Warp("in_orcs01", "orcdunwarp006", 30, 154, 3, 2, "gef_fild10", 65, 335);
+Warp("in_orcs01", "orcdunwarp007", 30, 182, 2, 1, "orcsdun01", 32, 170);
+Warp("in_orcs01", "orcdunwarp008", 108, 86, 3, 2, "gef_fild10", 223, 203);
+Warp("in_orcs01", "orcdunwarp009", 108, 114, 2, 1, "orcsdun02", 180, 17);
+Warp("in_orcs01", "orcdunwarp010", 124, 171, 1, 3, "gef_fild10", 138, 329);
+Warp("in_orcs01", "orcdunwarp011", 162, 55, 4, 1, "gef_fild10", 214, 53);
