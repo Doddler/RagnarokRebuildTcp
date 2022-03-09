@@ -1,7 +1,0 @@
-﻿Key,Value
-IP,127.0.0.1
-Port,14248
-MaxConnections,100
-Debug,1
-WalkPathData,..\..\..\..\..\RebuildClient\Assets\Maps\exportdata
-//SingleMobTest,SOLDIER_SKELETON
