@@ -61,6 +61,7 @@ namespace Assets.Scripts.Network
 				PopupDialog = GameObject.Instantiate(Resources.Load<GameObject>("Dialog"));
 
 			PopupDialog.transform.SetParent(CameraFollower.Instance.UiCanvas.transform);
+			PopupDialog.transform.localScale = Vector3.one;
 
             PopupDialog.GetComponent<CharacterChat>().SetText(text);
             //textObject.text = text;

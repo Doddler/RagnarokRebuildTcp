@@ -80,7 +80,7 @@ namespace Assets.Scripts.MapEditor
 
             Debug.Log("Generating secondary UV set.");
 
-            Unwrapping.GenerateSecondaryUVSet(Mesh);
+            Unwrapping.GenerateSecondaryUVSet(Mesh, MeshBuilder.GetUnwrapParam());
 
             //Debug.Log(Mesh.uv2);
 
@@ -136,7 +136,7 @@ namespace Assets.Scripts.MapEditor
             if (Mesh == null || MapData.IsWalkTable)
                 return;
             
-            Unwrapping.GenerateSecondaryUVSet(Mesh);
+            Unwrapping.GenerateSecondaryUVSet(Mesh, MeshBuilder.GetUnwrapParam());
             Mesh.UploadMeshData(false);
 
             //Debug.Log(Mesh.uv2);

@@ -129,8 +129,8 @@ namespace Assets.Scripts.MapEditor.Editor
 	        RenderSettings.fog = true;
 	        RenderSettings.fogMode = FogMode.Linear;
 	        RenderSettings.fogColor = world.FogSetup.FogColor;
-	        RenderSettings.fogStartDistance = world.FogSetup.NearPlane * 45f;
-	        RenderSettings.fogEndDistance = world.FogSetup.FarPlane * 450f;
+	        RenderSettings.fogStartDistance = world.FogSetup.NearPlane * 55f;
+	        RenderSettings.fogEndDistance = world.FogSetup.FarPlane * 550f;
         }
 
         private void LoadWater()

@@ -1,4 +1,4 @@
-﻿﻿﻿#if UNITY
+﻿
 using UnityEngine;
 
 namespace Lidgren.Network
@@ -187,4 +187,3 @@ namespace Lidgren.Network
 		}
 	}
 }
-#endif

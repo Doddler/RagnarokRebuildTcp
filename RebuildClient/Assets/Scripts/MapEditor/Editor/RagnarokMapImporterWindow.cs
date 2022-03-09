@@ -237,9 +237,37 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 ImportMap(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
             }
-
 		}
 
+        [MenuItem("Ragnarok/Import Water")]
+		static void ImportWater()
+        {
+            var waterDir = Path.Combine(Application.dataPath, "Maps/Texture/Water/").Replace("\\", "/");
+			//Debug.Log(waterDir);
+
+            var baseFolder = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture\\워터").Replace("\\", "/");
+			//Debug.Log(baseFolder);
+
+            if (!Directory.Exists(waterDir))
+                Directory.CreateDirectory(waterDir);
+
+            var cnt = 0;
+
+            foreach (var path in Directory.GetFiles(baseFolder, "*.jpg"))
+            {
+                //Debug.Log(path);
+                var outdir = Path.Combine(waterDir, Path.GetFileName(path));
+                if (!File.Exists(outdir))
+                {
+                    File.Copy(path, outdir);
+					cnt++;
+                }
+            }
+		
+            if(cnt > 0)
+                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+		}
+        
         static void ImportMap(string f)
         {
             var saveDir = Path.Combine(Application.dataPath, "maps").Replace("\\", "/");
@@ -247,6 +275,8 @@ namespace Assets.Scripts.MapEditor.Editor
 			var lastDirectory = Path.GetDirectoryName(f);
 			var baseName = Path.GetFileNameWithoutExtension(f);
 			Debug.Log(f);
+
+            ImportWater();
 
 			var relativeDir = saveDir.Substring(saveDir.IndexOf("Assets/"));
 
@@ -268,7 +298,7 @@ namespace Assets.Scripts.MapEditor.Editor
 			var resourcePath = Path.Combine(lastDirectory, baseName + ".rsw");
 			if (File.Exists(resourcePath))
 			{
-				var world = RagnarokResourceLoader.LoadResourceFile(resourcePath);
+				var world = RagnarokResourceLoader.LoadResourceFile(resourcePath, data);
 				world.name = baseName + " world data";
 
 				var worldFolder = Path.Combine(relativeDir, "world");

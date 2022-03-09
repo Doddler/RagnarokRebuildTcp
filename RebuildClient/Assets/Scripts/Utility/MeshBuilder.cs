@@ -132,7 +132,7 @@ namespace Assets.Scripts.Utility
             mesh.OptimizeReorderVertexBuffer();
 #if UNITY_EDITOR
             if(buildSecondaryUVs)
-                Unwrapping.GenerateSecondaryUVSet(mesh);
+                Unwrapping.GenerateSecondaryUVSet(mesh, MeshBuilder.GetUnwrapParam());
 #endif
             return mesh;
         }
@@ -159,6 +159,18 @@ namespace Assets.Scripts.Utility
             return mesh;
         }
 
+#if UNITY_EDITOR
+        public static UnwrapParam GetUnwrapParam(float hardAngle = 88f, float packMargin = 20f, float angleError = 8f, float areaError = 15f)
+        {
+            return new UnwrapParam()
+            {
+                angleError = Mathf.Clamp(angleError, 1f, 75f) * .01f,
+                areaError = Mathf.Clamp(areaError, 1f, 75f) * .01f,
+                hardAngle = Mathf.Clamp(hardAngle, 0f, 180f),
+                packMargin = Mathf.Clamp(packMargin, 1f, 64) * .001f
+            };
+        }
+#endif
 
         public MeshBuilder()
         {

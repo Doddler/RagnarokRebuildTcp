@@ -32,11 +32,13 @@ namespace Assets.Scripts.MapEditor
         private RoMapData mapData;
 
         public RoMapChunk[] Chunks;
+        public RoMapWaterChunk[] WaterChunks;
         public int ChunkWidth;
         public int ChunkHeight;
 
         public Material MapMaterial;
         public Material ShadowMaterial;
+        public Material WaterMaterial;
 
         public EditMode CurrentMode;
         public bool DragSeparated;
@@ -60,6 +62,8 @@ namespace Assets.Scripts.MapEditor
         public RectInt SelectedRegion;
         public bool HasSelection;
         private SelectionMode selectionMode;
+
+        private RoWaterAnimator WaterAnimator;
 
         [NonSerialized] public Vector2Int HoveredTile;
         [NonSerialized] public bool CursorVisible;
@@ -88,6 +92,8 @@ namespace Assets.Scripts.MapEditor
                 TileSize = 1f;
             RebuildMesh();
             MakeStatic();
+
+            UpdateWater();
         }
 
         public void AdjustRendererInChildren(bool enabled)
@@ -145,13 +151,15 @@ namespace Assets.Scripts.MapEditor
             for (var i = 0; i < transform.childCount; i++)
             {
                 var child = transform.GetChild(i);
+                if (child.gameObject.name.Contains("Water"))
+                    continue;
                 child.gameObject.isStatic = true;
                 foreach (Transform t in child.transform)
                 {
-                    if(!MapData.IsWalkTable)
+                    if (!MapData.IsWalkTable)
                         t.gameObject.isStatic = true;
                     else
-                        GameObjectUtility.SetStaticEditorFlags(t.gameObject, StaticEditorFlags.BatchingStatic | StaticEditorFlags.NavigationStatic);
+                        GameObjectUtility.SetStaticEditorFlags(t.gameObject,  StaticEditorFlags.BatchingStatic | StaticEditorFlags.NavigationStatic);
                 }
             }
 
@@ -233,6 +241,37 @@ namespace Assets.Scripts.MapEditor
             }
 
             ProbeGroup.probePositions = probePositions.ToArray();
+        }
+
+        private void UpdateWater()
+        {
+            if (MapData.Water == null)
+                return;
+
+            if (WaterMaterial == null)
+            {
+                
+                WaterMaterial = new Material(Shader.Find("Unlit/RoWaterShader"));
+                if (MapData.Water.Images == null || MapData.Water.Images.Length <= 0)
+                {
+                    var w = MapData.Water;
+                    w.Images = new Texture2D[32];
+
+                    for (var i = 0; i < 32; i++)
+                        w.Images[i] = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Maps/texture/water/water{w.Type}{i:D2}.jpg");
+
+                    EditorUtility.SetDirty(MapData);
+                }
+
+                WaterMaterial.mainTexture = MapData.Water.Images[0];
+            }
+
+            if (WaterAnimator == null)
+            {
+                WaterAnimator = gameObject.AddComponent<RoWaterAnimator>();
+                WaterAnimator.Water = MapData.Water;
+                WaterAnimator.Material = WaterMaterial;
+            }
         }
 
         private void PrepareMaterial()
@@ -322,6 +361,7 @@ namespace Assets.Scripts.MapEditor
             var chunkYMax = (r.yMax-1) / ChunkSizeInTiles;
 
             PrepareMaterial();
+            UpdateWater();
 
             //Debug.Log($"Rebuilding mesh area {r} in chunks {chunkXMin},{chunkYMin} to {chunkXMax},{chunkYMax} (mesh size {MapData.Width},{MapData.Height})");
 
@@ -331,6 +371,14 @@ namespace Assets.Scripts.MapEditor
                 ChunkHeight = MapData.Height / ChunkSizeInTiles;
 
                 Chunks = new RoMapChunk[ChunkWidth * ChunkHeight];
+            }
+            
+            if (WaterChunks == null)
+            {
+                ChunkWidth = MapData.Width / ChunkSizeInTiles;
+                ChunkHeight = MapData.Height / ChunkSizeInTiles;
+
+                WaterChunks = new RoMapWaterChunk[ChunkWidth * ChunkHeight];
             }
 
             for (var x = chunkXMin; x <= chunkXMax; x++)
@@ -355,6 +403,34 @@ namespace Assets.Scripts.MapEditor
 
                     chunk.UpdateMaterial(MapMaterial, ShadowMaterial);
                     chunk.RebuildMeshData(TileSize, PaintEmptyTileColorsBlack);
+
+                    if (WaterChunks == null)
+                        continue;
+
+                    var wc = WaterChunks[x + y * ChunkWidth];
+
+                    if (wc == null)
+                    {
+                        var go = new GameObject($"WaterChunk{x}-{y}");
+                        wc = go.AddComponent<RoMapWaterChunk>();
+                        wc.hideFlags = HideFlags.NotEditable;
+                        WaterChunks[x + y * ChunkWidth] = wc;
+                        wc.Initialize(MapData, MapData.Water, WaterMaterial, new RectInt(x * ChunkSizeInTiles, y * ChunkSizeInTiles, ChunkSizeInTiles, ChunkSizeInTiles));
+                    }
+                    
+                    wc.transform.parent = gameObject.transform;
+                    wc.transform.localPosition = new Vector3(x * TileSize * ChunkSizeInTiles, 0, y * TileSize * ChunkSizeInTiles);
+
+                    wc.RebuildWaterMesh();
+
+                    if (wc.WaterTileCount <= 0)
+                    {
+                        //yeah we're just gonna yeet it if it's got no water in it
+                        //wc.gameObject.SetActive(false);
+                        GameObject.DestroyImmediate(wc.gameObject);
+                        WaterChunks[x + y * ChunkWidth] = null;
+                        
+                    }
                 }
             }
 

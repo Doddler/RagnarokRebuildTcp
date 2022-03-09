@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.MapEditor.Editor
@@ -12,8 +13,9 @@ namespace Assets.Scripts.MapEditor.Editor
 		private BinaryReader br;
 
 		private RagnarokWorld world;
+        private RoMapData mapData;
 
-		private GameObject parentBox;
+        private GameObject parentBox;
 
 		private void LoadModel(int index)
 		{
@@ -126,7 +128,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 		}
 
-		private RagnarokWorld Load(string path)
+		private RagnarokWorld Load(string path, RoMapData mapData)
 		{
 			var filename = path;
 			var basename = Path.GetFileNameWithoutExtension(filename);
@@ -134,6 +136,8 @@ namespace Assets.Scripts.MapEditor.Editor
 
 			fs = new FileStream(filename, FileMode.Open);
 			br = new BinaryReader(fs);
+
+            this.mapData = mapData;
 
 			var header = new string(br.ReadChars(4));
 			if (header != "GRSW")
@@ -186,6 +190,18 @@ namespace Assets.Scripts.MapEditor.Editor
 				}
 
 				world.Water = water;
+
+                mapData.Water = new MapWater()
+                {
+                    Type = water.Type,
+                    AnimSpeed = water.AnimSpeed,
+                    Level = water.Level,
+                    WaveHeight = water.WaveHeight,
+                    WavePitch = water.WavePitch,
+                    WaveSpeed = water.WaveSpeed
+                };
+
+				EditorUtility.SetDirty(mapData);
 
 				Debug.Log($"Water: Level {water.Level} Type: {water.Type} Height: {water.WaveHeight} Speed: {water.WaveSpeed} Pitch: {water.WavePitch} AnimSpeed: {water.AnimSpeed}");
 			}
@@ -291,10 +307,10 @@ namespace Assets.Scripts.MapEditor.Editor
 		}
 
 		//[MenuItem("Ragnarok/Import World Resource")]
-		public static RagnarokWorld LoadResourceFile(string path)
+		public static RagnarokWorld LoadResourceFile(string path, RoMapData mapData)
 		{
 			var loader = new RagnarokResourceLoader();
-			return loader.Load(path);
+            return loader.Load(path, mapData);
 
 			//DestroyImmediate(loader);
 		}

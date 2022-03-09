@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RagnarokLightingConfiguration
   m_EditorClassIdentifier: 
   _lightmapperBackend: 2
-  _mixedLightingMode: 2
+  _mixedLightingMode: 0
   UpdateAmbientLight: 0
   _ambientMode: 3
   _ambientIntensity: 1
@@ -55,13 +55,13 @@ MonoBehaviour:
   _reflectionIntensity: 1
   _enableAmbientOcclusion: 1
   _aoExponentDirect: 1
-  _aoExponentIndirect: 2
-  _aoMaxDistance: 8
+  _aoExponentIndirect: 1
+  _aoMaxDistance: 12
   _bakedGI: 1
   _directSamples: 32
   _indirectSamples: 256
   _environmentSamples: 256
-  _bakeResolution: 5
+  _bakeResolution: 4
   _padding: 2
   _maxAtlasSize: 1024
   _realtimeGI: 0

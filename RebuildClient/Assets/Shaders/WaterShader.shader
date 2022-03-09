@@ -1,8 +1,14 @@
-Shader "Unlit/WaterDepthShader"
+// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "Unlit/RoWaterShader"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _WaveHeight("Height", Float) = 0
+        _WaveSpeed("Speed", Float) = 0
+        _WavePitch("Pitch", Float) = 0
+
     }
     SubShader
     {
@@ -44,18 +50,34 @@ Shader "Unlit/WaterDepthShader"
             sampler2D _MainTex;
             //sampler2D _CameraDepthTexture;
             float4 _MainTex_ST;
+            float _WaveHeight;
+            float _WavePitch;
+            float _WaveSpeed;
 
             #define COMPUTE_DEPTH_01b -(view.z * _ProjectionParams.w)
             #define COMPUTE_DEPTH_01 -(UnityObjectToViewPos( v.vertex ).z * _ProjectionParams.w)
 
             v2f vert (appdata v)
             {
+                
+                float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                float4 vin = v.vertex;
+
+                float offset = (_Time.x * 1000 * _WaveSpeed) % 360 - 180;
+                float x = worldPos.x % 2.0;
+                float y = worldPos.z % 2.0;
+
+                float diff    = x < 1.0 ? y < 1.0 ? 1.0 : -1.0 : 0.0;
+                
+                worldPos.y += sin((3.1415926/180) * (offset + 0.5 * _WavePitch * (worldPos.x + worldPos.z + diff))) * _WaveHeight;
+
+                v.vertex = mul( unity_WorldToObject, worldPos);
+
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                UNITY_TRANSFER_FOG(o, UnityObjectToClipPos(vin));
 
-                float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 
                 float4 view = mul(UNITY_MATRIX_V, float4(worldPos, 1));
                 o.vertex = mul(UNITY_MATRIX_P, view);
