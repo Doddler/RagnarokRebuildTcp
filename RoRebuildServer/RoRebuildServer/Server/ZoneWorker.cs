@@ -89,6 +89,8 @@ internal class ZoneWorker : BackgroundService
                 else
                     await Task.Yield();
 
+                await NetworkManager.ScanAndDisconnect();
+
                 total += elapsed;
 
                 if (max < elapsed)
@@ -105,9 +107,7 @@ internal class ZoneWorker : BackgroundService
                     avg *= 1000d;
 
                     ServerLogger.Log($"[Program] {players} players. Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
-
-                    await NetworkManager.ScanAndDisconnect();
-
+                    
                     total = 0;
                     spos = 0;
                     max = 0;

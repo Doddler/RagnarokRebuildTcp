@@ -71,7 +71,7 @@ namespace Assets.Scripts.Sprites
 
         public float CurrentShade = 1f;
         public float TargetShade;
-        public float ShadeLevel = 0.7f;
+        public float ShadeLevel = 0.85f;
 
         public bool LockAngle;
 
@@ -265,11 +265,17 @@ namespace Assets.Scripts.Sprites
 
             ChangeMotion(CurrentMotion, true);
 
-            if (parent == null)
+            if (Parent == null)
             {
                 UpdateShade();
                 CurrentShade = TargetShade; //skip fade in at first spawn
             }
+            else
+            {
+                Parent.isDirty = true;
+                ChildUpdate();
+            }
+
 
             isDirty = true;
         }
@@ -350,6 +356,9 @@ namespace Assets.Scripts.Sprites
                 var sound = SpriteData.Sounds[frame.Sound];
                 if (sound != null && AudioSource != null)
                 {
+                    if(AudioSource.isPlaying)
+                        AudioSource.Stop();
+
                     AudioSource.clip = sound;
                     AudioSource.Play();
                 }
@@ -495,8 +504,12 @@ namespace Assets.Scripts.Sprites
 
                 var diff = parentAnchor - ourAnchor;
 
+                //Debug.Log($"Anchoring {name} to {Parent.name}: {ourAnchor} to {parentAnchor} ");
+
                 transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, 0f);
             }
+            //else
+            //    Debug.Log("Ignoring anchor on " + name);
         }
 
         private int GetFrameForHeadTurn(RoSpriteAnimator animator)
@@ -521,7 +534,7 @@ namespace Assets.Scripts.Sprites
                 var lightPower = (directionalLight.color.r + directionalLight.color.g + directionalLight.color.b) / 3f;
                 lightPower = (lightPower * directionalLight.intensity + 1) / 2f;
                 lightPower *= directionalLight.shadowStrength;
-                ShadeLevel = 1f - (0.35f * lightPower);
+                ShadeLevel = 1f - (0.25f * lightPower);
 
             }
 
@@ -549,6 +562,8 @@ namespace Assets.Scripts.Sprites
         public void UpdateColor()
         {
             var c = new Color(Color.r * CurrentShade, Color.g * CurrentShade, Color.b * CurrentShade, Alpha);
+
+
 
             mat.color = c;
             mat2.color = c;
@@ -622,6 +637,8 @@ namespace Assets.Scripts.Sprites
             if (Parent != null)
                 return;
 
+            //if (Type == SpriteType.Player)
+            //    isDirty = true; //haaaaaaaaaaaaaaaaaack for heads floating in webgl build for some reason
 
             UpdateShade();
             CurrentShade = Mathf.Lerp(CurrentShade, TargetShade, Time.deltaTime * 10f);

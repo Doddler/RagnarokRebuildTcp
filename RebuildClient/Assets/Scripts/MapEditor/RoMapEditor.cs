@@ -241,6 +241,8 @@ namespace Assets.Scripts.MapEditor
             }
 
             ProbeGroup.probePositions = probePositions.ToArray();
+
+            EditorUtility.SetDirty(ProbeGroup);
         }
 
         private void UpdateWater()

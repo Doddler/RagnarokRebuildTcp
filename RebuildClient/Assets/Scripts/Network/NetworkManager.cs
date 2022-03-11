@@ -13,6 +13,8 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
@@ -47,6 +49,9 @@ namespace Assets.Scripts.Network
 
         private Scene currentScene;
 
+        private AsyncOperationHandle spritePreload;
+        private AsyncOperationHandle uiPreload;
+
 
 #if DEBUG
         public static string SpawnMap = "";
@@ -68,6 +73,8 @@ namespace Assets.Scripts.Network
 #endif
 
             LeanTween.init(4000);
+            spritePreload = Addressables.DownloadDependenciesAsync($"Assets/Sprites/Monsters/poring.spr");
+            uiPreload = Addressables.DownloadDependenciesAsync($"gridicon");
 
 
             //client = new NetClient(config);
@@ -81,6 +88,7 @@ namespace Assets.Scripts.Network
             //var target = "ws://138.197.151.167:5000/ws";
             var target = "ws://127.0.0.1:5000/ws";
             StartConnectServer(target);
+            //StartCoroutine(GetServerPath());
             return;
 #endif
 
@@ -89,7 +97,7 @@ namespace Assets.Scripts.Network
 
         private IEnumerator GetServerPath()
         {
-            var www = new WWW("http://www.dodsrv.com/ragnarokdev/serverconfig.txt");
+            var www = new WWW("https://www.dodsrv.com/ragnarok/serverconfig.txt");
             yield return www;
 
             if (www.error != null)
@@ -98,6 +106,11 @@ namespace Assets.Scripts.Network
             }
             else
             {
+                Debug.Log("Connecting to server at: " + www.text);
+
+                while (!spritePreload.IsDone || !uiPreload.IsDone)
+                    yield return new WaitForSeconds(0.1f);
+
                 StartConnectServer(www.text);
             }
         }

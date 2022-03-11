@@ -22,7 +22,7 @@ internal class ScriptCompiler
 
         var walker = new ScriptTreeWalker();
 
-        var name = Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, inputPath).Replace(".", "_").Replace("\\", "_");
+        var name = Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, inputPath).Replace(".", "_").Replace("\\", "_").Replace("/", "_");
 
         var str = walker.BuildClass(name, parser);
 

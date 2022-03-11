@@ -30,6 +30,7 @@ namespace Assets.Scripts.Effects
                 Ring1Material = new Material(ShaderCache.Instance.AdditiveShader);
                 Ring1Material.mainTexture = Resources.Load<Texture2D>("ring_blue");
                 Ring1Material.color = new Color(170/255f, 170/255f, 1f, 1f);
+                Ring1Material.renderQueue = 3001;
             }
 
             if (Ring2Material == null)
@@ -37,12 +38,14 @@ namespace Assets.Scripts.Effects
                 Ring2Material = new Material(ShaderCache.Instance.AdditiveShader);
                 Ring2Material.mainTexture = Resources.Load<Texture2D>("ring_blue");
                 Ring2Material.color = new Color(100 / 255f, 100 / 255f, 1f, 1f);
+                Ring2Material.renderQueue = 3001;
             }
 
             if (CircleMaterial == null)
             {
                 CircleMaterial = new Material(ShaderCache.Instance.AlphaBlendParticleShader);
                 CircleMaterial.mainTexture = Resources.Load<Texture2D>("alpha_down");
+                CircleMaterial.renderQueue = 3001;
                 //CircleMaterial.color = new Color(1f, 1f, 1f, 1f);
             }
 

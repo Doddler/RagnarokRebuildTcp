@@ -31,7 +31,7 @@ Shader "Unlit/TestSpriteShader"
 			Lighting Off
 			ZWrite Off
 			Blend One OneMinusSrcAlpha
-			/*
+			
 
 			Pass {
 				ZWrite On
@@ -41,7 +41,8 @@ Shader "Unlit/TestSpriteShader"
 				#pragma vertex vert
 				#pragma fragment frag
 				#include "UnityCG.cginc"
-				#include "Billboard.cginc"
+
+				#pragma multi_compile _ WATER_BELOW WATER_ABOVE
 
 				struct v2f {
 					float4 pos : SV_POSITION;
@@ -63,12 +64,16 @@ Shader "Unlit/TestSpriteShader"
 
 				half4 frag(v2f i) : COLOR
 				{
+			#ifdef WATER_BELOW
+					clip(-1);
+			#endif
+
 					fixed4 c = tex2D(_MainTex, i.texcoord);
 					clip(c.a - 0.5);
-					return half4 (0,0,0,0);
+					return half4 (1,1,1,1);
 				}
 				ENDCG
-			}*/
+			}
 
 			Pass
 			{
@@ -185,10 +190,9 @@ Shader "Unlit/TestSpriteShader"
 					o.texcoord = v.texcoord;
 					o.color = v.color * _Color;
 
-					float4 tempVertex = o.vertex;
-					o.vertex = UnityObjectToClipPos(v.vertex);
-					UNITY_TRANSFER_FOG(o, o.vertex);
-					o.vertex = tempVertex;
+					float4 tempVertex = UnityObjectToClipPos(v.vertex);
+					UNITY_TRANSFER_FOG(o, tempVertex);
+				
 
 					o.screenPos = ComputeScreenPos(o.vertex);
 					o.screenPos.z = COMPUTE_DEPTH_01b;

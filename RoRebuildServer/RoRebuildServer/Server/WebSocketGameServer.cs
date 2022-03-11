@@ -22,10 +22,11 @@ internal class WebSocketGameServer
         var webSocketOptions = new WebSocketOptions()
         {
             KeepAliveInterval = TimeSpan.FromSeconds(30),
+            
         };
-
+        
         app.UseWebSockets(webSocketOptions);
-
+        
         app.Run(async (context) =>
         {
             if (context.Request.Path == "/ws")

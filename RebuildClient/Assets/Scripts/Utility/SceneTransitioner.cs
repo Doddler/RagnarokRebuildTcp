@@ -128,7 +128,7 @@ namespace Assets.Scripts.Utility
 				SceneManager.UnloadSceneAsync(unloadScene);
 
 			MonsterHoverText.text = "";
-
+			
 			var trans = Addressables.LoadSceneAsync($"Assets/Scenes/Maps/{newScene}.unity", LoadSceneMode.Additive);
 
 			//var trans = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);

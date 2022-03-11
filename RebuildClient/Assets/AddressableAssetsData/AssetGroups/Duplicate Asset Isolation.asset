@@ -17,56 +17,16 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 816189f5356a63f45864da4029e71f7b
   m_SerializeEntries:
-  - m_GUID: 0bd7fb84c7e49d947a220d2ae494bf87
-    m_Address: Assets/Sounds/se_prtbird_02.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 0daaacc2b4dd2b94da78f28f86185963
-    m_Address: Assets/Sounds/se_moc_wind_little.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 38914a4440d94a14e8aed43def6e0d92
-    m_Address: Assets/Sounds/se_girl_wowo.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 5a77360cff5f25d46be15b0ea5dcb8bf
-    m_Address: Assets/Sounds/se_wolf1.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 7107728c81a6bd444982f8353882e84d
     m_Address: Assets/Shaders/TestShader.shader
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 715ee00dde5bf12429dcc51ed1340c22
-    m_Address: Assets/Sounds/se_pay_grassbug05.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 75dfed39651b3624f922a08196b3e92a
     m_Address: Assets/Shaders/WalkableShader.shader
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 83904a60524584d43a119b268a7d1277
-    m_Address: Assets/Sounds/se_subterranean_waterdrop_03.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 83cbd46b2face9345a136cd3e95c8d1f
-    m_Address: Assets/Sounds/se_prtthewaterofabrook.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 8b94dfa573b4ad44a944eca96271d0b5
     m_Address: Assets/Shaders/UnlitTile.shader
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 937f8c7961dfc3d4e889e9fc5445b2e4
-    m_Address: Assets/Sounds/se_field_wind_04.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: bcde692f5f1e214418bad9395a3f3ab4
-    m_Address: Assets/Sounds/se_prtbird_01.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: dc2e9b1912b8a2e4486a4fd3225290f9
-    m_Address: Assets/Sounds/se_prtbird_05.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

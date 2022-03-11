@@ -373,7 +373,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 		private Material CreateMaterial()
 		{
-			var mat = new Material(Shader.Find("Standard (Specular setup)"));
+			var mat = new Material(Shader.Find("Custom/ObjectShader"));
 			mat.mainTexture = atlas;
 			mat.SetFloat("_Glossiness", 0);
 			mat.SetColor("_SpecColor", new Color(0, 0, 0, 1));

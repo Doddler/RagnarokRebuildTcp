@@ -199,6 +199,17 @@ namespace Assets.Scripts
                 ChangeStaticRecursive(t.gameObject, isStatic);
             }
         }
+
+        public static string GetGameObjectPath(this GameObject obj)
+        {
+            string path = "/" + obj.name;
+            while (obj.transform.parent != null)
+            {
+                obj = obj.transform.parent.gameObject;
+                path = "/" + obj.name + path;
+            }
+            return path;
+        }
     }
 
 

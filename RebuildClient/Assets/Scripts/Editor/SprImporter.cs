@@ -66,7 +66,7 @@ public class SprImporter : UnityEditor.AssetImporters.ScriptedImporter
                 var s = actLoader.Sounds[i];
                 if (s == "atk")
 	                continue;
-                var sPath = $"Assets/sounds/{s}";
+                var sPath = $"Assets/sounds/{s.Replace(".wav", ".ogg")}";
                 var sound = AssetDatabase.LoadAssetAtPath<AudioClip>(sPath);
                 if(sound == null)
                     Debug.Log("Could not find sound " + sPath + " for sprite " + name);
