@@ -49,3 +49,5 @@ RoRebuildServer/RoServerScript/obj/
 RoRebuildServer/DataToClientUtility/obj/
 RoRebuildServer/DataToClientUtility/bin/
 RoRebuildServer/RebuildSharedData/bin/
+RebuildClient/Assets/AddressableAssetsData/link.xml
+RebuildClient/Assets/AddressableAssetsData/link.xml.meta
