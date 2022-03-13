@@ -32,6 +32,8 @@ public class DamageIndicator : MonoBehaviour
 			sb.Append("<color=#FF0000>");
 
 		var useTrueType = CameraFollower.Instance.UseTTFDamage;
+        if (!int.TryParse(value, out var _))
+            useTrueType = true;
 
 		if (useTrueType)
 			sb.Append("<cspace=0.4>");
