@@ -1,0 +1,7 @@
+﻿Id,Name,ImportEffect,StrFile,SoundFile,PrefabName
+0,RedPotion,true,빨간포션,_heal_effect,
+1,LevelUp,true,angel,levelup,
+2,Resurrect,true,resurrection,priest_resurrection,
+3,Death,true,devil,,
+4,PortalEffect,false,,,Assets/Prefabs/PortalEffect.prefab
+5,Smoke,false,,,Assets/Effects/Smoke/SmokeEmitter.prefab

@@ -3,6 +3,7 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
@@ -53,6 +54,9 @@ public partial class Monster : IEntityAutoReset
 
     public static float MaxSpawnTimeInSeconds = 180;
 
+    public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
+    public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
+
 	public void Reset()
     {
         Entity = Entity.Null;
@@ -98,24 +102,20 @@ public partial class Monster : IEntityAutoReset
 
 	private void UpdateStats()
 	{
-		var b = CombatEntity.BaseStats;
-		var s = CombatEntity.Stats;
-
-		b.Level = MonsterBase.Level;
-		b.MaxHp = s.MaxHp = s.Hp = MonsterBase.HP;
-		b.MaxSp = s.MaxHp = MonsterBase.HP;
-		b.Atk = s.Atk = (short)MonsterBase.AtkMin;
-		b.Atk2 = s.Atk2 = (short)MonsterBase.AtkMax;
-		b.MoveSpeed = s.MoveSpeed = MonsterBase.MoveSpeed;
-		b.Range = s.Range = MonsterBase.Range;
-		b.SpriteAttackTiming = s.SpriteAttackTiming = MonsterBase.SpriteAttackTiming;
-		b.HitDelayTime = s.HitDelayTime = MonsterBase.HitTime;
-		b.AttackMotionTime = s.AttackMotionTime = MonsterBase.RechargeTime;
-
-		s.Def = MonsterBase.Def;
-		s.Vit = (short)MonsterBase.Vit;
-
-	}
+		SetStat(CharacterStat.Level, MonsterBase.Level);
+		SetStat(CharacterStat.Hp, MonsterBase.HP);
+		SetStat(CharacterStat.MaxHp, MonsterBase.HP);
+		SetStat(CharacterStat.Attack, MonsterBase.AtkMin);
+		SetStat(CharacterStat.Attack2, MonsterBase.AtkMax);
+        SetStat(CharacterStat.Range, MonsterBase.Range);
+        SetStat(CharacterStat.Def, MonsterBase.Def);
+        SetStat(CharacterStat.Vit, MonsterBase.Vit);
+        SetTiming(TimingStat.MoveSpeed, MonsterBase.MoveSpeed);
+		SetTiming(TimingStat.SpriteAttackTiming, MonsterBase.SpriteAttackTiming);
+		SetTiming(TimingStat.HitDelayTime, MonsterBase.HitTime);
+		SetTiming(TimingStat.AttackMotionTime, MonsterBase.RechargeTime);
+        Character.MoveSpeed = MonsterBase.MoveSpeed;
+    }
 
 	private bool ValidateTarget()
 	{
@@ -226,7 +226,7 @@ public partial class Monster : IEntityAutoReset
 	{
 		var list = EntityListPool.Get();
 
-		Character.Map.GatherPlayersInRange(Character, distance, list, true, true);
+		Character.Map.GatherEnemiesInRange(Character, distance, list, true, true);
 
 		if (list.Count == 0)
 		{
@@ -276,12 +276,12 @@ public partial class Monster : IEntityAutoReset
 
 		Character.LastAttacked = Entity.Null;
 
-		if (Character.Map != null && Character.Map.PlayerCount == 0)
-		{
-			nextAiUpdate = Time.ElapsedTimeFloat + 2f + GameRandom.NextFloat(0f, 1f);
-		}
-		else
-		{
+        if (Character.Map != null && Character.Map.PlayerCount == 0)
+        {
+            nextAiUpdate = Time.ElapsedTimeFloat + 2f + GameRandom.NextFloat(0f, 1f);
+        }
+        else
+        {
 			if (nextAiUpdate < Time.ElapsedTimeFloat)
 			{
 				if (nextAiUpdate + Time.DeltaTimeFloat < Time.ElapsedTimeFloat)

@@ -41,8 +41,26 @@ namespace Assets.Scripts.Objects
                 return val;
 
             var mat = new Material(Shader.Find("Ragnarok/EffectShader"));
-            mat.SetFloat("_SrcBlend", (float)BlendMode.One);
-            mat.SetFloat("_DstBlend", (float)BlendMode.One);
+
+            if (srcBlend == 5 && destBlend == 6)
+                destBlend = 10;
+            
+            if (srcBlend == 5 && destBlend == 7)
+            {
+                srcBlend = 1;
+                destBlend = 1;
+                mat.EnableKeyword("MULTIPLY_ALPHA");
+            }
+            else
+            {
+                Debug.Log("MultiplyAlpha ON");
+                mat.DisableKeyword("MULTIPLY_ALPHA");
+            }
+            
+
+
+            mat.SetFloat("_SrcBlend", (float)srcBlend);
+            mat.SetFloat("_DstBlend", (float)destBlend);
             mat.SetFloat("_ZWrite", 0);
             mat.SetFloat("_Cull", 0);
 

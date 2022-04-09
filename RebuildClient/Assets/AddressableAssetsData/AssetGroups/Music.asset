@@ -197,6 +197,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Music
+  - m_GUID: ac09a04c82354d4469bcd1f8a1e18d8b
+    m_Address: Assets/Music/48.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

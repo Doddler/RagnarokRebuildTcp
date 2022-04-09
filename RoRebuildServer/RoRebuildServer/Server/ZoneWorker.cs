@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime;
 using RoRebuildServer.Data;
+using RoRebuildServer.Database;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
@@ -30,6 +31,7 @@ internal class ZoneWorker : BackgroundService
         ServerLogger.Log("Ragnarok Rebuild Zone Server, starting up!");
 
         DistanceCache.Init();
+        RoDatabase.Initialize();
         DataManager.Initialize();
 
         if (DataManager.TryGetConfigInt("MaxSpawnTime", out var spawnTime))
@@ -37,12 +39,13 @@ internal class ZoneWorker : BackgroundService
             Monster.MaxSpawnTimeInSeconds = spawnTime / 1000f;
             ServerLogger.Log($"Max monster spawn time set to {Monster.MaxSpawnTimeInSeconds} seconds.");
         }
-
+        
         world = new World();
         NetworkManager.Init(world);
             
         Time.Start();
 
+        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
         GC.Collect();
         GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
 
@@ -51,7 +54,7 @@ internal class ZoneWorker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Initialize();
-
+        
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
@@ -80,7 +83,9 @@ internal class ZoneWorker : BackgroundService
                     await NetworkManager.ProcessOutgoingMessages();
                 
                 world.Update();
-                
+
+                await NetworkManager.ScanAndDisconnect();
+
                 //if we spent less than 10ms on this frame, sleep for the remaining time
                 var elapsed = Time.GetExactTime() - startTime;
                 var ms = (int)(elapsed * 1000) + 1;
@@ -88,9 +93,7 @@ internal class ZoneWorker : BackgroundService
                     await Task.Delay(10 - ms, stoppingToken);
                 else
                     await Task.Yield();
-
-                await NetworkManager.ScanAndDisconnect();
-
+                
                 total += elapsed;
 
                 if (max < elapsed)
@@ -127,12 +130,14 @@ internal class ZoneWorker : BackgroundService
         appLifetime.StopApplication();
     }
 
-    public override Task StopAsync(CancellationToken cancellationToken)
+    public override async Task StopAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Server shutting down at: {time}", DateTimeOffset.Now);
 
         NetworkManager.Shutdown();
+        //network manager shutdown should queue all players to save, so now we wait for save to finish
+        await RoDatabase.Shutdown();
 
-        return base.StopAsync(cancellationToken);
+        await base.StopAsync(cancellationToken);
     }
 }

@@ -1,11 +1,16 @@
-﻿using Microsoft.Extensions.ObjectPool;
+﻿using System.Threading.Channels;
+using Microsoft.Extensions.ObjectPool;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.Database;
+using RoRebuildServer.Database.Domain;
+using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -21,6 +26,8 @@ public class World
 
     public List<Instance> Instances = new();
     public ObjectPool<AreaOfEffect> AoEPool;
+
+    private Channel<MapMoveRequest> moveRequests;
 
     private Dictionary<int, Entity> entityList = new();
     //private Dictionary<string, int> mapIdLookup = new();
@@ -54,6 +61,7 @@ public class World
         }
 
         AoEPool = new DefaultObjectPool<AreaOfEffect>(new AreaOfEffectPoolPolicy(), 64);
+        moveRequests = Channel.CreateUnbounded<MapMoveRequest>(new UnboundedChannelOptions() {AllowSynchronousContinuations = false, SingleReader = true, SingleWriter = false});
     }
 
     public void FullyRemoveEntity(ref Entity entity, CharacterRemovalReason reason = CharacterRemovalReason.OutOfSight)
@@ -61,6 +69,14 @@ public class World
         removeList.Add(entity);
 
         var ch = entity.Get<WorldObject>();
+
+        if (ch.Type == CharacterType.Player)
+        {
+            var player = ch.Player;
+            player.SaveCharacterToData();
+            var req = new SaveCharacterRequest(player.Id, player.Name, ch.Map?.Name, ch.Position, player.CharData);
+            RoDatabase.EnqueueDbRequest(req);
+        }
 
         entityList.Remove(ch.Id);
         ch.Map?.RemoveEntity(ref entity, reason, true);
@@ -73,9 +89,12 @@ public class World
 
     public void Update()
     {
-        for(var i = 0; i < Instances.Count; i++)
-            Instances[i].Update();
+        //for(var i = 0; i < Instances.Count; i++)
+        //    Instances[i].Update();
 
+        Parallel.ForEach(Instances, instance => instance.Update());
+            
+        PerformMoves();
         PerformRemovals();
     }
 
@@ -168,21 +187,34 @@ public class World
 
         ce.Init(ref e, ch);
 
-        ce.BaseStats.Level = 1;
+        ce.SetStat(CharacterStat.Level, 1);
 
         player.Connection = connection;
         player.Entity = e;
         player.CombatEntity = ce;
         player.Character = ch;
-        player.IsMale = GameRandom.Next(0, 1) == 0;
-        player.HeadId = (byte)GameRandom.Next(0, 28);
-        player.Name = "Player " + GameRandom.Next(0, 999);
+        
+        if (connection.LoadCharacterRequest != null && connection.LoadCharacterRequest.HasCharacter)
+        {
+            player.Name = connection.LoadCharacterRequest.Name;
+            player.Id = connection.LoadCharacterRequest.Id;
+            var data = connection.LoadCharacterRequest.Data;
+
+            if (data != null)
+                Buffer.BlockCopy(data, 0, player.CharData, 0, data.Length);
+
+            player.ApplyDataToCharacter();
+        }
 
         player.Init();
 
+        if(ce.GetStat(CharacterStat.Hp) <= 0)
+            ce.FullRecovery(true, true);
+
+        ch.Name = player.Name;
+        connection.LoadCharacterRequest = null;
         connection.Player = player;
-
-
+        
         entityList.Add(ch.Id, e);
         //player.IsMale = false;
 
@@ -191,7 +223,9 @@ public class World
         //player.HeadId = 15;
 
         //map.SendAllEntitiesToPlayer(ref e);
-        map.AddEntity(ref e);
+        //map.AddEntity(ref e);
+
+        moveRequests.Writer.TryWrite(new MapMoveRequest(e, MoveRequestType.InitialSpawn, null, map, p));
         
         return e;
     }
@@ -321,6 +355,38 @@ public class World
         return false;
     }
 
+    public void PerformMoves()
+    {
+        while (moveRequests.Reader.TryRead(out var move))
+        {
+            if (!move.Player.IsAlive())
+                continue;
+            
+            var character = move.Player.Get<WorldObject>();
+
+            ServerLogger.Log($"Performing move on player {character.Name} to map {move.DestMap.Name}.");
+
+            if (character.Map != null)
+            {
+                character.Map.RemoveEntity(ref move.Player, CharacterRemovalReason.OutOfSight, character.Map.Instance != move.DestMap.Instance);
+            }
+            
+            character.ResetState();
+            character.Position = move.Position;
+            
+            move.DestMap.AddEntity(ref move.Player, character.Map?.Instance != move.DestMap.Instance);
+
+            var player = character.Player;
+            player.Connection.LastKeepAlive = Time.ElapsedTime; //reset tick time so they get 2 mins to load the map
+
+            if (move.MoveRequestType == MoveRequestType.InitialSpawn)
+                CommandBuilder.InformEnterServer(character, player);
+
+            if (move.MoveRequestType == MoveRequestType.MapMove)
+                CommandBuilder.SendChangeMap(character, player);
+        }
+    }
+
     public void MovePlayerWorldMap(ref Entity entity, WorldObject character, string mapName, Position newPosition)
     {
         if (!TryGetWorldMapByName(mapName, out var map) || map == null)
@@ -334,27 +400,27 @@ public class World
 
     public void MovePlayerMap(ref Entity entity, WorldObject character, Map map, Position newPosition)
     {
+        moveRequests.Writer.TryWrite(new MapMoveRequest(entity, MoveRequestType.MapMove, character.Map, map, newPosition));
+
         character.IsActive = false;
-        if (character.Map != null)
-        {
-            character.Map.RemoveEntity(ref entity, CharacterRemovalReason.OutOfSight, character.Map.Instance != map.Instance);
-        }
-
-        character.ResetState();
-        character.Position = newPosition;
+        //if (character.Map != null)
+        //    character.Map.RemoveEntity(ref entity, CharacterRemovalReason.OutOfSight, character.Map.Instance != map.Instance);
         
-        if (newPosition == Position.Zero)
-        {
-            map.FindPositionInRange(map.MapBounds, out var p);
-            character.Position = newPosition;
-        }
+        //character.ResetState();
+        //character.Position = newPosition;
         
-        map.AddEntity(ref entity, character.Map?.Instance != map.Instance);
+        //if (newPosition == Position.Zero)
+        //{
+        //    map.FindPositionInRange(map.MapBounds, out var p);
+        //    character.Position = newPosition;
+        //}
+        
+        //map.AddEntity(ref entity, character.Map?.Instance != map.Instance);
 
-        var player = entity.Get<Player>();
-        player.Connection.LastKeepAlive = Time.ElapsedTime; //reset tick time so they get 2 mins to load the map
+        //var player = entity.Get<Player>();
+        //player.Connection.LastKeepAlive = Time.ElapsedTime; //reset tick time so they get 2 mins to load the map
 
-        CommandBuilder.SendChangeMap(character, player);
+        //CommandBuilder.SendChangeMap(character, player);
     }
 
 

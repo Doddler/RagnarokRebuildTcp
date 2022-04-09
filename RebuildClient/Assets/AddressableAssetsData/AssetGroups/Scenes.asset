@@ -662,6 +662,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
+  - m_GUID: 4c3a9d9e9ddaa2748984a5d2b3edfec1
+    m_Address: Assets/Scenes/Maps/in_orcs01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 911f3e509ba8eca46819232d50c2e217
+    m_Address: Assets/Scenes/Maps/orcsdun01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: c4f2a1f7ead1be34aa5ebe5f9caed122
+    m_Address: Assets/Scenes/Maps/orcsdun02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
 
@@ -28,7 +29,7 @@ public class PacketRespawn : IClientPacketHandler
         ch.SpawnImmunity = 5f;
 
         ce.ClearDamageQueue();
-        ce.Stats.Hp = ce.Stats.MaxHp;
+        ce.SetStat(CharacterStat.Hp, ce.GetStat(CharacterStat.MaxHp));
 
         CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
 

@@ -3,6 +3,7 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 
@@ -62,11 +63,16 @@ public static class DataManager
         return false;
     }
 
+    public static void RegisterItem(string name, ItemInteractionBase item)
+    {
+        
+    }
+
     public static void RegisterNpc(string name, string map, string sprite, int x, int y, int facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase npcBehavior)
     {
         if (!MonsterCodeLookup.TryGetValue(sprite, out var md))
         {
-            ServerLogger.LogError($"Could not load NPC '{name}' as the sprite {sprite} was not recognized by teh server.");
+            ServerLogger.LogError($"Could not load NPC '{name}' as the sprite {sprite} was not recognized by the server.");
             return;
         }
 

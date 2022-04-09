@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Assets.Scripts.Objects;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
@@ -59,6 +60,8 @@ namespace Assets.Scripts.Editor
             entry.DstAlpha = br.ReadInt32();
             entry.MTPreset = br.ReadInt32();
 
+            //Debug.Log($"{entry.SrcAlpha} {entry.DstAlpha}");
+
             return entry;
         }
 
@@ -95,11 +98,14 @@ namespace Assets.Scripts.Editor
             return layer;
         }
 
-        public void Load(string path)
+        public StrAnimationFile Load(string path, [NotNull] string newName = null)
         {
             effectPath = path;
             baseName = Path.GetFileNameWithoutExtension(path);
             basePath = Path.GetDirectoryName(path);
+
+            if (newName != null)
+                baseName = newName;
 
 			anim = ScriptableObject.CreateInstance(typeof(StrAnimationFile)) as StrAnimationFile;
 
@@ -130,7 +136,9 @@ namespace Assets.Scripts.Editor
             AssetDatabase.CreateAsset(anim, Path.Combine("Assets/Effects/", baseName + ".asset"));
 
             fs.Close();
-		}
+
+            return anim;
+        }
 
         public void MakeAtlas(string path)
         {

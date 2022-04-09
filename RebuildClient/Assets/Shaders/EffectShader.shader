@@ -36,6 +36,7 @@
             #pragma fragment frag
             // make fog work
             #pragma multi_compile_fog
+            #pragma shader_feature MULTIPLY_ALPHA
 
             #include "UnityCG.cginc"
 
@@ -73,9 +74,12 @@
                 // apply fog
                 //UNITY_APPLY_FOG(i.fogCoord, col);
             
-            float4 c = _Color * float4(0.5, 0.5, 0.5, 0.5);
-
-                return col * c * _Color.a;
+                float4 c = _Color;
+#if MULTIPLY_ALPHA
+                return col * c * c.a;
+#else
+                return col * c;
+#endif
             }
             ENDCG
         }

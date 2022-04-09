@@ -1,0 +1,8 @@
+﻿
+RecoveryItem("Red_Potion", 45, 65, 0, 0);
+
+//Item("Red_Potion")
+//{
+//OnUse:
+//	Heal(45, 65);
+//}

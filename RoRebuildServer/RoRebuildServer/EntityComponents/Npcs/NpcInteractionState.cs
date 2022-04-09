@@ -14,8 +14,10 @@ public class NpcInteractionState
     public int Step;
     public int InteractionResult;
 
-    public int[] ValuesInt = new int[5];
-    public string?[] ValuesString = new string[5];
+    public const int StorageCount = 5;
+
+    public int[] ValuesInt = new int[StorageCount];
+    public string?[] ValuesString = new string[StorageCount];
 
     public void Reset()
     {

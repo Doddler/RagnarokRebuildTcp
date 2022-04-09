@@ -232,9 +232,9 @@ public class WorldObject : IEntityAutoReset
 
         //we won't interrupt the next step we are currently taking, so append it to the start of our new path.
         if (hasOld)
-            len = Pathfinder.GetPathWithInitialStep(Map.WalkData, Position, oldNext, target, WalkPath, range);
+            len = Map.Instance.Pathfinder.GetPathWithInitialStep(Map.WalkData, Position, oldNext, target, WalkPath, range);
         else
-            len = Pathfinder.GetPath(Map.WalkData, Position, target, WalkPath, range);
+            len = Map.Instance.Pathfinder.GetPath(Map.WalkData, Position, target, WalkPath, range);
 
         if (len == 0)
             return false;
@@ -284,7 +284,7 @@ public class WorldObject : IEntityAutoReset
     {
 #if DEBUG
         if(Time.UpdateCount == LastUpdate)
-            ServerLogger.LogError($"Entity {Entity} name {Name} is updating twice in one frame!");
+            ServerLogger.LogError($"Entity {Entity} name {Name} is updating twice in one frame! Current update tick is: {Time.UpdateCount}");
 
         LastUpdate = Time.UpdateCount;
 #endif

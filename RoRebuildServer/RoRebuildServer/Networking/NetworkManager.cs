@@ -1,15 +1,20 @@
-﻿using System.Diagnostics;
+﻿using System.Buffers;
+using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Reflection;
 using System.Text;
 using System.Threading.Channels;
 using Lidgren.Network;
 using Microsoft.Extensions.ObjectPool;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.Database;
+using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
@@ -87,9 +92,11 @@ public class NetworkManager
         if (!IsSingleThreadMode)
         {
             ServerLogger.Log("Starting messaging thread...");
-            outboundMessageThread = new Thread(ProcessOutgoingMessagesThread);
-            outboundMessageThread.Priority = ThreadPriority.AboveNormal;
-            outboundMessageThread.Start();
+            //outboundMessageThread = new Thread(ProcessOutgoingMessagesThread);
+            //outboundMessageThread.Priority = ThreadPriority.AboveNormal;
+            //outboundMessageThread.Start();
+            //ProcessOutgoingMessagesThread();
+            Task.Run(ProcessOutgoingMessagesLoop).ConfigureAwait(false);
         }
         else
             ServerLogger.Log("Starting in single thread mode.");
@@ -190,6 +197,10 @@ public class NetworkManager
         }
     }
 
+    public static void QueueDisconnect(NetworkConnection connection)
+    {
+        connection.CancellationSource.Cancel();
+    }
 
     public static void DisconnectPlayer(NetworkConnection connection)
     {
@@ -289,10 +300,10 @@ public class NetworkManager
         }
     }
 
-    private static void ProcessOutgoingMessagesThread()
-    {
-        Task.Run(ProcessOutgoingMessagesLoop);
-    }
+    //private static void ProcessOutgoingMessagesThread()
+    //{
+    //    Task.Run(ProcessOutgoingMessagesLoop).ConfigureAwait(false);
+    //}
     private static async Task ProcessOutgoingMessagesLoop()
     {
         while (!IsRunning)
@@ -415,7 +426,45 @@ public class NetworkManager
         return msg;
     }
 
+    private static bool GetCharId(string connectString, out Guid id)
+    {
+        var sp = connectString.AsSpan(7);
+        return Guid.TryParse(sp, out id);
+    }
 
+    private static async Task<LoadCharacterRequest> LoadOrCreateCharacter(string connectString)
+    {
+        ServerLogger.Log("Received connection with connection string: " + connectString);
+        if (connectString.Length > 7)
+        {
+            if (GetCharId(connectString, out var id))
+            {
+                var req = new LoadCharacterRequest(id);
+                await RoDatabase.ExecuteDbRequestAsync(req);
+
+                if (req.HasCharacter)
+                {
+                    ServerLogger.Log($"Client has an existing character! Character name {req.Name}.");
+                    return req;
+                }
+            }
+        }
+
+        var name = "Player " + GameRandom.Next(0, 999);
+
+        var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
+
+        var newReq = new SaveCharacterRequest(Guid.Empty, name, null, Position.Invalid, charData);
+        await RoDatabase.ExecuteDbRequestAsync(newReq);
+
+        ArrayPool<int>.Shared.Return(charData, true);
+
+        var loadReq = new LoadCharacterRequest(newReq.Id);
+        await RoDatabase.ExecuteDbRequestAsync(loadReq);
+
+        return loadReq;
+    }
+    
     public static async Task ReceiveConnection(HttpContext context, WebSocket socket)
     {
         var buffer = new byte[1024 * 4];
@@ -437,11 +486,13 @@ public class NetworkManager
 
         var txt = Encoding.UTF8.GetString(new ReadOnlySpan<byte>(buffer, 0, result.Count));
 
-        if (txt != "Connect")
+        ServerLogger.Log(txt);
+
+        if (!txt.StartsWith("Connect"))
         {
             ServerLogger.Log("Client failed to connect properly, disconnecting...");
             timeoutToken = new CancellationTokenSource(15000).Token;
-            await socket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+            await socket.CloseAsync(WebSocketCloseStatus.ProtocolError, "Server did not have valid connection string.", CancellationToken.None);
             return;
         }
 
@@ -453,6 +504,10 @@ public class NetworkManager
 
         ServerLogger.Log($"We have a new connection!");
 
+        var hasCharacter = false;
+
+        playerConnection.LoadCharacterRequest = await LoadOrCreateCharacter(txt);
+        
         clientLock.EnterWriteLock();
 
         try
@@ -480,7 +535,7 @@ public class NetworkManager
             }
             catch (OperationCanceledException)
             {
-                ServerLogger.Log($"Client has timed out, disconnecting player.");
+                ServerLogger.Log($"Client connection closed or timed out, disconnecting player.");
                 exit = true;
             }
             catch (Exception e)

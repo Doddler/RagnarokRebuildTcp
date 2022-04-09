@@ -20,6 +20,50 @@ class Program
         WriteMonsterData();
         WriteServerConfig();
         WriteMapList();
+        WriteEffectsList();
+    }
+
+    private static void WriteEffectsList()
+    {
+        var inPath = Path.Combine(path, "Effects.csv");
+        var tempPath = Path.Combine(Path.GetTempPath(), @"Effects.csv"); //copy in case file is locked
+        File.Copy(inPath, tempPath, true);
+
+        using (var tr = new StreamReader(tempPath) as TextReader)
+        using (var csv = new CsvReader(tr, CultureInfo.CurrentCulture))
+        {
+
+            var entries = csv.GetRecords<CsvEffects>().ToList();
+
+            
+            var effectList = new EffectTypeList();
+            effectList.Effects = new List<EffectTypeEntry>();
+
+            foreach (var e in entries)
+            {
+                effectList.Effects.Add(new EffectTypeEntry()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    ImportEffect = e.ImportEffect,
+                    StrFile = e.StrFile,
+                    SoundFile = e.SoundFile,
+                    PrefabName = e.PrefabName
+                });
+            }
+
+
+            JsonSerializerOptions options = new JsonSerializerOptions();
+            options.SetupExtensions();
+
+            var json = JsonSerializer.Serialize(effectList, options);
+
+            var effectDir = Path.Combine(outPath, "effects.json");
+
+            File.WriteAllText(effectDir, json);
+        }
+
+        File.Delete(tempPath);
     }
 
 

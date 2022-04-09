@@ -15,6 +15,6 @@ public struct SingleUIntUnion
     /// Value as an unsigned 32 bit integer
     /// </summary>
     [FieldOffset(0)]
-    [CLSCompliant(false)]
+    //[CLSCompliant(false)]
     public uint UIntValue;
 }

@@ -13,19 +13,24 @@ namespace RoRebuildServer.EntityComponents;
 public class CombatEntity : IEntityAutoReset
 {
     public Entity Entity;
-    public WorldObject Character;
+    public WorldObject Character = null!;
 
     public int Faction;
     public int Party;
+    
+    [EntityIgnoreNullCheck]
+    private int[] statData = new int[(int)CharacterStat.CharacterStatsMax];
+    
+    [EntityIgnoreNullCheck]
+    private float[] timingData = new float[(int)TimingStat.TimingStatsMax];
 
     [EntityIgnoreNullCheck]
-    public BaseStats BaseStats;
+    public List<DamageInfo> DamageQueue = null!;
 
-    [EntityIgnoreNullCheck]
-    public CurrentStats Stats;
-
-    [EntityIgnoreNullCheck]
-    public List<DamageInfo>? DamageQueue;
+    public int GetStat(CharacterStat type) => statData[(int)type];
+    public float GetTiming(TimingStat type) => timingData[(int)type];
+    public void SetStat(CharacterStat type, int val) => statData[(int)type] = val;
+    public void SetTiming(TimingStat type, float val) => timingData[(int)type] = val;
 
     public void Reset()
     {
@@ -33,6 +38,58 @@ public class CombatEntity : IEntityAutoReset
         Character = null!;
         Faction = -1;
         Party = -1;
+
+        for(var i = 0; i < statData.Length; i++)
+            statData[i] = 0;
+    }
+
+    public void Heal(int hp, int hp2 = -1)
+    {
+        if (hp2 != -1 && hp2 > hp)
+            hp = GameRandom.Next(hp, hp2);
+
+        var curHp = GetStat(CharacterStat.Hp);
+        var maxHp = GetStat(CharacterStat.MaxHp);
+
+        if(curHp + hp > maxHp)
+            hp = maxHp - curHp;
+
+        SetStat(CharacterStat.Hp, curHp + hp);
+
+        if (Character.Map == null)
+            return;
+
+        Character.Map.GatherPlayersForMultiCast(ref Entity, Character);
+        CommandBuilder.SendHealMulti(Character, hp, HealType.Item);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void FullRecovery(bool hp, bool mp)
+    {
+        if(hp)
+            SetStat(CharacterStat.Hp, GetStat(CharacterStat.MaxHp));
+        if(mp)
+            SetStat(CharacterStat.Mp, GetStat(CharacterStat.MaxMp));
+    }
+
+    public bool IsValidAlly(CombatEntity source)
+    {
+        if (this == source)
+            return false;
+        if (Entity.IsNull() || !Entity.IsAlive())
+            return false;
+        if (!Character.IsActive || Character.State == CharacterState.Dead)
+            return false;
+        if (source.Character.Map != Character.Map)
+            return false;
+
+        if (source.Entity.Type != Character.Entity.Type)
+            return false;
+
+        if (Character.ClassId >= 1000 && Character.ClassId < 4000)
+            return false; //hack
+
+        return true;
     }
 
     public bool IsValidTarget(CombatEntity source)
@@ -49,8 +106,17 @@ public class CombatEntity : IEntityAutoReset
             return false;
         if (Character.SpawnImmunity > 0f)
             return false;
-        if (source.Character.ClassId == Character.ClassId)
+        //if (source.Character.ClassId == Character.ClassId)
+        //    return false;
+        if (source.Entity.Type == EntityType.Player && Character.Entity.Type == EntityType.Player)
             return false;
+
+        //if (source.Entity.Type == EntityType.Player)
+        //    return false;
+
+        if (source.Entity.Type == EntityType.Monster && Character.Entity.Type == EntityType.Monster)
+            return false;
+
         if (Character.ClassId >= 1000 && Character.ClassId < 4000)
             return false; //hack
         //if (source.Party == Party)
@@ -81,42 +147,51 @@ public class CombatEntity : IEntityAutoReset
         var mon = Character.Entity.Get<Monster>();
         var exp = mon.MonsterBase.Exp;
 
-        Character.Map.GatherPlayersInRange(Character, 18, list, false);
+        if (Character.Map == null)
+            return;
+
+        Character.Map.GatherPlayersInRange(Character, 12, list, false);
         Character.Map.GatherPlayersForMultiCast(ref Entity, Character);
 
         foreach (var e in list)
         {
             if (e.IsNull() || !e.IsAlive())
                 continue;
-            var ce = e.Get<CombatEntity>();
-
-            if (ce == null || !ce.Character.IsActive)
-                continue;
-
-            if (ce.BaseStats.Level >= 99)
-                continue;
 
             var player = e.Get<Player>();
+            
+            var level = player.GetData(PlayerStat.Level);
+            
+            if (level >= 99)
+                continue;
 
-            ce.BaseStats.Experience += exp;
-
-            var requiredExp = DataManager.ExpChart.ExpRequired[ce.BaseStats.Level];
+            var curExp = player.GetData(PlayerStat.Experience);
+            curExp += exp;
+            
+            var requiredExp = DataManager.ExpChart.ExpRequired[level];
 
             CommandBuilder.SendExpGain(player, exp);
 
-            if (ce.BaseStats.Experience < requiredExp)
-                continue;
-            
-            while (ce.BaseStats.Experience >= requiredExp && ce.BaseStats.Level < 99)
+            if (curExp < requiredExp)
             {
-                ce.BaseStats.Experience -= requiredExp;
+                player.SetData(PlayerStat.Experience, curExp);
+                continue;
+            }
+
+            while (curExp >= requiredExp && level < 99)
+            {
+                curExp -= requiredExp;
 
                 player.LevelUp();
+                level++;
 
-                if (ce.BaseStats.Level < 99)
-                    requiredExp = DataManager.ExpChart.ExpRequired[ce.BaseStats.Level];
+                if (level < 99)
+                    requiredExp = DataManager.ExpChart.ExpRequired[level];
             }
-            CommandBuilder.LevelUp(player.Character, ce.BaseStats.Level);
+
+            player.SetData(PlayerStat.Experience, curExp);
+
+            CommandBuilder.LevelUp(player.Character, level);
             CommandBuilder.SendHealMulti(player.Character, 0, HealType.None);
         }
 
@@ -132,14 +207,14 @@ public class CombatEntity : IEntityAutoReset
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling PerformMeleeAttack.");
 #endif
         if (Character.AttackCooldown + Time.DeltaTimeFloat + 0.005f < Time.ElapsedTimeFloat)
-            Character.AttackCooldown = Time.ElapsedTimeFloat + Stats.AttackMotionTime; //they are consecutively attacking
+            Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackMotionTime); //they are consecutively attacking
         else
-            Character.AttackCooldown += Stats.AttackMotionTime;
+            Character.AttackCooldown += GetTiming(TimingStat.AttackMotionTime);
 
         Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
-
-        var atk1 = Stats.Atk;
-        var atk2 = Stats.Atk2;
+        
+        var atk1 = GetStat(CharacterStat.Attack);
+        var atk2 = GetStat(CharacterStat.Attack2);
         if (atk1 <= 0)
             atk1 = 1;
         if (atk2 < atk1)
@@ -147,11 +222,9 @@ public class CombatEntity : IEntityAutoReset
 
         var baseDamage = (short)GameRandom.Next(atk1, atk2);
 
-        var defCut = 2f;
-        if (target.Stats.Def > 99)
-            defCut = 1f;
+        var defCut = MathF.Pow(0.99f, target.GetStat(CharacterStat.Def) - 1);
 
-        var damage = (short)(baseDamage * (1 - (target.Stats.Def / 100f / defCut)) - target.Stats.Vit * 0.7f);
+        var damage = (short)(baseDamage * defCut - GetStat(CharacterStat.Vit) * 0.7f);
         if (damage < 1)
             damage = 1;
 
@@ -162,7 +235,7 @@ public class CombatEntity : IEntityAutoReset
             KnockBack = 0,
             Source = Entity,
             Target = target.Entity,
-            Time = Time.ElapsedTimeFloat + Stats.SpriteAttackTiming
+            Time = Time.ElapsedTimeFloat + GetTiming(TimingStat.SpriteAttackTiming)
         };
 
         //ServerLogger.Log($"{aiCooldown} {character.AttackCooldown} {angle} {dir}");
@@ -173,13 +246,13 @@ public class CombatEntity : IEntityAutoReset
 
         target.QueueDamage(di);
 
-        if (target.Character.Type == CharacterType.Monster && di.Damage > target.Stats.Hp)
+        if (target.Character.Type == CharacterType.Monster && di.Damage > target.GetStat(CharacterStat.Hp))
         {
             var mon = target.Entity.Get<Monster>();
-            mon.AddDelay(Stats.SpriteAttackTiming); //make sure it stops acting until it dies
+            mon.AddDelay(GetTiming(TimingStat.SpriteAttackTiming) * 2); //make sure it stops acting until it dies
         }
 
-        if (Character.Type == CharacterType.Player && di.Damage > target.Stats.Hp)
+        if (Character.Type == CharacterType.Player && di.Damage > target.GetStat(CharacterStat.Hp))
         {
             var player = Entity.Get<Player>();
             player.ClearTarget();
@@ -208,9 +281,11 @@ public class CombatEntity : IEntityAutoReset
                 Character.State = CharacterState.Idle;
 
             //inform clients the player was hit and for how much
+            var delayTime = GetTiming(TimingStat.HitDelayTime);
+
             Character.Map.GatherPlayersForMultiCast(ref Entity, Character);
-            if (Character.AddMoveDelay(Stats.HitDelayTime))
-                CommandBuilder.SendHitMulti(Character, Stats.HitDelayTime, di.Damage);
+            if (Character.AddMoveDelay(delayTime))
+                CommandBuilder.SendHitMulti(Character, delayTime, di.Damage);
             else
                 CommandBuilder.SendHitMulti(Character, -1, di.Damage);
             CommandBuilder.ClearRecipients();
@@ -220,9 +295,12 @@ public class CombatEntity : IEntityAutoReset
                 Character.LastAttacked = di.Source;
 
             var ec = di.Target.Get<CombatEntity>();
-            ec.Stats.Hp -= di.Damage;
-
-            if (ec.Stats.Hp <= 0)
+            var hp = GetStat(CharacterStat.Hp);
+            hp -= di.Damage;
+            
+            SetStat(CharacterStat.Hp, hp);
+            
+            if (hp <= 0)
             {
                 if (Character.Type == CharacterType.Monster)
                 {
@@ -236,7 +314,7 @@ public class CombatEntity : IEntityAutoReset
                 if (Character.Type == CharacterType.Player)
                 {
                     var player = Character.Entity.Get<Player>();
-                    ec.Stats.Hp = 0;
+                    SetStat(CharacterStat.Hp, 0);
                     player.Die();
                     return;
                 }
@@ -248,15 +326,13 @@ public class CombatEntity : IEntityAutoReset
     {
         Entity = e;
         Character = ch;
-        BaseStats = new BaseStats();
-        Stats = new CurrentStats();
-
+        
         if(DamageQueue == null)
             DamageQueue = new List<DamageInfo>(4);
 
         DamageQueue.Clear();
 
-        Stats.Range = 2;
+        SetStat(CharacterStat.Range, 2);
     }
 
     public void Update()

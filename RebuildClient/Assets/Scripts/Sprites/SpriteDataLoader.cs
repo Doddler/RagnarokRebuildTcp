@@ -276,9 +276,9 @@ namespace Assets.Scripts.Sprites
 
 		private ServerControllable PrefabMonster(MonsterClassData mData, ref MonsterSpawnParameters param)
 		{
-			var prefabName = mData.SpriteName.Replace(".prefab", "");
-			var split = prefabName.Split('/');
-			prefabName = split.Last();
+			var prefabName = mData.SpriteName; //.Replace(".prefab", "");
+			//var split = prefabName.Split('/');
+			//prefabName = split.Last();
 
             var obj = new GameObject(prefabName);
 

@@ -8,14 +8,14 @@ namespace RoRebuildServer.EntityComponents;
 public class Npc
 {
     public Entity Entity;
-    public string Name;
+    public string Name = null!;
     public bool HasTouch;
     public bool HasInteract;
     
-    public int[] ValuesInt;
-    public string[] ValuesString;
+    public int[] ValuesInt = new int[NpcInteractionState.StorageCount];
+    public string[] ValuesString = new string[NpcInteractionState.StorageCount];
 
-    public NpcBehaviorBase Behavior;
+    public NpcBehaviorBase Behavior = null!;
 
     public void Update()
     {

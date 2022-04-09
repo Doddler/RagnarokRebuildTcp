@@ -6,12 +6,12 @@ public class GameRandom
 {
     private static readonly Random _global = new Random();
     private static int _seed = 0;
+    [ThreadStatic]
     private static Random? local;
 
     public static int Next() => Next(0, Int32.MaxValue);
     public static int Next(int max) => Next(0, max);
-
-
+    
     public static short NextShort() => (short)Next(0, short.MaxValue);
     public static short NextShort(short max) => (short)Next(0, max);
     public static short NextShort(short min, short max) => (short)Next(min, max);
@@ -24,18 +24,18 @@ public class GameRandom
 
     private static void Initialize()
     {
-        //lock (_global)
-        //{
-        //	if (_local == null)
-        //	{
-        //		if (_seed == 0)
-        _seed = _global.Next();
-        //		else
-        //			Interlocked.Increment(ref _seed);
+        lock (_global)
+        {
+            if (local == null)
+            {
+                if (_seed == 0)
+                    _seed = _global.Next();
+                else
+                    Interlocked.Increment(ref _seed);
 
-        local = new Random(_seed);
-        //	}
-        //}
+                local = new Random(_seed);
+            }
+        }
     }
 
     public static int Next(int min, int max)

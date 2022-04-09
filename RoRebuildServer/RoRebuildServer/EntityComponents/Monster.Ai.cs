@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
@@ -22,8 +23,9 @@ public partial class Monster
 			case MonsterInputCheck.InReachedTarget: return InReachedTarget();
 			case MonsterInputCheck.InTargetSearch: return InTargetSearch();
 			case MonsterInputCheck.InAttackRange: return InAttackRange();
+			case MonsterInputCheck.InNeedAttackingAdjust: return InNeedAttackingAdjust();
 			case MonsterInputCheck.InAttackDelayEnd: return InAttackDelayEnd();
-			case MonsterInputCheck.InAttacked: return InAttacked();
+            case MonsterInputCheck.InAttacked: return InAttacked();
 			case MonsterInputCheck.InDeadTimeoutEnd: return InDeadTimeoutEnd();
 			case MonsterInputCheck.InAllyInCombat: return InAllyInCombat();
 		}
@@ -61,7 +63,7 @@ public partial class Monster
 		if (Character.MoveSpeed < 0 && InEnemyOutOfAttackRange())
 			return true;
 
-		if (Pathfinder.GetPath(Character.Map.WalkData, Character.Position, targetCharacter.Position, null, 1) == 0)
+		if (Character.Map?.Instance.Pathfinder.GetPath(Character.Map.WalkData, Character.Position, targetCharacter.Position, null, 1) == 0)
 			return true;
 
 		return false;
@@ -77,10 +79,16 @@ public partial class Monster
 			Target = Entity.Null;
 
 		//if we have a character still, check if we're in range.
-		if (Target != Entity.Null)
-			return targetCharacter.Position.InRange(Character.Position, MonsterBase.Range);
+        if (Target != Entity.Null)
+        {
+            var adjust = 0;
+            if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
+                adjust = 1; //the monster uses a 1 tile shorter attack radius when idle or chasing
 
-		//if we don't have a target, check if we can acquire one quickly
+            return targetCharacter.Position.DistanceTo(Character.Position) <= MonsterBase.Range - adjust;
+        }
+
+        //if we don't have a target, check if we can acquire one quickly
 		if (!FindRandomTargetInRange(MonsterBase.Range, out var newTarget))
 			return false;
 
@@ -96,6 +104,21 @@ public partial class Monster
 		//failed. Return false.
 		return false;
 	}
+
+
+    private bool InNeedAttackingAdjust()
+    {
+        if (Character.AttackCooldown > Time.ElapsedTimeFloat)
+            return false;
+
+        if (GameRandom.Next(0, 1) < 1)
+            return false;
+		
+        if (Character.Map!.HasAllyInRange(Character, 0, false, true))
+            return true;
+
+        return false;
+    }
 
 	private bool InAttackDelayEnd()
 	{
@@ -186,6 +209,7 @@ public partial class Monster
 			case MonsterOutputCheck.OutTryAttacking: return OutTryAttacking();
 			case MonsterOutputCheck.OutStartAttacking: return OutStartAttacking();
 			case MonsterOutputCheck.OutPerformAttack: return OutPerformAttack();
+			case MonsterOutputCheck.OutAttackingAdjust: return OutAttackingAdjust();
 			case MonsterOutputCheck.OutTryRevival: return OutTryRevival();
 		}
 
@@ -234,6 +258,23 @@ public partial class Monster
         }
 
         return FindSpawnPointInArea(Character.Map!.MapBounds, Character.Position, 9, 20);
+    }
+
+
+    private bool OutAttackingAdjust()
+    {
+        if (MonsterBase.MoveSpeed < 0)
+            return false;
+
+        var area = Area.CreateAroundPoint(Character.Position, 1);
+        area.ClipArea(Area.CreateAroundPoint(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range)));
+
+		var newPos = Position.RandomPosition(area);
+        if (newPos != Character.Position && newPos != targetCharacter.Position &&
+            Character.TryMove(ref Entity, newPos, 0))
+            return true;
+
+        return false;
     }
 
 	private bool OutSearch()

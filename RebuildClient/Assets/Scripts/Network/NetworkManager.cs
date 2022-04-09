@@ -52,6 +52,8 @@ namespace Assets.Scripts.Network
         private AsyncOperationHandle spritePreload;
         private AsyncOperationHandle uiPreload;
 
+        public Guid CharacterGuid;
+
 
 #if DEBUG
         public static string SpawnMap = "";
@@ -120,10 +122,16 @@ namespace Assets.Scripts.Network
 
             socket = WebSocketFactory.CreateInstance(serverPath);
 
+            var id = PlayerPrefs.GetString("characterid", "");
+            var str = "Connect" + id.ToString();
+            Debug.Log(str);
+
             socket.OnOpen += () =>
             {
                 Debug.Log("Socket connection opened!");
-                socket.Send(Encoding.UTF8.GetBytes("Connect"));
+
+
+                socket.Send(Encoding.UTF8.GetBytes(str));
             };
 
             socket.OnClose += e =>
@@ -247,6 +255,8 @@ namespace Assets.Scripts.Network
                 var isMale = msg.ReadBoolean();
                 var name = msg.ReadString();
                 var isMain = PlayerId == id;
+
+                Debug.Log("Name: " + name);
 
                 var playerData = new PlayerSpawnParameters()
                 {
@@ -420,8 +430,12 @@ namespace Assets.Scripts.Network
         {
             var id = msg.ReadInt32();
             var mapName = msg.ReadString();
+            var bytes = new byte[16];
+            msg.ReadBytes(bytes, 16);
+            CharacterGuid = new Guid(bytes);
+            PlayerPrefs.SetString("characterid", CharacterGuid.ToString());
 
-            Debug.Log($"We're id {id} on map {mapName}");
+            Debug.Log($"We're id {id} on map {mapName} with guid {CharacterGuid}");
 
             CurrentMap = mapName;
 

@@ -838,7 +838,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: a0430e3d11d2bf14f86b7f12101929de
-    m_Address: PortalPlaceholder
+    m_Address: Effects/PortalEffect
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: a28208c8c1752084f806e7a777da178a

@@ -51,3 +51,9 @@ RoRebuildServer/DataToClientUtility/bin/
 RoRebuildServer/RebuildSharedData/bin/
 RebuildClient/Assets/AddressableAssetsData/link.xml
 RebuildClient/Assets/AddressableAssetsData/link.xml.meta
+RebuildClient/WebGL/
+RebuildClient/StandaloneWindows64/
+RoRebuildServer/RoRebuildServer/RoCharacterDatabase.db
+RoRebuildServer/RoRebuildServer/RoCharacterDatabase.db-shm
+RoRebuildServer/RoRebuildServer/RoCharacterDatabase.db-wal
+RebuildClient/UserSettings/

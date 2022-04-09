@@ -18,7 +18,7 @@ internal class ScriptTreeWalker
         name = inputName;
         builder = new ScriptBuilder(inputName.Replace(" ", "_"), "System", "System.Linq",
             "RoRebuildServer.Data.Map", "RebuildSharedData.Data", "RoRebuildServer.Data", "RoRebuildServer.EntityComponents", 
-            "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util");
+            "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util", "RoRebuildServer.EntityComponents.Items");
 
         var ruleSet = parser.rule_set();
 
@@ -42,6 +42,9 @@ internal class ScriptTreeWalker
                 case "Npc":
                     EnterNpcStatement(context);
                     break;
+                case "Item":
+                    EnterItemStatement(context);
+                    break;
                 case "MapConfig":
                     EnterMapConfigStatement(context);
                     break;
@@ -56,6 +59,9 @@ internal class ScriptTreeWalker
 
             switch (id)
             {
+                case "RecoveryItem":
+                    EnterRecoveryItemStatement(standaloneContext);
+                    break;
                 case "Warp":
                     EnterWarpStatement(standaloneContext);
                     break;
@@ -64,7 +70,41 @@ internal class ScriptTreeWalker
             }
         }
     }
-        
+
+    private void EnterItemStatement(FunctionDefinitionContext functionContext)
+    {
+        //only expect one param, the item name
+        var param = functionContext.functionparam();
+        if (param.expression().Length != 1)
+            throw new Exception($"Incorrect number of parameters on MapConfig expression on line {param.start.Line}");
+
+        var str = param.expression()[0].GetText();
+        if (str.StartsWith("\""))
+            str = str.Substring(1, str.Length - 2);
+
+        str = str.Replace(" ", "_");
+
+        sectionHandler = ItemSectionHandler;
+
+        builder.StartItem(str);
+
+        var statements = functionContext.block1;
+        VisitStatementBlock(statements);
+
+
+        builder.EndMethod();
+        builder.EndClass();
+
+        builder.EndItem(str);
+    }
+
+
+    public void ItemSectionHandler(StartSectionContext context)
+    {
+        builder.StartItemSection(context.IDENTIFIER().GetText());
+    }
+
+
     private void EnterMapConfigStatement(FunctionDefinitionContext functionContext)
     {
         //only expect one param, the map name
@@ -143,6 +183,37 @@ internal class ScriptTreeWalker
         builder.EndClass();
 
         builder.EndNpc(str,displayName, mapName, spriteName, facingTxt, x, y, w, h);
+    }
+
+    private void EnterRecoveryItemStatement(StandaloneFunctionContext functionContext)
+    {
+        var param = functionContext.functionparam();
+        var expr = param.expression();
+
+        if (expr.Length != 5)
+            throw new Exception($"Incorrect number of parameters on RecoveryItem expression on line {param.start.Line}");
+        
+        var str = param.expression()[0].GetText();
+        if (str.StartsWith("\""))
+            str = str.Substring(1, str.Length - 2);
+        str = str.Replace(" ", "_");
+
+        var hp1 = int.Parse(expr[1].GetText());
+        var hp2 = int.Parse(expr[2].GetText());
+        var sp1 = int.Parse(expr[3].GetText());
+        var sp2 = int.Parse(expr[4].GetText());
+
+        builder.StartItem(str);
+        builder.StartItemSection("OnUse");
+        if (hp1 > 0 || hp2 > 0)
+        {
+            builder.OutputRaw($"combatEntity.Heal({hp1}, {hp2})");
+            builder.EndLine(functionContext.start.Line);
+        }
+
+        builder.EndMethod();
+        builder.EndClass();
+        builder.EndItem(str);
     }
 
     private void EnterWarpStatement(StandaloneFunctionContext functionContext)

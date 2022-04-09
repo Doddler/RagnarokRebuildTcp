@@ -41,6 +41,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] Resurrection,
 
     AdminRequestMove,
+    AdminServerAction,
     AdminLevelUp,
     AdminEnterServerSpecificMap,
 
@@ -51,4 +52,9 @@ public enum PacketType : byte
     NpcAdvance,
     NpcSelectOption,
     
+}
+
+public enum AdminAction : byte
+{
+    ForceGC
 }

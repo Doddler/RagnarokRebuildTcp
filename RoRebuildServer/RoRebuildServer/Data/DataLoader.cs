@@ -88,7 +88,7 @@ internal class DataLoader
                 Exp = monster.Exp,
                 Def = monster.Def,
                 Vit = monster.Vit,
-                Range = monster.Range > 0 ? monster.Range : 1,
+                Range = monster.Range > 0 ? monster.Range + 1 : 1,
                 ScanDist = monster.ScanDist,
                 ChaseDist = monster.ChaseDist,
                 AtkMin = monster.AtkMin,

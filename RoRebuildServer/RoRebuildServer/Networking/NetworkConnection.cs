@@ -1,4 +1,5 @@
 ﻿using System.Net.WebSockets;
+using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntitySystem;
 
@@ -21,6 +22,7 @@ public class NetworkConnection
     public bool Confirmed { get; set; } = false;
     public CancellationToken Cancellation { get; set; }
     public CancellationTokenSource CancellationSource { get; set; }
+    public LoadCharacterRequest? LoadCharacterRequest { get; set; }
 
     public NetworkConnection(WebSocket socket)
     {

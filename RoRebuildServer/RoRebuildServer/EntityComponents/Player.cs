@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -15,20 +16,27 @@ namespace RoRebuildServer.EntityComponents;
 public class Player : IEntityAutoReset
 {
     public Entity Entity;
-    public WorldObject Character;
-    public CombatEntity CombatEntity;
+    public WorldObject Character = null!;
+    public CombatEntity CombatEntity = null!;
 
     public NetworkConnection Connection;
 
     [EntityIgnoreNullCheck]
     public NpcInteractionState NpcInteractionState = new();
 
+    [EntityIgnoreNullCheck]
+    public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
+
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public float CurrentCooldown;
     public HeadFacing HeadFacing;
     //public PlayerData Data { get; set; }
-    public byte HeadId;
-    public bool IsMale;
+    public bool IsAdmin { get; set; }
+    
+    public int HeadId => GetData(PlayerStat.Head);
+    public bool IsMale => GetData(PlayerStat.Gender) == 0;
+
     public bool IsInNpcInteraction;
         
     public Entity Target { get; set; }
@@ -36,80 +44,121 @@ public class Player : IEntityAutoReset
     public bool QueueAttack { get; set; }
     private float regenTickTime { get; set; }
 
-
+    public int GetData(PlayerStat type) => CharData[(int)type];
+    public void SetData(PlayerStat type, int val) => CharData[(int)type] = val;
+    public int GetStat(CharacterStat type) => CombatEntity.GetStat(type);
+    public float GetTiming(TimingStat type) => CombatEntity.GetTiming(type);
+    public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
+    public void SetStat(CharacterStat type, float val) => CombatEntity.SetStat(type, (int)val);
+    public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
+    
     public void Reset()
     {
         Entity = Entity.Null;
         Target = Entity.Null;
-        Character = null;
-        CombatEntity = null;
-        Connection = null;
+        Character = null!;
+        CombatEntity = null!;
+        Connection = null!;
         CurrentCooldown = 0f;
-        HeadId = 0;
         HeadFacing = HeadFacing.Center;
-        IsMale = true;
         QueueAttack = false;
+        Id = Guid.Empty;
         Name = "Player";
         //Data = new PlayerData(); //fix this...
         regenTickTime = 0f;
         NpcInteractionState.Reset();
+        IsAdmin = false;
+        for(var i = 0; i < CharData.Length; i++)
+            CharData[i] = 0;
     }
 
     public void Init()
     {
+        if (GetData(PlayerStat.Status) == 0)
+        {
+            SetData(PlayerStat.Level, 1);
+            SetData(PlayerStat.Head, GameRandom.Next(0, 31));
+            SetData(PlayerStat.Gender, GameRandom.Next(0, 1));
+            SetData(PlayerStat.Status, 1);
+        }
+
         UpdateStats();
+
+        SetStat(CharacterStat.Level, GetData(PlayerStat.Level));
+        IsAdmin = true; //for now
     }
     
-    private void UpdateStats()
+    public void UpdateStats()
     {
-        var s = CombatEntity.Stats;
+        var level = GetData(PlayerStat.Level);
+        var aMotionTime = 1.1f - level * 0.006f;
+        var spriteAttackTiming = 0.6f;
 
-        s.AttackMotionTime = 0.9f;
-        s.HitDelayTime = 0.5f;
-        s.SpriteAttackTiming = 0.6f;
-        Character.MoveSpeed -= 0.003f;
+        if (spriteAttackTiming > aMotionTime)
+            spriteAttackTiming = aMotionTime;
 
-        s.Range = 2;
+        SetTiming(TimingStat.AttackMotionTime, aMotionTime);
+        SetTiming(TimingStat.SpriteAttackTiming, spriteAttackTiming);
+        SetTiming(TimingStat.AttackDelayTime, 0); //fixme!
+        SetTiming(TimingStat.HitDelayTime, 0.5f);
+        SetTiming(TimingStat.MoveSpeed, 0.15f);
+        SetStat(CharacterStat.Range, 2);
 
-        CombatEntity.BaseStats.Level = 0;
-        LevelUp(); //fixes attack stats and all that
+        var atk = (level / 2f) * (level / 2f) + level * (level / 10) + 12 + level;
+        atk *= 1.2f;
+        var atk1 = (int)(atk * 0.90f - 1);
+        var atk2 = (int)(atk * 1.10f + 1);
+
+        var multiplier = 0.1f + level / 10f;
+        if (multiplier > 1f)
+            multiplier = 1f;
+
+        SetStat(CharacterStat.Attack, atk1);
+        SetStat(CharacterStat.Attack2, atk2);
+        SetStat(CharacterStat.Def, level * 0.7f);
+        SetStat(CharacterStat.Vit, 3 + level * 1.5f);
+        SetStat(CharacterStat.MaxHp, 50 + 100 * level);
+
+        var newMaxHp = (level * level * level) / 20 + 80 * level;
+        var updatedMaxHp = (int)(newMaxHp * multiplier) + 70;
+
+        SetStat(CharacterStat.MaxHp, updatedMaxHp);
+        if(GetStat(CharacterStat.Hp) <= 0)
+            SetStat(CharacterStat.Hp, updatedMaxHp);
+
+        var moveSpeed = 0.15f - (0.001f * level / 3f);
+        SetTiming(TimingStat.MoveSpeed, moveSpeed);
+        Character.MoveSpeed = moveSpeed;
     }
 
     public void LevelUp()
     {
-        var bs = CombatEntity.BaseStats;
-        var s = CombatEntity.Stats;
+        var level = GetData(PlayerStat.Level);
+        var aMotionTime = 1.1f - level * 0.006f;
+        var spriteAttackTiming = 0.6f;
 
-        bs.Level++;
-        s.AttackMotionTime -= 0.004f;
-        if (s.SpriteAttackTiming > s.AttackMotionTime)
-            s.SpriteAttackTiming = s.AttackMotionTime;
+        level++;
 
-        if (bs.Level < 50)
-            Character.MoveSpeed -= 0.0006f;
+        SetData(PlayerStat.Level, level);
+        SetStat(CharacterStat.Level, level);
 
-        var atk = (bs.Level / 2f) * (bs.Level / 2f) + bs.Level * (bs.Level / 10) + 12 + bs.Level;
-        s.Atk = (short)(atk * 0.90f - 1);
-        s.Atk2 = (short)(atk * 1.10f + 1);
-        s.Def = (short)(bs.Level * 0.7f);
-        //s.Vit++;
-        s.MaxHp = 50 + 100 * bs.Level;
-        s.Vit = (short)(3 + bs.Level * 1.5f);
-        if (s.Def > 90)
-            s.Def = 90;
+        UpdateStats();
 
-        var multiplier = 0.1f + bs.Level / 10f;
-        if (multiplier > 1f)
-            multiplier = 1f;
-
-
-        var newMaxHp = (bs.Level * bs.Level * bs.Level) / 20 + 80 * bs.Level;
-
-        s.MaxHp = bs.MaxHp = (int)(newMaxHp * multiplier) + 70;
-
-        s.Hp = s.MaxHp;
+        CombatEntity.FullRecovery(true, true);
     }
 
+    public void SaveCharacterToData()
+    {
+        SetData(PlayerStat.Hp, GetStat(CharacterStat.Hp));
+        SetData(PlayerStat.Mp, GetStat(CharacterStat.Mp));
+    }
+
+    public void ApplyDataToCharacter()
+    {
+        SetStat(CharacterStat.Hp, GetData(PlayerStat.Hp));
+        SetStat(CharacterStat.Mp, GetData(PlayerStat.Mp));
+    }
+    
     public void UpdateSit(bool isSitting)
     {
         if (!isSitting)
@@ -129,8 +178,8 @@ public class Player : IEntityAutoReset
         if (!Character.IsActive || Character.State == CharacterState.Dead)
             return;
 
-        var hp = CombatEntity.Stats.Hp;
-        var maxHp = CombatEntity.Stats.MaxHp;
+        var hp = GetStat(CharacterStat.Hp);
+        var maxHp = GetStat(CharacterStat.MaxHp);
 
         if (hp < maxHp)
         {
@@ -141,7 +190,7 @@ public class Player : IEntityAutoReset
                 regen = maxHp - hp;
 
 
-            CombatEntity.Stats.Hp += regen;
+            SetStat(CharacterStat.Hp, hp + regen);
 
             CommandBuilder.SendHealSingle(this, regen, HealType.None);
         }
@@ -225,7 +274,7 @@ public class Player : IEntityAutoReset
             return;
         }
 
-        if (Character.Position.SquareDistance(targetCharacter.Position) > CombatEntity.Stats.Range)
+        if (Character.Position.SquareDistance(targetCharacter.Position) > GetStat(CharacterStat.Range))
         {
             TargetForAttack(targetCharacter);
             return;
@@ -263,16 +312,17 @@ public class Player : IEntityAutoReset
         Character.SpawnImmunity = -1;
 
         CombatEntity.PerformMeleeAttack(targetEntity);
+        Character.AddMoveDelay(GetTiming(TimingStat.AttackDelayTime));
 
         QueueAttack = true;
 
-        Character.AttackCooldown = Time.ElapsedTimeFloat + CombatEntity.Stats.AttackMotionTime;
+        Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackMotionTime);
     }
 
 
     public void TargetForAttack(WorldObject enemy)
     {
-        if (Character.Position.SquareDistance(enemy.Position) <= CombatEntity.Stats.Range)
+        if (Character.Position.SquareDistance(enemy.Position) <= GetStat(CharacterStat.Range))
         {
             ChangeTarget(enemy);
             PerformAttack(enemy);
@@ -288,7 +338,7 @@ public class Player : IEntityAutoReset
     public void PerformSkill()
     {
         var pool = EntityListPool.Get();
-        Character.Map.GatherEntitiesInRange(Character, 7, pool);
+        Character.Map.GatherEnemiesInRange(Character, 7, pool, true);
 
         if (Character.AttackCooldown > Time.ElapsedTimeFloat)
             return;
@@ -312,9 +362,10 @@ public class Player : IEntityAutoReset
                 continue;
 
             CombatEntity.PerformMeleeAttack(target);
+            Character.AddMoveDelay(GetTiming(TimingStat.AttackDelayTime));
         }
 
-        Character.AttackCooldown = Time.ElapsedTimeFloat + CombatEntity.Stats.AttackMotionTime;
+        Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackMotionTime);
     }
 
     public bool WarpPlayer(string mapName, int x, int y, int width, int height, bool failIfNotWalkable)
@@ -375,7 +426,7 @@ public class Player : IEntityAutoReset
 
         if (Character.State == CharacterState.Moving)
         {
-            if (Character.Position.SquareDistance(targetCharacter.Position) <= CombatEntity.Stats.Range)
+            if (Character.Position.SquareDistance(targetCharacter.Position) <= GetStat(CharacterStat.Range))
                 PerformAttack(targetCharacter);
         }
 

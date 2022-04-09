@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3685515773686913541}
   - component: {fileID: 8410366849295386011}
   m_Layer: 0
-  m_Name: PortalPlaceholder
+  m_Name: PortalEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

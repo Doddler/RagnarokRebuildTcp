@@ -35,17 +35,19 @@ public class Map
 
     private int chunkCheckId;
 
-    private int playerCount;
-    public int PlayerCount
-    {
-        get => playerCount;
-        set
-        {
-            if (value != playerCount)
-                ServerLogger.Debug($"Map {Name} changed player count to {value}.");
-            playerCount = value;
-        }
-    }
+    public int PlayerCount { get; set; }
+
+    //private int playerCount;
+    //public int PlayerCount
+    //{
+    //    get => playerCount;
+    //    set
+    //    {
+    //        if (value != playerCount)
+    //            ServerLogger.Debug($"Map {Name} changed player count to {value}.");
+    //        playerCount = value;
+    //    }
+    //}
 
     private int entityCount = 0;
 
@@ -251,9 +253,12 @@ public class Map
 
         if(addToInstance)
             Instance.Entities.Add(ref entity);
-        
+
         if (ch.Type == CharacterType.Player)
+        {
             PlayerCount++;
+            ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
+        }
 
         entityCount++;
     }
@@ -394,10 +399,47 @@ public class Map
             }
         }
     }
-    
-    public void GatherEntitiesInRange(WorldObject character, int distance, EntityList list, bool checkImmunity = false)
+
+
+    public bool HasAllyInRange(WorldObject character, int distance, bool checkLineOfSight, bool checkImmunity = false)
     {
-        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, ServerConfig.MaxViewDistance))
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
+        {
+            foreach (var m in c.AllEntities)
+            {
+                var ch = m.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
+
+                if (m == character.Entity)
+                    continue;
+
+                if (ch.Type == CharacterType.NPC)
+                    continue;
+
+                if (checkImmunity && ch.SpawnImmunity > 0)
+                    continue;
+
+                if (!ch.CombatEntity.IsValidAlly(character.CombatEntity))
+                    continue;
+                
+                if (character.Position.InRange(ch.Position, distance))
+                {
+                    if (checkLineOfSight && !WalkData.HasLineOfSight(character.Position, ch.Position))
+                        continue;
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    public void GatherAlliesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
         {
 
             foreach (var m in c.AllEntities)
@@ -406,11 +448,66 @@ public class Map
                 if (!ch.IsActive)
                     continue;
 
+                if (ch.Type == CharacterType.NPC)
+                    continue;
+
                 if (checkImmunity && ch.SpawnImmunity > 0)
                     continue;
 
+                if (!ch.CombatEntity.IsValidAlly(character.CombatEntity))
+                    continue;
+
                 if (character.Position.InRange(ch.Position, distance))
+                {
+                    if (checkLineOfSight && !WalkData.HasLineOfSight(character.Position, ch.Position))
+                        continue;
+
                     list.Add(m);
+                }
+            }
+
+            //foreach (var p in c.Players)
+            //{
+            //    var ch = p.Get<WorldObject>();
+            //    if (!ch.IsActive)
+            //        continue;
+
+            //    if (checkImmunity && ch.SpawnImmunity > 0)
+            //        continue;
+
+            //    if (character.Position.InRange(ch.Position, distance))
+            //        list.Add(p);
+            //}
+        }
+    }
+
+    public void GatherEnemiesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
+        {
+
+            foreach (var m in c.AllEntities)
+            {
+                var ch = m.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
+
+                if (ch.Type == CharacterType.NPC)
+                    continue;
+
+                if (checkImmunity && ch.SpawnImmunity > 0)
+                    continue;
+
+                if (!character.CombatEntity.IsValidTarget(ch.CombatEntity))
+                    continue;
+                
+                if (character.Position.InRange(ch.Position, distance))
+                {
+                    if (checkLineOfSight && !WalkData.HasLineOfSight(character.Position, ch.Position))
+                        continue;
+
+                    list.Add(m);
+                }
             }
 
             //foreach (var p in c.Players)
@@ -568,7 +665,10 @@ public class Map
             entityCount--;
 
         if (entity.Type == EntityType.Player)
+        {
             PlayerCount--;
+            ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
+        }
 
     }
 
@@ -728,7 +828,7 @@ public class Map
         chunkWidth = AlignValue(Width, 8) / 8;
         chunkHeight = AlignValue(Height, 8) / 8;
 
-        MapBounds = new Area(0, 0, Width - 1, Height - 1);
+        MapBounds = new Area(1, 1, Width - 2, Height - 2);
         ChunkBounds = new Area(0, 0, chunkWidth - 1, chunkHeight - 1);
         
         Chunks = new Chunk[chunkWidth * chunkHeight];

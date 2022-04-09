@@ -20,6 +20,9 @@ Geffen Tower,gef_tower,gef_tower.walk,13.mp3
 Geffen Dungeon 1F,gef_dun00,gef_dun00.walk,21.mp3
 Geffen Dungeon 2F,gef_dun01,gef_dun01.walk,21.mp3
 Geffenia,gef_dun02,gef_dun02.walk,50.mp3
+Orc Village,in_orcs01,in_orcs01.walk,35.mp3
+Orc Dungeon 1F,orcsdun01,orcsdun01.walk,48.mp3
+Orc Dungeon 2F,orcsdun02,orcsdun02.walk,48.mp3
 Izlude,izlude,izlude.walk,26.mp3
 Izlude Indoors,izlude_in,izlude_in.walk,26.mp3
 Juperos 1F,juperos_01,juperos_01.walk,89.mp3

@@ -23,6 +23,7 @@ public enum MonsterAiState : byte
     StateAbnormal,
     StateSearch,
     StateAttacking,
+    StateAdjust,
     StateDead
 }
 
@@ -37,6 +38,7 @@ public enum MonsterInputCheck : byte
     InEnemyOutOfSight,
     InEnemyOutOfAttackRange,
     InAttackDelayEnd,
+    InNeedAttackingAdjust,
     InDeadTimeoutEnd,
     InAllyInCombat
 }
@@ -53,5 +55,6 @@ public enum MonsterOutputCheck : byte
     OutPerformAttack,
     OutChangeTargets,
     OutTryRevival,
+    OutAttackingAdjust,
     OutWaitForever
 }

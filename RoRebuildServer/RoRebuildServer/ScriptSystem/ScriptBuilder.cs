@@ -3,6 +3,7 @@ using System.Text;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 
@@ -19,6 +20,7 @@ public class ScriptBuilder
     private List<string> functionSources = new();
 
     private List<string> npcDefinitions = new();
+    private List<string> itemDefinitions = new();
 
     //state machine stuff
     private Dictionary<string, int> localIntVariables = new();
@@ -38,7 +40,6 @@ public class ScriptBuilder
     private string localvariable = "";
     private int pointerCount = 0;
     private int lineNumber = 1;
-    private bool identifierSwap = false;
     private int curBlock;
     private string switchOption = "";
     private bool hasWait = false;
@@ -47,6 +48,8 @@ public class ScriptBuilder
     private NpcInteractionResult waitType = NpcInteractionResult.WaitForContinue;
 
     public bool UseStateMachine;
+    public bool UseStateStorage;
+    public int StateStorageLimit = 0;
 
     private int indentation = 1;
 
@@ -155,7 +158,7 @@ public class ScriptBuilder
     {
         methodName = name.Replace(" ", "");
         UseStateMachine = false;
-        identifierSwap = false;
+        UseStateStorage = false;
         blockBuilder.Clear();
 
 
@@ -172,13 +175,78 @@ public class ScriptBuilder
         indentation++;
     }
 
+    public void StartItem(string name)
+    {
+        UseStateMachine = false;
+        UseStateStorage = false;
+        blockBuilder.Clear();
+
+        StartIndentedScriptLine().AppendLine($"public class RoRebuildItemGen_{name} : ItemInteractionBase");
+        StartIndentedScriptLine().AppendLine("{");
+        indentation++;
+        
+        StartIndentedBlockLine().AppendLine($"public override void Init(Player player, CombatEntity combatEntity)");
+        StartIndentedBlockLine().AppendLine("{");
+        indentation++;
+
+        methodName = "Init";
+        
+        LoadFunctionSource(typeof(Player), "player");
+        LoadFunctionSource(typeof(CombatEntity), "combatEntity");
+    }
+
+    public void EndItem(string name)
+    {
+        var behaviorName = $"RoRebuildItemGen_{name}";
+        itemDefinitions.Add($"DataManager.RegisterItem(\"{name}\", new {behaviorName}());");
+    }
+
+    public void StartItemSection(string section)
+    {
+        if (methodName == section)
+            return;
+
+        functionSources.Clear();
+        functionBaseClasses.Clear();
+
+        methodName = section;
+
+        if (section == "OnEquip" || section == "OnUnequip")
+        {
+            CloseScope();
+            StartIndentedBlockLine().AppendLine($"public override void {section}(Player player, CombatEntity combatEntity, ItemEquipState state)");
+            OpenScope();
+
+            stateVariable = "state";
+            UseStateMachine = false;
+            UseStateStorage = true;
+            StateStorageLimit = 4;
+
+            LoadFunctionSource(typeof(Player), "player");
+            LoadFunctionSource(typeof(CombatEntity), "combatEntity");
+            LoadFunctionSource(typeof(ItemInteractionBase), "item");
+        }
+        else
+        {
+
+            CloseScope();
+            StartIndentedBlockLine().AppendLine($"public override void {section}(Player player, CombatEntity combatEntity)");
+            OpenScope();
+
+            UseStateMachine = false;
+            UseStateStorage = false;
+
+            LoadFunctionSource(typeof(Player), "player");
+            LoadFunctionSource(typeof(CombatEntity), "combatEntity");
+        }
+    }
 
 
     public void StartNpc(string name)
     {
         methodName = name.Replace(" ", "");
         UseStateMachine = true;
-        identifierSwap = true;
+        UseStateStorage = false;
         stateVariable = "state";
         localvariable = "npc";
         blockBuilder.Clear();
@@ -216,12 +284,12 @@ public class ScriptBuilder
 
     public void StartNpcSection(string section)
     {
-        functionSources.Clear();
-        functionBaseClasses.Clear();
-
         if (methodName == section)
             return;
 
+        functionSources.Clear();
+        functionBaseClasses.Clear();
+        
         methodName = section;
 
         if (section == "OnClick" || section == "OnTouch")
@@ -239,6 +307,8 @@ public class ScriptBuilder
             pointerCount = 0;
             curBlock = 0;
             UseStateMachine = true;
+            UseStateStorage = true;
+            StateStorageLimit = NpcInteractionState.StorageCount;
 
             LoadFunctionSource(typeof(Npc), "npc");
             LoadFunctionSource(typeof(Player), "player");
@@ -407,7 +477,7 @@ public class ScriptBuilder
 
     public void OutputVariable(string id)
     {
-        if (!UseStateMachine)
+        if (!UseStateStorage)
         {
             lineBuilder.Append(id);
             return;
@@ -523,29 +593,53 @@ public class ScriptBuilder
         StartIndentedScriptLine().AppendLine("}");
     }
 
+    private void OutputLoader(string loaderName, string loaderInterface, List<string>? lines)
+    {
+        if (lines == null || lines.Count == 0)
+            return;
+
+        StartIndentedScriptLine().AppendLine($"public class {loaderName}_{className} : {loaderInterface}");
+        StartIndentedScriptLine().AppendLine("{");
+        indentation++;
+        StartIndentedScriptLine().AppendLine("public void Load()");
+        StartIndentedScriptLine().AppendLine("{");
+        indentation++;
+
+        foreach (var line in lines)
+            StartIndentedScriptLine().AppendLine(line);
+
+        indentation--;
+        StartIndentedScriptLine().AppendLine("}");
+        indentation--;
+        StartIndentedScriptLine().AppendLine("}");
+    }
+
     public string OutputFinal()
     {
         //indentation--;
         //StartIndentedScriptLine().AppendLine("}");
 
-        if (npcDefinitions.Count > 0)
-        {
-            StartIndentedScriptLine().AppendLine($"public class NpcLoader_{className} : INpcLoader");
-            StartIndentedScriptLine().AppendLine("{");
-            indentation++;
-            StartIndentedScriptLine().AppendLine("public void Load()");
-            StartIndentedScriptLine().AppendLine("{");
-            indentation++;
+        OutputLoader("NpcLoader", "INpcLoader", npcDefinitions);
+        OutputLoader("ItemLoader", "IItemLoader", itemDefinitions);
 
-            foreach (var npc in npcDefinitions)
-                StartIndentedScriptLine().AppendLine(npc);
+        //if (npcDefinitions.Count > 0)
+        //{
+        //    StartIndentedScriptLine().AppendLine($"public class NpcLoader_{className} : INpcLoader");
+        //    StartIndentedScriptLine().AppendLine("{");
+        //    indentation++;
+        //    StartIndentedScriptLine().AppendLine("public void Load()");
+        //    StartIndentedScriptLine().AppendLine("{");
+        //    indentation++;
 
-            indentation--;
-            StartIndentedScriptLine().AppendLine("}");
-            indentation--;
-            StartIndentedScriptLine().AppendLine("}");
-        }
+        //    foreach (var npc in npcDefinitions)
+        //        StartIndentedScriptLine().AppendLine(npc);
 
+        //    indentation--;
+        //    StartIndentedScriptLine().AppendLine("}");
+        //    indentation--;
+        //    StartIndentedScriptLine().AppendLine("}");
+        //}
+        
         indentation--;
         StartIndentedScriptLine().AppendLine("}");
 
