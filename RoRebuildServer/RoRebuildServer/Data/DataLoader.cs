@@ -5,6 +5,7 @@ using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
@@ -63,6 +64,80 @@ internal class DataLoader
         }
 
         return chart;
+    }
+
+    public Dictionary<string, int> LoadEffectIds()
+    {
+        var effects = new Dictionary<string, int>();
+
+        using var tr = new StreamReader(@"ServerData/Db/Effects.csv") as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+
+        var entries = csv.GetRecords<CsvEffects>().ToList();
+
+        foreach (var entry in entries)
+        {
+            effects.Add(entry.Name, entry.Id);
+        }
+
+        return effects;
+    }
+
+    public Dictionary<int, ItemInfo> LoadItemList()
+    {
+        var items = new Dictionary<int, ItemInfo>();
+
+        using var tr = new StreamReader(@"ServerData/Db/Items.csv") as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+
+        var entries = csv.GetRecords<CsvItem>().ToList();
+        
+        foreach (var entry in entries)
+        {
+            var item = new ItemInfo()
+            {
+                Code = entry.Code,
+                Id = entry.Id,
+                IsUseable = entry.IsUseable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+                Effect = -1,
+            };
+
+            if (string.IsNullOrWhiteSpace(entry.Effect))
+            {
+                if (DataManager.EffectIdForName.TryGetValue(entry.Effect, out var effectId))
+                    item.Effect = effectId;
+                else
+                    ServerLogger.LogWarning($"Could not find effect '{entry.Effect}' with name '{item.Code}'.");
+            }
+
+            items.Add(item.Id, item);
+        }
+
+        return items;
+    }
+
+    public Dictionary<string, int> GenerateItemIdByNameLookup()
+    {
+        var lookup = new Dictionary<string, int>();
+
+        foreach (var item in DataManager.ItemList)
+        {
+            lookup.Add(item.Value.Code, item.Value.Id);
+        }
+
+        return lookup;
+    }
+
+    public void LoadItemInteractions(Assembly assembly)
+    {
+        var itemType = typeof(IItemLoader);
+        foreach (var type in assembly.GetTypes().Where(t => t.IsAssignableTo(itemType)))
+        {
+            var handler = (IItemLoader)Activator.CreateInstance(type)!;
+            handler.Load();
+        }
     }
 
     public List<MonsterDatabaseInfo> LoadMonsterStats()
@@ -180,14 +255,14 @@ internal class DataLoader
 
     public void LoadNpcScripts(Assembly assembly)
     {
-        var npcType = typeof(INpcLoader);
-        foreach (var type in assembly.GetTypes().Where(t => t.IsAssignableTo(npcType)))
+        var itemType = typeof(INpcLoader);
+        foreach (var type in assembly.GetTypes().Where(t => t.IsAssignableTo(itemType)))
         {
             var handler = (INpcLoader)Activator.CreateInstance(type)!;
             handler.Load();
         }
     }
-
+    
     public Dictionary<string, Action<ServerMapConfig>> LoadMapConfigs(Assembly assembly)
     {
         var configs = new Dictionary<string, Action<ServerMapConfig>>();

@@ -43,7 +43,7 @@ public class CombatEntity : IEntityAutoReset
             statData[i] = 0;
     }
 
-    public void Heal(int hp, int hp2 = -1)
+    public void Heal(int hp, int hp2, bool showValue = false)
     {
         if (hp2 != -1 && hp2 > hp)
             hp = GameRandom.Next(hp, hp2);

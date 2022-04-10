@@ -109,6 +109,12 @@ namespace Assets.Scripts.Editor
 
 			anim = ScriptableObject.CreateInstance(typeof(StrAnimationFile)) as StrAnimationFile;
 
+            if (!File.Exists(path))
+            {
+                Debug.LogError("Could not load str animation at path: " + path);
+                return null;
+            }
+
             fs = new FileStream(path, FileMode.Open);
             br = new BinaryReader(fs);
 

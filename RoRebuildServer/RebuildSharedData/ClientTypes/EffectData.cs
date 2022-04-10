@@ -15,6 +15,7 @@ public class EffectTypeEntry
     public bool ImportEffect;
     public string? StrFile;
     public string? SoundFile;
+    public float Offset;
     public string? PrefabName;
 }
 

@@ -1303,6 +1303,7 @@ MonoBehaviour:
   Height: 50
   TurnSpeed: 0
   MonSpawnCount: 1
+  EffectConfigFile: {fileID: 4900000, guid: fe0085492b5724e42ba9fd5dd7248178, type: 3}
   LastRightClick: 0
 --- !u!1 &1047215510
 GameObject:

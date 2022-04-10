@@ -1089,6 +1089,11 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void AttachEffectToEntity(int effectId)
+        {
+
+        }
+
         private void Update()
         {
             Shader.SetGlobalColor("_FakeAmbient", FakeAmbient);

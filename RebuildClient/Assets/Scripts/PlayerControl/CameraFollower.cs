@@ -6,11 +6,13 @@ using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Config;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -67,6 +69,9 @@ namespace Assets.Scripts
         private string targetText;
 
         public bool UseTTFDamage = false;
+
+        public Dictionary<string, int> EffectIdLookup;
+        public Dictionary<int, EffectTypeEntry> EffectList;
 
 #if DEBUG
         private const float MaxClickDistance = 500;
@@ -133,6 +138,8 @@ namespace Assets.Scripts
 
         public int MonSpawnCount = 1;
 
+        public TextAsset EffectConfigFile;
+
         public float LastRightClick;
         private bool isHolding;
         public void Awake()
@@ -147,6 +154,21 @@ namespace Assets.Scripts
             UpdateCameraSize();
 
             Physics.queriesHitBackfaces = true;
+            
+            var effects = JsonUtility.FromJson<EffectTypeList>(EffectConfigFile.text);
+            EffectList = new Dictionary<int, EffectTypeEntry>();
+            EffectIdLookup = new Dictionary<string, int>();
+            foreach (var e in effects.Effects)
+            {
+                var asset = e.PrefabName;
+                if (string.IsNullOrEmpty(asset) || !e.ImportEffect)
+                    asset = $"Assets/Effects/Prefabs/{e.Name}.prefab";
+
+                e.PrefabName = asset; //yeah we're modifying the list after loading it but... probably fine
+
+                EffectList.Add(e.Id, e);
+                EffectIdLookup.Add(e.Name, e.Id);
+            }
 
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
@@ -631,7 +653,17 @@ namespace Assets.Scripts
             TextBoxText.ForceMeshUpdate();
             LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
             TextBoxScrollRect.verticalNormalizedPosition = 0;
-            
+        }
+
+        public void AppendError(string txt)
+        {
+            if (string.IsNullOrWhiteSpace(txt))
+                return;
+
+            TextBoxText.text += Environment.NewLine + "<color=red>Error</color>: " + txt;
+            TextBoxText.ForceMeshUpdate();
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
+            TextBoxScrollRect.verticalNormalizedPosition = 0;
         }
         
         public void OnSubmitTextBox(string text)
@@ -684,6 +716,15 @@ namespace Assets.Scripts
 
                 if (s[0] == "/bgm")
                     AudioManager.Instance.ToggleMute();
+
+                if (s[0] == "/effect" && s.Length > 1)
+                {
+                    if(int.TryParse(s[1], out var id))
+                        AttachEffectToEntity(id, controllable);
+                    else
+                        AttachEffectToEntity(s[1], controllable);
+                    
+                }
             }
             else
             {
@@ -699,6 +740,38 @@ namespace Assets.Scripts
 
 
             lastMessage = text;
+        }
+
+        public void AttachEffectToEntity(string effect, ServerControllable target)
+        {
+            if (!EffectIdLookup.TryGetValue(effect, out var id))
+            {
+                AppendError($"Could not find effect with name {effect}.");
+                return;
+            }
+
+            AttachEffectToEntity(id, target);
+        }
+
+        public void AttachEffectToEntity(int effect, ServerControllable target)
+        {
+            if (!EffectList.TryGetValue(effect, out var asset))
+            {
+                AppendError($"Could not find effect with id {effect}.");
+                return;
+            }
+
+            var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
+            loader.Completed += ah =>
+            {
+                if (target.gameObject != null && target.gameObject.activeInHierarchy)
+                {
+                    var obj2 = GameObject.Instantiate(ah.Result, target.gameObject.transform, false);
+                    obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                    //obj2.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                    //ah.Result.transform.SetParent(obj.transform, false);
+                }
+            };
         }
 
         public void UpdateWaterTexture()
@@ -834,6 +907,21 @@ namespace Assets.Scripts
                 //if(controllable.IsWalking)
                 NetworkManager.Instance.StopPlayer();
             }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+                AttachEffectToEntity("RedPotion", controllable);
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+                AttachEffectToEntity("Death", controllable);
+
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+                AttachEffectToEntity("LevelUp", controllable);
+
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+                AttachEffectToEntity("Resurrect", controllable);
+
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+                AttachEffectToEntity("MVP", controllable);
 
             //if (Input.GetKeyDown(KeyCode.Q))
             //{

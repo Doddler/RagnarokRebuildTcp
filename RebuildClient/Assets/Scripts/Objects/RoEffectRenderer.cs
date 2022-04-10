@@ -53,7 +53,7 @@ namespace Assets.Scripts.Objects
             }
             else
             {
-                Debug.Log("MultiplyAlpha ON");
+                //Debug.Log("MultiplyAlpha ON");
                 mat.DisableKeyword("MULTIPLY_ALPHA");
             }
             
@@ -108,7 +108,7 @@ namespace Assets.Scripts.Objects
                 Initialize(Anim);
 
             AudioSource = GetComponent<AudioSource>();
-            if (AudioSource.clip != null)
+            if (AudioSource != null && AudioSource.clip != null)
                 hasAudio = true;
         }
 
@@ -122,7 +122,7 @@ namespace Assets.Scripts.Objects
             for (var i = 0; i < 4; i++)
             {
                 var p = VectorHelper.Rotate(pos[i], -angle * Mathf.Deg2Rad);
-                tempPositions[i] = new Vector3(p.x, p.y, 0) / 35f;
+                tempPositions[i] = new Vector3(p.x, p.y, 0) / 50f;
                 
                 //Debug.Log(tempPositions[i]);
 
@@ -158,15 +158,15 @@ namespace Assets.Scripts.Objects
 
         private void UpdateLayerData(GameObject go, Material mat, Vector2 pos, Color color, int layerNum)
         {
-            go.transform.localPosition = new Vector3((pos.x - 320f)/35f, -(pos.y-320f)/35f, 0);
+            go.transform.localPosition = new Vector3((pos.x - 320f)/50f, -(pos.y-320f)/50f);
             //if (!Mathf.Approximately(angle, angles[layerNum]))
             //{
             //    go.transform.rotation = Quaternion.Euler(0, 0, -angle);
             //    angles[layerNum] = angle;
             //}
-
             go.transform.localScale = new Vector3(1f, 1f, 1f);
             mat.SetColor("_Color", color);
+            layerRenderers[layerNum].sortingOrder = layerNum;
         }
 
         private bool UpdateAnimationLayer(int layerNum)

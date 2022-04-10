@@ -30,6 +30,11 @@ public static class DataManager
     public static List<InstanceEntry> InstanceList;
     public static Dictionary<string, Action<ServerMapConfig>> MapConfigs;
 
+    public static Dictionary<string, int> ItemIdByName;
+    public static Dictionary<int, ItemInfo> ItemList;
+
+    public static Dictionary<string, int> EffectIdForName;
+
     public static List<MapEntry> Maps => mapList;
     
 
@@ -65,7 +70,13 @@ public static class DataManager
 
     public static void RegisterItem(string name, ItemInteractionBase item)
     {
-        
+        if (!ItemIdByName.TryGetValue(name, out var id))
+        {
+            ServerLogger.LogWarning($"Could not attach item interaction to item as the item list does not contain: {name}");
+            return;
+        }
+
+        ItemList[id].Interaction = item;
     }
 
     public static void RegisterNpc(string name, string map, string sprite, int x, int y, int facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase npcBehavior)
@@ -94,6 +105,10 @@ public static class DataManager
         //mapSpawnInfo = loader.LoadSpawnInfo();
         monsterAiList = loader.LoadAiStateMachines();
         ExpChart = loader.LoadExpChart();
+        EffectIdForName = loader.LoadEffectIds();
+        ItemList = loader.LoadItemList();
+        ItemIdByName = loader.GenerateItemIdByNameLookup();
+        loader.LoadItemInteractions(ScriptAssembly);
         
         MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
         MonsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);

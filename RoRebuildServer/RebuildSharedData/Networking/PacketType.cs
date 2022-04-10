@@ -39,6 +39,8 @@ public enum PacketType : byte
     Say,
     ChangeName,
     [ServerOnlyPacket] Resurrection,
+    UseInventoryItem,
+    [ServerOnlyPacket] Effect,
 
     AdminRequestMove,
     AdminServerAction,

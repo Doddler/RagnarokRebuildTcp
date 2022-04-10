@@ -263,7 +263,7 @@ namespace Assets.Scripts.Network
 			var shader = Shader.Find("Unlit/TestSpriteShader");
 			var mat = new Material(shader);
 			mat.SetFloat("_Offset", 0.4f);
-			mat.color = new Color(1f, 1f, 1f, 0.5f);
+			mat.color = new Color(1f, 1f, 1f, 0.75f);
 			sprite.material = mat;
 
 			sprite.sortingOrder = -1;

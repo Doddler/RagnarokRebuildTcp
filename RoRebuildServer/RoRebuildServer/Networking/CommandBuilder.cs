@@ -341,6 +341,18 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
+    public static void SendEffectOnCharacterMulti(WorldObject p, int effectId)
+    {
+        if (!HasRecipients())
+            return;
+        
+        var packet = NetworkManager.StartPacket(PacketType.Effect, 16);
+        packet.Write(p.Id);
+        packet.Write(effectId);
+        
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void SendHealMulti(WorldObject p, int healAmount, HealType type)
     {
         if (!HasRecipients())

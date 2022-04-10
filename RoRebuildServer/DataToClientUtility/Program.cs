@@ -48,6 +48,7 @@ class Program
                     ImportEffect = e.ImportEffect,
                     StrFile = e.StrFile,
                     SoundFile = e.SoundFile,
+                    Offset = e.Offset,
                     PrefabName = e.PrefabName
                 });
             }

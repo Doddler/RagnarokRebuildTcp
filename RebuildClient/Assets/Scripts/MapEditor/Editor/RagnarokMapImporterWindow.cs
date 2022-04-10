@@ -74,6 +74,12 @@ namespace Assets.Scripts.MapEditor.Editor
 			File.WriteAllLines(@"Assets/Sprites/AttackTiming.txt", output);
 		}
 
+        private static void UpdateAddressablesForPathAndType(string filter, string folder, string label, string[] guids,
+            List<AddressableAssetEntry> entriesAdded)
+        {
+
+        }
+
 		[MenuItem("Ragnarok/Update Addressables")]
 		public static void UpdateAddressables()
 		{
@@ -87,7 +93,10 @@ namespace Assets.Scripts.MapEditor.Editor
 			var monText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/monsterclass.json", typeof(TextAsset)) as TextAsset;
 			var monsters = JsonUtility.FromJson<DatabaseMonsterClassData>(monText.text);
 			
-			//update sprites
+			//---------------------------------------------------------
+            // Spriets
+            //---------------------------------------------------------
+
 			var guids = AssetDatabase.FindAssets("t:RoSpriteData", new[] { "Assets/Sprites" });
 
 			for (int i = 0; i < guids.Length; i++)
@@ -112,7 +121,45 @@ namespace Assets.Scripts.MapEditor.Editor
 
 				entriesAdded.Add(entry);
 			}
+
+			//---------------------------------------------------------
+			// Effects
+			//---------------------------------------------------------
+
+            var effectText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/effects.json", typeof(TextAsset)) as TextAsset;
+            var effects = JsonUtility.FromJson<EffectTypeList>(effectText.text);
+
+			Debug.Log(effects.Effects.Count);
+
+			guids = AssetDatabase.FindAssets("t:GameObject", new[] { "Assets/Effects/Prefabs" });
 			
+            for (int i = 0; i < guids.Length; i++)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                var fName = Path.GetFileNameWithoutExtension(path);
+                if (effects.Effects.All(m => m.Name != fName))
+                {
+                    //Debug.Log("Not found: " + fName + " " + effects.Effects[0].Name);
+                    var existing = defGroup.GetAssetEntry(guids[i]);
+                    if (existing == null)
+                        continue;
+                    settings.RemoveAssetEntry(guids[i], true);
+                    entriesRemoved.Add(existing);
+                    continue;
+                }
+
+                var entry = settings.CreateOrMoveEntry(guids[i], defGroup, readOnly: false, postEvent: false);
+                //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
+                entry.labels.Add("Effect");
+
+                entriesAdded.Add(entry);
+            }
+			
+            //---------------------------------------------------------
+            // Maps
+            //---------------------------------------------------------
+
 			var mapText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/maps.json", typeof(TextAsset)) as TextAsset;
 			var maps = JsonUtility.FromJson<ClientMapList>(mapText.text);
             var musicNames = new List<string>();
