@@ -8,6 +8,7 @@
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <UserSecretsId>RoRebuildServer-2d3ccb1b-373d-43ec-b059-5e7dc1bb4316</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

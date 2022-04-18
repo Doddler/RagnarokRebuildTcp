@@ -8,7 +8,7 @@ namespace RoRebuildServer.EntityComponents;
 public class Npc
 {
     public Entity Entity;
-    public string Name = null!;
+    public string Name { get; set; } = null!; //making this a property makes it accessible via npc scripting
     public bool HasTouch;
     public bool HasInteract;
     

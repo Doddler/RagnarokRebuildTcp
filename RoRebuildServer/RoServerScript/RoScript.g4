@@ -11,7 +11,7 @@ toplevelstatement : IDENTIFIER LPAREN functionparam? RPAREN block1=statementbloc
 statement : IF LPAREN expression RPAREN block1=statementblock (ELSE block2=statementblock)?				# IfStatement
 		  | FOR LPAREN asgn=expression SEMI comp=expression SEMI inc=expression RPAREN statementblock	# ForLoop
 		  | WHILE LPAREN comp=expression RPAREN statementblock											# WhileLoop
-		  | BREAK SEMI																					# BreakLoop
+		  | BREAK count=DECIMAL? SEMI																	# BreakLoop
 		  | expression SEMI																				# StatementExpression
 		  | IDENTIFIER DECIMAL? COLON																	# StartSection
 		  | SWITCH LPAREN expr=expression RPAREN LBRACKET switchblock* RBRACKET							# SwitchStatement
@@ -84,8 +84,10 @@ OR  : '||' ;
 BOR : '|' ;
 BAND : '&' ;
 
+/*
 TRUE  : 'true' ;
 FALSE : 'false' ;
+*/
 
 INC : '++';
 DEC : '--';

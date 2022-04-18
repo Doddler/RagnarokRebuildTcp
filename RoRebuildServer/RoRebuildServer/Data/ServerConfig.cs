@@ -20,7 +20,21 @@ public static class ServerConfig
         }
     }
 
+
+    public static ServerDataConfig ServerDataConfig
+    {
+        get
+        {
+            if (dataConfig != null) return dataConfig;
+
+            configuration ??= GetConfig();
+            dataConfig = configuration.GetSection("ServerDataConfig").Get<ServerDataConfig>();
+            return dataConfig;
+        }
+    }
+    
     private static ServerEntryConfig? entryConfig;
+    private static ServerDataConfig? dataConfig;
     private static IConfiguration? configuration;
 
     public static IConfiguration GetConfig()
@@ -31,7 +45,7 @@ public static class ServerConfig
         configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .AddUserSecrets("RoRebuildServer")
+            .AddUserSecrets("RoRebuildServer-2d3ccb1b-373d-43ec-b059-5e7dc1bb4316")
             .AddEnvironmentVariables()
             .Build();
         return configuration;

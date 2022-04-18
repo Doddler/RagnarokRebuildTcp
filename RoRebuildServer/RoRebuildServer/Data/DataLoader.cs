@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using CsvHelper;
+using RoRebuildServer.Data.Config;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
@@ -14,9 +15,16 @@ namespace RoRebuildServer.Data;
 
 internal class DataLoader
 {
+    private ServerDataConfig config;
+
+    public DataLoader(ServerDataConfig config)
+    {
+        this.config = config;
+    }
+
     public List<MapEntry> LoadMaps()
     {
-        using var tr = new StreamReader(@"ServerData/Db/Maps.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(config.DataPath, @"Db/Maps.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var maps = csv.GetRecords<MapEntry>().ToList();
@@ -28,7 +36,7 @@ internal class DataLoader
 
     public List<InstanceEntry> LoadInstances()
     {
-        using var tr = new StreamReader(@"ServerData/Db/Instances.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(config.DataPath, @"Db/Instances.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var instances = new List<InstanceEntry>();

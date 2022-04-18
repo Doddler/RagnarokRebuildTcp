@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using RebuildSharedData.Enum;
+using RoRebuildServer.Data.Config;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
@@ -39,6 +40,8 @@ public static class DataManager
     
 
     public static ExpChart ExpChart;
+
+    private static ServerDataConfig config;
 
 
     public static List<MonsterAiEntry> GetAiStateMachine(MonsterAiType monsterType)
@@ -92,7 +95,10 @@ public static class DataManager
     
     public static void Initialize()
     {
-        var loader = new DataLoader();
+        config = ServerConfig.ServerDataConfig;
+        ServerLogger.Log($"Loading server data at path: " + config.DataPath);
+
+        var loader = new DataLoader(config);
 
         ScriptAssembly = loader.CompileScripts();
         NpcManager = new NpcBehaviorManager();

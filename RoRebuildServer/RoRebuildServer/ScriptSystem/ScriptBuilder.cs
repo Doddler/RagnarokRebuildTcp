@@ -53,6 +53,8 @@ public class ScriptBuilder
 
     private int indentation = 1;
 
+    public Stack<int> breakPointerStack = new Stack<int>();
+
     public ScriptBuilder(string className, params string[] namespaceList)
     {
         this.className = className;
@@ -64,7 +66,7 @@ public class ScriptBuilder
         scriptBuilder.AppendLine($"namespace RoRebuildGenData");
         scriptBuilder.AppendLine("{");
     }
-
+    
     private void ResetMethod()
     {
         blockBuilder.Clear();
@@ -97,23 +99,43 @@ public class ScriptBuilder
         return blockBuilder;
     }
 
-    public int GotoFutureBlock()
+    public int GetFutureBlockPointer()
     {
-        StartIndentedBlockLine().AppendLine($"goto case ###{pointerCount}###;");
+        pointerCount++;
+        return pointerCount - 1;
+    }
+
+    public int GotoFutureBlock(bool extraIndent = false)
+    {
+        var line = StartIndentedBlockLine();
+        
+        if(extraIndent)
+            line.Append("\t");
+        
+        line.AppendLine($"goto case ###{pointerCount}###;");
         pointerCount++;
         return pointerCount-1;
+    }
+    
+    public void GotoFutureBlock(int ptr)
+    {
+        StartIndentedBlockLine().AppendLine($"goto case ###{ptr}###;");
+    }
+    public void GotoBlock(int blockId)
+    {
+        StartIndentedBlockLine().AppendLine($"goto case {blockId};");
     }
 
     public void RegisterGotoDestination(int id)
     {
         labels.Add(id, curBlock);
     }
-
+    
     public bool IsEmptyLine()
     {
         return lineBuilder.Length == 0;
     }
-
+    
     public void OpenStateIf()
     {
         StartIndentedBlockLine().AppendLine($"\tgoto case {curBlock + 1};");
@@ -126,7 +148,7 @@ public class ScriptBuilder
         return pointerCount-1;
     }
 
-    public void AdvanceBlock(bool skipGoto = false)
+    public int AdvanceBlock(bool skipGoto = false)
     {
         curBlock++;
         if (!skipGoto)
@@ -135,6 +157,8 @@ public class ScriptBuilder
         indentation--;
         StartIndentedBlockLine().AppendLine($"case {curBlock}:");
         indentation++;
+
+        return curBlock;
     }
 
     public void LoadFunctionSource(Type source, string varName)
@@ -148,6 +172,13 @@ public class ScriptBuilder
         {
             if (m == "GetType" || m == "ToString" || m == "Equals" || m == "GetHashCode")
                 continue;
+
+            if (m.StartsWith("get_"))
+            {
+                var m2 = m.Substring(4);
+                if (!functionBaseClasses.ContainsKey(m2))
+                    functionBaseClasses.Add(m2, varName);
+            }
 
             if (!functionBaseClasses.ContainsKey(m))
                 functionBaseClasses.Add(m, varName);
@@ -430,6 +461,10 @@ public class ScriptBuilder
                 return "1";
             case "center":
                 return "2";
+            case "true":
+                return "true";
+            case "false":
+                return "false";
             case "s":
                 return "0";
             case "sw":
@@ -450,7 +485,12 @@ public class ScriptBuilder
                 return "Time.MinutesSinceStartup()";
         }
 
-        return string.Empty;
+        if (functionBaseClasses.TryGetValue(id, out var src))
+            return $"{src}.{id}";
+
+        ServerLogger.LogWarning($"Error in {className} line {lineNumber} : Unable to parse parse unidentified constant '{id}'");
+
+        return id;
     }
 
     public string GetStringForVariable(string id)

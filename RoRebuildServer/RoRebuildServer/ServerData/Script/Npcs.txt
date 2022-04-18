@@ -26,6 +26,30 @@ OnClick:
 }
 
 
+Npc("prontera", "Test NPC", "4_F_KAFRA2", 248, 48, NW) 
+{
+OnClick:
+	Dialog(Name, "Yo buddy! Want to ask me some questions?");
+	while(true) 
+	{
+		Option("Option 1", "Option 2", "Option 3", "Leave");
+		
+		switch(Result) 
+		{
+		case 0:
+			Dialog("Test NPC", "Wow you picked option 1, sick dude.");
+		case 1: 
+		case 2:
+			Dialog("Test NPC", "Holy moly you picked option " + Result + ", amazing!");
+		case 3:
+			break 2; //break out of the while loop
+		}
+	}
+	Dialog("Test NPC", "Groovy, have yourself a fantabulous day!");
+}
+
+
+
 
 //MoveTo("prt_fild08", 170, 375);
 

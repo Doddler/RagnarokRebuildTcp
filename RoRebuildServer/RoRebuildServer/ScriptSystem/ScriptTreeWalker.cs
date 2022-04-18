@@ -300,6 +300,9 @@ internal class ScriptTreeWalker
             case WhileLoopContext context:
                 VisitWhileLoop(context);
                 break;
+            case BreakLoopContext context:
+                VisitBreak(context);
+                break;
             case StartSectionContext context:
                 if (sectionHandler != null)
                     sectionHandler(context);
@@ -381,7 +384,6 @@ internal class ScriptTreeWalker
                 builder.RegisterGotoDestination(ptr2);
             }
         }
-
     }
 
     private void VisitSwitchStatement(SwitchStatementContext context)
@@ -408,6 +410,10 @@ internal class ScriptTreeWalker
         {
             VisitExpression(context.expr);
             builder.OpenSwitch();
+
+            var breakPtr = builder.GetFutureBlockPointer();
+            builder.breakPointerStack.Push(breakPtr);
+            var statementPtr = -1;
                 
             foreach (var t in items)
             {
@@ -423,15 +429,42 @@ internal class ScriptTreeWalker
                 builder.EndLine();
 
                 builder.OpenStateIf();
+
                 var ptr = builder.GotoFutureBlock();
                 builder.AdvanceBlock(true);
-                    
-                foreach(var s in item.statement())
-                    VisitStatement(s);
 
-                builder.AdvanceBlock();
+                if (statementPtr != -1)
+                {
+                    builder.RegisterGotoDestination(statementPtr);
+                    statementPtr = -1;
+                }
+
+                var hasStatements = false;
+              
+                foreach (var s in item.statement())
+                {
+                    VisitStatement(s);
+                    hasStatements = true;
+                }
+
+                if (!hasStatements)
+                {
+                    if (statementPtr == -1)
+                        statementPtr = builder.GotoFutureBlock();
+                    else
+                        builder.GotoFutureBlock(statementPtr);
+                }
+
+                builder.GotoFutureBlock(breakPtr);
+
+                builder.AdvanceBlock(true);
                 builder.RegisterGotoDestination(ptr);
+                //builder.breakPointerStack.Pop();
             }
+
+            builder.AdvanceBlock();
+            builder.RegisterGotoDestination(breakPtr);
+            builder.breakPointerStack.Pop();
         }
 
             
@@ -444,14 +477,42 @@ internal class ScriptTreeWalker
 
     private void VisitWhileLoop(WhileLoopContext whileContext)
     {
-        builder.OutputRaw("while (");
-        VisitExpression(whileContext.comp);
-        builder.OutputRaw(")");
-        builder.EndLine();
+        if (!builder.UseStateMachine)
+        {
+            builder.OutputRaw("while (");
+            VisitExpression(whileContext.comp);
+            builder.OutputRaw(")");
+            builder.EndLine();
 
-        builder.OpenScope();
-        VisitStatementBlock(whileContext.statementblock());
-        builder.CloseScope();
+            builder.OpenScope();
+            VisitStatementBlock(whileContext.statementblock());
+            builder.CloseScope();
+        }
+        else
+        {
+            var start = builder.AdvanceBlock();
+            var end = builder.GetFutureBlockPointer();
+            
+            builder.OutputRaw("if (");
+            VisitExpression(whileContext.expression());
+            builder.OutputRaw(")");
+            builder.EndLine();
+
+            var loop = builder.GotoFutureBlock(true);
+            builder.GotoFutureBlock(end);
+
+            builder.AdvanceBlock(true);
+            builder.RegisterGotoDestination(loop);
+            builder.breakPointerStack.Push(end);
+
+            VisitStatementBlock(whileContext.statementblock());
+
+            builder.GotoBlock(start);
+
+            builder.AdvanceBlock(true);
+            builder.RegisterGotoDestination(end);
+            builder.breakPointerStack.Pop();
+        }
     }
 
     private void VisitForLoop(ForLoopContext forLoopContext)
@@ -468,6 +529,40 @@ internal class ScriptTreeWalker
         builder.OpenScope();
         VisitStatementBlock(forLoopContext.statementblock());
         builder.CloseScope();
+    }
+
+    private void VisitBreak(BreakLoopContext breakContext)
+    {
+        if (!builder.UseStateMachine)
+        {
+            if(breakContext.count != null)
+                ErrorResult(breakContext, $"You cannot break a specific count outside of OnClick and OnTouch blocks.");
+            builder.OutputRaw("break;");
+            builder.EndLine();
+        }
+        else
+        {
+            if (breakContext.count != null)
+            {
+                var count = int.Parse(breakContext.count.Text);
+                if (builder.breakPointerStack.Count < count)
+                    ErrorResult(breakContext, $"You cannot break {count} times here, as we don't have enough places to break from.");
+
+                var ptr = builder.breakPointerStack.Skip(count - 1).First();
+
+                builder.GotoFutureBlock(ptr);
+                builder.EndLine();
+            }
+            else
+            {
+                if (!builder.breakPointerStack.TryPeek(out var ptr))
+                    ErrorResult(breakContext,
+                        "You cannot use a break statement here, as there is nowhere you can break to.");
+
+                builder.GotoFutureBlock(ptr);
+                builder.EndLine();
+            }
+        }
     }
 
     private void VisitExpression(ExpressionContext expressionContext)
