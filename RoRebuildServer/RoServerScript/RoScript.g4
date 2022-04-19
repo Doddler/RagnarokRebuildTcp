@@ -41,7 +41,7 @@ expression : IDENTIFIER type=(INC|DEC)											#ExpressionUnary
 		   | function															#FunctionCallExpression
 		   | PER LPAREN functionparam? RPAREN									#AreaType
 		   | VAR assignment														#VarDeclaration
-		   | LOCAL assignment													#LocalDeclaration
+		   | type=(LOCAL|LOCALSTR) assignment									#LocalDeclaration
 		   | assignment															#AssignmentExpression
 		   | entity																#ExpressionEntity
 		   ;
@@ -74,6 +74,7 @@ SWITCH : 'switch';
 CASE : 'case';
 RETURN : 'return';
 LOCAL : 'local';
+LOCALSTR : 'localstr';
 GLOBAL : 'global';
 DOT : '.';
 

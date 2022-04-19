@@ -49,6 +49,7 @@ public class ScriptBuilder
 
     public bool UseStateMachine;
     public bool UseStateStorage;
+    public bool UseLocalStorage;
     public int StateStorageLimit = 0;
 
     private int indentation = 1;
@@ -190,6 +191,7 @@ public class ScriptBuilder
         methodName = name.Replace(" ", "");
         UseStateMachine = false;
         UseStateStorage = false;
+        UseLocalStorage = false;
         blockBuilder.Clear();
 
 
@@ -210,6 +212,7 @@ public class ScriptBuilder
     {
         UseStateMachine = false;
         UseStateStorage = false;
+        UseLocalStorage = false;
         blockBuilder.Clear();
 
         StartIndentedScriptLine().AppendLine($"public class RoRebuildItemGen_{name} : ItemInteractionBase");
@@ -251,6 +254,7 @@ public class ScriptBuilder
             stateVariable = "state";
             UseStateMachine = false;
             UseStateStorage = true;
+            UseLocalStorage = true;
             StateStorageLimit = 4;
 
             LoadFunctionSource(typeof(Player), "player");
@@ -266,6 +270,7 @@ public class ScriptBuilder
 
             UseStateMachine = false;
             UseStateStorage = false;
+            UseLocalStorage = false;
 
             LoadFunctionSource(typeof(Player), "player");
             LoadFunctionSource(typeof(CombatEntity), "combatEntity");
@@ -278,6 +283,7 @@ public class ScriptBuilder
         methodName = name.Replace(" ", "");
         UseStateMachine = true;
         UseStateStorage = false;
+        UseLocalStorage = true;
         stateVariable = "state";
         localvariable = "npc";
         blockBuilder.Clear();
@@ -339,6 +345,7 @@ public class ScriptBuilder
             curBlock = 0;
             UseStateMachine = true;
             UseStateStorage = true;
+            UseLocalStorage = true;
             StateStorageLimit = NpcInteractionState.StorageCount;
 
             LoadFunctionSource(typeof(Npc), "npc");
@@ -357,6 +364,7 @@ public class ScriptBuilder
             OpenScope();
 
             UseStateMachine = false;
+            UseLocalStorage = true;
 
             LoadFunctionSource(typeof(Npc), "npc");
         }
@@ -454,7 +462,10 @@ public class ScriptBuilder
         switch (id.ToLower())
         {
             case "result":
-                return $"{stateVariable}.InteractionResult";
+                if(UseStateStorage)
+                    return $"{stateVariable}.InteractionResult";
+                else
+                    return id;
             case "left":
                 return "0";
             case "right":
@@ -497,17 +508,23 @@ public class ScriptBuilder
     {
         int pos = 0;
 
-        if (stateIntVariables.TryGetValue(id, out pos))
-            return $"{stateVariable}.ValuesInt[{pos}]";
+        if (UseStateStorage)
+        {
+            if (stateIntVariables.TryGetValue(id, out pos))
+                return $"{stateVariable}.ValuesInt[{pos}]";
 
-        if (stateStringVariables.TryGetValue(id, out pos))
-            return $"{stateVariable}.ValuesString[{pos}]";
-            
-        if (localIntVariables.TryGetValue(id, out pos))
-            return $"{localvariable}.ValuesInt[{pos}]";
-        
-        if (localStringVariables.TryGetValue(id, out pos))
-            return $"{localvariable}.ValuesString[{pos}]";
+            if (stateStringVariables.TryGetValue(id, out pos))
+                return $"{stateVariable}.ValuesString[{pos}]";
+        }
+
+        if (UseLocalStorage)
+        {
+            if (localIntVariables.TryGetValue(id, out pos))
+                return $"{localvariable}.ValuesInt[{pos}]";
+
+            if (localStringVariables.TryGetValue(id, out pos))
+                return $"{localvariable}.ValuesString[{pos}]";
+        }
 
         if(id.ToLower() == "result")
             return $"{stateVariable}.InteractionResult";
@@ -517,11 +534,11 @@ public class ScriptBuilder
 
     public void OutputVariable(string id)
     {
-        if (!UseStateStorage)
-        {
-            lineBuilder.Append(id);
-            return;
-        }
+        //if (!UseStateStorage)
+        //{
+        //    lineBuilder.Append(id);
+        //    return;
+        //}
 
         var str = GetStringForVariable(id);
         if(String.IsNullOrWhiteSpace(id))

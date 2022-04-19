@@ -682,10 +682,14 @@ internal class ScriptTreeWalker
         if(!builder.UseStateMachine)
             ErrorResult(localDeclarationContext, "Cannot use local type for variable not used within an NPC OnClick or OnTouch command.");
 
+
+        var type = localDeclarationContext.type.Text.ToLower();
+        var isString = (type == "localstr");
+
         var assn = localDeclarationContext.assignment();
         if (assn is VarAssignmentContext varContext)
         {
-            builder.DefineVariable(varContext.IDENTIFIER().GetText(), false, true);
+            builder.DefineVariable(varContext.IDENTIFIER().GetText(), isString, true);
         }
 
         VisitAssignment(localDeclarationContext.assignment());

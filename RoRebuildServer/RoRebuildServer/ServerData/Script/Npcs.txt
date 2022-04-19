@@ -18,9 +18,33 @@ OnClick:
 			Dialog("Kafra Employee", "You don't have enough money. The storage useage fee is 40 Zeny.");
 			return;
 		}
-		Dialog("Kafra Employee", "Here, let me open your Storage for you. Thank you for using the Kafra Service.");
+		Dialog("Kaxfra Employee", "Here, let me open your Storage for you. Thank you for using the Kafra Service.");
 		DropZeny(40);
 		OpenStorage();
+		return;
+	}
+}
+
+Npc("prt_fild08", "Garnet", "1_F_02", 160, 365, S) 
+{
+	localstr name = "Garnet";
+OnClick:
+	ShowSprite("kafra_06", right);
+ 
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?d");
+	Option("Save", "Use Storage", "Cancel");
+	switch(Result) 	
+	{
+	case 0:
+		Dialog("Kafra Employee", "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
+		return;
+	case 1:
+		if(GetZeny() < 40)
+		{
+			Dialog("Kafra Employee", "You don't have enough money. The storage useage fee is 40 Zeny.");
+			return;
+		}
+		Dialog("Kafra Employee", "Here, let me open your Storage for you. Thank you for using the Kafra Service.");
 		return;
 	}
 }
