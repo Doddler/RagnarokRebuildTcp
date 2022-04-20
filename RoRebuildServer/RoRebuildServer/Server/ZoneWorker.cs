@@ -64,10 +64,13 @@ internal class ZoneWorker : BackgroundService
         var max = 0d;
         var spos = 0;
 
-#if DEBUG
         var noticeTime = 5f;
+        
+
+#if DEBUG
+        var noticeMax = 30f;
 #else
-			var noticeTime = 60f;
+		var noticeMax = 600f;
 #endif
         var lastLog = Time.ElapsedTime - noticeTime + 5f; //make the first check-in 5s after start no matter what
 
@@ -110,13 +113,16 @@ internal class ZoneWorker : BackgroundService
                     var players = NetworkManager.PlayerCount;
 
                     avg *= 1000d;
-
-                    ServerLogger.Log($"[Program] {players} players. Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
+                    
+                    ServerLogger.Log($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
                     
                     total = 0;
                     spos = 0;
                     max = 0;
                     lastLog = Time.ElapsedTime;
+                    noticeTime += 5;
+                    if(noticeTime > noticeMax)
+                        noticeTime = noticeMax;
                 }
             }
         }
