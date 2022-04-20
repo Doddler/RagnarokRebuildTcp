@@ -3,6 +3,7 @@ using Antlr4.Runtime;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.Config;
 using RoRebuildServer.Logging;
 using RoServerScript;
 
@@ -23,8 +24,10 @@ internal class ScriptCompiler
 
         var walker = new ScriptTreeWalker();
 
-        var tempPath = ServerConfig.ServerDataConfig.DebugScriptOutputPath;
-        var dataPath = ServerConfig.ServerDataConfig.DataPath;
+        var config = ServerConfig.GetConfigSection<ServerDataConfig>();
+
+        var tempPath = config.DebugScriptOutputPath;
+        var dataPath = config.DataPath;
 
         var name = Path.GetRelativePath(dataPath, inputPath).Replace(".", "_").Replace("\\", "_").Replace("/", "_");
 
@@ -34,7 +37,7 @@ internal class ScriptCompiler
 
         scriptFiles.Add(Path.GetRelativePath(dataPath, inputPath), str);
 
-        if (ServerConfig.ServerDataConfig.WriteDebugScripts)
+        if (config.WriteDebugScripts)
         {
             if (!Directory.Exists(tempPath))
                 Directory.CreateDirectory(tempPath);

@@ -15,7 +15,7 @@ namespace RoRebuildServer.Data;
 
 internal class DataLoader
 {
-    private ServerDataConfig config;
+    private readonly ServerDataConfig config;
 
     public DataLoader(ServerDataConfig config)
     {
@@ -237,7 +237,7 @@ internal class DataLoader
 
             ServerLogger.Log("Compiling server side scripts...");
             
-            var path = Path.Combine(ServerConfig.ServerDataConfig.DataPath, "Script/");
+            var path = Path.Combine(config.DataPath, "Script/");
             foreach (var file in Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories))
             {
                 ServerLogger.Debug("Compiling script " + Path.GetRelativePath(path, file));

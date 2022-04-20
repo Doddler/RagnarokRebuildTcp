@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.Config;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Util;
@@ -16,7 +17,7 @@ public class PacketEnterServer : IClientPacketHandler
         if (connection.Character != null)
             return;
 
-        var config = ServerConfig.ServerEntryConfig;
+        var config = ServerConfig.GetConfigSection<ServerEntryConfig>();
 
         var map = config.Map;
         var area = Area.CreateAroundPoint(config.Position, config.Area);

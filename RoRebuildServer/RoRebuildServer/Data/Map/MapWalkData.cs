@@ -142,8 +142,9 @@ public class MapWalkData
 
     public MapWalkData(string name)
     {
-        if (!DataManager.TryGetConfigValue("WalkPathData", out var walkPath) || string.IsNullOrEmpty(walkPath))
-            throw new Exception("Configuration did not have section for WalkPathData!");
+        var walkPath = DataManager.Config.WalkPathData;
+        if (string.IsNullOrEmpty(walkPath))
+            throw new Exception("Configuration did not include a valid WalkPathData value!");
 
         var path = Path.Combine(walkPath, name);
 

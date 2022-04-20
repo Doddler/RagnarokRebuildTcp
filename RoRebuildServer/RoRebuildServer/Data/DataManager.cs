@@ -41,7 +41,7 @@ public static class DataManager
 
     public static ExpChart ExpChart;
 
-    private static ServerDataConfig config;
+    public static ServerDataConfig Config;
 
 
     public static List<MonsterAiEntry> GetAiStateMachine(MonsterAiType monsterType)
@@ -95,10 +95,10 @@ public static class DataManager
     
     public static void Initialize()
     {
-        config = ServerConfig.ServerDataConfig;
-        ServerLogger.Log($"Loading server data at path: " + config.DataPath);
+        Config = ServerConfig.GetConfigSection<ServerDataConfig>();
+        ServerLogger.Log($"Loading server data at path: " + Config.DataPath);
 
-        var loader = new DataLoader(config);
+        var loader = new DataLoader(Config);
 
         ScriptAssembly = loader.CompileScripts();
         NpcManager = new NpcBehaviorManager();
