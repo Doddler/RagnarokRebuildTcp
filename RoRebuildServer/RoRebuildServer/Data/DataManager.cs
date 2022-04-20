@@ -19,10 +19,7 @@ public static class DataManager
     public static Dictionary<string, MonsterDatabaseInfo> MonsterCodeLookup;
 
     private static List<List<MonsterAiEntry>> monsterAiList;
-
-    private static Dictionary<string, string> configValues;
-
-
+    
     private static List<MapEntry> mapList;
 
     public static Assembly ScriptAssembly;
@@ -40,37 +37,12 @@ public static class DataManager
     
 
     public static ExpChart ExpChart;
-
-    public static ServerDataConfig Config;
-
-
+    
     public static List<MonsterAiEntry> GetAiStateMachine(MonsterAiType monsterType)
     {
         return monsterAiList[(int)monsterType];
     }
-
-
-    public static bool TryGetConfigValue(string key, out string? value)
-    {
-        if (configValues.TryGetValue(key, out value))
-            return true;
-
-        value = null;
-        return false;
-    }
-
-    public static bool TryGetConfigInt(string key, out int value)
-    {
-        if (configValues.TryGetValue(key, out var val))
-        {
-            if (int.TryParse(val, out value))
-                return true;
-        }
-
-        value = 0;
-        return false;
-    }
-
+    
     public static void RegisterItem(string name, ItemInteractionBase item)
     {
         if (!ItemIdByName.TryGetValue(name, out var id))
@@ -95,15 +67,15 @@ public static class DataManager
     
     public static void Initialize()
     {
-        Config = ServerConfig.GetConfigSection<ServerDataConfig>();
-        ServerLogger.Log($"Loading server data at path: " + Config.DataPath);
+        //Config = ServerConfig.GetConfigSection<ServerDataConfig>();
+        //ServerLogger.Log($"Loading server data at path: " + Config.DataPath);
 
-        var loader = new DataLoader(Config);
+        var loader = new DataLoader();
 
         ScriptAssembly = loader.CompileScripts();
         NpcManager = new NpcBehaviorManager();
 
-        configValues = loader.LoadServerConfig();
+        //configValues = loader.LoadServerConfig();
         mapList = loader.LoadMaps();
         InstanceList = loader.LoadInstances();
         //mapConnectorLookup = loader.LoadConnectors(mapList);

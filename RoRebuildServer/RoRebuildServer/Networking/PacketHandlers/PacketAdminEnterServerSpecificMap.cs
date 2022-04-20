@@ -1,5 +1,6 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Networking;
+using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
@@ -12,7 +13,7 @@ public class PacketAdminEnterServerSpecificMap : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (!NetworkManager.DebugMode)
+        if (!ServerConfig.DebugConfig.EnableEnterSpecificMap)
         {
             ServerLogger.LogWarning("Player connected with debug packet EnterServerSpecificMap, disconnecting player.");
             NetworkManager.DisconnectPlayer(connection);

@@ -15,16 +15,9 @@ namespace RoRebuildServer.Data;
 
 internal class DataLoader
 {
-    private readonly ServerDataConfig config;
-
-    public DataLoader(ServerDataConfig config)
-    {
-        this.config = config;
-    }
-
     public List<MapEntry> LoadMaps()
     {
-        using var tr = new StreamReader(Path.Combine(config.DataPath, @"Db/Maps.csv")) as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Maps.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var maps = csv.GetRecords<MapEntry>().ToList();
@@ -36,7 +29,7 @@ internal class DataLoader
 
     public List<InstanceEntry> LoadInstances()
     {
-        using var tr = new StreamReader(Path.Combine(config.DataPath, @"Db/Instances.csv")) as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Instances.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var instances = new List<InstanceEntry>();
@@ -237,7 +230,7 @@ internal class DataLoader
 
             ServerLogger.Log("Compiling server side scripts...");
             
-            var path = Path.Combine(config.DataPath, "Script/");
+            var path = Path.Combine(ServerConfig.DataConfig.DataPath, "Script/");
             foreach (var file in Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories))
             {
                 ServerLogger.Debug("Compiling script " + Path.GetRelativePath(path, file));

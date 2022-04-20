@@ -17,7 +17,7 @@ public class PacketEnterServer : IClientPacketHandler
         if (connection.Character != null)
             return;
 
-        var config = ServerConfig.GetConfigSection<ServerEntryConfig>();
+        var config = ServerConfig.EntryConfig;
 
         var map = config.Map;
         var area = Area.CreateAroundPoint(config.Position, config.Area);

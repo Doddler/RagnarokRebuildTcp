@@ -8,6 +8,16 @@ public static class ServerConfig
     public const int MaxAoESize = 9;
     public const int InitialConnectionCapacity = 40;
 
+    private static ServerDebugConfig? serverDebugConfig;
+    private static ServerDataConfig? serverDataConfig;
+    private static ServerEntryConfig? serverEntryConfig;
+    private static ServerOperationConfig? serverOperationConfig;
+
+    public static ServerDebugConfig DebugConfig => serverDebugConfig ??= GetConfigSection<ServerDebugConfig>();
+    public static ServerDataConfig DataConfig => serverDataConfig ??= GetConfigSection<ServerDataConfig>();
+    public static ServerEntryConfig EntryConfig => serverEntryConfig ??= GetConfigSection<ServerEntryConfig>();
+    public static ServerOperationConfig OperationConfig => serverOperationConfig ??= GetConfigSection<ServerOperationConfig>();
+
     public static T GetConfigSection<T>()
     {
         configuration ??= GetConfig();

@@ -34,7 +34,9 @@ internal class ZoneWorker : BackgroundService
         RoDatabase.Initialize();
         DataManager.Initialize();
 
-        if (DataManager.TryGetConfigInt("MaxSpawnTime", out var spawnTime))
+        var spawnTime = ServerConfig.DebugConfig.MaxSpawnTime;
+
+        if (spawnTime > 0)
         {
             Monster.MaxSpawnTimeInSeconds = spawnTime / 1000f;
             ServerLogger.Log($"Max monster spawn time set to {Monster.MaxSpawnTimeInSeconds} seconds.");

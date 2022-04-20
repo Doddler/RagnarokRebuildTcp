@@ -24,7 +24,7 @@ internal class ScriptCompiler
 
         var walker = new ScriptTreeWalker();
 
-        var config = ServerConfig.GetConfigSection<ServerDataConfig>();
+        var config = ServerConfig.DataConfig;
 
         var tempPath = config.DebugScriptOutputPath;
         var dataPath = config.DataPath;

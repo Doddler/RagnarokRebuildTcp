@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
+using RoRebuildServer.Data;
 
 namespace RoRebuildServer.Networking.PacketHandlers;
 
@@ -9,7 +10,10 @@ public class PacketAdminRequestMove : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (!NetworkManager.QuickMoveEnabled)
+        if (!connection.Entity.IsAlive())
+            return;
+
+        if (!connection.Player.IsAdmin && !ServerConfig.DebugConfig.EnableWarpCommandForEveryone)
             return;
 
         var player = connection.Player;

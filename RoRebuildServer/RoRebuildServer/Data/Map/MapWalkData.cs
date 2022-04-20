@@ -142,7 +142,7 @@ public class MapWalkData
 
     public MapWalkData(string name)
     {
-        var walkPath = DataManager.Config.WalkPathData;
+        var walkPath = ServerConfig.DataConfig.WalkPathData;
         if (string.IsNullOrEmpty(walkPath))
             throw new Exception("Configuration did not include a valid WalkPathData value!");
 

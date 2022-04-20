@@ -89,10 +89,13 @@ public class World
 
     public void Update()
     {
-        //for(var i = 0; i < Instances.Count; i++)
-        //    Instances[i].Update();
-
-        Parallel.ForEach(Instances, instance => instance.Update());
+        if (NetworkManager.IsSingleThreadMode)
+        {
+            for (var i = 0; i < Instances.Count; i++)
+                Instances[i].Update();
+        }
+        else
+            Parallel.ForEach(Instances, instance => instance.Update());
             
         PerformMoves();
         PerformRemovals();

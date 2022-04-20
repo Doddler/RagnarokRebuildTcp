@@ -46,29 +46,17 @@ public class NetworkManager
     //public static int PlayerCount => State.ConnectionLookup.Count;
     
     public static bool IsRunning;
-    public static bool IsSingleThreadMode;
-    public static bool QuickMoveEnabled;
+    public static bool IsSingleThreadMode { get; set; }
     public static bool DebugMode;
 
     public static void Init(World gameWorld)
     {
         World = gameWorld;
-
-
-        if (!DataManager.TryGetConfigInt("Port", out var port))
-            throw new Exception("Configuration does not have value for port!");
-        if (!DataManager.TryGetConfigInt("MaxConnections", out var maxConnections))
-            throw new Exception("Configuration does not have value for max connections!");
-
-
-        if (DataManager.TryGetConfigInt("SingleThread", out var threading))
-            IsSingleThreadMode = threading != 0;
-
-        if (DataManager.TryGetConfigInt("QuickMoveEnabled", out var quickmove))
-            QuickMoveEnabled = quickmove != 0;
-
-        if (DataManager.TryGetConfigInt("Debug", out var debug))
-            DebugMode = debug == 1;
+        
+        
+        IsSingleThreadMode = !ServerConfig.OperationConfig.UseMultipleThreads;
+        
+        DebugMode = ServerConfig.DebugConfig.UseDebugMode;
 
 #if DEBUG
         DebugMode = true;
@@ -78,7 +66,7 @@ public class NetworkManager
 #endif
 
 
-        ServerLogger.Log($"Starting server with a maximum of {maxConnections} connections.");
+        ServerLogger.Log($"Starting server NetworkManager!");
 
 
         inboundChannel = new NetQueue<InboundMessage>(100);
@@ -368,7 +356,7 @@ public class NetworkManager
                 return;
             }
         }
-
+        
         PacketHandlers[(int)type](msg.Client, msg);
 #endif
 #if !DEBUG
