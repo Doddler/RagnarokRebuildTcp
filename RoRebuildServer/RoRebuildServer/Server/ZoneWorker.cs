@@ -141,5 +141,10 @@ internal class ZoneWorker : BackgroundService
         await RoDatabase.Shutdown();
 
         await base.StopAsync(cancellationToken);
+
+        //makes it real clear in the logs where the server shuts down
+        logger.LogInformation("Server is now shut down!");
+        logger.LogInformation("=======================================================================================");
+        logger.LogInformation("=======================================================================================");
     }
 }

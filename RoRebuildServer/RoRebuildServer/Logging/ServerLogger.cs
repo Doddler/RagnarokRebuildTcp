@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using RoRebuildServer.Data;
 using Serilog;
+using Serilog.Context;
 using Serilog.Core;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -7,17 +9,9 @@ namespace RoRebuildServer.Logging;
 
 public static class ServerLogger
 {
-#if DEBUG
-    private static Logger logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console(theme: SystemConsoleTheme.Colored).CreateLogger();
-#else
-    private static Logger logger = new LoggerConfiguration().MinimumLevel.Information().WriteTo.Console(theme: SystemConsoleTheme.Colored).CreateLogger();
-#endif
+    private static Logger logger = new LoggerConfiguration().Enrich.FromLogContext().ReadFrom.Configuration(ServerConfig.Configuration).CreateLogger();
 
     public static Logger GetLogger() => logger;
-
-    //private static readonly object[] param = new object[0]; //to avoid allocating a new array each time when logging
-
-    //public static void RegisterLogger(ILogger log) => new LoggerConfiguration().WriteTo.Console().CreateLogger();
 
     [Conditional("DEBUG")]
     public static void Debug(string message) => logger.Debug(message);

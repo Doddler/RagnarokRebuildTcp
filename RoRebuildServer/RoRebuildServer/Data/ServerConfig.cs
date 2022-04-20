@@ -23,8 +23,16 @@ public static class ServerConfig
         configuration ??= GetConfig();
         return configuration.GetSection(typeof(T).Name).Get<T>();
     }
-    
+
+    public static T GetConfigValue<T>(string name)
+    {
+        configuration ??= GetConfig();
+        return configuration.GetValue<T>(name);
+    }
+
     private static IConfiguration? configuration;
+
+    public static IConfiguration Configuration => configuration ??= GetConfig();
 
     public static IConfiguration GetConfig()
     {
@@ -34,6 +42,7 @@ public static class ServerConfig
         configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile("appsettings.Logging.json", optional: true, reloadOnChange: true)
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
             .AddUserSecrets("RoRebuildServer-2d3ccb1b-373d-43ec-b059-5e7dc1bb4316")
             .AddEnvironmentVariables()

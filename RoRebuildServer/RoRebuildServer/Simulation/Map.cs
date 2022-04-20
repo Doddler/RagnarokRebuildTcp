@@ -627,7 +627,7 @@ public class Map
         if (!DataManager.MapConfigs.TryGetValue(Name, out var action))
             return;
 
-        ServerLogger.Log("Loading map config for map " + Name);
+        ServerLogger.Debug("Loading map config for map " + Name);
         MapConfig = new ServerMapConfig(this);
 
         action(MapConfig);

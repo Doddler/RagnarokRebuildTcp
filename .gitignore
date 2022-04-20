@@ -57,3 +57,4 @@ RoRebuildServer/RoRebuildServer/RoCharacterDatabase.db
 RoRebuildServer/RoRebuildServer/RoCharacterDatabase.db-shm
 RoRebuildServer/RoRebuildServer/RoCharacterDatabase.db-wal
 RebuildClient/UserSettings/
+RoRebuildServer/RoRebuildServer/Logs/
