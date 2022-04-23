@@ -27,6 +27,8 @@ public class WorldObject : IEntityAutoReset
 
     public Entity LastAttacked;
 
+    private EntityList? visiblePlayers;
+
     public float SpawnImmunity;
     public float AttackCooldown;
     public float MoveSpeed;
@@ -107,6 +109,7 @@ public class WorldObject : IEntityAutoReset
         TargetPosition = new Position();
         FacingDirection = Direction.South;
         WalkPath = null;
+        ClearVisiblePlayerList();
     }
 
     public void Init(ref Entity entity)
@@ -135,6 +138,80 @@ public class WorldObject : IEntityAutoReset
         State = CharacterState.Idle;
     }
 
+    public void AddVisiblePlayer(Entity e)
+    {
+        if (visiblePlayers == null)
+            visiblePlayers = EntityListPool.Get();
+
+
+#if DEBUG
+        //sanity check
+        var obj2 = e.Get<WorldObject>();
+
+        if (e.Type != EntityType.Player)
+            ServerLogger.LogWarning($"WorldObject {Name} is attempting to add {obj2.Name} to it's visible players list, but that object is not a player.");
+        else if (visiblePlayers.Contains(e))
+            ServerLogger.LogWarning($"WorldObject {Name} is attempting to add a visible player {obj2.Name}, but that player is already tagged as visible.");
+        //else
+        //    ServerLogger.Log($"WorldObject {Name} is adding a visible player {obj2.Name} to it's visible list.");
+
+#endif
+
+        visiblePlayers.Add(e);
+    }
+
+    public bool IsPlayerVisible(Entity e)
+    {
+        if (visiblePlayers == null)
+            return false;
+
+        return visiblePlayers.Contains(e);
+    }
+
+    public void RemoveVisiblePlayer(Entity e)
+    {
+        if (visiblePlayers == null)
+            return;
+
+#if DEBUG
+        //sanity check
+        var obj2 = e.Get<WorldObject>();
+        
+        if (e.Type != EntityType.Player)
+            ServerLogger.LogWarning($"WorldObject {Name} is attempting to remove {obj2.Name} from it's visible players list, but that object is not a player.");
+        else if (!visiblePlayers.Contains(e))
+            ServerLogger.LogWarning($"WorldObject {Name} is attempting to remove visible entity {obj2.Name}, but that player is not on the visibility list.");
+        //else
+        //    ServerLogger.Log($"WorldObject {Name} is removing a player {obj2.Name} from it's visible list.");
+#endif
+
+        visiblePlayers.Remove(ref e);
+    }
+
+    public void ClearVisiblePlayerList()
+    {
+        if (visiblePlayers == null)
+            return;
+
+        visiblePlayers.Clear();
+        EntityListPool.Return(visiblePlayers);
+        visiblePlayers = null;
+    }
+
+    public EntityList? GetVisiblePlayerList() => visiblePlayers;
+
+    public bool TryGetVisiblePlayerList(out EntityList entityList)
+    {
+        if (visiblePlayers == null)
+        {
+            entityList = null!;
+            return false;
+        }
+
+        entityList = visiblePlayers;
+        return true;
+    }
+    
     public void SitStand(bool isSitting)
     {
         if (Type != CharacterType.Player)
@@ -293,6 +370,9 @@ public class WorldObject : IEntityAutoReset
             return;
 
         SpawnImmunity -= Time.DeltaTimeFloat;
+
+        if(visiblePlayers != null)
+            visiblePlayers.ClearInactive();
 
         if (Entity.Type == EntityType.Player)
         {

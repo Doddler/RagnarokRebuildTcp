@@ -1,0 +1,4 @@
+MapConfig("2009rwc_03")
+{
+	CreateSpawn("PORING50", 20);
+}

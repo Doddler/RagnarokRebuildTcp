@@ -66,7 +66,6 @@ internal class ZoneWorker : BackgroundService
 
         var noticeTime = 5f;
         
-
 #if DEBUG
         var noticeMax = 30f;
 #else

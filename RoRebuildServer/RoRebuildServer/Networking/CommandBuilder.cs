@@ -25,6 +25,15 @@ public static class CommandBuilder
         recipients.Add(player.Connection);
     }
 
+
+    public static void AddRecipients(EntityList list)
+    {
+        foreach (var e in list)
+        {
+            AddRecipient(e);
+        }
+    }
+
     public static void ClearRecipients()
     {
         recipients?.Clear();

@@ -1,0 +1,24 @@
+
+Npc("2009rwc_03", "Kafra Staff#DebugRoom", "4_F_KAFRA2", 49, 49, SW) 
+{
+	localstr name = "Kafra Staff";
+OnClick:
+	ShowSprite("kafra_06", right);
+ 
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?d");
+	Option("Save", "Use Storage", "Cancel");
+	switch(Result) 	
+	{
+	case 0:
+		Dialog(name, "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
+		return;
+	case 1:
+		if(GetZeny() < 40)
+		{
+			Dialog(name, "You don't have enough money. The storage useage fee is 40 Zeny.");
+			return;
+		}
+		Dialog(name, "Here, let me open your Storage for you. Thank you for using the Kafra Service.");
+		return;
+	}
+}

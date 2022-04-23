@@ -15,13 +15,20 @@ public static class ServerConfig
 
     public static ServerDebugConfig DebugConfig => serverDebugConfig ??= GetConfigSection<ServerDebugConfig>();
     public static ServerDataConfig DataConfig => serverDataConfig ??= GetConfigSection<ServerDataConfig>();
-    public static ServerEntryConfig EntryConfig => serverEntryConfig ??= GetConfigSection<ServerEntryConfig>();
+    public static ServerEntryConfig EntryConfig => serverEntryConfig ??= GetConfigSection<ServerEntryConfig>("ServerCharacterEntry");
     public static ServerOperationConfig OperationConfig => serverOperationConfig ??= GetConfigSection<ServerOperationConfig>();
 
     public static T GetConfigSection<T>()
     {
         configuration ??= GetConfig();
         return configuration.GetSection(typeof(T).Name).Get<T>();
+    }
+
+
+    public static T GetConfigSection<T>(string sectionName)
+    {
+        configuration ??= GetConfig();
+        return configuration.GetSection(sectionName).Get<T>();
     }
 
     public static T GetConfigValue<T>(string name)

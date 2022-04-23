@@ -457,14 +457,18 @@ namespace Assets.Scripts.Network
                 Debug.LogWarning("Trying to remove entity " + id + ", but it does not exist in scene!");
                 return;
             }
-
-            entityList.Remove(id);
-
+            
             if (id == PlayerId)
             {
-                Debug.LogWarning("Whoa! Trying to delete player object. Is that right...?");
-                CameraFollower.Instance.Target = null;
+                Debug.Log("We're removing the player object! Hopefully the server knows what it's doing. We're just going to pretend we didn't see it.");
+                return;
+
+                //Debug.LogWarning("Whoa! Trying to delete player object. Is that right...?");
+                //CameraFollower.Instance.Target = null;
             }
+
+
+            entityList.Remove(id);
 
             if (reason == CharacterRemovalReason.Dead)
             {
@@ -1069,6 +1073,9 @@ namespace Assets.Scripts.Network
 
         public void SendMoveRequest(string map, int x = -999, int y = -999)
         {
+            if (map.ToLower() == "debug" || map.ToLower() == "debugroom")
+                map = "2009rwc_03";
+
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.AdminRequestMove);

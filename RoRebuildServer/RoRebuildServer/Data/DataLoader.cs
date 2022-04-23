@@ -229,17 +229,19 @@ internal class DataLoader
             var compiler = new ScriptCompiler();
 
             ServerLogger.Log("Compiling server side scripts...");
-            
+
+            var hasNewScripts = false;
+
             var path = Path.Combine(ServerConfig.DataConfig.DataPath, "Script/");
             foreach (var file in Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories))
             {
                 ServerLogger.Debug("Compiling script " + Path.GetRelativePath(path, file));
-                compiler.Compile(file);
+                hasNewScripts |= compiler.Compile(file);
             }
 
             ServerLogger.Log("Generating and loading script assembly...");
 
-            var assembly = compiler.Load();
+            var assembly = compiler.Load(!hasNewScripts);
 
             ServerLogger.Log("Server scripts loaded!");
 

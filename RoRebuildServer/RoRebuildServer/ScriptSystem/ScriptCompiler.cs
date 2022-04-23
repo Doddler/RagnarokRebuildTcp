@@ -13,8 +13,33 @@ internal class ScriptCompiler
 {
     public Dictionary<string, string> scriptFiles = new();
 
-    public void Compile(string inputPath)
+    public bool Compile(string inputPath)
     {
+        var config = ServerConfig.DataConfig;
+
+        var cachePath = Path.Combine(config.CachePath, "scripts");
+        var dataPath = config.DataPath;
+
+        var name = Path.GetRelativePath(dataPath, inputPath).Replace(".", "_").Replace("\\", "_").Replace("/", "_");
+        var cacheFileName = Path.Combine(cachePath, name) + ".txt";
+
+        if (config.CacheScripts)
+        {
+            if (File.Exists(cacheFileName))
+            {
+                var oldModified = File.GetLastWriteTime(inputPath);
+                var newModified = File.GetLastWriteTime(cacheFileName);
+
+                if (newModified > oldModified)
+                {
+                    ServerLogger.Debug($"File {cacheFileName} is already built, using it instead.");
+                    var script = File.ReadAllText(cacheFileName);
+                    scriptFiles.Add(Path.GetRelativePath(dataPath, inputPath), script);
+                    return false;
+                }
+            }
+        }
+
         var fs = new StreamReader(inputPath);
         var input = new AntlrInputStream(fs);
 
@@ -23,31 +48,58 @@ internal class ScriptCompiler
         var parser = new RoScriptParser(tokenStream);
 
         var walker = new ScriptTreeWalker();
-
-        var config = ServerConfig.DataConfig;
-
-        var tempPath = config.DebugScriptOutputPath;
-        var dataPath = config.DataPath;
-
-        var name = Path.GetRelativePath(dataPath, inputPath).Replace(".", "_").Replace("\\", "_").Replace("/", "_");
-
-        var str = walker.BuildClass(name, parser);
-
         
-
+        var str = walker.BuildClass(name, parser);
+        
         scriptFiles.Add(Path.GetRelativePath(dataPath, inputPath), str);
 
-        if (config.WriteDebugScripts)
+        if (config.CacheScripts)
         {
-            if (!Directory.Exists(tempPath))
-                Directory.CreateDirectory(tempPath);
+            if (!Directory.Exists(cachePath))
+                Directory.CreateDirectory(cachePath);
             
-            File.WriteAllText(Path.Combine(tempPath, name) + ".txt", str);
+            File.WriteAllText(cacheFileName, str);
         }
+
+        return true;
     }
 
-    public Assembly Load()
+    private bool TryLoadFromCache(out Assembly assembly)
     {
+        assembly = null!;
+
+        var cachePath = Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll");
+        if (!File.Exists(cachePath))
+            return false;
+
+        try
+        {
+            var bytes = File.ReadAllBytes(cachePath);
+
+            assembly = Assembly.Load(bytes);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            ServerLogger.LogWarning($"Could not load script assembly from cache due to an exception: {ex}");
+
+            return false;
+        }
+    }
+    
+    public Assembly Load(bool loadFromCache)
+    {
+        var useCache = ServerConfig.DataConfig.CacheScripts;
+        if (useCache && loadFromCache)
+        {
+            if (TryLoadFromCache(out var a))
+            {
+                ServerLogger.Log("Scripts have not changed, script assembly loaded from cache.");
+                return a;
+            }
+        }
+
         var trees = new List<SyntaxTree>();
         foreach (var script in scriptFiles)
         {
@@ -86,7 +138,11 @@ internal class ScriptCompiler
             }
         }
 
-        return Assembly.Load(memoryStream.ToArray());
+        var bytes = memoryStream.ToArray();
+        if(useCache)
+            File.WriteAllBytes(Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll"), bytes);
+
+        return Assembly.Load(bytes);
 
     }
 }
