@@ -5,11 +5,20 @@ using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
 using UnityEditor.AddressableAssets.Settings;
+using UnityEditor.Build;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [InitializeOnLoad]
-public class BuildTool : MonoBehaviour
+public class BuildTool : IActiveBuildTargetChanged
 {
+    private static void SwitchBuildTargets(BuildTarget target)
+    {
+        if (target == BuildTarget.WebGL)
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
+        else
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
+    }
 
     [MenuItem("Build/Build Everything", false, 1)]
     public static void TheFullMonte()
@@ -18,15 +27,15 @@ public class BuildTool : MonoBehaviour
 
         var group = EditorUserBuildSettings.selectedBuildTargetGroup;
         var target = EditorUserBuildSettings.activeBuildTarget;
-
+        
         //webgl
         BuildForPlatform(BuildTargetGroup.WebGL, BuildTarget.WebGL, "Build/WebGL/ragnarok", true, true);
 
         //windows64
         BuildForPlatform(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64, "Build/PC/RebuildClient.exe", true, true);
-        
+
         //restore
-        EditorUserBuildSettings.SwitchActiveBuildTarget(group, target);
+        SwitchBuildTargets(target);
         
         //zip PC build
         ZipPcBuildIntoWebGL();
@@ -68,7 +77,7 @@ public class BuildTool : MonoBehaviour
     {
         Debug.Log($"Building for platform {group}:{platform} in destination folder {location} ({(updateAddressables ? "with" : "without")} addressables)");
         if(swapToPlatform)
-            EditorUserBuildSettings.SwitchActiveBuildTarget(group, platform);
+            SwitchBuildTargets(platform);
 
         if (updateAddressables)
             BuildTool.UpdateAddressables();
@@ -93,6 +102,7 @@ public class BuildTool : MonoBehaviour
         options.targetGroup = group;
         options.target = platform;
         options.options = BuildOptions.None;
+        options.scenes = new[] { "Assets/Scenes/MainScene.unity" };
         BuildPipeline.BuildPlayer(options);
     }
 
@@ -129,6 +139,8 @@ public class BuildTool : MonoBehaviour
     {
         var path = ContentUpdateScript.GetContentStateDataPath(false);
         var settings = AddressableAssetSettingsDefaultObject.Settings;
+        Debug.Log("Path: " + path);
+//        settings.RemoteCatalogLoadPath.
         ContentUpdateScript.BuildContentUpdate(settings, path);
 
     }
@@ -147,44 +159,48 @@ public class BuildTool : MonoBehaviour
     {
         RagnarokMapImporterWindow.UpdateAddressables();
 
-        var group = EditorUserBuildSettings.selectedBuildTargetGroup;
+        //var group = EditorUserBuildSettings.selectedBuildTargetGroup;
         var target = EditorUserBuildSettings.activeBuildTarget;
 
-        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
+        SwitchBuildTargets(BuildTarget.WebGL);
 
         UpdateAddressables();
 
-        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
+        SwitchBuildTargets(BuildTarget.StandaloneWindows64);
 
         UpdateAddressables();
-
-        EditorUserBuildSettings.SwitchActiveBuildTarget(group, target);
+        SwitchBuildTargets(target);
     }
 
 
     [MenuItem("Build/Full Addressables Rebuild/Build All", false, 150)]
     public static void FullAddressablesBuild()
     {
-        var group = EditorUserBuildSettings.selectedBuildTargetGroup;
+        //var group = EditorUserBuildSettings.selectedBuildTargetGroup;
         var target = EditorUserBuildSettings.activeBuildTarget;
-
+        
         AddressableAssetSettings.CleanPlayerContent();
 
-        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
+        SwitchBuildTargets(BuildTarget.WebGL);
 
         RagnarokMapImporterWindow.UpdateAddressables();
         AddressableAssetSettings.BuildPlayerContent();
 
-        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
+        SwitchBuildTargets(BuildTarget.StandaloneWindows64);
 
         RagnarokMapImporterWindow.UpdateAddressables();
         AddressableAssetSettings.BuildPlayerContent();
-
-        EditorUserBuildSettings.SwitchActiveBuildTarget(group, target);
+        
+        SwitchBuildTargets(target);
 
         //var path = ContentUpdateScript.GetContentStateDataPath(false);
 
         //Debug.Log(path);
     }
-
+    
+    public int callbackOrder { get; }
+    public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
+    {
+        //throw new System.NotImplementedException();
+    }
 }

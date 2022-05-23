@@ -151,7 +151,7 @@ public partial class Monster : IEntityAutoReset
 		Character.State = CharacterState.Dead;
 
 		CombatEntity.DistributeExperience();
-
+		
 		Character.IsActive = false;
 		
 		if (SpawnRule == null)
@@ -171,6 +171,8 @@ public partial class Monster : IEntityAutoReset
 			nextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
 			deadTimeout += Time.ElapsedTimeFloat;
 		}
+
+        Character.ClearVisiblePlayerList(); //make sure this is at the end or the player may not be notified of the monster's death
 	}
 
 	public void ResetDelay()
@@ -226,7 +228,7 @@ public partial class Monster : IEntityAutoReset
 	{
 		var list = EntityListPool.Get();
 
-		Character.Map.GatherEnemiesInRange(Character, distance, list, true, true);
+		Character.Map!.GatherValidTargets(Character, distance, MonsterBase.Range, list);
 
 		if (list.Count == 0)
 		{
@@ -235,7 +237,7 @@ public partial class Monster : IEntityAutoReset
 			return false;
 		}
 
-		newTarget = list.Count == 1 ? list[0] : list[GameRandom.Next(0, list.Count - 1)];
+		newTarget = list.Count == 1 ? list[0] : list[GameRandom.NextInclusive(0, list.Count - 1)];
 
 		EntityListPool.Return(list);
 

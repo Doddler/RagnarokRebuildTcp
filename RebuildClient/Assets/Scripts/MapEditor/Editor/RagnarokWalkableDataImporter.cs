@@ -68,7 +68,7 @@ namespace Assets.Scripts.MapEditor.Editor
                         var c2 = new Cell();
                         c2.Type = CellType.None;
                         c2.Heights = Vector4.zero;
-                        c2.Top = new Tile() {Enabled = true, Texture = "red", UVs = VectorHelper.DefaultQuadUVs(), Color = Color.white};
+                        c2.Top = new Tile() {Enabled = true, Texture = "red", UVs = VectorHelper.DefaultQuadUVs(), Color = Color.white, IsUnlit = false};
                         c2.Right = new Tile() {Enabled = false, UVs = VectorHelper.DefaultQuadUVs() };
                         c2.Front = new Tile() {Enabled = false, UVs = VectorHelper.DefaultQuadUVs() };
                         cells[x + y * realWidth] = c2;
@@ -118,7 +118,7 @@ namespace Assets.Scripts.MapEditor.Editor
                             throw new Exception("Unknown cell type " + type);
                     }
 
-                    c.Top = new Tile() { Enabled = true, Texture = color, UVs = VectorHelper.DefaultQuadUVs(), Color = Color.white };
+                    c.Top = new Tile() { Enabled = true, Texture = color, UVs = VectorHelper.DefaultQuadUVs(), Color = Color.white, IsUnlit = false};
                     c.Right = new Tile() { Enabled = false, UVs = VectorHelper.DefaultQuadUVs() };
                     c.Front = new Tile() { Enabled = false, UVs = VectorHelper.DefaultQuadUVs() };
 

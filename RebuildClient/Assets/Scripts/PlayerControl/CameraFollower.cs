@@ -68,10 +68,13 @@ namespace Assets.Scripts
         private GameObject selectedSprite;
         private string targetText;
 
+        public GameObject WarpPanel;
+
         public bool UseTTFDamage = false;
 
         public Dictionary<string, int> EffectIdLookup;
         public Dictionary<int, EffectTypeEntry> EffectList;
+        public Dictionary<int, GameObject> EffectCache;
 
 #if DEBUG
         private const float MaxClickDistance = 500;
@@ -158,6 +161,7 @@ namespace Assets.Scripts
             var effects = JsonUtility.FromJson<EffectTypeList>(EffectConfigFile.text);
             EffectList = new Dictionary<int, EffectTypeEntry>();
             EffectIdLookup = new Dictionary<string, int>();
+            EffectCache = new Dictionary<int, GameObject>();
             foreach (var e in effects.Effects)
             {
                 var asset = e.PrefabName;
@@ -755,12 +759,20 @@ namespace Assets.Scripts
 
         public void AttachEffectToEntity(int effect, ServerControllable target)
         {
+
             if (!EffectList.TryGetValue(effect, out var asset))
             {
                 AppendError($"Could not find effect with id {effect}.");
                 return;
             }
 
+            if (EffectCache.TryGetValue(effect, out var prefab) && prefab != null)
+            {
+                var obj2 = GameObject.Instantiate(prefab, target.gameObject.transform, false);
+                obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                return;
+            }
+            
             var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
             loader.Completed += ah =>
             {
@@ -768,6 +780,8 @@ namespace Assets.Scripts
                 {
                     var obj2 = GameObject.Instantiate(ah.Result, target.gameObject.transform, false);
                     obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+
+                    EffectCache[asset.Id] = ah.Result;
                     //obj2.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                     //ah.Result.transform.SetParent(obj.transform, false);
                 }
@@ -832,13 +846,29 @@ namespace Assets.Scripts
             UpdateWaterTexture();
             
             var pointerOverUi = EventSystem.current.IsPointerOverGameObject();
-            var inTextBox = EventSystem.current.currentSelectedGameObject != null;
-
+            var selected = EventSystem.current.currentSelectedGameObject;
+            
+            var inTextBox = false;
+            if (selected != null)
+                inTextBox = selected.GetComponent<TMP_InputField>() != null;
+            
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                //Debug.Log("Escape pressed, inTextBox: " + inTextBox);
+                //Debug.Log(EventSystem.current.currentSelectedGameObject);
+                
+                if (inTextBox)
+                {
+                    inTextBox = false;
+                    TextBoxInputField.text = "";
+                }
+                else
+                {
+                    UiManager.Instance.CloseLastWindow();
+                }
+
                 EventSystem.current.SetSelectedGameObject(null);
-                inTextBox = false;
-                TextBoxInputField.text = "";
+                
             }
 
             if (inTextBox)
@@ -908,20 +938,34 @@ namespace Assets.Scripts
                 NetworkManager.Instance.StopPlayer();
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                AttachEffectToEntity("RedPotion", controllable);
+            if (!inTextBox && Input.GetKeyDown(KeyCode.W))
+            {
+                if(!WarpPanel.activeInHierarchy)
+                    WarpPanel.GetComponent<WarpWindow>().ShowWindow();
+                else
+                    WarpPanel.GetComponent<WarpWindow>().HideWindow();
+            }
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-                AttachEffectToEntity("Death", controllable);
+            if(!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
+                NetworkManager.Instance.SendUseItem(501);
 
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-                AttachEffectToEntity("LevelUp", controllable);
+            //if (Input.GetKeyDown(KeyCode.Alpha1))
+            //    AttachEffectToEntity("RedPotion", controllable);
 
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-                AttachEffectToEntity("Resurrect", controllable);
+            //if (Input.GetKeyDown(KeyCode.Alpha2))
+            //    AttachEffectToEntity("Death", controllable);
 
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-                AttachEffectToEntity("MVP", controllable);
+            //if (Input.GetKeyDown(KeyCode.Alpha3))
+            //    AttachEffectToEntity("LevelUp", controllable);
+
+            //if (Input.GetKeyDown(KeyCode.Alpha4))
+            //    AttachEffectToEntity("Resurrect", controllable);
+
+            //if (Input.GetKeyDown(KeyCode.Alpha5))
+            //    AttachEffectToEntity("MVP", controllable);
+
+            //if(Input.GetKeyDown(KeyCode.Alpha6))
+            //    CastingEffect.StartCasting(0.6f, "ring_yellow", controllable.gameObject);
 
             //if (Input.GetKeyDown(KeyCode.Q))
             //{

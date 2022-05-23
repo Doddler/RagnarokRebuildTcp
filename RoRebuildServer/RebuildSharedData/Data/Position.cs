@@ -76,15 +76,15 @@ public struct Position : IEquatable<Position>
 
     public static Position RandomPosition(int maxx, int maxy)
     {
-        var x = GameRandom.Next(0, maxx);
-        var y = GameRandom.Next(0, maxy);
+        var x = GameRandom.NextInclusive(0, maxx);
+        var y = GameRandom.NextInclusive(0, maxy);
         return new Position(x, y);
     }
 
     public static Position RandomPosition(int minx, int miny, int maxx, int maxy)
     {
-        var x = GameRandom.Next(minx, maxx);
-        var y = GameRandom.Next(miny, maxy);
+        var x = GameRandom.NextInclusive(minx, maxx);
+        var y = GameRandom.NextInclusive(miny, maxy);
         return new Position(x, y);
     }
 

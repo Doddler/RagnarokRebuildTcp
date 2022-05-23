@@ -1,0 +1,569 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Assets.Editor;
+using Assets.Scripts.MapEditor.Editor.ObjectEditors;
+using Assets.Scripts.Utility;
+using NUnit.Framework;
+using Unity.EditorCoroutines.Editor;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace Assets.Scripts.MapEditor.Editor
+{
+    class RoLightingManagerWindow : EditorWindow
+    {
+        public bool IsBaking;
+        public bool HasAmbient;
+        public bool UseMultiMap;
+        public bool ResetMapResources;
+
+        public Object[] Scenes; // Object array to store the list of scenes
+        private Vector2 scrollPosition;
+
+        private Dictionary<string, byte[]> ambientTextures;
+        private List<Light> lights;
+
+        private string mapName;
+
+        private int bakeIndex;
+
+
+        private const int DirectSamples = 32;
+        private const int IndirectSamples = 256;
+        private const int EnvironmentSamples = 256;
+
+        private const int NoLightSamples = 1;
+
+        private EditorCoroutine minimapCoroutine;
+
+
+        [MenuItem("Ragnarok/Lighting Manager")]
+        static void Init()
+        {
+            var window = (RoLightingManagerWindow)GetWindow(typeof(RoLightingManagerWindow), false, "Ro Lighting");
+            window.Show();
+        }
+
+        private bool TryFindMapEditor(out RoMapEditor mapOut)
+        {
+            mapOut = null;
+            var map = GameObject.FindObjectsOfType<RoMapEditor>();
+            foreach (var m in map)
+            {
+                if (m.gameObject.name.Contains("_walk"))
+                    continue;
+
+                mapOut = m;
+                return true;
+            }
+
+            return false;
+        }
+
+        private void ReloadResources()
+        {
+            if (!TryFindMapEditor(out var map))
+            {
+                Debug.LogError("Could not reload resources: could not find map editor in the scene.");
+                return;
+            }
+
+            var mapName = map.MapData.name;
+            var path = $"Assets/Maps/world/{mapName}_world.asset";
+            var world = AssetDatabase.LoadAssetAtPath<RagnarokWorld>(path);
+
+            if (world == null)
+            {
+                Debug.Log($"Could not reload resources: could not find world data at path {path}");
+                return;
+            }
+            
+            var builder = new RagnarokWorldSceneBuilder();
+            builder.Load(map.MapData, world);
+        }
+
+        private void ReimportMap()
+        {
+            if (!TryFindMapEditor(out var map))
+            {
+                Debug.LogError("Could not reload resources: could not find map editor in the scene.");
+                return;
+            }
+
+            //var mapData = map.MapData;
+
+            var mapName = map.MapData.name;
+            var path = $"Assets/Maps/{mapName}.asset";
+            //var mapData = AssetDatabase.LoadAssetAtPath<RoMapData>(path);
+
+            var importer = new RagnarokMapDataImporter(path, mapName);
+            importer.Import(true, true, true, true, true);
+        }
+
+        private void DisableAllLights()
+        {
+            lights = new List<Light>();
+
+            foreach (var l in GameObject.FindObjectsOfType<Light>())
+            {
+                if (l.enabled && l.gameObject.activeInHierarchy)
+                {
+                    lights.Add(l);
+                    l.enabled = false;
+                }
+            }
+        }
+
+        private void RestoreLights()
+        {
+            if (lights == null)
+                return;
+
+            foreach (var l in lights)
+            {
+                l.enabled = true;
+            }
+
+
+        }
+
+        private void SetLightSettings()
+        {
+            Lightmapping.lightingSettings.ao = true;
+            Lightmapping.lightingSettings.directSampleCount = DirectSamples;
+            Lightmapping.lightingSettings.indirectSampleCount = IndirectSamples;
+            Lightmapping.lightingSettings.environmentSampleCount = EnvironmentSamples;
+            Lightmapping.lightingSettings.aoExponentDirect = 1f;
+            Lightmapping.lightingSettings.aoExponentIndirect = 1f;
+            Lightmapping.lightingSettings.prioritizeView = false;
+        }
+
+        private void BakeAmbient()
+        {
+            if (UseMultiMap)
+            {
+                var path = AssetDatabase.GetAssetPath(Scenes[bakeIndex]);
+                EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
+            }
+
+            if (!TryFindMapEditor(out var map))
+                return;
+
+            if (ResetMapResources)
+                ReloadResources();
+
+            mapName = map.name;
+
+            RenderSettings.ambientLight = Color.white;
+            RenderSettings.ambientIntensity = 5f;
+
+            DisableAllLights();
+            SetLightSettings();
+
+
+            Lightmapping.bakeCompleted -= PostAmbient;
+            Lightmapping.bakeCompleted -= BakePost;
+            Lightmapping.bakeCompleted += PostAmbient;
+            IsBaking = true;
+            HasAmbient = true;
+            Lightmapping.giWorkflowMode = Lightmapping.GIWorkflowMode.OnDemand;
+            Lightmapping.BakeAsync();
+        }
+
+        private void PostAmbient()
+        {
+            ambientTextures = new Dictionary<string, byte[]>();
+
+            foreach (var f in Directory.GetFiles($"Assets/Scenes/Maps/{mapName}/", "*.exr").OrderBy(o => o))
+            {
+                var baseName = Path.GetFileNameWithoutExtension(f);
+
+                if (baseName.ToLower().Contains("reflection"))
+                    continue;
+
+                Debug.Log(f);
+                
+                var import = (TextureImporter)TextureImporter.GetAtPath(f);
+                import.isReadable = true;
+                import.textureCompression = TextureImporterCompression.Uncompressed;
+
+                EditorUtility.SetDirty(import);
+                import.SaveAndReimport();
+
+                AssetDatabase.ImportAsset(f);
+                AssetDatabase.Refresh();
+
+                var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(f);
+                ambientTextures.Add(baseName, tex.EncodeToPNG());
+            }
+
+            RestoreLights();
+
+            EditorSceneManager.MarkAllScenesDirty();
+            EditorSceneManager.SaveOpenScenes();
+
+            BakeRegular();
+        }
+
+        private void BakeRegular()
+        {
+            if (!TryFindMapEditor(out var map))
+                return;
+
+            mapName = map.name;
+
+            var settings = map.gameObject.GetComponent<RoMapRenderSettings>();
+            settings.AmbientOcclusionStrength = 0f;
+
+            RenderSettings.ambientLight = Color.black;
+            RenderSettings.ambientIntensity = 0f;
+            SetLightSettings();
+
+            //Debug.Log("Lights: " + lights.Count);
+
+            if (HasAmbient && lights.Count <= 1) //only directional light
+            {
+                Lightmapping.lightingSettings.ao = false;
+                Lightmapping.lightingSettings.directSampleCount = NoLightSamples;
+                Lightmapping.lightingSettings.indirectSampleCount = NoLightSamples;
+                Lightmapping.lightingSettings.environmentSampleCount = NoLightSamples;
+            }
+            
+            Lightmapping.bakeCompleted -= PostAmbient;
+            Lightmapping.bakeCompleted -= BakePost;
+            Lightmapping.bakeCompleted += BakePost;
+            IsBaking = true;
+
+            Lightmapping.lightingSettings.directionalityMode = HasAmbient ? LightmapsMode.CombinedDirectional : LightmapsMode.NonDirectional;
+            Lightmapping.giWorkflowMode = Lightmapping.GIWorkflowMode.OnDemand;
+            Lightmapping.BakeAsync();
+        }
+
+        private void BakePost()
+        {
+            IsBaking = false;
+            
+            if (HasAmbient)
+            {
+                if (!TryFindMapEditor(out var map))
+                    return;
+
+                if (ambientTextures == null || ambientTextures.Count == 0)
+                    return;
+
+                foreach (var f in Directory.GetFiles($"Assets/Scenes/Maps/{mapName}/", "*.exr").OrderBy(o => o))
+                {
+                    var baseName = Path.GetFileNameWithoutExtension(f);
+                    var dirName = baseName.Replace("_light", "_dir");
+                    var fullDirPath = $"Assets/Scenes/Maps/{mapName}/{dirName}.png";
+
+                    if (!File.Exists(fullDirPath) || !ambientTextures.ContainsKey(baseName))
+                        continue;
+
+                    var tex = ambientTextures[baseName];
+                    File.WriteAllBytes(fullDirPath, tex);
+
+                    var import = (TextureImporter)TextureImporter.GetAtPath(fullDirPath);
+                    import.crunchedCompression = true;
+
+                    EditorUtility.SetDirty(import);
+                    import.SaveAndReimport();
+
+                    if (lights.Count <= 1)
+                    {
+                        //there's no lights, lets shrink the lightmaps a whole bunch as they contain nothing
+                        var orig = (TextureImporter)TextureImporter.GetAtPath(f);
+                        orig.maxTextureSize = 64;
+
+                        EditorUtility.SetDirty(orig);
+                        import.SaveAndReimport();
+
+                        AssetDatabase.ImportAsset(f);
+                    }
+
+                    AssetDatabase.ImportAsset(fullDirPath);
+                    AssetDatabase.Refresh();
+                }
+
+                var settings = map.gameObject.GetComponent<RoMapRenderSettings>();
+                settings.AmbientOcclusionStrength = 0.5f;
+                                                     
+                ambientTextures = null;
+            }
+            
+            SetLightSettings();
+
+            EditorSceneManager.MarkAllScenesDirty();
+            EditorSceneManager.SaveOpenScenes();
+            //EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+
+            if (UseMultiMap && bakeIndex + 1 < Scenes.Length)
+            {
+                bakeIndex++;
+                BakeAmbient();
+            }
+        }
+
+        private IEnumerator MakeMinimaps()
+        {
+            yield return new EditorWaitForSeconds(1f);
+
+
+            foreach (var s in Scenes)
+            {
+                var path = AssetDatabase.GetAssetPath(s);
+                EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
+
+
+                if (!TryFindMapEditor(out var editor))
+                    yield break;
+
+                var lights = FindObjectsOfType<Light>();
+                Light dirLight = null;
+                var oldStr = 1f;
+                foreach (var l in lights)
+                {
+                    if (l.type == LightType.Directional)
+                    {
+                        dirLight = l;
+                        oldStr = dirLight.shadowStrength;
+                        dirLight.shadowStrength = 0f;
+                        break;
+                    }
+                }
+
+
+                var go = new GameObject("MapCamera");
+                var cam = go.AddComponent<Camera>();
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = new Color(0f, 0f, 0f, 0f);
+
+                var width = editor.MapData.InitialSize.x;
+                var height = editor.MapData.InitialSize.y;
+
+                go.transform.localPosition = new Vector3(width, 140, height);
+                go.transform.localRotation = Quaternion.Euler(90, 0, 0);
+
+                cam.orthographic = true;
+                cam.orthographicSize = height;
+
+                //yield return new EditorWaitForSeconds(1f);
+
+                //dirLight.shadowStrength = oldStr;
+
+                var tool = go.AddComponent<ScreenshotCamera>();
+                tool.FileName = editor.MapData.name;
+                tool.Width = width * 10;
+                tool.Height = height * 10;
+
+                tool.TakeScreenshotCoroutine();
+
+                var walk = editor.MapData.WalkData;
+                
+                var m = new MeshBuilder();
+
+
+                var sharedData = walk.SharedMeshData;
+                sharedData.RebuildArea(new RectInt(0, 0, walk.InitialSize.x, walk.InitialSize.y), 1, false);
+
+                //these probably aren't the right UVs but... it won't be textured anyways!
+                var uvs = new Vector2[4]
+                {
+                    new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 0), new Vector2(1, 1)
+                };
+
+                var count = 0;
+                var gos = new List<GameObject>();
+
+                for (var x = 0; x < walk.InitialSize.x; x++)
+                {
+                    for (var y = 0; y < walk.InitialSize.y; y++)
+                    {
+
+                        if (walk.WalkCellData.CellWalkable(x, y))
+                            continue;
+
+                        var tVerts = sharedData.GetTileVertices(new Vector2Int(x, y), Vector3.zero);
+                        var tNormals = sharedData.GetTileNormals(new Vector2Int(x, y));// topNormals[x1 + y1 * ChunkBounds.width];
+                        var tColors = sharedData.GetTileColors(new Vector2Int(x, y));
+
+
+                        m.StartTriangle();
+
+                        m.AddVertices(tVerts);
+                        m.AddUVs(uvs);
+                        m.AddColors(tColors);
+                        m.AddNormals(tNormals);
+                        m.AddTriangles(new[] { 0, 1, 3, 3, 2, 0 });
+
+                        count++;
+                        if (count > 8000)
+                        {
+                            gos.Add(BuildMeshIntoObject(m));
+                            count = 0;
+                        }
+                    }
+                }
+
+                gos.Add(BuildMeshIntoObject(m));
+
+                cam.backgroundColor = new Color(0f, 0f, 0f, 1f);
+                cam.cullingMask = 1 << LayerMask.NameToLayer("Editor");
+
+                tool.FileName = editor.MapData.name + "_walkmask";
+                tool.TakeScreenshotCoroutine();
+
+
+                DestroyImmediate(go);
+
+                foreach (var g in gos)
+                    DestroyImmediate(g);
+
+                EditorSceneManager.MarkAllScenesDirty();
+                EditorSceneManager.SaveOpenScenes();
+
+                //Debug.Log(path);
+            }
+        }
+
+        private GameObject BuildMeshIntoObject(MeshBuilder m)
+        {
+
+            var go2 = new GameObject("MapBlackout");
+            var mf = go2.AddComponent<MeshFilter>();
+            var mr = go2.AddComponent<MeshRenderer>();
+            var mat = new Material(Shader.Find("Unlit/Texture"));
+            go2.layer = LayerMask.NameToLayer("Editor");
+            mr.material = mat;
+
+            mf.mesh = m.Build();
+            m.Clear();
+
+            return go2;
+        }
+
+        public void OnDestroy()
+        {
+            if(minimapCoroutine != null)
+                EditorCoroutineUtility.StopCoroutine(minimapCoroutine);
+        }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "HAA0101:Array allocation for params parameter", Justification = "It's annoying holy shit")]
+        public void OnGUI()
+        {
+
+            var bigStyle = new GUIStyle(GUI.skin.label) { fontSize = 20, clipping = TextClipping.Overflow };
+
+            GUILayout.Space(10);
+            EditorGUILayout.LabelField("Lighting Manager", bigStyle);
+            GUILayout.Space(10);
+            EditorGuiLayoutUtility.HorizontalLine();
+
+            EditorGUILayout.LabelField("Map Settings", EditorStyles.boldLabel);
+
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Reload Resources"))
+            {
+                ReloadResources();
+            }
+            if (GUILayout.Button("Reimport Map"))
+            {
+                ReimportMap();
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.LabelField("Clear Lights", EditorStyles.boldLabel);
+
+            EditorGUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Clear Occlusion"))
+            {
+
+            }
+
+            if (GUILayout.Button("Clear All Lighting"))
+            {
+
+            }
+            EditorGUILayout.EndHorizontal();
+
+
+            EditorGUILayout.LabelField("Bake", EditorStyles.boldLabel);
+
+            EditorGUILayout.BeginHorizontal();
+
+            if (!IsBaking)
+            {
+
+                if (GUILayout.Button("Bake Without Ambient Occlusion"))
+                {
+                    HasAmbient = false;
+                    UseMultiMap = false;
+                    lights?.Clear();
+                    BakeRegular();
+                }
+
+                if (GUILayout.Button("Bake All"))
+                {
+                    UseMultiMap = false;
+                    lights?.Clear();
+                    BakeAmbient();
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Cancel"))
+                {
+                    Lightmapping.Cancel();
+                    IsBaking = false;
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            EditorGuiLayoutUtility.HorizontalLine();
+
+
+            ResetMapResources = GUILayout.Toggle(ResetMapResources, "Reset Map Resources on Batch Bake");
+            
+            EditorGUILayout.BeginHorizontal();
+
+            if (!IsBaking && Scenes.Length > 0)
+            {
+
+                if (GUILayout.Button("Bake All Scenes"))
+                {
+                    UseMultiMap = true;
+                    bakeIndex = 0;
+                    BakeAmbient();
+                }
+                if (GUILayout.Button("Make Minimaps"))
+                {
+                    if (minimapCoroutine == null)
+                        minimapCoroutine = EditorCoroutineUtility.StartCoroutine(MakeMinimaps(), this);
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, false);
+
+
+            ScriptableObject target = this;
+            SerializedObject so = new SerializedObject(target);
+            SerializedProperty scenesProperty = so.FindProperty("Scenes");
+
+            EditorGUILayout.PropertyField(scenesProperty, true); // True shows children
+            so.ApplyModifiedProperties(); // Apply modified properties
+
+            GUILayout.EndScrollView();
+        }
+    }
+}

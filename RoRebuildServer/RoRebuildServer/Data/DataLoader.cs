@@ -105,7 +105,7 @@ internal class DataLoader
                 Effect = -1,
             };
 
-            if (string.IsNullOrWhiteSpace(entry.Effect))
+            if (!string.IsNullOrWhiteSpace(entry.Effect))
             {
                 if (DataManager.EffectIdForName.TryGetValue(entry.Effect, out var effectId))
                     item.Effect = effectId;

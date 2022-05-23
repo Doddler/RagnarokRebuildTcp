@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -265,8 +266,25 @@ namespace Assets.Scripts.MapEditor.Editor
 
 			world.FogSetup = LoadFogData(basedir, basename);
 
+            world.LightSetup.UseMapAmbient = CheckUseMapAmbient(basedir, basename);
+
+			Debug.Log($"UseAmbient: " + world.LightSetup.UseMapAmbient);
+
 			return world;
 		}
+
+        public bool CheckUseMapAmbient(string baseDir, string mapName)
+        {
+            var lightPath = Path.Combine(baseDir, "mapobjlighttable.txt");
+            var lines = File.ReadAllLines(lightPath);
+
+            var line = lines.FirstOrDefault(l => l.Contains(mapName + ".rsw"));
+
+            if (line == null)
+                return true;
+
+            return line.ToLower().Contains("on");
+        }
 
 		public RoFogSetup LoadFogData(string baseDir, string mapName)
 		{
@@ -297,10 +315,15 @@ namespace Assets.Scripts.MapEditor.Editor
 			var near = float.Parse(newLines[lineId + 1]);
 			var far = float.Parse(newLines[lineId + 2]);
 
-			var a = int.Parse(newLines[lineId + 3].Substring(2, 2), NumberStyles.HexNumber);
-			var r = int.Parse(newLines[lineId + 3].Substring(4, 2), NumberStyles.HexNumber);
-			var g = int.Parse(newLines[lineId + 3].Substring(6, 2), NumberStyles.HexNumber);
-			var b = int.Parse(newLines[lineId + 3].Substring(8, 2), NumberStyles.HexNumber);
+            var hex = newLines[lineId + 3].Substring(2);
+            if (hex.Length < 8)
+                hex = new string('0', 8 - hex.Length) + hex;
+
+
+			var a = int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
+			var r = int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+			var g = int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
+			var b = int.Parse(hex.Substring(6, 2), NumberStyles.HexNumber);
 			var color = new Color(r / 255f, g / 255f, b / 255f, a / 255f);
 
 			return new RoFogSetup() { NearPlane = near, FarPlane = far, FogColor = color };

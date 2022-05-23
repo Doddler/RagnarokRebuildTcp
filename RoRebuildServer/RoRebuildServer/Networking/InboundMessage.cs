@@ -57,6 +57,17 @@ public class InboundMessage
         Debug.Assert(position + size <= Length * 8);
     }
 
+
+
+    public sbyte ReadSByte()
+    {
+        VerifyBufferSize(8);
+        var ret = NetBitWriter.ReadByte(Message, 8, position);
+        position += 8;
+        return (sbyte)ret;
+    }
+
+
     public byte ReadByte()
     {
         VerifyBufferSize(8);

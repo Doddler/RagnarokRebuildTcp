@@ -364,6 +364,23 @@ public class Pathfinder
         return steps + 1; //add initial first step
     }
 
+    public bool HasPath(MapWalkData walkData, Position start, Position target, int range)
+    {
+        if (start == target)
+            return true;
+
+        if (Math.Abs(start.X - target.X) > MaxDistance || Math.Abs(start.Y - target.Y) > MaxDistance)
+            return false;
+
+        var direct = CheckDirectPath(walkData, start, target, MaxDistance, range, 0);
+        if (direct > 0)
+            return true;
+
+        var path = MakePath(walkData, start, target, MaxDistance, range);
+
+        return path != null;
+    }
+
     public int GetPath(MapWalkData walkData, Position start, Position target, Position[] pathOut, int range)
     {
         if (start == target)

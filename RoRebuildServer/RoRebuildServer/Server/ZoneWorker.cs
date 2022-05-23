@@ -112,9 +112,16 @@ internal class ZoneWorker : BackgroundService
                     var players = NetworkManager.PlayerCount;
 
                     avg *= 1000d;
-                    
+
+#if DEBUG
+                    if(max > 0.1f)
+                        ServerLogger.Log($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
+                    else
+                        ServerLogger.Debug($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
+#else
                     ServerLogger.Log($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
-                    
+#endif
+
                     total = 0;
                     spos = 0;
                     max = 0;

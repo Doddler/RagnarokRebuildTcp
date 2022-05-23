@@ -43,6 +43,8 @@ public class PacketEnterServer : IClientPacketHandler
         networkPlayer.Connection = connection;
         connection.Player = networkPlayer;
 
+        connection.Player.UpdateStats();
+
         ServerLogger.Debug($"Player assigned entity {playerEntity}, creating entity at location {connection.Character.Position}.");
 
         //CommandBuilder.InformEnterServer(connection.Character, networkPlayer);

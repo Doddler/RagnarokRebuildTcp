@@ -63,7 +63,7 @@ namespace Assets.Scripts.MapEditor
                     var cell = cellData[pos];
 
                     var max = Mathf.Min(cell.Heights.x, cell.Heights.y, cell.Heights.z, cell.Heights.w) * RoMapData.YScale;
-                    if (-Water.Level + Water.WaveHeight - 0.01f < max)
+                    if (-Water.Level + (Water.WaveHeight / 5f) - 0.01f < max)
                         continue;
 
                     var x1 = x - ChunkBounds.xMin;

@@ -438,7 +438,7 @@ public class NetworkManager
             }
         }
 
-        var name = "Player " + GameRandom.Next(0, 999);
+        var name = "Player " + GameRandom.NextInclusive(0, 999);
 
         var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
 

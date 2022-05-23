@@ -25,6 +25,11 @@ Orc Dungeon 1F,orcsdun01,orcsdun01.walk,48.mp3
 Orc Dungeon 2F,orcsdun02,orcsdun02.walk,48.mp3
 Izlude,izlude,izlude.walk,26.mp3
 Izlude Indoors,izlude_in,izlude_in.walk,26.mp3
+Undersea Tunnel 1F,iz_dun00,iz_dun00.walk,29.mp3
+Undersea Tunnel 2F,iz_dun01,iz_dun01.walk,29.mp3
+Undersea Tunnel 3F,iz_dun02,iz_dun02.walk,29.mp3
+Undersea Tunnel 4F,iz_dun03,iz_dun03.walk,49.mp3
+Undersea Tunnel 5F,iz_dun04,iz_dun04.walk,49.mp3
 Juperos 1F,juperos_01,juperos_01.walk,89.mp3
 Mt. Mjolnir 1,mjolnir_01,mjolnir_01.walk,31.mp3
 Mt. Mjolnir 2,mjolnir_02,mjolnir_02.walk,33.mp3
@@ -121,7 +126,8 @@ Alberta,alberta,alberta.walk,15.mp3
 Alberta Indoors,alberta_in,alberta_in.walk,15.mp3
 Aldebaran,aldebaran,aldebaran.walk,39.mp3
 Aldebaran Indoors,aldeba_in,aldeba_in.walk,39.mp3
-Arena Room,2009rwc_03,2009rwc_03.walk,
+Debug Room,2009rwc_03,2009rwc_03.walk,
+Debug Room 2,guild_vs4,guild_vs4.walk,
 Clock Tower B1f,alde_dun01,alde_dun01.walk,61.mp3
 Clock Tower B2f,alde_dun02,alde_dun02.walk,61.mp3
 Clock Tower B3f,alde_dun03,alde_dun03.walk,61.mp3
@@ -131,3 +137,33 @@ Clock Tower 2f,c_tower2,c_tower2.walk,60.mp3
 Clock Tower 3f,c_tower3,c_tower3.walk,60.mp3
 Clock Tower 4f,c_tower4,c_tower4.walk,60.mp3
 Valkyrie Realm,prt_gld,prt_gld.walk,66.mp3
+Glast Heim,glast_01,glast_01.walk,42.mp3
+Glast Heim Castle 1F,gl_cas01,gl_cas01.walk,43.mp3
+Glast Heim Castle 2F,gl_cas02,gl_cas02.walk,43.mp3
+Glast Heim St. Abbey,gl_church,gl_church.walk,40.mp3
+Glast Heim Catacombs,gl_chyard,gl_chyard.walk,40.mp3
+The Lowest Cave in Glast Heim B1F,gl_dun01,gl_dun01.walk,42.mp3
+The Lowest Cave in Glast Heim B2F,gl_dun02,gl_dun02.walk,42.mp3
+Glast Heim Keep,gl_in01,gl_in01.walk,42.mp3
+Glast Heim Chivalry 1F,gl_knt01,gl_knt01.walk,44.mp3
+Glast Heim Chivalry 2F,gl_knt02,gl_knt02.walk,44.mp3
+Glast Heim Underprison B1F,gl_prison,gl_prison.walk,40.mp3
+Glast Heim Underprison B2F,gl_prison1,gl_prison1.walk,40.mp3
+Glast Heim Culvert B1F,gl_sew01,gl_sew01.walk,48.mp3
+Glast Heim Culvert B2F,gl_sew02,gl_sew02.walk,48.mp3
+Glast Heim Culvert B3F,gl_sew03,gl_sew03.walk,48.mp3
+Glast Heim Culvert B4F,gl_sew04,gl_sew04.walk,48.mp3
+Glast Heim Staircase Dungeon,gl_step,gl_step.walk,42.mp3
+Mjolnir Dead Pit 1F,mjo_dun01,mjo_dun01.walk,27.mp3
+Mjolnir Dead Pit 2F,mjo_dun02,mjo_dun02.walk,27.mp3
+Mjolnir Dead Pit 3F,mjo_dun03,mjo_dun03.walk,27.mp3
+Prontera Culvert 1F,prt_sewb1,prt_sewb1.walk,19.mp3
+Prontera Culvert 2F,prt_sewb2,prt_sewb2.walk,19.mp3
+Prontera Culvert 3F,prt_sewb3,prt_sewb3.walk,19.mp3
+Prontera Culvert 4F,prt_sewb4,prt_sewb4.walk,19.mp3
+Sunken Ship Upper Decks,treasure01,treasure01.walk,17.mp3
+Sunken Ship Lower Decks,treasure02,treasure02.walk,17.mp3
+Shipwreck Island,alb2trea,alb2trea.walk,52.mp3
+Byalan Island,izlu2dun,izlu2dun.walk,52.mp3
+Morroc Assassin Guild,in_moc_16,in_moc_16.walk,45.mp3
+St. Capitolina Abbey,prt_monk,prt_monk.walk,28.mp3

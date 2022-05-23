@@ -14,6 +14,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -75,30 +76,37 @@ namespace Assets.Scripts.Network
 #endif
 
             LeanTween.init(4000);
+
+            
+            StartCoroutine(StartUp());
+        }
+
+        private IEnumerator StartUp()
+        {
+            //update addressables
+            AsyncOperationHandle<List<IResourceLocator>> updateHandle = Addressables.UpdateCatalogs();
+            yield return updateHandle;
+
             spritePreload = Addressables.DownloadDependenciesAsync($"Assets/Sprites/Monsters/poring.spr");
             uiPreload = Addressables.DownloadDependenciesAsync($"gridicon");
 
-
-            //client = new NetClient(config);
-            //client.Start();
-
-            //NetOutgoingMessage outMsg = client.CreateMessage();
-            //outMsg.Write("A Client");
+            yield return spritePreload;
+            yield return uiPreload;
 
 #if UNITY_EDITOR
-            //var target = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "serverconfig.txt"));
-            //var target = "ws://138.197.151.167:5000/ws";
             var target = "ws://127.0.0.1:5000/ws";
             StartConnectServer(target);
-            //StartCoroutine(GetServerPath());
-            return;
+            yield break; //end coroutine
 #endif
 
-            StartCoroutine(GetServerPath());
-        }
+            if (Application.platform == RuntimePlatform.WindowsPlayer)
+            {
+                var path = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "serverconfig.txt"));
+                StartConnectServer(path);
+                yield break;
+            }
 
-        private IEnumerator GetServerPath()
-        {
+            //we will load our config 
             var www = new WWW("https://www.dodsrv.com/ragnarok/serverconfig.txt");
             yield return www;
 
@@ -136,7 +144,7 @@ namespace Assets.Scripts.Network
 
             socket.OnClose += e =>
             {
-                Debug.LogWarning("Socket connection closed!");
+                Debug.LogWarning("Socket connection closed: " + e);
             };
 
 
@@ -840,6 +848,18 @@ namespace Assets.Scripts.Network
             }
         }
 
+        public void OnMessageEffect(ClientInboundMessage msg)
+        {
+            var id = msg.ReadInt32();
+            var effect = msg.ReadInt32();
+
+
+            if (!entityList.TryGetValue(id, out var controllable))
+                return;
+
+            CameraFollower.AttachEffectToEntity(effect, controllable);
+        }
+
         void HandleDataPacket(ClientInboundMessage msg)
         {
             var type = (PacketType)msg.ReadByte();
@@ -919,6 +939,9 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.ChangeName:
                     OnMessageChangeName(msg);
+                    break;
+                case PacketType.Effect:
+                    OnMessageEffect(msg);
                     break;
                 default:
                     Debug.LogWarning($"Failed to handle packet type: {type}");
@@ -1091,7 +1114,18 @@ namespace Assets.Scripts.Network
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.AdminLevelUp);
-            msg.Write((byte)level);
+            msg.Write((sbyte)level);
+
+            SendMessage(msg);
+        }
+
+        public void SendUseItem(int id)
+        {
+            //Debug.Log("Send usable item");
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.UseInventoryItem);
+            msg.Write(id);
 
             SendMessage(msg);
         }
@@ -1114,10 +1148,12 @@ namespace Assets.Scripts.Network
             //			socket.DispatchMessageQueue();
             //#endif
 
-            if (socket.GetState() == WebSocketState.Open)
+            var state = socket.GetState();
+
+            if (state == WebSocketState.Open)
                 DoPacketHandling();
 
-            if (socket.GetState() == WebSocketState.Open && isReady && !isConnected)
+            if (state == WebSocketState.Open && isReady && !isConnected)
             {
                 Debug.Log("We've been accepted! Lets try to enter the game.");
                 SendPing();
@@ -1153,17 +1189,17 @@ namespace Assets.Scripts.Network
                 isConnected = true;
             }
 
-            if (isConnected && socket.GetState() != WebSocketState.Open)
+            if (isConnected && state != WebSocketState.Open && state != WebSocketState.Connecting)
             {
                 isConnected = false;
-                Debug.LogWarning("Client is now disconnected!");
+                Debug.LogWarning("Client state has changed to: " + state);
             }
 
             if (!isConnected)
                 return;
 
 
-            if (socket.GetState() == WebSocketState.Closed)
+            if (state == WebSocketState.Closed)
             {
                 Console.WriteLine("Disconnected!");
                 return;

@@ -9,12 +9,13 @@ public class GameRandom
     [ThreadStatic]
     private static Random? local;
 
-    public static int Next() => Next(0, Int32.MaxValue);
+    public static int Next() => NextInclusive(0, Int32.MaxValue);
     public static int Next(int max) => Next(0, max);
-    
-    public static short NextShort() => (short)Next(0, short.MaxValue);
-    public static short NextShort(short max) => (short)Next(0, max);
-    public static short NextShort(short min, short max) => (short)Next(min, max);
+    public static int NextInclusive(int max) => NextInclusive(0, max);
+
+    public static short NextShort() => (short)NextDouble(0, short.MaxValue);
+    public static short NextShort(short max) => (short)NextDouble(0, max);
+    public static short NextShort(short min, short max) => (short)NextDouble(min, max);
 
     public static float NextFloat() => (float)NextDouble();
     public static float NextFloat(float max) => (float)NextDouble(0, (double)max);
@@ -38,7 +39,16 @@ public class GameRandom
         }
     }
 
+
     public static int Next(int min, int max)
+    {
+        if (local == null)
+            Initialize();
+
+        return local!.Next(min, max);
+    }
+
+    public static int NextInclusive(int min, int max)
     {
         if (local == null)
             Initialize();

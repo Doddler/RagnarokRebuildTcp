@@ -38,7 +38,7 @@ public class MapWalkData
         {
             if (count > tries)
                 break;
-            pos = new Position(GameRandom.Next(0, Width - 1), GameRandom.Next(0, Height - 1));
+            pos = new Position(GameRandom.NextInclusive(0, Width - 1), GameRandom.NextInclusive(0, Height - 1));
             count++;
         } while (!IsCellWalkable(pos));
 
@@ -54,7 +54,7 @@ public class MapWalkData
 
         do
         {
-            pos = new Position(GameRandom.Next(0, Width - 1), GameRandom.Next(0, Height - 1));
+            pos = new Position(GameRandom.NextInclusive(0, Width - 1), GameRandom.NextInclusive(0, Height - 1));
         } while (!IsCellWalkable(pos));
 
         return pos;
@@ -73,7 +73,7 @@ public class MapWalkData
             if(area.MaxX < area.MinX || area.MaxY < area.MinY)
                 ServerLogger.LogError("WAAAA");
 
-            p = new Position(GameRandom.Next(area.MinX, area.MaxX), GameRandom.Next(area.MinY, area.MaxY));
+            p = new Position(GameRandom.NextInclusive(area.MinX, area.MaxX), GameRandom.NextInclusive(area.MinY, area.MaxY));
             if (attempt > maxAttempts)
                 return false;
             attempt++;
@@ -93,7 +93,7 @@ public class MapWalkData
         area = area.ClipAndNormalize(Bounds);
 
         var max = area.Width * area.Height;
-        var start = GameRandom.Next(0, max - 1);
+        var start = GameRandom.NextInclusive(0, max - 1);
         var pos = start + 1;
 
         while (start != pos)

@@ -1,4 +1,5 @@
 MapConfig("2009rwc_03")
 {
-	CreateSpawn("PORING50", 20);
+	//CreateSpawn("WILD_ROSE", 2, 120000);
+	CreateSpawn("PORING", 1, %(49, 49, 3, 3));
 }

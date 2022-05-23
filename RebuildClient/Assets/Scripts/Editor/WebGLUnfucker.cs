@@ -15,7 +15,7 @@ public static class WebGLUnfucker
         if (target != BuildTarget.WebGL)
             return;
 
-        var buildFolder = "Build_" + DateTime.Now.ToString("yyyy-mm-dd-hh-mm");
+        var buildFolder = "Build_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm");
         Directory.Move(Path.Combine(pathToBuiltProject, "Build"), Path.Combine(pathToBuiltProject, buildFolder));
 
         var indexPath = Path.Combine(pathToBuiltProject, "index.html");

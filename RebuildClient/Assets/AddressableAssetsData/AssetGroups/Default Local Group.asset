@@ -1490,6 +1490,331 @@ MonoBehaviour:
     m_Address: Assets/Effects/Smoke/SmokeEmitter.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 7d9db7aa46d933a4f83cf250cf07cf1a
+    m_Address: Assets/Effects/Prefabs/freezing.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 17fb304b406ebb04eaa82dd887ce265b
+    m_Address: Assets/Effects/Prefabs/Hit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 71524991148b16e4c86090e51f10b668
+    m_Address: Assets/Effects/Prefabs/Resurrect.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 6ae02caf82b0d5545b6faf882306e33f
+    m_Address: Assets/Effects/Prefabs/YellowPotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: a0ff041615fb58f42882e8fe7346be99
+    m_Address: Assets/Effects/Prefabs/Angelus.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: c14f98e337527ca4da3458a24cc4b425
+    m_Address: Assets/Effects/Prefabs/firehit1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 9ced277a8419b7b4bba3c92e555d562b
+    m_Address: Assets/Effects/Prefabs/firehit2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 6a27673b1f8676d45886b0b7581aba4f
+    m_Address: Assets/Effects/Prefabs/freezed.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: e77ce3b86d8bcde4e93a1da40c4fcaca
+    m_Address: Assets/Effects/Prefabs/WhitePotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 617e143609f1bb741bd3c5d9092d72c7
+    m_Address: Assets/Effects/Prefabs/GreenPotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: df59853ba9b301d4db5560d3d2e0522e
+    m_Address: Assets/Effects/Prefabs/LevelUp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 21b6f804b7f5e9c40991e7e05bc68731
+    m_Address: Assets/Effects/Prefabs/freeze.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: f59b04f35e39b894cb888573528d9e33
+    m_Address: Assets/Effects/Prefabs/Death.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 8f8d0c49fa55485449d88c80e302935a
+    m_Address: Assets/Effects/Prefabs/bubble.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: d6877e3bf168a7a42acfcf148a2ada68
+    m_Address: Assets/Effects/Prefabs/RedPotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 1b4d2ae0edf90c843819b9669402e9df
+    m_Address: Assets/Effects/Prefabs/OrangePotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 9f050c23334719746a396301302a95a8
+    m_Address: Assets/Effects/Prefabs/BluePotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 8ad5f72afed7cdb4aba5a9d6795eeaa0
+    m_Address: Assets/Effects/Prefabs/MVP.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 4ce9da0af775fca42b4db0dd44f37262
+    m_Address: Assets/Effects/Prefabs/firehit3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 69176d3a4f22d7349904d79c3926f180
+    m_Address: Assets/Effects/Prefabs/JobUp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: b56ac545f2ba10540bf6828d4021889a
+    m_Address: Assets/Effects/Prefabs/firehit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: 906bd139f4373f6489b349423be7bcd3
+    m_Address: Assets/Effects/Prefabs/HolyHit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: fa284dae59c50fe448eee635b4aa2516
+    m_Address: Assets/Sprites/Monsters/cornutus.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 38d439a9342f4444888ebbf5413d1cf4
+    m_Address: Assets/Sprites/Monsters/deviace.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 560e982155dcc634bb770607b17c6f27
+    m_Address: Assets/Sprites/Monsters/kukre.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3e95c3088c8ba92478ac5d11ac24e00f
+    m_Address: Assets/Sprites/Monsters/marc.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f801f3d0c3cd4954a8d3ec45c330d1e0
+    m_Address: Assets/Sprites/Monsters/marina.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: dd62c442d00d636418f8ef40e04c50be
+    m_Address: Assets/Sprites/Monsters/marine_sphere.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 49598f94177fbbd408212616819e2fa0
+    m_Address: Assets/Sprites/Monsters/marse.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c93d94504978dfa4399b0fe7edc9ff0a
+    m_Address: Assets/Sprites/Monsters/merman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 10a623328f6dd4a488c7ca20e935b2d4
+    m_Address: Assets/Sprites/Monsters/obeaune.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1823065658ef3cf4883bcc31468c5b6a
+    m_Address: Assets/Sprites/Monsters/phen.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bd990a0f38bacc249a445d55a94257b0
+    m_Address: Assets/Sprites/Monsters/plankton.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 59ca955f0f49295429fb1427a409fb43
+    m_Address: Assets/Sprites/Monsters/strouf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2cd5170a1e5460c4bbf26effae96893e
+    m_Address: Assets/Sprites/Monsters/sword_fish.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4a7bb830b8616244796f647789c71697
+    m_Address: Assets/Sprites/Monsters/vadon.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ea96174d7de1b9b479d6b1e63e4b6d5a
+    m_Address: Assets/Effects/Prefabs/LoV.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: eac7b2d3c5a44ab4188c8ce82893b61a
+    m_Address: Assets/Sprites/Monsters/alice.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b39ce2b9db57a8148914642f3a2d5b4b
+    m_Address: Assets/Sprites/Monsters/bloody_knight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2cd49fc6fd33f9243a77b6816dbe4df7
+    m_Address: Assets/Sprites/Monsters/carat.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8c006013b07b8bf4396eb16b4e849242
+    m_Address: Assets/Sprites/Monsters/chimera.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bf6a073ce519aa243a55cb1abb4e80b9
+    m_Address: Assets/Sprites/Monsters/dark_frame.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 15442c3cd647291439d079d3b2a259d7
+    m_Address: Assets/Sprites/Monsters/dark_illusion.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 33f51485c0b5e834f8aa7745640ee411
+    m_Address: Assets/Sprites/Monsters/dark_lord.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3ef8003bdfe5d0a448b48d2f11e307ac
+    m_Address: Assets/Sprites/Monsters/drake.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 880b00298fc14cb4e82c42b1167460ae
+    m_Address: Assets/Sprites/Monsters/evil_druid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4eb5d6b06a08d3441bbbb1ea9d02f29c
+    m_Address: Assets/Sprites/Monsters/gargoyle.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 48ecb2bdb21bdd2469d7187595dd5c7d
+    m_Address: Assets/Sprites/Monsters/injustice.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bc692fe0e9eb8d54baed0b7cd0660475
+    m_Address: Assets/Sprites/Monsters/khalitzburg.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b1f21c18b9554b444b4ba57c2c2a1c90
+    m_Address: Assets/Sprites/Monsters/knight_of_abyss.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: cafc3dcd6cfd5ac47bd3e185ef967b5d
+    m_Address: Assets/Sprites/Monsters/majoruros.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e9579e8c1cc22b54f9debd3f3875f391
+    m_Address: Assets/Sprites/Monsters/myst.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 294af21e962990943969330dffb2640a
+    m_Address: Assets/Sprites/Monsters/phendark.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9a28b1cc08d53f14baa3c4036df6c59d
+    m_Address: Assets/Sprites/Monsters/pirate_skel.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d3e940949b0a5384b9803eba5ecfdc8d
+    m_Address: Assets/Sprites/Monsters/raydric.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4763d060afceab34fa788d07ccefdf22
+    m_Address: Assets/Sprites/Monsters/raydric_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 18c8740eb0021a24e8f240ba6df66927
+    m_Address: Assets/Sprites/Monsters/rybio.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 32a983b042b0f624db2b84e909bc6958
+    m_Address: Assets/Sprites/Monsters/sageworm.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d57931f7ab15a1e4bb5655a7e94441e1
+    m_Address: Assets/Sprites/Monsters/skel_prisoner.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d336c475e980a754eb1ee00e39066047
+    m_Address: Assets/Sprites/Monsters/skel_worker.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bb09bf13d10585f469b9eea89b2476cd
+    m_Address: Assets/Sprites/Monsters/sting.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ba6cbe91c7bf50f409ebb75d8620c2df
+    m_Address: Assets/Sprites/Monsters/wind_ghost.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 395759da43cf79f409f82106499b94c6
+    m_Address: Assets/Sprites/Monsters/wraith.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: df05d860693c9c84fbd4b6416e8b5e07
+    m_Address: Assets/Sprites/Monsters/zherlthsh.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6a9805b8f49e7544ea984576e3fb7a79
+    m_Address: Assets/Sprites/Monsters/zombie_prisoner.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

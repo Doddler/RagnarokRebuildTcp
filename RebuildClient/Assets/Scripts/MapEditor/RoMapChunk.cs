@@ -135,18 +135,27 @@ namespace Assets.Scripts.MapEditor
         {
             if (Mesh == null || MapData.IsWalkTable)
                 return;
-            
-            Unwrapping.GenerateSecondaryUVSet(Mesh, MeshBuilder.GetUnwrapParam());
-            Mesh.UploadMeshData(false);
 
-            //Debug.Log(Mesh.uv2);
+            try
+            {
 
-            MeshFilter.sharedMesh = Mesh;
-            MeshRenderer.material = Material;
+                Unwrapping.GenerateSecondaryUVSet(Mesh, MeshBuilder.GetUnwrapParam());
+                Mesh.UploadMeshData(false);
 
-            NeedsUVUpdate = false;
+                //Debug.Log(Mesh.uv2);
 
-            EditorUtility.SetDirty(Mesh);
+                MeshFilter.sharedMesh = Mesh;
+                MeshRenderer.material = Material;
+
+                NeedsUVUpdate = false;
+
+                EditorUtility.SetDirty(Mesh);
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"Failed to rebuild UVs on {name} due to exception: {e}" );
+            }
         }
 
         private void RemoveOldChildren()
@@ -169,7 +178,8 @@ namespace Assets.Scripts.MapEditor
             var collider = child.AddComponent<MeshCollider>();
 
             mr.material = ShadowMaterial;
-            mr.receiveShadows = false;
+            mr.receiveShadows = true;
+            mr.scaleInLightmap = 0.2f;
             mr.shadowCastingMode = ShadowCastingMode.TwoSided;
 
             mf.sharedMesh = mesh;
@@ -210,10 +220,9 @@ namespace Assets.Scripts.MapEditor
                     if (true) //always draw top cell, no matter what
                     {
                         var m = mesh;
-                        if (paintEmptyTilesBlack && (cell.Top.Texture == null || cell.Top.Texture == "BACKSIDE" || cell.Top.Texture == "BLACK"))
+                        if (paintEmptyTilesBlack && cell.Top.IsUnlit)
                             m = shadow;
-
-
+                        
                         var offset = Vector3.zero;
                         if (MapData.IsWalkTable)
                             offset += new Vector3(0f, 0.01f, 0f);
@@ -221,7 +230,7 @@ namespace Assets.Scripts.MapEditor
                         var tVerts = sharedData.GetTileVertices(new Vector2Int(x, y), transform.position - offset);
                         var tNormals = sharedData.GetTileNormals(new Vector2Int(x, y));// topNormals[x1 + y1 * ChunkBounds.width];
                         var tColors = sharedData.GetTileColors(new Vector2Int(x, y));
-
+                        
                         m.StartTriangle();
 
                         m.AddVertices(tVerts);
@@ -234,7 +243,7 @@ namespace Assets.Scripts.MapEditor
                     if (cell.Right.Enabled && x + 1 < MapData.Width && !MapData.IsWalkTable)
                     {
                         var m = mesh;
-                        if (paintEmptyTilesBlack && (cell.Right.Texture == null || cell.Right.Texture == "BACKSIDE" || cell.Right.Texture == "BLACK"))
+                        if (paintEmptyTilesBlack && cell.Right.IsUnlit)
                             m = shadow;
 
                         var neighbor = cellData[x + 1 + y * MapData.Width];
@@ -257,9 +266,9 @@ namespace Assets.Scripts.MapEditor
                     if (cell.Front.Enabled && y - 1 >= 0 && !MapData.IsWalkTable)
                     {
                         var m = mesh;
-                        if (paintEmptyTilesBlack && (cell.Front.Texture == null || cell.Front.Texture == "BACKSIDE" || cell.Front.Texture == "BLACK"))
+                        if (paintEmptyTilesBlack && cell.Front.IsUnlit)
                             m = shadow;
-
+                        
                         var neighbor = cellData[x + (y - 1) * MapData.Width];
 
                         var f1 = new Vector3((x1 + 0) * tileSize, cell.Heights[2] * RoMapData.YScale, (y1 + 0) * tileSize);

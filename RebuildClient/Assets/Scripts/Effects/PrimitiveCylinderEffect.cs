@@ -131,6 +131,7 @@ namespace Assets.Scripts.Effects
             }
         }
 
+
         public void Render3DCasting()
         {
             mb.Clear();
@@ -140,6 +141,9 @@ namespace Assets.Scripts.Effects
                 var p = Parts[ec];
                 if (!p.Active)
                     continue;
+                
+                if (p.Alpha < 0)
+                    p.Alpha = 0;
 
                 var baseAngle = p.CoverAngle / (EffectPart.PartCount - 1);
                 var pos = 0;
@@ -150,12 +154,7 @@ namespace Assets.Scripts.Effects
                 var topLast = Vector3.zero;
 
                 var color = new Color(1f, 1f, 1f, p.Alpha / 255f);
-
-                colors[0] = color;
-                colors[1] = color;
-                colors[2] = color;
-                colors[3] = color;
-
+                
                 for (var i = 0f; i <= p.CoverAngle; i += baseAngle)
                 {
                     var angle = i + p.Angle;
@@ -186,34 +185,7 @@ namespace Assets.Scripts.Effects
 
                     if (pos > 0)
                     {
-                        var normalLast = bottomLast.normalized;
-                        var normal = bottom.normalized;
-
-                        var uv1 = (pos - 1) / (float)EffectPart.PartCount;
-                        var uv2 = pos / (float)EffectPart.PartCount;
-
-                        if (p.Alpha < 0)
-                            p.Alpha = 0;
-
-
-                        verts[0] = topLast * 0.1f;
-                        verts[1] = top * 0.1f;
-                        verts[2] = bottomLast * 0.1f;
-                        verts[3] = bottom * 0.1f;
-
-                        uvs[0] = new Vector2(uv1, 1);
-                        uvs[1] = new Vector2(uv2, 1);
-                        uvs[2] = new Vector2(uv1, 0);
-                        uvs[3] = new Vector2(uv2, 0);
-
-                        normals[0] = normalLast;
-                        normals[1] = normal;
-                        normals[2] = normalLast;
-                        normals[3] = normal;
-
-                        //Debug.Log(uv1 + " + " + uv2);
-
-                        mb.AddQuad(verts, normals, uvs, colors);
+                        AddTexturedSliceQuad(topLast, top, bottomLast, bottom, pos, EffectPart.PartCount, color, 0.1f);
                     }
 
                     pos++;

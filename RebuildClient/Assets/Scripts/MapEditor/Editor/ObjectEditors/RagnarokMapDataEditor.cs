@@ -82,6 +82,7 @@ namespace Assets.Scripts.MapEditor.Editor.ObjectEditors
 
         private void LoadMapMeshData()
         {
+            Debug.Log(data);
             var go = new GameObject(data.name);
             var editor = go.AddComponent<RoMapEditor>();
             editor.Initialize(data);

@@ -35,7 +35,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// (Re)initialize this instance with provided 32 bit seed
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public virtual void Initialize(uint seed)
 		{
 			// should be abstract, but non-CLS compliant methods can't be abstract!
@@ -45,7 +45,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Generates a random value from UInt32.MinValue to UInt32.MaxValue, inclusively
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public virtual uint NextUInt32()
 		{
 			// should be abstract, but non-CLS compliant methods can't be abstract!
@@ -117,7 +117,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Generates a random value between UInt64.MinValue to UInt64.MaxValue
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public ulong NextUInt64()
 		{
 			ulong retval = NextUInt32();

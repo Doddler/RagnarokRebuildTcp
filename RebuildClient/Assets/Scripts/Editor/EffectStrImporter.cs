@@ -58,7 +58,9 @@ namespace Assets.Scripts.Editor
                     {
                         var audio = obj.AddComponent<AudioSource>();
                         audio.clip = clip;
-                        audio.volume = 0.9f;
+                        audio.volume = 0.5f;
+                        audio.priority = 64;
+                        audio.spatialBlend = 0.7f;
                         renderer.AudioSource = audio;
                     }
                     else

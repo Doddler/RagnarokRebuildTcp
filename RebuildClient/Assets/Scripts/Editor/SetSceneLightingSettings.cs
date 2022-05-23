@@ -13,18 +13,18 @@ namespace Assets.Scripts.Editor
 		[MenuItem("Ragnarok/Set Lighting Settings")]
 		public static void SetLightingSettings()
 		{
-			LightmapEditorSettings.mixedBakeMode = MixedLightingMode.IndirectOnly;
-			LightmapEditorSettings.directSampleCount = 32;
-			LightmapEditorSettings.indirectSampleCount = 256;
-			LightmapEditorSettings.environmentSampleCount = 256;
-			LightmapEditorSettings.bounces = 1;
-			LightmapEditorSettings.bakeResolution = 4;
-			LightmapEditorSettings.padding = 2;
-			LightmapEditorSettings.maxAtlasSize = 1024;
-			LightmapEditorSettings.enableAmbientOcclusion = true;
-			LightmapEditorSettings.aoMaxDistance = 12;
-			LightmapEditorSettings.lightmapsMode = LightmapsMode.NonDirectional;
-			LightmapEditorSettings.lightmapper = LightmapEditorSettings.Lightmapper.ProgressiveGPU;
+			Lightmapping.lightingSettings.mixedBakeMode = MixedLightingMode.IndirectOnly;
+			Lightmapping.lightingSettings.directSampleCount = 32;
+			Lightmapping.lightingSettings.indirectSampleCount = 256;
+			Lightmapping.lightingSettings.environmentSampleCount = 256;
+			Lightmapping.lightingSettings.maxBounces = 2;
+            Lightmapping.lightingSettings.lightmapResolution = 4;
+            Lightmapping.lightingSettings.lightmapPadding = 2;
+            Lightmapping.lightingSettings.lightmapMaxSize = 1024;
+            Lightmapping.lightingSettings.ao = true;
+            Lightmapping.lightingSettings.aoMaxDistance = 12;
+            Lightmapping.lightingSettings.directionalityMode = LightmapsMode.NonDirectional;
+            Lightmapping.lightingSettings.lightmapper = LightingSettings.Lightmapper.ProgressiveGPU;
 		}
 	}
 }

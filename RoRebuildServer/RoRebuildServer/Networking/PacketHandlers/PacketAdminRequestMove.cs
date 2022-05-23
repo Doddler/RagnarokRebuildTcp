@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers;
 
@@ -23,6 +24,8 @@ public class PacketAdminRequestMove : IClientPacketHandler
         var mapName = msg.ReadString();
         var posX = msg.ReadInt16();
         var posY = msg.ReadInt16();
+
+        ServerLogger.Log($"Player {connection.Player.Name} requested move to map {mapName}.");
 
         if (!ch.Map.World.TryGetWorldMapByName(mapName, out var map))
         {
@@ -61,7 +64,7 @@ public class PacketAdminRequestMove : IClientPacketHandler
         //CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
 
         if (ch.Map.Name == mapName)
-            ch.Map.TeleportEntity(ref connection.Entity, ch, pos, false, CharacterRemovalReason.OutOfSight);
+            ch.Map.TeleportEntity(ref connection.Entity, ch, pos, CharacterRemovalReason.OutOfSight);
         else
             ch.Map.World.MovePlayerMap(ref connection.Entity, ch, map, pos);
     }

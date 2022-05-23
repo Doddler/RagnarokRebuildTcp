@@ -536,6 +536,8 @@ namespace HybridWebSocket
         public void Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
         {
 
+            Debug.Log("Socket is being told to close. " + code + " " + reason);
+
             // Check state
             if (this.ws.ReadyState == WebSocketSharp.WebSocketState.Closing)
                 throw new WebSocketInvalidStateException("WebSocket is already closing.");

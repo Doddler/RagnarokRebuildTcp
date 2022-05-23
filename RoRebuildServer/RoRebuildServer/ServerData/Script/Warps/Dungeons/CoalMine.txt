@@ -1,0 +1,7 @@
+Warp("mjo_dun01", "coalminewarp001", 14, 283, 2, 4, "mjo_dun02", 381, 343);
+Warp("mjo_dun01", "coalminewarp002", 52, 14, 4, 2, "mjolnir_02", 79, 363);
+Warp("mjo_dun02", "coalminewarp003", 31, 21, 1, 1, "mjo_dun03", 302, 262);
+Warp("mjo_dun02", "coalminewarp004", 39, 21, 1, 1, "mjo_dun03", 308, 262);
+Warp("mjo_dun02", "coalminewarp005", 384, 343, 2, 4, "mjo_dun01", 17, 283);
+Warp("mjo_dun03", "coalminewarp006", 302, 264, 1, 1, "mjo_dun02", 31, 23);
+Warp("mjo_dun03", "coalminewarp007", 308, 264, 1, 1, "mjo_dun02", 39, 23);

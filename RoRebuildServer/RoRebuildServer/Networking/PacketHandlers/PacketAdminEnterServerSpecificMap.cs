@@ -53,8 +53,13 @@ public class PacketAdminEnterServerSpecificMap : IClientPacketHandler
         for(var i = 0; i < 99; i++)
             player.LevelUp();
 
+        player.UpdateStats();
+
         ServerLogger.Log($"Player assigned entity {playerEntity}, creating entity at location {connection.Character.Position}.");
 
-        CommandBuilder.InformEnterServer(connection.Character, networkPlayer);
+        //CommandBuilder.InformEnterServer(connection.Character, networkPlayer);
+
+        //don't need to inform the client as the CreatePlayer call will create a map move request,
+        //and the player will be informed when that runs.
     }
 }

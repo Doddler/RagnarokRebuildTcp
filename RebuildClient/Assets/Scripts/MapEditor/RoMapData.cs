@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
+using Debug = UnityEngine.Debug;
 
 namespace Assets.Scripts.MapEditor
 {
@@ -63,7 +64,7 @@ namespace Assets.Scripts.MapEditor
 
         public override string ToString()
         {
-            return $"Cell Heights: {Heights}|Top:{Top.Enabled} {Top.Texture}|Front:{Front.Enabled} {Front.Texture}|Right:{Right.Enabled} {Right.Texture}";
+            return $"Cell Heights: {Heights}|Top:{Top.Enabled} {Top.Texture} {!Top.IsUnlit}|Front:{Front.Enabled} {Front.Texture} {!Front.IsUnlit}|Right:{Right.Enabled} {Right.Texture} {!Right.IsUnlit}";
         }
     }
 
@@ -71,13 +72,21 @@ namespace Assets.Scripts.MapEditor
     public class Tile
     {
         public bool Enabled;
+        public bool IsUnlit;
         public string Texture;
         public Vector2[] UVs;
         public Color Color;
 
         public Tile Clone()
         {
-            return new Tile() {Enabled = Enabled, Texture = Texture, UVs = (Vector2[])UVs.Clone(), Color = Color};
+            return new Tile() {Enabled = Enabled, Texture = Texture, UVs = (Vector2[])UVs.Clone(), Color = Color, IsUnlit = IsUnlit};
+        }
+
+        public Color GetColor()
+        {
+            //if(IsUnlit)
+            //    return Color.black;
+            return Color;
         }
 
         public void Serialize(BinaryWriter bw)
@@ -85,6 +94,7 @@ namespace Assets.Scripts.MapEditor
             bw.Write(Enabled);
             if (Enabled)
             {
+                bw.Write(IsUnlit);
                 bw.Write(Texture);
                 for (var i = 0; i < 4; i++)
                     bw.Write(UVs[i]);
@@ -99,7 +109,8 @@ namespace Assets.Scripts.MapEditor
 
             if (!Enabled)
                 return;
-            
+
+            IsUnlit = br.ReadBoolean();
             Texture = br.ReadString();
             for (var i = 0; i < 4; i++)
                 UVs[i] = br.ReadVector2();

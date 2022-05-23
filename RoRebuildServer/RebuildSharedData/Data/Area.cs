@@ -53,7 +53,7 @@ public struct Area
 
     public Position RandomInArea()
     {
-        return new Position(GameRandom.Next(MinX, MaxX), GameRandom.Next(MinY, MaxY));
+        return new Position(GameRandom.NextInclusive(MinX, MaxX), GameRandom.NextInclusive(MinY, MaxY));
     }
 
     public Direction DirectionFromArea(int x, int y)

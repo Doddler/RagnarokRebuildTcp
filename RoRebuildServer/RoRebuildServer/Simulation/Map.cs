@@ -5,10 +5,12 @@ using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation;
@@ -67,7 +69,9 @@ public class Map
             player.RemoveVisiblePlayer(other.Entity);
     }
 
-
+    /// <summary>
+    /// Called on a player after their move is completed to update that player's visibility of nearby objects.
+    /// </summary>
     public void UpdatePlayerAfterMove(ref Entity movingEntity, WorldObject movingCharacter, Position oldPosition, Position newPosition)
     {
         var movingPlayer = movingEntity.Get<Player>();
@@ -115,15 +119,20 @@ public class Map
         }
     }
 
-    public void TeleportEntity(ref Entity entity, WorldObject ch, Position newPosition, bool isWalkUpdate = false, CharacterRemovalReason reason = CharacterRemovalReason.Teleport)
+    /// <summary>
+    /// Simplified variation of MoveEntity for any move where the entity is removed from it's old location and
+    /// appears in a new one. Takes a move reason so the client can play the appropriate effect.
+    /// </summary>
+    public void TeleportEntity(ref Entity entity, WorldObject ch, Position newPosition, CharacterRemovalReason reason = CharacterRemovalReason.Teleport)
     {
         var oldPosition = ch.Position;
+
+        //ch.StopMovingImmediately();
 
         SendRemoveEntityAroundCharacter(ref entity, ch, reason);
         ch.Position = newPosition;
         ch.ClearVisiblePlayerList();
-        SendAddEntityAroundCharacter(ref entity, ch);
-
+        
         //check if the move puts them over to a new chunk, and if so, move them to the new one
         var cOld = GetChunkForPosition(oldPosition);
         var cNew = GetChunkForPosition(newPosition);
@@ -133,17 +142,21 @@ public class Map
             cOld.RemoveEntity(ref entity, ch.Type);
             cNew.AddEntity(ref entity, ch.Type);
         }
-
+        
         //if the moving entity is a player, he needs to know of the new/removed entities from his sight
         if (ch.Type == CharacterType.Player)
         {
             var movingPlayer = entity.Get<Player>();
             CommandBuilder.SendRemoveAllEntities(movingPlayer);
-            ch.ClearVisiblePlayerList();
             SendAllEntitiesToPlayer(ref entity);
         }
+
+        SendAddEntityAroundCharacter(ref entity, ch); //do this after moving them to the new chunk
     }
 
+    /// <summary>
+    /// Move an entity from one location to another and update nearby entities' visibility of the moving entity.
+    /// </summary>
     public void MoveEntity(ref Entity entity, WorldObject ch, Position newPosition, bool isWalkUpdate = false)
     {
         //if(ch.Type == CharacterType.Player)
@@ -274,11 +287,13 @@ public class Map
                 var targetCharacter = player.Get<WorldObject>();
                 if (!targetCharacter.IsActive)
                     continue;
-                if (targetCharacter.Position.InRange(ch.Position, ServerConfig.MaxViewDistance) && targetCharacter != ch)
+                if (!targetCharacter.Position.InRange(ch.Position, ServerConfig.MaxViewDistance))
+                    continue;
+                
+                if(targetCharacter != ch)
                     CommandBuilder.AddRecipient(player);
 
-                if (player != entity) //the player will add itself to it's own visible set elsewhere
-                    AddPlayerVisibility(targetCharacter, ch);
+                AddPlayerVisibility(targetCharacter, ch);
             }
         }
 
@@ -496,6 +511,45 @@ public class Map
         }
     }
 
+    public void GatherValidTargets(WorldObject character, int distance, int attackRange, EntityList list)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
+        {
+
+            foreach (var m in c.AllEntities)
+            {
+                var ch = m.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
+
+                if (ch.Type == CharacterType.NPC)
+                    continue;
+
+                if (ch.SpawnImmunity > 0)
+                    continue;
+
+                if (!ch.CombatEntity.IsValidTarget(character.CombatEntity))
+                    continue;
+
+                if (!character.Position.InRange(ch.Position, distance))
+                    continue;
+                
+                if (!WalkData.HasLineOfSight(character.Position, ch.Position))
+                    continue;
+
+                if (character.Position.DistanceTo(ch.Position) > attackRange)
+                {
+                    if (!Instance.Pathfinder.HasPath(WalkData, character.Position, ch.Position, 1))
+                        continue;
+                }
+                
+
+                list.Add(m);
+            }
+            
+        }
+    }
+
     public void GatherEnemiesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
@@ -518,8 +572,12 @@ public class Map
 
                 if (character.Position.InRange(ch.Position, distance))
                 {
-                    if (checkLineOfSight && !WalkData.HasLineOfSight(character.Position, ch.Position))
-                        continue;
+                    if (checkLineOfSight)
+                    {
+                        if (!WalkData.HasLineOfSight(character.Position, ch.Position))
+
+                                continue;
+                    }
 
                     list.Add(m);
                 }

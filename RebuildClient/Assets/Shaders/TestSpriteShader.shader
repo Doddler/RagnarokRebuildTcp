@@ -1,9 +1,4 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
-// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
+﻿
 Shader "Unlit/TestSpriteShader"
 {
 	Properties
@@ -105,6 +100,11 @@ Shader "Unlit/TestSpriteShader"
 				fixed4 _Color;
 				fixed _Offset;
 				fixed _Rotation;
+
+
+				//from our globals
+				float4 _RoAmbientColor;
+				float4 _RoDiffuseColor;
 
 				float4 Rotate(float4 vert)
 				{
@@ -216,7 +216,12 @@ Shader "Unlit/TestSpriteShader"
 						discard;
 #endif
 
-					fixed4 c = tex2D(_MainTex, i.texcoord) * i.color;
+
+					float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
+
+					env = env * 0.5 + 0.5;
+
+					fixed4 c = tex2D(_MainTex, i.texcoord) * i.color * float4(env.rgb,1);
 
 					UNITY_APPLY_FOG(i.fogCoord, c);
 					//UNITY_OPAQUE_ALPHA(c.a);

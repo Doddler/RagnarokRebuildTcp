@@ -4,6 +4,7 @@ using CsvHelper;
 using Dahomey.Json;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Util;
+using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 
@@ -14,11 +15,12 @@ class Program
     private const string path = @"..\..\..\..\RoRebuildServer\ServerData\Db\";
     private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\Data\";
     private const string outPathStreaming = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\";
+    private const string configPath = @"..\..\..\..\..\RebuildServer\";
 
     static void Main(string[] args)
     {
         WriteMonsterData();
-        WriteServerConfig();
+        //WriteServerConfig();
         WriteMapList();
         WriteEffectsList();
     }
@@ -70,6 +72,12 @@ class Program
 
     private static void WriteServerConfig()
     {
+        //Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
+
+        //ServerConfig.LoadConfigFromPath(configPath);
+
+        //var config = ServerConfig.OperationConfig;
+
         var inPath = Path.Combine(path, "ServerSettings.csv");
         var tempPath = Path.Combine(Path.GetTempPath(), @"ServerSettings.csv"); //copy in case file is locked
         File.Copy(inPath, tempPath);

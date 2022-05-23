@@ -53,6 +53,22 @@ namespace Assets.Scripts.Sprites
 		public string SpriteName;
 	}
 
+    [Serializable]
+    public class AdminWarpList
+    {
+        public string Map;
+        public string Title;
+        public int X;
+        public int Y;
+    }
+
+    [Serializable]
+    public class AdminWarpSectionList
+    {
+        public string Title;
+        public List<AdminWarpList> WarpList;
+    }
+
 	class DatabasePlayerHeadData
 	{
 		public List<PlayerHeadData> PlayerHeadData;
@@ -62,6 +78,11 @@ namespace Assets.Scripts.Sprites
 	{
 		public List<PlayerClassData> PlayerClassData;
 	}
+	class AdminWarpListData
+    {
+        public List<AdminWarpList> WarpSections;
+    }
+
 
 	//[Serializable]
 	//class DatabaseMonsterClassData

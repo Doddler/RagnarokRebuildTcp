@@ -202,6 +202,61 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Music
+  - m_GUID: df412cb18baba9c4b871078ebcedcc8e
+    m_Address: Assets/Music/29.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: fae2bc127a5e7b343a892798f8a70478
+    m_Address: Assets/Music/49.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: cec377bf60e12f84b8ab8aac5e2a803b
+    m_Address: Assets/Music/17.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: 1e5fdf92c15acd6438fe5eba2c9c279c
+    m_Address: Assets/Music/27.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: 59d554259128b1c47a9b18c248a652d2
+    m_Address: Assets/Music/28.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: 635956ec37da6dd4c826f9237e2670f5
+    m_Address: Assets/Music/40.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: 4956731a1ab7e4442a85dbc5f5344b59
+    m_Address: Assets/Music/42.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: 91074a1d54d51dc48a1c18f24af2c163
+    m_Address: Assets/Music/43.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: e2d095e76c5fbe34e8d9939df6812cf3
+    m_Address: Assets/Music/44.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: 3c4b50f209ab9bc4c82d60c17004858f
+    m_Address: Assets/Music/52.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+  - m_GUID: 981d7863bc5c23b4bb1dedd720c4d72c
+    m_Address: Assets/Music/89.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

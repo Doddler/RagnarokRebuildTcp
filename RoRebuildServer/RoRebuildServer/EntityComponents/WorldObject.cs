@@ -37,6 +37,8 @@ public class WorldObject : IEntityAutoReset
     public int MoveStep;
     public int TotalMoveSteps;
 
+    
+    
 #if DEBUG
     public ulong LastUpdate;
 #endif
@@ -153,7 +155,7 @@ public class WorldObject : IEntityAutoReset
         else if (visiblePlayers.Contains(e))
             ServerLogger.LogWarning($"WorldObject {Name} is attempting to add a visible player {obj2.Name}, but that player is already tagged as visible.");
         //else
-        //    ServerLogger.Log($"WorldObject {Name} is adding a visible player {obj2.Name} to it's visible list.");
+            //ServerLogger.Log($"WorldObject {Name} is adding a visible player {obj2.Name} to it's visible list.\n{Environment.StackTrace}");
 
 #endif
 
@@ -182,7 +184,7 @@ public class WorldObject : IEntityAutoReset
         else if (!visiblePlayers.Contains(e))
             ServerLogger.LogWarning($"WorldObject {Name} is attempting to remove visible entity {obj2.Name}, but that player is not on the visibility list.");
         //else
-        //    ServerLogger.Log($"WorldObject {Name} is removing a player {obj2.Name} from it's visible list.");
+            //ServerLogger.Log($"WorldObject {Name} is removing a player {obj2.Name} from it's visible list.\n{Environment.StackTrace}");
 #endif
 
         visiblePlayers.Remove(ref e);
@@ -192,6 +194,8 @@ public class WorldObject : IEntityAutoReset
     {
         if (visiblePlayers == null)
             return;
+        
+        //ServerLogger.Log($"WorldObject {Name} is clearing it's visible player list.");
 
         visiblePlayers.Clear();
         EntityListPool.Return(visiblePlayers);

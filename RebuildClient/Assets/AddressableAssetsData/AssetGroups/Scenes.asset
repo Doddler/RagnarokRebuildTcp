@@ -17,47 +17,47 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 4b0b0e1592b90e14b97036da1939d1d0
   m_SerializeEntries:
-  - m_GUID: 5051999a22869ad46a014dc8c8c55a61
+  - m_GUID: dd0f4314ba568ef43b16a276307107cb
     m_Address: Assets/Scenes/Maps/2009rwc_03.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 790f596e22f23b44ebe5e4e863d1e132
+  - m_GUID: b309c273c5f2a5a498cac9fe28e96ab6
     m_Address: Assets/Scenes/Maps/alberta.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 416ad776e217f0f4bb36a34ebea2574e
+  - m_GUID: a8658f7774410dd448291a9c1e59c72b
     m_Address: Assets/Scenes/Maps/alberta_in.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 28a5cd5a6bdc55845aa833a4dce829c1
+  - m_GUID: 4e6d9c26f28cadb4f9cf9ae50121223e
     m_Address: Assets/Scenes/Maps/alde_dun01.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: f134d5002c2f4564d9f6a9a3405c5ac8
+  - m_GUID: 63c9d62d6d1ea3f4eb08c6a3a4d7ad35
     m_Address: Assets/Scenes/Maps/alde_dun02.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 38846ad81be7a9f4a8fc840339f8e4c2
+  - m_GUID: ccb764fdec46d83428544b36852b9476
     m_Address: Assets/Scenes/Maps/alde_dun03.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 15a6b690398f74c47b66eff45dd4f00a
+  - m_GUID: 175e60a825d7bf24ea8c77b084c524b5
     m_Address: Assets/Scenes/Maps/alde_dun04.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: c9fbf3e794b7ee34185268223347af70
+  - m_GUID: c8f7c03b24e6c8a4e92e491f9a0a77d9
     m_Address: Assets/Scenes/Maps/aldeba_in.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 0a5f878b0b5a68543998d84f51b28601
+  - m_GUID: 3e9ce929b46c22943baea5ab829a67b2
     m_Address: Assets/Scenes/Maps/aldebaran.unity
     m_ReadOnly: 0
     m_SerializedLabels:
@@ -72,22 +72,22 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: b09bf837f779c314895e43b3de79ee60
+  - m_GUID: d789771b99011284493a72eadd5ef332
     m_Address: Assets/Scenes/Maps/c_tower1.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: d41488dd6b168ab45a86ea74b9344f13
+  - m_GUID: 97f1dee4383a1674ead1f64dd0569073
     m_Address: Assets/Scenes/Maps/c_tower2.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: a05872d0165397b4ab7d8ca64a384948
+  - m_GUID: c5a31840dda2a0c40982f70f731cca9a
     m_Address: Assets/Scenes/Maps/c_tower3.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: f055acd0ddf00fe4f9d87d3209006bda
+  - m_GUID: dfcd17b13d75f0541afcecaec7876625
     m_Address: Assets/Scenes/Maps/c_tower4.unity
     m_ReadOnly: 0
     m_SerializedLabels:
@@ -197,6 +197,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
+  - m_GUID: fa7ff48c773d68f41b2c8d66fd726e63
+    m_Address: Assets/Scenes/Maps/guild_vs4.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 4c3a9d9e9ddaa2748984a5d2b3edfec1
+    m_Address: Assets/Scenes/Maps/in_orcs01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
   - m_GUID: 4ae98663de95dbf419e545f4bd006f5a
     m_Address: Assets/Scenes/Maps/in_sphinx1.unity
     m_ReadOnly: 0
@@ -219,6 +229,31 @@ MonoBehaviour:
     - Maps
   - m_GUID: 9b1a5a0db3da18a408540dc60a67637f
     m_Address: Assets/Scenes/Maps/in_sphinx5.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 9209f7b3f728a484d97d4a3260d21b57
+    m_Address: Assets/Scenes/Maps/iz_dun00.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: cecc09daa4ac9ad489e53017c08b3faf
+    m_Address: Assets/Scenes/Maps/iz_dun01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 8614c519850b4464c8c944c15aa65ab0
+    m_Address: Assets/Scenes/Maps/iz_dun02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 06d5895f17b91c3478a4a3b6b2983e9c
+    m_Address: Assets/Scenes/Maps/iz_dun03.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: cb5f560b2bf46d04cb2b9a1d2112eeff
+    m_Address: Assets/Scenes/Maps/iz_dun04.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
@@ -447,32 +482,42 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 6802fd096a4c02149b28a679e28ec75f
+  - m_GUID: 911f3e509ba8eca46819232d50c2e217
+    m_Address: Assets/Scenes/Maps/orcsdun01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: c4f2a1f7ead1be34aa5ebe5f9caed122
+    m_Address: Assets/Scenes/Maps/orcsdun02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 748ba25e593311b44b727d43d55395e5
     m_Address: Assets/Scenes/Maps/pay_arche.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 17ffb3386709de04c86e67af93e0e14a
+  - m_GUID: e921bfe2f04f9074babbed75795857df
     m_Address: Assets/Scenes/Maps/pay_dun00.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 400d8617300bf4c4db96b3c7f5829ec2
+  - m_GUID: 8bbb60644e777a44c8bde6c496f6cb79
     m_Address: Assets/Scenes/Maps/pay_dun01.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 0973f44576cf3d447a9e4121ce1a4f53
+  - m_GUID: d2b42d9eb1055af45806b86e4a6ee2ed
     m_Address: Assets/Scenes/Maps/pay_dun02.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: b674313ba175fe646bb071f470957065
+  - m_GUID: faf2a25b8de8b764dad7c7217173a3e7
     m_Address: Assets/Scenes/Maps/pay_dun03.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 7550e493999c164448c09577c54c3575
+  - m_GUID: c6ff9c2e88e66f2468bf3ab55e04014e
     m_Address: Assets/Scenes/Maps/pay_dun04.unity
     m_ReadOnly: 0
     m_SerializedLabels:
@@ -522,158 +567,288 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 9a42d1167e4dedd4ba16d69f46b3fe66
+  - m_GUID: 54a4baf95446feb4180613b2da9755f2
     m_Address: Assets/Scenes/Maps/pay_fild10.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 1ce6c819eb072074fae705efe7699130
+  - m_GUID: 0300e15590709fd43905f8307c0b0268
     m_Address: Assets/Scenes/Maps/pay_fild11.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 50ffca02cc5cfe14e993833b557a48cd
+  - m_GUID: 62fa6255cb4281b4ba583381e0861b9f
     m_Address: Assets/Scenes/Maps/pay_gld.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 7eeb1181586ead1498f0184320ab5524
+  - m_GUID: 17b9864526a60c246be2c90a512b06fc
     m_Address: Assets/Scenes/Maps/payon.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 20adf8face049fa438fc9d4ca78b5aaf
+  - m_GUID: 3a14263aa5b8bd945b0cfccead198589
     m_Address: Assets/Scenes/Maps/payon_in01.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 97b9949db00a4cd4a976fe3e16d10307
+  - m_GUID: 686e6592423bf614abb3972dc9f6fc5e
     m_Address: Assets/Scenes/Maps/payon_in02.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: c908c70e7a231bd43a3701cb172cb22c
+  - m_GUID: a2662551523608741aabb37aa28ccbd5
     m_Address: Assets/Scenes/Maps/payon_in03.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 04c21da69cc5a174fb4f6a6ad7d73f11
+  - m_GUID: 83362bc087a12a943ad2dd10f306d7fe
     m_Address: Assets/Scenes/Maps/prontera.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 6f1cb5da5dfb4214881cef84e508ffeb
+  - m_GUID: cd5cedc87e6eb93418d81393f6a0ef28
     m_Address: Assets/Scenes/Maps/prt_castle.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: c39a4a1c60a47ec4f8f621fb7becdf4e
+  - m_GUID: b84ee29be4497ff41998fd820224c65f
     m_Address: Assets/Scenes/Maps/prt_church.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 15411e18dc866904d9d04418e20b3b79
+  - m_GUID: dfca1eb2b0f6dee4db2ec60c5354d53c
     m_Address: Assets/Scenes/Maps/prt_fild00.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 771ef639deda2464abb4e74a667be225
+  - m_GUID: 0e512910d2516964d87f58e6ce4b3723
     m_Address: Assets/Scenes/Maps/prt_fild01.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 409364f0ce0da7748897f43c22579d25
+  - m_GUID: f3b28821704b1374db3dec82bc60eb6b
     m_Address: Assets/Scenes/Maps/prt_fild02.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 2c67832264e19c149815b9e77c1e1290
+  - m_GUID: c6b5a08c7d855e748ba6515a05552351
     m_Address: Assets/Scenes/Maps/prt_fild03.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 8dd5f3e5750d48740a63b9a29cc138c9
+  - m_GUID: 9e74e6afeda518045987fc4cb429e4b6
     m_Address: Assets/Scenes/Maps/prt_fild04.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: e3b35e6dccaf13f46b8e9006b0d516c1
+  - m_GUID: fe6c30c0de917104e9cf5c634f883a7a
     m_Address: Assets/Scenes/Maps/prt_fild05.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 0bf62e0404dd39f42bb5334e2db504cf
+  - m_GUID: 52379e75ebddbd54cabc9ef03d24eb7c
     m_Address: Assets/Scenes/Maps/prt_fild06.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: b719a24ae4e1bad4297a5f889f892bc3
+  - m_GUID: 9df7e291e5930b149bd2f65d9ba306e8
     m_Address: Assets/Scenes/Maps/prt_fild07.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 64fba831ad1b30f40886c3ea86fd8ec9
+  - m_GUID: 48db2b81cdcddeb46b6b9db80356ddaa
     m_Address: Assets/Scenes/Maps/prt_fild08.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 777f67cf446305443958e36a72374670
+  - m_GUID: a48bb1aefdb460b42a54f3d55cf6bf16
     m_Address: Assets/Scenes/Maps/prt_fild09.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: a164d023ce21f6d44acbdcc666553d3e
+  - m_GUID: dbc1a647b3c563447b0b497c23bb3595
     m_Address: Assets/Scenes/Maps/prt_fild10.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 9a1d6a70d484a7f41a760393c2290515
+  - m_GUID: 3ab20654483a0d848b215878d801cf36
     m_Address: Assets/Scenes/Maps/prt_fild11.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: cbd9cdad30d97fa498ec2d32ac7dab60
+  - m_GUID: 9322a5ab37b14944bba61fd718d57a13
     m_Address: Assets/Scenes/Maps/prt_gld.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 57e69b9bdfc8df941b2f0f3056a11da3
+  - m_GUID: 08551fde01d27b544ae10829a9a484e4
     m_Address: Assets/Scenes/Maps/prt_in.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 368c93f1599f266459b3e28910fb3e50
+  - m_GUID: 31e00e5b45776394bbf9700a469b3c21
     m_Address: Assets/Scenes/Maps/prt_maze01.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 3e698b9ba3a7c794ea46b9b24e2bf9d8
+  - m_GUID: 36ff7b2dc71b75e48bb3e292112062e4
     m_Address: Assets/Scenes/Maps/prt_maze02.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: e75ef2d13d3893c4291ae79805e70e8a
+  - m_GUID: ea011a81feb12f94998790950df32bcc
     m_Address: Assets/Scenes/Maps/prt_maze03.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 267659894c998ef4c85a67c7fe4622a3
+  - m_GUID: 207c63a9128ba1a488539942d7183be9
     m_Address: Assets/Scenes/Maps/prt_sewb1.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 4c3a9d9e9ddaa2748984a5d2b3edfec1
-    m_Address: Assets/Scenes/Maps/in_orcs01.unity
+  - m_GUID: 974d7f965620d294c8b7b2218bc356a8
+    m_Address: Assets/Scenes/Maps/alb2trea.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: 911f3e509ba8eca46819232d50c2e217
-    m_Address: Assets/Scenes/Maps/orcsdun01.unity
+  - m_GUID: d3cc22a2a3c10d041b2ee777701a697e
+    m_Address: Assets/Scenes/Maps/gl_cas01.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
-  - m_GUID: c4f2a1f7ead1be34aa5ebe5f9caed122
-    m_Address: Assets/Scenes/Maps/orcsdun02.unity
+  - m_GUID: 52de6bde54dd5d848a598c61ee241b6b
+    m_Address: Assets/Scenes/Maps/gl_cas02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 99010804d708adb479bf7cfc63bb8378
+    m_Address: Assets/Scenes/Maps/gl_church.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: c741d6fb93f944b4a937d67b68ebe266
+    m_Address: Assets/Scenes/Maps/gl_chyard.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: baa51584c1410b14685e1d1cee6995d4
+    m_Address: Assets/Scenes/Maps/gl_dun01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 8aaaf66c1836d954cb1a34d1d9eec9f9
+    m_Address: Assets/Scenes/Maps/gl_dun02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: fef4f6361d908fe4597ea32c0ae9f316
+    m_Address: Assets/Scenes/Maps/gl_in01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 8013dc52c26275944afc38e72246d5ef
+    m_Address: Assets/Scenes/Maps/gl_knt01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 35d751f2b41544247b52c36c18c8c776
+    m_Address: Assets/Scenes/Maps/gl_knt02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: b9f040dca56cc1a47b98934f4dad82cc
+    m_Address: Assets/Scenes/Maps/gl_prison.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 6fe91e200ecf2fc40b7292d3355e835e
+    m_Address: Assets/Scenes/Maps/gl_prison1.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 9204f4df6b173c947b0386a1ca351512
+    m_Address: Assets/Scenes/Maps/gl_sew01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 2c7985e3ce0275e44a8519600d2f74cf
+    m_Address: Assets/Scenes/Maps/gl_sew02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 8c0c05a23a53acf4a9eb4516d5f879dc
+    m_Address: Assets/Scenes/Maps/gl_sew03.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 0c94daddc18a63e43aefa228639dcc4b
+    m_Address: Assets/Scenes/Maps/gl_sew04.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 4b567a680d7235f4daabc8890263f207
+    m_Address: Assets/Scenes/Maps/gl_step.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 9d02e13fa23a56942922b64115d56820
+    m_Address: Assets/Scenes/Maps/in_moc_16.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 7ed1771b72ae2b746855e2182f3a72b1
+    m_Address: Assets/Scenes/Maps/izlu2dun.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: c2ea23af5edc1cd4ea274ec1961a2a06
+    m_Address: Assets/Scenes/Maps/mjo_dun01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 9a771647d294bf444b652f1bdfacdf98
+    m_Address: Assets/Scenes/Maps/mjo_dun02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 014bdb57904ec3a44b3cb9feadaa4c5a
+    m_Address: Assets/Scenes/Maps/mjo_dun03.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 62aaa5379b114b94cbd0b2c4db4f4de7
+    m_Address: Assets/Scenes/Maps/prt_monk.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 78e6de6fd2d8f2e46bb8f79da4d52b30
+    m_Address: Assets/Scenes/Maps/prt_sewb2.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 86af4a83a83012d4ca6d4ba6d9bc3e20
+    m_Address: Assets/Scenes/Maps/prt_sewb3.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 4e520125622af8c479786597cb11eb45
+    m_Address: Assets/Scenes/Maps/prt_sewb4.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 00d569161f98de04fb6488c3b72cf5d0
+    m_Address: Assets/Scenes/Maps/treasure01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: e0fe5e0f64e5f004892ed3ff206def80
+    m_Address: Assets/Scenes/Maps/treasure02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 1fc070c21056e9445a57b0cb44cddb73
+    m_Address: Assets/Scenes/Maps/glast_01.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps

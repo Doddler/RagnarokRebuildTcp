@@ -46,5 +46,5 @@ MapConfig("moc_pryd06")
 	CreateSpawn("ARCLOUSE", 20, %(100, 90, 80, 50));
 	CreateSpawn("ANCIENT_MUMMY", 20, %(100, 90, 80, 50));
 	CreateSpawn("MIMIC", 20, %(100, 90, 80, 50));
-	CreateSpawn("AMON_RA", 1, %(102, 166, 1, 1), 3600000, 1600000);
+	CreateSpawn("AMON_RA", 1, %(102, 86, 1, 1), 3600000, 1600000);
 }

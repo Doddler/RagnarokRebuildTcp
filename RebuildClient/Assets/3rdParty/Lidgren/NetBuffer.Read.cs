@@ -60,7 +60,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads a signed byte
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public sbyte ReadSByte()
 		{
 			NetException.Assert(m_bitLength - m_readPosition >= 8, c_readOverflowError);
@@ -163,7 +163,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads a 16 bit unsigned integer written using Write(UInt16)
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public UInt16 ReadUInt16()
 		{
 			NetException.Assert(m_bitLength - m_readPosition >= 16, c_readOverflowError);
@@ -186,7 +186,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads a 32 bit signed integer written using Write(Int32)
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public bool ReadInt32(out Int32 result)
 		{
 			if (m_bitLength - m_readPosition < 32)
@@ -230,7 +230,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads an 32 bit unsigned integer written using Write(UInt32)
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public UInt32 ReadUInt32()
 		{
 			NetException.Assert(m_bitLength - m_readPosition >= 32, c_readOverflowError);
@@ -242,7 +242,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads an 32 bit unsigned integer written using Write(UInt32) and returns true for success
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public bool ReadUInt32(out UInt32 result)
 		{
 			if (m_bitLength - m_readPosition < 32)
@@ -258,7 +258,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads an unsigned integer stored in 1 to 32 bits, written using Write(UInt32, Int32)
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public UInt32 ReadUInt32(int numberOfBits)
 		{
 			NetException.Assert(numberOfBits > 0 && numberOfBits <= 32, "ReadUInt32(bits) can only read between 1 and 32 bits");
@@ -272,7 +272,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads a 64 bit unsigned integer written using Write(UInt64)
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public UInt64 ReadUInt64()
 		{
 			NetException.Assert(m_bitLength - m_readPosition >= 64, c_readOverflowError);
@@ -304,7 +304,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads an unsigned integer stored in 1 to 64 bits, written using Write(UInt64, Int32)
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public UInt64 ReadUInt64(int numberOfBits)
 		{
 			NetException.Assert(numberOfBits > 0 && numberOfBits <= 64, "ReadUInt64(bits) can only read between 1 and 64 bits");
@@ -416,7 +416,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads a variable sized UInt32 written using WriteVariableUInt32()
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public uint ReadVariableUInt32()
 		{
 			int num1 = 0;
@@ -437,7 +437,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads a variable sized UInt32 written using WriteVariableUInt32() and returns true for success
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public bool ReadVariableUInt32(out uint result)
 		{
 			int num1 = 0;
@@ -483,7 +483,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads a variable sized UInt32 written using WriteVariableInt64()
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public UInt64 ReadVariableUInt64()
 		{
 			UInt64 num1 = 0;

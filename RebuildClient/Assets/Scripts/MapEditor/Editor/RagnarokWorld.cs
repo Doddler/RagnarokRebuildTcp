@@ -75,6 +75,8 @@ namespace Assets.Scripts.MapEditor.Editor
         public Color Diffuse;
         public Color Ambient;
         public float Opacity;
+
+        public bool UseMapAmbient;
         //public Vector3 Direction;
     }
 

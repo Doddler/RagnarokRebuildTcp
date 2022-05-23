@@ -8,6 +8,7 @@ Shader "Unlit/RoWaterShader"
         _WaveHeight("Height", Float) = 0
         _WaveSpeed("Speed", Float) = 0
         _WavePitch("Pitch", Float) = 0
+        _Color("Tint", Color) = (1,1,1,0.5)
 
     }
     SubShader
@@ -53,6 +54,11 @@ Shader "Unlit/RoWaterShader"
             float _WaveHeight;
             float _WavePitch;
             float _WaveSpeed;
+            float4 _Color;
+
+            
+            //from our globals
+            float4 _RoAmbientColor;
 
             #define COMPUTE_DEPTH_01b -(view.z * _ProjectionParams.w)
             #define COMPUTE_DEPTH_01 -(UnityObjectToViewPos( v.vertex ).z * _ProjectionParams.w)
@@ -109,9 +115,14 @@ Shader "Unlit/RoWaterShader"
 
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
+
+                fixed a = col.a * _Color.a;
+
+                col = col * 0.5 + col * _RoAmbientColor * 0.5;
+                
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return col * 0.5;
+                return fixed4(col.rgb *= a, a);
             }
             ENDCG
         }

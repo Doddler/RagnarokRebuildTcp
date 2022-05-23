@@ -2,8 +2,9 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.ProBuilder;
 
-[CustomEditor(typeof(MeshFilter)), CanEditMultipleObjects]
+[CustomEditor(typeof(MeshRenderer)), CanEditMultipleObjects]
 public class NormalsVisualizer : Editor
 {
     private static bool showNormals;
@@ -26,7 +27,9 @@ public class NormalsVisualizer : Editor
 
         var lineList = new List<Vector3>();
 
-        var mf = (MeshFilter)target;
+        var mr = (MeshRenderer)target;
+
+        var mf = mr.GetComponent<MeshFilter>();
         if (mf == null)
             return;
 
@@ -37,7 +40,7 @@ public class NormalsVisualizer : Editor
         for (int i = 0; i < mesh.vertexCount; i++)
         {
             lineList.Add(mesh.vertices[i]);
-            lineList.Add(mesh.vertices[i] + mesh.normals[i]);
+            lineList.Add(mesh.vertices[i] + mesh.normals[i]*5);
             //Handles.DrawLine(
             //    mesh.vertices[i],
             //    mesh.vertices[i] + mesh.normals[i]);
@@ -45,7 +48,7 @@ public class NormalsVisualizer : Editor
 
         if (lineList.Count > 0)
         {
-            Handles.matrix = (target as MeshFilter).transform.localToWorldMatrix;
+            Handles.matrix = mf.transform.localToWorldMatrix;
             Handles.color = Color.yellow;
             Handles.DrawLines(lineList.ToArray());
         }

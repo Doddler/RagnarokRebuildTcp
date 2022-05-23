@@ -73,6 +73,8 @@ namespace Assets.Scripts.Sprites
         public float TargetShade;
         public float ShadeLevel = 0.85f;
 
+        private const float shadeForShadow = 0.80f;
+
         public bool LockAngle;
 
         public SpriteMotion CurrentMotion;
@@ -534,7 +536,7 @@ namespace Assets.Scripts.Sprites
                 var lightPower = (directionalLight.color.r + directionalLight.color.g + directionalLight.color.b) / 3f;
                 lightPower = (lightPower * directionalLight.intensity + 1) / 2f;
                 lightPower *= directionalLight.shadowStrength;
-                ShadeLevel = 1f - (0.25f * lightPower);
+                ShadeLevel = shadeForShadow;
 
             }
 

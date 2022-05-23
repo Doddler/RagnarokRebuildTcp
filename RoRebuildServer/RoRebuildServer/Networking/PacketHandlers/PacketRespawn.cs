@@ -36,8 +36,7 @@ public class PacketRespawn : IClientPacketHandler
         if (!inPlace)
         {
             if (ch.Map.Name == "prt_fild08")
-                ch.Map.TeleportEntity(ref connection.Entity, ch, new Position(170, 367), false,
-                    CharacterRemovalReason.OutOfSight);
+                ch.Map.TeleportEntity(ref connection.Entity, ch, new Position(170, 367), CharacterRemovalReason.OutOfSight);
             else
             {
                 if(World.Instance.TryGetWorldMapByName("prt_fild08", out var dest))

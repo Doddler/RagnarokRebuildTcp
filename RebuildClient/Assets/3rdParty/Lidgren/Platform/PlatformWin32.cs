@@ -14,7 +14,7 @@ namespace Lidgren.Network
 		private static readonly long s_timeInitialized = Stopwatch.GetTimestamp();
 		private static readonly double s_dInvFreq = 1.0 / (double)Stopwatch.Frequency;
 		
-		[CLSCompliant(false)]
+//		[CLSCompliant(false)]
 		public static ulong GetPlatformSeed(int seedInc)
 		{
 			ulong seed = (ulong)System.Diagnostics.Stopwatch.GetTimestamp();

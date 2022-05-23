@@ -13,6 +13,11 @@ internal class ScriptCompiler
 {
     public Dictionary<string, string> scriptFiles = new();
 
+    /// <summary>
+    /// Compiles a script on a given path and stores the output.
+    /// </summary>
+    /// <param name="inputPath">Path to script file</param>
+    /// <returns>True if the script needed to be compiled, false if the script was found in cache.</returns>
     public bool Compile(string inputPath)
     {
         var config = ServerConfig.DataConfig;
@@ -96,6 +101,8 @@ internal class ScriptCompiler
             if (TryLoadFromCache(out var a))
             {
                 ServerLogger.Log("Scripts have not changed, script assembly loaded from cache.");
+                scriptFiles.Clear(); //no need to keep the scripts in memory anymore.
+                scriptFiles = null;
                 return a;
             }
         }
@@ -141,6 +148,9 @@ internal class ScriptCompiler
         var bytes = memoryStream.ToArray();
         if(useCache)
             File.WriteAllBytes(Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll"), bytes);
+
+        scriptFiles.Clear(); //no need to keep the scripts in memory anymore.
+        scriptFiles = null;
 
         return Assembly.Load(bytes);
 

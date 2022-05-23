@@ -17,7 +17,10 @@ namespace Assets.Scripts.MapEditor
 
         private bool paintEmptyTilesBlack;
 
+        private static Color[] black = new[] { Color.black, Color.black, Color.black, Color.black };
 
+        private static float litColor = 3f;
+        
         public RoMapSharedMeshData(RoMapData data)
         {
             this.data = data;
@@ -32,6 +35,7 @@ namespace Assets.Scripts.MapEditor
 
         public Vector3[] GetTileVertices(Vector2Int point, Vector3 origin)
         {
+            //Debug.Log(point + " " + data.Width);
             var vertOut = new Vector3[4];
             for (var i = 0; i < 4; i++)
                 vertOut[i] = vertexData[point.x + point.y * data.Width][i] - origin;
@@ -63,7 +67,7 @@ namespace Assets.Scripts.MapEditor
 
             return neighborCheck;
         }
-
+        
         private Vector3 AverageNormal(bool[] hasNeighbor, Vector2Int[] neighborDirections, Vector3 initialNormal, Vector2Int homePos, int vertexId)
         {
             var neighborCheck = GetNeighborsForVertex(vertexId);
@@ -135,7 +139,7 @@ namespace Assets.Scripts.MapEditor
             return color / count;
         }
 
-        private (bool[] hasNeighbros, Vector2Int[] neighbors) GetValidNeighbors(Vector2Int homePos)
+        private (bool[] hasNeighbors, Vector2Int[] neighbors) GetValidNeighbors(Vector2Int homePos)
         {
             var hasNeighbor = new bool[8];
             var neighbors = new Vector2Int[8];
@@ -169,6 +173,50 @@ namespace Assets.Scripts.MapEditor
             return (hasNeighbor, neighbors);
         }
 
+        private void AverageUnlitConnectedNeighborValues(Vector2Int homePos, Color[] colors)
+        {
+            var (hasNeighbor, neighbors) = GetValidNeighbors(homePos);
+            var hideLightmaps = new bool[4];
+
+            if (data.Cell(homePos).Top.IsUnlit)
+            {
+
+                for (var i = 0; i < 4; i++)
+                    colors[i].a = 0f;
+
+                return;
+            }
+
+            for (var i = 0; i < 4; i++)
+            {
+                var neighborCheck = GetNeighborsForVertex(i);
+
+                if (data.Cell(homePos).Top.IsUnlit)
+                    hideLightmaps[i] = true;
+
+                for (var j = 0; j < neighborCheck.Length; j++)
+                {
+                    var n = neighborCheck[j];
+
+                    if (!hasNeighbor[n])
+                        continue;
+
+                    var neighbor = homePos + neighbors[n];
+
+                    if (!data.Cell(neighbor).Top.IsUnlit)
+                        continue;
+
+                    if (data.IsNeighborVertexConnected(homePos, homePos + neighbors[n], neighbors[n], i))
+                        hideLightmaps[i] = true;
+                }
+            }
+
+            for (var i = 0; i < 4; i++)
+            {
+                colors[i].a = hideLightmaps[i] ? 0f : litColor;
+            }
+        }
+
         private void AverageCellConnectedNormals(Vector2Int homePos)
         {
             var (hasNeighbor, neighbors) = GetValidNeighbors(homePos);
@@ -197,14 +245,27 @@ namespace Assets.Scripts.MapEditor
             //colorsOut[2] = data.Cell(homePos).Top.Color;
             //colorsOut[3] = data.Cell(homePos).Top.Color;
 
-            colorsOut[0] = hasNeighbor[1] ? data.Cell(homePos + neighbors[1]).Top.Color : Color.white;
-            colorsOut[1] = hasNeighbor[2] ? data.Cell(homePos + neighbors[2]).Top.Color : Color.white;
-            colorsOut[2] = data.Cell(homePos).Top.Color;
-            colorsOut[3] = hasNeighbor[4] ? data.Cell(homePos + neighbors[4]).Top.Color : Color.white;
+            colorsOut[0] = hasNeighbor[1] ? data.Cell(homePos + neighbors[1]).Top.GetColor() : Color.white;
+            colorsOut[1] = hasNeighbor[2] ? data.Cell(homePos + neighbors[2]).Top.GetColor() : Color.white;
+            colorsOut[2] = data.Cell(homePos).Top.GetColor();
+            colorsOut[3] = hasNeighbor[4] ? data.Cell(homePos + neighbors[4]).Top.GetColor() : Color.white;
+            
 
-            for (var i = 0; i < 4; i++)
-                colorsOut[i].a = 1f;
+            AverageUnlitConnectedNeighborValues(homePos, colorsOut);
 
+            ////top left
+            //if(HasUnlitConnectedNeighbor())
+
+            //if (hasNeighbor[0] && data.Cell(homePos + neighbors[0]).Top.IsUnlit && data.IsNeighborVertexConnected(homePos, neighbors[0], neighborDirections[id], vertexId))
+            //    hideLightmap[0] = true;
+            ////top right
+            //if (hasNeighbor[2] && data.Cell(homePos + neighbors[2]).Top.IsUnlit)
+            //    hideLightmap[1] = true;
+            //if (hasNeighbor[5] && data.Cell(homePos + neighbors[5]).Top.IsUnlit)
+            //    hideLightmap[2] = true;
+            //if (hasNeighbor[0] && data.Cell(homePos + neighbors[1]).Top.IsUnlit)
+            //    hideLightmap[0] = true;
+            
             colorData[homePos.x + homePos.y * data.Width] = colorsOut;
         }
 
@@ -221,10 +282,7 @@ namespace Assets.Scripts.MapEditor
 
         public Color[] FourBlackColors()
         {
-            var colors = new Color[4];
-            for (var i = 0; i < 4; i++)
-                colors[i] = Color.black;
-            return colors;
+            return black;
         }
 
         public Color[] GetAveragedRightColors(Vector2Int pos)
@@ -235,13 +293,13 @@ namespace Assets.Scripts.MapEditor
 
             var colors = new Color[4];
 
-            colors[0] = hasNeighbor[2] ? data.Cell(pos + neighbors[2]).Top.Color : Color.white;
-            colors[1] = hasNeighbor[2] ? data.Cell(pos + neighbors[2]).Top.Color : Color.white;
-            colors[2] = hasNeighbor[4] ? data.Cell(pos + neighbors[4]).Top.Color : Color.white;
-            colors[3] = hasNeighbor[4] ? data.Cell(pos + neighbors[4]).Top.Color : Color.white;
+            colors[0] = hasNeighbor[2] ? data.Cell(pos + neighbors[2]).Top.GetColor() : Color.white;
+            colors[1] = hasNeighbor[2] ? data.Cell(pos + neighbors[2]).Top.GetColor() : Color.white;
+            colors[2] = hasNeighbor[4] ? data.Cell(pos + neighbors[4]).Top.GetColor() : Color.white;
+            colors[3] = hasNeighbor[4] ? data.Cell(pos + neighbors[4]).Top.GetColor() : Color.white;
 
             for (var i = 0; i < 4; i++)
-                colors[i].a = 1f;
+                colors[i].a = cell.Right.IsUnlit ? 0f : 1f;
 
             return colors;
 
@@ -292,13 +350,13 @@ namespace Assets.Scripts.MapEditor
 
             var colors = new Color[4];
 
-            colors[0] = cell.Top.Color;
-            colors[1] = hasNeighbor[4] ? data.Cell(pos + neighbors[4]).Top.Color : Color.white;
-            colors[2] = cell.Top.Color;
-            colors[3] = hasNeighbor[4] ? data.Cell(pos + neighbors[4]).Top.Color : Color.white;
+            colors[0] = cell.Top.GetColor();
+            colors[1] = hasNeighbor[4] ? data.Cell(pos + neighbors[4]).Top.GetColor() : Color.white;
+            colors[2] = cell.Top.GetColor();
+            colors[3] = hasNeighbor[4] ? data.Cell(pos + neighbors[4]).Top.GetColor() : Color.white;
 
             for (var i = 0; i < 4; i++)
-                colors[i].a = 1f;
+                colors[i].a = cell.Front.IsUnlit ? 0f : 1f;
 
             return colors;
 
@@ -376,7 +434,7 @@ namespace Assets.Scripts.MapEditor
 
                     normalData[x + y * data.Width] = normals;
 
-                    cellColors[x + y * data.Width] = cell.Top.Color;
+                    cellColors[x + y * data.Width] = cell.Top.GetColor();
                 }
             }
         }

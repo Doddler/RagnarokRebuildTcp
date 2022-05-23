@@ -46,10 +46,12 @@ public class CombatEntity : IEntityAutoReset
     public void Heal(int hp, int hp2, bool showValue = false)
     {
         if (hp2 != -1 && hp2 > hp)
-            hp = GameRandom.Next(hp, hp2);
+            hp = GameRandom.NextInclusive(hp, hp2);
 
         var curHp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
+
+        hp += (int)(maxHp * 0.06f); //kinda cheat and force give an extra 6% hp back
 
         if(curHp + hp > maxHp)
             hp = maxHp - curHp;
@@ -220,7 +222,7 @@ public class CombatEntity : IEntityAutoReset
         if (atk2 < atk1)
             atk2 = atk1;
 
-        var baseDamage = (short)GameRandom.Next(atk1, atk2);
+        var baseDamage = (short)GameRandom.NextInclusive(atk1, atk2);
 
         var defCut = MathF.Pow(0.99f, target.GetStat(CharacterStat.Def) - 1);
 

@@ -3,11 +3,10 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Color ("Color", Color) = (1,1,1,1)
+        [PerRendererData] _Color ("Color", Color) = (1,1,1,1)
         [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend ("BlendSource", Float) = 1
         [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend ("BlendDestination", Float) = 0
         [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Float) = 0
-        [Toggle] _ZWrite ("ZWrite", Float) = 0
     }
     SubShader
     {
@@ -26,8 +25,9 @@
         Cull [_Cull]
         Lighting Off
         ZWrite [_ZWrite]
-        Ztest False
+        ZTest[_myCustomCompare]
         Blend [_SrcBlend] [_DstBlend]
+
 
         Pass
         {

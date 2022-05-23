@@ -4,7 +4,7 @@ namespace Assets.Scripts.Effects
 {
     public class EffectPart
     {
-        public const int PartCount = 16;
+        public const int PartCount = 21;
 
         public bool Active;
         public float Alpha;

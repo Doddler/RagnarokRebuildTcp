@@ -54,6 +54,9 @@ public partial class Monster
 		if (!ValidateTarget())
 			return true;
 
+        if (!targetCharacter.CombatEntity.IsValidTarget(CombatEntity))
+            return true;
+
 		if (targetCharacter.Position == Character.Position)
 			return false;
 
@@ -62,11 +65,15 @@ public partial class Monster
 
 		if (Character.MoveSpeed < 0 && InEnemyOutOfAttackRange())
 			return true;
+		
+        if (!Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
+        {
+			if (Character.Map?.Instance.Pathfinder.GetPath(Character.Map.WalkData, Character.Position,
+                    targetCharacter.Position, null, 1) == 0)
+                return true;
+        }
 
-		if (Character.Map?.Instance.Pathfinder.GetPath(Character.Map.WalkData, Character.Position, targetCharacter.Position, null, 1) == 0)
-			return true;
-
-		return false;
+        return false;
 	}
 
 	private bool InAttackRange()
@@ -111,7 +118,7 @@ public partial class Monster
         if (Character.AttackCooldown > Time.ElapsedTimeFloat)
             return false;
 
-        if (GameRandom.Next(0, 1) < 1)
+        if (GameRandom.NextInclusive(0, 1) < 1)
             return false;
 		
         if (Character.Map!.HasAllyInRange(Character, 0, false, true))
@@ -166,6 +173,9 @@ public partial class Monster
 
 		if (targetCharacter.Position.DistanceTo(Character.Position) > MonsterBase.Range)
 			return true;
+
+        if (!Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
+            return true;
 
 		return false;
 	}

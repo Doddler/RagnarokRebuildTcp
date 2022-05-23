@@ -56,4 +56,18 @@ public static class ServerConfig
             .Build();
         return configuration;
     }
+
+    public static void LoadConfigFromPath(string path)
+    {
+        ArgumentNullException.ThrowIfNull("Configuration already loaded!");
+
+        configuration = new ConfigurationBuilder()
+            .SetBasePath(path)
+            .AddJsonFile(Path.Combine(path, "appsettings.json"), optional: true, reloadOnChange: true)
+            .AddJsonFile(Path.Combine(path, "appsettings.Logging.json"), optional: true, reloadOnChange: true)
+            .AddJsonFile(Path.Combine(path, $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json"), optional: true, reloadOnChange: true)
+            .AddUserSecrets("RoRebuildServer-2d3ccb1b-373d-43ec-b059-5e7dc1bb4316")
+            .AddEnvironmentVariables()
+            .Build();
+    }
 }

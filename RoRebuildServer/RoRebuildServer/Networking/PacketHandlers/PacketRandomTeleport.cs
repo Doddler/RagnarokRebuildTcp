@@ -34,8 +34,10 @@ public class PacketRandomTeleport : IClientPacketHandler
 
         do
         {
-            p = new Position(GameRandom.Next(0, map.Width - 1), GameRandom.Next(0, map.Height - 1));
+            p = new Position(GameRandom.NextInclusive(0, map.Width - 1), GameRandom.NextInclusive(0, map.Height - 1));
         } while (!map.WalkData.IsCellWalkable(p));
+
+        ServerLogger.Log($"Player {player.Name} executes a random teleport from {ch.Position} to {p}");
 
         player.AddActionDelay(1.1f); //add 1s to the player's cooldown times. Should lock out immediate re-use.
         ch.ResetState();

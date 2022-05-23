@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Assets.Scripts.Objects;
+using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using UnityEditor;
 using UnityEngine;
@@ -32,11 +34,41 @@ namespace Assets.Scripts.MapEditor.Editor
 
             var factor = 1 + (1 - world.LightSetup.Opacity);
 
-            Debug.Log(c + " : " + ambientIntensity + " : " + factor);
-            
+            //Debug.Log(c + " : " + ambientIntensity + " : " + factor);
+
             c = new Color(c.r + diff.r * ng, c.g + diff.g * ng, c.b + diff.b * ng, c.a);
 
             RenderSettings.ambientLight = c;
+
+            //alt rendering mode
+
+            RenderSettings.ambientLight = Color.black;
+
+            var map = GameObject.FindObjectsOfType<RoMapEditor>();
+            //Debug.Log("AAAAAAAAAAAAAA" + map);
+
+            foreach (var m in map)
+            {
+                if (m.gameObject.name.Contains("_walk"))
+                    continue;
+
+                var go = m.gameObject;
+                var light = go.GetComponent<RoMapRenderSettings>();
+                if (light == null)
+                    light = go.AddComponent<RoMapRenderSettings>();
+
+                light.AmbientColor = world.LightSetup.Ambient;
+                light.Diffuse = world.LightSetup.Diffuse;
+                light.Opacity = world.LightSetup.Opacity;
+                light.UseMapAmbient = world.LightSetup.UseMapAmbient;
+
+                //m.PaintEmptyTileColorsBlack = false;
+
+                break;
+            }
+
+
+
             //RenderSettings.ambientIntensity = (1 - world.LightSetup.Opacity) * 2;
 
             //Debug.Log("Light count: " + world.Lights.Count);
@@ -66,39 +98,87 @@ namespace Assets.Scripts.MapEditor.Editor
                 targetLight.shadows = LightShadows.Soft;
             }
 
-            var intensity = world.LightSetup.Opacity;
-            //if (90 - world.LightSetup.Longitude >= 50)
-            //    intensity = 0.8f;
-            //if (90 - world.LightSetup.Longitude >= 60)
-            //    intensity = 0.7f;
+            var intensity = 1;// world.LightSetup.Opacity;
 
-            //if (data.name == "yuno")
-            //    intensity = 0.5f;
+            var rotation = Quaternion.Euler(90 - world.LightSetup.Longitude, world.LightSetup.Latitude, 0);
 
-            targetLight.transform.rotation = Quaternion.Euler(90-world.LightSetup.Longitude, world.LightSetup.Latitude, 0);
-            targetLight.color = world.LightSetup.Diffuse;
+            if(world.MapName == "moc_pryd02" || world.MapName == "moc_pryd03")
+                rotation = Quaternion.Euler(0, 0, 0);
+
+
+            targetLight.transform.rotation = rotation; //Quaternion.Euler(90 - world.LightSetup.Longitude, world.LightSetup.Latitude, 0);
+            targetLight.color = Color.white;
             targetLight.intensity = intensity;
-            targetLight.lightmapBakeType = LightmapBakeType.Mixed;
-            
+            targetLight.shadowBias = 0.5f;
+            targetLight.shadowNormalBias = 0f;
+            targetLight.lightmapBakeType = LightmapBakeType.Realtime;
+
             targetLight.shadowStrength = 1;
         }
 
-        private void PlaceLight(GameObject parent, string name, Vector3 position, Color color, float range, float intensity)
+        private void PlaceLight(GameObject parent, Color color, float range, float intensity)
         {
-            var lobj = new GameObject(name);
-            lobj.isStatic = true;
-            lobj.transform.parent = parent.transform;
-            lobj.transform.localPosition = position;
+            //var lobj = new GameObject(name);
+            //lobj.isStatic = true;
+            //lobj.transform.parent = parent.transform;
+            //lobj.transform.localPosition = position;
 
+            var lobj = parent;
+
+            //color = color * 0.9f + new Color(0.1f, 0.1f, 0.1f, 0.1f);
+
+            //color = Color.Lerp(color, Color.white, 0.2f);
+
+            //color = color / 2;
+
+            //var it = range * 5 / 255f;
+            ////Debug.Log("LIGHT:"+ it);
+
+
+            ////color += new Color(it, it, it, 0f);
+
+            var max = Mathf.Max(color.r, color.g, color.b);
+            ////max /= 2;
+
+            //var boostTo = 0.5f;
+
+            //if (max < boostTo)
+            //{
+            //    var boost = boostTo - max;
+            //    //color = new Color(color.r + boost, color.g + boost, color.b + boost, color.a);
+            //    color = new Color(color.r / max * boostTo, color.g / max * boostTo, color.b / max * boostTo, color.a);
+            //}
+
+            var i = Mathf.Max(3, (range + 1) / 3f);// 3 + Mathf.Pow(range/10f,2); //2 * (1/max);
+
+            //range *= 0.8f;
+
+            //range = range / 2 + range * max;
+
+            //var i = intensity;
+            
             var l = lobj.AddComponent<Light>();
             l.type = LightType.Point;
             l.range = range;
             l.color = color;
-            l.intensity = intensity;
+            l.intensity = i;
+            l.lightmapBakeType = LightmapBakeType.Baked;
+            l.shadows = LightShadows.Soft;
+
+            var sub = new GameObject("Sub Light");
+            sub.transform.SetParent(lobj.transform);
+            sub.transform.localPosition = Vector3.zero;
+            sub.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
+
+            l = sub.AddComponent<Light>();
+            l.type = LightType.Point;
+            l.range = range/2f;
+            l.color = color;
+            l.intensity = i;
             l.lightmapBakeType = LightmapBakeType.Baked;
             l.shadows = LightShadows.Soft;
         }
-        
+
         private void LoadLights()
         {
             var lightContainer = new GameObject("lights");
@@ -108,7 +188,49 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 var position = new Vector3(light.Position.x / 5, -light.Position.y / 5, light.Position.z / 5);
 
-                PlaceLight(lightContainer, light.Name, position, light.Color, light.Range / 5f, Mathf.Max(5f, light.Range / 5f / 4f));
+                var lightObj = new GameObject(light.Name);
+                lightObj.transform.SetParent(lightContainer.transform, false);
+                lightObj.transform.localPosition = position;
+                lightObj.isStatic = true;
+
+                //PlaceLight(lightObj, "Gen" + light.Name, Vector3.zero, light.Color, light.Range / 5, 7.5f);
+
+                var r = light.Range / 5f;
+                //var b = 1f;
+
+                //var c = 0;
+
+                PlaceLight(lightObj, light.Color, r, 5);
+
+                //for (var i = r; i > 1; i -= r / 10f)
+                //{
+                //    if (Mathf.Approximately(i, r))
+                //        PlaceLight(lightObj, light.Color, i, b);
+                //    else
+                //    {
+                //        var go = new GameObject("Light " + i);
+                //        go.isStatic = true;
+                //        go.transform.SetParent(lightObj.transform);
+                //        go.transform.localPosition = Vector3.zero;
+                //        //go.hideFlags = HideFlags.HideInHierarchy;
+
+                //        PlaceLight(go, light.Color, i, b);
+                //    }
+
+                //    c++;
+
+                //    if (c > 2)
+                //        b += 0.2f;
+                //}
+
+                //PlaceLight(lightContainer, light.Name + " normal1", Vector3.zero, light.Color, light.Range / 5f, 1f);
+                //PlaceLight(lightContainer, light.Name + " normal2", position, light.Color, light.Range / 5f * 0.9f, 1f);
+                //PlaceLight(lightContainer, light.Name + " normal3", position, light.Color, light.Range / 5f * 0.8f, 1f);
+                //PlaceLight(lightContainer, light.Name + " normal4", position, light.Color, light.Range / 5f * 0.7f, 1f);
+                //PlaceLight(lightContainer, light.Name + " bright1", position, light.Color, light.Range / 5f * 0.6f, 2f);
+                //PlaceLight(lightContainer, light.Name + " bright2", position, light.Color, light.Range / 5f * 0.4f, 3f);
+                //PlaceLight(lightContainer, light.Name + " bright3", position, light.Color, light.Range / 5f * 0.2f, baseIntensity + inc * 4);
+                //PlaceLight(lightContainer, light.Name + " bright2", position, light.Color, light.Range / 5f / 4f, 4f);
 
 
                 //PlaceLight(light.Name + " Red", position, Color.red, light.Range / 5f, light.Color.r * 5f);
@@ -120,23 +242,23 @@ namespace Assets.Scripts.MapEditor.Editor
 
         private void LoadFog()
         {
-	        if (world.FogSetup == null)
-		        return;
+            if (world.FogSetup == null)
+                return;
 
-	        if (Mathf.Approximately(world.FogSetup.FogColor.a, 0))
-		        return; //fog alpha is 0, so probably shouldn't be visible...
+            if (Mathf.Approximately(world.FogSetup.FogColor.a, 0))
+                return; //fog alpha is 0, so probably shouldn't be visible...
 
-	        RenderSettings.fog = true;
-	        RenderSettings.fogMode = FogMode.Linear;
-	        RenderSettings.fogColor = world.FogSetup.FogColor;
-	        RenderSettings.fogStartDistance = world.FogSetup.NearPlane * 55f;
-	        RenderSettings.fogEndDistance = world.FogSetup.FarPlane * 550f;
+            RenderSettings.fog = true;
+            RenderSettings.fogMode = FogMode.Linear;
+            RenderSettings.fogColor = world.FogSetup.FogColor;
+            RenderSettings.fogStartDistance = world.FogSetup.NearPlane * 55f;
+            RenderSettings.fogEndDistance = world.FogSetup.FarPlane * 550f;
         }
 
         private void LoadWater()
         {
-	        if (world.Water == null)
-		        return;
+            if (world.Water == null)
+                return;
 
 
 
@@ -179,38 +301,38 @@ namespace Assets.Scripts.MapEditor.Editor
             //mr.receiveShadows = false;
             //mr.reflectionProbeUsage = ReflectionProbeUsage.Off;
             //mr.lightProbeUsage = LightProbeUsage.Off;
-            
+
             //mf.sharedMesh = mesh;
         }
 
         public void LoadEffectPlaceholders(RoMapData mapData, RagnarokWorld worldData)
         {
-	        data = mapData;
-	        world = worldData;
+            data = mapData;
+            world = worldData;
 
-	        var findObject = GameObject.Find($"{world.MapName} resources");
-	        if (findObject != null)
-		        baseObject = findObject;
-	        else
-	        {
-		        baseObject = new GameObject($"{world.MapName} resources");
-		        baseObject.transform.position = new Vector3(data.InitialSize.x, 0, data.InitialSize.y);
-		        baseObject.isStatic = true;
-	        }
+            var findObject = GameObject.Find($"{world.MapName} resources");
+            if (findObject != null)
+                baseObject = findObject;
+            else
+            {
+                baseObject = new GameObject($"{world.MapName} resources");
+                baseObject.transform.position = new Vector3(data.InitialSize.x, 0, data.InitialSize.y);
+                baseObject.isStatic = true;
+            }
 
-	        var effectContainer = new GameObject("effects");
-	        effectContainer.transform.SetParent(baseObject.transform, false);
+            var effectContainer = new GameObject("effects");
+            effectContainer.transform.SetParent(baseObject.transform, false);
 
-	        foreach (var effect in world.Effects)
-	        {
+            foreach (var effect in world.Effects)
+            {
                 var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 //var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Smoke/SmokeEmitter.prefab");
                 //var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
                 obj.name = effect.Id + " - " + effect.Name;
-		        obj.transform.SetParent(effectContainer.transform, false);
+                obj.transform.SetParent(effectContainer.transform, false);
                 obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
-                
-	        }
+
+            }
         }
 
         public void LoadEffects()
@@ -220,20 +342,44 @@ namespace Assets.Scripts.MapEditor.Editor
 
             foreach (var effect in world.Effects)
             {
-	            if (effect.Id == 44)
-	            {
-		            var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Smoke/SmokeEmitter.prefab");
-		            var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
-		            obj.name = effect.Id + " - " + effect.Name;
-		            obj.transform.SetParent(effectContainer.transform, false);
-		            obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                if (effect.Id == 44) //chimney smoke
+                {
+                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Smoke/SmokeEmitter.prefab");
+                    var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
+                    obj.name = effect.Id + " - " + effect.Name;
+                    obj.transform.SetParent(effectContainer.transform, false);
+                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
                 }
+
+                if (effect.Id == 45) //fireflies
+                {
+                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Resources/Fireflies.prefab");
+                    var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
+                    obj.name = effect.Id + " - " + effect.Name;
+                    obj.transform.SetParent(effectContainer.transform, false);
+                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                }
+
                 if (effect.Id == 47 && world.MapName == "moc_pryd01")
                 {
                     //torch
                     var light = world.Lights[0];
                     var position = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
-                    PlaceLight(effectContainer, light.Name, position + new Vector3(0f, 4f, 0f), light.Color, light.Range / 5f, light.Range / 5f / 4f);
+                    //PlaceLight(effectContainer, light.Name, position + new Vector3(0f, 4f, 0f), light.Color, light.Range / 5f, light.Range / 5f / 4f);
+                }
+
+                if (effect.Id == 109) //underwater bubbles
+                {
+                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/bubble.prefab");
+                    var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
+                    obj.AddComponent<Billboard>();
+                    obj.name = effect.Id + " - " + effect.Name;
+                    obj.transform.SetParent(effectContainer.transform, false);
+                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    var renderer = obj.GetComponent<RoEffectRenderer>();
+                    renderer.IsLoop = true;
+                    renderer.UseZTest = true;
+                    renderer.RandomStart = true;
                 }
             }
         }
@@ -254,8 +400,8 @@ namespace Assets.Scripts.MapEditor.Editor
             foreach (var sound in world.Sounds)
             {
                 //var soundName = Path.GetFileNameWithoutExtension(sound.File);
-                var soundAsset = AssetDatabase.LoadAssetAtPath<AudioClip>(Path.Combine(soundFolder, sound.File));
-                if(soundAsset == null)
+                var soundAsset = AssetDatabase.LoadAssetAtPath<AudioClip>(Path.Combine(soundFolder, sound.File.Replace(".wav", ".ogg")));
+                if (soundAsset == null)
                     Debug.LogWarning("Could not load audio file " + sound.File);
 
                 var go = new GameObject(sound.Name);
@@ -283,7 +429,7 @@ namespace Assets.Scripts.MapEditor.Editor
         {
             var modelContainer = new GameObject("models");
             modelContainer.transform.SetParent(baseObject.transform, false);
-            
+
             foreach (var model in world.Models)
             {
                 var baseFolder = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "model");
@@ -326,7 +472,7 @@ namespace Assets.Scripts.MapEditor.Editor
                         modelCache.Add(model.FileName, prefabRef);
                     }
                 }
-                
+
                 obj.isStatic = true;
                 obj.name = model.FileName;
                 obj.transform.parent = modelContainer.transform;
@@ -338,9 +484,9 @@ namespace Assets.Scripts.MapEditor.Editor
                 var ry = Matrix4x4.Rotate(Quaternion.Euler(0, model.Rotation.y, 0));
 
                 var final = rz * rx * ry;
-                
+
                 var rotation = model.Rotation;
-                
+
                 obj.transform.rotation = final.rotation; //Quaternion.Euler(rotation);
 
                 //obj.ChangeStaticRecursive(true);
@@ -357,11 +503,11 @@ namespace Assets.Scripts.MapEditor.Editor
             var oldBox = GameObject.Find($"{world.MapName} resources");
             if (oldBox != null)
                 GameObject.DestroyImmediate(oldBox);
-            
+
             baseObject = new GameObject($"{world.MapName} resources");
             baseObject.transform.position = new Vector3(data.InitialSize.x, 0, data.InitialSize.y);
             baseObject.isStatic = true;
-            
+
             SetWorldLighting();
             LoadLights();
             LoadModels();

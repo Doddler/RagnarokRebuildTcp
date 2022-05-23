@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using UnityEditor.SceneManagement;
+#pragma warning disable CS0618
 
 // Enums for Baking Options
 public enum BakeOptions
@@ -115,7 +116,7 @@ public class BakeLightmaps : EditorWindow
         EditorWindow window = GetWindow(typeof(BakeLightmaps), false, "Bake Manager");
         window.autoRepaintOnSceneChange = true;
 
-  		Texture icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/BakeManager/Icon/BakeIcon.png");
+  		Texture icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/3rdParty/BakeManager/Icon/BakeIcon.png");
   		GUIContent titleContent = new GUIContent("Bake Manager", icon);
   		window.titleContent = titleContent;
     }
@@ -419,7 +420,9 @@ public class BakeLightmaps : EditorWindow
     // When lightmapping is done, update EditorGUI
     private void DoneLightmapping(string state)
     {
+#pragma warning disable CS0618
         Lightmapping.completed = null;
+#pragma warning restore CS0618
         sceneList.Clear();
         sceneIndex = 0;
 

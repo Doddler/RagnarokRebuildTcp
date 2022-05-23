@@ -77,8 +77,8 @@ public class Player : IEntityAutoReset
         if (GetData(PlayerStat.Status) == 0)
         {
             SetData(PlayerStat.Level, 1);
-            SetData(PlayerStat.Head, GameRandom.Next(0, 31));
-            SetData(PlayerStat.Gender, GameRandom.Next(0, 1));
+            SetData(PlayerStat.Head, GameRandom.NextInclusive(0, 31));
+            SetData(PlayerStat.Gender, GameRandom.NextInclusive(0, 1));
             SetData(PlayerStat.Status, 1);
         }
 
@@ -91,6 +91,15 @@ public class Player : IEntityAutoReset
     public void UpdateStats()
     {
         var level = GetData(PlayerStat.Level);
+
+        if (level > 99 || level < 1)
+        {
+            ServerLogger.LogWarning($"Woah! The player '{Name}' has a level of {level}, that's not normal. We'll lower the level down to the cap.");
+            level = Math.Clamp(level, 1, 99);
+            SetData(PlayerStat.Level, level);
+
+        }
+
         var aMotionTime = 1.1f - level * 0.006f;
         var spriteAttackTiming = 0.6f;
 
@@ -109,9 +118,9 @@ public class Player : IEntityAutoReset
         var atk1 = (int)(atk * 0.90f - 1);
         var atk2 = (int)(atk * 1.10f + 1);
 
-        var multiplier = 0.1f + level / 10f;
-        if (multiplier > 1f)
-            multiplier = 1f;
+        //var multiplier = 0.1f + level / 10f;
+        //if (multiplier > 1f)
+        //    multiplier = 1f;
 
         SetStat(CharacterStat.Attack, atk1);
         SetStat(CharacterStat.Attack2, atk2);
@@ -119,8 +128,9 @@ public class Player : IEntityAutoReset
         SetStat(CharacterStat.Vit, 3 + level * 1.5f);
         SetStat(CharacterStat.MaxHp, 50 + 100 * level);
 
-        var newMaxHp = (level * level * level) / 20 + 80 * level;
-        var updatedMaxHp = (int)(newMaxHp * multiplier) + 70;
+        //var newMaxHp = (level * level * level) / 20 + 80 * level;
+        var newMaxHp = (level * level * level) / 80 + 42 * level;
+        var updatedMaxHp = newMaxHp;// (int)(newMaxHp * multiplier) + 70;
 
         SetStat(CharacterStat.MaxHp, updatedMaxHp);
         if(GetStat(CharacterStat.Hp) <= 0)
@@ -134,10 +144,31 @@ public class Player : IEntityAutoReset
     public void LevelUp()
     {
         var level = GetData(PlayerStat.Level);
+
+        if (level + 1 > 99)
+            return; //hard lock levels above 99
+
         var aMotionTime = 1.1f - level * 0.006f;
         var spriteAttackTiming = 0.6f;
 
         level++;
+
+        SetData(PlayerStat.Level, level);
+        SetStat(CharacterStat.Level, level);
+
+        UpdateStats();
+
+        CombatEntity.FullRecovery(true, true);
+    }
+
+    public void JumpToLevel(int target)
+    {
+        var level = GetData(PlayerStat.Level);
+
+        if (target < 1 || target > 99)
+            return; //hard lock levels above 99
+        
+        level = target;
 
         SetData(PlayerStat.Level, level);
         SetStat(CharacterStat.Level, level);
@@ -393,7 +424,7 @@ public class Player : IEntityAutoReset
         }
         
         if (Character.Map?.Name == mapName)
-            Character.Map.TeleportEntity(ref Entity, Character, p, false, CharacterRemovalReason.OutOfSight);
+            Character.Map.TeleportEntity(ref Entity, Character, p, CharacterRemovalReason.OutOfSight);
         else
             World.Instance.MovePlayerMap(ref Entity, Character, map, p);
 

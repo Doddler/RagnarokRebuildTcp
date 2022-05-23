@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts.Utility;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Effects
 {
@@ -53,6 +54,8 @@ namespace Assets.Scripts.Effects
 
             transform.localScale = new Vector3(2f, 2f, 2f);
             
+
+
             prim.Parts[0] = new EffectPart()
             {
                 Active = true,
@@ -95,7 +98,7 @@ namespace Assets.Scripts.Effects
                 Step = 0,
                 CoverAngle = 360,
                 MaxHeight = 250,
-                Angle = 0,
+                Angle = Random.Range(0f, 360f),
                 Alpha = 70,
                 Distance = 4f, //4f,
                 RiseAngle = 89

@@ -23,3 +23,4 @@
 21,Angelus,true,angelus,,1,
 22,PortalEffect,false,,,0,Assets/Prefabs/PortalEffect.prefab
 23,Smoke,false,,,0,Assets/Effects/Smoke/SmokeEmitter.prefab
+24,bubble,true,bubble,,0,

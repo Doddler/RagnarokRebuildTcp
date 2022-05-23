@@ -58,3 +58,6 @@ RoRebuildServer/RoRebuildServer/RoCharacterDatabase.db-shm
 RoRebuildServer/RoRebuildServer/RoCharacterDatabase.db-wal
 RebuildClient/UserSettings/
 RoRebuildServer/RoRebuildServer/Logs/
+RoRebuildServer/RoRebuildServer/Cache/
+RebuildClient/Assets/Scenes/MainScene/
+RebuildClient/Assets/Scenes/LightmapTestScene/

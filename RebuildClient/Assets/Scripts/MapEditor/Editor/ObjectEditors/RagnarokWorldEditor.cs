@@ -15,14 +15,17 @@ namespace Assets.Scripts.MapEditor.Editor.ObjectEditors
             {
                 var world = (RagnarokWorld)target;
                 
-                var path = AssetDatabase.GetAssetPath(world);
+                var path = AssetDatabase.GetAssetPath(world).Replace("\\", "/");
                 var basePath = Path.GetDirectoryName(path);
-                var parentPath = Directory.GetParent(basePath).ToString();
+                var parentPath = string.Join("/", path.Split('/')[..^2]);
 
                 var mapDataPath = Path.Combine(parentPath, world.MapName + ".asset").Replace("\\", "/");
 
+                Debug.Log(path);
+                Debug.Log(basePath);
+                Debug.Log(parentPath);
                 Debug.Log(mapDataPath);
-
+                
                 var mapData = AssetDatabase.LoadAssetAtPath<RoMapData>(mapDataPath);
 
                 Debug.Log(mapData);

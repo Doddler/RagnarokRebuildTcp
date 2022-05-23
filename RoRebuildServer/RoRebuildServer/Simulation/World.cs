@@ -1,5 +1,6 @@
 ﻿using System.Threading.Channels;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.VisualBasic;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -185,7 +186,7 @@ public class World
         ch.ClassId = 0; // GameRandom.Next(0, 6);
         ch.MoveSpeed = 0.15f;
         ch.Type = CharacterType.Player;
-        ch.FacingDirection = (Direction)GameRandom.Next(0, 7);
+        ch.FacingDirection = (Direction)GameRandom.NextInclusive(0, 7);
         ch.Init(ref e);
 
         ce.Init(ref e, ch);
@@ -204,7 +205,12 @@ public class World
             var data = connection.LoadCharacterRequest.Data;
 
             if (data != null)
-                Buffer.BlockCopy(data, 0, player.CharData, 0, data.Length);
+            {
+                if(data.Length == player.CharData.Length * 4)
+                    Buffer.BlockCopy(data, 0, player.CharData, 0, data.Length);
+                else
+                    ServerLogger.LogWarning($"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
+            }
 
             player.ApplyDataToCharacter();
         }
@@ -265,7 +271,7 @@ public class World
         ch.Position = p;
         ch.MoveSpeed = monsterDef.MoveSpeed;
         ch.Type = CharacterType.Monster;
-        ch.FacingDirection = (Direction)GameRandom.Next(0, 7);
+        ch.FacingDirection = (Direction)GameRandom.NextInclusive(0, 7);
         ch.Init(ref e);
 
         ce.Entity = e;
@@ -321,7 +327,7 @@ public class World
 
         ce.Init(ref e, ch);
         monster.Initialize(ref e, ch, ce, monster.MonsterBase, monster.MonsterBase.AiType, spawnEntry, map.Name);
-
+        
         map.AddEntity(ref e, false);
 
         return true;

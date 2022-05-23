@@ -282,8 +282,26 @@ namespace Assets.Editor
 			if (currentEditor.CursorVisible)
 			{
 				var cell = currentData.Cell(currentEditor.HoveredTile);
-				EditorStyles.label.wordWrap = true;
-				EditorGUILayout.LabelField($"Hover Tile: {currentEditor.HoveredTile}\n{cell.ToString().Replace("|", "\n")}");
+
+                var uvMin = new Vector2(1f, 1f);
+                var uvMax = new Vector2(0f, 0f);
+
+                if (cell.Top != null)
+                {
+                    for (var j = 0; j < 4; j++)
+                    {
+                        uvMin = Vector2.Min(uvMin, cell.Top.UVs[j]);
+                        uvMax = Vector2.Max(uvMax, cell.Top.UVs[j]);
+                    }
+                }
+
+
+                EditorStyles.label.wordWrap = true;
+				EditorGUILayout.LabelField($"Hover Tile: {currentEditor.HoveredTile}\n{cell.ToString().Replace("|", "\n")}\n{uvMin} {uvMax}");
+
+
+                //if (Event.current.isKey && Event.current.shift && Event.current.keyCode == KeyCode.C)
+                //    Debug.Log("HI");
 			}
 		}
 

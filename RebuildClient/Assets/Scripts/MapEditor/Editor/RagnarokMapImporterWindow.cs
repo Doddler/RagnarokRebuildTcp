@@ -409,6 +409,13 @@ namespace Assets.Scripts.MapEditor.Editor
 			AssetDatabase.SaveAssets();
 		}
 
+        [MenuItem("Ragnarok/Import THE Map")]
+        static void ImportFiles2()
+		{
+            ImportMap(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "pay_dun00.gnd"));
+
+		}
+
 
 		[MenuItem("Ragnarok/Import Maps")]
 		static void ImportFiles()

@@ -14,24 +14,25 @@ public class PacketAdminLevelUp : IClientPacketHandler
             || !connection.Entity.IsAlive() || connection.Character.State == CharacterState.Dead)
             return;
 
-        var lvTarget = (int)msg.ReadByte();
+        var lvTarget = (int)msg.ReadSByte();
         var character = connection.Character;
             
         var level = character.CombatEntity.GetStat(CharacterStat.Level);
-
-        if (level >= 99)
-            return;
-
+        
         if (lvTarget == 0)
-            lvTarget = level + 1;
+            lvTarget = 1;
+
+        var newLevel = Math.Clamp(level + lvTarget, 1, 99);
+
+        character.Player.JumpToLevel(newLevel);
 
         for (var i = level; i < lvTarget; i++)
         {
             character.Player.LevelUp();
         }
-
+        
         character.Map.GatherPlayersForMultiCast(ref character.Entity, character);
-        CommandBuilder.LevelUp(character, lvTarget);
+        CommandBuilder.LevelUp(character, newLevel);
         CommandBuilder.SendHealMulti(character, 0, HealType.None);
         CommandBuilder.ClearRecipients();
     }

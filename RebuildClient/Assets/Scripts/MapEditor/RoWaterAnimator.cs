@@ -29,7 +29,7 @@ namespace Assets.Scripts.MapEditor
             if(Water.AnimSpeed > 0)
                 fullFrameTime = Water.AnimSpeed / 60f;
 
-            Material.SetFloat("_WaveHeight", Water.WaveHeight);
+            Material.SetFloat("_WaveHeight", Water.WaveHeight / 5f);
             Material.SetFloat("_WaveSpeed", Water.WaveSpeed);
             Material.SetFloat("_WavePitch", Water.WavePitch);
 

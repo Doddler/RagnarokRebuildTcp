@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEditor;
+#pragma warning disable CS0618 //it's not my file, I don't really care lol
 
 [Serializable]
 [CreateAssetMenu]

@@ -19,7 +19,7 @@ namespace Assets.Scripts.MapEditor.Editor
 		private Texture2D atlas;
 		private Rect[] atlasRects;
 
-		private int textureIndex = 0;
+		//private int textureIndex = 0;
 
 		private string savePath;
 		private string baseName;

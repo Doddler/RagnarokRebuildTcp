@@ -187,7 +187,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads an unsigned 16 bit integer
 		/// </summary>
-		[CLSCompliant(false)]
+		
 #if UNSAFE
 		public static unsafe ushort ReadUInt16(byte[] fromBuffer, int numberOfBits, int readBitOffset)
 		{
@@ -233,7 +233,6 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads the specified number of bits into an UInt32
 		/// </summary>
-		[CLSCompliant(false)]
 #if UNSAFE
 		public static unsafe uint ReadUInt32(byte[] fromBuffer, int numberOfBits, int readBitOffset)
 		{
@@ -296,13 +295,13 @@ namespace Lidgren.Network
 #endif
 		}
 
-		//[CLSCompliant(false)]
+		////[CLSCompliant(false)]
 		//public static ulong ReadUInt64(byte[] fromBuffer, int numberOfBits, int readBitOffset)
 
 		/// <summary>
 		/// Writes an unsigned 16 bit integer
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public static void WriteUInt16(ushort source, int numberOfBits, byte[] destination, int destinationBitOffset)
 		{
 			if (numberOfBits == 0)
@@ -331,7 +330,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Writes the specified number of bits into a byte array
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public static int WriteUInt32(uint source, int numberOfBits, byte[] destination, int destinationBitOffset)
 		{
 #if BIGENDIAN
@@ -377,7 +376,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Writes the specified number of bits into a byte array
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public static int WriteUInt64(ulong source, int numberOfBits, byte[] destination, int destinationBitOffset)
 		{
 #if BIGENDIAN
@@ -475,7 +474,7 @@ namespace Lidgren.Network
 		/// Write Base128 encoded variable sized unsigned integer
 		/// </summary>
 		/// <returns>number of bytes written</returns>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public static int WriteVariableUInt32(byte[] intoBuffer, int offset, uint value)
 		{
 			int retval = 0;
@@ -493,7 +492,7 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Reads a UInt32 written using WriteUnsignedVarInt(); will increment offset!
 		/// </summary>
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		public static uint ReadVariableUInt32(byte[] buffer, ref int offset)
 		{
 			int num1 = 0;
