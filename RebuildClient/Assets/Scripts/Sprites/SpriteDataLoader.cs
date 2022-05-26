@@ -220,6 +220,7 @@ namespace Assets.Scripts.Sprites
 			control.CharacterType = CharacterType.Player;
 			control.SpriteMode = ClientSpriteType.Sprite;
 			control.IsAlly = true;
+            control.IsMainCharacter = param.IsMainCharacter;
 			control.IsMale = param.IsMale;
             control.Level = param.Level;
 

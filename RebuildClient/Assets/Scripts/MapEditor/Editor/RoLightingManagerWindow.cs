@@ -81,7 +81,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 Debug.Log($"Could not reload resources: could not find world data at path {path}");
                 return;
             }
-            
+
             var builder = new RagnarokWorldSceneBuilder();
             builder.Load(map.MapData, world);
         }
@@ -186,7 +186,7 @@ namespace Assets.Scripts.MapEditor.Editor
                     continue;
 
                 Debug.Log(f);
-                
+
                 var import = (TextureImporter)TextureImporter.GetAtPath(f);
                 import.isReadable = true;
                 import.textureCompression = TextureImporterCompression.Uncompressed;
@@ -232,7 +232,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 Lightmapping.lightingSettings.indirectSampleCount = NoLightSamples;
                 Lightmapping.lightingSettings.environmentSampleCount = NoLightSamples;
             }
-            
+
             Lightmapping.bakeCompleted -= PostAmbient;
             Lightmapping.bakeCompleted -= BakePost;
             Lightmapping.bakeCompleted += BakePost;
@@ -246,7 +246,7 @@ namespace Assets.Scripts.MapEditor.Editor
         private void BakePost()
         {
             IsBaking = false;
-            
+
             if (HasAmbient)
             {
                 if (!TryFindMapEditor(out var map))
@@ -291,10 +291,10 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 var settings = map.gameObject.GetComponent<RoMapRenderSettings>();
                 settings.AmbientOcclusionStrength = 0.5f;
-                                                     
+
                 ambientTextures = null;
             }
-            
+
             SetLightSettings();
 
             EditorSceneManager.MarkAllScenesDirty();
@@ -310,8 +310,10 @@ namespace Assets.Scripts.MapEditor.Editor
 
         private IEnumerator MakeMinimaps()
         {
-            yield return new EditorWaitForSeconds(1f);
+            //yield return new EditorWaitForSeconds(1f);
 
+
+            var mapList = new List<string>();
 
             foreach (var s in Scenes)
             {
@@ -363,7 +365,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 tool.TakeScreenshotCoroutine();
 
                 var walk = editor.MapData.WalkData;
-                
+
                 var m = new MeshBuilder();
 
 
@@ -375,6 +377,9 @@ namespace Assets.Scripts.MapEditor.Editor
                 {
                     new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 0), new Vector2(1, 1)
                 };
+
+                var c = new Color(170f / 255f, 170f / 255f, 170f / 255f, 1f);
+                var colors = new Color[4] { c, c, c, c };
 
                 var count = 0;
                 var gos = new List<GameObject>();
@@ -389,56 +394,103 @@ namespace Assets.Scripts.MapEditor.Editor
 
                         var tVerts = sharedData.GetTileVertices(new Vector2Int(x, y), Vector3.zero);
                         var tNormals = sharedData.GetTileNormals(new Vector2Int(x, y));// topNormals[x1 + y1 * ChunkBounds.width];
-                        var tColors = sharedData.GetTileColors(new Vector2Int(x, y));
+                        //var tColors = sharedData.GetTileColors(new Vector2Int(x, y));
 
 
                         m.StartTriangle();
 
                         m.AddVertices(tVerts);
                         m.AddUVs(uvs);
-                        m.AddColors(tColors);
+                        m.AddColors(colors);
                         m.AddNormals(tNormals);
                         m.AddTriangles(new[] { 0, 1, 3, 3, 2, 0 });
 
                         count++;
                         if (count > 8000)
                         {
-                            gos.Add(BuildMeshIntoObject(m));
+                            gos.Add(BuildMeshIntoObject(m, c));
                             count = 0;
                         }
                     }
                 }
 
-                gos.Add(BuildMeshIntoObject(m));
+                gos.Add(BuildMeshIntoObject(m, c));
 
-                cam.backgroundColor = new Color(0f, 0f, 0f, 1f);
+                cam.backgroundColor = new Color(66f / 255f, 66f / 255f, 66f / 255f, 1f);
                 cam.cullingMask = 1 << LayerMask.NameToLayer("Editor");
 
                 tool.FileName = editor.MapData.name + "_walkmask";
                 tool.TakeScreenshotCoroutine();
 
+                mapList.Add(editor.MapData.name);
 
                 DestroyImmediate(go);
 
                 foreach (var g in gos)
                     DestroyImmediate(g);
 
+                if (dirLight != null)
+                    dirLight.shadowStrength = 1f; //oldStr;
+
                 EditorSceneManager.MarkAllScenesDirty();
                 EditorSceneManager.SaveOpenScenes();
 
                 //Debug.Log(path);
             }
+
+            AssetDatabase.Refresh();
+
+            //foreach (var path in Directory.GetFiles($"Assets/Maps/minimap/", "*.png"))
+            foreach(var mapName in mapList)
+            {
+                var path = $"Assets/Maps/minimap/{mapName}.png";
+                var path2 = $"Assets/Maps/minimap/{mapName}_walkmask.png";
+
+                var tImporter = AssetImporter.GetAtPath(path) as TextureImporter;
+                if (tImporter != null)
+                {
+                    var tmp = new TextureImporterSettings();
+                    tImporter.ReadTextureSettings(tmp);
+
+                    tImporter.crunchedCompression = true;
+                    tImporter.textureType = TextureImporterType.Sprite;
+                    tImporter.alphaSource = TextureImporterAlphaSource.None;
+                    tmp.spriteMeshType = SpriteMeshType.FullRect;
+                    tmp.textureType = TextureImporterType.Sprite;
+                    tImporter.SetTextureSettings(tmp);
+                    AssetDatabase.ImportAsset(path);
+                }
+
+                tImporter = AssetImporter.GetAtPath(path2) as TextureImporter;
+                if (tImporter != null)
+                {
+
+                    var tmp = new TextureImporterSettings();
+                    tImporter.ReadTextureSettings(tmp);
+
+                    tImporter.crunchedCompression = true;
+                    tImporter.textureType = TextureImporterType.Sprite;
+                    tImporter.alphaSource = TextureImporterAlphaSource.None;
+                    tmp.spriteMeshType = SpriteMeshType.FullRect;
+                    tmp.textureType = TextureImporterType.Sprite;
+                    tImporter.SetTextureSettings(tmp);
+                    AssetDatabase.ImportAsset(path);
+                }
+            }
+
+            AssetDatabase.Refresh();
         }
 
-        private GameObject BuildMeshIntoObject(MeshBuilder m)
+        private GameObject BuildMeshIntoObject(MeshBuilder m, Color c)
         {
 
             var go2 = new GameObject("MapBlackout");
             var mf = go2.AddComponent<MeshFilter>();
             var mr = go2.AddComponent<MeshRenderer>();
-            var mat = new Material(Shader.Find("Unlit/Texture"));
+            var mat = new Material(Shader.Find("Unlit/Color"));
             go2.layer = LayerMask.NameToLayer("Editor");
             mr.material = mat;
+            mat.color = c;
 
             mf.mesh = m.Build();
             m.Clear();
@@ -448,7 +500,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
         public void OnDestroy()
         {
-            if(minimapCoroutine != null)
+            if (minimapCoroutine != null)
                 EditorCoroutineUtility.StopCoroutine(minimapCoroutine);
         }
 
@@ -532,7 +584,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 
             ResetMapResources = GUILayout.Toggle(ResetMapResources, "Reset Map Resources on Batch Bake");
-            
+
             EditorGUILayout.BeginHorizontal();
 
             if (!IsBaking && Scenes.Length > 0)
@@ -546,8 +598,10 @@ namespace Assets.Scripts.MapEditor.Editor
                 }
                 if (GUILayout.Button("Make Minimaps"))
                 {
-                    if (minimapCoroutine == null)
-                        minimapCoroutine = EditorCoroutineUtility.StartCoroutine(MakeMinimaps(), this);
+                    if (minimapCoroutine != null)
+                        EditorCoroutineUtility.StopCoroutine(minimapCoroutine);
+
+                    minimapCoroutine = EditorCoroutineUtility.StartCoroutine(MakeMinimaps(), this);
                 }
             }
 

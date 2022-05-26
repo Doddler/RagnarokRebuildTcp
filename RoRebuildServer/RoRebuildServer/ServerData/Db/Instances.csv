@@ -1,10 +1,11 @@
 ﻿Name,IsWorldInstance,Maps
-Towns,true,prontera,prt_in,prt_church,prt_castle,morocc,morocc_in,moc_castle,moc_ruins,geffen,geffen_in,gef_tower,izlude,izlude_in,alberta,alberta_in,payon,payon_in01,payon_in02,payon_in03,pay_arche,aldebaran,aldeba_in
+Towns,true,prontera,prt_in,prt_church,prt_castle,morocc,morocc_in,moc_castle,moc_ruins,geffen,geffen_in,gef_tower,izlude,izlude_in,alberta,alberta_in,payon,payon_in01,payon_in02,payon_in03,pay_arche,aldebaran,aldeba_in,yuno,yuno_in01,yuno_in02,yuno_in03,yuno_in04,yuno_in05
 Prontera Fields,true,prt_fild00,prt_fild01,prt_fild02,prt_fild03,prt_fild04,prt_fild05,prt_fild06,prt_fild07,prt_fild08,prt_fild09,prt_fild10,prt_fild11,prt_monk
 Geffen Fields,true,gef_fild00,gef_fild01,gef_fild02,gef_fild03,gef_fild04,gef_fild05,gef_fild06,gef_fild07,gef_fild08,gef_fild09,gef_fild10,gef_fild11,gef_fild12,gef_fild13,gef_fild14
 Payon Fields,true,pay_fild01,pay_fild02,pay_fild03,pay_fild04,pay_fild05,pay_fild06,pay_fild07,pay_fild08,pay_fild09,pay_fild10,pay_fild11
 Morroc Fields,true,moc_fild01,moc_fild02,moc_fild03,moc_fild04,moc_fild05,moc_fild06,moc_fild07,moc_fild08,moc_fild09,moc_fild10,moc_fild11,moc_fild12,moc_fild13,moc_fild14,moc_fild15,moc_fild16,moc_fild17,moc_fild18,moc_fild19,in_moc_16
 Mt. Mjolnir,true,mjolnir_01,mjolnir_02,mjolnir_03,mjolnir_04,mjolnir_05,mjolnir_06,mjolnir_07,mjolnir_08,mjolnir_09,mjolnir_10,mjolnir_11,mjolnir_12
+Yuno Fields,true,yuno_fild01,yuno_fild02,yuno_fild03,yuno_fild04,yuno_fild05,yuno_fild06,yuno_fild07,yuno_fild08,yuno_fild09,yuno_fild10,yuno_fild11,yuno_fild12
 Glast Heim,true,glast_01,gl_cas01,gl_cas02,gl_church,gl_chyard,gl_dun01,gl_dun02,gl_in01,gl_knt01,gl_knt02,gl_prison,gl_prison1,gl_sew01,gl_sew02,gl_sew03,gl_sew04,gl_step
 Pyramid,true,moc_pryd01,moc_pryd02,moc_pryd03,moc_pryd04,moc_prydb1,moc_pryd05,moc_pryd06
 Sphinx,true,in_sphinx1,in_sphinx2,in_sphinx3,in_sphinx4,in_sphinx5
@@ -19,4 +20,5 @@ Izlude Bailan Cave,true,izlu2dun,iz_dun00,iz_dun01,iz_dun02,iz_dun03,iz_dun04
 Mjolnir Dead Pit,true,mjo_dun01,mjo_dun02,mjo_dun03
 Prontera Culverts,true,prt_sewb1,prt_sewb2,prt_sewb3,prt_sewb4
 Sunken Ship,true,alb2trea,treasure01,treasure02
+Turtle Island,true,tur_dun01,tur_dun02,tur_dun03,tur_dun04
 Debug Room,true,2009rwc_03,guild_vs4,juperos_01

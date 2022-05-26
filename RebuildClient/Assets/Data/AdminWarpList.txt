@@ -2,11 +2,13 @@
 	Home (Prontera Field 8), prt_fild08, 170, 367
 Towns
 	Prontera, prontera, 118, 83
+	Payon, payon
 	Morroc, morocc, 159, 273
 	Geffen, geffen, 120, 62
 	Izlude, izlude, 128, 96
 	Alberta, alberta, 31, 240
 	Aldebaran, aldebaran, 118, 104
+	Yuno, yuno
 Prontera Field
 	0, prt_fild00
 	1, prt_fild01
@@ -58,7 +60,6 @@ Morroc Field
 	18, moc_fild18
 	19, moc_fild19
 Payon Field
-	0, pay_fild00
 	1, pay_fild01
 	2, pay_fild02
 	3, pay_fild03
@@ -83,6 +84,19 @@ Mt. Mjolnir
 	10, mjolnir_10
 	11, mjolnir_11
 	12, mjolnir_12
+Yuno Field
+	1, yuno_fild01
+	2, yuno_fild02
+	3, yuno_fild03
+	4, yuno_fild04
+	5, yuno_fild05
+	6, yuno_fild06
+	7, yuno_fild07
+	8, yuno_fild08
+	9, yuno_fild09
+	10, yuno_fild10
+	11, yuno_fild11
+	12, yuno_fild12
 Geffen Tower
 	1F, gef_dun00
 	2F, gef_dun01
@@ -164,6 +178,11 @@ Glast Heim
 	3,gl_sew03
 	4,gl_sew04
 	Staircase,gl_step
+Turtle Island
+	1,tur_dun01
+	2,tur_dun02
+	3,tur_dun03
+	4,tur_dun04
 Debug
 	Test Room 1,2009rwc_03
 	Test Room 2,guild_vs4

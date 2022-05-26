@@ -15,7 +15,6 @@ using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.Editor
 {
-
     public static class EffectStrImporter
     {
         [MenuItem("Ragnarok/Load Effects")]

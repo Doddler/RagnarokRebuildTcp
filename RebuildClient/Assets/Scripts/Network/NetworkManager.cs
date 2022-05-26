@@ -280,6 +280,7 @@ namespace Assets.Scripts.Network
                     Level = lvl,
                     MaxHp = maxHp,
                     Hp = hp,
+                    IsMainCharacter = isMain,
                 };
 
                 if (id == PlayerId)

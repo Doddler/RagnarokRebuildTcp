@@ -31,6 +31,24 @@ public static class Directions
         return Direction.South;
     }
 
+    public static float GetAngleForDirection(Direction d)
+    {
+        switch (d)
+        {
+            case Direction.North: return 0f;
+            case Direction.NorthEast: return 45f;
+            case Direction.East: return 90f;
+            case Direction.SouthEast: return 135f;
+            case Direction.South: return 180f;
+            case Direction.SouthWest: return 225f;
+            case Direction.West: return 270f;
+            case Direction.NorthWest: return 315f;
+            
+        }
+
+        return 0f;
+    }
+
     public static Direction GetIntercardinalDirection(this Direction d)
     {
         switch (d)

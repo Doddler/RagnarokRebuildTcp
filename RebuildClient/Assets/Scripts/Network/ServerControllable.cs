@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace Assets.Scripts.Network
 		public float ShadowSize;
 		public bool IsAlly;
 		public bool IsMale;
+        public bool IsMainCharacter;
         public bool IsInteractable;
         public int Level;
         public string Name;
@@ -413,7 +415,18 @@ namespace Assets.Scripts.Network
             if (SpriteMode == ClientSpriteType.Prefab)
 				return;
 
-			hitDelay -= Time.deltaTime;
+            if (IsMainCharacter)
+            {
+                var mc = MinimapController.Instance;
+				if(mc == null || SpriteAnimator == null)
+					return;
+
+				//Debug.Log(transform.position);
+                MinimapController.Instance.SetPlayerPosition(new Vector2Int((int)transform.position.x, (int)transform.position.z),
+                    Directions.GetAngleForDirection(SpriteAnimator.Direction) + 180f);
+            }
+
+            hitDelay -= Time.deltaTime;
 			if (hitDelay >= 0f)
 				return;
 

@@ -1815,6 +1815,1911 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
+  - m_GUID: 4d9445aa1ea26394a952b85823245adb
+    m_Address: Assets/Sprites/Monsters/anolian.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 12de3d294889df445ba346199ed165a6
+    m_Address: Assets/Maps/minimap/2009rwc_03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8c4fc694aabf3364ca28343a469a60ef
+    m_Address: Assets/Maps/minimap/2009rwc_03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: fcb0680ed5bcc32479dae5623962fecc
+    m_Address: Assets/Maps/minimap/alb2trea.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7e58c85cf8d0cb240a792e2468fc6577
+    m_Address: Assets/Maps/minimap/alb2trea_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 3c96e17350c4b6449be5d6d9ff6da538
+    m_Address: Assets/Maps/minimap/alberta.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ebd4a608a96389a43b767747e4b3788e
+    m_Address: Assets/Maps/minimap/alberta_in.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 56678cbc5ab2a9847bcc1839aef68fbc
+    m_Address: Assets/Maps/minimap/alberta_in_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ffcfe2c4dec5f4244b98f65500679e72
+    m_Address: Assets/Maps/minimap/alberta_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: cb16f9a50c1caa84f928c4b3f39b3fc1
+    m_Address: Assets/Maps/minimap/alde_dun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d2437c0ed359ea643a3ac01f4a4e25ce
+    m_Address: Assets/Maps/minimap/alde_dun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 70d1f7defc8c5994c92794bbacfba3f3
+    m_Address: Assets/Maps/minimap/alde_dun02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 6eaf64355358db148981aa990652dc65
+    m_Address: Assets/Maps/minimap/alde_dun02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1afef192a2bf24940b0738f1e8a45be0
+    m_Address: Assets/Maps/minimap/alde_dun03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0284f46d9b756d8428e7325c2c6e2e4a
+    m_Address: Assets/Maps/minimap/alde_dun03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 28da7861b80c87e48aa1ad3809a54376
+    m_Address: Assets/Maps/minimap/alde_dun04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 4754d42179635074fb9222ac5660b112
+    m_Address: Assets/Maps/minimap/alde_dun04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 41ef376960fea864792a95f9224e4e0f
+    m_Address: Assets/Maps/minimap/aldeba_in.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d826ba76e0d951945af03c9fd9a73360
+    m_Address: Assets/Maps/minimap/aldeba_in_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c175dfb334ec3374b9b095bb413a3d6b
+    m_Address: Assets/Maps/minimap/aldebaran.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e4583ee8056ef4441a80ef5abf84ef34
+    m_Address: Assets/Maps/minimap/aldebaran_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1435ac613d186fb4f817ff33015a17ca
+    m_Address: Assets/Maps/minimap/anthell01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7f277ce0ad8649946b6839d82fc03623
+    m_Address: Assets/Maps/minimap/anthell01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8b55114b490e3a94ba1def586b6cb2ec
+    m_Address: Assets/Maps/minimap/anthell02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d47e4e1547ce9bb489a786a9f8d1d1ea
+    m_Address: Assets/Maps/minimap/anthell02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2f2f153713ff8fd4e80b803b6d609206
+    m_Address: Assets/Maps/minimap/c_tower1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bb9debd55b7859541927d4dcbe44b861
+    m_Address: Assets/Maps/minimap/c_tower1_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5d4e42c40ed075c4ba5dfe108149b524
+    m_Address: Assets/Maps/minimap/c_tower2.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7eab3ac82ebb3174087b9eae9eebbbc0
+    m_Address: Assets/Maps/minimap/c_tower2_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bad36d9156e3188408190b06e1ad225e
+    m_Address: Assets/Maps/minimap/c_tower3.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8eabf9b5e1ce13f47b930957dbd5fe4b
+    m_Address: Assets/Maps/minimap/c_tower3_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 32382ed998093084da885161a07a42ab
+    m_Address: Assets/Maps/minimap/c_tower4.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b22e2e91f9c93e74fbac49b48467803a
+    m_Address: Assets/Maps/minimap/c_tower4_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: dd6048e638e6aef4591a68927a2c10ce
+    m_Address: Assets/Maps/minimap/gef_dun00.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7479ddac82fda174db1f040a9c0b1c58
+    m_Address: Assets/Maps/minimap/gef_dun00_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5fb27c2810103014e930000fcb653016
+    m_Address: Assets/Maps/minimap/gef_dun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 080cb00cc246d9045b00af5214c46229
+    m_Address: Assets/Maps/minimap/gef_dun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 623921abd4c9d714a83673fb22326c29
+    m_Address: Assets/Maps/minimap/gef_dun02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8cf0d96dd3c2a7047b909fa02e656867
+    m_Address: Assets/Maps/minimap/gef_dun02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bb94c38c270cb9249ad57fd6237a1c7d
+    m_Address: Assets/Maps/minimap/gef_fild00.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1e3321819c029124db24d0df88418e87
+    m_Address: Assets/Maps/minimap/gef_fild00_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ce0973b024ad99548b881f4b3b0fc704
+    m_Address: Assets/Maps/minimap/gef_fild01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 56b957c073f430441873c1a2fba78362
+    m_Address: Assets/Maps/minimap/gef_fild01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ffdc6b4d50e259e4ab136f553a4745f8
+    m_Address: Assets/Maps/minimap/gef_fild02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 4fe20e71317dc1947ba626501fa4e507
+    m_Address: Assets/Maps/minimap/gef_fild02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2791ce3559548fd40ac03b0de83a84a4
+    m_Address: Assets/Maps/minimap/gef_fild03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 25ff0f0e581143e4b991db2bb4218ffe
+    m_Address: Assets/Maps/minimap/gef_fild03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: effdc16b58b58ef40b0cabda9ca17c61
+    m_Address: Assets/Maps/minimap/gef_fild04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5352de5a13d16c84f9ba2697deea93a8
+    m_Address: Assets/Maps/minimap/gef_fild04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 08b672ba9c9c0af4a957ef8b5ab4d491
+    m_Address: Assets/Maps/minimap/gef_fild05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0252d42527c0ef34fb5f9d919842803a
+    m_Address: Assets/Maps/minimap/gef_fild05_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bb680f8a25f9c844892a91f04ba14a52
+    m_Address: Assets/Maps/minimap/gef_fild06.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e1d68e9888fb108428b3675045191b8e
+    m_Address: Assets/Maps/minimap/gef_fild06_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 024b9667bb0261546b4dbb03b6e7b5ac
+    m_Address: Assets/Maps/minimap/gef_fild07.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d7cde7a250b025f449a013966128d65c
+    m_Address: Assets/Maps/minimap/gef_fild07_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0efa9d143f6f4a34784458c7170c1164
+    m_Address: Assets/Maps/minimap/gef_fild08.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 43e3f7b51a8721b4fb0c864bb20a4d92
+    m_Address: Assets/Maps/minimap/gef_fild08_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c6c0e0b77868ac34eb86a9f593b2e6c0
+    m_Address: Assets/Maps/minimap/gef_fild09.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 781c6c09960811249b93922924846efa
+    m_Address: Assets/Maps/minimap/gef_fild09_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 05bbaf0b27eb8f54b9beba9476cf77b8
+    m_Address: Assets/Maps/minimap/gef_fild10.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 460c4f5c885bb3c499647749e49d65a9
+    m_Address: Assets/Maps/minimap/gef_fild10_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d7a5a7cd95b36b94795abc3d87846131
+    m_Address: Assets/Maps/minimap/gef_fild11.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 78357424a27b52b4c90bd0ac222ef86e
+    m_Address: Assets/Maps/minimap/gef_fild11_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e1945e9564bc5e5438c1b9e6d7665789
+    m_Address: Assets/Maps/minimap/gef_fild12.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9bf7cb263e9b4134aa6e6f8eb5bd05f9
+    m_Address: Assets/Maps/minimap/gef_fild12_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b29c74b54edf378408480c100670accd
+    m_Address: Assets/Maps/minimap/gef_fild13.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9d61ad081050ea44782c6d60519b727a
+    m_Address: Assets/Maps/minimap/gef_fild13_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a4acc7627a814ca46963729635e4fb0c
+    m_Address: Assets/Maps/minimap/gef_fild14.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b4dce118a587dbf40859e9360c7122ca
+    m_Address: Assets/Maps/minimap/gef_fild14_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 16977f89f44736a42875c63f5607c379
+    m_Address: Assets/Maps/minimap/gef_tower.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 52e117d4b2ee39f48ba570077d00d17a
+    m_Address: Assets/Maps/minimap/gef_tower_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9d117ba5a868aca4a9e2cf82354eebce
+    m_Address: Assets/Maps/minimap/geffen.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 211ae5833ac7f5941a5c3af4de7466ca
+    m_Address: Assets/Maps/minimap/geffen_in.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d2e19e73e2c68e04aa4aa11be1274a80
+    m_Address: Assets/Maps/minimap/geffen_in_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 549d20bd9054b6f429ce85e935eddaba
+    m_Address: Assets/Maps/minimap/geffen_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 860d78a0d2b3a9745acec6379bd3218e
+    m_Address: Assets/Maps/minimap/gl_cas01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a7ee861cf48f41046875299b9da96462
+    m_Address: Assets/Maps/minimap/gl_cas01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 4767f5d37e3da3342abf2a1f533c01fa
+    m_Address: Assets/Maps/minimap/gl_cas02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5e357e7832ae7434890f457950d6b672
+    m_Address: Assets/Maps/minimap/gl_cas02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e8a3b9f7d711d644a8ca064c27365f9d
+    m_Address: Assets/Maps/minimap/gl_church.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 471f23fae9e2e5846bb348092238620f
+    m_Address: Assets/Maps/minimap/gl_church_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7efbb06be7d4de94f9bf2ac3c8afbe80
+    m_Address: Assets/Maps/minimap/gl_chyard.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 6e340b37a7df475418e9f44cb6751f68
+    m_Address: Assets/Maps/minimap/gl_chyard_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 79856054f4b25c440999db6b5414e21c
+    m_Address: Assets/Maps/minimap/gl_dun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9bd7c992efb14674393ce0abcfe3b3e8
+    m_Address: Assets/Maps/minimap/gl_dun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 45f5f5eb6c45e5c409ccabbad83fc673
+    m_Address: Assets/Maps/minimap/gl_dun02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 59728e106298eb4428efa0a08466505c
+    m_Address: Assets/Maps/minimap/gl_dun02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e2f4fa4f6689a7a4382a033d836a0441
+    m_Address: Assets/Maps/minimap/gl_in01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1582d1b90484f4d439dd185a80249b19
+    m_Address: Assets/Maps/minimap/gl_in01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a342f2a487fcf01458ad3951af470ae0
+    m_Address: Assets/Maps/minimap/gl_knt01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 10a991997ffd5544eb96735bdbcb785f
+    m_Address: Assets/Maps/minimap/gl_knt01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c131526487cdbfb4ca7b9b24b7104be5
+    m_Address: Assets/Maps/minimap/gl_knt02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0ae7e72fb832ee245b2da47c80d41d79
+    m_Address: Assets/Maps/minimap/gl_knt02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f23c75dd1035e8341bd8b798df963e87
+    m_Address: Assets/Maps/minimap/gl_prison.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ff8ab55af547def499e238a5f30c8e12
+    m_Address: Assets/Maps/minimap/gl_prison1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 6f8978d733a64214fbb772bdf4bf39c1
+    m_Address: Assets/Maps/minimap/gl_prison1_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 53994c69b00e78248b98668f3b6fe5aa
+    m_Address: Assets/Maps/minimap/gl_prison_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 880d0507f0d340c42aab1871bc450f44
+    m_Address: Assets/Maps/minimap/gl_sew01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b1585d60a4618564dbf7f4d40732f2d2
+    m_Address: Assets/Maps/minimap/gl_sew01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e0d482fc7e6bc814187dd9fb23d66d07
+    m_Address: Assets/Maps/minimap/gl_sew02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 603756addb5283840ab33689981929bf
+    m_Address: Assets/Maps/minimap/gl_sew02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1f397261cac0cde4d9875c85e6c6a0c6
+    m_Address: Assets/Maps/minimap/gl_sew03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e2dba15b5e45864489465c03b08924ca
+    m_Address: Assets/Maps/minimap/gl_sew03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1e4770cdf95919045ada3c9ad2853df9
+    m_Address: Assets/Maps/minimap/gl_sew04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2eb18fe441d47d644bbfd4a614297800
+    m_Address: Assets/Maps/minimap/gl_sew04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5f3f087147e471b4ebb2321655369b49
+    m_Address: Assets/Maps/minimap/gl_step.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 90d2c93c0f730c447a3f11c459494812
+    m_Address: Assets/Maps/minimap/gl_step_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1bf00e82e9285a6418bb7c32f6b42c3f
+    m_Address: Assets/Maps/minimap/glast_01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0aae54e73b20d6b42bf9c946679ed0ae
+    m_Address: Assets/Maps/minimap/glast_01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 572aee8715d981246ae6ab3ae0f50c51
+    m_Address: Assets/Maps/minimap/guild_vs1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1489a90fa7eb9d94d9c9c82fa7decce6
+    m_Address: Assets/Maps/minimap/guild_vs1_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 088715f67f0548c438587b69f9f344ed
+    m_Address: Assets/Maps/minimap/guild_vs2.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 93d69a76c9ce26344880e9ab9bfa76fc
+    m_Address: Assets/Maps/minimap/guild_vs2_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 99e3ea82154716c4d9a4c6feb64e6c06
+    m_Address: Assets/Maps/minimap/guild_vs3.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bc2331d7326aacf4090161e51e933fb8
+    m_Address: Assets/Maps/minimap/guild_vs3_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e9b29322bcfc7c145880d8bda79cfd53
+    m_Address: Assets/Maps/minimap/guild_vs4.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: aa8e1bb3e3d590b46972eb7f8b9b5e7e
+    m_Address: Assets/Maps/minimap/guild_vs4_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 6ac77b7883a9d364fb6a0093e804862e
+    m_Address: Assets/Maps/minimap/in_moc_16.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8082fb19af08ead4fa114f5eebfe4579
+    m_Address: Assets/Maps/minimap/in_moc_16_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 58e2bf1fed7726e488de546cc64d9a09
+    m_Address: Assets/Maps/minimap/in_orcs01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 863aa23df3904e64b8f5b227754cd6a4
+    m_Address: Assets/Maps/minimap/in_orcs01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7af1557fd04185e4eba2bf3f87f59e34
+    m_Address: Assets/Maps/minimap/in_sphinx1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 577509b54db8a294c809f5d3fd6bcc40
+    m_Address: Assets/Maps/minimap/in_sphinx1_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 51bd5089b237da64ebd6a2e5df076e73
+    m_Address: Assets/Maps/minimap/in_sphinx2.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2525474a59505b2458619fccb5ba4115
+    m_Address: Assets/Maps/minimap/in_sphinx2_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b697bd4fb34b90b489ddca07b865e11e
+    m_Address: Assets/Maps/minimap/in_sphinx3.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1ee50b094bd2a5244bdf16a105713ee9
+    m_Address: Assets/Maps/minimap/in_sphinx3_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9ec9105210d22924e8ae1c4fcfaa4537
+    m_Address: Assets/Maps/minimap/in_sphinx4.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 479807567804de744be85dd1ed89f241
+    m_Address: Assets/Maps/minimap/in_sphinx4_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a1e4b48075a669d4cb90f2ceb9bafd6f
+    m_Address: Assets/Maps/minimap/in_sphinx5.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 360a6a8d037da4c47bd5105858eadc49
+    m_Address: Assets/Maps/minimap/in_sphinx5_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 03deec29ba7c5d8449eb5713df1c3852
+    m_Address: Assets/Maps/minimap/iz_dun00.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b1c388b1113f15646839883bc631c529
+    m_Address: Assets/Maps/minimap/iz_dun00_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2e7cf3be4c8f49f429a9502db96ff7d8
+    m_Address: Assets/Maps/minimap/iz_dun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 456e8929ba588e840adec887ec8bfa37
+    m_Address: Assets/Maps/minimap/iz_dun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 77f57ca8e9d60ce4fb8459a695fc153f
+    m_Address: Assets/Maps/minimap/iz_dun02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ef01047f2f4806147b4326bb817b431d
+    m_Address: Assets/Maps/minimap/iz_dun02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 148837e85b3cb3a429ce1b7982c15ef9
+    m_Address: Assets/Maps/minimap/iz_dun03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a3ebcf1643061514787bf9c511ac3625
+    m_Address: Assets/Maps/minimap/iz_dun03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 567d6e8d89c1caf438b97fdf17197d5c
+    m_Address: Assets/Maps/minimap/iz_dun04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 73b4e44f52a31fe46b8441e8bc81b87d
+    m_Address: Assets/Maps/minimap/iz_dun04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 56fd6e7326ad43d43a14968a44053448
+    m_Address: Assets/Maps/minimap/izlu2dun.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 19396e1ed0c64704091a66fb36b1e63e
+    m_Address: Assets/Maps/minimap/izlu2dun_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: dd7347ddd1eda6142a1abc97b5ceb612
+    m_Address: Assets/Maps/minimap/izlude.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2a4cf01223f524f4b83a1fbad7cdb805
+    m_Address: Assets/Maps/minimap/izlude_in.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 24f775920a6453a41a1db1d6ffa3fefb
+    m_Address: Assets/Maps/minimap/izlude_in_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b213fb2e64ec8d646851d91899fc2849
+    m_Address: Assets/Maps/minimap/izlude_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1abd46ca54bda1d4dadc9e7948d9805d
+    m_Address: Assets/Maps/minimap/juperos_01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b6591a412e3f3884ca5b7b44d94dbfac
+    m_Address: Assets/Maps/minimap/juperos_01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 743745386249e694d9c6b6a83937ee9a
+    m_Address: Assets/Maps/minimap/mag_dun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0118a1133b5b28047b472b96ad0319b2
+    m_Address: Assets/Maps/minimap/mag_dun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9a5cedd854cc2414697e6c9111ced7f5
+    m_Address: Assets/Maps/minimap/mjo_dun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 322b612d39527ab448d9730a82be3352
+    m_Address: Assets/Maps/minimap/mjo_dun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: de7c641ee5a9e5b428e698a7bab0f017
+    m_Address: Assets/Maps/minimap/mjo_dun02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ddd0f9c65a62abd469d1c06bcb4467dc
+    m_Address: Assets/Maps/minimap/mjo_dun02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 25906c77b1291fd40abb7a36d1b90eed
+    m_Address: Assets/Maps/minimap/mjo_dun03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 251b7f42dcfd8b94ea97721cebe9a33b
+    m_Address: Assets/Maps/minimap/mjo_dun03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9aa9e96cc7a0fb6489f3636c6ed098e7
+    m_Address: Assets/Maps/minimap/mjolnir_01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b246e823ef695804cb7679ab2ac0ff33
+    m_Address: Assets/Maps/minimap/mjolnir_01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e425058a53f16c94ebb53a6fdfe1762e
+    m_Address: Assets/Maps/minimap/mjolnir_02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c54b61134214e0b4b8bc18aba7a364ad
+    m_Address: Assets/Maps/minimap/mjolnir_02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bc3899ae83e606048a84451c1828080c
+    m_Address: Assets/Maps/minimap/mjolnir_03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f95f05d256cf5e849adfbfadb6eab458
+    m_Address: Assets/Maps/minimap/mjolnir_03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b39520aff46d8dd48bfc9bd6e02f2aad
+    m_Address: Assets/Maps/minimap/mjolnir_04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: db87a990ab60912498c492adb5ce58aa
+    m_Address: Assets/Maps/minimap/mjolnir_04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ca56b1fba64e63a45b47219924805bd7
+    m_Address: Assets/Maps/minimap/mjolnir_05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 62cdb5fc83e03584a9627ed5860d4403
+    m_Address: Assets/Maps/minimap/mjolnir_05_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9c6e8ce5cc59fa6419a7684323e1b78b
+    m_Address: Assets/Maps/minimap/mjolnir_06.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8a2ef85fc07a8a14c9f516f3ca864755
+    m_Address: Assets/Maps/minimap/mjolnir_06_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0dc3bdef425893e4183319b46a83e725
+    m_Address: Assets/Maps/minimap/mjolnir_07.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: fa1a9eab631a3fe4ca90e6e6eb03ec79
+    m_Address: Assets/Maps/minimap/mjolnir_07_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ee0d8d583874b844e92d40f32334570f
+    m_Address: Assets/Maps/minimap/mjolnir_08.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 21bb07ea71381c34293068737c3d012f
+    m_Address: Assets/Maps/minimap/mjolnir_08_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bf356bef3ce1a4148b9068823b01d7f9
+    m_Address: Assets/Maps/minimap/mjolnir_09.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 97e36560769420a4ba4794a897107689
+    m_Address: Assets/Maps/minimap/mjolnir_09_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 748083312fef2c9448d1716ec7a89eac
+    m_Address: Assets/Maps/minimap/mjolnir_10.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c068abca8614d6c46bfc2a30e2af8d00
+    m_Address: Assets/Maps/minimap/mjolnir_10_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e4ded1722eabcb042ace62fe8f84afb4
+    m_Address: Assets/Maps/minimap/mjolnir_11.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5e670a287518a5c4f8781bcf50df305c
+    m_Address: Assets/Maps/minimap/mjolnir_11_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 11629beda0f52b446a7ced3f0af5aed4
+    m_Address: Assets/Maps/minimap/mjolnir_12.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e334f644b718ebd49a8f9b2598f57574
+    m_Address: Assets/Maps/minimap/mjolnir_12_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 4966b3f41fe00904b87ca61330f03356
+    m_Address: Assets/Maps/minimap/moc_castle.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1e86d932d48c22146926276b5c52d7ed
+    m_Address: Assets/Maps/minimap/moc_castle_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1c7fbb9ba38c34e43bac349df4f8a736
+    m_Address: Assets/Maps/minimap/moc_fild01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5a094edca946d3743a4c145d740f50dc
+    m_Address: Assets/Maps/minimap/moc_fild01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 04202ce708a8cfc4a8082e04e0b8407e
+    m_Address: Assets/Maps/minimap/moc_fild02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 29b2dee7fd6379b4b8b0f7d3275e37a8
+    m_Address: Assets/Maps/minimap/moc_fild02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 00480d5651f59ef4c9ba21f54361cd67
+    m_Address: Assets/Maps/minimap/moc_fild03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e7dc984d72d6bd844b44eee35051f235
+    m_Address: Assets/Maps/minimap/moc_fild03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: dbec1c354136d8547b6110308a30e8bf
+    m_Address: Assets/Maps/minimap/moc_fild04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5b1d38bf265473643ba97de2043a67ae
+    m_Address: Assets/Maps/minimap/moc_fild04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5304e1eb1786d2346b632350fab0717b
+    m_Address: Assets/Maps/minimap/moc_fild05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 35eaaafbb1f9ff44d86b715932b4d184
+    m_Address: Assets/Maps/minimap/moc_fild05_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f5dbf2b7c1691b34ea9b959cef2d68be
+    m_Address: Assets/Maps/minimap/moc_fild06.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b2cf9dd80e947734cab6a2a584016ef0
+    m_Address: Assets/Maps/minimap/moc_fild06_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ebd6a2cfcea65af4e9fffeee25c046b7
+    m_Address: Assets/Maps/minimap/moc_fild07.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b282515a522a39a4f9fcf118adfbb93e
+    m_Address: Assets/Maps/minimap/moc_fild07_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 42253cac88783724ca8f8eed7e8a56a4
+    m_Address: Assets/Maps/minimap/moc_fild08.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 564818a5ce6bf324e9dd49717bb9a3be
+    m_Address: Assets/Maps/minimap/moc_fild08_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a197ba514752cf045a17955900e9d55b
+    m_Address: Assets/Maps/minimap/moc_fild09.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1c3787dfe869b2841bfffc813e67a3af
+    m_Address: Assets/Maps/minimap/moc_fild09_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 67585ef2f1d0a5a4ca17dbf628155fa9
+    m_Address: Assets/Maps/minimap/moc_fild10.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: dae72dbbff451b6429d396290ff78ab5
+    m_Address: Assets/Maps/minimap/moc_fild10_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 4fe525a86996ef64789690c1d2acfb16
+    m_Address: Assets/Maps/minimap/moc_fild11.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 27a699ec1ac2b2541918cc78d3417501
+    m_Address: Assets/Maps/minimap/moc_fild11_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ba5a46f65c3516346b6ccb47b4da5fad
+    m_Address: Assets/Maps/minimap/moc_fild12.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 99f7d959f45fa5a4b81ca3041bce955c
+    m_Address: Assets/Maps/minimap/moc_fild12_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 232131619cedafd4199062af73310d7c
+    m_Address: Assets/Maps/minimap/moc_fild13.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bbda751fdd269e543b88dcebc2395635
+    m_Address: Assets/Maps/minimap/moc_fild13_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b5b90ca1783f54842a9e550f6ee4f921
+    m_Address: Assets/Maps/minimap/moc_fild14.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e6d10d16197790a4db1e19675b3da4e1
+    m_Address: Assets/Maps/minimap/moc_fild14_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 60308c265beb9f347a9e0d8631bad23c
+    m_Address: Assets/Maps/minimap/moc_fild15.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 488580740de1b0048b1feb18d29ccd1e
+    m_Address: Assets/Maps/minimap/moc_fild15_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 6b8bc459d6abb884db145c7ebea4dad3
+    m_Address: Assets/Maps/minimap/moc_fild16.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f8de087c725fa524e84adf4ff05afdfb
+    m_Address: Assets/Maps/minimap/moc_fild16_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 64705a2177932a54a9f52db71861d575
+    m_Address: Assets/Maps/minimap/moc_fild17.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 13fd2a09d63dc3b4f88c951ed6e0a921
+    m_Address: Assets/Maps/minimap/moc_fild17_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 836f0aef9c1a47343a6e4ae7017ea856
+    m_Address: Assets/Maps/minimap/moc_fild18.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 39cab887eb1d11849b1852c2fa8a1ef0
+    m_Address: Assets/Maps/minimap/moc_fild18_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 00d2a4faf5f86a942b1f54460f4d961a
+    m_Address: Assets/Maps/minimap/moc_fild19.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a25b698166b21e040983e9c35b60dc7e
+    m_Address: Assets/Maps/minimap/moc_fild19_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bc2e7482ccf43cb498bd47a63d11bc5a
+    m_Address: Assets/Maps/minimap/moc_pryd01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 946b9b634a074834bb3f90149854a567
+    m_Address: Assets/Maps/minimap/moc_pryd01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 4e7f78288fc3a4042bfc8d7dc50c7e28
+    m_Address: Assets/Maps/minimap/moc_pryd02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: dc97dbbe6ed2aae4b81415c35d27b9c1
+    m_Address: Assets/Maps/minimap/moc_pryd02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 653075fe00943a24aa6432e564f4d8af
+    m_Address: Assets/Maps/minimap/moc_pryd03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 350e55576ecb3c44d8b648aef8d09686
+    m_Address: Assets/Maps/minimap/moc_pryd03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 622bc450940c75348b5e0716f7f2efa5
+    m_Address: Assets/Maps/minimap/moc_pryd04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f37624a2ab9dc7344a539e59a40a145c
+    m_Address: Assets/Maps/minimap/moc_pryd04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: fe4e7a294c1ce7f4ea0947e38e1cee30
+    m_Address: Assets/Maps/minimap/moc_pryd05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8f2c4e7cc7dd96043a4fe89ff712d93c
+    m_Address: Assets/Maps/minimap/moc_pryd05_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7ba24ccc94671b8479a9c18e0cf6c15a
+    m_Address: Assets/Maps/minimap/moc_pryd06.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9b7b763ad34964a4ab4a8d3e2de72163
+    m_Address: Assets/Maps/minimap/moc_pryd06_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 47ae3c2796e60d246bc03a71090b9435
+    m_Address: Assets/Maps/minimap/moc_prydb1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 507772e20b334aa41aa0228feeb7947c
+    m_Address: Assets/Maps/minimap/moc_prydb1_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d4afd814b0d320b40b7df04bf03b0aac
+    m_Address: Assets/Maps/minimap/moc_ruins.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 312db14496eb1de49948987dbea99651
+    m_Address: Assets/Maps/minimap/moc_ruins_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b4c39fdc45dee9840b3f7f5531940b6b
+    m_Address: Assets/Maps/minimap/morocc.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a226d1967fd98f5438a0b7aa44ddf371
+    m_Address: Assets/Maps/minimap/morocc_in.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: def787560f2e5a343ac49e6849cf41a5
+    m_Address: Assets/Maps/minimap/morocc_in_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ae8f0ce7dc2c51e428c58e2c7714106e
+    m_Address: Assets/Maps/minimap/morocc_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bb18c041f00fb724c897ce2d59c1f02f
+    m_Address: Assets/Maps/minimap/orcsdun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 031bb0895e6015d48b4ec75f7b1a88c5
+    m_Address: Assets/Maps/minimap/orcsdun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 514a2bcbeed74b747b9ddcbeb19b28b2
+    m_Address: Assets/Maps/minimap/orcsdun02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 11a74de783f50e94a845ba83a5039ff3
+    m_Address: Assets/Maps/minimap/orcsdun02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0a3be078dcd61ac42ba84a8ffc4c0787
+    m_Address: Assets/Maps/minimap/pay_arche.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e424d5694c6c05849a0db4cb8c892a5a
+    m_Address: Assets/Maps/minimap/pay_arche_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 708b502c0adc16c42b6cc2e6955fab08
+    m_Address: Assets/Maps/minimap/pay_dun00.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: eded74c8d82ebaa4b94abac9b32a657d
+    m_Address: Assets/Maps/minimap/pay_dun00_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1e0725a8c66bb364cb83f6db85ce9663
+    m_Address: Assets/Maps/minimap/pay_dun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: aa38ff6d977995645a18c8c0d2202c20
+    m_Address: Assets/Maps/minimap/pay_dun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 3b488545ea5a1164080ec5bb44c51da2
+    m_Address: Assets/Maps/minimap/pay_dun02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f5f71d2334011b641b7ac916e7119ad0
+    m_Address: Assets/Maps/minimap/pay_dun02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 644acb48fc2b7be49a0b88b2c5bfc932
+    m_Address: Assets/Maps/minimap/pay_dun03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d3f625fc130dca446ba082b20da6a824
+    m_Address: Assets/Maps/minimap/pay_dun03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: fb2e6f09c6c127d42a2b4602c48bb52f
+    m_Address: Assets/Maps/minimap/pay_dun04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c3a326e64bc25f04c95482fff0cb1eb0
+    m_Address: Assets/Maps/minimap/pay_dun04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 9341bed61c59bbd40951707630185dfd
+    m_Address: Assets/Maps/minimap/pay_fild01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 837b1dcf9a92a7a4dbe4a3dc4db7fead
+    m_Address: Assets/Maps/minimap/pay_fild01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2bf5a360f7c12dd4d98914ee80f7c887
+    m_Address: Assets/Maps/minimap/pay_fild02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0c54cb816f9de794d9f6bab37305f4f6
+    m_Address: Assets/Maps/minimap/pay_fild02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 88a9c215fe9ef6b49abc03c6f9733cdf
+    m_Address: Assets/Maps/minimap/pay_fild03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8eba6d97e3334b740afa7c0474a1f114
+    m_Address: Assets/Maps/minimap/pay_fild03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: edc9576b3c8f7844a8ef394f6bd25f24
+    m_Address: Assets/Maps/minimap/pay_fild04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1653f35f859162941bde644f8361069f
+    m_Address: Assets/Maps/minimap/pay_fild04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 16a82f899ba25a84099b941ea32e8a68
+    m_Address: Assets/Maps/minimap/pay_fild05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f2d59d112d6a71446b962bf415113a98
+    m_Address: Assets/Maps/minimap/pay_fild05_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: fbb362a642dc5fc439658d80733ac590
+    m_Address: Assets/Maps/minimap/pay_fild06.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 570b7bfdb4aed024786ee4795c558509
+    m_Address: Assets/Maps/minimap/pay_fild06_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8c9853d0ff1027a46983d5d9544fb8b6
+    m_Address: Assets/Maps/minimap/pay_fild07.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ad6d3eff182985d4295c971ef83635a9
+    m_Address: Assets/Maps/minimap/pay_fild07_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1153f5fc26762c64fb01316e6cdf412d
+    m_Address: Assets/Maps/minimap/pay_fild08.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5a6dd3b01e77e43498bf947c45e9c650
+    m_Address: Assets/Maps/minimap/pay_fild08_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 442ddc19d7211b74ab34ceddb332c91a
+    m_Address: Assets/Maps/minimap/pay_fild09.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2197e3e881ef08142aa56cda39c7bb62
+    m_Address: Assets/Maps/minimap/pay_fild09_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 75134555bde476844be66b1b51369d68
+    m_Address: Assets/Maps/minimap/pay_fild10.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d7db35ae3bbcfbd46b08aafdd871bcde
+    m_Address: Assets/Maps/minimap/pay_fild10_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 09989bba559a97448b6ba7a543fd1291
+    m_Address: Assets/Maps/minimap/pay_fild11.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f0fefbe959da94347b12482d99084742
+    m_Address: Assets/Maps/minimap/pay_fild11_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8d72952fe2d1dc144b46efb3eb2020c4
+    m_Address: Assets/Maps/minimap/pay_gld.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 354eaedc11e66f445b93a1c713dc862f
+    m_Address: Assets/Maps/minimap/pay_gld_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 8c355ed30dda4d4419cbbb4b64894cc5
+    m_Address: Assets/Maps/minimap/payon.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 76bd77dd1a9b6d64f9f9841833183e68
+    m_Address: Assets/Maps/minimap/payon_in01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ae0c48d63f34509409c080272c4c2666
+    m_Address: Assets/Maps/minimap/payon_in01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2c093ed4e566ad14cab5315ae2b21773
+    m_Address: Assets/Maps/minimap/payon_in02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 020e78dfb6e13654aab03650f3980f6e
+    m_Address: Assets/Maps/minimap/payon_in02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a2700e16f8be60d45a90bf61925853a5
+    m_Address: Assets/Maps/minimap/payon_in03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2bf21b17e116f99489416c2dc1d46f22
+    m_Address: Assets/Maps/minimap/payon_in03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a1a9fc1906edb8c4081dca2216517f61
+    m_Address: Assets/Maps/minimap/payon_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ead1f2fd0aad5e34abd1636eae804a41
+    m_Address: Assets/Maps/minimap/prontera.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b88844c453ae0eb4b89c4e9ea2636f6d
+    m_Address: Assets/Maps/minimap/prontera_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: cdc70bc1cda20a042b62bac50d4e5d15
+    m_Address: Assets/Maps/minimap/prt_castle.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e15758fd349c83e4f837af05b181b7a7
+    m_Address: Assets/Maps/minimap/prt_castle_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 537601620e53c1e4d92be130ebad8606
+    m_Address: Assets/Maps/minimap/prt_church.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 32d786a3eb7986d449876e2287b2daed
+    m_Address: Assets/Maps/minimap/prt_church_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 590e3bc820dd79b44928992769dae544
+    m_Address: Assets/Maps/minimap/prt_fild00.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e035ebe94c9da8c479b874ae9f0f9e80
+    m_Address: Assets/Maps/minimap/prt_fild00_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: fc50e26d8ae766f43abc508e307622b3
+    m_Address: Assets/Maps/minimap/prt_fild01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bb432726d89df90459e008239a5936cb
+    m_Address: Assets/Maps/minimap/prt_fild01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1d91ec6742c2d4c47bdf92d1e266c72f
+    m_Address: Assets/Maps/minimap/prt_fild02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 30c5a2fc0d326ee49abd5999d70d2c4e
+    m_Address: Assets/Maps/minimap/prt_fild02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 373e2138c4b283a4cbd1a03ed9e0c67f
+    m_Address: Assets/Maps/minimap/prt_fild03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 55732d587dbe5424aaabcf9cd8a698cb
+    m_Address: Assets/Maps/minimap/prt_fild03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c330e73a38193d148b9ece5ebb975d1b
+    m_Address: Assets/Maps/minimap/prt_fild04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 62c75ffc49b43da44998df152372c198
+    m_Address: Assets/Maps/minimap/prt_fild04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 3c5726cf4c8f3a243be94666e556099c
+    m_Address: Assets/Maps/minimap/prt_fild05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 54fae6aa998372d4d913e01e2049da7c
+    m_Address: Assets/Maps/minimap/prt_fild05_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5ef74d3f3baf67742a6a884063a5262e
+    m_Address: Assets/Maps/minimap/prt_fild06.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e3536b0921227c545bdaa75f2e438831
+    m_Address: Assets/Maps/minimap/prt_fild06_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 956901b11507e2f40b0906a256e3e9e7
+    m_Address: Assets/Maps/minimap/prt_fild07.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: cec0ee2b35de06c4ea9565f66dc35edc
+    m_Address: Assets/Maps/minimap/prt_fild07_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7e938d6d50cd91c4dbac6af948e2a497
+    m_Address: Assets/Maps/minimap/prt_fild08.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: cc716fb90430963449c7a4ca3e82f76b
+    m_Address: Assets/Maps/minimap/prt_fild08_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b2147c5ca31e38340b28c320d9194d5c
+    m_Address: Assets/Maps/minimap/prt_fild09.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0cad466d7c1b71249931dc71e4fbc3f9
+    m_Address: Assets/Maps/minimap/prt_fild09_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 91cf5cd9ab532da45bb903682673b03b
+    m_Address: Assets/Maps/minimap/prt_fild10.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 693b58ed2c3f00a4086662bfbfcdd791
+    m_Address: Assets/Maps/minimap/prt_fild10_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 3c0dba6bb2ebe91449c320322d695488
+    m_Address: Assets/Maps/minimap/prt_fild11.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 4ed1498d461787f479a8c58f7e44216c
+    m_Address: Assets/Maps/minimap/prt_fild11_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e29c4a47eb368014a9dd33a0983c34be
+    m_Address: Assets/Maps/minimap/prt_gld.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7b283f52e3434644388ac765c4bfab3a
+    m_Address: Assets/Maps/minimap/prt_gld_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c3f72d9e6c5189b4fa9cf9f0b83df4b1
+    m_Address: Assets/Maps/minimap/prt_in.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 87ce9f5f27264c04bbb62ad789569546
+    m_Address: Assets/Maps/minimap/prt_in_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 4f6ba3a65f610a64d9e4f7c1134a8ca1
+    m_Address: Assets/Maps/minimap/prt_maze01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 65815f5dbe2335d429d676cc3636a2ba
+    m_Address: Assets/Maps/minimap/prt_maze01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e2c10608af396cb41871ad6a813fc46e
+    m_Address: Assets/Maps/minimap/prt_maze02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0cf048363bd601f448dae2d95ce310ff
+    m_Address: Assets/Maps/minimap/prt_maze02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 67dc2ab216dd9ff49ad8473906118ea1
+    m_Address: Assets/Maps/minimap/prt_maze03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 24aeca43705f5404c998ff92f23e1db6
+    m_Address: Assets/Maps/minimap/prt_maze03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 04aa90bf4951494429338a141a5247b4
+    m_Address: Assets/Maps/minimap/prt_monk.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ac74d89e55dd95943a6d7dbb434dad79
+    m_Address: Assets/Maps/minimap/prt_monk_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 49df6ebc57605b744a2a2ffe9dce797b
+    m_Address: Assets/Maps/minimap/prt_sewb1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: a9e3e617d2e497844aecd6aa56beb049
+    m_Address: Assets/Maps/minimap/prt_sewb1_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1dcf3f46c851cd7498a1f53390b5287e
+    m_Address: Assets/Maps/minimap/prt_sewb2.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1e8699012ab5efb428f758b130e8177e
+    m_Address: Assets/Maps/minimap/prt_sewb2_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 3a707c8b635fc1d438e6b4e9da119be6
+    m_Address: Assets/Maps/minimap/prt_sewb3.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5726f73e6fd9c054a9fbe7faac4a7187
+    m_Address: Assets/Maps/minimap/prt_sewb3_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d39c7409bbd30a847bddb76d8dc5810d
+    m_Address: Assets/Maps/minimap/prt_sewb4.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 0d393d39f7adc9d41a2b3cd16dd3e763
+    m_Address: Assets/Maps/minimap/prt_sewb4_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 739ba5db95a939649ba3a20d72cef517
+    m_Address: Assets/Maps/minimap/schg_cas01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: fe33b47a1929df145a005746ab627eee
+    m_Address: Assets/Maps/minimap/schg_cas01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d51b0da24e8882a4388bfe0d27031a6f
+    m_Address: Assets/Maps/minimap/treasure01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ec032c0a95aeadd44b617a643a9d8db5
+    m_Address: Assets/Maps/minimap/treasure01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 4dbb0c306567943458c47149a4af4312
+    m_Address: Assets/Maps/minimap/treasure02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: ccbdd12dedcb7e740b55a1e9576a12e7
+    m_Address: Assets/Maps/minimap/treasure02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 603686d59bb42224fad205dd84943200
+    m_Address: Assets/Maps/minimap/yuno.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c3904607c8d0b0c46b1d4d5ff5249887
+    m_Address: Assets/Maps/minimap/yuno_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5d40987aadece554eb4d52e0d2d6283c
+    m_Address: Assets/Maps/minimap/yuno_fild01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7e7c23da64b783f41a5e3c5f209dc2ad
+    m_Address: Assets/Maps/minimap/yuno_fild01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 824b9fc8770f4984f9d575a83c580a61
+    m_Address: Assets/Maps/minimap/yuno_fild02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5a1853c90c92335409b4cd8ff972e0b3
+    m_Address: Assets/Maps/minimap/yuno_fild02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7e8b93594e2879b4ca3af66ab772bc05
+    m_Address: Assets/Maps/minimap/yuno_fild03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c504c9df132d82f449aaae5b063b3041
+    m_Address: Assets/Maps/minimap/yuno_fild03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5cbe4edeebec1f24a9b76ca12745065b
+    m_Address: Assets/Maps/minimap/yuno_fild04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 312739898a002834cb77fdbdeaede2f7
+    m_Address: Assets/Maps/minimap/yuno_fild04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 1be53a7468ab3e2438c41949028a3caa
+    m_Address: Assets/Maps/minimap/yuno_fild05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b425678064052bd4191823be012f25bd
+    m_Address: Assets/Maps/minimap/yuno_fild05_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 65ef40f59095ce642b0bbf2728dc1df6
+    m_Address: Assets/Maps/minimap/yuno_fild06.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 78a5c9d0e560f10499cb7e6c37fd667a
+    m_Address: Assets/Maps/minimap/yuno_fild06_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 3330f4b54c158c241bd834a999fc7559
+    m_Address: Assets/Maps/minimap/yuno_fild07.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2322ef1a5600be943ba0c73161fc83c0
+    m_Address: Assets/Maps/minimap/yuno_fild07_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5def00d8b17d2fa4dab106471a7e213e
+    m_Address: Assets/Maps/minimap/yuno_fild08.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: d3427d16744f5474cafc8e438d348435
+    m_Address: Assets/Maps/minimap/yuno_fild08_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2c905910961232246bad1d1f9e078d18
+    m_Address: Assets/Maps/minimap/yuno_fild09.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 6f6c0b5d5f33ef042b4350c8d0f8adff
+    m_Address: Assets/Maps/minimap/yuno_fild09_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 26ae3a91284e88b41a72f5bd424b3dc4
+    m_Address: Assets/Maps/minimap/yuno_fild10.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bf0649401c0045e44b10d37988670632
+    m_Address: Assets/Maps/minimap/yuno_fild10_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: c97604caad6787a42a9d300a9bbc0dda
+    m_Address: Assets/Maps/minimap/yuno_fild11.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f7a2528de0e458c438c8d1f98c96ca97
+    m_Address: Assets/Maps/minimap/yuno_fild11_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 18d549224de4ea04181c6fb164a9ad0c
+    m_Address: Assets/Maps/minimap/yuno_fild12.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: f6817be7a9612eb428f8f629be6f8a2a
+    m_Address: Assets/Maps/minimap/yuno_fild12_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 93b3e26c08c5cb4439a0d39d410e1d2a
+    m_Address: Assets/Maps/minimap/yuno_in01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5d25bc2e460a67a4fa422c67fff4f31e
+    m_Address: Assets/Maps/minimap/yuno_in01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 371235c94bf7de549a640f88527529c1
+    m_Address: Assets/Maps/minimap/yuno_in02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5e3db1dfc4ef9764aa078c0aa6ea706d
+    m_Address: Assets/Maps/minimap/yuno_in02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 686516e466beeee4ba70b5a083860dc4
+    m_Address: Assets/Maps/minimap/yuno_in03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e636327d653ef5d40b041582f4b5a999
+    m_Address: Assets/Maps/minimap/yuno_in03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 37592d9dfa57a3a42ac2cf80eaa29778
+    m_Address: Assets/Maps/minimap/yuno_in04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5dbf17b1a10cb194e8c2961ae01d33d9
+    m_Address: Assets/Maps/minimap/yuno_in04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 5c53f8e258cc4674eab3ae22f1d20e8a
+    m_Address: Assets/Maps/minimap/yuno_in05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: b4e96878ff9788e449587c95f8860a8b
+    m_Address: Assets/Maps/minimap/yuno_in05_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

@@ -121,12 +121,12 @@ namespace Assets.Scripts.MapEditor.Editor
 
 				entriesAdded.Add(entry);
 			}
-
+			
 			//---------------------------------------------------------
 			// Effects
 			//---------------------------------------------------------
 
-            var effectText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/effects.json", typeof(TextAsset)) as TextAsset;
+			var effectText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/effects.json", typeof(TextAsset)) as TextAsset;
             var effects = JsonUtility.FromJson<EffectTypeList>(effectText.text);
 
 			Debug.Log(effects.Effects.Count);
@@ -163,7 +163,7 @@ namespace Assets.Scripts.MapEditor.Editor
 			var mapText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/maps.json", typeof(TextAsset)) as TextAsset;
 			var maps = JsonUtility.FromJson<ClientMapList>(mapText.text);
             var musicNames = new List<string>();
-
+			
 			//update scenes
 			guids = AssetDatabase.FindAssets("t:Scene", new[] { "Assets/Scenes/Maps" });
 
@@ -218,6 +218,21 @@ namespace Assets.Scripts.MapEditor.Editor
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
                 entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
                 entry.labels.Add("Music");
+
+                entriesAdded.Add(entry);
+            }
+
+            guids = AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets/Maps/Minimap" });
+
+            for (int i = 0; i < guids.Length; i++)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                var fName = Path.GetFileName(path);
+				
+                var entry = settings.CreateOrMoveEntry(guids[i], defGroup, readOnly: false, postEvent: false);
+                //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
+                entry.labels.Add("Minimap");
 
                 entriesAdded.Add(entry);
             }

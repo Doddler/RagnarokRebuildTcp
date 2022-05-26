@@ -852,6 +852,96 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
+  - m_GUID: 2c7ad9317140da44e8a97488e4d66e60
+    m_Address: Assets/Scenes/Maps/yuno.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 5153afe60be9ab649b8632088241b16c
+    m_Address: Assets/Scenes/Maps/yuno_fild01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: c9c9d1f61816c0842aee23be560d00fe
+    m_Address: Assets/Scenes/Maps/yuno_fild02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: df3e4341dc10e6c41866c667fbb4d1ff
+    m_Address: Assets/Scenes/Maps/yuno_fild03.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 1415f1af540f6c44f929770f7d83c8e7
+    m_Address: Assets/Scenes/Maps/yuno_fild04.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: efa33eccb42595041af05488eea3de54
+    m_Address: Assets/Scenes/Maps/yuno_fild05.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: b6325e330474baa449bf3c369c68d43d
+    m_Address: Assets/Scenes/Maps/yuno_fild06.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 4000f8abf5c5bcc498500c219e7fdc17
+    m_Address: Assets/Scenes/Maps/yuno_fild07.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: a0528416832ed614aa4179a7a84af35f
+    m_Address: Assets/Scenes/Maps/yuno_fild08.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: f2c31f369e41bd9458e3138437c4711f
+    m_Address: Assets/Scenes/Maps/yuno_fild09.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 6e5be01a32117504cb567d2816dc223b
+    m_Address: Assets/Scenes/Maps/yuno_fild10.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 84cd1dd23a361734ea0249cd793b2a2f
+    m_Address: Assets/Scenes/Maps/yuno_fild11.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 0867d03034400fe44bc12f7b86188166
+    m_Address: Assets/Scenes/Maps/yuno_fild12.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 43bbc251f876b24458782d3ba5848156
+    m_Address: Assets/Scenes/Maps/yuno_in01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: c78271381c85e934ab9d71c9ad6d02c2
+    m_Address: Assets/Scenes/Maps/yuno_in02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 43b97128d3fe11d4c856f4c71f0e2cb6
+    m_Address: Assets/Scenes/Maps/yuno_in03.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: f4ef02efeaad2dc4ca1fffb8057f7cc0
+    m_Address: Assets/Scenes/Maps/yuno_in04.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: a579eb11bb9961844bb3d5b1bc98d56b
+    m_Address: Assets/Scenes/Maps/yuno_in05.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

@@ -120,6 +120,7 @@ class Program
             {
                 Code = e.Code,
                 Name = e.Name,
+                MapMode = e.MapMode,
                 Music = e.Music
             });
         }

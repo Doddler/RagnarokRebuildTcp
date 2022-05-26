@@ -139,11 +139,17 @@ namespace Assets.Scripts.Utility
 		private void FinishSceneChange(AsyncOperationHandle<SceneInstance> obj)
 		{
 			finishCallback();
+            var newMap = mapEntries.FirstOrDefault(m => m.Code == newScene);
+
 			if (needAudioChange)
 			{
-				var newMap = mapEntries.FirstOrDefault(m => m.Code == newScene);
 				AudioManager.Instance.PlayBgm(newMap.Music);
 			}
+
+			if(newMap.MapMode == "None")
+				MinimapController.Instance.gameObject.SetActive(false);
+			else
+			    MinimapController.Instance.LoadMinimap(newScene, newMap.MapMode);
 		}
 
 		private void FinishSceneChange(AsyncOperation op)

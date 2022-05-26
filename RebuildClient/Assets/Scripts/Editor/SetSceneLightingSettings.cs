@@ -12,7 +12,10 @@ namespace Assets.Scripts.Editor
 	{
 		[MenuItem("Ragnarok/Set Lighting Settings")]
 		public static void SetLightingSettings()
-		{
+        {
+            var lighting = AssetDatabase.LoadAssetAtPath<LightingSettings>("Assets/Textures/Ro Lighting.lighting");
+            Lightmapping.lightingSettings = lighting;
+
 			Lightmapping.lightingSettings.mixedBakeMode = MixedLightingMode.IndirectOnly;
 			Lightmapping.lightingSettings.directSampleCount = 32;
 			Lightmapping.lightingSettings.indirectSampleCount = 256;

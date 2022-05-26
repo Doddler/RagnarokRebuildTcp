@@ -44,12 +44,12 @@ public class ScreenshotCamera : MonoBehaviour
         tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0, false);
         tex.Apply();
         
-        var bytes = tex.EncodeToJPG();
+        var bytes = tex.EncodeToPNG();
 
 
         if (!Directory.Exists("Assets/Maps/minimap"))
             Directory.CreateDirectory("Assets/Maps/minimap");
-        File.WriteAllBytes($@"Assets/Maps/minimap/{FileName}.jpg", bytes);
+        File.WriteAllBytes($@"Assets/Maps/minimap/{FileName}.png", bytes);
 
         cam.targetTexture = null;
         RenderTexture.active = prevRT;

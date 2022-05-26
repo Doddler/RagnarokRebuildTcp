@@ -5,6 +5,7 @@ public class ClientMapEntry
 {
     public string Code;
     public string Name;
+    public string MapMode;
     public string Music;
 }
 
