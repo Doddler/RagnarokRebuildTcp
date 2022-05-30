@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Extensions;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -19,7 +20,10 @@ public class MinimapController : MonoBehaviour
     
     private GameObject playerMapIconObject;
 
+    public MapMinimapType MapType;
+
     public float ObjectScaleFactor = 1f;
+    public float MinimapPixelsPerTile = 5f;
 
     public float minScale;
     public float maxScale;
@@ -29,7 +33,7 @@ public class MinimapController : MonoBehaviour
 
     private float offsetX;
     private float offsetY;
-
+    
     private static MinimapController instance;
 
     private Coroutine loadCoroutine;
@@ -76,13 +80,14 @@ public class MinimapController : MonoBehaviour
 
         var w = mapSprite.texture.height;
         var h = mapSprite.texture.height;
+        var offset = new Vector3(0.5f, 0.5f, 0);
 
-        r.localPosition = new Vector3(pos.x * 10f / 2f, pos.y * 10f / 2f - h, 0f);
+        r.localPosition = new Vector3(pos.x * MinimapPixelsPerTile / 2f, pos.y * MinimapPixelsPerTile / 2f - h, 0f) + offset;
 
         //ScrollRect.horizontalNormalizedPosition = pos.x / (float)w;
 
-        var px = (pos.x * 10f / 2f + offsetX) * curSize;
-        var py = ((h - pos.y * 10f / 2f) + offsetY) * curSize;
+        var px = (pos.x * MinimapPixelsPerTile / 2f + offsetX) * curSize;
+        var py = ((h - pos.y * MinimapPixelsPerTile / 2f) + offsetY) * curSize;
 
         var scrollx = px - 125f;
         var scrolly = py - 125f;
@@ -95,7 +100,7 @@ public class MinimapController : MonoBehaviour
         scrollx = Mathf.Clamp(-scrollx, -maxScroll, 0);
         scrolly = Mathf.Clamp(scrolly, 0, maxScroll);
 
-        Debug.Log($"{curSize} {px} {py} {scrollx} {scrolly} {maxScroll}");
+        //Debug.Log($"{curSize} {px} {py} {scrollx} {scrolly} {maxScroll}");
 
         ContentContainer.GetComponent<RectTransform>().anchoredPosition = new Vector3(scrollx, scrolly, 0f);
 
@@ -107,7 +112,7 @@ public class MinimapController : MonoBehaviour
         playerMapIconObject.transform.localScale = Vector3.one * s;
     }
 
-    public void LoadMinimap(string mapName, string mapType)
+    public void LoadMinimap(string mapName, MapMinimapType type)
     {
         if(loadCoroutine != null)
             StopCoroutine(loadCoroutine);
@@ -120,18 +125,22 @@ public class MinimapController : MonoBehaviour
         //if(walkSprite != null)
         //    Destroy(walkSprite);
         walkSprite = null;
+        MapType = type;
 
-        loadCoroutine = StartCoroutine(LoadMinimapCoroutine(mapName, mapType));
+        loadCoroutine = StartCoroutine(LoadMinimapCoroutine(mapName));
     }
 
     public void SetZoom(float zoom)
     {
         zoom = Mathf.Clamp(zoom, minScale, maxScale);
+        //Debug.Log($"Setting minimap size to {zoom} (in a range of {minScale} to {maxScale})");
 
         curSize = zoom;
 
         if (mapSprite == null)
             return;
+
+        UpdateMapMaterial();
 
         var w = mapSprite.texture.width;
         var h = mapSprite.texture.height;
@@ -164,10 +173,39 @@ public class MinimapController : MonoBehaviour
 
     public void UpdateZoomFromSlider()
     {
-        SetZoom(ZoomSlider.value.Remap(0, 1, minScale, maxScale));
+        
+        SetZoom(LeanTween.easeInQuad(minScale, maxScale, ZoomSlider.value/ZoomSlider.maxValue));
+        
+        //SetZoom(ZoomSlider.value.Remap(ZoomSlider.minValue, ZoomSlider.maxValue, minScale, maxScale));
     }
 
-    public IEnumerator LoadMinimapCoroutine(string mapName, string mapType)
+    private void UpdateMapMaterial()
+    {
+
+        MapImage.sprite = mapSprite;
+
+        if (MapType == MapMinimapType.Dungeon)
+        {
+            MapImage.sprite = walkSprite;
+            MapImage.material = DungeonMaterial;
+        }
+        else
+        {
+            if (MapType == MapMinimapType.Town)
+            {
+                //dungeon material but with regular map, so no highlighted walk
+                MapImage.material = DungeonMaterial;
+            }
+            else
+            {
+                MapImage.material = OverworldMaterial;
+                OverworldMaterial.SetTexture("_SecondaryTex", walkSprite.texture);
+            }
+
+        }
+    }
+
+    public IEnumerator LoadMinimapCoroutine(string mapName)
     {
         yield return new WaitForEndOfFrame();
 
@@ -188,36 +226,21 @@ public class MinimapController : MonoBehaviour
         mapSprite = loadMap.Result;
         walkSprite = loadWalk.Result;
 
-        MapImage.sprite = mapSprite;
-
-        if (mapType == "Dungeon")
-        {
-            MapImage.sprite = walkSprite;
-            MapImage.material = DungeonMaterial;
-        }
-        else
-        {
-            if (mapType == "Town")
-            {
-                //dungeon material but with regular map, so no highlighted walk
-                MapImage.material = DungeonMaterial;
-            }
-            else
-            {
-                MapImage.material = OverworldMaterial;
-                OverworldMaterial.SetTexture("_SecondaryTex", walkSprite.texture);
-            }
-            
-        }
+        UpdateMapMaterial();
 
         minScale = 250f / mapSprite.texture.width;
-        maxScale = 1f;
-
+        
         if (250f / mapSprite.texture.height < minScale)
             minScale = 250f / mapSprite.texture.height;
 
-        if (minScale > 1f)
-            maxScale = 1f;
+        maxScale = minScale * 6f;
+
+        maxScale = Mathf.Clamp(maxScale, 2f, 10f);
+
+        if (minScale > maxScale)
+            maxScale = minScale;
+
+
 
         //var sprite = Sprite.Create(map, new Rect(0, 0, map.width, map.height), new Vector2(0, 1), 1);
 
@@ -242,7 +265,7 @@ public class MinimapController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Mathf.Approximately(curSize, lastZoom))
+        if(!Mathf.Approximately(curSize, lastZoom))
             SetZoom(curSize);
     }
 }

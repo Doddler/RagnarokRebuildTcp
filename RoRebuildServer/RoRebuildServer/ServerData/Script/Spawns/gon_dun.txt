@@ -1,0 +1,31 @@
+MapConfig("gon_dun01")
+{
+	CreateSpawn("BLOOD_BUTTERFLY", 55, 650000, 350000);
+	CreateSpawn("LIVE_PEACH_TREE", 35);
+	CreateSpawn("ZIPPER_BEAR", 30);
+	CreateSpawn("RED_PLANT", 5);
+	CreateSpawn("YELLOW_PLANT", 10);
+	CreateSpawn("WHITE_PLANT", 10);
+}
+
+MapConfig("gon_dun02")
+{
+	CreateSpawn("LIVE_PEACH_TREE", 2, %(241, 226, 15, 20), 300000, 150000);
+	CreateSpawn("BABY_LEOPARD", 4, %(241, 226, 15, 20), 600000, 300000);
+	CreateSpawn("LIVE_PEACH_TREE", 3, %(241, 226, 15, 20), 120000, 60000);
+	CreateSpawn("LIVE_PEACH_TREE", 1, %(33, 115, 10, 15), 300000, 150000);
+	CreateSpawn("BABY_LEOPARD", 2, %(33, 115, 10, 15), 600000, 300000);
+	CreateSpawn("EVIL_CLOUD_HERMIT", 20, 690000, 390000);
+	CreateSpawn("BLOOD_BUTTERFLY", 20);
+	CreateSpawn("LIVE_PEACH_TREE", 15);
+	CreateSpawn("YELLOW_PLANT", 10);
+}
+
+MapConfig("gon_dun03")
+{
+	CreateSpawn("WHITE_PLANT", 10);
+	CreateSpawn("WILD_GINSENG", 20, 600000, 300000);
+	CreateSpawn("WICKED_NYMPH", 50, 600000, 300000);
+	CreateSpawn("EVIL_CLOUD_HERMIT", 30);
+	CreateSpawn("DARK_SNAKE_LORD", 1, 5650000, 3650000);
+}

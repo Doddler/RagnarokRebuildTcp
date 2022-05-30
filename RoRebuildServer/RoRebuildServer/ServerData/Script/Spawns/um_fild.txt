@@ -1,0 +1,89 @@
+MapConfig("um_fild01")
+{
+	CreateSpawn("DRYAD", 40);
+	CreateSpawn("STEM_WORM", 30);
+	CreateSpawn("HARPY", 2);
+	CreateSpawn("DUSTINESS", 20);
+	CreateSpawn("WOOTAN_FIGHTER", 10);
+	CreateSpawn("GREEN_PLANT", 10, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+	CreateSpawn("SHINING_PLANT", 5, 180000, 90000);
+	CreateSpawn("SHINING_PLANT", 1, 180000, 90000);
+}
+
+MapConfig("um_fild02")
+{
+	CreateSpawn("COCO", 10);
+	CreateSpawn("CHOCO", 3);
+	CreateSpawn("KIND_OF_BEETLE", 30);
+	CreateSpawn("DUSTINESS", 20);
+	CreateSpawn("WOOTAN_FIGHTER", 26);
+	CreateSpawn("STONE_SHOOTER", 13);
+	CreateSpawn("STONE_SHOOTER", 1, %(169, 215, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(169, 215, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(159, 285, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(159, 285, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(99, 303, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(99, 303, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(122, 242, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(122, 242, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(124, 198, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(124, 198, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(126, 133, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(126, 133, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(159, 171, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(159, 171, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(284, 247, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(284, 247, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(330, 262, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(330, 262, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(296, 187, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(296, 187, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(285, 105, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(285, 105, 10, 10), 120000, 60000);
+	CreateSpawn("STONE_SHOOTER", 1, %(257, 137, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_FIGHTER", 2, %(257, 137, 10, 10), 120000, 60000);
+	CreateSpawn("FLORA", 3, %(360, 320, 20, 30), 180000, 120000);
+	CreateSpawn("RED_PLANT", 5, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 5, 180000, 90000);
+}
+
+MapConfig("um_fild03")
+{
+	CreateSpawn("PARASITE", 60);
+	CreateSpawn("DRAGON_TAIL", 45);
+	CreateSpawn("ALLIGATOR", 15);
+	CreateSpawn("STAINER", 10);
+	CreateSpawn("GRYPHON", 1, 3500000, 1900000);
+	CreateSpawn("PEST", 2);
+	CreateSpawn("BLUE_PLANT", 5, 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 10, 180000, 90000);
+	CreateSpawn("SHINING_PLANT", 2, 180000, 90000);
+}
+
+MapConfig("um_fild04")
+{
+	CreateSpawn("KIND_OF_BEETLE", 30);
+	CreateSpawn("HORN", 15);
+	CreateSpawn("CHOCO", 2);
+	CreateSpawn("WOOTAN_SHOOTER", 7);
+	CreateSpawn("KIND_OF_BEETLE", 4, %(264, 293, 10, 10), 120000, 60000);
+	CreateSpawn("HORN", 2, %(264, 293, 10, 10), 1200000, 60000);
+	CreateSpawn("KIND_OF_BEETLE", 2, %(121, 239, 10, 10), 120000, 60000);
+	CreateSpawn("KIND_OF_BEETLE", 2, %(91, 79, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_SHOOTER", 1, %(91, 79, 10, 10), 300000, 60000);
+	CreateSpawn("KIND_OF_BEETLE", 2, %(244, 339, 10, 10), 120000, 60000);
+	CreateSpawn("KIND_OF_BEETLE", 2, %(295, 93, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_SHOOTER", 1, %(295, 93, 10, 10), 300000, 60000);
+	CreateSpawn("KIND_OF_BEETLE", 2, %(118, 237, 10, 10), 120000, 60000);
+	CreateSpawn("HORN", 1, %(118, 237, 10, 10), 120000, 60000);
+	CreateSpawn("KIND_OF_BEETLE", 2, %(311, 285, 10, 10), 120000, 60000);
+	CreateSpawn("HORN", 1, %(311, 285, 10, 10), 120000, 60000);
+	CreateSpawn("KIND_OF_BEETLE", 2, %(206, 188, 10, 10), 120000, 60000);
+	CreateSpawn("HORN", 1, %(206, 188, 10, 10), 120000, 60000);
+	CreateSpawn("KIND_OF_BEETLE", 2, %(239, 245, 10, 10), 120000, 60000);
+	CreateSpawn("HORN", 1, %(239, 245, 10, 10), 120000, 60000);
+	CreateSpawn("WOOTAN_SHOOTER", 1, %(239, 245, 10, 10), 300000, 60000);
+	CreateSpawn("RED_PLANT", 5, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 5, 180000, 90000);
+}

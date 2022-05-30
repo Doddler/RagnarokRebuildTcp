@@ -1,0 +1,4 @@
+MapConfig("lhz_in01")
+{
+	CreateSpawn("RED_MUSHROOM", 1, %(157, 54, 0, 0), 1200000, 600000);
+}

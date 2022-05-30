@@ -1,0 +1,15 @@
+MapConfig("ayo_dun01")
+{
+	CreateSpawn("LEAF_CAT", 65);
+	CreateSpawn("WHISPER", 10);
+	CreateSpawn("KRABEN", 5);
+	CreateSpawn("GHOUL", 30);
+}
+
+MapConfig("ayo_dun02")
+{
+	CreateSpawn("TAMRUAN", 70);
+	CreateSpawn("WHISPER", 20);
+	CreateSpawn("KRABEN", 20);
+	CreateSpawn("LADY_TANEE", 1, %(150, 90, 15, 30), 25200000, 18000000);
+}

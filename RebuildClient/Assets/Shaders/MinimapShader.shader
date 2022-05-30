@@ -112,7 +112,7 @@ Shader "Ragnarok/MinimapShader"
 				if (color2.r > 0.5)
 					color.rgb *= 0.6;
 
-				color.a = IN.color.a;
+				//color.a = IN.color.a;
 
 				return color;
 			}

@@ -1,0 +1,33 @@
+MapConfig("juperos_01")
+{
+	CreateSpawn("VENATU_4", 15, %(100, 180, 60, 70));
+	CreateSpawn("VENATU_1", 25, %(100, 180, 60, 70));
+	CreateSpawn("VENATU_2", 20, %(100, 180, 60, 70));
+	CreateSpawn("VENATU_3", 25, %(100, 180, 60, 70));
+	CreateSpawn("VENATU_4", 35, %(192, 132, 60, 80));
+	CreateSpawn("VENATU_1", 45, %(192, 132, 60, 80));
+	CreateSpawn("VENATU_2", 50, %(192, 132, 60, 80));
+	CreateSpawn("VENATU_3", 45, %(192, 132, 60, 80));
+}
+
+MapConfig("juperos_02")
+{
+	CreateSpawn("VENATU_4", 50);
+	CreateSpawn("VENATU_1", 65);
+	CreateSpawn("VENATU_2", 65);
+	CreateSpawn("VENATU_3", 65);
+	CreateSpawn("APOCALIPS", 70);
+}
+
+MapConfig("jupe_core")
+{
+	CreateSpawn("VENATU_1", 25);
+	CreateSpawn("VENATU_2", 25);
+	CreateSpawn("VENATU_3", 25);
+	CreateSpawn("DIMIK_1", 40);
+	CreateSpawn("DIMIK_2", 40);
+	CreateSpawn("DIMIK_3", 40);
+	CreateSpawn("DIMIK_4", 40);
+	CreateSpawn("ARCHDAM", 40);
+	CreateSpawn("APOCALIPS_H", 1, 7200000, 3600000);
+}

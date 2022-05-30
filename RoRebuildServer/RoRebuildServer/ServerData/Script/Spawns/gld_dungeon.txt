@@ -1,0 +1,39 @@
+MapConfig("gld_dun01")
+{
+	CreateSpawn("SKELETON_GENERAL", 10);
+	CreateSpawn("AM_MUT", 20);
+	CreateSpawn("CAT_O_NINE_TAIL", 3, 1200000);
+	CreateSpawn("GAJOMART", 10);
+	CreateSpawn("EDDGA", 1, 28800000, 7200000);
+	CreateSpawn("VAGABOND_WOLF", 1, 14400000, 7200000);
+}
+
+MapConfig("gld_dun02")
+{
+	CreateSpawn("OWL_BARON", 3);
+	CreateSpawn("GIANT_SPIDER", 10, 240000, 120000);
+	CreateSpawn("ANCIENT_WORM", 5, 120000, 60000);
+	CreateSpawn("KILLER_MANTIS", 5, 120000, 60000);
+	CreateSpawn("GIANT_HONET", 10, 120000, 60000);
+	CreateSpawn("DOPPELGANGER", 1, 28800000, 7200000);
+}
+
+MapConfig("gld_dun03")
+{
+	CreateSpawn("MAYA_PUPLE", 3, 1200000, 600000);
+	CreateSpawn("CATERPILLAR", 20);
+	CreateSpawn("GULLINBURSTI", 10);
+	CreateSpawn("CREMY_FEAR", 20);
+	CreateSpawn("LEIB_OLMAI", 20);
+	CreateSpawn("MAYA", 1, 28800000, 7200000);
+}
+
+MapConfig("gld_dun04")
+{
+	CreateSpawn("WRAITH_DEAD", 20);
+	CreateSpawn("MINI_DEMON", 20);
+	CreateSpawn("ZOMBIE_MASTER", 20);
+	CreateSpawn("DARK_ILLUSION", 1, 1200000);
+	CreateSpawn("DARK_LORD", 1, 28800000, 7200000);
+	CreateSpawn("GHOSTRING", 1, 14400000, 7200000);
+}

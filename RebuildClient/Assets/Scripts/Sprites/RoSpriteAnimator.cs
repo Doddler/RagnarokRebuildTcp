@@ -25,7 +25,7 @@ namespace Assets.Scripts.Sprites
         public Color Color;
         public float Alpha;
 
-        private static bool nextUseSmoothRender = true;
+        private static bool nextUseSmoothRender = false;
         private static bool canUpdateRenderer = false;
 
         public List<RoSpriteAnimator> ChildrenSprites = new List<RoSpriteAnimator>();
@@ -228,7 +228,7 @@ namespace Assets.Scripts.Sprites
 
             MeshRenderer.sharedMaterials = materialArray;
 
-            SpriteData.Atlas.filterMode = !nextUseSmoothRender ? FilterMode.Bilinear : FilterMode.Point;
+            SpriteData.Atlas.filterMode = !nextUseSmoothRender ? FilterMode.Trilinear : FilterMode.Point;
 
 
             if (Parent != null)
@@ -632,7 +632,7 @@ namespace Assets.Scripts.Sprites
 
             if (Input.GetKeyDown(KeyCode.F2))
             {
-                SpriteData.Atlas.filterMode = nextUseSmoothRender ? FilterMode.Bilinear : FilterMode.Point;
+                SpriteData.Atlas.filterMode = nextUseSmoothRender ? FilterMode.Trilinear : FilterMode.Point;
                 canUpdateRenderer = true;
             }
 

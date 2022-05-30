@@ -307,7 +307,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 BakeAmbient();
             }
         }
-
+        
         private IEnumerator MakeMinimaps()
         {
             //yield return new EditorWaitForSeconds(1f);
@@ -323,6 +323,9 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 if (!TryFindMapEditor(out var editor))
                     yield break;
+
+                //editor.MapData.RebuildAtlas();
+                //editor.UpdateAtlasTexture();
 
                 var lights = FindObjectsOfType<Light>();
                 Light dirLight = null;
@@ -347,7 +350,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 var width = editor.MapData.InitialSize.x;
                 var height = editor.MapData.InitialSize.y;
 
-                go.transform.localPosition = new Vector3(width, 140, height);
+                go.transform.localPosition = new Vector3(width, 210, height);
                 go.transform.localRotation = Quaternion.Euler(90, 0, 0);
 
                 cam.orthographic = true;
@@ -357,18 +360,20 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 //dirLight.shadowStrength = oldStr;
 
+                const int pixelsPerTile = 2;
+
                 var tool = go.AddComponent<ScreenshotCamera>();
                 tool.FileName = editor.MapData.name;
-                tool.Width = width * 10;
-                tool.Height = height * 10;
+                tool.Width = width * pixelsPerTile;
+                tool.Height = height * pixelsPerTile;
 
                 tool.TakeScreenshotCoroutine();
 
                 var walk = editor.MapData.WalkData;
 
+                //start mesh building
                 var m = new MeshBuilder();
-
-
+                
                 var sharedData = walk.SharedMeshData;
                 sharedData.RebuildArea(new RectInt(0, 0, walk.InitialSize.x, walk.InitialSize.y), 1, false);
 
@@ -379,6 +384,8 @@ namespace Assets.Scripts.MapEditor.Editor
                 };
 
                 var c = new Color(170f / 255f, 170f / 255f, 170f / 255f, 1f);
+                var c1 = new Color(1f, 1f, 1f, 1f);
+
                 var colors = new Color[4] { c, c, c, c };
 
                 var count = 0;
@@ -408,13 +415,19 @@ namespace Assets.Scripts.MapEditor.Editor
                         count++;
                         if (count > 8000)
                         {
-                            gos.Add(BuildMeshIntoObject(m, c));
+                            var newGo = BuildMeshIntoObject(m, Shader.Find("UI/Default"));
+                            newGo.transform.position = new Vector3(0f, 200f, 0f);
+                            newGo.transform.localScale = new Vector3(1f, 0f, 1f);
+                            gos.Add(newGo);
                             count = 0;
                         }
                     }
                 }
 
-                gos.Add(BuildMeshIntoObject(m, c));
+                var newGo2 = BuildMeshIntoObject(m, Shader.Find("UI/Default"));
+                newGo2.transform.position = new Vector3(0f, 200f, 0f);
+                newGo2.transform.localScale = new Vector3(1f, 0f, 1f);
+                gos.Add(newGo2);
 
                 cam.backgroundColor = new Color(66f / 255f, 66f / 255f, 66f / 255f, 1f);
                 cam.cullingMask = 1 << LayerMask.NameToLayer("Editor");
@@ -423,11 +436,75 @@ namespace Assets.Scripts.MapEditor.Editor
                 tool.TakeScreenshotCoroutine();
 
                 mapList.Add(editor.MapData.name);
+                foreach (var g in gos)
+                    DestroyImmediate(g);
+
+
+                //start mesh building -------------------------------------------------
+                //this one for combined
+                m = new MeshBuilder();
+
+                c = new Color(0f, 0f, 0f, 0.5f);
+                colors = new Color[4] { c, c, c, c };
+
+                count = 0;
+                gos = new List<GameObject>();
+
+                for (var x = 0; x < walk.InitialSize.x; x++)
+                {
+                    for (var y = 0; y < walk.InitialSize.y; y++)
+                    {
+
+                        if (walk.WalkCellData.CellWalkable(x, y))
+                            continue;
+
+                        var tVerts = sharedData.GetTileVertices(new Vector2Int(x, y), Vector3.zero);
+                        var tNormals = sharedData.GetTileNormals(new Vector2Int(x, y));// topNormals[x1 + y1 * ChunkBounds.width];
+                        //var tColors = sharedData.GetTileColors(new Vector2Int(x, y));
+
+
+                        m.StartTriangle();
+
+                        m.AddVertices(tVerts);
+                        m.AddUVs(uvs);
+                        m.AddColors(colors);
+                        m.AddNormals(tNormals);
+                        m.AddTriangles(new[] { 0, 1, 3, 3, 2, 0 });
+
+                        count++;
+                        if (count > 8000)
+                        {
+                            var newGo = BuildMeshIntoObject(m, Shader.Find("Unlit/BlendingTestShader"));
+                            newGo.transform.position = new Vector3(0f, 200f, 0f);
+                            newGo.transform.localScale = new Vector3(1f, 0f, 1f);
+                            gos.Add(newGo);
+                            count = 0;
+                        }
+                    }
+                }
+
+                newGo2 = BuildMeshIntoObject(m, Shader.Find("Unlit/BlendingTestShader"));
+                newGo2.transform.position = new Vector3(0f, 200f, 0f);
+                newGo2.transform.localScale = new Vector3(1f, 0f, 1f);
+                gos.Add(newGo2);
+
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = new Color(0f, 0f, 0f, 0f);
+                cam.cullingMask = -1;
+
+                tool.FileName = editor.MapData.name + "_combined";
+                tool.TakeScreenshotCoroutine();
+
+                mapList.Add(editor.MapData.name);
+                //yield break;
+                foreach (var g in gos)
+                    DestroyImmediate(g);
+
+                //end light baking
+
 
                 DestroyImmediate(go);
 
-                foreach (var g in gos)
-                    DestroyImmediate(g);
 
                 if (dirLight != null)
                     dirLight.shadowStrength = 1f; //oldStr;
@@ -449,48 +526,55 @@ namespace Assets.Scripts.MapEditor.Editor
                 var tImporter = AssetImporter.GetAtPath(path) as TextureImporter;
                 if (tImporter != null)
                 {
-                    var tmp = new TextureImporterSettings();
-                    tImporter.ReadTextureSettings(tmp);
+                    //var tmp = new TextureImporterSettings();
+                    //tImporter.ReadTextureSettings(tmp);
 
                     tImporter.crunchedCompression = true;
                     tImporter.textureType = TextureImporterType.Sprite;
-                    tImporter.alphaSource = TextureImporterAlphaSource.None;
-                    tmp.spriteMeshType = SpriteMeshType.FullRect;
-                    tmp.textureType = TextureImporterType.Sprite;
-                    tImporter.SetTextureSettings(tmp);
-                    AssetDatabase.ImportAsset(path);
+                    tImporter.alphaSource = TextureImporterAlphaSource.FromInput;
+                    //tmp.spriteMeshType = SpriteMeshType.FullRect;
+                    //tmp.textureType = TextureImporterType.Sprite;
+                    tImporter.spriteImportMode = SpriteImportMode.Single;
+                    //tImporter.SetTextureSettings(tmp);
+                    EditorUtility.SetDirty(tImporter);
+                    tImporter.SaveAndReimport();
+                    //AssetDatabase.ImportAsset(path);
                 }
 
                 tImporter = AssetImporter.GetAtPath(path2) as TextureImporter;
                 if (tImporter != null)
                 {
 
-                    var tmp = new TextureImporterSettings();
-                    tImporter.ReadTextureSettings(tmp);
+                    //var tmp = new TextureImporterSettings();
+                    //tImporter.ReadTextureSettings(tmp);
 
                     tImporter.crunchedCompression = true;
                     tImporter.textureType = TextureImporterType.Sprite;
-                    tImporter.alphaSource = TextureImporterAlphaSource.None;
-                    tmp.spriteMeshType = SpriteMeshType.FullRect;
-                    tmp.textureType = TextureImporterType.Sprite;
-                    tImporter.SetTextureSettings(tmp);
-                    AssetDatabase.ImportAsset(path);
+                    tImporter.alphaSource = TextureImporterAlphaSource.FromInput;
+                    tImporter.spriteImportMode = SpriteImportMode.Single;
+                    //tmp.spriteMeshType = SpriteMeshType.FullRect;
+                    //tmp.spriteMode = 1;
+                    //tmp.textureType = TextureImporterType.Sprite;
+                    //tImporter.SetTextureSettings(tmp);
+                    EditorUtility.SetDirty(tImporter);
+                    tImporter.SaveAndReimport();
+                    //AssetDatabase.ImportAsset(path);
                 }
             }
 
             AssetDatabase.Refresh();
         }
 
-        private GameObject BuildMeshIntoObject(MeshBuilder m, Color c)
+        private GameObject BuildMeshIntoObject(MeshBuilder m, Shader shader)
         {
 
             var go2 = new GameObject("MapBlackout");
             var mf = go2.AddComponent<MeshFilter>();
             var mr = go2.AddComponent<MeshRenderer>();
-            var mat = new Material(Shader.Find("Unlit/Color"));
+            var mat = new Material(shader);
             go2.layer = LayerMask.NameToLayer("Editor");
             mr.material = mat;
-            mat.color = c;
+            mat.color = Color.white;
 
             mf.mesh = m.Build();
             m.Clear();

@@ -1,0 +1,154 @@
+MapConfig("yuno_fild01")
+{
+	CreateSpawn("DUSTINESS", 50);
+	CreateSpawn("PORING", 20);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("GRAND_PECO", 3, %(190, 329, 80, 20), 50000, 25000);
+	CreateSpawn("RED_PLANT", 15, 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 2, %(70, 370, 10, 10), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 1, %(70, 370, 10, 10), 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 2, %(66, 267, 10, 10), 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 6, %(238, 326, 40, 40), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 2, %(238, 326, 40, 40), 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 15, 1800000, 900000);
+	CreateSpawn("GREEN_PLANT", 20, 1800000, 900000);
+	CreateSpawn("DUSTINESS", 25);
+}
+
+MapConfig("yuno_fild09")
+{
+	CreateSpawn("HUNTER_FLY", 10);
+	CreateSpawn("HORN", 40);
+	CreateSpawn("STAINER", 20);
+	CreateSpawn("KIND_OF_BEETLE", 30);
+	CreateSpawn("HUNTER_FLY", 10);
+	CreateSpawn("WILD_ROSE", 5);
+	CreateSpawn("RED_PLANT", 10, 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 10, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("yuno_fild02")
+{
+	CreateSpawn("KIND_OF_BEETLE", 40);
+	CreateSpawn("HORN", 40);
+	CreateSpawn("DELETER", 20);
+	CreateSpawn("DUSTINESS", 20);
+	CreateSpawn("PETIT", 10);
+	CreateSpawn("WILD_ROSE", 5);
+	CreateSpawn("RED_PLANT", 20, 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 20, 1800000, 900000);
+	CreateSpawn("GREEN_PLANT", 20, 1800000, 900000);
+	CreateSpawn("ANGELING", 1, 3600000, 180000);
+}
+
+MapConfig("yuno_fild03")
+{
+	CreateSpawn("GEOGRAPHER", 15);
+	CreateSpawn("PORING", 30);
+	CreateSpawn("DROPS", 40);
+	CreateSpawn("POPORING", 50);
+	CreateSpawn("MARIN", 20);
+	CreateSpawn("SIDE_WINDER", 1);
+	CreateSpawn("DEVILING", 1, 3600000, 180000);
+	CreateSpawn("YELLOW_PLANT", 20, 1800000, 900000);
+	CreateSpawn("RED_PLANT", 15, 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 2, %(297, 230, 10, 10), 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 1, %(136, 328, 1, 1), 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 1, %(137, 330, 1, 1), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 1, %(222, 262, 10, 10), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 1, %(297, 230, 10, 10), 1800000, 900000);
+}
+
+MapConfig("yuno_fild04")
+{
+	CreateSpawn("PORING", 60);
+	CreateSpawn("PUPA", 10);
+	CreateSpawn("CONDOR", 20);
+	CreateSpawn("DROPS", 40);
+	CreateSpawn("MASTERING", 1, 1800000, 900000);
+	CreateSpawn("RED_PLANT", 10, 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 10, 1800000, 900000);
+	CreateSpawn("GREEN_PLANT", 10, 1800000, 900000);
+}
+
+MapConfig("yuno_fild05")
+{
+	CreateSpawn("RAFFLESIA", 70);
+	CreateSpawn("DUSTINESS", 30);
+	CreateSpawn("HORN", 30);
+	CreateSpawn("KIND_OF_BEETLE", 10);
+	CreateSpawn("ARCHANGELING", 1, 3600000, 180000);
+	CreateSpawn("RED_PLANT", 10, 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 10, 1800000, 900000);
+	CreateSpawn("GREEN_PLANT", 10, 1800000, 900000);
+	CreateSpawn("BLUE_PLANT", 2, %(176, 202, 8, 8), 180000, 90000);
+	CreateSpawn("BLUE_PLANT", 2, %(300, 280, 5, 5), 180000, 90000);
+}
+
+MapConfig("yuno_fild06")
+{
+	CreateSpawn("SLEEPER", 70);
+	CreateSpawn("GOAT", 40);
+	CreateSpawn("DEMON_PUNGUS", 30);
+	CreateSpawn("RED_PLANT", 10);
+	CreateSpawn("YELLOW_PLANT", 10);
+	CreateSpawn("GREEN_PLANT", 10);
+}
+
+MapConfig("yuno_fild07")
+{
+	CreateSpawn("GOAT", 50);
+	CreateSpawn("GEOGRAPHER", 10);
+	CreateSpawn("DRILLER", 10);
+	CreateSpawn("HARPY", 1, 1800000, 900000);
+	CreateSpawn("RED_PLANT", 10, 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 10, 1800000, 900000);
+	CreateSpawn("GREEN_PLANT", 10, 1800000, 900000);
+}
+
+MapConfig("yuno_fild08")
+{
+	CreateSpawn("WILD_ROSE", 5);
+	CreateSpawn("GRAND_PECO", 30, %(200, 300, 290, 100));
+	CreateSpawn("GRAND_PECO", 20, %(272, 205, 100, 120));
+	CreateSpawn("GRAND_PECO", 30, %(230, 110, 250, 90));
+	CreateSpawn("GEOGRAPHER", 12, %(200, 300, 290, 100));
+	CreateSpawn("GEOGRAPHER", 6, %(272, 205, 100, 120));
+	CreateSpawn("GEOGRAPHER", 12, %(230, 110, 250, 90));
+	CreateSpawn("DUSTINESS", 7, %(200, 300, 290, 100));
+	CreateSpawn("DUSTINESS", 6, %(272, 205, 100, 120));
+	CreateSpawn("DUSTINESS", 7, %(230, 110, 250, 90));
+	CreateSpawn("RED_PLANT", 10, 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 10, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("yuno_fild10")
+{
+	CreateSpawn("DUSTINESS", 20);
+	CreateSpawn("HUNTER_FLY", 10);
+	CreateSpawn("GEOGRAPHER", 20);
+	CreateSpawn("STAINER", 20);
+	CreateSpawn("KIND_OF_BEETLE", 40);
+}
+
+MapConfig("yuno_fild11")
+{
+	CreateSpawn("SLEEPER", 10);
+	CreateSpawn("GEOGRAPHER", 3);
+	CreateSpawn("SLEEPER", 5, %(65, 294, 70, 160));
+	CreateSpawn("GEOGRAPHER", 2, %(65, 294, 70, 160));
+	CreateSpawn("SLEEPER", 35, %(225, 220, 125, 135));
+	CreateSpawn("GEOGRAPHER", 15, %(225, 220, 125, 135));
+	CreateSpawn("RED_PLANT", 10, 1800000, 900000);
+	CreateSpawn("YELLOW_PLANT", 10, 1800000, 900000);
+	CreateSpawn("GREEN_PLANT", 10, 1800000, 900000);
+}
+
+MapConfig("yuno_fild12")
+{
+	CreateSpawn("DEMON_PUNGUS", 30);
+	CreateSpawn("POPORING", 15);
+	CreateSpawn("GEOGRAPHER", 5);
+}

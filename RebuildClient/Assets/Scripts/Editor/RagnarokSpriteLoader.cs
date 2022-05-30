@@ -16,7 +16,8 @@ namespace Assets.Editor
 
     class RagnarokSpriteLoader
     {
-        private Stream fs;
+        //private Stream fs;
+        private MemoryStream ms;
         private BinaryReader br;
 
         private int version;
@@ -64,9 +65,9 @@ namespace Assets.Editor
                 var size = width * height;
                 var data = new byte[size];
                 var index = 0;
-                var end = br.ReadUInt16() + fs.Position;
+                var end = br.ReadUInt16() + ms.Position;
 
-                while (fs.Position < end)
+                while (ms.Position < end)
                 {
                     var c = br.ReadByte();
                     data[index++] = c;
@@ -244,9 +245,13 @@ namespace Assets.Editor
         {
             var filename = ctx.assetPath;
             var basename = Path.GetFileNameWithoutExtension(filename);
-            
-            fs = new FileStream(filename, FileMode.Open);
-            br = new BinaryReader(fs);
+
+            var bytes = File.ReadAllBytes(filename);
+            ms = new MemoryStream(bytes);
+            br = new BinaryReader(ms);
+
+            //fs = new FileStream(filename, FileMode.Open);
+            //br = new BinaryReader(fs);
 
             var header = new string(br.ReadChars(2));
             if (header != "SP")
@@ -312,7 +317,7 @@ namespace Assets.Editor
             supertexture.name = $"{basename}_atlas";
             var rects = supertexture.PackTextures(Textures.ToArray(), 2, 2048, false);
             supertexture.filterMode = FilterMode.Point;
-
+            
             ctx.AddObjectToAsset(supertexture.name, supertexture);
 
 
@@ -374,8 +379,9 @@ namespace Assets.Editor
             //AnimationUtility.SetObjectReferenceCurve(anim, spriteBinding, keyframes);
 
             //ctx.AddObjectToAsset("anim", anim);
-
-            fs.Close();
+            
+            br.Dispose();
+            ms.Dispose();
         }
     }
 }

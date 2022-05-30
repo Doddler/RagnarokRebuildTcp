@@ -1,0 +1,29 @@
+MapConfig("lou_dun01")
+{
+	CreateSpawn("HORONG", 15);
+	CreateSpawn("INCREASE_SOIL", 15);
+	CreateSpawn("SIDE_WINDER", 10, %(215, 159, 40, 80), 300000, 120000);
+	CreateSpawn("LI_ME_MANG_RYANG", 25, %(215, 159, 40, 80), 300000, 120000);
+	CreateSpawn("LI_ME_MANG_RYANG", 20);
+	CreateSpawn("GRIZZLY", 15);
+	CreateSpawn("LEIB_OLMAI", 1, 300000, 120000);
+	CreateSpawn("BLACK_MUSHROOM", 5, %(197, 77, 10, 10));
+	CreateSpawn("SHINING_PLANT", 5);
+}
+
+MapConfig("lou_dun02")
+{
+	CreateSpawn("HYEGUN", 40, 300000, 120000);
+	CreateSpawn("MUNAK", 25);
+	CreateSpawn("DANCING_DRAGON", 5);
+	CreateSpawn("MIMIC", 5);
+}
+
+MapConfig("lou_dun03")
+{
+	CreateSpawn("HYEGUN", 25);
+	CreateSpawn("DANCING_DRAGON", 25);
+	CreateSpawn("CIVIL_SERVANT", 15);
+	CreateSpawn("CHUNG_E_", 5, 3000000, 1800000);
+	CreateSpawn("BACSOJIN_", 1, 7000000, 5000000);
+}

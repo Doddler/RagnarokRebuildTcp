@@ -1,0 +1,20 @@
+MapConfig("lou_fild01")
+{
+	CreateSpawn("BIGFOOT", 7, %(224, 315, 100, 50));
+	CreateSpawn("BIGFOOT", 4, %(203, 225, 110, 35), 60000, 30000);
+	CreateSpawn("BIGFOOT", 4, %(273, 128, 75, 50));
+	CreateSpawn("CARAMEL", 7, %(224, 315, 100, 50));
+	CreateSpawn("CARAMEL", 7, %(203, 225, 110, 35));
+	CreateSpawn("CARAMEL", 7, %(273, 128, 75, 50));
+	CreateSpawn("MANTIS", 10, %(224, 315, 100, 50));
+	CreateSpawn("MANTIS", 10, %(203, 225, 110, 35));
+	CreateSpawn("MANTIS", 10, %(273, 128, 75, 50));
+	CreateSpawn("INCREASE_SOIL", 8, %(224, 315, 100, 50));
+	CreateSpawn("INCREASE_SOIL", 15, %(203, 225, 110, 35), 60000, 30000);
+	CreateSpawn("INCREASE_SOIL", 7, %(273, 128, 75, 500));
+	CreateSpawn("ANACONDAQ", 2, %(224, 315, 100, 50));
+	CreateSpawn("ANACONDAQ", 1, %(203, 225, 110, 35));
+	CreateSpawn("ANACONDAQ", 2, %(273, 128, 75, 50));
+	CreateSpawn("BLACK_MUSHROOM", 5);
+	CreateSpawn("YELLOW_PLANT", 10);
+}

@@ -1,0 +1,23 @@
+MapConfig("xmas_dun01")
+{
+	CreateSpawn("PORING", 10);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("MASTERING", 1, 1800000, 900000);
+	CreateSpawn("ANGELING", 1, 3600000, 1800000);
+	CreateSpawn("DROPS", 10);
+	CreateSpawn("MARIN", 20);
+	CreateSpawn("COOKIE_XMAS", 40);
+	CreateSpawn("MYSTCASE", 5);
+	CreateSpawn("CHEPET", 1, 1200000, 900000);
+	CreateSpawn("COOKIE", 40);
+}
+
+MapConfig("xmas_dun02")
+{
+	CreateSpawn("COOKIE_XMAS", 20);
+	CreateSpawn("CRUISER", 35);
+	CreateSpawn("MYSTCASE", 50);
+	CreateSpawn("KNIGHT_OF_WINDSTORM", 1, 3600000, 7200000);
+	CreateSpawn("GARM_BABY", 1, 1800000);
+	CreateSpawn("COOKIE", 20);
+}

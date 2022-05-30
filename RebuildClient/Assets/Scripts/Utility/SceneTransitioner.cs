@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts.Objects;
 using RebuildSharedData.ClientTypes;
+using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -146,10 +147,12 @@ namespace Assets.Scripts.Utility
 				AudioManager.Instance.PlayBgm(newMap.Music);
 			}
 
-			if(newMap.MapMode == "None")
-				MinimapController.Instance.gameObject.SetActive(false);
-			else
-			    MinimapController.Instance.LoadMinimap(newScene, newMap.MapMode);
+            var type = (MapMinimapType)newMap.MapMode;
+
+			//if(type == MapMinimapType.None)
+			//	MinimapController.Instance.gameObject.SetActive(false);
+			//else
+			    MinimapController.Instance.LoadMinimap(newScene, MapMinimapType.Field);
 		}
 
 		private void FinishSceneChange(AsyncOperation op)

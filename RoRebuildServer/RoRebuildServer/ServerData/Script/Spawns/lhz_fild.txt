@@ -1,0 +1,33 @@
+MapConfig("lhz_fild01")
+{
+	CreateSpawn("METALING", 60);
+	CreateSpawn("MOLE", 60);
+	CreateSpawn("CARAMEL", 20);
+	CreateSpawn("GREEN_PLANT", 10, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+	CreateSpawn("RED_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("lhz_fild02")
+{
+	CreateSpawn("METALING", 50);
+	CreateSpawn("CARAMEL", 30);
+	CreateSpawn("HORN", 10);
+	CreateSpawn("MOLE", 10);
+	CreateSpawn("ANOPHELES", 15);
+	CreateSpawn("YELLOW_PLANT", 15, 60000, 30000);
+	CreateSpawn("GREEN_PLANT", 15, 60000, 30000);
+}
+
+MapConfig("lhz_fild03")
+{
+	CreateSpawn("METALING", 30, %(262, 233, 74, 140));
+	CreateSpawn("CARAMEL", 30, %(127, 248, 45, 140));
+	CreateSpawn("HORN", 10, %(127, 248, 45, 140));
+	CreateSpawn("RAFFLESIA", 5, %(127, 248, 45, 140));
+	CreateSpawn("ANOPHELES", 20);
+	CreateSpawn("STEM_WORM", 50);
+	CreateSpawn("HILL_WIND_1", 15);
+	CreateSpawn("RED_PLANT", 10, 60000, 30000);
+	CreateSpawn("GREEN_PLANT", 10, 60000, 30000);
+}

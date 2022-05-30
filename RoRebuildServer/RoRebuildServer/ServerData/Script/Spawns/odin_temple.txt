@@ -1,0 +1,41 @@
+MapConfig("odin_tem01")
+{
+	CreateSpawn("BREEZE", 10);
+	CreateSpawn("PLASMA_Y", 15);
+	CreateSpawn("PLASMA_R", 3);
+	CreateSpawn("PLASMA_G", 3);
+	CreateSpawn("PLASMA_P", 3);
+	CreateSpawn("PLASMA_B", 3);
+	CreateSpawn("SKEGGIOLD", 1);
+	CreateSpawn("YELLOW_PLANT", 5, 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 5, 180000, 90000);
+	CreateSpawn("BLUE_PLANT", 5, 90000, 450000);
+}
+
+MapConfig("odin_tem02")
+{
+	CreateSpawn("SKEGGIOLD", 3);
+	CreateSpawn("SKEGGIOLD_", 3);
+	CreateSpawn("SKOGUL", 20);
+	CreateSpawn("PLASMA_Y", 15);
+	CreateSpawn("FRUS", 15);
+	CreateSpawn("G_SKOGUL", 10);
+	CreateSpawn("G_FRUS", 10);
+	CreateSpawn("G_RANDGRIS", 1);
+	CreateSpawn("BLUE_PLANT", 10, 180000, 90000);
+	CreateSpawn("G_SKOGUL", 5);
+	CreateSpawn("G_FRUS", 10);
+}
+
+MapConfig("odin_tem03")
+{
+	CreateSpawn("SKEGGIOLD", 15);
+	CreateSpawn("SKEGGIOLD_", 10);
+	CreateSpawn("SKOGUL", 5);
+	CreateSpawn("PLASMA_Y", 20);
+	CreateSpawn("FRUS", 15);
+	CreateSpawn("G_RANDGRIS", 1);
+	CreateSpawn("RANDGRIS", 1, 28800000, 7200000);
+	CreateSpawn("BLUE_PLANT", 10, 180000, 90000);
+	CreateSpawn("SHINING_PLANT", 1, 180000, 90000);
+}

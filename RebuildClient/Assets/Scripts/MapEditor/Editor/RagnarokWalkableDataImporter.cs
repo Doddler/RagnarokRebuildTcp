@@ -98,6 +98,10 @@ namespace Assets.Scripts.MapEditor.Editor
                             c.Type = CellType.None;
                             color = "red";
                             break;
+                        case 2:
+                            c.Type = CellType.Walkable | CellType.Snipable;
+                            color = "orange";
+                            break;
                         case 3:
                             c.Type = CellType.Walkable | CellType.Snipable | CellType.Water;
                             color = "blue";

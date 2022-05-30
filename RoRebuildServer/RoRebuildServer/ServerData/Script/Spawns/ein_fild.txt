@@ -1,0 +1,113 @@
+MapConfig("ein_fild01")
+{
+	CreateSpawn("DEMON_PUNGUS", 50);
+	CreateSpawn("PUNK", 50);
+}
+
+MapConfig("ein_fild02")
+{
+	CreateSpawn("DEMON_PUNGUS", 25);
+	CreateSpawn("DRILLER", 40);
+	CreateSpawn("UNGOLIANT", 1, 86400000, 86000000);
+}
+
+MapConfig("ein_fild03")
+{
+	CreateSpawn("METALING", 30);
+	CreateSpawn("GEOGRAPHER", 5);
+	CreateSpawn("MOLE", 40);
+	CreateSpawn("GEOGRAPHER", 10, %(153, 328, 100, 35));
+	CreateSpawn("GEOGRAPHER", 5, %(260, 190, 45, 25));
+	CreateSpawn("CARAMEL", 10, %(88, 143, 25, 70), 60000, 30000);
+	CreateSpawn("HORN", 5, %(155, 40, 35, 20), 60000, 30000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("ein_fild04")
+{
+	CreateSpawn("GEOGRAPHER", 15);
+	CreateSpawn("MOLE", 5);
+	CreateSpawn("GEOGRAPHER", 45, %(200, 295, 125, 65));
+	CreateSpawn("GEOGRAPHER", 5, %(125, 135, 40, 40));
+	CreateSpawn("GEOGRAPHER", 5, %(260, 70, 20, 30));
+	CreateSpawn("METALING", 50);
+	CreateSpawn("GIEARTH", 10, %(285, 240, 35, 90), 3600000, 3000000);
+	CreateSpawn("MOLE", 15, %(106, 284, 60, 60));
+	CreateSpawn("MINERAL", 5, %(106, 284, 60, 60), 3600000, 3000000);
+	CreateSpawn("RED_PLANT", 10, 180000, 90000);
+	CreateSpawn("GREEN_PLANT", 10, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("ein_fild05")
+{
+	CreateSpawn("MINERAL", 35);
+	CreateSpawn("ANOPHELES", 30);
+	CreateSpawn("OBSIDIAN", 20);
+	CreateSpawn("DEMON_PUNGUS", 20);
+	CreateSpawn("GEOGRAPHER", 10);
+}
+
+MapConfig("ein_fild06")
+{
+	CreateSpawn("PUPA", 15);
+	CreateSpawn("HARPY", 5);
+	CreateSpawn("GIEARTH", 2, 180000, 90000);
+	CreateSpawn("GOAT", 55);
+	CreateSpawn("BLACK_MUSHROOM", 10, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+	CreateSpawn("RED_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("ein_fild07")
+{
+	CreateSpawn("PORING", 40);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("METALING", 60);
+	CreateSpawn("FLORA", 20);
+	CreateSpawn("GEOGRAPHER", 10);
+	CreateSpawn("UNGOLIANT", 1, 86400000, 86000000);
+	CreateSpawn("RED_MUSHROOM", 10, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+	CreateSpawn("RED_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("ein_fild08")
+{
+	CreateSpawn("PORING", 25);
+	CreateSpawn("DROPS", 25);
+	CreateSpawn("POPORING", 25);
+	CreateSpawn("THIEF_BUG", 30);
+	CreateSpawn("METALING", 25);
+	CreateSpawn("PORCELLIO", 10);
+	CreateSpawn("RED_MUSHROOM", 10, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+	CreateSpawn("RED_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("ein_fild09")
+{
+	CreateSpawn("METALING", 40);
+	CreateSpawn("PORCELLIO", 20);
+	CreateSpawn("THIEF_BUG", 20);
+	CreateSpawn("THIEF_BUG_EGG", 3, %(100, 260, 2, 2), 600000, 300000);
+	CreateSpawn("RED_PLANT", 10, 120000, 60000);
+	CreateSpawn("YELLOW_PLANT", 10, 120000, 60000);
+	CreateSpawn("RED_MUSHROOM", 10, 120000, 60000);
+	CreateSpawn("FLORA", 5, %(260, 85, 50, 20), 300000, 120000);
+}
+
+MapConfig("ein_fild10")
+{
+	CreateSpawn("GEOGRAPHER", 10);
+	CreateSpawn("PORCELLIO", 15);
+	CreateSpawn("PORCELLIO", 20, %(152, 314, 130, 30));
+	CreateSpawn("RED_PLANT", 10, 120000, 60000);
+	CreateSpawn("YELLOW_PLANT", 10, 120000, 60000);
+	CreateSpawn("YOYO", 6, %(225, 95, 30, 45), 30000, 10000);
+	CreateSpawn("YOYO", 4, %(320, 130, 40, 40), 30000, 10000);
+	CreateSpawn("FLORA", 10, %(225, 95, 30, 45), 300000, 120000);
+	CreateSpawn("FLORA", 10, %(320, 130, 40, 40), 300000, 120000);
+	CreateSpawn("BLUE_PLANT", 5, 900000, 450000);
+}

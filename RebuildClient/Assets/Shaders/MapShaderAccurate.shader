@@ -25,7 +25,7 @@ Shader "Custom/MapShaderAccurate"
 	}
 		SubShader
 		{
-			Tags { "RenderType" = "AlphaTest" "IGNOREPROJECTOR" = "true" "LightMode" = "ForwardBase" }
+			Tags { "RenderType" = "AlphaTest" "LightMode" = "ForwardBase" }
 			LOD 200
 
 			Pass
@@ -174,6 +174,7 @@ Shader "Custom/MapShaderAccurate"
 					finalColor += lm * saturate(i.color.a);
 					
 					UNITY_APPLY_FOG(i.fogCoord, finalColor);
+					finalColor.a = 1; //reject transparancy, we're opaque and using cuttoff elsewhere. Fixes minimap generation having holes.
 					return finalColor;
 
 

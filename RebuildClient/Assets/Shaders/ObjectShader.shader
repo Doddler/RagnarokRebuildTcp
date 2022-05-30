@@ -9,6 +9,7 @@ Shader "Custom/ObjectShader"
         _Specular("Specular", Range(0,1)) = 0.0
         _Cutoff("Cutoff", Range(0,1)) = 0.5
         _AmbientIntensity("Ambient Intensity", Range(0,1)) = 1
+        _LightmapIntensity("Lightmap Intensity", Range(0,1)) = 1
     }
     SubShader
     {
@@ -114,6 +115,7 @@ Shader "Custom/ObjectShader"
             fixed4 _Color;
             fixed _Cutoff;
             fixed _AmbientIntensity;
+            fixed _LightmapIntensity;
             
 
 #ifdef DIRLIGHTMAP_COMBINED
@@ -162,7 +164,7 @@ Shader "Custom/ObjectShader"
                 clip(diffuse.a - _Cutoff);
                 
 #if LIGHTMAP_ON
-                float4 lm = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv2)), 1);
+                float4 lm = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv2)), 1) * _LightmapIntensity;
 #else
                 float4 lm = float4(ShadeSH9(float4(i.normal, 1)),1);
 #endif

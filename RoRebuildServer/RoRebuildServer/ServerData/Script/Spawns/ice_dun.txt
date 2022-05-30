@@ -1,0 +1,24 @@
+MapConfig("ice_dun01")
+{
+	CreateSpawn("GAZETI", 10);
+	CreateSpawn("ROWEEN", 40);
+	CreateSpawn("MUSCIPULAR", 20);
+	CreateSpawn("SIROMA", 60);
+}
+
+MapConfig("ice_dun02")
+{
+	CreateSpawn("GAZETI", 30);
+	CreateSpawn("ICEICLE", 10);
+	CreateSpawn("SNOWIER", 30);
+	CreateSpawn("SIROMA", 20);
+	CreateSpawn("ICE_TITAN", 10);
+}
+
+MapConfig("ice_dun03")
+{
+	CreateSpawn("GAZETI", 30);
+	CreateSpawn("ICEICLE", 10);
+	CreateSpawn("SNOWIER", 30);
+	CreateSpawn("ICE_TITAN", 50);
+}

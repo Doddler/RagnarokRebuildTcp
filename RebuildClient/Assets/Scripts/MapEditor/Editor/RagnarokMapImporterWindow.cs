@@ -227,9 +227,22 @@ namespace Assets.Scripts.MapEditor.Editor
             for (int i = 0; i < guids.Length; i++)
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
-                var fName = Path.GetFileName(path);
-				
-                var entry = settings.CreateOrMoveEntry(guids[i], defGroup, readOnly: false, postEvent: false);
+                var fName = Path.GetFileNameWithoutExtension(path).Replace("_walkmask", "");
+                
+                var map = maps.MapEntries.FirstOrDefault(m => m.Code == fName);
+
+                if (map == null)
+                {
+                    //Debug.Log("Not found: " + fName);
+                    var existing = defGroup.GetAssetEntry(guids[i]);
+                    if (existing == null)
+                        continue;
+                    settings.RemoveAssetEntry(guids[i], true);
+                    entriesRemoved.Add(existing);
+                    continue;
+                }
+
+				var entry = settings.CreateOrMoveEntry(guids[i], defGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
                 entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
                 entry.labels.Add("Minimap");
@@ -279,7 +292,7 @@ namespace Assets.Scripts.MapEditor.Editor
 			return walkData;
 		}
 
-        [MenuItem("Ragnarok/Import All Maps")]
+		[MenuItem("Ragnarok/Import All Maps")]
         static void ImportAllFiles()
         {
             var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");

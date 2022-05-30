@@ -1,0 +1,47 @@
+MapConfig("abyss_01")
+{
+	CreateSpawn("MIMIC", 10, 600000);
+	CreateSpawn("ANCIENT_MIMIC", 10, 600000);
+	CreateSpawn("FERUS", 10, %(152, 205, 130, 70));
+	CreateSpawn("FERUS_", 25, %(152, 205, 130, 70), 300000);
+	CreateSpawn("NOVUS", 3, %(152, 205, 130, 70));
+	CreateSpawn("NOVUS_", 3, %(152, 205, 130, 70));
+	CreateSpawn("FERUS", 10, %(103, 93, 85, 70));
+	CreateSpawn("FERUS_", 15, %(103, 93, 85, 70), 300000);
+	CreateSpawn("NOVUS", 3, %(103, 93, 85, 70));
+	CreateSpawn("NOVUS_", 3, %(103, 93, 85, 70));
+	CreateSpawn("FERUS", 10, %(195, 102, 85, 70));
+	CreateSpawn("FERUS_", 15, %(195, 102, 85, 70), 300000);
+	CreateSpawn("NOVUS", 3, %(195, 102, 85, 70));
+	CreateSpawn("NOVUS_", 3, %(195, 102, 85, 70));
+	CreateSpawn("PENOMENA", 15, %(110, 170, 15, 15), 660000, 300000);
+	CreateSpawn("PENOMENA", 5, %(195, 147, 5, 10), 720000, 300000);
+	CreateSpawn("PENOMENA", 10, %(140, 100, 15, 5), 780000, 300000);
+	CreateSpawn("DRAGON_EGG", 3, %(260, 40, 14, 14), 1200000, 600000);
+	CreateSpawn("DRAGON_EGG", 5, %(150, 160, 50, 50), 1800000, 600000);
+}
+
+MapConfig("abyss_02")
+{
+	CreateSpawn("MIMIC", 10, 900000);
+	CreateSpawn("ANCIENT_MIMIC", 10, 900000);
+	CreateSpawn("FERUS", 50, 300000);
+	CreateSpawn("ACIDUS", 10, 600000);
+	CreateSpawn("ACIDUS_", 60, 300000);
+	CreateSpawn("NOVUS", 5);
+	CreateSpawn("NOVUS_", 5);
+	CreateSpawn("DRAGON_EGG", 10, 1800000, 600000);
+}
+
+MapConfig("abyss_03")
+{
+	CreateSpawn("MIMIC", 10, 300000);
+	CreateSpawn("ANCIENT_MIMIC", 10, 300000);
+	CreateSpawn("ACIDUS", 60, 600000);
+	CreateSpawn("ACIDUS_", 10, 300000);
+	CreateSpawn("FERUS", 10, 300000);
+	CreateSpawn("FERUS_", 10, 300000);
+	CreateSpawn("DRAGON_EGG", 10, 1800000, 600000);
+	CreateSpawn("HYDRO", 3, 3000000, 2400000);
+	CreateSpawn("DETALE", 1, 10800000, 7200000);
+}

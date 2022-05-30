@@ -1,0 +1,10 @@
+MapConfig("gon_fild01")
+{
+	CreateSpawn("BABY_LEOPARD", 40, 600000, 300000);
+	CreateSpawn("ZIPPER_BEAR", 20);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("RICE_CAKE_BOY", 30);
+	CreateSpawn("WILD_GINSENG", 2, 630000, 330000);
+	CreateSpawn("GREEN_PLANT", 5);
+	CreateSpawn("SHINING_PLANT", 1);
+}

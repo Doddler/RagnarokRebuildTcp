@@ -1,0 +1,94 @@
+MapConfig("ra_fild01")
+{
+	CreateSpawn("MUSCIPULAR", 40);
+	CreateSpawn("GEOGRAPHER", 20);
+	CreateSpawn("DROSERA", 10);
+	CreateSpawn("GRYPHON", 1, 3500000, 1900000);
+}
+
+MapConfig("ra_fild02")
+{
+	CreateSpawn("MUSCIPULAR", 30);
+	CreateSpawn("GALION", 20);
+	CreateSpawn("DROSERA", 10);
+}
+
+MapConfig("ra_fild03")
+{
+	CreateSpawn("STAPO", 10);
+	CreateSpawn("GALION", 30);
+	CreateSpawn("ROWEEN", 20);
+	CreateSpawn("DROSERA", 10);
+}
+
+MapConfig("ra_fild04")
+{
+	CreateSpawn("ROWEEN", 50);
+	CreateSpawn("GALION", 20);
+	CreateSpawn("ATROCE", 1, 3600000, 180000);
+}
+
+MapConfig("ra_fild05")
+{
+	CreateSpawn("HILL_WIND_1", 40);
+	CreateSpawn("DROSERA", 20);
+	CreateSpawn("GEOGRAPHER", 10);
+}
+
+MapConfig("ra_fild06")
+{
+	CreateSpawn("HILL_WIND_1", 20);
+	CreateSpawn("ANOPHELES", 10);
+}
+
+MapConfig("ra_fild07")
+{
+	CreateSpawn("STAPO", 20);
+	CreateSpawn("GALION", 20);
+	CreateSpawn("ROWEEN", 30);
+}
+
+MapConfig("ra_fild08")
+{
+	CreateSpawn("STAPO", 50);
+	CreateSpawn("DROPS", 20);
+	CreateSpawn("DROSERA", 10);
+}
+
+MapConfig("ra_fild09")
+{
+	CreateSpawn("DROSERA", 30);
+	CreateSpawn("HILL_WIND_1", 5);
+	CreateSpawn("METALING", 10);
+	CreateSpawn("HARPY", 1, 1800000, 900000);
+}
+
+MapConfig("ra_fild10")
+{
+	CreateSpawn("STAPO", 30);
+	CreateSpawn("GALION", 15);
+	CreateSpawn("ROWEEN", 5);
+}
+
+MapConfig("ra_fild11")
+{
+	CreateSpawn("STAPO", 20);
+	CreateSpawn("DROPS", 30);
+	CreateSpawn("ROWEEN", 5);
+	CreateSpawn("YELLOW_PLANT", 5, 180000, 90000);
+	CreateSpawn("RED_PLANT", 5, 180000, 90000);
+}
+
+MapConfig("ra_fild12")
+{
+	CreateSpawn("STAPO", 10);
+	CreateSpawn("DROPS", 10);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("ra_fild13")
+{
+	CreateSpawn("STAPO", 30);
+	CreateSpawn("DROPS", 10);
+	CreateSpawn("ROWEEN", 5);
+}

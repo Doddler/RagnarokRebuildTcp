@@ -1,0 +1,55 @@
+MapConfig("gefenia01")
+{
+	CreateSpawn("FAKE_ANGEL", 60);
+	CreateSpawn("SUCCUBUS", 10);
+	CreateSpawn("INCUBUS", 10);
+	CreateSpawn("VIOLY", 30);
+	CreateSpawn("MINI_DEMON", 20);
+	CreateSpawn("KNIGHT_OF_ABYSS", 10);
+	CreateSpawn("BLOODY_KNIGHT", 1, 3600000, 3000000);
+	CreateSpawn("MYSTELTAINN", 1, 10800000, 7200000);
+	CreateSpawn("EXECUTIONER", 1, 18000000, 14400000);
+	CreateSpawn("TIRFING", 1, 18000000, 14400000);
+}
+
+MapConfig("gefenia02")
+{
+	CreateSpawn("FAKE_ANGEL", 30);
+	CreateSpawn("SUCCUBUS", 20);
+	CreateSpawn("INCUBUS", 10);
+	CreateSpawn("VIOLY", 40);
+	CreateSpawn("MINI_DEMON", 30);
+	CreateSpawn("KNIGHT_OF_ABYSS", 10);
+	CreateSpawn("BLOODY_KNIGHT", 1, 3600000, 3000000);
+	CreateSpawn("MYSTELTAINN", 1, 18000000, 14400000);
+	CreateSpawn("EXECUTIONER", 1, 18000000, 14400000);
+	CreateSpawn("TIRFING", 1, 10800000, 7200000);
+}
+
+MapConfig("gefenia03")
+{
+	CreateSpawn("FAKE_ANGEL", 40);
+	CreateSpawn("SUCCUBUS", 10);
+	CreateSpawn("INCUBUS", 20);
+	CreateSpawn("VIOLY", 40);
+	CreateSpawn("MINI_DEMON", 30);
+	CreateSpawn("KNIGHT_OF_ABYSS", 10);
+	CreateSpawn("BLOODY_KNIGHT", 1, 3600000, 3000000);
+	CreateSpawn("MYSTELTAINN", 1, 18000000, 14400000);
+	CreateSpawn("EXECUTIONER", 1, 10800000, 7200000);
+	CreateSpawn("TIRFING", 1, 18000000, 14400000);
+}
+
+MapConfig("gefenia04")
+{
+	CreateSpawn("FAKE_ANGEL", 30);
+	CreateSpawn("SUCCUBUS", 10, 600000, 300000);
+	CreateSpawn("INCUBUS", 10, 600000, 300000);
+	CreateSpawn("VIOLY", 30);
+	CreateSpawn("MINI_DEMON", 20);
+	CreateSpawn("KNIGHT_OF_ABYSS", 10);
+	CreateSpawn("BLOODY_KNIGHT", 1, 3600000, 3000000);
+	CreateSpawn("MYSTELTAINN", 1, 18000000, 14400000);
+	CreateSpawn("EXECUTIONER", 1, 18000000, 14400000);
+	CreateSpawn("TIRFING", 1, 18000000, 14400000);
+}

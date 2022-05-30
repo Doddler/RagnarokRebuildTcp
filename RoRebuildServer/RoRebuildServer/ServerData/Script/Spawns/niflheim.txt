@@ -1,0 +1,8 @@
+MapConfig("niflheim")
+{
+	CreateSpawn("DULLAHAN", 5, 1800000, 1200000);
+	CreateSpawn("GIBBET", 10, 1200000, 600000);
+	CreateSpawn("HYLOZOIST", 10, 1200000, 600000);
+	CreateSpawn("QUVE", 20, 300000, 150000);
+	CreateSpawn("LUDE", 20, 300000, 150000);
+}

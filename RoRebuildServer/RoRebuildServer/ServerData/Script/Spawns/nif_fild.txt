@@ -1,0 +1,29 @@
+MapConfig("nif_fild01")
+{
+	CreateSpawn("DISGUISE", 20);
+	CreateSpawn("DISGUISE", 30, 300000, 120000);
+	CreateSpawn("DULLAHAN", 7, %(227, 253, 20, 20), 1800000, 1200000);
+	CreateSpawn("DULLAHAN", 13);
+	CreateSpawn("GIBBET", 10);
+	CreateSpawn("HYLOZOIST", 10);
+	CreateSpawn("QUVE", 30);
+}
+
+MapConfig("nif_fild02")
+{
+	CreateSpawn("LUDE", 10, %(366, 236, 15, 15), 360000, 150000);
+	CreateSpawn("BLOODY_MURDERER", 1, %(356, 139, 10, 10), 1200000, 600000);
+	CreateSpawn("BLOODY_MURDERER", 1, %(144, 232, 10, 10), 1200000, 600000);
+	CreateSpawn("BLOODY_MURDERER", 1, %(118, 282, 15, 15), 1200000, 600000);
+	CreateSpawn("BLOODY_MURDERER", 1, %(62, 327, 15, 15), 1200000, 600000);
+	CreateSpawn("BLOODY_MURDERER", 7);
+	CreateSpawn("LOLI_RURI", 2, %(114, 136, 15, 15), 1200000, 600000);
+	CreateSpawn("HYLOZOIST", 4, %(52, 115, 10, 10), 1200000, 600000);
+	CreateSpawn("GIBBET", 5, %(84, 276, 15, 15), 1200000, 600000);
+	CreateSpawn("GIBBET", 5, %(352, 273, 15, 15), 300000, 150000);
+	CreateSpawn("LOLI_RURI", 19, 120000, 60000);
+	CreateSpawn("DULLAHAN", 5, %(352, 273, 15, 15), 600000, 300000);
+	CreateSpawn("DULLAHAN", 5);
+	CreateSpawn("HYLOZOIST", 6);
+	CreateSpawn("GIBBET", 10);
+}

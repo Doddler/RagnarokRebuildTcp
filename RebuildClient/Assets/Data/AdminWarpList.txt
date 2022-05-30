@@ -8,7 +8,7 @@ Towns
 	Izlude, izlude, 128, 96
 	Alberta, alberta, 31, 240
 	Aldebaran, aldebaran, 118, 104
-	Yuno, yuno
+	Juno, yuno
 Prontera Field
 	0, prt_fild00
 	1, prt_fild01
@@ -84,7 +84,7 @@ Mt. Mjolnir
 	10, mjolnir_10
 	11, mjolnir_11
 	12, mjolnir_12
-Yuno Field
+Juno Field
 	1, yuno_fild01
 	2, yuno_fild02
 	3, yuno_fild03

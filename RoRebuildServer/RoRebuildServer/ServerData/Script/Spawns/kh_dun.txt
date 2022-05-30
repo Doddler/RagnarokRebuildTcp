@@ -1,0 +1,30 @@
+MapConfig("kh_khiel01")
+{
+	CreateSpawn("ALICEL", 10);
+	CreateSpawn("ALIOT", 10);
+	CreateSpawn("ALIZA", 10);
+	CreateSpawn("G_ALICEL", 10);
+	CreateSpawn("G_ALIOT", 10);
+	CreateSpawn("G_ALIZA", 10);
+	CreateSpawn("G_CONSTANT", 10);
+}
+
+MapConfig("kh_dun01")
+{
+	CreateSpawn("ALICEL", 10);
+	CreateSpawn("ALICE", 30);
+	CreateSpawn("ALIOT", 10);
+	CreateSpawn("ALIZA", 60);
+	CreateSpawn("CONSTANT", 30);
+	CreateSpawn("G_CONSTANT", 10);
+}
+
+MapConfig("kh_dun02")
+{
+	CreateSpawn("ALICEL", 60);
+	CreateSpawn("ALIOT", 50);
+	CreateSpawn("ALIZA", 30);
+	CreateSpawn("CONSTANT", 15);
+	CreateSpawn("G_CONSTANT", 5);
+	CreateSpawn("KIEL_", 1, 7200000, 3600000);
+}

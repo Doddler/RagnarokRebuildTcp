@@ -1,0 +1,16 @@
+MapConfig("ayo_fild01")
+{
+	CreateSpawn("COCO", 30);
+	CreateSpawn("YOYO", 30);
+	CreateSpawn("SMOKIE", 30);
+	CreateSpawn("LEAF_CAT", 3, 3600000, 1800000);
+	CreateSpawn("GREEN_PLANT", 10);
+}
+
+MapConfig("ayo_fild02")
+{
+	CreateSpawn("LEAF_CAT", 50);
+	CreateSpawn("WOOTAN_FIGHTER", 20);
+	CreateSpawn("KIND_OF_BEETLE", 30);
+	CreateSpawn("YELLOW_PLANT", 10);
+}

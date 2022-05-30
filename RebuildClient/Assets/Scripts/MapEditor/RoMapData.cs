@@ -376,9 +376,9 @@ namespace Assets.Scripts.MapEditor
 
             TextureImportHelper.SetTexturesReadable(Textures);
 
-            var supertexture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            var supertexture = new Texture2D(2, 2, TextureFormat.RGBA32, 2, false);
             supertexture.name = $"{name}_atlas";
-            AtlasRects = supertexture.PackTextures(Textures.ToArray(), 2, 4096, false);
+            AtlasRects = supertexture.PackTextures(Textures.ToArray(), 4, 4096, false);
 
 
             var copyTexture = new Texture2D(supertexture.width, supertexture.height, TextureFormat.RGBA32, false);

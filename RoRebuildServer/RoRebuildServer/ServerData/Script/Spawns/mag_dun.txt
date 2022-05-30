@@ -1,0 +1,24 @@
+MapConfig("mag_dun01")
+{
+	CreateSpawn("LAVA_GOLEM", 20, 600000, 300000);
+	CreateSpawn("KAHO", 20);
+	CreateSpawn("EXPLOSION", 30);
+	CreateSpawn("GRIZZLY", 10);
+	CreateSpawn("BLAZZER", 20);
+}
+
+MapConfig("mag_dun02")
+{
+	CreateSpawn("BLAZZER", 5, %(70, 190, 20, 20), 300000, 150000);
+	CreateSpawn("BLAZZER", 15, %(200, 120, 40, 40), 300000, 150000);
+	CreateSpawn("NIGHTMARE_TERROR", 10, %(70, 87, 50, 50), 300000, 150000);
+	CreateSpawn("NIGHTMARE_TERROR", 3, %(210, 156, 15, 15), 60000, 30000);
+	CreateSpawn("NIGHTMARE_TERROR", 3, %(135, 153, 15, 15), 60000, 30000);
+	CreateSpawn("NIGHTMARE_TERROR", 14, 60000, 30000);
+	CreateSpawn("DELETER", 5, %(120, 202, 20, 20), 60000, 30000);
+	CreateSpawn("DELETER_", 10, %(185, 185, 50, 50), 300000, 150000);
+	CreateSpawn("DELETER", 5, %(200, 77, 30, 30), 300000, 150000);
+	CreateSpawn("GIG", 20);
+	CreateSpawn("DIABOLIC", 5, %(200, 77, 30, 30), 300000, 150000);
+	CreateSpawn("DIABOLIC", 5, %(135, 68, 15, 15), 300000, 30000);
+}

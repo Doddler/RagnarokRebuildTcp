@@ -1,0 +1,106 @@
+MapConfig("hu_fild01")
+{
+	CreateSpawn("BREEZE", 5, 900000, 300000);
+	CreateSpawn("PLASMA_B", 5, 900000, 300000);
+	CreateSpawn("PLASMA_G", 5, 900000, 300000);
+	CreateSpawn("PLASMA_P", 5, 900000, 300000);
+	CreateSpawn("PLASMA_R", 5, 900000, 300000);
+	CreateSpawn("PLASMA_Y", 5, 900000, 300000);
+	CreateSpawn("GEOGRAPHER", 30, 300000);
+	CreateSpawn("DEMON_PUNGUS", 30, 1200000, 600000);
+}
+
+MapConfig("hu_fild02")
+{
+	CreateSpawn("RAFFLESIA", 35);
+	CreateSpawn("ANOPHELES", 30);
+	CreateSpawn("METALING", 25);
+	CreateSpawn("SAVAGE_BABE", 25);
+	CreateSpawn("GREEN_IGUANA", 10);
+	CreateSpawn("BREEZE", 10);
+	CreateSpawn("GEOGRAPHER", 10);
+	CreateSpawn("DEMON_PUNGUS", 5);
+	CreateSpawn("NOVUS", 2);
+	CreateSpawn("NOVUS_", 2);
+}
+
+MapConfig("hu_fild03")
+{
+	CreateSpawn("METALING", 80);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("THIEF_BUG", 10);
+	CreateSpawn("GREEN_IGUANA", 10);
+	CreateSpawn("BLACK_MUSHROOM", 10, 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 10, 180000, 90000);
+}
+
+MapConfig("hu_fild04")
+{
+	CreateSpawn("BREEZE", 10);
+	CreateSpawn("DELETER", 40);
+	CreateSpawn("DELETER_", 30);
+	CreateSpawn("NOVUS", 10);
+	CreateSpawn("NOVUS_", 10);
+	CreateSpawn("ANOPHELES", 50);
+	CreateSpawn("GREEN_IGUANA", 20);
+	CreateSpawn("SLEEPER", 7, %(60, 149, 35, 122), 600000, 300000);
+	CreateSpawn("GREEN_PLANT", 10);
+	CreateSpawn("RED_PLANT", 10);
+	CreateSpawn("YELLOW_PLANT", 10);
+	CreateSpawn("BLUE_PLANT", 4, %(206, 210, 30, 18), 120000, 600000);
+	CreateSpawn("BLUE_PLANT", 2, %(206, 120, 10, 10), 120000, 600000);
+}
+
+MapConfig("hu_fild05")
+{
+	CreateSpawn("GREEN_IGUANA", 15, %(112, 272, 62, 82));
+	CreateSpawn("NOVUS", 3, %(112, 272, 62, 82));
+	CreateSpawn("NOVUS_", 3, %(112, 272, 62, 82));
+	CreateSpawn("ANOPHELES", 10, %(112, 272, 62, 82));
+	CreateSpawn("MUTANT_DRAGON", 1, %(112, 272, 62, 82), 24000000, 1800000);
+	CreateSpawn("GREEN_IGUANA", 15, %(276, 302, 93, 60));
+	CreateSpawn("NOVUS", 3, %(276, 302, 93, 60));
+	CreateSpawn("NOVUS_", 3, %(276, 302, 93, 60));
+	CreateSpawn("ANOPHELES", 10, %(276, 302, 93, 60));
+	CreateSpawn("MUTANT_DRAGON", 1, %(276, 302, 93, 60), 24000000, 1800000);
+	CreateSpawn("GREEN_IGUANA", 15, %(286, 144, 82, 90));
+	CreateSpawn("NOVUS", 3, %(286, 144, 82, 90));
+	CreateSpawn("NOVUS_", 3, %(286, 144, 82, 90));
+	CreateSpawn("ANOPHELES", 10, %(286, 144, 82, 90));
+	CreateSpawn("MUTANT_DRAGON", 1, %(286, 144, 82, 90), 24000000, 1800000);
+	CreateSpawn("GREEN_IGUANA", 15, %(286, 144, 82, 90));
+	CreateSpawn("NOVUS", 3, %(118, 106, 80, 70));
+	CreateSpawn("NOVUS_", 3, %(118, 106, 80, 70));
+	CreateSpawn("ANOPHELES", 10, %(118, 106, 80, 70));
+	CreateSpawn("MUTANT_DRAGON", 1, %(118, 106, 80, 70), 24000000, 1800000);
+	CreateSpawn("ANOPHELES", 10);
+	CreateSpawn("DRAGON_EGG", 2, 3600000, 1800000);
+	CreateSpawn("DRAGON_EGG", 1, %(196, 196, 5, 5), 3600000, 1800000);
+	CreateSpawn("DRAGON_EGG", 1, %(340, 50, 10, 10), 3600000, 1800000);
+	CreateSpawn("DRAGON_EGG", 1, %(280, 350, 5, 5), 3600000, 1800000);
+}
+
+MapConfig("hu_fild06")
+{
+	CreateSpawn("MOLE", 50);
+	CreateSpawn("CARAMEL", 20);
+	CreateSpawn("PORING", 10);
+	CreateSpawn("POPORING", 10);
+	CreateSpawn("METALING", 10);
+	CreateSpawn("GREEN_PLANT", 10, 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 180000, 90000);
+}
+
+MapConfig("hu_fild07")
+{
+	CreateSpawn("BREEZE", 10);
+	CreateSpawn("PETIT", 40);
+	CreateSpawn("PETIT_", 30);
+	CreateSpawn("NOVUS", 10);
+	CreateSpawn("NOVUS_", 10);
+	CreateSpawn("ANOPHELES", 30);
+	CreateSpawn("GREEN_IGUANA", 10);
+	CreateSpawn("GEOGRAPHER", 20);
+	CreateSpawn("DEMON_PUNGUS", 10);
+	CreateSpawn("YELLOW_PLANT", 20);
+}

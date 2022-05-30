@@ -1,0 +1,28 @@
+MapConfig("ama_fild01")
+{
+	CreateSpawn("KARAKASA", 50);
+	CreateSpawn("KAPHA", 5, %(174, 207, 20, 20), 1200000, 600000);
+	CreateSpawn("KAPHA", 5, %(241, 310, 10, 10), 600000, 300000);
+	CreateSpawn("KAPHA", 5, %(114, 230, 10, 10), 600000, 300000);
+	CreateSpawn("KAPHA", 5, %(174, 253, 10, 10), 600000, 300000);
+	CreateSpawn("HYDRA", 1, %(177, 315, 0, 0), 60000, 30000);
+	CreateSpawn("HYDRA", 1, %(175, 315, 0, 0), 63000, 31500);
+	CreateSpawn("HYDRA", 1, %(173, 315, 0, 0), 66000, 33000);
+	CreateSpawn("HYDRA", 1, %(171, 315, 0, 0), 69000, 34500);
+	CreateSpawn("HYDRA", 1, %(169, 315, 0, 0), 72000, 39000);
+	CreateSpawn("HYDRA", 1, %(177, 314, 0, 0), 66000, 33000);
+	CreateSpawn("HYDRA", 1, %(175, 314, 0, 0), 72000, 39000);
+	CreateSpawn("HYDRA", 1, %(173, 314, 0, 0), 60000, 30000);
+	CreateSpawn("HYDRA", 1, %(171, 314, 0, 0), 69000, 34500);
+	CreateSpawn("HYDRA", 1, %(169, 314, 0, 0), 63000, 31500);
+	CreateSpawn("HYDRA", 1, %(171, 313, 0, 0), 66000, 33000);
+	CreateSpawn("HYDRA", 1, %(173, 313, 0, 0), 60000, 30000);
+	CreateSpawn("HYDRA", 1, %(175, 313, 0, 0), 66000, 33000);
+	CreateSpawn("HYDRA", 1, %(173, 310, 0, 0), 60000, 30000);
+	CreateSpawn("KAPHA", 20, 60000, 30000);
+	CreateSpawn("KAPHA", 10, %(174, 306, 20, 20), 300000, 150000);
+	CreateSpawn("MIYABI_NINGYO", 2, 180000, 90000);
+	CreateSpawn("POISON_TOAD", 1, 180000, 90000);
+	CreateSpawn("POPORING", 15);
+	CreateSpawn("BIGFOOT", 15, 60000, 30000);
+}

@@ -1,0 +1,167 @@
+MapConfig("tha_t01")
+{
+	CreateSpawn("ALICE", 5);
+	CreateSpawn("PLASMA_G", 20);
+	CreateSpawn("RIDEWORD", 20);
+	CreateSpawn("MIMIC", 20);
+	CreateSpawn("SOLACE", 4, 1800000, 1200000);
+}
+
+MapConfig("tha_t02")
+{
+	CreateSpawn("ALICE", 10);
+	CreateSpawn("PLASMA_B", 20);
+	CreateSpawn("MIMIC", 30);
+	CreateSpawn("ANCIENT_MIMIC", 80);
+	CreateSpawn("RIDEWORD", 10);
+	CreateSpawn("DEATHWORD", 10);
+	CreateSpawn("ELDER", 10);
+	CreateSpawn("RETRIBUTION", 4, 1800000, 1200000);
+}
+
+MapConfig("tha_t03")
+{
+	CreateSpawn("PLASMA_P", 20);
+	CreateSpawn("RIDEWORD", 30);
+	CreateSpawn("DEATHWORD", 80);
+	CreateSpawn("MIMIC", 10);
+	CreateSpawn("ANCIENT_MIMIC", 10);
+	CreateSpawn("ELDER", 10);
+	CreateSpawn("SHELTER", 4, 1800000, 1200000);
+}
+
+MapConfig("tha_t04")
+{
+	CreateSpawn("PLASMA_R", 20);
+	CreateSpawn("RIDEWORD", 20);
+	CreateSpawn("DEATHWORD", 20);
+	CreateSpawn("MIMIC", 20);
+	CreateSpawn("ANCIENT_MIMIC", 20);
+	CreateSpawn("ELDER", 20);
+	CreateSpawn("OWL_BARON", 10);
+	CreateSpawn("OWL_DUKE", 10);
+	CreateSpawn("OBSERVATION", 4, 1800000, 1200000);
+}
+
+MapConfig("tha_t05")
+{
+	CreateSpawn("ELDER", 5, %(61, 179, 55, 55));
+	CreateSpawn("PLASMA_B", 10, %(61, 179, 55, 55));
+	CreateSpawn("DEATHWORD", 10, %(61, 179, 55, 55));
+	CreateSpawn("ANCIENT_MIMIC", 10, %(61, 179, 55, 55));
+	CreateSpawn("OWL_DUKE", 20, %(61, 179, 55, 55), 300000, 120000);
+	CreateSpawn("OWL_BARON", 5, %(61, 179, 55, 55), 300000, 120000);
+	CreateSpawn("ELDER", 5, %(178, 178, 55, 55));
+	CreateSpawn("PLASMA_G", 10, %(178, 178, 55, 55));
+	CreateSpawn("DEATHWORD", 10, %(178, 178, 55, 55));
+	CreateSpawn("ANCIENT_MIMIC", 10, %(178, 178, 55, 55));
+	CreateSpawn("OWL_DUKE", 20, %(178, 178, 55, 55), 300000, 120000);
+	CreateSpawn("OWL_BARON", 5, %(178, 178, 55, 55), 300000, 120000);
+	CreateSpawn("ELDER", 5, %(178, 63, 55, 5));
+	CreateSpawn("PLASMA_P", 10, %(178, 63, 55, 55));
+	CreateSpawn("DEATHWORD", 10, %(178, 63, 55, 55));
+	CreateSpawn("ANCIENT_MIMIC", 10, %(178, 63, 55, 55));
+	CreateSpawn("OWL_DUKE", 20, %(178, 63, 55, 55), 300000, 120000);
+	CreateSpawn("OWL_BARON", 5, %(178, 63, 55, 55), 300000, 120000);
+	CreateSpawn("ELDER", 5, %(62, 63, 55, 55));
+	CreateSpawn("PLASMA_R", 10, %(62, 63, 55, 55));
+	CreateSpawn("DEATHWORD", 10, %(62, 63, 55, 55));
+	CreateSpawn("ANCIENT_MIMIC", 10, %(62, 63, 55, 55));
+	CreateSpawn("OWL_DUKE", 20, %(62, 63, 55, 55), 300000, 120000);
+	CreateSpawn("OWL_BARON", 5, %(62, 63, 55, 55), 300000, 120000);
+	CreateSpawn("THA_DOLOR", 2, 1800000, 1200000);
+}
+
+MapConfig("tha_t06")
+{
+	CreateSpawn("ELDER", 5, %(61, 179, 55, 55));
+	CreateSpawn("PLASMA_B", 10, %(61, 179, 55, 55));
+	CreateSpawn("DEATHWORD", 10, %(61, 179, 55, 55));
+	CreateSpawn("ANCIENT_MIMIC", 10, %(61, 179, 55, 55));
+	CreateSpawn("OWL_BARON", 10, %(61, 179, 55, 55), 300000, 120000);
+	CreateSpawn("OWL_DUKE", 10, %(61, 179, 55, 55), 300000, 120000);
+	CreateSpawn("ELDER", 5, %(178, 178, 55, 55));
+	CreateSpawn("PLASMA_G", 10, %(178, 178, 55, 55));
+	CreateSpawn("DEATHWORD", 10, %(178, 178, 55, 55));
+	CreateSpawn("ANCIENT_MIMIC", 10, %(178, 178, 55, 55));
+	CreateSpawn("OWL_BARON", 10, %(178, 178, 55, 55), 300000, 120000);
+	CreateSpawn("OWL_DUKE", 10, %(178, 178, 55, 55), 300000, 120000);
+	CreateSpawn("ELDER", 5, %(178, 63, 55, 55));
+	CreateSpawn("PLASMA_P", 10, %(178, 63, 55, 55));
+	CreateSpawn("DEATHWORD", 10, %(178, 63, 55, 55));
+	CreateSpawn("ANCIENT_MIMIC", 10, %(178, 63, 55, 55));
+	CreateSpawn("OWL_BARON", 10, %(178, 63, 55, 55), 300000, 120000);
+	CreateSpawn("OWL_DUKE", 10, %(178, 63, 55, 55), 300000, 120000);
+	CreateSpawn("ELDER", 5, %(62, 63, 55, 55));
+	CreateSpawn("PLASMA_R", 10, %(62, 63, 55, 55));
+	CreateSpawn("DEATHWORD", 10, %(62, 63, 55, 55));
+	CreateSpawn("ANCIENT_MIMIC", 10, %(62, 63, 55, 55));
+	CreateSpawn("OWL_BARON", 10, %(62, 63, 55, 55), 300000, 120000);
+	CreateSpawn("OWL_DUKE", 10, %(62, 63, 55, 55), 300000, 120000);
+	CreateSpawn("THA_MAERO", 2, 1800000, 1200000);
+}
+
+MapConfig("tha_t07")
+{
+	CreateSpawn("DEATHWORD", 10, %(70, 105, 40, 75), 300000, 120000);
+	CreateSpawn("ANCIENT_MIMIC", 10, %(70, 105, 40, 75), 300000, 120000);
+	CreateSpawn("SOLACE", 7, %(70, 105, 40, 75), 300000, 120000);
+	CreateSpawn("SHELTER", 7, %(70, 105, 40, 75), 300000, 120000);
+	CreateSpawn("RETRIBUTION", 15, %(70, 105, 40, 75));
+	CreateSpawn("OBSERVATION", 7, %(70, 105, 40, 75), 300000, 120000);
+	CreateSpawn("THA_DESPERO", 2, %(70, 105, 40, 75), 1800000, 1200000);
+}
+
+MapConfig("tha_t08")
+{
+	CreateSpawn("DEATHWORD", 10, %(70, 105, 40, 80), 300000, 120000);
+	CreateSpawn("ANCIENT_MIMIC", 10, %(70, 105, 40, 80), 300000, 120000);
+	CreateSpawn("SOLACE", 5, %(70, 105, 40, 80));
+	CreateSpawn("SHELTER", 5, %(70, 105, 40, 80));
+	CreateSpawn("RETRIBUTION", 20, %(70, 105, 40, 80), 300000, 120000);
+	CreateSpawn("OBSERVATION", 5, %(70, 105, 40, 80));
+	CreateSpawn("THA_ODIUM", 2, %(70, 105, 40, 80), 1800000, 1200000);
+}
+
+MapConfig("tha_t09")
+{
+	CreateSpawn("PLASMA_R", 5, %(50, 129, 35, 35));
+	CreateSpawn("SOLACE", 20, %(50, 129, 35, 35), 600000);
+	CreateSpawn("RETRIBUTION", 5, %(50, 129, 35, 35), 420000);
+	CreateSpawn("SHELTER", 5, %(50, 129, 35, 35), 420000);
+	CreateSpawn("OBSERVATION", 5, %(50, 129, 35, 35), 420000);
+	CreateSpawn("THA_DOLOR", 1, %(50, 129, 35, 35), 1800000, 1200000);
+	CreateSpawn("G_THA_DOLOR", 3, %(50, 129, 35, 35), 1800000, 1200000);
+}
+
+MapConfig("tha_t10")
+{
+	CreateSpawn("PLASMA_B", 5, %(129, 129, 35, 35));
+	CreateSpawn("RETRIBUTION", 20, %(129, 129, 35, 35), 600000);
+	CreateSpawn("SOLACE", 5, %(129, 129, 35, 35), 420000);
+	CreateSpawn("SHELTER", 5, %(129, 129, 35, 35), 420000);
+	CreateSpawn("OBSERVATION", 5, %(129, 129, 35, 35), 420000);
+	CreateSpawn("THA_MAERO", 1, %(129, 129, 35, 35), 1800000, 1200000);
+	CreateSpawn("G_THA_MAERO", 3, %(129, 129, 35, 35), 1800000, 1200000);
+}
+
+MapConfig("tha_t11")
+{
+	CreateSpawn("PLASMA_G", 5, %(50, 51, 35, 35));
+	CreateSpawn("SHELTER", 20, %(50, 51, 35, 35), 600000);
+	CreateSpawn("SOLACE", 5, %(50, 51, 35, 35), 420000);
+	CreateSpawn("RETRIBUTION", 5, %(50, 51, 35, 35), 420000);
+	CreateSpawn("OBSERVATION", 5, %(50, 51, 35, 35), 420000);
+	CreateSpawn("THA_DESPERO", 1, %(50, 51, 35, 35), 1800000, 1200000);
+	CreateSpawn("G_THA_DESPERO", 3, %(50, 51, 35, 35), 1800000, 1200000);
+}
+
+MapConfig("tha_t12")
+{
+	CreateSpawn("PLASMA_Y", 5, %(129, 51, 35, 35));
+	CreateSpawn("OBSERVATION", 13, %(129, 51, 35, 35), 600000);
+	CreateSpawn("SOLACE", 5, %(129, 51, 35, 35), 420000);
+	CreateSpawn("SHELTER", 5, %(129, 51, 35, 35), 420000);
+	CreateSpawn("RETRIBUTION", 5, %(129, 51, 35, 35), 420000);
+	CreateSpawn("G_THA_ODIUM", 4, %(129, 51, 35, 35), 1800000, 1200000);
+}

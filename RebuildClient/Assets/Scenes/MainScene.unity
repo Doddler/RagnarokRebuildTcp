@@ -365,7 +365,9 @@ MonoBehaviour:
   DungeonMaterial: {fileID: 2100000, guid: 7a07b60dd7cd6c04e8f5f70f2241423a, type: 2}
   PlayerIcon: {fileID: 21300000, guid: 978509ab5a8ca9f4e823c755976a1bc1, type: 3}
   ZoomSlider: {fileID: 1947714746}
+  MapType: 0
   ObjectScaleFactor: 1
+  MinimapPixelsPerTile: 2
   minScale: 0
   maxScale: 0
   curSize: 0
@@ -3845,6 +3847,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3977,6 +3980,19 @@ MonoBehaviour:
   MonSpawnCount: 1
   EffectConfigFile: {fileID: 4900000, guid: fe0085492b5724e42ba9fd5dd7248178, type: 3}
   LastRightClick: 0
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e503d7fda25e551449f46c621c38cc47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &982349712
 GameObject:
   m_ObjectHideFlags: 0
@@ -4879,7 +4895,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2000122720}
   m_HandleRect: {fileID: 2000122719}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6771,14 +6787,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 8a836d118b479e8458aef138e336bf73, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ead1f2fd0aad5e34abd1636eae804a41, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 768161a0751df1f4d825408672695101, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7218,8 +7234,8 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1900370484}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
+  m_MaxValue: 10
+  m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:

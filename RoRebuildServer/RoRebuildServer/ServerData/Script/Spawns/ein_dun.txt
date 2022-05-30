@@ -1,0 +1,19 @@
+MapConfig("ein_dun01")
+{
+	CreateSpawn("PITMAN", 55);
+	CreateSpawn("NOXIOUS", 40);
+	CreateSpawn("PORCELLIO", 30);
+	CreateSpawn("VENOMOUS", 20);
+	CreateSpawn("WASTE_STOVE", 5, 120000, 600000);
+	CreateSpawn("UNGOLIANT", 1, 3600000, 3000000);
+}
+
+MapConfig("ein_dun02")
+{
+	CreateSpawn("MINERAL", 50);
+	CreateSpawn("OBSIDIAN", 40);
+	CreateSpawn("TEDDY_BEAR", 30);
+	CreateSpawn("WASTE_STOVE", 30);
+	CreateSpawn("VENOMOUS", 20);
+	CreateSpawn("RSX_0806", 1, 7500000, 7200000);
+}

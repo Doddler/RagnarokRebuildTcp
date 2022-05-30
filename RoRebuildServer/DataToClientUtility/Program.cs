@@ -3,6 +3,7 @@ using System.Text.Json;
 using CsvHelper;
 using Dahomey.Json;
 using RebuildSharedData.ClientTypes;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Util;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
@@ -116,11 +117,12 @@ class Program
 
         foreach (var e in entries)
         {
+            var mode = Enum.Parse<MapMinimapType>(e.MapMode);
             mapList.MapEntries.Add(new ClientMapEntry()
             {
                 Code = e.Code,
                 Name = e.Name,
-                MapMode = e.MapMode,
+                MapMode = (int)mode,
                 Music = e.Music
             });
         }
