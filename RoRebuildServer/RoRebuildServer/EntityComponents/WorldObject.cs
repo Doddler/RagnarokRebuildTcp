@@ -25,7 +25,7 @@ public class WorldObject : IEntityAutoReset
 
     public Position[]? WalkPath;
 
-    public Entity LastAttacked;
+    public Entity LastAttacked { get; set; }
 
     private EntityList? visiblePlayers;
 
@@ -153,7 +153,7 @@ public class WorldObject : IEntityAutoReset
         if (e.Type != EntityType.Player)
             ServerLogger.LogWarning($"WorldObject {Name} is attempting to add {obj2.Name} to it's visible players list, but that object is not a player.");
         else if (visiblePlayers.Contains(e))
-            ServerLogger.LogWarning($"WorldObject {Name} is attempting to add a visible player {obj2.Name}, but that player is already tagged as visible.");
+            ServerLogger.Debug($"WorldObject {Name} is attempting to add a visible player {obj2.Name}, but that player is already tagged as visible.");
         //else
             //ServerLogger.Log($"WorldObject {Name} is adding a visible player {obj2.Name} to it's visible list.\n{Environment.StackTrace}");
 
@@ -182,7 +182,7 @@ public class WorldObject : IEntityAutoReset
         if (e.Type != EntityType.Player)
             ServerLogger.LogWarning($"WorldObject {Name} is attempting to remove {obj2.Name} from it's visible players list, but that object is not a player.");
         else if (!visiblePlayers.Contains(e))
-            ServerLogger.LogWarning($"WorldObject {Name} is attempting to remove visible entity {obj2.Name}, but that player is not on the visibility list.");
+            ServerLogger.Debug($"WorldObject {Name} is attempting to remove visible entity {obj2.Name}, but that player is not on the visibility list.");
         //else
             //ServerLogger.Log($"WorldObject {Name} is removing a player {obj2.Name} from it's visible list.\n{Environment.StackTrace}");
 #endif

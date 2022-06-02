@@ -154,6 +154,23 @@ public class Map
         SendAddEntityAroundCharacter(ref entity, ch); //do this after moving them to the new chunk
     }
 
+
+    public void RefreshEntity(WorldObject ch)
+    {
+        if (ch.TryGetVisiblePlayerList(out var list))
+        {
+            CommandBuilder.AddRecipients(list);
+            CommandBuilder.SendRemoveEntityMulti(ch, CharacterRemovalReason.Refresh);
+            CommandBuilder.SendCreateEntityMulti(ch);
+            CommandBuilder.ClearRecipients();
+        }
+
+        //SendRemoveEntityAroundCharacter(ref entity, ch, reason);
+        //SendAddEntityAroundCharacter(ref entity, ch);
+        //if(entity.Type == EntityType.Player)
+        //    CommandBuilder.SendCreateEntity(ch, entity.Get<Player>());
+    }
+
     /// <summary>
     /// Move an entity from one location to another and update nearby entities' visibility of the moving entity.
     /// </summary>

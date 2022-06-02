@@ -267,7 +267,7 @@ namespace Assets.Scripts.Sprites
             control.Name = param.Name;
             control.Hp = param.Hp;
             control.MaxHp = param.MaxHp;
-			
+
             AddressableUtility.LoadRoSpriteData(go, bodySpriteName, bodySprite.OnSpriteDataLoad);
 			AddressableUtility.LoadRoSpriteData(go, headSpriteName, headSprite.OnSpriteDataLoad);
 			AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);

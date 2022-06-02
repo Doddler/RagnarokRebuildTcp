@@ -26,7 +26,8 @@ public partial class Monster
 			case MonsterInputCheck.InNeedAttackingAdjust: return InNeedAttackingAdjust();
 			case MonsterInputCheck.InAttackDelayEnd: return InAttackDelayEnd();
             case MonsterInputCheck.InAttacked: return InAttacked();
-			case MonsterInputCheck.InDeadTimeoutEnd: return InDeadTimeoutEnd();
+            case MonsterInputCheck.InAttackedNoSwap: return InAttacked(false);
+            case MonsterInputCheck.InDeadTimeoutEnd: return InDeadTimeoutEnd();
 			case MonsterInputCheck.InAllyInCombat: return InAllyInCombat();
 		}
 
@@ -149,19 +150,19 @@ public partial class Monster
 		return false;
 	}
 
-	private bool InAttacked()
+	private bool InAttacked(bool swapToNewAttacker = true)
 	{
 		if (Character.LastAttacked.IsNull())
 			return false;
 		if (!Character.LastAttacked.IsAlive())
 			return false;
 
-		if (Target != Character.LastAttacked)
+		if (swapToNewAttacker && Target != Character.LastAttacked)
 			SwapTarget(Character.LastAttacked);
 
 		return true;
 	}
-
+	
 	private bool InEnemyOutOfAttackRange()
 	{
 		if (!ValidateTarget())
@@ -171,7 +172,11 @@ public partial class Monster
 		if (targetCharacter == null)
 			return false;
 
-		if (targetCharacter.Position.DistanceTo(Character.Position) > MonsterBase.Range)
+        var adjust = 0;
+        if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
+            adjust = 1; //the monster uses a 1 tile shorter attack radius when idle or chasing
+
+		if (targetCharacter.Position.DistanceTo(Character.Position) > MonsterBase.Range - adjust)
 			return true;
 
         if (!Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
@@ -280,7 +285,11 @@ public partial class Monster
         area.ClipArea(Area.CreateAroundPoint(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range)));
 
 		var newPos = Position.RandomPosition(area);
-        if (newPos != Character.Position && newPos != targetCharacter.Position &&
+
+        if (targetCharacter.Position.DistanceTo(newPos) > MonsterBase.Range)
+            return false;
+		
+		if (newPos != Character.Position && newPos != targetCharacter.Position &&
             Character.TryMove(ref Entity, newPos, 0))
             return true;
 

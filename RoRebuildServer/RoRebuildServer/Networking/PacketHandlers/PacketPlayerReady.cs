@@ -16,6 +16,8 @@ public class PacketPlayerReady : IClientPacketHandler
 
         connection.Character.Map.SendAddEntityAroundCharacter(ref connection.Entity, connection.Character);
 
+        CommandBuilder.SendExpGain(connection.Player, 0); //update their exp
+
         connection.Character.SpawnImmunity = 5f;
 
         ServerLogger.Debug($"Player {connection.Entity} finished loading, spawning him on {connection.Character.Map.Name} at position {connection.Character.Position}.");

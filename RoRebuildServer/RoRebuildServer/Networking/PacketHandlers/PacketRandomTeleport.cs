@@ -43,6 +43,7 @@ public class PacketRandomTeleport : IClientPacketHandler
         ch.ResetState();
         ch.SpawnImmunity = 5f;
         map.TeleportEntity(ref connection.Entity, ch, p);
+        CommandBuilder.SendExpGain(connection.Player, 0); //update their exp
 
         var ce = connection.Entity.Get<CombatEntity>();
         ce.ClearDamageQueue();

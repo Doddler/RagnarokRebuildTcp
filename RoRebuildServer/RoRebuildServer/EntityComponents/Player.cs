@@ -97,10 +97,9 @@ public class Player : IEntityAutoReset
             ServerLogger.LogWarning($"Woah! The player '{Name}' has a level of {level}, that's not normal. We'll lower the level down to the cap.");
             level = Math.Clamp(level, 1, 99);
             SetData(PlayerStat.Level, level);
-
         }
 
-        var aMotionTime = 1.1f - level * 0.006f;
+        var aMotionTime = 1.1f - level * 0.004f;
         var spriteAttackTiming = 0.6f;
 
         if (spriteAttackTiming > aMotionTime)
@@ -113,8 +112,14 @@ public class Player : IEntityAutoReset
         SetTiming(TimingStat.MoveSpeed, 0.15f);
         SetStat(CharacterStat.Range, 2);
 
-        var atk = (level / 2f) * (level / 2f) + level * (level / 10) + 12 + level;
+        //var minAtk = (level / 2f) * (level / 2f) + level * (level / 10) + 12 + level;
+        var atk = (level / 2f) * (level / 2f) + level * (level / 10) + 28 + level;
         atk *= 1.2f;
+        
+        //lower damage below lv 60, raise above
+        var proc = 0.5f + Math.Clamp(level, 0, 99f) / 120f;
+        atk *= proc;
+        
         var atk1 = (int)(atk * 0.90f - 1);
         var atk2 = (int)(atk * 1.10f + 1);
 
@@ -171,7 +176,9 @@ public class Player : IEntityAutoReset
         level = target;
 
         SetData(PlayerStat.Level, level);
+        SetData(PlayerStat.Experience, 0); //reset exp to 0
         SetStat(CharacterStat.Level, level);
+        
 
         UpdateStats();
 

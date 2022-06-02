@@ -3,6 +3,7 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
+using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
@@ -229,6 +230,22 @@ public class CombatEntity : IEntityAutoReset
         var damage = (short)(baseDamage * defCut - GetStat(CharacterStat.Vit) * 0.7f);
         if (damage < 1)
             damage = 1;
+
+        var lvCut = 1f;
+        if (target.Character.Type == CharacterType.Monster)
+        {
+            //players deal 1.5% less damage per level they are below a monster, to a max of -90%
+            lvCut -= 0.015f * (target.GetStat(CharacterStat.Level) - GetStat(CharacterStat.Level));
+            lvCut = Math.Clamp(lvCut, 0.1f, 1f);
+        }
+        else
+        {
+            //monsters deal 0.5% less damage per level they are below the player, to a max of -50%
+            lvCut -= 0.005f * (target.GetStat(CharacterStat.Level) - GetStat(CharacterStat.Level));
+            lvCut = Math.Clamp(lvCut, 0.5f, 1f);
+        }
+
+        damage = (short)(lvCut * damage);
 
         var di = new DamageInfo()
         {

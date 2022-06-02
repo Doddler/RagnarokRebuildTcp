@@ -256,23 +256,31 @@ public partial class Monster : IEntityAutoReset
 
 		//Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
 
+        //ServerLogger.Debug($"{Entity}: Checking AI for state {CurrentAiState}");
+
 		for (var i = 0; i < aiEntries.Count; i++)
 		{
 			var entry = aiEntries[i];
 
 			if (entry.InputState != CurrentAiState)
 				continue;
+			
+            if (!InputStateCheck(entry.InputCheck))
+            {
+				//ServerLogger.Debug($"{Entity}: Did not meet input requirements for {entry.InputCheck}");
+                continue;
+            }
 
-			if (!InputStateCheck(entry.InputCheck))
+            //ServerLogger.Debug($"{Entity}: Met input requirements for {entry.InputCheck}");
+
+            if (!OutputStateCheck(entry.OutputCheck))
+            {
+                //ServerLogger.Debug($"{Entity}: Did not meet output requirements for {entry.OutputCheck}");
 				continue;
+            }
 
-			if (!OutputStateCheck(entry.OutputCheck))
-				continue;
-
-			//ServerLogger.Log($"Monster from {entry.InputState} to state {entry.OutputState} (via {entry.InputCheck}/{entry.OutputCheck})");
-
-			//Profiler.Event(ProfilerEvent.MonsterStateMachineChangeSuccess);
-
+            //ServerLogger.Debug($"{Entity}: Met output requirements for {entry.OutputCheck}! Changing state to {entry.OutputState}");
+			
 			CurrentAiState = entry.OutputState;
 		}
 

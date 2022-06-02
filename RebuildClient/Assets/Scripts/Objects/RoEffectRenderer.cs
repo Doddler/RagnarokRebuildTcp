@@ -363,7 +363,7 @@ namespace Assets.Scripts.Objects
                         return;
                     }
 
-                    Debug.Log($"Animation {name} finishing.");
+                    //Debug.Log($"Animation {name} finishing.");
 
                     Destroy(gameObject);
                     return;

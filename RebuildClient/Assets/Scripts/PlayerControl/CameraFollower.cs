@@ -32,6 +32,7 @@ namespace Assets.Scripts
         public GameObject LevelUpPrefab;
         public GameObject ResurrectPrefab;
         public GameObject DeathPrefab;
+        public TextAsset LevelChart;
 
         private static CameraFollower _instance;
         private RoWalkDataProvider WalkProvider;
@@ -40,6 +41,9 @@ namespace Assets.Scripts
         public TextMeshProUGUI TargetUi;
         public TextMeshProUGUI PlayerTargetUi;
         public TextMeshProUGUI HpDisplay;
+        public Slider HpSlider;
+        public TextMeshProUGUI ExpDisplay;
+        public Slider ExpSlider;
         public TMP_InputField TextBoxInputField;
         public CanvasScaler CanvasScaler;
 
@@ -72,15 +76,19 @@ namespace Assets.Scripts
 
         public bool UseTTFDamage = false;
 
+        private int[] levelReqs = new int[100];
+
         public Dictionary<string, int> EffectIdLookup;
         public Dictionary<int, EffectTypeEntry> EffectList;
         public Dictionary<int, GameObject> EffectCache;
-
+        
 #if DEBUG
         private const float MaxClickDistance = 500;
 #else
         private const float MaxClickDistance = 150;
 #endif
+
+        public int ExpForLevel(int lvl) => levelReqs[lvl];
 
         public static CameraFollower Instance
         {
@@ -174,6 +182,12 @@ namespace Assets.Scripts
                 EffectIdLookup.Add(e.Name, e.Id);
             }
 
+            var lines = LevelChart.text.Split("\n"); //we'll trim out \r after if it exists
+            for (var i = 0; i < 99; i++)
+                levelReqs[i] = int.Parse(lines[i].Trim());
+            
+            LevelChart = null; //don't need to hold this anymore
+
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
             //    targetWalkable = Target.AddComponent<EntityWalkable>();
@@ -189,7 +203,17 @@ namespace Assets.Scripts
 
             HpDisplay.gameObject.SetActive(true);
             HpDisplay.text = $"HP: {hp}/{maxHp}";
+            HpSlider.value = (float)hp / (float)maxHp;
         }
+
+        public void UpdatePlayerExp(int exp, int maxExp)
+        {
+            var percent = exp / (float) maxExp;
+
+            ExpDisplay.text = $"Exp: {exp}/{maxExp} ({percent * 100f:F1}%)";
+            ExpSlider.value = percent;
+        }
+        
 
         private GameObject CreateSelectedCursorObject()
         {
@@ -720,6 +744,40 @@ namespace Assets.Scripts
 
                 if (s[0] == "/bgm")
                     AudioManager.Instance.ToggleMute();
+
+
+                if (s[0] == "/change")
+                {
+                    if(s.Length == 1)
+                        NetworkManager.Instance.SendRandomizeAppearance(0);
+
+                    if (s.Length == 2)
+                    {
+                        if (s[1].ToLower() == "hair")
+                            NetworkManager.Instance.SendRandomizeAppearance(1);
+                        if (s[1].ToLower() == "gender")
+                            NetworkManager.Instance.SendRandomizeAppearance(2, controllable.IsMale ? 1 : 0);
+                        if (s[1].ToLower() == "job")
+                            NetworkManager.Instance.SendRandomizeAppearance(3);
+                    }
+
+                    if (s.Length == 3)
+                    {
+                        if (int.TryParse(s[2], out var id))
+                        {
+
+                            if (s[1].ToLower() == "hair")
+                                NetworkManager.Instance.SendRandomizeAppearance(1, id);
+                            if (s[1].ToLower() == "gender")
+                                NetworkManager.Instance.SendRandomizeAppearance(2, id);
+                            if (s[1].ToLower() == "job")
+                                NetworkManager.Instance.SendRandomizeAppearance(3, id);
+                        }
+                    }
+                }
+
+                if (s[0] == "/randomize" || s[0] == "/random")
+                        NetworkManager.Instance.SendRandomizeAppearance(0);
 
                 if (s[0] == "/effect" && s.Length > 1)
                 {

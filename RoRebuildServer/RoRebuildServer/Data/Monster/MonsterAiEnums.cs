@@ -31,6 +31,7 @@ public enum MonsterInputCheck : byte
 {
     InWaitEnd,
     InAttacked,
+    InAttackedNoSwap,
     InReachedTarget,
     InAttackRange,
     InChangeNormal,

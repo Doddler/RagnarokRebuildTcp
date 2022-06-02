@@ -5,9 +5,11 @@ AiPassive,StateRandomMove,InAttacked,OutStartChase,StateChase
 AiPassive,StateRandomMove,InReachedTarget,OutWaitStart,StateIdle
 AiPassive,StateChase,InAttackRange,OutStartAttacking,StateAttacking
 AiPassive,StateChase,InReachedTarget,OutSearch,StateSearch
+AiPassive,StateChase,InAttackedNoSwap,OutStartChase,StateChase
 AiPassive,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiPassive,StateSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiPassive,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
+AiPassive,StateSearch,InAttackRange,OutStartAttacking,StateAttacking
 AiPassive,StateAttacking,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiPassive,StateAttacking,InEnemyOutOfAttackRange,OutStartChase,StateChase
 AiPassive,StateAttacking,InAttackDelayEnd,OutPerformAttack,StateAttacking
@@ -19,9 +21,11 @@ AiAssist,StateRandomMove,InAttacked,OutStartChase,StateChase
 AiAssist,StateRandomMove,InReachedTarget,OutWaitStart,StateIdle
 AiAssist,StateChase,InAttackRange,OutStartAttacking,StateAttacking
 AiAssist,StateChase,InReachedTarget,OutSearch,StateSearch
+AiAssist,StateChase,InAttackedNoSwap,OutStartChase,StateChase
 AiAssist,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiAssist,StateSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiAssist,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
+AiAssist,StateSearch,InAttackRange,OutStartAttacking,StateAttacking
 AiAssist,StateAttacking,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiAssist,StateAttacking,InEnemyOutOfAttackRange,OutStartChase,StateChase
 AiAssist,StateAttacking,InAttackDelayEnd,OutPerformAttack,StateAttacking

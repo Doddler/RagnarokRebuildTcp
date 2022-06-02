@@ -110,7 +110,7 @@ public static class CommandBuilder
         {
             WriteMoveData(c, packet);
         }
-			
+
     }
 
     private static OutboundMessage BuildCreateEntity(WorldObject c, bool isSelf = false)
@@ -392,8 +392,9 @@ public static class CommandBuilder
     public static void SendExpGain(Player p, int exp)
     {
         var packet = NetworkManager.StartPacket(PacketType.GainExp, 8);
+        packet.Write(p.GetData(PlayerStat.Experience));
         packet.Write(exp);
-
+        
         NetworkManager.SendMessage(packet, p.Connection);
     }
 

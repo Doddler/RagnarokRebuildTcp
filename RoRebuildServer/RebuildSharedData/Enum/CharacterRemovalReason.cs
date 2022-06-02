@@ -5,5 +5,6 @@ public enum CharacterRemovalReason : byte
     OutOfSight,
     Teleport,
     Disconnect,
-    Dead
+    Dead,
+    Refresh
 }

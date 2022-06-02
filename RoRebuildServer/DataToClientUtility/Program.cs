@@ -101,6 +101,20 @@ class Program
         File.Delete(tempPath);
     }
 
+    private static void WriteExpChart()
+    {
+        using var tr = new StreamReader(Path.Combine(path, "ExpChart.csv")) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+
+        var entries = csv.GetRecords<CsvExpChart>().ToList();
+
+        var lines = new List<string>();
+        foreach (var entry in entries)
+            lines.Add(entry.Experience.ToString());
+                
+        File.WriteAllLines(Path.Combine(outPath, "levelchart.txt"), lines);
+    }
+
     private static void WriteMapList()
     {
         using var tempPath = new TempFileCopy(Path.Combine(path, "Maps.csv"));
@@ -266,6 +280,7 @@ class Program
         var mData = new List<MonsterClassData>();
         LoadMonsterData(mData);
         LoadNpcData(mData);
+        WriteExpChart();
 
         var dbTable = new DatabaseMonsterClassData();
         dbTable.MonsterClassData = mData;

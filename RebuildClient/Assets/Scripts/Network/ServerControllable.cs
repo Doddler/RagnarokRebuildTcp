@@ -33,7 +33,7 @@ namespace Assets.Scripts.Network
         public string Name;
         public int Hp;
         public int MaxHp;
-
+        
         public GameObject PopupDialog;
 
         public string DisplayName => CharacterType == CharacterType.NPC ? Name : $"Lv.{Level} {Name}";

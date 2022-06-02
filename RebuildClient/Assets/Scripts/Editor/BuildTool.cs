@@ -15,9 +15,17 @@ public class BuildTool : IActiveBuildTargetChanged
     private static void SwitchBuildTargets(BuildTarget target)
     {
         if (target == BuildTarget.WebGL)
+        {
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
+            EditorUserBuildSettings.selectedStandaloneTarget = BuildTarget.WebGL;
+            EditorUserBuildSettings.selectedBuildTargetGroup = BuildTargetGroup.WebGL;
+        }
         else
+        {
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
+            EditorUserBuildSettings.selectedStandaloneTarget = BuildTarget.StandaloneWindows64;
+            EditorUserBuildSettings.selectedBuildTargetGroup = BuildTargetGroup.Standalone;
+        }
     }
 
     [MenuItem("Build/Build Everything", false, 1)]
@@ -29,7 +37,7 @@ public class BuildTool : IActiveBuildTargetChanged
         var target = EditorUserBuildSettings.activeBuildTarget;
         
         //webgl
-        BuildForPlatform(BuildTargetGroup.WebGL, BuildTarget.WebGL, "Build/WebGL/ragnarok", true, true);
+        BuildForPlatform(BuildTargetGroup.WebGL, BuildTarget.WebGL, "Build/WebGL/ragnarok/", true, true);
 
         //windows64
         BuildForPlatform(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64, "Build/PC/RebuildClient.exe", true, true);
@@ -45,7 +53,7 @@ public class BuildTool : IActiveBuildTargetChanged
     public static void EverythingWithoutAddressables()
     {
         //webgl
-        BuildForPlatform(BuildTargetGroup.WebGL, BuildTarget.WebGL, "Build/WebGL", false, false);
+        BuildForPlatform(BuildTargetGroup.WebGL, BuildTarget.WebGL, "Build/WebGL/ragnarok/", false, false);
 
         //windows64
         BuildForPlatform(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64, "Build/PC/RebuildClient.exe", false, false);
@@ -54,7 +62,7 @@ public class BuildTool : IActiveBuildTargetChanged
         ZipPcBuildIntoWebGL();
     }
 
-    //[MenuItem("Build/Test the zip thing", false, 2000)]
+    [MenuItem("Build/Test the zip thing", false, 2000)]
     private static void ZipPcBuildIntoWebGL()
     {
 
@@ -67,6 +75,8 @@ public class BuildTool : IActiveBuildTargetChanged
             File.Copy(path, Path.Combine("Build/RagnarokRebuild/RagnarokRebuild", Path.GetFileName(path)));
 
         CopyFilesRecursively("Build/PC/RebuildClient_Data", "Build/RagnarokRebuild/RagnarokRebuild/RebuildClient_Data");
+
+
 
         if (File.Exists("Build/WebGL/ragnarok/RagnarokRebuild.zip"))
             File.Delete("Build/WebGL/ragnarok/RagnarokRebuild.zip");
@@ -96,7 +106,7 @@ public class BuildTool : IActiveBuildTargetChanged
                 if(dir.Contains("Build_"))
                     Directory.Delete(dir, true);
         }
-
+        
         var options = new BuildPlayerOptions();
         options.locationPathName = location;
         options.targetGroup = group;

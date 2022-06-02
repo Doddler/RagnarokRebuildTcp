@@ -78,7 +78,9 @@ Shader "Unlit/TestSpriteShader"
 				#pragma multi_compile_fog
 				#pragma multi_compile _ PIXELSNAP_ON
 				#pragma multi_compile _ WATER_BELOW WATER_ABOVE
+
 				#include "UnityCG.cginc"
+				#include "UnityUI.cginc"
 				#include "Billboard.cginc"
 
 				struct appdata_t
@@ -94,13 +96,24 @@ Shader "Unlit/TestSpriteShader"
 					fixed4 color : COLOR;
 					float2 texcoord  : TEXCOORD0;
 					float4 screenPos : TEXCOORD1;
-					UNITY_FOG_COORDS(2)
+					half4  mask : TEXCOORD2;
+					UNITY_FOG_COORDS(3)
 				};
 
 				fixed4 _Color;
 				fixed _Offset;
 				fixed _Rotation;
 
+
+				sampler2D _MainTex;
+
+				float4 _ClipRect;
+				float4 _MainTex_ST;
+				float4 _MainTex_TexelSize;
+				sampler2D _WaterDepth;
+								
+				float _MaskSoftnessX;
+				float _MaskSoftnessY;
 
 				//from our globals
 				float4 _RoAmbientColor;
@@ -192,6 +205,20 @@ Shader "Unlit/TestSpriteShader"
 
 					float4 tempVertex = UnityObjectToClipPos(v.vertex);
 					UNITY_TRANSFER_FOG(o, tempVertex);
+
+
+					//smoothpixelshader stuff here
+
+					float2 pixelSize = tempVertex.w;
+					pixelSize /= float2(1, 1) * abs(mul((float2x2)UNITY_MATRIX_P, _ScreenParams.xy));
+
+					float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);
+					float2 maskUV = (v.vertex.xy - clampedRect.xy) / (clampedRect.zw - clampedRect.xy);
+					o.texcoord = float4(v.texcoord.x, v.texcoord.y, maskUV.x, maskUV.y);
+					o.mask = half4(v.vertex.xy * 2 - clampedRect.xy - clampedRect.zw, 0.25 / (0.25 * half2(_MaskSoftnessX, _MaskSoftnessY) + abs(pixelSize.xy)));
+
+					//end of smooth pixel
+
 				
 
 					o.screenPos = ComputeScreenPos(o.vertex);
@@ -200,8 +227,6 @@ Shader "Unlit/TestSpriteShader"
 					return o;
 				}
 
-				sampler2D _MainTex;
-				sampler2D _WaterDepth;
 
 				fixed4 frag(v2f i) : SV_Target
 				{
@@ -221,7 +246,24 @@ Shader "Unlit/TestSpriteShader"
 
 					env = env * 0.5 + 0.5;
 
-					fixed4 c = tex2D(_MainTex, i.texcoord) * i.color * float4(env.rgb,1);
+					//smoothpixel
+
+					// apply anti-aliasing
+					float2 texturePosition = i.texcoord * _MainTex_TexelSize.zw;
+					float2 nearestBoundary = round(texturePosition);
+					float2 delta = float2(abs(ddx(texturePosition.x)) + abs(ddx(texturePosition.y)),
+						abs(ddy(texturePosition.x)) + abs(ddy(texturePosition.y)));
+
+
+					float2 samplePosition = (texturePosition - nearestBoundary) / delta;
+					samplePosition = clamp(samplePosition, -0.5, 0.5) + nearestBoundary;
+
+					fixed4 diff = tex2D(_MainTex, samplePosition * _MainTex_TexelSize.xy);
+
+					//endsmoothpixel
+
+					fixed4 c = diff * i.color * float4(env.rgb,1);
+					
 
 					UNITY_APPLY_FOG(i.fogCoord, c);
 					//UNITY_OPAQUE_ALPHA(c.a);

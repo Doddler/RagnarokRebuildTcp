@@ -18,6 +18,7 @@ public class PacketEnterServer : IClientPacketHandler
             return;
 
         var config = ServerConfig.EntryConfig;
+        var debug = ServerConfig.DebugConfig;
 
         var map = config.Map;
         var area = Area.CreateAroundPoint(config.Position, config.Area);
@@ -31,7 +32,13 @@ public class PacketEnterServer : IClientPacketHandler
                 area = Area.CreateAroundPoint(req.Position, 0);
             }
         }
-
+        
+        if (debug.DebugMapOnly && !string.IsNullOrWhiteSpace(debug.DebugMapName))
+        {
+            map = debug.DebugMapName;
+            area = Area.CreateAroundPoint(Position.Zero, 0);
+        }
+        
         var playerEntity = NetworkManager.World.CreatePlayer(connection, map, area);
         //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prt_fild08", Area.CreateAroundPoint(new Position(170, 367), 5));
         //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prontera", Area.CreateAroundPoint(new Position(248, 42), 5));

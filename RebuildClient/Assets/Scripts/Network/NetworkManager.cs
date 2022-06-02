@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Assets.Scripts.MapEditor;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using HybridWebSocket;
@@ -35,6 +36,8 @@ namespace Assets.Scripts.Network
         public int PlayerId;
         public NetQueue<ClientInboundMessage> InboundMessages = new NetQueue<ClientInboundMessage>(30);
         public NetQueue<ClientOutgoingMessage> OutboundMessages = new NetQueue<ClientOutgoingMessage>(30);
+
+        public PlayerState PlayerState = new PlayerState();
 
         //private static NetClient client;
 
@@ -263,7 +266,7 @@ namespace Assets.Scripts.Network
                 var isMale = msg.ReadBoolean();
                 var name = msg.ReadString();
                 var isMain = PlayerId == id;
-
+                
                 Debug.Log("Name: " + name);
 
                 var playerData = new PlayerSpawnParameters()
@@ -282,11 +285,18 @@ namespace Assets.Scripts.Network
                     Hp = hp,
                     IsMainCharacter = isMain,
                 };
+                
+                controllable = SpriteDataLoader.Instance.InstantiatePlayer(ref playerData);
+
 
                 if (id == PlayerId)
+                {
+                    PlayerState.Level = lvl;
+                    
                     CameraFollower.UpdatePlayerHP(hp, maxHp);
-
-                controllable = SpriteDataLoader.Instance.InstantiatePlayer(ref playerData);
+                    var max = CameraFollower.Instance.ExpForLevel(controllable.Level-1);
+                    CameraFollower.UpdatePlayerExp(PlayerState.Exp, max);
+                }
             }
             else
             {
@@ -469,11 +479,11 @@ namespace Assets.Scripts.Network
             
             if (id == PlayerId)
             {
-                Debug.Log("We're removing the player object! Hopefully the server knows what it's doing. We're just going to pretend we didn't see it.");
-                return;
+                //Debug.Log("We're removing the player object! Hopefully the server knows what it's doing. We're just going to pretend we didn't see it.");
+                //return;
 
-                //Debug.LogWarning("Whoa! Trying to delete player object. Is that right...?");
-                //CameraFollower.Instance.Target = null;
+                Debug.LogWarning("Whoa! Trying to delete player object. Is that right...?");
+                CameraFollower.Instance.Target = null;
             }
 
 
@@ -679,10 +689,20 @@ namespace Assets.Scripts.Network
 
         public void OnMessageGainExp(ClientInboundMessage msg)
         {
+            var total = msg.ReadInt32();
             var exp = msg.ReadInt32();
+            
+            //Debug.Log("Gain Exp:" + exp + " " + total);
+
+            PlayerState.Exp = total;
+            CameraFollower.UpdatePlayerExp(PlayerState.Exp, CameraFollower.Instance.ExpForLevel(PlayerState.Level));
+
+            if (exp == 0)
+                return;
 
             if (!entityList.TryGetValue(PlayerId, out var controllable))
                 return;
+            
 
             var go = GameObject.Instantiate(HealPrefab, controllable.transform.localPosition, Quaternion.identity);
             var di = go.GetComponent<DamageIndicator>();
@@ -692,6 +712,10 @@ namespace Assets.Scripts.Network
                 height = controllable.SpriteAnimator.SpriteData.Size / 50f;
 
             di.DoDamage($"<color=yellow>+{exp} Exp", controllable.gameObject.transform.localPosition, height, Direction.None, false, false);
+
+            PlayerState.Exp += exp;
+            var max = CameraFollower.Instance.ExpForLevel(controllable.Level-1);
+            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, max);
         }
 
         public void OnMessageLevelUp(ClientInboundMessage msg)
@@ -711,9 +735,12 @@ namespace Assets.Scripts.Network
             go.transform.localRotation = Quaternion.identity;
 
             controllable.Level = lvl;
+            var req = CameraFollower.Instance.ExpForLevel(lvl-2);
+            PlayerState.Exp -= req;
+            PlayerState.Level = lvl;
+            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, req);
         }
-
-
+        
         public void OnMessageResurrection(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -1064,6 +1091,19 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
+
+
+        public void SendRandomizeAppearance(int mode, int id = -1)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.AdminRandomizeAppearance);
+            msg.Write(mode);
+            msg.Write(id);
+
+            SendMessage(msg);
+        }
+
 
         public void SendRespawn(bool inPlace)
         {

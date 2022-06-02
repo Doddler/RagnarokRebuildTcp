@@ -99,5 +99,24 @@ public static class DataManager
 
         loader.LoadNpcScripts(ScriptAssembly);
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
+
+
+        //special handling for if we start the map in single map only mode, removes all other maps from the server instance list
+        var debug = ServerConfig.DebugConfig;
+        if (debug.DebugMapOnly)
+        {
+            var okInstance = InstanceList.FirstOrDefault(i => i.Maps.Contains(debug.DebugMapName));
+            if (okInstance == null)
+            {
+                ServerLogger.LogWarning($"Server started in Debug Map Only mode, but the specified map {debug.DebugMapName} was not found on the instance list.");
+                return;
+            }
+
+            ServerLogger.Log($"Starting server in Debug Map Only mode. The map {debug.DebugMapName} is the only map available.");
+
+            okInstance.Maps.RemoveAll(m => m != debug.DebugMapName);
+            InstanceList.Clear();
+            InstanceList.Add(okInstance);
+        }
     }
 }
