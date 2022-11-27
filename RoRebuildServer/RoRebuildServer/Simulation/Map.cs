@@ -654,18 +654,20 @@ public class Map
 
     public void TriggerAreaOfEffectForCharacter(WorldObject character, Position initialPos, Position targetPosition)
     {
-        foreach (Chunk c in GetChunkEnumeratorAroundPosition(targetPosition, ServerConfig.MaxViewDistance))
-        {
-            for (var i = 0; i < c.AreaOfEffects.Count; i++)
-            {
-                var aoe = c.AreaOfEffects[i];
-                if (!aoe.IsActive)
-                    continue;
+        //Since aoes are added to each chunk they affect, we only need to check aoes in our current chunk
 
-                if (aoe.HasTouchedAoE(initialPos, targetPosition))
-                    aoe.OnAoETouch(character);
-            }
+        var c = GetChunkForPosition(character.Position);
+        
+        for (var i = 0; i < c.AreaOfEffects.Count; i++)
+        {
+            var aoe = c.AreaOfEffects[i];
+            if (!aoe.IsActive)
+                continue;
+
+            if (aoe.HasTouchedAoE(initialPos, targetPosition))
+                aoe.OnAoETouch(character);
         }
+    
     }
 
     public Position GetRandomWalkablePositionInArea(Area area, int tries = 100)
@@ -706,10 +708,21 @@ public class Map
         }
     }
 
-    public void CreateAreaOfEffect(AreaOfEffect aoe, Position pos)
+    public void CreateAreaOfEffect(AreaOfEffect aoe)
     {
-        var c = GetChunkForPosition(pos);
-        c.AreaOfEffects.Add(aoe);
+        //add the aoe to every chunk touched by the aoe
+        foreach (var chunk in GetChunkEnumerator(aoe.Area))
+        {
+            chunk.AreaOfEffects.Add(aoe);
+        }
+    }
+
+    public void RemoveAreaOfEffect(AreaOfEffect aoe, Position pos)
+    {
+        foreach (var chunk in GetChunkEnumerator(aoe.Area))
+        {
+            chunk.AreaOfEffects.Remove(aoe);
+        }
     }
 
     private void LoadMapConfig()
@@ -799,7 +812,7 @@ public class Map
             chunkCheckId = 0;
 
 #if DEBUG
-        //sanity check
+        //sanity checks
         if (chunkCheckId == 0 && PlayerCount == 0)
         {
             foreach (var c in Chunks)
@@ -813,6 +826,13 @@ public class Map
                             throw new Exception(
                                 $"Map {Name} has no players, but the entity {obj.Name} thinks it can still see a player.");
                     }
+                }
+
+                foreach (var aoe in c.AreaOfEffects)
+                {
+                    if (!aoe.IsActive)
+                        throw new Exception(
+                            $"Oh snap! An inactive aoe is still attached to the chunk {c} on map {Name}.");
                 }
             }
         }
@@ -922,6 +942,12 @@ public class Map
         ServerLogger.LogWarning($"Attempted to find walkable cell in area {area} on map {Name}, but there are no walkable cells in the zone.");
         p = Position.Invalid;
         return false;
+    }
+
+    public void ReloadMapScripts()
+    {
+        LoadNpcs();
+        LoadMapConfig();
     }
 
     public Map(World world, Instance instance, string name, string walkData)

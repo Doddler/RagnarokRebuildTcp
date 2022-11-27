@@ -19,28 +19,24 @@ public class Player : IEntityAutoReset
     public WorldObject Character = null!;
     public CombatEntity CombatEntity = null!;
 
-    public NetworkConnection Connection;
-
-    [EntityIgnoreNullCheck]
-    public NpcInteractionState NpcInteractionState = new();
-
-    [EntityIgnoreNullCheck]
-    public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
-
+    public NetworkConnection Connection = null!;
+    
     public Guid Id { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = "Uninitialized Player";
     public float CurrentCooldown;
     public HeadFacing HeadFacing;
     //public PlayerData Data { get; set; }
     public bool IsAdmin { get; set; }
-    
+    public bool IsInNpcInteraction { get; set; }
     public int HeadId => GetData(PlayerStat.Head);
     public bool IsMale => GetData(PlayerStat.Gender) == 0;
-
-    public bool IsInNpcInteraction;
-        
+    
+    [EntityIgnoreNullCheck] public NpcInteractionState NpcInteractionState = new();
+    [EntityIgnoreNullCheck] public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
+    [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
+    
     public Entity Target { get; set; }
-        
+    
     public bool QueueAttack { get; set; }
     private float regenTickTime { get; set; }
 
@@ -63,13 +59,15 @@ public class Player : IEntityAutoReset
         HeadFacing = HeadFacing.Center;
         QueueAttack = false;
         Id = Guid.Empty;
-        Name = "Player";
+        Name = "Uninitialized Player";
         //Data = new PlayerData(); //fix this...
         regenTickTime = 0f;
         NpcInteractionState.Reset();
         IsAdmin = false;
         for(var i = 0; i < CharData.Length; i++)
             CharData[i] = 0;
+
+        SavePosition.Reset();
     }
 
     public void Init()
@@ -85,6 +83,7 @@ public class Player : IEntityAutoReset
         UpdateStats();
 
         SetStat(CharacterStat.Level, GetData(PlayerStat.Level));
+        
         IsAdmin = true; //for now
     }
     
@@ -196,6 +195,14 @@ public class Player : IEntityAutoReset
         SetStat(CharacterStat.Hp, GetData(PlayerStat.Hp));
         SetStat(CharacterStat.Mp, GetData(PlayerStat.Mp));
     }
+
+    public void EndNpcInteractions()
+    {
+        if (!IsInNpcInteraction)
+            return;
+
+        NpcInteractionState.CancelInteraction();
+    }
     
     public void UpdateSit(bool isSitting)
     {
@@ -236,10 +243,14 @@ public class Player : IEntityAutoReset
 
     public void Die()
     {
+        if (Character.Map == null)
+            throw new Exception("Attempted to kill a player, but the player is not attached to any map.");
+
         if (Character.State == CharacterState.Dead)
             return; //we're already dead!
 
         ClearTarget();
+        EndNpcInteractions();
         Character.StopMovingImmediately();
         Character.State = CharacterState.Dead;
 
@@ -256,11 +267,10 @@ public class Player : IEntityAutoReset
             return false;
         }
 
-        var ce = Target.Get<CombatEntity>();
-        if (ce == null || !ce.IsValidTarget(CombatEntity))
+        if (!Target.TryGet<CombatEntity>(out var ce))
             return false;
-
-        return true;
+        
+        return ce.IsValidTarget(CombatEntity);
     }
 
     public void ClearTarget()
@@ -284,9 +294,12 @@ public class Player : IEntityAutoReset
     }
 
 
-    public void SaveSpawnPoint(string mapName, int x, int y, int size = 1)
+    public void SaveSpawnPoint(string spawnName)
     {
-
+        if (DataManager.SavePoints.TryGetValue(spawnName, out var spawnPosition))
+            SavePosition = spawnPosition;
+        else
+            ServerLogger.LogError($"Npc script attempted to set spawn position to \"{spawnName}\", but that spawn point was not defined.");
     }
 
 
@@ -356,8 +369,7 @@ public class Player : IEntityAutoReset
 
         Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackMotionTime);
     }
-
-
+    
     public void TargetForAttack(WorldObject enemy)
     {
         if (Character.Position.SquareDistance(enemy.Position) <= GetStat(CharacterStat.Range))

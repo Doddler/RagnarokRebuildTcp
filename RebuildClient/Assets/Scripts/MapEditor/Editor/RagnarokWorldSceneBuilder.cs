@@ -20,6 +20,9 @@ namespace Assets.Scripts.MapEditor.Editor
 
         private Dictionary<string, GameObject> modelCache = new Dictionary<string, GameObject>();
 
+        private Color maxLightColor = Color.black;
+        private float maxLight = 0f;
+
         private void SetWorldLighting()
         {
             //RenderSettings.ambientIntensity = 0f;
@@ -138,14 +141,19 @@ namespace Assets.Scripts.MapEditor.Editor
             ////color += new Color(it, it, it, 0f);
 
             var max = Mathf.Max(color.r, color.g, color.b);
+
+            if (max > maxLight)
+            {
+                maxLight = max;
+                maxLightColor = color;
+            }
+
             ////max /= 2;
 
             //var boostTo = 0.5f;
 
-            //if (max < boostTo)
+            //if (max > boostTo)
             //{
-            //    var boost = boostTo - max;
-            //    //color = new Color(color.r + boost, color.g + boost, color.b + boost, color.a);
             //    color = new Color(color.r / max * boostTo, color.g / max * boostTo, color.b / max * boostTo, color.a);
             //}
 
@@ -168,7 +176,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var sub = new GameObject("Sub Light");
             sub.transform.SetParent(lobj.transform);
             sub.transform.localPosition = Vector3.zero;
-            sub.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
+            //sub.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
 
             l = sub.AddComponent<Light>();
             l.type = LightType.Point;
@@ -183,6 +191,8 @@ namespace Assets.Scripts.MapEditor.Editor
         {
             var lightContainer = new GameObject("lights");
             lightContainer.transform.SetParent(baseObject.transform, false);
+
+            maxLight = -1f;
 
             foreach (var light in world.Lights)
             {
@@ -238,6 +248,8 @@ namespace Assets.Scripts.MapEditor.Editor
                 //PlaceLight(light.Name + " Green", position, Color.green, light.Range / 5f, light.Color.b * 5f);
 
             }
+
+            Debug.Log($"Brightest scene color value is {maxLight} (color {maxLightColor})");
         }
 
         private void LoadFog()

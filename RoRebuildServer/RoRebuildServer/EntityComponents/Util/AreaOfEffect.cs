@@ -74,6 +74,7 @@ public class AreaOfEffect
         IsActive = false;
     }
 
+    //HasTouchedAoE checks if we are entering an aoe we were not previously in. If we are already in the aoe nothing happens.
     public bool HasTouchedAoE(Position initial, Position newPos)
     {
         if (Area.Contains(initial))
@@ -92,8 +93,7 @@ public class AreaOfEffect
             }
         }
     }
-
-
+    
     public void Update(Map map)
     {
         if (Expiration < 0 || NextTick < 0)

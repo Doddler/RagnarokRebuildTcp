@@ -4,6 +4,7 @@ using RoRebuildServer.Data.Config;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
@@ -32,6 +33,8 @@ public static class DataManager
     public static Dictionary<int, ItemInfo> ItemList;
 
     public static Dictionary<string, int> EffectIdForName;
+
+    public static Dictionary<string, SavePosition> SavePoints;
 
     public static List<MapEntry> Maps => mapList;
     
@@ -64,6 +67,27 @@ public static class DataManager
 
         NpcManager.RegisterNpc(name, map, md.Id, x, y, (Direction)facing, w, h, hasInteract, hasTouch, npcBehavior);
     }
+
+    public static void ReloadScripts()
+    {
+        var loader = new DataLoader();
+
+        //only things that are safe to reload
+        monsterStats = loader.LoadMonsterStats();
+        monsterAiList = loader.LoadAiStateMachines();
+        ExpChart = loader.LoadExpChart();
+        EffectIdForName = loader.LoadEffectIds();
+        SavePoints = loader.LoadSavePoints();
+
+        //rebuild script assemblies
+        ScriptAssembly = loader.CompileScripts();
+        NpcManager = new NpcBehaviorManager();
+        
+        //the things we actually want to load
+        loader.LoadNpcScripts(ScriptAssembly);
+        MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
+        loader.LoadItemInteractions(ScriptAssembly);
+    }
     
     public static void Initialize()
     {
@@ -86,6 +110,7 @@ public static class DataManager
         EffectIdForName = loader.LoadEffectIds();
         ItemList = loader.LoadItemList();
         ItemIdByName = loader.GenerateItemIdByNameLookup();
+        SavePoints = loader.LoadSavePoints();
         loader.LoadItemInteractions(ScriptAssembly);
         
         MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);

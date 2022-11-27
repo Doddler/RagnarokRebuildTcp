@@ -188,3 +188,14 @@ Turtle Island,tur_dun01,tur_dun01.walk,Dungeon,65.mp3
 Turtle Island Dungeon,tur_dun02,tur_dun02.walk,Dungeon,65.mp3
 Good Turtles Village,tur_dun03,tur_dun03.walk,Dungeon,65.mp3
 Turtle Palace,tur_dun04,tur_dun04.walk,Dungeon,65.mp3
+Map,guild_room,guild_room.walk,Field,1.mp3
+Map,new_1-1,new_1-1.walk,Field,1.mp3
+Map,new_1-2,new_1-2.walk,Field,1.mp3
+Map,new_1-3,new_1-3.walk,Field,1.mp3
+Map,new_1-4,new_1-4.walk,Field,1.mp3
+Map,poring_c01,poring_c01.walk,Field,1.mp3
+Map,poring_c02,poring_c02.walk,Field,1.mp3
+Map,pvp_n_1-4,pvp_n_1-4.walk,Field,1.mp3
+Map,pvp_n_1-5,pvp_n_1-5.walk,Field,1.mp3
+Map,sword_1-1,sword_1-1.walk,Field,1.mp3
+Map,turbo_n_1,turbo_n_1.walk,Field,1.mp3

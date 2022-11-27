@@ -8,4 +8,5 @@ public enum ClientErrorType : byte
     TooManyRequests,
     MalformedRequest,
     RequestTooLong,
+    DisallowedCharacters
 }

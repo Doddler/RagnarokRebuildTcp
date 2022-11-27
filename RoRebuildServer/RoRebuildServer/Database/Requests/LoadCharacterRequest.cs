@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RebuildSharedData.Data;
+using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Database.Requests;
 
@@ -9,6 +10,8 @@ public class LoadCharacterRequest : IDbRequest
     public string Name;
     public string Map;
     public Position Position;
+    public SavePosition SavePosition;
+    
     public byte[]? Data;
     public bool HasCharacter;
 
@@ -34,6 +37,18 @@ public class LoadCharacterRequest : IDbRequest
             Map = ch.Map;
         Position = new Position(ch.X, ch.Y);
         Data = ch.Data;
+        if (ch.SavePoint != null)
+        {
+            SavePosition = new SavePosition()
+            {
+                MapName = ch.SavePoint.MapName ?? "",
+                Position = new Position(ch.SavePoint.X, ch.SavePoint.Y),
+                Area = ch.SavePoint.Area
+            };
+        }
+        else
+            SavePosition = new SavePosition();
+
         HasCharacter = true;
     }
 }

@@ -58,7 +58,8 @@ internal class ScriptCompiler
         
         scriptFiles.Add(Path.GetRelativePath(dataPath, inputPath), str);
 
-        if (config.CacheScripts)
+        //for testing and debug we'll write to cache even if we don't load from it
+        //if (config.CacheScripts)
         {
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
@@ -107,6 +108,9 @@ internal class ScriptCompiler
             }
         }
 
+        if(!useCache)
+            ServerLogger.Log("Script caching is currently disabled. Forcing recompile.");
+
         var trees = new List<SyntaxTree>();
         foreach (var script in scriptFiles)
         {
@@ -146,7 +150,9 @@ internal class ScriptCompiler
         }
 
         var bytes = memoryStream.ToArray();
-        if(useCache)
+
+        //for testing and debug we'll write to cache even if we don't load from it
+        //if(useCache)
             File.WriteAllBytes(Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll"), bytes);
 
         scriptFiles.Clear(); //no need to keep the scripts in memory anymore.

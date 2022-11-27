@@ -463,7 +463,7 @@ public class ScriptBuilder
         {
             case "result":
                 if(UseStateStorage)
-                    return $"{stateVariable}.InteractionResult";
+                    return $"{stateVariable}.OptionResult";
                 else
                     return id;
             case "left":
@@ -527,7 +527,7 @@ public class ScriptBuilder
         }
 
         if(id.ToLower() == "result")
-            return $"{stateVariable}.InteractionResult";
+            return $"{stateVariable}.OptionResult";
         
         return GetConstValue(id);
     }

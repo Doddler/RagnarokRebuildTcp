@@ -2,6 +2,7 @@
 
 public enum NpcInteractionResult : byte
 {
+    None,
     WaitForContinue,
     WaitForInput,
     WaitForTime,

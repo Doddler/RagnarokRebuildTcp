@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace RoRebuildServer.EntitySystem;
@@ -58,6 +59,38 @@ public struct Entity
 #endif
         var id = EntityComponentManager.GetComponentIndex<T>(data.Type);
         return (T)data.Components[id];
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryGet<T>([MaybeNullWhen(false)] out T component) where T : class
+    {
+        var data = EntityManager.Entities[Id];
+#if DEBUG
+        if (data.Gen != Gen)
+            throw new Exception("Attempting to get component of an expired entity!");
+#endif
+        var id = EntityComponentManager.GetComponentIndex<T>(data.Type);
+
+        if (id < 0)
+        {
+            component = null;
+            return false;
+        }
+
+        component = (T)data.Components[id];
+        return true;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Has<T>() where T : class
+    {
+        var data = EntityManager.Entities[Id];
+#if DEBUG
+        if (data.Gen != Gen)
+            throw new Exception("Attempting to check component of an expired entity!");
+#endif
+        var id = EntityComponentManager.GetComponentIndex<T>(data.Type);
+        return id >= 0;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

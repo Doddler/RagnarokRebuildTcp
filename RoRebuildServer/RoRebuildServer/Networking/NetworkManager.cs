@@ -143,6 +143,45 @@ public class NetworkManager
         }
     }
 
+    public static void AddAllPlayersAsRecipient()
+    {
+        var players = Players;
+        clientLock.EnterReadLock();
+        
+        try
+        {
+            for (var i = 0; i < players.Count; i++)
+            {
+                if (players[i].Socket.State == WebSocketState.Open)
+                    CommandBuilder.AddRecipient(players[i].Entity);
+            }
+        }
+        finally
+        {
+            clientLock.ExitReadLock();
+        }
+    }
+
+    //useful if the server is going to shit itself for a bit and you don't want players timing out
+    public static void ExtendTimeoutForAllPlayers(int seconds)
+    {
+        var players = Players;
+        clientLock.EnterReadLock();
+
+        try
+        {
+            for (var i = 0; i < players.Count; i++)
+            {
+                if (players[i].Socket.State == WebSocketState.Open)
+                    players[i].LastKeepAlive += (double)seconds;
+            }
+        }
+        finally
+        {
+            clientLock.ExitReadLock();
+        }
+    }
+
     public static async Task ScanAndDisconnect()
     {
         var players = Players;
@@ -198,7 +237,7 @@ public class NetworkManager
             return;
         }
 
-        clientLock.EnterReadLock();
+        clientLock.EnterWriteLock();
 
         try
         {
@@ -226,11 +265,11 @@ public class NetworkManager
         }
         finally
         {
-            clientLock.ExitReadLock();
+            clientLock.ExitWriteLock();
         }
     }
 
-    public static InboundMessage CreateInboundMessage(NetworkConnection client)
+    public static InboundMessage CreateInboundMessage(NetworkConnection? client)
     {
         var obj = inboundPool.Get();
         if (client != null)
@@ -238,7 +277,7 @@ public class NetworkManager
         return obj;
     }
 
-    public static OutboundMessage CreateOutboundMessage(NetworkConnection client = null)
+    public static OutboundMessage CreateOutboundMessage(NetworkConnection? client = null)
     {
         var obj = outboundPool.Get();
         if (client != null)
@@ -442,7 +481,7 @@ public class NetworkManager
 
         var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
 
-        var newReq = new SaveCharacterRequest(Guid.Empty, name, null, Position.Invalid, charData);
+        var newReq = new SaveCharacterRequest(Guid.Empty, name, null, Position.Invalid, charData, new SavePosition());
         await RoDatabase.ExecuteDbRequestAsync(newReq);
 
         ArrayPool<int>.Shared.Return(charData, true);

@@ -4,6 +4,9 @@ using RebuildSharedData.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Linq;
+using Microsoft.Extensions.Options;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
 
@@ -12,8 +15,9 @@ public class NpcInteractionState
     public Entity NpcEntity;
     public Player? Player;
     public int Step;
-    public int InteractionResult;
-
+    public int OptionResult = -1;
+    public NpcInteractionResult InteractionResult { get; set; }
+    
     public const int StorageCount = 5;
 
     public int[] ValuesInt = new int[StorageCount];
@@ -41,29 +45,73 @@ public class NpcInteractionState
         NpcEntity = npc;
         Player = player;
         Step = 0;
-        InteractionResult = 0;
+        InteractionResult = NpcInteractionResult.WaitForTime;
     }
 
+    public void CancelInteraction()
+    {
+        if (Player == null)
+            return;
 
+        if (!NpcEntity.IsAlive())
+        {
+            Player.IsInNpcInteraction = false;
+            Reset();
+            return;
+        }
+
+        var npc = NpcEntity.Get<Npc>();
+        npc.CancelInteraction(Player);
+
+        Player.IsInNpcInteraction = false;
+        Reset();
+    }
+
+    public void ContinueInteraction()
+    {
+        if (Player == null)
+            return;
+
+        var npc = NpcEntity.Get<Npc>();
+        npc.Advance(Player);
+    }
+    
+    public void OptionInteraction(int result)
+    {
+        if (Player == null)
+            return;
+
+        var npc = NpcEntity.Get<Npc>();
+        npc.OptionAdvance(Player, result);
+    }
+    
     public void ShowSprite(string spriteName, int pos)
     {
         Console.WriteLine("ShowSprite " + spriteName);
+
+        if (Player == null)
+            return;
+        
+        CommandBuilder.SendNpcShowSprite(Player, spriteName, pos);
     }
-
-
+    
     public void Option(params string[] options)
     {
         Console.WriteLine("Option");
         foreach(var s in options)
             Console.WriteLine(" - " + s);
+
+        if (Player == null)
+            return;
+        
+        CommandBuilder.SendNpcOption(Player, options);
     }
 
     public void MoveTo(string mapName, int x, int y)
     {
         MoveTo(mapName, x, y, 1, 1);
     }
-
-
+    
     public void MoveTo(string mapName, int x, int y, int width, int height)
     {
         //ServerLogger.Log("Warp to " + mapName);
@@ -84,7 +132,11 @@ public class NpcInteractionState
 
     public void Dialog(string name, string text)
     {
+        if (Player == null)
+            return;
+
         Console.WriteLine($"Dialog {name}: {text}");
+        CommandBuilder.SendNpcDialog(Player, name, text);
     }
 
     public void OpenStorage()

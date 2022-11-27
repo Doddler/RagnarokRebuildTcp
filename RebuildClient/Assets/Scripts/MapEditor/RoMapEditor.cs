@@ -8,6 +8,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using Lightmapping = UnityEngine.Experimental.GlobalIllumination.Lightmapping;
+using LightType = UnityEngine.LightType;
 
 namespace Assets.Scripts.MapEditor
 {
@@ -75,6 +76,8 @@ namespace Assets.Scripts.MapEditor
         private Texture2D cursorTexture;
 
         private RectInt cursorArea;
+
+        private bool updatedLightmapper;
 
         public RoMapData MapData => mapData;
 
@@ -475,10 +478,10 @@ namespace Assets.Scripts.MapEditor
 
 
 
-        public void OnEnable()
+        public void UpdateLightmapSettings()
         {
             SceneView.duringSceneGui += OnSceneGUI;
-
+            
             if (mapData == null)
                 return;
 
@@ -494,6 +497,10 @@ namespace Assets.Scripts.MapEditor
                     Cookie cookie = new Cookie();
                     LightDataGI ld = new LightDataGI();
 
+                    var type = FalloffType.InverseSquared;
+
+                    Debug.Log("Setting point light falloff to: " + type);
+
                     for (int i = 0; i < requests.Length; i++)
                     {
                         Light l = requests[i];
@@ -507,12 +514,15 @@ namespace Assets.Scripts.MapEditor
                             default: ld.InitNoBake(l.GetInstanceID()); break;
                         }
                         ld.cookieID = l.cookie?.GetInstanceID() ?? 0;
-                        
-                        ld.falloff = FalloffType.InverseSquared;
+
+                        if(l.type == LightType.Point)
+                            ld.falloff = type;
+
                         lightsOutput[i] = ld;
                     }
                 };
                 Lightmapping.SetDelegate(testDel);
+                updatedLightmapper = true;
             }
 
         }
@@ -523,12 +533,17 @@ namespace Assets.Scripts.MapEditor
 
             if(!mapData.IsWalkTable)
                 Lightmapping.ResetDelegate();
+            
+            updatedLightmapper = false;
         }
 
         public void Update()
         {
             if (Selection.activeGameObject != gameObject && hasToolStored)
                 LeaveEditMode();
+
+            if(!updatedLightmapper)
+                UpdateLightmapSettings();
 
             Shader.SetGlobalColor("_FakeAmbient", Color.white);
         }

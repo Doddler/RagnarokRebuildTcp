@@ -130,6 +130,7 @@ Shader "Custom/MapShaderAccurate"
 
 #if LIGHTMAP_ON
 					lm = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv2)), 1);
+					lm = lerp(float4(0, 0, 0, 0), lm, _LightmapFactor);
 #endif
 #ifdef DIRLIGHTMAP_COMBINED //our baked ambient occlusion is stored in the dirlightmap
 					fixed4 bakedDirTex = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D_SAMPLER(unity_LightmapInd, unity_LightmapInd, i.uv2)),1);

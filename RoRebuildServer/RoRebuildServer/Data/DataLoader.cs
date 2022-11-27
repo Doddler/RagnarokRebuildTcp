@@ -1,11 +1,13 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using CsvHelper;
+using RebuildSharedData.Data;
 using RoRebuildServer.Data.Config;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
@@ -65,6 +67,30 @@ internal class DataLoader
         }
 
         return chart;
+    }
+
+    public Dictionary<string, SavePosition> LoadSavePoints()
+    {
+        
+        using var tr = new StreamReader(@"ServerData/Db/SavePoints.csv") as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+
+        var entries = csv.GetRecords<CsvSavePoints>().ToList();
+
+        var savePoints = new Dictionary<string, SavePosition>();
+
+        foreach (var e in entries)
+        {
+            savePoints.Add(e.Name, new SavePosition()
+            {
+                MapName = e.Map,
+                Position = new Position(e.X, e.Y),
+                Area = e.Area,
+            });
+        }
+
+        return savePoints;
+    
     }
 
     public Dictionary<string, int> LoadEffectIds()

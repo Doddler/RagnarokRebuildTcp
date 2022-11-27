@@ -26,15 +26,14 @@ public class World
     public static World Instance = null!;
 
     public List<Instance> Instances = new();
-    public ObjectPool<AreaOfEffect> AoEPool;
-
+    private ObjectPool<AreaOfEffect> AoEPool { get; set; }
+    
     private Channel<MapMoveRequest> moveRequests;
 
     private Dictionary<int, Entity> entityList = new();
     //private Dictionary<string, int> mapIdLookup = new();
 
     private Dictionary<string, int> worldMapInstanceLookup = new();
-
     private List<Entity> removeList = new(30);
     
     private int nextEntityId = 0;
@@ -42,6 +41,11 @@ public class World
 
     private int mapCount = 0;
     const int initialEntityCount = 10_000;
+
+    public void TriggerReloadServerScripts() => reloadScriptsFlag = true;
+    private bool reloadScriptsFlag = false;
+
+    private readonly object aoeLock = new();
 
     public World()
     {
@@ -67,6 +71,8 @@ public class World
 
     public void FullyRemoveEntity(ref Entity entity, CharacterRemovalReason reason = CharacterRemovalReason.OutOfSight)
     {
+        //important that this only happens on the player's map thread or between server updates on the main thread
+
         removeList.Add(entity);
 
         var ch = entity.Get<WorldObject>();
@@ -74,9 +80,21 @@ public class World
         if (ch.Type == CharacterType.Player)
         {
             var player = ch.Player;
+            player.EndNpcInteractions();
             player.SaveCharacterToData();
-            var req = new SaveCharacterRequest(player.Id, player.Name, ch.Map?.Name, ch.Position, player.CharData);
+            var req = new SaveCharacterRequest(player.Id, player.Name, ch.Map?.Name, ch.Position, player.CharData, player.SavePosition);
             RoDatabase.EnqueueDbRequest(req);
+        }
+
+        if (ch.Type == CharacterType.NPC)
+        {
+            var npc = ch.Npc;
+
+            if (npc.HasTouch && npc.AreaOfEffect != null)
+            {
+                ch.Map?.RemoveAreaOfEffect(npc.AreaOfEffect, ch.Position);
+                
+            }
         }
 
         entityList.Remove(ch.Id);
@@ -100,8 +118,76 @@ public class World
             
         PerformMoves();
         PerformRemovals();
+
+        if (reloadScriptsFlag)
+        {
+            DoScriptReload();
+            reloadScriptsFlag = false;
+        }
     }
 
+    public AreaOfEffect GetNewAreaOfEffect()
+    {
+        lock (aoeLock)
+        {
+            return AoEPool.Get();
+        }
+    }
+
+    public void ReturnAreaOfEffect(AreaOfEffect aoe)
+    {
+        lock (aoeLock)
+        {
+            AoEPool.Return(aoe);
+        }
+    }
+
+    private void DoScriptReload()
+    {
+        CommandBuilder.AddAllPlayersAsRecipients();
+        CommandBuilder.SendServerMessage("Server is reloading NPC and Monster scripts, things might get a bit spicy!");
+
+        NetworkManager.ExtendTimeoutForAllPlayers(30); //add 30s to player timeout timers. Won't take nearly that long, but better safe.
+        UnloadAllNpcsAndMonsters(); //remove all npc/monsters from the maps
+        PerformRemovals(); //recycle all returned npc/monster entities
+        DataManager.ReloadScripts(); //recompile scripts
+        ReloadNpcsAndMonsters(); //re-add npcs and monsters to maps
+
+        CommandBuilder.SendServerMessage("Reload complete! Hopefully things continue to work!");
+        CommandBuilder.ClearRecipients();
+    }
+
+    private void UnloadAllNpcsAndMonsters()
+    {
+        //gracefully terminate npc interactions before we kill the npc
+        foreach (var player in NetworkManager.Players)
+            player.Player?.EndNpcInteractions();
+
+        var ids = new List<int>();
+
+        foreach (var entity in entityList)
+        {
+            var e = entity.Value;
+
+            if (e.Type == EntityType.Npc || e.Type == EntityType.Monster)
+            {
+                FullyRemoveEntity(ref e);
+                ids.Add(entity.Key);
+            }
+        }
+
+        foreach(var i in ids)
+            entityList.Remove(i);
+    }
+
+    private void ReloadNpcsAndMonsters()
+    {
+        foreach (var instance in Instances)
+        {
+            instance.ReloadScripts();
+        }
+    }
+    
     public void CreateNpc(Map map, NpcSpawnDefinition spawn)
     {
         var e = EntityManager.New(EntityType.Npc);
@@ -137,10 +223,11 @@ public class World
                 Type = AoeType.NpcTouch
             };
 
-            map.CreateAreaOfEffect(aoe, ch.Position);
+            map.CreateAreaOfEffect(aoe);
+            npc.AreaOfEffect = aoe;
         }
     }
-
+    
     public Entity CreatePlayer(NetworkConnection connection, string mapName, Area spawnArea)
     {
         var e = EntityManager.New(EntityType.Player);
@@ -202,6 +289,7 @@ public class World
         {
             player.Name = connection.LoadCharacterRequest.Name;
             player.Id = connection.LoadCharacterRequest.Id;
+            player.SavePosition = connection.LoadCharacterRequest.SavePosition;
             var data = connection.LoadCharacterRequest.Data;
 
             if (data != null)

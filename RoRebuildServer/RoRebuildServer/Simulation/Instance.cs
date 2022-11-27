@@ -41,6 +41,12 @@ public class Instance
         }
     }
 
+    public void ReloadScripts()
+    {
+        foreach (var map in Maps)
+            map.ReloadMapScripts();
+    }
+
     public void RemoveEntity(ref Entity e)
     {
         removeList.Add(e);

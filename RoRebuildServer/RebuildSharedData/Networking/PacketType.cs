@@ -49,15 +49,32 @@ public enum PacketType : byte
     AdminRandomizeAppearance,
 
     NpcClick,
-    NpcShowSprite,
-    NpcDialog,
-    NpcOption,
+    [ServerOnlyPacket] NpcInteraction,
     NpcAdvance,
     NpcSelectOption,
     
 }
 
+public enum MessageType : byte
+{
+    Local,
+    MapWide,
+    WorldWide,
+    Server,
+    Party,
+    DirectMessage
+}
+
 public enum AdminAction : byte
 {
-    ForceGC
+    ForceGC,
+    ReloadScripts
+}
+
+public enum NpcInteractionType
+{
+    NpcDialog,
+    NpcOption,
+    NpcEndInteraction,
+    NpcShowSprite,
 }

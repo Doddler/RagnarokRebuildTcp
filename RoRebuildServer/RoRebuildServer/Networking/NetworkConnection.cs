@@ -8,7 +8,8 @@ namespace RoRebuildServer.Networking;
 public enum ConnectionStatus
 {
     PendingAuthentication,
-    Connected
+    Connected,
+    Disconnected,
 }
 
 public class NetworkConnection

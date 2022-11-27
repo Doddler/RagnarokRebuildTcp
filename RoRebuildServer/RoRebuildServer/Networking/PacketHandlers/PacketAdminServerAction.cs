@@ -1,4 +1,5 @@
 ﻿using RebuildSharedData.Networking;
+using RoRebuildServer.Simulation;
 
 namespace RoRebuildServer.Networking.PacketHandlers;
 
@@ -17,5 +18,8 @@ public class PacketAdminServerAction : IClientPacketHandler
 
         if(type == AdminAction.ForceGC)
             GC.Collect();
+
+        if(type == AdminAction.ReloadScripts)
+            World.Instance.TriggerReloadServerScripts();
     }
 }

@@ -24,6 +24,8 @@ public class PacketUseInventoryItem : IClientPacketHandler
 
         //obviously you should check if the item is in your inventory, but we have no inventory!
 
+        character.Player.AddActionDelay(0.2f);
+
         if (!DataManager.ItemList.TryGetValue(itemId, out var item))
         {
             ServerLogger.LogError($"User is attempting to use invalid item id {itemId}. Due to the error, the player will be disconnected.");

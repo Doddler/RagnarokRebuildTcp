@@ -9,7 +9,7 @@ OnClick:
 	switch(Result) 	
 	{
 	case 0:
-		SaveSpawnPoint("prontera", 156, 326, 5);
+		SaveSpawnPoint("Prontera Southwest Benches"); //prontera,156,326,5
 		Dialog("Kafra Employee", "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
 		return;
 	case 1:
@@ -18,7 +18,7 @@ OnClick:
 			Dialog("Kafra Employee", "You don't have enough money. The storage useage fee is 40 Zeny.");
 			return;
 		}
-		Dialog("Kaxfra Employee", "Here, let me open your Storage for you. Thank you for using the Kafra Service.");
+		Dialog("Kafra Employee", "Here, let me open your Storage for you. Thank you for using the Kafra Service.");
 		DropZeny(40);
 		OpenStorage();
 		return;
@@ -39,7 +39,7 @@ OnClick:
 			Dialog("Test NPC", "Wow you picked option 1, sick dude.");
 		case 1: 
 		case 2:
-			Dialog("Test NPC", "Holy moly you picked option " + Result + ", amazing!");
+			Dialog("Test NPC", "Holy moly you picked option " + (Result + 1) + ", amazing!");
 		case 3:
 			break 2; //break out of the while loop
 		}

@@ -34,6 +34,11 @@ public static class CommandBuilder
         }
     }
 
+    public static void AddAllPlayersAsRecipients()
+    {
+        NetworkManager.AddAllPlayersAsRecipient();
+    }
+
     public static void ClearRecipients()
     {
         recipients?.Clear();
@@ -209,8 +214,21 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
+    public static void SendServerMessage(string text)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.Say, 364);
+
+        packet.Write(-1);
+        packet.Write(text);
+        
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void SendSayMulti(WorldObject c, string text)
     {
+        if (!HasRecipients())
+            return;
+
         var packet = NetworkManager.StartPacket(PacketType.Say, 364);
 
         packet.Write(c.Id);
@@ -416,5 +434,50 @@ public static class CommandBuilder
         packet.Write((byte)level);
 
         NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+
+    public static void SendNpcDialog(Player p, string name, string dialog)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 256);
+
+        packet.Write((byte)NpcInteractionType.NpcDialog);
+        packet.Write(name);
+        packet.Write(dialog);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+
+    public static void SendNpcOption(Player p, string[] options)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 256);
+
+        packet.Write((byte)NpcInteractionType.NpcOption);
+        packet.Write(options.Length);
+        for (var i = 0; i < options.Length; i++)
+        {
+            packet.Write(options[i]);
+        }
+        
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void SendNpcEndInteraction(Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 8);
+        packet.Write((byte)NpcInteractionType.NpcEndInteraction);
+        
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void SendNpcShowSprite(Player p, string spriteName, int pos)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 8);
+        packet.Write((byte)NpcInteractionType.NpcShowSprite);
+        packet.Write(spriteName);
+        packet.Write((byte)pos);
+
+        NetworkManager.SendMessage(packet, p.Connection);
     }
 }

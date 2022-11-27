@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Enum;
+﻿using System.Drawing;
+using RebuildSharedData.Enum;
 
 namespace RebuildSharedData.Data;
 
@@ -11,7 +12,7 @@ public struct Area
 
     public Area Clone => new Area(this);
     public static Area Zero => new Area(0, 0, 0, 0);
-		
+
     public bool IsZero => MinX == 0 && MaxX == 0 && MinY == 0 && MaxY == 0;
 
     public int Width => MaxX - MinX + 1;
@@ -49,6 +50,27 @@ public struct Area
     public bool PointInArea(int x, int y)
     {
         return x >= MinX && x <= MaxX && y >= MinY && y <= MaxY;
+    }
+
+    public bool Overlaps(Area b)
+    {
+        //if one rectangle is on the left side of the other
+        if (MinX > b.MaxX || b.MinX > MaxX)
+            return false;
+
+        //if one rectangle is above the other
+        if (MinY > b.MaxY || b.MinY > MaxY)
+            return false;
+
+        return true;
+    }
+
+    public bool HasEntered(Position initial, Position dest)
+    {
+        if (Contains(initial))
+            return false;
+
+        return Contains(dest);
     }
 
     public Position RandomInArea()
@@ -97,9 +119,9 @@ public struct Area
 
         if (MinX > MaxX)
             MaxX = MinX;
-        if(MinY > MaxY)
+        if (MinY > MaxY)
             MaxY = MinY;
-			
+
         return this;
     }
 
@@ -160,4 +182,27 @@ public struct Area
     {
         return !(left == right);
     }
+
+    public bool Equals(Area other)
+    {
+        return MinX == other.MinX && MinY == other.MinY && MaxX == other.MaxX && MaxY == other.MaxY;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Area other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            var hashCode = MinX;
+            hashCode = (hashCode * 397) ^ MinY;
+            hashCode = (hashCode * 397) ^ MaxX;
+            hashCode = (hashCode * 397) ^ MaxY;
+            return hashCode;
+        }
+    }
+
 }

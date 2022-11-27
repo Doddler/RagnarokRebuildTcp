@@ -30,4 +30,5 @@ public class PacketSay : IClientPacketHandler
         CommandBuilder.SendSayMulti(connection.Character, text);
         CommandBuilder.ClearRecipients();
     }
+
 }

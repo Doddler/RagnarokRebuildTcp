@@ -16,4 +16,10 @@ public abstract class NpcBehaviorBase
     {
         return NpcInteractionResult.EndInteraction;
     }
+
+
+    public virtual void OnCancel(Npc npc, Player player, NpcInteractionState state)
+    {
+        
+    }
 }

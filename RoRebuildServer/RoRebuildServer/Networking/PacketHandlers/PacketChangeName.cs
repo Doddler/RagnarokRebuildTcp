@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Config;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 
 namespace RoRebuildServer.Networking.PacketHandlers;
@@ -13,7 +14,7 @@ public class PacketChangeName: IClientPacketHandler
 
         var str = msg.ReadString();
 
-        if (str.Length > 40)
+        if (str.Length > SharedConfig.MaxPlayerName)
         {
             CommandBuilder.SendRequestFailed(connection.Player, ClientErrorType.RequestTooLong);
         }
