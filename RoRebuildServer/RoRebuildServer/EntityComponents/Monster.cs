@@ -68,7 +68,9 @@ public partial class Monster : IEntityAutoReset
         aiTickRate = 0.1f;
         nextAiUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(0, aiTickRate);
         SpawnRule = null;
-
+        MonsterBase = null;
+        SpawnMap = null;
+		
         Target = Entity.Null;
     }
     

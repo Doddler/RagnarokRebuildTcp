@@ -711,15 +711,15 @@ public class Map
     public void CreateAreaOfEffect(AreaOfEffect aoe)
     {
         //add the aoe to every chunk touched by the aoe
-        foreach (var chunk in GetChunkEnumerator(aoe.Area))
+        foreach (var chunk in GetChunkEnumerator(GetChunksForArea(aoe.Area)))
         {
             chunk.AreaOfEffects.Add(aoe);
         }
     }
 
-    public void RemoveAreaOfEffect(AreaOfEffect aoe, Position pos)
+    public void RemoveAreaOfEffect(AreaOfEffect aoe)
     {
-        foreach (var chunk in GetChunkEnumerator(aoe.Area))
+        foreach (var chunk in GetChunkEnumerator(GetChunksForArea(aoe.Area)))
         {
             chunk.AreaOfEffects.Remove(aoe);
         }

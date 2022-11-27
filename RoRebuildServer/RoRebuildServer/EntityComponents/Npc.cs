@@ -15,9 +15,9 @@ public class Npc : IEntityAutoReset
     public bool HasTouch;
     public bool HasInteract;
     public AreaOfEffect? AreaOfEffect;
-    
-    public int[] ValuesInt = new int[NpcInteractionState.StorageCount];
-    public string[] ValuesString = new string[NpcInteractionState.StorageCount];
+
+    [EntityIgnoreNullCheck] public int[] ValuesInt = new int[NpcInteractionState.StorageCount];
+    [EntityIgnoreNullCheck] public string[] ValuesString = new string[NpcInteractionState.StorageCount];
 
     public NpcBehaviorBase Behavior = null!;
 
@@ -34,6 +34,15 @@ public class Npc : IEntityAutoReset
             World.Instance.ReturnAreaOfEffect(AreaOfEffect);
             AreaOfEffect = null!;
         }
+
+        for (var i = 0; i < NpcInteractionState.StorageCount; i++)
+        {
+            ValuesInt[i] = 0;
+            ValuesString[i] = String.Empty;
+        }
+
+        Entity = Entity.Null;
+        Behavior = null!;
     }
 
     public void CancelInteraction(Player player)

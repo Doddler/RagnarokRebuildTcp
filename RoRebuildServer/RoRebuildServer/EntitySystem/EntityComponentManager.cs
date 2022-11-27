@@ -68,10 +68,9 @@ public static class EntityComponentManager
     public static void RecycleComponent(EntityType type, int slot, object component)
     {
         var id = componentIndexes[(int)type * MaxComponentCount + slot];
-#if DEBUG
+
         if (id < 0)
-            throw new Exception("Attempting to recycle component of incorrect type!");
-#endif
+            return;
 
         componentPool[id].Return(component);
     }

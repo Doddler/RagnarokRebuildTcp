@@ -60,11 +60,10 @@ public class NpcInteractionState
             return;
         }
 
-        var npc = NpcEntity.Get<Npc>();
-        npc.CancelInteraction(Player);
+        ServerLogger.Debug($"Player {Player} had an NPC interaction cancelled.");
 
-        Player.IsInNpcInteraction = false;
-        Reset();
+        var npc = NpcEntity.Get<Npc>();
+        npc.CancelInteraction(Player); //this will trigger a reset on this object
     }
 
     public void ContinueInteraction()

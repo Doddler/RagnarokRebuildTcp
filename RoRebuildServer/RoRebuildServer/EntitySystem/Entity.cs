@@ -4,15 +4,13 @@ using System.Runtime.InteropServices;
 
 namespace RoRebuildServer.EntitySystem;
 
-[Flags]
 public enum EntityType : byte
 {
     None = 0,
     Player = 1,
     Monster = 2,
-    Combatant = Player & Monster,
-    Npc = 4,
-    Effect = 8
+    Npc = 3,
+    Effect = 4
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 2)]

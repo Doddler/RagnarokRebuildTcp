@@ -1171,6 +1171,26 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendReloadScript()
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.AdminServerAction);
+            msg.Write((byte)AdminAction.ReloadScripts);
+
+            SendMessage(msg);
+        }
+        
+        public void SendNpcClick(int target)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.NpcClick);
+            msg.Write(target);
+
+            SendMessage(msg);
+        }
+
         public void AttachEffectToEntity(int effectId)
         {
 

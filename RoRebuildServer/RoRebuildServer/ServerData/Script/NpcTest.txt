@@ -5,7 +5,7 @@ Npc("2009rwc_03", "Kafra Staff#DebugRoom", "4_F_KAFRA2", 49, 49, SW)
 OnClick:
 	ShowSprite("kafra_06", right);
  
-	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?d");
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
 	Option("Save", "Use Storage", "Cancel");
 	switch(Result) 	
 	{

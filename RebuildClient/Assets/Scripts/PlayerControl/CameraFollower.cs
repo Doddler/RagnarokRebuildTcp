@@ -560,6 +560,17 @@ namespace Assets.Scripts
                             noHold = true;
                         }
                     }
+
+
+                    if (anim.Controllable.CharacterType == CharacterType.NPC)
+                    {
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            NetworkManager.Instance.SendNpcClick(anim.Controllable.Id);
+                            isHolding = false;
+                            noHold = true;
+                        }
+                    }
                 }
             }
             else
@@ -786,6 +797,11 @@ namespace Assets.Scripts
                     else
                         AttachEffectToEntity(s[1], controllable);
                     
+                }
+
+                if (s[0] == "/reloadscript")
+                {
+                    NetworkManager.Instance.SendReloadScript();
                 }
             }
             else

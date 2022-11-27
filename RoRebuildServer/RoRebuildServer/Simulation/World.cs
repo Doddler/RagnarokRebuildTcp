@@ -92,7 +92,7 @@ public class World
 
             if (npc.HasTouch && npc.AreaOfEffect != null)
             {
-                ch.Map?.RemoveAreaOfEffect(npc.AreaOfEffect, ch.Position);
+                ch.Map?.RemoveAreaOfEffect(npc.AreaOfEffect);
                 
             }
         }
@@ -226,6 +226,8 @@ public class World
             map.CreateAreaOfEffect(aoe);
             npc.AreaOfEffect = aoe;
         }
+
+        entityList.Add(ch.Id, e);
     }
     
     public Entity CreatePlayer(NetworkConnection connection, string mapName, Area spawnArea)

@@ -1,6 +1,6 @@
 ﻿
 
-Npc("prontera", "Kafra Staff", "4_F_KAFRA2", 248, 42, NW) 
+Npc("prontera", "Kafra Staff", "4_F_KAFRA1", 248, 42, NW) 
 {
 OnClick:
 	ShowSprite("kafra_06", right);
@@ -25,7 +25,7 @@ OnClick:
 	}
 }
 
-Npc("prontera", "Test NPC", "4_F_KAFRA2", 248, 48, NW) 
+Npc("prontera", "Test NPC", "4_F_KAFRA4", 243, 48, SW) 
 {
 OnClick:
 	Dialog(Name, "Yo buddy! Want to ask me some questions?");

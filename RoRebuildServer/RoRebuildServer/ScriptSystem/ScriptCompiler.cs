@@ -45,7 +45,7 @@ internal class ScriptCompiler
             }
         }
 
-        var fs = new StreamReader(inputPath);
+        using var fs = new StreamReader(inputPath);
         var input = new AntlrInputStream(fs);
 
         var lexer = new RoScriptLexer(input);
@@ -66,7 +66,7 @@ internal class ScriptCompiler
             
             File.WriteAllText(cacheFileName, str);
         }
-
+        
         return true;
     }
 
