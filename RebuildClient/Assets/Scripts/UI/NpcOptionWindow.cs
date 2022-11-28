@@ -51,8 +51,11 @@ namespace Assets.Scripts.UI
         // Start is called before the first frame update
         void Awake()
         {
-            TemplateButton.SetActive(false);
-            gameObject.SetActive(false);            
+            if (Time.timeSinceLevelLoad < 1f)
+            {
+                TemplateButton.SetActive(false);
+                gameObject.SetActive(false);
+            }
         }
 
         // Update is called once per frame
