@@ -20,8 +20,8 @@ public class PacketSitStand : IClientPacketHandler
             return;
         }
 
-        if (player.IsInNpcInteraction)
-            return;
+        //if (player.IsInNpcInteraction)
+        //    return;
 
         player.AddActionDelay(CooldownActionType.SitStand);
 

@@ -11,7 +11,8 @@ namespace RoRebuildServer.ScriptSystem;
 
 internal class ScriptCompiler
 {
-    public Dictionary<string, string> scriptFiles = new();
+    private Dictionary<string, string> scriptFiles = new();
+    private HashSet<string> uniqueNames = new();
 
     /// <summary>
     /// Compiles a script on a given path and stores the output.
@@ -54,7 +55,7 @@ internal class ScriptCompiler
 
         var walker = new ScriptTreeWalker();
         
-        var str = walker.BuildClass(name, parser);
+        var str = walker.BuildClass(name, parser, uniqueNames);
         
         scriptFiles.Add(Path.GetRelativePath(dataPath, inputPath), str);
 
@@ -156,7 +157,8 @@ internal class ScriptCompiler
             File.WriteAllBytes(Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll"), bytes);
 
         scriptFiles.Clear(); //no need to keep the scripts in memory anymore.
-        scriptFiles = null;
+        scriptFiles = null!;
+        uniqueNames = null!; 
 
         return Assembly.Load(bytes);
 

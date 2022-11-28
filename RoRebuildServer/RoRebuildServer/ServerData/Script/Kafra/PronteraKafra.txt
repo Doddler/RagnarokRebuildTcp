@@ -1,0 +1,160 @@
+﻿
+Npc("prontera", "Kafra Staff", "4_F_KAFRA1", 146, 89, E) 
+{
+	localstr name = "Kafra Employee";
+OnClick:
+	FocusNpc();
+	ShowSprite("kafra_01", right);
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
+	Option("Save", "Use Storage", "Teleport Service", "Cancel");
+	switch(Result) 	
+	{
+	case 0:
+		SaveSpawnPoint("Prontera Southwest Benches");
+		Dialog(name, "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
+		return;
+	case 1:
+		Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
+		return;
+	case 2:
+		Dialog(name, "Please choose your destination.");
+		Option("Izlude -> 600z", "Geffen -> 1200z", "Payon -> 1200z", "Morroc -> 1200z", "Orc Dungeon -> 1700z", "Alberta -> 1800z", "Cancel" );
+		switch(Result)
+		{
+			case 0: MoveTo("izlude", 91, 105); break;
+			case 1: MoveTo("geffen", 120, 39); break;
+			case 2: MoveTo("payon", 161, 58); break;
+			case 3: MoveTo("morocc", 156, 46); break;
+			case 4: MoveTo("gef_fild10", 52, 326); break;
+			case 5: MoveTo("alberta", 117, 56); break;
+		}
+	}
+}
+
+Npc("prontera", "Kafra Staff", "4_F_KAFRA3", 151, 29, NE) 
+{
+	localstr name = "Kafra Employee";
+OnClick:
+	FocusNpc();
+	ShowSprite("kafra_03", right);
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
+	Option("Save", "Use Storage", "Teleport Service", "Cancel");
+	switch(Result) 	
+	{
+	case 0:
+		SaveSpawnPoint("Prontera South");
+		Dialog(name, "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
+		return;
+	case 1:
+		Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
+		return;
+	case 2:
+		Dialog(name, "Please choose your destination.");
+		Option("Izlude -> 600z", "Geffen -> 1200z", "Payon -> 1200z", "Morroc -> 1200z", "Orc Dungeon -> 1700z", "Alberta -> 1800z", "Cancel" );
+		switch(Result)
+		{
+			case 0: MoveTo("izlude", 91, 105); break;
+			case 1: MoveTo("geffen", 120, 39); break;
+			case 2: MoveTo("payon", 161, 58); break;
+			case 3: MoveTo("morocc", 156, 46); break;
+			case 4: MoveTo("gef_fild10", 52, 326); break;
+			case 5: MoveTo("alberta", 117, 56); break;
+		}
+	}
+}
+
+Npc("prontera", "Kafra Staff", "4_F_KAFRA4", 282, 200, W) 
+{
+	localstr name = "Kafra Employee";
+OnClick:
+	FocusNpc();
+	ShowSprite("kafra_04", right);
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
+	Option("Save", "Use Storage", "Teleport Service", "Cancel");
+	switch(Result) 	
+	{
+	case 0:
+		SaveSpawnPoint("Prontera East");
+		Dialog(name, "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
+		return;
+	case 1:
+		Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
+		return;
+	case 2:
+		Dialog(name, "Please choose your destination.");
+		Option("Izlude -> 600z", "Geffen -> 1200z", "Payon -> 1200z", "Morroc -> 1200z", "Orc Dungeon -> 1700z", "Alberta -> 1800z", "Cancel" );
+		switch(Result)
+		{
+			case 0: MoveTo("izlude", 91, 105); break;
+			case 1: MoveTo("geffen", 120, 39); break;
+			case 2: MoveTo("payon", 161, 58); break;
+			case 3: MoveTo("morocc", 156, 46); break;
+			case 4: MoveTo("gef_fild10", 52, 326); break;
+			case 5: MoveTo("alberta", 117, 56); break;
+		}
+	}
+}
+
+Npc("prontera", "Kafra Staff", "4_F_KAFRA5", 29, 200, E) 
+{
+	localstr name = "Kafra Employee";
+OnClick:
+	FocusNpc();
+	ShowSprite("kafra_05", right);
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
+	Option("Save", "Use Storage", "Teleport Service", "Cancel");
+	switch(Result) 	
+	{
+	case 0:
+		SaveSpawnPoint("Prontera West");
+		Dialog(name, "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
+		return;
+	case 1:
+		Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
+		return;
+	case 2:
+		Dialog(name, "Please choose your destination.");
+		Option("Izlude -> 600z", "Geffen -> 1200z", "Payon -> 1200z", "Morroc -> 1200z", "Orc Dungeon -> 1700z", "Alberta -> 1800z", "Cancel" );
+		switch(Result)
+		{
+			case 0: MoveTo("izlude", 91, 105); break;
+			case 1: MoveTo("geffen", 120, 39); break;
+			case 2: MoveTo("payon", 161, 58); break;
+			case 3: MoveTo("morocc", 156, 46); break;
+			case 4: MoveTo("gef_fild10", 52, 326); break;
+			case 5: MoveTo("alberta", 117, 56); break;
+		}
+	}
+}
+
+Npc("prontera", "Kafra Staff", "4_F_KAFRA6", 152, 326, SE) 
+{
+	localstr name = "Kafra Employee";
+OnClick:
+	FocusNpc();
+	ShowSprite("kafra_06", right);
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
+	Option("Save", "Use Storage", "Teleport Service", "Cancel");
+	switch(Result) 	
+	{
+	case 0:
+		SaveSpawnPoint("Prontera North");
+		Dialog(name, "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
+		return;
+	case 1:
+		Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
+		return;
+	case 2:
+		Dialog(name, "Please choose your destination.");
+		Option("Izlude -> 600z", "Geffen -> 1200z", "Payon -> 1200z", "Morroc -> 1200z", "Orc Dungeon -> 1700z", "Alberta -> 1800z", "Cancel" );
+		switch(Result)
+		{
+			case 0: MoveTo("izlude", 91, 105); break;
+			case 1: MoveTo("geffen", 120, 39); break;
+			case 2: MoveTo("payon", 161, 58); break;
+			case 3: MoveTo("morocc", 156, 46); break;
+			case 4: MoveTo("gef_fild10", 52, 326); break;
+			case 5: MoveTo("alberta", 117, 56); break;
+		}
+	}
+}

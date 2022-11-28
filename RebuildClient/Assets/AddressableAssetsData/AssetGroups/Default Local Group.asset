@@ -5238,6 +5238,101 @@ MonoBehaviour:
     m_Address: Assets/Maps/texture/Water/water1031.jpg
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 347388a4dba314c4ba73303f79200a8e
+    m_Address: Assets/Sprites/Cutins/kafra_01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+  - m_GUID: 0b6cfcc42d98a2244b2527443e952b30
+    m_Address: Assets/Sprites/Cutins/kafra_02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+  - m_GUID: 5479ee39707aee1439e1dd09280094bc
+    m_Address: Assets/Sprites/Cutins/kafra_03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+  - m_GUID: 36c4698c79bb7ad42ad28e4dd544f3e2
+    m_Address: Assets/Sprites/Cutins/kafra_04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+  - m_GUID: 6dcf44f4ae93c1144933a68e83a6c23e
+    m_Address: Assets/Sprites/Cutins/kafra_05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+  - m_GUID: b328cdcd70f85d84d8a2f671f83307fe
+    m_Address: Assets/Sprites/Cutins/kafra_06.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+  - m_GUID: 9902566e75e171a48ba7d8e94d6ccf24
+    m_Address: Assets/Sprites/Cutins/kafra_07.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+  - m_GUID: 758804b5049d9944a9cd37eed446a67c
+    m_Address: Assets/Sprites/Cutins/kafra_08.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+  - m_GUID: e3e7c4bad65eeec4ea5dc0d1e7b8b62d
+    m_Address: .pngts/Sprites/Cutins/kafra_09.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+  - m_GUID: e52375e6aa5531742b56258783d4aee0
+    m_Address: Assets/Maps/minimap/guild_room.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7b4944d9dec233248949bd7b80405f91
+    m_Address: Assets/Maps/minimap/guild_room_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: fd8a3916b846b4346a4ab0c634345725
+    m_Address: Assets/Maps/minimap/poring_c01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 2835a6a011c90d740a0d6573ad6a355a
+    m_Address: Assets/Maps/minimap/poring_c01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: e4389cfed80660841a906c740a15e5d7
+    m_Address: Assets/Maps/minimap/poring_c02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: bece6516e4235884089873906fbfd55d
+    m_Address: Assets/Maps/minimap/poring_c02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 69b4a666b19af90419a08e5bd2bd1992
+    m_Address: Assets/Maps/minimap/pvp_n_1-4.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: adb9c8805d7bc254384d8950aee8848d
+    m_Address: Assets/Maps/minimap/pvp_n_1-4_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 242c41906ecc99741a7a16c051fd1838
+    m_Address: Assets/Maps/minimap/pvp_n_1-5.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 15f7e9b098af405499a59e9aeb759758
+    m_Address: Assets/Maps/minimap/pvp_n_1-5_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

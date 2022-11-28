@@ -962,6 +962,31 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
+  - m_GUID: 0af02da355002164e8524f9d2ba2af27
+    m_Address: Assets/Scenes/Maps/guild_room.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 6222e9e435bc0b14382062767a485dc4
+    m_Address: Assets/Scenes/Maps/poring_c01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 4e0e39fb124ce3449923a98365f7e531
+    m_Address: Assets/Scenes/Maps/poring_c02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 9ccb736bd5d738a48a199c4205fa1b7b
+    m_Address: Assets/Scenes/Maps/pvp_n_1-4.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+  - m_GUID: 0a602cc0ac235e34bb6cbb3aaefe8348
+    m_Address: Assets/Scenes/Maps/pvp_n_1-5.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

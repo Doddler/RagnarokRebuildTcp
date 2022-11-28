@@ -73,6 +73,7 @@ public enum AdminAction : byte
 
 public enum NpcInteractionType
 {
+    NpcFocusNpc,
     NpcDialog,
     NpcOption,
     NpcEndInteraction,

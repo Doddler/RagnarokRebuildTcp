@@ -6,6 +6,7 @@ using System.Text;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI;
 using Assets.Scripts.Utility;
 using HybridWebSocket;
 using Lidgren.Network;
@@ -16,6 +17,7 @@ using RebuildSharedData.Networking;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -888,6 +890,61 @@ namespace Assets.Scripts.Network
             CameraFollower.AttachEffectToEntity(effect, controllable);
         }
 
+        public void OnMessageNpcInteraction(ClientInboundMessage msg)
+        {
+            var type = (NpcInteractionType)msg.ReadByte();
+
+            Debug.Log($"Received NPC interaction of type: {type}");
+
+            switch (type)
+            {
+                case NpcInteractionType.NpcDialog:
+                {
+                    var name = msg.ReadString();
+                    var text = msg.ReadString();
+
+                    //CameraFollower.AppendChatText(name + ": " + text);
+                    CameraFollower.IsInNPCInteraction = true;
+                    CameraFollower.DialogPanel.GetComponent<DialogWindow>().SetDialog(name, text);
+                    break;
+                }
+                case NpcInteractionType.NpcFocusNpc:
+                {
+                    var id = msg.ReadInt32();
+                    if (!entityList.TryGetValue(id, out var controllable))
+                        return;
+
+                    CameraFollower.OverrideTarget = controllable.gameObject;
+                    break;
+                }
+                case NpcInteractionType.NpcShowSprite:
+                {
+                    var sprite = msg.ReadString();
+                    Debug.Log($"Show npc sprite {sprite}");
+                    CameraFollower.DialogPanel.GetComponent<DialogWindow>().ShowImage(sprite);
+                    break;
+                }
+                case NpcInteractionType.NpcOption:
+                {
+                    var options = new List<string>();
+                    var len = msg.ReadInt32();
+                    for(var i = 0; i < len; i++)
+                        options.Add(msg.ReadString());
+
+                    CameraFollower.NpcOptionPanel.GetComponent<NpcOptionWindow>().ShowOptionWindow(options);
+                    break;
+                }
+                case NpcInteractionType.NpcEndInteraction:
+                    CameraFollower.OverrideTarget = null;
+                    CameraFollower.IsInNPCInteraction = false;
+                    CameraFollower.DialogPanel.GetComponent<DialogWindow>().HideUI();
+                    break;
+                default:
+                    Debug.LogError($"Unknown Npc Interaction type: {type}");
+                    break;
+            }
+        }
+
         void HandleDataPacket(ClientInboundMessage msg)
         {
             var type = (PacketType)msg.ReadByte();
@@ -970,6 +1027,9 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.Effect:
                     OnMessageEffect(msg);
+                    break;
+                case PacketType.NpcInteraction:
+                    OnMessageNpcInteraction(msg);
                     break;
                 default:
                     Debug.LogWarning($"Failed to handle packet type: {type}");
@@ -1190,6 +1250,26 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
+
+        public void SendNpcAdvance()
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.NpcAdvance);
+            
+            SendMessage(msg);
+        }
+
+        public void SendNpcSelectOption(int result)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.NpcSelectOption);
+            msg.Write(result);
+
+            SendMessage(msg);
+        }
+
 
         public void AttachEffectToEntity(int effectId)
         {

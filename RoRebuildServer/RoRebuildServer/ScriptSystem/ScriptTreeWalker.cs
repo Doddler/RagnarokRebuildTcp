@@ -13,13 +13,13 @@ internal class ScriptTreeWalker
     private string name;
     private Action<StartSectionContext>? sectionHandler;
 
-    public string BuildClass(string inputName, RoScriptParser parser)
+    public string BuildClass(string inputName, RoScriptParser parser, HashSet<string> uniqueNames)
     {
         name = inputName;
-        builder = new ScriptBuilder(inputName.Replace(" ", "_"), "System", "System.Linq",
+        builder = new ScriptBuilder(inputName.Replace(" ", "_"), uniqueNames, "System", "System.Linq",
             "RoRebuildServer.Data.Map", "RebuildSharedData.Data", "RoRebuildServer.Data", "RoRebuildServer.EntityComponents", 
             "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util", "RoRebuildServer.EntityComponents.Items");
-
+        
         var ruleSet = parser.rule_set();
 
 
@@ -169,7 +169,7 @@ internal class ScriptTreeWalker
         if (!int.TryParse(facingTxt, out var _))
             facingTxt = builder.GetConstValue(facingTxt);
         
-        builder.StartNpc(str);
+        var name = builder.StartNpc(str);
 
         sectionHandler = NpcSectionHandler;
 
@@ -182,7 +182,7 @@ internal class ScriptTreeWalker
         builder.EndMethod();
         builder.EndClass();
 
-        builder.EndNpc(str,displayName, mapName, spriteName, facingTxt, x, y, w, h);
+        builder.EndNpc(name,displayName, mapName, spriteName, facingTxt, x, y, w, h);
     }
 
     private void EnterRecoveryItemStatement(StandaloneFunctionContext functionContext)
@@ -245,13 +245,13 @@ internal class ScriptTreeWalker
             dh = int.Parse(expr[10].GetText());
         }
 
-        builder.StartNpc(str);
+        var name = builder.StartNpc(str);
         builder.StartNpcSection("OnTouch");
         builder.OutputRaw($"state.MoveTo({destMap}, {dx}, {dy}, {dw}, {dh})");
         builder.EndLine(functionContext.start.Line);
         builder.EndMethod();
         builder.EndClass();
-        builder.EndNpc(str, displayName, mapName, "\"WARP\"", "4", x, y, w, h);
+        builder.EndNpc(name, displayName, mapName, "\"WARP\"", "4", x, y, w, h);
     }
 
     public void NpcSectionHandler(StartSectionContext context)
@@ -585,6 +585,9 @@ internal class ScriptTreeWalker
                 VisitExpression(parensContext.expression());
                 builder.OutputRaw(")");
                 break;
+            case AssignmentExpressionContext assignmentContext:
+                VisitAssignment(assignmentContext.assignment());
+                break;
             default:
                 ErrorResult(expressionContext);
                 break;
@@ -698,9 +701,12 @@ internal class ScriptTreeWalker
     public void VisitVarDeclaration(VarDeclarationContext varDeclarationContext)
     {
         var assn = varDeclarationContext.assignment();
+        var type = varDeclarationContext.type.Text.ToLower();
+        var isString = (type == "string");
+
         if (builder.UseStateMachine && assn is VarAssignmentContext varContext)
         {
-            builder.DefineVariable(varContext.IDENTIFIER().GetText(), false, false);
+            builder.DefineVariable(varContext.IDENTIFIER().GetText(), isString, false);
         }
         else
             builder.OutputRaw("var ");

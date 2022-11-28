@@ -208,6 +208,7 @@ public class World
         npc.HasTouch = spawn.HasTouch;
         npc.Entity = e;
         npc.Behavior = spawn.Behavior;
+        npc.Behavior.Init(npc);
 
         map.AddEntity(ref e);
 
@@ -462,6 +463,9 @@ public class World
                 continue;
             
             var character = move.Player.Get<WorldObject>();
+
+            if (character.Map != move.SrcMap)
+                continue; //player is no longer on the originating map
 
             ServerLogger.Log($"Performing move on player {character.Name} to map {move.DestMap.Name}.");
 

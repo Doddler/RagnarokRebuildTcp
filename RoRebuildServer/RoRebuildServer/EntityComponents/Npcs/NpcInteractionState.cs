@@ -83,10 +83,18 @@ public class NpcInteractionState
         var npc = NpcEntity.Get<Npc>();
         npc.OptionAdvance(Player, result);
     }
+
+    public void FocusNpc()
+    {
+        if (Player == null)
+            return;
+
+        CommandBuilder.SendFocusNpc(Player, NpcEntity.Get<Npc>());
+    }
     
     public void ShowSprite(string spriteName, int pos)
     {
-        Console.WriteLine("ShowSprite " + spriteName);
+        //Console.WriteLine("ShowSprite " + spriteName);
 
         if (Player == null)
             return;
@@ -96,9 +104,9 @@ public class NpcInteractionState
     
     public void Option(params string[] options)
     {
-        Console.WriteLine("Option");
-        foreach(var s in options)
-            Console.WriteLine(" - " + s);
+        //Console.WriteLine("Option");
+        //foreach(var s in options)
+        //    Console.WriteLine(" - " + s);
 
         if (Player == null)
             return;
@@ -134,7 +142,7 @@ public class NpcInteractionState
         if (Player == null)
             return;
 
-        Console.WriteLine($"Dialog {name}: {text}");
+        //Console.WriteLine($"Dialog {name}: {text}");
         CommandBuilder.SendNpcDialog(Player, name, text);
     }
 

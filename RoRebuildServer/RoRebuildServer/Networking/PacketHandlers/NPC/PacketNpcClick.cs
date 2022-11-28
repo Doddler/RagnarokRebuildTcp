@@ -1,8 +1,11 @@
-﻿using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
+using System.Numerics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.NPC;
 
@@ -15,11 +18,16 @@ public class PacketNpcClick : IClientPacketHandler
 
         var character = connection.Character;
 
-        if (character == null
+        if (character == null || connection.Player == null
             || character.State == CharacterState.Sitting
             || character.State == CharacterState.Dead
             || character.Player.IsInNpcInteraction)
             return;
+
+
+        if (connection.Player.InActionCooldown())
+            return;
+        connection.Player.AddActionDelay(CooldownActionType.Click);
 
         var target = World.Instance.GetEntityById(id);
 
@@ -30,9 +38,13 @@ public class PacketNpcClick : IClientPacketHandler
             return;
 
         var npc = target.Get<Npc>();
+        var npcChar = target.Get<WorldObject>();
         if (!npc.HasInteract)
             return;
 
+
         npc.OnInteract(character.Player);
+        
+        character.ChangeLookDirection(ref connection.Entity, (npcChar.Position - character.Position).Normalize().GetDirectionForOffset(), HeadFacing.Center);
     }
 }

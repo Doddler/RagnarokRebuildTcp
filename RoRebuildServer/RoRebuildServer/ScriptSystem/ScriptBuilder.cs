@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.EntityComponents;
@@ -36,6 +37,7 @@ public class ScriptBuilder
 
     private string className = "";
     private string methodName = "";
+    private string npcName = "";
     private string stateVariable = "";
     private string localvariable = "";
     private int pointerCount = 0;
@@ -54,11 +56,14 @@ public class ScriptBuilder
 
     private int indentation = 1;
 
+    private HashSet<string> UniqueNames;
+
     public Stack<int> breakPointerStack = new Stack<int>();
 
-    public ScriptBuilder(string className, params string[] namespaceList)
+    public ScriptBuilder(string className, HashSet<string> uniqueNames, params string[] namespaceList)
     {
         this.className = className;
+        UniqueNames = uniqueNames;
 
         foreach (var n in namespaceList)
             scriptBuilder.AppendLine($"using {n};");
@@ -278,7 +283,7 @@ public class ScriptBuilder
     }
 
 
-    public void StartNpc(string name)
+    public string StartNpc(string name)
     {
         methodName = name.Replace(" ", "");
         UseStateMachine = true;
@@ -291,7 +296,20 @@ public class ScriptBuilder
         remoteCommands.Clear();
         hasTouch = false;
         hasInteract = false;
-        
+
+        name += "_" + Guid.NewGuid().ToString().Replace("-", "_");
+
+        //if (UniqueNames.Contains(name))
+        //{
+        //    if (name.Contains("#"))
+        //        throw new Exception(
+        //            $"The NPC with the unique name {name} was attempted to be reused in the script {className}");
+        //    else
+        //        name += "_" + GameRandom.Next(0, 999_999_999);
+        //}
+
+        //UniqueNames.Add(name);
+
         StartIndentedScriptLine().AppendLine($"public class RoRebuildNpcGen_{name} : NpcBehaviorBase");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
@@ -310,7 +328,7 @@ public class ScriptBuilder
 
         LoadFunctionSource(typeof(Npc), "npc");
 
-        
+        return name;
     }
 
     public void EndNpc(string name, string npcTag, string map, string sprite, string facing, int x, int y, int w, int h)

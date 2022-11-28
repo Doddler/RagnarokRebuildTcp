@@ -40,7 +40,7 @@ expression : IDENTIFIER type=(INC|DEC)											#ExpressionUnary
 		   | LPAREN expression RPAREN											#ArithmeticParens
 		   | function															#FunctionCallExpression
 		   | PER LPAREN functionparam? RPAREN									#AreaType
-		   | VAR assignment														#VarDeclaration
+		   | type=(VAR|VARSTR) assignment										#VarDeclaration
 		   | type=(LOCAL|LOCALSTR) assignment									#LocalDeclaration
 		   | assignment															#AssignmentExpression
 		   | entity																#ExpressionEntity
@@ -73,6 +73,7 @@ PER : '%';
 SWITCH : 'switch';
 CASE : 'case';
 RETURN : 'return';
+VARSTR : 'string';
 LOCAL : 'local';
 LOCALSTR : 'localstr';
 GLOBAL : 'global';

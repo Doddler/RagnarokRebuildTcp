@@ -1,34 +1,52 @@
 ﻿
 
-Npc("prontera", "Kafra Staff", "4_F_KAFRA1", 248, 42, NW) 
+Npc("prontera", "Kafra Staff", "4_F_KAFRA6", 248, 42, NW) 
 {
+	localstr name = "Kafra Employee";
 OnClick:
+	FocusNpc();
 	ShowSprite("kafra_06", right);
-	Dialog("Kafra Employee", "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
-	Option("Save", "Use Storage", "Cancel");
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
+	Option("Save", "Use Storage", "Teleport Service", "Cancel");
 	switch(Result) 	
 	{
 	case 0:
 		SaveSpawnPoint("Prontera Southwest Benches"); //prontera,156,326,5
-		Dialog("Kafra Employee", "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
+		Dialog(name, "Your Respawn Point has been saved in the city of Prontera. Thank you for using the Kafra Service.");
 		return;
 	case 1:
-		if(GetZeny() < 40)
-		{
-			Dialog("Kafra Employee", "You don't have enough money. The storage useage fee is 40 Zeny.");
-			return;
-		}
-		Dialog("Kafra Employee", "Here, let me open your Storage for you. Thank you for using the Kafra Service.");
-		DropZeny(40);
-		OpenStorage();
+		Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
 		return;
+		//if(GetZeny() < 40)
+		//{
+		//	Dialog(name, "You don't have enough money. The storage useage fee is 40 Zeny.");
+		//	return;
+		//}
+		//Dialog(name, "Here, let me open your Storage for you. Thank you for using the Kafra Service.");
+		//DropZeny(40);
+		//OpenStorage();
+		//return;
+	case 2:
+		Dialog(name, "Please choose your destination.");
+		Option("Izlude -> 600z", "Geffen -> 1200z", "Payon -> 1200z", "Morroc -> 1200z", "Orc Dungeon -> 1700z", "Alberta -> 1800z", "Cancel" );
+		switch(Result)
+		{
+			case 0: MoveTo("izlude", 91, 105); break;
+			case 1: MoveTo("geffen", 120, 39); break;
+			case 2: MoveTo("payon", 161, 58); break;
+			case 3: MoveTo("morocc", 156, 46); break;
+			case 4: MoveTo("gef_fild10", 52, 326); break;
+			case 5: MoveTo("alberta", 117, 56); break;
+		}
 	}
 }
 
 Npc("prontera", "Test NPC", "4_F_KAFRA4", 243, 48, SW) 
 {
 OnClick:
-	Dialog(Name, "Yo buddy! Want to ask me some questions?");
+	string name = "Test NPC";
+	FocusNpc();
+	Dialog(name, "Yo buddy! Want to ask me some questions?");
 	while(true) 
 	{
 		Option("Option 1", "Option 2", "Option 3", "Leave");
@@ -36,15 +54,27 @@ OnClick:
 		switch(Result) 
 		{
 		case 0:
-			Dialog("Test NPC", "Wow you picked option 1, sick dude.");
+			Dialog(name, "Wow you picked option 1, sick dude.");
+			if(name != "Super Test NPC")
+			{
+				name = "Super Test NPC";
+				Dialog(name, "Whoa I changed my name!");
+			}
 		case 1: 
 		case 2:
-			Dialog("Test NPC", "Holy moly you picked option " + (Result + 1) + ", amazing!");
+			Dialog(name, "Holy moly you picked option " + (Result + 1) + ", amazing!");
+			if(name != "Dance Hero")
+			{
+				name = "Dance Hero";
+				Dialog(name, "Whoa I changed my name!");
+			}
 		case 3:
 			break 2; //break out of the while loop
 		}
+
+		Dialog(name, "So what will it be? Have any more questions?");
 	}
-	Dialog("Test NPC", "Groovy, have yourself a fantabulous day!");
+	Dialog(name, "Groovy, have yourself a fantabulous day!");
 }
 
 

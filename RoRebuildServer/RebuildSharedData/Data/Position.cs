@@ -19,7 +19,7 @@ public struct Position : IEquatable<Position>
         X = x;
         Y = y;
     }
-		
+
     public Position(Position src)
     {
         X = src.X;
@@ -28,7 +28,7 @@ public struct Position : IEquatable<Position>
 
     public bool IsValid() => X >= 0 && Y >= 0;
 
-        
+
     public Position StepTowards(Position dest)
     {
         var pos = new Position(this);
@@ -50,15 +50,15 @@ public struct Position : IEquatable<Position>
     {
         return Math.Max(Math.Abs(X - dest.X), Math.Abs(Y - dest.Y));
     }
-    
+
     public float Angle(Position b)
     {
         float xDiff = b.X - X;
         float yDiff = b.Y - Y;
-        var angle = (float) ((float) Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI) - 90;
+        var angle = (float)((float)Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI) - 90;
         if (angle < -180)
             angle += 360;
-			
+
         return angle;
     }
 
@@ -92,7 +92,7 @@ public struct Position : IEquatable<Position>
     public float GetDirection()
     {
         var rad = Math.Atan2(X, Y);
-			
+
         var deg = rad * (180 / Math.PI);
         return (float)deg;
 
@@ -116,7 +116,7 @@ public struct Position : IEquatable<Position>
     {
 #if DEBUG
         //sanity check
-        if(X < -1 || X > 1 || Y < -1 || Y > 1)
+        if (X < -1 || X > 1 || Y < -1 || Y > 1)
             throw new Exception("Get Direction provided invalid inputs!");
 #endif
 
@@ -130,6 +130,18 @@ public struct Position : IEquatable<Position>
         if (X == 0 && Y == -1) return Direction.South;
 
         return Direction.South;
+    }
+
+    public Position Normalize()
+    {
+        var x = X;
+        var y = Y;
+        if (x < -1) x = -1;
+        if (x > 1) x = 1;
+        if (y < -1) y = -1;
+        if (y > 1) y = 1;
+
+        return new Position(x, y);
     }
 
     public Position AddDirectionToPosition(Direction d)
@@ -182,7 +194,7 @@ public struct Position : IEquatable<Position>
         return $"{X.ToString()},{Y.ToString()}";
     }
 
-    public static Position operator - (Position left, Position right) => new Position(left.X - right.X, left.Y - right.Y);
-    public static Position operator + (Position left, Position right) => new Position(left.X + right.X, left.Y + right.Y);
-    public static Position operator / (Position left, int right) => new Position(left.X / right, left.Y / right);
+    public static Position operator -(Position left, Position right) => new Position(left.X - right.X, left.Y - right.Y);
+    public static Position operator +(Position left, Position right) => new Position(left.X + right.X, left.Y + right.Y);
+    public static Position operator /(Position left, int right) => new Position(left.X / right, left.Y / right);
 }

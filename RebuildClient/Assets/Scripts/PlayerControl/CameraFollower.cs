@@ -5,6 +5,7 @@ using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI;
 using Assets.Scripts.Utility;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Config;
@@ -73,8 +74,11 @@ namespace Assets.Scripts
         private string targetText;
 
         public GameObject WarpPanel;
+        public GameObject DialogPanel;
+        public GameObject NpcOptionPanel;
 
         public bool UseTTFDamage = false;
+        public bool IsInNPCInteraction = false;
 
         private int[] levelReqs = new int[100];
 
@@ -121,6 +125,7 @@ namespace Assets.Scripts
         }
 
         public GameObject Target;
+        public GameObject OverrideTarget;
         public Camera Camera;
         public Vector3 CurLookAt;
 
@@ -187,6 +192,8 @@ namespace Assets.Scripts
                 levelReqs[i] = int.Parse(lines[i].Trim());
             
             LevelChart = null; //don't need to hold this anymore
+
+            DialogPanel.GetComponent<DialogWindow>().HideUI();
 
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
@@ -504,6 +511,15 @@ namespace Assets.Scripts
 
         private void DoScreenCast(bool isOverUi)
         {
+
+            if (IsInNPCInteraction && !isOverUi && Input.GetMouseButtonDown(0))
+            {
+                NetworkManager.Instance.SendNpcAdvance();
+                isHolding = false;
+                noHold = true;
+                return; //no point in doing other screencast stuff if we're still talking to the npc.
+            }
+
             var ray = Camera.ScreenPointToRay(Input.mousePosition);
 
             var hasHitCharacter = false;
@@ -642,6 +658,9 @@ namespace Assets.Scripts
 
 
             if (noHold)
+                return;
+
+            if (IsInNPCInteraction)
                 return;
             
             if (Input.GetMouseButton(0) && ClickDelay <= 0)
@@ -900,7 +919,7 @@ namespace Assets.Scripts
         {
             if (Target == null)
                 return;
-
+            
             if (controllable == null)
                 controllable = Target.GetComponent<ServerControllable>();
 
@@ -1096,6 +1115,7 @@ namespace Assets.Scripts
                 }
             }
 
+
 #if !DEBUG
             if (Height > 80)
 	            Height = 80;
@@ -1133,8 +1153,12 @@ namespace Assets.Scripts
             if (Distance < 30)
 	            Distance = 30;
 #endif
+            
+            var curTarget = Target.transform.position;
+            if (OverrideTarget != null)
+                curTarget = (curTarget + OverrideTarget.transform.position)/2f;
 
-            TargetFollow = Vector3.Lerp(TargetFollow, Target.transform.position, Time.deltaTime * 5f);
+            TargetFollow = Vector3.Lerp(TargetFollow, curTarget, Time.deltaTime * 5f);
             CurLookAt = TargetFollow;
 
             var targetHeight = Mathf.Lerp(Target.transform.position.y, WalkProvider.GetHeightForPosition(Target.transform.position), Time.deltaTime * 20f);

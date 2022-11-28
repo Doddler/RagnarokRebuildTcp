@@ -435,8 +435,7 @@ public static class CommandBuilder
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
-
-
+    
     public static void SendNpcDialog(Player p, string name, string dialog)
     {
         var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 256);
@@ -448,6 +447,17 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void SendFocusNpc(Player p, Npc target)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 32);
+
+        var obj = target.Entity.Get<WorldObject>();
+
+        packet.Write((byte)NpcInteractionType.NpcFocusNpc);
+        packet.Write(obj.Id);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
 
     public static void SendNpcOption(Player p, string[] options)
     {
