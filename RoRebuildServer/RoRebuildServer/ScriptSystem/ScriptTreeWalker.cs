@@ -12,6 +12,9 @@ internal class ScriptTreeWalker
     private ScriptBuilder builder;
     private string name;
     private Action<StartSectionContext>? sectionHandler;
+    private Dictionary<string, ScriptMacro> macroMap = new();
+
+    private HashSet<string> activeMacros = new();
 
     public string BuildClass(string inputName, RoScriptParser parser, HashSet<string> uniqueNames)
     {
@@ -21,8 +24,7 @@ internal class ScriptTreeWalker
             "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util", "RoRebuildServer.EntityComponents.Items");
         
         var ruleSet = parser.rule_set();
-
-
+        
         foreach (var statement in ruleSet.toplevelstatement())
             VisitTopLevelStatement(statement);
 
@@ -33,24 +35,14 @@ internal class ScriptTreeWalker
     {
         builder.SetLineNumber(topLevelContext.Start.Line);
 
-        if (topLevelContext is FunctionDefinitionContext context)
+        if (topLevelContext is MacroDefinitionContext macroContext)
         {
-            var id = context.IDENTIFIER().GetText();
+            EnterMacroStatement(macroContext);
+        }
 
-            switch (id)
-            {
-                case "Npc":
-                    EnterNpcStatement(context);
-                    break;
-                case "Item":
-                    EnterItemStatement(context);
-                    break;
-                case "MapConfig":
-                    EnterMapConfigStatement(context);
-                    break;
-                default:
-                    throw new Exception("Unexpected top level statement: " + id);
-            }
+        if (topLevelContext is TopLevelFunctionDefinitionContext context)
+        {
+            VisitFunctionDefinitionContext(context.functionDefinition());
         }
 
         if (topLevelContext is StandaloneFunctionContext standaloneContext)
@@ -69,8 +61,59 @@ internal class ScriptTreeWalker
                     throw new Exception("Unexpected top level function call: " + id);
             }
         }
+
+        if(topLevelContext is TopLevelMacroCallContext macroCallContext)
+            VisitMacroContext(macroCallContext.macrocall());
     }
 
+    private void VisitFunctionDefinitionContext(FunctionDefinitionContext context)
+    {
+        var id = context.IDENTIFIER().GetText();
+
+        switch (id)
+        {
+            case "Npc":
+                EnterNpcStatement(context);
+                break;
+            case "Item":
+                EnterItemStatement(context);
+                break;
+            case "MapConfig":
+                EnterMapConfigStatement(context);
+                break;
+            default:
+                throw new Exception("Unexpected top level statement: " + id);
+        }
+    }
+
+    private void EnterMacroStatement(MacroDefinitionContext macroContext)
+    {
+        var name = macroContext.IDENTIFIER().GetText();
+        var mp = macroContext.functionparam();
+
+        if (mp != null)
+        {
+            var vardef = mp.expression();
+            var macro = new ScriptMacro(vardef.Length, macroContext.statementblock());
+            
+
+            for (var i = 0; i < vardef.Length; i++)
+            {
+                var v = vardef[i];
+                macro.DefineVariable(i, v.GetText());
+            }
+            macroMap.Add(name, macro);
+        }
+        else
+
+        {
+            var macro = new ScriptMacro(0, macroContext.statementblock());
+            macroMap.Add(name, macro);
+        }
+
+        
+    }
+    
     private void EnterItemStatement(FunctionDefinitionContext functionContext)
     {
         //only expect one param, the item name
@@ -148,22 +191,22 @@ internal class ScriptTreeWalker
         if (expr.Length != 6 && expr.Length != 8)
             throw new Exception($"Incorrect number of parameters on Npc expression on line {param.start.Line}");
 
-        var str = expr[1].GetText().Unescape();
+        var str = ExpressionContextString(expr[1]).Unescape();
         str = str.Replace(" ", "_").Replace("#", "__");
 
-        var mapName = expr[0].GetText();
-        var displayName = expr[1].GetText();
-        var spriteName = expr[2].GetText();
-        var x = int.Parse(expr[3].GetText());
-        var y = int.Parse(expr[4].GetText());
-        var facingTxt = expr[5].GetText();
+        var mapName = ExpressionContextString(expr[0]);
+        var displayName = ExpressionContextString(expr[1]);
+        var spriteName = ExpressionContextString(expr[2]);
+        var x = int.Parse(ExpressionContextString(expr[3]));
+        var y = int.Parse(ExpressionContextString(expr[4]));
+        var facingTxt = ExpressionContextString(expr[5]);
         var w = 0;
         var h = 0;
 
         if (expr.Length == 8)
         {
-            w = int.Parse(expr[6].GetText());
-            h = int.Parse(expr[7].GetText());
+            w = int.Parse(ExpressionContextString(expr[6]));
+            h = int.Parse(ExpressionContextString(expr[7]));
         }
 
         if (!int.TryParse(facingTxt, out var _))
@@ -263,7 +306,7 @@ internal class ScriptTreeWalker
     {
         ServerLogger.LogWarning($"{name} line {context.start.Line}: Section definition '{context.IDENTIFIER()}' ignored as this type does not allow it.");
     }
-
+    
     private void VisitStatementBlock(StatementblockContext blockContext)
     {
         builder.SetLineNumber(blockContext.Start.Line);
@@ -576,7 +619,8 @@ internal class ScriptTreeWalker
             case LogicalAndContext logicalAndContext: VisitOperator(logicalAndContext.left, logicalAndContext.right, logicalAndContext.type.Text); break;
             case ComparisonContext comparisonContext: VisitOperator(comparisonContext.left, comparisonContext.right, comparisonContext.comparison_operator().GetText()); break;
             case ExpressionEntityContext entityContext: VisitEntity(entityContext.entity()); break;
-            case FunctionCallExpressionContext functionCallContext: VisitFunctionCall((FunctionCallContext)functionCallContext.function()); break;
+            case FunctionCallExpressionContext functionCallContext: VisitFunctionCallExpression(functionCallContext); break;
+            case ExpressionFunctionDefinitionContext functionDefinitionContext: VisitFunctionDefinitionContext(functionDefinitionContext.functionDefinition()); break;
             case AreaTypeContext areaTypeContext: VisitAreaType(areaTypeContext); break;
             case VarDeclarationContext varDeclarationContext: VisitVarDeclaration(varDeclarationContext); break;
             case LocalDeclarationContext context: VisitLocalDeclaration(context); break;
@@ -639,6 +683,63 @@ internal class ScriptTreeWalker
         builder.OutputRaw(")");
     }
 
+    private void VisitFunctionCallExpression(FunctionCallExpressionContext functionContext)
+    {
+        //VisitFunctionCall((FunctionCallContext)functionCallContext.function())
+
+        var func = functionContext.function();
+
+        switch (func)
+        {
+            case FunctionCallContext callContext: VisitFunctionCall(callContext); break;
+            case RegularMacroCallContext macroContext: VisitMacroContext(macroContext.macrocall()); break;
+        }
+    }
+
+    private void VisitMacroContext(MacrocallContext macroContext)
+    {
+        var id = macroContext.IDENTIFIER().GetText();
+        var fparam = macroContext.functionparam();
+
+        if (!macroMap.TryGetValue(id, out var macro))
+        {
+            var found = false;
+
+            if (builder.ActiveMacro != null && builder.ActiveMacro.TryGetVariable(id, out var expression))
+            {
+                if (macroMap.TryGetValue(expression.GetText(), out macro))
+                    found = true;
+            }
+
+            if(!found)
+                ErrorResult(macroContext, $"Cannot find a macro defined with the name \"{id}\".");
+        }
+
+        if (activeMacros.Contains(id))
+            ErrorResult(macroContext, $"You cannot call macro {id} as it is currently already active. A macro cannot call itself or be called by any siblings.");
+
+        activeMacros.Add(id);
+        builder.PushMacro(macro);
+        
+        if (fparam != null)
+        {
+            var p = fparam.expression();
+
+            var pos = 0;
+
+            foreach (var t in p)
+            {
+                macro.SetValue(pos, t);
+
+                pos++;
+            }
+        }
+        
+        VisitStatementBlock(macro.Context);
+
+        builder.PopMacro();
+        activeMacros.Remove(id);
+    }
 
     private void VisitFunctionCall(FunctionCallContext functionContext, bool isChained = false)
     {
@@ -740,12 +841,27 @@ internal class ScriptTreeWalker
                 builder.OutputRaw(context.GetText());
                 break;
             case VariableContext context:
-                builder.OutputVariable(context.GetText());
+                if(builder.ActiveMacro != null && builder.ActiveMacro.HasVariable(context.GetText()))
+                    VisitExpression(builder.ActiveMacro.GetVariable(context.GetText()));
+                else
+                    builder.OutputVariable(context.GetText());
                 break;
             default:
                 ErrorResult(entityContext);
                 break;
         }
+    }
+
+    private string ExpressionContextString(ExpressionContext expression)
+    {
+        var val = expression.GetText();
+        if (builder.ActiveMacro == null)
+            return val;
+
+        if(builder.ActiveMacro.TryGetVariable(val, out var expr))
+            return expr.GetText();
+
+        return val;
     }
 
     private void ErrorResult(ParserRuleContext context, string? message = null)

@@ -153,7 +153,7 @@ public class NpcInteractionState
 
     public int GetZeny()
     {
-        return 999;
+        return 99999;
     }
 
     public void DropZeny(int zeny)

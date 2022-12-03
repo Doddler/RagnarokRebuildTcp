@@ -29,19 +29,22 @@ public class PacketNpcClick : IClientPacketHandler
             return;
         connection.Player.AddActionDelay(CooldownActionType.Click);
 
-        var target = World.Instance.GetEntityById(id);
+        var targetNpc = World.Instance.GetEntityById(id);
+        
+        character.StopAction();
+        character.Player.ClearTarget();
 
-        if (target.IsNull() || !target.IsAlive())
+        if (targetNpc.Type != EntityType.Npc)
             return;
 
-        if (target.Type != EntityType.Npc)
+        if (targetNpc.IsNull() || !targetNpc.IsAlive())
             return;
+        
+        var npc = targetNpc.Get<Npc>();
+        var npcChar = targetNpc.Get<WorldObject>();
 
-        var npc = target.Get<Npc>();
-        var npcChar = target.Get<WorldObject>();
         if (!npc.HasInteract)
             return;
-
 
         npc.OnInteract(character.Player);
         

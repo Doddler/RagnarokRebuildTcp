@@ -1,0 +1,159 @@
+﻿
+macro Kafra(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %saveLocation, %saveDesc, %teleportMacro)
+{
+	Npc(%map, %npcName, %sprite, %x, %y, %facing) 
+	{
+		localstr name = %chatName;
+	OnClick:
+		FocusNpc();
+		ShowSprite(%cutin, right);
+		Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
+		Option("Save", "Use Storage", "Teleport Service", "Cancel");
+		switch(Result) 	
+		{
+		case 0:
+			SaveSpawnPoint(%saveLocation);
+			Dialog(name, "Your Respawn Point has been saved " + %saveDesc + ". Thank you for using the Kafra Service.");
+			return;
+		case 1:
+			Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
+			return;
+		case 2:
+			@%teleportMacro();
+		}
+	}
+}
+
+macro KafraNoSave(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %teleportMacro)
+{
+	Npc(%map, %npcName, %sprite, %x, %y, %facing) 
+	{
+		localstr name = %chatName;
+	OnClick:
+		FocusNpc();
+		ShowSprite(%cutin, right);
+		Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
+		Option("Use Storage", "Teleport Service", "Cancel");
+		switch(Result) 	
+		{
+		case 0:
+			Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
+			return;
+		case 1:
+			@%teleportMacro();
+		}
+	}
+}
+
+macro KafraTeleportListProntera()
+{
+	Dialog(name, "Please choose your destination.");
+	Option("Izlude → 600z", "Geffen → 1200z", "Payon → 1200z", "Morroc → 1200z", "Orc Dungeon → 1700z", "Alberta → 1800z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("izlude", 91, 105, 600);
+		case 1: @TeleportCase("geffen", 120, 39, 1200);
+		case 2: @TeleportCase("payon", 161, 58, 1200);
+		case 3: @TeleportCase("morocc", 156, 46, 1200);
+		case 4: @TeleportCase("gef_fild10", 52, 326, 1700);
+		case 5: @TeleportCase("alberta", 117, 56, 1000);
+	}
+}
+
+macro KafraTeleportListAlberta()
+{
+	Dialog(name, "Please choose your destination.");
+	Option("Payon → 1200z", "Morroc → 1800z", "Prontera → 1800z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("payon", 161, 58, 1200);
+		case 1: @TeleportCase("morocc", 156, 46, 1800);
+		case 2: @TeleportCase("prontera", 116, 72, 1200);
+	}
+}
+
+macro KafraTeleportListMorroc()
+{
+	Dialog(name, "Please choose your destination.");
+	Option("Prontera → 1200z", "Payon → 1200z", "Alberta → 1800z", "Comodo → 1800z", "Paros Lighthouse → 1200z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("prontera", 116, 72, 1200);
+		case 1: @TeleportCase("payon", 161, 58, 1200);
+		case 2: @TeleportCase("alberta", 117, 56, 1800);
+		case 3: @TeleportCase("comodo", 209, 143, 1800);
+		case 4: @TeleportCase("cmd_fild07", 127, 134, 1200);
+	}
+}
+
+macro KafraTeleportListGeffen()
+{
+	Dialog(name, "Please choose your destination.");
+	Option("Prontera → 1200z", "Al De Baran → 1200z", "Orc Dungeon → 1800z", "Mjolnir Dead Pit → 1800z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("prontera", 116, 72, 1200);
+		case 1: @TeleportCase("aldebaran", 168, 112, 1200);
+		case 2: @TeleportCase("gef_fild10", 52, 326, 1800);
+		case 3: @TeleportCase("mjolnir_02", 99, 351, 1800);
+	}
+}
+
+macro KafraTeleportListPayon()
+{
+	Dialog(name, "Please choose your destination.");
+	Option("Prontera → 1200z", "Alberta → 1200z", "Morroc → 1200z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("prontera", 116, 72, 1200);
+		case 1: @TeleportCase("alberta", 117, 56, 1200);
+		case 2: @TeleportCase("morocc", 156, 46, 1800);
+	}
+}
+
+macro KafraTeleportListOrcDungeon()
+{
+	Dialog(name, "Please choose your destination.");
+	Option("Geffen → 1200z", "Prontera → 1200z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("geffen", 120, 39, 1200);
+		case 1: @TeleportCase("prontera", 116, 72, 1200);
+	}
+}
+
+macro TeleportCase(%map, %x, %y, %zeny)
+{
+	if(GetZeny() < %zeny)
+	{
+		Dialog(name, "Sorry, you currently don't have enough zeny to use this teleport.");
+		return;
+	}
+	DropZeny(%zeny);
+	MoveTo(%map, %x, %y);
+	return;
+}
+
+@Kafra("prontera", 146, 89, E, "Kafra Staff", "Kafra Defolty - Kafra Employee", "4_F_KAFRA1", "kafra_01", "Prontera Southwest Benches", "in the city of Prontera", KafraTeleportListProntera);
+@KafraNoSave("prontera", 248, 42, N, "Kafra Staff", "Kafra Telling - Kafra Employee", "4_F_KAFRA2", "kafra_02", KafraTeleportListProntera);
+@Kafra("prontera", 151, 29, N, "Kafra Staff", "Kafra Sorin - Kafra Employee", "4_F_KAFRA3", "kafra_03", "Prontera South", "in the city of Prontera", KafraTeleportListProntera);
+@Kafra("prontera", 282, 200, W, "Kafra Staff", "Kafra Bennit - Kafra Employee", "4_F_KAFRA4", "kafra_04", "Prontera East", "in the city of Prontera", KafraTeleportListProntera);
+@Kafra("prontera", 29, 200, E, "Kafra Staff", "Kafra Glaris - Kafra Employee", "4_F_KAFRA5", "kafra_05", "Prontera West", "in the city of Prontera", KafraTeleportListProntera);
+@Kafra("prontera", 152, 326, SE, "Kafra Staff", "Kafra W - Kafra Employee", "4_F_KAFRA6", "kafra_06", "Prontera North", "in the city of Prontera", KafraTeleportListProntera);
+
+@Kafra("alberta", 28, 229, N, "Kafra Staff", "Kafra Employee", "4_F_KAFRA2", "kafra_02", "Alberta North", "in the city of Alberta", KafraTeleportListAlberta);
+@Kafra("alberta", 113, 60, E, "Kafra Staff", "Kafra Employee", "4_F_KAFRA6", "kafra_06", "Alberta South", "in the city of Alberta", KafraTeleportListAlberta);
+
+@Kafra("morocc", 160, 258, S, "Kafra Staff", "Kafra Employee", "4_F_KAFRA4", "kafra_04", "Morroc North", "in the city of Morroc", KafraTeleportListMorroc);
+@Kafra("morocc", 156, 97, S, "Kafra Staff", "Kafra Employee", "4_F_KAFRA5", "kafra_05", "Morroc South", "in the city of Morroc", KafraTeleportListMorroc);
+
+@KafraNoSave("gef_fild10", 73, 340, SE, "Kafra Staff", "Kafra Employee", "4_F_KAFRA2", "kafra_02", KafraTeleportListOrcDungeon);
+
+@Kafra("geffen", 120, 62, N, "Kafra Staff", "Kafra Employee", "4_F_KAFRA3", "kafra_03", "Geffen South", "in the city of Geffen", KafraTeleportListGeffen);
+@Kafra("geffen", 203, 123, W, "Kafra Staff", "Kafra Employee", "4_F_KAFRA4", "kafra_04", "Geffen South", "in the city of Geffen", KafraTeleportListGeffen); //east kafra, doesn't have it's own save
+
+@Kafra("payon", 181, 104, S, "Kafra Staff", "Kafra Employee", "4_F_KAFRA5", "kafra_05", "Payon South", "in the city of Payon", KafraTeleportListPayon);
+@Kafra("payon", 175, 226, S, "Kafra Staff", "Kafra Employee", "4_F_KAFRA2", "kafra_02", "Payon North", "in the city of Payon", KafraTeleportListPayon);
+@Kafra("pay_arche", 55, 123, NW, "Kafra Staff", "Kafra Employee", "4_F_KAFRA1", "kafra_01", "Archer Village", "in the Archer Village", KafraTeleportListPayon);
+
+

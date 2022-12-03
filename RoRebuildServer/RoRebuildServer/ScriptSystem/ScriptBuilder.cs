@@ -58,7 +58,10 @@ public class ScriptBuilder
 
     private HashSet<string> UniqueNames;
 
-    public Stack<int> breakPointerStack = new Stack<int>();
+    public Stack<int> breakPointerStack = new();
+
+    private Stack<ScriptMacro> macroStack = new();
+    public ScriptMacro? ActiveMacro;
 
     public ScriptBuilder(string className, HashSet<string> uniqueNames, params string[] namespaceList)
     {
@@ -388,6 +391,24 @@ public class ScriptBuilder
         }
     }
 
+    public void PushMacro(ScriptMacro macro)
+    {
+        if (ActiveMacro != null)
+            macroStack.Push(ActiveMacro);
+
+        ActiveMacro = macro;
+    }
+    
+    public void PopMacro()
+    {
+        if (ActiveMacro == null)
+            throw new Exception("Unable to pop macro, no macro is currently on the stack!");
+
+        ActiveMacro = null;
+        if (macroStack.TryPop(out var macro))
+            ActiveMacro = macro;
+    }
+
     public void FunctionCall(string name, bool isChained)
     {
         if (isChained)
@@ -549,7 +570,7 @@ public class ScriptBuilder
         
         return GetConstValue(id);
     }
-
+    
     public void OutputVariable(string id)
     {
         //if (!UseStateStorage)

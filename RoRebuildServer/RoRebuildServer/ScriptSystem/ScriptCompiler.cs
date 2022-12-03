@@ -1,5 +1,9 @@
 ﻿using System.Reflection;
 using Antlr4.Runtime;
+using Antlr4.Runtime.Atn;
+using Antlr4.Runtime.Dfa;
+using Antlr4.Runtime.Sharpen;
+using Antlr4.Runtime.Tree.Xpath;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using RoRebuildServer.Data;
@@ -8,6 +12,18 @@ using RoRebuildServer.Logging;
 using RoServerScript;
 
 namespace RoRebuildServer.ScriptSystem;
+
+
+public class QueryLanguageErrorListener : BaseErrorListener
+{
+    public override void SyntaxError(
+        IRecognizer recognizer, IToken offendingSymbol,
+        int line, int charPositionInLine,
+        string msg, RecognitionException e)
+    {
+        throw new Exception($"Line {line} ch {charPositionInLine}: " + msg);
+    }
+}
 
 internal class ScriptCompiler
 {
@@ -53,9 +69,22 @@ internal class ScriptCompiler
         var tokenStream = new CommonTokenStream(lexer);
         var parser = new RoScriptParser(tokenStream);
 
-        var walker = new ScriptTreeWalker();
+        parser.AddErrorListener(new QueryLanguageErrorListener());
         
-        var str = walker.BuildClass(name, parser, uniqueNames);
+        var str = String.Empty;
+
+        try
+        {
+            var walker = new ScriptTreeWalker();
+            str = walker.BuildClass(name, parser, uniqueNames);
+        }
+        catch (Exception e)
+        {
+            ServerLogger.LogError($"Failed to compile script {inputPath}!");
+            throw;
+        }
+
+        
         
         scriptFiles.Add(Path.GetRelativePath(dataPath, inputPath), str);
 

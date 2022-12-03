@@ -284,7 +284,7 @@ namespace Assets.Scripts
 
         private void UpdateSelectedTarget()
         {
-            if (!hasSelection || SelectedTarget == null)
+            if (!hasSelection || SelectedTarget == null || IsInNPCInteraction)
             {
                 if (PlayerTargetUi.gameObject.activeInHierarchy)
                     ClearSelected();
@@ -619,7 +619,7 @@ namespace Assets.Scripts
             var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
             var okPath = true;
 
-            if (hasGroundPos && hasSrcPos)
+            if (hasGroundPos && hasSrcPos && !IsInNPCInteraction)
             {
                 if (mapPosition != lastTile)
                 {
@@ -818,7 +818,7 @@ namespace Assets.Scripts
                     
                 }
 
-                if (s[0] == "/reloadscript")
+                if (s[0] == "/reloadscript" || s[0] == "/scriptreload")
                 {
                     NetworkManager.Instance.SendReloadScript();
                 }
