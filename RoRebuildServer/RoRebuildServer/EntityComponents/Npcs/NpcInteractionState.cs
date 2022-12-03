@@ -7,6 +7,8 @@ using RoRebuildServer.Networking;
 using static System.Net.Mime.MediaTypeNames;
 using System.Xml.Linq;
 using Microsoft.Extensions.Options;
+using RoRebuildServer.Data;
+using RoRebuildServer.Simulation;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
 
@@ -16,12 +18,15 @@ public class NpcInteractionState
     public Player? Player;
     public int Step;
     public int OptionResult = -1;
-    public NpcInteractionResult InteractionResult { get; set; }
     
     public const int StorageCount = 5;
 
     public int[] ValuesInt = new int[StorageCount];
     public string?[] ValuesString = new string[StorageCount];
+
+    public NpcInteractionResult InteractionResult { get; set; }
+    public bool IsTouchEvent { get; set; }
+
 
     public void Reset()
     {
@@ -160,7 +165,7 @@ public class NpcInteractionState
     {
 
     }
-
+    
     public int Random(int max) => GameRandom.Next(max);
     public int Random(int min, int max) => GameRandom.Next(min, max);
 

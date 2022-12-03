@@ -1,0 +1,48 @@
+
+
+
+Npc("2009rwc_03", "Kafra Staff#DebugRoom", "4_F_KAFRA1", 49, 49, SE, 1, 1) 
+{
+	local prog = 0;
+OnTouch:
+    StartTimer(64); //by default timer updates every 200ms, force to to update faster
+OnClick:
+    KillMyMobs();
+    StopTimer();
+OnTimer 64:
+    KillMyMobs();
+    SummonMobsNearby(1, "PORING", 0, 0, 7 - prog, -7);
+    SummonMobsNearby(1, "PORING", 0, 0, -7 + prog, 7);
+    SummonMobsNearby(1, "PORING", 0, 0, -7, -7 + prog);
+    SummonMobsNearby(1, "PORING", 0, 0, 7, 7 - prog);
+    prog = prog + 1;
+    if(prog == 15)
+        prog = 0;
+    ResetTimer();
+}
+
+/*
+Npc("2009rwc_03", "Kafra Staff#DebugRoom", "4_F_KAFRA1", 49, 49, SE, 1, 1) 
+{
+	localstr name = "Kafra Staff";
+OnTouch:
+    StartTimer();
+    return;
+OnClick:
+    KillMyMobs();
+    return;
+OnTimer 250:
+    SummonMobsNearby(100, "PORING", 1, 1);
+OnTimer 500:
+    SummonMobsNearby(100, "PORING", 2, 2);
+OnTimer 750:
+    SummonMobsNearby(100, "PORING", 3, 3);
+OnTimer 1000:
+    SummonMobsNearby(100, "PORING", 4, 4);
+OnTimer 1250:
+    SummonMobsNearby(100, "PORING", 5, 5);
+OnTimer 1500:
+    SummonMobsNearby(100, "PORING", 6, 6);
+    EndTimer();
+}
+*/

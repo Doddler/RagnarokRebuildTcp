@@ -299,7 +299,8 @@ internal class ScriptTreeWalker
 
     public void NpcSectionHandler(StartSectionContext context)
     {
-        builder.StartNpcSection(context.IDENTIFIER().GetText());
+        var timer = context.DECIMAL()?.GetText();
+        builder.StartNpcSection(context.IDENTIFIER().GetText(), timer != null ? int.Parse(timer) : -1);
     }
 
     private void WarningForInvalidSectionHandler(StartSectionContext context)
@@ -783,8 +784,8 @@ internal class ScriptTreeWalker
 
     public void VisitLocalDeclaration(LocalDeclarationContext localDeclarationContext)
     {
-        if(!builder.UseStateMachine)
-            ErrorResult(localDeclarationContext, "Cannot use local type for variable not used within an NPC OnClick or OnTouch command.");
+        //if(!builder.UseStateMachine)
+        //    ErrorResult(localDeclarationContext, "Cannot use local type for variable not used within an NPC OnClick or OnTouch command.");
 
 
         var type = localDeclarationContext.type.Text.ToLower();

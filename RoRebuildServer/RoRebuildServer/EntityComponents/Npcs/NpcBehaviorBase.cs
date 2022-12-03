@@ -22,4 +22,9 @@ public abstract class NpcBehaviorBase
     {
         
     }
+
+    public virtual void OnTimer(Npc npc, float lastTime, float newTime)
+    {
+
+    }
 }

@@ -7,8 +7,15 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
+using static System.Collections.Specialized.BitVector32;
 
 namespace RoRebuildServer.ScriptSystem;
+
+public struct TimerFunction
+{
+    public int EventTime { get; set; }
+    public string FuncName { get; set; }
+}
 
 public class ScriptBuilder
 {
@@ -32,6 +39,8 @@ public class ScriptBuilder
     private List<int> timerValues = new();
     private List<string> remoteCommands = new();
     private Dictionary<string, NpcInteractionResult> waitingFunctions = new();
+
+    private List<TimerFunction> timerFunctions = new();
 
     //private Dictionary<string, ScriptMethodHandler> methodHandlers = new();
 
@@ -75,13 +84,11 @@ public class ScriptBuilder
         scriptBuilder.AppendLine($"namespace RoRebuildGenData");
         scriptBuilder.AppendLine("{");
     }
-    
+
     private void ResetMethod()
     {
         blockBuilder.Clear();
         blocks.Clear();
-        localIntVariables.Clear();
-        localStringVariables.Clear();
 
         pointerCount = 0;
         curBlock = 0;
@@ -117,15 +124,15 @@ public class ScriptBuilder
     public int GotoFutureBlock(bool extraIndent = false)
     {
         var line = StartIndentedBlockLine();
-        
-        if(extraIndent)
+
+        if (extraIndent)
             line.Append("\t");
-        
+
         line.AppendLine($"goto case ###{pointerCount}###;");
         pointerCount++;
-        return pointerCount-1;
+        return pointerCount - 1;
     }
-    
+
     public void GotoFutureBlock(int ptr)
     {
         StartIndentedBlockLine().AppendLine($"goto case ###{ptr}###;");
@@ -139,12 +146,12 @@ public class ScriptBuilder
     {
         labels.Add(id, curBlock);
     }
-    
+
     public bool IsEmptyLine()
     {
         return lineBuilder.Length == 0;
     }
-    
+
     public void OpenStateIf()
     {
         StartIndentedBlockLine().AppendLine($"\tgoto case {curBlock + 1};");
@@ -154,7 +161,7 @@ public class ScriptBuilder
     {
         StartIndentedBlockLine().AppendLine($"\tgoto case ###{pointerCount}###;");
         pointerCount++;
-        return pointerCount-1;
+        return pointerCount - 1;
     }
 
     public int AdvanceBlock(bool skipGoto = false)
@@ -226,13 +233,13 @@ public class ScriptBuilder
         StartIndentedScriptLine().AppendLine($"public class RoRebuildItemGen_{name} : ItemInteractionBase");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
-        
+
         StartIndentedBlockLine().AppendLine($"public override void Init(Player player, CombatEntity combatEntity)");
         StartIndentedBlockLine().AppendLine("{");
         indentation++;
 
         methodName = "Init";
-        
+
         LoadFunctionSource(typeof(Player), "player");
         LoadFunctionSource(typeof(CombatEntity), "combatEntity");
     }
@@ -289,7 +296,7 @@ public class ScriptBuilder
     public string StartNpc(string name)
     {
         methodName = name.Replace(" ", "");
-        UseStateMachine = true;
+        UseStateMachine = false;
         UseStateStorage = false;
         UseLocalStorage = true;
         stateVariable = "state";
@@ -340,19 +347,24 @@ public class ScriptBuilder
         npcDefinitions.Add($"DataManager.RegisterNpc({npcTag}, {map}, {sprite}, {x}, {y}, {facing}, {w}, {h}, {(hasInteract ? "true" : "false")}, {(hasTouch ? "true" : "false")}, new {behaviorName}());");
     }
 
-    public void StartNpcSection(string section)
+    public void StartNpcSection(string section, int timer = -1)
     {
+        if (timer >= 0)
+        {
+            section = section.TrimEnd() + timer;
+        }
+
         if (methodName == section)
             return;
 
+        EndMethod();
         functionSources.Clear();
         functionBaseClasses.Clear();
-        
+
         methodName = section;
 
         if (section == "OnClick" || section == "OnTouch")
         {
-            CloseScope();
             StartIndentedBlockLine().AppendLine($"public override NpcInteractionResult {section}(Npc npc, Player player, NpcInteractionState state)");
             OpenScope();
             StartIndentedBlockLine().AppendLine($"switch ({stateVariable}.Step)");
@@ -361,7 +373,7 @@ public class ScriptBuilder
             StartIndentedBlockLine().AppendLine($"case 0:");
             indentation++;
             ApplyBlockToScript();
-            
+
             pointerCount = 0;
             curBlock = 0;
             UseStateMachine = true;
@@ -380,14 +392,18 @@ public class ScriptBuilder
         }
         else
         {
-            CloseScope();
-            StartIndentedBlockLine().AppendLine($"public override void {section}(Npc npc)");
+            StartIndentedBlockLine().AppendLine($"public void {section}(Npc npc)");
             OpenScope();
 
             UseStateMachine = false;
             UseLocalStorage = true;
 
             LoadFunctionSource(typeof(Npc), "npc");
+
+            if (section.StartsWith("OnTimer"))
+            {
+                timerFunctions.Add(new TimerFunction() { EventTime = timer, FuncName = methodName });
+            }
         }
     }
 
@@ -398,7 +414,7 @@ public class ScriptBuilder
 
         ActiveMacro = macro;
     }
-    
+
     public void PopMacro()
     {
         if (ActiveMacro == null)
@@ -458,7 +474,7 @@ public class ScriptBuilder
 
     public void OutputBreak()
     {
-        if(lineBuilder.Length > 0)
+        if (lineBuilder.Length > 0)
             EndLine();
 
         lineBuilder.Append("break;");
@@ -486,7 +502,7 @@ public class ScriptBuilder
             if (isString)
             {
                 if (!stateStringVariables.ContainsKey(id))
-                    stateStringVariables.Add(id, stateStringVariables.Count); 
+                    stateStringVariables.Add(id, stateStringVariables.Count);
             }
             else
             {
@@ -501,7 +517,7 @@ public class ScriptBuilder
         switch (id.ToLower())
         {
             case "result":
-                if(UseStateStorage)
+                if (UseStateStorage)
                     return $"{stateVariable}.OptionResult";
                 else
                     return id;
@@ -565,12 +581,12 @@ public class ScriptBuilder
                 return $"{localvariable}.ValuesString[{pos}]";
         }
 
-        if(id.ToLower() == "result")
+        if (id.ToLower() == "result")
             return $"{stateVariable}.OptionResult";
-        
+
         return GetConstValue(id);
     }
-    
+
     public void OutputVariable(string id)
     {
         //if (!UseStateStorage)
@@ -580,7 +596,7 @@ public class ScriptBuilder
         //}
 
         var str = GetStringForVariable(id);
-        if(String.IsNullOrWhiteSpace(id))
+        if (String.IsNullOrWhiteSpace(id))
             throw new Exception($"Attempting to use unknown variable {id}!");
 
         lineBuilder.Append(str);
@@ -681,12 +697,44 @@ public class ScriptBuilder
         }
 
         UseStateMachine = false;
+
+    }
+
+    public void OutputTimerMethods()
+    {
+        timerFunctions.Sort((a, b) => a.EventTime.CompareTo(b.EventTime));
+
+        StartIndentedBlockLine().AppendLine($"public override void OnTimer(Npc npc, float lastTime, float newTime)");
+        OpenScope();
+
+        for (var i = 0; i < timerFunctions.Count; i++)
+        {
+            var timer = timerFunctions[i];
+            var f = (float)timer.EventTime / 1000f;
+
+            StartIndentedBlockLine().AppendLine($"if (lastTime < {f}f && newTime >= {f}f)");
+            OpenScope();
+            StartIndentedBlockLine().AppendLine($"this.OnTimer{timer.EventTime}(npc);");
+            CloseScope();
+        }
+
+        CloseScope();
+        ApplyBlockToScript();
+
+        timerFunctions.Clear();
     }
 
     public void EndClass()
     {
+        if (timerFunctions.Count > 0)
+            OutputTimerMethods();
+
         indentation--;
         StartIndentedScriptLine().AppendLine("}");
+
+        localIntVariables.Clear();
+        localStringVariables.Clear();
+
     }
 
     private void OutputLoader(string loaderName, string loaderInterface, List<string>? lines)
@@ -735,7 +783,7 @@ public class ScriptBuilder
         //    indentation--;
         //    StartIndentedScriptLine().AppendLine("}");
         //}
-        
+
         indentation--;
         StartIndentedScriptLine().AppendLine("}");
 

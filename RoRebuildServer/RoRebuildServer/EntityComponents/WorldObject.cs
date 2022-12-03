@@ -371,7 +371,10 @@ public class WorldObject : IEntityAutoReset
 #endif
 
         if (Type == CharacterType.NPC)
+        {
+            npc.Update();
             return;
+        }
 
         SpawnImmunity -= Time.DeltaTimeFloat;
 

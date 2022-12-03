@@ -330,7 +330,7 @@ public class World
         return e;
     }
 
-    public void CreateMonster(Map map, MonsterDatabaseInfo monsterDef, Area spawnArea, MapSpawnRule spawnRule)
+    public Entity CreateMonster(Map map, MonsterDatabaseInfo monsterDef, Area spawnArea, MapSpawnRule? spawnRule)
     {
         var e = EntityManager.New(EntityType.Monster);
         var ch = e.Get<WorldObject>();
@@ -373,6 +373,8 @@ public class World
         m.Initialize(ref e, ch, ce, monsterDef, monsterDef.AiType, spawnRule, map.Name);
         
         map.AddEntity(ref e);
+
+        return e;
     }
 
 

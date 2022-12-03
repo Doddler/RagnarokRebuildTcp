@@ -1,0 +1,38 @@
+﻿
+
+macro ShipCase(%map, %x, %y, %zeny)
+{
+    if(GetZeny() < %zeny)
+    {
+        Dialog(Name, %zeny + " zeny! Only " + %zeny + " zeny to ride!");
+        return;
+    }
+    DropZeny(%zeny);
+    MoveTo(%map, %x, %y);
+    return;
+}
+
+Npc("izlude", "Sailor", "4W_SAILOR", 201, 181, W) 
+{
+OnClick:
+    FocusNpc();
+    Dialog(Name, "Everybody! Attention, attention! Step on up and ride the winds on the fastest ship in Rune-Midgard!");
+    Option("Byalan Island -> 150z", "Alberta Marina -> 500z", "Cancel" );
+    switch(Result)
+    {
+        case 0: @ShipCase("izlu2dun", 107, 50, 150);
+        case 1: @ShipCase("alberta", 188, 169, 500);
+    }
+}
+
+Npc("izlu2dun", "Sailor", "4W_SAILOR", 108, 27, N) 
+{
+OnClick:
+    FocusNpc();
+    Dialog(Name, "Wanna head back?");
+    Option("Yeah, I'm tired as heck.", "Nope, I love this place!" );
+    switch(Result)
+    {
+        case 0: MoveTo("izlude", 176, 182);
+    }
+}

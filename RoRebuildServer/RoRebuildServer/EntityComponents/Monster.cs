@@ -91,8 +91,8 @@ public partial class Monster : IEntityAutoReset
             LockMovementToSpawn = SpawnRule.LockToSpawn;
         }
 
-        if (Character.ClassId >= 4000 && spawnEntry == null)
-            throw new Exception("Monster created without spawn entry"); //remove when arbitrary monster spawning is added
+        //if (Character.ClassId >= 4000 && spawnEntry == null)
+        //    throw new Exception("Monster created without spawn entry"); //remove when arbitrary monster spawning is added
 
         UpdateStats();
 
@@ -158,7 +158,7 @@ public partial class Monster : IEntityAutoReset
 		
 		if (SpawnRule == null)
 		{
-			ServerLogger.LogWarning("Attempting to remove entity without spawn data! How?? " + Character.ClassId);
+			//ServerLogger.LogWarning("Attempting to remove entity without spawn data! How?? " + Character.ClassId);
             Character.Map.RemoveEntity(ref Entity, CharacterRemovalReason.Dead, true);
 			//World.Instance.FullyRemoveEntity(ref Entity);
 		}

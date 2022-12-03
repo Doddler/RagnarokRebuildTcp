@@ -19,6 +19,7 @@ macro Kafra(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %saveLo
 			Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
 			return;
 		case 2:
+            Dialog(name, "Please choose your destination.");
 			@%teleportMacro();
 		}
 	}
@@ -40,6 +41,7 @@ macro KafraNoSave(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %
 			Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
 			return;
 		case 1:
+            Dialog(name, "Please choose your destination.");
 			@%teleportMacro();
 		}
 	}
@@ -47,7 +49,6 @@ macro KafraNoSave(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %
 
 macro KafraTeleportListProntera()
 {
-	Dialog(name, "Please choose your destination.");
 	Option("Izlude → 600z", "Geffen → 1200z", "Payon → 1200z", "Morroc → 1200z", "Orc Dungeon → 1700z", "Alberta → 1800z", "Cancel" );
 	switch(Result)
 	{
@@ -62,7 +63,6 @@ macro KafraTeleportListProntera()
 
 macro KafraTeleportListAlberta()
 {
-	Dialog(name, "Please choose your destination.");
 	Option("Payon → 1200z", "Morroc → 1800z", "Prontera → 1800z", "Cancel" );
 	switch(Result)
 	{
@@ -74,7 +74,6 @@ macro KafraTeleportListAlberta()
 
 macro KafraTeleportListMorroc()
 {
-	Dialog(name, "Please choose your destination.");
 	Option("Prontera → 1200z", "Payon → 1200z", "Alberta → 1800z", "Comodo → 1800z", "Paros Lighthouse → 1200z", "Cancel" );
 	switch(Result)
 	{
@@ -88,7 +87,6 @@ macro KafraTeleportListMorroc()
 
 macro KafraTeleportListGeffen()
 {
-	Dialog(name, "Please choose your destination.");
 	Option("Prontera → 1200z", "Al De Baran → 1200z", "Orc Dungeon → 1800z", "Mjolnir Dead Pit → 1800z", "Cancel" );
 	switch(Result)
 	{
@@ -101,7 +99,6 @@ macro KafraTeleportListGeffen()
 
 macro KafraTeleportListPayon()
 {
-	Dialog(name, "Please choose your destination.");
 	Option("Prontera → 1200z", "Alberta → 1200z", "Morroc → 1200z", "Cancel" );
 	switch(Result)
 	{
@@ -113,7 +110,6 @@ macro KafraTeleportListPayon()
 
 macro KafraTeleportListOrcDungeon()
 {
-	Dialog(name, "Please choose your destination.");
 	Option("Geffen → 1200z", "Prontera → 1200z", "Cancel" );
 	switch(Result)
 	{
