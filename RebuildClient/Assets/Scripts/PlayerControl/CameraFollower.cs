@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Effects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
@@ -11,6 +12,7 @@ using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Config;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Networking;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -511,7 +513,6 @@ namespace Assets.Scripts
 
         private void DoScreenCast(bool isOverUi)
         {
-
             if (IsInNPCInteraction && !isOverUi && Input.GetMouseButtonDown(0))
             {
                 NetworkManager.Instance.SendNpcAdvance();
@@ -533,12 +534,17 @@ namespace Assets.Scripts
             if (isHolding || isOverUi)
                 hasHitCharacter = false;
 
+            //Debug.Log(string.Join(", ", characterHits.Select(c => c.transform.name)));
+            
             if (hasHitCharacter)
             {
                 //var anim = charHit.transform.gameObject.GetComponent<RoSpriteAnimator>();
                 var anim = GetClosestOrEnemy(characterHits);
                 if (anim == null)
+                {
                     hasHitCharacter = false; //back out if our hit is a false positive (the object is dead or dying for example)
+                    ChangeCursor(NormalCursorTexture);
+                }
 
                 if (hasHitCharacter)
                 {
@@ -820,7 +826,13 @@ namespace Assets.Scripts
 
                 if (s[0] == "/reloadscript" || s[0] == "/scriptreload")
                 {
-                    NetworkManager.Instance.SendReloadScript();
+                    NetworkManager.Instance.SendAdminAction(AdminAction.ReloadScripts);
+                }
+
+
+                if (s[0] == "/servergc")
+                {
+                    NetworkManager.Instance.SendAdminAction(AdminAction.ForceGC);
                 }
             }
             else

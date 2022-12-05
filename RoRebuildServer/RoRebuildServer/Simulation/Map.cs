@@ -36,7 +36,7 @@ public class Map
     private readonly int chunkHeight;
 
     private int chunkCheckId;
-
+    
     public int PlayerCount { get; set; }
 
     //private int playerCount;
@@ -755,7 +755,9 @@ public class Map
         var removal = charChunk.RemoveEntity(ref entity, ch.Type);
 
         if (!removal)
+        {
             ServerLogger.LogWarning($"Attempting to remove entity {entity} from map, but it appears to already be gone.");
+        }
 
         //Entities.Remove(ref entity);
         //removeList.Add(entity);

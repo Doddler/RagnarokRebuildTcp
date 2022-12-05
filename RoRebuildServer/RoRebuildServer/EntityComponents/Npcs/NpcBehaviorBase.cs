@@ -27,4 +27,14 @@ public abstract class NpcBehaviorBase
     {
 
     }
+
+    public virtual void OnSignal(Npc npc, Npc srcNpc, string signal)
+    {
+
+    }
+
+    public virtual void OnMobKill(Npc npc)
+    {
+
+    }
 }

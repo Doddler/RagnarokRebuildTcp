@@ -12,12 +12,13 @@ public class Instance
     private readonly World world;
     public List<Map> Maps { get; set; }
     public Dictionary<string, Map> MapNameLookup = new();
+    public Dictionary<string, Entity> NpcNameLookup = new();
 
     public EntityList Entities { get; set; }
     private List<Entity> removeList = new(30);
 
     public Pathfinder Pathfinder { get; set; }
-
+    
     public Instance(World world, InstanceEntry instanceDetails)
     {
         this.world = world;
@@ -32,7 +33,6 @@ public class Instance
             {
                 ServerLogger.LogError($"Instance {instanceDetails.Name} could not create map {mapId} as it was not found in the map data table.");
                 continue;
-                
             }
             
             var map = new Map(world, this, md.Code, md.WalkData);

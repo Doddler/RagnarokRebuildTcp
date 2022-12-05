@@ -13,7 +13,6 @@ using RoServerScript;
 
 namespace RoRebuildServer.ScriptSystem;
 
-
 public class QueryLanguageErrorListener : BaseErrorListener
 {
     public override void SyntaxError(
@@ -83,8 +82,6 @@ internal class ScriptCompiler
             ServerLogger.LogError($"Failed to compile script {inputPath}!");
             throw;
         }
-
-        
         
         scriptFiles.Add(Path.GetRelativePath(dataPath, inputPath), str);
 
@@ -96,6 +93,10 @@ internal class ScriptCompiler
             
             File.WriteAllText(cacheFileName, str);
         }
+
+        //convince antlr to release memory from the lexer/parser
+        lexer.Interpreter = new LexerATNSimulator(lexer, lexer.Atn);
+        parser.Interpreter = new ParserATNSimulator(parser, parser.Atn);
         
         return true;
     }

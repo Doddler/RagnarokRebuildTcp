@@ -4,6 +4,7 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
+using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
@@ -14,11 +15,13 @@ namespace RoRebuildServer.EntityComponents;
 public class Npc : IEntityAutoReset
 {
     public Entity Entity;
+    public string FullName { get; set; } = null!;
     public string Name { get; set; } = null!; //making this a property makes it accessible via npc scripting
     
     public AreaOfEffect? AreaOfEffect;
 
     public EntityList? Mobs;
+    public int MobCount => Mobs?.Count ?? 0;
 
     [EntityIgnoreNullCheck] public int[] ValuesInt = new int[NpcInteractionState.StorageCount];
     [EntityIgnoreNullCheck] public string[] ValuesString = new string[NpcInteractionState.StorageCount];
@@ -39,6 +42,16 @@ public class Npc : IEntityAutoReset
         if (TimerActive && TimerStart + LastTimerUpdate + TimerUpdateRate < Time.ElapsedTime)
         {
             UpdateTimer();
+        }
+
+        if (Mobs != null && Mobs.Count > 0)
+        {
+            var count = Mobs.Count;
+            Mobs.ClearInactive();
+            if (count != Mobs.Count)
+            {
+                OnMobKill();
+            }
         }
     }
 
@@ -62,6 +75,11 @@ public class Npc : IEntityAutoReset
         Mobs = null;
     }
 
+    public void OnMobKill()
+    {
+        Behavior.OnMobKill(this);
+    }
+
     public void UpdateTimer()
     {
         if (!Entity.IsAlive())
@@ -73,7 +91,8 @@ public class Npc : IEntityAutoReset
         var lastTime = LastTimerUpdate;
         var newTime = (float)(Time.ElapsedTime - TimerStart);
 
-        LastTimerUpdate = newTime; //update this before OnTimer since OnTimer may call ResetTimer
+        //update this before OnTimer since OnTimer may call ResetTimer or otherwise change the timer
+        LastTimerUpdate = newTime;
 
         Behavior.OnTimer(this, lastTime, newTime);
     }
@@ -154,7 +173,7 @@ public class Npc : IEntityAutoReset
     {
         player.NpcInteractionState.InteractionResult = NpcInteractionResult.None;
         NpcInteractionResult res;
-
+        
         if (player.NpcInteractionState.IsTouchEvent)
             res = Behavior.OnTouch(this, player, player.NpcInteractionState);
         else
@@ -167,7 +186,6 @@ public class Npc : IEntityAutoReset
             player.IsInNpcInteraction = false;
             player.NpcInteractionState.Reset();
             CommandBuilder.SendNpcEndInteraction(player);
-            
         }
     }
     public void OptionAdvance(Player player, int result)
@@ -191,7 +209,11 @@ public class Npc : IEntityAutoReset
         }
     }
 
-
+    public void OnSignal(Npc srcNpc, string signal)
+    {
+        Behavior.OnSignal(this, srcNpc, signal);
+    }
+    
     public void SummonMobsNearby(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
     {
         var chara = Entity.Get<WorldObject>();
@@ -226,5 +248,60 @@ public class Npc : IEntityAutoReset
             if (npc.Mobs[i].TryGet(out Monster mon))
                 mon.Die();
         }
+
+        npc.Mobs.Clear();
+        OnMobKill();
+    }
+
+    public void HideNpc()
+    {
+        var chara = Entity.Get<WorldObject>();
+
+        if (!chara.IsActive)
+            return; //npc already hidden
+
+        //this puts the npc in a weird state where it still exists in the Instance, but not on the map
+        chara.Map.RemoveEntity(ref Entity, CharacterRemovalReason.OutOfSight, false);
+        chara.IsActive = false; //set active after removing or players won't be notified
+
+        if(HasTouch && AreaOfEffect != null)
+            chara.Map.RemoveAreaOfEffect(AreaOfEffect);
+    }
+
+    public void ShowNpc()
+    {
+        var chara = Entity.Get<WorldObject>();
+
+        if (chara.IsActive)
+            return; //npc is already visible
+
+        chara.IsActive = true; //set active before adding it or players won't be notified
+        chara.Map.AddEntity(ref Entity, false);
+
+        if (HasTouch && AreaOfEffect != null)
+            chara.Map.CreateAreaOfEffect(AreaOfEffect);
+    }
+
+    public void SignalNpc(string npcName, string signal)
+    {
+        var chara = Entity.Get<WorldObject>();
+
+        if (!chara.Map.Instance.NpcNameLookup.TryGetValue(npcName, out var destNpc) || !destNpc.IsAlive())
+        {
+            ServerLogger.LogWarning($"Npc {FullName} attempted to signal npc {npcName}, but that npc could not be found.");
+            return;
+        }
+
+        var npc = destNpc.Get<Npc>();
+        npc.OnSignal(this, signal);
+    }
+
+    public void DebugMessage(string message)
+    {
+#if DEBUG
+        CommandBuilder.AddAllPlayersAsRecipients();
+        CommandBuilder.SendServerMessage(message);
+        CommandBuilder.ClearRecipients();
+#endif
     }
 }

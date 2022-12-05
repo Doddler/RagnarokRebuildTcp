@@ -48,15 +48,6 @@ public static class EntityManager
 
         try
         {
-            if (EntityCount < Entities.Length)
-            {
-                EntityCount++;
-                var id = EntityCount;
-                var entityData = GenerateEntityData(type, id);
-                
-                return new Entity() { Id = id, Gen = entityData.Gen, TypeId = (byte)type };
-            }
-
             if (FreeEntities.Count > 0)
             {
                 var id = FreeEntities.Pop();
@@ -65,6 +56,15 @@ public static class EntityManager
                 return new Entity() { Id = id, Gen = entityData.Gen, TypeId = (byte)type };
             }
 
+            if (EntityCount < Entities.Length)
+            {
+                EntityCount++;
+                var id = EntityCount;
+                var entityData = GenerateEntityData(type, id);
+
+                return new Entity() { Id = id, Gen = entityData.Gen, TypeId = (byte)type };
+            }
+   
             Array.Resize(ref Entities, Entities.Length << 1);
 
             EntityCount++;
@@ -92,7 +92,7 @@ public static class EntityManager
             for (var i = 0; i < EntityComponentManager.MaxComponentPerType; i++)
             {
                 EntityComponentManager.RecycleComponent(entity.Type, i, entity.Components[i]);
-                entity.Components[i] = null;
+                entity.Components[i] = null!;
             }
 
             entity.Gen++;

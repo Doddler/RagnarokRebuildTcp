@@ -20,7 +20,7 @@ internal class ScriptTreeWalker
     {
         name = inputName;
         builder = new ScriptBuilder(inputName.Replace(" ", "_"), uniqueNames, "System", "System.Linq",
-            "RoRebuildServer.Data.Map", "RebuildSharedData.Data", "RoRebuildServer.Data", "RoRebuildServer.EntityComponents", 
+            "RoRebuildServer.Data.Map", "RebuildSharedData.Data", "RoRebuildServer.Data", "RoRebuildServer.EntityComponents", "RoRebuildServer.ScriptSystem",
             "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util", "RoRebuildServer.EntityComponents.Items");
         
         var ruleSet = parser.rule_set();
@@ -811,7 +811,15 @@ internal class ScriptTreeWalker
             builder.DefineVariable(varContext.IDENTIFIER().GetText(), isString, false);
         }
         else
-            builder.OutputRaw("var ");
+        {
+            var id = ((VarAssignmentContext)assn).IDENTIFIER().GetText();
+
+            if (!builder.HasUserVariable(id))
+            {
+                builder.OutputRaw("var ");
+                builder.AddUserVariable(id);
+            }
+        }
 
         VisitAssignment(varDeclarationContext.assignment());
     }

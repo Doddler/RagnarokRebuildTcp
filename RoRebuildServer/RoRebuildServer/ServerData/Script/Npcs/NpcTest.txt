@@ -1,24 +1,88 @@
 
 
+Npc("guild_vs4", "Kafra Staff#DebugRoom3", "4_F_KAFRA6", 50, 50, SW, 1, 1) 
+{
+    local prog = 0;
+OnClick:
+    FocusNpc();
+	ShowSprite("kafra_06", right);
+    if(prog == 0)
+    {
+        Dialog("Kafra Staff", "You're about to have a bad time, buddy.");
+
+        SummonMobsNearby(5, "POISON_SPORE", 7, 7);
+
+        HideNpc();
+    }
+    else
+    {
+        Dialog("Kafra Staff", "Damn dude you killed them all");
+
+        prog = 0;
+    }
+OnMobKill:
+    if(MobCount == 0)
+    {
+        prog = 1;
+        ShowNpc();
+    }
+}
+
+//event PoringFireworks()
+//{
+//
+//}
+
+
+
+macro PoringWiper(%distance, %prog)
+{
+    var x = Sin(%prog / 4.77f);
+    var y = Cos(%prog / 4.77f);
+
+    var pos = Position(x * %distance, y * %distance);
+    SummonMobsNearby(1, "PORING", 0, 0, GetX(pos), GetY(pos));
+}
 
 Npc("2009rwc_03", "Kafra Staff#DebugRoom", "4_F_KAFRA1", 49, 49, SE, 1, 1) 
 {
 	local prog = 0;
-OnTouch:
-    StartTimer(64); //by default timer updates every 200ms, force to to update faster
+    HideNpc();
+OnSignal:
+    if(Signal == "On")
+    {
+        ShowNpc();
+        StartTimer(50); //50ms update rate
+    }
 OnClick:
     KillMyMobs();
     StopTimer();
-OnTimer 64:
+    HideNpc();
+OnMobKill:
+    DebugMessage("Mobs remaining: " + MobCount );
+OnTimer 50:
     KillMyMobs();
-    SummonMobsNearby(1, "PORING", 0, 0, 7 - prog, -7);
-    SummonMobsNearby(1, "PORING", 0, 0, -7 + prog, 7);
-    SummonMobsNearby(1, "PORING", 0, 0, -7, -7 + prog);
-    SummonMobsNearby(1, "PORING", 0, 0, 7, 7 - prog);
+
     prog = prog + 1;
-    if(prog == 15)
-        prog = 0;
+    if(prog >= 31)
+        prog = 1;
+       
+    @PoringWiper(5, prog);
+    @PoringWiper(7, prog);
+    @PoringWiper(10, prog);
+    @PoringWiper(13, prog);
+    @PoringWiper(15, prog);
+    @PoringWiper(17, prog);
+    @PoringWiper(19, prog);
+    @PoringWiper(21, prog);
+    
     ResetTimer();
+}
+
+Npc("2009rwc_03", "Kafra Staff#DebugRoom2", "4_F_KAFRA6", 62, 62, SW, 1, 1) 
+{
+OnClick:
+    SignalNpc("Kafra Staff#DebugRoom", "On");
 }
 
 /*

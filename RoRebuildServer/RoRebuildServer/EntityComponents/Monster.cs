@@ -159,20 +159,20 @@ public partial class Monster : IEntityAutoReset
 		if (SpawnRule == null)
 		{
 			//ServerLogger.LogWarning("Attempting to remove entity without spawn data! How?? " + Character.ClassId);
-            Character.Map.RemoveEntity(ref Entity, CharacterRemovalReason.Dead, true);
-			//World.Instance.FullyRemoveEntity(ref Entity);
-		}
-		else
-		{
-            Character.Map.RemoveEntity(ref Entity, CharacterRemovalReason.Dead, false);
-			deadTimeout = GameRandom.NextFloat(SpawnRule.MinSpawnTime / 1000f, SpawnRule.MaxSpawnTime / 1000f);
-			if (deadTimeout < 0.4f)
-				deadTimeout = 0.4f; //minimum respawn time
-			if (deadTimeout > MaxSpawnTimeInSeconds)
-				deadTimeout = MaxSpawnTimeInSeconds;
-			nextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
-			deadTimeout += Time.ElapsedTimeFloat;
-		}
+            
+            World.Instance.FullyRemoveEntity(ref Entity, CharacterRemovalReason.Dead);
+            //Character.ClearVisiblePlayerList();
+            return;
+        }
+
+        Character.Map.RemoveEntity(ref Entity, CharacterRemovalReason.Dead, false);
+        deadTimeout = GameRandom.NextFloat(SpawnRule.MinSpawnTime / 1000f, SpawnRule.MaxSpawnTime / 1000f);
+        if (deadTimeout < 0.4f)
+            deadTimeout = 0.4f; //minimum respawn time
+        if (deadTimeout > MaxSpawnTimeInSeconds)
+            deadTimeout = MaxSpawnTimeInSeconds;
+        nextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
+        deadTimeout += Time.ElapsedTimeFloat;
 
         Character.ClearVisiblePlayerList(); //make sure this is at the end or the player may not be notified of the monster's death
 	}

@@ -8,6 +8,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
+using RoRebuildServer.ScriptSystem;
 
 namespace RoRebuildServer.Data;
 
@@ -80,7 +81,7 @@ public static class DataManager
         SavePoints = loader.LoadSavePoints();
 
         //rebuild script assemblies
-        ScriptAssembly = loader.CompileScripts();
+        ScriptAssembly = ScriptLoader.LoadAssembly();
         NpcManager = new NpcBehaviorManager();
         
         //the things we actually want to load
@@ -96,7 +97,7 @@ public static class DataManager
 
         var loader = new DataLoader();
 
-        ScriptAssembly = loader.CompileScripts();
+        ScriptAssembly = ScriptLoader.LoadAssembly();
         NpcManager = new NpcBehaviorManager();
 
         //configValues = loader.LoadServerConfig();

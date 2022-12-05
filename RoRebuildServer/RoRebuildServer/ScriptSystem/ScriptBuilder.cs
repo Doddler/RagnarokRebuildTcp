@@ -39,6 +39,7 @@ public class ScriptBuilder
     private List<int> timerValues = new();
     private List<string> remoteCommands = new();
     private Dictionary<string, NpcInteractionResult> waitingFunctions = new();
+    private List<string> additionalVariables = new();
 
     private List<TimerFunction> timerFunctions = new();
 
@@ -183,9 +184,10 @@ public class ScriptBuilder
         if (functionSources.Contains(name))
             return;
 
-        var methods = source.GetMethods(BindingFlags.Public | BindingFlags.Instance).Select(s => s.Name).ToList();
-        foreach (var m in methods)
+        var methods = source.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).ToList();
+        foreach (var method in methods)
         {
+            var m = method.Name;
             if (m == "GetType" || m == "ToString" || m == "Equals" || m == "GetHashCode")
                 continue;
 
@@ -196,11 +198,21 @@ public class ScriptBuilder
                     functionBaseClasses.Add(m2, varName);
             }
 
-            if (!functionBaseClasses.ContainsKey(m))
-                functionBaseClasses.Add(m, varName);
+            if (method.IsStatic)
+            {
+                if (!functionBaseClasses.ContainsKey(m))
+                    functionBaseClasses.Add(m, varName);
+            }
+            else
+            {
+                if (!functionBaseClasses.ContainsKey(m))
+                    functionBaseClasses.Add(m, varName);
+            }
+
+
         }
     }
-
+    
     public void StartMap(string name)
     {
         methodName = name.Replace(" ", "");
@@ -257,6 +269,7 @@ public class ScriptBuilder
 
         functionSources.Clear();
         functionBaseClasses.Clear();
+        additionalVariables.Clear();
 
         methodName = section;
 
@@ -275,6 +288,7 @@ public class ScriptBuilder
             LoadFunctionSource(typeof(Player), "player");
             LoadFunctionSource(typeof(CombatEntity), "combatEntity");
             LoadFunctionSource(typeof(ItemInteractionBase), "item");
+            LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
         }
         else
         {
@@ -289,6 +303,7 @@ public class ScriptBuilder
 
             LoadFunctionSource(typeof(Player), "player");
             LoadFunctionSource(typeof(CombatEntity), "combatEntity");
+            LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
         }
     }
 
@@ -360,6 +375,7 @@ public class ScriptBuilder
         EndMethod();
         functionSources.Clear();
         functionBaseClasses.Clear();
+        additionalVariables.Clear();
 
         methodName = section;
 
@@ -384,26 +400,50 @@ public class ScriptBuilder
             LoadFunctionSource(typeof(Npc), "npc");
             LoadFunctionSource(typeof(Player), "player");
             LoadFunctionSource(typeof(NpcInteractionState), "state");
+            LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
 
             if (section == "OnClick")
                 hasInteract = true;
             if (section == "OnTouch")
                 hasTouch = true;
+
+            return;
         }
-        else
+
+        if (section == "OnSignal")
         {
-            StartIndentedBlockLine().AppendLine($"public void {section}(Npc npc)");
+
+            StartIndentedBlockLine().AppendLine($"public override void {section}(Npc npc, Npc srcNpc, string signal)");
             OpenScope();
+            StartIndentedBlockLine().AppendLine($"var Src = srcNpc;");
+            StartIndentedBlockLine().AppendLine($"var Signal = signal;");
 
             UseStateMachine = false;
             UseLocalStorage = true;
 
             LoadFunctionSource(typeof(Npc), "npc");
+            additionalVariables.Add("Src");
+            additionalVariables.Add("Signal");
+            LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+            return;
+        }
 
-            if (section.StartsWith("OnTimer"))
-            {
-                timerFunctions.Add(new TimerFunction() { EventTime = timer, FuncName = methodName });
-            }
+        var strOverride = "";
+        if (section == "OnMobKill")
+            strOverride = " override";
+        
+        StartIndentedBlockLine().AppendLine($"public{strOverride} void {section}(Npc npc)");
+        OpenScope();
+
+        UseStateMachine = false;
+        UseLocalStorage = true;
+
+        LoadFunctionSource(typeof(Npc), "npc");
+        LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+
+        if (section.StartsWith("OnTimer"))
+        {
+            timerFunctions.Add(new TimerFunction() { EventTime = timer, FuncName = methodName });
         }
     }
 
@@ -554,7 +594,10 @@ public class ScriptBuilder
         if (functionBaseClasses.TryGetValue(id, out var src))
             return $"{src}.{id}";
 
-        ServerLogger.LogWarning($"Error in {className} line {lineNumber} : Unable to parse parse unidentified constant '{id}'");
+        if (additionalVariables.Contains(id))
+            return id;
+
+        throw new Exception($"Error in {className} line {lineNumber} : Unable to parse parse unidentified constant '{id}'");
 
         return id;
     }
@@ -734,7 +777,16 @@ public class ScriptBuilder
 
         localIntVariables.Clear();
         localStringVariables.Clear();
+        additionalVariables.Clear();
 
+    }
+
+    public bool HasUserVariable(string varName) => additionalVariables.Contains(varName);
+
+    public void AddUserVariable(string varName)
+    {
+        if(!additionalVariables.Contains(varName))
+            additionalVariables.Add(varName);
     }
 
     private void OutputLoader(string loaderName, string loaderInterface, List<string>? lines)

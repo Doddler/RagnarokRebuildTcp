@@ -375,14 +375,13 @@ public class WorldObject : IEntityAutoReset
             npc.Update();
             return;
         }
-
-        SpawnImmunity -= Time.DeltaTimeFloat;
-
+        
         if(visiblePlayers != null)
             visiblePlayers.ClearInactive();
 
         if (Entity.Type == EntityType.Player)
         {
+            SpawnImmunity -= Time.DeltaTimeFloat;
             player.Update();
             combatEntity.Update();
         }

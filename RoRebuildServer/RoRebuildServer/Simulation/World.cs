@@ -91,15 +91,14 @@ public class World
             var npc = ch.Npc;
 
             if (npc.HasTouch && npc.AreaOfEffect != null)
-            {
                 ch.Map?.RemoveAreaOfEffect(npc.AreaOfEffect);
-                
-            }
+            
+            if (ch.Map != null && ch.Map.Instance.NpcNameLookup.ContainsKey(npc.FullName))
+                ch.Map.Instance.NpcNameLookup.Remove(npc.FullName);
         }
 
         entityList.Remove(ch.Id);
         ch.Map?.RemoveEntity(ref entity, reason, true);
-        ch.Map?.Instance.RemoveEntity(ref entity);
         ch.IsActive = false;
         ch.Map = null;
 
@@ -203,14 +202,16 @@ public class World
         ch.Type = CharacterType.NPC;
         ch.FacingDirection = spawn.FacingDirection;
         ch.Init(ref e);
+        npc.FullName = spawn.FullName;
         npc.Name = spawn.Name;
         npc.HasInteract = spawn.HasInteract;
         npc.HasTouch = spawn.HasTouch;
         npc.Entity = e;
         npc.Behavior = spawn.Behavior;
-        npc.Behavior.Init(npc);
 
         map.AddEntity(ref e);
+
+        map.Instance.NpcNameLookup.TryAdd(spawn.FullName, e);
 
         if (npc.HasTouch)
         {
@@ -229,6 +230,9 @@ public class World
         }
 
         entityList.Add(ch.Id, e);
+
+
+        npc.Behavior.Init(npc); //save this for last, the npc might do something silly like hide itself and needs to be on the map
     }
     
     public Entity CreatePlayer(NetworkConnection connection, string mapName, Area spawnArea)

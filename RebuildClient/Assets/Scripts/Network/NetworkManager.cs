@@ -1231,12 +1231,13 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendReloadScript()
+
+        public void SendAdminAction(AdminAction action)
         {
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.AdminServerAction);
-            msg.Write((byte)AdminAction.ReloadScripts);
+            msg.Write((byte)action);
 
             SendMessage(msg);
         }
