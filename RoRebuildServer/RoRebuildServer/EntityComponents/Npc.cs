@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Buffers;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Npcs;
@@ -17,14 +18,21 @@ public class Npc : IEntityAutoReset
     public Entity Entity;
     public string FullName { get; set; } = null!;
     public string Name { get; set; } = null!; //making this a property makes it accessible via npc scripting
-    
+
     public AreaOfEffect? AreaOfEffect;
 
     public EntityList? Mobs;
     public int MobCount => Mobs?.Count ?? 0;
 
-    [EntityIgnoreNullCheck] public int[] ValuesInt = new int[NpcInteractionState.StorageCount];
-    [EntityIgnoreNullCheck] public string[] ValuesString = new string[NpcInteractionState.StorageCount];
+    public EntityList? Events;
+    public int EventsCount => Events?.Count ?? 0;
+
+    private int[]? valuesInt;
+    private string[]? valuesString;
+
+
+    public int[]? ParamsInt;
+    public string? ParamString;
 
     public NpcBehaviorBase Behavior = null!;
 
@@ -36,7 +44,11 @@ public class Npc : IEntityAutoReset
     public bool HasInteract;
     public bool TimerActive;
 
+    public bool IsHidden => Entity.Get<WorldObject>().IsActive;
 
+    public int[] ValuesInt => valuesInt ??= ArrayPool<int>.Shared.Rent(NpcInteractionState.StorageCount);
+    public string[] ValuesString => valuesString ??= ArrayPool<string>.Shared.Rent(NpcInteractionState.StorageCount);
+    
     public void Update()
     {
         if (TimerActive && TimerStart + LastTimerUpdate + TimerUpdateRate < Time.ElapsedTime)
@@ -64,15 +76,25 @@ public class Npc : IEntityAutoReset
             AreaOfEffect = null!;
         }
 
-        for (var i = 0; i < NpcInteractionState.StorageCount; i++)
+        if (Events != null)
         {
-            ValuesInt[i] = 0;
-            ValuesString[i] = String.Empty;
+            Events.Clear();
+            EntityListPool.Return(Events);
+            Events = null;
         }
+        
+        if(valuesInt != null)
+            ArrayPool<int>.Shared.Return(valuesInt);
+        if(valuesString != null) 
+            ArrayPool<string>.Shared.Return(valuesString);
 
+        valuesInt = null!;
+        valuesString = null!;
         Entity = Entity.Null;
         Behavior = null!;
         Mobs = null;
+        ParamsInt = null;
+        ParamString = null;
     }
 
     public void OnMobKill()
@@ -209,9 +231,33 @@ public class Npc : IEntityAutoReset
         }
     }
 
-    public void OnSignal(Npc srcNpc, string signal)
+    public void OnSignal(Npc srcNpc, string signal, int value1=0, int value2=0, int value3=0, int value4=0)
     {
-        Behavior.OnSignal(this, srcNpc, signal);
+        Behavior.OnSignal(this, srcNpc, signal, value1, value2, value3, value4);
+    }
+
+    public void SummonMobs(int count, string name, int x, int y, int width = 0, int height = 0)
+    {
+        var chara = Entity.Get<WorldObject>();
+
+        if (chara.Map == null)
+            return;
+
+        var monster = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(new Position(x, y), width, height);
+
+        var mobs = Mobs;
+        if (mobs == null)
+        {
+            mobs = new EntityList(count);
+            Mobs = mobs;
+        }
+        else
+            mobs.ClearInactive();
+
+        for (int i = 0; i < count; i++)
+            mobs.Add(World.Instance.CreateMonster(chara.Map, monster, area, null));
     }
     
     public void SummonMobsNearby(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
@@ -233,6 +279,12 @@ public class Npc : IEntityAutoReset
 
         for (int i = 0; i < count; i++)
             mobs.Add(World.Instance.CreateMonster(chara.Map, monster, area, null));
+    }
+
+    public bool CheckMonstersOfTypeInRange(string name, int x, int y, int distance)
+    {
+        var chara = Entity.Get<WorldObject>();
+        return chara.Map.HasMonsterOfTypeInRange(new Position(x, y), distance, DataManager.MonsterCodeLookup[name]);
     }
 
     public void KillMyMobs()
@@ -282,7 +334,22 @@ public class Npc : IEntityAutoReset
             chara.Map.CreateAreaOfEffect(AreaOfEffect);
     }
 
-    public void SignalNpc(string npcName, string signal)
+    public void SignalMyEvents(string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
+    {
+        if (Events == null)
+            return;
+
+        for (var i = 0; i < Events.Count; i++)
+        {
+            var evt = Events[i];
+            if (!evt.IsAlive())
+                continue;
+            var npc = Events[i].Get<Npc>();
+            npc.OnSignal(this, signal, value1, value2, value3, value4);
+        }
+    }
+
+    public void SignalNpc(string npcName, string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
     {
         var chara = Entity.Get<WorldObject>();
 
@@ -293,7 +360,29 @@ public class Npc : IEntityAutoReset
         }
 
         var npc = destNpc.Get<Npc>();
-        npc.OnSignal(this, signal);
+        npc.OnSignal(this, signal, value1, value2, value3, value4);
+    }
+    
+    public void CreateEvent(string eventName, int x, int y, string? valueString = null) => CreateEvent(eventName, x, y, 0, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, int x, int y, int value1, string? valueString = null) => CreateEvent(eventName, x, y, value1, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, string? valueString = null) => CreateEvent(eventName, x, y, value1, value2, 0, 0, valueString);
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, string? valueString = null) => CreateEvent(eventName, x, y, value1, value2, value3, 0, valueString);
+    
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, int value4, string? valueString = null)
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to create event, but the npc is not currently attached to a map.");
+
+        var eventObj = World.Instance.CreateEvent(chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
+        Events ??= EntityListPool.Get();
+        Events.ClearInactive();
+        Events.Add(eventObj);
+    }
+
+    public void EndEvent()
+    {
+        World.Instance.FullyRemoveEntity(ref Entity);
     }
 
     public void DebugMessage(string message)

@@ -19,7 +19,7 @@ public class NpcInteractionState
     public int Step;
     public int OptionResult = -1;
     
-    public const int StorageCount = 5;
+    public const int StorageCount = 10;
 
     public int[] ValuesInt = new int[StorageCount];
     public string?[] ValuesString = new string[StorageCount];
@@ -164,19 +164,5 @@ public class NpcInteractionState
     public void DropZeny(int zeny)
     {
 
-    }
-    
-    public int Random(int max) => GameRandom.Next(max);
-    public int Random(int min, int max) => GameRandom.Next(min, max);
-
-    public int DeterministicRandom(int seed, int max)
-    {
-        var calcBase = (DateTime.Today.ToFileTimeUtc() / 86400) * 100 + seed;
-
-        var step1 = (calcBase << 11) ^ calcBase;
-        var step2 = (step1.RotateRight(8)) ^ step1;
-        step2 = Math.Abs(step2);
-
-        return (int)(step2 % max);
     }
 }

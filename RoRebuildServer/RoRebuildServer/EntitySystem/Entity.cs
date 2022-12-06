@@ -62,6 +62,12 @@ public struct Entity
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGet<T>([MaybeNullWhen(false)] out T component) where T : class
     {
+        if (!IsAlive())
+        {
+            component = null;
+            return false;
+        }
+
         var data = EntityManager.Entities[Id];
 #if DEBUG
         if (data.Gen != Gen)

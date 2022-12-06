@@ -1,4 +1,6 @@
-﻿using System.Threading.Channels;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Threading.Channels;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.VisualBasic;
 using RebuildSharedData.ClientTypes;
@@ -34,7 +36,7 @@ public class World
     //private Dictionary<string, int> mapIdLookup = new();
 
     private Dictionary<string, int> worldMapInstanceLookup = new();
-    private List<Entity> removeList = new(30);
+    private ConcurrentBag<Entity> removeList = new();
     
     private int nextEntityId = 0;
     private int maxEntityId = 10_000_000;
@@ -101,6 +103,8 @@ public class World
         ch.Map?.RemoveEntity(ref entity, reason, true);
         ch.IsActive = false;
         ch.Map = null;
+
+        //ServerLogger.Log($"Recycling " + ch.Name);
 
         EntityManager.Recycle(entity);
     }
@@ -192,7 +196,7 @@ public class World
         var e = EntityManager.New(EntityType.Npc);
         var ch = e.Get<WorldObject>();
         var npc = e.Get<Npc>();
-
+        
         ch.Id = GetNextEntityId();
         ch.IsActive = true;
         ch.ClassId = spawn.SpriteId;
@@ -201,6 +205,7 @@ public class World
         ch.MoveSpeed = 0;
         ch.Type = CharacterType.NPC;
         ch.FacingDirection = spawn.FacingDirection;
+        ch.Name = spawn.FullName;
         ch.Init(ref e);
         npc.FullName = spawn.FullName;
         npc.Name = spawn.Name;
@@ -233,6 +238,39 @@ public class World
 
 
         npc.Behavior.Init(npc); //save this for last, the npc might do something silly like hide itself and needs to be on the map
+    }
+
+    //event is an invisible npc without a spawn definition intended to be transient
+    public Entity CreateEvent(Map map, string eventName, Position pos, int param1, int param2, int param3, int param4, string? paramString)
+    {
+        var e = EntityManager.New(EntityType.Npc);
+        var ch = e.Get<WorldObject>();
+        var npc = e.Get<Npc>();
+
+        if (!DataManager.NpcManager.EventBehaviorLookup.TryGetValue(eventName, out var behavior))
+            throw new Exception($"Unable to create event \"{eventName}\" as the matching script could not be found.");
+
+        ch.Id = GetNextEntityId();
+        ch.IsActive = false; //it shouldn't see or interact with anyone
+        ch.ClassId = 0;
+        ch.Entity = e;
+        ch.Position = pos;
+        ch.MoveSpeed = 0;
+        ch.Type = CharacterType.NPC;
+        ch.Name = eventName;
+        ch.Init(ref e);
+        npc.FullName = eventName;
+        npc.Name = eventName;
+        npc.HasInteract = false;
+        npc.HasTouch = false;
+        npc.Entity = e;
+        npc.Behavior = behavior;
+
+        map.AddEntity(ref e);
+
+        npc.Behavior.InitEvent(npc, param1, param2, param3, param4, paramString);
+        
+        return e;
     }
     
     public Entity CreatePlayer(NetworkConnection connection, string mapName, Area spawnArea)
@@ -340,6 +378,8 @@ public class World
         var ch = e.Get<WorldObject>();
         var ce = e.Get<CombatEntity>();
         var m = e.Get<Monster>();
+
+        spawnArea.ClipArea(map.MapBounds);
         
         Position p;
         if (!spawnArea.IsZero && spawnArea.Size <= 1)
@@ -435,8 +475,9 @@ public class World
     {
         for (var i = 0; i < removeList.Count; i++)
         {
-            var entity = removeList[i];
-
+            if (!removeList.TryPeek(out var entity))
+                throw new Exception("removeList collection blocked while world performing entity removal!");
+            
             if (entity.IsNull() || !entity.IsAlive())
                 return;
 

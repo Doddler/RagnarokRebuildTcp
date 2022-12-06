@@ -247,41 +247,7 @@ internal class DataLoader
 
         return config;
     }
-
-    public Assembly CompileScripts()
-    {
-        try
-        {
-            var compiler = new ScriptCompiler();
-
-            ServerLogger.Log("Compiling server side scripts...");
-
-            var hasNewScripts = false;
-
-            var path = Path.Combine(ServerConfig.DataConfig.DataPath, "Script/");
-            foreach (var file in Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories))
-            {
-                ServerLogger.Debug("Compiling script " + Path.GetRelativePath(path, file));
-                hasNewScripts |= compiler.Compile(file);
-            }
-
-            ServerLogger.Log("Generating and loading script assembly...");
-
-            var assembly = compiler.Load(!hasNewScripts);
-
-            ServerLogger.Log("Server scripts loaded!");
-
-            return assembly;
-
-            
-        }
-        catch (Exception ex)
-        {
-            ServerLogger.LogError("Failed to compile scripts due to exeption: " + ex);
-            throw;
-        }
-    }
-
+    
     public void LoadNpcScripts(Assembly assembly)
     {
         var itemType = typeof(INpcLoader);

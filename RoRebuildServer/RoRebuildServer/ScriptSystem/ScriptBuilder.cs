@@ -39,7 +39,7 @@ public class ScriptBuilder
     private List<int> timerValues = new();
     private List<string> remoteCommands = new();
     private Dictionary<string, NpcInteractionResult> waitingFunctions = new();
-    private List<string> additionalVariables = new();
+    private Dictionary<string, string> additionalVariables { get; set; } = new();
 
     private List<TimerFunction> timerFunctions = new();
 
@@ -63,6 +63,7 @@ public class ScriptBuilder
     public bool UseStateStorage;
     public bool UseLocalStorage;
     public int StateStorageLimit = 0;
+    public bool IsEvent;
 
     private int indentation = 1;
 
@@ -356,10 +357,67 @@ public class ScriptBuilder
         return name;
     }
 
+    public string StartEvent(string name)
+    {
+        methodName = name.Replace(" ", "");
+        UseStateMachine = false;
+        UseStateStorage = false;
+        UseLocalStorage = true;
+        stateVariable = "state";
+        localvariable = "npc";
+        blockBuilder.Clear();
+        timerValues.Clear();
+        remoteCommands.Clear();
+        hasTouch = false;
+        hasInteract = false;
+
+        name += "_" + Guid.NewGuid().ToString().Replace("-", "_");
+        
+        StartIndentedScriptLine().AppendLine($"public class RoRebuildNpcGen_{name} : NpcBehaviorBase");
+        StartIndentedScriptLine().AppendLine("{");
+        indentation++;
+
+        //StartIndentedBlockLine().AppendLine($"[ServerMapConfigAttribute(\"{methodName}\")]");
+        StartIndentedBlockLine().AppendLine($"public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)");
+        StartIndentedBlockLine().AppendLine("{");
+        indentation++;
+
+        StartIndentedBlockLine().AppendLine("npc.ParamsInt = new int[4];");
+        StartIndentedBlockLine().AppendLine("npc.ParamsInt[0] = param1; npc.ParamsInt[1] = param2; npc.ParamsInt[2] = param3; npc.ParamsInt[3] = param4;");
+        StartIndentedBlockLine().AppendLine("npc.ParamString = paramString;");
+
+        methodName = "InitEvent";
+
+        waitingFunctions.Clear();
+        waitingFunctions.Add("Dialog", NpcInteractionResult.WaitForContinue);
+        waitingFunctions.Add("Option", NpcInteractionResult.WaitForInput);
+        waitingFunctions.Add("MoveTo", NpcInteractionResult.EndInteraction);
+
+        LoadFunctionSource(typeof(Npc), "npc");
+        LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+        additionalVariables.Add("Param1", "npc.ParamsInt[0]");
+        additionalVariables.Add("Param2", "npc.ParamsInt[1]");
+        additionalVariables.Add("Param3", "npc.ParamsInt[2]");
+        additionalVariables.Add("Param4", "npc.ParamsInt[3]");
+        additionalVariables.Add("ParamString", "npc.ParamString");
+
+        IsEvent = true;
+
+        return name;
+    }
+
     public void EndNpc(string name, string npcTag, string map, string sprite, string facing, int x, int y, int w, int h)
     {
         var behaviorName = $"RoRebuildNpcGen_{name}";
         npcDefinitions.Add($"DataManager.RegisterNpc({npcTag}, {map}, {sprite}, {x}, {y}, {facing}, {w}, {h}, {(hasInteract ? "true" : "false")}, {(hasTouch ? "true" : "false")}, new {behaviorName}());");
+    }
+
+
+    public void EndEvent(string name, string className)
+    {
+        var behaviorName = $"RoRebuildNpcGen_{className}";
+        npcDefinitions.Add($"DataManager.RegisterEvent(\"{name}\", new {behaviorName}());");
+        IsEvent = false;
     }
 
     public void StartNpcSection(string section, int timer = -1)
@@ -378,6 +436,15 @@ public class ScriptBuilder
         additionalVariables.Clear();
 
         methodName = section;
+
+        if (IsEvent)
+        {
+            additionalVariables.Add("Param1", "npc.ParamsInt[0]");
+            additionalVariables.Add("Param2", "npc.ParamsInt[1]");
+            additionalVariables.Add("Param3", "npc.ParamsInt[2]");
+            additionalVariables.Add("Param4", "npc.ParamsInt[3]");
+            additionalVariables.Add("ParamString", "npc.ParamString");
+        }
 
         if (section == "OnClick" || section == "OnTouch")
         {
@@ -413,17 +480,19 @@ public class ScriptBuilder
         if (section == "OnSignal")
         {
 
-            StartIndentedBlockLine().AppendLine($"public override void {section}(Npc npc, Npc srcNpc, string signal)");
+            StartIndentedBlockLine().AppendLine($"public override void {section}(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4)");
             OpenScope();
-            StartIndentedBlockLine().AppendLine($"var Src = srcNpc;");
-            StartIndentedBlockLine().AppendLine($"var Signal = signal;");
-
+            
             UseStateMachine = false;
             UseLocalStorage = true;
 
             LoadFunctionSource(typeof(Npc), "npc");
-            additionalVariables.Add("Src");
-            additionalVariables.Add("Signal");
+            additionalVariables.Add("Src", "SrcNpc");
+            additionalVariables.Add("Signal", "signal");
+            additionalVariables.Add("Value1", "value1");
+            additionalVariables.Add("Value2", "value2");
+            additionalVariables.Add("Value3", "value3");
+            additionalVariables.Add("Value4", "value4");
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
             return;
         }
@@ -594,8 +663,8 @@ public class ScriptBuilder
         if (functionBaseClasses.TryGetValue(id, out var src))
             return $"{src}.{id}";
 
-        if (additionalVariables.Contains(id))
-            return id;
+        if (additionalVariables.ContainsKey(id))
+            return additionalVariables[id];
 
         throw new Exception($"Error in {className} line {lineNumber} : Unable to parse parse unidentified constant '{id}'");
 
@@ -781,12 +850,12 @@ public class ScriptBuilder
 
     }
 
-    public bool HasUserVariable(string varName) => additionalVariables.Contains(varName);
+    public bool HasUserVariable(string varName) => additionalVariables.ContainsKey(varName);
 
     public void AddUserVariable(string varName)
     {
-        if(!additionalVariables.Contains(varName))
-            additionalVariables.Add(varName);
+        if(!additionalVariables.ContainsKey(varName))
+            additionalVariables.Add(varName, varName);
     }
 
     private void OutputLoader(string loaderName, string loaderInterface, List<string>? lines)

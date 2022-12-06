@@ -1,4 +1,5 @@
 ﻿using RebuildSharedData.Data;
+using RebuildSharedData.Util;
 
 namespace RoRebuildServer.ScriptSystem;
 
@@ -14,6 +15,11 @@ public static class ScriptUtilityFunctions
         return (float)Math.Cos(angle);
     }
 
+    public static float DegToRad(float angle)
+    {
+        return MathF.PI / 180f * angle;
+    }
+
     public static Position Position(float x, float y)
     {
         return new Position((int)MathF.Round(x), (int)MathF.Round(y));
@@ -21,4 +27,18 @@ public static class ScriptUtilityFunctions
 
     public static int GetX(Position p) => p.X;
     public static int GetY(Position p) => p.Y;
+    
+    public static int Random(int max) => GameRandom.Next(max);
+    public static int Random(int min, int max) => GameRandom.Next(min, max);
+
+    public static int DeterministicRandom(int seed, int max)
+    {
+        var calcBase = (DateTime.Today.ToFileTimeUtc() / 86400) * 100 + seed;
+
+        var step1 = (calcBase << 11) ^ calcBase;
+        var step2 = (step1.RotateRight(8)) ^ step1;
+        step2 = Math.Abs(step2);
+
+        return (int)(step2 % max);
+    }
 }

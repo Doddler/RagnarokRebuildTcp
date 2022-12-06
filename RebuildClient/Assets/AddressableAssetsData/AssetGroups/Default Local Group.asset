@@ -5279,7 +5279,7 @@ MonoBehaviour:
     m_SerializedLabels:
     - Cutins
   - m_GUID: e3e7c4bad65eeec4ea5dc0d1e7b8b62d
-    m_Address: .pngts/Sprites/Cutins/kafra_09.png
+    m_Address: Assets/Sprites/Cutins/kafra_09.png
     m_ReadOnly: 0
     m_SerializedLabels:
     - Cutins
@@ -5330,6 +5330,2336 @@ MonoBehaviour:
     - Minimap
   - m_GUID: 15f7e9b098af405499a59e9aeb759758
     m_Address: Assets/Maps/minimap/pvp_n_1-5_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 34a7304eefc95e14582eab9b83e75140
+    m_Address: Assets/Sprites/Npcs/4w_sailor.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 05270960910bf8b4d8125c425217eb16
+    m_Address: Assets/Sprites/Npcs/1_etc_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d808480b5694b154f804dea664d40599
+    m_Address: Assets/Sprites/Npcs/1_f_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b8320dbd1b6e89747b3247135b1beaa4
+    m_Address: Assets/Sprites/Npcs/1_f_02.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 85758ba93f29ef94f81463547e7d0929
+    m_Address: Assets/Sprites/Npcs/1_f_03.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 45e51cb972ccacc488ed157d366c5e4e
+    m_Address: Assets/Sprites/Npcs/1_f_04.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3732cef49aa62d942b5e4362fdb5db01
+    m_Address: Assets/Sprites/Npcs/1_f_gypsy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 21e2e09b9cda3504994b6d72e53988b6
+    m_Address: Assets/Sprites/Npcs/1_f_librarygirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5cb98908fe3827d4d8101eab186792c1
+    m_Address: Assets/Sprites/Npcs/1_f_maria.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: cf6d4e2aaec0ec54d84bd7c9cd62763a
+    m_Address: Assets/Sprites/Npcs/1_f_merchant_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bf413fbe28ec8e149812222daa1482c9
+    m_Address: Assets/Sprites/Npcs/1_f_merchant_02.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1210f683308101c469c20218b0a95e6a
+    m_Address: Assets/Sprites/Npcs/1_f_orient_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d8da7f0314737ea499c771ea0cdfb40b
+    m_Address: Assets/Sprites/Npcs/1_f_orient_02.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5297c009f7c771f46b73636e90e0dc30
+    m_Address: Assets/Sprites/Npcs/1_f_orient_03.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 179277deba3f3e946a0208bce2bd73af
+    m_Address: Assets/Sprites/Npcs/1_f_orient_04.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c368daf42ae7a004cb8f982c95331a25
+    m_Address: Assets/Sprites/Npcs/1_f_priest.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c58c40e77a98fbb4aa19eac572b2f145
+    m_Address: Assets/Sprites/Npcs/1_f_pubgirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ed78d2f0a060e344eabe5dee6e2b3bbf
+    m_Address: Assets/Sprites/Npcs/1_f_signzisk.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 31c6f54c322f3f04b8ecfeb4cfe8e269
+    m_Address: Assets/Sprites/Npcs/1_flag_eagle.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 03ce7e6dd76f43746b4cc6c186c8c74a
+    m_Address: Assets/Sprites/Npcs/1_flag_lion.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8225ebc6312f2794ab499fa0a768fb21
+    m_Address: Assets/Sprites/Npcs/1_m_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fa5f9b4f707bd3b40ac53b12c3fb155a
+    m_Address: Assets/Sprites/Npcs/1_m_02.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b9d492d19553d0845a0442df11fd7f5e
+    m_Address: Assets/Sprites/Npcs/1_m_03.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f073f2f25a55992418cf30e73c81f4bb
+    m_Address: Assets/Sprites/Npcs/1_m_04.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d771c7acb268dcf4191f3655682cd9f1
+    m_Address: Assets/Sprites/Npcs/1_m_bard.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ac011b86036691b4db015d8248c7f35b
+    m_Address: Assets/Sprites/Npcs/1_m_hof.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ec2fe7b44c1282540b96214d5cce9715
+    m_Address: Assets/Sprites/Npcs/1_m_innkeeper.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 48afd5f947b5d90468f7f41c74b74073
+    m_Address: Assets/Sprites/Npcs/1_m_jobguider.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 95ddbf0529588a7419068149ff40657d
+    m_Address: Assets/Sprites/Npcs/1_m_jobtester.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b8e181ed1d277484082529d1b1af33e1
+    m_Address: Assets/Sprites/Npcs/1_m_knightmaster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b50c0c86429503646a4dab01832e5032
+    m_Address: Assets/Sprites/Npcs/1_m_librarymaster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f35aad83b59c66744ba96fce037a14c3
+    m_Address: Assets/Sprites/Npcs/1_m_merchant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 15f292e04489cfe4c934951cd525a7ec
+    m_Address: Assets/Sprites/Npcs/1_m_moc_lord.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2818ae880abca094692408674660a75e
+    m_Address: Assets/Sprites/Npcs/1_m_orient01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d05dee8a7f1b46544b763dfa5995c6d1
+    m_Address: Assets/Sprites/Npcs/1_m_pastor.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 958ff11496d15df4abad4ba56f8f1824
+    m_Address: Assets/Sprites/Npcs/1_m_pay_elder.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d9c7a0a48b62210428980f587d56f18d
+    m_Address: Assets/Sprites/Npcs/1_m_pron_king.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ca599347a7759f34783fd2b0dde6cf9b
+    m_Address: Assets/Sprites/Npcs/1_m_pubmaster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: be90beeafa85c024a911cbac8c88c81b
+    m_Address: Assets/Sprites/Npcs/1_m_sign1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2d363a6dd5021134d905b8a750272b00
+    m_Address: Assets/Sprites/Npcs/1_m_signalche.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9e436d2e306d66f43861eea37a997a29
+    m_Address: Assets/Sprites/Npcs/1_m_signart.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 50f12fb02794d99478c82cbff1f90abd
+    m_Address: Assets/Sprites/Npcs/1_m_signmcnt.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 584cae6c0c5e4ba448d7f08321e184ca
+    m_Address: Assets/Sprites/Npcs/1_m_signmonk.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0d022ccb128cbef40b08feafd6143555
+    m_Address: Assets/Sprites/Npcs/1_m_signmonk2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3b8ab4e827dfea746afcf4308e2b33c5
+    m_Address: Assets/Sprites/Npcs/1_m_signrogue.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 044735294b525754a967bf74ee48b49b
+    m_Address: Assets/Sprites/Npcs/1_m_siz.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a5a8eddf5f8a0f9489e20477a64f4bc4
+    m_Address: Assets/Sprites/Npcs/1_m_smith.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d0e37821b9a80f044bd03673f73a4348
+    m_Address: Assets/Sprites/Npcs/1_m_wizard.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a4ccad462c70597478011097add3dc04
+    m_Address: Assets/Sprites/Npcs/1_m_youngknight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 19ba566a4e9d4534883f685f83d14697
+    m_Address: Assets/Sprites/Npcs/1_shadow_npc.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 36ecc8fe0808e7c409e7f4eb2a73df6b
+    m_Address: Assets/Sprites/Npcs/2_board1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7d3fef0dab6027f4fa48d36afc317d40
+    m_Address: Assets/Sprites/Npcs/2_board2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fdd95377319deb7499d3470863dd2a5e
+    m_Address: Assets/Sprites/Npcs/2_bulletin_board.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 336a0ce83817a3d48aa0726627990532
+    m_Address: Assets/Sprites/Npcs/2_colavend.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 38437cc6c028ead4c86de2c60e2dea48
+    m_Address: Assets/Sprites/Npcs/2_f_magicmaster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: af5c754d169b8a64697b51e2429c072b
+    m_Address: Assets/Sprites/Npcs/2_f_sign1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0c2d09681c0c4dd448b46968b7cc6e8d
+    m_Address: Assets/Sprites/Npcs/2_m_alche.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4622bce5ca418dc40b2a6d4db28a50e9
+    m_Address: Assets/Sprites/Npcs/2_m_bard_orient.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 118d63e0ed7fff649b43c174c800c047
+    m_Address: Assets/Sprites/Npcs/2_m_dyeinger.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a2e05fedf5bb65a45a544f81ba5e0628
+    m_Address: Assets/Sprites/Npcs/2_m_molgenstein.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6e5e94ac6a58d30418604d599c1894a7
+    m_Address: Assets/Sprites/Npcs/2_m_oldblsmith.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b53b8e9297b8bc1498c11055ce674844
+    m_Address: Assets/Sprites/Npcs/2_m_pharmacist.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bb82efb165267f94884bb93f04fb831c
+    m_Address: Assets/Sprites/Npcs/2_m_sage_b.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 510a5ac1ef3f7ad498d70725ef7e7dfc
+    m_Address: Assets/Sprites/Npcs/2_m_sage_old.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 502b188b4b673a44eba39329a5a0fcb2
+    m_Address: Assets/Sprites/Npcs/2_m_swordmaster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0e40d5f2f76f0a549b51919ee427aeb6
+    m_Address: Assets/Sprites/Npcs/2_m_thiefmaster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2c151d6c41958cb4aa94369c1876eb0b
+    m_Address: Assets/Sprites/Npcs/2_monemus.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a121a00da444be949bffcf294edc6ee8
+    m_Address: Assets/Sprites/Npcs/2_postbox.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1fdda690fabc3d643bfa57a0d6f2c8dd
+    m_Address: Assets/Sprites/Npcs/4_angeling.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 974e176565ca1ce4899c1ebf9dac122f
+    m_Address: Assets/Sprites/Npcs/4_archangeling.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 46f438abaaf6fa342ab3417b11b5e50a
+    m_Address: Assets/Sprites/Npcs/4_babyleopard.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b18101e0a2227804f80a679be47e699f
+    m_Address: Assets/Sprites/Npcs/4_baphomet.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e10d8d73d12ed6d42a4d7e1e56da68ee
+    m_Address: Assets/Sprites/Npcs/4_bear.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 099493fe8cc9c6644a0944f2f18f34f7
+    m_Address: Assets/Sprites/Npcs/4_blue_flower.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 92b8547cfa5f44048b72cc521294f341
+    m_Address: Assets/Sprites/Npcs/4_bluewolf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 518eb745a4bdfbc47b6de1e2f964c723
+    m_Address: Assets/Sprites/Npcs/4_board3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ed31bee7a61b48c459534efaaf460859
+    m_Address: Assets/Sprites/Npcs/4_bull.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fcc22a56e92e859428c5131f03520851
+    m_Address: Assets/Sprites/Npcs/4_bulletin_board2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6f28197b75a65e14a91db5e5c323f61d
+    m_Address: Assets/Sprites/Npcs/4_cat.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b3b9f9fee0f99a849a57f9797cfb623a
+    m_Address: Assets/Sprites/Npcs/4_cook.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9ecfba79e4d48b24eae7e4eb46b294d0
+    m_Address: Assets/Sprites/Npcs/4_darklord.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1695d01294fb9a24b8f6678534ba6144
+    m_Address: Assets/Sprites/Npcs/4_deviruchi.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 22a054878426e1249863fc1298819edd
+    m_Address: Assets/Sprites/Npcs/4_dog01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 72e1a2f0c9b065f4bb4b595758b93008
+    m_Address: Assets/Sprites/Npcs/4_donkey.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 670b11c0154850b47b0eca2d2a1ff72a
+    m_Address: Assets/Sprites/Npcs/4_dragon_egg.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0e590bf8829c4e44688b32c00ef7cba7
+    m_Address: Assets/Sprites/Npcs/4_dst_camel.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ac549f7a1b0972041924ca598df20ed5
+    m_Address: Assets/Sprites/Npcs/4_dst_soldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: beafc7f3b78027c4d97fa38154781a27
+    m_Address: Assets/Sprites/Npcs/4_f_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 196b4371dfc28df4c9ffc501e735da76
+    m_Address: Assets/Sprites/Npcs/4_f_02.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 450b8e48cf7db9f4fb2c08380733aa6a
+    m_Address: Assets/Sprites/Npcs/4_f_03.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 88c3afc2a55995b42991b90f0ef43c98
+    m_Address: Assets/Sprites/Npcs/4_f_04.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9add52ac76c1df843b42759856429c92
+    m_Address: Assets/Sprites/Npcs/4_f_05.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 51e51f613c5b87f498e6cedf8418a256
+    m_Address: Assets/Sprites/Npcs/4_f_06.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5736ab9d075fb9040969e4b14b05e0c8
+    m_Address: Assets/Sprites/Npcs/4_f_07.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d49615c95933fb24caa16c03956baed5
+    m_Address: Assets/Sprites/Npcs/4_f_across.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8779def4989ecbc4ebaf772889f6c070
+    m_Address: Assets/Sprites/Npcs/4_f_agentkafra.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6543f2b7c138fd74b8713eec39518ff2
+    m_Address: Assets/Sprites/Npcs/4_f_alche.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1280b524b569d90409243728056cdb1f
+    m_Address: Assets/Sprites/Npcs/4_f_anniversary.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 046621540cd55664d8c19f7bd3655303
+    m_Address: Assets/Sprites/Npcs/4_f_aruna_pop.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2e3e416b9cfbd1249a2636d593e408d4
+    m_Address: Assets/Sprites/Npcs/4_f_babayaga.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4f1e81503494cf14b885e46b1d789bd0
+    m_Address: Assets/Sprites/Npcs/4_f_brz_indian.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9fa34b474b668564b983aba18898bc41
+    m_Address: Assets/Sprites/Npcs/4_f_brz_indold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 96047aaafd0843d4993a80d8890bd995
+    m_Address: Assets/Sprites/Npcs/4_f_brz_woman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 28493dae862f16d448b1a9451c0dd6a5
+    m_Address: Assets/Sprites/Npcs/4_f_capegirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fc0514f8194a68843a3a33a8d7e27dab
+    m_Address: Assets/Sprites/Npcs/4_f_cave1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8d720d434079754478429d421b914160
+    m_Address: Assets/Sprites/Npcs/4_f_child.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b8b010c54c5ba5a47a8fb89c36c64188
+    m_Address: Assets/Sprites/Npcs/4_f_chndoctor.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4778c0f6db8bd1e468bdf7a3ec78aad4
+    m_Address: Assets/Sprites/Npcs/4_f_chndress1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9218624047de31d48919b0ad945026aa
+    m_Address: Assets/Sprites/Npcs/4_f_chndress2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a0062106394c0384484741b16ef0f9da
+    m_Address: Assets/Sprites/Npcs/4_f_chndress3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 53bf442ce7769cb408cf7cd3b1fefcdd
+    m_Address: Assets/Sprites/Npcs/4_f_chnwoman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2aecb391bf0f14549b7f7189e464104a
+    m_Address: Assets/Sprites/Npcs/4_f_cru.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8447bc9e29b13a1468c8603077aafde1
+    m_Address: Assets/Sprites/Npcs/4_f_desert.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0bf5131399f9e7f40ae86b3dc9dd0325
+    m_Address: Assets/Sprites/Npcs/4_f_domino.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1b0deaad467c6ac42b7e5cfcdced7345
+    m_Address: Assets/Sprites/Npcs/4_f_dst_child.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 463c51a4fb791654185c4d9fb37ed68e
+    m_Address: Assets/Sprites/Npcs/4_f_dst_grand.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d6b35f2bcd5c08c4c8fb1ec096133204
+    m_Address: Assets/Sprites/Npcs/4_f_eden_master.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b0a5b4df9ff72d24890ee1f8e33d8b4b
+    m_Address: Assets/Sprites/Npcs/4_f_eden_officer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 39f566de2ed4b7a4d80a2757e976cbe5
+    m_Address: Assets/Sprites/Npcs/4_f_einold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fcd46fb5355bcbe44913d07dccc4e5d7
+    m_Address: Assets/Sprites/Npcs/4_f_einwoman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4a20bf575cdb5fc42bc7bf003bc2b92d
+    m_Address: Assets/Sprites/Npcs/4_f_fairy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3e0319b4d11f7ab419252a5760408182
+    m_Address: Assets/Sprites/Npcs/4_f_fairy1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e99a0d89a6ab3c747b1b49470d77ceaa
+    m_Address: Assets/Sprites/Npcs/4_f_fairykid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a17b54b1b34f6cd449d632bdd7af01f2
+    m_Address: Assets/Sprites/Npcs/4_f_fairykid2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 29c5bc7e2d313b14f83fc0c7d77f5e8d
+    m_Address: Assets/Sprites/Npcs/4_f_fairykid3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 474b06ceaeaeeaf4880cf765b0d1487c
+    m_Address: Assets/Sprites/Npcs/4_f_fairykid4.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6e713b316301a0840a7d1bc34f115b8c
+    m_Address: Assets/Sprites/Npcs/4_f_fairykid5.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 694d871de1bf0b14fbfa0f0886c12a61
+    m_Address: Assets/Sprites/Npcs/4_f_fairykid6.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9ae3b1f26275d3c43bbfab5dae11efec
+    m_Address: Assets/Sprites/Npcs/4_f_fairysoldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6067cc204b692d047b09721dc1f9feab
+    m_Address: Assets/Sprites/Npcs/4_f_godemom.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 840abae9cd033fc45b44872f4a6f359f
+    m_Address: Assets/Sprites/Npcs/4_f_gon.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a64fce5a497468644a9bdcf505cc87fe
+    m_Address: Assets/Sprites/Npcs/4_f_hugirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1cced48c6380b114baeee1ee89008f1c
+    m_Address: Assets/Sprites/Npcs/4_f_hugranma.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 577e7ced1d007f14088e06b417c68c05
+    m_Address: Assets/Sprites/Npcs/4_f_huwoman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c8b1d410e5e80ae469767c1d172a508f
+    m_Address: Assets/Sprites/Npcs/4_f_job_assassin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: eeb1df4507ee0ee4aa4a1e01073513b3
+    m_Address: Assets/Sprites/Npcs/4_f_job_blacksmith.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8e9e5eb0661d9b24da7124d8b77ff202
+    m_Address: Assets/Sprites/Npcs/4_f_job_hunter.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 92b3d3cfc396b62479a88906b950500a
+    m_Address: Assets/Sprites/Npcs/4_f_job_knight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6cd7fba8a82b2a746ae0feaa44081ceb
+    m_Address: Assets/Sprites/Npcs/4_f_jpn.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 90678f888b5ef9c4d93ba0cd651a4936
+    m_Address: Assets/Sprites/Npcs/4_f_jpn2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8c9fcf30cfa771b4cb485591c22cc289
+    m_Address: Assets/Sprites/Npcs/4_f_jpnchibi.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4447a41859577f047b86c9cec9878e85
+    m_Address: Assets/Sprites/Npcs/4_f_jpnmu.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c060bbe676fc5ba428a1eb98f300e570
+    m_Address: Assets/Sprites/Npcs/4_f_jpnoba.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: dc898ddff81017545a3f372bf2642d89
+    m_Address: Assets/Sprites/Npcs/4_f_jpnoba2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f62c5796a5563494f83beecaad94d88d
+    m_Address: Assets/Sprites/Npcs/4_f_kafra1 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 69c4d3053a491a741a23c7d071ae8291
+    m_Address: Assets/Sprites/Npcs/4_f_kafra2 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3b9c5a7285236c04695713449fa61bc6
+    m_Address: Assets/Sprites/Npcs/4_f_kafra3 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2d8882ecdbdc8004d84f3ea96e6f78d5
+    m_Address: Assets/Sprites/Npcs/4_f_kafra4 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 548f8366048210f4a847fc5a437240ff
+    m_Address: Assets/Sprites/Npcs/4_f_kafra5 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fb4df3e651d154e4299d39e8a144cd3e
+    m_Address: Assets/Sprites/Npcs/4_f_kafra6 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: dd0b5e34b43db014398668125d6a5f70
+    m_Address: Assets/Sprites/Npcs/4_f_kafra7 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 36a025db9d917df4abe522c6a6c8a003
+    m_Address: Assets/Sprites/Npcs/4_f_kafra8 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d02a45902b261cb4ab6a682f82750f60
+    m_Address: Assets/Sprites/Npcs/4_f_kafra9 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 44a0c2fe1824f6741a8f7908eb802ebf
+    m_Address: Assets/Sprites/Npcs/4_f_khellisia.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0c75d2c85a396e747905eb22e8148f6a
+    m_Address: Assets/Sprites/Npcs/4_f_khelly.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 56dd5450746daf94abfe374e5aff11cd
+    m_Address: Assets/Sprites/Npcs/4_f_khgirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f3f5034f44213db4d958d4f4efcc4086
+    m_Address: Assets/Sprites/Npcs/4_f_khwoman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9512e5d4f1949a04f92fca94ebe76963
+    m_Address: Assets/Sprites/Npcs/4_f_kid2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9783319fa9598a845b992383dab1af16
+    m_Address: Assets/Sprites/Npcs/4_f_kid3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fd1a4616d3963164b9f1b69ad3cef9a4
+    m_Address: Assets/Sprites/Npcs/4_f_lgtgirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b14f314ddc1620a45822cfdac5398e4f
+    m_Address: Assets/Sprites/Npcs/4_f_lgtgrand.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: afa315c103c27ea4a8eb50eb10da9bbe
+    m_Address: Assets/Sprites/Npcs/4_f_madame.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0ee967c3c661bfb49bc3a36e046547b4
+    m_Address: Assets/Sprites/Npcs/4_f_maid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f2d9206fff5a1844d8c632d8b3769bc5
+    m_Address: Assets/Sprites/Npcs/4_f_mask.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 60cd1efa3d221324e83715d8f7538e96
+    m_Address: Assets/Sprites/Npcs/4_f_mask1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3360a3b967d7d2f40a352ab6632b0299
+    m_Address: Assets/Sprites/Npcs/4_f_monk.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 10d604b5ae70a9c4fb04f1b2094b03d6
+    m_Address: Assets/Sprites/Npcs/4_f_munak.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 20c3e5352963b444a9de01b0bcd9455c
+    m_Address: Assets/Sprites/Npcs/4_f_mut1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0a71eaeba0e4e6d4bbcf1bf27e464abd
+    m_Address: Assets/Sprites/Npcs/4_f_mut2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0784b0a27804c8341bb3ccdc7319a76a
+    m_Address: Assets/Sprites/Npcs/4_f_nacoruri.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7dd59d7075cdc1a4c8072828ac5e2669
+    m_Address: Assets/Sprites/Npcs/4_f_nfdeadkafra.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 724beba22c96a9940a6bb5f37652c9a9
+    m_Address: Assets/Sprites/Npcs/4_f_nfdeadmgcian.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 61dc8f3112f167d4e8d21df7d2a4f3d5
+    m_Address: Assets/Sprites/Npcs/4_f_nflostgirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 59d7e6ae35707094caa25a1c1c47b6c0
+    m_Address: Assets/Sprites/Npcs/4_f_novice.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d36b99f90018f1645aa2f19da55efdb8
+    m_Address: Assets/Sprites/Npcs/4_f_operation.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3a6f0cdb8b09fd64b9abff4933e8e485
+    m_Address: Assets/Sprites/Npcs/4_f_rachold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e35c70452a4cf4744ae4be337dfd1f50
+    m_Address: Assets/Sprites/Npcs/4_f_racing.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 583515102af64544aa8ad448287946f6
+    m_Address: Assets/Sprites/Npcs/4_f_rogue.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9b83cc78324af6141acd88f66ba960c6
+    m_Address: Assets/Sprites/Npcs/4_f_ruschild.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b4e9a0e326fbfb147ba78c21220896aa
+    m_Address: Assets/Sprites/Npcs/4_f_rusgreen.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a220264543c01c943b94ad5bf197e322
+    m_Address: Assets/Sprites/Npcs/4_f_ruswoman1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: dbb14de825d30ec458508611d9a7e105
+    m_Address: Assets/Sprites/Npcs/4_f_ruswoman2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f51838a322303094dbfdc7be6747d042
+    m_Address: Assets/Sprites/Npcs/4_f_ruswoman3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1f81509a0e6c12d4d80725155698e1ca
+    m_Address: Assets/Sprites/Npcs/4_f_science.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e7a8f745dcd619e43a2ed21c1bdeea3c
+    m_Address: Assets/Sprites/Npcs/4_f_shabby.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 27ef998408cc2d8438fcea498626d268
+    m_Address: Assets/Sprites/Npcs/4_f_shaman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 45f8014b4e4f68b40af5f22016ec4847
+    m_Address: Assets/Sprites/Npcs/4_f_sister.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 85727fdc985e06e438109bbbc847bb52
+    m_Address: Assets/Sprites/Npcs/4_f_sitdown.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 80f90bac019eac8438099fc19fb0520b
+    m_Address: Assets/Sprites/Npcs/4_f_soccer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f03c74598c06c024d911e903b6e7ff56
+    m_Address: Assets/Sprites/Npcs/4_f_son.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6405bd1e6936fc84eac7fffcc7ce004c
+    m_Address: Assets/Sprites/Npcs/4_f_teleporter.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4e325681facaca44a81c518e43a73bd4
+    m_Address: Assets/Sprites/Npcs/4_f_thaiayo.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4285ca5b5cf0d034d9c267ef598d471a
+    m_Address: Assets/Sprites/Npcs/4_f_thaigirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5be96b5db7539154eb9e9d13007d1a83
+    m_Address: Assets/Sprites/Npcs/4_f_thaishaman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 93f6f699f4f94464e87d5fdfce28869a
+    m_Address: Assets/Sprites/Npcs/4_f_trainee.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4ce980d1c440ac24482104d349dfb857
+    m_Address: Assets/Sprites/Npcs/4_f_twgirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f64d31f00f98af74595b47a8d9cece42
+    m_Address: Assets/Sprites/Npcs/4_f_twgrandmom.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: cafefc52b72c4234f9f86f33a7700e00
+    m_Address: Assets/Sprites/Npcs/4_f_twmaskgirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 918e9a65f6d46b94eb397b566c24a275
+    m_Address: Assets/Sprites/Npcs/4_f_twmidwoman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e4c0b6c4a4f50ab45babdc5f8c554758
+    m_Address: Assets/Sprites/Npcs/4_f_umgirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 505bb363156e1d2468c61b852a71b262
+    m_Address: Assets/Sprites/Npcs/4_f_umoldwoman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d0d01de583a828d409e4cadd2680006c
+    m_Address: Assets/Sprites/Npcs/4_f_umwoman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6bff757a293c2014b9fdb42990cabab1
+    m_Address: Assets/Sprites/Npcs/4_f_valkyrie.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f94862c7b003b0143b5148439bb9846a
+    m_Address: Assets/Sprites/Npcs/4_f_valkyrie2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: acc171b81f42ad94ab36de70bd2140c7
+    m_Address: Assets/Sprites/Npcs/4_f_yunyang.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e9b562f853ed6784596474882e505153
+    m_Address: Assets/Sprites/Npcs/4_f_zondagirl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3d315a4e3e1e2f645b3a30c4cd7193c6
+    m_Address: Assets/Sprites/Npcs/4_ghostring.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7ea630017110555469136aea2bf9cf3e
+    m_Address: Assets/Sprites/Npcs/4_human_gerutoo.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 234fb00eb88a3534fadfa644e6f10796
+    m_Address: Assets/Sprites/Npcs/4_kid01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1fa2e5215f2ea9543a79ad54dcb5d2e9
+    m_Address: Assets/Sprites/Npcs/4_lam.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 173718cc860dd7843b638e1685d74a20
+    m_Address: Assets/Sprites/Npcs/4_lgtscience.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 323a8e2b05081504db7966cc698eb086
+    m_Address: Assets/Sprites/Npcs/4_m_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 11c3cab2bd7da9846a76b603d447ba08
+    m_Address: Assets/Sprites/Npcs/4_m_1stprin1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 93d280fa48683f74dba8f0d1155b63e6
+    m_Address: Assets/Sprites/Npcs/4_m_1stprin2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bdc52f3513ed14749a34f501c8ca0120
+    m_Address: Assets/Sprites/Npcs/4_m_02.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5b847c2bcdc9ab040a2daed7a72d514b
+    m_Address: Assets/Sprites/Npcs/4_m_2ndprin1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4a6fa6d90090fca46850c47d0f525082
+    m_Address: Assets/Sprites/Npcs/4_m_2ndprin2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c43aa19aa7d0161408d7fe9a4e6672e8
+    m_Address: Assets/Sprites/Npcs/4_m_03.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 122aaf1387d8b1c4fa8dc6f1a5ef8a88
+    m_Address: Assets/Sprites/Npcs/4_m_3rdprin1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4763bce26a707664f83a58ec42c9256e
+    m_Address: Assets/Sprites/Npcs/4_m_3rdprin2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 136b3b79cd18e924f864b28e1181dd56
+    m_Address: Assets/Sprites/Npcs/4_m_04.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a3a92f3e81c304a44b1ab088f2ff4278
+    m_Address: Assets/Sprites/Npcs/4_m_4thprin1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7a2bf5fc9a7a8f743a48643b9a5d9f96
+    m_Address: Assets/Sprites/Npcs/4_m_4thprin2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bc79e6347b0e30a4e972ff3083fd87e2
+    m_Address: Assets/Sprites/Npcs/4_m_05.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9f1315ab09e9db84db704ccdc83973d4
+    m_Address: Assets/Sprites/Npcs/4_m_5thprin1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 47f2725185a746b42abd5ab487afc993
+    m_Address: Assets/Sprites/Npcs/4_m_5thprin2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 024f63d95de5f1a4dad798f5df331143
+    m_Address: Assets/Sprites/Npcs/4_m_06.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c390ba6b9dcfb234981d90cd52c5ddee
+    m_Address: Assets/Sprites/Npcs/4_m_6thprin1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b95f1bc7beb33404499c7fa11c833cd2
+    m_Address: Assets/Sprites/Npcs/4_m_6thprin2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 08349c5b3821bd84ba43fb2ba87d9129
+    m_Address: Assets/Sprites/Npcs/4_m_across.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: cf4ffa1e89e427545827250df0b2f6a6
+    m_Address: Assets/Sprites/Npcs/4_m_alche_a.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fe260ae422a38e14582a4383b277716e
+    m_Address: Assets/Sprites/Npcs/4_m_alche_b.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 562f9c45a9c6f4d4993be3f2c6173118
+    m_Address: Assets/Sprites/Npcs/4_m_alche_c.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 84cfc60dc2d1e7c4196dbde370c3b376
+    m_Address: Assets/Sprites/Npcs/4_m_alche_d.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5ae598173bb12d347872e2f1fe044be9
+    m_Address: Assets/Sprites/Npcs/4_m_aruna_nfm1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d5d4c9677c301994a8e92310b788e091
+    m_Address: Assets/Sprites/Npcs/4_m_ateil.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ab1a4d67d598a864293ca4c21904d0e1
+    m_Address: Assets/Sprites/Npcs/4_m_babycat.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: eda027d9574a21947a98951e83c2a27b
+    m_Address: Assets/Sprites/Npcs/4_m_barber.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 806436923ff07c74aa74dd5c21693242
+    m_Address: Assets/Sprites/Npcs/4_m_bard.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9fb1371ccccb5714eafb63786c158d41
+    m_Address: Assets/Sprites/Npcs/4_m_bibi.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 933928f2620ecb84da5c2f5cfc4f9103
+    m_Address: Assets/Sprites/Npcs/4_m_bongun.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f544c87fbfd5eee4eb94ff633651aed0
+    m_Address: Assets/Sprites/Npcs/4_m_bosscat.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 61188f292b71dd64e86b73bab2d20d17
+    m_Address: Assets/Sprites/Npcs/4_m_brz_indian.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: cd2df499ffe64f94fa2651e346b848b8
+    m_Address: Assets/Sprites/Npcs/4_m_brz_jaci.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e5a4e8bb9f547f942a047f9c651c4bc4
+    m_Address: Assets/Sprites/Npcs/4_m_brz_man1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 28ffb802ae2c2654d8fb0a79ebfbc6c0
+    m_Address: Assets/Sprites/Npcs/4_m_brz_man2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e7886cc12eaa134408ce8f6370910d2f
+    m_Address: Assets/Sprites/Npcs/4_m_buddhist.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: dbebc4af9ffb26042af2960d4ca28696
+    m_Address: Assets/Sprites/Npcs/4_m_casman1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 452c2bf2091fde644b8057c24f898860
+    m_Address: Assets/Sprites/Npcs/4_m_catman1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7256501da9131a64f9b44aeff4f55424
+    m_Address: Assets/Sprites/Npcs/4_m_catman2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fe4e2bd1f0f303e4d8942784ef974e68
+    m_Address: Assets/Sprites/Npcs/4_m_cave1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4bc21204e71aac94e8b5aaaec75a0725
+    m_Address: Assets/Sprites/Npcs/4_m_champsoul.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9376085017a90b346ad0e3f81f7012ba
+    m_Address: Assets/Sprites/Npcs/4_m_child.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9a98bf60b35fcfa4499c92c1ae45124b
+    m_Address: Assets/Sprites/Npcs/4_m_child1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1a1001453c59be346a0ecfdc7c71a703
+    m_Address: Assets/Sprites/Npcs/4_m_chn8guek.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7209c48dc7c5bcf41ad34a3296c2303d
+    m_Address: Assets/Sprites/Npcs/4_m_chncook.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 100009b253a00e948a48f712d6a84c09
+    m_Address: Assets/Sprites/Npcs/4_m_chngenerl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3995e1849e18b1a4898fe4d7e80dae73
+    m_Address: Assets/Sprites/Npcs/4_m_chnman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: adfa6ceb92f35bf45886958f957595de
+    m_Address: Assets/Sprites/Npcs/4_m_chnmonk.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a24bb981ba71d9a4abdebfc77f7f2ec6
+    m_Address: Assets/Sprites/Npcs/4_m_chnold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 30f2ee7dea371eb42a266abf1c3bcebf
+    m_Address: Assets/Sprites/Npcs/4_m_chnsoldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a0fede9ec6bb6b34485c863bf1a4ae6a
+    m_Address: Assets/Sprites/Npcs/4_m_cru.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a891772e44c30454887cbaac8ef680ee
+    m_Address: Assets/Sprites/Npcs/4_m_cru_crua.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f92d5525b81fe7646a92526b015fc5b0
+    m_Address: Assets/Sprites/Npcs/4_m_cru_head.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 22bba4e427740cf499622b5214cd0ad1
+    m_Address: Assets/Sprites/Npcs/4_m_cru_knt.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8abe42f84e540d04bbf89bb72c8b74c4
+    m_Address: Assets/Sprites/Npcs/4_m_cru_old.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3fb621657a5634a4a84fd23c71235a8e
+    m_Address: Assets/Sprites/Npcs/4_m_cru_sold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e0174b4f795d1de4ba6d2c3b04c862ea
+    m_Address: Assets/Sprites/Npcs/4_m_desert.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0a137708b93100542817d0d0c77faf45
+    m_Address: Assets/Sprites/Npcs/4_m_dieman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ca5b441dc35de4747a69bc5e12b9e91c
+    m_Address: Assets/Sprites/Npcs/4_m_doctor.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: aa74358d82dbc1b41aeec2eaecf380e8
+    m_Address: Assets/Sprites/Npcs/4_m_domino.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e5baf1720dca6e34a89981109d0f6b7c
+    m_Address: Assets/Sprites/Npcs/4_m_drake.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bed996fbbe8264e4ab67b2e7a615cc0f
+    m_Address: Assets/Sprites/Npcs/4_m_dst_child.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 25dac9e4488527c4593b6d4c527f5182
+    m_Address: Assets/Sprites/Npcs/4_m_dst_grand.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a0afab8bb7d7af74ebc88145f39e62f1
+    m_Address: Assets/Sprites/Npcs/4_m_dst_master.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 940f9b0ce2f45674c94b68018b7ed4cd
+    m_Address: Assets/Sprites/Npcs/4_m_dst_tough.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 27fb2bcce4760474c880a5fe160bd2a6
+    m_Address: Assets/Sprites/Npcs/4_m_dstman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0df0140d901bdc34bbceecc2f1b8eef4
+    m_Address: Assets/Sprites/Npcs/4_m_dstmandead.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d5d7451eb4c88034e96fba366ffbcab5
+    m_Address: Assets/Sprites/Npcs/4_m_dwarf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: be26447a592942342b3df260d4e8b12d
+    m_Address: Assets/Sprites/Npcs/4_m_eden_guarder.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c662ab5088e7d2c419664731ecd1f75f
+    m_Address: Assets/Sprites/Npcs/4_m_ein_soldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f6c84aa67d5f290438bdf6dc50f604e7
+    m_Address: Assets/Sprites/Npcs/4_m_einman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7978192ef14627d4386413999e000462
+    m_Address: Assets/Sprites/Npcs/4_m_einman2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 074e336fe23a7484e92073fb2f76d3e7
+    m_Address: Assets/Sprites/Npcs/4_m_einminer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1ebdcf89af0a75d468a3189d51b8191e
+    m_Address: Assets/Sprites/Npcs/4_m_einold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9a261a1a95922b948a68d378363ba980
+    m_Address: Assets/Sprites/Npcs/4_m_fairykid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d039336d3a1d16b4db8eb2e16a85deae
+    m_Address: Assets/Sprites/Npcs/4_m_fairykid2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6de5521d552b398489837dbfe5852716
+    m_Address: Assets/Sprites/Npcs/4_m_fairykid3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 39da71256a31d3249b55ee7b67942ecb
+    m_Address: Assets/Sprites/Npcs/4_m_fairykid4.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2db7407b3ebd19d479e0cd34f5bb07f3
+    m_Address: Assets/Sprites/Npcs/4_m_fairykid5.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7b042299aa870e14a9b0c43339d204c5
+    m_Address: Assets/Sprites/Npcs/4_m_fairysoldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6d1d85b3e066620418090a1bc85d0305
+    m_Address: Assets/Sprites/Npcs/4_m_fairysoldier2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 54cc540d0b5b0a94ca4c1c741bcc2c9d
+    m_Address: Assets/Sprites/Npcs/4_m_frozen.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f26ce5003833c864499d1360215091a0
+    m_Address: Assets/Sprites/Npcs/4_m_frozen1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ebc69ae9762a9694ca145f1513de71a9
+    m_Address: Assets/Sprites/Npcs/4_m_gef_soldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d42507eb09fc2244db64d1aedd25146e
+    m_Address: Assets/Sprites/Npcs/4_m_grandmonk.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fabd8f3df5a01c841a28939ead7f6a4c
+    m_Address: Assets/Sprites/Npcs/4_m_greatpo.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 804d60f5bba3e5d45a29afb8a82d406f
+    m_Address: Assets/Sprites/Npcs/4_m_gusliman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ce7d1569cca68a44a9affbe5536fa056
+    m_Address: Assets/Sprites/Npcs/4_m_huboy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 378e7e2eb31544a4c813d7ec0ce56324
+    m_Address: Assets/Sprites/Npcs/4_m_hugranfa.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ade7c5be0b83547468057f057a3065d7
+    m_Address: Assets/Sprites/Npcs/4_m_human_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bf61e9287d83e9842b25c1606da28e19
+    m_Address: Assets/Sprites/Npcs/4_m_human_02.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 609c2d03985941c4388ea7a222dad594
+    m_Address: Assets/Sprites/Npcs/4_m_humerchant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c01eb63cee4f4b14e819130c6fb63bad
+    m_Address: Assets/Sprites/Npcs/4_m_huoldarmy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c3b976df3ea04b045a4f16325840fc81
+    m_Address: Assets/Sprites/Npcs/4_m_job_assassin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 228d1358b1ae74347955a809eb92dc01
+    m_Address: Assets/Sprites/Npcs/4_m_job_blacksmith.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 149b264f1857c2f4092d3546f2ba3792
+    m_Address: Assets/Sprites/Npcs/4_m_job_hunter.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 570708d97aa75cc4dbe44256890dd239
+    m_Address: Assets/Sprites/Npcs/4_m_job_knight1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7109efd51be3f5444b7fa3f0a98f1c14
+    m_Address: Assets/Sprites/Npcs/4_m_job_knight2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2df6338911bf2614f825de387679a3de
+    m_Address: Assets/Sprites/Npcs/4_m_job_wizard.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d7538b37ff1157e408df3366e0a1ebeb
+    m_Address: Assets/Sprites/Npcs/4_m_jp_mid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4fbb85003998136439a8fee31c080cc0
+    m_Address: Assets/Sprites/Npcs/4_m_jp_run.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8e23604d3437a724dae54ba4758307ba
+    m_Address: Assets/Sprites/Npcs/4_m_jpn.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8ca22a7c8d18da846b76ab52943358b4
+    m_Address: Assets/Sprites/Npcs/4_m_jpn2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1321f67d5342e9d45995495fe59c212a
+    m_Address: Assets/Sprites/Npcs/4_m_jpnchibi.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 73fc401d921b0544e8c3f3a67f3b4d7e
+    m_Address: Assets/Sprites/Npcs/4_m_jpnoji.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 05577fcbbc7816a44844e40a17877392
+    m_Address: Assets/Sprites/Npcs/4_m_jpnoji2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5d91c84b0e07f4840a0f632ae1488cc0
+    m_Address: Assets/Sprites/Npcs/4_m_khboy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 35dbf285591ef8941a8a0dbcd62d0321
+    m_Address: Assets/Sprites/Npcs/4_m_khkiel.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b35bfe20f9b4ff1459067b81c231ac34
+    m_Address: Assets/Sprites/Npcs/4_m_khkyel.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5d0da08ad3169124b8d65488209988cf
+    m_Address: Assets/Sprites/Npcs/4_m_khman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 13cd1da689272524cbe5f26280dfe12e
+    m_Address: Assets/Sprites/Npcs/4_m_kid1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4b28b7c078ffb6944b0c1065dbf409a8
+    m_Address: Assets/Sprites/Npcs/4_m_kid2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 818f770abe726184a84d07e8d61c9f56
+    m_Address: Assets/Sprites/Npcs/4_m_ky_head.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5b550874e0f675941a3602d1faa2ac28
+    m_Address: Assets/Sprites/Npcs/4_m_ky_kiyom.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2953fb72319ebb241ac2c40ebb92add7
+    m_Address: Assets/Sprites/Npcs/4_m_ky_knt.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b0e011ec240d5e14fb0eed49c5e8717c
+    m_Address: Assets/Sprites/Npcs/4_m_ky_sold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7b65602c4edbb0e4794f04e3b31a8a28
+    m_Address: Assets/Sprites/Npcs/4_m_lgtgrand.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 64f2646f5a90f464d8acaf7b8fe0254f
+    m_Address: Assets/Sprites/Npcs/4_m_lgtguard.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ba6b10d45f35a48448a8b5a47fb8f516
+    m_Address: Assets/Sprites/Npcs/4_m_lgtguard2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 868d4ea0aec27d84d9fa5c5b4519185c
+    m_Address: Assets/Sprites/Npcs/4_m_lgtman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4598258669ce9ec45a531715f35a24d0
+    m_Address: Assets/Sprites/Npcs/4_m_lgtpoor.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 28e6407c120d22144bd8d8676b3574f6
+    m_Address: Assets/Sprites/Npcs/4_m_lieman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 906ca23d23e14db4381704c8efc44093
+    m_Address: Assets/Sprites/Npcs/4_m_manager.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0f169340a199ef041a1027126512626d
+    m_Address: Assets/Sprites/Npcs/4_m_mask.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 492d649847e711d439c24bf77f9c7bc1
+    m_Address: Assets/Sprites/Npcs/4_m_mask1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 574c4a9ecff15ad4daff0a7036f0e3d2
+    m_Address: Assets/Sprites/Npcs/4_m_maskman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8d88fd4cb7f7848459cd3b64b574077a
+    m_Address: Assets/Sprites/Npcs/4_m_mercat1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 32e7c003a4c178a4a8fff7f1f42779a1
+    m_Address: Assets/Sprites/Npcs/4_m_mercat2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 58f833b60588fd648a1a63c1237e50f4
+    m_Address: Assets/Sprites/Npcs/4_m_middle.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6fb9f621e686c6341a336d64da921cb4
+    m_Address: Assets/Sprites/Npcs/4_m_middle1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: eb0abc8185ddc7d4dbe6946187431a63
+    m_Address: Assets/Sprites/Npcs/4_m_mikid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b77dd7253d250844bb379d180766a8ce
+    m_Address: Assets/Sprites/Npcs/4_m_minister.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3f55275f674e1e14c9de48c59f2326ea
+    m_Address: Assets/Sprites/Npcs/4_m_moc_soldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 40a67415d8c6683428d85ea4ebf3e338
+    m_Address: Assets/Sprites/Npcs/4_m_mocass1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 48b2fddeaf607e545a16e3d3bc65f84b
+    m_Address: Assets/Sprites/Npcs/4_m_mocass2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7118e62acc3eda6469359c38773d6ec4
+    m_Address: Assets/Sprites/Npcs/4_m_monk.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 77335facc2c64d14b9f9fbc85a2ee6f4
+    m_Address: Assets/Sprites/Npcs/4_m_mut1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d62c19149056bcd45b7324badc4e2dd0
+    m_Address: Assets/Sprites/Npcs/4_m_mut2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 143647b2fcdfe044e8fcf2f880766bdf
+    m_Address: Assets/Sprites/Npcs/4_m_nfdeadman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b4efc704b066ca842ad04a52fc507894
+    m_Address: Assets/Sprites/Npcs/4_m_nfdeadman2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bbf3d1d2238aedc45828a8551d1a58a4
+    m_Address: Assets/Sprites/Npcs/4_m_nfdeadswdman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e70ddbb718635a548ae3b6d02f0ad42b
+    m_Address: Assets/Sprites/Npcs/4_m_nflostman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6a8b8fd82a586ee4791b21fef1318735
+    m_Address: Assets/Sprites/Npcs/4_m_nfman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7cb4d7b3099e45f428d8886a265a74c1
+    m_Address: Assets/Sprites/Npcs/4_m_novelist.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f13e07401bd1f0846a7c66c378a20120
+    m_Address: Assets/Sprites/Npcs/4_m_oilman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1948fd76e61b07c488276ef081ad2f85
+    m_Address: Assets/Sprites/Npcs/4_m_oldfriar.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b8241b1a90e31904c8d5694bc22a2f43
+    m_Address: Assets/Sprites/Npcs/4_m_operation.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2db095c1548edcc43813ac19b47d6b5d
+    m_Address: Assets/Sprites/Npcs/4_m_orient01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 95647f39c2942d640a2caacdd42caf4d
+    m_Address: Assets/Sprites/Npcs/4_m_orient02.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ad959873cb05d3e4eb71fc0f3d5fcf89
+    m_Address: Assets/Sprites/Npcs/4_m_patrick.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 65f82511fb2179447941b585374502da
+    m_Address: Assets/Sprites/Npcs/4_m_pay_soldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ecaa129ab50c82c479a0e5ce83d07faf
+    m_Address: Assets/Sprites/Npcs/4_m_pecoknight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: caf872fd23ae8ea4c921ed40837c6dcc
+    m_Address: Assets/Sprites/Npcs/4_m_philman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fccb10545786c1d4a8e72ef622162055
+    m_Address: Assets/Sprites/Npcs/4_m_pierrot.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 42ba72fa68a3a0e488d34cd853f91ca9
+    m_Address: Assets/Sprites/Npcs/4_m_president.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1132e39b25009934c8c7e1110f54358d
+    m_Address: Assets/Sprites/Npcs/4_m_rachman1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3ffe155e5d0c1914aa6a80909652bf2e
+    m_Address: Assets/Sprites/Npcs/4_m_rachman2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 754b35d854132e645baa7b902bd060b7
+    m_Address: Assets/Sprites/Npcs/4_m_rachold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fbf65a8dd439db84aa7f0bc8416b45fe
+    m_Address: Assets/Sprites/Npcs/4_m_rachold1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9b60826ce82b70a489833518f8c57d6c
+    m_Address: Assets/Sprites/Npcs/4_m_rasword.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4e3cf4c94ec86ec4f8bbea92e6f8476b
+    m_Address: Assets/Sprites/Npcs/4_m_redsword.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d77c20df050df984e9617d6021782912
+    m_Address: Assets/Sprites/Npcs/4_m_reidin_kurs.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4b12f5a3bd4cf994c98882b98879c196
+    m_Address: Assets/Sprites/Npcs/4_m_reindeer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8761ef7a6fbeb7346923748cbe5be846
+    m_Address: Assets/Sprites/Npcs/4_m_repair.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 62cb41d1244338e4fa912c1fbc4e657d
+    m_Address: Assets/Sprites/Npcs/4_m_rogue.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4016434acb5be4846925508fba1eb809
+    m_Address: Assets/Sprites/Npcs/4_m_roki.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: db4a2cdb12aeca74b85fbe15fa0e2f1e
+    m_Address: Assets/Sprites/Npcs/4_m_rusbald.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3b7cd0f42fcea7543b372f4b46868f22
+    m_Address: Assets/Sprites/Npcs/4_m_ruschild.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f821591800c020f4d87f8044e83fa226
+    m_Address: Assets/Sprites/Npcs/4_m_rusking.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bf685bcf0f252e649883b2b6c080a4fe
+    m_Address: Assets/Sprites/Npcs/4_m_rusknight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e989b4bdace962945beff992fa2ea21b
+    m_Address: Assets/Sprites/Npcs/4_m_rusman1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 7e7bfb7c14a6b094abcebe6fb7fd6f87
+    m_Address: Assets/Sprites/Npcs/4_m_rusman2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 92361ea51264f484d8335dffd1c4ef0b
+    m_Address: Assets/Sprites/Npcs/4_m_sage_a.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 783146911f51cf14191bea955fb2707f
+    m_Address: Assets/Sprites/Npcs/4_m_sage_c.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: eb54f276bb198334e8cefd7c75c76871
+    m_Address: Assets/Sprites/Npcs/4_m_salvation.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 752893459436e084a9fa7d1146abb90c
+    m_Address: Assets/Sprites/Npcs/4_m_santa.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 92a627ab348905d4088e5d22103fa212
+    m_Address: Assets/Sprites/Npcs/4_m_science.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d51521e5f70584c45b92a814959d7c0a
+    m_Address: Assets/Sprites/Npcs/4_m_seaman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d2ec0bd89da2f0d4cbe922e49e24f6ba
+    m_Address: Assets/Sprites/Npcs/4_m_sitdown.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b05cc02bf8ec2034d80edafad8310390
+    m_Address: Assets/Sprites/Npcs/4_m_snowman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0a1549485d32ccd429a60907462d8461
+    m_Address: Assets/Sprites/Npcs/4_m_soccer7.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9719205fcbefaf142b0dcc88c7437051
+    m_Address: Assets/Sprites/Npcs/4_m_soccer9.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ca9dc80ac74f82e46b9959e0d6a0c707
+    m_Address: Assets/Sprites/Npcs/4_m_teleporter.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: aa35bbf9f6139624fae9ea70c3fe6ea7
+    m_Address: Assets/Sprites/Npcs/4_m_thaiayo.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 804940384a273254983062e4488296ea
+    m_Address: Assets/Sprites/Npcs/4_m_thaiold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 28bd32fb49baa8f448fe05c355c2c555
+    m_Address: Assets/Sprites/Npcs/4_m_thaiongbak.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4ea7f43de43d3b644bec85c405d1cdc6
+    m_Address: Assets/Sprites/Npcs/4_m_trainee.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c19923e8086338043a60d6d9db251aee
+    m_Address: Assets/Sprites/Npcs/4_m_tristan.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f9ea0c0677da9a642b759e7363bbe605
+    m_Address: Assets/Sprites/Npcs/4_m_tuffold.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2181a4521d59271479af94344e417f37
+    m_Address: Assets/Sprites/Npcs/4_m_twboy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 96ae657609b937449b0ed7fc067b5104
+    m_Address: Assets/Sprites/Npcs/4_m_twmaskman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: dcd13e7e9cf9c06439f9866ec548cb3f
+    m_Address: Assets/Sprites/Npcs/4_m_twmidman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 23047223f79819d4eb4cf91c3ed0f51b
+    m_Address: Assets/Sprites/Npcs/4_m_twoldman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 252b63218cf089f4c989f31aa3b47734
+    m_Address: Assets/Sprites/Npcs/4_m_twteaman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: fbead4dea0c6e21418ad9f8947bb39e4
+    m_Address: Assets/Sprites/Npcs/4_m_umchief.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 394d2bbe1dc1d434dafea41e3b3eee1b
+    m_Address: Assets/Sprites/Npcs/4_m_umdancekid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 71eac11dd0b0c2849910ce7c6775d0d6
+    m_Address: Assets/Sprites/Npcs/4_m_umdancekid2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0d52f1f9e0de89c4f856c0c047fe13b6
+    m_Address: Assets/Sprites/Npcs/4_m_umkid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9bb81403382b3a140b834d538b41c36f
+    m_Address: Assets/Sprites/Npcs/4_m_umoldman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1f88407029a0d934fb7fd15f996c194d
+    m_Address: Assets/Sprites/Npcs/4_m_umsoldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d80700bf9f108e245b9a07c108244b71
+    m_Address: Assets/Sprites/Npcs/4_m_uncleknight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ecc5857ac6ed94c4fab48adad8a06426
+    m_Address: Assets/Sprites/Npcs/4_m_youngknight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3bc51ff73e52d7b43b84b385be38abae
+    m_Address: Assets/Sprites/Npcs/4_m_yoyorogue.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2a43b56b758c35140abd20b7fc53d102
+    m_Address: Assets/Sprites/Npcs/4_m_yuri.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: eea18b39f67cc3342bc2d61fa4f66678
+    m_Address: Assets/Sprites/Npcs/4_m_zondaman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c0724d689092a1841a450d6a74224b62
+    m_Address: Assets/Sprites/Npcs/4_m_zondaoyaji.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5945328a64f231a48a04c443d3f2eaa8
+    m_Address: Assets/Sprites/Npcs/4_man_benkuni.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 85eef2932bc4a644abb7e983f4e5cf7b
+    m_Address: Assets/Sprites/Npcs/4_man_galtun.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 88a2b9ec9b3b53d498af544cc0ae22ef
+    m_Address: Assets/Sprites/Npcs/4_man_galtun1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 956ecb47b3ec49942bc2dce93d0ab7b0
+    m_Address: Assets/Sprites/Npcs/4_man_jerutoo.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 672bc73abea2a664bad8027c8dc295b4
+    m_Address: Assets/Sprites/Npcs/4_man_lavail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0a0665d23bc0b16458749673814ebc4a
+    m_Address: Assets/Sprites/Npcs/4_man_nitt.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d26a88a834cff374e96b067442d7a5b3
+    m_Address: Assets/Sprites/Npcs/4_man_piom.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4c4de16e9c97ff44c84e37deb4e20147
+    m_Address: Assets/Sprites/Npcs/4_man_piom2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 97b76c3e63ee5c64095ea836dffaa84a
+    m_Address: Assets/Sprites/Npcs/4_man_piom3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b19b5d40bf98c2c42b4c02d39cca13db
+    m_Address: Assets/Sprites/Npcs/4_man_piom4.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: dbbaa34a7f5328146a0dfa5600222421
+    m_Address: Assets/Sprites/Npcs/4_man_piom5.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2fbadc67472656f4489e5fde6974e5af
+    m_Address: Assets/Sprites/Npcs/4_man_piom6.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 73615a244d57d0e4bb4675c646332aeb
+    m_Address: Assets/Sprites/Npcs/4_mimic.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5a67bdb3162f05241826c7f0b8ac1df5
+    m_Address: Assets/Sprites/Npcs/4_nfbat.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b0d6af47a3cf45e4f85676d629d36f94
+    m_Address: Assets/Sprites/Npcs/4_nfcock.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f012912c17a1e3046b5a03a88df070e1
+    m_Address: Assets/Sprites/Npcs/4_nfcoffin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bb5c94b791f39ef44b26ab61957ea899
+    m_Address: Assets/Sprites/Npcs/4_nfwisp.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c12cf8db7c05dda4c8b6f7b8be7f51c3
+    m_Address: Assets/Sprites/Npcs/4_orclady.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5a4cfbdc560d2ad46ad6c947273d3594
+    m_Address: Assets/Sprites/Npcs/4_orclady2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: b10fa882fbee9534989846885db494f6
+    m_Address: Assets/Sprites/Npcs/4_orcwarrior.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c914e3ed6c868fc47bceb1769ae9e122
+    m_Address: Assets/Sprites/Npcs/4_orcwarrior2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3a502f57d78870c4197f97ead5c3c4c7
+    m_Address: Assets/Sprites/Npcs/4_pecopeco.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a8616d4dd10e3e34491d2128f901b783
+    m_Address: Assets/Sprites/Npcs/4_poring.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: bfbc4d95649ab6b4189c62206aa42582
+    m_Address: Assets/Sprites/Npcs/4_red_flower.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5d4887ec021b987498c72f30c37e7cf0
+    m_Address: Assets/Sprites/Npcs/4_rus_dwolf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3904fd768363bca4bb9a8fac9ccd2670
+    m_Address: Assets/Sprites/Npcs/4_vending_machine.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ae84bb92459f58246abb9ddebbe86655
+    m_Address: Assets/Sprites/Npcs/4_white_cow.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 61e5cf7558c9fa44494396c4b6ba5985
+    m_Address: Assets/Sprites/Npcs/4_whitetiger.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2d7854d86feb46743bc7922b247c4372
+    m_Address: Assets/Sprites/Npcs/4_yell_flower.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f992d1fed5ad6e242ba579899e5f8098
+    m_Address: Assets/Sprites/Npcs/4w_f_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5600684959a6c7b468a7b2fd1fcb0b7f
+    m_Address: Assets/Sprites/Npcs/4w_f_kafra2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 71a631c18ffce514395348bd32c35a91
+    m_Address: Assets/Sprites/Npcs/4w_kid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 2109cdadbe9166145809ecbde255e0ce
+    m_Address: Assets/Sprites/Npcs/4w_m_01.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 65ae482d45ed17d47b32a69bc76a897f
+    m_Address: Assets/Sprites/Npcs/4w_m_02.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: aeb91db5aeb15b246b28c10e6742a1da
+    m_Address: Assets/Sprites/Npcs/4w_m_03.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1b93b39fefd115d46ba77bc26d3ceab6
+    m_Address: Assets/Sprites/Npcs/4w_sailor 1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: e9d6be20b4c585e4786966cb2e3e431b
+    m_Address: Assets/Sprites/Npcs/8_doppel.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a94640ac796b0d545a4410fa5f490227
+    m_Address: Assets/Sprites/Npcs/8_f.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 01bfb66b31f341140a90e1faa45be40f
+    m_Address: Assets/Sprites/Npcs/8_f_girl.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 41ca783b1586b2e41859b8a241b4ea72
+    m_Address: Assets/Sprites/Npcs/8_f_grandmother.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: cbefe00ac2767794692f9457948c8fc8
+    m_Address: Assets/Sprites/Npcs/8_m_jpnmaster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 107a7f5ac55bd20459d3414589efd556
+    m_Address: Assets/Sprites/Npcs/8_m_jpnsoldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a7e7f6d4c6e16174c902031e7500ea11
+    m_Address: Assets/Sprites/Npcs/8_m_twsoldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4052e8d5445c0ad44a525237efb3d28e
+    m_Address: Assets/Sprites/Npcs/8w_soldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3291e6c1dffea174ab32d9d4328c3190
+    m_Address: Assets/Sprites/Npcs/clear_npc.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0eff035060b21f84086c81a65051bad9
+    m_Address: Assets/Sprites/Npcs/poring.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 3b5b77cac88ee5d4e93c5f4e034a3d34
+    m_Address: Assets/Sprites/Npcs/switch.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8e475ff38e775604f9adbef261c122b4
+    m_Address: Assets/Maps/minimap/guild_vs3.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+  - m_GUID: 7eeca9eefa30c6b409faffdedeec9e3e
+    m_Address: Assets/Maps/minimap/guild_vs3_walkmask.png
     m_ReadOnly: 0
     m_SerializedLabels:
     - Minimap

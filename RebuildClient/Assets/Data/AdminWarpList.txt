@@ -186,4 +186,5 @@ Turtle Island
 Debug
 	Test Room 1,2009rwc_03
 	Test Room 2,guild_vs4
+	Test Room 3,guild_vs3
 	Juperos 1F,juperos_01

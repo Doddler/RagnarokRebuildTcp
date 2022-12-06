@@ -40,6 +40,9 @@ internal class ScriptTreeWalker
             EnterMacroStatement(macroContext);
         }
 
+        if(topLevelContext is EventDefinitionContext eventDefinitionContext)
+            EnterEventStatement(eventDefinitionContext);
+
         if (topLevelContext is TopLevelFunctionDefinitionContext context)
         {
             VisitFunctionDefinitionContext(context.functionDefinition());
@@ -179,6 +182,26 @@ internal class ScriptTreeWalker
             str = str.Substring(1, str.Length - 2);
 
         return str;
+    }
+
+    private void EnterEventStatement(EventDefinitionContext eventContext)
+    {
+        var str = eventContext.IDENTIFIER().GetText();
+
+
+        var name = builder.StartEvent(str);
+
+        sectionHandler = NpcSectionHandler;
+
+        var statements = eventContext.statementblock();
+        VisitStatementBlock(statements);
+
+        //methodBuilder.WithBody(block);
+
+        builder.EndMethod();
+        builder.EndClass();
+
+        builder.EndEvent(str, name);
     }
 
     private void EnterNpcStatement(FunctionDefinitionContext functionContext)

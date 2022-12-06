@@ -55,6 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="EntityComponents\Effects\" />
     <Folder Include="ServerData\Script\Spawns\" />
   </ItemGroup>
 

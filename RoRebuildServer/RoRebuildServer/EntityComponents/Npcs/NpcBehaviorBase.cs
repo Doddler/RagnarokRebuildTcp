@@ -6,6 +6,8 @@ public abstract class NpcBehaviorBase
 {
     public virtual void Init(Npc npc) {}
 
+    public virtual void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString) { }
+
     public virtual NpcInteractionResult OnClick(Npc npc, Player player, NpcInteractionState state)
     {
         return NpcInteractionResult.EndInteraction;
@@ -28,7 +30,7 @@ public abstract class NpcBehaviorBase
 
     }
 
-    public virtual void OnSignal(Npc npc, Npc srcNpc, string signal)
+    public virtual void OnSignal(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4)
     {
 
     }

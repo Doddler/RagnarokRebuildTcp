@@ -426,9 +426,9 @@ public class Map
         //}
     }
 
-    public void GatherMonstersOfTypeInRange(WorldObject character, int distance, EntityList list, MonsterDatabaseInfo monsterType)
+    public void GatherMonstersOfTypeInRange(Position position, int distance, EntityList list, MonsterDatabaseInfo monsterType)
     {
-        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
         {
             foreach (var m in c.Monsters)
             {
@@ -439,12 +439,36 @@ public class Map
                 var monster = m.Get<Monster>();
 
                 if (monster.MonsterBase != monsterType)
-                    return;
+                    continue;
 
-                if (character.Position.InRange(ch.Position, distance))
+                if (position.InRange(ch.Position, distance))
                     list.Add(m);
             }
         }
+    }
+
+
+    public bool HasMonsterOfTypeInRange(Position position, int distance, MonsterDatabaseInfo monsterType)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
+        {
+            foreach (var m in c.Monsters)
+            {
+                var ch = m.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
+
+                var monster = m.Get<Monster>();
+
+                if (monster.MonsterBase != monsterType)
+                    continue;
+
+                if (position.InRange(ch.Position, distance))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -730,7 +754,7 @@ public class Map
         if (!DataManager.MapConfigs.TryGetValue(Name, out var action))
             return;
 
-        ServerLogger.Debug("Loading map config for map " + Name);
+        ServerLogger.LogVerbose("Loading map config for map " + Name);
         MapConfig = new ServerMapConfig(this);
 
         action(MapConfig);

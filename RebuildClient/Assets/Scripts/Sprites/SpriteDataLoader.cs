@@ -350,7 +350,9 @@ namespace Assets.Scripts.Sprites
 			control.ShadowSize = mData.ShadowSize;
 			control.IsAlly = false;
             control.Level = param.Level;
-            control.Name = mData.Name;
+            control.Name = param.Name;
+            if (string.IsNullOrEmpty(param.Name))
+                control.Name = mData.Name;
 
 			control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
 

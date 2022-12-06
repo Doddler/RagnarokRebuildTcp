@@ -987,6 +987,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
+  - m_GUID: 02fcbd59f091d764ba6afd843c38a11e
+    m_Address: Assets/Scenes/Maps/guild_vs3.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

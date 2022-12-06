@@ -28,11 +28,48 @@ OnMobKill:
     }
 }
 
-//event PoringFireworks()
-//{
-//
-//}
+event PoringFireworks
+{
+    StartTimer(120);
+    local count = 0;
+OnTimer 120:
+    if(count >= 5) { KillMyMobs(); EndEvent(); return; }
+    
+    for(var i = 0; i < 8; i++)
+    {
+        var x = Sin(DegToRad(i * 45));
+        var y = Cos(DegToRad(i * 45));
+        
+        var pos = Position(x * (count + 2), y * (count + 2));
+        SummonMobsNearby(1, "PORING", 0, 0, GetX(pos), GetY(pos));
+    }
+    count = count + 2;
+    ResetTimer();
+}
 
+Npc("2009rwc_03", "Kafra Staff#DebugRoom", "4_F_KAFRA1", 49, 49, SE, 1, 1) 
+{
+	local prog = 0;
+    HideNpc();
+OnSignal:
+    ShowNpc();
+    StartTimer(250); //50ms update rate
+OnClick:
+    StopTimer();
+    HideNpc();
+OnTimer 250:
+    CreateEvent("PoringFireworks", Random(30, 70), Random(30, 70));
+    ResetTimer();
+}
+
+Npc("2009rwc_03", "Kafra Staff#DebugRoom2", "4_F_KAFRA6", 62, 62, SW, 1, 1) 
+{
+OnClick:
+    SignalNpc("Kafra Staff#DebugRoom", "On");
+}
+
+
+/*
 
 
 macro PoringWiper(%distance, %prog)
@@ -44,7 +81,8 @@ macro PoringWiper(%distance, %prog)
     SummonMobsNearby(1, "PORING", 0, 0, GetX(pos), GetY(pos));
 }
 
-Npc("2009rwc_03", "Kafra Staff#DebugRoom", "4_F_KAFRA1", 49, 49, SE, 1, 1) 
+
+Npc("2009rwc_03", "Kafra Staff#PoringWiper", "4_F_KAFRA1", 49, 49, SE, 1, 1) 
 {
 	local prog = 0;
     HideNpc();
@@ -52,21 +90,19 @@ OnSignal:
     if(Signal == "On")
     {
         ShowNpc();
-        StartTimer(50); //50ms update rate
+        StartTimer(250); //50ms update rate
     }
 OnClick:
     KillMyMobs();
     StopTimer();
     HideNpc();
-OnMobKill:
-    DebugMessage("Mobs remaining: " + MobCount );
-OnTimer 50:
+OnTimer 250:
     KillMyMobs();
 
     prog = prog + 1;
     if(prog >= 31)
         prog = 1;
-       
+
     @PoringWiper(5, prog);
     @PoringWiper(7, prog);
     @PoringWiper(10, prog);
@@ -79,13 +115,13 @@ OnTimer 50:
     ResetTimer();
 }
 
-Npc("2009rwc_03", "Kafra Staff#DebugRoom2", "4_F_KAFRA6", 62, 62, SW, 1, 1) 
+Npc("2009rwc_03", "Kafra Staff#DebugRoom2b", "4_F_KAFRA6", 62, 62, SW, 1, 1) 
 {
 OnClick:
-    SignalNpc("Kafra Staff#DebugRoom", "On");
+    SignalNpc("Kafra Staff#PoringWiper", "On");
 }
 
-/*
+
 Npc("2009rwc_03", "Kafra Staff#DebugRoom", "4_F_KAFRA1", 49, 49, SE, 1, 1) 
 {
 	localstr name = "Kafra Staff";

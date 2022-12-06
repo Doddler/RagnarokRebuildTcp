@@ -11,6 +11,7 @@ public interface INpcLoader
 public class NpcBehaviorManager
 {
     public Dictionary<string, List<NpcSpawnDefinition>> NpcSpawnsForMaps = new();
+    public Dictionary<string, NpcBehaviorBase> EventBehaviorLookup = new();
 
     public void RegisterNpc(string name, string map, int spriteId, int x, int y, Direction facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase behavior)
     {
@@ -36,5 +37,10 @@ public class NpcBehaviorManager
             NpcSpawnsForMaps.Add(map, new List<NpcSpawnDefinition>());
 
         NpcSpawnsForMaps[map].Add(npc);
+    }
+
+    public void RegisterEvent(string name, NpcBehaviorBase behavior)
+    {
+        EventBehaviorLookup.Add(name, behavior);
     }
 }

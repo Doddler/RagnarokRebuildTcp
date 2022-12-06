@@ -65,7 +65,6 @@ public static class ScriptLoader
             while (!process.StandardOutput.EndOfStream)
             {
                 var line = process.StandardOutput.ReadLine();
-                Console.WriteLine(line);
 
                 if (!string.IsNullOrWhiteSpace(line))
                 {
@@ -128,7 +127,7 @@ public static class ScriptLoader
             var path = Path.Combine(ServerConfig.DataConfig.DataPath, "Script/");
             foreach (var file in Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories))
             {
-                ServerLogger.Debug("Compiling script " + Path.GetRelativePath(path, file));
+                ServerLogger.LogVerbose("Compiling script " + Path.GetRelativePath(path, file));
                 hasNewScripts |= compiler.Compile(file);
             }
 

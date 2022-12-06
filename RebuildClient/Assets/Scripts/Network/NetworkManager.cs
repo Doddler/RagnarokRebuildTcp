@@ -311,11 +311,12 @@ namespace Assets.Scripts.Network
                     maxHp = (int)msg.ReadUInt16();
                     hp = (int)msg.ReadUInt16();
                 }
-
+                
                 if (type == CharacterType.NPC)
                 {
                     name = msg.ReadString();
                     interactable = msg.ReadBoolean();
+                    Debug.Log(name);
                 }
 
                 var monData = new MonsterSpawnParameters()
@@ -894,7 +895,7 @@ namespace Assets.Scripts.Network
         {
             var type = (NpcInteractionType)msg.ReadByte();
 
-            Debug.Log($"Received NPC interaction of type: {type}");
+            //Debug.Log($"Received NPC interaction of type: {type}");
 
             switch (type)
             {

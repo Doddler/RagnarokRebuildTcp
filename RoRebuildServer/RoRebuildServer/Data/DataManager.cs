@@ -69,6 +69,11 @@ public static class DataManager
         NpcManager.RegisterNpc(name, map, md.Id, x, y, (Direction)facing, w, h, hasInteract, hasTouch, npcBehavior);
     }
 
+    public static void RegisterEvent(string name, NpcBehaviorBase npcBehavior)
+    {
+        NpcManager.RegisterEvent(name, npcBehavior);
+    }
+
     public static void ReloadScripts()
     {
         var loader = new DataLoader();

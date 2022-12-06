@@ -5,6 +5,7 @@
 rule_set : toplevelstatement* EOF ;
 
 toplevelstatement : MACRO IDENTIFIER LPAREN functionparam? RPAREN statementblock						# MacroDefinition
+				  | EVENT IDENTIFIER statementblock														# EventDefinition
 				  | functionDefinition																	# TopLevelFunctionDefinition
 				  | macrocall SEMI?																		# TopLevelMacroCall
 				  | IDENTIFIER LPAREN functionparam? RPAREN SEMI										# StandaloneFunction
@@ -79,6 +80,7 @@ FOR : 'for';
 WHILE : 'while';
 BREAK : 'break';
 MACRO : 'macro';
+EVENT : 'event';
 INCLUDE : '#include';
 PER : '%';
 SWITCH : 'switch';

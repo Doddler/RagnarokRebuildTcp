@@ -197,7 +197,7 @@ public partial class Monster : IEntityAutoReset
 
 		var list = EntityListPool.Get();
 
-		Character.Map.GatherMonstersOfTypeInRange(Character, distance, list, MonsterBase);
+		Character.Map.GatherMonstersOfTypeInRange(Character.Position, distance, list, MonsterBase);
 
 		if (list.Count == 0)
 		{

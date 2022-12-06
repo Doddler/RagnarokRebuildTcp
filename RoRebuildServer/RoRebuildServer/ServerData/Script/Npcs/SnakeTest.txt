@@ -1,0 +1,110 @@
+﻿event SnakeTrail
+{
+	local life = Param1;
+	SummonMobsNearby(1, "GEOGRAPHER", 0, 0, 0, 0);
+	StartTimer(250);
+OnSignal:
+	if(Signal == "Add")
+		life = life + Value1;
+OnTimer 250:
+	life = life - 1;
+	if(life <= 0)
+	{
+		KillMyMobs();
+		EndEvent();
+	}
+	ResetTimer();
+}
+
+Npc("guild_vs3", "Kafra Staff#Master", "4_F_KAFRA1", 61, 61, SW, 1, 1) 
+{
+	local x = 43;
+	local y = 51;
+	local targetX = 0;
+	local targetY = 0;
+	local moveX = 1;
+	local moveY = 0;
+	local length = 10;
+OnClick:
+    FocusNpc();
+	ShowSprite("kafra_01", right);
+	Dialog("Kafra Staff", "Are you ready to play?");
+	Option("Hell yeah!", "No way!");
+	if(Result == 0)	{
+		Dialog("Kafra Staff", "Here we go!");
+		KillMyMobs(); //just a safety
+		SignalNpc("Turn Left#Control", "On");
+		SignalNpc("Turn Right#Control", "On");
+		SignalNpc("Turn Down#Control", "On");
+		SignalNpc("Turn Up#Control", "On");
+		targetX = Random(35, 65);
+		targetY = Random(35, 65);
+		SummonMobs(1, "PUPA", targetX, targetY);
+		StartTimer(250);
+		HideNpc();
+	}
+OnTimer 250:
+	x = x + moveX;
+	y = y + moveY;
+
+	//tail collision check
+	if(CheckMonstersOfTypeInRange("GEOGRAPHER",x,y,0)) {
+		SignalNpc("Kafra Staff#Master", "Reset"); //yes signal self
+		return;
+	}
+	
+	CreateEvent("SnakeTrail", x, y, length);
+	ResetTimer();
+	
+	if(x < 30 || x > 70 || y < 30 || y > 70) {
+		SignalNpc("Kafra Staff#Master", "Reset");
+		return;
+	}
+
+	//check if you got the item
+	if(x == targetX && y == targetY) {
+		KillMyMobs();
+		targetX = Random(35, 65);
+		targetY = Random(35, 65);
+		SummonMobs(1, "PUPA", targetX, targetY);
+		length = length + 5;
+		SignalMyEvents("Add",5);
+	}
+OnSignal:
+	if(Signal == "SetMove")	{
+		//no double back or same movement
+		if(moveX != Value1 && moveY != Value2) 
+		{
+			moveX = Value1;
+			moveY = Value2;
+		}
+	}
+	if(Signal == "Reset") {
+		x = 43;
+		y = 51;
+		SignalNpc("Turn Left#Control", "Off");
+		SignalNpc("Turn Right#Control", "Off");
+		SignalNpc("Turn Down#Control", "Off");
+		SignalNpc("Turn Up#Control", "Off");
+		StopTimer();
+		KillMyMobs();
+		ShowNpc();
+	}
+}
+
+macro ControlNpc(%name, %sprite, %x, %y, %movex, %movey)
+{
+	Npc("guild_vs3", %name, %sprite, %x, %y, SW, 1, 1)
+	{
+		HideNpc();
+	OnSignal:
+		if(Signal == "On") ShowNpc(); else HideNpc();
+	OnClick:
+		SignalNpc("Kafra Staff#Master", "SetMove", %movex, %movey);
+	}
+}
+
+@ControlNpc("Turn Left#Control", "4_F_KAFRA2", 58, 61, -1, 0);
+@ControlNpc("Turn Right#Control", "4_F_KAFRA3", 64, 61, 1, 0);
+@ControlNpc("Turn Up#Control", "4_F_KAFRA4", 61, 64, 0, 1);
+@ControlNpc("Turn Down#Control", "4_F_KAFRA5", 61, 58, 0, -1);

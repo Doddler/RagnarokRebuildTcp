@@ -17,7 +17,7 @@ public class Chunk
     public EntityList AllEntities { get; set; } = new EntityList(32);
     public EntityList Players { get; set; } = new EntityList(16);
     public EntityList Monsters { get; set; } = new EntityList(16);
-    public List<AreaOfEffect> AreaOfEffects { get; set; } = new List<AreaOfEffect>(16);
+    public List<AreaOfEffect> AreaOfEffects { get; set; } = new List<AreaOfEffect>(8);
 
     public override string ToString() => $"Chunk ({X},{Y})";
 
