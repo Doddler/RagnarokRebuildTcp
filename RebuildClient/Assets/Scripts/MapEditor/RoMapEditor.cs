@@ -854,10 +854,11 @@ namespace Assets.Scripts.MapEditor
 
         public void OnSceneGUI(SceneView sceneView)
         {
-            int controlId = GUIUtility.GetControlID(FocusType.Passive);
-
             if (!inEditMode)
 	            return;
+
+            int controlId = GUIUtility.GetControlID(FocusType.Passive);
+
 
             //override f command to focus on cursor
             if (Event.current.type == EventType.ExecuteCommand)

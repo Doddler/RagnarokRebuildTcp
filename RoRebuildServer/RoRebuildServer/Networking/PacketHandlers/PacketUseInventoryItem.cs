@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 
@@ -24,7 +25,10 @@ public class PacketUseInventoryItem : IClientPacketHandler
 
         //obviously you should check if the item is in your inventory, but we have no inventory!
 
-        character.Player.AddActionDelay(0.2f);
+
+        if (connection.Player.InActionCooldown())
+            return;
+        character.Player.AddActionDelay(CooldownActionType.UseItem);
 
         if (!DataManager.ItemList.TryGetValue(itemId, out var item))
         {

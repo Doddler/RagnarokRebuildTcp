@@ -216,7 +216,7 @@ public class ScriptBuilder
     
     public void StartMap(string name)
     {
-        methodName = name.Replace(" ", "");
+        methodName = name.Replace(" ", "").Replace("-", "_");
         UseStateMachine = false;
         UseStateStorage = false;
         UseLocalStorage = false;
@@ -227,7 +227,7 @@ public class ScriptBuilder
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
 
-        StartIndentedBlockLine().AppendLine($"[ServerMapConfigAttribute(\"{methodName}\")]");
+        StartIndentedBlockLine().AppendLine($"[ServerMapConfigAttribute(\"{name}\")]");
         StartIndentedBlockLine().AppendLine($"public static void Map_{methodName}(ServerMapConfig map)");
         StartIndentedBlockLine().AppendLine("{");
 

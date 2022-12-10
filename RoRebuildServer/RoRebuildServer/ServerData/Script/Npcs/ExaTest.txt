@@ -1,0 +1,54 @@
+﻿event Exaflare {
+	local moveX = Param1;
+	local moveY = Param2;
+	local delay = Param3;
+	local facing = Param4;
+	local max = 10;
+	
+	StartTimer();
+	SetTimer(delay * 3000); //start times advanced by 3s per point in delay
+OnTimer 7000:
+	// start cast animation
+	PlayEffectAtMyLocation("Exacast", facing);
+OnTimer 11000:
+	// start marching explosions
+	PlayEffectAtMyLocation("ThunderStorm");
+	DamagePlayersNearby(999, 3, 5); //7x7 area
+	
+	//move
+	MoveNpcRelative(moveX, moveY);
+	SetTimer(10000); //rewind the timer so we move again in 1s
+	max = max - 1;
+	if(max <= 0)
+		EndEvent();
+}
+
+Npc("pvp_n_1-5", "Kafra Staff#DebugRoom4", "4_F_KAFRA6", 100, 101, SW, 1, 1) 
+{
+OnClick:
+	HideNpc();
+	SummonMobsNearby(1, "MOONLIGHT", 5, 5);
+	StartTimer();
+OnTimer 5000:
+	CreateEvent("Exaflare", 82, 116, 0, -4, 1, S);
+	CreateEvent("Exaflare", 82+6, 116, 0, -4, 0, S);
+	CreateEvent("Exaflare", 82+6*2, 116, 0, -4, 2, S);
+	CreateEvent("Exaflare", 82+6*3, 116, 0, -4, 1, S);
+	CreateEvent("Exaflare", 82+6*4, 116, 0, -4, 0, S);
+	CreateEvent("Exaflare", 82+6*5, 116, 0, -4, 2, S);
+	CreateEvent("Exaflare", 82+6*6, 116, 0, -4, 2, S);
+OnTimer 14000:
+	CreateEvent("Exaflare", 82, 82, 4, 0, 1, E);
+	CreateEvent("Exaflare", 82, 82+6, 4, 0, 2, E);
+	CreateEvent("Exaflare", 82, 82+6*2, 4, 0, 2, E);
+	CreateEvent("Exaflare", 82, 82+6*3, 4, 0, 1, E);
+	CreateEvent("Exaflare", 82, 82+6*4, 4, 0, 0, E);
+	CreateEvent("Exaflare", 82, 82+6*5, 4, 0, 1, E);
+	CreateEvent("Exaflare", 82, 82+6*6, 4, 0, 2, E);
+OnTimer 60000:
+	KillMyMobs();
+	ShowNpc();
+OnMobKill:
+	ShowNpc();
+}
+

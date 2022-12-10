@@ -20,6 +20,7 @@ using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Network
@@ -558,17 +559,37 @@ namespace Assets.Scripts.Network
             controllable.StopWalking();
         }
 
-        private void OnMessageAttack(ClientInboundMessage msg)
+        private void OnMessageTakeDamage(ClientInboundMessage msg)
         {
             var id1 = msg.ReadInt32();
-            var id2 = msg.ReadInt32();
+            
+            if (!entityList.TryGetValue(id1, out var controllable))
+            {
+                Debug.LogWarning("Trying to have entity " + id1 + " take damage, but it does not exist in scene!");
+                return;
+            }
 
+
+            var dmg = msg.ReadInt16();
+            var hitCount = msg.ReadByte();
+            var damageTiming = msg.ReadFloat();
+
+            StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, controllable));
+        }
+
+        private void OnMessageAttack(ClientInboundMessage msg)
+        {
+            //Debug.Log("OnMessageAttack");
+
+            var id1 = msg.ReadInt32();
+            var id2 = msg.ReadInt32();
+            
             if (!entityList.TryGetValue(id1, out var controllable))
             {
                 Debug.LogWarning("Trying to attack entity " + id1 + ", but it does not exist in scene!");
                 return;
             }
-
+            
             var hasTarget = entityList.TryGetValue(id2, out var controllable2);
 
             var dir = (Direction)msg.ReadByte();
@@ -587,7 +608,7 @@ namespace Assets.Scripts.Network
                 var v = dir.GetVectorValue();
                 controllable.CounterHitDir = new Vector3(v.x, 0, v.y);
             }
-
+            
             controllable.StopImmediate(pos);
             controllable.SpriteAnimator.Direction = dir;
             controllable.SpriteAnimator.State = SpriteState.Idle;
@@ -603,7 +624,7 @@ namespace Assets.Scripts.Network
                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
 
             //controllable2.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
-
+            
             if (hasTarget && controllable.SpriteAnimator.IsInitialized)
             {
                 if (controllable.SpriteAnimator.SpriteData == null)
@@ -879,7 +900,7 @@ namespace Assets.Scripts.Network
             }
         }
 
-        public void OnMessageEffect(ClientInboundMessage msg)
+        public void OnMessageEffectOnCharacter(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
             var effect = msg.ReadInt32();
@@ -889,6 +910,17 @@ namespace Assets.Scripts.Network
                 return;
 
             CameraFollower.AttachEffectToEntity(effect, controllable);
+        }
+
+
+        public void OnMessageEffectAtLocation(ClientInboundMessage msg)
+        {
+            var effect = msg.ReadInt32();
+            var pos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
+            var facing = msg.ReadInt32();
+
+            var spawn = new Vector3(pos.x + 0.5f, CameraFollower.WalkProvider.GetHeightForPosition(transform.position), pos.y + 0.5f);
+            CameraFollower.CreateEffect(effect, spawn, facing);
         }
 
         public void OnMessageNpcInteraction(ClientInboundMessage msg)
@@ -990,6 +1022,9 @@ namespace Assets.Scripts.Network
                 case PacketType.Move:
                     OnMessageMove(msg);
                     break;
+                case PacketType.TakeDamage:
+                    OnMessageTakeDamage(msg); 
+                    break;
                 case PacketType.Attack:
                     OnMessageAttack(msg);
                     break;
@@ -1026,8 +1061,11 @@ namespace Assets.Scripts.Network
                 case PacketType.ChangeName:
                     OnMessageChangeName(msg);
                     break;
-                case PacketType.Effect:
-                    OnMessageEffect(msg);
+                case PacketType.EffectOnCharacter:
+                    OnMessageEffectOnCharacter(msg);
+                    break;
+                case PacketType.EffectAtLocation:
+                    OnMessageEffectAtLocation(msg);
                     break;
                 case PacketType.NpcInteraction:
                     OnMessageNpcInteraction(msg);

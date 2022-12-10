@@ -4929,6 +4929,7 @@ MonoBehaviour:
   DeathPrefab: {fileID: 7753055832927964443, guid: f59b04f35e39b894cb888573528d9e33,
     type: 3}
   LevelChart: {fileID: 4900000, guid: bf3e40d01a0dbb840827a67aec440af4, type: 3}
+  WalkProvider: {fileID: 0}
   UiCanvas: {fileID: 2007945106}
   TargetUi: {fileID: 739528562}
   PlayerTargetUi: {fileID: 57028168}
@@ -6174,7 +6175,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2000122720}
   m_HandleRect: {fileID: 2000122719}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

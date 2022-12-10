@@ -251,7 +251,8 @@ public class World
             throw new Exception($"Unable to create event \"{eventName}\" as the matching script could not be found.");
 
         ch.Id = GetNextEntityId();
-        ch.IsActive = false; //it shouldn't see or interact with anyone
+        ch.IsActive = true;
+        ch.Hidden = true;
         ch.ClassId = 0;
         ch.Entity = e;
         ch.Position = pos;
@@ -378,18 +379,19 @@ public class World
         var ch = e.Get<WorldObject>();
         var ce = e.Get<CombatEntity>();
         var m = e.Get<Monster>();
-
-        spawnArea.ClipArea(map.MapBounds);
         
         Position p;
         if (!spawnArea.IsZero && spawnArea.Size <= 1)
         {
+            spawnArea.ClipArea(map.MapBounds);
             p = new Position(spawnArea.MinX, spawnArea.MinY);
         }
         else
         {
             if (spawnArea.IsZero)
                 spawnArea = map.MapBounds;
+            else
+                spawnArea.ClipArea(map.MapBounds);
 
             if (!map.FindPositionInRange(spawnArea, out p))
             {

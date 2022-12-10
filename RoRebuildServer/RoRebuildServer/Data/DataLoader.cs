@@ -110,6 +110,55 @@ internal class DataLoader
         return effects;
     }
 
+    public Dictionary<int,JobInfo> LoadJobs()
+    {
+        var jobs = new Dictionary<int, JobInfo>();
+
+        var timings = new Dictionary<string, float[]>();
+
+        var timingEntries = File.ReadAllLines(@"ServerData/Db/WeaponAttackTiming.csv");
+        foreach (var timingEntry in timingEntries.Skip(1))
+        {
+            var s = timingEntry.Split(",");
+            var cName = s[0];
+            var timing = s.Skip(1).Select(f => float.Parse(f)).ToArray();
+            timings.Add(cName, timing);
+        }
+
+        using var tr = new StreamReader(@"ServerData/Db/Jobs.csv") as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+        
+        var entries = csv.GetRecords<CsvJobs>().ToList();
+        
+        foreach (var entry in entries)
+        {
+            if (!timings.ContainsKey(entry.Class))
+                throw new Exception($"WeaponAttackTiming.csv does not contain a timing definition for the job {entry.Class}.");
+
+            var job = new JobInfo()
+            {
+                Id = entry.Id,
+                Class = entry.Class,
+                HP = entry.HP,
+                SP = entry.SP,
+                WeaponTimings = timings[entry.Class]
+            };
+            jobs.Add(job.Id, job);
+        }
+        return jobs;
+    }
+
+    public Dictionary<string, int> GetJobIdLookup(Dictionary<int, JobInfo> jobs)
+    {
+        var lookup = new Dictionary<string, int>();
+        foreach (var j in jobs)
+        {
+            lookup.Add(j.Value.Class, j.Key);
+        }
+
+        return lookup;
+    }
+
     public Dictionary<int, ItemInfo> LoadItemList()
     {
         var items = new Dictionary<int, ItemInfo>();

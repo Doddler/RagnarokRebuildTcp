@@ -1,6 +1,8 @@
-﻿using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RebuildZoneServer.Networking;
+using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
@@ -56,7 +58,7 @@ public static class CommandBuilder
             ServerLogger.LogWarning("Attempting to send empty movepath to player");
             return;
         }
-
+        
         packet.Write(c.MoveSpeed);
         packet.Write(c.MoveCooldown);
         packet.Write((byte)c.TotalMoveSteps);
@@ -111,6 +113,9 @@ public static class CommandBuilder
             packet.Write(npc.HasInteract);
         }
 
+        if (c.Hidden)
+            ServerLogger.LogWarning($"We are sending the data of hidden character \"{c.Name}\" to the client!");
+
         if (c.State == CharacterState.Moving)
         {
             WriteMoveData(c, packet);
@@ -140,6 +145,22 @@ public static class CommandBuilder
         packet.Write((byte)attacker.FacingDirection);
         packet.Write(attacker.Position);
         packet.Write(di.Damage);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+
+    public static void TakeDamageMulti(WorldObject target, DamageInfo di)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.TakeDamage, 48);
+        
+        packet.Write(target.Id);
+        packet.Write(di.Damage);
+        packet.Write(di.HitCount);
+        packet.Write(di.Time);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -373,13 +394,26 @@ public static class CommandBuilder
         if (!HasRecipients())
             return;
         
-        var packet = NetworkManager.StartPacket(PacketType.Effect, 16);
+        var packet = NetworkManager.StartPacket(PacketType.EffectOnCharacter, 16);
         packet.Write(p.Id);
         packet.Write(effectId);
         
         NetworkManager.SendMessageMulti(packet, recipients);
     }
+    
+    public static void SendEffectAtLocationMulti(int effectId, Position pos, int facing)
+    {
+        if (!HasRecipients())
+            return;
+        
+        var packet = NetworkManager.StartPacket(PacketType.EffectAtLocation, 16);
+        packet.Write(effectId);
+        packet.Write(pos);
+        packet.Write(facing);
 
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+    
     public static void SendHealMulti(WorldObject p, int healAmount, HealType type)
     {
         if (!HasRecipients())
@@ -435,7 +469,7 @@ public static class CommandBuilder
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
-    
+
     public static void SendNpcDialog(Player p, string name, string dialog)
     {
         var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 256);

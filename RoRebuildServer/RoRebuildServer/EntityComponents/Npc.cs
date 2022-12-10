@@ -1,7 +1,9 @@
 ﻿using System.Buffers;
+using System.Diagnostics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -44,7 +46,7 @@ public class Npc : IEntityAutoReset
     public bool HasInteract;
     public bool TimerActive;
 
-    public bool IsHidden => Entity.Get<WorldObject>().IsActive;
+    public bool IsHidden() => !Entity.Get<WorldObject>().Hidden;
 
     public int[] ValuesInt => valuesInt ??= ArrayPool<int>.Shared.Rent(NpcInteractionState.StorageCount);
     public string[] ValuesString => valuesString ??= ArrayPool<string>.Shared.Rent(NpcInteractionState.StorageCount);
@@ -302,19 +304,19 @@ public class Npc : IEntityAutoReset
         }
 
         npc.Mobs.Clear();
-        OnMobKill();
+        //OnMobKill();
     }
 
     public void HideNpc()
     {
         var chara = Entity.Get<WorldObject>();
 
-        if (!chara.IsActive)
+        if (chara.Hidden)
             return; //npc already hidden
 
         //this puts the npc in a weird state where it still exists in the Instance, but not on the map
         chara.Map.RemoveEntity(ref Entity, CharacterRemovalReason.OutOfSight, false);
-        chara.IsActive = false; //set active after removing or players won't be notified
+        chara.Hidden = true;
 
         if(HasTouch && AreaOfEffect != null)
             chara.Map.RemoveAreaOfEffect(AreaOfEffect);
@@ -324,10 +326,10 @@ public class Npc : IEntityAutoReset
     {
         var chara = Entity.Get<WorldObject>();
 
-        if (chara.IsActive)
+        if (!chara.Hidden)
             return; //npc is already visible
 
-        chara.IsActive = true; //set active before adding it or players won't be notified
+        chara.Hidden = false;
         chara.Map.AddEntity(ref Entity, false);
 
         if (HasTouch && AreaOfEffect != null)
@@ -383,6 +385,76 @@ public class Npc : IEntityAutoReset
     public void EndEvent()
     {
         World.Instance.FullyRemoveEntity(ref Entity);
+    }
+
+    public void PlayEffectAtMyLocation(string effect, int facing = 0)
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to play effect, but the npc is not currently attached to a map.");
+
+        var id = DataManager.EffectIdForName[effect];
+
+        chara.Map.GatherPlayersForMultiCast(ref Entity, chara);
+        CommandBuilder.SendEffectAtLocationMulti(id, chara.Position, facing);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void MoveNpcRelative(int x, int y)
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to play effect, but the npc is not currently attached to a map.");
+
+        x = chara.Position.X + x;
+        y = chara.Position.Y + y;
+
+        //DebugMessage($"Moving npc {Name} to {x},{y}");
+
+        chara.Map.MoveEntity(ref Entity, chara, new Position(x, y), false);
+    }
+
+    public void DamagePlayersNearby(int damage, int area, int hitCount = 1)
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to deal damage, but the npc is not currently attached to a map.");
+
+        var el = EntityListPool.Get();
+
+        chara.Map.GatherPlayersInRange(chara, area, el, false);
+
+        foreach (var e in el)
+        {
+            if (e.Type == EntityType.Player)
+            {
+                var ch = e.Get<WorldObject>();
+                var ce = e.Get<CombatEntity>();
+
+                if (!ce.IsValidTarget(null))
+                    continue;
+
+                var di = new DamageInfo()
+                    { Damage = (short)damage, HitCount = (byte)hitCount, KnockBack = 0, Source = Entity, Target = e, Time = 0.3f };
+
+                chara.Map.GatherPlayersForMultiCast(ref Entity, ch);
+                CommandBuilder.TakeDamageMulti(ch, di);
+                CommandBuilder.ClearRecipients();
+
+                ch.CombatEntity.QueueDamage(di);
+            }
+        }
+
+        EntityListPool.Return(el);
+    }
+
+    public void SetTimer(int timer)
+    {
+        var prevStart = TimerStart;
+        TimerStart = Time.ElapsedTime - timer / 1000f;
+        LastTimerUpdate = (timer - 1) / 1000f;
+
+        //DebugMessage($"Setting npc {Name} timer from {prevStart} to {TimerStart} (current server time is {Time.ElapsedTime})");
     }
 
     public void DebugMessage(string message)

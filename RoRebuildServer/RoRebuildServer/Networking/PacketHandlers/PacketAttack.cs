@@ -2,6 +2,7 @@
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation;
 
 namespace RoRebuildServer.Networking.PacketHandlers;
@@ -20,6 +21,10 @@ public class PacketAttack : IClientPacketHandler
             || character.State == CharacterState.Dead
             || character.Player.IsInNpcInteraction)
             return;
+        
+        if (connection.Player.InActionCooldown())
+            return;
+        character.Player.AddActionDelay(CooldownActionType.Click);
 
         var target = World.Instance.GetEntityById(id);
 

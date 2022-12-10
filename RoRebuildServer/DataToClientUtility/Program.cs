@@ -49,6 +49,7 @@ class Program
                     Id = e.Id,
                     Name = e.Name,
                     ImportEffect = e.ImportEffect,
+                    Billboard = e.Billboard,
                     StrFile = e.StrFile,
                     SoundFile = e.SoundFile,
                     Offset = e.Offset,

@@ -95,7 +95,7 @@ public class CombatEntity : IEntityAutoReset
         return true;
     }
 
-    public bool IsValidTarget(CombatEntity source)
+    public bool IsValidTarget(CombatEntity? source)
     {
         if (this == source)
             return false;
@@ -105,20 +105,24 @@ public class CombatEntity : IEntityAutoReset
             return false;
         if (Character.Map == null)
             return false;
-        if (source.Character.Map != Character.Map)
-            return false;
+
         if (Character.SpawnImmunity > 0f)
             return false;
         //if (source.Character.ClassId == Character.ClassId)
         //    return false;
-        if (source.Entity.Type == EntityType.Player && Character.Entity.Type == EntityType.Player)
-            return false;
+        if (source != null)
+        {
+            if (source.Character.Map != Character.Map)
+                return false;
+            if (source.Entity.Type == EntityType.Player && Character.Entity.Type == EntityType.Player)
+                return false;
+            if (source.Entity.Type == EntityType.Monster && Character.Entity.Type == EntityType.Monster)
+                return false;
+        }
 
         //if (source.Entity.Type == EntityType.Player)
         //    return false;
 
-        if (source.Entity.Type == EntityType.Monster && Character.Entity.Type == EntityType.Monster)
-            return false;
 
         if (Character.ClassId >= 1000 && Character.ClassId < 4000)
             return false; //hack
@@ -299,14 +303,16 @@ public class CombatEntity : IEntityAutoReset
             if (Character.State == CharacterState.Sitting)
                 Character.State = CharacterState.Idle;
 
+            var damage = di.Damage * di.HitCount;
+
             //inform clients the player was hit and for how much
             var delayTime = GetTiming(TimingStat.HitDelayTime);
 
             Character.Map.GatherPlayersForMultiCast(ref Entity, Character);
             if (Character.AddMoveDelay(delayTime))
-                CommandBuilder.SendHitMulti(Character, delayTime, di.Damage);
+                CommandBuilder.SendHitMulti(Character, delayTime, damage);
             else
-                CommandBuilder.SendHitMulti(Character, -1, di.Damage);
+                CommandBuilder.SendHitMulti(Character, -1, damage);
             CommandBuilder.ClearRecipients();
 
 
@@ -315,7 +321,7 @@ public class CombatEntity : IEntityAutoReset
 
             var ec = di.Target.Get<CombatEntity>();
             var hp = GetStat(CharacterStat.Hp);
-            hp -= di.Damage;
+            hp -= damage;
             
             SetStat(CharacterStat.Hp, hp);
             

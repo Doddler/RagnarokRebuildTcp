@@ -1,0 +1,9 @@
+﻿Id,Class,HP,SP,SpriteMale,SpriteFemale
+0,Novice,1,1,Assets/Sprites/Characters/BodyMale/초보자_남.spr,Assets/Sprites/Characters/BodyFemale/초보자_여.spr
+1,Swordsman,1.6,1,Assets/Sprites/Characters/BodyMale/검사_남.spr,Assets/Sprites/Characters/BodyFemale/검사_여.spr
+2,Archer,1.15,1.5,Assets/Sprites/Characters/BodyMale/궁수_남.spr,Assets/Sprites/Characters/BodyFemale/궁수_여.spr
+3,Mage,1.1,1.8,Assets/Sprites/Characters/BodyMale/마법사_남.spr,Assets/Sprites/Characters/BodyFemale/마법사_여.spr
+4,Acolyte,1.2,1.6,Assets/Sprites/Characters/BodyMale/성직자_남.spr,Assets/Sprites/Characters/BodyFemale/성직자_여.spr
+5,Thief,1.3,1.3,Assets/Sprites/Characters/BodyMale/도둑_남.spr,Assets/Sprites/Characters/BodyFemale/도둑_여.spr
+6,Merchant,1.4,1.4,Assets/Sprites/Characters/BodyMale/상인_남.spr,Assets/Sprites/Characters/BodyFemale/상인_여.spr
+200,GameMaster,1,1,Assets/Sprites/Characters/BodyMale/운영자_남.spr,Assets/Sprites/Characters/BodyFemale/운영자_여.spr

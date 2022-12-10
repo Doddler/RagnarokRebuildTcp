@@ -19,6 +19,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
@@ -38,7 +39,7 @@ namespace Assets.Scripts
         public TextAsset LevelChart;
 
         private static CameraFollower _instance;
-        private RoWalkDataProvider WalkProvider;
+        public RoWalkDataProvider WalkProvider;
 
         public Canvas UiCanvas;
         public TextMeshProUGUI TargetUi;
@@ -180,7 +181,7 @@ namespace Assets.Scripts
             foreach (var e in effects.Effects)
             {
                 var asset = e.PrefabName;
-                if (string.IsNullOrEmpty(asset) || !e.ImportEffect)
+                if (string.IsNullOrEmpty(asset) || e.ImportEffect)
                     asset = $"Assets/Effects/Prefabs/{e.Name}.prefab";
 
                 e.PrefabName = asset; //yeah we're modifying the list after loading it but... probably fine
@@ -873,23 +874,80 @@ namespace Assets.Scripts
 
             if (EffectCache.TryGetValue(effect, out var prefab) && prefab != null)
             {
-                var obj2 = GameObject.Instantiate(prefab, target.gameObject.transform, false);
+                if (asset.Billboard)
+                {
+                    var obj2 = GameObject.Instantiate(prefab, target.gameObject.transform, false);
+                    obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                }
+                else
+                {
+                    var obj2 = GameObject.Instantiate(prefab);
+                    obj2.transform.localPosition = target.gameObject.transform.position + new Vector3(0, asset.Offset, 0);
+                }
+
+                return;
+            }
+            //Debug.Log($"Loading effect asset {asset.PrefabName}");
+            var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
+            loader.Completed += ah =>
+            {
+                if (target.gameObject != null && target.gameObject.activeInHierarchy)
+                {
+                    if (asset.Billboard)
+                    {
+                        var obj2 = GameObject.Instantiate(ah.Result, target.gameObject.transform, false);
+                        obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                    }
+                    else
+                    {
+                        var obj2 = GameObject.Instantiate(ah.Result);
+                        obj2.transform.localPosition = target.gameObject.transform.position + new Vector3(0, asset.Offset, 0);
+                    }
+
+                    EffectCache[asset.Id] = ah.Result;
+                    //obj2.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                    //ah.Result.transform.SetParent(obj.transform, false);
+                }
+            };
+        }
+
+        public void CreateEffect(int effect, Vector3 pos, int facing)
+        {
+
+            if (!EffectList.TryGetValue(effect, out var asset))
+            {
+                AppendError($"Could not find effect with id {effect}.");
+                return;
+            }
+
+            var outputObj = new GameObject(asset.Name);
+            outputObj.transform.localPosition = pos;
+
+            if (EffectCache.TryGetValue(effect, out var prefab) && prefab != null)
+            {
+                var obj2 = GameObject.Instantiate(prefab, outputObj.transform, false);
                 obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                if (asset.Billboard)
+                    obj2.AddComponent<Billboard>();
+
+                if(facing != 0)
+                    obj2.transform.localRotation = Quaternion.AngleAxis(45 * facing, Vector3.up);
+
                 return;
             }
             
             var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
             loader.Completed += ah =>
             {
-                if (target.gameObject != null && target.gameObject.activeInHierarchy)
-                {
-                    var obj2 = GameObject.Instantiate(ah.Result, target.gameObject.transform, false);
-                    obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                var obj2 = GameObject.Instantiate(ah.Result, outputObj.transform, false);
+                obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                if (asset.Billboard)
+                    obj2.AddComponent<Billboard>();
 
-                    EffectCache[asset.Id] = ah.Result;
-                    //obj2.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-                    //ah.Result.transform.SetParent(obj.transform, false);
-                }
+
+                Debug.Log("Loaded effect " + asset.PrefabName);
+
+                EffectCache[asset.Id] = ah.Result;
             };
         }
 

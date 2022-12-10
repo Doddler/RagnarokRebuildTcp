@@ -23,7 +23,6 @@ public class Player : IEntityAutoReset
     
     public Guid Id { get; set; }
     public string Name { get; set; } = "Uninitialized Player";
-    public float CurrentCooldown;
     public HeadFacing HeadFacing;
     //public PlayerData Data { get; set; }
     public bool IsAdmin { get; set; }
@@ -39,6 +38,23 @@ public class Player : IEntityAutoReset
     
     public bool QueueAttack { get; set; }
     private float regenTickTime { get; set; }
+
+#if DEBUG
+    private float currentCooldown;
+    public float CurrentCooldown
+    {
+        get => currentCooldown;
+        set
+        {
+            currentCooldown = value;
+            if(currentCooldown > 5f)
+                ServerLogger.LogWarning($"Warning! Player cooldown exceeds 5s!");
+        }
+    }
+#else
+    public float CurrentCooldown;
+#endif
+
 
     public int GetData(PlayerStat type) => CharData[(int)type];
     public void SetData(PlayerStat type, int val) => CharData[(int)type] = val;

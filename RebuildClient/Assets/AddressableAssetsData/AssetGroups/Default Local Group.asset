@@ -7663,6 +7663,35 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Minimap
+  - m_GUID: 63614632b02e4594aaffd3b975ed7a62
+    m_Address: Assets/Effects/Prefabs/ThunderStorm.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+  - m_GUID: dc91a17514f16b948af29fd009b839b0
+    m_Address: Assets/Prefabs/Exacast.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 41f3235966086e04eaae51509301cc72
+    m_Address: Assets/Effects/Prefabs/Exacast.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3c2e09388f62a3e4a84287e683de4409
+    m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 21ca215010628024db031a5a0d1ff4cc
+    m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d952d16f255b0fc408ab4f8aac1ff59b
+    m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_1207.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 21e1e635574445f49891830e42158d67
+    m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_1207.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

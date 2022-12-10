@@ -16,6 +16,7 @@ public class WorldObject : IEntityAutoReset
     public Entity Entity;
     public string Name;
     public bool IsActive;
+    public bool Hidden;
     public int ClassId;
     public Direction FacingDirection;
     public CharacterState State;
@@ -93,16 +94,16 @@ public class WorldObject : IEntityAutoReset
             return combatEntity;
         }
     }
-
-
+    
     public void Reset()
     {
         Id = -1;
         Entity = Entity.Null;
         LastAttacked = Entity.Null;
         IsActive = true;
+        Hidden = false;
         Map = null;
-        Name = null;
+        Name = null!;
         State = CharacterState.Idle;
         MoveCooldown = 0;
         MoveSpeed = 0.15f;
@@ -145,21 +146,20 @@ public class WorldObject : IEntityAutoReset
         if (visiblePlayers == null)
             visiblePlayers = EntityListPool.Get();
 
-
-#if DEBUG
         //sanity check
         var obj2 = e.Get<WorldObject>();
 
+#if DEBUG
         if (e.Type != EntityType.Player)
             ServerLogger.LogWarning($"WorldObject {Name} is attempting to add {obj2.Name} to it's visible players list, but that object is not a player.");
         else if (visiblePlayers.Contains(e))
             ServerLogger.Debug($"WorldObject {Name} is attempting to add a visible player {obj2.Name}, but that player is already tagged as visible.");
         //else
             //ServerLogger.Log($"WorldObject {Name} is adding a visible player {obj2.Name} to it's visible list.\n{Environment.StackTrace}");
-
 #endif
 
-        visiblePlayers.Add(e);
+        if(!obj2.Hidden)
+            visiblePlayers.Add(e);
     }
 
     public bool IsPlayerVisible(Entity e)

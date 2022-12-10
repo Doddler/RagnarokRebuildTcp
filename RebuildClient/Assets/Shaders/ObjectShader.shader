@@ -13,7 +13,7 @@ Shader "Custom/ObjectShader"
     }
     SubShader
     {
-            Tags {"Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout" "BW" = "TrueProbes" "LightMode" = "ForwardBase"}
+            Tags {"Queue" = "AlphaTest" "RenderType" = "TransparentCutout" "BW" = "TrueProbes" "LightMode" = "ForwardBase"}
 
         LOD 200
                 //Lighting Off

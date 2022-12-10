@@ -26,7 +26,7 @@ Npc("guild_vs3", "Kafra Staff#Master", "4_F_KAFRA1", 61, 61, SW, 1, 1)
 	local moveY = 0;
 	local length = 10;
 OnClick:
-    FocusNpc();
+	FocusNpc();
 	ShowSprite("kafra_01", right);
 	Dialog("Kafra Staff", "Are you ready to play?");
 	Option("Hell yeah!", "No way!");
@@ -70,6 +70,9 @@ OnTimer 250:
 		length = length + 5;
 		SignalMyEvents("Add",5);
 	}
+OnMobKill:
+	if(IsHidden())
+		SummonMobs(1, "PUPA", targetX, targetY); //resummon if killed
 OnSignal:
 	if(Signal == "SetMove")	{
 		//no double back or same movement
@@ -82,6 +85,7 @@ OnSignal:
 	if(Signal == "Reset") {
 		x = 43;
 		y = 51;
+		DebugMessage("Game Over! Your score is: " + length);
 		SignalNpc("Turn Left#Control", "Off");
 		SignalNpc("Turn Right#Control", "Off");
 		SignalNpc("Turn Down#Control", "Off");

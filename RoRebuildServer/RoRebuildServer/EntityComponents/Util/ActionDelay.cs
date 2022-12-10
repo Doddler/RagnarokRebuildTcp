@@ -7,15 +7,17 @@ public enum CooldownActionType
     Click,
     FaceDirection,
     SitStand,
-    StopAction
+    StopAction,
+    UseItem,
 }
 
 public static class ActionDelay
 {
-    public const float ClickCooldownTime = 0.30f;
+    public const float ClickCooldownTime = 0.25f;
     public const float FaceDirectionCooldown = 0.10f;
     public const float SitStandCooldown = 0.25f;
     private const float StopActionCooldown = 0.20f;
+    private const float UseItemCooldown = 0.10f;
 
     public static float CooldownTime(CooldownActionType type)
     {
@@ -25,6 +27,7 @@ public static class ActionDelay
             case CooldownActionType.FaceDirection: return FaceDirectionCooldown;
             case CooldownActionType.SitStand: return SitStandCooldown;
             case CooldownActionType.StopAction: return StopActionCooldown;
+            case CooldownActionType.UseItem: return UseItemCooldown;
             default:
                 ServerLogger.LogWarning($"Could not get ActionDelay Cooldown for type {type} (value {(int)type}.");
                 return 0.3f;

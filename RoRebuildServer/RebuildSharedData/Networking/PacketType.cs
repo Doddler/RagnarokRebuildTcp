@@ -16,6 +16,7 @@ public enum PacketType : byte
     StartMove,
     [ServerOnlyPacket] Move,
     Attack,
+    [ServerOnlyPacket] TakeDamage,
     LookTowards,
     SitStand,
     [ServerOnlyPacket] RemoveEntity,
@@ -40,8 +41,9 @@ public enum PacketType : byte
     ChangeName,
     [ServerOnlyPacket] Resurrection,
     UseInventoryItem,
-    [ServerOnlyPacket] Effect,
-
+    [ServerOnlyPacket] EffectOnCharacter,
+    [ServerOnlyPacket] EffectAtLocation,
+    
     AdminRequestMove,
     AdminServerAction,
     AdminLevelUp,
