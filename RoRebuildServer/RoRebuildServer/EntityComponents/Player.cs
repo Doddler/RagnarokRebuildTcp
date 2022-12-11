@@ -38,6 +38,7 @@ public class Player : IEntityAutoReset
     
     public bool QueueAttack { get; set; }
     private float regenTickTime { get; set; }
+    public int WeaponClass { get; set; }
 
 #if DEBUG
     private float currentCooldown;
@@ -48,7 +49,7 @@ public class Player : IEntityAutoReset
         {
             currentCooldown = value;
             if(currentCooldown > 5f)
-                ServerLogger.LogWarning($"Warning! Player cooldown exceeds 5s!");
+                ServerLogger.LogWarning($"Warning! Attempting to set player cooldown to time exceeding 5s! Stack Trace:\n" + Environment.StackTrace);
         }
     }
 #else
@@ -82,6 +83,7 @@ public class Player : IEntityAutoReset
         IsAdmin = false;
         for(var i = 0; i < CharData.Length; i++)
             CharData[i] = 0;
+        WeaponClass = 0;
 
         SavePosition.Reset();
     }

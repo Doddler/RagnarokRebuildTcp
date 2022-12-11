@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Dynamic;
+using System.Globalization;
 using System.Text.Json;
 using CsvHelper;
 using Dahomey.Json;
@@ -24,6 +25,7 @@ class Program
         //WriteServerConfig();
         WriteMapList();
         WriteEffectsList();
+        WriteJobDataStuff();
     }
 
     private static void WriteEffectsList()
@@ -38,7 +40,7 @@ class Program
 
             var entries = csv.GetRecords<CsvEffects>().ToList();
 
-            
+
             var effectList = new EffectTypeList();
             effectList.Effects = new List<EffectTypeEntry>();
 
@@ -60,6 +62,7 @@ class Program
 
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.SetupExtensions();
+            options.WriteIndented = true;
 
             var json = JsonSerializer.Serialize(effectList, options);
 
@@ -112,7 +115,7 @@ class Program
         var lines = new List<string>();
         foreach (var entry in entries)
             lines.Add(entry.Experience.ToString());
-                
+
         File.WriteAllLines(Path.Combine(outPath, "levelchart.txt"), lines);
     }
 
@@ -168,6 +171,7 @@ class Program
 
         JsonSerializerOptions options = new JsonSerializerOptions();
         options.SetupExtensions();
+        options.WriteIndented = true;
 
         var json = JsonSerializer.Serialize(mapList, options);
 
@@ -219,7 +223,7 @@ class Program
         using (var csv = new CsvReader(tr, CultureInfo.CurrentCulture))
         {
             var monsters = csv.GetRecords<CsvMonsterData>().ToList();
-            
+
             foreach (var monster in monsters)
             {
                 //if (monster.Id >= 4000 && monSpawns.All(m => m.Class != monster.Code))
@@ -247,7 +251,7 @@ class Program
         var inPath = Path.Combine(path, "Npcs.csv");
         var tempPath = Path.Combine(Path.GetTempPath(), "Npcs.csv"); //copy in case file is locked
         File.Copy(inPath, tempPath, true);
-            
+
         using (var tr = new StreamReader(tempPath) as TextReader)
         using (var csv = new CsvReader(tr, CultureInfo.CurrentCulture))
         {
@@ -288,6 +292,7 @@ class Program
 
         JsonSerializerOptions options = new JsonSerializerOptions();
         options.SetupExtensions();
+        options.WriteIndented = true;
 
         var json = JsonSerializer.Serialize(dbTable, options);
 
@@ -295,7 +300,94 @@ class Program
 
         File.WriteAllText(monsterDir, json);
 
+    }
 
-            
+    private static List<U> ConvertToClient<T, U>(string csvName, string jsonName, string baseObjName, Func<List<T>, List<U>> convert)
+    {
+        var inPath = Path.Combine(path, csvName);
+        var tempPath = Path.Combine(Path.GetTempPath(), csvName); //copy in case file is locked
+        File.Copy(inPath, tempPath, true);
+
+        using var tr = new StreamReader(tempPath) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+        var jobs = csv.GetRecords<T>().ToList();
+
+        var list = convert(jobs);
+
+        dynamic dataObj = new ExpandoObject();
+        ((IDictionary<string, Object>)dataObj).Add(baseObjName, list);
+
+        JsonSerializerOptions options = new JsonSerializerOptions();
+        options.SetupExtensions();
+        options.WriteIndented = true;
+
+        var json = JsonSerializer.Serialize(dataObj, options);
+        var targetDir = Path.Combine(outPath, jsonName);
+
+        File.WriteAllText(targetDir, json);
+
+        return list;
+    }
+
+    private static void WriteJobDataStuff()
+    {
+        var classes = ConvertToClient<CsvWeaponClass, PlayerWeaponClass>("WeaponClass.csv", "weaponclass.json", "PlayerWeaponClass",
+            weapons => weapons.Select(w => new PlayerWeaponClass() { Id = w.Id, Name = w.FullName }).ToList()
+        );
+
+        var jobs = ConvertToClient<CsvJobs, PlayerClassData>("Jobs.csv", "playerclass.json", "PlayerClassData",
+            jobs => jobs.Select(j => new PlayerClassData() { Id = j.Id, Name = j.Class, SpriteFemale = j.SpriteFemale, SpriteMale = j.SpriteMale }).ToList()
+            );
+
+        PlayerWeaponData CsvWeaponDataToClient(CsvJobWeaponInfo w) => new()
+            {
+                Job = jobs.First(j => j.Name == w.Job).Id,
+                Class = classes.First(c => c.Name == w.Class).Id,
+                AttackAnimation = w.AttackAnimation,
+                SpriteFemale = w.SpriteFemale,
+                SpriteMale = w.SpriteMale
+            };
+        
+        //takes some extra processing because we're filling in each type that's not included in JobWeaponInfo.csv
+        ConvertToClient<CsvJobWeaponInfo, PlayerWeaponData>("JobWeaponInfo.csv", "jobweaponinfo.json", "JobWeaponInfo",
+            wi =>
+            {
+                var data = new List<PlayerWeaponData>();
+                var combos = new List<(int, int)>();
+                foreach (var w in wi)
+                {
+                    var wd = CsvWeaponDataToClient(w);
+                    data.Add(wd);
+                    combos.Add((wd.Job, wd.Class));
+                }
+
+                for (var j = 0; j < jobs.Count; j++) 
+                {
+                    for (var i = 0; i < classes.Count; i++)
+                    {
+                        if (!combos.Contains((jobs[j].Id, classes[i].Id)))
+                        {
+                            var defaultForClass = data.FirstOrDefault(w => w.Class == 0 && w.Job == j);
+                            if (defaultForClass != null)
+                            {
+                                var wd = defaultForClass.Clone();
+                                wd.Job = j;
+                                wd.Class = i;
+                                data.Add(wd);
+                                combos.Add((wd.Job, wd.Class));
+                            }
+                            else
+                            {
+                                var wd = data.First(w => w.Class == 0 && w.Job == 0).Clone();
+                                wd.Job = j;
+                                wd.Class = i;
+                                data.Add(wd);
+                                combos.Add((wd.Job, wd.Class));
+                            }
+                        }
+                    }
+                }
+                return data;
+            });
     }
 }

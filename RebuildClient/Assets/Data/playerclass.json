@@ -1,68 +1,52 @@
 {
-	"PlayerClassData": [
-		{
-			"Id": 0,
-			"Name": "Novice",
-			"SpriteFemale": "Assets/Sprites/Characters/BodyFemale/초보자_여.spr",
-			"SpriteMale": "Assets/Sprites/Characters/BodyMale/초보자_남.spr",
-			"Weapons": [
-				{
-					"Id": 0,
-					"Class": "Unarmed",
-					"AttackAnimation": 0,
-					"SpriteMale": "",
-					"SpriteFemale": ""
-				},
-				{
-					"Id": 1,
-					"Class": "Dagger",
-					"AttackAnimation": 2,
-					"SpriteMale": "Assets/Sprites/Weapons/Novice/Male/초보자_남_1207.spr",
-					"SpriteFemale": "Assets/Sprites/Weapons/Novice/Female/초보자_여_1207.spr"
-				}
-			]
-		},
-		{
-			"Id": 1,
-			"Name": "Swordsman",
-			"SpriteFemale": "Assets/Sprites/Characters/BodyFemale/검사_여.spr",
-			"SpriteMale": "Assets/Sprites/Characters/BodyMale/검사_남.spr"
-		},
-		{
-			"Id": 2,
-			"Name": "Archer",
-			"SpriteFemale": "Assets/Sprites/Characters/BodyFemale/궁수_여.spr",
-			"SpriteMale": "Assets/Sprites/Characters/BodyMale/궁수_남.spr"
-		},
-		{
-			"Id": 3,
-			"Name": "Thief",
-			"SpriteFemale": "Assets/Sprites/Characters/BodyFemale/도둑_여.spr",
-			"SpriteMale": "Assets/Sprites/Characters/BodyMale/도둑_남.spr"
-		},
-		{
-			"Id": 4,
-			"Name": "Acolyte",
-			"SpriteFemale": "Assets/Sprites/Characters/BodyFemale/성직자_여.spr",
-			"SpriteMale": "Assets/Sprites/Characters/BodyMale/성직자_남.spr"
-		},
-		{
-			"Id": 5,
-			"Name": "Mage",
-			"SpriteFemale": "Assets/Sprites/Characters/BodyFemale/마법사_여.spr",
-			"SpriteMale": "Assets/Sprites/Characters/BodyMale/마법사_남.spr"
-		},
-		{
-			"Id": 6,
-			"Name": "Merchant",
-			"SpriteFemale": "Assets/Sprites/Characters/BodyFemale/상인_여.spr",
-			"SpriteMale": "Assets/Sprites/Characters/BodyMale/상인_남.spr"
-		},
-		{
-			"Id": 200,
-			"Name": "Gamemaster",
-			"SpriteFemale": "Assets/Sprites/Characters/BodyFemale/운영자_여.spr",
-			"SpriteMale": "Assets/Sprites/Characters/BodyMale/운영자_남.spr"
-		}
-	]
+  "PlayerClassData": [
+    {
+      "Id": 0,
+      "Name": "Novice",
+      "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uCD08\uBCF4\uC790_\uB0A8.spr",
+      "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uCD08\uBCF4\uC790_\uC5EC.spr"
+    },
+    {
+      "Id": 1,
+      "Name": "Swordsman",
+      "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uAC80\uC0AC_\uB0A8.spr",
+      "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uAC80\uC0AC_\uC5EC.spr"
+    },
+    {
+      "Id": 2,
+      "Name": "Archer",
+      "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uAD81\uC218_\uB0A8.spr",
+      "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uAD81\uC218_\uC5EC.spr"
+    },
+    {
+      "Id": 3,
+      "Name": "Mage",
+      "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uB9C8\uBC95\uC0AC_\uB0A8.spr",
+      "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uB9C8\uBC95\uC0AC_\uC5EC.spr"
+    },
+    {
+      "Id": 4,
+      "Name": "Acolyte",
+      "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uC131\uC9C1\uC790_\uB0A8.spr",
+      "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uC131\uC9C1\uC790_\uC5EC.spr"
+    },
+    {
+      "Id": 5,
+      "Name": "Thief",
+      "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uB3C4\uB451_\uB0A8.spr",
+      "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uB3C4\uB451_\uC5EC.spr"
+    },
+    {
+      "Id": 6,
+      "Name": "Merchant",
+      "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uC0C1\uC778_\uB0A8.spr",
+      "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uC0C1\uC778_\uC5EC.spr"
+    },
+    {
+      "Id": 200,
+      "Name": "GameMaster",
+      "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uC6B4\uC601\uC790_\uB0A8.spr",
+      "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uC6B4\uC601\uC790_\uC5EC.spr"
+    }
+  ]
 }

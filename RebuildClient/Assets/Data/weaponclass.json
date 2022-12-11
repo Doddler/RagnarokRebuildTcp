@@ -1,0 +1,56 @@
+{
+  "PlayerWeaponClass": [
+    {
+      "Id": 0,
+      "Name": "Unarmed"
+    },
+    {
+      "Id": 1,
+      "Name": "Dagger"
+    },
+    {
+      "Id": 2,
+      "Name": "Sword"
+    },
+    {
+      "Id": 3,
+      "Name": "Sword (2-Handed)"
+    },
+    {
+      "Id": 4,
+      "Name": "Spear"
+    },
+    {
+      "Id": 5,
+      "Name": "Spear (2-Handed)"
+    },
+    {
+      "Id": 6,
+      "Name": "Axe"
+    },
+    {
+      "Id": 7,
+      "Name": "Axe (2-Handed)"
+    },
+    {
+      "Id": 8,
+      "Name": "Mace"
+    },
+    {
+      "Id": 9,
+      "Name": "Mace (2-Handed)"
+    },
+    {
+      "Id": 10,
+      "Name": "Rod"
+    },
+    {
+      "Id": 11,
+      "Name": "Rod (2-Handed)"
+    },
+    {
+      "Id": 12,
+      "Name": "Bow"
+    }
+  ]
+}

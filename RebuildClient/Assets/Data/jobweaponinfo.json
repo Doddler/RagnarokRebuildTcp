@@ -1,0 +1,836 @@
+{
+  "JobWeaponInfo": [
+    {
+      "Job": 0,
+      "Class": 0,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_1207.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_1207.spr"
+    },
+    {
+      "Job": 0,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uAC80.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uAC80.spr"
+    },
+    {
+      "Job": 1,
+      "Class": 0,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_1207.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_1207.spr"
+    },
+    {
+      "Job": 2,
+      "Class": 0,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 0,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 0,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 0,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 0,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 3,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackAnimation": 3,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 4,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 6,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackAnimation": 2,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 0,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    },
+    {
+      "Job": 7,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackAnimation": 1,
+      "SpriteMale": "",
+      "SpriteFemale": ""
+    }
+  ]
+}

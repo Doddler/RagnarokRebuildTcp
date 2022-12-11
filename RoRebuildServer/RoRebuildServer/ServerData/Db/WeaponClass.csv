@@ -1,14 +1,14 @@
-﻿Id,WeaponClass
-0,Unarmed
-1,Dagger
-2,Sword
-3,2HSword
-4,Spear
-5,2HSpear
-6,Axe
-7,2HAxe
-8,Mace
-9,2HMace
-10,Rod
-11,2HRod
-12,Bow
+﻿Id,WeaponClass,FullName
+0,Unarmed,Unarmed
+1,Dagger,Dagger
+2,Sword,Sword
+3,2HSword,Sword (2-Handed)
+4,Spear,Spear
+5,2HSpear,Spear (2-Handed)
+6,Axe,Axe
+7,2HAxe,Axe (2-Handed)
+8,Mace,Mace
+9,2HMace,Mace (2-Handed)
+10,Rod,Rod
+11,2HRod,Rod (2-Handed)
+12,Bow,Bow

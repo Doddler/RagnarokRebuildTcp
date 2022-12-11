@@ -5,7 +5,8 @@ Novice,Sword,0,2,Assets/Sprites/Weapons/Novice/Male/초보자_남_검.spr,Assets
 Swordsman,Unarmed,0,1,,
 Swordsman,Dagger,0,2,Assets/Sprites/Weapons/Swordsman/Male/검사_남_1207.spr,Assets/Sprites/Weapons/Swordsman/Female/검사_여_1207.spr
 Archer,Unarmed,0,3,,
-Thief,Unarmed,0,1,,
-Acolyte,Unarmed,0,2,,
-Merchant,Unarmed,0,2,,
 Mage,Unarmed,0,3,,
+Acolyte,Unarmed,0,2,,
+Thief,Unarmed,0,1,,
+Merchant,Unarmed,0,2,,
+

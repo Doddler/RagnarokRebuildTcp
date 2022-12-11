@@ -671,7 +671,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
             EditorGUILayout.BeginHorizontal();
 
-            if (!IsBaking && Scenes.Length > 0)
+            if (!IsBaking && Scenes != null && Scenes.Length > 0)
             {
 
                 if (GUILayout.Button("Bake All Scenes"))
