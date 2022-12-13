@@ -102,6 +102,7 @@ public static class CommandBuilder
             var player = c.Entity.Get<Player>();
             packet.Write((byte)player.HeadFacing);
             packet.Write((byte)player.HeadId);
+            packet.Write((byte)player.WeaponClass);
             packet.Write(player.IsMale);
             packet.Write(player.Name);
         }

@@ -9,6 +9,7 @@ using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -38,7 +39,7 @@ public class Player : IEntityAutoReset
     
     public bool QueueAttack { get; set; }
     private float regenTickTime { get; set; }
-    public int WeaponClass { get; set; }
+    public int WeaponClass => DefaultWeaponForJob(GetData(PlayerStat.Job));
 
 #if DEBUG
     private float currentCooldown;
@@ -83,7 +84,7 @@ public class Player : IEntityAutoReset
         IsAdmin = false;
         for(var i = 0; i < CharData.Length; i++)
             CharData[i] = 0;
-        WeaponClass = 0;
+        //WeaponClass = 0;
 
         SavePosition.Reset();
     }
@@ -108,12 +109,19 @@ public class Player : IEntityAutoReset
     public void UpdateStats()
     {
         var level = GetData(PlayerStat.Level);
+        var job = GetData(PlayerStat.Job);
+        var jobInfo = DataManager.JobInfo[job];
 
         if (level > 99 || level < 1)
         {
             ServerLogger.LogWarning($"Woah! The player '{Name}' has a level of {level}, that's not normal. We'll lower the level down to the cap.");
             level = Math.Clamp(level, 1, 99);
             SetData(PlayerStat.Level, level);
+        }
+
+        //if (Character.ClassId != job)
+        {
+            Character.ClassId = job; //there should be more complex checks here to prevent GM and mounts from being lost but we'll deal with it later
         }
 
         var aMotionTime = 1.1f - level * 0.004f;
@@ -162,7 +170,7 @@ public class Player : IEntityAutoReset
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
     }
-
+    
     public void LevelUp()
     {
         var level = GetData(PlayerStat.Level);
@@ -311,6 +319,34 @@ public class Player : IEntityAutoReset
         Target = target.Entity;
     }
 
+    public int DefaultWeaponForJob(int newJobId) => newJobId switch
+    {
+        0 => 1, //novice => dagger
+        1 => 2, //swordsman => sword
+        2 => 12, //archer => bow
+        3 => 10, //mage => rod
+        4 => 8, //acolyte => mace
+        5 => 1, //thief => dagger
+        6 => 6, //merchant => axe
+        _ => 1, //anything else => dagger
+    };
+
+    public void ChangeJob(int newJobId)
+    {
+        var job = DataManager.JobInfo[newJobId];
+        SetData(PlayerStat.Job, newJobId);
+
+        if (Character.ClassId < 100) //we don't want to override special character classes like GameMaster
+            Character.ClassId = newJobId; 
+        
+        //until equipment is real pick weapon based on job
+        var weapon = DefaultWeaponForJob(newJobId);
+
+        //WeaponClass = weapon;
+        
+        if (Character.Map != null)
+            Character.Map.RefreshEntity(Character);
+    }
 
     public void SaveSpawnPoint(string spawnName)
     {

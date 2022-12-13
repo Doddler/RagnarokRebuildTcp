@@ -121,63 +121,45 @@ class Program
 
     private static void WriteMapList()
     {
-        using var tempPath = new TempFileCopy(Path.Combine(path, "Maps.csv"));
-        using var tr = new StreamReader(tempPath.Path) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
-
-        //using var tw = new StreamWriter(Path.Combine(path, "Maps2.csv"));
-        //using var csvOut = new CsvWriter(tw, CultureInfo.CurrentCulture);
-
-
-        var entries = csv.GetRecords<MapEntry>().ToList();
-        var mapList = new ClientMapList();
-        mapList.MapEntries = new List<ClientMapEntry>();
-
-        foreach (var e in entries)
-        {
-            var mode = Enum.Parse<MapMinimapType>(e.MapMode);
-            mapList.MapEntries.Add(new ClientMapEntry()
+        ConvertToClient<MapEntry, ClientMapEntry>("Maps.csv", "maps.json", convert =>
+            convert.Select(e => new ClientMapEntry()
             {
                 Code = e.Code,
                 Name = e.Name,
-                MapMode = (int)mode,
+                MapMode = (int)Enum.Parse<MapMinimapType>(e.MapMode),
                 Music = e.Music
-            });
-        }
+            }).ToList()
+        );
 
-        //        foreach (var l in File.ReadAllLines(@"G:\Projects2\Ragnarok\Resources\data\mp3nametable.txt"))
-        //        {
-        //if(string.IsNullOrWhiteSpace(l) || l.StartsWith("//") || l.StartsWith("#"))
-        //	continue;
+        //using var tempPath = new TempFileCopy(Path.Combine(path, "Maps.csv"));
+        //using var tr = new StreamReader(tempPath.Path) as TextReader;
+        //using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
-        //            var s = l.Split('#');
-        //            if (l.Length < 2)
-        //                continue;
+        //var entries = csv.GetRecords<MapEntry>().ToList();
+        //var mapList = new ClientMapList();
+        //mapList.MapEntries = new List<ClientMapEntry>();
 
-        //            var code = s[0].Substring(0, s[0].IndexOf('.'));
+        //foreach (var e in entries)
+        //{
+        //    var mode = Enum.Parse<MapMinimapType>(e.MapMode);
+        //    mapList.MapEntries.Add(new ClientMapEntry()
+        //    {
+        //        Code = e.Code,
+        //        Name = e.Name,
+        //        MapMode = (int)mode,
+        //        Music = e.Music
+        //    });
+        //}
 
-        //            var dir = s[1].Split("\\\\");
-        //            if (dir.Length < 2)
-        //                continue;
+        //JsonSerializerOptions options = new JsonSerializerOptions();
+        //options.SetupExtensions();
+        //options.WriteIndented = true;
 
-        //            var map = entries.FirstOrDefault(m => m.Code == code);
-        //            if (map == null)
-        //                continue;
+        //var json = JsonSerializer.Serialize(mapList, options);
 
-        //            map.Music = dir[1];
-        //        }
+        //var mapDir = Path.Combine(outPath, "maps.json");
 
-        //csvOut.WriteRecords(entries);
-
-        JsonSerializerOptions options = new JsonSerializerOptions();
-        options.SetupExtensions();
-        options.WriteIndented = true;
-
-        var json = JsonSerializer.Serialize(mapList, options);
-
-        var mapDir = Path.Combine(outPath, "maps.json");
-
-        File.WriteAllText(mapDir, json);
+        //File.WriteAllText(mapDir, json);
     }
 
     private static List<MapEntry> GetMapList()
@@ -302,7 +284,7 @@ class Program
 
     }
 
-    private static List<U> ConvertToClient<T, U>(string csvName, string jsonName, string baseObjName, Func<List<T>, List<U>> convert)
+    private static List<U> ConvertToClient<T, U>(string csvName, string jsonName, Func<List<T>, List<U>> convert)
     {
         var inPath = Path.Combine(path, csvName);
         var tempPath = Path.Combine(Path.GetTempPath(), csvName); //copy in case file is locked
@@ -315,7 +297,7 @@ class Program
         var list = convert(jobs);
 
         dynamic dataObj = new ExpandoObject();
-        ((IDictionary<string, Object>)dataObj).Add(baseObjName, list);
+        ((IDictionary<string, Object>)dataObj).Add("Items", list);
 
         JsonSerializerOptions options = new JsonSerializerOptions();
         options.SetupExtensions();
@@ -331,25 +313,28 @@ class Program
 
     private static void WriteJobDataStuff()
     {
-        var classes = ConvertToClient<CsvWeaponClass, PlayerWeaponClass>("WeaponClass.csv", "weaponclass.json", "PlayerWeaponClass",
+        var classes = ConvertToClient<CsvWeaponClass, PlayerWeaponClass>("WeaponClass.csv", "weaponclass.json",
             weapons => weapons.Select(w => new PlayerWeaponClass() { Id = w.Id, Name = w.FullName }).ToList()
         );
 
-        var jobs = ConvertToClient<CsvJobs, PlayerClassData>("Jobs.csv", "playerclass.json", "PlayerClassData",
+        var jobs = ConvertToClient<CsvJobs, PlayerClassData>("Jobs.csv", "playerclass.json",
             jobs => jobs.Select(j => new PlayerClassData() { Id = j.Id, Name = j.Class, SpriteFemale = j.SpriteFemale, SpriteMale = j.SpriteMale }).ToList()
             );
 
         PlayerWeaponData CsvWeaponDataToClient(CsvJobWeaponInfo w) => new()
-            {
-                Job = jobs.First(j => j.Name == w.Job).Id,
-                Class = classes.First(c => c.Name == w.Class).Id,
-                AttackAnimation = w.AttackAnimation,
-                SpriteFemale = w.SpriteFemale,
-                SpriteMale = w.SpriteMale
-            };
-        
+        {
+            Job = jobs.First(j => j.Name == w.Job).Id,
+            Class = classes.First(c => c.Name == w.Class).Id,
+            AttackMale = w.AttackMale,
+            AttackFemale = w.AttackFemale,
+            SpriteFemale = w.SpriteFemale,
+            SpriteMale = w.SpriteMale,
+            EffectMale = w.EffectMale,
+            EffectFemale = w.EffectFemale
+        };
+
         //takes some extra processing because we're filling in each type that's not included in JobWeaponInfo.csv
-        ConvertToClient<CsvJobWeaponInfo, PlayerWeaponData>("JobWeaponInfo.csv", "jobweaponinfo.json", "JobWeaponInfo",
+        ConvertToClient<CsvJobWeaponInfo, PlayerWeaponData>("JobWeaponInfo.csv", "jobweaponinfo.json",
             wi =>
             {
                 var data = new List<PlayerWeaponData>();
@@ -361,12 +346,13 @@ class Program
                     combos.Add((wd.Job, wd.Class));
                 }
 
-                for (var j = 0; j < jobs.Count; j++) 
+                for (var j = 0; j < jobs.Count; j++)
                 {
                     for (var i = 0; i < classes.Count; i++)
                     {
                         if (!combos.Contains((jobs[j].Id, classes[i].Id)))
                         {
+                            //try to use the unarmed animation for the job, and barring that fall back to unarmed animation for novice
                             var defaultForClass = data.FirstOrDefault(w => w.Class == 0 && w.Job == j);
                             if (defaultForClass != null)
                             {

@@ -26,6 +26,7 @@ namespace Assets.Scripts.Sprites
         public string Name;
         public int Hp;
         public int MaxHp;
+        public int WeaponClass;
     }
 
 	public struct MonsterSpawnParameters
@@ -49,12 +50,14 @@ namespace Assets.Scripts.Sprites
 		public TextAsset MonsterClassData;
 		public TextAsset PlayerClassData;
 		public TextAsset PlayerHeadData;
+		public TextAsset PlayerWeaponData;
 
-		private Dictionary<int, MonsterClassData> monsterClassLookup = new Dictionary<int, MonsterClassData>();
-		private Dictionary<int, PlayerHeadData> playerHeadLookup = new Dictionary<int, PlayerHeadData>();
-		private Dictionary<int, PlayerClassData> playerClassLookup = new Dictionary<int, PlayerClassData>();
+        private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
+		private readonly Dictionary<int, PlayerHeadData> playerHeadLookup = new();
+		private readonly Dictionary<int, PlayerClassData> playerClassLookup = new();
+		private readonly Dictionary<int, Dictionary<int, List<PlayerWeaponData>>> playerWeaponLookup = new();
 
-		private bool isInitialized;
+        private bool isInitialized;
 
 		private void Awake()
 		{
@@ -70,17 +73,32 @@ namespace Assets.Scripts.Sprites
 				monsterClassLookup.Add(m.Id, m);
 			}
 
-			var headData = JsonUtility.FromJson<DatabasePlayerHeadData>(PlayerHeadData.text);
-			foreach (var h in headData.PlayerHeadData)
+			var headData = JsonUtility.FromJson<Wrapper<PlayerHeadData>>(PlayerHeadData.text);
+			foreach (var h in headData.Items)
 			{
 				playerHeadLookup.Add(h.Id, h);
 			}
 			
-			var playerData = JsonUtility.FromJson<DatabasePlayerClassData>(PlayerClassData.text);
-			foreach (var p in playerData.PlayerClassData)
+			var playerData = JsonUtility.FromJson<Wrapper<PlayerClassData>>(PlayerClassData.text);
+			foreach (var p in playerData.Items)
 			{
 				playerClassLookup.Add(p.Id, p);
 			}
+
+            //split weapon entries into a tree of base job -> weapon class -> sprite list
+            var weaponData = JsonUtility.FromJson<Wrapper<PlayerWeaponData>>(PlayerWeaponData.text);
+            foreach (var weapon in weaponData.Items)
+            {
+				if(!playerWeaponLookup.ContainsKey(weapon.Job))
+					playerWeaponLookup.Add(weapon.Job, new Dictionary<int, List<PlayerWeaponData>>());
+
+				var jList = playerWeaponLookup[weapon.Job];
+				if(!jList.ContainsKey(weapon.Class))
+					jList.Add(weapon.Class, new List<PlayerWeaponData>());
+
+				var cList = jList[weapon.Class];
+				cList.Add(weapon);
+            }
 
 			isInitialized = true;
 		}
@@ -244,26 +262,25 @@ namespace Assets.Scripts.Sprites
 			var bodySpriteName = param.IsMale ? pData.SpriteMale : pData.SpriteFemale;
 			var headSpriteName = param.IsMale ? hData.SpriteMale : hData.SpriteFemale;
 			
-			if (param.ClassId == 0)
+			Debug.Log($"Instantiate player sprite with job {param.ClassId} weapon {param.WeaponClass}");
+
+            PlayerWeaponData? weapon = null;
+
+			if (playerWeaponLookup.TryGetValue(param.ClassId, out var weaponsByJob))
 			{
-				var weaponSpriteFile = param.IsMale ? "Assets/Sprites/Weapons/Novice/Male/초보자_남_1207.spr" : "Assets/Sprites/Weapons/Novice/Female/초보자_여_1207.spr";
-
-				var weapon = new GameObject("Weapon");
-				weapon.layer = LayerMask.NameToLayer("Characters");
-				weapon.transform.SetParent(body.transform, false);
-				weapon.transform.localPosition = Vector3.zero;
-
-				var weaponSprite = weapon.AddComponent<RoSpriteAnimator>();
-				
-				weaponSprite.Parent = bodySprite;
-				weaponSprite.SpriteOrder = 2;
-
-				bodySprite.ChildrenSprites.Add(weaponSprite);
-
-				AddressableUtility.LoadRoSpriteData(go, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
+                if (weaponsByJob.TryGetValue(param.WeaponClass, out var weapons) && weapons.Count > 0)
+                {
+                    weapon = weapons[0]; //cheeeat, will need to change when we can have multiple sprites per weapon type
+                }
 			}
 
-			control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
+            if (weapon != null)
+            {
+                LoadAndAttachWeapon(go, body.transform, bodySprite, weapon, false, param.IsMale);
+                LoadAndAttachWeapon(go, body.transform, bodySprite, weapon, true, param.IsMale);
+            }
+
+            control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.Name = param.Name;
             control.Hp = param.Hp;
             control.MaxHp = param.MaxHp;
@@ -274,6 +291,34 @@ namespace Assets.Scripts.Sprites
 
 			return control;
 		}
+
+        private void LoadAndAttachWeapon(GameObject parent, Transform bodyTransform, RoSpriteAnimator bodySprite, PlayerWeaponData weapon, bool isEffect, bool isMale)
+        {
+            var weaponSpriteFile = isMale ? weapon.SpriteMale : weapon.SpriteFemale;
+            if (isEffect)
+				weaponSpriteFile = isMale ? weapon.EffectMale : weapon.EffectFemale;
+
+            if (string.IsNullOrEmpty(weaponSpriteFile))
+            {
+                Debug.Log($"Not loading sprite for weapon as the requested weapon class does not have one.");
+                return;
+            }
+
+            var weaponObj = new GameObject("Weapon");
+            weaponObj.layer = LayerMask.NameToLayer("Characters");
+            weaponObj.transform.SetParent(bodyTransform, false);
+            weaponObj.transform.localPosition = Vector3.zero;
+
+            var weaponSprite = weaponObj.AddComponent<RoSpriteAnimator>();
+
+            weaponSprite.Parent = bodySprite;
+            weaponSprite.SpriteOrder = 2;
+
+			bodySprite.PreferredAttackMotion = isMale ? weapon.AttackMale : weapon.AttackFemale;
+            bodySprite.ChildrenSprites.Add(weaponSprite);
+
+            AddressableUtility.LoadRoSpriteData(parent, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
+        }
 
 		private ServerControllable PrefabMonster(MonsterClassData mData, ref MonsterSpawnParameters param)
 		{

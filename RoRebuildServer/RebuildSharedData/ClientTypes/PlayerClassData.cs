@@ -19,18 +19,25 @@ public class PlayerWeaponData
     public int Job;
     public int Class;
     public int Weapon;
-    public int AttackAnimation;
+    public int AttackMale;
+    public int AttackFemale;
     public string SpriteMale;
+    public string EffectMale;
     public string SpriteFemale;
+    public string EffectFemale;
 
     public PlayerWeaponData Clone() => new PlayerWeaponData
     {
         Job = Job,
         Class = Class,
         Weapon = Weapon,
-        AttackAnimation = AttackAnimation,
+        AttackMale = AttackMale,
+        AttackFemale = AttackFemale,
         SpriteMale = SpriteMale,
-        SpriteFemale = SpriteFemale
+        EffectMale = EffectMale,
+        SpriteFemale = SpriteFemale,
+        EffectFemale = EffectFemale,
+
     };
 }
 

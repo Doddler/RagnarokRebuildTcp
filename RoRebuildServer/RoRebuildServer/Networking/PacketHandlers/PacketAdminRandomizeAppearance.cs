@@ -5,8 +5,8 @@ using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers;
 
-[ClientPacketHandler(PacketType.AdminRandomizeAppearance)]
-public class PacketAdminRandomizeAppearance : IClientPacketHandler
+[ClientPacketHandler(PacketType.AdminChangeAppearance)]
+public class PacketAdminChangeAppearance : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
@@ -40,12 +40,13 @@ public class PacketAdminRandomizeAppearance : IClientPacketHandler
                 break;
             case 3:
                 if (val >= 0 && val <= 6)
-                    p.Character.ClassId = val;
+                    p.ChangeJob(val);
                 else
-                    p.Character.ClassId = GameRandom.Next(0, 6);
-                break;
+                    p.ChangeJob(GameRandom.Next(0, 6));
+                return; //return as we don't want to double refresh (change job will refresh)
         }
 
         connection.Character.Map.RefreshEntity(p.Character);
+        p.UpdateStats();
     }
 }

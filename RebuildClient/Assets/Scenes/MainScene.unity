@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.44300556, g: 0.49219465, b: 0.5719236, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4828,7 +4828,6 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
-  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4970,18 +4969,6 @@ MonoBehaviour:
   MonSpawnCount: 1
   EffectConfigFile: {fileID: 4900000, guid: fe0085492b5724e42ba9fd5dd7248178, type: 3}
   LastRightClick: 0
---- !u!114 &963194230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e503d7fda25e551449f46c621c38cc47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &982349712
 GameObject:
   m_ObjectHideFlags: 0
@@ -6672,6 +6659,7 @@ MonoBehaviour:
   MonsterClassData: {fileID: 4900000, guid: 0da69e67950a7634eab6c86ca001de11, type: 3}
   PlayerClassData: {fileID: 4900000, guid: 8053c7a53d510ca4db83d6a3787cffe0, type: 3}
   PlayerHeadData: {fileID: 4900000, guid: 87c440754c880dc4f99595f42a739ef3, type: 3}
+  PlayerWeaponData: {fileID: 4900000, guid: 4c20ee67b4001884487e36371d1bcf9f, type: 3}
 --- !u!4 &1344481038
 Transform:
   m_ObjectHideFlags: 0

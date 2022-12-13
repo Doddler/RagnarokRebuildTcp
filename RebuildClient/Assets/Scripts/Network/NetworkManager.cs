@@ -83,12 +83,13 @@ namespace Assets.Scripts.Network
 
             LeanTween.init(4000);
 
-            
+
             StartCoroutine(StartUp());
         }
 
         private IEnumerator StartUp()
         {
+#if !UNITY_EDITOR
             //update addressables
             AsyncOperationHandle<List<IResourceLocator>> updateHandle = Addressables.UpdateCatalogs();
             yield return updateHandle;
@@ -98,7 +99,7 @@ namespace Assets.Scripts.Network
 
             yield return spritePreload;
             yield return uiPreload;
-
+#endif
 #if UNITY_EDITOR
             var target = "ws://127.0.0.1:5000/ws";
             StartConnectServer(target);
@@ -266,10 +267,11 @@ namespace Assets.Scripts.Network
 
                 var headFacing = (HeadFacing)msg.ReadByte();
                 var headId = msg.ReadByte();
+                var weapon = msg.ReadByte();
                 var isMale = msg.ReadBoolean();
                 var name = msg.ReadString();
                 var isMain = PlayerId == id;
-                
+
                 Debug.Log("Name: " + name);
 
                 var playerData = new PlayerSpawnParameters()
@@ -286,18 +288,19 @@ namespace Assets.Scripts.Network
                     Level = lvl,
                     MaxHp = maxHp,
                     Hp = hp,
+                    WeaponClass = weapon,
                     IsMainCharacter = isMain,
                 };
-                
+
                 controllable = SpriteDataLoader.Instance.InstantiatePlayer(ref playerData);
 
 
                 if (id == PlayerId)
                 {
                     PlayerState.Level = lvl;
-                    
+
                     CameraFollower.UpdatePlayerHP(hp, maxHp);
-                    var max = CameraFollower.Instance.ExpForLevel(controllable.Level-1);
+                    var max = CameraFollower.Instance.ExpForLevel(controllable.Level - 1);
                     CameraFollower.UpdatePlayerExp(PlayerState.Exp, max);
                 }
             }
@@ -312,7 +315,7 @@ namespace Assets.Scripts.Network
                     maxHp = (int)msg.ReadUInt16();
                     hp = (int)msg.ReadUInt16();
                 }
-                
+
                 if (type == CharacterType.NPC)
                 {
                     name = msg.ReadString();
@@ -480,7 +483,7 @@ namespace Assets.Scripts.Network
                 Debug.LogWarning("Trying to remove entity " + id + ", but it does not exist in scene!");
                 return;
             }
-            
+
             if (id == PlayerId)
             {
                 //Debug.Log("We're removing the player object! Hopefully the server knows what it's doing. We're just going to pretend we didn't see it.");
@@ -562,7 +565,7 @@ namespace Assets.Scripts.Network
         private void OnMessageTakeDamage(ClientInboundMessage msg)
         {
             var id1 = msg.ReadInt32();
-            
+
             if (!entityList.TryGetValue(id1, out var controllable))
             {
                 Debug.LogWarning("Trying to have entity " + id1 + " take damage, but it does not exist in scene!");
@@ -583,13 +586,13 @@ namespace Assets.Scripts.Network
 
             var id1 = msg.ReadInt32();
             var id2 = msg.ReadInt32();
-            
+
             if (!entityList.TryGetValue(id1, out var controllable))
             {
                 Debug.LogWarning("Trying to attack entity " + id1 + ", but it does not exist in scene!");
                 return;
             }
-            
+
             var hasTarget = entityList.TryGetValue(id2, out var controllable2);
 
             var dir = (Direction)msg.ReadByte();
@@ -608,23 +611,32 @@ namespace Assets.Scripts.Network
                 var v = dir.GetVectorValue();
                 controllable.CounterHitDir = new Vector3(v.x, 0, v.y);
             }
-            
+
             controllable.StopImmediate(pos);
             controllable.SpriteAnimator.Direction = dir;
-            controllable.SpriteAnimator.State = SpriteState.Idle;
+            controllable.SpriteAnimator.State = SpriteState.Standby;
             controllable.SpriteAnimator.AnimSpeed = 1f;
             if (controllable.SpriteAnimator.Type == SpriteType.Player)
             {
-                if (controllable.IsMale)
-                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack2, true);
-                else
-                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack3, true);
+                switch (controllable.SpriteAnimator.PreferredAttackMotion)
+                {
+                    default:
+                    case 1:
+                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+                        break;
+                    case 2:
+                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack2, true);
+                        break;
+                    case 3:
+                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack3, true);
+                        break;
+                }
             }
             else
                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
 
             //controllable2.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
-            
+
             if (hasTarget && controllable.SpriteAnimator.IsInitialized)
             {
                 if (controllable.SpriteAnimator.SpriteData == null)
@@ -715,7 +727,7 @@ namespace Assets.Scripts.Network
         {
             var total = msg.ReadInt32();
             var exp = msg.ReadInt32();
-            
+
             //Debug.Log("Gain Exp:" + exp + " " + total);
 
             PlayerState.Exp = total;
@@ -726,7 +738,7 @@ namespace Assets.Scripts.Network
 
             if (!entityList.TryGetValue(PlayerId, out var controllable))
                 return;
-            
+
 
             var go = GameObject.Instantiate(HealPrefab, controllable.transform.localPosition, Quaternion.identity);
             var di = go.GetComponent<DamageIndicator>();
@@ -738,7 +750,7 @@ namespace Assets.Scripts.Network
             di.DoDamage($"<color=yellow>+{exp} Exp", controllable.gameObject.transform.localPosition, height, Direction.None, false, false);
 
             PlayerState.Exp += exp;
-            var max = CameraFollower.Instance.ExpForLevel(controllable.Level-1);
+            var max = CameraFollower.Instance.ExpForLevel(controllable.Level - 1);
             CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, max);
         }
 
@@ -759,12 +771,12 @@ namespace Assets.Scripts.Network
             go.transform.localRotation = Quaternion.identity;
 
             controllable.Level = lvl;
-            var req = CameraFollower.Instance.ExpForLevel(lvl-2);
+            var req = CameraFollower.Instance.ExpForLevel(lvl - 2);
             PlayerState.Exp -= req;
             PlayerState.Level = lvl;
             CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, req);
         }
-        
+
         public void OnMessageResurrection(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -932,41 +944,41 @@ namespace Assets.Scripts.Network
             switch (type)
             {
                 case NpcInteractionType.NpcDialog:
-                {
-                    var name = msg.ReadString();
-                    var text = msg.ReadString();
+                    {
+                        var name = msg.ReadString();
+                        var text = msg.ReadString();
 
-                    //CameraFollower.AppendChatText(name + ": " + text);
-                    CameraFollower.IsInNPCInteraction = true;
-                    CameraFollower.DialogPanel.GetComponent<DialogWindow>().SetDialog(name, text);
-                    break;
-                }
+                        //CameraFollower.AppendChatText(name + ": " + text);
+                        CameraFollower.IsInNPCInteraction = true;
+                        CameraFollower.DialogPanel.GetComponent<DialogWindow>().SetDialog(name, text);
+                        break;
+                    }
                 case NpcInteractionType.NpcFocusNpc:
-                {
-                    var id = msg.ReadInt32();
-                    if (!entityList.TryGetValue(id, out var controllable))
-                        return;
+                    {
+                        var id = msg.ReadInt32();
+                        if (!entityList.TryGetValue(id, out var controllable))
+                            return;
 
-                    CameraFollower.OverrideTarget = controllable.gameObject;
-                    break;
-                }
+                        CameraFollower.OverrideTarget = controllable.gameObject;
+                        break;
+                    }
                 case NpcInteractionType.NpcShowSprite:
-                {
-                    var sprite = msg.ReadString();
-                    Debug.Log($"Show npc sprite {sprite}");
-                    CameraFollower.DialogPanel.GetComponent<DialogWindow>().ShowImage(sprite);
-                    break;
-                }
+                    {
+                        var sprite = msg.ReadString();
+                        Debug.Log($"Show npc sprite {sprite}");
+                        CameraFollower.DialogPanel.GetComponent<DialogWindow>().ShowImage(sprite);
+                        break;
+                    }
                 case NpcInteractionType.NpcOption:
-                {
-                    var options = new List<string>();
-                    var len = msg.ReadInt32();
-                    for(var i = 0; i < len; i++)
-                        options.Add(msg.ReadString());
+                    {
+                        var options = new List<string>();
+                        var len = msg.ReadInt32();
+                        for (var i = 0; i < len; i++)
+                            options.Add(msg.ReadString());
 
-                    CameraFollower.NpcOptionPanel.GetComponent<NpcOptionWindow>().ShowOptionWindow(options);
-                    break;
-                }
+                        CameraFollower.NpcOptionPanel.GetComponent<NpcOptionWindow>().ShowOptionWindow(options);
+                        break;
+                    }
                 case NpcInteractionType.NpcEndInteraction:
                     CameraFollower.OverrideTarget = null;
                     CameraFollower.IsInNPCInteraction = false;
@@ -1023,7 +1035,7 @@ namespace Assets.Scripts.Network
                     OnMessageMove(msg);
                     break;
                 case PacketType.TakeDamage:
-                    OnMessageTakeDamage(msg); 
+                    OnMessageTakeDamage(msg);
                     break;
                 case PacketType.Attack:
                     OnMessageAttack(msg);
@@ -1192,11 +1204,11 @@ namespace Assets.Scripts.Network
         }
 
 
-        public void SendRandomizeAppearance(int mode, int id = -1)
+        public void SendChangeAppearance(int mode, int id = -1)
         {
             var msg = StartMessage();
 
-            msg.Write((byte)PacketType.AdminRandomizeAppearance);
+            msg.Write((byte)PacketType.AdminChangeAppearance);
             msg.Write(mode);
             msg.Write(id);
 
@@ -1280,7 +1292,7 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
-        
+
         public void SendNpcClick(int target)
         {
             var msg = StartMessage();
@@ -1296,7 +1308,7 @@ namespace Assets.Scripts.Network
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.NpcAdvance);
-            
+
             SendMessage(msg);
         }
 

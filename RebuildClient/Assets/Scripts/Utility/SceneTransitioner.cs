@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts.Objects;
+using Assets.Scripts.Sprites;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using TMPro;
@@ -45,8 +46,8 @@ namespace Assets.Scripts.Utility
 
 		private void LoadMaps()
 		{
-			var maps = JsonUtility.FromJson<ClientMapList>(MapList.text);
-			mapEntries = maps.MapEntries;
+			var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapList.text);
+			mapEntries = maps.Items.ToList();
 		}
 
 		private bool CheckMapAudioChange(string curScene, string newScene)
@@ -149,10 +150,10 @@ namespace Assets.Scripts.Utility
 
             var type = (MapMinimapType)newMap.MapMode;
 
-			//if(type == MapMinimapType.None)
-			//	MinimapController.Instance.gameObject.SetActive(false);
-			//else
-			    MinimapController.Instance.LoadMinimap(newScene, MapMinimapType.Field);
+			if (type == MapMinimapType.None)
+				MinimapController.Instance.gameObject.SetActive(false);
+			else
+				MinimapController.Instance.LoadMinimap(newScene, type);
 		}
 
 		private void FinishSceneChange(AsyncOperation op)

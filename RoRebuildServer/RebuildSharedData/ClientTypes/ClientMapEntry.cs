@@ -8,9 +8,3 @@ public class ClientMapEntry
     public int MapMode;
     public string Music;
 }
-
-[Serializable]
-public class ClientMapList
-{
-    public List<ClientMapEntry> MapEntries;
-}

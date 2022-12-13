@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Assets.Scripts.MapEditor.Editor.ObjectEditors;
+using Assets.Scripts.Sprites;
 using B83.Image.BMP;
 using RebuildSharedData.ClientTypes;
 using SFB;
@@ -161,7 +162,7 @@ namespace Assets.Scripts.MapEditor.Editor
             //---------------------------------------------------------
 
 			var mapText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/maps.json", typeof(TextAsset)) as TextAsset;
-			var maps = JsonUtility.FromJson<ClientMapList>(mapText.text);
+			var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(mapText.text);
             var musicNames = new List<string>();
 			
 			//update scenes
@@ -172,7 +173,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				var path = AssetDatabase.GUIDToAssetPath(guids[i]);
 				var fName = Path.GetFileNameWithoutExtension(path);
 
-                var map = maps.MapEntries.FirstOrDefault(m => m.Code == fName);
+                var map = maps.Items.FirstOrDefault(m => m.Code == fName);
 
 				if (map == null)
 				{
@@ -246,7 +247,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 var fName = Path.GetFileNameWithoutExtension(path).Replace("_walkmask", "");
                 
-                var map = maps.MapEntries.FirstOrDefault(m => m.Code == fName);
+                var map = maps.Items.FirstOrDefault(m => m.Code == fName);
 
                 if (map == null)
                 {
@@ -313,9 +314,9 @@ namespace Assets.Scripts.MapEditor.Editor
         static void ImportAllFiles()
         {
             var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
-            var maps = JsonUtility.FromJson<ClientMapList>(asset.text);
+            var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(asset.text);
 			
-            foreach (var map in maps.MapEntries)
+            foreach (var map in maps.Items)
             {
                 //Debug.Log($"Assets/Scenes/Maps/{map.Code}.unity");
 

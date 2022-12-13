@@ -7,36 +7,6 @@ using RebuildSharedData.ClientTypes;
 
 namespace Assets.Scripts.Sprites
 {
-	//[Serializable]
-	//public class MonsterClassData
-	//{
-	//	public int Id;
-	//	public string Name;
-	//	public string SpriteName;
-	//	public float Offset;
-	//	public float ShadowSize;
-	//}
-
-	[Serializable]
-	public class PlayerClassData
-	{
-		public int Id;
-		public string Name;
-		public string SpriteMale;
-		public string SpriteFemale;
-        public PlayerWeaponData[] Weapons;
-    }
-
-    [Serializable]
-    public class PlayerWeaponData
-    {
-        public int Id;
-		public string Name;
-        public int AttackAnimation;
-        public string SpriteMale;
-        public string SpriteFemale;
-    }
-
     [Serializable]
 	public class PlayerHeadData
 	{
@@ -94,10 +64,16 @@ namespace Assets.Scripts.Sprites
         public List<AdminWarpList> WarpSections;
     }
 
+    [Serializable]
+    public class Wrapper<T>
+    {
+        public T[] Items;
+    }
 
-	//[Serializable]
-	//class DatabaseMonsterClassData
-	//{
-	//	public List<MonsterClassData> MonsterClassData;
-	//}
+
+    //[Serializable]
+    //class DatabaseMonsterClassData
+    //{
+    //	public List<MonsterClassData> MonsterClassData;
+    //}
 }

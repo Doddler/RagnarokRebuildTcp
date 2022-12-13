@@ -786,16 +786,16 @@ namespace Assets.Scripts
                 if (s[0] == "/change")
                 {
                     if(s.Length == 1)
-                        NetworkManager.Instance.SendRandomizeAppearance(0);
+                        NetworkManager.Instance.SendChangeAppearance(0);
 
                     if (s.Length == 2)
                     {
                         if (s[1].ToLower() == "hair")
-                            NetworkManager.Instance.SendRandomizeAppearance(1);
+                            NetworkManager.Instance.SendChangeAppearance(1);
                         if (s[1].ToLower() == "gender")
-                            NetworkManager.Instance.SendRandomizeAppearance(2, controllable.IsMale ? 1 : 0);
+                            NetworkManager.Instance.SendChangeAppearance(2, controllable.IsMale ? 1 : 0);
                         if (s[1].ToLower() == "job")
-                            NetworkManager.Instance.SendRandomizeAppearance(3);
+                            NetworkManager.Instance.SendChangeAppearance(3);
                     }
 
                     if (s.Length == 3)
@@ -804,17 +804,17 @@ namespace Assets.Scripts
                         {
 
                             if (s[1].ToLower() == "hair")
-                                NetworkManager.Instance.SendRandomizeAppearance(1, id);
+                                NetworkManager.Instance.SendChangeAppearance(1, id);
                             if (s[1].ToLower() == "gender")
-                                NetworkManager.Instance.SendRandomizeAppearance(2, id);
+                                NetworkManager.Instance.SendChangeAppearance(2, id);
                             if (s[1].ToLower() == "job")
-                                NetworkManager.Instance.SendRandomizeAppearance(3, id);
+                                NetworkManager.Instance.SendChangeAppearance(3, id);
                         }
                     }
                 }
 
                 if (s[0] == "/randomize" || s[0] == "/random")
-                        NetworkManager.Instance.SendRandomizeAppearance(0);
+                        NetworkManager.Instance.SendChangeAppearance(0);
 
                 if (s[0] == "/effect" && s.Length > 1)
                 {

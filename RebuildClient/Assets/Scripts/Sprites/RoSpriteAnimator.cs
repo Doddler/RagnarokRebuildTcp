@@ -78,6 +78,7 @@ namespace Assets.Scripts.Sprites
         public bool LockAngle;
 
         public SpriteMotion CurrentMotion;
+        public int PreferredAttackMotion;
 
         private RoAction currentAction;
         private int currentActionIndex;
@@ -85,11 +86,11 @@ namespace Assets.Scripts.Sprites
 
         private float currentFrameTime = 0;
         private int currentFrame = 0;
-        private int maxFrame = 0;
+        private int maxFrame { get; set; } = 0;
         private bool isLooping;
         private bool isPaused;
         private bool isDirty;
-
+        
         private Material mat;
         private Material mat2;
         private Material[] materialArray;
@@ -101,7 +102,7 @@ namespace Assets.Scripts.Sprites
         private float rotate = 0;
         private bool doSpin = false;
         private float spinSpeed = 100f;
-
+        
         private Shader shader;
 
         public bool IsInitialized => isInitialized;
@@ -135,6 +136,8 @@ namespace Assets.Scripts.Sprites
 
         public Vector2 GetAnimationAnchor()
         {
+            if (currentFrame >= currentAction.Frames.Length)
+                return Vector2.zero;
             var frame = currentAction.Frames[currentFrame];
             if (frame.Pos.Length > 0)
                 return frame.Pos[0].Position;
@@ -146,7 +149,7 @@ namespace Assets.Scripts.Sprites
         public void OnSpriteDataLoad(RoSpriteData spriteData)
         {
             if (spriteData == null)
-                throw new Exception("AAAAAAA");
+                throw new Exception($"Failed to load sprite data for sprite as the passed spriteData object was empty!");
             //Debug.Log("Loaded sprite data for sprite " + spriteData.Name);
             SpriteData = spriteData;
             Initialize();
@@ -348,8 +351,9 @@ namespace Assets.Scripts.Sprites
         {
             if (currentFrame >= currentAction.Frames.Length)
             {
-                Debug.LogWarning($"Current frame is {currentFrame}, max frame is {maxFrame}, but actual frame max is {currentAction.Frames.Length}");
-                return;
+                //Debug.LogWarning($"Current frame is {currentFrame}, max frame is {maxFrame}, but actual frame max is {currentAction.Frames.Length}");
+                //return;
+                currentFrame = currentAction.Frames.Length - 1; //hold on last frame. This only happens if this is a child of an animation of a longer length
             }
             var frame = currentAction.Frames[currentFrame];
 
@@ -387,6 +391,8 @@ namespace Assets.Scripts.Sprites
                 return;
             currentAction = SpriteData.Actions[currentActionIndex + currentAngleIndex];
             maxFrame = currentAction.Frames.Length - 1;
+            if (currentFrame > maxFrame)
+                currentFrame = 0;
             isDirty = true;
         }
 
@@ -398,6 +404,8 @@ namespace Assets.Scripts.Sprites
             currentAction = SpriteData.Actions[currentActionIndex + currentAngleIndex];
             maxFrame = currentAction.Frames.Length - 1;
             currentFrameTime = currentAction.Delay / 1000f * AnimSpeed; //reset current frame time
+            if (currentFrame > maxFrame)
+                currentFrame = 0;
             isDirty = true;
         }
 
@@ -493,6 +501,7 @@ namespace Assets.Scripts.Sprites
 
             currentAction = SpriteData.Actions[currentActionIndex + currentAngleIndex];
             currentFrame = newCurrentFrame;
+
             UpdateSpriteFrame();
             ChildUpdate();
         }
