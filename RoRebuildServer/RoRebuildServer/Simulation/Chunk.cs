@@ -10,14 +10,15 @@ public class Chunk
     public int X;
     public int Y;
     public int WalkableTiles;
+    public int Size;
 
-    public int MapX => X * 8;
-    public int MapY => Y * 8;
+    public int MapX => X * Size;
+    public int MapY => Y * Size;
 
-    public EntityList AllEntities { get; set; } = new EntityList(32);
-    public EntityList Players { get; set; } = new EntityList(16);
-    public EntityList Monsters { get; set; } = new EntityList(16);
-    public List<AreaOfEffect> AreaOfEffects { get; set; } = new List<AreaOfEffect>(8);
+    public EntityList AllEntities { get; set; } = new EntityList(16, true);
+    public EntityList Players { get; set; } = new EntityList(8, true);
+    public EntityList Monsters { get; set; } = new EntityList(8, true);
+    public List<AreaOfEffect> AreaOfEffects { get; set; } = new List<AreaOfEffect>(2);
 
     public override string ToString() => $"Chunk ({X},{Y})";
 
@@ -26,8 +27,8 @@ public class Chunk
 #if DEBUG
         //sanity check
         var character = entity.Get<WorldObject>();
-        var chunkX = character.Position.X / 8;
-        var chunkY = character.Position.Y / 8;
+        var chunkX = character.Position.X / Size;
+        var chunkY = character.Position.Y / Size;
         if (X != chunkX || Y != chunkY)
             throw new Exception("Sanity check failed: Entity added to incorrect chunk?");
 #endif
@@ -70,8 +71,8 @@ public class Chunk
         foreach (var entity in AllEntities)
         {
             var character = entity.Get<WorldObject>();
-            var chunkX = character.Position.X / 8;
-            var chunkY = character.Position.Y / 8;
+            var chunkX = character.Position.X / Size;
+            var chunkY = character.Position.Y / Size;
             if (X != chunkX || Y != chunkY)
                 throw new Exception("Sanity check failed: Entity added to incorrect chunk?");
         }

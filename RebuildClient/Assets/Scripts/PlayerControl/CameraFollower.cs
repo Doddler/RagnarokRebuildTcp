@@ -796,6 +796,9 @@ namespace Assets.Scripts
                             NetworkManager.Instance.SendChangeAppearance(2, controllable.IsMale ? 1 : 0);
                         if (s[1].ToLower() == "job")
                             NetworkManager.Instance.SendChangeAppearance(3);
+                        if (s[1].ToLower() == "weapon")
+                            NetworkManager.Instance.SendChangeAppearance(4);
+
                     }
 
                     if (s.Length == 3)
@@ -809,6 +812,8 @@ namespace Assets.Scripts
                                 NetworkManager.Instance.SendChangeAppearance(2, id);
                             if (s[1].ToLower() == "job")
                                 NetworkManager.Instance.SendChangeAppearance(3, id);
+                            if (s[1].ToLower() == "weapon")
+                                NetworkManager.Instance.SendChangeAppearance(4, id);
                         }
                     }
                 }

@@ -39,7 +39,9 @@ public class Player : IEntityAutoReset
     
     public bool QueueAttack { get; set; }
     private float regenTickTime { get; set; }
-    public int WeaponClass => DefaultWeaponForJob(GetData(PlayerStat.Job));
+    private int _weaponClass = -1;
+    public int WeaponClass => _weaponClass != -1 ? _weaponClass : DefaultWeaponForJob(GetData(PlayerStat.Job));
+    public void SetWeaponClassOverride(int id) => _weaponClass = id;
 
 #if DEBUG
     private float currentCooldown;
@@ -84,7 +86,7 @@ public class Player : IEntityAutoReset
         IsAdmin = false;
         for(var i = 0; i < CharData.Length; i++)
             CharData[i] = 0;
-        //WeaponClass = 0;
+        _weaponClass = -1;
 
         SavePosition.Reset();
     }

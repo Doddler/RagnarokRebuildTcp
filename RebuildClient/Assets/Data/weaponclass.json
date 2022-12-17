@@ -2,55 +2,81 @@
   "Items": [
     {
       "Id": 0,
-      "Name": "Unarmed"
+      "Name": "Unarmed",
+      "WeaponClass": "Unarmed",
+      "HitSound": "_hit_fist1/_hit_fist2/_hit_fist3/_hit_fist4"
     },
     {
       "Id": 1,
-      "Name": "Dagger"
+      "Name": "Dagger",
+      "WeaponClass": "Dagger",
+      "HitSound": "_hit_dagger"
     },
     {
       "Id": 2,
-      "Name": "Sword"
+      "Name": "Sword",
+      "WeaponClass": "Sword",
+      "HitSound": "_hit_sword"
     },
     {
       "Id": 3,
-      "Name": "Sword (2-Handed)"
+      "Name": "Sword (2-Handed)",
+      "WeaponClass": "2HSword",
+      "HitSound": "_hit_sword"
     },
     {
       "Id": 4,
-      "Name": "Spear"
+      "Name": "Spear",
+      "WeaponClass": "Spear",
+      "HitSound": "_hit_spear"
     },
     {
       "Id": 5,
-      "Name": "Spear (2-Handed)"
+      "Name": "Spear (2-Handed)",
+      "WeaponClass": "2HSpear",
+      "HitSound": "_hit_spear"
     },
     {
       "Id": 6,
-      "Name": "Axe"
+      "Name": "Axe",
+      "WeaponClass": "Axe",
+      "HitSound": "_hit_axe"
     },
     {
       "Id": 7,
-      "Name": "Axe (2-Handed)"
+      "Name": "Axe (2-Handed)",
+      "WeaponClass": "2HAxe",
+      "HitSound": "_hit_axe"
     },
     {
       "Id": 8,
-      "Name": "Mace"
+      "Name": "Mace",
+      "WeaponClass": "Mace",
+      "HitSound": "_hit_mace"
     },
     {
       "Id": 9,
-      "Name": "Mace (2-Handed)"
+      "Name": "Mace (2-Handed)",
+      "WeaponClass": "2HMace",
+      "HitSound": "_hit_mace"
     },
     {
       "Id": 10,
-      "Name": "Rod"
+      "Name": "Rod",
+      "WeaponClass": "Rod",
+      "HitSound": "_hit_rod"
     },
     {
       "Id": 11,
-      "Name": "Rod (2-Handed)"
+      "Name": "Rod (2-Handed)",
+      "WeaponClass": "2HRod",
+      "HitSound": "_hit_rod"
     },
     {
       "Id": 12,
-      "Name": "Bow"
+      "Name": "Bow",
+      "WeaponClass": "Bow",
+      "HitSound": "_hit_arrow"
     }
   ]
 }

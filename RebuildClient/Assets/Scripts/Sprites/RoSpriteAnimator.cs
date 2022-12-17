@@ -193,6 +193,7 @@ namespace Assets.Scripts.Sprites
                 MeshCollider = gameObject.AddComponent<MeshCollider>();
 
             SortingGroup = gameObject.GetOrAddComponent<SortingGroup>();
+            SortingGroup.sortingOrder = SpriteOrder;
 
             MeshRenderer.receiveShadows = false;
             MeshRenderer.lightProbeUsage = LightProbeUsage.Off;
@@ -512,6 +513,12 @@ namespace Assets.Scripts.Sprites
             {
                 var parentAnchor = Parent.GetAnimationAnchor();
                 var ourAnchor = GetAnimationAnchor();
+
+                if (ourAnchor == Vector2.zero)
+                {
+                    transform.localPosition = new Vector3(0f, 0f, 0f);
+                    return;
+                }
 
                 var diff = parentAnchor - ourAnchor;
 

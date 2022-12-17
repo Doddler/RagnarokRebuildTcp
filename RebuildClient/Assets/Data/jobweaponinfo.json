@@ -26,12 +26,45 @@
       "Job": 0,
       "Class": 2,
       "Weapon": 0,
-      "AttackMale": 2,
-      "AttackFemale": 3,
+      "AttackMale": 3,
+      "AttackFemale": 2,
       "SpriteMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uAC80.spr",
-      "EffectMale": "",
+      "EffectMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uAC80_\uAC80\uAD11.spr",
       "SpriteFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uAC80.spr",
-      "EffectFemale": ""
+      "EffectFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uAC80_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 0,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackMale": 3,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB3C4\uB07C.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB3C4\uB07C_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB3C4\uB07C.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB3C4\uB07C_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 0,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackMale": 3,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB86F\uB4DC.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB86F\uB4DC_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB86F\uB4DC.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB86F\uB4DC_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 0,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackMale": 3,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uD074\uB7FD.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uD074\uB7FD_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uD074\uB7FD.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uD074\uB7FD_\uAC80\uAD11.spr"
     },
     {
       "Job": 1,
@@ -50,10 +83,10 @@
       "Weapon": 0,
       "AttackMale": 2,
       "AttackFemale": 2,
-      "SpriteMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_1207.spr",
-      "EffectMale": "",
-      "SpriteFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_1207.spr",
-      "EffectFemale": ""
+      "SpriteMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uB2E8\uAC80.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uB2E8\uAC80.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
     },
     {
       "Job": 1,
@@ -67,6 +100,72 @@
       "EffectFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uAC80_\uAC80\uAD11.spr"
     },
     {
+      "Job": 1,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uAC80.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uAC80_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uAC80.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uAC80_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 1,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackMale": 3,
+      "AttackFemale": 3,
+      "SpriteMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uCC3D.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uCC3D_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uCC3D.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uCC3D_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 1,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackMale": 3,
+      "AttackFemale": 3,
+      "SpriteMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uCC3D.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uCC3D_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uCC3D.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uCC3D_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 1,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uB3C4\uB07C.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uB3C4\uB07C_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uB3C4\uB07C.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uB3C4\uB07C_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 1,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uB3C4\uB07C.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uB3C4\uB07C_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uB3C4\uB07C.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uB3C4\uB07C_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 1,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uD074\uB7FD.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uD074\uB7FD_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uD074\uB7FD.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uD074\uB7FD_\uAC80\uAD11.spr"
+    },
+    {
       "Job": 2,
       "Class": 0,
       "Weapon": 0,
@@ -75,6 +174,28 @@
       "SpriteMale": "",
       "EffectMale": "",
       "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 2,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackMale": 3,
+      "AttackFemale": 3,
+      "SpriteMale": "Assets/Sprites/Weapons/Archer/Male/\uAD81\uC218_\uB0A8_\uB2E8\uAC80.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Archer/Male/\uAD81\uC218_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Archer/Female/\uAD81\uC218_\uC5EC_\uB2E8\uAC80.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Archer/Female/\uAD81\uC218_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 2,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Archer/Male/\uAD81\uC218_\uB0A8_\uD65C.spr",
+      "EffectMale": "",
+      "SpriteFemale": "Assets/Sprites/Weapons/Archer/Female/\uAD81\uC218_\uC5EC_\uD65C.spr",
       "EffectFemale": ""
     },
     {
@@ -89,6 +210,28 @@
       "EffectFemale": ""
     },
     {
+      "Job": 3,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackMale": 3,
+      "AttackFemale": 3,
+      "SpriteMale": "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uB2E8\uAC80.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uB2E8\uAC80.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 3,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uB86F\uB4DC.spr",
+      "EffectMale": "",
+      "SpriteFemale": "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uB86F\uB4DC.spr",
+      "EffectFemale": ""
+    },
+    {
       "Job": 4,
       "Class": 0,
       "Weapon": 0,
@@ -100,6 +243,28 @@
       "EffectFemale": ""
     },
     {
+      "Job": 4,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uB86F\uB4DC.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uB86F\uB4DC_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uB86F\uB4DC.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uB86F\uB4DC_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 4,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uD074\uB7FD.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uD074\uB7FD_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uD074\uB7FD.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uD074\uB7FD_\uAC80\uAD11.spr"
+    },
+    {
       "Job": 5,
       "Class": 0,
       "Weapon": 0,
@@ -108,6 +273,39 @@
       "SpriteMale": "",
       "EffectMale": "",
       "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 5,
+      "Class": 1,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uB2E8\uAC80.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uB2E8\uAC80.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 5,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uAC80.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uAC80_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uAC80.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uAC80_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 5,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackMale": 3,
+      "AttackFemale": 3,
+      "SpriteMale": "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uD65C.spr",
+      "EffectMale": "",
+      "SpriteFemale": "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uD65C.spr",
       "EffectFemale": ""
     },
     {
@@ -122,231 +320,176 @@
       "EffectFemale": ""
     },
     {
-      "Job": 0,
-      "Class": 3,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 0,
-      "Class": 4,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 0,
-      "Class": 5,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 0,
-      "Class": 6,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 0,
-      "Class": 7,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 0,
-      "Class": 8,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 0,
-      "Class": 9,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 0,
-      "Class": 10,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 0,
-      "Class": 11,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 0,
-      "Class": 12,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 3,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 4,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 5,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 6,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 7,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 8,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 9,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 10,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 11,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 1,
-      "Class": 12,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 2,
+      "Job": 6,
       "Class": 1,
       "Weapon": 0,
       "AttackMale": 3,
       "AttackFemale": 3,
+      "SpriteMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uB2E8\uAC80.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uB2E8\uAC80.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 6,
+      "Class": 2,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uAC80.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uAC80_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uAC80.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uAC80_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 6,
+      "Class": 6,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uB3C4\uB07C.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uB3C4\uB07C_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uB3C4\uB07C.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uB3C4\uB07C_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 6,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uC591\uC190\uB3C4\uB07C.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uC591\uC190\uB3C4\uB07C_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uC591\uC190\uB3C4\uB07C.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uC591\uC190\uB3C4\uB07C_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 6,
+      "Class": 8,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uD074\uB7FD.spr",
+      "EffectMale": "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uD074\uB7FD_\uAC80\uAD11.spr",
+      "SpriteFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uD074\uB7FD.spr",
+      "EffectFemale": "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uD074\uB7FD_\uAC80\uAD11.spr"
+    },
+    {
+      "Job": 0,
+      "Class": 3,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 4,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 5,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 7,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 0,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 9,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 10,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
+      "SpriteMale": "",
+      "EffectMale": "",
+      "SpriteFemale": "",
+      "EffectFemale": ""
+    },
+    {
+      "Job": 1,
+      "Class": 12,
+      "Weapon": 0,
+      "AttackMale": 1,
+      "AttackFemale": 1,
       "SpriteMale": "",
       "EffectMale": "",
       "SpriteFemale": "",
@@ -463,28 +606,6 @@
       "EffectFemale": ""
     },
     {
-      "Job": 2,
-      "Class": 12,
-      "Weapon": 0,
-      "AttackMale": 3,
-      "AttackFemale": 3,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 3,
-      "Class": 1,
-      "Weapon": 0,
-      "AttackMale": 3,
-      "AttackFemale": 3,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
       "Job": 3,
       "Class": 2,
       "Weapon": 0,
@@ -564,17 +685,6 @@
     {
       "Job": 3,
       "Class": 9,
-      "Weapon": 0,
-      "AttackMale": 3,
-      "AttackFemale": 3,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 3,
-      "Class": 10,
       "Weapon": 0,
       "AttackMale": 3,
       "AttackFemale": 3,
@@ -684,29 +794,7 @@
     },
     {
       "Job": 4,
-      "Class": 8,
-      "Weapon": 0,
-      "AttackMale": 2,
-      "AttackFemale": 2,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 4,
       "Class": 9,
-      "Weapon": 0,
-      "AttackMale": 2,
-      "AttackFemale": 2,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 4,
-      "Class": 10,
       "Weapon": 0,
       "AttackMale": 2,
       "AttackFemale": 2,
@@ -732,28 +820,6 @@
       "Weapon": 0,
       "AttackMale": 2,
       "AttackFemale": 2,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 5,
-      "Class": 1,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 5,
-      "Class": 2,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
       "SpriteMale": "",
       "EffectMale": "",
       "SpriteFemale": "",
@@ -859,39 +925,6 @@
       "EffectFemale": ""
     },
     {
-      "Job": 5,
-      "Class": 12,
-      "Weapon": 0,
-      "AttackMale": 1,
-      "AttackFemale": 1,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 6,
-      "Class": 1,
-      "Weapon": 0,
-      "AttackMale": 2,
-      "AttackFemale": 2,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 6,
-      "Class": 2,
-      "Weapon": 0,
-      "AttackMale": 2,
-      "AttackFemale": 2,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
       "Job": 6,
       "Class": 3,
       "Weapon": 0,
@@ -916,39 +949,6 @@
     {
       "Job": 6,
       "Class": 5,
-      "Weapon": 0,
-      "AttackMale": 2,
-      "AttackFemale": 2,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 6,
-      "Class": 6,
-      "Weapon": 0,
-      "AttackMale": 2,
-      "AttackFemale": 2,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 6,
-      "Class": 7,
-      "Weapon": 0,
-      "AttackMale": 2,
-      "AttackFemale": 2,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 6,
-      "Class": 8,
       "Weapon": 0,
       "AttackMale": 2,
       "AttackFemale": 2,

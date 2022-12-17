@@ -7896,6 +7896,134 @@ MonoBehaviour:
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB86F\uB4DC_\uAC80\uAD11.spr"
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 03dca7cddb7f55a4e93dea040dedac3b
+    m_Address: "Assets/Sprites/Weapons/Archer/Female/\uAD81\uC218_\uC5EC_\uB2E8\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0959faa8af57799429022e581a4b6e96
+    m_Address: "Assets/Sprites/Weapons/Archer/Female/\uAD81\uC218_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 04435e694c97b4348b33f54e824b120f
+    m_Address: "Assets/Sprites/Weapons/Archer/Female/\uAD81\uC218_\uC5EC_\uD65C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b4855602acc4b0641ad46bf1f3c6eef9
+    m_Address: "Assets/Sprites/Weapons/Archer/Male/\uAD81\uC218_\uB0A8_\uD65C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a337c01084f617e40b7ce68cd367a9fd
+    m_Address: "Assets/Sprites/Weapons/Archer/Male/\uAD81\uC218_\uB0A8_\uB2E8\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 903f135f9a79eed429fbace38c4144a3
+    m_Address: "Assets/Sprites/Weapons/Archer/Male/\uAD81\uC218_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d4f2da79baee0c84ab27cf3d8e9dfd33
+    m_Address: "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7816db2a4cdade34dae6815a6d2b02d7
+    m_Address: "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uB86F\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f4cc236e65e348c4e9b81b00d4d28f61
+    m_Address: "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uC2A4\uD0AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2a0ea25506c0dd348b1a0bbea95e8a20
+    m_Address: "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uB2E8\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8ff34a04f456a5e46ba55087a02ac2b6
+    m_Address: "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uC2A4\uD0AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8fc14db6afa453a4fad644fabe4ec02a
+    m_Address: "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 52a6811404900b447bccdd0bc7104b5e
+    m_Address: "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uB86F\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 11b238f7d05c49146a0fcee454707993
+    m_Address: "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uB2E8\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6032143aa37ad3e49bd9549dcd86fa05
+    m_Address: "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uD074\uB7FD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 11531c79e11b08141bd3e4048021a5e5
+    m_Address: "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uB86F\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e8d9fcbf1cd28cc4fa25bda8ac1dfa09
+    m_Address: "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uD074\uB7FD_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 17163f7f48346aa4eb2127f38c0c74a5
+    m_Address: "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uB86F\uB4DC_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f2da5f9bca7e3e4409ec9f1d3885fb9d
+    m_Address: "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uB86F\uB4DC_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4546310bd8f183c4aa29d42e92533c50
+    m_Address: "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uB86F\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 088a098e1eb2e764cbdbb0a659be8c0b
+    m_Address: "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uD074\uB7FD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 100d2c38db1f2b14cbed43ed4c865c88
+    m_Address: "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uD074\uB7FD_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e0e329c44b0325f478dfa95f467a09b9
+    m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uD65C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 83a2098b8ff44de4ca77c640d44ad85d
+    m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 76cc23997a2f2514cbb72435fb1ff5b8
+    m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ee9167de0a8dc4f49bbc5e9648a432bb
+    m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uB2E8\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f64c05dc01e403741a5e9005041a89f5
+    m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b05df2e73239e524ab8c0154a8ff58ed
+    m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uB2E8\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 19df75561fc39c24688c84e0ac492a72
+    m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1e14a45b056aa0546bb2eb159766cab7
+    m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 87b19659fc2ec4b41be580e23cbb4e3b
+    m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 100a7aea6ea43a8408c78761293b3e24
+    m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uD65C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

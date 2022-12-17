@@ -53,7 +53,7 @@ public class Map
 
     private int entityCount = 0;
 
-    private const int ChunkSize = 8;
+    private int ChunkSize { get; set; } = 8;
 
     public void AddPlayerVisibility(WorldObject player, WorldObject other)
     {
@@ -945,12 +945,12 @@ public class Map
 
     public Chunk GetChunkForPosition(Position pos)
     {
-        return Chunks[(pos.X / 8) + (pos.Y / 8) * chunkWidth];
+        return Chunks[(pos.X / ChunkSize) + (pos.Y / ChunkSize) * chunkWidth];
     }
 
     public Area GetChunksForArea(Area area)
     {
-        return new Area(area.MinX / 8, area.MinY / 8, area.MaxX / 8, area.MaxY / 8);
+        return new Area(area.MinX / ChunkSize, area.MinY / ChunkSize, area.MaxX / ChunkSize, area.MaxY / ChunkSize);
     }
 
     public bool FindPositionInRange(Area area, out Position p)
@@ -994,8 +994,10 @@ public class Map
         Width = WalkData.Width;
         Height = WalkData.Height;
 
-        chunkWidth = AlignValue(Width, 8) / 8;
-        chunkHeight = AlignValue(Height, 8) / 8;
+        ChunkSize = ServerConfig.OperationConfig.MapChunkSize;
+
+        chunkWidth = AlignValue(Width, ChunkSize) / ChunkSize;
+        chunkHeight = AlignValue(Height, ChunkSize) / ChunkSize;
 
         MapBounds = new Area(1, 1, Width - 2, Height - 2);
         ChunkBounds = new Area(0, 0, chunkWidth - 1, chunkHeight - 1);
@@ -1020,6 +1022,7 @@ public class Map
                     }
                 }
                 Chunks[x + y * chunkWidth] = new Chunk();
+                Chunks[x + y * chunkWidth].Size = ChunkSize;
                 Chunks[x + y * chunkWidth].X = x;
                 Chunks[x + y * chunkWidth].Y = y;
                 Chunks[x + y * chunkWidth].WalkableTiles = walkable;

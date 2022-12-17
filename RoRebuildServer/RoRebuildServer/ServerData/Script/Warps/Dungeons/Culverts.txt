@@ -1,0 +1,23 @@
+﻿Warp("prt_sewb1", "culvertwarp001", 135, 248, 2, 2, "prt_fild05", 274, 208);
+Warp("prt_sewb1", "culvertwarp002", 188, 247, 1, 3, "prt_sewb2", 19, 19);
+Warp("prt_sewb2", "culvertwarp003", 19, 12, 2, 2, "prt_sewb1", 192, 247);
+Warp("prt_sewb2", "culvertwarp004", 19, 175, 4, 2, "prt_sewb2", 60, 28);
+Warp("prt_sewb2", "culvertwarp005", 60, 24, 4, 2, "prt_sewb2", 19, 171);
+Warp("prt_sewb2", "culvertwarp006", 100, 176, 4, 2, "prt_sewb2", 140, 28);
+Warp("prt_sewb2", "culvertwarp007", 140, 24, 4, 2, "prt_sewb2", 100, 172);
+Warp("prt_sewb2", "culvertwarp008", 180, 24, 4, 2, "prt_sewb3", 180, 169);
+Warp("prt_sewb3", "culvertwarp009", 20, 185, 3, 2, "prt_sewb4", 100, 92);
+Warp("prt_sewb3", "culvertwarp010", 180, 173, 4, 2, "prt_sewb2", 180, 28);
+Warp("prt_sewb4", "culvertwarp011", 100, 96, 3, 2, "prt_sewb3", 19, 180);
+
+Npc("prt_fild05", "Culvert Guard", "8W_SOLDIER", 272, 214, SE) 
+{
+OnClick:
+    FocusNpc();
+    Dialog(Name, "Hey there, you're one of the adventurers the captain said are helping with the bugs, right? If so you're in the right spot, this here's the entrance to the Prontera Culverts.");
+    Dialog(Name, "You interested in heading down now?");
+    Option("Yes Sir.", "Bugs you say? No thanks.");
+    if(Result == 1)
+        return;
+    MoveTo("prt_sewb1", 131, 247);
+}

@@ -284,7 +284,7 @@ class Program
 
     }
 
-    private static List<U> ConvertToClient<T, U>(string csvName, string jsonName, Func<List<T>, List<U>> convert)
+    private static List<TDst> ConvertToClient<TSrc, TDst>(string csvName, string jsonName, Func<List<TSrc>, List<TDst>> convert)
     {
         var inPath = Path.Combine(path, csvName);
         var tempPath = Path.Combine(Path.GetTempPath(), csvName); //copy in case file is locked
@@ -292,7 +292,7 @@ class Program
 
         using var tr = new StreamReader(tempPath) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
-        var jobs = csv.GetRecords<T>().ToList();
+        var jobs = csv.GetRecords<TSrc>().ToList();
 
         var list = convert(jobs);
 
@@ -314,7 +314,7 @@ class Program
     private static void WriteJobDataStuff()
     {
         var classes = ConvertToClient<CsvWeaponClass, PlayerWeaponClass>("WeaponClass.csv", "weaponclass.json",
-            weapons => weapons.Select(w => new PlayerWeaponClass() { Id = w.Id, Name = w.FullName }).ToList()
+            weapons => weapons.Select(w => new PlayerWeaponClass() { Id = w.Id, Name = w.FullName, WeaponClass = w.WeaponClass, HitSound = w.HitSound }).ToList()
         );
 
         var jobs = ConvertToClient<CsvJobs, PlayerClassData>("Jobs.csv", "playerclass.json",
@@ -324,13 +324,13 @@ class Program
         PlayerWeaponData CsvWeaponDataToClient(CsvJobWeaponInfo w) => new()
         {
             Job = jobs.First(j => j.Name == w.Job).Id,
-            Class = classes.First(c => c.Name == w.Class).Id,
+            Class = classes.First(c => c.WeaponClass == w.Class).Id,
             AttackMale = w.AttackMale,
             AttackFemale = w.AttackFemale,
-            SpriteFemale = w.SpriteFemale,
-            SpriteMale = w.SpriteMale,
-            EffectMale = w.EffectMale,
-            EffectFemale = w.EffectFemale
+            SpriteFemale = string.IsNullOrWhiteSpace(w.SpriteFemale) ? string.Empty : "Assets/Sprites/Weapons/" + w.SpriteFemale,
+            SpriteMale = string.IsNullOrWhiteSpace(w.SpriteMale) ? string.Empty : "Assets/Sprites/Weapons/" + w.SpriteMale,
+            EffectMale = string.IsNullOrWhiteSpace(w.EffectMale) ? string.Empty : "Assets/Sprites/Weapons/" + w.EffectMale,
+            EffectFemale = string.IsNullOrWhiteSpace(w.EffectFemale) ? string.Empty : "Assets/Sprites/Weapons/" + w.EffectFemale
         };
 
         //takes some extra processing because we're filling in each type that's not included in JobWeaponInfo.csv

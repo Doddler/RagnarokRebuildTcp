@@ -99,12 +99,26 @@ macro KafraTeleportListGeffen()
 
 macro KafraTeleportListPayon()
 {
-	Option("Prontera → 1200z", "Alberta → 1200z", "Morroc → 1200z", "Cancel" );
+	Option("Archer Village → 200z", "Prontera → 1200z", "Alberta → 1200z", "Morroc → 1200z", "Cancel" );
 	switch(Result)
 	{
-		case 0: @TeleportCase("prontera", 116, 72, 1200);
-		case 1: @TeleportCase("alberta", 117, 56, 1200);
-		case 2: @TeleportCase("morocc", 156, 46, 1800);
+		case 0: @TeleportCase("pay_arche", 65, 138, 200);
+		case 1: @TeleportCase("prontera", 116, 72, 1200);
+		case 2: @TeleportCase("alberta", 117, 56, 1200);
+		case 3: @TeleportCase("morocc", 156, 46, 1800);
+	}
+}
+
+
+macro KafraTeleportListArcherVillage()
+{
+	Option("Payon → 200z", "Prontera → 1200z", "Alberta → 1200z", "Morroc → 1200z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("payon", 161, 58, 200);
+		case 1: @TeleportCase("prontera", 116, 72, 1200);
+		case 2: @TeleportCase("alberta", 117, 56, 1200);
+		case 3: @TeleportCase("morocc", 156, 46, 1800);
 	}
 }
 
@@ -150,6 +164,6 @@ macro TeleportCase(%map, %x, %y, %zeny)
 
 @Kafra("payon", 181, 104, S, "Kafra Staff", "Kafra Employee", "4_F_KAFRA5", "kafra_05", "Payon South", "in the city of Payon", KafraTeleportListPayon);
 @Kafra("payon", 175, 226, S, "Kafra Staff", "Kafra Employee", "4_F_KAFRA2", "kafra_02", "Payon North", "in the city of Payon", KafraTeleportListPayon);
-@Kafra("pay_arche", 55, 123, NW, "Kafra Staff", "Kafra Employee", "4_F_KAFRA1", "kafra_01", "Archer Village", "in the Archer Village", KafraTeleportListPayon);
+@Kafra("pay_arche", 55, 123, NW, "Kafra Staff", "Kafra Employee", "4_F_KAFRA1", "kafra_01", "Archer Village", "in the Archer Village", KafraTeleportListArcherVillage);
 
 

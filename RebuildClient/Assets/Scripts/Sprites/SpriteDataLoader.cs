@@ -261,18 +261,18 @@ namespace Assets.Scripts.Sprites
 			
 			var bodySpriteName = param.IsMale ? pData.SpriteMale : pData.SpriteFemale;
 			var headSpriteName = param.IsMale ? hData.SpriteMale : hData.SpriteFemale;
-			
-			Debug.Log($"Instantiate player sprite with job {param.ClassId} weapon {param.WeaponClass}");
+
+            Debug.Log($"Instantiate player sprite with job {param.ClassId} weapon {param.WeaponClass}");
 
             PlayerWeaponData? weapon = null;
 
-			if (playerWeaponLookup.TryGetValue(param.ClassId, out var weaponsByJob))
-			{
+            if (playerWeaponLookup.TryGetValue(param.ClassId, out var weaponsByJob))
+            {
                 if (weaponsByJob.TryGetValue(param.WeaponClass, out var weapons) && weapons.Count > 0)
                 {
                     weapon = weapons[0]; //cheeeat, will need to change when we can have multiple sprites per weapon type
                 }
-			}
+            }
 
             if (weapon != null)
             {
@@ -313,8 +313,10 @@ namespace Assets.Scripts.Sprites
 
             weaponSprite.Parent = bodySprite;
             weaponSprite.SpriteOrder = 2;
+			if(isEffect)
+                weaponSprite.SpriteOrder = 20;
 
-			bodySprite.PreferredAttackMotion = isMale ? weapon.AttackMale : weapon.AttackFemale;
+            bodySprite.PreferredAttackMotion = isMale ? weapon.AttackMale : weapon.AttackFemale;
             bodySprite.ChildrenSprites.Add(weaponSprite);
 
             AddressableUtility.LoadRoSpriteData(parent, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);

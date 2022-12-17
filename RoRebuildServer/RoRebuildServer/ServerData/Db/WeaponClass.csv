@@ -1,14 +1,14 @@
-﻿Id,WeaponClass,FullName
-0,Unarmed,Unarmed
-1,Dagger,Dagger
-2,Sword,Sword
-3,2HSword,Sword (2-Handed)
-4,Spear,Spear
-5,2HSpear,Spear (2-Handed)
-6,Axe,Axe
-7,2HAxe,Axe (2-Handed)
-8,Mace,Mace
-9,2HMace,Mace (2-Handed)
-10,Rod,Rod
-11,2HRod,Rod (2-Handed)
-12,Bow,Bow
+﻿Id,WeaponClass,FullName,HitSound
+0,Unarmed,Unarmed,_hit_fist1/_hit_fist2/_hit_fist3/_hit_fist4
+1,Dagger,Dagger,_hit_dagger
+2,Sword,Sword,_hit_sword
+3,2HSword,Sword (2-Handed),_hit_sword
+4,Spear,Spear,_hit_spear
+5,2HSpear,Spear (2-Handed),_hit_spear
+6,Axe,Axe,_hit_axe
+7,2HAxe,Axe (2-Handed),_hit_axe
+8,Mace,Mace,_hit_mace
+9,2HMace,Mace (2-Handed),_hit_mace
+10,Rod,Rod,_hit_rod
+11,2HRod,Rod (2-Handed),_hit_rod
+12,Bow,Bow,_hit_arrow

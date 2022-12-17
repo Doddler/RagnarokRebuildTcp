@@ -44,6 +44,12 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
                 else
                     p.ChangeJob(GameRandom.Next(0, 6));
                 return; //return as we don't want to double refresh (change job will refresh)
+            case 4:
+                if (val >= 0 && val <= 12)
+                    p.SetWeaponClassOverride(val);
+                else
+                    p.SetWeaponClassOverride(0);
+                break;
         }
 
         connection.Character.Map.RefreshEntity(p.Character);

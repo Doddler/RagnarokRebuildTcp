@@ -45,4 +45,6 @@ public class PlayerWeaponClass
 {
     public int Id;
     public string Name;
+    public string WeaponClass;
+    public string HitSound;
 }

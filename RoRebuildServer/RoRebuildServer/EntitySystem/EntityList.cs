@@ -8,15 +8,20 @@ public class EntityList
     private int count;
     private int capacity;
 
+    private readonly bool useDelayCreate;
+    private bool isCreated;
+
     public int Count => count;
 
     public EntityList() : this(32) { }
 
-    public EntityList(int initialCapacity)
+    public EntityList(int initialCapacity, bool delayCreate = false)
     {
         capacity = initialCapacity;
         count = 0;
         entities = new Entity[capacity];
+        useDelayCreate = delayCreate;
+        isCreated = false;
         //entityLookup = new Dictionary<EcsEntity, int>(capacity);
     }
 
@@ -32,6 +37,12 @@ public class EntityList
 
     private void ResizeIfNeeded()
     {
+        if (useDelayCreate && !isCreated)
+        {
+            entities = new Entity[capacity];
+            isCreated = true;
+        }
+
         if (count + 1 > capacity)
         {
             capacity *= 2;

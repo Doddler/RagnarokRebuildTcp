@@ -16,8 +16,12 @@ public class PacketAdminServerAction : IClientPacketHandler
 
         var type = (AdminAction)msg.ReadByte();
 
-        if(type == AdminAction.ForceGC)
+        if (type == AdminAction.ForceGC)
+        {
             GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
 
         if(type == AdminAction.ReloadScripts)
             World.Instance.TriggerReloadServerScripts();
