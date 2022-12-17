@@ -31,7 +31,7 @@ namespace Assets.Scripts.MapEditor
 
         public bool NeedsUVUpdate;
 
-        private bool needRebuild;
+        //private bool needRebuild;
         private float delayToRebuild = 5f;
 
         private EditorCoroutine rebuildCoroutine;
@@ -295,7 +295,7 @@ namespace Assets.Scripts.MapEditor
             //}
 
 
-            needRebuild = true;
+            //needRebuild = true;
             delayToRebuild = Random.Range(4f, 8f);
 
             Mesh = mesh.Build(name);

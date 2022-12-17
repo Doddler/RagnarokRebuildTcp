@@ -66,7 +66,7 @@ namespace Assets.Scripts.Network
         public static string SpawnMap = "";
 #endif
 
-        private async void Start()
+        private void Start()
         {
             Debug.Log("Starting Network Manager");
 
@@ -89,7 +89,12 @@ namespace Assets.Scripts.Network
 
         private IEnumerator StartUp()
         {
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
+            var target = "ws://127.0.0.1:5000/ws";
+            StartConnectServer(target);
+            yield break; //end coroutine
+#else
+
             //update addressables
             AsyncOperationHandle<List<IResourceLocator>> updateHandle = Addressables.UpdateCatalogs();
             yield return updateHandle;
@@ -99,12 +104,6 @@ namespace Assets.Scripts.Network
 
             yield return spritePreload;
             yield return uiPreload;
-#endif
-#if UNITY_EDITOR
-            var target = "ws://127.0.0.1:5000/ws";
-            StartConnectServer(target);
-            yield break; //end coroutine
-#endif
 
             if (Application.platform == RuntimePlatform.WindowsPlayer)
             {
@@ -130,6 +129,7 @@ namespace Assets.Scripts.Network
 
                 StartConnectServer(www.text);
             }
+#endif
         }
 
         private void StartConnectServer(string serverPath)
@@ -320,7 +320,7 @@ namespace Assets.Scripts.Network
                 {
                     name = msg.ReadString();
                     interactable = msg.ReadBoolean();
-                    Debug.Log(name);
+                    //Debug.Log(name);
                 }
 
                 var monData = new MonsterSpawnParameters()

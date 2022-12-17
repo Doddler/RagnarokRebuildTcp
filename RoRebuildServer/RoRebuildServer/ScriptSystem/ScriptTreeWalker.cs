@@ -1,4 +1,5 @@
-﻿using Antlr4.Runtime;
+﻿using System.Diagnostics;
+using Antlr4.Runtime;
 using RebuildSharedData.Util;
 using RoRebuildServer.Logging;
 using RoServerScript;
@@ -9,8 +10,8 @@ namespace RoRebuildServer.ScriptSystem;
 
 internal class ScriptTreeWalker
 {
-    private ScriptBuilder builder;
-    private string name;
+    private ScriptBuilder builder = null!;
+    private string name = null!;
     private Action<StartSectionContext>? sectionHandler;
     private Dictionary<string, ScriptMacro> macroMap = new();
 
@@ -741,6 +742,8 @@ internal class ScriptTreeWalker
 
         if (activeMacros.Contains(id))
             ErrorResult(macroContext, $"You cannot call macro {id} as it is currently already active. A macro cannot call itself or be called by any siblings.");
+
+        Debug.Assert(macro != null);
 
         activeMacros.Add(id);
         builder.PushMacro(macro);

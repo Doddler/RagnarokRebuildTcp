@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
@@ -16,13 +17,13 @@ namespace RoRebuildServer.EntityComponents;
 public partial class Monster : IEntityAutoReset
 {
     public Entity Entity;
-    public WorldObject Character;
-    public CombatEntity CombatEntity;
+    public WorldObject Character = null!;
+    public CombatEntity CombatEntity = null!;
     
     private float aiTickRate;
     //private float aiCooldown;
 
-    private float nextAiUpdate { get; set; }
+    private float nextAiUpdate;
     private float nextMoveUpdate;
 
     //private float randomMoveCooldown;
@@ -30,27 +31,27 @@ public partial class Monster : IEntityAutoReset
     private const float minIdleWaitTime = 3f;
     private const float maxIdleWaitTime = 6f;
 
-    private bool hasTarget;
+    //private bool hasTarget;
 
     private Entity Target;
 
-    private WorldObject targetCharacter => Target.GetIfAlive<WorldObject>();
+    private WorldObject? targetCharacter => Target.GetIfAlive<WorldObject>();
 
-    public MonsterDatabaseInfo MonsterBase;
+    public MonsterDatabaseInfo MonsterBase = null!;
     //public MapSpawnEntry SpawnEntry;
-    public string SpawnMap;
+    public string SpawnMap = null!;
     public MapSpawnRule? SpawnRule;
     private MonsterAiType aiType;
-    private List<MonsterAiEntry> aiEntries;
+    private List<MonsterAiEntry> aiEntries = null!;
 
     public bool LockMovementToSpawn;
 
     public MonsterAiState CurrentAiState;
 
-    private WorldObject searchTarget;
+    //private WorldObject searchTarget = null!;
 
     private float deadTimeout;
-    private float allyScanTimeout;
+    //private float allyScanTimeout;
 
     public static float MaxSpawnTimeInSeconds = 180;
 
@@ -60,16 +61,16 @@ public partial class Monster : IEntityAutoReset
 	public void Reset()
     {
         Entity = Entity.Null;
-        Character = null;
-        aiEntries = null;
+        Character = null!;
+        aiEntries = null!;
         //SpawnEntry = null;
-        CombatEntity = null;
-        searchTarget = null;
+        CombatEntity = null!;
+        //searchTarget = null!;
         aiTickRate = 0.1f;
         nextAiUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(0, aiTickRate);
         SpawnRule = null;
-        MonsterBase = null;
-        SpawnMap = null;
+        MonsterBase = null!;
+        SpawnMap = null!;
 		
         Target = Entity.Null;
     }
@@ -165,7 +166,7 @@ public partial class Monster : IEntityAutoReset
             return;
         }
 
-        Character.Map.RemoveEntity(ref Entity, CharacterRemovalReason.Dead, false);
+        Character.Map?.RemoveEntity(ref Entity, CharacterRemovalReason.Dead, false);
         deadTimeout = GameRandom.NextFloat(SpawnRule.MinSpawnTime / 1000f, SpawnRule.MaxSpawnTime / 1000f);
         if (deadTimeout < 0.4f)
             deadTimeout = 0.4f; //minimum respawn time
@@ -197,7 +198,9 @@ public partial class Monster : IEntityAutoReset
 
 		var list = EntityListPool.Get();
 
-		Character.Map.GatherMonstersOfTypeInRange(Character.Position, distance, list, MonsterBase);
+        Debug.Assert(Character.Map != null, "Monster must be attached to a map");
+
+        Character.Map.GatherMonstersOfTypeInRange(Character.Position, distance, list, MonsterBase);
 
 		if (list.Count == 0)
 		{

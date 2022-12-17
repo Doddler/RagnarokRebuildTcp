@@ -4,13 +4,13 @@ namespace RoRebuildServer.Data.CsvDataTypes;
 
 public class CsvJobWeaponInfo
 { 
-    public string Job { get; set; }
-    public string Class { get; set; }
-    public int ItemId { get; set; }
-    public int AttackMale { get; set; }
-    public int AttackFemale { get; set; }
-    public string SpriteMale { get; set; }
-    public string EffectMale { get; set; }
-    public string SpriteFemale { get; set; }
-    public string EffectFemale { get; set; }
+    public required string Job { get; set; }
+    public required string Class { get; set; }
+    public required int ItemId { get; set; }
+    public required int AttackMale { get; set; }
+    public required int AttackFemale { get; set; }
+    public required string SpriteMale { get; set; }
+    public required string EffectMale { get; set; }
+    public required string SpriteFemale { get; set; }
+    public required string EffectFemale { get; set; }
 }

@@ -109,7 +109,7 @@ public static class EntityComponentManager
             {
                 var et = componentTypes[j];
                 var attribute = et.GetCustomAttributes(typeof(EntityComponent), true).First() as EntityComponent;
-                if (attribute.ApplicableTypes.Any(t => t == entityType))
+                if (attribute != null && attribute.ApplicableTypes.Any(t => t == entityType))
                 {
                     componentIndexes[i * MaxComponentCount + index] = GetComponentIndex(et);
                     componentPositions[i * MaxComponentCount + j] = index;

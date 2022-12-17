@@ -12,8 +12,7 @@ public static class RoDatabase
     private static IServiceScopeFactory scopeFactory;
     private static IConfiguration config;
 
-    private static Channel<IDbRequest> dbRequestChannel;
-    private static Thread dbProcessThread;
+    private static Channel<IDbRequest> dbRequestChannel = null!;
 
     private static int activeDbRequestThreads;
 
@@ -31,7 +30,6 @@ public static class RoDatabase
 
         var provider = services.BuildServiceProvider();
         scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
-        
     }
 
     public static RoContext GetUnscopedDbContext()

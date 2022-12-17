@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
@@ -14,7 +15,7 @@ public class WorldObject : IEntityAutoReset
 {
     public int Id { get; set; }
     public Entity Entity;
-    public string Name;
+    public string Name = null!;
     public bool IsActive;
     public bool Hidden;
     public int ClassId;
@@ -46,10 +47,12 @@ public class WorldObject : IEntityAutoReset
 
     public Map? Map;
 
-    private Player player;
-    private Monster monster;
-    private Npc npc;
-    private CombatEntity combatEntity;
+    //really silly to suppress null on these when they could actually be null but, well...
+    private Player player = null!;
+    private Monster monster = null!;
+    private Npc npc = null!;
+    private CombatEntity combatEntity = null!;
+
     public Player Player
     {
         get
@@ -218,6 +221,8 @@ public class WorldObject : IEntityAutoReset
     
     public void SitStand(bool isSitting)
     {
+        Debug.Assert(Map != null);
+
         if (Type != CharacterType.Player)
             return;
 
@@ -239,14 +244,15 @@ public class WorldObject : IEntityAutoReset
 
     public void ChangeLookDirection(ref Entity entity, Direction direction, HeadFacing facing)
     {
+        Debug.Assert(Map != null);
+
         if (State == CharacterState.Moving || State == CharacterState.Dead)
             return;
 
         FacingDirection = direction;
 
         var player = entity.Get<Player>();
-        if (player != null)
-            player.HeadFacing = facing;
+        player.HeadFacing = facing;
 
         Map.GatherPlayersForMultiCast(ref entity, this);
         CommandBuilder.ChangeFacingMulti(this);
@@ -255,6 +261,8 @@ public class WorldObject : IEntityAutoReset
 
     public void StopMovingImmediately()
     {
+        Debug.Assert(Map != null);
+
         if (State == CharacterState.Moving)
         {
             Map.GatherPlayersForMultiCast(ref Entity, this);
@@ -266,6 +274,8 @@ public class WorldObject : IEntityAutoReset
 
     public bool AddMoveDelay(float delay)
     {
+        Debug.Assert(Map != null);
+
         if (HitDelay > Time.ElapsedTimeFloat)
             return false;
 
@@ -287,6 +297,8 @@ public class WorldObject : IEntityAutoReset
 
     public bool TryMove(ref Entity entity, Position target, int range)
     {
+        Debug.Assert(Map != null);
+
         if (State == CharacterState.Sitting || State == CharacterState.Dead)
             return false;
 
@@ -343,6 +355,9 @@ public class WorldObject : IEntityAutoReset
 
     public void StopAction()
     {
+        Debug.Assert(Map != null);
+        Debug.Assert(WalkPath != null);
+
         var needsStop = false;
 
         //if it's not MoveStep + 2, that means the next step is already the last step.
@@ -407,6 +422,8 @@ public class WorldObject : IEntityAutoReset
             
             if (MoveCooldown <= 0f)
             {
+                Debug.Assert(WalkPath != null);
+
                 FacingDirection = (WalkPath[MoveStep + 1] - WalkPath[MoveStep]).GetDirectionForOffset();
 
                 MoveStep++;

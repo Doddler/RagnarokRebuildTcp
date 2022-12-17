@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using RebuildSharedData.Data;
 using RoRebuildServer.EntityComponents.Character;
 
@@ -21,6 +22,7 @@ public class LoadCharacterRequest : IDbRequest
         Name = string.Empty;
         Map = string.Empty;
         Position = Position.Invalid;
+        SavePosition = null!;
     }
 
     public async Task ExecuteAsync(RoContext dbContext)
@@ -39,9 +41,11 @@ public class LoadCharacterRequest : IDbRequest
         Data = ch.Data;
         if (ch.SavePoint != null)
         {
+            Debug.Assert(!string.IsNullOrWhiteSpace(ch.SavePoint.MapName), "Map name should never be empty");
+
             SavePosition = new SavePosition()
             {
-                MapName = ch.SavePoint.MapName ?? "",
+                MapName = ch.SavePoint.MapName,
                 Position = new Position(ch.SavePoint.X, ch.SavePoint.Y),
                 Area = ch.SavePoint.Area
             };

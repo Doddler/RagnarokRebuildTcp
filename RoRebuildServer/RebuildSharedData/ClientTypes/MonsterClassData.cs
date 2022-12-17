@@ -1,5 +1,7 @@
 ﻿namespace RebuildSharedData.ClientTypes;
 
+#pragma warning disable CS8618 //disable warning for nullable fields
+
 [Serializable]
 public class MonsterClassData
 {

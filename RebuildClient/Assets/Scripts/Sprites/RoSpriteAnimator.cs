@@ -633,7 +633,7 @@ namespace Assets.Scripts.Sprites
             //}
         }
 
-        private float trailCountdown = 0.1f;
+        //private float trailCountdown = 0.1f;
 
         public void Update()
         {

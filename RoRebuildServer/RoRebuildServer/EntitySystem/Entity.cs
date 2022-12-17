@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -60,11 +61,11 @@ public struct Entity
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGet<T>([MaybeNullWhen(false)] out T component) where T : class
+    public bool TryGet<T>([NotNullWhen(true)] out T component) where T : class
     {
         if (!IsAlive())
         {
-            component = null;
+            component = null!;
             return false;
         }
 
@@ -77,11 +78,12 @@ public struct Entity
 
         if (id < 0)
         {
-            component = null;
+            component = null!;
             return false;
         }
-
+        
         component = (T)data.Components[id];
+        Debug.Assert(component != null, "TryGet<T> must return valid component if returning true");
         return true;
     }
     

@@ -2,9 +2,9 @@
 
 public static class EntityManager
 {
-    public static EntityData[] Entities;
+    public static EntityData[] Entities = null!;
     public static int EntityCount;
-    public static GrowList<int> FreeEntities;
+    public static GrowList<int> FreeEntities = null!;
 
     internal static int ComponentTypeCount;
 
@@ -34,7 +34,7 @@ public static class EntityManager
 
         for (var i = 0; i < typeCount; i++)
         {
-            data.Components[i] = EntityComponentManager.GetComponentByIndex(type, i);
+            data.Components[i] = EntityComponentManager.GetComponentByIndex(type, i)!;
         }
 
         Entities[id] = data;

@@ -47,7 +47,7 @@ public class ScriptBuilder
 
     private string className = "";
     private string methodName = "";
-    private string npcName = "";
+    //private string npcName = "";
     private string stateVariable = "";
     private string localvariable = "";
     private int pointerCount = 0;
@@ -668,7 +668,7 @@ public class ScriptBuilder
 
         throw new Exception($"Error in {className} line {lineNumber} : Unable to parse parse unidentified constant '{id}'");
 
-        return id;
+        //return id;
     }
 
     public string GetStringForVariable(string id)

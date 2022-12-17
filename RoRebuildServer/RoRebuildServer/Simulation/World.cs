@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Channels;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.VisualBasic;
@@ -63,12 +65,17 @@ public class World
             var instance = new Instance(this, instanceEntry);
             var id = Instances.Count;
             Instances.Add(instance);
-            foreach(var map in instanceEntry.Maps)
+            foreach (var map in instanceEntry.Maps)
+            {
                 worldMapInstanceLookup.Add(map, id);
+                mapCount++;
+            }
         }
 
         AoEPool = new DefaultObjectPool<AreaOfEffect>(new AreaOfEffectPoolPolicy(), 64);
         moveRequests = Channel.CreateUnbounded<MapMoveRequest>(new UnboundedChannelOptions() {AllowSynchronousContinuations = false, SingleReader = true, SingleWriter = false});
+
+        ServerLogger.Log($"World created, using {mapCount} maps and {nextEntityId} entities.");
     }
 
     public void FullyRemoveEntity(ref Entity entity, CharacterRemovalReason reason = CharacterRemovalReason.OutOfSight)
@@ -435,6 +442,8 @@ public class World
 
         var map = monster.Character.Map;
 
+        Debug.Assert(map != null);
+
         var area = map.MapBounds;
         if (spawnEntry.HasSpawnZone)
             area = spawnEntry.SpawnArea;
@@ -492,7 +501,7 @@ public class World
     }
 
 
-    public bool TryGetWorldMapByName(string mapName, out Map? map)
+    public bool TryGetWorldMapByName(string mapName, [NotNullWhen(true)] out Map? map)
     {
         if (worldMapInstanceLookup.TryGetValue(mapName, out var instanceId))
         {

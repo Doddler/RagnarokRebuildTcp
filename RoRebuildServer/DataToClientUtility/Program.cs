@@ -95,7 +95,7 @@ class Program
 
             //var ip = entries.FirstOrDefault(e => e.Key == "IP").Value;
             //var port = entries.FirstOrDefault(e => e.Key == "Port").Value;
-            var url = entries.FirstOrDefault(e => e.Key == "Url").Value;
+            var url = entries.First(e => e.Key == "Url").Value;
 
             var configPath = Path.Combine(outPathStreaming, "serverconfig.txt");
 

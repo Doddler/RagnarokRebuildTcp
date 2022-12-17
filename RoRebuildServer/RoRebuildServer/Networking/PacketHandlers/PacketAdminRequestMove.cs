@@ -14,7 +14,8 @@ public class PacketAdminRequestMove : IClientPacketHandler
         if (!connection.Entity.IsAlive())
             return;
 
-        if (!connection.Player.IsAdmin && !ServerConfig.DebugConfig.EnableWarpCommandForEveryone)
+        if (connection.Player == null || connection.Character?.Map == null 
+            || (!connection.Player.IsAdmin && !ServerConfig.DebugConfig.EnableWarpCommandForEveryone))
             return;
 
         var player = connection.Player;

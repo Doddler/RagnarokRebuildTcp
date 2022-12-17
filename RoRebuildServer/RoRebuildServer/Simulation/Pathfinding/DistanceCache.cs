@@ -6,10 +6,10 @@ namespace RoRebuildServer.Simulation.Pathfinding;
 
 public static class DistanceCache
 {
-    private static Direction[] directions;
-    private static float[] angles;
-    private static float[] distances;
-    private static int[] intDistances;
+    private static Direction[] directions = null!;
+    private static float[] angles = null!;
+    private static float[] distances = null!;
+    private static int[] intDistances = null!;
 
     private static int max;
     private static int width;

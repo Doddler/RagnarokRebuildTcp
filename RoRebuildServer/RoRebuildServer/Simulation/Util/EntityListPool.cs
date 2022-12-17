@@ -7,13 +7,13 @@ public static class EntityListPool
 {
     private static ObjectPool<EntityList> pool;
 
-    private static bool isInitialized;
+    //private static bool isInitialized;
 
     static EntityListPool()
     {
         var defaultPolicy = new DefaultPooledObjectPolicy<EntityList>();
         pool = new DefaultObjectPool<EntityList>(defaultPolicy);
-        isInitialized = true;
+        //isInitialized = true;
     }
 
     public static EntityList Get()

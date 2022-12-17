@@ -16,6 +16,8 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
 
         var p = connection.Player;
 
+        if (p == null) return;
+
         var id = msg.ReadInt32();
         var val = msg.ReadInt32();
         

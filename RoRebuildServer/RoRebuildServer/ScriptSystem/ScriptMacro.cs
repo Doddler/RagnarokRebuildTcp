@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using RoRebuildServer.EntitySystem;
 using RoServerScript;
 
@@ -36,7 +37,7 @@ public class ScriptMacro
 
     public RoScriptParser.ExpressionContext GetVariable(string name) => Values[VariableIds[name]];
 
-    public bool TryGetVariable(string name, out RoScriptParser.ExpressionContext output)
+    public bool TryGetVariable(string name, [NotNullWhen(true)] out RoScriptParser.ExpressionContext? output)
     {
         output = null;
         if (!VariableIds.TryGetValue(name, out var id))

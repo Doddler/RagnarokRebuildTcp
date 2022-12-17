@@ -1,5 +1,7 @@
 ﻿namespace RoRebuildServer.Data.Config;
 
+#pragma warning disable CS8618 //non nullable field defaulting to null
+
 public class ServerDebugConfig
 {
     public bool UseDebugMode { get; set; }

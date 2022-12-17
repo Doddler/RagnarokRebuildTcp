@@ -2,10 +2,10 @@
 
 public class CsvJobs
 {
-    public int Id { get; set; }
-    public string Class { get; set; }
-    public float HP { get; set; }
-    public float SP { get; set; }
-    public string SpriteMale { get; set; }
-    public string SpriteFemale { get; set; }
+    public required int Id { get; set; }
+    public required string Class { get; set; }
+    public required float HP { get; set; }
+    public required float SP { get; set; }
+    public required string SpriteMale { get; set; }
+    public required string SpriteFemale { get; set; }
 }

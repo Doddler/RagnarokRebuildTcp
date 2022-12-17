@@ -23,7 +23,7 @@ public class Instance
     {
         this.world = world;
         Maps = new List<Map>(instanceDetails.Maps.Count);
-        Entities = new EntityList(256);
+        Entities = new EntityList(128);
         Pathfinder = new Pathfinder();
 
         foreach (var mapId in instanceDetails.Maps)

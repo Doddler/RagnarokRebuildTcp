@@ -17,7 +17,7 @@ internal class ZoneWorker : BackgroundService
     private readonly ILogger<ZoneWorker> logger;
     private readonly IServiceProvider services;
     private readonly IHostApplicationLifetime appLifetime;
-    private World world;
+    private World? world;
 
     public ZoneWorker(ILogger<ZoneWorker> logger, IServiceProvider services, IHostApplicationLifetime appLifetime)
     {
@@ -56,6 +56,8 @@ internal class ZoneWorker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Initialize();
+
+        Debug.Assert(world != null);
         
         var stopwatch = new Stopwatch();
         stopwatch.Start();

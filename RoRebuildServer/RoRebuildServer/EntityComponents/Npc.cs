@@ -266,6 +266,8 @@ public class Npc : IEntityAutoReset
     {
         var chara = Entity.Get<WorldObject>();
 
+        Debug.Assert(chara.Map != null, $"Npc {Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
         var monster = DataManager.MonsterCodeLookup[name];
 
         var area = Area.CreateAroundPoint(chara.Position + new Position(offsetX, offsetY), width, height);
@@ -286,6 +288,7 @@ public class Npc : IEntityAutoReset
     public bool CheckMonstersOfTypeInRange(string name, int x, int y, int distance)
     {
         var chara = Entity.Get<WorldObject>();
+        Debug.Assert(chara.Map != null, $"Npc {Name} cannot check monsters of type {name} nearby, it is not currently attached to a map.");
         return chara.Map.HasMonsterOfTypeInRange(new Position(x, y), distance, DataManager.MonsterCodeLookup[name]);
     }
 
@@ -314,6 +317,9 @@ public class Npc : IEntityAutoReset
         if (chara.Hidden)
             return; //npc already hidden
 
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to execute HideNpc, but the npc is not currently attached to a map.");
+
         //this puts the npc in a weird state where it still exists in the Instance, but not on the map
         chara.Map.RemoveEntity(ref Entity, CharacterRemovalReason.OutOfSight, false);
         chara.Hidden = true;
@@ -328,6 +334,9 @@ public class Npc : IEntityAutoReset
 
         if (!chara.Hidden)
             return; //npc is already visible
+
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to execute ShowNpc, but the npc is not currently attached to a map.");
 
         chara.Hidden = false;
         chara.Map.AddEntity(ref Entity, false);
@@ -354,6 +363,9 @@ public class Npc : IEntityAutoReset
     public void SignalNpc(string npcName, string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
     {
         var chara = Entity.Get<WorldObject>();
+
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to signal npc {npcName}, but the npc is not currently attached to a map.");
 
         if (!chara.Map.Instance.NpcNameLookup.TryGetValue(npcName, out var destNpc) || !destNpc.IsAlive())
         {

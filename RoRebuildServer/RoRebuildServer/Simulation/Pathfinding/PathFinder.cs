@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Logging;
@@ -16,7 +17,7 @@ public class PathNode : IComparable<PathNode>
     public float Score;
     public Direction Direction;
 
-    public void Set(PathNode parent, Position position, float distance)
+    public void Set(PathNode? parent, Position position, float distance)
     {
         Parent = parent;
         Position = position;
@@ -41,7 +42,7 @@ public class PathNode : IComparable<PathNode>
         F = Score + Distance;
     }
 
-    public PathNode(PathNode parent, Position position, float distance)
+    public PathNode(PathNode? parent, Position position, float distance)
     {
         Set(parent, position, distance);
     }
@@ -87,8 +88,10 @@ public class Pathfinder
 
     }
 
-    private PathNode NextPathNode(PathNode parent, Position position, float distance)
+    private PathNode NextPathNode(PathNode? parent, Position position, float distance)
     {
+        Debug.Assert(nodeCache != null);
+
         var n = nodeCache[cachePos - 1];
         n.Set(parent, position, distance);
         cachePos--;
@@ -381,7 +384,7 @@ public class Pathfinder
         return path != null;
     }
 
-    public int GetPath(MapWalkData walkData, Position start, Position target, Position[] pathOut, int range)
+    public int GetPath(MapWalkData walkData, Position start, Position target, Position[]? pathOut, int range)
     {
         if (start == target)
             return 0;

@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Character;
@@ -52,7 +53,7 @@ public partial class Monster
 
 	private bool InEnemyOutOfSight()
 	{
-		if (!ValidateTarget())
+		if (!ValidateTarget() || targetCharacter == null)
 			return true;
 
         if (!targetCharacter.CombatEntity.IsValidTarget(CombatEntity))
@@ -67,7 +68,7 @@ public partial class Monster
 		if (Character.MoveSpeed < 0 && InEnemyOutOfAttackRange())
 			return true;
 		
-        if (!Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
+        if (Character.Map != null && !Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
         {
 			if (Character.Map?.Instance.Pathfinder.GetPath(Character.Map.WalkData, Character.Position,
                     targetCharacter.Position, null, 1) == 0)
@@ -79,7 +80,7 @@ public partial class Monster
 
 	private bool InAttackRange()
 	{
-		if (Character.Map.PlayerCount == 0)
+		if (Character.Map != null && Character.Map.PlayerCount == 0)
 			return false;
 
 		//do we have a target? If we do and it's not valid, remove it.
@@ -87,7 +88,7 @@ public partial class Monster
 			Target = Entity.Null;
 
 		//if we have a character still, check if we're in range.
-        if (Target != Entity.Null)
+        if (Target != Entity.Null && targetCharacter != null)
         {
             var adjust = 0;
             if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
@@ -138,7 +139,7 @@ public partial class Monster
 
 	private bool InAllyInCombat()
 	{
-		if (!Character.Map.QuickCheckPlayersNearby(Character, 15))
+		if (!Character.Map!.QuickCheckPlayersNearby(Character, 15))
 			return false;
 
 		if (CanAssistAlly(9, out var target))
@@ -179,6 +180,7 @@ public partial class Monster
 		if (targetCharacter.Position.DistanceTo(Character.Position) > MonsterBase.Range - adjust)
 			return true;
 
+        Debug.Assert(Character.Map != null, "Character.Map != null");
         if (!Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
             return true;
 
@@ -187,7 +189,7 @@ public partial class Monster
 
 	private bool InTargetSearch()
 	{
-		if (Character.Map.PlayerCount == 0)
+		if (Character.Map == null || Character.Map.PlayerCount == 0)
 			return false;
 
 		if (!FindRandomTargetInRange(MonsterBase.ScanDist, out var newTarget))
@@ -281,6 +283,8 @@ public partial class Monster
         if (MonsterBase.MoveSpeed < 0)
             return false;
 
+        Debug.Assert(targetCharacter != null, $"Monster {Character.Name} attempting to perform attack adjustment while targetCharacter is null.");
+
         var area = Area.CreateAroundPoint(Character.Position, 1);
         area.ClipArea(Area.CreateAroundPoint(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range)));
 
@@ -310,7 +314,7 @@ public partial class Monster
 		var distance = Character.Position.DistanceTo(targetChar.Position);
 		if (distance <= MonsterBase.Range)
 		{
-			hasTarget = true;
+			//hasTarget = true;
 			return true;
 		}
 
@@ -318,10 +322,10 @@ public partial class Monster
 		{
 
 			nextMoveUpdate = 0;
-			hasTarget = true;
+			//hasTarget = true;
 			return true;
 		}
-
+		
 		return false;
 	}
 
@@ -337,7 +341,6 @@ public partial class Monster
 		var distance = Character.Position.DistanceTo(targetChar.Position);
 		if (distance <= MonsterBase.Range)
 		{
-			hasTarget = true;
 			Target = Character.LastAttacked;
 			return true;
 		}
@@ -347,16 +350,17 @@ public partial class Monster
 
 			nextMoveUpdate = 0;
 			Target = Character.LastAttacked;
-			hasTarget = true;
 			return true;
 		}
-
+		
 		return false;
 	}
 
 	private bool OutPerformAttack()
 	{
-		var targetEntity = targetCharacter.Entity.Get<CombatEntity>();
+        Debug.Assert(targetCharacter != null, $"Monster {Character.Name} must have a target to use this action.");
+
+        var targetEntity = targetCharacter.Entity.Get<CombatEntity>();
 		if (!targetEntity.IsValidTarget(CombatEntity))
 			return false;
 

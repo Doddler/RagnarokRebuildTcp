@@ -263,7 +263,7 @@ public class CombatEntity : IEntityAutoReset
 
         //ServerLogger.Log($"{aiCooldown} {character.AttackCooldown} {angle} {dir}");
 
-        Character.Map.GatherPlayersForMultiCast(ref Entity, Character);
+        Character.Map?.GatherPlayersForMultiCast(ref Entity, Character);
         CommandBuilder.AttackMulti(Character, target.Character, di);
         CommandBuilder.ClearRecipients();
 
@@ -308,7 +308,7 @@ public class CombatEntity : IEntityAutoReset
             //inform clients the player was hit and for how much
             var delayTime = GetTiming(TimingStat.HitDelayTime);
 
-            Character.Map.GatherPlayersForMultiCast(ref Entity, Character);
+            Character.Map?.GatherPlayersForMultiCast(ref Entity, Character);
             if (Character.AddMoveDelay(delayTime))
                 CommandBuilder.SendHitMulti(Character, delayTime, damage);
             else

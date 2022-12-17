@@ -1,11 +1,9 @@
-﻿using Microsoft.Toolkit.HighPerformance;
-using RebuildSharedData.Data;
+﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
@@ -784,7 +782,7 @@ public class Map
         var charChunk = GetChunkForPosition(ch.Position);
         var removal = charChunk.RemoveEntity(ref entity, ch.Type);
 
-        if (!removal)
+        if (!removal && ch.State != CharacterState.Dead) //monster could be waiting respawn, it's not that weird to not be on a chunk if dead
         {
             ServerLogger.LogWarning($"Attempting to remove entity {entity} from map, but it appears to already be gone.");
         }

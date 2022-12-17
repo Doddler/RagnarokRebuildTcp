@@ -2,9 +2,9 @@
 
 public class MapEntry
 {
-    public string Name { get; set; }
-    public string Code { get; set; }
-    public string WalkData { get; set; }
-    public string MapMode { get; set; }
-    public string Music { get; set; }
+    public required string Name { get; set; }
+    public required string Code { get; set; }
+    public required string WalkData { get; set; }
+    public required string MapMode { get; set; }
+    public required string Music { get; set; }
 }

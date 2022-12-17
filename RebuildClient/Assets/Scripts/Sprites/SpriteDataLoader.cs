@@ -264,7 +264,7 @@ namespace Assets.Scripts.Sprites
 
             Debug.Log($"Instantiate player sprite with job {param.ClassId} weapon {param.WeaponClass}");
 
-            PlayerWeaponData? weapon = null;
+            PlayerWeaponData weapon = null;
 
             if (playerWeaponLookup.TryGetValue(param.ClassId, out var weaponsByJob))
             {

@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
@@ -11,7 +12,7 @@ public class PacketRandomTeleport : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-		if (connection.Character == null || connection.Player == null)
+		if (connection.Character == null || connection.Player == null || connection.Character.Map == null)
             return;
 
         var player = connection.Player;
@@ -29,7 +30,7 @@ public class PacketRandomTeleport : IClientPacketHandler
 
         var ch = connection.Character;
         var map = ch.Map;
-
+        
         var p = new Position();
 
         do

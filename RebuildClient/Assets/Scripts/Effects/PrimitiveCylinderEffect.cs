@@ -10,11 +10,6 @@ namespace Assets.Scripts.Effects
 {
     class PrimitiveCylinderEffect : PrimitiveBaseEffect
     {
-        private Vector3[] verts = new Vector3[4];
-        private Vector3[] normals = new Vector3[4];
-        private Color[] colors = new Color[4];
-        private Vector2[] uvs = new Vector2[4];
-
         public static PrimitiveCylinderEffect LaunchEffect(GameObject go, Material mat, int partCount, float duration)
         {
             var prim = go.AddComponent<PrimitiveCylinderEffect>();

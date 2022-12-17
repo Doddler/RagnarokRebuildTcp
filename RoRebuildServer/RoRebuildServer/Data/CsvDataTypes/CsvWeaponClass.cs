@@ -2,8 +2,8 @@
 
 public class CsvWeaponClass
 {
-    public int Id { get; set; }
-    public string WeaponClass { get; set; }
-    public string FullName { get; set;}
-    public string HitSound { get; set; }
+    public required int Id { get; set; }
+    public required string WeaponClass { get; set; }
+    public required string FullName { get; set;}
+    public required string HitSound { get; set; }
 }

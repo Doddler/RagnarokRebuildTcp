@@ -2,9 +2,9 @@
 
 public class ServerDataConfig
 {
-    public string DataPath { get; set; }
-    public string CachePath { get; set; }
-    public bool CacheScripts { get; set; }
-    public bool CompileScriptsOutOfProcess { get; set; }
-    public string WalkPathData { get; set; }
+    public required string DataPath { get; set; }
+    public required string CachePath { get; set; }
+    public required bool CacheScripts { get; set; }
+    public required bool CompileScriptsOutOfProcess { get; set; }
+    public required string WalkPathData { get; set; }
 }

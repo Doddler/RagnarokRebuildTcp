@@ -16,6 +16,7 @@ public class PacketUseInventoryItem : IClientPacketHandler
 
         if (character == null
             || character.Map == null
+            || character.Player == null
             || character.State == CharacterState.Sitting
             || character.State == CharacterState.Dead
             || character.Player.IsInNpcInteraction)
@@ -26,7 +27,7 @@ public class PacketUseInventoryItem : IClientPacketHandler
         //obviously you should check if the item is in your inventory, but we have no inventory!
 
 
-        if (connection.Player.InActionCooldown())
+        if (character.Player.InActionCooldown())
             return;
         character.Player.AddActionDelay(CooldownActionType.UseItem);
 

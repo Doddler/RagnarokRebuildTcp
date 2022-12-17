@@ -5,7 +5,7 @@ namespace RoRebuildServer.EntityComponents.Character
 {
     public class SavePosition
     {
-        public string MapName { get; set; }
+        public string MapName { get; set; } = null!;
         public Position Position { get; set; }
         public int Area { get; set; }
 

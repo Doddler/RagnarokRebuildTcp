@@ -19,6 +19,8 @@ using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
 
+#pragma warning disable CS8618 //non nullable member is uninitialized
+
 namespace RoRebuildServer.Networking;
 
 public class NetworkManager
@@ -41,7 +43,7 @@ public class NetworkManager
     private static ObjectPool<InboundMessage> inboundPool;
 
     private static ReaderWriterLockSlim clientLock = new();
-    private static Thread outboundMessageThread;
+    //private static Thread outboundMessageThread;
 
     //public static int PlayerCount => State.ConnectionLookup.Count;
     
@@ -95,12 +97,12 @@ public class NetworkManager
         PacketCheckClientState = new bool[handlerCount];
 
 
-        foreach (var type in Assembly.GetAssembly(typeof(NetworkManager)).GetTypes()
+        foreach (var type in Assembly.GetAssembly(typeof(NetworkManager))!.GetTypes()
                      .Where(t => t.IsClass && t.GetCustomAttribute<ClientPacketHandlerAttribute>() != null))
         {
             var handler = (IClientPacketHandler)Activator.CreateInstance(type)!;
             var attr = type.GetCustomAttribute<ClientPacketHandlerAttribute>();
-            var packetType = attr.PacketType;
+            var packetType = attr!.PacketType;
             
             if (PacketHandlers[(int)packetType] != null)
                 throw new Exception($"Duplicate packet handler exists for type {packetType}!");
@@ -197,16 +199,17 @@ public class NetworkManager
                     await disconnectList.Writer.WriteAsync(players[i]);
                 else
                 {
-                    if (players[i].Character == null)
+                    var chara = players[i].Character;
+                    if (chara == null)
                     {
                         if (players[i].LastKeepAlive + 20 < Time.ElapsedTime)
                             await disconnectList.Writer.WriteAsync(players[i]);
                     }
                     else
                     {
-                        if (players[i].Character.IsActive && players[i].LastKeepAlive + 20 < Time.ElapsedTime)
+                        if (chara.IsActive && players[i].LastKeepAlive + 20 < Time.ElapsedTime)
                             await disconnectList.Writer.WriteAsync(players[i]);
-                        if (!players[i].Character.IsActive && players[i].LastKeepAlive + 120 < Time.ElapsedTime)
+                        if (!chara.IsActive && players[i].LastKeepAlive + 120 < Time.ElapsedTime)
                             await disconnectList.Writer.WriteAsync(players[i]);
                     }
                 }
@@ -531,7 +534,7 @@ public class NetworkManager
 
         ServerLogger.Log($"We have a new connection!");
 
-        var hasCharacter = false;
+        //var hasCharacter = false;
 
         playerConnection.LoadCharacterRequest = await LoadOrCreateCharacter(txt);
         

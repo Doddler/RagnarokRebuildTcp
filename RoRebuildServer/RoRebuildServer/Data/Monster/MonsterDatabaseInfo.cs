@@ -4,8 +4,8 @@ public class MonsterDatabaseInfo
 {
     public int Id { get; set; }
     public int Level { get; set; }
-    public string Name { get; set; }
-    public string Code { get; set; }
+    public required string Name { get; set; }
+    public required string Code { get; set; }
     public int ScanDist { get; set; }
     public int ChaseDist { get; set; }
     public int HP { get; set; }

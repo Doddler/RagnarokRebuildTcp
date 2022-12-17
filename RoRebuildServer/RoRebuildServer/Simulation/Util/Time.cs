@@ -10,34 +10,30 @@ public static class Time
     public static float DeltaTimeFloat;
     public static ulong UpdateCount;
 
-    private static Stopwatch stopWatch;
-
-    private static double[] previousFrameTimes;
+    private static readonly Stopwatch StopWatch = new Stopwatch();
+    private static readonly double[] PreviousFrameTimes = new double[SampleCount];
+    
     private static int frameIndex;
     private static int frameCount;
 
     private const int SampleCount = 100;
-
     
-
     public static void Start()
     {
-        stopWatch = new Stopwatch();
-        stopWatch.Start();
-        previousFrameTimes = new double[SampleCount];
+        StopWatch.Start();
     }
 
     public static void Update()
     {
-        if (stopWatch == null)
+        if (StopWatch == null || !StopWatch.IsRunning)
             throw new Exception("Attempting to update Time without it being initialized");
-        var newTime = stopWatch.Elapsed.TotalSeconds;
+        var newTime = StopWatch.Elapsed.TotalSeconds;
         DeltaTime = (newTime - ElapsedTime);
         DeltaTimeFloat = (float)DeltaTime;
         ElapsedTime = newTime;
         ElapsedTimeFloat = (float)newTime;
 
-        previousFrameTimes[frameIndex] = DeltaTime;
+        PreviousFrameTimes[frameIndex] = DeltaTime;
         frameIndex++;
         if (frameCount < frameIndex)
             frameCount++;
@@ -53,7 +49,7 @@ public static class Time
 
     public static double GetExactTime()
     {
-        return stopWatch.Elapsed.TotalSeconds;
+        return StopWatch.Elapsed.TotalSeconds;
     }
 
     public static int MinutesSinceStartup()
@@ -63,7 +59,7 @@ public static class Time
 
     public static int MsSinceLastUpdate()
     {
-        var time = stopWatch.Elapsed.TotalSeconds - ElapsedTime;
+        var time = StopWatch.Elapsed.TotalSeconds - ElapsedTime;
         return (int)(time * 1000);
     }
 
@@ -71,11 +67,11 @@ public static class Time
     {
         double total = 0;
         for (var i = 0; i < frameCount; i++)
-            total += previousFrameTimes[i];
+            total += PreviousFrameTimes[i];
         return total / frameCount;
     }
 
-    public static double GetMaxFrameTime() => previousFrameTimes.Max();
+    public static double GetMaxFrameTime() => PreviousFrameTimes.Max();
 
     public static void ManuallyIncrement(double deltaTime)
     {

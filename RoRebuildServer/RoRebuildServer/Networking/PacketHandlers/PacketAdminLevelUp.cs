@@ -36,6 +36,6 @@ public class PacketAdminLevelUp : IClientPacketHandler
         CommandBuilder.SendHealMulti(character, 0, HealType.None);
         CommandBuilder.ClearRecipients();
 
-        CommandBuilder.SendExpGain(connection.Player, 0);
+        CommandBuilder.SendExpGain(character.Player, 0);
     }
 }

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using Lidgren.Network;
+using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking;
 
@@ -15,7 +16,7 @@ public class InboundMessage
 
     public InboundMessage()
     {
-        Client = null;
+        Client = null!;
         Message = new byte[1024];
         position = 0;
     }
@@ -30,7 +31,7 @@ public class InboundMessage
 
     public void Clear()
     {
-        Client = null;
+        Client = null!;
         Length = 0;
         position = 0;
     }
@@ -116,7 +117,10 @@ public class InboundMessage
             return String.Empty;
 
         if (len > Length)
-            return null; //don't allocate if they haven't sent enough bytes
+        {
+            throw new Exception($"Inbound packet from connection '{Client.Character?.Name}' sent packet which contained a malformed string.");
+            //return null!; //don't allocate if they haven't sent enough bytes
+        }
 
         if ((position & 7) == 0)
         {

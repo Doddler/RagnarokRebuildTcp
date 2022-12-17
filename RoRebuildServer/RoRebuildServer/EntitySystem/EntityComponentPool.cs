@@ -42,7 +42,7 @@ public class EntityComponentPool
     public object Get()
     {
         if (count == 0)
-            return Activator.CreateInstance(type);
+            return Activator.CreateInstance(type)!;
         
         count--;
         return pool[count];
@@ -51,7 +51,7 @@ public class EntityComponentPool
     public T Get<T>()
     {
         if (count == 0)
-            return (T)Activator.CreateInstance(type);
+            return (T)Activator.CreateInstance(type)!;
 
         count--;
         return (T)pool[count];
@@ -70,7 +70,7 @@ public class EntityComponentPool
         {
             if (nullableFields[i].FieldType.IsValueType)
             {
-                if (nullableFields[i].FieldType == typeof(Entity) && ((Entity)nullableFields[i].GetValue(e)).IsAlive())
+                if (nullableFields[i].FieldType == typeof(Entity) && ((Entity)nullableFields[i].GetValue(e)!).IsAlive())
                     throw new Exception(
                         $"Memory leak when returning entity component {type.Name}, field {nullableFields[i].Name} is not assigned Entity.Null!");
             }

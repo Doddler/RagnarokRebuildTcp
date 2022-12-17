@@ -21,20 +21,20 @@ public static class ServerConfig
     public static T GetConfigSection<T>()
     {
         configuration ??= GetConfig();
-        return configuration.GetSection(typeof(T).Name).Get<T>();
+        return configuration.GetSection(typeof(T).Name).Get<T>()!;
     }
 
 
     public static T GetConfigSection<T>(string sectionName)
     {
         configuration ??= GetConfig();
-        return configuration.GetSection(sectionName).Get<T>();
+        return configuration.GetSection(sectionName).Get<T>()!;
     }
 
     public static T GetConfigValue<T>(string name)
     {
         configuration ??= GetConfig();
-        return configuration.GetValue<T>(name);
+        return configuration.GetValue<T>(name)!;
     }
 
     private static IConfiguration? configuration;

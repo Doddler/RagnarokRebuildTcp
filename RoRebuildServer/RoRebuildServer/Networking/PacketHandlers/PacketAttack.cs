@@ -17,8 +17,8 @@ public class PacketAttack : IClientPacketHandler
         var character = connection.Character;
 
         if (character == null
-            || character.State == CharacterState.Sitting 
-            || character.State == CharacterState.Dead
+            || connection.Player == null
+            || character.State is CharacterState.Sitting or CharacterState.Dead 
             || character.Player.IsInNpcInteraction)
             return;
         

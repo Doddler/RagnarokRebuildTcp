@@ -1,9 +1,9 @@
 ﻿public class CsvSavePoints
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Map { get; set; }
-    public int X { get; set; }
-    public int Y { get; set; }
-    public int Area { get; set; }
+    public required int Id { get; set; }
+    public required string Name { get; set; }
+    public required string Map { get; set; }
+    public required int X { get; set; }
+    public required int Y { get; set; }
+    public required int Area { get; set; }
 }

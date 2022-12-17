@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RebuildZoneServer.Networking;
@@ -275,6 +276,7 @@ public static class CommandBuilder
         var packet = BuildCreateEntity(c, true);
         packet = NetworkManager.StartPacket(PacketType.EnterServer, 32);
         packet.Write(c.Id);
+        Debug.Assert(c.Map != null, $"Player {p} not attached to map to inform of server enter.");
         packet.Write(c.Map.Name);
         packet.Write(c.Player.Id.ToByteArray());
         NetworkManager.SendMessage(packet, p.Connection);
@@ -342,7 +344,7 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, player.Connection);
     }
 
-    public static void SendChangeTarget(Player p, WorldObject target)
+    public static void SendChangeTarget(Player p, WorldObject? target)
     {
         var packet = NetworkManager.StartPacket(PacketType.ChangeTarget, 32);
 

@@ -2,14 +2,11 @@
 
 public class EntityList
 {
-    private Entity[] entities;
+    private Entity[]? entities;
     //private Dictionary<EcsEntity, int> entityLookup;
 
     private int count;
     private int capacity;
-
-    private readonly bool useDelayCreate;
-    private bool isCreated;
 
     public int Count => count;
 
@@ -19,17 +16,15 @@ public class EntityList
     {
         capacity = initialCapacity;
         count = 0;
-        entities = new Entity[capacity];
-        useDelayCreate = delayCreate;
-        isCreated = false;
-        //entityLookup = new Dictionary<EcsEntity, int>(capacity);
+        if (!delayCreate)
+            entities = new Entity[capacity];
     }
 
     public Entity this[int index]
     {
         get
         {
-            if (index < 0 || index >= count)
+            if (index < 0 || index >= count || entities == null)
                 throw new IndexOutOfRangeException();
             return entities[index];
         }
@@ -37,11 +32,7 @@ public class EntityList
 
     private void ResizeIfNeeded()
     {
-        if (useDelayCreate && !isCreated)
-        {
-            entities = new Entity[capacity];
-            isCreated = true;
-        }
+        entities ??= new Entity[capacity];
 
         if (count + 1 > capacity)
         {
@@ -57,7 +48,7 @@ public class EntityList
 
         ResizeIfNeeded();
 
-        entities[count] = entity;
+        entities![count] = entity;
         count++;
     }
 
@@ -69,31 +60,29 @@ public class EntityList
 
         ResizeIfNeeded();
 
-        entities[count] = entity;
+        entities![count] = entity;
         count++;
     }
 
     public void Clear()
     {
-        Array.Clear(entities, 0, capacity);
+        if (entities != null && count > 0)
+            Array.Clear(entities, 0, capacity);
         count = 0;
     }
 
     public void SwapFromBack(int index)
     {
-        //if(!entities[count - 1].IsAlive())
-        //	throw new Exception("The last entity of EntityList is not active to perform SwapFromBack.");
-
-        entities[index] = entities[count - 1];
-        //entityLookup[entities[index]] = index;
-        //entities[count - 1] = default;
-
+        entities![index] = entities[count - 1];
+     
         count--;
     }
 
     public bool Remove(ref Entity entity)
     {
-        //if(entityLookup.TryGetValue(entity, out var id))
+        if (entities == null) 
+            return false;
+        
         for (var i = 0; i < count; i++)
         {
 
@@ -117,6 +106,9 @@ public class EntityList
 
     public bool Contains(Entity entity)
     {
+        if (entities == null)
+            return false;
+
         for (var i = 0; i < count; i++)
         {
             if (entities[i] == entity)
@@ -128,6 +120,9 @@ public class EntityList
 
     public int ClearInactive()
     {
+        if (entities == null)
+            return 0;
+
         var clearCount = 0;
         for (var i = 0; i < count; i++)
         {

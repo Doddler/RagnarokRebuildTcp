@@ -40,10 +40,15 @@ internal class DataLoader
 
         while (csv.Read())
         {
-            var instance = new InstanceEntry();
-            instance.Name = csv.Context.Parser.Record.ElementAt(0);
-            instance.IsWorldInstance = csv.Context.Parser.Record.ElementAt(1) == "true";
-            instance.Maps = csv.Context.Parser.Record.Skip(2).ToList();
+            
+            if (csv.Context.Parser.Record == null)
+                continue; //piss off possible null exceptions
+            var instance = new InstanceEntry
+            {
+                Name = csv.Context.Parser.Record.ElementAt(0),
+                IsWorldInstance = csv.Context.Parser.Record.ElementAt(1) == "true",
+                Maps = csv.Context.Parser.Record.Skip(2).ToList()
+            };
             instances.Add(instance);
         }
 
@@ -57,8 +62,8 @@ internal class DataLoader
 
         var entries = csv.GetRecords<CsvExpChart>().ToList();
 
-        var chart = new ExpChart();
-        chart.ExpRequired = new int[100];
+        var chart = new ExpChart { ExpRequired = new int[100] };
+        
         chart.ExpRequired[0] = 0; //should always be true but why not!
 
         foreach (var e in entries)
@@ -269,7 +274,7 @@ internal class DataLoader
                 Id = npc.Id,
                 Code = npc.Code,
                 Name = npc.Name,
-                AiType = MonsterAiType.AiEmpty
+                AiType = MonsterAiType.AiEmpty,
             });
             npcCount++;
         }
@@ -320,7 +325,7 @@ internal class DataLoader
             var action = (Action<ServerMapConfig>)type.CreateDelegate(typeof(Action<ServerMapConfig>));
             var at = type.GetCustomAttribute<ServerMapConfigAttribute>();
 
-            configs.Add(at.MapName, action);
+            if (at != null) configs.Add(at.MapName, action);
         }
 
         return configs;

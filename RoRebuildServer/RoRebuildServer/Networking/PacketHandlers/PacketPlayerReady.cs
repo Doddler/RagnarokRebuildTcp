@@ -8,7 +8,7 @@ public class PacketPlayerReady : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (connection.Character == null || connection.Character.Map == null)
+        if (connection.Character == null || connection.Character.Map == null || connection.Player == null)
             return;
 
         connection.Character.IsActive = true;

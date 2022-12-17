@@ -2,7 +2,7 @@
 
 public class InstanceEntry
 {
-    public string Name { get; set; }
-    public bool IsWorldInstance { get; set; }
-    public List<string> Maps { get; set; }
+    public required string Name { get; set; }
+    public required bool IsWorldInstance { get; set; }
+    public required List<string> Maps { get; set; }
 }

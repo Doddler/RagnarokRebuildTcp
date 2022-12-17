@@ -2,5 +2,5 @@
 
 public class ExpChart
 {
-    public int[] ExpRequired;
+    public required int[] ExpRequired;
 }

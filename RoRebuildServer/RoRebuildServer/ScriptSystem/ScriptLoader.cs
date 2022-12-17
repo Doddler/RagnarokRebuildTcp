@@ -47,7 +47,7 @@ public static class ScriptLoader
 
         Process currentProcess = Process.GetCurrentProcess();
 
-        var startInfo = new ProcessStartInfo(currentProcess.MainModule.FileName)
+        var startInfo = new ProcessStartInfo(currentProcess.MainModule!.FileName)
         {
             Arguments = "compile",
             UseShellExecute = false,
@@ -69,7 +69,10 @@ public static class ScriptLoader
                 if (!string.IsNullOrWhiteSpace(line))
                 {
                     var str = JsonSerializer.Deserialize<CompilerLogEvent>(line);
-                    ServerLogger.GetLogger().Write(str.Level, str.Message);
+                    if(str != null)
+                        ServerLogger.GetLogger().Write(str.Level, str.Message);
+                    else
+                        ServerLogger.GetLogger().Write(LogEventLevel.Warning, $"Received message from out of process script compiler, but message was malformed. Message: {line}");
                 }
             }
 
@@ -77,7 +80,7 @@ public static class ScriptLoader
             
             return;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ServerLogger.LogError($"Host process caused an exception while running the compiler process!");
             throw;

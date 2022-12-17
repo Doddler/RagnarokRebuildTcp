@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Character;
@@ -181,7 +182,7 @@ public class Player : IEntityAutoReset
             return; //hard lock levels above 99
 
         var aMotionTime = 1.1f - level * 0.006f;
-        var spriteAttackTiming = 0.6f;
+        //var spriteAttackTiming = 0.6f;
 
         level++;
 
@@ -311,7 +312,7 @@ public class Player : IEntityAutoReset
         Target = Entity.Null;
     }
 
-    public void ChangeTarget(WorldObject target)
+    public void ChangeTarget(WorldObject? target)
     {
         if (target == null || Target == target.Entity)
             return;
@@ -443,6 +444,8 @@ public class Player : IEntityAutoReset
 
     public void PerformSkill()
     {
+        Debug.Assert(Character.Map != null, $"Player {Name} cannot perform skill, it is not attached to a map.");
+
         var pool = EntityListPool.Get();
         Character.Map.GatherEnemiesInRange(Character, 7, pool, true);
 
@@ -501,7 +504,7 @@ public class Player : IEntityAutoReset
         if (Character.Map?.Name == mapName)
             Character.Map.TeleportEntity(ref Entity, Character, p, CharacterRemovalReason.OutOfSight);
         else
-            World.Instance.MovePlayerMap(ref Entity, Character, map, p);
+            World.Instance?.MovePlayerMap(ref Entity, Character, map, p);
 
         return true;
     }

@@ -10,10 +10,11 @@ public class PacketStopAction : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-		if (connection.Character == null)
+		if (connection.Character == null || connection.Player == null)
             return;
 
-        var player = connection.Entity.Get<Player>();
+        var player = connection.Player;
+
         if (player.InActionCooldown())
         {
             ServerLogger.Debug("Player stop action ignored due to cooldown.");

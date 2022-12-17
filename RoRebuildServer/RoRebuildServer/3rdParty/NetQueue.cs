@@ -20,6 +20,11 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Diagnostics;
 
+//all these are possible null dereferencing with default(T)
+#pragma warning disable CS8602
+#pragma warning disable CS8603 
+#pragma warning disable CS8601
+
 //
 // Comment for Linux Mono users: reports of library thread hangs on EnterReadLock() suggests switching to plain lock() works better
 //

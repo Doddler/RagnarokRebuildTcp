@@ -77,7 +77,7 @@ internal class ScriptCompiler
             var walker = new ScriptTreeWalker();
             str = walker.BuildClass(name, parser, uniqueNames);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             ServerLogger.LogError($"Failed to compile script {inputPath}!");
             throw;
@@ -134,7 +134,7 @@ internal class ScriptCompiler
             {
                 ServerLogger.Log("Scripts have not changed, script assembly loaded from cache.");
                 scriptFiles.Clear(); //no need to keep the scripts in memory anymore.
-                scriptFiles = null;
+                scriptFiles = null!;
                 return a;
             }
         }
@@ -158,7 +158,7 @@ internal class ScriptCompiler
             MetadataReference.CreateFromFile(typeof(ScriptCompiler).Assembly.Location)
         };
 
-        Assembly.GetEntryAssembly().GetReferencedAssemblies().ToList().ForEach(a => references2.Add(MetadataReference.CreateFromFile(Assembly.Load(a).Location)));
+        Assembly.GetEntryAssembly()!.GetReferencedAssemblies().ToList().ForEach(a => references2.Add(MetadataReference.CreateFromFile(Assembly.Load(a).Location)));
 
         CSharpCompilation compilation = CSharpCompilation.Create(
             assemblyName,

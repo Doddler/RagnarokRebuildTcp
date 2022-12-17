@@ -12,7 +12,7 @@ public class PacketRespawn : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (connection.Character == null || connection.Character.Map == null || connection.Character.State != CharacterState.Dead)
+        if (connection.Character == null || connection.Player == null || connection.Character.Map == null || connection.Character.State != CharacterState.Dead)
             return;
 
         var inPlace = msg.ReadByte() == 1;
