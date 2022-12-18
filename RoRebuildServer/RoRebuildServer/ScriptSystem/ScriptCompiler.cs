@@ -191,6 +191,5 @@ internal class ScriptCompiler
         uniqueNames = null!; 
 
         return Assembly.Load(bytes);
-
     }
 }

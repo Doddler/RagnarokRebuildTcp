@@ -585,7 +585,7 @@ namespace Assets.Scripts
                     }
 
 
-                    if (anim.Controllable.CharacterType == CharacterType.NPC)
+                    if (anim.Controllable.CharacterType == CharacterType.NPC && anim.Controllable.IsInteractable)
                     {
                         if (Input.GetMouseButtonDown(0))
                         {

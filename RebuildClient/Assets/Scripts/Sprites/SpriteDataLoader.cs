@@ -324,12 +324,21 @@ namespace Assets.Scripts.Sprites
 
 		private ServerControllable PrefabMonster(MonsterClassData mData, ref MonsterSpawnParameters param)
 		{
-			var prefabName = mData.SpriteName; //.Replace(".prefab", "");
-			//var split = prefabName.Split('/');
-			//prefabName = split.Last();
+			var prefabName = mData.SpriteName;
 
             var obj = new GameObject(prefabName);
-
+			
+			var control = obj.AddComponent<ServerControllable>();
+			control.CharacterType = CharacterType.NPC;
+			control.SpriteMode = ClientSpriteType.Prefab;
+			control.EntityObject = obj;
+            control.Level = param.Level;
+            control.Name = param.Name;
+            control.IsAlly = true;
+            control.IsInteractable = false;
+			
+			control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
+			
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
             loader.Completed += ah =>
             {
@@ -337,25 +346,15 @@ namespace Assets.Scripts.Sprites
                 {
                     var obj2 = GameObject.Instantiate(ah.Result, obj.transform, false);
                     obj2.transform.localPosition = Vector3.zero;
-                    //ah.Result.transform.SetParent(obj.transform, false);
+
+                    var sprite = obj2.GetComponent<RoSpriteAnimator>();
+                    if (sprite != null)
+                        sprite.Controllable = control;
                 }
             };
 
-			//var res = Resources.Load<GameObject>(prefabName);
-			//if(res == null)
-   //             Debug.Log("Failed to load resource with name " + prefabName);
-			
-			//Debug.Log(prefabName);
-			//var obj = GameObject.Instantiate(res);
-			var control = obj.AddComponent<ServerControllable>();
-			control.CharacterType = CharacterType.NPC;
-			control.SpriteMode = ClientSpriteType.Prefab;
-			control.EntityObject = obj;
-            control.Level = param.Level;
 
-			control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-
-			return control;
+            return control;
 		}
 
 		public ServerControllable InstantiateMonster(ref MonsterSpawnParameters param)

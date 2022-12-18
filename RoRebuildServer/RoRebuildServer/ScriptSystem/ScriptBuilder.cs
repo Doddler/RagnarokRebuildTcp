@@ -406,10 +406,10 @@ public class ScriptBuilder
         return name;
     }
 
-    public void EndNpc(string name, string npcTag, string map, string sprite, string facing, int x, int y, int w, int h)
+    public void EndNpc(string name, string npcTag, string map, string signalName, string sprite, string facing, int x, int y, int w, int h)
     {
         var behaviorName = $"RoRebuildNpcGen_{name}";
-        npcDefinitions.Add($"DataManager.RegisterNpc({npcTag}, {map}, {sprite}, {x}, {y}, {facing}, {w}, {h}, {(hasInteract ? "true" : "false")}, {(hasTouch ? "true" : "false")}, new {behaviorName}());");
+        npcDefinitions.Add($"DataManager.RegisterNpc({npcTag}, {map}, {signalName}, {sprite}, {x}, {y}, {facing}, {w}, {h}, {(hasInteract ? "true" : "false")}, {(hasTouch ? "true" : "false")}, new {behaviorName}());");
     }
 
 

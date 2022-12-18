@@ -18,6 +18,7 @@ namespace RoRebuildServer.EntityComponents;
 public class Npc : IEntityAutoReset
 {
     public Entity Entity;
+    public WorldObject Character = null!;
     public string FullName { get; set; } = null!;
     public string Name { get; set; } = null!; //making this a property makes it accessible via npc scripting
 
@@ -31,8 +32,7 @@ public class Npc : IEntityAutoReset
 
     private int[]? valuesInt;
     private string[]? valuesString;
-
-
+    
     public int[]? ParamsInt;
     public string? ParamString;
 
@@ -45,6 +45,8 @@ public class Npc : IEntityAutoReset
     public bool HasTouch;
     public bool HasInteract;
     public bool TimerActive;
+
+    private string? currentSignalTarget;
 
     public bool IsHidden() => !Entity.Get<WorldObject>().Hidden;
 
@@ -97,6 +99,8 @@ public class Npc : IEntityAutoReset
         Mobs = null;
         ParamsInt = null;
         ParamString = null;
+        Character = null!;
+        currentSignalTarget = null;
     }
 
     public void OnMobKill()
@@ -231,6 +235,31 @@ public class Npc : IEntityAutoReset
             player.NpcInteractionState.Reset();
             CommandBuilder.SendNpcEndInteraction(player);
         }
+    }
+
+    public void RegisterSignal(string signal)
+    {
+        if (Character.Map == null)
+            throw new Exception($"Could not perform function AssignSignalTarget on npc {FullName}, it is not currently assigned to a map!");
+        
+        RemoveSignal();
+
+        Character.Map?.Instance.NpcNameLookup.TryAdd(signal, Entity);
+        currentSignalTarget = signal;
+    }
+
+    public void RemoveSignal()
+    {
+        if (Character.Map == null)
+        {
+            if(!string.IsNullOrWhiteSpace(currentSignalTarget))
+                throw new Exception($"Npc '{FullName}' is attempting to remove the signal '{currentSignalTarget}' while not assigned to a map! The signal pointer is probably dangling.");
+            
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(currentSignalTarget) && Character.Map.Instance.NpcNameLookup.ContainsKey(currentSignalTarget))
+            Character.Map?.Instance.NpcNameLookup.Remove(currentSignalTarget);
     }
 
     public void OnSignal(Npc srcNpc, string signal, int value1=0, int value2=0, int value3=0, int value4=0)

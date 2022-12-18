@@ -60,7 +60,7 @@ public static class DataManager
         ItemList[id].Interaction = item;
     }
 
-    public static void RegisterNpc(string name, string map, string sprite, int x, int y, int facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase npcBehavior)
+    public static void RegisterNpc(string name, string map, string? signalName, string sprite, int x, int y, int facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase npcBehavior)
     {
         if (!MonsterCodeLookup.TryGetValue(sprite, out var md))
         {
@@ -68,7 +68,7 @@ public static class DataManager
             return;
         }
 
-        NpcManager.RegisterNpc(name, map, md.Id, x, y, (Direction)facing, w, h, hasInteract, hasTouch, npcBehavior);
+        NpcManager.RegisterNpc(name, map, signalName, md.Id, x, y, (Direction)facing, w, h, hasInteract, hasTouch, npcBehavior);
     }
 
     public static void RegisterEvent(string name, NpcBehaviorBase npcBehavior)

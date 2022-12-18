@@ -7675,355 +7675,543 @@ MonoBehaviour:
   - m_GUID: 41f3235966086e04eaae51509301cc72
     m_Address: Assets/Effects/Prefabs/Exacast.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Effect
   - m_GUID: 3c2e09388f62a3e4a84287e683de4409
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 21ca215010628024db031a5a0d1ff4cc
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: d952d16f255b0fc408ab4f8aac1ff59b
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_1207.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 21e1e635574445f49891830e42158d67
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_1207.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: a0edd47bedee48b44aa09ae919bffd35
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: b58b86a526bc9aa4d973c2a4da355177
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: be14109779c4c784994713e8a9a1ea7e
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_1116.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: b8944b75d4144a040aa01c29691aee76
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 97f2db3849df870448ec52b46a2559be
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uB3C4\uB07C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: eda3f8f6b0f9084498b597f89c713ff8
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uD074\uB7FD.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 7c4a68121bd6ad142a319d44c2601715
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uB3C4\uB07C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 396c3a1769944b64093425300e5e9b78
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uD074\uB7FD_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 7dc36804676703544981de8a07904ba3
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 5d10ac0025ea190408ab4a761f70e65b
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uCC3D_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 796f2bb1b38f0594c927ba011d8f4a5a
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: bf54b2ebc75d2e54c8f2e707e2934361
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 1f5da1d9ecf79fc43a7831dcd987583b
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uB3C4\uB07C_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 2080163c2d6d5a94abc242d37d219cad
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 589f05e0648febc4ca26a408e7ac82ae
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uCC3D.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 9529cb4e3e2f0ba48b7ed85c0d69e7e3
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uB3C4\uB07C_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 670dc1941b6f83c45bed0ca7e4c63882
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uCC3D.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 75760e30f1b569a4d9569c621dd4cf23
     m_Address: "Assets/Sprites/Weapons/Swordsman/Male/\uAC80\uC0AC_\uB0A8_\uC591\uC190\uCC3D_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 005f761350f0aef44a12902115842739
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uB3C4\uB07C_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 7d39c56cc9ec6cf47a2bfea00ad1a948
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uCC3D.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: acc6ed85ac3a8b740aaadda77f4adacb
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uCC3D_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: cd71c2b5236832043a8a507e263e3ad4
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 80127919dfa91a14fad0f7907c9a10f7
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uCC3D.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: cadf7e801f4eabb4d9acdd6e3fb83d97
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uB3C4\uB07C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 0469f3cb0322d2240b942993742409bb
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uB3C4\uB07C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: adc3fb8aa215d394786697f985c9f149
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uB3C4\uB07C_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 55cc8e0e882320e42b623996e271e833
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uD074\uB7FD.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 627471b1942e9f44591f42724fdd9c06
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: c2e5f7d94a2c0414ebba271ab921ee8b
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uCC3D_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: c177f6263c25f1f4191e9d11901106e7
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uD074\uB7FD_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: eeb273c4f37dafb44a7d92d7a7d104d7
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 6ea9c54e67a481e4fa2d966b49a0d234
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 8a67f7e1c01ae6545a75c2821eee23dc
     m_Address: "Assets/Sprites/Weapons/Swordsman/Female/\uAC80\uC0AC_\uC5EC_\uC591\uC190\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: ba7ad5a2949dda34e98a191efc8d0fc0
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uD074\uB7FD_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: ebd9ffc3cfac0c145a47f9ec46988826
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: bb792b86393187143a1a3b5c07884e4b
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB86F\uB4DC_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 2be8ec0ec9b9fae4586b38655c7fb3f1
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB3C4\uB07C_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: b804ca6cfa87cbe408e4ddd6e48b589d
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uD074\uB7FD.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 173b8c28c3f066f47bc7d2b026e15565
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 66183babccd004f448ee1e490573729d
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 6c0d4fa108af9dc438172e3af31a1954
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB86F\uB4DC.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: d80a385db3b2b1e4bba25e0430ee5e84
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uB3C4\uB07C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 976c6a142faacec4bb00364338333a48
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB3C4\uB07C_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: faa403b2a00a7ac4fbc998fdd5dc693e
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 38d6cf263c172674c8eabeea853cf6b8
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: d160a02a49e7d2a469218aade47c80aa
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: cee9f68511ff0dc4bbfee0a42a19e5dc
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uD074\uB7FD.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 698a4408da9798944b86aa274154847c
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB3C4\uB07C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 78886598be13d3a48b83e4e70adf16de
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB86F\uB4DC.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 25cad1d30ab6e1d41bdd62ba31f05f04
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uD074\uB7FD_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 518331bb8ba17974e8d01a5ba54c57df
     m_Address: "Assets/Sprites/Weapons/Novice/Female/\uCD08\uBCF4\uC790_\uC5EC_\uB86F\uB4DC_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 03dca7cddb7f55a4e93dea040dedac3b
     m_Address: "Assets/Sprites/Weapons/Archer/Female/\uAD81\uC218_\uC5EC_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 0959faa8af57799429022e581a4b6e96
     m_Address: "Assets/Sprites/Weapons/Archer/Female/\uAD81\uC218_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 04435e694c97b4348b33f54e824b120f
     m_Address: "Assets/Sprites/Weapons/Archer/Female/\uAD81\uC218_\uC5EC_\uD65C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: b4855602acc4b0641ad46bf1f3c6eef9
     m_Address: "Assets/Sprites/Weapons/Archer/Male/\uAD81\uC218_\uB0A8_\uD65C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: a337c01084f617e40b7ce68cd367a9fd
     m_Address: "Assets/Sprites/Weapons/Archer/Male/\uAD81\uC218_\uB0A8_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 903f135f9a79eed429fbace38c4144a3
     m_Address: "Assets/Sprites/Weapons/Archer/Male/\uAD81\uC218_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: d4f2da79baee0c84ab27cf3d8e9dfd33
     m_Address: "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 7816db2a4cdade34dae6815a6d2b02d7
     m_Address: "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uB86F\uB4DC.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: f4cc236e65e348c4e9b81b00d4d28f61
     m_Address: "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uC2A4\uD0AC.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 2a0ea25506c0dd348b1a0bbea95e8a20
     m_Address: "Assets/Sprites/Weapons/Mage/Female/\uB9C8\uBC95\uC0AC_\uC5EC_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 8ff34a04f456a5e46ba55087a02ac2b6
     m_Address: "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uC2A4\uD0AC.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 8fc14db6afa453a4fad644fabe4ec02a
     m_Address: "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 52a6811404900b447bccdd0bc7104b5e
     m_Address: "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uB86F\uB4DC.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 11b238f7d05c49146a0fcee454707993
     m_Address: "Assets/Sprites/Weapons/Mage/Male/\uB9C8\uBC95\uC0AC_\uB0A8_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 6032143aa37ad3e49bd9549dcd86fa05
     m_Address: "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uD074\uB7FD.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 11531c79e11b08141bd3e4048021a5e5
     m_Address: "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uB86F\uB4DC.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: e8d9fcbf1cd28cc4fa25bda8ac1dfa09
     m_Address: "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uD074\uB7FD_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 17163f7f48346aa4eb2127f38c0c74a5
     m_Address: "Assets/Sprites/Weapons/Acolyte/Female/\uC131\uC9C1\uC790_\uC5EC_\uB86F\uB4DC_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: f2da5f9bca7e3e4409ec9f1d3885fb9d
     m_Address: "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uB86F\uB4DC_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 4546310bd8f183c4aa29d42e92533c50
     m_Address: "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uB86F\uB4DC.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 088a098e1eb2e764cbdbb0a659be8c0b
     m_Address: "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uD074\uB7FD.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 100d2c38db1f2b14cbed43ed4c865c88
     m_Address: "Assets/Sprites/Weapons/Acolyte/Male/\uC131\uC9C1\uC790_\uB0A8_\uD074\uB7FD_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: e0e329c44b0325f478dfa95f467a09b9
     m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uD65C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 83a2098b8ff44de4ca77c640d44ad85d
     m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 76cc23997a2f2514cbb72435fb1ff5b8
     m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: ee9167de0a8dc4f49bbc5e9648a432bb
     m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: f64c05dc01e403741a5e9005041a89f5
     m_Address: "Assets/Sprites/Weapons/Thief/Female/\uB3C4\uB451_\uC5EC_\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: b05df2e73239e524ab8c0154a8ff58ed
     m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uB2E8\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 19df75561fc39c24688c84e0ac492a72
     m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 1e14a45b056aa0546bb2eb159766cab7
     m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 87b19659fc2ec4b41be580e23cbb4e3b
     m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uAC80.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
   - m_GUID: 100a7aea6ea43a8408c78761293b3e24
     m_Address: "Assets/Sprites/Weapons/Thief/Male/\uB3C4\uB451_\uB0A8_\uD65C.spr"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: f61ae40a635bb8d45864051341b6d766
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 082cd22c3b732a0468b7f5ce6c95410b
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d86175fe5fa0f274daac3b9dcf53e503
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uB2E8\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 6e88a436775bbcc4fbaa5a87ff82ca45
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d52362f180dd8f8449677fcd88987333
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uB3C4\uB07C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: d54d07a155a3de84a96551a6ff2886e8
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uB3C4\uB07C_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 57ff432904afc0141ae617d3023b3645
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uC591\uC190\uB3C4\uB07C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 4dd4feb3b5690a74f8cec3e941e20027
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uC591\uC190\uB3C4\uB07C_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: ad22c86b363ecd34f8864ca30e01c8b5
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uD074\uB7FD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c983bc9aa5070514fbde3bf87df833ca
+    m_Address: "Assets/Sprites/Weapons/Merchant/Female/\uC0C1\uC778_\uC5EC_\uD074\uB7FD_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 1010cb6e18b684e40b613806e8bec108
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 65eb40d1d7d46a94fb6f665ef8b448f0
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 0bf82c39375dc074cb1e4608e89538e7
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uB2E8\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 56cb3a4b41aee1b419e7d6c3a32ecf8c
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uB2E8\uAC80_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 5e9ae908b60e52e4285017ac1a171a20
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uB3C4\uB07C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 9b1d6943d689b244aa35e87235248782
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uB3C4\uB07C_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: c1148dcfda016654eb1374d33870e4da
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uC591\uC190\uB3C4\uB07C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: a1d698e814e376e48891541675f264a2
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uC591\uC190\uB3C4\uB07C_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 8a2b668e65f58584d88041d41221ede4
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uD074\uB7FD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+  - m_GUID: 09bfc1777d237d14bacc9c169ce55332
+    m_Address: "Assets/Sprites/Weapons/Merchant/Male/\uC0C1\uC778_\uB0A8_\uD074\uB7FD_\uAC80\uAD11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

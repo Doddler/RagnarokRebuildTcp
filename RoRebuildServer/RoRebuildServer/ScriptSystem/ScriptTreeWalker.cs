@@ -5,7 +5,6 @@ using RoRebuildServer.Logging;
 using RoServerScript;
 using static RoServerScript.RoScriptParser;
 
-
 namespace RoRebuildServer.ScriptSystem;
 
 internal class ScriptTreeWalker
@@ -23,9 +22,9 @@ internal class ScriptTreeWalker
         builder = new ScriptBuilder(inputName.Replace(" ", "_"), uniqueNames, "System", "System.Linq",
             "RoRebuildServer.Data.Map", "RebuildSharedData.Data", "RoRebuildServer.Data", "RoRebuildServer.EntityComponents", "RoRebuildServer.ScriptSystem",
             "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util", "RoRebuildServer.EntityComponents.Items");
-        
+
         var ruleSet = parser.rule_set();
-        
+
         foreach (var statement in ruleSet.toplevelstatement())
             VisitTopLevelStatement(statement);
 
@@ -41,7 +40,7 @@ internal class ScriptTreeWalker
             EnterMacroStatement(macroContext);
         }
 
-        if(topLevelContext is EventDefinitionContext eventDefinitionContext)
+        if (topLevelContext is EventDefinitionContext eventDefinitionContext)
             EnterEventStatement(eventDefinitionContext);
 
         if (topLevelContext is TopLevelFunctionDefinitionContext context)
@@ -66,7 +65,7 @@ internal class ScriptTreeWalker
             }
         }
 
-        if(topLevelContext is TopLevelMacroCallContext macroCallContext)
+        if (topLevelContext is TopLevelMacroCallContext macroCallContext)
             VisitMacroContext(macroCallContext.macrocall());
     }
 
@@ -99,7 +98,7 @@ internal class ScriptTreeWalker
         {
             var vardef = mp.expression();
             var macro = new ScriptMacro(vardef.Length, macroContext.statementblock());
-            
+
 
             for (var i = 0; i < vardef.Length; i++)
             {
@@ -115,9 +114,9 @@ internal class ScriptTreeWalker
             macroMap.Add(name, macro);
         }
 
-        
+
     }
-    
+
     private void EnterItemStatement(FunctionDefinitionContext functionContext)
     {
         //only expect one param, the item name
@@ -216,7 +215,7 @@ internal class ScriptTreeWalker
             throw new Exception($"Incorrect number of parameters on Npc expression on line {param.start.Line}");
 
         var str = ExpressionContextString(expr[1]).Unescape();
-        str = str.Replace(" ", "_").Replace("#", "__");
+        str = str.Replace(" ", "_").Replace("#", "__").Replace("?", "Q");
 
         var mapName = ExpressionContextString(expr[0]);
         var displayName = ExpressionContextString(expr[1]);
@@ -235,7 +234,7 @@ internal class ScriptTreeWalker
 
         if (!int.TryParse(facingTxt, out var _))
             facingTxt = builder.GetConstValue(facingTxt);
-        
+
         var name = builder.StartNpc(str);
 
         sectionHandler = NpcSectionHandler;
@@ -249,7 +248,7 @@ internal class ScriptTreeWalker
         builder.EndMethod();
         builder.EndClass();
 
-        builder.EndNpc(name,displayName, mapName, spriteName, facingTxt, x, y, w, h);
+        builder.EndNpc(name, displayName, mapName, displayName, spriteName, facingTxt, x, y, w, h);
     }
 
     private void EnterRecoveryItemStatement(StandaloneFunctionContext functionContext)
@@ -259,7 +258,7 @@ internal class ScriptTreeWalker
 
         if (expr.Length != 5)
             throw new Exception($"Incorrect number of parameters on RecoveryItem expression on line {param.start.Line}");
-        
+
         var str = param.expression()[0].GetText();
         if (str.StartsWith("\""))
             str = str.Substring(1, str.Length - 2);
@@ -283,42 +282,42 @@ internal class ScriptTreeWalker
         builder.EndItem(str);
     }
 
+    private void OutputWarpStatement(ExpressionContext expression)
+    {
+
+    }
+
     private void EnterWarpStatement(StandaloneFunctionContext functionContext)
     {
         var param = functionContext.functionparam();
         var expr = param.expression();
 
-        if (expr.Length != 9 && expr.Length != 11)
-            throw new Exception($"Incorrect number of parameters on Warp expression on line {param.start.Line}");
+        var v = new ScriptTopLevelParameters(expr);
 
-        var str = expr[1].GetText().Unescape();
-        str = str.Replace(" ", "_").Replace("#", "__");
+        if (v.VerifySignature("ssiiiisiiii"))
+            v.SetParameters(new[] { "mapName", "signalName", "x", "y", "w", "h", "destMap", "dx", "dy", "dw", "dh" });
+        if (v.VerifySignature("ssiiiisii"))
+            v.SetParameters(new[] { "mapName", "signalName", "x", "y", "w", "h", "destMap", "dx", "dy" });
+        if (v.VerifySignature("sssiiiisiiii"))
+            v.SetParameters(new[] { "mapName", "signalName", "displayName", "x", "y", "w", "h", "destMap", "dx", "dy", "dw", "dh" });
+        if (v.VerifySignature("sssiiiisii"))
+            v.SetParameters(new[] { "mapName", "signalName", "displayName", "x", "y", "w", "h", "destMap", "dx", "dy" });
 
-        var mapName = expr[0].GetText();
-        var displayName = expr[1].GetText();
-        var x = int.Parse(expr[2].GetText());
-        var y = int.Parse(expr[3].GetText());
-        var w = int.Parse(expr[4].GetText());
-        var h = int.Parse(expr[5].GetText());
-        var destMap = expr[6].GetText();
-        var dx = int.Parse(expr[7].GetText());
-        var dy = int.Parse(expr[8].GetText());
-        var dw = 0;
-        var dh = 0;
+        if (!v.HasParametersSet())
+            throw new Exception($"The Warp expression on line {param.start.Line} could not match the parameters provided to any known function signature.");
 
-        if (expr.Length == 11)
-        {
-            dw = int.Parse(expr[9].GetText());
-            dh = int.Parse(expr[10].GetText());
-        }
+        var str = v["signalName"].String.Unescape();
+        if (string.IsNullOrWhiteSpace(str))
+            str = "UnnamedWarp_" + v["mapName"].String.Unescape();
+        str = str.Replace(" ", "_").Replace("#", "__").Replace("?", "Q");
 
         var name = builder.StartNpc(str);
         builder.StartNpcSection("OnTouch");
-        builder.OutputRaw($"state.MoveTo({destMap}, {dx}, {dy}, {dw}, {dh})");
+        builder.OutputRaw($"state.MoveTo({v["destMap"]}, {v["dx"]}, {v["dy"]}, {v["dw"]}, {v["dh"]})");
         builder.EndLine(functionContext.start.Line);
         builder.EndMethod();
         builder.EndClass();
-        builder.EndNpc(name, displayName, mapName, "\"WARP\"", "4", x, y, w, h);
+        builder.EndNpc(name, v["displayName"], v["mapName"], v["signalName"], "\"WARP\"", "4", v["x"], v["y"], v["w"], v["h"]);
     }
 
     public void NpcSectionHandler(StartSectionContext context)
@@ -331,7 +330,7 @@ internal class ScriptTreeWalker
     {
         ServerLogger.LogWarning($"{name} line {context.start.Line}: Section definition '{context.IDENTIFIER()}' ignored as this type does not allow it.");
     }
-    
+
     private void VisitStatementBlock(StatementblockContext blockContext)
     {
         builder.SetLineNumber(blockContext.Start.Line);
@@ -349,7 +348,7 @@ internal class ScriptTreeWalker
                 ErrorResult(blockContext);
                 break;
         }
-            
+
     }
 
     private void VisitStatement(StatementContext statementContext)
@@ -445,7 +444,7 @@ internal class ScriptTreeWalker
                 var ptr2 = builder.GotoFutureBlock();
                 builder.AdvanceBlock(true);
                 builder.RegisterGotoDestination(falsePointer);
-                    
+
                 VisitStatementBlock(context.block2);
 
                 builder.AdvanceBlock();
@@ -482,11 +481,11 @@ internal class ScriptTreeWalker
             var breakPtr = builder.GetFutureBlockPointer();
             builder.breakPointerStack.Push(breakPtr);
             var statementPtr = -1;
-                
+
             foreach (var t in items)
             {
                 var item = t as SwitchCaseContext;
-                if(item == null)
+                if (item == null)
                     ErrorResult(context, "Expecting case in switch block.");
 
                 builder.OutputRaw("if ((");
@@ -508,7 +507,7 @@ internal class ScriptTreeWalker
                 }
 
                 var hasStatements = false;
-              
+
                 foreach (var s in item.statement())
                 {
                     VisitStatement(s);
@@ -535,7 +534,7 @@ internal class ScriptTreeWalker
             builder.breakPointerStack.Pop();
         }
 
-            
+
     }
 
     private void VisitSwitchCaseStatement(SwitchCaseContext context)
@@ -560,7 +559,7 @@ internal class ScriptTreeWalker
         {
             var start = builder.AdvanceBlock();
             var end = builder.GetFutureBlockPointer();
-            
+
             builder.OutputRaw("if (");
             VisitExpression(whileContext.expression());
             builder.OutputRaw(")");
@@ -603,7 +602,7 @@ internal class ScriptTreeWalker
     {
         if (!builder.UseStateMachine)
         {
-            if(breakContext.count != null)
+            if (breakContext.count != null)
                 ErrorResult(breakContext, $"You cannot break a specific count outside of OnClick and OnTouch blocks.");
             builder.OutputRaw("break;");
             builder.EndLine();
@@ -736,7 +735,7 @@ internal class ScriptTreeWalker
                     found = true;
             }
 
-            if(!found)
+            if (!found)
                 ErrorResult(macroContext, $"Cannot find a macro defined with the name \"{id}\".");
         }
 
@@ -747,7 +746,7 @@ internal class ScriptTreeWalker
 
         activeMacros.Add(id);
         builder.PushMacro(macro);
-        
+
         if (fparam != null)
         {
             var p = fparam.expression();
@@ -761,7 +760,7 @@ internal class ScriptTreeWalker
                 pos++;
             }
         }
-        
+
         VisitStatementBlock(macro.Context);
 
         builder.PopMacro();
@@ -852,7 +851,7 @@ internal class ScriptTreeWalker
 
     public void VisitAssignment(AssignmentContext assignmentContext)
     {
-        switch(assignmentContext)
+        switch (assignmentContext)
         {
             case VarAssignmentContext context:
                 builder.OutputVariable(context.IDENTIFIER().GetText());
@@ -876,7 +875,7 @@ internal class ScriptTreeWalker
                 builder.OutputRaw(context.GetText());
                 break;
             case VariableContext context:
-                if(builder.ActiveMacro != null && builder.ActiveMacro.HasVariable(context.GetText()))
+                if (builder.ActiveMacro != null && builder.ActiveMacro.HasVariable(context.GetText()))
                     VisitExpression(builder.ActiveMacro.GetVariable(context.GetText()));
                 else
                     builder.OutputVariable(context.GetText());
@@ -893,7 +892,7 @@ internal class ScriptTreeWalker
         if (builder.ActiveMacro == null)
             return val;
 
-        if(builder.ActiveMacro.TryGetVariable(val, out var expr))
+        if (builder.ActiveMacro.TryGetVariable(val, out var expr))
             return expr.GetText();
 
         return val;

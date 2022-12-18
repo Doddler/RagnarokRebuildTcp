@@ -1,7 +1,9 @@
 MapConfig("glast_01")
 {
 	CreateSpawn("KNIGHT_OF_ABYSS", 2, 600000, 300000);
-	CreateSpawn("GARGOYLE", 10);
+	CreateSpawn("GARGOYLE", 1);
+	CreateSpawn("POISON_SPORE", 25);
+	CreateSpawn("BATHORY", 15);
 	CreateSpawn("SHINING_PLANT", 1, %(233, 209, 15, 15), 1800000, 900000);
 	CreateSpawn("GREEN_PLANT", 8, %(233, 209, 15, 15), 360000, 180000);
 	CreateSpawn("BLUE_PLANT", 2, %(233, 209, 15, 15), 900000, 450000);

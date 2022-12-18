@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3685515773686913541}
   - component: {fileID: 8410366849295386011}
-  m_Layer: 0
+  - component: {fileID: 1502979080914438505}
+  - component: {fileID: 2202688848148844686}
+  m_Layer: 11
   m_Name: PortalEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3685515773686913545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 131.9815, y: -305.21545, z: 835.0959}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,3 +46,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bafe3ae2c215704084e2cbf5ed5c7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &1502979080914438505
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3685515773686913545}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 0.5, z: 3}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2202688848148844686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3685515773686913545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 207f463a2ed1c654aaf0778afe783e5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpriteData: {fileID: 0}
+  Direction: 0
+  Type: 5
+  State: 0
+  AnimSpeed: 1
+  SpriteOffset: 0
+  SpriteOrder: 0
+  Color: {r: 0, g: 0, b: 0, a: 0}
+  Alpha: 0
+  ChildrenSprites: []
+  BattleZSwapGroups: []
+  Parent: {fileID: 0}
+  Shadow: {fileID: 0}
+  AudioSource: {fileID: 0}
+  IgnoreAnchor: 0
+  IsHead: 0
+  HeadFacing: 0
+  SetAsDirty: 0
+  Idle: 0
+  Attack: 0
+  Standby: 0
+  Walk: 0
+  Hit: 0
+  Sit: 0
+  Dead: 0
+  Controllable: {fileID: 0}
+  MeshFilter: {fileID: 0}
+  MeshRenderer: {fileID: 0}
+  MeshCollider: {fileID: 0}
+  SortingGroup: {fileID: 0}
+  CurrentShade: 1
+  TargetShade: 0
+  ShadeLevel: 0.85
+  LockAngle: 0
+  CurrentMotion: 0
+  PreferredAttackMotion: 0

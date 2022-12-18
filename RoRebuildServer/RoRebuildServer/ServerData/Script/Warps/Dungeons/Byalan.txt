@@ -1,13 +1,13 @@
 
 Warp("iz_dun00", "byalancavewarp001", 39, 41, 5, 2, "iz_dun01", 41, 37);	
-Warp("iz_dun00", "byalancavewarp002", 168, 173, 3, 3, "izlu2dun", 108, 88);
+Warp("iz_dun00", "byalancavewarp002", "Byalan Island", 168, 173, 3, 3, "izlu2dun", 108, 88);
 Warp("iz_dun00", "byalancavewarp003", 352, 342, 5, 2, "iz_dun01", 253, 252);
 Warp("iz_dun01", "byalancavewarp004", 41, 32, 2, 2, "iz_dun00", 39, 46);
 Warp("iz_dun01", "byalancavewarp005", 118, 170, 5, 2, "iz_dun02", 236, 204);
 Warp("iz_dun01", "byalancavewarp006", 253, 258, 2, 2, "iz_dun00", 352, 337);
 Warp("iz_dun02", "byalancavewarp007", 236, 198, 5, 3, "iz_dun01", 118, 165);
-Warp("iz_dun02", "byalancavewarp008", 339, 331, 2, 2,  "iz_dun03", 32, 63);
-Warp("iz_dun03", "byalancavewarp009", 29, 63, 2, 2,  "iz_dun02", 339, 328);
+Warp("iz_dun02", "byalancavewarp008", "Undersea Tunnel", 339, 331, 2, 2,  "iz_dun03", 32, 63);
+Warp("iz_dun03", "byalancavewarp009", "Byalan Cave Dungeon", 29, 63, 2, 2,  "iz_dun02", 339, 328);
 Warp("iz_dun03", "byalancavewarp010", 264, 245, 1, 2,  "iz_dun04", 26, 27);
 Warp("iz_dun04", "byalancavewarp011", 26, 24, 2, 2,  "iz_dun03", 261, 245);
-Warp("izlu2dun", "byalancavewarp012", 108, 83, 3, 2, "iz_dun00", 168, 168);
+Warp("izlu2dun", "byalancavewarp012", "Byalan Cave Dungeon", 108, 83, 3, 2, "iz_dun00", 168, 168);

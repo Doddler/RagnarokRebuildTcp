@@ -1,5 +1,5 @@
 ﻿
-Warp("pay_dun00", "payondunwarp001", 21, 186, 2, 2, "pay_arche", 39, 131);
+Warp("pay_dun00", "payondunwarp001", "Archer Village", 21, 186, 2, 2, "pay_arche", 39, 131);
 Warp("pay_dun00", "payondunwarp002", 184, 33, 2, 7, "pay_dun01", 19, 33);
 Warp("pay_dun01", "payondunwarp003", 15, 33, 2, 6, "pay_dun00", 181, 33);
 Warp("pay_dun01", "payondunwarp004", 286, 25, 2, 7, "pay_dun02", 19, 63);
@@ -7,8 +7,9 @@ Warp("pay_dun02", "payondunwarp005", 16, 63, 2, 7, "pay_dun01", 283, 28);
 Warp("pay_dun02", "payondunwarp006", 137, 128, 4, 1, "pay_dun03", 155, 159);
 
 //entrance to payon 5 takes you to 1 of 4 entrances
-Npc("pay_dun03", "payondunwarp007", "WARP", 127, 62, N, 1, 2)
-{
+Npc("pay_dun03", "", "WARP", 127, 62, N, 1, 2)
+{  
+    RegisterSignal("payondunwarp007");
 OnTouch:
     //use minutes since startup as the hash source to get a number between 1-4
     var rnd = DeterministicRandom(MinutesSinceStartup, 4);

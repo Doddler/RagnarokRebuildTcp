@@ -1,45 +1,46 @@
 
-Warp("gl_cas01", "glastheimwarp001", 135, 40, 2, 3, "gl_cas01", 144, 314);
-Warp("gl_cas01", "glastheimwarp002", 149, 314, 2, 3, "gl_prison", 14, 70);
-Warp("gl_cas01", "glastheimwarp003", 167, 191, 2, 3, "gl_prison", 14, 70);
-Warp("gl_cas01", "glastheimwarp004", 185, 236, 2, 3, "gl_cas01", 163, 191);
-Warp("gl_cas01", "glastheimwarp005", 200, 18, 3, 2, "glast_01", 200, 294);
+Warp("gl_cas01", "glastheimwarp001", "Glast Heim Castle", 135, 40, 2, 3, "gl_cas01", 144, 314);
+Warp("gl_cas01", "glastheimwarp002", "Glast Heim Prison", 149, 314, 2, 3, "gl_prison", 14, 70);
+Warp("gl_cas01", "glastheimwarp003", "Glast Heim Prison", 167, 191, 2, 3, "gl_prison", 14, 70);
+Warp("gl_cas01", "glastheimwarp004", "Glast Heim Castle", 185, 236, 2, 3, "gl_cas01", 163, 191);
+Warp("gl_cas01", "glastheimwarp005", "Glast Heim", 200, 18, 3, 2, "glast_01", 200, 294);
 Warp("gl_cas01", "glastheimwarp006", 200, 165, 3, 2, "gl_cas02", 104, 20);
 Warp("gl_cas01", "glastheimwarp007", 214, 236, 2, 3, "gl_cas01", 238, 192);
-Warp("gl_cas01", "glastheimwarp008", 234, 192, 2, 3, "gl_prison", 14, 70);
-Warp("gl_cas01", "glastheimwarp009", 371, 301, 2, 3, "gl_prison", 14, 70);
+Warp("gl_cas01", "glastheimwarp008", "Glast Heim Prison", 234, 192, 2, 3, "gl_prison", 14, 70);
+Warp("gl_cas01", "glastheimwarp009", "Glast Heim Prison", 371, 301, 2, 3, "gl_prison", 14, 70);
 Warp("gl_cas01", "glastheimwarp010", 373, 39, 2, 3, "gl_cas01", 367, 301);
 Warp("gl_cas02", "glastheimwarp011", 103, 15, 2, 1, "gl_cas01", 200, 160);
-Warp("gl_cas02", "glastheimwarp012", 104, 193, 2, 1, "glast_01", 199, 326);
-Warp("gl_church", "glastheimwarp013", 16, 299, 2, 2, "gl_chyard", 147, 283);
-Warp("gl_church", "glastheimwarp014", 156, 4, 2, 2, "glast_01", 200, 133);
-Warp("gl_church", "glastheimwarp015", 301, 46, 2, 2, "gl_chyard", 147, 16);
-Warp("gl_chyard", "glastheimwarp016", 12, 149, 2, 2, "gl_sew02", 29, 270);
-Warp("gl_chyard", "glastheimwarp017", 147, 12, 2, 2, "gl_church", 295, 46);
-Warp("gl_chyard", "glastheimwarp018", 147, 287, 2, 2, "gl_church", 16, 295);
-Warp("gl_dun01", "glastheimwarp019", 133, 276, 2, 2, "gl_sew04", 101, 78);
+Warp("gl_cas02", "glastheimwarp012", "Glast Heim", 104, 193, 2, 1, "glast_01", 199, 326);
+Warp("gl_church", "glastheimwarp013", "Glast Heim Catacombs", 16, 299, 2, 2, "gl_chyard", 147, 283);
+Warp("gl_church", "glastheimwarp014", "Glast Heim", 156, 4, 2, 2, "glast_01", 200, 133);
+Warp("gl_church", "glastheimwarp015", "Glast Heim Catacombs", 301, 46, 2, 2, "gl_chyard", 147, 16);
+Warp("gl_chyard", "glastheimwarp016", "Glast Heim Sewers", 12, 149, 2, 2, "gl_sew02", 29, 270);
+Warp("gl_chyard", "glastheimwarp017", "Glast Heim Church", 147, 12, 2, 2, "gl_church", 295, 46);
+Warp("gl_chyard", "glastheimwarp018", "Glast Heim Church", 147, 287, 2, 2, "gl_church", 16, 295);
+Warp("gl_dun01", "glastheimwarp019", "Glast Heim Sewers", 133, 276, 2, 2, "gl_sew04", 101, 78);
 Warp("gl_dun01", "glastheimwarp020", 225, 18, 4, 2, "gl_dun02", 224, 274);
 Warp("gl_dun02", "glastheimwarp021", 224, 277, 4, 2, "gl_dun01", 225, 22);
-Warp("gl_in01", "glastheimwarp022", 81, 68, 2, 2, "glast_01", 166, 330);
-Warp("gl_in01", "glastheimwarp023", 83, 174, 2, 2, "glast_01", 182, 355);
-Warp("gl_in01", "glastheimwarp024", 106, 125, 2, 2, "glast_01", 219, 356);
-Warp("gl_in01", "glastheimwarp025", 118, 59, 2, 2, "glast_01", 234, 330);
-Warp("gl_knt01", "glastheimwarp026", 12, 148, 2, 2, "gl_knt02", 15, 140);
+Warp("gl_in01", "glastheimwarp022", "Glast Heim", 81, 68, 2, 2, "glast_01", 166, 330);
+Warp("gl_in01", "glastheimwarp023", "Glast Heim", 83, 174, 2, 2, "glast_01", 182, 355);
+Warp("gl_in01", "glastheimwarp024", "Glast Heim", 106, 125, 2, 2, "glast_01", 219, 356);
+Warp("gl_in01", "glastheimwarp025", "Glast Heim", 118, 59, 2, 2, "glast_01", 234, 330);
+Warp("gl_knt01", "glastheimwarp026", "Glast Heim Chivalry", 12, 148, 2, 2, "gl_knt02", 15, 140);
 Warp("gl_knt01", "glastheimwarp027", 104, 204, 4, 2, "gl_knt01", 123, 292);
 Warp("gl_knt01", "glastheimwarp028", 129, 292, 2, 3, "gl_knt01", 104, 199);
-Warp("gl_knt01", "glastheimwarp029", 150, 6, 2, 2, "glast_01", 73, 193);
+Warp("gl_knt01", "glastheimwarp029", "Glast Heim", 150, 6, 2, 2, "glast_01", 73, 193);
 Warp("gl_knt01", "glastheimwarp030", 150, 291, 2, 2, "gl_knt02", 157, 287);
-Warp("gl_knt01", "glastheimwarp031", 231, 197, 3, 2, "gl_sew02", 296, 22);
+Warp("gl_knt01", "glastheimwarp031", "Glast Heim Sewers", 231, 197, 3, 2, "gl_sew02", 296, 22);
 Warp("gl_knt01", "glastheimwarp032", 287, 144, 2, 2, "gl_knt02", 283, 140);
 Warp("gl_knt02", "glastheimwarp033", 10, 138, 2, 2, "gl_knt01", 7, 148);
 Warp("gl_knt02", "glastheimwarp034", 157, 292, 2, 2, "gl_knt01", 150, 286);
 Warp("gl_knt02", "glastheimwarp035", 289, 138, 2, 2, "gl_knt01", 292, 144);
-Warp("gl_prison1", "glastheimwarp036", 62, 187, 3, 1, "gl_sew01", 258, 255);
+Warp("gl_prison1", "glastheimwarp036", "Glast Heim Sewers", 62, 187, 3, 1, "gl_sew01", 258, 255);
 Warp("gl_prison1", "glastheimwarp037", 150, 10, 3, 2, "gl_prison", 149, 178);
 Warp("gl_prison", "glastheimwarp038", 149, 184, 3, 1, "gl_prison1", 150, 14);
 
-Npc("gl_prison", "glastheimwarp039", "WARP", 10, 70, N, 2, 3)
+Npc("gl_prison", "???", "WARP", 10, 70, N, 2, 3)
 {
+	RegisterSignal("glastheimwarp039");
 OnTouch:
 	var pri1 = Random(4);
 	switch(pri1)
@@ -56,26 +57,26 @@ OnTouch:
 }
 
 Warp("gl_sew01", "glastheimwarp040", 19, 21, 3, 1, "gl_sew02", 108, 290);
-Warp("gl_sew01", "glastheimwarp041", 258, 258, 3, 1, "gl_prison1", 61, 183);
-Warp("gl_sew02", "glastheimwarp042", 16, 26, 1, 3, "gl_prison1", 61, 183);
-Warp("gl_sew02", "glastheimwarp043", 30, 273, 1, 1, "gl_chyard", 16, 149);
-Warp("gl_sew02", "glastheimwarp044", 109, 294, 3, 2, "gl_sew01", 19, 24);
-Warp("gl_sew02", "glastheimwarp045", 290, 156, 1, 2, "gl_step", 117, 124);
-Warp("gl_sew02", "glastheimwarp046", 296, 18, 2, 1, "gl_knt01", 231, 192);
+Warp("gl_sew01", "glastheimwarp041", "Glast Heim Prison", 258, 258, 3, 1, "gl_prison1", 61, 183);
+Warp("gl_sew02", "glastheimwarp042", "Glast Heim Prison", 16, 26, 1, 3, "gl_prison1", 61, 183);
+Warp("gl_sew02", "glastheimwarp043", "Glast Heim Catacombs", 30, 273, 1, 1, "gl_chyard", 16, 149);
+Warp("gl_sew02", "glastheimwarp044", "Glast Heim Sewers", 109, 294, 3, 2, "gl_sew01", 19, 24);
+Warp("gl_sew02", "glastheimwarp045", "Maze of Stairs", 290, 156, 1, 2, "gl_step", 117, 124);
+Warp("gl_sew02", "glastheimwarp046", "Glast Heim Chivalry", 296, 18, 2, 1, "gl_knt01", 231, 192);
 Warp("gl_sew02", "glastheimwarp047", 299, 294, 2, 4, "gl_sew03", 171, 283);
 Warp("gl_sew03", "glastheimwarp048", 64, 10, 4, 1, "gl_sew04", 68, 276);
 Warp("gl_sew03", "glastheimwarp049", 171, 286, 4, 1, "gl_sew02", 295, 294);
 Warp("gl_sew04", "glastheimwarp050", 68, 280, 4, 2, "gl_sew03", 64, 13);
-Warp("gl_sew04", "glastheimwarp051", 104, 78, 1, 4, "gl_dun01", 133, 271);
-Warp("gl_step", "glastheimwarp052", 8, 8, 1, 3, "glast_01", 54, 108);
-Warp("gl_step", "glastheimwarp053", 120, 123, 1, 1, "gl_sew02", 285, 158);
-Warp("glast_01", "glastheimwarp054", 51, 108, 1, 2, "gl_step", 12, 7);
-Warp("glast_01", "glastheimwarp055", 77, 193, 2, 2, "gl_knt01", 150, 15);
-Warp("glast_01", "glastheimwarp056", 162, 330, 2, 2, "gl_in01", 77, 68);
-Warp("glast_01", "glastheimwarp057", 179, 360, 2, 2, "gl_in01", 79, 174);
-Warp("glast_01", "glastheimwarp058", 199, 322, 2, 2, "gl_cas02", 104, 189);
-Warp("glast_01", "glastheimwarp059", 200, 137, 2, 1, "gl_church", 156, 8);
-Warp("glast_01", "glastheimwarp060", 200, 297, 2, 1, "gl_cas01", 199, 23);
-Warp("glast_01", "glastheimwarp061", 220, 360, 2, 2, "gl_in01", 110, 125);
-Warp("glast_01", "glastheimwarp062", 237, 330, 2, 2, "gl_in01", 122, 59);
-Warp("glast_01", "glastheimwarp063", 380, 304, 2, 2, "gef_fild06", 22, 304);
+Warp("gl_sew04", "glastheimwarp051", "Underground Tunnels", 104, 78, 1, 4, "gl_dun01", 133, 271);
+Warp("gl_step", "glastheimwarp052", "Glast Heim", 8, 8, 1, 3, "glast_01", 54, 108);
+Warp("gl_step", "glastheimwarp053", "Glast Heim Sewers", 120, 123, 1, 1, "gl_sew02", 285, 158);
+Warp("glast_01", "glastheimwarp054", "Maze of Stairs", 51, 108, 1, 2, "gl_step", 12, 7);
+Warp("glast_01", "glastheimwarp055", "Glast Heim Chivalry", 77, 193, 2, 2, "gl_knt01", 150, 15);
+Warp("glast_01", "glastheimwarp056", "Glast Heim Castle Quarters", 162, 330, 2, 2, "gl_in01", 77, 68);
+Warp("glast_01", "glastheimwarp057", "Glast Heim Castle Quarters", 179, 360, 2, 2, "gl_in01", 79, 174);
+Warp("glast_01", "glastheimwarp058", "Glast Heim Castle", 199, 322, 2, 2, "gl_cas02", 104, 189);
+Warp("glast_01", "glastheimwarp059", "Glast Heim Church", 200, 137, 2, 1, "gl_church", 156, 8);
+Warp("glast_01", "glastheimwarp060", "Glast Heim Castle", 200, 297, 2, 1, "gl_cas01", 199, 23);
+Warp("glast_01", "glastheimwarp061", "Glast Heim Castle Quarters", 220, 360, 2, 2, "gl_in01", 110, 125);
+Warp("glast_01", "glastheimwarp062", "Glast Heim Castle Quarters", 237, 330, 2, 2, "gl_in01", 122, 59);
+Warp("glast_01", "glastheimwarp063", "Geffen Fields", 380, 304, 2, 2, "gef_fild06", 22, 304);

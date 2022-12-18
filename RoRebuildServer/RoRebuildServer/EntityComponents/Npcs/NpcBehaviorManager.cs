@@ -13,7 +13,7 @@ public class NpcBehaviorManager
     public Dictionary<string, List<NpcSpawnDefinition>> NpcSpawnsForMaps = new();
     public Dictionary<string, NpcBehaviorBase> EventBehaviorLookup = new();
 
-    public void RegisterNpc(string name, string map, int spriteId, int x, int y, Direction facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase behavior)
+    public void RegisterNpc(string name, string map, string? signalName, int spriteId, int x, int y, Direction facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase behavior)
     {
         var shortName = name;
         if(name.Contains("#"))
@@ -23,6 +23,7 @@ public class NpcBehaviorManager
         {
             FullName = name,
             Name = shortName,
+            SignalName = signalName,
             SpriteId = spriteId,
             Position = new Position(x, y),
             FacingDirection = facing,

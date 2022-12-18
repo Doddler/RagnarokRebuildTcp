@@ -75,7 +75,7 @@ public class World
         AoEPool = new DefaultObjectPool<AreaOfEffect>(new AreaOfEffectPoolPolicy(), 64);
         moveRequests = Channel.CreateUnbounded<MapMoveRequest>(new UnboundedChannelOptions() {AllowSynchronousContinuations = false, SingleReader = true, SingleWriter = false});
 
-        ServerLogger.Log($"World created, using {mapCount} maps and {nextEntityId} entities.");
+        ServerLogger.Log($"World created using {mapCount} maps across {Instances.Count} instances placing a total of {nextEntityId} entities.");
     }
 
     public void FullyRemoveEntity(ref Entity entity, CharacterRemovalReason reason = CharacterRemovalReason.OutOfSight)
@@ -101,9 +101,8 @@ public class World
 
             if (npc.HasTouch && npc.AreaOfEffect != null)
                 ch.Map?.RemoveAreaOfEffect(npc.AreaOfEffect);
-            
-            if (ch.Map != null && ch.Map.Instance.NpcNameLookup.ContainsKey(npc.FullName))
-                ch.Map.Instance.NpcNameLookup.Remove(npc.FullName);
+
+            npc.RemoveSignal();
         }
 
         entityList.Remove(ch.Id);
@@ -220,11 +219,10 @@ public class World
         npc.HasTouch = spawn.HasTouch;
         npc.Entity = e;
         npc.Behavior = spawn.Behavior;
+        npc.Character = ch;
 
         map.AddEntity(ref e);
-
-        map.Instance.NpcNameLookup.TryAdd(spawn.FullName, e);
-
+        
         if (npc.HasTouch)
         {
             var aoe = new AreaOfEffect()
@@ -243,7 +241,9 @@ public class World
 
         entityList.Add(ch.Id, e);
 
-
+        if(!string.IsNullOrWhiteSpace(spawn.SignalName))
+            npc.RegisterSignal(spawn.SignalName);
+        
         npc.Behavior.Init(npc); //save this for last, the npc might do something silly like hide itself and needs to be on the map
     }
 
@@ -273,6 +273,7 @@ public class World
         npc.HasTouch = false;
         npc.Entity = e;
         npc.Behavior = behavior;
+        npc.Character = ch;
 
         map.AddEntity(ref e);
 
@@ -564,24 +565,6 @@ public class World
         moveRequests.Writer.TryWrite(new MapMoveRequest(entity, MoveRequestType.MapMove, character.Map, map, newPosition));
 
         character.IsActive = false;
-        //if (character.Map != null)
-        //    character.Map.RemoveEntity(ref entity, CharacterRemovalReason.OutOfSight, character.Map.Instance != map.Instance);
-        
-        //character.ResetState();
-        //character.Position = newPosition;
-        
-        //if (newPosition == Position.Zero)
-        //{
-        //    map.FindPositionInRange(map.MapBounds, out var p);
-        //    character.Position = newPosition;
-        //}
-        
-        //map.AddEntity(ref entity, character.Map?.Instance != map.Instance);
-
-        //var player = entity.Get<Player>();
-        //player.Connection.LastKeepAlive = Time.ElapsedTime; //reset tick time so they get 2 mins to load the map
-
-        //CommandBuilder.SendChangeMap(character, player);
     }
 
 

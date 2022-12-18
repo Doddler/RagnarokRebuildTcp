@@ -352,17 +352,20 @@ public class WorldObject : IEntityAutoReset
         return true;
     }
 
-
+    //this shortens the move path of any moving character so they only finish the next tile movement and stop
     public void StopAction()
     {
-        Debug.Assert(Map != null);
-        Debug.Assert(WalkPath != null);
-
+        if (Map == null)
+            return;
+        
         var needsStop = false;
 
         //if it's not MoveStep + 2, that means the next step is already the last step.
         if (State == CharacterState.Moving && MoveStep + 2 < TotalMoveSteps)
         {
+            if (WalkPath == null)
+                throw new Exception($"Error stopping action of character {Name}, who is in the Moving state but it does not have a WalkPath object.");
+
             TotalMoveSteps = MoveStep + 2;
             TargetPosition = WalkPath[TotalMoveSteps - 1];
 
