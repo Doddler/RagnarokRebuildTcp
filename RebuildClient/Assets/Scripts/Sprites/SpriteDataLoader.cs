@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
@@ -103,98 +104,105 @@ namespace Assets.Scripts.Sprites
 			isInitialized = true;
 		}
 
-        private GameObject CloneAnimatorForTrail(RoSpriteAnimator src, RoSpriteTrail trail, int order)
-        {
-            if (!src.IsInitialized)
-                return null;
+   //     private GameObject CloneAnimatorForTrail(RoSpriteAnimator src, RoSpriteTrail trail, int order)
+   //     {
+   //         if (!src.IsInitialized)
+   //             return null;
 
-            var go = new GameObject(src.gameObject.name);
-            var mf = go.AddComponent<MeshFilter>();
-            var mr = go.AddComponent<MeshRenderer>();
+   //         var go = new GameObject(src.gameObject.name);
+   //         var mf = go.AddComponent<MeshFilter>();
+   //         var mr = go.AddComponent<MeshRenderer>();
 
-			if(order > 0)
-                mr.sortingOrder = order;
+   //         var sr = src.SpriteRenderer as RoSpriteRendererStandard;
+   //         if (sr == null)
+   //             throw new Exception("Cannot CloneAnimatorForTrail as it is not using a RoSpriteRendererStandard.");
 
-            mr.receiveShadows = false;
-            mr.lightProbeUsage = LightProbeUsage.Off;
-            mr.shadowCastingMode = ShadowCastingMode.Off;
+			//if(order > 0)
+   //             mr.sortingOrder = order;
 
-			trail.Renderers.Add(mr);
+   //         mr.receiveShadows = false;
+   //         mr.lightProbeUsage = LightProbeUsage.Off;
+   //         mr.shadowCastingMode = ShadowCastingMode.Off;
 
-			mf.mesh = src.GetMeshForFrame();
+			//trail.Renderers.Add(mr);
 
-            var mats = new Material[src.MeshRenderer.sharedMaterials.Length];
+			//mf.mesh = sr.GetMeshForFrame();
 
-            for (var i = 0; i < src.MeshRenderer.sharedMaterials.Length; i++)
-            {
-                var srcMat = src.MeshRenderer.sharedMaterials[i];
+   //         var mats = new Material[src.MeshRenderer.sharedMaterials.Length];
 
-                var shader = srcMat.shader;
-				//Debug.Log(shader);
-                var mat = new Material(shader);
-                //Debug.Log(mat);
-				mat.shader = shader;
-                mat.mainTexture = srcMat.mainTexture;
-                mat.renderQueue = srcMat.renderQueue;
-                mat.shaderKeywords = srcMat.shaderKeywords;
+   //         for (var i = 0; i < src.MeshRenderer.sharedMaterials.Length; i++)
+   //         {
+   //             var srcMat = src.MeshRenderer.sharedMaterials[i];
+
+   //             var shader = srcMat.shader;
+			//	//Debug.Log(shader);
+   //             var mat = new Material(shader);
+   //             //Debug.Log(mat);
+			//	mat.shader = shader;
+   //             mat.mainTexture = srcMat.mainTexture;
+   //             mat.renderQueue = srcMat.renderQueue;
+   //             mat.shaderKeywords = srcMat.shaderKeywords;
 
 
-				mats[i] = mat;
-			}
+			//	mats[i] = mat;
+			//}
 
-            mr.sharedMaterials = mats;
+   //         mr.sharedMaterials = mats;
 
-			//Debug.Log(mr.material);
+			////Debug.Log(mr.material);
 
-            return go;
-        }
+   //         return go;
+   //     }
 		
-        public void CloneObjectForTrail(RoSpriteAnimator src)
-        {
-            if (!isInitialized)
-                Initialize();
+   //     public void CloneObjectForTrail(RoSpriteAnimator src)
+   //     {
+   //         if (!isInitialized)
+   //             Initialize();
 
-			if(src.Parent != null)
-				Debug.LogError("Cannot clone sprite animator for trail as it is not the parent animator!");
+			//if(src.Parent != null)
+			//	Debug.LogError("Cannot clone sprite animator for trail as it is not the parent animator!");
 
-            var go = new GameObject("Trail");
-            go.layer = LayerMask.NameToLayer("Characters");
-            go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            go.transform.position = src.transform.position;
-            var bb =go.AddComponent<Billboard>();
+   //         var go = new GameObject("Trail");
+   //         go.layer = LayerMask.NameToLayer("Characters");
+   //         go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+   //         go.transform.position = src.transform.position;
+   //         var bb =go.AddComponent<Billboard>();
 
-
-            var trail = go.AddComponent<RoSpriteTrail>();
-            trail.Color = src.CurrentColor;
-            trail.Duration = 0.6f;
-            trail.LifeTime = 0.5f;
-            trail.StartTime = 0.49f;
-            trail.Renderers = new List<MeshRenderer>();
-
-			var main = CloneAnimatorForTrail(src, trail, 0);
-			main.transform.SetParent(go.transform);
-            main.transform.localPosition = src.transform.localPosition + new Vector3(0, 0, 0.05f);
-            main.transform.localScale = src.transform.localScale;
-            trail.SortingGroup = main.AddComponent<SortingGroup>();
+   //         var sr = src.SpriteRenderer as RoSpriteRendererStandard;
+   //         if (sr == null)
+   //             throw new Exception("Cannot CloneAnimatorForTrail as it is not using a RoSpriteRendererStandard.");
 			
-			var order = 1;
+   //         var trail = go.AddComponent<RoSpriteTrail>();
+   //         trail.Color = sr.Color;
+   //         trail.Duration = 0.6f;
+   //         trail.LifeTime = 0.5f;
+   //         trail.StartTime = 0.49f;
+   //         trail.Renderers = new List<MeshRenderer>();
 
-            foreach (var c in src.ChildrenSprites)
-            {
-                var sub = CloneAnimatorForTrail(c, trail, order);
-                if (sub == null)
-                    continue;
-				sub.transform.SetParent(main.transform);
-                sub.transform.localScale = c.transform.localScale;
-				sub.transform.localPosition = c.transform.localPosition;
+			//var main = CloneAnimatorForTrail(src, trail, 0);
+			//main.transform.SetParent(go.transform);
+   //         main.transform.localPosition = src.transform.localPosition + new Vector3(0, 0, 0.05f);
+   //         main.transform.localScale = src.transform.localScale;
+   //         trail.SortingGroup = main.AddComponent<SortingGroup>();
+			
+			//var order = 1;
 
-                order++;
-            }
+   //         foreach (var c in src.ChildrenSprites)
+   //         {
+   //             var sub = CloneAnimatorForTrail(c, trail, order);
+   //             if (sub == null)
+   //                 continue;
+			//	sub.transform.SetParent(main.transform);
+   //             sub.transform.localScale = c.transform.localScale;
+			//	sub.transform.localPosition = c.transform.localPosition;
 
-			//call lateupdate directly in case we are too late to update in time
-			bb.LateUpdate();
-			trail.Init();
-        }
+   //             order++;
+   //         }
+
+			////call lateupdate directly in case we are too late to update in time
+			//bb.LateUpdate();
+			//trail.Init();
+   //     }
 		
         public ServerControllable InstantiatePlayer(ref PlayerSpawnParameters param)
 		{
@@ -246,7 +254,7 @@ namespace Assets.Scripts.Sprites
 			if(param.State == CharacterState.Moving)
 				bodySprite.ChangeMotion(SpriteMotion.Walk);
 			bodySprite.ChildrenSprites.Add(headSprite);
-			bodySprite.SpriteOffset = 0.5f;
+			//bodySprite.SpriteOffset = 0.5f;
 			bodySprite.HeadFacing = param.HeadFacing;
 
 			if (param.State == CharacterState.Sitting)
@@ -322,6 +330,36 @@ namespace Assets.Scripts.Sprites
             AddressableUtility.LoadRoSpriteData(parent, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
         }
 
+        public void AttachEmote(GameObject target, int emoteId)
+        {
+            var go = new GameObject("Emote");
+            //go.layer = LayerMask.NameToLayer("Characters");
+			go.AddComponent<Billboard>();
+			
+            var emote = go.AddComponent<EmoteController>();
+            emote.AnimationId = emoteId;
+            emote.Target = target;
+
+            var child = new GameObject("Sprite");
+            //child.layer = LayerMask.NameToLayer("Characters");
+            child.transform.SetParent(go.transform, false);
+            child.transform.localPosition = Vector3.zero;
+            child.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
+            var sr = child.AddComponent<RoSpriteRendererStandard>();
+            sr.SecondPassForWater = false;
+            sr.UpdateAngleWithCamera = false;
+
+            var sprite = child.AddComponent<RoSpriteAnimator>();
+            emote.RoSpriteAnimator = sprite;
+            sprite.Type = SpriteType.Npc;
+            sprite.State = SpriteState.Dead;
+            //sprite.LockAngle = true;
+            sprite.SpriteRenderer = sr;
+            
+            AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/emotion.spr", emote.OnFinishLoad);
+        }
+
 		private ServerControllable PrefabMonster(MonsterClassData mData, ref MonsterSpawnParameters param)
 		{
 			var prefabName = mData.SpriteName;
@@ -392,7 +430,7 @@ namespace Assets.Scripts.Sprites
 			sprite.Controllable = control;
 			
 			control.SpriteAnimator = sprite;
-			control.SpriteAnimator.SpriteOffset = mData.Offset;
+			//control.SpriteAnimator.SpriteOffset = mData.Offset;
 			control.ShadowSize = mData.ShadowSize;
 			control.IsAlly = false;
             control.Level = param.Level;

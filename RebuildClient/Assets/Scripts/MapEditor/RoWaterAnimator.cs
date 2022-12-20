@@ -13,6 +13,19 @@ namespace Assets.Scripts.MapEditor
         private float cooldown;
         private float fullFrameTime;
         private bool isActive;
+        
+        private static RoWaterAnimator instance;
+
+        public static RoWaterAnimator Instance
+        {
+            get
+            {
+                if (instance != null)
+                    return instance;
+                instance = GameObject.FindObjectOfType<RoWaterAnimator>();
+                return instance;
+            }
+        }
 
         // Use this for initialization
         void Start()

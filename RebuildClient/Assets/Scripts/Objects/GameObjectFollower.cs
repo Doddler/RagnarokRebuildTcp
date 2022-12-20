@@ -6,6 +6,7 @@ public class GameObjectFollower : MonoBehaviour
 {
     public GameObject Target;
     public Vector3 Offset;
+    public bool DestroyOnTargetDead;
 
     // Start is called before the first frame update
     void Start()
@@ -18,5 +19,10 @@ public class GameObjectFollower : MonoBehaviour
     {
         if(Target != null)
             transform.position = Target.transform.position + Offset;
+        else
+        {
+            if(DestroyOnTargetDead && gameObject == null)
+                Destroy(gameObject);
+        }
     }
 }

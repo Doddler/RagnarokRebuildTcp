@@ -316,11 +316,15 @@ namespace Assets.Scripts.Network
 
 		public void UpdateFade(float f)
 		{
-			if(SpriteAnimator != null)
-				SpriteAnimator.Alpha = f;
-			if(shadowSprite != null)
-				shadowSprite.color = new Color(1f, 1f, 1f, f / 2f);
-		}
+            if (SpriteAnimator != null)
+            {
+                SpriteAnimator.Alpha = f;
+				SpriteAnimator.SetDirty();
+            }
+
+            if (shadowSprite != null)
+                shadowSprite.color = new Color(1f, 1f, 1f, f / 2f);
+        }
 
 		public void FadeOutAndVanish(float time)
 		{
@@ -365,42 +369,42 @@ namespace Assets.Scripts.Network
 			StartCoroutine(MonsterDeathCoroutine(hitCount));
 		}
 
-        public void BlastOff(Vector3 direction)
-        {
-            isMoving = false;
-            movePath = null;
+   //     public void BlastOff(Vector3 direction)
+   //     {
+   //         isMoving = false;
+   //         movePath = null;
 
-            FadeOutAndVanish(2f);
+   //         FadeOutAndVanish(2f);
 
-			SpriteAnimator.DoSpin();
+			//SpriteAnimator.DoSpin();
 
-            StartCoroutine(BlastOffCoroutine(direction));
-        }
+   //         StartCoroutine(BlastOffCoroutine(direction));
+   //     }
 
-        private IEnumerator BlastOffCoroutine(Vector3 direction)
-        {
-            var time = 0f;
+  //      private IEnumerator BlastOffCoroutine(Vector3 direction)
+  //      {
+  //          var time = 0f;
 
-            while (true)
-            {
-                var factor = 1f * Time.deltaTime * 0.8f;
-                transform.localPosition += direction * Time.deltaTime * 0.5f;
-                transform.localScale += new Vector3(factor, factor, factor) * 3f;
-                time += Time.deltaTime;
-                if (time < 0.5f)
-                    yield return null;
-                else
-                {
-                    var go = GameObject.Instantiate(Resources.Load<GameObject>("Explosion"));
-                    go.transform.localPosition = gameObject.transform.localPosition;
-					go.transform.localScale = new Vector3(5f, 5f, 5f);
-                    break;
-                }
-            }
-			if(gameObject != null)
-			    GameObject.Destroy(gameObject);
+  //          while (true)
+  //          {
+  //              var factor = 1f * Time.deltaTime * 0.8f;
+  //              transform.localPosition += direction * Time.deltaTime * 0.5f;
+  //              transform.localScale += new Vector3(factor, factor, factor) * 3f;
+  //              time += Time.deltaTime;
+  //              if (time < 0.5f)
+  //                  yield return null;
+  //              else
+  //              {
+  //                  var go = GameObject.Instantiate(Resources.Load<GameObject>("Explosion"));
+  //                  go.transform.localPosition = gameObject.transform.localPosition;
+		//			go.transform.localScale = new Vector3(5f, 5f, 5f);
+  //                  break;
+  //              }
+  //          }
+		//	if(gameObject != null)
+		//	    GameObject.Destroy(gameObject);
 
-		}
+		//}
 		private void Update()
 		{
             if (PopupDialog != null)

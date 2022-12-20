@@ -18,13 +18,14 @@ namespace Assets.Scripts.Sprites
 
 		private static int meshBuildCount = 0;
 
-		public static Mesh BuildColliderMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex,
-			int currentFrame)
+        public static Mesh BuildColliderMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex, int currentFrame) 
+            => BuildColliderMesh(spriteData, currentActionIndex + currentAngleIndex, currentFrame);
+		
+        public static Mesh BuildColliderMesh(RoSpriteData spriteData, int currentActionIndex, int currentFrame)
 		{
-			var frame = spriteData.Actions[currentActionIndex + currentAngleIndex].Frames[currentFrame];
+			var frame = spriteData.Actions[currentActionIndex].Frames[currentFrame];
 
 			meshBuildCount++;
-			//Debug.Log("Building new mesh, current mesh count: " + meshBuildCount);
 
 			outNormals.Clear();
 			outVertices.Clear();
@@ -120,9 +121,18 @@ namespace Assets.Scripts.Sprites
 			return mesh;
 		}
 
-		public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex, int currentFrame, float alpha = 1)
-		{
-			var frame = spriteData.Actions[currentActionIndex + currentAngleIndex].Frames[currentFrame];
+        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex, int currentFrame, float alpha = 1) 
+            => BuildSpriteMesh(spriteData, currentActionIndex + currentAngleIndex, currentFrame, alpha);
+        
+		
+        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentFrame, float alpha = 1)
+        {
+            var actions = spriteData.Actions[currentActionIndex];
+
+            if (currentFrame >= actions.Frames.Length)
+				Debug.LogError("AAAA");
+
+            var frame = actions.Frames[currentFrame];
 
 			meshBuildCount++;
 			//Debug.Log("Building new mesh, current mesh count: " + meshBuildCount);

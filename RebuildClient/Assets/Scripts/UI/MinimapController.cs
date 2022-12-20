@@ -254,6 +254,8 @@ public class MinimapController : MonoBehaviour
     void Awake()
     {
         instance = this;
+        OverworldMaterial = new Material(OverworldMaterial);
+        DungeonMaterial = new Material(DungeonMaterial);
     }
 
     // Start is called before the first frame update

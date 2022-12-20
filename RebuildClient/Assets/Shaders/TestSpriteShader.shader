@@ -4,8 +4,8 @@ Shader "Unlit/TestSpriteShader"
 	Properties
 	{
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
-		_Color("Tint", Color) = (1,1,1,1)
-		_Offset("Offset", Float) = 0
+		[PerRendererData] _Color("Tint", Color) = (1,1,1,1)
+		[PerRendererData] _Offset("Offset", Float) = 0
 		_Rotation("Rotation", Range(0,360)) = 0
 	}
 

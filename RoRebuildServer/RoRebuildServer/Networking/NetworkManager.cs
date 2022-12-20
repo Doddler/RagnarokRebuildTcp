@@ -46,7 +46,9 @@ public class NetworkManager
     //private static Thread outboundMessageThread;
 
     //public static int PlayerCount => State.ConnectionLookup.Count;
-    
+
+    private static int clientTimeoutTime = ServerConfig.OperationConfig.ClientTimeoutSeconds;
+
     public static bool IsRunning;
     public static bool IsSingleThreadMode { get; set; }
     public static bool DebugMode;
@@ -130,7 +132,10 @@ public class NetworkManager
                 PacketHandlers[i] = PacketHandlers[(int)PacketType.UnhandledPacket];
             }
         }
-        
+
+        if (clientTimeoutTime < 10)
+            clientTimeoutTime = 10;
+
         IsRunning = true;
 
         ServerLogger.Log("Server started.");
@@ -202,14 +207,14 @@ public class NetworkManager
                     var chara = players[i].Character;
                     if (chara == null)
                     {
-                        if (players[i].LastKeepAlive + 20 < Time.ElapsedTime)
+                        if (players[i].LastKeepAlive + clientTimeoutTime < Time.ElapsedTime)
                             await disconnectList.Writer.WriteAsync(players[i]);
                     }
                     else
                     {
-                        if (chara.IsActive && players[i].LastKeepAlive + 20 < Time.ElapsedTime)
+                        if (chara.IsActive && players[i].LastKeepAlive + clientTimeoutTime < Time.ElapsedTime)
                             await disconnectList.Writer.WriteAsync(players[i]);
-                        if (!chara.IsActive && players[i].LastKeepAlive + 120 < Time.ElapsedTime)
+                        if (!chara.IsActive && players[i].LastKeepAlive + clientTimeoutTime + 120 < Time.ElapsedTime)
                             await disconnectList.Writer.WriteAsync(players[i]);
                     }
                 }

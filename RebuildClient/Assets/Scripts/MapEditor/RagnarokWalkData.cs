@@ -48,7 +48,7 @@ namespace Assets.Scripts.MapEditor
             Debug.LogWarning("Could not determine cell type from cell data: " + color);
             return CellType.None;
         }
-
+        
         public void UpdateWalkCellData()
         {
             Debug.LogWarning(name + " WE SERIALIZIN'");

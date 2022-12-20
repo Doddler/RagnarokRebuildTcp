@@ -241,11 +241,12 @@ namespace Assets.Scripts
 
             var sprite = cursor.AddComponent<RoSpriteAnimator>();
 
-            sprite.SpriteOffset = 0.5f;
+            //sprite.SpriteOffset = 0.5f;
             sprite.ChangeMotion(SpriteMotion.Idle);
             sprite.ChangeAngle(3);
             sprite.Type = SpriteType.Npc;
             sprite.LockAngle = true;
+            sprite.SpriteOrder = 19999; //be in front of everything damn you
 
             sprite.SpriteData = TargetSprite;
             sprite.Initialize(false);
@@ -782,6 +783,8 @@ namespace Assets.Scripts
                 if (s[0] == "/bgm")
                     AudioManager.Instance.ToggleMute();
 
+                if (s[0] == "/emote" && s.Length == 2)
+                    SpriteDataLoader.Instance.AttachEmote(Target, int.Parse(s[1]));
 
                 if (s[0] == "/change")
                 {
@@ -1042,8 +1045,12 @@ namespace Assets.Scripts
             if (inTextBox)
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
                     TextBoxInputField.text = lastMessage;
-                
+                    if(lastMessage != null)
+                        TextBoxInputField.caretPosition = lastMessage.Length;
+                }
+
             }
 
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))

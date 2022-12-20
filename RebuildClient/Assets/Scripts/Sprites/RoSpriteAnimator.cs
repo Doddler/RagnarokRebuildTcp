@@ -15,21 +15,20 @@ namespace Assets.Scripts.Sprites
     public class RoSpriteAnimator : MonoBehaviour
     {
         public RoSpriteData SpriteData;
+        public RoSpriteRendererBase SpriteRenderer;
         public Direction Direction;
         public SpriteType Type;
         public SpriteState State;
         public float AnimSpeed = 1;
-        public float SpriteOffset = 0;
-        public int SpriteOrder = 0;
-
+        
         public Color Color;
-        public float Alpha;
+        public float Alpha { get; set; }
+        public int SpriteOrder;
 
         private static bool nextUseSmoothRender = false;
         private static bool canUpdateRenderer = false;
 
         public List<RoSpriteAnimator> ChildrenSprites = new List<RoSpriteAnimator>();
-        public List<SortingGroup> BattleZSwapGroups = new List<SortingGroup>();
 
         public RoSpriteAnimator Parent;
         public GameObject Shadow;
@@ -50,21 +49,10 @@ namespace Assets.Scripts.Sprites
         public bool Hit;
         public bool Sit;
         public bool Dead;
-
-        private Dictionary<int, Mesh> meshCache;
-        private Dictionary<int, Mesh> colliderCache;
-
+        
         public ServerControllable Controllable;
-        public MeshFilter MeshFilter;
-        public MeshRenderer MeshRenderer;
-        public MeshCollider MeshCollider;
-        public SortingGroup SortingGroup;
-
-        private GameObject[] layers;
-        private SpriteRenderer[] sprites;
         private bool isInitialized;
-        private int layerCount;
-
+        
         private string spriteName;
 
         private Light directionalLight;
@@ -76,6 +64,7 @@ namespace Assets.Scripts.Sprites
         private const float shadeForShadow = 0.80f;
 
         public bool LockAngle;
+        public bool DisableLoop;
 
         public SpriteMotion CurrentMotion;
         public int PreferredAttackMotion;
@@ -87,22 +76,13 @@ namespace Assets.Scripts.Sprites
         private float currentFrameTime = 0;
         private int currentFrame = 0;
         private int maxFrame { get; set; } = 0;
-        private bool isLooping;
         private bool isPaused;
         private bool isDirty;
         
-        private Material mat;
-        private Material mat2;
-        private Material[] materialArray;
+        //private float rotate = 0;
+        //private bool doSpin = false;
+        //private float spinSpeed = 100f;
 
-        public Color CurrentColor => mat.color;
-
-        //private float deadResetTime = 0;
-
-        private float rotate = 0;
-        private bool doSpin = false;
-        private float spinSpeed = 100f;
-        
         private Shader shader;
 
         public bool IsInitialized => isInitialized;
@@ -112,27 +92,29 @@ namespace Assets.Scripts.Sprites
         public bool IsAttackMotion => CurrentMotion == SpriteMotion.Attack1 || CurrentMotion == SpriteMotion.Attack2 ||
                                       CurrentMotion == SpriteMotion.Attack3;
 
+        public Action OnFinishAnimation;
+
         public void SetDirty()
         {
             isDirty = true;
         }
 
-        public void DoSpin()
-        {
-            spinSpeed = Random.Range(240f, 640f);
+        //public void DoSpin()
+        //{
+        //    spinSpeed = Random.Range(240f, 640f);
 
-            var megaSpin = Random.Range(0, 100);
-            if (megaSpin == 10)
-                spinSpeed = Random.Range(640f, 6400f);
+        //    var megaSpin = Random.Range(0, 100);
+        //    if (megaSpin == 10)
+        //        spinSpeed = Random.Range(640f, 6400f);
 
-            var dir = Random.Range(0, 2);
-            if (dir == 1)
-                spinSpeed *= -1;
+        //    var dir = Random.Range(0, 2);
+        //    if (dir == 1)
+        //        spinSpeed *= -1;
 
-            spinSpeed *= 2f;
+        //    spinSpeed *= 2f;
 
-            doSpin = true;
-        }
+        //    doSpin = true;
+        //}
 
         public Vector2 GetAnimationAnchor()
         {
@@ -158,6 +140,19 @@ namespace Assets.Scripts.Sprites
                 ChangeAction(0);
         }
 
+
+        public void OnSpriteDataLoadNoCollider(RoSpriteData spriteData)
+        {
+            if (spriteData == null)
+                throw new Exception($"Failed to load sprite data for sprite as the passed spriteData object was empty!");
+            //Debug.Log("Loaded sprite data for sprite " + spriteData.Name);
+            SpriteData = spriteData;
+            Initialize(false);
+
+            if (currentAction == null)
+                ChangeAction(0);
+        }
+
         public void Initialize(bool makeCollider = true)
         {
             if (isInitialized)
@@ -173,70 +168,16 @@ namespace Assets.Scripts.Sprites
 
             var parent = gameObject.transform.parent;
 
-            if (parent == null)
-            {
-
-                //var bb = gameObject.AddComponent<Billboard>();
-            }
-            else
+            if (parent != null)
             {
                 Parent = parent.gameObject.GetComponent<RoSpriteAnimator>();
                 if (Parent != null)
                     Controllable = Parent.Controllable;
             }
 
-            MeshFilter = gameObject.AddComponent<MeshFilter>();
-            MeshRenderer = gameObject.AddComponent<MeshRenderer>();
+            isInitialized = true;
 
-            MeshRenderer.sortingOrder = SpriteOrder;
-            if (makeCollider)
-                MeshCollider = gameObject.AddComponent<MeshCollider>();
-
-            SortingGroup = gameObject.GetOrAddComponent<SortingGroup>();
-            SortingGroup.sortingOrder = SpriteOrder;
-
-            MeshRenderer.receiveShadows = false;
-            MeshRenderer.lightProbeUsage = LightProbeUsage.Off;
-            MeshRenderer.shadowCastingMode = ShadowCastingMode.Off;
-
-            if (shader == null)
-                shader = ShaderCache.Instance?.SpriteShader;
-
-            if (shader == null)
-                Debug.LogError("Could not find shader Unlit/TestSpriteShader");
-
-            mat = new Material(shader);
-            mat.renderQueue -= 2;
-            mat.EnableKeyword("WATER_BELOW");
-            mat.mainTexture = SpriteData.Atlas;
-            
-            if (Mathf.Approximately(0, SpriteOffset))
-                mat.SetFloat("_Offset", SpriteData.Size / 125f);
-            else
-                mat.SetFloat("_Offset", SpriteOffset);
-
-            materialArray = new Material[2];
-            
-            materialArray[0] = mat;
-
-            mat2 = new Material(shader);
-            mat2.EnableKeyword("WATER_ABOVE");
-            mat2.mainTexture = SpriteData.Atlas;
-
-            if (Mathf.Approximately(0, SpriteOffset))
-                mat2.SetFloat("_Offset", SpriteData.Size / 125f);
-            else
-                mat2.SetFloat("_Offset", SpriteOffset);
-
-            materialArray[1] = mat2;
-
-            MeshRenderer.sharedMaterials = materialArray;
-
-            SpriteData.Atlas.filterMode = !nextUseSmoothRender ? FilterMode.Trilinear : FilterMode.Point;
-
-
-            if (Parent != null)
-                mat.SetFloat("_Offset", Parent.SpriteData.Size / 125f);
+            ChangeMotion(CurrentMotion, true);
 
             if (AudioSource == null && Parent == null)
             {
@@ -260,16 +201,10 @@ namespace Assets.Scripts.Sprites
                     child.Initialize();
             }
 
-            meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
-            colliderCache = SpriteMeshCache.GetColliderCacheForSprite(SpriteData.Name);
             spriteName = SpriteData.Name;
 
             Color = Color.white;
             Alpha = 1;
-
-            isInitialized = true;
-
-            ChangeMotion(CurrentMotion, true);
 
             if (Parent == null)
             {
@@ -282,47 +217,27 @@ namespace Assets.Scripts.Sprites
                 ChildUpdate();
             }
 
+            if (SpriteRenderer == null)
+            {
+                var stdRenderer = gameObject.AddComponent<RoSpriteRendererStandard>();
+                stdRenderer.SecondPassForWater = true;
+                stdRenderer.UpdateAngleWithCamera = true;
+                stdRenderer.SortingOrder = SpriteOrder;
+
+                SpriteRenderer = stdRenderer;
+            }
+
+            SpriteRenderer.SetSprite(SpriteData);
+            SpriteRenderer.SetColor(Color);
+            SpriteRenderer.SetDirection(Direction);
+
+            if (Parent != null)
+                SpriteRenderer.SetOffset(Parent.SpriteData.Size / 125f);
+
+            SpriteRenderer.Initialize(makeCollider);
 
             isDirty = true;
         }
-        
-        private Mesh GetColliderForFrame()
-        {
-            var id = ((currentActionIndex + currentAngleIndex) << 8) + currentFrame;
-
-            if (colliderCache.TryGetValue(id, out var mesh))
-                return mesh;
-
-            //Debug.Log("Building new mesh for " + name);
-
-            var newMesh = SpriteMeshBuilder.BuildColliderMesh(SpriteData, currentActionIndex, currentAngleIndex, currentFrame);
-
-            colliderCache.Add(id, newMesh);
-
-            return newMesh;
-        }
-
-        public Mesh GetMeshForFrame()
-        {
-            var id = ((currentActionIndex + currentAngleIndex) << 8) + currentFrame;
-
-            if (meshCache == null)
-            {
-                Debug.Log("Meshcache is not initialized! But how? isInitialized status is " + isInitialized);
-            }
-
-            if (meshCache.TryGetValue(id, out var mesh))
-                return mesh;
-
-            //Debug.Log("Building new mesh for " + name);
-
-            var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, currentActionIndex, currentAngleIndex, currentFrame);
-
-            meshCache.Add(id, newMesh);
-
-            return newMesh;
-        }
-
 
         public void OnDrawGizmos()
         {
@@ -350,6 +265,9 @@ namespace Assets.Scripts.Sprites
 
         public void UpdateSpriteFrame()
         {
+            if (!isInitialized || SpriteRenderer == null)
+                return;
+
             if (currentFrame >= currentAction.Frames.Length)
             {
                 //Debug.LogWarning($"Current frame is {currentFrame}, max frame is {maxFrame}, but actual frame max is {currentAction.Frames.Length}");
@@ -363,7 +281,7 @@ namespace Assets.Scripts.Sprites
                 var sound = SpriteData.Sounds[frame.Sound];
                 if (sound != null && AudioSource != null)
                 {
-                    if(AudioSource.isPlaying)
+                    if (AudioSource.isPlaying)
                         AudioSource.Stop();
 
                     AudioSource.clip = sound;
@@ -371,23 +289,16 @@ namespace Assets.Scripts.Sprites
                 }
             }
 
-            var mesh = GetMeshForFrame();
-            var cMesh = GetColliderForFrame();
-
-            MeshFilter.sharedMesh = null;
-            MeshFilter.sharedMesh = mesh;
-            if (MeshCollider != null)
-            {
-                MeshCollider.sharedMesh = null;
-                MeshCollider.sharedMesh = cMesh;
-            }
-
-            //Debug.Log("Updating sprite frame!");
+            SpriteRenderer.SetAction(currentActionIndex);
+            SpriteRenderer.SetDirection((Direction)currentAngleIndex);
+            SpriteRenderer.SetFrame(currentFrame);
+            SpriteRenderer.Rebuild();
         }
 
         public void ChangeAngle(int newAngleIndex)
         {
             currentAngleIndex = newAngleIndex;
+            Direction = (Direction)currentAngleIndex;
             if (!isInitialized)
                 return;
             currentAction = SpriteData.Actions[currentActionIndex + currentAngleIndex];
@@ -410,11 +321,26 @@ namespace Assets.Scripts.Sprites
             isDirty = true;
         }
 
+        public void ChangeActionExact(int newActionIndex)
+        {
+            if (!isInitialized) return;
+            currentActionIndex = newActionIndex / 8 * 8;
+            currentAngleIndex = newActionIndex % 8;
+            currentAction = SpriteData.Actions[newActionIndex];
+            Direction = (Direction)currentAngleIndex;
+            maxFrame = currentAction.Frames.Length - 1;
+            currentFrameTime = 0; //reset current frame time
+            if (currentFrame > maxFrame)
+                currentFrame = 0;
+            isDirty = true;
+            isPaused = false;
+        }
+
         public void ChangeMotion(SpriteMotion nextMotion, bool forceUpdate = false)
         {
             //Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion}");
-            
-            if(CurrentMotion == SpriteMotion.Dead && !forceUpdate)
+
+            if (CurrentMotion == SpriteMotion.Dead && !forceUpdate)
                 Debug.LogWarning("Changing from dead to something else!");
 
             if (CurrentMotion == nextMotion && !forceUpdate)
@@ -475,8 +401,12 @@ namespace Assets.Scripts.Sprites
                     ChangeMotion(nextMotion);
                 else
                 {
-                    if (State != SpriteState.Dead)
+                    OnFinishAnimation?.Invoke();
+
+                    if (State != SpriteState.Dead && !DisableLoop)
+                    {
                         currentFrame = 0;
+                    }
                     else
                     {
                         currentFrame = maxFrame;
@@ -576,23 +506,27 @@ namespace Assets.Scripts.Sprites
             else
                 TargetShade = 1f;
         }
-        
+
         public void UpdateColor()
         {
             var c = new Color(Color.r * CurrentShade, Color.g * CurrentShade, Color.b * CurrentShade, Alpha);
 
+            if (SpriteRenderer != null)
+                SpriteRenderer.SetColor(c);
 
-
-            mat.color = c;
-            mat2.color = c;
+            //mat.color = c;
+            //mat2.color = c;
         }
 
         public void UpdateChildColor()
         {
             var c = new Color(Parent.Color.r * Parent.CurrentShade, Parent.Color.g * Parent.CurrentShade, Parent.Color.b * Parent.CurrentShade, Parent.Alpha);
 
-            mat.color = c;
-            mat2.color = c;
+            if (SpriteRenderer != null)
+                SpriteRenderer.SetColor(c);
+
+            //mat.color = c;
+            //mat2.color = c;
         }
 
         public void LateUpdate()
@@ -603,7 +537,7 @@ namespace Assets.Scripts.Sprites
                 canUpdateRenderer = false;
             }
 
-            if (SortingGroup == null || Parent != null)
+            if (Parent != null)
                 return;
             if (mainCamera == null)
                 mainCamera = Camera.main;
@@ -611,9 +545,9 @@ namespace Assets.Scripts.Sprites
             var screenPos = Camera.main.WorldToScreenPoint(transform.position);
             screenPos = new Vector3(
                 Mathf.Clamp(screenPos.x, -100, mainCamera.pixelWidth + 100),
-                Mathf.Clamp(screenPos.y, -100, mainCamera.pixelHeight + 100), 
+                Mathf.Clamp(screenPos.y, -100, mainCamera.pixelHeight + 100),
                 0);
-            
+
             var sortGroup = Mathf.RoundToInt(screenPos.y * Screen.width + screenPos.x);
             var ratio = 1f / (Screen.width * Screen.height / 20000f);
             var sortLayerNum = 10000 - Mathf.RoundToInt(sortGroup * ratio);
@@ -670,13 +604,13 @@ namespace Assets.Scripts.Sprites
             if (currentAction == null)
                 ChangeAction(0);
 
-            var angleIndex = 0;
-            var is4dir = RoAnimationHelper.IsFourDirectionAnimation(Type, CurrentMotion);
+            //var angleIndex = 0;
+            //var is4dir = RoAnimationHelper.IsFourDirectionAnimation(Type, CurrentMotion);
 
-            if (is4dir)
-                angleIndex = RoAnimationHelper.GetFourDirectionSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
-            else
-                angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
+            //if (is4dir)
+            //    angleIndex = RoAnimationHelper.GetFourDirectionSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
+            //else
+            //angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
 
             //if (CurrentMotion == SpriteMotion.Dead)
             //{
@@ -691,18 +625,21 @@ namespace Assets.Scripts.Sprites
 
             //}
 
+            var angleIndex = (int)Direction;
+
             if (currentAngleIndex != angleIndex && !LockAngle)
                 ChangeAngle(angleIndex);
 
-            if (doSpin)
-            {
-                rotate += Time.deltaTime * spinSpeed;
-                if (rotate > 360)
-                    rotate -= 360;
-                if (rotate < 0)
-                    rotate += 360;
-                mat.SetFloat("_Rotation", rotate);
-            }
+            //sadly disabled until I add support to RoSpriteRenderer
+            //if (doSpin)
+            //{
+            //    rotate += Time.deltaTime * spinSpeed;
+            //    if (rotate > 360)
+            //        rotate -= 360;
+            //    if (rotate < 0)
+            //        rotate += 360;
+            //    mat.SetFloat("_Rotation", rotate);
+            //}
 
             //if (Input.GetKeyDown(KeyCode.F11))
             //{
@@ -770,21 +707,7 @@ namespace Assets.Scripts.Sprites
                         ChildrenSprites[i].ChildSetFrameData(currentActionIndex, currentAngleIndex, currentFrame);
                     }
                 }
-
-                for (var i = 0; i < BattleZSwapGroups.Count; i++)
-                {
-                    if (currentAngleIndex <= 1 || currentAngleIndex >= 6)
-                    {
-                        if (BattleZSwapGroups[i].sortingOrder < 0)
-                            BattleZSwapGroups[i].sortingOrder *= -1;
-                    }
-                    else
-                    {
-                        if (BattleZSwapGroups[i].sortingOrder > 0)
-                            BattleZSwapGroups[i].sortingOrder *= -1;
-                    }
-                }
-
+               
                 isDirty = false;
             }
 
