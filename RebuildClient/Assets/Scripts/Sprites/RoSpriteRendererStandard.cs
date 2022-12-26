@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts.MapEditor;
+using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Sprites
 {
-    internal class RoSpriteRendererStandard : RoSpriteRendererBase
+    internal class RoSpriteRendererStandard : MonoBehaviour, IRoSpriteRenderer
     {
         private int _currentAngleIndex;
         public int CurrentAngleIndex
@@ -42,7 +43,21 @@ namespace Assets.Scripts.Sprites
 
         private bool isInitialized;
 
-        public override void Initialize(bool makeCollider = false)
+        public int ActionId;
+        public int CurrentFrame;
+        public Color Color;
+        public Direction Direction;
+        public float SpriteOffset;
+        public RoSpriteData SpriteData;
+
+        public void SetAction(int action) => ActionId = action;
+        public void SetColor(Color color) => Color = color;
+        public void SetDirection(Direction direction) => Direction = direction;
+        public void SetFrame(int frame) => CurrentFrame = frame;
+        public void SetSprite(RoSpriteData sprite) => SpriteData = sprite;
+        public void SetOffset(float offset) => SpriteOffset = offset;
+
+        public void Initialize(bool makeCollider = false)
         {
             if (isInitialized)
                 return;
@@ -109,7 +124,7 @@ namespace Assets.Scripts.Sprites
             }
         }
 
-        public override void Rebuild()
+        public void Rebuild()
         {
             if (!isInitialized)
                 return;
@@ -198,6 +213,7 @@ namespace Assets.Scripts.Sprites
 
             return newMesh;
         }
+
         private Mesh GetColliderForFrame()
         {
             var id = ((ActionId + CurrentAngleIndex) << 16) + CurrentFrame;

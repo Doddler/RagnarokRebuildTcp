@@ -236,20 +236,20 @@ namespace Assets.Scripts
             var cursor = new GameObject("Cursor");
             cursor.layer = LayerMask.NameToLayer("Characters");
             cursor.transform.SetParent(go.transform, false);
-            cursor.transform.localPosition = Vector3.zero;
+            cursor.transform.localPosition = new Vector3(0f, 0.5f, 0f);
             cursor.AddComponent<SortingGroup>();
 
             var sprite = cursor.AddComponent<RoSpriteAnimator>();
 
             //sprite.SpriteOffset = 0.5f;
             sprite.ChangeMotion(SpriteMotion.Idle);
-            sprite.ChangeAngle(3);
             sprite.Type = SpriteType.Npc;
             sprite.LockAngle = true;
             sprite.SpriteOrder = 19999; //be in front of everything damn you
 
             sprite.SpriteData = TargetSprite;
             sprite.Initialize(false);
+            sprite.ChangeActionExact(3);
 
             return go;
         }
@@ -731,6 +731,11 @@ namespace Assets.Scripts
             LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
             TextBoxScrollRect.verticalNormalizedPosition = 0;
         }
+
+        public void Emote(int id)
+        {
+            SpriteDataLoader.Instance.AttachEmote(Target, id);
+        }
         
         public void OnSubmitTextBox(string text)
         {
@@ -784,7 +789,7 @@ namespace Assets.Scripts
                     AudioManager.Instance.ToggleMute();
 
                 if (s[0] == "/emote" && s.Length == 2)
-                    SpriteDataLoader.Instance.AttachEmote(Target, int.Parse(s[1]));
+                    Emote(int.Parse(s[1]));
 
                 if (s[0] == "/change")
                 {

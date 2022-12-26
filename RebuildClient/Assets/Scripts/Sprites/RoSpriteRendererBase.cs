@@ -9,23 +9,17 @@ using UnityEngine;
 
 namespace Assets.Scripts.Sprites
 {
-    public abstract class RoSpriteRendererBase : MonoBehaviour
+    public interface IRoSpriteRenderer
     {
-        public int ActionId;
-        public int CurrentFrame;
-        public Color Color;
-        public Direction Direction;
-        public float SpriteOffset;
-        public RoSpriteData SpriteData;
-        
-        public void SetAction(int action) => ActionId = action;
-        public void SetColor(Color color) => Color = color;
-        public void SetDirection(Direction direction) => Direction = direction;
-        public void SetFrame(int frame) => CurrentFrame = frame;
-        public void SetSprite(RoSpriteData sprite) => SpriteData = sprite;
-        public void SetOffset(float offset) => SpriteOffset = offset;
+        void SetAction(int action);
+        void SetColor(Color color);
+        void SetDirection(Direction direction);
+        void SetFrame(int frame);
+        void SetSprite(RoSpriteData sprite);
+        void SetOffset(float offset);
 
-        public virtual void Rebuild() { throw new NotImplementedException(); }
-        public virtual void Initialize(bool makeCollider = false) { }
+
+        void Rebuild();
+        void Initialize(bool makeCollider = false);
     }
 }

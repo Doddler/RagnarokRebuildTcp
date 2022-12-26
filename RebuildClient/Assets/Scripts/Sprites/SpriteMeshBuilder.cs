@@ -130,7 +130,7 @@ namespace Assets.Scripts.Sprites
             var actions = spriteData.Actions[currentActionIndex];
 
             if (currentFrame >= actions.Frames.Length)
-				Debug.LogError("AAAA");
+				Debug.LogError($"Current frame {currentFrame} exceeds max frame length {actions.Frames.Length} on sprite {spriteData.Name} for currentAction {currentActionIndex}");
 
             var frame = actions.Frames[currentFrame];
 

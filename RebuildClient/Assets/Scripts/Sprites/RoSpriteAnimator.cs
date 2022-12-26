@@ -15,7 +15,7 @@ namespace Assets.Scripts.Sprites
     public class RoSpriteAnimator : MonoBehaviour
     {
         public RoSpriteData SpriteData;
-        public RoSpriteRendererBase SpriteRenderer;
+        public IRoSpriteRenderer SpriteRenderer;
         public Direction Direction;
         public SpriteType Type;
         public SpriteState State;
@@ -220,8 +220,8 @@ namespace Assets.Scripts.Sprites
             if (SpriteRenderer == null)
             {
                 var stdRenderer = gameObject.AddComponent<RoSpriteRendererStandard>();
-                stdRenderer.SecondPassForWater = true;
-                stdRenderer.UpdateAngleWithCamera = true;
+                stdRenderer.SecondPassForWater = !LockAngle; //anything you'd want to lock angle for probably doesn't need a water pass
+                stdRenderer.UpdateAngleWithCamera = !LockAngle;
                 stdRenderer.SortingOrder = SpriteOrder;
 
                 SpriteRenderer = stdRenderer;
@@ -486,7 +486,7 @@ namespace Assets.Scripts.Sprites
 
             }
 
-            var srcPos = transform.position + new Vector3(0, 0.5f, 0);
+            var srcPos = transform.position + new Vector3(0, 0.2f, 0);
 
             var destDir = directionalLight.transform.rotation * Vector3.forward * -1;
 
@@ -694,7 +694,7 @@ namespace Assets.Scripts.Sprites
             if (currentFrameTime < 0 || currentFrame > maxFrame)
                 AdvanceFrame();
 
-            if (isDirty)
+            //if (isDirty)
             {
                 UpdateSpriteFrame();
                 for (var i = 0; i < ChildrenSprites.Count; i++)

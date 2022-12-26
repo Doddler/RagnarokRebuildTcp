@@ -85,7 +85,7 @@ namespace Assets.Scripts.MapEditor
         {
 	        if (Application.isPlaying && Camera.main == null && !mapData.IsWalkTable)
 	        {
-		        NetworkManager.SpawnMap = name;
+		        //NetworkManager.SpawnMap = name;
 		        SceneManager.LoadScene("MainScene");
 	        }
         }
