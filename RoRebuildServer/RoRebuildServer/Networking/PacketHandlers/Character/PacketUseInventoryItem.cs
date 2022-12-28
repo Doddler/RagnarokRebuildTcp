@@ -2,10 +2,9 @@
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Util;
-using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
 [ClientPacketHandler(PacketType.UseInventoryItem)]
 public class PacketUseInventoryItem : IClientPacketHandler

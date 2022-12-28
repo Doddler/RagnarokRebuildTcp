@@ -3,7 +3,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Character;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
 [ClientPacketHandler(PacketType.AdminChangeAppearance)]
 public class PacketAdminChangeAppearance : IClientPacketHandler

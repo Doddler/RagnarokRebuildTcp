@@ -4,7 +4,7 @@ using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
 [ClientPacketHandler(PacketType.AdminRequestMove)]
 public class PacketAdminRequestMove : IClientPacketHandler

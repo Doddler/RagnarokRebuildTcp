@@ -2,7 +2,7 @@
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Util;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Connection;
 
 [ClientPacketHandler(PacketType.Ping)]
 public class PacketPing : IClientPacketHandler

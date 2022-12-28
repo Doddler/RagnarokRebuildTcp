@@ -2,7 +2,7 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
 [ClientPacketHandler(PacketType.ChangeName)]
 public class PacketChangeName: IClientPacketHandler

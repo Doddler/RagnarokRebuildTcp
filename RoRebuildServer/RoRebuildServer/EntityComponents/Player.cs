@@ -60,6 +60,8 @@ public class Player : IEntityAutoReset
     public float CurrentCooldown;
 #endif
 
+    public float LastEmoteTime; //we'll probably need to have like, a bunch of timers at some point...
+
 
     public int GetData(PlayerStat type) => CharData[(int)type];
     public void SetData(PlayerStat type, int val) => CharData[(int)type] = val;
@@ -88,6 +90,7 @@ public class Player : IEntityAutoReset
         for(var i = 0; i < CharData.Length; i++)
             CharData[i] = 0;
         _weaponClass = -1;
+        LastEmoteTime = 0;
 
         SavePosition.Reset();
     }

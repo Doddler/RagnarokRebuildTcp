@@ -3,7 +3,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
 [ClientPacketHandler(PacketType.SitStand)]
 public class PacketSitStand : IClientPacketHandler

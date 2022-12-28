@@ -6,7 +6,7 @@ using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
 [ClientPacketHandler(PacketType.AdminEnterServerSpecificMap)]
 public class PacketAdminEnterServerSpecificMap : IClientPacketHandler

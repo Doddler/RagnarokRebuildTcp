@@ -1,7 +1,7 @@
 ﻿using RebuildSharedData.Networking;
 using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Connection;
 
 [ClientPacketHandler(PacketType.PlayerReady)]
 public class PacketPlayerReady : IClientPacketHandler

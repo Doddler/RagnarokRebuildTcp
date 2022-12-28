@@ -1,9 +1,8 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Character;
-using RoRebuildServer.EntitySystem;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
 [ClientPacketHandler(PacketType.AdminLevelUp)]
 public class PacketAdminLevelUp : IClientPacketHandler

@@ -261,6 +261,19 @@ public static class CommandBuilder
     }
 
 
+    public static void SendEmoteMulti(WorldObject c, int emote)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.Emote, 32);
+
+        packet.Write(c.Id);
+        packet.Write(emote);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void SendChangeNameMulti(WorldObject c, string text)
     {
         var packet = NetworkManager.StartPacket(PacketType.ChangeName, 96);

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntitySystem;
@@ -175,22 +176,23 @@ public class WorldObject : IEntityAutoReset
 
     public void RemoveVisiblePlayer(Entity e)
     {
-        if (visiblePlayers == null)
-            return;
-
 #if DEBUG
         //sanity check
         var obj2 = e.Get<WorldObject>();
-        
+
+        if (visiblePlayers == null)
+        {
+            ServerLogger.LogWarning($"WorldObject {Name} is attempting to remove {obj2.Name} from it's visible players list, but it currently has no visible players.");
+            return;
+        }
+
         if (e.Type != EntityType.Player)
             ServerLogger.LogWarning($"WorldObject {Name} is attempting to remove {obj2.Name} from it's visible players list, but that object is not a player.");
         else if (!visiblePlayers.Contains(e))
             ServerLogger.Debug($"WorldObject {Name} is attempting to remove visible entity {obj2.Name}, but that player is not on the visibility list.");
-        //else
-            //ServerLogger.Log($"WorldObject {Name} is removing a player {obj2.Name} from it's visible list.\n{Environment.StackTrace}");
 #endif
 
-        visiblePlayers.Remove(ref e);
+        visiblePlayers?.Remove(ref e);
     }
 
     public void ClearVisiblePlayerList()
@@ -207,11 +209,11 @@ public class WorldObject : IEntityAutoReset
 
     public EntityList? GetVisiblePlayerList() => visiblePlayers;
 
-    public bool TryGetVisiblePlayerList(out EntityList entityList)
+    public bool TryGetVisiblePlayerList([NotNullWhen(true)] out EntityList? entityList)
     {
         if (visiblePlayers == null)
         {
-            entityList = null!;
+            entityList = null;
             return false;
         }
 
@@ -295,14 +297,22 @@ public class WorldObject : IEntityAutoReset
         player.HeadFacing = HeadFacing.Center; //don't need to send this to client, they will assume it resets
     }
 
-    public bool TryMove(ref Entity entity, Position target, int range)
+    public bool CanMove()
     {
-        Debug.Assert(Map != null);
-
         if (State == CharacterState.Sitting || State == CharacterState.Dead)
             return false;
 
         if (MoveSpeed <= 0)
+            return false;
+
+        return true;
+    }
+
+    public bool TryMove(ref Entity entity, Position target, int range)
+    {
+        Debug.Assert(Map != null);
+
+        if (!CanMove())
             return false;
 
         if (!Map.WalkData.IsCellWalkable(target))

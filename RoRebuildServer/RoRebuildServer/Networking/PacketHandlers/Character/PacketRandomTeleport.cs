@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-using RebuildSharedData.Data;
+﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
 [ClientPacketHandler(PacketType.RandomTeleport)]
 public class PacketRandomTeleport : IClientPacketHandler

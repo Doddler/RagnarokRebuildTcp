@@ -1,7 +1,7 @@
 ﻿using RebuildSharedData.Networking;
 using RoRebuildServer.Simulation;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
 [ClientPacketHandler(PacketType.AdminServerAction, true)]
 public class PacketAdminServerAction : IClientPacketHandler

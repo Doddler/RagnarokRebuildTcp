@@ -4,14 +4,14 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
 [ClientPacketHandler(PacketType.StartMove)]
 public class PacketStartMove : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-		if (connection.Character == null)
+        if (connection.Character == null)
             return; //we don't accept the keep-alive packet if they haven't entered the world yet
 
         var player = connection.Entity.Get<Player>();
@@ -36,5 +36,5 @@ public class PacketStartMove : IClientPacketHandler
         //if (connection.Character.TryMove(ref connection.Entity, target, 0))
         connection.Character.TryMove(ref connection.Entity, target, 0);
         player.ClearTarget();
-	}
+    }
 }

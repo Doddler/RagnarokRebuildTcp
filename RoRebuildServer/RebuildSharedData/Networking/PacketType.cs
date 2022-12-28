@@ -43,6 +43,7 @@ public enum PacketType : byte
     UseInventoryItem,
     [ServerOnlyPacket] EffectOnCharacter,
     [ServerOnlyPacket] EffectAtLocation,
+    Emote,
     
     AdminRequestMove,
     AdminServerAction,

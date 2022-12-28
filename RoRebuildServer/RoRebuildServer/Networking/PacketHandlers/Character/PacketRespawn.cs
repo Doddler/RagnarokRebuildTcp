@@ -2,10 +2,9 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Character;
-using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
 
-namespace RoRebuildServer.Networking.PacketHandlers;
+namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
 [ClientPacketHandler(PacketType.Respawn)]
 public class PacketRespawn : IClientPacketHandler
