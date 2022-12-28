@@ -59,7 +59,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="rmdir /s /q &quot;$(TargetDir)ServerData&quot;&#xD;&#xA;XCOPY &quot;$(ProjectDir)ServerData&quot; &quot;$(TargetDir)ServerData&quot; /E /I /F /Y" />
+    <Exec Command="@echo Copying server script files -^&gt; &quot;$(TargetDir)ServerData&quot;&#xD;&#xA;rmdir /s /q &quot;$(TargetDir)ServerData&quot;&#xD;&#xA;XCOPY &quot;$(ProjectDir)ServerData&quot; &quot;$(TargetDir)ServerData&quot; /E /I /F /Y &gt; NUL" />
   </Target>
 
 
