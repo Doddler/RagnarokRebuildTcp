@@ -1,0 +1,17 @@
+id frame x	 y size commands
+0	23	8	-3	1	!
+1	23	8	-3	1	?
+2	10	8	-3	1	ho,whistle
+3	10	8	-3	1	lv,heart
+5	13	8	-3	1	swt,sweat
+6	15	8	-3	1	ic,idea
+7	10	8	-3	1	an,angry
+8	10	0	0	1	ag,grumpy
+9	10	8	-3	1	$,money
+10	13	8	-3	1	...
+11	10	8	-3	1	rock
+13	10	8	-3	1	paper
+12	10	8	-3	1	scissors
+15	17	10	-8	0.8	thx,thanks
+16	9	10	-3	1	wah,worried
+17	11	10	-7	0.8	sry,sorry

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Sprites
 {
     [ExecuteInEditMode]
-    internal class RoSpriteRendererUI : MaskableGraphic, IRoSpriteRenderer
+    public class RoSpriteRendererUI : MaskableGraphic, IRoSpriteRenderer
     {
         public int ActionId;
         public int CurrentFrame;
@@ -50,16 +50,19 @@ namespace Assets.Scripts.Sprites
                 return;
             
             var mesh = GetMeshForFrame();
+
+            if (mesh == null)
+                return; // this happens when leaving play mode so we won't report on it. Hopefully won't bite us.
             
             for(var i = 0; i < mesh.vertices.Length; i++)
-                vh.AddVert(mesh.vertices[i] * rectTransform.sizeDelta, mesh.colors32[i], mesh.uv[i]);
+                vh.AddVert(((Vector2)mesh.vertices[i] + OffsetPosition / 50f) * rectTransform.sizeDelta, mesh.colors32[i], mesh.uv[i]);
 
             for(var i = 0; i < mesh.triangles.Length; i+=3)
                 vh.AddTriangle(mesh.triangles[i], mesh.triangles[i+1], mesh.triangles[i+2]);
 
             SpriteData.Atlas.filterMode = FilterMode.Bilinear;
 
-            Debug.Log(rectTransform.sizeDelta);
+            //Debug.Log(rectTransform.sizeDelta);
 
             //Debug.Log($"We're populating a mesh with {vh.currentVertCount} verts {vh.currentIndexCount} tris");
         }
@@ -106,7 +109,7 @@ namespace Assets.Scripts.Sprites
         {
             if (!VerifyStatus(false)) return;
 
-            Debug.Log("Initializing RoSpriteRendererUI!");
+            //Debug.Log("Initializing RoSpriteRendererUI!");
             
             meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
 
