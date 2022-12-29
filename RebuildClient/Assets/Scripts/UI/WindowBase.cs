@@ -22,7 +22,7 @@ namespace Assets.Scripts.UI
                 mgr.WindowStack.Add(this);
 
             transform.SetAsLastSibling(); //move to top
-
+            
             //Init();
         }
 

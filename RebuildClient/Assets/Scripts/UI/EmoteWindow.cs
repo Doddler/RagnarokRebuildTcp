@@ -8,7 +8,7 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Assets.Scripts.UI
 {
-    public class EmoteWindow : MonoBehaviour
+    public class EmoteWindow : WindowBase
     {
         public TextAsset EmoteListFile;
         public GameObject ContentArea;
@@ -70,5 +70,6 @@ namespace Assets.Scripts.UI
             if (!isInitialized)
                 return;
         }
+        
     }
 }

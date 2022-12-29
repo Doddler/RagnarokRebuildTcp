@@ -29,4 +29,9 @@ public class EmoteEntry : MonoBehaviour, IPointerClickHandler
     {
         CameraFollower.Instance.Emote(emoteId);
     }
+
+    public void Awake()
+    {
+        //SpriteRenderer.Rebuild();
+    }
 }

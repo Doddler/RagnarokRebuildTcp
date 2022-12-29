@@ -79,6 +79,7 @@ namespace Assets.Scripts
         public GameObject WarpPanel;
         public GameObject DialogPanel;
         public GameObject NpcOptionPanel;
+        public GameObject EmotePanel;
 
         public bool UseTTFDamage = false;
         public bool IsInNPCInteraction = false;
@@ -1126,7 +1127,16 @@ namespace Assets.Scripts
                     WarpPanel.GetComponent<WarpWindow>().HideWindow();
             }
 
-            if(!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
+
+            if (!inTextBox && Input.GetKeyDown(KeyCode.E))
+            {
+                if (!EmotePanel.activeInHierarchy)
+                    EmotePanel.GetComponent<EmoteWindow>().ShowWindow();
+                else
+                    EmotePanel.GetComponent<EmoteWindow>().HideWindow();
+            }
+
+            if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
                 NetworkManager.Instance.SendUseItem(501);
 
             //if (Input.GetKeyDown(KeyCode.Alpha1))

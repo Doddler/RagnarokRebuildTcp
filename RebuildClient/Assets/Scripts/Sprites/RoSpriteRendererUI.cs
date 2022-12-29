@@ -78,7 +78,7 @@ namespace Assets.Scripts.Sprites
         public bool VerifyStatus(bool verifyInitialized = true)
         {
             if (!isInitialized && verifyInitialized)
-                throw new Exception("Attempting to double initialize UI sprite renderer!");
+                throw new Exception("UI sprite renderer is not initialized! (but it should be)");
             if (gameObject == null)
                 throw new Exception("Attempting to initialize UI sprite renderer while it's gameobject is invalid!");
             if (SpriteData == null)
@@ -114,6 +114,10 @@ namespace Assets.Scripts.Sprites
             meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
 
             isInitialized = true;
+
+
+            SetVerticesDirty();
+            SetMaterialDirty();
         }
 
         public void Update()

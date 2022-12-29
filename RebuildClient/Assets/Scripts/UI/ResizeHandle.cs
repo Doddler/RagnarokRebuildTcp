@@ -29,7 +29,7 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         startSize = rect.sizeDelta;
         startMousePosition = Input.mousePosition;
 
-        transform.SetAsLastSibling(); //move to top
+        Target.SetAsLastSibling(); //move to top
 
         OnDragEvent.Invoke();
     }
