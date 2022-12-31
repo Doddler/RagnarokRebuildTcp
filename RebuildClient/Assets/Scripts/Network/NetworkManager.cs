@@ -21,6 +21,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Network
@@ -888,6 +889,17 @@ namespace Assets.Scripts.Network
             controllable.Name = text;
         }
 
+        public void OnEmote(ClientInboundMessage msg)
+        {
+            var id = msg.ReadInt32();
+            var emote = msg.ReadInt32();
+            
+            if (!entityList.TryGetValue(id, out var controllable))
+                return;
+
+            SpriteDataLoader.Instance.AttachEmote(controllable.gameObject, emote);
+        }
+
         public void OnMessageRequestFailed(ClientInboundMessage msg)
         {
             var error = (ClientErrorType)msg.ReadByte();
@@ -1081,6 +1093,9 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.NpcInteraction:
                     OnMessageNpcInteraction(msg);
+                    break;
+                case PacketType.Emote:
+                    OnEmote(msg);
                     break;
                 default:
                     Debug.LogWarning($"Failed to handle packet type: {type}");
@@ -1282,6 +1297,15 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendEmote(int id)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.Emote);
+            msg.Write(id);
+
+            SendMessage(msg);
+        }
 
         public void SendAdminAction(AdminAction action)
         {

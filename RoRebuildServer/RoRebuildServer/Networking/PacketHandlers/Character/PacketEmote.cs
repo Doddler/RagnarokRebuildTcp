@@ -23,7 +23,7 @@ public class PacketEmote : IClientPacketHandler
         }
 
         var player = connection.Player;
-        if (player.InActionCooldown() || player.LastEmoteTime + 1f > Time.DeltaTimeFloat)
+        if (player.InActionCooldown() || player.LastEmoteTime + 1f > Time.ElapsedTimeFloat)
             return;
         
         map.GatherPlayersForMultiCast(ref connection.Entity, connection.Character);

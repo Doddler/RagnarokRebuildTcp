@@ -5,7 +5,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
-using Debug = UnityEngine.Debug;
 
 namespace Assets.Scripts.MapEditor
 {
@@ -183,6 +182,8 @@ namespace Assets.Scripts.MapEditor
         private Dictionary<string, int> TextureLookup = new Dictionary<string, int>();
         private RoMapChangeTracker ChangeTracker = new RoMapChangeTracker();
 
+        public static float YScale = 0.20f;
+
 #if UNITY_EDITOR
 
         public RectInt Rect => new RectInt(0, 0, Width, Height);
@@ -206,9 +207,7 @@ namespace Assets.Scripts.MapEditor
                 LoadCellData();
             return container.CellData[x + y * Width];
         }
-
-        public static float YScale = 0.20f;
-
+        
         [NonSerialized]
         private MapDataContainer container;
 

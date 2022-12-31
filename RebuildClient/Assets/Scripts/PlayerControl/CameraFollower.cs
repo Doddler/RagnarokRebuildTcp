@@ -735,7 +735,7 @@ namespace Assets.Scripts
 
         public void Emote(int id)
         {
-            SpriteDataLoader.Instance.AttachEmote(Target, id);
+            NetworkManager.Instance.SendEmote(id);
         }
         
         public void OnSubmitTextBox(string text)
