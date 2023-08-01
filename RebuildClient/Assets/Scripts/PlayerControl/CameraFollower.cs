@@ -14,6 +14,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using TMPro;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
@@ -219,8 +220,16 @@ namespace Assets.Scripts
 
         public void UpdatePlayerExp(int exp, int maxExp)
         {
+            if (maxExp <= 0)
+            {
+                ExpDisplay.text = "";
+                ExpSlider.gameObject.SetActive(false);
+                return;
+            }
+            
             var percent = exp / (float) maxExp;
 
+            ExpSlider.gameObject.SetActive(true);
             ExpDisplay.text = $"Exp: {exp}/{maxExp} ({percent * 100f:F1}%)";
             ExpSlider.value = percent;
         }
@@ -628,6 +637,11 @@ namespace Assets.Scripts
             var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
             var okPath = true;
 
+            if (hasGroundPos && !WalkProvider.IsCellWalkable(mapPosition))
+            {
+
+            }
+
             if (hasGroundPos && hasSrcPos && !IsInNPCInteraction)
             {
                 if (mapPosition != lastTile)
@@ -648,6 +662,31 @@ namespace Assets.Scripts
                         var steps = Pathfinder.GetPath(WalkProvider.WalkData, mapPosition, srcPosition, tempPath);
                         if (steps == 0)
                             okPath = false;
+                    }
+                    else
+                    {
+                        //the target isn't valid, so we're going to try to see if we can find something that is in the same raycast target
+
+                        var loopCount = 0; //infinite loop safety
+                        ray.origin = groundHit.point + ray.direction * 0.01f;
+                        while (Physics.Raycast(ray, out var rehit, MaxClickDistance, (1 << LayerMask.NameToLayer("WalkMap"))) && loopCount < 5)
+                        {
+                            var newGroundPos = WalkProvider.GetMapPositionForWorldPosition(rehit.point, out var newMapPosition);
+
+                            if (newGroundPos && WalkProvider.IsCellWalkable(newMapPosition) && (newMapPosition - srcPosition).SquareDistance() <= SharedConfig.MaxPathLength)
+                            {
+                                var steps = Pathfinder.GetPath(WalkProvider.WalkData, newMapPosition, srcPosition, tempPath);
+                                if (steps > 0)
+                                {
+                                    groundHit = rehit;
+                                    mapPosition = newMapPosition;
+                                    okPath = true;
+                                    break;
+                                }
+                            }
+                            ray.origin = rehit.point + ray.direction * 0.01f;
+                            loopCount++;
+                        }
                     }
                 }
                 else
