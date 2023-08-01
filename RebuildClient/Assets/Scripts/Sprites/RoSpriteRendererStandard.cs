@@ -5,6 +5,7 @@ using Assets.Scripts.MapEditor;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEditor.Build.Pipeline.Interfaces;
 
 namespace Assets.Scripts.Sprites
 {
@@ -56,7 +57,17 @@ namespace Assets.Scripts.Sprites
         public void SetFrame(int frame) => CurrentFrame = frame;
         public void SetSprite(RoSpriteData sprite) => SpriteData = sprite;
         public void SetOffset(float offset) => SpriteOffset = offset;
+        public RoFrame GetActiveRendererFrame()
+        {
+            var actions = SpriteData.Actions[ActionId + CurrentAngleIndex];
+            var frame = CurrentFrame;
 
+            if (frame >= actions.Frames.Length)
+                frame = actions.Frames.Length - 1;
+            
+            return actions.Frames[frame];
+        }
+        
         public void Initialize(bool makeCollider = false)
         {
             if (isInitialized)
@@ -103,24 +114,27 @@ namespace Assets.Scripts.Sprites
 
         private void CreateMaterials()
         {
-            if (aboveWaterMat == null)
+            if (materialArrayNormal == null || materialArrayNormal.Length <= 0)
             {
-                aboveWaterMat = new Material(shader);
-                aboveWaterMat.EnableKeyword("WATER_ABOVE");
+                var noWaterMat = new Material(shader);
+                noWaterMat.EnableKeyword("WATER_OFF");
 
                 materialArrayNormal = new Material[1];
-                materialArrayNormal[0] = aboveWaterMat;
+                materialArrayNormal[0] = noWaterMat;
             }
 
-            if (belowWaterMat == null)
+            if (materialArrayWater == null || materialArrayWater.Length <= 0)
             {
-                belowWaterMat = new Material(shader);
-                belowWaterMat.EnableKeyword("WATER_BELOW");
-                belowWaterMat.renderQueue -= 2;
+                aboveWaterMat = new Material(shader);
+                //aboveWaterMat.EnableKeyword("WATER_ABOVE");
 
-                materialArrayWater = new Material[2];
-                materialArrayWater[0] = belowWaterMat;
-                materialArrayWater[1] = aboveWaterMat;
+                //belowWaterMat = new Material(shader);
+                //belowWaterMat.EnableKeyword("WATER_BELOW");
+                //belowWaterMat.renderQueue -= 2;
+
+                materialArrayWater = new Material[1];
+                //materialArrayWater[0] = belowWaterMat;
+                materialArrayWater[0] = aboveWaterMat;
             }
         }
 
@@ -141,7 +155,6 @@ namespace Assets.Scripts.Sprites
                     HasWater = RoWalkDataProvider.Instance.IsPositionNearWater(transform.position, 1);
 
                     if (HasWater)
-
                         MeshRenderer.sharedMaterials = materialArrayWater;
                     else
                         MeshRenderer.sharedMaterials = materialArrayNormal;
@@ -173,12 +186,12 @@ namespace Assets.Scripts.Sprites
             SetPropertyBlock();
             MeshRenderer.SetPropertyBlock(propertyBlock, 0);
 
-            if (SecondPassForWater && HasWater)
-            {
-                MeshRenderer.GetPropertyBlock(propertyBlock, 1);
-                SetPropertyBlock();
-                MeshRenderer.SetPropertyBlock(propertyBlock, 1);
-            }
+            //if (SecondPassForWater && HasWater)
+            //{
+            //    MeshRenderer.GetPropertyBlock(propertyBlock, 1);
+            //    SetPropertyBlock();
+            //    MeshRenderer.SetPropertyBlock(propertyBlock, 1);
+            //}
 
         }
 
@@ -206,7 +219,7 @@ namespace Assets.Scripts.Sprites
 
             if (meshCache.TryGetValue(id, out var mesh))
                 return mesh;
-
+            
             var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, ActionId, CurrentAngleIndex, CurrentFrame);
 
             meshCache.Add(id, newMesh);
@@ -228,10 +241,10 @@ namespace Assets.Scripts.Sprites
             return newMesh;
         }
 
-        public void Update()
+        public bool UpdateRenderer()
         {
             if (!isInitialized)
-                return;
+                return false;
 
             if (UpdateAngleWithCamera)
             {
@@ -239,10 +252,13 @@ namespace Assets.Scripts.Sprites
                 if (angleIndex != CurrentAngleIndex)
                 {
                     CurrentAngleIndex = angleIndex;
+                    
                     Rebuild();
+                    return true;
                 }
             }
 
+            return false;
         }
 
         //public void OnDestroy()

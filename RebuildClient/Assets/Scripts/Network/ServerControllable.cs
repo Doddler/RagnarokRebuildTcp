@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Effects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
@@ -262,7 +263,7 @@ namespace Assets.Scripts.Network
 			sprite.sprite = spriteObj;
 			shadowSprite = sprite;
 
-			var shader = Shader.Find("Unlit/TestSpriteShader");
+			var shader = ShaderCache.Instance.SpriteShader;
 			var mat = new Material(shader);
 			mat.SetFloat("_Offset", 0.4f);
 			mat.color = new Color(1f, 1f, 1f, 0.75f);

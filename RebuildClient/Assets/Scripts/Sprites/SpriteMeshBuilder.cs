@@ -22,7 +22,12 @@ namespace Assets.Scripts.Sprites
             => BuildColliderMesh(spriteData, currentActionIndex + currentAngleIndex, currentFrame);
 		
         public static Mesh BuildColliderMesh(RoSpriteData spriteData, int currentActionIndex, int currentFrame)
-		{
+        {
+			//this can sometimes happen if it gets rotated to an angle that doesn't have a matching frame count
+            var maxFrames = spriteData.Actions[currentActionIndex].Frames.Length;
+			if (currentFrame >= maxFrames)
+				currentFrame = maxFrames - 1;
+
 			var frame = spriteData.Actions[currentActionIndex].Frames[currentFrame];
 
 			meshBuildCount++;
@@ -130,7 +135,10 @@ namespace Assets.Scripts.Sprites
             var actions = spriteData.Actions[currentActionIndex];
 
             if (currentFrame >= actions.Frames.Length)
-				Debug.LogError($"Current frame {currentFrame} exceeds max frame length {actions.Frames.Length} on sprite {spriteData.Name} for currentAction {currentActionIndex}");
+            {
+				//this can happen if the camera rotates to an animation with less frames of animation. If that happens, just use the last frame..
+                currentFrame = actions.Frames.Length - 1;
+            }
 
             var frame = actions.Frames[currentFrame];
 

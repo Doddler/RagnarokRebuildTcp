@@ -366,4 +366,20 @@ internal class DataLoader
 
         return entryList;
     }
+
+    public Dictionary<int, EmoteInfo> LoadEmotes()
+    {
+        using var tr = new StreamReader(@"ServerData/Db/Emotes.csv") as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+
+        var data = new Dictionary<int, EmoteInfo>();
+        var emotes = csv.GetRecords<CsvEmote>().ToList();
+
+        foreach (var emote in emotes)
+        {
+
+        }
+
+        return data;
+    }
 }

@@ -31,6 +31,21 @@ namespace Assets.Scripts.Sprites
         public void SetFrame(int frame) => CurrentFrame = frame;
         public void SetSprite(RoSpriteData sprite) => SpriteData = sprite;
         public void SetOffset(float offset) => SpriteOffset = offset;
+        public RoFrame GetActiveRendererFrame()
+        {
+            var actions = SpriteData.Actions[ActionId + (int)Direction];
+            var frame = CurrentFrame;
+
+            if (frame >= actions.Frames.Length)
+                frame = actions.Frames.Length - 1;
+
+            return actions.Frames[frame];
+        }
+        
+        public bool UpdateRenderer()
+        {
+            return false;
+        }
 
         public override Texture mainTexture => SpriteData.Atlas;
         

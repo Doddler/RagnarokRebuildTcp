@@ -25,7 +25,7 @@ namespace Assets.Scripts.Sprites
         public float Alpha { get; set; }
         public int SpriteOrder;
 
-        private static bool nextUseSmoothRender = false;
+        private static bool nextUseSmoothRender = true;
         private static bool canUpdateRenderer = false;
 
         public List<RoSpriteAnimator> ChildrenSprites = new List<RoSpriteAnimator>();
@@ -118,13 +118,24 @@ namespace Assets.Scripts.Sprites
 
         public Vector2 GetAnimationAnchor()
         {
+            if (SpriteRenderer == null)
+            {
+                Debug.Log($"{name} has no sprite renderer!");
+                return Vector2.zero;
+            }
+
+            var frame = SpriteRenderer.GetActiveRendererFrame();
+
             if (currentFrame >= currentAction.Frames.Length)
                 return Vector2.zero;
-            var frame = currentAction.Frames[currentFrame];
+
+            //var angle = SpriteRenderer.GetCurrentRenderAngleIndex();
+            //var frame = currentAction.Frames[currentActionIndex + angle];
             if (frame.Pos.Length > 0)
                 return frame.Pos[0].Position;
             if (IsHead && (State == SpriteState.Idle || State == SpriteState.Sit))
                 return frame.Pos[currentFrame].Position;
+            
             return Vector2.zero;
         }
 
@@ -165,6 +176,7 @@ namespace Assets.Scripts.Sprites
                 return;
 
             Type = SpriteData.Type;
+            SpriteData.Atlas.filterMode = FilterMode.Bilinear;
 
             var parent = gameObject.transform.parent;
 
@@ -239,13 +251,13 @@ namespace Assets.Scripts.Sprites
             isDirty = true;
         }
 
-        public void OnDrawGizmos()
-        {
-            //if (Parent != null)
-            // return; //don't draw gizmo if we're parented to someone else.
-            //   var pos = RoAnimationHelper.FacingDirectionToVector(Direction);
-            //   Gizmos.DrawLine(transform.position, transform.position + new Vector3(pos.x, 0, pos.y));
-        }
+        //public void OnDrawGizmos()
+        //{
+        //    //if (Parent != null)
+        //    // return; //don't draw gizmo if we're parented to someone else.
+        //    //   var pos = RoAnimationHelper.FacingDirectionToVector(Direction);
+        //    //   Gizmos.DrawLine(transform.position, transform.position + new Vector3(pos.x, 0, pos.y));
+        //}
 
         public float GetHitTiming()
         {
@@ -292,6 +304,17 @@ namespace Assets.Scripts.Sprites
             SpriteRenderer.SetAction(currentActionIndex);
             SpriteRenderer.SetDirection((Direction)currentAngleIndex);
             SpriteRenderer.SetFrame(currentFrame);
+
+            if (currentFrame >= currentAction.Frames.Length)
+            {
+                //for some reason we've changed to an action with a shorter length, loop around or stop depending on the action type
+                if (!DisableLoop)
+                    currentFrame = 0;
+                else
+                    currentFrame = currentAction.Frames.Length - 1;
+            }
+
+            SpriteRenderer.UpdateRenderer();
             SpriteRenderer.Rebuild();
         }
 
@@ -528,7 +551,7 @@ namespace Assets.Scripts.Sprites
             //mat.color = c;
             //mat2.color = c;
         }
-
+        
         public void LateUpdate()
         {
             if (canUpdateRenderer)
@@ -582,7 +605,7 @@ namespace Assets.Scripts.Sprites
 
             if (Input.GetKeyDown(KeyCode.F2))
             {
-                SpriteData.Atlas.filterMode = nextUseSmoothRender ? FilterMode.Trilinear : FilterMode.Point;
+                SpriteData.Atlas.filterMode = nextUseSmoothRender ? FilterMode.Bilinear : FilterMode.Point;
                 canUpdateRenderer = true;
             }
 

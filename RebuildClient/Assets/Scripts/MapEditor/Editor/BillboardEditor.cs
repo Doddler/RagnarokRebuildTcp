@@ -7,13 +7,13 @@ namespace Assets.Scripts.MapEditor.Editor
     [CustomEditor(typeof(Billboard))]
     class BillboardEditor : UnityEditor.Editor
     {
-        public override void OnInspectorGUI()
-        {
-            GUILayout.Label("Use billboard: " + Billboard.UseOldStyle);
-            if (GUILayout.Button("Change Style"))
-                Billboard.UseOldStyle = !Billboard.UseOldStyle;
+        //public override void OnInspectorGUI()
+        //{
+        //    GUILayout.Label("Use billboard: " + Billboard.UseOldStyle);
+        //    if (GUILayout.Button("Change Style"))
+        //        Billboard.UseOldStyle = !Billboard.UseOldStyle;
 
 
-        }
+        //}
     }
 }

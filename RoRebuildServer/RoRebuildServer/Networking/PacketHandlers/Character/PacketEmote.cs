@@ -18,7 +18,7 @@ public class PacketEmote : IClientPacketHandler
         var emote = msg.ReadInt32();
         if (emote > 100)
         {
-            CommandBuilder.SendRequestFailed(connection.Player!, ClientErrorType.MalformedRequest);
+            CommandBuilder.SendRequestFailed(connection.Player, ClientErrorType.MalformedRequest);
             return;
         }
 

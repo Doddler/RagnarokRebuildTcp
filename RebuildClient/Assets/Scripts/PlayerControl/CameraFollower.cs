@@ -971,25 +971,30 @@ namespace Assets.Scripts
 
             if (WaterTexture == null)
             {
-                WaterTexture = new RenderTexture(Screen.width, Screen.height, 8, RenderTextureFormat.Default);
-                WaterDepthTexture = new RenderTexture(Screen.width, Screen.height, 8, RenderTextureFormat.Depth);
+                WaterTexture = new RenderTexture(Screen.width/4, Screen.height/4, 32, RenderTextureFormat.ARGBHalf);
+                WaterDepthTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 16, RenderTextureFormat.Depth);
 
                 WaterCamera.SetTargetBuffers(WaterTexture.colorBuffer, WaterDepthTexture.depthBuffer);
+                WaterCamera.SetReplacementShader(ShaderCache.Instance.WaterShader, null);
 
-                Shader.SetGlobalTexture("_WaterDepth", WaterDepthTexture);
+                Shader.SetGlobalTexture("_WaterDepth", WaterTexture);
             }
 
-            if (WaterTexture.width != Screen.width || WaterTexture.height != Screen.height)
+            if (WaterTexture.width != Screen.width/4 || WaterTexture.height != Screen.height/4)
             {
-                WaterTexture.Release();
-                WaterDepthTexture.Release();
-
-                WaterTexture = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.Default);
-                WaterDepthTexture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.Depth);
+                var oldWaterTexture = WaterTexture;
+                var oldWaterDepth = WaterDepthTexture;
+                
+                WaterTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 32, RenderTextureFormat.ARGBHalf);
+                WaterDepthTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 16, RenderTextureFormat.Depth);
 
                 WaterCamera.SetTargetBuffers(WaterTexture.colorBuffer, WaterDepthTexture.depthBuffer);
+                WaterCamera.SetReplacementShader(ShaderCache.Instance.WaterShader, null);
 
-                Shader.SetGlobalTexture("_WaterDepth", WaterDepthTexture);
+                Shader.SetGlobalTexture("_WaterDepth", WaterTexture);
+
+                oldWaterTexture.Release();
+                oldWaterDepth.Release();
             }
         }
 
@@ -1213,12 +1218,12 @@ namespace Assets.Scripts
             }
 
 
-#if !DEBUG
-            if (Height > 80)
-	            Height = 80;
-            if (Height < 35)
-	            Height = 35;
-#endif
+//#if !DEBUG
+            if (Height > 75)
+	            Height = 75;
+            if (Height < 30)
+	            Height = 30;
+//#endif
 
             DoScreenCast(pointerOverUi);
             UpdateSelectedTarget();

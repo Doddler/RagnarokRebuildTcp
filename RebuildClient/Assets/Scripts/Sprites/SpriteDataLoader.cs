@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
 using RebuildSharedData.ClientTypes;
@@ -59,7 +60,7 @@ namespace Assets.Scripts.Sprites
 		private readonly Dictionary<int, Dictionary<int, List<PlayerWeaponData>>> playerWeaponLookup = new();
 
         private bool isInitialized;
-
+		
 		private void Awake()
 		{
 			Initialize();
@@ -226,7 +227,8 @@ namespace Assets.Scripts.Sprites
 			go.layer = LayerMask.NameToLayer("Characters");
 			go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 			var control = go.AddComponent<ServerControllable>();
-			go.AddComponent<Billboard>();
+		    var billboard = go.AddComponent<Billboard>();
+            billboard.Style = Billboard.BillboardStyle.Character;
 
 			var body = new GameObject("Sprite");
 			body.layer = LayerMask.NameToLayer("Characters");
@@ -308,7 +310,7 @@ namespace Assets.Scripts.Sprites
 
             if (string.IsNullOrEmpty(weaponSpriteFile))
             {
-                Debug.Log($"Not loading sprite for weapon as the requested weapon class does not have one.");
+                Debug.Log($"Not loading sprite for weapon as the requested weapon class does not have one. (GO: {parent} Sprite: {bodySprite?.SpriteData?.Name})");
                 return;
             }
 
@@ -334,8 +336,9 @@ namespace Assets.Scripts.Sprites
         {
             var go = new GameObject("Emote");
             //go.layer = LayerMask.NameToLayer("Characters");
-			go.AddComponent<Billboard>();
-			
+            var billboard = go.AddComponent<Billboard>();
+            billboard.Style = Billboard.BillboardStyle.Character;
+
             var emote = go.AddComponent<EmoteController>();
             emote.AnimationId = emoteId;
             emote.Target = target;
@@ -419,9 +422,10 @@ namespace Assets.Scripts.Sprites
 			    control.CharacterType = CharacterType.Monster;
 			control.SpriteMode = ClientSpriteType.Sprite;
             control.IsInteractable = param.Interactable;
-			go.AddComponent<Billboard>();
+            var billboard = go.AddComponent<Billboard>();
+            billboard.Style = Billboard.BillboardStyle.Character;
 
-			var child = new GameObject("Sprite");
+            var child = new GameObject("Sprite");
 			child.layer = LayerMask.NameToLayer("Characters");
 			child.transform.SetParent(go.transform, false);
 			child.transform.localPosition = Vector3.zero;

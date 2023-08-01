@@ -151,7 +151,6 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-
     public static void TakeDamageMulti(WorldObject target, DamageInfo di)
     {
         if (!HasRecipients())

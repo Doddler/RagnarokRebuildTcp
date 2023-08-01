@@ -68,6 +68,10 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            var c = gameObject.GetComponent<Canvas>();
+            c.enabled = !c.enabled;
+        }
     }
 }

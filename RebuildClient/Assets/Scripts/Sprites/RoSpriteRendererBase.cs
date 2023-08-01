@@ -11,6 +11,8 @@ namespace Assets.Scripts.Sprites
         void SetFrame(int frame);
         void SetSprite(RoSpriteData sprite);
         void SetOffset(float offset);
+        RoFrame GetActiveRendererFrame();
+        bool UpdateRenderer();
 
 
         void Rebuild();

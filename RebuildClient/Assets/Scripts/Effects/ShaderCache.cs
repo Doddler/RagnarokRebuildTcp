@@ -24,5 +24,8 @@ namespace Assets.Scripts.Effects
         public Shader SpriteShader;
         public Shader AlphaBlendParticleShader;
         public Shader AdditiveShader;
+        public Shader WaterShader;
+
+        public bool BillboardSprites = true;
     }
 }

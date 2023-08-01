@@ -18,7 +18,7 @@ Shader "Unlit/TestSpriteShader"
 				"RenderType" = "Transparent"
 				"PreviewType" = "Plane"
 				"CanUseSpriteAtlas" = "True"
-			 "ForceNoShadowCasting" = "True"
+				"ForceNoShadowCasting" = "True"
 				"DisableBatching" = "true"
 			}
 
@@ -28,47 +28,47 @@ Shader "Unlit/TestSpriteShader"
 			Blend One OneMinusSrcAlpha
 			
 
-			Pass {
-				ZWrite On
-				ColorMask 0
+			//Pass {
+			//	ZWrite On
+			//	ColorMask 0
 
-				CGPROGRAM
-				#pragma vertex vert
-				#pragma fragment frag
-				#include "UnityCG.cginc"
+			//	CGPROGRAM
+			//	#pragma vertex vert
+			//	#pragma fragment frag
+			//	#include "UnityCG.cginc"
 
-				#pragma multi_compile _ WATER_BELOW WATER_ABOVE
+			//	#pragma multi_compile _ WATER_BELOW WATER_ABOVE
 
-				struct v2f {
-					float4 pos : SV_POSITION;
-					float2 texcoord : TEXCOORD0;
-				};
+			//	struct v2f {
+			//		float4 pos : SV_POSITION;
+			//		float2 texcoord : TEXCOORD0;
+			//	};
 
-				v2f vert(appdata_base v)
-				{
-					v2f o;
+			//	v2f vert(appdata_base v)
+			//	{
+			//		v2f o;
 
-					o.pos = UnityObjectToClipPos(v.vertex);
+			//		o.pos = UnityObjectToClipPos(v.vertex);
 
-					//o.pos = Billboard2(v.vertex, 0);
-					o.texcoord = v.texcoord;
-					return o;
-				}
+			//		//o.pos = Billboard2(v.vertex, 0);
+			//		o.texcoord = v.texcoord;
+			//		return o;
+			//	}
 
-				sampler2D _MainTex;
+			//	sampler2D _MainTex;
 
-				half4 frag(v2f i) : COLOR
-				{
-			#ifdef WATER_BELOW
-					clip(-1);
-			#endif
+			//	half4 frag(v2f i) : COLOR
+			//	{
+			//#ifdef WATER_BELOW
+			//		clip(-1);
+			//#endif
 
-					fixed4 c = tex2D(_MainTex, i.texcoord);
-					clip(c.a - 0.5);
-					return half4 (1,1,1,1);
-				}
-				ENDCG
-			}
+			//		fixed4 c = tex2D(_MainTex, i.texcoord);
+			//		clip(c.a - 0.5);
+			//		return half4 (1,1,1,1);
+			//	}
+			//	ENDCG
+			//}
 
 			Pass
 			{
@@ -96,7 +96,7 @@ Shader "Unlit/TestSpriteShader"
 					fixed4 color : COLOR;
 					float2 texcoord  : TEXCOORD0;
 					float4 screenPos : TEXCOORD1;
-					half4  mask : TEXCOORD2;
+					half4  worldPos : TEXCOORD2;
 					UNITY_FOG_COORDS(3)
 				};
 
@@ -146,7 +146,7 @@ Shader "Unlit/TestSpriteShader"
 					//--------------------------------------------------------------------------------------------
 
 					float2 pos = v.vertex.xy;
-
+	
 
 					float3 worldPos = mul(unity_ObjectToWorld, float4(pos.x, pos.y, 0, 1)).xyz;
 					float3 originPos = mul(unity_ObjectToWorld, float4(pos.x, 0, 0, 1)).xyz; //world position of origin
@@ -173,6 +173,7 @@ Shader "Unlit/TestSpriteShader"
 
 					//determine move as a % of the distance from the point to the camera
 					float decRate = (fixDist * 0.7 - _Offset / 2) / camDist; //where does the 4 come from? Who knows!
+					float decRateNoOffset = (fixDist * 0.7) / camDist; //where does the 4 come from? Who knows!
 					float decRate2 = (fixDist  ) / camDist; //where does the 4 come from? Who knows!
 
 					float4 view = mul(UNITY_MATRIX_V, float4(worldPos, 1));
@@ -205,39 +206,50 @@ Shader "Unlit/TestSpriteShader"
 
 					float4 tempVertex = UnityObjectToClipPos(v.vertex);
 					UNITY_TRANSFER_FOG(o, tempVertex);
-
-
+	
 					//smoothpixelshader stuff here
 
-					float2 pixelSize = tempVertex.w;
-					pixelSize /= float2(1, 1) * abs(mul((float2x2)UNITY_MATRIX_P, _ScreenParams.xy));
+					//float2 pixelSize = tempVertex.w;
+					//pixelSize /= float2(1, 1) * abs(mul((float2x2)UNITY_MATRIX_P, _ScreenParams.xy));
+	
+	
 
 					float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);
 					float2 maskUV = (v.vertex.xy - clampedRect.xy) / (clampedRect.zw - clampedRect.xy);
 					o.texcoord = float4(v.texcoord.x, v.texcoord.y, maskUV.x, maskUV.y);
-					o.mask = half4(v.vertex.xy * 2 - clampedRect.xy - clampedRect.zw, 0.25 / (0.25 * half2(_MaskSoftnessX, _MaskSoftnessY) + abs(pixelSize.xy)));
+					//o.mask = half4(v.vertex.xy * 2 - clampedRect.xy - clampedRect.zw, 0.25 / (0.25 * half2(_MaskSoftnessX, _MaskSoftnessY) + abs(pixelSize.xy)));
 
 					//end of smooth pixel
 
-				
-
-					o.screenPos = ComputeScreenPos(o.vertex);
-					o.screenPos.z = COMPUTE_DEPTH_01b;
-
+					//what the fuck
+	
+	
+					
+					//o.screenPos.z = -(view.z * _ProjectionParams.w);
+	
+	
+					//add world space translated 0,0,0 to 
+					
+					o.vertex = UnityObjectToClipPos(v.vertex);
+	#ifndef WATER_OFF
+					o.screenPos = ComputeScreenPos(mul(UNITY_MATRIX_VP, float4(worldPos.xyz, 0)));
+					o.worldPos = float4(worldPos.xyz, 0);
+	#endif
+					
 					return o;
 				}
 
 
 				fixed4 frag(v2f i) : SV_Target
 				{
-					float z = SAMPLE_DEPTH_TEXTURE_PROJ(_WaterDepth, UNITY_PROJ_COORD(i.screenPos));
-					float waterDepth = Linear01Depth(z);
+    float2 textureCoordinate = i.screenPos.xy / i.screenPos.w;
+					float y = tex2D(_WaterDepth, textureCoordinate).r;
 #ifdef WATER_BELOW
-					if (waterDepth > i.screenPos.z)
+					if (y < i.worldPos.y)
 						discard;
 #endif
 #ifdef WATER_ABOVE
-					if (waterDepth <= i.screenPos.z)
+					if (y > i.worldPos.y)
 						discard;
 #endif
 
@@ -269,9 +281,10 @@ Shader "Unlit/TestSpriteShader"
 					//UNITY_OPAQUE_ALPHA(c.a);
 
 					c *= i.color;
-
+    //c.rgb = float3(i.worldPos.y, i.worldPos.y, i.worldPos.y);
+    //c.rgb = float3(y, y, y);
 					c.rgb *= c.a;
-
+    
 
 
 					return c;

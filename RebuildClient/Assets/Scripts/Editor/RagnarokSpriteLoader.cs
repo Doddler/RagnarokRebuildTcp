@@ -316,7 +316,7 @@ namespace Assets.Editor
             var supertexture = new Texture2D(2, 2);
             supertexture.name = $"{basename}_atlas";
             var rects = supertexture.PackTextures(Textures.ToArray(), 2, 2048, false);
-            supertexture.filterMode = FilterMode.Point;
+            supertexture.filterMode = FilterMode.Bilinear;
             
             ctx.AddObjectToAsset(supertexture.name, supertexture);
 

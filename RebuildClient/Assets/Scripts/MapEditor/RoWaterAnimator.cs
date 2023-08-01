@@ -65,6 +65,7 @@ namespace Assets.Scripts.MapEditor
                 curFrame = 0;
 
             Material.mainTexture = Water.Images[curFrame];
+            Shader.SetGlobalTexture("_WaterImageTexture", Water.Images[curFrame]);
         }
     }
 }
