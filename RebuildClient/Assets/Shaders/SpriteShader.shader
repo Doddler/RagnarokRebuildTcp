@@ -123,7 +123,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 					fixDist = (outDist / sin(radians(angleC))) * sin(radians(angleA)); //supposedly basic trigonometry
 
 				//determine move as a % of the distance from the point to the camera
-				float decRate = (fixDist * 0.7 - _Offset / 2) / camDist; //where does the value come from? Who knows!
+				float decRate = (fixDist * 0.7 - _Offset / 4) / camDist; //where does the value come from? Who knows!
 				float decRateNoOffset = (fixDist * 0.7) / camDist; //where does the value come from? Who knows!
 				float decRate2 = (fixDist) / camDist; //where does the value come from? Who knows!
 
@@ -168,11 +168,11 @@ Shader"Ragnarok/CharacterSpriteShader"
 						length(unity_ObjectToWorld._m01_m11_m21),
 						length(unity_ObjectToWorld._m02_m12_m22)
 					);
- 
+
 					unity_ObjectToWorld._m00_m10_m20 = float3(scale.x, 0, 0);
 					unity_ObjectToWorld._m01_m11_m21 = float3(0, scale.y, 0);
 					unity_ObjectToWorld._m02_m12_m22 = float3(0, 0, scale.z);
-	
+
 					//build info needed for water line
 					worldPos = mul(unity_ObjectToWorld, float4(pos.x, pos.y*1.5, 0, 1)).xyz; //fudge y sprite height 
 					o.screenPos = ComputeScreenPos(o.vertex);

@@ -215,8 +215,9 @@ namespace Assets.Scripts.MapEditor
 
         public Vector2Int GetTilePositionForPoint(Vector3 point)
         {
-            var x = Mathf.FloorToInt((point.x - transform.position.x));
-            var y = Mathf.FloorToInt((point.z - transform.position.z));
+            var position = transform.position;
+            var x = Mathf.FloorToInt((point.x - position.x));
+            var y = Mathf.FloorToInt((point.z - position.z));
 
             return new Vector2Int(x, y);
         }
@@ -225,8 +226,9 @@ namespace Assets.Scripts.MapEditor
         {
             tile = new Vector2Int();
 
-            var x = Mathf.FloorToInt((point.x - transform.position.x));
-            var y = Mathf.FloorToInt((point.z - transform.position.z));
+            var position = transform.position;
+            var x = Mathf.FloorToInt((point.x - position.x));
+            var y = Mathf.FloorToInt((point.z - position.z));
 
             //Debug.Log(WalkData.Width + " " + WalkData.Height + " " + x + " " + y);
 

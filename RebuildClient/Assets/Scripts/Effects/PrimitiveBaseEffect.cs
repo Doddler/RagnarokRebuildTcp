@@ -39,6 +39,7 @@ namespace Assets.Scripts.Effects
 
         protected float frameTime;
 
+        //these are temporary to be fed into the meshbuilder
         protected Vector3[] verts = new Vector3[4];
         protected Vector3[] normals = new Vector3[4];
         protected Color[] colors = new Color[4];
@@ -57,19 +58,22 @@ namespace Assets.Scripts.Effects
         }
 
 
-        protected void AddTexturedSliceQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, int pos, int sliceCount, Color c, float scale = 1)
+        protected void AddTexturedSliceQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, int pos,
+            int sliceCount, Color c, float scale = 1)
         {
             var uv1 = (pos - 1) / (float)sliceCount;
             var uv2 = pos / (float)sliceCount;
 
-            AddTexturedQuad(vert1, vert2, vert3, vert4, new Vector2(uv1, 1), new Vector2(uv2, 1), new Vector2(uv1, 0), new Vector2(uv2, 0), c, scale);
+            AddTexturedQuad(vert1, vert2, vert3, vert4, new Vector2(uv1, 1), new Vector2(uv2, 1), new Vector2(uv1, 0),
+                new Vector2(uv2, 0), c, scale);
         }
 
-        
-        protected void AddTexturedQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4, Color c, float scale = 1)
-    {
+
+        protected void AddTexturedQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, Vector2 uv1,
+            Vector2 uv2, Vector2 uv3, Vector2 uv4, Color c, float scale = 1)
+        {
             //we get the uvs for a vertical slice for the position pos out of the number of parts used
-            
+
             colors[0] = c;
             colors[1] = c;
             colors[2] = c;
