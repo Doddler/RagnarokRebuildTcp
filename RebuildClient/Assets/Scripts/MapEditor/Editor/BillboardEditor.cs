@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.MapEditor.Editor
 {
-    [CustomEditor(typeof(Billboard))]
+    [CustomEditor(typeof(BillboardObject))]
     class BillboardEditor : UnityEditor.Editor
     {
         //public override void OnInspectorGUI()

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Assets.Scripts.Effects.PrimitiveHandlers
 {
     [RoPrimitive("Cylender")]
-    public class CastingCylinderPrimitive
+    public class CastingCylinderPrimitive : IPrimitiveHandler
     {
         //used in main elemental casting
         public static void Update3DCasting(RagnarokPrimitive primitive)

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
   m_DefaultGroup: 5f474784577dcf644a3c480fd3b9e282
-  m_CachedHash:
+  m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: 4cf303602231d3985516337c0ff9f1e7
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
@@ -32,11 +32,14 @@ MonoBehaviour:
   m_ShaderBundleNaming: 0
   m_ShaderBundleCustomNaming: 
   m_MonoScriptBundleNaming: 0
+  m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
     m_Id: 8bd178fc79599e24084b6500e3396261
   m_RemoteCatalogLoadPath:
     m_Id: 8bd178fc79599e24084b6500e3396261
+  m_ContentStateBuildPathProfileVariableName: 
+  m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 2
   m_overridePlayerVersion: 
@@ -46,6 +49,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7c5c3cc9a5e21504d9f8d32ba72e2bb0, type: 2}
   - {fileID: 11400000, guid: eac91c1b2081254408c3ae784eaec042, type: 2}
   - {fileID: 11400000, guid: b1b690e48c575774f96d5dd5a3e6eccf, type: 2}
+  - {fileID: 11400000, guid: 7648eb6afbf687649aa2c351e036529b, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -120,7 +124,7 @@ MonoBehaviour:
           m_Key: HostingServiceUploadSpeed
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.String
-          m_Data: ServerData/WebGL
+          m_Data: ServerData/StandaloneWindows64
           m_Key: ContentRoot
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Boolean
@@ -138,3 +142,4 @@ MonoBehaviour:
     m_NextInstanceId: 1
     m_RegisteredServiceTypeRefs:
     - UnityEditor.AddressableAssets.HostingServices.HttpHostingService, Unity.Addressables.Editor
+    m_PingTimeoutInMilliseconds: 5000

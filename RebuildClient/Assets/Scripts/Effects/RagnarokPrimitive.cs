@@ -1,4 +1,6 @@
 ﻿using System;
+using Assets.Scripts.Effects.PrimitiveData;
+using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,6 +15,7 @@ namespace Assets.Scripts.Effects
         private MeshRenderer mr;
         private MeshFilter mf;
         private Mesh mesh;
+        private BillboardObject billboard;
         
         public Material Material;
         
@@ -21,7 +24,7 @@ namespace Assets.Scripts.Effects
         public T GetPrimitiveData<T>() => (T)PrimitiveData;
 
         public PrimitiveType PrimitiveType;
-
+        public IPrimitiveHandler PrimitiveHandler;
         public RagnarokEffectData.PrimitiveUpdateDelegate UpdateHandler;
         public RagnarokEffectData.PrimitiveRenderDelegate RenderHandler;
 
@@ -32,9 +35,12 @@ namespace Assets.Scripts.Effects
         public float Duration;
         public float CurrentPos;
         public int Step;
+
+        public Vector3 Velocity;
         
         public bool IsActive = false;
         public bool IsDirty = false;
+        public bool IsInit = false;
         
         //these are temporary to be fed into the meshbuilder
         private Vector3[] verts = new Vector3[4];
@@ -57,10 +63,12 @@ namespace Assets.Scripts.Effects
             DelayTime = 0;
             IsActive = false;
             IsDirty = false;
+            IsInit = false;
             Effect = null;
             PrimitiveData = null;
             UpdateHandler = null;
             RenderHandler = null;
+            PrimitiveHandler = null;
             Material = null;
             mr.material = null;
             mf.sharedMesh = null;
@@ -73,8 +81,21 @@ namespace Assets.Scripts.Effects
             Parts = null;
             mesh = null;
             mb = null;
+            if (billboard != null)
+                billboard.Style = BillboardStyle.None;
+            Velocity = Vector3.zero;
         }
-        
+
+        public void SetBillboardMode(BillboardStyle style)
+        {
+            if (billboard == null)
+                billboard = gameObject.AddComponent<BillboardObject>();
+            billboard.Style = style;
+        }
+
+        public void SetBillboardAxis(Vector3 axis) => billboard.Axis = axis;
+        public void SetBillboardSubRotation(Quaternion subRotation) => billboard.SubRotation = subRotation;
+
         public void EndPrimitive()
         {
             IsActive = false;
@@ -93,6 +114,12 @@ namespace Assets.Scripts.Effects
             Duration = duration;
             PartsCount = 0;
 
+            if (PrimitiveHandler != null)
+            {
+                UpdateHandler = PrimitiveHandler.GetDefaultUpdateHandler();
+                RenderHandler = PrimitiveHandler.GetDefaultRenderHandler();
+            }
+
             if (mb == null)
                 mb = EffectPool.BorrowMeshBuilder();
             if (mesh == null)
@@ -110,7 +137,36 @@ namespace Assets.Scripts.Effects
 
             IsActive = true;
         }
-        
+
+        public void AddTexturedSpriteQuad(Sprite sprite, Vector3 offset, float width, float height, Color c)
+        {
+            colors[0] = c;
+            colors[1] = c;
+            colors[2] = c;
+            colors[3] = c;
+            
+            verts[0] = new Vector3(-width, height);
+            verts[1] = new Vector3(width, height);
+            verts[2] = new Vector3(-width, -height);
+            verts[3] = new Vector3(width, -height);
+
+            var spriteUVs = sprite.uv;
+            var rect = sprite.textureRect;
+            
+            
+            uvs[0] = spriteUVs[0];
+            uvs[1] = spriteUVs[1];
+            uvs[2] = spriteUVs[2];
+            uvs[3] = spriteUVs[3];
+            
+            //completely unused really
+            normals[0] = Vector3.up;
+            normals[1] = Vector3.up;
+            normals[2] = Vector3.up;
+            normals[3] = Vector3.up;
+            
+            mb.AddQuad(verts, normals, uvs, colors);
+        }
         
         public void AddTexturedSliceQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, int pos,
             int sliceCount, Color c, float scale = 1)
@@ -158,6 +214,10 @@ namespace Assets.Scripts.Effects
         {
             if (!IsActive)
                 return false;
+            
+            if(!IsInit && PrimitiveHandler != null)
+                PrimitiveHandler.Init(this);
+            IsInit = true;
 
             DelayTime -= Time.deltaTime;
             if (DelayTime > 0)
@@ -171,6 +231,8 @@ namespace Assets.Scripts.Effects
 
             if (UpdateHandler != null)
                 UpdateHandler(this);
+
+            transform.position += Velocity * Time.deltaTime;
 
             return IsActive && CurrentPos < Duration;
         }

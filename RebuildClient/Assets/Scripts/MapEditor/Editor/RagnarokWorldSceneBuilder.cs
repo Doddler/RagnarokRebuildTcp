@@ -384,7 +384,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 {
                     var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/bubble.prefab");
                     var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
-                    obj.AddComponent<Billboard>();
+                    obj.AddComponent<BillboardObject>();
                     obj.name = effect.Id + " - " + effect.Name;
                     obj.transform.SetParent(effectContainer.transform, false);
                     obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);

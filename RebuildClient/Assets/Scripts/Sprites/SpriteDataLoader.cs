@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Effects;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
 using RebuildSharedData.ClientTypes;
@@ -232,8 +229,8 @@ namespace Assets.Scripts.Sprites
 			go.layer = LayerMask.NameToLayer("Characters");
 			go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 			var control = go.AddComponent<ServerControllable>();
-		    var billboard = go.AddComponent<Billboard>();
-            billboard.Style = Billboard.BillboardStyle.Character;
+		    var billboard = go.AddComponent<BillboardObject>();
+            billboard.Style = BillboardStyle.Character;
 
 			var body = new GameObject("Sprite");
 			body.layer = LayerMask.NameToLayer("Characters");
@@ -341,8 +338,8 @@ namespace Assets.Scripts.Sprites
         {
             var go = new GameObject("Emote");
             //go.layer = LayerMask.NameToLayer("Characters");
-            var billboard = go.AddComponent<Billboard>();
-            billboard.Style = Billboard.BillboardStyle.Character;
+            var billboard = go.AddComponent<BillboardObject>();
+            billboard.Style = BillboardStyle.Character;
 
             var emote = go.AddComponent<EmoteController>();
             emote.AnimationId = emoteId;
@@ -427,8 +424,8 @@ namespace Assets.Scripts.Sprites
 			    control.CharacterType = CharacterType.Monster;
 			control.SpriteMode = ClientSpriteType.Sprite;
             control.IsInteractable = param.Interactable;
-            var billboard = go.AddComponent<Billboard>();
-            billboard.Style = Billboard.BillboardStyle.Character;
+            var billboard = go.AddComponent<BillboardObject>();
+            billboard.Style = BillboardStyle.Character;
 
             var child = new GameObject("Sprite");
 			child.layer = LayerMask.NameToLayer("Characters");

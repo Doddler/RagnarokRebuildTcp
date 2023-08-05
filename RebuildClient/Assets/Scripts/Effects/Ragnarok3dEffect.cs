@@ -11,14 +11,18 @@ namespace Assets.Scripts.Effects
     public class Ragnarok3dEffect : MonoBehaviour
     {
         public float Duration;
+        public int DurationFrames;
         public float CurrentPos;
-        public int Step;
+        public int Step = -1;
+        public int LastStep = 0;
+        public int ObjCount = 0;
 
         public Vector3 PositionOffset = Vector3.zero;
         public GameObject FollowTarget;
         public Object EffectData;
 
         public bool DestroyOnTargetLost = false;
+        public bool UpdateOnlyOnFrameChange = false;
 
         public float activeDelay = 0f;
         public float pauseTime = 0f;
@@ -28,7 +32,7 @@ namespace Assets.Scripts.Effects
         private List<GameObject> attachedObjects = new();
 
         private bool isInitialized = false;
-        
+
         public static Ragnarok3dEffect Create()
         {
             var go = new GameObject("Effect");
@@ -39,6 +43,18 @@ namespace Assets.Scripts.Effects
         public void SetEffectType(EffectType type)
         {
             effectHandler = RagnarokEffectData.GetEffectHandler(type);
+        }
+
+        public void SetDurationByTime(float time)
+        {
+            Duration = time;
+            DurationFrames = Mathf.FloorToInt(time / 60f);
+        }
+        
+        public void SetDurationByFrames(int frame)
+        {
+            Duration = (frame + 1) * (1f / 60f);
+            DurationFrames = frame;
         }
 
         public void AttachChildObject(GameObject obj)
@@ -59,9 +75,10 @@ namespace Assets.Scripts.Effects
             EffectData = null;
             Duration = 0;
             CurrentPos = 0;
-            Step = 0;
+            Step = -1;
+            LastStep = -1;
             PositionOffset = Vector3.zero;
-            for(var i = 0; i < primitives.Count; i++)
+            for (var i = 0; i < primitives.Count; i++)
             {
                 var p = primitives[i];
                 RagnarokEffectPool.ReturnPrimitive(p);
@@ -83,28 +100,25 @@ namespace Assets.Scripts.Effects
 
             var pHandler = RagnarokEffectData.GetPrimitiveHandler(type);
             if (pHandler != null)
-            {
-                primitive.UpdateHandler = pHandler.GetDefaultUpdateHandler();
-                primitive.RenderHandler = pHandler.GetDefaultRenderHandler();
-            }
+                primitive.PrimitiveHandler = pHandler;
 
             primitive.Prepare(this, type, mat, duration);
-
+            
             primitives.Add(primitive);
 
             return primitive;
         }
-        
+
         private void RenderDirtyPrimitives()
         {
             for (var i = 0; i < primitives.Count; i++)
             {
                 var p = primitives[i];
-                if(p.IsDirty)
+                if (p.IsDirty)
                     p.RenderPrimitive();
             }
         }
-        
+
         public void Update()
         {
             activeDelay -= Time.deltaTime;
@@ -119,9 +133,10 @@ namespace Assets.Scripts.Effects
             }
 
             CurrentPos += Time.deltaTime;
-            if(Mathf.RoundToInt(CurrentPos / (1 / 60f)) > Step)
+            LastStep = Step;
+            if (Mathf.RoundToInt(CurrentPos / (1 / 60f)) > Step)
                 Step++; //only advance once per frame.
-            
+                
             if (FollowTarget == null && DestroyOnTargetLost)
             {
                 RagnarokEffectPool.Return3dEffect(this);
@@ -131,10 +146,16 @@ namespace Assets.Scripts.Effects
             if (FollowTarget != null)
                 transform.localPosition = FollowTarget.transform.position + PositionOffset;
 
-            if (effectHandler == null)
-                return;
-            
-            var active = effectHandler.Update(this, CurrentPos, Step);
+            var active = false;
+            if (UpdateOnlyOnFrameChange)
+            {
+                if (LastStep != Step)
+                    active = effectHandler.Update(this, CurrentPos, Step);
+                else
+                    active = true;
+            }
+            else
+                active = effectHandler.Update(this, CurrentPos, Step);
             var anyActive = active;
 
             for (var i = 0; i < primitives.Count; i++)
@@ -143,12 +164,12 @@ namespace Assets.Scripts.Effects
 
                 if (!p.IsActive)
                     continue;
-                
+
                 var pActive = p.UpdatePrimitive();
                 if (pActive)
                     anyActive = true;
-                
-                if(pActive && p.IsDirty)
+
+                if (pActive && p.IsDirty)
                     p.RenderPrimitive();
             }
 

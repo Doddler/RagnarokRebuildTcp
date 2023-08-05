@@ -88,6 +88,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var defGroup = settings.DefaultGroup;
             var mapGroup = settings.FindGroup("Scenes");
             var musicGroup = settings.FindGroup("Music");
+            var soundsGroup = settings.FindGroup("Sounds");
             var entriesAdded = new List<AddressableAssetEntry>();
             var entriesRemoved = new List<AddressableAssetEntry>();
 
@@ -219,6 +220,23 @@ namespace Assets.Scripts.MapEditor.Editor
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
                 entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
                 entry.labels.Add("Music");
+
+                entriesAdded.Add(entry);
+            }
+            
+            
+            //update effect sounds
+            guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/Effects" });
+
+            for (int i = 0; i < guids.Length; i++)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                var fName = Path.GetFileName(path);
+                
+                var entry = settings.CreateOrMoveEntry(guids[i], soundsGroup, readOnly: false, postEvent: false);
+                //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
+                entry.labels.Add("Sounds");
 
                 entriesAdded.Add(entry);
             }

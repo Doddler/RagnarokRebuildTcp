@@ -245,7 +245,7 @@ namespace Assets.Scripts
             var go = new GameObject("Cursor");
             go.layer = LayerMask.NameToLayer("Characters");
             go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            go.AddComponent<Billboard>();
+            go.AddComponent<BillboardObject>();
 
             var cursor = new GameObject("Cursor");
             cursor.layer = LayerMask.NameToLayer("Characters");
@@ -1044,7 +1044,7 @@ namespace Assets.Scripts
                 var obj2 = GameObject.Instantiate(prefab, outputObj.transform, false);
                 obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
                 if (asset.Billboard)
-                    obj2.AddComponent<Billboard>();
+                    obj2.AddComponent<BillboardObject>();
 
                 if(facing != 0)
                     obj2.transform.localRotation = Quaternion.AngleAxis(45 * facing, Vector3.up);
@@ -1058,7 +1058,7 @@ namespace Assets.Scripts
                 var obj2 = GameObject.Instantiate(ah.Result, outputObj.transform, false);
                 obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
                 if (asset.Billboard)
-                    obj2.AddComponent<Billboard>();
+                    obj2.AddComponent<BillboardObject>();
 
 
                 Debug.Log("Loaded effect " + asset.PrefabName);
@@ -1247,7 +1247,8 @@ namespace Assets.Scripts
                 NetworkManager.Instance.SendUseItem(501);
 
             if (!inTextBox && Input.GetKeyDown(KeyCode.F5))
-                CastEffect.Create(2f, "ring_blue", controllable.gameObject);
+                FireArrow.Create(controllable.gameObject, 5);
+                //CastEffect.Create(2f, "ring_blue", controllable.gameObject);
 
             //if (Input.GetKeyDown(KeyCode.Alpha1))
             //    AttachEffectToEntity("RedPotion", controllable);
@@ -1267,13 +1268,13 @@ namespace Assets.Scripts
             // if(Input.GetKeyDown(KeyCode.Alpha6))
             //     CastingEffect.StartCasting(2f, "ring_blue", controllable.gameObject);
 
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-            //    //CastingEffect.StartCasting(3, "ring_red", controllable.gameObject);
-                var temp = new GameObject("Warp");
-                temp.transform.position = controllable.transform.position + new Vector3(0, 0.1f, 0f);
-                MapWarpEffect.StartWarp(temp);
-            }
+            // if (Input.GetKeyDown(KeyCode.Q))
+            // {
+            // //    //CastingEffect.StartCasting(3, "ring_red", controllable.gameObject);
+            //     var temp = new GameObject("Warp");
+            //     temp.transform.position = controllable.transform.position + new Vector3(0, 0.1f, 0f);
+            //     MapWarpEffect.StartWarp(temp);
+            // }
 
             //if (Input.GetKeyDown(KeyCode.Keypad1) || (Input.GetKeyDown(KeyCode.Alpha1) && Input.GetKey(KeyCode.LeftShift)))
             //    NetworkManager.Instance.SendMoveRequest("prontera");

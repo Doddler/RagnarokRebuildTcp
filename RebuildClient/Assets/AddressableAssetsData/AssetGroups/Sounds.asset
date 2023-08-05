@@ -1,0 +1,367 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sounds
+  m_EditorClassIdentifier: 
+  m_GroupName: Sounds
+  m_Data:
+    m_SerializedData: []
+  m_GUID: e9b84a28ee9c9c549b4d357336ac0152
+  m_SerializeEntries:
+  - m_GUID: 2877cdfa3a641374d91a0141bca1abe9
+    m_Address: Assets/Sounds/Effects/ef_angel.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51f3f11d2ba70694c9adeb446a59ee53
+    m_Address: Assets/Sounds/Effects/ef_angelus.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d724bec9085af3447bb708f17b3868d4
+    m_Address: Assets/Sounds/Effects/ef_aqua.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac56ecb4140ae2b439baf7ac64469cd9
+    m_Address: Assets/Sounds/Effects/ef_bash.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e46d3b673a24eb4b87f45a70b523445
+    m_Address: Assets/Sounds/Effects/ef_beginspell.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43fb229c838b2c04eb6b933d25c4d43e
+    m_Address: Assets/Sounds/Effects/ef_blessing.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82476045b51d4de4293310344557bca9
+    m_Address: Assets/Sounds/Effects/ef_coin.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11ce9496f8db77146bb2d45b065a97e7
+    m_Address: Assets/Sounds/Effects/ef_coin1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86e8da7315bd1e74a9481164a76b9464
+    m_Address: Assets/Sounds/Effects/ef_coin2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 729f2499f85c31f40b24f753db0ccfd6
+    m_Address: Assets/Sounds/Effects/ef_coin3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9012143b7ce1f454795086be164742fa
+    m_Address: Assets/Sounds/Effects/ef_decagility.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eed9b6c5948b3334dbe43e383ed1e9e2
+    m_Address: Assets/Sounds/Effects/ef_detoxication.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 745f9d89b3ac3ea4eab3cc4df80ec16a
+    m_Address: Assets/Sounds/Effects/ef_devil.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a41edbf472301c41b94e22a8a9d24c2
+    m_Address: Assets/Sounds/Effects/ef_endure.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd605707c0c99a84098c26cc2c3bab1c
+    m_Address: Assets/Sounds/Effects/ef_entry.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6b293086e7ad6d459aff043d251cf67
+    m_Address: Assets/Sounds/Effects/ef_exit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 471207c2fc5c5364b8777d193cb063ba
+    m_Address: Assets/Sounds/Effects/ef_firearrow0.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 163bbcd2c5451be4990dd841a34b4f87
+    m_Address: Assets/Sounds/Effects/ef_firearrow1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f27e6a5ae4409d841b7f19fb521779c2
+    m_Address: Assets/Sounds/Effects/ef_firearrow2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd9031d0f4f382a449efc64dec3110bb
+    m_Address: Assets/Sounds/Effects/ef_firearrow3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c61086957eda984b98d9090278e307d
+    m_Address: Assets/Sounds/Effects/ef_fireball.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cf9ddefa4c8be24e8431f54e6c2407a
+    m_Address: Assets/Sounds/Effects/ef_firehit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3d68caef001fda4b9fe6e421d56d708
+    m_Address: Assets/Sounds/Effects/ef_firewall.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87a9dcc2b8140c840a51631d62d92a2d
+    m_Address: Assets/Sounds/Effects/ef_frostdiver.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e58bac8da09dbed4394a2eba0a92ad44
+    m_Address: Assets/Sounds/Effects/ef_frostdiver2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 090256f4ff64ebc4cb4a3bdbaaebc022
+    m_Address: Assets/Sounds/Effects/ef_glasswall.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 09a57cbe65ab7ff4b8844ca5830bae11
+    m_Address: Assets/Sounds/Effects/ef_healsp.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 761e298f60a5c7748815f792a89ae536
+    m_Address: Assets/Sounds/Effects/ef_hiding.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12ed6079d4259bd409b55f767da26ad4
+    m_Address: Assets/Sounds/Effects/ef_hit2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ffc482cbf4f9e5489ebd2faf3a13f9d
+    m_Address: Assets/Sounds/Effects/ef_hit3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 719f105881a0aaa44804f00ed0771e26
+    m_Address: Assets/Sounds/Effects/ef_hit4.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a35748c9206ad2a499464e226240fa0b
+    m_Address: Assets/Sounds/Effects/ef_hit5.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19a0650122065074e8ffb6bc8f4efce4
+    m_Address: Assets/Sounds/Effects/ef_hit6.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99dcfaf9f66e54a4ba9f4f4d980405ad
+    m_Address: Assets/Sounds/Effects/ef_icearrow.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 451bfd7ce2142be4da79c8d0fe01e23f
+    m_Address: Assets/Sounds/Effects/ef_icearrow1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f91641c490bc7d8429de9632b9fc9f05
+    m_Address: Assets/Sounds/Effects/ef_icearrow2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c0adc7cc72db9a458684720fcbd958b
+    m_Address: Assets/Sounds/Effects/ef_icearrow3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53fad49f8ed8f754c88d80169bf97536
+    m_Address: Assets/Sounds/Effects/ef_incagidex.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ecbfc55dd3f20a94da7274dde3e3e770
+    m_Address: Assets/Sounds/Effects/ef_incagility.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b8d738bea8e0794da8bfecf47a2579f
+    m_Address: Assets/Sounds/Effects/ef_lightbolt.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 118ed109215f2b449940b6668a8ab8cc
+    m_Address: Assets/Sounds/Effects/ef_lightbolt1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: affd9a1934a6ee84fbd9cf4cc270aa06
+    m_Address: Assets/Sounds/Effects/ef_lightbolt2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a127f646caf5ba24a84c40ac2b48f31e
+    m_Address: Assets/Sounds/Effects/ef_lightbolt3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf0ab15dac82c374887b936552b251fa
+    m_Address: Assets/Sounds/Effects/ef_magnumbreak.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3324fe7ce00f9bf40a3e489e6a743fed
+    m_Address: Assets/Sounds/Effects/ef_napalmbeat.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f071e991e2f51db4f97bb68ffc7bce52
+    m_Address: Assets/Sounds/Effects/ef_poisonattack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cf73f9a28518804eb1f3e9f5fcc0173
+    m_Address: Assets/Sounds/Effects/ef_portal.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63cfec9b479b2ea4db974a282aa13179
+    m_Address: Assets/Sounds/Effects/ef_readyportal.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bd0aac58330db447ad77dec70731046
+    m_Address: Assets/Sounds/Effects/ef_ruwach.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f309b92eab38ab469ff791df777b2f7
+    m_Address: Assets/Sounds/Effects/ef_sight.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a10001706a19e349bd40d662fa485dd
+    m_Address: Assets/Sounds/Effects/ef_signum.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98a079038309ef84cb7640945fd2cbd0
+    m_Address: Assets/Sounds/Effects/ef_soulstrike.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d42a7954a696124883cc87cdc83fe32
+    m_Address: Assets/Sounds/Effects/ef_steal.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8d95035d5dbe78409eebf39af4d8b1c
+    m_Address: Assets/Sounds/Effects/ef_stonecurse.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11305b3a9af9b244294409072cf3cf49
+    m_Address: Assets/Sounds/Effects/ef_teleportation.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f95219057c7e2b1478c579c57055d144
+    m_Address: Assets/Sounds/Effects/ef_thunderstorm.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36c29891b044e1a4b946da6a42642b93
+    m_Address: Assets/Sounds/Effects/ef_torch.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 20e27e1e859e6fa4aad1bd2948640695, type: 2}
+    - {fileID: 11400000, guid: f8d83f90873d756459d84f99969d3ff7, type: 2}

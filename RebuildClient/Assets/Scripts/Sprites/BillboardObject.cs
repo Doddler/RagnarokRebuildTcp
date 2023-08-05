@@ -3,39 +3,28 @@ using UnityEngine;
 
 namespace Assets.Scripts.Sprites
 {
-    public class Billboard : MonoBehaviour
+    public enum BillboardStyle
     {
-        public enum BillboardStyle
-        {
-            Normal,
-            AxisAligned,
-            Character
-        }
-
+        None,
+        Normal,
+        AxisAligned,
+        Character
+    }
+    
+    public class BillboardObject : MonoBehaviour
+    {
         public BillboardStyle Style = BillboardStyle.Normal;
         public Vector3 Axis = Vector3.up;
-        
-
-        private bool useSpriteBillboards = true;
-        private static Vector3 CharacterAxis = new Vector3(0, 1f, 0);
-
-        public void Update()
-        {
-            //don't allow this to break containment cause it's bad code.
-#if UNITY_EDITOR
-            useSpriteBillboards = ShaderCache.Instance.BillboardSprites;
-#endif
-        }
+        public Quaternion SubRotation = Quaternion.identity;
 
         public void LateUpdate()
         {
+            if (Style == BillboardStyle.None)
+                return;
+            
             if (Style == BillboardStyle.Normal)
             {
-                //transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                if(useSpriteBillboards)
-                    transform.localRotation = Camera.main.transform.rotation;
-                else
-                    transform.localRotation = Quaternion.identity;
+                transform.localRotation = Camera.main.transform.rotation;
                 return;
             }
 
@@ -48,16 +37,13 @@ namespace Assets.Scripts.Sprites
 
                 var up = Vector3.Cross(look, right);
 
-                transform.rotation = Quaternion.LookRotation(look, up);
+                transform.rotation = Quaternion.LookRotation(look, up) * SubRotation;
             }
 
             if (Style == BillboardStyle.Character)
             {
-                if (useSpriteBillboards)
-                    transform.localRotation = Camera.main.transform.rotation;
-                else
-                    transform.localRotation = Quaternion.identity;
-
+                transform.localRotation = Camera.main.transform.rotation;
+             
                 //var look = (transform.position - Camera.main.transform.position).normalized;
                 //var right = Vector3.Cross(CharacterAxis, look);
 

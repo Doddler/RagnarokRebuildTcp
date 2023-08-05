@@ -72,6 +72,8 @@ AudioMixerController:
     name: Environment
   - guid: 6c7820cdcd2da454e8f82a500dd7f94c
     name: Music
+  - guid: 2f75581845d55ea42a00cd6f377edd11
+    name: Sounds
   m_AudioMixerGroupViews:
   - guids:
     - 4676cc9509a4f23448c9335c27fa7312

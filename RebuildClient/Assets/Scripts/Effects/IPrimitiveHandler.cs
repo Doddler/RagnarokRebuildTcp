@@ -6,7 +6,14 @@ namespace Assets.Scripts.Effects
 {
     public interface IPrimitiveHandler
     {
-        public PrimitiveUpdateDelegate GetDefaultUpdateHandler();
-        public PrimitiveRenderDelegate GetDefaultRenderHandler();
+        public void Init(RagnarokPrimitive primitive) {}
+        public PrimitiveUpdateDelegate GetDefaultUpdateHandler()
+        { 
+            return null;
+        }
+        public PrimitiveRenderDelegate GetDefaultRenderHandler()
+        {
+            return null;
+        }
     }
 }
