@@ -12,7 +12,10 @@ AiPassive,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
 AiPassive,StateSearch,InAttackRange,OutStartAttacking,StateAttacking
 AiPassive,StateAttacking,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiPassive,StateAttacking,InEnemyOutOfAttackRange,OutStartChase,StateChase
+AiPassive,StateAttacking,InNeedAttackingAdjust,OutAttackingAdjust,StateAdjust
 AiPassive,StateAttacking,InAttackDelayEnd,OutPerformAttack,StateAttacking
+AiPassive,StateAdjust,InReachedTarget,OutSearch,StateSearch
+AiPassive,StateAdjust,InAttacked,OutChangeTargets,StateSearch
 AiPassive,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
 AiAssist,StateIdle,InAllyInCombat,OutStartChase,StateChase
 AiAssist,StateIdle,InWaitEnd,OutRandomMoveStart,StateRandomMove
@@ -28,7 +31,10 @@ AiAssist,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
 AiAssist,StateSearch,InAttackRange,OutStartAttacking,StateAttacking
 AiAssist,StateAttacking,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiAssist,StateAttacking,InEnemyOutOfAttackRange,OutStartChase,StateChase
+AiAssist,StateAttacking,InNeedAttackingAdjust,OutAttackingAdjust,StateAdjust
 AiAssist,StateAttacking,InAttackDelayEnd,OutPerformAttack,StateAttacking
+AiAssist,StateAdjust,InReachedTarget,OutSearch,StateSearch
+AiAssist,StateAdjust,InAttacked,OutChangeTargets,StateSearch
 AiAssist,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
 AiAggressive,StateIdle,InTargetSearch,OutStartChase,StateChase
 AiAggressive,StateIdle,InWaitEnd,OutRandomMoveStart,StateRandomMove

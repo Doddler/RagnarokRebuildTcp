@@ -59,7 +59,11 @@ namespace Assets.Scripts.Sprites
 		private readonly Dictionary<int, PlayerClassData> playerClassLookup = new();
 		private readonly Dictionary<int, Dictionary<int, List<PlayerWeaponData>>> playerWeaponLookup = new();
 
+		private readonly List<string> validMonsterClasses = new();
+
         private bool isInitialized;
+
+        public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
 		
 		private void Awake()
 		{
@@ -73,6 +77,7 @@ namespace Assets.Scripts.Sprites
 			foreach (var m in entityData.MonsterClassData)
 			{
 				monsterClassLookup.Add(m.Id, m);
+				validMonsterClasses.Add(m.Name);
 			}
 
 			var headData = JsonUtility.FromJson<Wrapper<PlayerHeadData>>(PlayerHeadData.text);

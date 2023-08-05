@@ -11,7 +11,8 @@ namespace Assets.Scripts.Effects
     {
         public void Awake()
         {
-            MapWarpEffect.StartWarp(gameObject);
+            EffectHandlers.MapWarpEffect.StartWarp(gameObject);
+            //MapWarpEffect.StartWarp(gameObject);
         }
     }
 }

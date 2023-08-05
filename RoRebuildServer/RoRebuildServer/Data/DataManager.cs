@@ -19,6 +19,7 @@ public static class DataManager
     private static List<MonsterDatabaseInfo> monsterStats;
     public static Dictionary<int, MonsterDatabaseInfo> MonsterIdLookup;
     public static Dictionary<string, MonsterDatabaseInfo> MonsterCodeLookup;
+    public static Dictionary<string, MonsterDatabaseInfo> MonsterNameLookup;
 
     private static List<List<MonsterAiEntry>> monsterAiList;
     
@@ -125,11 +126,13 @@ public static class DataManager
         
         MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
         MonsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
+        MonsterNameLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
 
         foreach (var m in monsterStats)
         {
             MonsterIdLookup.Add(m.Id, m);
             MonsterCodeLookup.Add(m.Code, m);
+            MonsterNameLookup.TryAdd(m.Name, m);
         }
 
         loader.LoadNpcScripts(ScriptAssembly);

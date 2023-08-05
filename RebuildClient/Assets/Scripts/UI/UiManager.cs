@@ -7,6 +7,7 @@ public class UiManager : MonoBehaviour
 {
     public GameObject WarpManager;
     public GameObject EmoteManager;
+    public GameObject PrimaryUserUIContainer;
 
     public List<IClosableWindow> WindowStack = new List<IClosableWindow>();
 
@@ -70,7 +71,7 @@ public class UiManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F11))
         {
-            var c = gameObject.GetComponent<Canvas>();
+            var c = PrimaryUserUIContainer.GetComponent<Canvas>();
             c.enabled = !c.enabled;
         }
     }

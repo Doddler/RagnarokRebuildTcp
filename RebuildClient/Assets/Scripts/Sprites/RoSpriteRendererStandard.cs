@@ -200,6 +200,7 @@ namespace Assets.Scripts.Sprites
             propertyBlock.SetTexture("_MainTex", SpriteData.Atlas);
             propertyBlock.SetColor("_Color", Color);
             propertyBlock.SetFloat("_Offset", SpriteOffset);
+            propertyBlock.SetFloat("_Width", SpriteData.AverageWidth/25f);
 
             if (Mathf.Approximately(0, SpriteOffset))
                 propertyBlock.SetFloat("_Offset", SpriteData.Size / 125f);

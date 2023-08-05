@@ -1,36 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assets.Scripts.Utility;
+﻿using Assets.Scripts.Utility;
 using UnityEngine;
 
-namespace Assets.Scripts.Effects
+namespace Assets.Scripts.Effects.PrimitiveHandlers
 {
-    class PrimitiveCylinderEffect : PrimitiveBaseEffect
+    [RoPrimitive("Cylender")]
+    public class CastingCylinderPrimitive
     {
-        public static PrimitiveCylinderEffect LaunchEffect(GameObject go, Material mat, int partCount, float duration)
-        {
-            var prim = go.AddComponent<PrimitiveCylinderEffect>();
-            prim.Init(partCount, mat);
-            prim.Duration = duration;
-
-            return prim;
-        }
-        
         //used in main elemental casting
-        public void Update3DCasting()
+        public static void Update3DCasting(RagnarokPrimitive primitive)
         {
-            var mid = (EffectPart.PartCount - 1) / 2;
-            var m2 = 90 / mid;
+            var step = primitive.Step;
 
+            var mid = (EffectPart.SegmentCount - 1) / 2;
+            var m2 = 90 / mid;
+            
             for (var ec = 0; ec < 4; ec++)
             {
                 //if (Mathf.Approximately(size, 3f) && ec < 3)
                 //    ec = 3;
 
-                var p = Parts[ec];
+                var p = primitive.Parts[ec];
 
                 if (p.Active)
                 {
@@ -42,7 +31,7 @@ namespace Assets.Scripts.Effects
                     if (p.Angle > 360)
                         p.Angle -= 360;
 
-                    if (Step > Duration * 60 - 40)
+                    if (step > primitive.Duration * 60 - 40)
                     {
                         if (ec < 3)
                             p.Alpha -= 5 * 60 * Time.deltaTime;
@@ -50,7 +39,7 @@ namespace Assets.Scripts.Effects
                             p.Alpha -= 3 * 60 * Time.deltaTime;
                     }
                 }
-                else if (Step < 20)
+                else if (step < 20)
                 {
                     if (p.Alpha2 != 1)
                     {
@@ -61,14 +50,14 @@ namespace Assets.Scripts.Effects
                     }
                 }
 
-                for (var i = 0; i < EffectPart.PartCount; i++)
+                for (var i = 0; i < EffectPart.SegmentCount; i++)
                 {
                     if (p.Flags[i] == 0)
                     {
                         var sinLimit = 90 + ((i - mid) * m2);
 
-                        if (Step <= 90)
-                            p.Heights[i] = p.MaxHeight * Mathf.Sin(sinLimit * Mathf.Deg2Rad) * Mathf.Sin(CurrentPos * 60 * Mathf.Deg2Rad);
+                        if (primitive.Step <= 90)
+                            p.Heights[i] = p.MaxHeight * Mathf.Sin(sinLimit * Mathf.Deg2Rad) * Mathf.Sin(primitive.CurrentPos * 60 * Mathf.Deg2Rad);
 
                         if (p.Heights[i] > p.MaxHeight * Mathf.Sin(sinLimit * Mathf.Deg2Rad))
                         {
@@ -81,17 +70,20 @@ namespace Assets.Scripts.Effects
                     }
                 }
             }
-        }
 
+            primitive.IsDirty = true;
+        }
+        
+        
         //used for warp portal effect
-        public void Update3DCasting4()
+        public static void Update3DCasting4(RagnarokPrimitive primitive)
         {
-            var mid = (EffectPart.PartCount - 1) / 2;
+            var mid = (EffectPart.SegmentCount - 1) / 2;
             var m2 = 90 / mid;
 
             for (var ec = 0; ec < 4; ec++)
             {
-                var p = Parts[ec];
+                var p = primitive.Parts[ec];
 
                 if (!p.Active)
                     continue;
@@ -106,7 +98,7 @@ namespace Assets.Scripts.Effects
                 p.RiseAngle = (90f - p.Distance * 9f);
                 p.MaxHeight = p.Distance;
 
-                if (Step > Duration * 60 + 40)
+                if (primitive.Step > primitive.Duration * 60 + 40)
                 {
                     p.Alpha -= 3 * 60 * Time.deltaTime;
                     if (p.Alpha < 0)
@@ -118,29 +110,31 @@ namespace Assets.Scripts.Effects
                 }
 
 
-                for (var i = 0; i < EffectPart.PartCount; i++)
+                for (var i = 0; i < EffectPart.SegmentCount; i++)
                 {
                     if (p.Flags[i] == 0)
                         p.Heights[i] = p.MaxHeight;
                 }
             }
+            
+            primitive.IsDirty = true;
         }
-
-
-        public void Render3DCasting()
+        
+        
+        public static void Render3DCasting(RagnarokPrimitive primitive, MeshBuilder mb)
         {
             mb.Clear();
 
             for (var ec = 0; ec < 4; ec++)
             {
-                var p = Parts[ec];
+                var p = primitive.Parts[ec];
                 if (!p.Active)
                     continue;
                 
                 if (p.Alpha < 0)
                     p.Alpha = 0;
 
-                var baseAngle = p.CoverAngle / (EffectPart.PartCount - 1);
+                var baseAngle = p.CoverAngle / (EffectPart.SegmentCount - 1);
                 var pos = 0;
 
                 //Debug.Log(baseAngle);
@@ -158,7 +152,7 @@ namespace Assets.Scripts.Effects
 
                     if (p.CoverAngle == 360)
                     {
-                        if (pos == EffectPart.PartCount - 1)
+                        if (pos == EffectPart.SegmentCount - 1)
                             angle = p.Angle;
                     }
 
@@ -180,20 +174,17 @@ namespace Assets.Scripts.Effects
 
                     if (pos > 0)
                     {
-                        AddTexturedSliceQuad(topLast, top, bottomLast, bottom, pos, EffectPart.PartCount, color, 0.1f);
+                        primitive.AddTexturedSliceQuad(topLast, top, bottomLast, bottom, pos, EffectPart.SegmentCount, color, 0.1f);
                     }
 
                     pos++;
-                    if (pos >= EffectPart.PartCount)
-                        pos = EffectPart.PartCount - 1;
+                    if (pos >= EffectPart.SegmentCount)
+                        pos = EffectPart.SegmentCount - 1;
 
                     bottomLast = bottom;
                     topLast = top;
                 }
             }
-
-            mf.sharedMesh = mb.ApplyToMesh(mesh);
         }
-        
     }
 }

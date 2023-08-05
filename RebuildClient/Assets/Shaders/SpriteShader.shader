@@ -7,6 +7,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
 		[PerRendererData] _Color("Tint", Color) = (1,1,1,1)
 		[PerRendererData] _Offset("Offset", Float) = 0
+		[PerRendererData] _Width("Width", Float) = 0
 		_Rotation("Rotation", Range(0,360)) = 0
 	}
 
@@ -27,7 +28,118 @@ Shader"Ragnarok/CharacterSpriteShader"
 		Lighting Off
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
+		
+		
+		Pass {
+			ZWrite On
+			Blend Zero One
+//			AlphaToMask On
 
+
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#include "UnityCG.cginc"
+			#include "Billboard.cginc"
+
+			struct appdata_t
+			{
+				float4 vertex   : POSITION;
+				float4 color    : COLOR;
+				float2 texcoord : TEXCOORD0;
+			};
+
+			struct v2f {
+				float4 pos : SV_POSITION;
+				fixed4 color : COLOR;
+				float2 texcoord : TEXCOORD0;
+			};
+
+
+			sampler2D _MainTex;
+			fixed4 _Color;
+
+			
+			v2f vert(appdata_t v)
+			{
+				v2f o;
+
+			//--------------------------------------------------------------------------------------------
+			//start of billboard code
+			//--------------------------------------------------------------------------------------------
+
+			float2 pos = v.vertex.xy;
+
+			float3 worldPos = mul(unity_ObjectToWorld, float4(pos.x, pos.y, 0, 1)).xyz;
+			float3 originPos = mul(unity_ObjectToWorld, float4(pos.x, 0, 0, 1)).xyz; //world position of origin
+			float3 upPos = originPos + float3(0, 1, 0); //up from origin
+
+			float outDist = abs(pos.y); //distance from origin should always be equal to y
+
+			float angleA = Angle(originPos, upPos, worldPos); //angle between vertex position, origin, and up
+			float angleB = Angle(worldPos, _WorldSpaceCameraPos.xyz, originPos); //angle between vertex position, camera, and origin
+
+			float camDist = distance(_WorldSpaceCameraPos.xyz, worldPos.xyz);
+
+			if (pos.y > 0)
+			{
+				angleA = 90 - (angleA - 90);
+				angleB = 90 - (angleB - 90);
+			}
+
+			float angleC = 180 - angleA - angleB; //the third angle
+
+			float fixDist = 0;
+			if (pos.y > 0)
+				fixDist = (outDist / sin(radians(angleC))) * sin(radians(angleA)); //supposedly basic trigonometry
+
+			//determine move as a % of the distance from the point to the camera
+			float decRate = (fixDist * 0.7 + 0.1) / camDist; //where does the value come from? Who knows!
+			float decRateNoOffset = (fixDist * 0.7) / camDist; //where does the value come from? Who knows!
+			float decRate2 = (fixDist) / camDist; //where does the value come from? Who knows!
+
+
+			float4 view = mul(UNITY_MATRIX_V, float4(worldPos, 1));
+
+			float4 pro = mul(UNITY_MATRIX_P, view);
+
+			#if UNITY_UV_STARTS_AT_TOP
+				// Windows - DirectX
+				view.z -= abs(UNITY_NEAR_CLIP_VALUE - view.z) * decRate2;
+				pro.z -= abs(UNITY_NEAR_CLIP_VALUE - pro.z) * decRate;
+			#else
+				// WebGL - OpenGL
+				view.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate2;
+				pro.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate;
+			#endif
+
+			o.pos = pro;
+
+			//--------------------------------------------------------------------------------------------
+			//end of billboard code
+			//--------------------------------------------------------------------------------------------
+	
+
+				//o.pos = Billboard2(v.vertex, 0);
+				
+				o.color = v.color * _Color;
+				o.texcoord = v.texcoord;
+				return o;
+			}
+
+			half4 frag(v2f i) : COLOR
+			{
+				fixed4 c = tex2D(_MainTex, i.texcoord);
+				c *= i.color;
+
+				clip(c.a - 0.5);
+				
+				return c;
+				return half4 (1,1,1,1);
+			}
+			ENDCG
+		}
+	
 		Pass
 		{
 		CGPROGRAM
@@ -36,6 +148,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 			#pragma multi_compile_fog
 			#pragma multi_compile _ PIXELSNAP_ON
 			//#pragma multi_compile _ WATER_OFF
+		
 
 			#include "UnityCG.cginc"
 			#include "UnityUI.cginc"
@@ -61,6 +174,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 			fixed4 _Color;
 			fixed _Offset;
 			fixed _Rotation;
+			fixed _Width;
 
 
 			sampler2D _MainTex;
@@ -201,6 +315,9 @@ Shader"Ragnarok/CharacterSpriteShader"
 				//endsmoothpixel
 
 				fixed4 c = diff * i.color * float4(env.rgb,1);
+
+				if(c.a < 0.001)
+					discard;
 		
 				UNITY_APPLY_FOG(i.fogCoord, c);
 			
@@ -223,9 +340,9 @@ Shader"Ragnarok/CharacterSpriteShader"
 					// apply fog
 					UNITY_APPLY_FOG(i.fogCoord, waterTex);
 	
-					float simHeight = i.worldPos.y - abs(i.worldPos.x * i.worldPos.x);
+					float simHeight = i.worldPos.y - abs(i.worldPos.x)/(_Width)*0.5;
 	
-					simHeight = clamp(simHeight, i.worldPos.y - 0.3, i.worldPos.y);
+					simHeight = clamp(simHeight, i.worldPos.y - 0.4, i.worldPos.y);
 	
 					if (height-0 > simHeight)
 						c.rgb *= lerp(float3(1, 1, 1), waterTex.rgb, saturate(((height - 0) - simHeight) * 10));

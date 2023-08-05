@@ -19,6 +19,7 @@ namespace Assets.Scripts.Utility
 
         private int startIndex = 0;
 
+        public bool HasData => vertices.Count > 0;
         public void StartTriangle() => startIndex = vertices.Count;
 
         //public int VertexCount => vertices.Count;

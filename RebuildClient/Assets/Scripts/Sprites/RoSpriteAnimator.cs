@@ -75,6 +75,7 @@ namespace Assets.Scripts.Sprites
 
         private float currentFrameTime = 0;
         private int currentFrame = 0;
+        private int lastFrame = 0;
         private int maxFrame { get; set; } = 0;
         private bool isPaused;
         private bool isDirty;
@@ -120,7 +121,8 @@ namespace Assets.Scripts.Sprites
         {
             if (SpriteRenderer == null)
             {
-                Debug.Log($"{name} has no sprite renderer!");
+                // Debug.Log($"{name} has no sprite renderer!");
+                //probably hasn't finished loading yet, not much we can do.
                 return Vector2.zero;
             }
 
@@ -288,7 +290,7 @@ namespace Assets.Scripts.Sprites
             }
             var frame = currentAction.Frames[currentFrame];
 
-            if (frame.Sound > -1 && frame.Sound < SpriteData.Sounds.Length && !isPaused)
+            if (frame.Sound > -1 && frame.Sound < SpriteData.Sounds.Length && lastFrame != currentFrame && !isPaused)
             {
                 var sound = SpriteData.Sounds[frame.Sound];
                 if (sound != null && AudioSource != null)
@@ -300,6 +302,8 @@ namespace Assets.Scripts.Sprites
                     AudioSource.Play();
                 }
             }
+
+            lastFrame = currentFrame;
 
             SpriteRenderer.SetAction(currentActionIndex);
             SpriteRenderer.SetDirection((Direction)currentAngleIndex);

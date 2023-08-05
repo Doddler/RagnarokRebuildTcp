@@ -50,6 +50,7 @@ public enum PacketType : byte
     AdminLevelUp,
     AdminEnterServerSpecificMap,
     AdminChangeAppearance,
+    AdminSummonMonster,
 
     NpcClick,
     [ServerOnlyPacket] NpcInteraction,

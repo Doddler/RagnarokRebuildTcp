@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utility;
+using JetBrains.Annotations;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Config;
 using RebuildSharedData.Data;
@@ -22,6 +25,7 @@ using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 using Debug = UnityEngine.Debug;
+using MapWarpEffect = Assets.Scripts.Effects.EffectHandlers.MapWarpEffect;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
@@ -776,6 +780,40 @@ namespace Assets.Scripts
         {
             NetworkManager.Instance.SendEmote(id);
         }
+
+        [CanBeNull]
+        private string[] SplitStringCommand(string input)
+        {
+            var outList = new List<string>();
+            var inQuote = false;
+            var sb = new StringBuilder();
+
+            foreach (var c in input)
+            {
+                if (c == ' ' && !inQuote)
+                {
+                    if (sb.Length == 0)
+                        continue;
+                    outList.Add(sb.ToString());
+                    sb.Clear();
+                    continue;
+                }
+
+                if (c == '"')
+                {
+                    inQuote = !inQuote;
+                    continue;
+                }
+
+                sb.Append(c);
+            }
+            
+            if (inQuote)
+                return null;
+            
+            outList.Add(sb.ToString());
+            return outList.ToArray();
+        }
         
         public void OnSubmitTextBox(string text)
         {
@@ -788,7 +826,14 @@ namespace Assets.Scripts
 
             if (text.StartsWith("/"))
             {
-                var s = text.Split(new [] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                var s = SplitStringCommand(text);
+                if (s == null)
+                {
+                    AppendError($"Malformed slash command, could not execute.");
+                    return;
+                }
+                
+                Debug.Log($"string command: " + string.Join('|', s));
 
                 if (s[0] == "/warp" && s.Length > 1)
                 {
@@ -823,6 +868,24 @@ namespace Assets.Scripts
                         NetworkManager.Instance.SendAdminLevelUpRequest(0);
                     else
                         NetworkManager.Instance.SendAdminLevelUpRequest(level);
+                }
+
+                if (s[0] == "/summon")
+                {
+                    var failed = false;
+                    if (s.Length == 3 && int.TryParse(s[2], out var count))
+                    {
+                        var mob = s[1];
+                        if(!SpriteDataLoader.Instance.IsValidMonsterName(mob))
+                            AppendError($"The monster name '{mob}' is not valid.");
+                        else
+                            NetworkManager.Instance.SendAdminSummonMonster(mob, count);
+                            
+
+                    }
+                    else
+                        AppendError("Invalid summon monster request.");
+
                 }
 
                 if (s[0] == "/bgm")
@@ -1183,6 +1246,9 @@ namespace Assets.Scripts
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
                 NetworkManager.Instance.SendUseItem(501);
 
+            if (!inTextBox && Input.GetKeyDown(KeyCode.F5))
+                CastEffect.Create(2f, "ring_blue", controllable.gameObject);
+
             //if (Input.GetKeyDown(KeyCode.Alpha1))
             //    AttachEffectToEntity("RedPotion", controllable);
 
@@ -1197,17 +1263,17 @@ namespace Assets.Scripts
 
             //if (Input.GetKeyDown(KeyCode.Alpha5))
             //    AttachEffectToEntity("MVP", controllable);
+            //
+            // if(Input.GetKeyDown(KeyCode.Alpha6))
+            //     CastingEffect.StartCasting(2f, "ring_blue", controllable.gameObject);
 
-            //if(Input.GetKeyDown(KeyCode.Alpha6))
-            //    CastingEffect.StartCasting(0.6f, "ring_yellow", controllable.gameObject);
-
-            //if (Input.GetKeyDown(KeyCode.Q))
-            //{
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
             //    //CastingEffect.StartCasting(3, "ring_red", controllable.gameObject);
-            //    var temp = new GameObject("Warp");
-            //    temp.transform.position = controllable.transform.position;
-            //    MapWarpEffect.StartWarp(temp);
-            //}
+                var temp = new GameObject("Warp");
+                temp.transform.position = controllable.transform.position + new Vector3(0, 0.1f, 0f);
+                MapWarpEffect.StartWarp(temp);
+            }
 
             //if (Input.GetKeyDown(KeyCode.Keypad1) || (Input.GetKeyDown(KeyCode.Alpha1) && Input.GetKey(KeyCode.LeftShift)))
             //    NetworkManager.Instance.SendMoveRequest("prontera");
@@ -1278,7 +1344,7 @@ namespace Assets.Scripts
                 Rotation -= 360;
             if (Rotation < 0)
                 Rotation += 360;
-
+            
             Rotation = Mathf.LerpAngle(Rotation, TargetRotation, 7.5f * Time.deltaTime);
 
             var ctrlKey = Input.GetKey(KeyCode.LeftControl) ? 10 : 1;
@@ -1288,12 +1354,12 @@ namespace Assets.Scripts
             if(!pointerOverUi && screenRect.Contains(Input.mousePosition))
                 Distance += Input.GetAxis("Mouse ScrollWheel") * 20 * ctrlKey;
 
-#if !DEBUG
+// #if !DEBUG
             if (Distance > 90)
 	            Distance = 90;
             if (Distance < 30)
 	            Distance = 30;
-#endif
+// #endif
             
             var curTarget = Target.transform.position;
             if (OverrideTarget != null)
@@ -1308,6 +1374,10 @@ namespace Assets.Scripts
 
             var pos = Quaternion.Euler(Height, Rotation, 0) * Vector3.back * Distance;
 
+            //sort sprites and all that jazz as if the camera were completely flat with the ground.
+            Camera.transparencySortMode = TransparencySortMode.CustomAxis;
+            Camera.transparencySortAxis = Quaternion.Euler(0, Rotation, 0) * Vector3.forward;
+            
             transform.position = CurLookAt + pos;
             transform.LookAt(CurLookAt, Vector3.up);
 

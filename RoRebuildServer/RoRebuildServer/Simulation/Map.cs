@@ -3,6 +3,7 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -511,8 +512,62 @@ public class Map
 
         return false;
     }
+    
+    public bool IsEntityStacked(WorldObject character)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, 0))
+        {
+            foreach (var m in c.AllEntities)
+            {
+                var ch = m.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
 
+                if (m == character.Entity)
+                    continue;
 
+                if (ch.Position != character.Position)
+                    continue;
+                
+                if (ch.Type == CharacterType.NPC)
+                    continue;
+
+                if (ch.SpawnImmunity > 0)
+                    continue;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsTileOccupied(Position pos)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(pos, 0))
+        {
+            foreach (var m in c.AllEntities)
+            {
+                var ch = m.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
+
+                if (ch.Position != pos)
+                    continue;
+                
+                if (ch.Type == CharacterType.NPC)
+                    continue;
+
+                if (ch.SpawnImmunity > 0)
+                    continue;
+                
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
     public void GatherAlliesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
@@ -646,6 +701,8 @@ public class Map
 
     public bool QuickCheckPlayersNearby(WorldObject character, int distance)
     {
+        if(PlayerCount  == 0) return false;
+
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
         {
             if (c.Players.Count > 0)

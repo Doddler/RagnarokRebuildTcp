@@ -1276,6 +1276,17 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendAdminSummonMonster(string name, int count)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.AdminSummonMonster);
+            msg.Write(name);
+            msg.Write((short)count);
+            
+            SendMessage(msg);
+        }
+        
         public void SendAdminLevelUpRequest(int level)
         {
             var msg = StartMessage();

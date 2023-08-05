@@ -313,6 +313,7 @@ namespace Assets.Scripts
         public Vector2Int[] SpriteSizes;
         public Texture2D Atlas;
         public int Size;
+        public float AverageWidth;
         public AudioClip[] Sounds;
         public int AttackFrameTime;
     }

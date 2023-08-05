@@ -1,30 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using Assets.Scripts.Effects.PrimitiveData;
+using Assets.Scripts.Effects.PrimitiveHandlers;
 using UnityEngine;
 
-namespace Assets.Scripts.Effects
+namespace Assets.Scripts.Effects.EffectHandlers
 {
-    class MapWarpEffect : MonoBehaviour
+    [RoEffect("MapWarpEffect")]
+    public class MapWarpEffect : IEffectHandler
     {
-        public GameObject FollowTarget;
-        public float Duration;
-        
-        private PrimitiveCylinderEffect prim;
-        private PrimitiveCylinderEffect prim2;
-        private PrimitiveCircleEffect circle;
-
         public static Material Ring1Material;
         public static Material Ring2Material;
         public static Material CircleMaterial;
-
-        public static MapWarpEffect StartWarp(GameObject parent)
+        
+        public static Ragnarok3dEffect StartWarp(GameObject parent)
         {
-            var warp = parent.AddComponent<MapWarpEffect>();
-
+            var effect = RagnarokEffectPool.Get3dEffect(EffectType.MapWarpEffect);
+            effect.Duration = -1;
+            effect.FollowTarget = parent;
+            effect.DestroyOnTargetLost = true;
+            effect.PositionOffset = new Vector3(0, 0.05f, 0f);
+            
             if (Ring1Material == null)
             {
                 Ring1Material = new Material(ShaderCache.Instance.AdditiveShader);
@@ -49,25 +43,16 @@ namespace Assets.Scripts.Effects
                 //CircleMaterial.color = new Color(1f, 1f, 1f, 1f);
             }
 
-            warp.FollowTarget = parent;
-
-            warp.Init();
-
-            return warp;
-        }
-
-        public void Init()
-        {
+            
             var angle = 60;
 
-            prim = PrimitiveCylinderEffect.LaunchEffect(new GameObject("Warp(A)"), Ring1Material, 4, float.MaxValue );
-            prim.transform.SetParent(gameObject.transform, false);
+            var prim = effect.LaunchPrimitive(PrimitiveType.Cylender, Ring1Material, float.MaxValue);
+            prim.CreateParts(4);
             prim.transform.localScale = new Vector3(2f, 2f, 2f);
-            //mode = 11
-
-            prim.Updater = prim.Update3DCasting4;
-            prim.Renderer = prim.Render3DCasting;
-
+            
+            prim.UpdateHandler = CastingCylinderPrimitive.Update3DCasting4;
+            prim.RenderHandler = CastingCylinderPrimitive.Render3DCasting;
+            
             prim.Parts[0] = new EffectPart()
             {
                 Active = true,
@@ -115,16 +100,15 @@ namespace Assets.Scripts.Effects
                 Distance = 10f, //4.5f,
                 RiseAngle = angle - 10
             };
-
-            prim2 = PrimitiveCylinderEffect.LaunchEffect(new GameObject("Warp(B)"), Ring2Material, 4, float.MaxValue);
-            prim2.transform.SetParent(gameObject.transform, false);
-            prim2.DelayUpdate(1 / 60f);
+            
+            var prim2 = effect.LaunchPrimitive(PrimitiveType.Cylender, Ring2Material, float.MaxValue);
+            prim2.CreateParts(4);
             prim2.transform.localScale = new Vector3(2f, 2f, 2f);
-            //mode = 4
-
-            prim2.Updater = prim2.Update3DCasting4;
-            prim2.Renderer = prim2.Render3DCasting;
-
+            prim2.DelayTime = 1 / 60f;
+            
+            prim2.UpdateHandler = CastingCylinderPrimitive.Update3DCasting4;
+            prim2.RenderHandler = CastingCylinderPrimitive.Render3DCasting;
+            
             prim2.Parts[0] = new EffectPart()
             {
                 Active = true,
@@ -173,47 +157,29 @@ namespace Assets.Scripts.Effects
                 RiseAngle = angle - 11
             };
 
-            circle = PrimitiveCircleEffect.LaunchEffect(new GameObject("Circle"), CircleMaterial, 0, float.MaxValue);
-            circle.transform.SetParent(gameObject.transform, false);
-            circle.DelayUpdate(2 / 60f);
+            var circle = effect.LaunchPrimitive(PrimitiveType.Circle, CircleMaterial, float.MaxValue);
+            circle.DelayTime = 2 / 60f;
             circle.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             circle.transform.localPosition += new Vector3(0f, 0.1f, 0f);
 
-            circle.Updater = circle.Update3DCircle;
-            circle.Renderer = circle.Render3DCircle;
+            var cData = circle.GetPrimitiveData<CircleData>();
 
-            circle.Duration = float.MaxValue;
-            circle.Radius = 15;
-            circle.Alpha = 0;
-            circle.MaxAlpha = 96;
-            circle.AlphaSpeed = circle.MaxAlpha / 20f;
-            circle.FadeOutStart = float.MaxValue - 10f;
-            circle.ArcAngle = 36f;
+            cData.Radius = 15;
+            cData.Alpha = 0;
+            cData.MaxAlpha = 96;
+            cData.AlphaSpeed = cData.MaxAlpha / 20f;
+            cData.FadeOutStart = float.MaxValue - 10f;
+            cData.ArcAngle = 36f;
 
             var particles = GameObject.Instantiate(Resources.Load<GameObject>("PortalParticles"));
-            particles.transform.SetParent(gameObject.transform, false);
-            particles.transform.localPosition = Vector3.zero;
+            effect.AttachChildObject(particles);
 
-            //circle.transform.localRotation = Quaternion.Euler(90, 0, 0);
+            return effect;
         }
-
-        public void OnDestroy()
+        
+        public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
-            if(prim != null)
-                Destroy(prim.gameObject);
-            if(prim2 != null)
-                Destroy(prim2.gameObject);
-        }
-
-        public void Update()
-        {
-            if (FollowTarget == null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            transform.position = FollowTarget.transform.position;
+            return true; //never die
         }
     }
 }

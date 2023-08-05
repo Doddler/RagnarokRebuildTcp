@@ -176,7 +176,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "firehit",
-      "SoundFile": "",
+      "SoundFile": "ef_firehit",
       "Offset": 0,
       "PrefabName": ""
     },
@@ -186,7 +186,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "firehit1",
-      "SoundFile": "",
+      "SoundFile": "ef_firehit",
       "Offset": 0,
       "PrefabName": ""
     },
@@ -196,7 +196,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "firehit2",
-      "SoundFile": "",
+      "SoundFile": "ef_firehit",
       "Offset": 0,
       "PrefabName": ""
     },
@@ -206,7 +206,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "firehit3",
-      "SoundFile": "",
+      "SoundFile": "ef_firehit",
       "Offset": 0,
       "PrefabName": ""
     },
@@ -216,7 +216,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "angelus",
-      "SoundFile": "",
+      "SoundFile": "ef_angelus",
       "Offset": 1,
       "PrefabName": ""
     },
@@ -256,7 +256,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "thunderstorm",
-      "SoundFile": "",
+      "SoundFile": "ef_thunderstorm",
       "Offset": 0,
       "PrefabName": ""
     },

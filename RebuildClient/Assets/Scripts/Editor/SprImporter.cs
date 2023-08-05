@@ -107,6 +107,8 @@ public class SprImporter : UnityEditor.AssetImporters.ScriptedImporter
             }
 
             var maxExtent = 0f;
+            var totalWidth = 0f;
+            var widthCount = 0;
 
             foreach (var a in asset.Actions)
             {
@@ -128,11 +130,14 @@ public class SprImporter : UnityEditor.AssetImporters.ScriptedImporter
                             y = Mathf.Abs(l.Position.y - sprite.y / 2f);
                         if (y > maxExtent)
                             maxExtent = y;
+                        totalWidth += Mathf.Abs(l.Position.x) + sprite.x / 2f;
+                        widthCount++;
                     }
                 }
             }
 
             asset.Size = Mathf.CeilToInt(maxExtent);
+            asset.AverageWidth = totalWidth / widthCount;
 
             //Debug.Log(asset.Actions.Length);
 

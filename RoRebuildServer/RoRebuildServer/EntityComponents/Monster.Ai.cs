@@ -119,11 +119,11 @@ public partial class Monster
     {
         if (Character.AttackCooldown > Time.ElapsedTimeFloat)
             return false;
-
+		
         if (GameRandom.NextInclusive(0, 1) < 1)
             return false;
 		
-        if (Character.Map!.HasAllyInRange(Character, 0, false, true))
+        if (Character.Map!.IsEntityStacked(Character))
             return true;
 
         return false;
@@ -276,8 +276,7 @@ public partial class Monster
 
         return FindSpawnPointInArea(Character.Map!.MapBounds, Character.Position, 9, 20);
     }
-
-
+	
     private bool OutAttackingAdjust()
     {
         if (MonsterBase.MoveSpeed < 0)
@@ -285,19 +284,35 @@ public partial class Monster
 
         Debug.Assert(targetCharacter != null, $"Monster {Character.Name} attempting to perform attack adjustment while targetCharacter is null.");
 
-        var area = Area.CreateAroundPoint(Character.Position, 1);
+        var rnd = GameRandom.NextInclusive(0, 100); //very rarely, scan further than normal
+        var range = rnd switch
+        {
+            < 80 => 1,
+            < 95 => 2,
+            _ => 3
+        };
+
+        var area = Area.CreateAroundPoint(Character.Position, range);
         area.ClipArea(Area.CreateAroundPoint(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range)));
 
 		var newPos = Position.RandomPosition(area);
 
-        if (targetCharacter.Position.DistanceTo(newPos) > MonsterBase.Range)
+        if (!Character.Map!.WalkData.IsCellWalkable(newPos))
+            return false;
+
+        if (newPos == Character.Position || newPos == targetCharacter.Position)
+            return false;
+
+        if (DistanceCache.IntDistance(targetCharacter.Position, newPos) > MonsterBase.Range)
             return false;
 		
-		if (newPos != Character.Position && newPos != targetCharacter.Position &&
-            Character.TryMove(ref Entity, newPos, 0))
-            return true;
+		if (Character.Map!.IsTileOccupied(newPos))
+            return false;
 
-        return false;
+        if (!Character.Map!.WalkData.HasLineOfSight(Character.Position, newPos))
+            return false;
+
+		return Character.TryMove(ref Entity, newPos, 0); //will fail if they can't get there
     }
 
 	private bool OutSearch()

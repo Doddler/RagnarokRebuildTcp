@@ -4,7 +4,7 @@ namespace Assets.Scripts.Effects
 {
     public class EffectPart
     {
-        public const int PartCount = 21;
+        public const int SegmentCount = 21;
 
         public bool Active;
         public float Alpha;
@@ -16,8 +16,8 @@ namespace Assets.Scripts.Effects
         public int Step;
         public float Distance;
 
-        public float[] Heights = new float[PartCount];
-        public int[] Flags = new int[PartCount];
+        public float[] Heights = new float[SegmentCount];
+        public int[] Flags = new int[SegmentCount];
         
         public void Clear()
         {
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Effects
             Step = 0;
             Distance = 0;
 
-            for (var i = 0; i < PartCount; i++)
+            for (var i = 0; i < SegmentCount; i++)
             {
                 Heights[i] = 0;
                 Flags[i] = 0;

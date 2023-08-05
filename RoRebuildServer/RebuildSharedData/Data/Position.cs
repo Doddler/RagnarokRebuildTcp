@@ -13,7 +13,7 @@ public struct Position : IEquatable<Position>
 
     public static Position Zero => new Position(0, 0);
     public static Position Invalid => new Position(-999, -999);
-
+    
     public Position(int x, int y)
     {
         X = x;
@@ -27,6 +27,7 @@ public struct Position : IEquatable<Position>
     }
 
     public bool IsValid() => X >= 0 && Y >= 0;
+    public Position Abs() => new(X < 0 ? X * -1 : X, Y < 0 ? Y * -1 : Y);
 
 
     public Position StepTowards(Position dest)
