@@ -107,7 +107,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             prim2.DelayTime = 1 / 60f;
             
             prim2.UpdateHandler = CastingCylinderPrimitive.Update3DCasting4;
-            prim2.RenderHandler = CastingCylinderPrimitive.Render3DCasting;
+            // prim2.RenderHandler = CastingCylinderPrimitive.Render3DCasting;
             
             prim2.Parts[0] = new EffectPart()
             {
@@ -161,15 +161,16 @@ namespace Assets.Scripts.Effects.EffectHandlers
             circle.DelayTime = 2 / 60f;
             circle.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             circle.transform.localPosition += new Vector3(0f, 0.1f, 0f);
+            circle.Duration = float.MaxValue;
 
             var cData = circle.GetPrimitiveData<CircleData>();
 
             cData.Radius = 15;
             cData.Alpha = 0;
             cData.MaxAlpha = 96;
-            cData.AlphaSpeed = cData.MaxAlpha / 20f;
-            cData.FadeOutStart = float.MaxValue - 10f;
+            cData.AlphaSpeed = cData.MaxAlpha * 6f; //should reach max in 10/60 frames
             cData.ArcAngle = 36f;
+            cData.FillCircle = true;
 
             var particles = GameObject.Instantiate(Resources.Load<GameObject>("PortalParticles"));
             effect.AttachChildObject(particles);

@@ -139,6 +139,7 @@ namespace Assets.Scripts
         public Vector3 CurLookAt;
 
         private ServerControllable controllable;
+        public ServerControllable TargetControllable => controllable;
 
         public Vector3 MoveTo;
 
@@ -1248,7 +1249,8 @@ namespace Assets.Scripts
 
             if (!inTextBox && Input.GetKeyDown(KeyCode.F5))
                 FireArrow.Create(controllable.gameObject, 5);
-                //CastEffect.Create(2f, "ring_blue", controllable.gameObject);
+            if (!inTextBox && Input.GetKeyDown(KeyCode.F6))
+                CastEffect.Create(2f, "ring_blue", controllable.gameObject);
 
             //if (Input.GetKeyDown(KeyCode.Alpha1))
             //    AttachEffectToEntity("RedPotion", controllable);

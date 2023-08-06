@@ -27,7 +27,7 @@ namespace Assets.Scripts.Effects
         public float activeDelay = 0f;
         public float pauseTime = 0f;
 
-        private IEffectHandler effectHandler;
+        public IEffectHandler EffectHandler;
         private List<RagnarokPrimitive> primitives = new();
         private List<GameObject> attachedObjects = new();
 
@@ -42,7 +42,7 @@ namespace Assets.Scripts.Effects
 
         public void SetEffectType(EffectType type)
         {
-            effectHandler = RagnarokEffectData.GetEffectHandler(type);
+            EffectHandler = RagnarokEffectData.GetEffectHandler(type);
         }
 
         public void SetDurationByTime(float time)
@@ -71,7 +71,7 @@ namespace Assets.Scripts.Effects
             FollowTarget = null;
             activeDelay = 0;
             pauseTime = 0;
-            effectHandler = null;
+            EffectHandler = null;
             EffectData = null;
             Duration = 0;
             CurrentPos = 0;
@@ -94,7 +94,7 @@ namespace Assets.Scripts.Effects
             primitives.Clear();
         }
 
-        public RagnarokPrimitive LaunchPrimitive(PrimitiveType type, Material mat, float duration)
+        public RagnarokPrimitive LaunchPrimitive(PrimitiveType type, Material mat, float duration = -1)
         {
             var primitive = RagnarokEffectPool.GetPrimitive(this);
 
@@ -150,12 +150,12 @@ namespace Assets.Scripts.Effects
             if (UpdateOnlyOnFrameChange)
             {
                 if (LastStep != Step)
-                    active = effectHandler.Update(this, CurrentPos, Step);
+                    active = EffectHandler.Update(this, CurrentPos, Step);
                 else
                     active = true;
             }
             else
-                active = effectHandler.Update(this, CurrentPos, Step);
+                active = EffectHandler.Update(this, CurrentPos, Step);
             var anyActive = active;
 
             for (var i = 0; i < primitives.Count; i++)

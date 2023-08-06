@@ -85,7 +85,7 @@ namespace Assets.Scripts.Objects
 
             AddressableUtility.Load<AudioClip>(gameObject, "Assets/Sounds/Effects/" + filename, ac =>
             {
-                Debug.Log("CLIP!" + filename);
+                // Debug.Log("CLIP!" + filename);
                 AudioSource.PlayClipAtPoint(ac, position, targetVolume);
             });
         }

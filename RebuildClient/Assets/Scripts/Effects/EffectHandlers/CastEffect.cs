@@ -18,7 +18,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             
             if (!CastMaterials.TryGetValue(texture, out var mat))
             {
-                mat = new Material(ShaderCache.Instance.AdditiveShader);
+                mat = new Material(ShaderCache.Instance.AlphaBlendParticleShader);
                 mat.mainTexture = Resources.Load<Texture2D>(texture);
                 mat.renderQueue = 3001;
                 CastMaterials.Add(texture, mat);
@@ -26,10 +26,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             effect.transform.localScale = new Vector3(2f, 2f, 2f);
             
-            var prim = effect.LaunchPrimitive(PrimitiveType.Circle, mat, duration);
-
-            prim.UpdateHandler = CastingCylinderPrimitive.Update3DCasting;
-            prim.RenderHandler = CastingCylinderPrimitive.Render3DCasting;
+            var prim = effect.LaunchPrimitive(PrimitiveType.Cylender, mat, duration);
 
             prim.CreateParts(4);
             

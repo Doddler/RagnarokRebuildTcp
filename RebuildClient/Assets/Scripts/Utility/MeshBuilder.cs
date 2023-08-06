@@ -11,13 +11,15 @@ namespace Assets.Scripts.Utility
 
     public class MeshBuilder
     {
-        private List<Vector3>  vertices = new List<Vector3>();
-        private List<Vector3> normals = new List<Vector3>();
-        private List<Vector2> uvs = new List<Vector2>();
-        private List<int> triangles = new List<int>();
-        private List<Color> colors = new List<Color>();
+        private List<Vector3>  vertices = new();
+        private List<Vector3> normals = new();
+        private List<Vector2> uvs = new();
+        private List<Vector3> uv3s = new();
+        private List<int> triangles = new();
+        private List<Color> colors = new();
 
         private int startIndex = 0;
+        private bool useUv3 = false;
 
         public bool HasData => vertices.Count > 0;
         public void StartTriangle() => startIndex = vertices.Count;
@@ -39,6 +41,8 @@ namespace Assets.Scripts.Utility
             uvs.Clear();
             triangles.Clear();
             colors.Clear();
+            uv3s.Clear();
+            useUv3 = false;
         }
 
         public void AddFullTriangle(Vector3[] vertArray, Vector3[] normalArray, Vector2[] uvArray, Color[] colorArray, int[] triangleArray)
@@ -74,6 +78,28 @@ namespace Assets.Scripts.Utility
             triangles.Add(tri+2);
         }
         
+        
+        public void AddPerspectiveQuad(Vector3[] vertArray, Vector3[] normalArray, Vector3[] uvArray, Color[] colorArray)
+        {
+            var tri = vertices.Count;
+
+#if DEBUG
+            if(vertArray.Length != 4 || normalArray.Length != 4 || uvArray.Length != 4)
+                throw new Exception("AddPerspectiveQuad was passed incorrect parameters! Oh no!");
+#endif
+
+            AddVertices(vertArray);
+            AddNormals(normalArray);
+            AddUV3s(uvArray);
+            AddColors(colorArray);
+            triangles.Add(tri);
+            triangles.Add(tri+1);
+            triangles.Add(tri+2);
+            triangles.Add(tri+1);
+            triangles.Add(tri+3);
+            triangles.Add(tri+2);
+        }
+        
         public void AddVertices(Vector3[] vertArray)
         {
             foreach(var v in vertArray)
@@ -88,9 +114,26 @@ namespace Assets.Scripts.Utility
 
         public void AddUVs(Vector2[] uvArray)
         {
+#if UNITY_EDITOR
+            if (uv3s.Count > 0)
+                throw new Exception("Cannot use UV2 and UV3 in the same mesh!");
+#endif
             foreach(var uv in uvArray)
                 uvs.Add(uv);
         }
+        
+        public void AddUV3s(Vector3[] uvArray)
+        {
+#if UNITY_EDITOR
+            if (uvs.Count > 0)
+                throw new Exception("Cannot use UV2 and UV3 in the same mesh!");
+#endif
+            foreach(var uv in uvArray)
+                uv3s.Add(uv);
+
+            useUv3 = true;
+        }
+
 
         public void AddTriangles(int[] triArray)
         {
@@ -117,7 +160,10 @@ namespace Assets.Scripts.Utility
             mesh.SetVertices(vertices);
             mesh.SetNormals(normals);
             mesh.SetTriangles(triangles, 0);
-            mesh.SetUVs(0, uvs);
+            if(!useUv3)
+                mesh.SetUVs(0, uvs);
+            else
+                mesh.SetUVs(0, uv3s);
             mesh.SetColors(colors);
 
             //mesh.vertices = vertices.ToArray();
@@ -143,7 +189,10 @@ namespace Assets.Scripts.Utility
             mesh.SetVertices(vertices);
             mesh.SetNormals(normals);
             mesh.SetTriangles(triangles, 0);
-            mesh.SetUVs(0, uvs);
+            if(!useUv3)
+                mesh.SetUVs(0, uvs);
+            else
+                mesh.SetUVs(0, uv3s);
             mesh.SetColors(colors);
             
             mesh.RecalculateBounds();

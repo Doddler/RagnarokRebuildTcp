@@ -1,11 +1,15 @@
 ﻿using Assets.Scripts.Utility;
 using UnityEngine;
+using static Assets.Scripts.Effects.RagnarokEffectData;
 
 namespace Assets.Scripts.Effects.PrimitiveHandlers
 {
     [RoPrimitive("Cylender")]
     public class CastingCylinderPrimitive : IPrimitiveHandler
     {
+        public PrimitiveUpdateDelegate GetDefaultUpdateHandler() => Update3DCasting;
+        public PrimitiveRenderDelegate GetDefaultRenderHandler() => Render3DCasting;
+        
         //used in main elemental casting
         public static void Update3DCasting(RagnarokPrimitive primitive)
         {

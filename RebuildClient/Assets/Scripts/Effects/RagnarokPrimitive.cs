@@ -3,6 +3,7 @@ using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 using Object = System.Object;
@@ -27,12 +28,14 @@ namespace Assets.Scripts.Effects
         public IPrimitiveHandler PrimitiveHandler;
         public RagnarokEffectData.PrimitiveUpdateDelegate UpdateHandler;
         public RagnarokEffectData.PrimitiveRenderDelegate RenderHandler;
+        public Func<RagnarokPrimitive, bool> EventTrigger;
 
         public EffectPart[] Parts;
         public int PartsCount;
 
         public float DelayTime;
         public float Duration;
+        public int FrameDuration;
         public float CurrentPos;
         public int Step;
 
@@ -41,12 +44,14 @@ namespace Assets.Scripts.Effects
         public bool IsActive = false;
         public bool IsDirty = false;
         public bool IsInit = false;
+        public bool HasFiredEvent = false;
         
         //these are temporary to be fed into the meshbuilder
         private Vector3[] verts = new Vector3[4];
         private Vector3[] normals = new Vector3[4];
         private Color[] colors = new Color[4];
         private Vector2[] uvs = new Vector2[4];
+        private Vector3[] uv3s = new Vector3[4];
 
         public static RagnarokPrimitive Create()
         {
@@ -58,12 +63,14 @@ namespace Assets.Scripts.Effects
         public void Reset()
         {
             Duration = 0;
+            FrameDuration = 0;
             CurrentPos = 0;
             Step = 0;
             DelayTime = 0;
             IsActive = false;
             IsDirty = false;
             IsInit = false;
+            HasFiredEvent = false;
             Effect = null;
             PrimitiveData = null;
             UpdateHandler = null;
@@ -84,6 +91,7 @@ namespace Assets.Scripts.Effects
             if (billboard != null)
                 billboard.Style = BillboardStyle.None;
             Velocity = Vector3.zero;
+            EventTrigger = null;
         }
 
         public void SetBillboardMode(BillboardStyle style)
@@ -112,6 +120,7 @@ namespace Assets.Scripts.Effects
             Effect = effect;
             PrimitiveType = type;
             Duration = duration;
+            FrameDuration = Mathf.FloorToInt(duration / 60f);
             PartsCount = 0;
 
             if (PrimitiveHandler != null)
@@ -125,7 +134,13 @@ namespace Assets.Scripts.Effects
             if (mesh == null)
                 mesh = EffectPool.BorrowMesh();
             if (mr == null)
+            {
                 mr = gameObject.AddComponent<MeshRenderer>();
+                mr.receiveShadows = false;
+                mr.lightProbeUsage = LightProbeUsage.Off;
+                mr.shadowCastingMode = ShadowCastingMode.Off;
+            }
+
             if (mf == null)
                 mf = gameObject.AddComponent<MeshFilter>();
 
@@ -167,6 +182,38 @@ namespace Assets.Scripts.Effects
             
             mb.AddQuad(verts, normals, uvs, colors);
         }
+        
+        public void AddTexturedPerspectiveQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, Vector3 uv1,
+            Vector3 uv2, Vector3 uv3, Vector3 uv4, Color c, float scale = 1)
+        {
+            //we get the uvs for a vertical slice for the position pos out of the number of parts used
+
+            colors[0] = c;
+            colors[1] = c;
+            colors[2] = c;
+            colors[3] = c;
+
+            verts[0] = vert1 * scale;
+            verts[1] = vert2 * scale;
+            verts[2] = vert3 * scale;
+            verts[3] = vert4 * scale;
+
+            uv3s[0] = uv1;
+            uv3s[1] = uv2;
+            uv3s[2] = uv3;
+            uv3s[3] = uv4;
+
+            //completely unused really
+            normals[0] = Vector3.up;
+            normals[1] = Vector3.up;
+            normals[2] = Vector3.up;
+            normals[3] = Vector3.up;
+
+            //Debug.Log(uv1 + " + " + uv2);
+
+            mb.AddPerspectiveQuad(verts, normals, uv3s, colors);
+        }
+
         
         public void AddTexturedSliceQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, int pos,
             int sliceCount, Color c, float scale = 1)
@@ -231,8 +278,17 @@ namespace Assets.Scripts.Effects
 
             if (UpdateHandler != null)
                 UpdateHandler(this);
-
+            
             transform.position += Velocity * Time.deltaTime;
+
+            if (EventTrigger != null && !HasFiredEvent)
+            {
+                if (EventTrigger(this))
+                {
+                    HasFiredEvent = true;
+                    Effect.EffectHandler.OnEvent(Effect, this);
+                }
+            }
 
             return IsActive && CurrentPos < Duration;
         }
