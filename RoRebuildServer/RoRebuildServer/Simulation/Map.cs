@@ -111,7 +111,7 @@ public class Map
                 if (targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
                     !targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
                 {
-                    if (targetCharacter.IsActive && !targetCharacter.Hidden)
+                    if (targetCharacter.IsActive)
                         CommandBuilder.SendRemoveEntity(targetCharacter, movingPlayer, CharacterRemovalReason.OutOfSight);
                     if (targetCharacter.Type != CharacterType.Player)
                         RemovePlayerVisibility(movingCharacter, targetCharacter);
@@ -150,9 +150,12 @@ public class Map
             var movingPlayer = entity.Get<Player>();
             CommandBuilder.SendRemoveAllEntities(movingPlayer);
             SendAllEntitiesToPlayer(ref entity);
+            if(ch.Hidden)
+                CommandBuilder.SendAdminHideStatus(ch.Player, ch.Hidden);
         }
 
-        SendAddEntityAroundCharacter(ref entity, ch); //do this after moving them to the new chunk
+        if(!ch.Hidden)
+            SendAddEntityAroundCharacter(ref entity, ch); //do this after moving them to the new chunk
     }
 
 
@@ -215,8 +218,7 @@ public class Map
                         if (targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
                             targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
                         {
-                            if(!ch.Hidden)
-                                CommandBuilder.AddRecipient(player);
+                            CommandBuilder.AddRecipient(player);
 
                             continue;
                         }
@@ -228,8 +230,7 @@ public class Map
                     if (!targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
                         targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
                     {
-                        if(!ch.Hidden)
-                            CommandBuilder.SendCreateEntity(ch, playerObj);
+                        CommandBuilder.SendCreateEntity(ch, playerObj);
                         AddPlayerVisibility(targetCharacter, ch);
                     }
 
@@ -237,8 +238,7 @@ public class Map
                     if (targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
                         !targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
                     {
-                        if (!ch.Hidden)
-                            CommandBuilder.SendRemoveEntity(ch, playerObj, CharacterRemovalReason.OutOfSight);
+                        CommandBuilder.SendRemoveEntity(ch, playerObj, CharacterRemovalReason.OutOfSight);
                         RemovePlayerVisibility(targetCharacter, ch);
                     }
                 }
@@ -312,7 +312,7 @@ public class Map
                 if (!targetCharacter.Position.InRange(ch.Position, ServerConfig.MaxViewDistance))
                     continue;
                 
-                if(targetCharacter != ch && !ch.Hidden)
+                if(targetCharacter != ch)
                     CommandBuilder.AddRecipient(player);
 
                 AddPlayerVisibility(targetCharacter, ch);
@@ -403,8 +403,7 @@ public class Map
 #endif
                 if (ch.IsActive && ch.Position.InRange(playerChar.Position, ServerConfig.MaxViewDistance))
                 {
-                    if(!ch.Hidden)
-                        CommandBuilder.SendCreateEntity(ch, playerObj);
+                    CommandBuilder.SendCreateEntity(ch, playerObj);
                     AddPlayerVisibility(playerChar, ch);
                 }
 
@@ -623,7 +622,7 @@ public class Map
                 if (!ch.IsActive)
                     continue;
 
-                if (ch.Type == CharacterType.NPC)
+                if (ch.Type == CharacterType.NPC || ch.Hidden)
                     continue;
 
                 if (ch.SpawnImmunity > 0)
@@ -830,7 +829,7 @@ public class Map
             return;
 
         var ch = entity.Get<WorldObject>();
-
+        
         SendRemoveEntityAroundCharacter(ref entity, ch, reason);
         ch.ClearVisiblePlayerList();
 

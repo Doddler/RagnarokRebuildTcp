@@ -6,16 +6,15 @@ using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
-[ClientPacketHandler(PacketType.AdminRequestMove)]
+[AdminClientPacketHandler(PacketType.AdminRequestMove)]
 public class PacketAdminRequestMove : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (!connection.Entity.IsAlive())
+        if (!connection.IsConnectedAndInGame)
             return;
 
-        if (connection.Player == null || connection.Character?.Map == null 
-            || (!connection.Player.IsAdmin && !ServerConfig.DebugConfig.EnableWarpCommandForEveryone))
+        if (!connection.IsAdmin && !ServerConfig.DebugConfig.EnableWarpCommandForEveryone)
             return;
 
         var player = connection.Player;
@@ -25,6 +24,7 @@ public class PacketAdminRequestMove : IClientPacketHandler
         var mapName = msg.ReadString();
         var posX = msg.ReadInt16();
         var posY = msg.ReadInt16();
+        var force = msg.ReadBoolean();
 
         ServerLogger.Log($"Player {connection.Player.Name} requested move to map {mapName}.");
 
@@ -51,22 +51,30 @@ public class PacketAdminRequestMove : IClientPacketHandler
         //ce.Stats.Hp = ce.Stats.MaxHp;
 
         var pos = new Position(posX, posY);
-        if (pos.IsValid())
+        if (!force)
         {
-            if (!map.WalkData.IsPositionInBounds(pos) || !map.WalkData.IsCellWalkable(pos))
+            if (pos.IsValid())
             {
-                CommandBuilder.SendRequestFailed(player, ClientErrorType.InvalidCoordinates);
-                return;
+                if (!map.WalkData.IsPositionInBounds(pos) || !map.WalkData.IsCellWalkable(pos))
+                {
+                    CommandBuilder.SendRequestFailed(player, ClientErrorType.InvalidCoordinates);
+                    return;
+                }
             }
+            else
+                pos = map.WalkData.FindWalkableCellOnMap(); //find a random cell if one wasn't requested
         }
         else
-            pos = map.WalkData.FindWalkableCellOnMap(); //find a random cell if one wasn't requested
+        {
+            pos.ClampToArea(map.MapBounds);
+        }
 
         //CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
-
+    
         if (ch.Map.Name == mapName)
             ch.Map.TeleportEntity(ref connection.Entity, ch, pos, CharacterRemovalReason.OutOfSight);
         else
             ch.Map.World.MovePlayerMap(ref connection.Entity, ch, map, pos);
+    
     }
 }

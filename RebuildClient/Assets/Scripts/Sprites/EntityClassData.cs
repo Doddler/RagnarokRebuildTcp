@@ -42,7 +42,7 @@ namespace Assets.Scripts.Sprites
         public int X;
         public int Y;
     }
-
+    
     [Serializable]
     public class AdminWarpSectionList
     {
@@ -60,14 +60,31 @@ namespace Assets.Scripts.Sprites
 		public List<PlayerClassData> PlayerClassData;
 	}
 	class AdminWarpListData
-    {
-        public List<AdminWarpList> WarpSections;
-    }
+	{
+		public List<AdminWarpList> WarpSections;
+	}
+	
+	[Serializable]
+	public class FogInfo
+	{
+		public float NearPlane;
+		public float FarPlane;
+		public float Density;
+		public string Map;
+		public string Color;
+	}
 
     [Serializable]
     public class Wrapper<T>
     {
         public T[] Items;
+    }
+    
+    
+    [Serializable]
+    public class ListWrapper<T>
+    {
+	    public List<T> Items;
     }
 
 

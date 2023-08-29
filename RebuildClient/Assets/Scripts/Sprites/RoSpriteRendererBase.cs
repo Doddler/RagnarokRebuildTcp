@@ -5,7 +5,7 @@ namespace Assets.Scripts.Sprites
 {
     public interface IRoSpriteRenderer
     {
-        void SetAction(int action);
+        void SetAction(int action, bool is8Direction = false);
         void SetColor(Color color);
         void SetDirection(Direction direction);
         void SetFrame(int frame);
@@ -13,6 +13,9 @@ namespace Assets.Scripts.Sprites
         void SetOffset(float offset);
         RoFrame GetActiveRendererFrame();
         bool UpdateRenderer();
+        void SetActive(bool isActive);
+        void SetOverrideMaterial(Material mat);
+        void SetLightProbeAnchor(GameObject anchor);
 
 
         void Rebuild();

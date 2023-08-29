@@ -371,7 +371,7 @@ public class ScriptBuilder
         hasTouch = false;
         hasInteract = false;
 
-        name += "_" + Guid.NewGuid().ToString().Replace("-", "_");
+        name += "_" + Guid.NewGuid().ToString().Replace("-", "_").Replace("'", "").Replace("[", "").Replace("]", "");
         
         StartIndentedScriptLine().AppendLine($"public class RoRebuildNpcGen_{name} : NpcBehaviorBase");
         StartIndentedScriptLine().AppendLine("{");

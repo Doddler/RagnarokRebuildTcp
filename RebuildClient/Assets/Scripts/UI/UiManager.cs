@@ -12,6 +12,7 @@ public class UiManager : MonoBehaviour
     public List<IClosableWindow> WindowStack = new List<IClosableWindow>();
 
     private static UiManager _instance;
+    private Canvas canvas;
 
     public static UiManager Instance
     {
@@ -37,6 +38,8 @@ public class UiManager : MonoBehaviour
         var emote = EmoteManager.GetComponent<EmoteWindow>();
         emote.ShowWindow();
         emote.HideWindow();
+
+        canvas = PrimaryUserUIContainer.GetComponent<Canvas>();
     }
 
     public void MoveToLast(IClosableWindow entry)
@@ -66,13 +69,18 @@ public class UiManager : MonoBehaviour
         
     }
 
+    public void SetEnabled(bool enabled)
+    {
+        var c = PrimaryUserUIContainer.GetComponent<Canvas>();
+        canvas.enabled = enabled;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F11))
+        if (Input.GetKeyDown(KeyCode.F11) && canvas != null)
         {
-            var c = PrimaryUserUIContainer.GetComponent<Canvas>();
-            c.enabled = !c.enabled;
+            SetEnabled(!canvas.enabled);
         }
     }
 }

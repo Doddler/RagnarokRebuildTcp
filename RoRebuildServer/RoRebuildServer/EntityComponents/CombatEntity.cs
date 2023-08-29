@@ -18,6 +18,7 @@ public class CombatEntity : IEntityAutoReset
 
     public int Faction;
     public int Party;
+    public bool IsTargetable;
     
     [EntityIgnoreNullCheck]
     private int[] statData = new int[(int)CharacterStat.CharacterStatsMax];
@@ -39,8 +40,9 @@ public class CombatEntity : IEntityAutoReset
         Character = null!;
         Faction = -1;
         Party = -1;
+        IsTargetable = true;
 
-        for(var i = 0; i < statData.Length; i++)
+        for (var i = 0; i < statData.Length; i++)
             statData[i] = 0;
     }
 
@@ -104,6 +106,8 @@ public class CombatEntity : IEntityAutoReset
         if (!Character.IsActive || Character.State == CharacterState.Dead)
             return false;
         if (Character.Map == null)
+            return false;
+        if (Character.Hidden)
             return false;
 
         if (Character.SpawnImmunity > 0f)

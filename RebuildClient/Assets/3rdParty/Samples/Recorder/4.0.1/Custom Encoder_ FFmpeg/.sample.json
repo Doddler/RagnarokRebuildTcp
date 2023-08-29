@@ -1,0 +1,5 @@
+{
+  "displayName":"Custom Encoder: FFmpeg",
+  "description": "Example for integrating a custom command line encoder such as FFmpeg in the Movie Recorder. \n Requires your own FFmpeg executable. Tested with FFmpeg 5.0.1.",
+  "createSeparatePackage": false
+}

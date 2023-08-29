@@ -37,7 +37,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 Debug.Log("Ragnarok data directory set to: " + path);
             }
             else
-                Debug.LogWarning("Failed to set data directory.");
+                Debug.LogWarning("Failed to set data directory. Using old directory: " + EditorPrefs.GetString("RagnarokDataPath", null));
         }
     }
 }

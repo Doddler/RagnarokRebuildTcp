@@ -36,42 +36,60 @@ namespace Assets.Scripts.Editor
                 if (File.Exists(prefabPath))
                     continue;
 
-                var loader = new RagnarokEffectLoader();
-                var anim = loader.Load(@$"G:\Projects2\Ragnarok\Resources\data\texture\effect\{e.StrFile}.str", e.Name);
-                if (anim == null)
-                    continue;
-
-                loader.MakeAtlas(@"Assets/Effects/Atlas/");
-
-                var obj = new GameObject(e.Name);
-                var renderer = obj.AddComponent<RoEffectRenderer>();
-                var sorter = obj.AddComponent<SortingGroup>();
-                //var billboard = obj.AddComponent<Billboard>();
-
-                if (!string.IsNullOrWhiteSpace(e.SoundFile))
+                if (!string.IsNullOrWhiteSpace(e.StrFile))
                 {
-                    var assetPath = $"Assets/Sounds/{e.SoundFile}.ogg";
-                    var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+                    var loader = new RagnarokEffectLoader();
+                    var anim = loader.Load(@$"G:\Projects2\Ragnarok\Resources\data\texture\effect\{e.StrFile}.str", e.Name);
+                    if (anim == null)
+                        continue;
 
-                    if (clip != null)
+                    loader.MakeAtlas(@"Assets/Effects/Atlas/");
+
+                    var obj = new GameObject(e.Name);
+                    var renderer = obj.AddComponent<RoEffectRenderer>();
+                    var sorter = obj.AddComponent<SortingGroup>();
+                    //var billboard = obj.AddComponent<Billboard>();
+
+                    if (!string.IsNullOrWhiteSpace(e.SoundFile))
                     {
-                        var audio = obj.AddComponent<AudioSource>();
-                        audio.clip = clip;
-                        audio.volume = 0.5f;
-                        audio.priority = 64;
-                        audio.spatialBlend = 0.7f;
-                        renderer.AudioSource = audio;
+                        var assetPath = $"Assets/Sounds/{e.SoundFile}.ogg";
+                        var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+
+                        if (clip != null)
+                        {
+                            var audio = obj.AddComponent<AudioSource>();
+                            audio.clip = clip;
+                            audio.volume = 0.5f;
+                            audio.priority = 64;
+                            audio.spatialBlend = 0.7f;
+                            renderer.AudioSource = audio;
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Could not load sound file at : " + assetPath);
+                        }
                     }
-                    else
-                    {
-                        Debug.LogWarning("Could not load sound file at : " + assetPath);
-                    }
+
+                    renderer.Anim = anim;
+
+                    PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
+                    Object.DestroyImmediate(obj);
                 }
 
-                renderer.Anim = anim;
+                if (!string.IsNullOrWhiteSpace(e.Sprite))
+                {
+                    var obj = new GameObject(e.Name);
+                    var effect = obj.AddComponent<SpriteEffect>();
 
-                PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
-                Object.DestroyImmediate(obj);
+                    var spritePath = "Assets/Sprites/Effects/";
+                    var sprite = AssetDatabase.LoadAssetAtPath<RoSpriteData>(spritePath + e.Sprite + ".spr");
+
+                    effect.SpriteData = sprite;
+                    effect.IsLoop = true;
+                    
+                    PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
+                    Object.DestroyImmediate(obj);
+                }
             }
 
             RagnarokMapImporterWindow.UpdateAddressables();

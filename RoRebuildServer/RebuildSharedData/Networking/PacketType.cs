@@ -51,12 +51,13 @@ public enum PacketType : byte
     AdminEnterServerSpecificMap,
     AdminChangeAppearance,
     AdminSummonMonster,
+    AdminHideCharacter,
+    AdminChangeSpeed,
 
     NpcClick,
     [ServerOnlyPacket] NpcInteraction,
     NpcAdvance,
     NpcSelectOption,
-    
 }
 
 public enum MessageType : byte

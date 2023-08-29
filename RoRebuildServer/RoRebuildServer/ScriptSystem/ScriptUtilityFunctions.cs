@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Text;
+using RebuildSharedData.Data;
 using RebuildSharedData.Util;
 
 namespace RoRebuildServer.ScriptSystem;
@@ -23,6 +24,23 @@ public static class ScriptUtilityFunctions
     public static Position Position(float x, float y)
     {
         return new Position((int)MathF.Round(x), (int)MathF.Round(y));
+    }
+
+    public static string CleanCsString(string str)
+    {
+        var sb = new StringBuilder(str.Length);
+        for(var i = 0; i < str.Length; i++)
+        {
+            var s = str[i];
+            if (s < '0' || s > 'z')
+                continue;
+            if (s > '9' && s < 'A')
+                continue;
+            if (s > 'Z' && s < 'a')
+                continue;
+            sb.Append(s);
+        }
+        return sb.ToString();
     }
 
     public static int GetX(Position p) => p.X;

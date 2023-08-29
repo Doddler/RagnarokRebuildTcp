@@ -25,6 +25,7 @@ namespace Assets.Scripts.Objects
 
         public TextAsset MapInfo;
         public AudioMixer Mixer;
+        public AnimationCurve FalloffCurve;
         private float bgmLevel;
         private bool muteBgm;
 
@@ -91,6 +92,12 @@ namespace Assets.Scripts.Objects
         }
 
         // private void Play
+
+        public void MuteBGM()
+        {
+            Mixer.SetFloat("Music", -80);
+            muteBgm = true;
+        }
 
         public void ToggleMute()
         {

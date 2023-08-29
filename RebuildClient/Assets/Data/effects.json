@@ -6,6 +6,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "\uBE68\uAC04\uD3EC\uC158",
+      "Sprite": "",
       "SoundFile": "_heal_effect",
       "Offset": -0.1,
       "PrefabName": ""
@@ -16,6 +17,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "\uC8FC\uD64D\uD3EC\uC158",
+      "Sprite": "",
       "SoundFile": "_heal_effect",
       "Offset": -0.1,
       "PrefabName": ""
@@ -26,6 +28,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "\uB178\uB780\uD3EC\uC158",
+      "Sprite": "",
       "SoundFile": "_heal_effect",
       "Offset": -0.1,
       "PrefabName": ""
@@ -36,6 +39,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "\uD558\uC580\uD3EC\uC158",
+      "Sprite": "",
       "SoundFile": "_heal_effect",
       "Offset": -0.1,
       "PrefabName": ""
@@ -46,6 +50,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "\uCD08\uB85D\uD3EC\uC158",
+      "Sprite": "",
       "SoundFile": "_heal_effect",
       "Offset": -0.1,
       "PrefabName": ""
@@ -56,6 +61,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "\uD30C\uB780\uD3EC\uC158",
+      "Sprite": "",
       "SoundFile": "_heal_effect",
       "Offset": -0.1,
       "PrefabName": ""
@@ -66,6 +72,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "angel",
+      "Sprite": "",
       "SoundFile": "levelup",
       "Offset": 0,
       "PrefabName": ""
@@ -76,6 +83,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "joblvup",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
@@ -86,6 +94,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "resurrection",
+      "Sprite": "",
       "SoundFile": "priest_resurrection",
       "Offset": 0,
       "PrefabName": ""
@@ -96,6 +105,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "devil",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
@@ -106,6 +116,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "mvp",
+      "Sprite": "",
       "SoundFile": "st_mvp",
       "Offset": 0,
       "PrefabName": ""
@@ -116,6 +127,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "lord",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
@@ -126,6 +138,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "hit",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
@@ -136,6 +149,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "holyhit",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
@@ -146,6 +160,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "freeze",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
@@ -156,6 +171,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "freezed",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
@@ -166,6 +182,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "freezing",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
@@ -176,6 +193,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "firehit",
+      "Sprite": "",
       "SoundFile": "ef_firehit",
       "Offset": 0,
       "PrefabName": ""
@@ -186,6 +204,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "firehit1",
+      "Sprite": "",
       "SoundFile": "ef_firehit",
       "Offset": 0,
       "PrefabName": ""
@@ -196,6 +215,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "firehit2",
+      "Sprite": "",
       "SoundFile": "ef_firehit",
       "Offset": 0,
       "PrefabName": ""
@@ -206,6 +226,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "firehit3",
+      "Sprite": "",
       "SoundFile": "ef_firehit",
       "Offset": 0,
       "PrefabName": ""
@@ -216,6 +237,7 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "angelus",
+      "Sprite": "",
       "SoundFile": "ef_angelus",
       "Offset": 1,
       "PrefabName": ""
@@ -226,6 +248,7 @@
       "ImportEffect": false,
       "Billboard": false,
       "StrFile": "",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": "Assets/Prefabs/PortalEffect.prefab"
@@ -236,6 +259,7 @@
       "ImportEffect": false,
       "Billboard": false,
       "StrFile": "",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": "Assets/Effects/Smoke/SmokeEmitter.prefab"
@@ -246,29 +270,98 @@
       "ImportEffect": true,
       "Billboard": true,
       "StrFile": "bubble",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
     },
     {
       "Id": 25,
-      "Name": "ThunderStorm",
+      "Name": "bubble1",
       "ImportEffect": true,
       "Billboard": true,
-      "StrFile": "thunderstorm",
-      "SoundFile": "ef_thunderstorm",
+      "StrFile": "bubble1",
+      "Sprite": "",
+      "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
     },
     {
       "Id": 26,
+      "Name": "bubble2",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "bubble2",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 27,
+      "Name": "bubble3",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "bubble3",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 28,
+      "Name": "bubble4",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "bubble4",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 29,
+      "Name": "ThunderStorm",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "thunderstorm",
+      "Sprite": "",
+      "SoundFile": "ef_thunderstorm",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 30,
+      "Name": "Torch",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "",
+      "Sprite": "torch_01",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 31,
       "Name": "Exacast",
       "ImportEffect": false,
       "Billboard": false,
       "StrFile": "",
+      "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": "Assets/Prefabs/Exacast.prefab"
+    },
+    {
+      "Id": 32,
+      "Name": "GasPush",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "GasPush",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

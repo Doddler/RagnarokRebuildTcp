@@ -367,6 +367,27 @@ internal class DataLoader
         return entryList;
     }
 
+    public void LoadMonsterSpawnMinions()
+    {
+
+        using var tr = new StreamReader(@"ServerData/Db/SpawnMinionTable.csv") as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+
+        var spawns = csv.GetRecords<CsvMonsterSpawnMinions>().ToList();
+
+        foreach (var entry in spawns)
+        {
+            if (!DataManager.MonsterCodeLookup.TryGetValue(entry.Monster, out var targetMonster))
+                throw new Exception($"Error loading SpawnMinionTable.csv, could not find monster named {entry.Monster}.");
+
+            if (!DataManager.MonsterCodeLookup.TryGetValue(entry.Minion, out var minion))
+                throw new Exception($"Error loading SpawnMinionTable.csv, could not find minion named {entry.Minion}.");
+
+            targetMonster.Minions ??= new List<MonsterSpawnMinions>();
+            targetMonster.Minions.Add(new MonsterSpawnMinions() {Count = entry.Count, Monster = minion});
+        }
+    }
+
     public Dictionary<int, EmoteInfo> LoadEmotes()
     {
         using var tr = new StreamReader(@"ServerData/Db/Emotes.csv") as TextReader;

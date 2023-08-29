@@ -259,16 +259,22 @@ MapConfig("moc_fild17")
 
 MapConfig("moc_fild18")
 {
-	CreateSpawn("STEEL_CHONCHON", 70);
-	CreateSpawn("CHONCHON", 40);
-	CreateSpawn("MUKA", 40);
-	CreateSpawn("METALLER", 10);
-	CreateSpawn("MAGNOLIA", 25);
-	CreateSpawn("ANDRE", 5);
-	CreateSpawn("DENIRO", 5);
-	CreateSpawn("PIERE", 5);
-	CreateSpawn("ANT_EGG", 5);
-	CreateSpawn("DRAGON_FLY", 1, 3600000, 1800000);
+	CreateSpawn("ANACONDAQ", 35);
+	CreateSpawn("CHONCHON", 15);
+	CreateSpawn("STEEL_CHONCHON", 25);
+	CreateSpawn("DROPS", 20);
+	CreateSpawn("HODE", 55);
+
+	//CreateSpawn("STEEL_CHONCHON", 70);
+	//CreateSpawn("CHONCHON", 40);
+	//CreateSpawn("MUKA", 40);
+	//CreateSpawn("METALLER", 10);
+	//CreateSpawn("MAGNOLIA", 25);
+	//CreateSpawn("ANDRE", 5);
+	//CreateSpawn("DENIRO", 5);
+	//CreateSpawn("PIERE", 5);
+	//CreateSpawn("ANT_EGG", 5);
+	CreateSpawn("DRAGON_FLY", 1, %(198, 138, 8,8), 3600000, 1800000).LockToSpawnZone();
 	CreateSpawn("HUNTER_FLY", 1, 7200000, 3600000);
 	CreateSpawn("YELLOW_PLANT", 1, %(143, 352, 0, 0), 180000, 90000);
 	CreateSpawn("YELLOW_PLANT", 1, %(72, 333, 0, 0), 180000, 90000);

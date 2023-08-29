@@ -5,21 +5,19 @@ using Assets.Scripts.MapEditor;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEditor.Build.Pipeline.Interfaces;
 
 namespace Assets.Scripts.Sprites
 {
     internal class RoSpriteRendererStandard : MonoBehaviour, IRoSpriteRenderer
     {
         private int _currentAngleIndex;
+
         public int CurrentAngleIndex
         {
             get => _currentAngleIndex;
-            set
-            {
-                _currentAngleIndex = value;
-            }
+            set { _currentAngleIndex = value; }
         }
+
         public bool UpdateAngleWithCamera;
         public bool SecondPassForWater;
         public int SortingOrder;
@@ -30,6 +28,8 @@ namespace Assets.Scripts.Sprites
         public MeshRenderer MeshRenderer;
         public MeshCollider MeshCollider;
         public SortingGroup SortingGroup;
+
+        public Material OverrideMaterial;
 
         private static Material belowWaterMat;
         private static Material aboveWaterMat;
@@ -43,6 +43,7 @@ namespace Assets.Scripts.Sprites
         private Dictionary<int, Mesh> colliderCache;
 
         private bool isInitialized;
+        private bool is8Direction;
 
         public int ActionId;
         public int CurrentFrame;
@@ -51,12 +52,18 @@ namespace Assets.Scripts.Sprites
         public float SpriteOffset;
         public RoSpriteData SpriteData;
 
-        public void SetAction(int action) => ActionId = action;
+        public void SetAction(int action, bool is8Direction)
+        {
+            ActionId = action;
+            this.is8Direction = is8Direction;
+        }
+
         public void SetColor(Color color) => Color = color;
         public void SetDirection(Direction direction) => Direction = direction;
         public void SetFrame(int frame) => CurrentFrame = frame;
         public void SetSprite(RoSpriteData sprite) => SpriteData = sprite;
         public void SetOffset(float offset) => SpriteOffset = offset;
+
         public RoFrame GetActiveRendererFrame()
         {
             var actions = SpriteData.Actions[ActionId + CurrentAngleIndex];
@@ -64,10 +71,10 @@ namespace Assets.Scripts.Sprites
 
             if (frame >= actions.Frames.Length)
                 frame = actions.Frames.Length - 1;
-            
+
             return actions.Frames[frame];
         }
-        
+
         public void Initialize(bool makeCollider = false)
         {
             if (isInitialized)
@@ -88,7 +95,7 @@ namespace Assets.Scripts.Sprites
             SortingGroup.sortingOrder = SortingOrder;
 
             MeshRenderer.receiveShadows = false;
-            MeshRenderer.lightProbeUsage = LightProbeUsage.Off;
+            MeshRenderer.lightProbeUsage = LightProbeUsage.BlendProbes;
             MeshRenderer.shadowCastingMode = ShadowCastingMode.Off;
 
             propertyBlock = new MaterialPropertyBlock();
@@ -138,6 +145,24 @@ namespace Assets.Scripts.Sprites
             }
         }
 
+        public void SetActive(bool isActive)
+        {
+            // Debug.Log($"{gameObject.GetGameObjectPath()} {isActive}");
+            gameObject.SetActive(isActive);
+        }
+
+        public void SetOverrideMaterial(Material mat)
+        {
+            OverrideMaterial = mat;
+            //MeshRenderer.sharedMaterials = null;
+            MeshRenderer.sharedMaterial = OverrideMaterial;
+        }
+
+        public void SetLightProbeAnchor(GameObject anchor)
+        {
+            MeshRenderer.probeAnchor = anchor.transform;
+        }
+
         public void Rebuild()
         {
             if (!isInitialized)
@@ -145,26 +170,32 @@ namespace Assets.Scripts.Sprites
 
             CreateMaterials();
 
-            if (SecondPassForWater)
+            if (OverrideMaterial != null)
             {
-
-                if (RoWalkDataProvider.Instance.GetMapPositionForWorldPosition(transform.position, out var pos) && pos != LastPosition)
-                {
-                    LastPosition = pos;
-                    
-                    HasWater = RoWalkDataProvider.Instance.IsPositionNearWater(transform.position, 1);
-
-                    if (HasWater)
-                        MeshRenderer.sharedMaterials = materialArrayWater;
-                    else
-                        MeshRenderer.sharedMaterials = materialArrayNormal;
-                }
-
-                //Debug.Log($"{pos} {LastPosition} {HasWater}");
+                MeshRenderer.sharedMaterial = OverrideMaterial;
             }
             else
             {
-                MeshRenderer.sharedMaterials = materialArrayNormal;
+                if (SecondPassForWater)
+                {
+                    if (RoWalkDataProvider.Instance.GetMapPositionForWorldPosition(transform.position, out var pos) && pos != LastPosition)
+                    {
+                        LastPosition = pos;
+
+                        HasWater = RoWalkDataProvider.Instance.IsPositionNearWater(transform.position, 1);
+
+                        if (HasWater)
+                            MeshRenderer.sharedMaterials = materialArrayWater;
+                        else
+                            MeshRenderer.sharedMaterials = materialArrayNormal;
+                    }
+
+                    //Debug.Log($"{pos} {LastPosition} {HasWater}");
+                }
+                else
+                {
+                    MeshRenderer.sharedMaterials = materialArrayNormal;
+                }
             }
 
 
@@ -192,7 +223,6 @@ namespace Assets.Scripts.Sprites
             //    SetPropertyBlock();
             //    MeshRenderer.SetPropertyBlock(propertyBlock, 1);
             //}
-
         }
 
         private void SetPropertyBlock()
@@ -200,7 +230,7 @@ namespace Assets.Scripts.Sprites
             propertyBlock.SetTexture("_MainTex", SpriteData.Atlas);
             propertyBlock.SetColor("_Color", Color);
             propertyBlock.SetFloat("_Offset", SpriteOffset);
-            propertyBlock.SetFloat("_Width", SpriteData.AverageWidth/25f);
+            propertyBlock.SetFloat("_Width", SpriteData.AverageWidth / 25f);
 
             if (Mathf.Approximately(0, SpriteOffset))
                 propertyBlock.SetFloat("_Offset", SpriteData.Size / 125f);
@@ -220,7 +250,7 @@ namespace Assets.Scripts.Sprites
 
             if (meshCache.TryGetValue(id, out var mesh))
                 return mesh;
-            
+
             var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, ActionId, CurrentAngleIndex, CurrentFrame);
 
             meshCache.Add(id, newMesh);
@@ -249,11 +279,21 @@ namespace Assets.Scripts.Sprites
 
             if (UpdateAngleWithCamera)
             {
-                var angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
+                // var targetDir = transform.position - CameraFollower.Instance.transform.position;
+                // var subAngle = Vector3.SignedAngle(targetDir, CameraFollower.Instance.transform.forward, Vector3.up);
+                //
+
+                var rotation = 360 - CameraFollower.Instance.Rotation;
+                if(!is8Direction)
+                    rotation -= 22;
+                if (rotation < 0)
+                    rotation += 360;
+                
+                var angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, rotation);
                 if (angleIndex != CurrentAngleIndex)
                 {
                     CurrentAngleIndex = angleIndex;
-                    
+
                     Rebuild();
                     return true;
                 }

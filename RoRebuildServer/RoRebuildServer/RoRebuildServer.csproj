@@ -55,7 +55,6 @@
 
   <ItemGroup>
     <Folder Include="EntityComponents\Effects\" />
-    <Folder Include="ServerData\Script\Spawns\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

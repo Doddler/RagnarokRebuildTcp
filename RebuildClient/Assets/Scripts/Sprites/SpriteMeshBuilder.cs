@@ -155,6 +155,9 @@ namespace Assets.Scripts.Sprites
 
 			var tIndex = 0;
 
+			var maxX = 0f;
+			var maxY = 0f;
+
 			for (var i = 0; i < frame.Layers.Length; i++)
 			{
 				var layer = frame.Layers[i];
@@ -170,6 +173,9 @@ namespace Assets.Scripts.Sprites
 
 				var offsetX = (Mathf.RoundToInt(sprite.rect.width) % 2 == 1) ? 0.5f : 0f;
 				var offsetY = (Mathf.RoundToInt(sprite.rect.height) % 2 == 1) ? 0.5f : 0f;
+
+				maxX = Mathf.Max(maxX, sprite.rect.width);
+				maxY = Mathf.Max(maxY, sprite.rect.height);
 
 				for (var j = 0; j < verts.Length; j++)
 				{
@@ -205,6 +211,8 @@ namespace Assets.Scripts.Sprites
 
 				tIndex += 4;
 			}
+
+			mesh.bounds = new Bounds(Vector3.zero, new Vector3(maxX, maxY, Mathf.Max(maxX, maxY)));
 
 			//Debug.Log($"{outVertices.Count} {outColors.Count}");
 

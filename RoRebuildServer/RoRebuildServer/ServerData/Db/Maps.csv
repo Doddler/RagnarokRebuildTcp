@@ -191,13 +191,44 @@ Turtle Island Dungeon,tur_dun02,tur_dun02.walk,Dungeon,65.mp3
 Good Turtles Village,tur_dun03,tur_dun03.walk,Dungeon,65.mp3
 Turtle Palace,tur_dun04,tur_dun04.walk,Dungeon,65.mp3
 Map,guild_room,guild_room.walk,Field,1.mp3
-Map,new_1-1,new_1-1.walk,Field,1.mp3
-Map,new_1-2,new_1-2.walk,Field,1.mp3
-Map,new_1-3,new_1-3.walk,Field,1.mp3
-Map,new_1-4,new_1-4.walk,Field,1.mp3
+Map,new_zone01,new_zone01.walk,Field,1.mp3
+Map,new_zone02,new_zone02.walk,Field,1.mp3
+Map,new_zone03,new_zone03.walk,Field,1.mp3
+Map,new_zone04,new_zone04.walk,Field,1.mp3
 Map,poring_c01,poring_c01.walk,Field,1.mp3
 Map,poring_c02,poring_c02.walk,Field,1.mp3
 Map,pvp_n_1-4,pvp_n_1-4.walk,Field,1.mp3
 Map,pvp_n_1-5,pvp_n_1-5.walk,Field,1.mp3
 Map,sword_1-1,sword_1-1.walk,Field,1.mp3
 Map,turbo_n_1,turbo_n_1.walk,Field,1.mp3
+Job Quest Map,job_thief1,job_thief1.walk,Field,51.mp3
+Job Quest Map,job_duncer,job_duncer.walk,Field,51.mp3
+Job Quest Map,job_knt,job_knt.walk,Field,51.mp3
+Job Quest Map,job_prist,job_prist.walk,Field,51.mp3
+Job Quest Map,job_sword1,job_sword1.walk,Field,51.mp3
+Job Quest Map,job_wiz,job_wiz.walk,Field,51.mp3
+Job Quest Map,job_hunte,job_hunte.walk,Field,51.mp3
+Job Quest Map,job_monk,job_monk.walk,Field,28.mp3
+Jawaii,jawaii,jawaii.walk,Field,28.mp3
+Jawaii Indoors,jawaii_in,jawaii_in.walk,Field,28.mp3
+Luina Realm,alde_gld,alde_gld.walk,Field,66.mp3
+"Luina Castle, Neuschwanstein",aldeg_cas01,aldeg_cas01.walk,Field,66.mp3
+"Luina Castle, Hohenschwangau",aldeg_cas02,aldeg_cas02.walk,Field,66.mp3
+"Luina Castle, Nuernberg",aldeg_cas03,aldeg_cas03.walk,Field,66.mp3
+"Luina Castle, Wuerzburg",aldeg_cas04,aldeg_cas04.walk,Field,66.mp3
+"Luina Castle, Rothenburg",aldeg_cas05,aldeg_cas05.walk,Field,66.mp3
+"Britoniah Castle, Repherion",gefg_cas01,gefg_cas01.walk,Field,66.mp3
+"Britoniah Castle, Eeyorbriggar",gefg_cas02,gefg_cas02.walk,Field,66.mp3
+"Britoniah Castle, Yesnelph",gefg_cas03,gefg_cas03.walk,Field,66.mp3
+"Britoniah Castle, Bergel",gefg_cas04,gefg_cas04.walk,Field,66.mp3
+"Britoniah Castle, Mersetzdeitz",gefg_cas05,gefg_cas05.walk,Field,66.mp3
+"Balder Castle, Bright Arbor",payg_cas01,payg_cas01.walk,Field,66.mp3
+"Balder Castle, Sacred Palace",payg_cas02,payg_cas02.walk,Field,66.mp3
+"Balder Castle, Holy Shadow",payg_cas03,payg_cas03.walk,Field,66.mp3
+"Balder Castle, Scarlet Palace",payg_cas04,payg_cas04.walk,Field,66.mp3
+"Balder Castle, Bamboo Groove Hill",payg_cas05,payg_cas05.walk,Field,66.mp3
+"Valkyrie Castle, Kriemhild",prtg_cas01,prtg_cas01.walk,Field,66.mp3
+"Valkyrie Castle, Swanhild",prtg_cas02,prtg_cas02.walk,Field,66.mp3
+"Valkyrie Castle, Fadhgrindh",prtg_cas03,prtg_cas03.walk,Field,66.mp3
+"Valkyrie Castle, Skoegul",prtg_cas04,prtg_cas04.walk,Field,66.mp3
+"Valkyrie Castle, Gondul",prtg_cas05,prtg_cas05.walk,Field,66.mp3

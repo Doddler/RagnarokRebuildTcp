@@ -1,0 +1,8 @@
+﻿Warp("tur_dun01","turtledunwarp001", 154, 242, 3, 2, "tur_dun02", 147, 263);
+Warp("tur_dun02","turtledunwarp002", 147, 269, 3, 2, "tur_dun01", 154, 238);
+Warp("tur_dun02","turtledunwarp003", 168, 19, 4, 1, "tur_dun03", 131, 191);
+Warp("tur_dun03","turtledunwarp004", 131, 194, 3, 1, "tur_dun02", 168, 23);
+Warp("tur_dun03","turtledunwarp005", 218, 70, 2, 2, "tur_dun04", 99, 193);
+Warp("tur_dun04","turtledunwarp006", 99, 197, 4, 2, "tur_dun03", 218, 74);
+Warp("tur_dun05","turtledunwarp007", 9, 45, 1, 5, "tur_dun01", 154, 238);
+Warp("tur_dun05","turtledunwarp008", 89, 69, 1, 6, "tur_dun02", 147, 263);

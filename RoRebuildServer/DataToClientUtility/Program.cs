@@ -53,13 +53,13 @@ class Program
                     ImportEffect = e.ImportEffect,
                     Billboard = e.Billboard,
                     StrFile = e.StrFile,
+                    Sprite = e.Sprite,
                     SoundFile = e.SoundFile,
                     Offset = e.Offset,
                     PrefabName = e.PrefabName
                 });
             }
-
-
+            
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.SetupExtensions();
             options.WriteIndented = true;

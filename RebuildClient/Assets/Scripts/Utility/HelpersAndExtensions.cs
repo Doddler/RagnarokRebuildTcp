@@ -103,6 +103,14 @@ namespace Assets.Scripts
                 v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
             );
         }
+
+        public static Vector2 Clamp(Vector2 v, Vector2 min, Vector2 max)
+        {
+            return new Vector2(
+                Mathf.Clamp(v.x, min.x, max.x),
+                Mathf.Clamp(v.y, min.y, max.y)
+            );
+        }
     }
 
     public static class RectHelper

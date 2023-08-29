@@ -439,7 +439,7 @@ public class Player : IEntityAutoReset
             return;
         }
 
-        if (!Character.TryMove(ref Entity, enemy.Position, 0))
+        if (!Character.TryMove(enemy.Position, 0))
             return;
 
         ChangeTarget(enemy);

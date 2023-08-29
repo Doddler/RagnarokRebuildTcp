@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
@@ -11,22 +10,31 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utility;
 using JetBrains.Annotations;
+using PlayerControl;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Config;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using TMPro;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
+using Utility;
 using Debug = UnityEngine.Debug;
-using MapWarpEffect = Assets.Scripts.Effects.EffectHandlers.MapWarpEffect;
 using Random = UnityEngine.Random;
+
+#if UNITY_EDITOR
+using System.IO;
+using UnityEditor;
+using UnityEditor.Recorder;
+using UnityEditor.Recorder.Input;
+using UnityEditor.Recorder.Examples;
+#endif
 
 namespace Assets.Scripts
 {
@@ -72,7 +80,7 @@ namespace Assets.Scripts
 
         private int lastWidth;
         private int lastHeight;
-        
+
         private Vector2Int lastTile;
         private bool lastPathValid;
         private bool noHold = false;
@@ -94,9 +102,19 @@ namespace Assets.Scripts
         public Dictionary<string, int> EffectIdLookup;
         public Dictionary<int, EffectTypeEntry> EffectList;
         public Dictionary<int, GameObject> EffectCache;
+
+        public bool CinemachineMode;
+        public VideoRecorder Recorder;
+
+        private const bool CinemachineCenterPlayerOnMap = true;
+        private const bool CinemachineHidePlayerObject = true;
+
+        public float FogNearRatio = 0.3f;
+        public float FogFarRatio = 4f;
         
 #if DEBUG
         private const float MaxClickDistance = 500;
+        
 #else
         private const float MaxClickDistance = 150;
 #endif
@@ -168,6 +186,7 @@ namespace Assets.Scripts
 
         public float LastRightClick;
         private bool isHolding;
+
         public void Awake()
         {
             //CurLookAt = Target.transform.position;
@@ -180,7 +199,7 @@ namespace Assets.Scripts
             UpdateCameraSize();
 
             Physics.queriesHitBackfaces = true;
-            
+
             var effects = JsonUtility.FromJson<EffectTypeList>(EffectConfigFile.text);
             EffectList = new Dictionary<int, EffectTypeEntry>();
             EffectIdLookup = new Dictionary<string, int>();
@@ -200,10 +219,13 @@ namespace Assets.Scripts
             var lines = LevelChart.text.Split("\n"); //we'll trim out \r after if it exists
             for (var i = 0; i < 99; i++)
                 levelReqs[i] = int.Parse(lines[i].Trim());
-            
+
             LevelChart = null; //don't need to hold this anymore
 
             DialogPanel.GetComponent<DialogWindow>().HideUI();
+
+            if (Recorder != null)
+                Recorder.gameObject.SetActive(false);
 
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
@@ -231,18 +253,17 @@ namespace Assets.Scripts
                 ExpSlider.gameObject.SetActive(false);
                 return;
             }
-            
-            var percent = exp / (float) maxExp;
+
+            var percent = exp / (float)maxExp;
 
             ExpSlider.gameObject.SetActive(true);
             ExpDisplay.text = $"Exp: {exp}/{maxExp} ({percent * 100f:F1}%)";
             ExpSlider.value = percent;
         }
-        
+
 
         private GameObject CreateSelectedCursorObject()
         {
-
             var go = new GameObject("Cursor");
             go.layer = LayerMask.NameToLayer("Characters");
             go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
@@ -548,11 +569,11 @@ namespace Assets.Scripts
             if (characterHits.Length > 0)
                 hasHitCharacter = true;
 
-            if (isHolding || isOverUi)
+            if (isHolding || isOverUi || CinemachineMode)
                 hasHitCharacter = false;
 
             //Debug.Log(string.Join(", ", characterHits.Select(c => c.transform.name)));
-            
+
             if (hasHitCharacter)
             {
                 //var anim = charHit.transform.gameObject.GetComponent<RoSpriteAnimator>();
@@ -625,7 +646,7 @@ namespace Assets.Scripts
                 isHolding = false;
                 noHold = false;
             }
-            
+
 
             if (isOverUi && Input.GetMouseButtonDown(0))
                 noHold = true;
@@ -644,7 +665,6 @@ namespace Assets.Scripts
 
             if (hasGroundPos && !WalkProvider.IsCellWalkable(mapPosition))
             {
-
             }
 
             if (hasGroundPos && hasSrcPos && !IsInNPCInteraction)
@@ -678,7 +698,8 @@ namespace Assets.Scripts
                         {
                             var newGroundPos = WalkProvider.GetMapPositionForWorldPosition(rehit.point, out var newMapPosition);
 
-                            if (newGroundPos && WalkProvider.IsCellWalkable(newMapPosition) && (newMapPosition - srcPosition).SquareDistance() <= SharedConfig.MaxPathLength)
+                            if (newGroundPos && WalkProvider.IsCellWalkable(newMapPosition) &&
+                                (newMapPosition - srcPosition).SquareDistance() <= SharedConfig.MaxPathLength)
                             {
                                 var steps = Pathfinder.GetPath(WalkProvider.WalkData, newMapPosition, srcPosition, tempPath);
                                 if (steps > 0)
@@ -689,6 +710,7 @@ namespace Assets.Scripts
                                     break;
                                 }
                             }
+
                             ray.origin = rehit.point + ray.direction * 0.01f;
                             loopCount++;
                         }
@@ -715,7 +737,7 @@ namespace Assets.Scripts
 
             if (IsInNPCInteraction)
                 return;
-            
+
             if (Input.GetMouseButton(0) && ClickDelay <= 0)
             {
                 var srcPos = controllable.Position;
@@ -782,189 +804,13 @@ namespace Assets.Scripts
             NetworkManager.Instance.SendEmote(id);
         }
 
-        [CanBeNull]
-        private string[] SplitStringCommand(string input)
-        {
-            var outList = new List<string>();
-            var inQuote = false;
-            var sb = new StringBuilder();
-
-            foreach (var c in input)
-            {
-                if (c == ' ' && !inQuote)
-                {
-                    if (sb.Length == 0)
-                        continue;
-                    outList.Add(sb.ToString());
-                    sb.Clear();
-                    continue;
-                }
-
-                if (c == '"')
-                {
-                    inQuote = !inQuote;
-                    continue;
-                }
-
-                sb.Append(c);
-            }
-            
-            if (inQuote)
-                return null;
-            
-            outList.Add(sb.ToString());
-            return outList.ToArray();
-        }
-        
         public void OnSubmitTextBox(string text)
         {
             //Debug.Log("Submitted: " + text);
             //         EventSystem.current.SetSelectedGameObject(null);
             //         TextBoxInputField.text = "";
 
-            if (string.IsNullOrWhiteSpace(text))
-                return;
-
-            if (text.StartsWith("/"))
-            {
-                var s = SplitStringCommand(text);
-                if (s == null)
-                {
-                    AppendError($"Malformed slash command, could not execute.");
-                    return;
-                }
-                
-                Debug.Log($"string command: " + string.Join('|', s));
-
-                if (s[0] == "/warp" && s.Length > 1)
-                {
-                    if (s.Length == 4)
-                    {
-                        if(int.TryParse(s[2], out var x) && int.TryParse(s[3], out var y))
-                            NetworkManager.Instance.SendMoveRequest(s[1], x, y);
-                        else
-                            NetworkManager.Instance.SendMoveRequest(s[1]);
-                    }
-                    else
-                        NetworkManager.Instance.SendMoveRequest(s[1]);
-                }
-
-                if (s[0] == "/where")
-                {
-                    var mapname = NetworkManager.Instance.CurrentMap;
-                    var srcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
-
-                    AppendChatText($"Location: {mapname} {srcPosition.x},{srcPosition.y}");
-                }
-
-                if (s[0] == "/name" || s[0] == "/changename")
-                {
-                    var newName = text.Substring(s[0].Length + 1);
-                    NetworkManager.Instance.SendChangeName(newName);
-                }
-
-                if (s[0] == "/level")
-                {
-                    if(s.Length == 1 || !int.TryParse(s[1], out var level))
-                        NetworkManager.Instance.SendAdminLevelUpRequest(0);
-                    else
-                        NetworkManager.Instance.SendAdminLevelUpRequest(level);
-                }
-
-                if (s[0] == "/summon")
-                {
-                    var failed = false;
-                    if (s.Length == 3 && int.TryParse(s[2], out var count))
-                    {
-                        var mob = s[1];
-                        if(!SpriteDataLoader.Instance.IsValidMonsterName(mob))
-                            AppendError($"The monster name '{mob}' is not valid.");
-                        else
-                            NetworkManager.Instance.SendAdminSummonMonster(mob, count);
-                            
-
-                    }
-                    else
-                        AppendError("Invalid summon monster request.");
-
-                }
-
-                if (s[0] == "/bgm")
-                    AudioManager.Instance.ToggleMute();
-
-                if (s[0] == "/emote" && s.Length == 2)
-                    Emote(int.Parse(s[1]));
-
-                if (s[0] == "/change")
-                {
-                    if(s.Length == 1)
-                        NetworkManager.Instance.SendChangeAppearance(0);
-
-                    if (s.Length == 2)
-                    {
-                        if (s[1].ToLower() == "hair")
-                            NetworkManager.Instance.SendChangeAppearance(1);
-                        if (s[1].ToLower() == "gender")
-                            NetworkManager.Instance.SendChangeAppearance(2, controllable.IsMale ? 1 : 0);
-                        if (s[1].ToLower() == "job")
-                            NetworkManager.Instance.SendChangeAppearance(3);
-                        if (s[1].ToLower() == "weapon")
-                            NetworkManager.Instance.SendChangeAppearance(4);
-
-                    }
-
-                    if (s.Length == 3)
-                    {
-                        if (int.TryParse(s[2], out var id))
-                        {
-
-                            if (s[1].ToLower() == "hair")
-                                NetworkManager.Instance.SendChangeAppearance(1, id);
-                            if (s[1].ToLower() == "gender")
-                                NetworkManager.Instance.SendChangeAppearance(2, id);
-                            if (s[1].ToLower() == "job")
-                                NetworkManager.Instance.SendChangeAppearance(3, id);
-                            if (s[1].ToLower() == "weapon")
-                                NetworkManager.Instance.SendChangeAppearance(4, id);
-                        }
-                    }
-                }
-
-                if (s[0] == "/randomize" || s[0] == "/random")
-                        NetworkManager.Instance.SendChangeAppearance(0);
-
-                if (s[0] == "/effect" && s.Length > 1)
-                {
-                    if(int.TryParse(s[1], out var id))
-                        AttachEffectToEntity(id, controllable);
-                    else
-                        AttachEffectToEntity(s[1], controllable);
-                    
-                }
-
-                if (s[0] == "/reloadscript" || s[0] == "/scriptreload")
-                {
-                    NetworkManager.Instance.SendAdminAction(AdminAction.ReloadScripts);
-                }
-
-
-                if (s[0] == "/servergc")
-                {
-                    NetworkManager.Instance.SendAdminAction(AdminAction.ForceGC);
-                }
-            }
-            else
-            {
-                if (text.Length > 255)
-                {
-                    AppendChatText("<color=yellow>Error</color>: Text too long.");
-                }
-                else
-                    NetworkManager.Instance.SendSay(text);
-                //AppendChatText(text);
-                
-            }
-
+            ClientCommandHandler.HandleClientCommand(this, controllable, text);
 
             lastMessage = text;
         }
@@ -982,7 +828,6 @@ namespace Assets.Scripts
 
         public void AttachEffectToEntity(int effect, ServerControllable target)
         {
-
             if (!EffectList.TryGetValue(effect, out var asset))
             {
                 AppendError($"Could not find effect with id {effect}.");
@@ -1004,6 +849,7 @@ namespace Assets.Scripts
 
                 return;
             }
+
             //Debug.Log($"Loading effect asset {asset.PrefabName}");
             var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
             loader.Completed += ah =>
@@ -1030,7 +876,6 @@ namespace Assets.Scripts
 
         public void CreateEffect(int effect, Vector3 pos, int facing)
         {
-
             if (!EffectList.TryGetValue(effect, out var asset))
             {
                 AppendError($"Could not find effect with id {effect}.");
@@ -1047,12 +892,12 @@ namespace Assets.Scripts
                 if (asset.Billboard)
                     obj2.AddComponent<BillboardObject>();
 
-                if(facing != 0)
+                if (facing != 0)
                     obj2.transform.localRotation = Quaternion.AngleAxis(45 * facing, Vector3.up);
 
                 return;
             }
-            
+
             var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
             loader.Completed += ah =>
             {
@@ -1074,25 +919,27 @@ namespace Assets.Scripts
 
             if (WaterTexture == null)
             {
-                WaterTexture = new RenderTexture(Screen.width/4, Screen.height/4, 32, RenderTextureFormat.ARGBHalf);
-                WaterDepthTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 16, RenderTextureFormat.Depth);
-
-                WaterCamera.SetTargetBuffers(WaterTexture.colorBuffer, WaterDepthTexture.depthBuffer);
-                WaterCamera.SetReplacementShader(ShaderCache.Instance.WaterShader, null);
-
-                Shader.SetGlobalTexture("_WaterDepth", WaterTexture);
-            }
-
-            if (WaterTexture.width != Screen.width/4 || WaterTexture.height != Screen.height/4)
-            {
-                var oldWaterTexture = WaterTexture;
-                var oldWaterDepth = WaterDepthTexture;
-                
                 WaterTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 32, RenderTextureFormat.ARGBHalf);
                 WaterDepthTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 16, RenderTextureFormat.Depth);
 
                 WaterCamera.SetTargetBuffers(WaterTexture.colorBuffer, WaterDepthTexture.depthBuffer);
                 WaterCamera.SetReplacementShader(ShaderCache.Instance.WaterShader, null);
+                WaterCamera.backgroundColor = new Color(0, 0, -1000);
+
+                Shader.SetGlobalTexture("_WaterDepth", WaterTexture);
+            }
+
+            if (WaterTexture.width != Screen.width / 4 || WaterTexture.height != Screen.height / 4)
+            {
+                var oldWaterTexture = WaterTexture;
+                var oldWaterDepth = WaterDepthTexture;
+
+                WaterTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 32, RenderTextureFormat.ARGBHalf);
+                WaterDepthTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 16, RenderTextureFormat.Depth);
+
+                WaterCamera.SetTargetBuffers(WaterTexture.colorBuffer, WaterDepthTexture.depthBuffer);
+                WaterCamera.SetReplacementShader(ShaderCache.Instance.WaterShader, null);
+                WaterCamera.backgroundColor = new Color(0, 0, -1000);
 
                 Shader.SetGlobalTexture("_WaterDepth", WaterTexture);
 
@@ -1106,12 +953,68 @@ namespace Assets.Scripts
             //WaterCamera.RenderWithShader(WaterDepthShader, "WaterDepth");
             //WaterCamera.Render();
         }
-        
+
+        public void CinemachineFollow()
+        {
+            if (CinemachineHidePlayerObject)
+                controllable.SpriteAnimator.SetRenderActive(false);
+
+            if (Recorder != null)
+            {
+                Recorder.gameObject.SetActive(true);
+                transform.position = Recorder.transform.position;
+                transform.localRotation = Recorder.transform.rotation;
+
+                WaterCamera.fieldOfView = Recorder.GetComponent<Camera>().fieldOfView;
+                Camera.main.fieldOfView = Recorder.GetComponent<Camera>().fieldOfView;
+                
+                // Debug.Log(transform.position);
+            }
+
+            Rotation = transform.localRotation.eulerAngles.y;
+            WalkProvider.DisableRenderer();
+
+            if (ListenerProbe != null)
+            {
+                if (Physics.Raycast(transform.localPosition, transform.forward, out var hit, LayerMask.NameToLayer("Ground")))
+                {
+                    var dist = Vector3.Distance(Camera.main.transform.position, hit.point);
+                    if (dist > 30)
+                        ListenerProbe.transform.localPosition = new Vector3(0f, 0f, dist - 30f);
+                    else
+                        ListenerProbe.transform.localPosition = Camera.main.transform.position;
+                }
+                else
+                {
+                    ListenerProbe.transform.localPosition = new Vector3(0f, 0f, 30f);
+                }
+
+
+                // var forward = Camera.main.transform.forward;
+                //var dist = Vector3.Distance(Camera.main.transform.position, Target.transform.position);
+            }
+        }
+
+        public void UpdateFog()
+        {
+            if (!CinemachineMode && RenderSettings.fog)
+            {
+                var near = Distance * FogNearRatio;
+                var far = Distance * FogFarRatio;
+
+                RenderSettings.fogStartDistance = near;
+                RenderSettings.fogEndDistance = far;
+                
+                var val = (RenderSettings.fogEndDistance - Distance) / (RenderSettings.fogEndDistance - RenderSettings.fogStartDistance);
+                Camera.backgroundColor = RenderSettings.fogColor * (1 - val);
+            }
+        }
+
         public void Update()
         {
             if (Target == null)
                 return;
-            
+
             if (controllable == null)
                 controllable = Target.GetComponent<ServerControllable>();
 
@@ -1129,19 +1032,19 @@ namespace Assets.Scripts
                 UpdateCameraSize();
 
             UpdateWaterTexture();
-            
+
             var pointerOverUi = EventSystem.current.IsPointerOverGameObject();
             var selected = EventSystem.current.currentSelectedGameObject;
-            
+
             var inTextBox = false;
             if (selected != null)
                 inTextBox = selected.GetComponent<TMP_InputField>() != null;
-            
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 //Debug.Log("Escape pressed, inTextBox: " + inTextBox);
                 //Debug.Log(EventSystem.current.currentSelectedGameObject);
-                
+
                 if (inTextBox)
                 {
                     inTextBox = false;
@@ -1153,7 +1056,6 @@ namespace Assets.Scripts
                 }
 
                 EventSystem.current.SetSelectedGameObject(null);
-                
             }
 
             if (inTextBox)
@@ -1161,10 +1063,9 @@ namespace Assets.Scripts
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     TextBoxInputField.text = lastMessage;
-                    if(lastMessage != null)
+                    if (lastMessage != null)
                         TextBoxInputField.caretPosition = lastMessage.Length;
                 }
-
             }
 
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
@@ -1229,7 +1130,7 @@ namespace Assets.Scripts
 
             if (!inTextBox && Input.GetKeyDown(KeyCode.W))
             {
-                if(!WarpPanel.activeInHierarchy)
+                if (!WarpPanel.activeInHierarchy)
                     WarpPanel.GetComponent<WarpWindow>().ShowWindow();
                 else
                     WarpPanel.GetComponent<WarpWindow>().HideWindow();
@@ -1247,10 +1148,16 @@ namespace Assets.Scripts
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
                 NetworkManager.Instance.SendUseItem(501);
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.F5))
+            if (!inTextBox && Input.GetKeyDown(KeyCode.F3))
                 FireArrow.Create(controllable.gameObject, 5);
-            if (!inTextBox && Input.GetKeyDown(KeyCode.F6))
+            if (!inTextBox && Input.GetKeyDown(KeyCode.F4))
                 CastEffect.Create(2f, "ring_blue", controllable.gameObject);
+
+            if (!inTextBox && Input.GetKeyDown(KeyCode.F2))
+                ForestLightEffect.Create((ForestLightType)Random.Range(0, 4), controllable.transform.position);
+
+            if (!inTextBox && Input.GetKeyDown(KeyCode.L))
+                CastLockOnEffect.Create(2f, controllable.gameObject);
 
             //if (Input.GetKeyDown(KeyCode.Alpha1))
             //    AttachEffectToEntity("RedPotion", controllable);
@@ -1296,6 +1203,26 @@ namespace Assets.Scripts
             //NetworkManager.Instance.SkillAttack();
             //        }
 
+#if UNITY_EDITOR
+            if ((Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.F6)) && Application.isEditor && Recorder != null)
+            {
+                if (CinemachineMode)
+                {
+                    CinemachineMode = false;
+                    
+                    Recorder.StopRecording();
+                    Camera.main.fieldOfView = 15f;
+                }
+                else
+                {
+                    CinemachineMode = true;
+                    if(Recorder.CenterPlayerOnMap)
+                        NetworkManager.Instance.SendAdminHideCharacter(true);
+                    Recorder.StartRecording();
+                }
+            }
+#endif
+
             if (!inTextBox && !pointerOverUi && Input.GetMouseButtonDown(1))
             {
                 if (Time.timeSinceLevelLoad - LastRightClick < 0.3f)
@@ -1311,7 +1238,6 @@ namespace Assets.Scripts
 
             if (!inTextBox && !pointerOverUi && Input.GetMouseButton(1))
             {
-
                 if (Input.GetMouseButton(1) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
                 {
                     Height -= Input.GetAxis("Mouse Y") / 4;
@@ -1328,9 +1254,9 @@ namespace Assets.Scripts
 
 //#if !DEBUG
             if (Height > 75)
-	            Height = 75;
+                Height = 75;
             if (Height < 30)
-	            Height = 30;
+                Height = 30;
 //#endif
 
             DoScreenCast(pointerOverUi);
@@ -1347,26 +1273,26 @@ namespace Assets.Scripts
                 Rotation -= 360;
             if (Rotation < 0)
                 Rotation += 360;
-            
+
             Rotation = Mathf.LerpAngle(Rotation, TargetRotation, 7.5f * Time.deltaTime);
 
             var ctrlKey = Input.GetKey(KeyCode.LeftControl) ? 10 : 1;
 
             var screenRect = new Rect(0, 0, Screen.width, Screen.height);
 
-            if(!pointerOverUi && screenRect.Contains(Input.mousePosition))
+            if (!pointerOverUi && screenRect.Contains(Input.mousePosition))
                 Distance += Input.GetAxis("Mouse ScrollWheel") * 20 * ctrlKey;
 
-// #if !DEBUG
+#if !DEBUG
             if (Distance > 90)
-	            Distance = 90;
+                Distance = 90;
             if (Distance < 30)
-	            Distance = 30;
-// #endif
-            
+                Distance = 30;
+#endif
+
             var curTarget = Target.transform.position;
             if (OverrideTarget != null)
-                curTarget = (curTarget + OverrideTarget.transform.position)/2f;
+                curTarget = (curTarget + OverrideTarget.transform.position) / 2f;
 
             TargetFollow = Vector3.Lerp(TargetFollow, curTarget, Time.deltaTime * 5f);
             CurLookAt = TargetFollow;
@@ -1380,9 +1306,10 @@ namespace Assets.Scripts
             //sort sprites and all that jazz as if the camera were completely flat with the ground.
             Camera.transparencySortMode = TransparencySortMode.CustomAxis;
             Camera.transparencySortAxis = Quaternion.Euler(0, Rotation, 0) * Vector3.forward;
-            
+
             transform.position = CurLookAt + pos;
             transform.LookAt(CurLookAt, Vector3.up);
+
 
             if (!inTextBox && Input.GetKeyDown(KeyCode.T))
                 NetworkManager.Instance.RandomTeleport();
@@ -1402,6 +1329,11 @@ namespace Assets.Scripts
                     }
                 }
             }
+
+            if (CinemachineMode)
+                CinemachineFollow();
+
+            UpdateFog();
         }
     }
 }

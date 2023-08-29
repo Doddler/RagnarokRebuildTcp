@@ -1153,25 +1153,25 @@
       "Music": "1.mp3"
     },
     {
-      "Code": "new_1-1",
+      "Code": "new_zone01",
       "Name": "Map",
       "MapMode": 3,
       "Music": "1.mp3"
     },
     {
-      "Code": "new_1-2",
+      "Code": "new_zone02",
       "Name": "Map",
       "MapMode": 3,
       "Music": "1.mp3"
     },
     {
-      "Code": "new_1-3",
+      "Code": "new_zone03",
       "Name": "Map",
       "MapMode": 3,
       "Music": "1.mp3"
     },
     {
-      "Code": "new_1-4",
+      "Code": "new_zone04",
       "Name": "Map",
       "MapMode": 3,
       "Music": "1.mp3"
@@ -1211,6 +1211,192 @@
       "Name": "Map",
       "MapMode": 3,
       "Music": "1.mp3"
+    },
+    {
+      "Code": "job_thief1",
+      "Name": "Job Quest Map",
+      "MapMode": 3,
+      "Music": "51.mp3"
+    },
+    {
+      "Code": "job_duncer",
+      "Name": "Job Quest Map",
+      "MapMode": 3,
+      "Music": "51.mp3"
+    },
+    {
+      "Code": "job_knt",
+      "Name": "Job Quest Map",
+      "MapMode": 3,
+      "Music": "51.mp3"
+    },
+    {
+      "Code": "job_prist",
+      "Name": "Job Quest Map",
+      "MapMode": 3,
+      "Music": "51.mp3"
+    },
+    {
+      "Code": "job_sword1",
+      "Name": "Job Quest Map",
+      "MapMode": 3,
+      "Music": "51.mp3"
+    },
+    {
+      "Code": "job_wiz",
+      "Name": "Job Quest Map",
+      "MapMode": 3,
+      "Music": "51.mp3"
+    },
+    {
+      "Code": "job_hunte",
+      "Name": "Job Quest Map",
+      "MapMode": 3,
+      "Music": "51.mp3"
+    },
+    {
+      "Code": "job_monk",
+      "Name": "Job Quest Map",
+      "MapMode": 3,
+      "Music": "28.mp3"
+    },
+    {
+      "Code": "jawaii",
+      "Name": "Jawaii",
+      "MapMode": 3,
+      "Music": "28.mp3"
+    },
+    {
+      "Code": "jawaii_in",
+      "Name": "Jawaii Indoors",
+      "MapMode": 3,
+      "Music": "28.mp3"
+    },
+    {
+      "Code": "alde_gld",
+      "Name": "Luina Realm",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "aldeg_cas01",
+      "Name": "Luina Castle, Neuschwanstein",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "aldeg_cas02",
+      "Name": "Luina Castle, Hohenschwangau",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "aldeg_cas03",
+      "Name": "Luina Castle, Nuernberg",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "aldeg_cas04",
+      "Name": "Luina Castle, Wuerzburg",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "aldeg_cas05",
+      "Name": "Luina Castle, Rothenburg",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "gefg_cas01",
+      "Name": "Britoniah Castle, Repherion",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "gefg_cas02",
+      "Name": "Britoniah Castle, Eeyorbriggar",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "gefg_cas03",
+      "Name": "Britoniah Castle, Yesnelph",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "gefg_cas04",
+      "Name": "Britoniah Castle, Bergel",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "gefg_cas05",
+      "Name": "Britoniah Castle, Mersetzdeitz",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "payg_cas01",
+      "Name": "Balder Castle, Bright Arbor",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "payg_cas02",
+      "Name": "Balder Castle, Sacred Palace",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "payg_cas03",
+      "Name": "Balder Castle, Holy Shadow",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "payg_cas04",
+      "Name": "Balder Castle, Scarlet Palace",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "payg_cas05",
+      "Name": "Balder Castle, Bamboo Groove Hill",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "prtg_cas01",
+      "Name": "Valkyrie Castle, Kriemhild",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "prtg_cas02",
+      "Name": "Valkyrie Castle, Swanhild",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "prtg_cas03",
+      "Name": "Valkyrie Castle, Fadhgrindh",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "prtg_cas04",
+      "Name": "Valkyrie Castle, Skoegul",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
+      "Code": "prtg_cas05",
+      "Name": "Valkyrie Castle, Gondul",
+      "MapMode": 3,
+      "Music": "66.mp3"
     }
   ]
 }

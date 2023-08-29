@@ -2,6 +2,13 @@
 
 namespace Assets.Scripts.Effects
 {
+    [Flags]
+    public enum RoPrimitiveHandlerFlags : int
+    {
+        None,
+        CycleColors
+    }
+    
     public class RoEffectAttribute : Attribute
     {
         public string TypeName;

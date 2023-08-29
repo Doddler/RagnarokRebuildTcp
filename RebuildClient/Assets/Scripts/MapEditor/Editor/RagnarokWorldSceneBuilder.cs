@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Assets.Scripts.Effects;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
+using Objects;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using PrimitiveType = UnityEngine.PrimitiveType;
 
 namespace Assets.Scripts.MapEditor.Editor
 {
@@ -263,8 +267,8 @@ namespace Assets.Scripts.MapEditor.Editor
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
             RenderSettings.fogColor = world.FogSetup.FogColor;
-            RenderSettings.fogStartDistance = world.FogSetup.NearPlane * 55f;
-            RenderSettings.fogEndDistance = world.FogSetup.FarPlane * 550f;
+            RenderSettings.fogStartDistance = world.FogSetup.NearPlane * 300f;
+            RenderSettings.fogEndDistance = world.FogSetup.FarPlane * 400f;
         }
 
         private void LoadWater()
@@ -351,6 +355,7 @@ namespace Assets.Scripts.MapEditor.Editor
         {
             var effectContainer = new GameObject("effects");
             effectContainer.transform.SetParent(baseObject.transform, false);
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
 
             foreach (var effect in world.Effects)
             {
@@ -361,6 +366,7 @@ namespace Assets.Scripts.MapEditor.Editor
                     obj.name = effect.Id + " - " + effect.Name;
                     obj.transform.SetParent(effectContainer.transform, false);
                     obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    continue;
                 }
 
                 if (effect.Id == 45) //fireflies
@@ -370,29 +376,109 @@ namespace Assets.Scripts.MapEditor.Editor
                     obj.name = effect.Id + " - " + effect.Name;
                     obj.transform.SetParent(effectContainer.transform, false);
                     obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    
+                    continue;
                 }
 
                 if (effect.Id == 47 && world.MapName == "moc_pryd01")
                 {
                     //torch
                     var light = world.Lights[0];
-                    var position = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
-                    //PlaceLight(effectContainer, light.Name, position + new Vector3(0f, 4f, 0f), light.Color, light.Range / 5f, light.Range / 5f / 4f);
+                    var position = new Vector3(effect.Position.x / 5, -effect.Position.y / 5 + 2, effect.Position.z / 5);
+                    
+                    var lightObj = new GameObject(light.Name);
+                    lightObj.transform.SetParent(effectContainer.transform, false);
+                    lightObj.transform.localPosition = position;
+                    lightObj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    lightObj.isStatic = true;
+                
+                    //PlaceLight(lightObj, "Gen" + light.Name, Vector3.zero, light.Color, light.Range / 5, 7.5f);
+                
+                    var r = light.Range / 5f;
+                    //var b = 1f;
+                
+                    //var c = 0;
+                
+                    PlaceLight(lightObj, light.Color, r, 5);
+                }
+
+                if (effect.Id == 47)
+                {
+                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/Torch.prefab");
+                    var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
+                    obj.name = effect.Id + " - " + effect.Name;
+                    
+                    obj.transform.SetParent(effectContainer.transform, false);
+                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5 + 2f, effect.Position.z / 5);
+                    obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    continue;
                 }
 
                 if (effect.Id == 109) //underwater bubbles
                 {
-                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/bubble.prefab");
+                    var obj = new GameObject(effect.Id + " - " + effect.Name);
+                    //var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/bubble.prefab");
+                    //var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
+                    obj.AddComponent<BillboardObject>();
+                    obj.name = effect.Id + " - " + effect.Name;
+                    obj.transform.SetParent(effectContainer.transform, false);
+                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    var renderer = obj.AddComponent<RandomEffectInstantiator>();
+                    renderer.PrefabList = new List<GameObject>();
+                    renderer.IsLoop = true;
+                    renderer.UseZTest = true;
+                    renderer.RandomStart = true;
+                    renderer.LoopDelay = effect.Delay / 1000f;
+                    obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    
+                    for (var i = 1; i <= 4; i++)
+                    {
+                        renderer.PrefabList.Add(AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/Effects/Prefabs/bubble{i}.prefab"));
+                    }
+                    continue;
+                }
+                
+                
+                if (effect.Id == 110) //gas push
+                {
+                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/GasPush.prefab");
                     var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
                     obj.AddComponent<BillboardObject>();
                     obj.name = effect.Id + " - " + effect.Name;
                     obj.transform.SetParent(effectContainer.transform, false);
                     obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                     var renderer = obj.GetComponent<RoEffectRenderer>();
                     renderer.IsLoop = true;
                     renderer.UseZTest = true;
                     renderer.RandomStart = true;
+                    renderer.LoopDelay = effect.Delay/1000f;
+                    
+                    continue;
                 }
+
+                if (effect.Id == 307 || effect.Id == 322 || effect.Id == 323)
+                {
+                    var obj = new GameObject(effect.Name);
+                    var spawner = obj.AddComponent<EffectSpawner>();
+                    spawner.EffectType = EffectType.ForestLightEffect;
+                    spawner.Variant = 0;
+                    if (effect.Id == 322)
+                        spawner.Variant = 1;
+                    if (effect.Id == 323)
+                        spawner.Variant = 2;
+                    obj.transform.SetParent(effectContainer.transform, false);
+                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    // obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
+                    continue;
+                }
+
+                var tempObj = new GameObject("Missing Effect " + effect.Id + " - " + effect.Name);
+                tempObj.transform.SetParent(effectContainer.transform, false);
+                tempObj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                
+                Debug.LogWarning($"Unknown effect ID {effect.Id}, not loaded into scene. ({effect})");
             }
         }
 
@@ -503,6 +589,35 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 //obj.ChangeStaticRecursive(true);
             }
+        }
+
+        public void ReloadEffectsOnly(RoMapData mapData, RagnarokWorld worldData)
+        {
+            data = mapData;
+            world = worldData;
+            
+            modelCache = new Dictionary<string, GameObject>();
+            
+            var oldBox = GameObject.Find($"{world.MapName} resources");
+            if (oldBox != null)
+            {
+                for (var i = 0; i < oldBox.transform.childCount; i++)
+                {
+                    var child = oldBox.transform.GetChild(i);
+                    if (child.name == "effects")
+                    {
+                        Debug.Log("AAAAA FOUND YOU");
+                        Debug.Log(child);
+                        GameObject.DestroyImmediate(child.gameObject);
+                    }
+                }
+
+                baseObject = oldBox;
+            }
+            else
+                return;
+            
+            LoadEffects();
         }
 
         public void Load(RoMapData mapData, RagnarokWorld worldData)

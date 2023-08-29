@@ -539,4 +539,13 @@ public static class CommandBuilder
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
+
+
+    public static void SendAdminHideStatus(Player p, bool isHidden)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.AdminHideCharacter, 8);
+        packet.Write(isHidden);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
 }

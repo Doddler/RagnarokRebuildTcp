@@ -20,5 +20,6 @@ public class MonsterDatabaseInfo
     public float SpriteAttackTiming { get; set; }
     public int Range { get; set; }
     public MonsterAiType AiType { get; set; }
+    public List<MonsterSpawnMinions>? Minions { get; set; }
     public float MoveSpeed { get; set; }
 }

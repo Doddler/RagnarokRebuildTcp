@@ -13,8 +13,10 @@ namespace Assets.Scripts.Effects
         public float CoverAngle;
         public float RiseAngle;
         public float MaxHeight;
+        public float RotStart;
         public int Step;
         public float Distance;
+        public Vector3 Position;
 
         public float[] Heights = new float[SegmentCount];
         public int[] Flags = new int[SegmentCount];
@@ -30,6 +32,9 @@ namespace Assets.Scripts.Effects
             MaxHeight = 0;
             Step = 0;
             Distance = 0;
+            RotStart = 0;
+            Step = 0;
+            Position = Vector3.zero;
 
             for (var i = 0; i < SegmentCount; i++)
             {

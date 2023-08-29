@@ -237,7 +237,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 					fixDist = (outDist / sin(radians(angleC))) * sin(radians(angleA)); //supposedly basic trigonometry
 
 				//determine move as a % of the distance from the point to the camera
-				float decRate = (fixDist * 0.7 - _Offset / 4) / camDist; //where does the value come from? Who knows!
+				float decRate = (fixDist * 0.7 - _Offset/4) / camDist; //where does the value come from? Who knows!
 				float decRateNoOffset = (fixDist * 0.7) / camDist; //where does the value come from? Who knows!
 				float decRate2 = (fixDist) / camDist; //where does the value come from? Who knows!
 
@@ -328,7 +328,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 					float2 uv = (i.screenPos.xy / i.screenPos.w);
 					float4 water = tex2D(_WaterDepth, uv);
 					float2 wateruv = TRANSFORM_TEX(water.xy, _WaterImageTexture);
-	
+				
 					if (water.a < 0.1)
 						return c;
 	

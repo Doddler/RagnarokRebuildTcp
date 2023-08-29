@@ -118,8 +118,12 @@ public struct Area
             MaxY = clippingArea.MaxY;
 
         if (MinX > MaxX)
+            MinX = MaxX;
+        if (MaxX < MinX)
             MaxX = MinX;
         if (MinY > MaxY)
+            MinY = MaxY;
+        if (MaxY < MinY)
             MaxY = MinY;
 
         return this;

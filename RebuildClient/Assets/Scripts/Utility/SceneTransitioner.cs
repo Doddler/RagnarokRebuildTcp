@@ -28,12 +28,14 @@ namespace Assets.Scripts.Utility
 		public TextMeshProUGUI MonsterHoverText;
 
 		public TextAsset MapList;
+		public TextAsset FogData;
 		
 		private Scene unloadScene;
 		private string newScene;
 		private Action finishCallback;
 
 		private List<ClientMapEntry> mapEntries;
+		private List<FogInfo> mapFogInfo;
 
 		private bool needAudioChange = false;
 
@@ -42,6 +44,9 @@ namespace Assets.Scripts.Utility
 			Instance = this;
 			BlackoutImage.gameObject.SetActive(true);
 			LoadingImage.gameObject.SetActive(true);
+			
+			var json = JsonUtility.FromJson<Wrapper<FogInfo>>(FogData.text);
+			mapFogInfo = json.Items.ToList();
         }
 
 		private void LoadMaps()
@@ -130,6 +135,7 @@ namespace Assets.Scripts.Utility
 				SceneManager.UnloadSceneAsync(unloadScene);
 
 			MonsterHoverText.text = "";
+			LightmapSettings.lightProbes = null;
 			
 			var trans = Addressables.LoadSceneAsync($"Assets/Scenes/Maps/{newScene}.unity", LoadSceneMode.Additive);
 
@@ -141,14 +147,29 @@ namespace Assets.Scripts.Utility
 		private void FinishSceneChange(AsyncOperationHandle<SceneInstance> obj)
 		{
 			finishCallback();
+			
             var newMap = mapEntries.FirstOrDefault(m => m.Code == newScene);
+            
+            LightProbes.Tetrahedralize();
 
 			if (needAudioChange)
 			{
 				AudioManager.Instance.PlayBgm(newMap.Music);
 			}
 
-            var type = (MapMinimapType)newMap.MapMode;
+			var fog = mapFogInfo.FirstOrDefault(m => m.Map == newScene);
+			if (fog != null)
+			{
+				CameraFollower.Instance.FogNearRatio = fog.NearPlane * 1500f / 400f;
+				CameraFollower.Instance.FogFarRatio = fog.FarPlane * 1500f / 400f;
+			}
+			else
+			{
+				CameraFollower.Instance.FogNearRatio = 0.1f * 1500f / 400f;
+				CameraFollower.Instance.FogFarRatio = 0.9f * 1500f / 400f;
+			}
+
+			var type = (MapMinimapType)newMap.MapMode;
 
 			if (type == MapMinimapType.None)
 				MinimapController.Instance.gameObject.SetActive(false);

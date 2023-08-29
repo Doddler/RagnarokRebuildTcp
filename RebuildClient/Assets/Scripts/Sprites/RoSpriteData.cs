@@ -302,6 +302,30 @@ namespace Assets.Scripts
 
             return false;
         }
+
+        public static bool Is8Direction(SpriteType type, SpriteMotion motion)
+        {
+            switch (type)
+            {
+                case SpriteType.Player:
+                case SpriteType.Head:
+                case SpriteType.Headgear:
+                case SpriteType.Npc:
+                {
+                    switch (motion)
+                    {
+                        case SpriteMotion.Idle:
+                        case SpriteMotion.Sit:
+                        case SpriteMotion.Walk:
+                            return true;
+                    }                    
+                }
+                break;
+            }
+            
+            return false;
+        }
+        
     }
 
     public class RoSpriteData : ScriptableObject

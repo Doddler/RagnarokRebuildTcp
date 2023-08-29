@@ -37,7 +37,11 @@ namespace Assets.Scripts.Effects
         public float Duration;
         public int FrameDuration;
         public float CurrentPos;
+        public float PrevPos;
         public int Step;
+        public bool IsStepFrame;
+
+        public float CurrentFrameTime => IsStepFrame ? 1 / 60f : 0f;
 
         public Vector3 Velocity;
         
@@ -59,12 +63,19 @@ namespace Assets.Scripts.Effects
             var p = go.AddComponent<RagnarokPrimitive>();
             return p;
         }
+
+        public void SetFrame(int frameNum)
+        {
+            Step = frameNum;
+            CurrentPos = Step * (1 / 60f);
+        }
         
         public void Reset()
         {
             Duration = 0;
             FrameDuration = 0;
             CurrentPos = 0;
+            PrevPos = 0;
             Step = 0;
             DelayTime = 0;
             IsActive = false;
@@ -151,6 +162,33 @@ namespace Assets.Scripts.Effects
             PrimitiveData = RagnarokEffectData.NewPrimitiveData(PrimitiveType);
 
             IsActive = true;
+            IsDirty = true;
+        }
+        
+        public void AddTexturedRectangleQuad(Vector3 offset, float width, float height, Color c)
+        {
+            colors[0] = c;
+            colors[1] = c;
+            colors[2] = c;
+            colors[3] = c;
+            
+            verts[0] = new Vector3(-width, height);
+            verts[1] = new Vector3(width, height);
+            verts[2] = new Vector3(-width, -height);
+            verts[3] = new Vector3(width, -height);
+            
+            uvs[0] = new Vector2(0, 1);
+            uvs[1] = new Vector2(1, 1);
+            uvs[2] = new Vector2(0, 0);
+            uvs[3] = new Vector2(1, 0);
+            
+            //completely unused really
+            normals[0] = Vector3.up;
+            normals[1] = Vector3.up;
+            normals[2] = Vector3.up;
+            normals[3] = Vector3.up;
+            
+            mb.AddQuad(verts, normals, uvs, colors);
         }
 
         public void AddTexturedSpriteQuad(Sprite sprite, Vector3 offset, float width, float height, Color c)
@@ -226,6 +264,12 @@ namespace Assets.Scripts.Effects
         }
 
 
+        public void AddTexturedQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, Color c, float scale = 1)
+        {
+            AddTexturedQuad(vert1, vert2, vert3, vert4, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 0),
+                new Vector2(1, 0), c, scale);
+        }
+
         public void AddTexturedQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, Vector2 uv1,
             Vector2 uv2, Vector2 uv3, Vector2 uv4, Color c, float scale = 1)
         {
@@ -269,10 +313,17 @@ namespace Assets.Scripts.Effects
             DelayTime -= Time.deltaTime;
             if (DelayTime > 0)
                 return IsActive;
-            
+
+            PrevPos = CurrentPos;
             CurrentPos += Time.deltaTime;
-            if(Mathf.RoundToInt(CurrentPos / (1 / 60f)) > Step)
+            if (Mathf.RoundToInt(CurrentPos / (1 / 60f)) > Step)
+            {
                 Step++; //only advance once per frame.
+                IsStepFrame = true;
+            }
+            else
+                IsStepFrame = false;
+
             if (Step > int.MaxValue / 2)
                 Step = 0; //safety in case they are on screen for a very, very long time
 

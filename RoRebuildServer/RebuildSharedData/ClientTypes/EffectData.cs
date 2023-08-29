@@ -15,6 +15,7 @@ public class EffectTypeEntry
     public bool ImportEffect;
     public bool Billboard;
     public string? StrFile;
+    public string? Sprite;
     public string? SoundFile;
     public float Offset;
     public string? PrefabName;

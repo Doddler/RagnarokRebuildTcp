@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Channels;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.VisualBasic;
@@ -291,11 +292,18 @@ public class World
         
         if (!TryGetWorldMapByName(mapName, out var map) || map == null)
             throw new Exception($"Could not create player on world map '{mapName}' as it could not be found.");
-        
+
+        //force the spawn area to be in bounds
+        spawnArea.ClipArea(map.MapBounds);
+
         if (spawnArea.IsZero)
             spawnArea = map.MapBounds;
 
-        Position p;
+        Position p = new Position(spawnArea.MidX, spawnArea.MidY);
+
+        //if their tile isn't walkable, put them somewhere else on the map. Note that this could be exploited.
+        if (!map.WalkData.IsCellWalkable(p) && spawnArea.Width <= 1 && spawnArea.Height <= 1)
+            spawnArea = map.MapBounds;
 
         if (spawnArea.Width > 1 || spawnArea.Height > 1)
         {
@@ -316,8 +324,7 @@ public class World
                 p = spawnArea.RandomInArea();
             } while (!map.WalkData.IsCellWalkable(p));
         }
-        else
-            p = new Position(spawnArea.MidX, spawnArea.MidY);
+        
 
         ch.Id = GetNextEntityId();
         ch.IsActive = false; //start off inactive
@@ -428,6 +435,21 @@ public class World
         
         map.AddEntity(ref e);
 
+
+        if (monsterDef.Minions != null && monsterDef.Minions.Count > 0)
+        {
+            for (var i = 0; i < monsterDef.Minions.Count; i++)
+            {
+                var minionDef = monsterDef.Minions[i];
+                for (var j = 0; j < minionDef.Count; j++)
+                {
+                    var minion = CreateMonster(map, minionDef.Monster, Area.CreateAroundPoint(p, 2), null);
+                    m.AddChild(ref minion);
+                }
+            }
+        }
+
+
         return e;
     }
 
@@ -478,6 +500,21 @@ public class World
         monster.Initialize(ref e, ch, ce, monster.MonsterBase, monster.MonsterBase.AiType, spawnEntry, map.Name);
         
         map.AddEntity(ref e, false);
+
+        var monsterDef = monster.MonsterBase;
+
+        if (monsterDef.Minions != null && monsterDef.Minions.Count > 0)
+        {
+            for (var i = 0; i < monsterDef.Minions.Count; i++)
+            {
+                var minionDef = monsterDef.Minions[i];
+                for (var j = 0; j < minionDef.Count; j++)
+                {
+                    var minion = CreateMonster(map, minionDef.Monster, Area.CreateAroundPoint(p, 2), null);
+                    monster.AddChild(ref minion);
+                }
+            }
+        }
 
         return true;
     }

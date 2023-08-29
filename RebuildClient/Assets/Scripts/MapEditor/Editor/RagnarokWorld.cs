@@ -65,6 +65,8 @@ namespace Assets.Scripts.MapEditor.Editor
         public int Id;
         public float Delay;
         public Vector4 Param;
+
+        public override string ToString() => $"[Effect {Name} Id {Id}: Position {Position} Delay {Delay} Param {Param}]";
     }
 
     [Serializable]

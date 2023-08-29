@@ -1,0 +1,1733 @@
+{
+  "Items": [
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "1@nyd",
+      "Color": "0x5548d1cc"
+    },
+    {
+      "NearPlane": 0.22,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "2@nyd",
+      "Color": "0x006196b8"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "1@orcs",
+      "Color": "0xff013200"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "2@orcs",
+      "Color": "0xff013200"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "abyss_02",
+      "Color": "0xffdcdcdc"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "alb2trea",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "alberta",
+      "Color": "0xffffffff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "aldebaran",
+      "Color": "0xffffffff"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "ama_dun02",
+      "Color": "0x22660033"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.5,
+      "Density": 0.3,
+      "Map": "ama_dun03",
+      "Color": "0x22990066"
+    },
+    {
+      "NearPlane": 0.4,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "ama_fild01",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.05,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "anthell01",
+      "Color": "0xff601B00"
+    },
+    {
+      "NearPlane": 0.05,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "anthell02",
+      "Color": "0xff601B00"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "ayo_fild01",
+      "Color": "0xffA8FFFC"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "ayothaya",
+      "Color": "0xffA3FFF1"
+    },
+    {
+      "NearPlane": 0.37,
+      "FarPlane": 0.7,
+      "Density": 0.7,
+      "Map": "bat_a01",
+      "Color": "0xff772200"
+    },
+    {
+      "NearPlane": 0.37,
+      "FarPlane": 0.7,
+      "Density": 0.7,
+      "Map": "bat_a02",
+      "Color": "0xff772200"
+    },
+    {
+      "NearPlane": 0.15,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "beach_dun",
+      "Color": "0x222A00FF"
+    },
+    {
+      "NearPlane": 0.15,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "beach_dun2",
+      "Color": "0x222A00FF"
+    },
+    {
+      "NearPlane": 0.15,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "beach_dun3",
+      "Color": "0x22ff00FF"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "bra_dun01",
+      "Color": "0xff176555"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "bra_dun02",
+      "Color": "0xff176555"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "bra_fild01",
+      "Color": "0xff638f1e"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.7,
+      "Density": 0.4,
+      "Map": "cmd_fild01",
+      "Color": "0x224a6976"
+    },
+    {
+      "NearPlane": 0.4,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "cmd_fild02",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.5,
+      "Density": 0.3,
+      "Map": "cmd_fild03",
+      "Color": "0x224a6976"
+    },
+    {
+      "NearPlane": 0.4,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "cmd_fild04",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "cmd_fild05",
+      "Color": "0x224a6976"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "cmd_fild06",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "cmd_fild07",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "cmd_fild08",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.3,
+      "Map": "cmd_fild09",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.5,
+      "Density": 0.2,
+      "Map": "e_tower",
+      "Color": "0x11ADB0C3"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "ein_fild03",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "ein_fild04",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "ein_fild06",
+      "Color": "0xffF0DCC8"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "ein_fild08",
+      "Color": "0xff660000"
+    },
+    {
+      "NearPlane": 0.5,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "einbech",
+      "Color": "0xff332211"
+    },
+    {
+      "NearPlane": 0.4,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "einbroch",
+      "Color": "0xff660000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "gef_dun00",
+      "Color": "0xff8600B8"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "gef_dun01",
+      "Color": "0xff8600B8"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "gef_dun02",
+      "Color": "0xff8600B8"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "gef_dun03",
+      "Color": "0xff8600B8"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild00",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild01",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild02",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild03",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild04",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild05",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild06",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild07",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild08",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild09",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild10",
+      "Color": "0x22F7FF75"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild11",
+      "Color": "0x22F7FF75"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.45,
+      "Density": 0.5,
+      "Map": "gef_fild12",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.45,
+      "Density": 0.5,
+      "Map": "gef_fild13",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.75,
+      "Density": 0.5,
+      "Map": "gef_fild14",
+      "Color": "0x2275A9FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.95,
+      "Density": 0.3,
+      "Map": "geffen",
+      "Color": "0xffD7A8FF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.3,
+      "Map": "glast_01",
+      "Color": "0xff040098"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "gld_dun01",
+      "Color": "0xff04009A"
+    },
+    {
+      "NearPlane": 0.15,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "gld_dun02",
+      "Color": "0x222A00FF"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "gld_dun03",
+      "Color": "0xff601B00"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "gld_dun04",
+      "Color": "0xff013200"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "gon_dun01",
+      "Color": "0x22ccffcc"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "gon_dun03",
+      "Color": "0x22990066"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "gon_fild01",
+      "Color": "0x2299ffff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "hu_fild01",
+      "Color": "0xffddd7cc"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "hu_fild04",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.35,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "hu_fild05",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.23,
+      "FarPlane": 0.7,
+      "Density": 0.5,
+      "Map": "hu_fild07",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "in_sphinx1",
+      "Color": "0xff5D0000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "in_sphinx2",
+      "Color": "0xff5D0000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "in_sphinx3",
+      "Color": "0xff5D0000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "in_sphinx4",
+      "Color": "0xff5D0000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "in_sphinx5",
+      "Color": "0xff5D0000"
+    },
+    {
+      "NearPlane": 0.15,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "iz_dun00",
+      "Color": "0x222A00FF"
+    },
+    {
+      "NearPlane": 0.15,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "iz_dun01",
+      "Color": "0x222A00FF"
+    },
+    {
+      "NearPlane": 0.15,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "iz_dun02",
+      "Color": "0x222A00FF"
+    },
+    {
+      "NearPlane": 0,
+      "FarPlane": 0.6,
+      "Density": 0.5,
+      "Map": "iz_dun03",
+      "Color": "0xff000CA8"
+    },
+    {
+      "NearPlane": 0,
+      "FarPlane": 0.5,
+      "Density": 0.5,
+      "Map": "iz_dun04",
+      "Color": "0xff000CA8"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "izlu2dun",
+      "Color": "0xffA3F7FF"
+    },
+    {
+      "NearPlane": 0.13,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "izlude",
+      "Color": "0xffffffff"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 1,
+      "Density": 0.3,
+      "Map": "jupe_cave",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "lhz_fild02",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.8,
+      "Density": 0.3,
+      "Map": "lhz_fild03",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "lou_fild01",
+      "Color": "0x22ffcccc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "mag_dun01",
+      "Color": "0xff89003"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.45,
+      "Density": 0.1,
+      "Map": "mag_dun02",
+      "Color": "0xff890030"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.2,
+      "Map": "man_fild01",
+      "Color": "0x0099ccff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.2,
+      "Map": "man_fild02",
+      "Color": "0x0099ccff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.5,
+      "Density": 0.4,
+      "Map": "man_fild03",
+      "Color": "0x0099ccff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.2,
+      "Map": "manuk",
+      "Color": "0x0099ccff"
+    },
+    {
+      "NearPlane": 0.22,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "mid_camp",
+      "Color": "0x0099ffff"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "mjo_dun01",
+      "Color": "0xff000000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "mjo_dun02",
+      "Color": "0xff000000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "mjo_dun03",
+      "Color": "0xff000000"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_01",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_02",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_03",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_04",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_05",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_06",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_07",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_08",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_09",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_10",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_11",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mjolnir_12",
+      "Color": "0x22DEEEFF"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild01",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "moc_fild02",
+      "Color": "0xffA3F7FF"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild03",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild04",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild05",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild06",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild07",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild08",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild09",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild10",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild11",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild12",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "moc_fild13",
+      "Color": "0xffA3F7FF"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "moc_fild14",
+      "Color": "0xffA3F7FF"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "moc_fild15",
+      "Color": "0xffA3F7FF"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.55,
+      "Density": 0.5,
+      "Map": "moc_fild16",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.8,
+      "Density": 0.3,
+      "Map": "moc_fild17",
+      "Color": "0xffA3F7FF"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.8,
+      "Density": 0.3,
+      "Map": "moc_fild18",
+      "Color": "0xffA3F7FF"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "moc_fild19",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.4,
+      "FarPlane": 0.7,
+      "Density": 0.4,
+      "Map": "moc_fild20",
+      "Color": "0x44660000"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.7,
+      "Density": 0.5,
+      "Map": "moc_fild21",
+      "Color": "0x44660000"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.8,
+      "Map": "moc_fild22",
+      "Color": "0x44660000"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.8,
+      "Map": "moc_fild22b",
+      "Color": "0x44660000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "moc_pryd01",
+      "Color": "0xff820040"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "moc_pryd02",
+      "Color": "0xff820040"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "moc_pryd03",
+      "Color": "0xff820040"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "moc_pryd04",
+      "Color": "0xff820040"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "moc_pryd05",
+      "Color": "0xff820040"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "moc_pryd06",
+      "Color": "0xff820040"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.75,
+      "Density": 0.3,
+      "Map": "moc_prydb1",
+      "Color": "0xff220011"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.95,
+      "Density": 0.3,
+      "Map": "moc_ruins",
+      "Color": "0xffFFDDA8"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.95,
+      "Density": 0.3,
+      "Map": "morocc",
+      "Color": "0xffB37D60"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "mosk_dun01",
+      "Color": "0xffc4f9ff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "mosk_dun02",
+      "Color": "0xffc4f9ff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.7,
+      "Density": 0.5,
+      "Map": "mosk_dun03",
+      "Color": "0xffc4f9ff"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.7,
+      "Map": "mosk_fild01",
+      "Color": "0xffc4f9ff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "mosk_fild02",
+      "Color": "0xffc4f9ff"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.7,
+      "Map": "mosk_ship",
+      "Color": "0xffc4f9ff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "niflheim",
+      "Color": "0x22ffccff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "nif_fild01",
+      "Color": "0x22ccccff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "nif_fild02",
+      "Color": "0x22cc99a9"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "nyd_dun01",
+      "Color": "0x5507004e"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "nyd_dun02",
+      "Color": "0x2207004e"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "orcsdun01",
+      "Color": "0xff013200"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "orcsdun02",
+      "Color": "0xff013200"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "pay_arche",
+      "Color": "0xffA8FFFC"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "pay_dun00",
+      "Color": "0xff04009A"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "pay_dun01",
+      "Color": "0xff04009A"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "pay_dun02",
+      "Color": "0xff04009A"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "pay_dun03",
+      "Color": "0xff04009A"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "pay_dun04",
+      "Color": "0xff04009A"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild01",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild02",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild03",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild04",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild05",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild06",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild07",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild08",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild09",
+      "Color": "0xff006F1A"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild10",
+      "Color": "0xff006F1A"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "pay_fild11",
+      "Color": "0xff2F90A5"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "payon",
+      "Color": "0xffA8FFFC"
+    },
+    {
+      "NearPlane": 0.23,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "prontera",
+      "Color": "0xffffffff"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild00",
+      "Color": "0xffBAFF77"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild01",
+      "Color": "0xffBAFF77"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild02",
+      "Color": "0xffBAFF77"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild03",
+      "Color": "0xffA3FFF1"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild04",
+      "Color": "0xffBAFF77"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild05",
+      "Color": "0xffBAFF77"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "prt_fild06",
+      "Color": "0xffA3FFF1"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild07",
+      "Color": "0xffBAFF77"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild08",
+      "Color": "0xffBAFF77"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild09",
+      "Color": "0xffFFEFA3"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild10",
+      "Color": "0xffBAFF77"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "prt_fild11",
+      "Color": "0xffBAFF77"
+    },
+    {
+      "NearPlane": 0.25,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "prt_monk",
+      "Color": "0xffA3FFF1"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "prt_sewb1",
+      "Color": "0xff00135A"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "prt_sewb2",
+      "Color": "0xff00135A"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "prt_sewb3",
+      "Color": "0xff00135A"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "prt_sewb4",
+      "Color": "0xff00135A"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qaru01",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qaru02",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qaru03",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qaru04",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qaru05",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qsch01",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qsch02",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qsch03",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qsch04",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "que_qsch05",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.22,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "spl_fild01",
+      "Color": "0x00ccee88"
+    },
+    {
+      "NearPlane": 0.22,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "spl_fild02",
+      "Color": "0x00ccee88"
+    },
+    {
+      "NearPlane": 0.22,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "spl_in02",
+      "Color": "0x00ffccff"
+    },
+    {
+      "NearPlane": 0.22,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "spl_fild03",
+      "Color": "0x00ccee88"
+    },
+    {
+      "NearPlane": 0.22,
+      "FarPlane": 0.8,
+      "Density": 0.7,
+      "Map": "splendide",
+      "Color": "0x00ffccff"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.98,
+      "Density": 0.5,
+      "Map": "tha_scene01",
+      "Color": "0x22777777"
+    },
+    {
+      "NearPlane": 0.4,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "thana_boss",
+      "Color": "0xffDFCAA0"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "thor_camp",
+      "Color": "0xff332211"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.6,
+      "Map": "thor_v01",
+      "Color": "0xff4C352A"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.6,
+      "Map": "thor_v02",
+      "Color": "0xff4C352A"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.6,
+      "Map": "thor_v03",
+      "Color": "0xff4C352A"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "treasure01",
+      "Color": "0xff000000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "treasure02",
+      "Color": "0xff000000"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.5,
+      "Density": 0.3,
+      "Map": "tur_dun01",
+      "Color": "0x224a6976"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.4,
+      "Density": 0.3,
+      "Map": "tur_dun02",
+      "Color": "0x224a6976"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.5,
+      "Density": 0.3,
+      "Map": "tur_dun03",
+      "Color": "0x224a6976"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.5,
+      "Density": 0.3,
+      "Map": "tur_dun05",
+      "Color": "0x224a6976"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.5,
+      "Density": 0.3,
+      "Map": "tur_dun06",
+      "Color": "0x224a6976"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "um_dun02",
+      "Color": "0x22ccffff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "um_fild01",
+      "Color": "0x22ccffff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "um_fild02",
+      "Color": "0x227fffd4"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "um_fild03",
+      "Color": "0x22ccffff"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "um_fild04",
+      "Color": "0xff99ffcc"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.8,
+      "Density": 0.5,
+      "Map": "umbala",
+      "Color": "0x22ccffff"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "ve_fild01",
+      "Color": "0x44D89864"
+    },
+    {
+      "NearPlane": 0.2,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "ve_fild02",
+      "Color": "0x44D89864"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "ve_fild03",
+      "Color": "0x22F9D6BF"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.8,
+      "Density": 0.8,
+      "Map": "ve_fild04",
+      "Color": "0x22F2CFB7"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "ve_fild05",
+      "Color": "0x22FCEDC4"
+    },
+    {
+      "NearPlane": 0.45,
+      "FarPlane": 0.9,
+      "Density": 0.2,
+      "Map": "ve_fild06",
+      "Color": "0x22FCEDC4"
+    },
+    {
+      "NearPlane": 0.4,
+      "FarPlane": 0.9,
+      "Density": 0.5,
+      "Map": "ve_fild07",
+      "Color": "0xffAA7755"
+    },
+    {
+      "NearPlane": 0.1,
+      "FarPlane": 0.3,
+      "Density": 0.1,
+      "Map": "veins",
+      "Color": "0xffAA7755"
+    },
+    {
+      "NearPlane": 0.23,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "yggdrasil01",
+      "Color": "0x2200ffff"
+    },
+    {
+      "NearPlane": 0.23,
+      "FarPlane": 0.6,
+      "Density": 0.3,
+      "Map": "xmas",
+      "Color": "0xffffffff"
+    },
+    {
+      "NearPlane": 0.23,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "xmas_dun01",
+      "Color": "0x3020ffff"
+    },
+    {
+      "NearPlane": 0.23,
+      "FarPlane": 0.9,
+      "Density": 0.3,
+      "Map": "xmas_dun02",
+      "Color": "0x3020ffff"
+    },
+    {
+      "NearPlane": 0.13,
+      "FarPlane": 0.8,
+      "Density": 0.3,
+      "Map": "xmas_fild01",
+      "Color": "0xffffffff"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno_fild01",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno_fild02",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno_fild03",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno_fild04",
+      "Color": "0x22dcdcdc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno_fild05",
+      "Color": "0xffdcdcdc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno_fild06",
+      "Color": "0xffdcdcdc"
+    },
+    {
+      "NearPlane": 0.18,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno_fild07",
+      "Color": "0xffdcdcdc"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno_fild08",
+      "Color": "0xffddd7cc"
+    },
+    {
+      "NearPlane": 0.3,
+      "FarPlane": 0.7,
+      "Density": 0.3,
+      "Map": "yuno_fild09",
+      "Color": "0xffddd7cc"
+    }
+  ]
+}

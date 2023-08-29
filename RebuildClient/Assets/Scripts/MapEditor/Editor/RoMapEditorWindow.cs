@@ -321,7 +321,10 @@ namespace Assets.Editor
 
 			if (GUILayout.Button("Rebuild Secondary UVs"))
 				currentEditor.RebuildUVDataInArea(currentData.Rect);
-
+			
+			if(GUILayout.Button("Remove Color From Selected Tiles"))
+				currentEditor.RemoveColorFromTiles();
+			
 			var paint = GUILayout.Toggle(currentEditor.PaintEmptyTileColorsBlack, "Black Out Empty Tile Vertex Colors");
 			if (paint != currentEditor.PaintEmptyTileColorsBlack)
 			{

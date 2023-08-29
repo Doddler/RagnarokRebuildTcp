@@ -183,6 +183,20 @@ Turtle Island
 	2,tur_dun02
 	3,tur_dun03
 	4,tur_dun04
+Novice Training Grounds
+	Entrance,new_zone01
+	Quiz,new_zone02
+	Battle Challenge,new_zone03
+	Interview,new_zone04
+Job Quests
+	Thief,job_thief1
+	Swordsman,job_sword1
+	Knight,job_knt
+	Priest,job_prist
+	Wizard,job_wiz
+	Assasssin,in_moc_16
+	Hunter,job_hunte
+	Dancer,job_duncer
 Debug
 	Test Room 1,2009rwc_03
 	Test Room 2,guild_vs4

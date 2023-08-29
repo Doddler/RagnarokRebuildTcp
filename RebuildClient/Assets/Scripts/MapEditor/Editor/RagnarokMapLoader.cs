@@ -160,12 +160,20 @@ namespace Assets.Scripts.MapEditor.Editor
 
             //var data = br.ReadBytes(count * perCell * 4);
         }
-
+        
         private void ParseTiles()
         {
             var count = br.ReadInt32();
             tiles = new Tile[count];
             lightIds = new int[count];
+            
+            // var firstTile = "";
+            // var firstUVMin = new Vector2(0, 0);
+            // var firstUVMax = new Vector2(0, 0);
+
+            var unlitCount = 0;
+
+            // var lightIdList = new List<int>();
 
             for (var i = 0; i < count; i++)
             {
@@ -182,16 +190,19 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 var texId = br.ReadInt16();
                 var lightId = br.ReadInt16();
-
+                
                 tile.Texture = textures[texId];
                 tile.Color = br.ReadByteColor();
                 lightIds[i] = lightId;
 
                 //tile.IsUnlit = lightId <= 0;
 
-
                 if (tile.Texture.ToLower() == "black" || tile.Texture.ToLower() == "backside")
+                {
                     tile.IsUnlit = true;
+                    // if(firstTile != tile.Texture)
+                    //     unlitCount++;
+                }
 
                 var uvMin = new Vector2(1f, 1f);
                 var uvMax = new Vector2(0f, 0f);
@@ -201,10 +212,17 @@ namespace Assets.Scripts.MapEditor.Editor
                     uvMin = Vector2.Min(uvMin, tile.UVs[j]);
                     uvMax = Vector2.Max(uvMax, tile.UVs[j]);
                 }
-
+                //
+                // if (i == 0)
+                // {
+                //     firstTile = tile.Texture;
+                //     firstUVMin = uvMin;
+                //     firstUVMax = uvMax;
+                //     Debug.Log($"Using {firstTile} {uvMin} {uvMax} as unlit tile for map.");
+                // }
 
                 //what the everliving nonsense it this shit put it in a file or something god
-
+                //
                 if ((tile.Texture == "시계탑던전03" && uvMin == new Vector2(0f, 0.75f) && uvMax == new Vector2(0.25f, 1f)) //clock tower basement
                     //clocktower topside
                     || (tile.Texture == "gp-lostdun_g03" && uvMin == new Vector2(0.75f, 0f) && uvMax == new Vector2(1f, 0.25f))
@@ -259,13 +277,22 @@ namespace Assets.Scripts.MapEditor.Editor
                     || (tile.Texture == "hot-1" && uvMin == new Vector2(0.75f, 0.75f) && uvMax == new Vector2(1f, 1f))
 
 
-                   ////izlude
-                   //|| (tile.Texture == "iz-03" && uvMin == new Vector2(0f, 0.5f) && uvMax == new Vector2(0.25f, 0.75f))
-                   //|| (tile.Texture == "iz-03" && uvMin == new Vector2(0f, 0.75f) && uvMax == new Vector2(0.25f, 1f))
-                   //|| (tile.Texture == "iz-03" && uvMin == new Vector2(0.25f, 0.75f) && uvMax == new Vector2(0.5f, 1f))
-                   //|| (tile.Texture == "iz-03" && uvMin == new Vector2(0.5f, 0.75f) && uvMax == new Vector2(0.75f, 1f))
+                    ////izlude
+                    //|| (tile.Texture == "iz-03" && uvMin == new Vector2(0f, 0.5f) && uvMax == new Vector2(0.25f, 0.75f))
+                    //|| (tile.Texture == "iz-03" && uvMin == new Vector2(0f, 0.75f) && uvMax == new Vector2(0.25f, 1f))
+                    //|| (tile.Texture == "iz-03" && uvMin == new Vector2(0.25f, 0.75f) && uvMax == new Vector2(0.5f, 1f))
+                    //|| (tile.Texture == "iz-03" && uvMin == new Vector2(0.5f, 0.75f) && uvMax == new Vector2(0.75f, 1f))
                    )
+                {
                     tile.IsUnlit = true;
+                    unlitCount++;
+                }
+                //
+                // if (tile.Texture == firstTile && uvMin == firstUVMin && uvMax == firstUVMax)
+                // {
+                //     tile.IsUnlit = true;
+                //     unlitCount++;
+                // }
 
                 //if (i == 0 || lightId == 0)
                 //{
@@ -275,6 +302,8 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 tiles[i] = tile;
             }
+
+            Debug.Log($"Painted {unlitCount} tiles unlit.");
         }
 
         private Vector2[] RightSwapUVs(Vector2[] uvs)

@@ -215,7 +215,7 @@ internal class ScriptTreeWalker
             throw new Exception($"Incorrect number of parameters on Npc expression on line {param.start.Line}");
 
         var str = ExpressionContextString(expr[1]).Unescape();
-        str = str.Replace(" ", "_").Replace("#", "__").Replace("?", "Q");
+        str = ScriptUtilityFunctions.CleanCsString(str);
 
         var mapName = ExpressionContextString(expr[0]);
         var displayName = ExpressionContextString(expr[1]);
@@ -309,7 +309,7 @@ internal class ScriptTreeWalker
         var str = v["signalName"].String.Unescape();
         if (string.IsNullOrWhiteSpace(str))
             str = "UnnamedWarp_" + v["mapName"].String.Unescape();
-        str = str.Replace(" ", "_").Replace("#", "__").Replace("?", "Q");
+        str = ScriptUtilityFunctions.CleanCsString(str);
 
         var name = builder.StartNpc(str);
         builder.StartNpcSection("OnTouch");

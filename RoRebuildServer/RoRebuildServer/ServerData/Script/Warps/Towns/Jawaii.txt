@@ -1,0 +1,7 @@
+﻿Warp("jawaii", "jawaiiwarp001", 108, 186, 1, 1, "jawaii_in", 85, 117);
+Warp("jawaii", "jawaiiwarp002", 192, 214, 2, 2, "jawaii_in", 27, 94);
+Warp("jawaii_in", "jawaiiwarp003", 27, 91, 2, 1, "jawaii", 192, 218);
+Warp("jawaii_in", "jawaiiwarp004", 88, 117, 2, 2, "jawaii", 110, 186);
+Warp("jawaii_in", "jawaiiwarp005", 90, 78, 2, 2, "jawaii", 116, 172);
+Warp("jawaii_in", "jawaiiwarp006", 113, 61, 2, 2, "jawaii", 137, 201);
+Warp("jawaii_in", "jawaiiwarp007", 132, 107, 2, 2, "jawaii", 111, 198);

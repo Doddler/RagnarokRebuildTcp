@@ -11,6 +11,7 @@ public class CsvEffects
     public bool ImportEffect { get; set; }
     public bool Billboard { get; set; }
     public string? StrFile { get; set; }
+    public string? Sprite { get; set; }
     public string? SoundFile { get; set; }
     public float Offset { get; set; }
     public string? PrefabName { get; set; }

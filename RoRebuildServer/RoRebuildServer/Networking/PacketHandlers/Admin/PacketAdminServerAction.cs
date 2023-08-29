@@ -3,17 +3,11 @@ using RoRebuildServer.Simulation;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
-[ClientPacketHandler(PacketType.AdminServerAction, true)]
+[AdminClientPacketHandler(PacketType.AdminServerAction)]
 public class PacketAdminServerAction : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (connection.Player?.IsAdmin != true)
-        {
-            NetworkManager.DisconnectPlayer(connection);
-            return;
-        }
-
         var type = (AdminAction)msg.ReadByte();
 
         if (type == AdminAction.ForceGC)

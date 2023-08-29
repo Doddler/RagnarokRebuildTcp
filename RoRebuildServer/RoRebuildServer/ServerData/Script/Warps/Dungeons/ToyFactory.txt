@@ -1,0 +1,3 @@
+﻿Warp("xmas_dun01", "toyfactorywarp001", 129, 130, 1, 1, "xmas_dun02", 131, 130);
+Warp("xmas_dun01", "toyfactorywarp002", 205, 13, 2, 2, "xmas", 143, 311);
+Warp("xmas_dun02", "toyfactorywarp003", 129, 130, 1, 1, "xmas_dun01", 132, 130);

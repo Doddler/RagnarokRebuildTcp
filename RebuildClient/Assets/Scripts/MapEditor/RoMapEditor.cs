@@ -204,7 +204,7 @@ namespace Assets.Scripts.MapEditor
             }
         }
 
-        private void RebuildProbes()
+        public void RebuildProbes()
         {
             if (MapData.IsWalkTable)
                 return;
@@ -221,9 +221,11 @@ namespace Assets.Scripts.MapEditor
 
             var probePositions = new List<Vector3>();
 
-            for (var x = 0; x < MapData.Width; x += 3)
+            var probeCount = 0;
+
+            for (var x = 0; x < MapData.Width; x += 1)
             {
-                for (var y = 0; y < MapData.Height; y += 3)
+                for (var y = 0; y < MapData.Height; y += 1)
                 {
                     
                     var cell = MapData.Cell(x, y);
@@ -233,24 +235,33 @@ namespace Assets.Scripts.MapEditor
 
                     var ray = new Ray(topCast, Vector3.down);
 
-                    if (Physics.Raycast(ray, out var hitInfo, 100f, layerMask))
+                    if (Physics.Raycast(ray, out var hitInfo, 100f))
                     {
-                        probePositions.Add(hitInfo.point);
+                        probePositions.Add(hitInfo.point + new Vector3(0f, 0.01f, 0f));
                     }
                     else
 						probePositions.Add(castBottom);
 
+                    probeCount++;
 
-                    if (x % 5 == 0 && y % 5 == 0)
-                        probePositions.Add(new Vector3(x * TileSize, cell.AverageHeights * RoMapData.YScale + 10f, y * TileSize));
 
-                    if (x % 30 == 0 && y % 30 == 0)
-						probePositions.Add(new Vector3(x * TileSize, cell.AverageHeights * RoMapData.YScale + 50f, y * TileSize));
+                    if (x % 2 == 0 && y % 2 == 0)
+                    {
+                        probePositions.Add(new Vector3(x * TileSize, cell.AverageHeights * RoMapData.YScale + 3f, y * TileSize));
+                        probeCount++;
+                    }
+
+                    if (x % 10 == 0 && y % 10 == 0)
+                    {
+                        probePositions.Add(new Vector3(x * TileSize, cell.AverageHeights * RoMapData.YScale + 20f, y * TileSize));
+                        probeCount++;
+                    }
                 }
             }
 
+            Debug.Log($"Placed {probeCount} light probes on map {mapData.name}.");
             ProbeGroup.probePositions = probePositions.ToArray();
-
+            
             EditorUtility.SetDirty(ProbeGroup);
         }
 
@@ -336,6 +347,35 @@ namespace Assets.Scripts.MapEditor
                 if(c.NeedsUVUpdate)
                     c.RebuildUvs();
             }
+        }
+
+        public void RemoveColorFromTiles()
+        {
+            if (mapData.IsWalkTable)
+                return; //no need for this
+
+            var r = SelectedRegion;
+            if (r.width == 0 || r.height == 0)
+                return;
+
+            r.ClampToBounds(new RectInt(0, 0, MapData.Width, MapData.Height));
+            
+            var cells = MapData.GetCellData();
+
+            for (var x = r.xMin; x < r.xMax; x++)
+            {
+                for (var y = r.yMin; y < r.yMax; y++)
+                {
+                    var cell = cells[x + y * MapData.Width];
+
+                    cell.Top.Color = new Color(1, 1, 1, 1);
+                    cell.Front.Color = new Color(1, 1, 1, 1);
+                    
+                    
+                }
+            }
+            
+            RebuildMeshInArea(r);
         }
 
         public void RebuildUVDataInArea(RectInt r)
@@ -749,9 +789,14 @@ namespace Assets.Scripts.MapEditor
 
             rayHit = new RaycastHit();
 
+            if (Chunks.Length <= 0)
+                return false;
+
+            var mask = Chunks[0].GetLayerMaskForChunk();
+
             for (var i = 0; i < Chunks.Length; i++)
             {
-                if (Chunks[i].GetMeshIntersection(worldRay, out var hit))
+                if (Chunks[i].GetMeshIntersection(worldRay, out var hit, mask))
                 {
                     if (hit.distance < distance)
                     {

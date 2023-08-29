@@ -11,21 +11,14 @@ using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin
 {
-    [ClientPacketHandler(PacketType.AdminSummonMonster)]
+    [AdminClientPacketHandler(PacketType.AdminSummonMonster)]
     public class PacketAdminSummonMonster : IClientPacketHandler
     {
         public void Process(NetworkConnection connection, InboundMessage msg)
         {
-            if (connection.Character == null || !connection.Character.IsActive || connection.Character.Map == null
-                || !connection.Entity.IsAlive() || connection.Character.State == CharacterState.Dead)
+            if (!connection.IsOnlineAdmin)
                 return;
-
-            if (connection.Player?.IsAdmin != true)
-            {
-                NetworkManager.DisconnectPlayer(connection);
-                return;
-            }
-
+            
             var chara = connection.Entity.Get<WorldObject>();
             
             if (chara.Map == null)

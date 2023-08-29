@@ -48,6 +48,7 @@ namespace Assets.Scripts.Network
         private float lastPing = 0;
         private bool isReady = false;
         private bool isConnected = false;
+        private bool isAdminHidden = false;
 
         public Color FakeAmbient = Color.white;
 
@@ -303,6 +304,7 @@ namespace Assets.Scripts.Network
                     CameraFollower.UpdatePlayerHP(hp, maxHp);
                     var max = CameraFollower.Instance.ExpForLevel(controllable.Level - 1);
                     CameraFollower.UpdatePlayerExp(PlayerState.Exp, max);
+                    controllable.IsHidden = isAdminHidden;
                 }
             }
             else
@@ -358,7 +360,8 @@ namespace Assets.Scripts.Network
                 CameraFollower.Target = controllable.gameObject;
                 //Debug.Log($"Player entity sent, we're at position {pos}");
 
-                SceneTransitioner.Instance.FadeIn();
+                if(!CameraFollower.Instance.CinemachineMode)
+                    SceneTransitioner.Instance.FadeIn();
                 CameraFollower.Instance.SnapLookAt();
             }
 
@@ -1002,6 +1005,19 @@ namespace Assets.Scripts.Network
             }
         }
 
+        public void OnMessageAdminHideCharacter(ClientInboundMessage msg)
+        {
+            var isHidden = msg.ReadBoolean();
+            Debug.Log($"Packet for setting admin hide state: {isHidden}");
+
+            isAdminHidden = isHidden;
+
+            if (CameraFollower.TargetControllable)
+            {
+                CameraFollower.TargetControllable.IsHidden = isHidden;
+            }
+        }
+        
         void HandleDataPacket(ClientInboundMessage msg)
         {
             var type = (PacketType)msg.ReadByte();
@@ -1096,6 +1112,9 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.Emote:
                     OnEmote(msg);
+                    break;
+                case PacketType.AdminHideCharacter:
+                    OnMessageAdminHideCharacter(msg);
                     break;
                 default:
                     Debug.LogWarning($"Failed to handle packet type: {type}");
@@ -1261,7 +1280,7 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendMoveRequest(string map, int x = -999, int y = -999)
+        public void SendMoveRequest(string map, int x = -999, int y = -999, bool forcePosition = false)
         {
             if (map.ToLower() == "debug" || map.ToLower() == "debugroom")
                 map = "2009rwc_03";
@@ -1272,6 +1291,7 @@ namespace Assets.Scripts.Network
             msg.Write(map);
             msg.Write((short)x);
             msg.Write((short)y);
+            msg.Write(forcePosition);
 
             SendMessage(msg);
         }
@@ -1357,6 +1377,25 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendAdminHideCharacter(bool desireHidden)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.AdminHideCharacter);
+            msg.Write(desireHidden);
+            
+            SendMessage(msg);
+        }
+
+        public void SendAdminChangeSpeed(int value)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.AdminChangeSpeed);
+            msg.Write((Int16)value);
+            
+            SendMessage(msg);
+        }
 
         public void AttachEffectToEntity(int effectId)
         {

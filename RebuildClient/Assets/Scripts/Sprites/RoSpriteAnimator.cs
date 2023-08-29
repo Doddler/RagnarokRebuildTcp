@@ -32,9 +32,11 @@ namespace Assets.Scripts.Sprites
 
         public RoSpriteAnimator Parent;
         public GameObject Shadow;
+        public GameObject LightProbeAnchor;
         public SortingGroup ShadowSortingGroup { get; set; }
 
-        public AudioSource AudioSource;
+        // public AudioSource AudioSource;
+        public AudioSource[] AudioSources;
 
         public bool IgnoreAnchor = false;
         public bool IsHead = false;
@@ -79,6 +81,9 @@ namespace Assets.Scripts.Sprites
         private int maxFrame { get; set; } = 0;
         private bool isPaused;
         private bool isDirty;
+        private bool isActive;
+
+        private float soundUpdateTime;
         
         //private float rotate = 0;
         //private bool doSpin = false;
@@ -93,11 +98,26 @@ namespace Assets.Scripts.Sprites
         public bool IsAttackMotion => CurrentMotion == SpriteMotion.Attack1 || CurrentMotion == SpriteMotion.Attack2 ||
                                       CurrentMotion == SpriteMotion.Attack3;
 
+        public bool Is8Direction => RoAnimationHelper.Is8Direction(SpriteData.Type, CurrentMotion);
+
         public Action OnFinishAnimation;
 
         public void SetDirty()
         {
             isDirty = true;
+        }
+
+        public void SetRenderActive(bool isActive)
+        {
+            if(Shadow)
+                Shadow.SetActive(isActive);
+            gameObject.SetActive(isActive);
+            if (SpriteRenderer != null)
+            {
+                SpriteRenderer.SetActive(isActive);
+                foreach (var c in ChildrenSprites)
+                    c.SpriteRenderer.SetActive(isActive);
+            }
         }
 
         //public void DoSpin()
@@ -190,21 +210,70 @@ namespace Assets.Scripts.Sprites
             }
 
             isInitialized = true;
+            isActive = true;
+
+            if (Parent == null)
+            {
+                LightProbeAnchor = new GameObject("LightProbeAnchor");
+                LightProbeAnchor.transform.SetParent(gameObject.transform.parent);
+                LightProbeAnchor.transform.localPosition = new Vector3(0f, 1f, 0f);
+            }
+            else
+                LightProbeAnchor = Parent.LightProbeAnchor;
 
             ChangeMotion(CurrentMotion, true);
 
-            if (AudioSource == null && Parent == null)
+            if (AudioSources == null && Parent == null)
             {
-                var channel = AudioManager.Instance.Mixer.FindMatchingGroups("Sounds")[0];
-                AudioSource = gameObject.AddComponent<AudioSource>();
-                AudioSource.spatialBlend = 0.7f;
-                AudioSource.priority = 60;
-                AudioSource.maxDistance = 40;
-                AudioSource.rolloffMode = AudioRolloffMode.Linear;
-                AudioSource.volume = 1f;
-                AudioSource.dopplerLevel = 0;
-                AudioSource.outputAudioMixerGroup = channel;
+                AudioSources = new AudioSource[SpriteData.Sounds.Length];
+                var am = AudioManager.Instance;
+                if (am != null)
+                {
+                    var channel = am.Mixer.FindMatchingGroups("Sounds")[0];
+
+                    for (var i = 0; i < SpriteData.Sounds.Length; i++)
+                    {
+                        if (SpriteData.Sounds[i] == null)
+                            continue;
+
+                        var source = gameObject.AddComponent<AudioSource>();
+                        source.clip = SpriteData.Sounds[i];
+                        source.spatialBlend = 1f;
+                        source.priority = 80;
+                        // source.minDistance = 10;
+                        source.maxDistance = 50;
+                        source.rolloffMode = AudioRolloffMode.Custom;
+                        source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, AudioManager.Instance.FalloffCurve);
+                        source.volume = 1f;
+                        // source.spread = 1;
+                        source.dopplerLevel = 0;
+                        source.outputAudioMixerGroup = channel;
+                        source.enabled = false;
+
+                        AudioSources[i] = source;
+                    }
+                }
             }
+            //
+            // if (AudioSource == null && Parent == null)
+            // {
+            //     // Debug.Log(AudioManager.Instance.Mixer.FindMatchingGroups("Sounds"));
+            //     var channel = AudioManager.Instance.Mixer.FindMatchingGroups("Sounds")[0];
+            //     AudioSource = gameObject.AddComponent<AudioSource>();
+            //     AudioSource.spatialBlend = 1f;
+            //     AudioSource.priority = 60;
+            //     AudioSource.minDistance = 10;
+            //     AudioSource.maxDistance = 60;
+            //     AudioSource.rolloffMode = AudioRolloffMode.Custom;
+            //     AudioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, AudioManager.Instance.FalloffCurve);
+            //     AudioSource.volume = 1f;
+            //     AudioSource.spread = 1;
+            //     AudioSource.dopplerLevel = 0;
+            //     AudioSource.outputAudioMixerGroup = channel;
+            //     //
+            //     // if (parent.name == "Nightmare")
+            //     //     AudioSource.volume = 0.3f;
+            // }
 
             if (Type == SpriteType.Player && State == SpriteState.Idle)
                 isPaused = true;
@@ -244,11 +313,12 @@ namespace Assets.Scripts.Sprites
             SpriteRenderer.SetSprite(SpriteData);
             SpriteRenderer.SetColor(Color);
             SpriteRenderer.SetDirection(Direction);
-
+            
             if (Parent != null)
                 SpriteRenderer.SetOffset(Parent.SpriteData.Size / 125f);
 
             SpriteRenderer.Initialize(makeCollider);
+            SpriteRenderer.SetLightProbeAnchor(LightProbeAnchor);
 
             isDirty = true;
         }
@@ -292,20 +362,27 @@ namespace Assets.Scripts.Sprites
 
             if (frame.Sound > -1 && frame.Sound < SpriteData.Sounds.Length && lastFrame != currentFrame && !isPaused)
             {
-                var sound = SpriteData.Sounds[frame.Sound];
-                if (sound != null && AudioSource != null)
+                var distance = (transform.position - CameraFollower.Instance.ListenerProbe.transform.position).magnitude;
+                if (distance < 50)
                 {
-                    if (AudioSource.isPlaying)
-                        AudioSource.Stop();
 
-                    AudioSource.clip = sound;
-                    AudioSource.Play();
+                    var src = AudioSources[frame.Sound];
+                    if (src != null)
+                    {
+                        src.enabled = true;
+                        src.priority = 32 + Mathf.FloorToInt(distance); 
+                        src.Play();
+                    }
                 }
             }
 
             lastFrame = currentFrame;
-
-            SpriteRenderer.SetAction(currentActionIndex);
+            
+            
+            if(Parent == null)
+                SpriteRenderer.SetAction(currentActionIndex, Is8Direction);
+            else
+                SpriteRenderer.SetAction(currentActionIndex, Parent.Is8Direction);
             SpriteRenderer.SetDirection((Direction)currentAngleIndex);
             SpriteRenderer.SetFrame(currentFrame);
 
@@ -398,7 +475,7 @@ namespace Assets.Scripts.Sprites
                     HeadFacing = HeadFacing.Center;
             }
 
-            if (Shadow != null)
+            if (Shadow != null && isActive)
             {
                 if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
                     Shadow.SetActive(false);
@@ -459,7 +536,7 @@ namespace Assets.Scripts.Sprites
 
             currentAction = SpriteData.Actions[currentActionIndex + currentAngleIndex];
             currentFrame = newCurrentFrame;
-
+            
             UpdateSpriteFrame();
             ChildUpdate();
         }
@@ -554,6 +631,20 @@ namespace Assets.Scripts.Sprites
 
             //mat.color = c;
             //mat2.color = c;
+        }
+
+        public void SoundCleanup()
+        {
+            //because clips that finished playing still tie up unity voices.
+            for (var i = 0; i < AudioSources.Length; i++)
+            {
+                var source = AudioSources[i];
+                if (source && !source.isPlaying)
+                {
+                    source.priority = 255;
+                    source.enabled = false;
+                }
+            }
         }
         
         public void LateUpdate()
@@ -736,6 +827,13 @@ namespace Assets.Scripts.Sprites
                 }
                
                 isDirty = false;
+            }
+
+            soundUpdateTime -= Time.deltaTime;
+            if (soundUpdateTime < 0)
+            {
+                SoundCleanup();
+                soundUpdateTime += Random.Range(1f, 3f);
             }
 
         }

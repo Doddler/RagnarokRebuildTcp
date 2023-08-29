@@ -8,7 +8,7 @@ using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
-[ClientPacketHandler(PacketType.AdminEnterServerSpecificMap)]
+[AdminClientPacketHandler(PacketType.AdminEnterServerSpecificMap)]
 public class PacketAdminEnterServerSpecificMap : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)

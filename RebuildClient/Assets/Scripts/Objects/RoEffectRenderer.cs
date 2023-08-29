@@ -7,18 +7,16 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Objects
 {
-
-
-
     public class RoEffectRenderer : MonoBehaviour
     {
         public AudioSource AudioSource;
         public StrAnimationFile Anim;
-        
+
         public bool IsLoop;
         public bool UseZTest;
         public bool RandomStart;
-
+        public float LoopDelay;
+        
         private bool isInit;
 
         private CullingGroup cullingGroup;
@@ -43,8 +41,10 @@ namespace Assets.Scripts.Objects
 
         private float time;
         private int frame;
+        private float waitTime;
 
         private bool hasAudio;
+        private bool hasDisabledChildren;
 
         private Material GetEffectMaterial(int layer, int srcBlend, int destBlend)
         {
@@ -70,7 +70,6 @@ namespace Assets.Scripts.Objects
             }
 
 
-
             mat.SetFloat("_SrcBlend", (float)srcBlend);
             mat.SetFloat("_DstBlend", (float)destBlend);
             mat.SetFloat("_ZWrite", 0);
@@ -78,7 +77,7 @@ namespace Assets.Scripts.Objects
 
             mat.SetFloat("_Cull", 0);
 
-            if(UseZTest)
+            if (UseZTest)
                 mat.SetInt("_myCustomCompare", (int)UnityEngine.Rendering.CompareFunction.LessEqual);
             else
                 mat.SetInt("_myCustomCompare", (int)UnityEngine.Rendering.CompareFunction.Always);
@@ -126,7 +125,7 @@ namespace Assets.Scripts.Objects
             isInit = true;
 
             if (RandomStart)
-                time = Random.Range(0, (float)Anim.MaxKey/(float)Anim.FrameRate);
+                time = Random.Range(0, (float)Anim.MaxKey / (float)Anim.FrameRate + LoopDelay);
 
             if (IsLoop)
             {
@@ -138,17 +137,23 @@ namespace Assets.Scripts.Objects
                 cullingGroup.SetBoundingSpheres(boundingSpheres);
                 cullingGroup.SetBoundingSphereCount(1);
             }
+            
+            AudioSource = GetComponent<AudioSource>();
+            if (AudioSource != null)
+            {
+                AudioSource.priority = 60;
+                AudioSource.dopplerLevel = 0;
+                if (AudioSource != null && AudioSource.clip != null)
+                    hasAudio = true;
+            }
         }
 
         // Use this for initialization
         private void Awake()
         {
-            if (Anim != null)
-                Initialize(Anim);
+            // if (Anim != null)
+            //     Initialize(Anim);
 
-            AudioSource = GetComponent<AudioSource>();
-            if (AudioSource != null && AudioSource.clip != null)
-                hasAudio = true;
         }
 
         private void UpdateMesh(MeshFilter mf, Mesh mesh, Vector2[] pos, Vector2[] uvs, float angle, int imageId)
@@ -317,7 +322,7 @@ namespace Assets.Scripts.Objects
             {
                 if (Anim.Layers[i].AnimationCount == 0)
                     continue;
-
+ 
                 var res = UpdateAnimationLayer(i);
                 layerObjects[i].SetActive(res);
             }
@@ -327,12 +332,13 @@ namespace Assets.Scripts.Objects
         private void Update()
         {
             if (!isInit)
-                return;
+                Initialize(Anim);
+            
 
             if (IsLoop)
             {
                 //if (CameraFollower.Instance.Target != null && (CameraFollower.Instance.Target.transform.position - transform.position).magnitude > 30)
-                if(!cullingGroup.IsVisible(0))
+                if (!cullingGroup.IsVisible(0))
                     return;
             }
 
@@ -347,11 +353,24 @@ namespace Assets.Scripts.Objects
 
             if (frame > Anim.MaxKey)
             {
+                waitTime += Time.deltaTime;
+                if (IsLoop && waitTime < LoopDelay)
+                {
+                    if (hasDisabledChildren) return;
+
+                    for (var i = 0; i < layerObjects.Count; i++)
+                        layerObjects[i].SetActive(false);
+                    hasDisabledChildren = true;
+
+                    return;
+                }
+
                 if (IsLoop)
                 {
-                    //Debug.Log($"{Anim.FrameRate} {Anim.MaxKey} {time}");
-                    time -= (float)Anim.MaxKey/ (float)Anim.FrameRate;
-                    frame = Mathf.FloorToInt(time * Anim.FrameRate); ;
+                    time -= (float)Anim.MaxKey / (float)Anim.FrameRate + LoopDelay;
+                    frame = Mathf.FloorToInt(time * Anim.FrameRate);
+                    waitTime = 0f;
+                    hasDisabledChildren = false;
                 }
                 else
                 {
@@ -379,7 +398,7 @@ namespace Assets.Scripts.Objects
                 return;
             foreach (var m in layerMeshes)
                 Destroy(m);
-            if(cullingGroup != null)
+            if (cullingGroup != null)
                 cullingGroup.Dispose();
         }
     }

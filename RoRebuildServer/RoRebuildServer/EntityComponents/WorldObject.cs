@@ -18,7 +18,7 @@ public class WorldObject : IEntityAutoReset
     public Entity Entity;
     public string Name = null!;
     public bool IsActive;
-    public bool Hidden;
+    public bool Hidden { get; set; }
     public int ClassId;
     public Direction FacingDirection;
     public CharacterState State;
@@ -161,9 +161,8 @@ public class WorldObject : IEntityAutoReset
         //else
             //ServerLogger.Log($"WorldObject {Name} is adding a visible player {obj2.Name} to it's visible list.\n{Environment.StackTrace}");
 #endif
-
-        if(!obj2.Hidden)
-            visiblePlayers.Add(e);
+        
+        visiblePlayers.Add(e);
     }
 
     public bool IsPlayerVisible(Entity e)
@@ -308,7 +307,13 @@ public class WorldObject : IEntityAutoReset
         return true;
     }
 
-    public bool TryMove(ref Entity entity, Position target, int range)
+    /// <summary>
+    /// Attempt to move within a certain distance of the target.
+    /// </summary>
+    /// <param name="target">The target location.</param>
+    /// <param name="range">The distance to the target you wish to enter within.</param>
+    /// <returns>True if a target position was set.</returns>
+    public bool TryMove(Position target, int range)
     {
         Debug.Assert(Map != null);
 
@@ -356,7 +361,7 @@ public class WorldObject : IEntityAutoReset
         //if (Type == CharacterType.Player)
         //    ServerLogger.Log("Player moving! Starting from : " + WalkPath[0] + " speed is " + MoveSpeed);
 
-        Map.StartMove(ref entity, this);
+        Map.StartMove(ref Entity, this);
         ChangeToActionState();
 
         return true;

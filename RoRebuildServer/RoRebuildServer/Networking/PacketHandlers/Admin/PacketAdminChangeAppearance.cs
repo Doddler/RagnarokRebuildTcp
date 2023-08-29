@@ -5,13 +5,12 @@ using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
-[ClientPacketHandler(PacketType.AdminChangeAppearance)]
+[AdminClientPacketHandler(PacketType.AdminChangeAppearance)]
 public class PacketAdminChangeAppearance : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (connection.Character == null || !connection.Character.IsActive || connection.Character.Map == null
-            || !connection.Entity.IsAlive() || connection.Character.State == CharacterState.Dead)
+        if (!connection.IsOnlineAdmin)
             return;
 
         var p = connection.Player;

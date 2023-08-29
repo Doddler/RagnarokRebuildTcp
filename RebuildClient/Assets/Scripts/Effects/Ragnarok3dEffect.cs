@@ -28,10 +28,12 @@ namespace Assets.Scripts.Effects
         public float pauseTime = 0f;
 
         public IEffectHandler EffectHandler;
-        private List<RagnarokPrimitive> primitives = new();
-        private List<GameObject> attachedObjects = new();
-
+        public List<RagnarokPrimitive> primitives = new();
+        public List<GameObject> attachedObjects = new();
+        
         private bool isInitialized = false;
+
+        public List<RagnarokPrimitive> GetPrimitives => primitives;
 
         public static Ragnarok3dEffect Create()
         {

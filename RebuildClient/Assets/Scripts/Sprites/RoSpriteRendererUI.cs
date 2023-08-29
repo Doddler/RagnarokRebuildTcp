@@ -24,8 +24,9 @@ namespace Assets.Scripts.Sprites
         private Dictionary<int, Mesh> meshCache;
         
         private bool isInitialized;
+        private bool isEnabled;
 
-        public void SetAction(int action) => ActionId = action;
+        public void SetAction(int action, bool is8Direction) => ActionId = action;
         public void SetColor(Color color) => Color = color;
         public void SetDirection(Direction direction) => Direction = direction;
         public void SetFrame(int frame) => CurrentFrame = frame;
@@ -47,6 +48,23 @@ namespace Assets.Scripts.Sprites
             return false;
         }
 
+        public void SetActive(bool isActive)
+        {
+            isEnabled = isActive;
+            SetVerticesDirty();
+            SetMaterialDirty();
+        }
+
+        public void SetOverrideMaterial(Material mat)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLightProbeAnchor(GameObject anchor)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Texture mainTexture => SpriteData.Atlas;
         
         protected override void OnRectTransformDimensionsChange()
@@ -61,7 +79,7 @@ namespace Assets.Scripts.Sprites
         {
             vh.Clear();
 
-            if (!isInitialized)
+            if (!isInitialized || !isEnabled)
                 return;
             
             var mesh = GetMeshForFrame();
@@ -129,6 +147,7 @@ namespace Assets.Scripts.Sprites
             meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
 
             isInitialized = true;
+            isEnabled = true;
 
 
             SetVerticesDirty();

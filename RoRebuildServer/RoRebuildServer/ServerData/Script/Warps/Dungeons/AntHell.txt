@@ -1,0 +1,4 @@
+﻿Warp("anthell01", "anthellwarp001", 35, 267, 1, 2,  "moc_fild04", 213, 327);
+Warp("anthell01", "anthellwarp002", 253, 32, 2, 1, "anthell02", 34, 263);
+Warp("anthell02", "anthellwarp003", 32, 267, 2, 2, "anthell01", 253, 35);
+Warp("anthell02", "anthellwarp004", 171, 169, 1, 1, "moc_fild15", 251, 248);

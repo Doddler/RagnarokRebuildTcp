@@ -34,6 +34,8 @@ public partial class Monster : IEntityAutoReset
     //private bool hasTarget;
 
     private Entity Target;
+    private Entity Master;
+    private EntityList? Children;
 
     private WorldObject? targetCharacter => Target.GetIfAlive<WorldObject>();
 
@@ -52,6 +54,7 @@ public partial class Monster : IEntityAutoReset
 
     private float deadTimeout;
     //private float allyScanTimeout;
+    private bool inAdjustMove;
 
     public static float MaxSpawnTimeInSeconds = 180;
 
@@ -61,6 +64,7 @@ public partial class Monster : IEntityAutoReset
 	public void Reset()
     {
         Entity = Entity.Null;
+        Master = Entity.Null;
         Character = null!;
         aiEntries = null!;
         //SpawnEntry = null;
@@ -71,6 +75,7 @@ public partial class Monster : IEntityAutoReset
         SpawnRule = null;
         MonsterBase = null!;
         SpawnMap = null!;
+        Children = null;
 		
         Target = Entity.Null;
     }
@@ -102,6 +107,32 @@ public partial class Monster : IEntityAutoReset
         CurrentAiState = MonsterAiState.StateIdle;
     }
 
+    public void AddChild(ref Entity child)
+    {
+		if(!child.IsAlive() && child.Type != EntityType.Monster)
+            ServerLogger.LogError($"Cannot AddChild on monster {Character.Name} when child entity {child} is not alive or not a monster.");
+
+        var childMon = child.Get<Monster>();
+        
+        Children ??= new EntityList();
+		Children.Add(child);
+		
+		childMon.MakeChild(ref Entity);
+    }
+
+    public void MakeChild(ref Entity parent, MonsterAiType newAiType = MonsterAiType.AiMinion)
+    {
+		if(!parent.IsAlive() && parent.Type != EntityType.Monster)
+            ServerLogger.LogError($"Cannot MakeChild on monster {Character.Name} when parent entity {parent} is not alive or not a monster.");
+
+        Master = parent;
+        float speed = parent.Get<WorldObject>().MoveSpeed;
+        SetTiming(TimingStat.MoveSpeed, speed);
+        Character.MoveSpeed = speed;
+
+        if (newAiType != MonsterAiType.AiEmpty)
+            aiEntries = DataManager.GetAiStateMachine(newAiType);
+    }
 
 	private void UpdateStats()
 	{
@@ -156,8 +187,17 @@ public partial class Monster : IEntityAutoReset
 		CombatEntity.DistributeExperience();
 		
 		Character.IsActive = false;
-		
-		if (SpawnRule == null)
+
+        if (Children != null && Children.Count > 0)
+        {
+            foreach (var child in Children)
+            {
+                var childMonster = child.Get<Monster>();
+                childMonster.Die();
+            }
+        }
+
+        if (SpawnRule == null)
 		{
 			//ServerLogger.LogWarning("Attempting to remove entity without spawn data! How?? " + Character.ClassId);
             
@@ -176,6 +216,8 @@ public partial class Monster : IEntityAutoReset
         deadTimeout += Time.ElapsedTimeFloat;
 
         Character.ClearVisiblePlayerList(); //make sure this is at the end or the player may not be notified of the monster's death
+
+
 	}
 
 	public void ResetDelay()
@@ -306,7 +348,7 @@ public partial class Monster : IEntityAutoReset
 			}
 		}
 	}
-
+	
 	public void Update()
     {
         if (Character.Map?.PlayerCount == 0)
@@ -314,9 +356,9 @@ public partial class Monster : IEntityAutoReset
 
         if (nextAiUpdate > Time.ElapsedTimeFloat)
             return;
-
+		
         AiStateMachineUpdate();
-
+		
 		//if(GameRandom.Next(4000) == 42)
 		//	Die();
 	}

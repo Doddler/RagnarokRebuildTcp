@@ -1,4 +1,5 @@
 ﻿using System.Net.WebSockets;
+using RebuildSharedData.Enum;
 using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntitySystem;
@@ -31,4 +32,10 @@ public class NetworkConnection
         CancellationSource = new CancellationTokenSource();
         Cancellation = CancellationSource.Token;
     }
+
+    public bool IsConnected => Status == ConnectionStatus.Connected;
+    public bool IsConnectedAndInGame => IsConnected && Character?.IsActive == true && Character?.Map != null;
+    public bool IsAdmin => Player?.IsAdmin == true;
+    public bool IsOnlineAdmin => IsAdmin && IsConnectedAndInGame;
+    public bool IsPlayerAlive => IsConnectedAndInGame && Character.State != CharacterState.Dead;
 }

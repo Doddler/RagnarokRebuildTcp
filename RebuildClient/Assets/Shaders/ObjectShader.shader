@@ -10,6 +10,7 @@ Shader "Custom/ObjectShader"
         _Cutoff("Cutoff", Range(0,1)) = 0.5
         _AmbientIntensity("Ambient Intensity", Range(0,1)) = 1
         _LightmapIntensity("Lightmap Intensity", Range(0,1)) = 1
+        [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Int) = 2
     }
     SubShader
     {
@@ -69,6 +70,8 @@ Shader "Custom/ObjectShader"
 
         Pass
         {
+            Cull [_CullMode]
+            
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag

@@ -75,6 +75,12 @@ public struct Position : IEquatable<Position>
         return RandomPosition(area.MinX, area.MinY, area.MaxX, area.MaxY);
     }
 
+
+    public static Position RandomPosition(Position position, int distance)
+    {
+        return RandomPosition(position.X-distance, position.Y-distance, position.X+distance, position.Y+distance);
+    }
+
     public static Position RandomPosition(int maxx, int maxy)
     {
         var x = GameRandom.NextInclusive(0, maxx);
@@ -89,6 +95,17 @@ public struct Position : IEquatable<Position>
         return new Position(x, y);
     }
 
+    public void ClampToArea(Area bounds)
+    {
+        if(X < bounds.MinX)
+            X = bounds.MinX;
+        if(X  > bounds.MaxX)
+            X = bounds.MaxX;
+        if(Y < bounds.MinY)
+            Y = bounds.MinY;
+        if(Y  > bounds.MaxY)
+            Y = bounds.MaxY;
+    }
 
     public float GetDirection()
     {

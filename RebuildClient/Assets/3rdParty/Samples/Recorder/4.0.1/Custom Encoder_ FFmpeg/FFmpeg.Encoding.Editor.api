@@ -1,0 +1,35 @@
+// This file is generated. Do not modify by hand.
+// XML documentation file not found. To check if public methods have XML comments,
+// make sure the XML doc file is present and located next to the scraped dll
+namespace UnityEditor.Recorder.Examples
+{
+    [System.ComponentModel.DisplayName(@"FFmpeg Encoder")] [UnityEditor.Recorder.Encoder.EncoderSettings(typeof(UnityEditor.Recorder.Examples.FFmpegEncoder))] public sealed class FFmpegEncoderSettings : System.IEquatable<UnityEditor.Recorder.Examples.FFmpegEncoderSettings>, UnityEditor.Recorder.Encoder.IEncoderSettings
+    {
+        public string FFMpegPath { get; }
+        public UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat Format { get; set; }
+        public FFmpegEncoderSettings() {}
+        public virtual bool Equals(object obj);
+        public virtual int GetHashCode();
+        public string GetOptions();
+        public string GetPixelFormat(bool inputContainsAlpha);
+        public virtual bool SupportsCurrentPlatform();
+        public enum OutputFormat
+        {
+            [UnityEngine.InspectorName(@"H.264 Default")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat H264Default = 0;
+            [UnityEngine.InspectorName(@"H.264 Lossless 420")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat H264Lossless420 = 2;
+            [UnityEngine.InspectorName(@"H.264 Lossless 444")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat H264Lossless444 = 3;
+            [UnityEngine.InspectorName(@"H.264 NVIDIA")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat H264Nvidia = 1;
+            [UnityEngine.InspectorName(@"H.265 HEVC Default")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat HevcDefault = 4;
+            [UnityEngine.InspectorName(@"H.265 HEVC NVIDIA")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat HevcNvidia = 5;
+            [UnityEngine.InspectorName(@"Apple ProRes 422 (apcn)")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat ProRes422 = 9;
+            [UnityEngine.InspectorName(@"Apple ProRes 422 HQ (apch)")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat ProRes422HQ = 8;
+            [UnityEngine.InspectorName(@"Apple ProRes 422 LT (apcs)")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat ProRes422LT = 10;
+            [UnityEngine.InspectorName(@"Apple ProRes 422 Proxy (apco)")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat ProRes422Proxy = 11;
+            [UnityEngine.InspectorName(@"Apple ProRes 4444 (ap4h)")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat ProRes4444 = 7;
+            [UnityEngine.InspectorName(@"Apple ProRes 4444 XQ (ap4x)")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat ProRes4444XQ = 6;
+            public int value__;
+            [UnityEngine.InspectorName(@"VP8 (WebM)")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat VP8Default = 12;
+            [UnityEngine.InspectorName(@"VP9 (WebM)")] public const UnityEditor.Recorder.Examples.FFmpegEncoderSettings.OutputFormat VP9Default = 13;
+        }
+    }
+}

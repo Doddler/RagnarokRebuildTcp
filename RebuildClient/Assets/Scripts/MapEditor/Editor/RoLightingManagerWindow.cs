@@ -20,6 +20,7 @@ namespace Assets.Scripts.MapEditor.Editor
         public bool HasAmbient;
         public bool UseMultiMap;
         public bool ResetMapResources;
+        public bool AlwaysRebuildLightprobes;
 
         public Object[] Scenes; // Object array to store the list of scenes
         private Vector2 scrollPosition;
@@ -64,6 +65,28 @@ namespace Assets.Scripts.MapEditor.Editor
             return false;
         }
 
+        private void ReloadEffects()
+        {
+            if (!TryFindMapEditor(out var map))
+            {
+                Debug.LogError("Could not reload resources: could not find map editor in the scene.");
+                return;
+            }
+
+            var mapName = map.MapData.name;
+            var path = $"Assets/Maps/world/{mapName}_world.asset";
+            var world = AssetDatabase.LoadAssetAtPath<RagnarokWorld>(path);
+
+            if (world == null)
+            {
+                Debug.Log($"Could not reload resources: could not find world data at path {path}");
+                return;
+            }
+
+            var builder = new RagnarokWorldSceneBuilder();
+            builder.ReloadEffectsOnly(map.MapData, world);
+        }
+        
         private void ReloadResources()
         {
             if (!TryFindMapEditor(out var map))
@@ -125,7 +148,10 @@ namespace Assets.Scripts.MapEditor.Editor
 
             foreach (var l in lights)
             {
-                l.enabled = true;
+                if(l)
+                    l.enabled = true;
+                else
+                    Debug.LogWarning($"For some reason, the light {l} on game object {l.name} has been destroyed.");
             }
 
 
@@ -163,6 +189,9 @@ namespace Assets.Scripts.MapEditor.Editor
 
             DisableAllLights();
             SetLightSettings();
+            
+            if(AlwaysRebuildLightprobes)
+                map.RebuildProbes();
 
 
             Lightmapping.bakeCompleted -= PostAmbient;
@@ -608,6 +637,12 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 ReloadResources();
             }
+
+            if (GUILayout.Button("Reload Effects"))
+            {
+                ReloadEffects();
+            }
+            
             if (GUILayout.Button("Reimport Map"))
             {
                 ReimportMap();
@@ -628,6 +663,20 @@ namespace Assets.Scripts.MapEditor.Editor
             {
 
             }
+            EditorGUILayout.EndHorizontal();
+            
+            
+            EditorGUILayout.LabelField("Other Options", EditorStyles.boldLabel);
+            
+            
+            EditorGUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Rebuild Lightprobes"))
+            {
+                if(TryFindMapEditor(out var editor))
+                    editor.RebuildProbes();
+            }
+
             EditorGUILayout.EndHorizontal();
 
 
@@ -668,6 +717,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 
             ResetMapResources = GUILayout.Toggle(ResetMapResources, "Reset Map Resources on Batch Bake");
+            AlwaysRebuildLightprobes = GUILayout.Toggle(AlwaysRebuildLightprobes, "Always rebuild light probes on scene bake");
 
             EditorGUILayout.BeginHorizontal();
 

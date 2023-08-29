@@ -35,6 +35,7 @@ public class NetworkManager
     public static Action<NetworkConnection, InboundMessage>[] PacketHandlers;
     public static bool[] PacketCheckClientState;
     public static PacketType LastPacketType;
+    public static Dictionary<int, bool> AdminPacketLookup = new();
 
     private static NetQueue<InboundMessage> inboundChannel;
     private static NetQueue<OutboundMessage> outboundChannel;
@@ -111,9 +112,12 @@ public class NetworkManager
 
             PacketCheckClientState[(int)packetType] = attr.VerifyClientConnection;
 
+            if (attr.IsAdminPacket)
+                AdminPacketLookup[(int)packetType] = true;
+
             //if (packetType == PacketType.UnhandledPacket || packetType == PacketType.Disconnect)
             //    PacketHandlers[(int)packetType] = handler.HandlePacketNoCheck; //skip client connected check for these two packets
-            
+
             PacketHandlers[(int)packetType] = handler.Process;
         }
 
@@ -403,7 +407,15 @@ public class NetworkManager
                 return;
             }
         }
-        
+
+        //if it's an admin packet and not an admin
+        if (AdminPacketLookup.TryGetValue((int)type, out var isAdmin) && isAdmin && !connection.IsAdmin)
+        {
+            DisconnectPlayer(connection);
+            ServerLogger.Log($"Player {connection.Character?.Name} is using an admin command without admin privileges. Disconnecting.");
+            return;
+        }
+
         PacketHandlers[(int)type](msg.Client, msg);
 #endif
 #if !DEBUG
@@ -557,6 +569,7 @@ public class NetworkManager
 
         var msg = CreateOutboundMessage(playerConnection);
         msg.WritePacketType(PacketType.ConnectionApproved);
+        playerConnection.Status = ConnectionStatus.Connected;
         outboundChannel.Enqueue(msg);
 
         while (socket.State == WebSocketState.Open)
@@ -589,6 +602,8 @@ public class NetworkManager
 
             inboundChannel.Enqueue(inMsg);
         }
+
+        playerConnection.Status = ConnectionStatus.Disconnected;
 
         //timeoutToken = new CancellationTokenSource(15000).Token;
 

@@ -135,6 +135,7 @@ public static class DataManager
             MonsterNameLookup.TryAdd(m.Name, m);
         }
 
+        loader.LoadMonsterSpawnMinions();
         loader.LoadNpcScripts(ScriptAssembly);
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
 

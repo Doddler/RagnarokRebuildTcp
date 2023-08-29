@@ -8,8 +8,8 @@ MapConfig("moc_pryd02")
 {
 	CreateSpawn("POPORING", 20);
 	CreateSpawn("DRAINLIAR", 20);
-	CreateSpawn("MUMMY", 30);
-	CreateSpawn("ISIS", 25);
+	CreateSpawn("MUMMY", 55);
+	//CreateSpawn("ISIS", 25);
 	CreateSpawn("SOLDIER_SKELETON", 20);
 	CreateSpawn("ARCHER_SKELETON", 20);
 }

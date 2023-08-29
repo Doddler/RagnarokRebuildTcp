@@ -34,7 +34,7 @@ public class PacketStartMove : IClientPacketHandler
         var target = new Position(x, y);
 
         //if (connection.Character.TryMove(ref connection.Entity, target, 0))
-        connection.Character.TryMove(ref connection.Entity, target, 0);
+        connection.Character.TryMove(target, 0);
         player.ClearTarget();
     }
 }

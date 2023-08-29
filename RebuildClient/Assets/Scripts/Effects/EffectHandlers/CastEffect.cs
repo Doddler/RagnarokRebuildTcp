@@ -18,7 +18,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             
             if (!CastMaterials.TryGetValue(texture, out var mat))
             {
-                mat = new Material(ShaderCache.Instance.AlphaBlendParticleShader);
+                mat = new Material(ShaderCache.Instance.InvAlphaShader);
                 mat.mainTexture = Resources.Load<Texture2D>(texture);
                 mat.renderQueue = 3001;
                 CastMaterials.Add(texture, mat);

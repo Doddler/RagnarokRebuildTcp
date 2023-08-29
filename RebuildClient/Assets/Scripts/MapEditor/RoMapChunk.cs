@@ -92,7 +92,7 @@ namespace Assets.Scripts.MapEditor
             EditorUtility.SetDirty(this);
         }
 
-        private int GetLayerMaskForChunk()
+        public int GetLayerMaskForChunk()
         {
             var layer = 1 << LayerMask.NameToLayer("Ground");
             if (MapData.IsWalkTable)
@@ -111,9 +111,9 @@ namespace Assets.Scripts.MapEditor
             return layer;
         }
 
-        public bool GetMeshIntersection(Ray ray, out RaycastHit rayHit)
+        public bool GetMeshIntersection(Ray ray, out RaycastHit rayHit, int layerMask)
         {
-            if (Physics.Raycast(ray, out var hit, 300f, GetLayerMaskForChunk()))
+            if (Physics.Raycast(ray, out var hit, 300f, layerMask))
             {
                 rayHit = hit;
                 return true;

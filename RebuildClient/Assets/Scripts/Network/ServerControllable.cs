@@ -49,6 +49,7 @@ namespace Assets.Scripts.Network
 		private float moveSpeed = 0.2f;
 		private float moveProgress;
 		private bool isMoving;
+		private bool isHidden;
 
 		private SpriteRenderer shadowSprite;
 		private Material shadowMaterial;
@@ -57,6 +58,24 @@ namespace Assets.Scripts.Network
         private float dialogCountdown = 0f;
 
 		public bool IsWalking => movePath != null && movePath.Count > 1;
+
+		public bool IsHidden
+		{
+			get => isHidden;
+			set
+			{
+				isHidden = value;
+				RefreshHiddenState();
+			}
+		}
+
+		public void RefreshHiddenState()
+		{
+			if(shadowSprite)
+				shadowSprite.enabled = !isHidden;
+			if(SpriteAnimator)
+				SpriteAnimator.SetRenderActive(!isHidden);
+		}
 
         public void DialogBox(string text)
         {
@@ -263,10 +282,11 @@ namespace Assets.Scripts.Network
 			sprite.sprite = spriteObj;
 			shadowSprite = sprite;
 
-			var shader = ShaderCache.Instance.SpriteShader;
+			var shader = ShaderCache.Instance.SpriteShaderNoZWrite;
 			var mat = new Material(shader);
 			mat.SetFloat("_Offset", 0.4f);
 			mat.color = new Color(1f, 1f, 1f, 0.75f);
+			mat.renderQueue = 2999;
 			sprite.material = mat;
 
 			sprite.sortingOrder = -1;
@@ -455,6 +475,9 @@ namespace Assets.Scripts.Network
 					SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
 				}
 			}
+			
+			if(IsMainCharacter)
+				RefreshHiddenState();
 		}
 
 		private void OnDestroy()

@@ -1,0 +1,3 @@
+﻿Warp("xmas_fild01", "xmasfieldwarp001", 69, 252, 10, 2, "xmas", 149, 44);
+Warp("xmas_fild01", "xmasfieldwarp002", 84, 48, 10, 2, "aldebaran", 140, 239);
+Warp("xmas_fild01", "xmasfieldwarp003", 90, 252, 10, 2, "xmas", 149, 44);

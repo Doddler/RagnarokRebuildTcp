@@ -1,0 +1,179 @@
+﻿MapConfig("new_zone03")
+{
+	//CreateSpawn("PORING", 10);
+	//CreateSpawn("DROPS", 10);
+	//CreateSpawn("LUNATIC", 10);
+	//CreateSpawn("CHONCHON", 10);
+	//CreateSpawn("FABRE", 5); //should be danger fabre
+
+	//CreateSpawn("CONDOR", 10);
+	//CreateSpawn("PICKY_", 10);
+	//CreateSpawn("WILOW", 10);
+	//CreateSpawn("RODA_FROG", 10);
+	//CreateSpawn("FABRE", 5);  //should be danger fabre
+
+	CreateSpawn("ROCKER", 10);
+	CreateSpawn("THIEF_BUG", 10);
+	CreateSpawn("THIEF_BUG_", 10);
+	CreateSpawn("SPORE", 10);
+	CreateSpawn("FABRE", 5);
+}
+
+MapConfig("job_thief1")
+{
+	CreateSpawn("RED_MUSHROOM", 180);
+	CreateSpawn("FABRE", 50);
+	CreateSpawn("CHONCHON", 50);
+	CreateSpawn("SPORE", 30);
+}
+
+MapConfig("in_moc_16")
+{
+	CreateSpawn("PORING", 1, %(62, 161, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(85, 169, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(88, 152, 1, 1), 0, 0);
+	CreateSpawn("DROPS", 1, %(90, 143, 1, 1), 0, 0);
+	CreateSpawn("POPORING", 1, %(74, 167, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(77, 173, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(62, 161, 1, 1), 0, 0);
+	CreateSpawn("POPORING", 1, %(85, 169, 1, 1), 0, 0);
+	CreateSpawn("DROPS", 1, %(79, 174, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(85, 156, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(74, 171, 1, 1), 0, 0);
+	CreateSpawn("DROPS", 1, %(68, 173, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(65, 158, 1, 1), 0, 0);
+	CreateSpawn("DROPS", 1, %(60, 158, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(64, 169, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(71, 173, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(77, 172, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(76, 172, 1, 1), 0, 0);
+	CreateSpawn("DROPS", 1, %(75, 172, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(67, 167, 1, 1), 0, 0);
+	CreateSpawn("POPORING", 1, %(86, 170, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(86, 171, 1, 1), 0, 0);
+	CreateSpawn("DROPS", 1, %(86, 170, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(86, 173, 1, 1), 0, 0);
+	CreateSpawn("POPORING", 1, %(85, 170, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(89, 156, 1, 1), 0, 0);
+	CreateSpawn("DROPS", 1, %(89, 156, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(89, 156, 1, 1), 0, 0);
+	CreateSpawn("DROPS", 1, %(89, 156, 1, 1), 0, 0);
+	CreateSpawn("POPORING", 1, %(89, 156, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(83, 169, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(63, 158, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(63, 157, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(64, 159, 1, 1), 0, 0);
+	CreateSpawn("LUNATIC", 1, %(63, 159, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(63, 159, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(63, 159, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(83, 148, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(82, 148, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(84, 148, 1, 1), 0, 0);
+}
+
+MapConfig("job_knt")
+{
+	CreateSpawn("DUSTINESS", 1, %(39, 150, 1, 1));
+	CreateSpawn("DUSTINESS", 1, %(47, 150, 1, 1), 0, 0);
+	CreateSpawn("DUSTINESS", 1, %(39, 142, 1, 1), 0, 0);
+	CreateSpawn("DUSTINESS", 1, %(47, 142, 1, 1), 0, 0);
+	CreateSpawn("PIERE", 1, %(43, 137, 1, 1), 0, 0);
+	CreateSpawn("ANDRE", 1, %(43, 137, 1, 1), 0, 0);
+	CreateSpawn("DENIRO", 1, %(43, 137, 1, 1), 0, 0);
+	CreateSpawn("PIERE", 1, %(43, 155, 1, 1), 0, 0);
+	CreateSpawn("ANDRE", 1, %(43, 155, 1, 1), 0, 0);
+	CreateSpawn("DENIRO", 1, %(43, 155, 1, 1), 0, 0);
+	CreateSpawn("ARGOS", 1, %(35, 146, 1, 1), 0, 0);
+	CreateSpawn("ARGOS", 1, %(52, 146, 1, 1), 0, 0);
+	CreateSpawn("FRILLDORA", 1, %(53, 52, 1, 1), 0, 0);
+	CreateSpawn("FRILLDORA", 1, %(34, 52, 1, 1), 0, 0);
+	CreateSpawn("DESERT_WOLF", 1, %(43, 42, 1, 1), 0, 0);
+	CreateSpawn("DESERT_WOLF", 1, %(43, 62, 1, 1), 0, 0);
+	CreateSpawn("DRAINLIAR", 1, %(58, 52, 1, 1), 0, 0);
+	CreateSpawn("DRAINLIAR", 1, %(58, 52, 1, 1), 0, 0);
+	CreateSpawn("DRAINLIAR", 1, %(29, 52, 1, 1), 0, 0);
+	CreateSpawn("DRAINLIAR", 1, %(29, 52, 1, 1), 0, 0);
+	CreateSpawn("ANACONDAQ", 1, %(60, 68, 1, 1), 0, 0);
+	CreateSpawn("ANACONDAQ", 1, %(27, 68, 1, 1), 0, 0);
+	CreateSpawn("ANACONDAQ", 1, %(60, 35, 1, 1), 0, 0);
+	CreateSpawn("ANACONDAQ", 1, %(27, 35, 1, 1), 0, 0);
+	CreateSpawn("GOBLIN_1", 1, %(136, 152, 1, 1), 0, 0);
+	CreateSpawn("GOBLIN_2", 1, %(150, 152, 1, 1), 0, 0);
+	CreateSpawn("GOBLIN_3", 1, %(143, 145, 1, 1), 0, 0);
+	CreateSpawn("GOBLIN_4", 1, %(143, 167, 1, 1), 0, 0);
+	CreateSpawn("GOBLIN_5", 1, %(139, 167, 1, 1), 0, 0);
+	CreateSpawn("GOBLIN_ARCHER", 1, %(147, 167, 1, 1), 0, 0);
+	CreateSpawn("STEAM_GOBLIN", 1, %(136, 158, 1, 1), 0, 0);
+}
+
+MapConfig("job_hunte")
+{
+	CreateSpawn("ZOMBIE", 1, %(67, 80, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(114, 78, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(89, 127, 1, 1), 0, 0);
+	CreateSpawn("MUMMY", 1, %(53, 73, 1, 1), 0, 0);
+	CreateSpawn("ARCHER_SKELETON", 1, %(125, 70, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(90, 92, 1, 1), 0, 0);
+	CreateSpawn("ARCHER_SKELETON", 1, %(85, 100, 1, 1), 0, 0);
+	CreateSpawn("MUMMY", 1, %(72, 102, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(108, 103, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(88, 127, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(125, 69, 1, 1), 0, 0);
+	CreateSpawn("ARCHER_SKELETON", 1, %(77, 112, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(53, 106, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(53, 73, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(125, 70, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(90, 91, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(67, 80, 1, 1), 0, 0);
+	CreateSpawn("ARCHER_SKELETON", 1, %(77, 112, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(53, 106, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(53, 73, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(125, 70, 1, 1), 0, 0);
+	CreateSpawn("MUMMY", 1, %(90, 91, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(85, 100, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(72, 102, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(108, 103, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(77, 112, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(112, 139, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(112, 139, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(112, 139, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(112, 139, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(90, 91, 1, 1), 0, 0);
+	CreateSpawn("PORING", 1, %(53, 73, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(53, 106, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(77, 112, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(72, 102, 1, 1), 0, 0);
+	CreateSpawn("ZOMBIE", 1, %(108, 103, 1, 1), 0, 0);
+}
+
+MapConfig("job_wiz")
+{
+	CreateSpawn("PHEN", 1, %(109, 174, 1, 1), 0, 0);
+	CreateSpawn("SHELLFISH", 1, %(118, 174, 1, 1), 0, 0);
+	CreateSpawn("VADON", 1, %(109, 165, 1, 1), 0, 0);
+	CreateSpawn("CORNUTUS", 1, %(118, 165, 1, 1), 0, 0);
+	CreateSpawn("MARINA", 1, %(101, 157, 1, 1), 0, 0);
+	CreateSpawn("MARIN", 1, %(126, 157, 1, 1), 0, 0);
+	CreateSpawn("MAGNOLIA", 1, %(98, 170, 1, 1), 0, 0);
+	CreateSpawn("OBEAUNE", 1, %(129, 170, 1, 1), 0, 0);
+
+	CreateSpawn("YOYO", 1, %(111, 102, 1, 1), 0, 0);
+	CreateSpawn("DENIRO", 1, %(120, 102, 1, 1), 0, 0);
+	CreateSpawn("CARAMEL", 1, %(111, 102, 1, 1), 0, 0);
+	CreateSpawn("HODE", 1, %(120, 102, 1, 1), 0, 0);
+	CreateSpawn("SAVAGE", 1, %(111, 93, 1, 1), 0, 0);
+	CreateSpawn("GIEARTH", 1, %(120, 93, 1, 1), 0, 0);
+	CreateSpawn("BIGFOOT", 1, %(107, 98, 1, 1), 0, 0);
+	CreateSpawn("ORK_WARRIOR", 1, %(124, 98, 1, 1), 0, 0);
+	CreateSpawn("VITATA", 1, %(104, 86, 1, 1), 0, 0);
+	CreateSpawn("MANTIS", 1, %(127, 86, 1, 1), 0, 0);
+
+	CreateSpawn("ZEROM", 1, %(58, 110, 1, 1), 0, 0);
+	CreateSpawn("GOBLIN_2", 1, %(33, 110, 1, 1), 0, 0);
+	CreateSpawn("SCORPION", 1, %(40, 103, 1, 1), 0, 0);
+	CreateSpawn("FRILLDORA", 1, %(51, 103, 1, 1), 0, 0);
+	CreateSpawn("PECOPECO", 1, %(40, 92, 1, 1), 0, 0);
+	CreateSpawn("ELDER_WILOW", 1, %(51, 92, 1, 1), 0, 0);
+	CreateSpawn("METALLER", 1, %(37, 89, 1, 1), 0, 0);
+	CreateSpawn("DESERT_WOLF", 1, %(54, 89, 1, 1), 0, 0);
+}

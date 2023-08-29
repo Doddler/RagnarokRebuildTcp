@@ -256,3 +256,13 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4253,VENATU_2,Venatu,80,7001,63,68,63,63,68,66,679,830,2,27,27,5416,5579,10,12,Medium,Formless,Wind2,504,360,1020,150,Normal,AiAggressive,620,venatu_2.spr,0,0.5,1
 4254,VENATU_3,Venatu,78,6073,64,60,65,60,60,60,580,709,2,29,24,5111,5114,10,12,Medium,Formless,Earth2,504,360,1020,150,Normal,AiAggressive,620,venatu_3.spr,0,0.5,1
 4255,VENATU_4,Venatu,75,5384,58,65,64,61,61,63,504,616,2,26,26,4609,4657,10,12,Medium,Formless,Water2,504,360,1020,150,Normal,AiAggressive,620,venatu_4.spr,0,0.5,1
+4256,COOKIE,Cookie,25,434,21,21,21,21,21,21,74,91,1,9,9,352,352,10,12,Small,Demihuman,Neutral3,1036,240,936,200,Normal,AiPassive,111,cookie.spr,0,0.5,1
+4257,COOKIE_XMAS,Cookie,28,499,23,23,23,23,23,23,85,104,1,10,10,465,465,10,12,Small,Demihuman,Holy2,1248,240,1248,400,Normal,AiPassive,350,cookie_xmas.spr,0,0.5,1
+4258,CRUISER,Cruiser,35,655,27,29,29,34,23,29,103,126,7,10,10,587,575,10,12,Medium,Formless,Neutral3,1296,432,1296,400,Normal,AiAggressive,1000,cruiser.spr,0,0.5,1
+4259,CHEPET,Chepet,42,22128,47,47,45,47,47,47,366,447,1,18,18,19621,16127,10,12,Medium,Demihuman,Fire1,672,288,672,400,Normal,AiAggressive,350,chepet.spr,0,0.5,1
+4260,GOBLINE_XMAS,Festive Goblin,25,421,20,21,20,20,21,21,74,91,1,9,9,338,363,10,12,Medium,Demihuman,Wind1,1120,240,620,100,Normal,AiAggressive,400,gobline_xmas.spr,0,0.5,1
+4261,GARM,Garm,73,18144,64,84,79,71,70,76,733,896,3,30,30,18548,14418,10,12,Large,Beast,Water4,608,336,408,400,Boss,AiAggressive,325,garm.spr,0,0.5,1
+4262,GARM_BABY,Baby Garm,61,3384,47,52,51,49,49,50,376,459,1,21,21,2786,2705,10,12,Medium,Beast,Water2,879,576,672,450,Normal,AiAggressive,300,garm_baby.spr,0,0.5,1
+4263,KNIGHT_OF_WINDSTORM,Stormy Knight,77,268992,106,127,100,106,127,117,1344,1643,2,36,36,417138,445782,10,12,Large,Formless,Wind4,468,288,468,200,Boss,AiAggressive,259,knight_of_windstorm.spr,0,0.5,1
+4264,MYSTCASE,Mystcase,38,856,31,31,31,31,31,31,138,169,1,13,13,900,882,10,12,Medium,Formless,Neutral3,1248,432,1248,400,Normal,AiPassive,450,mystcase.spr,0,0.5,1
+4265,WRAITH_DEAD,Wraith Dead,74,29294,50,64,50,72,64,1,757,926,2,20,20,12363,10458,10,12,Large,Undead,Undead4,1816,240,576,175,Normal,AiAggressive,850,wraith_dead.spr,0,0.5,1
