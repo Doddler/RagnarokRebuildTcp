@@ -212,6 +212,7 @@ Job Quest Map,job_monk,job_monk.walk,Field,28.mp3
 Jawaii,jawaii,jawaii.walk,Field,28.mp3
 Jawaii Indoors,jawaii_in,jawaii_in.walk,Field,28.mp3
 Luina Realm,alde_gld,alde_gld.walk,Field,66.mp3
+Baldr Realm,pay_gld,pay_gld.walk,Field,66.mp3
 "Luina Castle, Neuschwanstein",aldeg_cas01,aldeg_cas01.walk,Field,66.mp3
 "Luina Castle, Hohenschwangau",aldeg_cas02,aldeg_cas02.walk,Field,66.mp3
 "Luina Castle, Nuernberg",aldeg_cas03,aldeg_cas03.walk,Field,66.mp3
@@ -232,3 +233,23 @@ Luina Realm,alde_gld,alde_gld.walk,Field,66.mp3
 "Valkyrie Castle, Fadhgrindh",prtg_cas03,prtg_cas03.walk,Field,66.mp3
 "Valkyrie Castle, Skoegul",prtg_cas04,prtg_cas04.walk,Field,66.mp3
 "Valkyrie Castle, Gondul",prtg_cas05,prtg_cas05.walk,Field,66.mp3
+"Papuchicha Forest",cmd_fild01,cmd_fild01.walk,Field,63.mp3
+"Kokomo Beach",cmd_fild02,cmd_fild02.walk,Field,63.mp3
+"Zenhai Marsh",cmd_fild03,cmd_fild03.walk,Field,63.mp3
+"Kokomo Beach",cmd_fild04,cmd_fild04.walk,Field,63.mp3
+"Papuchicha Forest Border",cmd_fild05,cmd_fild05.walk,Field,63.mp3
+"Fortress Saint Darmain [West]",cmd_fild06,cmd_fild06.walk,Field,63.mp3
+"Pharos, Beacon Island",cmd_fild07,cmd_fild07.walk,Field,63.mp3
+"Fortress Saint Darmain [East]",cmd_fild08,cmd_fild08.walk,Field,37.mp3
+"Fortress Saint Darmain [South]",cmd_fild09,cmd_fild09.walk,Field,63.mp3
+"Comodo [Inside 1]",cmd_in01,cmd_in01.walk,None,63.mp3
+"Comodo [Inside 2]",cmd_in02,cmd_in02.walk,None,63.mp3
+"Comodo, the Beach Town",comodo,comodo.walk,Field,63.mp3
+"Karu, the West Cave",beach_dun,beach_dun.walk,Dungeon,41.mp3
+"Ruande, the North Cave",beach_dun2,beach_dun2.walk,Dungeon,41.mp3
+"Mao, the East Cave",beach_dun3,beach_dun3.walk,Dungeon,41.mp3
+"Lutie, the Snow Village",xmas,xmas.walk,Town,59.mp3
+"Toy Dungeon 1 [Factory Area]",xmas_dun01,xmas_dun01.walk,Dungeon,58.mp3
+"Toy Dungeon 2 [Monitoring Area]",xmas_dun02,xmas_dun02.walk,Dungeon,58.mp3
+"Lutie Field",xmas_fild01,xmas_fild01.walk,Field,55.mp3
+"Lutie [Inside]",xmas_in,xmas_in.walk,Field,59.mp3

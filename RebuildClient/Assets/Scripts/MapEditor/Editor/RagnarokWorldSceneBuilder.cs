@@ -456,6 +456,26 @@ namespace Assets.Scripts.MapEditor.Editor
                     
                     continue;
                 }
+                
+                
+                if (effect.Id == 165) //christmas light, or the effect called 'banjjakii'
+                {
+                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/ChristmasLight.prefab");
+                    var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
+                    obj.AddComponent<BillboardObject>();
+                    obj.name = effect.Id + " - " + effect.Name;
+                    obj.transform.SetParent(effectContainer.transform, false);
+                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    var renderer = obj.GetComponent<ChristmasTwinkleEffect>();
+                    renderer.IsLoop = true;
+                    renderer.UseZTest = false;
+                    renderer.RandomStart = false;
+                    // renderer.LoopDelay = effect.Delay/1000f;
+                    
+                    continue;
+                }
+
 
                 if (effect.Id == 307 || effect.Id == 322 || effect.Id == 323)
                 {

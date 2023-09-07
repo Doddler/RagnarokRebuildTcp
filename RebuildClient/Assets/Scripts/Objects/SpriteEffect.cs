@@ -21,7 +21,8 @@ namespace Assets.Scripts.Objects
         private BoundingSphere[] boundingSpheres;
 
         private GameObject spriteObject;
-        
+
+        protected RoSpriteAnimator Sprite;
         
 
         public void Initialize()
@@ -38,17 +39,17 @@ namespace Assets.Scripts.Objects
             // sr.SecondPassForWater = false;
             // sr.UpdateAngleWithCamera = false;
             //
-            var sprite = child.AddComponent<RoSpriteAnimator>();
-            sprite.Type = SpriteType.Npc;
+            Sprite = child.AddComponent<RoSpriteAnimator>();
+            Sprite.Type = SpriteType.Npc;
             // sprite.State = SpriteState.Dead;
             // sprite.SpriteRenderer = sr;
-            sprite.LockAngle = true;
-            sprite.State = SpriteState.Idle;
-            sprite.OnSpriteDataLoadNoCollider(SpriteData);
-            sprite.ChangeActionExact(0);
+            Sprite.LockAngle = true;
+            Sprite.State = SpriteState.Idle;
+            Sprite.OnSpriteDataLoadNoCollider(SpriteData);
+            Sprite.ChangeActionExact(0);
             
             if(OverrideMaterial != null)
-                sprite.SpriteRenderer.SetOverrideMaterial(OverrideMaterial);
+                Sprite.SpriteRenderer.SetOverrideMaterial(OverrideMaterial);
             
             //sprite.LockAngle = true;
             
@@ -79,21 +80,29 @@ namespace Assets.Scripts.Objects
             //     hasAudio = true;
         }
 
+        public virtual void UpdateSpriteEffect()
+        {
+            
+        }
+
         public void Update()
         {
             if (!isInit)
                 return;
             
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             if (CameraFollower.Instance.CinemachineMode)
             {
                 spriteObject.SetActive(true);
+                UpdateSpriteEffect();
                 return;
             }
 #endif
             
             if (IsLoop)
                 spriteObject.SetActive(cullingGroup.IsVisible(0));
+            
+            UpdateSpriteEffect();
         }
         
         void OnDestroy()

@@ -129,6 +129,8 @@ namespace Assets.Scripts.Network
 
 			if(SpriteMode == ClientSpriteType.Sprite)
 				SpriteAnimator.Direction = direction;
+			else
+				gameObject.transform.rotation = Quaternion.Euler(0f, RoAnimationHelper.FacingDirectionToRotation(direction), 0f);
 		}
 		
 		private bool IsNeighbor(Vector2Int pos1, Vector2Int pos2)

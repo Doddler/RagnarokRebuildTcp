@@ -266,3 +266,21 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4263,KNIGHT_OF_WINDSTORM,Stormy Knight,77,268992,106,127,100,106,127,117,1344,1643,2,36,36,417138,445782,10,12,Large,Formless,Wind4,468,288,468,200,Boss,AiAggressive,259,knight_of_windstorm.spr,0,0.5,1
 4264,MYSTCASE,Mystcase,38,856,31,31,31,31,31,31,138,169,1,13,13,900,882,10,12,Medium,Formless,Neutral3,1248,432,1248,400,Normal,AiPassive,450,mystcase.spr,0,0.5,1
 4265,WRAITH_DEAD,Wraith Dead,74,29294,50,64,50,72,64,1,757,926,2,20,20,12363,10458,10,12,Large,Undead,Undead4,1816,240,576,175,Normal,AiAggressive,850,wraith_dead.spr,0,0.5,1
+4266,SHELLFISH,Shellfish,15,241,12,13,13,13,13,13,39,48,1,6,6,119,113,10,12,Small,Aquatic,Water1,864,384,864,200,Normal,AiPassive,481,shellfish.spr,0,0.5,1
+4267,ALLIGATOR,Alligator,42,1151,33,35,35,34,34,34,174,213,1,15,15,1108,1120,10,12,Medium,Beast,Water1,1100,480,900,200,Normal,AiPassive,558,alligator.spr,0,0.5,1
+4268,ASTER,Aster,18,287,15,14,15,14,14,14,47,58,1,7,6,175,169,10,12,Small,Aquatic,Earth1,1264,216,864,400,Normal,AiPassive,350,aster.spr,0,0.5,1
+4269,CRAB,Crab,20,346,16,17,17,17,17,17,60,73,1,7,7,212,219,7,12,Small,Aquatic,Water1,992,360,792,200,Normal,AiPassive,296,crab.spr,0,0.5,1
+4270,RAGGLER,Raggler,21,353,16,17,16,16,17,17,64,79,1,8,8,244,236,10,12,Small,Beast,Wind1,1000,384,900,200,Normal,AiAggressive,259,raggler.spr,0,0.5,1
+4271,MOBSTER,Mobster,61,11389,58,58,58,58,58,58,627,766,1,25,25,10426,8423,10,12,Medium,Demihuman,Neutral1,1100,580,560,250,Normal,AiAggressive,700,mobster.spr,0,0.5,1
+4272,FUR_SEAL,Fur Seal,63,11419,71,40,68,50,56,45,567,694,1,19,19,6814,5525,10,12,Medium,Beast,Water1,1612,583,622,200,Normal,AiAggressive,600,fur_seal.spr,0,0.5,1
+4273,GALAPAGO,Galapago,61,3319,49,48,49,48,48,48,396,484,1,21,19,2651,2733,10,12,Small,Beast,Earth1,1430,1080,1080,165,Normal,AiPassive,496,galapago.spr,0,0.5,1
+4274,MUTANT_DRAGON,Mutant Dragon,65,91503,96,52,80,66,74,59,981,1199,4,21,21,60918,41515,10,12,Large,Dragon,Fire2,1280,240,1080,250,Boss,AiPassive,925,mutant_dragon.spr,0,0.5,1
+4275,SEE_OTTER,See Otter,59,6597,64,41,68,47,52,44,339,414,1,17,17,6093,4946,10,12,Medium,Beast,Water3,1132,532,583,190,Normal,AiAggressive,450,see_otter.spr,0,0.5,1
+4276,GRYPHON,Gryphon,72,115514,100,64,87,69,92,68,1135,1388,1,26,26,80318,60307,10,12,Large,Beast,Wind4,704,432,504,100,Boss,AiAggressive,296,gryphon.spr,0,0.5,1
+4277,MEDUSA,Medusa,79,14131,77,84,63,71,68,66,837,1023,1,28,28,11842,10600,10,12,Medium,Demon,Neutral2,1720,360,1320,180,Normal,AiAggressive,1000,medusa.spr,0,0.5,1
+4278,NERAID,Neraid,40,1084,33,32,33,32,32,32,172,211,1,14,13,1011,981,10,12,Small,Beast,Earth1,776,288,576,200,Normal,AiAggressive,400,neraid.spr,0,0.5,1
+4279,TRI_JOINT,Tri Joint,32,558,20,21,22,30,33,18,127,156,1,12,9,536,643,10,12,Small,Insect,Earth1,860,624,660,200,Normal,AiPassive,682,tri_joint.spr,0,0.5,1
+4280,STALACTIC_GOLEM,Stalactic Golem,60,4270,58,39,73,44,29,44,423,518,1,32,22,3643,3781,10,12,Large,Formless,Neutral4,1264,288,864,200,Normal,AiPassive,900,stalactic_golem.spr,0,0.5,1
+4281,MEGALODON,Megalodon,24,599,14,18,14,20,18,1,64,79,1,6,6,230,228,10,12,Medium,Undead,Undead1,2492,432,792,200,Normal,AiPassive,725,megalodon.spr,0,0.5,1
+4282,MEGALITH,Megalith,45,1284,37,37,37,37,37,37,189,231,9,16,16,1351,1325,10,12,Large,Formless,Neutral4,1332,672,1332,200,Normal,AiAggressiveImmobile,962,megalith.spr,0,0.5,1
+4283,TAO_GUNKA,Tao Gunka,70,261755,134,98,138,92,59,87,1296,1584,2,48,33,392701,393602,10,12,Large,Demon,Neutral3,1020,144,288,150,Boss,AiAggressive,400,tao_gunka.spr,0,0.5,1

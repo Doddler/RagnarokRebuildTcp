@@ -81,7 +81,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1900cfd2f81c5ad4da80ba7cdf06ccdc,
         type: 3}
       propertyPath: m_Name
-      value: empelium90_0 Variant
+      value: Emperium90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -111,3 +111,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationSpeed: 0.1
+  OffsetInitialPosition: {x: -0.5, y: 0, z: -0.5}

@@ -27,6 +27,12 @@ namespace Utility
         public float OverrideFarValue = 395f;
         public CameraClearFlags ClearFlags = CameraClearFlags.Skybox;
 
+
+        //this is out of control
+        public Material WoeBannerMaterial;
+        public Texture2D WoeTexture;
+        public bool UpdateWoeBanner;
+
         private bool firstUpdate = false;
         
         private CameraFollower cameraFollower;
@@ -49,6 +55,22 @@ namespace Utility
 
         public void UpdateFog(float nearRatio, float farRatio, bool forceUpdate)
         {
+            var cam = CameraFollower.Instance.Recorder.gameObject.GetComponent<Camera>();
+            if(ClearFlags != 0)
+                cam.clearFlags = ClearFlags;
+
+            if (!ClearFlags.HasFlag(CameraClearFlags.Skybox))
+            {
+                if (!OverrideBgColor) //cinemachine mode
+                {
+                    var val = (RenderSettings.fogEndDistance - fogDistance) / (RenderSettings.fogEndDistance - RenderSettings.fogStartDistance);
+                    cam.backgroundColor = RenderSettings.fogColor * (1 - val);
+                }
+                else
+                    cam.backgroundColor = OverrideBgColorValue;
+            }
+
+
             if (OverrideNearFar)
             {
                 if (ForceDistanceChange)
@@ -109,19 +131,6 @@ namespace Utility
                     RenderSettings.fogStartDistance = Mathf.Lerp(RenderSettings.fogStartDistance, near, Time.deltaTime * FogFadeSpeed);;
                     RenderSettings.fogEndDistance = Mathf.Lerp(RenderSettings.fogEndDistance, far, Time.deltaTime * FogFadeSpeed);;
                 }
-
-                var cam = CameraFollower.Instance.Recorder.gameObject.GetComponent<Camera>();
-                cam.clearFlags = ClearFlags;
-
-                if (!OverrideBgColor) //cinemachine mode
-                {
-                    
-
-                    var val = (RenderSettings.fogEndDistance - fogDistance) / (RenderSettings.fogEndDistance - RenderSettings.fogStartDistance);
-                    cam.backgroundColor = RenderSettings.fogColor * (1 - val);
-                }
-                else
-                    cam.backgroundColor = OverrideBgColorValue;
             }
             else
                 Debug.Log("No Ground for fog update!");
@@ -131,6 +140,9 @@ namespace Utility
         public void LateUpdate()
         {
             UpdateFog(cameraFollower.FogNearRatio, cameraFollower.FogFarRatio, firstUpdate);
+
+            if (UpdateWoeBanner)
+                WoeBannerMaterial.mainTexture = WoeTexture;
             
             if(firstUpdate)
                 firstUpdate = false;

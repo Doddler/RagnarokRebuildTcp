@@ -225,7 +225,7 @@ Shader "Custom/ObjectShader"
                 //return saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5));
 
 
-                finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse * env + lm * 2 * (diffuse);;
+                finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse * env + lm * 2 * (diffuse) * _LightmapIntensity * 0.8;
 
                 finalColor *= ambienttex;
 

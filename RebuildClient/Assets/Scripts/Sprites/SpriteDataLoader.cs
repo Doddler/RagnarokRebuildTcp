@@ -389,7 +389,7 @@ namespace Assets.Scripts.Sprites
                 {
                     var obj2 = GameObject.Instantiate(ah.Result, obj.transform, false);
                     obj2.transform.localPosition = Vector3.zero;
-
+                    
                     var sprite = obj2.GetComponent<RoSpriteAnimator>();
                     if (sprite != null)
                         sprite.Controllable = control;

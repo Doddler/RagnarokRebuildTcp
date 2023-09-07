@@ -1,0 +1,410 @@
+﻿		
+Warp("alde_gld", "aldebaranguildwarp001", 48, 78, 4, 1, "aldeg_cas01", 34, 248);
+Warp("alde_gld", "aldebaranguildwarp002", 95, 253, 3, 1, "aldeg_cas02", 88, 163);
+Warp("alde_gld", "aldebaranguildwarp003", 142, 81, 3, 1, "aldeg_cas03", 114, 286);
+Warp("alde_gld", "aldebaranguildwarp004", 183, 203, 2, 2, "turbo_room", 99, 64);
+Warp("alde_gld", "aldebaranguildwarp005", 243, 242, 1, 2, "aldeg_cas04", 149, 17);
+Warp("alde_gld", "aldebaranguildwarp006", 259, 90, 1, 4, "aldeg_cas05", 216, 103);
+Warp("alde_gld", "aldebaranguildwarp007", 284, 160, 2, 4, "aldebaran", 39, 140);
+//aldebaran castle 1
+//========================================================================================
+
+Warp("aldeg_cas01", "aldebaranguildwarp008", 26, 188, 1, 2, "aldeg_cas01", 50, 70);
+Warp("aldeg_cas01", "aldebaranguildwarp009", 31, 197, 1, 1, "aldeg_cas01", 175, 175);
+Warp("aldeg_cas01", "aldebaranguildwarp010", 34, 252, 6, 1, "alde_gld", 48, 83);
+Warp("aldeg_cas01", "aldebaranguildwarp011", 39, 222, 1, 1, "aldeg_cas01", 70, 108);
+Warp("aldeg_cas01", "aldebaranguildwarp012", 46, 70, 1, 7, "aldeg_cas01", 24, 188);
+Warp("aldeg_cas01", "aldebaranguildwarp013", 46, 197, 1, 1, "aldeg_cas01", 232, 182);
+Warp("aldeg_cas01", "aldebaranguildwarp014", 50, 222, 1, 1, "aldeg_cas01", 104, 108);
+Warp("aldeg_cas01", "aldebaranguildwarp015", 54, 27, 3, 1, "aldeg_cas01", 62, 191);
+Warp("aldeg_cas01", "aldebaranguildwarp016", 66, 191, 1, 1, "aldeg_cas01", 122, 61);
+Warp("aldeg_cas01", "aldebaranguildwarp017", 70, 112, 4, 1, "aldeg_cas01", 42, 225);
+Warp("aldeg_cas01", "aldebaranguildwarp018", 89, 23, 6, 1, "aldeg_cas01", 207, 132);
+Warp("aldeg_cas01", "aldebaranguildwarp019", 104, 112, 4, 1, "aldeg_cas01", 45, 224);
+Warp("aldeg_cas01", "aldebaranguildwarp020", 126, 61, 1, 4, "aldeg_cas01", 62, 191);
+Warp("aldeg_cas01", "aldebaranguildwarp021", 171, 175, 1, 3, "aldeg_cas01", 35, 197);
+Warp("aldeg_cas01", "aldebaranguildwarp022", 206, 188, 2, 1, "aldeg_cas01", 216, 50);
+Warp("aldeg_cas01", "aldebaranguildwarp023", 207, 128, 5, 1, "aldeg_cas01", 89, 27);
+Warp("aldeg_cas01", "aldebaranguildwarp024", 216, 54, 4, 1, "aldeg_cas01", 206, 184);
+Warp("aldeg_cas01", "aldebaranguildwarp025", 232, 186, 2, 1, "aldeg_cas01", 42, 197);
+//aldebaran castle 2
+//========================================================================================
+
+Warp("aldeg_cas02", "aldebaranguildwarp026", 22, 193, 2, 1, "aldeg_cas02", 88, 13);
+Warp("aldeg_cas02", "aldebaranguildwarp027", 33, 174, 1, 1, "aldeg_cas02", 126, 61);
+Warp("aldeg_cas02", "aldebaranguildwarp028", 45, 39, 1, 3, "aldeg_cas02", 79, 208);
+Warp("aldeg_cas02", "aldebaranguildwarp029", 50, 185, 1, 1, "aldeg_cas02", 192, 192);
+Warp("aldeg_cas02", "aldebaranguildwarp030", 84, 208, 1, 1, "aldeg_cas02", 105, 84);
+Warp("aldeg_cas02", "aldebaranguildwarp031", 88, 9, 2, 1, "aldeg_cas02", 22, 190);
+Warp("aldeg_cas02", "aldebaranguildwarp032", 88, 159, 2, 1, "alde_gld", 95, 249);
+Warp("aldeg_cas02", "aldebaranguildwarp033", 105, 88, 3, 1, "aldeg_cas02", 79, 208);
+Warp("aldeg_cas02", "aldebaranguildwarp034", 121, 88, 4, 1, "aldeg_cas02", 177, 135);
+Warp("aldeg_cas02", "aldebaranguildwarp035", 130, 61, 1, 3, "aldeg_cas02", 33, 179);
+Warp("aldeg_cas02", "aldebaranguildwarp036", 177, 131, 3, 1, "aldeg_cas02", 121, 84);
+Warp("aldeg_cas02", "aldebaranguildwarp037", 192, 196, 4, 1, "aldeg_cas02", 50, 180);
+Warp("aldeg_cas02", "aldebaranguildwarp038", 197, 9, 2, 1, "aldeg_cas02", 206, 192);
+Warp("aldeg_cas02", "aldebaranguildwarp039", 206, 196, 4, 1, "aldeg_cas02", 197, 13);
+//aldebaran castle 3
+//========================================================================================
+
+Warp("aldeg_cas03", "aldebaranguildwarp040", 44, 222, 1, 1, "aldeg_cas03", 213, 182);
+Warp("aldeg_cas03", "aldebaranguildwarp041", 51, 90, 1, 2, "aldeg_cas03", 87, 251);
+Warp("aldeg_cas03", "aldebaranguildwarp042", 60, 241, 2, 1, "aldeg_cas03", 91, 61);
+Warp("aldeg_cas03", "aldebaranguildwarp043", 79, 130, 3, 1, "aldeg_cas03", 201, 149);
+Warp("aldeg_cas03", "aldebaranguildwarp044", 87, 247, 2, 1, "aldeg_cas03", 54, 90);
+Warp("aldeg_cas03", "aldebaranguildwarp045", 91, 57, 5, 1, "aldeg_cas03", 60, 236);
+Warp("aldeg_cas03", "aldebaranguildwarp046", 92, 217, 1, 1, "aldeg_cas03", 127, 90);
+Warp("aldeg_cas03", "aldebaranguildwarp047", 93, 124, 3, 1, "aldeg_cas03", 87, 251);
+Warp("aldeg_cas03", "aldebaranguildwarp048", 114, 290, 4, 1, "alde_gld", 142, 85);
+Warp("aldeg_cas03", "aldebaranguildwarp049", 130, 90, 1, 2, "aldeg_cas03", 96, 215);
+Warp("aldeg_cas03", "aldebaranguildwarp050", 195, 54, 3, 1, "aldeg_cas03", 199, 186);
+Warp("aldeg_cas03", "aldebaranguildwarp051", 199, 190, 3, 1, "aldeg_cas03", 195, 51);
+Warp("aldeg_cas03", "aldebaranguildwarp052", 201, 145, 2, 1, "aldeg_cas03", 79, 126);
+Warp("aldeg_cas03", "aldebaranguildwarp053", 214, 186, 2, 1, "aldeg_cas03", 49, 222);
+//aldebaran castle 4
+//========================================================================================
+
+Warp("aldeg_cas04", "aldebaranguildwarp054", 17, 196, 1, 1, "aldeg_cas04", 132, 228);
+Warp("aldeg_cas04", "aldebaranguildwarp055", 21, 88, 1, 3, "aldeg_cas04", 192, 41);
+Warp("aldeg_cas04", "aldebaranguildwarp056", 21, 123, 1, 3, "aldeg_cas04", 125, 168);
+Warp("aldeg_cas04", "aldebaranguildwarp057", 49, 53, 4, 1, "aldeg_cas04", 196, 82);
+Warp("aldeg_cas04", "aldebaranguildwarp058", 50, 132, 4, 1, "aldeg_cas04", 129, 210);
+Warp("aldeg_cas04", "aldebaranguildwarp059", 78, 88, 1, 3, "aldeg_cas04", 174, 58);
+Warp("aldeg_cas04", "aldebaranguildwarp060", 108, 210, 1, 1, "aldeg_cas04", 186, 92);
+Warp("aldeg_cas04", "aldebaranguildwarp061", 121, 168, 1, 2, "aldeg_cas04", 25, 123);
+Warp("aldeg_cas04", "aldebaranguildwarp062", 132, 209, 1, 1, "aldeg_cas04", 50, 129);
+
+Warp("aldeg_cas04", "aldebaranguildwarp064", 145, 17, 1, 2, "alde_gld", 239, 242);
+Warp("aldeg_cas04", "aldebaranguildwarp065", 156, 210, 1, 1, "aldeg_cas04", 169, 97);
+Warp("aldeg_cas04", "aldebaranguildwarp066", 171, 100, 1, 1, "aldeg_cas04", 152, 210);
+Warp("aldeg_cas04", "aldebaranguildwarp067", 175, 54, 1, 1, "aldeg_cas04", 74, 88);
+Warp("aldeg_cas04", "aldebaranguildwarp068", 185, 87, 1, 1, "aldeg_cas04", 111, 210);
+Warp("aldeg_cas04", "aaldebaranguildwarp069", 196, 86, 2, 1, "aldeg_cas04", 49, 57);
+Warp("aldeg_cas04", "aldebaranguildwarp070", 197, 40, 1, 1, "aldeg_cas04", 26, 88);
+//aldebaran castle 5
+//========================================================================================
+
+Warp("aldeg_cas05", "aldebaranguildwarp071", 5, 187, 1, 2, "aldeg_cas05", 151, 62);
+Warp("aldeg_cas05", "aldebaranguildwarp072", 12, 175, 3, 1, "aldeg_cas05", 162, 194);
+Warp("aldeg_cas05", "aldebaranguildwarp073", 14, 88, 1, 2, "aldeg_cas05", 156, 227);
+Warp("aldeg_cas05", "aldebaranguildwarp074", 15, 227, 2, 2, "aldeg_cas05", 195, 46);
+Warp("aldeg_cas05", "aldebaranguildwarp075", 70, 189, 1, 2, "aldeg_cas05", 166, 81);
+Warp("aldeg_cas05", "aldebaranguildwarp076", 125, 194, 1, 2, "aldeg_cas05", 199, 70);
+Warp("aldeg_cas05", "aldebaranguildwarp077", 150, 67, 1, 1, "aldeg_cas05", 9, 187);
+Warp("aldeg_cas05", "aldebaranguildwarp078", 156, 231, 1, 1, "aldeg_cas05", 18, 88);
+Warp("aldeg_cas05", "aldebaranguildwarp079", 164, 86, 1, 1, "aldeg_cas05", 66, 189);
+Warp("aldeg_cas05", "aldebaranguildwarp080", 165, 232, 3, 1, "aldeg_cas05", 193, 49);
+Warp("aldeg_cas05", "aldebaranguildwarp081", 166, 193, 1, 4, "aldeg_cas05", 13, 179);
+Warp("aldeg_cas05", "aldebaranguildwarp082", 188, 49, 1, 1, "aldeg_cas05", 165, 228);
+Warp("aldeg_cas05", "aldebaranguildwarp083", 195, 42, 1, 1, "aldeg_cas05", 19, 227);
+Warp("aldeg_cas05", "aldebaranguildwarp084", 194, 71, 1, 1, "aldeg_cas05", 129, 194);
+Warp("aldeg_cas05", "aldebaranguildwarp085", 216, 107, 3, 1, "alde_gld", 264, 90);
+//fasdfsdf
+
+Warp("gefg_cas01", "geffenguildwarp001", 31, 185, 1, 1, "gefg_cas01", 33, 47);
+Warp("gefg_cas01", "geffenguildwarp002", 33, 51, 2, 1, "gefg_cas01", 35, 185);
+Warp("gefg_cas01", "geffenguildwarp003", 34, 136, 9, 1, "gef_fild13", 150, 50);
+Warp("gefg_cas01", "geffenguildwarp004", 34, 167, 1, 1, "gefg_cas01", 174, 34);
+Warp("gefg_cas01", "geffenguildwarp005", 39, 196, 2, 1, "gefg_cas01", 62, 13);
+Warp("gefg_cas01", "geffenguildwarp006", 54, 84, 1, 2, "gefg_cas01", 174, 14);
+Warp("gefg_cas01", "geffenguildwarp007", 58, 185, 1, 1, "gefg_cas01", 90, 47);
+Warp("gefg_cas01", "geffenguildwarp008", 59, 170, 1, 1, "gefg_cas01", 205, 34);
+Warp("gefg_cas01", "geffenguildwarp009", 62, 9, 4, 1, "gefg_cas01", 39, 192);
+Warp("gefg_cas01", "geffenguildwarp010", 90, 51, 2, 1, "gefg_cas01", 54, 185);
+Warp("gefg_cas01", "geffenguildwarp011", 99, 178, 1, 8, "gef_fild13", 214, 75);
+Warp("gefg_cas01", "geffenguildwarp012", 170, 14, 1, 2, "gefg_cas01", 50, 84);
+Warp("gefg_cas01", "geffenguildwarp013", 170, 34, 1, 2, "gefg_cas01", 30, 167);
+Warp("gefg_cas01", "geffenguildwarp014", 181, 52, 1, 2, "gefg_cas01", 198, 160);
+Warp("gefg_cas01", "geffenguildwarp015", 202, 159, 1, 2, "gefg_cas01", 185, 52);
+Warp("gefg_cas01", "geffenguildwarp016", 209, 34, 1, 2, "gefg_cas01", 56, 170);
+//geffen castle 2
+//========================================================================================
+Warp("gefg_cas02", "geffenguildwarp017", 22, 160, 1, 1, "gefg_cas02", 34, 17);
+Warp("gefg_cas02", "geffenguildwarp018", 25, 13, 1, 2, "gefg_cas02", 170, 11);
+Warp("gefg_cas02", "geffenguildwarp019", 34, 13, 2, 1, "gefg_cas02", 22, 156);
+Warp("gefg_cas02", "geffenguildwarp020", 34, 68, 2, 1, "gefg_cas02", 50, 175);
+Warp("gefg_cas02", "geffenguildwarp021", 34, 152, 1, 1, "gefg_cas02", 153, 18);
+Warp("gefg_cas02", "geffenguildwarp022", 35, 173, 1, 2, "gefg_cas02", 76, 42);
+Warp("gefg_cas02", "geffenguildwarp023", 46, 175, 1, 1, "gefg_cas02", 34, 64);
+Warp("gefg_cas02", "geffenguildwarp024", 48, 159, 1, 1, "gefg_cas02", 184, 41);
+Warp("gefg_cas02", "geffenguildwarp025", 57, 136, 1, 1, "gefg_cas02", 180, 18);
+Warp("gefg_cas02", "geffenguildwarp026", 70, 147, 8, 1, "gef_fild13", 308, 240);
+Warp("gefg_cas02", "geffenguildwarp027", 80, 42, 1, 2, "gefg_cas02", 39, 173);
+Warp("gefg_cas02", "geffenguildwarp028", 148, 18, 1, 2, "gefg_cas02", 35, 150);
+Warp("gefg_cas02", "geffenguildwarp029", 150, 36, 2, 1, "gefg_cas02", 152, 186);
+Warp("gefg_cas02", "geffenguildwarp030", 152, 190, 2, 1, "gefg_cas02", 150, 41);
+Warp("gefg_cas02", "geffenguildwarp031", 174, 11, 1, 2, "gefg_cas02", 21, 13);
+Warp("gefg_cas02", "geffenguildwarp032", 184, 36, 2, 1, "gefg_cas02", 48, 155);
+Warp("gefg_cas02", "geffenguildwarp033", 185, 18, 1, 2, "gefg_cas02", 53, 136);
+//geffen castle 3
+//========================================================================================
+Warp("gefg_cas03", "geffenguildwarp034", 17, 206, 1, 1, "gefg_cas03", 29, 219);
+Warp("gefg_cas03", "geffenguildwarp035", 27, 215, 1, 1, "gefg_cas03", 17, 202);
+Warp("gefg_cas03", "geffenguildwarp036", 34, 286, 1, 1, "gefg_cas03", 131, 92);
+Warp("gefg_cas03", "geffenguildwarp037", 38, 243, 1, 1, "gefg_cas03", 29, 219);
+Warp("gefg_cas03", "geffenguildwarp038", 38, 259, 1, 1, "gefg_cas03", 43, 271);
+Warp("gefg_cas03", "geffenguildwarp039", 42, 175, 1, 1, "gefg_cas03", 266, 43);
+Warp("gefg_cas03", "geffenguildwarp040", 43, 191, 1, 1, "gefg_cas03", 70, 185);
+Warp("gefg_cas03", "geffenguildwarp041", 47, 271, 1, 1, "gefg_cas03", 38, 255);
+Warp("gefg_cas03", "geffenguildwarp042", 50, 248, 1, 1, "gefg_cas03", 54, 229);
+Warp("gefg_cas03", "geffenguildwarp043", 58, 232, 1, 1, "gefg_cas03", 62, 213);
+Warp("gefg_cas03", "geffenguildwarp044", 63, 255, 1, 1, "gefg_cas03", 156, 92);
+Warp("gefg_cas03", "geffenguildwarp045", 65, 215, 1, 1, "gefg_cas03", 233, 74);
+Warp("gefg_cas03", "geffenguildwarp046", 66, 223, 1, 2, "gefg_cas03", 96, 53);
+Warp("gefg_cas03", "geffenguildwarp047", 68, 290, 5, 1, "gef_fild13", 73, 288);
+Warp("gefg_cas03", "geffenguildwarp048", 70, 182, 1, 1, "gefg_cas03", 39, 191);
+Warp("gefg_cas03", "geffenguildwarp049", 79, 244, 1, 1, "gefg_cas03", 91, 250);
+Warp("gefg_cas03", "geffenguildwarp050", 88, 248, 1, 1, "gefg_cas03", 76, 242);
+Warp("gefg_cas03", "geffenguildwarp051", 90, 218, 1, 1, "gefg_cas03", 111, 210);
+Warp("gefg_cas03", "geffenguildwarp052", 92, 53, 1, 3, "gefg_cas03", 62, 223);
+Warp("gefg_cas03", "geffenguildwarp053", 93, 159, 1, 3, "gef_fild13", 83, 181);
+Warp("gefg_cas03", "geffenguildwarp054", 93, 209, 1, 1, "gefg_cas03", 92, 250);
+Warp("gefg_cas03", "geffenguildwarp055", 95, 251, 1, 1, "gefg_cas03", 91, 209);
+Warp("gefg_cas03", "geffenguildwarp056", 103, 283, 2, 2, "gef_fild13", 117, 273);
+Warp("gefg_cas03", "geffenguildwarp057", 106, 217, 1, 1, "gefg_cas03", 131, 15);
+Warp("gefg_cas03", "geffenguildwarp058", 115, 210, 1, 1, "gefg_cas03", 92, 215);
+Warp("gefg_cas03", "geffenguildwarp059", 130, 250, 1, 6, "gef_fild13", 143, 240);
+Warp("gefg_cas03", "geffenguildwarp060", 135, 15, 1, 2, "gefg_cas03", 110, 217);
+Warp("gefg_cas03", "geffenguildwarp061", 135, 92, 1, 2, "gefg_cas03", 34, 282);
+Warp("gefg_cas03", "geffenguildwarp062", 152, 92, 1, 2, "gefg_cas03", 59, 255);
+Warp("gefg_cas03", "geffenguildwarp063", 154, 16, 1, 2, "gefg_cas03", 252, 11);
+Warp("gefg_cas03", "geffenguildwarp064", 212, 46, 2, 1, "gefg_cas03", 225, 158);
+Warp("gefg_cas03", "geffenguildwarp065", 225, 154, 2, 1, "gefg_cas03", 212, 42);
+Warp("gefg_cas03", "geffenguildwarp066", 237, 74, 1, 2, "gefg_cas03", 62, 213);
+Warp("gefg_cas03", "geffenguildwarp067", 256, 11, 1, 2, "gefg_cas03", 159, 16);
+Warp("gefg_cas03", "geffenguildwarp068", 266, 47, 2, 1, "gefg_cas03", 45, 175);
+//geffen castle 4
+//========================================================================================
+Warp("gefg_cas04", "geffenguildwarp069", 18, 9, 2, 1, "gefg_cas04", 57, 220);
+Warp("gefg_cas04", "geffenguildwarp070", 18, 82, 2, 1, "gefg_cas04", 34, 215);
+Warp("gefg_cas04", "geffenguildwarp071", 24, 145, 11, 1, "gef_fild13", 192, 277);
+Warp("gefg_cas04", "geffenguildwarp072", 27, 180, 1, 1, "gefg_cas04", 142, 59);
+Warp("gefg_cas04", "geffenguildwarp073", 34, 211, 2, 1, "gefg_cas04", 18, 78);
+Warp("gefg_cas04", "geffenguildwarp074", 42, 9, 2, 1, "gefg_cas04", 42, 77);
+Warp("gefg_cas04", "geffenguildwarp075", 42, 81, 2, 1, "gefg_cas04", 42, 13);
+Warp("gefg_cas04", "geffenguildwarp076", 51, 25, 2, 1, "gefg_cas04", 142, 37);
+Warp("gefg_cas04", "geffenguildwarp077", 53, 196, 1, 1, "gefg_cas04", 170, 36);
+Warp("gefg_cas04", "geffenguildwarp078", 57, 224, 1, 1, "gefg_cas04", 18, 13);
+Warp("gefg_cas04", "geffenguildwarp079", 140, 168, 2, 2, "gefg_cas04", 178, 61);
+Warp("gefg_cas04", "geffenguildwarp080", 142, 33, 2, 1, "gefg_cas04", 52, 21);
+Warp("gefg_cas04", "geffenguildwarp081", 142, 55, 2, 1, "gefg_cas04", 32, 180);
+Warp("gefg_cas04", "geffenguildwarp082", 174, 36, 1, 2, "gefg_cas04", 53, 192);
+Warp("gefg_cas04", "geffenguildwarp083", 178, 57, 2, 1, "gefg_cas04", 145, 165);
+//geffen castle 5
+//========================================================================================
+Warp("gefg_cas05", "geffenguildwarp084", 7, 134, 2, 2, "gef_fild13", 252, 57);
+Warp("gefg_cas05", "geffenguildwarp085", 37, 16, 2, 1, "gefg_cas05", 153, 44);
+Warp("gefg_cas05", "geffenguildwarp086", 43, 62, 1, 2, "gefg_cas05", 78, 138);
+Warp("gefg_cas05", "geffenguildwarp087", 44, 143, 1, 1, "gefg_cas05", 70, 155);
+Warp("gefg_cas05", "geffenguildwarp088", 50, 165, 1, 1, "gefg_cas05", 178, 68);
+Warp("gefg_cas05", "geffenguildwarp089", 66, 76, 2, 1, "gefg_cas05", 79, 156);
+Warp("gefg_cas05", "geffenguildwarp090", 68, 150, 1, 1, "gefg_cas05", 44, 147);
+Warp("gefg_cas05", "geffenguildwarp091", 74, 138, 1, 1, "gefg_cas05", 47, 62);
+Warp("gefg_cas05", "geffenguildwarp092", 83, 152, 2, 2, "gefg_cas05", 66, 72);
+Warp("gefg_cas05", "geffenguildwarp093", 87, 165, 1, 1, "gefg_cas05", 84, 62);
+Warp("gefg_cas05", "geffenguildwarp094", 88, 62, 1, 2, "gefg_cas05", 83, 165);
+Warp("gefg_cas05", "geffenguildwarp095", 93, 16, 2, 1, "gefg_cas05", 202, 44);
+Warp("gefg_cas05", "geffenguildwarp096", 99, 204, 10, 1, "gef_fild13", 305, 87);
+Warp("gefg_cas05", "geffenguildwarp097", 178, 72, 2, 1, "gefg_cas05", 46, 165);
+Warp("gefg_cas05", "geffenguildwarp098", 190, 20, 2, 1, "gefg_cas05", 194, 151);
+Warp("gefg_cas05", "geffenguildwarp099", 194, 147, 2, 1, "gefg_cas05", 190, 16);
+Warp("gefg_cas05", "geffenguildwarp100", 149, 44, 1, 2, "gefg_cas05", 37, 20);
+Warp("gefg_cas05", "geffenguildwarp101", 206, 44, 1, 2, "gefg_cas05", 93, 20);
+
+Warp("pay_gld", "payonguildwarp001", 16, 276, 2, 4, "moc_fild02", 374, 272);
+Warp("pay_gld", "payonguildwarp002", 121, 238, 2, 1, "payg_cas01", 214, 48);
+Warp("pay_gld", "payonguildwarp003", 140, 156, 2, 1, "payg_cas04", 252, 271);
+Warp("pay_gld", "payonguildwarp004", 204, 270, 2, 1, "payg_cas05", 62, 227);
+Warp("pay_gld", "payonguildwarp005", 291, 116, 1, 2, "payg_cas02", 272, 57);
+Warp("pay_gld", "payonguildwarp006", 321, 293, 1, 2, "payg_cas03", 226, 26);
+Warp("pay_gld", "payonguildwarp007", 374, 149, 2, 10, "payon", 20, 142);
+//payon castle 1
+//========================================================================================
+
+Warp("payg_cas01", "payonguildwarp008", 11, 114, 1, 3, "payg_cas01", 81, 15);
+Warp("payg_cas01", "payonguildwarp009", 53, 111, 3, 1, "payg_cas01", 115, 147);
+Warp("payg_cas01", "payonguildwarp010", 84, 14, 1, 3, "payg_cas01", 15, 115);
+Warp("payg_cas01", "payonguildwarp011", 102, 17, 2, 1, "payg_cas01", 201, 121);
+Warp("payg_cas01", "payonguildwarp012", 115, 151, 3, 1, "payg_cas01", 53, 115);
+Warp("payg_cas01", "payonguildwarp013", 134, 43, 1, 3, "payg_cas01", 226, 130);
+Warp("payg_cas01", "payonguildwarp014", 201, 114, 1, 1, "payg_cas01", 213, 72);
+Warp("payg_cas01", "payonguildwarp015", 201, 126, 1, 1, "payg_cas01", 102, 21);
+Warp("payg_cas01", "payonguildwarp016", 213, 76, 2, 1, "payg_cas01", 201, 118);
+Warp("payg_cas01", "payonguildwarp017", 214, 44, 8, 1, "pay_gld", 121, 233);
+Warp("payg_cas01", "payonguildwarp018", 218, 112, 1, 1, "payg_cas01", 230, 94);
+Warp("payg_cas01", "payonguildwarp019", 222, 130, 1, 2, "payg_cas01", 130, 43);
+Warp("payg_cas01", "payonguildwarp020", 230, 98, 1, 1, "payg_cas01", 222, 112);
+//payon castle 2
+//========================================================================================
+
+Warp("payg_cas02", "payonguildwarp021", 13, 42, 4, 1, "payg_cas02", 254, 243);
+Warp("payg_cas02", "payonguildwarp022", 28, 293, 1, 1, "payg_cas02", 229, 72);
+Warp("payg_cas02", "payonguildwarp023", 47, 223, 4, 1, "payg_cas02", 280, 287);
+Warp("payg_cas02", "payonguildwarp024", 65, 292, 3, 1, "payg_cas02", 215, 35);
+Warp("payg_cas02", "payonguildwarp025", 84, 240, 1, 1, "payg_cas02", 224, 30);
+Warp("payg_cas02", "payonguildwarp026", 215, 31, 2, 1, "payg_cas02", 65, 288);
+Warp("payg_cas02", "payonguildwarp027", 222, 26, 1, 2, "payg_cas02", 80, 240);
+Warp("payg_cas02", "payonguildwarp028", 232, 72, 1, 1, "payg_cas02", 28, 289);
+Warp("payg_cas02", "payonguildwarp029", 236, 59, 1, 1, "payg_cas02", 229, 72);
+Warp("payg_cas02", "payonguildwarp030", 254, 239, 2, 1, "payg_cas02", 13, 38);
+Warp("payg_cas02", "payonguildwarp031", 276, 61, 1, 4, "pay_gld", 295, 116);
+Warp("payg_cas02", "payonguildwarp032", 280, 291, 4, 1, "payg_cas02", 47, 227);
+//payon castle 3
+//========================================================================================
+
+Warp("payg_cas03", "payonguildwarp033", 20, 19, 1, 1, "payg_cas03", 255, 72);
+Warp("payg_cas03", "payonguildwarp034", 29, 245, 3, 1, "payg_cas03", 39, 80);
+Warp("payg_cas03", "payonguildwarp035", 29, 269, 2, 1, "payg_cas03", 269, 287);
+Warp("payg_cas03", "payonguildwarp036", 39, 5, 3, 1, "payg_cas03", 263, 66);
+Warp("payg_cas03", "payonguildwarp037", 39, 84, 3, 1, "payg_cas03", 29, 249);
+Warp("payg_cas03", "payonguildwarp038", 57, 19, 1, 1, "payg_cas03", 269, 75);
+Warp("payg_cas03", "payonguildwarp039", 226, 22, 4, 1, "pay_gld", 317, 293);
+Warp("payg_cas03", "payonguildwarp040", 245, 41, 1, 1, "payg_cas03", 255, 68);
+Warp("payg_cas03", "payonguildwarp041", 255, 64, 1, 1, "payg_cas03", 245, 37);
+Warp("payg_cas03", "payonguildwarp042", 255, 76, 1, 1, "payg_cas03", 24, 19);
+Warp("payg_cas03", "payonguildwarp043", 261, 34, 1, 1, "payg_cas03", 270, 66);
+Warp("payg_cas03", "payonguildwarp044", 262, 71, 2, 1, "payg_cas03", 39, 9);
+Warp("payg_cas03", "payonguildwarp045", 269, 79, 1, 1, "payg_cas03", 53, 19);
+Warp("payg_cas03", "payonguildwarp046", 269, 290, 4, 1, "payg_cas03", 29, 273);
+Warp("payg_cas03", "payonguildwarp047", 272, 68, 1, 1, "payg_cas03", 261, 38);
+//payon castle 4
+//========================================================================================
+
+Warp("payg_cas04", "payonguildwarp048", 7, 261, 1, 2, "payg_cas04", 55, 30);
+Warp("payg_cas04", "payonguildwarp049", 28, 31, 1, 2, "payg_cas04", 251, 42);
+Warp("payg_cas04", "payonguildwarp050", 59, 30, 1, 1, "payg_cas04", 11, 261);
+Warp("payg_cas04", "payonguildwarp051", 74, 240, 1, 3, "payg_cas04", 256, 212);
+Warp("payg_cas04", "payonguildwarp052", 74, 282, 1, 3, "payg_cas04", 225, 208);
+Warp("payg_cas04", "payonguildwarp053", 78, 261, 1, 5, "payg_cas04", 236, 189);
+Warp("payg_cas04", "payonguildwarp054", 229, 208, 1, 1, "payg_cas04", 70, 282);
+Warp("payg_cas04", "payonguildwarp055", 232, 189, 1, 2, "payg_cas04", 74, 261);
+Warp("payg_cas04", "payonguildwarp056", 254, 45, 1, 1, "payg_cas04", 24, 31);
+Warp("payg_cas04", "payonguildwarp057", 252, 275, 8, 1, "pay_gld", 140, 160);
+Warp("payg_cas04", "payonguildwarp058", 260, 212, 1, 1, "payg_cas04", 70, 240);
+//payon castle 5
+//========================================================================================
+
+Warp("payg_cas05", "payonguildwarp059", 14, 14, 2, 2, "payg_cas05", 246, 41);
+Warp("payg_cas05", "payonguildwarp060", 23, 283, 1, 1, "payg_cas05", 237, 282);
+Warp("payg_cas05", "payonguildwarp061", 39, 264, 1, 1, "payg_cas05", 237, 231);
+Warp("payg_cas05", "payonguildwarp062", 56, 255, 1, 2, "payg_cas05", 223, 256);
+Warp("payg_cas05", "payonguildwarp063", 62, 223, 5, 1, "pay_gld", 198, 264);
+Warp("payg_cas05", "payonguildwarp064", 219, 256, 1, 3, "payg_cas05", 52, 255);
+Warp("payg_cas05", "payonguildwarp065", 237, 227, 3, 1, "payg_cas05", 40, 260);
+Warp("payg_cas05", "payonguildwarp066", 237, 286, 3, 1, "payg_cas05", 19, 282);
+Warp("payg_cas05", "payonguildwarp067", 242, 41, 1, 1, "payg_cas05", 18, 18);
+Warp("payg_cas05", "payonguildwarp068", 283, 256, 1, 3, "payg_cas05", 286, 43);
+Warp("payg_cas05", "payonguildwarp069", 290, 43, 1, 3, "payg_cas05", 287, 256);
+Warp("prt_gld", "pronteraguildwarp001", 107, 240, 1, 3, "prtg_cas04", 86, 13);
+Warp("prt_gld", "pronteraguildwarp002", 129, 65, 1, 3, "prtg_cas01", 99, 32);
+Warp("prt_gld", "pronteraguildwarp003", 153, 141, 4, 1, "prtg_cas03", 168, 12);
+Warp("prt_gld", "pronteraguildwarp004", 159, 25, 3, 2, "prt_castle", 102, 178);
+Warp("prt_gld", "pronteraguildwarp005", 159, 298, 3, 2, "prt_fild01", 199, 30);
+Warp("prt_gld", "pronteraguildwarp006", 212, 240, 1, 4, "prtg_cas05", 17, 235);
+Warp("prt_gld", "pronteraguildwarp007", 240, 124, 3, 1, "prtg_cas02", 43, 229);
+//prontera castle 1
+//========================================================================================
+
+Warp("prtg_cas01", "pronteraguildwarp008", 37, 47, 1, 1, "prtg_cas01", 45, 34);
+Warp("prtg_cas01", "pronteraguildwarp009", 37, 54, 1, 1, "prtg_cas01", 192, 119);
+Warp("prtg_cas01", "pronteraguildwarp010", 41, 34, 1, 1, "prtg_cas01", 40, 47);
+Warp("prtg_cas01", "pronteraguildwarp011", 51, 70, 1, 2, "prtg_cas01", 202, 92);
+Warp("prtg_cas01", "pronteraguildwarp012", 57, 19, 1, 1, "prtg_cas01", 80, 49);
+Warp("prtg_cas01", "pronteraguildwarp013", 62, 34, 1, 1, "prtg_cas01", 192, 119);
+Warp("prtg_cas01", "pronteraguildwarp014", 71, 54, 1, 1, "prtg_cas01", 192, 65);
+Warp("prtg_cas01", "pronteraguildwarp015", 75, 183, 4, 1, "prtg_cas01", 147, 116);
+Warp("prtg_cas01", "pronteraguildwarp016", 84, 19, 1, 1, "prtg_cas01", 192, 65);
+Warp("prtg_cas01", "pronteraguildwarp017", 84, 49, 1, 1, "prtg_cas01", 61, 19);
+Warp("prtg_cas01", "pronteraguildwarp018", 103, 32, 1, 6, "prt_gld", 134, 65);
+Warp("prtg_cas01", "pronteraguildwarp019", 109, 163, 1, 3, "prtg_cas01", 202, 183);
+Warp("prtg_cas01", "pronteraguildwarp020", 147, 120, 4, 1, "prtg_cas01", 75, 187);
+Warp("prtg_cas01", "pronteraguildwarp021", 196, 64, 1, 3, "prtg_cas01", 75, 54);
+Warp("prtg_cas01", "pronteraguildwarp022", 196, 119, 1, 3, "prtg_cas01", 40, 54);
+Warp("prtg_cas01", "pronteraguildwarp023", 206, 92, 1, 4, "prtg_cas01", 55, 70);
+Warp("prtg_cas01", "pronteraguildwarp024", 206, 182, 1, 3, "prtg_cas01", 113, 163);
+//prontera castle 2
+//========================================================================================
+
+Warp("prtg_cas02", "pronteraguildwarp025", 35, 183, 2, 1, "prtg_cas02", 71, 82);
+Warp("prtg_cas02", "pronteraguildwarp026", 43, 233, 3, 1, "prt_gld", 240, 128);
+Warp("prtg_cas02", "pronteraguildwarp027", 45, 21, 2, 1, "prtg_cas02", 203, 25);
+Warp("prtg_cas02", "pronteraguildwarp028", 53, 202, 1, 1, "prtg_cas02", 165, 41);
+Warp("prtg_cas02", "pronteraguildwarp029", 64, 164, 1, 1, "prtg_cas02", 98, 25);
+Warp("prtg_cas02", "pronteraguildwarp030", 71, 86, 3, 1, "prtg_cas02", 35, 187);
+Warp("prtg_cas02", "pronteraguildwarp031", 88, 215, 1, 1, "prtg_cas02", 206, 41);
+Warp("prtg_cas02", "pronteraguildwarp032", 98, 21, 2, 1, "prtg_cas02", 64, 168);
+Warp("prtg_cas02", "pronteraguildwarp033", 157, 135, 2, 2, "prtg_cas02", 184, 40);
+Warp("prtg_cas02", "pronteraguildwarp034", 161, 41, 1, 2, "prtg_cas02", 57, 202);
+Warp("prtg_cas02", "pronteraguildwarp035", 184, 44, 1, 1, "prtg_cas02", 157, 140);
+Warp("prtg_cas02", "pronteraguildwarp036", 203, 21, 3, 1, "prtg_cas02", 45, 25);
+Warp("prtg_cas02", "pronteraguildwarp037", 210, 41, 1, 2, "prtg_cas02", 84, 215);
+//prontera castle 3
+//========================================================================================
+
+
+Warp("prtg_cas03", "pronteraguildwarp038", 6, 78, 1, 4, "prtg_cas03", 176, 44);
+Warp("prtg_cas03", "pronteraguildwarp039", 7, 200, 1, 1, "prtg_cas03", 169, 231);
+Warp("prtg_cas03", "pronteraguildwarp040", 45, 43, 9, 1, "prtg_cas03", 165, 54);
+Warp("prtg_cas03", "pronteraguildwarp041", 45, 121, 6, 1, "prtg_cas03", 164, 177);
+Warp("prtg_cas03", "pronteraguildwarp042", 86, 73, 1, 3, "prtg_cas03", 178, 81);
+Warp("prtg_cas03", "pronteraguildwarp043", 164, 173, 8, 1, "prtg_cas03", 45, 117);
+Warp("prtg_cas03", "pronteraguildwarp044", 165, 59, 2, 1, "prtg_cas03", 45, 47);
+Warp("prtg_cas03", "pronteraguildwarp045", 168, 8, 5, 1, "prt_gld", 153, 137);
+Warp("prtg_cas03", "pronteraguildwarp046", 169, 235, 3, 1, "prtg_cas03", 11, 200);
+Warp("prtg_cas03", "pronteraguildwarp047", 172, 44, 1, 1, "prtg_cas03", 10, 78);
+Warp("prtg_cas03", "pronteraguildwarp048", 178, 85, 1, 1, "prtg_cas03", 82, 73);
+Warp("prtg_cas03", "pronteraguildwarp049", 191, 55, 1, 1, "prtg_cas03", 190, 233);
+Warp("prtg_cas03", "pronteraguildwarp050", 194, 233, 1, 3, "prtg_cas03", 191, 59);
+//prontera castle 4
+//========================================================================================
+
+Warp("prtg_cas04", "pronteraguildwarp051", 7, 254, 1, 2, "prtg_cas04", 32, 32);
+Warp("prtg_cas04", "pronteraguildwarp052", 10, 229, 3, 1, "prtg_cas04", 48, 44);
+Warp("prtg_cas04", "pronteraguildwarp053", 32, 28, 1, 1, "prtg_cas04", 11, 254);
+Warp("prtg_cas04", "pronteraguildwarp054", 34, 225, 7, 1, "prtg_cas04", 63, 26);
+Warp("prtg_cas04", "pronteraguildwarp055", 34, 290, 2, 1, "prtg_cas04", 238, 261);
+Warp("prtg_cas04", "pronteraguildwarp056", 42, 13, 1, 1, "prtg_cas04", 56, 254);
+Warp("prtg_cas04", "pronteraguildwarp057", 48, 48, 1, 1, "prtg_cas04", 10, 233);
+Warp("prtg_cas04", "pronteraguildwarp058", 54, 25, 1, 1, "prtg_cas04", 56, 233);
+Warp("prtg_cas04", "pronteraguildwarp059", 56, 229, 3, 1, "prtg_cas04", 54, 29);
+Warp("prtg_cas04", "pronteraguildwarp060", 60, 254, 1, 1, "prtg_cas04", 42, 17);
+Warp("prtg_cas04", "pronteraguildwarp061", 63, 30, 2, 1, "prtg_cas04", 34, 229);
+Warp("prtg_cas04", "pronteraguildwarp062", 86, 9, 5, 1, "prt_gld", 111, 240);
+Warp("prtg_cas04", "pronteraguildwarp063", 238, 257, 3, 1, "prtg_cas04", 34, 286);
+Warp("prtg_cas04", "pronteraguildwarp064", 247, 258, 3, 1, "prtg_cas04", 255, 14);
+Warp("prtg_cas04", "pronteraguildwarp065", 251, 14, 1, 3, "prtg_cas04", 247, 254);
+//prontera castle 5
+//========================================================================================
+
+Warp("prtg_cas05", "pronteraguildwarp066", 17, 231, 11, 1, "prt_gld", 208, 240);
+Warp("prtg_cas05", "pronteraguildwarp067", 26, 3, 4, 1, "prtg_cas05", 228, 92);
+Warp("prtg_cas05", "pronteraguildwarp068", 38, 250, 2, 1, "prtg_cas05", 244, 7);
+Warp("prtg_cas05", "pronteraguildwarp069", 53, 246, 1, 1, "prtg_cas05", 199, 13);
+Warp("prtg_cas05", "pronteraguildwarp070", 58, 7, 4, 1, "prtg_cas05", 253, 290);
+Warp("prtg_cas05", "pronteraguildwarp071", 66, 225, 1, 1, "prtg_cas05", 260, 92);
+Warp("prtg_cas05", "pronteraguildwarp072", 76, 242, 1, 1, "prtg_cas05", 288, 13);
+Warp("prtg_cas05", "pronteraguildwarp073", 195, 13, 1, 3, "prtg_cas05", 55, 248);
+Warp("prtg_cas05", "pronteraguildwarp074", 228, 96, 2, 1, "prtg_cas05", 26, 7);
+Warp("prtg_cas05", "pronteraguildwarp075", 244, 3, 5, 1, "prtg_cas05", 35, 247);
+Warp("prtg_cas05", "pronteraguildwarp076", 253, 294, 3, 1, "prtg_cas05", 58, 11);
+Warp("prtg_cas05", "pronteraguildwarp077", 260, 96, 2, 1, "prtg_cas05", 66, 229);
+Warp("prtg_cas05", "pronteraguildwarp078", 292, 13, 1, 3, "prtg_cas05", 76, 246);
+
+Npc("aldeg_cas04", "aldebaranguildwarp063", "WARP", 132, 231, N, 1, 1)
+{
+OnTouch:
+	var ht1 = Random(5);
+	switch(ht1)
+	{
+	case 0:
+		MoveTo("aldeg_cas04", 152, 210); 
+	case 1:
+		MoveTo("aldeg_cas04", 111, 210);
+	case 2:
+		MoveTo("aldeg_cas04", 129, 212);
+	case 3:
+		MoveTo("aldeg_cas04", 129, 212);
+	case 4:
+		MoveTo("aldeg_cas04", 14, 196);
+	}
+}

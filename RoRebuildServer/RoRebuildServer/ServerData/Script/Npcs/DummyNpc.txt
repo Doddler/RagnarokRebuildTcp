@@ -148,16 +148,16 @@ Npc("gef_fild09", "Bulletin Board", "2_BOARD1", 227, 29, N) { }
 Npc("gef_fild10", "Bulletin Board", "2_BOARD2", 109, 23, N) { }
 Npc("gef_fild10", "Bulletin Board", "2_BULLETIN_BOARD", 69, 340, N) { }
 Npc("gef_fild10", "Kafra Employee", "4_F_KAFRA2", 73, 340, SE) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 122, 273, SW) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 144, 250, SW) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 159, 57, NW) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 187, 288, S) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 219, 80, NW) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 250, 65, SE) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 294, 243, W) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 319, 85, SE) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 184, SW) { }
-Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 300, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 122, 273, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 144, 250, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 159, 57, NW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 187, 288, S) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 219, 80, NW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 250, 65, SE) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 294, 243, W) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 319, 85, SE) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 184, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 300, SW) { }
 Npc("gef_fild13", "Bulletin Board", "2_BOARD1", 202, 31, N) { }
 Npc("gef_fild13", "Bulletin Board", "2_BOARD2", 29, 206, N) { }
 Npc("gef_tower", "Annoyed Man", "1_M_WIZARD", 118, 36, S) { }
@@ -452,11 +452,11 @@ Npc("pay_dun03", "Fox Mask Problem Solver", "4_M_JPN2", 1, 1, S) { }
 Npc("pay_dun03", "Nine Tail", "4_M_JPN2", 48, 84, S) { }
 Npc("pay_fild08", "Man", "4_M_ORIENT02", 218, 283, W) { }
 Npc("pay_fild10", "Guildsman", "4W_M_02", 148, 252, S) { }
-Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 130, 236, NW) { }
-Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 147, 163, S) { }
-Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 195, 274, SE) { }
-Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 292, 126, W) { }
-Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 321, 284, SW) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 130, 236, NW) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 147, 163, S) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 195, 274, SE) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 292, 126, W) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 321, 284, SW) { }
 Npc("payon_in01", "Archer Wolt", "4_M_ORIENT01", 47, 59, W) { }
 Npc("payon_in01", "Archer Zakk", "4_M_ORIENT01", 66, 64, SE) { }
 Npc("payon_in01", "Armor Dealer", "1_F_ORIENT_02", 7, 119, W) { }
@@ -645,11 +645,83 @@ Npc("prt_fild05", "Bulletin Board", "2_BULLETIN_BOARD", 278, 220, N) { }
 Npc("prt_fild05", "Kafra Employee", "4_F_KAFRA4", 290, 224, W) { }
 Npc("prt_fild05", "Tool Dealer", "4_M_01", 290, 221, W) { }
 Npc("prt_fild08", "Bard", "1_M_BARD", 175, 374, SW) { }
-Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 131, 240, S) { }
-Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 138, 73, NW) { }
-Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 163, 136, SW) { }
-Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 188, 240, SE) { }
-Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 244, 133, W) { }
+Npc("beach_dun3", "Nigiboran", "4_M_BIBI", 30, 220, S) { }
+Npc("c_tower3", "Doorkeeper", "4_M_02", 10, 249, S) { }
+Npc("cmd_fild04", "Daeguro", "4_F_KID2", 267, 137, S) { }
+Npc("cmd_fild04", "Ziyaol", "4_M_SEAMAN", 248, 86, S) { }
+Npc("cmd_fild04", "Zyosegirl", "4_F_04", 188, 74, S) { }
+Npc("cmd_fild07", "Armor Dealer", "4W_F_01", 277, 85, S) { }
+Npc("cmd_fild07", "Hallosu", "4W_SAILOR", 52, 280, S) { }
+Npc("cmd_fild07", "Kafra Employee", "4_F_KAFRA7", 136, 134, S) { }
+Npc("cmd_fild07", "Rahasu", "4W_SAILOR", 192, 58, S) { }
+Npc("cmd_fild07", "Sarumane", "4W_SAILOR", 94, 134, S) { }
+Npc("cmd_fild07", "Tool Dealer", "4_M_01", 257, 126, SE) { }
+Npc("cmd_fild07", "Weapon Dealer", "1_M_03", 250, 98, W) { }
+Npc("cmd_fild07", "Zain", "4W_SAILOR", 299, 83, S) { }
+Npc("cmd_in01", "Armor Dealer", "4W_F_01", 117, 165, S) { }
+Npc("cmd_in01", "Examiner", "4_F_07", 33, 25, SE) { }
+Npc("cmd_in01", "Neels", "4_M_JOB_BLACKSMITH", 164, 115, NW) { }
+Npc("cmd_in01", "Tool Dealer", "4_M_01", 79, 182, SE) { }
+Npc("cmd_in01", "Weapon Dealer", "1_M_03", 128, 165, W) { }
+Npc("cmd_in01", "Yillia", "1_F_04", 175, 120, SW) { }
+Npc("cmd_in02", "Chief", "1_M_03", 32, 140, S) { }
+Npc("cmd_in02", "Deniroz", "4_M_ORIENT02", 89, 72, S) { }
+Npc("cmd_in02", "G . J", "4_M_04", 172, 105, S) { }
+Npc("cmd_in02", "Kafra Employee", "4_F_KAFRA7", 146, 180, S) { }
+Npc("cmd_in02", "Loyar", "4_M_01", 174, 126, S) { }
+Npc("cmd_in02", "Man", "4_M_ROGUE", 190, 94, SW) { }
+Npc("cmd_in02", "Manzi", "4_M_03", 189, 99, S) { }
+Npc("cmd_in02", "Martine", "1_M_02", 73, 81, S) { }
+Npc("cmd_in02", "Moo", "4_M_MANAGER", 57, 62, S) { }
+Npc("cmd_in02", "Roberto", "4_M_SEAMAN", 64, 43, S) { }
+Npc("cmd_in02", "Scoursege", "1_M_BARD", 48, 55, S) { }
+Npc("cmd_in02", "Shalone", "4W_F_01", 178, 92, S) { }
+Npc("cmd_in02", "Stonae", "4W_M_02", 178, 86, S) { }
+Npc("cmd_in02", "Strange Guy", "1_M_SIGNART", 88, 51, S) { }
+Npc("cmd_in02", "Strange Guy", "1_M_SIGNART", 88, 51, S) { }
+Npc("comodo", "BBQ Boy", "4_M_04", 221, 310, S) { }
+Npc("comodo", "BBQ Boy", "4_M_KID1", 213, 310, S) { }
+Npc("comodo", "BBQ Mama", "1_F_MERCHANT_02", 215, 307, S) { }
+Npc("comodo", "BBQ Papa", "1_M_04", 216, 310, S) { }
+Npc("comodo", "BBQ Visitor", "4_F_01", 218, 309, S) { }
+Npc("comodo", "Bismark", "2_M_THIEFMASTER", 158, 342, NW) { }
+Npc("comodo", "Bor Robin", "4_M_04", 193, 151, S) { }
+Npc("comodo", "Bulletin Board", "2_BULLETIN_BOARD", 210, 148, N) { }
+Npc("comodo", "Camp Ground Boy", "4_M_BIBI", 206, 310, S) { }
+Npc("comodo", "Camp Ground Boy", "4_M_KID1", 209, 314, S) { }
+Npc("comodo", "Camping Maiden", "1_F_LIBRARYGIRL", 209, 305, S) { }
+Npc("comodo", "Camping Youth", "1_M_YOUNGKNIGHT", 204, 310, S) { }
+Npc("comodo", "Chef Assistant", "4_M_01", 225, 164, SW) { }
+Npc("comodo", "Comodo Guide", "8_F_GIRL", 176, 350, S) { }
+Npc("comodo", "Comodo Guide", "8_F_GIRL", 322, 178, S) { }
+Npc("comodo", "Comodo Guide", "8_F_GIRL", 37, 219, S) { }
+Npc("comodo", "Devellin", "4_F_01", 204, 148, NE) { }
+Npc("comodo", "Hair Ornament Girl", "8_F_GIRL", 228, 159, SW) { }
+Npc("comodo", "Hayes", "4_F_03", 171, 137, NW) { }
+Npc("comodo", "Hullaris", "4_F_GODEMOM", 187, 153, S) { }
+Npc("comodo", "Kachua", "4_F_02", 219, 158, E) { }
+Npc("comodo", "Kafra Employee", "4_F_KAFRA7", 195, 150, S) { }
+Npc("comodo", "Kichiri", "4W_M_02", 169, 284, S) { }
+Npc("comodo", "Magatu", "1_M_JOBTESTER", 163, 280, S) { }
+Npc("comodo", "Mailbox", "2_POSTBOX", 200, 150, N) { }
+Npc("comodo", "Merunte", "4_M_JOB_HUNTER", 237, 217, SE) { }
+Npc("comodo", "Munak's Grandma", "8_F_GRANDMOTHER", 112, 182, N) { }
+Npc("comodo", "Rakusa", "1_F_MERCHANT_01", 164, 291, S) { }
+Npc("comodo", "Ryde", "4_M_02", 170, 137, NE) { }
+Npc("comodo", "Shanel", "4_F_07", 204, 172, SE) { }
+Npc("comodo", "Snowtora", "4_F_01", 180, 153, S) { }
+Npc("comodo", "Souvenir Vendor", "4W_F_01", 296, 125, S) { }
+Npc("comodo", "Suspicious Guy", "2_M_THIEFMASTER", 210, 154, W) { }
+Npc("comodo", "TORUNA", "4_M_MANAGER", 88, 97, S) { }
+Npc("comodo", "Traveler", "4_F_GON", 273, 137, S) { }
+Npc("comodo", "Wandering Bard", "2_M_BARD_ORIENT", 211, 155, SE) { }
+Npc("comodo", "Wandering Master", "4_M_JOB_ASSASSIN", 172, 230, SW) { }
+Npc("comodo", "Won", "1_M_MOC_LORD", 232, 87, S) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 131, 240, S) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 138, 73, NW) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 163, 136, SW) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 188, 240, SE) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 244, 133, W) { }
 Npc("prt_in", "Aesop", "4_M_JOB_KNIGHT2", 85, 99, SW) { }
 Npc("prt_in", "Aigie", "4_F_03", 169, 11, SE) { }
 Npc("prt_in", "Aigie", "4_F_03", 169, 11, SW) { }
@@ -903,3 +975,372 @@ Npc("aldeg_cas02", "Emperium", "EMPERIUM", 214, 24, N) { }
 Npc("aldeg_cas03", "Emperium", "EMPERIUM", 206, 32, N) { }
 Npc("aldeg_cas04", "Emperium", "EMPERIUM", 36, 218, N) { }
 Npc("aldeg_cas05", "Emperium", "EMPERIUM", 28, 102, N) { }
+Npc("alde_gld", "GM_TBT", "4_F_RACING", 5, 5, SE) { }
+Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 45, 87, N) { }
+Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 51, 87, N) { }
+Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 61, 79, E) { }
+Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 61, 87, E) { }
+Npc("alde_gld", "Luina Castle 2", "GUILD_FLAG", 99, 244, S) { }
+Npc("alde_gld", "Luina Castle 2", "GUILD_FLAG", 99, 251, S) { }
+Npc("alde_gld", "Luina Castle 3", "GUILD_FLAG", 146, 82, N) { }
+Npc("alde_gld", "Luina Castle 4", "GUILD_FLAG", 239, 239, W) { }
+Npc("alde_gld", "Luina Castle 4", "GUILD_FLAG", 239, 246, W) { }
+Npc("alde_gld", "Luina Castle 5", "GUILD_FLAG", 265, 87, E) { }
+Npc("alde_gld", "Luina Castle 5", "GUILD_FLAG", 265, 93, E) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 137, 89, SW) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 232, 245, S) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 265, 98, SE) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 55, 89, NW) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 92, 247, W) { }
+Npc("alde_gld", "Peco Peco Manager", "4_F_RACING", 181, 199, SE) { }
+Npc("alde_gld", "Sign", "2_BULLETIN_BOARD", 178, 180, N) { }
+Npc("alde_gld", "Turbo Track Guide", "4_F_RACING", 186, 199, SW) { }
+Npc("aldeg_cas01", "Arl Fredo", "1_M_JOBTESTER", 218, 175, N) { }
+Npc("aldeg_cas01", "Kafra Service", "4_F_KAFRA1", 218, 170, N) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 203, 150, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 210, 150, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 30, 246, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 30, 248, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 37, 246, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 37, 248, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 62, 64, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 62, 75, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 66, 64, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 66, 75, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 70, 64, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 70, 75, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 74, 64, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 74, 75, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 90, 9, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 95, 80, W) { }
+Npc("aldeg_cas02", "ChenChenLee", "1_M_JOBTESTER", 78, 74, N) { }
+Npc("aldeg_cas02", "Kafra Service", "4_F_KAFRA1", 84, 74, N) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 103, 53, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 108, 39, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 121, 29, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 183, 140, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 197, 40, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 212, 152, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 229, 6, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 230, 40, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 32, 213, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 57, 213, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 63, 41, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 67, 30, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 73, 53, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 82, 71, W) { }
+Npc("aldeg_cas03", "Kafra Service", "4_F_KAFRA1", 118, 76, N) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 108, 60, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 112, 107, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 112, 117, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 121, 73, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 138, 83, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 176, 175, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 181, 179, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 192, 44, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 199, 169, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 207, 75, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 208, 145, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 69, 71, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 75, 102, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 77, 115, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 77, 215, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 91, 69, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 96, 62, W) { }
+Npc("aldeg_cas03", "Najarf", "1_M_JOBTESTER", 110, 118, N) { }
+Npc("aldeg_cas04", "Brimhemsen", "1_M_JOBTESTER", 67, 116, N) { }
+Npc("aldeg_cas04", "Kafra Service", "4_F_KAFRA1", 45, 88, N) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 112, 206, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 113, 212, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 129, 193, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 129, 193, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 130, 180, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 133, 220, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 164, 90, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 167, 61, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 169, 15, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 169, 22, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 186, 42, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 30, 69, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 33, 107, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 33, 116, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 45, 98, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 55, 97, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 77, 117, W) { }
+Npc("aldeg_cas05", "Brimhemsen", "1_M_JOBTESTER", 51, 179, N) { }
+Npc("aldeg_cas05", "Kafra Service", "4_F_KAFRA1", 31, 190, N) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 10, 218, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 10, 225, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 14, 117, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 142, 212, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 149, 196, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 150, 202, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 154, 51, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 164, 201, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 170, 85, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 187, 59, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 22, 211, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 38, 201, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 41, 180, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 65, 182, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 65, 205, W) { }
+Npc("gef_fild08", "Bulletin Board", "2_BOARD2", 211, 24, N) { }
+Npc("gef_fild09", "Bulletin Board", "2_BOARD1", 227, 29, N) { }
+Npc("gef_fild10", "Bulletin Board", "2_BOARD2", 109, 23, N) { }
+Npc("gef_fild10", "Bulletin Board", "2_BULLETIN_BOARD", 69, 340, N) { }
+Npc("gef_fild10", "Kafra Employee", "4_F_KAFRA2", 73, 340, SE) { }
+Npc("gef_fild13", "Britoniah Castle 1", "GUILD_FLAG", 148, 51, SE) { }
+Npc("gef_fild13", "Britoniah Castle 1", "GUILD_FLAG", 155, 53, SE) { }
+Npc("gef_fild13", "Britoniah Castle 1", "GUILD_FLAG", 211, 71, E) { }
+Npc("gef_fild13", "Britoniah Castle 1", "GUILD_FLAG", 212, 79, E) { }
+Npc("gef_fild13", "Britoniah Castle 2", "GUILD_FLAG", 290, 243, S) { }
+Npc("gef_fild13", "Britoniah Castle 2", "GUILD_FLAG", 303, 243, S) { }
+Npc("gef_fild13", "Britoniah Castle 2", "GUILD_FLAG", 312, 243, S) { }
+Npc("gef_fild13", "Britoniah Castle 2", "GUILD_FLAG", 324, 243, S) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 113, 274, NE) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 144, 235, E) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 144, 244, S) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 73, 295, NE) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 78, 182, S) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 87, 182, S) { }
+Npc("gef_fild13", "Britoniah Castle 4", "GUILD_FLAG", 190, 283, SW) { }
+Npc("gef_fild13", "Britoniah Castle 4", "GUILD_FLAG", 199, 274, SW) { }
+Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 252, 51, W) { }
+Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 26, 147, W) { }
+Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 302, 87, NE) { }
+Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 313, 83, N) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 122, 273, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 144, 250, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 159, 57, NW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 187, 288, S) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 219, 80, NW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 250, 65, SE) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 294, 243, W) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 319, 85, SE) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 184, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 300, SW) { }
+Npc("gef_fild13", "Bulletin Board", "2_BOARD1", 202, 31, N) { }
+Npc("gef_fild13", "Bulletin Board", "2_BOARD2", 29, 206, N) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 17, 171, SE) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 22, 156, SE) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 28, 157, S) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 59, 16, S) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 64, 16, S) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 68, 185, SW) { }
+Npc("gefg_cas01", "Gnahcher", "1_M_JOBTESTER", 40, 48, SE) { }
+Npc("gefg_cas01", "Kafra Service", "4_F_KAFRA1", 83, 47, SW) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 30, 123, SE) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 37, 168, E) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 37, 177, E) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 65, 130, SE) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 65, 139, E) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 68, 36, W) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 68, 47, W) { }
+Npc("gefg_cas02", "Esmark", "1_M_JOBTESTER", 12, 66, SE) { }
+Npc("gefg_cas02", "Kafra Service", "4_F_KAFRA1", 23, 66, SW) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 122, 220, E) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 122, 229, E) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 34, 208, NW) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 37, 214, NW) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 52, 276, NE) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 56, 164, S) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 65, 164, S) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 91, 257, NE) { }
+Npc("gefg_cas03", "Jyang", "1_M_JOBTESTER", 106, 23, SE) { }
+Npc("gefg_cas03", "Kafra Service", "4_F_KAFRA1", 116, 89, SE) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 24, 157, S) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 24, 73, NW) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 29, 212, NW) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 35, 158, S) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 35, 73, S) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 39, 212, NE) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 44, 184, S) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 51, 184, S) { }
+Npc("gefg_cas04", "Kafra Service", "4_F_KAFRA1", 59, 70, SW) { }
+Npc("gefg_cas04", "Kellvahni", "1_M_JOBTESTER", 73, 46, SW) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 62, 144, NE) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 62, 66, S) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 69, 66, S) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 77, 185, NE) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 83, 158, NW) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 92, 181, N) { }
+Npc("gefg_cas05", "Byohre", "1_M_JOBTESTER", 70, 52, SW) { }
+Npc("gefg_cas05", "Kafra Service", "4_F_KAFRA1", 61, 52, SE) { }
+Npc("pay_gld", "Greenwood Castle 1", "GUILD_FLAG", 110, 233, S) { }
+Npc("pay_gld", "Greenwood Castle 1", "GUILD_FLAG", 116, 233, S) { }
+Npc("pay_gld", "Greenwood Castle 1", "GUILD_FLAG", 125, 236, S) { }
+Npc("pay_gld", "Greenwood Castle 1", "GUILD_FLAG", 91, 239, W) { }
+Npc("pay_gld", "Greenwood Castle 2", "GUILD_FLAG", 271, 163, N) { }
+Npc("pay_gld", "Greenwood Castle 2", "GUILD_FLAG", 291, 135, E) { }
+Npc("pay_gld", "Greenwood Castle 2", "GUILD_FLAG", 292, 120, E) { }
+Npc("pay_gld", "Greenwood Castle 2", "GUILD_FLAG", 292, 122, E) { }
+Npc("pay_gld", "Greenwood Castle 3", "GUILD_FLAG", 321, 289, W) { }
+Npc("pay_gld", "Greenwood Castle 3", "GUILD_FLAG", 321, 298, W) { }
+Npc("pay_gld", "Greenwood Castle 3", "GUILD_FLAG", 327, 304, NW) { }
+Npc("pay_gld", "Greenwood Castle 3", "GUILD_FLAG", 333, 254, S) { }
+Npc("pay_gld", "Greenwood Castle 4", "GUILD_FLAG", 133, 151, W) { }
+Npc("pay_gld", "Greenwood Castle 4", "GUILD_FLAG", 137, 160, N) { }
+Npc("pay_gld", "Greenwood Castle 4", "GUILD_FLAG", 143, 160, N) { }
+Npc("pay_gld", "Greenwood Castle 4", "GUILD_FLAG", 153, 166, NW) { }
+Npc("pay_gld", "Greenwood Castle 5", "GUILD_FLAG", 187, 294, W) { }
+Npc("pay_gld", "Greenwood Castle 5", "GUILD_FLAG", 190, 277, SW) { }
+Npc("pay_gld", "Greenwood Castle 5", "GUILD_FLAG", 199, 268, S) { }
+Npc("pay_gld", "Greenwood Castle 5", "GUILD_FLAG", 208, 268, S) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 130, 236, NW) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 147, 163, S) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 195, 274, SE) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 292, 126, W) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 321, 284, SW) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 206, 108, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 212, 108, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 221, 116, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 221, 123, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 233, 67, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 238, 67, S) { }
+Npc("payg_cas01", "Kafra Service", "4_F_KAFRA1", 128, 58, SW) { }
+Npc("payg_cas01", "Kurunnadi", "1_M_JOBTESTER", 120, 58, S) { }
+Npc("payg_cas02", "Cherieos", "1_M_JOBTESTER", 22, 260, NE) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 202, 49, N) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 209, 49, N) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 254, 40, E) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 254, 48, E) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 59, 282, S) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 70, 282, S) { }
+Npc("payg_cas02", "Kafra Service", "4_F_KAFRA1", 22, 275, SE) { }
+Npc("payg_cas03", "Garriet", "1_M_JOBTESTER", 50, 261, SW) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 236, 45, W) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 236, 54, W) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 259, 66, S) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 266, 66, S) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 34, 31, S) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 43, 31, S) { }
+Npc("payg_cas03", "Kafra Service", "4_F_KAFRA1", 9, 263, SE) { }
+Npc("payg_cas04", "DJ", "1_M_JOBTESTER", 38, 284, SW) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 232, 181, S) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 239, 181, S) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 248, 160, E) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 248, 168, E) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 248, 259, N) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 255, 259, N) { }
+Npc("payg_cas04", "Kafra Service", "4_F_KAFRA1", 40, 235, NW) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 24, 249, S) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 32, 249, S) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 55, 252, W) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 55, 260, W) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 57, 271, N) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 62, 271, N) { }
+Npc("payg_cas05", "Kafra Service", "4_F_KAFRA1", 276, 227, NW) { }
+Npc("payg_cas05", "Najarf", "1_M_JOBTESTER", 277, 249, SW) { }
+Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 131, 60, E) { }
+Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 135, 60, E) { }
+Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 138, 60, E) { }
+Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 138, 68, E) { }
+Npc("prt_gld", "Valkyrie Castle 2", "GUILD_FLAG", 236, 126, N) { }
+Npc("prt_gld", "Valkyrie Castle 2", "GUILD_FLAG", 236, 128, N) { }
+Npc("prt_gld", "Valkyrie Castle 2", "GUILD_FLAG", 244, 126, N) { }
+Npc("prt_gld", "Valkyrie Castle 2", "GUILD_FLAG", 244, 128, N) { }
+Npc("prt_gld", "Valkyrie Castle 3", "GUILD_FLAG", 147, 136, S) { }
+Npc("prt_gld", "Valkyrie Castle 3", "GUILD_FLAG", 147, 140, S) { }
+Npc("prt_gld", "Valkyrie Castle 3", "GUILD_FLAG", 158, 136, S) { }
+Npc("prt_gld", "Valkyrie Castle 3", "GUILD_FLAG", 158, 140, S) { }
+Npc("prt_gld", "Valkyrie Castle 4", "GUILD_FLAG", 120, 236, E) { }
+Npc("prt_gld", "Valkyrie Castle 4", "GUILD_FLAG", 120, 243, E) { }
+Npc("prt_gld", "Valkyrie Castle 4", "GUILD_FLAG", 122, 236, E) { }
+Npc("prt_gld", "Valkyrie Castle 4", "GUILD_FLAG", 122, 243, E) { }
+Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 197, 236, W) { }
+Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 197, 243, W) { }
+Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 199, 236, W) { }
+Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 199, 243, W) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 131, 240, S) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 138, 73, NW) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 163, 136, SW) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 188, 240, SE) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 244, 133, W) { }
+Npc("prtg_cas01", "Abrai", "1_M_JOBTESTER", 112, 181, N) { }
+Npc("prtg_cas01", "Kafra Service", "4_F_KAFRA1", 96, 173, N) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 45, 46, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 55, 46, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 58, 56, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 64, 56, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 73, 14, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 73, 6, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 76, 32, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 84, 32, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 94, 24, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 94, 39, S) { }
+Npc("prtg_cas02", "Kafra Service", "4_F_KAFRA1", 71, 36, S) { }
+Npc("prtg_cas02", "Rhay", "1_M_JOBTESTER", 94, 61, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 11, 214, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 11, 219, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 153, 161, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 162, 161, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 20, 214, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 20, 219, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 34, 189, N) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 38, 189, N) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 40, 227, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 46, 227, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 70, 227, N) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 79, 227, N) { }
+Npc("prtg_cas03", "Kafra Service", "4_F_KAFRA1", 181, 215, S) { }
+Npc("prtg_cas03", "Stick", "1_M_JOBTESTER", 51, 100, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 158, 210, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 162, 201, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 165, 201, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 168, 28, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 169, 210, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 182, 28, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 43, 50, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 43, 58, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 48, 50, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 48, 58, S) { }
+Npc("prtg_cas04", "Bandred", "1_M_JOBTESTER", 259, 265, S) { }
+Npc("prtg_cas04", "Kafra Service", "4_F_KAFRA1", 258, 247, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 258, 20, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 258, 25, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 263, 20, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 263, 27, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 59, 29, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 67, 29, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 75, 27, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 75, 29, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 82, 27, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 82, 29, S) { }
+Npc("prtg_cas05", "Kafra Service", "4_F_KAFRA1", 52, 41, S) { }
+Npc("prtg_cas05", "Reiner", "1_M_JOBTESTER", 36, 37, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 19, 243, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 19, 247, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 249, 289, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 253, 271, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 256, 289, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 26, 243, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 26, 247, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 273, 257, S) { }
+Npc("xmas_in", "Armor Dealer", "4W_F_01", 168, 104, S) { }
+Npc("xmas_in", "Christmas girl", "4_F_05", 165, 174, S) { }
+Npc("xmas_in", "Christmas Girl", "4_F_05", 165, 174, S) { }
+Npc("xmas_in", "Generous old lady", "4_F_GODEMOM", 27, 103, S) { }
+Npc("xmas_in", "Generous Old Lady", "4_F_GODEMOM", 27, 103, S) { }
+Npc("xmas_in", "Gift Merchant", "4_F_GON", 169, 34, W) { }
+Npc("xmas_in", "Headgear Merchant", "4_M_NFLOSTMAN", 35, 30, SW) { }
+Npc("xmas_in", "Santa", "4_M_SANTA", 100, 96, S) { }
+Npc("xmas_in", "Santa", "4_M_SANTA", 100, 96, S) { }
+Npc("xmas_in", "Tool Dealer", "4_M_01", 40, 38, SE) { }
+Npc("xmas_in", "Weapon Dealer", "1_M_03", 174, 98, W) { }
+Npc("xmas", "Alfrik", "4_M_DWARF", 36, 103, S) { }
+Npc("xmas", "Chef Assistant", "4_M_01", 152, 137, SE) { }
+Npc("xmas", "Christmas Clown", "4_M_PIERROT", 146, 136, S) { }
+Npc("xmas", "Christmas Clown", "4_M_PIERROT", 146, 136, S) { }
+Npc("xmas", "Christmas youngman", "4_M_06", 117, 304, S) { }
+Npc("xmas", "Christmas Youngman", "4_M_06", 117, 304, S) { }
+Npc("xmas", "Fuzzy Fuzz", "4_M_05", 175, 156, SW) { }
+Npc("xmas", "Hairy Uncle", "4_M_05", 176, 236, S) { }
+Npc("xmas", "Hairy Uncle", "4_M_05", 176, 236, S) { }
+Npc("xmas", "Kid", "4_F_KID2", 208, 168, S) { }
+Npc("xmas", "Kid", "4_F_KID2", 208, 168, S) { }
+Npc("xmas", "Kid", "4_M_KID1", 206, 168, S) { }
+Npc("xmas", "Kid", "4_M_KID1", 206, 168, S) { }
+Npc("xmas", "Pretty Lindsay", "4_F_NFLOSTGIRL", 183, 267, SW) { }
+Npc("xmas", "Snowman", "4_M_SNOWMAN", 134, 112, S) { }
+Npc("xmas", "Snowman", "4_M_SNOWMAN", 134, 112, S) { }
+Npc("xmas", "Vending Machine Man", "4_M_BIBI", 117, 295, S) { }

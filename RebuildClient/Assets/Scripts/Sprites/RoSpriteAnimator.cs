@@ -236,21 +236,24 @@ namespace Assets.Scripts.Sprites
                         if (SpriteData.Sounds[i] == null)
                             continue;
 
-                        var source = gameObject.AddComponent<AudioSource>();
-                        source.clip = SpriteData.Sounds[i];
-                        source.spatialBlend = 1f;
-                        source.priority = 80;
+                        var audioSource = gameObject.AddComponent<AudioSource>();
+                        audioSource.clip = SpriteData.Sounds[i];
+                        audioSource.spatialBlend = 1f;
+                        audioSource.priority = 80;
                         // source.minDistance = 10;
-                        source.maxDistance = 50;
-                        source.rolloffMode = AudioRolloffMode.Custom;
-                        source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, AudioManager.Instance.FalloffCurve);
-                        source.volume = 1f;
+                        // if(SpriteData.name == "moonlight")
+                        //     audioSource.maxDistance = 100;
+                        // else
+                            audioSource.maxDistance = 50;
+                        audioSource.rolloffMode = AudioRolloffMode.Custom;
+                        audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, AudioManager.Instance.FalloffCurve);
+                        audioSource.volume = 1f;
                         // source.spread = 1;
-                        source.dopplerLevel = 0;
-                        source.outputAudioMixerGroup = channel;
-                        source.enabled = false;
+                        audioSource.dopplerLevel = 0;
+                        audioSource.outputAudioMixerGroup = channel;
+                        audioSource.enabled = false;
 
-                        AudioSources[i] = source;
+                        AudioSources[i] = audioSource;
                     }
                 }
             }

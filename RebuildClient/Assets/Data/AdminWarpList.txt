@@ -8,6 +8,7 @@ Towns
 	Izlude, izlude, 128, 96
 	Alberta, alberta, 31, 240
 	Aldebaran, aldebaran, 118, 104
+	Comodo, comodo
 	Juno, yuno
 Prontera Field
 	0, prt_fild00
@@ -183,7 +184,29 @@ Turtle Island
 	2,tur_dun02
 	3,tur_dun03
 	4,tur_dun04
-Novice Training Grounds
+Comodo Area
+	1,cmd_fild01
+	2,cmd_fild02
+	3,cmd_fild03
+	4,cmd_fild04
+	5,cmd_fild05
+	6,cmd_fild06
+	7,cmd_fild07
+	8,cmd_fild08
+	9,cmd_fild09
+	Indoors 1,cmd_in01
+	2,cmd_in02
+	Comodo,comodo
+	West Cave,beach_dun
+	North Cave,beach_dun2
+	East Cave,beach_dun3
+Lutie
+	Lutie,xmas
+	Toy Castle 1,xmas_dun01
+	2,xmas_dun02
+	Field,xmas_fild01
+	Indoors,xmas_in
+Novice Grounds
 	Entrance,new_zone01
 	Quiz,new_zone02
 	Battle Challenge,new_zone03

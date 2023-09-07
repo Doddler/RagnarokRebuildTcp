@@ -108,21 +108,39 @@ namespace Assets.Scripts
             return angle;
         }
 
-        public static Vector2 FacingDirectionToVector(FacingDirection facing)
+        public static Vector2 FacingDirectionToVector(Direction facing)
         {
             switch (facing)
             {
-                case FacingDirection.South: return new Vector2(0, -1);
-                case FacingDirection.SouthWest: return new Vector2(-1, -1);
-                case FacingDirection.West: return new Vector2(-1, 0);
-                case FacingDirection.NorthWest: return new Vector2(-1, 1);
-                case FacingDirection.North: return new Vector2(0, 1);
-                case FacingDirection.NorthEast: return new Vector2(1, 1);
-                case FacingDirection.East: return new Vector2(1, 0);
-                case FacingDirection.SouthEast: return new Vector2(1, -1);
+                case Direction.South: return new Vector2(0, -1);
+                case Direction.SouthWest: return new Vector2(-1, -1);
+                case Direction.West: return new Vector2(-1, 0);
+                case Direction.NorthWest: return new Vector2(-1, 1);
+                case Direction.North: return new Vector2(0, 1);
+                case Direction.NorthEast: return new Vector2(1, 1);
+                case Direction.East: return new Vector2(1, 0);
+                case Direction.SouthEast: return new Vector2(1, -1);
             }
 
             return Vector2.zero;
+        }
+        
+        
+        public static float FacingDirectionToRotation(Direction facing)
+        {
+            switch (facing)
+            {
+                case Direction.South: return 180f;
+                case Direction.SouthWest: return 225f;
+                case Direction.West: return 270f;
+                case Direction.NorthWest: return 315f;
+                case Direction.North: return 0f;
+                case Direction.NorthEast: return 45f;
+                case Direction.East: return 90f;
+                case Direction.SouthEast: return 135f;
+            }
+
+            return 0;
         }
 
         public static int GetSpriteIndexForAngle(Direction facing, float cameraRotation)

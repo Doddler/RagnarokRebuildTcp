@@ -258,6 +258,7 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
 
 				o.color = v.color * _Color;
             	o.envColor = float4(ShadeSH9(fixed4(0,1,0,1)),1);
+            	//o.envColor = o.envColor * 0.7;
 
             	
 				float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);

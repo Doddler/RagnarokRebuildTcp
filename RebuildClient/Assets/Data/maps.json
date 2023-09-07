@@ -1397,6 +1397,126 @@
       "Name": "Valkyrie Castle, Gondul",
       "MapMode": 3,
       "Music": "66.mp3"
+    },
+    {
+      "Code": "cmd_fild01",
+      "Name": "Papuchicha Forest",
+      "MapMode": 3,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "cmd_fild02",
+      "Name": "Kokomo Beach",
+      "MapMode": 3,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "cmd_fild03",
+      "Name": "Zenhai Marsh",
+      "MapMode": 3,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "cmd_fild04",
+      "Name": "Kokomo Beach",
+      "MapMode": 3,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "cmd_fild05",
+      "Name": "Papuchicha Forest Border",
+      "MapMode": 3,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "cmd_fild06",
+      "Name": "Fortress Saint Darmain [West]",
+      "MapMode": 3,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "cmd_fild07",
+      "Name": "Pharos, Beacon Island",
+      "MapMode": 3,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "cmd_fild08",
+      "Name": "Fortress Saint Darmain [East]",
+      "MapMode": 3,
+      "Music": "637.mp3"
+    },
+    {
+      "Code": "cmd_fild09",
+      "Name": "Fortress Saint Darmain [South]",
+      "MapMode": 3,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "cmd_in01",
+      "Name": "Comodo [Inside 1]",
+      "MapMode": 0,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "cmd_in02",
+      "Name": "Comodo [Inside 2]",
+      "MapMode": 0,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "comodo",
+      "Name": "Comodo, the Beach Town",
+      "MapMode": 3,
+      "Music": "63.mp3"
+    },
+    {
+      "Code": "beach_dun",
+      "Name": "Karu, the West Cave",
+      "MapMode": 2,
+      "Music": "41.mp3"
+    },
+    {
+      "Code": "beach_dun2",
+      "Name": "Ruande, the North Cave",
+      "MapMode": 2,
+      "Music": "41.mp3"
+    },
+    {
+      "Code": "beach_dun3",
+      "Name": "Mao, the East Cave",
+      "MapMode": 2,
+      "Music": "41.mp3"
+    },
+    {
+      "Code": "xmas",
+      "Name": "Lutie, the Snow Village",
+      "MapMode": 1,
+      "Music": "59.mp3"
+    },
+    {
+      "Code": "xmas_dun01",
+      "Name": "Toy Dungeon 1 [Factory Area]",
+      "MapMode": 2,
+      "Music": "58.mp3"
+    },
+    {
+      "Code": "xmas_dun02",
+      "Name": "Toy Dungeon 2 [Monitoring Area]",
+      "MapMode": 2,
+      "Music": "58.mp3"
+    },
+    {
+      "Code": "xmas_fild01",
+      "Name": "Lutie Field",
+      "MapMode": 3,
+      "Music": "55.mp3"
+    },
+    {
+      "Code": "xmas_in",
+      "Name": "Lutie [Inside]",
+      "MapMode": 3,
+      "Music": "59.mp3"
     }
   ]
 }
