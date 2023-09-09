@@ -1,7 +1,6 @@
 ﻿using System;
 using Assets.Scripts.Sprites;
 using UnityEngine;
-using UnityStandardAssets._2D;
 
 namespace Assets.Scripts.Objects
 {
