@@ -1279,6 +1279,12 @@
       "Music": "66.mp3"
     },
     {
+      "Code": "pay_gld",
+      "Name": "Baldr Realm",
+      "MapMode": 3,
+      "Music": "66.mp3"
+    },
+    {
       "Code": "aldeg_cas01",
       "Name": "Luina Castle, Neuschwanstein",
       "MapMode": 3,
@@ -1444,7 +1450,7 @@
       "Code": "cmd_fild08",
       "Name": "Fortress Saint Darmain [East]",
       "MapMode": 3,
-      "Music": "637.mp3"
+      "Music": "37.mp3"
     },
     {
       "Code": "cmd_fild09",

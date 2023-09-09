@@ -133,7 +133,7 @@ namespace Utility.Editor
 
         private void OnSelectionChange()
         {
-            Debug.Log($"{targetClip} {targetObject} {Selection.activeGameObject} {EditorWindow.HasOpenInstances<AnimationWindow>()}");
+            // Debug.Log($"{targetClip} {targetObject} {Selection.activeGameObject} {EditorWindow.HasOpenInstances<AnimationWindow>()}");
             
             if (targetClip == null || !EditorWindow.HasOpenInstances<AnimationWindow>())
                 return;
