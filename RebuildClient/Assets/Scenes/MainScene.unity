@@ -10762,11 +10762,11 @@ MonoBehaviour:
   TalkCursorTexture: {fileID: 2800000, guid: 9555fdeda875c5b4091ac7b50b30fc4f, type: 3}
   TargetSprite: {fileID: 3665038560859790406, guid: c045d72f7facb1c4ba481477f0ce7768,
     type: 3}
-  LevelUpPrefab: {fileID: 1537648296274982500, guid: df59853ba9b301d4db5560d3d2e0522e,
+  LevelUpPrefab: {fileID: 8943146218309681466, guid: f84d52957683d304389b8967f446c05c,
     type: 3}
-  ResurrectPrefab: {fileID: 1810329587768182838, guid: 71524991148b16e4c86090e51f10b668,
+  ResurrectPrefab: {fileID: 1526801284317253419, guid: 184ada95b002b3648b32d81b704746d5,
     type: 3}
-  DeathPrefab: {fileID: 7753055832927964443, guid: f59b04f35e39b894cb888573528d9e33,
+  DeathPrefab: {fileID: 4344521095782343, guid: 3ff1809f2c974e64eb16d181eee5e2d5,
     type: 3}
   LevelChart: {fileID: 4900000, guid: bf3e40d01a0dbb840827a67aec440af4, type: 3}
   WalkProvider: {fileID: 0}
@@ -12227,7 +12227,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2000122720}
   m_HandleRect: {fileID: 2000122719}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -12880,7 +12880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af84a25807e94349bfce7cd6ea55fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MonsterClassData: {fileID: 4900000, guid: 0da69e67950a7634eab6c86ca001de11, type: 3}
+  MonsterClassData: {fileID: 4900000, guid: 5cc5b999c9406024aa1eaa264263cf2a, type: 3}
   PlayerClassData: {fileID: 4900000, guid: 8053c7a53d510ca4db83d6a3787cffe0, type: 3}
   PlayerHeadData: {fileID: 4900000, guid: 87c440754c880dc4f99595f42a739ef3, type: 3}
   PlayerWeaponData: {fileID: 4900000, guid: 4c20ee67b4001884487e36371d1bcf9f, type: 3}

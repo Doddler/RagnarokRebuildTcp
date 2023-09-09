@@ -56,6 +56,10 @@ namespace Assets.Scripts.MapEditor
 #if UNITY_EDITOR
 		public void ExportToFile(string path)
         {
+            var outDir = Path.GetDirectoryName(path);
+            if (!Directory.Exists(outDir))
+                Directory.CreateDirectory(outDir);
+            
 			using (var fs = new FileStream(path, FileMode.Create))
 			using (var bw = new BinaryWriter(fs))
 			{

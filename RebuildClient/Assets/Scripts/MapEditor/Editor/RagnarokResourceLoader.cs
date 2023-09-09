@@ -159,7 +159,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				GameObject.DestroyImmediate(oldBox);
 
 
-			Debug.Log("Version: " + world.Version);
+			Debug.Log("Map Version: " + world.Version);
 
 			world.IniFileName = br.ReadKoreanString(40);
 			world.GndFileName = br.ReadKoreanString(40);

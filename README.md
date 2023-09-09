@@ -2,29 +2,28 @@
 
 Server and client for a Ragnarok Online-like game. Some assembly required.
 
-**Note**: This repository contains no game assets from Ragnarok Online.
+**Note**: This repository contains no game assets from Ragnarok Online. You will need to provide those yourself.
 
 **Warning**: The code is horrifying, would not recommend reading.
 
 ## Requirements
 
-- Unity 2021.2.14f or higher
-- .NET 6
+- Unity 2022.3.6f1 or higher
+- .NET 7
 - Lack of sanity
 
 ## Setting things up
 
-- In the unity editor, using the ragnarok menu, select the "Set Ragnarok Data Directory". Specify the folder that contains files extracted from data.grf.
-- Before you do anything, copy everything from the wav folder into the Assets/Sound directory. Other importing may break if these aren't present.
-- To import maps, select Import Maps from the ragnarok menu. You can multi-select files here, and will save the scenes to the Assets/Scenes/Maps/ folder. This is very slow, don't import too many at once or you will be very sad.
-- You will need to bake lights for each scene or the maps will look like butts. You can use the bake manager and the RagnarokLightingConfiguration preset to bake multiple scenes at once. This is also slow, especially if GPU baking fails for you.
-- You'll need to copy over sprite .spr and .act pairs manually.
-- Character sprites go in the Assets/Sprites/Characters/ folder. Use the subfolders BodyFemale, BodyMale, HeadFemale, and HeadMale for those sprites.
-- The character sprite paths are specified in the headdata.json and playerclass.json file in the case that you want to use different folders. You can refer to these files to find the sprite names you'll need to import too.
-- Monster sprites need to be placed in the Assets/Sprites/Monsters/ folder. This path is hardcoded somewhere.
-- Monster sprite names are specified in the server config that gets copied over to the client using the update utility.
-- For maps and sprites to load when you start the game, you will need to mark their imported scenes and spr assets as Addressables. You can do this using the 'Ragnarok\Update Addressables' menu option.
-- Server config files are csv files in the RoRebuildServer\RoRebuildServer\ServerData\ folder.
-- The server config specifies all maps the server attempts to load, monsters, their spawns, and map connectors. A map needs to be imported first on the unity side, or the pathfinding data won't exist for the server to use.
-- If you change monsters in the server data csv or adjust the server side packets, run the updateclient.bat to copy settings over to the client.
-- It will probably not work first time, and I probably missed important things on this list. Good luck!
+- Load up the server csproj project, and make sure the server is able to build successfully. You don't need to run it yet.
+- In the root project directory, run "updateclient.bat". This copies server definitions and data over to the client.
+- Open the client directory in Unity.
+- From the Ragnarok menu, select "Copy data from client data folder".
+- First you will be prompted to set a path to the extracted data.grf files from an original client. For this import process to work correctly, the files will need to have been extracted with the right locale and have working korean file names.
+- You then will receive a warning on how long the process will take. In testing this took about 2 hours to complete.
+- Once all the maps are imported, open the Lighting Manager window (Ragnarok -> Open Lighting Manager).
+- Place all the scenes in the Scenes\Maps folder into the list of scenes on the Lighting Manager window. Then, click 'bake all scenes' (not bake all). This can take several hours depending on your GPU. You can skip this step but maps will not display with any lighting until you do.
+- Once lighting is baked, you can select the option 'Make Minimaps' to generate minimap images.
+- Copy any of your BGM over from your ragnarok client into the Music folder.
+- Finally, select 'Ragnarok -> Update Addressables' to link all the newly imported assets. Any time you add sprites or maps, you will need to do this again.
+- At this point, you should be able to run the server. Make sure you set visual studio to run the server as a standalone rather than via IIS.
+- Once the server is running, hitting play in the editor should allow you to connect.

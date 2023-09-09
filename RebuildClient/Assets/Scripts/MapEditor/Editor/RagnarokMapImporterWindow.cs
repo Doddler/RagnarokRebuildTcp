@@ -329,14 +329,23 @@ namespace Assets.Scripts.MapEditor.Editor
         }
 
         [MenuItem("Ragnarok/Import All Maps")]
-        static void ImportAllFiles()
+        public static void ImportAllFiles()
         {
             var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
             var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(asset.text);
 
+            if (!Directory.Exists("Assets/Scenes/Maps/"))
+                Directory.CreateDirectory("Assets/Scenes/Maps/");
+
+            var curMap = 0;
+            var maxMaps = maps.Items.Length;
+
             foreach (var map in maps.Items)
             {
                 //Debug.Log($"Assets/Scenes/Maps/{map.Code}.unity");
+                
+                EditorUtility.DisplayProgressBar("Import All Maps", $"Importing map {map.Name} ({curMap+1} out of {maxMaps})...", (float)curMap / (float)maxMaps);
+                curMap++;
 
                 //var scene = SceneManager.GetSceneByPath($"Assets/Scenes/Maps/{map.Code}.unity");
                 if (File.Exists($"Assets/Scenes/Maps/{map.Code}.unity"))
@@ -346,12 +355,20 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 //Debug.Log(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
 
-                ImportMap(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
+                var mapPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd");
+
+                if(File.Exists(mapPath))
+                    ImportMap(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
+                else
+                    Debug.LogWarning($"Could not find map to import: {mapPath}");
             }
+            
+            
+            EditorUtility.ClearProgressBar();
         }
 
         [MenuItem("Ragnarok/Import Water")]
-        static void ImportWater()
+        public static void ImportWater()
         {
             var waterDir = Path.Combine(Application.dataPath, "Maps/Texture/Water/").Replace("\\", "/");
             //Debug.Log(waterDir);
@@ -472,13 +489,13 @@ namespace Assets.Scripts.MapEditor.Editor
 
             AssetDatabase.SaveAssets();
         }
-
-        [MenuItem("Ragnarok/Import THE Map")]
-        static void ImportFiles2()
-        {
-            ImportMap(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "pay_dun00.gnd"));
-
-        }
+        //
+        // [MenuItem("Ragnarok/Import THE Map")]
+        // static void ImportFiles2()
+        // {
+        //     ImportMap(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "pay_dun00.gnd"));
+        //
+        // }
 
 
         [MenuItem("Ragnarok/Import Maps")]

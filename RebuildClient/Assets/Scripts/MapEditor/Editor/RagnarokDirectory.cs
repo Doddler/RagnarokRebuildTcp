@@ -18,6 +18,16 @@ namespace Assets.Scripts.MapEditor.Editor
             }
         }
 
+        //alternative that does not throw an exception
+        public static string GetRagnarokDataDirectorySafe
+        {
+            get
+            {
+                var path = EditorPrefs.GetString("RagnarokDataPath", null);
+                return path;
+            }
+        }
+
 
         [MenuItem("Ragnarok/Set Ragnarok Data Directory", priority = 0)]
         public static void SetDataDirectory()

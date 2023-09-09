@@ -35,7 +35,7 @@ namespace Assets.Scripts
                 AssetDatabase.Refresh();
         }
 
-        public static Texture2D SaveAndUpdateTexture(Texture2D texture, string outputPath)
+        public static Texture2D SaveAndUpdateTexture(Texture2D texture, string outputPath, Action<TextureImporter> callback = null)
         {
 
 	        var bytes = texture.EncodeToPNG();
@@ -56,6 +56,9 @@ namespace Assets.Scripts
 	        importer.alphaIsTransparency = true;
             importer.maxTextureSize = 4096;
 
+            if (callback != null)
+                callback(importer);
+
 	        importer.SaveAndReimport();
             
 	        texture = AssetDatabase.LoadAssetAtPath<Texture2D>(outputPath);
@@ -70,6 +73,9 @@ namespace Assets.Scripts
 
             if (!File.Exists(texPath))
                 texPath = Path.Combine(importPath, textureName);
+
+            if (!File.Exists(texPath))
+                texPath = importPath;
 
             //Debug.Log(texPath);
 

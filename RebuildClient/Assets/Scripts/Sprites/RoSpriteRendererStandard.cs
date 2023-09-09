@@ -121,6 +121,9 @@ namespace Assets.Scripts.Sprites
 
         private void CreateMaterials()
         {
+            if (shader == null)
+                return;
+            
             if (materialArrayNormal == null || materialArrayNormal.Length <= 0)
             {
                 var noWaterMat = new Material(shader);

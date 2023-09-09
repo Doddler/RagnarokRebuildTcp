@@ -520,7 +520,12 @@ namespace Assets.Scripts.MapEditor.Editor
                 //var soundName = Path.GetFileNameWithoutExtension(sound.File);
                 var soundAsset = AssetDatabase.LoadAssetAtPath<AudioClip>(Path.Combine(soundFolder, sound.File.Replace(".wav", ".ogg")));
                 if (soundAsset == null)
-                    Debug.LogWarning("Could not load audio file " + sound.File);
+                {
+                    //try again, but use wav instead of ogg
+                    soundAsset = AssetDatabase.LoadAssetAtPath<AudioClip>(Path.Combine(soundFolder, sound.File));
+                    if(soundAsset == null)
+                        Debug.LogWarning("Could not load audio file " + sound.File);
+                }
 
                 var go = new GameObject(sound.Name);
                 go.transform.parent = soundContainer.transform;

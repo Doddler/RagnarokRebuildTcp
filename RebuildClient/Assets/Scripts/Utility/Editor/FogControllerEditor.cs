@@ -26,7 +26,7 @@ namespace Utility.Editor
             var json = JsonUtility.FromJson<Wrapper<FogInfo>>(dataFile.text);
 
             var mapName = EditorSceneManager.GetActiveScene().name;
-            Debug.Log(mapName);
+            // Debug.Log(mapName);
             
             mapFog = json.Items.FirstOrDefault(m => m.Map == mapName);
             if (mapFog != null)

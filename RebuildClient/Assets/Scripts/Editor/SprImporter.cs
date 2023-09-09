@@ -58,19 +58,23 @@ public class SprImporter : UnityEditor.AssetImporters.ScriptedImporter
             asset.SpriteSizes = spr.SpriteSizes.ToArray();
             asset.Name = baseName;
             asset.Atlas = spr.Atlas;
-            asset.Sounds = new AudioClip[actLoader.Sounds.Length];
-
-
-            for(var i = 0; i < asset.Sounds.Length; i++)
+            if (actLoader.Sounds != null)
             {
-                var s = actLoader.Sounds[i];
-                if (s == "atk")
-	                continue;
-                var sPath = $"Assets/sounds/{s.Replace(".wav", ".ogg")}";
-                var sound = AssetDatabase.LoadAssetAtPath<AudioClip>(sPath);
-                if(sound == null)
-                    Debug.Log("Could not find sound " + sPath + " for sprite " + name);
-                asset.Sounds[i] = sound;
+                asset.Sounds = new AudioClip[actLoader.Sounds.Length];
+
+                for (var i = 0; i < asset.Sounds.Length; i++)
+                {
+                    var s = actLoader.Sounds[i];
+                    if (s == "atk")
+                        continue;
+                    var sPath = $"Assets/Sounds/{s}";
+                    if(!File.Exists(sPath))
+                        sPath = $"Assets/Sounds/{s.Replace(".wav", ".ogg")}";
+                    var sound = AssetDatabase.LoadAssetAtPath<AudioClip>(sPath);
+                    if (sound == null)
+                        Debug.Log("Could not find sound " + sPath + " for sprite " + name);
+                    asset.Sounds[i] = sound;
+                }
             }
             //asset.Sounds = asset.Sounds.ToArray();
             
