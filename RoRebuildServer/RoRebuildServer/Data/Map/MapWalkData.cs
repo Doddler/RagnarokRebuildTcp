@@ -4,7 +4,7 @@ using RoRebuildServer.Logging;
 namespace RoRebuildServer.Data.Map;
 
 [Flags]
-public enum CellType
+public enum CellType : byte
 {
     None = 0,
     Walkable = 1,
@@ -165,8 +165,17 @@ public class MapWalkData
         }
         catch (Exception)
         {
-            ServerLogger.LogError($"Failed to load map data for file {name}");
-            throw;
+            ServerLogger.LogError($"Failed to load map walk data for file {path}");
+
+            Width = 1024; //unreasonably large, but there'll be errors if it isn't big enough.
+            Height = 1024;
+
+            Bounds = new Area(0, 0, Width - 1, Height - 1);
+            cellData = new byte[Width * Height];
+            for (var i = 0; i < Width * Height; i++)
+                cellData[i] = (byte)CellType.Walkable;
+
+            //throw;
         }
     }
 }
