@@ -16,6 +16,7 @@ namespace Assets.Scripts.Effects
         public int Step = -1;
         public int LastStep = 0;
         public int ObjCount = 0;
+        public EffectType EffectType;
 
         public Vector3 PositionOffset = Vector3.zero;
         public GameObject FollowTarget;
@@ -28,10 +29,11 @@ namespace Assets.Scripts.Effects
         public float pauseTime = 0f;
 
         public IEffectHandler EffectHandler;
+        public IEffectOwner EffectOwner;
         public List<RagnarokPrimitive> primitives = new();
         public List<GameObject> attachedObjects = new();
         
-        private bool isInitialized = false;
+        public bool IsInitialized = false;
 
         public List<RagnarokPrimitive> GetPrimitives => primitives;
 
@@ -45,12 +47,14 @@ namespace Assets.Scripts.Effects
         public void SetEffectType(EffectType type)
         {
             EffectHandler = RagnarokEffectData.GetEffectHandler(type);
+            EffectType = type;
+            IsInitialized = true;
         }
 
         public void SetDurationByTime(float time)
         {
             Duration = time;
-            DurationFrames = Mathf.FloorToInt(time / 60f);
+            DurationFrames = Mathf.FloorToInt(time * 60f);
         }
         
         public void SetDurationByFrames(int frame)
@@ -69,17 +73,20 @@ namespace Assets.Scripts.Effects
         public void Reset()
         {
             // Debug.Log("EffectReset");
-            isInitialized = false;
+            IsInitialized = false;
             FollowTarget = null;
             activeDelay = 0;
             pauseTime = 0;
             EffectHandler = null;
+            EffectOwner = null;
             EffectData = null;
             Duration = 0;
             CurrentPos = 0;
             Step = -1;
             LastStep = -1;
             PositionOffset = Vector3.zero;
+            EffectType = 0;
+            
             for (var i = 0; i < primitives.Count; i++)
             {
                 var p = primitives[i];
@@ -107,7 +114,7 @@ namespace Assets.Scripts.Effects
             primitive.Prepare(this, type, mat, duration);
             
             primitives.Add(primitive);
-
+            
             return primitive;
         }
 
@@ -119,6 +126,19 @@ namespace Assets.Scripts.Effects
                 if (p.IsDirty)
                     p.RenderPrimitive();
             }
+        }
+
+        public void EndEffect()
+        {
+            
+            RagnarokEffectPool.Return3dEffect(this);
+        }
+
+        private void EndEffectWithNotifyOwner()
+        {
+            if(EffectOwner != null)
+                EffectOwner.OnEffectEnd(this); //notify owner to remove us, we've run our course
+            RagnarokEffectPool.Return3dEffect(this);
         }
 
         public void Update()
@@ -141,7 +161,7 @@ namespace Assets.Scripts.Effects
                 
             if (FollowTarget == null && DestroyOnTargetLost)
             {
-                RagnarokEffectPool.Return3dEffect(this);
+                EndEffectWithNotifyOwner();
                 return;
             }
 
@@ -176,7 +196,7 @@ namespace Assets.Scripts.Effects
             }
 
             if (!anyActive)
-                RagnarokEffectPool.Return3dEffect(this);
+                EndEffectWithNotifyOwner();
         }
     }
 }

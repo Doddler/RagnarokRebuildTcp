@@ -134,6 +134,11 @@ public partial class Monster : IEntityAutoReset
             aiEntries = DataManager.GetAiStateMachine(newAiType);
     }
 
+    public void RemoveChild(ref Entity child)
+    {
+        Children?.Remove(ref child);
+    }
+
 	private void UpdateStats()
 	{
 		SetStat(CharacterStat.Level, MonsterBase.Level);
@@ -176,7 +181,11 @@ public partial class Monster : IEntityAutoReset
 
 	}
 
-	public void Die()
+    /// <summary>
+    /// This kills the monster.
+    /// </summary>
+    /// <param name="isMasterCommand">Is the issuer of this die command the master of this monster? If so, set this to suppress the RemoveChild callback.</param>
+	public void Die(bool isMasterCommand = false)
 	{
 		if (CurrentAiState == MonsterAiState.StateDead)
 			return;
@@ -187,14 +196,22 @@ public partial class Monster : IEntityAutoReset
 		CombatEntity.DistributeExperience();
 		
 		Character.IsActive = false;
-
+        
         if (Children != null && Children.Count > 0)
         {
             foreach (var child in Children)
             {
                 var childMonster = child.Get<Monster>();
-                childMonster.Die();
+                childMonster.Die(true);
             }
+
+            Children.Clear();
+        }
+        
+        if (Master.IsAlive() && !isMasterCommand)
+        {
+            var monster = Master.Get<Monster>();
+            monster.RemoveChild(ref Entity);
         }
 
         if (SpawnRule == null)

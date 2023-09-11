@@ -112,7 +112,7 @@ namespace PlayerControl
                         cameraFollower.AppendError("Invalid summon monster request.");
                     }
                     
-                    var failed = false;
+                    //var failed = false;
                     var count = 1;
                     var name = s[1];
                     var nameMax = s.Length - 1;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using Utility;
@@ -10,8 +11,10 @@ namespace Assets.Scripts.Effects
     {
         private static Stack<Ragnarok3dEffect> effectList = new();
         private static Stack<RagnarokPrimitive> primitiveList = new();
+        private static Stack<DamageIndicator> indicatorList = new();
 
         private static GameObject effectContainer;
+        private static GameObject damageContainer;
         
         public static Ragnarok3dEffect Get3dEffect(EffectType type)
         {
@@ -36,6 +39,12 @@ namespace Assets.Scripts.Effects
 
         public static void Return3dEffect(Ragnarok3dEffect effect)
         {
+            if (!effect.IsInitialized)
+                Debug.LogWarning($"Returning effect object to the pool but it was either already returned or never initialized.");
+            
+            if (effectList.Contains(effect))
+                throw new Exception($"Attempting to return a 3d effect that is already in the pool!");
+            
             effect.Reset();
             effect.gameObject.transform.SetParent(Instance.transform);
             effect.gameObject.SetActive(false);
@@ -62,6 +71,40 @@ namespace Assets.Scripts.Effects
             primitive.gameObject.transform.SetParent(Instance.transform);
             primitive.gameObject.SetActive(false);
             primitiveList.Push(primitive);
+        }
+
+        private static GameObject indicatorSource;
+        
+        public static DamageIndicator GetDamageIndicator()
+        {
+            if (damageContainer == null)
+            {
+                damageContainer = new GameObject("DamageContainer");
+                indicatorSource = Resources.Load<GameObject>("DamageNormal");
+            }
+
+            if (!indicatorList.TryPop(out var i))
+            {
+                var go = GameObject.Instantiate(indicatorSource);
+                i = go.GetComponent<DamageIndicator>();
+            }
+            
+            i.gameObject.transform.SetParent(damageContainer.transform);
+            
+            return i;
+        }
+
+        public static void ReturnDamageIndicator(DamageIndicator indicator)
+        {
+            if (indicatorList.Count > 50)
+            {
+                Destroy(indicator.gameObject);
+                return;
+            }
+
+            indicator.gameObject.transform.SetParent(Instance.transform);
+            indicator.gameObject.SetActive(false);
+            indicatorList.Push(indicator);
         }
     }
 }

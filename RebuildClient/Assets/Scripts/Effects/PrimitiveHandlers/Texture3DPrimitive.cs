@@ -27,19 +27,24 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 if (data.CurCycleDelay > 0)
                     data.CurCycleDelay -= Time.deltaTime;
 
-                if (data.CurCycleDelay < 0)
+                if (data.CurCycleDelay <= 0)
                 {
                     if (EffectHelpers.TryChangeAndCycleColor(data.Color, data.ColorChange, out data.Color))
                         data.CurCycleDelay = data.RGBCycleDelay;
                 }
             }
             
+            
+            
             primitive.IsDirty = primitive.Step == 0 || data.ScalingSpeed != Vector2.zero || data.Flags != RoPrimitiveHandlerFlags.None;
+            // Debug.Log($"{primitive.Step} {primitive.IsDirty}");
         }
         
         private void RenderTexture3D(RagnarokPrimitive primitive, MeshBuilder mb)
         {
             var data = primitive.GetPrimitiveData<Texture3DData>();
+            
+            // Debug.Log($"RenderTexture3D");
             
             primitive.AddTexturedRectangleQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
         }

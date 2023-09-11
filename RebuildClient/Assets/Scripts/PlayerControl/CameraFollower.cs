@@ -46,9 +46,9 @@ namespace Assets.Scripts
         public Texture2D AttackCursorTexture;
         public Texture2D TalkCursorTexture;
         public RoSpriteData TargetSprite;
-        public GameObject LevelUpPrefab;
-        public GameObject ResurrectPrefab;
-        public GameObject DeathPrefab;
+        // public GameObject LevelUpPrefab;
+        // public GameObject ResurrectPrefab;
+        // public GameObject DeathPrefab;
         public TextAsset LevelChart;
 
         private static CameraFollower _instance;
@@ -1153,11 +1153,11 @@ namespace Assets.Scripts
             if (!inTextBox && Input.GetKeyDown(KeyCode.F4))
                 CastEffect.Create(2f, "ring_blue", controllable.gameObject);
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.F2))
+            if (!inTextBox && Input.GetKeyDown(KeyCode.L))
                 ForestLightEffect.Create((ForestLightType)Random.Range(0, 4), controllable.transform.position);
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.L))
-                CastLockOnEffect.Create(2f, controllable.gameObject);
+            if (!inTextBox && Input.GetKeyDown(KeyCode.F2))
+                CastLockOnEffect.Create(5f, controllable.gameObject);
 
             //if (Input.GetKeyDown(KeyCode.Alpha1))
             //    AttachEffectToEntity("RedPotion", controllable);

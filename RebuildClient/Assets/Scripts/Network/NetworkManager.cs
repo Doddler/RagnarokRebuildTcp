@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Assets.Scripts.Effects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
@@ -21,6 +22,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using Utility;
 using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
 
@@ -663,11 +665,12 @@ namespace Assets.Scripts.Network
             {
                 for (var i = 0; i < hitCount; i++)
                 {
-                    var go = GameObject.Instantiate(DamagePrefab, target.transform.localPosition, Quaternion.identity);
-                    var di = go.GetComponent<DamageIndicator>();
+                    //var go = GameObject.Instantiate(DamagePrefab, target.transform.localPosition, Quaternion.identity);
+                    //var di = go.GetComponent<DamageIndicator>();
+                    var di = RagnarokEffectPool.GetDamageIndicator();
                     var red = target.SpriteAnimator.Type == SpriteType.Player;
                     var height = 1f;
-                    di.DoDamage(damage.ToString(), target.gameObject.transform.localPosition, height,
+                    di.DoDamage(TextIndicatorType.Damage,damage.ToString(), target.gameObject.transform.localPosition, height,
                         target.SpriteAnimator.Direction, red, false);
                     yield return new WaitForSeconds(0.2f);
                 }
@@ -744,14 +747,14 @@ namespace Assets.Scripts.Network
                 return;
 
 
-            var go = GameObject.Instantiate(HealPrefab, controllable.transform.localPosition, Quaternion.identity);
-            var di = go.GetComponent<DamageIndicator>();
+            //var go = GameObject.Instantiate(HealPrefab, controllable.transform.localPosition, Quaternion.identity);
+            var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 72f / 50f;
 
             if (controllable.SpriteAnimator != null)
                 height = controllable.SpriteAnimator.SpriteData.Size / 50f;
 
-            di.DoDamage($"<color=yellow>+{exp} Exp", controllable.gameObject.transform.localPosition, height, Direction.None, false, false);
+            di.DoDamage(TextIndicatorType.Heal, $"<color=yellow>+{exp} Exp", controllable.gameObject.transform.localPosition, height, Direction.None, false, false);
 
             PlayerState.Exp += exp;
             var max = CameraFollower.Instance.ExpForLevel(controllable.Level - 1);
@@ -769,7 +772,7 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            var go = GameObject.Instantiate(CameraFollower.LevelUpPrefab);
+            var go = GameObject.Instantiate(ClientConstants.Instance.LevelUpPrefab);
             go.transform.SetParent(controllable.transform, true);
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
@@ -792,7 +795,7 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            var go = GameObject.Instantiate(CameraFollower.ResurrectPrefab);
+            var go = GameObject.Instantiate(ClientConstants.Instance.ResurrectPrefab);
             go.transform.SetParent(controllable.transform, true);
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
@@ -823,7 +826,7 @@ namespace Assets.Scripts.Network
 
             if (id == PlayerId)
             {
-                var go = GameObject.Instantiate(CameraFollower.DeathPrefab);
+                var go = GameObject.Instantiate(ClientConstants.Instance.DeathPrefab);
                 go.transform.SetParent(controllable.transform, true);
                 go.transform.localPosition = Vector3.zero;
                 go.transform.localRotation = Quaternion.identity;

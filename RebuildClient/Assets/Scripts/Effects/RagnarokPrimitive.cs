@@ -172,10 +172,10 @@ namespace Assets.Scripts.Effects
             colors[2] = c;
             colors[3] = c;
             
-            verts[0] = new Vector3(-width, height);
-            verts[1] = new Vector3(width, height);
-            verts[2] = new Vector3(-width, -height);
-            verts[3] = new Vector3(width, -height);
+            verts[0] = new Vector3(-width,0, height);
+            verts[1] = new Vector3(width, 0,height);
+            verts[2] = new Vector3(-width, 0,-height);
+            verts[3] = new Vector3(width, 0,-height);
             
             uvs[0] = new Vector2(0, 1);
             uvs[1] = new Vector2(1, 1);
@@ -341,7 +341,10 @@ namespace Assets.Scripts.Effects
                 }
             }
 
-            return IsActive && CurrentPos < Duration;
+            if(Duration > 0)
+                return IsActive && CurrentPos < Duration;
+            
+            return IsActive;
         }
 
         public void RenderPrimitive()

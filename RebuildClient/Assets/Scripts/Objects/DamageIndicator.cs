@@ -2,29 +2,47 @@
 using System.Collections.Generic;
 using System.Text;
 using Assets.Scripts;
+using Assets.Scripts.Effects;
+using Assets.Scripts.Objects;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
+using Utility;
+
+public enum TextIndicatorType
+{
+	Damage,
+	Heal,
+	ComboDamage
+}
 
 public class DamageIndicator : MonoBehaviour
 {
 	public TextMeshPro TextObject;
-	public AnimationCurve Trajectory;
-	public AnimationCurve Size;
-	public AnimationCurve Alpha;
-    public bool FliesAwayFromTarget = true;
-    public int HeightMultiplier = 6;
-    public float TweenTime = 1f;
+	// public AnimationCurve Trajectory;
+	// public AnimationCurve Size;
+	// public AnimationCurve Alpha;
+ //    public bool FliesAwayFromTarget = true;
+ //    public int HeightMultiplier = 6;
+ //    public float TweenTime = 1f;
+
+    public DamageIndicatorPathData PathData;
 
 	private static StringBuilder sb = new StringBuilder(128);
 
 	private Vector3 start;
 	private Vector3 end;
 	
-	public void DoDamage(string value, Vector3 startPosition, float height, Direction direction, bool isRed, bool isCrit)
-    {
+	public void DoDamage(TextIndicatorType type, string value, Vector3 startPosition, float height, Direction direction, bool isRed, bool isCrit)
+	{
+		PathData = type switch
+		{
+			TextIndicatorType.Heal => ClientConstants.Instance.HealPath,
+			_ => ClientConstants.Instance.DamagePath
+		};
+	    
         direction = direction.GetIntercardinalDirection();
 		var text = value.ToString();
 
@@ -59,25 +77,33 @@ public class DamageIndicator : MonoBehaviour
 
 		start = new Vector3(startPosition.x, startPosition.y + height * 1.25f, startPosition.z);
 		//end = start;
-        if (FliesAwayFromTarget)
+        if (PathData.FliesAwayFromTarget)
             end = start + dirVector * 4;
         else
             end = start;
 
+        transform.parent = null;
 		transform.localPosition = start;
+		
+		gameObject.SetActive(true);
 
-		var lt = LeanTween.value(gameObject, OnUpdate, 0, 1, TweenTime);
-		lt.setOnComplete(onComplete: () => GameObject.Destroy(gameObject));
+		var lt = LeanTween.value(gameObject, OnUpdate, 0, 1, PathData.TweenTime);
+		lt.setOnComplete(onComplete: OnComplete);
+	}
+
+	private void OnComplete()
+	{
+		RagnarokEffectPool.ReturnDamageIndicator(this);
 	}
 
 	void OnUpdate(float f)
 	{
-		var height = Trajectory.Evaluate(f);
-		var size = Size.Evaluate(f);
+		var height = PathData.Trajectory.Evaluate(f);
+		var size = PathData.Size.Evaluate(f);
 		var pos = Vector3.Lerp(start, end, f);
-		var alpha = Alpha.Evaluate(f);
+		var alpha = PathData.Alpha.Evaluate(f);
 
-		transform.localPosition = new Vector3(pos.x, pos.y + height * HeightMultiplier, pos.z);
+		transform.localPosition = new Vector3(pos.x, pos.y + height * PathData.HeightMultiplier, pos.z);
 		transform.localScale = new Vector3(size, size, size);
 		TextObject.color = new Color(1, 1, 1, alpha);
 	}

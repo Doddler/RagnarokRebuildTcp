@@ -17,10 +17,16 @@ namespace Assets.Scripts.Effects
         
         public static bool TryChangeAndCycleValue(float val, float change, float lowBounds, float highBounds, out float valOut)
         {
+            if (val >= highBounds)
+            {
+                valOut = lowBounds;
+                return false;
+            }
+
             valOut = val + change;
             if (val > highBounds)
             {
-                valOut = lowBounds;
+                valOut = highBounds;
                 return true;
             }
 
