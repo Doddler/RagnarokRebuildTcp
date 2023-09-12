@@ -1,16 +1,22 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
+using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents;
 
-[EntityComponent(new [] { EntityType.Player , EntityType.Monster})]
+[EntityComponent(new[] { EntityType.Player, EntityType.Monster })]
 public class CombatEntity : IEntityAutoReset
 {
     public Entity Entity;
@@ -19,10 +25,12 @@ public class CombatEntity : IEntityAutoReset
     public int Faction;
     public int Party;
     public bool IsTargetable;
-    
+
+    public SkillCastInfo CastingSkill;
+
     [EntityIgnoreNullCheck]
     private int[] statData = new int[(int)CharacterStat.CharacterStatsMax];
-    
+
     [EntityIgnoreNullCheck]
     private float[] timingData = new float[(int)TimingStat.TimingStatsMax];
 
@@ -56,7 +64,7 @@ public class CombatEntity : IEntityAutoReset
 
         hp += (int)(maxHp * 0.06f); //kinda cheat and force give an extra 6% hp back
 
-        if(curHp + hp > maxHp)
+        if (curHp + hp > maxHp)
             hp = maxHp - curHp;
 
         SetStat(CharacterStat.Hp, curHp + hp);
@@ -64,16 +72,16 @@ public class CombatEntity : IEntityAutoReset
         if (Character.Map == null)
             return;
 
-        Character.Map.GatherPlayersForMultiCast(ref Entity, Character);
+        Character.Map.GatherPlayersForMultiCast(Character);
         CommandBuilder.SendHealMulti(Character, hp, HealType.Item);
         CommandBuilder.ClearRecipients();
     }
 
     public void FullRecovery(bool hp, bool mp)
     {
-        if(hp)
+        if (hp)
             SetStat(CharacterStat.Hp, GetStat(CharacterStat.MaxHp));
-        if(mp)
+        if (mp)
             SetStat(CharacterStat.Mp, GetStat(CharacterStat.MaxMp));
     }
 
@@ -127,7 +135,6 @@ public class CombatEntity : IEntityAutoReset
         //if (source.Entity.Type == EntityType.Player)
         //    return false;
 
-
         if (Character.ClassId >= 1000 && Character.ClassId < 4000)
             return false; //hack
         //if (source.Party == Party)
@@ -162,7 +169,7 @@ public class CombatEntity : IEntityAutoReset
             return;
 
         Character.Map.GatherPlayersInRange(Character, 12, list, false);
-        Character.Map.GatherPlayersForMultiCast(ref Entity, Character);
+        Character.Map.GatherPlayersForMultiCast(Character);
 
         foreach (var e in list)
         {
@@ -170,15 +177,15 @@ public class CombatEntity : IEntityAutoReset
                 continue;
 
             var player = e.Get<Player>();
-            
+
             var level = player.GetData(PlayerStat.Level);
-            
+
             if (level >= 99)
                 continue;
 
             var curExp = player.GetData(PlayerStat.Experience);
             curExp += exp;
-            
+
             var requiredExp = DataManager.ExpChart.ExpRequired[level];
 
             CommandBuilder.SendExpGain(player, exp);
@@ -211,19 +218,94 @@ public class CombatEntity : IEntityAutoReset
         EntityListPool.Return(list);
     }
 
-    public void PerformMeleeAttack(CombatEntity target)
+    public void ResumeQueuedSkillAction()
+    {
+        if (CastingSkill.Level <= 0)
+            return;
+
+        var target = CastingSkill.TargetEntity.GetIfAlive<CombatEntity>();
+        if (target == null) return;
+
+        AttemptStartSingleTargetSkillAttack(target, CastingSkill.Skill, CastingSkill.Level);
+    }
+
+    public void AttemptStartSingleTargetSkillAttack(CombatEntity target, CharacterSkill skill, int level)
+    {
+        if (Character.State == CharacterState.Dead)
+        {
+            ServerLogger.LogError("Cannot attempt a skill action while dead! " + Environment.StackTrace);
+        }
+
+        if (Character.Type == CharacterType.Player && !Character.Player.VerifyCanUseSkill(skill, level))
+        {
+            ServerLogger.Log($"Player {Character.Name} attempted to use skill {skill} lvl {level}, but they cannot use that skill.");
+            return;
+        }
+
+        var skillInfo = new SkillCastInfo()
+        {
+            TargetEntity = target.Entity,
+            Skill = skill,
+            Level = level,
+            TargetedPosition = Position.Invalid
+        };
+
+        if (Character.State == CharacterState.Moving)
+        {
+            CastingSkill = skillInfo;
+            Character.StopAction();
+            Character.QueuedCasting = true;
+            return;
+        }
+
+        var res = SkillHandler.ValidateTarget(skillInfo, this);
+
+        if (res == SkillValidationResult.Success)
+        {
+            CastingSkill = skillInfo;
+            Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
+
+            var castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, target, skillInfo.Level);
+            if (castTime <= 0)
+                ExecuteQueuedSkillAttack();
+            else
+            {
+                Character.State = CharacterState.Casting;
+                Character.CastingTime = Time.ElapsedTimeFloat + castTime;
+
+                Character.Map?.GatherPlayersForMultiCast(Character);
+                CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime);
+                CommandBuilder.ClearRecipients();
+            }
+        }
+        else
+        {
+            if (Character.Type == CharacterType.Player)
+                CommandBuilder.SkillFailed(Character.Player, res);
+        }
+    }
+
+    public void ExecuteQueuedSkillAttack()
+    {
+        var res = SkillHandler.ValidateTarget(CastingSkill, this);
+        if (res != SkillValidationResult.Success)
+        {
+#if DEBUG
+            ServerLogger.Log($"Character {Character} failed a queued skill attack with the validation result: {res}");
+            return;
+#endif
+        }
+
+        SkillHandler.ExecuteSkill(CastingSkill, this);
+    }
+
+    public DamageInfo CalculateCombatResult(CombatEntity target, float attackMultiplier, int hitCount, AttackFlags flags, AttackElement element = AttackElement.Neutral)
     {
 #if DEBUG
         if (!target.IsValidTarget(this))
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling PerformMeleeAttack.");
 #endif
-        if (Character.AttackCooldown + Time.DeltaTimeFloat + 0.005f < Time.ElapsedTimeFloat)
-            Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackMotionTime); //they are consecutively attacking
-        else
-            Character.AttackCooldown += GetTiming(TimingStat.AttackMotionTime);
 
-        Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
-        
         var atk1 = GetStat(CharacterStat.Attack);
         var atk2 = GetStat(CharacterStat.Attack2);
         if (atk1 <= 0)
@@ -233,12 +315,19 @@ public class CombatEntity : IEntityAutoReset
 
         var baseDamage = (short)GameRandom.NextInclusive(atk1, atk2);
 
+        var eleMod = 100;
+        if (target.Character.Type == CharacterType.Monster)
+        {
+            var mon = target.Character.Monster;
+            eleMod = DataManager.ElementChart.GetAttackModifier(element, mon.MonsterBase.Element);
+        }
+
         var defCut = MathF.Pow(0.99f, target.GetStat(CharacterStat.Def) - 1);
 
-        var damage = (short)(baseDamage * defCut - GetStat(CharacterStat.Vit) * 0.7f);
+        var damage = (short)(baseDamage * attackMultiplier * (eleMod / 100f) * defCut - GetStat(CharacterStat.Vit) * 0.7f);
         if (damage < 1)
             damage = 1;
-
+        
         var lvCut = 1f;
         if (target.Character.Type == CharacterType.Monster)
         {
@@ -252,39 +341,77 @@ public class CombatEntity : IEntityAutoReset
             lvCut -= 0.005f * (target.GetStat(CharacterStat.Level) - GetStat(CharacterStat.Level));
             lvCut = Math.Clamp(lvCut, 0.5f, 1f);
         }
-
+        
         damage = (short)(lvCut * damage);
+        
+        if (eleMod == 0)
+            damage = 0;
+        
+        var res = AttackResult.NormalDamage;
+        if (damage == 0)
+            res = AttackResult.Miss;
 
         var di = new DamageInfo()
         {
+            Result = res,
             Damage = damage,
-            HitCount = 1,
+            HitCount = (byte)hitCount,
             KnockBack = 0,
             Source = Entity,
             Target = target.Entity,
             Time = Time.ElapsedTimeFloat + GetTiming(TimingStat.SpriteAttackTiming)
         };
 
-        //ServerLogger.Log($"{aiCooldown} {character.AttackCooldown} {angle} {dir}");
+        return di;
+    }
 
-        Character.Map?.GatherPlayersForMultiCast(ref Entity, Character);
-        CommandBuilder.AttackMulti(Character, target.Character, di);
+    public void PerformAttackAction(CombatEntity target)
+    {
+#if DEBUG
+        if (!target.IsValidTarget(this))
+            throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling PerformMeleeAttack.");
+#endif
+        if (Character.AttackCooldown + Time.DeltaTimeFloat + 0.005f < Time.ElapsedTimeFloat)
+            Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackMotionTime); //they are consecutively attacking
+        else
+            Character.AttackCooldown += GetTiming(TimingStat.AttackMotionTime);
+
+        Character.MoveCooldown = Character.AttackCooldown;
+        Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
+    }
+
+    public void ExecuteCombatResult(DamageInfo damageInfo)
+    {
+        var target = damageInfo.Target.Get<CombatEntity>();
+
+        Character.Map?.GatherPlayersForMultiCast(Character);
+        CommandBuilder.AttackMulti(Character, target.Character, damageInfo);
         CommandBuilder.ClearRecipients();
 
-        target.QueueDamage(di);
+        target.QueueDamage(damageInfo);
 
-        if (target.Character.Type == CharacterType.Monster && di.Damage > target.GetStat(CharacterStat.Hp))
+        if (target.Character.Type == CharacterType.Monster && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
         {
             var mon = target.Entity.Get<Monster>();
             mon.AddDelay(GetTiming(TimingStat.SpriteAttackTiming) * 2); //make sure it stops acting until it dies
         }
 
-        if (Character.Type == CharacterType.Player && di.Damage > target.GetStat(CharacterStat.Hp))
+        if (Character.Type == CharacterType.Player && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
         {
             var player = Entity.Get<Player>();
             player.ClearTarget();
         }
     }
+
+    public void PerformMeleeAttack(CombatEntity target)
+    {
+        PerformAttackAction(target);
+
+        var di = CalculateCombatResult(target, 1f, 1, AttackFlags.Physical);
+
+        ExecuteCombatResult(di);
+    }
+
 
 
     private void AttackUpdate()
@@ -312,7 +439,7 @@ public class CombatEntity : IEntityAutoReset
             //inform clients the player was hit and for how much
             var delayTime = GetTiming(TimingStat.HitDelayTime);
 
-            Character.Map?.GatherPlayersForMultiCast(ref Entity, Character);
+            Character.Map?.GatherPlayersForMultiCast(Character);
             if (Character.AddMoveDelay(delayTime))
                 CommandBuilder.SendHitMulti(Character, delayTime, damage);
             else
@@ -326,9 +453,9 @@ public class CombatEntity : IEntityAutoReset
             var ec = di.Target.Get<CombatEntity>();
             var hp = GetStat(CharacterStat.Hp);
             hp -= damage;
-            
+
             SetStat(CharacterStat.Hp, hp);
-            
+
             if (hp <= 0)
             {
                 if (Character.Type == CharacterType.Monster)
@@ -355,8 +482,9 @@ public class CombatEntity : IEntityAutoReset
     {
         Entity = e;
         Character = ch;
-        
-        if(DamageQueue == null)
+        IsTargetable = true;
+
+        if (DamageQueue == null)
             DamageQueue = new List<DamageInfo>(4);
 
         DamageQueue.Clear();

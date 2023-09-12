@@ -84,9 +84,9 @@ namespace Assets.Scripts.Effects.EffectHandlers
             if (step > delay && (step - delay) % 12 == 0 && (step - delay) <= effect.ObjCount * 12)
             {
                 //debug!
-                CameraFollower.Instance.AttachEffectToEntity("firehit1", CameraFollower.Instance.TargetControllable);
-                CameraFollower.Instance.TargetControllable.SpriteAnimator.State = SpriteState.Standby;
-                CameraFollower.Instance.TargetControllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit, true);
+                CameraFollower.Instance.AttachEffectToEntity("firehit1", effect.FollowTarget);
+                //CameraFollower.Instance.TargetControllable.SpriteAnimator.State = SpriteState.Standby;
+                //CameraFollower.Instance.TargetControllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit, true);
             }
 
             return step < effect.DurationFrames;

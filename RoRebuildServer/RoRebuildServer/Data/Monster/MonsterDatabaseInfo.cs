@@ -1,4 +1,6 @@
-﻿namespace RoRebuildServer.Data.Monster;
+﻿using RebuildSharedData.Enum.EntityStats;
+
+namespace RoRebuildServer.Data.Monster;
 
 public class MonsterDatabaseInfo
 {
@@ -19,6 +21,7 @@ public class MonsterDatabaseInfo
     public float HitTime { get; set; }
     public float SpriteAttackTiming { get; set; }
     public int Range { get; set; }
+    public CharacterElement Element { get; set; }
     public MonsterAiType AiType { get; set; }
     public List<MonsterSpawnMinions>? Minions { get; set; }
     public float MoveSpeed { get; set; }

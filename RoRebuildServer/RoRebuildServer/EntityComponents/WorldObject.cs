@@ -7,6 +7,7 @@ using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
+using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntityComponents;
@@ -40,8 +41,9 @@ public class WorldObject : IEntityAutoReset
     public int MoveStep;
     public int TotalMoveSteps;
 
-    
-    
+    public float CastingTime;
+    public bool QueuedCasting;
+
 #if DEBUG
     public ulong LastUpdate;
 #endif
@@ -116,6 +118,8 @@ public class WorldObject : IEntityAutoReset
         TargetPosition = new Position();
         FacingDirection = Direction.South;
         WalkPath = null;
+        CastingTime = 0f;
+        QueuedCasting = false;
         ClearVisiblePlayerList();
     }
 
@@ -142,6 +146,7 @@ public class WorldObject : IEntityAutoReset
 	public void ResetState()
     {
         MoveCooldown = 0;
+        QueuedCasting = false;
         State = CharacterState.Idle;
     }
 
@@ -238,7 +243,7 @@ public class WorldObject : IEntityAutoReset
         var player = Entity.Get<Player>();
         player.UpdateSit(isSitting);
 
-        Map.GatherPlayersForMultiCast(ref Entity, this);
+        Map.GatherPlayersForMultiCast(this);
         CommandBuilder.ChangeSittingMulti(this);
         CommandBuilder.ClearRecipients();
     }
@@ -255,7 +260,7 @@ public class WorldObject : IEntityAutoReset
         var player = entity.Get<Player>();
         player.HeadFacing = facing;
 
-        Map.GatherPlayersForMultiCast(ref entity, this);
+        Map.GatherPlayersForMultiCast(this);
         CommandBuilder.ChangeFacingMulti(this);
         CommandBuilder.ClearRecipients();
     }
@@ -266,7 +271,7 @@ public class WorldObject : IEntityAutoReset
 
         if (State == CharacterState.Moving)
         {
-            Map.GatherPlayersForMultiCast(ref Entity, this);
+            Map.GatherPlayersForMultiCast(this);
             CommandBuilder.CharacterStopImmediateMulti(this);
             CommandBuilder.ClearRecipients();
             State = CharacterState.Idle;
@@ -374,7 +379,7 @@ public class WorldObject : IEntityAutoReset
             return;
         
         var needsStop = false;
-
+        
         //if it's not MoveStep + 2, that means the next step is already the last step.
         if (State == CharacterState.Moving && MoveStep + 2 < TotalMoveSteps)
         {
@@ -388,10 +393,18 @@ public class WorldObject : IEntityAutoReset
             needsStop = true;
         }
 
+        QueuedCasting = false;
+
         if (!needsStop)
             return;
 
         Map.StartMove(ref Entity, this);
+    }
+
+    private void FinishCasting()
+    {
+        SkillHandler.ExecuteSkill(CombatEntity.CastingSkill, CombatEntity);
+        State = CharacterState.Idle;
     }
     
     public void Update()
@@ -427,6 +440,14 @@ public class WorldObject : IEntityAutoReset
 
         if (State == CharacterState.Idle)
             return;
+
+        if (State == CharacterState.Casting)
+        {
+            if (CastingTime < Time.ElapsedTimeFloat)
+            {
+                FinishCasting();
+            }
+        }
         
         if (State == CharacterState.Moving)
         {
@@ -454,7 +475,12 @@ public class WorldObject : IEntityAutoReset
                 Map.MoveEntity(ref Entity, this, nextPos, true);
 
                 if (nextPos == TargetPosition)
+                {
                     State = CharacterState.Idle;
+                    if(QueuedCasting && CombatEntity != null && CombatEntity.CastingSkill.IsValid)
+                        CombatEntity?.ResumeQueuedSkillAction();
+                    QueuedCasting = false;
+                }
                 else
                 {
                     FacingDirection = (WalkPath[MoveStep + 1] - WalkPath[MoveStep]).GetDirectionForOffset();

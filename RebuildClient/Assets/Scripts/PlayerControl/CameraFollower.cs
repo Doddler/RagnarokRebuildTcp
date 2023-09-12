@@ -590,6 +590,9 @@ namespace Assets.Scripts
                     var color = "";
                     if (!anim.Controllable.IsAlly && anim.Controllable.CharacterType != CharacterType.NPC)
                     {
+                        if(Input.GetKeyDown(KeyCode.Alpha2))
+                            NetworkManager.Instance.SendSingleTargetSkillAction(anim.Controllable.Id, CharacterSkill.FireBolt, 5);
+                            //CastLockOnEffect.Create(3f, anim.Controllable.gameObject);
                         ChangeCursor(AttackCursorTexture);
                         color = "<color=#FFAAAA>";
                         hasHitMap = false;
@@ -815,7 +818,7 @@ namespace Assets.Scripts
             lastMessage = text;
         }
 
-        public void AttachEffectToEntity(string effect, ServerControllable target)
+        public void AttachEffectToEntity(string effect, GameObject target)
         {
             if (!EffectIdLookup.TryGetValue(effect, out var id))
             {
@@ -826,7 +829,7 @@ namespace Assets.Scripts
             AttachEffectToEntity(id, target);
         }
 
-        public void AttachEffectToEntity(int effect, ServerControllable target)
+        public void AttachEffectToEntity(int effect, GameObject target)
         {
             if (!EffectList.TryGetValue(effect, out var asset))
             {
@@ -838,13 +841,13 @@ namespace Assets.Scripts
             {
                 if (asset.Billboard)
                 {
-                    var obj2 = GameObject.Instantiate(prefab, target.gameObject.transform, false);
+                    var obj2 = GameObject.Instantiate(prefab, target.transform, false);
                     obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
                 }
                 else
                 {
                     var obj2 = GameObject.Instantiate(prefab);
-                    obj2.transform.localPosition = target.gameObject.transform.position + new Vector3(0, asset.Offset, 0);
+                    obj2.transform.localPosition = target.transform.position + new Vector3(0, asset.Offset, 0);
                 }
 
                 return;
@@ -854,17 +857,17 @@ namespace Assets.Scripts
             var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
             loader.Completed += ah =>
             {
-                if (target.gameObject != null && target.gameObject.activeInHierarchy)
+                if (target != null && target.gameObject.activeInHierarchy)
                 {
                     if (asset.Billboard)
                     {
-                        var obj2 = GameObject.Instantiate(ah.Result, target.gameObject.transform, false);
+                        var obj2 = GameObject.Instantiate(ah.Result, target.transform, false);
                         obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
                     }
                     else
                     {
                         var obj2 = GameObject.Instantiate(ah.Result);
-                        obj2.transform.localPosition = target.gameObject.transform.position + new Vector3(0, asset.Offset, 0);
+                        obj2.transform.localPosition = target.transform.position + new Vector3(0, asset.Offset, 0);
                     }
 
                     EffectCache[asset.Id] = ah.Result;
@@ -1147,17 +1150,17 @@ namespace Assets.Scripts
 
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
                 NetworkManager.Instance.SendUseItem(501);
-
-            if (!inTextBox && Input.GetKeyDown(KeyCode.F3))
-                FireArrow.Create(controllable.gameObject, 5);
-            if (!inTextBox && Input.GetKeyDown(KeyCode.F4))
-                CastEffect.Create(2f, "ring_blue", controllable.gameObject);
-
-            if (!inTextBox && Input.GetKeyDown(KeyCode.L))
-                ForestLightEffect.Create((ForestLightType)Random.Range(0, 4), controllable.transform.position);
-
-            if (!inTextBox && Input.GetKeyDown(KeyCode.F2))
-                CastLockOnEffect.Create(5f, controllable.gameObject);
+            //
+            // if (!inTextBox && Input.GetKeyDown(KeyCode.F3))
+            //     FireArrow.Create(controllable.gameObject, 5);
+            // if (!inTextBox && Input.GetKeyDown(KeyCode.F4))
+            //     CastEffect.Create(3f, "ring_red", controllable.gameObject);
+            //
+            // if (!inTextBox && Input.GetKeyDown(KeyCode.L))
+            //     ForestLightEffect.Create((ForestLightType)Random.Range(0, 4), controllable.transform.position);
+            //
+            // if (!inTextBox && Input.GetKeyDown(KeyCode.F2))
+            //     CastLockOnEffect.Create(3f, controllable.gameObject);
 
             //if (Input.GetKeyDown(KeyCode.Alpha1))
             //    AttachEffectToEntity("RedPotion", controllable);
@@ -1185,25 +1188,13 @@ namespace Assets.Scripts
             //     MapWarpEffect.StartWarp(temp);
             // }
 
-            //if (Input.GetKeyDown(KeyCode.Keypad1) || (Input.GetKeyDown(KeyCode.Alpha1) && Input.GetKey(KeyCode.LeftShift)))
-            //    NetworkManager.Instance.SendMoveRequest("prontera");
-            //if (Input.GetKeyDown(KeyCode.Keypad2) || (Input.GetKeyDown(KeyCode.Alpha2) && Input.GetKey(KeyCode.LeftShift)))
-            //    NetworkManager.Instance.SendMoveRequest("geffen");
-            //if (Input.GetKeyDown(KeyCode.Keypad3) || (Input.GetKeyDown(KeyCode.Alpha3) && Input.GetKey(KeyCode.LeftShift)))
-            //    NetworkManager.Instance.SendMoveRequest("morocc");
-            //if (Input.GetKeyDown(KeyCode.Keypad4) || (Input.GetKeyDown(KeyCode.Alpha4) && Input.GetKey(KeyCode.LeftShift)))
-            //    NetworkManager.Instance.SendMoveRequest("payon");
-            //if (Input.GetKeyDown(KeyCode.Keypad5) || (Input.GetKeyDown(KeyCode.Alpha5) && Input.GetKey(KeyCode.LeftShift)))
-            //    NetworkManager.Instance.SendMoveRequest("alberta");
-            //if (Input.GetKeyDown(KeyCode.Keypad6) || (Input.GetKeyDown(KeyCode.Alpha6) && Input.GetKey(KeyCode.LeftShift)))
-            //    NetworkManager.Instance.SendMoveRequest("aldebaran");
-
             //        if (Input.GetKeyDown(KeyCode.F4))
             //        {
             //NetworkManager.Instance.SkillAttack();
             //        }
 
-#if UNITY_EDITOR
+            //remove the flag to enable cinemachine recording on this
+#if UNITY_EDITOR && CINEMACHINEMODE
             if ((Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.F6)) && Application.isEditor && Recorder != null)
             {
                 if (CinemachineMode)

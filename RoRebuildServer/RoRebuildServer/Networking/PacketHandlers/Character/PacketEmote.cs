@@ -26,7 +26,7 @@ public class PacketEmote : IClientPacketHandler
         if (player.InActionCooldown() || player.LastEmoteTime + 1f > Time.ElapsedTimeFloat)
             return;
         
-        map.GatherPlayersForMultiCast(ref connection.Entity, connection.Character);
+        map.GatherPlayersForMultiCast(connection.Character);
         CommandBuilder.SendEmoteMulti(connection.Character, emote);
         CommandBuilder.ClearRecipients();
 

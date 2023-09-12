@@ -286,7 +286,7 @@ public class Player : IEntityAutoReset
         Character.StopMovingImmediately();
         Character.State = CharacterState.Dead;
 
-        Character.Map.GatherPlayersForMultiCast(ref Entity, Character);
+        Character.Map.GatherPlayersForMultiCast(Character);
         CommandBuilder.SendPlayerDeath(Character);
         CommandBuilder.ClearRecipients();
     }
@@ -443,6 +443,11 @@ public class Player : IEntityAutoReset
             return;
 
         ChangeTarget(enemy);
+    }
+
+    public bool VerifyCanUseSkill(CharacterSkill skill, int lvl)
+    {
+        return true; //lol
     }
 
     public void PerformSkill()

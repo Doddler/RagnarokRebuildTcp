@@ -29,7 +29,7 @@ public class PacketAdminLevelUp : IClientPacketHandler
             character.Player.LevelUp();
         }
         
-        character.Map.GatherPlayersForMultiCast(ref character.Entity, character);
+        character.Map.GatherPlayersForMultiCast(character);
         CommandBuilder.LevelUp(character, newLevel);
         CommandBuilder.SendHealMulti(character, 0, HealType.None);
         CommandBuilder.ClearRecipients();

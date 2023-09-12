@@ -135,6 +135,47 @@ public static class CommandBuilder
         return packet;
     }
 
+    public static void StartCastMulti(WorldObject caster, WorldObject target, CharacterSkill skill, int lvl,
+        float castTime)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.StartCast, 48);
+
+        packet.Write(caster.Id);
+        packet.Write(target.Id);
+        packet.Write((byte)skill);
+        packet.Write((byte)lvl);
+        packet.Write((byte)caster.FacingDirection);
+        packet.Write(caster.Position);
+        packet.Write(castTime);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+    
+    public static void SkillExecuteTargetedSkill(WorldObject caster, WorldObject target, CharacterSkill skill, int lvl,
+        DamageInfo di)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
+
+        packet.Write((byte)SkillType.SingleTarget);
+        packet.Write(caster.Id);
+        packet.Write(target.Id);
+        packet.Write((byte)skill);
+        packet.Write((byte)lvl);
+        packet.Write((byte)caster.FacingDirection);
+        packet.Write(caster.Position);
+        packet.Write(di.Damage);
+        packet.Write((byte)di.Result);
+        packet.Write((byte)di.HitCount);
+        
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void AttackMulti(WorldObject attacker, WorldObject target, DamageInfo di)
     {
         if (!HasRecipients())
@@ -147,6 +188,7 @@ public static class CommandBuilder
         packet.Write((byte)attacker.FacingDirection);
         packet.Write(attacker.Position);
         packet.Write(di.Damage);
+        packet.Write((byte)di.HitCount);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -545,6 +587,15 @@ public static class CommandBuilder
     {
         var packet = NetworkManager.StartPacket(PacketType.AdminHideCharacter, 8);
         packet.Write(isHidden);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+
+    public static void SkillFailed(Player p, SkillValidationResult res)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.SkillError, 24);
+        packet.Write((byte)res);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

@@ -187,9 +187,9 @@ namespace PlayerControl
                 if (s[0] == "/effect" && s.Length > 1)
                 {
                     if (int.TryParse(s[1], out var id))
-                        cameraFollower.AttachEffectToEntity(id, controllable);
+                        cameraFollower.AttachEffectToEntity(id, controllable.gameObject);
                     else
-                        cameraFollower.AttachEffectToEntity(s[1], controllable);
+                        cameraFollower.AttachEffectToEntity(s[1], controllable.gameObject);
                 }
 
                 if (s[0] == "/reloadscript" || s[0] == "/scriptreload")

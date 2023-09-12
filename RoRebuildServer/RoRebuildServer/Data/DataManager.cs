@@ -42,8 +42,8 @@ public static class DataManager
 
     public static List<MapEntry> Maps => mapList;
     
-
     public static ExpChart ExpChart;
+    public static ElementChart ElementChart;
     
     public static List<MonsterAiEntry> GetAiStateMachine(MonsterAiType monsterType)
     {
@@ -122,6 +122,7 @@ public static class DataManager
         ItemList = loader.LoadItemList();
         ItemIdByName = loader.GenerateItemIdByNameLookup();
         SavePoints = loader.LoadSavePoints();
+        ElementChart = loader.LoadElementChart();
         loader.LoadItemInteractions(ScriptAssembly);
         
         MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);

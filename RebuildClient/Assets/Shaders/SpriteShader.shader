@@ -321,7 +321,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 		
 				UNITY_APPLY_FOG(i.fogCoord, c);
 			
-				c *= i.color;
+				//c *= i.color;
 				c.rgb *= c.a;
 	
 				#ifndef WATER_OFF

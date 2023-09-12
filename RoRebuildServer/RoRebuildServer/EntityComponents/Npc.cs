@@ -436,7 +436,7 @@ public class Npc : IEntityAutoReset
 
         var id = DataManager.EffectIdForName[effect];
 
-        chara.Map.GatherPlayersForMultiCast(ref Entity, chara);
+        chara.Map.GatherPlayersForMultiCast(chara);
         CommandBuilder.SendEffectAtLocationMulti(id, chara.Position, facing);
         CommandBuilder.ClearRecipients();
     }
@@ -478,7 +478,7 @@ public class Npc : IEntityAutoReset
                 var di = new DamageInfo()
                     { Damage = (short)damage, HitCount = (byte)hitCount, KnockBack = 0, Source = Entity, Target = e, Time = 0.3f };
 
-                chara.Map.GatherPlayersForMultiCast(ref Entity, ch);
+                chara.Map.GatherPlayersForMultiCast(ch);
                 CommandBuilder.TakeDamageMulti(ch, di);
                 CommandBuilder.ClearRecipients();
 

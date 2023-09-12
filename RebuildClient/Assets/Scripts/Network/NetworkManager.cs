@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
@@ -654,7 +655,12 @@ namespace Assets.Scripts.Network
                 if (controllable.SpriteAnimator.Type == SpriteType.Player)
                     damageTiming = 0.5f;
 
-                StartCoroutine(DamageEvent(dmg, damageTiming, 1, controllable2));
+                var hits = msg.ReadByte();
+                
+                if(hits > 1)
+                    FireArrow.Create(controllable2.gameObject, hits);
+
+                StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable2));
             }
         }
 
@@ -939,7 +945,7 @@ namespace Assets.Scripts.Network
             if (!entityList.TryGetValue(id, out var controllable))
                 return;
 
-            CameraFollower.AttachEffectToEntity(effect, controllable);
+            CameraFollower.AttachEffectToEntity(effect, controllable.gameObject);
         }
 
 
@@ -1018,6 +1024,35 @@ namespace Assets.Scripts.Network
             if (CameraFollower.TargetControllable)
             {
                 CameraFollower.TargetControllable.IsHidden = isHidden;
+            }
+        }
+
+        public void OnMessageStartCasting(ClientInboundMessage msg)
+        {
+            var srcId = msg.ReadInt32();
+            var targetId = msg.ReadInt32();
+            var skill = (CharacterSkill)msg.ReadByte();
+            var lvl = (int)msg.ReadByte();
+            var dir = (Direction)msg.ReadByte();
+            var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
+            var castTime = msg.ReadFloat();
+
+            if (entityList.TryGetValue(srcId, out var controllable))
+            {
+                controllable.SpriteAnimator.Direction = dir;
+                if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
+                {
+                    controllable.SpriteAnimator.State = SpriteState.Standby;
+                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
+                }
+
+                if(skill == CharacterSkill.FireBolt)
+                    CastEffect.Create(castTime, "ring_red", controllable.gameObject);
+            }
+
+            if (entityList.TryGetValue(targetId, out var target))
+            {
+                CastLockOnEffect.Create(castTime, target.gameObject);
             }
         }
         
@@ -1118,6 +1153,9 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.AdminHideCharacter:
                     OnMessageAdminHideCharacter(msg);
+                    break;
+                case PacketType.StartCast:
+                    OnMessageStartCasting(msg);
                     break;
                 default:
                     Debug.LogWarning($"Failed to handle packet type: {type}");
@@ -1239,7 +1277,6 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
-
 
         public void SendChangeAppearance(int mode, int id = -1)
         {
@@ -1396,6 +1433,19 @@ namespace Assets.Scripts.Network
             
             msg.Write((byte)PacketType.AdminChangeSpeed);
             msg.Write((Int16)value);
+            
+            SendMessage(msg);
+        }
+
+        public void SendSingleTargetSkillAction(int targetId, CharacterSkill skill, int lvl)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.Skill);
+            msg.Write((byte)SkillType.SingleTarget);
+            msg.Write(targetId);
+            msg.Write((byte)skill);
+            msg.Write((byte)lvl);
             
             SendMessage(msg);
         }

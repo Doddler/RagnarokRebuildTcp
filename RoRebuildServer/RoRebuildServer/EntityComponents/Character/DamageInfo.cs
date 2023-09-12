@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.EntitySystem;
+﻿using RoRebuildServer.EntityComponents.Util;
+using RoRebuildServer.EntitySystem;
 
 namespace RoRebuildServer.EntityComponents.Character;
 
@@ -10,4 +11,5 @@ public class DamageInfo
     public short Damage;
     public byte HitCount;
     public byte KnockBack;
+    public AttackResult Result;
 }

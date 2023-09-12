@@ -411,7 +411,7 @@ public class Map
         }
     }
 
-    public void GatherPlayersForMultiCast(ref Entity target, WorldObject character)
+    public void GatherPlayersForMultiCast(WorldObject character)
     {
         if (character.TryGetVisiblePlayerList(out var list))
         {

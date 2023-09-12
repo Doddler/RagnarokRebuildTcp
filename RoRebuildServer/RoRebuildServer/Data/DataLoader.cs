@@ -2,6 +2,7 @@
 using System.Reflection;
 using CsvHelper;
 using RebuildSharedData.Data;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data.Config;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
@@ -72,6 +73,34 @@ internal class DataLoader
         }
 
         return chart;
+    }
+
+    public ElementChart LoadElementChart()
+    {
+        using var tr = new StreamReader(@"ServerData/Db/ElementalChart.csv") as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+
+        var entries = csv.GetRecords<dynamic>().ToList();
+
+        var attackTypes = Enum.GetNames(typeof(AttackElement)).Length;
+        var defenseTypes = Enum.GetNames(typeof(CharacterElement)).Length;
+
+        var chart = new int[defenseTypes][];
+        for (var i = 0; i < defenseTypes; i++)
+        {
+            chart[i] = new int[attackTypes];
+            IDictionary<string, object> row = entries[i];
+            var values = row.Values.ToList();
+
+            for (var j = 0; j < attackTypes; j++)
+            {
+                if(int.TryParse((string)values[j+1], out var percent))
+                   chart[i][j] = percent;
+            }
+
+        }
+
+        return new ElementChart(chart);
     }
 
     public Dictionary<string, SavePosition> LoadSavePoints()
@@ -254,6 +283,7 @@ internal class DataLoader
                 RechargeTime = monster.RechargeTime / 1000f,
                 MoveSpeed = monster.MoveSpeed / 1000f,
                 SpriteAttackTiming = monster.SpriteAttackTiming / 1000f,
+                Element = monster.Element,
                 AiType = (MonsterAiType)Enum.Parse(typeof(MonsterAiType), monster.MonsterAi),
                 Name = monster.Name
             });
