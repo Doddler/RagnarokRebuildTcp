@@ -64,7 +64,7 @@ public class Map
     public void RemovePlayerVisibility(WorldObject player, WorldObject other)
     {
         other.RemoveVisiblePlayer(player.Entity);
-        if (other.Type == CharacterType.Player && player != other)
+        if (other.Type == CharacterType.Player && player != other && !other.Hidden)
             player.RemoveVisiblePlayer(other.Entity);
     }
 
@@ -312,7 +312,7 @@ public class Map
                 if (!targetCharacter.Position.InRange(ch.Position, ServerConfig.MaxViewDistance))
                     continue;
                 
-                if(targetCharacter != ch)
+                if(targetCharacter != ch && !ch.Hidden)
                     CommandBuilder.AddRecipient(player);
 
                 AddPlayerVisibility(targetCharacter, ch);
@@ -830,7 +830,8 @@ public class Map
 
         var ch = entity.Get<WorldObject>();
         
-        SendRemoveEntityAroundCharacter(ref entity, ch, reason);
+        if(!ch.Hidden)
+            SendRemoveEntityAroundCharacter(ref entity, ch, reason);
         ch.ClearVisiblePlayerList();
 
         var hasRemoved = false;

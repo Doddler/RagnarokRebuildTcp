@@ -584,15 +584,23 @@ namespace Assets.Scripts.MapEditor.Editor
                     }
                     else
                     {
-                        var modelLoader = new RagnarokModelLoader();
+                        try
+                        {
+                            var modelLoader = new RagnarokModelLoader();
 
-                        modelLoader.LoadModel(modelPath, relative);
-                        obj = modelLoader.Compile();
+                            modelLoader.LoadModel(modelPath, relative);
+                            obj = modelLoader.Compile();
 
-                        PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
+                            PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
 
-                        var prefabRef = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
-                        modelCache.Add(model.FileName, prefabRef);
+                            var prefabRef = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+                            modelCache.Add(model.FileName, prefabRef);
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            Debug.LogError($"File not found loading model name {model.Name} at path '{modelPath}'!");
+                            continue;
+                        }
                     }
                 }
 

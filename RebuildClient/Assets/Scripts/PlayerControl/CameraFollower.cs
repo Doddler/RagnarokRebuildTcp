@@ -45,6 +45,8 @@ namespace Assets.Scripts
         public Texture2D NormalCursorTexture;
         public Texture2D AttackCursorTexture;
         public Texture2D TalkCursorTexture;
+        public Texture2D TargetCursorTexture;
+        public Texture2D TargetCursorNoTargetTexture;
         public RoSpriteData TargetSprite;
         // public GameObject LevelUpPrefab;
         // public GameObject ResurrectPrefab;
@@ -102,6 +104,10 @@ namespace Assets.Scripts
         public Dictionary<string, int> EffectIdLookup;
         public Dictionary<int, EffectTypeEntry> EffectList;
         public Dictionary<int, GameObject> EffectCache;
+
+        private bool hasSkillOnCursor;
+        private CharacterSkill cursorSkill;
+        private int cursorSkillLvl;
 
         public bool CinemachineMode;
         public VideoRecorder Recorder;
@@ -479,7 +485,7 @@ namespace Assets.Scripts
             if (currentCursor == cursorTexture)
                 return;
 
-            if (cursorTexture == TalkCursorTexture)
+            if (cursorTexture == TalkCursorTexture || cursorTexture == TargetCursorTexture || cursorTexture == TargetCursorNoTargetTexture)
                 Cursor.SetCursor(cursorTexture, new Vector2(16, 14), CursorMode.Auto);
             else
                 Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
@@ -558,7 +564,7 @@ namespace Assets.Scripts
                 noHold = true;
                 return; //no point in doing other screencast stuff if we're still talking to the npc.
             }
-
+            
             var ray = Camera.ScreenPointToRay(Input.mousePosition);
 
             var hasHitCharacter = false;
@@ -571,7 +577,7 @@ namespace Assets.Scripts
 
             if (isHolding || isOverUi || CinemachineMode)
                 hasHitCharacter = false;
-
+            
             //Debug.Log(string.Join(", ", characterHits.Select(c => c.transform.name)));
 
             if (hasHitCharacter)
@@ -590,10 +596,22 @@ namespace Assets.Scripts
                     var color = "";
                     if (!anim.Controllable.IsAlly && anim.Controllable.CharacterType != CharacterType.NPC)
                     {
-                        if(Input.GetKeyDown(KeyCode.Alpha2))
-                            NetworkManager.Instance.SendSingleTargetSkillAction(anim.Controllable.Id, CharacterSkill.FireBolt, 5);
+                        if (hasSkillOnCursor)
+                        {
+                            ChangeCursor(TargetCursorTexture);
+                            if (Input.GetMouseButtonDown(0))
+                            {
+                                NetworkManager.Instance.SendSingleTargetSkillAction(anim.Controllable.Id, cursorSkill, cursorSkillLvl);
+                                hasSkillOnCursor = false;
+                                return;
+                            }
+                        }
+                        else
+                            ChangeCursor(AttackCursorTexture);
+                        
+                            
                             //CastLockOnEffect.Create(3f, anim.Controllable.gameObject);
-                        ChangeCursor(AttackCursorTexture);
+                        
                         color = "<color=#FFAAAA>";
                         hasHitMap = false;
                     }
@@ -637,12 +655,26 @@ namespace Assets.Scripts
                 }
             }
             else
-                ChangeCursor(NormalCursorTexture);
+            {
+                if(hasSkillOnCursor)
+                    ChangeCursor(TargetCursorNoTargetTexture);
+                else
+                    ChangeCursor(NormalCursorTexture);
+            }
 
             ClickDelay -= Time.deltaTime;
 
             if (Input.GetMouseButtonUp(0))
                 ClickDelay = 0;
+            
+            
+            if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && hasSkillOnCursor)
+            {
+                hasSkillOnCursor = false;
+                isHolding = false;
+                noHold = true;
+                //return; //first click just ends cast mode
+            }
 
             if (!Input.GetMouseButton(0))
             {
@@ -775,11 +807,17 @@ namespace Assets.Scripts
                                 isHolding = true;
                             }
                         }
+
                     }
                 }
             }
         }
 
+        public void ResetChat()
+        {
+            TextBoxText.text = "Welcome to Ragnarok Rebuild!";
+        }
+        
         public void AppendChatText(string txt)
         {
             if (string.IsNullOrWhiteSpace(txt))
@@ -1048,6 +1086,9 @@ namespace Assets.Scripts
                 //Debug.Log("Escape pressed, inTextBox: " + inTextBox);
                 //Debug.Log(EventSystem.current.currentSelectedGameObject);
 
+                if (hasSkillOnCursor)
+                    hasSkillOnCursor = false;
+
                 if (inTextBox)
                 {
                     inTextBox = false;
@@ -1150,6 +1191,13 @@ namespace Assets.Scripts
 
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
                 NetworkManager.Instance.SendUseItem(501);
+
+            if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                hasSkillOnCursor = true;
+                cursorSkill = CharacterSkill.FireBolt;
+                cursorSkillLvl = 5;
+            }
             //
             // if (!inTextBox && Input.GetKeyDown(KeyCode.F3))
             //     FireArrow.Create(controllable.gameObject, 5);
@@ -1194,7 +1242,7 @@ namespace Assets.Scripts
             //        }
 
             //remove the flag to enable cinemachine recording on this
-#if UNITY_EDITOR && CINEMACHINEMODE
+#if UNITY_EDITOR
             if ((Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.F6)) && Application.isEditor && Recorder != null)
             {
                 if (CinemachineMode)
@@ -1248,7 +1296,15 @@ namespace Assets.Scripts
                 Height = 75;
             if (Height < 30)
                 Height = 30;
-//#endif
+
+            if (Distance < 0)
+                Distance *= -1;
+            if (Height < 0)
+                Height *= -1;
+#if !DEBUG
+            if (Distance > 100)
+                Distance = 100;
+#endif
 
             DoScreenCast(pointerOverUi);
             UpdateSelectedTarget();

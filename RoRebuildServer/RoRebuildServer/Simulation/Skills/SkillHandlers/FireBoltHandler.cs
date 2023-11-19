@@ -27,7 +27,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers
 
             var res = source.CalculateCombatResult(target, 1, lvl, AttackFlags.Magical, AttackElement.Fire);
             source.PerformAttackAction(target);
-            source.ExecuteCombatResult(res);
+            source.ExecuteCombatResult(res, true);
 
             var ch = source.Character;
 

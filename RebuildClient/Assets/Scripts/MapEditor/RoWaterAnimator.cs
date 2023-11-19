@@ -66,6 +66,12 @@ namespace Assets.Scripts.MapEditor
 
             Material.mainTexture = Water.Images[curFrame];
             Shader.SetGlobalTexture("_WaterImageTexture", Water.Images[curFrame]);
+            
+#if UNITY_EDITOR
+            Material.SetFloat("_WaveHeight", Water.WaveHeight / 5f);
+            Material.SetFloat("_WaveSpeed", Water.WaveSpeed);
+            Material.SetFloat("_WavePitch", Water.WavePitch);
+#endif
         }
     }
 }

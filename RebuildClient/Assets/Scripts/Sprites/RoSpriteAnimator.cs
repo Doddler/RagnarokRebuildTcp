@@ -445,7 +445,7 @@ namespace Assets.Scripts.Sprites
 
         public void ChangeMotion(SpriteMotion nextMotion, bool forceUpdate = false)
         {
-            //Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion}");
+            // Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion}");
 
             if (CurrentMotion == SpriteMotion.Dead && !forceUpdate)
                 Debug.LogWarning("Changing from dead to something else!");

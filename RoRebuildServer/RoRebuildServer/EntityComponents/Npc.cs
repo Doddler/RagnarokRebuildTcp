@@ -332,6 +332,24 @@ public class Npc : IEntityAutoReset
         for (var i = 0; i < npc.Mobs.Count; i++)
         {
             if (npc.Mobs[i].TryGet(out Monster mon))
+                mon.Die(false);
+        }
+
+        npc.Mobs.Clear();
+        //OnMobKill();
+    }
+
+    public void KillMyMobsWithExp()
+    {
+        var chara = Entity.Get<WorldObject>();
+        var npc = chara.Npc;
+
+        if (npc.Mobs == null)
+            return;
+
+        for (var i = 0; i < npc.Mobs.Count; i++)
+        {
+            if (npc.Mobs[i].TryGet(out Monster mon))
                 mon.Die();
         }
 

@@ -41,8 +41,8 @@ public class WorldObject : IEntityAutoReset
     public int MoveStep;
     public int TotalMoveSteps;
 
-    public float CastingTime;
     public bool QueuedCasting;
+
 
 #if DEBUG
     public ulong LastUpdate;
@@ -118,7 +118,6 @@ public class WorldObject : IEntityAutoReset
         TargetPosition = new Position();
         FacingDirection = Direction.South;
         WalkPath = null;
-        CastingTime = 0f;
         QueuedCasting = false;
         ClearVisiblePlayerList();
     }
@@ -401,11 +400,6 @@ public class WorldObject : IEntityAutoReset
         Map.StartMove(ref Entity, this);
     }
 
-    private void FinishCasting()
-    {
-        SkillHandler.ExecuteSkill(CombatEntity.CastingSkill, CombatEntity);
-        State = CharacterState.Idle;
-    }
     
     public void Update()
     {
@@ -440,14 +434,6 @@ public class WorldObject : IEntityAutoReset
 
         if (State == CharacterState.Idle)
             return;
-
-        if (State == CharacterState.Casting)
-        {
-            if (CastingTime < Time.ElapsedTimeFloat)
-            {
-                FinishCasting();
-            }
-        }
         
         if (State == CharacterState.Moving)
         {

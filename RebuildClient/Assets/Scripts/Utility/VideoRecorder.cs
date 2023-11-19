@@ -2,14 +2,13 @@
 using System.IO;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
+using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.Animations;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Examples;
 using UnityEditor.Recorder.Input;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+#endif
 
 namespace Utility
 {
@@ -26,7 +25,10 @@ namespace Utility
 
 
         private Camera camera;
+
+#if UNITY_EDITOR
         private RecorderController recorderController;
+#endif
 
         private Dictionary<string, int> clipNumbers = new();
 
@@ -71,6 +73,7 @@ namespace Utility
 
         public void StopRecording()
         {
+#if UNITY_EDITOR
             if (!IsActive)
                 return;
             if (IsRecording)
@@ -80,10 +83,12 @@ namespace Utility
             AudioManager.Instance.ToggleMute();
             gameObject.SetActive(false);
             VirtualCamera.gameObject.SetActive(false);
+#endif
         }
 
         public void StartRecording()
         {
+#if UNITY_EDITOR
             if (!VirtualCamera)
                 return;
 
@@ -156,6 +161,7 @@ namespace Utility
                 recorderController.StartRecording();
                 IsRecording = true;
             }
+#endif
         }
     }
 }

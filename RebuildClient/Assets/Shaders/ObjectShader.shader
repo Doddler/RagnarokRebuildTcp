@@ -168,8 +168,10 @@ Shader "Custom/ObjectShader"
                 
 #if LIGHTMAP_ON
                 float4 lm = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv2)), 1) * _LightmapIntensity;
+                lm = clamp(lm, 0, 0.5);
 #else
                 float4 lm = float4(ShadeSH9(float4(i.normal, 1)),1);
+                lm = clamp(lm, 0, 0.5);
 #endif
                 float4 ambienttex = float4(1, 1, 1, 1);
 

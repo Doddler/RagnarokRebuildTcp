@@ -122,9 +122,11 @@ namespace PlayerControl
                         count = newCount;
                         nameMax--;
                     }
+                    
+                    Debug.Log($"Summon '{name}' {count} {nameMax}");
 
                     if (s.Length > nameMax)
-                        name = String.Join(" ", s.Skip(1).Take(s.Length - 1));
+                        name = String.Join(" ", s.Skip(1).Take(s.Length - 2));
 
                     if (!SpriteDataLoader.Instance.IsValidMonsterName(name))
                         cameraFollower.AppendError($"The monster name '{name}' is not valid.");
@@ -149,7 +151,7 @@ namespace PlayerControl
                             NetworkManager.Instance.SendChangeAppearance(1);
                         if (s[1].ToLower() == "gender")
                             NetworkManager.Instance.SendChangeAppearance(2, controllable.IsMale ? 1 : 0);
-                        if (s[1].ToLower() == "job")
+                        if (s[1].ToLower() == "job" || s[1].ToLower() == "class")
                             NetworkManager.Instance.SendChangeAppearance(3);
                         if (s[1].ToLower() == "weapon")
                             NetworkManager.Instance.SendChangeAppearance(4);
@@ -163,17 +165,21 @@ namespace PlayerControl
                                 NetworkManager.Instance.SendChangeAppearance(1, id);
                             if (s[1].ToLower() == "gender")
                                 NetworkManager.Instance.SendChangeAppearance(2, id);
-                            if (s[1].ToLower() == "job")
+                            if (s[1].ToLower() == "job" || s[1].ToLower() == "class")
                                 NetworkManager.Instance.SendChangeAppearance(3, id);
                             if (s[1].ToLower() == "weapon")
                                 NetworkManager.Instance.SendChangeAppearance(4, id);
                         }
                     }
                 }
-                
-                if(s[0] == "/speed")
-                    if(int.TryParse(s[1], out var speed))
+
+                if (s[0] == "/speed")
+                {
+                    if (s.Length > 1 && int.TryParse(s[1], out var speed))
                         NetworkManager.Instance.SendAdminChangeSpeed(speed);
+                    else
+                        cameraFollower.AppendChatText("<color=yellow>Error</color>: Incorrect parameters.");
+                }
 
                 if (s[0] == "/admin")
                 {
@@ -202,6 +208,9 @@ namespace PlayerControl
                 {
                     NetworkManager.Instance.SendAdminAction(AdminAction.ForceGC);
                 }
+                
+                if(s[0] == "/clear" || s[0] == "/cls" || s[0] == "/clearchat")
+                    cameraFollower.ResetChat();
             }
             else
             {

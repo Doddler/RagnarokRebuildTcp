@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Assets.Scripts;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
@@ -29,17 +30,41 @@ public class DamageIndicator : MonoBehaviour
  //    public float TweenTime = 1f;
 
     public DamageIndicatorPathData PathData;
+    public ServerControllable Controllable;
 
 	private static StringBuilder sb = new StringBuilder(128);
 
 	private Vector3 start;
 	private Vector3 end;
+
+	public void AttachComboIndicatorToControllable(ServerControllable controllable)
+	{
+		RemoveComboIndicatorIfExists(controllable);
+		Controllable = controllable;
+		Controllable.ComboIndicator = gameObject;
+	}
+
+	private void RemoveComboIndicatorIfExists(ServerControllable controllable)
+	{
+		if (controllable.ComboIndicator == null)
+			return;
+
+		var di = controllable.ComboIndicator.GetComponent<DamageIndicator>();
+		if (di == null)
+		{
+			Destroy(controllable.ComboIndicator);
+			controllable.ComboIndicator = null;
+		}
+		
+		di.EndDamageIndicator();
+	}
 	
 	public void DoDamage(TextIndicatorType type, string value, Vector3 startPosition, float height, Direction direction, bool isRed, bool isCrit)
 	{
 		PathData = type switch
 		{
 			TextIndicatorType.Heal => ClientConstants.Instance.HealPath,
+			TextIndicatorType.ComboDamage => ClientConstants.Instance.ComboPath,
 			_ => ClientConstants.Instance.DamagePath
 		};
 	    
@@ -93,6 +118,17 @@ public class DamageIndicator : MonoBehaviour
 
 	private void OnComplete()
 	{
+		EndDamageIndicator(true);
+	}
+
+	public void EndDamageIndicator( bool skipCancelTween = false)
+	{
+		if(!skipCancelTween)
+			LeanTween.cancel(gameObject);
+	
+		if (Controllable && Controllable.ComboIndicator == gameObject)
+			Controllable.ComboIndicator = null;
+			
 		RagnarokEffectPool.ReturnDamageIndicator(this);
 	}
 

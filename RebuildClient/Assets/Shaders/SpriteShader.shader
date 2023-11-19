@@ -13,16 +13,18 @@ Shader"Ragnarok/CharacterSpriteShader"
 
 	SubShader
 	{
-		Tags
-		{
-			"Queue" = "Transparent"
-			"IgnoreProjector" = "True"
-			"RenderType" = "Transparent"
-			"PreviewType" = "Plane"
-			"CanUseSpriteAtlas" = "True"
-			"ForceNoShadowCasting" = "True"
-			"DisableBatching" = "true"
-		}
+//		Tags
+//		{
+//			"Queue" = "Transparent"
+//			"IgnoreProjector" = "True"
+//			"RenderType" = "Transparent"
+//			"PreviewType" = "Plane"
+//			"CanUseSpriteAtlas" = "True"
+//			"ForceNoShadowCasting" = "True"
+//			"DisableBatching" = "true"
+//		}
+		
+		Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" "DisableBatching" = "True" "LightMode"="ForwardBase" }
 
 		Cull Off
 		Lighting Off
@@ -168,7 +170,8 @@ Shader"Ragnarok/CharacterSpriteShader"
 				float2 texcoord  : TEXCOORD0;
 				float4 screenPos : TEXCOORD1;
 				half4  worldPos : TEXCOORD2;
-				UNITY_FOG_COORDS(3)
+				half4  envColor : TEXCOORD3;
+				UNITY_FOG_COORDS(4)
 			};
 
 			fixed4 _Color;
@@ -264,6 +267,8 @@ Shader"Ragnarok/CharacterSpriteShader"
 				o.texcoord = v.texcoord;
 				o.color = v.color * _Color;
 
+				o.envColor = clamp(float4(ShadeSH9(fixed4(0,1,0,1)),1) * 0.5, 0, 0.35);
+
 				float4 tempVertex = UnityObjectToClipPos(v.vertex);
 				UNITY_TRANSFER_FOG(o, tempVertex);
 	
@@ -299,7 +304,8 @@ Shader"Ragnarok/CharacterSpriteShader"
 			fixed4 frag(v2f i) : SV_Target
 			{
 				float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
-				env = env * 0.5 + 0.5;
+				//env = env * 0.5 + 0.5;
+				env = env * 0.5 + saturate(0.5 + i.envColor);
 	
 				//smoothpixel
 				// apply anti-aliasing
@@ -335,7 +341,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 					float4 waterTex = tex2D(_WaterImageTexture, wateruv);
 					float height = water.z;
 					
-					waterTex = float4(0.5, 0.5, 0.5, 1) + (waterTex / 2);
+					waterTex = float4(0.6, 0.6, 0.6, 1) + (waterTex * 0.5);
 	
 					// apply fog
 					UNITY_APPLY_FOG(i.fogCoord, waterTex);

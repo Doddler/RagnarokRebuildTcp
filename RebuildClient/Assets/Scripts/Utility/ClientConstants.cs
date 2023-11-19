@@ -8,6 +8,7 @@ namespace Assets.Scripts.Utility
     {
         public DamageIndicatorPathData DamagePath;
         public DamageIndicatorPathData HealPath;
+        public DamageIndicatorPathData ComboPath;
         public GameObject LevelUpPrefab;
         public GameObject ResurrectPrefab;
         public GameObject DeathPrefab;

@@ -44,6 +44,7 @@ namespace Assets.Scripts.Network
 
         public ClientSpriteType SpriteMode;
         public GameObject EntityObject;
+        public GameObject ComboIndicator;
 
         private List<Vector2Int> movePath;
         private Vector2Int[] tempPath;
@@ -57,6 +58,7 @@ namespace Assets.Scripts.Network
 
         private float hitDelay = 0f;
         private float dialogCountdown = 0f;
+        private float movePauseTime = 0f;
 
         public bool IsWalking => movePath != null && movePath.Count > 1;
 
@@ -168,6 +170,8 @@ namespace Assets.Scripts.Network
 
         public void StartMove(float speed, float progress, int stepCount, int curStep, List<Vector2Int> steps)
         {
+            // Debug.Log($"{name} Start Move - Speed:{speed} Progress:{progress} StepCount:{stepCount} CurStep:{curStep} StepLength:{steps.Count}");
+            
             //don't reset start pos if the next tile is the same
             if (movePath == null || movePath.Count <= 1 || movePath[1] != steps[1])
                 StartPos = transform.position - new Vector3(0.5f, 0f, 0.5f);
@@ -249,6 +253,19 @@ namespace Assets.Scripts.Network
         {
             if (movePath.Count > 2)
                 movePath.RemoveRange(2, movePath.Count - 2);
+        }
+
+        public void PauseMove(float time)
+        {
+            if (!isMoving)
+                return;
+            
+            if (SpriteAnimator.SpriteData.Type == SpriteType.Player)
+                SpriteAnimator.State = SpriteState.Standby;
+            else
+                SpriteAnimator.State = SpriteState.Idle;
+
+            movePauseTime = time;
         }
 
         public void StopImmediate(Vector2Int position)
@@ -493,6 +510,10 @@ namespace Assets.Scripts.Network
 
             if (isMoving)
             {
+                movePauseTime -= Time.deltaTime;
+                if (movePauseTime > 0f)
+                    return;
+                
                 UpdateMove();
 
                 if (SpriteAnimator.State != SpriteState.Walking)
@@ -531,6 +552,12 @@ namespace Assets.Scripts.Network
                     EffectList[i].EndEffect();
 
                 EffectList.Clear();
+            }
+
+            if (ComboIndicator != null)
+            {
+                var di = ComboIndicator.GetComponent<DamageIndicator>();
+                di.EndDamageIndicator();
             }
         }
 

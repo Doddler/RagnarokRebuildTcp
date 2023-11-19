@@ -184,8 +184,9 @@ public partial class Monster : IEntityAutoReset
     /// <summary>
     /// This kills the monster.
     /// </summary>
+    /// <param name="giveExperience">Whether killing this monster should reward experience to contributing players.</param>
     /// <param name="isMasterCommand">Is the issuer of this die command the master of this monster? If so, set this to suppress the RemoveChild callback.</param>
-	public void Die(bool isMasterCommand = false)
+    public void Die(bool giveExperience = true, bool isMasterCommand = false)
 	{
 		if (CurrentAiState == MonsterAiState.StateDead)
 			return;
@@ -193,7 +194,8 @@ public partial class Monster : IEntityAutoReset
 		CurrentAiState = MonsterAiState.StateDead;
 		Character.State = CharacterState.Dead;
 
-		CombatEntity.DistributeExperience();
+        if(giveExperience)
+		    CombatEntity.DistributeExperience();
 		
 		Character.IsActive = false;
         
@@ -202,7 +204,7 @@ public partial class Monster : IEntityAutoReset
             foreach (var child in Children)
             {
                 var childMonster = child.Get<Monster>();
-                childMonster.Die(true);
+                childMonster.Die(false, true);
             }
 
             Children.Clear();

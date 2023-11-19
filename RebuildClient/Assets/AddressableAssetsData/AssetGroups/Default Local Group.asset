@@ -10466,6 +10466,360 @@ MonoBehaviour:
     m_SerializedLabels:
     - Minimap
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3997328f8af0a540a94324722e717e4
+    m_Address: Assets/Sprites/Monsters/alligator.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d162fbf80040b914090a1f3aa7f296b9
+    m_Address: Assets/Sprites/Monsters/aster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e5dce6bb2c247e4781b94bbfabeb092
+    m_Address: Assets/Sprites/Monsters/crab.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf1ba92c60d833445907bc24f8848ec9
+    m_Address: Assets/Sprites/Monsters/fur_seal.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07207b28f0537224c90d250debd5ed1a
+    m_Address: Assets/Sprites/Monsters/galapago.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 461db3bd645ff8e4e8b3cb58c8aef294
+    m_Address: Assets/Sprites/Monsters/gryphon.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d96f1f364532bf3428b8c32ee3ac07bb
+    m_Address: Assets/Sprites/Monsters/medusa.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b36a0c0b9e10ed444aba9310b339a93d
+    m_Address: Assets/Sprites/Monsters/megalith.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ea9d9a07b90cb444836925cf14cf786
+    m_Address: Assets/Sprites/Monsters/megalodon.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6485a2be8bec3ce469cc9668dd22323f
+    m_Address: Assets/Sprites/Monsters/mobster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6120f39c46c159e4da43353137e9a75b
+    m_Address: Assets/Sprites/Monsters/mutant_dragon.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0007c6ff0f266c74c9b407e2383c01b1
+    m_Address: Assets/Sprites/Monsters/neraid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5eda70b21b5444b46b1b181ef230b9c1
+    m_Address: Assets/Sprites/Monsters/raggler.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9922e88dbfd30c4b8b5fa9bdb4e435f
+    m_Address: Assets/Sprites/Monsters/see_otter.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7f9c64c7a651eb4389f206b21c7aca3
+    m_Address: Assets/Sprites/Monsters/shellfish.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b47e39166f812248a51b39170b484e9
+    m_Address: Assets/Sprites/Monsters/stalactic_golem.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4b3933ad61cbef4f9b25de781d28e56
+    m_Address: Assets/Sprites/Monsters/tao_gunka.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 090ae650ec670464cb87cecfa277ea2f
+    m_Address: Assets/Sprites/Monsters/tri_joint.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e13be6b7033a7bd4faeb37f882ead917
+    m_Address: Assets/Maps/minimap/beach_dun.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5604fb99dc1e104c9481151581d2808
+    m_Address: Assets/Maps/minimap/beach_dun2.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57c9280f7afdccb46b5c1b5b33220c51
+    m_Address: Assets/Maps/minimap/beach_dun2_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f483c7f8f45d0fa4689cdc90460f21ee
+    m_Address: Assets/Maps/minimap/beach_dun3.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a4e72aa5cb397543a8f4294de68ad00
+    m_Address: Assets/Maps/minimap/beach_dun3_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3cc420fd3daf874f93bf219ce1382d9
+    m_Address: Assets/Maps/minimap/beach_dun_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7293c399d7a75149ab8fad2d56ec551
+    m_Address: Assets/Maps/minimap/cmd_fild01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ebb931b8a5987b4d94656b142e8e9f1
+    m_Address: Assets/Maps/minimap/cmd_fild01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab88e8f2af8637e4398cf60532a3c429
+    m_Address: Assets/Maps/minimap/cmd_fild02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5fc38eeca7501c4cb312202f64be87c
+    m_Address: Assets/Maps/minimap/cmd_fild02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06cfb535c10a65145844e074c7733f33
+    m_Address: Assets/Maps/minimap/cmd_fild03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb39ae19a9c79d443b35ff8b2618266e
+    m_Address: Assets/Maps/minimap/cmd_fild03_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33b50d3d5db3db54db6321d8ec9b27fe
+    m_Address: Assets/Maps/minimap/cmd_fild04.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1f9f99f36fd5264988368aef6299c74
+    m_Address: Assets/Maps/minimap/cmd_fild04_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da692bba19c9ce94cb281d2bbbf0162a
+    m_Address: Assets/Maps/minimap/cmd_fild05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ec6d172ed4dd0b428f968ce37e7791c
+    m_Address: Assets/Maps/minimap/cmd_fild05_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0145a4b467e1ebe40a0b3f8337154b34
+    m_Address: Assets/Maps/minimap/cmd_fild06.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8511df2174829b14d966676e45a736b9
+    m_Address: Assets/Maps/minimap/cmd_fild06_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9390eaf0ea141a41a5361ba02cd1e37
+    m_Address: Assets/Maps/minimap/cmd_fild07.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a397d1e2c4b6fa49bfd79d559ce0d89
+    m_Address: Assets/Maps/minimap/cmd_fild07_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f79e902be2c9b7048b577cb49b45bb88
+    m_Address: Assets/Maps/minimap/cmd_fild08.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9763120b023117a4b9cd05f24597ca0d
+    m_Address: Assets/Maps/minimap/cmd_fild08_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32e4cf8db39a9d5479bac286e8e9ee7c
+    m_Address: Assets/Maps/minimap/cmd_fild09.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a09753eea70304346a31fb8b77e27ef0
+    m_Address: Assets/Maps/minimap/cmd_fild09_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6e8838b9f18dc844b5a74d8efcdad35
+    m_Address: Assets/Maps/minimap/cmd_in01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b2675cfd14bb6c4e9c3d7f3e015614a
+    m_Address: Assets/Maps/minimap/cmd_in01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c61c82f52d30c0147a96fdf4f8f451cd
+    m_Address: Assets/Maps/minimap/cmd_in02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55c2e158ca665c642ad34962025271ea
+    m_Address: Assets/Maps/minimap/cmd_in02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0715b61d687996498de9d8eed44d2ec
+    m_Address: Assets/Maps/minimap/comodo.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2e477f01d7be7942887edac0f6d05fa
+    m_Address: Assets/Maps/minimap/comodo_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b4a82dec28f55a4ba649d523528216d
+    m_Address: Assets/Maps/minimap/xmas.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0453532f364b51488e3eea6f69e0445
+    m_Address: Assets/Maps/minimap/xmas_dun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c3d92410fdcf8b499de2033c2d5d6b1
+    m_Address: Assets/Maps/minimap/xmas_dun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af2ed06a869f673449aea20ea1db5086
+    m_Address: Assets/Maps/minimap/xmas_dun02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 906c18c556353ab4db117890cacea094
+    m_Address: Assets/Maps/minimap/xmas_dun02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d6be90422f06d24a9305ca340fa00dd
+    m_Address: Assets/Maps/minimap/xmas_fild01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5deda466856eb0843b2feeb98bcaca4f
+    m_Address: Assets/Maps/minimap/xmas_fild01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c4352621df732b4e838511b8673ab3d
+    m_Address: Assets/Maps/minimap/xmas_in.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32d3709c1ce84a44a8d8db6f500f1717
+    m_Address: Assets/Maps/minimap/xmas_in_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c60d720ee1bd1af42ae2d6ad4b747cb8
+    m_Address: Assets/Maps/minimap/xmas_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd85ae3a7c119b843b2e65f17fc989b3
+    m_Address: Assets/Sprites/Effects/christmas.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

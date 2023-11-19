@@ -172,7 +172,8 @@ public static class CommandBuilder
         packet.Write(di.Damage);
         packet.Write((byte)di.Result);
         packet.Write((byte)di.HitCount);
-        
+        packet.Write(di.AttackMotionTime);
+
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
@@ -189,6 +190,7 @@ public static class CommandBuilder
         packet.Write(attacker.Position);
         packet.Write(di.Damage);
         packet.Write((byte)di.HitCount);
+        packet.Write(di.AttackMotionTime);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

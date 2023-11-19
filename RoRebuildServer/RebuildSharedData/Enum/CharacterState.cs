@@ -5,7 +5,5 @@ public enum CharacterState : byte
     Idle,
     Moving,
     Sitting,
-    Casting,
     Dead,
-    Hidden,
 }

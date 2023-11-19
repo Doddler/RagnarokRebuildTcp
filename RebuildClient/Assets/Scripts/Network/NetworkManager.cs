@@ -605,6 +605,8 @@ namespace Assets.Scripts.Network
             var dir = (Direction)msg.ReadByte();
             var pos = ReadPosition(msg);
             var dmg = msg.ReadInt16();
+            var hits = msg.ReadByte();
+            var motionTime = msg.ReadFloat();
 
             if (hasTarget)
             {
@@ -618,11 +620,22 @@ namespace Assets.Scripts.Network
                 var v = dir.GetVectorValue();
                 controllable.CounterHitDir = new Vector3(v.x, 0, v.y);
             }
+            
+            controllable.SpriteAnimator.AnimSpeed = 1f; //this will get reset when we resume walking anyways
+            
+            if (controllable.SpriteAnimator.State == SpriteState.Walking)
+            {
+                controllable.PauseMove(motionTime);
+                controllable.SpriteAnimator.State = SpriteState.Standby;
+                controllable.SpriteAnimator.Direction = dir;
+            }
+            else
+            {
+                controllable.StopImmediate(pos);
+                controllable.SpriteAnimator.Direction = dir;
+                controllable.SpriteAnimator.State = SpriteState.Standby;
+            }
 
-            controllable.StopImmediate(pos);
-            controllable.SpriteAnimator.Direction = dir;
-            controllable.SpriteAnimator.State = SpriteState.Standby;
-            controllable.SpriteAnimator.AnimSpeed = 1f;
             if (controllable.SpriteAnimator.Type == SpriteType.Player)
             {
                 switch (controllable.SpriteAnimator.PreferredAttackMotion)
@@ -654,8 +667,6 @@ namespace Assets.Scripts.Network
                 var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
                 if (controllable.SpriteAnimator.Type == SpriteType.Player)
                     damageTiming = 0.5f;
-
-                var hits = msg.ReadByte();
                 
                 if(hits > 1)
                     FireArrow.Create(controllable2.gameObject, hits);
@@ -673,13 +684,29 @@ namespace Assets.Scripts.Network
                 {
                     //var go = GameObject.Instantiate(DamagePrefab, target.transform.localPosition, Quaternion.identity);
                     //var di = go.GetComponent<DamageIndicator>();
-                    var di = RagnarokEffectPool.GetDamageIndicator();
-                    var red = target.SpriteAnimator.Type == SpriteType.Player;
-                    var height = 1f;
-                    di.DoDamage(TextIndicatorType.Damage,damage.ToString(), target.gameObject.transform.localPosition, height,
-                        target.SpriteAnimator.Direction, red, false);
+                    if (!target)
+                        break;
+                    
+                    AttachDamageIndicator(damage, damage * (i+1), target);
                     yield return new WaitForSeconds(0.2f);
                 }
+            }
+        }
+
+        private void AttachDamageIndicator(int damage, int totalDamage, ServerControllable target)
+        {
+            var di = RagnarokEffectPool.GetDamageIndicator();
+            var red = target.SpriteAnimator.Type == SpriteType.Player;
+            var height = 1f;
+            di.DoDamage(TextIndicatorType.Damage,damage.ToString(), target.gameObject.transform.localPosition, height,
+                target.SpriteAnimator.Direction, red, false);
+
+            if (damage != totalDamage)
+            {
+                var di2 = RagnarokEffectPool.GetDamageIndicator();
+                di2.DoDamage(TextIndicatorType.ComboDamage,$"<color=#FFFF00>{totalDamage}</color>", target.gameObject.transform.localPosition, height,
+                    target.SpriteAnimator.Direction, false, false);
+                di2.AttachComboIndicatorToControllable(target);
             }
         }
 

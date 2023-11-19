@@ -8,6 +8,7 @@ public class DamageInfo
     public Entity Source;
     public Entity Target;
     public float Time;
+    public float AttackMotionTime;
     public short Damage;
     public byte HitCount;
     public byte KnockBack;

@@ -25,6 +25,8 @@ public class CombatEntity : IEntityAutoReset
     public int Faction;
     public int Party;
     public bool IsTargetable;
+    public float CastingTime;
+    public bool IsCasting;
 
     public SkillCastInfo CastingSkill;
 
@@ -217,6 +219,11 @@ public class CombatEntity : IEntityAutoReset
 
         EntityListPool.Return(list);
     }
+    private void FinishCasting()
+    {
+        SkillHandler.ExecuteSkill(CastingSkill, this);
+        IsCasting = false;
+    }
 
     public void ResumeQueuedSkillAction()
     {
@@ -270,8 +277,8 @@ public class CombatEntity : IEntityAutoReset
                 ExecuteQueuedSkillAttack();
             else
             {
-                Character.State = CharacterState.Casting;
-                Character.CastingTime = Time.ElapsedTimeFloat + castTime;
+                IsCasting = true;
+                CastingTime = Time.ElapsedTimeFloat + castTime;
 
                 Character.Map?.GatherPlayersForMultiCast(Character);
                 CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime);
@@ -359,7 +366,8 @@ public class CombatEntity : IEntityAutoReset
             KnockBack = 0,
             Source = Entity,
             Target = target.Entity,
-            Time = Time.ElapsedTimeFloat + GetTiming(TimingStat.SpriteAttackTiming)
+            Time = Time.ElapsedTimeFloat + GetTiming(TimingStat.SpriteAttackTiming),
+            AttackMotionTime = GetTiming(TimingStat.SpriteAttackTiming)
         };
 
         return di;
@@ -369,24 +377,32 @@ public class CombatEntity : IEntityAutoReset
     {
 #if DEBUG
         if (!target.IsValidTarget(this))
-            throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling PerformMeleeAttack.");
+            throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling PerformAttackAction.");
 #endif
         if (Character.AttackCooldown + Time.DeltaTimeFloat + 0.005f < Time.ElapsedTimeFloat)
             Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackMotionTime); //they are consecutively attacking
         else
             Character.AttackCooldown += GetTiming(TimingStat.AttackMotionTime);
 
-        Character.MoveCooldown = Character.AttackCooldown;
+        Character.MoveCooldown = GetTiming(TimingStat.AttackMotionTime);
         Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
     }
 
-    public void ExecuteCombatResult(DamageInfo damageInfo)
+    /// <summary>
+    /// Applies a damageInfo to the enemy combatant. Use sendPacket = false to suppress sending an attack packet if you plan to send a different packet later.
+    /// </summary>
+    /// <param name="damageInfo">Damage to apply, sourced from this combat entity.</param>
+    /// <param name="sendPacket">Set to true if you wish to automatically send an Attack packet.</param>
+    public void ExecuteCombatResult(DamageInfo damageInfo, bool sendPacket = true)
     {
         var target = damageInfo.Target.Get<CombatEntity>();
 
-        Character.Map?.GatherPlayersForMultiCast(Character);
-        CommandBuilder.AttackMulti(Character, target.Character, damageInfo);
-        CommandBuilder.ClearRecipients();
+        if (sendPacket)
+        {
+            Character.Map?.GatherPlayersForMultiCast(Character);
+            CommandBuilder.AttackMulti(Character, target.Character, damageInfo);
+            CommandBuilder.ClearRecipients();
+        }
 
         target.QueueDamage(damageInfo);
 
@@ -496,7 +512,11 @@ public class CombatEntity : IEntityAutoReset
     {
         if (!Character.IsActive)
             return;
-        if (DamageQueue != null && DamageQueue.Count > 0)
+
+        if (IsCasting && CastingTime < Time.ElapsedTimeFloat)
+                FinishCasting();
+
+        if (DamageQueue.Count > 0)
             AttackUpdate();
     }
 }

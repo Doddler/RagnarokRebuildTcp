@@ -1,5 +1,5 @@
 ﻿Name,IsWorldInstance,Maps
-Towns,true,prontera,prt_in,prt_church,prt_castle,morocc,morocc_in,moc_castle,moc_ruins,geffen,geffen_in,gef_tower,izlude,izlude_in,alberta,alberta_in,payon,payon_in01,payon_in02,payon_in03,pay_arche,aldebaran,aldeba_in,yuno,yuno_in01,yuno_in02,yuno_in03,yuno_in04,yuno_in05
+Towns,true,prontera,prt_in,prt_church,prt_castle,morocc,morocc_in,moc_castle,moc_ruins,geffen,geffen_in,gef_tower,izlude,izlude_in,alberta,alberta_in,payon,payon_in01,payon_in02,payon_in03,pay_arche,payon_mem,aldebaran,aldeba_in,yuno,yuno_in01,yuno_in02,yuno_in03,yuno_in04,yuno_in05
 Prontera Fields,true,prt_fild00,prt_fild01,prt_fild02,prt_fild03,prt_fild04,prt_fild05,prt_fild06,prt_fild07,prt_fild08,prt_fild09,prt_fild10,prt_fild11,prt_monk
 Geffen Fields,true,gef_fild00,gef_fild01,gef_fild02,gef_fild03,gef_fild04,gef_fild05,gef_fild06,gef_fild07,gef_fild08,gef_fild09,gef_fild10,gef_fild11,gef_fild12,gef_fild13,gef_fild14
 Payon Fields,true,pay_fild01,pay_fild02,pay_fild03,pay_fild04,pay_fild05,pay_fild06,pay_fild07,pay_fild08,pay_fild09,pay_fild10,pay_fild11

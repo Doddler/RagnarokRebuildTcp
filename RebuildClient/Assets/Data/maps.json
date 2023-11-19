@@ -559,6 +559,12 @@
       "Music": "14.mp3"
     },
     {
+      "Code": "payon_mem",
+      "Name": "Old Payon",
+      "MapMode": 1,
+      "Music": "14.mp3"
+    },
+    {
       "Code": "payon_in01",
       "Name": "Payon Indoors",
       "MapMode": 0,
