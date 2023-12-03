@@ -9,7 +9,7 @@ namespace Assets.Scripts.Objects
 {
     public class RoEffectRenderer : MonoBehaviour
     {
-        public AudioSource AudioSource;
+        public EffectAudioSource AudioSource;
         public StrAnimationFile Anim;
 
         public bool IsLoop;
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Objects
         private int frame;
         private float waitTime;
 
-        private bool hasAudio;
+        // private bool hasAudio;
         private bool hasDisabledChildren;
 
         private Material GetEffectMaterial(int layer, int srcBlend, int destBlend)
@@ -138,13 +138,14 @@ namespace Assets.Scripts.Objects
                 cullingGroup.SetBoundingSphereCount(1);
             }
             
-            AudioSource = GetComponent<AudioSource>();
+            AudioSource = GetComponent<EffectAudioSource>();
             if (AudioSource != null)
             {
-                AudioSource.priority = 60;
-                AudioSource.dopplerLevel = 0;
-                if (AudioSource != null && AudioSource.clip != null)
-                    hasAudio = true;
+                // AudioSource.priority = 60;
+                // AudioSource.dopplerLevel = 0;
+                // if (AudioSource != null && AudioSource.clip != null)
+                AudioSource.Play();
+                // hasAudio = true;
             }
         }
 
@@ -374,13 +375,13 @@ namespace Assets.Scripts.Objects
                 }
                 else
                 {
-                    if (hasAudio && AudioSource.isPlaying)
-                    {
-                        for (var i = 0; i < layerObjects.Count; i++)
-                            layerObjects[i].SetActive(false);
-
-                        return;
-                    }
+                    // if (hasAudio && AudioSource.isPlaying)
+                    // {
+                    //     for (var i = 0; i < layerObjects.Count; i++)
+                    //         layerObjects[i].SetActive(false);
+                    //
+                    //     return;
+                    // }
 
                     //Debug.Log($"Animation {name} finishing.");
 

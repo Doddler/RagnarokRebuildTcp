@@ -1156,67 +1156,67 @@
       "Code": "guild_room",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "01.mp3"
     },
     {
       "Code": "new_zone01",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "30.mp3"
     },
     {
       "Code": "new_zone02",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "30.mp3"
     },
     {
       "Code": "new_zone03",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "30.mp3"
     },
     {
       "Code": "new_zone04",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "30.mp3"
     },
     {
       "Code": "poring_c01",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "01.mp3"
     },
     {
       "Code": "poring_c02",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "01.mp3"
     },
     {
       "Code": "pvp_n_1-4",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "01.mp3"
     },
     {
       "Code": "pvp_n_1-5",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "01.mp3"
     },
     {
       "Code": "sword_1-1",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "01.mp3"
     },
     {
       "Code": "turbo_n_1",
       "Name": "Map",
       "MapMode": 3,
-      "Music": "1.mp3"
+      "Music": "01.mp3"
     },
     {
       "Code": "job_thief1",
@@ -1468,19 +1468,19 @@
       "Code": "cmd_in01",
       "Name": "Comodo [Inside 1]",
       "MapMode": 0,
-      "Music": "63.mp3"
+      "Music": "62.mp3"
     },
     {
       "Code": "cmd_in02",
       "Name": "Comodo [Inside 2]",
       "MapMode": 0,
-      "Music": "63.mp3"
+      "Music": "62.mp3"
     },
     {
       "Code": "comodo",
       "Name": "Comodo, the Beach Town",
       "MapMode": 3,
-      "Music": "63.mp3"
+      "Music": "62.mp3"
     },
     {
       "Code": "beach_dun",

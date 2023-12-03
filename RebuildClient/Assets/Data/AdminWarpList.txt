@@ -10,6 +10,7 @@ Towns
 	Aldebaran, aldebaran, 118, 104
 	Comodo, comodo
 	Juno, yuno
+	Old Payon, payon_mem
 Prontera Field
 	0, prt_fild00
 	1, prt_fild01
@@ -72,6 +73,19 @@ Payon Field
 	9, pay_fild09
 	10, pay_fild10
 	11, pay_fild11
+Juno Field
+	1, yuno_fild01
+	2, yuno_fild02
+	3, yuno_fild03
+	4, yuno_fild04
+	5, yuno_fild05
+	6, yuno_fild06
+	7, yuno_fild07
+	8, yuno_fild08
+	9, yuno_fild09
+	10, yuno_fild10
+	11, yuno_fild11
+	12, yuno_fild11
 Mt. Mjolnir
 	1, mjolnir_01
 	2, mjolnir_02
@@ -220,6 +234,11 @@ Job Quests
 	Assasssin,in_moc_16
 	Hunter,job_hunte
 	Dancer,job_duncer
+War of Emperium
+	Luina Realm,alde_gld
+	Britoniah Realm,gef_fild13
+	Baldur Realm,pay_gld
+	Valkyrie Realm,prt_gld
 Debug
 	Test Room 1,2009rwc_03
 	Test Room 2,guild_vs4

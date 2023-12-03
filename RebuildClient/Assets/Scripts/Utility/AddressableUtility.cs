@@ -41,16 +41,19 @@ namespace Assets.Scripts.Utility
 			};
 		}
 
-		public static void Load<T>(GameObject owner, string fileName, Action<T> onComplete)
+		public static AsyncOperationHandle<T> Load<T>(GameObject owner, string fileName, Action<T> onComplete)
 		{
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new Exception($"Attempting to load type {typeof(T)} but the fileName was empty!");
 
-            Addressables.LoadAssetAsync<T>(fileName).Completed += handle =>
+            var asyncOp = Addressables.LoadAssetAsync<T>(fileName);
+            asyncOp.Completed += handle =>
 			{
 				if (owner != null)
 					onComplete(handle.Result);
 			};
+
+            return asyncOp;
 		}
 	}
 }

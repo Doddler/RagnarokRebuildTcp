@@ -55,13 +55,17 @@ namespace Assets.Scripts.Editor
                         var assetPath = $"Assets/Sounds/{e.SoundFile}.ogg";
                         var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
 
+                        if (clip == null)
+                        {
+                            assetPath = $"Assets/Sounds/Effects/{e.SoundFile}.ogg";
+                            clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+                        }
+
                         if (clip != null)
                         {
-                            var audio = obj.AddComponent<AudioSource>();
-                            audio.clip = clip;
-                            audio.volume = 0.5f;
-                            audio.priority = 64;
-                            audio.spatialBlend = 0.7f;
+                            var audio = obj.AddComponent<EffectAudioSource>();
+                            audio.Volume = 1f;
+                            audio.Clip = clip;
                             renderer.AudioSource = audio;
                         }
                         else

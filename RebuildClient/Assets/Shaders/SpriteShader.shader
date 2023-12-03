@@ -341,7 +341,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 					float4 waterTex = tex2D(_WaterImageTexture, wateruv);
 					float height = water.z;
 					
-					waterTex = float4(0.6, 0.6, 0.6, 1) + (waterTex * 0.5);
+					waterTex = float4(0.5, 0.5, 0.5, 1) + (waterTex * 0.6);
 	
 					// apply fog
 					UNITY_APPLY_FOG(i.fogCoord, waterTex);

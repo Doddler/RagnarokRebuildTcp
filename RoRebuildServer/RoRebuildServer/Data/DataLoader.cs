@@ -58,7 +58,7 @@ internal class DataLoader
     
     public ExpChart LoadExpChart()
     {
-        using var tr = new StreamReader(@"ServerData/Db/ExpChart.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/ExpChart.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var entries = csv.GetRecords<CsvExpChart>().ToList();
@@ -77,7 +77,7 @@ internal class DataLoader
 
     public ElementChart LoadElementChart()
     {
-        using var tr = new StreamReader(@"ServerData/Db/ElementalChart.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/ElementalChart.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var entries = csv.GetRecords<dynamic>().ToList();
@@ -106,7 +106,7 @@ internal class DataLoader
     public Dictionary<string, SavePosition> LoadSavePoints()
     {
         
-        using var tr = new StreamReader(@"ServerData/Db/SavePoints.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/SavePoints.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var entries = csv.GetRecords<CsvSavePoints>().ToList();
@@ -131,7 +131,7 @@ internal class DataLoader
     {
         var effects = new Dictionary<string, int>();
 
-        using var tr = new StreamReader(@"ServerData/Db/Effects.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Effects.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var entries = csv.GetRecords<CsvEffects>().ToList();
@@ -150,7 +150,7 @@ internal class DataLoader
 
         var timings = new Dictionary<string, float[]>();
 
-        var timingEntries = File.ReadAllLines(@"ServerData/Db/WeaponAttackTiming.csv");
+        var timingEntries = File.ReadAllLines(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/WeaponAttackTiming.csv"));
         foreach (var timingEntry in timingEntries.Skip(1))
         {
             var s = timingEntry.Split(",");
@@ -159,7 +159,7 @@ internal class DataLoader
             timings.Add(cName, timing);
         }
 
-        using var tr = new StreamReader(@"ServerData/Db/Jobs.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Jobs.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
         
         var entries = csv.GetRecords<CsvJobs>().ToList();
@@ -193,11 +193,23 @@ internal class DataLoader
         return lookup;
     }
 
+    public List<string> LoadMvpList()
+    {
+        var mvps = new List<string>();
+
+        foreach (var line in File.ReadAllLines(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/MvpList.csv")).Skip(1))
+        {
+            mvps.Add(line);
+        }
+        
+        return mvps;
+    }
+
     public Dictionary<int, ItemInfo> LoadItemList()
     {
         var items = new Dictionary<int, ItemInfo>();
 
-        using var tr = new StreamReader(@"ServerData/Db/Items.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Items.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var entries = csv.GetRecords<CsvItem>().ToList();
@@ -252,7 +264,7 @@ internal class DataLoader
 
     public List<MonsterDatabaseInfo> LoadMonsterStats()
     {
-        using var tr = new StreamReader(@"ServerData/Db/Monsters.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Monsters.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var monsters = csv.GetRecords<CsvMonsterData>().ToList();
@@ -291,7 +303,7 @@ internal class DataLoader
 
         ServerLogger.Log($"Loading monsters: {obj.Count}");
 
-        using var tr2 = new StreamReader(@"ServerData/Db/Npcs.csv") as TextReader;
+        using var tr2 = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Npcs.csv")) as TextReader;
         using var csv2 = new CsvReader(tr2, CultureInfo.CurrentCulture);
 
         var npcCount = 0;
@@ -319,7 +331,7 @@ internal class DataLoader
     {
         var config = new Dictionary<string, string>();
 
-        using var tr = new StreamReader(@"ServerData/Db/ServerSettings.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/ServerSettings.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var entries = csv.GetRecords<CsvServerConfig>().ToList();
@@ -368,7 +380,7 @@ internal class DataLoader
         for (var i = 0; i < aiTypeCount; i++)
             entryList.Add(new List<MonsterAiEntry>());
 
-        using var tr = new StreamReader(@"ServerData/Db/MonsterAI.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/MonsterAI.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var states = csv.GetRecords<CsvMonsterAI>().ToList();
@@ -400,7 +412,7 @@ internal class DataLoader
     public void LoadMonsterSpawnMinions()
     {
 
-        using var tr = new StreamReader(@"ServerData/Db/SpawnMinionTable.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/SpawnMinionTable.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var spawns = csv.GetRecords<CsvMonsterSpawnMinions>().ToList();
@@ -420,7 +432,7 @@ internal class DataLoader
 
     public Dictionary<int, EmoteInfo> LoadEmotes()
     {
-        using var tr = new StreamReader(@"ServerData/Db/Emotes.csv") as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Emotes.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
 
         var data = new Dictionary<int, EmoteInfo>();

@@ -142,11 +142,13 @@ public class WorldObject : IEntityAutoReset
     }
 
 
-	public void ResetState()
+	public void ResetState(bool resetIfDead = false)
     {
         MoveCooldown = 0;
         QueuedCasting = false;
-        State = CharacterState.Idle;
+
+        if (State != CharacterState.Dead || resetIfDead)
+            State = CharacterState.Idle;
     }
 
     public void AddVisiblePlayer(Entity e)
@@ -263,7 +265,7 @@ public class WorldObject : IEntityAutoReset
         CommandBuilder.ChangeFacingMulti(this);
         CommandBuilder.ClearRecipients();
     }
-
+    
     public void StopMovingImmediately()
     {
         Debug.Assert(Map != null);

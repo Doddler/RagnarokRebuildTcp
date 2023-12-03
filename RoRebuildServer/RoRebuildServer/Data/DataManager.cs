@@ -35,6 +35,7 @@ public static class DataManager
     public static Dictionary<string, int> JobIdLookup;
     public static Dictionary<string, int> ItemIdByName;
     public static Dictionary<int, ItemInfo> ItemList;
+    public static List<string> MvpMonsterCodes;
 
     public static Dictionary<string, int> EffectIdForName;
 
@@ -87,6 +88,7 @@ public static class DataManager
         ExpChart = loader.LoadExpChart();
         EffectIdForName = loader.LoadEffectIds();
         SavePoints = loader.LoadSavePoints();
+        MvpMonsterCodes = loader.LoadMvpList();
 
         //rebuild script assemblies
         ScriptAssembly = ScriptLoader.LoadAssembly();
@@ -123,6 +125,7 @@ public static class DataManager
         ItemIdByName = loader.GenerateItemIdByNameLookup();
         SavePoints = loader.LoadSavePoints();
         ElementChart = loader.LoadElementChart();
+        MvpMonsterCodes = loader.LoadMvpList();
         loader.LoadItemInteractions(ScriptAssembly);
         
         MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);

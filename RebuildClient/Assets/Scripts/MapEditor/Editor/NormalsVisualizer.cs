@@ -24,6 +24,7 @@ public class NormalsVisualizer : Editor
     {
         if (Event.current.type != EventType.Repaint || !showNormals)
             return;
+        
 
         var lineList = new List<Vector3>();
 

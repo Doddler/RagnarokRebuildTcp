@@ -115,8 +115,8 @@ namespace PlayerControl
                     //var failed = false;
                     var count = 1;
                     var name = s[1];
-                    var nameMax = s.Length - 1;
-
+                    var nameMax = s.Length;
+                    
                     if (s.Length >= 3 && int.TryParse(s[s.Length - 1], out var newCount))
                     {
                         count = newCount;
@@ -125,8 +125,8 @@ namespace PlayerControl
                     
                     Debug.Log($"Summon '{name}' {count} {nameMax}");
 
-                    if (s.Length > nameMax)
-                        name = String.Join(" ", s.Skip(1).Take(s.Length - 2));
+                    if (s.Length > 2)
+                        name = String.Join(" ", s.Skip(1).Take(nameMax-1));
 
                     if (!SpriteDataLoader.Instance.IsValidMonsterName(name))
                         cameraFollower.AppendError($"The monster name '{name}' is not valid.");

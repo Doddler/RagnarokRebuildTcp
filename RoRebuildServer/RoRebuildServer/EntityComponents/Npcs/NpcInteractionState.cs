@@ -130,6 +130,8 @@ public class NpcInteractionState
         if (Player == null)
             return;
 
+        Player.Character.StopMovingImmediately();
+
         var ch = Player.Character;
         var ce = Player.CombatEntity;
 

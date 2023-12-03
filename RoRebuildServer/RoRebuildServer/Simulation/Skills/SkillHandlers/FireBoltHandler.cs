@@ -12,7 +12,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers
     [SkillHandler(CharacterSkill.FireBolt)]
     public class FireBoltHandler : SkillHandlerBase
     {
-        public override float GetCastTime(CombatEntity source, CombatEntity target, Position position, int lvl)
+        public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
         {
             if (lvl < 0 || lvl > 10)
                 lvl = 10;
@@ -20,10 +20,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers
             return 2f + lvl * 0.1f;
         }
 
-        public override void Process(CombatEntity source, CombatEntity target, Position position, int lvl)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl)
         {
             if (lvl < 0 || lvl > 10)
                 lvl = 10;
+
+            if (target == null || !target.IsValidTarget(source))
+                return;
 
             var res = source.CalculateCombatResult(target, 1, lvl, AttackFlags.Magical, AttackElement.Fire);
             source.PerformAttackAction(target);

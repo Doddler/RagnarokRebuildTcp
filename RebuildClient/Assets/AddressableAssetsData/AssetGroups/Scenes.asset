@@ -65,7 +65,7 @@ MonoBehaviour:
     m_SerializedLabels:
     - Maps
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3e9ce929b46c22943baea5ab829a67b2
+  - m_GUID: 9c27555c4d570ad4f8abafbf2b6240e8
     m_Address: Assets/Scenes/Maps/aldebaran.unity
     m_ReadOnly: 0
     m_SerializedLabels:
@@ -619,12 +619,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c6ff9c2e88e66f2468bf3ab55e04014e
     m_Address: Assets/Scenes/Maps/pay_dun04.unity
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Maps
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 44b26a3181c1d3b448a1004013bb2796
-    m_Address: Assets/Scenes/Maps/pay_fild01.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps
@@ -1519,6 +1513,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e9289979e1235db4c919f9aca89c7bed
     m_Address: Assets/Scenes/Maps/prt_fild08.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e0440c1db092d943b23ce6a64db1569
+    m_Address: Assets/Scenes/Maps/pay_fild01.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Maps

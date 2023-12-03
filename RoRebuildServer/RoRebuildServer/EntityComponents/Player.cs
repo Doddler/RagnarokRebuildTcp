@@ -489,7 +489,7 @@ public class Player : IEntityAutoReset
     {
         if (!World.Instance.TryGetWorldMapByName(mapName, out var map))
             return false;
-
+        
         AddActionDelay(2f); //block character input for 1+ seconds.
         Character.ResetState();
         Character.SpawnImmunity = 5f;

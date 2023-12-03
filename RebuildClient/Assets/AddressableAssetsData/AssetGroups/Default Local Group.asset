@@ -1786,138 +1786,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7d9db7aa46d933a4f83cf250cf07cf1a
-    m_Address: Assets/Effects/Prefabs/freezing.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 17fb304b406ebb04eaa82dd887ce265b
-    m_Address: Assets/Effects/Prefabs/Hit.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 71524991148b16e4c86090e51f10b668
-    m_Address: Assets/Effects/Prefabs/Resurrect.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6ae02caf82b0d5545b6faf882306e33f
-    m_Address: Assets/Effects/Prefabs/YellowPotion.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4ce9da0af775fca42b4db0dd44f37262
-    m_Address: Assets/Effects/Prefabs/firehit3.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9ced277a8419b7b4bba3c92e555d562b
-    m_Address: Assets/Effects/Prefabs/firehit2.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b56ac545f2ba10540bf6828d4021889a
-    m_Address: Assets/Effects/Prefabs/firehit.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6a27673b1f8676d45886b0b7581aba4f
-    m_Address: Assets/Effects/Prefabs/freezed.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e77ce3b86d8bcde4e93a1da40c4fcaca
-    m_Address: Assets/Effects/Prefabs/WhitePotion.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 617e143609f1bb741bd3c5d9092d72c7
-    m_Address: Assets/Effects/Prefabs/GreenPotion.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: df59853ba9b301d4db5560d3d2e0522e
-    m_Address: Assets/Effects/Prefabs/LevelUp.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 21b6f804b7f5e9c40991e7e05bc68731
-    m_Address: Assets/Effects/Prefabs/freeze.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f59b04f35e39b894cb888573528d9e33
-    m_Address: Assets/Effects/Prefabs/Death.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8f8d0c49fa55485449d88c80e302935a
-    m_Address: Assets/Effects/Prefabs/bubble.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d6877e3bf168a7a42acfcf148a2ada68
-    m_Address: Assets/Effects/Prefabs/RedPotion.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1b4d2ae0edf90c843819b9669402e9df
-    m_Address: Assets/Effects/Prefabs/OrangePotion.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9f050c23334719746a396301302a95a8
-    m_Address: Assets/Effects/Prefabs/BluePotion.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8ad5f72afed7cdb4aba5a9d6795eeaa0
-    m_Address: Assets/Effects/Prefabs/MVP.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a0ff041615fb58f42882e8fe7346be99
-    m_Address: Assets/Effects/Prefabs/Angelus.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 69176d3a4f22d7349904d79c3926f180
-    m_Address: Assets/Effects/Prefabs/JobUp.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c14f98e337527ca4da3458a24cc4b425
-    m_Address: Assets/Effects/Prefabs/firehit1.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 906bd139f4373f6489b349423be7bcd3
-    m_Address: Assets/Effects/Prefabs/HolyHit.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fa284dae59c50fe448eee635b4aa2516
     m_Address: Assets/Sprites/Monsters/cornutus.spr
     m_ReadOnly: 0
@@ -2001,12 +1869,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ea96174d7de1b9b479d6b1e63e4b6d5a
-    m_Address: Assets/Effects/Prefabs/LoV.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eac7b2d3c5a44ab4188c8ce82893b61a
     m_Address: Assets/Sprites/Monsters/alice.spr
@@ -9264,22 +9126,10 @@ MonoBehaviour:
     m_SerializedLabels:
     - Minimap
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 63614632b02e4594aaffd3b975ed7a62
-    m_Address: Assets/Effects/Prefabs/ThunderStorm.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc91a17514f16b948af29fd009b839b0
     m_Address: Assets/Prefabs/Exacast.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 41f3235966086e04eaae51509301cc72
-    m_Address: Assets/Effects/Prefabs/Exacast.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c2e09388f62a3e4a84287e683de4409
     m_Address: "Assets/Sprites/Weapons/Novice/Male/\uCD08\uBCF4\uC790_\uB0A8_\uAC80.spr"
@@ -9935,12 +9785,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c928b077a6229cd4f9267c2140b2a23b
-    m_Address: Assets/Effects/Prefabs/Torch.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 553661c21b8888042a44375fe804b1b8
     m_Address: Assets/Sprites/Monsters/chepet.spr
     m_ReadOnly: 0
@@ -10001,36 +9845,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4a73d48552b0c7f4c949bb5cc7c1aa59
-    m_Address: Assets/Effects/Prefabs/bubble1.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4f05a9ea6ab38844e86a74afd30c4d7b
-    m_Address: Assets/Effects/Prefabs/bubble2.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4054a14b67a35174495da31a816a02c3
-    m_Address: Assets/Effects/Prefabs/bubble3.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 926a00c5d68abd946bfe1ee81a9c939a
-    m_Address: Assets/Effects/Prefabs/bubble4.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bcaa36ba0f6b5b84ca7e90502e342783
-    m_Address: Assets/Effects/Prefabs/GasPush.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 31c9dbc115f395243a7ec89f6d872840
     m_Address: Assets/Maps/minimap/new_zone01.png
     m_ReadOnly: 0
@@ -10078,11 +9892,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bee4593789378034e80ec51e62e32166
-    m_Address: Assets/Music/01.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 956e1aee55a08714d82864a3cced5006
     m_Address: Assets/Maps/minimap/job_hunte.png
@@ -10819,6 +10628,186 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bcaa36ba0f6b5b84ca7e90502e342783
+    m_Address: Assets/Effects/Prefabs/GasPush.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f050c23334719746a396301302a95a8
+    m_Address: Assets/Effects/Prefabs/BluePotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e77ce3b86d8bcde4e93a1da40c4fcaca
+    m_Address: Assets/Effects/Prefabs/WhitePotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df59853ba9b301d4db5560d3d2e0522e
+    m_Address: Assets/Effects/Prefabs/LevelUp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4054a14b67a35174495da31a816a02c3
+    m_Address: Assets/Effects/Prefabs/bubble3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21b6f804b7f5e9c40991e7e05bc68731
+    m_Address: Assets/Effects/Prefabs/freeze.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 926a00c5d68abd946bfe1ee81a9c939a
+    m_Address: Assets/Effects/Prefabs/bubble4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f59b04f35e39b894cb888573528d9e33
+    m_Address: Assets/Effects/Prefabs/Death.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ad5f72afed7cdb4aba5a9d6795eeaa0
+    m_Address: Assets/Effects/Prefabs/MVP.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6877e3bf168a7a42acfcf148a2ada68
+    m_Address: Assets/Effects/Prefabs/RedPotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ced277a8419b7b4bba3c92e555d562b
+    m_Address: Assets/Effects/Prefabs/firehit2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b4d2ae0edf90c843819b9669402e9df
+    m_Address: Assets/Effects/Prefabs/OrangePotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c928b077a6229cd4f9267c2140b2a23b
+    m_Address: Assets/Effects/Prefabs/Torch.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a27673b1f8676d45886b0b7581aba4f
+    m_Address: Assets/Effects/Prefabs/freezed.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0ff041615fb58f42882e8fe7346be99
+    m_Address: Assets/Effects/Prefabs/Angelus.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ce9da0af775fca42b4db0dd44f37262
+    m_Address: Assets/Effects/Prefabs/firehit3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 906bd139f4373f6489b349423be7bcd3
+    m_Address: Assets/Effects/Prefabs/HolyHit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71524991148b16e4c86090e51f10b668
+    m_Address: Assets/Effects/Prefabs/Resurrect.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69176d3a4f22d7349904d79c3926f180
+    m_Address: Assets/Effects/Prefabs/JobUp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a73d48552b0c7f4c949bb5cc7c1aa59
+    m_Address: Assets/Effects/Prefabs/bubble1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f05a9ea6ab38844e86a74afd30c4d7b
+    m_Address: Assets/Effects/Prefabs/bubble2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea96174d7de1b9b479d6b1e63e4b6d5a
+    m_Address: Assets/Effects/Prefabs/LoV.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 617e143609f1bb741bd3c5d9092d72c7
+    m_Address: Assets/Effects/Prefabs/GreenPotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d9db7aa46d933a4f83cf250cf07cf1a
+    m_Address: Assets/Effects/Prefabs/freezing.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b56ac545f2ba10540bf6828d4021889a
+    m_Address: Assets/Effects/Prefabs/firehit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c14f98e337527ca4da3458a24cc4b425
+    m_Address: Assets/Effects/Prefabs/firehit1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17fb304b406ebb04eaa82dd887ce265b
+    m_Address: Assets/Effects/Prefabs/Hit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ae02caf82b0d5545b6faf882306e33f
+    m_Address: Assets/Effects/Prefabs/YellowPotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63614632b02e4594aaffd3b975ed7a62
+    m_Address: Assets/Effects/Prefabs/ThunderStorm.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f8d0c49fa55485449d88c80e302935a
+    m_Address: Assets/Effects/Prefabs/bubble.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}

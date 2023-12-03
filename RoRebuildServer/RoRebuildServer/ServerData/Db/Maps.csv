@@ -191,17 +191,17 @@ Turtle Island,tur_dun01,tur_dun01.walk,Dungeon,65.mp3
 Turtle Island Dungeon,tur_dun02,tur_dun02.walk,Dungeon,65.mp3
 Good Turtles Village,tur_dun03,tur_dun03.walk,Dungeon,65.mp3
 Turtle Palace,tur_dun04,tur_dun04.walk,Dungeon,65.mp3
-Map,guild_room,guild_room.walk,Field,1.mp3
-Map,new_zone01,new_zone01.walk,Field,1.mp3
-Map,new_zone02,new_zone02.walk,Field,1.mp3
-Map,new_zone03,new_zone03.walk,Field,1.mp3
-Map,new_zone04,new_zone04.walk,Field,1.mp3
-Map,poring_c01,poring_c01.walk,Field,1.mp3
-Map,poring_c02,poring_c02.walk,Field,1.mp3
-Map,pvp_n_1-4,pvp_n_1-4.walk,Field,1.mp3
-Map,pvp_n_1-5,pvp_n_1-5.walk,Field,1.mp3
-Map,sword_1-1,sword_1-1.walk,Field,1.mp3
-Map,turbo_n_1,turbo_n_1.walk,Field,1.mp3
+Map,guild_room,guild_room.walk,Field,01.mp3
+Map,new_zone01,new_zone01.walk,Field,30.mp3
+Map,new_zone02,new_zone02.walk,Field,30.mp3
+Map,new_zone03,new_zone03.walk,Field,30.mp3
+Map,new_zone04,new_zone04.walk,Field,30.mp3
+Map,poring_c01,poring_c01.walk,Field,01.mp3
+Map,poring_c02,poring_c02.walk,Field,01.mp3
+Map,pvp_n_1-4,pvp_n_1-4.walk,Field,01.mp3
+Map,pvp_n_1-5,pvp_n_1-5.walk,Field,01.mp3
+Map,sword_1-1,sword_1-1.walk,Field,01.mp3
+Map,turbo_n_1,turbo_n_1.walk,Field,01.mp3
 Job Quest Map,job_thief1,job_thief1.walk,Field,51.mp3
 Job Quest Map,job_duncer,job_duncer.walk,Field,51.mp3
 Job Quest Map,job_knt,job_knt.walk,Field,51.mp3
@@ -243,9 +243,9 @@ Baldr Realm,pay_gld,pay_gld.walk,Field,66.mp3
 "Pharos, Beacon Island",cmd_fild07,cmd_fild07.walk,Field,63.mp3
 "Fortress Saint Darmain [East]",cmd_fild08,cmd_fild08.walk,Field,37.mp3
 "Fortress Saint Darmain [South]",cmd_fild09,cmd_fild09.walk,Field,63.mp3
-"Comodo [Inside 1]",cmd_in01,cmd_in01.walk,None,63.mp3
-"Comodo [Inside 2]",cmd_in02,cmd_in02.walk,None,63.mp3
-"Comodo, the Beach Town",comodo,comodo.walk,Field,63.mp3
+"Comodo [Inside 1]",cmd_in01,cmd_in01.walk,None,62.mp3
+"Comodo [Inside 2]",cmd_in02,cmd_in02.walk,None,62.mp3
+"Comodo, the Beach Town",comodo,comodo.walk,Field,62.mp3
 "Karu, the West Cave",beach_dun,beach_dun.walk,Dungeon,41.mp3
 "Ruande, the North Cave",beach_dun2,beach_dun2.walk,Dungeon,41.mp3
 "Mao, the East Cave",beach_dun3,beach_dun3.walk,Dungeon,41.mp3

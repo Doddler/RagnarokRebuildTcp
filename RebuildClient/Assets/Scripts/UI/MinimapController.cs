@@ -78,7 +78,7 @@ public class MinimapController : MonoBehaviour
         r.anchorMin = Vector2.zero;
         r.anchorMax = Vector2.zero;
 
-        var w = mapSprite.texture.height;
+        var w = mapSprite.texture.width;
         var h = mapSprite.texture.height;
         var offset = new Vector3(0.5f, 0.5f, 0);
 

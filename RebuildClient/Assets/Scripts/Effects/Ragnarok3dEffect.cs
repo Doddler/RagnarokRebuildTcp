@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,6 +20,7 @@ namespace Assets.Scripts.Effects
         public EffectType EffectType;
 
         public Vector3 PositionOffset = Vector3.zero;
+        public ServerControllable SourceEntity;
         public GameObject FollowTarget;
         public Object EffectData;
 
@@ -34,6 +36,8 @@ namespace Assets.Scripts.Effects
         public List<GameObject> attachedObjects = new();
         
         public bool IsInitialized = false;
+
+        public int SourceEntityId => SourceEntity != null ? SourceEntity.Id : -1; 
 
         public List<RagnarokPrimitive> GetPrimitives => primitives;
 

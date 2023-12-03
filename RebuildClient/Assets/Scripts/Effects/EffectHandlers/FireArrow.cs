@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Scripts.Effects.PrimitiveData;
+using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         private static string[] SpriteNames =
             { "firebolt1", "firebolt2", "firebolt3", "firebolt4", "firebolt5", "firebolt6", "firebolt7" };
 
-        public static Ragnarok3dEffect Create(GameObject target, int count)
+        public static Ragnarok3dEffect Create(ServerControllable source, ServerControllable target, int count)
         {
             if (fireboltMaterial == null)
             {
@@ -39,8 +40,9 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 fireboltAtlas = Resources.Load<SpriteAtlas>("FireBolt");
 
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.FireArrow);
+            effect.SourceEntity = source;
             effect.SetDurationByFrames(12 + count * 10 + 60);
-            effect.FollowTarget = target;
+            effect.FollowTarget = target.gameObject;
             effect.UpdateOnlyOnFrameChange = true;
             effect.ObjCount = count;
 
@@ -54,7 +56,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             if (step == 12)
             {
                 var id = Random.Range(0, 4);
-                AudioManager.Instance.OneShotSoundEffect($"ef_firearrow{id}.ogg", effect.transform.position);
+                AudioManager.Instance.OneShotSoundEffect(effect.SourceEntityId, $"ef_firearrow{id}.ogg", effect.transform.position);
             }
 
             if (step >= 12 && (step - 12) % 10 == 0 && step < effect.DurationFrames && (step - 12) / 10 <= effect.ObjCount)
@@ -85,7 +87,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             {
                 //debug!
                 if(effect.FollowTarget) //no more bolts if our follow target ends
-                    CameraFollower.Instance.AttachEffectToEntity("firehit1", effect.FollowTarget);
+                    CameraFollower.Instance.AttachEffectToEntity("firehit1", effect.FollowTarget, effect.SourceEntityId);
                 //CameraFollower.Instance.TargetControllable.SpriteAnimator.State = SpriteState.Standby;
                 //CameraFollower.Instance.TargetControllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit, true);
             }

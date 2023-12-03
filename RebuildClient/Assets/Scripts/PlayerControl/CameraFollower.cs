@@ -65,6 +65,7 @@ namespace Assets.Scripts
         public Slider ExpSlider;
         public TMP_InputField TextBoxInputField;
         public CanvasScaler CanvasScaler;
+        public TextMeshProUGUI ErrorNoticeUi;
 
         public ScrollRect TextBoxScrollRect;
         public TextMeshProUGUI TextBoxText;
@@ -195,6 +196,8 @@ namespace Assets.Scripts
 
         public void Awake()
         {
+            _instance = this;
+            
             //CurLookAt = Target.transform.position;
             TargetFollow = CurLookAt;
             Camera = GetComponent<Camera>();
@@ -856,7 +859,7 @@ namespace Assets.Scripts
             lastMessage = text;
         }
 
-        public void AttachEffectToEntity(string effect, GameObject target)
+        public void AttachEffectToEntity(string effect, GameObject target, int ownerId = -1)
         {
             if (!EffectIdLookup.TryGetValue(effect, out var id))
             {
@@ -867,7 +870,7 @@ namespace Assets.Scripts
             AttachEffectToEntity(id, target);
         }
 
-        public void AttachEffectToEntity(int effect, GameObject target)
+        public void AttachEffectToEntity(int effect, GameObject target, int ownerId = -1)
         {
             if (!EffectList.TryGetValue(effect, out var asset))
             {
@@ -881,11 +884,19 @@ namespace Assets.Scripts
                 {
                     var obj2 = GameObject.Instantiate(prefab, target.transform, false);
                     obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+
+                    var audio = obj2.GetComponent<EffectAudioSource>();
+                    if (audio)
+                        audio.OwnerId = ownerId;
                 }
                 else
                 {
                     var obj2 = GameObject.Instantiate(prefab);
                     obj2.transform.localPosition = target.transform.position + new Vector3(0, asset.Offset, 0);
+                    
+                    var audio = obj2.GetComponent<EffectAudioSource>();
+                    if (audio)
+                        audio.OwnerId = ownerId;
                 }
 
                 return;
@@ -901,11 +912,17 @@ namespace Assets.Scripts
                     {
                         var obj2 = GameObject.Instantiate(ah.Result, target.transform, false);
                         obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                        var audio = obj2.GetComponent<EffectAudioSource>();
+                        if (audio)
+                            audio.OwnerId = ownerId;
                     }
                     else
                     {
                         var obj2 = GameObject.Instantiate(ah.Result);
                         obj2.transform.localPosition = target.transform.position + new Vector3(0, asset.Offset, 0);
+                        var audio = obj2.GetComponent<EffectAudioSource>();
+                        if (audio)
+                            audio.OwnerId = ownerId;
                     }
 
                     EffectCache[asset.Id] = ah.Result;
@@ -1049,6 +1066,15 @@ namespace Assets.Scripts
                 var val = (RenderSettings.fogEndDistance - Distance) / (RenderSettings.fogEndDistance - RenderSettings.fogStartDistance);
                 Camera.backgroundColor = RenderSettings.fogColor * (1 - val);
             }
+        }
+
+        public static void SetErrorUiText(string text)
+        {
+            Dispatcher.RunOnMainThread(() =>
+            {
+                Instance.ErrorNoticeUi.gameObject.SetActive(true);
+                Instance.ErrorNoticeUi.text = "<color=red>Error: </color>" + text;                
+            });
         }
 
         public void Update()

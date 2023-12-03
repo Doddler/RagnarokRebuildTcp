@@ -19,7 +19,7 @@ macro Kafra(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %saveLo
 			Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
 			return;
 		case 2:
-            Dialog(name, "Please choose your destination.");
+			Dialog(name, "Please choose your destination.");
 			@%teleportMacro();
 		}
 	}
@@ -41,7 +41,7 @@ macro KafraNoSave(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %
 			Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
 			return;
 		case 1:
-            Dialog(name, "Please choose your destination.");
+			Dialog(name, "Please choose your destination.");
 			@%teleportMacro();
 		}
 	}
@@ -109,6 +109,40 @@ macro KafraTeleportListPayon()
 	}
 }
 
+macro KafraTeleportListComodo()
+{
+	Option("Morroc→ 1200z", "Alberta → 1800z", "Paros Lighthouse → 1200z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("morocc", 156, 46, 1200);
+		case 2: @TeleportCase("alberta", 117, 56, 1800);
+		case 4: @TeleportCase("cmd_fild07", 127, 134, 1200);
+	}
+}
+
+macro KafraTeleportListIzlude()
+{
+	Option("Geffen → 1200z", "Payon → 1200z", "Morroc → 1200z", "Al De Baran → 1800z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("geffen", 120, 39, 1200);
+		case 1: @TeleportCase("payon", 161, 58, 1200);
+		case 2: @TeleportCase("morocc", 156, 46, 1200);
+		case 3: @TeleportCase("aldebaran", 168, 112, 1800);
+	}
+}
+
+macro KafraTeleportListAldebaran()
+{
+	Option("Geffen → 1200z", "Juno → 1200z", "Izlude → 1200z", "Mjolnir Dead Pit → 1700z", "Cancel" );
+	switch(Result)
+	{
+		case 0: @TeleportCase("geffen", 120, 39, 1200);
+		case 1: @TeleportCase("yuno", 158, 125, 1200);
+		case 2: @TeleportCase("izlude", 94, 103, 1800);
+		case 3: @TeleportCase("mjolnir_02", 99, 351, 1700);
+	}
+}
 
 macro KafraTeleportListArcherVillage()
 {
@@ -170,4 +204,6 @@ macro TeleportCase(%map, %x, %y, %zeny)
 @Kafra("payon", 175, 226, S, "Kafra Staff", "Kafra Employee", "4_F_KAFRA2", "kafra_02", "Payon North", "in the city of Payon", KafraTeleportListPayon);
 @Kafra("pay_arche", 55, 123, NW, "Kafra Staff", "Kafra Employee", "4_F_KAFRA1", "kafra_01", "Archer Village", "in the Archer Village", KafraTeleportListArcherVillage);
 
-
+@Kafra("izlude", 134, 88, W, "Kafra Staff", "Kafra Employee", "4_F_KAFRA1", "kafra_01", "Izlude", "in the town of Izlude", KafraTeleportListIzlude);
+@Kafra("comodo", 195, 150, S, "Kafra Staff", "Kafra Employee", "4_F_KAFRA7", "kafra_07", "Comodo", "in the town of Comodo", KafraTeleportListComodo);
+@Kafra("aldebaran", 143, 119, S, "Kafra Staff", "Kafra Employee", "4_F_KAFRA5", "kafra_05", "Aldebaran", "in the city of Aldebaran", KafraTeleportListAldebaran);

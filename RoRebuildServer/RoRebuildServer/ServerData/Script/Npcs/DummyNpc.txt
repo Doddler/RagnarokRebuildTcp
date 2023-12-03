@@ -125,7 +125,7 @@ Npc("aldebaran", "Issei", "1_M_02", 93, 80, S) { }
 Npc("aldebaran", "Joo Jahk", "4_M_ORIENT01", 180, 46, S) { }
 Npc("aldebaran", "Kafra Employee", "4_F_KAFRA1", 54, 238, SE) { }
 Npc("aldebaran", "Kafra Employee", "4_F_KAFRA2", 58, 225, S) { }
-Npc("aldebaran", "Kafra Employee", "4_F_KAFRA5", 143, 119, S) { }
+//Npc("aldebaran", "Kafra Employee", "4_F_KAFRA5", 143, 119, S) { }
 //Npc("aldebaran", "Kafra Voting Staff", "4_F_KAFRA2", 145, 102, S) { }
 Npc("aldebaran", "Lady", "1_F_04", 66, 213, N) { }
 Npc("aldebaran", "Little Kid", "1_M_SIZ", 86, 228, S) { }
@@ -147,7 +147,7 @@ Npc("gef_fild08", "Bulletin Board", "2_BOARD2", 211, 24, N) { }
 Npc("gef_fild09", "Bulletin Board", "2_BOARD1", 227, 29, N) { }
 Npc("gef_fild10", "Bulletin Board", "2_BOARD2", 109, 23, N) { }
 Npc("gef_fild10", "Bulletin Board", "2_BULLETIN_BOARD", 69, 340, N) { }
-Npc("gef_fild10", "Kafra Employee", "4_F_KAFRA2", 73, 340, SE) { }
+//Npc("gef_fild10", "Kafra Employee", "4_F_KAFRA2", 73, 340, SE) { }
 //Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 122, 273, SW) { }
 //Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 144, 250, SW) { }
 //Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 159, 57, NW) { }
@@ -280,7 +280,7 @@ Npc("izlude", "Edgar", "1_M_03", 182, 186, W) { }
 Npc("izlude", "Fruit gardener", "1_M_INNKEEPER", 94, 98, S) { }
 Npc("izlude", "Grongast", "4_M_JOB_KNIGHT2", 69, 181, S) { }
 Npc("izlude", "Guide", "8W_SOLDIER", 121, 87, E) { }
-Npc("izlude", "Kafra Employee", "4_F_KAFRA1", 134, 88, W) { }
+//Npc("izlude", "Kafra Employee", "4_F_KAFRA1", 134, 88, W) { }
 Npc("izlude", "Kylick", "4W_M_01", 150, 143, W) { }
 //Npc("izlude", "Mailbox", "2_POSTBOX", 136, 94, N) { }
 Npc("izlude", "Marriage Companion", "1_F_LIBRARYGIRL", 171, 185, SW) { }
@@ -700,7 +700,7 @@ Npc("comodo", "Hair Ornament Girl", "8_F_GIRL", 228, 159, SW) { }
 Npc("comodo", "Hayes", "4_F_03", 171, 137, NW) { }
 Npc("comodo", "Hullaris", "4_F_GODEMOM", 187, 153, S) { }
 Npc("comodo", "Kachua", "4_F_02", 219, 158, E) { }
-Npc("comodo", "Kafra Employee", "4_F_KAFRA7", 195, 150, S) { }
+//Npc("comodo", "Kafra Employee", "4_F_KAFRA7", 195, 150, S) { }
 Npc("comodo", "Kichiri", "4W_M_02", 169, 284, S) { }
 Npc("comodo", "Magatu", "1_M_JOBTESTER", 163, 280, S) { }
 Npc("comodo", "Mailbox", "2_POSTBOX", 200, 150, N) { }

@@ -157,12 +157,17 @@ namespace Assets.Scripts.Network
             socket.OnClose += e =>
             {
                 Debug.LogWarning("Socket connection closed: " + e);
+                if(!isConnected)
+                    CameraFollower.SetErrorUiText($"Could not connect to server at {serverPath}.");
+                else
+                    CameraFollower.SetErrorUiText("Connection has been closed.");
             };
 
 
             socket.OnError += e =>
             {
                 Debug.LogError("Socket connection had an error: " + e);
+                CameraFollower.SetErrorUiText("Socket connection generated an error.");
             };
 
             socket.OnMessage += bytes =>
@@ -188,9 +193,17 @@ namespace Assets.Scripts.Network
 
         public void SendMessage(ClientOutgoingMessage message)
         {
+            if (socket.GetState() != WebSocketState.Open)
+            {
+                Debug.Log("Could not send message, socket not open!");
+                return;
+            }
+            
             //this sucks. Should modify it to work with spans...
             var buffer = new byte[message.Length];
             Buffer.BlockCopy(message.Message, 0, buffer, 0, message.Length);
+
+            
             socket.Send(buffer);
             //Debug.Log("Sending message type: " + (PacketType)buffer[0]);
         }
@@ -669,7 +682,7 @@ namespace Assets.Scripts.Network
                     damageTiming = 0.5f;
                 
                 if(hits > 1)
-                    FireArrow.Create(controllable2.gameObject, hits);
+                    FireArrow.Create(controllable, controllable2, hits);
 
                 StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable2));
             }
@@ -972,7 +985,7 @@ namespace Assets.Scripts.Network
             if (!entityList.TryGetValue(id, out var controllable))
                 return;
 
-            CameraFollower.AttachEffectToEntity(effect, controllable.gameObject);
+            CameraFollower.AttachEffectToEntity(effect, controllable.gameObject, controllable.Id);
         }
 
 
@@ -1367,6 +1380,8 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage();
             
+            Debug.Log("Summon: " + name);
+            
             msg.Write((byte)PacketType.AdminSummonMonster);
             msg.Write(name);
             msg.Write((short)count);
@@ -1539,6 +1554,7 @@ namespace Assets.Scripts.Network
             if (isConnected && state != WebSocketState.Open && state != WebSocketState.Connecting)
             {
                 isConnected = false;
+                CameraFollower.SetErrorUiText("Lost connection to server!");
                 Debug.LogWarning("Client state has changed to: " + state);
             }
 

@@ -1,0 +1,251 @@
+﻿
+Warp("yuno_in01", "yunowarp001", 32, 36, 2, 2, "yuno", 193, 142);
+Warp("yuno_in01", "yunowarp002", 32, 182, 2, 2, "yuno_in01", 86, 164);
+Warp("yuno_in01", "yunowarp003", 34, 100, 2, 2, "yuno", 51, 151);
+Warp("yuno_in01", "yunowarp004", 40, 176, 2, 2, "yuno", 51, 105);
+Warp("yuno_in01", "yunowarp005", 82, 164, 2, 2, "yuno_in01", 28, 182);
+Warp("yuno_in01", "yunowarp006", 88, 36, 1, 1, "yuno_in01", 173, 34);
+Warp("yuno_in01", "yunowarp007", 101, 85, 2, 2, "yuno", 254, 144);
+Warp("yuno_in01", "yunowarp008", 116, 40, 2, 2, "yuno", 120, 138);
+Warp("yuno_in01", "yunowarp009", 168, 104, 2, 2, "yuno", 264, 90);
+Warp("yuno_in01", "yunowarp010", 176, 34, 2, 2, "yuno_in01", 91, 36);
+Warp("yuno_in02", "yunowarp011", 82, 14, 2, 2, "yuno_in05", 192, 194);
+Warp("yuno_in02", "yunowarp012", 172, 61, 1, 6, "yuno", 90, 318);
+Warp("yuno_in03", "yunowarp013", 25, 11, 4, 1, "yuno", 278, 290);
+Warp("yuno_in03", "yunowarp014", 25, 56, 2, 2, "yuno_in03", 32, 92);
+Warp("yuno_in03", "yunowarp015", 32, 89, 2, 2, "yuno_in03", 25, 53);
+Warp("yuno_in03", "yunowarp016", 66, 186, 1, 3, "yuno_in03", 156, 134);
+Warp("yuno_in03", "yunowarp017", 96, 62, 3, 1, "yuno_in03", 223, 170);
+Warp("yuno_in03", "yunowarp018", 104, 115, 3, 1, "yuno_in03", 219, 47);
+Warp("yuno_in03", "yunowarp019", 111, 192, 3, 1, "yuno_in03", 162, 132);
+Warp("yuno_in03", "yunowarp020", 124, 178, 1, 3, "yuno_in03", 176, 118);
+Warp("yuno_in03", "yunowarp021", 153, 134, 1, 3, "yuno_in03", 62, 186);
+Warp("yuno_in03", "yunowarp022", 162, 129, 3, 1, "yuno_in03", 111, 188);
+Warp("yuno_in03", "yunowarp023", 167, 19, 4, 1, "yuno", 323, 280);
+Warp("yuno_in03", "yunowarp024", 161, 174, 1, 3, "yuno_in03", 183, 119);
+Warp("yuno_in03", "yunowarp025", 161, 187, 1, 3, "yuno_in03", 183, 131);
+Warp("yuno_in03", "yunowarp026", 167, 72, 4, 1, "yuno_in03", 179, 113);
+Warp("yuno_in03", "yunowarp027", 173, 118, 1, 3, "yuno_in03", 120, 178);
+Warp("yuno_in03", "yunowarp028", 179, 109, 4, 1, "yuno_in03", 167, 69);
+Warp("yuno_in03", "yunowarp029", 186, 119, 1, 3, "yuno_in03", 163, 174);
+Warp("yuno_in03", "yunowarp030", 186, 131, 1, 3, "yuno_in03", 163, 187);
+Warp("yuno_in03", "yunowarp031", 219, 50, 3, 1, "yuno_in03", 104, 118);
+Warp("yuno_in03", "yunowarp032", 223, 167, 2, 2, "yuno_in03", 96, 59);
+Warp("yuno_in03", "yunowarp033", 224, 19, 3, 1, "yuno", 282, 363);
+Warp("yuno_in03", "yunowarp034", 231, 58, 2, 2, "yuno_in03", 239, 144);
+Warp("yuno_in03", "yunowarp035", 235, 91, 3, 1, "yuno_in03", 244, 49);
+Warp("yuno_in03", "yunowarp036", 239, 141, 3, 1, "yuno_in03", 231, 55);
+Warp("yuno_in03", "yunowarp037", 244, 52, 3, 1, "yuno_in03", 235, 94);
+Warp("yuno_in04", "yunowarp038", 28, 58, 1, 4, "yuno", 338, 203);
+Warp("yuno_in04", "yunowarp039", 33, 130, 2, 2, "yuno", 95, 184);
+Warp("yuno_in04", "yunowarp040", 52, 58, 1, 4, "yuno_in04", 97, 58);
+Warp("yuno_in04", "yunowarp041", 95, 58, 1, 4, "yuno_in04", 50, 58);
+Warp("yuno_in04", "yunowarp042", 103, 22, 3, 1, "yuno_in04", 103, 53);
+Warp("yuno_in04", "yunowarp043", 103, 51, 3, 1, "yuno_in04", 103, 20);
+Warp("yuno_in04", "yunowarp044", 103, 64, 3, 1, "yuno_in04", 103, 95);
+Warp("yuno_in04", "yunowarp045", 103, 93, 3, 1, "yuno_in04", 103, 62);
+Warp("yuno_in04", "yunowarp046", 115, 22, 3, 1, "yuno_in04", 115, 53);
+Warp("yuno_in04", "yunowarp047", 115, 50, 3, 1, "yuno_in04", 115, 20);
+Warp("yuno_in04", "yunowarp048", 115, 64, 3, 1, "yuno_in04", 115, 95);
+Warp("yuno_in04", "yunowarp049", 115, 93, 3, 1, "yuno_in04", 115, 62);
+Warp("yuno_in04", "yunowarp050", 122, 57, 1, 4, "yuno_in04", 164, 110);
+Warp("yuno_in04", "yunowarp051", 161, 110, 1, 4, "yuno_in04", 120, 57);
+Warp("yuno_in04", "yunowarp052", 192, 28, 1, 3, "yuno", 198, 87);
+Warp("yuno_in05", "yunowarp054", 31, 167, 2, 2, "yuno_in05", 50, 85);
+Warp("yuno_in05", "yunowarp057", 50, 88, 1, 1, "yuno_in02", 86, 14);
+Warp("yuno_in05", "yunowarp068", 196, 194, 1, 4, "yuno_in02", 85, 14);
+Warp("yuno", "yunowarp069", 47, 105, 2, 2, "yuno_in01", 37, 176);
+Warp("yuno", "yunowarp070", 47, 151, 2, 2,  "yuno_in01", 30, 100);
+Warp("yuno", "yunowarp71", 54, 217, 2, 2, "y_airport", 143, 16);
+Warp("yuno", "yunowarp072", 87, 321, 2, 2, "yuno_in02", 168, 61);
+Warp("yuno", "yunowarp073", 93, 180, 1, 1, "yuno_in04", 33, 127);
+Warp("yuno", "yunowarp074", 117, 135, 2, 2, "yuno_in01", 116, 37);
+Warp("yuno", "yunowarp075", 158, 14, 6, 2, "yuno_fild04", 231, 280);
+Warp("yuno", "yunowarp076", 195, 87, 1, 2, "yuno_in04", 189, 28);
+Warp("yuno", "yunowarp077", 196, 138, 2, 2, "yuno_in01", 32, 33);
+Warp("yuno", "yunowarp078", 218, 181, 2, 2, "que_god01", 98, 83);
+Warp("yuno", "yunowarp079", 245, 147, 2, 2, "yuno_in01", 101, 88);
+Warp("yuno", "yunowarp080", 264, 87, 2, 2, "yuno_in01", 168, 101);
+Warp("yuno", "yunowarp081", 278, 293, 2, 2, "yuno_in03", 25, 15);
+Warp("yuno", "yunowarp082", 284, 366, 2, 2, "yuno_in03", 224, 23);
+Warp("yuno", "yunowarp083", 323, 284, 2, 2, "yuno_in03", 167, 22);
+Warp("yuno", "yunowarp084", 342, 203, 2, 2, "yuno_in04", 32, 58);
+
+
+Npc("yuno_in05", "yunowarp053", "WARP", 16, 188, N, 2, 1)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 181, 94);
+	case 1:
+		MoveTo("yuno_in05", 176, 13);
+	}
+}
+
+Npc("yuno_in05", "yunowarp055", "WARP", 40, 178, N, 1, 1)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 181, 94);
+	case 1:
+		MoveTo("yuno_in05", 176, 13);
+	}
+}
+
+Npc("yuno_in05", "yunowarp056", "WARP", 47, 186, N, 1, 1)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 181, 94);
+	case 1:
+		MoveTo("yuno_in05", 176, 13);
+	}
+}
+
+
+Npc("yuno_in05", "yunowarp058", "WARP", 125, 82, N, 1, 3)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 192, 102);
+	case 1:
+		MoveTo("yuno_in05", 145, 82);
+	}
+}
+
+Npc("yuno_in05", "yunowarp059", "WARP", 136, 71, N, 3, 1)
+{
+OnTouch:
+	var target = Random(4);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 181, 112);
+	case 1:
+		MoveTo("yuno_in05", 16, 185);
+	case 2:
+		MoveTo("yuno_in05", 16, 185);
+	case 3:
+		MoveTo("yuno_in05", 176, 48);
+	}
+}
+
+Npc("yuno_in05", "yunowarp060", "WARP", 148, 82, N, 1, 3)
+{
+OnTouch:
+	var target = Random(3);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 169, 102);
+	case 1:
+		MoveTo("yuno_in05", 128, 82);
+	case 2:
+		MoveTo("yuno_in05", 156, 141);
+	}
+}
+
+Npc("yuno_in05", "yunowarp061", "WARP", 153, 141, N, 1, 1)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 192, 102);
+	case 1:
+		MoveTo("yuno_in05", 145, 82);
+	}
+}
+
+Npc("yuno_in05", "yunowarp062", "WARP", 165, 102, N, 1, 3)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 192, 102);
+	case 1:
+		MoveTo("yuno_in05", 145, 82);
+	}
+}
+
+Npc("yuno_in05", "yunowarp063", "WARP", 176, 9, N, 3, 1)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 181, 112);
+	case 1:
+		MoveTo("yuno_in05", 176, 48);
+	}
+}
+
+Npc("yuno_in05", "yunowarp064", "WARP", 176, 52, N, 1, 1)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 181, 94);
+	case 1:
+		MoveTo("yuno_in05", 176, 13);
+	}
+}
+
+Npc("yuno_in05", "yunowarp065", "WARP", 181, 91, N, 3, 1)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 181, 112);
+	case 1:
+		MoveTo("yuno_in05", 176, 48);
+	}
+}
+
+Npc("yuno_in05", "yunowarp066", "WARP", 181, 116, N, 3, 1)
+{
+OnTouch:
+	var target = Random(2);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 181, 94);
+	case 1:
+		MoveTo("yuno_in05", 176, 13);
+	}
+}
+
+Npc("yuno_in05", "yunowarp067", "WARP", 196, 102, N, 1, 3)
+{
+OnTouch:
+	var target = Random(3);
+	switch(target)
+	{
+	case 0:
+		MoveTo("yuno_in05", 169, 102);
+	case 1:
+		MoveTo("yuno_in05", 128, 82);
+	case 2:
+		MoveTo("yuno_in05", 156, 141);
+	}
+}

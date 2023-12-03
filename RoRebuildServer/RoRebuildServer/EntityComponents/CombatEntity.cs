@@ -478,8 +478,18 @@ public class CombatEntity : IEntityAutoReset
                 {
                     Character.ResetState();
                     var monster = Entity.Get<Monster>();
+
+                    if (Entity.IsAlive() && enemy.Type == CharacterType.Player && DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
+                    {
+                        //if we're an mvp, give the attacker the effect
+                        Character.Map?.GatherPlayersForMultiCast(Character);
+                        CommandBuilder.SendEffectOnCharacterMulti(enemy, DataManager.EffectIdForName["MVP"]);
+                        CommandBuilder.ClearRecipients();
+                    }
+
                     monster.Die();
                     DamageQueue.Clear();
+
                     return;
                 }
 
