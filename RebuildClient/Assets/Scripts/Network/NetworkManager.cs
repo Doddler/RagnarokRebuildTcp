@@ -680,9 +680,14 @@ namespace Assets.Scripts.Network
                 var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
                 if (controllable.SpriteAnimator.Type == SpriteType.Player)
                     damageTiming = 0.5f;
-                
-                if(hits > 1)
-                    FireArrow.Create(controllable, controllable2, hits);
+
+                if (hits > 1)
+                {
+                    DefaultSkillCastEffect.Create(controllable);
+                    //FireArrow.Create(controllable, controllable2, hits);
+                    dmg = (short)(dmg * hits);
+                    hits = 1;
+                }
 
                 StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable2));
             }

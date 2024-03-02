@@ -32,20 +32,14 @@ namespace Assets.Scripts.MapEditor.Editor
             //RenderSettings.ambientIntensity = 0f;
             RenderSettings.ambientMode = AmbientMode.Flat;
 
-            var c = world.LightSetup.Ambient;
-            var ambientIntensity = (c.r + c.g + c.b) / 3;
-            ambientIntensity = 1 + (1 - world.LightSetup.Opacity);
+            var ambient = world.LightSetup.Ambient;
 
-            var ng = 1 - world.LightSetup.Opacity;
-            var diff = world.LightSetup.Diffuse;
+            var opacity = 1 - world.LightSetup.Opacity;
+            var diffuse = world.LightSetup.Diffuse;
 
-            var factor = 1 + (1 - world.LightSetup.Opacity);
+            ambient = new Color(ambient.r + diffuse.r * opacity, ambient.g + diffuse.g * opacity, ambient.b + diffuse.b * opacity, ambient.a);
 
-            //Debug.Log(c + " : " + ambientIntensity + " : " + factor);
-
-            c = new Color(c.r + diff.r * ng, c.g + diff.g * ng, c.b + diff.b * ng, c.a);
-
-            RenderSettings.ambientLight = c;
+            RenderSettings.ambientLight = ambient;
 
             //alt rendering mode
 

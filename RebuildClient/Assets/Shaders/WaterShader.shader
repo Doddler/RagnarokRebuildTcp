@@ -59,11 +59,10 @@
             float4 _Color;
             
             //from our globals
-            float4 _RoAmbientColor;
+            float4 _RoDiffuseColor;
 
             v2f vert (appdata v)
             {
-                
                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 float4 vin = v.vertex;
 
@@ -108,13 +107,12 @@
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
 
-                fixed a = col.a * _Color.a;
-
-                col = col * 0.5 + col * _RoAmbientColor * 0.5;
+                fixed a = 0.5625;
+                //col = col * 0.88;// * 0.5833333333333333;
                 
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return fixed4(col.rgb *= a, a);
+                return fixed4(col.rgb*a, a);
             }
             ENDCG
         }

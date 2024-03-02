@@ -49,5 +49,12 @@ namespace Assets.Scripts.MapEditor.Editor
             else
                 Debug.LogWarning("Failed to set data directory. Using old directory: " + EditorPrefs.GetString("RagnarokDataPath", null));
         }
+
+        [MenuItem("Ragnarok/Open Ragnarok Data Directory", priority = 1)]
+        public static void OpenDataDirectory()
+        {
+            var oldPath = EditorPrefs.GetString("RagnarokDataPath", null);
+            EditorUtility.RevealInFinder(oldPath);
+        }
     }
 }

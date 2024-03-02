@@ -25,6 +25,7 @@ namespace Assets.Scripts.Effects
         public Shader SpriteShaderNoZWrite;
         public Shader SpritePerspectiveShader;
         public Shader AlphaBlendParticleShader;
+        public Shader AlphaBlendNoZWriteShader;
         public Shader InvAlphaShader;
         public Shader AdditiveShader;
         public Shader WaterShader;

@@ -56,6 +56,7 @@ namespace Assets.Scripts.Effects
         private Color[] colors = new Color[4];
         private Vector2[] uvs = new Vector2[4];
         private Vector3[] uv3s = new Vector3[4];
+        private int[] tris;
 
         public static RagnarokPrimitive Create()
         {
@@ -164,6 +165,37 @@ namespace Assets.Scripts.Effects
             IsActive = true;
             IsDirty = true;
         }
+
+        public void AddTriangle(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 uv1,
+            Vector3 uv2, Vector3 uv3, Color c, float scale = 1)
+        {
+
+            colors[0] = c;
+            colors[1] = c;
+            colors[2] = c;
+            colors[3] = c;
+
+            verts[0] = vert1 * scale;
+            verts[1] = vert2 * scale;
+            verts[2] = vert3 * scale;
+            verts[3] = Vector3.zero;
+
+            uvs[0] = uv1;
+            uvs[1] = uv2;
+            uvs[2] = uv3;
+            uvs[3] = Vector2.zero;
+
+            //completely unused really
+            normals[0] = Vector3.up;
+            normals[1] = Vector3.up;
+            normals[2] = Vector3.up;
+            normals[3] = Vector3.up;
+
+            if (tris == null)
+                tris = new[] { 2, 1, 0 };
+            
+            mb.AddFullTriangle(verts, normals, uvs, colors, tris );
+        }
         
         public void AddTexturedRectangleQuad(Vector3 offset, float width, float height, Color c)
         {
@@ -226,26 +258,26 @@ namespace Assets.Scripts.Effects
         {
             //we get the uvs for a vertical slice for the position pos out of the number of parts used
 
-            colors[0] = c;
-            colors[1] = c;
-            colors[2] = c;
             colors[3] = c;
+            colors[2] = c;
+            colors[1] = c;
+            colors[0] = c;
 
-            verts[0] = vert1 * scale;
-            verts[1] = vert2 * scale;
-            verts[2] = vert3 * scale;
-            verts[3] = vert4 * scale;
+            verts[3] = vert1 * scale;
+            verts[2] = vert2 * scale;
+            verts[1] = vert3 * scale;
+            verts[0] = vert4 * scale;
 
-            uv3s[0] = uv1;
-            uv3s[1] = uv2;
-            uv3s[2] = uv3;
-            uv3s[3] = uv4;
+            uv3s[3] = uv1;
+            uv3s[2] = uv2;
+            uv3s[1] = uv3;
+            uv3s[0] = uv4;
 
             //completely unused really
-            normals[0] = Vector3.up;
-            normals[1] = Vector3.up;
-            normals[2] = Vector3.up;
             normals[3] = Vector3.up;
+            normals[2] = Vector3.up;
+            normals[1] = Vector3.up;
+            normals[0] = Vector3.up;
 
             //Debug.Log(uv1 + " + " + uv2);
 
