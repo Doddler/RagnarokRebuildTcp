@@ -1,5 +1,6 @@
 ﻿using System.Dynamic;
 using System.Globalization;
+using System.Text;
 using System.Text.Json;
 using CsvHelper;
 using Dahomey.Json;
@@ -34,8 +35,8 @@ class Program
         var tempPath = Path.Combine(Path.GetTempPath(), @"Effects.csv"); //copy in case file is locked
         File.Copy(inPath, tempPath, true);
 
-        using (var tr = new StreamReader(tempPath) as TextReader)
-        using (var csv = new CsvReader(tr, CultureInfo.CurrentCulture))
+        using (var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader)
+        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
         {
 
             var entries = csv.GetRecords<CsvEffects>().ToList();
@@ -87,8 +88,8 @@ class Program
         var tempPath = Path.Combine(Path.GetTempPath(), @"ServerSettings.csv"); //copy in case file is locked
         File.Copy(inPath, tempPath);
 
-        using (var tr = new StreamReader(tempPath) as TextReader)
-        using (var csv = new CsvReader(tr, CultureInfo.CurrentCulture))
+        using (var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader)
+        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
         {
 
             var entries = csv.GetRecords<CsvServerConfig>().ToList();
@@ -107,8 +108,8 @@ class Program
 
     private static void WriteExpChart()
     {
-        using var tr = new StreamReader(Path.Combine(path, "ExpChart.csv")) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+        using var tr = new StreamReader(Path.Combine(path, "ExpChart.csv"), Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
         var entries = csv.GetRecords<CsvExpChart>().ToList();
 
@@ -133,7 +134,7 @@ class Program
 
         //using var tempPath = new TempFileCopy(Path.Combine(path, "Maps.csv"));
         //using var tr = new StreamReader(tempPath.Path) as TextReader;
-        //using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+        //using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
         //var entries = csv.GetRecords<MapEntry>().ToList();
         //var mapList = new ClientMapList();
@@ -165,8 +166,8 @@ class Program
     private static List<MapEntry> GetMapList()
     {
         using var tempPath = new TempFileCopy(Path.Combine(path, "Maps.csv"));
-        using var tr = new StreamReader(tempPath.Path) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+        using var tr = new StreamReader(tempPath.Path, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
         return csv.GetRecords<MapEntry>().ToList();
     }
@@ -180,7 +181,7 @@ class Program
     //	List<CsvMapSpawnEntry> monsters;
 
     //	using (var tr = new StreamReader(tempPath) as TextReader)
-    //	using (var csv = new CsvReader(tr, CultureInfo.CurrentCulture))
+    //	using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
     //	{
     //		monsters = csv.GetRecords<CsvMapSpawnEntry>().ToList();
     //	}
@@ -201,8 +202,8 @@ class Program
 
         //monSpawns = monSpawns.Where(m => maps.Any(m2 => m2.Code == m.Map)).ToList();
 
-        using (var tr = new StreamReader(tempPath) as TextReader)
-        using (var csv = new CsvReader(tr, CultureInfo.CurrentCulture))
+        using (var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader)
+        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
         {
             var monsters = csv.GetRecords<CsvMonsterData>().ToList();
 
@@ -234,8 +235,8 @@ class Program
         var tempPath = Path.Combine(Path.GetTempPath(), "Npcs.csv"); //copy in case file is locked
         File.Copy(inPath, tempPath, true);
 
-        using (var tr = new StreamReader(tempPath) as TextReader)
-        using (var csv = new CsvReader(tr, CultureInfo.CurrentCulture))
+        using (var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader)
+        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
         {
             var npcs = csv.GetRecords<CsvNpc>().ToList();
 
@@ -290,8 +291,8 @@ class Program
         var tempPath = Path.Combine(Path.GetTempPath(), csvName); //copy in case file is locked
         File.Copy(inPath, tempPath, true);
 
-        using var tr = new StreamReader(tempPath) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.CurrentCulture);
+        using var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
         var jobs = csv.GetRecords<TSrc>().ToList();
 
         var list = convert(jobs);
