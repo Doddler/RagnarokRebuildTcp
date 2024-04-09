@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.EntityComponents.Util;
+﻿using RebuildSharedData.Enum;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 
 namespace RoRebuildServer.EntityComponents.Character;

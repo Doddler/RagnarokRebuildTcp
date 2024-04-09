@@ -15,6 +15,7 @@ namespace RebuildSharedData.Enum.EntityStats
         Dark,
         Holy,
         Ghost,
-        Special
+        Special,
+        None
     }
 }

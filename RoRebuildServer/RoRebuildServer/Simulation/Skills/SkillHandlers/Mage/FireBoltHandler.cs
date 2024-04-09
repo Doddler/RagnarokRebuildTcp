@@ -7,13 +7,15 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
 
-namespace RoRebuildServer.Simulation.Skills.SkillHandlers
+namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
 {
     [SkillHandler(CharacterSkill.FireBolt)]
     public class FireBoltHandler : SkillHandlerBase
     {
         public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
         {
+            return 0f;
+
             if (lvl < 0 || lvl > 10)
                 lvl = 10;
 
@@ -29,8 +31,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers
                 return;
 
             var res = source.CalculateCombatResult(target, 1, lvl, AttackFlags.Magical, AttackElement.Fire);
-            source.PerformAttackAction(target);
-            source.ExecuteCombatResult(res, true);
+            source.ApplyCooldownForAttackAction(target);
+            source.ExecuteCombatResult(res, false);
 
             var ch = source.Character;
 

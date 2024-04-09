@@ -14,6 +14,7 @@ public enum PacketType : byte
     Ping,
     [ServerOnlyPacket] CreateEntity,
     StartMove,
+    [ServerOnlyPacket] FixedMove,
     [ServerOnlyPacket] Move,
     Attack,
     [ServerOnlyPacket] TakeDamage,

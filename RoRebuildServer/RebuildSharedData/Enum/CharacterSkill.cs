@@ -7,6 +7,25 @@ namespace RebuildSharedData.Enum
     public enum CharacterSkill : byte
     {
         None,
-        FireBolt
+        //swordsman
+        Bash,
+        Endure,
+        MagnumBreak,
+        Provoke,
+        //mage
+        FireBolt,
+        ColdBolt,
+        FireBall,
+        FireWall,
+        FrostDriver,
+        LightningBolt,
+        SoulStrike,
+        ThunderStorm,
+        SafetyWall,
+        //archer
+        DoubleStrafe,
+        ArrowShower,
+        ImproveConcentration,
+
     }
 }
