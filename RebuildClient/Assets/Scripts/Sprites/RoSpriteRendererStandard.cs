@@ -51,6 +51,7 @@ namespace Assets.Scripts.Sprites
         public Direction Direction;
         public float SpriteOffset;
         public RoSpriteData SpriteData;
+        //public Texture2D AppliedPalette;
 
         public void SetAction(int action, bool is8Direction)
         {
@@ -128,6 +129,8 @@ namespace Assets.Scripts.Sprites
             {
                 var noWaterMat = new Material(shader);
                 noWaterMat.EnableKeyword("WATER_OFF");
+                // if(SpriteData.Palette != null || AppliedPalette != null)
+                //     noWaterMat.EnableKeyword("PALETTE_ON");
 
                 materialArrayNormal = new Material[1];
                 materialArrayNormal[0] = noWaterMat;
@@ -141,6 +144,9 @@ namespace Assets.Scripts.Sprites
                 //belowWaterMat = new Material(shader);
                 //belowWaterMat.EnableKeyword("WATER_BELOW");
                 //belowWaterMat.renderQueue -= 2;
+                
+                // if(SpriteData.Palette != null || AppliedPalette != null)
+                //     aboveWaterMat.EnableKeyword("PALETTE_ON");
 
                 materialArrayWater = new Material[1];
                 //materialArrayWater[0] = belowWaterMat;
@@ -197,7 +203,8 @@ namespace Assets.Scripts.Sprites
                 }
                 else
                 {
-                    MeshRenderer.sharedMaterials = materialArrayNormal;
+                    if(materialArrayNormal != null)
+                        MeshRenderer.sharedMaterials = materialArrayNormal;
                 }
             }
 
@@ -230,10 +237,20 @@ namespace Assets.Scripts.Sprites
 
         private void SetPropertyBlock()
         {
+            var envColor = RoMapRenderSettings.GetBakedLightContribution(new Vector2(transform.position.x, transform.position.z));
+            
             propertyBlock.SetTexture("_MainTex", SpriteData.Atlas);
             propertyBlock.SetColor("_Color", Color);
-            propertyBlock.SetFloat("_Offset", SpriteOffset);
+            propertyBlock.SetColor("_EnvColor", envColor);
             propertyBlock.SetFloat("_Width", SpriteData.AverageWidth / 25f);
+            
+            // if (SpriteData.Palette != null || AppliedPalette != null)
+            // {
+            //     if(AppliedPalette != null)
+            //         propertyBlock.SetTexture("_PalTex", AppliedPalette);
+            //     else
+            //         propertyBlock.SetTexture("_PalTex", SpriteData.Palette);
+            // }
 
             if (Mathf.Approximately(0, SpriteOffset))
                 propertyBlock.SetFloat("_Offset", SpriteData.Size / 125f);

@@ -17,6 +17,7 @@ namespace Assets.Scripts.Utility
         private List<Vector3> uv3s = new();
         private List<int> triangles = new();
         private List<Color> colors = new();
+        private List<Color32> color32s = new();
 
         private int startIndex = 0;
         private bool useUv3 = false;
@@ -41,23 +42,24 @@ namespace Assets.Scripts.Utility
             uvs.Clear();
             triangles.Clear();
             colors.Clear();
+            color32s.Clear();
             uv3s.Clear();
             useUv3 = false;
         }
 
-        public void AddFullTriangle(Vector3[] vertArray, Vector3[] normalArray, Vector2[] uvArray, Color[] colorArray, int[] triangleArray)
+        public void AddFullTriangle(Vector3[] vertArray, Vector3[] normalArray, Vector2[] uvArray, Color32[] colorArray, int[] triangleArray)
         {
             StartTriangle();
             AddVertices(vertArray);
             AddNormals(normalArray);
             AddUVs(uvArray);
             if(colors != null)
-                AddColors(colorArray);
+                AddColor32s(colorArray);
 
             AddTriangles(triangleArray);
         }
-
-        public void AddQuad(Vector3[] vertArray, Vector3[] normalArray, Vector2[] uvArray, Color[] colorArray)
+        
+        public void AddQuad(Vector3[] vertArray, Vector3[] normalArray, Vector2[] uvArray, Color32[] colorArray)
         {
             var tri = vertices.Count;
 
@@ -69,7 +71,7 @@ namespace Assets.Scripts.Utility
             AddVertices(vertArray);
             AddNormals(normalArray);
             AddUVs(uvArray);
-            AddColors(colorArray);
+            AddColor32s(colorArray);
             triangles.Add(tri);
             triangles.Add(tri+1);
             triangles.Add(tri+2);
@@ -78,8 +80,7 @@ namespace Assets.Scripts.Utility
             triangles.Add(tri+2);
         }
         
-        
-        public void AddPerspectiveQuad(Vector3[] vertArray, Vector3[] normalArray, Vector3[] uvArray, Color[] colorArray)
+        public void AddPerspectiveQuad(Vector3[] vertArray, Vector3[] normalArray, Vector3[] uvArray, Color32[] colorArray)
         {
             var tri = vertices.Count;
 
@@ -91,7 +92,7 @@ namespace Assets.Scripts.Utility
             AddVertices(vertArray);
             AddNormals(normalArray);
             AddUV3s(uvArray);
-            AddColors(colorArray);
+            AddColor32s(colorArray);
             triangles.Add(tri);
             triangles.Add(tri+1);
             triangles.Add(tri+2);
@@ -146,8 +147,18 @@ namespace Assets.Scripts.Utility
             if (colorArray == null)
                 return;
             foreach(var c in colorArray)
-                colors.Add(c);
+                color32s.Add(c);
         }
+        
+        
+        public void AddColor32s(Color32[] colorArray)
+        {
+            if (colorArray == null)
+                return;
+            foreach(var c in colorArray)
+                color32s.Add(c);
+        }
+
         
         public Mesh Build(string name = "Mesh", bool buildSecondaryUVs = false)
         {
@@ -156,6 +167,9 @@ namespace Assets.Scripts.Utility
 
             var mesh = new Mesh();
             mesh.name = name;
+            
+            if(vertices.Count != color32s.Count && colors.Count == 0)
+                Console.WriteLine("AAAAA");
 
             mesh.SetVertices(vertices);
             mesh.SetNormals(normals);
@@ -164,7 +178,10 @@ namespace Assets.Scripts.Utility
                 mesh.SetUVs(0, uvs);
             else
                 mesh.SetUVs(0, uv3s);
-            mesh.SetColors(colors);
+            if(colors.Count > 0)
+                mesh.SetColors(colors);
+            if(color32s.Count > 0)
+                mesh.SetColors(color32s);
 
             //mesh.vertices = vertices.ToArray();
             //mesh.normals = normals.ToArray();
@@ -173,7 +190,7 @@ namespace Assets.Scripts.Utility
             //mesh.colors = colors.ToArray();
 
             mesh.RecalculateBounds();
-            mesh.RecalculateTangents();
+            //mesh.RecalculateTangents();
             mesh.Optimize();
             mesh.OptimizeIndexBuffers();
             mesh.OptimizeReorderVertexBuffer();
@@ -193,7 +210,10 @@ namespace Assets.Scripts.Utility
                 mesh.SetUVs(0, uvs);
             else
                 mesh.SetUVs(0, uv3s);
-            mesh.SetColors(colors);
+            if(colors.Count > 0)
+                mesh.SetColors(colors);
+            if(color32s.Count > 0)
+                mesh.SetColors(color32s);
             
             mesh.RecalculateBounds();
             //mesh.RecalculateTangents();

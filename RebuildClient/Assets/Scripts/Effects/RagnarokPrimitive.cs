@@ -53,7 +53,7 @@ namespace Assets.Scripts.Effects
         //these are temporary to be fed into the meshbuilder
         private Vector3[] verts = new Vector3[4];
         private Vector3[] normals = new Vector3[4];
-        private Color[] colors = new Color[4];
+        private Color32[] colors = new Color32[4];
         private Vector2[] uvs = new Vector2[4];
         private Vector3[] uv3s = new Vector3[4];
         private int[] tris;
@@ -167,7 +167,7 @@ namespace Assets.Scripts.Effects
         }
 
         public void AddTriangle(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 uv1,
-            Vector3 uv2, Vector3 uv3, Color c, float scale = 1)
+            Vector3 uv2, Vector3 uv3, Color32 c, float scale = 1)
         {
 
             colors[0] = c;
@@ -197,7 +197,7 @@ namespace Assets.Scripts.Effects
             mb.AddFullTriangle(verts, normals, uvs, colors, tris );
         }
         
-        public void AddTexturedRectangleQuad(Vector3 offset, float width, float height, Color c)
+        public void AddTexturedRectangleQuad(Vector3 offset, float width, float height, Color32 c)
         {
             colors[0] = c;
             colors[1] = c;
@@ -223,7 +223,7 @@ namespace Assets.Scripts.Effects
             mb.AddQuad(verts, normals, uvs, colors);
         }
 
-        public void AddTexturedSpriteQuad(Sprite sprite, Vector3 offset, float width, float height, Color c)
+        public void AddTexturedSpriteQuad(Sprite sprite, Vector3 offset, float width, float height, Color32 c)
         {
             colors[0] = c;
             colors[1] = c;
@@ -254,7 +254,7 @@ namespace Assets.Scripts.Effects
         }
         
         public void AddTexturedPerspectiveQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, Vector3 uv1,
-            Vector3 uv2, Vector3 uv3, Vector3 uv4, Color c, float scale = 1)
+            Vector3 uv2, Vector3 uv3, Vector3 uv4, Color32 c, float scale = 1)
         {
             //we get the uvs for a vertical slice for the position pos out of the number of parts used
 

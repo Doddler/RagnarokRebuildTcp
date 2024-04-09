@@ -39,7 +39,7 @@ namespace Assets.Scripts.MapEditor
             MeshRenderer.shadowCastingMode = ShadowCastingMode.Off;
             MeshRenderer.receiveShadows = false;
             MeshRenderer.material = Material;
-            
+            MeshRenderer.lightProbeUsage = LightProbeUsage.Off;
 
             GameObjectUtility.SetStaticEditorFlags(gameObject, (StaticEditorFlags)0);
             

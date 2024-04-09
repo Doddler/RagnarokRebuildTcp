@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.Scripts.Effects
 {
@@ -25,7 +26,7 @@ namespace Assets.Scripts.Effects
         public Shader SpriteShaderNoZWrite;
         public Shader SpritePerspectiveShader;
         public Shader AlphaBlendParticleShader;
-        public Shader AlphaBlendNoZWriteShader;
+        public Shader AlphaBlendNoZTestShader;
         public Shader InvAlphaShader;
         public Shader AdditiveShader;
         public Shader WaterShader;

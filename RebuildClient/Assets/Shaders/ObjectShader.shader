@@ -172,6 +172,7 @@ Shader "Custom/ObjectShader"
 #else
                 float4 lm = float4(ShadeSH9(float4(i.normal, 1)),1);
                 lm = clamp(lm, 0, 0.5);
+                
 #endif
                 float4 ambienttex = float4(1, 1, 1, 1);
 
@@ -221,42 +222,18 @@ Shader "Custom/ObjectShader"
 
                 float env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 
-
-
-                //return diffuseTerm * _RoDiffuseColor + _RoAmbientColor;
-                //return saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5));
-
-
+                //this code here matches the original game and adds lightmaps the same as it does ground
+                //because it wasn't built with lightmapping in mind it doesn't look great in most cases
+                // finalColor *= (_RoAmbientColor + NdotL * _RoDiffuseColor) * ambienttex;
+                // finalColor *= env;
+                // finalColor += lm * 0.5 * _LightmapIntensity;
+                // return finalColor;
+                
                 finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse * env + lm * 2 * (diffuse) * _LightmapIntensity * 0.8;
-
                 finalColor *= ambienttex;
-
                 finalColor *= 1 + (ambientStrength / 10);
 
-                //finalColor = (diffuseTerm * _RoDiffuseColor + _RoAmbientColor * 0.4) * diffuse * env;
-
-                //return finalColor;
-
-                //finalColor = diffuse * ((env + lm + diffuseTerm)/2);
-
-                //return finalColor;
-
-                //finalColor *= lerp(_RoAmbientColor, float4(1,1,1,1), (lm * diffuseTerm)); // *diffuseTerm;
-                //finalColor.r *= lerp(diffuse.r * _RoAmbientColor.r, 1, diffuseTerm.r);
-                //finalColor.g *= lerp(diffuse.g * _RoAmbientColor.g, 1, diffuseTerm.g);
-                //finalColor.b *= lerp(diffuse.b * _RoAmbientColor.b, 1, diffuseTerm.b);
-
-                //finalColor =  float4(lerp(diffuse.r, 1, diffuseTerm.r),0,0,1);
-
-                //finalColor *= (_RoAmbientColor + diffuseTerm);
-
-                //finalColor *= lerp(_RoAmbientColor, float4(1, 1, 1, 1), diffuseTerm);
-
-                //finalColor = lm;
-
                 UNITY_APPLY_FOG(i.fogCoord, finalColor);
-
-                //finalColor = clamp(finalColor, 0.02, 1);
 
                 return finalColor;
 
@@ -265,7 +242,39 @@ Shader "Custom/ObjectShader"
             ENDCG
         }
 
+		Pass
+	        {
+	            Tags { "LightMode" = "ForwardAdd" }
+	            Blend SrcAlpha One
+	            Fog { Color (0,0,0,0) } // in additive pass fog should be black
+	            ZWrite Off
+	            ZTest LEqual
 
+	            CGPROGRAM
+	            #pragma target 3.0
+
+	            // -------------------------------------
+
+
+	            #pragma shader_feature_local _NORMALMAP
+	            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+	            #pragma shader_feature_local _METALLICGLOSSMAP
+	            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+	            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+	            #pragma shader_feature_local _DETAIL_MULX2
+	            #pragma shader_feature_local _PARALLAXMAP
+
+	            #pragma multi_compile_fwdadd_fullshadows
+	            #pragma multi_compile_fog
+	            // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
+	            //#pragma multi_compile _ LOD_FADE_CROSSFADE
+
+	            #pragma vertex vertAdd
+	            #pragma fragment fragAdd
+	            #include "UnityStandardCoreForward.cginc"
+
+	            ENDCG
+	        }
 
         //Tags { "RenderType" = "AlphaTest" }
         //LOD 200

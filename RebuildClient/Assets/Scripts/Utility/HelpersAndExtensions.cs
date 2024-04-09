@@ -166,7 +166,6 @@ namespace Assets.Scripts
         {
             return Mathf.Abs(value - target) < 0.001f;
         }
-
     }
 
     public static class DirectoryHelper
@@ -216,6 +215,7 @@ namespace Assets.Scripts
                 obj = obj.transform.parent.gameObject;
                 path = "/" + obj.name + path;
             }
+
             return path;
         }
     }
@@ -228,7 +228,11 @@ namespace Assets.Scripts
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
-
     }
 
+    public static class ColorHelper
+    {
+        public static Color32 Black => new Color32(0, 0, 0, 255);
+        public static Color32 White => new Color32(255, 255, 255, 255);
+    }
 }

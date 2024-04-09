@@ -10,12 +10,13 @@ using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.MapEditor.Editor
 {
     class RagnarokMapLoader
     {
-        private FileStream fs;
+        private MemoryStream ms;
         private BinaryReader br;
 
         private string name;
@@ -37,7 +38,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
         private Texture2D lightmapAtlas;
         private Dictionary<int, Vector2Int> lightmapPositions;
-        private Texture2D lightmapMapTexture;
+        // private Texture2D lightmapMapTexture;
         private int[] lightIds;
 
 
@@ -108,7 +109,6 @@ namespace Assets.Scripts.MapEditor.Editor
             var sizeCell = br.ReadInt32();
             var perCell = perCellX * perCellY * sizeCell;
 
-
             var width = Mathf.RoundToInt(Mathf.Sqrt(count));
             var height = Mathf.CeilToInt(Mathf.Sqrt(count));
             var w2 = (int)Mathf.Pow(2, Mathf.CeilToInt(Mathf.Log(width * 8) / Mathf.Log(2)));
@@ -116,13 +116,34 @@ namespace Assets.Scripts.MapEditor.Editor
 
             var bOut = new byte[w2 * h2 * 4];
             lightmapPositions = new Dictionary<int, Vector2Int>();
+            //
+            // var origPos = (int)ms.Position;
+            // var msOut = new MemoryStream();
+            // var bw = new BinaryWriter(msOut);
+            // ms.Seek(0, SeekOrigin.Begin);
+            // bw.Write(br.ReadBytes(origPos));
 
-            Debug.Log($"perCellX:{perCellX} perCellY:{perCellY} sizeCell:{sizeCell} perCell:{perCell} width:{width} height:{height} w2:{w2} h2:{h2} count:{count} perCell:{perCell} bOut.Length:{bOut.Length}");
+            Debug.Log(
+                $"perCellX:{perCellX} perCellY:{perCellY} sizeCell:{sizeCell} perCell:{perCell} width:{width} height:{height} w2:{w2} h2:{h2} count:{count} perCell:{perCell} bOut.Length:{bOut.Length}");
+
+            
             
             for (var i = 0; i < count; i++)
             {
                 var intensity = br.ReadBytes(perCell);
                 var specular = br.ReadBytes(perCell * 3);
+                
+                // //var dat = new[] { (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255) };
+                // var dat = new[] { (byte)0x00, (byte)0x00, (byte)0x00 };
+                //
+                // for (var k = 0; k < perCell; k++)
+                //     bw.Write((byte)(0xFF));
+                // for (var k = 0; k < perCell; k++)
+                // {
+                //     
+                //     bw.Write(dat);
+                // }
+                    
 
                 var pos = i * perCell;
                 var x = (i % width) * 8;
@@ -136,37 +157,36 @@ namespace Assets.Scripts.MapEditor.Editor
                     {
                         var idx = ((x + x2) + (y + y2) * w2) * 4;
 
-                        //Debug.Log("idx:" + idx + " of " + bOut.Length);
-                        //Debug.Log("pos:" + (pos + perCell + (x2 + y2 * 8) * 3 + 0) + " of " + bytes.Length);
-                        //Debug.Log($"i:{i} pos:{pos} x:{x} y:{y} x2:{x2} y2:{y2}");
-
                         //rgba
-                        bOut[idx + 0] = (byte)(specular[(x2 + y2 * 8) * 3 + 0] );
-                        bOut[idx + 1] = (byte)(specular[(x2 + y2 * 8) * 3 + 1] );
-                        bOut[idx + 2] = (byte)(specular[(x2 + y2 * 8) * 3 + 2] );
-                        bOut[idx + 3] = (byte)(intensity[(x2 + y2 * 8)] );
-                        //bOut[idx + 3] = (byte)(bytes[pos + (x2 + y2 * 8)]);
+                        bOut[idx + 0] = (byte)(specular[(x2 + y2 * 8) * 3 + 0]);
+                        bOut[idx + 1] = (byte)(specular[(x2 + y2 * 8) * 3 + 1]);
+                        bOut[idx + 2] = (byte)(specular[(x2 + y2 * 8) * 3 + 2]);
+                        bOut[idx + 3] = (byte)(intensity[(x2 + y2 * 8)]);
                     }
                 }
             }
-            
+
             var texture = new Texture2D(w2, h2, TextureFormat.RGBA32, false);
             texture.LoadRawTextureData(bOut);
             texture.Apply();
 
             lightmapAtlas = texture;
-
-            //File.WriteAllBytes($"F:\\Temp\\lightmap\\lmsrc.png", texture.EncodeToPNG());
-
-            //var data = br.ReadBytes(count * perCell * 4);
+            
+            // origPos = (int)ms.Position;
+            // bw.Write(br.ReadBytes((int)ms.Length - (int)ms.Position));
+            // ms.Seek(origPos, SeekOrigin.Begin);
+            // File.WriteAllBytes(@"G:\Projects2\Ragnarok\client\data\orcsdun01.gnd", msOut.ToArray());
+            // msOut.Dispose();
+            
+            // File.WriteAllBytes($"F:\\Temp\\lightmap\\lmsrc.png", texture.EncodeToPNG());
         }
-        
+
         private void ParseTiles()
         {
             var count = br.ReadInt32();
             tiles = new Tile[count];
             lightIds = new int[count];
-            
+
             // var firstTile = "";
             // var firstUVMin = new Vector2(0, 0);
             // var firstUVMax = new Vector2(0, 0);
@@ -190,7 +210,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 var texId = br.ReadInt16();
                 var lightId = br.ReadInt16();
-                
+
                 tile.Texture = textures[texId];
                 tile.Color = br.ReadByteColor();
                 lightIds[i] = lightId;
@@ -251,31 +271,23 @@ namespace Assets.Scripts.MapEditor.Editor
                     || (tile.Texture == "hot-3" && uvMin == new Vector2(0.25f, 0.5f) && uvMax == new Vector2(0.5f, 0.75f))
                     || (tile.Texture == "hot-3" && uvMin == new Vector2(0.5f, 0.75f) && uvMax == new Vector2(0.75f, 1f))
                     || (tile.Texture == "hot-3" && uvMin == new Vector2(0.75f, 0.75f) && uvMax == new Vector2(1f, 1f))
-
                     || (tile.Texture == "hot-2" && uvMin == new Vector2(0f, 0.75f) && uvMax == new Vector2(0.25f, 1f))
-
-
                     || (tile.Texture == "hot-8" && uvMin == new Vector2(0f, 0.75f) && uvMax == new Vector2(0.25f, 1f))
                     || (tile.Texture == "hot-8" && uvMin == new Vector2(0.25f, 0.75f) && uvMax == new Vector2(0.5f, 1f))
                     || (tile.Texture == "hot-8" && uvMin == new Vector2(0.75f, 0.75f) && uvMax == new Vector2(1f, 1f))
                     || (tile.Texture == "hot-8" && uvMin == new Vector2(0.5f, 0.75f) && uvMax == new Vector2(0.75f, 1f))
-
-
                     || (tile.Texture == "hot-9" && uvMin == new Vector2(0f, 0.75f) && uvMax == new Vector2(0.25f, 1f))
                     || (tile.Texture == "hot-9" && uvMin == new Vector2(0.25f, 0.75f) && uvMax == new Vector2(0.5f, 1f))
                     || (tile.Texture == "hot-9" && uvMin == new Vector2(0.5f, 0.75f) && uvMax == new Vector2(0.75f, 1f))
                     || (tile.Texture == "hot-9" && uvMin == new Vector2(0.75f, 0.75f) && uvMax == new Vector2(1f, 1f))
-
                     || (tile.Texture == "hot-10" && uvMin == new Vector2(0f, 0.75f) && uvMax == new Vector2(0.25f, 1f))
                     || (tile.Texture == "hot-10" && uvMin == new Vector2(0.25f, 0.75f) && uvMax == new Vector2(0.5f, 1f))
                     || (tile.Texture == "hot-10" && uvMin == new Vector2(0.5f, 0.75f) && uvMax == new Vector2(0.75f, 1f))
                     || (tile.Texture == "hot-10" && uvMin == new Vector2(0.75f, 0.75f) && uvMax == new Vector2(1f, 1f))
-
                     || (tile.Texture == "hot-1" && uvMin == new Vector2(0f, 0.75f) && uvMax == new Vector2(0.25f, 1f))
                     || (tile.Texture == "hot-1" && uvMin == new Vector2(0.25f, 0.75f) && uvMax == new Vector2(0.5f, 1f))
                     || (tile.Texture == "hot-1" && uvMin == new Vector2(0.5f, 0.75f) && uvMax == new Vector2(0.75f, 1f))
                     || (tile.Texture == "hot-1" && uvMin == new Vector2(0.75f, 0.75f) && uvMax == new Vector2(1f, 1f))
-
 
                     ////izlude
                     //|| (tile.Texture == "iz-03" && uvMin == new Vector2(0f, 0.5f) && uvMax == new Vector2(0.25f, 0.75f))
@@ -343,14 +355,13 @@ namespace Assets.Scripts.MapEditor.Editor
             for (var i = 0; i < cells.Length; i++)
                 cells[i] = new Cell() { Top = GetDisabledTile(), Front = GetDisabledTile(), Right = GetDisabledTile(), Heights = Vector4.zero };
 
-            lightmapMapTexture = new Texture2D(width*8, height*8, TextureFormat.RGBA32, false);
-
-            var pixels = lightmapMapTexture.GetPixels32();
-            for (var i = 0; i < pixels.Length; i++)
-                pixels[i] = new Color32(0, 0, 0, 0);
-            lightmapMapTexture.SetPixels32(pixels);
-            lightmapMapTexture.Apply();
-            
+            // lightmapMapTexture = new Texture2D(width * 6, height * 6, TextureFormat.RGBA32, false);
+            //
+            // var pixels = lightmapMapTexture.GetPixels32();
+            // for (var i = 0; i < pixels.Length; i++)
+            //     pixels[i] = new Color32(0, 0, 0, 0);
+            // lightmapMapTexture.SetPixels32(pixels);
+            // lightmapMapTexture.Apply();
 
             for (var y = 0; y < height; y++)
             {
@@ -370,27 +381,27 @@ namespace Assets.Scripts.MapEditor.Editor
                     cell.Top = GetDisabledTile();
                     //cell.Front = GetDisabledTile();
                     cell.Right = GetDisabledTile();
-                    
+
                     if (top != -1)
                     {
                         if (top >= tiles.Length)
                             Debug.LogError(
                                 $"Cell is requesting top tile ID {top} but the list only goes to {tiles.Length}");
-                        cell.Top = new Tile() { Enabled = true, Texture = tiles[top].Texture, UVs = tiles[top].UVs, Color = tiles[top].Color, IsUnlit = tiles[top].IsUnlit};
-                        
-                        var id = lightIds[top];
+                        cell.Top = new Tile()
+                            { Enabled = true, Texture = tiles[top].Texture, UVs = tiles[top].UVs, Color = tiles[top].Color, IsUnlit = tiles[top].IsUnlit };
 
-                        if (lightIds[top] >= 0)
-                        {
-                            var pos = lightmapPositions[id];
-                            Graphics.CopyTexture(lightmapAtlas, 0, 0, pos.x, pos.y, 8, 8, lightmapMapTexture, 0, 0, x * 8, y * 8);
-                        }
-
+                        //var id = lightIds[top];
+                        //
+                        // if (lightIds[top] >= 0)
+                        // {
+                        //     var pos = lightmapPositions[id];
+                        //     Graphics.CopyTexture(lightmapAtlas, 0, 0, pos.x + 1, pos.y + 1, 6, 6, lightmapMapTexture, 0, 0, x * 6, y * 6);
+                        // }
                     }
 
                     if (y < realHeight - 1)
                     {
-                        if(x + (y + 1) * realWidth >= cells.Length)
+                        if (x + (y + 1) * realWidth >= cells.Length)
                             Debug.LogError($"Whoa, looking out of bounds! X is {x}, Y is {y}, realwidth {realWidth} realheight {realHeight}");
                         var cell2 = cells[x + (y + 1) * realWidth]; //special case because our front isn't their front...
                         if (front != -1)
@@ -407,7 +418,11 @@ namespace Assets.Scripts.MapEditor.Editor
                     }
 
                     if (right != -1)
-                        cell.Right = new Tile() { Enabled = true, Texture = tiles[right].Texture, UVs = RightSwapUVs(tiles[right].UVs), Color = tiles[right].Color, IsUnlit = tiles[right].IsUnlit};
+                        cell.Right = new Tile()
+                        {
+                            Enabled = true, Texture = tiles[right].Texture, UVs = RightSwapUVs(tiles[right].UVs), Color = tiles[right].Color,
+                            IsUnlit = tiles[right].IsUnlit
+                        };
 
                     //Debug.Log($"Load tile {cell.Heights} {top} {front} {right}");
 
@@ -419,7 +434,10 @@ namespace Assets.Scripts.MapEditor.Editor
             }
 
             //lightmapMapTexture.Apply();
-            //File.WriteAllBytes($"F:\\Temp\\lightmap\\{name}.png", lightmapMapTexture.EncodeToPNG());
+            //
+            // var tex2 = ChangeFormat(lightmapMapTexture);
+            //
+            // File.WriteAllBytes($"F:\\Temp\\lightmap\\{name}.png", tex2.EncodeToPNG());
         }
 
 
@@ -431,8 +449,8 @@ namespace Assets.Scripts.MapEditor.Editor
 
             name = basename;
 
-            fs = new FileStream(filename, FileMode.Open);
-            br = new BinaryReader(fs);
+            ms = new MemoryStream(File.ReadAllBytes(filename)); // new FileStream(filename, FileMode.Open);
+            br = new BinaryReader(ms);
 
             var header = new string(br.ReadChars(4));
             if (header != "GRGN")
@@ -455,10 +473,10 @@ namespace Assets.Scripts.MapEditor.Editor
             ParseSurfaces();
 
 
-            Debug.Log($"Finished {fs.Position} of {fs.Length}");
+            Debug.Log($"Finished {ms.Position} of {ms.Length}");
 
-            fs.Close();
-            fs.Dispose();
+            ms.Close();
+            ms.Dispose();
 
 
             var mapData = ScriptableObject.CreateInstance<RoMapData>();

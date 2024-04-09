@@ -9,15 +9,66 @@ namespace Assets.Scripts.MapEditor
         public Color Diffuse;
 
         public Color TempDiffuse;
-        
+
+        public Texture2D BakedLightContributionMap;
+
         public float Opacity;
-        [Range(0,1)]
-        public float AmbientOcclusionStrength;
+        [Range(0, 1)] public float AmbientOcclusionStrength;
         public bool UseMapAmbient = true;
+
+        private static Color32[] globalMap;
+        private static int mWidth;
+        private static int mHeight;
+
+        public static void ClearBakedLightmap()
+        {
+            globalMap = null;
+        }
+
+        private static float BilinearInterpolate(float tl, float tr, float bl, float br, float x, float y)
+        {
+            var v = tl * (1 - x) + tr * x;
+            var h = bl * (1 - y) + br * y;
+
+            return (v + h) / 2f;
+        }
+
+        public static Color GetBakedLightContribution(Vector2 position)
+        {
+            if (globalMap == null)
+                return new Color32(0, 0, 0, 1);
+
+            var pos = new Vector2(Mathf.Clamp(position.x, 0, mWidth - 1), Mathf.Clamp(position.y, 0, mHeight - 1));
+            var x1 = (int)Mathf.Floor(pos.x);
+            var x2 = (int)Mathf.Floor(pos.x) + 1;
+            var y1 = (int)Mathf.Floor(pos.y);
+            var y2 = (int)Mathf.Floor(pos.y) + 1;
+
+            var tl = globalMap[x1 + y1 * mWidth];
+            var tr = globalMap[x2 + y1 * mWidth];
+            var bl = globalMap[x1 + y2 * mWidth];
+            var br = globalMap[x2 + y2 * mWidth];
+
+            var r = BilinearInterpolate(tl.r / 255f, tr.r / 255f, bl.r / 255f, br.r / 255f, pos.x - x1, pos.y - y1);
+            var g = BilinearInterpolate(tl.g / 255f, tr.g / 255f, bl.g / 255f, br.g / 255f, pos.x - x1, pos.y - y1);
+            var b = BilinearInterpolate(tl.b / 255f, tr.b / 255f, bl.b / 255f, br.b / 255f, pos.x - x1, pos.y - y1);
+
+            var m = 1 - Mathf.Max(r, g, b);
+
+            return new Color(m+r, m+g, m+b, (r+g+b)/3f);
+        }
 
         public void Awake()
         {
+            if (BakedLightContributionMap == null || Camera.main == null)
+            {
+                globalMap = null;
+                return;
+            }
 
+            globalMap = BakedLightContributionMap.GetPixels32();
+            mWidth = BakedLightContributionMap.width;
+            mHeight = BakedLightContributionMap.height;
         }
 
 #if UNITY_EDITOR

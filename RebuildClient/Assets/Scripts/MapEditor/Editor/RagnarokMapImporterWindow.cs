@@ -12,6 +12,7 @@ using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utility.Editor;
 using Debug = UnityEngine.Debug;
 // ReSharper disable StringIndexOfIsCultureSpecific.1
 
@@ -75,10 +76,71 @@ namespace Assets.Scripts.MapEditor.Editor
             File.WriteAllLines(@"Assets/Sprites/AttackTiming.txt", output);
         }
 
-        private static void UpdateAddressablesForPathAndType(string filter, string folder, string label, string[] guids,
-            List<AddressableAssetEntry> entriesAdded)
+        private static string GetGroupName(string path)
         {
+            //because it's easier in the long run if bundle names are alphanumeric, we'll translate korean paths to english names
+            
+                        
+            var folder = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
 
+            var idx = path.IndexOfOccurence("/",  4);
+            if (idx > 0)
+            {
+                var basePath = path.Substring(0, idx+1);
+                folder = new DirectoryInfo(Path.GetDirectoryName(basePath)).Name;
+            }
+
+            return folder switch
+            {
+                "거북이섬" => "TurtleIsland",
+                "게페니아" => "Geffenia",
+                "글래스트" => "GlastHeim",
+                "글래지하수로" => "GlastHeimSewers",
+                "길드전" => "GuildWar",
+                "나무잡초꽃" => "Foliage",
+                "내부소품" => "PropsIndoor",
+                "니플헤임" => "Niflheim",
+                "대만" => "Taiwan",
+                "던전" => "Dungeon",
+                "동굴마을" => "CaveVillage",
+                "등대섬" => "Lighthouse",
+                "라헬" => "Rachel",
+                "러시아" => "Russia",
+                "리히타르젠" => "Lighthalzen",
+                "모로코" => "Morroc",
+                "무명섬" => "Nameless",
+                "사막도시" => "DesertCity",
+                "아요타야" => "Ayothaya",
+                "아인브로크" => "Einbroch",
+                "알데바란" => "Aldebaran",
+                "알베르타" => "Alberta",
+                "어비스" => "Abyss",
+                "외부소품" => "PropsOutdoor",
+                "용암동굴" => "Magma",
+                "움발라" => "Umbala",
+                "유노" => "Juno",
+                "유노추가" => "Juno2",
+                "유페로스" => "Juperos",
+                "인던01" => "Instance01",
+                "인던02" => "Instance02",
+                "일본" => "Japan",
+                "자와이" => "Jawaii",
+                "전장" => "Battlegrounds",
+                "중국" => "China",
+                "지하감옥" => "Prison",
+                "지하묘지" => "Catacombs",
+                "집시마을" => "GypsyVillage",
+                "크리스마스마을" => "ChristmasVillage",
+                "타나토스" => "Thanatos",
+                "토르화산" => "ThorVolcano",
+                "페이욘" => "Payon",
+                "프론테라" => "Prontera",
+                "해변마을" => "BeachVillage",
+                "휘겔" => "Hugel",
+                "흑마법사방" => "BlackMagic",
+                "히나마쯔리" => "Hinamatsuri",
+                _ => folder
+            };
         }
 
         [MenuItem("Ragnarok/Update Addressables")]
@@ -89,6 +151,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var mapGroup = settings.FindGroup("Scenes");
             var musicGroup = settings.FindGroup("Music");
             var soundsGroup = settings.FindGroup("Sounds");
+            var modelsGroup = settings.FindGroup("Models");
             var entriesAdded = new List<AddressableAssetEntry>();
             var entriesRemoved = new List<AddressableAssetEntry>();
 
@@ -96,7 +159,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var monsters = JsonUtility.FromJson<DatabaseMonsterClassData>(monText.text);
 
             //---------------------------------------------------------
-            // Spriets
+            // Sprites
             //---------------------------------------------------------
 
             var guids = AssetDatabase.FindAssets("t:RoSpriteData", new[] { "Assets/Sprites" });
@@ -168,6 +231,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
             //update scenes
             guids = AssetDatabase.FindAssets("t:Scene", new[] { "Assets/Scenes/Maps" });
+            var usedPrefabs = new HashSet<string>();
 
             for (int i = 0; i < guids.Length; i++)
             {
@@ -196,6 +260,14 @@ namespace Assets.Scripts.MapEditor.Editor
                     musicNames.Add(map.Music);
 
                 entriesAdded.Add(entry);
+
+                var dependencies = AssetDatabase.GetDependencies(path);
+                foreach (var d in dependencies)
+                {
+                    if(!usedPrefabs.Contains(d))
+                        usedPrefabs.Add(d);
+                        
+                }
             }
 
             //update sprites
@@ -285,6 +357,37 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 entriesAdded.Add(entry);
             }
+            
+            
+            //update models
+            guids = AssetDatabase.FindAssets("t:Prefab,t:Texture2D,t:Mesh,t:Material", new[] { "Assets/Models/" });
+
+            for (int i = 0; i < guids.Length; i++)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                var fName = Path.GetFileName(path);
+
+                if (!usedPrefabs.Contains(path))
+                {
+                    var existing = modelsGroup.GetAssetEntry(guids[i]);
+                    if (existing == null)
+                        continue;
+                    settings.RemoveAssetEntry(guids[i], true);
+                    entriesRemoved.Add(existing);
+                    
+                    continue;
+                }
+
+                var label = GetGroupName(path);
+                var entry = settings.CreateOrMoveEntry(guids[i], modelsGroup, readOnly: false, postEvent: false);
+                //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
+                entry.labels.Add(label);
+
+                entriesAdded.Add(entry);
+            }
+
+            
 
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, true);
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryRemoved, entriesRemoved, true);
@@ -306,6 +409,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 
             var walkData = altitude.LoadWalkData(importPath);
+            // walkData = altitude.SplitWalkData(walkData, 4, Path.GetFileNameWithoutExtension(importPath));
             walkData.name = Path.GetFileNameWithoutExtension(importPath) + "_walk";
 
             var saveDir = "Assets/maps/altitude";

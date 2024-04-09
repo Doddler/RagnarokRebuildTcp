@@ -27,7 +27,7 @@ Shader "Custom/MapShaderAccurate"
 		{
 			Tags { "RenderType" = "AlphaTest" "LightMode" = "ForwardBase" }
 			LOD 200
-
+			
 			Pass
 			{
 				Lighting On
@@ -36,13 +36,15 @@ Shader "Custom/MapShaderAccurate"
 				#pragma fragment frag
 				// make fog work
 				#pragma multi_compile_fog
-			#pragma multi_compile_fwdbase
+				#pragma multi_compile_fwdbase
 
-			#pragma multi_compile _ LIGHTMAP_ON
-
+				#pragma multi_compile _ LIGHTMAP_ON
 
 				#pragma multi_compile _ SHADOWS_SCREEN
-			#pragma multi_compile _ VERTEXLIGHT_ON
+				#pragma multi_compile _ VERTEXLIGHT_ON
+
+				
+				#include "UnityCG.cginc"
 
 
 
@@ -88,7 +90,7 @@ Shader "Custom/MapShaderAccurate"
 #endif
 
 				//unity defined variables
-				uniform float4 _LightColor0;
+				//uniform float4 _LightColor0;
 
 				//from our globals
 				float4 _RoAmbientColor;
@@ -108,6 +110,9 @@ Shader "Custom/MapShaderAccurate"
 					o.lightDir = normalize(ObjSpaceLightDir(v.vertex));
 					o.uv2 = v.uv2.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 					//o.worldpos = mul(unity_ObjectToWorld, v.vertex);
+
+					//o.color = _LightColor0;
+
 
 					
 					UNITY_TRANSFER_FOG(o,o.pos);
@@ -144,9 +149,9 @@ Shader "Custom/MapShaderAccurate"
 					float shadowStr = 1 - (saturate(1 - attenuation * NdotL * 2) * _Opacity); //NdotL here is to force things facing away from sun to be unlit
 					float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 
-					float4 s = env;
-					float m = max(max(s.r, s.g), s.b);
-					float world = saturate(0.5 + (s / m) * 0.5);
+					//float4 s = env;
+					//float m = max(max(s.r, s.g), s.b);
+					//float world = saturate(0.5 + (s / m) * 0.5);
 					//return s / m;
 
 					//return lm;
@@ -168,7 +173,7 @@ Shader "Custom/MapShaderAccurate"
 
 					float4 finalColor = tex; // *0.9; //Controversial! But I think it's right.
 
-					finalColor *= saturate(NdotL * env + _RoAmbientColor) * ambienttex;
+					finalColor *= saturate(NdotL * _RoDiffuseColor + _RoAmbientColor) * ambienttex;
 					finalColor *= saturate(i.color);
 					finalColor *= env; //double dipping environment color?
 					finalColor *= shadowStr;
@@ -192,6 +197,41 @@ Shader "Custom/MapShaderAccurate"
 
 			ENDCG
 			}
+
+			Pass
+	        {
+	            Tags { "LightMode" = "ForwardAdd" }
+	            Blend SrcAlpha One
+	            Fog { Color (0,0,0,0) } // in additive pass fog should be black
+	            ZWrite Off
+	            ZTest LEqual
+
+	            CGPROGRAM
+	            #pragma target 3.0
+
+	            // -------------------------------------
+
+
+	            #pragma shader_feature_local _NORMALMAP
+	            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+	            #pragma shader_feature_local _METALLICGLOSSMAP
+	            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+	            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+	            #pragma shader_feature_local _DETAIL_MULX2
+	            #pragma shader_feature_local _PARALLAXMAP
+
+	            #pragma multi_compile_fwdadd_fullshadows
+	            #pragma multi_compile_fog
+	            // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
+	            //#pragma multi_compile _ LOD_FADE_CROSSFADE
+
+	            #pragma vertex vertAdd
+	            #pragma fragment fragAdd
+	            #include "UnityStandardCoreForward.cginc"
+
+	            ENDCG
+	        }
+
 		}
 		FallBack "Transparent/Cutout/VertexLit"
 }

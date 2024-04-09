@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Assets.Scripts.Network;
 using RebuildSharedData.Enum;
 using UnityEditor;
@@ -31,8 +32,7 @@ namespace Assets.Scripts.MapEditor
     public class RoMapEditor : MonoBehaviour
     {
 #if UNITY_EDITOR
-        [SerializeField]
-        private RoMapData mapData;
+        [SerializeField] private RoMapData mapData;
 
         public RoMapChunk[] Chunks;
         public RoMapWaterChunk[] WaterChunks;
@@ -49,7 +49,7 @@ namespace Assets.Scripts.MapEditor
         public float HeightSnap = 2f;
 
         public bool PaintEmptyTileColorsBlack = false;
-        
+
         public const int ChunkSizeInTiles = 16;
 
         public bool IsEditorStartupMode;
@@ -83,11 +83,11 @@ namespace Assets.Scripts.MapEditor
 
         public void Awake()
         {
-	        if (Application.isPlaying && Camera.main == null && !mapData.IsWalkTable)
-	        {
-		        //NetworkManager.SpawnMap = name;
-		        SceneManager.LoadScene("MainScene");
-	        }
+            if (Application.isPlaying && Camera.main == null && !mapData.IsWalkTable)
+            {
+                //NetworkManager.SpawnMap = name;
+                SceneManager.LoadScene("MainScene");
+            }
         }
 
         public void Initialize(RoMapData data)
@@ -112,7 +112,7 @@ namespace Assets.Scripts.MapEditor
 
         public void EnterEditMode()
         {
-            if(MapData.IsWalkTable)
+            if (MapData.IsWalkTable)
                 AdjustRendererInChildren(true);
             if (hasToolStored)
                 return;
@@ -139,7 +139,7 @@ namespace Assets.Scripts.MapEditor
         public void Reload()
         {
             RebuildMeshInArea(MapData.Rect);
-            if(gameObject.isStatic)
+            if (gameObject.isStatic)
                 RebuildUVDataInArea(MapData.Rect);
             //Initialize(mapData);
         }
@@ -164,7 +164,7 @@ namespace Assets.Scripts.MapEditor
                     if (!MapData.IsWalkTable)
                         t.gameObject.isStatic = true;
                     else
-                        GameObjectUtility.SetStaticEditorFlags(t.gameObject,  StaticEditorFlags.BatchingStatic | StaticEditorFlags.NavigationStatic);
+                        GameObjectUtility.SetStaticEditorFlags(t.gameObject, StaticEditorFlags.BatchingStatic | StaticEditorFlags.NavigationStatic);
                 }
             }
 
@@ -198,16 +198,126 @@ namespace Assets.Scripts.MapEditor
 
                     //chunk.RebuildUVDataOnly();
                     chunk.RebuildMeshData(TileSize, PaintEmptyTileColorsBlack);
-                    if(gameObject.isStatic)
+                    if (gameObject.isStatic)
                         chunk.RebuildUvs();
                 }
             }
         }
-
-        public void RebuildProbes()
+        
+        public void BuildMapLightProbeTexture(bool destroyProbesAfterBaking = true)
         {
             if (MapData.IsWalkTable)
                 return;
+
+            var walkProvider = GameObject.FindObjectOfType<RoWalkDataProvider>();
+            if (walkProvider == null)
+                return;
+
+            if (ProbeGroup == null)
+            {
+                Debug.LogWarning($"BuildMapLightProbeTexture called, but there are no light probes to use.");
+                return;
+            }
+
+            var colors = new Color[walkProvider.WalkData.Width * walkProvider.WalkData.Height];
+            var tempColor = new Color[1];
+            var tempUp = new Vector3[] { Vector3.up };
+
+            LightProbes.Tetrahedralize();
+
+            for (var x = 0; x < walkProvider.WalkData.Width; x++)
+            {
+                for (var y = 0; y < walkProvider.WalkData.Height; y++)
+                {
+                    var cell = walkProvider.WalkData.Cell(x, y);
+
+                    LightProbes.GetInterpolatedProbe(new Vector3(x + 0.5f, cell.AverageHeights * RoMapData.YScale + 0.8f, y + 0.5f),
+                        null, out var probe);
+
+                    probe.Evaluate(tempUp, tempColor);
+                    colors[x + y * walkProvider.WalkData.Width] = tempColor[0].gamma;
+                }
+            }
+
+            var tex = new Texture2D(walkProvider.WalkData.Width, walkProvider.WalkData.Height, TextureFormat.RGBA32, false);
+            tex.SetPixels(colors);
+            tex.Apply();
+            var bytes = tex.EncodeToPNG();
+
+            var pathRoot = "Assets/Maps/lighting/";
+
+            if (!Directory.Exists(pathRoot))
+                Directory.CreateDirectory(pathRoot);
+            var destPath = $"{pathRoot}{MapData.name}.png";
+            File.WriteAllBytes(destPath, bytes);
+
+            if (ProbeGroup != null && destroyProbesAfterBaking)
+                DestroyImmediate(ProbeGroup.gameObject);
+
+            AssetDatabase.Refresh();
+
+            TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(destPath);
+            importer.textureType = TextureImporterType.Default;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.textureFormat = TextureImporterFormat.Automatic;
+            importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.isReadable = true;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.maxTextureSize = 4096;
+
+            importer.SaveAndReimport();
+            var finalTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(destPath);
+            var settings = GetComponent<RoMapRenderSettings>();
+            if (settings != null)
+            {
+                settings.BakedLightContributionMap = finalTexture;
+                EditorUtility.SetDirty(settings);
+            }
+        }
+
+        private bool IsPositionNearObject(Vector2 position, List<Vector2> objects, float distance)
+        {
+            foreach (var obj in objects)
+            {
+                if (Vector2.Distance(position, obj) < distance)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private bool HasLightsInScene()
+        {
+            foreach (var l in FindObjectsOfType<Light>())
+            {
+                if (l.type != LightType.Directional)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void RebuildProbes(bool limitToNonStaticAreas = false)
+        {
+            if (MapData.IsWalkTable)
+                return;
+
+            var objectList = new List<Vector2>();
+
+
+            if (limitToNonStaticAreas)
+            {
+                if (!HasLightsInScene())
+                    return; //no point if there's no lights.
+
+                foreach (var obj in FindObjectsOfType<MeshRenderer>())
+                {
+                    if (!obj.gameObject.isStatic && !obj.gameObject.name.StartsWith("WaterChunk"))
+                        objectList.Add(new Vector2(obj.transform.position.x, obj.transform.position.z));
+                }
+            }
 
             if (ProbeGroup == null)
             {
@@ -227,7 +337,12 @@ namespace Assets.Scripts.MapEditor
             {
                 for (var y = 0; y < MapData.Height; y += 1)
                 {
-                    
+                    if (limitToNonStaticAreas)
+                    {
+                        if (!IsPositionNearObject(new Vector2(x, y) * TileSize, objectList, 10f)) // && (x % 20 != 0 || y % 20 != 0))
+                            continue;
+                    }
+
                     var cell = MapData.Cell(x, y);
 
                     var castBottom = new Vector3(x * TileSize, cell.AverageHeights, y * TileSize);
@@ -240,7 +355,7 @@ namespace Assets.Scripts.MapEditor
                         probePositions.Add(hitInfo.point + new Vector3(0f, 0.01f, 0f));
                     }
                     else
-						probePositions.Add(castBottom);
+                        probePositions.Add(castBottom);
 
                     probeCount++;
 
@@ -261,7 +376,7 @@ namespace Assets.Scripts.MapEditor
 
             Debug.Log($"Placed {probeCount} light probes on map {mapData.name}.");
             ProbeGroup.probePositions = probePositions.ToArray();
-            
+
             EditorUtility.SetDirty(ProbeGroup);
         }
 
@@ -272,7 +387,6 @@ namespace Assets.Scripts.MapEditor
 
             if (WaterMaterial == null)
             {
-                
                 WaterMaterial = new Material(Shader.Find("Unlit/RoWaterShader"));
                 if (MapData.Water.Images == null || MapData.Water.Images.Length <= 0)
                 {
@@ -300,10 +414,10 @@ namespace Assets.Scripts.MapEditor
         {
             if (MapMaterial == null)
             {
-                if(MapData.Atlas == null)
+                if (MapData.Atlas == null)
                     MapData.RebuildAtlas();
 
-                if(!MapData.IsWalkTable)
+                if (!MapData.IsWalkTable)
                     MapMaterial = new Material(Shader.Find("Custom/MapShaderAccurate"));
                 else
                     MapMaterial = new Material(Shader.Find("Unlit/WalkableShader"));
@@ -344,7 +458,7 @@ namespace Assets.Scripts.MapEditor
         {
             foreach (var c in Chunks)
             {
-                if(c.NeedsUVUpdate)
+                if (c.NeedsUVUpdate)
                     c.RebuildUvs();
             }
         }
@@ -359,7 +473,7 @@ namespace Assets.Scripts.MapEditor
                 return;
 
             r.ClampToBounds(new RectInt(0, 0, MapData.Width, MapData.Height));
-            
+
             var cells = MapData.GetCellData();
 
             for (var x = r.xMin; x < r.xMax; x++)
@@ -370,11 +484,9 @@ namespace Assets.Scripts.MapEditor
 
                     cell.Top.Color = new Color(1, 1, 1, 1);
                     cell.Front.Color = new Color(1, 1, 1, 1);
-                    
-                    
                 }
             }
-            
+
             RebuildMeshInArea(r);
         }
 
@@ -395,21 +507,21 @@ namespace Assets.Scripts.MapEditor
                 for (var y = chunkYMin; y <= chunkYMax; y++)
                 {
                     var chunk = Chunks[x + y * ChunkWidth];
-                    if(chunk != null)
+                    if (chunk != null)
                         chunk.RebuildUvs();
                 }
             }
         }
-        
+
         public void RebuildMeshInArea(RectInt r)
         {
             Profiler.BeginSample("RebuildMeshInArea");
             r.ClampToBounds(new RectInt(0, 0, MapData.Width, MapData.Height));
 
             var chunkXMin = r.xMin / ChunkSizeInTiles;
-            var chunkXMax = (r.xMax-1) / ChunkSizeInTiles;
+            var chunkXMax = (r.xMax - 1) / ChunkSizeInTiles;
             var chunkYMin = r.yMin / ChunkSizeInTiles;
-            var chunkYMax = (r.yMax-1) / ChunkSizeInTiles;
+            var chunkYMax = (r.yMax - 1) / ChunkSizeInTiles;
 
             PrepareMaterial();
             UpdateWater();
@@ -423,7 +535,7 @@ namespace Assets.Scripts.MapEditor
 
                 Chunks = new RoMapChunk[ChunkWidth * ChunkHeight];
             }
-            
+
             if (WaterChunks == null && !MapData.IsWalkTable)
             {
                 ChunkWidth = MapData.Width / ChunkSizeInTiles;
@@ -469,9 +581,10 @@ namespace Assets.Scripts.MapEditor
                         wc = go.AddComponent<RoMapWaterChunk>();
                         wc.hideFlags = HideFlags.NotEditable;
                         WaterChunks[x + y * ChunkWidth] = wc;
-                        wc.Initialize(MapData, MapData.Water, WaterMaterial, new RectInt(x * ChunkSizeInTiles, y * ChunkSizeInTiles, ChunkSizeInTiles, ChunkSizeInTiles));
+                        wc.Initialize(MapData, MapData.Water, WaterMaterial,
+                            new RectInt(x * ChunkSizeInTiles, y * ChunkSizeInTiles, ChunkSizeInTiles, ChunkSizeInTiles));
                     }
-                    
+
                     wc.transform.parent = gameObject.transform;
                     wc.transform.localPosition = new Vector3(x * TileSize * ChunkSizeInTiles, 0, y * TileSize * ChunkSizeInTiles);
 
@@ -483,7 +596,6 @@ namespace Assets.Scripts.MapEditor
                         //wc.gameObject.SetActive(false);
                         GameObject.DestroyImmediate(wc.gameObject);
                         WaterChunks[x + y * ChunkWidth] = null;
-                        
                     }
                 }
             }
@@ -517,11 +629,10 @@ namespace Assets.Scripts.MapEditor
         }
 
 
-
         public void UpdateLightmapSettings()
         {
             SceneView.duringSceneGui += OnSceneGUI;
-            
+
             if (mapData == null)
                 return;
 
@@ -546,16 +657,39 @@ namespace Assets.Scripts.MapEditor
                         Light l = requests[i];
                         switch (l.type)
                         {
-                            case UnityEngine.LightType.Directional: LightmapperUtils.Extract(l, ref dLight); LightmapperUtils.Extract(l, out cookie); ld.Init(ref dLight, ref cookie); break;
-                            case UnityEngine.LightType.Point: LightmapperUtils.Extract(l, ref point); LightmapperUtils.Extract(l, out cookie); ld.Init(ref point, ref cookie); break;
-                            case UnityEngine.LightType.Spot: LightmapperUtils.Extract(l, ref spot); LightmapperUtils.Extract(l, out cookie); ld.Init(ref spot, ref cookie); break;
-                            case UnityEngine.LightType.Area: LightmapperUtils.Extract(l, ref rect); LightmapperUtils.Extract(l, out cookie); ld.Init(ref rect, ref cookie); break;
-                            case UnityEngine.LightType.Disc: LightmapperUtils.Extract(l, ref disc); LightmapperUtils.Extract(l, out cookie); ld.Init(ref disc, ref cookie); break;
-                            default: ld.InitNoBake(l.GetInstanceID()); break;
+                            case UnityEngine.LightType.Directional:
+                                LightmapperUtils.Extract(l, ref dLight);
+                                LightmapperUtils.Extract(l, out cookie);
+                                ld.Init(ref dLight, ref cookie);
+                                break;
+                            case UnityEngine.LightType.Point:
+                                LightmapperUtils.Extract(l, ref point);
+                                LightmapperUtils.Extract(l, out cookie);
+                                ld.Init(ref point, ref cookie);
+                                break;
+                            case UnityEngine.LightType.Spot:
+                                LightmapperUtils.Extract(l, ref spot);
+                                LightmapperUtils.Extract(l, out cookie);
+                                ld.Init(ref spot, ref cookie);
+                                break;
+                            case UnityEngine.LightType.Area:
+                                LightmapperUtils.Extract(l, ref rect);
+                                LightmapperUtils.Extract(l, out cookie);
+                                ld.Init(ref rect, ref cookie);
+                                break;
+                            case UnityEngine.LightType.Disc:
+                                LightmapperUtils.Extract(l, ref disc);
+                                LightmapperUtils.Extract(l, out cookie);
+                                ld.Init(ref disc, ref cookie);
+                                break;
+                            default:
+                                ld.InitNoBake(l.GetInstanceID());
+                                break;
                         }
+
                         ld.cookieID = l.cookie?.GetInstanceID() ?? 0;
 
-                        if(l.type == LightType.Point)
+                        if (l.type == LightType.Point)
                             ld.falloff = type;
 
                         lightsOutput[i] = ld;
@@ -564,16 +698,15 @@ namespace Assets.Scripts.MapEditor
                 Lightmapping.SetDelegate(testDel);
                 updatedLightmapper = true;
             }
-
         }
 
         public void OnDisable()
         {
             SceneView.duringSceneGui -= OnSceneGUI;
 
-            if(!mapData.IsWalkTable)
+            if (!mapData.IsWalkTable)
                 Lightmapping.ResetDelegate();
-            
+
             updatedLightmapper = false;
         }
 
@@ -582,7 +715,7 @@ namespace Assets.Scripts.MapEditor
             if (Selection.activeGameObject != gameObject && hasToolStored)
                 LeaveEditMode();
 
-            if(!updatedLightmapper)
+            if (!updatedLightmapper)
                 UpdateLightmapSettings();
 
             Shader.SetGlobalColor("_FakeAmbient", Color.white);
@@ -626,7 +759,7 @@ namespace Assets.Scripts.MapEditor
                     var cell = cells[x + y * MapData.Width];
 
                     var offset = Vector3.zero;
-                    if(MapData.IsWalkTable)
+                    if (MapData.IsWalkTable)
                         offset += new Vector3(0f, 0.05f, 0f);
 
                     var v1 = new Vector3((x + 0) * TileSize, cell.Heights[0] * RoMapData.YScale, (y + 1) * TileSize) + offset;
@@ -647,7 +780,7 @@ namespace Assets.Scripts.MapEditor
 
             GL.PopMatrix();
         }
-        
+
         public (Vector2Int, Direction) GetTileAndDirForDirection(Direction dir)
         {
             if (dir == Direction.SouthWest)
@@ -673,7 +806,7 @@ namespace Assets.Scripts.MapEditor
             if (dir == Direction.North)
                 return (new Vector2Int(x, SelectedRegion.yMax - 1), xOdd ? Direction.North : Direction.NorthEast);
 
-            if(xOdd && !yOdd)
+            if (xOdd && !yOdd)
                 return (new Vector2Int(x, y), Direction.North);
 
             if (!xOdd && yOdd)
@@ -681,9 +814,8 @@ namespace Assets.Scripts.MapEditor
 
             if (xOdd && yOdd)
                 return (new Vector2Int(x, y), Direction.None);
-            
-            return (new Vector2Int(x, y), Direction.NorthEast);
 
+            return (new Vector2Int(x, y), Direction.NorthEast);
         }
 
         public Vector3 GetPositionForTileEdgeOrCorner(int x, int y, Direction dir)
@@ -714,18 +846,21 @@ namespace Assets.Scripts.MapEditor
                 pos += new Vector3((x + 0) * TileSize, tile.Heights[2] * RoMapData.YScale, (y + 1) * TileSize);
                 return pos / 2 + transform.position;
             }
+
             if (dir == Direction.East)
             {
                 var pos = new Vector3((x + 1) * TileSize, tile.Heights[1] * RoMapData.YScale, (y + 0) * TileSize);
                 pos += new Vector3((x + 1) * TileSize, tile.Heights[3] * RoMapData.YScale, (y + 1) * TileSize);
                 return pos / 2 + transform.position;
             }
+
             if (dir == Direction.North)
             {
                 var pos = new Vector3((x + 0) * TileSize, tile.Heights[0] * RoMapData.YScale, (y + 1) * TileSize);
                 pos += new Vector3((x + 1) * TileSize, tile.Heights[1] * RoMapData.YScale, (y + 1) * TileSize);
                 return pos / 2 + transform.position;
             }
+
             if (dir == Direction.South)
             {
                 var pos = new Vector3((x + 0) * TileSize, tile.Heights[2] * RoMapData.YScale, (y + 0) * TileSize);
@@ -735,7 +870,7 @@ namespace Assets.Scripts.MapEditor
 
             return Vector3.zero; //shouldn't happen...
         }
-        
+
         public Vector3 GetTileCenterPosition(int x, int y)
         {
             var data = MapData.GetCellData();
@@ -780,7 +915,7 @@ namespace Assets.Scripts.MapEditor
                 CurrentBrush?.OnSelectionChange();
             }
         }
-        
+
         private bool RaycastToChunks(out RaycastHit rayHit)
         {
             var worldRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
@@ -815,7 +950,6 @@ namespace Assets.Scripts.MapEditor
             //Debug.Log("MOUSEMOVE");
             if (Event.current.type == EventType.MouseMove)
             {
-                
                 var hasHit = RaycastToChunks(out var hit);
 
                 if (hasHit)
@@ -835,7 +969,7 @@ namespace Assets.Scripts.MapEditor
                     //Debug.Log(size);
                     cursorArea = new RectInt(tile.x - size / 2, tile.y - size / 2, 1 + size, 1 + size);
                     cursorArea.ClampToBounds(MapData.Rect);
-                    
+
                     CursorVisible = true;
                 }
             }
@@ -864,7 +998,6 @@ namespace Assets.Scripts.MapEditor
                     EditorUtility.SetDirty(gameObject);
                     return true;
                 }
-
             }
 
             return false;
@@ -872,16 +1005,16 @@ namespace Assets.Scripts.MapEditor
 
         public void DebugStartupCheck()
         {
-	        if (Event.current.type == EventType.MouseUp && Event.current.button == 0)
-	        {
-		        if (!RaycastToChunks(out var hit))
-			        return;
-                
-		        var walkProvider = GameObject.FindObjectOfType<RoWalkDataProvider>();
-		        if (walkProvider == null)
-			        return;
+            if (Event.current.type == EventType.MouseUp && Event.current.button == 0)
+            {
+                if (!RaycastToChunks(out var hit))
+                    return;
 
-		        walkProvider.GetMapPositionForWorldPosition(hit.point, out var mapPos);
+                var walkProvider = GameObject.FindObjectOfType<RoWalkDataProvider>();
+                if (walkProvider == null)
+                    return;
+
+                walkProvider.GetMapPositionForWorldPosition(hit.point, out var mapPos);
                 if (!walkProvider.IsCellWalkable(mapPos))
                     return;
 
@@ -894,13 +1027,12 @@ namespace Assets.Scripts.MapEditor
 
                 IsEditorStartupMode = false;
             }
-
         }
 
         public void OnSceneGUI(SceneView sceneView)
         {
             if (!inEditMode)
-	            return;
+                return;
 
             int controlId = GUIUtility.GetControlID(FocusType.Passive);
 
@@ -912,7 +1044,7 @@ namespace Assets.Scripts.MapEditor
                 {
                     Event.current.commandName = "";
                     Event.current.Use();
-                    
+
                     if (CursorVisible)
                     {
                         var curPos = GetTileCenterPosition(Mathf.FloorToInt(cursorArea.center.x), Mathf.FloorToInt(cursorArea.center.y));
@@ -932,7 +1064,7 @@ namespace Assets.Scripts.MapEditor
                 HighlightTopFaces(SelectedRegion);
 
 
-            if (CursorVisible && Event.current.isKey && Event.current.type == EventType.KeyDown 
+            if (CursorVisible && Event.current.isKey && Event.current.type == EventType.KeyDown
                 && Event.current.shift && Event.current.keyCode == KeyCode.C)
             {
                 var cell = MapData.Cell(HoveredTile);
@@ -958,8 +1090,8 @@ namespace Assets.Scripts.MapEditor
 
             if (IsEditorStartupMode)
             {
-	            DebugStartupCheck();
-	            return;
+                DebugStartupCheck();
+                return;
             }
 
             if (PerformSelectAction())

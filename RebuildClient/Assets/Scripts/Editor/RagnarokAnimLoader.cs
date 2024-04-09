@@ -180,7 +180,11 @@ namespace Assets.Editor
 			if (version >= 22)
 			{
 				for (var i = 0; i < actions.Length; i++)
-					actions[i].Delay = (int)(br.ReadSingle() * 25);
+					actions[i].Delay = (int)(br.ReadSingle() * 24);
+			}
+			else
+			{
+				Console.WriteLine($"Processed ACT {actfile} with version {version}");
 			}
 			
 			fs.Close();

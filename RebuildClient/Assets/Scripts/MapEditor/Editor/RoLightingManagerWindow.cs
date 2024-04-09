@@ -39,7 +39,10 @@ namespace Assets.Scripts.MapEditor.Editor
 
         private const int NoLightSamples = 1;
 
+        private bool shouldBakeLightProbes = false;
+
         private EditorCoroutine minimapCoroutine;
+        private EditorCoroutine lightBakeCoroutine;
 
 
         [MenuItem("Ragnarok/Lighting Manager")]
@@ -201,14 +204,13 @@ namespace Assets.Scripts.MapEditor.Editor
             if(AlwaysRebuildLightprobes)
                 map.RebuildProbes();
 
-
             Lightmapping.bakeCompleted -= PostAmbient;
             Lightmapping.bakeCompleted -= BakePost;
             Lightmapping.bakeCompleted += PostAmbient;
             IsBaking = true;
             HasAmbient = true;
             Lightmapping.giWorkflowMode = Lightmapping.GIWorkflowMode.OnDemand;
-            Lightmapping.BakeAsync();
+            lightBakeCoroutine = EditorCoroutineUtility.StartCoroutine(StartBaking(), this);
         }
 
         private void PostAmbient()
@@ -259,6 +261,9 @@ namespace Assets.Scripts.MapEditor.Editor
             RenderSettings.ambientLight = Color.black;
             RenderSettings.ambientIntensity = 0f;
             SetLightSettings();
+            
+            if(AlwaysRebuildLightprobes && shouldBakeLightProbes)
+                map.RebuildProbes();
 
             //Debug.Log("Lights: " + lights.Count);
 
@@ -272,14 +277,35 @@ namespace Assets.Scripts.MapEditor.Editor
 
             Lightmapping.bakeCompleted -= PostAmbient;
             Lightmapping.bakeCompleted -= BakePost;
-            Lightmapping.bakeCompleted += BakePost;
+            Lightmapping.bakeCompleted += PostLightProbeBake;
             IsBaking = true;
 
             Lightmapping.lightingSettings.directionalityMode = HasAmbient ? LightmapsMode.CombinedDirectional : LightmapsMode.NonDirectional;
             Lightmapping.giWorkflowMode = Lightmapping.GIWorkflowMode.OnDemand;
-            Lightmapping.BakeAsync();
+            lightBakeCoroutine = EditorCoroutineUtility.StartCoroutine(StartBaking(), this);
         }
+        
+        
+        private void PostLightProbeBake()
+        {
+            if (!shouldBakeLightProbes || !TryFindMapEditor(out var map2))
+            {
+                BakePost();
+                return;
+            }
 
+            map2.BuildMapLightProbeTexture(true);
+            map2.RebuildProbes(true);
+            
+            EditorSceneManager.MarkAllScenesDirty();
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.Refresh();
+
+            Lightmapping.bakeCompleted -= PostLightProbeBake;
+            Lightmapping.bakeCompleted += BakePost;
+            lightBakeCoroutine = EditorCoroutineUtility.StartCoroutine(StartBaking(), this);
+        }
+        
         private void BakePost()
         {
             IsBaking = false;
@@ -330,6 +356,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 settings.AmbientOcclusionStrength = 0.5f;
 
                 ambientTextures = null;
+                
             }
 
             SetLightSettings();
@@ -341,8 +368,18 @@ namespace Assets.Scripts.MapEditor.Editor
             if (UseMultiMap && bakeIndex + 1 < Scenes.Length)
             {
                 bakeIndex++;
+                shouldBakeLightProbes = true;
                 BakeAmbient();
             }
+        }
+        
+        private IEnumerator StartBaking()
+        {
+            //this is really stupid but you can end up in a race where it starts baking before
+            //it registers lighting settings have changed, so we wait. But only for a second.
+            AssetDatabase.Refresh();
+            yield return new EditorWaitForSeconds(1f);
+            Lightmapping.BakeAsync();
         }
         
         private IEnumerator MakeMinimaps()
@@ -699,6 +736,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 {
                     HasAmbient = false;
                     UseMultiMap = false;
+                    shouldBakeLightProbes = true;
                     lights?.Clear();
                     BakeRegular();
                 }
@@ -706,8 +744,18 @@ namespace Assets.Scripts.MapEditor.Editor
                 if (GUILayout.Button("Bake All"))
                 {
                     UseMultiMap = false;
+                    shouldBakeLightProbes = true;
                     lights?.Clear();
                     BakeAmbient();
+                }
+
+                if (GUILayout.Button("Do Light Probe Thing"))
+                {
+                    if (TryFindMapEditor(out var map))
+                    {
+                        map.BuildMapLightProbeTexture();
+                    }
+
                 }
             }
             else
@@ -735,6 +783,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 if (GUILayout.Button("Bake All Scenes"))
                 {
                     UseMultiMap = true;
+                    shouldBakeLightProbes = true;
                     bakeIndex = 0;
                     BakeAmbient();
                 }

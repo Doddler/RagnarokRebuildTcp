@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Objects;
@@ -97,6 +98,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 targetLight = go.AddComponent<Light>();
                 targetLight.type = LightType.Directional;
                 targetLight.shadows = LightShadows.Soft;
+                targetLight.cullingMask = ~LayerMask.GetMask("Characters");
             }
 
             var intensity = 1;// world.LightSetup.Opacity;

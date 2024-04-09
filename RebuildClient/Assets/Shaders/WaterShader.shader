@@ -60,27 +60,23 @@
             
             //from our globals
             float4 _RoDiffuseColor;
+            float4 _RoAmbientColor;
 
             v2f vert (appdata v)
             {
                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
-                float4 vin = v.vertex;
 
                 float offset = (_Time.x * 1000 * _WaveSpeed) % 360 - 180;
                 float x = worldPos.x % 2.0;
                 float y = worldPos.z % 2.0;
 
-                float diff    = x < 1.0 ? y < 1.0 ? 1.0 : -1.0 : 0.0;
+                float diff = x < 1.0 ? y < 1.0 ? 1.0 : -1.0 : 0.0;
                 
                 worldPos.y += sin((3.1415926/180) * (offset + 0.5 * _WavePitch * (worldPos.x + worldPos.z + diff))) * _WaveHeight;
 
-                v.vertex = mul( unity_WorldToObject, worldPos);
-
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o, UnityObjectToClipPos(vin));
-
+                UNITY_TRANSFER_FOG(o, UnityObjectToClipPos(v.vertex));
 
                 float4 view = mul(UNITY_MATRIX_V, float4(worldPos, 1));
                 o.vertex = mul(UNITY_MATRIX_P, view);
@@ -91,28 +87,16 @@
 
             fixed4 frag(v2f i) : SV_Target
             {
-                    //float z = SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(i.screenPos));
-                    //float sceneZ = LinearEyeDepth();
-                    //float depth = sceneZ - i.screenPos.z;
-                //float depth = Linear01Depth(z);
-
-                //if (depth < i.screenPos.z)
-                //    discard;
-
-                //float depth = i.screenPos.z;
-
-                //return float4(depth, depth, depth, 1);
-    //return fixed4(i.uv.x%1, i.uv.y%1, 0, 1);
-    
-                // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
 
                 fixed a = 0.5625;
+                float env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
+                env = env * 0.5 + 0.5;
                 //col = col * 0.88;// * 0.5833333333333333;
                 
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return fixed4(col.rgb*a, a);
+                return fixed4(col.rgb*env*a, a);
             }
             ENDCG
         }

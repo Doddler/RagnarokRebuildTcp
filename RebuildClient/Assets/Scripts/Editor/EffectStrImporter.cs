@@ -39,7 +39,7 @@ namespace Assets.Scripts.Editor
                 if (!string.IsNullOrWhiteSpace(e.StrFile))
                 {
                     var loader = new RagnarokEffectLoader();
-                    var anim = loader.Load(@$"G:\Projects2\Ragnarok\Resources\data\texture\effect\{e.StrFile}.str", e.Name);
+                    var anim = loader.Load( Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, @$"texture\effect\{e.StrFile}.str"), e.Name);
                     if (anim == null)
                         continue;
 

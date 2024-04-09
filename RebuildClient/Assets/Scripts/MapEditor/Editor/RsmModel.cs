@@ -15,7 +15,7 @@ namespace Assets.Scripts.MapEditor.Editor
         public Vector3[] Vertices = new Vector3[3];
         public Vector3[] Normals = new Vector3[3];
         public Vector2[] UVs = new Vector2[3];
-        public Color[] Colors = new Color[3];
+        public Color32[] Colors = new Color32[3];
         public bool TwoSided;
 
         public Vector3[] FlippedNormals
@@ -85,7 +85,7 @@ namespace Assets.Scripts.MapEditor.Editor
         public Bounds Bounds;
         public List<Vector3> Vertices = new List<Vector3>();
         public List<Vector2> UVs = new List<Vector2>();
-        public List<Color> Colors = new List<Color>();
+        public List<Color32> Colors = new List<Color32>();
         public List<RsmFace> Faces = new List<RsmFace>();
         public List<RsmPosKeyframe> PosKeyFrames = new List<RsmPosKeyframe>();
         public List<RsmRotKeyFrame> RotationKeyFrames = new List<RsmRotKeyFrame>();

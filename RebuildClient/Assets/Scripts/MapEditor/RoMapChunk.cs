@@ -235,7 +235,8 @@ namespace Assets.Scripts.MapEditor
 
                         m.AddVertices(tVerts);
                         m.AddUVs(MapData.TranslateTileTextureUVs(cell.Top));
-                        m.AddColors(tColors);
+                        if(!MapData.IsWalkTable)
+                            m.AddColors(tColors);
                         m.AddNormals(tNormals);
                         m.AddTriangles(new[] { 0, 1, 3, 3, 2, 0 });
                     }
@@ -259,7 +260,8 @@ namespace Assets.Scripts.MapEditor
                         m.AddVertices(new[] { r1, r2, r3, r4 });
                         m.AddNormals(new[] { rnormal, rnormal, rnormal, rnormal });
                         m.AddUVs(MapData.TranslateTileTextureUVs(cell.Right));
-                        m.AddColors(sharedData.GetAveragedRightColors(new Vector2Int(x, y)));
+                        if(!MapData.IsWalkTable)
+                            m.AddColors(sharedData.GetAveragedRightColors(new Vector2Int(x, y)));
                         m.AddTriangles(new[] { 0, 1, 3, 3, 2, 0 });
                     }
 
@@ -282,7 +284,8 @@ namespace Assets.Scripts.MapEditor
                         m.AddVertices(new[] { f1, f2, f3, f4 });
                         m.AddNormals(new[] { fNormal, fNormal, fNormal, fNormal });
                         m.AddUVs(MapData.TranslateTileTextureUVs(cell.Front));
-                        m.AddColors(sharedData.GetAveragedFrontColors(new Vector2Int(x, y)));
+                        if(!MapData.IsWalkTable)
+                            m.AddColors(sharedData.GetAveragedFrontColors(new Vector2Int(x, y)));
                         m.AddTriangles(new[] { 0, 1, 3, 3, 2, 0 });
                     }
                 }

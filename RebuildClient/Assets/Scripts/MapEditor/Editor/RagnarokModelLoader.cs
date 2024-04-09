@@ -532,6 +532,8 @@ namespace Assets.Scripts.MapEditor.Editor
 			br?.Dispose();
 		}
 
+		
+		[MenuItem("Ragnarok/Load Test Model")]
 		public static void LoadModelTest()
 		{
 			var loader = new RagnarokModelLoader();
@@ -542,32 +544,31 @@ namespace Assets.Scripts.MapEditor.Editor
 					GameObject.DestroyImmediate(go);
 				go = new GameObject("ModelTest");
 
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\게페니아\대장간.rsm"; //Retarded hammer building
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\유노\유노_나무3.rsm"; //Juno tree
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\게페니아\도구점.rsm"; //geffen windmill
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\유노\유노_과학자건물.rsm"; //alchemist thing?
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\모로코\개미나무.rsm"; //big ass ant
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\모로코\개미지옥나무뿌리.rsm"; //ant hell tree thing
-
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\니플헤임\니플헤임-무기점.rsm"; //weird skull hatchet house
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\니플헤임\니플헤임-풍차.rsm"; //niflheim windmill
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\프론테라\상점01.rsm"; //fruit cart
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\페이욘\싸리담1.rsm"; //payon fence
-				//var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\알베르타\도구점.rsm"; //alberta pickaxe shop
-				var modelPath = @"G:\Projects2\Ragnarok\Resources\data\model\프론테라\무기점.rsm"; //prontera armory
-
-
-
-
+				// var modelName = @"게페니아\대장간.rsm"; //Geffen wierd hammer building
+				// var modelName = @"유노\유노_나무3.rsm"; //Juno tree
+				// var modelName = @"게페니아\도구점.rsm"; //geffen windmill
+				// var modelName = @"유노\유노_과학자건물.rsm"; //alchemist thing?
+				// var modelName = @"모로코\개미나무.rsm"; //big ass ant
+				// var modelName = @"모로코\개미지옥나무뿌리.rsm"; //ant hell tree thing
+				// var modelName = @"니플헤임\니플헤임-무기점.rsm"; //weird skull hatchet house
+				// var modelName = @"니플헤임\니플헤임-풍차.rsm"; //niflheim windmill
+				// var modelName = @"프론테라\상점01.rsm"; //fruit cart
+				// var modelName = @"페이욘\싸리담1.rsm"; //payon fence
+				// var modelName = @"알베르타\도구점.rsm"; //alberta pickaxe shop
+				//var modelName = @"글래스트\글래스트_부서진의자1.rsm"; //Glast\Glast_BrokenChair1
+				//var modelName = @"내부소품\탁상1.rsm"; //props\desk1
+				
+				var modelName = @"프론테라\민가04.rsm"; //prontera armory
+				
+				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, $@"model\{modelName}"); //prontera armory
 				var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
-
-				//loader.LoadModel(@"G:\Projects2\Ragnarok\Resources\data\model\글래스트\글래스트_부서진의자1.rsm"); //Glast\Glast_BrokenChair1
-				//loader.LoadModel(@"G:\Projects2\Ragnarok\Resources\data\model\내부소품\탁상1.rsm"); //props\desk1
+		
+				
 				loader.LoadModel(modelPath, savePath); //Glast\Glast_KnightStatue13
-
-
+		
+		
 				var model = loader.Compile();
-
+		
 				model.transform.SetParent(go.transform, false);
 				model.transform.localScale = new Vector3(1f, 1f, 1f);
 			}
@@ -575,8 +576,8 @@ namespace Assets.Scripts.MapEditor.Editor
 			{
 				loader.Dispose(); ;
 			}
-
-
+		
+		
 		}
 
 	}

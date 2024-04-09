@@ -19,6 +19,8 @@ namespace Assets.Scripts.MapEditor
     {
         public Vector4 Heights;
         public CellType Type;
+        
+        public float AverageHeights => (Heights[0] + Heights[1] + Heights[2] + Heights[3]) / 4f;
     }
 
     public class RagnarokWalkData : ScriptableObject
