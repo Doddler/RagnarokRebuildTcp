@@ -1529,6 +1529,12 @@
       "Name": "Lutie [Inside]",
       "MapMode": 3,
       "Music": "59.mp3"
+    },
+    {
+      "Code": "amatsu",
+      "Name": "Amatsu, the Land of Destiny",
+      "MapMode": 1,
+      "Music": "76.mp3"
     }
   ]
 }

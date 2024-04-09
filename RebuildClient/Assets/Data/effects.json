@@ -362,6 +362,17 @@
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 33,
+      "Name": "LightSpinner",
+      "ImportEffect": false,
+      "Billboard": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": "Assets/Prefabs/LightSpinner.prefab"
     }
   ]
 }
