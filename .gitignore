@@ -68,3 +68,7 @@ RebuildClient/Assets/SampleScenes/
 RebuildClient/Assets/Cinemachine/
 RebuildClient/Assets/prt_fild08stitch.unity
 RebuildClient/Assets/prt_fild08stitch.unity.meta
+RebuildClient/Logs/AssetImportWorker0.log
+RebuildClient/Logs/
+*.user
+RoRebuildServer/RoRebuildServer/.config/

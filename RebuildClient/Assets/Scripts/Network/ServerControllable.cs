@@ -55,18 +55,18 @@ namespace Assets.Scripts.Network
         private float hitLockImmuneTime = 0f;
         private bool isDirectMove;
         private bool isHidden;
-        private bool _isMoving;
-
-        private bool isMoving
-        {
-            get => _isMoving;
-            set
-            {
-                if (IsMainCharacter && isMoving && !value)
-                    Debug.Log($"Stopping main character.");
-                _isMoving = value;
-            }
-        }
+        
+        private bool isMoving;
+        // {
+        //     get => _isMoving;
+        //     set
+        //     {
+        //         if (IsMainCharacter && isMoving && !value)
+        //             Debug.Log($"Stopping main character.");
+        //         _isMoving = value;
+        //     }
+        // }
+        //private bool _isMoving;
 
         private Vector3 snapStartPos;
         private LTDescr snapAnim;
@@ -215,9 +215,9 @@ namespace Assets.Scripts.Network
 
         public void StartMove(float speed, float progress, int stepCount, int curStep, List<Vector2Int> steps)
         {
-            if (IsMainCharacter)
-                Debug.Log(
-                    $"{name} Start Move - From {steps[0]} to {steps[stepCount - 1]}\nSpeed:{speed} Progress:{progress} StepCount:{stepCount} CurStep:{curStep} StepLength:{steps.Count}");
+            // if (IsMainCharacter)
+            //     Debug.Log(
+            //         $"{name} Start Move - From {steps[0]} to {steps[stepCount - 1]}\nSpeed:{speed} Progress:{progress} StepCount:{stepCount} CurStep:{curStep} StepLength:{steps.Count}");
 
             moveSpeed = speed;
             tempSpeed = -1;
@@ -297,8 +297,8 @@ namespace Assets.Scripts.Network
                 Position = movePath[0];
                 transform.position = new Vector3(Position.x + 0.5f, walkProvider.GetHeightForPosition(transform.position), Position.y + 0.5f);
                 movePath.Clear();
-                if (IsMainCharacter)
-                    Debug.Log($"We've finished pathing, stopping character.");
+                // if (IsMainCharacter)
+                //     Debug.Log($"We've finished pathing, stopping character.");
                 isMoving = false;
             }
             else

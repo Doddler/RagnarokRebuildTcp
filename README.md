@@ -27,3 +27,4 @@ Server and client for a Ragnarok Online-like game. Some assembly required.
 - Finally, select 'Ragnarok -> Update Addressables' to link all the newly imported assets. Any time you add sprites or maps, you will need to do this again.
 - At this point, you should be able to run the server. Make sure you set visual studio to run the server as a standalone rather than via IIS.
 - Once the server is running, hitting play in the editor should allow you to connect.
+- You might get errors related to missing reference on GameDataManager on your first run, to fix this open the scene MainScene in the Scenes folder and make sure the data fields correctly link to the files in Assets/Data.
