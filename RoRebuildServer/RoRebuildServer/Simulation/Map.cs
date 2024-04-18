@@ -178,7 +178,7 @@ public class Map
     /// <summary>
     /// Move an entity from one location to another and update nearby entities' visibility of the moving entity.
     /// </summary>
-    public void MoveEntity(ref Entity entity, WorldObject ch, Position newPosition, bool isWalkUpdate = false)
+    public void ChangeEntityPosition(ref Entity entity, WorldObject ch, Position newPosition, bool isWalkUpdate = false)
     {
         //if(ch.Type == CharacterType.Player)
         //	ServerLogger.Log($"Moving {entity} from {ch.Position} to {newPosition}");
@@ -365,24 +365,18 @@ public class Map
             CommandBuilder.SendStartMoveEntityMulti(ch);
             CommandBuilder.ClearRecipients();
         }
+    }
+    public void SendFixedWalkMove(ref Entity entity, WorldObject ch, Position dest, float time)
+    {
+        if (!entity.IsAlive())
+            return;
 
-        //foreach (Chunk chunk in GetChunkEnumeratorAroundPosition(ch.Position, ServerConfig.MaxViewDistance))
-        //{
-        //    foreach (var player in chunk.Players)
-        //    {
-        //        var targetCharacter = player.Get<WorldObject>();
-        //        if (!targetCharacter.IsActive)
-        //            continue;
-        //        if (targetCharacter.Position.InRange(ch.Position, ServerConfig.MaxViewDistance))
-        //            CommandBuilder.AddRecipient(player);
-        //    }
-        //}
-
-        //if (CommandBuilder.HasRecipients())
-        //{
-        //    CommandBuilder.SendStartMoveEntityMulti(ch);
-        //    CommandBuilder.ClearRecipients();
-        //}
+        if (ch.TryGetVisiblePlayerList(out var list))
+        {
+            CommandBuilder.AddRecipients(list);
+            CommandBuilder.SendMoveToFixedPositionMulti(ch, dest, time);
+            CommandBuilder.ClearRecipients();
+        }
     }
 
     public void SendAllEntitiesToPlayer(ref Entity target)
@@ -493,7 +487,7 @@ public class Map
                 if (ch.Type == CharacterType.NPC)
                     continue;
 
-                if (checkImmunity && ch.SpawnImmunity > 0)
+                if (checkImmunity && ch.IsTargetImmune)
                     continue;
 
                 if (!ch.CombatEntity.IsValidAlly(character.CombatEntity))
@@ -531,7 +525,7 @@ public class Map
                 if (ch.Type == CharacterType.NPC)
                     continue;
 
-                if (ch.SpawnImmunity > 0)
+                if (ch.IsTargetImmune)
                     continue;
 
                 return true;
@@ -557,7 +551,7 @@ public class Map
                 if (ch.Type == CharacterType.NPC)
                     continue;
 
-                if (ch.SpawnImmunity > 0)
+                if (ch.IsTargetImmune)
                     continue;
                 
                 return true;
@@ -581,7 +575,7 @@ public class Map
                 if (ch.Type == CharacterType.NPC)
                     continue;
 
-                if (checkImmunity && ch.SpawnImmunity > 0)
+                if (checkImmunity && ch.IsTargetImmune)
                     continue;
 
                 if (!ch.CombatEntity.IsValidAlly(character.CombatEntity))
@@ -625,7 +619,7 @@ public class Map
                 if (ch.Type == CharacterType.NPC || ch.Hidden)
                     continue;
 
-                if (ch.SpawnImmunity > 0)
+                if (ch.IsTargetImmune)
                     continue;
 
                 if (!ch.CombatEntity.IsValidTarget(character.CombatEntity))
@@ -664,7 +658,7 @@ public class Map
                 if (ch.Type == CharacterType.NPC)
                     continue;
 
-                if (checkImmunity && ch.SpawnImmunity > 0)
+                if (checkImmunity && ch.IsTargetImmune)
                     continue;
 
                 if (!character.CombatEntity.IsValidTarget(ch.CombatEntity))
@@ -723,7 +717,7 @@ public class Map
 
                 if (checkImmunity)
                 {
-                    if (ch.SpawnImmunity > 0 || ch.State == CharacterState.Dead)
+                    if (ch.IsTargetImmune || ch.State == CharacterState.Dead)
                         continue;
                 }
 
@@ -924,57 +918,6 @@ public class Map
             }
         }
 #endif
-
-        //        if (chunkCheckId == 0) //don't do it all the time
-        //        {
-        //            //sanitycheck
-        //            var entityCount = 0;
-        //            var loopCount = 0;
-        //            var noEntities = 0;
-        //            for (var i = 0; i < Chunks.Length; i++)
-        //            {
-        //                loopCount++;
-        //                entityCount += Chunks[i].AllEntities.Count;
-        //                if (Chunks[i].Monsters.Count == 0)
-        //                    noEntities++;
-        //            }
-
-        //            var entityCount2 = 0;
-        //            var loopCount2 = 0;
-        //            var noEntities2 = 0;
-        //            foreach (var chunk in GetChunkEnumerator(ChunkBounds))
-        //            {
-        //                var chunkArea = new Area(chunk.X * ChunkSize, chunk.Y * ChunkSize, (chunk.X + 1) * ChunkSize, (chunk.Y + 1) * ChunkSize);
-
-        //                loopCount2++;
-        //                entityCount2 += chunk.AllEntities.Count;
-
-        //                if (chunk.Monsters.Count == 0)
-        //                    noEntities2++;
-
-        //                foreach (var m in chunk.AllEntities)
-        //                {
-        //                    if (m.Type != EntityType.Monster)
-        //                        continue;
-        //                    var ch = m.Get<WorldObject>();
-        //                    if (!chunkArea.Contains(ch.Position))
-        //                        throw new Exception(
-        //                            $"Monster {m.Get<Monster>().MonsterBase.Name} is outside of chunk bounds! Position {ch.Position} is not in chunk bounds of {chunkArea}");
-        //                }
-        //            }
-
-        //            if (entityCount != entityCount2)
-        //                ServerLogger.LogError(
-        //                    $"FUUUUUUUCCCCKKKK! Entity count does not match expected value! Got {entityCount2}, expected {entityCount}");
-
-        //            if (entityCount != this.entityCount)
-        //                ServerLogger.LogError(
-        //                    $"Entity count does not match expected value! Has {entityCount}, expected {this.entityCount}");
-        //        }
-
-        //        foreach(var c in Chunks)
-        //            c.VerifyChunkData();
-        //#endif
     }
 
 

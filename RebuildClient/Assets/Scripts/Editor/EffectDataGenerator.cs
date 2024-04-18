@@ -11,7 +11,7 @@ namespace Assets.Editor
 {
     public static class EffectDataGenerator
     {
-        [MenuItem("Ragnarok/Generate 3D Effect Data Classes")]
+        [MenuItem("Ragnarok/CodeGen/Update 3D Effect + Primitive handlers")]
         public static void Generate3DEffectDataClass()
         {
             var text = new List<string>();

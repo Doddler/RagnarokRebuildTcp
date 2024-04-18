@@ -45,7 +45,7 @@ public class PacketAdminRequestMove : IClientPacketHandler
 
         player.AddActionDelay(2f); //block character input for 1+ seconds.
         ch.ResetState();
-        ch.SpawnImmunity = 5f;
+        ch.SetSpawnImmunity();
 
         ce.ClearDamageQueue();
         //ce.Stats.Hp = ce.Stats.MaxHp;

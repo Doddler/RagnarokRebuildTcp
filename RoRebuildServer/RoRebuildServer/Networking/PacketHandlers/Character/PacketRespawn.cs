@@ -25,7 +25,7 @@ public class PacketRespawn : IClientPacketHandler
 
         player.AddActionDelay(1.1f); //add 1s to the player's cooldown times. Should lock out immediate re-use.
         ch.ResetState(true);
-        ch.SpawnImmunity = 5f;
+        ch.SetSpawnImmunity();
 
         ce.ClearDamageQueue();
         ce.SetStat(CharacterStat.Hp, ce.GetStat(CharacterStat.MaxHp));

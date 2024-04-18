@@ -25,7 +25,7 @@ public class PacketStopAction : IClientPacketHandler
 
         player.AddActionDelay(CooldownActionType.StopAction);
 
-        connection.Character.StopAction();
+        connection.Character.ShortenMovePath();
 
         connection.Player.ClearTarget();
 	}

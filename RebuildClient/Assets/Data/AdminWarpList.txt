@@ -240,8 +240,11 @@ War of Emperium
 	Baldur Realm,pay_gld
 	Valkyrie Realm,prt_gld
 Debug
-	Test Room 1,2009rwc_03
-	Test Room 2,guild_vs4
-	Test Room 3,guild_vs3
-	Test Room 4,pvp_n_1-5
+	Debug Room 1,2009rwc_03
+	Debug Room 2,guild_vs4
+	Debug Room 3,guild_vs3
+	Debug Room 4,pvp_n_1-5
+	Test Room A,guild_vs1
+	Test Room B,guild_vs2
+	Test Room C,guild_vs5
 	Juperos 1F,juperos_01

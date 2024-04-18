@@ -5,6 +5,7 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
+using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
@@ -148,14 +149,20 @@ public partial class Monster
 		if (!ValidateTarget())
 			Target = Entity.Null;
 
+        var target = targetCharacter;
+
 		//if we have a character still, check if we're in range.
-        if (Target != Entity.Null && targetCharacter != null)
+        if (Target != Entity.Null && target != null)
         {
             var adjust = 0;
             if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
                 adjust = 1; //the monster uses a 1 tile shorter attack radius when idle or chasing
 
-            return targetCharacter.Position.DistanceTo(Character.Position) <= MonsterBase.Range - adjust;
+            if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range - adjust)
+            {
+                if (!Character.Map!.WalkData.HasLineOfSight(Character.Position, target.Position))
+                    return false;
+            }
         }
 
         //if we don't have a target, check if we can acquire one quickly
@@ -163,8 +170,8 @@ public partial class Monster
 			return false;
 
 		//we have a character. Check if it's in range, and if so, assign it as our current target
-		var targetChar = newTarget.Get<WorldObject>();
-		if (targetChar.Position.DistanceTo(Character.Position) <= MonsterBase.Range)
+		target = newTarget.Get<WorldObject>();
+		if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range)
 		{
 			SwapTarget(newTarget);
 			//Target = newTarget;
@@ -240,22 +247,22 @@ public partial class Monster
 		if (!ValidateTarget())
 			return false;
 
-		var targetChar = targetCharacter;
-		if (targetCharacter == null)
+		var target = targetCharacter;
+		if (target == null)
 			return false;
 
         var adjust = 0;
         if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
             adjust = 1; //the monster uses a 1 tile shorter attack radius when idle or chasing
 
-		if (targetCharacter.Position.DistanceTo(Character.Position) > MonsterBase.Range - adjust)
-			return true;
-
-        Debug.Assert(Character.Map != null, "Character.Map != null");
-        if (!Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
+        if (target.Position.DistanceTo(Character.Position) > MonsterBase.Range - adjust)
             return true;
 
-		return false;
+        Debug.Assert(Character.Map != null, "Character.Map != null");
+        if (!Character.Map.WalkData.HasLineOfSight(Character.Position, target.Position))
+            return true;
+
+        return false;
 	}
 
     /// <summary>
@@ -281,7 +288,7 @@ public partial class Monster
 	{
 		if (deadTimeout > Time.ElapsedTimeFloat)
 		{
-			nextAiUpdate = deadTimeout + 0.01f;
+			NextAiUpdate = deadTimeout + 0.01f;
 			return false;
 		}
 
@@ -317,7 +324,7 @@ public partial class Monster
         {
             var target = m.Target.Get<CombatEntity>();
 
-            if (CombatEntity.IsValidTarget(target))
+            if (target.IsValidTarget(CombatEntity))
             {
                 SwapTarget(m.Target);
                 return true;
@@ -375,7 +382,7 @@ public partial class Monster
 	/// </summary>
 	private bool OutWaitForever()
 	{
-		nextAiUpdate += 100_000_000f;
+		NextAiUpdate += 100_000_000f;
 		return true;
 	}
 
@@ -473,7 +480,8 @@ public partial class Monster
 	/// Always succeeds, a monster can always switch to scan state.
 	/// </summary>
 	private bool OutSearch()
-	{
+    {
+        NextAiUpdate = Time.ElapsedTimeFloat; //do AI update next tick. Must use elapsed time here for this to work.
 		return true;
 	}
 
@@ -486,16 +494,16 @@ public partial class Monster
 		if (targetChar == null)
 			return false;
 
-		var distance = Character.Position.DistanceTo(targetChar.Position);
-		if (distance <= MonsterBase.Range)
+		//var distance = Character.Position.DistanceTo(targetChar.Position);
+		if (CombatEntity.CanAttackTarget(targetChar))
 		{
 			//hasTarget = true;
+            NextAiUpdate = Time.ElapsedTimeFloat;
 			return true;
 		}
 
 		if (Character.TryMove(targetChar.Position, 1))
 		{
-
 			nextMoveUpdate = 0;
 			//hasTarget = true;
 			return true;
@@ -547,7 +555,7 @@ public partial class Monster
 
 		CombatEntity.PerformMeleeAttack(targetEntity);
 
-		nextAiUpdate += MonsterBase.AttackTime;
+		NextAiUpdate += MonsterBase.AttackTime;
 
 		return true;
 	}
@@ -568,8 +576,17 @@ public partial class Monster
 	/// </summary>
 	private bool OutStartAttacking()
 	{
-		Character.StopMovingImmediately();
-		nextAiUpdate = Time.ElapsedTimeFloat;
+        if (Character.IsMoving)
+        {
+            if (Character.StepsRemaining <= 1) //we're already stopping so we can just bail here.
+                return false;
+			//ServerLogger.Debug($"Monster {MonsterBase.Name} {Entity} stopping to attack. Current position {Character.Position} time to stop: {Character.MoveCooldown}");
+            Character.ShortenMovePath();
+            NextAiUpdate = Time.ElapsedTimeFloat + Character.TimeToReachNextStep;
+            return false;
+        }
+
+        NextAiUpdate = Time.ElapsedTimeFloat;
 		return true;
 	}
 

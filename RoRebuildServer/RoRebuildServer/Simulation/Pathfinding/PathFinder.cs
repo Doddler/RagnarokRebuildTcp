@@ -57,7 +57,7 @@ public class Pathfinder
 {
     private PathNode[]? nodeCache;
     private int cachePos;
-    private const int MaxDistance = 16;
+    public const int MaxDistance = 16;
     private const int MaxCacheSize = ((MaxDistance + 1) * 2) * ((MaxDistance + 1) * 2);
 
     //private static List<PathNode> openList = new List<PathNode>(MaxCacheSize);
@@ -258,7 +258,7 @@ public class Pathfinder
         var pos = start;
         tempPath[startPos] = pos;
         var i = startPos + 1;
-
+        
         while (i < maxDistance)
         {
             if (pos.X > target.X + range)
@@ -276,7 +276,7 @@ public class Pathfinder
             tempPath[i] = pos;
             i++;
 
-            if (pos.SquareDistance(target) <= range)
+            if (pos.InRange(target, range))
             {
                 //Profiler.Event(ProfilerEvent.PathFoundDirect);
                 return i;
@@ -313,9 +313,82 @@ public class Pathfinder
 
         if (pathOut[0] != start)
             throw new Exception("First entry in path should be our starting position!");
-
+        
         if (pathOut[length - 1].SquareDistance(target) > range)
             throw new Exception("Last entry is not at the expected position!");
+    }
+
+    private void CopyPathIntoPositionArray(PathNode? path, Position[] pathOut, int startIndex)
+    {
+        while (path != null)
+        {
+            pathOut[path.Steps + startIndex] = path.Position;
+            path = path.Parent;
+        }
+    }
+
+    public int GetPathWithinAttackRange(MapWalkData walkData, Position start, Position initialNextTile, Position target, Position[] pathOut, int attackRange)
+    {
+        var hasFirstStep = initialNextTile != Position.Invalid;
+        var pathStart = hasFirstStep ? initialNextTile : start; //if we have a next tile already set, use that as the start.
+        var maxDistance = hasFirstStep ? MaxDistance - 1 : MaxDistance;
+        var firstStep = hasFirstStep ? 1 : 0;
+
+        if (hasFirstStep && initialNextTile == target) 
+            return 0; //no need to change path if we're already next to the target
+
+        if (DistanceCache.InRange(pathStart, target, attackRange) && walkData.HasLineOfSight(pathStart, target))
+            return 0; //our start position is already in line of sight
+
+        //first check if a straight line exists
+        var direct = CheckDirectPath(walkData, pathStart, target, maxDistance, 1, firstStep);
+        if (direct > 0)
+        {
+            if (hasFirstStep)
+                tempPath[0] = start;
+                
+            //since we know we can get to the target's own cell, we know at some point you'll be in attack range and line of sight.
+            direct = GetStepsToAttackRange(walkData, tempPath, target, direct, attackRange);
+            Array.Copy(tempPath, 0, pathOut, 0, direct);
+
+#if DEBUG 
+            SanityCheck(pathOut, start, target, direct, attackRange); //verify the path is valid and ends within range
+#endif
+            return direct;
+        }
+
+        var path = MakePath(walkData, pathStart, target, maxDistance, 1); //find a path that goes directly to the target
+        if (path == null)
+            return 0;
+
+        var steps = path.Steps + 1 + firstStep;
+
+        CopyPathIntoPositionArray(path, pathOut, firstStep);
+        if (hasFirstStep)
+            pathOut[0] = start;
+
+        steps = GetStepsToAttackRange(walkData, pathOut, target, steps, attackRange); //shrink path to only the point where you can attack from
+
+#if DEBUG
+        if(steps > 0)
+            SanityCheck(pathOut, start, target, steps, attackRange);  //verify the path is valid and ends within range
+#endif
+        return steps;
+    }
+    private int GetStepsToAttackRange(MapWalkData walkData, Position[] path, Position target, int length, int range)
+    {
+        for (var i = 1; i < length - 1; i++)
+        {
+            if (DistanceCache.InRange(path[i], target, range) && walkData.HasLineOfSight(path[i], target))
+                return i + 1; //the +1 is because element 0 of our path is the start position
+        }
+
+        return length;
+    }
+
+    public int GetPathWithinAttackRange(MapWalkData walkData, Position start, Position target, Position[] pathOut, int attackRange)
+    {
+        return GetPathWithinAttackRange(walkData, start, Position.Invalid, target, pathOut, attackRange);
     }
 
     public int GetPathWithInitialStep(MapWalkData walkData, Position start, Position initial, Position target, Position[]? pathOut, int range)

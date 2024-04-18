@@ -470,7 +470,7 @@ public class Npc : IEntityAutoReset
 
         //DebugMessage($"Moving npc {Name} to {x},{y}");
 
-        chara.Map.MoveEntity(ref Entity, chara, new Position(x, y), false);
+        chara.Map.ChangeEntityPosition(ref Entity, chara, new Position(x, y), false);
     }
 
     public void DamagePlayersNearby(int damage, int area, int hitCount = 1)

@@ -10,4 +10,13 @@ namespace RebuildSharedData.Enum
         AreaTargeted,
         SelfCast
     }
+
+    public enum SkillClass : byte
+    {
+        None,
+        Physical,
+        Ranged,
+        Magic,
+        Unique
+    }
 }

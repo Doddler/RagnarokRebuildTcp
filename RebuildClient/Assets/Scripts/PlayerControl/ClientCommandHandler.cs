@@ -83,7 +83,8 @@ namespace PlayerControl
                     var mapname = NetworkManager.Instance.CurrentMap;
                     var srcPos = cameraFollower.WalkProvider.GetMapPositionForWorldPosition(cameraFollower.Target.transform.position, out var srcPosition);
 
-                    cameraFollower.AppendChatText($"Location: {mapname} {srcPosition.x},{srcPosition.y}");
+                    cameraFollower.AppendChatText($"Client location: {mapname} {srcPosition.x},{srcPosition.y}");
+                    NetworkManager.Instance.SendWhereCommand();
                 }
 
                 if (s[0] == "/name" || s[0] == "/changename")
@@ -193,7 +194,15 @@ namespace PlayerControl
                 if (s[0] == "/effect" && s.Length > 1)
                 {
                     if (int.TryParse(s[1], out var id))
-                        cameraFollower.AttachEffectToEntity(id, controllable.gameObject);
+                    {
+                        if (Application.isEditor && s.Length > 2 && int.TryParse(s[2], out var count))
+                        {
+                            for(var i = 0; i < count; i++)
+                                cameraFollower.AttachEffectToEntity(id, controllable.gameObject);
+                        }
+                        else
+                            cameraFollower.AttachEffectToEntity(id, controllable.gameObject);
+                    }
                     else
                         cameraFollower.AttachEffectToEntity(s[1], controllable.gameObject);
                 }

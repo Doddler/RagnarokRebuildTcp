@@ -91,6 +91,7 @@ namespace Assets.Scripts
         public GameObject SelectedTarget;
         private GameObject selectedSprite;
         private string targetText;
+        private GameObject ClickEffectPrefab;
 
         public GameObject WarpPanel;
         public GameObject DialogPanel;
@@ -236,6 +237,8 @@ namespace Assets.Scripts
             if (Recorder != null)
                 Recorder.gameObject.SetActive(false);
 
+            ClickEffectPrefab = Resources.Load<GameObject>($"MoveNotice");
+
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
             //    targetWalkable = Target.AddComponent<EntityWalkable>();
@@ -295,6 +298,13 @@ namespace Assets.Scripts
             sprite.SpriteData = TargetSprite;
             sprite.Initialize(false);
             sprite.ChangeActionExact(3);
+
+            var mat = new Material(ShaderCache.Instance.SpriteShaderNoZTest);
+            mat.renderQueue = 3005; //above water and all other sprites
+            
+            var renderer = sprite.GetComponent<RoSpriteRendererStandard>();
+            renderer.SetOverrideMaterial(mat);
+            
 
             return go;
         }
@@ -789,7 +799,8 @@ namespace Assets.Scripts
                         if (Input.GetMouseButtonDown(0)) //only do this when mouse is down the first time. Yeah the second check is dumb...
                         {
                             ClickDelay = 0.1f;
-                            ChangeFacing(WalkProvider.GetWorldPositionForTile(destPos));
+                            //if(controllable.SpriteAnimator.State != SpriteState.Standby)
+                                ChangeFacing(WalkProvider.GetWorldPositionForTile(destPos));
                         }
                     }
                     else
@@ -798,6 +809,8 @@ namespace Assets.Scripts
                         if (WalkProvider.IsCellWalkable(destPos) && dist < SharedConfig.MaxPathLength)
                         {
                             NetworkManager.Instance.MovePlayer(destPos);
+                            var click = GameObject.Instantiate(ClickEffectPrefab);
+                            click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
                             ClickDelay = 0.5f;
                             isHolding = true;
                         }
@@ -806,6 +819,8 @@ namespace Assets.Scripts
                             if (WalkProvider.GetNextWalkableTileForClick(srcPos, destPos, out var dest2))
                             {
                                 NetworkManager.Instance.MovePlayer(dest2);
+                                var click = GameObject.Instantiate(ClickEffectPrefab);
+                                click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
                                 ClickDelay = 0.5f;
                                 isHolding = true;
                             }
@@ -1221,7 +1236,7 @@ namespace Assets.Scripts
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha2))
             {
                 hasSkillOnCursor = true;
-                cursorSkill = CharacterSkill.FireBolt;
+                cursorSkill = CharacterSkill.Bash;
                 cursorSkillLvl = 5;
             }
             //

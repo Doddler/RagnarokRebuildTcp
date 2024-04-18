@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Channels;
 using Lidgren.Network;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.VisualBasic;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
@@ -43,6 +44,16 @@ public class NetworkManager
     private static ObjectPool<OutboundMessage> outboundPool;
     private static ObjectPool<InboundMessage> inboundPool;
 
+#if DEBUG
+    private static PriorityQueue<InboundMessage, float> inboundLagSimQueue = new();
+    private static PriorityQueue<OutboundMessage, float> outboundLagSimQueue = new();
+    private static Object inboundLagLock = new();
+    private static Object outboundLagLock = new();
+    private static bool useSimulatedLag;
+    private static float inboundLagTime;
+    private static float outboundLagTime;
+#endif
+
     private static ReaderWriterLockSlim clientLock = new();
     //private static Thread outboundMessageThread;
 
@@ -58,13 +69,25 @@ public class NetworkManager
     {
         World = gameWorld;
         
-        
         IsSingleThreadMode = !ServerConfig.OperationConfig.UseMultipleThreads;
+        var debugConfig = ServerConfig.DebugConfig;
         
-        DebugMode = ServerConfig.DebugConfig.UseDebugMode;
+        DebugMode = debugConfig.UseDebugMode;
 
 #if DEBUG
         DebugMode = true;
+
+        //simulated lag stuff. Only used in debug mode
+        useSimulatedLag = debugConfig.AddSimulatedLag;
+        inboundLagTime = debugConfig.InboundSimulatedLag / 1000f;
+        outboundLagTime = debugConfig.OutboundSimulatedLag / 1000f;
+        if(useSimulatedLag && inboundLagTime > 0f)
+            ServerLogger.Log($"Simulated inbound lag enabled with a lag time of {debugConfig.InboundSimulatedLag}ms.");
+        if (useSimulatedLag && outboundLagTime > 0f)
+        {
+            ServerLogger.Log($"Simulated outbound lag enabled with a lag time of {debugConfig.OutboundSimulatedLag}ms.");
+            Task.Run(OutboundLagBackgroundThread).ConfigureAwait(false);
+        }
 #else
             if(DebugMode)
                 ServerLogger.LogWarning("Server is started using debug mode config flag! Be sure this is what you want.");
@@ -94,12 +117,10 @@ public class NetworkManager
         else
             ServerLogger.Log("Starting in single thread mode.");
 
-
         var handlerCount = System.Enum.GetNames(typeof(PacketType)).Length;
         PacketHandlers = new Action<NetworkConnection, InboundMessage>[handlerCount];
         PacketCheckClientState = new bool[handlerCount];
-
-
+        
         foreach (var type in Assembly.GetAssembly(typeof(NetworkManager))!.GetTypes()
                      .Where(t => t.IsClass && t.GetCustomAttribute<ClientPacketHandlerAttribute>() != null))
         {
@@ -294,12 +315,14 @@ public class NetworkManager
         var obj = outboundPool.Get();
         if (client != null)
             obj.Clients.Add(client);
+        obj.IsInitialized = true;
         return obj;
     }
 
     public static void RetireOutboundMessage(OutboundMessage message)
     {
         //message.Clear();
+        message.Clear();
         outboundPool.Return(message);
     }
     
@@ -311,6 +334,19 @@ public class NetworkManager
     
     public static async Task ProcessIncomingMessages()
     {
+#if DEBUG
+        if (useSimulatedLag && inboundLagTime > 0f)
+        {
+            lock (inboundLagLock)
+            {
+                while (inboundLagSimQueue.TryPeek(out var msg, out var priority) && priority < Time.ElapsedTimeFloat)
+                {
+                    inboundLagSimQueue.Dequeue();
+                    inboundChannel.Enqueue(msg);
+                }
+            }
+        }
+#endif
         while (inboundChannel.TryDequeue(out var item))
         {
             try
@@ -338,6 +374,46 @@ public class NetworkManager
             }
         }
     }
+#if DEBUG
+    private static async Task OutboundLagBackgroundThread()
+    {
+        ServerLogger.Debug($"Using simulated lag, adding {(int)(inboundLagTime*1000)}ms to each inbound packet.");
+
+        while (!IsRunning)
+            await Task.Delay(500);
+
+        while (IsRunning)
+        {
+            if (outboundLagSimQueue.TryPeek(out var msg, out var priority))
+            {
+                if (priority < Time.ElapsedTimeFloat)
+                {
+                    //in theory we could end up deque a different message from the one we peeked due to thread safety,
+                    //but 
+                    lock (outboundLagLock)
+                        msg = outboundLagSimQueue.Dequeue();
+
+                    if (msg == null)
+                    {
+                        ServerLogger.LogError($"OutboundLagBackgroundThread attempting to queue a message that is null");
+                        continue;
+                    }
+
+                    outboundChannel.Enqueue(msg);
+                }
+                else
+                    await Task.Delay(1);
+            }
+            else
+            {
+                if(PlayerCount <= 0)
+                    await Task.Delay(1000);
+                else
+                    await Task.Delay(1);
+            }
+        }
+    }
+#endif
 
     //private static void ProcessOutgoingMessagesThread()
     //{
@@ -361,6 +437,19 @@ public class NetworkManager
     {
         while (outboundChannel.TryDequeue(out var message))
         {
+            if (message == null || !message.IsInitialized)
+            {
+                ServerLogger.LogError($"Server attempted to process outgoing message that was already recycled!");
+                continue;
+            }
+
+            if (message.Clients == null || message.Clients.Count == 0)
+            {
+                ServerLogger.LogWarning($"Message type {(PacketType)message.Message[0]} in outbound queue, but it has no clients set as recipients.");
+                RetireOutboundMessage(message);
+                continue;
+            }
+
             //var message = await outboundChannel.Reader.ReadAsync();
             foreach (var client in message.Clients)
             {
@@ -446,13 +535,31 @@ public class NetworkManager
         if (message.Clients.Count == 0 || !message.Clients.Contains(connection))
             message.Clients.Add(connection);
 
+        message.IsQueued = true;
+
+#if DEBUG
+        if (useSimulatedLag && outboundLagTime > 0f)
+        {
+            lock (outboundLagLock)
+            {
+                outboundLagSimQueue.Enqueue(message, Time.ElapsedTimeFloat + outboundLagTime);
+            }
+        }
+        else
+            outboundChannel.Enqueue(message);
+
+#else
         outboundChannel.Enqueue(message);
+#endif
     }
 
     public static void SendMessageMulti(OutboundMessage message, List<NetworkConnection>? connections)
     {
-        if (connections == null)
+        if (connections == null || message == null)
             return;
+
+        if(message.IsQueued)
+            ServerLogger.LogError($"Attempting to send client message, but it's already queued to be sent!");
 
         for (var i = 0; i < connections.Count; i++)
         {
@@ -461,8 +568,28 @@ public class NetworkManager
                 message.Clients.Add(c);
         }
 
-        if (message.Clients.Count > 0)
+        if (message.Clients.Count <= 0)
+        {
+            RetireOutboundMessage(message);
+            return;
+        }
+
+        message.IsQueued = true;
+
+#if DEBUG
+        if (useSimulatedLag && outboundLagTime > 0f)
+        {
+            lock (outboundLagLock)
+            {
+                outboundLagSimQueue.Enqueue(message, Time.ElapsedTimeFloat + outboundLagTime);
+            }
+        }
+        else
             outboundChannel.Enqueue(message);
+
+#else
+        outboundChannel.Enqueue(message);
+#endif
     }
     
     public static OutboundMessage StartPacket(PacketType type, int capacity = 0)
@@ -599,8 +726,17 @@ public class NetworkManager
             inMsg.Populate(buffer, 0, result.Count);
 
             //Buffer.BlockCopy(buffer, 0, inMsg, 0, result.Count);
-
+#if DEBUG
+            if (useSimulatedLag && inboundLagTime > 0f)
+            {
+                lock(inboundLagLock)
+                    inboundLagSimQueue.Enqueue(inMsg, Time.ElapsedTimeFloat + inboundLagTime);
+            }
+            else
+                inboundChannel.Enqueue(inMsg);
+#else
             inboundChannel.Enqueue(inMsg);
+#endif
         }
 
         playerConnection.Status = ConnectionStatus.Disconnected;

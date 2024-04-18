@@ -8,6 +8,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Networking;
 
@@ -80,6 +81,9 @@ public static class CommandBuilder
                 i++;
                 packet.Write(b);
             }
+
+            var lockTime = c.MoveLockTime - Time.ElapsedTimeFloat;
+            packet.Write(lockTime > 0 ? lockTime : 0f);
         }
     }
 
@@ -270,12 +274,31 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="c"></param>
     public static void SendStartMoveEntityMulti(WorldObject c)
     {
         var packet = NetworkManager.StartPacket(PacketType.StartMove, 256);
 
         packet.Write(c.Id);
         WriteMoveData(c, packet);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+    /// <summary>
+    /// Special action that informs the client that a character will move from their current position to a destination without regards to distance.
+    /// </summary>
+    public static void SendMoveToFixedPositionMulti(WorldObject c, Position dest, float time)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.FixedMove, 32);
+
+        packet.Write(c.Id);
+        packet.Write(dest);
+        packet.Write(c.MoveSpeed);
+        packet.Write(time);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -444,7 +467,11 @@ public static class CommandBuilder
         packet.Write(c.Id);
         packet.Write(delayTime);
         packet.Write(damage);
-
+        packet.Write(c.Position);
+        packet.Write(c.IsMoving);
+        if (c.IsMoving)
+            packet.Write(c.MoveCooldown);
+        
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 

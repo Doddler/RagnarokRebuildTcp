@@ -8,7 +8,7 @@ namespace Assets.Scripts.SkillHandlers
 		{
 			handlers = new SkillHandlerBase[17];
 			handlers[0] = new DefaultSkillHandler();
-			handlers[1] = new DefaultSkillHandler();
+			handlers[1] = new Assets.Scripts.SkillHandlers.Handlers.BashHandler();
 			handlers[2] = new DefaultSkillHandler();
 			handlers[3] = new DefaultSkillHandler();
 			handlers[4] = new DefaultSkillHandler();

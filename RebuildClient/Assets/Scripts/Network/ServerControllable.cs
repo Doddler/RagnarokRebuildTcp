@@ -10,6 +10,7 @@ using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Assertions;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -49,9 +50,26 @@ namespace Assets.Scripts.Network
         private List<Vector2Int> movePath;
         private Vector2Int[] tempPath;
         private float moveSpeed = 0.2f;
+        private float tempSpeed = -1f;
         private float moveProgress;
-        private bool isMoving;
+        private float hitLockImmuneTime = 0f;
+        private bool isDirectMove;
         private bool isHidden;
+        private bool _isMoving;
+
+        private bool isMoving
+        {
+            get => _isMoving;
+            set
+            {
+                if (IsMainCharacter && isMoving && !value)
+                    Debug.Log($"Stopping main character.");
+                _isMoving = value;
+            }
+        }
+
+        private Vector3 snapStartPos;
+        private LTDescr snapAnim;
 
         private SpriteRenderer shadowSprite;
         private Material shadowMaterial;
@@ -59,6 +77,7 @@ namespace Assets.Scripts.Network
         private float hitDelay = 0f;
         private float dialogCountdown = 0f;
         private float movePauseTime = 0f;
+        public bool IsMoving => isMoving;
 
         public bool IsWalking => movePath != null && movePath.Count > 1;
 
@@ -146,6 +165,13 @@ namespace Assets.Scripts.Network
             return false;
         }
 
+        private Direction GetDirectionForHeading(Vector2Int dest)
+        {
+            var src = new Vector2(transform.position.x - 0.5f, transform.position.z - 0.5f);
+            var angle = Vector2.SignedAngle(src, dest);
+            return Directions.GetFacingForAngle(angle);
+        }
+
         private Direction GetDirectionForOffset(Vector2Int offset)
         {
             if (offset.x == -1 && offset.y == -1) return Direction.SouthWest;
@@ -168,16 +194,42 @@ namespace Assets.Scripts.Network
             return false;
         }
 
+        public void DirectWalkMove(float speed, float time, Vector2Int dest)
+        {
+            StartPos = transform.position - new Vector3(0.5f, 0f, 0.5f);
+
+            if (movePath == null)
+                movePath = new List<Vector2Int>(20);
+            else
+                movePath.Clear();
+
+            movePath.Add(dest);
+            movePath.Add(dest);
+
+            //movePath[0] = StartPos;
+            moveProgress = time / speed;
+            moveSpeed = speed;
+
+            isDirectMove = true;
+        }
+
         public void StartMove(float speed, float progress, int stepCount, int curStep, List<Vector2Int> steps)
         {
-            // Debug.Log($"{name} Start Move - Speed:{speed} Progress:{progress} StepCount:{stepCount} CurStep:{curStep} StepLength:{steps.Count}");
-            
-            //don't reset start pos if the next tile is the same
-            if (movePath == null || movePath.Count <= 1 || movePath[1] != steps[1])
-                StartPos = transform.position - new Vector3(0.5f, 0f, 0.5f);
+            if (IsMainCharacter)
+                Debug.Log(
+                    $"{name} Start Move - From {steps[0]} to {steps[stepCount - 1]}\nSpeed:{speed} Progress:{progress} StepCount:{stepCount} CurStep:{curStep} StepLength:{steps.Count}");
 
             moveSpeed = speed;
+            tempSpeed = -1;
+            isDirectMove = false;
+
+            //don't reset start pos if the next tile is the same
+            if (movePath == null || movePath.Count <= 1 || movePath[1] != steps[1])
+                //    if (stepCount > 1)
+                StartPos = transform.position - new Vector3(0.5f, 0f, 0.5f);
+
             moveProgress = progress / speed; //hack please fix
+
 
             if (movePath == null)
                 movePath = new List<Vector2Int>(20);
@@ -204,15 +256,28 @@ namespace Assets.Scripts.Network
         private void UpdateMove()
         {
             if (movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
+            var speed = moveSpeed;
+            if (tempSpeed > 0)
+                speed = tempSpeed;
 
             if (movePath.Count > 1)
             {
-                var offset = movePath[1] - movePath[0];
-                if (IsDiagonal(GetDirectionForOffset(offset)))
-                    moveProgress -= Time.deltaTime / moveSpeed * 0.80f;
+                if (isDirectMove)
+                {
+                    moveProgress -= Time.deltaTime / speed;
+                    var angle = Vector2.SignedAngle(Vector2.up, movePath[1] - new Vector2(StartPos.x, StartPos.z));
+                    // Debug.Log($"Next Step {movePath[1]} curPosition {new Vector2(StartPos.x, StartPos.z)} angle {angle}");
+                    SpriteAnimator.Direction = Directions.GetFacingForAngle(angle);
+                }
                 else
-                    moveProgress -= Time.deltaTime / moveSpeed;
-                SpriteAnimator.Direction = GetDirectionForOffset(offset);
+                {
+                    var offset = movePath[1] - movePath[0];
+                    if (IsDiagonal(GetDirectionForOffset(offset)))
+                        moveProgress -= Time.deltaTime / speed * 0.80f;
+                    else
+                        moveProgress -= Time.deltaTime / speed;
+                    SpriteAnimator.Direction = GetDirectionForOffset(offset);
+                }
             }
 
             while (moveProgress < 0f && movePath.Count > 1)
@@ -221,6 +286,7 @@ namespace Assets.Scripts.Network
                 StartPos = new Vector3(movePath[0].x, walkProvider.GetHeightForPosition(transform.position), movePath[0].y);
                 Position = movePath[0];
                 moveProgress += 1f;
+                tempSpeed = -1;
             }
 
             if (movePath.Count == 0)
@@ -231,6 +297,8 @@ namespace Assets.Scripts.Network
                 Position = movePath[0];
                 transform.position = new Vector3(Position.x + 0.5f, walkProvider.GetHeightForPosition(transform.position), Position.y + 0.5f);
                 movePath.Clear();
+                if (IsMainCharacter)
+                    Debug.Log($"We've finished pathing, stopping character.");
                 isMoving = false;
             }
             else
@@ -253,13 +321,15 @@ namespace Assets.Scripts.Network
         {
             if (movePath.Count > 2)
                 movePath.RemoveRange(2, movePath.Count - 2);
+
+            isDirectMove = false;
         }
 
         public void PauseMove(float time)
         {
             if (!isMoving)
                 return;
-            
+
             if (SpriteAnimator.SpriteData.Type == SpriteType.Player)
                 SpriteAnimator.State = SpriteState.Standby;
             else
@@ -268,18 +338,77 @@ namespace Assets.Scripts.Network
             movePauseTime = time;
         }
 
-        public void StopImmediate(Vector2Int position)
+        public int FindPosInPath(Vector2Int pos)
         {
-            isMoving = false;
-            movePath = null;
-            SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
+            Assert.IsTrue(IsMoving);
+            for (var i = 0; i < movePath.Count; i++)
+                if (movePath[i] == pos)
+                    return i;
 
+            return -1;
+        }
+
+        public void SnapToMovePath(Vector2Int pos, float progressToNextTile)
+        {
+            
+            var targetPos = new Vector3(pos.x + 0.5f, pos.y + 0.5f);
+            var distance = Vector2.Distance(movePath[0], targetPos);
+            
+            // if(IsMainCharacter && Application.isEditor)
+            //     Debug.Log($"SnapToMovePath: targetPos: {targetPos} distance: {distance}\nPosition in move path: {FindPosInPath(pos)}");
+
+            if (distance < 0.35f) //no point if we're pretty close to where we should be
+                return;
+            
+            var inPathPosition = FindPosInPath(pos);
+
+            if (inPathPosition < 0)
+            {
+                //we're ahead of the server as we've already removed the tile we should be on.
+                //We'll let the server catch up by waiting the amount of time it would take for
+                //a character to travel the distance, assuming it doesn't get hit again.
+                movePauseTime = moveSpeed * distance;
+                // Debug.Log($"Setting movePauseTime of {movePauseTime}");
+            }
+            else
+            {
+                //the server is ahead of where we currently are.
+                //we will prevent this character from visually being hit locked until we could
+                //possibly catch up, plus a little extra.
+                var timeToTile = (inPathPosition + (1 - progressToNextTile)) * moveSpeed;
+                hitLockImmuneTime = Time.time + timeToTile;
+                // Debug.Log($"Setting hitLockImmuneTime {timeToTile}");
+            }
+        }
+
+        public void SnapToTile(Vector2Int position, float snapSpeed = 0.07f, float leeway = 0.75f)
+        {
             var targetPos = new Vector3(position.x + 0.5f, walkProvider.GetHeightForPosition(transform.position), position.y + 0.5f);
 
             LeanTween.cancel(gameObject);
 
-            if ((transform.localPosition - targetPos).magnitude > 1f)
-                LeanTween.move(gameObject, targetPos, 0.2f);
+            if (IsMainCharacter)
+                Debug.Log(
+                    $"SnapToTile {Name} has distance {(transform.localPosition - targetPos).magnitude} and speed of {snapSpeed}f. {leeway}f required to execute snap.");
+
+
+            if ((transform.localPosition - targetPos).magnitude > 0.75f)
+                LeanTween.move(gameObject, targetPos, 0.07f);
+        }
+
+        public void StopImmediate(Vector2Int position, bool snapToTile = true)
+        {
+            isMoving = false;
+            isDirectMove = false;
+            movePath = null;
+            if(SpriteAnimator.State == SpriteState.Walking)
+                SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
+
+            if (IsMainCharacter)
+                Debug.Log($"Character asked to stop immediately.\nSnap to tile if out of range:{snapToTile}");
+
+            if (snapToTile)
+                SnapToTile(position);
         }
 
         public void AttachEffect(Ragnarok3dEffect effect)
@@ -293,13 +422,14 @@ namespace Assets.Scripts.Network
 #endif
 
             EffectList.Add(effect);
+            effect.EffectOwner = this;
         }
 
         public void EndEffectOfType(EffectType type)
         {
             if (EffectList == null || EffectList.Count == 0)
                 return; //job well done
-            
+
             Span<int> endEffect = stackalloc int[EffectList.Count];
             var pos = 0;
             for (var i = 0; i < EffectList.Count; i++)
@@ -352,6 +482,28 @@ namespace Assets.Scripts.Network
                 go.SetActive(false);
         }
 
+        public void PerformBasicAttackMotion()
+        {
+            if (SpriteAnimator.Type == SpriteType.Player)
+            {
+                switch (SpriteAnimator.PreferredAttackMotion)
+                {
+                    default:
+                    case 1:
+                        SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+                        break;
+                    case 2:
+                        SpriteAnimator.ChangeMotion(SpriteMotion.Attack2, true);
+                        break;
+                    case 3:
+                        SpriteAnimator.ChangeMotion(SpriteMotion.Attack3, true);
+                        break;
+                }
+            }
+            else
+                SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+        }
+
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
@@ -377,16 +529,21 @@ namespace Assets.Scripts.Network
 
         public void SetHitDelay(float time)
         {
-            hitDelay = time;
+            if (hitLockImmuneTime < Time.time || time <= 0)
+                hitDelay = time;
         }
 
-        private static Action<object> completeDestroy = (object go) =>
+        private static void CompleteDestroy(object go)
         {
             var go2 = go as GameObject;
             if (go2 == null)
                 return;
             GameObject.Destroy(go2);
-        };
+        }
+
+        public void UpdateSnap(float f)
+        {
+        }
 
         public void UpdateFade(float f)
         {
@@ -404,7 +561,7 @@ namespace Assets.Scripts.Network
         {
             var lt = LeanTween.value(gameObject, UpdateFade, 1, 0, time);
 
-            lt.setOnComplete(completeDestroy, gameObject);
+            lt.setOnComplete(CompleteDestroy, gameObject);
         }
 
         private IEnumerator MonsterDeathCoroutine(int hitCount)
@@ -513,7 +670,7 @@ namespace Assets.Scripts.Network
                 movePauseTime -= Time.deltaTime;
                 if (movePauseTime > 0f)
                     return;
-                
+
                 UpdateMove();
 
                 if (SpriteAnimator.State != SpriteState.Walking)

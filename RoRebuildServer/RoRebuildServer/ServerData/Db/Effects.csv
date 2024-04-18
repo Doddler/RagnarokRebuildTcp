@@ -32,3 +32,4 @@
 30,Torch,TRUE,TRUE,,torch_01,,0,
 31,Exacast,FALSE,FALSE,,,,0,Assets/Prefabs/Exacast.prefab
 32,GasPush,TRUE,TRUE,GasPush,,,0,
+33,LightSpinner,FALSE,FALSE,,,,0,Assets/Prefabs/LightSpinner.prefab

@@ -126,10 +126,13 @@ Alberta,alberta,alberta.walk,Town,15.mp3
 Alberta Indoors,alberta_in,alberta_in.walk,None,15.mp3
 Aldebaran,aldebaran,aldebaran.walk,Town,39.mp3
 Aldebaran Indoors,aldeba_in,aldeba_in.walk,None,39.mp3
-Debug Room,2009rwc_03,2009rwc_03.walk,None,111.mp3
+Debug Room,2009rwc_03,2009rwc_03.walk,None,64.mp3
 Debug Room 2,guild_vs4,guild_vs4.walk,None,89.mp3
 Debug Room 3,guild_vs3,guild_vs3.walk,None,65.mp3
 Debug Room 4,pvp_n_1-5,pvp_n_1-5.walk,None,51.mp3
+Test Room A,guild_vs1,guild_vs1.walk,None,07.mp3
+Test Room B,guild_vs2,guild_vs2.walk,None,07.mp3
+Test Room C,guild_vs5,guild_vs4.walk,None,51.mp3
 Clock Tower B1f,alde_dun01,alde_dun01.walk,Dungeon,61.mp3
 Clock Tower B2f,alde_dun02,alde_dun02.walk,Dungeon,61.mp3
 Clock Tower B3f,alde_dun03,alde_dun03.walk,Dungeon,61.mp3
@@ -254,3 +257,4 @@ Baldr Realm,pay_gld,pay_gld.walk,Field,66.mp3
 "Toy Dungeon 2 [Monitoring Area]",xmas_dun02,xmas_dun02.walk,Dungeon,58.mp3
 "Lutie Field",xmas_fild01,xmas_fild01.walk,Field,55.mp3
 "Lutie [Inside]",xmas_in,xmas_in.walk,Field,59.mp3
+"Amatsu, the Land of Destiny",amatsu,amatsu.walk,Town,76.mp3

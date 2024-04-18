@@ -75,6 +75,8 @@ internal class ZoneWorker : BackgroundService
 #endif
         var lastLog = Time.ElapsedTime - noticeTime + 5f; //make the first check-in 5s after start no matter what
 
+        var loopCount = 0;
+        
         try
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -107,6 +109,14 @@ internal class ZoneWorker : BackgroundService
 
                 spos++;
 
+                loopCount++;
+                if (loopCount > 1000 && elapsed < 5)
+                {
+                    GC.Collect(2, GCCollectionMode.Optimized, false);
+                    loopCount = 0;
+                }
+
+
                 if (lastLog + noticeTime < Time.ElapsedTime)
                 {
                     var avg = (total / spos);
@@ -117,9 +127,9 @@ internal class ZoneWorker : BackgroundService
 
 #if DEBUG
                     if(max > 0.1f)
-                        ServerLogger.Log($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
+                        ServerLogger.Log($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms (GC Time: {GC.GetTotalPauseDuration()})");
                     else
-                        ServerLogger.Debug($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
+                        ServerLogger.Debug($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms (GC Time: {GC.GetTotalPauseDuration()}");
 #else
                     ServerLogger.Log($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
 #endif

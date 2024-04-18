@@ -41,7 +41,7 @@ public class PacketRandomTeleport : IClientPacketHandler
 
         player.AddActionDelay(1.1f); //add 1s to the player's cooldown times. Should lock out immediate re-use.
         ch.ResetState();
-        ch.SpawnImmunity = 5f;
+        ch.SetSpawnImmunity();
         map.TeleportEntity(ref connection.Entity, ch, p);
         CommandBuilder.SendExpGain(connection.Player, 0); //update their exp
 

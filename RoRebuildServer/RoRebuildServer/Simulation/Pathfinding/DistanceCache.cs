@@ -10,10 +10,12 @@ public static class DistanceCache
     private static float[] angles = null!;
     private static float[] distances = null!;
     private static int[] intDistances = null!;
+    private static int[] distanceToSquareRange = null!;
 
     private static int max;
     private static int width;
     private static int height;
+    private static int maxRangeConversion;
 
     private const int center = ServerConfig.MaxViewDistance;
 
@@ -22,11 +24,13 @@ public static class DistanceCache
         max = ServerConfig.MaxViewDistance;
         width = max * 2 + 1;
         height = max * 2 + 1;
+        maxRangeConversion = max * 2; //probably too much but oh well
 
         angles = new float[width * height];
         distances = new float[width * height];
         intDistances = new int[width * height];
         directions = new Direction[width * height];
+        distanceToSquareRange = new int[maxRangeConversion];
 
         var centerPos = new Position(center, center);
 
@@ -46,6 +50,19 @@ public static class DistanceCache
                 directions[x + y * width] = facing;
             }
         }
+
+        for (var i = 0; i < maxRangeConversion; i++)
+        {
+            distanceToSquareRange[i] = (int)(i * MathF.Sqrt(2) / 2f);
+        }
+
+    }
+
+    public static int FitSquareRangeInCircle(int range)
+    {
+        if (range < maxRangeConversion)
+            return distanceToSquareRange[range];
+        return (int)(range * MathF.Sqrt(2));
     }
 
     public static float Angle(Position p1, Position p2)
@@ -98,7 +115,7 @@ public static class DistanceCache
     {
         return IntDistance(p1, p2);
     }
-    
+
     public static bool InRange(this Position p1, Position p2, int distance)
     {
         return IntDistance(p1, p2) <= distance;

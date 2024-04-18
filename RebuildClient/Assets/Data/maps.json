@@ -766,7 +766,7 @@
       "Code": "2009rwc_03",
       "Name": "Debug Room",
       "MapMode": 0,
-      "Music": "111.mp3"
+      "Music": "64.mp3"
     },
     {
       "Code": "guild_vs4",
@@ -783,6 +783,24 @@
     {
       "Code": "pvp_n_1-5",
       "Name": "Debug Room 4",
+      "MapMode": 0,
+      "Music": "51.mp3"
+    },
+    {
+      "Code": "guild_vs1",
+      "Name": "Test Room A",
+      "MapMode": 0,
+      "Music": "07.mp3"
+    },
+    {
+      "Code": "guild_vs2",
+      "Name": "Test Room B",
+      "MapMode": 0,
+      "Music": "07.mp3"
+    },
+    {
+      "Code": "guild_vs5",
+      "Name": "Test Room C",
       "MapMode": 0,
       "Music": "51.mp3"
     },

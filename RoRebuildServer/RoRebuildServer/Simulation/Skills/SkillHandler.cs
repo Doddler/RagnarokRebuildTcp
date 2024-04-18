@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Simulation.Skills
 {
@@ -18,6 +19,7 @@ namespace RoRebuildServer.Simulation.Skills
                 var handler = (SkillHandlerBase)Activator.CreateInstance(type)!;
                 var attr = type.GetCustomAttribute<SkillHandlerAttribute>();
                 var skill = attr.SkillType;
+                handler.SkillClassification = attr.SkillClassification;
 
                 handlers[(int)skill] = handler;
             }
@@ -40,6 +42,19 @@ namespace RoRebuildServer.Simulation.Skills
             if (handler != null)
                 return handler.GetCastTime(src, target, level);
             return 0f;
+        }
+
+        public static int GetSkillRange(CombatEntity src, CharacterSkill skill, int level)
+        {
+            var handler = handlers[(int)skill];
+            if (handler != null)
+            {
+                var range = handler.GetSkillRange(src, level);
+                if(range > 0)
+                    return range;
+            }
+
+            return src.GetStat(CharacterStat.Range);
         }
 
         public static void ExecuteSkill(SkillCastInfo info, CombatEntity src)

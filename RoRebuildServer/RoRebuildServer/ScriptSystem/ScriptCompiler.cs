@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Dfa;
@@ -54,7 +55,7 @@ internal class ScriptCompiler
                 if (newModified > oldModified)
                 {
                     ServerLogger.Debug($"File {cacheFileName} is already built, using it instead.");
-                    var script = File.ReadAllText(cacheFileName);
+                    var script = File.ReadAllText(cacheFileName, Encoding.UTF8);
                     scriptFiles.Add(Path.GetRelativePath(dataPath, inputPath), script);
                     return false;
                 }

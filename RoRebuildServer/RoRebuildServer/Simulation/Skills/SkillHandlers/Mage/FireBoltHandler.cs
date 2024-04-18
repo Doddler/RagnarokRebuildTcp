@@ -9,19 +9,19 @@ using RoRebuildServer.Networking;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
 {
-    [SkillHandler(CharacterSkill.FireBolt)]
+    [SkillHandler(CharacterSkill.FireBolt, SkillClass.Magic)]
     public class FireBoltHandler : SkillHandlerBase
     {
         public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
         {
-            return 0f;
+            //return 0f;
 
             if (lvl < 0 || lvl > 10)
                 lvl = 10;
 
-            return 2f + lvl * 0.1f;
+            return 1f + lvl * 0.1f;
         }
-
+        
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl)
         {
             if (lvl < 0 || lvl > 10)

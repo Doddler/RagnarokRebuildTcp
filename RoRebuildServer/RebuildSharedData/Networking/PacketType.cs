@@ -47,6 +47,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] EffectOnCharacter,
     [ServerOnlyPacket] EffectAtLocation,
     Emote,
+    ClientTextCommand,
     
     AdminRequestMove,
     AdminServerAction,
@@ -77,6 +78,10 @@ public enum AdminAction : byte
 {
     ForceGC,
     ReloadScripts
+}
+public enum ClientTextCommand : byte
+{
+    Where
 }
 
 public enum NpcInteractionType

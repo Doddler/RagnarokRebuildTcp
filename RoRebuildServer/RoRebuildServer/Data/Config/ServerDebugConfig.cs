@@ -10,6 +10,9 @@ public class ServerDebugConfig
     public int MaxSpawnTime { get; set; }
     public bool DebugMapOnly { get; set; }
     public string DebugMapName { get; set; }
+    public bool AddSimulatedLag { get; set; } = false;
+    public int InboundSimulatedLag { get; set; } //in ms
+    public int OutboundSimulatedLag { get; set; }
     //public bool UseForceEnterMap { get; set; }
     //public string ForceEnterMapName { get; set; }
 }

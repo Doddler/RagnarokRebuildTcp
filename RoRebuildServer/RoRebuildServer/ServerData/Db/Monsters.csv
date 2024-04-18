@@ -130,7 +130,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4127,MUMMY,Mummy,37,1253,21,27,21,30,27,1,121,148,1,8,8,573,637,10,12,Medium,Undead,Undead2,1772,384,72,300,Normal,AiAggressive,300,mummy.spr,0,0.5,1
 4128,ISIS,Isis,47,1206,42,45,34,39,37,36,216,265,1,15,15,1567,1352,10,12,Large,Demon,Dark1,1384,336,768,200,Normal,AiAggressive,500,isis.spr,0.4,0.5,1
 4129,SOLDIER_SKELETON,Soldier Skeleton,29,732,16,21,16,24,21,1,76,93,1,6,6,345,350,10,12,Medium,Undead,Undead1,2276,432,576,200,Normal,AiAggressive,225,skel_soldier.spr,0,0.5,1
-4130,ARCHER_SKELETON,Archer Skeleton,31,825,16,22,17,30,18,1,84,103,9,6,6,310,323,10,12,Medium,Undead,Undead1,2864,576,864,300,Normal,AiAggressive,700,skel_archer.spr,0,0.5,1
+4130,ARCHER_SKELETON,Archer Skeleton,31,825,16,22,17,30,18,1,84,103,9,6,6,310,323,10,16,Medium,Undead,Undead1,2864,576,864,300,Normal,AiAggressive,700,skel_archer.spr,0,0.5,1
 4131,MIMIC,Mimic,51,1056,20,36,12,57,73,53,107,508,1,1,22,1195,2549,10,12,Medium,Formless,Neutral3,972,288,500,100,Normal,AiAggressive,500,mimic.spr,0,0.5,1
 4132,MATYR,Matyr,31,672,25,25,25,25,25,25,118,145,1,11,11,565,577,10,12,Medium,Beast,Dark1,432,360,432,150,Normal,AiAggressive,150,matyr.spr,0,0.5,1
 4133,VERIT,Verit,38,1234,21,27,21,31,27,1,124,151,1,8,8,637,631,10,12,Medium,Undead,Undead1,2468,480,768,250,Normal,AiPassive,500,verit.spr,0,0.5,1
@@ -284,3 +284,4 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4281,MEGALODON,Megalodon,24,599,14,18,14,20,18,1,64,79,1,6,6,230,228,10,12,Medium,Undead,Undead1,2492,432,792,200,Normal,AiPassive,725,megalodon.spr,0,0.5,1
 4282,MEGALITH,Megalith,45,1086,35,37,37,44,29,37,151,184,9,14,14,1064,1041,10,12,Large,Formless,Neutral4,1332,672,1332,200,Normal,AiAggressiveImmobile,962,megalith.spr,0,-1,1
 4283,TAO_GUNKA,Tao Gunka,70,261755,134,98,138,92,59,87,1296,1584,2,48,33,392701,393602,10,12,Large,Demon,Neutral3,1020,144,288,150,Boss,AiAggressive,400,tao_gunka.spr,0,0.5,1
+4284,TARGET_DUMMY,Target Dummy,1,9000,1,2,10,1,1,1,1,1,1,999,999,0,0,7,12,Small,Plant,Earth1,1,1,1,-1,Normal,AiPlant,1,barricade.spr,0,-1,1

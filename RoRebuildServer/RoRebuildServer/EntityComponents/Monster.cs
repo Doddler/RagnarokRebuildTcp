@@ -19,11 +19,25 @@ public partial class Monster : IEntityAutoReset
     public Entity Entity;
     public WorldObject Character = null!;
     public CombatEntity CombatEntity = null!;
-    
+
     private float aiTickRate;
     //private float aiCooldown;
 
-    private float nextAiUpdate;
+    private float NextAiUpdate;
+    //private float NextAiUpdate
+    //{
+    //    get => nextAiUpdate;
+    //    set
+    //    {
+    //        if (dbgFlag && value > Time.ElapsedTimeFloat)
+    //            ServerLogger.Debug($"Updated AI update time to {value - Time.ElapsedTimeFloat} (previous value was {nextAiUpdate - Time.ElapsedTimeFloat})");
+    //        if (NetworkManager.PlayerCount == 0)
+    //            dbgFlag = false;
+    //        nextAiUpdate = value;
+    //    }
+    //}
+    //private float nextAiUpdate;
+
     private float nextMoveUpdate;
 
     //private float randomMoveCooldown;
@@ -55,13 +69,16 @@ public partial class Monster : IEntityAutoReset
     private float deadTimeout;
     //private float allyScanTimeout;
     private bool inAdjustMove;
+#if DEBUG
+    private bool dbgFlag;
+#endif
 
     public static float MaxSpawnTimeInSeconds = 180;
 
     public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
     public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
 
-	public void Reset()
+    public void Reset()
     {
         Entity = Entity.Null;
         Master = Entity.Null;
@@ -71,15 +88,15 @@ public partial class Monster : IEntityAutoReset
         CombatEntity = null!;
         //searchTarget = null!;
         aiTickRate = 0.1f;
-        nextAiUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(0, aiTickRate);
+        NextAiUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(0, aiTickRate);
         SpawnRule = null;
         MonsterBase = null!;
         SpawnMap = null!;
         Children = null;
-		
+
         Target = Entity.Null;
     }
-    
+
     public void Initialize(ref Entity e, WorldObject character, CombatEntity combat, MonsterDatabaseInfo monData, MonsterAiType type, MapSpawnRule? spawnEntry, string mapName)
     {
         Entity = e;
@@ -90,7 +107,7 @@ public partial class Monster : IEntityAutoReset
         aiType = type;
         SpawnMap = mapName;
         aiEntries = DataManager.GetAiStateMachine(aiType);
-        nextAiUpdate = Time.ElapsedTimeFloat + 1f;
+        NextAiUpdate = Time.ElapsedTimeFloat + 1f;
 
         if (SpawnRule != null)
         {
@@ -109,20 +126,20 @@ public partial class Monster : IEntityAutoReset
 
     public void AddChild(ref Entity child)
     {
-		if(!child.IsAlive() && child.Type != EntityType.Monster)
+        if (!child.IsAlive() && child.Type != EntityType.Monster)
             ServerLogger.LogError($"Cannot AddChild on monster {Character.Name} when child entity {child} is not alive or not a monster.");
 
         var childMon = child.Get<Monster>();
-        
+
         Children ??= new EntityList();
-		Children.Add(child);
-		
-		childMon.MakeChild(ref Entity);
+        Children.Add(child);
+
+        childMon.MakeChild(ref Entity);
     }
 
     public void MakeChild(ref Entity parent, MonsterAiType newAiType = MonsterAiType.AiMinion)
     {
-		if(!parent.IsAlive() && parent.Type != EntityType.Monster)
+        if (!parent.IsAlive() && parent.Type != EntityType.Monster)
             ServerLogger.LogError($"Cannot MakeChild on monster {Character.Name} when parent entity {parent} is not alive or not a monster.");
 
         Master = parent;
@@ -139,47 +156,50 @@ public partial class Monster : IEntityAutoReset
         Children?.Remove(ref child);
     }
 
-	private void UpdateStats()
-	{
-		SetStat(CharacterStat.Level, MonsterBase.Level);
-		SetStat(CharacterStat.Hp, MonsterBase.HP);
-		SetStat(CharacterStat.MaxHp, MonsterBase.HP);
-		SetStat(CharacterStat.Attack, MonsterBase.AtkMin);
-		SetStat(CharacterStat.Attack2, MonsterBase.AtkMax);
+    private void UpdateStats()
+    {
+        SetStat(CharacterStat.Level, MonsterBase.Level);
+        SetStat(CharacterStat.Hp, MonsterBase.HP);
+        SetStat(CharacterStat.MaxHp, MonsterBase.HP);
+        SetStat(CharacterStat.Attack, MonsterBase.AtkMin);
+        SetStat(CharacterStat.Attack2, MonsterBase.AtkMax);
         SetStat(CharacterStat.Range, MonsterBase.Range);
         SetStat(CharacterStat.Def, MonsterBase.Def);
         SetStat(CharacterStat.Vit, MonsterBase.Vit);
         SetTiming(TimingStat.MoveSpeed, MonsterBase.MoveSpeed);
-		SetTiming(TimingStat.SpriteAttackTiming, MonsterBase.SpriteAttackTiming);
-		SetTiming(TimingStat.HitDelayTime, MonsterBase.HitTime);
-		SetTiming(TimingStat.AttackMotionTime, MonsterBase.RechargeTime);
+        SetTiming(TimingStat.SpriteAttackTiming, MonsterBase.SpriteAttackTiming);
+        SetTiming(TimingStat.HitDelayTime, MonsterBase.HitTime);
+        SetTiming(TimingStat.AttackMotionTime, MonsterBase.AttackTime);
+        SetTiming(TimingStat.AttackDelayTime, MonsterBase.RechargeTime);
         Character.MoveSpeed = MonsterBase.MoveSpeed;
     }
 
-	private bool ValidateTarget()
-	{
-		if (Target.IsNull() || !Target.IsAlive())
-			return false;
-		var ce = Target.Get<CombatEntity>();
-		if (!ce.IsValidTarget(CombatEntity))
-			return false;
-		return true;
-	}
+    private bool ValidateTarget()
+    {
+        if (Target.IsNull() || !Target.IsAlive())
+            return false;
+        var ce = Target.Get<CombatEntity>();
+        if (!ce.IsValidTarget(CombatEntity))
+            return false;
+        return true;
+    }
 
-	private void SwapTarget(Entity newTarget)
-	{
-		if (Target == newTarget)
-			return;
-		
-		Target = newTarget;
+    private void SwapTarget(Entity newTarget)
+    {
+        if (Target == newTarget)
+            return;
 
-		if (Target.Type == EntityType.Player)
+        Target = newTarget;
+
+        if (Target.Type == EntityType.Player)
         {
             var p = newTarget.Get<Player>();
-			CommandBuilder.SendMonsterTarget(p, Character);
-		}
+            if(p.Character.State == CharacterState.Dead)
+                ServerLogger.LogWarning($"Monster {Character.Name} is attempting to change target to a dead player!");
+            CommandBuilder.SendMonsterTarget(p, Character);
+        }
 
-	}
+    }
 
     /// <summary>
     /// This kills the monster.
@@ -187,18 +207,18 @@ public partial class Monster : IEntityAutoReset
     /// <param name="giveExperience">Whether killing this monster should reward experience to contributing players.</param>
     /// <param name="isMasterCommand">Is the issuer of this die command the master of this monster? If so, set this to suppress the RemoveChild callback.</param>
     public void Die(bool giveExperience = true, bool isMasterCommand = false)
-	{
-		if (CurrentAiState == MonsterAiState.StateDead)
-			return;
+    {
+        if (CurrentAiState == MonsterAiState.StateDead)
+            return;
 
-		CurrentAiState = MonsterAiState.StateDead;
-		Character.State = CharacterState.Dead;
+        CurrentAiState = MonsterAiState.StateDead;
+        Character.State = CharacterState.Dead;
 
-        if(giveExperience)
-		    CombatEntity.DistributeExperience();
-		
-		Character.IsActive = false;
-        
+        if (giveExperience)
+            CombatEntity.DistributeExperience();
+
+        Character.IsActive = false;
+
         if (Children != null && Children.Count > 0)
         {
             foreach (var child in Children)
@@ -209,7 +229,7 @@ public partial class Monster : IEntityAutoReset
 
             Children.Clear();
         }
-        
+
         if (Master.IsAlive() && !isMasterCommand)
         {
             var monster = Master.Get<Monster>();
@@ -217,9 +237,9 @@ public partial class Monster : IEntityAutoReset
         }
 
         if (SpawnRule == null)
-		{
-			//ServerLogger.LogWarning("Attempting to remove entity without spawn data! How?? " + Character.ClassId);
-            
+        {
+            //ServerLogger.LogWarning("Attempting to remove entity without spawn data! How?? " + Character.ClassId);
+
             World.Instance.FullyRemoveEntity(ref Entity, CharacterRemovalReason.Dead);
             //Character.ClearVisiblePlayerList();
             return;
@@ -231,109 +251,107 @@ public partial class Monster : IEntityAutoReset
             deadTimeout = 0.4f; //minimum respawn time
         if (deadTimeout > MaxSpawnTimeInSeconds)
             deadTimeout = MaxSpawnTimeInSeconds;
-        nextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
+        NextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
         deadTimeout += Time.ElapsedTimeFloat;
 
         Character.ClearVisiblePlayerList(); //make sure this is at the end or the player may not be notified of the monster's death
+    }
 
+    public void ResetDelay()
+    {
+        NextAiUpdate = 0f;
+    }
 
-	}
+    public void AddDelay(float delay)
+    {
+        //usually to stop a monster from acting after taking fatal damage, but before the damage is applied
+        NextAiUpdate = Time.ElapsedTimeFloat + delay;
+    }
 
-	public void ResetDelay()
-	{
-		nextAiUpdate = 0f;
-	}
+    private bool CanAssistAlly(int distance, out Entity newTarget)
+    {
+        newTarget = Entity.Null;
 
-	public void AddDelay(float delay)
-	{
-		//usually to stop a monster from acting after taking fatal damage, but before the damage is applied
-		nextAiUpdate = Time.ElapsedTimeFloat + delay;
-	}
+        //if (Time.ElapsedTimeFloat < allyScanTimeout)
+        //             return false;
 
-	private bool CanAssistAlly(int distance, out Entity newTarget)
-	{
-		newTarget = Entity.Null;
-
-		//if (Time.ElapsedTimeFloat < allyScanTimeout)
-		//             return false;
-
-		var list = EntityListPool.Get();
+        var list = EntityListPool.Get();
 
         Debug.Assert(Character.Map != null, "Monster must be attached to a map");
 
         Character.Map.GatherMonstersOfTypeInRange(Character.Position, distance, list, MonsterBase);
 
-		if (list.Count == 0)
-		{
-			EntityListPool.Return(list);
-			return false;
-		}
+        if (list.Count == 0)
+        {
+            EntityListPool.Return(list);
+            return false;
+        }
 
-		for (var i = 0; i < list.Count; i++)
-		{
-			var entity = list[i];
-			var monster = entity.Get<Monster>();
+        for (var i = 0; i < list.Count; i++)
+        {
+            var entity = list[i];
+            var monster = entity.Get<Monster>();
 
-			//check if their ally is attacking, the target is alive, and they can see their ally
-			if (monster.CurrentAiState == MonsterAiState.StateAttacking
-				&& monster.Target.IsAlive()
-				&& Character.Map.WalkData.HasLineOfSight(Character.Position, monster.Character.Position))
-			{
-				newTarget = monster.Target;
-				EntityListPool.Return(list);
-				return true;
-			}
-		}
+            //check if their ally is attacking, the target is alive, and they can see their ally
+            if (monster.CurrentAiState == MonsterAiState.StateAttacking
+                && monster.Target.IsAlive()
+                && Character.Map.WalkData.HasLineOfSight(Character.Position, monster.Character.Position))
+            {
+                newTarget = monster.Target;
+                EntityListPool.Return(list);
+                return true;
+            }
+        }
 
-		EntityListPool.Return(list);
-		//allyScanTimeout = Time.ElapsedTimeFloat + 0.25f; //don't scan for allies in combat more than 4 times a second. It's slow.
-		return false;
-	}
+        EntityListPool.Return(list);
+        //allyScanTimeout = Time.ElapsedTimeFloat + 0.25f; //don't scan for allies in combat more than 4 times a second. It's slow.
+        return false;
+    }
 
-	private bool FindRandomTargetInRange(int distance, out Entity newTarget)
-	{
-		var list = EntityListPool.Get();
+    private bool FindRandomTargetInRange(int distance, out Entity newTarget)
+    {
+        var list = EntityListPool.Get();
 
-		Character.Map!.GatherValidTargets(Character, distance, MonsterBase.Range, list);
+        Character.Map!.GatherValidTargets(Character, distance, MonsterBase.Range, list);
 
-		if (list.Count == 0)
-		{
-			EntityListPool.Return(list);
-			newTarget = Entity.Null;
-			return false;
-		}
+        if (list.Count == 0)
+        {
+            EntityListPool.Return(list);
+            newTarget = Entity.Null;
+            return false;
+        }
 
-		newTarget = list.Count == 1 ? list[0] : list[GameRandom.NextInclusive(0, list.Count - 1)];
+        newTarget = list.Count == 1 ? list[0] : list[GameRandom.NextInclusive(0, list.Count - 1)];
 
-		EntityListPool.Return(list);
+        EntityListPool.Return(list);
 
-		return true;
-	}
+        return true;
+    }
 
-	public void AiStateMachineUpdate()
-	{
+    public void AiStateMachineUpdate()
+    {
 #if DEBUG
-		if (!Character.IsActive && CurrentAiState != MonsterAiState.StateDead)
-		{
-			ServerLogger.LogWarning($"Monster was in incorrect state {CurrentAiState}, even though it should be dead (character is not active)");
-			CurrentAiState = MonsterAiState.StateDead;
-		}
+        if (!Character.IsActive && CurrentAiState != MonsterAiState.StateDead)
+        {
+            ServerLogger.LogWarning($"Monster was in incorrect state {CurrentAiState}, even though it should be dead (character is not active)");
+            CurrentAiState = MonsterAiState.StateDead;
+        }
 #endif
 
-		//Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
+        //Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
 
         //ServerLogger.Debug($"{Entity}: Checking AI for state {CurrentAiState}");
 
-		for (var i = 0; i < aiEntries.Count; i++)
-		{
-			var entry = aiEntries[i];
+        for (var i = 0; i < aiEntries.Count; i++)
+        {
+            var entry = aiEntries[i];
 
-			if (entry.InputState != CurrentAiState)
-				continue;
-			
+            if (entry.InputState != CurrentAiState)
+                continue;
+
             if (!InputStateCheck(entry.InputCheck))
             {
-				//ServerLogger.Debug($"{Entity}: Did not meet input requirements for {entry.InputCheck}");
+                //ServerLogger.Debug($"{Entity}: Did not meet input requirements for {entry.InputCheck}");
                 continue;
             }
 
@@ -342,43 +360,46 @@ public partial class Monster : IEntityAutoReset
             if (!OutputStateCheck(entry.OutputCheck))
             {
                 //ServerLogger.Debug($"{Entity}: Did not meet output requirements for {entry.OutputCheck}");
-				continue;
+                continue;
             }
 
-            //ServerLogger.Debug($"{Entity}: Met output requirements for {entry.OutputCheck}! Changing state to {entry.OutputState}");
-			
-			CurrentAiState = entry.OutputState;
-		}
+#if DEBUG
+            if(ServerConfig.DebugConfig.DebugMapOnly)
+                ServerLogger.Debug($"{Entity}: AI state change from {CurrentAiState}: {entry.InputCheck} -> {entry.OutputCheck} = {entry.OutputState}");
+#endif
 
-		Character.LastAttacked = Entity.Null;
+            CurrentAiState = entry.OutputState;
+        }
+
+        Character.LastAttacked = Entity.Null;
 
         if (Character.Map != null && Character.Map.PlayerCount == 0)
         {
-            nextAiUpdate = Time.ElapsedTimeFloat + 2f + GameRandom.NextFloat(0f, 1f);
+            NextAiUpdate = Time.ElapsedTimeFloat + 2f + GameRandom.NextFloat(0f, 1f);
         }
         else
         {
-			if (nextAiUpdate < Time.ElapsedTimeFloat)
-			{
-				if (nextAiUpdate + Time.DeltaTimeFloat < Time.ElapsedTimeFloat)
-					nextAiUpdate = Time.ElapsedTimeFloat + aiTickRate;
-				else
-					nextAiUpdate += aiTickRate;
-			}
-		}
-	}
-	
-	public void Update()
+            if (NextAiUpdate < Time.ElapsedTimeFloat)
+            {
+                if (NextAiUpdate + Time.DeltaTimeFloat < Time.ElapsedTimeFloat)
+                    NextAiUpdate = Time.ElapsedTimeFloat + aiTickRate;
+                else
+                    NextAiUpdate += aiTickRate;
+            }
+        }
+    }
+
+    public void Update()
     {
         if (Character.Map?.PlayerCount == 0)
             return;
 
-        if (nextAiUpdate > Time.ElapsedTimeFloat)
+        if (NextAiUpdate > Time.ElapsedTimeFloat)
             return;
-		
+
         AiStateMachineUpdate();
-		
-		//if(GameRandom.Next(4000) == 42)
-		//	Die();
-	}
+
+        //if(GameRandom.Next(4000) == 42)
+        //	Die();
+    }
 }

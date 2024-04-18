@@ -7,6 +7,9 @@ namespace RoRebuildServer.Simulation.Skills
 {
     public abstract class SkillHandlerBase
     {
+        public SkillClass SkillClassification = SkillClass.Unique;
+        protected const int DefaultMagicCastRange = 9;
+
         public virtual bool IsAreaTargeted => false;
         public virtual float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0f;
         public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl);
@@ -15,6 +18,15 @@ namespace RoRebuildServer.Simulation.Skills
         public float GetCastTime(CombatEntity source, Position position, int lvl) => GetCastTime(source, null, position, lvl);
         public void Process(CombatEntity source, Position position, int lvl) => Process(source, null, position, lvl);
         public void Process(CombatEntity source, CombatEntity target, int lvl) => Process(source, target, Position.Invalid, lvl);
+
+        public virtual int GetSkillRange(CombatEntity source, int lvl)
+        {
+            switch (SkillClassification)
+            {
+                case SkillClass.Magic: return DefaultMagicCastRange;
+                default: return -1;
+            }
+        }
 
         public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position)
         {
@@ -42,10 +54,12 @@ namespace RoRebuildServer.Simulation.Skills
     public class SkillHandlerAttribute : Attribute
     {
         public CharacterSkill SkillType;
+        public SkillClass SkillClassification;
 
-        public SkillHandlerAttribute(CharacterSkill skillType)
+        public SkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None)
         {
             SkillType = skillType;
+            SkillClassification = skillClassification;
         }
     }
 

@@ -7,7 +7,7 @@ using RoRebuildServer.Networking;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
 {
-    [SkillHandler(CharacterSkill.Bash)]
+    [SkillHandler(CharacterSkill.Bash, SkillClass.Physical)]
     public class BashHandler : SkillHandlerBase
     {
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl)

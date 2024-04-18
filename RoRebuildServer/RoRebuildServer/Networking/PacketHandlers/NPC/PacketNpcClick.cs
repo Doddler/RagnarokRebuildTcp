@@ -31,9 +31,6 @@ public class PacketNpcClick : IClientPacketHandler
 
         var targetNpc = World.Instance.GetEntityById(id);
         
-        character.StopAction();
-        character.Player.ClearTarget();
-
         if (targetNpc.Type != EntityType.Npc)
             return;
 
@@ -41,13 +38,17 @@ public class PacketNpcClick : IClientPacketHandler
             return;
         
         var npc = targetNpc.Get<Npc>();
-        var npcChar = targetNpc.Get<WorldObject>();
 
         if (!npc.HasInteract)
             return;
 
+        character.ShortenMovePath(); //we might be walking for 1 more tile after we start our interaction 
+        character.Player.ClearTarget();
+
         npc.OnInteract(character.Player);
         
-        character.ChangeLookDirection(ref connection.Entity, (npcChar.Position - character.Position).Normalize().GetDirectionForOffset(), HeadFacing.Center);
+        if(!character.IsMoving)
+            character.LookAtEntity(ref targetNpc);
+            //character.ChangeLookDirection(ref connection.Entity, (npcChar.Position - character.Position).Normalize().GetDirectionForOffset(), HeadFacing.Center);
     }
 }

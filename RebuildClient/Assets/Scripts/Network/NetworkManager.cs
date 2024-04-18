@@ -7,6 +7,7 @@ using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.PlayerControl;
+using Assets.Scripts.SkillHandlers;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utility;
@@ -254,6 +255,8 @@ namespace Assets.Scripts.Network
                     }
                 }
             }
+
+            var lockTime = msg.ReadFloat();
             //for (var i = 0; i < totalSteps; i++)
             //	pathData.Add(ReadPosition(msg));
 
@@ -261,6 +264,7 @@ namespace Assets.Scripts.Network
             //	Debug.Log("Doing move for player!");
 
             ctrl.StartMove(moveSpeed, moveCooldown, totalSteps, curStep, pathData);
+            ctrl.SetHitDelay(lockTime);
         }
 
         private ServerControllable SpawnEntity(ClientInboundMessage msg)
@@ -457,6 +461,23 @@ namespace Assets.Scripts.Network
             LoadMoveData(msg, controllable);
         }
 
+        private void OnMessageFixedMove(ClientInboundMessage msg)
+        {
+            var id = msg.ReadInt32();
+            
+            if (!entityList.TryGetValue(id, out var controllable))
+            {
+                Debug.LogWarning("Trying to move entity " + id + ", but it does not exist in scene!");
+                return;
+            }
+
+            var dest = ReadPosition(msg);
+            var speed = msg.ReadFloat();
+            var time = msg.ReadFloat();
+            
+            controllable.DirectWalkMove(speed, time, dest);
+        }
+
         private void OnMessageChangeMaps(ClientInboundMessage msg)
         {
             var mapName = msg.ReadString();
@@ -600,6 +621,104 @@ namespace Assets.Scripts.Network
             StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, controllable));
         }
 
+        private void AttackMotion(ServerControllable src, Vector2Int pos, Direction dir, float motionTime, ServerControllable target)
+        {
+            var hasTarget = target != null;
+            
+            if (hasTarget)
+            {
+                var cd = src.transform.localPosition - target.transform.localPosition;
+                cd.y = 0;
+                target.CounterHitDir = cd.normalized;
+                //Debug.Log("Counter hit: " + cd);
+            }
+            else
+            {
+                var v = dir.GetVectorValue();
+                src.CounterHitDir = new Vector3(v.x, 0, v.y);
+            }
+            
+            src.SpriteAnimator.AnimSpeed = 1f; //this will get reset when we resume walking anyways
+            //
+            // if (src.SpriteAnimator.State == SpriteState.Walking)
+            // {
+            //     src.PauseMove(motionTime);
+            //     src.SpriteAnimator.State = SpriteState.Standby;
+            //     src.SpriteAnimator.Direction = dir;
+            // }
+            // else
+            {
+                src.StopImmediate(pos, false);
+                src.SpriteAnimator.Direction = dir;
+                src.SpriteAnimator.State = SpriteState.Standby;
+            }
+        }
+
+        private void OnMessageSkill(ClientInboundMessage msg)
+        {
+            var type = (SkillType)msg.ReadByte();
+            switch (type)
+            {
+                case SkillType.SingleTarget:
+                    OnMessageTargetedSkillAttack(msg);
+                    break;
+                default:
+                    throw new Exception($"Could not handle skill packet of type {type}");
+            }
+        }
+        
+        private void OnMessageTargetedSkillAttack(ClientInboundMessage msg)
+        {
+            var id1 = msg.ReadInt32();
+            var id2 = msg.ReadInt32();
+            var skill = (CharacterSkill)msg.ReadByte();
+            var skillLvl = (int)msg.ReadByte();
+
+            if (!entityList.TryGetValue(id1, out var controllable))
+            {
+                Debug.LogWarning("Trying to attack entity " + id1 + ", but it does not exist in scene!");
+                return;
+            }
+            
+            var hasTarget = entityList.TryGetValue(id2, out var controllable2);
+
+            var dir = (Direction)msg.ReadByte();
+            var pos = ReadPosition(msg);
+            var dmg = msg.ReadInt16();
+            var result = (AttackResult)msg.ReadByte();
+            var hits = msg.ReadByte();
+            var motionTime = msg.ReadFloat();
+            
+            AttackMotion(controllable, pos, dir, motionTime, controllable2);
+            
+            if (hasTarget && controllable.SpriteAnimator.IsInitialized)
+            {
+                if (controllable.SpriteAnimator.SpriteData == null)
+                {
+                    throw new Exception("AAA? " + controllable.gameObject.name + " " + controllable.gameObject);
+                }
+
+                var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
+                if (controllable.SpriteAnimator.Type == SpriteType.Player)
+                    damageTiming = 0.5f;
+                
+                ClientSkillHandler.ExecuteSkill(controllable, controllable2, skill, skillLvl );
+
+                // if (hits > 1)
+                // {
+                //     DefaultSkillCastEffect.Create(controllable);
+                //     //FireArrow.Create(controllable, controllable2, hits);
+                //     dmg = (short)(dmg * hits);
+                //     hits = 1;
+                // }
+
+                if (hits < 1)
+                    hits = 1;
+
+                StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable2));
+            }
+        }
+
         private void OnMessageAttack(ClientInboundMessage msg)
         {
             //Debug.Log("OnMessageAttack");
@@ -644,7 +763,7 @@ namespace Assets.Scripts.Network
             }
             else
             {
-                controllable.StopImmediate(pos);
+                controllable.StopImmediate(pos, false);
                 controllable.SpriteAnimator.Direction = dir;
                 controllable.SpriteAnimator.State = SpriteState.Standby;
             }
@@ -733,6 +852,8 @@ namespace Assets.Scripts.Network
             var id = msg.ReadInt32();
             var delay = msg.ReadFloat();
             var damage = msg.ReadInt32();
+            var pos = ReadPosition(msg);
+            var isMoving = msg.ReadBoolean();
 
             if (!entityList.TryGetValue(id, out var controllable))
             {
@@ -759,8 +880,22 @@ namespace Assets.Scripts.Network
             if (controllable.SpriteAnimator.Type == SpriteType.Player)
                 controllable.SpriteAnimator.State = SpriteState.Standby;
 
+            //controllable.SnapToTile(controllable.Position, 0.2f);
+            
             if (!controllable.SpriteAnimator.IsAttackMotion)
                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
+
+            if(isMoving && controllable.IsMoving)
+            {
+                var cooldown = msg.ReadFloat();
+                
+                controllable.SnapToMovePath(pos, cooldown);
+            }
+            else
+            {
+                controllable.SnapToTile(pos, 0.2f);
+            }
+                
         }
 
         public void OnMessageChangeTarget(ClientInboundMessage msg)
@@ -923,6 +1058,12 @@ namespace Assets.Scripts.Network
         {
             var id = msg.ReadInt32();
             var text = msg.ReadString();
+
+            if (id == -1)
+            {
+                CameraFollower.AppendChatText("Server: " + text);
+                return;
+            }
 
             if (!entityList.TryGetValue(id, out var controllable))
             {
@@ -1115,6 +1256,9 @@ namespace Assets.Scripts.Network
                 case PacketType.StartMove:
                     OnMessageStartMove(msg);
                     break;
+                case PacketType.FixedMove:
+                    OnMessageFixedMove(msg);
+                    break;
                 case PacketType.RemoveAllEntities:
                     OnMessageRemoveAllEntities(msg);
                     break;
@@ -1150,6 +1294,9 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.Attack:
                     OnMessageAttack(msg);
+                    break;
+                case PacketType.Skill:
+                    OnMessageSkill(msg);
                     break;
                 case PacketType.HitTarget:
                     OnMessageHit(msg);
@@ -1362,6 +1509,16 @@ namespace Assets.Scripts.Network
             msg.Write((byte)PacketType.ChangeName);
             msg.Write(text);
 
+            SendMessage(msg);
+        }
+
+        public void SendWhereCommand()
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.ClientTextCommand);
+            msg.Write((byte)ClientTextCommand.Where);
+            
             SendMessage(msg);
         }
 

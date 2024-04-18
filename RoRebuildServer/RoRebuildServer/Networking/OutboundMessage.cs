@@ -25,15 +25,20 @@ public class OutboundMessage
 {
     public List<NetworkConnection> Clients;
     public byte[] Message;
+    public bool IsInitialized;
+    public bool IsQueued;
     public int Length => (position + 7) / 8; //convert position in bits to bytes
 
     private int position;
+    
 
     public OutboundMessage()
     {
         Clients = new List<NetworkConnection>(10);
         Message = new byte[1024];
         position = 0;
+        IsInitialized = false;
+        IsQueued = false;
     }
 
     public OutboundMessage(List<NetworkConnection> clients, byte[] message, int length)
@@ -41,12 +46,15 @@ public class OutboundMessage
         Clients = clients;
         Message = message;
         position = 0;
+        IsInitialized = true;
     }
 
     public void Clear()
     {
         Clients.Clear();
         position = 0;
+        IsInitialized = false;
+        IsQueued = false;
     }
 
     public void WritePacketType(PacketType type)

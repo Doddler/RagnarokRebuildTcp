@@ -2,6 +2,9 @@ MapConfig("2009rwc_03")
 {
 	//CreateSpawn("WILD_ROSE", 2, 120000);
 	CreateSpawn("PORING", 1, %(49, 49, 3, 3));
+	CreateSpawn("TARGET_DUMMY", 1, %(74, 72, 0, 0));
+	CreateSpawn("TARGET_DUMMY", 1, %(76, 70, 0, 0));
+	CreateSpawn("TARGET_DUMMY", 1, %(65, 72, 0, 0));
 }
 
 MapConfig("pvp_n_1-5")

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
@@ -9,6 +10,7 @@ using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -37,8 +39,8 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
     
     public Entity Target { get; set; }
-    
-    public bool QueueAttack { get; set; }
+
+    public bool AutoAttackLock { get; set; }
     private float regenTickTime { get; set; }
     private int _weaponClass = -1;
     public int WeaponClass => _weaponClass != -1 ? _weaponClass : DefaultWeaponForJob(GetData(PlayerStat.Job));
@@ -80,7 +82,7 @@ public class Player : IEntityAutoReset
         Connection = null!;
         CurrentCooldown = 0f;
         HeadFacing = HeadFacing.Center;
-        QueueAttack = false;
+        AutoAttackLock = false;
         Id = Guid.Empty;
         Name = "Uninitialized Player";
         //Data = new PlayerData(); //fix this...
@@ -130,7 +132,10 @@ public class Player : IEntityAutoReset
             Character.ClassId = job; //there should be more complex checks here to prevent GM and mounts from being lost but we'll deal with it later
         }
 
-        var aMotionTime = 1.1f - level * 0.004f;
+        var aMotionTime = 0.5f;
+        var delayTime = 1.1f - level * 0.004f;
+        if (delayTime < aMotionTime)
+            delayTime = aMotionTime;
         var spriteAttackTiming = 0.6f;
 
         if (spriteAttackTiming > aMotionTime)
@@ -138,13 +143,12 @@ public class Player : IEntityAutoReset
 
         SetTiming(TimingStat.AttackMotionTime, aMotionTime);
         SetTiming(TimingStat.SpriteAttackTiming, spriteAttackTiming);
-        SetTiming(TimingStat.AttackDelayTime, 0); //fixme!
+        SetTiming(TimingStat.AttackDelayTime, delayTime);
         SetTiming(TimingStat.HitDelayTime, 0.5f);
         SetTiming(TimingStat.MoveSpeed, 0.15f);
         SetStat(CharacterStat.Range, 2);
 
-        //var minAtk = (level / 2f) * (level / 2f) + level * (level / 10) + 12 + level;
-        var atk = (level / 2f) * (level / 2f) + level * (level / 10) + 28 + level;
+        var atk = (level / 2f) * (level / 2f) + level * (int)(level / 10) + 28 + level;
         atk *= 1.2f;
         
         //lower damage below lv 60, raise above
@@ -307,7 +311,7 @@ public class Player : IEntityAutoReset
 
     public void ClearTarget()
     {
-        QueueAttack = false;
+        AutoAttackLock = false;
 
         if (!Target.IsNull())
             CommandBuilder.SendChangeTarget(this, null);
@@ -365,32 +369,37 @@ public class Player : IEntityAutoReset
 
     public void PerformQueuedAttack()
     {
-        //QueueAttack = false;
-        if (!ValidateTarget())
+        if (Character.State == CharacterState.Sitting 
+            || Character.State == CharacterState.Dead
+            || !ValidateTarget())
         {
-            QueueAttack = false;
+            AutoAttackLock = false;
             return;
         }
 
         var targetCharacter = Target.Get<WorldObject>();
-        if (!targetCharacter.IsActive)
+        if (!targetCharacter.IsActive || targetCharacter.Map != Character.Map)
         {
-            QueueAttack = false;
+            AutoAttackLock = false;
             return;
         }
 
-        if (targetCharacter.Map != Character.Map)
+        if (DistanceCache.IntDistance(Character.Position, targetCharacter.Position) > GetStat(CharacterStat.Range))
         {
-            QueueAttack = false;
+            if(Character.State == CharacterState.Idle) //no point trying to move if we're already moving
+                Character.TryMove(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range)-1);
+            return;
+        }
+        
+        if (Character.State == CharacterState.Moving)
+        {
+            if (Character.StepsRemaining > 1)
+                Character.ShortenMovePath(); //no point in shortening a path that is already short
+            
             return;
         }
 
-        if (Character.Position.SquareDistance(targetCharacter.Position) > GetStat(CharacterStat.Range))
-        {
-            TargetForAttack(targetCharacter);
-            return;
-        }
-
+        ChangeTarget(targetCharacter);
         PerformAttack(targetCharacter);
     }
     public void PerformAttack(WorldObject targetCharacter)
@@ -409,37 +418,55 @@ public class Player : IEntityAutoReset
             return;
         }
 
-        Character.StopMovingImmediately();
+        AutoAttackLock = true;
 
-        if (Character.AttackCooldown > Time.ElapsedTimeFloat)
+        if (Character.State == CharacterState.Moving)
         {
-            QueueAttack = true;
+            if(Character.QueuedAction == QueuedAction.Move && Character.MoveLockTime > Time.DeltaTimeFloat)
+                Character.State = CharacterState.Idle;
+            else
+                Character.ShortenMovePath();
+
             if (Target != targetCharacter.Entity)
                 ChangeTarget(targetCharacter);
 
             return;
         }
 
-        Character.SpawnImmunity = -1;
+        //Character.StopMovingImmediately();
 
+        if (Character.AttackCooldown > Time.ElapsedTimeFloat)
+        {
+            if (Target != targetCharacter.Entity)
+                ChangeTarget(targetCharacter);
+
+            return;
+        }
+
+        Character.ResetSpawnImmunity();
         CombatEntity.PerformMeleeAttack(targetEntity);
-        Character.AddMoveDelay(GetTiming(TimingStat.AttackDelayTime));
-
-        QueueAttack = true;
-
-        Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackMotionTime);
+        Character.AddMoveLockTime(GetTiming(TimingStat.AttackDelayTime));
+        
+        Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackDelayTime);
     }
     
     public void TargetForAttack(WorldObject enemy)
     {
-        if (Character.Position.SquareDistance(enemy.Position) <= GetStat(CharacterStat.Range))
+        if (CombatEntity.IsCasting)
+        {
+            ChangeTarget(enemy);
+            AutoAttackLock = true;
+            return;
+        }
+
+        if (DistanceCache.IntDistance(Character.Position, enemy.Position) <= GetStat(CharacterStat.Range))
         {
             ChangeTarget(enemy);
             PerformAttack(enemy);
             return;
         }
 
-        if (!Character.TryMove(enemy.Position, 0))
+        if (!Character.TryMove(enemy.Position, GetStat(CharacterStat.Range)))
             return;
 
         ChangeTarget(enemy);
@@ -479,10 +506,10 @@ public class Player : IEntityAutoReset
                 continue;
 
             CombatEntity.PerformMeleeAttack(target);
-            Character.AddMoveDelay(GetTiming(TimingStat.AttackDelayTime));
+            Character.AddMoveLockTime(GetTiming(TimingStat.AttackDelayTime));
         }
 
-        Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackMotionTime);
+        Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackDelayTime);
     }
 
     public bool WarpPlayer(string mapName, int x, int y, int width, int height, bool failIfNotWalkable)
@@ -492,7 +519,7 @@ public class Player : IEntityAutoReset
         
         AddActionDelay(2f); //block character input for 1+ seconds.
         Character.ResetState();
-        Character.SpawnImmunity = 5f;
+        Character.SetSpawnImmunity();
 
         CombatEntity.ClearDamageQueue();
 
@@ -558,12 +585,22 @@ public class Player : IEntityAutoReset
     public void AddActionDelay(CooldownActionType type) => CurrentCooldown += ActionDelay.CooldownTime(type);
     public void AddActionDelay(float time) => CurrentCooldown += CurrentCooldown;
 
+    private bool InCombatReadyState => Character.State == CharacterState.Idle && !CombatEntity.IsCasting &&
+                                       Character.AttackCooldown < Time.ElapsedTimeFloat;
+
+    private bool InMoveReadyState => Character.State == CharacterState.Idle && !CombatEntity.IsCasting;
+
     public void Update()
     {
-        if (QueueAttack)
+        CurrentCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
+        if (CurrentCooldown < 0)
+            CurrentCooldown = 0;
+        
+        if (Character.State == CharacterState.Dead || Character.State == CharacterState.Sitting)
         {
-            if (Character.AttackCooldown < Time.ElapsedTimeFloat)
-                PerformQueuedAttack();
+            Character.QueuedAction = QueuedAction.None;
+            AutoAttackLock = false;
+            return;
         }
 
         if (regenTickTime < Time.ElapsedTimeFloat)
@@ -575,11 +612,53 @@ public class Player : IEntityAutoReset
                 regenTickTime = Time.ElapsedTimeFloat + 8f;
         }
 
-        CurrentCooldown -= Time.DeltaTimeFloat;
+        if (Character.QueuedAction == QueuedAction.Cast)
+        {
+            if (CombatEntity.CastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
+            {
+                if (Character.State == CharacterState.Moving && Character.InMoveLock && !Character.InAttackCooldown && CombatEntity.CanAttackTarget(targetCharacter))
+                    Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
 
-        if (CurrentCooldown < 0)
-            CurrentCooldown = 0;
+                if (InCombatReadyState)
+                {
+                    if (CombatEntity.CastingSkill.IsValid)
+                        CombatEntity?.ResumeQueuedSkillAction();
+                    else
+                        Character.QueuedAction = QueuedAction.None;
+                }
+            }
+            else
+            {
+                Character.QueuedAction = QueuedAction.None;
+                Target = Entity.Null;
+            }
+        }
+        
+        if (Character.QueuedAction == QueuedAction.Move && InMoveReadyState)
+        {
+            if (Character.InMoveLock)
+                return;
 
+            Character.QueuedAction = QueuedAction.None;
+            Character.TryMove(Character.TargetPosition, 0, false);
+            
+            return;
+        }
 
+        if (AutoAttackLock)
+        {
+            if (!Target.TryGet<WorldObject>(out var targetCharacter))
+            {
+                AutoAttackLock = false;
+                Target = Entity.Null;
+                return;
+            }
+
+            if (Character.InMoveLock && !Character.InAttackCooldown && CombatEntity.CanAttackTarget(targetCharacter))
+                Character.StopMovingImmediately();
+
+            if(InCombatReadyState)
+                PerformQueuedAttack();
+        }
     }
 }

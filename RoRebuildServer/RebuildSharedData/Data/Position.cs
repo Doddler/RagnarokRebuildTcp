@@ -48,7 +48,7 @@ public struct Position : IEquatable<Position>
 
     /// <summary>
     /// Calculate the chebyshev distance to the destination.
-    /// A simplified distance check that returns the max distance along each of the x and y-axes.
+    /// A simplified distance check that returns the max distance along both the x and y-axes.
     /// Used to determine if a point is within a square area.
     /// I realize this probably will cause confusion with squared distance...
     /// </summary>
