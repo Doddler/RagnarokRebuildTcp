@@ -1,0 +1,3668 @@
+{
+  "MonsterClassData": [
+    {
+      "Id": 4000,
+      "Name": "Poring",
+      "SpriteName": "poring.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 5000,
+      "Name": "Poring",
+      "SpriteName": "poring.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4001,
+      "Name": "Fabre",
+      "SpriteName": "fabre.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4002,
+      "Name": "Lunatic",
+      "SpriteName": "lunatic.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4003,
+      "Name": "Pupa",
+      "SpriteName": "pupa.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4004,
+      "Name": "Creamy",
+      "SpriteName": "creamy.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4005,
+      "Name": "Rocker",
+      "SpriteName": "rocker.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4006,
+      "Name": "Poporing",
+      "SpriteName": "poporing.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4007,
+      "Name": "Thief Bug",
+      "SpriteName": "thief_bug.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4008,
+      "Name": "Thief Bug Egg",
+      "SpriteName": "thief_bug_egg.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4009,
+      "Name": "Hornet",
+      "SpriteName": "hornet.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4010,
+      "Name": "Green Plant",
+      "SpriteName": "green_plant.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4011,
+      "Name": "Black Mushroom",
+      "SpriteName": "black_mushroom.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4012,
+      "Name": "Drops",
+      "SpriteName": "drops.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4013,
+      "Name": "Blue Plant",
+      "SpriteName": "blue_plant.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4014,
+      "Name": "Familiar",
+      "SpriteName": "farmiliar.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4015,
+      "Name": "Tarou",
+      "SpriteName": "tarou.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4016,
+      "Name": "Vocal",
+      "SpriteName": "rocker.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1.5
+    },
+    {
+      "Id": 4017,
+      "Name": "Shining Plant",
+      "SpriteName": "shining_plant.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4018,
+      "Name": "Mandragora",
+      "SpriteName": "mandragora.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4019,
+      "Name": "Eclipse",
+      "SpriteName": "eclipse.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4020,
+      "Name": "Yoyo",
+      "SpriteName": "yoyo.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4021,
+      "Name": "Smokie",
+      "SpriteName": "smokie.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4022,
+      "Name": "Choco",
+      "SpriteName": "choco.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4023,
+      "Name": "Savage Babe",
+      "SpriteName": "savage_babe.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1
+    },
+    {
+      "Id": 4024,
+      "Name": "Baby Desert Wolf",
+      "SpriteName": "desert_wolf_b.spr",
+      "Offset": 0,
+      "ShadowSize": 0.35,
+      "Size": 1
+    },
+    {
+      "Id": 4025,
+      "Name": "Peco Peco Egg",
+      "SpriteName": "peco_egg.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4026,
+      "Name": "Peco Peco",
+      "SpriteName": "pecopeco.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4027,
+      "Name": "Condor",
+      "SpriteName": "condor.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4028,
+      "Name": "Picky",
+      "SpriteName": "picky.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1
+    },
+    {
+      "Id": 4029,
+      "Name": "Eggshell Picky",
+      "SpriteName": "picky_.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1
+    },
+    {
+      "Id": 4030,
+      "Name": "Red Mushroom",
+      "SpriteName": "red_mushroom.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4031,
+      "Name": "Dagger Goblin",
+      "SpriteName": "goblin_1.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4032,
+      "Name": "Flail Goblin",
+      "SpriteName": "goblin_2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4033,
+      "Name": "Axe Goblin",
+      "SpriteName": "goblin_3.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4034,
+      "Name": "Hammer Goblin",
+      "SpriteName": "goblin_4.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4035,
+      "Name": "Mace Goblin",
+      "SpriteName": "goblin_5.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4036,
+      "Name": "Goblin Archer",
+      "SpriteName": "goblin_archer.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4037,
+      "Name": "Panzer Goblin",
+      "SpriteName": "panzer_goblin.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4038,
+      "Name": "Steamrider Goblin",
+      "SpriteName": "steam_goblin.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4039,
+      "Name": "Rotor Gyro",
+      "SpriteName": "rotar_zairo.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4040,
+      "Name": "Goblin Leader",
+      "SpriteName": "goblin_leader.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4041,
+      "Name": "Yellow Plant",
+      "SpriteName": "yellow_plant.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4042,
+      "Name": "Savage",
+      "SpriteName": "savage.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4043,
+      "Name": "Willow",
+      "SpriteName": "wilow.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4044,
+      "Name": "Spore",
+      "SpriteName": "spore.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4045,
+      "Name": "Snake",
+      "SpriteName": "snake.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4046,
+      "Name": "Wolf",
+      "SpriteName": "wolf.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4047,
+      "Name": "Marin",
+      "SpriteName": "marin.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4048,
+      "Name": "Ghostring",
+      "SpriteName": "ghostring.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4049,
+      "Name": "Mastering",
+      "SpriteName": "mastering.spr",
+      "Offset": 0,
+      "ShadowSize": 0.75,
+      "Size": 1
+    },
+    {
+      "Id": 4050,
+      "Name": "Angeling",
+      "SpriteName": "angeling.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4051,
+      "Name": "Deviling",
+      "SpriteName": "deviling.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4052,
+      "Name": "Dragon Tail",
+      "SpriteName": "dragon_tail.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4053,
+      "Name": "Poison Spore",
+      "SpriteName": "poison_spore.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4054,
+      "Name": "Worm Tail",
+      "SpriteName": "worm_tail.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4055,
+      "Name": "Elder Willow",
+      "SpriteName": "elder_wilow.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4056,
+      "Name": "Eggyra",
+      "SpriteName": "eggyra.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4057,
+      "Name": "Bigfoot",
+      "SpriteName": "bigfoot.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4058,
+      "Name": "Sohee",
+      "SpriteName": "sohee.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4059,
+      "Name": "Wanderer",
+      "SpriteName": "wander_man.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4060,
+      "Name": "Greatest General",
+      "SpriteName": "greatest_general.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4061,
+      "Name": "Horong",
+      "SpriteName": "horong.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4062,
+      "Name": "Nine Tail",
+      "SpriteName": "nine_tail.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4063,
+      "Name": "Eddga",
+      "SpriteName": "eddga.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4064,
+      "Name": "Female Thief Bug",
+      "SpriteName": "thief_bug_female.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4065,
+      "Name": "Male Thief Bug",
+      "SpriteName": "thief_bug_male.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4066,
+      "Name": "Golden Thief Bug",
+      "SpriteName": "golden_bug.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4067,
+      "Name": "Vagabond Wolf",
+      "SpriteName": "vagabond_wolf.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4068,
+      "Name": "Scorpion",
+      "SpriteName": "scorpion.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4069,
+      "Name": "Metaller",
+      "SpriteName": "metaller.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4070,
+      "Name": "Magnolia",
+      "SpriteName": "magnolia.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4071,
+      "Name": "Andre",
+      "SpriteName": "andre.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4072,
+      "Name": "Deniro",
+      "SpriteName": "deniro.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4073,
+      "Name": "Piere",
+      "SpriteName": "piere.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4074,
+      "Name": "Vitata",
+      "SpriteName": "vitata.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4075,
+      "Name": "Giearth",
+      "SpriteName": "giearth.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4076,
+      "Name": "Maya",
+      "SpriteName": "maya.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4077,
+      "Name": "Maya Puple",
+      "SpriteName": "maya_puple.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4078,
+      "Name": "Golem",
+      "SpriteName": "golem.spr",
+      "Offset": 0,
+      "ShadowSize": 1,
+      "Size": 1
+    },
+    {
+      "Id": 4079,
+      "Name": "Muka",
+      "SpriteName": "muka.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4080,
+      "Name": "Ant Egg",
+      "SpriteName": "ant_egg.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4081,
+      "Name": "Anacondaq",
+      "SpriteName": "anacondaq.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4082,
+      "Name": "Frilldora",
+      "SpriteName": "frilldora.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4083,
+      "Name": "Desert Wolf",
+      "SpriteName": "desert_wolf.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4084,
+      "Name": "Sidewinder",
+      "SpriteName": "side_winder.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4085,
+      "Name": "Hode",
+      "SpriteName": "hode.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4086,
+      "Name": "Phreeoni",
+      "SpriteName": "phreeoni.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4087,
+      "Name": "Sandman",
+      "SpriteName": "sand_man.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4088,
+      "Name": "Steel Chonchon",
+      "SpriteName": "steel_chocho.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1
+    },
+    {
+      "Id": 4089,
+      "Name": "Dragon Fly",
+      "SpriteName": "dragon_fly.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1
+    },
+    {
+      "Id": 4090,
+      "Name": "Hunter Fly",
+      "SpriteName": "hunter_fly.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1
+    },
+    {
+      "Id": 4091,
+      "Name": "Chonchon",
+      "SpriteName": "chocho.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1
+    },
+    {
+      "Id": 4092,
+      "Name": "Caramel",
+      "SpriteName": "caramel.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4093,
+      "Name": "Horn",
+      "SpriteName": "horn.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4094,
+      "Name": "Stainer",
+      "SpriteName": "stainer.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4095,
+      "Name": "Earth Petit",
+      "SpriteName": "petit.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4096,
+      "Name": "Sky Petit",
+      "SpriteName": "petit_.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4097,
+      "Name": "Flora",
+      "SpriteName": "flora.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4098,
+      "Name": "Mantis",
+      "SpriteName": "mantis.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4099,
+      "Name": "Argos",
+      "SpriteName": "argos.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4100,
+      "Name": "Argiope",
+      "SpriteName": "argiope.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4101,
+      "Name": "Mistress",
+      "SpriteName": "mistress.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4102,
+      "Name": "Ambernite",
+      "SpriteName": "ambernite.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4103,
+      "Name": "Stem Worm",
+      "SpriteName": "stem_worm.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4104,
+      "Name": "Dustiness",
+      "SpriteName": "dustiness.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4105,
+      "Name": "Coco",
+      "SpriteName": "coco.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4106,
+      "Name": "Red Plant",
+      "SpriteName": "red_plant.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4107,
+      "Name": "Roda Frog",
+      "SpriteName": "roda_frog.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4108,
+      "Name": "Thara Frog",
+      "SpriteName": "thara_frog.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4109,
+      "Name": "Toad",
+      "SpriteName": "toad.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4110,
+      "Name": "Wild Rose",
+      "SpriteName": "wild_rose.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4111,
+      "Name": "Kobold Archer",
+      "SpriteName": "kobold_archer.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4112,
+      "Name": "Axe Kobold",
+      "SpriteName": "kobold_1.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4113,
+      "Name": "Hammer Kobold",
+      "SpriteName": "kobold_2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4114,
+      "Name": "Mace Kobold",
+      "SpriteName": "kobold_3.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4115,
+      "Name": "Kobold Leader",
+      "SpriteName": "kobolt_leader.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4116,
+      "Name": "Orc Warrior",
+      "SpriteName": "ork_warrior.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4117,
+      "Name": "Orc Lord",
+      "SpriteName": "orc_lord.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4118,
+      "Name": "Orc Lady",
+      "SpriteName": "orc_lady.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4119,
+      "Name": "Orc Baby",
+      "SpriteName": "orc_baby.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4120,
+      "Name": "Orc Hero",
+      "SpriteName": "ork_hero.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4121,
+      "Name": "Orc Archer",
+      "SpriteName": "orc_archer.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4122,
+      "Name": "High Orc",
+      "SpriteName": "high_orc.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4123,
+      "Name": "Orc Skeleton",
+      "SpriteName": "orc_skeleton.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4124,
+      "Name": "Orc Zombie",
+      "SpriteName": "orc_zombie.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4125,
+      "Name": "Zenorc",
+      "SpriteName": "zenorc.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4126,
+      "Name": "Drainliar",
+      "SpriteName": "drainliar.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4127,
+      "Name": "Mummy",
+      "SpriteName": "mummy.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4128,
+      "Name": "Isis",
+      "SpriteName": "isis.spr",
+      "Offset": 0.4,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4129,
+      "Name": "Soldier Skeleton",
+      "SpriteName": "skel_soldier.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4130,
+      "Name": "Archer Skeleton",
+      "SpriteName": "skel_archer.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4131,
+      "Name": "Mimic",
+      "SpriteName": "mimic.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4132,
+      "Name": "Matyr",
+      "SpriteName": "matyr.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4133,
+      "Name": "Verit",
+      "SpriteName": "verit.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4134,
+      "Name": "Ancient Mummy",
+      "SpriteName": "ancient_mummy.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4135,
+      "Name": "Osiris",
+      "SpriteName": "osiris.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4136,
+      "Name": "Minorous",
+      "SpriteName": "minorous.spr",
+      "Offset": 0,
+      "ShadowSize": 1,
+      "Size": 1
+    },
+    {
+      "Id": 4137,
+      "Name": "Arclouse",
+      "SpriteName": "arclouse.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4138,
+      "Name": "Amon Ra",
+      "SpriteName": "amon_ra.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4139,
+      "Name": "Zombie",
+      "SpriteName": "zombie.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4140,
+      "Name": "Skeleton",
+      "SpriteName": "skeleton.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4141,
+      "Name": "Ice Titan",
+      "SpriteName": "ice_titan.spr",
+      "Offset": 0.5,
+      "ShadowSize": 0.75,
+      "Size": 1
+    },
+    {
+      "Id": 4142,
+      "Name": "Bongun",
+      "SpriteName": "bon_gun.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4143,
+      "Name": "Hydra",
+      "SpriteName": "hydra.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4144,
+      "Name": "Munak",
+      "SpriteName": "munak.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4145,
+      "Name": "Whisper",
+      "SpriteName": "whisper.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4146,
+      "Name": "Whisper",
+      "SpriteName": "whisper.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4147,
+      "Name": "Whisper",
+      "SpriteName": "whisper_boss.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4148,
+      "Name": "Dokebi",
+      "SpriteName": "dokebi.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4149,
+      "Name": "Am Mut",
+      "SpriteName": "am_mut.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4150,
+      "Name": "Cat \u0027o Nine Tails",
+      "SpriteName": "cat_o_nine_tail.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4151,
+      "Name": "Moonlight Flower",
+      "SpriteName": "moonlight.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4152,
+      "Name": "Skeleton General",
+      "SpriteName": "skeleton_general.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4153,
+      "Name": "White Plant",
+      "SpriteName": "white_plant.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4154,
+      "Name": "Punk",
+      "SpriteName": "punk.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4155,
+      "Name": "Rideword",
+      "SpriteName": "rideword.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4156,
+      "Name": "Bathory",
+      "SpriteName": "bathory.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4157,
+      "Name": "Tower Keeper",
+      "SpriteName": "c_tower_manager.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4158,
+      "Name": "Elder",
+      "SpriteName": "elder.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4159,
+      "Name": "Alarm",
+      "SpriteName": "alarm.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4160,
+      "Name": "Owl Duke",
+      "SpriteName": "owl_duke.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4161,
+      "Name": "Owl Baron",
+      "SpriteName": "owl_baron.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4162,
+      "Name": "Executioner",
+      "SpriteName": "executioner.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4163,
+      "Name": "Clock",
+      "SpriteName": "clock.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4164,
+      "Name": "Cramp",
+      "SpriteName": "cramp.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4165,
+      "Name": "Joker",
+      "SpriteName": "joker.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4166,
+      "Name": "Penomena",
+      "SpriteName": "penomena.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4167,
+      "Name": "Mysteltain",
+      "SpriteName": "mysteltainn.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4168,
+      "Name": "Tyrfing",
+      "SpriteName": "tirfing.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4169,
+      "Name": "Brilight",
+      "SpriteName": "brilight.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4170,
+      "Name": "Martin",
+      "SpriteName": "martin.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4171,
+      "Name": "Sasquatch",
+      "SpriteName": "sasquatch.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4172,
+      "Name": "Leib Olmai",
+      "SpriteName": "leib_olmai.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4173,
+      "Name": "Killer Mantis",
+      "SpriteName": "killer_mantis.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4174,
+      "Name": "Baphomet",
+      "SpriteName": "baphomet.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4175,
+      "Name": "Baphomet Jr.",
+      "SpriteName": "baphomet_.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4176,
+      "Name": "Nightmare",
+      "SpriteName": "nightmare.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4177,
+      "Name": "Ghoul",
+      "SpriteName": "ghoul.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4178,
+      "Name": "Jakk",
+      "SpriteName": "jakk.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4179,
+      "Name": "Dracula",
+      "SpriteName": "dracula.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4180,
+      "Name": "Marionette",
+      "SpriteName": "marionette.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4181,
+      "Name": "Deviruchi",
+      "SpriteName": "deviruchi.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4182,
+      "Name": "Doppelganger",
+      "SpriteName": "doppelganger.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4183,
+      "Name": "Anubis",
+      "SpriteName": "anubis.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4184,
+      "Name": "Requiem",
+      "SpriteName": "requiem.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4185,
+      "Name": "Zerom",
+      "SpriteName": "zerom.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4186,
+      "Name": "Pasana",
+      "SpriteName": "pasana.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4187,
+      "Name": "Marduk",
+      "SpriteName": "marduk.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4188,
+      "Name": "Pharaoh",
+      "SpriteName": "pharaoh.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4189,
+      "Name": "Plankton",
+      "SpriteName": "plankton.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4190,
+      "Name": "Marina",
+      "SpriteName": "marina.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4191,
+      "Name": "Kukre",
+      "SpriteName": "kukre.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4192,
+      "Name": "Vadon",
+      "SpriteName": "vadon.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4193,
+      "Name": "Cornutus",
+      "SpriteName": "cornutus.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4194,
+      "Name": "Marse",
+      "SpriteName": "marse.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4195,
+      "Name": "Obeaune",
+      "SpriteName": "obeaune.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4196,
+      "Name": "Merman",
+      "SpriteName": "merman.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4197,
+      "Name": "Phen",
+      "SpriteName": "phen.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4198,
+      "Name": "Marine Sphere",
+      "SpriteName": "marine_sphere.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4199,
+      "Name": "Marc",
+      "SpriteName": "marc.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4200,
+      "Name": "Sword Fish",
+      "SpriteName": "sword_fish.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4201,
+      "Name": "Strouf",
+      "SpriteName": "strouf.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4202,
+      "Name": "Deviace",
+      "SpriteName": "deviace.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4203,
+      "Name": "Sageworm",
+      "SpriteName": "sageworm.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4204,
+      "Name": "Carat",
+      "SpriteName": "carat.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4205,
+      "Name": "Dark Frame",
+      "SpriteName": "dark_frame.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4206,
+      "Name": "Alice",
+      "SpriteName": "alice.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4207,
+      "Name": "Raydric",
+      "SpriteName": "raydric.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4208,
+      "Name": "Raydric Archer",
+      "SpriteName": "raydric_archer.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4209,
+      "Name": "Chimera",
+      "SpriteName": "chimera.spr",
+      "Offset": 0,
+      "ShadowSize": 1,
+      "Size": 1
+    },
+    {
+      "Id": 4210,
+      "Name": "Evil Druid",
+      "SpriteName": "evil_druid.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4211,
+      "Name": "Abyssal Knight",
+      "SpriteName": "knight_of_abyss.spr",
+      "Offset": 0,
+      "ShadowSize": 1,
+      "Size": 1
+    },
+    {
+      "Id": 4212,
+      "Name": "Khalitzburg",
+      "SpriteName": "khalitzburg.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4213,
+      "Name": "Wraith",
+      "SpriteName": "wraith.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4214,
+      "Name": "Dark Illusion",
+      "SpriteName": "dark_illusion.spr",
+      "Offset": 0,
+      "ShadowSize": 1,
+      "Size": 1
+    },
+    {
+      "Id": 4215,
+      "Name": "Dark Lord",
+      "SpriteName": "dark_lord.spr",
+      "Offset": 0,
+      "ShadowSize": 1,
+      "Size": 1
+    },
+    {
+      "Id": 4216,
+      "Name": "Skeleton Prisoner",
+      "SpriteName": "skel_prisoner.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4217,
+      "Name": "Zombie Prisoner",
+      "SpriteName": "zombie_prisoner.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4218,
+      "Name": "Sting",
+      "SpriteName": "sting.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4219,
+      "Name": "Majorous",
+      "SpriteName": "majoruros.spr",
+      "Offset": 0,
+      "ShadowSize": 1,
+      "Size": 1
+    },
+    {
+      "Id": 4220,
+      "Name": "Gargoyle",
+      "SpriteName": "gargoyle.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4221,
+      "Name": "Bloody Knight",
+      "SpriteName": "bloody_knight.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4222,
+      "Name": "Injustice",
+      "SpriteName": "injustice.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4223,
+      "Name": "Rybio",
+      "SpriteName": "rybio.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4224,
+      "Name": "Zealotus",
+      "SpriteName": "zherlthsh.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4225,
+      "Name": "Phendark",
+      "SpriteName": "phendark.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4226,
+      "Name": "Anolian",
+      "SpriteName": "anolian.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4227,
+      "Name": "Wind Ghost",
+      "SpriteName": "wind_ghost.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4228,
+      "Name": "Skeleton Worker",
+      "SpriteName": "skel_worker.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4229,
+      "Name": "Myst",
+      "SpriteName": "myst.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4230,
+      "Name": "Pirate Skeleton",
+      "SpriteName": "pirate_skel.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4231,
+      "Name": "Drake",
+      "SpriteName": "drake.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4232,
+      "Name": "Spring Rabbit",
+      "SpriteName": "spring_rabbit.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4233,
+      "Name": "Pest",
+      "SpriteName": "pest.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4234,
+      "Name": "Permeter",
+      "SpriteName": "permeter.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4235,
+      "Name": "Solider",
+      "SpriteName": "solider.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4236,
+      "Name": "Freezer",
+      "SpriteName": "freezer.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4237,
+      "Name": "Heater",
+      "SpriteName": "heater.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4238,
+      "Name": "Assulter",
+      "SpriteName": "assulter.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4239,
+      "Name": "Turtle General",
+      "SpriteName": "turtle_general.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4240,
+      "Name": "Grand Peco",
+      "SpriteName": "grand_peco.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4241,
+      "Name": "Beetle King",
+      "SpriteName": "kind_of_beetle.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4242,
+      "Name": "Deleter",
+      "SpriteName": "deleter.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4243,
+      "Name": "Deleter",
+      "SpriteName": "deleter_.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4244,
+      "Name": "Geographer",
+      "SpriteName": "geographer.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4245,
+      "Name": "Rafflesia",
+      "SpriteName": "rafflesia.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4246,
+      "Name": "Archangeling",
+      "SpriteName": "archangeling.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4247,
+      "Name": "Sleeper",
+      "SpriteName": "sleeper.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4248,
+      "Name": "Goat",
+      "SpriteName": "goat.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4249,
+      "Name": "Demon Pungus",
+      "SpriteName": "demon_pungus.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4250,
+      "Name": "Driller",
+      "SpriteName": "driller.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4251,
+      "Name": "Harpy",
+      "SpriteName": "harpy.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4252,
+      "Name": "Venatu",
+      "SpriteName": "venatu_1.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4253,
+      "Name": "Venatu",
+      "SpriteName": "venatu_2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4254,
+      "Name": "Venatu",
+      "SpriteName": "venatu_3.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4255,
+      "Name": "Venatu",
+      "SpriteName": "venatu_4.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4256,
+      "Name": "Cookie",
+      "SpriteName": "cookie.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4257,
+      "Name": "Cookie",
+      "SpriteName": "cookie_xmas.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4258,
+      "Name": "Cruiser",
+      "SpriteName": "cruiser.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4259,
+      "Name": "Chepet",
+      "SpriteName": "chepet.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4260,
+      "Name": "Festive Goblin",
+      "SpriteName": "gobline_xmas.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4261,
+      "Name": "Garm",
+      "SpriteName": "garm.spr",
+      "Offset": 0,
+      "ShadowSize": 1,
+      "Size": 1
+    },
+    {
+      "Id": 4262,
+      "Name": "Baby Garm",
+      "SpriteName": "garm_baby.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4263,
+      "Name": "Stormy Knight",
+      "SpriteName": "knight_of_windstorm.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4264,
+      "Name": "Mystcase",
+      "SpriteName": "mystcase.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4265,
+      "Name": "Wraith Dead",
+      "SpriteName": "wraith_dead.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4266,
+      "Name": "Shellfish",
+      "SpriteName": "shellfish.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4267,
+      "Name": "Alligator",
+      "SpriteName": "alligator.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4268,
+      "Name": "Aster",
+      "SpriteName": "aster.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4269,
+      "Name": "Crab",
+      "SpriteName": "crab.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4270,
+      "Name": "Raggler",
+      "SpriteName": "raggler.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4271,
+      "Name": "Mobster",
+      "SpriteName": "mobster.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4272,
+      "Name": "Fur Seal",
+      "SpriteName": "fur_seal.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4273,
+      "Name": "Galapago",
+      "SpriteName": "galapago.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4274,
+      "Name": "Mutant Dragon",
+      "SpriteName": "mutant_dragon.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4275,
+      "Name": "See Otter",
+      "SpriteName": "see_otter.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4276,
+      "Name": "Gryphon",
+      "SpriteName": "gryphon.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4277,
+      "Name": "Medusa",
+      "SpriteName": "medusa.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4278,
+      "Name": "Neraid",
+      "SpriteName": "neraid.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4279,
+      "Name": "Tri Joint",
+      "SpriteName": "tri_joint.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4280,
+      "Name": "Stalactic Golem",
+      "SpriteName": "stalactic_golem.spr",
+      "Offset": 0,
+      "ShadowSize": 1,
+      "Size": 1
+    },
+    {
+      "Id": 4281,
+      "Name": "Megalodon",
+      "SpriteName": "megalodon.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4282,
+      "Name": "Megalith",
+      "SpriteName": "megalith.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 4283,
+      "Name": "Tao Gunka",
+      "SpriteName": "tao_gunka.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4284,
+      "Name": "Target Dummy",
+      "SpriteName": "barricade.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 1000,
+      "Name": "Warp",
+      "SpriteName": "Assets/Prefabs/PortalEffect.prefab",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 1001,
+      "Name": "Emperium",
+      "SpriteName": "Assets/Prefabs/Emperium90.prefab",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 1002,
+      "Name": "Guild Flag",
+      "SpriteName": "Assets/Prefabs/GuildFlag90.prefab",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1
+    },
+    {
+      "Id": 1003,
+      "Name": "Simon Mayace",
+      "SpriteName": "1_etc_01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1004,
+      "Name": "Armor Dealer",
+      "SpriteName": "1_f_01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1005,
+      "Name": "Garnet",
+      "SpriteName": "1_f_02.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1006,
+      "Name": "Tool Dealer",
+      "SpriteName": "1_f_03.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1007,
+      "Name": "Lady",
+      "SpriteName": "1_f_04.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1008,
+      "Name": "Magic Guildsman",
+      "SpriteName": "1_f_gypsy.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1009,
+      "Name": "Hat Store Girl",
+      "SpriteName": "1_f_librarygirl.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1010,
+      "Name": "Weapon Dealer",
+      "SpriteName": "1_f_maria.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1011,
+      "Name": "Tool Dealer",
+      "SpriteName": "1_f_merchant_01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1012,
+      "Name": "Item Collector",
+      "SpriteName": "1_f_merchant_02.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1013,
+      "Name": "Tool Dealer",
+      "SpriteName": "1_f_orient_01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1014,
+      "Name": "Mystic Lady ",
+      "SpriteName": "1_f_orient_02.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1015,
+      "Name": "Nan Hyang",
+      "SpriteName": "1_f_orient_03.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1016,
+      "Name": "Hagin",
+      "SpriteName": "1_f_orient_04.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1017,
+      "Name": "Nun",
+      "SpriteName": "1_f_priest.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1018,
+      "Name": "Waitress",
+      "SpriteName": "1_f_pubgirl.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1019,
+      "Name": "Jesqurienne",
+      "SpriteName": "1_f_signzisk.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1020,
+      "Name": "Dessert manager",
+      "SpriteName": "1_m_01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1021,
+      "Name": "Grout\u0027he Tuccok",
+      "SpriteName": "1_m_02.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1022,
+      "Name": "Weapon Dealer",
+      "SpriteName": "1_m_03.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1023,
+      "Name": "Clanux Heffron",
+      "SpriteName": "1_m_04.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1024,
+      "Name": "Bard",
+      "SpriteName": "1_m_bard.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1025,
+      "Name": "Crumpler",
+      "SpriteName": "1_m_hof.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1026,
+      "Name": "Inn Employee",
+      "SpriteName": "1_m_innkeeper.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1027,
+      "Name": "Butcher",
+      "SpriteName": "1_m_jobguider.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1028,
+      "Name": "Master Kavaruk",
+      "SpriteName": "1_m_jobtester.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1029,
+      "Name": "Rebarev Doug",
+      "SpriteName": "1_m_knightmaster.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1030,
+      "Name": "Gershaun",
+      "SpriteName": "1_m_librarymaster.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1031,
+      "Name": "Trader",
+      "SpriteName": "1_m_merchant.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1032,
+      "Name": "Won",
+      "SpriteName": "1_m_moc_lord.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1033,
+      "Name": "Serutero",
+      "SpriteName": "1_m_orient01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1034,
+      "Name": "Cleric",
+      "SpriteName": "1_m_pastor.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1035,
+      "Name": "Charlron",
+      "SpriteName": "1_m_pay_elder.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1036,
+      "Name": "The king of Midgard",
+      "SpriteName": "1_m_pron_king.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1037,
+      "Name": "Grandpa Pharmacist",
+      "SpriteName": "1_m_pubmaster.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1038,
+      "Name": "Archeologist",
+      "SpriteName": "1_m_sign1.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1039,
+      "Name": "Sir Jore",
+      "SpriteName": "1_m_signalche.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1040,
+      "Name": "Strange Guy",
+      "SpriteName": "1_m_signart.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1041,
+      "Name": "Wealthy-looking Merchant",
+      "SpriteName": "1_m_signmcnt.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1042,
+      "Name": "Daewoon",
+      "SpriteName": "1_m_signmonk2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1043,
+      "Name": "Rogue",
+      "SpriteName": "1_m_signrogue.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1044,
+      "Name": "Armor Dealer",
+      "SpriteName": "1_m_siz.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1045,
+      "Name": "Blacksmith",
+      "SpriteName": "1_m_smith.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1046,
+      "Name": "Marius",
+      "SpriteName": "1_m_wizard.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1047,
+      "Name": "Prontera Knight Member",
+      "SpriteName": "1_m_youngknight.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1048,
+      "Name": "switch",
+      "SpriteName": "1_shadow_npc.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1049,
+      "Name": "Sign",
+      "SpriteName": "2_board1.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1050,
+      "Name": "Bulletin Board",
+      "SpriteName": "2_board2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1051,
+      "Name": "Sign",
+      "SpriteName": "2_bulletin_board.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1052,
+      "Name": "Mage",
+      "SpriteName": "2_f_magicmaster.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1053,
+      "Name": "Alchemist Guildmember",
+      "SpriteName": "2_m_alche.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1054,
+      "Name": "Bard",
+      "SpriteName": "2_m_bard_orient.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1055,
+      "Name": "French Revolution",
+      "SpriteName": "2_m_dyeinger.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1056,
+      "Name": "Molgenstein",
+      "SpriteName": "2_m_molgenstein.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1057,
+      "Name": "Old Blacksmith",
+      "SpriteName": "2_m_oldblsmith.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1058,
+      "Name": "Grampa",
+      "SpriteName": "2_m_pharmacist.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1059,
+      "Name": "Metavis Seith ",
+      "SpriteName": "2_m_sage_b.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1060,
+      "Name": "Magic Academy Headmaster",
+      "SpriteName": "2_m_sage_old.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1061,
+      "Name": "Insect Guy",
+      "SpriteName": "2_m_swordmaster.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1062,
+      "Name": "Alcouskou",
+      "SpriteName": "2_m_thiefmaster.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1063,
+      "Name": "Mailbox",
+      "SpriteName": "2_postbox.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1064,
+      "Name": "BAPHOMET",
+      "SpriteName": "4_baphomet.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1065,
+      "Name": "Nyao",
+      "SpriteName": "4_cat.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1066,
+      "Name": "Marlene Sheu",
+      "SpriteName": "4_cook.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1067,
+      "Name": "DARK LORD",
+      "SpriteName": "4_darklord.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1068,
+      "Name": "DEVIRUCHI",
+      "SpriteName": "4_deviruchi.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1069,
+      "Name": "\uBE44\uD2F0",
+      "SpriteName": "4_dog01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1070,
+      "Name": "Auction Guide",
+      "SpriteName": "4_f_01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1071,
+      "Name": "Vegetable Gardener",
+      "SpriteName": "4_f_02.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1072,
+      "Name": "Smile Assistance",
+      "SpriteName": "4_f_03.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1073,
+      "Name": "Tool Dealer",
+      "SpriteName": "4_f_04.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1074,
+      "Name": "Lonely-looking Woman",
+      "SpriteName": "4_f_05.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1075,
+      "Name": "Shanel",
+      "SpriteName": "4_f_07.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1076,
+      "Name": "Kafra Employee",
+      "SpriteName": "4_f_agentkafra.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1077,
+      "Name": "Nephia",
+      "SpriteName": "4_f_alche.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1078,
+      "Name": "Girl",
+      "SpriteName": "4_f_chndress1.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1079,
+      "Name": "Catholic Knight",
+      "SpriteName": "4_f_cru.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1080,
+      "Name": "Hullaris",
+      "SpriteName": "4_f_godemom.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1081,
+      "Name": "Traveler",
+      "SpriteName": "4_f_gon.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1082,
+      "Name": "Hwekebein",
+      "SpriteName": "4_f_job_assassin.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1083,
+      "Name": "Neris",
+      "SpriteName": "4_f_job_blacksmith.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1084,
+      "Name": "Seisner",
+      "SpriteName": "4_f_job_hunter.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1085,
+      "Name": "Lady Amy Beatrist",
+      "SpriteName": "4_f_job_knight.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1086,
+      "Name": "Maid",
+      "SpriteName": "4_f_jpn.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1087,
+      "Name": "Auction Guide",
+      "SpriteName": "4_f_kafra1.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1088,
+      "Name": "Kafra Employee",
+      "SpriteName": "4_f_kafra2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1089,
+      "Name": "kafra Employee",
+      "SpriteName": "4_f_kafra3.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1090,
+      "Name": "Kafra",
+      "SpriteName": "4_f_kafra4.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1091,
+      "Name": "Kafra Employee",
+      "SpriteName": "4_f_kafra5.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1092,
+      "Name": "Kafra Employee",
+      "SpriteName": "4_f_kafra6.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1093,
+      "Name": "Kafra Employee",
+      "SpriteName": "4_f_kafra7.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1094,
+      "Name": "Kafra Voting Staff",
+      "SpriteName": "4_f_kafra9.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1095,
+      "Name": "Little Girl",
+      "SpriteName": "4_f_kid2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1096,
+      "Name": "Inn Employee",
+      "SpriteName": "4_f_maid.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1097,
+      "Name": "Chief Guard",
+      "SpriteName": "4_f_monk.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1098,
+      "Name": "Pretty Lindsay",
+      "SpriteName": "4_f_nflostgirl.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1099,
+      "Name": "",
+      "SpriteName": "4_f_novice.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1100,
+      "Name": "Turbo Track Guide",
+      "SpriteName": "4_f_racing.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1101,
+      "Name": "Representative",
+      "SpriteName": "4_f_sister.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1102,
+      "Name": "Hypnotist",
+      "SpriteName": "4_f_teleporter.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1103,
+      "Name": "Luina Castle",
+      "SpriteName": "4_f_valkyrie.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1104,
+      "Name": "Child with a Cat",
+      "SpriteName": "4_f_yunyang.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1105,
+      "Name": "Aure Dupon",
+      "SpriteName": "4_kid01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1106,
+      "Name": "Gate Keeper",
+      "SpriteName": "4_m_01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1107,
+      "Name": "PVP Narrator",
+      "SpriteName": "4_m_02.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1108,
+      "Name": "Ice Cream Merchant",
+      "SpriteName": "4_m_03.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1109,
+      "Name": "Esere",
+      "SpriteName": "4_m_04.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1110,
+      "Name": "Fuzzy Fuzz",
+      "SpriteName": "4_m_05.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1111,
+      "Name": "Weapon Dealer",
+      "SpriteName": "4_m_06.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1112,
+      "Name": "Enoz",
+      "SpriteName": "4_m_alche_a.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1113,
+      "Name": "Studying Scholar",
+      "SpriteName": "4_m_alche_b.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1114,
+      "Name": "Pisruik Quv",
+      "SpriteName": "4_m_alche_d.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1115,
+      "Name": "Butcher",
+      "SpriteName": "4_m_barber.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1116,
+      "Name": "Vending Machine Man",
+      "SpriteName": "4_m_bibi.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1117,
+      "Name": "Monk",
+      "SpriteName": "4_m_chnmonk.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1118,
+      "Name": "Senior Crusader",
+      "SpriteName": "4_m_cru_old.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1119,
+      "Name": "Crusader",
+      "SpriteName": "4_m_cru.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1120,
+      "Name": "Goodday",
+      "SpriteName": "4_m_dwarf.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1121,
+      "Name": "Guide",
+      "SpriteName": "4_m_gef_soldier.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1122,
+      "Name": "Akagi",
+      "SpriteName": "4_m_job_assassin.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1123,
+      "Name": "Blacksmith",
+      "SpriteName": "4_m_job_blacksmith.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1124,
+      "Name": "Merunte",
+      "SpriteName": "4_m_job_hunter.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1125,
+      "Name": "Shurank",
+      "SpriteName": "4_m_job_knight1.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1126,
+      "Name": "Dequ\u0027ee",
+      "SpriteName": "4_m_job_knight2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1127,
+      "Name": "Old Scholar Tyus",
+      "SpriteName": "4_m_job_wizard.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1128,
+      "Name": "Fox Mask Problem Solver",
+      "SpriteName": "4_m_jpn2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1129,
+      "Name": "Tialfi",
+      "SpriteName": "4_m_kid1.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1130,
+      "Name": "Seth",
+      "SpriteName": "4_m_kid2.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1131,
+      "Name": "The Wise Bull Horn",
+      "SpriteName": "4_m_lgtgrand.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1132,
+      "Name": "Peculiar-looking Steward",
+      "SpriteName": "4_m_manager.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1133,
+      "Name": "Priest Praupin",
+      "SpriteName": "4_m_minister.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1134,
+      "Name": "Guide",
+      "SpriteName": "4_m_moc_soldier.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1135,
+      "Name": "Zhenbolt",
+      "SpriteName": "4_m_monk.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1136,
+      "Name": "Headgear Merchant",
+      "SpriteName": "4_m_nflostman.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1137,
+      "Name": "Praying Man",
+      "SpriteName": "4_m_nfman.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1138,
+      "Name": "Sharle Orelean",
+      "SpriteName": "4_m_oilman.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1139,
+      "Name": "Rice Cake Boy",
+      "SpriteName": "4_m_orient01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1140,
+      "Name": "Pierce",
+      "SpriteName": "4_m_orient02.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1141,
+      "Name": "Guide",
+      "SpriteName": "4_m_pay_soldier.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1142,
+      "Name": "Christmas Clown",
+      "SpriteName": "4_m_pierrot.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1143,
+      "Name": "Reidin Corse",
+      "SpriteName": "4_m_reidin_kurs.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1144,
+      "Name": "Kasis",
+      "SpriteName": "4_m_repair.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1145,
+      "Name": "Adventurer",
+      "SpriteName": "4_m_rogue.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1146,
+      "Name": "Sage Welshyun",
+      "SpriteName": "4_m_sage_a.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1147,
+      "Name": "Mishoona",
+      "SpriteName": "4_m_sage_c.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1148,
+      "Name": "Christmas Link",
+      "SpriteName": "4_m_santa.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1149,
+      "Name": "Tzerero",
+      "SpriteName": "4_m_seaman.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1150,
+      "Name": "Snowman",
+      "SpriteName": "4_m_snowman.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1151,
+      "Name": "Monster Tamer",
+      "SpriteName": "4_m_teleporter.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1152,
+      "Name": "Aibakthing",
+      "SpriteName": "4_m_thaiongbak.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1153,
+      "Name": "Kunlun Envoy",
+      "SpriteName": "4_m_twmidman.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1154,
+      "Name": "Argen",
+      "SpriteName": "4_m_yoyorogue.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1155,
+      "Name": "Scamp",
+      "SpriteName": "4_m_yuri.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1156,
+      "Name": "Cool Event Voting Staff",
+      "SpriteName": "4_m_zondaman.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1157,
+      "Name": "Librarian",
+      "SpriteName": "4_m_zondaoyaji.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1158,
+      "Name": "Armor Dealer",
+      "SpriteName": "4w_f_01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1159,
+      "Name": "Flower Girl",
+      "SpriteName": "4w_kid.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1160,
+      "Name": "Citizen",
+      "SpriteName": "4w_m_01.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1161,
+      "Name": "Auction Entrance Desk",
+      "SpriteName": "4w_m_02.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1162,
+      "Name": "Traveler",
+      "SpriteName": "4w_m_03.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1163,
+      "Name": "Steiner",
+      "SpriteName": "4w_sailor.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1164,
+      "Name": "DOPPELGANGER",
+      "SpriteName": "8_doppel.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1165,
+      "Name": "Ipore",
+      "SpriteName": "8_f_girl.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1166,
+      "Name": "Granny",
+      "SpriteName": "8_f_grandmother.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1167,
+      "Name": "Jeweler",
+      "SpriteName": "8_f.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1168,
+      "Name": "Single Army",
+      "SpriteName": "8_m_jpnsoldier.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1169,
+      "Name": "Single Army",
+      "SpriteName": "8_m_twsoldier.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1170,
+      "Name": "Librarian",
+      "SpriteName": "8w_soldier.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 1171,
+      "Name": "battle_traces",
+      "SpriteName": "clear_npc.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    }
+  ]
+}
