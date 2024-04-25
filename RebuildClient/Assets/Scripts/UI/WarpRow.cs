@@ -9,7 +9,7 @@ public class WarpRow : MonoBehaviour
     public GameObject RowGroup;
     public TextMeshProUGUI Title;
 
-    public float CreateNewEntry(string title, string mapName, int x = -999, int y = -999)
+    public WarpButton CreateNewEntry(string title, string mapName, int x = -999, int y = -999)
     {
         var button = GameObject.Instantiate(ButtonPrefab);
         button.transform.SetParent(RowGroup.transform);
@@ -24,7 +24,7 @@ public class WarpRow : MonoBehaviour
         //Debug.Log(title + " : " + width);
         rect.sizeDelta = new Vector2(width + 12, 25);
 
-        return rect.sizeDelta.x;
+        return obj;
     }
 
     public void FinalizeInit()

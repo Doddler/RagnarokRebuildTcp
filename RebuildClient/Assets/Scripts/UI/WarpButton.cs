@@ -29,6 +29,13 @@ public class WarpButton : MonoBehaviour
         }
     }
 
+    public Vector2 GetSize()
+    {
+        var rect = GetComponent<RectTransform>();
+        //Debug.Log(title + " : " + width);
+        return rect.sizeDelta;
+    }
+
     void Start()
     {
         

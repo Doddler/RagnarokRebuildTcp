@@ -34,10 +34,17 @@ namespace Assets.Scripts.Utility
 		private string newScene;
 		private Action finishCallback;
 
-		private List<ClientMapEntry> mapEntries;
-		private List<FogInfo> mapFogInfo;
-
+		private static List<ClientMapEntry> mapEntries;
+		private static List<FogInfo> mapFogInfo;
+		
 		private bool needAudioChange = false;
+
+		public List<ClientMapEntry> GetMapEntries()
+		{
+			if(mapEntries == null)
+				LoadMaps();
+			return mapEntries;
+		}
 
 		public void Start()
 		{
