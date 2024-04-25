@@ -73,12 +73,16 @@ namespace Assets.Scripts.Sprites
         private int currentAngleIndex;
 
         private float currentFrameTime = 0;
+        private float pauseTime = 0;
         private int currentFrame = 0;
         private int lastFrame = 0;
+        private int lastWalkFrame = 0;
         private int maxFrame { get; set; } = 0;
         private bool isPaused;
         private bool isDirty;
         private bool isActive;
+
+        public static RoSpriteData FallbackSpriteData;
 
         //private float rotate = 0;
         //private bool doSpin = false;
@@ -96,6 +100,14 @@ namespace Assets.Scripts.Sprites
         public bool Is8Direction => RoAnimationHelper.Is8Direction(SpriteData.Type, CurrentMotion);
 
         public Action OnFinishAnimation;
+
+        public void PauseAnimation(float time = 999_999_999f)
+        {
+            isPaused = true;
+            pauseTime = time;
+        }
+
+        public void Unpause() => isPaused = false;
 
         public void SetDirty()
         {
@@ -159,7 +171,11 @@ namespace Assets.Scripts.Sprites
         public void OnSpriteDataLoad(RoSpriteData spriteData)
         {
             if (spriteData == null)
-                throw new Exception($"Failed to load sprite data for sprite as the passed spriteData object was empty!");
+            {
+                Debug.LogError($"Failed to load sprite data for sprite as the passed spriteData object was empty!");
+                spriteData = FallbackSpriteData;
+            }
+
             //Debug.Log("Loaded sprite data for sprite " + spriteData.Name);
             SpriteData = spriteData;
             Initialize();
@@ -219,7 +235,7 @@ namespace Assets.Scripts.Sprites
             ChangeMotion(CurrentMotion, true);
             
             if (Type == SpriteType.Player && State == SpriteState.Idle)
-                isPaused = true;
+                PauseAnimation();
 
             if (ChildrenSprites.Count > 0)
             {
@@ -387,7 +403,8 @@ namespace Assets.Scripts.Sprites
 
         public void ChangeMotion(SpriteMotion nextMotion, bool forceUpdate = false)
         {
-            // Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion}");
+            // if(SpriteData?.Name == "초보자_남")
+            //     Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion}");
 
             if (CurrentMotion == SpriteMotion.Dead && !forceUpdate)
                 Debug.LogWarning("Changing from dead to something else!");
@@ -397,6 +414,8 @@ namespace Assets.Scripts.Sprites
 
             CurrentMotion = nextMotion;
             currentFrame = 0;
+            if (nextMotion == SpriteMotion.Walk)
+                currentFrame = lastWalkFrame;
 
             if (!isInitialized)
                 return;
@@ -414,7 +433,7 @@ namespace Assets.Scripts.Sprites
                 {
                     currentFrame = (int)HeadFacing;
                     UpdateSpriteFrame();
-                    isPaused = true;
+                    PauseAnimation();
                 }
                 else
                     HeadFacing = HeadFacing.Center;
@@ -459,10 +478,13 @@ namespace Assets.Scripts.Sprites
                     else
                     {
                         currentFrame = maxFrame;
-                        isPaused = true;
+                        PauseAnimation();
                     }
                 }
             }
+
+            if (State == SpriteState.Walking)
+                lastWalkFrame = currentFrame;
 
             if (currentFrameTime < 0)
                 currentFrameTime += (float)currentAction.Delay / 1000f * AnimSpeed;
@@ -652,6 +674,10 @@ namespace Assets.Scripts.Sprites
 
             if (currentAction == null)
                 ChangeAction(0);
+
+            pauseTime--;
+            if (pauseTime < 0)
+                isPaused = false;
 
             //var angleIndex = 0;
             //var is4dir = RoAnimationHelper.IsFourDirectionAnimation(Type, CurrentMotion);

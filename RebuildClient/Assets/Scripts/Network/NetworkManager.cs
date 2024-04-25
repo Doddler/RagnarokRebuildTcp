@@ -755,13 +755,13 @@ namespace Assets.Scripts.Network
             
             controllable.SpriteAnimator.AnimSpeed = 1f; //this will get reset when we resume walking anyways
             
-            if (controllable.SpriteAnimator.State == SpriteState.Walking)
-            {
-                controllable.PauseMove(motionTime);
-                controllable.SpriteAnimator.State = SpriteState.Standby;
-                controllable.SpriteAnimator.Direction = dir;
-            }
-            else
+            // if (!moveAfter && controllable.SpriteAnimator.State == SpriteState.Walking)
+            // {
+            //     controllable.PauseMove(motionTime);
+            //     controllable.SpriteAnimator.State = SpriteState.Standby;
+            //     controllable.SpriteAnimator.Direction = dir;
+            // }
+            // else
             {
                 controllable.StopImmediate(pos, false);
                 controllable.SpriteAnimator.Direction = dir;
@@ -1225,11 +1225,14 @@ namespace Assets.Scripts.Network
 
             if (entityList.TryGetValue(srcId, out var controllable))
             {
+                if(controllable.SpriteAnimator.State == SpriteState.Walking)
+                    controllable.StopImmediate(casterPos, false);
                 controllable.SpriteAnimator.Direction = dir;
                 if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
                 {
                     controllable.SpriteAnimator.State = SpriteState.Standby;
-                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
+                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Casting);
+                    controllable.SpriteAnimator.PauseAnimation();
                 }
 
                 if(skill == CharacterSkill.FireBolt)
