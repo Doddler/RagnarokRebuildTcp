@@ -384,10 +384,9 @@ Shader"Ragnarok/CharacterSpriteShader"
 
 				if(c.a < 0.001)
 					discard;
-		
+
 				UNITY_APPLY_FOG(i.fogCoord, c);
 			
-				//c *= i.color;
 				c.rgb *= c.a;
 	
 				#ifndef WATER_OFF
@@ -403,19 +402,18 @@ Shader"Ragnarok/CharacterSpriteShader"
 					
 					waterTex = float4(0.5, 0.5, 0.5, 1) + (waterTex * 0.6);
 	
-					// apply fog
-					UNITY_APPLY_FOG(i.fogCoord, waterTex);
-	
 					float simHeight = i.worldPos.y - abs(i.worldPos.x)/(_Width)*0.5;
 	
 					simHeight = clamp(simHeight, i.worldPos.y - 0.4, i.worldPos.y);
-	
+
+					//we can't use UNITY_APPLY_FOG again because of errors so we do this to apply fog to our water.
+					UNITY_APPLY_FOG_COLOR(i.fogCoord, waterTex, unity_FogColor); 
+					
 					if (height-0 > simHeight)
 						c.rgb *= lerp(float3(1, 1, 1), waterTex.rgb, saturate(((height - 0) - simHeight) * 10));
-					//c.rgb *= waterTex.rgb;
+
 				#endif
 
-				//return float4(env.rgb, c.a);
 				return c;
 			}
 		ENDCG
