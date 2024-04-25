@@ -14,6 +14,14 @@ namespace PlayerControl
 {
     public static class ClientCommandHandler
     {
+        private static Dictionary<string, int> emoteList = new();
+
+        public static void RegisterEmoteCommand(string command, int id)
+        {
+            emoteList.TryAdd(command, id);
+        }
+        
+        
         [CanBeNull]
         private static string[] SplitStringCommand(string input)
         {
@@ -220,6 +228,9 @@ namespace PlayerControl
                 
                 if(s[0] == "/clear" || s[0] == "/cls" || s[0] == "/clearchat")
                     cameraFollower.ResetChat();
+                
+                if(emoteList.TryGetValue(s[0], out var emote))
+                    NetworkManager.Instance.SendEmote(emote);
             }
             else
             {
