@@ -644,6 +644,25 @@ public class Map
         }
     }
 
+    public void GatherMonstersInArea(Position center, int distance, EntityList list)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(center, distance))
+        {
+
+            foreach (var m in c.AllEntities)
+            {
+                var ch = m.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
+
+                if (ch.Type != CharacterType.Monster)
+                    continue;
+                
+                list.Add(m);
+            }
+        }
+    }
+
     public void GatherEnemiesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
@@ -676,19 +695,6 @@ public class Map
                     list.Add(m);
                 }
             }
-
-            //foreach (var p in c.Players)
-            //{
-            //    var ch = p.Get<WorldObject>();
-            //    if (!ch.IsActive)
-            //        continue;
-
-            //    if (checkImmunity && ch.SpawnImmunity > 0)
-            //        continue;
-
-            //    if (character.Position.InRange(ch.Position, distance))
-            //        list.Add(p);
-            //}
         }
     }
 

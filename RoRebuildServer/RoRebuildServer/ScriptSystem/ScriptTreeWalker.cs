@@ -13,7 +13,7 @@ internal class ScriptTreeWalker
     private string name = null!;
     private Action<StartSectionContext>? sectionHandler;
     private Dictionary<string, ScriptMacro> macroMap = new();
-
+    private Dictionary<string, StatementblockContext> eventHandlers = new();
     private HashSet<string> activeMacros = new();
 
     public string BuildClass(string inputName, RoScriptParser parser, HashSet<string> uniqueNames)
@@ -21,7 +21,8 @@ internal class ScriptTreeWalker
         name = inputName;
         builder = new ScriptBuilder(inputName.Replace(" ", "_"), uniqueNames, "System", "System.Linq",
             "RoRebuildServer.Data.Map", "RebuildSharedData.Data", "RoRebuildServer.Data", "RoRebuildServer.EntityComponents", "RoRebuildServer.ScriptSystem",
-            "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util", "RoRebuildServer.EntityComponents.Items");
+            "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util", "RoRebuildServer.EntityComponents.Items",
+            "RoRebuildServer.EntityComponents.Monsters", "RoRebuildServer.Data.Monster");
 
         var ruleSet = parser.rule_set();
 
@@ -84,6 +85,9 @@ internal class ScriptTreeWalker
             case "MapConfig":
                 EnterMapConfigStatement(context);
                 break;
+            case "SkillHandler":
+                EnterSkillHandlerStatement(context);
+                break;
             default:
                 throw new Exception("Unexpected top level statement: " + id);
         }
@@ -113,8 +117,6 @@ internal class ScriptTreeWalker
             var macro = new ScriptMacro(0, macroContext.statementblock());
             macroMap.Add(name, macro);
         }
-
-
     }
 
     private void EnterItemStatement(FunctionDefinitionContext functionContext)
@@ -144,13 +146,11 @@ internal class ScriptTreeWalker
         builder.EndItem(str);
     }
 
-
     public void ItemSectionHandler(StartSectionContext context)
     {
         builder.StartItemSection(context.IDENTIFIER().GetText());
     }
-
-
+    
     private void EnterMapConfigStatement(FunctionDefinitionContext functionContext)
     {
         //only expect one param, the map name
@@ -174,6 +174,47 @@ internal class ScriptTreeWalker
 
         builder.EndMethod();
         builder.EndClass();
+    }
+
+    private void EnterSkillHandlerStatement(FunctionDefinitionContext functionContext)
+    {
+        //only expect one param, the item name
+        var param = functionContext.functionparam();
+        if (param.expression().Length != 1)
+            throw new Exception($"Incorrect number of parameters on SkillHandler expression on line {param.start.Line}");
+
+        eventHandlers.Clear();
+
+        var str = param.expression()[0].GetText();
+        if (str.StartsWith("\""))
+            str = str.Substring(1, str.Length - 2);
+        
+        str = str.Replace(" ", "_");
+        builder.StartMonsterSkillHandler(str);
+
+        sectionHandler = SkillSectionHandler;
+
+        var statements = functionContext.block1;
+        VisitStatementBlock(statements);
+
+        builder.EndMethod();
+
+        foreach (var e in eventHandlers)
+        {
+            builder.StartSkillEventMethod(e.Key);
+            VisitStatementBlock(e.Value);
+            builder.EndMethod();
+        }
+
+        builder.CreateFinalSkillHandler();
+        builder.EndClass();
+
+        builder.EndMonsterSkillHandler(str);
+    }
+
+    public void SkillSectionHandler(StartSectionContext context)
+    {
+        builder.StartMonsterSkillAiSection(context.IDENTIFIER().GetText());
     }
 
     private string CleanString(string str)
@@ -203,6 +244,7 @@ internal class ScriptTreeWalker
 
         builder.EndEvent(str, name);
     }
+
 
     private void EnterNpcStatement(FunctionDefinitionContext functionContext)
     {
@@ -773,6 +815,21 @@ internal class ScriptTreeWalker
         {
             var id = functionContext.IDENTIFIER().GetText();
             var fparam = functionContext.functionparam();
+            var isConditional = functionContext.condition != null;
+            var isTerminal = builder.IsTerminalFunction(id);
+            var hasEventBlock = functionContext.eventblock != null;
+
+            if (isConditional)
+            {
+                builder.OutputRaw("if (");
+                VisitExpression(functionContext.condition);
+                builder.OutputRaw(")");
+                builder.EndLine();
+                builder.OpenScope();
+            }
+
+            if (isTerminal || hasEventBlock)
+                builder.OutputRaw("if (");
 
             builder.FunctionCall(id, isChained);
 
@@ -803,8 +860,36 @@ internal class ScriptTreeWalker
                 continue;
             }
 
+            if (isTerminal || hasEventBlock)
+            {
+                builder.OutputRaw(")");
+                builder.OpenScope();
+                if (hasEventBlock)
+                {
+                    var eventName = builder.OutputEventCall();
+                    eventHandlers.Add(eventName, functionContext.eventblock!);
+                }
+
+                if(isTerminal)
+                    builder.OutputReturn();
+                builder.CloseScope();
+            }
+
+            if (isConditional)
+            {
+                if(!isTerminal)
+                    builder.OutputRaw(";");
+                builder.EndLine();
+                builder.CloseScope();
+            }
+
             break;
         }
+    }
+
+    public void VisitFunctionTerminalFunctionHandler(FunctionCallContext context)
+    {
+
     }
 
     public void VisitLocalDeclaration(LocalDeclarationContext localDeclarationContext)

@@ -23,46 +23,48 @@ public partial class Monster
     /// <returns>True if the state should change, false if the state transition should fail.</returns>
     /// TODO: Some input state checks change the monster's target, where as that shouldn't happen until the output state checks.
     private bool InputStateCheck(MonsterInputCheck inCheckType)
-	{
-		switch (inCheckType)
-		{
-			case MonsterInputCheck.InWaitEnd: return InWaitEnd();
-			case MonsterInputCheck.InEnemyOutOfSight: return InEnemyOutOfSight();
-			case MonsterInputCheck.InEnemyOutOfAttackRange: return InEnemyOutOfAttackRange();
-			case MonsterInputCheck.InReachedTarget: return InReachedTarget();
-			case MonsterInputCheck.InReachedRandomMoveTarget: return InReachedRandomMoveTarget();
-			case MonsterInputCheck.InTargetSearch: return InTargetSearch();
-			case MonsterInputCheck.InAttackRange: return InAttackRange();
-			case MonsterInputCheck.InNeedAttackingAdjust: return InNeedAttackingAdjust();
-			case MonsterInputCheck.InAttackDelayEnd: return InAttackDelayEnd();
+    {
+        switch (inCheckType)
+        {
+            case MonsterInputCheck.InWaitEnd: return InWaitEnd();
+            case MonsterInputCheck.InEnemyOutOfSight: return InEnemyOutOfSight();
+            case MonsterInputCheck.InEnemyOutOfAttackRange: return InEnemyOutOfAttackRange();
+            case MonsterInputCheck.InReachedTarget: return InReachedTarget();
+            case MonsterInputCheck.InReachedRandomMoveTarget: return InReachedRandomMoveTarget();
+            case MonsterInputCheck.InTargetSearch: return InTargetSearch();
+            case MonsterInputCheck.InAttackRange: return InAttackRange();
+            case MonsterInputCheck.InAttackRangeAny: return InAttackRangeAny();
+            case MonsterInputCheck.InNeedAttackingAdjust: return InNeedAttackingAdjust();
+            case MonsterInputCheck.InAttackDelayEnd: return InAttackDelayEnd();
             case MonsterInputCheck.InAttacked: return InAttacked();
             case MonsterInputCheck.InAttackedNoSwap: return InAttacked(false);
             case MonsterInputCheck.InDeadTimeoutEnd: return InDeadTimeoutEnd();
-			case MonsterInputCheck.InAllyInCombat: return InAllyInCombat();
-			case MonsterInputCheck.InOwnerOutOfSight: return InOwnerOutOfSight();
-			case MonsterInputCheck.InOwnerAttacked: return InOwnerAttacked();
-		}
+            case MonsterInputCheck.InAllyInCombat: return InAllyInCombat();
+            case MonsterInputCheck.InOwnerOutOfSight: return InOwnerOutOfSight();
+            case MonsterInputCheck.InOwnerAttacked: return InOwnerAttacked();
+            case MonsterInputCheck.InNoCondition: return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/// <summary> Checks if an elapsed wait time has passed before a monster is allowed to random move again. </summary>
-	private bool InWaitEnd()
-	{
-		if (nextMoveUpdate <= Time.ElapsedTimeFloat || MonsterBase.MoveSpeed < 0)
-			return true;
+    /// <summary> Checks if an elapsed wait time has passed before a monster is allowed to random move again. </summary>
+    private bool InWaitEnd()
+    {
+        if (nextMoveUpdate <= Time.ElapsedTimeFloat || MonsterBase.MoveSpeed < 0)
+            return true;
 
-		return false;
-	}
+        return false;
+    }
 
-	/// <summary> Checks if the monster has reached it's destination yet. </summary>
-	private bool InReachedTarget()
-	{
-		if (Character.State != CharacterState.Moving)
-			return true;
+    /// <summary> Checks if the monster has reached it's destination yet. </summary>
+    private bool InReachedTarget()
+    {
+        if (Character.State != CharacterState.Moving)
+            return true;
 
-		return false;
-	}
+        return false;
+    }
 
     private bool AdjustToAdjacentTile()
     {
@@ -109,147 +111,164 @@ public partial class Monster
     }
 
 
-/// <summary>
+    /// <summary>
     /// Checks the status of the monster's current target, and returns true if the monster can no longer see or reach that target.
     /// </summary>
     private bool InEnemyOutOfSight()
-	{
-		if (!ValidateTarget() || targetCharacter == null)
-			return true;
+    {
+        if (!ValidateTarget() || targetCharacter == null)
+            return true;
 
         if (!targetCharacter.CombatEntity.IsValidTarget(CombatEntity))
             return true;
 
-		if (targetCharacter.Position == Character.Position)
-			return false;
+        if (targetCharacter.Position == Character.Position)
+            return false;
 
-		if (targetCharacter.Position.SquareDistance(Character.Position) > MonsterBase.ChaseDist)
-			return true;
+        if (targetCharacter.Position.SquareDistance(Character.Position) > MonsterBase.ChaseDist)
+            return true;
 
-		if (Character.MoveSpeed < 0 && InEnemyOutOfAttackRange())
-			return true;
-		
+        if (Character.MoveSpeed < 0 && InEnemyOutOfAttackRange())
+            return true;
+
         if (Character.Map != null && !Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
         {
-			if (Character.Map?.Instance.Pathfinder.GetPath(Character.Map.WalkData, Character.Position,
+            if (Character.Map?.Instance.Pathfinder.GetPath(Character.Map.WalkData, Character.Position,
                     targetCharacter.Position, null, 1) == 0)
                 return true;
         }
 
         return false;
-	}
+    }
 
-	/// <summary> Checks if the monster is within range to attack it's current target or not. </summary>
-	private bool InAttackRange()
-	{
-		if (Character.Map != null && Character.Map.PlayerCount == 0)
-			return false;
+    /// <summary> Checks if the monster is within range to attack it's current target or not. </summary>
+    private bool InAttackRange()
+    {
+        if (Character.Map != null && Character.Map.PlayerCount == 0)
+            return false;
 
-		//do we have a target? If we do and it's not valid, remove it.
-		if (!ValidateTarget())
-			Target = Entity.Null;
+        //do we have a target? If we do and it's not valid, remove it.
+        if (!ValidateTarget())
+            Target = Entity.Null;
 
         var target = targetCharacter;
+        var checkPosition = Character.Position;
+        if (Character.IsMoving && Character.WalkPath != null)
+            checkPosition = Character.WalkPath[Character.MoveStep + 1];
 
-		//if we have a character still, check if we're in range.
-        if (Target != Entity.Null && target != null)
-        {
-            var adjust = 0;
-            if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
-                adjust = 1; //the monster uses a 1 tile shorter attack radius when idle or chasing
+        //if we have a character still, check if we're in range.
+        if (Target == Entity.Null || target == null) return false;
+        
+        var adjust = 0;
+        //if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
+        //    adjust = 1; //the monster uses a 1 tile shorter attack radius when idle or chasing
 
-            if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range - adjust)
-            {
-                if (!Character.Map!.WalkData.HasLineOfSight(Character.Position, target.Position))
-                    return false;
-            }
-        }
+        if (target.Position.DistanceTo(checkPosition) <= MonsterBase.Range - adjust)
+            return Character.Map!.WalkData.HasLineOfSight(checkPosition, target.Position);
+
+        //failed. Return false.
+        return false;
+    }
+
+
+    /// <summary> We don't care who we're next to, if it isn't our target we'll pick a new one. </summary>
+    private bool InAttackRangeAny()
+    {
+        if (Character.Map != null && Character.Map.PlayerCount == 0)
+            return false;
+
+        if (InAttackRange())
+            return true;
 
         //if we don't have a target, check if we can acquire one quickly
-		if (!FindRandomTargetInRange(MonsterBase.Range, out var newTarget))
-			return false;
+        if (!FindRandomTargetInRange(MonsterBase.Range, out var newTarget))
+            return false;
 
-		//we have a character. Check if it's in range, and if so, assign it as our current target
-		target = newTarget.Get<WorldObject>();
-		if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range)
-		{
-			SwapTarget(newTarget);
-			//Target = newTarget;
-			return true;
-		}
+        var checkPosition = Character.Position;
+        if (Character.IsMoving && Character.WalkPath != null)
+            checkPosition = Character.WalkPath[Character.MoveStep + 1];
 
-		//failed. Return false.
-		return false;
-	}
+        //we have a character. Check if it's in range, and if so, assign it as our current target
+        var target = newTarget.Get<WorldObject>();
+        if (target.Position.DistanceTo(checkPosition) <= MonsterBase.Range)
+        {
+            SwapTarget(newTarget);
+            //Target = newTarget;
+            return true;
+        }
 
-	/// <summary>
-	/// Checks if the monster is currently stacked on top of another monster.
-	/// There is a random element here, the monster only has a 50% chance to care when checked.
-	/// </summary>
+        //failed. Return false.
+        return false;
+    }
+
+    /// <summary>
+    /// Checks if the monster is currently stacked on top of another monster.
+    /// There is a random element here, the monster only has a 50% chance to care when checked.
+    /// </summary>
     private bool InNeedAttackingAdjust()
     {
         if (Character.AttackCooldown > Time.ElapsedTimeFloat)
             return false;
-		
+
         if (GameRandom.NextInclusive(0, 1) < 1)
             return false;
-		
+
         if (Character.Map!.IsEntityStacked(Character))
             return true;
 
         return false;
     }
 
-	/// <summary> Has the monster's attack cooldown expired yet? </summary>
-	private bool InAttackDelayEnd()
-	{
-		if (Character.AttackCooldown > Time.ElapsedTimeFloat)
-			return false;
+    /// <summary> Has the monster's attack cooldown expired yet? </summary>
+    private bool InAttackDelayEnd()
+    {
+        if (Character.AttackCooldown > Time.ElapsedTimeFloat)
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	/// <summary> Scans for any allies of the same type within sight that are in combat, and if so, assist them. </summary>
-	/// TODO: We should not commit to switching target until the output state check occurs.
-	private bool InAllyInCombat()
-	{
-		if (!Character.Map!.QuickCheckPlayersNearby(Character, 15))
-			return false;
+    /// <summary> Scans for any allies of the same type within sight that are in combat, and if so, assist them. </summary>
+    /// TODO: We should not commit to switching target until the output state check occurs.
+    private bool InAllyInCombat()
+    {
+        if (!Character.Map!.QuickCheckPlayersNearby(Character, 15))
+            return false;
 
-		if (CanAssistAlly(9, out var target))
-		{
-			SwapTarget(target);
-			return true;
-		}
+        if (CanAssistAlly(9, out var target))
+        {
+            SwapTarget(target);
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
     /// <summary> Checks if the monster has been attacked by any player since the last AI update. </summary>
     /// <param name="swapToNewAttacker">Should we cause the monster to change his target in response to being attacked?</param>
     /// TODO: We should not commit to switching target until the output state check occurs.
     private bool InAttacked(bool swapToNewAttacker = true)
-	{
-		if (Character.LastAttacked.IsNull())
-			return false;
-		if (!Character.LastAttacked.IsAlive())
-			return false;
+    {
+        if (Character.LastAttacked.IsNull())
+            return false;
+        if (!Character.LastAttacked.IsAlive())
+            return false;
 
-		if (swapToNewAttacker && Target != Character.LastAttacked)
-			SwapTarget(Character.LastAttacked);
+        if (swapToNewAttacker && Target != Character.LastAttacked)
+            SwapTarget(Character.LastAttacked);
 
-		return true;
-	}
-	
-	/// <summary> Checks if the current target has moved beyond attack range. </summary>
-	private bool InEnemyOutOfAttackRange()
-	{
-		if (!ValidateTarget())
-			return false;
+        return true;
+    }
 
-		var target = targetCharacter;
-		if (target == null)
-			return false;
+    /// <summary> Checks if the current target has moved beyond attack range. </summary>
+    private bool InEnemyOutOfAttackRange()
+    {
+        if (!ValidateTarget())
+            return false;
+
+        var target = targetCharacter;
+        if (target == null)
+            return false;
 
         var adjust = 0;
         if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
@@ -263,37 +282,37 @@ public partial class Monster
             return true;
 
         return false;
-	}
+    }
 
     /// <summary>
     /// Looks to see if there are any valid targets within scan distance. Switches target to the new target.
     /// </summary>
     /// TODO: We should not commit to switching target until the output state check occurs.
     private bool InTargetSearch()
-	{
-		if (Character.Map == null || Character.Map.PlayerCount == 0)
-			return false;
+    {
+        if (Character.Map == null || Character.Map.PlayerCount == 0)
+            return false;
 
-		if (!FindRandomTargetInRange(MonsterBase.ScanDist, out var newTarget))
-			return false;
+        if (!FindRandomTargetInRange(MonsterBase.ScanDist, out var newTarget))
+            return false;
 
-		SwapTarget(newTarget);
-		return true;
-	}
+        SwapTarget(newTarget);
+        return true;
+    }
 
-	/// <summary>
-	/// Checks if the monster's respawn timer has expired, and if the monster should attempt to respawn.
-	/// </summary>
-	private bool InDeadTimeoutEnd()
-	{
-		if (deadTimeout > Time.ElapsedTimeFloat)
-		{
-			NextAiUpdate = deadTimeout + 0.01f;
-			return false;
-		}
+    /// <summary>
+    /// Checks if the monster's respawn timer has expired, and if the monster should attempt to respawn.
+    /// </summary>
+    private bool InDeadTimeoutEnd()
+    {
+        if (deadTimeout > Time.ElapsedTimeFloat)
+        {
+            NextAiUpdate = deadTimeout + 0.01f;
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
     private bool InOwnerOutOfSight()
     {
@@ -310,16 +329,16 @@ public partial class Monster
         return false;
     }
 
-	/// <summary>
-	/// Responds to the owner being in combat, and if so assumes that target itself.
-	/// </summary>
-	/// <returns></returns>
+    /// <summary>
+    /// Responds to the owner being in combat, and if so assumes that target itself.
+    /// </summary>
+    /// <returns></returns>
     private bool InOwnerAttacked()
     {
-		if(!Master.IsAlive())
-			return false;
+        if (!Master.IsAlive())
+            return false;
 
-		var m = Master.Get<Monster>();
+        var m = Master.Get<Monster>();
         if (m.Target.IsAlive())
         {
             var target = m.Target.Get<CombatEntity>();
@@ -344,63 +363,77 @@ public partial class Monster
     /// <param name="outCheckType"></param>
     /// <returns>True if the state should change, false if the state transition should fail.</returns>
     private bool OutputStateCheck(MonsterOutputCheck outCheckType)
-	{
-		switch (outCheckType)
-		{
-			case MonsterOutputCheck.OutRandomMoveStart: return OutRandomMoveStart();
-			case MonsterOutputCheck.OutWaitStart: return OutWaitStart();
-			case MonsterOutputCheck.OutSearch: return OutSearch();
-			case MonsterOutputCheck.OutStartChase: return OutStartChase();
-			case MonsterOutputCheck.OutChangeTargets: return OutChangeTargets();
-			case MonsterOutputCheck.OutTryAttacking: return OutTryAttacking();
-			case MonsterOutputCheck.OutStartAttacking: return OutStartAttacking();
-			case MonsterOutputCheck.OutPerformAttack: return OutPerformAttack();
-			case MonsterOutputCheck.OutAttackingAdjust: return OutAttackingAdjust();
-			case MonsterOutputCheck.OutTryRevival: return OutTryRevival();
-			case MonsterOutputCheck.OutMoveToOwner: return OutMoveToOwner();
-		}
+    {
+        switch (outCheckType)
+        {
+            case MonsterOutputCheck.OutRandomMoveStart: return OutRandomMoveStart();
+            case MonsterOutputCheck.OutWaitStart: return OutWaitStart();
+            case MonsterOutputCheck.OutSearch: return OutSearch();
+            case MonsterOutputCheck.OutStartChase: return OutStartChase();
+            case MonsterOutputCheck.OutChangeTargets: return OutChangeTargets();
+            case MonsterOutputCheck.OutTryAttacking: return OutTryAttacking();
+            case MonsterOutputCheck.OutStartAttacking: return OutStartAttacking();
+            case MonsterOutputCheck.OutPerformAttack: return OutPerformAttack();
+            case MonsterOutputCheck.OutAttackingAdjust: return OutAttackingAdjust();
+            case MonsterOutputCheck.OutTryRevival: return OutTryRevival();
+            case MonsterOutputCheck.OutMoveToOwner: return OutMoveToOwner();
+            case MonsterOutputCheck.OutDebug: return OutDebug();
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/// <summary>
-	/// Waits a random amount of time before the next Random Move should be allowed to execute.
-	/// If the monster is stacked with another monster, it will reset the wait time.
-	/// </summary>
-	private bool OutWaitStart()
-	{
-		Target = Entity.Null;
-		
+    private bool OutDebug()
+    {
+        if (CombatEntity.IsCasting || Character.InAttackCooldown || !FindRandomTargetInRange(9, out var newTarget))
+            return false;
+
+        if(!CombatEntity.AttemptStartSingleTargetSkillAttack(newTarget.Get<CombatEntity>(), CharacterSkill.FireBolt, 5));
+            return false;
+
+        nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Waits a random amount of time before the next Random Move should be allowed to execute.
+    /// If the monster is stacked with another monster, it will reset the wait time.
+    /// </summary>
+    private bool OutWaitStart()
+    {
+        Target = Entity.Null;
+
         nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
         inAdjustMove = false;
-	
-		return true;
-	}
 
-	/// <summary>
-	/// State transition where the monster will be unable to move for a very long period of time.
-	/// </summary>
-	private bool OutWaitForever()
-	{
-		NextAiUpdate += 100_000_000f;
-		return true;
-	}
+        return true;
+    }
 
-	/// <summary>
-	/// Attempts to find a random target that the monster can reach within a specified distance.
-	/// </summary>
-	/// <param name="area">The bounds to search for a walkable tile.</param>
-	/// <param name="targetPos">The monster's starting location.</param>
-	/// <param name="distance">The maximum distance the monster can path.</param>
-	/// <param name="attempts">How many locations we should test before giving up.</param>
+    /// <summary>
+    /// State transition where the monster will be unable to move for a very long period of time.
+    /// </summary>
+    private bool OutWaitForever()
+    {
+        NextAiUpdate += 100_000_000f;
+        return true;
+    }
+
+    /// <summary>
+    /// Attempts to find a random target that the monster can reach within a specified distance.
+    /// </summary>
+    /// <param name="area">The bounds to search for a walkable tile.</param>
+    /// <param name="targetPos">The monster's starting location.</param>
+    /// <param name="distance">The maximum distance the monster can path.</param>
+    /// <param name="attempts">How many locations we should test before giving up.</param>
     private bool FindRandomMoveTargetInArea(Area area, Position targetPos, int distance, int attempts)
     {
         var moveArea = Area.CreateAroundPoint(targetPos, distance).ClipArea(area);
         var newPos = Position.RandomPosition(moveArea);
 
-		for (var i = 0; i < attempts; i++)
+        for (var i = 0; i < attempts; i++)
         {
-			//spend the first 25% of checks skipping any moves only 2 tiles away
+            //spend the first 25% of checks skipping any moves only 2 tiles away
             if (i < attempts / 4f && (targetPos.SquareDistance(newPos) <= 2 || Character.Map!.IsTileOccupied(newPos)))
                 continue;
 
@@ -414,14 +447,14 @@ public partial class Monster
         return false;
     }
 
-	/// <summary>
-	/// Attempts to start moving to a random position within range.
-	/// If a monster is locked to a specific region, it will attempt to find a target within that space first.
-	/// </summary>
-	private bool OutRandomMoveStart()
-	{
-		if (MonsterBase.MoveSpeed < 0)
-			return false;
+    /// <summary>
+    /// Attempts to start moving to a random position within range.
+    /// If a monster is locked to a specific region, it will attempt to find a target within that space first.
+    /// </summary>
+    private bool OutRandomMoveStart()
+    {
+        if (MonsterBase.MoveSpeed < 0)
+            return false;
 
         if (LockMovementToSpawn && SpawnRule != null)
         {
@@ -431,11 +464,11 @@ public partial class Monster
 
         return FindRandomMoveTargetInArea(Character.Map!.MapBounds, Character.Position, 9, 20);
     }
-	
-	/// <summary>
-	/// Attempts to cause the monster to move to an unoccupied tile that remains within attack range of it's target.
-	/// It will most likely attempt to move only 1 tile, but it can rarely chose to move 2 or 3 tiles.
-	/// Only makes one attempt per check to adjust.
+
+    /// <summary>
+    /// Attempts to cause the monster to move to an unoccupied tile that remains within attack range of it's target.
+    /// It will most likely attempt to move only 1 tile, but it can rarely chose to move 2 or 3 tiles.
+    /// Only makes one attempt per check to adjust.
     /// </summary>
     private bool OutAttackingAdjust()
     {
@@ -455,7 +488,7 @@ public partial class Monster
         var area = Area.CreateAroundPoint(Character.Position, range);
         area.ClipArea(Area.CreateAroundPoint(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range)));
 
-		var newPos = Position.RandomPosition(area);
+        var newPos = Position.RandomPosition(area);
 
         if (!Character.Map!.WalkData.IsCellWalkable(newPos))
             return false;
@@ -465,138 +498,138 @@ public partial class Monster
 
         if (DistanceCache.IntDistance(targetCharacter.Position, newPos) > MonsterBase.Range)
             return false;
-		
-		if (Character.Map!.IsTileOccupied(newPos))
+
+        if (Character.Map!.IsTileOccupied(newPos))
             return false;
 
         if (!Character.Map!.WalkData.HasLineOfSight(Character.Position, newPos))
             return false;
 
-		return Character.TryMove(newPos, 0); //will fail if they can't get there
+        return Character.TryMove(newPos, 0); //will fail if they can't get there
     }
 
-	/// <summary>
-	/// Switches a monster to scan for possible targets.
-	/// Always succeeds, a monster can always switch to scan state.
-	/// </summary>
-	private bool OutSearch()
+    /// <summary>
+    /// Switches a monster to scan for possible targets.
+    /// Always succeeds, a monster can always switch to scan state.
+    /// </summary>
+    private bool OutSearch()
     {
         NextAiUpdate = Time.ElapsedTimeFloat; //do AI update next tick. Must use elapsed time here for this to work.
-		return true;
-	}
+        return true;
+    }
 
-	/// <summary>
-	/// Attempts to start a move towards the chosen target.
-	/// </summary>
-	private bool OutStartChase()
-	{
-		var targetChar = targetCharacter;
-		if (targetChar == null)
-			return false;
+    /// <summary>
+    /// Attempts to start a move towards the chosen target.
+    /// </summary>
+    private bool OutStartChase()
+    {
+        var targetChar = targetCharacter;
+        if (targetChar == null)
+            return false;
 
-		//var distance = Character.Position.DistanceTo(targetChar.Position);
-		if (CombatEntity.CanAttackTarget(targetChar))
-		{
-			//hasTarget = true;
+        //var distance = Character.Position.DistanceTo(targetChar.Position);
+        if (CombatEntity.CanAttackTarget(targetChar))
+        {
+            //hasTarget = true;
             NextAiUpdate = Time.ElapsedTimeFloat;
-			return true;
-		}
+            return true;
+        }
 
-		if (Character.TryMove(targetChar.Position, 1))
-		{
-			nextMoveUpdate = 0;
-			//hasTarget = true;
-			return true;
-		}
-		
-		return false;
-	}
+        if (Character.TryMove(targetChar.Position, 1))
+        {
+            nextMoveUpdate = 0;
+            //hasTarget = true;
+            return true;
+        }
 
-	/// <summary>
-	/// Checks if the monster is able to change targets to the last attacked enemy.
-	/// </summary>
-	private bool OutChangeTargets()
-	{
-		if (Character.LastAttacked.IsNull() || !Character.LastAttacked.IsAlive())
-			return false;
+        return false;
+    }
 
-		var targetChar = Character.LastAttacked.Get<WorldObject>();
-		if (!targetChar.IsActive)
-			return false;
+    /// <summary>
+    /// Checks if the monster is able to change targets to the last attacked enemy.
+    /// </summary>
+    private bool OutChangeTargets()
+    {
+        if (Character.LastAttacked.IsNull() || !Character.LastAttacked.IsAlive())
+            return false;
 
-		var distance = Character.Position.DistanceTo(targetChar.Position);
-		if (distance <= MonsterBase.Range)
-		{
-			Target = Character.LastAttacked;
-			return true;
-		}
+        var targetChar = Character.LastAttacked.Get<WorldObject>();
+        if (!targetChar.IsActive)
+            return false;
 
-		if (Character.TryMove(targetChar.Position, 1))
-		{
+        var distance = Character.Position.DistanceTo(targetChar.Position);
+        if (distance <= MonsterBase.Range)
+        {
+            Target = Character.LastAttacked;
+            return true;
+        }
 
-			nextMoveUpdate = 0;
-			Target = Character.LastAttacked;
-			return true;
-		}
-		
-		return false;
-	}
+        if (Character.TryMove(targetChar.Position, 1))
+        {
 
-	/// <summary>
-	/// Performs an attack on the monster's currently chosen target. The validity of the attack is assumed to have been checked prior.
-	/// </summary>
-	private bool OutPerformAttack()
-	{
+            nextMoveUpdate = 0;
+            Target = Character.LastAttacked;
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Performs an attack on the monster's currently chosen target. The validity of the attack is assumed to have been checked prior.
+    /// </summary>
+    private bool OutPerformAttack()
+    {
         Debug.Assert(targetCharacter != null, $"Monster {Character.Name} must have a target to use this action.");
 
         var targetEntity = targetCharacter.Entity.Get<CombatEntity>();
-		if (!targetEntity.IsValidTarget(CombatEntity))
-			return false;
+        if (!targetEntity.IsValidTarget(CombatEntity))
+            return false;
 
-		CombatEntity.PerformMeleeAttack(targetEntity);
+        CombatEntity.PerformMeleeAttack(targetEntity);
 
-		NextAiUpdate += MonsterBase.AttackTime;
+        NextAiUpdate += MonsterBase.AttackTime;
 
-		return true;
-	}
+        return true;
+    }
 
-	/// <summary>
-	/// Checks if it can attack a target, stops moving immediately and schedules a new AI update next frame.
-	/// </summary>
-	private bool OutTryAttacking()
-	{
-		if (!InAttackRange())
-			return false;
+    /// <summary>
+    /// Checks if it can attack a target, stops moving immediately and schedules a new AI update next frame.
+    /// </summary>
+    private bool OutTryAttacking()
+    {
+        if (!InAttackRange())
+            return false;
 
-		return OutStartAttacking();
-	}
+        return OutStartAttacking();
+    }
 
-	/// <summary>
-	/// The monster will stop moving immediately and schedule a new AI update next frame.
-	/// </summary>
-	private bool OutStartAttacking()
-	{
+    /// <summary>
+    /// The monster will stop moving immediately and schedule a new AI update next frame.
+    /// </summary>
+    private bool OutStartAttacking()
+    {
         if (Character.IsMoving)
         {
             if (Character.StepsRemaining <= 1) //we're already stopping so we can just bail here.
                 return false;
-			//ServerLogger.Debug($"Monster {MonsterBase.Name} {Entity} stopping to attack. Current position {Character.Position} time to stop: {Character.MoveCooldown}");
+            //ServerLogger.Debug($"Monster {MonsterBase.Name} {Entity} stopping to attack. Current position {Character.Position} time to stop: {Character.MoveCooldown}");
             Character.ShortenMovePath();
             NextAiUpdate = Time.ElapsedTimeFloat + Character.TimeToReachNextStep;
             return false;
         }
 
         NextAiUpdate = Time.ElapsedTimeFloat;
-		return true;
-	}
+        return true;
+    }
 
-	/// <summary>
-	/// Revives a monster somewhere based on it's specified respawn rules.
-	/// </summary>
-	private bool OutTryRevival()
-	{
-		return World.Instance.RespawnMonster(this);
-	}
+    /// <summary>
+    /// Revives a monster somewhere based on it's specified respawn rules.
+    /// </summary>
+    private bool OutTryRevival()
+    {
+        return World.Instance.RespawnMonster(this);
+    }
 
     private bool OutMoveToOwner()
     {

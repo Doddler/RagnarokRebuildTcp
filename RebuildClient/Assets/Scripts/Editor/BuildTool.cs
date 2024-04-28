@@ -7,7 +7,6 @@ using UnityEditor.AddressableAssets.Build;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.Build;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [InitializeOnLoad]
 public class BuildTool : IActiveBuildTargetChanged
@@ -78,9 +77,9 @@ public class BuildTool : IActiveBuildTargetChanged
 
 
 
-        if (File.Exists("Build/WebGL/ragnarok/RagnarokRebuild.zip"))
-            File.Delete("Build/WebGL/ragnarok/RagnarokRebuild.zip");
-        ZipFile.CreateFromDirectory("Build/RagnarokRebuild", "Build/WebGL/ragnarok/RagnarokRebuild.zip");
+        if (File.Exists("Build/WebGL/RagnarokRebuild.zip"))
+            File.Delete("Build/WebGL/RagnarokRebuild.zip");
+        ZipFile.CreateFromDirectory("Build/RagnarokRebuild", "Build/WebGL/RagnarokRebuild.zip");
     }
 
     private static void BuildForPlatform(BuildTargetGroup group, BuildTarget platform, string location, bool updateAddressables, bool swapToPlatform)
@@ -105,6 +104,9 @@ public class BuildTool : IActiveBuildTargetChanged
             foreach(var dir in Directory.GetDirectories(location, "*", SearchOption.AllDirectories))
                 if(dir.Contains("Build_"))
                     Directory.Delete(dir, true);
+            var indexPath = Path.Combine(location, "index.html");
+            if(File.Exists(indexPath))
+                File.Delete(indexPath);
         }
         
         var options = new BuildPlayerOptions();
@@ -150,14 +152,25 @@ public class BuildTool : IActiveBuildTargetChanged
         var path = ContentUpdateScript.GetContentStateDataPath(false);
         var settings = AddressableAssetSettingsDefaultObject.Settings;
         Debug.Log("Path: " + path);
+        
+        var builderInput = new AddressablesDataBuilderInput(settings);
+
+        var menu = new AddressablesBuildMenuUpdateAPreviousBuild(); //this is fucking scuffed
+        menu.OnPrebuild(builderInput);
+        
 //        settings.RemoteCatalogLoadPath.
-        ContentUpdateScript.BuildContentUpdate(settings, path);
+        //ContentUpdateScript.BuildContentUpdate(settings, path);
 
     }
 
     [MenuItem("Build/Update Addressables (Current Platform)", false, 100)]
     public static void UpdateAddressablesBuild()
     {
+        var target = EditorUserBuildSettings.activeBuildTarget;
+        Debug.Log($"Updating addressables for platform {target}");
+        
+        SwitchBuildTargets(target);
+        
         RagnarokMapImporterWindow.UpdateAddressables();
         UpdateAddressables();
 
@@ -201,6 +214,47 @@ public class BuildTool : IActiveBuildTargetChanged
         RagnarokMapImporterWindow.UpdateAddressables();
         AddressableAssetSettings.BuildPlayerContent();
         
+        SwitchBuildTargets(target);
+
+        //var path = ContentUpdateScript.GetContentStateDataPath(false);
+
+        //Debug.Log(path);
+    }
+    
+    [MenuItem("Build/Full Addressables Rebuild/Build WebGL", false, 150)]
+    public static void FullAddressablesWebGLBuild()
+    {
+        //var group = EditorUserBuildSettings.selectedBuildTargetGroup;
+        var target = EditorUserBuildSettings.activeBuildTarget;
+        
+        AddressableAssetSettings.CleanPlayerContent();
+
+        SwitchBuildTargets(BuildTarget.WebGL);
+
+        RagnarokMapImporterWindow.UpdateAddressables();
+        AddressableAssetSettings.BuildPlayerContent();
+
+        SwitchBuildTargets(target);
+
+        //var path = ContentUpdateScript.GetContentStateDataPath(false);
+
+        //Debug.Log(path);
+    }
+    
+        
+    [MenuItem("Build/Full Addressables Rebuild/Build PC", false, 150)]
+    public static void FullAddressablesPCBuild()
+    {
+        //var group = EditorUserBuildSettings.selectedBuildTargetGroup;
+        var target = EditorUserBuildSettings.activeBuildTarget;
+        
+        AddressableAssetSettings.CleanPlayerContent();
+
+        SwitchBuildTargets(BuildTarget.StandaloneWindows64);
+
+        RagnarokMapImporterWindow.UpdateAddressables();
+        AddressableAssetSettings.BuildPlayerContent();
+
         SwitchBuildTargets(target);
 
         //var path = ContentUpdateScript.GetContentStateDataPath(false);

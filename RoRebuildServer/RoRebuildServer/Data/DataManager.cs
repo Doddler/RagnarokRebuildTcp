@@ -6,6 +6,7 @@ using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
+using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
@@ -20,6 +21,7 @@ public static class DataManager
     public static Dictionary<int, MonsterDatabaseInfo> MonsterIdLookup;
     public static Dictionary<string, MonsterDatabaseInfo> MonsterCodeLookup;
     public static Dictionary<string, MonsterDatabaseInfo> MonsterNameLookup;
+    public static Dictionary<string, MonsterSkillAiBase> MonsterSkillAiHandlers;
 
     private static List<List<MonsterAiEntry>> monsterAiList;
     
@@ -78,6 +80,11 @@ public static class DataManager
         NpcManager.RegisterEvent(name, npcBehavior);
     }
 
+    public static void RegisterMonsterSkillHandler(string name, MonsterSkillAiBase handler)
+    {
+        MonsterSkillAiHandlers.Add(name, handler);
+    }
+
     public static void ReloadScripts()
     {
         var loader = new DataLoader();
@@ -98,6 +105,7 @@ public static class DataManager
         loader.LoadNpcScripts(ScriptAssembly);
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
         loader.LoadItemInteractions(ScriptAssembly);
+        loader.LoadMonsterSkillAi(ScriptAssembly);
     }
     
     public static void Initialize()
@@ -141,6 +149,7 @@ public static class DataManager
 
         loader.LoadMonsterSpawnMinions();
         loader.LoadNpcScripts(ScriptAssembly);
+        loader.LoadMonsterSkillAi(ScriptAssembly);
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
 
 

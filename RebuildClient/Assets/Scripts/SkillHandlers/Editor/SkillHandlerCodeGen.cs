@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Assets.Scripts.SkillHandlers.Handlers;
 using RebuildSharedData.Enum;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -38,7 +37,9 @@ namespace Assets.Scripts.SkillHandlers.Editor
                     var attr = type.GetCustomAttribute<SkillHandlerAttribute>();
                     var skill = attr.SkillType;
 
-                    handlers[(int)skill] = $"\t\t\thandlers[{(int)skill}] = new {type}();";
+                    handlers[(int)skill] = $"\t\t\thandlers[{(int)skill}] = new {type.Name}();";
+                    if (attr.RunHandlerWithoutSource)
+                        handlers[(int)skill] += $"\n\t\t\thandlers[{(int)skill}].ExecuteWithoutSource = true;";
                 }
             }
 

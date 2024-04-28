@@ -37,7 +37,9 @@ functionparam : expression (COMMA expression)*
 macrocall : AT IDENTIFIER LPAREN functionparam? RPAREN (DOT function)?
 		  ;
 			  					  
-function : IDENTIFIER LPAREN functionparam? RPAREN (DOT function)?				#FunctionCall
+function : IDENTIFIER LPAREN functionparam? RPAREN (DOT function)?
+				(LSQUARE condition=expression RSQUARE)?
+				(ARROW eventblock=statementblock)?								#FunctionCall
 		 | macrocall SEMI?														#RegularMacroCall
 		 ;
 		  
@@ -104,6 +106,8 @@ BAND : '&' ;
 TRUE  : 'true' ;
 FALSE : 'false' ;
 */
+
+ARROW : '->';
 
 INC : '++';
 DEC : '--';

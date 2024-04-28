@@ -11,7 +11,6 @@ using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Utility.Editor;
 using Debug = UnityEngine.Debug;
 // ReSharper disable StringIndexOfIsCultureSpecific.1
@@ -143,8 +142,21 @@ namespace Assets.Scripts.MapEditor.Editor
             };
         }
 
-        [MenuItem("Ragnarok/Update Addressables")]
-        public static void UpdateAddressables()
+        [MenuItem("Ragnarok/Update Addressables (Fast)")]
+        public static void UpdateAddressablesSprites()
+        {
+            UpdateAddressables(false);
+        }
+
+        //Having processModels set de-duplicates all model assets in scenes into their own addressables group.
+        //Things will still work if you don't update them, but you can skip them if you don't want to wait.
+        [MenuItem("Ragnarok/Update Addressables (Full)")]
+        public static void UpdateAddressablesAll()
+        {
+            UpdateAddressables(true);
+        }
+        
+        public static void UpdateAddressables(bool processModels = true)
         {
             var settings = AddressableAssetSettingsDefaultObject.Settings;
             var defGroup = settings.DefaultGroup;
@@ -261,12 +273,15 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 entriesAdded.Add(entry);
 
-                var dependencies = AssetDatabase.GetDependencies(path);
-                foreach (var d in dependencies)
+                if (processModels)
                 {
-                    if(!usedPrefabs.Contains(d))
-                        usedPrefabs.Add(d);
-                        
+                    var dependencies = AssetDatabase.GetDependencies(path);
+                    foreach (var d in dependencies)
+                    {
+                        if (!usedPrefabs.Contains(d))
+                            usedPrefabs.Add(d);
+
+                    }
                 }
             }
 
@@ -357,37 +372,40 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 entriesAdded.Add(entry);
             }
-            
-            
-            //update models
-            guids = AssetDatabase.FindAssets("t:Prefab,t:Texture2D,t:Mesh,t:Material", new[] { "Assets/Models/" });
 
-            for (int i = 0; i < guids.Length; i++)
+
+            if (processModels)
             {
-                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
-                var fName = Path.GetFileName(path);
+                //update models
+                guids = AssetDatabase.FindAssets("t:Prefab,t:Texture2D,t:Mesh,t:Material", new[] { "Assets/Models/" });
 
-                if (!usedPrefabs.Contains(path))
+                for (int i = 0; i < guids.Length; i++)
                 {
-                    var existing = modelsGroup.GetAssetEntry(guids[i]);
-                    if (existing == null)
+                    var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                    var fName = Path.GetFileName(path);
+
+                    if (!usedPrefabs.Contains(path))
+                    {
+                        var existing = modelsGroup.GetAssetEntry(guids[i]);
+                        if (existing == null)
+                            continue;
+                        settings.RemoveAssetEntry(guids[i], true);
+                        entriesRemoved.Add(existing);
+
                         continue;
-                    settings.RemoveAssetEntry(guids[i], true);
-                    entriesRemoved.Add(existing);
-                    
-                    continue;
+                    }
+
+                    var label = GetGroupName(path);
+                    var entry = settings.CreateOrMoveEntry(guids[i], modelsGroup, readOnly: false, postEvent: false);
+                    //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                    entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
+                    entry.labels.Add(label);
+
+                    entriesAdded.Add(entry);
                 }
-
-                var label = GetGroupName(path);
-                var entry = settings.CreateOrMoveEntry(guids[i], modelsGroup, readOnly: false, postEvent: false);
-                //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
-                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
-                entry.labels.Add(label);
-
-                entriesAdded.Add(entry);
             }
 
-            
+
 
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, true);
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryRemoved, entriesRemoved, true);

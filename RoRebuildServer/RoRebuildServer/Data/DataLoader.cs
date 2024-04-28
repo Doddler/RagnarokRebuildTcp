@@ -11,6 +11,7 @@ using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
+using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
@@ -51,6 +52,8 @@ internal class DataLoader
                 IsWorldInstance = csv.Context.Parser.Record.ElementAt(1) == "true",
                 Maps = csv.Context.Parser.Record.Skip(2).ToList()
             };
+            if (instance.Name.StartsWith("//")) //special case for commented out instance
+                continue;
             instances.Add(instance);
         }
 
@@ -259,6 +262,17 @@ internal class DataLoader
         foreach (var type in assembly.GetTypes().Where(t => t.IsAssignableTo(itemType)))
         {
             var handler = (IItemLoader)Activator.CreateInstance(type)!;
+            handler.Load();
+        }
+    }
+
+    public void LoadMonsterSkillAi(Assembly assembly)
+    {
+        DataManager.MonsterSkillAiHandlers = new Dictionary<string, MonsterSkillAiBase>();
+        var itemType = typeof(IMonsterLoader);
+        foreach (var type in assembly.GetTypes().Where(t => t.IsAssignableTo(itemType)))
+        {
+            var handler = (IMonsterLoader)Activator.CreateInstance(type)!;
             handler.Load();
         }
     }

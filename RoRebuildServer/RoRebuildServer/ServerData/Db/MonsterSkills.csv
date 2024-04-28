@@ -1,0 +1,2 @@
+﻿Monster,State,Skill,Level,Percent,CastTime,Delay,If,Condition,Dispel,TargetAi,Emote
+Poring,StateIdle,coldbolt,3,500,1000,5000,,,

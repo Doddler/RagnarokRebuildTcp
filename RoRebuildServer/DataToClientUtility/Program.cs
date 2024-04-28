@@ -120,47 +120,57 @@ class Program
         File.WriteAllLines(Path.Combine(outPath, "levelchart.txt"), lines);
     }
 
+    private static List<string> GetActiveInstanceMaps()
+    {
+        using var tr = new StreamReader(Path.Combine(path, "Instances.csv")) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+
+        var mapCodes = new List<string>();
+
+        csv.Read(); //skip header row, we aren't using it
+
+        while (csv.Read())
+        {
+
+            if (csv.Context.Parser.Record == null)
+                continue; //piss off possible null exceptions
+            var instance = new InstanceEntry
+            {
+                Name = csv.Context.Parser.Record.ElementAt(0),
+                IsWorldInstance = csv.Context.Parser.Record.ElementAt(1) == "true",
+                Maps = csv.Context.Parser.Record.Skip(2).ToList()
+            };
+            if (instance.Name.StartsWith("//")) //special case for commented out instance
+                continue;
+            
+            foreach(var m in instance.Maps)
+                if(!mapCodes.Contains(m))
+                    mapCodes.Add(m);
+        }
+
+        return mapCodes;
+    }
+
     private static void WriteMapList()
     {
+        var inUseMaps = GetActiveInstanceMaps();
+
         ConvertToClient<MapEntry, ClientMapEntry>("Maps.csv", "maps.json", convert =>
-            convert.Select(e => new ClientMapEntry()
             {
-                Code = e.Code,
-                Name = e.Name,
-                MapMode = (int)Enum.Parse<MapMinimapType>(e.MapMode),
-                Music = e.Music
-            }).ToList()
+                var mapOut = new List<MapEntry>();
+                foreach(var m in convert)
+                    if(inUseMaps.Contains(m.Code))
+                        mapOut.Add(m);
+
+                return mapOut.Select(e => new ClientMapEntry()
+                {
+                    Code = e.Code,
+                    Name = e.Name,
+                    MapMode = (int)Enum.Parse<MapMinimapType>(e.MapMode),
+                    Music = e.Music
+                }).ToList();
+            }
         );
-
-        //using var tempPath = new TempFileCopy(Path.Combine(path, "Maps.csv"));
-        //using var tr = new StreamReader(tempPath.Path) as TextReader;
-        //using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-
-        //var entries = csv.GetRecords<MapEntry>().ToList();
-        //var mapList = new ClientMapList();
-        //mapList.MapEntries = new List<ClientMapEntry>();
-
-        //foreach (var e in entries)
-        //{
-        //    var mode = Enum.Parse<MapMinimapType>(e.MapMode);
-        //    mapList.MapEntries.Add(new ClientMapEntry()
-        //    {
-        //        Code = e.Code,
-        //        Name = e.Name,
-        //        MapMode = (int)mode,
-        //        Music = e.Music
-        //    });
-        //}
-
-        //JsonSerializerOptions options = new JsonSerializerOptions();
-        //options.SetupExtensions();
-        //options.WriteIndented = true;
-
-        //var json = JsonSerializer.Serialize(mapList, options);
-
-        //var mapDir = Path.Combine(outPath, "maps.json");
-
-        //File.WriteAllText(mapDir, json);
     }
 
     private static List<MapEntry> GetMapList()
@@ -216,6 +226,7 @@ class Program
                 {
                     Id = monster.Id,
                     Name = monster.Name,
+                    Code = monster.Code,
                     SpriteName = monster.ClientSprite,
                     Offset = monster.ClientOffset,
                     ShadowSize = monster.ClientShadow,
@@ -249,6 +260,7 @@ class Program
                 {
                     Id = npc.Id,
                     Name = npc.Name,
+                    Code = npc.Code,
                     SpriteName = npc.ClientSprite,
                     Offset = npc.ClientOffset,
                     ShadowSize = npc.ClientShadow,

@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Assets.Scripts.MapEditor;
+using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.ClientTypes;
@@ -11,8 +11,6 @@ using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -129,29 +127,33 @@ namespace Assets.Scripts.Utility
 		private IEnumerator BeginTransitionScene()
 		{
 			LoadingImage.gameObject.SetActive(true);
+			RoMapRenderSettings.ClearBakedLightmap();
 
 			yield return null;
 			yield return null;
-
-			TransitionScenes();
-		}
-
-		private void TransitionScenes()
-		{
+			
 			if(unloadScene.IsValid())
 				SceneManager.UnloadSceneAsync(unloadScene);
 
 			MonsterHoverText.text = "";
 			LightmapSettings.lightProbes = null;
-			
-			var trans = Addressables.LoadSceneAsync($"Assets/Scenes/Maps/{newScene}.unity", LoadSceneMode.Additive);
 
-			//var trans = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
-			trans.Completed += FinishSceneChange;
-			//trans.completed += FinishSceneChange;
+			var sceneName = $"Assets/Scenes/Maps/{newScene}.unity";
+
+			var trans = Addressables.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+			
+			while (!trans.IsDone)
+			{
+				NetworkManager.Instance.LoadingText.text = $"Map {trans.PercentComplete*100:N0}%";
+				yield return 0;
+			}
+			
+			yield return trans;
+
+			FinishSceneChange();
 		}
 
-		private void FinishSceneChange(AsyncOperationHandle<SceneInstance> obj)
+		private void FinishSceneChange()
 		{
 			finishCallback();
 			
@@ -184,10 +186,10 @@ namespace Assets.Scripts.Utility
 				MinimapController.Instance.LoadMinimap(newScene, type);
 		}
 
-		private void FinishSceneChange(AsyncOperation op)
-		{
-			finishCallback();
-		}
+		// private void FinishSceneChange(AsyncOperation op)
+		// {
+		// 	finishCallback();
+		// }
 
 		private IEnumerator WaitAndStartFade()
 		{

@@ -92,7 +92,12 @@ namespace PlayerControl
                     var srcPos = cameraFollower.WalkProvider.GetMapPositionForWorldPosition(cameraFollower.Target.transform.position, out var srcPosition);
 
                     cameraFollower.AppendChatText($"Client location: {mapname} {srcPosition.x},{srcPosition.y}");
-                    NetworkManager.Instance.SendWhereCommand();
+                    NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Where);
+                }
+
+                if (s[0] == "/info")
+                {
+                    NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Info);
                 }
 
                 if (s[0] == "/name" || s[0] == "/changename")
@@ -137,7 +142,7 @@ namespace PlayerControl
                     if (s.Length > 2)
                         name = String.Join(" ", s.Skip(1).Take(nameMax-1));
 
-                    if (!SpriteDataLoader.Instance.IsValidMonsterName(name))
+                    if (!SpriteDataLoader.Instance.IsValidMonsterName(name) && !SpriteDataLoader.Instance.IsValidMonsterCode(name))
                         cameraFollower.AppendError($"The monster name '{name}' is not valid.");
                     else
                         NetworkManager.Instance.SendAdminSummonMonster(name, count);
@@ -194,6 +199,16 @@ namespace PlayerControl
                 {
                     NetworkManager.Instance.SendAdminChangeSpeed(50);
                     NetworkManager.Instance.SendAdminHideCharacter(true);
+                }
+
+                if (s[0] == "/kill")
+                {
+                    NetworkManager.Instance.SendAdminKillMobAction(false);
+                }
+
+                if (s[0] == "/killall")
+                {
+                    NetworkManager.Instance.SendAdminKillMobAction(true);
                 }
 
                 if (s[0] == "/randomize" || s[0] == "/random")

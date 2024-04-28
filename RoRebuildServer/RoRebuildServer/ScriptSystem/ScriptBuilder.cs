@@ -3,8 +3,10 @@ using System.Text;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Items;
+using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using static System.Collections.Specialized.BitVector32;
@@ -29,6 +31,7 @@ public class ScriptBuilder
 
     private List<string> npcDefinitions = new();
     private List<string> itemDefinitions = new();
+    private List<string> monsterSkillDefinitions = new();
 
     //state machine stuff
     private Dictionary<string, int> localIntVariables = new();
@@ -40,8 +43,9 @@ public class ScriptBuilder
     private List<string> remoteCommands = new();
     private Dictionary<string, NpcInteractionResult> waitingFunctions = new();
     private Dictionary<string, string> additionalVariables { get; set; } = new();
-
+    
     private List<TimerFunction> timerFunctions = new();
+    private List<MonsterAiState> monsterStatesWithHandlers = new();
 
     //private Dictionary<string, ScriptMethodHandler> methodHandlers = new();
 
@@ -49,7 +53,7 @@ public class ScriptBuilder
     private string methodName = "";
     //private string npcName = "";
     private string stateVariable = "";
-    private string localvariable = "";
+    private string localVariable = "";
     private int pointerCount = 0;
     private int lineNumber = 1;
     private int curBlock;
@@ -57,6 +61,7 @@ public class ScriptBuilder
     private bool hasWait = false;
     private bool hasTouch = false;
     private bool hasInteract = false;
+    private string eventHandlerTarget = "";
     private NpcInteractionResult waitType = NpcInteractionResult.WaitForContinue;
 
     public bool UseStateMachine;
@@ -66,13 +71,17 @@ public class ScriptBuilder
     public bool IsEvent;
 
     private int indentation = 1;
+    private int uniqueVal = 0;
 
     private HashSet<string> UniqueNames;
+    private HashSet<string> terminalFunctions = new();
 
     public Stack<int> breakPointerStack = new();
 
     private Stack<ScriptMacro> macroStack = new();
     public ScriptMacro? ActiveMacro;
+
+    public bool IsTerminalFunction(string name) => terminalFunctions.Contains(name);
 
     public ScriptBuilder(string className, HashSet<string> uniqueNames, params string[] namespaceList)
     {
@@ -100,7 +109,7 @@ public class ScriptBuilder
     {
         lineNumber = num;
     }
-
+    
     public StringBuilder StartIndentedScriptLine()
     {
         for (var i = 0; i < indentation; i++)
@@ -179,6 +188,17 @@ public class ScriptBuilder
         return curBlock;
     }
 
+    public void LoadObjectProperties(Type source, string varName)
+    {
+        var name = source.Name;
+        var properties = source.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
+        foreach (var prop in properties)
+        {
+            var pName = prop.Name;
+            additionalVariables.Add(pName, $"{varName}.{pName}");
+        }
+    }
+
     public void LoadFunctionSource(Type source, string varName)
     {
         var name = source.Name;
@@ -210,7 +230,7 @@ public class ScriptBuilder
                     functionBaseClasses.Add(m, varName);
             }
 
-
+            
         }
     }
     
@@ -221,8 +241,8 @@ public class ScriptBuilder
         UseStateStorage = false;
         UseLocalStorage = false;
         blockBuilder.Clear();
-
-
+        terminalFunctions.Clear();
+        
         StartIndentedScriptLine().AppendLine($"public static partial class RoRebuildGenMapData_{className}");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
@@ -242,6 +262,7 @@ public class ScriptBuilder
         UseStateStorage = false;
         UseLocalStorage = false;
         blockBuilder.Clear();
+        terminalFunctions.Clear();
 
         StartIndentedScriptLine().AppendLine($"public class RoRebuildItemGen_{name} : ItemInteractionBase");
         StartIndentedScriptLine().AppendLine("{");
@@ -257,11 +278,116 @@ public class ScriptBuilder
         LoadFunctionSource(typeof(CombatEntity), "combatEntity");
     }
 
+    public void StartMonsterSkillHandler(string name)
+    {
+        methodName = name.Replace(" ", "").Replace("-", "_");
+        UseStateMachine = false;
+        UseStateStorage = false;
+        UseLocalStorage = false;
+        blockBuilder.Clear();
+        monsterStatesWithHandlers.Clear();
+        terminalFunctions.Clear();
+
+        StartIndentedScriptLine().AppendLine($"public class RoRebuildSkillAI_{name} : MonsterSkillAiBase");
+        StartIndentedScriptLine().AppendLine("{");
+        indentation++;
+
+        StartIndentedBlockLine().AppendLine($"public void Init()");
+        StartIndentedBlockLine().AppendLine("{");
+        indentation++;
+
+        methodName = "Init";
+    }
+
+    public void EndMonsterSkillHandler(string name)
+    {
+        var behaviorName = $"RoRebuildSkillAI_{name}";
+        monsterSkillDefinitions.Add($"DataManager.RegisterMonsterSkillHandler(\"{name}\", new {behaviorName}());");
+    }
+
     public void EndItem(string name)
     {
         var behaviorName = $"RoRebuildItemGen_{name}";
         itemDefinitions.Add($"DataManager.RegisterItem(\"{name}\", new {behaviorName}());");
     }
+
+    public void StartMonsterSkillAiSection(string section)
+    {
+        if (methodName == section)
+            return;
+
+        if(!Enum.TryParse<MonsterAiState>(section, out var state))
+            throw new Exception($"Error in {className} line {lineNumber} : the section '{section}' does not match a valid MonsterAiState.");
+        if(monsterStatesWithHandlers.Contains(state))
+            throw new Exception($"Error in {className} line {lineNumber} : the section '{section}' is defined twice.");
+
+        functionSources.Clear();
+        functionBaseClasses.Clear();
+        additionalVariables.Clear();
+        terminalFunctions.Clear();
+
+        monsterStatesWithHandlers.Add(state);
+        methodName = section;
+        eventHandlerTarget = "state.CastSuccessEvent";
+        terminalFunctions.Add("TryCast");
+
+        CloseScope();
+        StartIndentedBlockLine().AppendLine($"public void {section}(MonsterSkillAiState state)");
+        OpenScope();
+
+        UseStateMachine = false;
+        UseStateStorage = false;
+        UseLocalStorage = false;
+
+        LoadObjectProperties(typeof(MonsterSkillAiState), "state");
+        LoadFunctionSource(typeof(MonsterSkillAiState), "state");
+        LoadFunctionSource(typeof(MonsterSkillAiBase), "this"); //probably don't need this but may as well...
+
+        foreach (var i in Enum.GetValues<CharacterSkill>())
+            additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
+
+        foreach (var i in Enum.GetValues<MonsterSkillAiFlags>())
+            additionalVariables.TryAdd(i.ToString(), $"MonsterSkillAiFlags.{i}");
+
+
+        foreach (var i in Enum.GetValues<MonsterAiState>())
+            additionalVariables.TryAdd(i.ToString(), $"MonsterAiState.{i}");
+    }
+
+    public void StartSkillEventMethod(string eventName)
+    {
+        methodName = eventName;
+        StartIndentedScriptLine().AppendLine($"private void {eventName}(MonsterSkillAiState state)");
+        OpenScope();
+        //we can keep the same registered function sources
+    }
+
+    public void CreateFinalSkillHandler()
+    {
+        StartIndentedScriptLine().AppendLine($"public override void RunAiSkillUpdate(MonsterAiState aiState, MonsterSkillAiState skillState)");
+        StartIndentedScriptLine().AppendLine("{");
+        indentation++;
+        StartIndentedScriptLine().AppendLine($"switch(aiState)");
+        StartIndentedScriptLine().AppendLine("{");
+        indentation++;
+
+        foreach (var state in monsterStatesWithHandlers)
+        {
+            StartIndentedScriptLine().AppendLine($"case MonsterAiState.{state}:");
+            indentation++;
+            StartIndentedScriptLine().AppendLine($"{state}(skillState);");
+            StartIndentedScriptLine().AppendLine($"break;");
+            indentation--;
+        }
+
+        StartIndentedScriptLine().AppendLine("}");
+        indentation--;
+        //StartIndentedScriptLine().AppendLine("return false;");
+        StartIndentedScriptLine().AppendLine("}");
+        indentation--;
+        EndLine();
+    }
+
 
     public void StartItemSection(string section)
     {
@@ -271,6 +397,7 @@ public class ScriptBuilder
         functionSources.Clear();
         functionBaseClasses.Clear();
         additionalVariables.Clear();
+        terminalFunctions.Clear();
 
         methodName = section;
 
@@ -316,10 +443,11 @@ public class ScriptBuilder
         UseStateStorage = false;
         UseLocalStorage = true;
         stateVariable = "state";
-        localvariable = "npc";
+        localVariable = "npc";
         blockBuilder.Clear();
         timerValues.Clear();
         remoteCommands.Clear();
+        terminalFunctions.Clear();
         hasTouch = false;
         hasInteract = false;
 
@@ -364,10 +492,11 @@ public class ScriptBuilder
         UseStateStorage = false;
         UseLocalStorage = true;
         stateVariable = "state";
-        localvariable = "npc";
+        localVariable = "npc";
         blockBuilder.Clear();
         timerValues.Clear();
         remoteCommands.Clear();
+        terminalFunctions.Clear();
         hasTouch = false;
         hasInteract = false;
 
@@ -434,6 +563,7 @@ public class ScriptBuilder
         functionSources.Clear();
         functionBaseClasses.Clear();
         additionalVariables.Clear();
+        terminalFunctions.Clear();
 
         methodName = section;
 
@@ -687,16 +817,29 @@ public class ScriptBuilder
         if (UseLocalStorage)
         {
             if (localIntVariables.TryGetValue(id, out pos))
-                return $"{localvariable}.ValuesInt[{pos}]";
+                return $"{localVariable}.ValuesInt[{pos}]";
 
             if (localStringVariables.TryGetValue(id, out pos))
-                return $"{localvariable}.ValuesString[{pos}]";
+                return $"{localVariable}.ValuesString[{pos}]";
         }
 
         if (id.ToLower() == "result")
             return $"{stateVariable}.OptionResult";
 
         return GetConstValue(id);
+    }
+
+    public string OutputEventCall()
+    {
+        if (string.IsNullOrWhiteSpace(eventHandlerTarget))
+            throw new Exception($"Attempting to add event handler to function with -> when no event handler type is defined.");
+
+        var eventName = $"Event{uniqueVal}";
+        lineBuilder.Append($"{eventHandlerTarget} = {eventName};");
+        uniqueVal++;
+        EndLine();
+
+        return eventName;
     }
 
     public void OutputVariable(string id)
@@ -718,7 +861,7 @@ public class ScriptBuilder
     {
         lineBuilder.Append(varname);
     }
-
+    
     public void OpenSwitch()
     {
         switchOption = lineBuilder.ToString();
@@ -847,9 +990,8 @@ public class ScriptBuilder
         localIntVariables.Clear();
         localStringVariables.Clear();
         additionalVariables.Clear();
-
     }
-
+    
     public bool HasUserVariable(string varName) => additionalVariables.ContainsKey(varName);
 
     public void AddUserVariable(string varName)
@@ -886,6 +1028,7 @@ public class ScriptBuilder
 
         OutputLoader("NpcLoader", "INpcLoader", npcDefinitions);
         OutputLoader("ItemLoader", "IItemLoader", itemDefinitions);
+        OutputLoader("MonsterSkillLoader", "IMonsterLoader", monsterSkillDefinitions);
 
         //if (npcDefinitions.Count > 0)
         //{

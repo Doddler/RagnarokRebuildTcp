@@ -1,14 +1,15 @@
 ﻿using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
+using JetBrains.Annotations;
 using RebuildSharedData.Enum;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
 {
-    [SkillHandler(CharacterSkill.FireBolt)]
+    [SkillHandler(CharacterSkill.FireBolt, true)]
     public class FireBoltHandler : SkillHandlerBase
     {
-        public override void StartSkillCasting(ServerControllable src, ServerControllable target, SkillType skillType, int lvl, float castTime)
+        public override void StartSkillCasting(ServerControllable src, ServerControllable target, SkillTarget skillType, int lvl, float castTime)
         {
             if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
             {
@@ -26,9 +27,9 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.EndEffectOfType(EffectType.CastEffect);
         }
 
-        public override void ExecuteSkillTargeted(ServerControllable src, ServerControllable target, int lvl)
+        public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ServerControllable target, int lvl)
         {
-            src.PerformBasicAttackMotion();
+            src?.PerformBasicAttackMotion();
             if(target != null)
                 FireArrow.Create(src, target, lvl); //don't attach to the entity so the effect stays if they get removed
         }

@@ -3,6 +3,7 @@
 public enum MonsterAiType : byte
 {
     AiEmpty,
+    AiDebug,
     AiPassive,
     AiPassiveImmobile,
     AiAggressive,
@@ -13,6 +14,8 @@ public enum MonsterAiType : byte
     AiAggressiveLooter,
     AiAngry,
     AiPlant,
+    AiPacifist,
+    AiHyperPacifist,
     AiMinion
 }
 
@@ -25,7 +28,8 @@ public enum MonsterAiState : byte
     StateSearch,
     StateAttacking,
     StateAdjust,
-    StateDead
+    StateDead,
+    StateFlee
 }
 
 public enum MonsterInputCheck : byte
@@ -36,6 +40,7 @@ public enum MonsterInputCheck : byte
     InReachedTarget,
     InReachedRandomMoveTarget,
     InAttackRange,
+    InAttackRangeAny,
     InChangeNormal,
     InTargetSearch,
     InEnemyOutOfSight,
@@ -46,6 +51,7 @@ public enum MonsterInputCheck : byte
     InAllyInCombat,
     InOwnerAttacked,
     InOwnerOutOfSight,
+    InNoCondition,
 }
 
 public enum MonsterOutputCheck : byte
@@ -62,5 +68,6 @@ public enum MonsterOutputCheck : byte
     OutTryRevival,
     OutAttackingAdjust,
     OutWaitForever,
-    OutMoveToOwner
+    OutMoveToOwner,
+    OutDebug
 }

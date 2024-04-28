@@ -5,8 +5,9 @@ public enum ClientErrorType : byte
     None,
     UnknownMap,
     InvalidCoordinates,
+    InvalidInput,
     TooManyRequests,
     MalformedRequest,
     RequestTooLong,
-    DisallowedCharacters
+    DisallowedCharacters,
 }

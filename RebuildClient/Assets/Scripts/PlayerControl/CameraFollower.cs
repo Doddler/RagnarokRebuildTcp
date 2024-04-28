@@ -1,39 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Assets.Scripts.Effects;
-using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utility;
-using JetBrains.Annotations;
 using PlayerControl;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Config;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using RebuildSharedData.Networking;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utility;
 using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 
 #if UNITY_EDITOR
-using System.IO;
-using UnityEditor;
-using UnityEditor.Recorder;
-using UnityEditor.Recorder.Input;
-using UnityEditor.Recorder.Examples;
 #endif
 
 namespace Assets.Scripts
@@ -116,6 +105,7 @@ namespace Assets.Scripts
 
         private const bool CinemachineCenterPlayerOnMap = true;
         private const bool CinemachineHidePlayerObject = true;
+        public bool IsInErrorState;
 
         public float FogNearRatio = 0.3f;
         public float FogFarRatio = 4f;
@@ -808,9 +798,12 @@ namespace Assets.Scripts
                         var dist = (srcPos - destPos).SquareDistance();
                         if (WalkProvider.IsCellWalkable(destPos) && dist < SharedConfig.MaxPathLength)
                         {
+                            if (!isHolding)
+                            {
+                                var click = GameObject.Instantiate(ClickEffectPrefab);
+                                click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
+                            }
                             NetworkManager.Instance.MovePlayer(destPos);
-                            var click = GameObject.Instantiate(ClickEffectPrefab);
-                            click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
                             ClickDelay = 0.5f;
                             isHolding = true;
                         }
@@ -818,9 +811,12 @@ namespace Assets.Scripts
                         {
                             if (WalkProvider.GetNextWalkableTileForClick(srcPos, destPos, out var dest2))
                             {
+                                if (!isHolding)
+                                {
+                                    var click = GameObject.Instantiate(ClickEffectPrefab);
+                                    click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
+                                }
                                 NetworkManager.Instance.MovePlayer(dest2);
-                                var click = GameObject.Instantiate(ClickEffectPrefab);
-                                click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
                                 ClickDelay = 0.5f;
                                 isHolding = true;
                             }
@@ -1078,8 +1074,8 @@ namespace Assets.Scripts
                 RenderSettings.fogStartDistance = near;
                 RenderSettings.fogEndDistance = far;
                 
-                var val = (RenderSettings.fogEndDistance - Distance) / (RenderSettings.fogEndDistance - RenderSettings.fogStartDistance);
-                Camera.backgroundColor = RenderSettings.fogColor * (1 - val);
+                // var val = (RenderSettings.fogEndDistance - Distance) / (RenderSettings.fogEndDistance - RenderSettings.fogStartDistance);
+                // Camera.backgroundColor = RenderSettings.fogColor * (1 - val);
             }
         }
 
@@ -1088,12 +1084,16 @@ namespace Assets.Scripts
             Dispatcher.RunOnMainThread(() =>
             {
                 Instance.ErrorNoticeUi.gameObject.SetActive(true);
-                Instance.ErrorNoticeUi.text = "<color=red>Error: </color>" + text;                
+                Instance.ErrorNoticeUi.text = "<color=red>Error: </color>" + text;
+                Instance.IsInErrorState = true;
             });
         }
 
         public void Update()
         {
+            if (IsInErrorState && Input.GetKeyDown(KeyCode.Space))
+                SceneManager.LoadScene(0);
+            
             if (Target == null)
                 return;
 
@@ -1237,6 +1237,13 @@ namespace Assets.Scripts
             {
                 hasSkillOnCursor = true;
                 cursorSkill = CharacterSkill.Bash;
+                cursorSkillLvl = 5;
+            }
+            
+            if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                hasSkillOnCursor = true;
+                cursorSkill = CharacterSkill.ColdBolt;
                 cursorSkillLvl = 5;
             }
             //

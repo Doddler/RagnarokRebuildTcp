@@ -37,6 +37,8 @@ public class WorldObject : IEntityAutoReset
     public CharacterType Type;
     public Position Position;
     public Position TargetPosition;
+    public float MoveModifier;
+    public float MoveModifierTime;
 
     public Position[]? WalkPath;
 
@@ -93,7 +95,7 @@ public class WorldObject : IEntityAutoReset
     private Npc npc = null!;
     private CombatEntity combatEntity = null!;
 
-    public bool HasCombatEntity => Entity.IsAlive() && (Entity.Type == EntityType.Player && Entity.Type == EntityType.Monster);
+    public bool HasCombatEntity => Entity.IsAlive() && (Entity.Type == EntityType.Player || Entity.Type == EntityType.Monster);
 
     public Player Player
     {
@@ -254,7 +256,7 @@ public class WorldObject : IEntityAutoReset
 
     public bool TryGetVisiblePlayerList([NotNullWhen(true)] out EntityList? entityList)
     {
-        if (visiblePlayers == null)
+        if (visiblePlayers == null || visiblePlayers.Count == 0)
         {
             entityList = null;
             return false;
@@ -479,10 +481,14 @@ public class WorldObject : IEntityAutoReset
         if (MoveLockTime > Time.ElapsedTimeFloat)
             return;
 
+        MoveModifierTime -= Time.DeltaTimeFloat;
+        if (MoveModifierTime < 0)
+            MoveModifier = 1f;
+
         if (FacingDirection.IsDiagonal())
-            MoveCooldown -= Time.DeltaTimeFloat * DiagonalSpeedPenalty;
+            MoveCooldown -= Time.DeltaTimeFloat * DiagonalSpeedPenalty * MoveModifier;
         else
-            MoveCooldown -= Time.DeltaTimeFloat;
+            MoveCooldown -= Time.DeltaTimeFloat * MoveModifier;
 
         if (MoveCooldown <= 0f)
         {
@@ -503,7 +509,7 @@ public class WorldObject : IEntityAutoReset
             {
                 Debug.Assert(CombatEntity != null);
                 State = CharacterState.Idle;
-                if (QueuedAction == QueuedAction.Cast && AttackCooldown < Time.ElapsedTimeFloat && CombatEntity.CastingSkill.IsValid)
+                if (QueuedAction == QueuedAction.Cast && AttackCooldown < Time.ElapsedTimeFloat && CombatEntity.QueuedCastingSkill.IsValid)
                     CombatEntity?.ResumeQueuedSkillAction();
             }
             else

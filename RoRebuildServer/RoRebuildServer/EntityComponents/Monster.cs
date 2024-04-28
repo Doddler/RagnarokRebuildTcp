@@ -5,6 +5,7 @@ using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
@@ -39,6 +40,7 @@ public partial class Monster : IEntityAutoReset
     //private float nextAiUpdate;
 
     private float nextMoveUpdate;
+    private float nextAiSkillUpdate;
 
     //private float randomMoveCooldown;
 
@@ -47,9 +49,10 @@ public partial class Monster : IEntityAutoReset
 
     //private bool hasTarget;
 
-    private Entity Target;
+    public Entity Target;
     private Entity Master;
     private EntityList? Children;
+    
 
     private WorldObject? targetCharacter => Target.GetIfAlive<WorldObject>();
 
@@ -59,6 +62,10 @@ public partial class Monster : IEntityAutoReset
     public MapSpawnRule? SpawnRule;
     private MonsterAiType aiType;
     private List<MonsterAiEntry> aiEntries = null!;
+    
+    private MonsterSkillAiState skillState = null!;
+    public Action<MonsterSkillAiState>? CastSuccessEvent = null;
+    private MonsterSkillAiBase? skillAiHandler;
 
     public bool LockMovementToSpawn;
 
@@ -72,6 +79,8 @@ public partial class Monster : IEntityAutoReset
 #if DEBUG
     private bool dbgFlag;
 #endif
+
+    public bool HasMaster => Master.IsAlive();
 
     public static float MaxSpawnTimeInSeconds = 180;
 
@@ -93,6 +102,9 @@ public partial class Monster : IEntityAutoReset
         MonsterBase = null!;
         SpawnMap = null!;
         Children = null;
+        skillState = null!; //really should pool these?
+        skillAiHandler = null;
+        CastSuccessEvent = null;
 
         Target = Entity.Null;
     }
@@ -122,6 +134,10 @@ public partial class Monster : IEntityAutoReset
         character.Name = $"{monData.Name} {e}";
 
         CurrentAiState = MonsterAiState.StateIdle;
+        skillState = new MonsterSkillAiState(this);
+
+        if (DataManager.MonsterSkillAiHandlers.TryGetValue(monData.Code, out var handler))
+            skillAiHandler = handler;
     }
 
     public void AddChild(ref Entity child)
@@ -328,6 +344,39 @@ public partial class Monster : IEntityAutoReset
         return true;
     }
 
+    public void RunCastSuccessEvent()
+    {
+        if (CastSuccessEvent != null)
+            CastSuccessEvent(skillState);
+        CastSuccessEvent = null;
+    }
+
+    public bool AiSkillScanUpdate()
+    {
+        skillState.SkillCastSuccess = false;
+        nextAiSkillUpdate = Time.ElapsedTimeFloat + 1f;
+
+        skillAiHandler?.RunAiSkillUpdate(CurrentAiState, skillState);
+
+        if (!skillState.SkillCastSuccess)
+            return false;
+
+        //CombatEntity.ApplyCooldownForAttackAction();
+
+        if (skillState.CastSuccessEvent != null)
+        {
+            if (skillState.ExecuteEventAtStartOfCast || Character.QueuedAction != QueuedAction.Cast)
+            {
+                skillState.CastSuccessEvent(skillState);
+                CastSuccessEvent = null;
+            }
+            else
+                CastSuccessEvent = skillState.CastSuccessEvent;
+        }
+
+        return true;
+    }
+
     public void AiStateMachineUpdate()
     {
 #if DEBUG
@@ -337,6 +386,9 @@ public partial class Monster : IEntityAutoReset
             CurrentAiState = MonsterAiState.StateDead;
         }
 #endif
+
+        if (skillAiHandler != null && nextAiSkillUpdate < Time.ElapsedTimeFloat && !Character.InAttackCooldown)
+            AiSkillScanUpdate();
 
         //Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
 

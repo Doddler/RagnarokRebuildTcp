@@ -8,11 +8,15 @@ namespace RoRebuildServer.Simulation.Skills
     public static class SkillHandler
     {
         private static SkillHandlerBase?[] handlers;
+        private static SkillHandlerAttribute[] skillAttributes;
+
+        public static SkillHandlerAttribute GetSkillAttributes(CharacterSkill skill) => skillAttributes[(int)skill];
 
         static SkillHandler()
         {
             var count = System.Enum.GetNames(typeof(CharacterSkill)).Length;
             handlers = new SkillHandlerBase[count];
+            skillAttributes = new SkillHandlerAttribute[count];
 
             foreach(var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.GetCustomAttribute<SkillHandlerAttribute>() != null))
             {
@@ -22,6 +26,7 @@ namespace RoRebuildServer.Simulation.Skills
                 handler.SkillClassification = attr.SkillClassification;
 
                 handlers[(int)skill] = handler;
+                skillAttributes[(int)skill] = attr;
             }
         }
 

@@ -77,11 +77,13 @@ public enum MessageType : byte
 public enum AdminAction : byte
 {
     ForceGC,
-    ReloadScripts
+    ReloadScripts,
+    KillMobs
 }
 public enum ClientTextCommand : byte
 {
-    Where
+    Where,
+    Info
 }
 
 public enum NpcInteractionType

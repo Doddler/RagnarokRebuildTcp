@@ -33,10 +33,15 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 primitive.Material.mainTexture = sprite.texture;
                 primitive.AddTexturedSpriteQuad(sprite, Vector3.zero, data.Width, data.Height, Color.white);
             }
+            else
+            {
+                primitive.Material.mainTexture = data.Texture;
+                primitive.AddTexturedRectangleQuad(Vector3.zero, data.Width, data.Height, Color.white);
+            }
             
             var dir = (primitive.Velocity).normalized;
             
-            var multiplier = new Vector3(0, 0, -1);
+            var multiplier = new Vector3(0, 0, 1);
             
             var axis = Quaternion.LookRotation(dir) * multiplier;
             

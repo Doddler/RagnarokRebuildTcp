@@ -1,0 +1,31 @@
+﻿
+Npc("prt_fild08", "Bard", "1_M_BARD", 175, 374, SW, 1, 1) 
+{
+	OnClick:
+		FocusNpc();
+		ShowSprite("bard_eland01", right);
+
+		Dialog(Name, "Hey there, welcome to Ragnarok Rebuild! It's rare to see new faces here, links to this place aren't easy to come by. "
+				   + "Since you're already here though let me tell you a little bit about this place.");
+
+		Dialog(Name, "Ragnarok Rebuild is a remake of sorts, the whole thing including the client and server were built from the ground up. "
+		           + "It's not completely faithful to the original, but it should still feel pretty familiar if you've played before.");
+
+		Dialog(Name, "I wouldn't consider this a real server though, it's more of a developer testing ground for trying out new features. "
+				   + "Don't let that stop you from looking around though, you're more than welcome to do as you wish.")
+
+		Dialog(Name, "This whole thing is very much a work in progress so there's a lot of things missing that you might expect to work. "
+				   + "You can't interact with most NPCs, but the Kafra staff can still help you out. ");
+
+		Dialog(Name, "There's currently no items, equipment, stats, you simply get stronger as you level. "
+		           + "There's not even any skills! Well that's not quite true, but you'll see what I mean later.");
+
+		Dialog(Name, "I recommend checking the help menu in the bottom right, it'll help you figure out what you can do here. You can even level yourself up! "
+				   + "You should also check out that warp button, it lets you jump to any map on the server.");
+
+		ShowSprite("bard_eland02", right);
+
+		Dialog(Name, "You're free to offer feedback at the @RoDoddler twitter account afterwards if you want. "
+				   + "I know it's possible to reach level 99 without cheating so be sure to let him know if you manage it yourself! :)");
+
+}

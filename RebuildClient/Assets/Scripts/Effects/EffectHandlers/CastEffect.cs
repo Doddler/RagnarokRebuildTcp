@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Effects.PrimitiveHandlers;
 using UnityEngine;
 
 namespace Assets.Scripts.Effects.EffectHandlers
@@ -10,7 +8,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
     {
         private static readonly Dictionary<string, Material> CastMaterials = new();
         
-        public static Ragnarok3dEffect Create(float duration, string texture, GameObject followTarget)
+        public static Ragnarok3dEffect Create(float duration, string texture, GameObject followTarget, bool useInvAlphaShader = false)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.CastEffect);
             effect.Duration = duration;
@@ -18,8 +16,10 @@ namespace Assets.Scripts.Effects.EffectHandlers
             
             if (!CastMaterials.TryGetValue(texture, out var mat))
             {
-                mat = new Material(ShaderCache.Instance.AdditiveShader);
-                //mat = new Material(ShaderCache.Instance.InvAlphaShader);
+                if(!useInvAlphaShader)
+                    mat = new Material(ShaderCache.Instance.AdditiveShader);
+                else
+                    mat = new Material(ShaderCache.Instance.InvAlphaShader);
                 mat.mainTexture = Resources.Load<Texture2D>(texture);
                 mat.renderQueue = 3001;
                 CastMaterials.Add(texture, mat);

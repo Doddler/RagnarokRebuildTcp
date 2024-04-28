@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Assets.Scripts;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
@@ -10,7 +8,6 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
-using Utility;
 
 public enum TextIndicatorType
 {
@@ -22,12 +19,6 @@ public enum TextIndicatorType
 public class DamageIndicator : MonoBehaviour
 {
 	public TextMeshPro TextObject;
-	// public AnimationCurve Trajectory;
-	// public AnimationCurve Size;
-	// public AnimationCurve Alpha;
- //    public bool FliesAwayFromTarget = true;
- //    public int HeightMultiplier = 6;
- //    public float TweenTime = 1f;
 
     public DamageIndicatorPathData PathData;
     public ServerControllable Controllable;
@@ -36,12 +27,14 @@ public class DamageIndicator : MonoBehaviour
 
 	private Vector3 start;
 	private Vector3 end;
+	private Vector3 basePosition;
 
 	public void AttachComboIndicatorToControllable(ServerControllable controllable)
 	{
 		RemoveComboIndicatorIfExists(controllable);
 		Controllable = controllable;
 		Controllable.ComboIndicator = gameObject;
+		basePosition = controllable.transform.localPosition;
 	}
 
 	private void RemoveComboIndicatorIfExists(ServerControllable controllable)
@@ -107,6 +100,8 @@ public class DamageIndicator : MonoBehaviour
         else
             end = start;
 
+        Controllable = null;
+        basePosition = Vector3.zero;
         transform.parent = null;
 		transform.localPosition = start;
 		
@@ -134,9 +129,12 @@ public class DamageIndicator : MonoBehaviour
 
 	void OnUpdate(float f)
 	{
+		if (Controllable)
+			basePosition = Controllable.transform.localPosition;
+		
 		var height = PathData.Trajectory.Evaluate(f);
 		var size = PathData.Size.Evaluate(f);
-		var pos = Vector3.Lerp(start, end, f);
+		var pos = Vector3.Lerp(start, end, f) + basePosition;
 		var alpha = PathData.Alpha.Evaluate(f);
 
 		transform.localPosition = new Vector3(pos.x, pos.y + height * PathData.HeightMultiplier, pos.z);

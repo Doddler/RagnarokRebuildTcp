@@ -26,5 +26,7 @@ namespace RebuildSharedData.Enum
         DoubleStrafe,
         ArrowShower,
         ImproveConcentration,
+        //acolyte
+        Heal
     }
 }

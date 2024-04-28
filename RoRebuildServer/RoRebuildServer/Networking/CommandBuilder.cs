@@ -38,6 +38,19 @@ public static class CommandBuilder
         }
     }
 
+    public static void EnsureRecipient(Entity entity)
+    {
+        if (!entity.TryGet<Player>(out var player))
+            return;
+
+        if(recipients != null)
+            for(var i = 0; i < recipients.Count; i++)
+                if (recipients[i] == player.Connection)
+                    return;
+
+        AddRecipient(entity);
+    }
+
     public static void AddAllPlayersAsRecipients()
     {
         NetworkManager.AddAllPlayersAsRecipient();
@@ -166,7 +179,7 @@ public static class CommandBuilder
 
         var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
 
-        packet.Write((byte)SkillType.SingleTarget);
+        packet.Write((byte)SkillTarget.SingleTarget);
         packet.Write(caster.Id);
         packet.Write(target.Id);
         packet.Write((byte)skill);
@@ -177,6 +190,7 @@ public static class CommandBuilder
         packet.Write((byte)di.Result);
         packet.Write((byte)di.HitCount);
         packet.Write(di.AttackMotionTime);
+        //packet.Write(caster.IsMoving);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -195,6 +209,7 @@ public static class CommandBuilder
         packet.Write(di.Damage);
         packet.Write((byte)di.HitCount);
         packet.Write(di.AttackMotionTime);
+        //packet.Write(attacker.IsMoving);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

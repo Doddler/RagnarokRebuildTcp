@@ -17,11 +17,11 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             if (!connection.IsPlayerAlive)
                 return;
 
-            var type = (SkillType)msg.ReadByte();
+            var type = (SkillTarget)msg.ReadByte();
 
             switch (type)
             {
-                case SkillType.SingleTarget: 
+                case SkillTarget.SingleTarget: 
                     ProcessSingleTargetSkill(connection, msg);
                     return;
             }

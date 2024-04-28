@@ -4,9 +4,11 @@ using System.Text;
 
 namespace RebuildSharedData.Enum
 {
-    public enum SkillType : byte
+    public enum SkillTarget : byte
     {
         SingleTarget,
+        SingleAlly,
+        SingleAny,
         AreaTargeted,
         SelfCast
     }

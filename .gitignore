@@ -71,3 +71,4 @@ RebuildClient/Logs/AssetImportWorker0.log
 RebuildClient/Logs/
 *.user
 RoRebuildServer/RoRebuildServer/.config/
+RebuildClient/Assets/Textures/Guilds/

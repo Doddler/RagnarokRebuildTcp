@@ -6,6 +6,7 @@
 public class MonsterClassData
 {
     public int Id;
+    public string Code;
     public string Name;
     public string SpriteName;
     public float Offset;

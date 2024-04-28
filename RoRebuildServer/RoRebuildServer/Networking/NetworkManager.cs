@@ -660,7 +660,7 @@ public class NetworkManager
 
         var txt = Encoding.UTF8.GetString(new ReadOnlySpan<byte>(buffer, 0, result.Count));
 
-        ServerLogger.Log(txt);
+        //ServerLogger.Log(txt);
 
         if (!txt.StartsWith("Connect"))
         {

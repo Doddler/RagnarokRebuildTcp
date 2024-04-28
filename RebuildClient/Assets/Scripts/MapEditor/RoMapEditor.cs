@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Assets.Scripts.Network;
 using RebuildSharedData.Enum;
 using UnityEditor;
 using UnityEngine;
@@ -704,7 +703,7 @@ namespace Assets.Scripts.MapEditor
         {
             SceneView.duringSceneGui -= OnSceneGUI;
 
-            if (!mapData.IsWalkTable)
+            if (mapData == null || !mapData.IsWalkTable)
                 Lightmapping.ResetDelegate();
 
             updatedLightmapper = false;

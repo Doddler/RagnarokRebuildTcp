@@ -63,11 +63,9 @@ public class Pathfinder
     //private static List<PathNode> openList = new List<PathNode>(MaxCacheSize);
 
     private OrderedBag<PathNode> openBag = new OrderedBag<PathNode>();
-
-    private HashSet<Position> openListPos = new HashSet<Position>();
     private HashSet<Position> closedListPos = new HashSet<Position>();
 
-    private Dictionary<int, PathNode> nodeLookup = new Dictionary<int, PathNode>(MaxCacheSize);
+    //private Dictionary<int, PathNode> nodeLookup = new Dictionary<int, PathNode>(MaxCacheSize);
 
     private Position[] tempPath = new Position[MaxDistance + 1];
 
@@ -114,30 +112,16 @@ public class Pathfinder
         return false;
     }
 
-    private void AddLookup(Position pos, PathNode node)
-    {
-        nodeLookup.Add((pos.X << 12) + pos.Y, node);
-    }
-
-    private PathNode GetNode(Position pos)
-    {
-        return nodeLookup[(pos.X << 12) + pos.Y];
-    }
-
-    //private static void InsertOpenNode(PathNode node)
+    //private void AddLookup(Position pos, PathNode node)
     //{
-    //	for (var i = 0; i < openList.Count; i++)
-    //	{
-    //		if (node.F < openList[i].F)
-    //		{
-    //			openList.Insert(i, node);
-    //			return;
-    //		}
-    //	}
-
-    //	openList.Add(node);
+    //    nodeLookup.Add((pos.X << 12) + pos.Y, node);
     //}
 
+    //private PathNode GetNode(Position pos)
+    //{
+    //    return nodeLookup[(pos.X << 12) + pos.Y];
+    //}
+    
     private PathNode? BuildPath(MapWalkData walkData, Position start, Position target, int maxLength, int range)
     {
         if (nodeCache == null)
@@ -146,25 +130,17 @@ public class Pathfinder
         cachePos = MaxCacheSize;
         pathRange = range;
 
-        //openList.Clear();
         openBag.Clear();
-        openListPos.Clear();
         closedListPos.Clear();
-        nodeLookup.Clear();
-
+        
         var current = NextPathNode(null, start, CalcDistance(start, target));
 
         openBag.Add(current);
-        //openList.Add(current);
-        AddLookup(start, current);
-
+        
         while (openBag.Count > 0 && !closedListPos.Contains(target))
         {
-            //current = openList[0];
             current = openBag[0];
             openBag.RemoveFirst();
-            //openList.RemoveAt(0);
-            openListPos.Remove(current.Position);
             closedListPos.Add(current.Position);
 
             if (current.Steps > maxLength || current.Steps + current.Distance / 2 > maxLength)
@@ -184,21 +160,6 @@ public class Pathfinder
                     if (np.X < 0 || np.Y < 0 || np.X >= walkData.Width || np.Y >= walkData.Height)
                         continue;
 
-                    //if (openListPos.Contains(np))
-                    //{
-                    //	//the open list contains the neighboring cell. Check if the path from this node is better or not
-                    //	var oldNode = GetNode(np);
-                    //	var dir = (np - current.Position).GetDirectionForOffset();
-                    //	var distance = CalcDistance(np, target);
-                    //	var newF = current.Score + 1 + distance + (dir.IsDiagonal() ? 0.4f : 0f);
-                    //	if (newF < oldNode.F)
-                    //	{
-                    //		oldNode.Set(current, np, CalcDistance(np, target)); //swap the old parent to us if we're better
-                    //	}
-
-                    //	continue;
-                    //}
-
                     if (closedListPos.Contains(np))
                         continue;
 
@@ -206,6 +167,7 @@ public class Pathfinder
                     if (!walkData.IsCellWalkable(np))
                         continue;
 
+                    //you can only move diagonally if it doesn't cut across an un-walkable tile.
                     if (x == -1 && y == -1)
                         if (!walkData.IsCellWalkable(current.Position.X - 1, current.Position.Y) ||
                             !walkData.IsCellWalkable(current.Position.X, current.Position.Y - 1))
@@ -227,28 +189,15 @@ public class Pathfinder
                             continue;
 
                     if (np.SquareDistance(target) <= range)
-                    {
-                        //Profiler.Event(ProfilerEvent.PathFoundIndirect);
                         return NextPathNode(current, np, 0);
-                    }
 
                     var newNode = NextPathNode(current, np, CalcDistance(np, target));
-                    //openList.Add(newNode);
-
-                    //InsertOpenNode(newNode);
 
                     openBag.Add(newNode);
-                    //openListPos.Add(np);
-                    AddLookup(np, newNode);
                     closedListPos.Add(np);
-
-                    //openList.Sort((a, b) => a.F.CompareTo(b.F));
                 }
             }
-
         }
-
-        //Profiler.Event(ProfilerEvent.PathNotFound);
 
         return null;
     }
@@ -298,8 +247,7 @@ public class Pathfinder
 
         var path = BuildPath(walkData, start, target, maxDistance, range);
 
-        //openList.Clear();
-        openListPos.Clear();
+        openBag.Clear();
         closedListPos.Clear();
 
         return path;

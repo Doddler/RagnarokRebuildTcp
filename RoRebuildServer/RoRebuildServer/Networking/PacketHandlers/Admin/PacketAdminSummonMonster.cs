@@ -32,7 +32,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
             {
                 if (!DataManager.MonsterNameLookup.TryGetValue(mobName, out monster))
                 {
-                    CommandBuilder.SendRequestFailed(connection.Player, ClientErrorType.TooManyRequests);
+                    CommandBuilder.SendRequestFailed(connection.Player, ClientErrorType.InvalidInput);
                     return;
                 }
             }

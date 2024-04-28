@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 5f474784577dcf644a3c480fd3b9e282
   m_currentHash:
     serializedVersion: 2
-    Hash: f9607121c5e7f60c8c89fe804914ea37
+    Hash: a81dd11cd470c35faa267c0b26e6d009
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
@@ -72,11 +72,11 @@ MonoBehaviour:
       - m_Id: aaf2736326f913f48b47e5fc5b718e16
         m_Value: ServerData/[BuildTarget]
       - m_Id: 71578df276051d343969c8a673238ede
-        m_Value: http://www.dodsrv.com/[BuildTarget]
+        m_Value: https://www.dodsrv.com/[BuildTarget]
       - m_Id: 6ccfce0d2f99b9840863001912eda880
         m_Value: ServerData/[BuildTarget]
       - m_Id: 2167257a6f79afc4c9dfc48e9bc9c6cd
-        m_Value: http://www.dodsrv.com/[BuildTarget]
+        m_Value: https://www.dodsrv.com/[BuildTarget]
     - m_InheritedParent: 
       m_Id: 9486c70cbe8b29b4b911e2e0f648c716
       m_ProfileName: Local
@@ -124,6 +124,7 @@ MonoBehaviour:
     - Sprite
     - Maps
     - Music
+    - Cutins
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 17faa74332f153d469a86381dc48b448, type: 2}
@@ -137,7 +138,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e455818fb9476543b6ae1bfee2841a4, type: 2}
   - {fileID: 11400000, guid: c13c6c4cb7c642f4a9601d50f150a6e2, type: 2}
   - {fileID: 11400000, guid: dd5759afe41748249b7cd4065143262a, type: 2}
-  m_ActiveProfileId: 9486c70cbe8b29b4b911e2e0f648c716
+  m_ActiveProfileId: 74eeaed3b15ea2e48ba2cdf48da13ea4
   m_HostingServicesManager:
     m_HostingServiceInfos:
     - classRef: UnityEditor.AddressableAssets.HostingServices.HttpHostingService,
@@ -154,7 +155,7 @@ MonoBehaviour:
           m_Key: HostingServiceUploadSpeed
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.String
-          m_Data: Library/com.unity.addressables/aa/Windows/StandaloneWindows64
+          m_Data: ServerData/StandaloneWindows64
           m_Key: ContentRoot
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Boolean

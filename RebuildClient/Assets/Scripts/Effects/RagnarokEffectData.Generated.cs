@@ -10,6 +10,7 @@ namespace Assets.Scripts.Effects
 		DefaultSkillCastEffect,
 		FireArrow,
 		ForestLightEffect,
+		IceArrow,
 		MapWarpEffect,
 	}
 
@@ -33,6 +34,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.DefaultSkillCastEffect, new Assets.Scripts.Effects.EffectHandlers.DefaultSkillCastEffect());
 			effectHandlers.Add(EffectType.FireArrow, new Assets.Scripts.Effects.EffectHandlers.FireArrow());
 			effectHandlers.Add(EffectType.ForestLightEffect, new Assets.Scripts.Effects.EffectHandlers.ForestLightEffect());
+			effectHandlers.Add(EffectType.IceArrow, new Assets.Scripts.Effects.EffectHandlers.IceArrow());
 			effectHandlers.Add(EffectType.MapWarpEffect, new Assets.Scripts.Effects.EffectHandlers.MapWarpEffect());
 			primitiveHandlers.Add(PrimitiveType.Cylender, new Assets.Scripts.Effects.PrimitiveHandlers.CastingCylinderPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Circle2D, new Assets.Scripts.Effects.PrimitiveHandlers.Circle2DPrimitive());

@@ -2,14 +2,7 @@
   "MonsterClassData": [
     {
       "Id": 4000,
-      "Name": "Poring",
-      "SpriteName": "poring.spr",
-      "Offset": 0,
-      "ShadowSize": 0.5,
-      "Size": 1
-    },
-    {
-      "Id": 5000,
+      "Code": "PORING",
       "Name": "Poring",
       "SpriteName": "poring.spr",
       "Offset": 0,
@@ -18,6 +11,7 @@
     },
     {
       "Id": 4001,
+      "Code": "FABRE",
       "Name": "Fabre",
       "SpriteName": "fabre.spr",
       "Offset": 0,
@@ -26,6 +20,7 @@
     },
     {
       "Id": 4002,
+      "Code": "LUNATIC",
       "Name": "Lunatic",
       "SpriteName": "lunatic.spr",
       "Offset": 0,
@@ -34,6 +29,7 @@
     },
     {
       "Id": 4003,
+      "Code": "PUPA",
       "Name": "Pupa",
       "SpriteName": "pupa.spr",
       "Offset": 0,
@@ -42,6 +38,7 @@
     },
     {
       "Id": 4004,
+      "Code": "CREAMY",
       "Name": "Creamy",
       "SpriteName": "creamy.spr",
       "Offset": 0,
@@ -50,6 +47,7 @@
     },
     {
       "Id": 4005,
+      "Code": "ROCKER",
       "Name": "Rocker",
       "SpriteName": "rocker.spr",
       "Offset": 0,
@@ -58,6 +56,7 @@
     },
     {
       "Id": 4006,
+      "Code": "POPORING",
       "Name": "Poporing",
       "SpriteName": "poporing.spr",
       "Offset": 0,
@@ -66,6 +65,7 @@
     },
     {
       "Id": 4007,
+      "Code": "THIEF_BUG",
       "Name": "Thief Bug",
       "SpriteName": "thief_bug.spr",
       "Offset": 0,
@@ -74,6 +74,7 @@
     },
     {
       "Id": 4008,
+      "Code": "THIEF_BUG_EGG",
       "Name": "Thief Bug Egg",
       "SpriteName": "thief_bug_egg.spr",
       "Offset": 0,
@@ -82,6 +83,7 @@
     },
     {
       "Id": 4009,
+      "Code": "HORNET",
       "Name": "Hornet",
       "SpriteName": "hornet.spr",
       "Offset": 0,
@@ -90,6 +92,7 @@
     },
     {
       "Id": 4010,
+      "Code": "GREEN_PLANT",
       "Name": "Green Plant",
       "SpriteName": "green_plant.spr",
       "Offset": 0,
@@ -98,6 +101,7 @@
     },
     {
       "Id": 4011,
+      "Code": "BLACK_MUSHROOM",
       "Name": "Black Mushroom",
       "SpriteName": "black_mushroom.spr",
       "Offset": 0,
@@ -106,6 +110,7 @@
     },
     {
       "Id": 4012,
+      "Code": "DROPS",
       "Name": "Drops",
       "SpriteName": "drops.spr",
       "Offset": 0,
@@ -114,6 +119,7 @@
     },
     {
       "Id": 4013,
+      "Code": "BLUE_PLANT",
       "Name": "Blue Plant",
       "SpriteName": "blue_plant.spr",
       "Offset": 0,
@@ -122,6 +128,7 @@
     },
     {
       "Id": 4014,
+      "Code": "FARMILIAR",
       "Name": "Familiar",
       "SpriteName": "farmiliar.spr",
       "Offset": 0,
@@ -130,6 +137,7 @@
     },
     {
       "Id": 4015,
+      "Code": "TAROU",
       "Name": "Tarou",
       "SpriteName": "tarou.spr",
       "Offset": 0,
@@ -138,6 +146,7 @@
     },
     {
       "Id": 4016,
+      "Code": "VOCAL",
       "Name": "Vocal",
       "SpriteName": "rocker.spr",
       "Offset": 0,
@@ -146,6 +155,7 @@
     },
     {
       "Id": 4017,
+      "Code": "SHINING_PLANT",
       "Name": "Shining Plant",
       "SpriteName": "shining_plant.spr",
       "Offset": 0,
@@ -154,6 +164,7 @@
     },
     {
       "Id": 4018,
+      "Code": "MANDRAGORA",
       "Name": "Mandragora",
       "SpriteName": "mandragora.spr",
       "Offset": 0,
@@ -162,6 +173,7 @@
     },
     {
       "Id": 4019,
+      "Code": "ECLIPSE",
       "Name": "Eclipse",
       "SpriteName": "eclipse.spr",
       "Offset": 0,
@@ -170,6 +182,7 @@
     },
     {
       "Id": 4020,
+      "Code": "YOYO",
       "Name": "Yoyo",
       "SpriteName": "yoyo.spr",
       "Offset": 0,
@@ -178,6 +191,7 @@
     },
     {
       "Id": 4021,
+      "Code": "SMOKIE",
       "Name": "Smokie",
       "SpriteName": "smokie.spr",
       "Offset": 0,
@@ -186,6 +200,7 @@
     },
     {
       "Id": 4022,
+      "Code": "CHOCO",
       "Name": "Choco",
       "SpriteName": "choco.spr",
       "Offset": 0,
@@ -194,6 +209,7 @@
     },
     {
       "Id": 4023,
+      "Code": "SAVAGE_BABE",
       "Name": "Savage Babe",
       "SpriteName": "savage_babe.spr",
       "Offset": 0,
@@ -202,6 +218,7 @@
     },
     {
       "Id": 4024,
+      "Code": "DESERT_WOLF_B",
       "Name": "Baby Desert Wolf",
       "SpriteName": "desert_wolf_b.spr",
       "Offset": 0,
@@ -210,6 +227,7 @@
     },
     {
       "Id": 4025,
+      "Code": "PECOPECO_EGG",
       "Name": "Peco Peco Egg",
       "SpriteName": "peco_egg.spr",
       "Offset": 0,
@@ -218,6 +236,7 @@
     },
     {
       "Id": 4026,
+      "Code": "PECOPECO",
       "Name": "Peco Peco",
       "SpriteName": "pecopeco.spr",
       "Offset": 0,
@@ -226,6 +245,7 @@
     },
     {
       "Id": 4027,
+      "Code": "CONDOR",
       "Name": "Condor",
       "SpriteName": "condor.spr",
       "Offset": 0,
@@ -234,6 +254,7 @@
     },
     {
       "Id": 4028,
+      "Code": "PICKY",
       "Name": "Picky",
       "SpriteName": "picky.spr",
       "Offset": 0,
@@ -242,6 +263,7 @@
     },
     {
       "Id": 4029,
+      "Code": "PICKY_",
       "Name": "Eggshell Picky",
       "SpriteName": "picky_.spr",
       "Offset": 0,
@@ -250,6 +272,7 @@
     },
     {
       "Id": 4030,
+      "Code": "RED_MUSHROOM",
       "Name": "Red Mushroom",
       "SpriteName": "red_mushroom.spr",
       "Offset": 0,
@@ -258,6 +281,7 @@
     },
     {
       "Id": 4031,
+      "Code": "GOBLIN_1",
       "Name": "Dagger Goblin",
       "SpriteName": "goblin_1.spr",
       "Offset": 0,
@@ -266,6 +290,7 @@
     },
     {
       "Id": 4032,
+      "Code": "GOBLIN_2",
       "Name": "Flail Goblin",
       "SpriteName": "goblin_2.spr",
       "Offset": 0,
@@ -274,6 +299,7 @@
     },
     {
       "Id": 4033,
+      "Code": "GOBLIN_3",
       "Name": "Axe Goblin",
       "SpriteName": "goblin_3.spr",
       "Offset": 0,
@@ -282,6 +308,7 @@
     },
     {
       "Id": 4034,
+      "Code": "GOBLIN_4",
       "Name": "Hammer Goblin",
       "SpriteName": "goblin_4.spr",
       "Offset": 0,
@@ -290,6 +317,7 @@
     },
     {
       "Id": 4035,
+      "Code": "GOBLIN_5",
       "Name": "Mace Goblin",
       "SpriteName": "goblin_5.spr",
       "Offset": 0,
@@ -298,6 +326,7 @@
     },
     {
       "Id": 4036,
+      "Code": "GOBLIN_ARCHER",
       "Name": "Goblin Archer",
       "SpriteName": "goblin_archer.spr",
       "Offset": 0,
@@ -306,6 +335,7 @@
     },
     {
       "Id": 4037,
+      "Code": "PANZER_GOBLIN",
       "Name": "Panzer Goblin",
       "SpriteName": "panzer_goblin.spr",
       "Offset": 0,
@@ -314,6 +344,7 @@
     },
     {
       "Id": 4038,
+      "Code": "STEAM_GOBLIN",
       "Name": "Steamrider Goblin",
       "SpriteName": "steam_goblin.spr",
       "Offset": 0,
@@ -322,6 +353,7 @@
     },
     {
       "Id": 4039,
+      "Code": "ROTAR_ZAIRO",
       "Name": "Rotor Gyro",
       "SpriteName": "rotar_zairo.spr",
       "Offset": 0,
@@ -330,6 +362,7 @@
     },
     {
       "Id": 4040,
+      "Code": "GOBLIN_LEADER",
       "Name": "Goblin Leader",
       "SpriteName": "goblin_leader.spr",
       "Offset": 0,
@@ -338,6 +371,7 @@
     },
     {
       "Id": 4041,
+      "Code": "YELLOW_PLANT",
       "Name": "Yellow Plant",
       "SpriteName": "yellow_plant.spr",
       "Offset": 0,
@@ -346,6 +380,7 @@
     },
     {
       "Id": 4042,
+      "Code": "SAVAGE",
       "Name": "Savage",
       "SpriteName": "savage.spr",
       "Offset": 0,
@@ -354,6 +389,7 @@
     },
     {
       "Id": 4043,
+      "Code": "WILOW",
       "Name": "Willow",
       "SpriteName": "wilow.spr",
       "Offset": 0,
@@ -362,6 +398,7 @@
     },
     {
       "Id": 4044,
+      "Code": "SPORE",
       "Name": "Spore",
       "SpriteName": "spore.spr",
       "Offset": 0,
@@ -370,6 +407,7 @@
     },
     {
       "Id": 4045,
+      "Code": "SNAKE",
       "Name": "Snake",
       "SpriteName": "snake.spr",
       "Offset": 0,
@@ -378,6 +416,7 @@
     },
     {
       "Id": 4046,
+      "Code": "WOLF",
       "Name": "Wolf",
       "SpriteName": "wolf.spr",
       "Offset": 0,
@@ -386,6 +425,7 @@
     },
     {
       "Id": 4047,
+      "Code": "MARIN",
       "Name": "Marin",
       "SpriteName": "marin.spr",
       "Offset": 0,
@@ -394,6 +434,7 @@
     },
     {
       "Id": 4048,
+      "Code": "GHOSTRING",
       "Name": "Ghostring",
       "SpriteName": "ghostring.spr",
       "Offset": 0,
@@ -402,6 +443,7 @@
     },
     {
       "Id": 4049,
+      "Code": "MASTERING",
       "Name": "Mastering",
       "SpriteName": "mastering.spr",
       "Offset": 0,
@@ -410,6 +452,7 @@
     },
     {
       "Id": 4050,
+      "Code": "ANGELING",
       "Name": "Angeling",
       "SpriteName": "angeling.spr",
       "Offset": 0,
@@ -418,6 +461,7 @@
     },
     {
       "Id": 4051,
+      "Code": "DEVILING",
       "Name": "Deviling",
       "SpriteName": "deviling.spr",
       "Offset": 0,
@@ -426,6 +470,7 @@
     },
     {
       "Id": 4052,
+      "Code": "DRAGON_TAIL",
       "Name": "Dragon Tail",
       "SpriteName": "dragon_tail.spr",
       "Offset": 0,
@@ -434,6 +479,7 @@
     },
     {
       "Id": 4053,
+      "Code": "POISON_SPORE",
       "Name": "Poison Spore",
       "SpriteName": "poison_spore.spr",
       "Offset": 0,
@@ -442,6 +488,7 @@
     },
     {
       "Id": 4054,
+      "Code": "WORM_TAIL",
       "Name": "Worm Tail",
       "SpriteName": "worm_tail.spr",
       "Offset": 0,
@@ -450,6 +497,7 @@
     },
     {
       "Id": 4055,
+      "Code": "ELDER_WILOW",
       "Name": "Elder Willow",
       "SpriteName": "elder_wilow.spr",
       "Offset": 0,
@@ -458,6 +506,7 @@
     },
     {
       "Id": 4056,
+      "Code": "EGGYRA",
       "Name": "Eggyra",
       "SpriteName": "eggyra.spr",
       "Offset": 0,
@@ -466,6 +515,7 @@
     },
     {
       "Id": 4057,
+      "Code": "BIGFOOT",
       "Name": "Bigfoot",
       "SpriteName": "bigfoot.spr",
       "Offset": 0,
@@ -474,6 +524,7 @@
     },
     {
       "Id": 4058,
+      "Code": "SOHEE",
       "Name": "Sohee",
       "SpriteName": "sohee.spr",
       "Offset": 0,
@@ -482,6 +533,7 @@
     },
     {
       "Id": 4059,
+      "Code": "WANDER_MAN",
       "Name": "Wanderer",
       "SpriteName": "wander_man.spr",
       "Offset": 0,
@@ -490,6 +542,7 @@
     },
     {
       "Id": 4060,
+      "Code": "GREATEST_GENERAL",
       "Name": "Greatest General",
       "SpriteName": "greatest_general.spr",
       "Offset": 0,
@@ -498,6 +551,7 @@
     },
     {
       "Id": 4061,
+      "Code": "HORONG",
       "Name": "Horong",
       "SpriteName": "horong.spr",
       "Offset": 0,
@@ -506,6 +560,7 @@
     },
     {
       "Id": 4062,
+      "Code": "NINE_TAIL",
       "Name": "Nine Tail",
       "SpriteName": "nine_tail.spr",
       "Offset": 0,
@@ -514,6 +569,7 @@
     },
     {
       "Id": 4063,
+      "Code": "EDDGA",
       "Name": "Eddga",
       "SpriteName": "eddga.spr",
       "Offset": 0,
@@ -522,6 +578,7 @@
     },
     {
       "Id": 4064,
+      "Code": "THIEF_BUG_",
       "Name": "Female Thief Bug",
       "SpriteName": "thief_bug_female.spr",
       "Offset": 0,
@@ -530,6 +587,7 @@
     },
     {
       "Id": 4065,
+      "Code": "THIEF_BUG__",
       "Name": "Male Thief Bug",
       "SpriteName": "thief_bug_male.spr",
       "Offset": 0,
@@ -538,6 +596,7 @@
     },
     {
       "Id": 4066,
+      "Code": "GOLDEN_BUG",
       "Name": "Golden Thief Bug",
       "SpriteName": "golden_bug.spr",
       "Offset": 0,
@@ -546,6 +605,7 @@
     },
     {
       "Id": 4067,
+      "Code": "VAGABOND_WOLF",
       "Name": "Vagabond Wolf",
       "SpriteName": "vagabond_wolf.spr",
       "Offset": 0,
@@ -554,6 +614,7 @@
     },
     {
       "Id": 4068,
+      "Code": "SCORPION",
       "Name": "Scorpion",
       "SpriteName": "scorpion.spr",
       "Offset": 0,
@@ -562,6 +623,7 @@
     },
     {
       "Id": 4069,
+      "Code": "METALLER",
       "Name": "Metaller",
       "SpriteName": "metaller.spr",
       "Offset": 0,
@@ -570,6 +632,7 @@
     },
     {
       "Id": 4070,
+      "Code": "MAGNOLIA",
       "Name": "Magnolia",
       "SpriteName": "magnolia.spr",
       "Offset": 0,
@@ -578,6 +641,7 @@
     },
     {
       "Id": 4071,
+      "Code": "ANDRE",
       "Name": "Andre",
       "SpriteName": "andre.spr",
       "Offset": 0,
@@ -586,6 +650,7 @@
     },
     {
       "Id": 4072,
+      "Code": "DENIRO",
       "Name": "Deniro",
       "SpriteName": "deniro.spr",
       "Offset": 0,
@@ -594,6 +659,7 @@
     },
     {
       "Id": 4073,
+      "Code": "PIERE",
       "Name": "Piere",
       "SpriteName": "piere.spr",
       "Offset": 0,
@@ -602,6 +668,7 @@
     },
     {
       "Id": 4074,
+      "Code": "VITATA",
       "Name": "Vitata",
       "SpriteName": "vitata.spr",
       "Offset": 0,
@@ -610,6 +677,7 @@
     },
     {
       "Id": 4075,
+      "Code": "GIEARTH",
       "Name": "Giearth",
       "SpriteName": "giearth.spr",
       "Offset": 0,
@@ -618,6 +686,7 @@
     },
     {
       "Id": 4076,
+      "Code": "MAYA",
       "Name": "Maya",
       "SpriteName": "maya.spr",
       "Offset": 0,
@@ -626,6 +695,7 @@
     },
     {
       "Id": 4077,
+      "Code": "MAYA_PUPLE",
       "Name": "Maya Puple",
       "SpriteName": "maya_puple.spr",
       "Offset": 0,
@@ -634,6 +704,7 @@
     },
     {
       "Id": 4078,
+      "Code": "GOLEM",
       "Name": "Golem",
       "SpriteName": "golem.spr",
       "Offset": 0,
@@ -642,6 +713,7 @@
     },
     {
       "Id": 4079,
+      "Code": "MUKA",
       "Name": "Muka",
       "SpriteName": "muka.spr",
       "Offset": 0,
@@ -650,6 +722,7 @@
     },
     {
       "Id": 4080,
+      "Code": "ANT_EGG",
       "Name": "Ant Egg",
       "SpriteName": "ant_egg.spr",
       "Offset": 0,
@@ -658,6 +731,7 @@
     },
     {
       "Id": 4081,
+      "Code": "ANACONDAQ",
       "Name": "Anacondaq",
       "SpriteName": "anacondaq.spr",
       "Offset": 0,
@@ -666,6 +740,7 @@
     },
     {
       "Id": 4082,
+      "Code": "FRILLDORA",
       "Name": "Frilldora",
       "SpriteName": "frilldora.spr",
       "Offset": 0,
@@ -674,6 +749,7 @@
     },
     {
       "Id": 4083,
+      "Code": "DESERT_WOLF",
       "Name": "Desert Wolf",
       "SpriteName": "desert_wolf.spr",
       "Offset": 0,
@@ -682,6 +758,7 @@
     },
     {
       "Id": 4084,
+      "Code": "SIDE_WINDER",
       "Name": "Sidewinder",
       "SpriteName": "side_winder.spr",
       "Offset": 0,
@@ -690,6 +767,7 @@
     },
     {
       "Id": 4085,
+      "Code": "HODE",
       "Name": "Hode",
       "SpriteName": "hode.spr",
       "Offset": 0,
@@ -698,6 +776,7 @@
     },
     {
       "Id": 4086,
+      "Code": "PHREEONI",
       "Name": "Phreeoni",
       "SpriteName": "phreeoni.spr",
       "Offset": 0,
@@ -706,6 +785,7 @@
     },
     {
       "Id": 4087,
+      "Code": "SAND_MAN",
       "Name": "Sandman",
       "SpriteName": "sand_man.spr",
       "Offset": 0,
@@ -714,6 +794,7 @@
     },
     {
       "Id": 4088,
+      "Code": "STEEL_CHONCHON",
       "Name": "Steel Chonchon",
       "SpriteName": "steel_chocho.spr",
       "Offset": 0,
@@ -722,6 +803,7 @@
     },
     {
       "Id": 4089,
+      "Code": "DRAGON_FLY",
       "Name": "Dragon Fly",
       "SpriteName": "dragon_fly.spr",
       "Offset": 0,
@@ -730,6 +812,7 @@
     },
     {
       "Id": 4090,
+      "Code": "HUNTER_FLY",
       "Name": "Hunter Fly",
       "SpriteName": "hunter_fly.spr",
       "Offset": 0,
@@ -738,6 +821,7 @@
     },
     {
       "Id": 4091,
+      "Code": "CHONCHON",
       "Name": "Chonchon",
       "SpriteName": "chocho.spr",
       "Offset": 0,
@@ -746,6 +830,7 @@
     },
     {
       "Id": 4092,
+      "Code": "CARAMEL",
       "Name": "Caramel",
       "SpriteName": "caramel.spr",
       "Offset": 0,
@@ -754,6 +839,7 @@
     },
     {
       "Id": 4093,
+      "Code": "HORN",
       "Name": "Horn",
       "SpriteName": "horn.spr",
       "Offset": 0,
@@ -762,6 +848,7 @@
     },
     {
       "Id": 4094,
+      "Code": "STAINER",
       "Name": "Stainer",
       "SpriteName": "stainer.spr",
       "Offset": 0,
@@ -770,6 +857,7 @@
     },
     {
       "Id": 4095,
+      "Code": "PETIT",
       "Name": "Earth Petit",
       "SpriteName": "petit.spr",
       "Offset": 0,
@@ -778,6 +866,7 @@
     },
     {
       "Id": 4096,
+      "Code": "PETIT_",
       "Name": "Sky Petit",
       "SpriteName": "petit_.spr",
       "Offset": 0,
@@ -786,6 +875,7 @@
     },
     {
       "Id": 4097,
+      "Code": "FLORA",
       "Name": "Flora",
       "SpriteName": "flora.spr",
       "Offset": 0,
@@ -794,6 +884,7 @@
     },
     {
       "Id": 4098,
+      "Code": "MANTIS",
       "Name": "Mantis",
       "SpriteName": "mantis.spr",
       "Offset": 0,
@@ -802,6 +893,7 @@
     },
     {
       "Id": 4099,
+      "Code": "ARGOS",
       "Name": "Argos",
       "SpriteName": "argos.spr",
       "Offset": 0,
@@ -810,6 +902,7 @@
     },
     {
       "Id": 4100,
+      "Code": "ARGIOPE",
       "Name": "Argiope",
       "SpriteName": "argiope.spr",
       "Offset": 0,
@@ -818,6 +911,7 @@
     },
     {
       "Id": 4101,
+      "Code": "MISTRESS",
       "Name": "Mistress",
       "SpriteName": "mistress.spr",
       "Offset": 0,
@@ -826,6 +920,7 @@
     },
     {
       "Id": 4102,
+      "Code": "AMBERNITE",
       "Name": "Ambernite",
       "SpriteName": "ambernite.spr",
       "Offset": 0,
@@ -834,6 +929,7 @@
     },
     {
       "Id": 4103,
+      "Code": "STEM_WORM",
       "Name": "Stem Worm",
       "SpriteName": "stem_worm.spr",
       "Offset": 0,
@@ -842,6 +938,7 @@
     },
     {
       "Id": 4104,
+      "Code": "DUSTINESS",
       "Name": "Dustiness",
       "SpriteName": "dustiness.spr",
       "Offset": 0,
@@ -850,6 +947,7 @@
     },
     {
       "Id": 4105,
+      "Code": "COCO",
       "Name": "Coco",
       "SpriteName": "coco.spr",
       "Offset": 0,
@@ -858,6 +956,7 @@
     },
     {
       "Id": 4106,
+      "Code": "RED_PLANT",
       "Name": "Red Plant",
       "SpriteName": "red_plant.spr",
       "Offset": 0,
@@ -866,6 +965,7 @@
     },
     {
       "Id": 4107,
+      "Code": "RODA_FROG",
       "Name": "Roda Frog",
       "SpriteName": "roda_frog.spr",
       "Offset": 0,
@@ -874,6 +974,7 @@
     },
     {
       "Id": 4108,
+      "Code": "THARA_FROG",
       "Name": "Thara Frog",
       "SpriteName": "thara_frog.spr",
       "Offset": 0,
@@ -882,6 +983,7 @@
     },
     {
       "Id": 4109,
+      "Code": "TOAD",
       "Name": "Toad",
       "SpriteName": "toad.spr",
       "Offset": 0,
@@ -890,6 +992,7 @@
     },
     {
       "Id": 4110,
+      "Code": "WILD_ROSE",
       "Name": "Wild Rose",
       "SpriteName": "wild_rose.spr",
       "Offset": 0,
@@ -898,6 +1001,7 @@
     },
     {
       "Id": 4111,
+      "Code": "KOBOLD_ARCHER",
       "Name": "Kobold Archer",
       "SpriteName": "kobold_archer.spr",
       "Offset": 0,
@@ -906,6 +1010,7 @@
     },
     {
       "Id": 4112,
+      "Code": "KOBOLD_1",
       "Name": "Axe Kobold",
       "SpriteName": "kobold_1.spr",
       "Offset": 0,
@@ -914,6 +1019,7 @@
     },
     {
       "Id": 4113,
+      "Code": "KOBOLD_2",
       "Name": "Hammer Kobold",
       "SpriteName": "kobold_2.spr",
       "Offset": 0,
@@ -922,6 +1028,7 @@
     },
     {
       "Id": 4114,
+      "Code": "KOBOLD_3",
       "Name": "Mace Kobold",
       "SpriteName": "kobold_3.spr",
       "Offset": 0,
@@ -930,6 +1037,7 @@
     },
     {
       "Id": 4115,
+      "Code": "KOBOLD_LEADER",
       "Name": "Kobold Leader",
       "SpriteName": "kobolt_leader.spr",
       "Offset": 0,
@@ -938,6 +1046,7 @@
     },
     {
       "Id": 4116,
+      "Code": "ORK_WARRIOR",
       "Name": "Orc Warrior",
       "SpriteName": "ork_warrior.spr",
       "Offset": 0,
@@ -946,6 +1055,7 @@
     },
     {
       "Id": 4117,
+      "Code": "ORC_LORD",
       "Name": "Orc Lord",
       "SpriteName": "orc_lord.spr",
       "Offset": 0,
@@ -954,6 +1064,7 @@
     },
     {
       "Id": 4118,
+      "Code": "ORC_LADY",
       "Name": "Orc Lady",
       "SpriteName": "orc_lady.spr",
       "Offset": 0,
@@ -962,6 +1073,7 @@
     },
     {
       "Id": 4119,
+      "Code": "ORC_BABY",
       "Name": "Orc Baby",
       "SpriteName": "orc_baby.spr",
       "Offset": 0,
@@ -970,6 +1082,7 @@
     },
     {
       "Id": 4120,
+      "Code": "ORK_HERO",
       "Name": "Orc Hero",
       "SpriteName": "ork_hero.spr",
       "Offset": 0,
@@ -978,6 +1091,7 @@
     },
     {
       "Id": 4121,
+      "Code": "ORC_ARCHER",
       "Name": "Orc Archer",
       "SpriteName": "orc_archer.spr",
       "Offset": 0,
@@ -986,6 +1100,7 @@
     },
     {
       "Id": 4122,
+      "Code": "HIGH_ORC",
       "Name": "High Orc",
       "SpriteName": "high_orc.spr",
       "Offset": 0,
@@ -994,6 +1109,7 @@
     },
     {
       "Id": 4123,
+      "Code": "ORC_SKELETON",
       "Name": "Orc Skeleton",
       "SpriteName": "orc_skeleton.spr",
       "Offset": 0,
@@ -1002,6 +1118,7 @@
     },
     {
       "Id": 4124,
+      "Code": "ORC_ZOMBIE",
       "Name": "Orc Zombie",
       "SpriteName": "orc_zombie.spr",
       "Offset": 0,
@@ -1010,6 +1127,7 @@
     },
     {
       "Id": 4125,
+      "Code": "ZENORC",
       "Name": "Zenorc",
       "SpriteName": "zenorc.spr",
       "Offset": 0,
@@ -1018,6 +1136,7 @@
     },
     {
       "Id": 4126,
+      "Code": "DRAINLIAR",
       "Name": "Drainliar",
       "SpriteName": "drainliar.spr",
       "Offset": 0,
@@ -1026,6 +1145,7 @@
     },
     {
       "Id": 4127,
+      "Code": "MUMMY",
       "Name": "Mummy",
       "SpriteName": "mummy.spr",
       "Offset": 0,
@@ -1034,6 +1154,7 @@
     },
     {
       "Id": 4128,
+      "Code": "ISIS",
       "Name": "Isis",
       "SpriteName": "isis.spr",
       "Offset": 0.4,
@@ -1042,6 +1163,7 @@
     },
     {
       "Id": 4129,
+      "Code": "SOLDIER_SKELETON",
       "Name": "Soldier Skeleton",
       "SpriteName": "skel_soldier.spr",
       "Offset": 0,
@@ -1050,6 +1172,7 @@
     },
     {
       "Id": 4130,
+      "Code": "ARCHER_SKELETON",
       "Name": "Archer Skeleton",
       "SpriteName": "skel_archer.spr",
       "Offset": 0,
@@ -1058,6 +1181,7 @@
     },
     {
       "Id": 4131,
+      "Code": "MIMIC",
       "Name": "Mimic",
       "SpriteName": "mimic.spr",
       "Offset": 0,
@@ -1066,6 +1190,7 @@
     },
     {
       "Id": 4132,
+      "Code": "MATYR",
       "Name": "Matyr",
       "SpriteName": "matyr.spr",
       "Offset": 0,
@@ -1074,6 +1199,7 @@
     },
     {
       "Id": 4133,
+      "Code": "VERIT",
       "Name": "Verit",
       "SpriteName": "verit.spr",
       "Offset": 0,
@@ -1082,6 +1208,7 @@
     },
     {
       "Id": 4134,
+      "Code": "ANCIENT_MUMMY",
       "Name": "Ancient Mummy",
       "SpriteName": "ancient_mummy.spr",
       "Offset": 0,
@@ -1090,6 +1217,7 @@
     },
     {
       "Id": 4135,
+      "Code": "OSIRIS",
       "Name": "Osiris",
       "SpriteName": "osiris.spr",
       "Offset": 0,
@@ -1098,6 +1226,7 @@
     },
     {
       "Id": 4136,
+      "Code": "MINOROUS",
       "Name": "Minorous",
       "SpriteName": "minorous.spr",
       "Offset": 0,
@@ -1106,6 +1235,7 @@
     },
     {
       "Id": 4137,
+      "Code": "ARCLOUSE",
       "Name": "Arclouse",
       "SpriteName": "arclouse.spr",
       "Offset": 0,
@@ -1114,6 +1244,7 @@
     },
     {
       "Id": 4138,
+      "Code": "AMON_RA",
       "Name": "Amon Ra",
       "SpriteName": "amon_ra.spr",
       "Offset": 0,
@@ -1122,6 +1253,7 @@
     },
     {
       "Id": 4139,
+      "Code": "ZOMBIE",
       "Name": "Zombie",
       "SpriteName": "zombie.spr",
       "Offset": 0,
@@ -1130,6 +1262,7 @@
     },
     {
       "Id": 4140,
+      "Code": "SKELETON",
       "Name": "Skeleton",
       "SpriteName": "skeleton.spr",
       "Offset": 0,
@@ -1138,6 +1271,7 @@
     },
     {
       "Id": 4141,
+      "Code": "ICE_TITAN",
       "Name": "Ice Titan",
       "SpriteName": "ice_titan.spr",
       "Offset": 0.5,
@@ -1146,6 +1280,7 @@
     },
     {
       "Id": 4142,
+      "Code": "BON_GUN",
       "Name": "Bongun",
       "SpriteName": "bon_gun.spr",
       "Offset": 0,
@@ -1154,6 +1289,7 @@
     },
     {
       "Id": 4143,
+      "Code": "HYDRA",
       "Name": "Hydra",
       "SpriteName": "hydra.spr",
       "Offset": 0,
@@ -1162,6 +1298,7 @@
     },
     {
       "Id": 4144,
+      "Code": "MUNAK",
       "Name": "Munak",
       "SpriteName": "munak.spr",
       "Offset": 0,
@@ -1170,6 +1307,7 @@
     },
     {
       "Id": 4145,
+      "Code": "WHISPER",
       "Name": "Whisper",
       "SpriteName": "whisper.spr",
       "Offset": 0,
@@ -1178,6 +1316,7 @@
     },
     {
       "Id": 4146,
+      "Code": "WHISPER_",
       "Name": "Whisper",
       "SpriteName": "whisper.spr",
       "Offset": 0,
@@ -1186,6 +1325,7 @@
     },
     {
       "Id": 4147,
+      "Code": "WHISPER_BOSS",
       "Name": "Whisper",
       "SpriteName": "whisper_boss.spr",
       "Offset": 0,
@@ -1194,6 +1334,7 @@
     },
     {
       "Id": 4148,
+      "Code": "DOKEBI",
       "Name": "Dokebi",
       "SpriteName": "dokebi.spr",
       "Offset": 0,
@@ -1202,6 +1343,7 @@
     },
     {
       "Id": 4149,
+      "Code": "AM_MUT",
       "Name": "Am Mut",
       "SpriteName": "am_mut.spr",
       "Offset": 0,
@@ -1210,6 +1352,7 @@
     },
     {
       "Id": 4150,
+      "Code": "CAT_O_NINE_TAIL",
       "Name": "Cat \u0027o Nine Tails",
       "SpriteName": "cat_o_nine_tail.spr",
       "Offset": 0,
@@ -1218,6 +1361,7 @@
     },
     {
       "Id": 4151,
+      "Code": "MOONLIGHT",
       "Name": "Moonlight Flower",
       "SpriteName": "moonlight.spr",
       "Offset": 0,
@@ -1226,6 +1370,7 @@
     },
     {
       "Id": 4152,
+      "Code": "SKELETON_GENERAL",
       "Name": "Skeleton General",
       "SpriteName": "skeleton_general.spr",
       "Offset": 0,
@@ -1234,6 +1379,7 @@
     },
     {
       "Id": 4153,
+      "Code": "WHITE_PLANT",
       "Name": "White Plant",
       "SpriteName": "white_plant.spr",
       "Offset": 0,
@@ -1242,6 +1388,7 @@
     },
     {
       "Id": 4154,
+      "Code": "PUNK",
       "Name": "Punk",
       "SpriteName": "punk.spr",
       "Offset": 0,
@@ -1250,6 +1397,7 @@
     },
     {
       "Id": 4155,
+      "Code": "RIDEWORD",
       "Name": "Rideword",
       "SpriteName": "rideword.spr",
       "Offset": 0,
@@ -1258,6 +1406,7 @@
     },
     {
       "Id": 4156,
+      "Code": "BATHORY",
       "Name": "Bathory",
       "SpriteName": "bathory.spr",
       "Offset": 0,
@@ -1266,6 +1415,7 @@
     },
     {
       "Id": 4157,
+      "Code": "C_TOWER_MANAGER",
       "Name": "Tower Keeper",
       "SpriteName": "c_tower_manager.spr",
       "Offset": 0,
@@ -1274,6 +1424,7 @@
     },
     {
       "Id": 4158,
+      "Code": "ELDER",
       "Name": "Elder",
       "SpriteName": "elder.spr",
       "Offset": 0,
@@ -1282,6 +1433,7 @@
     },
     {
       "Id": 4159,
+      "Code": "ALARM",
       "Name": "Alarm",
       "SpriteName": "alarm.spr",
       "Offset": 0,
@@ -1290,6 +1442,7 @@
     },
     {
       "Id": 4160,
+      "Code": "OWL_DUKE",
       "Name": "Owl Duke",
       "SpriteName": "owl_duke.spr",
       "Offset": 0,
@@ -1298,6 +1451,7 @@
     },
     {
       "Id": 4161,
+      "Code": "OWL_BARON",
       "Name": "Owl Baron",
       "SpriteName": "owl_baron.spr",
       "Offset": 0,
@@ -1306,6 +1460,7 @@
     },
     {
       "Id": 4162,
+      "Code": "EXECUTIONER",
       "Name": "Executioner",
       "SpriteName": "executioner.spr",
       "Offset": 0,
@@ -1314,6 +1469,7 @@
     },
     {
       "Id": 4163,
+      "Code": "CLOCK",
       "Name": "Clock",
       "SpriteName": "clock.spr",
       "Offset": 0,
@@ -1322,6 +1478,7 @@
     },
     {
       "Id": 4164,
+      "Code": "CRAMP",
       "Name": "Cramp",
       "SpriteName": "cramp.spr",
       "Offset": 0,
@@ -1330,6 +1487,7 @@
     },
     {
       "Id": 4165,
+      "Code": "JOKER",
       "Name": "Joker",
       "SpriteName": "joker.spr",
       "Offset": 0,
@@ -1338,6 +1496,7 @@
     },
     {
       "Id": 4166,
+      "Code": "PENOMENA",
       "Name": "Penomena",
       "SpriteName": "penomena.spr",
       "Offset": 0,
@@ -1346,6 +1505,7 @@
     },
     {
       "Id": 4167,
+      "Code": "MYSTELTAINN",
       "Name": "Mysteltain",
       "SpriteName": "mysteltainn.spr",
       "Offset": 0,
@@ -1354,6 +1514,7 @@
     },
     {
       "Id": 4168,
+      "Code": "TIRFING",
       "Name": "Tyrfing",
       "SpriteName": "tirfing.spr",
       "Offset": 0,
@@ -1362,6 +1523,7 @@
     },
     {
       "Id": 4169,
+      "Code": "BRILIGHT",
       "Name": "Brilight",
       "SpriteName": "brilight.spr",
       "Offset": 0,
@@ -1370,6 +1532,7 @@
     },
     {
       "Id": 4170,
+      "Code": "MARTIN",
       "Name": "Martin",
       "SpriteName": "martin.spr",
       "Offset": 0,
@@ -1378,6 +1541,7 @@
     },
     {
       "Id": 4171,
+      "Code": "SASQUATCH",
       "Name": "Sasquatch",
       "SpriteName": "sasquatch.spr",
       "Offset": 0,
@@ -1386,6 +1550,7 @@
     },
     {
       "Id": 4172,
+      "Code": "LEIB_OLMAI",
       "Name": "Leib Olmai",
       "SpriteName": "leib_olmai.spr",
       "Offset": 0,
@@ -1394,6 +1559,7 @@
     },
     {
       "Id": 4173,
+      "Code": "KILLER_MANTIS",
       "Name": "Killer Mantis",
       "SpriteName": "killer_mantis.spr",
       "Offset": 0,
@@ -1402,6 +1568,7 @@
     },
     {
       "Id": 4174,
+      "Code": "BAPHOMET",
       "Name": "Baphomet",
       "SpriteName": "baphomet.spr",
       "Offset": 0,
@@ -1410,6 +1577,7 @@
     },
     {
       "Id": 4175,
+      "Code": "BAPHOMET_",
       "Name": "Baphomet Jr.",
       "SpriteName": "baphomet_.spr",
       "Offset": 0,
@@ -1418,6 +1586,7 @@
     },
     {
       "Id": 4176,
+      "Code": "NIGHTMARE",
       "Name": "Nightmare",
       "SpriteName": "nightmare.spr",
       "Offset": 0,
@@ -1426,6 +1595,7 @@
     },
     {
       "Id": 4177,
+      "Code": "GHOUL",
       "Name": "Ghoul",
       "SpriteName": "ghoul.spr",
       "Offset": 0,
@@ -1434,6 +1604,7 @@
     },
     {
       "Id": 4178,
+      "Code": "JAKK",
       "Name": "Jakk",
       "SpriteName": "jakk.spr",
       "Offset": 0,
@@ -1442,6 +1613,7 @@
     },
     {
       "Id": 4179,
+      "Code": "DRACULA",
       "Name": "Dracula",
       "SpriteName": "dracula.spr",
       "Offset": 0,
@@ -1450,6 +1622,7 @@
     },
     {
       "Id": 4180,
+      "Code": "MARIONETTE",
       "Name": "Marionette",
       "SpriteName": "marionette.spr",
       "Offset": 0,
@@ -1458,6 +1631,7 @@
     },
     {
       "Id": 4181,
+      "Code": "DEVIRUCHI",
       "Name": "Deviruchi",
       "SpriteName": "deviruchi.spr",
       "Offset": 0,
@@ -1466,6 +1640,7 @@
     },
     {
       "Id": 4182,
+      "Code": "DOPPELGANGER",
       "Name": "Doppelganger",
       "SpriteName": "doppelganger.spr",
       "Offset": 0,
@@ -1474,6 +1649,7 @@
     },
     {
       "Id": 4183,
+      "Code": "ANUBIS",
       "Name": "Anubis",
       "SpriteName": "anubis.spr",
       "Offset": 0,
@@ -1482,6 +1658,7 @@
     },
     {
       "Id": 4184,
+      "Code": "REQUIEM",
       "Name": "Requiem",
       "SpriteName": "requiem.spr",
       "Offset": 0,
@@ -1490,6 +1667,7 @@
     },
     {
       "Id": 4185,
+      "Code": "ZEROM",
       "Name": "Zerom",
       "SpriteName": "zerom.spr",
       "Offset": 0,
@@ -1498,6 +1676,7 @@
     },
     {
       "Id": 4186,
+      "Code": "PASANA",
       "Name": "Pasana",
       "SpriteName": "pasana.spr",
       "Offset": 0,
@@ -1506,6 +1685,7 @@
     },
     {
       "Id": 4187,
+      "Code": "MARDUK",
       "Name": "Marduk",
       "SpriteName": "marduk.spr",
       "Offset": 0,
@@ -1514,6 +1694,7 @@
     },
     {
       "Id": 4188,
+      "Code": "PHARAOH",
       "Name": "Pharaoh",
       "SpriteName": "pharaoh.spr",
       "Offset": 0,
@@ -1522,6 +1703,7 @@
     },
     {
       "Id": 4189,
+      "Code": "PLANKTON",
       "Name": "Plankton",
       "SpriteName": "plankton.spr",
       "Offset": 0,
@@ -1530,6 +1712,7 @@
     },
     {
       "Id": 4190,
+      "Code": "MARINA",
       "Name": "Marina",
       "SpriteName": "marina.spr",
       "Offset": 0,
@@ -1538,6 +1721,7 @@
     },
     {
       "Id": 4191,
+      "Code": "KUKRE",
       "Name": "Kukre",
       "SpriteName": "kukre.spr",
       "Offset": 0,
@@ -1546,6 +1730,7 @@
     },
     {
       "Id": 4192,
+      "Code": "VADON",
       "Name": "Vadon",
       "SpriteName": "vadon.spr",
       "Offset": 0,
@@ -1554,6 +1739,7 @@
     },
     {
       "Id": 4193,
+      "Code": "CORNUTUS",
       "Name": "Cornutus",
       "SpriteName": "cornutus.spr",
       "Offset": 0,
@@ -1562,6 +1748,7 @@
     },
     {
       "Id": 4194,
+      "Code": "MARSE",
       "Name": "Marse",
       "SpriteName": "marse.spr",
       "Offset": 0,
@@ -1570,6 +1757,7 @@
     },
     {
       "Id": 4195,
+      "Code": "OBEAUNE",
       "Name": "Obeaune",
       "SpriteName": "obeaune.spr",
       "Offset": 0,
@@ -1578,6 +1766,7 @@
     },
     {
       "Id": 4196,
+      "Code": "MERMAN",
       "Name": "Merman",
       "SpriteName": "merman.spr",
       "Offset": 0,
@@ -1586,6 +1775,7 @@
     },
     {
       "Id": 4197,
+      "Code": "PHEN",
       "Name": "Phen",
       "SpriteName": "phen.spr",
       "Offset": 0,
@@ -1594,6 +1784,7 @@
     },
     {
       "Id": 4198,
+      "Code": "MARINE_SPHERE",
       "Name": "Marine Sphere",
       "SpriteName": "marine_sphere.spr",
       "Offset": 0,
@@ -1602,6 +1793,7 @@
     },
     {
       "Id": 4199,
+      "Code": "MARC",
       "Name": "Marc",
       "SpriteName": "marc.spr",
       "Offset": 0,
@@ -1610,6 +1802,7 @@
     },
     {
       "Id": 4200,
+      "Code": "SWORD_FISH",
       "Name": "Sword Fish",
       "SpriteName": "sword_fish.spr",
       "Offset": 0,
@@ -1618,6 +1811,7 @@
     },
     {
       "Id": 4201,
+      "Code": "STROUF",
       "Name": "Strouf",
       "SpriteName": "strouf.spr",
       "Offset": 0,
@@ -1626,6 +1820,7 @@
     },
     {
       "Id": 4202,
+      "Code": "DEVIACE",
       "Name": "Deviace",
       "SpriteName": "deviace.spr",
       "Offset": 0,
@@ -1634,6 +1829,7 @@
     },
     {
       "Id": 4203,
+      "Code": "SAGEWORM",
       "Name": "Sageworm",
       "SpriteName": "sageworm.spr",
       "Offset": 0,
@@ -1642,6 +1838,7 @@
     },
     {
       "Id": 4204,
+      "Code": "CARAT",
       "Name": "Carat",
       "SpriteName": "carat.spr",
       "Offset": 0,
@@ -1650,6 +1847,7 @@
     },
     {
       "Id": 4205,
+      "Code": "DARK_FRAME",
       "Name": "Dark Frame",
       "SpriteName": "dark_frame.spr",
       "Offset": 0,
@@ -1658,6 +1856,7 @@
     },
     {
       "Id": 4206,
+      "Code": "ALICE",
       "Name": "Alice",
       "SpriteName": "alice.spr",
       "Offset": 0,
@@ -1666,6 +1865,7 @@
     },
     {
       "Id": 4207,
+      "Code": "RAYDRIC",
       "Name": "Raydric",
       "SpriteName": "raydric.spr",
       "Offset": 0,
@@ -1674,6 +1874,7 @@
     },
     {
       "Id": 4208,
+      "Code": "RAYDRIC_ARCHER",
       "Name": "Raydric Archer",
       "SpriteName": "raydric_archer.spr",
       "Offset": 0,
@@ -1682,6 +1883,7 @@
     },
     {
       "Id": 4209,
+      "Code": "CHIMERA",
       "Name": "Chimera",
       "SpriteName": "chimera.spr",
       "Offset": 0,
@@ -1690,6 +1892,7 @@
     },
     {
       "Id": 4210,
+      "Code": "EVIL_DRUID",
       "Name": "Evil Druid",
       "SpriteName": "evil_druid.spr",
       "Offset": 0,
@@ -1698,6 +1901,7 @@
     },
     {
       "Id": 4211,
+      "Code": "KNIGHT_OF_ABYSS",
       "Name": "Abyssal Knight",
       "SpriteName": "knight_of_abyss.spr",
       "Offset": 0,
@@ -1706,6 +1910,7 @@
     },
     {
       "Id": 4212,
+      "Code": "KHALITZBURG",
       "Name": "Khalitzburg",
       "SpriteName": "khalitzburg.spr",
       "Offset": 0,
@@ -1714,6 +1919,7 @@
     },
     {
       "Id": 4213,
+      "Code": "WRAITH",
       "Name": "Wraith",
       "SpriteName": "wraith.spr",
       "Offset": 0,
@@ -1722,6 +1928,7 @@
     },
     {
       "Id": 4214,
+      "Code": "DARK_ILLUSION",
       "Name": "Dark Illusion",
       "SpriteName": "dark_illusion.spr",
       "Offset": 0,
@@ -1730,6 +1937,7 @@
     },
     {
       "Id": 4215,
+      "Code": "DARK_LORD",
       "Name": "Dark Lord",
       "SpriteName": "dark_lord.spr",
       "Offset": 0,
@@ -1738,6 +1946,7 @@
     },
     {
       "Id": 4216,
+      "Code": "SKEL_PRISONER",
       "Name": "Skeleton Prisoner",
       "SpriteName": "skel_prisoner.spr",
       "Offset": 0,
@@ -1746,6 +1955,7 @@
     },
     {
       "Id": 4217,
+      "Code": "ZOMBIE_PRISONER",
       "Name": "Zombie Prisoner",
       "SpriteName": "zombie_prisoner.spr",
       "Offset": 0,
@@ -1754,6 +1964,7 @@
     },
     {
       "Id": 4218,
+      "Code": "STING",
       "Name": "Sting",
       "SpriteName": "sting.spr",
       "Offset": 0,
@@ -1762,6 +1973,7 @@
     },
     {
       "Id": 4219,
+      "Code": "MAJORUROS",
       "Name": "Majorous",
       "SpriteName": "majoruros.spr",
       "Offset": 0,
@@ -1770,6 +1982,7 @@
     },
     {
       "Id": 4220,
+      "Code": "GARGOYLE",
       "Name": "Gargoyle",
       "SpriteName": "gargoyle.spr",
       "Offset": 0,
@@ -1778,6 +1991,7 @@
     },
     {
       "Id": 4221,
+      "Code": "BLOODY_KNIGHT",
       "Name": "Bloody Knight",
       "SpriteName": "bloody_knight.spr",
       "Offset": 0,
@@ -1786,6 +2000,7 @@
     },
     {
       "Id": 4222,
+      "Code": "INJUSTICE",
       "Name": "Injustice",
       "SpriteName": "injustice.spr",
       "Offset": 0,
@@ -1794,6 +2009,7 @@
     },
     {
       "Id": 4223,
+      "Code": "RYBIO",
       "Name": "Rybio",
       "SpriteName": "rybio.spr",
       "Offset": 0,
@@ -1802,6 +2018,7 @@
     },
     {
       "Id": 4224,
+      "Code": "ZHERLTHSH",
       "Name": "Zealotus",
       "SpriteName": "zherlthsh.spr",
       "Offset": 0,
@@ -1810,6 +2027,7 @@
     },
     {
       "Id": 4225,
+      "Code": "PHENDARK",
       "Name": "Phendark",
       "SpriteName": "phendark.spr",
       "Offset": 0,
@@ -1818,6 +2036,7 @@
     },
     {
       "Id": 4226,
+      "Code": "ANOLIAN",
       "Name": "Anolian",
       "SpriteName": "anolian.spr",
       "Offset": 0,
@@ -1826,6 +2045,7 @@
     },
     {
       "Id": 4227,
+      "Code": "WIND_GHOST",
       "Name": "Wind Ghost",
       "SpriteName": "wind_ghost.spr",
       "Offset": 0,
@@ -1834,6 +2054,7 @@
     },
     {
       "Id": 4228,
+      "Code": "SKEL_WORKER",
       "Name": "Skeleton Worker",
       "SpriteName": "skel_worker.spr",
       "Offset": 0,
@@ -1842,6 +2063,7 @@
     },
     {
       "Id": 4229,
+      "Code": "MYST",
       "Name": "Myst",
       "SpriteName": "myst.spr",
       "Offset": 0,
@@ -1850,6 +2072,7 @@
     },
     {
       "Id": 4230,
+      "Code": "PIRATE_SKEL",
       "Name": "Pirate Skeleton",
       "SpriteName": "pirate_skel.spr",
       "Offset": 0,
@@ -1858,6 +2081,7 @@
     },
     {
       "Id": 4231,
+      "Code": "DRAKE",
       "Name": "Drake",
       "SpriteName": "drake.spr",
       "Offset": 0,
@@ -1866,6 +2090,7 @@
     },
     {
       "Id": 4232,
+      "Code": "SPRING_RABBIT",
       "Name": "Spring Rabbit",
       "SpriteName": "spring_rabbit.spr",
       "Offset": 0,
@@ -1874,6 +2099,7 @@
     },
     {
       "Id": 4233,
+      "Code": "PEST",
       "Name": "Pest",
       "SpriteName": "pest.spr",
       "Offset": 0,
@@ -1882,6 +2108,7 @@
     },
     {
       "Id": 4234,
+      "Code": "PERMETER",
       "Name": "Permeter",
       "SpriteName": "permeter.spr",
       "Offset": 0,
@@ -1890,6 +2117,7 @@
     },
     {
       "Id": 4235,
+      "Code": "SOLIDER",
       "Name": "Solider",
       "SpriteName": "solider.spr",
       "Offset": 0,
@@ -1898,6 +2126,7 @@
     },
     {
       "Id": 4236,
+      "Code": "FREEZER",
       "Name": "Freezer",
       "SpriteName": "freezer.spr",
       "Offset": 0,
@@ -1906,6 +2135,7 @@
     },
     {
       "Id": 4237,
+      "Code": "HEATER",
       "Name": "Heater",
       "SpriteName": "heater.spr",
       "Offset": 0,
@@ -1914,6 +2144,7 @@
     },
     {
       "Id": 4238,
+      "Code": "ASSULTER",
       "Name": "Assulter",
       "SpriteName": "assulter.spr",
       "Offset": 0,
@@ -1922,6 +2153,7 @@
     },
     {
       "Id": 4239,
+      "Code": "TURTLE_GENERAL",
       "Name": "Turtle General",
       "SpriteName": "turtle_general.spr",
       "Offset": 0,
@@ -1930,6 +2162,7 @@
     },
     {
       "Id": 4240,
+      "Code": "GRAND_PECO",
       "Name": "Grand Peco",
       "SpriteName": "grand_peco.spr",
       "Offset": 0,
@@ -1938,6 +2171,7 @@
     },
     {
       "Id": 4241,
+      "Code": "KIND_OF_BEETLE",
       "Name": "Beetle King",
       "SpriteName": "kind_of_beetle.spr",
       "Offset": 0,
@@ -1946,6 +2180,7 @@
     },
     {
       "Id": 4242,
+      "Code": "DELETER",
       "Name": "Deleter",
       "SpriteName": "deleter.spr",
       "Offset": 0,
@@ -1954,6 +2189,7 @@
     },
     {
       "Id": 4243,
+      "Code": "DELETER_",
       "Name": "Deleter",
       "SpriteName": "deleter_.spr",
       "Offset": 0,
@@ -1962,6 +2198,7 @@
     },
     {
       "Id": 4244,
+      "Code": "GEOGRAPHER",
       "Name": "Geographer",
       "SpriteName": "geographer.spr",
       "Offset": 0,
@@ -1970,6 +2207,7 @@
     },
     {
       "Id": 4245,
+      "Code": "RAFFLESIA",
       "Name": "Rafflesia",
       "SpriteName": "rafflesia.spr",
       "Offset": 0,
@@ -1978,6 +2216,7 @@
     },
     {
       "Id": 4246,
+      "Code": "ARCHANGELING",
       "Name": "Archangeling",
       "SpriteName": "archangeling.spr",
       "Offset": 0,
@@ -1986,6 +2225,7 @@
     },
     {
       "Id": 4247,
+      "Code": "SLEEPER",
       "Name": "Sleeper",
       "SpriteName": "sleeper.spr",
       "Offset": 0,
@@ -1994,6 +2234,7 @@
     },
     {
       "Id": 4248,
+      "Code": "GOAT",
       "Name": "Goat",
       "SpriteName": "goat.spr",
       "Offset": 0,
@@ -2002,6 +2243,7 @@
     },
     {
       "Id": 4249,
+      "Code": "DEMON_PUNGUS",
       "Name": "Demon Pungus",
       "SpriteName": "demon_pungus.spr",
       "Offset": 0,
@@ -2010,6 +2252,7 @@
     },
     {
       "Id": 4250,
+      "Code": "DRILLER",
       "Name": "Driller",
       "SpriteName": "driller.spr",
       "Offset": 0,
@@ -2018,6 +2261,7 @@
     },
     {
       "Id": 4251,
+      "Code": "HARPY",
       "Name": "Harpy",
       "SpriteName": "harpy.spr",
       "Offset": 0,
@@ -2026,6 +2270,7 @@
     },
     {
       "Id": 4252,
+      "Code": "VENATU_1",
       "Name": "Venatu",
       "SpriteName": "venatu_1.spr",
       "Offset": 0,
@@ -2034,6 +2279,7 @@
     },
     {
       "Id": 4253,
+      "Code": "VENATU_2",
       "Name": "Venatu",
       "SpriteName": "venatu_2.spr",
       "Offset": 0,
@@ -2042,6 +2288,7 @@
     },
     {
       "Id": 4254,
+      "Code": "VENATU_3",
       "Name": "Venatu",
       "SpriteName": "venatu_3.spr",
       "Offset": 0,
@@ -2050,6 +2297,7 @@
     },
     {
       "Id": 4255,
+      "Code": "VENATU_4",
       "Name": "Venatu",
       "SpriteName": "venatu_4.spr",
       "Offset": 0,
@@ -2058,6 +2306,7 @@
     },
     {
       "Id": 4256,
+      "Code": "COOKIE",
       "Name": "Cookie",
       "SpriteName": "cookie.spr",
       "Offset": 0,
@@ -2066,6 +2315,7 @@
     },
     {
       "Id": 4257,
+      "Code": "COOKIE_XMAS",
       "Name": "Cookie",
       "SpriteName": "cookie_xmas.spr",
       "Offset": 0,
@@ -2074,6 +2324,7 @@
     },
     {
       "Id": 4258,
+      "Code": "CRUISER",
       "Name": "Cruiser",
       "SpriteName": "cruiser.spr",
       "Offset": 0,
@@ -2082,6 +2333,7 @@
     },
     {
       "Id": 4259,
+      "Code": "CHEPET",
       "Name": "Chepet",
       "SpriteName": "chepet.spr",
       "Offset": 0,
@@ -2090,6 +2342,7 @@
     },
     {
       "Id": 4260,
+      "Code": "GOBLINE_XMAS",
       "Name": "Festive Goblin",
       "SpriteName": "gobline_xmas.spr",
       "Offset": 0,
@@ -2098,6 +2351,7 @@
     },
     {
       "Id": 4261,
+      "Code": "GARM",
       "Name": "Garm",
       "SpriteName": "garm.spr",
       "Offset": 0,
@@ -2106,6 +2360,7 @@
     },
     {
       "Id": 4262,
+      "Code": "GARM_BABY",
       "Name": "Baby Garm",
       "SpriteName": "garm_baby.spr",
       "Offset": 0,
@@ -2114,6 +2369,7 @@
     },
     {
       "Id": 4263,
+      "Code": "KNIGHT_OF_WINDSTORM",
       "Name": "Stormy Knight",
       "SpriteName": "knight_of_windstorm.spr",
       "Offset": 0,
@@ -2122,6 +2378,7 @@
     },
     {
       "Id": 4264,
+      "Code": "MYSTCASE",
       "Name": "Mystcase",
       "SpriteName": "mystcase.spr",
       "Offset": 0,
@@ -2130,6 +2387,7 @@
     },
     {
       "Id": 4265,
+      "Code": "WRAITH_DEAD",
       "Name": "Wraith Dead",
       "SpriteName": "wraith_dead.spr",
       "Offset": 0,
@@ -2138,6 +2396,7 @@
     },
     {
       "Id": 4266,
+      "Code": "SHELLFISH",
       "Name": "Shellfish",
       "SpriteName": "shellfish.spr",
       "Offset": 0,
@@ -2146,6 +2405,7 @@
     },
     {
       "Id": 4267,
+      "Code": "ALLIGATOR",
       "Name": "Alligator",
       "SpriteName": "alligator.spr",
       "Offset": 0,
@@ -2154,6 +2414,7 @@
     },
     {
       "Id": 4268,
+      "Code": "ASTER",
       "Name": "Aster",
       "SpriteName": "aster.spr",
       "Offset": 0,
@@ -2162,6 +2423,7 @@
     },
     {
       "Id": 4269,
+      "Code": "CRAB",
       "Name": "Crab",
       "SpriteName": "crab.spr",
       "Offset": 0,
@@ -2170,6 +2432,7 @@
     },
     {
       "Id": 4270,
+      "Code": "RAGGLER",
       "Name": "Raggler",
       "SpriteName": "raggler.spr",
       "Offset": 0,
@@ -2178,6 +2441,7 @@
     },
     {
       "Id": 4271,
+      "Code": "MOBSTER",
       "Name": "Mobster",
       "SpriteName": "mobster.spr",
       "Offset": 0,
@@ -2186,6 +2450,7 @@
     },
     {
       "Id": 4272,
+      "Code": "FUR_SEAL",
       "Name": "Fur Seal",
       "SpriteName": "fur_seal.spr",
       "Offset": 0,
@@ -2194,6 +2459,7 @@
     },
     {
       "Id": 4273,
+      "Code": "GALAPAGO",
       "Name": "Galapago",
       "SpriteName": "galapago.spr",
       "Offset": 0,
@@ -2202,6 +2468,7 @@
     },
     {
       "Id": 4274,
+      "Code": "MUTANT_DRAGON",
       "Name": "Mutant Dragon",
       "SpriteName": "mutant_dragon.spr",
       "Offset": 0,
@@ -2210,6 +2477,7 @@
     },
     {
       "Id": 4275,
+      "Code": "SEE_OTTER",
       "Name": "See Otter",
       "SpriteName": "see_otter.spr",
       "Offset": 0,
@@ -2218,6 +2486,7 @@
     },
     {
       "Id": 4276,
+      "Code": "GRYPHON",
       "Name": "Gryphon",
       "SpriteName": "gryphon.spr",
       "Offset": 0,
@@ -2226,6 +2495,7 @@
     },
     {
       "Id": 4277,
+      "Code": "MEDUSA",
       "Name": "Medusa",
       "SpriteName": "medusa.spr",
       "Offset": 0,
@@ -2234,6 +2504,7 @@
     },
     {
       "Id": 4278,
+      "Code": "NERAID",
       "Name": "Neraid",
       "SpriteName": "neraid.spr",
       "Offset": 0,
@@ -2242,6 +2513,7 @@
     },
     {
       "Id": 4279,
+      "Code": "TRI_JOINT",
       "Name": "Tri Joint",
       "SpriteName": "tri_joint.spr",
       "Offset": 0,
@@ -2250,6 +2522,7 @@
     },
     {
       "Id": 4280,
+      "Code": "STALACTIC_GOLEM",
       "Name": "Stalactic Golem",
       "SpriteName": "stalactic_golem.spr",
       "Offset": 0,
@@ -2258,6 +2531,7 @@
     },
     {
       "Id": 4281,
+      "Code": "MEGALODON",
       "Name": "Megalodon",
       "SpriteName": "megalodon.spr",
       "Offset": 0,
@@ -2266,6 +2540,7 @@
     },
     {
       "Id": 4282,
+      "Code": "MEGALITH",
       "Name": "Megalith",
       "SpriteName": "megalith.spr",
       "Offset": 0,
@@ -2274,6 +2549,7 @@
     },
     {
       "Id": 4283,
+      "Code": "TAO_GUNKA",
       "Name": "Tao Gunka",
       "SpriteName": "tao_gunka.spr",
       "Offset": 0,
@@ -2282,6 +2558,7 @@
     },
     {
       "Id": 4284,
+      "Code": "TARGET_DUMMY",
       "Name": "Target Dummy",
       "SpriteName": "barricade.spr",
       "Offset": 0,
@@ -2289,7 +2566,44 @@
       "Size": 1
     },
     {
+      "Id": 4285,
+      "Code": "TEST_DRONE",
+      "Name": "Test Drone",
+      "SpriteName": "constant.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4286,
+      "Code": "RANDGRIS",
+      "Name": "Valkyrie Randgris",
+      "SpriteName": "randgris.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4287,
+      "Code": "VALKYRIE",
+      "Name": "Valkyrie",
+      "SpriteName": "g_randgris.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
+      "Id": 4288,
+      "Code": "PORING50",
+      "Name": "Poring",
+      "SpriteName": "poring.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1
+    },
+    {
       "Id": 1000,
+      "Code": "WARP",
       "Name": "Warp",
       "SpriteName": "Assets/Prefabs/PortalEffect.prefab",
       "Offset": 0,
@@ -2298,6 +2612,7 @@
     },
     {
       "Id": 1001,
+      "Code": "EMPERIUM",
       "Name": "Emperium",
       "SpriteName": "Assets/Prefabs/Emperium90.prefab",
       "Offset": 0,
@@ -2306,6 +2621,7 @@
     },
     {
       "Id": 1002,
+      "Code": "GUILD_FLAG",
       "Name": "Guild Flag",
       "SpriteName": "Assets/Prefabs/GuildFlag90.prefab",
       "Offset": 0,
@@ -2314,6 +2630,7 @@
     },
     {
       "Id": 1003,
+      "Code": "1_ETC_01",
       "Name": "Simon Mayace",
       "SpriteName": "1_etc_01.spr",
       "Offset": 0,
@@ -2322,6 +2639,7 @@
     },
     {
       "Id": 1004,
+      "Code": "1_F_01",
       "Name": "Armor Dealer",
       "SpriteName": "1_f_01.spr",
       "Offset": 0,
@@ -2330,6 +2648,7 @@
     },
     {
       "Id": 1005,
+      "Code": "1_F_02",
       "Name": "Garnet",
       "SpriteName": "1_f_02.spr",
       "Offset": 0,
@@ -2338,6 +2657,7 @@
     },
     {
       "Id": 1006,
+      "Code": "1_F_03",
       "Name": "Tool Dealer",
       "SpriteName": "1_f_03.spr",
       "Offset": 0,
@@ -2346,6 +2666,7 @@
     },
     {
       "Id": 1007,
+      "Code": "1_F_04",
       "Name": "Lady",
       "SpriteName": "1_f_04.spr",
       "Offset": 0,
@@ -2354,6 +2675,7 @@
     },
     {
       "Id": 1008,
+      "Code": "1_F_GYPSY",
       "Name": "Magic Guildsman",
       "SpriteName": "1_f_gypsy.spr",
       "Offset": 0,
@@ -2362,6 +2684,7 @@
     },
     {
       "Id": 1009,
+      "Code": "1_F_LIBRARYGIRL",
       "Name": "Hat Store Girl",
       "SpriteName": "1_f_librarygirl.spr",
       "Offset": 0,
@@ -2370,6 +2693,7 @@
     },
     {
       "Id": 1010,
+      "Code": "1_F_MARIA",
       "Name": "Weapon Dealer",
       "SpriteName": "1_f_maria.spr",
       "Offset": 0,
@@ -2378,6 +2702,7 @@
     },
     {
       "Id": 1011,
+      "Code": "1_F_MERCHANT_01",
       "Name": "Tool Dealer",
       "SpriteName": "1_f_merchant_01.spr",
       "Offset": 0,
@@ -2386,6 +2711,7 @@
     },
     {
       "Id": 1012,
+      "Code": "1_F_MERCHANT_02",
       "Name": "Item Collector",
       "SpriteName": "1_f_merchant_02.spr",
       "Offset": 0,
@@ -2394,6 +2720,7 @@
     },
     {
       "Id": 1013,
+      "Code": "1_F_ORIENT_01",
       "Name": "Tool Dealer",
       "SpriteName": "1_f_orient_01.spr",
       "Offset": 0,
@@ -2402,6 +2729,7 @@
     },
     {
       "Id": 1014,
+      "Code": "1_F_ORIENT_02",
       "Name": "Mystic Lady ",
       "SpriteName": "1_f_orient_02.spr",
       "Offset": 0,
@@ -2410,6 +2738,7 @@
     },
     {
       "Id": 1015,
+      "Code": "1_F_ORIENT_03",
       "Name": "Nan Hyang",
       "SpriteName": "1_f_orient_03.spr",
       "Offset": 0,
@@ -2418,6 +2747,7 @@
     },
     {
       "Id": 1016,
+      "Code": "1_F_ORIENT_04",
       "Name": "Hagin",
       "SpriteName": "1_f_orient_04.spr",
       "Offset": 0,
@@ -2426,6 +2756,7 @@
     },
     {
       "Id": 1017,
+      "Code": "1_F_PRIEST",
       "Name": "Nun",
       "SpriteName": "1_f_priest.spr",
       "Offset": 0,
@@ -2434,6 +2765,7 @@
     },
     {
       "Id": 1018,
+      "Code": "1_F_PUBGIRL",
       "Name": "Waitress",
       "SpriteName": "1_f_pubgirl.spr",
       "Offset": 0,
@@ -2442,6 +2774,7 @@
     },
     {
       "Id": 1019,
+      "Code": "1_F_SIGNZISK",
       "Name": "Jesqurienne",
       "SpriteName": "1_f_signzisk.spr",
       "Offset": 0,
@@ -2450,6 +2783,7 @@
     },
     {
       "Id": 1020,
+      "Code": "1_M_01",
       "Name": "Dessert manager",
       "SpriteName": "1_m_01.spr",
       "Offset": 0,
@@ -2458,6 +2792,7 @@
     },
     {
       "Id": 1021,
+      "Code": "1_M_02",
       "Name": "Grout\u0027he Tuccok",
       "SpriteName": "1_m_02.spr",
       "Offset": 0,
@@ -2466,6 +2801,7 @@
     },
     {
       "Id": 1022,
+      "Code": "1_M_03",
       "Name": "Weapon Dealer",
       "SpriteName": "1_m_03.spr",
       "Offset": 0,
@@ -2474,6 +2810,7 @@
     },
     {
       "Id": 1023,
+      "Code": "1_M_04",
       "Name": "Clanux Heffron",
       "SpriteName": "1_m_04.spr",
       "Offset": 0,
@@ -2482,6 +2819,7 @@
     },
     {
       "Id": 1024,
+      "Code": "1_M_BARD",
       "Name": "Bard",
       "SpriteName": "1_m_bard.spr",
       "Offset": 0,
@@ -2490,6 +2828,7 @@
     },
     {
       "Id": 1025,
+      "Code": "1_M_HOF",
       "Name": "Crumpler",
       "SpriteName": "1_m_hof.spr",
       "Offset": 0,
@@ -2498,6 +2837,7 @@
     },
     {
       "Id": 1026,
+      "Code": "1_M_INNKEEPER",
       "Name": "Inn Employee",
       "SpriteName": "1_m_innkeeper.spr",
       "Offset": 0,
@@ -2506,6 +2846,7 @@
     },
     {
       "Id": 1027,
+      "Code": "1_M_JOBGUIDER",
       "Name": "Butcher",
       "SpriteName": "1_m_jobguider.spr",
       "Offset": 0,
@@ -2514,6 +2855,7 @@
     },
     {
       "Id": 1028,
+      "Code": "1_M_JOBTESTER",
       "Name": "Master Kavaruk",
       "SpriteName": "1_m_jobtester.spr",
       "Offset": 0,
@@ -2522,6 +2864,7 @@
     },
     {
       "Id": 1029,
+      "Code": "1_M_KNIGHTMASTER",
       "Name": "Rebarev Doug",
       "SpriteName": "1_m_knightmaster.spr",
       "Offset": 0,
@@ -2530,6 +2873,7 @@
     },
     {
       "Id": 1030,
+      "Code": "1_M_LIBRARYMASTER",
       "Name": "Gershaun",
       "SpriteName": "1_m_librarymaster.spr",
       "Offset": 0,
@@ -2538,6 +2882,7 @@
     },
     {
       "Id": 1031,
+      "Code": "1_M_MERCHANT",
       "Name": "Trader",
       "SpriteName": "1_m_merchant.spr",
       "Offset": 0,
@@ -2546,6 +2891,7 @@
     },
     {
       "Id": 1032,
+      "Code": "1_M_MOC_LORD",
       "Name": "Won",
       "SpriteName": "1_m_moc_lord.spr",
       "Offset": 0,
@@ -2554,6 +2900,7 @@
     },
     {
       "Id": 1033,
+      "Code": "1_M_ORIENT01",
       "Name": "Serutero",
       "SpriteName": "1_m_orient01.spr",
       "Offset": 0,
@@ -2562,6 +2909,7 @@
     },
     {
       "Id": 1034,
+      "Code": "1_M_PASTOR",
       "Name": "Cleric",
       "SpriteName": "1_m_pastor.spr",
       "Offset": 0,
@@ -2570,6 +2918,7 @@
     },
     {
       "Id": 1035,
+      "Code": "1_M_PAY_ELDER",
       "Name": "Charlron",
       "SpriteName": "1_m_pay_elder.spr",
       "Offset": 0,
@@ -2578,6 +2927,7 @@
     },
     {
       "Id": 1036,
+      "Code": "1_M_PRON_KING",
       "Name": "The king of Midgard",
       "SpriteName": "1_m_pron_king.spr",
       "Offset": 0,
@@ -2586,6 +2936,7 @@
     },
     {
       "Id": 1037,
+      "Code": "1_M_PUBMASTER",
       "Name": "Grandpa Pharmacist",
       "SpriteName": "1_m_pubmaster.spr",
       "Offset": 0,
@@ -2594,6 +2945,7 @@
     },
     {
       "Id": 1038,
+      "Code": "1_M_SIGN1",
       "Name": "Archeologist",
       "SpriteName": "1_m_sign1.spr",
       "Offset": 0,
@@ -2602,6 +2954,7 @@
     },
     {
       "Id": 1039,
+      "Code": "1_M_SIGNALCHE",
       "Name": "Sir Jore",
       "SpriteName": "1_m_signalche.spr",
       "Offset": 0,
@@ -2610,6 +2963,7 @@
     },
     {
       "Id": 1040,
+      "Code": "1_M_SIGNART",
       "Name": "Strange Guy",
       "SpriteName": "1_m_signart.spr",
       "Offset": 0,
@@ -2618,6 +2972,7 @@
     },
     {
       "Id": 1041,
+      "Code": "1_M_SIGNMCNT",
       "Name": "Wealthy-looking Merchant",
       "SpriteName": "1_m_signmcnt.spr",
       "Offset": 0,
@@ -2626,6 +2981,7 @@
     },
     {
       "Id": 1042,
+      "Code": "1_M_SIGNMONK2",
       "Name": "Daewoon",
       "SpriteName": "1_m_signmonk2.spr",
       "Offset": 0,
@@ -2634,6 +2990,7 @@
     },
     {
       "Id": 1043,
+      "Code": "1_M_SIGNROGUE",
       "Name": "Rogue",
       "SpriteName": "1_m_signrogue.spr",
       "Offset": 0,
@@ -2642,6 +2999,7 @@
     },
     {
       "Id": 1044,
+      "Code": "1_M_SIZ",
       "Name": "Armor Dealer",
       "SpriteName": "1_m_siz.spr",
       "Offset": 0,
@@ -2650,6 +3008,7 @@
     },
     {
       "Id": 1045,
+      "Code": "1_M_SMITH",
       "Name": "Blacksmith",
       "SpriteName": "1_m_smith.spr",
       "Offset": 0,
@@ -2658,6 +3017,7 @@
     },
     {
       "Id": 1046,
+      "Code": "1_M_WIZARD",
       "Name": "Marius",
       "SpriteName": "1_m_wizard.spr",
       "Offset": 0,
@@ -2666,6 +3026,7 @@
     },
     {
       "Id": 1047,
+      "Code": "1_M_YOUNGKNIGHT",
       "Name": "Prontera Knight Member",
       "SpriteName": "1_m_youngknight.spr",
       "Offset": 0,
@@ -2674,6 +3035,7 @@
     },
     {
       "Id": 1048,
+      "Code": "1_SHADOW_NPC",
       "Name": "switch",
       "SpriteName": "1_shadow_npc.spr",
       "Offset": 0,
@@ -2682,6 +3044,7 @@
     },
     {
       "Id": 1049,
+      "Code": "2_BOARD1",
       "Name": "Sign",
       "SpriteName": "2_board1.spr",
       "Offset": 0,
@@ -2690,6 +3053,7 @@
     },
     {
       "Id": 1050,
+      "Code": "2_BOARD2",
       "Name": "Bulletin Board",
       "SpriteName": "2_board2.spr",
       "Offset": 0,
@@ -2698,6 +3062,7 @@
     },
     {
       "Id": 1051,
+      "Code": "2_BULLETIN_BOARD",
       "Name": "Sign",
       "SpriteName": "2_bulletin_board.spr",
       "Offset": 0,
@@ -2706,6 +3071,7 @@
     },
     {
       "Id": 1052,
+      "Code": "2_F_MAGICMASTER",
       "Name": "Mage",
       "SpriteName": "2_f_magicmaster.spr",
       "Offset": 0,
@@ -2714,6 +3080,7 @@
     },
     {
       "Id": 1053,
+      "Code": "2_M_ALCHE",
       "Name": "Alchemist Guildmember",
       "SpriteName": "2_m_alche.spr",
       "Offset": 0,
@@ -2722,6 +3089,7 @@
     },
     {
       "Id": 1054,
+      "Code": "2_M_BARD_ORIENT",
       "Name": "Bard",
       "SpriteName": "2_m_bard_orient.spr",
       "Offset": 0,
@@ -2730,6 +3098,7 @@
     },
     {
       "Id": 1055,
+      "Code": "2_M_DYEINGER",
       "Name": "French Revolution",
       "SpriteName": "2_m_dyeinger.spr",
       "Offset": 0,
@@ -2738,6 +3107,7 @@
     },
     {
       "Id": 1056,
+      "Code": "2_M_MOLGENSTEIN",
       "Name": "Molgenstein",
       "SpriteName": "2_m_molgenstein.spr",
       "Offset": 0,
@@ -2746,6 +3116,7 @@
     },
     {
       "Id": 1057,
+      "Code": "2_M_OLDBLSMITH",
       "Name": "Old Blacksmith",
       "SpriteName": "2_m_oldblsmith.spr",
       "Offset": 0,
@@ -2754,6 +3125,7 @@
     },
     {
       "Id": 1058,
+      "Code": "2_M_PHARMACIST",
       "Name": "Grampa",
       "SpriteName": "2_m_pharmacist.spr",
       "Offset": 0,
@@ -2762,6 +3134,7 @@
     },
     {
       "Id": 1059,
+      "Code": "2_M_SAGE_B",
       "Name": "Metavis Seith ",
       "SpriteName": "2_m_sage_b.spr",
       "Offset": 0,
@@ -2770,6 +3143,7 @@
     },
     {
       "Id": 1060,
+      "Code": "2_M_SAGE_OLD",
       "Name": "Magic Academy Headmaster",
       "SpriteName": "2_m_sage_old.spr",
       "Offset": 0,
@@ -2778,6 +3152,7 @@
     },
     {
       "Id": 1061,
+      "Code": "2_M_SWORDMASTER",
       "Name": "Insect Guy",
       "SpriteName": "2_m_swordmaster.spr",
       "Offset": 0,
@@ -2786,6 +3161,7 @@
     },
     {
       "Id": 1062,
+      "Code": "2_M_THIEFMASTER",
       "Name": "Alcouskou",
       "SpriteName": "2_m_thiefmaster.spr",
       "Offset": 0,
@@ -2794,6 +3170,7 @@
     },
     {
       "Id": 1063,
+      "Code": "2_POSTBOX",
       "Name": "Mailbox",
       "SpriteName": "2_postbox.spr",
       "Offset": 0,
@@ -2802,6 +3179,7 @@
     },
     {
       "Id": 1064,
+      "Code": "4_BAPHOMET",
       "Name": "BAPHOMET",
       "SpriteName": "4_baphomet.spr",
       "Offset": 0,
@@ -2810,6 +3188,7 @@
     },
     {
       "Id": 1065,
+      "Code": "4_CAT",
       "Name": "Nyao",
       "SpriteName": "4_cat.spr",
       "Offset": 0,
@@ -2818,6 +3197,7 @@
     },
     {
       "Id": 1066,
+      "Code": "4_COOK",
       "Name": "Marlene Sheu",
       "SpriteName": "4_cook.spr",
       "Offset": 0,
@@ -2826,6 +3206,7 @@
     },
     {
       "Id": 1067,
+      "Code": "4_DARKLORD",
       "Name": "DARK LORD",
       "SpriteName": "4_darklord.spr",
       "Offset": 0,
@@ -2834,6 +3215,7 @@
     },
     {
       "Id": 1068,
+      "Code": "4_DEVIRUCHI",
       "Name": "DEVIRUCHI",
       "SpriteName": "4_deviruchi.spr",
       "Offset": 0,
@@ -2842,6 +3224,7 @@
     },
     {
       "Id": 1069,
+      "Code": "4_DOG01",
       "Name": "\uBE44\uD2F0",
       "SpriteName": "4_dog01.spr",
       "Offset": 0,
@@ -2850,6 +3233,7 @@
     },
     {
       "Id": 1070,
+      "Code": "4_F_01",
       "Name": "Auction Guide",
       "SpriteName": "4_f_01.spr",
       "Offset": 0,
@@ -2858,6 +3242,7 @@
     },
     {
       "Id": 1071,
+      "Code": "4_F_02",
       "Name": "Vegetable Gardener",
       "SpriteName": "4_f_02.spr",
       "Offset": 0,
@@ -2866,6 +3251,7 @@
     },
     {
       "Id": 1072,
+      "Code": "4_F_03",
       "Name": "Smile Assistance",
       "SpriteName": "4_f_03.spr",
       "Offset": 0,
@@ -2874,6 +3260,7 @@
     },
     {
       "Id": 1073,
+      "Code": "4_F_04",
       "Name": "Tool Dealer",
       "SpriteName": "4_f_04.spr",
       "Offset": 0,
@@ -2882,6 +3269,7 @@
     },
     {
       "Id": 1074,
+      "Code": "4_F_05",
       "Name": "Lonely-looking Woman",
       "SpriteName": "4_f_05.spr",
       "Offset": 0,
@@ -2890,6 +3278,7 @@
     },
     {
       "Id": 1075,
+      "Code": "4_F_07",
       "Name": "Shanel",
       "SpriteName": "4_f_07.spr",
       "Offset": 0,
@@ -2898,6 +3287,7 @@
     },
     {
       "Id": 1076,
+      "Code": "4_F_AGENTKAFRA",
       "Name": "Kafra Employee",
       "SpriteName": "4_f_agentkafra.spr",
       "Offset": 0,
@@ -2906,6 +3296,7 @@
     },
     {
       "Id": 1077,
+      "Code": "4_F_ALCHE",
       "Name": "Nephia",
       "SpriteName": "4_f_alche.spr",
       "Offset": 0,
@@ -2914,6 +3305,7 @@
     },
     {
       "Id": 1078,
+      "Code": "4_F_CHNDRESS1",
       "Name": "Girl",
       "SpriteName": "4_f_chndress1.spr",
       "Offset": 0,
@@ -2922,6 +3314,7 @@
     },
     {
       "Id": 1079,
+      "Code": "4_F_CRU",
       "Name": "Catholic Knight",
       "SpriteName": "4_f_cru.spr",
       "Offset": 0,
@@ -2930,6 +3323,7 @@
     },
     {
       "Id": 1080,
+      "Code": "4_F_GODEMOM",
       "Name": "Hullaris",
       "SpriteName": "4_f_godemom.spr",
       "Offset": 0,
@@ -2938,6 +3332,7 @@
     },
     {
       "Id": 1081,
+      "Code": "4_F_GON",
       "Name": "Traveler",
       "SpriteName": "4_f_gon.spr",
       "Offset": 0,
@@ -2946,6 +3341,7 @@
     },
     {
       "Id": 1082,
+      "Code": "4_F_JOB_ASSASSIN",
       "Name": "Hwekebein",
       "SpriteName": "4_f_job_assassin.spr",
       "Offset": 0,
@@ -2954,6 +3350,7 @@
     },
     {
       "Id": 1083,
+      "Code": "4_F_JOB_BLACKSMITH",
       "Name": "Neris",
       "SpriteName": "4_f_job_blacksmith.spr",
       "Offset": 0,
@@ -2962,6 +3359,7 @@
     },
     {
       "Id": 1084,
+      "Code": "4_F_JOB_HUNTER",
       "Name": "Seisner",
       "SpriteName": "4_f_job_hunter.spr",
       "Offset": 0,
@@ -2970,6 +3368,7 @@
     },
     {
       "Id": 1085,
+      "Code": "4_F_JOB_KNIGHT",
       "Name": "Lady Amy Beatrist",
       "SpriteName": "4_f_job_knight.spr",
       "Offset": 0,
@@ -2978,6 +3377,7 @@
     },
     {
       "Id": 1086,
+      "Code": "4_F_JPN",
       "Name": "Maid",
       "SpriteName": "4_f_jpn.spr",
       "Offset": 0,
@@ -2986,6 +3386,7 @@
     },
     {
       "Id": 1087,
+      "Code": "4_F_KAFRA1",
       "Name": "Auction Guide",
       "SpriteName": "4_f_kafra1.spr",
       "Offset": 0,
@@ -2994,6 +3395,7 @@
     },
     {
       "Id": 1088,
+      "Code": "4_F_KAFRA2",
       "Name": "Kafra Employee",
       "SpriteName": "4_f_kafra2.spr",
       "Offset": 0,
@@ -3002,6 +3404,7 @@
     },
     {
       "Id": 1089,
+      "Code": "4_F_KAFRA3",
       "Name": "kafra Employee",
       "SpriteName": "4_f_kafra3.spr",
       "Offset": 0,
@@ -3010,6 +3413,7 @@
     },
     {
       "Id": 1090,
+      "Code": "4_F_KAFRA4",
       "Name": "Kafra",
       "SpriteName": "4_f_kafra4.spr",
       "Offset": 0,
@@ -3018,6 +3422,7 @@
     },
     {
       "Id": 1091,
+      "Code": "4_F_KAFRA5",
       "Name": "Kafra Employee",
       "SpriteName": "4_f_kafra5.spr",
       "Offset": 0,
@@ -3026,6 +3431,7 @@
     },
     {
       "Id": 1092,
+      "Code": "4_F_KAFRA6",
       "Name": "Kafra Employee",
       "SpriteName": "4_f_kafra6.spr",
       "Offset": 0,
@@ -3034,6 +3440,7 @@
     },
     {
       "Id": 1093,
+      "Code": "4_F_KAFRA7",
       "Name": "Kafra Employee",
       "SpriteName": "4_f_kafra7.spr",
       "Offset": 0,
@@ -3042,6 +3449,7 @@
     },
     {
       "Id": 1094,
+      "Code": "4_F_KAFRA9",
       "Name": "Kafra Voting Staff",
       "SpriteName": "4_f_kafra9.spr",
       "Offset": 0,
@@ -3050,6 +3458,7 @@
     },
     {
       "Id": 1095,
+      "Code": "4_F_KID2",
       "Name": "Little Girl",
       "SpriteName": "4_f_kid2.spr",
       "Offset": 0,
@@ -3058,6 +3467,7 @@
     },
     {
       "Id": 1096,
+      "Code": "4_F_MAID",
       "Name": "Inn Employee",
       "SpriteName": "4_f_maid.spr",
       "Offset": 0,
@@ -3066,6 +3476,7 @@
     },
     {
       "Id": 1097,
+      "Code": "4_F_MONK",
       "Name": "Chief Guard",
       "SpriteName": "4_f_monk.spr",
       "Offset": 0,
@@ -3074,6 +3485,7 @@
     },
     {
       "Id": 1098,
+      "Code": "4_F_NFLOSTGIRL",
       "Name": "Pretty Lindsay",
       "SpriteName": "4_f_nflostgirl.spr",
       "Offset": 0,
@@ -3082,6 +3494,7 @@
     },
     {
       "Id": 1099,
+      "Code": "4_F_NOVICE",
       "Name": "",
       "SpriteName": "4_f_novice.spr",
       "Offset": 0,
@@ -3090,6 +3503,7 @@
     },
     {
       "Id": 1100,
+      "Code": "4_F_RACING",
       "Name": "Turbo Track Guide",
       "SpriteName": "4_f_racing.spr",
       "Offset": 0,
@@ -3098,6 +3512,7 @@
     },
     {
       "Id": 1101,
+      "Code": "4_F_SISTER",
       "Name": "Representative",
       "SpriteName": "4_f_sister.spr",
       "Offset": 0,
@@ -3106,6 +3521,7 @@
     },
     {
       "Id": 1102,
+      "Code": "4_F_TELEPORTER",
       "Name": "Hypnotist",
       "SpriteName": "4_f_teleporter.spr",
       "Offset": 0,
@@ -3114,6 +3530,7 @@
     },
     {
       "Id": 1103,
+      "Code": "4_F_VALKYRIE",
       "Name": "Luina Castle",
       "SpriteName": "4_f_valkyrie.spr",
       "Offset": 0,
@@ -3122,6 +3539,7 @@
     },
     {
       "Id": 1104,
+      "Code": "4_F_YUNYANG",
       "Name": "Child with a Cat",
       "SpriteName": "4_f_yunyang.spr",
       "Offset": 0,
@@ -3130,6 +3548,7 @@
     },
     {
       "Id": 1105,
+      "Code": "4_KID01",
       "Name": "Aure Dupon",
       "SpriteName": "4_kid01.spr",
       "Offset": 0,
@@ -3138,6 +3557,7 @@
     },
     {
       "Id": 1106,
+      "Code": "4_M_01",
       "Name": "Gate Keeper",
       "SpriteName": "4_m_01.spr",
       "Offset": 0,
@@ -3146,6 +3566,7 @@
     },
     {
       "Id": 1107,
+      "Code": "4_M_02",
       "Name": "PVP Narrator",
       "SpriteName": "4_m_02.spr",
       "Offset": 0,
@@ -3154,6 +3575,7 @@
     },
     {
       "Id": 1108,
+      "Code": "4_M_03",
       "Name": "Ice Cream Merchant",
       "SpriteName": "4_m_03.spr",
       "Offset": 0,
@@ -3162,6 +3584,7 @@
     },
     {
       "Id": 1109,
+      "Code": "4_M_04",
       "Name": "Esere",
       "SpriteName": "4_m_04.spr",
       "Offset": 0,
@@ -3170,6 +3593,7 @@
     },
     {
       "Id": 1110,
+      "Code": "4_M_05",
       "Name": "Fuzzy Fuzz",
       "SpriteName": "4_m_05.spr",
       "Offset": 0,
@@ -3178,6 +3602,7 @@
     },
     {
       "Id": 1111,
+      "Code": "4_M_06",
       "Name": "Weapon Dealer",
       "SpriteName": "4_m_06.spr",
       "Offset": 0,
@@ -3186,6 +3611,7 @@
     },
     {
       "Id": 1112,
+      "Code": "4_M_ALCHE_A",
       "Name": "Enoz",
       "SpriteName": "4_m_alche_a.spr",
       "Offset": 0,
@@ -3194,6 +3620,7 @@
     },
     {
       "Id": 1113,
+      "Code": "4_M_ALCHE_B",
       "Name": "Studying Scholar",
       "SpriteName": "4_m_alche_b.spr",
       "Offset": 0,
@@ -3202,6 +3629,7 @@
     },
     {
       "Id": 1114,
+      "Code": "4_M_ALCHE_D",
       "Name": "Pisruik Quv",
       "SpriteName": "4_m_alche_d.spr",
       "Offset": 0,
@@ -3210,6 +3638,7 @@
     },
     {
       "Id": 1115,
+      "Code": "4_M_BARBER",
       "Name": "Butcher",
       "SpriteName": "4_m_barber.spr",
       "Offset": 0,
@@ -3218,6 +3647,7 @@
     },
     {
       "Id": 1116,
+      "Code": "4_M_BIBI",
       "Name": "Vending Machine Man",
       "SpriteName": "4_m_bibi.spr",
       "Offset": 0,
@@ -3226,6 +3656,7 @@
     },
     {
       "Id": 1117,
+      "Code": "4_M_CHNMONK",
       "Name": "Monk",
       "SpriteName": "4_m_chnmonk.spr",
       "Offset": 0,
@@ -3234,6 +3665,7 @@
     },
     {
       "Id": 1118,
+      "Code": "4_M_CRU_OLD",
       "Name": "Senior Crusader",
       "SpriteName": "4_m_cru_old.spr",
       "Offset": 0,
@@ -3242,6 +3674,7 @@
     },
     {
       "Id": 1119,
+      "Code": "4_M_CRU",
       "Name": "Crusader",
       "SpriteName": "4_m_cru.spr",
       "Offset": 0,
@@ -3250,6 +3683,7 @@
     },
     {
       "Id": 1120,
+      "Code": "4_M_DWARF",
       "Name": "Goodday",
       "SpriteName": "4_m_dwarf.spr",
       "Offset": 0,
@@ -3258,6 +3692,7 @@
     },
     {
       "Id": 1121,
+      "Code": "4_M_GEF_SOLDIER",
       "Name": "Guide",
       "SpriteName": "4_m_gef_soldier.spr",
       "Offset": 0,
@@ -3266,6 +3701,7 @@
     },
     {
       "Id": 1122,
+      "Code": "4_M_JOB_ASSASSIN",
       "Name": "Akagi",
       "SpriteName": "4_m_job_assassin.spr",
       "Offset": 0,
@@ -3274,6 +3710,7 @@
     },
     {
       "Id": 1123,
+      "Code": "4_M_JOB_BLACKSMITH",
       "Name": "Blacksmith",
       "SpriteName": "4_m_job_blacksmith.spr",
       "Offset": 0,
@@ -3282,6 +3719,7 @@
     },
     {
       "Id": 1124,
+      "Code": "4_M_JOB_HUNTER",
       "Name": "Merunte",
       "SpriteName": "4_m_job_hunter.spr",
       "Offset": 0,
@@ -3290,6 +3728,7 @@
     },
     {
       "Id": 1125,
+      "Code": "4_M_JOB_KNIGHT1",
       "Name": "Shurank",
       "SpriteName": "4_m_job_knight1.spr",
       "Offset": 0,
@@ -3298,6 +3737,7 @@
     },
     {
       "Id": 1126,
+      "Code": "4_M_JOB_KNIGHT2",
       "Name": "Dequ\u0027ee",
       "SpriteName": "4_m_job_knight2.spr",
       "Offset": 0,
@@ -3306,6 +3746,7 @@
     },
     {
       "Id": 1127,
+      "Code": "4_M_JOB_WIZARD",
       "Name": "Old Scholar Tyus",
       "SpriteName": "4_m_job_wizard.spr",
       "Offset": 0,
@@ -3314,6 +3755,7 @@
     },
     {
       "Id": 1128,
+      "Code": "4_M_JPN2",
       "Name": "Fox Mask Problem Solver",
       "SpriteName": "4_m_jpn2.spr",
       "Offset": 0,
@@ -3322,6 +3764,7 @@
     },
     {
       "Id": 1129,
+      "Code": "4_M_KID1",
       "Name": "Tialfi",
       "SpriteName": "4_m_kid1.spr",
       "Offset": 0,
@@ -3330,6 +3773,7 @@
     },
     {
       "Id": 1130,
+      "Code": "4_M_KID2",
       "Name": "Seth",
       "SpriteName": "4_m_kid2.spr",
       "Offset": 0,
@@ -3338,6 +3782,7 @@
     },
     {
       "Id": 1131,
+      "Code": "4_M_LGTGRAND",
       "Name": "The Wise Bull Horn",
       "SpriteName": "4_m_lgtgrand.spr",
       "Offset": 0,
@@ -3346,6 +3791,7 @@
     },
     {
       "Id": 1132,
+      "Code": "4_M_MANAGER",
       "Name": "Peculiar-looking Steward",
       "SpriteName": "4_m_manager.spr",
       "Offset": 0,
@@ -3354,6 +3800,7 @@
     },
     {
       "Id": 1133,
+      "Code": "4_M_MINISTER",
       "Name": "Priest Praupin",
       "SpriteName": "4_m_minister.spr",
       "Offset": 0,
@@ -3362,6 +3809,7 @@
     },
     {
       "Id": 1134,
+      "Code": "4_M_MOC_SOLDIER",
       "Name": "Guide",
       "SpriteName": "4_m_moc_soldier.spr",
       "Offset": 0,
@@ -3370,6 +3818,7 @@
     },
     {
       "Id": 1135,
+      "Code": "4_M_MONK",
       "Name": "Zhenbolt",
       "SpriteName": "4_m_monk.spr",
       "Offset": 0,
@@ -3378,6 +3827,7 @@
     },
     {
       "Id": 1136,
+      "Code": "4_M_NFLOSTMAN",
       "Name": "Headgear Merchant",
       "SpriteName": "4_m_nflostman.spr",
       "Offset": 0,
@@ -3386,6 +3836,7 @@
     },
     {
       "Id": 1137,
+      "Code": "4_M_NFMAN",
       "Name": "Praying Man",
       "SpriteName": "4_m_nfman.spr",
       "Offset": 0,
@@ -3394,6 +3845,7 @@
     },
     {
       "Id": 1138,
+      "Code": "4_M_OILMAN",
       "Name": "Sharle Orelean",
       "SpriteName": "4_m_oilman.spr",
       "Offset": 0,
@@ -3402,6 +3854,7 @@
     },
     {
       "Id": 1139,
+      "Code": "4_M_ORIENT01",
       "Name": "Rice Cake Boy",
       "SpriteName": "4_m_orient01.spr",
       "Offset": 0,
@@ -3410,6 +3863,7 @@
     },
     {
       "Id": 1140,
+      "Code": "4_M_ORIENT02",
       "Name": "Pierce",
       "SpriteName": "4_m_orient02.spr",
       "Offset": 0,
@@ -3418,6 +3872,7 @@
     },
     {
       "Id": 1141,
+      "Code": "4_M_PAY_SOLDIER",
       "Name": "Guide",
       "SpriteName": "4_m_pay_soldier.spr",
       "Offset": 0,
@@ -3426,6 +3881,7 @@
     },
     {
       "Id": 1142,
+      "Code": "4_M_PIERROT",
       "Name": "Christmas Clown",
       "SpriteName": "4_m_pierrot.spr",
       "Offset": 0,
@@ -3434,6 +3890,7 @@
     },
     {
       "Id": 1143,
+      "Code": "4_M_REIDIN_KURS",
       "Name": "Reidin Corse",
       "SpriteName": "4_m_reidin_kurs.spr",
       "Offset": 0,
@@ -3442,6 +3899,7 @@
     },
     {
       "Id": 1144,
+      "Code": "4_M_REPAIR",
       "Name": "Kasis",
       "SpriteName": "4_m_repair.spr",
       "Offset": 0,
@@ -3450,6 +3908,7 @@
     },
     {
       "Id": 1145,
+      "Code": "4_M_ROGUE",
       "Name": "Adventurer",
       "SpriteName": "4_m_rogue.spr",
       "Offset": 0,
@@ -3458,6 +3917,7 @@
     },
     {
       "Id": 1146,
+      "Code": "4_M_SAGE_A",
       "Name": "Sage Welshyun",
       "SpriteName": "4_m_sage_a.spr",
       "Offset": 0,
@@ -3466,6 +3926,7 @@
     },
     {
       "Id": 1147,
+      "Code": "4_M_SAGE_C",
       "Name": "Mishoona",
       "SpriteName": "4_m_sage_c.spr",
       "Offset": 0,
@@ -3474,6 +3935,7 @@
     },
     {
       "Id": 1148,
+      "Code": "4_M_SANTA",
       "Name": "Christmas Link",
       "SpriteName": "4_m_santa.spr",
       "Offset": 0,
@@ -3482,6 +3944,7 @@
     },
     {
       "Id": 1149,
+      "Code": "4_M_SEAMAN",
       "Name": "Tzerero",
       "SpriteName": "4_m_seaman.spr",
       "Offset": 0,
@@ -3490,6 +3953,7 @@
     },
     {
       "Id": 1150,
+      "Code": "4_M_SNOWMAN",
       "Name": "Snowman",
       "SpriteName": "4_m_snowman.spr",
       "Offset": 0,
@@ -3498,6 +3962,7 @@
     },
     {
       "Id": 1151,
+      "Code": "4_M_TELEPORTER",
       "Name": "Monster Tamer",
       "SpriteName": "4_m_teleporter.spr",
       "Offset": 0,
@@ -3506,6 +3971,7 @@
     },
     {
       "Id": 1152,
+      "Code": "4_M_THAIONGBAK",
       "Name": "Aibakthing",
       "SpriteName": "4_m_thaiongbak.spr",
       "Offset": 0,
@@ -3514,6 +3980,7 @@
     },
     {
       "Id": 1153,
+      "Code": "4_M_TWMIDMAN",
       "Name": "Kunlun Envoy",
       "SpriteName": "4_m_twmidman.spr",
       "Offset": 0,
@@ -3522,6 +3989,7 @@
     },
     {
       "Id": 1154,
+      "Code": "4_M_YOYOROGUE",
       "Name": "Argen",
       "SpriteName": "4_m_yoyorogue.spr",
       "Offset": 0,
@@ -3530,6 +3998,7 @@
     },
     {
       "Id": 1155,
+      "Code": "4_M_YURI",
       "Name": "Scamp",
       "SpriteName": "4_m_yuri.spr",
       "Offset": 0,
@@ -3538,6 +4007,7 @@
     },
     {
       "Id": 1156,
+      "Code": "4_M_ZONDAMAN",
       "Name": "Cool Event Voting Staff",
       "SpriteName": "4_m_zondaman.spr",
       "Offset": 0,
@@ -3546,6 +4016,7 @@
     },
     {
       "Id": 1157,
+      "Code": "4_M_ZONDAOYAJI",
       "Name": "Librarian",
       "SpriteName": "4_m_zondaoyaji.spr",
       "Offset": 0,
@@ -3554,6 +4025,7 @@
     },
     {
       "Id": 1158,
+      "Code": "4W_F_01",
       "Name": "Armor Dealer",
       "SpriteName": "4w_f_01.spr",
       "Offset": 0,
@@ -3562,6 +4034,7 @@
     },
     {
       "Id": 1159,
+      "Code": "4W_KID",
       "Name": "Flower Girl",
       "SpriteName": "4w_kid.spr",
       "Offset": 0,
@@ -3570,6 +4043,7 @@
     },
     {
       "Id": 1160,
+      "Code": "4W_M_01",
       "Name": "Citizen",
       "SpriteName": "4w_m_01.spr",
       "Offset": 0,
@@ -3578,6 +4052,7 @@
     },
     {
       "Id": 1161,
+      "Code": "4W_M_02",
       "Name": "Auction Entrance Desk",
       "SpriteName": "4w_m_02.spr",
       "Offset": 0,
@@ -3586,6 +4061,7 @@
     },
     {
       "Id": 1162,
+      "Code": "4W_M_03",
       "Name": "Traveler",
       "SpriteName": "4w_m_03.spr",
       "Offset": 0,
@@ -3594,6 +4070,7 @@
     },
     {
       "Id": 1163,
+      "Code": "4W_SAILOR",
       "Name": "Steiner",
       "SpriteName": "4w_sailor.spr",
       "Offset": 0,
@@ -3602,6 +4079,7 @@
     },
     {
       "Id": 1164,
+      "Code": "8_DOPPEL",
       "Name": "DOPPELGANGER",
       "SpriteName": "8_doppel.spr",
       "Offset": 0,
@@ -3610,6 +4088,7 @@
     },
     {
       "Id": 1165,
+      "Code": "8_F_GIRL",
       "Name": "Ipore",
       "SpriteName": "8_f_girl.spr",
       "Offset": 0,
@@ -3618,6 +4097,7 @@
     },
     {
       "Id": 1166,
+      "Code": "8_F_GRANDMOTHER",
       "Name": "Granny",
       "SpriteName": "8_f_grandmother.spr",
       "Offset": 0,
@@ -3626,6 +4106,7 @@
     },
     {
       "Id": 1167,
+      "Code": "8_F",
       "Name": "Jeweler",
       "SpriteName": "8_f.spr",
       "Offset": 0,
@@ -3634,6 +4115,7 @@
     },
     {
       "Id": 1168,
+      "Code": "8_M_JPNSOLDIER",
       "Name": "Single Army",
       "SpriteName": "8_m_jpnsoldier.spr",
       "Offset": 0,
@@ -3642,6 +4124,7 @@
     },
     {
       "Id": 1169,
+      "Code": "8_M_TWSOLDIER",
       "Name": "Single Army",
       "SpriteName": "8_m_twsoldier.spr",
       "Offset": 0,
@@ -3650,6 +4133,7 @@
     },
     {
       "Id": 1170,
+      "Code": "8W_SOLDIER",
       "Name": "Librarian",
       "SpriteName": "8w_soldier.spr",
       "Offset": 0,
@@ -3658,6 +4142,7 @@
     },
     {
       "Id": 1171,
+      "Code": "CLEAR_NPC",
       "Name": "battle_traces",
       "SpriteName": "clear_npc.spr",
       "Offset": 0,

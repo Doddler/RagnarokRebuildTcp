@@ -289,7 +289,12 @@ public class Player : IEntityAutoReset
         EndNpcInteractions();
         Character.StopMovingImmediately();
         Character.State = CharacterState.Dead;
-
+        Character.QueuedAction = QueuedAction.None;
+        Character.MoveLockTime = 0f;
+        CombatEntity.IsCasting = false;
+        CombatEntity.CastingSkill.Clear();
+        CombatEntity.QueuedCastingSkill.Clear();
+        
         Character.Map.GatherPlayersForMultiCast(Character);
         CommandBuilder.SendPlayerDeath(Character);
         CommandBuilder.ClearRecipients();
@@ -386,7 +391,7 @@ public class Player : IEntityAutoReset
 
         if (DistanceCache.IntDistance(Character.Position, targetCharacter.Position) > GetStat(CharacterStat.Range))
         {
-            if(Character.State == CharacterState.Idle) //no point trying to move if we're already moving
+            if(InMoveReadyState)
                 Character.TryMove(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range)-1);
             return;
         }
@@ -570,8 +575,12 @@ public class Player : IEntityAutoReset
 
         if (Character.State == CharacterState.Moving)
         {
-            if (Character.Position.SquareDistance(targetCharacter.Position) <= GetStat(CharacterStat.Range))
-                PerformAttack(targetCharacter);
+            var checkPosition = Character.Position;
+            if (Character.IsMoving && Character.WalkPath != null)
+                checkPosition = Character.WalkPath[Character.MoveStep + 1];
+            if (DistanceCache.IntDistance(checkPosition, targetCharacter.Position) <= GetStat(CharacterStat.Range))
+                Character.ShortenMovePath();
+                //PerformAttack(targetCharacter);
         }
 
         if (Character.State == CharacterState.Idle)
@@ -614,14 +623,14 @@ public class Player : IEntityAutoReset
 
         if (Character.QueuedAction == QueuedAction.Cast)
         {
-            if (CombatEntity.CastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
+            if (CombatEntity.QueuedCastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
             {
                 if (Character.State == CharacterState.Moving && Character.InMoveLock && !Character.InAttackCooldown && CombatEntity.CanAttackTarget(targetCharacter))
                     Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
 
                 if (InCombatReadyState)
                 {
-                    if (CombatEntity.CastingSkill.IsValid)
+                    if (CombatEntity.QueuedCastingSkill.IsValid)
                         CombatEntity?.ResumeQueuedSkillAction();
                     else
                         Character.QueuedAction = QueuedAction.None;

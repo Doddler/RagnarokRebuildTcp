@@ -1,0 +1,5 @@
+﻿SkillId,ShortName,Name,Type,MaxLevel,CanAdjustLevel,OnHitEffect
+0,FireBolt,Fire Bolt,Targeted,10,true,firehit1
+1,ColdBolt,Cold Bolt,Targeted,10,true,icehit
+2,Bash,Bash,Targeted,10,true,
+3,Heal,Heal,Any,10,true,

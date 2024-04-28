@@ -644,7 +644,7 @@ Npc("prt_fild05", "Bulletin Board", "2_BULLETIN_BOARD", 278, 220, N) { }
 //Npc("prt_fild05", "Culvert Guardian", "8W_SOLDIER", 270, 212, SE) { }
 Npc("prt_fild05", "Kafra Employee", "4_F_KAFRA4", 290, 224, W) { }
 Npc("prt_fild05", "Tool Dealer", "4_M_01", 290, 221, W) { }
-Npc("prt_fild08", "Bard", "1_M_BARD", 175, 374, SW) { }
+//Npc("prt_fild08", "Bard", "1_M_BARD", 175, 374, SW) { }
 Npc("beach_dun3", "Nigiboran", "4_M_BIBI", 30, 220, S) { }
 Npc("c_tower3", "Doorkeeper", "4_M_02", 10, 249, S) { }
 Npc("cmd_fild04", "Daeguro", "4_F_KID2", 267, 137, S) { }
