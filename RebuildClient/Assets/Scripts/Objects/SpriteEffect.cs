@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.Sprites;
+﻿using Assets.Scripts.Sprites;
 using UnityEngine;
 
 namespace Assets.Scripts.Objects

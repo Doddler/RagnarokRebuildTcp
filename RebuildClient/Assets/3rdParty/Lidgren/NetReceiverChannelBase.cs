@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Lidgren.Network
+﻿namespace Lidgren.Network
 {
 	internal abstract class NetReceiverChannelBase
 	{

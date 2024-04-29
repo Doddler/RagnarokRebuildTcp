@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Assets.Scripts.MapEditor.Editor.ObjectEditors
 {

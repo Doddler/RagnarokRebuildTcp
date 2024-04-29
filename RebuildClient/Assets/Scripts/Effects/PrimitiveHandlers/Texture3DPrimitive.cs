@@ -1,8 +1,6 @@
-﻿using System.Data;
-using Assets.Scripts.Effects.PrimitiveData;
+﻿using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Utility;
 using UnityEngine;
-using UnityEngine.Video;
 
 namespace Assets.Scripts.Effects.PrimitiveHandlers
 {

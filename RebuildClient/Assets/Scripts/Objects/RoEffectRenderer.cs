@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Scripts.Network;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Objects

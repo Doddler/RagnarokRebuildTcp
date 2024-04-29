@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Assets.Scripts.Effects;
 using UnityEditor;
-using UnityEngine;
 
 namespace Assets.Editor
 {

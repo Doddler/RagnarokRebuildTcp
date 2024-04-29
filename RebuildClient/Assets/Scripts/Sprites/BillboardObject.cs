@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Effects;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Sprites
 {

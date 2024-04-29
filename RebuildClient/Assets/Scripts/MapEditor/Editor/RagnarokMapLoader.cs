@@ -3,14 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using B83.Image.BMP;
-using JetBrains.Annotations;
-using UnityEditor;
-using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.MapEditor.Editor
 {

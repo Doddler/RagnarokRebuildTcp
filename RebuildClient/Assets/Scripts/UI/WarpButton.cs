@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Assets.Scripts.Network;
 using TMPro;
 using UnityEngine;

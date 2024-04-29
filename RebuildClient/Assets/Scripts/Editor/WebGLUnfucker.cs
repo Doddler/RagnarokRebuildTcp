@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
-using UnityEngine;
 using DateTime = System.DateTime;
 
 public static class WebGLUnfucker

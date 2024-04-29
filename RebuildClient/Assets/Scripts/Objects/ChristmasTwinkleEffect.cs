@@ -1,6 +1,4 @@
-﻿using Assets.Scripts;
-using Assets.Scripts.Objects;
-using Assets.Scripts.Sprites;
+﻿using Assets.Scripts.Objects;
 using UnityEngine;
 
 namespace Objects

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-
-
-class Bounce : Ease {
+﻿class Bounce : Ease {
     public static double EaseOut(double t, double b, double c, double d)
     {
 		if ((t/=d) < (1/2.75)) {

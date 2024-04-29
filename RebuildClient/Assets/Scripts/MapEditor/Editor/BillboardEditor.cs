@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Sprites;
 using UnityEditor;
-using UnityEngine;
 
 namespace Assets.Scripts.MapEditor.Editor
 {

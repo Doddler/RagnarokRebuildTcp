@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading;
 using System.Diagnostics;
-using System.Security.Cryptography;
 using System.Net.Sockets;
 using System.Collections.Generic;
 

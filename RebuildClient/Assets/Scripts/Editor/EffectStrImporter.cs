@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Assets.Scripts.MapEditor.Editor;
 using Assets.Scripts.Objects;
-using Assets.Scripts.Sprites;
 using RebuildSharedData.ClientTypes;
 using UnityEditor;
 using UnityEngine;

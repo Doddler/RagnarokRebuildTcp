@@ -5,12 +5,10 @@ using System.Linq;
 using Assets.Editor;
 using Assets.Scripts.MapEditor.Editor.ObjectEditors;
 using Assets.Scripts.Utility;
-using NUnit.Framework;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.MapEditor.Editor
 {

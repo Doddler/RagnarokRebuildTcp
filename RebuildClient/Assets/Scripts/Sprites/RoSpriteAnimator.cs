@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Sprites
 {

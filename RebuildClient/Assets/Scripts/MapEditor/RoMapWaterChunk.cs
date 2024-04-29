@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Assets.Scripts.Utility;
+﻿using Assets.Scripts.Utility;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;

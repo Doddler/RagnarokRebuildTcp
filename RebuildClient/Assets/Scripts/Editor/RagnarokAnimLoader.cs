@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts;
-using Assets.Scripts.Sprites;
-
 using UnityEngine;
 
 namespace Assets.Editor

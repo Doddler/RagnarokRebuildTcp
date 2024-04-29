@@ -2,9 +2,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.ProBuilder;
 
-//[CustomEditor(typeof(MeshRenderer)), CanEditMultipleObjects]
+[CustomEditor(typeof(MeshRenderer)), CanEditMultipleObjects]
 public class NormalsVisualizer : Editor
 {
     private static bool showNormals;

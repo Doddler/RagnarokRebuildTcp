@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-
-namespace Lidgren.Network
+﻿namespace Lidgren.Network
 {
 	/// <summary>
 	/// Interface for an encryption algorithm

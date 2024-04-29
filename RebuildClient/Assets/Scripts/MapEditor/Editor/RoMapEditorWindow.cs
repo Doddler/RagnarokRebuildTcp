@@ -7,7 +7,6 @@ using Assets.Scripts.MapEditor;
 using Assets.Scripts.MapEditor.Editor;
 using UnityEditor;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Assets.Editor
 {

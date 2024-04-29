@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Windows.Forms.VisualStyles;
 using UnityEditor;
 using UnityEditor.Animations;
-using UnityEditor.Rendering;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Threading;
+﻿using System.Threading;
 using System.Diagnostics;
 
 #if !__NOIPENDPOINT__

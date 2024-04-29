@@ -1,8 +1,6 @@
-﻿using System;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Assertions.Comparers;
 using UnityEngine.Profiling;
 
 namespace Assets.Scripts.MapEditor.Editor.GroundBrushes

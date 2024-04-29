@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using Assets.Editor;
 using Assets.Scripts;
-using TMPro;
 using UnityEditor;
-using UnityEditor.Animations;
-
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class LayerCurveSet
 {

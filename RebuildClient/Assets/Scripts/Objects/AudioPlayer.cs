@@ -2,7 +2,6 @@
 using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Objects
 {

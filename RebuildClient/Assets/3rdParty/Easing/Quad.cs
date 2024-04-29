@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-
-
-class Quad : Ease { 
+﻿class Quad : Ease { 
     public static double EaseIn (double t, double b, double c, double d) {
 		return c*(t/=d)*t + b;
 	}

@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Effects
 {

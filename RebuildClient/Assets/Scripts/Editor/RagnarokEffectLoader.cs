@@ -1,8 +1,6 @@
-﻿using Assets.Scripts.MapEditor.Editor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Assets.Scripts.Objects;
 using JetBrains.Annotations;
 using UnityEditor;

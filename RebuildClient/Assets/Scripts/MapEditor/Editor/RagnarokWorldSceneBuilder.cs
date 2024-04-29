@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.Utility;
 using Objects;
 using UnityEditor;
 using UnityEditor.SceneManagement;

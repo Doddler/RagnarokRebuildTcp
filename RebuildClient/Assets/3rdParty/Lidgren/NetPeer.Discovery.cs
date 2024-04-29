@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading;
 
 #if !__NOIPENDPOINT__

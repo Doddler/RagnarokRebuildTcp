@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Network;
-using Assets.Scripts.Utility;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Object = System.Object;
 
 namespace Assets.Scripts.Effects

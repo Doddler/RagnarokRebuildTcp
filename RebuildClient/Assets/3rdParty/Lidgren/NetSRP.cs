@@ -1,7 +1,6 @@
 ﻿#define USE_SHA256
 
 using System;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Lidgren.Network

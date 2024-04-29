@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using UnityEditor.Recorder;
 using UnityEditor.Recorder.Encoder;
 using UnityEngine;
 

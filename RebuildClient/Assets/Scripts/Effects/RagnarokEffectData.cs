@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Effects.EffectHandlers;
-using Assets.Scripts.Effects.PrimitiveHandlers;
 using Assets.Scripts.Utility;
 
 namespace Assets.Scripts.Effects

@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayerControl;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.EventSystems.EventTrigger;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Assets.Scripts.UI
 {

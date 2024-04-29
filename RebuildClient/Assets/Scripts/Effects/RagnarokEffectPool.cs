@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Utility;
 using UnityEngine;
 using Utility;
-using Object = System.Object;
 
 namespace Assets.Scripts.Effects
 {

@@ -1,10 +1,5 @@
 ﻿using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

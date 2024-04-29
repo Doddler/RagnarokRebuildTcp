@@ -7,7 +7,6 @@ using System.IO;
 using System.Threading;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace UnityEditor.Recorder.Examples

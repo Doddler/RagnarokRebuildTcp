@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using RebuildSharedData.Enum;
-using RebuildSharedData.Extensions;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MinimapController : MonoBehaviour

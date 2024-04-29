@@ -1,5 +1,4 @@
 using System;
-using UnityEditor;
 using UnityEngine;
 using static UnityEditor.Recorder.Examples.FFmpegEncoderSettings;
 

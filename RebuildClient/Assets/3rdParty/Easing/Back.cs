@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-
-
-class Back : Ease {
+﻿class Back : Ease {
     public static double EaseIn(double t, double b, double c, double d)
     {
         double s = 1.70158;
