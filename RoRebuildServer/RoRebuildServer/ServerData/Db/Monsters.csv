@@ -54,7 +54,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4052,DRAGON_TAIL,Dragon Tail,61,2538,38,44,40,57,67,35,419,512,1,23,18,2470,2889,10,12,Medium,Insect,Wind2,862,312,534,175,Normal,AiAggressive,372,dragon_tail.spr,0,0.5,1
 4053,POISON_SPORE,Poison Spore,19,356,11,16,17,12,12,15,45,55,1,8,8,168,171,10,12,Medium,Plant,Poison1,1672,288,672,200,Normal,AiAggressive,550,poison_spore.spr,0,0.5,1
 4054,WORM_TAIL,Worm Tail,14,270,8,11,13,9,9,11,34,41,2,6,5,91,88,10,12,Medium,Plant,Earth1,1048,192,48,200,Normal,AiPassive,300,worm_tail.spr,0,0.5,1
-4055,ELDER_WILOW,Elder Willow,20,391,11,17,17,13,13,17,58,71,1,7,7,192,200,10,12,Medium,Plant,Fire2,1372,432,672,200,Normal,AiAggressive,300,elder_wilow.spr,0,0.5,1
+4055,ELDER_WILLOW,Elder Willow,20,391,11,17,17,13,13,17,58,71,1,7,7,192,200,10,12,Medium,Plant,Fire2,1372,432,672,200,Normal,AiAggressive,300,elder_wilow.spr,0,0.5,1
 4056,EGGYRA,Eggyra,24,391,19,22,20,20,20,20,68,83,1,8,9,312,328,10,12,Medium,Formless,Ghost2,1816,288,816,200,Normal,AiPassive,500,eggyra.spr,0,0.5,1
 4057,BIGFOOT,Bigfoot,25,434,21,20,21,20,20,20,74,91,1,9,8,359,342,10,12,Large,Beast,Earth1,1260,192,192,300,Normal,AiPassive,870,bigfoot.spr,0,0.5,1
 4058,SOHEE,Sohee,33,663,28,33,24,27,26,25,131,160,1,11,11,681,605,10,12,Medium,Demon,Water1,2112,576,912,250,Normal,AiPassive,333,sohee.spr,0,0.5,1

@@ -373,6 +373,28 @@
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": "Assets/Prefabs/LightSpinner.prefab"
+    },
+    {
+      "Id": 34,
+      "Name": "Mammonite",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "maemor",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 35,
+      "Name": "LightningBolt",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "lightning",
+      "Sprite": "",
+      "SoundFile": "ef_lightbolt",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

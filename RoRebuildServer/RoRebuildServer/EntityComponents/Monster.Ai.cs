@@ -582,6 +582,9 @@ public partial class Monster
     {
         Debug.Assert(targetCharacter != null, $"Monster {Character.Name} must have a target to use this action.");
 
+        if (CombatEntity.IsCasting || Character.QueuedAction == QueuedAction.Cast)
+            return false;
+
         var targetEntity = targetCharacter.Entity.Get<CombatEntity>();
         if (!targetEntity.IsValidTarget(CombatEntity))
             return false;

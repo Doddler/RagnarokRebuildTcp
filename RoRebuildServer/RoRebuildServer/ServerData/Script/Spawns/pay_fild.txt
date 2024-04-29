@@ -78,7 +78,7 @@ MapConfig("pay_fild06")
 
 MapConfig("pay_fild07")
 {
-	CreateSpawn("ELDER_WILOW", 70);
+	CreateSpawn("ELDER_WILLOW", 70);
 	CreateSpawn("EGGYRA", 40);
 	CreateSpawn("POPORING", 20);
 	CreateSpawn("WILOW", 20);
@@ -132,7 +132,7 @@ MapConfig("pay_fild11")
 {
 	CreateSpawn("HORONG", 40);
 	CreateSpawn("GREATEST_GENERAL", 30);
-	CreateSpawn("ELDER_WILOW", 10);
+	CreateSpawn("ELDER_WILLOW", 10);
 	CreateSpawn("POPORING", 20);
 	CreateSpawn("NINE_TAIL", 40);
 	CreateSpawn("DRAGON_TAIL", 15);

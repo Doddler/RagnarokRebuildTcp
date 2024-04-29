@@ -34,7 +34,7 @@ MapConfig("moc_fild02")
 
 MapConfig("moc_fild03")
 {
-	CreateSpawn("ELDER_WILOW", 70);
+	CreateSpawn("ELDER_WILLOW", 70);
 	CreateSpawn("GREATEST_GENERAL", 40);
 	CreateSpawn("POPORING", 30);
 	CreateSpawn("EGGYRA", 20);

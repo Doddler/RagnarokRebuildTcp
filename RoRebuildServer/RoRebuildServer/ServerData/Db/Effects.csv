@@ -33,3 +33,5 @@
 31,Exacast,FALSE,FALSE,,,,0,Assets/Prefabs/Exacast.prefab
 32,GasPush,TRUE,TRUE,GasPush,,,0,
 33,LightSpinner,FALSE,FALSE,,,,0,Assets/Prefabs/LightSpinner.prefab
+34,Mammonite,TRUE,TRUE,maemor,,,0,
+35,LightningBolt,TRUE,TRUE,lightning,,ef_lightbolt,0,

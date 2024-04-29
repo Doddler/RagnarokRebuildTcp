@@ -27,6 +27,8 @@ namespace RebuildSharedData.Enum
         ArrowShower,
         ImproveConcentration,
         //acolyte
-        Heal
+        Heal,
+        //merchant
+        Mammonite
     }
 }

@@ -275,6 +275,12 @@ internal class DataLoader
             var handler = (IMonsterLoader)Activator.CreateInstance(type)!;
             handler.Load();
         }
+
+        foreach (var entry in DataManager.MonsterSkillAiHandlers)
+        {
+            if(!DataManager.MonsterCodeLookup.TryGetValue(entry.Key, out _))
+                ServerLogger.LogWarning($"Ai skill handler exists for monster {entry.Key}, but a monster by that name does not exist.");
+        }
     }
 
     public List<MonsterDatabaseInfo> LoadMonsterStats()

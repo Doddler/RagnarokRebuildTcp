@@ -1,6 +1,7 @@
 ﻿
 SkillHandler("PORING50") {
 StateIdle:
+	//TryCast params: skillname, level, chance/1000, cast time (ms), delay time (ms)
 	TryCast(ColdBolt, 3, 50, 1000, 5000)-> SendEmote(29); //gg
 
 StateRandomMove:
@@ -19,6 +20,22 @@ StateFlee:
 		SendEmote(5); //sweat
 		ChangeAiState(StateIdle);
 	}
+}
+
+SkillHandler("ELDER_WILLOW") {
+StateAttacking:
+	TryCast(FireBolt, 3, 50, 1500, 5000);
+StateChase:
+	TryCast(FireBolt, 3, 50, 1500, 5000);
+}
+
+SkillHandler("MOONLIGHT") {
+StateChase:
+	TryCast(ColdBolt, 5, 200, 0, 5000);
+	TryCast(FireBolt, 5, 200, 0, 5000);
+	TryCast(LightningBolt, 5, 200, 0, 5000);
+StateAttacking:
+	TryCast(Mammonite, 10, 200, 0, 5000) -> SendEmote(8);
 }
 
 

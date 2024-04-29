@@ -173,7 +173,7 @@ MapConfig("job_wiz")
 	CreateSpawn("SCORPION", 1, %(40, 103, 1, 1), 0, 0);
 	CreateSpawn("FRILLDORA", 1, %(51, 103, 1, 1), 0, 0);
 	CreateSpawn("PECOPECO", 1, %(40, 92, 1, 1), 0, 0);
-	CreateSpawn("ELDER_WILOW", 1, %(51, 92, 1, 1), 0, 0);
+	CreateSpawn("ELDER_WILLOW", 1, %(51, 92, 1, 1), 0, 0);
 	CreateSpawn("METALLER", 1, %(37, 89, 1, 1), 0, 0);
 	CreateSpawn("DESERT_WOLF", 1, %(54, 89, 1, 1), 0, 0);
 }

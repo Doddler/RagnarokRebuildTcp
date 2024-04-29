@@ -589,12 +589,6 @@
       "Music": "14.mp3"
     },
     {
-      "Code": "pay_gld",
-      "Name": "Payon Guild Castles",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
       "Code": "pay_dun00",
       "Name": "Payon Dungeon 1F",
       "MapMode": 2,
@@ -1039,78 +1033,6 @@
       "Music": "28.mp3"
     },
     {
-      "Code": "yuno_fild01",
-      "Name": "Border Post",
-      "MapMode": 3,
-      "Music": "71.mp3"
-    },
-    {
-      "Code": "yuno_fild02",
-      "Name": "Kiel Hyre\u0027s Cottage",
-      "MapMode": 3,
-      "Music": "71.mp3"
-    },
-    {
-      "Code": "yuno_fild03",
-      "Name": "El Mes Plateau",
-      "MapMode": 3,
-      "Music": "72.mp3"
-    },
-    {
-      "Code": "yuno_fild04",
-      "Name": "El Mes Plateau",
-      "MapMode": 3,
-      "Music": "72.mp3"
-    },
-    {
-      "Code": "yuno_fild05",
-      "Name": "El Mes Plateau",
-      "MapMode": 3,
-      "Music": "72.mp3"
-    },
-    {
-      "Code": "yuno_fild06",
-      "Name": "El Mes Plateau",
-      "MapMode": 3,
-      "Music": "72.mp3"
-    },
-    {
-      "Code": "yuno_fild07",
-      "Name": "El Mes Gorge (Valley of Abyss)",
-      "MapMode": 3,
-      "Music": "72.mp3"
-    },
-    {
-      "Code": "yuno_fild08",
-      "Name": "Kiel Hyre Academy",
-      "MapMode": 3,
-      "Music": "71.mp3"
-    },
-    {
-      "Code": "yuno_fild09",
-      "Name": "Schwaltzwald Guard Camp",
-      "MapMode": 3,
-      "Music": "71.mp3"
-    },
-    {
-      "Code": "yuno_fild10",
-      "Name": "Juno Field",
-      "MapMode": 3,
-      "Music": "72.mp3"
-    },
-    {
-      "Code": "yuno_fild11",
-      "Name": "Juno Field",
-      "MapMode": 3,
-      "Music": "71.mp3"
-    },
-    {
-      "Code": "yuno_fild12",
-      "Name": "Border Checkpoint",
-      "MapMode": 3,
-      "Music": "71.mp3"
-    },
-    {
       "Code": "yuno",
       "Name": "Juno, Capital of the Schwarzwald Republic",
       "MapMode": 1,
@@ -1171,118 +1093,10 @@
       "Music": "65.mp3"
     },
     {
-      "Code": "guild_room",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "01.mp3"
-    },
-    {
-      "Code": "new_zone01",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "30.mp3"
-    },
-    {
-      "Code": "new_zone02",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "30.mp3"
-    },
-    {
-      "Code": "new_zone03",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "30.mp3"
-    },
-    {
-      "Code": "new_zone04",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "30.mp3"
-    },
-    {
-      "Code": "poring_c01",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "01.mp3"
-    },
-    {
-      "Code": "poring_c02",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "01.mp3"
-    },
-    {
-      "Code": "pvp_n_1-4",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "01.mp3"
-    },
-    {
       "Code": "pvp_n_1-5",
       "Name": "Map",
       "MapMode": 3,
       "Music": "01.mp3"
-    },
-    {
-      "Code": "sword_1-1",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "01.mp3"
-    },
-    {
-      "Code": "turbo_n_1",
-      "Name": "Map",
-      "MapMode": 3,
-      "Music": "01.mp3"
-    },
-    {
-      "Code": "job_thief1",
-      "Name": "Job Quest Map",
-      "MapMode": 3,
-      "Music": "51.mp3"
-    },
-    {
-      "Code": "job_duncer",
-      "Name": "Job Quest Map",
-      "MapMode": 3,
-      "Music": "51.mp3"
-    },
-    {
-      "Code": "job_knt",
-      "Name": "Job Quest Map",
-      "MapMode": 3,
-      "Music": "51.mp3"
-    },
-    {
-      "Code": "job_prist",
-      "Name": "Job Quest Map",
-      "MapMode": 3,
-      "Music": "51.mp3"
-    },
-    {
-      "Code": "job_sword1",
-      "Name": "Job Quest Map",
-      "MapMode": 3,
-      "Music": "51.mp3"
-    },
-    {
-      "Code": "job_wiz",
-      "Name": "Job Quest Map",
-      "MapMode": 3,
-      "Music": "51.mp3"
-    },
-    {
-      "Code": "job_hunte",
-      "Name": "Job Quest Map",
-      "MapMode": 3,
-      "Music": "51.mp3"
-    },
-    {
-      "Code": "job_monk",
-      "Name": "Job Quest Map",
-      "MapMode": 3,
-      "Music": "28.mp3"
     },
     {
       "Code": "jawaii",
@@ -1295,138 +1109,6 @@
       "Name": "Jawaii Indoors",
       "MapMode": 3,
       "Music": "28.mp3"
-    },
-    {
-      "Code": "alde_gld",
-      "Name": "Luina Realm",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "pay_gld",
-      "Name": "Baldr Realm",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "aldeg_cas01",
-      "Name": "Luina Castle, Neuschwanstein",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "aldeg_cas02",
-      "Name": "Luina Castle, Hohenschwangau",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "aldeg_cas03",
-      "Name": "Luina Castle, Nuernberg",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "aldeg_cas04",
-      "Name": "Luina Castle, Wuerzburg",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "aldeg_cas05",
-      "Name": "Luina Castle, Rothenburg",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "gefg_cas01",
-      "Name": "Britoniah Castle, Repherion",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "gefg_cas02",
-      "Name": "Britoniah Castle, Eeyorbriggar",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "gefg_cas03",
-      "Name": "Britoniah Castle, Yesnelph",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "gefg_cas04",
-      "Name": "Britoniah Castle, Bergel",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "gefg_cas05",
-      "Name": "Britoniah Castle, Mersetzdeitz",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "payg_cas01",
-      "Name": "Balder Castle, Bright Arbor",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "payg_cas02",
-      "Name": "Balder Castle, Sacred Palace",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "payg_cas03",
-      "Name": "Balder Castle, Holy Shadow",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "payg_cas04",
-      "Name": "Balder Castle, Scarlet Palace",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "payg_cas05",
-      "Name": "Balder Castle, Bamboo Groove Hill",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "prtg_cas01",
-      "Name": "Valkyrie Castle, Kriemhild",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "prtg_cas02",
-      "Name": "Valkyrie Castle, Swanhild",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "prtg_cas03",
-      "Name": "Valkyrie Castle, Fadhgrindh",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "prtg_cas04",
-      "Name": "Valkyrie Castle, Skoegul",
-      "MapMode": 3,
-      "Music": "66.mp3"
-    },
-    {
-      "Code": "prtg_cas05",
-      "Name": "Valkyrie Castle, Gondul",
-      "MapMode": 3,
-      "Music": "66.mp3"
     },
     {
       "Code": "cmd_fild01",
@@ -1517,36 +1199,6 @@
       "Name": "Mao, the East Cave",
       "MapMode": 2,
       "Music": "41.mp3"
-    },
-    {
-      "Code": "xmas",
-      "Name": "Lutie, the Snow Village",
-      "MapMode": 1,
-      "Music": "59.mp3"
-    },
-    {
-      "Code": "xmas_dun01",
-      "Name": "Toy Dungeon 1 [Factory Area]",
-      "MapMode": 2,
-      "Music": "58.mp3"
-    },
-    {
-      "Code": "xmas_dun02",
-      "Name": "Toy Dungeon 2 [Monitoring Area]",
-      "MapMode": 2,
-      "Music": "58.mp3"
-    },
-    {
-      "Code": "xmas_fild01",
-      "Name": "Lutie Field",
-      "MapMode": 3,
-      "Music": "55.mp3"
-    },
-    {
-      "Code": "xmas_in",
-      "Name": "Lutie [Inside]",
-      "MapMode": 3,
-      "Music": "59.mp3"
     },
     {
       "Code": "amatsu",
