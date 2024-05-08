@@ -68,7 +68,6 @@ namespace Assets.Scripts.MapEditor.Editor
             }
 
 
-
             //RenderSettings.ambientIntensity = (1 - world.LightSetup.Opacity) * 2;
 
             //Debug.Log("Light count: " + world.Lights.Count);
@@ -99,11 +98,11 @@ namespace Assets.Scripts.MapEditor.Editor
                 targetLight.cullingMask = ~LayerMask.GetMask("Characters");
             }
 
-            var intensity = 1;// world.LightSetup.Opacity;
+            var intensity = 1; // world.LightSetup.Opacity;
 
             var rotation = Quaternion.Euler(90 - world.LightSetup.Longitude, world.LightSetup.Latitude, 0);
 
-            if(world.MapName == "moc_pryd02" || world.MapName == "moc_pryd03")
+            if (world.MapName == "moc_pryd02" || world.MapName == "moc_pryd03")
                 rotation = Quaternion.Euler(0, 0, 0);
 
 
@@ -155,14 +154,14 @@ namespace Assets.Scripts.MapEditor.Editor
             //    color = new Color(color.r / max * boostTo, color.g / max * boostTo, color.b / max * boostTo, color.a);
             //}
 
-            var i = Mathf.Max(3, (range + 1) / 3f);// 3 + Mathf.Pow(range/10f,2); //2 * (1/max);
+            var i = Mathf.Max(3, (range + 1) / 3f); // 3 + Mathf.Pow(range/10f,2); //2 * (1/max);
 
             //range *= 0.8f;
 
             //range = range / 2 + range * max;
 
             //var i = intensity;
-            
+
             var l = lobj.AddComponent<Light>();
             l.type = LightType.Point;
             l.range = range;
@@ -178,7 +177,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
             l = sub.AddComponent<Light>();
             l.type = LightType.Point;
-            l.range = range/2f;
+            l.range = range / 2f;
             l.color = color;
             l.intensity = i;
             l.lightmapBakeType = LightmapBakeType.Baked;
@@ -244,7 +243,6 @@ namespace Assets.Scripts.MapEditor.Editor
                 //PlaceLight(light.Name + " Red", position, Color.red, light.Range / 5f, light.Color.r * 5f);
                 //PlaceLight(light.Name + " Blue", position, Color.blue, light.Range / 5f, light.Color.g * 5f);
                 //PlaceLight(light.Name + " Green", position, Color.green, light.Range / 5f, light.Color.b * 5f);
-
             }
 
             Debug.Log($"Brightest scene color value is {maxLight} (color {maxLightColor})");
@@ -269,7 +267,6 @@ namespace Assets.Scripts.MapEditor.Editor
         {
             if (world.Water == null)
                 return;
-
 
 
             //var waterContainer = new GameObject("water");
@@ -341,7 +338,6 @@ namespace Assets.Scripts.MapEditor.Editor
                 obj.name = effect.Id + " - " + effect.Name;
                 obj.transform.SetParent(effectContainer.transform, false);
                 obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
-
             }
         }
 
@@ -370,7 +366,7 @@ namespace Assets.Scripts.MapEditor.Editor
                     obj.name = effect.Id + " - " + effect.Name;
                     obj.transform.SetParent(effectContainer.transform, false);
                     obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
-                    
+
                     continue;
                 }
 
@@ -379,20 +375,20 @@ namespace Assets.Scripts.MapEditor.Editor
                     //torch
                     var light = world.Lights[0];
                     var position = new Vector3(effect.Position.x / 5, -effect.Position.y / 5 + 2, effect.Position.z / 5);
-                    
+
                     var lightObj = new GameObject(light.Name);
                     lightObj.transform.SetParent(effectContainer.transform, false);
                     lightObj.transform.localPosition = position;
-                    lightObj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    lightObj.transform.localScale = Vector3.one;
                     lightObj.isStatic = true;
-                
+
                     //PlaceLight(lightObj, "Gen" + light.Name, Vector3.zero, light.Color, light.Range / 5, 7.5f);
-                
+
                     var r = light.Range / 5f;
                     //var b = 1f;
-                
+
                     //var c = 0;
-                
+
                     PlaceLight(lightObj, light.Color, r, 5);
                 }
 
@@ -401,10 +397,16 @@ namespace Assets.Scripts.MapEditor.Editor
                     var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/Torch.prefab");
                     var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
                     obj.name = effect.Id + " - " + effect.Name;
+
+                    var sub = new GameObject("Torch " + effect.Name);
                     
-                    obj.transform.SetParent(effectContainer.transform, false);
-                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5 + 2f, effect.Position.z / 5);
-                    obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    obj.transform.SetParent(sub.transform, false);
+                    obj.transform.localPosition = new Vector3(0.1f, 0f, 0f);
+                    obj.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f); //I think this feels closer to the original...
+                    
+                    sub.transform.SetParent(effectContainer.transform, false);
+                    sub.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5 + 1.9f, effect.Position.z / 5);
+                    
                     continue;
                 }
 
@@ -423,16 +425,17 @@ namespace Assets.Scripts.MapEditor.Editor
                     renderer.UseZTest = true;
                     renderer.RandomStart = true;
                     renderer.LoopDelay = effect.Delay / 1000f;
-                    obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                    
+                    obj.transform.localScale = Vector3.one;
+
                     for (var i = 1; i <= 4; i++)
                     {
                         renderer.PrefabList.Add(AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/Effects/Prefabs/bubble{i}.prefab"));
                     }
+
                     continue;
                 }
-                
-                
+
+
                 if (effect.Id == 110) //gas push
                 {
                     var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/GasPush.prefab");
@@ -441,17 +444,17 @@ namespace Assets.Scripts.MapEditor.Editor
                     obj.name = effect.Id + " - " + effect.Name;
                     obj.transform.SetParent(effectContainer.transform, false);
                     obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
-                    obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    obj.transform.localScale = Vector3.one;
                     var renderer = obj.GetComponent<RoEffectRenderer>();
                     renderer.IsLoop = true;
                     renderer.UseZTest = true;
                     renderer.RandomStart = true;
-                    renderer.LoopDelay = effect.Delay/1000f;
-                    
+                    renderer.LoopDelay = effect.Delay / 1000f;
+
                     continue;
                 }
-                
-                
+
+
                 if (effect.Id == 165) //christmas light, or the effect called 'banjjakii'
                 {
                     var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/ChristmasLight.prefab");
@@ -466,7 +469,7 @@ namespace Assets.Scripts.MapEditor.Editor
                     renderer.UseZTest = false;
                     renderer.RandomStart = false;
                     // renderer.LoopDelay = effect.Delay/1000f;
-                    
+
                     continue;
                 }
 
@@ -491,7 +494,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 var tempObj = new GameObject("Missing Effect " + effect.Id + " - " + effect.Name);
                 tempObj.transform.SetParent(effectContainer.transform, false);
                 tempObj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
-                
+
                 Debug.LogWarning($"Unknown effect ID {effect.Id}, not loaded into scene. ({effect})");
             }
         }
@@ -517,7 +520,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 {
                     //try again, but use wav instead of ogg
                     soundAsset = AssetDatabase.LoadAssetAtPath<AudioClip>(Path.Combine(soundFolder, sound.File));
-                    if(soundAsset == null)
+                    if (soundAsset == null)
                         Debug.LogWarning("Could not load audio file " + sound.File);
                 }
 
@@ -622,9 +625,9 @@ namespace Assets.Scripts.MapEditor.Editor
         {
             data = mapData;
             world = worldData;
-            
+
             modelCache = new Dictionary<string, GameObject>();
-            
+
             var oldBox = GameObject.Find($"{world.MapName} resources");
             if (oldBox != null)
             {
@@ -643,7 +646,7 @@ namespace Assets.Scripts.MapEditor.Editor
             }
             else
                 return;
-            
+
             LoadEffects();
         }
 

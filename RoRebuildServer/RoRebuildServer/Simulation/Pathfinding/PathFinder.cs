@@ -12,12 +12,12 @@ public class PathNode : IComparable<PathNode>
     public PathNode? Parent;
     public Position Position;
     public int Steps;
-    public float Distance;
-    public float F;
-    public float Score;
+    public int Distance;
+    public int F;
+    public int Score;
     public Direction Direction;
 
-    public void Set(PathNode? parent, Position position, float distance)
+    public void Set(PathNode? parent, Position position, int distance)
     {
         Parent = parent;
         Position = position;
@@ -32,17 +32,17 @@ public class PathNode : IComparable<PathNode>
             Direction = (position - Parent.Position).GetDirectionForOffset();
 
             Steps = Parent.Steps + 1;
-            Score = Parent.Score + 1;
+            Score = Parent.Score + 10;
 
             if (Direction.IsDiagonal())
-                Score += 0.4f;
+                Score += 4;
         }
 
         Distance = distance;
         F = Score + Distance;
     }
 
-    public PathNode(PathNode? parent, Position position, float distance)
+    public PathNode(PathNode? parent, Position position, int distance)
     {
         Set(parent, position, distance);
     }
@@ -86,7 +86,7 @@ public class Pathfinder
 
     }
 
-    private PathNode NextPathNode(PathNode? parent, Position position, float distance)
+    private PathNode NextPathNode(PathNode? parent, Position position, int distance)
     {
         Debug.Assert(nodeCache != null);
 
@@ -96,9 +96,9 @@ public class Pathfinder
         return n;
     }
 
-    private float CalcDistance(Position pos, Position dest)
+    private int CalcDistance(Position pos, Position dest)
     {
-        return Math.Max(0, Math.Abs(pos.X - dest.X) - pathRange) + Math.Max(0, Math.Abs(pos.Y - dest.Y) - pathRange);
+        return (Math.Max(0, Math.Abs(pos.X - dest.X) - pathRange) + Math.Max(0, Math.Abs(pos.Y - dest.Y) - pathRange));
     }
 
     private bool HasPosition(List<PathNode> node, Position pos)

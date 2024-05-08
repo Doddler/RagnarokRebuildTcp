@@ -416,7 +416,7 @@ public class CombatEntity : IEntityAutoReset
         if (atk2 < atk1)
             atk2 = atk1;
 
-        var baseDamage = (short)GameRandom.NextInclusive(atk1, atk2);
+        var baseDamage = GameRandom.NextInclusive(atk1, atk2);
 
         var eleMod = 100;
         if (target.Character.Type == CharacterType.Monster)
@@ -429,7 +429,7 @@ public class CombatEntity : IEntityAutoReset
 
         var defCut = MathF.Pow(0.99f, target.GetStat(CharacterStat.Def) - 1);
 
-        var damage = (short)(baseDamage * attackMultiplier * (eleMod / 100f) * defCut - GetStat(CharacterStat.Vit) * 0.7f);
+        var damage = (int)(baseDamage * attackMultiplier * (eleMod / 100f) * defCut - GetStat(CharacterStat.Vit) * 0.7f);
         if (damage < 1)
             damage = 1;
         
@@ -447,7 +447,7 @@ public class CombatEntity : IEntityAutoReset
             lvCut = Math.Clamp(lvCut, 0.5f, 1f);
         }
         
-        damage = (short)(lvCut * damage);
+        damage = (int)(lvCut * damage);
 
         if (damage < 1)
             damage = 1;

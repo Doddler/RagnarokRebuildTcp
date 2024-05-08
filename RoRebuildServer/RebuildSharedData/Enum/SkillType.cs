@@ -6,6 +6,7 @@ namespace RebuildSharedData.Enum
 {
     public enum SkillTarget : byte
     {
+        Any,
         SingleTarget,
         SingleAlly,
         SingleAny,

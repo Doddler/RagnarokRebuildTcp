@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -338,6 +339,9 @@ namespace Assets.Scripts.Objects
                 //if (CameraFollower.Instance.Target != null && (CameraFollower.Instance.Target.transform.position - transform.position).magnitude > 30)
                 if (!cullingGroup.IsVisible(0))
                     return;
+                
+                if(frame > Anim.MaxKey)
+                    waitTime += Time.deltaTime;
             }
 
             time += Time.deltaTime;
@@ -345,13 +349,12 @@ namespace Assets.Scripts.Objects
             if (newFrame == frame)
                 return;
 
-            //Debug.Log(frame);
+            //Debug.Log($"frame: {frame} waittime: {waitTime} time: {time}");
 
             frame = newFrame;
 
             if (frame > Anim.MaxKey)
             {
-                waitTime += Time.deltaTime;
                 if (IsLoop && waitTime < LoopDelay)
                 {
                     if (hasDisabledChildren) return;
@@ -365,7 +368,8 @@ namespace Assets.Scripts.Objects
 
                 if (IsLoop)
                 {
-                    time -= (float)Anim.MaxKey / (float)Anim.FrameRate + LoopDelay;
+                    time = 0f;
+                    //time -= (float)Anim.MaxKey / (float)Anim.FrameRate + LoopDelay;
                     frame = Mathf.FloorToInt(time * Anim.FrameRate);
                     waitTime = 0f;
                     hasDisabledChildren = false;
@@ -399,5 +403,16 @@ namespace Assets.Scripts.Objects
             if (cullingGroup != null)
                 cullingGroup.Dispose();
         }
+
+        public void OnDrawGizmos()
+        {
+            Gizmos.DrawIcon(transform.position, "effect.png", true);
+        }
+
+        // public void OnDrawGizmosSelected()
+        // {
+        //     if(isInit)
+        //         Gizmos.DrawSphere(boundingSphere.position, boundingSphere.radius);
+        // }
     }
 }

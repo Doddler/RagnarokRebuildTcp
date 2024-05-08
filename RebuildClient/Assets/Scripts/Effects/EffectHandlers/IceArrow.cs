@@ -37,7 +37,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             }
 
             if (iceArrowAtlas == null)
-                iceArrowAtlas = Resources.Load<SpriteAtlas>("FireBolt");
+                iceArrowAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
 
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.IceArrow);
             effect.SourceEntity = source;
@@ -110,6 +110,9 @@ namespace Assets.Scripts.Effects.EffectHandlers
             data.Radius = 0f;
             data.RadiusSpeed = 7.2f; //originally 1.2 per frame
             data.RadiusAccel = -14.76f; //(data.RadiusSpeed / (prim.Duration + 0.66f)) * 3f; //original: -(data.RadiusSpeed / (prim.FrameDuration + 40f)) * 2f;
+            
+            sender.IsActive = false;
+            sender.gameObject.SetActive(false);
         }
     }
 }

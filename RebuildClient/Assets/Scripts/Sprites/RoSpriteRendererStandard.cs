@@ -253,7 +253,7 @@ namespace Assets.Scripts.Sprites
             // }
 
             if (Mathf.Approximately(0, SpriteOffset))
-                propertyBlock.SetFloat("_Offset", SpriteData.Size / 125f);
+                propertyBlock.SetFloat("_Offset", Mathf.Max(SpriteData.Size / 125f, 1f));
             else
                 propertyBlock.SetFloat("_Offset", SpriteOffset);
 

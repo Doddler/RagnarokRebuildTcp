@@ -4,79 +4,108 @@
       "Id": 0,
       "Name": "Unarmed",
       "WeaponClass": "Unarmed",
-      "HitSound": "_hit_fist1/_hit_fist2/_hit_fist3/_hit_fist4"
+      "HitSounds": [
+        "_hit_fist1.ogg",
+        "_hit_fist2.ogg",
+        "_hit_fist3.ogg",
+        "_hit_fist4.ogg"
+      ]
     },
     {
       "Id": 1,
       "Name": "Dagger",
       "WeaponClass": "Dagger",
-      "HitSound": "_hit_dagger"
+      "HitSounds": [
+        "_hit_dagger.ogg"
+      ]
     },
     {
       "Id": 2,
       "Name": "Sword",
       "WeaponClass": "Sword",
-      "HitSound": "_hit_sword"
+      "HitSounds": [
+        "_hit_sword.ogg"
+      ]
     },
     {
       "Id": 3,
       "Name": "Sword (2-Handed)",
       "WeaponClass": "2HSword",
-      "HitSound": "_hit_sword"
+      "HitSounds": [
+        "_hit_sword.ogg"
+      ]
     },
     {
       "Id": 4,
       "Name": "Spear",
       "WeaponClass": "Spear",
-      "HitSound": "_hit_spear"
+      "HitSounds": [
+        "_hit_spear.ogg"
+      ]
     },
     {
       "Id": 5,
       "Name": "Spear (2-Handed)",
       "WeaponClass": "2HSpear",
-      "HitSound": "_hit_spear"
+      "HitSounds": [
+        "_hit_spear.ogg"
+      ]
     },
     {
       "Id": 6,
       "Name": "Axe",
       "WeaponClass": "Axe",
-      "HitSound": "_hit_axe"
+      "HitSounds": [
+        "_hit_axe.ogg"
+      ]
     },
     {
       "Id": 7,
       "Name": "Axe (2-Handed)",
       "WeaponClass": "2HAxe",
-      "HitSound": "_hit_axe"
+      "HitSounds": [
+        "_hit_axe.ogg"
+      ]
     },
     {
       "Id": 8,
       "Name": "Mace",
       "WeaponClass": "Mace",
-      "HitSound": "_hit_mace"
+      "HitSounds": [
+        "_hit_mace.ogg"
+      ]
     },
     {
       "Id": 9,
       "Name": "Mace (2-Handed)",
       "WeaponClass": "2HMace",
-      "HitSound": "_hit_mace"
+      "HitSounds": [
+        "_hit_mace.ogg"
+      ]
     },
     {
       "Id": 10,
       "Name": "Rod",
       "WeaponClass": "Rod",
-      "HitSound": "_hit_rod"
+      "HitSounds": [
+        "_hit_rod.ogg"
+      ]
     },
     {
       "Id": 11,
       "Name": "Rod (2-Handed)",
       "WeaponClass": "2HRod",
-      "HitSound": "_hit_rod"
+      "HitSounds": [
+        "_hit_rod.ogg"
+      ]
     },
     {
       "Id": 12,
       "Name": "Bow",
       "WeaponClass": "Bow",
-      "HitSound": "_hit_arrow"
+      "HitSounds": [
+        "_hit_arrow.ogg"
+      ]
     }
   ]
 }

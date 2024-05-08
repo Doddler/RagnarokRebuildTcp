@@ -1,4 +1,4 @@
-﻿Id,Name,ImportEffect,Billboard,StrFile,Sprite,SoundFile,Offset,PrefabName
+﻿Id,Name,ImportEffect,Billboard,StrFile,Sprite,SoundFile,Offset,PrefabName,Flags
 0,RedPotion,TRUE,TRUE,빨간포션,,_heal_effect,-0.1,
 1,OrangePotion,TRUE,TRUE,주홍포션,,_heal_effect,-0.1,
 2,YellowPotion,TRUE,TRUE,노란포션,,_heal_effect,-0.1,
@@ -29,9 +29,10 @@
 27,bubble3,TRUE,TRUE,bubble3,,,0,
 28,bubble4,TRUE,TRUE,bubble4,,,0,
 29,ThunderStorm,TRUE,TRUE,thunderstorm,,ef_thunderstorm,0,
-30,Torch,TRUE,TRUE,,torch_01,,0,
+30,Torch,TRUE,TRUE,,torch_01,,0,,PerspectiveShader
 31,Exacast,FALSE,FALSE,,,,0,Assets/Prefabs/Exacast.prefab
 32,GasPush,TRUE,TRUE,GasPush,,,0,
 33,LightSpinner,FALSE,FALSE,,,,0,Assets/Prefabs/LightSpinner.prefab
 34,Mammonite,TRUE,TRUE,maemor,,,0,
-35,LightningBolt,TRUE,TRUE,lightning,,ef_lightbolt,0,
+35,MammoniteCoins,FALSE,FALSE,,,,0,Assets/Prefabs/MammoniteCoins.prefab
+36,LightningBolt,TRUE,TRUE,lightning,,ef_lightbolt,0,

@@ -29,9 +29,15 @@ namespace Assets.Scripts.MapEditor.Editor
         [MenuItem("Ragnarok/Build Sprite Attack Timing")]
         public static void BuildSpriteAttackTiming()
         {
-            var guids = AssetDatabase.FindAssets("t:RoSpriteData", new[] { "Assets/Sprites" });
+            var guids = AssetDatabase.FindAssets("t:RoSpriteData", new[]
+            {
+                "Assets/Sprites/Monsters", 
+                //"Assets/Sprites/Characters",
+                //"Assets/Sprites/Npcs"
+            });
 
             var output = new List<string>();
+            var badout = new List<string>();
 
             for (var i = 0; i < guids.Length; i++)
             {
@@ -39,9 +45,12 @@ namespace Assets.Scripts.MapEditor.Editor
                 var asset = AssetDatabase.LoadAssetAtPath<RoSpriteData>(path);
                 var name = asset.Name;
                 if (asset.Type != SpriteType.Monster && asset.Type != SpriteType.Monster2 && asset.Type != SpriteType.Pet)
+                {
+                    Debug.LogWarning($"Sprite {name} is not the right type (is {asset.Type})");
                     continue;
+                }
 
-                if (asset.Name.ToUpper() == "GOLDEN_BUG")
+                if (asset.Name.ToUpper() == "FARMILIAR")
                 {
                     Debug.Log("AAAA" + RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack1));
                 }
@@ -52,8 +61,10 @@ namespace Assets.Scripts.MapEditor.Editor
                 if (actionId == -1)
                     continue;
 
+                //note: the first direction of an action is authoritative in terms of frame delay for all other directions
                 var frames = asset.Actions[actionId].Frames;
                 var found = false;
+                    
                 for (var j = 0; j < frames.Length; j++)
                 {
                     if (frames[j].IsAttackFrame)
@@ -64,15 +75,19 @@ namespace Assets.Scripts.MapEditor.Editor
                         break;
                     }
                 }
-
+                
                 if (!found)
                 {
-                    var time = frames.Length * asset.Actions[actionId].Delay;
+                    var pos = frames.Length - 2;
+                    if (pos < 0)
+                        pos = 0;
+                    var time = pos * asset.Actions[actionId].Delay;
                     output.Add($"{name}:{time}");
                 }
             }
 
             File.WriteAllLines(@"Assets/Sprites/AttackTiming.txt", output);
+            //File.WriteAllLines(@"Assets/Sprites/AttackTimingBad.txt", badout);
         }
 
         private static string GetGroupName(string path)
@@ -327,6 +342,25 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 entriesAdded.Add(entry);
             }
+            
+            //special sound cases for sounds we want to include outside of the effects folder
+            guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds" });
+
+            for (int i = 0; i < guids.Length; i++)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                var fName = Path.GetFileName(path);
+                if (!Path.GetFileName(fName).StartsWith("_"))
+                    continue;
+                
+                var entry = settings.CreateOrMoveEntry(guids[i], soundsGroup, readOnly: false, postEvent: false);
+                //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]).Replace("Assets/Sounds", "Assets/Sounds/Effects");
+                entry.labels.Add("Sounds");
+
+                entriesAdded.Add(entry);
+            }
+
 
 
             //update sprites

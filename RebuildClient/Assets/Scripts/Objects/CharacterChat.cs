@@ -21,8 +21,8 @@ namespace Assets.Scripts.Objects
 
             var rect = transform as RectTransform;
             
-            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, TextObject.textBounds.size.x + 20);
-            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, TextObject.textBounds.size.y + 20);
+            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, TextObject.textBounds.size.x + 18);
+            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, TextObject.textBounds.size.y + 14);
         }
 
         // Update is called once per frame

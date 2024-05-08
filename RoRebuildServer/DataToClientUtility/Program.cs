@@ -10,6 +10,7 @@ using RebuildSharedData.Util;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
+using RoRebuildServer.EntityComponents.Monsters;
 
 namespace DataToClientUtility;
 
@@ -60,7 +61,7 @@ class Program
                     PrefabName = e.PrefabName
                 });
             }
-            
+
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.SetupExtensions();
             options.WriteIndented = true;
@@ -142,9 +143,9 @@ class Program
             };
             if (instance.Name.StartsWith("//")) //special case for commented out instance
                 continue;
-            
-            foreach(var m in instance.Maps)
-                if(!mapCodes.Contains(m))
+
+            foreach (var m in instance.Maps)
+                if (!mapCodes.Contains(m))
                     mapCodes.Add(m);
         }
 
@@ -158,8 +159,8 @@ class Program
         ConvertToClient<MapEntry, ClientMapEntry>("Maps.csv", "maps.json", convert =>
             {
                 var mapOut = new List<MapEntry>();
-                foreach(var m in convert)
-                    if(inUseMaps.Contains(m.Code))
+                foreach (var m in convert)
+                    if (inUseMaps.Contains(m.Code))
                         mapOut.Add(m);
 
                 return mapOut.Select(e => new ClientMapEntry()
@@ -273,8 +274,7 @@ class Program
 
         File.Delete(tempPath);
     }
-
-
+    
     private static void WriteMonsterData()
     {
         var mData = new List<MonsterClassData>();
@@ -327,7 +327,12 @@ class Program
     private static void WriteJobDataStuff()
     {
         var classes = ConvertToClient<CsvWeaponClass, PlayerWeaponClass>("WeaponClass.csv", "weaponclass.json",
-            weapons => weapons.Select(w => new PlayerWeaponClass() { Id = w.Id, Name = w.FullName, WeaponClass = w.WeaponClass, HitSound = w.HitSound }).ToList()
+            weapons => weapons.Select(w => new PlayerWeaponClass() {
+                Id = w.Id, 
+                Name = w.FullName, 
+                WeaponClass = w.WeaponClass, 
+                HitSounds = w.HitSound.Split('/').Select(a => a + ".ogg").ToList()
+            }).ToList()
         );
 
         var jobs = ConvertToClient<CsvJobs, PlayerClassData>("Jobs.csv", "playerclass.json",
@@ -345,6 +350,25 @@ class Program
             EffectMale = string.IsNullOrWhiteSpace(w.EffectMale) ? string.Empty : "Assets/Sprites/Weapons/" + w.EffectMale,
             EffectFemale = string.IsNullOrWhiteSpace(w.EffectFemale) ? string.Empty : "Assets/Sprites/Weapons/" + w.EffectFemale
         };
+
+        ConvertToClient<CsvSkillData, SkillData>("Skills.csv", "skillinfo.json", si =>
+        {
+            var data = new List<SkillData>();
+
+            foreach (var s in si)
+            {
+                data.Add(new SkillData()
+                {
+                    SkillId = Enum.Parse<CharacterSkill>(s.ShortName),
+                    Name = s.Name,
+                    Type = Enum.Parse<SkillTarget>(s.Type),
+                    MaxLevel = s.MaxLevel,
+                    CanAdjustLevel = s.CanAdjustLevel
+                });
+            }
+
+            return data;
+        });
 
         //takes some extra processing because we're filling in each type that's not included in JobWeaponInfo.csv
         ConvertToClient<CsvJobWeaponInfo, PlayerWeaponData>("JobWeaponInfo.csv", "jobweaponinfo.json",

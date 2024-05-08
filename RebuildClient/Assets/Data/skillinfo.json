@@ -1,0 +1,46 @@
+{
+  "Items": [
+    {
+      "SkillId": 5,
+      "Type": 1,
+      "Name": "Fire Bolt",
+      "MaxLevel": 10,
+      "CanAdjustLevel": true
+    },
+    {
+      "SkillId": 6,
+      "Type": 1,
+      "Name": "Cold Bolt",
+      "MaxLevel": 10,
+      "CanAdjustLevel": true
+    },
+    {
+      "SkillId": 1,
+      "Type": 1,
+      "Name": "Bash",
+      "MaxLevel": 10,
+      "CanAdjustLevel": true
+    },
+    {
+      "SkillId": 17,
+      "Type": 3,
+      "Name": "Heal",
+      "MaxLevel": 10,
+      "CanAdjustLevel": true
+    },
+    {
+      "SkillId": 18,
+      "Type": 1,
+      "Name": "Mammonite",
+      "MaxLevel": 10,
+      "CanAdjustLevel": true
+    },
+    {
+      "SkillId": 12,
+      "Type": 4,
+      "Name": "Thunder Storm",
+      "MaxLevel": 10,
+      "CanAdjustLevel": true
+    }
+  ]
+}

@@ -61,6 +61,7 @@ namespace Assets.Scripts.Sprites
 
         public bool LockAngle;
         public bool DisableLoop;
+        public bool RaycastForShadow = true;
 
         public SpriteMotion CurrentMotion;
         public int PreferredAttackMotion;
@@ -103,7 +104,7 @@ namespace Assets.Scripts.Sprites
             isPaused = true;
             pauseTime = time;
         }
-
+        
         public void Unpause() => isPaused = false;
 
         public void SetDirty()
@@ -566,7 +567,7 @@ namespace Assets.Scripts.Sprites
             //Debug.DrawLine(srcPos, destDir, Color.yellow, 10f, false);
             //Debug.DrawRay(srcPos, destDir, Color.yellow, 100f, false);
 
-            if (Physics.Raycast(ray, out var hit, 50f, mask))
+            if (RaycastForShadow && Physics.Raycast(ray, out var hit, 50f, mask))
             {
                 //Debug.Log(hit.transform.gameObject);
                 TargetShade = ShadeLevel;

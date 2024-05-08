@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Assets.Scripts;
 using UnityEngine;
 
@@ -151,18 +152,22 @@ namespace Assets.Editor
 
 			//string[] sounds;
 
+
 			if (version >= 21)
 			{
 				var count = br.ReadInt32();
 				Sounds = new string[count];
+
 				for (var i = 0; i < count; i++)
 				{
 					Sounds[i] = new string(br.ReadChars(40)).TrimEnd('\0');
 				}
-
+				
 				for (var i = 0; i < actions.Length; i++)
 				{
-					for (var j = 0; j < actions[i].Frames.Length; j++)
+					var frameCount = actions[i].Frames.Length;
+
+					for (var j = 0; j < frameCount; j++)
 					{
 						var frame = actions[i].Frames[j];
 						if (frame.Sound >= 0)

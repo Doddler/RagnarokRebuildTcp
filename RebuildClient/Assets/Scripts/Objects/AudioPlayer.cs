@@ -75,7 +75,7 @@ namespace Assets.Scripts.Objects
         }
 
 
-        public bool PlayAudioClip(string filename, GameObject attachTarget, float volume)
+        public bool PlayAudioClip(string filename, GameObject attachTarget, float volume, bool inEffectFolder = true)
         {
             isInUse = true;
             isLoading = true;
@@ -86,7 +86,11 @@ namespace Assets.Scripts.Objects
             
             audioSource.volume = volume;
 
-            loadHandle = AddressableUtility.Load<AudioClip>(gameObject, "Assets/Sounds/Effects/" + filename, OnFinishLoad);
+            var path = "Assets/Sounds/Effects/" + filename;
+            if (!inEffectFolder)
+                path = "Assets/Sounds/" + filename;
+
+            loadHandle = AddressableUtility.Load<AudioClip>(gameObject, path, OnFinishLoad);
             
             return true;
         }
@@ -103,7 +107,9 @@ namespace Assets.Scripts.Objects
             
             audioSource.volume = volume;
 
-            loadHandle = AddressableUtility.Load<AudioClip>(gameObject, "Assets/Sounds/Effects/" + filename, OnFinishLoad);
+            var path = "Assets/Sounds/Effects/" + filename;
+
+            loadHandle = AddressableUtility.Load<AudioClip>(gameObject, path, OnFinishLoad);
             
             return true;
         }

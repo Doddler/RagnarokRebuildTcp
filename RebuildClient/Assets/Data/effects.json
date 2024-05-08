@@ -387,6 +387,17 @@
     },
     {
       "Id": 35,
+      "Name": "MammoniteCoins",
+      "ImportEffect": false,
+      "Billboard": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": "Assets/Prefabs/MammoniteCoins.prefab"
+    },
+    {
+      "Id": 36,
       "Name": "LightningBolt",
       "ImportEffect": true,
       "Billboard": true,

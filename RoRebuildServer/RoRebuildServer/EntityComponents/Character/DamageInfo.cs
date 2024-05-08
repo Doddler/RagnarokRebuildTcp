@@ -10,7 +10,7 @@ public class DamageInfo
     public Entity Target;
     public float Time;
     public float AttackMotionTime;
-    public short Damage;
+    public int Damage;
     public byte HitCount;
     public byte KnockBack;
     public AttackResult Result;

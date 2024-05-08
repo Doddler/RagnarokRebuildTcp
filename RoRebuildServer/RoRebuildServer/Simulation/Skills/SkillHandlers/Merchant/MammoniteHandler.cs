@@ -19,10 +19,9 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
             if (target == null || !target.IsValidTarget(source))
                 return;
 
-            if (source.Entity.Type == EntityType.Monster && lvl == 10)
-                lvl = 20;
-
-
+            //if (source.Entity.Type == EntityType.Monster && lvl == 10)
+            //    lvl = 20;
+            
             var res = source.CalculateCombatResult(target, 1f + lvl * 0.5f, 1, AttackFlags.Physical);
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);

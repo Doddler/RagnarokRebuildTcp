@@ -112,8 +112,8 @@ public static class CommandBuilder
         {
             var ce = c.Entity.Get<CombatEntity>();
             packet.Write((byte)ce.GetStat(CharacterStat.Level));
-            packet.Write((ushort)ce.GetStat(CharacterStat.MaxHp));
-            packet.Write((ushort)ce.GetStat(CharacterStat.Hp));
+            packet.Write(ce.GetStat(CharacterStat.MaxHp));
+            packet.Write(ce.GetStat(CharacterStat.Hp));
         }
         if (c.Type == CharacterType.Player)
         {

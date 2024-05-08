@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using B83.Image.BMP;
 using UnityEngine;
 
@@ -35,13 +36,14 @@ namespace Assets.Scripts
                 AssetDatabase.Refresh();
         }
 
-        public static Texture2D SaveAndUpdateTexture(Texture2D texture, string outputPath, Action<TextureImporter> callback = null)
+        public static Texture2D SaveAndUpdateTexture(Texture2D texture, string outputPath, Action<TextureImporter> callback = null, bool forceUpdate = true)
         {
 
 	        var bytes = texture.EncodeToPNG();
 	        File.WriteAllBytes(outputPath, bytes);
 
-	        AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
+            if(forceUpdate)
+	            AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
 	        AssetDatabase.Refresh();
 
 	        TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(outputPath);
@@ -109,13 +111,83 @@ namespace Assets.Scripts
             throw new Exception($"Could not find texture {textureName} in the import path {importPath}");
         }
 
+        public static Texture2D FixPinkColor(Texture2D tex)
+        {
+            var colors = tex.GetPixels32();
+            var width = tex.width;
+            var height = tex.height;
+            var colorsOut = new Color32[colors.Length];
+            
+            //magic pink conversion and transparent color expansion
+            for (var y = 0; y < height; y++)
+            {
+                for (var x = 0; x < width; x++)
+                {
+                    var count = 0;
+                    var r = 0;
+                    var g = 0;
+                    var b = 0;
+
+                    if (x + y * width >= colors.Length)
+                        Debug.LogWarning($"For some reason looking out of bounds on color table on texture {tex} w{width} h{height} position {x} {y} ({x + y * width}");
+                    var color = colors[x + y * width];
+                    //Debug.Log(color);
+                    if (color.r < 254 || color.g != 0 || color.b < 254)
+                        continue;
+
+                    //Debug.Log("OHWOW: " + color);
+
+                    for (var y2 = -1; y2 <= 1; y2++)
+                    {
+                        for (var x2 = -1; x2 <= 1; x2++)
+                        {
+                            if (y + y2 < 0 || y + y2 >= height)
+                                continue;
+                            if (x + x2 < 0 || x + x2 >= width)
+                                continue;
+
+                            var color2 = colors[x + x2 + (y + y2) * width];
+
+                            if (color2.r >= 254 && color2.g == 0 && color2.b >= 254)
+                                continue;
+
+                            count++;
+
+                            r += color2.r;
+                            g += color2.g;
+                            b += color2.b;
+                        }
+                    }
+
+                    if (count > 0)
+                    {
+                        var r2 = (byte)Mathf.Clamp(r / count, 0, 255);
+                        var g2 = (byte)Mathf.Clamp(g / count, 0, 255);
+                        var b2 = (byte)Mathf.Clamp(b / count, 0, 255);
+
+                        //Debug.Log($"{x},{y} - change {color} to {r2},{g2},{b2}");
+
+                        colorsOut[x + y * width] = new Color32(r2, g2, b2, 0);
+                    }
+                    else
+                        colorsOut[x + y * width] = new Color32(0, 0, 0, 0);
+                }
+            }
+
+
+            var texOut = new Texture2D(width, height, TextureFormat.RGBA32, true);
+            texOut.SetPixels32(colorsOut);
+            texOut.Apply(true, true);
+            return texOut;
+        }
+
         public static Texture2D LoadTexture(string path)
         {
             if (Path.GetExtension(path).ToLower() == ".tga")
             {
                 return TGALoader.LoadTGA(path);
             }
-
+            
             var bmp = new BMPLoader();
             bmp.ForceAlphaReadWhenPossible = false;
             var img = bmp.LoadBMP(path);
@@ -241,6 +313,44 @@ namespace Assets.Scripts
                     atlas.SetPixels(xMin, yMax, xMax - xMin, 1, colors);
                 }
             }
+        }
+        
+        //code graciously from https://github.com/hanbim520/Unity2017AutoCreateSpriteAtlas
+        public static void CreateAtlas(string atlasName, string sptDesDir)
+        {
+            string yaml = @"%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!612988286 &1
+SpriteAtlasAsset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 2
+  m_MasterAtlas: {fileID: 0}
+  m_ImporterData:
+    packables: []
+  m_IsVariant: 0
+";
+            AssetDatabase.Refresh();
+
+            if (!Directory.Exists(sptDesDir ))
+            {
+                Directory.CreateDirectory(sptDesDir );
+                AssetDatabase.Refresh();
+            }
+            string filePath = sptDesDir + "/" + atlasName;
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                AssetDatabase.Refresh();
+            }
+            FileStream fs = new FileStream(filePath, FileMode.CreateNew);
+            byte[] bytes = new UTF8Encoding().GetBytes(yaml);
+            fs.Write(bytes, 0, bytes.Length);
+            fs.Close();
+            AssetDatabase.Refresh();
         }
     }
 }

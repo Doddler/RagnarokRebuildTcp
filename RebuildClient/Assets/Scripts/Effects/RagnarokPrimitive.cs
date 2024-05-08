@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
+using UnityEditor.Sprites;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Object = System.Object;
@@ -116,6 +117,7 @@ namespace Assets.Scripts.Effects
         public void EndPrimitive()
         {
             IsActive = false;
+            mr.enabled = false;
         }
 
         public void CreateParts(int count)
@@ -155,8 +157,9 @@ namespace Assets.Scripts.Effects
 
             Material = material;
             mr.material = Material;
+            mr.enabled = true;
             mf.sharedMesh = mesh;
-
+            
             PrimitiveData = RagnarokEffectData.NewPrimitiveData(PrimitiveType);
 
             IsActive = true;
@@ -232,7 +235,8 @@ namespace Assets.Scripts.Effects
             verts[2] = new Vector3(-width, -height);
             verts[3] = new Vector3(width, -height);
 
-            var spriteUVs = sprite.uv;
+            var spriteUVs = SpriteUtility.GetSpriteUVs(sprite, true);
+            //var spriteUVs = sprite.uv;
             var rect = sprite.textureRect;
             
             
@@ -378,6 +382,10 @@ namespace Assets.Scripts.Effects
 
         public void RenderPrimitive()
         {
+            mr.enabled = IsActive;
+            if (!IsActive)
+                return;
+            
             mb.Clear();
             if (RenderHandler != null)
             {

@@ -18,7 +18,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         private static Func<RagnarokPrimitive, bool> groundHitTrigger;
 
         private static string[] SpriteNames =
-            { "firebolt1", "firebolt2", "firebolt3", "firebolt4", "firebolt5", "firebolt6", "firebolt7" };
+            { "FireBolt1", "FireBolt2", "FireBolt3", "FireBolt4", "FireBolt5", "FireBolt6", "FireBolt7" };
 
         public static Ragnarok3dEffect Create(ServerControllable source, ServerControllable target, int count)
         {
@@ -37,7 +37,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             }
 
             if (fireboltAtlas == null)
-                fireboltAtlas = Resources.Load<SpriteAtlas>("FireBolt");
+                fireboltAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
 
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.FireArrow);
             effect.SourceEntity = source;
@@ -111,6 +111,10 @@ namespace Assets.Scripts.Effects.EffectHandlers
             data.Radius = 0f;
             data.RadiusSpeed = 7.2f; //originally 1.2 per frame
             data.RadiusAccel = -14.76f; //(data.RadiusSpeed / (prim.Duration + 0.66f)) * 3f; //original: -(data.RadiusSpeed / (prim.FrameDuration + 40f)) * 2f;
+
+            //sender.IsActive = false;
+            sender.EndPrimitive();
+            
         }
     }
 }

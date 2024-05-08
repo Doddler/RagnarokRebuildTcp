@@ -400,6 +400,11 @@ public class World
         {
             spawnArea.ClipArea(map.MapBounds);
             p = new Position(spawnArea.MinX, spawnArea.MinY);
+
+            //if our set location is not walkable we should spawn it somewhere else random
+            //should probably change this to not allow a spawn to be blocked by icewall or something if that skill ever gets added
+            if(!map.WalkData.IsCellWalkable(p) && map.FindPositionInRange(map.MapBounds, out var p2))
+                p = p2;
         }
         else
         {
@@ -477,6 +482,15 @@ public class World
         if (area.Width == 1 && area.Height == 1 && area.MinX != 0 && area.MinY != 0)
         {
             p = new Position(area.MinX, area.MinY);
+
+            if (!map.WalkData.IsCellWalkable(p))
+            {
+                if (!map.FindPositionInRange(map.MapBounds, out p))
+                {
+                    return false;
+                }
+            }
+
         }
         else
         {

@@ -42,9 +42,12 @@ namespace Assets.Scripts.Objects
             // sprite.State = SpriteState.Dead;
             // sprite.SpriteRenderer = sr;
             Sprite.LockAngle = true;
+            Sprite.RaycastForShadow = false;
             Sprite.State = SpriteState.Idle;
             Sprite.OnSpriteDataLoadNoCollider(SpriteData);
             Sprite.ChangeActionExact(0);
+            
+            
             
             if(OverrideMaterial != null)
                 Sprite.SpriteRenderer.SetOverrideMaterial(OverrideMaterial);

@@ -84,10 +84,12 @@ public class SprImporter : UnityEditor.AssetImporters.ScriptedImporter
                 case 32:
                     asset.Type = SpriteType.ActionNpc;
                     break;
+                case 39: //mi gao/increase soil for some reason
                 case 40:
                 case 41: //zerom for some reason
                     asset.Type = SpriteType.Monster;
                     break;
+                case 47: //dullahan for some reason
                 case 48:
                     asset.Type = SpriteType.Monster2;
                     break;

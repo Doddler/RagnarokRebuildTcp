@@ -36,7 +36,8 @@ namespace Assets.Scripts
     {
         private static PathNode[] nodeCache;
         private static int cachePos;
-        private const int MaxCacheSize = 1000;
+        private const int MaxDistance = 16;
+        private const int MaxCacheSize = (MaxDistance+MaxDistance+1)*(MaxDistance+MaxDistance+1)+10;
 
         private static List<PathNode> openList = new List<PathNode>(MaxCacheSize);
         //private static List<PathNode> closedList = new List<PathNode>(MaxCacheSize);
@@ -111,7 +112,7 @@ namespace Assets.Scripts
 
                 Profiler.EndSample();
 
-                if (current.Steps > 15 || current.Steps + current.Distance/2 > 15)
+                if (current.Steps > MaxDistance || current.Steps + current.Distance/2 > MaxDistance)
                     continue;
 
                 for (var x = -1; x <= 1; x++)

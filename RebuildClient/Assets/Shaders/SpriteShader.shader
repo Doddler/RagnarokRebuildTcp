@@ -339,20 +339,12 @@ Shader"Ragnarok/CharacterSpriteShader"
 
 			fixed4 frag(v2f i) : SV_Target
 			{
+				//environment ambient contribution disabled for now as it muddies the sprite
+				//todo: turn ambient contribution back on if fog is disabled.
+				//float4 env = float4(1,1,1,1);
 				float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
-				//env = env * 0.5 + 0.5;
-				//float m = max(i.envColor.r, max(i.envColor.g, i.envColor.b));
-				//env *= float4(i.envColor.r + m, i.envColor.g + m, i.envColor.b + m, 1);
-				env = env * 0.5 + 0.5;// + saturate(0.5 + i.envColor);
-				//env += i.light;
-				//env = min(1.35,env);
-
-				//return float4(i.color.rgb/2,1);
-				
-				//env.rgb = (env.rgb * i.envColor.rgb) + float3(i.envColor.a, i.envColor.a, i.envColor.a) * 0.33;
-
-				//return float4(i.light.rgb, 1);
-	
+				env = env * 0.3 + 0.7;// + saturate(0.5 + i.envColor);
+					
 				//smoothpixel
 				// apply anti-aliasing
 				float2 texturePosition = i.texcoord * _MainTex_TexelSize.zw;

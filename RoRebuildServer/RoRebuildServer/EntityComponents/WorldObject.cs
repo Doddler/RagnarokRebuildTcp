@@ -382,7 +382,7 @@ public class WorldObject : IEntityAutoReset
             return false;
 
         if (WalkPath == null)
-            WalkPath = new Position[17];
+            WalkPath = new Position[Pathfinder.MaxDistance+2];
 
         var hasOld = false;
         var oldNext = new Position();

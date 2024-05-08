@@ -38,26 +38,11 @@ StateAttacking:
 	TryCast(Mammonite, 10, 200, 0, 5000) -> SendEmote(8);
 }
 
-
-/*
-SkillHandler("Poring") {
+SkillHandler("STROUF") {
+StateAttacking:
+	TryCast(LightningBolt, 3, 50, 0, 5000);
+StateChase:
+	TryCast(LightningBolt, 3, 50, 0, 5000);
 StateIdle:
-	//TryCast rolls to see if the monster will cast a skill (if that skill is off cooldown).
-	//Once a skill is selected, no other code runs and the handler ends.
-	//Parameters: skill name, skill level, chance to cast (out of 1000), cast time, skill cooldown, flags
-	//value within square brackets are additional conditions to execute that skill
-	//the code block after the -> is the event handler for once that skill finishes casting.
-		
-	TryCast(ColdBolt,3,200,1000,5000);
-	TryCast(Heal,3,1000,500,15000)[HpPercent < 70] -> SendEmote(2); //whistle emote
-	TryCast(Heal,3,1000,500,15000)[AllyHpPercent < 90] -> {
-		if(SkillTarget.Name == "poring")
-			SendEmoteFromTarget(3); //heartEmote
-	}
-
-StateAttack:
-	TryCast(Heal,5,1000,800,10000,NoInterrupt|EventOnStartCast)[HpPercent < 40] -> SendEmote(28); //cry
+	TryCast(None, 3, 200, 0, 5000) -> SendEmote(32);
 }
-
-
-*/

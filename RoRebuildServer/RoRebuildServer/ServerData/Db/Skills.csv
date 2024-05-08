@@ -1,6 +1,7 @@
-﻿SkillId,ShortName,Name,Type,MaxLevel,CanAdjustLevel,OnHitEffect
-0,FireBolt,Fire Bolt,Targeted,10,true,firehit1
-1,ColdBolt,Cold Bolt,Targeted,10,true,icehit
-2,Bash,Bash,Targeted,10,true,
-3,Heal,Heal,Any,10,true,
-4,Mammonite,Mammonite,Targeted,10,true
+﻿SkillId,ShortName,Name,Type,MaxLevel,CanAdjustLevel,OnHitEffect,AreaSize
+0,FireBolt,Fire Bolt,SingleTarget,10,true,firehit1,
+1,ColdBolt,Cold Bolt,SingleTarget,10,true,icehit,
+2,Bash,Bash,SingleTarget,10,true,,
+3,Heal,Heal,SingleAny,10,true,,
+4,Mammonite,Mammonite,SingleTarget,10,true,,
+5,ThunderStorm,Thunder Storm,AreaTargeted,10,true,,5
