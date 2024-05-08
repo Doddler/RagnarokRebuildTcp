@@ -1,7 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
-using UnityEditor.Sprites;
+// using UnityEditor.Sprites;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Object = System.Object;
@@ -235,8 +235,7 @@ namespace Assets.Scripts.Effects
             verts[2] = new Vector3(-width, -height);
             verts[3] = new Vector3(width, -height);
 
-            var spriteUVs = SpriteUtility.GetSpriteUVs(sprite, true);
-            //var spriteUVs = sprite.uv;
+            var spriteUVs = sprite.uv;
             var rect = sprite.textureRect;
             
             

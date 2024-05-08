@@ -62,7 +62,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 AudioManager.Instance.OneShotSoundEffect(effect.SourceEntityId, file, effect.transform.position);
             }
 
-            if (step >= 12 && (step - 12) % 10 == 0 && step < effect.DurationFrames && (step - 12) / 10 <= effect.ObjCount)
+            if (step >= 12 && (step - 12) % 10 == 0 && step < effect.DurationFrames && (step - 12) / 10 < effect.ObjCount)
             {
                 var prim = effect.LaunchPrimitive(PrimitiveType.DirectionalBillboard, coldboltMaterial, 1.2f);
                 var data = prim.GetPrimitiveData<EffectSpriteData>();

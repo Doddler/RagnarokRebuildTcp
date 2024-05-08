@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.SkillHandlers;
 using Assets.Scripts.Sprites;
@@ -31,6 +32,7 @@ namespace Assets.Scripts.Network
         private WebSocket socket;
 
         public CameraFollower CameraFollower;
+        public CharacterOverlayManager OverlayManager;
         public GameObject DamagePrefab;
         public GameObject HealPrefab;
         public GameObject TargetNoticePrefab;
@@ -295,6 +297,14 @@ namespace Assets.Scripts.Network
             var lvl = -1;
             var maxHp = 0;
             var hp = 0;
+            
+            
+            if (type == CharacterType.Player || type == CharacterType.Monster)
+            {
+                lvl = (int)msg.ReadByte();
+                maxHp = (int)msg.ReadInt32();
+                hp = (int)msg.ReadInt32();                
+            }
 
             if (entityList.TryGetValue(id, out var oldEntity))
             {
@@ -303,13 +313,10 @@ namespace Assets.Scripts.Network
                 entityList.Remove(id);
             }
 
+
             ServerControllable controllable;
             if (type == CharacterType.Player)
             {
-                lvl = (int)msg.ReadByte();
-                maxHp = (int)msg.ReadUInt16();
-                hp = (int)msg.ReadUInt16();
-
                 var headFacing = (HeadFacing)msg.ReadByte();
                 var headId = msg.ReadByte();
                 var weapon = msg.ReadByte();
@@ -344,7 +351,6 @@ namespace Assets.Scripts.Network
                 {
                     PlayerState.Level = lvl;
 
-                    CameraFollower.UpdatePlayerHP(hp, maxHp);
                     var max = CameraFollower.Instance.ExpForLevel(controllable.Level - 1);
                     CameraFollower.UpdatePlayerExp(PlayerState.Exp, max);
                     controllable.IsHidden = isAdminHidden;
@@ -355,12 +361,12 @@ namespace Assets.Scripts.Network
                 var interactable = false;
                 var name = string.Empty;
 
-                if (type == CharacterType.Monster)
-                {
-                    lvl = (int)msg.ReadByte();
-                    maxHp = (int)msg.ReadUInt16();
-                    hp = (int)msg.ReadUInt16();
-                }
+                // if (type == CharacterType.Monster)
+                // {
+                //     lvl = (int)msg.ReadByte();
+                //     maxHp = (int)msg.ReadUInt16();
+                //     hp = (int)msg.ReadUInt16();
+                // }
 
                 if (type == CharacterType.NPC)
                 {
@@ -384,6 +390,11 @@ namespace Assets.Scripts.Network
                 };
                 controllable = SpriteDataLoader.Instance.InstantiateMonster(ref monData);
             }
+            
+            controllable.EnsureFloatingDisplayCreated().SetUp(name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
+            if(controllable.IsMainCharacter)
+                CameraFollower.UpdatePlayerHP(hp, maxHp);
+            controllable.SetHp(hp);
 
             entityList.Add(id, controllable);
 
@@ -637,11 +648,11 @@ namespace Assets.Scripts.Network
             }
 
 
-            var dmg = msg.ReadInt16();
+            var dmg = msg.ReadInt32();
             var hitCount = msg.ReadByte();
             var damageTiming = msg.ReadFloat();
 
-            StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, controllable));
+            StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, 0, controllable));
         }
 
         private void AttackMotion(ServerControllable src, Vector2Int pos, Direction dir, float motionTime, ServerControllable target)
@@ -702,7 +713,7 @@ namespace Assets.Scripts.Network
 
             var dir = (Direction)msg.ReadByte();
             var pos = ReadPosition(msg);
-            var dmg = msg.ReadInt16();
+            var dmg = msg.ReadInt32();
             var result = (AttackResult)msg.ReadByte();
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
@@ -713,7 +724,7 @@ namespace Assets.Scripts.Network
                 //if the skill handler is not flagged to execute without a source this will do nothing.
                 //we still want to execute when a special effect plays on a target though.
                 ClientSkillHandler.ExecuteSkill(null, controllable2, skill, skillLvl);
-                StartCoroutine(DamageEvent(dmg, 0f, hits, controllable2));
+                StartCoroutine(DamageEvent(dmg, 0f, hits, 0, controllable2));
                 return;
             }
             
@@ -735,7 +746,7 @@ namespace Assets.Scripts.Network
                 if (hits < 1)
                     hits = 1;
 
-                StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable2));
+                StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable.WeaponClass, controllable2));
             }
         }
 
@@ -756,7 +767,7 @@ namespace Assets.Scripts.Network
 
             var dir = (Direction)msg.ReadByte();
             var pos = ReadPosition(msg);
-            var dmg = msg.ReadInt16();
+            var dmg = msg.ReadInt32();
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
 
@@ -828,11 +839,11 @@ namespace Assets.Scripts.Network
                     hits = 1;
                 }
 
-                StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable2));
+                StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable.WeaponClass, controllable2));
             }
         }
 
-        private IEnumerator DamageEvent(int damage, float delay, int hitCount, ServerControllable target)
+        private IEnumerator DamageEvent(int damage, float delay, int hitCount, int weaponClass, ServerControllable target)
         {
             yield return new WaitForSeconds(delay);
             if (target != null && target.SpriteAnimator.IsInitialized)
@@ -861,6 +872,12 @@ namespace Assets.Scripts.Network
                         }
                     }
 
+                    if (weaponClass >= 0)
+                    {
+                        var hitSound = SpriteDataLoader.Instance.GetHitSoundForWeapon(weaponClass);
+                        AudioManager.Instance.OneShotSoundEffect(target.Id, hitSound, target.transform.position, 1f);
+                    }
+
                     AttachDamageIndicator(damage, damage * (i + 1), target);
                     // target.SlowMove(0.7f, 0.3f);
                     target.PosLockTime = 0.2f;
@@ -879,7 +896,7 @@ namespace Assets.Scripts.Network
             di.DoDamage(TextIndicatorType.Damage, damage.ToString(), target.gameObject.transform.localPosition, height,
                 target.SpriteAnimator.Direction, red, false);
 
-            if (damage != totalDamage)
+            if (damage != totalDamage && target.CharacterType != CharacterType.Player)
             {
                 var di2 = RagnarokEffectPool.GetDamageIndicator();
                 di2.DoDamage(TextIndicatorType.ComboDamage, $"<color=#FFFF00>{totalDamage}</color>", Vector3.zero, height,
@@ -906,8 +923,16 @@ namespace Assets.Scripts.Network
             if (controllable.Hp < 0)
                 controllable.Hp = 0;
 
-            if (id == PlayerId)
-                CameraFollower.UpdatePlayerHP(controllable.Hp, controllable.MaxHp);
+            // Debug.Log(controllable.MaxHp);
+            
+            //if (id == PlayerId)
+            if(controllable.CharacterType != CharacterType.NPC && controllable.MaxHp > 0)
+            {
+                if(controllable.IsMainCharacter)
+                    CameraFollower.UpdatePlayerHP(controllable.Hp, controllable.MaxHp);
+                controllable.SetHp(controllable.Hp);
+                
+            }
 
             if (delay < 0)
                 return;
@@ -953,7 +978,7 @@ namespace Assets.Scripts.Network
             if (!entityList.TryGetValue(id, out var controllable))
                 return;
 
-            CameraFollower.SetSelectedTarget(controllable.gameObject, controllable.DisplayName, controllable.IsAlly, false);
+            CameraFollower.SetSelectedTarget(controllable, controllable.DisplayName, controllable.IsAlly, false);
         }
 
         public void OnMessageGainExp(ClientInboundMessage msg)
@@ -1078,7 +1103,11 @@ namespace Assets.Scripts.Network
             controllable.MaxHp = maxHp;
 
             if (id == PlayerId)
-                CameraFollower.UpdatePlayerHP(hp, maxHp);
+            {
+                if(controllable.IsMainCharacter)
+                    CameraFollower.UpdatePlayerHP(hp, maxHp);
+                controllable.SetHp(controllable.Hp, controllable.MaxHp);
+            }
         }
 
         public void OnMessageMonsterTarget(ClientInboundMessage msg)
@@ -1284,6 +1313,7 @@ namespace Assets.Scripts.Network
                 }
 
                 ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
+                controllable.StartCastBar(skill, castTime);
                 //
                 // if (skill == CharacterSkill.FireBolt)
                 //     CastEffect.Create(castTime, "ring_red", controllable.gameObject);

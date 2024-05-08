@@ -5,6 +5,7 @@ using Assets.Scripts.Effects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -31,7 +32,12 @@ namespace Assets.Scripts.Network
         public int Level;
         public string Name;
         public int Hp;
-        public int MaxHp;
+        public int MaxHp
+        {
+            get;
+            set;
+        }
+        public int WeaponClass;
 
         public GameObject PopupDialog;
         public List<Ragnarok3dEffect> EffectList;
@@ -44,6 +50,7 @@ namespace Assets.Scripts.Network
         public GameObject EntityObject;
         public GameObject ComboIndicator;
 
+        public CharacterFloatingDisplay FloatingDisplay;
         private List<Vector2Int> movePath;
         private Vector2Int[] tempPath;
         private float moveSpeed = 0.2f;
@@ -91,6 +98,54 @@ namespace Assets.Scripts.Network
             }
         }
 
+        public CharacterFloatingDisplay EnsureFloatingDisplayCreated(bool makeEnabled = false)
+        {
+            if (FloatingDisplay == null)
+                FloatingDisplay = NetworkManager.Instance.OverlayManager.GetNewFloatingDisplay();
+            if(makeEnabled)
+                FloatingDisplay.gameObject.SetActive(true);
+            return FloatingDisplay;
+        }
+
+        public void SetHp(int hp, int maxHp)
+        {
+            FloatingDisplay.UpdateMaxHp(maxHp);
+            SetHp(hp);
+        }
+        
+        public void SetHp(int hp)
+        {
+            EnsureFloatingDisplayCreated();
+            if (IsMainCharacter)
+                FloatingDisplay.ForceHpBarOn();
+            else
+                FloatingDisplay = FloatingDisplay;
+            if(CharacterType != CharacterType.NPC)
+                FloatingDisplay.UpdateHp(hp);
+        }
+
+        public void StartCastBar(CharacterSkill skill, float duration)
+        {
+            EnsureFloatingDisplayCreated();
+            FloatingDisplay.StartCasting(duration);
+            var sName = skill.ToString();
+            
+            if (skill == CharacterSkill.FireBolt)
+                sName = "Fire Bolt";
+            if (skill == CharacterSkill.ColdBolt)
+                sName = "Cold Bolt";
+            if (skill == CharacterSkill.Bash)
+                sName = "Bash";
+            if (skill == CharacterSkill.Mammonite)
+                sName = "Mammonite";
+            
+            if(CharacterType == CharacterType.Player)
+                FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
+            else
+                FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
+                
+        }
+
         public void RefreshHiddenState()
         {
             if (shadowSprite)
@@ -99,36 +154,45 @@ namespace Assets.Scripts.Network
                 SpriteAnimator.SetRenderActive(!isHidden);
         }
 
+        public void ShowName(string name)
+        {
+            EnsureFloatingDisplayCreated();
+            FloatingDisplay.UpdateName(name);
+            FloatingDisplay.ShowNamePlate();
+        }
+
+        public void HideName()
+        {
+            if (FloatingDisplay == null)
+                return;
+            FloatingDisplay.HideNamePlate();
+        }
+
         public void DialogBox(string text)
         {
-            if (PopupDialog == null)
-                PopupDialog = GameObject.Instantiate(Resources.Load<GameObject>("Dialog"));
-
-            PopupDialog.transform.SetParent(CameraFollower.Instance.UiCanvas.transform);
-            PopupDialog.transform.localScale = Vector3.one;
-
-            PopupDialog.GetComponent<CharacterChat>().SetText(text);
-            //textObject.text = text;
+            EnsureFloatingDisplayCreated();
+            FloatingDisplay.ShowChatBubbleMessage(text, 8f);
 
             SnapDialog();
-            dialogCountdown = 8f;
         }
 
         public void SnapDialog()
         {
-            if (PopupDialog == null)
+            if (FloatingDisplay == null)
                 return;
+            
+            if(IsMainCharacter)
+                FloatingDisplay.transform.SetAsLastSibling();
 
-            var rect = PopupDialog.transform as RectTransform;
-
-            var screenPos = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0f, 4f, 0f));
-
-            //Debug.Log(screenPos);
-
-            var reverseScale = 1f / CameraFollower.Instance.CanvasScaler.scaleFactor;
-
-            rect.anchoredPosition = new Vector2(screenPos.x * reverseScale,
-                ((screenPos.y - CameraFollower.Instance.UiCanvas.pixelRect.height) + 0) * reverseScale);
+            var cf = CameraFollower.Instance;
+            var rect = FloatingDisplay.transform as RectTransform;
+            var screenPos = cf.Camera.WorldToScreenPoint(transform.position);
+            
+            var d = 70 / cf.Distance;
+            var reverseScale = 1f / cf.CanvasScaler.scaleFactor;
+            
+            rect.localScale = new Vector3(d,d,d);
+            rect.anchoredPosition = new Vector2(screenPos.x * reverseScale, (screenPos.y - cf.UiCanvas.pixelRect.height) * reverseScale);
         }
 
         public void ConfigureEntity(int id, Vector2Int worldPos, Direction direction)
@@ -609,8 +673,16 @@ namespace Assets.Scripts.Network
         {
             isMoving = false;
             movePath = null;
+            
+            FloatingDisplay.Close();
+            FloatingDisplay = null;
 
             StartCoroutine(MonsterDeathCoroutine(hitCount));
+        }
+
+        public void UpdateHp(int hp)
+        {
+            EnsureFloatingDisplayCreated();
         }
 
         //     public void BlastOff(Vector3 direction)
@@ -651,17 +723,20 @@ namespace Assets.Scripts.Network
         //}
         private void Update()
         {
-            if (PopupDialog != null)
-            {
-                dialogCountdown -= Time.deltaTime;
-                if (dialogCountdown < 0)
-                    GameObject.Destroy(PopupDialog);
-                else
-                    SnapDialog();
-            }
+            // if (PopupDialog != null)
+            // {
+            //     dialogCountdown -= Time.deltaTime;
+            //     if (dialogCountdown < 0)
+            //         GameObject.Destroy(PopupDialog);
+            //     else
+            //         SnapDialog();
+            // }
 
             if (SpriteMode == ClientSpriteType.Prefab)
                 return;
+            
+            if(FloatingDisplay != null)
+                SnapDialog();
 
             if (IsMainCharacter)
             {
@@ -723,6 +798,12 @@ namespace Assets.Scripts.Network
 
             if (PopupDialog != null)
                 Destroy(PopupDialog);
+
+            if (FloatingDisplay != null)
+            {
+                FloatingDisplay.Close();
+                FloatingDisplay = null;
+            }
 
             if (EffectList != null)
             {

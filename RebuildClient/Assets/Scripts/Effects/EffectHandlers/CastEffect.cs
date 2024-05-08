@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.Effects.EffectHandlers
@@ -26,6 +27,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
             }
 
             effect.transform.localScale = new Vector3(2f, 2f, 2f);
+            
+            AudioManager.Instance.OneShotSoundEffect(effect.SourceEntityId, $"ef_beginspell.ogg", followTarget.transform.position);
             
             var prim = effect.LaunchPrimitive(PrimitiveType.Cylender, mat, duration);
 

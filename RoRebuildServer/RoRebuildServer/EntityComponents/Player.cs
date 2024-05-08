@@ -239,20 +239,23 @@ public class Player : IEntityAutoReset
 
         NpcInteractionState.CancelInteraction();
     }
-    
+
+    // Adjust the remaining regen tick time when changing sitting state.
+    // Standing up doubles your remaining regen tick time, sitting down halves it.
     public void UpdateSit(bool isSitting)
     {
+        var remainingTime = regenTickTime - Time.ElapsedTimeFloat;
+        if (remainingTime < 0)
+            return;
+
         if (!isSitting)
         {
-            regenTickTime += 4f;
-            if (regenTickTime > Time.ElapsedTimeFloat + 8f)
-                regenTickTime = Time.ElapsedTimeFloat + 8f;
+            if (remainingTime > 4)
+                remainingTime = 4;
+            regenTickTime = Time.ElapsedTimeFloat + remainingTime * 2f;
         }
         else
-        {
-            if (regenTickTime > Time.ElapsedTimeFloat + 4f)
-                regenTickTime = Time.ElapsedTimeFloat + 4;
-        }
+            regenTickTime = Time.ElapsedTimeFloat + remainingTime / 2f;
     }
     public void RegenTick()
     {
@@ -609,7 +612,8 @@ public class Player : IEntityAutoReset
         {
             Character.QueuedAction = QueuedAction.None;
             AutoAttackLock = false;
-            return;
+            if(Character.State == CharacterState.Dead)
+                return;
         }
 
         if (regenTickTime < Time.ElapsedTimeFloat)

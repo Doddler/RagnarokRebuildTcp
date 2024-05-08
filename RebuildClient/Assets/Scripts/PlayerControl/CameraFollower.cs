@@ -20,6 +20,7 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utility;
+using CursorMode = UnityEngine.CursorMode;
 using Debug = UnityEngine.Debug;
 
 #if UNITY_EDITOR
@@ -30,12 +31,17 @@ namespace Assets.Scripts
     public class CameraFollower : MonoBehaviour
     {
         public GameObject ListenerProbe;
+        public CursorManager CursorManager;
 
-        public Texture2D NormalCursorTexture;
-        public Texture2D AttackCursorTexture;
-        public Texture2D TalkCursorTexture;
-        public Texture2D TargetCursorTexture;
-        public Texture2D TargetCursorNoTargetTexture;
+        // public List<Texture2D> NormalCursorAnimation;
+        // //private float cursorAnimTime;
+        // private int normalCursorFrame => Mathf.FloorToInt(Time.timeSinceLevelLoad * 12f) % NormalCursorAnimation.Count;
+        //
+        // //public Texture2D NormalCursorTexture;
+        // public Texture2D AttackCursorTexture;
+        // public Texture2D TalkCursorTexture;
+        // public Texture2D TargetCursorTexture;
+        // public Texture2D TargetCursorNoTargetTexture;
         public RoSpriteData TargetSprite;
         // public GameObject LevelUpPrefab;
         // public GameObject ResurrectPrefab;
@@ -46,8 +52,8 @@ namespace Assets.Scripts
         public RoWalkDataProvider WalkProvider;
 
         public Canvas UiCanvas;
-        public TextMeshProUGUI TargetUi;
-        public TextMeshProUGUI PlayerTargetUi;
+        //public TextMeshProUGUI TargetUi;
+        //public TextMeshProUGUI PlayerTargetUi;
         public TextMeshProUGUI HpDisplay;
         public Slider HpSlider;
         public TextMeshProUGUI ExpDisplay;
@@ -77,10 +83,10 @@ namespace Assets.Scripts
         private bool lastPathValid;
         private bool noHold = false;
         private bool hasSelection;
-        public GameObject SelectedTarget;
+        public ServerControllable SelectedTarget;
         private GameObject selectedSprite;
         private string targetText;
-        private GameObject ClickEffectPrefab;
+        private GameObject clickEffectPrefab;
 
         public GameObject WarpPanel;
         public GameObject DialogPanel;
@@ -98,7 +104,10 @@ namespace Assets.Scripts
 
         private bool hasSkillOnCursor;
         private CharacterSkill cursorSkill;
-        private int cursorSkillLvl;
+        private int cursorSkillLvl = 5;
+        private int cursorMaxSkillLvl;
+        private float skillScroll;
+        private bool cursorShowSkillLevel = true;
 
         public bool CinemachineMode;
         public VideoRecorder Recorder;
@@ -109,6 +118,7 @@ namespace Assets.Scripts
 
         public float FogNearRatio = 0.3f;
         public float FogFarRatio = 4f;
+
         
 #if DEBUG
         private const float MaxClickDistance = 500;
@@ -156,6 +166,8 @@ namespace Assets.Scripts
 
         private ServerControllable controllable;
         public ServerControllable TargetControllable => controllable;
+        
+        private ServerControllable mouseHoverTarget;
 
         public Vector3 MoveTo;
 
@@ -227,7 +239,9 @@ namespace Assets.Scripts
             if (Recorder != null)
                 Recorder.gameObject.SetActive(false);
 
-            ClickEffectPrefab = Resources.Load<GameObject>($"MoveNotice");
+            clickEffectPrefab = Resources.Load<GameObject>($"MoveNotice");
+            
+            LayoutRebuilder.ForceRebuildLayoutImmediate(UiCanvas.transform as RectTransform);
 
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
@@ -299,7 +313,7 @@ namespace Assets.Scripts
             return go;
         }
 
-        public void SetSelectedTarget(GameObject target, string name, bool isAlly, bool isHard)
+        public void SetSelectedTarget(ServerControllable target, string name, bool isAlly, bool isHard)
         {
             if (selectedSprite == null)
             {
@@ -311,11 +325,15 @@ namespace Assets.Scripts
                 color = "<color=#FFAAAA>";
             if (isHard)
                 color = "<color=#FF4444>";
-
+            
+            if(SelectedTarget != null && SelectedTarget != target)
+                SelectedTarget.HideName();
+            
             hasSelection = true;
             SelectedTarget = target;
-            PlayerTargetUi.text = color + name;
-            PlayerTargetUi.gameObject.SetActive(true);
+            SelectedTarget.ShowName(color + name);
+            //PlayerTargetUi.text = color + name;
+            //PlayerTargetUi.gameObject.SetActive(true);
             selectedSprite.SetActive(true);
             //Debug.Log("Selecting target: '" + name + "' with game object: " + target);
             UpdateSelectedTarget();
@@ -325,8 +343,11 @@ namespace Assets.Scripts
         {
             //Debug.Log("Clearing target.");
             hasSelection = false;
-            PlayerTargetUi.text = "";
-            PlayerTargetUi.gameObject.SetActive(false);
+            if(SelectedTarget != null && SelectedTarget != mouseHoverTarget)
+                SelectedTarget.HideName();
+            SelectedTarget = null;
+            // PlayerTargetUi.text = "";
+            // PlayerTargetUi.gameObject.SetActive(false);
             if (selectedSprite != null)
                 selectedSprite.SetActive(false);
         }
@@ -335,19 +356,18 @@ namespace Assets.Scripts
         {
             if (!hasSelection || SelectedTarget == null || IsInNPCInteraction)
             {
-                if (PlayerTargetUi.gameObject.activeInHierarchy)
-                    ClearSelected();
+                ClearSelected();
                 return;
             }
+            //
+            // if (!PlayerTargetUi.gameObject.activeInHierarchy)
+            //     PlayerTargetUi.gameObject.SetActive(true);
 
-            if (!PlayerTargetUi.gameObject.activeInHierarchy)
-                PlayerTargetUi.gameObject.SetActive(true);
+            // var screenPos = Camera.WorldToScreenPoint(SelectedTarget.transform.position);
+            // var reverseScale = 1f / CanvasScaler.scaleFactor;
 
-            var screenPos = Camera.WorldToScreenPoint(SelectedTarget.transform.position);
-            var reverseScale = 1f / CanvasScaler.scaleFactor;
-
-            PlayerTargetUi.rectTransform.anchoredPosition = new Vector2(screenPos.x * reverseScale,
-                ((screenPos.y - UiCanvas.pixelRect.height) - 30) * reverseScale);
+            // PlayerTargetUi.rectTransform.anchoredPosition = new Vector2(screenPos.x * reverseScale,
+            //     ((screenPos.y - UiCanvas.pixelRect.height) - 30) * reverseScale);
 
             selectedSprite.transform.position = SelectedTarget.transform.position;
             //TargetUi.text = color + anim.Controllable.gameObject.name;
@@ -483,18 +503,18 @@ namespace Assets.Scripts
             TargetFollow = Target.transform.position;
         }
 
-        public void ChangeCursor(Texture2D cursorTexture)
-        {
-            if (currentCursor == cursorTexture)
-                return;
-
-            if (cursorTexture == TalkCursorTexture || cursorTexture == TargetCursorTexture || cursorTexture == TargetCursorNoTargetTexture)
-                Cursor.SetCursor(cursorTexture, new Vector2(16, 14), CursorMode.Auto);
-            else
-                Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
-
-            currentCursor = cursorTexture;
-        }
+        // public void ChangeCursor(Texture2D cursorTexture)
+        // {
+        //     if (currentCursor == cursorTexture)
+        //         return;
+        //
+        //     if (cursorTexture == TalkCursorTexture || cursorTexture == TargetCursorTexture || cursorTexture == TargetCursorNoTargetTexture)
+        //         Cursor.SetCursor(cursorTexture, new Vector2(16, 14), CursorMode.Auto);
+        //     else
+        //         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
+        //
+        //     currentCursor = cursorTexture;
+        // }
 
         private RoSpriteAnimator GetHitAnimator(RaycastHit hit)
         {
@@ -590,18 +610,24 @@ namespace Assets.Scripts
                 if (anim == null)
                 {
                     hasHitCharacter = false; //back out if our hit is a false positive (the object is dead or dying for example)
-                    ChangeCursor(NormalCursorTexture);
+                    CursorManager.UpdateCursor(GameCursorMode.Normal);
                 }
 
                 if (hasHitCharacter)
                 {
-                    var screenPos = Camera.main.WorldToScreenPoint(anim.Controllable.gameObject.transform.position);
+                    if(mouseHoverTarget != null && mouseHoverTarget != anim.Controllable && mouseHoverTarget != SelectedTarget)
+                        mouseHoverTarget.HideName();
+                    mouseHoverTarget = anim.Controllable;
+
+                    var cursor = GameCursorMode.Normal;
+                    
+                    // var screenPos = Camera.main.WorldToScreenPoint(anim.Controllable.gameObject.transform.position);
                     var color = "";
                     if (!anim.Controllable.IsAlly && anim.Controllable.CharacterType != CharacterType.NPC)
                     {
                         if (hasSkillOnCursor)
                         {
-                            ChangeCursor(TargetCursorTexture);
+                            cursor = GameCursorMode.SkillTarget;
                             if (Input.GetMouseButtonDown(0))
                             {
                                 NetworkManager.Instance.SendSingleTargetSkillAction(anim.Controllable.Id, cursorSkill, cursorSkillLvl);
@@ -610,10 +636,7 @@ namespace Assets.Scripts
                             }
                         }
                         else
-                            ChangeCursor(AttackCursorTexture);
-                        
-                            
-                            //CastLockOnEffect.Create(3f, anim.Controllable.gameObject);
+                            cursor = GameCursorMode.Attack;
                         
                         color = "<color=#FFAAAA>";
                         hasHitMap = false;
@@ -622,18 +645,23 @@ namespace Assets.Scripts
                     {
                         if (anim.Controllable.IsInteractable)
                         {
-                            ChangeCursor(TalkCursorTexture);
+                            cursor = GameCursorMode.Dialog;
                             hasHitMap = false;
                         }
-                        else
-                            ChangeCursor(NormalCursorTexture);
                     }
 
-                    var reverseScale = 1f / CanvasScaler.scaleFactor;
+                    mouseHoverTarget.ShowName(color + mouseHoverTarget.DisplayName);
 
-                    TargetUi.rectTransform.anchoredPosition = new Vector2(screenPos.x * reverseScale,
-                        ((screenPos.y - UiCanvas.pixelRect.height) - 30) * reverseScale);
-                    TargetUi.text = color + anim.Controllable.DisplayName;
+                    if (IsInNPCInteraction)
+                    {
+                        CursorManager.UpdateCursor(GameCursorMode.Normal);
+                        return;
+                    }
+                    
+                    if(cursor == GameCursorMode.SkillTarget)
+                        CursorManager.UpdateCursor(cursor, cursorSkillLvl);
+                    else
+                        CursorManager.UpdateCursor(cursor);
 
                     if (anim.Controllable.CharacterType == CharacterType.Monster)
                     {
@@ -660,9 +688,18 @@ namespace Assets.Scripts
             else
             {
                 if(hasSkillOnCursor)
-                    ChangeCursor(TargetCursorNoTargetTexture);
+                    CursorManager.UpdateCursor(GameCursorMode.SkillTarget, cursorSkillLvl);
+                    //ChangeCursor(TargetCursorNoTargetTexture);
                 else
-                    ChangeCursor(NormalCursorTexture);
+                    CursorManager.UpdateCursor(GameCursorMode.Normal);
+                    //ChangeCursor(NormalCursorAnimation[normalCursorFrame]);
+            }
+            
+            if (!hasHitCharacter && mouseHoverTarget != null)
+            {
+                mouseHoverTarget.HideName();
+                mouseHoverTarget = null;
+                // TargetUi.text = "";
             }
 
             ClickDelay -= Time.deltaTime;
@@ -766,10 +803,6 @@ namespace Assets.Scripts
                 lastTile = mapPosition;
             }
 
-            if (!hasHitCharacter)
-                TargetUi.text = "";
-
-
             if (noHold)
                 return;
 
@@ -800,7 +833,7 @@ namespace Assets.Scripts
                         {
                             if (!isHolding)
                             {
-                                var click = GameObject.Instantiate(ClickEffectPrefab);
+                                var click = GameObject.Instantiate(clickEffectPrefab);
                                 click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
                             }
                             NetworkManager.Instance.MovePlayer(destPos);
@@ -813,7 +846,7 @@ namespace Assets.Scripts
                             {
                                 if (!isHolding)
                                 {
-                                    var click = GameObject.Instantiate(ClickEffectPrefab);
+                                    var click = GameObject.Instantiate(clickEffectPrefab);
                                     click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
                                 }
                                 NetworkManager.Instance.MovePlayer(dest2);
@@ -1088,6 +1121,11 @@ namespace Assets.Scripts
                 Instance.IsInErrorState = true;
             });
         }
+        //
+        // public void LateUpdate()
+        // {
+        //     CursorManager.ApplyCursor();
+        // }
 
         public void Update()
         {
@@ -1236,15 +1274,17 @@ namespace Assets.Scripts
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha2))
             {
                 hasSkillOnCursor = true;
-                cursorSkill = CharacterSkill.Bash;
-                cursorSkillLvl = 5;
+                cursorSkill = CharacterSkill.Mammonite;
+                //cursorSkillLvl = 10;
+                //skillScroll = 10f;
             }
             
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha3))
             {
                 hasSkillOnCursor = true;
-                cursorSkill = CharacterSkill.ColdBolt;
-                cursorSkillLvl = 5;
+                cursorSkill = CharacterSkill.FireBolt;
+                //cursorSkillLvl = 5;
+                //skillScroll = 5f;
             }
             //
             // if (!inTextBox && Input.GetKeyDown(KeyCode.F3))
@@ -1376,7 +1416,17 @@ namespace Assets.Scripts
             var screenRect = new Rect(0, 0, Screen.width, Screen.height);
 
             if (!pointerOverUi && screenRect.Contains(Input.mousePosition))
-                Distance += Input.GetAxis("Mouse ScrollWheel") * 20 * ctrlKey;
+            {
+                if (!hasSkillOnCursor)
+                    Distance += Input.GetAxis("Mouse ScrollWheel") * 20 * ctrlKey;
+                else
+                {
+                    skillScroll += Input.GetAxis("Mouse ScrollWheel") * 10f;
+                    skillScroll = Mathf.Clamp(skillScroll, 1, 10);
+                    cursorSkillLvl = Mathf.RoundToInt(skillScroll);
+                    // Debug.Log(skillScroll);
+                }
+            }
 
 #if !DEBUG
             if (Distance > 90)

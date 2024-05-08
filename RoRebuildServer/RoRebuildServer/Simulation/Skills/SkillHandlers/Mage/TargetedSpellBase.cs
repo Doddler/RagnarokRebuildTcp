@@ -19,7 +19,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
             if (lvl < 0 || lvl > 10)
                 lvl = 10;
 
-            return 1f + lvl * 0.1f;
+            return 0.4f + lvl * 0.2f;
         }
 
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl)

@@ -50,11 +50,15 @@ namespace Assets.Scripts.Sprites
 		public TextAsset PlayerClassData;
 		public TextAsset PlayerHeadData;
 		public TextAsset PlayerWeaponData;
+		public TextAsset WeaponClassData;
+		public TextAsset SkillData;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
 		private readonly Dictionary<int, PlayerHeadData> playerHeadLookup = new();
 		private readonly Dictionary<int, PlayerClassData> playerClassLookup = new();
 		private readonly Dictionary<int, Dictionary<int, List<PlayerWeaponData>>> playerWeaponLookup = new();
+		private readonly Dictionary<int, WeaponClassData> weaponClassData = new();
+		private readonly Dictionary<CharacterSkill, SkillData> skillData = new(); 
 
 		private readonly List<string> validMonsterClasses = new();
 		private readonly List<string> validMonsterCodes = new();
@@ -63,6 +67,19 @@ namespace Assets.Scripts.Sprites
 
         public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);
+
+        public string GetHitSoundForWeapon(int weaponId)
+        {
+	        if (!weaponClassData.TryGetValue(weaponId, out var weapon))
+		        weapon = weaponClassData[0];
+
+	        var hitSoundsCount = weapon.HitSounds.Count;
+	        if (hitSoundsCount <= 1)
+		        return weapon.HitSounds[0];
+	        
+	        return weapon.HitSounds[Random.Range(0, hitSoundsCount)];
+        }
+        
 		
 		private void Awake()
 		{
@@ -106,7 +123,15 @@ namespace Assets.Scripts.Sprites
 				var cList = jList[weapon.Class];
 				cList.Add(weapon);
             }
+            
+            var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
+            foreach (var weapon in weaponClass.Items)
+				weaponClassData.TryAdd(weapon.Id, weapon);
 
+            var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
+            foreach(var skill in skills.Items)
+	            skillData.Add(skill.SkillId, skill);
+            
 			isInitialized = true;
 		}
 
@@ -256,6 +281,7 @@ namespace Assets.Scripts.Sprites
             control.IsMainCharacter = param.IsMainCharacter;
 			control.IsMale = param.IsMale;
             control.Level = param.Level;
+            control.WeaponClass = param.WeaponClass;
 
 			bodySprite.Controllable = control;
 			if(param.State == CharacterState.Moving)
@@ -273,6 +299,7 @@ namespace Assets.Scripts.Sprites
 			headSprite.SpriteOrder = 1;
 
 			control.ShadowSize = 0.5f;
+			control.WeaponClass = param.WeaponClass;
 			
 			var bodySpriteName = param.IsMale ? pData.SpriteMale : pData.SpriteFemale;
 			var headSpriteName = param.IsMale ? hData.SpriteMale : hData.SpriteFemale;
@@ -299,6 +326,7 @@ namespace Assets.Scripts.Sprites
             control.Name = param.Name;
             control.Hp = param.Hp;
             control.MaxHp = param.MaxHp;
+            // control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0);
 
             AddressableUtility.LoadRoSpriteData(go, bodySpriteName, bodySprite.OnSpriteDataLoad);
 			AddressableUtility.LoadRoSpriteData(go, headSpriteName, headSprite.OnSpriteDataLoad);
@@ -384,6 +412,7 @@ namespace Assets.Scripts.Sprites
             control.IsInteractable = false;
 			
 			control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
+			control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0, false, false);
 			
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
             loader.Completed += ah =>
@@ -446,8 +475,12 @@ namespace Assets.Scripts.Sprites
             control.Name = param.Name;
             if (string.IsNullOrEmpty(param.Name))
                 control.Name = mData.Name;
+            control.WeaponClass = 0;
+            control.Hp = param.Hp;
+            control.MaxHp = param.MaxHp;
 
 			control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
+			// control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0);
 
             var basePath = "Assets/Sprites/Monsters/";
 			if(param.ClassId < 4000)

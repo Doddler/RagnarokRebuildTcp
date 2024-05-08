@@ -23,6 +23,16 @@ namespace Assets.Scripts.Sprites
 		public string SpriteMale;
 		public string SpriteFemale;
 	}
+	
+	[Serializable]
+	public class WeaponClassData
+	{
+		public int Id;
+		public string Name;
+		public string WeaponClass;
+		public List<string> HitSounds;
+	}
+
 
 	[Serializable]
 	public class HeadgearSpriteData

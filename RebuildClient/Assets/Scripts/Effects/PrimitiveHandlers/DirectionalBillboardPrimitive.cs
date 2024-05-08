@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Utility;
-using UnityEditor.Sprites;
 using UnityEngine;
 using static Assets.Scripts.Effects.RagnarokEffectData;
 
@@ -31,7 +30,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 var id = Mathf.FloorToInt(primitive.CurrentPos / (1f / data.FrameRate)) % data.SpriteList.Length;
                 var sprite = data.Atlas.GetSprite(data.SpriteList[id]);
 
-                primitive.Material.mainTexture = SpriteUtility.GetSpriteTexture(sprite, true);
+                primitive.Material.mainTexture = sprite.texture;
                 primitive.AddTexturedSpriteQuad(sprite, Vector3.zero, data.Width, data.Height, Color.white);
             }
             else

@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Shaders
+  m_EditorClassIdentifier: 
+  m_GroupName: Shaders
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 68ebdedde6817ea408621c1a3a756682
+  m_SerializeEntries:
+  - m_GUID: 9c95f3d504ace2d4a9d0712e87db3330
+    m_Address: Assets/Shaders/TestSpriteShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6e48a94539aa3e4c8cfa247031eca44
+    m_Address: Assets/Shaders/AdditiveShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75dfed39651b3624f922a08196b3e92a
+    m_Address: Assets/Shaders/WalkableShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a185cd5d85f2f8546aecfacafaacc03b
+    m_Address: Assets/Shaders/EffectShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3795cf92a1c70984aaf26dd87707e274
+    m_Address: Assets/Shaders/ModelShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dcbf137ae59bb974c9470f68e3106616
+    m_Address: Assets/Shaders/TestBillboard.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7107728c81a6bd444982f8353882e84d
+    m_Address: Assets/Shaders/TestShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b94dfa573b4ad44a944eca96271d0b5
+    m_Address: Assets/Shaders/UnlitTile.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2acbe2edf5ed91489f9bf72c8325869
+    m_Address: Assets/Shaders/VertexColorUnlit.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7d67804dbe13474f879a85c8bffa38e
+    m_Address: Assets/Shaders/ObjectShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1790c9464ea1e334da37a0985613706e
+    m_Address: Assets/Shaders/GroundBlendTest.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a744a85892e754b4c98bebdb0c762159
+    m_Address: Assets/Shaders/BlendingTestShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af716291ecb328748bf8303763de7415
+    m_Address: Assets/Shaders/TestProjectorShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 718e356a6c9cdec47810d5b9c2e0a356
+    m_Address: Assets/Shaders/ObjectShaderAcceptProjector.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a777199ba1d3a8d4d9ace42dc29483b3
+    m_Address: Assets/Shaders/MapShaderAccurate.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65154ebb0faaa3b4b98db4491b0e9dba
+    m_Address: Assets/Shaders/BillboardVerticalZDepthDirect.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff5d99320edd6224e80921f52013930e
+    m_Address: Assets/Shaders/WaterShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44d8f953fdc77a0448c088a857dc5746
+    m_Address: Assets/Shaders/MinimapShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cdceff6a6904e2b4d955ba233a49f798
+    m_Address: Assets/Shaders/FireflyShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81e61f4c5277e5c4ca96dc2b036447da
+    m_Address: Assets/Shaders/CastProjector.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f91689a8f3349d84dbfef0a2d7005ccb
+    m_Address: Assets/Shaders/SceneHeightShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a459dd63c7e42cb4981fa7fe62249a58
+    m_Address: Assets/Shaders/BillboardVerticalZDepth.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3e2b57f3d9f16d4dac9816f7fec7093
+    m_Address: Assets/Shaders/SpriteShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e39b7cfc0fbfd1347b2fb6508f066a7b
+    m_Address: Assets/Shaders/AlphaPerspectiveShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e3cb25b8b4a9284f827f9bac2f366ae
+    m_Address: Assets/Shaders/SpriteShaderNoZWrite.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e8688e51baef33644b1ad7ca0bd2498c
+    m_Address: Assets/Shaders/BillboardVerticalZDepthPerspective.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2047a671d485c7f438be8cf32a9ab1a0
+    m_Address: Assets/Shaders/InvAlphaBlendShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa184ab7f07e45479dd78e8f49520f4a
+    m_Address: Assets/Shaders/MapShaderDebug.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9303f662e059ae84293624132e24a509
+    m_Address: Assets/Shaders/EffectShaderNoZTest.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9977fd8b1caf414491067e7843aa30c2
+    m_Address: Assets/Shaders/MapShaderWithDithering.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 9ea64412f95d5684e8f1bcdff1aded98, type: 2}
+    - {fileID: 11400000, guid: 80d536c256301ab43abbaed978116b2b, type: 2}

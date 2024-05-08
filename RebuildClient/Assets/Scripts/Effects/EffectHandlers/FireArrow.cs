@@ -59,7 +59,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 AudioManager.Instance.OneShotSoundEffect(effect.SourceEntityId, $"ef_firearrow{id}.ogg", effect.transform.position);
             }
 
-            if (step >= 12 && (step - 12) % 10 == 0 && step < effect.DurationFrames && (step - 12) / 10 <= effect.ObjCount)
+            if (step >= 12 && (step - 12) % 10 == 0 && step < effect.DurationFrames && (step - 12) / 10 < effect.ObjCount)
             {
                 var prim = effect.LaunchPrimitive(PrimitiveType.DirectionalBillboard, fireboltMaterial, 1f);
                 var data = prim.GetPrimitiveData<EffectSpriteData>();
