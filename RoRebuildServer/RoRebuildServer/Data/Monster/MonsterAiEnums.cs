@@ -21,6 +21,7 @@ public enum MonsterAiType : byte
 
 public enum MonsterAiState : byte
 {
+    StateAny,
     StateIdle,
     StateRandomMove,
     StateChase,

@@ -24,17 +24,38 @@ StateFlee:
 
 SkillHandler("ELDER_WILLOW") {
 StateAttacking:
-	TryCast(FireBolt, 3, 50, 1500, 5000);
+	TryCast(FireBolt, 3, 500, 1500, 5000) -> SendEmote(29);
 StateChase:
-	TryCast(FireBolt, 3, 50, 1500, 5000);
+	TryCast(FireBolt, 3, 500, 1500, 5000) -> SendEmote(29);
+}
+
+macro MoonlightCombatActions() {
+	if(HpPercent < 70 && IsNamedEventOffCooldown("Magic Combo")) {
+		TryCast(ColdBolt, 5, 1000, 800, 10000, EventOnStartCast) -> SendEmote(29); //gg
+		TryCast(FireBolt, 5, 1000, 800, 10000);
+		TryCast(LightningBolt, 5, 1000, 800, 10000);
+		SetEventCooldown("Magic Combo", 20000);
+	}
+
+	if(HpPercent < 30 && IsNamedEventOffCooldown("FinalPhase")) {
+		SendEmote(7); //angry
+		ResetAllCooldowns();
+		SetEventCooldown("Final Phase", 999000000);
+	}
 }
 
 SkillHandler("MOONLIGHT") {
+StateAny:
+	TryCast(CallMinion,1, 1000, 2000, 30000)[MinionCount < 3] -> CallDefaultMinions();
+
 StateChase:
+	@MoonlightCombatActions();
 	TryCast(ColdBolt, 5, 200, 0, 5000);
 	TryCast(FireBolt, 5, 200, 0, 5000);
 	TryCast(LightningBolt, 5, 200, 0, 5000);
+
 StateAttacking:
+	@MoonlightCombatActions();
 	TryCast(Mammonite, 10, 200, 0, 5000) -> SendEmote(8);
 }
 

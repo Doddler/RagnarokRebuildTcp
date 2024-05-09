@@ -306,6 +306,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 				
 				light -= lmax/3;
 				o.color.rgb = o.color.rgb + light.rgb;
+				//o.color.rgb = _EnvColor.rgb;
 				//o.color.a = v.color;
 				
 				// o.light = v.uv1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
@@ -342,6 +343,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 				//environment ambient contribution disabled for now as it muddies the sprite
 				//todo: turn ambient contribution back on if fog is disabled.
 				//float4 env = float4(1,1,1,1);
+				//return i.color;
 				float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 				env = env * 0.3 + 0.7;// + saturate(0.5 + i.envColor);
 					
@@ -371,14 +373,16 @@ Shader"Ragnarok/CharacterSpriteShader"
 
 				//return float4(i.color.rgb/2, 1);
 
-				fixed4 c = diff * min(1.35, i.color * float4(env.rgb,1)); // + float4(i.light.rgb,0);
+				//The UNITY_APPLY_FOG can't be called twice so we'll store it to re-use later
+				float4 fogColor = float4(1,1,1,1);
+				UNITY_APPLY_FOG(i.fogCoord, fogColor);
+
+				fixed4 c = diff * min(1.35, fogColor * i.color * float4(env.rgb,1)); // + float4(i.light.rgb,0);
 				c = saturate(c);
 
 				if(c.a < 0.001)
 					discard;
 
-				UNITY_APPLY_FOG(i.fogCoord, c);
-			
 				c.rgb *= c.a;
 	
 				#ifndef WATER_OFF
@@ -397,9 +401,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 					float simHeight = i.worldPos.y - abs(i.worldPos.x)/(_Width)*0.5;
 	
 					simHeight = clamp(simHeight, i.worldPos.y - 0.4, i.worldPos.y);
-
-					//we can't use UNITY_APPLY_FOG again because of errors so we do this to apply fog to our water.
-					UNITY_APPLY_FOG_COLOR(i.fogCoord, waterTex, unity_FogColor); 
+					waterTex *= fogColor;
 					
 					if (height-0 > simHeight)
 						c.rgb *= lerp(float3(1, 1, 1), waterTex.rgb, saturate(((height - 0) - simHeight) * 10));

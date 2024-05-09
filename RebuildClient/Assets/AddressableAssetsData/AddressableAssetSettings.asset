@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 5f474784577dcf644a3c480fd3b9e282
   m_currentHash:
     serializedVersion: 2
-    Hash: a81dd11cd470c35faa267c0b26e6d009
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
@@ -125,6 +125,7 @@ MonoBehaviour:
     - Maps
     - Music
     - Cutins
+    - Effect
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 17faa74332f153d469a86381dc48b448, type: 2}
@@ -138,7 +139,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e455818fb9476543b6ae1bfee2841a4, type: 2}
   - {fileID: 11400000, guid: c13c6c4cb7c642f4a9601d50f150a6e2, type: 2}
   - {fileID: 11400000, guid: dd5759afe41748249b7cd4065143262a, type: 2}
-  m_ActiveProfileId: 74eeaed3b15ea2e48ba2cdf48da13ea4
+  m_ActiveProfileId: 9486c70cbe8b29b4b911e2e0f648c716
   m_HostingServicesManager:
     m_HostingServiceInfos:
     - classRef: UnityEditor.AddressableAssets.HostingServices.HttpHostingService,

@@ -52,6 +52,7 @@ public class CombatEntity : IEntityAutoReset
 
     public bool IsSkillOnCooldown(CharacterSkill skill) => skillCooldowns.TryGetValue(skill, out var t) && t > Time.ElapsedTimeFloat;
     public void SetSkillCooldown(CharacterSkill skill, float val) => skillCooldowns[skill] = Time.ElapsedTimeFloat + val;
+    public void ResetSkillCooldowns() => skillCooldowns.Clear();
 
     public void Reset()
     {
@@ -61,6 +62,7 @@ public class CombatEntity : IEntityAutoReset
         Faction = -1;
         Party = -1;
         IsTargetable = true;
+        IsCasting = false;
         skillCooldowns.Clear();
         
         for (var i = 0; i < statData.Length; i++)
@@ -269,6 +271,9 @@ public class CombatEntity : IEntityAutoReset
         
         var target = QueuedCastingSkill.TargetEntity.GetIfAlive<CombatEntity>();
         if (target == null) return;
+
+        if (target == this)
+            StartCastingSelfTargetedSkill(QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime);
         
         AttemptStartSingleTargetSkillAttack(target, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime);
     }
@@ -278,12 +283,71 @@ public class CombatEntity : IEntityAutoReset
         QueuedCastingSkill = skillInfo;
         Character.QueuedAction = QueuedAction.Cast;
     }
+
+    public bool StartCastingSelfTargetedSkill(CharacterSkill skill, int level, float castTime = -1f)
+    {
+        if (Character.State == CharacterState.Dead)
+        {
+            ServerLogger.LogError($"Cannot attempt a skill action {skill} while dead! " + Environment.StackTrace);
+            return false;
+        }
+
+        var skillInfo = new SkillCastInfo()
+        {
+            TargetEntity = Entity,
+            Skill = skill,
+            Level = level,
+            CastTime = castTime,
+            TargetedPosition = Position.Invalid
+        };
+
+
+        if (IsCasting) //if we're already casting, queue up the next cast
+        {
+            QueueCast(skillInfo);
+            return true;
+        }
+
+        if (Character.State == CharacterState.Moving) //if we are already moving, queue the skill action
+        {
+            if (Character.Type == CharacterType.Player)
+                Character.Player.ClearTarget(); //if we are currently moving we should dequeue attacking so we don't chase after casting
+
+            Character.ShortenMovePath(); //for some reason shorten move path cancels the queued action and I'm too lazy to find out why
+            QueueCast(skillInfo);
+
+            return true;
+        }
+        
+        if (Character.AttackCooldown > Time.ElapsedTimeFloat)
+        {
+            QueueCast(skillInfo);
+            return true;
+        }
+
+
+        if (castTime < 0f)
+            castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, null, skillInfo.Level);
+        if (castTime <= 0)
+            ExecuteQueuedSkillAttack();
+        else
+        {
+            IsCasting = true;
+            CastingTime = Time.ElapsedTimeFloat + castTime;
+
+            Character.Map?.GatherPlayersForMultiCast(Character);
+            CommandBuilder.StartCastMulti(Character, null, skillInfo.Skill, skillInfo.Level, castTime);
+            CommandBuilder.ClearRecipients();
+        }
+        return true;
+    }
     
     public bool AttemptStartSingleTargetSkillAttack(CombatEntity target, CharacterSkill skill, int level, float castTime = -1f)
     {
         if (Character.State == CharacterState.Dead)
         {
             ServerLogger.LogError("Cannot attempt a skill action while dead! " + Environment.StackTrace);
+            return false;
         }
 
         if (Character.Type == CharacterType.Player && !Character.Player.VerifyCanUseSkill(skill, level))

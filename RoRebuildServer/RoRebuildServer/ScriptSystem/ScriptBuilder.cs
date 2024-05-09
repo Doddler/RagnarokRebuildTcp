@@ -367,12 +367,27 @@ public class ScriptBuilder
         StartIndentedScriptLine().AppendLine($"public override void RunAiSkillUpdate(MonsterAiState aiState, MonsterSkillAiState skillState)");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
+
+        StartIndentedScriptLine().AppendLine("skillState.FinishedProcessing = false;");
+
+
+        if (monsterStatesWithHandlers.Contains(MonsterAiState.StateAny))
+        {
+            StartIndentedScriptLine().AppendLine($"StateAny(skillState);");
+            StartIndentedScriptLine().AppendLine($"if(skillState.FinishedProcessing) return;");
+
+            //
+        }
+
+
         StartIndentedScriptLine().AppendLine($"switch(aiState)");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
-
+        
         foreach (var state in monsterStatesWithHandlers)
         {
+            if (state == MonsterAiState.StateAny)
+                continue;
             StartIndentedScriptLine().AppendLine($"case MonsterAiState.{state}:");
             indentation++;
             StartIndentedScriptLine().AppendLine($"{state}(skillState);");

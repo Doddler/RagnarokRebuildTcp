@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Network;
+﻿using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Network;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
 {
@@ -6,6 +7,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     {
         public override void ExecuteSkillTargeted(ServerControllable src, ServerControllable target, int lvl)
         {
+            DefaultSkillCastEffect.Create(src);
             src.PerformBasicAttackMotion();
         }
     }

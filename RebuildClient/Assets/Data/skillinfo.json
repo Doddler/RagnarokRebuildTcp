@@ -15,6 +15,13 @@
       "CanAdjustLevel": true
     },
     {
+      "SkillId": 10,
+      "Type": 1,
+      "Name": "Lightning Bolt",
+      "MaxLevel": 10,
+      "CanAdjustLevel": true
+    },
+    {
       "SkillId": 1,
       "Type": 1,
       "Name": "Bash",
@@ -41,6 +48,20 @@
       "Name": "Thunder Storm",
       "MaxLevel": 10,
       "CanAdjustLevel": true
+    },
+    {
+      "SkillId": 19,
+      "Type": 5,
+      "Name": "Call Minion",
+      "MaxLevel": 10,
+      "CanAdjustLevel": false
+    },
+    {
+      "SkillId": 20,
+      "Type": 5,
+      "Name": "Haste",
+      "MaxLevel": 10,
+      "CanAdjustLevel": false
     }
   ]
 }

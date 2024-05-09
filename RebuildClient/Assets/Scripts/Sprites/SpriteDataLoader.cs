@@ -68,6 +68,8 @@ namespace Assets.Scripts.Sprites
         public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);
 
+        public string GetSkillName(CharacterSkill skill) => skillData[skill].Name;
+
         public string GetHitSoundForWeapon(int weaponId)
         {
 	        if (!weaponClassData.TryGetValue(weaponId, out var weapon))

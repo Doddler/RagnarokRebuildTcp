@@ -60,7 +60,6 @@ namespace Assets.Scripts.Network
         private float hitLockImmuneTime = 0f;
         private bool isDirectMove;
         private bool isHidden;
-        private bool isCasting;
         public float PosLockTime;
 
         private bool isMoving;
@@ -85,6 +84,7 @@ namespace Assets.Scripts.Network
         private float dialogCountdown = 0f;
         private float movePauseTime = 0f;
         public bool IsMoving => isMoving;
+        public bool IsCasting;
 
         public bool IsWalking => movePath != null && movePath.Count > 1;
 
@@ -124,26 +124,42 @@ namespace Assets.Scripts.Network
                 FloatingDisplay.UpdateHp(hp);
         }
 
+        public void ShowSkillCastMessage(CharacterSkill skill, float duration = 5f)
+        {
+            if (CharacterType != CharacterType.Player)
+                return;
+            
+            var sName = SpriteDataLoader.Instance.GetSkillName(skill);
+            FloatingDisplay.ShowChatBubbleMessage(sName + "!!", duration);
+        }
+
         public void StartCastBar(CharacterSkill skill, float duration)
         {
             EnsureFloatingDisplayCreated();
             FloatingDisplay.StartCasting(duration);
-            var sName = skill.ToString();
-            
-            if (skill == CharacterSkill.FireBolt)
-                sName = "Fire Bolt";
-            if (skill == CharacterSkill.ColdBolt)
-                sName = "Cold Bolt";
-            if (skill == CharacterSkill.Bash)
-                sName = "Bash";
-            if (skill == CharacterSkill.Mammonite)
-                sName = "Mammonite";
+            var sName = SpriteDataLoader.Instance.GetSkillName(skill);
+            //
+            // if (skill == CharacterSkill.FireBolt)
+            //     sName = "Fire Bolt";
+            // if (skill == CharacterSkill.ColdBolt)
+            //     sName = "Cold Bolt";
+            // if (skill == CharacterSkill.Bash)
+            //     sName = "Bash";
+            // if (skill == CharacterSkill.Mammonite)
+            //     sName = "Mammonite";
+
+            IsCasting = true;
             
             if(CharacterType == CharacterType.Player)
                 FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
             else
                 FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
                 
+        }
+
+        public void StopCasting()
+        {
+            FloatingDisplay?.CancelCasting();
         }
 
         public void RefreshHiddenState()
@@ -676,6 +692,8 @@ namespace Assets.Scripts.Network
             
             FloatingDisplay.Close();
             FloatingDisplay = null;
+
+            StopCasting();
 
             StartCoroutine(MonsterDeathCoroutine(hitCount));
         }

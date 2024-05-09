@@ -24,7 +24,7 @@ public partial class Monster : IEntityAutoReset
     private float aiTickRate;
     //private float aiCooldown;
 
-    private float NextAiUpdate;
+    private float nextAiUpdate;
     //private float NextAiUpdate
     //{
     //    get => nextAiUpdate;
@@ -38,6 +38,8 @@ public partial class Monster : IEntityAutoReset
     //    }
     //}
     //private float nextAiUpdate;
+
+    public void ResetAiUpdateTime() => nextAiUpdate = 0;
 
     private float nextMoveUpdate;
     private float nextAiSkillUpdate;
@@ -53,6 +55,7 @@ public partial class Monster : IEntityAutoReset
     private Entity Master;
     private EntityList? Children;
     
+    public int ChildCount => Children?.Count ?? 0;
 
     private WorldObject? targetCharacter => Target.GetIfAlive<WorldObject>();
 
@@ -70,7 +73,7 @@ public partial class Monster : IEntityAutoReset
     public bool LockMovementToSpawn;
 
     public MonsterAiState CurrentAiState;
-
+    
     //private WorldObject searchTarget = null!;
 
     private float deadTimeout;
@@ -97,7 +100,7 @@ public partial class Monster : IEntityAutoReset
         CombatEntity = null!;
         //searchTarget = null!;
         aiTickRate = 0.1f;
-        NextAiUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(0, aiTickRate);
+        nextAiUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(0, aiTickRate);
         SpawnRule = null;
         MonsterBase = null!;
         SpawnMap = null!;
@@ -119,7 +122,7 @@ public partial class Monster : IEntityAutoReset
         aiType = type;
         SpawnMap = mapName;
         aiEntries = DataManager.GetAiStateMachine(aiType);
-        NextAiUpdate = Time.ElapsedTimeFloat + 1f;
+        nextAiUpdate = Time.ElapsedTimeFloat + 1f;
 
         if (SpawnRule != null)
         {
@@ -234,6 +237,8 @@ public partial class Monster : IEntityAutoReset
             CombatEntity.DistributeExperience();
 
         Character.IsActive = false;
+        Character.QueuedAction = QueuedAction.None;
+        CombatEntity.IsCasting = false;
 
         if (Children != null && Children.Count > 0)
         {
@@ -267,7 +272,7 @@ public partial class Monster : IEntityAutoReset
             deadTimeout = 0.4f; //minimum respawn time
         if (deadTimeout > MaxSpawnTimeInSeconds)
             deadTimeout = MaxSpawnTimeInSeconds;
-        NextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
+        nextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
         deadTimeout += Time.ElapsedTimeFloat;
 
         Character.ClearVisiblePlayerList(); //make sure this is at the end or the player may not be notified of the monster's death
@@ -275,13 +280,13 @@ public partial class Monster : IEntityAutoReset
 
     public void ResetDelay()
     {
-        NextAiUpdate = 0f;
+        nextAiUpdate = 0f;
     }
 
     public void AddDelay(float delay)
     {
         //usually to stop a monster from acting after taking fatal damage, but before the damage is applied
-        NextAiUpdate = Time.ElapsedTimeFloat + delay;
+        nextAiUpdate = Time.ElapsedTimeFloat + delay;
     }
 
     private bool CanAssistAlly(int distance, out Entity newTarget)
@@ -348,6 +353,8 @@ public partial class Monster : IEntityAutoReset
     {
         if (CastSuccessEvent != null)
             CastSuccessEvent(skillState);
+        //else
+        //    ServerLogger.Debug("Cast success");
         CastSuccessEvent = null;
     }
 
@@ -365,7 +372,7 @@ public partial class Monster : IEntityAutoReset
 
         if (skillState.CastSuccessEvent != null)
         {
-            if (skillState.ExecuteEventAtStartOfCast || Character.QueuedAction != QueuedAction.Cast)
+            if (skillState.ExecuteEventAtStartOfCast && Character.QueuedAction != QueuedAction.Cast)
             {
                 skillState.CastSuccessEvent(skillState);
                 CastSuccessEvent = null;
@@ -427,16 +434,16 @@ public partial class Monster : IEntityAutoReset
 
         if (Character.Map != null && Character.Map.PlayerCount == 0)
         {
-            NextAiUpdate = Time.ElapsedTimeFloat + 2f + GameRandom.NextFloat(0f, 1f);
+            nextAiUpdate = Time.ElapsedTimeFloat + 2f + GameRandom.NextFloat(0f, 1f);
         }
         else
         {
-            if (NextAiUpdate < Time.ElapsedTimeFloat)
+            if (nextAiUpdate < Time.ElapsedTimeFloat)
             {
-                if (NextAiUpdate + Time.DeltaTimeFloat < Time.ElapsedTimeFloat)
-                    NextAiUpdate = Time.ElapsedTimeFloat + aiTickRate;
+                if (nextAiUpdate + Time.DeltaTimeFloat < Time.ElapsedTimeFloat)
+                    nextAiUpdate = Time.ElapsedTimeFloat + aiTickRate;
                 else
-                    NextAiUpdate += aiTickRate;
+                    nextAiUpdate += aiTickRate;
             }
         }
     }
@@ -446,7 +453,7 @@ public partial class Monster : IEntityAutoReset
         if (Character.Map?.PlayerCount == 0)
             return;
 
-        if (NextAiUpdate > Time.ElapsedTimeFloat)
+        if (nextAiUpdate > Time.ElapsedTimeFloat)
             return;
 
         AiStateMachineUpdate();

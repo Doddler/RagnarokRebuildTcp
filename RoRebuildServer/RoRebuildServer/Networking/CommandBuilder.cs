@@ -152,7 +152,7 @@ public static class CommandBuilder
         return packet;
     }
 
-    public static void StartCastMulti(WorldObject caster, WorldObject target, CharacterSkill skill, int lvl,
+    public static void StartCastMulti(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl,
         float castTime)
     {
         if (!HasRecipients())
@@ -161,7 +161,7 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.StartCast, 48);
 
         packet.Write(caster.Id);
-        packet.Write(target.Id);
+        packet.Write(target?.Id ?? -1 );
         packet.Write((byte)skill);
         packet.Write((byte)lvl);
         packet.Write((byte)caster.FacingDirection);
@@ -193,6 +193,22 @@ public static class CommandBuilder
         //packet.Write(caster.IsMoving);
 
         NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+    public static void SkillExecuteSelfTargetedSkill(WorldObject caster, CharacterSkill skill, int lvl)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
+
+        packet.Write((byte)SkillTarget.SelfCast);
+        packet.Write(caster.Id);
+        packet.Write((byte)skill);
+        packet.Write((byte)lvl);
+        packet.Write((byte)caster.FacingDirection);
+        packet.Write(caster.Position);
+        packet.Write(caster.CombatEntity?.GetTiming(TimingStat.AttackMotionTime) ?? 0);
     }
 
     public static void AttackMulti(WorldObject attacker, WorldObject target, DamageInfo di)

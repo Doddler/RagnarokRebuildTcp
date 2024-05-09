@@ -29,6 +29,10 @@ namespace RebuildSharedData.Enum
         //acolyte
         Heal,
         //merchant
-        Mammonite
+        Mammonite,
+
+        //monster specific
+        CallMinion,
+        Haste
     }
 }

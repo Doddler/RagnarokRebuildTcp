@@ -3,11 +3,13 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
+using System.Xml.Linq;
 
 namespace RoRebuildServer.EntityComponents.Monsters;
 
@@ -17,11 +19,14 @@ public class MonsterSkillAiState(Monster monster)
     public Action<MonsterSkillAiState>? CastSuccessEvent = null;
     public bool SkillCastSuccess;
     public bool ExecuteEventAtStartOfCast;
+    public bool FinishedProcessing;
 
     public int HpPercent => monster.CombatEntity.GetStat(CharacterStat.Hp) * 100 / monster.CombatEntity.GetStat(CharacterStat.MaxHp);
+    public int MinionCount => monster.ChildCount;
     private WorldObject? targetForSkill = null;
     private bool failNextSkill = false;
-    private Dictionary<CharacterSkill, float>? cooldownTimes;
+
+    private Dictionary<string, float>? specialCooldowns;
     
 
     public void Debug(string hello) { ServerLogger.Log(hello); }
@@ -37,7 +42,32 @@ public class MonsterSkillAiState(Monster monster)
     {
         SkillCastSuccess = true;
         targetForSkill = null;
+        monster.CastSuccessEvent = null;
+        CastSuccessEvent = null;
+        FinishedProcessing = true;
         return true;
+    }
+
+    public bool IsNamedEventOffCooldown(string name)
+    {
+        if (specialCooldowns == null || !specialCooldowns.TryGetValue(name, out var cooldown))
+            return true;
+
+        return Time.ElapsedTimeFloat > cooldown;
+    }
+
+    public void SetEventCooldown(string name, float cooldown)
+    {
+        if (specialCooldowns == null)
+            specialCooldowns = new Dictionary<string, float>();
+
+        specialCooldowns[name] = Time.ElapsedTimeFloat + cooldown / 1000f;
+    }
+
+    public void ResetAllCooldowns()
+    {
+        specialCooldowns?.Clear();
+        monster.CombatEntity.ResetSkillCooldowns();
     }
 
     public void ChangeAiState(MonsterAiState state)
@@ -61,7 +91,8 @@ public class MonsterSkillAiState(Monster monster)
 
         if (attr.SkillTarget == SkillTarget.SelfCast)
         {
-            //TODO: do something about actually casting the skill
+            if(!ce.StartCastingSelfTargetedSkill(skill, level, castTime / 1000f))
+                return SkillFail();
             ce.SetSkillCooldown(skill, delay / 1000f);
             return SkillSuccess();
         }
@@ -110,6 +141,57 @@ public class MonsterSkillAiState(Monster monster)
 
         return SkillFail();
     }
+
+    public void CallDefaultMinions()
+    {
+        var monsterDef = monster.MonsterBase;
+        if (monsterDef.Minions == null)
+        {
+            ServerLogger.LogWarning($"Monster {monster.Character.Name} attempting to call default minions, but has none defined.");
+            return;
+        }
+
+        var map = monster.Character.Map;
+
+        if (monsterDef.Minions != null && monsterDef.Minions.Count > 0)
+        {
+            for (var i = 0; i < monsterDef.Minions.Count; i++)
+            {
+                var minionDef = monsterDef.Minions[i];
+                for (var j = 0; j < minionDef.Count; j++)
+                {
+                    var minion = World.Instance.CreateMonster(map, minionDef.Monster, Area.CreateAroundPoint(monster.Character.Position, 3), null);
+                    var minionMonster = minion.Get<Monster>();
+                    minionMonster.ResetAiUpdateTime();
+
+                    monster.AddChild(ref minion);
+                }
+            }
+        }
+    }
+
+    //public void SummonMinion(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
+    //{
+    //    var chara = Entity.Get<WorldObject>();
+
+    //    Debug.Assert(chara.Map != null, $"Npc {Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+    //    var monster = DataManager.MonsterCodeLookup[name];
+
+    //    var area = Area.CreateAroundPoint(chara.Position + new Position(offsetX, offsetY), width, height);
+
+    //    var mobs = Mobs;
+    //    if (mobs == null)
+    //    {
+    //        mobs = new EntityList(count);
+    //        Mobs = mobs;
+    //    }
+    //    else
+    //        mobs.ClearInactive();
+
+    //    for (int i = 0; i < count; i++)
+    //        mobs.Add(World.Instance.CreateMonster(chara.Map, monster, area, null));
+    //}
 
     public void SendEmote(int emoteId)
     {

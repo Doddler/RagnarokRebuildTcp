@@ -307,7 +307,7 @@ public partial class Monster
     {
         if (deadTimeout > Time.ElapsedTimeFloat)
         {
-            NextAiUpdate = deadTimeout + 0.01f;
+            nextAiUpdate = deadTimeout + 0.01f;
             return false;
         }
 
@@ -415,7 +415,7 @@ public partial class Monster
     /// </summary>
     private bool OutWaitForever()
     {
-        NextAiUpdate += 100_000_000f;
+        nextAiUpdate += 100_000_000f;
         return true;
     }
 
@@ -514,7 +514,7 @@ public partial class Monster
     /// </summary>
     private bool OutSearch()
     {
-        NextAiUpdate = Time.ElapsedTimeFloat; //do AI update next tick. Must use elapsed time here for this to work.
+        nextAiUpdate = Time.ElapsedTimeFloat; //do AI update next tick. Must use elapsed time here for this to work.
         return true;
     }
 
@@ -531,7 +531,7 @@ public partial class Monster
         if (CombatEntity.CanAttackTarget(targetChar))
         {
             //hasTarget = true;
-            NextAiUpdate = Time.ElapsedTimeFloat;
+            nextAiUpdate = Time.ElapsedTimeFloat;
             return true;
         }
 
@@ -591,7 +591,7 @@ public partial class Monster
 
         CombatEntity.PerformMeleeAttack(targetEntity);
 
-        NextAiUpdate += MonsterBase.AttackTime;
+        nextAiUpdate += MonsterBase.AttackTime;
 
         return true;
     }
@@ -618,11 +618,11 @@ public partial class Monster
                 return false;
             //ServerLogger.Debug($"Monster {MonsterBase.Name} {Entity} stopping to attack. Current position {Character.Position} time to stop: {Character.MoveCooldown}");
             Character.ShortenMovePath();
-            NextAiUpdate = Time.ElapsedTimeFloat + Character.TimeToReachNextStep;
+            nextAiUpdate = Time.ElapsedTimeFloat + Character.TimeToReachNextStep;
             return false;
         }
 
-        NextAiUpdate = Time.ElapsedTimeFloat;
+        nextAiUpdate = Time.ElapsedTimeFloat;
         return true;
     }
 

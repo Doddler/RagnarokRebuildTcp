@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.Simulation.Skills.SkillHandlers;
 
 namespace RoRebuildServer.Simulation.Skills
 {
@@ -14,19 +15,33 @@ namespace RoRebuildServer.Simulation.Skills
 
         static SkillHandler()
         {
-            var count = System.Enum.GetNames(typeof(CharacterSkill)).Length;
+            var count = Enum.GetNames(typeof(CharacterSkill)).Length;
             handlers = new SkillHandlerBase[count];
             skillAttributes = new SkillHandlerAttribute[count];
-
+            
             foreach(var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.GetCustomAttribute<SkillHandlerAttribute>() != null))
             {
                 var handler = (SkillHandlerBase)Activator.CreateInstance(type)!;
                 var attr = type.GetCustomAttribute<SkillHandlerAttribute>();
                 var skill = attr.SkillType;
                 handler.SkillClassification = attr.SkillClassification;
+                handler.Skill = attr.SkillType;
 
                 handlers[(int)skill] = handler;
                 skillAttributes[(int)skill] = attr;
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                if (handlers[i] == null)
+                {
+                    handlers[i] = new SkillHandlerGenericCast()
+                    {
+                        Skill = (CharacterSkill)i,
+                        SkillClassification = SkillClass.None
+                    };
+                    skillAttributes[i] = new SkillHandlerAttribute((CharacterSkill)i, SkillClass.None, SkillTarget.SelfCast);
+                }
             }
         }
 
@@ -41,7 +56,7 @@ namespace RoRebuildServer.Simulation.Skills
             return SkillValidationResult.Failure;
         }
         
-        public static float GetSkillCastTime(CharacterSkill skill, CombatEntity src, CombatEntity target, int level)
+        public static float GetSkillCastTime(CharacterSkill skill, CombatEntity src, CombatEntity? target, int level)
         {
             var handler = handlers[(int)skill];
             if (handler != null)

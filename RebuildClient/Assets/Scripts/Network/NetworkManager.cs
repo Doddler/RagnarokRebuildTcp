@@ -12,6 +12,7 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utility;
 using HybridWebSocket;
+using JetBrains.Annotations;
 using Lidgren.Network;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -655,7 +656,7 @@ namespace Assets.Scripts.Network
             StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, 0, controllable));
         }
 
-        private void AttackMotion(ServerControllable src, Vector2Int pos, Direction dir, float motionTime, ServerControllable target)
+        private void AttackMotion(ServerControllable src, Vector2Int pos, Direction dir, float motionTime, [CanBeNull] ServerControllable target)
         {
             var hasTarget = target != null;
 
@@ -693,12 +694,31 @@ namespace Assets.Scripts.Network
             var type = (SkillTarget)msg.ReadByte();
             switch (type)
             {
+                case SkillTarget.SelfCast:
+                    OnMessageSelfTargetedSkill(msg);
+                    break;
                 case SkillTarget.SingleTarget:
                     OnMessageTargetedSkillAttack(msg);
                     break;
                 default:
                     throw new Exception($"Could not handle skill packet of type {type}");
             }
+        }
+
+        private void OnMessageSelfTargetedSkill(ClientInboundMessage msg)
+        {
+            var id = msg.ReadInt32();
+            var skill = (CharacterSkill)msg.ReadByte();
+            var skillLvl = (int)msg.ReadByte();
+            var dir = (Direction)msg.ReadByte();
+            var pos = ReadPosition(msg);
+            var motionTime = msg.ReadFloat();
+
+            if (!entityList.TryGetValue(id, out var controllable))
+                return;
+            
+            ClientSkillHandler.ExecuteSkill(controllable, null, skill, skillLvl);
+            AttackMotion(controllable, pos, dir, motionTime, null);
         }
 
         private void OnMessageTargetedSkillAttack(ClientInboundMessage msg)
@@ -729,6 +749,7 @@ namespace Assets.Scripts.Network
             }
             
             AttackMotion(controllable, pos, dir, motionTime, controllable2);
+            controllable.ShowSkillCastMessage(skill, 3);
 
             if (hasTarget && controllable.SpriteAnimator.IsInitialized)
             {
@@ -1296,7 +1317,6 @@ namespace Assets.Scripts.Network
             var dir = (Direction)msg.ReadByte();
             var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
             var castTime = msg.ReadFloat();
-
 
             entityList.TryGetValue(targetId, out var target);
             

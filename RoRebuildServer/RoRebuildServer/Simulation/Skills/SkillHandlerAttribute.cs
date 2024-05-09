@@ -7,6 +7,7 @@ namespace RoRebuildServer.Simulation.Skills;
 
 public abstract class SkillHandlerBase
 {
+    public CharacterSkill Skill;
     public SkillClass SkillClassification = SkillClass.Unique;
     protected const int DefaultMagicCastRange = 9;
 
