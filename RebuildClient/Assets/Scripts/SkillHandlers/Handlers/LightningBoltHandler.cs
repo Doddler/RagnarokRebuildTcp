@@ -9,7 +9,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.LightningBolt, true)]
     public class LightningBoltHandler : SkillHandlerBase
     {
-        public override void StartSkillCasting(ServerControllable src, ServerControllable target, SkillTarget skillType, int lvl, float castTime)
+        public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
         {
             if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
             {

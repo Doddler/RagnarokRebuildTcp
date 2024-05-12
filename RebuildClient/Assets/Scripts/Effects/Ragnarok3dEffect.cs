@@ -130,12 +130,13 @@ namespace Assets.Scripts.Effects
 
         public void EndEffect()
         {
-            
+            EffectHandler.OnCleanup(this);
             RagnarokEffectPool.Return3dEffect(this);
         }
 
         private void EndEffectWithNotifyOwner()
         {
+            EffectHandler.OnCleanup(this);
             if(EffectOwner != null)
                 EffectOwner.OnEffectEnd(this); //notify owner to remove us, we've run our course
             RagnarokEffectPool.Return3dEffect(this);

@@ -13,6 +13,7 @@ public abstract class SkillHandlerBase
 
     public virtual bool IsAreaTargeted => false;
     public virtual float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0f;
+    public virtual int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 0;
     public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl);
 
     public float GetCastTime(CombatEntity source, CombatEntity? target, int lvl) => GetCastTime(source, target, Position.Invalid, lvl);
@@ -73,7 +74,8 @@ public struct SkillCastInfo
     public CharacterSkill Skill;
     public int Level;
     public float CastTime;
+    public byte Range;
 
     public bool IsValid => Level > 0 && Level <= 30;
-    public void Clear() { Level = 0; }
+    public void Clear() { Level = 0; Range = 0; }
 }

@@ -142,7 +142,7 @@ namespace PlayerControl
                     if (s.Length > 2)
                         name = String.Join(" ", s.Skip(1).Take(nameMax-1));
 
-                    if (!SpriteDataLoader.Instance.IsValidMonsterName(name) && !SpriteDataLoader.Instance.IsValidMonsterCode(name))
+                    if (!ClientDataLoader.Instance.IsValidMonsterName(name) && !ClientDataLoader.Instance.IsValidMonsterCode(name))
                         cameraFollower.AppendError($"The monster name '{name}' is not valid.");
                     else
                         NetworkManager.Instance.SendAdminSummonMonster(name, count);

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using Lidgren.Network;
+using RebuildSharedData.Data;
 using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking;
@@ -67,8 +68,7 @@ public class InboundMessage
         position += 8;
         return (sbyte)ret;
     }
-
-
+    
     public byte ReadByte()
     {
         VerifyBufferSize(8);
@@ -108,6 +108,16 @@ public class InboundMessage
         var ret = (short)NetBitWriter.ReadByte(Message, 1, position);
         position += 1;
         return (ret > 0 ? true : false);
+    }
+
+    public Position ReadPosition()
+    {
+        VerifyBufferSize(32);
+        var x = (int)NetBitWriter.ReadUInt16(Message, 16, position);
+        position += 16;
+        var y = (int)NetBitWriter.ReadUInt16(Message, 16, position);
+        position += 16;
+        return new Position(x, y);
     }
 
     public string ReadString()

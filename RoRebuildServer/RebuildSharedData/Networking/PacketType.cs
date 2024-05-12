@@ -30,6 +30,7 @@ public enum PacketType : byte
     UnhandledPacket,
     [ServerOnlyPacket] HitTarget,
     [ServerOnlyPacket] StartCast,
+    [ServerOnlyPacket] StartAreaCast,
     Skill,
     [ServerOnlyPacket] SkillError,
     ChangeTarget,

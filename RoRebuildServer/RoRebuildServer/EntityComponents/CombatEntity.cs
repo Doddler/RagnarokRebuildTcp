@@ -266,15 +266,26 @@ public class CombatEntity : IEntityAutoReset
     
     public void ResumeQueuedSkillAction()
     {
+        Character.QueuedAction = QueuedAction.None;
+
         if (QueuedCastingSkill.Level <= 0)
             return;
-        
+
+        if (QueuedCastingSkill.TargetedPosition != Position.Invalid)
+        {
+            AttemptStartGroundTargetedSkill(QueuedCastingSkill.TargetedPosition, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime);
+            return;
+        }
+
         var target = QueuedCastingSkill.TargetEntity.GetIfAlive<CombatEntity>();
         if (target == null) return;
-
-        if (target == this)
-            StartCastingSelfTargetedSkill(QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime);
         
+        if (target == this)
+        {
+            AttemptStartSelfTargetSkill(QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime);
+            return;
+        }
+
         AttemptStartSingleTargetSkillAttack(target, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime);
     }
 
@@ -284,8 +295,73 @@ public class CombatEntity : IEntityAutoReset
         Character.QueuedAction = QueuedAction.Cast;
     }
 
-    public bool StartCastingSelfTargetedSkill(CharacterSkill skill, int level, float castTime = -1f)
+    public bool AttemptStartGroundTargetedSkill(Position target, CharacterSkill skill, int level, float castTime = -1)
     {
+        Character.QueuedAction = QueuedAction.None;
+        QueuedCastingSkill.Clear();
+
+        if (Character.State == CharacterState.Dead)
+        {
+            ServerLogger.LogError($"Cannot attempt a skill action {skill} while dead! " + Environment.StackTrace);
+            return false;
+        }
+
+        var skillInfo = new SkillCastInfo()
+        {
+            Skill = skill,
+            Level = level,
+            CastTime = castTime,
+            TargetedPosition = target,
+            Range = (byte)SkillHandler.GetSkillRange(this, skill, level)
+        };
+
+        if (IsCasting) //if we're already casting, queue up the next cast
+        {
+            QueueCast(skillInfo);
+            return true;
+        }
+
+        if (Character.State == CharacterState.Moving) //if we are already moving, queue the skill action
+        {
+            if (Character.Type == CharacterType.Player)
+                Character.Player.ClearTarget(); //if we are currently moving we should dequeue attacking so we don't chase after casting
+
+            Character.ShortenMovePath(); //for some reason shorten move path cancels the queued action and I'm too lazy to find out why
+            QueueCast(skillInfo);
+
+            return true;
+        }
+
+        if (Character.AttackCooldown > Time.ElapsedTimeFloat)
+        {
+            QueueCast(skillInfo);
+            return true;
+        }
+
+        CastingSkill = skillInfo;
+        Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
+
+        if (castTime < 0f)
+            castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, null, skillInfo.Level);
+        if (castTime <= 0)
+            ExecuteQueuedSkillAttack();
+        else
+        {
+            IsCasting = true;
+            CastingTime = Time.ElapsedTimeFloat + castTime;
+
+            Character.Map?.GatherPlayersForMultiCast(Character);
+            CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime);
+            CommandBuilder.ClearRecipients();
+        }
+        return true;
+    }
+
+    public bool AttemptStartSelfTargetSkill(CharacterSkill skill, int level, float castTime = -1f)
+    {
+        Character.QueuedAction = QueuedAction.None;
+        QueuedCastingSkill.Clear();
+
         if (Character.State == CharacterState.Dead)
         {
             ServerLogger.LogError($"Cannot attempt a skill action {skill} while dead! " + Environment.StackTrace);
@@ -325,6 +401,7 @@ public class CombatEntity : IEntityAutoReset
             return true;
         }
 
+        CastingSkill = skillInfo;
 
         if (castTime < 0f)
             castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, null, skillInfo.Level);
@@ -344,6 +421,9 @@ public class CombatEntity : IEntityAutoReset
     
     public bool AttemptStartSingleTargetSkillAttack(CombatEntity target, CharacterSkill skill, int level, float castTime = -1f)
     {
+        Character.QueuedAction = QueuedAction.None;
+        QueuedCastingSkill.Clear();
+
         if (Character.State == CharacterState.Dead)
         {
             ServerLogger.LogError("Cannot attempt a skill action while dead! " + Environment.StackTrace);
@@ -402,13 +482,9 @@ public class CombatEntity : IEntityAutoReset
                 QueueCast(skillInfo);
                 return true;
             }
-            else
-                Character.QueuedAction = QueuedAction.None;
 
             return false;
         }
-
-        Character.QueuedAction = QueuedAction.None;
 
         var res = SkillHandler.ValidateTarget(skillInfo, this);
 
@@ -454,6 +530,9 @@ public class CombatEntity : IEntityAutoReset
 
     public void ExecuteQueuedSkillAttack()
     {
+        //if (!QueuedCastingSkill.IsValid)
+        //    throw new Exception($"We shouldn't be attempting to execute a queued action when no queued action exists!");
+        //CastingSkill = QueuedCastingSkill;
         var res = SkillHandler.ValidateTarget(CastingSkill, this);
         if (res != SkillValidationResult.Success)
         {
@@ -464,6 +543,9 @@ public class CombatEntity : IEntityAutoReset
         }
 
         SkillHandler.ExecuteSkill(CastingSkill, this);
+        CastingSkill.Clear();
+        QueuedCastingSkill.Clear();
+        Character.ResetSpawnImmunity();
     }
 
     public DamageInfo CalculateCombatResult(CombatEntity target, float attackMultiplier, int hitCount, AttackFlags flags, AttackElement element = AttackElement.None)
@@ -475,6 +557,13 @@ public class CombatEntity : IEntityAutoReset
 
         var atk1 = GetStat(CharacterStat.Attack);
         var atk2 = GetStat(CharacterStat.Attack2);
+
+        if (Character.Type == CharacterType.Monster && flags.HasFlag(AttackFlags.Magical))
+        {
+            atk1 /= 2;
+            atk2 /= 2;
+        }
+
         if (atk1 <= 0)
             atk1 = 1;
         if (atk2 < atk1)
@@ -549,6 +638,13 @@ public class CombatEntity : IEntityAutoReset
         Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
     }
 
+    public void ApplyCooldownForAttackAction(Position target)
+    {
+        ApplyCooldownForAttackAction();
+
+        Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
+    }
+
     public void ApplyCooldownForAttackAction()
     {
         var attackMotionTime = GetTiming(TimingStat.AttackMotionTime); //time for actual weapon strike to occur
@@ -563,6 +659,9 @@ public class CombatEntity : IEntityAutoReset
             Character.AttackCooldown += delayTime;
 
         Character.AddMoveLockTime(attackMotionTime);
+
+        //if(Character.Type == CharacterType.Monster)
+        //    Character.Monster.AddDelay(attackMotionTime);
     }
 
     /// <summary>

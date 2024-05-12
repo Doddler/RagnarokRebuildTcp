@@ -89,9 +89,24 @@ public class MonsterSkillAiState(Monster monster)
 
         ExecuteEventAtStartOfCast = flags.HasFlag(MonsterSkillAiFlags.EventOnStartCast);
 
+        if (attr.SkillTarget == SkillTarget.AreaTargeted)
+        {
+            var target = targetForSkill;
+            if (target == null || !target.CombatEntity.IsValidTarget(ce))
+                if (monster.Target.TryGet<WorldObject>(out var newTarget))
+                    target = newTarget;
+            if (target == null)
+                return SkillFail();
+
+            if (!ce.AttemptStartGroundTargetedSkill(target.Position, skill, level, castTime / 1000f))
+                return SkillFail();
+            ce.SetSkillCooldown(skill, delay / 1000f);
+            return SkillSuccess();
+        }
+
         if (attr.SkillTarget == SkillTarget.SelfCast)
         {
-            if(!ce.StartCastingSelfTargetedSkill(skill, level, castTime / 1000f))
+            if(!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f))
                 return SkillFail();
             ce.SetSkillCooldown(skill, delay / 1000f);
             return SkillSuccess();

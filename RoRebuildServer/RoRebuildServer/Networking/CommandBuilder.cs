@@ -171,6 +171,25 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
     
+    public static void StartCastGroundTargetedMulti(WorldObject caster, Position target, CharacterSkill skill, int lvl, int size, float castTime)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.StartAreaCast, 48);
+
+        packet.Write(caster.Id);
+        packet.Write(target);
+        packet.Write((byte)skill);
+        packet.Write((byte)lvl);
+        packet.Write((byte)size);
+        packet.Write((byte)caster.FacingDirection);
+        packet.Write(caster.Position);
+        packet.Write(castTime);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void SkillExecuteTargetedSkill(WorldObject caster, WorldObject target, CharacterSkill skill, int lvl,
         DamageInfo di)
     {
@@ -209,6 +228,28 @@ public static class CommandBuilder
         packet.Write((byte)caster.FacingDirection);
         packet.Write(caster.Position);
         packet.Write(caster.CombatEntity?.GetTiming(TimingStat.AttackMotionTime) ?? 0);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+
+    public static void SkillExecuteAreaTargetedSkill(WorldObject caster, Position target, CharacterSkill skill, int lvl)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
+
+        packet.Write((byte)SkillTarget.AreaTargeted);
+        packet.Write(caster.Id);
+        packet.Write(target);
+        packet.Write((byte)skill);
+        packet.Write((byte)lvl);
+        packet.Write((byte)caster.FacingDirection);
+        packet.Write(caster.Position);
+        packet.Write(caster.CombatEntity?.GetTiming(TimingStat.AttackMotionTime) ?? 0);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
     }
 
     public static void AttackMulti(WorldObject attacker, WorldObject target, DamageInfo di)

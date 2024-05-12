@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Text;
 using Lidgren.Network;
+using RebuildSharedData.Data;
 using RebuildSharedData.Networking;
+using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 
 namespace Assets.Scripts.Network
 {
@@ -104,6 +106,12 @@ namespace Assets.Scripts.Network
             EnsureBufferSize(b.Length * 8);
             NetBitWriter.WriteBytes(b, 0, b.Length, Message, position);
             position += b.Length * 8;
+        }
+
+        public void Write(Vector2Int p)
+        {
+            Write((short)p.x);
+            Write((short)p.y);
         }
 
         public void Write(string s)

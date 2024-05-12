@@ -21,6 +21,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             switch (type)
             {
+                case SkillTarget.AreaTargeted:
+                    ProcessGroundTargetedSkill(connection, msg);
+                    return;
                 case SkillTarget.SingleTarget: 
                     ProcessSingleTargetSkill(connection, msg);
                     return;
@@ -28,6 +31,29 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             ServerLogger.Log($"Player {connection.Character.Name} is attempting to use a skill of type {type}, but no handler exists for this class of skill");
             return;
+        }
+
+        private void ProcessGroundTargetedSkill(NetworkConnection connection, InboundMessage msg)
+        {
+            Debug.Assert(connection.Player != null, "connection.Player != null");
+
+            var caster = connection.Character;
+            var groundTarget= msg.ReadPosition();
+            var map = caster?.Map;
+
+            if (map == null || caster == null)
+                throw new Exception($"Cannot ProcessGroundTargetedSkill, player or map is invalid.");
+
+            if (!map.WalkData.HasLineOfSight(caster.Position, groundTarget))
+            {
+                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.NoLineOfSight);
+                return;
+            }
+
+            var skill = (CharacterSkill)msg.ReadByte();
+            var lvl = (int)msg.ReadByte();
+
+            caster.CombatEntity.AttemptStartGroundTargetedSkill(groundTarget, skill, lvl);
         }
 
         private void ProcessSingleTargetSkill(NetworkConnection connection, InboundMessage msg)

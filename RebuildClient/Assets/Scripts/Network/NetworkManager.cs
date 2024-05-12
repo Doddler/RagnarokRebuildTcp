@@ -345,7 +345,7 @@ namespace Assets.Scripts.Network
                     IsMainCharacter = isMain,
                 };
 
-                controllable = SpriteDataLoader.Instance.InstantiatePlayer(ref playerData);
+                controllable = ClientDataLoader.Instance.InstantiatePlayer(ref playerData);
 
 
                 if (id == PlayerId)
@@ -389,7 +389,7 @@ namespace Assets.Scripts.Network
                     Hp = hp,
                     Interactable = interactable
                 };
-                controllable = SpriteDataLoader.Instance.InstantiateMonster(ref monData);
+                controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData);
             }
             
             controllable.EnsureFloatingDisplayCreated().SetUp(name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
@@ -652,6 +652,8 @@ namespace Assets.Scripts.Network
             var dmg = msg.ReadInt32();
             var hitCount = msg.ReadByte();
             var damageTiming = msg.ReadFloat();
+            
+            Debug.Log(hitCount);
 
             StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, 0, controllable));
         }
@@ -694,6 +696,9 @@ namespace Assets.Scripts.Network
             var type = (SkillTarget)msg.ReadByte();
             switch (type)
             {
+                case SkillTarget.AreaTargeted:
+                    OnMessageAreaTargetedSkill(msg);
+                    break;
                 case SkillTarget.SelfCast:
                     OnMessageSelfTargetedSkill(msg);
                     break;
@@ -704,6 +709,25 @@ namespace Assets.Scripts.Network
                     throw new Exception($"Could not handle skill packet of type {type}");
             }
         }
+        
+        
+        private void OnMessageAreaTargetedSkill(ClientInboundMessage msg)
+        {
+            var id = msg.ReadInt32();
+            var target = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
+            var skill = (CharacterSkill)msg.ReadByte();
+            var skillLvl = (int)msg.ReadByte();
+            var dir = (Direction)msg.ReadByte();
+            var pos = ReadPosition(msg);
+            var motionTime = msg.ReadFloat();
+
+            if (!entityList.TryGetValue(id, out var controllable))
+                return;
+            
+            ClientSkillHandler.ExecuteSkill(controllable, null, skill, skillLvl);
+            AttackMotion(controllable, pos, dir, motionTime, null);
+        }
+
 
         private void OnMessageSelfTargetedSkill(ClientInboundMessage msg)
         {
@@ -738,11 +762,12 @@ namespace Assets.Scripts.Network
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
             // var moveAfter = msg.ReadBoolean();
-
+            
             if (!hasSource)
             {
                 //if the skill handler is not flagged to execute without a source this will do nothing.
                 //we still want to execute when a special effect plays on a target though.
+                
                 ClientSkillHandler.ExecuteSkill(null, controllable2, skill, skillLvl);
                 StartCoroutine(DamageEvent(dmg, 0f, hits, 0, controllable2));
                 return;
@@ -852,13 +877,13 @@ namespace Assets.Scripts.Network
                 if (controllable.SpriteAnimator.Type == SpriteType.Player)
                     damageTiming = 0.5f;
 
-                if (hits > 1)
-                {
-                    DefaultSkillCastEffect.Create(controllable);
-                    //FireArrow.Create(controllable, controllable2, hits);
-                    dmg = (short)(dmg * hits);
-                    hits = 1;
-                }
+                // if (hits > 1)
+                // {
+                //     DefaultSkillCastEffect.Create(controllable);
+                //     //FireArrow.Create(controllable, controllable2, hits);
+                //     dmg = (short)(dmg * hits);
+                //     hits = 1;
+                // }
 
                 StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable.WeaponClass, controllable2));
             }
@@ -866,6 +891,8 @@ namespace Assets.Scripts.Network
 
         private IEnumerator DamageEvent(int damage, float delay, int hitCount, int weaponClass, ServerControllable target)
         {
+            // Debug.Log(hitCount);
+            
             yield return new WaitForSeconds(delay);
             if (target != null && target.SpriteAnimator.IsInitialized)
             {
@@ -895,7 +922,7 @@ namespace Assets.Scripts.Network
 
                     if (weaponClass >= 0)
                     {
-                        var hitSound = SpriteDataLoader.Instance.GetHitSoundForWeapon(weaponClass);
+                        var hitSound = ClientDataLoader.Instance.GetHitSoundForWeapon(weaponClass);
                         AudioManager.Instance.OneShotSoundEffect(target.Id, hitSound, target.transform.position, 1f);
                     }
 
@@ -1187,7 +1214,7 @@ namespace Assets.Scripts.Network
             if (!entityList.TryGetValue(id, out var controllable))
                 return;
 
-            SpriteDataLoader.Instance.AttachEmote(controllable.gameObject, emote);
+            ClientDataLoader.Instance.AttachEmote(controllable.gameObject, emote);
         }
 
         public void OnMessageRequestFailed(ClientInboundMessage msg)
@@ -1236,7 +1263,7 @@ namespace Assets.Scripts.Network
             var pos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
             var facing = msg.ReadInt32();
 
-            var spawn = new Vector3(pos.x + 0.5f, CameraFollower.WalkProvider.GetHeightForPosition(transform.position), pos.y + 0.5f);
+            var spawn = CameraFollower.WalkProvider.GetWorldPositionForTile(pos);
             CameraFollower.CreateEffect(effect, spawn, facing);
         }
 
@@ -1341,6 +1368,34 @@ namespace Assets.Scripts.Network
                 //     CastEffect.Create(castTime, "ring_blue", controllable.gameObject);
             }
 
+        }
+
+        public void OnMessageStartAreaCasting(ClientInboundMessage msg)
+        {
+            var srcId = msg.ReadInt32();
+            var target = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
+            var skill = (CharacterSkill)msg.ReadByte();
+            var lvl = (int)msg.ReadByte();
+            var size = (int)msg.ReadByte();
+            var dir = (Direction)msg.ReadByte();
+            var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
+            var castTime = msg.ReadFloat();
+
+            if (entityList.TryGetValue(srcId, out var controllable))
+            {
+                if (controllable.SpriteAnimator.State == SpriteState.Walking)
+                    controllable.StopImmediate(casterPos, false);
+                controllable.SpriteAnimator.Direction = dir;
+                if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
+                {
+                    controllable.SpriteAnimator.State = SpriteState.Standby;
+                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Casting);
+                    controllable.SpriteAnimator.PauseAnimation();
+                }
+
+                ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
+                controllable.StartCastBar(skill, castTime);
+            }
         }
 
         void HandleDataPacket(ClientInboundMessage msg)
@@ -1449,6 +1504,9 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.StartCast:
                     OnMessageStartCasting(msg);
+                    break;
+                case PacketType.StartAreaCast:
+                    OnMessageStartAreaCasting(msg);
                     break;
                 default:
                     Debug.LogWarning($"Failed to handle packet type: {type}");
@@ -1761,6 +1819,19 @@ namespace Assets.Scripts.Network
             msg.Write((byte)PacketType.Skill);
             msg.Write((byte)SkillTarget.SingleTarget);
             msg.Write(targetId);
+            msg.Write((byte)skill);
+            msg.Write((byte)lvl);
+
+            SendMessage(msg);
+        }
+
+        public void SendGroundTargetSkillAction(Vector2Int target, CharacterSkill skill, int lvl)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.Skill);
+            msg.Write((byte)SkillTarget.AreaTargeted);
+            msg.Write(target);
             msg.Write((byte)skill);
             msg.Write((byte)lvl);
 

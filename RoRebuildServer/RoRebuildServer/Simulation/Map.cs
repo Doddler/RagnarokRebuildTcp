@@ -663,39 +663,76 @@ public class Map
         }
     }
 
-    public void GatherEnemiesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
+    public void GatherEnemiesInArea(WorldObject character, Position position, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
-        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
         {
 
             foreach (var m in c.AllEntities)
             {
-                var ch = m.Get<WorldObject>();
-                if (!ch.IsActive)
+                var potentialTarget = m.Get<WorldObject>();
+                if (!potentialTarget.IsActive)
                     continue;
 
-                if (ch.Type == CharacterType.NPC)
+                if (potentialTarget.Type == CharacterType.NPC)
                     continue;
 
-                if (checkImmunity && ch.IsTargetImmune)
+                if (checkImmunity && potentialTarget.IsTargetImmune)
                     continue;
 
-                if (!character.CombatEntity.IsValidTarget(ch.CombatEntity))
+                if (!potentialTarget.CombatEntity.IsValidTarget(character.CombatEntity))
                     continue;
 
-                if (character.Position.InRange(ch.Position, distance))
+                if (position.InRange(potentialTarget.Position, distance))
                 {
                     if (checkLineOfSight)
                     {
-                        if (!WalkData.HasLineOfSight(character.Position, ch.Position))
+                        if (!WalkData.HasLineOfSight(character.Position, potentialTarget.Position))
 
-                                continue;
+                            continue;
                     }
 
                     list.Add(m);
                 }
             }
         }
+    }
+
+    public void GatherEnemiesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
+    {
+        GatherEnemiesInArea(character, character.Position, distance, list, checkLineOfSight, checkImmunity);
+        return;
+        //foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
+        //{
+
+        //    foreach (var m in c.AllEntities)
+        //    {
+        //        var ch = m.Get<WorldObject>();
+        //        if (!ch.IsActive)
+        //            continue;
+
+        //        if (ch.Type == CharacterType.NPC)
+        //            continue;
+
+        //        if (checkImmunity && ch.IsTargetImmune)
+        //            continue;
+
+        //        if (!ch.CombatEntity.IsValidTarget(character.CombatEntity))
+        //            continue;
+
+        //        if (character.Position.InRange(ch.Position, distance))
+        //        {
+        //            if (checkLineOfSight)
+        //            {
+        //                if (!WalkData.HasLineOfSight(character.Position, ch.Position))
+
+        //                        continue;
+        //            }
+
+        //            list.Add(m);
+        //        }
+        //    }
+        //}
     }
 
     public bool QuickCheckPlayersNearby(WorldObject character, int distance)

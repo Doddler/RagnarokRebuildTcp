@@ -129,7 +129,7 @@ namespace Assets.Scripts.Network
             if (CharacterType != CharacterType.Player)
                 return;
             
-            var sName = SpriteDataLoader.Instance.GetSkillName(skill);
+            var sName = ClientDataLoader.Instance.GetSkillName(skill);
             FloatingDisplay.ShowChatBubbleMessage(sName + "!!", duration);
         }
 
@@ -137,7 +137,7 @@ namespace Assets.Scripts.Network
         {
             EnsureFloatingDisplayCreated();
             FloatingDisplay.StartCasting(duration);
-            var sName = SpriteDataLoader.Instance.GetSkillName(skill);
+            var sName = ClientDataLoader.Instance.GetSkillName(skill);
             //
             // if (skill == CharacterSkill.FireBolt)
             //     sName = "Fire Bolt";

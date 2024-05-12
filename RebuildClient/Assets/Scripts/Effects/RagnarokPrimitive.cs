@@ -4,7 +4,6 @@ using Assets.Scripts.Utility;
 // using UnityEditor.Sprites;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Object = System.Object;
 
 namespace Assets.Scripts.Effects
 {
@@ -17,9 +16,10 @@ namespace Assets.Scripts.Effects
         private BillboardObject billboard;
         
         public Material Material;
+        public UnityEngine.Object disposableComponent; 
         
         public Ragnarok3dEffect Effect;
-        public Object PrimitiveData;
+        public System.Object PrimitiveData;
         public T GetPrimitiveData<T>() => (T)PrimitiveData;
 
         public PrimitiveType PrimitiveType;
@@ -87,14 +87,21 @@ namespace Assets.Scripts.Effects
             RenderHandler = null;
             PrimitiveHandler = null;
             Material = null;
-            mr.material = null;
-            mf.sharedMesh = null;
+            if (mr)
+            {
+                mr.material = null;
+                mf.sharedMesh = null;
+            }
+
             if(Parts != null)
                 EffectPool.ReturnParts(Parts);
             if(mesh != null)
                 EffectPool.ReturnMesh(mesh);
             if(mb != null)
                 EffectPool.ReturnMeshBuilder(mb);
+            if(disposableComponent)
+                Destroy(disposableComponent);
+            disposableComponent = null;
             Parts = null;
             mesh = null;
             mb = null;
@@ -124,6 +131,11 @@ namespace Assets.Scripts.Effects
         {
             Parts = EffectPool.BorrowParts(count);    
             PartsCount = count;
+        }
+
+        public void SetDisposableComponent(UnityEngine.Object component)
+        {
+            disposableComponent = component;
         }
 
         public void Prepare(Ragnarok3dEffect effect, PrimitiveType type, Material material, float duration)

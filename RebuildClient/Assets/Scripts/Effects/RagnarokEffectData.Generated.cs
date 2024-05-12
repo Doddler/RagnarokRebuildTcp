@@ -7,6 +7,7 @@ namespace Assets.Scripts.Effects
 	{
 		CastEffect,
 		CastLockOn,
+		CastTargetCircle,
 		DefaultSkillCastEffect,
 		FireArrow,
 		ForestLightEffect,
@@ -22,6 +23,7 @@ namespace Assets.Scripts.Effects
 		DirectionalBillboard,
 		Flash2D,
 		ForestLight,
+		ProjectorPrimitive,
 		Texture3D,
 	}
 
@@ -31,6 +33,7 @@ namespace Assets.Scripts.Effects
 		{
 			effectHandlers.Add(EffectType.CastEffect, new Assets.Scripts.Effects.EffectHandlers.CastEffect());
 			effectHandlers.Add(EffectType.CastLockOn, new Assets.Scripts.Effects.EffectHandlers.CastLockOnEffect());
+			effectHandlers.Add(EffectType.CastTargetCircle, new Assets.Scripts.Effects.EffectHandlers.CastTargetCircle());
 			effectHandlers.Add(EffectType.DefaultSkillCastEffect, new Assets.Scripts.Effects.EffectHandlers.DefaultSkillCastEffect());
 			effectHandlers.Add(EffectType.FireArrow, new Assets.Scripts.Effects.EffectHandlers.FireArrow());
 			effectHandlers.Add(EffectType.ForestLightEffect, new Assets.Scripts.Effects.EffectHandlers.ForestLightEffect());
@@ -46,6 +49,7 @@ namespace Assets.Scripts.Effects
 			primitiveHandlers.Add(PrimitiveType.Flash2D, new Assets.Scripts.Effects.PrimitiveHandlers.Flash2DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Flash2D, () => new Assets.Scripts.Effects.PrimitiveData.FlashData());
 			primitiveHandlers.Add(PrimitiveType.ForestLight, new Assets.Scripts.Effects.PrimitiveHandlers.ForestLightPrimitive());
+			primitiveHandlers.Add(PrimitiveType.ProjectorPrimitive, new Assets.Scripts.Effects.PrimitiveHandlers.ProjectorPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Texture3D, new Assets.Scripts.Effects.PrimitiveHandlers.Texture3DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Texture3D, () => new Assets.Scripts.Effects.PrimitiveData.Texture3DData());
 		}

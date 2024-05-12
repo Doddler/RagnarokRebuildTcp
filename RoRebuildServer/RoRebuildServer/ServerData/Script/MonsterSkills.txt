@@ -37,10 +37,11 @@ macro MoonlightCombatActions() {
 		SetEventCooldown("Magic Combo", 20000);
 	}
 
-	if(HpPercent < 30 && IsNamedEventOffCooldown("FinalPhase")) {
-		SendEmote(7); //angry
+	if(HpPercent < 30 && IsNamedEventOffCooldown("Final Phase")) {
+		TryCast(None, 1, 1000, 0, 5000) -> SendEmote(7); //angry
 		ResetAllCooldowns();
 		SetEventCooldown("Final Phase", 999000000);
+		TryCast(CallMinion,1, 1000, 400, 30000) -> CallDefaultMinions();
 	}
 }
 

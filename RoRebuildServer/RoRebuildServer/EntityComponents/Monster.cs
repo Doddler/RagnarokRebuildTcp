@@ -372,8 +372,9 @@ public partial class Monster : IEntityAutoReset
 
         if (skillState.CastSuccessEvent != null)
         {
-            if (skillState.ExecuteEventAtStartOfCast && Character.QueuedAction != QueuedAction.Cast)
+            if (skillState.ExecuteEventAtStartOfCast || (Character.QueuedAction == QueuedAction.None && !CombatEntity.IsCasting))
             {
+                //we need to execute our event now
                 skillState.CastSuccessEvent(skillState);
                 CastSuccessEvent = null;
             }
@@ -394,7 +395,7 @@ public partial class Monster : IEntityAutoReset
         }
 #endif
 
-        if (skillAiHandler != null && nextAiSkillUpdate < Time.ElapsedTimeFloat && !Character.InAttackCooldown)
+        if (skillAiHandler != null && nextAiSkillUpdate < Time.ElapsedTimeFloat && !Character.InAttackCooldown && Character.QueuedAction == QueuedAction.None)
             AiSkillScanUpdate();
 
         //Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
@@ -448,6 +449,9 @@ public partial class Monster : IEntityAutoReset
         }
     }
 
+    private bool InCombatReadyState => Character.State == CharacterState.Idle && !CombatEntity.IsCasting &&
+                                       Character.AttackCooldown < Time.ElapsedTimeFloat;
+
     public void Update()
     {
         if (Character.Map?.PlayerCount == 0)
@@ -456,7 +460,29 @@ public partial class Monster : IEntityAutoReset
         if (nextAiUpdate > Time.ElapsedTimeFloat)
             return;
 
-        AiStateMachineUpdate();
+        if (CombatEntity.IsCasting)
+            return;
+        
+        if (Character.QueuedAction == QueuedAction.None)
+            AiStateMachineUpdate();
+        
+        if (!InCombatReadyState)
+            return;
+
+        if (Character.QueuedAction == QueuedAction.Cast)
+            CombatEntity.ResumeQueuedSkillAction();
+
+        //a monster really shouldn't be queueing a move, how does that even happen...?
+        if (Character.QueuedAction == QueuedAction.Move)
+        {
+            if (Character.InMoveLock)
+                return;
+
+            Character.QueuedAction = QueuedAction.None;
+            Character.TryMove(Character.TargetPosition, 0, false);
+
+            return;
+        }
 
         //if(GameRandom.Next(4000) == 42)
         //	Die();

@@ -285,10 +285,9 @@ namespace Assets.Scripts.MapEditor
                 }
             }
 
-            //Debug.Log(start + " " + dest);
+            //step them in a very nieve fashion towards the target cell until we hit a wall
             while (next != start)
             {
-
                 if (start.x < next.x)
                     next.x--;
                 if (start.x > next.x)
@@ -298,18 +297,13 @@ namespace Assets.Scripts.MapEditor
                 if (start.y > next.y)
                     next.y++;
 
-                //Debug.Log(next);
-
                 if ((WalkData.Cell(next).Type & CellType.Walkable) != 0)
                 {
-                    //Debug.Log($"Found! {next}");
+                    if (next == dest) return false; //it's not valid if we don't move
+                    
                     modifiedPosition = next;
                     return true;
                 }
-                //else
-                //	Debug.Log($"Tile {next} {WalkData.Cell(next).Type}");
-
-                //start = next;
             }
 
             Debug.Log("Failed :(");

@@ -43,6 +43,7 @@ namespace Assets.Scripts
         // public Texture2D TargetCursorTexture;
         // public Texture2D TargetCursorNoTargetTexture;
         public RoSpriteData TargetSprite;
+
         // public GameObject LevelUpPrefab;
         // public GameObject ResurrectPrefab;
         // public GameObject DeathPrefab;
@@ -52,6 +53,7 @@ namespace Assets.Scripts
         public RoWalkDataProvider WalkProvider;
 
         public Canvas UiCanvas;
+
         //public TextMeshProUGUI TargetUi;
         //public TextMeshProUGUI PlayerTargetUi;
         public TextMeshProUGUI HpDisplay;
@@ -104,9 +106,10 @@ namespace Assets.Scripts
 
         private bool hasSkillOnCursor;
         private CharacterSkill cursorSkill;
+        private SkillTarget cursorSkillTarget;
         private int cursorSkillLvl = 5;
-        private int cursorMaxSkillLvl;
-        private float skillScroll;
+        private int cursorMaxSkillLvl = 10;
+        private float skillScroll = 5f;
         private bool cursorShowSkillLevel = true;
 
         public bool CinemachineMode;
@@ -119,15 +122,15 @@ namespace Assets.Scripts
         public float FogNearRatio = 0.3f;
         public float FogFarRatio = 4f;
 
-        
+
 #if DEBUG
         private const float MaxClickDistance = 500;
-        
+
 #else
         private const float MaxClickDistance = 150;
 #endif
 
-        public int ExpForLevel(int lvl) => levelReqs[lvl];
+        public int ExpForLevel(int lvl) => levelReqs[Mathf.Clamp(lvl, 1, 99)];
 
         public static CameraFollower Instance
         {
@@ -166,7 +169,7 @@ namespace Assets.Scripts
 
         private ServerControllable controllable;
         public ServerControllable TargetControllable => controllable;
-        
+
         private ServerControllable mouseHoverTarget;
 
         public Vector3 MoveTo;
@@ -200,7 +203,7 @@ namespace Assets.Scripts
         public void Awake()
         {
             _instance = this;
-            
+
             //CurLookAt = Target.transform.position;
             TargetFollow = CurLookAt;
             Camera = GetComponent<Camera>();
@@ -240,7 +243,7 @@ namespace Assets.Scripts
                 Recorder.gameObject.SetActive(false);
 
             clickEffectPrefab = Resources.Load<GameObject>($"MoveNotice");
-            
+
             LayoutRebuilder.ForceRebuildLayoutImmediate(UiCanvas.transform as RectTransform);
 
             //targetWalkable = Target.GetComponent<EntityWalkable>();
@@ -305,10 +308,10 @@ namespace Assets.Scripts
 
             var mat = new Material(ShaderCache.Instance.SpriteShaderNoZTest);
             mat.renderQueue = 3005; //above water and all other sprites
-            
+
             var renderer = sprite.GetComponent<RoSpriteRendererStandard>();
             renderer.SetOverrideMaterial(mat);
-            
+
 
             return go;
         }
@@ -325,10 +328,10 @@ namespace Assets.Scripts
                 color = "<color=#FFAAAA>";
             if (isHard)
                 color = "<color=#FF4444>";
-            
-            if(SelectedTarget != null && SelectedTarget != target)
+
+            if (SelectedTarget != null && SelectedTarget != target)
                 SelectedTarget.HideName();
-            
+
             hasSelection = true;
             SelectedTarget = target;
             SelectedTarget.ShowName(color + name);
@@ -343,7 +346,7 @@ namespace Assets.Scripts
         {
             //Debug.Log("Clearing target.");
             hasSelection = false;
-            if(SelectedTarget != null && SelectedTarget != mouseHoverTarget)
+            if (SelectedTarget != null && SelectedTarget != mouseHoverTarget)
                 SelectedTarget.HideName();
             SelectedTarget = null;
             // PlayerTargetUi.text = "";
@@ -578,293 +581,258 @@ namespace Assets.Scripts
             return null;
         }
 
-        private void DoScreenCast(bool isOverUi)
+        private enum CursorScanAction
         {
-            if (IsInNPCInteraction && !isOverUi && Input.GetMouseButtonDown(0))
-            {
-                NetworkManager.Instance.SendNpcAdvance();
-                isHolding = false;
-                noHold = true;
-                return; //no point in doing other screencast stuff if we're still talking to the npc.
-            }
-            
-            var ray = Camera.ScreenPointToRay(Input.mousePosition);
+            Open,
+            Enemy,
+            Ally,
+            Move,
+            GroundTargeting,
+            NoAction
+        }
 
-            var hasHitCharacter = false;
-
+        private bool FindEntityUnderCursor(Ray ray, bool preferEnemy, out ServerControllable target)
+        {
+            //one of these days we'll be able to target allies and that preferEnemy value will matter
+            target = null;
             var characterHits = Physics.RaycastAll(ray, MaxClickDistance, (1 << LayerMask.NameToLayer("Characters")));
-            var hasHitMap = Physics.Raycast(ray, out var groundHit, MaxClickDistance, (1 << LayerMask.NameToLayer("WalkMap")));
+            if (characterHits.Length == 0)
+                return false;
 
-            if (characterHits.Length > 0)
-                hasHitCharacter = true;
+            var anim = GetClosestOrEnemy(characterHits);
+            if (anim == null)
+                return false;
 
-            if (isHolding || isOverUi || CinemachineMode)
-                hasHitCharacter = false;
-            
-            //Debug.Log(string.Join(", ", characterHits.Select(c => c.transform.name)));
+            target = anim.Controllable;
+            return true;
+        }
 
-            if (hasHitCharacter)
+        private bool FindMapPositionUnderCursor(Ray ray, out Vector2Int position, out Vector3 groundHit)
+        {
+            position = Vector2Int.zero;
+            groundHit = Vector3.zero;
+
+            var hasHitMap = Physics.Raycast(ray, out var hit, MaxClickDistance, (1 << LayerMask.NameToLayer("WalkMap")));
+            if (!hasHitMap)
+                return false;
+
+            groundHit = hit.point;
+
+            if (WalkProvider.GetMapPositionForWorldPosition(groundHit, out position))
+                return true;
+
+            return false;
+        }
+
+        private bool FindWalkablePositionPastInitialRayHit(Ray ray, Vector3 groundHit, Vector2Int startPosition, out Vector3 newGroundHit,
+            out Vector2Int foundPosition)
+        {
+            //the target isn't valid, so we're going to try to see if we can find something that is in the same raycast target
+
+            var loopCount = 0; //infinite loop safety
+            ray.origin = groundHit + ray.direction * 0.01f;
+            while (Physics.Raycast(ray, out var rehit, MaxClickDistance, (1 << LayerMask.NameToLayer("WalkMap"))) && loopCount < 5)
             {
-                //var anim = charHit.transform.gameObject.GetComponent<RoSpriteAnimator>();
-                var anim = GetClosestOrEnemy(characterHits);
-                if (anim == null)
+                var newGroundPos = WalkProvider.GetMapPositionForWorldPosition(rehit.point, out var newMapPosition);
+
+                if (newGroundPos && WalkProvider.IsCellWalkable(newMapPosition) &&
+                    (newMapPosition - startPosition).SquareDistance() <= SharedConfig.MaxPathLength)
                 {
-                    hasHitCharacter = false; //back out if our hit is a false positive (the object is dead or dying for example)
-                    CursorManager.UpdateCursor(GameCursorMode.Normal);
+                    var steps = Pathfinder.GetPath(WalkProvider.WalkData, newMapPosition, startPosition, tempPath);
+                    if (steps > 0)
+                    {
+                        newGroundHit = rehit.point;
+                        foundPosition = newMapPosition;
+                        return true;
+                    }
                 }
 
-                if (hasHitCharacter)
+                ray.origin = rehit.point + ray.direction * 0.01f;
+                loopCount++;
+            }
+
+            newGroundHit = groundHit;
+            foundPosition = startPosition;
+            return false;
+        }
+
+        private GameCursorMode ScreenCastV2(bool isOverUi)
+        {
+            if (tempPath == null)
+                tempPath = new Vector2Int[SharedConfig.MaxPathLength + 2];
+
+            var ray = Camera.ScreenPointToRay(Input.mousePosition);
+
+            ClickDelay -= Time.deltaTime;
+            if (Input.GetMouseButtonUp(0))
+            {
+                isHolding = false;
+                ClickDelay = 0;
+            }
+
+            var leftClick = Input.GetMouseButtonDown(0);
+            var rightClick = Input.GetMouseButtonDown(1);
+
+            var preferEnemyTarget = !(hasSkillOnCursor && cursorSkillTarget == SkillTarget.SingleAlly);
+            var isAlive = controllable.SpriteAnimator.State != SpriteState.Dead;
+            var isSitting = controllable.SpriteAnimator.State == SpriteState.Sit;
+
+            //cancel skill on cursor if we can't use a skill
+            if (hasSkillOnCursor && (!isAlive || isSitting))
+                hasSkillOnCursor = false;
+
+            var hasEntity = FindEntityUnderCursor(ray, preferEnemyTarget, out var mouseTarget);
+            var hasGround = FindMapPositionUnderCursor(ray, out var groundPosition, out var intersectLocation);
+            var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
+            var hasTargetedSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.SingleTarget;
+            var hasGroundSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.AreaTargeted;
+
+            var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill;
+            var canClickEnemy = canInteract && !mouseTarget.IsAlly;
+            var canClickNpc = canInteract && mouseTarget.CharacterType == CharacterType.NPC;
+            var canClickGround = hasGround && isAlive && !canClickEnemy && !canClickNpc;
+            var canMove = ClickDelay <= 0 && isAlive && !isSitting;
+            var showEntityName = hasEntity && !isOverUi;
+
+            var cancelSkill = (hasSkillOnCursor && rightClick) || (hasSkillOnCursor && leftClick && hasTargetedSkill && !hasEntity);
+            if (cancelSkill) hasSkillOnCursor = hasGroundSkill = hasTargetedSkill = leftClick = rightClick = false; //lol
+
+            var displayCursor = canClickEnemy ? GameCursorMode.Attack : GameCursorMode.Normal;
+            if (canClickNpc) displayCursor = GameCursorMode.Dialog;
+            if (hasSkillOnCursor) displayCursor = GameCursorMode.SkillTarget;
+
+            if (showEntityName)
+            {
+                //if our new mouseover target is different from last time, we need to swap over
+                if (mouseHoverTarget != mouseTarget)
                 {
-                    if(mouseHoverTarget != null && mouseHoverTarget != anim.Controllable && mouseHoverTarget != SelectedTarget)
-                        mouseHoverTarget.HideName();
-                    mouseHoverTarget = anim.Controllable;
+                    if (SelectedTarget != mouseTarget) //we don't want to hide it if it's our currently targeted enemy though, that stays
+                        mouseHoverTarget?.HideName();
 
-                    var cursor = GameCursorMode.Normal;
-                    
-                    // var screenPos = Camera.main.WorldToScreenPoint(anim.Controllable.gameObject.transform.position);
-                    var color = "";
-                    if (!anim.Controllable.IsAlly && anim.Controllable.CharacterType != CharacterType.NPC)
-                    {
-                        if (hasSkillOnCursor)
-                        {
-                            cursor = GameCursorMode.SkillTarget;
-                            if (Input.GetMouseButtonDown(0))
-                            {
-                                NetworkManager.Instance.SendSingleTargetSkillAction(anim.Controllable.Id, cursorSkill, cursorSkillLvl);
-                                hasSkillOnCursor = false;
-                                return;
-                            }
-                        }
-                        else
-                            cursor = GameCursorMode.Attack;
-                        
-                        color = "<color=#FFAAAA>";
-                        hasHitMap = false;
-                    }
+                    mouseHoverTarget = mouseTarget;
+
+                    if (mouseHoverTarget.IsAlly)
+                        mouseHoverTarget.ShowName(mouseHoverTarget.DisplayName);
                     else
-                    {
-                        if (anim.Controllable.IsInteractable)
-                        {
-                            cursor = GameCursorMode.Dialog;
-                            hasHitMap = false;
-                        }
-                    }
-
-                    mouseHoverTarget.ShowName(color + mouseHoverTarget.DisplayName);
-
-                    if (IsInNPCInteraction)
-                    {
-                        CursorManager.UpdateCursor(GameCursorMode.Normal);
-                        return;
-                    }
-                    
-                    if(cursor == GameCursorMode.SkillTarget)
-                        CursorManager.UpdateCursor(cursor, cursorSkillLvl);
-                    else
-                        CursorManager.UpdateCursor(cursor);
-
-                    if (anim.Controllable.CharacterType == CharacterType.Monster)
-                    {
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            NetworkManager.Instance.SendAttack(anim.Controllable.Id);
-                            isHolding = false;
-                            noHold = true;
-                        }
-                    }
-
-
-                    if (anim.Controllable.CharacterType == CharacterType.NPC && anim.Controllable.IsInteractable)
-                    {
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            NetworkManager.Instance.SendNpcClick(anim.Controllable.Id);
-                            isHolding = false;
-                            noHold = true;
-                        }
-                    }
+                        mouseHoverTarget.ShowName("<color=#FFAAAA>" + mouseHoverTarget.DisplayName); //yeah this is stupid
                 }
             }
             else
             {
-                if(hasSkillOnCursor)
-                    CursorManager.UpdateCursor(GameCursorMode.SkillTarget, cursorSkillLvl);
-                    //ChangeCursor(TargetCursorNoTargetTexture);
-                else
-                    CursorManager.UpdateCursor(GameCursorMode.Normal);
-                    //ChangeCursor(NormalCursorAnimation[normalCursorFrame]);
-            }
-            
-            if (!hasHitCharacter && mouseHoverTarget != null)
-            {
-                mouseHoverTarget.HideName();
+                mouseHoverTarget?.HideName();
                 mouseHoverTarget = null;
-                // TargetUi.text = "";
             }
 
-            ClickDelay -= Time.deltaTime;
-
-            if (Input.GetMouseButtonUp(0))
-                ClickDelay = 0;
-            
-            
-            if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && hasSkillOnCursor)
+            if (canClickNpc && leftClick)
             {
-                hasSkillOnCursor = false;
-                isHolding = false;
-                noHold = true;
-                //return; //first click just ends cast mode
+                NetworkManager.Instance.SendNpcClick(mouseTarget.Id);
+                return displayCursor;
             }
 
-            if (!Input.GetMouseButton(0))
+            if (canClickEnemy && leftClick)
             {
-                isHolding = false;
-                noHold = false;
+                if (!hasTargetedSkill)
+                    NetworkManager.Instance.SendAttack(mouseTarget.Id);
+                else
+                {
+                    NetworkManager.Instance.SendSingleTargetSkillAction(mouseTarget.Id, cursorSkill, cursorSkillLvl);
+                    hasSkillOnCursor = false;
+                }
+
+                return displayCursor;
             }
 
+            //if our cursor isn't over ground there's no real point in continuing.
+            if (!hasGround)
+                return displayCursor;
 
-            if (isOverUi && Input.GetMouseButtonDown(0))
-                noHold = true;
-
-            if (!hasHitMap)
+            //while sitting or holding shift and clicking turns your character to face where you clicked
+            if (leftClick & (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || controllable.SpriteAnimator.State == SpriteState.Sit))
             {
+                ClickDelay = 0.1f;
+                ChangeFacing(WalkProvider.GetWorldPositionForTile(groundPosition));
+                return displayCursor;
+            }
+
+            var hasValidPath = lastPathValid; //if we haven't changed targets since last time we can assume it's just as valid as before 
+
+            if (hasSrcPos && groundPosition != lastTile) //but we have changed targets, so lets see if it's valid
+            {
+                hasValidPath = WalkProvider.IsCellWalkable(groundPosition);
+
+                //check to see if the destination can be reached
+                var steps = Pathfinder.GetPath(WalkProvider.WalkData, groundPosition, srcPosition, tempPath);
+                if (steps == 0)
+                    hasValidPath = false;
+
+                //if our cursor hits the top of a wall we want to check if there's valid ground behind it we can use.
+                if (!hasValidPath && FindWalkablePositionPastInitialRayHit(ray, intersectLocation,
+                        groundPosition, out intersectLocation, out groundPosition))
+                {
+                    //try to make a path again to our new, valid cell we found
+                    steps = Pathfinder.GetPath(WalkProvider.WalkData, groundPosition, srcPosition, tempPath);
+                    hasValidPath = steps > 0;
+                }
+            }
+
+            //this draws (or disables) the square indicator that shows where you're targeting on the ground
+            if (!isOverUi && canClickGround)
+                WalkProvider.UpdateCursorPosition(Target.transform.position, intersectLocation, hasValidPath);
+            else
                 WalkProvider.DisableRenderer();
-                return;
-            }
 
-            //we hit the map! Do map things
+            lastTile = groundPosition;
+            lastPathValid = hasValidPath;
 
-            var hasGroundPos = WalkProvider.GetMapPositionForWorldPosition(groundHit.point, out var mapPosition);
-            var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
-            var okPath = true;
-
-            if (hasGroundPos && !WalkProvider.IsCellWalkable(mapPosition))
+            if (leftClick && canClickGround && hasGroundSkill)
             {
-            }
-
-            if (hasGroundPos && hasSrcPos && !IsInNPCInteraction)
-            {
-                if (mapPosition != lastTile)
+                if (WalkProvider.IsCellWalkable(groundPosition))
                 {
-                    if (tempPath == null)
-                        tempPath = new Vector2Int[SharedConfig.MaxPathLength + 2];
-
-                    if (!WalkProvider.IsCellWalkable(mapPosition))
-                        okPath = false;
-
-                    if ((mapPosition - srcPosition).SquareDistance() > SharedConfig.MaxPathLength)
-                        okPath = false;
-
-                    if (okPath)
-                    {
-                        //Debug.Log("Performing path check");
-
-                        var steps = Pathfinder.GetPath(WalkProvider.WalkData, mapPosition, srcPosition, tempPath);
-                        if (steps == 0)
-                            okPath = false;
-                    }
-                    else
-                    {
-                        //the target isn't valid, so we're going to try to see if we can find something that is in the same raycast target
-
-                        var loopCount = 0; //infinite loop safety
-                        ray.origin = groundHit.point + ray.direction * 0.01f;
-                        while (Physics.Raycast(ray, out var rehit, MaxClickDistance, (1 << LayerMask.NameToLayer("WalkMap"))) && loopCount < 5)
-                        {
-                            var newGroundPos = WalkProvider.GetMapPositionForWorldPosition(rehit.point, out var newMapPosition);
-
-                            if (newGroundPos && WalkProvider.IsCellWalkable(newMapPosition) &&
-                                (newMapPosition - srcPosition).SquareDistance() <= SharedConfig.MaxPathLength)
-                            {
-                                var steps = Pathfinder.GetPath(WalkProvider.WalkData, newMapPosition, srcPosition, tempPath);
-                                if (steps > 0)
-                                {
-                                    groundHit = rehit;
-                                    mapPosition = newMapPosition;
-                                    okPath = true;
-                                    break;
-                                }
-                            }
-
-                            ray.origin = rehit.point + ray.direction * 0.01f;
-                            loopCount++;
-                        }
-                    }
+                    NetworkManager.Instance.SendGroundTargetSkillAction(groundPosition, cursorSkill, cursorSkillLvl);
+                    hasSkillOnCursor = false;
+                    isHolding = false;
                 }
-                else
-                    okPath = lastPathValid;
 
-                if (!isOverUi)
-                    WalkProvider.UpdateCursorPosition(Target.transform.position, groundHit.point, okPath);
-                else
-                    WalkProvider.DisableRenderer();
+                //TODO: we should inform the user it isn't valid here
 
-                lastPathValid = okPath;
-                lastTile = mapPosition;
+                hasSkillOnCursor = false;
+                return GameCursorMode.Normal; //the skill is no longer on our cursor so no point in keeping skill cursor
             }
 
-            if (noHold)
-                return;
+            //everything left is movement related so if we can't move or can't click ground, we're done.
+            if (!canClickGround || !canMove)
+                return displayCursor;
 
-            if (IsInNPCInteraction)
-                return;
+            //if they aren't trying to move we're also done. 
+            if (!leftClick && !isHolding) return displayCursor;
 
-            if (Input.GetMouseButton(0) && ClickDelay <= 0)
+            var dest = groundPosition;
+
+            //if we can't path to the tile they clicked on, instead get the closest tile that is valid and we'll walk to that instead.
+            if (!hasValidPath && WalkProvider.GetNextWalkableTileForClick(controllable.Position, groundPosition, out dest))
+                hasValidPath = true;
+
+            if (hasValidPath)
             {
-                var srcPos = controllable.Position;
-                var hasDest = WalkProvider.GetClosestTileTopToPoint(groundHit.point, out var destPos);
-
-                if (hasDest)
+                if (!isHolding)
                 {
-                    if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ||
-                        controllable.SpriteAnimator.State == SpriteState.Sit)
-                    {
-                        if (Input.GetMouseButtonDown(0)) //only do this when mouse is down the first time. Yeah the second check is dumb...
-                        {
-                            ClickDelay = 0.1f;
-                            //if(controllable.SpriteAnimator.State != SpriteState.Standby)
-                                ChangeFacing(WalkProvider.GetWorldPositionForTile(destPos));
-                        }
-                    }
-                    else
-                    {
-                        var dist = (srcPos - destPos).SquareDistance();
-                        if (WalkProvider.IsCellWalkable(destPos) && dist < SharedConfig.MaxPathLength)
-                        {
-                            if (!isHolding)
-                            {
-                                var click = GameObject.Instantiate(clickEffectPrefab);
-                                click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
-                            }
-                            NetworkManager.Instance.MovePlayer(destPos);
-                            ClickDelay = 0.5f;
-                            isHolding = true;
-                        }
-                        else
-                        {
-                            if (WalkProvider.GetNextWalkableTileForClick(srcPos, destPos, out var dest2))
-                            {
-                                if (!isHolding)
-                                {
-                                    var click = GameObject.Instantiate(clickEffectPrefab);
-                                    click.transform.position = WalkProvider.GetWorldPositionForTile(destPos) + new Vector3(0f, 0.02f, 0f);
-                                }
-                                NetworkManager.Instance.MovePlayer(dest2);
-                                ClickDelay = 0.5f;
-                                isHolding = true;
-                            }
-                        }
-
-                    }
+                    var click = Instantiate(clickEffectPrefab);
+                    click.transform.position = WalkProvider.GetWorldPositionForTile(dest) + new Vector3(0f, 0.02f, 0f);
                 }
+
+                NetworkManager.Instance.MovePlayer(dest);
+                ClickDelay = 0.5f;
+                isHolding = true;
             }
+
+            return displayCursor;
         }
 
         public void ResetChat()
         {
             TextBoxText.text = "Welcome to Ragnarok Rebuild!";
         }
-        
+
         public void AppendChatText(string txt)
         {
             if (string.IsNullOrWhiteSpace(txt))
@@ -937,7 +905,7 @@ namespace Assets.Scripts
                 {
                     var obj2 = GameObject.Instantiate(prefab);
                     obj2.transform.localPosition = target.transform.position + new Vector3(0, asset.Offset, 0);
-                    
+
                     var audio = obj2.GetComponent<EffectAudioSource>();
                     if (audio)
                         audio.OwnerId = ownerId;
@@ -993,6 +961,8 @@ namespace Assets.Scripts
                 obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
                 if (asset.Billboard)
                     obj2.AddComponent<BillboardObject>();
+                
+                outputObj.AddComponent<RemoveWhenChildless>();
 
                 if (facing != 0)
                     obj2.transform.localRotation = Quaternion.AngleAxis(45 * facing, Vector3.up);
@@ -1008,8 +978,10 @@ namespace Assets.Scripts
                 if (asset.Billboard)
                     obj2.AddComponent<BillboardObject>();
 
+                outputObj.AddComponent<RemoveWhenChildless>();
 
-                Debug.Log("Loaded effect " + asset.PrefabName);
+
+                // Debug.Log("Loaded effect " + asset.PrefabName);
 
                 EffectCache[asset.Id] = ah.Result;
             };
@@ -1069,7 +1041,7 @@ namespace Assets.Scripts
 
                 WaterCamera.fieldOfView = Recorder.GetComponent<Camera>().fieldOfView;
                 Camera.main.fieldOfView = Recorder.GetComponent<Camera>().fieldOfView;
-                
+
                 // Debug.Log(transform.position);
             }
 
@@ -1106,7 +1078,7 @@ namespace Assets.Scripts
 
                 RenderSettings.fogStartDistance = near;
                 RenderSettings.fogEndDistance = far;
-                
+
                 // var val = (RenderSettings.fogEndDistance - Distance) / (RenderSettings.fogEndDistance - RenderSettings.fogStartDistance);
                 // Camera.backgroundColor = RenderSettings.fogColor * (1 - val);
             }
@@ -1131,7 +1103,7 @@ namespace Assets.Scripts
         {
             if (IsInErrorState && Input.GetKeyDown(KeyCode.Space))
                 SceneManager.LoadScene(0);
-            
+
             if (Target == null)
                 return;
 
@@ -1274,15 +1246,19 @@ namespace Assets.Scripts
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha2))
             {
                 hasSkillOnCursor = true;
-                cursorSkill = CharacterSkill.Mammonite;
+                cursorSkill = CharacterSkill.ThunderStorm;
+                cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
+                Debug.Log(cursorSkillTarget);
                 //cursorSkillLvl = 10;
                 //skillScroll = 10f;
             }
-            
+
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha3))
             {
                 hasSkillOnCursor = true;
-                cursorSkill = CharacterSkill.FireBolt;
+                cursorSkill = CharacterSkill.ColdBolt;
+                cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
+                // Debug.Log(cursorSkillTarget);
                 //cursorSkillLvl = 5;
                 //skillScroll = 5f;
             }
@@ -1336,14 +1312,14 @@ namespace Assets.Scripts
                 if (CinemachineMode)
                 {
                     CinemachineMode = false;
-                    
+
                     Recorder.StopRecording();
                     Camera.main.fieldOfView = 15f;
                 }
                 else
                 {
                     CinemachineMode = true;
-                    if(Recorder.CenterPlayerOnMap)
+                    if (Recorder.CenterPlayerOnMap)
                         NetworkManager.Instance.SendAdminHideCharacter(true);
                     Recorder.StartRecording();
                 }
@@ -1394,7 +1370,23 @@ namespace Assets.Scripts
                 Distance = 100;
 #endif
 
-            DoScreenCast(pointerOverUi);
+
+            if (IsInNPCInteraction && !pointerOverUi && Input.GetMouseButtonDown(0))
+            {
+                NetworkManager.Instance.SendNpcAdvance();
+                isHolding = false;
+                noHold = true;
+                return; //no point in doing other screencast stuff if we're still talking to the npc.
+            }
+
+            //DoScreenCast(pointerOverUi);
+
+            var cursor = ScreenCastV2(pointerOverUi);
+            if (cursor != GameCursorMode.SkillTarget)
+                CursorManager.UpdateCursor(cursor);
+            else
+                CursorManager.UpdateCursor(cursor, cursorSkillLvl);
+
             UpdateSelectedTarget();
 
             //Rotation += Time.deltaTime * 360;

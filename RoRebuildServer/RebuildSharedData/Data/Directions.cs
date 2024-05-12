@@ -30,6 +30,15 @@ public static class Directions
         if (angle > -157.5f) return Direction.SouthEast;
         return Direction.South;
     }
+    
+    public static Direction Get4DirFacingForAngle(float angle)
+    {
+        if (angle > 90f) return Direction.SouthWest;
+        if (angle > 0f) return Direction.NorthWest;
+        if (angle > -90) return Direction.NorthEast;
+        return Direction.SouthEast;
+    }
+
 
     public static float GetAngleForDirection(Direction d)
     {

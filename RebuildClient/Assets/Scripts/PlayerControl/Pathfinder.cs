@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.MapEditor;
+using Assets.Scripts.Utility;
+using RebuildSharedData.Config;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -189,6 +191,8 @@ namespace Assets.Scripts
         {
 	        if (!walkData.CellWalkable(target.x, target.y))
 		        return 0;
+            if ((target - start).SquareDistance() > SharedConfig.MaxPathLength)
+                return 0;
 
             Profiler.BeginSample("Pathfinding");
             var path = BuildPath(walkData, start, target);

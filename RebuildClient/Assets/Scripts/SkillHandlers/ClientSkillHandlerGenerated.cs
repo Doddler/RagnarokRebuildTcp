@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[20];
+			handlers = new SkillHandlerBase[21];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new BashHandler();
 			handlers[2] = new DefaultSkillHandler();
@@ -22,7 +22,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[10] = new LightningBoltHandler();
 			handlers[10].ExecuteWithoutSource = true;
 			handlers[11] = new DefaultSkillHandler();
-			handlers[12] = new DefaultSkillHandler();
+			handlers[12] = new ThunderStormHandler();
 			handlers[13] = new DefaultSkillHandler();
 			handlers[14] = new DefaultSkillHandler();
 			handlers[15] = new DefaultSkillHandler();
@@ -30,6 +30,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[17] = new DefaultSkillHandler();
 			handlers[18] = new MammoniteHandler();
 			handlers[19] = new DefaultSkillHandler();
+			handlers[20] = new DefaultSkillHandler();
 		}
 	}
 }
