@@ -342,7 +342,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 			{
 				//environment ambient contribution disabled for now as it muddies the sprite
 				//todo: turn ambient contribution back on if fog is disabled.
-				//float4 env = float4(1,1,1,1);
+				// float4 env = float4(1,1,1,1);
 				//return i.color;
 				float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 				env = env * 0.3 + 0.7;// + saturate(0.5 + i.envColor);
@@ -375,7 +375,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 
 				//The UNITY_APPLY_FOG can't be called twice so we'll store it to re-use later
 				float4 fogColor = float4(1,1,1,1);
-				UNITY_APPLY_FOG(i.fogCoord, fogColor);
+				
 
 				fixed4 c = diff * min(1.35, fogColor * i.color * float4(env.rgb,1)); // + float4(i.light.rgb,0);
 				c = saturate(c);
@@ -383,7 +383,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 				if(c.a < 0.001)
 					discard;
 
-				c.rgb *= c.a;
+				
 	
 				#ifndef WATER_OFF
 					float2 uv = (i.screenPos.xy / i.screenPos.w);
@@ -407,6 +407,9 @@ Shader"Ragnarok/CharacterSpriteShader"
 						c.rgb *= lerp(float3(1, 1, 1), waterTex.rgb, saturate(((height - 0) - simHeight) * 10));
 
 				#endif
+
+				UNITY_APPLY_FOG(i.fogCoord, c);
+				c.rgb *= c.a;
 
 				return c;
 			}

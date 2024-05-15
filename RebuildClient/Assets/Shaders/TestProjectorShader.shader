@@ -9,12 +9,13 @@
          _ShadowTex ("Cookie", 2D) = "gray" {}
      }
      Subshader {
-         Tags {"Queue"="Transparent"}
+         Tags {"Queue"="Transparent-1"}
          Pass {
              ZWrite Off
              ColorMask RGB
              Blend SrcAlpha One // Additive blending
-             Offset -1, -1
+             Offset 0, 0
+             Ztest Equal
  
              CGPROGRAM
              #pragma vertex vert
