@@ -14,10 +14,12 @@ public class MapSpawnRule
     public int MaxSpawnTime { get; set; }
     public bool HasSpawnZone { get; set; }
     public bool LockToSpawn { get; set; }
+    public bool UseStrictZone { get; set; } //on official servers the server drifts the origin positions of each monster from its spawn area, but do we want to do that here?
+    public bool GuaranteeInZone { get; set; } //make sure the monster cannot spawn outside the selected zone.
 
     public void LockToSpawnZone() => LockToSpawn = true;
 
-    public MapSpawnRule(int id, MonsterDatabaseInfo monsterDatabaseInfo, Area spawnArea, int count, int minSpawnTime, int maxSpawnTime)
+    public MapSpawnRule(int id, MonsterDatabaseInfo monsterDatabaseInfo, Area spawnArea, int count, int minSpawnTime, int maxSpawnTime, bool useStrictZone = false, bool guaranteeInZone = false)
     {
         Id = id;
         MonsterDatabaseInfo = monsterDatabaseInfo;
@@ -26,9 +28,11 @@ public class MapSpawnRule
         MinSpawnTime = minSpawnTime;
         MaxSpawnTime = maxSpawnTime;
         HasSpawnZone = true;
+        UseStrictZone = useStrictZone;
+        GuaranteeInZone = guaranteeInZone;
     }
     
-    public MapSpawnRule(int id, MonsterDatabaseInfo monsterDatabaseInfo, int count, int minSpawnTime, int maxSpawnTime)
+    public MapSpawnRule(int id, MonsterDatabaseInfo monsterDatabaseInfo, int count, int minSpawnTime, int maxSpawnTime, bool useStrictZone = false, bool guaranteeInZone = false)
     {
         Id = id;
         MonsterDatabaseInfo = monsterDatabaseInfo;
@@ -36,6 +40,10 @@ public class MapSpawnRule
         Count = count;
         MinSpawnTime = minSpawnTime;
         MaxSpawnTime = maxSpawnTime;
+        UseStrictZone = useStrictZone;
+        GuaranteeInZone = guaranteeInZone;
     }
-    
+
+    public MapSpawnRule Clone() => new MapSpawnRule(Id, MonsterDatabaseInfo, SpawnArea, Count, MinSpawnTime, MaxSpawnTime, UseStrictZone, GuaranteeInZone);
+
 }

@@ -4,11 +4,13 @@ using System.Text;
 
 namespace RebuildSharedData.Enum
 {
-    public enum MapMinimapType
+    public enum MapType
     {
         None,
         Town,
         Dungeon,
-        Field
+        Field,
+        Indoor,
+        Indoors = Indoor
     }
 }

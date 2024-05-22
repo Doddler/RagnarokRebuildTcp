@@ -406,12 +406,17 @@ public class World
         Position p;
         if (!spawnArea.IsZero && spawnArea.Size <= 1)
         {
-            p = new Position(30, 30); //official servers have this default value too!
+            p = spawnArea.Min;
 
             //if our set location is not walkable we should spawn it somewhere else random
             //should probably change this to not allow a spawn to be blocked by icewall or something if that skill ever gets added
-            if(!map.WalkData.IsCellWalkable(p) && map.FindPositionInRange(monsterSpawnBounds, out var p2))
-                p = p2;
+            if (!map.WalkData.IsCellWalkable(p))
+            {
+                if (map.FindPositionInRange(monsterSpawnBounds, out var p2))
+                    p = p2;
+                else
+                    p = new Position(30, 30);
+            }
         }
         else
         {

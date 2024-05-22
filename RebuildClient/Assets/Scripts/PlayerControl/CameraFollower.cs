@@ -126,6 +126,7 @@ namespace Assets.Scripts
         private const bool CinemachineCenterPlayerOnMap = true;
         private const bool CinemachineHidePlayerObject = true;
         public bool IsInErrorState;
+        public bool DebugVisualization;
 
         public float FogNearRatio = 0.3f;
         public float FogFarRatio = 4f;
@@ -1336,6 +1337,12 @@ namespace Assets.Scripts
                 // Debug.Log(cursorSkillTarget);
                 //cursorSkillLvl = 5;
                 //skillScroll = 5f;
+            }
+
+            if (!inTextBox && Input.GetKeyDown(KeyCode.O))
+            {
+                DebugVisualization = true;
+                //GroundHighlighter.Create(controllable, "blue");
             }
 
             //remove the flag to enable cinemachine recording on this

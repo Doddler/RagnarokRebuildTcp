@@ -419,6 +419,21 @@ namespace Assets.Scripts.Network
                     SceneTransitioner.Instance.FadeIn();
                 CameraFollower.Instance.SnapLookAt();
             }
+            
+            #if UNITY_EDITOR
+            switch (type)
+            {
+                case CharacterType.Player:
+                    GroundHighlighter.Create(controllable, "blue");
+                    break;
+                case CharacterType.Monster:
+                    GroundHighlighter.Create(controllable, "red");
+                    break;
+                case CharacterType.NPC:
+                    GroundHighlighter.Create(controllable, "orange");
+                    break;
+            }
+            #endif
 
             return controllable;
         }

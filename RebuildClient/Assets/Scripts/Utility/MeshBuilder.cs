@@ -32,6 +32,7 @@ namespace Assets.Scripts.Utility
         public void AddNormal(Vector3 n) => normals.Add(n);
         public void AddUV(Vector2 v) => uvs.Add(v);
         public void AddTriangle(int i) => triangles.Add(i);
+        public void ClearVertex() => vertices.Clear();
 
         public bool HasMesh() => triangles.Count > 0;
 

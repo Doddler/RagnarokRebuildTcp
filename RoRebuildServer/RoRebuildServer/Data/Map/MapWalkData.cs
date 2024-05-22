@@ -54,7 +54,7 @@ public class MapWalkData
 
         do
         {
-            pos = new Position(GameRandom.NextInclusive(0, Width - 1), GameRandom.NextInclusive(0, Height - 1));
+            pos = Bounds.Shrink(4, 4).RandomInArea();
         } while (!IsCellWalkable(pos));
 
         return pos;

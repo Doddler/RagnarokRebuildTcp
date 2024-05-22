@@ -167,7 +167,7 @@ class Program
                 {
                     Code = e.Code,
                     Name = e.Name,
-                    MapMode = (int)Enum.Parse<MapMinimapType>(e.MapMode),
+                    MapMode = (int)Enum.Parse<MapType>(e.MapMode),
                     Music = e.Music
                 }).ToList();
             }

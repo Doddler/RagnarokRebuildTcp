@@ -33,7 +33,7 @@ public class PacketAttack : IClientPacketHandler
 
         var targetCharacter = target.Get<WorldObject>();
 
-        if (targetCharacter.Map != character.Map)
+        if (targetCharacter.Map != character.Map || !targetCharacter.HasCombatEntity)
             return;
 
         if (character.Position.SquareDistance(targetCharacter.Position) > ServerConfig.MaxViewDistance)

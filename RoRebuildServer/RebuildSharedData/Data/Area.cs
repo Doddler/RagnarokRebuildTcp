@@ -24,7 +24,9 @@ public struct Area
 
     public int Size => Width * Height;
 
+    public Position Min => new Position(MinX, MinY);
     public Position Center => new Position(MinX + (Width / 2), MinY + (Height / 2));
+    public Position Max => new Position(MaxX, MaxY);
 
     //public static Area AreaAroundPoint(int x, int y, int w, int h) => new Area(x - w, y - h, x + w, y + h);
 

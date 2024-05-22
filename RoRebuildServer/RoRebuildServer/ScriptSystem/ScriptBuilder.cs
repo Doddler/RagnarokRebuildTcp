@@ -242,7 +242,12 @@ public class ScriptBuilder
         UseLocalStorage = false;
         blockBuilder.Clear();
         terminalFunctions.Clear();
-        
+
+        functionSources.Clear();
+        functionBaseClasses.Clear();
+        additionalVariables.Clear();
+        terminalFunctions.Clear();
+
         StartIndentedScriptLine().AppendLine($"public static partial class RoRebuildGenMapData_{className}");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
@@ -252,6 +257,9 @@ public class ScriptBuilder
         StartIndentedBlockLine().AppendLine("{");
 
         LoadFunctionSource(typeof(ServerMapConfig), "map");
+        
+        foreach (var i in Enum.GetValues<SpawnCreateFlags>())
+            additionalVariables.Add(i.ToString(), $"SpawnCreateFlags.{i}");
 
         indentation++;
     }

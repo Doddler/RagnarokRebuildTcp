@@ -66,7 +66,7 @@ public class PacketAdminRequestMove : IClientPacketHandler
         }
         else
         {
-            pos.ClampToArea(map.MapBounds);
+            pos.ClampToArea(map.MapBounds.Shrink(4, 4));
         }
 
         //CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
