@@ -394,29 +394,45 @@ public class World
         var ch = e.Get<WorldObject>();
         var ce = e.Get<CombatEntity>();
         var m = e.Get<Monster>();
+        var monsterSpawnBounds = map.MapBounds.Shrink(4, 4);
+
+        var useOfficialSpawnMode = ServerConfig.OperationConfig.UseAccurateSpawnZoneFormula && spawnRule != null;
+        if (spawnRule != null)
+        {
+            if (spawnRule.GuaranteeInZone)
+                useOfficialSpawnMode = false;
+        }
         
         Position p;
         if (!spawnArea.IsZero && spawnArea.Size <= 1)
         {
-            spawnArea.ClipArea(map.MapBounds);
-            p = new Position(spawnArea.MinX, spawnArea.MinY);
+            p = new Position(30, 30); //official servers have this default value too!
 
             //if our set location is not walkable we should spawn it somewhere else random
             //should probably change this to not allow a spawn to be blocked by icewall or something if that skill ever gets added
-            if(!map.WalkData.IsCellWalkable(p) && map.FindPositionInRange(map.MapBounds, out var p2))
+            if(!map.WalkData.IsCellWalkable(p) && map.FindPositionInRange(monsterSpawnBounds, out var p2))
                 p = p2;
         }
         else
         {
-            if (spawnArea.IsZero)
-                spawnArea = map.MapBounds;
-            else
-                spawnArea.ClipArea(map.MapBounds);
-
-            if (!map.FindPositionInRange(spawnArea, out p))
+            if (useOfficialSpawnMode && !spawnArea.IsZero)
             {
-                ServerLogger.LogWarning($"Failed to spawn {monsterDef.Name} on map {map.Name}, could not find spawn location around {spawnArea}. Spawning randomly on map.");
-                map.FindPositionInRange(map.MapBounds, out p);
+                if(!map.FindPositionUsing9Slice(spawnArea, out p) && !map.FindPositionInRange(monsterSpawnBounds, out p))
+                    ServerLogger.LogWarning($"Failed to spawn {monsterDef.Name} on map {map.Name}, could not find spawn location around {spawnArea}. Spawning randomly on map.");
+            }
+            else
+            {
+                if (spawnArea.IsZero)
+                    spawnArea = map.MapBounds.Shrink(14, 14);
+                else
+                    spawnArea.ClipArea(monsterSpawnBounds);
+
+                if (!map.FindPositionInRange(spawnArea, out p))
+                {
+                    ServerLogger.LogWarning($"Failed to spawn {monsterDef.Name} on map {map.Name}, could not find spawn location around {spawnArea}. Spawning randomly on map.");
+                    if (!map.FindPositionInRange(monsterSpawnBounds, out p))
+                        p = new Position(30, 30);
+                }
             }
         }
 
@@ -472,31 +488,43 @@ public class World
 
         Debug.Assert(map != null);
 
-        var area = map.MapBounds;
+        var monsterSpawnBounds = map.MapBounds.Shrink(4, 4);
+        var spawnArea = monsterSpawnBounds;
         if (spawnEntry.HasSpawnZone)
-            area = spawnEntry.SpawnArea;
-
-        area.ClipArea(map.MapBounds);
-
+            spawnArea = spawnEntry.SpawnArea;
+        
         Position p;
-        if (area.Width == 1 && area.Height == 1 && area.MinX != 0 && area.MinY != 0)
+        if (spawnArea.Width == 1 && spawnArea.Height == 1 && spawnArea.MinX != 0 && spawnArea.MinY != 0)
         {
-            p = new Position(area.MinX, area.MinY);
+            p = new Position(spawnArea.MinX, spawnArea.MinY);
 
             if (!map.WalkData.IsCellWalkable(p))
             {
-                if (!map.FindPositionInRange(map.MapBounds, out p))
+                if (!map.FindPositionInRange(monsterSpawnBounds, out p))
                 {
                     return false;
                 }
             }
-
         }
         else
         {
-            if (!map.FindPositionInRange(area, out p))
+            if (ServerConfig.OperationConfig.UseAccurateSpawnZoneFormula && !spawnArea.IsZero)
             {
-                return false;
+                if (!map.FindPositionUsing9Slice(spawnArea, out p) && !map.FindPositionInRange(monsterSpawnBounds, out p))
+                    ServerLogger.LogWarning($"Failed to respawn {monster.MonsterBase.Name} on map {map.Name}, could not find a valid tile.");
+            }
+            else
+            {
+                if (spawnArea.IsZero)
+                    spawnArea = map.MapBounds.Shrink(14, 14);
+                else
+                    spawnArea.ClipArea(monsterSpawnBounds);
+
+                if (!map.FindPositionInRange(spawnArea, out p) && !map.FindPositionInRange(monsterSpawnBounds, out p))
+                {
+                    ServerLogger.LogWarning($"Failed to respawn {monster.MonsterBase.Name} on map {map.Name}, could not find a valid tile.");
+                    return false;
+                }
             }
         }
 

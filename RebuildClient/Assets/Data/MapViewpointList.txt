@@ -1,0 +1,7 @@
+map, zoomMin, zoomDist, zoomStart, spinMin, spinMax, spinStart, heightMin, heightMax, heightStart
+jupe_gate, 60, 0, 60, 0, 0, 0, 40, 40, 40
+jupe_area1, 60, 0, 60, 45, 45, 45, 40, 65, 40
+jupe_area2, 60, 0, 60, 315, 315, 315, 40, 65, 40
+jupe_ele, 60, 0, 60, 335, 335, 335, 40, 40, 40
+jupe_ele_r, 60, 0, 60, 0, 0, 0, 40, 40, 40
+jupe_cave, 60, 0, 60, 30, 30, 30, 40, 40, 40

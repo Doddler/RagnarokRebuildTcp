@@ -99,13 +99,13 @@
     {
       "Code": "geffen_in",
       "Name": "Geffen Indoors",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "13.mp3"
     },
     {
       "Code": "gef_tower",
       "Name": "Geffen Tower",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "13.mp3"
     },
     {
@@ -153,7 +153,7 @@
     {
       "Code": "izlude_in",
       "Name": "Izlude Indoors",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "26.mp3"
     },
     {
@@ -190,6 +190,12 @@
       "Code": "juperos_01",
       "Name": "Juperos 1F",
       "MapMode": 2,
+      "Music": "89.mp3"
+    },
+    {
+      "Code": "jupe_ele",
+      "Name": "Juperos Core Elevator",
+      "MapMode": 4,
       "Music": "89.mp3"
     },
     {
@@ -387,13 +393,13 @@
     {
       "Code": "moc_castle",
       "Name": "Morroc Castle",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "11.mp3"
     },
     {
       "Code": "morocc_in",
       "Name": "Morroc Indoors",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "11.mp3"
     },
     {
@@ -567,19 +573,19 @@
     {
       "Code": "payon_in01",
       "Name": "Payon Indoors",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "14.mp3"
     },
     {
       "Code": "payon_in02",
       "Name": "Payon Indoors",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "14.mp3"
     },
     {
       "Code": "payon_in03",
       "Name": "Payon Indoors",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "14.mp3"
     },
     {
@@ -627,19 +633,19 @@
     {
       "Code": "prt_in",
       "Name": "Prontera Indoors",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "08.mp3"
     },
     {
       "Code": "prt_castle",
       "Name": "Prontera Castle",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "09.mp3"
     },
     {
       "Code": "prt_church",
       "Name": "Prontera Santuary",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "10.mp3"
     },
     {
@@ -741,7 +747,7 @@
     {
       "Code": "alberta_in",
       "Name": "Alberta Indoors",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "15.mp3"
     },
     {
@@ -753,7 +759,7 @@
     {
       "Code": "aldeba_in",
       "Name": "Aldebaran Indoors",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "39.mp3"
     },
     {
@@ -1023,7 +1029,7 @@
     {
       "Code": "in_moc_16",
       "Name": "Morroc Assassin Guild",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "45.mp3"
     },
     {
@@ -1041,31 +1047,31 @@
     {
       "Code": "yuno_in01",
       "Name": "Inside Juno",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "70.mp3"
     },
     {
       "Code": "yuno_in02",
       "Name": "Inside the Sage Castle",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "70.mp3"
     },
     {
       "Code": "yuno_in03",
       "Name": "Inside Juno",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "70.mp3"
     },
     {
       "Code": "yuno_in04",
       "Name": "Republic Library",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "70.mp3"
     },
     {
       "Code": "yuno_in05",
       "Name": "Power Plant of Ymir\u0027s Heart",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "70.mp3"
     },
     {
@@ -1167,13 +1173,13 @@
     {
       "Code": "cmd_in01",
       "Name": "Comodo [Inside 1]",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "62.mp3"
     },
     {
       "Code": "cmd_in02",
       "Name": "Comodo [Inside 2]",
-      "MapMode": 0,
+      "MapMode": 4,
       "Music": "62.mp3"
     },
     {

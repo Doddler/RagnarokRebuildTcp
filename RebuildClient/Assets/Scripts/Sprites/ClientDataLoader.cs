@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
+using JetBrains.Annotations;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -9,6 +10,20 @@ using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Sprites
 {
+    public class MapViewpoint
+    {
+        public string MapName;
+        public int ZoomMin;
+        public int ZoomDist;
+        public int ZoomIn;
+        public int SpinMin;
+        public int SpinMax;
+        public int SpinIn;
+        public int HeightMin;
+        public int HeightMax;
+        public int HeightIn;
+    }
+    
     public class ClientDataLoader : MonoBehaviour
     {
         public static ClientDataLoader Instance;
@@ -19,14 +34,16 @@ namespace Assets.Scripts.Sprites
         public TextAsset PlayerWeaponData;
         public TextAsset WeaponClassData;
         public TextAsset SkillData;
+        public TextAsset MapViewpointData;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
         private readonly Dictionary<int, PlayerHeadData> playerHeadLookup = new();
         private readonly Dictionary<int, PlayerClassData> playerClassLookup = new();
         private readonly Dictionary<int, Dictionary<int, List<PlayerWeaponData>>> playerWeaponLookup = new();
         private readonly Dictionary<int, WeaponClassData> weaponClassData = new();
-        private readonly Dictionary<CharacterSkill, SkillData> skillData = new(); 
-
+        private readonly Dictionary<CharacterSkill, SkillData> skillData = new();
+        private readonly Dictionary<string, MapViewpoint> mapViewpoints = new();
+        
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
 
@@ -37,6 +54,8 @@ namespace Assets.Scripts.Sprites
 
         public string GetSkillName(CharacterSkill skill) => skillData[skill].Name;
         public SkillTarget GetSkillTarget(CharacterSkill skill) => skillData.TryGetValue(skill, out var target) ? target.Type : SkillTarget.Any;
+
+        public MapViewpoint GetMapViewpoint(string mapName) => mapViewpoints.GetValueOrDefault(mapName);
 
         public string GetHitSoundForWeapon(int weaponId)
         {
@@ -101,6 +120,27 @@ namespace Assets.Scripts.Sprites
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
             foreach(var skill in skills.Items)
                 skillData.Add(skill.SkillId, skill);
+
+            foreach (var mapDef in MapViewpointData.text.Split("\r\n"))
+            {
+                var s = mapDef.Split(',');
+                if (s.Length < 9 || s[0] == "map")
+                    continue;
+                mapViewpoints.Add(s[0], new MapViewpoint()
+                {
+                    MapName = s[0],
+                    ZoomMin = int.Parse(s[1]),
+                    ZoomDist = int.Parse(s[2]),
+                    ZoomIn = int.Parse(s[3]),
+                    SpinMin = int.Parse(s[4]),
+                    SpinMax = int.Parse(s[5]),
+                    SpinIn = int.Parse(s[6]),
+                    HeightMin = int.Parse(s[7]),
+                    HeightMax = int.Parse(s[8]),
+                    HeightIn = int.Parse(s[9]),
+                });
+            }
+            
             
             isInitialized = true;
         }

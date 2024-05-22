@@ -65,7 +65,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         {
             var primitives = effect.GetPrimitives;
             if(primitives.Count > 0)
-            materialPool.Push(primitives[0].Material);
+                materialPool.Push(primitives[0].Material);
         }
     }
 }

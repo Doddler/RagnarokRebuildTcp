@@ -14,6 +14,7 @@ public struct Area
     public static Area Zero => new Area(0, 0, 0, 0);
 
     public bool IsZero => MinX == 0 && MaxX == 0 && MinY == 0 && MaxY == 0;
+    public bool IsSingleCell => Width <= 1 && Height <= 1;
 
     public int Width => MaxX - MinX + 1;
     public int Height => MaxY - MinY + 1;
@@ -22,6 +23,8 @@ public struct Area
     public int MidY => MinY + (MaxY - MinY) / 2;
 
     public int Size => Width * Height;
+
+    public Position Center => new Position(MinX + (Width / 2), MinY + (Height / 2));
 
     //public static Area AreaAroundPoint(int x, int y, int w, int h) => new Area(x - w, y - h, x + w, y + h);
 
@@ -71,6 +74,15 @@ public struct Area
             return false;
 
         return Contains(dest);
+    }
+
+    public Area Shrink(int x, int y)
+    {
+        if (x > Width)
+            x = Width;
+        if (y > Height)
+            y = Height;
+        return new Area(MinX + x, MinY + y, MaxX - x, MaxY - y).Normalize();
     }
 
     public Position RandomInArea()
@@ -138,7 +150,7 @@ public struct Area
     /// <summary>
     /// Adjusts the area in case the min and max bounds are flipped.
     /// </summary>
-    public void Normalize()
+    public Area Normalize()
     {
         if (MinX > MaxX || MaxX < MinX)
         {
@@ -153,6 +165,8 @@ public struct Area
             MinY = MaxY;
             MaxY = miny;
         }
+
+        return this;
     }
 
     public static Area CreateAroundPoint(Position position, int distance)

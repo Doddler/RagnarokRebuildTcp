@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Effects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
@@ -134,6 +135,8 @@ namespace Assets.Scripts.Utility
 			
 			if(unloadScene.IsValid())
 				SceneManager.UnloadSceneAsync(unloadScene);
+			
+			RagnarokEffectData.SceneChangeCleanup();
 
 			MonsterHoverText.text = "";
 			LightmapSettings.lightProbes = null;
@@ -165,7 +168,7 @@ namespace Assets.Scripts.Utility
 			{
 				AudioManager.Instance.PlayBgm(newMap.Music);
 			}
-
+			
 			var fog = mapFogInfo.FirstOrDefault(m => m.Map == newScene);
 			if (fog != null)
 			{
@@ -178,12 +181,25 @@ namespace Assets.Scripts.Utility
 				CameraFollower.Instance.FogFarRatio = 0.9f * 1500f / 400f;
 			}
 
-			var type = (MapMinimapType)newMap.MapMode;
+			var type = (MapType)newMap.MapMode;
 
-			if (type == MapMinimapType.None)
+			if (type == MapType.None || type == MapType.Indoor)
 				MinimapController.Instance.gameObject.SetActive(false);
 			else
 				MinimapController.Instance.LoadMinimap(newScene, type);
+
+			var viewpoint = ClientDataLoader.Instance.GetMapViewpoint(newMap.Code);
+			if (viewpoint != null)
+			{
+				CameraFollower.Instance.SetCameraViewpoint(viewpoint);
+			}
+			else
+			{
+				if (type == MapType.Indoors)
+					CameraFollower.Instance.SetCameraMode(CameraMode.Indoor);
+				else
+					CameraFollower.Instance.SetCameraMode(CameraMode.Normal);
+			}
 		}
 
 		// private void FinishSceneChange(AsyncOperation op)

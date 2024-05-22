@@ -141,7 +141,7 @@ namespace Assets.Scripts.UI
             {
                 hpBar.SetColor(new Color32(0x6C, 0xEA, 0x45, 255));
                 if(isMain)
-                    ((RectTransform)hpBar.transform).sizeDelta = new Vector2(120f, 10f);
+                    ((RectTransform)hpBar.transform).sizeDelta = new Vector2(100f, 10f);
                 else
                     ((RectTransform)hpBar.transform).sizeDelta = new Vector2(100f, 10f);
             }

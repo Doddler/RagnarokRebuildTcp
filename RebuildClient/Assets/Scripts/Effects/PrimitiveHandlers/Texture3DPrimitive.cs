@@ -7,14 +7,15 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
     [RoPrimitive("Texture3D", typeof(Texture3DData))]
     public class Texture3DPrimitive : IPrimitiveHandler
     {
-
-
         public RagnarokEffectData.PrimitiveUpdateDelegate GetDefaultUpdateHandler() => UpdateTexture3D;
         public RagnarokEffectData.PrimitiveRenderDelegate GetDefaultRenderHandler() => RenderTexture3D;
         
         public void UpdateTexture3D(RagnarokPrimitive primitive)
         {
             var data = primitive.GetPrimitiveData<Texture3DData>();
+
+            if (data.Flags.HasFlag(RoPrimitiveHandlerFlags.NoAnimation))
+                return;
 
             data.Size = VectorHelper.Clamp(data.Size + data.ScalingSpeed * Time.deltaTime, data.MinSize, data.MaxSize);
 
@@ -32,8 +33,6 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 }
             }
             
-            
-            
             primitive.IsDirty = primitive.Step == 0 || data.ScalingSpeed != Vector2.zero || data.Flags != RoPrimitiveHandlerFlags.None;
             // Debug.Log($"{primitive.Step} {primitive.IsDirty}");
         }
@@ -41,8 +40,6 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
         private void RenderTexture3D(RagnarokPrimitive primitive, MeshBuilder mb)
         {
             var data = primitive.GetPrimitiveData<Texture3DData>();
-            
-            // Debug.Log($"RenderTexture3D");
             
             primitive.AddTexturedRectangleQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
         }

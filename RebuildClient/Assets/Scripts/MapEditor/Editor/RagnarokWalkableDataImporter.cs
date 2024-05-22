@@ -23,15 +23,12 @@ namespace Assets.Scripts.MapEditor.Editor
             textures.Add(AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Textures/orange.png"));
             textures.Add(AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Textures/purple.png"));
             textures.Add(AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Textures/aqua.png"));
+            textures.Add(AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Textures/black.png"));
             return textures;
         }
 
         private float GetPointHeight(Vector4 heights, Vector2 pos)
         {
-            var a = 0;
-            if (heights.magnitude > 1)
-                a = 1* 4;
-            
             var top = heights[0] * (1 - pos.x) + heights[1] * pos.x;
             var bottom = heights[2] * (1 - pos.x) + heights[3] * pos.x;
             var left = heights[0] * (1 - pos.y) + heights[2] * pos.y;

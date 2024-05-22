@@ -133,7 +133,6 @@ MapConfig("pay_dun04")
 	CreateSpawn("DOKEBI", 40);
 	CreateSpawn("SOHEE", 3);
 	CreateSpawn("HORONG", 30);
-	CreateSpawn("MOONLIGHT", 1, %(120, 120, 27, 27), 3600000, 7200000).LockToSpawnZone();
 	CreateSpawn("GREATEST_GENERAL", 11);
 	CreateSpawn("GREATEST_GENERAL", 1, %(123, 99, 0, 0), 3600000, 1800000);
 	CreateSpawn("GREATEST_GENERAL", 1, %(140, 114, 0, 0), 3600000, 1800000);
@@ -151,4 +150,5 @@ MapConfig("pay_dun04")
 	CreateSpawn("WHITE_PLANT", 2, %(107, 206, 5, 5), 180000, 90000);
 	CreateSpawn("WHITE_PLANT", 2, %(28, 110, 10, 10), 180000, 90000);
 	CreateSpawn("WHITE_PLANT", 2, %(190, 207, 5, 5), 180000, 90000);
+	CreateSpawn("MOONLIGHT", 1, %(120, 120, 27, 27), 3600000, 7200000, Mvp).LockToSpawnZone();
 }

@@ -35,7 +35,7 @@ public class Map
     private readonly int chunkHeight;
 
     private int chunkCheckId;
-    
+
     public int PlayerCount { get; set; }
 
     //private int playerCount;
@@ -96,7 +96,7 @@ public class Map
             foreach (var entity in chunk.AllEntities)
             {
                 var targetCharacter = entity.Get<WorldObject>();
-                
+
                 //if the player couldn't see the entity before, and can now, have that player add the entity
                 if (!targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
                     targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
@@ -133,7 +133,7 @@ public class Map
         SendRemoveEntityAroundCharacter(ref entity, ch, reason);
         ch.Position = newPosition;
         ch.ClearVisiblePlayerList();
-        
+
         //check if the move puts them over to a new chunk, and if so, move them to the new one
         var cOld = GetChunkForPosition(oldPosition);
         var cNew = GetChunkForPosition(newPosition);
@@ -143,18 +143,18 @@ public class Map
             cOld.RemoveEntity(ref entity, ch.Type);
             cNew.AddEntity(ref entity, ch.Type);
         }
-        
+
         //if the moving entity is a player, he needs to know of the new/removed entities from his sight
         if (ch.Type == CharacterType.Player)
         {
             var movingPlayer = entity.Get<Player>();
             CommandBuilder.SendRemoveAllEntities(movingPlayer);
             SendAllEntitiesToPlayer(ref entity);
-            if(ch.Hidden)
+            if (ch.Hidden)
                 CommandBuilder.SendAdminHideStatus(ch.Player, ch.Hidden);
         }
 
-        if(!ch.Hidden)
+        if (!ch.Hidden)
             SendAddEntityAroundCharacter(ref entity, ch); //do this after moving them to the new chunk
     }
 
@@ -311,8 +311,8 @@ public class Map
                     continue;
                 if (!targetCharacter.Position.InRange(ch.Position, ServerConfig.MaxViewDistance))
                     continue;
-                
-                if(targetCharacter != ch && !ch.Hidden)
+
+                if (targetCharacter != ch && !ch.Hidden)
                     CommandBuilder.AddRecipient(player);
 
                 AddPlayerVisibility(targetCharacter, ch);
@@ -328,7 +328,7 @@ public class Map
 
     private void SendRemoveEntityAroundCharacter(ref Entity entity, WorldObject ch, CharacterRemovalReason reason)
     {
-        if (!ch.Hidden && ch.TryGetVisiblePlayerList(out var list))
+        if (ch.TryGetVisiblePlayerList(out var list))
         {
             CommandBuilder.AddRecipients(list);
             CommandBuilder.SendRemoveEntityMulti(ch, reason);
@@ -505,7 +505,7 @@ public class Map
 
         return false;
     }
-    
+
     public bool IsEntityStacked(WorldObject character)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, 0))
@@ -521,7 +521,7 @@ public class Map
 
                 if (ch.Position != character.Position)
                     continue;
-                
+
                 if (ch.Type == CharacterType.NPC)
                     continue;
 
@@ -547,20 +547,20 @@ public class Map
 
                 if (ch.Position != pos)
                     continue;
-                
+
                 if (ch.Type == CharacterType.NPC)
                     continue;
 
                 if (ch.IsTargetImmune)
                     continue;
-                
+
                 return true;
             }
         }
 
         return false;
     }
-    
+
     public void GatherAlliesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
@@ -627,7 +627,7 @@ public class Map
 
                 if (!character.Position.InRange(ch.Position, distance))
                     continue;
-                
+
                 if (!WalkData.HasLineOfSight(character.Position, ch.Position))
                     continue;
 
@@ -636,11 +636,11 @@ public class Map
                     if (!Instance.Pathfinder.HasPath(WalkData, character.Position, ch.Position, 1))
                         continue;
                 }
-                
+
 
                 list.Add(m);
             }
-            
+
         }
     }
 
@@ -657,7 +657,7 @@ public class Map
 
                 if (ch.Type != CharacterType.Monster)
                     continue;
-                
+
                 list.Add(m);
             }
         }
@@ -737,7 +737,7 @@ public class Map
 
     public bool QuickCheckPlayersNearby(WorldObject character, int distance)
     {
-        if(PlayerCount  == 0) return false;
+        if (PlayerCount == 0) return false;
 
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
         {
@@ -779,7 +779,7 @@ public class Map
         //Since aoes are added to each chunk they affect, we only need to check aoes in our current chunk
 
         var c = GetChunkForPosition(character.Position);
-        
+
         for (var i = 0; i < c.AreaOfEffects.Count; i++)
         {
             var aoe = c.AreaOfEffects[i];
@@ -789,7 +789,7 @@ public class Map
             if (aoe.HasTouchedAoE(initialPos, targetPosition))
                 aoe.OnAoETouch(character);
         }
-    
+
     }
 
     public Position GetRandomWalkablePositionInArea(Area area, int tries = 100)
@@ -866,9 +866,9 @@ public class Map
             return;
 
         var ch = entity.Get<WorldObject>();
-        
-        if(!ch.Hidden)
-            SendRemoveEntityAroundCharacter(ref entity, ch, reason);
+
+        //if (!ch.Hidden)
+        SendRemoveEntityAroundCharacter(ref entity, ch, reason);
         ch.ClearVisiblePlayerList();
 
         var hasRemoved = false;
@@ -994,6 +994,38 @@ public class Map
         return new Area(area.MinX / ChunkSize, area.MinY / ChunkSize, area.MaxX / ChunkSize, area.MaxY / ChunkSize);
     }
 
+    //it's weird but it's how official servers find a free position
+    public bool FindPositionUsing9Slice(Area area, out Position p)
+    {
+        p = area.Center;
+        var mapBounds = MapBounds.Shrink(4, 4);
+        var xr = area.Width / 2;
+        var yr = area.Height / 2;
+        if (xr < 1) xr = 1;
+        if (yr < 1) yr = 1;
+        
+        var xDir = (GameRandom.Next(0, 20000) % 2) == 1 ? 1 : -1;
+        var yDir = (GameRandom.Next(0, 20000) % 2) == 1 ? 1 : -1;
+
+        for (var i = -1; i < 2; i++)
+        {
+            for (var j = -1; j < 2; j++)
+            {
+                var sx = p.X + i * (GameRandom.Next(0, 20000) % xr) * xDir;
+                var sy = p.Y + i * (GameRandom.Next(0, 20000) % yr) * yDir;
+                var target = new Position(sx, sy);
+
+                if (mapBounds.Contains(target) && WalkData.IsCellWalkable(target))
+                {
+                    p = target;
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public bool FindPositionInRange(Area area, out Position p)
     {
 #if DEBUG
@@ -1001,7 +1033,6 @@ public class Map
         {
             ServerLogger.LogWarning($"Attempting to find position in an area that exceeds map bounds! You should clip the area first.");
         }
-
 #endif
 
         if (WalkData.FindWalkableCellInArea(area, out p))
@@ -1040,7 +1071,7 @@ public class Map
         chunkWidth = AlignValue(Width, ChunkSize) / ChunkSize;
         chunkHeight = AlignValue(Height, ChunkSize) / ChunkSize;
 
-        MapBounds = new Area(1, 1, Width - 2, Height - 2);
+        MapBounds = new Area(0, 0, Width - 1, Height - 1);
         ChunkBounds = new Area(0, 0, chunkWidth - 1, chunkHeight - 1);
 
         Chunks = new Chunk[chunkWidth * chunkHeight];

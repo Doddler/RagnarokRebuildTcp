@@ -55,6 +55,8 @@ namespace Assets.Scripts.MapEditor
                 MeshRenderer.shadowCastingMode = ShadowCastingMode.Off;
                 MeshRenderer.receiveShadows = false;
             }
+
+            MeshRenderer.lightProbeUsage = LightProbeUsage.Off;
             
 
             Collider = gameObject.AddComponent<MeshCollider>();

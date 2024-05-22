@@ -473,7 +473,6 @@ namespace Assets.Scripts.MapEditor.Editor
                     continue;
                 }
 
-
                 if (effect.Id == 307 || effect.Id == 322 || effect.Id == 323)
                 {
                     var obj = new GameObject(effect.Name);
@@ -484,6 +483,23 @@ namespace Assets.Scripts.MapEditor.Editor
                         spawner.Variant = 1;
                     if (effect.Id == 323)
                         spawner.Variant = 2;
+                    obj.transform.SetParent(effectContainer.transform, false);
+                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    // obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
+                    continue;
+                }
+                
+                if (effect.Id == 559 || effect.Id == 560)
+                {
+                    var obj = new GameObject(effect.Name);
+                    var spawner = obj.AddComponent<EffectSpawner>();
+                    spawner.EffectType = EffectType.BlueWaterfallEffect;
+                    spawner.Variant = 0;
+                    if (effect.Id == 559)
+                        spawner.Variant = 0;
+                    if (effect.Id == 560)
+                        spawner.Variant = 1;
                     obj.transform.SetParent(effectContainer.transform, false);
                     obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
                     // obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);

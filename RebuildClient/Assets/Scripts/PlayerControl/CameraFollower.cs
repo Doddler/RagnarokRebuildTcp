@@ -28,6 +28,14 @@ using Debug = UnityEngine.Debug;
 
 namespace Assets.Scripts
 {
+    public enum CameraMode
+    {
+        None,
+        Normal,
+        Indoor,
+        Fixed
+    }
+
     public class CameraFollower : MonoBehaviour
     {
         public GameObject ListenerProbe;
@@ -200,6 +208,12 @@ namespace Assets.Scripts
         public float LastRightClick;
         private bool isHolding;
 
+        private CameraMode cameraMode;
+        private bool lockCamera;
+        private Vector2 rotationRange;
+        private Vector2 heightRange;
+        private Vector2 zoomRange = new Vector2(30, 70);
+
         public void Awake()
         {
             _instance = this;
@@ -245,7 +259,7 @@ namespace Assets.Scripts
             clickEffectPrefab = Resources.Load<GameObject>($"MoveNotice");
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(UiCanvas.transform as RectTransform);
-
+            
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
             //    targetWalkable = Target.AddComponent<EntityWalkable>();
@@ -253,6 +267,73 @@ namespace Assets.Scripts
             //DoMapSpawn();
         }
 
+        private void SaveCurrentCameraSettings()
+        {
+            if (cameraMode == CameraMode.Normal)
+            {
+                PlayerPrefs.SetFloat("cameraX", TargetRotation);
+                PlayerPrefs.SetFloat("cameraY", Height);
+            }
+
+            if (cameraMode == CameraMode.Indoor)
+            {
+                PlayerPrefs.SetFloat("cameraIndoorX", TargetRotation);
+                PlayerPrefs.SetFloat("cameraIndoorY", Height);
+            }
+        }
+
+        public void SetCameraViewpoint(MapViewpoint viewpoint)
+        {
+            cameraMode = CameraMode.Fixed;
+            TargetRotation = Rotation = viewpoint.SpinIn;
+            Height = viewpoint.HeightIn;
+            Distance = viewpoint.ZoomIn;
+            rotationRange = new Vector2(viewpoint.SpinMin, viewpoint.SpinMax);
+            heightRange = new Vector2(viewpoint.HeightMin, viewpoint.HeightMax);
+            zoomRange = new Vector2(viewpoint.ZoomMin, viewpoint.ZoomMin + viewpoint.ZoomDist);
+            lockCamera = true;
+        }
+
+        public void SetCameraMode(CameraMode mode)
+        {
+            if (mode == cameraMode)
+                return;
+
+            if (mode == CameraMode.Fixed || mode == CameraMode.None)
+            {
+                Debug.LogError($"You can't use this function to set camera mode to {mode}");
+                return;
+            }
+
+            SaveCurrentCameraSettings();
+            cameraMode = mode;
+
+            if (mode == CameraMode.Normal)
+            {
+                Rotation = PlayerPrefs.GetFloat("cameraX", 0);
+                Height = PlayerPrefs.GetFloat("cameraY", 50);
+                TargetRotation = Rotation;
+                Distance = 60;
+                zoomRange = new Vector2(30, 90);
+                lockCamera = false;
+            }
+
+            if (mode == CameraMode.Indoor)
+            {
+                Rotation = PlayerPrefs.GetFloat("cameraIndoorX", 45);
+                Height = PlayerPrefs.GetFloat("cameraIndoorY", 50);
+                TargetRotation = Rotation;
+                lockCamera = true;
+                Distance = 46;
+                rotationRange = new Vector2(40, 60);
+                heightRange = new Vector2(35, 65);
+                zoomRange = new Vector2(25, 80);
+            }
+            
+#if UNITY_EDITOR
+            zoomRange = new Vector2(30, 150);
+#endif
+        }
 
         public void UpdatePlayerHP(int hp, int maxHp)
         {
@@ -581,16 +662,6 @@ namespace Assets.Scripts
             return null;
         }
 
-        private enum CursorScanAction
-        {
-            Open,
-            Enemy,
-            Ally,
-            Move,
-            GroundTargeting,
-            NoAction
-        }
-
         private bool FindEntityUnderCursor(Ray ray, bool preferEnemy, out ServerControllable target)
         {
             //one of these days we'll be able to target allies and that preferEnemy value will matter
@@ -607,16 +678,18 @@ namespace Assets.Scripts
             return true;
         }
 
-        private bool FindMapPositionUnderCursor(Ray ray, out Vector2Int position, out Vector3 groundHit)
+        private bool FindMapPositionUnderCursor(Ray ray, out Vector2Int position, out Vector3 groundHit, int mask, bool pushPointTowardsNormal = false)
         {
             position = Vector2Int.zero;
             groundHit = Vector3.zero;
 
-            var hasHitMap = Physics.Raycast(ray, out var hit, MaxClickDistance, (1 << LayerMask.NameToLayer("WalkMap")));
+            var hasHitMap = Physics.Raycast(ray, out var hit, MaxClickDistance, mask);
             if (!hasHitMap)
                 return false;
 
             groundHit = hit.point;
+            if (pushPointTowardsNormal)
+                groundHit += hit.normal * 0.05f;
 
             if (WalkProvider.GetMapPositionForWorldPosition(groundHit, out position))
                 return true;
@@ -624,12 +697,17 @@ namespace Assets.Scripts
             return false;
         }
 
-        private bool FindWalkablePositionPastInitialRayHit(Ray ray, Vector3 groundHit, Vector2Int startPosition, out Vector3 newGroundHit,
-            out Vector2Int foundPosition)
+        private bool FindWalkablePositionPastInitialRayHit(Ray ray, Vector3 groundHit, Vector2Int startPosition, Vector2Int walkSource,
+            out Vector3 newGroundHit, out Vector2Int foundPosition)
         {
             //the target isn't valid, so we're going to try to see if we can find something that is in the same raycast target
+            //if multiple walkable tiles are in the path of the ray, the first one that the player can reach is chosen, otherwise the furthest will be used.
 
             var loopCount = 0; //infinite loop safety
+            var hasMatch = false;
+            newGroundHit = groundHit;
+            foundPosition = startPosition;
+
             ray.origin = groundHit + ray.direction * 0.01f;
             while (Physics.Raycast(ray, out var rehit, MaxClickDistance, (1 << LayerMask.NameToLayer("WalkMap"))) && loopCount < 5)
             {
@@ -638,22 +716,20 @@ namespace Assets.Scripts
                 if (newGroundPos && WalkProvider.IsCellWalkable(newMapPosition) &&
                     (newMapPosition - startPosition).SquareDistance() <= SharedConfig.MaxPathLength)
                 {
-                    var steps = Pathfinder.GetPath(WalkProvider.WalkData, newMapPosition, startPosition, tempPath);
+                    newGroundHit = rehit.point;
+                    foundPosition = newMapPosition;
+                    hasMatch = true;
+
+                    var steps = Pathfinder.GetPath(WalkProvider.WalkData, walkSource, newMapPosition, tempPath);
                     if (steps > 0)
-                    {
-                        newGroundHit = rehit.point;
-                        foundPosition = newMapPosition;
                         return true;
-                    }
                 }
 
                 ray.origin = rehit.point + ray.direction * 0.01f;
                 loopCount++;
             }
 
-            newGroundHit = groundHit;
-            foundPosition = startPosition;
-            return false;
+            return hasMatch;
         }
 
         private GameCursorMode ScreenCastV2(bool isOverUi)
@@ -681,16 +757,20 @@ namespace Assets.Scripts
             if (hasSkillOnCursor && (!isAlive || isSitting))
                 hasSkillOnCursor = false;
 
+            var walkMask = 1 << LayerMask.NameToLayer("WalkMap");
+            var groundMask = 1 << LayerMask.NameToLayer("Ground");
+
             var hasEntity = FindEntityUnderCursor(ray, preferEnemyTarget, out var mouseTarget);
-            var hasGround = FindMapPositionUnderCursor(ray, out var groundPosition, out var intersectLocation);
+            var hasGround = FindMapPositionUnderCursor(ray, out var groundPosition, out var intersectLocation, walkMask);
+            if (!hasGround) hasGround = FindMapPositionUnderCursor(ray, out groundPosition, out intersectLocation, groundMask, true);
             var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
             var hasTargetedSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.SingleTarget;
             var hasGroundSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.AreaTargeted;
 
             var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill;
-            var canClickEnemy = canInteract && !mouseTarget.IsAlly;
-            var canClickNpc = canInteract && mouseTarget.CharacterType == CharacterType.NPC;
-            var canClickGround = hasGround && isAlive && !canClickEnemy && !canClickNpc;
+            var canClickEnemy = canInteract && !mouseTarget.IsAlly && mouseTarget.CharacterType != CharacterType.NPC;
+            var canClickNpc = canInteract && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
+            var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc;
             var canMove = ClickDelay <= 0 && isAlive && !isSitting;
             var showEntityName = hasEntity && !isOverUi;
 
@@ -767,7 +847,7 @@ namespace Assets.Scripts
 
                 //if our cursor hits the top of a wall we want to check if there's valid ground behind it we can use.
                 if (!hasValidPath && FindWalkablePositionPastInitialRayHit(ray, intersectLocation,
-                        groundPosition, out intersectLocation, out groundPosition))
+                        groundPosition, srcPosition, out intersectLocation, out groundPosition))
                 {
                     //try to make a path again to our new, valid cell we found
                     steps = Pathfinder.GetPath(WalkProvider.WalkData, groundPosition, srcPosition, tempPath);
@@ -961,7 +1041,7 @@ namespace Assets.Scripts
                 obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
                 if (asset.Billboard)
                     obj2.AddComponent<BillboardObject>();
-                
+
                 outputObj.AddComponent<RemoveWhenChildless>();
 
                 if (facing != 0)
@@ -1093,11 +1173,6 @@ namespace Assets.Scripts
                 Instance.IsInErrorState = true;
             });
         }
-        //
-        // public void LateUpdate()
-        // {
-        //     CursorManager.ApplyCursor();
-        // }
 
         public void Update()
         {
@@ -1248,7 +1323,7 @@ namespace Assets.Scripts
                 hasSkillOnCursor = true;
                 cursorSkill = CharacterSkill.ThunderStorm;
                 cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
-                Debug.Log(cursorSkillTarget);
+                // Debug.Log(cursorSkillTarget);
                 //cursorSkillLvl = 10;
                 //skillScroll = 10f;
             }
@@ -1262,48 +1337,6 @@ namespace Assets.Scripts
                 //cursorSkillLvl = 5;
                 //skillScroll = 5f;
             }
-            //
-            // if (!inTextBox && Input.GetKeyDown(KeyCode.F3))
-            //     FireArrow.Create(controllable.gameObject, 5);
-            // if (!inTextBox && Input.GetKeyDown(KeyCode.F4))
-            //     CastEffect.Create(3f, "ring_red", controllable.gameObject);
-            //
-            // if (!inTextBox && Input.GetKeyDown(KeyCode.L))
-            //     ForestLightEffect.Create((ForestLightType)Random.Range(0, 4), controllable.transform.position);
-            //
-            // if (!inTextBox && Input.GetKeyDown(KeyCode.F2))
-            //     CastLockOnEffect.Create(3f, controllable.gameObject);
-
-            //if (Input.GetKeyDown(KeyCode.Alpha1))
-            //    AttachEffectToEntity("RedPotion", controllable);
-
-            //if (Input.GetKeyDown(KeyCode.Alpha2))
-            //    AttachEffectToEntity("Death", controllable);
-
-            //if (Input.GetKeyDown(KeyCode.Alpha3))
-            //    AttachEffectToEntity("LevelUp", controllable);
-
-            //if (Input.GetKeyDown(KeyCode.Alpha4))
-            //    AttachEffectToEntity("Resurrect", controllable);
-
-            //if (Input.GetKeyDown(KeyCode.Alpha5))
-            //    AttachEffectToEntity("MVP", controllable);
-            //
-            // if(Input.GetKeyDown(KeyCode.Alpha6))
-            //     CastingEffect.StartCasting(2f, "ring_blue", controllable.gameObject);
-
-            // if (Input.GetKeyDown(KeyCode.Q))
-            // {
-            // //    //CastingEffect.StartCasting(3, "ring_red", controllable.gameObject);
-            //     var temp = new GameObject("Warp");
-            //     temp.transform.position = controllable.transform.position + new Vector3(0, 0.1f, 0f);
-            //     MapWarpEffect.StartWarp(temp);
-            // }
-
-            //        if (Input.GetKeyDown(KeyCode.F4))
-            //        {
-            //NetworkManager.Instance.SkillAttack();
-            //        }
 
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
@@ -1333,7 +1366,7 @@ namespace Assets.Scripts
                     if (Input.GetKey(KeyCode.LeftShift))
                         Height = 50;
                     else
-                        TargetRotation = 0f;
+                        TargetRotation = cameraMode == CameraMode.Normal ? 0 : (rotationRange.y + rotationRange.x) / 2f;
                 }
 
                 LastRightClick = Time.timeSinceLevelLoad;
@@ -1346,11 +1379,15 @@ namespace Assets.Scripts
                     Height -= Input.GetAxis("Mouse Y") / 4;
 
                     Height = Mathf.Clamp(Height, 0f, 90f);
+                    if (lockCamera)
+                        Height = Mathf.Clamp(Height, heightRange.x, heightRange.y);
                 }
                 else
                 {
                     var turnSpeed = 200;
                     TargetRotation += Input.GetAxis("Mouse X") * turnSpeed * Time.deltaTime;
+                    if (lockCamera)
+                        TargetRotation = Mathf.Clamp(TargetRotation, rotationRange.x, rotationRange.y);
                 }
             }
 
@@ -1419,6 +1456,8 @@ namespace Assets.Scripts
                     // Debug.Log(skillScroll);
                 }
             }
+
+            Distance = Mathf.Clamp(Distance, zoomRange.x, zoomRange.y);
 
 #if !DEBUG
             if (Distance > 90)

@@ -2,6 +2,7 @@
 {
     public interface IEffectHandler
     {
+        public void SceneChangeResourceCleanup() {}
         public bool Update(Ragnarok3dEffect effect, float pos, int step) => true;
         public void OnEvent(Ragnarok3dEffect effect, RagnarokPrimitive sender) {}
         public void OnCleanup(Ragnarok3dEffect effect) {}

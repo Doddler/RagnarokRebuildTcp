@@ -51,6 +51,14 @@ namespace Assets.Scripts.Effects.EffectHandlers
             return effect;
         }
 
+        public void SceneChangeResourceCleanup()
+        {
+            Resources.UnloadAsset(fireboltAtlas);
+            fireboltAtlas = null;
+            GameObject.Destroy(fireboltMaterial);
+            GameObject.Destroy(fireboltRingMaterial);
+        }
+
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
             if (step == 12)
@@ -114,7 +122,6 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             //sender.IsActive = false;
             sender.EndPrimitive();
-            
         }
     }
 }

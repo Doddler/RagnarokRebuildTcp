@@ -85,5 +85,13 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             return effect;
         }
+
+        public void SceneChangeResourceCleanup()
+        {
+            if (forestLightMaterial == null)
+                return;
+            Resources.UnloadAsset(forestLightMaterial.mainTexture);
+            GameObject.Destroy(forestLightMaterial);
+        }
     }
 }

@@ -49,7 +49,7 @@ namespace Assets.Scripts.MapEditor
             mf = gameObject.AddComponent<MeshFilter>();
             mr = gameObject.AddComponent<MeshRenderer>();
             mr.material = mat;
-            mat.renderQueue = 3000 - 2;
+            mat.renderQueue = 3000 + 4;
 
             var loader = Addressables.LoadAssetAsync<Texture2D>("gridicon");
             loader.Completed += ah =>

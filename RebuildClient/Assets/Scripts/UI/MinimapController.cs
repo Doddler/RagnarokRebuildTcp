@@ -17,7 +17,7 @@ public class MinimapController : MonoBehaviour
     
     private GameObject playerMapIconObject;
 
-    public MapMinimapType MapType;
+    public MapType MapType;
 
     public float ObjectScaleFactor = 1f;
     public float MinimapPixelsPerTile = 5f;
@@ -109,7 +109,7 @@ public class MinimapController : MonoBehaviour
         playerMapIconObject.transform.localScale = Vector3.one * s;
     }
 
-    public void LoadMinimap(string mapName, MapMinimapType type)
+    public void LoadMinimap(string mapName, MapType type)
     {
         if(loadCoroutine != null)
             StopCoroutine(loadCoroutine);
@@ -181,14 +181,14 @@ public class MinimapController : MonoBehaviour
 
         MapImage.sprite = mapSprite;
 
-        if (MapType == MapMinimapType.Dungeon)
+        if (MapType == MapType.Dungeon)
         {
             MapImage.sprite = walkSprite;
             MapImage.material = DungeonMaterial;
         }
         else
         {
-            if (MapType == MapMinimapType.Town)
+            if (MapType == MapType.Town)
             {
                 //dungeon material but with regular map, so no highlighted walk
                 MapImage.material = DungeonMaterial;

@@ -6,7 +6,8 @@ namespace Assets.Scripts.Effects
     public enum RoPrimitiveHandlerFlags : int
     {
         None,
-        CycleColors
+        CycleColors,
+        NoAnimation
     }
     
     public class RoEffectAttribute : Attribute

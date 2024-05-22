@@ -5,6 +5,7 @@ namespace Assets.Scripts.Effects
 {
 	public enum EffectType
 	{
+		BlueWaterfallEffect,
 		CastEffect,
 		CastLockOn,
 		CastTargetCircle,
@@ -31,6 +32,7 @@ namespace Assets.Scripts.Effects
 	{
 		static RagnarokEffectData()
 		{
+			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.BlueWaterfallEffect());
 			effectHandlers.Add(EffectType.CastEffect, new Assets.Scripts.Effects.EffectHandlers.CastEffect());
 			effectHandlers.Add(EffectType.CastLockOn, new Assets.Scripts.Effects.EffectHandlers.CastLockOnEffect());
 			effectHandlers.Add(EffectType.CastTargetCircle, new Assets.Scripts.Effects.EffectHandlers.CastTargetCircle());

@@ -31,11 +31,22 @@ public class PacketRandomTeleport : IClientPacketHandler
         var map = ch.Map;
         
         var p = new Position();
+        var count = 0;
+
+        var area = map.MapBounds.Shrink(5, 5);
 
         do
         {
-            p = new Position(GameRandom.NextInclusive(0, map.Width - 1), GameRandom.NextInclusive(0, map.Height - 1));
-        } while (!map.WalkData.IsCellWalkable(p));
+            p = area.RandomInArea();
+            //p = new Position(GameRandom.NextInclusive(5, map.Width - 5), GameRandom.NextInclusive(5, map.Height - 5));
+            count++;
+        } while (!map.WalkData.IsCellWalkable(p) && count < 50);
+
+        if (count >= 50)
+        {
+            ServerLogger.Log($"Failed to move player {player.Name}, random teleport could not find a valid cell to use on map {map.Name} within area {area}.");
+            return;
+        }
 
         ServerLogger.Log($"Player {player.Name} executes a random teleport from {ch.Position} to {p}");
 

@@ -1,0 +1,39 @@
+﻿
+Npc("alberta", "Sailor", "4_M_SEAMAN", 247, 122, S)
+{
+    localstr name = "Gotanblue";
+OnClick:
+    FocusNpc();
+    Dialog(name, "Heh... I can see it in your eyes...\nI can tell you're curious about Turtle Island. I'm not sure where you heard about it, but I can help you out.");
+    Option("Turtle Island -> 10000z", "Cancel" );
+    switch(Result)
+    {
+        case 0:
+            if(GetZeny() < 10000)
+            {
+                Dialog(name, "Hmm... Sorry, but you don't have enough zeny. I hope you understand I can't let my expertise and experience be undervalued...");
+                return;
+            }
+            Dialog(name, "Alright!!\nYou've made your choice! With my experience, we'll arrive without fail! I appreciate your spirit!\n<color=#3355FF>- choo-choo -</color>");
+            DropZeny(10000);
+            MoveTo("tur_dun01", 157, 39);
+            return;
+        case 1:
+            Dialog(name, "Alright then...\nWell, should the spirit of adventure grab you, I'll be here waiting.");
+    }
+}
+
+Npc("tur_dun01", "Sailor", "4_M_SEAMAN", 165, 29, S)
+{
+    localstr name = "Gotanblue";
+OnClick:
+    FocusNpc();
+    Dialog(name, "Do you want to return to Alberta?");
+    Option("Go to Alberta", "Not yet" );
+    switch(Result)
+    {
+        case 0: 
+            Dialog(name, "Heh heh... I hope you've found what you were looking for. Alright, even an adventurer needs to return home every now and then.\n<color=#3355FF>- choo-choo -</color>");
+            MoveTo("alberta", 241, 115);
+    }
+}

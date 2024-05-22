@@ -24,5 +24,11 @@ namespace Assets.Scripts.Effects
                 return f();
             return null;
         }
+
+        public static void SceneChangeCleanup()
+        {
+            foreach(var handlers in effectHandlers)
+                handlers.Value.SceneChangeResourceCleanup();
+        }
     }
 }

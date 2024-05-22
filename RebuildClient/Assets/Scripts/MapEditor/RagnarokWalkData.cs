@@ -33,6 +33,7 @@ namespace Assets.Scripts.MapEditor
         public RoWalkCell Cell(int x, int y) => Cells[x + y * Width];
         public RoWalkCell Cell(Vector2Int pos) => Cells[pos.x + pos.y * Width];
         public bool CellWalkable(int x, int y) => (Cell(x, y).Type & CellType.Walkable) == CellType.Walkable;
+        
 
         public static CellType ColorToCellMask(string color)
         {

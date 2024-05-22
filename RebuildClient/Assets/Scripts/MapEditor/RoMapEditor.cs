@@ -202,7 +202,7 @@ namespace Assets.Scripts.MapEditor
                 }
             }
         }
-        
+
         public void BuildMapLightProbeTexture(bool destroyProbesAfterBaking = true)
         {
             if (MapData.IsWalkTable)
@@ -568,6 +568,25 @@ namespace Assets.Scripts.MapEditor
 
                     chunk.UpdateMaterial(MapMaterial, ShadowMaterial);
                     chunk.RebuildMeshData(TileSize, PaintEmptyTileColorsBlack);
+
+                    //there's no point in allowing the player to target chunks that have no targetable tiles
+                    if (mapData.IsWalkTable)
+                    {
+                        var hasUsableTile = false;
+                        for (var i = x * ChunkSizeInTiles; i < x * ChunkSizeInTiles + ChunkSizeInTiles; i++)
+                        {
+                            for (var j = y * ChunkSizeInTiles; j < y * ChunkSizeInTiles + ChunkSizeInTiles; j++)
+                            {
+                                Debug.Log($"{i},{j} {mapData.WalkCellData.Cell(i, j).Type}");
+                                if (mapData.WalkCellData.Cell(i, j).Type != CellType.None)
+                                {
+                                    hasUsableTile = true;
+                                }
+                            }
+                        }
+
+                        chunk.GetComponent<MeshCollider>().enabled = hasUsableTile;
+                    }
 
                     if (WaterChunks == null)
                         continue;

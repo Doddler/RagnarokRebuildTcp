@@ -15,8 +15,8 @@ Geffen Field 12,gef_fild12,gef_fild12.walk,Field,64.mp3
 Geffen Field 13,gef_fild13,gef_fild13.walk,Field,66.mp3
 Geffen Field 14,gef_fild14,gef_fild14.walk,Field,64.mp3
 Geffen,geffen,geffen.walk,Town,13.mp3
-Geffen Indoors,geffen_in,geffen_in.walk,None,13.mp3
-Geffen Tower,gef_tower,gef_tower.walk,None,13.mp3
+Geffen Indoors,geffen_in,geffen_in.walk,Indoor,13.mp3
+Geffen Tower,gef_tower,gef_tower.walk,Indoor,13.mp3
 Geffen Dungeon 1F,gef_dun00,gef_dun00.walk,Dungeon,21.mp3
 Geffen Dungeon 2F,gef_dun01,gef_dun01.walk,Dungeon,21.mp3
 Geffenia,gef_dun02,gef_dun02.walk,Dungeon,50.mp3
@@ -24,13 +24,14 @@ Orc Village,in_orcs01,in_orcs01.walk,Field,35.mp3
 Orc Dungeon 1F,orcsdun01,orcsdun01.walk,Dungeon,48.mp3
 Orc Dungeon 2F,orcsdun02,orcsdun02.walk,Dungeon,48.mp3
 Izlude,izlude,izlude.walk,Town,26.mp3
-Izlude Indoors,izlude_in,izlude_in.walk,None,26.mp3
+Izlude Indoors,izlude_in,izlude_in.walk,Indoor,26.mp3
 Undersea Tunnel 1F,iz_dun00,iz_dun00.walk,Dungeon,29.mp3
 Undersea Tunnel 2F,iz_dun01,iz_dun01.walk,Dungeon,29.mp3
 Undersea Tunnel 3F,iz_dun02,iz_dun02.walk,Dungeon,29.mp3
 Undersea Tunnel 4F,iz_dun03,iz_dun03.walk,Dungeon,49.mp3
 Undersea Tunnel 5F,iz_dun04,iz_dun04.walk,Dungeon,49.mp3
 Juperos 1F,juperos_01,juperos_01.walk,Dungeon,89.mp3
+Juperos Core Elevator,jupe_ele,jupe_ele.walk,Indoor,89.mp3
 Mt. Mjolnir 1,mjolnir_01,mjolnir_01.walk,Field,31.mp3
 Mt. Mjolnir 2,mjolnir_02,mjolnir_02.walk,Field,33.mp3
 Mt. Mjolnir 3,mjolnir_03,mjolnir_03.walk,Field,33.mp3
@@ -63,8 +64,8 @@ Morroc Field 17,moc_fild17,moc_fild17.walk,Field,37.mp3
 Morroc Field 18,moc_fild18,moc_fild18.walk,Field,37.mp3
 Morroc Field 19,moc_fild19,moc_fild19.walk,Field,37.mp3
 Morroc,morocc,morocc.walk,Town,11.mp3
-Morroc Castle,moc_castle,moc_castle.walk,None,11.mp3
-Morroc Indoors,morocc_in,morocc_in.walk,None,11.mp3
+Morroc Castle,moc_castle,moc_castle.walk,Indoor,11.mp3
+Morroc Indoors,morocc_in,morocc_in.walk,Indoor,11.mp3
 Morroc Pyramids,moc_ruins,moc_ruins.walk,None,11.mp3
 Pyramids 1F,moc_pryd01,moc_pryd01.walk,Dungeon,22.mp3
 Pyramids 2F,moc_pryd02,moc_pryd02.walk,Dungeon,22.mp3
@@ -93,9 +94,9 @@ Payon Field 10,pay_fild10,pay_fild10.walk,Field,36.mp3
 Payon Field 11,pay_fild11,pay_fild11.walk,Field,03.mp3
 Payon,payon,payon.walk,Town,14.mp3
 Old Payon,payon_mem,payon_mem.walk,Town,14.mp3
-Payon Indoors,payon_in01,payon_in01.walk,None,14.mp3
-Payon Indoors,payon_in02,payon_in02.walk,None,14.mp3
-Payon Indoors,payon_in03,payon_in03.walk,None,14.mp3
+Payon Indoors,payon_in01,payon_in01.walk,Indoor,14.mp3
+Payon Indoors,payon_in02,payon_in02.walk,Indoor,14.mp3
+Payon Indoors,payon_in03,payon_in03.walk,Indoor,14.mp3
 Payon Archer Village,pay_arche,pay_arche.walk,Field,14.mp3
 Payon Guild Castles,pay_gld,pay_gld.walk,Field,66.mp3
 Payon Dungeon 1F,pay_dun00,pay_dun00.walk,Dungeon,20.mp3
@@ -104,9 +105,9 @@ Payon Dungeon 3F,pay_dun02,pay_dun02.walk,Dungeon,20.mp3
 Payon Dungeon 4F,pay_dun03,pay_dun03.walk,Dungeon,47.mp3
 Payon Dungeon 5F,pay_dun04,pay_dun04.walk,Dungeon,47.mp3
 Prontera,prontera,prontera.walk,Town,08.mp3
-Prontera Indoors,prt_in,prt_in.walk,None,08.mp3
-Prontera Castle,prt_castle,prt_castle.walk,None,09.mp3
-Prontera Santuary,prt_church,prt_church.walk,None,10.mp3
+Prontera Indoors,prt_in,prt_in.walk,Indoor,08.mp3
+Prontera Castle,prt_castle,prt_castle.walk,Indoor,09.mp3
+Prontera Santuary,prt_church,prt_church.walk,Indoor,10.mp3
 Prontera Field 0,prt_fild00,prt_fild00.walk,Field,05.mp3
 Prontera Field 1,prt_fild01,prt_fild01.walk,Field,12.mp3
 Prontera Field 2,prt_fild02,prt_fild02.walk,Field,05.mp3
@@ -123,9 +124,9 @@ Forest Labyrinth 1F,prt_maze01,prt_maze01.walk,Field,16.mp3
 Forest Labyrinth 2F,prt_maze02,prt_maze02.walk,Field,16.mp3
 Forest Labyrinth 3F,prt_maze03,prt_maze03.walk,Field,16.mp3
 Alberta,alberta,alberta.walk,Town,15.mp3
-Alberta Indoors,alberta_in,alberta_in.walk,None,15.mp3
+Alberta Indoors,alberta_in,alberta_in.walk,Indoor,15.mp3
 Aldebaran,aldebaran,aldebaran.walk,Town,39.mp3
-Aldebaran Indoors,aldeba_in,aldeba_in.walk,None,39.mp3
+Aldebaran Indoors,aldeba_in,aldeba_in.walk,Indoor,39.mp3
 Debug Room,2009rwc_03,2009rwc_03.walk,None,64.mp3
 Debug Room 2,guild_vs4,guild_vs4.walk,None,89.mp3
 Debug Room 3,guild_vs3,guild_vs3.walk,None,65.mp3
@@ -170,7 +171,7 @@ Sunken Ship Upper Decks,treasure01,treasure01.walk,Dungeon,17.mp3
 Sunken Ship Lower Decks,treasure02,treasure02.walk,Dungeon,17.mp3
 Shipwreck Island,alb2trea,alb2trea.walk,Field,52.mp3
 Byalan Island,izlu2dun,izlu2dun.walk,Field,52.mp3
-Morroc Assassin Guild,in_moc_16,in_moc_16.walk,None,45.mp3
+Morroc Assassin Guild,in_moc_16,in_moc_16.walk,Indoor,45.mp3
 St. Capitolina Abbey,prt_monk,prt_monk.walk,Field,28.mp3
 Border Post,yuno_fild01,yuno_fild01.walk,Field,71.mp3
 Kiel Hyre's Cottage,yuno_fild02,yuno_fild02.walk,Field,71.mp3
@@ -185,11 +186,11 @@ Juno Field,yuno_fild10,yuno_fild10.walk,Field,72.mp3
 Juno Field,yuno_fild11,yuno_fild11.walk,Field,71.mp3
 Border Checkpoint,yuno_fild12,yuno_fild12.walk,Field,71.mp3
 "Juno, Capital of the Schwarzwald Republic",yuno,yuno.walk,Town,70.mp3
-Inside Juno,yuno_in01,yuno_in01.walk,None,70.mp3
-Inside the Sage Castle,yuno_in02,yuno_in02.walk,None,70.mp3
-Inside Juno,yuno_in03,yuno_in03.walk,None,70.mp3
-Republic Library,yuno_in04,yuno_in04.walk,None,70.mp3
-Power Plant of Ymir's Heart,yuno_in05,yuno_in05.walk,None,70.mp3
+Inside Juno,yuno_in01,yuno_in01.walk,Indoor,70.mp3
+Inside the Sage Castle,yuno_in02,yuno_in02.walk,Indoor,70.mp3
+Inside Juno,yuno_in03,yuno_in03.walk,Indoor,70.mp3
+Republic Library,yuno_in04,yuno_in04.walk,Indoor,70.mp3
+Power Plant of Ymir's Heart,yuno_in05,yuno_in05.walk,Indoor,70.mp3
 Turtle Island,tur_dun01,tur_dun01.walk,Dungeon,65.mp3
 Turtle Island Dungeon,tur_dun02,tur_dun02.walk,Dungeon,65.mp3
 Good Turtles Village,tur_dun03,tur_dun03.walk,Dungeon,65.mp3
@@ -246,8 +247,8 @@ Baldr Realm,pay_gld,pay_gld.walk,Field,66.mp3
 "Pharos, Beacon Island",cmd_fild07,cmd_fild07.walk,Field,63.mp3
 "Fortress Saint Darmain [East]",cmd_fild08,cmd_fild08.walk,Field,37.mp3
 "Fortress Saint Darmain [South]",cmd_fild09,cmd_fild09.walk,Field,63.mp3
-"Comodo [Inside 1]",cmd_in01,cmd_in01.walk,None,62.mp3
-"Comodo [Inside 2]",cmd_in02,cmd_in02.walk,None,62.mp3
+"Comodo [Inside 1]",cmd_in01,cmd_in01.walk,Indoor,62.mp3
+"Comodo [Inside 2]",cmd_in02,cmd_in02.walk,Indoor,62.mp3
 "Comodo, the Beach Town",comodo,comodo.walk,Field,62.mp3
 "Karu, the West Cave",beach_dun,beach_dun.walk,Dungeon,41.mp3
 "Ruande, the North Cave",beach_dun2,beach_dun2.walk,Dungeon,41.mp3
@@ -256,5 +257,5 @@ Baldr Realm,pay_gld,pay_gld.walk,Field,66.mp3
 "Toy Dungeon 1 [Factory Area]",xmas_dun01,xmas_dun01.walk,Dungeon,58.mp3
 "Toy Dungeon 2 [Monitoring Area]",xmas_dun02,xmas_dun02.walk,Dungeon,58.mp3
 "Lutie Field",xmas_fild01,xmas_fild01.walk,Field,55.mp3
-"Lutie [Inside]",xmas_in,xmas_in.walk,Field,59.mp3
+"Lutie [Inside]",xmas_in,xmas_in.walk,Indoor,59.mp3
 "Amatsu, the Land of Destiny",amatsu,amatsu.walk,Town,76.mp3

@@ -70,7 +70,7 @@ Npc("alberta", "Paul", "4_M_04", 195, 151, W) { }
 Npc("alberta", "Phelix", "4_M_03", 190, 173, S) { }
 Npc("alberta", "Poor-looking Merchant", "4_M_ORIENT02", 43, 49, SE) { }
 Npc("alberta", "Poor-looking Merchant", "4_M_ORIENT02", 43, 49, SE) { }
-Npc("alberta", "Sailor", "4_M_SEAMAN", 247, 122, S) { }
+//Npc("alberta", "Sailor", "4_M_SEAMAN", 247, 122, S) { }
 Npc("alberta", "Sea Captain", "4_M_SEAMAN", 245, 93, SW) { }
 Npc("alberta", "Shakir", "4W_M_03", 58, 80, W) { }
 Npc("alberta", "Smile Assistance", "4_F_03", 113, 53, S) { }
@@ -255,7 +255,7 @@ Npc("in_moc_16", "Jobchange Test Guide", "4_F_JOB_ASSASSIN", 21, 165, W) { }
 Npc("in_moc_16", "Varkady", "4_F_JOB_ASSASSIN", 87, 48, W) { }
 Npc("izlu2dun", "Bulletin Board", "2_BULLETIN_BOARD", 104, 91, N) { }
 Npc("izlu2dun", "Kafra Employee", "4_F_KAFRA2", 106, 58, S) { }
-Npc("izlu2dun", "Sailor", "4W_SAILOR", 108, 27, N) { }
+//Npc("izlu2dun", "Sailor", "4W_SAILOR", 108, 27, N) { }
 Npc("izlude_in", "Aaron", "1_M_YOUNGKNIGHT", 125, 164, W) { }
 Npc("izlude_in", "Armor Dealer", "1_M_SIZ", 70, 127, S) { }
 Npc("izlude_in", "Monster Tamer", "4_M_TELEPORTER", 129, 64, S) { }
@@ -286,7 +286,7 @@ Npc("izlude", "Kylick", "4W_M_01", 150, 143, W) { }
 Npc("izlude", "Marriage Companion", "1_F_LIBRARYGIRL", 171, 185, SW) { }
 Npc("izlude", "Pet Groomer", "4_F_TELEPORTER", 164, 138, S) { }
 Npc("izlude", "Red", "4_M_03", 56, 126, W) { }
-Npc("izlude", "Sailor", "4W_SAILOR", 201, 181, W) { }
+//Npc("izlude", "Sailor", "4W_SAILOR", 201, 181, W) { }
 Npc("izlude", "Scamp", "4_M_YURI", 186, 57, SE) { }
 Npc("izlude", "Smile Assistance", "4_F_03", 129, 118, S) { }
 Npc("izlude", "Soldier", "8W_SOLDIER", 124, 178, W) { }
@@ -806,7 +806,7 @@ Npc("sword_1-1", "Medic", "8W_SOLDIER", 230, 245, W) { }
 Npc("sword_1-1", "Test Hall Staff", "8W_SOLDIER", 230, 204, W) { }
 Npc("sword_1-1", "Test Hall Staff", "8W_SOLDIER", 230, 242, W) { }
 Npc("tur_dun01", "Knight", "2_M_SWORDMASTER", 190, 115, S) { }
-Npc("tur_dun01", "Sailor", "4_M_SEAMAN", 165, 29, S) { }
+//Npc("tur_dun01", "Sailor", "4_M_SEAMAN", 165, 29, S) { }
 Npc("tur_dun01", "Tool Dealer", "4W_M_03", 158, 54, E) { }
 Npc("tur_dun03", "knight leader", "4_M_MINISTER", 105, 76, S) { }
 Npc("tur_dun03", "Knight", "2_M_SWORDMASTER", 105, 74, S) { }

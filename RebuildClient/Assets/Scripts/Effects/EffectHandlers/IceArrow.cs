@@ -50,6 +50,15 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             return effect;
         }
+        
+        
+        public void SceneChangeResourceCleanup()
+        {
+            Resources.UnloadAsset(iceArrowAtlas);
+            iceArrowAtlas = null;
+            GameObject.Destroy(coldboltMaterial);
+            GameObject.Destroy(coldboltRingMaterial);
+        }
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
