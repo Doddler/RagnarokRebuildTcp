@@ -72,3 +72,5 @@ RebuildClient/Logs/
 *.user
 RoRebuildServer/RoRebuildServer/.config/
 RebuildClient/Assets/Textures/Guilds/
+RebuildClient/Assets/Test/Cylinder01.controller
+RebuildClient/Assets/Test/

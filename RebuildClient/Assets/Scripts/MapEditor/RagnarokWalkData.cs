@@ -57,7 +57,7 @@ namespace Assets.Scripts.MapEditor
             Debug.LogWarning(name + " WE SERIALIZIN'");
         }
 #if UNITY_EDITOR
-		public void ExportToFile(string path)
+		public void ExportToFile(string path, Vector2Int realSize)
         {
             var outDir = Path.GetDirectoryName(path);
             if (!Directory.Exists(outDir))
@@ -67,13 +67,20 @@ namespace Assets.Scripts.MapEditor
 			using (var bw = new BinaryWriter(fs))
 			{
 
-				bw.Write(Width);
-				bw.Write(Height);
+				bw.Write(realSize.x);
+				bw.Write(realSize.y);
 
-				for (var i = 0; i < Width * Height; i++)
-				{
-					bw.Write((byte) Cells[i].Type);
-				}
+                for (var y = 0; y < realSize.y; y++)
+                {
+                    for (var x = 0; x < realSize.x; x++)    
+                    {
+                        bw.Write((byte)Cell(x, y).Type);
+                    }
+                }
+				// for (var i = 0; i < Width * Height; i++)
+				// {
+				// 	bw.Write((byte) Cells[i].Type);
+				// }
 
 				fs.Flush(true);
 				fs.Close();

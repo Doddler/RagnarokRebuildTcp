@@ -161,11 +161,11 @@ namespace Assets.Scripts.MapEditor.Editor.ObjectEditors
             //if (!string.IsNullOrWhiteSpace(path))
 
             var path = "Assets/Maps/exportdata/" + data.name + ".walk";
-            data.WalkData.WalkCellData.ExportToFile(path);
+            data.WalkData.WalkCellData.ExportToFile(path, data.InitialSize*2);
         }
     }
 
-    [CustomEditor(typeof(RoMapData))]
+    [CustomEditor(typeof(RoMapData))] //CanEditMultipleObjects
     class RagnarokMapDataEditor : UnityEditor.Editor
     {
 
@@ -212,6 +212,12 @@ namespace Assets.Scripts.MapEditor.Editor.ObjectEditors
 
             if (GUILayout.Button("Export Walk Data"))
             {
+	            // for (var i = 0; i < targets.Length; i++)
+	            // {
+		           //  var importer = new RagnarokMapDataImporter((RoMapData)targets[i]);
+		           //  importer.Import(false, false, false, false, true);
+	            // }
+	            
 	            var importer = new RagnarokMapDataImporter((RoMapData)target);
 	            importer.Import(false, false, false, false, true);
             }

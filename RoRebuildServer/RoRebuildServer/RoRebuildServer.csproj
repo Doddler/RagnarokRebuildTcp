@@ -55,6 +55,7 @@
 
   <ItemGroup>
     <Folder Include="EntityComponents\Effects\" />
+    <Folder Include="Simulation\Skills\SkillHandlers\Monster\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
