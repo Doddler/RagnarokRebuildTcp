@@ -13,7 +13,8 @@ public enum SpawnCreateFlags
     GuaranteeInZone = 2,
     StrictArea = 4,
     LockToSpawnZone = 8,
-    MVP = Boss | GuaranteeInZone | StrictArea
+    MVP = Boss | GuaranteeInZone | StrictArea,
+    LockedArea = GuaranteeInZone | StrictArea | LockToSpawnZone
 }
 
 public class ServerMapConfig
