@@ -15,7 +15,7 @@ namespace Assets.Scripts.Editor
 {
     public static class EffectStrImporter
     {
-        [MenuItem("Ragnarok/Build Effect Atlases")]
+        [MenuItem("Ragnarok/Import and Update Skill Effect Atlas")]
         public static void ImportEffectTextures()
         {
             
@@ -44,6 +44,8 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/coin_d.bmp", "coin_d"));
             sprites.Add(ImportEffectTexture("texture/effect/coin_e.bmp", "coin_e"));
             sprites.Add(ImportEffectTexture("texture/effect/icearrow.tga", "icearrow"));
+            sprites.Add(ImportEffectTexture("texture/effect/lens1.tga", "lens1"));
+            sprites.Add(ImportEffectTexture("texture/effect/lens2.tga", "lens2"));
             
 
             atlas.Add(sprites.ToArray());
