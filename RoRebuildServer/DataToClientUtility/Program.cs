@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using CsvHelper;
 using Dahomey.Json;
 using RebuildSharedData.ClientTypes;
@@ -11,12 +12,13 @@ using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.EntityComponents.Monsters;
+using Tomlyn;
 
 namespace DataToClientUtility;
 
 class Program
 {
-    private const string path = @"..\..\..\..\RoRebuildServer\ServerData\Db\";
+    private const string path = @"..\..\..\..\GameConfig\ServerData\Db\";
     private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\Data\";
     private const string outPathStreaming = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\";
     private const string configPath = @"..\..\..\..\..\RebuildServer\";
@@ -231,7 +233,8 @@ class Program
                     SpriteName = monster.ClientSprite,
                     Offset = monster.ClientOffset,
                     ShadowSize = monster.ClientShadow,
-                    Size = monster.ClientSize
+                    Size = monster.ClientSize,
+                    AttackTiming = monster.SpriteAttackTiming/1000f
                 };
 
                 monsterData.Add(mc);
@@ -320,8 +323,25 @@ class Program
         var targetDir = Path.Combine(outPath, jsonName);
 
         File.WriteAllText(targetDir, json);
+        Console.WriteLine($"Writing data to {targetDir}");
 
         return list;
+    }
+
+    private static void SaveToClient<T>(string fileName, List<T> list)
+    {
+        dynamic dataObj = new ExpandoObject();
+        ((IDictionary<string, Object>)dataObj).Add("Items", list);
+
+        JsonSerializerOptions options = new JsonSerializerOptions();
+        options.SetupExtensions();
+        options.WriteIndented = true;
+
+        var json = JsonSerializer.Serialize(dataObj, options);
+        var targetDir = Path.Combine(outPath, fileName);
+
+        File.WriteAllText(targetDir, json);
+        Console.WriteLine($"Writing data to {targetDir}");
     }
 
     private static void WriteJobDataStuff()
@@ -351,24 +371,37 @@ class Program
             EffectFemale = string.IsNullOrWhiteSpace(w.EffectFemale) ? string.Empty : "Assets/Sprites/Weapons/" + w.EffectFemale
         };
 
-        ConvertToClient<CsvSkillData, SkillData>("Skills.csv", "skillinfo.json", si =>
+        var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
+        var skillData = Toml.ToModel<Dictionary<string, SkillData>>(File.ReadAllText(Path.Combine(path, "../Skills/Skills.toml"), Encoding.UTF8), null, options);
+        var skillOut = new List<SkillData>();
+        foreach (var (id, skill) in skillData)
         {
-            var data = new List<SkillData>();
+            skill.SkillId = Enum.Parse<CharacterSkill>(id);
+            if (skill.Name == null) skill.Name = id;
+            if (skill.Icon == null) skill.Icon = "nv_basic";
+            skillOut.Add(skill);
+        }
+        
+        SaveToClient("skillinfo.json", skillOut);
 
-            foreach (var s in si)
-            {
-                data.Add(new SkillData()
-                {
-                    SkillId = Enum.Parse<CharacterSkill>(s.ShortName),
-                    Name = s.Name,
-                    Type = Enum.Parse<SkillTarget>(s.Type),
-                    MaxLevel = s.MaxLevel,
-                    CanAdjustLevel = s.CanAdjustLevel
-                });
-            }
+        //ConvertToClient<CsvSkillData, SkillData>("Skills.csv", "skillinfo.json", si =>
+        //{
+        //    var data = new List<SkillData>();
 
-            return data;
-        });
+        //    foreach (var s in si)
+        //    {
+        //        data.Add(new SkillData()
+        //        {
+        //            SkillId = Enum.Parse<CharacterSkill>(s.ShortName),
+        //            Name = s.Name,
+        //            Target = Enum.Parse<SkillTarget>(s.Type),
+        //            MaxLevel = s.MaxLevel,
+        //            AdjustableLevel = s.CanAdjustLevel
+        //        });
+        //    }
+
+        //    return data;
+        //});
 
         //takes some extra processing because we're filling in each type that's not included in JobWeaponInfo.csv
         ConvertToClient<CsvJobWeaponInfo, PlayerWeaponData>("JobWeaponInfo.csv", "jobweaponinfo.json",

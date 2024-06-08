@@ -48,9 +48,17 @@ namespace Assets.Scripts.Sprites
         public int ActionId;
         public int CurrentFrame;
         public Color Color;
-        public Direction Direction;
+        public float Angle;
         public float SpriteOffset;
         public RoSpriteData SpriteData;
+
+        public Direction Direction;
+        // public Direction Direction
+        // {
+        //     get => RoAnimationHelper.GetFacingForAngle(Angle);
+        //     set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
+        // }
+        public Direction LastDirection;
         //public Texture2D AppliedPalette;
 
         public void SetAction(int action, bool is8Direction)
@@ -61,6 +69,8 @@ namespace Assets.Scripts.Sprites
 
         public void SetColor(Color color) => Color = color;
         public void SetDirection(Direction direction) => Direction = direction;
+        public void SetAngle(float angle) => Angle = angle;
+        
         public void SetFrame(int frame) => CurrentFrame = frame;
         public void SetSprite(RoSpriteData sprite) => SpriteData = sprite;
         public void SetOffset(float offset) => SpriteOffset = offset;

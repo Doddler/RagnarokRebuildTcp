@@ -312,7 +312,8 @@ public class CombatEntity : IEntityAutoReset
             Level = level,
             CastTime = castTime,
             TargetedPosition = target,
-            Range = (byte)SkillHandler.GetSkillRange(this, skill, level)
+            Range = (sbyte)SkillHandler.GetSkillRange(this, skill, level),
+            IsIndirect = false
         };
 
         if (IsCasting) //if we're already casting, queue up the next cast
@@ -374,7 +375,8 @@ public class CombatEntity : IEntityAutoReset
             Skill = skill,
             Level = level,
             CastTime = castTime,
-            TargetedPosition = Position.Invalid
+            TargetedPosition = Position.Invalid,
+            IsIndirect = false
         };
 
 
@@ -443,11 +445,11 @@ public class CombatEntity : IEntityAutoReset
             Skill = skill,
             Level = level,
             CastTime = castTime,
-            TargetedPosition = Position.Invalid
+            Range = (sbyte)SkillHandler.GetSkillRange(this, skill, level),
+            TargetedPosition = Position.Invalid,
+            IsIndirect = false
         };
-
-        var range = SkillHandler.GetSkillRange(this, skill, level);
-
+        
         if (IsCasting) //if we're already casting, queue up the next cast
         {
             QueueCast(skillInfo);
@@ -465,7 +467,7 @@ public class CombatEntity : IEntityAutoReset
             return true;
         }
 
-        if (Character.Position.DistanceTo(target.Character.Position) > range) //if we are out of range, try to move closer
+        if (Character.Position.DistanceTo(target.Character.Position) > skillInfo.Range) //if we are out of range, try to move closer
         {
             if (Character.Type == CharacterType.Player)
             {
@@ -477,7 +479,7 @@ public class CombatEntity : IEntityAutoReset
                 }
             }
 
-            if (Character.TryMove(target.Character.Position, range))
+            if (Character.TryMove(target.Character.Position, 1))
             {
                 QueueCast(skillInfo);
                 return true;
@@ -548,6 +550,11 @@ public class CombatEntity : IEntityAutoReset
         Character.ResetSpawnImmunity();
     }
 
+    public void ExecuteIndirectSkillAttack(SkillCastInfo info)
+    {
+        SkillHandler.ExecuteSkill(info, this);
+    }
+
     public DamageInfo CalculateCombatResult(CombatEntity target, float attackMultiplier, int hitCount, AttackFlags flags, AttackElement element = AttackElement.None)
     {
 #if DEBUG
@@ -612,6 +619,20 @@ public class CombatEntity : IEntityAutoReset
         if (damage == 0)
             res = AttackResult.Miss;
 
+        //technically the motion time is how long it's locked in place, we use sprite timing if it's faster.
+        var spriteTiming = GetTiming(TimingStat.SpriteAttackTiming);
+        var delayTiming = GetTiming(TimingStat.AttackDelayTime);
+        var motionTiming = GetTiming(TimingStat.AttackMotionTime);
+        if (motionTiming > delayTiming)
+            delayTiming = motionTiming;
+
+        delayTiming -= 0.2f;
+        if (delayTiming < 0.2f)
+            delayTiming = 0.2f;
+
+        if (spriteTiming > delayTiming)
+            spriteTiming = delayTiming;
+
         var di = new DamageInfo()
         {
             Result = res,
@@ -620,8 +641,8 @@ public class CombatEntity : IEntityAutoReset
             KnockBack = 0,
             Source = Entity,
             Target = target.Entity,
-            Time = Time.ElapsedTimeFloat + GetTiming(TimingStat.SpriteAttackTiming),
-            AttackMotionTime = GetTiming(TimingStat.SpriteAttackTiming)
+            Time = Time.ElapsedTimeFloat + spriteTiming,
+            AttackMotionTime = spriteTiming
         };
 
         return di;
@@ -658,6 +679,9 @@ public class CombatEntity : IEntityAutoReset
         else
             Character.AttackCooldown += delayTime;
 
+        if(Character.Type == CharacterType.Monster)
+            Character.Monster.AddDelay(attackMotionTime);
+        
         Character.AddMoveLockTime(attackMotionTime);
 
         //if(Character.Type == CharacterType.Monster)
@@ -681,10 +705,10 @@ public class CombatEntity : IEntityAutoReset
         }
 
         target.QueueDamage(damageInfo);
-        target.Character.MoveModifier = 0.5f;
-        var hitSlowTime = 0.2f * damageInfo.HitCount;
-        if (damageInfo.HitCount > 1 && target.Character.MoveModifierTime < hitSlowTime)
-            target.Character.MoveModifierTime = hitSlowTime;
+        //target.Character.MoveModifier = 0.5f;
+        //var hitSlowTime = 0.2f * damageInfo.HitCount;
+        //if (damageInfo.HitCount > 1 && target.Character.MoveModifierTime < hitSlowTime)
+        //    target.Character.MoveModifierTime = hitSlowTime;
 
         if (target.Character.Type == CharacterType.Monster && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
         {

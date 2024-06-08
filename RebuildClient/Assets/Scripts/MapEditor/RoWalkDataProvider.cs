@@ -270,6 +270,11 @@ namespace Assets.Scripts.MapEditor
             //we'll assume we can't walk on start, since this will only get called if the normal check fails
 
             //Debug.Log($"Finding walkable {start} to {dest}");
+            if (start == dest)
+            {
+                modifiedPosition = dest;
+                return true;
+            }
 
             var next = dest;
 

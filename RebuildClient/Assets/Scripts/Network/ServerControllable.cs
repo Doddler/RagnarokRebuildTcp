@@ -61,6 +61,11 @@ namespace Assets.Scripts.Network
         private bool isDirectMove;
         private bool isHidden;
         public float PosLockTime;
+        public float AttackAnimationSpeed = 1f;
+
+        private UniqueAttackAction uniqueAttackAction;
+        private float uniqueAttackStart;
+        private bool skipNextAttackMotion;
 
         private bool isMoving;
         // {
@@ -154,11 +159,26 @@ namespace Assets.Scripts.Network
                 FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
             else
                 FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
-                
+
+            if (SpriteAnimator != null && ClientDataLoader.Instance.GetUniqueAction(SpriteAnimator.SpriteData.Name, skill, out var action))
+            {
+                skipNextAttackMotion = true;
+                var start = action.StartAt / 1000f;
+                if (duration < start)
+                {
+                    SpriteAnimator.ChangeMotion((SpriteMotion)action.Animation);
+                }
+                else
+                {
+                    uniqueAttackAction = action;
+                    uniqueAttackStart = Time.timeSinceLevelLoad + duration - start;
+                }
+            }
         }
 
         public void StopCasting()
         {
+            uniqueAttackAction = null;
             FloatingDisplay?.CancelCasting();
         }
 
@@ -360,6 +380,9 @@ namespace Assets.Scripts.Network
                 }
             }
 
+            if (moveProgress < 0.5f)
+                Position = movePath[1];
+            
             while (moveProgress < 0f && movePath.Count > 1)
             {
                 movePath.RemoveAt(0);
@@ -542,6 +565,34 @@ namespace Assets.Scripts.Network
             }
         }
 
+        public void SetAttackAnimationSpeed(float motionTime)
+        {
+            #if DEBUG
+            if (CameraFollower.Instance.DebugIgnoreAttackMotion)
+            {
+                AttackAnimationSpeed = 1;
+                return;
+            }
+#endif
+            
+            if (SpriteAnimator == null)
+            {
+                AttackAnimationSpeed = 1;
+                return;
+            }
+
+            var baseMotionTime = SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
+            if (CharacterType == CharacterType.Player)
+                baseMotionTime = 0.5f;
+            if (baseMotionTime < motionTime)
+            {
+                AttackAnimationSpeed = 1;
+                return;
+            }
+
+            AttackAnimationSpeed = motionTime / baseMotionTime;
+        }
+
         public void AttachShadow(Sprite spriteObj)
         {
             if (gameObject == null)
@@ -575,8 +626,16 @@ namespace Assets.Scripts.Network
                 go.SetActive(false);
         }
 
-        public void PerformBasicAttackMotion()
+        public void PerformBasicAttackMotion(CharacterSkill skill = CharacterSkill.None)
         {
+            if (skipNextAttackMotion) //if the character casts a skill indirectly they shouldn't play their attack motion
+            {
+                // Debug.Log($"{name}: Skipping attack motion");
+                skipNextAttackMotion = false;
+                return;
+            }
+            // Debug.Log($"{name}:Performing attack motion.");
+            
             if (SpriteAnimator.Type == SpriteType.Player)
             {
                 switch (SpriteAnimator.PreferredAttackMotion)
@@ -595,6 +654,9 @@ namespace Assets.Scripts.Network
             }
             else
                 SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+            
+            // Debug.Log($"PerformBasicAttackMotion {name} speed {AttackAnimationSpeed}");
+            SpriteAnimator.AnimSpeed = AttackAnimationSpeed;
         }
 
 #if UNITY_EDITOR
@@ -665,6 +727,7 @@ namespace Assets.Scripts.Network
                 for (var i = 0; i < hitCount; i++)
                 {
                     SpriteAnimator.ChangeMotion(SpriteMotion.Hit, true);
+                    SpriteAnimator.AnimSpeed = 1f;
                     if (i == hitCount - 1)
                         hitTiming = SpriteAnimator.GetHitTiming();
                     yield return new WaitForSeconds(hitTiming);
@@ -674,6 +737,7 @@ namespace Assets.Scripts.Network
             var deathTiming = SpriteAnimator.GetDeathTiming();
             SpriteAnimator.State = SpriteState.Dead;
             SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
+            SpriteAnimator.AnimSpeed = 1f;
 
             yield return new WaitForSeconds(deathTiming);
 
@@ -741,21 +805,12 @@ namespace Assets.Scripts.Network
         //}
         private void Update()
         {
-            // if (PopupDialog != null)
-            // {
-            //     dialogCountdown -= Time.deltaTime;
-            //     if (dialogCountdown < 0)
-            //         GameObject.Destroy(PopupDialog);
-            //     else
-            //         SnapDialog();
-            // }
-
+            if(FloatingDisplay != null)
+                SnapDialog();
+            
             if (SpriteMode == ClientSpriteType.Prefab)
                 return;
             
-            if(FloatingDisplay != null)
-                SnapDialog();
-
             if (IsMainCharacter)
             {
                 var mc = MinimapController.Instance;
@@ -776,10 +831,18 @@ namespace Assets.Scripts.Network
             if (hitDelay >= 0f)
                 return;
 
+            if (IsCasting && uniqueAttackAction != null && Time.timeSinceLevelLoad > uniqueAttackStart)
+            {
+                SpriteAnimator.ChangeMotion((SpriteMotion)uniqueAttackAction.Animation);
+                skipNextAttackMotion = true;
+                uniqueAttackAction = null;
+            }
+
             if (isMoving)
             {
                 if (movePauseTime > 0f)
                 {
+                    SpriteAnimator.AnimSpeed = 1f;
                     if (CharacterType == CharacterType.Player && SpriteAnimator.CurrentMotion != SpriteMotion.Hit)
                         SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
                     return;

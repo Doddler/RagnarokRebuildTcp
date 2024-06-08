@@ -1,7 +1,10 @@
-﻿using RebuildSharedData.Networking;
+﻿using RebuildSharedData.Data;
+using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation;
+using System;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -20,8 +23,8 @@ public class PacketSitStand : IClientPacketHandler
             return;
         }
 
-        //if (player.IsInNpcInteraction)
-        //    return;
+        if (player.IsInNpcInteraction)
+            return;
 
         player.AddActionDelay(CooldownActionType.SitStand);
 

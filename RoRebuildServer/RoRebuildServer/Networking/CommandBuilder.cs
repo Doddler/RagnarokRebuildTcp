@@ -29,7 +29,6 @@ public static class CommandBuilder
         recipients.Add(player.Connection);
     }
 
-
     public static void AddRecipients(EntityList list)
     {
         foreach (var e in list)
@@ -170,7 +169,22 @@ public static class CommandBuilder
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
-    
+
+    public static void StartCastCircleMulti(Position target, int size, float castTime, bool isAlly)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.CreateCastCircle, 48);
+
+        packet.Write(target);
+        packet.Write((byte)size);
+        packet.Write(castTime);
+        packet.Write(isAlly);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void StartCastGroundTargetedMulti(WorldObject caster, Position target, CharacterSkill skill, int lvl, int size, float castTime)
     {
         if (!HasRecipients())
@@ -198,7 +212,7 @@ public static class CommandBuilder
 
         var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
 
-        packet.Write((byte)SkillTarget.SingleTarget);
+        packet.Write((byte)SkillTarget.Enemy);
         packet.Write(caster.Id);
         packet.Write(target.Id);
         packet.Write((byte)skill);
@@ -221,7 +235,7 @@ public static class CommandBuilder
 
         var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
 
-        packet.Write((byte)SkillTarget.SelfCast);
+        packet.Write((byte)SkillTarget.Self);
         packet.Write(caster.Id);
         packet.Write((byte)skill);
         packet.Write((byte)lvl);
@@ -240,7 +254,7 @@ public static class CommandBuilder
 
         var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
 
-        packet.Write((byte)SkillTarget.AreaTargeted);
+        packet.Write((byte)SkillTarget.Ground);
         packet.Write(caster.Id);
         packet.Write(target);
         packet.Write((byte)skill);
@@ -252,7 +266,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void AttackMulti(WorldObject attacker, WorldObject target, DamageInfo di)
+    public static void AttackMulti(WorldObject attacker, WorldObject target, DamageInfo di, bool showAttackMotion = true)
     {
         if (!HasRecipients())
             return;
@@ -266,7 +280,7 @@ public static class CommandBuilder
         packet.Write(di.Damage);
         packet.Write((byte)di.HitCount);
         packet.Write(di.AttackMotionTime);
-        //packet.Write(attacker.IsMoving);
+        packet.Write(showAttackMotion);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

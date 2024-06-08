@@ -26,6 +26,8 @@ namespace Assets.Scripts.Sprites
         public void SetAction(int action, bool is8Direction) => ActionId = action;
         public void SetColor(Color color) => Color = color;
         public void SetDirection(Direction direction) => Direction = direction;
+        public void SetAngle(float angle) => Direction = RoAnimationHelper.GetFacingForAngle(angle);
+
         public void SetFrame(int frame) => CurrentFrame = frame;
         public void SetSprite(RoSpriteData sprite) => SpriteData = sprite;
         public void SetOffset(float offset) => SpriteOffset = offset;

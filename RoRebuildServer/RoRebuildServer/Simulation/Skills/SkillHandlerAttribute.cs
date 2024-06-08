@@ -14,12 +14,12 @@ public abstract class SkillHandlerBase
     public virtual bool IsAreaTargeted => false;
     public virtual float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0f;
     public virtual int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 0;
-    public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl);
+    public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect);
 
     public float GetCastTime(CombatEntity source, CombatEntity? target, int lvl) => GetCastTime(source, target, Position.Invalid, lvl);
     public float GetCastTime(CombatEntity source, Position position, int lvl) => GetCastTime(source, null, position, lvl);
-    public void Process(CombatEntity source, Position position, int lvl) => Process(source, null, position, lvl);
-    public void Process(CombatEntity source, CombatEntity target, int lvl) => Process(source, target, Position.Invalid, lvl);
+    public void Process(CombatEntity source, Position position, int lvl, bool isIndirect = false) => Process(source, null, position, lvl, isIndirect);
+    public void Process(CombatEntity source, CombatEntity target, int lvl, bool isIndirect = false) => Process(source, target, Position.Invalid, lvl, isIndirect);
 
     public virtual int GetSkillRange(CombatEntity source, int lvl)
     {
@@ -37,7 +37,7 @@ public abstract class SkillHandlerBase
             if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, target.Character.Position))
                 return SkillValidationResult.NoLineOfSight;
 
-            if (target.IsValidTarget(source))
+            if (target.IsValidTarget(source) || source == target)
                 return SkillValidationResult.Success;
 
             return SkillValidationResult.InvalidTarget;
@@ -59,7 +59,7 @@ public class SkillHandlerAttribute : Attribute
     public SkillClass SkillClassification;
     public SkillTarget SkillTarget;
 
-    public SkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None, SkillTarget skillTarget = SkillTarget.SingleTarget)
+    public SkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None, SkillTarget skillTarget = SkillTarget.Enemy)
     {
         SkillType = skillType;
         SkillClassification = skillClassification;
@@ -74,8 +74,9 @@ public struct SkillCastInfo
     public CharacterSkill Skill;
     public int Level;
     public float CastTime;
-    public byte Range;
+    public sbyte Range { get; set; }
+    public bool IsIndirect { get; set; }
 
     public bool IsValid => Level > 0 && Level <= 30;
-    public void Clear() { Level = 0; Range = 0; }
+    public void Clear() { Level = 0; Range = -1; IsIndirect = false; }
 }

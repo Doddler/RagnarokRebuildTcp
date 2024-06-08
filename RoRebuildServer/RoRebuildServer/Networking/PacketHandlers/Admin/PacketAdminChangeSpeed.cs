@@ -14,8 +14,8 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
             var speed = msg.ReadInt16();
             if (speed < 30)
                 speed = 30;
-            if (speed > 500)
-                speed = 500;
+            if (speed > 2000)
+                speed = 2000;
 
             connection.Character.MoveSpeed = speed / 1000f;
             connection.Character.CombatEntity.SetTiming(TimingStat.MoveSpeed, speed / 1000f);

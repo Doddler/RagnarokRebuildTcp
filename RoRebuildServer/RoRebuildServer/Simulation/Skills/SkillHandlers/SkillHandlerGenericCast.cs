@@ -7,7 +7,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers
 {
     public class SkillHandlerGenericCast : SkillHandlerBase
     {
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
             var ch = source.Character;
             

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
 using JetBrains.Annotations;
@@ -7,6 +8,7 @@ using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Sprites
 {
@@ -35,6 +37,7 @@ namespace Assets.Scripts.Sprites
         public TextAsset WeaponClassData;
         public TextAsset SkillData;
         public TextAsset MapViewpointData;
+        public TextAsset UniqueAttackActionData;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
         private readonly Dictionary<int, PlayerHeadData> playerHeadLookup = new();
@@ -43,6 +46,7 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<int, WeaponClassData> weaponClassData = new();
         private readonly Dictionary<CharacterSkill, SkillData> skillData = new();
         private readonly Dictionary<string, MapViewpoint> mapViewpoints = new();
+        private readonly Dictionary<string, Dictionary<CharacterSkill, UniqueAttackAction>> uniqueSpriteActions = new();
         
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
@@ -53,7 +57,7 @@ namespace Assets.Scripts.Sprites
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);
 
         public string GetSkillName(CharacterSkill skill) => skillData[skill].Name;
-        public SkillTarget GetSkillTarget(CharacterSkill skill) => skillData.TryGetValue(skill, out var target) ? target.Type : SkillTarget.Any;
+        public SkillTarget GetSkillTarget(CharacterSkill skill) => skillData.TryGetValue(skill, out var target) ? target.Target : SkillTarget.Any;
 
         public MapViewpoint GetMapViewpoint(string mapName) => mapViewpoints.GetValueOrDefault(mapName);
 
@@ -68,7 +72,15 @@ namespace Assets.Scripts.Sprites
 	        
             return weapon.HitSounds[Random.Range(0, hitSoundsCount)];
         }
-        
+
+        public bool GetUniqueAction(string spriteName, CharacterSkill skill, out UniqueAttackAction actOut)
+        {
+            actOut = null;
+            if(uniqueSpriteActions.TryGetValue(spriteName, out var list))
+                if (list.TryGetValue(skill, out var action))
+                    actOut = action;
+            return actOut != null;
+        }
 		
         private void Awake()
         {
@@ -116,6 +128,20 @@ namespace Assets.Scripts.Sprites
             var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
             foreach (var weapon in weaponClass.Items)
                 weaponClassData.TryAdd(weapon.Id, weapon);
+            
+            var uniqueAttacks = JsonUtility.FromJson<Wrapper<UniqueAttackAction>>(UniqueAttackActionData.text);
+            foreach (var action in uniqueAttacks.Items)
+            {
+                if (!uniqueSpriteActions.TryGetValue(action.Sprite, out var list))
+                {
+                    list = new Dictionary<CharacterSkill, UniqueAttackAction>();
+                    uniqueSpriteActions.Add(action.Sprite, list);
+                }
+                if(Enum.TryParse(action.Action, out CharacterSkill skill))
+                    list.Add(skill, action);
+                else
+                    Debug.LogWarning($"Could not convert {action.Action} to a skill type when parsing unique skill actions");
+            }
 
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
             foreach(var skill in skills.Items)

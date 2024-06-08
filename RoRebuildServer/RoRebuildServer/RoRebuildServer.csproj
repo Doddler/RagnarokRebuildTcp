@@ -31,6 +31,11 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
       <PrivateAssets>all</PrivateAssets>
@@ -46,20 +51,28 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="SoftUni.Wintellect.PowerCollections" Version="2.0.0" />
+    <PackageReference Include="Tomlyn" Version="0.17.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameConfig\GameConfig.csproj" />
     <ProjectReference Include="..\RebuildSharedData\RebuildSharedData.csproj" />
     <ProjectReference Include="..\RoServerScript\RoServerScript.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="EntityComponents\Effects\" />
-    <Folder Include="Simulation\Skills\SkillHandlers\Monster\" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="@echo Copying server script files -^&gt; &quot;$(TargetDir)ServerData&quot;&#xD;&#xA;rmdir /s /q &quot;$(TargetDir)ServerData&quot;&#xD;&#xA;XCOPY &quot;$(ProjectDir)ServerData&quot; &quot;$(TargetDir)ServerData&quot; /E /I /F /Y &gt; NUL" />
+  <ItemGroup>
+    <None Update="ScriptSystem\RoScript.g4">
+      <DefaultCustomToolNamespace>$([MSBuild]::ValueOrDefault('$(RootNamespace).%(DefaultCustomToolNamespace)', '').TrimEnd('.'))</DefaultCustomToolNamespace>
+      <CustomToolNamespace>$([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))</CustomToolNamespace>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="@echo Clearing server script files -^&gt; &quot;$(TargetDir)ServerData&quot;&#xD;&#xA;rmdir /s /q &quot;$(TargetDir)ServerData&quot;" />
   </Target>
 
 

@@ -200,6 +200,8 @@ namespace Assets.Scripts.Utility
 				else
 					CameraFollower.Instance.SetCameraMode(CameraMode.Normal);
 			}
+			
+			CameraFollower.Instance.ResetCursor();
 		}
 
 		// private void FinishSceneChange(AsyncOperation op)

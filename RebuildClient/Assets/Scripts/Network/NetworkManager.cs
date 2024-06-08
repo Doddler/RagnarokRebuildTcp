@@ -673,7 +673,7 @@ namespace Assets.Scripts.Network
             StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, 0, controllable));
         }
 
-        private void AttackMotion(ServerControllable src, Vector2Int pos, Direction dir, float motionTime, [CanBeNull] ServerControllable target)
+        private void AttackMotion(ServerControllable src, Vector2Int pos, Direction dir, float motionSpeed, [CanBeNull] ServerControllable target)
         {
             var hasTarget = target != null;
 
@@ -689,8 +689,10 @@ namespace Assets.Scripts.Network
                 var v = dir.GetVectorValue();
                 src.CounterHitDir = new Vector3(v.x, 0, v.y);
             }
-
-            src.SpriteAnimator.AnimSpeed = 1f; //this will get reset when we resume walking anyways
+            
+            //src.SpriteAnimator.AnimSpeed = motionSpeed; //this will get reset when we resume walking anyways
+            //src.AttackAnimationSpeed = motionSpeed;
+            src.SetAttackAnimationSpeed(motionSpeed);
             //
             // if (src.SpriteAnimator.State == SpriteState.Walking)
             // {
@@ -711,13 +713,15 @@ namespace Assets.Scripts.Network
             var type = (SkillTarget)msg.ReadByte();
             switch (type)
             {
-                case SkillTarget.AreaTargeted:
+                case SkillTarget.Ground:
                     OnMessageAreaTargetedSkill(msg);
                     break;
-                case SkillTarget.SelfCast:
+                case SkillTarget.Self:
                     OnMessageSelfTargetedSkill(msg);
                     break;
-                case SkillTarget.SingleTarget:
+                case SkillTarget.Enemy:
+                case SkillTarget.Ally:
+                case SkillTarget.Any:
                     OnMessageTargetedSkillAttack(msg);
                     break;
                 default:
@@ -788,7 +792,15 @@ namespace Assets.Scripts.Network
                 return;
             }
             
-            AttackMotion(controllable, pos, dir, motionTime, controllable2);
+            var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
+            if (controllable.SpriteAnimator.Type == SpriteType.Player)
+                damageTiming = 0.5f;
+
+            var animationSpeed = 1f;
+            if (damageTiming > motionTime)
+                animationSpeed = damageTiming / motionTime;
+            
+            AttackMotion(controllable, pos, dir, animationSpeed, controllable2);
             controllable.ShowSkillCastMessage(skill, 3);
 
             if (hasTarget && controllable.SpriteAnimator.IsInitialized)
@@ -798,22 +810,18 @@ namespace Assets.Scripts.Network
                     throw new Exception("AAA? " + controllable.gameObject.name + " " + controllable.gameObject);
                 }
 
-                var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
-                if (controllable.SpriteAnimator.Type == SpriteType.Player)
-                    damageTiming = 0.5f;
-
                 ClientSkillHandler.ExecuteSkill(controllable, controllable2, skill, skillLvl);
 
                 if (hits < 1)
                     hits = 1;
 
-                StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable.WeaponClass, controllable2));
+                StartCoroutine(DamageEvent(dmg, motionTime, hits, controllable.WeaponClass, controllable2));
             }
         }
 
         private void OnMessageAttack(ClientInboundMessage msg)
         {
-            //Debug.Log("OnMessageAttack");
+            // Debug.Log("OnMessageAttack");
 
             var id1 = msg.ReadInt32();
             var id2 = msg.ReadInt32();
@@ -831,6 +839,7 @@ namespace Assets.Scripts.Network
             var dmg = msg.ReadInt32();
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
+            var showAttackAction = msg.ReadBoolean();
 
             if (hasTarget)
             {
@@ -845,7 +854,7 @@ namespace Assets.Scripts.Network
                 controllable.CounterHitDir = new Vector3(v.x, 0, v.y);
             }
 
-            controllable.SpriteAnimator.AnimSpeed = 1f; //this will get reset when we resume walking anyways
+            //controllable.SpriteAnimator.AnimSpeed = 1f; //this will get reset when we resume walking anyways
 
             // if (!moveAfter && controllable.SpriteAnimator.State == SpriteState.Walking)
             // {
@@ -859,26 +868,32 @@ namespace Assets.Scripts.Network
                 controllable.SpriteAnimator.Direction = dir;
                 controllable.SpriteAnimator.State = SpriteState.Standby;
             }
+            //
+            // if (showAttackAction)
+            // {
+            //     if (controllable.SpriteAnimator.Type == SpriteType.Player)
+            //     {
+            //         switch (controllable.SpriteAnimator.PreferredAttackMotion)
+            //         {
+            //             default:
+            //             case 1:
+            //                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+            //                 break;
+            //             case 2:
+            //                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack2, true);
+            //                 break;
+            //             case 3:
+            //                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack3, true);
+            //                 break;
+            //         }
+            //     }
+            //     else
+            //         controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+            // }
 
-            if (controllable.SpriteAnimator.Type == SpriteType.Player)
-            {
-                switch (controllable.SpriteAnimator.PreferredAttackMotion)
-                {
-                    default:
-                    case 1:
-                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
-                        break;
-                    case 2:
-                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack2, true);
-                        break;
-                    case 3:
-                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack3, true);
-                        break;
-                }
-            }
-            else
-                controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
-
+            controllable.SetAttackAnimationSpeed(motionTime);
+            controllable.PerformBasicAttackMotion();
+            
             //controllable2.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
 
             if (hasTarget && controllable.SpriteAnimator.IsInitialized)
@@ -888,9 +903,11 @@ namespace Assets.Scripts.Network
                     throw new Exception("AAA? " + controllable.gameObject.name + " " + controllable.gameObject);
                 }
 
-                var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
-                if (controllable.SpriteAnimator.Type == SpriteType.Player)
-                    damageTiming = 0.5f;
+                var damageTiming = motionTime;
+                
+                // var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
+                // if (controllable.SpriteAnimator.Type == SpriteType.Player)
+                //     damageTiming = 0.5f;
 
                 // if (hits > 1)
                 // {
@@ -906,8 +923,6 @@ namespace Assets.Scripts.Network
 
         private IEnumerator DamageEvent(int damage, float delay, int hitCount, int weaponClass, ServerControllable target)
         {
-            // Debug.Log(hitCount);
-            
             yield return new WaitForSeconds(delay);
             if (target != null && target.SpriteAnimator.IsInitialized)
             {
@@ -1413,6 +1428,19 @@ namespace Assets.Scripts.Network
             }
         }
 
+        public void OnMessageCreateCastCircle(ClientInboundMessage msg)
+        {
+            var target = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
+            var size = (int)msg.ReadByte();
+            var castTime = msg.ReadFloat();
+            var isAlly = msg.ReadBoolean();
+            
+            var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
+            var color = new Color(1f, 1f, 1f, 0.5f);
+            //CastTargetCircle.Create(isAlly? "magic_target" : "magic_target_bad", targetCell, color, size, castTime);
+            CastTargetCircle.Create("magic_target", targetCell, color, size, castTime);
+        }
+
         void HandleDataPacket(ClientInboundMessage msg)
         {
             var type = (PacketType)msg.ReadByte();
@@ -1522,6 +1550,9 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.StartAreaCast:
                     OnMessageStartAreaCasting(msg);
+                    break;
+                case PacketType.CreateCastCircle:
+                    OnMessageCreateCastCircle(msg);
                     break;
                 default:
                     Debug.LogWarning($"Failed to handle packet type: {type}");
@@ -1686,6 +1717,16 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendAdminFind(string target)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.AdminFindTarget);
+            msg.Write(target);
+            
+            SendMessage(msg);
+        }
+
         public void SendClientTextCommand(ClientTextCommand cmd)
         {
             var msg = StartMessage();
@@ -1832,7 +1873,7 @@ namespace Assets.Scripts.Network
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.Skill);
-            msg.Write((byte)SkillTarget.SingleTarget);
+            msg.Write((byte)SkillTarget.Enemy);
             msg.Write(targetId);
             msg.Write((byte)skill);
             msg.Write((byte)lvl);
@@ -1845,7 +1886,7 @@ namespace Assets.Scripts.Network
             var msg = StartMessage();
             
             msg.Write((byte)PacketType.Skill);
-            msg.Write((byte)SkillTarget.AreaTargeted);
+            msg.Write((byte)SkillTarget.Ground);
             msg.Write(target);
             msg.Write((byte)skill);
             msg.Write((byte)lvl);

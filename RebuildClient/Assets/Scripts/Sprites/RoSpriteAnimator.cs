@@ -13,7 +13,12 @@ namespace Assets.Scripts.Sprites
     {
         public RoSpriteData SpriteData;
         public IRoSpriteRenderer SpriteRenderer;
-        public Direction Direction;
+        public Direction Direction
+        {
+            get => RoAnimationHelper.GetFacingForAngle(Angle);
+            set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
+        }
+        public float Angle;
         public SpriteType Type;
         public SpriteState State;
         public float AnimSpeed = 1;
@@ -464,7 +469,11 @@ namespace Assets.Scripts.Sprites
             {
                 var nextMotion = RoAnimationHelper.GetMotionForState(State);
                 if (nextMotion != CurrentMotion)
+                {
+                    if (nextMotion == SpriteMotion.Idle || nextMotion == SpriteMotion.Standby || nextMotion == SpriteMotion.Dead)
+                        AnimSpeed = 1;
                     ChangeMotion(nextMotion);
+                }
                 else
                 {
                     OnFinishAnimation?.Invoke();

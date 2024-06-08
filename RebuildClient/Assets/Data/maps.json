@@ -129,7 +129,7 @@
     {
       "Code": "in_orcs01",
       "Name": "Orc Village",
-      "MapMode": 3,
+      "MapMode": 4,
       "Music": "35.mp3"
     },
     {
@@ -1113,7 +1113,7 @@
     {
       "Code": "jawaii_in",
       "Name": "Jawaii Indoors",
-      "MapMode": 3,
+      "MapMode": 4,
       "Music": "28.mp3"
     },
     {
@@ -1211,6 +1211,48 @@
       "Name": "Amatsu, the Land of Destiny",
       "MapMode": 1,
       "Music": "76.mp3"
+    },
+    {
+      "Code": "ama_in01",
+      "Name": "Amatsu [Indoors]",
+      "MapMode": 4,
+      "Music": "76.mp3"
+    },
+    {
+      "Code": "ama_in02",
+      "Name": "Amatsu [Himeji Castle]",
+      "MapMode": 4,
+      "Music": "76.mp3"
+    },
+    {
+      "Code": "ama_dun01",
+      "Name": "Amatsu Dungeon 1F - Tatami Maze",
+      "MapMode": 0,
+      "Music": "77.mp3"
+    },
+    {
+      "Code": "ama_dun02",
+      "Name": "Amatsu Dungeon 2F - Underground Forest",
+      "MapMode": 2,
+      "Music": "77.mp3"
+    },
+    {
+      "Code": "ama_dun03",
+      "Name": "Amatsu Dungeon 1F - Underground Shrine",
+      "MapMode": 2,
+      "Music": "77.mp3"
+    },
+    {
+      "Code": "ama_fild01",
+      "Name": "Amatsu Field",
+      "MapMode": 3,
+      "Music": "73.mp3"
+    },
+    {
+      "Code": "arena_room",
+      "Name": "Izlude Arena",
+      "MapMode": 4,
+      "Music": "52.mp3"
     }
   ]
 }

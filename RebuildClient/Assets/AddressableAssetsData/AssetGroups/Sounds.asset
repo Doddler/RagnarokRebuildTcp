@@ -359,6 +359,2406 @@ MonoBehaviour:
     m_SerializedLabels:
     - Sounds
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b49ca00a3aa1ed945b1e5dd762ea75a4
+    m_Address: Assets/Sounds/Effects/2008cat.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d092653a139dcf448a2501b5364822a5
+    m_Address: Assets/Sounds/Effects/Effects/_blind.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef306e6d43f92fa488ea963c3d0a7a3c
+    m_Address: Assets/Sounds/Effects/Effects/_silence.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 872d9b486b3ce3f4da8c4c87e7de5151
+    m_Address: Assets/Sounds/Effects/Effects/_stone.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 985d3a8f268c5ad44bb9aa6c3b5dc29c
+    m_Address: Assets/Sounds/Effects/Effects/_stun.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8b295cd2ee081a4f8cca84c0a3db166
+    m_Address: Assets/Sounds/Effects/ab_adoramus.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cff418737c90144b9328f43055a8e7e
+    m_Address: Assets/Sounds/Effects/ab_ancilla.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7326e6a433407548b130fc5420af950
+    m_Address: Assets/Sounds/Effects/ab_duplelight.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03f51c82ba938c344bf801983b859055
+    m_Address: Assets/Sounds/Effects/ab_judex.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b5f045ef3324cc458fa54c96e9f1534
+    m_Address: Assets/Sounds/Effects/ab_renovatio.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0409fe5a4b5eab44592015daf302b4aa
+    m_Address: Assets/Sounds/Effects/ac_concentration.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6cff05fed0e815f4c9b3eb2a06205b51
+    m_Address: Assets/Sounds/Effects/acolyte_cure.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90d71c5dd25e2174db9ebabfd46577db
+    m_Address: Assets/Sounds/Effects/acolyte_hunew.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 829a613275ed38f4fb3b37bc1684bd5b
+    m_Address: Assets/Sounds/Effects/analyze.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5fe8fe3de0c9f444a6e88244e6dc022
+    m_Address: Assets/Sounds/Effects/assasin_cloaking.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c27c813fbc8745047b59d1cb86d2b19d
+    m_Address: Assets/Sounds/Effects/assasin_enchantpoison.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0c3a942f05ebdf42867e0da7d0d6d8a
+    m_Address: Assets/Sounds/Effects/assasin_poisonreact.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e2c0b433d83f1546a6ddba5e1593c97
+    m_Address: Assets/Sounds/Effects/assasin_sonicblow.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b1bb4893f4e93be47acd350351b5d469
+    m_Address: Assets/Sounds/Effects/assasin_venomdust.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b07f81227bc4d041961a08f579a88a4
+    m_Address: Assets/Sounds/Effects/assasin_venomsplasher.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2876448685de2fc4a97a4e9982a4574f
+    m_Address: Assets/Sounds/Effects/autoshadow.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d23e658824976c4ab53d31560cdf77f
+    m_Address: Assets/Sounds/Effects/b_sideslide.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 596fabddc56a1454fb7bbe8b5cfecaa6
+    m_Address: Assets/Sounds/Effects/black_adrenalinerush.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd66c66485ab306419033d5ebc91364f
+    m_Address: Assets/Sounds/Effects/black_adrenalinerush_a.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70d0ad983f991314bb6869214e390660
+    m_Address: Assets/Sounds/Effects/black_adrenalinerush_b.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4788248a1d406584890dc48a1583acee
+    m_Address: Assets/Sounds/Effects/black_hammerfall.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c26e8799b5daec74087ac965ceb3adb7
+    m_Address: Assets/Sounds/Effects/black_maximize_power_circle.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac1abc5b9e5fe8649856e96356f847d1
+    m_Address: Assets/Sounds/Effects/black_maximize_power_sword.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 274e1a0be4d06a64c9a2fadaeba49d96
+    m_Address: Assets/Sounds/Effects/black_maximize_power_sword_bic.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40c6d64f3f0a7f44fb5264f045d730f1
+    m_Address: Assets/Sounds/Effects/black_overthrust.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97be24782e9fb2048825a18fa529de37
+    m_Address: Assets/Sounds/Effects/black_weapon_perfection.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d3c664b495e0e64881849038798afdf
+    m_Address: Assets/Sounds/Effects/black_weapon_repair.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2dcf044cb1cfc0944b433bc9aa72e989
+    m_Address: Assets/Sounds/Effects/black_weapon_repair_a.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88da9c487ef19a14dacbe1752d458d52
+    m_Address: Assets/Sounds/Effects/bloodylust.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 677c12a999b41724c9b72ad47cda546e
+    m_Address: Assets/Sounds/Effects/bodypaint.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b61470d972c8bf4ba88d6e68601541d
+    m_Address: Assets/Sounds/Effects/bs_refinefailed.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b593d8cc7e4d7214c93f24c4f50ab28b
+    m_Address: Assets/Sounds/Effects/bs_refinesuccess.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cc27a699cac0974c912c1ea77f896e9
+    m_Address: Assets/Sounds/Effects/chaospanic.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 410c786c5201195469dc4b84b4587ddd
+    m_Address: Assets/Sounds/Effects/complete.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb15313bebc2aa84889460159d229bf3
+    m_Address: Assets/Sounds/Effects/cru_grand cross.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5fa2f5eacc9d2ea42b666efd8ea66a90
+    m_Address: Assets/Sounds/Effects/cru_holy cross.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f78d285ecbb9054cb6856a7830d7896
+    m_Address: Assets/Sounds/Effects/cru_shield boomerang.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4438a38cc24e9544382d7fe4e1c4b22f
+    m_Address: Assets/Sounds/Effects/deadlyinfect.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 953ea045e0adae04d8bac9f1a82e41bb
+    m_Address: Assets/Sounds/Effects/dimension.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7e4bdb6494f337408f474b9a72c43b0
+    m_Address: Assets/Sounds/Effects/dragonfear.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e84794c5c5eeee4e950b3b4ae21b118
+    m_Address: Assets/Sounds/Effects/earth_quake.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a48f8be7efeb16b4ea5537997351b1ba
+    m_Address: Assets/Sounds/Effects/ef_firearrow.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f962d15f89670b458743621d433b48e
+    m_Address: Assets/Sounds/Effects/enervation.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc67081c5431e9c48a9e2906195fd0b7
+    m_Address: Assets/Sounds/Effects/f_sideslide.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: efb6936c6cf80a449b08be371e777be8
+    m_Address: Assets/Sounds/Effects/fast.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dae225340455eb43a446b1803968d41
+    m_Address: Assets/Sounds/Effects/feintbomb.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fed311c8a93f0dc408121fc4bb6d6b76
+    m_Address: Assets/Sounds/Effects/groomy.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7b6cdcbb1bfc234abac565c0caeeeb7
+    m_Address: "Assets/Sounds/Effects/g\uAC00\uC2DC\uB098\uBB34\uB36B.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d100b2e76947704799f5b0be3f69c5a
+    m_Address: "Assets/Sounds/Effects/g\uB370\uBAA8\uB2C9\uD654\uC774\uC5B4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 13b87f68bfa780346ab5c865afa5e04b
+    m_Address: "Assets/Sounds/Effects/g\uC2A4\uD3EC\uC5B4\uC775\uC2A4\uD50C\uB85C\uC83C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eced3f6e4f739154992d53564a88eba0
+    m_Address: "Assets/Sounds/Effects/g\uCE74\uD2B8\uBD80\uC2A4\uD2B8.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc9698a3bababa34cb4958e9c478f906
+    m_Address: "Assets/Sounds/Effects/g\uCE74\uD2B8\uCE90\uB17C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6fbafade7d5c29946908914e47395cb9
+    m_Address: "Assets/Sounds/Effects/g\uCE74\uD2B8\uD1A0\uB124\uC774\uB3C4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d502b66a209257947911587fc7d39825
+    m_Address: "Assets/Sounds/Effects/g\uD06C\uB808\uC774\uC9C0\uC704\uB4DC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e85229c7c2484694aa7f5092cad801d8
+    m_Address: "Assets/Sounds/Effects/g\uD558\uC6B8\uB9C1\uC624\uBE0C\uB9CC\uB4DC\uB77C\uACE0\uB77C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e0f0f526c7d4f041a442d07a792cfc0
+    m_Address: Assets/Sounds/Effects/h_blood_lust.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbd9b4828adddd74eb0c4ad3f89786c2
+    m_Address: Assets/Sounds/Effects/h_castling.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f367ee041e3e194790bf7000bd13853
+    m_Address: Assets/Sounds/Effects/h_defence.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f95bf044919c384c881948d39e28379
+    m_Address: Assets/Sounds/Effects/h_mental_change.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 710a1badfe36f1744aca598e9cb8d731
+    m_Address: Assets/Sounds/Effects/h_moonlight_1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 824dcc230bda7c84c90b87fab76e4a49
+    m_Address: Assets/Sounds/Effects/h_moonlight_2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc50726e10555e54ba1d28a7a269ea72
+    m_Address: Assets/Sounds/Effects/h_moonlight_3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 623cc29782eca9d4bbd55150f5200662
+    m_Address: Assets/Sounds/Effects/hallucinationwalk.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ada256316fbd9b54c9660599fd0987c5
+    m_Address: Assets/Sounds/Effects/hovering.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75ed1c5bacb8b3949b87ae61700b61dc
+    m_Address: Assets/Sounds/Effects/hun_anklesnare.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 750f3df15835cf943883f6d992be2b0d
+    m_Address: Assets/Sounds/Effects/hun_blastmine.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53ded892a8297b44191571b66b331b13
+    m_Address: Assets/Sounds/Effects/hun_britz.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ff7129344adee04d823fc14492f0b72
+    m_Address: Assets/Sounds/Effects/hun_trap_install.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8d5100f622e40449a785b824ae09637
+    m_Address: Assets/Sounds/Effects/hunter_anklesnare.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0c359af4af82b749b4c08e84f1de1a7
+    m_Address: Assets/Sounds/Effects/hunter_blastmine.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de8c1609099ce4f4bb63fe527cfb18c7
+    m_Address: Assets/Sounds/Effects/hunter_blitzbeat.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74a31a9e96b57e744bbed9d8cefc8bab
+    m_Address: Assets/Sounds/Effects/hunter_blitzbeat_1st.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82963411c10733346990319649461ce2
+    m_Address: Assets/Sounds/Effects/hunter_claymoretrap.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c160cdaf1bfc2c40989e3238a215477
+    m_Address: Assets/Sounds/Effects/hunter_detecting.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bbd152c8099c21a4cbd42b7ce4cd7505
+    m_Address: Assets/Sounds/Effects/hunter_flasher.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d41f22ef73b702b4fa67e0c68abb9971
+    m_Address: Assets/Sounds/Effects/hunter_freezingtrap.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a148593cd04ed08498d89d706ac913c2
+    m_Address: Assets/Sounds/Effects/hunter_landmine.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e8846c2e0a949344821dd4d0c98bfb7
+    m_Address: Assets/Sounds/Effects/hunter_removetrap.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acb9b9706da8f1b479c5483a4afa31b6
+    m_Address: Assets/Sounds/Effects/hunter_sandman.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a602b1f94dee144ea1b7f2db6d6e228
+    m_Address: Assets/Sounds/Effects/hunter_shockwavetrap.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ea75d508bb733a448dd6af6608cac94
+    m_Address: Assets/Sounds/Effects/hunter_skidtrap.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 73faa81e5818cf04f959f9a76e610894
+    m_Address: Assets/Sounds/Effects/hunter_springtrap.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 280ffc1f536cf8b438ef7ee20151c620
+    m_Address: Assets/Sounds/Effects/hunter_talkiebox_a.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 974719023918f4346bed0044ea15daea
+    m_Address: Assets/Sounds/Effects/hunter_talkiebox_b.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8118ef3114c48904b869a457c89c04d8
+    m_Address: Assets/Sounds/Effects/hunter_trap_on.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 08c5fd02e7ffd3c4b860f4223e43b2d2
+    m_Address: Assets/Sounds/Effects/ignorance.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a9c3793cd6a2504da92e6afbd38574d
+    m_Address: Assets/Sounds/Effects/infraredscan.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bcec4457e908d5a499f6d79cfe961405
+    m_Address: Assets/Sounds/Effects/invisibility.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6811547c0ae0dc94b84b49e6d6c90dca
+    m_Address: Assets/Sounds/Effects/itempokjuk.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc31d36a4346e24429b2415945bdda8a
+    m_Address: Assets/Sounds/Effects/knight_autocounter.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f93aaa338b5c636429111dc3f7c2c069
+    m_Address: Assets/Sounds/Effects/knight_bowling_bash.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 313bae8a57931594ba6dc10094c3cb01
+    m_Address: Assets/Sounds/Effects/knight_brandish_spear.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c753f6bd083f5524889ce7ae2ee51708
+    m_Address: Assets/Sounds/Effects/knight_spear_boomerang.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6602ad212a83cd458a159b7c20458d2
+    m_Address: Assets/Sounds/Effects/knight_twohandquicken.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e89b45d9fd3211d49a1f6821f7c179e2
+    m_Address: Assets/Sounds/Effects/kyrie_guard.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a70f6f917fe601443bbb7c937d61aeb8
+    m_Address: Assets/Sounds/Effects/laziness.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de12af860c431be4da86eb90ec21f7ac
+    m_Address: Assets/Sounds/Effects/lg_banding.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c0b3a69db390e043ada120d00130ad4
+    m_Address: Assets/Sounds/Effects/lg_banishingpoint.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 733489d0a54ae0f4fa00c70be1545f93
+    m_Address: Assets/Sounds/Effects/lg_cannonspear.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3231d63d2f8df1a4496bf831e2b2b29f
+    m_Address: Assets/Sounds/Effects/lg_earthdrive.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf93ec874a0f47f40b9d1df1ba4c06b3
+    m_Address: Assets/Sounds/Effects/lg_exeedbreak.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32889832273ff8447ab8a945fc87e7c4
+    m_Address: Assets/Sounds/Effects/lg_hesperuslit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cc26340e4fea6045a7a42f9a9d044b8
+    m_Address: Assets/Sounds/Effects/lg_inspiration.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c937314d09e2ea3428ebb1713b43ac70
+    m_Address: Assets/Sounds/Effects/lg_moonslasher.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c916d5e158420b24b8ab0f540530def1
+    m_Address: Assets/Sounds/Effects/lg_overbrand.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f79d18ee79f7b7441b79bb4085ff4587
+    m_Address: Assets/Sounds/Effects/lg_piety.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e54629bfe6afd5f4c8c893c3218257d0
+    m_Address: Assets/Sounds/Effects/lg_pinpointattack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea82a96fa08f76c4e9ef70d2c579d394
+    m_Address: Assets/Sounds/Effects/lg_prestige.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1289c970a6b30d441aebac059c2e728b
+    m_Address: Assets/Sounds/Effects/lg_rageburst.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6889b4ab9a8f5d140ab49ae3bf0c77af
+    m_Address: Assets/Sounds/Effects/lg_rayofgenesis.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3f5c9508f455304c8e48122406a8c9c
+    m_Address: Assets/Sounds/Effects/lg_reflectdamage.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aaa380521ef9acb4188e19923872dfcc
+    m_Address: Assets/Sounds/Effects/lg_shieldpress.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84930f3fc1bc8d94a811b72bd3124478
+    m_Address: Assets/Sounds/Effects/lg_shieldspell.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a831644145a6630409453ef269bde701
+    m_Address: Assets/Sounds/Effects/lg_trample.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afd1bf1a0be7dc14ab5d343f22d2fbf8
+    m_Address: Assets/Sounds/Effects/maelstrom.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06a798cb3726d8342ac8f469542cbf8c
+    m_Address: Assets/Sounds/Effects/magician_storncurse_a.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3166ad649008434885c5b35f63e4e63
+    m_Address: Assets/Sounds/Effects/magician_storncurse_b.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b63965a0c55da12428a34cfc7bc32075
+    m_Address: Assets/Sounds/Effects/magician_thunderstorm.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f03d8f92135a4e4d8be6323a20cddfc
+    m_Address: Assets/Sounds/Effects/magneticfield.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9ac545dedee80b4b848fa5a78276df3
+    m_Address: Assets/Sounds/Effects/mapae.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba0a00755e090c2428c7565a2257a6d7
+    m_Address: Assets/Sounds/Effects/merch_maemor.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2001dba054316064dad8d539f161f9b6
+    m_Address: Assets/Sounds/Effects/metalic.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c25036a66fa06494ea74b544285ca3b3
+    m_Address: "Assets/Sounds/Effects/mon_\uAE08\uAC15\uBD88\uAD34.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 204386b9d9524eb409f91757772b6c5d
+    m_Address: "Assets/Sounds/Effects/mon_\uB9F9\uB8E1\uACFC\uAC15.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3bc6adf8796ef94aa76d16117c68163
+    m_Address: "Assets/Sounds/Effects/mon_\uC544\uC218\uB77C \uD328\uD669\uAD8C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1247b756f7e3d164f9fec9333071e010
+    m_Address: "Assets/Sounds/Effects/mon_\uC5F0\uD658.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe701f87b1bcf9c4ea4242b48942dfea
+    m_Address: "Assets/Sounds/Effects/mon_\uCE68\uD22C\uACBD.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2da6595227ccce54ab0cfe24f6cfe825
+    m_Address: "Assets/Sounds/Effects/mon_\uD0C4\uC9C0\uC2E0\uD1B5.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 084b1cce1654f314492177e262aa3a70
+    m_Address: "Assets/Sounds/Effects/mon_\uD3ED\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d21b17b1bd36c2428801d569c4c3850
+    m_Address: Assets/Sounds/Effects/number_change.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc23f598820eaf9409f54f855cffdf40
+    m_Address: Assets/Sounds/Effects/p_failed.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a59b50eec51692543b89e15b37e36a78
+    m_Address: Assets/Sounds/Effects/p_success.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7f6abd4a9825a3459b834fcbca5543a
+    m_Address: Assets/Sounds/Effects/poemofnetherworld.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43439c1d179c04247ad986ec647a0872
+    m_Address: Assets/Sounds/Effects/pokjuk_jap.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c66b463c45c07c4aae8b10569ccfa09
+    m_Address: Assets/Sounds/Effects/priest_aspersio.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1e72b094c7bc864a8e89f15c7c3287b
+    m_Address: Assets/Sounds/Effects/priest_benedictio.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8e740f071525f148a2ccdacd95d18c2
+    m_Address: Assets/Sounds/Effects/priest_gloria.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e8736fc558909d4eb98947d56537844
+    m_Address: Assets/Sounds/Effects/priest_impositio.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3849753b8253c7e4e8d6985c65a250fb
+    m_Address: Assets/Sounds/Effects/priest_kyrie_eleison_a.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 967378ad0fb229748812420acc74b501
+    m_Address: Assets/Sounds/Effects/priest_kyrie_eleison_b.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb4e19e81a55dcf4d8670c6b92947d4e
+    m_Address: Assets/Sounds/Effects/priest_lexaeterna.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49809ab51b715e34190ad42a078201de
+    m_Address: Assets/Sounds/Effects/priest_lexdivina.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f1898761b707094eb45a1b11f460181
+    m_Address: Assets/Sounds/Effects/priest_magnificat.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d6a28ed18913334c9788b8b57896280
+    m_Address: Assets/Sounds/Effects/priest_magnus.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8e31aad0d1bed14dabbfad3a63067b3
+    m_Address: Assets/Sounds/Effects/priest_recovery.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 510ad291dec8693409d319dbaf79ed21
+    m_Address: Assets/Sounds/Effects/priest_resurrection.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68f9c08fc58c5bb42aa417bfc618e736
+    m_Address: Assets/Sounds/Effects/priest_sanctuary.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4702d8a9e38bea24fa0db81d12ce825a
+    m_Address: Assets/Sounds/Effects/priest_slowpoison.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ec4a7d05e3a1e1469d2d33606d63a45
+    m_Address: Assets/Sounds/Effects/priest_suffragium.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb867da6d45cf7b40b351b3c2de4140c
+    m_Address: Assets/Sounds/Effects/priest_turn_undead.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce300c502b6ef3d44901d35517129a3e
+    m_Address: Assets/Sounds/Effects/rainstorm.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cd1c971469c5ba46b104a060d43220d
+    m_Address: Assets/Sounds/Effects/reproduce.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0776b686cb989b4449fdf933dad8e4df
+    m_Address: Assets/Sounds/Effects/reverberation.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f8561ced8990c543a57bbb5cf5a48f2
+    m_Address: Assets/Sounds/Effects/rog_back stap.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4139db7225cb738499c1f5e2a2ac6fa6
+    m_Address: Assets/Sounds/Effects/rog_intimidate.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c0864860fd2bc04fa736c5b63366bf3
+    m_Address: Assets/Sounds/Effects/rog_steal coin.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd266ee2cd5da054b8bd8843f60346f4
+    m_Address: Assets/Sounds/Effects/sage_magic rod.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb1ca7e0d10d3244dbfebe6ea11a3da8
+    m_Address: Assets/Sounds/Effects/sage_spell breake.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a37d25f4a05fb841b0daaf40fbe8918
+    m_Address: Assets/Sounds/Effects/shadowform.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 59a19e93ae5dada45bbabc1cac4f99af
+    m_Address: Assets/Sounds/Effects/sign_center.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d9a5c94a9c3af15448495cbd7601fe84
+    m_Address: Assets/Sounds/Effects/sign_down.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa7b5c4f083e4894ebf25df1abd738e8
+    m_Address: Assets/Sounds/Effects/sign_left.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d2cfa9d19b89ad41a5dd4980c48f9e5
+    m_Address: Assets/Sounds/Effects/sign_noise.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c400cd58f60291447bba7de6e90db84b
+    m_Address: Assets/Sounds/Effects/sign_right.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70aa16ba7fae996439a646416dbc75d7
+    m_Address: Assets/Sounds/Effects/sign_up.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69d35f42d755f964f9abd3ecc89bf6cd
+    m_Address: Assets/Sounds/Effects/st_gas_pushhh.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c00e8a21bfcca9349b5b0b433652317e
+    m_Address: Assets/Sounds/Effects/st_girl_breath.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ed0cf716311919448dc61126d01e432
+    m_Address: Assets/Sounds/Effects/st_girl_wowo.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76a01fce0aecd0346b7273a084338b74
+    m_Address: Assets/Sounds/Effects/st_job_level_up.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29f19946ea67b7d47b20941643bb5a27
+    m_Address: Assets/Sounds/Effects/st_light_particle.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 004c8d40a39b6b742a7f1e4d3a9cdc06
+    m_Address: Assets/Sounds/Effects/st_mummy.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06cfc725211e9be40a6975f9391c58ff
+    m_Address: Assets/Sounds/Effects/st_mvp.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1167030f4ea456d49bdfc5e1f6a15bb4
+    m_Address: Assets/Sounds/Effects/st_pyramid_a.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ab1cf999e268204e94351b6e0882dd8
+    m_Address: Assets/Sounds/Effects/st_pyramid_b.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ab516a34e82ae148a33189f4e89dfce
+    m_Address: Assets/Sounds/Effects/st_reed.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2c62b1613118bb4ca105a296d8d4e5c
+    m_Address: Assets/Sounds/Effects/st_woman_cry.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa042761cb96c4e47a9f3f6d22f06fad
+    m_Address: Assets/Sounds/Effects/storm.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c3bc654db7b5e14584e3aa63663582e
+    m_Address: Assets/Sounds/Effects/strip.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4de3b7f469d6c346b73b6f50be5bfd0
+    m_Address: Assets/Sounds/Effects/swordman_provoke.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f11f1ad47a909da42937d3ec6fd4fa81
+    m_Address: "Assets/Sounds/Effects/s\uBC14\uB808\uD2F0\uB974\uC2A4\uD53C\uC5B4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 351fa4dfddf15da4b878e9d2c1c66d32
+    m_Address: "Assets/Sounds/Effects/s\uBC14\uD060\uC775\uC2A4\uD2B8\uB9BC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69a6671ef1128994999ddb6375574191
+    m_Address: "Assets/Sounds/Effects/s\uC0AC\uC774\uD0A5\uC6E8\uC774\uBE0C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b40b349ff4e398479fee86d727abe0f
+    m_Address: "Assets/Sounds/Effects/s\uC2A4\uD2B8\uB77C\uC774\uD0B9.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b03500698283dad468a4761b80f630ab
+    m_Address: "Assets/Sounds/Effects/s\uC2A4\uD3A0\uD53C\uC2A4\uD2B8.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a234cf752c5225498580f88c619b5a6
+    m_Address: "Assets/Sounds/Effects/s\uC6CC\uBA38.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6265a82a23162be458daf031fbbefeaa
+    m_Address: "Assets/Sounds/Effects/s\uC77C\uB809\uD2B8\uB9AD\uC6CC\uD06C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac9d5dca3f6d97d4caac7b5e371a2e63
+    m_Address: "Assets/Sounds/Effects/s\uD074\uB77C\uC6B0\uB4DC\uD0AC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e43e3a6002af8b041aab6b106111cf83
+    m_Address: "Assets/Sounds/Effects/s\uD30C\uC774\uC5B4\uC6CC\uD06C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d0bd18a173e00b41b960c8faf05b2a2
+    m_Address: "Assets/Sounds/Effects/s\uD3EC\uC774\uC98C\uBC84\uC2A4\uD130.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ce5bca7e68b4354e862dde4074f0a50
+    m_Address: "Assets/Sounds/Effects/t_\uACF5\uACA9\uB825.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a3562906b7c774409560ecc51384ea4
+    m_Address: "Assets/Sounds/Effects/t_\uB099\uBC95.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bd243ead40291742baaf15f27e21803
+    m_Address: "Assets/Sounds/Effects/t_\uB0A0\uB77C\uCC28\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d1389228de84cd4a84909105538b61b
+    m_Address: "Assets/Sounds/Effects/t_\uB0B4\uB824\uCC0D\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f07a2b312b0fbac4f83041e7ef263711
+    m_Address: "Assets/Sounds/Effects/t_\uB2EC\uB9AC\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7604c13634bda2140af76e8710b0720c
+    m_Address: "Assets/Sounds/Effects/t_\uB3CC\uB824\uCC28\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ff222d268554754aaf0d33583aad0f8
+    m_Address: "Assets/Sounds/Effects/t_\uB4F1\uB85D.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e67dd28a8ce0e54ab2716fffcd1cfde
+    m_Address: "Assets/Sounds/Effects/t_\uB530\uB4EF\uD55C\uB9C8\uBC95.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5988771f5500b154c9b1f2bf7146966c
+    m_Address: "Assets/Sounds/Effects/t_\uB9C8\uBC95.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5a93e10170aade48a6eac1cea3c97ef
+    m_Address: "Assets/Sounds/Effects/t_\uB9C8\uBC95\uBC18\uC0AC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5699df1e800d544c95fd730e7ae9966
+    m_Address: "Assets/Sounds/Effects/t_\uBC14\uB78C\uB9C8\uBC95.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c983d700130f994fb5e2a895dceba39
+    m_Address: "Assets/Sounds/Effects/t_\uBC14\uB78C\uBC29\uCD9C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92717c071c48a3b4eb326ab7352e7828
+    m_Address: "Assets/Sounds/Effects/t_\uBC29\uC5B4\uD615.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a90a3b2a3084e244a93291cfb50c334
+    m_Address: "Assets/Sounds/Effects/t_\uBCBD\uD295\uAE40.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4109e7c669beac841be346a3670ef71c
+    m_Address: "Assets/Sounds/Effects/t_\uBCC0\uC2E0.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a52447c849050347bd4411127cb6c67
+    m_Address: "Assets/Sounds/Effects/t_\uBCF4\uC870\uB9C8\uBC95.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dda6c7a8f9163e4187bb6ed62b98cb1
+    m_Address: "Assets/Sounds/Effects/t_\uC090\uC6A9.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6fe141a3c882ec54984edd691a1abe50
+    m_Address: "Assets/Sounds/Effects/t_\uC288\uC6C3.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93ba7f0c3b10d0445b8379388d4cf088
+    m_Address: "Assets/Sounds/Effects/t_\uC548\uB77D\uD55C\uB9C8\uBC95.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68a7ae177cf6e8348a6b72dde834ada4
+    m_Address: "Assets/Sounds/Effects/t_\uC5D0\uB108\uC9C0\uBC29\uCD9C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e12af96958aef248816211a074ba664
+    m_Address: "Assets/Sounds/Effects/t_\uC601\uD63C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e671d9fb229a144b94c6ba80f1b04cb
+    m_Address: "Assets/Sounds/Effects/t_\uC804\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2bc8db3e1bfb4fd469e900f5cfeedcb9
+    m_Address: "Assets/Sounds/Effects/t_\uC810\uD504.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79e84920522997147aa06c8c3867ac4c
+    m_Address: "Assets/Sounds/Effects/t_\uCCD0\uB0B4\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2540b4fa6d922f14ebc0d1d37e9daaf5
+    m_Address: "Assets/Sounds/Effects/t_\uCE58\uC789.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c005b970911acd44ae7ac9e6e09906e
+    m_Address: "Assets/Sounds/Effects/t_\uCE90\uC2A4\uD305.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66f69d5e6c43dcd4c9b7fa7ece2a7683
+    m_Address: "Assets/Sounds/Effects/t_\uD53C\uB9C1.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c816121372b8214f8f87aa0e40d07d1
+    m_Address: "Assets/Sounds/Effects/t_\uD68C\uC624\uB9AC\uCC28\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d86f8314332355f44902f330a57a738d
+    m_Address: "Assets/Sounds/Effects/t_\uD68C\uD53C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c35a0aef8f602d94c803181f83af51c7
+    m_Address: "Assets/Sounds/Effects/t_\uD68C\uD53C2.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22e9be68a08ab2d4eac6f22ad0c4ba6b
+    m_Address: "Assets/Sounds/Effects/t_\uD6A8\uACFC\uC74C1.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17dc78277519c614f96e0770097d36c3
+    m_Address: Assets/Sounds/Effects/thief_invenom.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81c5114fab2fbe84e8a9e042a042a011
+    m_Address: Assets/Sounds/Effects/track 55.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b50eb2fac9231b44e87f1270fb923f94
+    m_Address: Assets/Sounds/Effects/triangle.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0e43aeac3402c74a92c402b8e0cdea7
+    m_Address: Assets/Sounds/Effects/unlucky.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5dcc9d695c709c345b791a8d05cde48b
+    m_Address: Assets/Sounds/Effects/vallentine.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 536b1c7ae0e7a004a97cce303d608e82
+    m_Address: Assets/Sounds/Effects/warning.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ca6f751eee8e0843bdb71adeaec8d03
+    m_Address: Assets/Sounds/Effects/warp.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71b60d845390d4a48a9f3cd13c113cff
+    m_Address: Assets/Sounds/Effects/weakness.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b68663b7dc34e24ca080180aa2570e1
+    m_Address: Assets/Sounds/Effects/wedding.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 512d8b7ebd50e144aa73267b7caab8d0
+    m_Address: Assets/Sounds/Effects/wewish.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5c4ed5502374294192185cc1ab124fd
+    m_Address: Assets/Sounds/Effects/wideb.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81d345ad3cdeae841abe3d22bfa1a6ac
+    m_Address: Assets/Sounds/Effects/widesleep.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a97d1efe79dcb0c4888170e22e6a69bb
+    m_Address: Assets/Sounds/Effects/wizard_earthspike.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b38b60b48dab3254a95166a6682bbd68
+    m_Address: Assets/Sounds/Effects/wizard_fire_pillar_a.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97fe5678d73e99644a8cc3c9b12a488b
+    m_Address: Assets/Sounds/Effects/wizard_fire_pillar_b.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3dc249f259617e46b2969e1e9574db8
+    m_Address: Assets/Sounds/Effects/wizard_icewall.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28a6061d555740442a58d549b56d1dd3
+    m_Address: Assets/Sounds/Effects/wizard_meteo.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05a050bfbb203a34e8bdffc5e77759b9
+    m_Address: Assets/Sounds/Effects/wizard_meteor.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef1501860505f2e459dfcb5c2ca40a60
+    m_Address: Assets/Sounds/Effects/wizard_quagmire.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec0fc06a04b08a64eaf660837cbfb20c
+    m_Address: Assets/Sounds/Effects/wizard_sightrasher.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9932bdf80553a7f40846699c782b8fe5
+    m_Address: Assets/Sounds/Effects/wizard_stormgust.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22117b9aaa8494f49b85acf2d2e62d55
+    m_Address: Assets/Sounds/Effects/wizard_waterball_chulung.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc8be5b5089214e48b72176a9cd99adf
+    m_Address: Assets/Sounds/Effects/wl_frostmisty.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d41b0367d3364e24fb920430fbbef59e
+    m_Address: Assets/Sounds/Effects/wl_jackfrost.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4cb6c07a20db5c4d8c9cc94439ad6e1
+    m_Address: Assets/Sounds/Effects/wl_recognizedspell.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3f776b00927e5b4a86c291763e80b49
+    m_Address: Assets/Sounds/Effects/wl_siennaexecrate.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0de3c1e3c69072d45adfdfcdc2174e64
+    m_Address: Assets/Sounds/Effects/wl_stasis.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 840f32fbbde98ec49bef3062b7a020c1
+    m_Address: Assets/Sounds/Effects/wl_tetravortex.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 274580e9605ab734dad5d269377e64b2
+    m_Address: Assets/Sounds/Effects/wl_whiteimprison.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c96027f093c0924ba4ff543619fb519
+    m_Address: "Assets/Sounds/Effects/\uAC00\uC2A4\uD3A0.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3596fc557436cdf438aa6fd41bd86cd7
+    m_Address: "Assets/Sounds/Effects/\uACE0\uC131\uBC29\uAC00.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7a742bf4e84c254b8a97827dd27e049
+    m_Address: "Assets/Sounds/Effects/\uADF8\uB77C\uC6B4\uB4DC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ade18589a04214e488dc63a2feeddf1d
+    m_Address: "Assets/Sounds/Effects/\uADF8\uB808\uC774\uD2B8\uC5D0\uCF54.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2678c33ef2860c1449202ef4f5a6a5aa
+    m_Address: "Assets/Sounds/Effects/\uADF8\uB9BC\uC790\uBCA0\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a59118f1dbbfb114099d32adbd967b3d
+    m_Address: "Assets/Sounds/Effects/\uAE30\uACF5\uD3EC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad8f0daefd4226846bd7621866b25d18
+    m_Address: "Assets/Sounds/Effects/\uAE40\uC11C\uBC29\uB3C8.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b41ef4fed16f7744bbe36539fc381b00
+    m_Address: "Assets/Sounds/Effects/\uB098\uB77D\uC758\uB178\uB798.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55509134a54b1974f95ae8bc5fd50813
+    m_Address: "Assets/Sounds/Effects/\uB098\uB97C\uC78A\uC9C0\uB9D0\uC544\uC694.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 230509865a546054483564a018eb2da3
+    m_Address: "Assets/Sounds/Effects/\uB1CC\uACA9\uC1C4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcd4f39333445e84caa07500948f5b33
+    m_Address: "Assets/Sounds/Effects/\uB2C8\uBCA8\uB8FD\uAC90\uC758 \uBC18\uC9C0.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07fb23d314516ef40aad97d6f831f504
+    m_Address: "Assets/Sounds/Effects/\uB2CC\uC790_\uB358\uC9C0\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f92d4673c13c4d14c989cdfd5c75c1bb
+    m_Address: "Assets/Sounds/Effects/\uB2E4\uB2E4\uBBF8\uB4A4\uC9D1\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86ead5319f5c9394998ab3681034311a
+    m_Address: "Assets/Sounds/Effects/\uB2EC\uBE5B.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bcce447bff838284d8731cd02b084ec2
+    m_Address: "Assets/Sounds/Effects/\uB2EC\uBE5B\uC138\uB808\uB098\uB370.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f05a02c091a7e8d4f8062899d6a40e9d
+    m_Address: "Assets/Sounds/Effects/\uB2F9\uC2E0\uC744 \uC704\uD55C \uC11C\uBE44\uC2A4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b24e5d70feb052a41b86379053f67de1
+    m_Address: "Assets/Sounds/Effects/\uB354\uC2A4\uD2B8\uC0F7.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d79972f2a2e1a9a409522e49f8d63e46
+    m_Address: "Assets/Sounds/Effects/\uB370\uC2A4\uD398\uB77C\uB3C4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a60bc8fb16bd2b49927fe9bdc849077
+    m_Address: "Assets/Sounds/Effects/\uB514\uC2A4\uC554.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7cd52fc28e843a49a053bca39c94c1f
+    m_Address: "Assets/Sounds/Effects/\uB798\uD53C\uB4DC\uC0E4\uC6CC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99e339f892521fc4d9b9123ed2e8c966
+    m_Address: "Assets/Sounds/Effects/\uB808\uB77C\uB4DC\uC758\uC774\uC2AC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39cc600e343a4994fa3ec944633a6ee4
+    m_Address: "Assets/Sounds/Effects/\uB85C\uD0A4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a39d611ab7dbf748b58a3fec688d130
+    m_Address: "Assets/Sounds/Effects/\uB9C8\uB098\uC758\uB178\uB798.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f55d9cdf3e0461d40b2f9a5a1e341006
+    m_Address: "Assets/Sounds/Effects/\uB9C8\uBC95\uB825 \uC99D\uD3ED.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b87dd150d834d74484264cb84665b67
+    m_Address: "Assets/Sounds/Effects/\uB9E4\uC9C0\uCEEC\uBE14\uB9BF.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ccc304600b40de4c80be16067dff932
+    m_Address: "Assets/Sounds/Effects/\uB9E4\uC9C1 \uD06C\uB798\uC26C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd2d57b3dc2f5cd4eb3c6bf31df86b00
+    m_Address: "Assets/Sounds/Effects/\uB9F9\uD638\uACBD\uD30C\uC0B0.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3be05c4850bcf9746a8464adc73896fc
+    m_Address: "Assets/Sounds/Effects/\uBA54\uC544\uB9AC\uC758\uB178\uB798.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8d69776105966549a3ec14b40c77e4f
+    m_Address: "Assets/Sounds/Effects/\uBA54\uD14C\uC624 \uC5B4\uC370\uD2B8.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f00de66ebb6671f40babb7bc6bb1b1a8
+    m_Address: "Assets/Sounds/Effects/\uBA5C\uB85C\uB514\uC624\uBE0C\uC2F1\uD06C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4bc9c79989ac954281f4f3f795b23d5
+    m_Address: "Assets/Sounds/Effects/\uBC14\uC2E4\uB9AC\uCE74.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81f35dfa924649c45b66fb9270babeb6
+    m_Address: "Assets/Sounds/Effects/\uBC84\uC11C\uD06C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1653a0fb12e32044a9296ccdf07a46f3
+    m_Address: "Assets/Sounds/Effects/\uBCF5\uD638\uACA9.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16c05c40f2d301744bfb35f2d81698f9
+    m_Address: "Assets/Sounds/Effects/\uBD88\uC0AC\uC2E0.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79243afc3e5e7a9408275b84a7902752
+    m_Address: "Assets/Sounds/Effects/\uBE0C\uB77C\uAE30\uC758 \uC2DC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5dcf5152a15a6a44af8e53dfcb1e985
+    m_Address: "Assets/Sounds/Effects/\uBE44\uC698\uB4DC\uC624\uBE0C\uC6CC\uD06C\uB77C\uC774.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac3e9d8d522ef0f4a898c8683f1961c2
+    m_Address: "Assets/Sounds/Effects/\uBE44\uD2B8 \uC870\uC778\uD2B8.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b8c8792c278a2e4794efb95fe4ae3d0
+    m_Address: "Assets/Sounds/Effects/\uBE59\uC815\uB77D.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6dde6758223cef04ca0d4d89925d0415
+    m_Address: "Assets/Sounds/Effects/\uC0AC\uB9DD\uC758\uACE8\uC9DC\uAE30\uC5D0\uC11C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d2d6492968b7af4db147f90182225a7
+    m_Address: "Assets/Sounds/Effects/\uC0AC\uC6B4\uB4DC\uC624\uBE0C\uB514\uC2A4\uD2B8\uB7ED\uC158.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b62e4bd2bb200945a351fe52c5b7221
+    m_Address: "Assets/Sounds/Effects/\uC0C8\uD130\uB370\uC774\uB098\uC774\uD2B8\uD53C\uBC84.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f448450ebf90e2f419f930afd7ea8df3
+    m_Address: "Assets/Sounds/Effects/\uC0E4\uD504\uC288\uD305.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd8392de909f24b4c8508f643c17a2ea
+    m_Address: "Assets/Sounds/Effects/\uC11D\uC591\uC758 \uC5B4\uC314\uC2E0.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f605c4645eb51954493ca608620c2a2c
+    m_Address: "Assets/Sounds/Effects/\uC138\uC774\uB80C\uC758\uBAA9\uC18C\uB9AC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6dbb6ff35847fcf449d068a0f0c56de1
+    m_Address: "Assets/Sounds/Effects/\uC138\uD06C\uB9AC\uD30C\uC774\uC2A4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c33dde1ebcf364d408190573a0342108
+    m_Address: "Assets/Sounds/Effects/\uC18C\uC6B8 \uCCB4\uC778\uC9C0.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe8ad02660c24344091dee8f0d537f22
+    m_Address: "Assets/Sounds/Effects/\uC218\uB454.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c698be6fb4208a448a2c0376da3cb31c
+    m_Address: "Assets/Sounds/Effects/\uC218\uC90D\uC740\uD558\uB8E8\uC758\uC6B0\uC6B8.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66f48bcd36d4d3943a16ecf708e14c96
+    m_Address: "Assets/Sounds/Effects/\uC21C\uD658\uD558\uB294\uC790\uC5F0\uC758\uC18C\uB9AC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6deec6dfabb88d468b3b3856c7bb0c5
+    m_Address: "Assets/Sounds/Effects/\uC2A4\uC719\uB304\uC2A4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3687b846e53dc8041b2d8b8c2cff6a1b
+    m_Address: "Assets/Sounds/Effects/\uC2EC\uC5F0\uC18D\uC73C\uB85C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d65657820ced7348a1510df84352e1e
+    m_Address: "Assets/Sounds/Effects/\uC544\uC228\uD504\uD2F0\uC624.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b746061914bb1244b6cc7fe734855aa
+    m_Address: "Assets/Sounds/Effects/\uC548\uAC1C\uBCA0\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29cb3cc1258f61c4fa31c8cabe9b6f72
+    m_Address: "Assets/Sounds/Effects/\uC548\uC2DD\uC758\uC790\uC7A5\uAC00.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7151b17926d53b4ba98e77acad372a2
+    m_Address: "Assets/Sounds/Effects/\uC560\uB85C\uC6B0 \uBC1C\uCE78.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3845f845a620ac4994012fcc4e25e69
+    m_Address: "Assets/Sounds/Effects/\uC5B8\uB9AC\uBBF8\uD2F0\uB4DC\uD5C8\uBC0D\uBCF4\uC774\uC2A4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e1f882d74f00f4428753edb7502c33a
+    m_Address: "Assets/Sounds/Effects/\uC5F0\uC778\uB4E4\uC744\uC704\uD55C\uC2EC\uD3EC\uB2C8.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05eb565af5ecc304ba30cb9fe69c4c5e
+    m_Address: "Assets/Sounds/Effects/\uC5F0\uC8FC\uBD95\uACA9.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8fbc3e700c57ab40bf8d3c4a8cb4b7d
+    m_Address: "Assets/Sounds/Effects/\uC601\uC6D0\uC758 \uD63C\uB3C8.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 462ed5a6d16aca142808595c498447bd
+    m_Address: "Assets/Sounds/Effects/\uC624\uB77C \uBE14\uB808\uC774\uB4DC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6817969374d057344bb93ed9d2d1e982
+    m_Address: "Assets/Sounds/Effects/\uC6CC\uADF8\uC640\uD568\uAED8\uCDA4\uC744.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b07f6fe2ab48b44991927c86e2d91ef
+    m_Address: "Assets/Sounds/Effects/\uC708\uB4DC\uC6CC\uD06C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c99b7f0c789298498f0f41912cc0e17
+    m_Address: "Assets/Sounds/Effects/\uC774\uB454\uC758 \uC0AC\uACFC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f8d08f5680504145bc3f9122986f4be
+    m_Address: "Assets/Sounds/Effects/\uC77C\uC12C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1362bdb92bc091b4cbc4bb93f209c058
+    m_Address: "Assets/Sounds/Effects/\uC790\uC7A5\uAC00.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 476f17b5a29d9b042a4ed2f83c83ba91
+    m_Address: "Assets/Sounds/Effects/\uC804\uC7A5\uC758.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0617dbb006de12b48a3f7aa908bfe3bd
+    m_Address: "Assets/Sounds/Effects/\uD06C\uB798\uCEE4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ef0adccbb7fca445a494df920c4b44a
+    m_Address: "Assets/Sounds/Effects/\uD2B8\uB9AC\uD50C\uC561\uC158.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9733f293e7162f46b8044e6b722b691
+    m_Address: "Assets/Sounds/Effects/\uD3ED\uC5FC\uB8E1.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa53fe103cfa94e44b8e656a2e687b5b
+    m_Address: "Assets/Sounds/Effects/\uD3ED\uC8FD.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8be2444801784d646bf0c25d1ec9a6c4
+    m_Address: "Assets/Sounds/Effects/\uD480\uBC84\uC2A4\uD130.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f8127f2f3753aa4da0640ce28a2757b
+    m_Address: "Assets/Sounds/Effects/\uD48D\uC778.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5189ac41d670d14a88e6b011b8ae809
+    m_Address: "Assets/Sounds/Effects/\uD48D\uCC28\uB97C\uD5A5\uD574\uB3CC\uACA9.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31a57429e703ea244815725fd9ed9ee9
+    m_Address: "Assets/Sounds/Effects/\uD504\uB808\uC154.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8a9f6d6126b28842966f80dd050a4f5
+    m_Address: "Assets/Sounds/Effects/\uD50C\uB9BD.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89b215561f99cb54094a86b793966d92
+    m_Address: "Assets/Sounds/Effects/\uD53C\uC5B4\uC2F1\uC0F7.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e8576bdf281e9714aa75d9c4edc764c9
+    m_Address: "Assets/Sounds/Effects/\uD558\uBAA8\uB098\uC774\uC988.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ead9cd18a781808469fd05044351478a
+    m_Address: "Assets/Sounds/Effects/\uD589\uC6B4\uC758.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acefe77b7ce66504ba25866f3d5b947a
+    m_Address: "Assets/Sounds/Effects/\uD5E4\uB4DC \uD06C\uB7EC\uC26C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 490a0a3d878a68a4195335305f1e8f7b
+    m_Address: "Assets/Sounds/Effects/\uD5E4\uB974\uBAA8\uB4DC\uC758 \uC9C0\uD321\uC774.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb8c6eb0b2264c74db14a2ce11b16267
+    m_Address: "Assets/Sounds/Effects/\uD654\uC5FC\uC9C4.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a7e0087823b4f344abc163ffce378ce
+    m_Address: "Assets/Sounds/Effects/\uD761\uAE30.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2851ccef350f6f34cb20aca3ca45e3bc
+    m_Address: "Assets/Sounds/Effects/\uD765\uC5BC\uAC70\uB9BC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5caed4673b1dff145b1e806cf79acfea
+    m_Address: Assets/Sounds/Effects/_acolyte_attack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6a9b8a3007f50e4085e9fd6c8157878
+    m_Address: Assets/Sounds/Effects/_acolyte_hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84f7e17cabbaeef4e86f5985d629c67f
+    m_Address: Assets/Sounds/Effects/_archer_attack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65cf62b8d8e22ed4f96d8afd7de11a07
+    m_Address: Assets/Sounds/Effects/_archer_hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7b071ce932bf1745889f385e9dcd051
+    m_Address: Assets/Sounds/Effects/_attack_axe.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1787aac14556ed542a4b67675c049384
+    m_Address: Assets/Sounds/Effects/_attack_book.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7c630fc94c033445af57e35a1c6fee1
+    m_Address: Assets/Sounds/Effects/_attack_bow.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac776ff15c0b27f4fb397b5f643694ce
+    m_Address: Assets/Sounds/Effects/_attack_dagger.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5be9117c21711984f96ec216b2ebd103
+    m_Address: Assets/Sounds/Effects/_attack_katar.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cb6727cabc127c409b75c85c7fa8f3b
+    m_Address: Assets/Sounds/Effects/_attack_mace.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ff3d937b41c0ab479595781cc012d62
+    m_Address: Assets/Sounds/Effects/_attack_rod.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 152575c269db47f469eb6548f1071ce0
+    m_Address: Assets/Sounds/Effects/_attack_spear.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3427094aa1a1e4d4ea4b9beb7451354c
+    m_Address: Assets/Sounds/Effects/_attack_sword.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ebb7547707a4ca4787f186e68b2e1ef
+    m_Address: Assets/Sounds/Effects/_blind.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20ff8ed6bd6c9854e9f720e079228511
+    m_Address: Assets/Sounds/Effects/_confusion.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f792af0c9149d544eaff357c1f222c33
+    m_Address: Assets/Sounds/Effects/_curse.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fffd97dca2582b4d8ff737f1354e720
+    m_Address: Assets/Sounds/Effects/_enemy_hit1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e535368b446e08740887ee1e781aa3ee
+    m_Address: Assets/Sounds/Effects/_enemy_hit2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55f999380f6355e42ae3ead40ee80982
+    m_Address: Assets/Sounds/Effects/_enemy_hit3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 092591af78ac53e478474cd500b2782c
+    m_Address: Assets/Sounds/Effects/_enemy_hit4.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51e8eeb868c748640b982a834f41247f
+    m_Address: Assets/Sounds/Effects/_enemy_hit_fire1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 034687e98b72b504fb6c25265239e9f6
+    m_Address: Assets/Sounds/Effects/_enemy_hit_fire2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b410695fe6ba51a41812836d5110893f
+    m_Address: Assets/Sounds/Effects/_enemy_hit_normal1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c269caaab5a70341890c8cc6f0e7672
+    m_Address: Assets/Sounds/Effects/_enemy_hit_normal2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fe28bab5854e2d4b8cbb97254bad363
+    m_Address: Assets/Sounds/Effects/_enemy_hit_normal3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb55e19df10980042972aca0bafb59a4
+    m_Address: Assets/Sounds/Effects/_enemy_hit_normal4.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b1ac093de5ce80247af1f6ce6e9402db
+    m_Address: Assets/Sounds/Effects/_enemy_hit_wind1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 264076372ecee0149928801c481d19b9
+    m_Address: Assets/Sounds/Effects/_enemy_hit_wind2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa9c05e9b940e8e42b96799be94377f0
+    m_Address: Assets/Sounds/Effects/_frozen_explosion.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf4a11a099d19ac41a41ac672c096cd8
+    m_Address: Assets/Sounds/Effects/_heal_effect.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57f2a55bd777fbb44a5cea7ffea1aecd
+    m_Address: Assets/Sounds/Effects/_hit_arrow.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06e706e4e21210e43bee60adfd13b0ed
+    m_Address: Assets/Sounds/Effects/_hit_axe.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 34699e49fdb663b4cb3c069db976826e
+    m_Address: Assets/Sounds/Effects/_hit_dagger.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 95e0e219eab3f8644b10a072330a6b95
+    m_Address: Assets/Sounds/Effects/_hit_fist1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e39fe4de1f76c2748bdc80b94a141cb3
+    m_Address: Assets/Sounds/Effects/_hit_fist2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16d50a09b61a58e4fa05473a714f6a10
+    m_Address: Assets/Sounds/Effects/_hit_fist3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fbc9567b041c8484995ecdc2ad5a1c1a
+    m_Address: Assets/Sounds/Effects/_hit_fist4.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4ce24719223bd54e82537d5357e7c8e
+    m_Address: Assets/Sounds/Effects/_hit_mace.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbe31cf647b28b54ea3da56d1c171d3a
+    m_Address: Assets/Sounds/Effects/_hit_rod.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fab8e0c50cf5dd143a63bea6259a843f
+    m_Address: Assets/Sounds/Effects/_hit_spear.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e23f387075e1ee94181bd68c2d99ba8d
+    m_Address: Assets/Sounds/Effects/_hit_sword.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b16e8fb2a2f0364eab10752c32813dc
+    m_Address: "Assets/Sounds/Effects/_hit_\uAC1C\uD2C0\uB9C1\uD55C\uBC1C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f4b45142adb65d419ca1de12bf0b09a
+    m_Address: "Assets/Sounds/Effects/_hit_\uAD8C\uCD1D.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0242e5bbe2d655941b58007a7524aebc
+    m_Address: "Assets/Sounds/Effects/_hit_\uADF8\uB808\uB124\uC774\uB4DC\uB7F0\uCCD0.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 02958956d22bed3429414065fe61feb0
+    m_Address: "Assets/Sounds/Effects/_hit_\uB77C\uC774\uD50C.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2542fbe7ff7756545a0495260eb006e2
+    m_Address: "Assets/Sounds/Effects/_hit_\uC0F7\uAC74.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1626bdec2cb650041a7e95b81a8dc46e
+    m_Address: Assets/Sounds/Effects/_magician_attack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4da23ea0193b33e4180fec2abafe2c55
+    m_Address: Assets/Sounds/Effects/_magician_hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d685d6dbd644d1043b7b62ebc677f1d5
+    m_Address: Assets/Sounds/Effects/_merchant_attack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48a01be106bba3247bbe95dff28fb1d5
+    m_Address: Assets/Sounds/Effects/_merchant_hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b2866c7c350faa48bb042f05f0bf850
+    m_Address: Assets/Sounds/Effects/_novice_attack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cb2727ed5dc1074cb424147694e9fa3
+    m_Address: Assets/Sounds/Effects/_novice_hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72885c3221a18f545bad9f240f3e2bf2
+    m_Address: Assets/Sounds/Effects/_poison.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2ca24837b50f1044a1402b39d4e052c
+    m_Address: Assets/Sounds/Effects/_silence.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c37ad5512cddfef4aa71564b6a720a4b
+    m_Address: Assets/Sounds/Effects/_snore.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d7b99de7aa3cca408a7d7259d822ad3
+    m_Address: Assets/Sounds/Effects/_stone.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d5bf759deb2fe94dabc4eaf40b19d7e
+    m_Address: Assets/Sounds/Effects/_stone_explosion.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7254af3aad1c6a43968c69a891d4ea2
+    m_Address: Assets/Sounds/Effects/_stonecurse.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bb99f6086ad0264fb743d33515364fa
+    m_Address: Assets/Sounds/Effects/_stun.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf731888e736e05488fa4817a7702c9b
+    m_Address: Assets/Sounds/Effects/_swordman_attack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f63c5a05c4448c449e8060ac05b6cac
+    m_Address: Assets/Sounds/Effects/_swordman_hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de6d913f5b152b943a6cd34a7c79d74d
+    m_Address: Assets/Sounds/Effects/_thief_attack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9dddf12afab09c49b5444228bbd6037
+    m_Address: Assets/Sounds/Effects/_thief_hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

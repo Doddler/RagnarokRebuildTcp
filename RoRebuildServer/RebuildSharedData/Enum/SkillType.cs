@@ -6,12 +6,12 @@ namespace RebuildSharedData.Enum
 {
     public enum SkillTarget : byte
     {
+        Passive,
+        Enemy,
+        Ally,
         Any,
-        SingleTarget,
-        SingleAlly,
-        SingleAny,
-        AreaTargeted,
-        SelfCast
+        Ground,
+        Self
     }
 
     public enum SkillClass : byte

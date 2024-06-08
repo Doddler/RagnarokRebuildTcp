@@ -145,7 +145,7 @@ COLON : ':';
 
 STRING	:  '"' ( '\\"' | ~('"') )* '"' ;
 
-DECIMAL : '-'?[0-9]+('.'[0-9]+)?[f]? ;
+DECIMAL : '-'?[0-9][0-9hms]*('.'[0-9]+)?[f]? ;
 IDENTIFIER : [%a-zA-Z_][a-zA-Z_0-9]* ;
 
 COMMENT : '//' .+? ('\n'|EOF) -> skip ;

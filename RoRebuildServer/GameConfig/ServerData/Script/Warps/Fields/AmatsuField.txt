@@ -1,0 +1,4 @@
+﻿//Amatsu Field
+Warp("ama_fild01", "amafieldwarp001", 75, 30, 6, 2, "amatsu", 248, 288);
+Warp("ama_fild01", "amafieldwarp002", 174, 332, 3, 2, "ama_in01", 175, 174);
+Warp("ama_fild01", "amafieldwarp003", 330, 141, 2, 2, "ama_in01", 174, 124);

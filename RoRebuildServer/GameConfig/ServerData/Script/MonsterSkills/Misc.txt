@@ -1,0 +1,56 @@
+﻿
+//SkillHandler("PORING50") {
+//StateIdle:
+//	//TryCast params: skillname, level, chance/1000, cast time (ms), delay time (ms)
+//	TryCast(ColdBolt, 3, 50, 1000, 5000)-> SendEmote(29); //gg
+//
+//StateRandomMove:
+//	TryCast(ColdBolt, 3, 50, 1000, 5000)-> SendEmote(29); //gg
+//
+//StateAttacking:
+//	TryCast(ColdBolt, 5, 200, 1500, 15000)-> SendEmote(29); //gg
+//	TryCast(None, 1, 1000, 0, 5000)[HpPercent < 40] -> {
+//		SendEmote(26); //Help
+//		ChangeAiState(StateFlee);
+//	}
+//
+//StateFlee:
+//	TryCast(None, 1, 200, 0, 3000) -> SendEmote(26);
+//	TryCast(None, 1, 50, 0, 15000) -> {
+//		SendEmote(5); //sweat
+//		ChangeAiState(StateIdle);
+//	}
+//}
+
+SkillHandler("PORING50") {
+StateIdle:
+	
+StateAttacking:
+	TryCast(Haste, 1, 1000, 0, 99h)[HpPercent < 99];
+}
+
+SkillHandler("STROUF") {
+StateAttacking:
+	TryCast(LightningBolt, 3, 50, 0, 5000);
+StateChase:
+	TryCast(LightningBolt, 3, 50, 0, 5000);
+StateIdle:
+	TryCast(None, 3, 200, 0, 5000) -> SendEmote(32);
+}
+
+
+SkillHandler("ELDER") {
+StateAttacking:
+	TryCast(FireBolt, 7, 1000, 1500, 5000) -> SendEmote(11);
+	TryCast(LightningBolt, 7, 1000, 1500, 5000) -> SendEmote(12);
+StateChase:
+	TryCast(FireBolt, 7, 1000, 1500, 5000) -> SendEmote(11);
+	TryCast(LightningBolt, 7, 1000, 1500, 5000) -> SendEmote(12);
+}
+
+SkillHandler("MARDUK") {
+StateAttacking:
+	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(9);
+StateChase:
+	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(9);
+}

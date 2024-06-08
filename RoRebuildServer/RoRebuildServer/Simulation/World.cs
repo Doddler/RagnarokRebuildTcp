@@ -68,6 +68,8 @@ public class World
             Instances.Add(instance);
             foreach (var map in instanceEntry.Maps)
             {
+                if(worldMapInstanceLookup.ContainsKey(map))
+                    ServerLogger.LogWarning($"Could not add map '{map}' to instance {instanceEntry.Name} because that map is already assigned to the instance {Instances[worldMapInstanceLookup[map]].Name}");
                 worldMapInstanceLookup.Add(map, id);
                 mapCount++;
             }
@@ -156,6 +158,7 @@ public class World
     {
         CommandBuilder.AddAllPlayersAsRecipients();
         CommandBuilder.SendServerMessage("Server is reloading NPC and Monster scripts, things might get a bit spicy!");
+        CommandBuilder.ClearRecipients(); //if we don't clear it can cause issues
 
         NetworkManager.ExtendTimeoutForAllPlayers(30); //add 30s to player timeout timers. Won't take nearly that long, but better safe.
         UnloadAllNpcsAndMonsters(); //remove all npc/monsters from the maps
@@ -163,6 +166,7 @@ public class World
         DataManager.ReloadScripts(); //recompile scripts
         ReloadNpcsAndMonsters(); //re-add npcs and monsters to maps
 
+        CommandBuilder.AddAllPlayersAsRecipients();
         CommandBuilder.SendServerMessage("Reload complete! Hopefully things continue to work!");
         CommandBuilder.ClearRecipients();
     }
@@ -275,6 +279,7 @@ public class World
         npc.Entity = e;
         npc.Behavior = behavior;
         npc.Character = ch;
+        npc.IsEvent = true;
 
         map.AddEntity(ref e);
 
@@ -623,13 +628,20 @@ public class World
             move.DestMap.AddEntity(ref move.Player, character.Map?.Instance != move.DestMap.Instance);
 
             var player = character.Player;
+
             player.Connection.LastKeepAlive = Time.ElapsedTime; //reset tick time so they get 2 mins to load the map
 
             if (move.MoveRequestType == MoveRequestType.InitialSpawn)
                 CommandBuilder.InformEnterServer(character, player);
 
             if (move.MoveRequestType == MoveRequestType.MapMove)
+            {
                 CommandBuilder.SendChangeMap(character, player);
+
+                player.SaveCharacterToData();
+                var req = new SaveCharacterRequest(player.Id, player.Name, character.Map?.Name, character.Position, player.CharData, player.SavePosition);
+                RoDatabase.EnqueueDbRequest(req);
+            }
         }
     }
 

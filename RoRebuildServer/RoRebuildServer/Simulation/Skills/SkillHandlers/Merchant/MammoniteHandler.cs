@@ -11,7 +11,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
     [SkillHandler(CharacterSkill.Mammonite, SkillClass.Physical)]
     public class MammoniteHandler : SkillHandlerBase
     {
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
             if (lvl < 0 || lvl > 10)
                 lvl = 10;

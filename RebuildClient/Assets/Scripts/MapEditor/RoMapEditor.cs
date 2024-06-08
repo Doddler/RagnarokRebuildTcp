@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Assets.Scripts.Utility;
 using RebuildSharedData.Enum;
 using UnityEditor;
 using UnityEngine;
@@ -64,6 +65,7 @@ namespace Assets.Scripts.MapEditor
         public RectInt SelectedRegion;
         public bool HasSelection;
         private SelectionMode selectionMode;
+        private bool isSelectionDirty;
 
         private RoWaterAnimator WaterAnimator;
 
@@ -626,6 +628,7 @@ namespace Assets.Scripts.MapEditor
         {
             CurrentMode = newMode;
             HasSelection = false;
+            isSelectionDirty = true;
         }
 
         public void UpdateSelectionMode(SelectionMode mode)
@@ -634,6 +637,7 @@ namespace Assets.Scripts.MapEditor
                 HasSelection = false;
 
             selectionMode = mode;
+            isSelectionDirty = true;
         }
 
 
@@ -646,13 +650,14 @@ namespace Assets.Scripts.MapEditor
             return layer;
         }
 
-
         public void UpdateLightmapSettings()
         {
-            SceneView.duringSceneGui += OnSceneGUI;
-
             if (mapData == null)
                 return;
+            
+            SceneView.duringSceneGui += OnSceneGUI;
+            EditorApplication.playmodeStateChanged += OnDisable;
+
 
             if (!mapData.IsWalkTable)
             {
@@ -718,14 +723,35 @@ namespace Assets.Scripts.MapEditor
             }
         }
 
+        public void OnDestroy()
+        {
+            OnDisable();
+        }
+
         public void OnDisable()
         {
             SceneView.duringSceneGui -= OnSceneGUI;
+            EditorApplication.playmodeStateChanged -= OnDisable;
 
             if (mapData == null || !mapData.IsWalkTable)
                 Lightmapping.ResetDelegate();
 
             updatedLightmapper = false;
+
+        
+        }
+        
+        private void LateUpdate()
+        {
+            if (Application.isPlaying)
+            {
+                SceneView.duringSceneGui -= OnSceneGUI;
+                EditorApplication.playmodeStateChanged -= OnDisable;
+            }
+
+            if (!Application.isEditor && HasSelection)
+                HighlightMapSelection(null, SelectedRegion);
+
         }
 
         public void Update()
@@ -756,11 +782,61 @@ namespace Assets.Scripts.MapEditor
             highlightMaterial.SetInt("_ZWrite", 0);
         }
 
+        private Mesh[] selectionMesh;
+        private MeshBuilder mb;
+        private void HighlightMapSelection(Camera camera, RectInt region)
+        {
+            if (isSelectionDirty)
+            {
+                if (mb == null)
+                    mb = new MeshBuilder();
+                mb.Clear();
+                
+                var cells = MapData.GetCellData();
+
+                PrepareDrawMaterial();
+
+                var color = new Color32(255, 255, 255, 100);
+                var colors = new []{ color, color, color, color };
+                var normals = new[] { Vector3.up, Vector3.up, Vector3.up, Vector3.up };
+                var uvs = new[] { new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 0), new Vector2(1, 0) };
+            
+                for (var x = region.xMin; x < region.xMax; x++)
+                {
+                    for (var y = region.yMin; y < region.yMax; y++)
+                    {
+                        var cell = cells[x + y * MapData.Width];
+
+                        var offset = Vector3.zero;
+                        if (MapData.IsWalkTable)
+                            offset += new Vector3(0f, 0.05f, 0f);
+
+                        var v1 = new Vector3((x + 0) * TileSize, cell.Heights[0] * RoMapData.YScale, (y + 1) * TileSize) + offset;
+                        var v2 = new Vector3((x + 1) * TileSize, cell.Heights[1] * RoMapData.YScale, (y + 1) * TileSize) + offset;
+                        var v3 = new Vector3((x + 0) * TileSize, cell.Heights[2] * RoMapData.YScale, (y + 0) * TileSize) + offset;
+                        var v4 = new Vector3((x + 1) * TileSize, cell.Heights[3] * RoMapData.YScale, (y + 0) * TileSize) + offset;
+                    
+                        mb.AddQuad(new[] {v1, v2, v3, v4}, normals, uvs, colors);
+                    }
+                }
+
+                selectionMesh = mb.BuildMulti();
+                isSelectionDirty = false;
+            }
+            
+            for(var i = 0; i < selectionMesh.Length; i++)
+                Graphics.DrawMesh(selectionMesh[i], Matrix4x4.identity, highlightMaterial, gameObject.layer);
+            
+        }
+
+
         private void HighlightTopFaces(RectInt region)
         {
             var cells = MapData.GetCellData();
 
             PrepareDrawMaterial();
+
+            var mb = new MeshBuilder();
 
             GL.PushMatrix();
             GL.MultMatrix(Handles.matrix);
@@ -769,6 +845,7 @@ namespace Assets.Scripts.MapEditor
             GL.Begin(GL.TRIANGLES);
 
             GL.Color(new Color(1f, 1f, 1f, 0.3f));
+            
 
             for (var x = region.xMin; x < region.xMax; x++)
             {
@@ -784,6 +861,8 @@ namespace Assets.Scripts.MapEditor
                     var v2 = new Vector3((x + 1) * TileSize, cell.Heights[1] * RoMapData.YScale, (y + 1) * TileSize) + offset;
                     var v3 = new Vector3((x + 0) * TileSize, cell.Heights[2] * RoMapData.YScale, (y + 0) * TileSize) + offset;
                     var v4 = new Vector3((x + 1) * TileSize, cell.Heights[3] * RoMapData.YScale, (y + 0) * TileSize) + offset;
+                    
+                    mb.AddVertices(new[] {v1, v2, v3, v4});
 
                     GL.Vertex(v1 + transform.position);
                     GL.Vertex(v2 + transform.position);
@@ -929,6 +1008,7 @@ namespace Assets.Scripts.MapEditor
                     SelectedRegion = new RectInt(tile.x, tile.y, 1, 1);
 
                 HasSelection = true;
+                isSelectionDirty = true;
                 //CenterDragHandle();
                 CurrentBrush?.OnSelectionChange();
             }
@@ -1049,7 +1129,7 @@ namespace Assets.Scripts.MapEditor
 
         public void OnSceneGUI(SceneView sceneView)
         {
-            if (!inEditMode)
+            if (ReferenceEquals(this, null) || !inEditMode)
                 return;
 
             int controlId = GUIUtility.GetControlID(FocusType.Passive);
@@ -1079,7 +1159,7 @@ namespace Assets.Scripts.MapEditor
             UpdateCursor();
 
             if (Event.current.type == EventType.Repaint && selectionMode == SelectionMode.TopRect && HasSelection)
-                HighlightTopFaces(SelectedRegion);
+                HighlightMapSelection(null, SelectedRegion);
 
 
             if (CursorVisible && Event.current.isKey && Event.current.type == EventType.KeyDown

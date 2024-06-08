@@ -1,0 +1,18 @@
+{
+  "Items": [
+    {
+      "Sprite": "ork_hero",
+      "Action": "ThunderStorm",
+      "Animation": 5,
+      "HoldLastFrame": false,
+      "StartAt": 1100
+    },
+    {
+      "Sprite": "ork_hero",
+      "Action": "GrandThunderstorm",
+      "Animation": 5,
+      "HoldLastFrame": false,
+      "StartAt": 1200
+    }
+  ]
+}

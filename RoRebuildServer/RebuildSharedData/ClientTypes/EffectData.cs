@@ -4,14 +4,11 @@ using System.Text;
 
 namespace RebuildSharedData.ClientTypes;
 
-//disable null string warning on all our csv and data stuff
-#pragma warning disable CS8618
-
 [Serializable]
 public class EffectTypeEntry
 {
     public int Id;
-    public string Name;
+    public string Name = null!;
     public bool ImportEffect;
     public bool Billboard;
     public string? StrFile;
@@ -24,6 +21,6 @@ public class EffectTypeEntry
 [Serializable]
 public class EffectTypeList
 {
-    public List<EffectTypeEntry> Effects;
+    public List<EffectTypeEntry> Effects = null!;
 }
 

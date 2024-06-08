@@ -8,6 +8,7 @@ namespace Assets.Scripts.Sprites
         void SetAction(int action, bool is8Direction = false);
         void SetColor(Color color);
         void SetDirection(Direction direction);
+        void SetAngle(float angle);
         void SetFrame(int frame);
         void SetSprite(RoSpriteData sprite);
         void SetOffset(float offset);

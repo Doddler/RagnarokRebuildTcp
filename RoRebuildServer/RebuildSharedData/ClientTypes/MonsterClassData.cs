@@ -12,6 +12,7 @@ public class MonsterClassData
     public float Offset;
     public float ShadowSize;
     public float Size;
+    public float AttackTiming;
 }
 
 

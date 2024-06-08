@@ -23,6 +23,7 @@ namespace Assets.Scripts.Utility
         private bool useUv3 = false;
 
         public bool HasData => vertices.Count > 0;
+        public bool RequiresMultipleMeshes => vertices.Count > 65000;
         public void StartTriangle() => startIndex = vertices.Count;
 
         //public int VertexCount => vertices.Count;
@@ -200,6 +201,48 @@ namespace Assets.Scripts.Utility
                 Unwrapping.GenerateSecondaryUVSet(mesh, MeshBuilder.GetUnwrapParam());
 #endif
             return mesh;
+        }
+
+        public Mesh[] BuildMulti(string name = "Mesh", bool buildSecondaryUVs = false)
+        {
+            if (!HasMesh())
+                return new Mesh[] {};
+
+            var meshCount = Mathf.CeilToInt(vertices.Count / 40000f);
+            var meshes = new Mesh[meshCount];
+            for (var i = 0; i < meshCount; i++)
+            {
+                var mesh = new Mesh();
+                mesh.name = name;
+
+                var start = i * 40000;
+                var count = Mathf.Clamp(vertices.Count - start, 0, 40000);
+                var triCount = count / 4 * 6;
+                Debug.Log($"{start} {count} {triCount}");
+            
+                if(vertices.Count != color32s.Count && colors.Count == 0)
+                    Console.WriteLine("AAAAA");
+
+                mesh.SetVertices(vertices.GetRange(start, count));
+                mesh.SetNormals(normals.GetRange(start, count));
+                mesh.SetTriangles(triangles.GetRange(0, triCount), 0);
+                if(!useUv3)
+                    mesh.SetUVs(0, uvs.GetRange(start, count));
+                else
+                    mesh.SetUVs(0, uv3s.GetRange(start, count));
+                if(colors.Count > 0)
+                    mesh.SetColors(colors.GetRange(start, count));
+                if(color32s.Count > 0)
+                    mesh.SetColors(color32s.GetRange(start, count));
+
+                mesh.RecalculateBounds();
+                mesh.Optimize();
+                mesh.OptimizeIndexBuffers();
+                mesh.OptimizeReorderVertexBuffer();
+                meshes[i] = mesh;
+            }
+
+            return meshes;
         }
 
         public Mesh ApplyToMesh(Mesh mesh, bool buildSecondaryUVs = false)

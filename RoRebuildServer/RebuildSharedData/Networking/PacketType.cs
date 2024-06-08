@@ -31,6 +31,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] HitTarget,
     [ServerOnlyPacket] StartCast,
     [ServerOnlyPacket] StartAreaCast,
+    [ServerOnlyPacket] CreateCastCircle,
     Skill,
     [ServerOnlyPacket] SkillError,
     ChangeTarget,
@@ -58,6 +59,7 @@ public enum PacketType : byte
     AdminSummonMonster,
     AdminHideCharacter,
     AdminChangeSpeed,
+    AdminFindTarget,
 
     NpcClick,
     [ServerOnlyPacket] NpcInteraction,

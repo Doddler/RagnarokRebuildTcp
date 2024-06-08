@@ -142,6 +142,24 @@ namespace Assets.Scripts
 
             return 0;
         }
+        
+        public static Direction GetFacingForAngle(float angle)
+        {
+            if (angle > 360)
+                angle -= 360;
+            if (angle < 0)
+                angle += 360;
+
+            if (angle > 360f - 22.5f) return Direction.North;
+            if (angle > 315f - 22.5f) return Direction.NorthWest;
+            if (angle > 270f - 22.5f) return Direction.West;
+            if (angle > 225f - 22.5f) return Direction.SouthWest;
+            if (angle > 180f - 22.5f) return Direction.South;
+            if (angle > 135f - 22.5f) return Direction.SouthEast;
+            if (angle > 90f - 22.5f) return Direction.East;
+            if (angle > 45f - 22.5f) return Direction.NorthEast;
+            return Direction.North;
+        }
 
         public static int GetSpriteIndexForAngle(Direction facing, float cameraRotation)
         {

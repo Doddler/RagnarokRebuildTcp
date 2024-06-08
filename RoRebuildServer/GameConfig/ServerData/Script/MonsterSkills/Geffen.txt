@@ -1,0 +1,40 @@
+﻿
+event GrandThunderObject {
+	local delay = Param1;
+	StartTimer();
+	SetTimer(2000-delay);
+	StartCastCircle(SelfPosition, 2, delay, false);
+OnTimer 2000:
+	AreaSkillIndirect(SelfPosition, ThunderStorm, 10);
+	EndEvent();
+}
+
+event GrandThunderstorm {
+	StartTimer();
+OnTimer 500: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 2000);
+OnTimer 600: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1950);
+OnTimer 700: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1900);
+OnTimer 800: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1850);
+OnTimer 900: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1800);
+OnTimer 1000: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1750);
+OnTimer 1100: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1700);
+OnTimer 1200: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1650);
+OnTimer 1300: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1600);
+OnTimer 1400: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1550);
+OnTimer 1500: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1500);
+OnTimer 1600: EndEvent();
+
+}
+
+SkillHandler("ORK_HERO") {
+StateAttacking:
+	TryCast(GrandThunderstorm, 10, 500, 2500, 5000, EventOnStartCast)[HpPercent < 30] -> CreateEvent("GrandThunderstorm");
+	TryCast(ThunderStorm, 10, 200, 2500, 5000)[HpPercent >= 30];
+StateIdle:
+	//TryCast(CallMinion, 1, 100, 2000, 30000)[MinionCount < 3] -> CallDefaultMinions();
+}
+
+SkillHandler("DOPPELGANGER") {
+StateAttacking:
+	TryCast(Haste, 1, 1000, 0, 10h)[HpPercent <= 30];
+}

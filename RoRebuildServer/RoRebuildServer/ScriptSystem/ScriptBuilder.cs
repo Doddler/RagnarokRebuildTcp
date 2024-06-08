@@ -553,6 +553,9 @@ public class ScriptBuilder
         additionalVariables.Add("Param4", "npc.ParamsInt[3]");
         additionalVariables.Add("ParamString", "npc.ParamString");
 
+        foreach (var i in Enum.GetValues<CharacterSkill>())
+            additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
+
         IsEvent = true;
 
         return name;
@@ -597,6 +600,9 @@ public class ScriptBuilder
             additionalVariables.Add("Param3", "npc.ParamsInt[2]");
             additionalVariables.Add("Param4", "npc.ParamsInt[3]");
             additionalVariables.Add("ParamString", "npc.ParamString");
+
+            foreach (var i in Enum.GetValues<CharacterSkill>())
+                additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
         }
 
         if (section == "OnClick" || section == "OnTouch")

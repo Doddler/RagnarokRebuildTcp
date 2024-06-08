@@ -61,7 +61,8 @@ public class SprImporter : UnityEditor.AssetImporters.ScriptedImporter
                         continue;
                     var sPath = $"Assets/Sounds/{s}";
                     if(!File.Exists(sPath))
-                        sPath = $"Assets/Sounds/{s.Replace(".wav", ".ogg")}";
+                        sPath = $"Assets/Sounds/{s.Replace(".wav", "")}.ogg";
+
                     var sound = AssetDatabase.LoadAssetAtPath<AudioClip>(sPath);
                     if (sound == null)
                         Debug.Log("Could not find sound " + sPath + " for sprite " + name);
@@ -133,7 +134,39 @@ public class SprImporter : UnityEditor.AssetImporters.ScriptedImporter
                     }
                 }
             }
+            
+            //far better way to get sprite attack timing
+            if (asset.Type == SpriteType.Monster || asset.Type == SpriteType.Monster2 || asset.Type == SpriteType.Pet)
+            {
+                var actionId = RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack1);
+                if (actionId == -1)
+                    actionId = RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack2);
+                if (actionId >= 0)
+                {
 
+                    var frames = asset.Actions[actionId].Frames;
+                    var found = false;
+
+                    for (var j = 0; j < frames.Length; j++)
+                    {
+                        if (frames[j].IsAttackFrame)
+                        {
+                            asset.AttackFrameTime = j * asset.Actions[actionId].Delay;
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        var pos = frames.Length - 2;
+                        if (pos < 0)
+                            pos = 0;
+                        asset.AttackFrameTime = pos * asset.Actions[actionId].Delay;
+                    }
+                }
+            }
+            
             asset.Size = Mathf.CeilToInt(maxExtent);
             asset.AverageWidth = totalWidth / widthCount;
 

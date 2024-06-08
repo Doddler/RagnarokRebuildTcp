@@ -11,6 +11,7 @@ Towns
 	Comodo, comodo
 	Juno, yuno
 	Old Payon, payon_mem
+	Amatsu, amatsu
 Prontera Field
 	0, prt_fild00
 	1, prt_fild01
@@ -207,6 +208,12 @@ Lutie
 	2,xmas_dun02
 	Field,xmas_fild01
 	Indoors,xmas_in
+Amatsu
+	Amatsu,amatsu
+	Field,ama_fild01
+	1,ama_dun01
+	2,ama_dun02
+	3,ama_dun03
 Novice Grounds
 	Entrance,new_zone01
 	Quiz,new_zone02
@@ -235,3 +242,5 @@ Debug
 	Test Room B,guild_vs2
 	Test Room C,guild_vs5
 	Juperos 1F,juperos_01
+	Elevator,jupe_ele
+	Arena Room,arena_room

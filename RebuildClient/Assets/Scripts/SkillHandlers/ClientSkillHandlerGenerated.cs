@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[21];
+			handlers = new SkillHandlerBase[22];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new BashHandler();
 			handlers[2] = new DefaultSkillHandler();
@@ -30,7 +30,8 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[17] = new DefaultSkillHandler();
 			handlers[18] = new MammoniteHandler();
 			handlers[19] = new DefaultSkillHandler();
-			handlers[20] = new DefaultSkillHandler();
+			handlers[20] = new GrandThunderstormHandler();
+			handlers[21] = new DefaultSkillHandler();
 		}
 	}
 }

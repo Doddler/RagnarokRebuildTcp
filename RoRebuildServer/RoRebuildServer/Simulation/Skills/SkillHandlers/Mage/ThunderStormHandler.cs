@@ -8,10 +8,12 @@ using RoRebuildServer.Data;
 using RoRebuildServer.Networking;
 using System;
 using System.Diagnostics;
+using RoRebuildServer.Database.Domain;
+using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 
-[SkillHandler(CharacterSkill.ThunderStorm, SkillClass.Magic, SkillTarget.AreaTargeted)]
+[SkillHandler(CharacterSkill.ThunderStorm, SkillClass.Magic, SkillTarget.Ground)]
 public class ThunderStormHandler : SkillHandlerBase
 {
     public override int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 2; //range 2 = 5x5
@@ -24,27 +26,32 @@ public class ThunderStormHandler : SkillHandlerBase
         return 1f + lvl * 0.4f;
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
         
         var targetList = EntityListPool.Get();
-        map.GatherEnemiesInArea(source.Character, position, 2, targetList, true, true);
-        
+        map.GatherEnemiesInArea(source.Character, position, 2, targetList, !isIndirect, true);
+        map?.GatherPlayersForMultiCast(source.Character);
+
         foreach (var e in targetList)
         {
             var res = source.CalculateCombatResult(e.Get<CombatEntity>(), 1, lvl, AttackFlags.Magical, AttackElement.Wind);
-            source.ExecuteCombatResult(res, true);
+            source.ExecuteCombatResult(res, false);
+            
+            if(e.TryGet<WorldObject>(out var blastTarget))
+                CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
         }
         
         EntityListPool.Return(targetList);
 
-        source.ApplyCooldownForAttackAction(position);
+        if (!isIndirect)
+            source.ApplyCooldownForAttackAction(position);
         var id = DataManager.EffectIdForName["ThunderStorm"];
 
-        map.GatherPlayersForMultiCast(source.Character);
-        CommandBuilder.SkillExecuteAreaTargetedSkill(source.Character, position, CharacterSkill.ThunderStorm, lvl);
+        if(!isIndirect)
+            CommandBuilder.SkillExecuteAreaTargetedSkill(source.Character, position, CharacterSkill.ThunderStorm, lvl);
         CommandBuilder.SendEffectAtLocationMulti(id, position, 0);
         CommandBuilder.ClearRecipients();
     }

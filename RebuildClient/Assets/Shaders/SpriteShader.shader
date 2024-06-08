@@ -303,9 +303,11 @@ Shader"Ragnarok/CharacterSpriteShader"
 				float4 light = float4(ShadeVertexLightsFull(v.vertex, float3(0,1,0), 8, true), 1.0);
 				light += float4(_EnvColor.rgb * min(_EnvColor.a, 1),0);
 				float lmax = max(light.r, max(light.g, light.b));
+				//lmax = clamp(lmax, 0, 0.5);
 				
-				light -= lmax/3;
-				o.color.rgb = o.color.rgb + light.rgb;
+				//light -= light/lmax;
+				if(lmax > 0)
+					o.color.rgb = o.color.rgb * ((light.rgb / lmax + 0.2)/1.2);
 				//o.color.rgb = _EnvColor.rgb;
 				//o.color.a = v.color;
 				
@@ -342,10 +344,10 @@ Shader"Ragnarok/CharacterSpriteShader"
 			{
 				//environment ambient contribution disabled for now as it muddies the sprite
 				//todo: turn ambient contribution back on if fog is disabled.
-				// float4 env = float4(1,1,1,1);
+				 float4 env = float4(1,1,1,1);
 				//return i.color;
-				float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
-				env = env * 0.3 + 0.7;// + saturate(0.5 + i.envColor);
+				//float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
+				//env = env * 0.3 + 0.7;// + saturate(0.5 + i.envColor);
 					
 				//smoothpixel
 				// apply anti-aliasing

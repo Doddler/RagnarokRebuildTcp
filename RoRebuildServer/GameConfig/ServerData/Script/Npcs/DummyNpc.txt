@@ -1,0 +1,1346 @@
+﻿Npc("alb2trea", "Bulletin Board", "2_BULLETIN_BOARD", 75, 101, N) { }
+Npc("alb2trea", "Fisk", "4W_SAILOR", 39, 50, E) { }
+Npc("alb2trea", "Kafra Employee", "4_F_KAFRA1", 59, 69, SE) { }
+Npc("alb2trea", "Tool Dealer", "4_M_01", 87, 65, SE) { }
+Npc("alberta_in", "Armor Dealer", "4W_F_01", 180, 15, N) { }
+Npc("alberta_in", "Chad", "1_M_03", 20, 183, N) { }
+Npc("alberta_in", "Cherokee", "1_M_01", 122, 53, S) { }
+Npc("alberta_in", "Fredrik", "4_M_03", 28, 58, N) { }
+Npc("alberta_in", "Fredrik", "4_M_03", 28, 58, N) { }
+Npc("alberta_in", "Gate Keeper", "4_M_01", 26, 146, S) { }
+Npc("alberta_in", "Grampa", "2_M_PHARMACIST", 29, 140, S) { }
+Npc("alberta_in", "Grandpa Pharmacist", "1_M_PUBMASTER", 16, 28, S) { }
+Npc("alberta_in", "Grandpa Turtle", "2_M_PHARMACIST", 23, 104, S) { }
+Npc("alberta_in", "Guarnien", "4W_M_02", 70, 51, SE) { }
+Npc("alberta_in", "Guild Staff", "1_M_SMITH", 174, 22, NW) { }
+Npc("alberta_in", "Inn Employee", "1_M_INNKEEPER", 32, 142, SW) { }
+Npc("alberta_in", "Item Collector", "1_F_MERCHANT_02", 165, 96, N) { }
+Npc("alberta_in", "Kahlamanlith", "4_M_04", 13, 71, SW) { }
+Npc("alberta_in", "Kahlamanlith", "4_M_04", 13, 71, SW) { }
+Npc("alberta_in", "Louitz", "4_M_02", 133, 55, SW) { }
+Npc("alberta_in", "Maid", "4_F_JPN", 154, 171, SE) { }
+Npc("alberta_in", "Merchant Guildsman", "4_M_01", 28, 29, W) { }
+Npc("alberta_in", "Merchant", "4_M_04", 53, 43, E) { }
+Npc("alberta_in", "Monster Tamer", "4_M_TELEPORTER", 173, 76, S) { }
+Npc("alberta_in", "Peculiar-looking Steward", "4_M_MANAGER", 114, 178, SE) { }
+Npc("alberta_in", "PVP Narrator", "4_M_02", 22, 146, S) { }
+Npc("alberta_in", "Repair Man", "4_M_04", 31, 65, S) { }
+Npc("alberta_in", "Stylist", "4_F_02", 55, 142, NE) { }
+Npc("alberta_in", "Tool Dealer", "1_F_MERCHANT_01", 182, 97, N) { }
+Npc("alberta_in", "Wealthy-looking Merchant", "1_M_SIGNMCNT", 125, 101, SE) { }
+Npc("alberta_in", "Weapon Dealer", "1_M_03", 188, 21, N) { }
+Npc("alberta_in", "Weapon Dealer", "4_KID01", 175, 97, S) { }
+Npc("alberta_in", "Xenophon", "4_M_02", 21, 63, SE) { }
+Npc("alberta_in", "Xenophon", "4_M_02", 21, 63, SE) { }
+Npc("pay_fild03", "Guide", "8W_SOLDIER", 400, 68, S) { }
+Npc("pay_fild03", "Trader's Lover", "1_M_INNKEEPER", 406, 73, SE) { }
+Npc("pay_fild03", "Trader", "1_M_MERCHANT", 403, 73, SW) { }
+//Npc("pay_fild03", "Tourist", "4W_M_03", 420, 74, S) { }
+Npc("alberta", "Aibakthing", "4_M_THAIONGBAK", 247, 42, SW) { }
+Npc("alberta", "Akagi", "4_M_JOB_ASSASSIN", 30, 65, SW) { }
+Npc("alberta", "Bulletin Board", "2_BULLETIN_BOARD", 111, 59, N) { }
+Npc("alberta", "Charlron", "1_M_PAY_ELDER", 119, 221, E) { }
+Npc("alberta", "Chef Assistant", "4_M_05", 167, 135, SE) { }
+//Npc("alberta", "Cool Event Voting Staff", "4_M_ZONDAMAN", 114, 70, E) { }
+Npc("alberta", "Crusader", "4_M_CRU", 196, 146, N) { }
+Npc("alberta", "Drunken Old Man", "1_M_JOBGUIDER", 131, 139, W) { }
+Npc("alberta", "Elin", "4W_KID", 117, 135, N) { }
+Npc("alberta", "Fabian", "4_M_02", 97, 51, N) { }
+Npc("alberta", "Fastidious Old Man", "4_M_SAGE_C", 165, 83, S) { }
+Npc("alberta", "Fastidious Old Man", "4_M_SAGE_C", 165, 83, S) { }
+Npc("alberta", "Fisk", "4W_SAILOR", 189, 151, SE) { }
+Npc("alberta", "Gershaun", "1_M_LIBRARYMASTER", 232, 106, E) { }
+Npc("alberta", "Girl", "4_F_CHNDRESS1", 245, 45, SW) { }
+Npc("alberta", "Grandmother Alma", "8_F_GRANDMOTHER", 93, 174, W) { }
+Npc("alberta", "Guard", "8W_SOLDIER", 98, 202, SE) { }
+Npc("alberta", "Guide", "8W_SOLDIER", 120, 60, SW) { }
+Npc("alberta", "Guide", "8W_SOLDIER", 23, 238, S) { }
+Npc("alberta", "Gypsy Hairdresser", "4_M_BARBER", 33, 141, NE) { }
+Npc("alberta", "Hat Store Girl", "1_F_LIBRARYGIRL", 136, 79, NW) { }
+//Npc("alberta", "Ice Cream Merchant", "4_M_03", 120, 53, S) { } //this dude is stacked on the stylish merchant for some reason
+//Npc("alberta", "Kafra Employee", "4_F_KAFRA2", 28, 229, N) { }
+//Npc("alberta", "Kafra Employee", "4_F_KAFRA6", 113, 60, E) { }
+//Npc("alberta", "Kafra Voting Staff", "4_F_KAFRA2", 119, 70, S) { }
+Npc("alberta", "Kinsey", "4_M_ORIENT02", 91, 70, S) { }
+Npc("alberta", "Kunlun Envoy", "4_M_TWMIDMAN", 245, 69, SW) { }
+//Npc("alberta", "Mailbox", "2_POSTBOX", 30, 240, N) { }
+//Npc("alberta", "Mailbox", "2_POSTBOX", 90, 60, N) { }
+Npc("alberta", "Necko", "4W_M_02", 83, 96, SE) { }
+Npc("alberta", "Paul", "4_M_04", 195, 151, W) { }
+Npc("alberta", "Phelix", "4_M_03", 190, 173, S) { }
+Npc("alberta", "Poor-looking Merchant", "4_M_ORIENT02", 43, 49, SE) { }
+Npc("alberta", "Poor-looking Merchant", "4_M_ORIENT02", 43, 49, SE) { }
+//Npc("alberta", "Sailor", "4_M_SEAMAN", 247, 122, S) { }
+Npc("alberta", "Sea Captain", "4_M_SEAMAN", 245, 93, SW) { }
+Npc("alberta", "Shakir", "4W_M_03", 58, 80, W) { }
+Npc("alberta", "Smile Assistance", "4_F_03", 113, 53, S) { }
+Npc("alberta", "Sonya", "8_F", 62, 156, W) { }
+Npc("alberta", "Steiner", "4W_SAILOR", 53, 39, N) { }
+Npc("alberta", "Stylish Merchant", "1_M_BARD", 120, 53, NW) { }
+Npc("alberta", "Tourist", "4W_M_03", 43, 244, S) { }
+Npc("alberta", "Trader's Lover", "1_M_INNKEEPER", 29, 243, SE) { }
+Npc("alberta", "Trader", "1_M_MERCHANT", 26, 243, SW) { }
+Npc("alberta", "Turtle Island Scholar", "2_M_MOLGENSTEIN", 248, 89, S) { }
+Npc("alde_dun03", "Doorkeeper", "4W_F_01", 264, 16, S) { }
+Npc("aldeba_in", "Armor Dealer", "4W_F_01", 20, 60, N) { }
+Npc("aldeba_in", "Cipriano", "4_M_MANAGER", 219, 61, S) { }
+Npc("aldeba_in", "Esere", "4_M_04", 216, 169, SE) { }
+Npc("aldeba_in", "Harold", "1_M_SMITH", 223, 121, S) { }
+Npc("aldeba_in", "Inn Employee", "1_M_INNKEEPER", 92, 58, W) { }
+Npc("aldeba_in", "Kafra Employee", "4_F_AGENTKAFRA", 155, 240, SE) { }
+Npc("aldeba_in", "kafra Employee", "4_F_KAFRA3", 88, 161, SW) { }
+Npc("aldeba_in", "Kafra Jasmine", "4_F_KAFRA3", 24, 245, S) { }
+Npc("aldeba_in", "Kafra Service", "4_F_KAFRA1", 84, 166, S) { }
+Npc("aldeba_in", "Kafra Service", "4_F_KAFRA4", 142, 238, S) { }
+Npc("aldeba_in", "Kafra Service", "4_F_KAFRA5", 96, 181, S) { }
+Npc("aldeba_in", "Kafra Service", "4_F_KAFRA6", 91, 244, S) { }
+Npc("aldeba_in", "Lionel", "4W_M_01", 152, 47, S) { }
+Npc("aldeba_in", "Master", "1_M_PUBMASTER", 156, 179, S) { }
+Npc("aldeba_in", "Merchant", "4_M_04", 152, 166, S) { }
+Npc("aldeba_in", "Monster Tamer", "4_M_TELEPORTER", 168, 175, S) { }
+Npc("aldeba_in", "Piru Piru", "8_F", 156, 118, S) { }
+Npc("aldeba_in", "Pusat Pelayanan Kafra ", "4_F_KAFRA2", 83, 245, S) { }
+Npc("aldeba_in", "Repair Man", "4_M_04", 38, 60, SW) { }
+Npc("aldeba_in", "Reynolds", "1_M_02", 232, 241, S) { }
+Npc("aldeba_in", "Sir Jore", "1_M_SIGNALCHE", 155, 101, SW) { }
+Npc("aldeba_in", "Tool Dealer", "4_M_01", 94, 56, SE) { }
+Npc("aldeba_in", "Tzerero", "4_M_SEAMAN", 223, 167, SW) { }
+Npc("aldeba_in", "Weapon Dealer", "1_M_03", 28, 54, N) { }
+Npc("aldeba_in", "Weapon Dealer", "4_M_06", 22, 47, S) { }
+Npc("aldebaran", "Alchemy Guy", "1_M_03", 121, 231, S) { }
+Npc("aldebaran", "Bell Keeper", "4_M_ORIENT02", 143, 136, S) { }
+Npc("aldebaran", "Bill Thayer", "4_M_05", 178, 239, SW) { }
+Npc("aldebaran", "Bulletin Board", "2_BULLETIN_BOARD", 136, 133, N) { }
+Npc("aldebaran", "Bulletin Board", "2_BULLETIN_BOARD", 146, 106, N) { }
+Npc("aldebaran", "Canal Guy", "4W_M_01", 46, 129, S) { }
+Npc("aldebaran", "Chef Assistant", "4W_M_01", 165, 107, W) { }
+Npc("aldebaran", "Christmas Link", "4_M_SANTA", 168, 168, S) { }
+Npc("aldebaran", "Christmas Link", "4_M_SANTA", 168, 168, S) { }
+Npc("aldebaran", "Citizen", "4W_M_01", 212, 122, S) { }
+//Npc("aldebaran", "Cool Event Voting Staff", "4_M_ZONDAMAN", 138, 102, E) { }
+Npc("aldebaran", "Forest Guy", "4W_M_02", 67, 154, S) { }
+Npc("aldebaran", "Forger Munster", "1_M_02", 113, 70, S) { }
+Npc("aldebaran", "Insect Guy", "2_M_SWORDMASTER", 159, 242, S) { }
+Npc("aldebaran", "Issei", "1_M_02", 93, 80, S) { }
+Npc("aldebaran", "Joo Jahk", "4_M_ORIENT01", 180, 46, S) { }
+Npc("aldebaran", "Kafra Employee", "4_F_KAFRA1", 54, 238, SE) { }
+Npc("aldebaran", "Kafra Employee", "4_F_KAFRA2", 58, 225, S) { }
+//Npc("aldebaran", "Kafra Employee", "4_F_KAFRA5", 143, 119, S) { }
+//Npc("aldebaran", "Kafra Voting Staff", "4_F_KAFRA2", 145, 102, S) { }
+Npc("aldebaran", "Lady", "1_F_04", 66, 213, N) { }
+Npc("aldebaran", "Little Kid", "1_M_SIZ", 86, 228, S) { }
+//Npc("aldebaran", "Mailbox", "2_POSTBOX", 135, 122, N) { }
+Npc("aldebaran", "Merchant", "4_M_03", 152, 63, SE) { }
+Npc("aldebaran", "Meteurengut", "1_M_WIZARD", 44, 53, S) { }
+Npc("aldebaran", "Phracon Guy", "1_M_02", 117, 181, S) { }
+Npc("aldebaran", "Shell Gathering Lady", "4W_F_01", 81, 61, S) { }
+Npc("aldebaran", "Slot Guy", "1_M_01", 90, 170, S) { }
+Npc("aldebaran", "Smile Assistance", "4_F_03", 136, 135, S) { }
+Npc("aldebaran", "Smithing Guy", "1_M_JOBTESTER", 64, 104, S) { }
+Npc("aldebaran", "Soldier", "8W_SOLDIER", 139, 63, S) { }
+Npc("aldebaran", "Soldier", "8W_SOLDIER", 241, 136, S) { }
+Npc("aldebaran", "Sylvia", "1_F_04", 60, 70, S) { }
+Npc("aldebaran", "Town Girl", "4W_F_01", 146, 124, S) { }
+Npc("aldebaran", "Young Man", "4_M_01", 49, 93, S) { }
+Npc("c_tower3", "Doorkeeper", "4_M_02", 10, 249, S) { }
+Npc("gef_fild08", "Bulletin Board", "2_BOARD2", 211, 24, N) { }
+Npc("gef_fild09", "Bulletin Board", "2_BOARD1", 227, 29, N) { }
+Npc("gef_fild10", "Bulletin Board", "2_BOARD2", 109, 23, N) { }
+Npc("gef_fild10", "Bulletin Board", "2_BULLETIN_BOARD", 69, 340, N) { }
+//Npc("gef_fild10", "Kafra Employee", "4_F_KAFRA2", 73, 340, SE) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 122, 273, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 144, 250, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 159, 57, NW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 187, 288, S) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 219, 80, NW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 250, 65, SE) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 294, 243, W) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 319, 85, SE) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 184, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 300, SW) { }
+Npc("gef_fild13", "Bulletin Board", "2_BOARD1", 202, 31, N) { }
+Npc("gef_fild13", "Bulletin Board", "2_BOARD2", 29, 206, N) { }
+Npc("gef_tower", "Annoyed Man", "1_M_WIZARD", 118, 36, S) { }
+Npc("gef_tower", "Bulletin Board", "2_BULLETIN_BOARD", 55, 142, N) { }
+Npc("gef_tower", "Dismal Wizard", "4_M_JOB_WIZARD", 102, 24, W) { }
+Npc("gef_tower", "Enoz", "4_M_ALCHE_A", 116, 37, N) { }
+Npc("gef_tower", "Magic Guildsman", "1_F_GYPSY", 111, 37, S) { }
+Npc("gef_tower", "Nyao", "4_CAT", 115, 36, S) { }
+Npc("gef_tower", "White Dog", "4_DOG01", 107, 36, S) { }
+Npc("geffen_in", "Aaron", "4_M_SAGE_A", 61, 72, NE) { }
+Npc("geffen_in", "Armor Dealer", "1_F_01", 26, 178, S) { }
+Npc("geffen_in", "Blacksmith Guildsman", "4_M_JOB_BLACKSMITH", 110, 169, NW) { }
+Npc("geffen_in", "Blacksmith", "1_M_SMITH", 144, 166, S) { }
+Npc("geffen_in", "Blacksmith", "4_M_JOB_BLACKSMITH", 71, 112, W) { }
+Npc("geffen_in", "Christopher", "1_M_SMITH", 110, 172, N) { }
+Npc("geffen_in", "Crumpler", "1_M_HOF", 22, 125, NW) { }
+Npc("geffen_in", "Crusader", "4_M_CRU", 109, 161, SW) { }
+Npc("geffen_in", "Cute Girl", "4_F_KID2", 171, 42, SW) { }
+Npc("geffen_in", "Cute Girl", "4_F_KID2", 171, 42, W) { }
+Npc("geffen_in", "Gate Keeper", "4_M_01", 63, 63, S) { }
+Npc("geffen_in", "Girl", "4_M_KID2", 106, 106, NE) { }
+Npc("geffen_in", "Great Magician", "1_M_WIZARD", 151, 119, S) { }
+Npc("geffen_in", "Guild Staff", "1_M_01", 155, 122, S) { }
+Npc("geffen_in", "Hadenheim", "4_M_SEAMAN", 114, 73, NW) { }
+Npc("geffen_in", "Inn Employee", "1_M_INNKEEPER", 70, 64, SE) { }
+Npc("geffen_in", "Jesqurienne", "1_F_SIGNZISK", 59, 74, S) { }
+Npc("geffen_in", "Lonely-looking Woman", "4_F_05", 159, 48, S) { }
+Npc("geffen_in", "Lonely-looking Woman", "4_F_05", 159, 48, SE) { }
+Npc("geffen_in", "Mage Guildsman", "2_F_MAGICMASTER", 164, 124, S) { }
+Npc("geffen_in", "Magical Item Seller", "1_M_WIZARD", 77, 173, N) { }
+Npc("geffen_in", "Merchant Daven", "2_M_PHARMACIST", 79, 76, W) { }
+Npc("geffen_in", "Mikhail", "4_M_01", 30, 71, S) { }
+Npc("geffen_in", "Molgenstein", "2_M_MOLGENSTEIN", 141, 140, SW) { }
+Npc("geffen_in", "Monster Scholar", "4_F_GON", 109, 72, W) { }
+Npc("geffen_in", "Psychic Advisor", "4_M_BIBI", 39, 127, W) { }
+Npc("geffen_in", "PVP Narrator", "4_M_02", 67, 63, S) { }
+Npc("geffen_in", "Repair Man", "4_M_04", 34, 166, SW) { }
+Npc("geffen_in", "Skyler", "1_M_PUBMASTER", 59, 61, NW) { }
+Npc("geffen_in", "Theodore", "1_M_01", 34, 170, N) { }
+Npc("geffen_in", "Tool Dealer", "1_F_03", 77, 167, N) { }
+Npc("geffen_in", "Tool Dealer", "1_M_WIZARD", 171, 123, S) { }
+Npc("geffen_in", "Trader", "1_F_01", 74, 144, N) { }
+Npc("geffen_in", "Waitress", "4_F_01", 70, 67, SW) { }
+Npc("geffen_in", "Waitress", "4_F_02", 27, 134, SE) { }
+Npc("geffen_in", "Weapon Dealer", "1_M_01", 30, 178, S) { }
+Npc("geffen_in", "Weapon Dealer", "4_M_02", 22, 171, E) { }
+Npc("geffen_in", "Wizard Stanza", "1_M_WIZARD", 164, 109, N) { }
+Npc("geffen", "Akki", "4_F_JOB_BLACKSMITH", 178, 72, SW) { }
+Npc("geffen", "Argen", "4_M_YOYOROGUE", 129, 148, SW) { }
+Npc("geffen", "Aure Dupon", "4_KID01", 181, 114, SW) { }
+Npc("geffen", "Bard", "1_M_BARD", 132, 38, SW) { }
+Npc("geffen", "Bulletin Board", "2_BULLETIN_BOARD", 124, 65, N) { }
+Npc("geffen", "Bysliter", "1_F_04", 46, 164, NW) { }
+Npc("geffen", "Chef Assistant", "4_M_03", 196, 111, SW) { }
+Npc("geffen", "Citizen", "4W_M_01", 203, 146, SE) { }
+//Npc("geffen", "Cool Event Voting Staff", "4_M_ZONDAMAN", 117, 37, E) { }
+Npc("geffen", "Dequ'ee", "4_M_JOB_KNIGHT2", 154, 143, SW) { }
+Npc("geffen", "Goodday", "4_M_DWARF", 172, 52, NW) { }
+Npc("geffen", "Guide", "4_M_GEF_SOLDIER", 118, 62, N) { }
+Npc("geffen", "Guide", "4_M_GEF_SOLDIER", 123, 202, SE) { }
+Npc("geffen", "Guide", "4_M_GEF_SOLDIER", 203, 116, N) { }
+Npc("geffen", "Guide", "4_M_GEF_SOLDIER", 37, 123, SE) { }
+Npc("geffen", "Ipore", "8_F_GIRL", 67, 87, SW) { }
+//Npc("geffen", "Kafra Employee", "4_F_KAFRA3", 120, 62, N) { }
+//Npc("geffen", "Kafra Voting Staff", "4_F_KAFRA2", 122, 37, S) { }
+//Npc("geffen", "Kafra", "4_F_KAFRA4", 203, 123, W) { }
+//Npc("geffen", "Mailbox", "2_POSTBOX", 115, 67, N) { }
+//Npc("geffen", "Mailbox", "2_POSTBOX", 199, 125, N) { }
+Npc("geffen", "Meera", "4_F_02", 59, 143, N) { }
+Npc("geffen", "Merchant", "4_M_03", 173, 88, SE) { }
+Npc("geffen", "New_Mage_Manager", "8_F", 67, 180, S) { }
+Npc("geffen", "Nia", "8_F_GIRL", 122, 77, S) { }
+Npc("geffen", "Orwalk", "4_KID01", 156, 190, N) { }
+Npc("geffen", "Pet Groomer", "4_F_TELEPORTER", 193, 152, S) { }
+Npc("geffen", "Ralphie", "4W_M_01", 149, 26, N) { }
+Npc("geffen", "Sage Welshyun", "4_M_SAGE_A", 110, 200, SW) { }
+Npc("geffen", "Seth", "4_M_KID2", 83, 189, SE) { }
+Npc("geffen", "Sign Post", "2_BOARD1", 120, 189, N) { }
+Npc("geffen", "Smile Assistance", "4_F_03", 119, 107, S) { }
+Npc("geffen", "Stacey", "4W_F_01", 111, 48, N) { }
+Npc("geffen", "Suspicious Guy", "4W_M_03", 146, 148, S) { }
+//Npc("in_moc_16", "[Dante]", "2_M_THIEFMASTER", 156, 77, NW) { }
+//Npc("in_moc_16", "[Guil Marobihts]", "1_M_JOBTESTER", 156, 75, NW) { }
+//Npc("in_moc_16", "[Hyuie]", "1_M_JOBTESTER", 156, 87, NW) { }
+//Npc("in_moc_16", "[Khai]", "4_M_JOB_ASSASSIN", 156, 85, NW) { }
+//Npc("in_moc_16", "[Observing Man]", "2_M_THIEFMASTER", 156, 79, NW) { }
+//Npc("in_moc_16", "[Unnamed Man]", "1_M_MOC_LORD", 156, 83, NW) { }
+//Npc("in_moc_16", "[Varkady]", "4_F_JOB_ASSASSIN", 156, 81, W) { }
+Npc("in_moc_16", "Dante", "2_M_THIEFMASTER", 89, 98, NW) { }
+Npc("in_moc_16", "Guild Master's Aide", "1_M_JOBTESTER", 186, 81, NW) { }
+Npc("in_moc_16", "Guild Master", "1_M_MOC_LORD", 149, 80, S) { }
+Npc("in_moc_16", "Guild Officer", "4_M_JOB_ASSASSIN", 25, 90, NW) { }
+Npc("in_moc_16", "Guildsman", "1_M_JOBTESTER", 19, 33, NW) { }
+Npc("in_moc_16", "Jobchange Test Guide", "4_F_JOB_ASSASSIN", 21, 165, W) { }
+Npc("in_moc_16", "Varkady", "4_F_JOB_ASSASSIN", 87, 48, W) { }
+Npc("izlu2dun", "Bulletin Board", "2_BULLETIN_BOARD", 104, 91, N) { }
+Npc("izlu2dun", "Kafra Employee", "4_F_KAFRA2", 106, 58, S) { }
+//Npc("izlu2dun", "Sailor", "4W_SAILOR", 108, 27, N) { }
+Npc("izlude_in", "Aaron", "1_M_YOUNGKNIGHT", 125, 164, W) { }
+Npc("izlude_in", "Armor Dealer", "1_M_SIZ", 70, 127, S) { }
+Npc("izlude_in", "Monster Tamer", "4_M_TELEPORTER", 129, 64, S) { }
+Npc("izlude_in", "Nahlen", "8_F", 173, 88, W) { }
+Npc("izlude_in", "Shurank", "4_M_JOB_KNIGHT1", 82, 163, SW) { }
+Npc("izlude_in", "Swordman", "2_M_SWORDMASTER", 74, 172, S) { }
+Npc("izlude_in", "Swordman", "4_F_03", 30, 175, S) { }
+Npc("izlude_in", "Swordman", "4_M_03", 62, 170, E) { }
+Npc("izlude_in", "Test Hall Staff", "8W_SOLDIER", 30, 163, N) { }
+Npc("izlude_in", "Thomas De Knight", "4W_M_02", 175, 130, W) { }
+Npc("izlude_in", "Tool Dealer", "1_M_01", 115, 61, N) { }
+Npc("izlude_in", "Weapon Dealer", "1_F_MARIA", 60, 127, S) { }
+Npc("izlude", "Airship Staff", "4_F_01", 206, 55, SW) { }
+Npc("izlude", "Bonne", "4_F_01", 55, 74, W) { }
+Npc("izlude", "Bulletin Board", "2_BULLETIN_BOARD", 131, 116, N) { }
+Npc("izlude", "Butcher", "1_M_JOBGUIDER", 105, 99, N) { }
+Npc("izlude", "Cebalis", "4W_M_02", 58, 126, W) { }
+Npc("izlude", "Charfri", "4_F_02", 135, 78, W) { }
+Npc("izlude", "Cuskoal", "4_F_TELEPORTER", 119, 121, W) { }
+Npc("izlude", "Dega", "4_M_02", 150, 118, W) { }
+Npc("izlude", "Edgar", "1_M_03", 182, 186, W) { }
+Npc("izlude", "Fruit gardener", "1_M_INNKEEPER", 94, 98, S) { }
+Npc("izlude", "Grongast", "4_M_JOB_KNIGHT2", 69, 181, S) { }
+Npc("izlude", "Guide", "8W_SOLDIER", 121, 87, E) { }
+//Npc("izlude", "Kafra Employee", "4_F_KAFRA1", 134, 88, W) { }
+Npc("izlude", "Kylick", "4W_M_01", 150, 143, W) { }
+//Npc("izlude", "Mailbox", "2_POSTBOX", 136, 94, N) { }
+Npc("izlude", "Marriage Companion", "1_F_LIBRARYGIRL", 171, 185, SW) { }
+Npc("izlude", "Pet Groomer", "4_F_TELEPORTER", 164, 138, S) { }
+Npc("izlude", "Red", "4_M_03", 56, 126, W) { }
+//Npc("izlude", "Sailor", "4W_SAILOR", 201, 181, W) { }
+Npc("izlude", "Scamp", "4_M_YURI", 186, 57, SE) { }
+Npc("izlude", "Smile Assistance", "4_F_03", 129, 118, S) { }
+Npc("izlude", "Soldier", "8W_SOLDIER", 124, 178, W) { }
+Npc("izlude", "Vendor from Milk Ranch", "4_F_01", 105, 92, NE) { }
+Npc("izlude", "비티", "4_DOG01", 250, 250, SW) { }
+Npc("juperos_01", "Bronze Statue", "CLEAR_NPC", 99, 112, N) { }
+Npc("juperos_01", "Bronze Statue", "CLEAR_NPC", 99, 71, N) { }
+Npc("juperos_01", "Machine Statue", "CLEAR_NPC", 215, 127, N) { }
+Npc("juperos_01", "Sculpture", "CLEAR_NPC", 79, 92, N) { }
+Npc("juperos_01", "Stone Statue", "CLEAR_NPC", 123, 92, N) { }
+Npc("mjo_dun02", "Flaming Spirit Man", "4_M_03", 88, 295, S) { }
+Npc("mjo_dun02", "Grer", "4_M_DWARF", 126, 34, NW) { }
+Npc("mjolnir_01", "Dwarf Blacksmith", "4_M_DWARF", 35, 136, NE) { }
+Npc("mjolnir_02", "Blacksmith Miner", "4_F_JOB_BLACKSMITH", 85, 362, SW) { }
+Npc("mjolnir_02", "Kafra Employee", "4_F_KAFRA2", 82, 362, S) { }
+Npc("mjolnir_09", "Berling", "4_M_DWARF", 87, 129, SW) { }
+Npc("mjolnir_09", "Dwarf Blacksmith", "4_M_DWARF", 209, 341, SW) { }
+Npc("mjolnir_11", "Acolyte", "4_F_SISTER", 27, 223, SW) { }
+Npc("mjolnir_11", "Dwarf Blacksmith", "4_M_DWARF", 149, 247, SE) { }
+Npc("mjolnir_12", "Dwarf Blacksmith", "4_M_DWARF", 18, 18, NE) { }
+Npc("moc_fild07", "Ascetic", "4_F_SISTER", 41, 355, S) { }
+Npc("moc_fild11", "battle_traces", "CLEAR_NPC", 184, 342, N) { }
+Npc("moc_fild11", "battle_traces", "CLEAR_NPC", 205, 52, N) { }
+Npc("moc_fild11", "battle_traces", "CLEAR_NPC", 226, 235, N) { }
+Npc("moc_fild11", "battle_traces", "CLEAR_NPC", 39, 163, N) { }
+Npc("moc_fild12", "battle_traces", "CLEAR_NPC", 166, 369, N) { }
+Npc("moc_fild12", "battle_traces", "CLEAR_NPC", 173, 215, N) { }
+Npc("moc_fild12", "battle_traces", "CLEAR_NPC", 276, 165, N) { }
+Npc("moc_fild12", "Serutero", "1_M_ORIENT01", 35, 303, S) { }
+Npc("moc_fild15", "Bulletin Board", "2_BULLETIN_BOARD", 267, 264, N) { }
+Npc("moc_fild16", "Ice Cream Merchant", "4_M_03", 88, 304, S) { }
+Npc("moc_fild16", "New Assassin", "2_M_THIEFMASTER", 211, 254, S) { }
+Npc("moc_fild16", "Uncle Assassin", "1_M_JOBTESTER", 199, 212, S) { }
+Npc("moc_fild17", "battle_traces", "CLEAR_NPC", 213, 358, N) { }
+Npc("moc_fild17", "battle_traces", "CLEAR_NPC", 228, 274, N) { }
+Npc("moc_fild17", "battle_traces", "CLEAR_NPC", 34, 292, N) { }
+Npc("moc_fild18", "battle_traces", "CLEAR_NPC", 109, 197, N) { }
+Npc("moc_fild18", "battle_traces", "CLEAR_NPC", 111, 303, N) { }
+Npc("moc_fild18", "battle_traces", "CLEAR_NPC", 156, 96, N) { }
+Npc("moc_fild18", "battle_traces", "CLEAR_NPC", 177, 333, N) { }
+Npc("moc_fild18", "battle_traces", "CLEAR_NPC", 309, 257, N) { }
+Npc("moc_fild18", "battle_traces", "CLEAR_NPC", 346, 296, N) { }
+Npc("moc_fild19", "Bulletin Board", "2_BULLETIN_BOARD", 107, 101, N) { }
+Npc("moc_prydb1", "Alcouskou", "2_M_THIEFMASTER", 154, 128, S) { }
+Npc("moc_prydb1", "Guild Staff", "1_F_04", 39, 129, W) { }
+Npc("moc_prydb1", "Guild Staff", "2_M_THIEFMASTER", 42, 133, W) { }
+Npc("moc_ruins", "Bulletin Board", "2_BULLETIN_BOARD", 61, 164, N) { }
+Npc("moc_ruins", "Dubious Man", "4_M_01", 141, 125, SW) { }
+Npc("moc_ruins", "Kafra Employee", "4_F_KAFRA4", 59, 157, NE) { }
+Npc("moc_ruins", "Part-timer", "4_F_04", 91, 150, N) { }
+Npc("moc_ruins", "Thief Trainer", "4_M_02", 66, 164, S) { }
+Npc("morocc_in", "Abdul", "4W_M_03", 72, 32, E) { }
+Npc("morocc_in", "Abdul", "4W_M_03", 72, 32, E) { }
+Npc("morocc_in", "Aragham", "4W_M_03", 73, 38, E) { }
+Npc("morocc_in", "Aragham", "4W_M_03", 73, 38, E) { }
+Npc("morocc_in", "Armor Dealer", "1_M_MERCHANT", 141, 60, N) { }
+Npc("morocc_in", "Bankley", "4W_M_01", 12, 156, SW) { }
+Npc("morocc_in", "Employee", "1_F_01", 146, 179, N) { }
+Npc("morocc_in", "Gate Keeper", "4_M_01", 144, 142, S) { }
+Npc("morocc_in", "Geil", "4_M_ORIENT02", 51, 101, SW) { }
+Npc("morocc_in", "Grampa", "1_M_PUBMASTER", 112, 122, N) { }
+Npc("morocc_in", "Inn Employee", "1_M_INNKEEPER", 147, 141, SW) { }
+Npc("morocc_in", "Inn Employee", "1_M_INNKEEPER", 78, 100, S) { }
+Npc("morocc_in", "Kid", "4_M_KID2", 174, 30, E) { }
+Npc("morocc_in", "Marius", "1_M_WIZARD", 76, 163, S) { }
+Npc("morocc_in", "Old Scholar Tyus", "4_M_JOB_WIZARD", 116, 101, SW) { }
+Npc("morocc_in", "Pierce", "4_M_ORIENT02", 142, 100, S) { }
+Npc("morocc_in", "PVP Narrator", "4_M_02", 144, 138, S) { }
+Npc("morocc_in", "Repair Man", "4W_M_03", 71, 41, S) { }
+Npc("morocc_in", "Rogue", "1_M_SIGNROGUE", 115, 154, SE) { }
+Npc("morocc_in", "Sade", "4W_M_03", 63, 32, E) { }
+Npc("morocc_in", "Sade", "4W_M_03", 63, 32, E) { }
+Npc("morocc_in", "Student", "4_M_04", 140, 102, S) { }
+Npc("morocc_in", "Weapon Dealer", "1_M_MERCHANT", 141, 67, N) { }
+Npc("morocc_in", "Weapon Dealer", "4W_M_03", 132, 57, N) { }
+Npc("morocc_in", "Young Man", "2_M_THIEFMASTER", 114, 162, S) { }
+Npc("morocc", "Ant Man", "1_M_01", 76, 75, S) { }
+Npc("morocc", "Auction Entrance Desk", "4W_M_02", 300, 10, N) { }
+Npc("morocc", "Auction Guide", "4W_M_02", 182, 95, E) { }
+Npc("morocc", "Bard", "2_M_BARD_ORIENT", 134, 111, SW) { }
+Npc("morocc", "Blacksmith Guildsman", "4_F_JOB_BLACKSMITH", 95, 133, S) { }
+Npc("morocc", "Bulletin Board", "2_BULLETIN_BOARD", 152, 110, N) { }
+Npc("morocc", "Butcher", "4_M_03", 157, 72, E) { }
+Npc("morocc", "Chef Assistant", "4_M_04", 120, 97, SE) { }
+Npc("morocc", "Citizen", "4_F_03", 289, 230, SW) { }
+//Npc("morocc", "Cool Event Voting Staff", "4_M_ZONDAMAN", 155, 114, E) { }
+Npc("morocc", "Dimitri", "1_M_03", 180, 155, S) { }
+Npc("morocc", "Duke Nali", "4_M_ORIENT01", 121, 109, SE) { }
+Npc("morocc", "Fly Man", "1_M_JOBGUIDER", 234, 273, S) { }
+Npc("morocc", "Guide", "4_M_MOC_SOLDIER", 153, 286, E) { }
+Npc("morocc", "Guide", "4_M_MOC_SOLDIER", 162, 97, E) { }
+Npc("morocc", "Guide", "4_M_MOC_SOLDIER", 28, 161, E) { }
+Npc("morocc", "Guide", "4_M_MOC_SOLDIER", 294, 203, S) { }
+Npc("morocc", "Guide", "4_M_MOC_SOLDIER", 54, 97, S) { }
+Npc("morocc", "Hans", "4_M_04", 240, 72, SW) { }
+Npc("morocc", "Ice Cream Merchant", "4_M_03", 160, 143, S) { }
+Npc("morocc", "Item Collector", "4_M_03", 170, 101, W) { }
+Npc("morocc", "Item Collector", "4_M_03", 206, 250, N) { }
+Npc("morocc", "Jeweler", "4W_M_03", 145, 44, E) { }
+Npc("morocc", "Jeweler", "8_F", 166, 51, W) { }
+//Npc("morocc", "Kafra Employee", "4_F_KAFRA4", 160, 258, S) { }
+//Npc("morocc", "Kafra Employee", "4_F_KAFRA5", 156, 97, S) { }
+//Npc("morocc", "Kafra Voting Staff", "4_F_KAFRA2", 164, 114, S) { }
+Npc("morocc", "Little Girl", "4_F_KID2", 132, 111, SE) { }
+//Npc("morocc", "Mailbox", "2_POSTBOX", 166, 110, N) { }
+//Npc("morocc", "Mailbox", "2_POSTBOX", 168, 262, N) { }
+Npc("morocc", "Merchant", "4_M_03", 180, 259, SW) { }
+Npc("morocc", "Muetro", "4_M_02", 82, 292, SE) { }
+Npc("morocc", "Pet Groomer", "4_M_TELEPORTER", 269, 167, S) { }
+Npc("morocc", "Picky Lady", "1_F_01", 79, 111, S) { }
+Npc("morocc", "Shaze", "4W_M_01", 281, 178, W) { }
+Npc("morocc", "Smile Assistance", "4_F_03", 158, 97, S) { }
+Npc("morocc", "Suspicious Guy", "2_M_THIEFMASTER", 100, 104, NW) { }
+Npc("morocc", "Thug", "2_M_THIEFMASTER", 123, 58, S) { }
+Npc("morocc", "Tool Dealer", "4_F_04", 147, 102, S) { }
+Npc("morocc", "Tool Dealer", "4W_M_03", 151, 243, E) { }
+Npc("morocc", "Towner", "4_M_01", 208, 85, N) { }
+Npc("morocc", "Towner", "4_M_03", 116, 266, N) { }
+Npc("morocc", "Towner", "4_M_ORIENT02", 44, 180, N) { }
+Npc("morocc", "Towner", "4W_M_03", 150, 50, N) { }
+Npc("morocc", "Towner", "4W_M_03", 68, 260, N) { }
+Npc("morocc", "Trader", "4_F_04", 244, 134, SE) { }
+Npc("morocc", "Trader", "4_F_04", 268, 193, N) { }
+Npc("morocc", "Trader", "4_M_ORIENT02", 35, 69, E) { }
+Npc("morocc", "Trader", "4W_M_03", 139, 92, E) { }
+Npc("morocc", "Trader", "4W_M_03", 259, 193, S) { }
+Npc("morocc", "Traveler", "4W_M_03", 273, 79, S) { }
+Npc("morocc", "Uncle Morroc", "1_M_02", 277, 213, S) { }
+Npc("morocc", "Whichebain", "4_F_JOB_ASSASSIN", 27, 112, S) { }
+Npc("morocc", "Zaka", "4W_M_03", 201, 30, S) { }
+Npc("new_zone01", "Guard", "8W_SOLDIER", 144, 107, W) { }
+Npc("new_zone01", "Guard", "8W_SOLDIER", 144, 116, W) { }
+Npc("new_zone01", "Shion", "4_F_JOB_HUNTER", 53, 114, S) { }
+Npc("new_zone02", "Entrance Guard", "4_F_03", 38, 182, SW) { }
+Npc("new_zone02", "Guide Soldier", "8W_SOLDIER", 121, 101, W) { }
+Npc("new_zone02", "Helper", "4_M_02", 17, 182, SE) { }
+Npc("new_zone02", "Instructor", "4_F_03", 161, 182, SE) { }
+Npc("new_zone02", "Interface Tutor", "4_M_CRU", 99, 105, SW) { }
+Npc("new_zone02", "Item Tutor", "4_F_JOB_BLACKSMITH", 115, 111, SW) { }
+Npc("new_zone02", "Kafra Employee", "4_F_KAFRA1", 118, 108, SW) { }
+Npc("new_zone02", "Receptionist", "4_M_04", 100, 29, S) { }
+Npc("new_zone02", "Skill Tutor", "4_M_MONK", 83, 111, SW) { }
+Npc("new_zone02", "Status Assistant", "4_M_SAGE_A", 182, 182, SW) { }
+Npc("new_zone02", "Sweet Potato Merchant", "4_F_01", 28, 185, SW) { }
+Npc("new_zone02", "Understandings of Skill", "1_M_01", 184, 172, NW) { }
+Npc("new_zone03", "Test Examiner", "4_M_03", 96, 174, SW) { }
+Npc("new_zone03", "Trainer", "4_M_02", 95, 30, S) { }
+Npc("new_zone04", "Bruce", "1_M_LIBRARYMASTER", 91, 22, S) { }
+Npc("new_zone04", "Final Tutor", "1_ETC_01", 100, 29, NW) { }
+Npc("pay_arche", "Alchemist Guildmember", "2_M_ALCHE", 130, 113, SW) { }
+Npc("pay_arche", "Archer Joe", "4_M_ORIENT01", 77, 131, W) { }
+Npc("pay_arche", "Arpesto", "4_M_05", 109, 169, SW) { }
+Npc("pay_arche", "Bulletin Board", "2_BULLETIN_BOARD", 39, 134, N) { }
+Npc("pay_arche", "Bulletin Board", "2_BULLETIN_BOARD", 79, 31, N) { }
+Npc("pay_arche", "Guide", "4_M_PAY_SOLDIER", 85, 30, W) { }
+//Npc("pay_arche", "Kafra Employee", "4_F_KAFRA1", 55, 123, N) { }
+//Npc("pay_arche", "Mailbox", "2_POSTBOX", 55, 127, N) { }
+Npc("pay_arche", "Part-timer", "4_M_ORIENT01", 122, 100, N) { }
+Npc("pay_arche", "Reidin Corse", "4_M_REIDIN_KURS", 103, 165, SE) { }
+Npc("pay_arche", "Seisner", "4_F_JOB_HUNTER", 84, 139, SW) { }
+Npc("pay_arche", "Sign", "2_BOARD1", 127, 154, S) { }
+Npc("pay_dun03", "Fox Mask Problem Solver", "4_M_JPN2", 1, 1, S) { }
+Npc("pay_dun03", "Nine Tail", "4_M_JPN2", 48, 84, S) { }
+Npc("pay_fild08", "Man", "4_M_ORIENT02", 218, 283, W) { }
+Npc("pay_fild10", "Guildsman", "4W_M_02", 148, 252, S) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 130, 236, NW) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 147, 163, S) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 195, 274, SE) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 292, 126, W) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 321, 284, SW) { }
+Npc("payon_in01", "Archer Wolt", "4_M_ORIENT01", 47, 59, W) { }
+Npc("payon_in01", "Archer Zakk", "4_M_ORIENT01", 66, 64, SE) { }
+Npc("payon_in01", "Armor Dealer", "1_F_ORIENT_02", 7, 119, W) { }
+Npc("payon_in01", "Fortuneteller", "4_M_BIBI", 133, 108, W) { }
+Npc("payon_in01", "Gate Keeper", "4_M_01", 176, 107, S) { }
+Npc("payon_in01", "Granny", "8_F_GRANDMOTHER", 103, 111, S) { }
+Npc("payon_in01", "Hunter", "1_M_ORIENT01", 25, 100, NW) { }
+Npc("payon_in01", "Inn Employee", "1_M_INNKEEPER", 132, 62, SE) { }
+Npc("payon_in01", "Inventor Jaxx", "4_M_ORIENT02", 5, 134, SE) { }
+Npc("payon_in01", "Mystic Lady ", "1_F_ORIENT_02", 103, 79, S) { }
+Npc("payon_in01", "Poring Fortuneteller", "4_M_BIBI", 131, 76, W) { }
+Npc("payon_in01", "PVP Narrator", "4_M_02", 172, 109, S) { }
+Npc("payon_in01", "Tool Dealer", "4_M_ORIENT01", 5, 49, NE) { }
+Npc("payon_in01", "trainee", "4W_F_01", 127, 111, E) { }
+Npc("payon_in01", "Waitress", "4_F_01", 180, 7, W) { }
+Npc("payon_in01", "Weapon Dealer", "1_F_ORIENT_03", 15, 119, N) { }
+Npc("payon_in01", "Weapon Dealer", "4_F_KID2", 5, 129, E) { }
+Npc("payon_in01", "Young man", "4_M_ORIENT02", 122, 41, NE) { }
+Npc("payon_in02", "Archer Guildsman", "4_M_03", 64, 71, S) { }
+Npc("payon_in02", "Bard Jet", "1_M_BARD", 67, 65, SW) { }
+Npc("payon_in02", "Hunter", "1_M_ORIENT01", 21, 31, NW) { }
+Npc("payon_in02", "Master Kavaruk", "1_M_JOBTESTER", 54, 13, SW) { }
+Npc("payon_in02", "Tool Dealer", "1_F_ORIENT_01", 87, 34, N) { }
+Npc("payon_in02", "Young man", "4_M_04", 25, 71, S) { }
+Npc("payon_in03", "Chief Guardsman", "4_M_PAY_SOLDIER", 96, 116, SW) { }
+Npc("payon_in03", "Chief", "1_M_PAY_ELDER", 99, 190, S) { }
+Npc("payon_in03", "Daewoon", "1_M_SIGNMONK2", 11, 31, S) { }
+Npc("payon_in03", "Guard", "4_M_PAY_SOLDIER", 102, 185, SE) { }
+Npc("payon_in03", "Marx Hansen", "4_M_04", 188, 146, SE) { }
+Npc("payon_in03", "Nan Hyang", "1_F_ORIENT_03", 8, 193, S) { }
+Npc("payon", "Antonio", "4_M_ORIENT01", 144, 173, SE) { }
+Npc("payon", "Antonio", "4_M_ORIENT01", 144, 173, SE) { }
+Npc("payon", "Bard", "1_M_BARD", 181, 172, SW) { }
+Npc("payon", "Begnahd", "4_M_ORIENT01", 145, 178, SW) { }
+Npc("payon", "Begnahd", "4_M_ORIENT01", 145, 178, SW) { }
+Npc("payon", "Bulletin Board", "2_BULLETIN_BOARD", 178, 108, N) { }
+Npc("payon", "Chef Assistant", "4_M_ORIENT02", 206, 119, SE) { }
+//Npc("payon", "Cool Event Voting Staff", "4_M_ZONDAMAN", 153, 182, E) { }
+Npc("payon", "Friar", "4_F_SISTER", 79, 171, S) { }
+Npc("payon", "Grout'he Tuccok", "1_M_02", 182, 132, SW) { }
+Npc("payon", "Guardsman", "4_M_PAY_SOLDIER", 158, 246, SW) { }
+Npc("payon", "Guide", "4_M_PAY_SOLDIER", 162, 67, S) { }
+Npc("payon", "Hagin", "1_F_ORIENT_04", 154, 170, SW) { }
+Npc("payon", "Hakhim", "4_M_ORIENT01", 137, 178, SE) { }
+Npc("payon", "Hakhim", "4_M_ORIENT01", 137, 178, SE) { }
+Npc("payon", "Heavy Drinker", "2_M_PHARMACIST", 210, 110, NW) { }
+Npc("payon", "Jade", "4_M_SAGE_A", 173, 238, SE) { }
+Npc("payon", "Jason", "4_M_ORIENT01", 103, 63, SW) { }
+//Npc("payon", "Kafra Employee", "4_F_KAFRA2", 175, 226, S) { }
+//Npc("payon", "Kafra Employee", "4_F_KAFRA5", 181, 104, S) { }
+//Npc("payon", "Kafra Voting Staff", "4_F_KAFRA2", 158, 182, S) { }
+Npc("payon", "Lady", "4_F_01", 246, 154, N) { }
+//Npc("payon", "Mailbox", "2_POSTBOX", 171, 226, N) { }
+//Npc("payon", "Mailbox", "2_POSTBOX", 191, 104, N) { }
+Npc("payon", "Merchant", "4_M_03", 200, 134, SE) { }
+Npc("payon", "Monster Scholar", "4W_M_02", 132, 235, SW) { }
+Npc("payon", "Moohyun", "4_M_ROGUE", 215, 102, SW) { }
+Npc("payon", "Neko Neko", "4_F_JOB_ASSASSIN", 115, 131, SW) { }
+Npc("payon", "Pet Groomer", "4_F_TELEPORTER", 177, 131, S) { }
+Npc("payon", "Phoenix", "4_M_MONK", 157, 141, SE) { }
+Npc("payon", "Repair Man", "4_M_ORIENT01", 143, 165, NE) { }
+Npc("payon", "Rice Cake Boy", "4_M_ORIENT01", 209, 127, SW) { }
+Npc("payon", "RuRumuni", "4W_M_03", 91, 77, S) { }
+Npc("payon", "Smile Assistance", "4_F_03", 186, 104, SE) { }
+Npc("payon", "Talpitz", "1_M_ORIENT01", 151, 39, NW) { }
+Npc("payon", "The Wise Bull Horn", "4_M_LGTGRAND", 184, 65, SW) { }
+Npc("payon", "Tool Dealer", "4_M_ORIENT01", 159, 96, S) { }
+Npc("payon", "Woman", "1_F_01", 246, 158, SE) { }
+Npc("payon", "Woman", "1_F_01", 249, 156, NW) { }
+Npc("payon", "Young Man", "1_M_ORIENT01", 134, 211, S) { }
+Npc("payon", "Young Man", "4_M_ORIENT01", 173, 82, N) { }
+Npc("prontera", "Ahel", "1_F_PRIEST", 183, 333, NW) { }
+Npc("prontera", "Arthail", "1_M_BARD", 126, 335, SE) { }
+Npc("prontera", "Auction Entrance Desk", "4W_M_02", 300, 10, N) { }
+Npc("prontera", "Auction Guide", "4_F_KAFRA1", 218, 120, S) { }
+Npc("prontera", "Beeyo", "1_M_04", 197, 188, W) { }
+Npc("prontera", "Bulletin Board", "2_BULLETIN_BOARD", 148, 49, N) { }
+Npc("prontera", "Butcher", "4_M_BARBER", 64, 125, N) { }
+Npc("prontera", "Chef Assistant", "8_F_GIRL", 156, 212, NW) { }
+Npc("prontera", "Clanux Heffron", "1_M_04", 269, 326, SW) { }
+//Npc("prontera", "Cool Event Voting Staff", "4_M_ZONDAMAN", 147, 125, E) { }
+Npc("prontera", "Dairenne", "4_F_01", 78, 150, SW) { }
+Npc("prontera", "Doll Supplier", "4_M_03", 248, 153, N) { }
+Npc("prontera", "Flower Girl", "4_F_01", 113, 42, N) { }
+Npc("prontera", "Flower Girl", "4W_KID", 58, 182, N) { }
+Npc("prontera", "French Revolution", "2_M_DYEINGER", 153, 284, N) { }
+Npc("prontera", "Fruit Gardener", "8_F", 104, 49, N) { }
+Npc("prontera", "Gift Merchant", "4_F_02", 105, 87, N) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 160, 330, N) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 160, 330, N) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 223, 99, NW) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 223, 99, NW) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 229, 104, SE) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 229, 104, SE) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 47, 339, SE) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 47, 339, SE) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 52, 344, SE) { }
+Npc("prontera", "Guard", "8W_SOLDIER", 52, 344, SE) { }
+Npc("prontera", "Guide", "8W_SOLDIER", 154, 187, S) { }
+Npc("prontera", "Guide", "8W_SOLDIER", 160, 29, N) { }
+Npc("prontera", "Guide", "8W_SOLDIER", 282, 208, W) { }
+Npc("prontera", "Guide", "8W_SOLDIER", 29, 200, E) { }
+Npc("prontera", "Jayon", "4_M_03", 247, 129, SW) { }
+//Npc("prontera", "Kafra Employee", "4_F_KAFRA1", 146, 89, E) { }
+//Npc("prontera", "Kafra Employee", "4_F_KAFRA2", 248, 42, N) { }
+//Npc("prontera", "Kafra Employee", "4_F_KAFRA3", 151, 29, N) { }
+//Npc("prontera", "Kafra Employee", "4_F_KAFRA4", 282, 200, W) { }
+//Npc("prontera", "Kafra Employee", "4_F_KAFRA5", 29, 207, E) { }
+//Npc("prontera", "Kafra Employee", "4_F_KAFRA6", 152, 326, SW) { }
+//Npc("prontera", "Kafra Voting Staff", "4_F_KAFRA2", 164, 125, S) { }
+Npc("prontera", "Kellion", "4W_M_01", 93, 330, SW) { }
+Npc("prontera", "Knight", "4_M_JOB_KNIGHT1", 66, 358, SE) { }
+Npc("prontera", "Knight", "4_M_JOB_KNIGHT2", 73, 357, SE) { }
+Npc("prontera", "Knight", "4_M_JOB_KNIGHT2", 78, 354, SW) { }
+Npc("prontera", "Knight", "4_M_JOB_KNIGHT2", 78, 357, SW) { }
+Npc("prontera", "Mage", "2_F_MAGICMASTER", 144, 301, SE) { }
+//Npc("prontera", "Mailbox", "2_POSTBOX", 146, 86, N) { }
+//Npc("prontera", "Mailbox", "2_POSTBOX", 275, 213, N) { }
+//Npc("prontera", "Mailbox", "2_POSTBOX", 34, 212, N) { }
+Npc("prontera", "Merchant", "4_M_03", 123, 102, SE) { }
+Npc("prontera", "Merideth", "4_F_02", 106, 116, E) { }
+Npc("prontera", "Milk Vendor", "4_M_04", 73, 140, N) { }
+Npc("prontera", "Nephia", "4_F_ALCHE", 165, 232, SW) { }
+Npc("prontera", "New Guild Master", "4_M_MONK", 167, 281, SW) { }
+Npc("prontera", "North Gate Guide", "8W_SOLDIER", 151, 330, S) { }
+Npc("prontera", "Peco Peco Breeder", "8W_SOLDIER", 55, 350, SE) { }
+Npc("prontera", "Peco Peco Trainer", "8W_SOLDIER", 232, 318, SW) { }
+Npc("prontera", "Pet Groomer", "4_M_TELEPORTER", 218, 211, S) { }
+Npc("prontera", "Sagle", "4_KID01", 66, 111, N) { }
+Npc("prontera", "Sagle", "4_KID01", 66, 111, SW) { }
+Npc("prontera", "Shuger", "4W_M_02", 101, 288, SW) { }
+Npc("prontera", "Sir Meroze", "4_M_JOB_KNIGHT1", 72, 352, NE) { }
+Npc("prontera", "Strife", "1_M_02", 216, 70, W) { }
+Npc("prontera", "Tialfi", "4_M_KID1", 124, 297, SW) { }
+Npc("prontera", "Tono", "4W_M_01", 54, 240, E) { }
+Npc("prontera", "Vegetable Gardener", "4_F_02", 48, 58, N) { }
+Npc("prontera", "Vendor from Milk Ranch", "4_F_01", 73, 134, N) { }
+Npc("prontera", "Woman", "4W_F_01", 260, 354, S) { }
+Npc("prontera", "Young man", "4W_M_01", 275, 86, W) { }
+Npc("prontera", "YuNa", "8_F_GIRL", 149, 202, W) { }
+Npc("prontera", "YuPi", "8_F", 160, 133, W) { }
+Npc("prt_castle", "Child with a Cat", "4_F_YUNYANG", 45, 28, SW) { }
+Npc("prt_castle", "Crusader", "4_M_CRU", 35, 151, SE) { }
+Npc("prt_castle", "Crusader", "4_M_JOB_KNIGHT2", 48, 164, N) { }
+Npc("prt_castle", "Dessert manager", "1_M_01", 42, 35, SE) { }
+Npc("prt_castle", "Hwekebein", "4_F_JOB_ASSASSIN", 44, 30, SE) { }
+Npc("prt_castle", "Librarian", "8W_SOLDIER", 84, 51, SE) { }
+Npc("prt_castle", "Marlene Sheu", "4_COOK", 45, 35, SE) { }
+Npc("prt_castle", "Minister", "1_M_JOBTESTER", 76, 165, E) { }
+Npc("prt_castle", "Nurse General", "1_M_04", 175, 146, S) { }
+Npc("prt_castle", "Rebarev Doug", "1_M_KNIGHTMASTER", 44, 151, N) { }
+Npc("prt_castle", "Senior Crusader", "4_M_CRU_OLD", 45, 169, SE) { }
+Npc("prt_castle", "Sharle Orelean", "4_M_OILMAN", 43, 30, SW) { }
+Npc("prt_castle", "Soldier", "8W_SOLDIER", 107, 58, SE) { }
+Npc("prt_castle", "Suffering Man", "4_M_JOB_KNIGHT1", 164, 32, NW) { }
+Npc("prt_church", " Sacrificing Nun", "1_F_PRIEST", 27, 24, NW) { }
+Npc("prt_church", "Catholic Knight", "4_F_CRU", 95, 127, SE) { }
+Npc("prt_church", "Cleric", "1_M_PASTOR", 184, 41, S) { }
+Npc("prt_church", "Divorce Staff", "1_F_LIBRARYGIRL", 20, 179, S) { }
+Npc("prt_church", "Father", "1_F_PRIEST", 173, 23, S) { }
+Npc("prt_church", "Garnet", "1_F_02", 103, 76, N) { }
+Npc("prt_church", "Henson", "2_M_PHARMACIST", 103, 71, N) { }
+Npc("prt_church", "High Priest", "1_M_PASTOR", 16, 41, S) { }
+Npc("prt_church", "Marry Happy", "1_F_LIBRARYGIRL", 94, 100, S) { }
+Npc("prt_church", "Nun", "1_F_PRIEST", 108, 124, S) { }
+Npc("prt_church", "Praying Man", "4_M_NFMAN", 113, 103, NW) { }
+Npc("prt_church", "Priest Praupin", "4_M_MINISTER", 179, 15, NW) { }
+Npc("prt_church", "Priest Praupin", "4_M_MINISTER", 179, 15, S) { }
+Npc("prt_church", "Remarry Staff", "1_F_LIBRARYGIRL", 22, 179, S) { }
+Npc("prt_church", "Single Army", "4_M_GEF_SOLDIER", 98, 102, N) { }
+Npc("prt_church", "Single Army", "4_M_MOC_SOLDIER", 99, 102, N) { }
+Npc("prt_church", "Single Army", "4_M_PAY_SOLDIER", 100, 102, N) { }
+Npc("prt_church", "Single Army", "8_M_JPNSOLDIER", 101, 102, N) { }
+Npc("prt_church", "Single Army", "8_M_TWSOLDIER", 102, 102, N) { }
+Npc("prt_church", "Single Army", "8W_SOLDIER", 97, 102, N) { }
+Npc("prt_church", "Sister Rhinus", "1_F_PRIEST", 111, 112, NW) { }
+Npc("prt_church", "The king of Midgard", "1_M_PRON_KING", 28, 178, S) { }
+Npc("prt_church", "The king of Midgard", "1_M_PRON_KING", 99, 125, S) { }
+Npc("prt_fild00", "Ascetic", "4W_M_02", 208, 218, E) { }
+Npc("prt_fild01", "Roskva", "4_F_KID2", 196, 47, SW) { }
+Npc("prt_fild01", "Roskva", "4_F_KAFRA4", 197, 52, E) { }
+Npc("prt_fild02", "Dvalin", "4_M_DWARF", 185, 270, SW) { }
+Npc("prt_fild03", "Ascetic", "4_M_ORIENT02", 365, 255, W) { }
+Npc("prt_fild05", "Bulletin Board", "2_BULLETIN_BOARD", 278, 220, N) { }
+//Npc("prt_fild05", "Culvert Guardian", "8W_SOLDIER", 270, 212, SE) { }
+Npc("prt_fild05", "Kafra Employee", "4_F_KAFRA4", 290, 224, W) { }
+Npc("prt_fild05", "Tool Dealer", "4_M_01", 290, 221, W) { }
+//Npc("prt_fild08", "Bard", "1_M_BARD", 175, 374, SW) { }
+Npc("beach_dun3", "Nigiboran", "4_M_BIBI", 30, 220, S) { }
+Npc("c_tower3", "Doorkeeper", "4_M_02", 10, 249, S) { }
+Npc("cmd_fild04", "Daeguro", "4_F_KID2", 267, 137, S) { }
+Npc("cmd_fild04", "Ziyaol", "4_M_SEAMAN", 248, 86, S) { }
+Npc("cmd_fild04", "Zyosegirl", "4_F_04", 188, 74, S) { }
+Npc("cmd_fild07", "Armor Dealer", "4W_F_01", 277, 85, S) { }
+Npc("cmd_fild07", "Hallosu", "4W_SAILOR", 52, 280, S) { }
+Npc("cmd_fild07", "Kafra Employee", "4_F_KAFRA7", 136, 134, S) { }
+Npc("cmd_fild07", "Rahasu", "4W_SAILOR", 192, 58, S) { }
+Npc("cmd_fild07", "Sarumane", "4W_SAILOR", 94, 134, S) { }
+Npc("cmd_fild07", "Tool Dealer", "4_M_01", 257, 126, SE) { }
+Npc("cmd_fild07", "Weapon Dealer", "1_M_03", 250, 98, W) { }
+Npc("cmd_fild07", "Zain", "4W_SAILOR", 299, 83, S) { }
+Npc("cmd_in01", "Armor Dealer", "4W_F_01", 117, 165, S) { }
+Npc("cmd_in01", "Examiner", "4_F_07", 33, 25, SE) { }
+Npc("cmd_in01", "Neels", "4_M_JOB_BLACKSMITH", 164, 115, NW) { }
+Npc("cmd_in01", "Tool Dealer", "4_M_01", 79, 182, SE) { }
+Npc("cmd_in01", "Weapon Dealer", "1_M_03", 128, 165, W) { }
+Npc("cmd_in01", "Yillia", "1_F_04", 175, 120, SW) { }
+Npc("cmd_in02", "Chief", "1_M_03", 32, 140, S) { }
+Npc("cmd_in02", "Deniroz", "4_M_ORIENT02", 89, 72, S) { }
+Npc("cmd_in02", "G . J", "4_M_04", 172, 105, S) { }
+Npc("cmd_in02", "Kafra Employee", "4_F_KAFRA7", 146, 180, S) { }
+Npc("cmd_in02", "Loyar", "4_M_01", 174, 126, S) { }
+Npc("cmd_in02", "Man", "4_M_ROGUE", 190, 94, SW) { }
+Npc("cmd_in02", "Manzi", "4_M_03", 189, 99, S) { }
+Npc("cmd_in02", "Martine", "1_M_02", 73, 81, S) { }
+Npc("cmd_in02", "Moo", "4_M_MANAGER", 57, 62, S) { }
+Npc("cmd_in02", "Roberto", "4_M_SEAMAN", 64, 43, S) { }
+Npc("cmd_in02", "Scoursege", "1_M_BARD", 48, 55, S) { }
+Npc("cmd_in02", "Shalone", "4W_F_01", 178, 92, S) { }
+Npc("cmd_in02", "Stonae", "4W_M_02", 178, 86, S) { }
+Npc("cmd_in02", "Strange Guy", "1_M_SIGNART", 88, 51, S) { }
+Npc("cmd_in02", "Strange Guy", "1_M_SIGNART", 88, 51, S) { }
+Npc("comodo", "BBQ Boy", "4_M_04", 221, 310, S) { }
+Npc("comodo", "BBQ Boy", "4_M_KID1", 213, 310, S) { }
+Npc("comodo", "BBQ Mama", "1_F_MERCHANT_02", 215, 307, S) { }
+Npc("comodo", "BBQ Papa", "1_M_04", 216, 310, S) { }
+Npc("comodo", "BBQ Visitor", "4_F_01", 218, 309, S) { }
+Npc("comodo", "Bismark", "2_M_THIEFMASTER", 158, 342, NW) { }
+Npc("comodo", "Bor Robin", "4_M_04", 193, 151, S) { }
+Npc("comodo", "Bulletin Board", "2_BULLETIN_BOARD", 210, 148, N) { }
+Npc("comodo", "Camp Ground Boy", "4_M_BIBI", 206, 310, S) { }
+Npc("comodo", "Camp Ground Boy", "4_M_KID1", 209, 314, S) { }
+Npc("comodo", "Camping Maiden", "1_F_LIBRARYGIRL", 209, 305, S) { }
+Npc("comodo", "Camping Youth", "1_M_YOUNGKNIGHT", 204, 310, S) { }
+Npc("comodo", "Chef Assistant", "4_M_01", 225, 164, SW) { }
+Npc("comodo", "Comodo Guide", "8_F_GIRL", 176, 350, S) { }
+Npc("comodo", "Comodo Guide", "8_F_GIRL", 322, 178, S) { }
+Npc("comodo", "Comodo Guide", "8_F_GIRL", 37, 219, S) { }
+Npc("comodo", "Devellin", "4_F_01", 204, 148, NE) { }
+Npc("comodo", "Hair Ornament Girl", "8_F_GIRL", 228, 159, SW) { }
+Npc("comodo", "Hayes", "4_F_03", 171, 137, NW) { }
+Npc("comodo", "Hullaris", "4_F_GODEMOM", 187, 153, S) { }
+Npc("comodo", "Kachua", "4_F_02", 219, 158, E) { }
+//Npc("comodo", "Kafra Employee", "4_F_KAFRA7", 195, 150, S) { }
+Npc("comodo", "Kichiri", "4W_M_02", 169, 284, S) { }
+Npc("comodo", "Magatu", "1_M_JOBTESTER", 163, 280, S) { }
+Npc("comodo", "Mailbox", "2_POSTBOX", 200, 150, N) { }
+Npc("comodo", "Merunte", "4_M_JOB_HUNTER", 237, 217, SE) { }
+Npc("comodo", "Munak's Grandma", "8_F_GRANDMOTHER", 112, 182, N) { }
+Npc("comodo", "Rakusa", "1_F_MERCHANT_01", 164, 291, S) { }
+Npc("comodo", "Ryde", "4_M_02", 170, 137, NE) { }
+Npc("comodo", "Shanel", "4_F_07", 204, 172, SE) { }
+Npc("comodo", "Snowtora", "4_F_01", 180, 153, S) { }
+Npc("comodo", "Souvenir Vendor", "4W_F_01", 296, 125, S) { }
+Npc("comodo", "Suspicious Guy", "2_M_THIEFMASTER", 210, 154, W) { }
+Npc("comodo", "TORUNA", "4_M_MANAGER", 88, 97, S) { }
+Npc("comodo", "Traveler", "4_F_GON", 273, 137, S) { }
+Npc("comodo", "Wandering Bard", "2_M_BARD_ORIENT", 211, 155, SE) { }
+Npc("comodo", "Wandering Master", "4_M_JOB_ASSASSIN", 172, 230, SW) { }
+Npc("comodo", "Won", "1_M_MOC_LORD", 232, 87, S) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 131, 240, S) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 138, 73, NW) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 163, 136, SW) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 188, 240, SE) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 244, 133, W) { }
+Npc("prt_in", "Aesop", "4_M_JOB_KNIGHT2", 85, 99, SW) { }
+Npc("prt_in", "Aigie", "4_F_03", 169, 11, SE) { }
+Npc("prt_in", "Aigie", "4_F_03", 169, 11, SW) { }
+Npc("prt_in", "Aleuce", "4_F_03", 161, 20, SW) { }
+Npc("prt_in", "Archeologist", "1_M_SIGN1", 227, 45, N) { }
+Npc("prt_in", "Armor Dealer", "1_M_02", 172, 132, N) { }
+Npc("prt_in", "Bartender", "1_M_PUBMASTER", 180, 20, W) { }
+Npc("prt_in", "Carter", "4_M_04", 162, 11, W) { }
+Npc("prt_in", "Chivalry Captain Herman", "1_M_KNIGHTMASTER", 88, 101, S) { }
+Npc("prt_in", "Curator of Library", "1_M_LIBRARYMASTER", 178, 92, N) { }
+Npc("prt_in", "Customer", "4_M_04", 173, 13, S) { }
+Npc("prt_in", "Customer", "4_M_ORIENT02", 170, 14, N) { }
+Npc("prt_in", "Dietrich", "4_M_02", 63, 69, SW) { }
+Npc("prt_in", "Dietrich", "4_M_02", 63, 69, SW) { }
+Npc("prt_in", "Gate Keeper", "4_M_01", 52, 140, S) { }
+Npc("prt_in", "Ginedin Rephere", "1_M_JOBTESTER", 284, 168, SW) { }
+Npc("prt_in", "Hollgrehenn", "4_M_03", 63, 60, N) { }
+Npc("prt_in", "Hollgrehenn", "4_M_03", 63, 60, N) { }
+Npc("prt_in", "Inn Employee", "1_M_INNKEEPER", 244, 135, N) { }
+Npc("prt_in", "Inn Employee", "4_F_MAID", 61, 141, S) { }
+Npc("prt_in", "Jovovich", "4_F_02", 243, 168, S) { }
+Npc("prt_in", "Juan", "4_M_03", 94, 57, SW) { }
+Npc("prt_in", "Lady Amy Beatrist", "4_F_JOB_KNIGHT", 69, 107, E) { }
+Npc("prt_in", "Leo", "4_M_03", 75, 88, SE) { }
+Npc("prt_in", "Librarian", "4_M_ZONDAOYAJI", 172, 106, N) { }
+Npc("prt_in", "Librarian", "4_M_ZONDAOYAJI", 172, 106, W) { }
+Npc("prt_in", "Library Girl", "1_F_LIBRARYGIRL", 175, 50, N) { }
+Npc("prt_in", "Lord Arther", "1_M_KNIGHTMASTER", 47, 141, N) { }
+Npc("prt_in", "Maos", "4_M_SEAMAN", 251, 129, S) { }
+Npc("prt_in", "Maos", "4_M_SEAMAN", 251, 129, SW) { }
+Npc("prt_in", "Marianne", "1_M_INNKEEPER", 49, 172, SW) { }
+Npc("prt_in", "Marvin", "1_F_PUBGIRL", 177, 18, W) { }
+Npc("prt_in", "Morrison", "4W_M_01", 47, 173, SW) { }
+Npc("prt_in", "Nami", "1_F_01", 234, 133, S) { }
+Npc("prt_in", "Prontera Knight Member", "1_M_YOUNGKNIGHT", 73, 87, S) { }
+Npc("prt_in", "PVP Narrator", "4_M_02", 56, 140, S) { }
+Npc("prt_in", "Recruiter", "8W_SOLDIER", 88, 105, W) { }
+Npc("prt_in", "Repair Man", "4_M_04", 63, 54, W) { }
+Npc("prt_in", "Shevild", "4_M_03", 173, 24, W) { }
+Npc("prt_in", "Simon Mayace", "1_ETC_01", 82, 98, SW) { }
+Npc("prt_in", "Sir Andrew Syloc", "1_M_YOUNGKNIGHT", 75, 107, S) { }
+Npc("prt_in", "Sir Edmund", "4_M_JOB_KNIGHT2", 70, 99, E) { }
+Npc("prt_in", "Sir Grey", "2_M_SWORDMASTER", 87, 92, S) { }
+Npc("prt_in", "Sir James Syracuse", "1_M_YOUNGKNIGHT", 71, 91, N) { }
+Npc("prt_in", "Sir Michael", "1_M_JOBGUIDER", 26, 31, N) { }
+Npc("prt_in", "Sir Windsor", "4_M_JOB_KNIGHT1", 79, 94, S) { }
+Npc("prt_in", "Steward", "1_M_JOBTESTER", 228, 26, SE) { }
+Npc("prt_in", "Teacher", "1_M_INNKEEPER", 38, 108, S) { }
+Npc("prt_in", "TenSue", "4W_M_01", 177, 20, W) { }
+Npc("prt_in", "Tool Dealer", "1_M_INNKEEPER", 126, 76, N) { }
+Npc("prt_in", "Vurewell", "4_M_04", 56, 68, SE) { }
+Npc("prt_in", "Vurewell", "4_M_04", 56, 68, SE) { }
+Npc("prt_in", "Weapon Dealer", "1_F_01", 164, 140, S) { }
+Npc("prt_in", "Weapon Dealer", "1_M_01", 171, 140, N) { }
+Npc("prt_in", "Weapon Dealer", "1_M_JOBGUIDER", 172, 130, N) { }
+Npc("prt_in", "Wedding Shop Dealer", "1_F_LIBRARYGIRL", 211, 169, N) { }
+Npc("prt_maze02", "Gordon", "1_M_BARD", 14, 183, S) { }
+Npc("prt_maze02", "Guard", "8W_SOLDIER", 100, 69, N) { }
+Npc("prt_maze02", "Guard", "8W_SOLDIER", 110, 69, N) { }
+Npc("prt_maze02", "Pleur", "4_F_02", 16, 183, SW) { }
+Npc("prt_maze02", "Pleur", "4_F_02", 57, 151, NW) { }
+Npc("prt_maze02", "Soldier", "8W_SOLDIER", 100, 69, N) { }
+Npc("prt_maze02", "Soldier", "8W_SOLDIER", 110, 69, N) { }
+Npc("prt_monk", "Assistant", "4_M_ORIENT02", 225, 180, NW) { }
+Npc("prt_monk", "Asthe", "1_F_PRIEST", 230, 106, SW) { }
+Npc("prt_monk", "Chief Guard", "4_F_MONK", 199, 169, SW) { }
+Npc("prt_monk", "Cleope Verce", "4_F_SISTER", 153, 210, SW) { }
+Npc("prt_monk", "Dog", "4_DOG01", 235, 245, SE) { }
+Npc("prt_monk", "Douha", "1_F_PRIEST", 251, 255, NW) { }
+Npc("prt_monk", "Gloria", "4_F_SISTER", 219, 164, SW) { }
+Npc("prt_monk", "Hedrick", "1_M_04", 28, 260, SE) { }
+Npc("prt_monk", "Ill Girl", "4_F_04", 226, 257, E) { }
+Npc("prt_monk", "Monk", "2_M_PHARMACIST", 59, 247, NW) { }
+Npc("prt_monk", "Monk", "4_M_CHNMONK", 129, 263, SE) { }
+Npc("prt_monk", "Puhae", "4_M_MINISTER", 57, 179, NW) { }
+Npc("prt_monk", "Training Monk", "4_M_MONK", 270, 198, SW) { }
+Npc("prt_monk", "Veiner", "4_M_ORIENT02", 197, 228, SW) { }
+Npc("prt_monk", "Weapon Dealer", "4_F_JOB_BLACKSMITH", 135, 263, SE) { }
+Npc("sword_1-1", "Mae", "4_F_03", 223, 167, W) { }
+Npc("sword_1-1", "Medic", "8W_SOLDIER", 230, 207, W) { }
+Npc("sword_1-1", "Medic", "8W_SOLDIER", 230, 245, W) { }
+Npc("sword_1-1", "Test Hall Staff", "8W_SOLDIER", 230, 204, W) { }
+Npc("sword_1-1", "Test Hall Staff", "8W_SOLDIER", 230, 242, W) { }
+Npc("tur_dun01", "Knight", "2_M_SWORDMASTER", 190, 115, S) { }
+//Npc("tur_dun01", "Sailor", "4_M_SEAMAN", 165, 29, S) { }
+Npc("tur_dun01", "Tool Dealer", "4W_M_03", 158, 54, E) { }
+Npc("tur_dun03", "knight leader", "4_M_MINISTER", 105, 76, S) { }
+Npc("tur_dun03", "Knight", "2_M_SWORDMASTER", 105, 74, S) { }
+Npc("tur_dun03", "Knight", "8W_SOLDIER", 104, 171, S) { }
+Npc("tur_dun03", "Knight", "8W_SOLDIER", 189, 126, S) { }
+Npc("tur_dun03", "Knight", "8W_SOLDIER", 67, 130, S) { }
+Npc("turbo_n_1", "Guide", "1_M_01", 384, 167, NW) { }
+Npc("turbo_n_1", "Helper", "4_F_TELEPORTER", 298, 167, SW) { }
+Npc("yuno_fild03", "Bulletin Board", "2_BULLETIN_BOARD", 37, 143, N) { }
+Npc("yuno_fild04", "Dismal Guy", "4_M_ORIENT02", 165, 245, S) { }
+Npc("yuno_in01", "Armor Dealer", "4W_F_01", 112, 26, S) { }
+Npc("yuno_in01", "Bain", "4W_M_02", 103, 157, SW) { }
+Npc("yuno_in01", "Bajin", "1_M_01", 100, 153, NE) { }
+Npc("yuno_in01", "Delayt", "4_M_ORIENT01", 164, 27, S) { }
+Npc("yuno_in01", "Delayt", "4_M_ORIENT01", 164, 27, S) { }
+Npc("yuno_in01", "Dillemat", "4_M_ORIENT01", 171, 27, S) { }
+Npc("yuno_in01", "Dillemat", "4_M_ORIENT01", 171, 27, S) { }
+Npc("yuno_in01", "Disturb", "4_M_ORIENT01", 171, 21, S) { }
+Npc("yuno_in01", "Disturb", "4_M_ORIENT01", 171, 21, S) { }
+Npc("yuno_in01", "Doctor", "4_F_ALCHE", 99, 101, S) { }
+Npc("yuno_in01", "Kato", "1_M_JOBTESTER", 19, 183, SE) { }
+Npc("yuno_in01", "Old Man", "4_M_05", 172, 100, SW) { }
+Npc("yuno_in01", "Repair Man", "4_M_04", 175, 28, SW) { }
+Npc("yuno_in01", "Stangckle", "4W_M_03", 17, 95, SE) { }
+Npc("yuno_in01", "Tool Dealer", "4_M_01", 25, 34, SE) { }
+Npc("yuno_in01", "Wagan", "4_M_03", 17, 30, SE) { }
+Npc("yuno_in01", "Weapon Dealer", "1_M_03", 103, 35, W) { }
+Npc("yuno_in02", "Magic Academy Headmaster", "2_M_SAGE_OLD", 38, 61, SE) { }
+Npc("yuno_in02", "Metavis Seith ", "2_M_SAGE_B", 88, 164, SE) { }
+Npc("yuno_in03", "", "4_F_NOVICE", 34, 110, SE) { }
+Npc("yuno_in03", "Biology Professor", "4_M_SAGE_C", 32, 102, NW) { }
+Npc("yuno_in03", "CiCi", "2_M_MOLGENSTEIN", 178, 43, N) { }
+Npc("yuno_in03", "History Professor", "4_M_MANAGER", 62, 176, W) { }
+Npc("yuno_in03", "Magic Academy Staff", "2_M_SAGE_B", 154, 35, S) { }
+Npc("yuno_in03", "Metto", "4_M_SEAMAN", 26, 39, SW) { }
+Npc("yuno_in03", "Mishoona", "4_M_SAGE_C", 176, 24, SW) { }
+Npc("yuno_in03", "Museum Guide", "1_F_02", 32, 15, SW) { }
+Npc("yuno_in03", "Neris", "4_F_JOB_BLACKSMITH", 20, 18, E) { }
+Npc("yuno_in03", "Physics Professor", "2_M_PHARMACIST", 244, 31, SW) { }
+Npc("yuno_in03", "Practical Test Professor", "4_M_SAGE_C", 169, 180, SW) { }
+Npc("yuno_in03", "Written Test Professor", "4_M_SAGE_A", 105, 177, SE) { }
+Npc("yuno_in04", "Adventurer", "4_M_ROGUE", 33, 119, SW) { }
+Npc("yuno_in04", "Degas", "4_M_ALCHE_A", 27, 107, S) { }
+Npc("yuno_in04", "Irahae", "2_M_ALCHE", 22, 107, SE) { }
+Npc("yuno_in04", "Librarian", "4_M_01", 34, 67, S) { }
+Npc("yuno_in04", "Passionate Student", "4_M_SAGE_A", 96, 106, SE) { }
+Npc("yuno_in04", "Pisruik Quv", "4_M_ALCHE_D", 33, 108, S) { }
+Npc("yuno_in04", "Representative", "4_F_SISTER", 20, 123, NE) { }
+Npc("yuno_in04", "Scholar", "8_F_GIRL", 190, 125, S) { }
+Npc("yuno_in04", "Student", "4_M_SAGE_A", 107, 14, SE) { }
+Npc("yuno_in04", "Studying Scholar", "4_M_ALCHE_B", 47, 113, NW) { }
+Npc("yuno", "Active little girl", "4W_F_01", 208, 164, S) { }
+Npc("yuno", "Airship Staff", "4_F_02", 14, 262, SE) { }
+Npc("yuno", "Airship Staff", "4_F_02", 88, 263, SW) { }
+Npc("yuno", "Auction Entrance Desk", "4W_M_02", 300, 10, N) { }
+Npc("yuno", "Auction Guide", "4_F_01", 129, 116, N) { }
+Npc("yuno", "Bulletin Board", "2_BULLETIN_BOARD", 153, 113, N) { }
+Npc("yuno", "Chef Assistant", "4_M_01", 130, 173, SW) { }
+//Npc("yuno", "Cool Event Voting Staff", "4_M_ZONDAMAN", 153, 191, E) { }
+Npc("yuno", "Freidrich", "4_F_NOVICE", 184, 173, S) { }
+Npc("yuno", "Hypnotist", "4_F_TELEPORTER", 138, 187, SE) { }
+Npc("yuno", "Jeweler", "4_M_01", 226, 107, SE) { }
+Npc("yuno", "Juno Artisan", "1_M_JOBGUIDER", 157, 205, S) { }
+Npc("yuno", "Juno Fighter", "4_M_JOB_HUNTER", 328, 239, S) { }
+Npc("yuno", "Juno Granny", "8_F_GRANDMOTHER", 337, 227, S) { }
+Npc("yuno", "Juno Guide", "8_F_GIRL", 153, 47, S) { }
+Npc("yuno", "Juno Sage", "2_F_MAGICMASTER", 165, 111, S) { }
+Npc("yuno", "Juno Soldier", "8W_SOLDIER", 150, 228, S) { }
+Npc("yuno", "Juno Soldier", "8W_SOLDIER", 150, 283, S) { }
+Npc("yuno", "Juno Soldier", "8W_SOLDIER", 165, 228, S) { }
+Npc("yuno", "Juno Soldier", "8W_SOLDIER", 165, 283, S) { }
+Npc("yuno", "Juno Soldier", "8W_SOLDIER", 227, 292, S) { }
+Npc("yuno", "Juno Soldier", "8W_SOLDIER", 263, 320, S) { }
+Npc("yuno", "Juno Soldier", "8W_SOLDIER", 334, 182, S) { }
+Npc("yuno", "Kafra Employee", "4_F_KAFRA5", 152, 187, S) { }
+Npc("yuno", "Kafra Employee", "4_F_KAFRA5", 327, 108, S) { }
+//Npc("yuno", "Kafra Voting Staff", "4_F_KAFRA9", 162, 191, S) { }
+Npc("yuno", "kafra", "4_F_KAFRA5", 277, 221, S) { }
+Npc("yuno", "Kasis", "4_M_REPAIR", 222, 116, SW) { }
+Npc("yuno", "Knight", "4_M_JOB_KNIGHT2", 330, 100, S) { }
+Npc("yuno", "Magical Item Seller", "4_F_01", 163, 187, SE) { }
+//Npc("yuno", "Mailbox", "2_POSTBOX", 148, 187, N) { }
+//Npc("yuno", "Mailbox", "2_POSTBOX", 332, 108, N) { }
+Npc("yuno", "Mr. King's Shop", "4_M_TELEPORTER", 205, 103, S) { }
+Npc("yuno", "Ninno", "4_M_JOB_ASSASSIN", 343, 68, S) { }
+Npc("yuno", "Noyee", "4W_F_01", 164, 200, S) { }
+Npc("yuno", "Old Blacksmith", "2_M_OLDBLSMITH", 241, 52, SW) { }
+Npc("yuno", "Pet Groomer", "4_F_TELEPORTER", 197, 114, S) { }
+Npc("yuno", "Tool Dealer", "4_M_02", 218, 97, SE) { }
+Npc("yuno", "Zhenbolt", "4_M_MONK", 300, 188, SE) { }
+Npc("job_hunte", "Guide", "1_M_PAY_ELDER", 178, 32, NW) { }
+Npc("job_hunte", "switch", "1_SHADOW_NPC", 93, 101, NW) { }
+Npc("job_hunte", "Test Superintendent ", "1_F_01", 1, 2, NW) { }
+Npc("job_hunte", "Test Superintendent", "1_F_01", 1, 1, NW) { }
+Npc("job_knt", "Knight1", "1_F_01", 1, 1, NW) { }
+Npc("job_knt", "Knight2", "1_F_01", 1, 2, NW) { }
+Npc("job_knt", "Knight3", "1_F_01", 1, 3, NW) { }
+Npc("job_knt", "Sir Windsor", "4_M_JOB_KNIGHT1", 89, 106, S) { }
+Npc("job_knt", "Timer", "1_M_PAY_ELDER", 1, 1, NW) { }
+Npc("job_prist", "BAPHOMET", "4_BAPHOMET", 168, 150, S) { }
+Npc("job_prist", "DARK LORD", "4_DARKLORD", 168, 115, S) { }
+Npc("job_prist", "DEVIRUCHI", "4_DEVIRUCHI", 168, 45, S) { }
+Npc("job_prist", "DOPPELGANGER", "8_DOPPEL", 168, 80, S) { }
+Npc("job_prist", "making MUMMY", "4_M_MINISTER", 1, 2, NW) { }
+Npc("job_prist", "making zombie", "4_M_MINISTER", 1, 1, NW) { }
+Npc("job_prist", "Tough Father ", "4_M_MINISTER", 23, 187, NW) { }
+Npc("job_prist", "Tough Father", "4_M_MINISTER", 24, 187, S) { }
+Npc("job_wiz", "Battle Helper", "8_F_GIRL", 50, 165, S) { }
+Npc("job_wiz", "Room of Earth", "1_F_01", 1, 3, NW) { }
+Npc("job_wiz", "Room of Earth", "1_F_01", 1, 4, NW) { }
+Npc("job_wiz", "Room of Fire", "1_F_01", 1, 5, NW) { }
+Npc("job_wiz", "Room of Fire", "1_F_01", 1, 6, NW) { }
+Npc("job_wiz", "Room of Water", "1_F_01", 1, 1, NW) { }
+Npc("job_wiz", "Room of Water", "1_F_01", 1, 2, NW) { }
+Npc("job_wiz", "Test Helper", "1_F_01", 1, 7, NW) { }
+Npc("job_duncer", "Aire", "4_F_07", 43, 93, S) { }
+Npc("job_duncer", "Background dancer", "4_F_07", 63, 110, S) { }
+Npc("job_duncer", "Background dancer", "4_F_07", 66, 113, S) { }
+Npc("job_duncer", "Background dancer", "4_F_07", 72, 113, S) { }
+Npc("job_duncer", "Background dancer", "4_F_07", 75, 110, S) { }
+Npc("job_duncer", "Bijou", "4W_F_01", 95, 93, S) { }
+Npc("job_duncer", "Waiting Room", "1_F_01", 32, 154, NW) { }
+Npc("jawaii_in", "Bartender", "1_ETC_01", 28, 124, N) { }
+Npc("jawaii_in", "Customer", "4W_M_01", 43, 115, N) { }
+Npc("jawaii_in", "Customer", "4W_M_02", 41, 106, SW) { }
+Npc("jawaii_in", "Employee", "4_F_07", 25, 100, SE) { }
+Npc("jawaii_in", "Employee", "4_F_07", 25, 94, SE) { }
+Npc("jawaii_in", "Employee", "4_F_07", 25, 96, SE) { }
+Npc("jawaii_in", "Employee", "4_F_07", 25, 98, SE) { }
+Npc("jawaii_in", "Employee", "4_F_07", 30, 100, S) { }
+Npc("jawaii_in", "Employee", "4_F_07", 30, 94, S) { }
+Npc("jawaii_in", "Employee", "4_F_07", 30, 96, S) { }
+Npc("jawaii_in", "Employee", "4_F_07", 30, 98, S) { }
+Npc("jawaii_in", "Security Officer", "4_M_JOB_KNIGHT2", 44, 110, N) { }
+Npc("jawaii_in", "Waitress", "1_F_PUBGIRL", 15, 104, N) { }
+Npc("jawaii", "Employee", "1_F_MERCHANT_02", 108, 199, SE) { }
+Npc("jawaii", "Employee", "4_F_04", 107, 189, SE) { }
+Npc("jawaii", "Employee", "4_F_04", 112, 173, NE) { }
+Npc("jawaii", "Employee", "4_M_NFMAN", 141, 200, SW) { }
+Npc("jawaii", "Ice Cream Dandy", "4_M_03", 186, 174, SW) { }
+Npc("jawaii", "Inn Receptionist", "1_F_PUBGIRL", 188, 218, NE) { }
+Npc("jawaii", "Jawaii Citizen", "4_F_07", 165, 121, NW) { }
+Npc("jawaii", "Jawaii Citizen", "4_F_07", 168, 247, SE) { }
+Npc("jawaii", "Jawaii Citizen", "4_F_07", 220, 235, SW) { }
+Npc("jawaii", "Jawaii Citizen", "4_F_07", 240, 146, SE) { }
+Npc("jawaii", "Marriage Companion", "1_F_LIBRARYGIRL", 214, 168, SE) { }
+Npc("jawaii", "Sailor", "4W_SAILOR", 122, 263, SE) { }
+Npc("jawaii", "Sailor", "4W_SAILOR", 239, 112, NE) { }
+Npc("prtg_cas01", "Emperium", "EMPERIUM", 197, 197, N) { }
+Npc("prtg_cas02", "Emperium", "EMPERIUM", 158, 174, N) { }
+Npc("prtg_cas03", "Emperium", "EMPERIUM", 17, 221, N) { }
+Npc("prtg_cas04", "Emperium", "EMPERIUM", 292, 14, N) { }
+Npc("prtg_cas05", "Emperium", "EMPERIUM", 266, 266, N) { }
+Npc("payg_cas01", "Emperium", "EMPERIUM", 139, 139, N) { }
+Npc("payg_cas02", "Emperium", "EMPERIUM", 39, 25, N) { }
+Npc("payg_cas03", "Emperium", "EMPERIUM", 269, 265, N) { }
+Npc("payg_cas04", "Emperium", "EMPERIUM", 271, 29, N) { }
+Npc("payg_cas05", "Emperium", "EMPERIUM", 31, 31, N) { }
+Npc("gefg_cas01", "Emperium", "EMPERIUM", 198, 182, N) { }
+Npc("gefg_cas02", "Emperium", "EMPERIUM", 176, 178, N) { }
+Npc("gefg_cas03", "Emperium", "EMPERIUM", 245, 167, N) { }
+Npc("gefg_cas04", "Emperium", "EMPERIUM", 174, 178, N) { }
+Npc("gefg_cas05", "Emperium", "EMPERIUM", 194, 184, N) { }
+Npc("aldeg_cas01", "Emperium", "EMPERIUM", 216, 24, N) { }
+Npc("aldeg_cas02", "Emperium", "EMPERIUM", 214, 24, N) { }
+Npc("aldeg_cas03", "Emperium", "EMPERIUM", 206, 32, N) { }
+Npc("aldeg_cas04", "Emperium", "EMPERIUM", 36, 218, N) { }
+Npc("aldeg_cas05", "Emperium", "EMPERIUM", 28, 102, N) { }
+Npc("alde_gld", "GM_TBT", "4_F_RACING", 5, 5, SE) { }
+Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 45, 87, N) { }
+Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 51, 87, N) { }
+Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 61, 79, E) { }
+Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 61, 87, E) { }
+Npc("alde_gld", "Luina Castle 2", "GUILD_FLAG", 99, 244, S) { }
+Npc("alde_gld", "Luina Castle 2", "GUILD_FLAG", 99, 251, S) { }
+Npc("alde_gld", "Luina Castle 3", "GUILD_FLAG", 146, 82, N) { }
+Npc("alde_gld", "Luina Castle 4", "GUILD_FLAG", 239, 239, W) { }
+Npc("alde_gld", "Luina Castle 4", "GUILD_FLAG", 239, 246, W) { }
+Npc("alde_gld", "Luina Castle 5", "GUILD_FLAG", 265, 87, E) { }
+Npc("alde_gld", "Luina Castle 5", "GUILD_FLAG", 265, 93, E) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 137, 89, SW) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 232, 245, S) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 265, 98, SE) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 55, 89, NW) { }
+//Npc("alde_gld", "Luina Castle", "4_F_VALKYRIE", 92, 247, W) { }
+Npc("alde_gld", "Peco Peco Manager", "4_F_RACING", 181, 199, SE) { }
+Npc("alde_gld", "Sign", "2_BULLETIN_BOARD", 178, 180, N) { }
+Npc("alde_gld", "Turbo Track Guide", "4_F_RACING", 186, 199, SW) { }
+Npc("aldeg_cas01", "Arl Fredo", "1_M_JOBTESTER", 218, 175, N) { }
+Npc("aldeg_cas01", "Kafra Service", "4_F_KAFRA1", 218, 170, N) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 203, 150, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 210, 150, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 30, 246, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 30, 248, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 37, 246, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 37, 248, S) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 62, 64, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 62, 75, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 66, 64, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 66, 75, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 70, 64, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 70, 75, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 74, 64, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 74, 75, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 90, 9, W) { }
+Npc("aldeg_cas01", "Luina Castle 1", "GUILD_FLAG", 95, 80, W) { }
+Npc("aldeg_cas02", "ChenChenLee", "1_M_JOBTESTER", 78, 74, N) { }
+Npc("aldeg_cas02", "Kafra Service", "4_F_KAFRA1", 84, 74, N) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 103, 53, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 108, 39, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 121, 29, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 183, 140, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 197, 40, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 212, 152, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 229, 6, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 230, 40, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 32, 213, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 57, 213, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 63, 41, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 67, 30, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 73, 53, W) { }
+Npc("aldeg_cas02", "Luina Castle 2", "GUILD_FLAG", 82, 71, W) { }
+Npc("aldeg_cas03", "Kafra Service", "4_F_KAFRA1", 118, 76, N) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 108, 60, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 112, 107, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 112, 117, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 121, 73, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 138, 83, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 176, 175, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 181, 179, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 192, 44, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 199, 169, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 207, 75, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 208, 145, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 69, 71, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 75, 102, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 77, 115, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 77, 215, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 91, 69, W) { }
+Npc("aldeg_cas03", "Luina Castle 3", "GUILD_FLAG", 96, 62, W) { }
+Npc("aldeg_cas03", "Najarf", "1_M_JOBTESTER", 110, 118, N) { }
+Npc("aldeg_cas04", "Brimhemsen", "1_M_JOBTESTER", 67, 116, N) { }
+Npc("aldeg_cas04", "Kafra Service", "4_F_KAFRA1", 45, 88, N) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 112, 206, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 113, 212, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 129, 193, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 129, 193, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 130, 180, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 133, 220, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 164, 90, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 167, 61, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 169, 15, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 169, 22, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 186, 42, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 30, 69, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 33, 107, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 33, 116, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 45, 98, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 55, 97, W) { }
+Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 77, 117, W) { }
+Npc("aldeg_cas05", "Brimhemsen", "1_M_JOBTESTER", 51, 179, N) { }
+Npc("aldeg_cas05", "Kafra Service", "4_F_KAFRA1", 31, 190, N) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 10, 218, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 10, 225, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 14, 117, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 142, 212, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 149, 196, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 150, 202, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 154, 51, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 164, 201, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 170, 85, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 187, 59, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 22, 211, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 38, 201, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 41, 180, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 65, 182, W) { }
+Npc("aldeg_cas05", "Luina Castle 5", "GUILD_FLAG", 65, 205, W) { }
+Npc("gef_fild08", "Bulletin Board", "2_BOARD2", 211, 24, N) { }
+Npc("gef_fild09", "Bulletin Board", "2_BOARD1", 227, 29, N) { }
+Npc("gef_fild10", "Bulletin Board", "2_BOARD2", 109, 23, N) { }
+Npc("gef_fild10", "Bulletin Board", "2_BULLETIN_BOARD", 69, 340, N) { }
+//Npc("gef_fild10", "Kafra Employee", "4_F_KAFRA2", 73, 340, SE) { }
+Npc("gef_fild13", "Britoniah Castle 1", "GUILD_FLAG", 148, 51, SE) { }
+Npc("gef_fild13", "Britoniah Castle 1", "GUILD_FLAG", 155, 53, SE) { }
+Npc("gef_fild13", "Britoniah Castle 1", "GUILD_FLAG", 211, 71, E) { }
+Npc("gef_fild13", "Britoniah Castle 1", "GUILD_FLAG", 212, 79, E) { }
+Npc("gef_fild13", "Britoniah Castle 2", "GUILD_FLAG", 290, 243, S) { }
+Npc("gef_fild13", "Britoniah Castle 2", "GUILD_FLAG", 303, 243, S) { }
+Npc("gef_fild13", "Britoniah Castle 2", "GUILD_FLAG", 312, 243, S) { }
+Npc("gef_fild13", "Britoniah Castle 2", "GUILD_FLAG", 324, 243, S) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 113, 274, NE) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 144, 235, E) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 144, 244, S) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 73, 295, NE) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 78, 182, S) { }
+Npc("gef_fild13", "Britoniah Castle 3", "GUILD_FLAG", 87, 182, S) { }
+Npc("gef_fild13", "Britoniah Castle 4", "GUILD_FLAG", 190, 283, SW) { }
+Npc("gef_fild13", "Britoniah Castle 4", "GUILD_FLAG", 199, 274, SW) { }
+Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 252, 51, W) { }
+Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 26, 147, W) { }
+Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 302, 87, NE) { }
+Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 313, 83, N) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 122, 273, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 144, 250, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 159, 57, NW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 187, 288, S) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 219, 80, NW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 250, 65, SE) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 294, 243, W) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 319, 85, SE) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 184, SW) { }
+//Npc("gef_fild13", "Britoniah Castle", "4_F_VALKYRIE", 73, 300, SW) { }
+Npc("gef_fild13", "Bulletin Board", "2_BOARD1", 202, 31, N) { }
+Npc("gef_fild13", "Bulletin Board", "2_BOARD2", 29, 206, N) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 17, 171, SE) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 22, 156, SE) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 28, 157, S) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 59, 16, S) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 64, 16, S) { }
+Npc("gefg_cas01", "Britoniah Castle 1", "GUILD_FLAG", 68, 185, SW) { }
+Npc("gefg_cas01", "Gnahcher", "1_M_JOBTESTER", 40, 48, SE) { }
+Npc("gefg_cas01", "Kafra Service", "4_F_KAFRA1", 83, 47, SW) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 30, 123, SE) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 37, 168, E) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 37, 177, E) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 65, 130, SE) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 65, 139, E) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 68, 36, W) { }
+Npc("gefg_cas02", "Britoniah Castle 2", "GUILD_FLAG", 68, 47, W) { }
+Npc("gefg_cas02", "Esmark", "1_M_JOBTESTER", 12, 66, SE) { }
+Npc("gefg_cas02", "Kafra Service", "4_F_KAFRA1", 23, 66, SW) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 122, 220, E) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 122, 229, E) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 34, 208, NW) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 37, 214, NW) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 52, 276, NE) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 56, 164, S) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 65, 164, S) { }
+Npc("gefg_cas03", "Britoniah Castle 3", "GUILD_FLAG", 91, 257, NE) { }
+Npc("gefg_cas03", "Jyang", "1_M_JOBTESTER", 106, 23, SE) { }
+Npc("gefg_cas03", "Kafra Service", "4_F_KAFRA1", 116, 89, SE) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 24, 157, S) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 24, 73, NW) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 29, 212, NW) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 35, 158, S) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 35, 73, S) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 39, 212, NE) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 44, 184, S) { }
+Npc("gefg_cas04", "Britoniah Castle 4", "GUILD_FLAG", 51, 184, S) { }
+Npc("gefg_cas04", "Kafra Service", "4_F_KAFRA1", 59, 70, SW) { }
+Npc("gefg_cas04", "Kellvahni", "1_M_JOBTESTER", 73, 46, SW) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 62, 144, NE) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 62, 66, S) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 69, 66, S) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 77, 185, NE) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 83, 158, NW) { }
+Npc("gefg_cas05", "Britoniah Castle 5", "GUILD_FLAG", 92, 181, N) { }
+Npc("gefg_cas05", "Byohre", "1_M_JOBTESTER", 70, 52, SW) { }
+Npc("gefg_cas05", "Kafra Service", "4_F_KAFRA1", 61, 52, SE) { }
+Npc("pay_gld", "Greenwood Castle 1", "GUILD_FLAG", 110, 233, S) { }
+Npc("pay_gld", "Greenwood Castle 1", "GUILD_FLAG", 116, 233, S) { }
+Npc("pay_gld", "Greenwood Castle 1", "GUILD_FLAG", 125, 236, S) { }
+Npc("pay_gld", "Greenwood Castle 1", "GUILD_FLAG", 91, 239, W) { }
+Npc("pay_gld", "Greenwood Castle 2", "GUILD_FLAG", 271, 163, N) { }
+Npc("pay_gld", "Greenwood Castle 2", "GUILD_FLAG", 291, 135, E) { }
+Npc("pay_gld", "Greenwood Castle 2", "GUILD_FLAG", 292, 120, E) { }
+Npc("pay_gld", "Greenwood Castle 2", "GUILD_FLAG", 292, 122, E) { }
+Npc("pay_gld", "Greenwood Castle 3", "GUILD_FLAG", 321, 289, W) { }
+Npc("pay_gld", "Greenwood Castle 3", "GUILD_FLAG", 321, 298, W) { }
+Npc("pay_gld", "Greenwood Castle 3", "GUILD_FLAG", 327, 304, NW) { }
+Npc("pay_gld", "Greenwood Castle 3", "GUILD_FLAG", 333, 254, S) { }
+Npc("pay_gld", "Greenwood Castle 4", "GUILD_FLAG", 133, 151, W) { }
+Npc("pay_gld", "Greenwood Castle 4", "GUILD_FLAG", 137, 160, N) { }
+Npc("pay_gld", "Greenwood Castle 4", "GUILD_FLAG", 143, 160, N) { }
+Npc("pay_gld", "Greenwood Castle 4", "GUILD_FLAG", 153, 166, NW) { }
+Npc("pay_gld", "Greenwood Castle 5", "GUILD_FLAG", 187, 294, W) { }
+Npc("pay_gld", "Greenwood Castle 5", "GUILD_FLAG", 190, 277, SW) { }
+Npc("pay_gld", "Greenwood Castle 5", "GUILD_FLAG", 199, 268, S) { }
+Npc("pay_gld", "Greenwood Castle 5", "GUILD_FLAG", 208, 268, S) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 130, 236, NW) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 147, 163, S) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 195, 274, SE) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 292, 126, W) { }
+//Npc("pay_gld", "Greenwood Castle", "4_F_VALKYRIE", 321, 284, SW) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 206, 108, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 212, 108, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 221, 116, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 221, 123, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 233, 67, S) { }
+Npc("payg_cas01", "Greenwood Castle 1", "GUILD_FLAG", 238, 67, S) { }
+Npc("payg_cas01", "Kafra Service", "4_F_KAFRA1", 128, 58, SW) { }
+Npc("payg_cas01", "Kurunnadi", "1_M_JOBTESTER", 120, 58, S) { }
+Npc("payg_cas02", "Cherieos", "1_M_JOBTESTER", 22, 260, NE) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 202, 49, N) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 209, 49, N) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 254, 40, E) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 254, 48, E) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 59, 282, S) { }
+Npc("payg_cas02", "Greenwood Castle 2", "GUILD_FLAG", 70, 282, S) { }
+Npc("payg_cas02", "Kafra Service", "4_F_KAFRA1", 22, 275, SE) { }
+Npc("payg_cas03", "Garriet", "1_M_JOBTESTER", 50, 261, SW) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 236, 45, W) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 236, 54, W) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 259, 66, S) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 266, 66, S) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 34, 31, S) { }
+Npc("payg_cas03", "Greenwood Castle 3", "GUILD_FLAG", 43, 31, S) { }
+Npc("payg_cas03", "Kafra Service", "4_F_KAFRA1", 9, 263, SE) { }
+Npc("payg_cas04", "DJ", "1_M_JOBTESTER", 38, 284, SW) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 232, 181, S) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 239, 181, S) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 248, 160, E) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 248, 168, E) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 248, 259, N) { }
+Npc("payg_cas04", "Greenwood Castle 4", "GUILD_FLAG", 255, 259, N) { }
+Npc("payg_cas04", "Kafra Service", "4_F_KAFRA1", 40, 235, NW) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 24, 249, S) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 32, 249, S) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 55, 252, W) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 55, 260, W) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 57, 271, N) { }
+Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 62, 271, N) { }
+Npc("payg_cas05", "Kafra Service", "4_F_KAFRA1", 276, 227, NW) { }
+Npc("payg_cas05", "Najarf", "1_M_JOBTESTER", 277, 249, SW) { }
+Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 131, 60, E) { }
+Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 135, 60, E) { }
+Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 138, 60, E) { }
+Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 138, 68, E) { }
+Npc("prt_gld", "Valkyrie Castle 2", "GUILD_FLAG", 236, 126, N) { }
+Npc("prt_gld", "Valkyrie Castle 2", "GUILD_FLAG", 236, 128, N) { }
+Npc("prt_gld", "Valkyrie Castle 2", "GUILD_FLAG", 244, 126, N) { }
+Npc("prt_gld", "Valkyrie Castle 2", "GUILD_FLAG", 244, 128, N) { }
+Npc("prt_gld", "Valkyrie Castle 3", "GUILD_FLAG", 147, 136, S) { }
+Npc("prt_gld", "Valkyrie Castle 3", "GUILD_FLAG", 147, 140, S) { }
+Npc("prt_gld", "Valkyrie Castle 3", "GUILD_FLAG", 158, 136, S) { }
+Npc("prt_gld", "Valkyrie Castle 3", "GUILD_FLAG", 158, 140, S) { }
+Npc("prt_gld", "Valkyrie Castle 4", "GUILD_FLAG", 120, 236, E) { }
+Npc("prt_gld", "Valkyrie Castle 4", "GUILD_FLAG", 120, 243, E) { }
+Npc("prt_gld", "Valkyrie Castle 4", "GUILD_FLAG", 122, 236, E) { }
+Npc("prt_gld", "Valkyrie Castle 4", "GUILD_FLAG", 122, 243, E) { }
+Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 197, 236, W) { }
+Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 197, 243, W) { }
+Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 199, 236, W) { }
+Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 199, 243, W) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 131, 240, S) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 138, 73, NW) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 163, 136, SW) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 188, 240, SE) { }
+//Npc("prt_gld", "Valkyrie Castle", "4_F_VALKYRIE", 244, 133, W) { }
+Npc("prtg_cas01", "Abrai", "1_M_JOBTESTER", 112, 181, N) { }
+Npc("prtg_cas01", "Kafra Service", "4_F_KAFRA1", 96, 173, N) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 45, 46, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 55, 46, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 58, 56, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 64, 56, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 73, 14, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 73, 6, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 76, 32, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 84, 32, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 94, 24, S) { }
+Npc("prtg_cas01", "Valkyrie Castle 1", "GUILD_FLAG", 94, 39, S) { }
+Npc("prtg_cas02", "Kafra Service", "4_F_KAFRA1", 71, 36, S) { }
+Npc("prtg_cas02", "Rhay", "1_M_JOBTESTER", 94, 61, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 11, 214, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 11, 219, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 153, 161, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 162, 161, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 20, 214, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 20, 219, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 34, 189, N) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 38, 189, N) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 40, 227, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 46, 227, S) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 70, 227, N) { }
+Npc("prtg_cas02", "Valkyrie Castle 2", "GUILD_FLAG", 79, 227, N) { }
+Npc("prtg_cas03", "Kafra Service", "4_F_KAFRA1", 181, 215, S) { }
+Npc("prtg_cas03", "Stick", "1_M_JOBTESTER", 51, 100, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 158, 210, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 162, 201, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 165, 201, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 168, 28, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 169, 210, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 182, 28, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 43, 50, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 43, 58, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 48, 50, S) { }
+Npc("prtg_cas03", "Valkyrie Castle 3", "GUILD_FLAG", 48, 58, S) { }
+Npc("prtg_cas04", "Bandred", "1_M_JOBTESTER", 259, 265, S) { }
+Npc("prtg_cas04", "Kafra Service", "4_F_KAFRA1", 258, 247, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 258, 20, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 258, 25, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 263, 20, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 263, 27, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 59, 29, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 67, 29, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 75, 27, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 75, 29, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 82, 27, S) { }
+Npc("prtg_cas04", "Valkyrie Castle 4", "GUILD_FLAG", 82, 29, S) { }
+Npc("prtg_cas05", "Kafra Service", "4_F_KAFRA1", 52, 41, S) { }
+Npc("prtg_cas05", "Reiner", "1_M_JOBTESTER", 36, 37, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 19, 243, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 19, 247, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 249, 289, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 253, 271, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 256, 289, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 26, 243, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 26, 247, S) { }
+Npc("prtg_cas05", "Valkyrie Castle 5", "GUILD_FLAG", 273, 257, S) { }
+Npc("xmas_in", "Armor Dealer", "4W_F_01", 168, 104, S) { }
+Npc("xmas_in", "Christmas girl", "4_F_05", 165, 174, S) { }
+Npc("xmas_in", "Christmas Girl", "4_F_05", 165, 174, S) { }
+Npc("xmas_in", "Generous old lady", "4_F_GODEMOM", 27, 103, S) { }
+Npc("xmas_in", "Generous Old Lady", "4_F_GODEMOM", 27, 103, S) { }
+Npc("xmas_in", "Gift Merchant", "4_F_GON", 169, 34, W) { }
+Npc("xmas_in", "Headgear Merchant", "4_M_NFLOSTMAN", 35, 30, SW) { }
+Npc("xmas_in", "Santa", "4_M_SANTA", 100, 96, S) { }
+Npc("xmas_in", "Santa", "4_M_SANTA", 100, 96, S) { }
+Npc("xmas_in", "Tool Dealer", "4_M_01", 40, 38, SE) { }
+Npc("xmas_in", "Weapon Dealer", "1_M_03", 174, 98, W) { }
+Npc("xmas", "Alfrik", "4_M_DWARF", 36, 103, S) { }
+Npc("xmas", "Chef Assistant", "4_M_01", 152, 137, SE) { }
+Npc("xmas", "Christmas Clown", "4_M_PIERROT", 146, 136, S) { }
+Npc("xmas", "Christmas Clown", "4_M_PIERROT", 146, 136, S) { }
+Npc("xmas", "Christmas youngman", "4_M_06", 117, 304, S) { }
+Npc("xmas", "Christmas Youngman", "4_M_06", 117, 304, S) { }
+Npc("xmas", "Fuzzy Fuzz", "4_M_05", 175, 156, SW) { }
+Npc("xmas", "Hairy Uncle", "4_M_05", 176, 236, S) { }
+Npc("xmas", "Hairy Uncle", "4_M_05", 176, 236, S) { }
+Npc("xmas", "Kid", "4_F_KID2", 208, 168, S) { }
+Npc("xmas", "Kid", "4_F_KID2", 208, 168, S) { }
+Npc("xmas", "Kid", "4_M_KID1", 206, 168, S) { }
+Npc("xmas", "Kid", "4_M_KID1", 206, 168, S) { }
+Npc("xmas", "Pretty Lindsay", "4_F_NFLOSTGIRL", 183, 267, SW) { }
+Npc("xmas", "Snowman", "4_M_SNOWMAN", 134, 112, S) { }
+Npc("xmas", "Snowman", "4_M_SNOWMAN", 134, 112, S) { }
+Npc("xmas", "Vending Machine Man", "4_M_BIBI", 117, 295, S) { }

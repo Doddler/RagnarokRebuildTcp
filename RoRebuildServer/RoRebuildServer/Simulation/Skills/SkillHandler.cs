@@ -24,6 +24,8 @@ namespace RoRebuildServer.Simulation.Skills
                 var handler = (SkillHandlerBase)Activator.CreateInstance(type)!;
                 var attr = type.GetCustomAttribute<SkillHandlerAttribute>();
                 var skill = attr.SkillType;
+                if (skill == CharacterSkill.None)
+                    continue; //you can disable a handler by setting it's skill to None
                 handler.SkillClassification = attr.SkillClassification;
                 handler.Skill = attr.SkillType;
 
@@ -40,7 +42,7 @@ namespace RoRebuildServer.Simulation.Skills
                         Skill = (CharacterSkill)i,
                         SkillClassification = SkillClass.None
                     };
-                    skillAttributes[i] = new SkillHandlerAttribute((CharacterSkill)i, SkillClass.None, SkillTarget.SelfCast);
+                    skillAttributes[i] = new SkillHandlerAttribute((CharacterSkill)i, SkillClass.None, SkillTarget.Self);
                 }
             }
         }
@@ -70,8 +72,7 @@ namespace RoRebuildServer.Simulation.Skills
             if (handler != null)
             {
                 var range = handler.GetSkillRange(src, level);
-                if(range > 0)
-                    return range;
+                return range < 0 ? src.GetStat(CharacterStat.Range) : range;
             }
 
             return src.GetStat(CharacterStat.Range);
@@ -82,7 +83,7 @@ namespace RoRebuildServer.Simulation.Skills
             CombatEntity? target = info.TargetEntity.GetIfAlive<CombatEntity>();
             var handler = handlers[(int)info.Skill];
             if (handler != null)
-                handler.Process(src, target, info.TargetedPosition, info.Level);
+                handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
         }
         
     }

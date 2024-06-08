@@ -306,7 +306,7 @@ internal class DataLoader
                 Exp = monster.Exp,
                 Def = monster.Def,
                 Vit = monster.Vit,
-                Range = monster.Range > 0 ? monster.Range + 1 : 1,
+                Range = monster.Range > 0 ? monster.Range : 1,
                 ScanDist = monster.ScanDist,
                 ChaseDist = monster.ChaseDist,
                 AtkMin = monster.AtkMin,
@@ -408,13 +408,16 @@ internal class DataLoader
 
         foreach (var entry in states)
         {
+            if (entry.AiType.Contains("//"))
+                continue;
+
             var hasError = false;
             hasError |= !Enum.TryParse(entry.AiType, out MonsterAiType aiType);
             hasError |= !Enum.TryParse(entry.State, out MonsterAiState inState);
             hasError |= !Enum.TryParse(entry.InputCheck, out MonsterInputCheck inCheck);
             hasError |= !Enum.TryParse(entry.OutputCheck, out MonsterOutputCheck outCheck);
             hasError |= !Enum.TryParse(entry.EndState, out MonsterAiState outState);
-
+            
             if (hasError)
                 throw new Exception($"Could not parse Ai States: {entry.AiType},{entry.State},{entry.InputCheck},{entry.OutputCheck},{entry.EndState}");
 

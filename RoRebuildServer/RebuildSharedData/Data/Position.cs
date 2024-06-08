@@ -53,10 +53,13 @@ public struct Position : IEquatable<Position>
     /// I realize this probably will cause confusion with squared distance...
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int SquareDistance(Position dest)
-    {
-        return Math.Max(Math.Abs(X - dest.X), Math.Abs(Y - dest.Y));
-    }
+    public int SquareDistance(Position dest) => Math.Max(Math.Abs(X - dest.X), Math.Abs(Y - dest.Y));
+
+    /// <summary>
+    /// Returns the sum of the distance on both the X and Y axis.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int BlockDistance(Position dest) => Math.Abs(X - dest.X) + Math.Abs(Y - dest.Y);
 
     public float Angle(Position b)
     {
@@ -155,7 +158,7 @@ public struct Position : IEquatable<Position>
 
         return Direction.South;
     }
-
+    
     public Position Normalize()
     {
         var x = X;
@@ -209,7 +212,7 @@ public struct Position : IEquatable<Position>
     {
         unchecked
         {
-            return (X * 397) ^ Y;
+            return X + Y * 4096;
         }
     }
 

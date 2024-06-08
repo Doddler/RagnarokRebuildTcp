@@ -21,10 +21,10 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             switch (type)
             {
-                case SkillTarget.AreaTargeted:
+                case SkillTarget.Ground:
                     ProcessGroundTargetedSkill(connection, msg);
                     return;
-                case SkillTarget.SingleTarget: 
+                case SkillTarget.Enemy: 
                     ProcessSingleTargetSkill(connection, msg);
                     return;
             }
@@ -53,6 +53,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             var skill = (CharacterSkill)msg.ReadByte();
             var lvl = (int)msg.ReadByte();
 
+            caster.ResetSpawnImmunity();
             caster.CombatEntity.AttemptStartGroundTargetedSkill(groundTarget, skill, lvl);
         }
 
@@ -69,6 +70,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             var skill = (CharacterSkill)msg.ReadByte();
             var lvl = (int)msg.ReadByte();
 
+            caster.ResetSpawnImmunity();
             caster.CombatEntity.AttemptStartSingleTargetSkillAttack(target, skill, lvl);
         }
     }

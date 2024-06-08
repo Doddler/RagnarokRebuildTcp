@@ -14,17 +14,19 @@ public class Instance
     public Dictionary<string, Map> MapNameLookup = new();
     public Dictionary<string, Entity> NpcNameLookup = new();
 
+    public string Name;
     public EntityList Entities { get; set; }
     private List<Entity> removeList = new(30);
 
-    public Pathfinder Pathfinder { get; set; }
+    public PathFinder Pathfinder { get; set; }
     
     public Instance(World world, InstanceEntry instanceDetails)
     {
         this.world = world;
+        Name = instanceDetails.Name;
         Maps = new List<Map>(instanceDetails.Maps.Count);
         Entities = new EntityList(128);
-        Pathfinder = new Pathfinder();
+        Pathfinder = new PathFinder();
 
         foreach (var mapId in instanceDetails.Maps)
         {

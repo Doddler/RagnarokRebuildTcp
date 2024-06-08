@@ -224,9 +224,11 @@ Shader "Custom/MapShaderAccurate"
 	            #pragma multi_compile_fog
 	            // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
 	            //#pragma multi_compile _ LOD_FADE_CROSSFADE
+	            #define _ALPHABLEND_ON
 
 	            #pragma vertex vertAdd
 	            #pragma fragment fragAdd
+	            
 	            #include "UnityStandardCoreForward.cginc"
 
 	            ENDCG

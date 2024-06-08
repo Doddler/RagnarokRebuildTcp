@@ -8,6 +8,7 @@ public class ServerDebugConfig
     public bool EnableWarpCommandForEveryone { get; set; }
     public bool EnableEnterSpecificMap { get; set; }
     public int MaxSpawnTime { get; set; }
+    public int MinSpawnTime { get; set; }
     public bool DebugMapOnly { get; set; }
     public string DebugMapName { get; set; }
     public bool AddSimulatedLag { get; set; } = false;

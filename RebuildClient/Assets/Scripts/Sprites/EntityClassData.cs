@@ -56,6 +56,16 @@ namespace Assets.Scripts.Sprites
         public string Title;
         public List<AdminWarpList> WarpList;
     }
+    
+    [Serializable]
+    public class UniqueAttackAction
+    {
+	    public string Sprite;
+	    public string Action;
+	    public int Animation;
+	    public bool HoldLastFrame;
+	    public int StartAt;
+    }
 
 	class DatabasePlayerHeadData
 	{

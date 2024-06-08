@@ -16,19 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 816189f5356a63f45864da4029e71f7b
-  m_SerializeEntries:
-  - m_GUID: 7107728c81a6bd444982f8353882e84d
-    m_Address: Assets/Shaders/TestShader.shader
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 75dfed39651b3624f922a08196b3e92a
-    m_Address: Assets/Shaders/WalkableShader.shader
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 8b94dfa573b4ad44a944eca96271d0b5
-    m_Address: Assets/Shaders/UnlitTile.shader
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

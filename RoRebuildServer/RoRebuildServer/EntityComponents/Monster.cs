@@ -282,11 +282,14 @@ public partial class Monster : IEntityAutoReset
     {
         nextAiUpdate = 0f;
     }
-
+    
     public void AddDelay(float delay)
     {
         //usually to stop a monster from acting after taking fatal damage, but before the damage is applied
-        nextAiUpdate = Time.ElapsedTimeFloat + delay;
+        //Character.DebugMessage($"{Character.Name} set AI update time to {nextAiUpdate}");
+        nextAiUpdate += delay;
+        if(nextAiUpdate < Time.ElapsedTimeFloat)
+            nextAiUpdate = Time.ElapsedTimeFloat + delay;
     }
 
     private bool CanAssistAlly(int distance, out Entity newTarget)
@@ -315,9 +318,11 @@ public partial class Monster : IEntityAutoReset
 
             //check if their ally is attacking, the target is alive, and they can see their ally
             if (monster.CurrentAiState == MonsterAiState.StateAttacking
-                && monster.Target.IsAlive()
                 && Character.Map.WalkData.HasLineOfSight(Character.Position, monster.Character.Position))
             {
+                var targetChara = monster.targetCharacter;
+                if (targetChara == null || !targetChara.CombatEntity.IsValidTarget(CombatEntity))
+                    continue;
                 newTarget = monster.Target;
                 EntityListPool.Return(list);
                 return true;

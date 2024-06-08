@@ -1,0 +1,79 @@
+MapConfig("iz_dun00")
+{
+	CreateSpawn("PLANKTON", 65);
+	CreateSpawn("MARINA", 50);
+	CreateSpawn("KUKRE", 30);
+	CreateSpawn("HYDRA", 15);
+	CreateSpawn("VADON", 30);
+	CreateSpawn("BLACK_MUSHROOM", 5, 180000, 90000);
+}
+
+MapConfig("iz_dun01")
+{
+	CreateSpawn("PLANKTON", 10);
+	CreateSpawn("MARINA", 30);
+	CreateSpawn("KUKRE", 20);
+	CreateSpawn("HYDRA", 30);
+	CreateSpawn("VADON", 60);
+	CreateSpawn("CORNUTUS", 50);
+	CreateSpawn("OBEAUNE", 5, %(120, 171, 69, 77), 10m, 5m);
+	CreateSpawn("MARSE", 10, %(120, 171, 69, 77), 10m, 5m);
+	CreateSpawn("BLACK_MUSHROOM", 10, 3m, 1m30s);
+}
+
+MapConfig("iz_dun02")
+{
+	CreateSpawn("HYDRA", 40);
+	CreateSpawn("CORNUTUS", 40);
+	CreateSpawn("MARSE", 40);
+	CreateSpawn("OBEAUNE", 100);
+	CreateSpawn("MERMAN", 1, 15m, 15m);
+	CreateSpawn("BLACK_MUSHROOM", 15, 3m, 1m30s);
+}
+
+MapConfig("iz_dun03")
+{
+	CreateSpawn("PHEN", 50);
+	CreateSpawn("MARINE_SPHERE", 40);
+	CreateSpawn("SWORD_FISH", 15);
+	CreateSpawn("SWORD_FISH", 20, %(146, 113, 114, 67));
+	CreateSpawn("MARC", 10);
+	CreateSpawn("MARC", 30, %(148, 190, 117, 72));
+	CreateSpawn("HYDRA", 20, 30m, 15m);
+	CreateSpawn("MERMAN", 2);
+	CreateSpawn("OBEAUNE", 3, %(140, 60, 97, 15), 5m);
+	CreateSpawn("MERMAN", 2, %(179, 254, 81, 10), 5m);
+	CreateSpawn("MERMAN", 1,%(93, 216, 29, 25), 5m);
+}
+
+MapConfig("iz_dun04")
+{
+	CreateSpawn("MARINE_SPHERE", 10);
+	CreateSpawn("SWORD_FISH", 10);
+	CreateSpawn("MERMAN", 50);
+	CreateSpawn("STROUF", 50);
+	CreateSpawn("HYDRA", 1, %(58, 135, 0, 0), 305000, 150000);
+	CreateSpawn("HYDRA", 1, %(61, 135, 0, 0), 300000, 150000);
+	CreateSpawn("HYDRA", 1, %(42, 129, 0, 0), 312000, 150000);
+	CreateSpawn("HYDRA", 1, %(42, 116, 0, 0), 306000, 150000);
+	CreateSpawn("HYDRA", 1, %(38, 129, 0, 0), 300000, 150000);
+	CreateSpawn("HYDRA", 1, %(33, 129, 0, 0), 308000, 150000);
+	CreateSpawn("HYDRA", 1, %(38, 115, 0, 0), 300000, 150000);
+	CreateSpawn("HYDRA", 1, %(33, 115, 0, 0), 321000, 150000);
+	CreateSpawn("HYDRA", 1, %(79, 246, 0, 0), 300000, 150000);
+	CreateSpawn("HYDRA", 1, %(80, 246, 0, 0), 294000, 150000);
+	CreateSpawn("HYDRA", 1, %(79, 234, 0, 0), 302000, 150000);
+	CreateSpawn("HYDRA", 1, %(80, 233, 0, 0), 318000, 150000);
+	CreateSpawn("HYDRA", 1, %(111, 41, 0, 0), 300000, 150000);
+	CreateSpawn("HYDRA", 1, %(111, 38, 0, 0), 303000, 150000);
+	CreateSpawn("HYDRA", 1, %(111, 35, 0, 0), 300000, 150000);
+	CreateSpawn("HYDRA", 1, %(69, 243, 0, 0), 321000, 150000);
+	CreateSpawn("HYDRA", 1, %(124, 233, 0, 0), 300000, 150000);
+	CreateSpawn("HYDRA", 1, %(134, 233, 0, 0), 305000, 150000);
+	CreateSpawn("PENOMENA", 50, 300000, 150000);
+	CreateSpawn("DEVIACE", 3, %(95, 147, 0, 0), 600000, 300000);
+	CreateSpawn("MERMAN", 2, %(103, 231, 10, 10), 150000);
+	CreateSpawn("MERMAN", 2, %(160, 231, 10, 10), 170000);
+	CreateSpawn("MERMAN", 2, %(95, 147, 10, 10), 150000);
+	CreateSpawn("MERMAN", 2, %(130, 216, 15, 15), 160000);
+}

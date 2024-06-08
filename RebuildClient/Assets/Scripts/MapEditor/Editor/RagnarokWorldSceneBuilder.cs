@@ -401,7 +401,7 @@ namespace Assets.Scripts.MapEditor.Editor
                     var sub = new GameObject("Torch " + effect.Name);
                     
                     obj.transform.SetParent(sub.transform, false);
-                    obj.transform.localPosition = new Vector3(0.1f, 0f, 0f);
+                    obj.transform.localPosition = new Vector3(0.0f, 0f, 0f);
                     obj.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f); //I think this feels closer to the original...
                     
                     sub.transform.SetParent(effectContainer.transform, false);

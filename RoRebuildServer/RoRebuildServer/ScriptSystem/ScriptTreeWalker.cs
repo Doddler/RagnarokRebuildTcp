@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
+using System.Text;
 using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
 using RebuildSharedData.Util;
 using RoRebuildServer.Logging;
 using RoServerScript;
@@ -150,7 +153,7 @@ internal class ScriptTreeWalker
     {
         builder.StartItemSection(context.IDENTIFIER().GetText());
     }
-    
+
     private void EnterMapConfigStatement(FunctionDefinitionContext functionContext)
     {
         //only expect one param, the map name
@@ -188,7 +191,7 @@ internal class ScriptTreeWalker
         var str = param.expression()[0].GetText();
         if (str.StartsWith("\""))
             str = str.Substring(1, str.Length - 2);
-        
+
         str = str.Replace(" ", "_");
         builder.StartMonsterSkillHandler(str);
 
@@ -364,8 +367,8 @@ internal class ScriptTreeWalker
 
     public void NpcSectionHandler(StartSectionContext context)
     {
-        var timer = context.DECIMAL()?.GetText();
-        builder.StartNpcSection(context.IDENTIFIER().GetText(), timer != null ? int.Parse(timer) : -1);
+        var timer = ParseDecimal(context, context.DECIMAL(), -1);
+        builder.StartNpcSection(context.IDENTIFIER().GetText(), timer);
     }
 
     private void WarningForInvalidSectionHandler(StartSectionContext context)
@@ -870,14 +873,14 @@ internal class ScriptTreeWalker
                     eventHandlers.Add(eventName, functionContext.eventblock!);
                 }
 
-                if(isTerminal)
+                if (isTerminal)
                     builder.OutputReturn();
                 builder.CloseScope();
             }
 
             if (isConditional)
             {
-                if(!isTerminal)
+                if (!isTerminal)
                     builder.OutputRaw(";");
                 builder.EndLine();
                 builder.CloseScope();
@@ -957,7 +960,7 @@ internal class ScriptTreeWalker
                 builder.OutputRaw(context.GetText());
                 break;
             case NumericConstContext context:
-                builder.OutputRaw(context.GetText());
+                builder.OutputRaw(ParseDecimal(context, context.DECIMAL()).ToString());
                 break;
             case VariableContext context:
                 if (builder.ActiveMacro != null && builder.ActiveMacro.HasVariable(context.GetText()))
@@ -981,6 +984,53 @@ internal class ScriptTreeWalker
             return expr.GetText();
 
         return val;
+    }
+
+    private StringBuilder decStringBuilder = new(12);
+
+    private int ParseDecimal(ParserRuleContext context, ITerminalNode? node, int defaultValue = -1)
+    {
+        if (node == null)
+            return defaultValue;
+
+        var value = node.GetText();
+        if (value == null)
+            return defaultValue;
+
+        if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var v))
+            return v;
+
+        try
+        {
+            var sum = 0;
+            for (var i = 0; i < value.Length; i++)
+            {
+                var c = value[i];
+                if ((c >= '0' && c <= '9') || c == '-')
+                {
+                    decStringBuilder.Append(c);
+                    continue;
+                }
+
+                if (c == 's')
+                    sum += int.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 1000;
+                if (c == 'm')
+                    sum += int.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 60 * 1000;
+                if (c == 'h')
+                    sum += int.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 60 * 60 * 1000;
+                decStringBuilder.Clear();
+            }
+
+            if (decStringBuilder.Length > 0)
+                sum += int.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture);
+
+            return sum;
+        }
+        catch
+        {
+            ErrorResult(context, $"Could not parse decimal from string {value}");
+            throw;
+        }
     }
 
     private void ErrorResult(ParserRuleContext context, string? message = null)

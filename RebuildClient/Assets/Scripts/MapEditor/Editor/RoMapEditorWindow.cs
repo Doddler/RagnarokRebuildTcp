@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 using Assets.Scripts;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.MapEditor.Editor;
@@ -19,7 +20,7 @@ namespace Assets.Editor
 
 	public class RoMapEditorWindow : EditorWindow
 	{
-		[MenuItem("Ragnarok/Map Editor")]
+		[UnityEditor.MenuItem("Ragnarok/Map Editor")]
 		static void Init()
 		{
 			var window = (RoMapEditorWindow)GetWindow(typeof(RoMapEditorWindow), false, "Map Editor");
@@ -297,7 +298,16 @@ namespace Assets.Editor
 
                 EditorStyles.label.wordWrap = true;
 				EditorGUILayout.LabelField($"Hover Tile: {currentEditor.HoveredTile}\n{cell.ToString().Replace("|", "\n")}\n{uvMin} {uvMax}");
-
+				EditorGUILayout.LabelField($"Selected: {currentEditor.SelectedRegion}");
+				if (currentEditor.HasSelection && GUILayout.Button("Copy"))
+				{
+					var sel = currentEditor.SelectedRegion;
+					if (sel.width <= 1 && sel.height <= 1)
+						Clipboard.SetText($"{sel.min}, {sel.height}");
+					else
+						Clipboard.SetText($"%({(int)sel.center.x}, {(int)sel.center.y}, {sel.width/2}, {sel.height/2})");
+				}
+				
 
                 //if (Event.current.isKey && Event.current.shift && Event.current.keyCode == KeyCode.C)
                 //    Debug.Log("HI");

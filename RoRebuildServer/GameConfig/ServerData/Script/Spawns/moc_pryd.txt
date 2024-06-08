@@ -1,0 +1,56 @@
+MapConfig("moc_pryd01")
+{
+	CreateSpawn("FARMILIAR", 30);
+	CreateSpawn("SNAKE", 30);
+	CreateSpawn("ANACONDAQ", 20);
+	CreateSpawn("POPORING", 30);
+}
+
+MapConfig("moc_pryd02")
+{
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("DRAINLIAR", 10);
+	CreateSpawn("MUMMY", 10);
+	CreateSpawn("SOLDIER_SKELETON", 50);
+	CreateSpawn("ARCHER_SKELETON", 40);
+	CreateSpawn("ISIS", 1, 15m, 15m);
+}
+
+MapConfig("moc_pryd03")
+{
+	CreateSpawn("DRAINLIAR", 15);
+	CreateSpawn("MATYR", 15);
+	CreateSpawn("MUMMY", 50);
+	CreateSpawn("VERIT", 40);
+	CreateSpawn("MIMIC", 5, 15m);
+}
+
+MapConfig("moc_pryd04")
+{
+	CreateSpawn("MUMMY", 40);
+	CreateSpawn("MATYR", 20);
+	CreateSpawn("ISIS", 50);
+	CreateSpawn("MIMIC", 15, 5m);
+	CreateSpawn("ANCIENT_MUMMY", 3);
+	CreateSpawn("OSIRIS", 1, 1h, 10m, MVP);
+	
+}
+
+MapConfig("moc_pryd05")
+{
+	CreateSpawn("MINOROUS", 60);
+	CreateSpawn("MUMMY", 10);
+	CreateSpawn("MATYR", 10);
+	CreateSpawn("VERIT", 50);
+	CreateSpawn("POPORING", 1, %(100, 95, 6, 14), 3m);
+}
+
+MapConfig("moc_pryd06")
+{
+	CreateSpawn("VERIT", 15, %(100, 90, 80, 50));
+	CreateSpawn("ARCLOUSE", 20, %(100, 90, 80, 50));
+	CreateSpawn("ANCIENT_MUMMY", 60, %(100, 90, 80, 50));
+	CreateSpawn("MIMIC", 30, %(100, 90, 80, 50));
+	CreateSpawn("MAJORUROS", 1, %(102, 172, 2, 16), 30m);
+	CreateSpawn("AMON_RA", 1, %(102, 86, 1, 1), 2h, 10m, MVP);
+}

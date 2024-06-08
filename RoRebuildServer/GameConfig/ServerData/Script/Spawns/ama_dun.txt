@@ -1,0 +1,29 @@
+MapConfig("ama_dun01")
+{
+	CreateSpawn("MIYABI_NINGYO", 65);
+	CreateSpawn("ANTIQUE_FIRELOCK", 45);
+	CreateSpawn("SHINOBI", 2, 5m, 5m);
+}
+
+MapConfig("ama_dun02")
+{
+	CreateSpawn("POISON_TOAD", 35, 3m, 1m30s);
+	CreateSpawn("ANTIQUE_FIRELOCK", 20, 1m, 30s);
+	CreateSpawn("MIYABI_NINGYO", 5, 2m, 1m);
+	CreateSpawn("SHINOBI", 2, 3m, 1m30s);
+	CreateSpawn("HORONG", 10);
+	CreateSpawn("THE_PAPER", 1, 3m, 1m30s);
+}
+
+MapConfig("ama_dun03")
+{
+	CreateSpawn("MIMIC", 5);
+	CreateSpawn("ANTIQUE_FIRELOCK", 25);
+	CreateSpawn("MIYABI_NINGYO", 1);
+	CreateSpawn("THE_PAPER", 20);
+	CreateSpawn("SHINOBI", 35);
+	CreateSpawn("SHINOBI", 20, 20m, 10m);
+	CreateSpawn("TENGU", 40);
+	CreateSpawn("TENGU", 15, 20m, 10m);
+	CreateSpawn("INCANTATION_SAMURAI", 1, 1h30m, 10m);
+}

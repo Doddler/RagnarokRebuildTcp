@@ -22,7 +22,7 @@ public class MapWalkData
 
     public bool IsPositionInBounds(Position p) => p.X >= 0 && p.X < Width && p.Y >= 0 && p.Y < Height;
     public bool IsPositionInBounds(int x, int y) => x >= 0 && x < Width && y >= 0 && y < Height;
-    public bool IsCellWalkable(int x, int y) => (cellData[x + y * Width] & 1) == 1;
+    public bool IsCellWalkable(int x, int y) => x < Width && y < Height && (cellData[x + y * Width] & 1) == 1;
     public bool IsCellWalkable(Position p) => (cellData[p.X + p.Y * Width] & 1) == 1;
     public bool IsCellSnipable(int x, int y) => (cellData[x + y * Width] & 4) == 4;
     public bool IsCellSnipable(Position p) => (cellData[p.X + p.Y * Width] & 4) == 4;

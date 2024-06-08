@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using Microsoft.Extensions.Logging;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Monster;
@@ -20,11 +21,14 @@ public class MonsterSkillAiState(Monster monster)
     public bool SkillCastSuccess;
     public bool ExecuteEventAtStartOfCast;
     public bool FinishedProcessing;
-
+    //public CharacterSkillB Test;
     public int HpPercent => monster.CombatEntity.GetStat(CharacterStat.Hp) * 100 / monster.CombatEntity.GetStat(CharacterStat.MaxHp);
     public int MinionCount => monster.ChildCount;
     private WorldObject? targetForSkill = null;
     private bool failNextSkill = false;
+
+    public EntityList? Events;
+    public int EventsCount => Events?.Count ?? 0;
 
     private Dictionary<string, float>? specialCooldowns;
     
@@ -89,7 +93,7 @@ public class MonsterSkillAiState(Monster monster)
 
         ExecuteEventAtStartOfCast = flags.HasFlag(MonsterSkillAiFlags.EventOnStartCast);
 
-        if (attr.SkillTarget == SkillTarget.AreaTargeted)
+        if (attr.SkillTarget == SkillTarget.Ground)
         {
             var target = targetForSkill;
             if (target == null || !target.CombatEntity.IsValidTarget(ce))
@@ -104,7 +108,7 @@ public class MonsterSkillAiState(Monster monster)
             return SkillSuccess();
         }
 
-        if (attr.SkillTarget == SkillTarget.SelfCast)
+        if (attr.SkillTarget == SkillTarget.Self)
         {
             if(!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f))
                 return SkillFail();
@@ -112,7 +116,7 @@ public class MonsterSkillAiState(Monster monster)
             return SkillSuccess();
         }
 
-        if (attr.SkillTarget == SkillTarget.SingleTarget)
+        if (attr.SkillTarget == SkillTarget.Enemy)
         {
             //if our conditional statement selected a target for us, use that, otherwise use our current target
             var target = targetForSkill;
@@ -256,5 +260,31 @@ public class MonsterSkillAiState(Monster monster)
         }
 
         return false;
+    }
+
+    public void CreateEvent(string eventName, string? valueString = null) => CreateEvent(eventName, Monster.Character.Position, 0, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, Position pos, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, 0, 0, valueString);
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, 0, valueString);
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, int value4, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, value4, valueString);
+
+    public void CreateEvent(string eventName, int x, int y, string? valueString = null) => CreateEvent(eventName, x, y, 0, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, int x, int y, int value1, string? valueString = null) => CreateEvent(eventName, x, y, value1, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, string? valueString = null) => CreateEvent(eventName, x, y, value1, value2, 0, 0, valueString);
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, string? valueString = null) => CreateEvent(eventName, x, y, value1, value2, value3, 0, valueString);
+
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, int value4, string? valueString = null)
+    {
+        var chara = monster.Character;
+        if (chara.Map == null)
+            throw new Exception($"Npc {chara.Name} attempting to create event, but the monster is not currently attached to a map.");
+
+        var eventObj = World.Instance.CreateEvent(chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
+        eventObj.Get<Npc>().Owner = Monster.Entity;
+        Events ??= EntityListPool.Get();
+        Events.ClearInactive();
+        Events.Add(eventObj);
+        
     }
 }

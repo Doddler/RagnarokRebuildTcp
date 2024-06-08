@@ -133,8 +133,7 @@ public partial class Monster
 
         if (Character.Map != null && !Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
         {
-            if (Character.Map?.Instance.Pathfinder.GetPath(Character.Map.WalkData, Character.Position,
-                    targetCharacter.Position, null, 1) == 0)
+            if (!Character.Map.Instance.Pathfinder.HasPath(Character.Map.WalkData, Character.Position, targetCharacter.Position, 1))
                 return true;
         }
 
@@ -152,19 +151,15 @@ public partial class Monster
             Target = Entity.Null;
 
         var target = targetCharacter;
-        var checkPosition = Character.Position;
-        if (Character.IsMoving && Character.WalkPath != null)
-            checkPosition = Character.WalkPath[Character.MoveStep + 1];
+        //var checkPosition = Character.Position;
+        //if (Character.IsMoving && Character.WalkPath != null)
+        //    checkPosition = Character.WalkPath[Character.MoveStep + 1];
 
         //if we have a character still, check if we're in range.
         if (Target == Entity.Null || target == null) return false;
         
-        var adjust = 0;
-        //if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
-        //    adjust = 1; //the monster uses a 1 tile shorter attack radius when idle or chasing
-
-        if (target.Position.DistanceTo(checkPosition) <= MonsterBase.Range - adjust)
-            return Character.Map!.WalkData.HasLineOfSight(checkPosition, target.Position);
+        if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range)
+            return Character.Map!.WalkData.HasLineOfSight(Character.Position, target.Position);
 
         //failed. Return false.
         return false;
@@ -184,13 +179,13 @@ public partial class Monster
         if (!FindRandomTargetInRange(MonsterBase.Range, out var newTarget))
             return false;
 
-        var checkPosition = Character.Position;
-        if (Character.IsMoving && Character.WalkPath != null)
-            checkPosition = Character.WalkPath[Character.MoveStep + 1];
+        //var checkPosition = Character.Position;
+        //if (Character.IsMoving && Character.WalkPath != null)
+        //    checkPosition = Character.WalkPath[Character.MoveStep + 1];
 
         //we have a character. Check if it's in range, and if so, assign it as our current target
         var target = newTarget.Get<WorldObject>();
-        if (target.Position.DistanceTo(checkPosition) <= MonsterBase.Range)
+        if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range)
         {
             SwapTarget(newTarget);
             //Target = newTarget;
@@ -269,12 +264,8 @@ public partial class Monster
         var target = targetCharacter;
         if (target == null)
             return false;
-
-        var adjust = 0;
-        if (CurrentAiState == MonsterAiState.StateChase || CurrentAiState == MonsterAiState.StateIdle)
-            adjust = 1; //the monster uses a 1 tile shorter attack radius when idle or chasing
-
-        if (target.Position.DistanceTo(Character.Position) > MonsterBase.Range - adjust)
+        
+        if (target.Position.DistanceTo(Character.Position) > MonsterBase.Range)
             return true;
 
         Debug.Assert(Character.Map != null, "Character.Map != null");
@@ -591,7 +582,8 @@ public partial class Monster
 
         CombatEntity.PerformMeleeAttack(targetEntity);
 
-        nextAiUpdate += MonsterBase.AttackTime;
+        //we should have our cooldown set by PerformMeleeAttack actually
+        //nextAiUpdate += MonsterBase.AttackTime;
 
         return true;
     }
@@ -617,7 +609,8 @@ public partial class Monster
             if (Character.StepsRemaining <= 1) //we're already stopping so we can just bail here.
                 return false;
             //ServerLogger.Debug($"Monster {MonsterBase.Name} {Entity} stopping to attack. Current position {Character.Position} time to stop: {Character.MoveCooldown}");
-            Character.ShortenMovePath();
+            //Character.ShortenMovePath();
+            Character.StopMovingImmediately();
             nextAiUpdate = Time.ElapsedTimeFloat + Character.TimeToReachNextStep;
             return false;
         }

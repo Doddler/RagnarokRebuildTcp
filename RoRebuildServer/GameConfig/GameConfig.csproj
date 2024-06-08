@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="$(SolutionDir)ServerData\**" CopyToOutputDirectory="Always" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="ServerData\Skills\Skills.toml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AdditionalFiles Include="ServerData\Skills\Skills.toml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </AdditionalFiles>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="ServerData\**">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\GameConfig.Generator\GameConfig.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+	<!--<Target Name="ReloadSourceGenerator" BeforeTargets="BeforeBuild" DependsOnTargets="$(BeforeBuildDependsOn)">
+		<Exec Command="dotnet build-server shutdown" />
+	</Target>-->
+
+</Project>

@@ -406,6 +406,17 @@
       "SoundFile": "ef_lightbolt",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 37,
+      "Name": "TwoHandQuicken",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "twohand",
+      "Sprite": "",
+      "SoundFile": "knight_twohandquicken",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

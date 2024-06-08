@@ -19,6 +19,8 @@ namespace Assets.Scripts.Sprites
 		
         public static Mesh BuildColliderMesh(RoSpriteData spriteData, int currentActionIndex, int currentFrame)
         {
+	        currentActionIndex = Mathf.Clamp(currentActionIndex, 0, spriteData.Actions.Length - 1);
+	        
 			//this can sometimes happen if it gets rotated to an angle that doesn't have a matching frame count
             var maxFrames = spriteData.Actions[currentActionIndex].Frames.Length;
 			if (currentFrame >= maxFrames)
@@ -128,6 +130,7 @@ namespace Assets.Scripts.Sprites
 		
         public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentFrame, float alpha = 1)
         {
+	        currentActionIndex = Mathf.Clamp(currentActionIndex, 0, spriteData.Actions.Length - 1);
             var actions = spriteData.Actions[currentActionIndex];
 
             if (currentFrame >= actions.Frames.Length)

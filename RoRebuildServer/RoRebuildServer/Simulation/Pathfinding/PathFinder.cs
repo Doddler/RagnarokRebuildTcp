@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Map;
@@ -7,250 +9,260 @@ using Wintellect.PowerCollections;
 
 namespace RoRebuildServer.Simulation.Pathfinding;
 
+public enum PathNodeType : int
+{
+    Unexplored,
+    Open,
+    Closed
+};
+
 public class PathNode : IComparable<PathNode>
 {
     public PathNode? Parent;
     public Position Position;
     public int Steps;
-    public int Distance;
-    public int F;
-    public int Score;
-    public Direction Direction;
+    public int Cost;
+    public int Total;
+    public PathNodeType Type;
 
-    public void Set(PathNode? parent, Position position, int distance)
+    //I'll probably regret not zeroing out the other values but I'll trust that Set will get called before they're ever used.
+    public void Init(Position pos)
+    {
+        Parent = null;
+        Position = pos;
+        Type = PathNodeType.Unexplored;
+    }
+
+    public void Set(PathNode? parent, int steps, int cost, int total, PathNodeType type)
     {
         Parent = parent;
-        Position = position;
-        if (Parent == null)
-        {
-            Steps = 0;
-            Score = 0;
-            Direction = Direction.None;
-        }
-        else
-        {
-            Direction = (position - Parent.Position).GetDirectionForOffset();
-
-            Steps = Parent.Steps + 1;
-            Score = Parent.Score + 10;
-
-            if (Direction.IsDiagonal())
-                Score += 4;
-        }
-
-        Distance = distance;
-        F = Score + Distance;
+        Steps = steps;
+        Cost = cost;
+        Total = total;
+        Type = type;
     }
-
-    public PathNode(PathNode? parent, Position position, int distance)
-    {
-        Set(parent, position, distance);
-    }
+    
+#if DEBUG
+    public string TracePath() => Parent != null ? Parent.TracePath() + (Position - Parent.Position).GetDirectionForOffset().NumPadDirection() : "0";
+    public override string ToString() => $"({Position}: Path:{TracePath()} Steps:{Steps} Cost:{Cost} Total:{Total})";
+#endif
 
     public int CompareTo(PathNode? other)
     {
-        return F.CompareTo(other!.F); //the things we do to pass ide nullability checks
+        return Total.CompareTo(other!.Total);
     }
 }
-	
-public class Pathfinder
+
+public class PathFinder
 {
     private PathNode[]? nodeCache;
     private int cachePos;
     public const int MaxDistance = 16;
-    private const int MaxCacheSize = ((MaxDistance + 1) * 2) * ((MaxDistance + 1) * 2);
+    private const int MaxCacheSize = ((MaxDistance + 1) * 2) * ((MaxDistance + 1) * 2) + 2; //the +2 is for our dummy nodes in GetPathWithInitialStep
 
-    //private static List<PathNode> openList = new List<PathNode>(MaxCacheSize);
+    private Position start;
+    private Position target;
+    private MapWalkData walkData = null!;
+    private int proximity;
 
-    private OrderedBag<PathNode> openBag = new OrderedBag<PathNode>();
-    private HashSet<Position> closedListPos = new HashSet<Position>();
+    private readonly OrderedBag<PathNode> openBag = new();
+    private readonly Dictionary<Position, PathNode> nodeList = new(); //you could probably replace this with an array to improve performance, it wouldn't even need to be that big.
 
-    //private Dictionary<int, PathNode> nodeLookup = new Dictionary<int, PathNode>(MaxCacheSize);
-
-    private Position[] tempPath = new Position[MaxDistance + 1];
-
-    private int pathRange = 0;
+    private int DistanceCost(Position pos) => (Math.Max(0, Math.Abs(pos.X - target.X) - proximity) + Math.Max(0, Math.Abs(pos.Y - target.Y) - proximity)) * 10;
+    private bool IsConnected(Position pos, int tx, int ty) => IsConnected(pos.X, pos.Y, tx, ty);
+    private bool IsConnected(int x, int y, int tx, int ty)
+    {
+        if (!walkData.IsCellWalkable(tx, ty)) return false;
+        return walkData.IsCellWalkable(x, ty) && walkData.IsCellWalkable(tx, y);
+    }
 
     private void BuildCache()
     {
-        ServerLogger.Log("Build path cache");
+        //ServerLogger.Log("Building path cache");
 
         nodeCache = new PathNode[MaxCacheSize];
         for (var i = 0; i < MaxCacheSize; i++)
         {
-            var n = new PathNode(null, Position.Zero, 0);
+            var n = new PathNode() { Cost = 0, Position = Position.Invalid, Total = 0, Type = PathNodeType.Unexplored };
             nodeCache[i] = n;
         }
 
         cachePos = MaxCacheSize;
-
     }
 
-    private PathNode NextPathNode(PathNode? parent, Position position, int distance)
-    {
-        Debug.Assert(nodeCache != null);
-
-        var n = nodeCache[cachePos - 1];
-        n.Set(parent, position, distance);
-        cachePos--;
-        return n;
-    }
-
-    private int CalcDistance(Position pos, Position dest)
-    {
-        return (Math.Max(0, Math.Abs(pos.X - dest.X) - pathRange) + Math.Max(0, Math.Abs(pos.Y - dest.Y) - pathRange));
-    }
-
-    private bool HasPosition(List<PathNode> node, Position pos)
-    {
-        for (var i = 0; i < node.Count; i++)
-        {
-            if (node[i].Position == pos)
-                return true;
-        }
-
-        return false;
-    }
-
-    //private void AddLookup(Position pos, PathNode node)
-    //{
-    //    nodeLookup.Add((pos.X << 12) + pos.Y, node);
-    //}
-
-    //private PathNode GetNode(Position pos)
-    //{
-    //    return nodeLookup[(pos.X << 12) + pos.Y];
-    //}
-    
-    private PathNode? BuildPath(MapWalkData walkData, Position start, Position target, int maxLength, int range)
+    private void ResetPath()
     {
         if (nodeCache == null)
             BuildCache();
 
         cachePos = MaxCacheSize;
-        pathRange = range;
 
         openBag.Clear();
-        closedListPos.Clear();
-        
-        var current = NextPathNode(null, start, CalcDistance(start, target));
+        nodeList.Clear();
+        //Array.Clear(usedNodes);
+    }
+    
+    private PathNode GetNode(Position pos)
+    {
+        Debug.Assert(nodeCache != null);
 
-        openBag.Add(current);
-        
-        while (openBag.Count > 0 && !closedListPos.Contains(target))
+        if (nodeList.TryGetValue(pos, out var node))
+            return node;
+
+        var n = nodeCache[cachePos - 1];
+        n.Init(pos);
+        cachePos--;
+        nodeList.Add(pos, n);
+        return n;
+    }
+
+    //Used to add a position to a path without having it in our closed list.
+    private PathNode GetDummyNode(Position pos)
+    {
+        Debug.Assert(nodeCache != null);
+
+        var n = nodeCache[cachePos - 1];
+        n.Init(pos);
+        n.Steps = 0; //the dummy node is always a starting point
+        cachePos--;
+        return n;
+    }
+
+    private void VisitConnectingNode(PathNode parent, int cost, Position pos)
+    {
+        if (parent.Steps >= MaxDistance)
+            return;
+
+        var newCost = parent.Cost + cost;
+        var node = GetNode(pos);
+        if (node.Type != PathNodeType.Unexplored)
         {
-            current = openBag[0];
+            if (node.Cost <= newCost) return;
+
+            if (node.Type == PathNodeType.Open)
+                openBag.Remove(node);
+
+            if (node.Type == PathNodeType.Closed)
+                node.Type = PathNodeType.Open;
+        }
+        node.Set(parent, parent.Steps + 1, newCost, newCost + DistanceCost(pos), PathNodeType.Open);
+        openBag.Add(node);
+    }
+
+    private PathNode? BuildPath()
+    {
+        while (openBag.Count > 0)
+        {
+            var node = openBag[0];
+            if (node.Position == target || node.Position.SquareDistance(target) <= proximity)
+                return node;
+
             openBag.RemoveFirst();
-            closedListPos.Add(current.Position);
 
-            if (current.Steps > maxLength || current.Steps + current.Distance / 2 > maxLength)
-                continue;
+            var x = node.Position.X; //just for readability
+            var y = node.Position.Y;
 
-            for (var x = -1; x <= 1; x++)
-            {
-                for (var y = -1; y <= 1; y++)
-                {
-                    if (x == 0 && y == 0)
-                        continue;
+            if (IsConnected(node.Position, x + 1, y - 1)) VisitConnectingNode(node, 14, new Position(x + 1, y - 1)); //SE
+            if (IsConnected(node.Position, x + 1, y + 0)) VisitConnectingNode(node, 10, new Position(x + 1, y + 0)); //E
+            if (IsConnected(node.Position, x + 1, y + 1)) VisitConnectingNode(node, 14, new Position(x + 1, y + 1)); //NE
+            if (IsConnected(node.Position, x + 0, y + 1)) VisitConnectingNode(node, 10, new Position(x + 0, y + 1)); //N
+            if (IsConnected(node.Position, x - 1, y + 1)) VisitConnectingNode(node, 14, new Position(x - 1, y + 1)); //NW
+            if (IsConnected(node.Position, x - 1, y + 0)) VisitConnectingNode(node, 10, new Position(x - 1, y + 0)); //W
+            if (IsConnected(node.Position, x - 1, y - 1)) VisitConnectingNode(node, 14, new Position(x - 1, y - 1)); //SW
+            if (IsConnected(node.Position, x + 0, y - 1)) VisitConnectingNode(node, 10, new Position(x + 0, y - 1)); // S
 
-                    var np = current.Position;
-                    np.X += x;
-                    np.Y += y;
-
-                    if (np.X < 0 || np.Y < 0 || np.X >= walkData.Width || np.Y >= walkData.Height)
-                        continue;
-
-                    if (closedListPos.Contains(np))
-                        continue;
-
-
-                    if (!walkData.IsCellWalkable(np))
-                        continue;
-
-                    //you can only move diagonally if it doesn't cut across an un-walkable tile.
-                    if (x == -1 && y == -1)
-                        if (!walkData.IsCellWalkable(current.Position.X - 1, current.Position.Y) ||
-                            !walkData.IsCellWalkable(current.Position.X, current.Position.Y - 1))
-                            continue;
-
-                    if (x == -1 && y == 1)
-                        if (!walkData.IsCellWalkable(current.Position.X - 1, current.Position.Y) ||
-                            !walkData.IsCellWalkable(current.Position.X, current.Position.Y + 1))
-                            continue;
-
-                    if (x == 1 && y == -1)
-                        if (!walkData.IsCellWalkable(current.Position.X + 1, current.Position.Y) ||
-                            !walkData.IsCellWalkable(current.Position.X, current.Position.Y - 1))
-                            continue;
-
-                    if (x == 1 && y == 1)
-                        if (!walkData.IsCellWalkable(current.Position.X + 1, current.Position.Y) ||
-                            !walkData.IsCellWalkable(current.Position.X, current.Position.Y + 1))
-                            continue;
-
-                    if (np.SquareDistance(target) <= range)
-                        return NextPathNode(current, np, 0);
-
-                    var newNode = NextPathNode(current, np, CalcDistance(np, target));
-
-                    openBag.Add(newNode);
-                    closedListPos.Add(np);
-                }
-            }
+            node.Type = PathNodeType.Closed;
         }
 
         return null;
     }
 
-    private int CheckDirectPath(MapWalkData walkData, Position start, Position target, int maxDistance, int range, int startPos)
+    private void PreparePathfinder(MapWalkData walkData, Position start, Position target, int range)
     {
-        var pos = start;
-        tempPath[startPos] = pos;
-        var i = startPos + 1;
-        
-        while (i < maxDistance)
+        this.target = target;
+        this.walkData = walkData;
+        this.proximity = range;
+        this.start = start;
+
+        ResetPath();
+        var initialNode = GetNode(start);
+        initialNode.Set(null, 0, 0, DistanceCost(start), PathNodeType.Open);
+        openBag.Add(initialNode);
+    }
+
+    public bool HasPath(MapWalkData mapWalkData, Position startPosition, Position destination, int proximityToTarget)
+    {
+        if (startPosition == destination || startPosition.SquareDistance(destination) > MaxDistance)
+            return false;
+
+        PreparePathfinder(mapWalkData, startPosition, destination, proximityToTarget);
+
+        var finalNode = BuildPath();
+        return finalNode != null;
+
+    }
+
+    public int GetPath(MapWalkData mapWalkData, Position startPosition, Position destination, Position[] pathOut, int proximityToTarget)
+    {
+        if (startPosition == destination || startPosition.SquareDistance(destination) > MaxDistance)
+            return 0;
+
+        PreparePathfinder(mapWalkData, startPosition, destination, proximityToTarget);
+
+        var finalNode = BuildPath();
+        if (finalNode == null)
+            return 0;
+
+        var totalSteps = finalNode.Steps + 1;
+
+        while (finalNode != null)
         {
-            if (pos.X > target.X + range)
-                pos.X--;
-            if (pos.X < target.X - range)
-                pos.X++;
-            if (pos.Y > target.Y + range)
-                pos.Y--;
-            if (pos.Y < target.Y - range)
-                pos.Y++;
-
-            if (!walkData.IsCellWalkable(pos))
-                return 0;
-
-            tempPath[i] = pos;
-            i++;
-
-            if (pos.InRange(target, range))
-            {
-                //Profiler.Event(ProfilerEvent.PathFoundDirect);
-                return i;
-            }
+            pathOut[finalNode.Steps] = finalNode.Position;
+            finalNode = finalNode.Parent;
         }
 
-        return 0;
+#if DEBUG
+        SanityCheck(pathOut, startPosition, destination, totalSteps, proximityToTarget);
+#endif
+
+        return totalSteps;
     }
 
-    public void CopyTempPath(Position[] path, int length)
+
+    public int GetPathWithInitialStep(MapWalkData mapWalkData, Position startPosition, Position initialStep, Position destination, Position[] pathOut, int proximityToTarget, float currentStepProgress)
     {
-        Array.Copy(tempPath, path, length);
-    }
+        if (startPosition == destination || startPosition.SquareDistance(destination) > MaxDistance)
+            return 0;
 
-    private PathNode? MakePath(MapWalkData walkData, Position start, Position target, int maxDistance, int range)
-    {
-        if (!walkData.IsCellWalkable(target))
-            return null;
+        //start pathfinding from the cell we are currently traveling into (initialStep), not the cell we currently occupy.
+        PreparePathfinder(mapWalkData, initialStep, destination, proximityToTarget);
+        openBag[0].Parent = GetDummyNode(startPosition); //because we're already moving we need to make sure the path we generate starts from our current startPosition.
+        openBag[0].Steps = 1;
+        
+        //add a second starting node with the reverse of our current path, but this time we're coming from initialStep and moving back into our starting cell.
+        var baseCost = (start - initialStep).IsOffsetDiagonal() ? 14 : 10;
+        var doubleBackProgress = (int)((1 - currentStepProgress) * baseCost);
+        var doubleBackNode = GetNode(startPosition);
+        doubleBackNode.Set(GetDummyNode(initialStep), 1, 0, doubleBackProgress + DistanceCost(startPosition), PathNodeType.Open);
+        openBag.Add(doubleBackNode);
 
-        var path = BuildPath(walkData, start, target, maxDistance, range);
+        var finalNode = BuildPath();
+        if (finalNode == null) return 0;
 
-        openBag.Clear();
-        closedListPos.Clear();
+        var totalSteps = finalNode.Steps + 1;
 
-        return path;
+        while (finalNode != null)
+        {
+            pathOut[finalNode.Steps] = finalNode.Position;
+            finalNode = finalNode.Parent;
+        }
+
+#if DEBUG
+        var swap = totalSteps > 1 && pathOut[1] == startPosition; //check if our path has us double back to our currently occupied cell
+        SanityCheck(pathOut, swap ? initialStep : startPosition, target, totalSteps, proximity);
+#endif
+        
+        return totalSteps;
     }
 
     public void SanityCheck(Position[] pathOut, Position start, Position target, int length, int range)
@@ -261,195 +273,8 @@ public class Pathfinder
 
         if (pathOut[0] != start)
             throw new Exception("First entry in path should be our starting position!");
-        
+
         if (pathOut[length - 1].SquareDistance(target) > range)
             throw new Exception("Last entry is not at the expected position!");
-    }
-
-    private void CopyPathIntoPositionArray(PathNode? path, Position[] pathOut, int startIndex)
-    {
-        while (path != null)
-        {
-            pathOut[path.Steps + startIndex] = path.Position;
-            path = path.Parent;
-        }
-    }
-
-    public int GetPathWithinAttackRange(MapWalkData walkData, Position start, Position initialNextTile, Position target, Position[] pathOut, int attackRange)
-    {
-        var hasFirstStep = initialNextTile != Position.Invalid;
-        var pathStart = hasFirstStep ? initialNextTile : start; //if we have a next tile already set, use that as the start.
-        var maxDistance = hasFirstStep ? MaxDistance - 1 : MaxDistance;
-        var firstStep = hasFirstStep ? 1 : 0;
-
-        if (hasFirstStep && initialNextTile == target) 
-            return 0; //no need to change path if we're already next to the target
-
-        if (DistanceCache.InRange(pathStart, target, attackRange) && walkData.HasLineOfSight(pathStart, target))
-            return 0; //our start position is already in line of sight
-
-        //first check if a straight line exists
-        var direct = CheckDirectPath(walkData, pathStart, target, maxDistance, 1, firstStep);
-        if (direct > 0)
-        {
-            if (hasFirstStep)
-                tempPath[0] = start;
-                
-            //since we know we can get to the target's own cell, we know at some point you'll be in attack range and line of sight.
-            direct = GetStepsToAttackRange(walkData, tempPath, target, direct, attackRange);
-            Array.Copy(tempPath, 0, pathOut, 0, direct);
-
-#if DEBUG 
-            SanityCheck(pathOut, start, target, direct, attackRange); //verify the path is valid and ends within range
-#endif
-            return direct;
-        }
-
-        var path = MakePath(walkData, pathStart, target, maxDistance, 1); //find a path that goes directly to the target
-        if (path == null)
-            return 0;
-
-        var steps = path.Steps + 1 + firstStep;
-
-        CopyPathIntoPositionArray(path, pathOut, firstStep);
-        if (hasFirstStep)
-            pathOut[0] = start;
-
-        steps = GetStepsToAttackRange(walkData, pathOut, target, steps, attackRange); //shrink path to only the point where you can attack from
-
-#if DEBUG
-        if(steps > 0)
-            SanityCheck(pathOut, start, target, steps, attackRange);  //verify the path is valid and ends within range
-#endif
-        return steps;
-    }
-    private int GetStepsToAttackRange(MapWalkData walkData, Position[] path, Position target, int length, int range)
-    {
-        for (var i = 1; i < length - 1; i++)
-        {
-            if (DistanceCache.InRange(path[i], target, range) && walkData.HasLineOfSight(path[i], target))
-                return i + 1; //the +1 is because element 0 of our path is the start position
-        }
-
-        return length;
-    }
-
-    public int GetPathWithinAttackRange(MapWalkData walkData, Position start, Position target, Position[] pathOut, int attackRange)
-    {
-        return GetPathWithinAttackRange(walkData, start, Position.Invalid, target, pathOut, attackRange);
-    }
-
-    public int GetPathWithInitialStep(MapWalkData walkData, Position start, Position initial, Position target, Position[]? pathOut, int range)
-    {
-        if (initial == target)
-            return 0;
-
-        if (Math.Abs(start.X - target.X) > MaxDistance || Math.Abs(start.Y - target.Y) > MaxDistance)
-            return 0;
-
-        var direct = CheckDirectPath(walkData, initial, target, MaxDistance - 1, range, 1);
-        if (direct > 0)
-        {
-            tempPath[0] = start;
-            if (pathOut == null)
-                return direct;
-            CopyTempPath(pathOut, direct);
-#if DEBUG
-				SanityCheck(pathOut, start, target, direct, range);
-#endif
-
-            return direct;
-        }
-
-        var path = MakePath(walkData, initial, target, MaxDistance - 1, range);
-        if (path == null)
-            return 0;
-
-        var steps = path.Steps + 1;
-
-        if (pathOut == null)
-            return steps;
-
-        if (path.Steps >= pathOut.Length)
-            ServerLogger.LogWarning($"Whoa! This isn't good. Steps is {path.Steps} but the array is {pathOut.Length}");
-
-        while (path != null)
-        {
-            pathOut[path.Steps + 1] = path.Position;
-            path = path.Parent;
-        }
-
-        pathOut[0] = start;
-
-#if DEBUG
-			SanityCheck(pathOut, start, target, steps + 1, range);
-#endif
-
-        return steps + 1; //add initial first step
-    }
-
-    public bool HasPath(MapWalkData walkData, Position start, Position target, int range)
-    {
-        if (start == target)
-            return true;
-
-        if (Math.Abs(start.X - target.X) > MaxDistance || Math.Abs(start.Y - target.Y) > MaxDistance)
-            return false;
-
-        var direct = CheckDirectPath(walkData, start, target, MaxDistance, range, 0);
-        if (direct > 0)
-            return true;
-
-        var path = MakePath(walkData, start, target, MaxDistance, range);
-
-        return path != null;
-    }
-
-    public int GetPath(MapWalkData walkData, Position start, Position target, Position[]? pathOut, int range)
-    {
-        if (start == target)
-            return 0;
-
-        if (Math.Abs(start.X - target.X) > MaxDistance || Math.Abs(start.Y - target.Y) > MaxDistance)
-            return 0;
-
-        var direct = CheckDirectPath(walkData, start, target, MaxDistance, range, 0);
-        if (direct > 0)
-        {
-            if (pathOut == null)
-                return direct;
-
-            CopyTempPath(pathOut, direct);
-#if DEBUG
-				SanityCheck(pathOut, start, target, direct, range);
-#endif
-            return direct;
-        }
-
-        var path = MakePath(walkData, start, target, MaxDistance, range);
-        if (path == null)
-            return 0;
-
-        var steps = path.Steps + 1;
-
-        if (pathOut == null)
-            return steps;
-
-#if DEBUG
-			if (path.Steps >= pathOut.Length)
-				ServerLogger.LogWarning($"Whoa! This isn't good. Steps is {path.Steps} but the array is {pathOut.Length}");
-#endif
-
-        while (path != null)
-        {
-            pathOut[path.Steps] = path.Position;
-            path = path.Parent;
-        }
-
-#if DEBUG
-			SanityCheck(pathOut, start, target, steps, range);
-#endif
-
-        return steps;
     }
 }

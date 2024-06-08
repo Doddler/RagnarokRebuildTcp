@@ -1,0 +1,4 @@
+﻿Warp("ama_dun01", "amatsudunwarp001", 234, 143, 1, 1, "ama_dun02", 35, 45);
+Warp("ama_dun02", "amatsudunwarp002", 30, 42, 2, 2, "ama_dun01", 229, 143);
+Warp("ama_dun02", "amatsudunwarp003", 196, 124, 2, 2, "ama_dun03", 119, 12);
+Warp("ama_dun03", "amatsudunwarp004", 119, 9, 4, 1, "ama_dun02", 196, 120);

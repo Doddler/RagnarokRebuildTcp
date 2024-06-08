@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
 using System.Diagnostics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -10,6 +11,7 @@ using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntityComponents;
@@ -18,6 +20,7 @@ namespace RoRebuildServer.EntityComponents;
 public class Npc : IEntityAutoReset
 {
     public Entity Entity;
+    public Entity Owner;
     public WorldObject Character = null!;
     public string FullName { get; set; } = null!;
     public string Name { get; set; } = null!; //making this a property makes it accessible via npc scripting
@@ -45,10 +48,14 @@ public class Npc : IEntityAutoReset
     public bool HasTouch;
     public bool HasInteract;
     public bool TimerActive;
+    public bool IsEvent;
 
     private string? currentSignalTarget;
 
+    private SkillCastInfo? skillInfo;
+
     public bool IsHidden() => !Entity.Get<WorldObject>().Hidden;
+    public Position SelfPosition => Character.Position;
 
     public int[] ValuesInt => valuesInt ??= ArrayPool<int>.Shared.Rent(NpcInteractionState.StorageCount);
     public string[] ValuesString => valuesString ??= ArrayPool<string>.Shared.Rent(NpcInteractionState.StorageCount);
@@ -423,7 +430,21 @@ public class Npc : IEntityAutoReset
         var npc = destNpc.Get<Npc>();
         npc.OnSignal(this, signal, value1, value2, value3, value4);
     }
+
+    public Position RandomFreeTileInRange(int range)
+    {
+        if (Character.Map != null && Character.Map.WalkData.FindWalkableCellInArea(Area.CreateAroundPoint(Character.Position, range), out var pos))
+            return pos;
+        
+        return Character.Position;
+    }
     
+    public void CreateEvent(string eventName, Position pos, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, 0, 0, valueString);
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, 0, valueString);
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, int value4, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, value4, valueString);
+
     public void CreateEvent(string eventName, int x, int y, string? valueString = null) => CreateEvent(eventName, x, y, 0, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, int x, int y, int value1, string? valueString = null) => CreateEvent(eventName, x, y, value1, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, int x, int y, int value1, int value2, string? valueString = null) => CreateEvent(eventName, x, y, value1, value2, 0, 0, valueString);
@@ -436,6 +457,8 @@ public class Npc : IEntityAutoReset
             throw new Exception($"Npc {FullName} attempting to create event, but the npc is not currently attached to a map.");
 
         var eventObj = World.Instance.CreateEvent(chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
+        if (Owner.IsAlive())
+            eventObj.Get<Npc>().Owner = Owner;
         Events ??= EntityListPool.Get();
         Events.ClearInactive();
         Events.Add(eventObj);
@@ -443,7 +466,41 @@ public class Npc : IEntityAutoReset
 
     public void EndEvent()
     {
+        Owner = Entity.Null;
         World.Instance.FullyRemoveEntity(ref Entity);
+    }
+
+    public void AreaSkillIndirect(Position pos, CharacterSkill skill, int lvl)
+    {
+        if (!Owner.IsAlive())
+            return;
+        var caster = Owner.Get<WorldObject>();
+        if (caster.Type == CharacterType.NPC || caster.State == CharacterState.Dead)
+            return;
+
+        var info = new SkillCastInfo()
+        {
+            CastTime = 0,
+            IsIndirect = true,
+            Skill = skill,
+            Level = lvl,
+            TargetedPosition = pos,
+            Range = 99,
+            TargetEntity = Entity.Null
+        };
+
+        caster.CombatEntity.ExecuteIndirectSkillAttack(info);
+    }
+
+    public void StartCastCircle(Position pos, int size, int duration, bool isAlly = false)
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to play effect, but the npc is not currently attached to a map.");
+
+        chara.Map.GatherPlayersForMultiCast(chara);
+        CommandBuilder.StartCastCircleMulti(pos, size+1, duration/1000f, isAlly);
+        CommandBuilder.ClearRecipients();
     }
 
     public void PlayEffectAtMyLocation(string effect, int facing = 0)

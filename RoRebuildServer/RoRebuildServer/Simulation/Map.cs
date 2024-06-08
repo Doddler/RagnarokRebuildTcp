@@ -302,6 +302,7 @@ public class Map
 
     public void SendAddEntityAroundCharacter(ref Entity entity, WorldObject ch)
     {
+        CommandBuilder.ClearRecipients();
         foreach (Chunk chunk in GetChunkEnumeratorAroundPosition(ch.Position, ServerConfig.MaxViewDistance))
         {
             foreach (var player in chunk.Players)
@@ -397,7 +398,8 @@ public class Map
 #endif
                 if (ch.IsActive && ch.Position.InRange(playerChar.Position, ServerConfig.MaxViewDistance))
                 {
-                    CommandBuilder.SendCreateEntity(ch, playerObj);
+                    if(!ch.Hidden || m == target)
+                        CommandBuilder.SendCreateEntity(ch, playerObj);
                     AddPlayerVisibility(playerChar, ch);
                 }
 
@@ -868,7 +870,8 @@ public class Map
         var ch = entity.Get<WorldObject>();
 
         //if (!ch.Hidden)
-        SendRemoveEntityAroundCharacter(ref entity, ch, reason);
+        if(ch.Type != CharacterType.NPC || !ch.Npc.IsEvent)
+            SendRemoveEntityAroundCharacter(ref entity, ch, reason);
         ch.ClearVisiblePlayerList();
 
         var hasRemoved = false;

@@ -12,7 +12,8 @@ public enum SpawnCreateFlags
     Boss = 1,
     GuaranteeInZone = 2,
     StrictArea = 4,
-    Mvp = Boss | GuaranteeInZone | StrictArea,
+    LockToSpawnZone = 8,
+    MVP = Boss | GuaranteeInZone | StrictArea
 }
 
 public class ServerMapConfig
@@ -42,9 +43,6 @@ public class ServerMapConfig
 
             for (var j = 0; j < spawn.Count; j++)
             {
-                if(spawn.MonsterDatabaseInfo.Code.ToUpper() == "TARGET_DUMMY")
-                    ServerLogger.Log("hi");
-
                 //the difference with the official server spawns is that each monster has its own spawn zone offset within the initial area randomly on startup.
                 if (ServerConfig.OperationConfig.UseAccurateSpawnZoneFormula)
                 {
@@ -75,20 +73,30 @@ public class ServerMapConfig
         }
     }
 
-    public MapSpawnRule? CreateSpawn(string mobName, int count, Area area, int respawn, int respawn2, SpawnCreateFlags flags = SpawnCreateFlags.None)
+    public MapSpawnRule CreateSpawn(string mobName, int count, Area area, int respawn, int variance, SpawnCreateFlags flags = SpawnCreateFlags.None)
     {
         if (!DataManager.MonsterCodeLookup.TryGetValue(mobName.Replace(" ", "_").ToUpper(), out var mobStats))
         {
             ServerLogger.LogError($"Could not spawn monster with name of '{mobName}', name not found.");
-            return null;
+            return null!;
         }
+
+        if (respawn < ServerConfig.DebugConfig.MinSpawnTime)
+            respawn = ServerConfig.DebugConfig.MinSpawnTime;
 
         area = area.ClipArea(Map.MapBounds);
 
-        var spawn = new MapSpawnRule(SpawnRules.Count, mobStats, area, count, respawn, respawn + respawn2);
-        spawn.UseStrictZone = flags.HasFlag(SpawnCreateFlags.StrictArea);
-        spawn.GuaranteeInZone = flags.HasFlag(SpawnCreateFlags.GuaranteeInZone);
+        var spawn = new MapSpawnRule(SpawnRules.Count, mobStats, area, count, respawn, respawn + variance);
+        if (!area.IsZero)
+        {
+            spawn.UseStrictZone = flags.HasFlag(SpawnCreateFlags.StrictArea);
+            spawn.GuaranteeInZone = flags.HasFlag(SpawnCreateFlags.GuaranteeInZone);
+        }
+
         SpawnRules.Add(spawn);
+
+        if(flags.HasFlag(SpawnCreateFlags.LockToSpawnZone))
+            spawn.LockToSpawnZone();
 
         //Console.WriteLine(mobName + "  BBB");
         return spawn;

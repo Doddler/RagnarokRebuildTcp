@@ -4,17 +4,18 @@ using System.Text;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 
-namespace RebuildSharedData.ClientTypes
-{
-    [Serializable]
-    public class SkillData
-    {
-        public CharacterSkill SkillId;
-        public SkillTarget Type;
-        public string Name;
-        public int MaxLevel;
-        public bool CanAdjustLevel;
-    }
-    
-}
+namespace RebuildSharedData.ClientTypes;
 
+#nullable disable
+
+[Serializable]
+public class SkillData
+{
+    public CharacterSkill SkillId;
+    public string Icon;
+    public string Name;
+    public SkillTarget Target;
+    public int MaxLevel;
+    public int[] SpCost;
+    public bool AdjustableLevel;
+}

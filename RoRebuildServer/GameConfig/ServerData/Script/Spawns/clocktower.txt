@@ -1,0 +1,104 @@
+MapConfig("c_tower1")
+{
+	CreateSpawn("PUNK", 20, %(250,345,110,35), 1m, 1m);
+	CreateSpawn("PUNK", 20, %(250,60,140,50), 1m, 1m);
+	CreateSpawn("BAPHOMET_", 3, %(60,197,40,177), 3m, 2m);
+	CreateSpawn("PUNK", 150);
+	CreateSpawn("DEMON_PUNGUS", 2, 1m);
+	CreateSpawn("RIDEWORD", 4);
+	CreateSpawn("C_TOWER_MANAGER", 2);
+	CreateSpawn("BATHORY", 1);
+}
+
+MapConfig("c_tower2")
+{
+	CreateSpawn("PUNK", 25);
+	CreateSpawn("DEMON_PUNGUS", 1, 10m);
+	CreateSpawn("CLOCK", 30);
+	CreateSpawn("CLOCK", 20, 30m);
+	CreateSpawn("ARCHER_SKELETON", 20, 30m);
+	CreateSpawn("RIDEWORD", 10, 3m);
+	CreateSpawn("RIDEWORD", 1, %(128, 100, 10, 10), 1m, 30s);
+	CreateSpawn("RIDEWORD", 1, %(149, 199, 10, 10), 2m, 1m);
+	CreateSpawn("RIDEWORD", 1, %(149, 199, 10, 10), 5m, 1m);
+	CreateSpawn("RIDEWORD", 1, %(273, 286, 20, 20), 2m, 1m);
+	CreateSpawn("RIDEWORD", 1, %(273, 286, 20, 20), 4m, 2m);
+	CreateSpawn("MIMIC", 3);
+	CreateSpawn("C_TOWER_MANAGER", 2);
+	CreateSpawn("ELDER", 2, 10m, 5m);
+
+	//deviruchi and clock rooms
+	CreateSpawn("DEVIRUCHI", 6,       %(167, 35, 11, 11),  120000, 120000);
+	CreateSpawn("CLOCK", 6,           %(100, 238, 13, 13), 120000, 120000).LockToSpawnZone();
+	CreateSpawn("ARCHER_SKELETON", 2, %(100, 238, 13, 13), 30000, 270000).LockToSpawnZone();
+}
+
+MapConfig("c_tower3")
+{
+	CreateSpawn("ALARM", 100, 5s);
+	CreateSpawn("RIDEWORD", 14, 90s);
+	CreateSpawn("RIDEWORD", 1, %(153, 220, 10, 10), 126000, 100000);
+	CreateSpawn("MIMIC", 10, 9000);
+	CreateSpawn("C_TOWER_MANAGER", 1);
+}
+
+MapConfig("c_tower4")
+{
+	CreateSpawn("C_TOWER_MANAGER", 2, 1800000);
+	CreateSpawn("C_TOWER_MANAGER", 1, 3600000);
+	CreateSpawn("WHISPER", 5);
+	CreateSpawn("ELDER", 1, 3600000, 1800000);
+	CreateSpawn("ELDER", 1, 1800000, 600000);
+	CreateSpawn("ALARM", 6, %(108, 198, 100, 10));
+	CreateSpawn("ALARM", 6, %(108, 178, 100, 10));
+	CreateSpawn("ALARM", 6, %(108, 158, 100, 10));
+	CreateSpawn("ALARM", 6, %(108, 138, 100, 10));
+	CreateSpawn("ALARM", 6, %(108, 118, 100, 10));
+	CreateSpawn("CLOCK", 7, %(108, 98, 100, 10));
+	CreateSpawn("CLOCK", 7, %(108, 78, 100, 10));
+	CreateSpawn("CLOCK", 7, %(108, 58, 100, 10));
+	CreateSpawn("CLOCK", 7, %(108, 38, 100, 10));
+	CreateSpawn("CLOCK", 7, %(108, 18, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 198, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 178, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 158, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 138, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 118, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 98, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 78, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 58, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 38, 100, 10));
+	CreateSpawn("OWL_DUKE", 3, %(108, 18, 100, 10));
+	CreateSpawn("OWL_BARON", 1, %(105, 153, 21, 8), 15m, 5m);
+	CreateSpawn("OWL_BARON", 1, %(107, 67, 14, 6), 15m, 5m);
+	CreateSpawn("OWL_BARON", 1, %(52, 116, 24, 19), 15m, 5m);
+	CreateSpawn("OWL_BARON", 1, %(141, 104, 2, 31), 15m, 5m);
+	CreateSpawn("RIDEWORD", 1, %(98, 180, 0, 0), 300000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(97, 180, 0, 0), 240000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(96, 180, 0, 0), 350000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(95, 180, 0, 0), 410000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(94, 180, 0, 0), 320000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(93, 180, 0, 0), 260000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(92, 180, 0, 0), 280000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(91, 180, 0, 0), 330000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(87, 180, 0, 0), 400000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(86, 180, 0, 0), 380000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(80, 179, 0, 0), 360000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(80, 180, 0, 0), 350000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(80, 181, 0, 0), 290000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(80, 182, 0, 0), 300000, 150000);
+	CreateSpawn("RIDEWORD", 1, %(80, 183, 0, 0), 340000, 150000);
+	CreateSpawn("MIMIC", 1, %(128, 194, 0, 0), 1800000, 900000);
+	CreateSpawn("MIMIC", 1, %(38, 193, 0, 0), 1800000, 900000);
+	CreateSpawn("MIMIC", 1, %(37, 159, 0, 0), 1800000, 900000);
+	CreateSpawn("MIMIC", 1, %(31, 139, 0, 0), 1800000, 900000);
+	CreateSpawn("MIMIC", 1, %(104, 14, 0, 0), 1800000, 900000);
+	CreateSpawn("MIMIC", 1, %(104, 27, 0, 0), 900000, 400000);
+	CreateSpawn("MIMIC", 1, %(105, 24, 0, 0), 900000, 400000);
+	CreateSpawn("MIMIC", 1, %(204, 104, 0, 0), 1800000, 900000);
+	CreateSpawn("MIMIC", 1, %(155, 108, 0, 0), 30s, 15s);
+	CreateSpawn("MIMIC", 1, %(148, 85, 0, 0), 1800000, 900000);
+	CreateSpawn("MIMIC", 1, %(189, 51, 0, 0), 1800000, 900000);
+	CreateSpawn("MIMIC", 1, %(170, 34, 0, 0), 1800000, 900000);
+	CreateSpawn("EXECUTIONER", 1, %(42, 41, 0, 0), 7200000, 3600000);
+}

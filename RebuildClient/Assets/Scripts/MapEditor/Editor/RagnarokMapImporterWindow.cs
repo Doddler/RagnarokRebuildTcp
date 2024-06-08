@@ -37,7 +37,7 @@ namespace Assets.Scripts.MapEditor.Editor
             });
 
             var output = new List<string>();
-            var badout = new List<string>();
+            var totalOut = new List<string>();
 
             for (var i = 0; i < guids.Length; i++)
             {
@@ -50,7 +50,7 @@ namespace Assets.Scripts.MapEditor.Editor
                     continue;
                 }
 
-                if (asset.Name.ToUpper() == "FARMILIAR")
+                if (asset.Name.ToUpper() == "SASQUATCH")
                 {
                     Debug.Log("AAAA" + RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack1));
                 }
@@ -64,6 +64,8 @@ namespace Assets.Scripts.MapEditor.Editor
                 //note: the first direction of an action is authoritative in terms of frame delay for all other directions
                 var frames = asset.Actions[actionId].Frames;
                 var found = false;
+                
+                totalOut.Add($"{name}:{frames.Length * asset.Actions[actionId].Delay}");
                     
                 for (var j = 0; j < frames.Length; j++)
                 {
@@ -87,7 +89,7 @@ namespace Assets.Scripts.MapEditor.Editor
             }
 
             File.WriteAllLines(@"Assets/Sprites/AttackTiming.txt", output);
-            //File.WriteAllLines(@"Assets/Sprites/AttackTimingBad.txt", badout);
+            File.WriteAllLines(@"Assets/Sprites/AttackLength.txt", totalOut);
         }
 
         private static string GetGroupName(string path)

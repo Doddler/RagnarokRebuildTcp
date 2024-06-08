@@ -18,25 +18,25 @@ MonoBehaviour:
   m_GUID: 5f474784577dcf644a3c480fd3b9e282
   m_SerializeEntries:
   - m_GUID: 013f99d427ee2df43b9a77044ccd9ede
-    m_Address: Assets/Sprites/Monsters/amon_ra.spr
+    m_Address: Assets/Sprites/MonstersOrig/amon_ra.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0400ece11e8fd2042a31794a121ace04
-    m_Address: Assets/Sprites/Monsters/clock.spr
+    m_Address: Assets/Sprites/MonstersOrig/clock.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 04fd9a5fbf7ba2544b5291784fd1b54c
-    m_Address: Assets/Sprites/Monsters/ghostring.spr
+    m_Address: Assets/Sprites/MonstersOrig/ghostring.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 050af5427c05ee445a8daf2911875138
-    m_Address: Assets/Sprites/Monsters/frilldora.spr
+    m_Address: Assets/Sprites/MonstersOrig/frilldora.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -48,25 +48,25 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 05676c1aa47c5ca47a03cfb361f140a3
-    m_Address: Assets/Sprites/Monsters/farmiliar.spr
+    m_Address: Assets/Sprites/MonstersOrig/farmiliar.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 070707860ca8c71449b712adb4be56e8
-    m_Address: Assets/Sprites/Monsters/picky_.spr
+    m_Address: Assets/Sprites/MonstersOrig/picky_.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0759502e5de3a744f8b10ea1ead97605
-    m_Address: Assets/Sprites/Monsters/goblin_2.spr
+    m_Address: Assets/Sprites/MonstersOrig/goblin_2.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 075f8e02c81afa047a2d2f7f569d4041
-    m_Address: Assets/Sprites/Monsters/brilight.spr
+    m_Address: Assets/Sprites/MonstersOrig/brilight.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -78,61 +78,55 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0a3ee882c5e8bb4459436dd8e66a14b6
-    m_Address: Assets/Sprites/Monsters/wild_rose.spr
+    m_Address: Assets/Sprites/MonstersOrig/wild_rose.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0ab732d66aae8b3448dd9eb8f12efe69
-    m_Address: Assets/Sprites/Monsters/sasquatch.spr
+    m_Address: Assets/Sprites/MonstersOrig/sasquatch.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0af8a5abecd2e23449df59218f62617e
-    m_Address: Assets/Sprites/Monsters/wolf.spr
+    m_Address: Assets/Sprites/MonstersOrig/wolf.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0bad18a9d97788d4d99640233c41a733
-    m_Address: Assets/Sprites/Monsters/am_mut.spr
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Sprite
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0c07465723628e04d9065259ddb97c05
-    m_Address: "Assets/Sprites/Characters/HeadFemale/4_\uC5EC.spr"
+    m_Address: Assets/Sprites/MonstersOrig/am_mut.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0ed87179b8d9f374ca0843f73a5f3c60
-    m_Address: Assets/Sprites/Monsters/isis.spr
+    m_Address: Assets/Sprites/MonstersOrig/isis.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0f18e4744deff184b94ff5b390b5780d
-    m_Address: Assets/Sprites/Monsters/mistress.spr
+    m_Address: Assets/Sprites/MonstersOrig/mistress.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 117386d8969497149833c0bbbaa4e949
-    m_Address: Assets/Sprites/Monsters/caramel.spr
+    m_Address: Assets/Sprites/MonstersOrig/caramel.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 11b9299f6408f874d885274282c6414e
-    m_Address: Assets/Sprites/Monsters/thief_bug_male.spr
+    m_Address: Assets/Sprites/MonstersOrig/thief_bug_male.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 123020b311b4781438a0a3cbc02102f0
-    m_Address: Assets/Sprites/Monsters/coco.spr
+    m_Address: Assets/Sprites/MonstersOrig/coco.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -156,25 +150,25 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1777ae685267c174588921c1b66a4207
-    m_Address: Assets/Sprites/Monsters/phreeoni.spr
+    m_Address: Assets/Sprites/MonstersOrig/phreeoni.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1c042f2e97eca224d9138dcb28f63dc3
-    m_Address: Assets/Sprites/Monsters/eggyra.spr
+    m_Address: Assets/Sprites/MonstersOrig/eggyra.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1c44842404a4b3545b8c6bef8e14da9b
-    m_Address: Assets/Sprites/Monsters/wander_man.spr
+    m_Address: Assets/Sprites/MonstersOrig/wander_man.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ca813a62720b894eba7c02579d505cf
-    m_Address: Assets/Sprites/Monsters/skel_archer.spr
+    m_Address: Assets/Sprites/MonstersOrig/skel_archer.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -186,13 +180,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1d34bf615bfb4c24b84aca0e2807de79
-    m_Address: Assets/Sprites/Monsters/sand_man.spr
+    m_Address: Assets/Sprites/MonstersOrig/sand_man.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1d9ae7f42c01682479282e59e5768343
-    m_Address: Assets/Sprites/Monsters/poring.spr
+    m_Address: Assets/Sprites/MonstersOrig/poring.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -204,7 +198,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 210aa90eb87874d40bbee2c8e72f042d
-    m_Address: Assets/Sprites/Monsters/penomena.spr
+    m_Address: Assets/Sprites/MonstersOrig/penomena.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -216,7 +210,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2583ee4b91694d147856ea56b5afbfad
-    m_Address: Assets/Sprites/Monsters/cat_o_nine_tail.spr
+    m_Address: Assets/Sprites/MonstersOrig/cat_o_nine_tail.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -228,25 +222,25 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 293df452191638b4a9b6e973464042b5
-    m_Address: Assets/Sprites/Monsters/thief_bug.spr
+    m_Address: Assets/Sprites/MonstersOrig/thief_bug.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2a09e065a866cf2438a62712f00ccdf8
-    m_Address: Assets/Sprites/Monsters/golem.spr
+    m_Address: Assets/Sprites/MonstersOrig/golem.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2a1f7acd8bcc5b14ead83cc3989048c2
-    m_Address: Assets/Sprites/Monsters/thief_bug_egg.spr
+    m_Address: Assets/Sprites/MonstersOrig/thief_bug_egg.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2b1871b4d8d18f543a2c4c9ffd2ca745
-    m_Address: Assets/Sprites/Monsters/spore.spr
+    m_Address: Assets/Sprites/MonstersOrig/spore.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -258,13 +252,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2c1b7bba405045f46905a14908df5b86
-    m_Address: Assets/Sprites/Monsters/orc_baby.spr
+    m_Address: Assets/Sprites/MonstersOrig/orc_baby.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2c648da71610a5647a1ab14858a2e5dc
-    m_Address: Assets/Sprites/Monsters/moonlight.spr
+    m_Address: Assets/Sprites/MonstersOrig/moonlight.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -282,19 +276,19 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2f72430bf05dde74d8bbc27eec53e0cf
-    m_Address: Assets/Sprites/Monsters/alarm.spr
+    m_Address: Assets/Sprites/MonstersOrig/alarm.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 31e8c3616f3418d4b9ef02db104e06cf
-    m_Address: Assets/Sprites/Monsters/stainer.spr
+    m_Address: Assets/Sprites/MonstersOrig/stainer.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 329714ac8d37b604cb231f4d5cd089d8
-    m_Address: Assets/Sprites/Monsters/greatest_general.spr
+    m_Address: Assets/Sprites/MonstersOrig/greatest_general.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -318,73 +312,73 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 36a7a27989817c54f8cead4cce99ebf7
-    m_Address: Assets/Sprites/Monsters/desert_wolf_b.spr
+    m_Address: Assets/Sprites/MonstersOrig/desert_wolf_b.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 36ce427242b01d24092fa619fff814a3
-    m_Address: Assets/Sprites/Monsters/red_plant.spr
+    m_Address: Assets/Sprites/MonstersOrig/red_plant.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 36f12b0bfba2a894ea54a4278e754fd1
-    m_Address: Assets/Sprites/Monsters/lunatic.spr
+    m_Address: Assets/Sprites/MonstersOrig/lunatic.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 36f48683280b51543878b5964d0ab5d4
-    m_Address: Assets/Sprites/Monsters/creamy.spr
+    m_Address: Assets/Sprites/MonstersOrig/creamy.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 37f383dd5ed5b3a45a5003443646d299
-    m_Address: Assets/Sprites/Monsters/eddga.spr
+    m_Address: Assets/Sprites/MonstersOrig/eddga.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3b3fd51c28824b34dae3043623eb2ff0
-    m_Address: Assets/Sprites/Monsters/elder.spr
+    m_Address: Assets/Sprites/MonstersOrig/elder.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c56b1906213cef4ba5192c229698c1d
-    m_Address: Assets/Sprites/Monsters/goblin_archer.spr
+    m_Address: Assets/Sprites/MonstersOrig/goblin_archer.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3ce7d15e92302e84499b9e4bad20aa23
-    m_Address: Assets/Sprites/Monsters/metaller.spr
+    m_Address: Assets/Sprites/MonstersOrig/metaller.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3d65691cb21357942a53f231b3326302
-    m_Address: Assets/Sprites/Monsters/savage_babe.spr
+    m_Address: Assets/Sprites/MonstersOrig/savage_babe.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3d9bb92ee7535924883f236f62c7efdf
-    m_Address: Assets/Sprites/Monsters/orc_zombie.spr
+    m_Address: Assets/Sprites/MonstersOrig/orc_zombie.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f53db95b8b2aaa4983da8ad7ef43342
-    m_Address: Assets/Sprites/Monsters/mysteltainn.spr
+    m_Address: Assets/Sprites/MonstersOrig/mysteltainn.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f9c3647eb2929d428f3fac2c594dfd9
-    m_Address: Assets/Sprites/Monsters/orc_archer.spr
+    m_Address: Assets/Sprites/MonstersOrig/orc_archer.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -396,13 +390,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4057673bee612a54eb73657118fe9f26
-    m_Address: Assets/Sprites/Monsters/matyr.spr
+    m_Address: Assets/Sprites/MonstersOrig/matyr.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 406068c3f6cf6034296da0d36362487a
-    m_Address: Assets/Sprites/Monsters/skel_soldier.spr
+    m_Address: Assets/Sprites/MonstersOrig/skel_soldier.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -414,13 +408,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 41bffcf39daf93a44b987709cb1a0a24
-    m_Address: Assets/Sprites/Monsters/yellow_plant.spr
+    m_Address: Assets/Sprites/MonstersOrig/yellow_plant.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4289a6954fe306a4b9691681898646c9
-    m_Address: Assets/Sprites/Monsters/martin.spr
+    m_Address: Assets/Sprites/MonstersOrig/martin.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -432,7 +426,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 452ea763b6dfd8d4aba5451e64105dc8
-    m_Address: Assets/Sprites/Monsters/kobold_3.spr
+    m_Address: Assets/Sprites/MonstersOrig/kobold_3.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -444,7 +438,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 463e7de72f44f6b46be1233a1d7d9c31
-    m_Address: Assets/Sprites/Monsters/side_winder.spr
+    m_Address: Assets/Sprites/MonstersOrig/side_winder.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -462,19 +456,19 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 47fcb79880b2a61469bb15b942dd1f6f
-    m_Address: Assets/Sprites/Monsters/orc_lord.spr
+    m_Address: Assets/Sprites/MonstersOrig/orc_lord.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 49799781a6ab3224680ef043f491d832
-    m_Address: Assets/Sprites/Monsters/marin.spr
+    m_Address: Assets/Sprites/MonstersOrig/marin.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4982b8efcbcba774fa0d969af10bbab2
-    m_Address: Assets/Sprites/Monsters/nine_tail.spr
+    m_Address: Assets/Sprites/MonstersOrig/nine_tail.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -486,7 +480,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4ad214ea3f1a0c6419b2e2c0680ccdfe
-    m_Address: Assets/Sprites/Monsters/poison_spore.spr
+    m_Address: Assets/Sprites/MonstersOrig/poison_spore.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -516,13 +510,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4e8632736d5ceaa409b656e6e1b11ab8
-    m_Address: Assets/Sprites/Monsters/owl_baron.spr
+    m_Address: Assets/Sprites/MonstersOrig/owl_baron.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4fc20fae7512b1f458b688eccbe0d440
-    m_Address: Assets/Sprites/Monsters/blue_plant.spr
+    m_Address: Assets/Sprites/MonstersOrig/blue_plant.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -540,13 +534,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5598d9ccb9d2c6c49a94d5866eda18de
-    m_Address: Assets/Sprites/Monsters/hode.spr
+    m_Address: Assets/Sprites/MonstersOrig/hode.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 59c9814cc3506f945aad370f89af9048
-    m_Address: Assets/Sprites/Monsters/panzer_goblin.spr
+    m_Address: Assets/Sprites/MonstersOrig/panzer_goblin.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -558,31 +552,31 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5d72933ca66da094cb37171d1208153f
-    m_Address: Assets/Sprites/Monsters/picky.spr
+    m_Address: Assets/Sprites/MonstersOrig/picky.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5d860c52a248656499e78e739dd0dec6
-    m_Address: Assets/Sprites/Monsters/sohee.spr
+    m_Address: Assets/Sprites/MonstersOrig/sohee.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5de40bacdafb8b24aae5477ad02c6274
-    m_Address: Assets/Sprites/Monsters/dragon_fly.spr
+    m_Address: Assets/Sprites/MonstersOrig/dragon_fly.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5eda30ee2e0ad0f4aa5c135f92c58c8a
-    m_Address: Assets/Sprites/Monsters/drainliar.spr
+    m_Address: Assets/Sprites/MonstersOrig/drainliar.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5f680446e4cd8e94b925f467a3e9ee14
-    m_Address: Assets/Sprites/Monsters/rotar_zairo.spr
+    m_Address: Assets/Sprites/MonstersOrig/rotar_zairo.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -594,79 +588,79 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6071e3e76f6e7ab40b9706a7660c9473
-    m_Address: Assets/Sprites/Monsters/chocho.spr
+    m_Address: Assets/Sprites/MonstersOrig/chocho.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 613835a2b778adf4a8f69325558c48ed
-    m_Address: Assets/Sprites/Monsters/rocker.spr
+    m_Address: Assets/Sprites/MonstersOrig/rocker.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6152ba466efabe74a9337a6ee732f223
-    m_Address: Assets/Sprites/Monsters/bon_gun.spr
+    m_Address: Assets/Sprites/MonstersOrig/bon_gun.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 61c583cbb961ff5459b13475d170dca4
-    m_Address: Assets/Sprites/Monsters/joker.spr
+    m_Address: Assets/Sprites/MonstersOrig/joker.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6453c35c31634d24bbe53ba5e7ec7840
-    m_Address: Assets/Sprites/Monsters/roda_frog.spr
+    m_Address: Assets/Sprites/MonstersOrig/roda_frog.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 652b1014b29934a4295c9df929e72ae4
-    m_Address: Assets/Sprites/Monsters/punk.spr
+    m_Address: Assets/Sprites/MonstersOrig/punk.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6533881c1c829134aabdfa2fdca755d9
-    m_Address: Assets/Sprites/Monsters/bigfoot.spr
+    m_Address: Assets/Sprites/MonstersOrig/bigfoot.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 65bd35e4398371a40b0b7e014551775c
-    m_Address: Assets/Sprites/Monsters/goblin_4.spr
+    m_Address: Assets/Sprites/MonstersOrig/goblin_4.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6851dc897d42df84da03110d8503e784
-    m_Address: Assets/Sprites/Monsters/kobold_archer.spr
+    m_Address: Assets/Sprites/MonstersOrig/kobold_archer.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 68f4c9c0d60f8d2489c8adb7b1cf6a8d
-    m_Address: Assets/Sprites/Monsters/andre.spr
+    m_Address: Assets/Sprites/MonstersOrig/andre.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 69024c46ba78f0341b960dcb1c3fba3a
-    m_Address: Assets/Sprites/Monsters/munak.spr
+    m_Address: Assets/Sprites/MonstersOrig/munak.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6912eba073f2122479e10b8a093539a2
-    m_Address: Assets/Sprites/Monsters/whisper_boss.spr
+    m_Address: Assets/Sprites/MonstersOrig/whisper_boss.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6981bfc3e27aec24d810ca3bdbf8459a
-    m_Address: Assets/Sprites/Monsters/dustiness.spr
+    m_Address: Assets/Sprites/MonstersOrig/dustiness.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -677,7 +671,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6c726cb74d82f394ea30b71e4d54cfc3
-    m_Address: Assets/Sprites/Monsters/baphomet_.spr
+    m_Address: Assets/Sprites/MonstersOrig/baphomet_.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -688,7 +682,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 700578ae829ad6d4d8957508583ad3d9
-    m_Address: Assets/Sprites/Monsters/desert_wolf.spr
+    m_Address: Assets/Sprites/MonstersOrig/desert_wolf.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -718,19 +712,19 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 768e41e93f017b34abdda0630a7d3cf7
-    m_Address: Assets/Sprites/Monsters/anacondaq.spr
+    m_Address: Assets/Sprites/MonstersOrig/anacondaq.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 772fd4f8ebdc84248af69bf614c96bc8
-    m_Address: Assets/Sprites/Monsters/thief_bug_female.spr
+    m_Address: Assets/Sprites/MonstersOrig/thief_bug_female.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 77a3140241d06234aadbc91a79d32849
-    m_Address: Assets/Sprites/Monsters/kobold_2.spr
+    m_Address: Assets/Sprites/MonstersOrig/kobold_2.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -748,7 +742,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 79c986b394188a2429a428089734f252
-    m_Address: Assets/Sprites/Monsters/mantis.spr
+    m_Address: Assets/Sprites/MonstersOrig/mantis.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -765,13 +759,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b501e839f0dc4549b1ae7f2d60d45b3
-    m_Address: Assets/Sprites/Monsters/pupa.spr
+    m_Address: Assets/Sprites/MonstersOrig/pupa.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b70df724e10d7e47ab902ffca952975
-    m_Address: Assets/Sprites/Monsters/fabre.spr
+    m_Address: Assets/Sprites/MonstersOrig/fabre.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -806,55 +800,55 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 81e103d37c03c774d8a84c7e9804b7a2
-    m_Address: Assets/Sprites/Monsters/hydra.spr
+    m_Address: Assets/Sprites/MonstersOrig/hydra.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 82503c37046c3b445912dc1ca0c8e056
-    m_Address: Assets/Sprites/Monsters/skeleton_general.spr
+    m_Address: Assets/Sprites/MonstersOrig/skeleton_general.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 830c7fb987df2524e86ebc40803f330f
-    m_Address: Assets/Sprites/Monsters/mimic.spr
+    m_Address: Assets/Sprites/MonstersOrig/mimic.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 83110798c9532a943ba55fab5f32b1d1
-    m_Address: Assets/Sprites/Monsters/scorpion.spr
+    m_Address: Assets/Sprites/MonstersOrig/scorpion.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8348b476a15847f4682ba65011d77395
-    m_Address: Assets/Sprites/Monsters/goblin_1.spr
+    m_Address: Assets/Sprites/MonstersOrig/goblin_1.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8486344c02e6b69438e3640afef1cf1d
-    m_Address: Assets/Sprites/Monsters/magnolia.spr
+    m_Address: Assets/Sprites/MonstersOrig/magnolia.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 85a046cf5ff9c3c4ca7cfa953949de71
-    m_Address: Assets/Sprites/Monsters/yoyo.spr
+    m_Address: Assets/Sprites/MonstersOrig/yoyo.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8606dba797efc47498f0e82bd1ca2dc6
-    m_Address: Assets/Sprites/Monsters/petit.spr
+    m_Address: Assets/Sprites/MonstersOrig/petit.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 88028cdc71f138144add8a4eac076751
-    m_Address: Assets/Sprites/Monsters/angeling.spr
+    m_Address: Assets/Sprites/MonstersOrig/angeling.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -878,25 +872,25 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c412c4ee5450e0429677716be0daf13
-    m_Address: Assets/Sprites/Monsters/minorous.spr
+    m_Address: Assets/Sprites/MonstersOrig/minorous.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c4241145e734d144bc7bd4a96648e74
-    m_Address: Assets/Sprites/Monsters/pecopeco.spr
+    m_Address: Assets/Sprites/MonstersOrig/pecopeco.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8cc5b06c167b1db4989eabb8bb708877
-    m_Address: Assets/Sprites/Monsters/ice_titan.spr
+    m_Address: Assets/Sprites/MonstersOrig/ice_titan.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8d57c22da426ba545b0c1c04bd9b18e1
-    m_Address: Assets/Sprites/Monsters/mastering.spr
+    m_Address: Assets/Sprites/MonstersOrig/mastering.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -908,13 +902,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8d73bf905caffde4cb4c788dc181b2a7
-    m_Address: Assets/Sprites/Monsters/baphomet.spr
+    m_Address: Assets/Sprites/MonstersOrig/baphomet.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 90cc54bcb314ac741a3000aaedca74f3
-    m_Address: Assets/Sprites/Monsters/hornet.spr
+    m_Address: Assets/Sprites/MonstersOrig/hornet.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -938,7 +932,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 94267bdd7454d1741b55d3b8896990d4
-    m_Address: Assets/Sprites/Monsters/shining_plant.spr
+    m_Address: Assets/Sprites/MonstersOrig/shining_plant.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -950,13 +944,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 96ce79ee5e749364d82d6bea6f1fb269
-    m_Address: Assets/Sprites/Monsters/wilow.spr
+    m_Address: Assets/Sprites/MonstersOrig/wilow.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 993e8fba08425cd46a927f8e903cd47a
-    m_Address: Assets/Sprites/Monsters/high_orc.spr
+    m_Address: Assets/Sprites/MonstersOrig/high_orc.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -974,25 +968,25 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9f1de5b135a57e642bcb21dfe0866442
-    m_Address: Assets/Sprites/Monsters/stem_worm.spr
+    m_Address: Assets/Sprites/MonstersOrig/stem_worm.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9f6aeee9f2e167042bbf3aff226d7e01
-    m_Address: Assets/Sprites/Monsters/arclouse.spr
+    m_Address: Assets/Sprites/MonstersOrig/arclouse.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9fd46c9d0b43e9c4dbcb6f99e7037acb
-    m_Address: Assets/Sprites/Monsters/goblin_leader.spr
+    m_Address: Assets/Sprites/MonstersOrig/goblin_leader.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9fd5bdfb90e20024b81eb9b96c615b62
-    m_Address: Assets/Sprites/Monsters/c_tower_manager.spr
+    m_Address: Assets/Sprites/MonstersOrig/c_tower_manager.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1008,25 +1002,25 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a28208c8c1752084f806e7a777da178a
-    m_Address: Assets/Sprites/Monsters/horn.spr
+    m_Address: Assets/Sprites/MonstersOrig/horn.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a2c51b3a6440495458a341e7a65c70b5
-    m_Address: Assets/Sprites/Monsters/peco_egg.spr
+    m_Address: Assets/Sprites/MonstersOrig/peco_egg.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a301ddaa363e899468eb49f81aaa4d49
-    m_Address: Assets/Sprites/Monsters/condor.spr
+    m_Address: Assets/Sprites/MonstersOrig/condor.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a354a8cfe2924fa48b84d7f6ed627680
-    m_Address: Assets/Sprites/Monsters/flora.spr
+    m_Address: Assets/Sprites/MonstersOrig/flora.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1038,19 +1032,19 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a4e8adae65ec2ab4792406575d74c56d
-    m_Address: Assets/Sprites/Monsters/zenorc.spr
+    m_Address: Assets/Sprites/MonstersOrig/zenorc.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a57c959c63ec031428bb92f239360c49
-    m_Address: Assets/Sprites/Monsters/goblin_5.spr
+    m_Address: Assets/Sprites/MonstersOrig/goblin_5.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a58b1f764ade7de4eaced27ae5f7ed60
-    m_Address: Assets/Sprites/Monsters/choco.spr
+    m_Address: Assets/Sprites/MonstersOrig/choco.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1080,49 +1074,49 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a97f7d01e35c9814888fa138ca058e5d
-    m_Address: Assets/Sprites/Monsters/bathory.spr
+    m_Address: Assets/Sprites/MonstersOrig/bathory.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: aa25cb017f6275c41b818986fea42136
-    m_Address: Assets/Sprites/Monsters/green_plant.spr
+    m_Address: Assets/Sprites/MonstersOrig/green_plant.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ab318b88f7e6aed469706e75a4c5275d
-    m_Address: Assets/Sprites/Monsters/red_mushroom.spr
+    m_Address: Assets/Sprites/MonstersOrig/red_mushroom.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ab333e907991597478d71b30446b2e26
-    m_Address: Assets/Sprites/Monsters/verit.spr
+    m_Address: Assets/Sprites/MonstersOrig/verit.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ab4a042a88fba9b4982dda2bb627fd25
-    m_Address: Assets/Sprites/Monsters/worm_tail.spr
+    m_Address: Assets/Sprites/MonstersOrig/worm_tail.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ac28158d1d42cc346bb00744447899fc
-    m_Address: Assets/Sprites/Monsters/owl_duke.spr
+    m_Address: Assets/Sprites/MonstersOrig/owl_duke.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ad96ee404ba35504abb7516cde853fa4
-    m_Address: Assets/Sprites/Monsters/steam_goblin.spr
+    m_Address: Assets/Sprites/MonstersOrig/steam_goblin.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ae69c957c4c7a844eb3fb8dfa946af89
-    m_Address: Assets/Sprites/Monsters/black_mushroom.spr
+    m_Address: Assets/Sprites/MonstersOrig/black_mushroom.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1140,19 +1134,19 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b0a20af02afafe44e82f893d26a9ae8d
-    m_Address: Assets/Sprites/Monsters/mummy.spr
+    m_Address: Assets/Sprites/MonstersOrig/mummy.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b132ef155af6f314abe448bafd55004e
-    m_Address: Assets/Sprites/Monsters/dragon_tail.spr
+    m_Address: Assets/Sprites/MonstersOrig/dragon_tail.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b14672f987f89204a8e064f04949b2f4
-    m_Address: Assets/Sprites/Monsters/kobold_1.spr
+    m_Address: Assets/Sprites/MonstersOrig/kobold_1.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1164,19 +1158,19 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b4616493a2aba7c448ab59f62406baec
-    m_Address: Assets/Sprites/Monsters/vagabond_wolf.spr
+    m_Address: Assets/Sprites/MonstersOrig/vagabond_wolf.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b551522ea5512534e8c6ce21b2cfb035
-    m_Address: Assets/Sprites/Monsters/smokie.spr
+    m_Address: Assets/Sprites/MonstersOrig/smokie.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b578e15c38d7978488bdd4ddaed93e24
-    m_Address: Assets/Sprites/Monsters/ancient_mummy.spr
+    m_Address: Assets/Sprites/MonstersOrig/ancient_mummy.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1230,7 +1224,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c210ce0eab982144a943168f213232f8
-    m_Address: Assets/Sprites/Monsters/rideword.spr
+    m_Address: Assets/Sprites/MonstersOrig/rideword.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1242,13 +1236,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c5c0bc18a4ec88348ac8c117c827824c
-    m_Address: Assets/Sprites/Monsters/leib_olmai.spr
+    m_Address: Assets/Sprites/MonstersOrig/leib_olmai.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c5e8380a4231d744babed1ef972ca795
-    m_Address: Assets/Sprites/Monsters/goblin_3.spr
+    m_Address: Assets/Sprites/MonstersOrig/goblin_3.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1260,13 +1254,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c69b5f995b26ab2498e9327348de1508
-    m_Address: Assets/Sprites/Monsters/drops.spr
+    m_Address: Assets/Sprites/MonstersOrig/drops.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c6d20db51b5ab694fa0d5f48ffc766ca
-    m_Address: Assets/Sprites/Monsters/argiope.spr
+    m_Address: Assets/Sprites/MonstersOrig/argiope.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1278,13 +1272,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c9954b9dc4d53fd47884ed6d3f08edf9
-    m_Address: Assets/Sprites/Monsters/tirfing.spr
+    m_Address: Assets/Sprites/MonstersOrig/tirfing.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cad382922d8fa6e4797a169c18b7ddf7
-    m_Address: Assets/Sprites/Monsters/toad.spr
+    m_Address: Assets/Sprites/MonstersOrig/toad.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1296,13 +1290,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cc8f291e45c82b440a58ed9abcbbd841
-    m_Address: Assets/Sprites/Monsters/kobolt_leader.spr
+    m_Address: Assets/Sprites/MonstersOrig/kobolt_leader.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cdc71d84b87f37c49bb32aa504d06994
-    m_Address: Assets/Sprites/Monsters/zombie.spr
+    m_Address: Assets/Sprites/MonstersOrig/zombie.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1320,7 +1314,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ce54439df34779b48afa36e2a1fa1a70
-    m_Address: Assets/Sprites/Monsters/killer_mantis.spr
+    m_Address: Assets/Sprites/MonstersOrig/killer_mantis.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1332,13 +1326,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d136f9cfcba22854a9240998e8d2c464
-    m_Address: Assets/Sprites/Monsters/argos.spr
+    m_Address: Assets/Sprites/MonstersOrig/argos.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d2594482139b4d942bac92178bef6016
-    m_Address: Assets/Sprites/Monsters/ant_egg.spr
+    m_Address: Assets/Sprites/MonstersOrig/ant_egg.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1356,13 +1350,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d33cc581c7aff1641a5e7723c8a22799
-    m_Address: Assets/Sprites/Monsters/eclipse.spr
+    m_Address: Assets/Sprites/MonstersOrig/eclipse.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d5c455adfeff0204894a6791a28f0ab3
-    m_Address: Assets/Sprites/Monsters/hunter_fly.spr
+    m_Address: Assets/Sprites/MonstersOrig/hunter_fly.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1392,7 +1386,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db2b7fac5be63624aa19adc36e0c5042
-    m_Address: Assets/Sprites/Monsters/elder_wilow.spr
+    m_Address: Assets/Sprites/MonstersOrig/elder_wilow.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1404,7 +1398,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dbf3cc80f251e174eb9bddcc0fefc13c
-    m_Address: Assets/Sprites/Monsters/piere.spr
+    m_Address: Assets/Sprites/MonstersOrig/piere.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1416,25 +1410,25 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dce7aab367c5cdd4c81471cae21e7b9e
-    m_Address: Assets/Sprites/Monsters/orc_lady.spr
+    m_Address: Assets/Sprites/MonstersOrig/orc_lady.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dcf27d08fb6d14848a2da5a718d9638b
-    m_Address: Assets/Sprites/Monsters/muka.spr
+    m_Address: Assets/Sprites/MonstersOrig/muka.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dd460e764a9976542be2aee593e91daa
-    m_Address: Assets/Sprites/Monsters/petit_.spr
+    m_Address: Assets/Sprites/MonstersOrig/petit_.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: df5b806d79a97d641a8a61632f8934f2
-    m_Address: Assets/Sprites/Monsters/deviling.spr
+    m_Address: Assets/Sprites/MonstersOrig/deviling.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1446,7 +1440,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e10cd867d0d16774caf159a7e2929c53
-    m_Address: Assets/Sprites/Monsters/osiris.spr
+    m_Address: Assets/Sprites/MonstersOrig/osiris.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1500,7 +1494,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e7e976062319def47ad89309a6bda749
-    m_Address: Assets/Sprites/Monsters/ork_warrior.spr
+    m_Address: Assets/Sprites/MonstersOrig/ork_warrior.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1512,31 +1506,31 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e840a4817325bb04b9169fa01f5756b9
-    m_Address: Assets/Sprites/Monsters/cramp.spr
+    m_Address: Assets/Sprites/MonstersOrig/cramp.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ea907dbe9fa757b449ea2b41bd6c164f
-    m_Address: Assets/Sprites/Monsters/orc_skeleton.spr
+    m_Address: Assets/Sprites/MonstersOrig/orc_skeleton.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eb6dae5fc39b449419934189e476a2bb
-    m_Address: Assets/Sprites/Monsters/tarou.spr
+    m_Address: Assets/Sprites/MonstersOrig/tarou.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ebd7933485500a348a3d7edf24638f16
-    m_Address: Assets/Sprites/Monsters/skeleton.spr
+    m_Address: Assets/Sprites/MonstersOrig/skeleton.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ec4e60dd3207676448d99529465ec7bc
-    m_Address: Assets/Sprites/Monsters/dokebi.spr
+    m_Address: Assets/Sprites/MonstersOrig/dokebi.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1554,13 +1548,13 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ecc7f6fd062685f4c840ad9d7fb3e734
-    m_Address: Assets/Sprites/Monsters/ork_hero.spr
+    m_Address: Assets/Sprites/MonstersOrig/ork_hero.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ed5c33172f3a8f540ae982125733fc34
-    m_Address: Assets/Sprites/Monsters/steel_chocho.spr
+    m_Address: Assets/Sprites/MonstersOrig/steel_chocho.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1572,19 +1566,19 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ee946c200f3337b4581929a4fc872817
-    m_Address: Assets/Sprites/Monsters/horong.spr
+    m_Address: Assets/Sprites/MonstersOrig/horong.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ef79cef2cc41fe2468066aabe94709fe
-    m_Address: Assets/Sprites/Monsters/ambernite.spr
+    m_Address: Assets/Sprites/MonstersOrig/ambernite.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f0aa0da9cacd0f54c9cf8e4ffb023b0f
-    m_Address: Assets/Sprites/Monsters/mandragora.spr
+    m_Address: Assets/Sprites/MonstersOrig/mandragora.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1596,7 +1590,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f21dd90a66e2ea9438c024cd757260fb
-    m_Address: Assets/Sprites/Monsters/deniro.spr
+    m_Address: Assets/Sprites/MonstersOrig/deniro.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1614,7 +1608,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f3dad21b8dbf41849a3103cca89c7724
-    m_Address: Assets/Sprites/Monsters/white_plant.spr
+    m_Address: Assets/Sprites/MonstersOrig/white_plant.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1632,7 +1626,7 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f434250607a67ef4d87a72056efb7a36
-    m_Address: Assets/Sprites/Monsters/savage.spr
+    m_Address: Assets/Sprites/MonstersOrig/savage.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1644,139 +1638,139 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f642d0831c9eb024dadd3a9afff32838
-    m_Address: Assets/Sprites/Monsters/poporing.spr
+    m_Address: Assets/Sprites/MonstersOrig/poporing.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f6de46f8fd415d0449e16151284ea472
-    m_Address: Assets/Sprites/Monsters/whisper.spr
+    m_Address: Assets/Sprites/MonstersOrig/whisper.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f7a27934271e08d4b87309bb88e877cc
-    m_Address: Assets/Sprites/Monsters/executioner.spr
+    m_Address: Assets/Sprites/MonstersOrig/executioner.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f7b2161e869bdc445b916b1927f69455
-    m_Address: Assets/Sprites/Monsters/thara_frog.spr
+    m_Address: Assets/Sprites/MonstersOrig/thara_frog.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fd43242ff762c4242bdd6db01b11cc77
-    m_Address: Assets/Sprites/Monsters/snake.spr
+    m_Address: Assets/Sprites/MonstersOrig/snake.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fe27e56b7a9d1204f9fa42ca6aabae69
-    m_Address: Assets/Sprites/Monsters/golden_bug.spr
+    m_Address: Assets/Sprites/MonstersOrig/golden_bug.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 83b014b3ba82d694e97c870ed2bbc7d6
-    m_Address: Assets/Sprites/Monsters/deviruchi.spr
+    m_Address: Assets/Sprites/MonstersOrig/deviruchi.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c936d4065c14d844b9842ccb9d5e4725
-    m_Address: Assets/Sprites/Monsters/doppelganger.spr
+    m_Address: Assets/Sprites/MonstersOrig/doppelganger.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f32888d5b869ae54ebc9fcb4f1ea14be
-    m_Address: Assets/Sprites/Monsters/dracula.spr
+    m_Address: Assets/Sprites/MonstersOrig/dracula.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c6076739ee3af384e86f2aff99b866f2
-    m_Address: Assets/Sprites/Monsters/ghoul.spr
+    m_Address: Assets/Sprites/MonstersOrig/ghoul.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d5d206ab97a03ab42b64067afba96915
-    m_Address: Assets/Sprites/Monsters/jakk.spr
+    m_Address: Assets/Sprites/MonstersOrig/jakk.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b92c845de955bd847bc0e85467ef3b6c
-    m_Address: Assets/Sprites/Monsters/marionette.spr
+    m_Address: Assets/Sprites/MonstersOrig/marionette.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 380cf202baf40e24da87d46ef5057180
-    m_Address: Assets/Sprites/Monsters/anubis.spr
+    m_Address: Assets/Sprites/MonstersOrig/anubis.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 36ca30e6542e15b44907809cdb878de8
-    m_Address: Assets/Sprites/Monsters/giearth.spr
+    m_Address: Assets/Sprites/MonstersOrig/giearth.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1e3c9be48ee428a4aa82b6c3caf09ff6
-    m_Address: Assets/Sprites/Monsters/marduk.spr
+    m_Address: Assets/Sprites/MonstersOrig/marduk.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cee2cefc84812df42a2488cf3d4edf85
-    m_Address: Assets/Sprites/Monsters/maya.spr
+    m_Address: Assets/Sprites/MonstersOrig/maya.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ed119d564f8f2474ba4ecbfe78ee2fbb
-    m_Address: Assets/Sprites/Monsters/maya_puple.spr
+    m_Address: Assets/Sprites/MonstersOrig/maya_puple.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f19fb8c1baf2754cbc3bd322138e5a7
-    m_Address: Assets/Sprites/Monsters/pasana.spr
+    m_Address: Assets/Sprites/MonstersOrig/pasana.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 508813928ba31774e8cf7be5b8d2722c
-    m_Address: Assets/Sprites/Monsters/pharaoh.spr
+    m_Address: Assets/Sprites/MonstersOrig/pharaoh.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6cdc0e27a5c867c429d4fe4735950d29
-    m_Address: Assets/Sprites/Monsters/requiem.spr
+    m_Address: Assets/Sprites/MonstersOrig/requiem.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4b6fcbbc7aec1e64790612912dba57bf
-    m_Address: Assets/Sprites/Monsters/vitata.spr
+    m_Address: Assets/Sprites/MonstersOrig/vitata.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: da4081a08e004a040a3361aec45cc101
-    m_Address: Assets/Sprites/Monsters/zerom.spr
+    m_Address: Assets/Sprites/MonstersOrig/zerom.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7246a5e8e63099543b95d7d67612c6a1
-    m_Address: Assets/Sprites/Monsters/nightmare.spr
+    m_Address: Assets/Sprites/MonstersOrig/nightmare.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -1787,259 +1781,259 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fa284dae59c50fe448eee635b4aa2516
-    m_Address: Assets/Sprites/Monsters/cornutus.spr
+    m_Address: Assets/Sprites/MonstersOrig/cornutus.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 38d439a9342f4444888ebbf5413d1cf4
-    m_Address: Assets/Sprites/Monsters/deviace.spr
+    m_Address: Assets/Sprites/MonstersOrig/deviace.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 560e982155dcc634bb770607b17c6f27
-    m_Address: Assets/Sprites/Monsters/kukre.spr
+    m_Address: Assets/Sprites/MonstersOrig/kukre.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3e95c3088c8ba92478ac5d11ac24e00f
-    m_Address: Assets/Sprites/Monsters/marc.spr
+    m_Address: Assets/Sprites/MonstersOrig/marc.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f801f3d0c3cd4954a8d3ec45c330d1e0
-    m_Address: Assets/Sprites/Monsters/marina.spr
+    m_Address: Assets/Sprites/MonstersOrig/marina.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dd62c442d00d636418f8ef40e04c50be
-    m_Address: Assets/Sprites/Monsters/marine_sphere.spr
+    m_Address: Assets/Sprites/MonstersOrig/marine_sphere.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 49598f94177fbbd408212616819e2fa0
-    m_Address: Assets/Sprites/Monsters/marse.spr
+    m_Address: Assets/Sprites/MonstersOrig/marse.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c93d94504978dfa4399b0fe7edc9ff0a
-    m_Address: Assets/Sprites/Monsters/merman.spr
+    m_Address: Assets/Sprites/MonstersOrig/merman.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 10a623328f6dd4a488c7ca20e935b2d4
-    m_Address: Assets/Sprites/Monsters/obeaune.spr
+    m_Address: Assets/Sprites/MonstersOrig/obeaune.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1823065658ef3cf4883bcc31468c5b6a
-    m_Address: Assets/Sprites/Monsters/phen.spr
+    m_Address: Assets/Sprites/MonstersOrig/phen.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bd990a0f38bacc249a445d55a94257b0
-    m_Address: Assets/Sprites/Monsters/plankton.spr
+    m_Address: Assets/Sprites/MonstersOrig/plankton.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 59ca955f0f49295429fb1427a409fb43
-    m_Address: Assets/Sprites/Monsters/strouf.spr
+    m_Address: Assets/Sprites/MonstersOrig/strouf.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2cd5170a1e5460c4bbf26effae96893e
-    m_Address: Assets/Sprites/Monsters/sword_fish.spr
+    m_Address: Assets/Sprites/MonstersOrig/sword_fish.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4a7bb830b8616244796f647789c71697
-    m_Address: Assets/Sprites/Monsters/vadon.spr
+    m_Address: Assets/Sprites/MonstersOrig/vadon.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eac7b2d3c5a44ab4188c8ce82893b61a
-    m_Address: Assets/Sprites/Monsters/alice.spr
+    m_Address: Assets/Sprites/MonstersOrig/alice.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b39ce2b9db57a8148914642f3a2d5b4b
-    m_Address: Assets/Sprites/Monsters/bloody_knight.spr
+    m_Address: Assets/Sprites/MonstersOrig/bloody_knight.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2cd49fc6fd33f9243a77b6816dbe4df7
-    m_Address: Assets/Sprites/Monsters/carat.spr
+    m_Address: Assets/Sprites/MonstersOrig/carat.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c006013b07b8bf4396eb16b4e849242
-    m_Address: Assets/Sprites/Monsters/chimera.spr
+    m_Address: Assets/Sprites/MonstersOrig/chimera.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bf6a073ce519aa243a55cb1abb4e80b9
-    m_Address: Assets/Sprites/Monsters/dark_frame.spr
+    m_Address: Assets/Sprites/MonstersOrig/dark_frame.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 15442c3cd647291439d079d3b2a259d7
-    m_Address: Assets/Sprites/Monsters/dark_illusion.spr
+    m_Address: Assets/Sprites/MonstersOrig/dark_illusion.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 33f51485c0b5e834f8aa7745640ee411
-    m_Address: Assets/Sprites/Monsters/dark_lord.spr
+    m_Address: Assets/Sprites/MonstersOrig/dark_lord.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3ef8003bdfe5d0a448b48d2f11e307ac
-    m_Address: Assets/Sprites/Monsters/drake.spr
+    m_Address: Assets/Sprites/MonstersOrig/drake.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 880b00298fc14cb4e82c42b1167460ae
-    m_Address: Assets/Sprites/Monsters/evil_druid.spr
+    m_Address: Assets/Sprites/MonstersOrig/evil_druid.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4eb5d6b06a08d3441bbbb1ea9d02f29c
-    m_Address: Assets/Sprites/Monsters/gargoyle.spr
+    m_Address: Assets/Sprites/MonstersOrig/gargoyle.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 48ecb2bdb21bdd2469d7187595dd5c7d
-    m_Address: Assets/Sprites/Monsters/injustice.spr
+    m_Address: Assets/Sprites/MonstersOrig/injustice.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bc692fe0e9eb8d54baed0b7cd0660475
-    m_Address: Assets/Sprites/Monsters/khalitzburg.spr
+    m_Address: Assets/Sprites/MonstersOrig/khalitzburg.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b1f21c18b9554b444b4ba57c2c2a1c90
-    m_Address: Assets/Sprites/Monsters/knight_of_abyss.spr
+    m_Address: Assets/Sprites/MonstersOrig/knight_of_abyss.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cafc3dcd6cfd5ac47bd3e185ef967b5d
-    m_Address: Assets/Sprites/Monsters/majoruros.spr
+    m_Address: Assets/Sprites/MonstersOrig/majoruros.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e9579e8c1cc22b54f9debd3f3875f391
-    m_Address: Assets/Sprites/Monsters/myst.spr
+    m_Address: Assets/Sprites/MonstersOrig/myst.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 294af21e962990943969330dffb2640a
-    m_Address: Assets/Sprites/Monsters/phendark.spr
+    m_Address: Assets/Sprites/MonstersOrig/phendark.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a28b1cc08d53f14baa3c4036df6c59d
-    m_Address: Assets/Sprites/Monsters/pirate_skel.spr
+    m_Address: Assets/Sprites/MonstersOrig/pirate_skel.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d3e940949b0a5384b9803eba5ecfdc8d
-    m_Address: Assets/Sprites/Monsters/raydric.spr
+    m_Address: Assets/Sprites/MonstersOrig/raydric.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4763d060afceab34fa788d07ccefdf22
-    m_Address: Assets/Sprites/Monsters/raydric_archer.spr
+    m_Address: Assets/Sprites/MonstersOrig/raydric_archer.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 18c8740eb0021a24e8f240ba6df66927
-    m_Address: Assets/Sprites/Monsters/rybio.spr
+    m_Address: Assets/Sprites/MonstersOrig/rybio.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 32a983b042b0f624db2b84e909bc6958
-    m_Address: Assets/Sprites/Monsters/sageworm.spr
+    m_Address: Assets/Sprites/MonstersOrig/sageworm.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d57931f7ab15a1e4bb5655a7e94441e1
-    m_Address: Assets/Sprites/Monsters/skel_prisoner.spr
+    m_Address: Assets/Sprites/MonstersOrig/skel_prisoner.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d336c475e980a754eb1ee00e39066047
-    m_Address: Assets/Sprites/Monsters/skel_worker.spr
+    m_Address: Assets/Sprites/MonstersOrig/skel_worker.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb09bf13d10585f469b9eea89b2476cd
-    m_Address: Assets/Sprites/Monsters/sting.spr
+    m_Address: Assets/Sprites/MonstersOrig/sting.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ba6cbe91c7bf50f409ebb75d8620c2df
-    m_Address: Assets/Sprites/Monsters/wind_ghost.spr
+    m_Address: Assets/Sprites/MonstersOrig/wind_ghost.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 395759da43cf79f409f82106499b94c6
-    m_Address: Assets/Sprites/Monsters/wraith.spr
+    m_Address: Assets/Sprites/MonstersOrig/wraith.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: df05d860693c9c84fbd4b6416e8b5e07
-    m_Address: Assets/Sprites/Monsters/zherlthsh.spr
+    m_Address: Assets/Sprites/MonstersOrig/zherlthsh.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6a9805b8f49e7544ea984576e3fb7a79
-    m_Address: Assets/Sprites/Monsters/zombie_prisoner.spr
+    m_Address: Assets/Sprites/MonstersOrig/zombie_prisoner.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4d9445aa1ea26394a952b85823245adb
-    m_Address: Assets/Sprites/Monsters/anolian.spr
+    m_Address: Assets/Sprites/MonstersOrig/anolian.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -2944,12 +2938,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Minimap
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3669a2642188cb9438f5e24fc99edafd
-    m_Address: Assets/Maps/minimap/pay_gld_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fa490fcfd3cb8c844b02677b38e492be
     m_Address: Assets/Maps/minimap/payon.png
     m_ReadOnly: 0
@@ -3204,150 +3192,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 38dcad33f06247c479d7cd946bdead1d
     m_Address: Assets/Maps/minimap/yuno.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ec884f4c80cd7f34e9d5258bee7a5adc
-    m_Address: Assets/Maps/minimap/yuno_fild01.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c91734f59cecff94298eb9c50310c076
-    m_Address: Assets/Maps/minimap/yuno_fild01_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 61bf3473c114ba24c8c76f5a5113f1e0
-    m_Address: Assets/Maps/minimap/yuno_fild02.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 419053e0cafb3ac478e04a0853b0ecc4
-    m_Address: Assets/Maps/minimap/yuno_fild02_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c3ac74c2d94c3814e896f42dc7d2317b
-    m_Address: Assets/Maps/minimap/yuno_fild03.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2dd831b39bc0fb74c9af9477ddd7cf10
-    m_Address: Assets/Maps/minimap/yuno_fild03_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 871b30a8ae5ffbf4d8ccf8af1642fa55
-    m_Address: Assets/Maps/minimap/yuno_fild04.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0d9b243494db89b4291bde85e6b739cd
-    m_Address: Assets/Maps/minimap/yuno_fild04_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a4070dee8571e614788280d194a55f87
-    m_Address: Assets/Maps/minimap/yuno_fild05.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 030ade7e9ea0e7c439db9c805a0999cf
-    m_Address: Assets/Maps/minimap/yuno_fild05_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ebe7a0f5c042eaa4294c4abd08d25ae7
-    m_Address: Assets/Maps/minimap/yuno_fild06.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8f759bbdce75b0144bf7198687458818
-    m_Address: Assets/Maps/minimap/yuno_fild06_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f68ccb9cdfda4d9428bc8bb1c6895881
-    m_Address: Assets/Maps/minimap/yuno_fild07.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 55c980ab0b6202d4a8037da67381efed
-    m_Address: Assets/Maps/minimap/yuno_fild07_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: df484c609e9bef24081cda88578764ed
-    m_Address: Assets/Maps/minimap/yuno_fild08.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a4011a87d9dee1344b4afe8dca5ab1f7
-    m_Address: Assets/Maps/minimap/yuno_fild08_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 54ba6b9f387a4eb438b7de52379e9e78
-    m_Address: Assets/Maps/minimap/yuno_fild09.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 93065cb065b477c4db1c9f80e86ab2ec
-    m_Address: Assets/Maps/minimap/yuno_fild09_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8602e9e9a8cd4fc4c9a77f025ca4b5a5
-    m_Address: Assets/Maps/minimap/yuno_fild10.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7ca72df372d499f44b5f86009721da86
-    m_Address: Assets/Maps/minimap/yuno_fild10_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7d2364fa5ba30ac41be48cb7de1e1525
-    m_Address: Assets/Maps/minimap/yuno_fild11.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f478ed9a0886a084fbd228a11ce24aae
-    m_Address: Assets/Maps/minimap/yuno_fild11_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c8a772663242364478f34ee763ae325c
-    m_Address: Assets/Maps/minimap/yuno_fild12.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b8d9f1f8c26d0b64cbd8f2ac02bb3ead
-    m_Address: Assets/Maps/minimap/yuno_fild12_walkmask.png
     m_ReadOnly: 0
     m_SerializedLabels:
     - Minimap
@@ -4138,12 +3982,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Minimap
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c20ec2477bf5263459445861956d7b44
-    m_Address: Assets/Maps/minimap/pay_gld.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a34c53708854ed34eb64b3e3e53870f4
     m_Address: Assets/Maps/minimap/prt_castle.png
     m_ReadOnly: 0
@@ -4313,145 +4151,145 @@ MonoBehaviour:
     - Minimap
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6c4295b4b53c4f94dbf74a0bb83f232f
-    m_Address: Assets/Sprites/Monsters/freezer.spr
+    m_Address: Assets/Sprites/MonstersOrig/freezer.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 35caa91aabb62f64c9ded29c7079625a
-    m_Address: Assets/Sprites/Monsters/heater.spr
+    m_Address: Assets/Sprites/MonstersOrig/heater.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 462616a54d9391746ae3b4757dccf00f
-    m_Address: Assets/Sprites/Monsters/permeter.spr
+    m_Address: Assets/Sprites/MonstersOrig/permeter.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9b6a2465d556bec45bdfbccd6e2c45f6
-    m_Address: Assets/Sprites/Monsters/pest.spr
+    m_Address: Assets/Sprites/MonstersOrig/pest.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7386ddbf57d06c34bbe3733944318c57
-    m_Address: Assets/Sprites/Monsters/solider.spr
+    m_Address: Assets/Sprites/MonstersOrig/solider.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8833965aa77f0e444a7d09a6609d08a3
-    m_Address: Assets/Sprites/Monsters/spring_rabbit.spr
+    m_Address: Assets/Sprites/MonstersOrig/spring_rabbit.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 56036f07492539746ad70c2b3e5d662b
-    m_Address: Assets/Sprites/Monsters/assulter.spr
+    m_Address: Assets/Sprites/MonstersOrig/assulter.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 00ea0b58250defd439c9caf559d6e2d7
-    m_Address: Assets/Sprites/Monsters/turtle_general.spr
+    m_Address: Assets/Sprites/MonstersOrig/turtle_general.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4fa722c5337cd5e40abb7614bc9f1e57
-    m_Address: Assets/Sprites/Monsters/archangeling.spr
+    m_Address: Assets/Sprites/MonstersOrig/archangeling.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c28a771d244c6d742890b7d1461919f4
-    m_Address: Assets/Sprites/Monsters/deleter.spr
+    m_Address: Assets/Sprites/MonstersOrig/deleter.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 22e7bd89270eb8e4eb478fea1faec14a
-    m_Address: Assets/Sprites/Monsters/deleter_.spr
+    m_Address: Assets/Sprites/MonstersOrig/deleter_.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ad72a3f906e6d94a8af2d023da4e0af
-    m_Address: Assets/Sprites/Monsters/demon_pungus.spr
+    m_Address: Assets/Sprites/MonstersOrig/demon_pungus.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 606e8951aa7382d439dc688edb7cca96
-    m_Address: Assets/Sprites/Monsters/driller.spr
+    m_Address: Assets/Sprites/MonstersOrig/driller.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d4db7b381c2b0c6428440ea734a70f8c
-    m_Address: Assets/Sprites/Monsters/geographer.spr
+    m_Address: Assets/Sprites/MonstersOrig/geographer.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 862c7c6d8bd244e46adb80fab86c0642
-    m_Address: Assets/Sprites/Monsters/goat.spr
+    m_Address: Assets/Sprites/MonstersOrig/goat.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8e3b652c4162659498ffc8a76605398e
-    m_Address: Assets/Sprites/Monsters/grand_peco.spr
+    m_Address: Assets/Sprites/MonstersOrig/grand_peco.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1136fd2b764edc24d9bbb7cd665a0a35
-    m_Address: Assets/Sprites/Monsters/harpy.spr
+    m_Address: Assets/Sprites/MonstersOrig/harpy.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6a4432b8189f43459cd3661bc1481d3
-    m_Address: Assets/Sprites/Monsters/kind_of_beetle.spr
+    m_Address: Assets/Sprites/MonstersOrig/kind_of_beetle.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ba33bea96b2a7d944802058a6d05deca
-    m_Address: Assets/Sprites/Monsters/rafflesia.spr
+    m_Address: Assets/Sprites/MonstersOrig/rafflesia.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 180c0ac4a87e74a45896eb8a49989122
-    m_Address: Assets/Sprites/Monsters/sleeper.spr
+    m_Address: Assets/Sprites/MonstersOrig/sleeper.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3ef7f59937dccd341a6fd9949084e323
-    m_Address: Assets/Sprites/Monsters/venatu_1.spr
+    m_Address: Assets/Sprites/MonstersOrig/venatu_1.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 752ff7a591f6aee49850702fc259a1e7
-    m_Address: Assets/Sprites/Monsters/venatu_2.spr
+    m_Address: Assets/Sprites/MonstersOrig/venatu_2.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bd4e12509254f1044abe3460cf938412
-    m_Address: Assets/Sprites/Monsters/venatu_3.spr
+    m_Address: Assets/Sprites/MonstersOrig/venatu_3.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 22d9b4568f0d4ec4ca98beadbd8752cf
-    m_Address: Assets/Sprites/Monsters/venatu_4.spr
+    m_Address: Assets/Sprites/MonstersOrig/venatu_4.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -6269,54 +6107,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Cutins
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e52375e6aa5531742b56258783d4aee0
-    m_Address: Assets/Maps/minimap/guild_room.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7b4944d9dec233248949bd7b80405f91
-    m_Address: Assets/Maps/minimap/guild_room_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fd8a3916b846b4346a4ab0c634345725
-    m_Address: Assets/Maps/minimap/poring_c01.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2835a6a011c90d740a0d6573ad6a355a
-    m_Address: Assets/Maps/minimap/poring_c01_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e4389cfed80660841a906c740a15e5d7
-    m_Address: Assets/Maps/minimap/poring_c02.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bece6516e4235884089873906fbfd55d
-    m_Address: Assets/Maps/minimap/poring_c02_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 69b4a666b19af90419a08e5bd2bd1992
-    m_Address: Assets/Maps/minimap/pvp_n_1-4.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: adb9c8805d7bc254384d8950aee8848d
-    m_Address: Assets/Maps/minimap/pvp_n_1-4_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 242c41906ecc99741a7a16c051fd1838
     m_Address: Assets/Maps/minimap/pvp_n_1-5.png
@@ -9786,196 +9576,64 @@ MonoBehaviour:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 553661c21b8888042a44375fe804b1b8
-    m_Address: Assets/Sprites/Monsters/chepet.spr
+    m_Address: Assets/Sprites/MonstersOrig/chepet.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 28abb0dec5957e24981fab261c2de447
-    m_Address: Assets/Sprites/Monsters/cookie.spr
+    m_Address: Assets/Sprites/MonstersOrig/cookie.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a2a6e206577b54c418d362cc81a59955
-    m_Address: Assets/Sprites/Monsters/cookie_xmas.spr
+    m_Address: Assets/Sprites/MonstersOrig/cookie_xmas.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ebec20afdab019344bcef68ac05c6f84
-    m_Address: Assets/Sprites/Monsters/cruiser.spr
+    m_Address: Assets/Sprites/MonstersOrig/cruiser.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4cbc86416722a924ca85d3f682ec89ad
-    m_Address: Assets/Sprites/Monsters/garm.spr
+    m_Address: Assets/Sprites/MonstersOrig/garm.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5190fe4d23af8774c95f2ce3c790c7f0
-    m_Address: Assets/Sprites/Monsters/garm_baby.spr
+    m_Address: Assets/Sprites/MonstersOrig/garm_baby.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5f88caaf2ef63774fbba7571e5985e21
-    m_Address: Assets/Sprites/Monsters/gobline_xmas.spr
+    m_Address: Assets/Sprites/MonstersOrig/gobline_xmas.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 591dda4722b51a04da20bea01e4ee50d
-    m_Address: Assets/Sprites/Monsters/knight_of_windstorm.spr
+    m_Address: Assets/Sprites/MonstersOrig/knight_of_windstorm.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fc18697e3a2581a44b955123a0d88742
-    m_Address: Assets/Sprites/Monsters/mystcase.spr
+    m_Address: Assets/Sprites/MonstersOrig/mystcase.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 281c678388521b34ca82f28049e5d800
-    m_Address: Assets/Sprites/Monsters/wraith_dead.spr
+    m_Address: Assets/Sprites/MonstersOrig/wraith_dead.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 31c9dbc115f395243a7ec89f6d872840
-    m_Address: Assets/Maps/minimap/new_zone01.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9aa9a190637710140b2b3a6f7066de7c
-    m_Address: Assets/Maps/minimap/new_zone01_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b394ab6d923989042841cbb534b26150
-    m_Address: Assets/Maps/minimap/new_zone02.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d41c515b35ed6684f85cd96b4ec2b43e
-    m_Address: Assets/Maps/minimap/new_zone02_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9c3657d0934d35443bc4ef7c0ca57b61
-    m_Address: Assets/Maps/minimap/new_zone03.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c222b7b7c64417e42b0167230149918a
-    m_Address: Assets/Maps/minimap/new_zone03_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0311d43c6eda47a40a804e50fc83d422
-    m_Address: Assets/Maps/minimap/new_zone04.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3a49d1916bd245e44bd052f9b55a6c2b
-    m_Address: Assets/Maps/minimap/new_zone04_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 956e1aee55a08714d82864a3cced5006
-    m_Address: Assets/Maps/minimap/job_hunte.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bb499e696a5fed041bc9fd6341421fa6
-    m_Address: Assets/Maps/minimap/job_hunte_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8fb1c1dcc50baa6458cc696b834edd68
-    m_Address: Assets/Maps/minimap/job_knt.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 94795c2ba71b33a4e9beaf3433c7a917
-    m_Address: Assets/Maps/minimap/job_knt_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ed7ba63ab396caf47a1093e8ce680900
-    m_Address: Assets/Maps/minimap/job_prist.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6618f274af8c33548b43c0c014a5ef0b
-    m_Address: Assets/Maps/minimap/job_prist_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6345016406e93ec4bbfd7586dee3bde6
-    m_Address: Assets/Maps/minimap/job_sword1.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 16f242cb759f0a446909ed832516c4b6
-    m_Address: Assets/Maps/minimap/job_sword1_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c5de26e1cb079f54eae08b5e02e88a37
-    m_Address: Assets/Maps/minimap/job_thief1.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c30bc22704e861443b93daaf199e172d
-    m_Address: Assets/Maps/minimap/job_thief1_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9667a04c783bc9142887549d9cb4a954
-    m_Address: Assets/Maps/minimap/job_wiz.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3aae46f4006a0e247984a1f2dcde73da
-    m_Address: Assets/Maps/minimap/job_wiz_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 88c3f79eb602369459228874cd12ac35
-    m_Address: Assets/Maps/minimap/job_duncer.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: afb5e2484a0d2fe4bae0c054b9bdae99
-    m_Address: Assets/Maps/minimap/job_duncer_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5ff8d77cdb0deab4a9695763df5ff414
     m_Address: Assets/Maps/minimap/jawaii.png
@@ -10001,18 +9659,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Minimap
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1aa098bff647f314a8f4251f62543918
-    m_Address: Assets/Maps/minimap/job_monk.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3b3fe8b102bbe554192f0c06a67a35eb
-    m_Address: Assets/Maps/minimap/job_monk_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a9e89e6e04c4fcf478fc5b1fe50e9957
     m_Address: Assets/Prefabs/GuildFlag90.prefab
     m_ReadOnly: 0
@@ -10023,362 +9669,110 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fb684bc89a3bfac4ca7db271fa57c18f
-    m_Address: Assets/Maps/minimap/alde_gld.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 01eba866ff5b0904f81e7d0fe3b62e2f
-    m_Address: Assets/Maps/minimap/alde_gld_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 97b7e780822ceb84f83ea9eaa9e8565e
-    m_Address: Assets/Maps/minimap/aldeg_cas01.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9b31020078d687e428362bb2ce0be702
-    m_Address: Assets/Maps/minimap/aldeg_cas01_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 014bd8733e5b3bd4aa6d172091eb2c8a
-    m_Address: Assets/Maps/minimap/aldeg_cas02.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c53965dbd4e24894aa8a6d3744e433e6
-    m_Address: Assets/Maps/minimap/aldeg_cas02_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5a5d50047891db7438231dee167e4b8a
-    m_Address: Assets/Maps/minimap/aldeg_cas03.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7487f9fe0a1d84d418d78d7c54959d05
-    m_Address: Assets/Maps/minimap/aldeg_cas03_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f05f8a87f9954d24e8a72834bc52b6ef
-    m_Address: Assets/Maps/minimap/aldeg_cas04.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c16144f8af934fc45ab80bdca96664d9
-    m_Address: Assets/Maps/minimap/aldeg_cas04_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4dd660e1a8475b04e9cac73816e0c9a3
-    m_Address: Assets/Maps/minimap/aldeg_cas05.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 42049c7750ae8744fad473290781636f
-    m_Address: Assets/Maps/minimap/aldeg_cas05_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 05a9411106869cb4c85d2bd4cff41f9c
-    m_Address: Assets/Maps/minimap/gefg_cas01.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1682440620003a0419cadf56f22da5a6
-    m_Address: Assets/Maps/minimap/gefg_cas01_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 921f17d1be34e3340bf5e11893e0f60d
-    m_Address: Assets/Maps/minimap/gefg_cas02.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 964668e525fe165428d8630ee55755dd
-    m_Address: Assets/Maps/minimap/gefg_cas02_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a43e2617ca7d5d24eb210da5dfadaa4d
-    m_Address: Assets/Maps/minimap/gefg_cas03.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4caa9026981f5bd4daf77e9c112f28cd
-    m_Address: Assets/Maps/minimap/gefg_cas03_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1f91d079531a46e42a95b5b74a19beae
-    m_Address: Assets/Maps/minimap/gefg_cas04.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 65dfeb863a6f2984cb6d98db968d39bf
-    m_Address: Assets/Maps/minimap/gefg_cas04_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 19605f4e6f70469499f40341616f9e41
-    m_Address: Assets/Maps/minimap/gefg_cas05.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 473c97b079ac6104083387d6eef99548
-    m_Address: Assets/Maps/minimap/gefg_cas05_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f10a4f7442b198e4bb33868ce38aff25
-    m_Address: Assets/Maps/minimap/payg_cas01.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 92bf14893ed6a9145962fd4ee120ed5f
-    m_Address: Assets/Maps/minimap/payg_cas01_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1b5e9d91f71b4b04ea26c5d19dc1b5be
-    m_Address: Assets/Maps/minimap/payg_cas02.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ddc9e1212e7f61e48be6bcc482543fe7
-    m_Address: Assets/Maps/minimap/payg_cas02_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 79589043094c9504cb23c06a3ea6ed45
-    m_Address: Assets/Maps/minimap/payg_cas03.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b56b95b3885cb9c4786652935a525ea7
-    m_Address: Assets/Maps/minimap/payg_cas03_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c8512c70d4791eb4ca393e4a65385313
-    m_Address: Assets/Maps/minimap/payg_cas04.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 10eaf8b397fe11844a62ce8ad38d549c
-    m_Address: Assets/Maps/minimap/payg_cas04_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1f904fbe36a0e194882f58fd1abbc817
-    m_Address: Assets/Maps/minimap/payg_cas05.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 038c7417b685de24c9d4112a1a48c05e
-    m_Address: Assets/Maps/minimap/payg_cas05_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f0bab18ad289bb34bb3bb58ef67e52d7
-    m_Address: Assets/Maps/minimap/prtg_cas01.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 232fd7d95cc26ad4d8d5f9780b359fee
-    m_Address: Assets/Maps/minimap/prtg_cas01_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 74e12eee814b56e4caad356f5d9864ec
-    m_Address: Assets/Maps/minimap/prtg_cas02.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7ac8dc111fdc855409213d17808e9d2f
-    m_Address: Assets/Maps/minimap/prtg_cas02_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cc8c8685c0d02224aacc10a6702b940f
-    m_Address: Assets/Maps/minimap/prtg_cas03.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b5a65aee31681d94eb2a17f543bbfae7
-    m_Address: Assets/Maps/minimap/prtg_cas03_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 368fadfe6c9e87e4eb5978d6d1e02824
-    m_Address: Assets/Maps/minimap/prtg_cas04.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9d93dd9094e5b0048b6df7af606ffb56
-    m_Address: Assets/Maps/minimap/prtg_cas04_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 09648ce4d8f54c049b37a8474da3212e
-    m_Address: Assets/Maps/minimap/prtg_cas05.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 609151956e5dec64da69e2483ac1e772
-    m_Address: Assets/Maps/minimap/prtg_cas05_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c3997328f8af0a540a94324722e717e4
-    m_Address: Assets/Sprites/Monsters/alligator.spr
+    m_Address: Assets/Sprites/MonstersOrig/alligator.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d162fbf80040b914090a1f3aa7f296b9
-    m_Address: Assets/Sprites/Monsters/aster.spr
+    m_Address: Assets/Sprites/MonstersOrig/aster.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0e5dce6bb2c247e4781b94bbfabeb092
-    m_Address: Assets/Sprites/Monsters/crab.spr
+    m_Address: Assets/Sprites/MonstersOrig/crab.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cf1ba92c60d833445907bc24f8848ec9
-    m_Address: Assets/Sprites/Monsters/fur_seal.spr
+    m_Address: Assets/Sprites/MonstersOrig/fur_seal.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 07207b28f0537224c90d250debd5ed1a
-    m_Address: Assets/Sprites/Monsters/galapago.spr
+    m_Address: Assets/Sprites/MonstersOrig/galapago.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 461db3bd645ff8e4e8b3cb58c8aef294
-    m_Address: Assets/Sprites/Monsters/gryphon.spr
+    m_Address: Assets/Sprites/MonstersOrig/gryphon.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d96f1f364532bf3428b8c32ee3ac07bb
-    m_Address: Assets/Sprites/Monsters/medusa.spr
+    m_Address: Assets/Sprites/MonstersOrig/medusa.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b36a0c0b9e10ed444aba9310b339a93d
-    m_Address: Assets/Sprites/Monsters/megalith.spr
+    m_Address: Assets/Sprites/MonstersOrig/megalith.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ea9d9a07b90cb444836925cf14cf786
-    m_Address: Assets/Sprites/Monsters/megalodon.spr
+    m_Address: Assets/Sprites/MonstersOrig/megalodon.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6485a2be8bec3ce469cc9668dd22323f
-    m_Address: Assets/Sprites/Monsters/mobster.spr
+    m_Address: Assets/Sprites/MonstersOrig/mobster.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6120f39c46c159e4da43353137e9a75b
-    m_Address: Assets/Sprites/Monsters/mutant_dragon.spr
+    m_Address: Assets/Sprites/MonstersOrig/mutant_dragon.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0007c6ff0f266c74c9b407e2383c01b1
-    m_Address: Assets/Sprites/Monsters/neraid.spr
+    m_Address: Assets/Sprites/MonstersOrig/neraid.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5eda70b21b5444b46b1b181ef230b9c1
-    m_Address: Assets/Sprites/Monsters/raggler.spr
+    m_Address: Assets/Sprites/MonstersOrig/raggler.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b9922e88dbfd30c4b8b5fa9bdb4e435f
-    m_Address: Assets/Sprites/Monsters/see_otter.spr
+    m_Address: Assets/Sprites/MonstersOrig/see_otter.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b7f9c64c7a651eb4389f206b21c7aca3
-    m_Address: Assets/Sprites/Monsters/shellfish.spr
+    m_Address: Assets/Sprites/MonstersOrig/shellfish.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1b47e39166f812248a51b39170b484e9
-    m_Address: Assets/Sprites/Monsters/stalactic_golem.spr
+    m_Address: Assets/Sprites/MonstersOrig/stalactic_golem.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d4b3933ad61cbef4f9b25de781d28e56
-    m_Address: Assets/Sprites/Monsters/tao_gunka.spr
+    m_Address: Assets/Sprites/MonstersOrig/tao_gunka.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 090ae650ec670464cb87cecfa277ea2f
-    m_Address: Assets/Sprites/Monsters/tri_joint.spr
+    m_Address: Assets/Sprites/MonstersOrig/tri_joint.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite
@@ -10563,66 +9957,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Minimap
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1b4a82dec28f55a4ba649d523528216d
-    m_Address: Assets/Maps/minimap/xmas.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c0453532f364b51488e3eea6f69e0445
-    m_Address: Assets/Maps/minimap/xmas_dun01.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6c3d92410fdcf8b499de2033c2d5d6b1
-    m_Address: Assets/Maps/minimap/xmas_dun01_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: af2ed06a869f673449aea20ea1db5086
-    m_Address: Assets/Maps/minimap/xmas_dun02.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 906c18c556353ab4db117890cacea094
-    m_Address: Assets/Maps/minimap/xmas_dun02_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1d6be90422f06d24a9305ca340fa00dd
-    m_Address: Assets/Maps/minimap/xmas_fild01.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5deda466856eb0843b2feeb98bcaca4f
-    m_Address: Assets/Maps/minimap/xmas_fild01_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9c4352621df732b4e838511b8673ab3d
-    m_Address: Assets/Maps/minimap/xmas_in.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 32d3709c1ce84a44a8d8db6f500f1717
-    m_Address: Assets/Maps/minimap/xmas_in_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c60d720ee1bd1af42ae2d6ad4b747cb8
-    m_Address: Assets/Maps/minimap/xmas_walkmask.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Minimap
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cd85ae3a7c119b843b2e65f17fc989b3
     m_Address: Assets/Sprites/Effects/christmas.spr
     m_ReadOnly: 0
@@ -10725,12 +10059,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Effect
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 906bd139f4373f6489b349423be7bcd3
-    m_Address: Assets/Effects/Prefabs/HolyHit.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Effect
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 71524991148b16e4c86090e51f10b668
     m_Address: Assets/Effects/Prefabs/Resurrect.prefab
     m_ReadOnly: 0
@@ -10808,6 +10136,1898 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 007f94ab1ffcbcc4fb7a7c11e4372c8c
+    m_Address: Assets/Maps/minimap/amatsu.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcd82084d407d7d4b9a5d0b829480dfd
+    m_Address: Assets/Maps/minimap/amatsu_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4343114a77cf72d48a4de3e1f7f77420
+    m_Address: Assets/Effects/GasPush.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16bf1f133cc50654491000220401bb12
+    m_Address: Assets/Effects/bubble.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3299365a096bab43b8c4df47bcdfb22
+    m_Address: Assets/Prefabs/LightSpinner.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 906bd139f4373f6489b349423be7bcd3
+    m_Address: Assets/Effects/Prefabs/HolyHit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f771dd6070283643b5e916f45a3f988
+    m_Address: Assets/Sprites/MonstersOrig/barricade.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: caf27d7bd9ad08947b9aed7d177b4778
+    m_Address: Assets/Maps/minimap/guild_vs1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8ca327628e4bd64281a98d9b361e88d
+    m_Address: Assets/Maps/minimap/guild_vs1_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c5b8ebd5b0bd324ea5a82080e1bc7fe
+    m_Address: Assets/Maps/minimap/guild_vs2.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f012e334b694c44fa33038e827f49d8
+    m_Address: Assets/Maps/minimap/guild_vs2_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 465b795601a60c4488f7e040a50926a2
+    m_Address: Assets/Maps/minimap/guild_vs5.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fe8a5b8c16c9d64a802cc774e83890e
+    m_Address: Assets/Maps/minimap/guild_vs5_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 979095a7e8d898941b9a177105b9e056
+    m_Address: Assets/Sprites/MonstersOrig/constant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e072fd358d9ac814a8d040245a0b17d1
+    m_Address: Assets/Sprites/MonstersOrig/randgris.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6547a5e47c89d454096cb9ba113b81ec
+    m_Address: Assets/Sprites/MonstersOrig/g_randgris.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6401d95ea06cd24c809739593f59f40
+    m_Address: Assets/Sprites/Cutins/bard_eland01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b28a81c2feec4b34c91e3da06a8c4642
+    m_Address: Assets/Sprites/Cutins/bard_eland02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Cutins
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eaa447e4cdbea8647912b07a9ef2bf7d
+    m_Address: Assets/Prefabs/MammoniteCoins.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c87344803e93474c9ba82fba611605f
+    m_Address: Assets/Effects/Prefabs/LightningBolt.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 662598006fd50ff469ffac66f45967a2
+    m_Address: Assets/Effects/Prefabs/Mammonite.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80a6896304d979e4283f7921ee11ff35
+    m_Address: "Assets/Sprites/Effects/\uC5B4\uC2A4\uD018\uC774\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80d89d834864ddb4dbcee3c289a6d0e9
+    m_Address: "Assets/Sprites/Effects/\uC5BC\uC74C\uB561.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 498eb8697c4207a47ba934391eb1febe
+    m_Address: "Assets/Sprites/Effects/\uCD95\uBCF5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc9073253f726b6479e99803e348ac0a
+    m_Address: Assets/Sprites/Monsters/8w_soldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f03e83a9372399342862bb9bde1f46b2
+    m_Address: Assets/Sprites/Monsters/alarm.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39b5333dbce137443832cd9a106c32fa
+    m_Address: Assets/Sprites/Monsters/alice.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d5accfadc7fb7e4c9bb56a87b0f86d4
+    m_Address: Assets/Sprites/Monsters/alligator.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eda5fbb7cd78d5142b50773f7296852f
+    m_Address: Assets/Sprites/Monsters/am_mut.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6eb6a46be37790143a8d77787ddb811e
+    m_Address: Assets/Sprites/Monsters/ambernite.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d11de299cc31a7546bea2d1dbe6671e4
+    m_Address: Assets/Sprites/Monsters/amon_ra.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 670702ffc0d97a6488ff456d464ae4b7
+    m_Address: Assets/Sprites/Monsters/anacondaq.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5901a04462cac04381dc72206611891
+    m_Address: Assets/Sprites/Monsters/ancient_mummy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f687443886cf71b46a2a696ad4b21e29
+    m_Address: Assets/Sprites/Monsters/andre.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd46233ace564c245b9991798bd72697
+    m_Address: Assets/Sprites/Monsters/angeling.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4234cb3e9f436354c922f8939ada4230
+    m_Address: Assets/Sprites/Monsters/anolian.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f7eb949a444e254d96b873fd6af6a5d
+    m_Address: Assets/Sprites/Monsters/ant_egg.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 198b3b297eace3f4794af10c969129ae
+    m_Address: Assets/Sprites/Monsters/anubis.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8173cf7eec740f946b573ecbbb085c68
+    m_Address: Assets/Sprites/Monsters/archangeling.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35235c6b32951914886d422c72c1cfab
+    m_Address: Assets/Sprites/Monsters/arclouse.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92e64df5172c66d4aa53d8c5be6e0d18
+    m_Address: Assets/Sprites/Monsters/argiope.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25dc40f873a99b04382bfb9df4e7e4b7
+    m_Address: Assets/Sprites/Monsters/argos.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90c61165b11477e409db89264820ce23
+    m_Address: Assets/Sprites/Monsters/assulter.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 986530500f98e044087f00e1ede66adc
+    m_Address: Assets/Sprites/Monsters/aster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae756d56f7acda048a5e4642fea2f5dc
+    m_Address: Assets/Sprites/Monsters/baphomet.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 726d739c2cafb3d4ea63c3e1f1bba610
+    m_Address: Assets/Sprites/Monsters/baphomet_.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9aee1dd50a2bb594cbf3de5b8b1e8521
+    m_Address: Assets/Sprites/Monsters/barricade.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06671e2eece28034e87ab49518ac035c
+    m_Address: Assets/Sprites/Monsters/bathory.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0c7f0b5606978d48b209961564b4c3a
+    m_Address: Assets/Sprites/Monsters/bigfoot.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b72167e8ace1b54a80ccb69fe268c24
+    m_Address: Assets/Sprites/Monsters/black_mushroom.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8408b3bd9f2fb245a7934f1225b33db
+    m_Address: Assets/Sprites/Monsters/bloody_knight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66a1fabb34e2d37499907eb192da533b
+    m_Address: Assets/Sprites/Monsters/blue_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e8dbbd174fb6a7478d213c29ad2ddbe
+    m_Address: Assets/Sprites/Monsters/bon_gun.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3dee8fb39133e664388713189f6b168c
+    m_Address: Assets/Sprites/Monsters/brilight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5bb7e5555b95654c99842589a11b309
+    m_Address: Assets/Sprites/Monsters/c_tower_manager.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd910e8a0ec217142be55a3bbab6f965
+    m_Address: Assets/Sprites/Monsters/caramel.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a53bd0e9c5fee949baa9dec484f5371
+    m_Address: Assets/Sprites/Monsters/carat.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c87b9d3cf27b625419384653642b303e
+    m_Address: Assets/Sprites/Monsters/cat_o_nine_tail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ecb60d107f750b743a8cc1cc261bbceb
+    m_Address: Assets/Sprites/Monsters/chepet.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6c156cfdfc12c543ab86faf7e3e2073
+    m_Address: Assets/Sprites/Monsters/chimera.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 768e3813c49104e49abc05fd5241c15f
+    m_Address: Assets/Sprites/Monsters/chocho.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a1aed1e213a5714692ca53cfbc24ed2
+    m_Address: Assets/Sprites/Monsters/choco.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 797a4bc3eb15ba247ad54e7f2bf3edc3
+    m_Address: Assets/Sprites/Monsters/clock.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ce3b4f3ba597f44cbad7160041e320d
+    m_Address: Assets/Sprites/Monsters/coco.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd7a1d1ab6dcc6d45b70b60b30a14fb1
+    m_Address: Assets/Sprites/Monsters/condor.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 493d7159dc1b58441bb2b29d6a76aa9d
+    m_Address: Assets/Sprites/Monsters/constant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e27594062a3342439fd52c78df5361c
+    m_Address: Assets/Sprites/Monsters/cookie.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57894a3eb9c81c043a88c480150a0569
+    m_Address: Assets/Sprites/Monsters/cookie_xmas.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d0339cd89bcc3a4fb4ad0c3b9e1d74e
+    m_Address: Assets/Sprites/Monsters/cornutus.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f568657876f9854a971a48d39d2de3a
+    m_Address: Assets/Sprites/Monsters/crab.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48f42ee22f33f6f429349a02bfb89243
+    m_Address: Assets/Sprites/Monsters/cramp.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcb18471709e31a4c86d432b2711a057
+    m_Address: Assets/Sprites/Monsters/creamy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c9ba27b72ec6c9498c9f23e0428ee77
+    m_Address: Assets/Sprites/Monsters/cruiser.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e207809578a505241af5fe841839b13b
+    m_Address: Assets/Sprites/Monsters/dark_frame.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5fbbec4494855ba4a97efe169bd4d98a
+    m_Address: Assets/Sprites/Monsters/dark_illusion.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3aaefee5190d1d7418d2115423e60276
+    m_Address: Assets/Sprites/Monsters/dark_lord.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fc67159c0011934f86153b0c57e667a
+    m_Address: Assets/Sprites/Monsters/deleter.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e0e433c6b5f9634aabf95e2b6afa276
+    m_Address: Assets/Sprites/Monsters/deleter_.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f14433ed5d9c97c488c9fa30826fd856
+    m_Address: Assets/Sprites/Monsters/demon_pungus.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89aac7ba117ff0649a02b16420213e76
+    m_Address: Assets/Sprites/Monsters/deniro.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 237b5bc4cc52de046917eb6b14f2fba0
+    m_Address: Assets/Sprites/Monsters/desert_wolf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23e32ac6bcfcb7f4aab2d0be3e2cb9df
+    m_Address: Assets/Sprites/Monsters/desert_wolf_b.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4c737172ee0a954ea51c91cc6e75884
+    m_Address: Assets/Sprites/Monsters/deviace.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40bb867b4739a994eadc26bcb0070766
+    m_Address: Assets/Sprites/Monsters/deviling.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5bed1bfb2200fea429a8614897563213
+    m_Address: Assets/Sprites/Monsters/deviruchi.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5ff168a7b06bb9498d692900e6adda4
+    m_Address: Assets/Sprites/Monsters/dokebi.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2ca5f5480b639f4e9c198f1f6b06e67
+    m_Address: Assets/Sprites/Monsters/doppelganger.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66a9c21b3dc52f246b63e898b19da1e0
+    m_Address: Assets/Sprites/Monsters/dracula.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83c21243232884141915219af2cdf01a
+    m_Address: Assets/Sprites/Monsters/dragon_fly.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2d827b2028ffed4c8ee53a7de4346b6
+    m_Address: Assets/Sprites/Monsters/dragon_tail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0795a730622de084fa482f035144c121
+    m_Address: Assets/Sprites/Monsters/drainliar.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f4c202ae17e5e046a27c61d39e7b441
+    m_Address: Assets/Sprites/Monsters/drake.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7952ca3afdec6441a73544ecd9e5a52
+    m_Address: Assets/Sprites/Monsters/driller.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 428743bfbdafa054c8d73708dd963afb
+    m_Address: Assets/Sprites/Monsters/drops.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5cbf68a6ea36de4aa03fb140a56f5b6
+    m_Address: Assets/Sprites/Monsters/dustiness.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4dc4da108627244e9b59714845cf602
+    m_Address: Assets/Sprites/Monsters/eclipse.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0faeada98b17da849acc0240b5b26e61
+    m_Address: Assets/Sprites/Monsters/eddga.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 347f80c7a3ef6bf42a1716caf40b5337
+    m_Address: Assets/Sprites/Monsters/eggyra.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a20853bcd31080845a4fc6e6cd072524
+    m_Address: Assets/Sprites/Monsters/elder.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1c576cb480638a4fac6ba2358df64cf
+    m_Address: Assets/Sprites/Monsters/elder_wilow.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9e6fc13b80523448823e0482382ed51
+    m_Address: Assets/Sprites/Monsters/evil_druid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7cb8de15fb7a8cc42898c204de7b2d9b
+    m_Address: Assets/Sprites/Monsters/executioner.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c4a24226f4073c448b1c2e4a9a220fe
+    m_Address: Assets/Sprites/Monsters/fabre.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4f4c7377d2174a48ad3681d480c37d0
+    m_Address: Assets/Sprites/Monsters/farmiliar.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b79dc5300c800d7428e8b3148e9c56fb
+    m_Address: Assets/Sprites/Monsters/flora.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe139745bbb5b0040956b08f46fdf829
+    m_Address: Assets/Sprites/Monsters/freezer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30ae3e01a2c22c04696f8b3278c623bd
+    m_Address: Assets/Sprites/Monsters/frilldora.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc7f97f4081981d4f8d347778abc4d03
+    m_Address: Assets/Sprites/Monsters/fur_seal.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db0e8b5d1bf13d940a991991342f356a
+    m_Address: Assets/Sprites/Monsters/g_randgris.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d6e0d0165ad55d4f82504c1423d0730
+    m_Address: Assets/Sprites/Monsters/galapago.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf192d8b07d98154580bdabe3c748090
+    m_Address: Assets/Sprites/Monsters/gargoyle.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4d23339dc3e73846a0ce2cac8c8edeb
+    m_Address: Assets/Sprites/Monsters/garm.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a82297bb48b12154396a56a6fa86832e
+    m_Address: Assets/Sprites/Monsters/garm_baby.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 316a65df1268d1d4f8c74f692d7b8fe7
+    m_Address: Assets/Sprites/Monsters/geographer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b37698663f6df54b95c8ecbfc6c3b80
+    m_Address: Assets/Sprites/Monsters/ghostring.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac271b77e81a24543a7c21bba2a1ed40
+    m_Address: Assets/Sprites/Monsters/ghoul.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffa8dbad85671704e8ca402464c1d03a
+    m_Address: Assets/Sprites/Monsters/giearth.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20ffe491bff810e4a9b282251b95c07c
+    m_Address: Assets/Sprites/Monsters/goat.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9662452e634c4cb48b3859dc6e4793ec
+    m_Address: Assets/Sprites/Monsters/goblin_1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3135c4976e20b844da315eb5fbc315bc
+    m_Address: Assets/Sprites/Monsters/goblin_2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1470712d56ac5c649938208a3d71ac0d
+    m_Address: Assets/Sprites/Monsters/goblin_3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6297884a71c94614ab0f1274a3f04d8b
+    m_Address: Assets/Sprites/Monsters/goblin_4.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cab15a1058faa094fbb9c80a744e7c66
+    m_Address: Assets/Sprites/Monsters/goblin_5.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d78dda15bd1769468072ed8f9c20510
+    m_Address: Assets/Sprites/Monsters/goblin_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ab31ee6cc26c864abc2521f8c998ce4
+    m_Address: Assets/Sprites/Monsters/goblin_leader.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a41674dff32356459965b7d02f28ee1
+    m_Address: Assets/Sprites/Monsters/gobline_xmas.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43fe3a4e75a686046968452256a2521d
+    m_Address: Assets/Sprites/Monsters/golden_bug.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f39a696ee37047f4e870d4c85b83098f
+    m_Address: Assets/Sprites/Monsters/golem.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a335d72cc37cfb4792c431a5e0993e0
+    m_Address: Assets/Sprites/Monsters/grand_peco.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 090f6dcb40ed9db459cbe4a9aed8da85
+    m_Address: Assets/Sprites/Monsters/greatest_general.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0825a538bcdc9aa4cb8dabe44dce6612
+    m_Address: Assets/Sprites/Monsters/green_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 606efcc5f6950a24ea743822aa9927bc
+    m_Address: Assets/Sprites/Monsters/gryphon.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8face5554caadd41a3f1ba92ef57e80
+    m_Address: Assets/Sprites/Monsters/harpy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 138dda62a4d51484e95ae8f621320a18
+    m_Address: Assets/Sprites/Monsters/heater.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f8894cf2b08cee419f50312d1301d2b
+    m_Address: Assets/Sprites/Monsters/high_orc.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dab2ad59854316b49b43c87c7b7db3a8
+    m_Address: Assets/Sprites/Monsters/hode.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e271b9b4478b14743863fd98b1b2ec6c
+    m_Address: Assets/Sprites/Monsters/horn.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a38bef992ae791f4ab09348700c41c0b
+    m_Address: Assets/Sprites/Monsters/hornet.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 813ab551211976845bfb3e7049358e52
+    m_Address: Assets/Sprites/Monsters/horong.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 946ff10e0d4498743b0020da83c79d92
+    m_Address: Assets/Sprites/Monsters/hunter_fly.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c60ba31b34deb7a439af7a18fbcde261
+    m_Address: Assets/Sprites/Monsters/hydra.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b25ef51b14884f34a9fbaed3d97c98e7
+    m_Address: Assets/Sprites/Monsters/ice_titan.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36db704d17429b84e9159d03a697c773
+    m_Address: Assets/Sprites/Monsters/injustice.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fdacbb4174bd5445833137baf700cd1
+    m_Address: Assets/Sprites/Monsters/isis.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aed0b4719fdb06643b4f7bd78344f984
+    m_Address: Assets/Sprites/Monsters/jakk.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b14015ce4881e242a71b5e5216ac004
+    m_Address: Assets/Sprites/Monsters/joker.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8626b2c6ef622b14a9ea5034ad8c2e8a
+    m_Address: Assets/Sprites/Monsters/khalitzburg.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4278f144a66c7f84f956f6619c9aa769
+    m_Address: Assets/Sprites/Monsters/killer_mantis.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da6407f57c4baef4aafb0730020de3b6
+    m_Address: Assets/Sprites/Monsters/kind_of_beetle.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6998833933a73064d8ed37ff8b569586
+    m_Address: Assets/Sprites/Monsters/knight_of_abyss.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d0dfabb037e78641a41b6b8bcf6880f
+    m_Address: Assets/Sprites/Monsters/knight_of_windstorm.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf34ecd11950c5f4e826638e80f2aaed
+    m_Address: Assets/Sprites/Monsters/kobold_1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 183df470f73749542adbec2eed9b46ba
+    m_Address: Assets/Sprites/Monsters/kobold_2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f8ea3dd585232b408f80b28b829bcdf
+    m_Address: Assets/Sprites/Monsters/kobold_3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67ad3a978a5baab40bf7f39e97eae6de
+    m_Address: Assets/Sprites/Monsters/kobold_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f7fc9a155a389144879d8348ded66a6
+    m_Address: Assets/Sprites/Monsters/kobolt_leader.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 565db6cef6ccb2f4ea043c44d9a02ff3
+    m_Address: Assets/Sprites/Monsters/kukre.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c206db93cdeebfd4a8fbe100579b77b8
+    m_Address: Assets/Sprites/Monsters/leib_olmai.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 09586200412d9d243b42ab97dc59fe49
+    m_Address: Assets/Sprites/Monsters/lunatic.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79a632edb1e83c146a7b66dd550bfb59
+    m_Address: Assets/Sprites/Monsters/magnolia.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3593e2fb808de784b9e816c17b8f4ee3
+    m_Address: Assets/Sprites/Monsters/majoruros.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19f3da2f200f513469a1547b83242c27
+    m_Address: Assets/Sprites/Monsters/mandragora.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 13d1b050f9e6c3b47888385deb10be61
+    m_Address: Assets/Sprites/Monsters/mantis.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1886584566768fe4981ee08d6358f625
+    m_Address: Assets/Sprites/Monsters/marc.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 676efd1033915004aa7aff1b5c78e802
+    m_Address: Assets/Sprites/Monsters/marduk.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f34df4cb5f988c14f80ebe685875d002
+    m_Address: Assets/Sprites/Monsters/marin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27aed25c3292afc4fbe03b8ffe1f3306
+    m_Address: Assets/Sprites/Monsters/marina.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22b4c7560e6ef0342b32230786ae7f41
+    m_Address: Assets/Sprites/Monsters/marine_sphere.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7aa546ebafed4947b3b1c3a400cab47
+    m_Address: Assets/Sprites/Monsters/marionette.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d69533bca3366f949835667cfdc6281a
+    m_Address: Assets/Sprites/Monsters/marse.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edaa802f3c1f18d438b7d84ebe5bcb60
+    m_Address: Assets/Sprites/Monsters/martin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82c533ab03318194a8ba15803a9d4563
+    m_Address: Assets/Sprites/Monsters/mastering.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6805f033e38f89144b1b36460d5e0391
+    m_Address: Assets/Sprites/Monsters/matyr.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8b4021f58eff66459fea00f8fee02df
+    m_Address: Assets/Sprites/Monsters/maya.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4d1b1826da74124ca45cc51a40edafb
+    m_Address: Assets/Sprites/Monsters/maya_puple.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8f7aec3d77f14444aabd918a1b3d94a
+    m_Address: Assets/Sprites/Monsters/medusa.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92e33a413dad6bf4181b0c1818d31b2c
+    m_Address: Assets/Sprites/Monsters/megalith.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a102e7b4020bcc46a7f90a861032614
+    m_Address: Assets/Sprites/Monsters/megalodon.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b2c17f8c35f3c2448f146ff4a708908
+    m_Address: Assets/Sprites/Monsters/merman.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 192b1b73102cf844995e6cb7317931b1
+    m_Address: Assets/Sprites/Monsters/metaller.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0abc4d40b0c4d94283b55a6d8e3ac8a
+    m_Address: Assets/Sprites/Monsters/mimic.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e90754c6da2f8674cbbe31460e785c65
+    m_Address: Assets/Sprites/Monsters/minorous.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 746dcbf820a23a4459327ede8e7fbe53
+    m_Address: Assets/Sprites/Monsters/mistress.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4ead71415f759b41983d627932fdeef
+    m_Address: Assets/Sprites/Monsters/mobster.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 576bdd354d1319943b4d7eab9eb0a900
+    m_Address: Assets/Sprites/Monsters/moonlight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcf9266df203f8246a317a94ac740d39
+    m_Address: Assets/Sprites/Monsters/muka.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56381c31ccfba86429aaa44f64cfdab2
+    m_Address: Assets/Sprites/Monsters/mummy.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa34e0f6edbb5c643a3f209fbd6ca4cf
+    m_Address: Assets/Sprites/Monsters/munak.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79060dbc7167d6341b1f0150acd1707f
+    m_Address: Assets/Sprites/Monsters/mutant_dragon.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 42057998bf3f7854c8e71bbedbf9cca8
+    m_Address: Assets/Sprites/Monsters/myst.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b5c06e7d02077642ac2c8f2c06cec01
+    m_Address: Assets/Sprites/Monsters/mystcase.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 34898e45e77eef743a5a8d35e583bf64
+    m_Address: Assets/Sprites/Monsters/mysteltainn.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71fe6539aca4ab84f8e52ae2d9c4ea5a
+    m_Address: Assets/Sprites/Monsters/neraid.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69761644196e0cd49a695b3adfaaa124
+    m_Address: Assets/Sprites/Monsters/nightmare.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac638200408d888428ac081740dac074
+    m_Address: Assets/Sprites/Monsters/nine_tail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bce3f7b27e7d2e2408351fc1ec14c0f9
+    m_Address: Assets/Sprites/Monsters/obeaune.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1638b77f517498499a524f18fea6502
+    m_Address: Assets/Sprites/Monsters/orc_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb683abb0cfdb804da2864152dbf31b2
+    m_Address: Assets/Sprites/Monsters/orc_baby.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dcc9df5dfc0ab214e8e72046b6b65169
+    m_Address: Assets/Sprites/Monsters/orc_lady.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c49a7a7183663154fa7d8c3779a2df34
+    m_Address: Assets/Sprites/Monsters/orc_lord.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c0a5a711834c8344988284e9d17fd6e
+    m_Address: Assets/Sprites/Monsters/orc_skeleton.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 011dc21cd0456b141b747955d5cd49b3
+    m_Address: Assets/Sprites/Monsters/orc_zombie.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 330edde94531c5f4a9f973ae6fd51d27
+    m_Address: Assets/Sprites/Monsters/ork_hero.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23cbf7457c580b246b74341b66ebe812
+    m_Address: Assets/Sprites/Monsters/ork_warrior.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfe234aa337958345bc826a9dd583529
+    m_Address: Assets/Sprites/Monsters/osiris.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93914366370a4f645b55567df99d9af3
+    m_Address: Assets/Sprites/Monsters/owl_baron.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a2cbdc020d562746a7580762450a66f
+    m_Address: Assets/Sprites/Monsters/owl_duke.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0dba10f850cba84a9c0d901d8227e4a
+    m_Address: Assets/Sprites/Monsters/panzer_goblin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22ae0f04508add644b3f70135afa95ed
+    m_Address: Assets/Sprites/Monsters/pasana.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cab87130f0d710345a0da1c4c9da12b8
+    m_Address: Assets/Sprites/Monsters/peco_egg.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98719033040a81742bbc448aaeeb34cf
+    m_Address: Assets/Sprites/Monsters/pecopeco.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36da7d187ff62bb44a30d9144f85bd3f
+    m_Address: Assets/Sprites/Monsters/penomena.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 42fb0192bc5329940905897e1d21b277
+    m_Address: Assets/Sprites/Monsters/permeter.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad962da47b544d349980c134133e6cd8
+    m_Address: Assets/Sprites/Monsters/pest.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5ff7561fdb77994890e5ad5ee15a4b4
+    m_Address: Assets/Sprites/Monsters/petit.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd0b2a1b77758924fa281a0094b2e007
+    m_Address: Assets/Sprites/Monsters/petit_.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4be383c4d9fa2b4d94bce71e61bfc45
+    m_Address: Assets/Sprites/Monsters/pharaoh.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49552f06556ef2b48bfab7a57deefe68
+    m_Address: Assets/Sprites/Monsters/phen.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5579f51781de87c4a839e360c889f5fa
+    m_Address: Assets/Sprites/Monsters/phendark.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f9a2f7bd37fb474a8ce000d7f3c6367
+    m_Address: Assets/Sprites/Monsters/phreeoni.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 564dbef3184fc5d42bcbcda7b4df9825
+    m_Address: Assets/Sprites/Monsters/picky.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 586079591b6109047b0cf86f045d4c8f
+    m_Address: Assets/Sprites/Monsters/picky_.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4d91f0576239654f93e061e5115f8ce
+    m_Address: Assets/Sprites/Monsters/piere.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 150e13f313cd7b24b842d21b219b69f5
+    m_Address: Assets/Sprites/Monsters/pirate_skel.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 979e18fb76aa9b9429e87f2b91cc4f28
+    m_Address: Assets/Sprites/Monsters/plankton.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b803444a41ac4b64b9dd212b87d0b101
+    m_Address: Assets/Sprites/Monsters/poison_spore.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0101ea0e83fcc674eae846ebc0042064
+    m_Address: Assets/Sprites/Monsters/poporing.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b055ab20687d054e900f78cfdddad65
+    m_Address: Assets/Sprites/Monsters/poring.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66e79394751c5a145b28689f61166725
+    m_Address: Assets/Sprites/Monsters/punk.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c801f8d2cca21f647a0fcb0dd27db692
+    m_Address: Assets/Sprites/Monsters/pupa.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d3bbf2be11bf6c4eab7d87aad29ed12
+    m_Address: Assets/Sprites/Monsters/rafflesia.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fda2002f9fd9335418ee2ff02e548a0c
+    m_Address: Assets/Sprites/Monsters/raggler.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb2a4ae16b814284183d3cb625cb3881
+    m_Address: Assets/Sprites/Monsters/randgris.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45e55ec1311dd59418efe07074e2d2ae
+    m_Address: Assets/Sprites/Monsters/raydric.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b80b61c99e82964d9cb3a19917ea260
+    m_Address: Assets/Sprites/Monsters/raydric_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b964dddfb95bc34895af023b1c539ff
+    m_Address: Assets/Sprites/Monsters/red_mushroom.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6ed3cbf372a6ca4fbe3763ccc506ade
+    m_Address: Assets/Sprites/Monsters/red_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e987e624d3a735f4ab99daf33c123d24
+    m_Address: Assets/Sprites/Monsters/requiem.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f2b9e4d55dd1bd4bb0c6fa3d631b261
+    m_Address: Assets/Sprites/Monsters/rideword.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77402c743aae74f46a897de695fb6a28
+    m_Address: Assets/Sprites/Monsters/rocker.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cf909911450b974bb0608f4aeeecfa5
+    m_Address: Assets/Sprites/Monsters/roda_frog.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9c6a6379f96842429b12b661116c59e
+    m_Address: Assets/Sprites/Monsters/rotar_zairo.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1477b6d09944d514e968f3b4911d2d1a
+    m_Address: Assets/Sprites/Monsters/rybio.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5de11e65f40262b47826e71bd49da245
+    m_Address: Assets/Sprites/Monsters/sageworm.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cea04436ecdab77459c988417f8db462
+    m_Address: Assets/Sprites/Monsters/sand_man.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c2b58b086ad47d84da693636da1e9c2c
+    m_Address: Assets/Sprites/Monsters/sasquatch.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4e55d971c958a949b64cd12f4f30ea7
+    m_Address: Assets/Sprites/Monsters/savage.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e724a9b77c9f564ea15733de4d50a1e
+    m_Address: Assets/Sprites/Monsters/savage_babe.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5a62354430c40e4d9df6f2c05e4b9c6
+    m_Address: Assets/Sprites/Monsters/scorpion.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ed0b579ff23b0624992032d7b9a52c12
+    m_Address: Assets/Sprites/Monsters/see_otter.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0a952e94989de34ebf692cd22796f75
+    m_Address: Assets/Sprites/Monsters/shellfish.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f4ee13b86bec2749a456b5356f2660d
+    m_Address: Assets/Sprites/Monsters/shining_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be175d72b486a674386c41296898ecf8
+    m_Address: Assets/Sprites/Monsters/side_winder.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccca60bf9b71e8044893bcbcd5bac652
+    m_Address: Assets/Sprites/Monsters/skel_archer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6527901d11a9e3940b1dd5e7352d3117
+    m_Address: Assets/Sprites/Monsters/skel_prisoner.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d849b3e788b7006469d5e5ca70390ce5
+    m_Address: Assets/Sprites/Monsters/skel_soldier.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0700c88a5c67001448a4889003ef26f3
+    m_Address: Assets/Sprites/Monsters/skel_worker.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8e1762fa86c9db4981d6e1febeb4579
+    m_Address: Assets/Sprites/Monsters/skeleton.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea0c458a224412a418fdc29f63845c98
+    m_Address: Assets/Sprites/Monsters/skeleton_general.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3d2b740c9b3ae947b249610a6ccc9a9
+    m_Address: Assets/Sprites/Monsters/sleeper.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44c31dfba55e5f6448a8c2234ac98dc2
+    m_Address: Assets/Sprites/Monsters/smokie.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78f789e38283a834ebe35ce605c191c7
+    m_Address: Assets/Sprites/Monsters/snake.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ddf0c6a0689f5c24dadfc0216de108ee
+    m_Address: Assets/Sprites/Monsters/sohee.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ec0eace7beec2a46b68b227974effa3
+    m_Address: Assets/Sprites/Monsters/solider.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc28619ced4433d41b7e682a6ecf5bfa
+    m_Address: Assets/Sprites/Monsters/spore.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37cb49673f052f94fbd36e094e8fcd5d
+    m_Address: Assets/Sprites/Monsters/spring_rabbit.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47ca1c1ed19c73a4aaba24059c32d1d5
+    m_Address: Assets/Sprites/Monsters/stainer.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4a36ea54a849084fae78442fccd56f7
+    m_Address: Assets/Sprites/Monsters/stalactic_golem.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84d5d6a2f7726a54096cb251e1126b5b
+    m_Address: Assets/Sprites/Monsters/steam_goblin.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 420e674e003e1c94f80aaf71291f5cb3
+    m_Address: Assets/Sprites/Monsters/steel_chocho.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50c9393907afadb40ac4c4746c244b23
+    m_Address: Assets/Sprites/Monsters/stem_worm.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 384158d98ab47c044b2acb46342c5254
+    m_Address: Assets/Sprites/Monsters/sting.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc44531f91b0a7f4ea959c6c6eaca59c
+    m_Address: Assets/Sprites/Monsters/strouf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81292f8f825b10b46a4c3206fc81d26e
+    m_Address: Assets/Sprites/Monsters/sword_fish.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0f65766521c7044da853893c87b8dce
+    m_Address: Assets/Sprites/Monsters/tao_gunka.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f548e3356986e97428028fdd5993b4d7
+    m_Address: Assets/Sprites/Monsters/tarou.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a77afbb2b32c4d4f96289311f2e981f
+    m_Address: Assets/Sprites/Monsters/thara_frog.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d450d31e5ca30534d9a70f119b18afa7
+    m_Address: Assets/Sprites/Monsters/thief_bug.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53034aeba1060134fa245d20eaf60437
+    m_Address: Assets/Sprites/Monsters/thief_bug_egg.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a58e8b179b5f7cf4b922828c4ccc02f5
+    m_Address: Assets/Sprites/Monsters/thief_bug_female.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d98fbaab08d0dd8489b85bf465ef626a
+    m_Address: Assets/Sprites/Monsters/thief_bug_male.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff41649fef8604a43bf6ada0b290d125
+    m_Address: Assets/Sprites/Monsters/tirfing.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec2df83f6527f924ca3a97470775f0cc
+    m_Address: Assets/Sprites/Monsters/toad.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81c4b16a6525a29438602d1f13b1daa4
+    m_Address: Assets/Sprites/Monsters/tri_joint.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21547ab5b7428984995ed6c845835d2e
+    m_Address: Assets/Sprites/Monsters/turtle_general.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81c97249e1f191a409dee3b6577a8458
+    m_Address: Assets/Sprites/Monsters/vadon.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e3f442c9fc1e674288425c09f3d81c4
+    m_Address: Assets/Sprites/Monsters/vagabond_wolf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae4203aa7392e79429c3144c15e39ec0
+    m_Address: Assets/Sprites/Monsters/venatu_1.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 055e76fb011965048826b28d41addf6f
+    m_Address: Assets/Sprites/Monsters/venatu_2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e1f282a3e9061f47a2e4172ef67140d
+    m_Address: Assets/Sprites/Monsters/venatu_3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64b4e991f4d821745a788f6800b1c959
+    m_Address: Assets/Sprites/Monsters/venatu_4.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b685123e4aa8f5945be7e2ce279d72dd
+    m_Address: Assets/Sprites/Monsters/vitata.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1831bd25543b49b4ca9bb6df7ed02779
+    m_Address: Assets/Sprites/Monsters/wander_man.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 73d1b4ef9f630d54ab2dbc597e4c8adf
+    m_Address: Assets/Sprites/Monsters/whisper.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d900b8f197b4d7244a6389e57e1ac61a
+    m_Address: Assets/Sprites/Monsters/whisper_boss.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a800f09e47a6e94c8856be26bac1c3c
+    m_Address: Assets/Sprites/Monsters/white_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: babcb51ebdb7e7e4f8e8fcdeefe51739
+    m_Address: Assets/Sprites/Monsters/wild_rose.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9912582605e29db478fdb8bda38f0d8d
+    m_Address: Assets/Sprites/Monsters/wilow.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff915fbbe27a044498d8800ab121c091
+    m_Address: Assets/Sprites/Monsters/wind_ghost.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fb7520da12f00b4dac636d9f9156c29
+    m_Address: Assets/Sprites/Monsters/wolf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 18c12b2c1607d0a46861e86bbe96c86d
+    m_Address: Assets/Sprites/Monsters/worm_tail.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3af8672ed58560449a489d043815bd7e
+    m_Address: Assets/Sprites/Monsters/wraith.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74a00f1637e83a64faafbb547c9934b7
+    m_Address: Assets/Sprites/Monsters/wraith_dead.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cd0ac6f1fecde844951fde4ebd029b0
+    m_Address: Assets/Sprites/Monsters/yellow_plant.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2cc3cc89720aaa4da4b8c267e9f4ec4
+    m_Address: Assets/Sprites/Monsters/yoyo.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e3630765ca38f74a8bad651e70ff57c
+    m_Address: Assets/Sprites/Monsters/zenorc.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e743def10e866847b849dba963ec739
+    m_Address: Assets/Sprites/Monsters/zerom.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0a03c235df5a9d42aa4f08fc6ca4a57
+    m_Address: Assets/Sprites/Monsters/zherlthsh.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 947265027b4366b4ea36861b19a85143
+    m_Address: Assets/Sprites/Monsters/zombie.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7a143ab25591cd4ea888e49fda5b482
+    m_Address: Assets/Sprites/Monsters/zombie_prisoner.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0626a72bd7be6c74c8aad7eb4176ea12
+    m_Address: Assets/Sprites/test/farmiliar.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2fc2512bd2f915d43847e52601f7f4e5
+    m_Address: Assets/Maps/minimap/jupe_ele.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be8de6ac41fcf4141bab799aa2da5bad
+    m_Address: Assets/Maps/minimap/jupe_ele_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fade11d2aadda49438269c02311de3f8
+    m_Address: Assets/Sprites/Monsters/verit.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 400fcb471dec7604d943813db317672b
+    m_Address: Assets/Maps/minimap/arena_room.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a681f4c324e6c864f8339620ff674092
+    m_Address: Assets/Maps/minimap/arena_room_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}

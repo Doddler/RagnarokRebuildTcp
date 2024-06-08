@@ -1,0 +1,165 @@
+﻿
+[Bash]
+Icon = "sm_bash"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[Endure]
+Icon = "sm_endure"
+Target = "Self"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+
+[MagnumBreak]
+Name = "Magnum Break"
+Icon = "sm_magnum"
+Target = "Self"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+
+[Provoke]
+Icon = "sm_provoke"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+
+[FireBolt]
+Name = "Fire Bolt"
+Icon = "mg_firebolt"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[ColdBolt]
+Name = "Cold Bolt"
+Icon = "nv_basic"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[FireBall]
+Name = "Fire Ball"
+Icon = "mg_fireball"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[FireWall]
+Name = "Fire Wall"
+Icon = "mg_firewall"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[FrostDriver]
+Name = "Frost Diver"
+Icon = "mg_frostdiver"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[LightningBolt]
+Name = "Lightning Bolt"
+Icon = "mg_lightningbolt"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[SoulStrike]
+Name = "Soul Strike"
+Icon = "mg_soulstrike"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[ThunderStorm]
+Name = "Thunderstorm"
+Icon = "mg_thunderstorm"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[SafetyWall]
+Name = "Safety Wall"
+Icon = "mg_safetywall"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[DoubleStrafe]
+Name = "Double Strafe"
+Icon = "ac_double"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[ChargeArrow]
+Name = "Charge Arrow"
+Icon = "ac_chargearrow"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[ArrowShower]
+Name = "Arrow Shower"
+Icon = "ac_shower"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[ImproveConcentration]
+Name = "Improve Concentration"
+Icon = "ac_concentration"
+Target = "Self"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+
+[Heal]
+Icon = "al_heal"
+Target = "Ally"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[IncreaseAgility]
+Name = "Increase Agility"
+Icon = "al_incagi"
+Target = "Ally"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[Blessing]
+Icon = "al_blessing"
+Target = "Ally"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+[Mammonite]
+Icon = "mc_mammonite"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+AdjustableLevel = true
+
+#Monster Skills
+[CallMinion]
+Name = "Call Minion"
+[GrandThunderstorm]
+Name = "Grand Thunderstorm"
+[Haste]

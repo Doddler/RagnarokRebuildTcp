@@ -24,7 +24,7 @@ public class Player : IEntityAutoReset
     public CombatEntity CombatEntity = null!;
 
     public NetworkConnection Connection = null!;
-    
+
     public Guid Id { get; set; }
     public string Name { get; set; } = "Uninitialized Player";
     public HeadFacing HeadFacing;
@@ -33,11 +33,11 @@ public class Player : IEntityAutoReset
     public bool IsInNpcInteraction { get; set; }
     public int HeadId => GetData(PlayerStat.Head);
     public bool IsMale => GetData(PlayerStat.Gender) == 0;
-    
+
     [EntityIgnoreNullCheck] public NpcInteractionState NpcInteractionState = new();
     [EntityIgnoreNullCheck] public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
-    
+
     public Entity Target { get; set; }
 
     public bool AutoAttackLock { get; set; }
@@ -54,7 +54,7 @@ public class Player : IEntityAutoReset
         set
         {
             currentCooldown = value;
-            if(currentCooldown > 5f)
+            if (currentCooldown > 5f)
                 ServerLogger.LogWarning($"Warning! Attempting to set player cooldown to time exceeding 5s! Stack Trace:\n" + Environment.StackTrace);
         }
     }
@@ -72,7 +72,7 @@ public class Player : IEntityAutoReset
     public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
     public void SetStat(CharacterStat type, float val) => CombatEntity.SetStat(type, (int)val);
     public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
-    
+
     public void Reset()
     {
         Entity = Entity.Null;
@@ -89,7 +89,7 @@ public class Player : IEntityAutoReset
         regenTickTime = 0f;
         NpcInteractionState.Reset();
         IsAdmin = false;
-        for(var i = 0; i < CharData.Length; i++)
+        for (var i = 0; i < CharData.Length; i++)
             CharData[i] = 0;
         _weaponClass = -1;
         LastEmoteTime = 0;
@@ -110,10 +110,10 @@ public class Player : IEntityAutoReset
         UpdateStats();
 
         SetStat(CharacterStat.Level, GetData(PlayerStat.Level));
-        
+
         IsAdmin = true; //for now
     }
-    
+
     public void UpdateStats()
     {
         var level = GetData(PlayerStat.Level);
@@ -142,7 +142,7 @@ public class Player : IEntityAutoReset
             spriteAttackTiming = aMotionTime;
 
         SetTiming(TimingStat.AttackMotionTime, aMotionTime);
-        SetTiming(TimingStat.SpriteAttackTiming, spriteAttackTiming);
+        SetTiming(TimingStat.SpriteAttackTiming, 0.5f);
         SetTiming(TimingStat.AttackDelayTime, delayTime);
         SetTiming(TimingStat.HitDelayTime, 0.5f);
         SetTiming(TimingStat.MoveSpeed, 0.15f);
@@ -150,11 +150,11 @@ public class Player : IEntityAutoReset
 
         var atk = (level / 2f) * (level / 2f) + level * (int)(level / 10) + 28 + level;
         atk *= 1.2f;
-        
+
         //lower damage below lv 60, raise above
         var proc = 0.5f + Math.Clamp(level, 0, 99f) / 120f;
         atk *= proc;
-        
+
         var atk1 = (int)(atk * 0.90f - 1);
         var atk2 = (int)(atk * 1.10f + 1);
 
@@ -173,14 +173,14 @@ public class Player : IEntityAutoReset
         var updatedMaxHp = newMaxHp;// (int)(newMaxHp * multiplier) + 70;
 
         SetStat(CharacterStat.MaxHp, updatedMaxHp);
-        if(GetStat(CharacterStat.Hp) <= 0)
+        if (GetStat(CharacterStat.Hp) <= 0)
             SetStat(CharacterStat.Hp, updatedMaxHp);
 
         var moveSpeed = 0.15f - (0.001f * level / 3f);
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
     }
-    
+
     public void LevelUp()
     {
         var level = GetData(PlayerStat.Level);
@@ -207,13 +207,13 @@ public class Player : IEntityAutoReset
 
         if (target < 1 || target > 99)
             return; //hard lock levels above 99
-        
+
         level = target;
 
         SetData(PlayerStat.Level, level);
         SetData(PlayerStat.Experience, 0); //reset exp to 0
         SetStat(CharacterStat.Level, level);
-        
+
 
         UpdateStats();
 
@@ -297,7 +297,7 @@ public class Player : IEntityAutoReset
         CombatEntity.IsCasting = false;
         CombatEntity.CastingSkill.Clear();
         CombatEntity.QueuedCastingSkill.Clear();
-        
+
         Character.Map.GatherPlayersForMultiCast(Character);
         CommandBuilder.SendPlayerDeath(Character);
         CommandBuilder.ClearRecipients();
@@ -313,7 +313,7 @@ public class Player : IEntityAutoReset
 
         if (!Target.TryGet<CombatEntity>(out var ce))
             return false;
-        
+
         return ce.IsValidTarget(CombatEntity);
     }
 
@@ -355,13 +355,13 @@ public class Player : IEntityAutoReset
         SetData(PlayerStat.Job, newJobId);
 
         if (Character.ClassId < 100) //we don't want to override special character classes like GameMaster
-            Character.ClassId = newJobId; 
-        
+            Character.ClassId = newJobId;
+
         //until equipment is real pick weapon based on job
         var weapon = DefaultWeaponForJob(newJobId);
 
         //WeaponClass = weapon;
-        
+
         if (Character.Map != null)
             Character.Map.RefreshEntity(Character);
     }
@@ -377,7 +377,7 @@ public class Player : IEntityAutoReset
 
     public void PerformQueuedAttack()
     {
-        if (Character.State == CharacterState.Sitting 
+        if (Character.State == CharacterState.Sitting
             || Character.State == CharacterState.Dead
             || !ValidateTarget())
         {
@@ -394,17 +394,18 @@ public class Player : IEntityAutoReset
 
         if (DistanceCache.IntDistance(Character.Position, targetCharacter.Position) > GetStat(CharacterStat.Range))
         {
-            if(InMoveReadyState)
-                Character.TryMove(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range)-1);
+            if (InMoveReadyState)
+                Character.TryMove(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range) - 1);
             return;
         }
-        
+
         if (Character.State == CharacterState.Moving)
         {
-            if (Character.StepsRemaining > 1)
-                Character.ShortenMovePath(); //no point in shortening a path that is already short
-            
-            return;
+            Character.StopMovingImmediately();
+            //if (Character.StepsRemaining > 1)
+            //    Character.ShortenMovePath(); //no point in shortening a path that is already short
+
+            //return;
         }
 
         ChangeTarget(targetCharacter);
@@ -430,7 +431,7 @@ public class Player : IEntityAutoReset
 
         if (Character.State == CharacterState.Moving)
         {
-            if(Character.QueuedAction == QueuedAction.Move && Character.MoveLockTime > Time.DeltaTimeFloat)
+            if (Character.QueuedAction == QueuedAction.Move && Character.MoveLockTime > Time.DeltaTimeFloat)
                 Character.State = CharacterState.Idle;
             else
                 Character.ShortenMovePath();
@@ -454,10 +455,10 @@ public class Player : IEntityAutoReset
         Character.ResetSpawnImmunity();
         CombatEntity.PerformMeleeAttack(targetEntity);
         Character.AddMoveLockTime(GetTiming(TimingStat.AttackDelayTime));
-        
+
         Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackDelayTime);
     }
-    
+
     public void TargetForAttack(WorldObject enemy)
     {
         if (CombatEntity.IsCasting)
@@ -474,7 +475,7 @@ public class Player : IEntityAutoReset
             return;
         }
 
-        if (!Character.TryMove(enemy.Position, GetStat(CharacterStat.Range)))
+        if (!Character.TryMove(enemy.Position, 1))
             return;
 
         ChangeTarget(enemy);
@@ -524,7 +525,7 @@ public class Player : IEntityAutoReset
     {
         if (!World.Instance.TryGetWorldMapByName(mapName, out var map))
             return false;
-        
+
         AddActionDelay(2f); //block character input for 1+ seconds.
         Character.ResetState();
         Character.SetSpawnImmunity();
@@ -543,7 +544,7 @@ public class Player : IEntityAutoReset
                 p = new Position(x, y);
             }
         }
-        
+
         if (Character.Map?.Name == mapName)
             Character.Map.TeleportEntity(ref Entity, Character, p, CharacterRemovalReason.OutOfSight);
         else
@@ -582,8 +583,8 @@ public class Player : IEntityAutoReset
             if (Character.IsMoving && Character.WalkPath != null)
                 checkPosition = Character.WalkPath[Character.MoveStep + 1];
             if (DistanceCache.IntDistance(checkPosition, targetCharacter.Position) <= GetStat(CharacterStat.Range))
-                Character.ShortenMovePath();
-                //PerformAttack(targetCharacter);
+                Character.StopMovingImmediately();
+            //PerformAttack(targetCharacter);
         }
 
         if (Character.State == CharacterState.Idle)
@@ -607,12 +608,12 @@ public class Player : IEntityAutoReset
         CurrentCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
         if (CurrentCooldown < 0)
             CurrentCooldown = 0;
-        
+
         if (Character.State == CharacterState.Dead || Character.State == CharacterState.Sitting)
         {
             Character.QueuedAction = QueuedAction.None;
             AutoAttackLock = false;
-            if(Character.State == CharacterState.Dead)
+            if (Character.State == CharacterState.Dead)
                 return;
         }
 
@@ -629,16 +630,26 @@ public class Player : IEntityAutoReset
         {
             if (CombatEntity.QueuedCastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
             {
-                if (Character.State == CharacterState.Moving && Character.InMoveLock && !Character.InAttackCooldown && CombatEntity.CanAttackTarget(targetCharacter))
+                var isValid = true;
+                var canAttack = CombatEntity.CanAttackTarget(targetCharacter, CombatEntity.QueuedCastingSkill.Range);
+                if (Character.State == CharacterState.Moving && canAttack)
                     Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
+                if (Character.State == CharacterState.Idle && !canAttack)
+                {
+                    var target = CombatEntity.CastingSkill.TargetEntity;
+                    isValid = Character.TryMove(targetCharacter.Position, 1);
+                }
 
-                if (InCombatReadyState)
+                if (InCombatReadyState && isValid)
                 {
                     if (CombatEntity.QueuedCastingSkill.IsValid)
                         CombatEntity?.ResumeQueuedSkillAction();
                     else
                         Character.QueuedAction = QueuedAction.None;
                 }
+
+                if (!isValid)
+                    Character.QueuedAction = QueuedAction.None;
             }
             else
             {
@@ -646,7 +657,7 @@ public class Player : IEntityAutoReset
                 Target = Entity.Null;
             }
         }
-        
+
         if (Character.QueuedAction == QueuedAction.Move && InMoveReadyState)
         {
             if (Character.InMoveLock)
@@ -654,7 +665,7 @@ public class Player : IEntityAutoReset
 
             Character.QueuedAction = QueuedAction.None;
             Character.TryMove(Character.TargetPosition, 0, false);
-            
+
             return;
         }
 
@@ -670,7 +681,7 @@ public class Player : IEntityAutoReset
             if (Character.InMoveLock && !Character.InAttackCooldown && CombatEntity.CanAttackTarget(targetCharacter))
                 Character.StopMovingImmediately();
 
-            if(InCombatReadyState)
+            if (InCombatReadyState)
                 PerformQueuedAttack();
         }
     }

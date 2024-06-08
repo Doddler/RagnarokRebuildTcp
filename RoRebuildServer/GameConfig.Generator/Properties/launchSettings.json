@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GameConfigSrcGenerator": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\GameConfig\\GameConfig.csproj"
+    }
+  }
+}

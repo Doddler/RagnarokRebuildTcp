@@ -71,6 +71,7 @@ namespace Assets.Scripts
         public TMP_InputField TextBoxInputField;
         public CanvasScaler CanvasScaler;
         public TextMeshProUGUI ErrorNoticeUi;
+        public TextMeshProUGUI DebugDisplay;
 
         public ScrollRect TextBoxScrollRect;
         public TextMeshProUGUI TextBoxText;
@@ -127,6 +128,7 @@ namespace Assets.Scripts
         private const bool CinemachineHidePlayerObject = true;
         public bool IsInErrorState;
         public bool DebugVisualization;
+        public bool DebugIgnoreAttackMotion;
 
         public float FogNearRatio = 0.3f;
         public float FogFarRatio = 4f;
@@ -215,6 +217,8 @@ namespace Assets.Scripts
         private Vector2 heightRange;
         private Vector2 zoomRange = new Vector2(30, 70);
 
+        public void ResetCursor() => isHolding = false;
+
         public void Awake()
         {
             _instance = this;
@@ -260,7 +264,7 @@ namespace Assets.Scripts
             clickEffectPrefab = Resources.Load<GameObject>($"MoveNotice");
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(UiCanvas.transform as RectTransform);
-            
+
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
             //    targetWalkable = Target.AddComponent<EntityWalkable>();
@@ -322,15 +326,15 @@ namespace Assets.Scripts
             if (mode == CameraMode.Indoor)
             {
                 Rotation = PlayerPrefs.GetFloat("cameraIndoorX", 45);
-                Height = PlayerPrefs.GetFloat("cameraIndoorY", 50);
+                Height = PlayerPrefs.GetFloat("cameraIndoorY", 55);
                 TargetRotation = Rotation;
                 lockCamera = true;
-                Distance = 46;
+                Distance = 55;
                 rotationRange = new Vector2(40, 60);
                 heightRange = new Vector2(35, 65);
                 zoomRange = new Vector2(25, 80);
             }
-            
+
 #if UNITY_EDITOR
             zoomRange = new Vector2(30, 150);
 #endif
@@ -750,7 +754,7 @@ namespace Assets.Scripts
             var leftClick = Input.GetMouseButtonDown(0);
             var rightClick = Input.GetMouseButtonDown(1);
 
-            var preferEnemyTarget = !(hasSkillOnCursor && cursorSkillTarget == SkillTarget.SingleAlly);
+            var preferEnemyTarget = !(hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally);
             var isAlive = controllable.SpriteAnimator.State != SpriteState.Dead;
             var isSitting = controllable.SpriteAnimator.State == SpriteState.Sit;
 
@@ -765,8 +769,8 @@ namespace Assets.Scripts
             var hasGround = FindMapPositionUnderCursor(ray, out var groundPosition, out var intersectLocation, walkMask);
             if (!hasGround) hasGround = FindMapPositionUnderCursor(ray, out groundPosition, out intersectLocation, groundMask, true);
             var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
-            var hasTargetedSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.SingleTarget;
-            var hasGroundSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.AreaTargeted;
+            var hasTargetedSkill = hasSkillOnCursor && (cursorSkillTarget == SkillTarget.Enemy || cursorSkillTarget == SkillTarget.Ally);
+            var hasGroundSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ground;
 
             var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill;
             var canClickEnemy = canInteract && !mouseTarget.IsAlly && mouseTarget.CharacterType != CharacterType.NPC;
@@ -781,6 +785,8 @@ namespace Assets.Scripts
             var displayCursor = canClickEnemy ? GameCursorMode.Attack : GameCursorMode.Normal;
             if (canClickNpc) displayCursor = GameCursorMode.Dialog;
             if (hasSkillOnCursor) displayCursor = GameCursorMode.SkillTarget;
+            
+            //Debug.Log($"{hasEntity} {}");
 
             if (showEntityName)
             {
@@ -858,7 +864,12 @@ namespace Assets.Scripts
 
             //this draws (or disables) the square indicator that shows where you're targeting on the ground
             if (!isOverUi && canClickGround)
+            {
+#if DEBUG
+                DebugDisplay.text = groundPosition.ToString();
+#endif
                 WalkProvider.UpdateCursorPosition(Target.transform.position, intersectLocation, hasValidPath);
+            }
             else
                 WalkProvider.DisableRenderer();
 
@@ -1332,18 +1343,26 @@ namespace Assets.Scripts
             if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha3))
             {
                 hasSkillOnCursor = true;
-                cursorSkill = CharacterSkill.ColdBolt;
+                cursorSkill = CharacterSkill.Bash;
                 cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
                 // Debug.Log(cursorSkillTarget);
                 //cursorSkillLvl = 5;
                 //skillScroll = 5f;
             }
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.O))
+            if (!inTextBox && Input.GetKeyDown(KeyCode.D))
             {
-                DebugVisualization = true;
+                DebugVisualization = !DebugVisualization;
                 //GroundHighlighter.Create(controllable, "blue");
             }
+            
+            
+            if (!inTextBox && Input.GetKeyDown(KeyCode.A))
+            {
+                DebugIgnoreAttackMotion = !DebugIgnoreAttackMotion;
+                //GroundHighlighter.Create(controllable, "blue");
+            }
+
 
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR

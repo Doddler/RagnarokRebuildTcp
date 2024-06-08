@@ -105,6 +105,13 @@ namespace PlayerControl
                     var newName = text.Substring(s[0].Length + 1);
                     NetworkManager.Instance.SendChangeName(newName);
                 }
+                
+                
+                if (s[0] == "/find")
+                {
+                    var target = text.Substring(s[0].Length + 1);
+                    NetworkManager.Instance.SendAdminFind(target);
+                }
 
                 if (s[0] == "/level")
                 {
