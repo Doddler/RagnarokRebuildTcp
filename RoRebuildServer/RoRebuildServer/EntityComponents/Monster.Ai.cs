@@ -616,6 +616,7 @@ public partial class Monster
         }
 
         nextAiUpdate = Time.ElapsedTimeFloat;
+        nextAiSkillUpdate = nextAiUpdate;
         return true;
     }
 

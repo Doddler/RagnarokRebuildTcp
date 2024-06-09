@@ -17,9 +17,9 @@ public class MonsterDatabaseInfo
     public int Vit { get; set; }
     public int Def { get; set; }
     public float RechargeTime { get; set; }
-    public float AttackTime { get; set; }
+    public float AttackLockTime { get; set; }
     public float HitTime { get; set; }
-    public float SpriteAttackTiming { get; set; }
+    public float AttackDamageTiming { get; set; }
     public int Range { get; set; }
     public CharacterElement Element { get; set; }
     public MonsterAiType AiType { get; set; }

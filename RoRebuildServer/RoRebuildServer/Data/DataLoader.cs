@@ -311,11 +311,11 @@ internal class DataLoader
                 ChaseDist = monster.ChaseDist,
                 AtkMin = monster.AtkMin,
                 AtkMax = monster.AtkMax,
-                AttackTime = monster.AttackTime / 1000f,
+                AttackLockTime = monster.AttackTime / 1000f,
                 HitTime = monster.HitTime / 1000f,
                 RechargeTime = monster.RechargeTime / 1000f,
                 MoveSpeed = monster.MoveSpeed / 1000f,
-                SpriteAttackTiming = monster.SpriteAttackTiming / 1000f,
+                AttackDamageTiming = monster.SpriteAttackTiming / 1000f,
                 Element = monster.Element,
                 AiType = (MonsterAiType)Enum.Parse(typeof(MonsterAiType), monster.MonsterAi),
                 Name = monster.Name

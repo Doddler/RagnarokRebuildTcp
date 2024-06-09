@@ -20,9 +20,9 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Monster
 
             source.ApplyCooldownForAttackAction();
 
-            var recharge = mon.MonsterBase.RechargeTime / 8f;
-            var motionTime = mon.MonsterBase.AttackTime;
-            var spriteTime = mon.MonsterBase.SpriteAttackTiming;
+            var recharge = mon.MonsterBase.RechargeTime / 3f;
+            var motionTime = mon.MonsterBase.AttackLockTime;
+            var spriteTime = mon.MonsterBase.AttackDamageTiming;
             if (recharge < motionTime)
             {
                 var ratio = recharge / motionTime;

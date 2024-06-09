@@ -101,6 +101,17 @@ public static class DataManager
         ScriptAssembly = ScriptLoader.LoadAssembly();
         NpcManager = new NpcBehaviorManager();
         
+        MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
+        MonsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
+        MonsterNameLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
+
+        foreach (var m in monsterStats)
+        {
+            MonsterIdLookup.Add(m.Id, m);
+            MonsterCodeLookup.Add(m.Code, m);
+            MonsterNameLookup.TryAdd(m.Name, m);
+        }
+
         //the things we actually want to load
         loader.LoadNpcScripts(ScriptAssembly);
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);

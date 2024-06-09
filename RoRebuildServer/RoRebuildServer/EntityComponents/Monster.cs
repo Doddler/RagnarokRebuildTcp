@@ -186,9 +186,9 @@ public partial class Monster : IEntityAutoReset
         SetStat(CharacterStat.Def, MonsterBase.Def);
         SetStat(CharacterStat.Vit, MonsterBase.Vit);
         SetTiming(TimingStat.MoveSpeed, MonsterBase.MoveSpeed);
-        SetTiming(TimingStat.SpriteAttackTiming, MonsterBase.SpriteAttackTiming);
+        SetTiming(TimingStat.SpriteAttackTiming, MonsterBase.AttackDamageTiming);
         SetTiming(TimingStat.HitDelayTime, MonsterBase.HitTime);
-        SetTiming(TimingStat.AttackMotionTime, MonsterBase.AttackTime);
+        SetTiming(TimingStat.AttackMotionTime, MonsterBase.AttackLockTime);
         SetTiming(TimingStat.AttackDelayTime, MonsterBase.RechargeTime);
         Character.MoveSpeed = MonsterBase.MoveSpeed;
     }
@@ -366,7 +366,8 @@ public partial class Monster : IEntityAutoReset
     public bool AiSkillScanUpdate()
     {
         skillState.SkillCastSuccess = false;
-        nextAiSkillUpdate = Time.ElapsedTimeFloat + 1f;
+        if(CurrentAiState != MonsterAiState.StateAttacking)
+            nextAiSkillUpdate = Time.ElapsedTimeFloat + 1f;
 
         skillAiHandler?.RunAiSkillUpdate(CurrentAiState, skillState);
 
@@ -400,8 +401,12 @@ public partial class Monster : IEntityAutoReset
         }
 #endif
 
-        if (skillAiHandler != null && nextAiSkillUpdate < Time.ElapsedTimeFloat && !Character.InAttackCooldown && Character.QueuedAction == QueuedAction.None)
+        var a = 0;
+        if (skillAiHandler != null && nextAiSkillUpdate < Time.ElapsedTimeFloat && !Character.InAttackCooldown &&
+            Character.QueuedAction == QueuedAction.None)
             AiSkillScanUpdate();
+        else
+            a = 1;
 
         //Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
 

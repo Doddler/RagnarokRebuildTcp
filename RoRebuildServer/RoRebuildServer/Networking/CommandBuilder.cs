@@ -131,7 +131,7 @@ public static class CommandBuilder
             packet.Write(npc.HasInteract);
         }
 
-        if (c.Hidden)
+        if (c.Hidden && !isSelf)
             ServerLogger.LogWarning($"We are sending the data of hidden character \"{c.Name}\" to the client!");
 
         if (c.State == CharacterState.Moving)
