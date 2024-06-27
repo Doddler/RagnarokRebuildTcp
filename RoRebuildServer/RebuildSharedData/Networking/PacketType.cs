@@ -34,6 +34,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] CreateCastCircle,
     Skill,
     [ServerOnlyPacket] SkillError,
+    [ServerOnlyPacket] ErrorMessage,
     ChangeTarget,
     [ServerOnlyPacket] GainExp,
     [ServerOnlyPacket] LevelUp,
@@ -50,6 +51,8 @@ public enum PacketType : byte
     [ServerOnlyPacket] EffectAtLocation,
     Emote,
     ClientTextCommand,
+    UpdatePlayerData,
+    ApplySkillPoint,
     
     AdminRequestMove,
     AdminServerAction,
@@ -60,6 +63,7 @@ public enum PacketType : byte
     AdminHideCharacter,
     AdminChangeSpeed,
     AdminFindTarget,
+    AdminResetSkills,
 
     NpcClick,
     [ServerOnlyPacket] NpcInteraction,

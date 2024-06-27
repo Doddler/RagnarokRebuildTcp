@@ -63,3 +63,4 @@ RebuildClient/Logs/
 *.user
 Other/~$RoStatProcessing.xlsx
 MonstersFullData/
+RebuildClient/MemoryCaptures/

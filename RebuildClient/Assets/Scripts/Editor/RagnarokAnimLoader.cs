@@ -131,7 +131,7 @@ namespace Assets.Editor
 			return actions;
 		}
 
-		public List<RoAction> Load(UnityEditor.AssetImporters.AssetImportContext ctx, RagnarokSpriteLoader spriteLoader, string actfile)
+		public List<RoAction> Load(RagnarokSpriteLoader spriteLoader, string actfile)
 		{
 			sprite = spriteLoader;
 

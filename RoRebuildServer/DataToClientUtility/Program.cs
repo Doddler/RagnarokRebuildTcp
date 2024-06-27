@@ -234,7 +234,7 @@ class Program
                     Offset = monster.ClientOffset,
                     ShadowSize = monster.ClientShadow,
                     Size = monster.ClientSize,
-                    AttackTiming = monster.SpriteAttackTiming/1000f
+                    AttackTiming = monster.SpriteAttackTiming / 1000f
                 };
 
                 monsterData.Add(mc);
@@ -277,7 +277,7 @@ class Program
 
         File.Delete(tempPath);
     }
-    
+
     private static void WriteMonsterData()
     {
         var mData = new List<MonsterClassData>();
@@ -346,15 +346,18 @@ class Program
 
     private static void WriteJobDataStuff()
     {
+        //weapon class
         var classes = ConvertToClient<CsvWeaponClass, PlayerWeaponClass>("WeaponClass.csv", "weaponclass.json",
-            weapons => weapons.Select(w => new PlayerWeaponClass() {
-                Id = w.Id, 
-                Name = w.FullName, 
-                WeaponClass = w.WeaponClass, 
+            weapons => weapons.Select(w => new PlayerWeaponClass()
+            {
+                Id = w.Id,
+                Name = w.FullName,
+                WeaponClass = w.WeaponClass,
                 HitSounds = w.HitSound.Split('/').Select(a => a + ".ogg").ToList()
             }).ToList()
         );
 
+        //job list
         var jobs = ConvertToClient<CsvJobs, PlayerClassData>("Jobs.csv", "playerclass.json",
             jobs => jobs.Select(j => new PlayerClassData() { Id = j.Id, Name = j.Class, SpriteFemale = j.SpriteFemale, SpriteMale = j.SpriteMale }).ToList()
             );
@@ -371,6 +374,7 @@ class Program
             EffectFemale = string.IsNullOrWhiteSpace(w.EffectFemale) ? string.Empty : "Assets/Sprites/Weapons/" + w.EffectFemale
         };
 
+        //skill data
         var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
         var skillData = Toml.ToModel<Dictionary<string, SkillData>>(File.ReadAllText(Path.Combine(path, "../Skills/Skills.toml"), Encoding.UTF8), null, options);
         var skillOut = new List<SkillData>();
@@ -381,29 +385,59 @@ class Program
             if (skill.Icon == null) skill.Icon = "nv_basic";
             skillOut.Add(skill);
         }
-        
+
         SaveToClient("skillinfo.json", skillOut);
 
-        //ConvertToClient<CsvSkillData, SkillData>("Skills.csv", "skillinfo.json", si =>
-        //{
-        //    var data = new List<SkillData>();
+        //skill tree
+        var skillTreeData = Toml.ToModel<Dictionary<string, PlayerSkillTree>>(File.ReadAllText(Path.Combine(path, "../Skills/SkillTree.toml"), Encoding.UTF8), null, options);
+        var skillTreeOut = new List<ClientSkillTree>();
 
-        //    foreach (var s in si)
-        //    {
-        //        data.Add(new SkillData()
-        //        {
-        //            SkillId = Enum.Parse<CharacterSkill>(s.ShortName),
-        //            Name = s.Name,
-        //            Target = Enum.Parse<SkillTarget>(s.Type),
-        //            MaxLevel = s.MaxLevel,
-        //            AdjustableLevel = s.CanAdjustLevel
-        //        });
-        //    }
+        foreach (var (id, tree) in skillTreeData)
+        {
+            var job = jobs.FirstOrDefault(j => id == j.Name);
+            if (job == null) throw new Exception($"SkillTree.toml could not identify job by name {id}");
 
-        //    return data;
-        //});
+            int extends = -1;
+            if (tree.Extends != null)
+            {
+                var extendJobClass = jobs.FirstOrDefault(j => j.Name == tree.Extends);
+                if (job == null) throw new Exception($"SkillTree.toml could not identify extension job by name {id}");
+                extends = extendJobClass.Id;
+            }
 
-        //takes some extra processing because we're filling in each type that's not included in JobWeaponInfo.csv
+            var entry = new ClientSkillTree()
+            {
+                ClassId = job.Id,
+                ExtendsClass = extends,
+                JobRank = tree.JobRank,
+                Skills = new List<ClientSkillTreeEntry>()
+            };
+
+            foreach (var skills in tree.SkillTree)
+            {
+                var skill = new ClientSkillTreeEntry()
+                {
+                    Skill = skillData[skills.Key.ToString()].SkillId,
+                    Prerequisites = new ClientPrereq[skills.Value.Count]
+                };
+                
+                for(var i = 0; i < skills.Value.Count; i++)
+                {
+                    var prereq = skills.Value[i];
+                    skill.Prerequisites[i] = new ClientPrereq()
+                    {
+                        Skill = prereq.Skill,
+                        Level = prereq.RequiredLevel
+                    };
+                }
+                entry.Skills.Add(skill);
+            }
+
+            skillTreeOut.Add(entry);
+        }
+        SaveToClient("skilltree.json", skillTreeOut);
+
+        //job weapon info
         ConvertToClient<CsvJobWeaponInfo, PlayerWeaponData>("JobWeaponInfo.csv", "jobweaponinfo.json",
             wi =>
             {

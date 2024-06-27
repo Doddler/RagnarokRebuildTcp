@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
@@ -13,12 +13,16 @@
 
   <ItemGroup>
     <Compile Remove="Logs\**" />
+    <Compile Remove="Simulation\Skills\SkillHandlers\Monster\**" />
     <Compile Remove="temp\**" />
     <Content Remove="Logs\**" />
+    <Content Remove="Simulation\Skills\SkillHandlers\Monster\**" />
     <Content Remove="temp\**" />
     <EmbeddedResource Remove="Logs\**" />
+    <EmbeddedResource Remove="Simulation\Skills\SkillHandlers\Monster\**" />
     <EmbeddedResource Remove="temp\**" />
     <None Remove="Logs\**" />
+    <None Remove="Simulation\Skills\SkillHandlers\Monster\**" />
     <None Remove="temp\**" />
   </ItemGroup>
 

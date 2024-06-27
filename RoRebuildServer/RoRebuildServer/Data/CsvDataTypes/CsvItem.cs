@@ -8,5 +8,6 @@
         public required int Price { get; set; }
         public required bool IsUseable { get; set; }
         public required string Effect { get; set; }
+        public required string Sprite { get; set; }
     }
 }

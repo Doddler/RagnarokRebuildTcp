@@ -8,6 +8,7 @@ using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering;
+using UnityEngine.U2D;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Sprites
@@ -25,7 +26,7 @@ namespace Assets.Scripts.Sprites
         public int HeightMax;
         public int HeightIn;
     }
-    
+
     public class ClientDataLoader : MonoBehaviour
     {
         public static ClientDataLoader Instance;
@@ -36,8 +37,10 @@ namespace Assets.Scripts.Sprites
         public TextAsset PlayerWeaponData;
         public TextAsset WeaponClassData;
         public TextAsset SkillData;
+        public TextAsset SkillTreeData;
         public TextAsset MapViewpointData;
         public TextAsset UniqueAttackActionData;
+        public SpriteAtlas ItemIconAtlas;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
         private readonly Dictionary<int, PlayerHeadData> playerHeadLookup = new();
@@ -47,7 +50,9 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<CharacterSkill, SkillData> skillData = new();
         private readonly Dictionary<string, MapViewpoint> mapViewpoints = new();
         private readonly Dictionary<string, Dictionary<CharacterSkill, UniqueAttackAction>> uniqueSpriteActions = new();
-        
+        private readonly Dictionary<int, ClientSkillTree> jobSkillTrees = new();
+        private readonly Dictionary<string, int> jobNameToIdTable = new();
+
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
 
@@ -56,8 +61,12 @@ namespace Assets.Scripts.Sprites
         public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);
 
+        public int GetJobIdForName(string name) => jobNameToIdTable.GetValueOrDefault(name, -1);
         public string GetSkillName(CharacterSkill skill) => skillData[skill].Name;
+        public SkillData GetSkillData(CharacterSkill skill) => skillData[skill];
         public SkillTarget GetSkillTarget(CharacterSkill skill) => skillData.TryGetValue(skill, out var target) ? target.Target : SkillTarget.Any;
+        public Dictionary<CharacterSkill, SkillData> GetAllSkills() => skillData;
+        public ClientSkillTree GetSkillTree(int jobId) => jobSkillTrees.GetValueOrDefault(jobId);
 
         public MapViewpoint GetMapViewpoint(string mapName) => mapViewpoints.GetValueOrDefault(mapName);
 
@@ -69,19 +78,19 @@ namespace Assets.Scripts.Sprites
             var hitSoundsCount = weapon.HitSounds.Count;
             if (hitSoundsCount <= 1)
                 return weapon.HitSounds[0];
-	        
+
             return weapon.HitSounds[Random.Range(0, hitSoundsCount)];
         }
 
         public bool GetUniqueAction(string spriteName, CharacterSkill skill, out UniqueAttackAction actOut)
         {
             actOut = null;
-            if(uniqueSpriteActions.TryGetValue(spriteName, out var list))
+            if (uniqueSpriteActions.TryGetValue(spriteName, out var list))
                 if (list.TryGetValue(skill, out var action))
                     actOut = action;
             return actOut != null;
         }
-		
+
         private void Awake()
         {
             Initialize();
@@ -103,32 +112,33 @@ namespace Assets.Scripts.Sprites
             {
                 playerHeadLookup.Add(h.Id, h);
             }
-			
+
             var playerData = JsonUtility.FromJson<Wrapper<PlayerClassData>>(PlayerClassData.text);
             foreach (var p in playerData.Items)
             {
                 playerClassLookup.Add(p.Id, p);
+                jobNameToIdTable.Add(p.Name, p.Id);
             }
 
             //split weapon entries into a tree of base job -> weapon class -> sprite list
             var weaponData = JsonUtility.FromJson<Wrapper<PlayerWeaponData>>(PlayerWeaponData.text);
             foreach (var weapon in weaponData.Items)
             {
-                if(!playerWeaponLookup.ContainsKey(weapon.Job))
+                if (!playerWeaponLookup.ContainsKey(weapon.Job))
                     playerWeaponLookup.Add(weapon.Job, new Dictionary<int, List<PlayerWeaponData>>());
 
                 var jList = playerWeaponLookup[weapon.Job];
-                if(!jList.ContainsKey(weapon.Class))
+                if (!jList.ContainsKey(weapon.Class))
                     jList.Add(weapon.Class, new List<PlayerWeaponData>());
 
                 var cList = jList[weapon.Class];
                 cList.Add(weapon);
             }
-            
+
             var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
             foreach (var weapon in weaponClass.Items)
                 weaponClassData.TryAdd(weapon.Id, weapon);
-            
+
             var uniqueAttacks = JsonUtility.FromJson<Wrapper<UniqueAttackAction>>(UniqueAttackActionData.text);
             foreach (var action in uniqueAttacks.Items)
             {
@@ -137,15 +147,22 @@ namespace Assets.Scripts.Sprites
                     list = new Dictionary<CharacterSkill, UniqueAttackAction>();
                     uniqueSpriteActions.Add(action.Sprite, list);
                 }
-                if(Enum.TryParse(action.Action, out CharacterSkill skill))
+
+                if (Enum.TryParse(action.Action, out CharacterSkill skill))
                     list.Add(skill, action);
                 else
                     Debug.LogWarning($"Could not convert {action.Action} to a skill type when parsing unique skill actions");
             }
 
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
-            foreach(var skill in skills.Items)
+            foreach (var skill in skills.Items)
                 skillData.Add(skill.SkillId, skill);
+            
+            var trees = JsonUtility.FromJson<Wrapper<ClientSkillTree>>(SkillTreeData.text);
+            foreach (var tree in trees.Items)
+                jobSkillTrees.Add(tree.ClassId, tree);
+
+            
 
             foreach (var mapDef in MapViewpointData.text.Split("\r\n"))
             {
@@ -166,111 +183,65 @@ namespace Assets.Scripts.Sprites
                     HeightIn = int.Parse(s[9]),
                 });
             }
-            
-            
             isInitialized = true;
         }
 
-        //     private GameObject CloneAnimatorForTrail(RoSpriteAnimator src, RoSpriteTrail trail, int order)
-        //     {
-        //         if (!src.IsInitialized)
-        //             return null;
+        private List<RoSpriteAnimator> tempList;
+        
+        public void ChangePlayerClass(ServerControllable player, ref PlayerSpawnParameters param)
+        {
+            if (!isInitialized)
+                throw new Exception($"We shouldn't be changing the player class while not initialized!");
+            
+            var pData = playerClassLookup[0]; //novice
+            if (playerClassLookup.TryGetValue(param.ClassId, out var lookupData))
+                pData = lookupData;
+            else
+                Debug.LogWarning("Failed to find player with id of " + param.ClassId);
+            
+            var hData = playerHeadLookup[0]; //default;
+            if (playerHeadLookup.TryGetValue(param.HeadId, out var lookupData2))
+                hData = lookupData2;
+            else
+                Debug.LogWarning("Failed to find player head with id of " + param.ClassId);
 
-        //         var go = new GameObject(src.gameObject.name);
-        //         var mf = go.AddComponent<MeshFilter>();
-        //         var mr = go.AddComponent<MeshRenderer>();
+            var bodySprite = player.SpriteAnimator;
+            
+            //find the head child, discard everything else
+            if (tempList == null)
+                tempList = new List<RoSpriteAnimator>();
+            else
+                tempList.Clear();
+            
+            RoSpriteAnimator headSprite = null;
+            
+            for (var i = 0; i < bodySprite.ChildrenSprites.Count; i++)
+            {
+                var type = bodySprite.ChildrenSprites[i].Type;
+                switch (type)
+                {
+                    case SpriteType.Head:
+                        headSprite = bodySprite.ChildrenSprites[i];
+                        tempList.Add(headSprite);
+                        break;
+                    case SpriteType.Headgear:
+                        tempList.Add(bodySprite.ChildrenSprites[i]);
+                        break;
+                    default:
+                        Destroy(bodySprite.ChildrenSprites[i].gameObject);
+                        break;
+                }
+            }
 
-        //         var sr = src.SpriteRenderer as RoSpriteRendererStandard;
-        //         if (sr == null)
-        //             throw new Exception("Cannot CloneAnimatorForTrail as it is not using a RoSpriteRendererStandard.");
-
-        //if(order > 0)
-        //             mr.sortingOrder = order;
-
-        //         mr.receiveShadows = false;
-        //         mr.lightProbeUsage = LightProbeUsage.Off;
-        //         mr.shadowCastingMode = ShadowCastingMode.Off;
-
-        //trail.Renderers.Add(mr);
-
-        //mf.mesh = sr.GetMeshForFrame();
-
-        //         var mats = new Material[src.MeshRenderer.sharedMaterials.Length];
-
-        //         for (var i = 0; i < src.MeshRenderer.sharedMaterials.Length; i++)
-        //         {
-        //             var srcMat = src.MeshRenderer.sharedMaterials[i];
-
-        //             var shader = srcMat.shader;
-        //	//Debug.Log(shader);
-        //             var mat = new Material(shader);
-        //             //Debug.Log(mat);
-        //	mat.shader = shader;
-        //             mat.mainTexture = srcMat.mainTexture;
-        //             mat.renderQueue = srcMat.renderQueue;
-        //             mat.shaderKeywords = srcMat.shaderKeywords;
-
-
-        //	mats[i] = mat;
-        //}
-
-        //         mr.sharedMaterials = mats;
-
-        ////Debug.Log(mr.material);
-
-        //         return go;
-        //     }
-		
-        //     public void CloneObjectForTrail(RoSpriteAnimator src)
-        //     {
-        //         if (!isInitialized)
-        //             Initialize();
-
-        //if(src.Parent != null)
-        //	Debug.LogError("Cannot clone sprite animator for trail as it is not the parent animator!");
-
-        //         var go = new GameObject("Trail");
-        //         go.layer = LayerMask.NameToLayer("Characters");
-        //         go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-        //         go.transform.position = src.transform.position;
-        //         var bb =go.AddComponent<Billboard>();
-
-        //         var sr = src.SpriteRenderer as RoSpriteRendererStandard;
-        //         if (sr == null)
-        //             throw new Exception("Cannot CloneAnimatorForTrail as it is not using a RoSpriteRendererStandard.");
-			
-        //         var trail = go.AddComponent<RoSpriteTrail>();
-        //         trail.Color = sr.Color;
-        //         trail.Duration = 0.6f;
-        //         trail.LifeTime = 0.5f;
-        //         trail.StartTime = 0.49f;
-        //         trail.Renderers = new List<MeshRenderer>();
-
-        //var main = CloneAnimatorForTrail(src, trail, 0);
-        //main.transform.SetParent(go.transform);
-        //         main.transform.localPosition = src.transform.localPosition + new Vector3(0, 0, 0.05f);
-        //         main.transform.localScale = src.transform.localScale;
-        //         trail.SortingGroup = main.AddComponent<SortingGroup>();
-			
-        //var order = 1;
-
-        //         foreach (var c in src.ChildrenSprites)
-        //         {
-        //             var sub = CloneAnimatorForTrail(c, trail, order);
-        //             if (sub == null)
-        //                 continue;
-        //	sub.transform.SetParent(main.transform);
-        //             sub.transform.localScale = c.transform.localScale;
-        //	sub.transform.localPosition = c.transform.localPosition;
-
-        //             order++;
-        //         }
-
-        ////call lateupdate directly in case we are too late to update in time
-        //bb.LateUpdate();
-        //trail.Init();
-        //     }
-		
+            if (headSprite == null)
+                throw new Exception($"Existing player has no head!");
+            
+            bodySprite.ChildrenSprites.Clear();
+            for(var i = 0; i < tempList.Count; i++)
+                bodySprite.ChildrenSprites.Add(tempList[i]);
+    
+        }
+        
         public ServerControllable InstantiatePlayer(ref PlayerSpawnParameters param)
         {
             if (!isInitialized)
@@ -306,7 +277,7 @@ namespace Assets.Scripts.Sprites
             head.layer = LayerMask.NameToLayer("Characters");
             head.transform.SetParent(body.transform, false);
             head.transform.localPosition = Vector3.zero;
-			
+
             var bodySprite = body.AddComponent<RoSpriteAnimator>();
             var headSprite = head.AddComponent<RoSpriteAnimator>();
 
@@ -320,7 +291,7 @@ namespace Assets.Scripts.Sprites
             control.WeaponClass = param.WeaponClass;
 
             bodySprite.Controllable = control;
-            if(param.State == CharacterState.Moving)
+            if (param.State == CharacterState.Moving)
                 bodySprite.ChangeMotion(SpriteMotion.Walk);
             bodySprite.ChildrenSprites.Add(headSprite);
             //bodySprite.SpriteOffset = 0.5f;
@@ -336,7 +307,7 @@ namespace Assets.Scripts.Sprites
 
             control.ShadowSize = 0.5f;
             control.WeaponClass = param.WeaponClass;
-			
+
             var bodySpriteName = param.IsMale ? pData.SpriteMale : pData.SpriteFemale;
             var headSpriteName = param.IsMale ? hData.SpriteMale : hData.SpriteFemale;
 
@@ -368,10 +339,19 @@ namespace Assets.Scripts.Sprites
             AddressableUtility.LoadRoSpriteData(go, headSpriteName, headSprite.OnSpriteDataLoad);
             AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
 
+            if (control.IsMainCharacter)
+            {
+                CameraFollower.Instance.CharacterJob.text = pData.Name;
+                CameraFollower.Instance.CharacterName.text = $"Lv. {control.Level} {control.Name}";
+            }
+            
+            // control.gameObject.AddComponent<RoSpriteTrailSpawner>();
+
             return control;
         }
 
-        private void LoadAndAttachWeapon(GameObject parent, Transform bodyTransform, RoSpriteAnimator bodySprite, PlayerWeaponData weapon, bool isEffect, bool isMale)
+        private void LoadAndAttachWeapon(GameObject parent, Transform bodyTransform, RoSpriteAnimator bodySprite, PlayerWeaponData weapon, bool isEffect,
+            bool isMale)
         {
             var weaponSpriteFile = isMale ? weapon.SpriteMale : weapon.SpriteFemale;
             if (isEffect)
@@ -379,7 +359,8 @@ namespace Assets.Scripts.Sprites
 
             if (string.IsNullOrEmpty(weaponSpriteFile))
             {
-                Debug.Log($"Not loading sprite for weapon as the requested weapon class does not have one. (GO: {parent} Sprite: {bodySprite?.SpriteData?.Name})");
+                Debug.Log(
+                    $"Not loading sprite for weapon as the requested weapon class does not have one. (GO: {parent} Sprite: {bodySprite?.SpriteData?.Name})");
                 return;
             }
 
@@ -392,7 +373,7 @@ namespace Assets.Scripts.Sprites
 
             weaponSprite.Parent = bodySprite;
             weaponSprite.SpriteOrder = 2;
-            if(isEffect)
+            if (isEffect)
                 weaponSprite.SpriteOrder = 20;
 
             bodySprite.PreferredAttackMotion = isMale ? weapon.AttackMale : weapon.AttackFemale;
@@ -428,7 +409,7 @@ namespace Assets.Scripts.Sprites
             sprite.State = SpriteState.Dead;
             //sprite.LockAngle = true;
             sprite.SpriteRenderer = sr;
-            
+
             AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/emotion.spr", emote.OnFinishLoad);
         }
 
@@ -437,7 +418,7 @@ namespace Assets.Scripts.Sprites
             var prefabName = mData.SpriteName;
 
             var obj = new GameObject(prefabName);
-			
+
             var control = obj.AddComponent<ServerControllable>();
             control.CharacterType = CharacterType.NPC;
             control.SpriteMode = ClientSpriteType.Prefab;
@@ -446,10 +427,10 @@ namespace Assets.Scripts.Sprites
             control.Name = param.Name;
             control.IsAlly = true;
             control.IsInteractable = false;
-			
+
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0, false, false);
-			
+
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
             loader.Completed += ah =>
             {
@@ -457,7 +438,7 @@ namespace Assets.Scripts.Sprites
                 {
                     var obj2 = GameObject.Instantiate(ah.Result, obj.transform, false);
                     obj2.transform.localPosition = Vector3.zero;
-                    
+
                     var sprite = obj2.GetComponent<RoSpriteAnimator>();
                     if (sprite != null)
                         sprite.Controllable = control;
@@ -470,7 +451,7 @@ namespace Assets.Scripts.Sprites
 
         public ServerControllable InstantiateMonster(ref MonsterSpawnParameters param)
         {
-            if(!isInitialized)
+            if (!isInitialized)
                 Initialize();
 
             var mData = monsterClassLookup[4000]; //poring
@@ -486,7 +467,7 @@ namespace Assets.Scripts.Sprites
             go.layer = LayerMask.NameToLayer("Characters");
             go.transform.localScale = new Vector3(1.5f * mData.Size, 1.5f * mData.Size, 1.5f * mData.Size);
             var control = go.AddComponent<ServerControllable>();
-            if(param.ClassId < 4000)
+            if (param.ClassId < 4000)
                 control.CharacterType = CharacterType.NPC;
             else
                 control.CharacterType = CharacterType.Monster;
@@ -502,7 +483,7 @@ namespace Assets.Scripts.Sprites
 
             var sprite = child.AddComponent<RoSpriteAnimator>();
             sprite.Controllable = control;
-			
+
             control.SpriteAnimator = sprite;
             //control.SpriteAnimator.SpriteOffset = mData.Offset;
             control.ShadowSize = mData.ShadowSize;
@@ -519,13 +500,15 @@ namespace Assets.Scripts.Sprites
             // control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0);
 
             var basePath = "Assets/Sprites/Monsters/";
-            if(param.ClassId < 4000)
+            if (param.ClassId < 4000)
                 basePath = "Assets/Sprites/Npcs/";
 
 
             AddressableUtility.LoadRoSpriteData(go, basePath + mData.SpriteName, control.SpriteAnimator.OnSpriteDataLoad);
             if (mData.ShadowSize > 0)
                 AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
+
+            // control.gameObject.AddComponent<RoSpriteTrailSpawner>();
 
             return control;
         }

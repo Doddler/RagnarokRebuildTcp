@@ -6,6 +6,7 @@ using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
+using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.Utility;
 using PlayerControl;
 using RebuildSharedData.ClientTypes;
@@ -18,6 +19,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utility;
 using CursorMode = UnityEngine.CursorMode;
@@ -66,6 +68,8 @@ namespace Assets.Scripts
         //public TextMeshProUGUI PlayerTargetUi;
         public TextMeshProUGUI HpDisplay;
         public Slider HpSlider;
+        public TextMeshProUGUI SpDisplay;
+        public Slider SpSlider;
         public TextMeshProUGUI ExpDisplay;
         public Slider ExpSlider;
         public TMP_InputField TextBoxInputField;
@@ -75,6 +79,9 @@ namespace Assets.Scripts
 
         public ScrollRect TextBoxScrollRect;
         public TextMeshProUGUI TextBoxText;
+
+        public TextMeshProUGUI CharacterName;
+        public TextMeshProUGUI CharacterJob;
 
         public Camera WaterCamera;
         public RenderTexture WaterTexture;
@@ -120,6 +127,7 @@ namespace Assets.Scripts
         private int cursorMaxSkillLvl = 10;
         private float skillScroll = 5f;
         private bool cursorShowSkillLevel = true;
+        public bool HasSkillOnCursor => hasSkillOnCursor;
 
         public bool CinemachineMode;
         public VideoRecorder Recorder;
@@ -141,7 +149,7 @@ namespace Assets.Scripts
         private const float MaxClickDistance = 150;
 #endif
 
-        public int ExpForLevel(int lvl) => levelReqs[Mathf.Clamp(lvl, 1, 99)];
+        public int ExpForLevel(int lvl) => lvl < 1 || lvl >= 99 ? -1 : levelReqs[lvl - 1];
 
         public static CameraFollower Instance
         {
@@ -189,10 +197,10 @@ namespace Assets.Scripts
 
         //private EntityWalkable targetWalkable;
 
-        public List<Vector2Int> MovePath;
-        public float MoveSpeed;
-        public float MoveProgress;
-        public Vector3 StartPos;
+        private List<Vector2Int> movePath;
+        private float moveSpeed;
+        private float moveProgress;
+        private Vector3 startPos;
 
         public float TargetRotation;
 
@@ -211,11 +219,12 @@ namespace Assets.Scripts
         public float LastRightClick;
         private bool isHolding;
 
-        private CameraMode cameraMode;
-        private bool lockCamera;
+        public CameraMode CameraMode; //public so we can change it in editor
+        public bool lockCamera;
         private Vector2 rotationRange;
         private Vector2 heightRange;
         private Vector2 zoomRange = new Vector2(30, 70);
+        public bool InTextBox;
 
         public void ResetCursor() => isHolding = false;
 
@@ -230,6 +239,7 @@ namespace Assets.Scripts
 
             WalkProvider = GameObject.FindObjectOfType<RoWalkDataProvider>();
 
+            GameConfig.InitializeIfNecessary();
             UpdateCameraSize();
 
             Physics.queriesHitBackfaces = true;
@@ -274,22 +284,52 @@ namespace Assets.Scripts
 
         private void SaveCurrentCameraSettings()
         {
-            if (cameraMode == CameraMode.Normal)
+            if (CameraMode == CameraMode.Normal)
             {
                 PlayerPrefs.SetFloat("cameraX", TargetRotation);
                 PlayerPrefs.SetFloat("cameraY", Height);
             }
 
-            if (cameraMode == CameraMode.Indoor)
+            if (CameraMode == CameraMode.Indoor)
             {
                 PlayerPrefs.SetFloat("cameraIndoorX", TargetRotation);
                 PlayerPrefs.SetFloat("cameraIndoorY", Height);
             }
         }
 
+        //return value signifies if we put a skill on the cursor or not
+        public bool PressSkillButton(CharacterSkill skill, int id)
+        {
+            if (TargetControllable.SpriteAnimator.State == SpriteState.Dead)
+                return false;
+            
+            var target = ClientDataLoader.Instance.GetSkillTarget(skill);
+            switch (target)
+            {
+                case SkillTarget.Any:
+                case SkillTarget.Enemy:
+                case SkillTarget.Ground:
+                case SkillTarget.Ally:
+                    hasSkillOnCursor = true;
+                    cursorSkill = skill;
+                    skillScroll = Mathf.Clamp(id, 1, 10);
+                    cursorSkillLvl = Mathf.RoundToInt(skillScroll);
+                    cursorSkillTarget = target;
+                    return true;
+                case SkillTarget.Passive:
+                    Debug.LogWarning($"Can't cast passive skill!");
+                    break;
+                case SkillTarget.Self:
+                    NetworkManager.Instance.SendSelfTargetSkillAction(skill, id);
+                    break;
+            }
+
+            return false;
+        }
+
         public void SetCameraViewpoint(MapViewpoint viewpoint)
         {
-            cameraMode = CameraMode.Fixed;
+            CameraMode = CameraMode.Fixed;
             TargetRotation = Rotation = viewpoint.SpinIn;
             Height = viewpoint.HeightIn;
             Distance = viewpoint.ZoomIn;
@@ -301,7 +341,7 @@ namespace Assets.Scripts
 
         public void SetCameraMode(CameraMode mode)
         {
-            if (mode == cameraMode)
+            if (mode == CameraMode)
                 return;
 
             if (mode == CameraMode.Fixed || mode == CameraMode.None)
@@ -311,7 +351,7 @@ namespace Assets.Scripts
             }
 
             SaveCurrentCameraSettings();
-            cameraMode = mode;
+            CameraMode = mode;
 
             if (mode == CameraMode.Normal)
             {
@@ -345,10 +385,23 @@ namespace Assets.Scripts
             if (hp < 0)
                 hp = 0;
 
+            var percent = hp / (float)maxHp;
             HpDisplay.gameObject.SetActive(true);
-            HpDisplay.text = $"HP: {hp}/{maxHp}";
+            HpDisplay.text = $"HP: {hp} / {maxHp} ({percent * 100f:F1}%)";
             HpSlider.value = (float)hp / (float)maxHp;
         }
+        
+        public void UpdatePlayerSP(int sp, int maxSp)
+        {
+            if (sp < 0)
+                sp = 0;
+
+            var percent = sp / (float)maxSp;
+            SpDisplay.gameObject.SetActive(true);
+            SpDisplay.text = $"SP: {sp} / {maxSp} ({percent * 100f:F1}%)";
+            SpSlider.value = (float)sp / (float)maxSp;
+        }
+
 
         public void UpdatePlayerExp(int exp, int maxExp)
         {
@@ -362,7 +415,7 @@ namespace Assets.Scripts
             var percent = exp / (float)maxExp;
 
             ExpSlider.gameObject.SetActive(true);
-            ExpDisplay.text = $"Exp: {exp}/{maxExp} ({percent * 100f:F1}%)";
+            ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
             ExpSlider.value = percent;
         }
 
@@ -462,14 +515,15 @@ namespace Assets.Scripts
             //TargetUi.text = color + anim.Controllable.gameObject.name;
         }
 
-        private void UpdateCameraSize()
+        public void UpdateCameraSize()
         {
             if (Screen.width == 0)
                 return; //wut?
             var scale = 1f / (1080f / Screen.height);
-            CanvasScaler.scaleFactor = scale;
+            CanvasScaler.scaleFactor = scale * GameConfig.Data.MasterUIScale;
             lastWidth = Screen.width;
             lastHeight = Screen.height;
+            UiManager.Instance.FitFloatingWindowsIntoPlayArea();
         }
 
 
@@ -785,8 +839,10 @@ namespace Assets.Scripts
             var displayCursor = canClickEnemy ? GameCursorMode.Attack : GameCursorMode.Normal;
             if (canClickNpc) displayCursor = GameCursorMode.Dialog;
             if (hasSkillOnCursor) displayCursor = GameCursorMode.SkillTarget;
-            
+
             //Debug.Log($"{hasEntity} {}");
+            
+            // Debug.Log($"CanInteract:{canInteract} MouseTarget:{mouseTarget} IsInteractable:{mouseTarget?.IsInteractable}");
 
             if (showEntityName)
             {
@@ -834,7 +890,8 @@ namespace Assets.Scripts
                 return displayCursor;
 
             //while sitting or holding shift and clicking turns your character to face where you clicked
-            if (leftClick & (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || controllable.SpriteAnimator.State == SpriteState.Sit))
+            if (!isOverUi && leftClick & 
+                (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || controllable.SpriteAnimator.State == SpriteState.Sit))
             {
                 ClickDelay = 0.1f;
                 ChangeFacing(WalkProvider.GetWorldPositionForTile(groundPosition));
@@ -1215,9 +1272,9 @@ namespace Assets.Scripts
             var pointerOverUi = EventSystem.current.IsPointerOverGameObject();
             var selected = EventSystem.current.currentSelectedGameObject;
 
-            var inTextBox = false;
+            InTextBox = false;
             if (selected != null)
-                inTextBox = selected.GetComponent<TMP_InputField>() != null;
+                InTextBox = selected.GetComponent<TMP_InputField>() != null;
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -1227,9 +1284,9 @@ namespace Assets.Scripts
                 if (hasSkillOnCursor)
                     hasSkillOnCursor = false;
 
-                if (inTextBox)
+                if (InTextBox)
                 {
-                    inTextBox = false;
+                    InTextBox = false;
                     TextBoxInputField.text = "";
                 }
                 else
@@ -1240,7 +1297,7 @@ namespace Assets.Scripts
                 EventSystem.current.SetSelectedGameObject(null);
             }
 
-            if (inTextBox)
+            if (InTextBox)
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
@@ -1252,7 +1309,7 @@ namespace Assets.Scripts
 
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
-                if (!inTextBox)
+                if (!InTextBox)
                 {
                     //EventSystem.current.SetSelectedGameObject(TextBoxInputField.gameObject);
                     TextBoxInputField.ActivateInputField();
@@ -1269,7 +1326,7 @@ namespace Assets.Scripts
                     }
                     else
                     {
-                        inTextBox = false;
+                        InTextBox = false;
 
                         //Debug.Log(text);
                         //TextBoxInputField.DeactivateInputField(true);
@@ -1281,13 +1338,13 @@ namespace Assets.Scripts
             }
 
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.R))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.R))
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Dead)
                     NetworkManager.Instance.SendRespawn(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             }
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.Insert))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.Insert))
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Idle || controllable.SpriteAnimator.State == SpriteState.Standby)
                     NetworkManager.Instance.ChangePlayerSitStand(true);
@@ -1295,7 +1352,7 @@ namespace Assets.Scripts
                     NetworkManager.Instance.ChangePlayerSitStand(false);
             }
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.M))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.M))
             {
                 AudioManager.Instance.ToggleMute();
             }
@@ -1303,14 +1360,14 @@ namespace Assets.Scripts
             //if (Input.GetKeyDown(KeyCode.S))
             //	controllable.SpriteAnimator.Standby = true;
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.Space))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.Space))
             {
                 //Debug.Log(controllable.IsWalking);
                 //if(controllable.IsWalking)
                 NetworkManager.Instance.StopPlayer();
             }
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.W))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.W))
             {
                 if (!WarpPanel.activeInHierarchy)
                     WarpPanel.GetComponent<WarpWindow>().ShowWindow();
@@ -1319,7 +1376,7 @@ namespace Assets.Scripts
             }
 
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.E))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.E))
             {
                 if (!EmotePanel.activeInHierarchy)
                     EmotePanel.GetComponent<EmoteWindow>().ShowWindow();
@@ -1327,37 +1384,37 @@ namespace Assets.Scripts
                     EmotePanel.GetComponent<EmoteWindow>().HideWindow();
             }
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
-                NetworkManager.Instance.SendUseItem(501);
+            // if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
+            //     NetworkManager.Instance.SendUseItem(501);
+            //
+            // if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha2))
+            // {
+            //     hasSkillOnCursor = true;
+            //     cursorSkill = CharacterSkill.ThunderStorm;
+            //     cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
+            //     // Debug.Log(cursorSkillTarget);
+            //     //cursorSkillLvl = 10;
+            //     //skillScroll = 10f;
+            // }
+            //
+            // if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha3))
+            // {
+            //     hasSkillOnCursor = true;
+            //     cursorSkill = CharacterSkill.Bash;
+            //     cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
+            //     // Debug.Log(cursorSkillTarget);
+            //     //cursorSkillLvl = 5;
+            //     //skillScroll = 5f;
+            // }
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                hasSkillOnCursor = true;
-                cursorSkill = CharacterSkill.ThunderStorm;
-                cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
-                // Debug.Log(cursorSkillTarget);
-                //cursorSkillLvl = 10;
-                //skillScroll = 10f;
-            }
-
-            if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                hasSkillOnCursor = true;
-                cursorSkill = CharacterSkill.Bash;
-                cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
-                // Debug.Log(cursorSkillTarget);
-                //cursorSkillLvl = 5;
-                //skillScroll = 5f;
-            }
-
-            if (!inTextBox && Input.GetKeyDown(KeyCode.D))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.D))
             {
                 DebugVisualization = !DebugVisualization;
                 //GroundHighlighter.Create(controllable, "blue");
             }
-            
-            
-            if (!inTextBox && Input.GetKeyDown(KeyCode.A))
+
+
+            if (!InTextBox && Input.GetKeyDown(KeyCode.A))
             {
                 DebugIgnoreAttackMotion = !DebugIgnoreAttackMotion;
                 //GroundHighlighter.Create(controllable, "blue");
@@ -1385,20 +1442,20 @@ namespace Assets.Scripts
             }
 #endif
 
-            if (!inTextBox && !pointerOverUi && Input.GetMouseButtonDown(1))
+            if (!InTextBox && !pointerOverUi && Input.GetMouseButtonDown(1))
             {
                 if (Time.timeSinceLevelLoad - LastRightClick < 0.3f)
                 {
                     if (Input.GetKey(KeyCode.LeftShift))
                         Height = 50;
                     else
-                        TargetRotation = cameraMode == CameraMode.Normal ? 0 : (rotationRange.y + rotationRange.x) / 2f;
+                        TargetRotation = CameraMode == CameraMode.Normal ? 0 : (rotationRange.y + rotationRange.x) / 2f;
                 }
 
                 LastRightClick = Time.timeSinceLevelLoad;
             }
 
-            if (!inTextBox && !pointerOverUi && Input.GetMouseButton(1))
+            if (!InTextBox && !pointerOverUi && Input.GetMouseButton(1))
             {
                 if (Input.GetMouseButton(1) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
                 {
@@ -1510,16 +1567,16 @@ namespace Assets.Scripts
             Camera.transparencySortAxis = Quaternion.Euler(0, Rotation, 0) * Vector3.forward;
 
             transform.position = CurLookAt + pos;
-            transform.LookAt(CurLookAt, Vector3.up);
+            transform.LookAt(CurLookAt + new Vector3(0f, 1f, 0f), Vector3.up);
 
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.T))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.T))
                 NetworkManager.Instance.RandomTeleport();
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.F3))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.F3))
                 UseTTFDamage = !UseTTFDamage;
 
-            if (!inTextBox && Input.GetKeyDown(KeyCode.Tab))
+            if (!InTextBox && Input.GetKeyDown(KeyCode.Tab))
             {
                 var chunks = GameObject.FindObjectsOfType<RoMapChunk>();
                 foreach (var c in chunks)

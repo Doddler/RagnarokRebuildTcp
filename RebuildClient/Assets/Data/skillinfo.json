@@ -2,26 +2,46 @@
   "Items": [
     {
       "SkillId": 1,
+      "Icon": "nv_basic",
+      "Name": "Basic Mastery",
+      "Target": 0,
+      "MaxLevel": 8,
+      "SpCost": null,
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 2,
+      "Icon": "nv_firstaid",
+      "Name": "First Aid",
+      "Target": 5,
+      "MaxLevel": 1,
+      "SpCost": [
+        10
+      ],
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 3,
       "Icon": "sm_bash",
       "Name": "Bash",
       "Target": 1,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
         8,
-        9,
-        10
+        8,
+        8,
+        8,
+        8,
+        15,
+        15,
+        15,
+        15,
+        15
       ],
       "AdjustableLevel": true
     },
     {
-      "SkillId": 2,
+      "SkillId": 4,
       "Icon": "sm_endure",
       "Name": "Endure",
       "Target": 5,
@@ -41,7 +61,16 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 3,
+      "SkillId": 5,
+      "Icon": "sm_recovery",
+      "Name": "Improved HP Recovery",
+      "Target": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 6,
       "Icon": "sm_magnum",
       "Name": "Magnum Break",
       "Target": 5,
@@ -61,7 +90,7 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 4,
+      "SkillId": 7,
       "Icon": "sm_provoke",
       "Name": "Provoke",
       "Target": 1,
@@ -81,7 +110,34 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 5,
+      "SkillId": 8,
+      "Icon": "sm_sword",
+      "Name": "Sword Mastery",
+      "Target": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 9,
+      "Icon": "sm_twohand",
+      "Name": "Two-Hand Sword Mastery",
+      "Target": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 10,
+      "Icon": "mg_srecovery",
+      "Name": "Improved Spiritual Recovery",
+      "Target": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 11,
       "Icon": "mg_firebolt",
       "Name": "Fire Bolt",
       "Target": 1,
@@ -101,8 +157,8 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 6,
-      "Icon": "nv_basic",
+      "SkillId": 12,
+      "Icon": "mg_coldbolt",
       "Name": "Cold Bolt",
       "Target": 1,
       "MaxLevel": 10,
@@ -121,7 +177,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 7,
+      "SkillId": 13,
       "Icon": "mg_fireball",
       "Name": "Fire Ball",
       "Target": 1,
@@ -141,7 +197,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 8,
+      "SkillId": 14,
       "Icon": "mg_firewall",
       "Name": "Fire Wall",
       "Target": 4,
@@ -161,7 +217,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 9,
+      "SkillId": 15,
       "Icon": "mg_frostdiver",
       "Name": "Frost Diver",
       "Target": 1,
@@ -181,7 +237,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 10,
+      "SkillId": 16,
       "Icon": "mg_lightningbolt",
       "Name": "Lightning Bolt",
       "Target": 1,
@@ -201,7 +257,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 11,
+      "SkillId": 17,
       "Icon": "mg_soulstrike",
       "Name": "Soul Strike",
       "Target": 1,
@@ -221,7 +277,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 12,
+      "SkillId": 18,
       "Icon": "mg_thunderstorm",
       "Name": "Thunderstorm",
       "Target": 4,
@@ -241,7 +297,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 13,
+      "SkillId": 19,
       "Icon": "mg_safetywall",
       "Name": "Safety Wall",
       "Target": 4,
@@ -261,7 +317,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 14,
+      "SkillId": 20,
       "Icon": "ac_double",
       "Name": "Double Strafe",
       "Target": 1,
@@ -281,7 +337,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 15,
+      "SkillId": 21,
       "Icon": "ac_chargearrow",
       "Name": "Charge Arrow",
       "Target": 1,
@@ -301,7 +357,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 16,
+      "SkillId": 22,
       "Icon": "ac_shower",
       "Name": "Arrow Shower",
       "Target": 4,
@@ -321,7 +377,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 17,
+      "SkillId": 23,
       "Icon": "ac_concentration",
       "Name": "Improve Concentration",
       "Target": 5,
@@ -341,7 +397,7 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 18,
+      "SkillId": 24,
       "Icon": "al_heal",
       "Name": "Heal",
       "Target": 2,
@@ -361,7 +417,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 19,
+      "SkillId": 25,
       "Icon": "al_incagi",
       "Name": "Increase Agility",
       "Target": 2,
@@ -381,7 +437,7 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 20,
+      "SkillId": 26,
       "Icon": "al_blessing",
       "Name": "Blessing",
       "Target": 2,
@@ -401,7 +457,16 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 21,
+      "SkillId": 27,
+      "Icon": "tf_double",
+      "Name": "Double Attack",
+      "Target": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 28,
       "Icon": "mc_mammonite",
       "Name": "Mammonite",
       "Target": 1,
@@ -421,7 +486,47 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 22,
+      "SkillId": 29,
+      "Icon": "kn_twohandquicken",
+      "Name": "Two-Hand Quicken",
+      "Target": 5,
+      "MaxLevel": 10,
+      "SpCost": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 30,
+      "Icon": "bs_hammerfall",
+      "Name": "Hammer Fall",
+      "Target": 4,
+      "MaxLevel": 5,
+      "SpCost": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 31,
       "Icon": "nv_basic",
       "Name": "Call Minion",
       "Target": 0,
@@ -430,7 +535,7 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 23,
+      "SkillId": 32,
       "Icon": "nv_basic",
       "Name": "Grand Thunderstorm",
       "Target": 0,
@@ -439,9 +544,9 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 24,
+      "SkillId": 33,
       "Icon": "nv_basic",
-      "Name": "Haste",
+      "Name": "Power UP",
       "Target": 0,
       "MaxLevel": 0,
       "SpCost": null,

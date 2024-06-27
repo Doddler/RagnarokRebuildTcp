@@ -105,6 +105,11 @@ namespace Assets.Scripts.MapEditor
             MeshFilter.sharedMesh = Mesh;
         }
 #endif
+        public void Awake()
+        {
+            var sort = gameObject.AddComponent<SortingGroup>();
+            sort.sortingOrder = -2;
+        }
     }
 
 }

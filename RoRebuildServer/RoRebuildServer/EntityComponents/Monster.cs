@@ -88,6 +88,7 @@ public partial class Monster : IEntityAutoReset
     public static float MaxSpawnTimeInSeconds = 180;
 
     public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
+    public int GetStat(CharacterStat type) => CombatEntity.GetStat(type);
     public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
 
     public void Reset()
@@ -132,7 +133,7 @@ public partial class Monster : IEntityAutoReset
         //if (Character.ClassId >= 4000 && spawnEntry == null)
         //    throw new Exception("Monster created without spawn entry"); //remove when arbitrary monster spawning is added
 
-        UpdateStats();
+        InitializeStats();
 
         character.Name = $"{monData.Name} {e}";
 
@@ -175,7 +176,7 @@ public partial class Monster : IEntityAutoReset
         Children?.Remove(ref child);
     }
 
-    private void UpdateStats()
+    private void InitializeStats()
     {
         SetStat(CharacterStat.Level, MonsterBase.Level);
         SetStat(CharacterStat.Hp, MonsterBase.HP);
@@ -185,12 +186,32 @@ public partial class Monster : IEntityAutoReset
         SetStat(CharacterStat.Range, MonsterBase.Range);
         SetStat(CharacterStat.Def, MonsterBase.Def);
         SetStat(CharacterStat.Vit, MonsterBase.Vit);
+        SetStat(CharacterStat.Int, MonsterBase.Int);
         SetTiming(TimingStat.MoveSpeed, MonsterBase.MoveSpeed);
         SetTiming(TimingStat.SpriteAttackTiming, MonsterBase.AttackDamageTiming);
         SetTiming(TimingStat.HitDelayTime, MonsterBase.HitTime);
         SetTiming(TimingStat.AttackMotionTime, MonsterBase.AttackLockTime);
         SetTiming(TimingStat.AttackDelayTime, MonsterBase.RechargeTime);
         Character.MoveSpeed = MonsterBase.MoveSpeed;
+    }
+
+    public void UpdateStats()
+    {
+        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100);
+
+        var recharge = MonsterBase.RechargeTime * aspdBonus;
+        var motionTime = MonsterBase.AttackLockTime;
+        var spriteTime = MonsterBase.AttackDamageTiming;
+        if (recharge < motionTime)
+        {
+            var ratio = recharge / motionTime;
+            motionTime *= ratio;
+            spriteTime *= ratio;
+        }
+
+        SetTiming(TimingStat.AttackDelayTime, recharge);
+        SetTiming(TimingStat.AttackMotionTime, motionTime);
+        SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
     }
 
     private bool ValidateTarget()

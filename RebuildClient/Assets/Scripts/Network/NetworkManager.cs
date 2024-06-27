@@ -5,11 +5,13 @@ using System.IO;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Network.PacketBase;
 using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.SkillHandlers;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
+using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.Utility;
 using HybridWebSocket;
 using JetBrains.Annotations;
@@ -26,7 +28,7 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Network
 {
-    class NetworkManager : MonoBehaviour
+    public class NetworkManager : MonoBehaviour
     {
         public static NetworkManager Instance;
 
@@ -38,11 +40,11 @@ namespace Assets.Scripts.Network
         public GameObject HealPrefab;
         public GameObject TargetNoticePrefab;
         public TextMeshProUGUI LoadingText;
-        public Dictionary<int, ServerControllable> entityList = new Dictionary<int, ServerControllable>();
+        public Dictionary<int, ServerControllable> EntityList = new Dictionary<int, ServerControllable>();
         public int PlayerId;
         public NetQueue<ClientInboundMessage> InboundMessages = new NetQueue<ClientInboundMessage>(30);
         public NetQueue<ClientOutgoingMessage> OutboundMessages = new NetQueue<ClientOutgoingMessage>(30);
-
+        
         public PlayerState PlayerState = new PlayerState();
 
         //private static NetClient client;
@@ -93,15 +95,20 @@ namespace Assets.Scripts.Network
 
         private IEnumerator StartUp()
         {
+#if WINDOWS_RUNTIME
+            var op = Addressables.LoadContentCatalogAsync(Path.Combine(Application.streamingAssetsPath, "aa/catalog.json"));
+            yield return op;            
+            
+#else
             var updateCheck = Addressables.CheckForCatalogUpdates(true);
             yield return updateCheck;
-
+            
             if (updateCheck.IsValid() && updateCheck.Result != null && updateCheck.Result.Count > 0)
             {
                 AsyncOperationHandle<List<IResourceLocator>> updateHandle = Addressables.UpdateCatalogs();
                 yield return updateHandle;
             }
-
+#endif
             //update addressables
 
             spritePreload = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/Monsters/poring.spr");
@@ -126,7 +133,8 @@ namespace Assets.Scripts.Network
                 yield return 0;
             }
 
-
+            ClientPacketHandler.Init(this, PlayerState);
+            
 #if UNITY_EDITOR
             var target = "ws://127.0.0.1:5000/ws";
             StartConnectServer(target);
@@ -240,7 +248,7 @@ namespace Assets.Scripts.Network
 
             CameraFollower.Target = null;
 
-            entityList.Clear();
+            EntityList.Clear();
         }
 
         private Vector2Int ReadPosition(ClientInboundMessage msg)
@@ -298,20 +306,20 @@ namespace Assets.Scripts.Network
             var lvl = -1;
             var maxHp = 0;
             var hp = 0;
-            
-            
+
+
             if (type == CharacterType.Player || type == CharacterType.Monster)
             {
                 lvl = (int)msg.ReadByte();
                 maxHp = (int)msg.ReadInt32();
-                hp = (int)msg.ReadInt32();                
+                hp = (int)msg.ReadInt32();
             }
 
-            if (entityList.TryGetValue(id, out var oldEntity))
+            if (EntityList.TryGetValue(id, out var oldEntity))
             {
                 //if for some reason we try to spawn an entity that already exists, we kill the old one.
                 oldEntity.FadeOutAndVanish(0.1f);
-                entityList.Remove(id);
+                EntityList.Remove(id);
             }
 
 
@@ -352,9 +360,11 @@ namespace Assets.Scripts.Network
                 {
                     PlayerState.Level = lvl;
 
-                    var max = CameraFollower.Instance.ExpForLevel(controllable.Level - 1);
+                    var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
                     CameraFollower.UpdatePlayerExp(PlayerState.Exp, max);
                     controllable.IsHidden = isAdminHidden;
+                    PlayerState.JobId = classId;
+                    UiManager.Instance.SkillManager.UpdateAvailableSkills();
                 }
             }
             else
@@ -391,13 +401,17 @@ namespace Assets.Scripts.Network
                 };
                 controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData);
             }
-            
+
             controllable.EnsureFloatingDisplayCreated().SetUp(name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
-            if(controllable.IsMainCharacter)
+            if (controllable.IsMainCharacter)
+            {
                 CameraFollower.UpdatePlayerHP(hp, maxHp);
+                CameraFollower.UpdatePlayerSP(100, 100);
+            }
+
             controllable.SetHp(hp);
 
-            entityList.Add(id, controllable);
+            EntityList.Add(id, controllable);
 
             if (controllable.SpriteMode == ClientSpriteType.Prefab)
                 return controllable;
@@ -419,8 +433,8 @@ namespace Assets.Scripts.Network
                     SceneTransitioner.Instance.FadeIn();
                 CameraFollower.Instance.SnapLookAt();
             }
-            
-            #if UNITY_EDITOR
+
+#if UNITY_EDITOR
             switch (type)
             {
                 case CharacterType.Player:
@@ -433,7 +447,7 @@ namespace Assets.Scripts.Network
                     GroundHighlighter.Create(controllable, "orange");
                     break;
             }
-            #endif
+#endif
 
             return controllable;
         }
@@ -444,7 +458,7 @@ namespace Assets.Scripts.Network
             var id = msg.ReadInt32();
             var isSitting = msg.ReadBoolean();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 Debug.LogWarning("Trying to move entity " + id + ", but it does not exist in scene!");
                 return;
@@ -469,7 +483,7 @@ namespace Assets.Scripts.Network
             var id = msg.ReadInt32();
             var facing = (Direction)msg.ReadByte();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 Debug.LogWarning("Trying to move entity " + id + ", but it does not exist in scene!");
                 return;
@@ -489,7 +503,7 @@ namespace Assets.Scripts.Network
         {
             var id = msg.ReadInt32();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 Debug.LogWarning("Trying to move entity " + id + ", but it does not exist in scene!");
                 return;
@@ -502,7 +516,7 @@ namespace Assets.Scripts.Network
         {
             var id = msg.ReadInt32();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 Debug.LogWarning("Trying to move entity " + id + ", but it does not exist in scene!");
                 return;
@@ -515,7 +529,7 @@ namespace Assets.Scripts.Network
         {
             var id = msg.ReadInt32();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 Debug.LogWarning("Trying to move entity " + id + ", but it does not exist in scene!");
                 return;
@@ -532,7 +546,7 @@ namespace Assets.Scripts.Network
         {
             var mapName = msg.ReadString();
 
-            entityList.Clear();
+            EntityList.Clear();
 
             CurrentMap = mapName;
             //var mapLoad = SceneManager.LoadSceneAsync(mapName, LoadSceneMode.Additive);
@@ -569,7 +583,7 @@ namespace Assets.Scripts.Network
             var id = msg.ReadInt32();
             var reason = (CharacterRemovalReason)msg.ReadByte();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 Debug.LogWarning("Trying to remove entity " + id + ", but it does not exist in scene!");
                 return;
@@ -585,7 +599,7 @@ namespace Assets.Scripts.Network
             }
 
 
-            entityList.Remove(id);
+            EntityList.Remove(id);
 
             if (reason == CharacterRemovalReason.Dead)
             {
@@ -613,12 +627,12 @@ namespace Assets.Scripts.Network
 
         private void OnMessageRemoveAllEntities(ClientInboundMessage msg)
         {
-            foreach (var entity in entityList)
+            foreach (var entity in EntityList)
             {
                 GameObject.Destroy(entity.Value.gameObject);
             }
 
-            entityList.Clear();
+            EntityList.Clear();
         }
 
 
@@ -626,7 +640,7 @@ namespace Assets.Scripts.Network
         {
             var id = msg.ReadInt32();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 Debug.LogWarning("Trying to stop entity " + id + ", but it does not exist in scene!");
                 return;
@@ -641,7 +655,7 @@ namespace Assets.Scripts.Network
         {
             var id = msg.ReadInt32();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 Debug.LogWarning("Trying to stop entity " + id + ", but it does not exist in scene!");
                 return;
@@ -657,7 +671,7 @@ namespace Assets.Scripts.Network
         {
             var id1 = msg.ReadInt32();
 
-            if (!entityList.TryGetValue(id1, out var controllable))
+            if (!EntityList.TryGetValue(id1, out var controllable))
             {
                 Debug.LogWarning("Trying to have entity " + id1 + " take damage, but it does not exist in scene!");
                 return;
@@ -667,7 +681,7 @@ namespace Assets.Scripts.Network
             var dmg = msg.ReadInt32();
             var hitCount = msg.ReadByte();
             var damageTiming = msg.ReadFloat();
-            
+
             Debug.Log(hitCount);
 
             StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, 0, controllable));
@@ -689,7 +703,7 @@ namespace Assets.Scripts.Network
                 var v = dir.GetVectorValue();
                 src.CounterHitDir = new Vector3(v.x, 0, v.y);
             }
-            
+
             //src.SpriteAnimator.AnimSpeed = motionSpeed; //this will get reset when we resume walking anyways
             //src.AttackAnimationSpeed = motionSpeed;
             src.SetAttackAnimationSpeed(motionSpeed);
@@ -728,8 +742,8 @@ namespace Assets.Scripts.Network
                     throw new Exception($"Could not handle skill packet of type {type}");
             }
         }
-        
-        
+
+
         private void OnMessageAreaTargetedSkill(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -740,9 +754,9 @@ namespace Assets.Scripts.Network
             var pos = ReadPosition(msg);
             var motionTime = msg.ReadFloat();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
                 return;
-            
+
             ClientSkillHandler.ExecuteSkill(controllable, null, skill, skillLvl);
             AttackMotion(controllable, pos, dir, motionTime, null);
         }
@@ -757,9 +771,9 @@ namespace Assets.Scripts.Network
             var pos = ReadPosition(msg);
             var motionTime = msg.ReadFloat();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
                 return;
-            
+
             ClientSkillHandler.ExecuteSkill(controllable, null, skill, skillLvl);
             AttackMotion(controllable, pos, dir, motionTime, null);
         }
@@ -771,8 +785,8 @@ namespace Assets.Scripts.Network
             var skill = (CharacterSkill)msg.ReadByte();
             var skillLvl = (int)msg.ReadByte();
 
-            var hasSource = entityList.TryGetValue(id1, out var controllable);
-            var hasTarget = entityList.TryGetValue(id2, out var controllable2);
+            var hasSource = EntityList.TryGetValue(id1, out var controllable);
+            var hasTarget = EntityList.TryGetValue(id2, out var controllable2);
 
             var dir = (Direction)msg.ReadByte();
             var pos = ReadPosition(msg);
@@ -781,17 +795,17 @@ namespace Assets.Scripts.Network
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
             // var moveAfter = msg.ReadBoolean();
-            
+
             if (!hasSource)
             {
                 //if the skill handler is not flagged to execute without a source this will do nothing.
                 //we still want to execute when a special effect plays on a target though.
-                
+
                 ClientSkillHandler.ExecuteSkill(null, controllable2, skill, skillLvl);
                 StartCoroutine(DamageEvent(dmg, 0f, hits, 0, controllable2));
                 return;
             }
-            
+
             var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
             if (controllable.SpriteAnimator.Type == SpriteType.Player)
                 damageTiming = 0.5f;
@@ -799,7 +813,7 @@ namespace Assets.Scripts.Network
             var animationSpeed = 1f;
             if (damageTiming > motionTime)
                 animationSpeed = damageTiming / motionTime;
-            
+
             AttackMotion(controllable, pos, dir, animationSpeed, controllable2);
             controllable.ShowSkillCastMessage(skill, 3);
 
@@ -826,13 +840,13 @@ namespace Assets.Scripts.Network
             var id1 = msg.ReadInt32();
             var id2 = msg.ReadInt32();
 
-            if (!entityList.TryGetValue(id1, out var controllable))
+            if (!EntityList.TryGetValue(id1, out var controllable))
             {
                 Debug.LogWarning("Trying to attack entity " + id1 + ", but it does not exist in scene!");
                 return;
             }
 
-            var hasTarget = entityList.TryGetValue(id2, out var controllable2);
+            var hasTarget = EntityList.TryGetValue(id2, out var controllable2);
 
             var dir = (Direction)msg.ReadByte();
             var pos = ReadPosition(msg);
@@ -893,7 +907,7 @@ namespace Assets.Scripts.Network
 
             controllable.SetAttackAnimationSpeed(motionTime);
             controllable.PerformBasicAttackMotion();
-            
+
             //controllable2.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
 
             if (hasTarget && controllable.SpriteAnimator.IsInitialized)
@@ -904,7 +918,7 @@ namespace Assets.Scripts.Network
                 }
 
                 var damageTiming = motionTime;
-                
+
                 // var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
                 // if (controllable.SpriteAnimator.Type == SpriteType.Player)
                 //     damageTiming = 0.5f;
@@ -926,7 +940,7 @@ namespace Assets.Scripts.Network
             yield return new WaitForSeconds(delay);
             if (target != null && target.SpriteAnimator.IsInitialized)
             {
-                if(hitCount > 1)
+                if (hitCount > 1)
                     target.SlowMove(0.5f, hitCount * 0.2f);
 
                 for (var i = 0; i < hitCount; i++)
@@ -959,7 +973,7 @@ namespace Assets.Scripts.Network
                     AttachDamageIndicator(damage, damage * (i + 1), target);
                     // target.SlowMove(0.7f, 0.3f);
                     target.PosLockTime = 0.2f;
-                    if(target.IsMoving)
+                    if (target.IsMoving)
                         target.UpdateMove(true); //this will snap them to the position in their path
                     yield return new WaitForSeconds(0.2f);
                 }
@@ -991,7 +1005,7 @@ namespace Assets.Scripts.Network
             var pos = ReadPosition(msg);
             var isMoving = msg.ReadBoolean();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
                 return;
@@ -1002,14 +1016,13 @@ namespace Assets.Scripts.Network
                 controllable.Hp = 0;
 
             // Debug.Log(controllable.MaxHp);
-            
+
             //if (id == PlayerId)
-            if(controllable.CharacterType != CharacterType.NPC && controllable.MaxHp > 0)
+            if (controllable.CharacterType != CharacterType.NPC && controllable.MaxHp > 0)
             {
-                if(controllable.IsMainCharacter)
+                if (controllable.IsMainCharacter)
                     CameraFollower.UpdatePlayerHP(controllable.Hp, controllable.MaxHp);
                 controllable.SetHp(controllable.Hp);
-                
             }
 
             if (delay < 0)
@@ -1053,7 +1066,7 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
                 return;
 
             CameraFollower.SetSelectedTarget(controllable, controllable.DisplayName, controllable.IsAlly, false);
@@ -1072,7 +1085,7 @@ namespace Assets.Scripts.Network
             if (exp == 0)
                 return;
 
-            if (!entityList.TryGetValue(PlayerId, out var controllable))
+            if (!EntityList.TryGetValue(PlayerId, out var controllable))
                 return;
 
 
@@ -1080,14 +1093,17 @@ namespace Assets.Scripts.Network
             var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 72f / 50f;
 
-            if (controllable.SpriteAnimator != null)
-                height = controllable.SpriteAnimator.SpriteData.Size / 50f;
+            if (GameConfig.Data.ShowExpGainOnKill)
+            {
+                if (controllable.SpriteAnimator != null)
+                    height = controllable.SpriteAnimator.SpriteData.Size / 50f;
 
-            di.DoDamage(TextIndicatorType.Heal, $"<color=yellow>+{exp} Exp", controllable.gameObject.transform.localPosition, height, Direction.None, false,
-                false);
+                di.DoDamage(TextIndicatorType.Heal, $"<color=yellow>+{exp} Exp", controllable.gameObject.transform.localPosition,
+                    height, Direction.None, false, false);
+            }
 
             PlayerState.Exp += exp;
-            var max = CameraFollower.Instance.ExpForLevel(controllable.Level - 1);
+            var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
             CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, max);
         }
 
@@ -1095,8 +1111,9 @@ namespace Assets.Scripts.Network
         {
             var id = msg.ReadInt32();
             var lvl = msg.ReadByte();
+            var curExp = msg.ReadInt32();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
                 return;
@@ -1107,11 +1124,19 @@ namespace Assets.Scripts.Network
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
 
+            var oldLvl = controllable.Level;
             controllable.Level = lvl;
-            var req = CameraFollower.Instance.ExpForLevel(lvl - 2);
-            PlayerState.Exp -= req;
-            PlayerState.Level = lvl;
-            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, req);
+            if (controllable.IsMainCharacter)
+            {
+                if(PlayerState.JobId == 0 && oldLvl < 10 && lvl >= 10)
+                    CameraFollower.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached level 10! You are now eligible to change jobs.");
+                    
+                var req = CameraFollower.Instance.ExpForLevel(lvl);
+                PlayerState.Exp = curExp;
+                PlayerState.Level = lvl;
+                CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, req);
+                CameraFollower.Instance.CharacterName.text = $"Lv. {controllable.Level} {controllable.Name}";
+            }
         }
 
         public void OnMessageResurrection(ClientInboundMessage msg)
@@ -1119,7 +1144,7 @@ namespace Assets.Scripts.Network
             var id = msg.ReadInt32();
             var pos = ReadPosition(msg);
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
                 return;
@@ -1139,7 +1164,7 @@ namespace Assets.Scripts.Network
             var id = msg.ReadInt32();
             var pos = ReadPosition(msg);
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 Debug.LogWarning("Trying to do death on entity " + id + ", but it does not exist in scene!");
                 return;
@@ -1171,7 +1196,7 @@ namespace Assets.Scripts.Network
             var maxHp = msg.ReadInt32();
             var type = (HealType)msg.ReadByte();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
                 return;
@@ -1182,7 +1207,7 @@ namespace Assets.Scripts.Network
 
             if (id == PlayerId)
             {
-                if(controllable.IsMainCharacter)
+                if (controllable.IsMainCharacter)
                     CameraFollower.UpdatePlayerHP(hp, maxHp);
                 controllable.SetHp(controllable.Hp, controllable.MaxHp);
             }
@@ -1194,7 +1219,7 @@ namespace Assets.Scripts.Network
 
             //Debug.Log("TARGET! " + id);
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
                 return;
 
             var targetIcon = GameObject.Instantiate(TargetNoticePrefab);
@@ -1213,7 +1238,7 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
             {
                 CameraFollower.AppendChatText("Unknown: " + text);
                 return;
@@ -1229,11 +1254,14 @@ namespace Assets.Scripts.Network
             var id = msg.ReadInt32();
             var text = msg.ReadString();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
                 return;
 
             CameraFollower.AppendChatText($"{controllable.Name} has changed their name to {text}.");
             controllable.Name = text;
+
+            if (controllable.IsMainCharacter)
+                CameraFollower.Instance.CharacterName.text = $"Lv. {controllable.Level} {controllable.Name}";
         }
 
         public void OnEmote(ClientInboundMessage msg)
@@ -1241,7 +1269,7 @@ namespace Assets.Scripts.Network
             var id = msg.ReadInt32();
             var emote = msg.ReadInt32();
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
                 return;
 
             ClientDataLoader.Instance.AttachEmote(controllable.gameObject, emote);
@@ -1280,7 +1308,7 @@ namespace Assets.Scripts.Network
             var effect = msg.ReadInt32();
 
 
-            if (!entityList.TryGetValue(id, out var controllable))
+            if (!EntityList.TryGetValue(id, out var controllable))
                 return;
 
             CameraFollower.AttachEffectToEntity(effect, controllable.gameObject, controllable.Id);
@@ -1318,7 +1346,7 @@ namespace Assets.Scripts.Network
                 case NpcInteractionType.NpcFocusNpc:
                 {
                     var id = msg.ReadInt32();
-                    if (!entityList.TryGetValue(id, out var controllable))
+                    if (!EntityList.TryGetValue(id, out var controllable))
                         return;
 
                     CameraFollower.OverrideTarget = controllable.gameObject;
@@ -1375,9 +1403,9 @@ namespace Assets.Scripts.Network
             var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
             var castTime = msg.ReadFloat();
 
-            entityList.TryGetValue(targetId, out var target);
-            
-            if (entityList.TryGetValue(srcId, out var controllable))
+            EntityList.TryGetValue(targetId, out var target);
+
+            if (EntityList.TryGetValue(srcId, out var controllable))
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Walking)
                     controllable.StopImmediate(casterPos, false);
@@ -1397,7 +1425,6 @@ namespace Assets.Scripts.Network
                 // if (skill == CharacterSkill.ColdBolt)
                 //     CastEffect.Create(castTime, "ring_blue", controllable.gameObject);
             }
-
         }
 
         public void OnMessageStartAreaCasting(ClientInboundMessage msg)
@@ -1411,7 +1438,7 @@ namespace Assets.Scripts.Network
             var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
             var castTime = msg.ReadFloat();
 
-            if (entityList.TryGetValue(srcId, out var controllable))
+            if (EntityList.TryGetValue(srcId, out var controllable))
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Walking)
                     controllable.StopImmediate(casterPos, false);
@@ -1434,7 +1461,7 @@ namespace Assets.Scripts.Network
             var size = (int)msg.ReadByte();
             var castTime = msg.ReadFloat();
             var isAlly = msg.ReadBoolean();
-            
+
             var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
             var color = new Color(1f, 1f, 1f, 0.5f);
             //CastTargetCircle.Create(isAlly? "magic_target" : "magic_target_bad", targetCell, color, size, castTime);
@@ -1444,6 +1471,13 @@ namespace Assets.Scripts.Network
         void HandleDataPacket(ClientInboundMessage msg)
         {
             var type = (PacketType)msg.ReadByte();
+
+            if (ClientPacketHandler.HasValidHandler(type))
+            {
+                Debug.Log($"Wow! Using new packet handler for packet type {type}");
+                ClientPacketHandler.Execute(type, msg);
+                return;
+            }
 
             //Debug.Log("Received packet type: " + type);
 
@@ -1555,9 +1589,25 @@ namespace Assets.Scripts.Network
                     OnMessageCreateCastCircle(msg);
                     break;
                 default:
-                    Debug.LogWarning($"Failed to handle packet type: {type}");
+                    InvalidPacket(msg, type); //Debug.LogWarning($"Failed to handle packet type: {type}"));
                     break;
             }
+        }
+
+        private void InvalidPacket(ClientInboundMessage msg, PacketType type)
+        {
+            var sb = new StringBuilder();
+            var len = msg.RemainingLength;
+            sb.Append($"Failed to handle packet type: {type} (data length {len})");
+            for (var i = 0; i < len; i++)
+            {
+                if (i > 0)
+                    sb.Append(" ");
+                if (i % 32 == 0)
+                    sb.Append("\n");
+                sb.Append(msg.ReadByte().ToString("X2"));
+            }
+            Debug.LogWarning(sb.ToString());
         }
 
         private void DoPacketHandling()
@@ -1720,10 +1770,10 @@ namespace Assets.Scripts.Network
         public void SendAdminFind(string target)
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.AdminFindTarget);
             msg.Write(target);
-            
+
             SendMessage(msg);
         }
 
@@ -1884,13 +1934,44 @@ namespace Assets.Scripts.Network
         public void SendGroundTargetSkillAction(Vector2Int target, CharacterSkill skill, int lvl)
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.Skill);
             msg.Write((byte)SkillTarget.Ground);
             msg.Write(target);
             msg.Write((byte)skill);
             msg.Write((byte)lvl);
 
+            SendMessage(msg);
+        }
+
+        public void SendSelfTargetSkillAction(CharacterSkill skill, int lvl)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.Skill);
+            msg.Write((byte)SkillTarget.Self);
+            msg.Write((short)skill);
+            msg.Write((byte)lvl);
+
+            SendMessage(msg);
+        }
+
+        public void SendApplySkillPoint(CharacterSkill skill)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.ApplySkillPoint);
+            msg.Write((byte)skill);
+            
+            SendMessage(msg);
+        }
+
+        public void SendAdminResetSkillPoints()
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.AdminResetSkills);
+            
             SendMessage(msg);
         }
 

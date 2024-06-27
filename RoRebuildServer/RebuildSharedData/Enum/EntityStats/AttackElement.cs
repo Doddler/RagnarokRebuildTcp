@@ -12,6 +12,7 @@ namespace RebuildSharedData.Enum.EntityStats
         Fire,
         Wind,
         Poison,
+        Undead,
         Dark,
         Holy,
         Ghost,

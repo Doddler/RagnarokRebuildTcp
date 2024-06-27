@@ -1,8 +1,12 @@
 ﻿using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using CsvHelper;
+using Microsoft.Extensions.Options;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data.Config;
 using RoRebuildServer.Data.CsvDataTypes;
@@ -15,6 +19,7 @@ using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
+using Tomlyn;
 
 namespace RoRebuildServer.Data;
 
@@ -209,6 +214,52 @@ internal class DataLoader
         return mvps;
     }
 
+    public Dictionary<CharacterSkill, SkillData> LoadSkillData()
+    {
+        var path = Path.Combine(ServerConfig.DataConfig.DataPath, @"Skills/Skills.toml");
+        var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
+        var skillData = Toml.ToModel<Dictionary<string, SkillData>>(File.ReadAllText(path, Encoding.UTF8), null, options);
+        var skillOut = new Dictionary<CharacterSkill, SkillData>();
+        foreach (var (id, skill) in skillData)
+        {
+            skill.SkillId = Enum.Parse<CharacterSkill>(id);
+            if (skill.Name == null) skill.Name = id;
+            if (skill.Icon == null) skill.Icon = "nv_basic";
+            skillOut.Add(skill.SkillId, skill);
+        }
+
+        return skillOut;
+    }
+
+    private CharacterSkill LookupSkillIdByName(string skill)
+    {
+        if (!Enum.TryParse<CharacterSkill>(skill, out var skillOut))
+            throw new Exception($"Could not find a skill with the name {skill}");
+
+        return skillOut;
+    }
+
+    //SkillTree[Job][Skill] { (Prereq, lvl) } 
+    public Dictionary<int, PlayerSkillTree> LoadSkillTree()
+    {
+        var path = Path.Combine(ServerConfig.DataConfig.DataPath, @"Skills/SkillTree.toml");
+        var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
+        var skillTreeData = Toml.ToModel<Dictionary<string, PlayerSkillTree>>(File.ReadAllText(path, Encoding.UTF8), null, options);
+        var extendList = new Dictionary<int, int>();
+        var treeOut = new Dictionary<int, PlayerSkillTree>();
+
+        foreach (var (id, tree) in skillTreeData)
+        {
+            treeOut.Add(DataManager.JobIdLookup[id], tree);
+            if (tree.Extends != null)
+                extendList.Add(DataManager.JobIdLookup[id], DataManager.JobIdLookup[tree.Extends]); //save this so we can chase skill requirements from previous jobs
+        }
+
+        DataManager.JobExtendsList = extendList;
+
+        return treeOut;
+    }
+
     public Dictionary<int, ItemInfo> LoadItemList()
     {
         var items = new Dictionary<int, ItemInfo>();
@@ -305,7 +356,9 @@ internal class DataLoader
                 HP = monster.HP,
                 Exp = monster.Exp,
                 Def = monster.Def,
+                MDef = monster.MDef,
                 Vit = monster.Vit,
+                Int = monster.Int,
                 Range = monster.Range > 0 ? monster.Range : 1,
                 ScanDist = monster.ScanDist,
                 ChaseDist = monster.ChaseDist,

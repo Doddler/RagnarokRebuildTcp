@@ -42,7 +42,7 @@ public class SprImporter : UnityEditor.AssetImporters.ScriptedImporter
         if (File.Exists(actName))
         {
             var actLoader = new RagnarokActLoader();
-            var actions = actLoader.Load(ctx, spr, actName);
+            var actions = actLoader.Load(spr, actName);
 
             var asset = ScriptableObject.CreateInstance(typeof(RoSpriteData)) as RoSpriteData;
             asset.Actions = actions.ToArray();

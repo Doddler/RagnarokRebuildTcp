@@ -1,9 +1,22 @@
 ﻿
+[BasicMastery]
+Name = "Basic Mastery"
+Icon = "nv_basic"
+Target = "Passive"
+MaxLevel = 8
+
+[FirstAid]
+Name = "First Aid"
+Icon = "nv_firstaid"
+Target = "Self"
+MaxLevel = 1
+SpCost = [10]
+
 [Bash]
 Icon = "sm_bash"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [8,8,8,8,8,15,15,15,15,15]
 AdjustableLevel = true
 
 [Endure]
@@ -11,6 +24,12 @@ Icon = "sm_endure"
 Target = "Self"
 MaxLevel = 10
 SpCost = [1,2,3,4,5,6,7,8,9,10]
+
+[IncreasedHPRecovery]
+Name = "Improved HP Recovery"
+Icon = "sm_recovery"
+MaxLevel = 10
+Target = "Passive"
 
 [MagnumBreak]
 Name = "Magnum Break"
@@ -25,6 +44,24 @@ Target = "Enemy"
 MaxLevel = 10
 SpCost = [1,2,3,4,5,6,7,8,9,10]
 
+[SwordMastery]
+Name = "Sword Mastery"
+Icon = "sm_sword"
+Target = "Passive"
+MaxLevel = 10
+
+[TwoHandSwordMastery]
+Name = "Two-Hand Sword Mastery"
+Icon = "sm_twohand"
+Target = "Passive"
+MaxLevel = 10
+
+[IncreaseSPRecovery]
+Name = "Improved Spiritual Recovery"
+Icon = "mg_srecovery"
+Target = "Passive"
+MaxLevel = 10
+
 [FireBolt]
 Name = "Fire Bolt"
 Icon = "mg_firebolt"
@@ -35,7 +72,7 @@ AdjustableLevel = true
 
 [ColdBolt]
 Name = "Cold Bolt"
-Icon = "nv_basic"
+Icon = "mg_coldbolt"
 Target = "Enemy"
 MaxLevel = 10
 SpCost = [1,2,3,4,5,6,7,8,9,10]
@@ -150,6 +187,12 @@ MaxLevel = 10
 SpCost = [1,2,3,4,5,6,7,8,9,10]
 AdjustableLevel = true
 
+[DoubleAttack]
+Name = "Double Attack"
+Icon = "tf_double"
+Target = "Passive"
+MaxLevel = 10
+
 [Mammonite]
 Icon = "mc_mammonite"
 Target = "Enemy"
@@ -157,9 +200,26 @@ MaxLevel = 10
 SpCost = [1,2,3,4,5,6,7,8,9,10]
 AdjustableLevel = true
 
+#Other skills
+[TwoHandQuicken]
+Name = "Two-Hand Quicken"
+Icon = "kn_twohandquicken"
+Target = "Self"
+MaxLevel = 10
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+
+[HammerFall]
+Name = "Hammer Fall"
+Icon = "bs_hammerfall"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+
 #Monster Skills
 [CallMinion]
 Name = "Call Minion"
 [GrandThunderstorm]
 Name = "Grand Thunderstorm"
-[Haste]
+
+[PowerUp]
+Name = "Power UP"

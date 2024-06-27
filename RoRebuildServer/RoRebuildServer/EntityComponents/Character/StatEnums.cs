@@ -26,6 +26,8 @@ public enum PlayerStat
     Facing,
     Hp,
     Mp,
+    SkillPoints,
+    StatPoints,
     PlayerStatsMax
 }
 
@@ -34,11 +36,13 @@ public enum CharacterStat
     Level,
     Hp,
     MaxHp,
-    Mp,
-    MaxMp,
+    Sp,
+    MaxSp,
     Range,
     Attack,
     Attack2,
+    MagicAtkMin,
+    MagicAtkMax,
     Str,
     Strength = Str,
     Dex,
@@ -55,6 +59,7 @@ public enum CharacterStat
     Defense = Def,
     MDef,
     MagicDefense = MDef,
+    AspdBonus,
     CharacterStatsMax
 }
 

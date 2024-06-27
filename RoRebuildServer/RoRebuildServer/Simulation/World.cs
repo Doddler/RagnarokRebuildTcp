@@ -94,7 +94,7 @@ public class World
             var player = ch.Player;
             player.EndNpcInteractions();
             player.SaveCharacterToData();
-            var req = new SaveCharacterRequest(player.Id, player.Name, ch.Map?.Name, ch.Position, player.CharData, player.SavePosition);
+            var req = new SaveCharacterRequest(player.Id, player.Name, ch.Map?.Name, ch.Position, player.CharData, player.SavePosition, player.LearnedSkills);
             RoDatabase.EnqueueDbRequest(req);
         }
 
@@ -356,6 +356,7 @@ public class World
             player.Name = connection.LoadCharacterRequest.Name;
             player.Id = connection.LoadCharacterRequest.Id;
             player.SavePosition = connection.LoadCharacterRequest.SavePosition;
+            player.LearnedSkills = connection.LoadCharacterRequest.SkillsLearned;
             var data = connection.LoadCharacterRequest.Data;
 
             if (data != null)
@@ -639,7 +640,7 @@ public class World
                 CommandBuilder.SendChangeMap(character, player);
 
                 player.SaveCharacterToData();
-                var req = new SaveCharacterRequest(player.Id, player.Name, character.Map?.Name, character.Position, player.CharData, player.SavePosition);
+                var req = new SaveCharacterRequest(player.Id, player.Name, character.Map?.Name, character.Position, player.CharData, player.SavePosition, player.LearnedSkills);
                 RoDatabase.EnqueueDbRequest(req);
             }
         }

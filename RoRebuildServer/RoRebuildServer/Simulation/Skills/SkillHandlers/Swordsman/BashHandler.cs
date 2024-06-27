@@ -18,7 +18,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
             if (target == null || !target.IsValidTarget(source))
                 return;
 
-            var res = source.CalculateCombatResult(target, 2f + lvl * 0.2f, 1, AttackFlags.Physical);
+            var res = source.CalculateCombatResult(target, 1f + lvl * 0.3f, 1, AttackFlags.Physical);
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);
             

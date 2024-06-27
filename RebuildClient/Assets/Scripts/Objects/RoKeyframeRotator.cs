@@ -29,7 +29,7 @@ namespace Assets.Scripts
             //if (!visible)
             //    return;
 
-            time += Time.deltaTime;
+            time += Time.deltaTime * 2;
             if (time > endTime)
                 time -= endTime;
 

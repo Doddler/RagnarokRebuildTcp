@@ -115,8 +115,8 @@ macro KafraTeleportListComodo()
 	switch(Result)
 	{
 		case 0: @TeleportCase("morocc", 156, 46, 1200);
-		case 2: @TeleportCase("alberta", 117, 56, 1800);
-		case 4: @TeleportCase("cmd_fild07", 127, 134, 1200);
+		case 1: @TeleportCase("alberta", 117, 56, 1800);
+		case 2: @TeleportCase("cmd_fild07", 127, 134, 1200);
 	}
 }
 

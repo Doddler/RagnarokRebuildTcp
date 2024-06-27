@@ -13,6 +13,7 @@ using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 using System;
+using RoRebuildServer.Simulation.StatusEffects.Setup;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents;
@@ -34,16 +35,15 @@ public class CombatEntity : IEntityAutoReset
     public SkillCastInfo QueuedCastingSkill { get; set; }
 
     [EntityIgnoreNullCheck]
-    private int[] statData = new int[(int)CharacterStat.CharacterStatsMax];
+    private readonly int[] statData = new int[(int)CharacterStat.CharacterStatsMax];
+    private static readonly int[] statResetData = new int[(int)CharacterStat.CharacterStatsMax]; //to quickly reset we'll just array copy this over statData
 
     [EntityIgnoreNullCheck]
     private float[] timingData = new float[(int)TimingStat.TimingStatsMax];
 
-    [EntityIgnoreNullCheck]
-    private Dictionary<CharacterSkill, float> skillCooldowns = new();
-
-    [EntityIgnoreNullCheck]
-    public List<DamageInfo> DamageQueue { get; set; } = null!;
+    [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> skillCooldowns = new();
+    [EntityIgnoreNullCheck] public List<DamageInfo> DamageQueue { get; set; } = null!;
+    [EntityIgnoreNullCheck] public List<StatusEffectState>? StatusEffects { get; set; }
 
     public int GetStat(CharacterStat type) => statData[(int)type];
     public float GetTiming(TimingStat type) => timingData[(int)type];
@@ -64,9 +64,21 @@ public class CombatEntity : IEntityAutoReset
         IsTargetable = true;
         IsCasting = false;
         skillCooldowns.Clear();
+        if(StatusEffects != null)
+            StatusEffects.Clear();
         
+        Array.Copy(statResetData, statData, statData.Length);
+
         for (var i = 0; i < statData.Length; i++)
             statData[i] = 0;
+    }
+
+    public void UpdateStats()
+    {
+        if(Character.Type == CharacterType.Monster)
+            Character.Monster.UpdateStats();
+        if(Character.Type == CharacterType.Player)
+            Character.Player.UpdateStats();
     }
 
     public void Heal(int hp, int hp2, bool showValue = false)
@@ -97,7 +109,7 @@ public class CombatEntity : IEntityAutoReset
         if (hp)
             SetStat(CharacterStat.Hp, GetStat(CharacterStat.MaxHp));
         if (mp)
-            SetStat(CharacterStat.Mp, GetStat(CharacterStat.MaxMp));
+            SetStat(CharacterStat.Sp, GetStat(CharacterStat.MaxSp));
     }
 
     public bool IsValidAlly(CombatEntity source)
@@ -247,7 +259,7 @@ public class CombatEntity : IEntityAutoReset
 
             player.SetData(PlayerStat.Experience, curExp);
 
-            CommandBuilder.LevelUp(player.Character, level);
+            CommandBuilder.LevelUp(player.Character, level, curExp);
             CommandBuilder.SendHealMulti(player.Character, 0, HealType.None);
         }
 
@@ -368,7 +380,10 @@ public class CombatEntity : IEntityAutoReset
             ServerLogger.LogError($"Cannot attempt a skill action {skill} while dead! " + Environment.StackTrace);
             return false;
         }
-
+        
+        if (level <= 0)
+            level = 10; //you really need to verify they have the skill or not
+        
         var skillInfo = new SkillCastInfo()
         {
             TargetEntity = Entity,
@@ -378,8 +393,7 @@ public class CombatEntity : IEntityAutoReset
             TargetedPosition = Position.Invalid,
             IsIndirect = false
         };
-
-
+        
         if (IsCasting) //if we're already casting, queue up the next cast
         {
             QueueCast(skillInfo);
@@ -562,13 +576,15 @@ public class CombatEntity : IEntityAutoReset
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling PerformMeleeAttack.");
 #endif
 
-        var atk1 = GetStat(CharacterStat.Attack);
-        var atk2 = GetStat(CharacterStat.Attack2);
+        var atk1 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack) : GetStat(CharacterStat.MagicAtkMin);
+        var atk2 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack2) : GetStat(CharacterStat.MagicAtkMax);
 
         if (Character.Type == CharacterType.Monster && flags.HasFlag(AttackFlags.Magical))
         {
-            atk1 /= 2;
-            atk2 /= 2;
+            //monster unique scaling, monster matk is 50% their physical, plus or minus a % equal to how much their int exceeds or is below their level
+            var magicScaleFactor = 100 + (GetStat(CharacterStat.Level) - GetStat(CharacterStat.Int));
+            atk1 = atk1 * 50 / magicScaleFactor;
+            atk2 = atk2 * 50 / magicScaleFactor;
         }
 
         if (atk1 <= 0)
@@ -587,9 +603,21 @@ public class CombatEntity : IEntityAutoReset
             eleMod = DataManager.ElementChart.GetAttackModifier(element, mon.MonsterBase.Element);
         }
 
-        var defCut = MathF.Pow(0.99f, target.GetStat(CharacterStat.Def) - 1);
+        var defCut = 1f;
+        var subDef = 0f;
+        if (flags.HasFlag(AttackFlags.Physical))
+        {
+            defCut = MathF.Pow(0.99f, target.GetStat(CharacterStat.Def) - 1);
+            subDef = target.GetStat(CharacterStat.Vit) * 0.7f;
+        }
 
-        var damage = (int)(baseDamage * attackMultiplier * (eleMod / 100f) * defCut - GetStat(CharacterStat.Vit) * 0.7f);
+        if (flags.HasFlag(AttackFlags.Magical))
+        {
+            defCut = MathF.Pow(0.99f, target.GetStat(CharacterStat.MDef) - 1);
+            subDef = target.GetStat(CharacterStat.Int) * 0.7f;
+        }
+        
+        var damage = (int)(baseDamage * attackMultiplier * (eleMod / 100f) * defCut - subDef);
         if (damage < 1)
             damage = 1;
         

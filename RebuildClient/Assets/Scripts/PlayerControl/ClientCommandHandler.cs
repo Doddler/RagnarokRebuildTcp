@@ -31,7 +31,7 @@ namespace PlayerControl
 
             foreach (var c in input)
             {
-                if (c == ' ' && !inQuote)
+                if ((c == ' ' && !inQuote) || (c == ',' && !inQuote))
                 {
                     if (sb.Length == 0)
                         continue;
@@ -119,6 +119,11 @@ namespace PlayerControl
                         NetworkManager.Instance.SendAdminLevelUpRequest(0);
                     else
                         NetworkManager.Instance.SendAdminLevelUpRequest(level);
+                }
+
+                if (s[0] == "/skillreset")
+                {
+                    NetworkManager.Instance.SendAdminResetSkillPoints();
                 }
 
                 if (s[0] == "/hide")

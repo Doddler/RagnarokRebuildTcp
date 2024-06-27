@@ -2,172 +2,184 @@
 1000,WARP,Warp,Assets/Prefabs/PortalEffect.prefab,0,-1,1
 1001,EMPERIUM,Emperium,Assets/Prefabs/Emperium90.prefab,0,-1,1
 1002,GUILD_FLAG,Guild Flag,Assets/Prefabs/GuildFlag90.prefab,0,-1,1
-1003,1_ETC_01,Simon Mayace,1_etc_01.spr,0,0.5,1
-1004,1_F_01,Armor Dealer,1_f_01.spr,0,0.5,1
-1005,1_F_02,Garnet,1_f_02.spr,0,0.5,1
-1006,1_F_03,Tool Dealer,1_f_03.spr,0,0.5,1
-1007,1_F_04,Lady,1_f_04.spr,0,0.5,1
-1008,1_F_GYPSY,Magic Guildsman,1_f_gypsy.spr,0,0.5,1
-1009,1_F_LIBRARYGIRL,Hat Store Girl,1_f_librarygirl.spr,0,0.5,1
-1010,1_F_MARIA,Weapon Dealer,1_f_maria.spr,0,0.5,1
-1011,1_F_MERCHANT_01,Tool Dealer,1_f_merchant_01.spr,0,0.5,1
-1012,1_F_MERCHANT_02,Item Collector,1_f_merchant_02.spr,0,0.5,1
-1013,1_F_ORIENT_01,Tool Dealer,1_f_orient_01.spr,0,0.5,1
-1014,1_F_ORIENT_02,Mystic Lady ,1_f_orient_02.spr,0,0.5,1
-1015,1_F_ORIENT_03,Nan Hyang,1_f_orient_03.spr,0,0.5,1
-1016,1_F_ORIENT_04,Hagin,1_f_orient_04.spr,0,0.5,1
-1017,1_F_PRIEST,Nun,1_f_priest.spr,0,0.5,1
-1018,1_F_PUBGIRL,Waitress,1_f_pubgirl.spr,0,0.5,1
-1019,1_F_SIGNZISK,Jesqurienne,1_f_signzisk.spr,0,0.5,1
-1020,1_M_01,Dessert manager,1_m_01.spr,0,0.5,1
-1021,1_M_02,Grout'he Tuccok,1_m_02.spr,0,0.5,1
-1022,1_M_03,Weapon Dealer,1_m_03.spr,0,0.5,1
-1023,1_M_04,Clanux Heffron,1_m_04.spr,0,0.5,1
-1024,1_M_BARD,Bard,1_m_bard.spr,0,0.5,1
-1025,1_M_HOF,Crumpler,1_m_hof.spr,0,0.5,1
-1026,1_M_INNKEEPER,Inn Employee,1_m_innkeeper.spr,0,0.5,1
-1027,1_M_JOBGUIDER,Butcher,1_m_jobguider.spr,0,0.5,1
-1028,1_M_JOBTESTER,Master Kavaruk,1_m_jobtester.spr,0,0.5,1
-1029,1_M_KNIGHTMASTER,Rebarev Doug,1_m_knightmaster.spr,0,0.5,1
-1030,1_M_LIBRARYMASTER,Gershaun,1_m_librarymaster.spr,0,0.5,1
-1031,1_M_MERCHANT,Trader,1_m_merchant.spr,0,0.5,1
-1032,1_M_MOC_LORD,Won,1_m_moc_lord.spr,0,0.5,1
-1033,1_M_ORIENT01,Serutero,1_m_orient01.spr,0,0.5,1
-1034,1_M_PASTOR,Cleric,1_m_pastor.spr,0,0.5,1
-1035,1_M_PAY_ELDER,Charlron,1_m_pay_elder.spr,0,0.5,1
-1036,1_M_PRON_KING,The king of Midgard,1_m_pron_king.spr,0,0.5,1
-1037,1_M_PUBMASTER,Grandpa Pharmacist,1_m_pubmaster.spr,0,0.5,1
-1038,1_M_SIGN1,Archeologist,1_m_sign1.spr,0,0.5,1
-1039,1_M_SIGNALCHE,Sir Jore,1_m_signalche.spr,0,0.5,1
-1040,1_M_SIGNART,Strange Guy,1_m_signart.spr,0,0.5,1
-1041,1_M_SIGNMCNT,Wealthy-looking Merchant,1_m_signmcnt.spr,0,0.5,1
-1042,1_M_SIGNMONK2,Daewoon,1_m_signmonk2.spr,0,0.5,1
-1043,1_M_SIGNROGUE,Rogue,1_m_signrogue.spr,0,0.5,1
-1044,1_M_SIZ,Armor Dealer,1_m_siz.spr,0,0.5,1
-1045,1_M_SMITH,Blacksmith,1_m_smith.spr,0,0.5,1
-1046,1_M_WIZARD,Marius,1_m_wizard.spr,0,0.5,1
-1047,1_M_YOUNGKNIGHT,Prontera Knight Member,1_m_youngknight.spr,0,0.5,1
-1048,1_SHADOW_NPC,switch,1_shadow_npc.spr,0,0.5,1
-1049,2_BOARD1,Sign,2_board1.spr,0,0.5,1
-1050,2_BOARD2,Bulletin Board,2_board2.spr,0,0.5,1
-1051,2_BULLETIN_BOARD,Sign,2_bulletin_board.spr,0,0.5,1
-1052,2_F_MAGICMASTER,Mage,2_f_magicmaster.spr,0,0.5,1
-1053,2_M_ALCHE,Alchemist Guildmember,2_m_alche.spr,0,0.5,1
-1054,2_M_BARD_ORIENT,Bard,2_m_bard_orient.spr,0,0.5,1
-1055,2_M_DYEINGER,French Revolution,2_m_dyeinger.spr,0,0.5,1
-1056,2_M_MOLGENSTEIN,Molgenstein,2_m_molgenstein.spr,0,0.5,1
-1057,2_M_OLDBLSMITH,Old Blacksmith,2_m_oldblsmith.spr,0,0.5,1
-1058,2_M_PHARMACIST,Grampa,2_m_pharmacist.spr,0,0.5,1
-1059,2_M_SAGE_B,Metavis Seith ,2_m_sage_b.spr,0,0.5,1
-1060,2_M_SAGE_OLD,Magic Academy Headmaster,2_m_sage_old.spr,0,0.5,1
-1061,2_M_SWORDMASTER,Insect Guy,2_m_swordmaster.spr,0,0.5,1
-1062,2_M_THIEFMASTER,Alcouskou,2_m_thiefmaster.spr,0,0.5,1
-1063,2_POSTBOX,Mailbox,2_postbox.spr,0,0.5,1
-1064,4_BAPHOMET,BAPHOMET,4_baphomet.spr,0,0.5,1
-1065,4_CAT,Nyao,4_cat.spr,0,0.5,1
-1066,4_COOK,Marlene Sheu,4_cook.spr,0,0.5,1
-1067,4_DARKLORD,DARK LORD,4_darklord.spr,0,0.5,1
-1068,4_DEVIRUCHI,DEVIRUCHI,4_deviruchi.spr,0,0.5,1
-1069,4_DOG01,비티,4_dog01.spr,0,0.5,1
-1070,4_F_01,Auction Guide,4_f_01.spr,0,0.5,1
-1071,4_F_02,Vegetable Gardener,4_f_02.spr,0,0.5,1
-1072,4_F_03,Smile Assistance,4_f_03.spr,0,0.5,1
-1073,4_F_04,Tool Dealer,4_f_04.spr,0,0.5,1
-1074,4_F_05,Lonely-looking Woman,4_f_05.spr,0,0.5,1
-1075,4_F_07,Shanel,4_f_07.spr,0,0.5,1
-1076,4_F_AGENTKAFRA,Kafra Employee,4_f_agentkafra.spr,0,0.5,1
-1077,4_F_ALCHE,Nephia,4_f_alche.spr,0,0.5,1
-1078,4_F_CHNDRESS1,Girl,4_f_chndress1.spr,0,0.5,1
-1079,4_F_CRU,Catholic Knight,4_f_cru.spr,0,0.5,1
-1080,4_F_GODEMOM,Hullaris,4_f_godemom.spr,0,0.5,1
-1081,4_F_GON,Traveler,4_f_gon.spr,0,0.5,1
-1082,4_F_JOB_ASSASSIN,Hwekebein,4_f_job_assassin.spr,0,0.5,1
-1083,4_F_JOB_BLACKSMITH,Neris,4_f_job_blacksmith.spr,0,0.5,1
-1084,4_F_JOB_HUNTER,Seisner,4_f_job_hunter.spr,0,0.5,1
-1085,4_F_JOB_KNIGHT,Lady Amy Beatrist,4_f_job_knight.spr,0,0.5,1
-1086,4_F_JPN,Maid,4_f_jpn.spr,0,0.5,1
-1087,4_F_KAFRA1,Auction Guide,4_f_kafra1.spr,0,0.5,1
-1088,4_F_KAFRA2,Kafra Employee,4_f_kafra2.spr,0,0.5,1
-1089,4_F_KAFRA3,kafra Employee,4_f_kafra3.spr,0,0.5,1
-1090,4_F_KAFRA4,Kafra,4_f_kafra4.spr,0,0.5,1
-1091,4_F_KAFRA5,Kafra Employee,4_f_kafra5.spr,0,0.5,1
-1092,4_F_KAFRA6,Kafra Employee,4_f_kafra6.spr,0,0.5,1
-1093,4_F_KAFRA7,Kafra Employee,4_f_kafra7.spr,0,0.5,1
-1094,4_F_KAFRA9,Kafra Voting Staff,4_f_kafra9.spr,0,0.5,1
-1095,4_F_KID2,Little Girl,4_f_kid2.spr,0,0.5,1
-1096,4_F_MAID,Inn Employee,4_f_maid.spr,0,0.5,1
-1097,4_F_MONK,Chief Guard,4_f_monk.spr,0,0.5,1
-1098,4_F_NFLOSTGIRL,Pretty Lindsay,4_f_nflostgirl.spr,0,0.5,1
-1099,4_F_NOVICE,,4_f_novice.spr,0,0.5,1
-1100,4_F_RACING,Turbo Track Guide,4_f_racing.spr,0,0.5,1
-1101,4_F_SISTER,Representative,4_f_sister.spr,0,0.5,1
-1102,4_F_TELEPORTER,Hypnotist,4_f_teleporter.spr,0,0.5,1
-1103,4_F_VALKYRIE,Luina Castle,4_f_valkyrie.spr,0,0.5,1
-1104,4_F_YUNYANG,Child with a Cat,4_f_yunyang.spr,0,0.5,1
-1105,4_KID01,Aure Dupon,4_kid01.spr,0,0.5,1
-1106,4_M_01,Gate Keeper,4_m_01.spr,0,0.5,1
-1107,4_M_02,PVP Narrator,4_m_02.spr,0,0.5,1
-1108,4_M_03,Ice Cream Merchant,4_m_03.spr,0,0.5,1
-1109,4_M_04,Esere,4_m_04.spr,0,0.5,1
-1110,4_M_05,Fuzzy Fuzz,4_m_05.spr,0,0.5,1
-1111,4_M_06,Weapon Dealer,4_m_06.spr,0,0.5,1
-1112,4_M_ALCHE_A,Enoz,4_m_alche_a.spr,0,0.5,1
-1113,4_M_ALCHE_B,Studying Scholar,4_m_alche_b.spr,0,0.5,1
-1114,4_M_ALCHE_D,Pisruik Quv,4_m_alche_d.spr,0,0.5,1
-1115,4_M_BARBER,Butcher,4_m_barber.spr,0,0.5,1
-1116,4_M_BIBI,Vending Machine Man,4_m_bibi.spr,0,0.5,1
-1117,4_M_CHNMONK,Monk,4_m_chnmonk.spr,0,0.5,1
-1118,4_M_CRU_OLD,Senior Crusader,4_m_cru_old.spr,0,0.5,1
-1119,4_M_CRU,Crusader,4_m_cru.spr,0,0.5,1
-1120,4_M_DWARF,Goodday,4_m_dwarf.spr,0,0.5,1
-1121,4_M_GEF_SOLDIER,Guide,4_m_gef_soldier.spr,0,0.5,1
-1122,4_M_JOB_ASSASSIN,Akagi,4_m_job_assassin.spr,0,0.5,1
-1123,4_M_JOB_BLACKSMITH,Blacksmith,4_m_job_blacksmith.spr,0,0.5,1
-1124,4_M_JOB_HUNTER,Merunte,4_m_job_hunter.spr,0,0.5,1
-1125,4_M_JOB_KNIGHT1,Shurank,4_m_job_knight1.spr,0,0.5,1
-1126,4_M_JOB_KNIGHT2,Dequ'ee,4_m_job_knight2.spr,0,0.5,1
-1127,4_M_JOB_WIZARD,Old Scholar Tyus,4_m_job_wizard.spr,0,0.5,1
-1128,4_M_JPN2,Fox Mask Problem Solver,4_m_jpn2.spr,0,0.5,1
-1129,4_M_KID1,Tialfi,4_m_kid1.spr,0,0.5,1
-1130,4_M_KID2,Seth,4_m_kid2.spr,0,0.5,1
-1131,4_M_LGTGRAND,The Wise Bull Horn,4_m_lgtgrand.spr,0,0.5,1
-1132,4_M_MANAGER,Peculiar-looking Steward,4_m_manager.spr,0,0.5,1
-1133,4_M_MINISTER,Priest Praupin,4_m_minister.spr,0,0.5,1
-1134,4_M_MOC_SOLDIER,Guide,4_m_moc_soldier.spr,0,0.5,1
-1135,4_M_MONK,Zhenbolt,4_m_monk.spr,0,0.5,1
-1136,4_M_NFLOSTMAN,Headgear Merchant,4_m_nflostman.spr,0,0.5,1
-1137,4_M_NFMAN,Praying Man,4_m_nfman.spr,0,0.5,1
-1138,4_M_OILMAN,Sharle Orelean,4_m_oilman.spr,0,0.5,1
-1139,4_M_ORIENT01,Rice Cake Boy,4_m_orient01.spr,0,0.5,1
-1140,4_M_ORIENT02,Pierce,4_m_orient02.spr,0,0.5,1
-1141,4_M_PAY_SOLDIER,Guide,4_m_pay_soldier.spr,0,0.5,1
-1142,4_M_PIERROT,Christmas Clown,4_m_pierrot.spr,0,0.5,1
-1143,4_M_REIDIN_KURS,Reidin Corse,4_m_reidin_kurs.spr,0,0.5,1
-1144,4_M_REPAIR,Kasis,4_m_repair.spr,0,0.5,1
-1145,4_M_ROGUE,Adventurer,4_m_rogue.spr,0,0.5,1
-1146,4_M_SAGE_A,Sage Welshyun,4_m_sage_a.spr,0,0.5,1
-1147,4_M_SAGE_C,Mishoona,4_m_sage_c.spr,0,0.5,1
-1148,4_M_SANTA,Christmas Link,4_m_santa.spr,0,0.5,1
-1149,4_M_SEAMAN,Tzerero,4_m_seaman.spr,0,0.5,1
-1150,4_M_SNOWMAN,Snowman,4_m_snowman.spr,0,0.5,1
-1151,4_M_TELEPORTER,Monster Tamer,4_m_teleporter.spr,0,0.5,1
-1152,4_M_THAIONGBAK,Aibakthing,4_m_thaiongbak.spr,0,0.5,1
-1153,4_M_TWMIDMAN,Kunlun Envoy,4_m_twmidman.spr,0,0.5,1
-1154,4_M_YOYOROGUE,Argen,4_m_yoyorogue.spr,0,0.5,1
-1155,4_M_YURI,Scamp,4_m_yuri.spr,0,0.5,1
-1156,4_M_ZONDAMAN,Cool Event Voting Staff,4_m_zondaman.spr,0,0.5,1
-1157,4_M_ZONDAOYAJI,Librarian,4_m_zondaoyaji.spr,0,0.5,1
-1158,4W_F_01,Armor Dealer,4w_f_01.spr,0,0.5,1
-1159,4W_KID,Flower Girl,4w_kid.spr,0,0.5,1
-1160,4W_M_01,Citizen,4w_m_01.spr,0,0.5,1
-1161,4W_M_02,Auction Entrance Desk,4w_m_02.spr,0,0.5,1
-1162,4W_M_03,Traveler,4w_m_03.spr,0,0.5,1
-1163,4W_SAILOR,Steiner,4w_sailor.spr,0,0.5,1
-1164,8_DOPPEL,DOPPELGANGER,8_doppel.spr,0,0.5,1
-1165,8_F_GIRL,Ipore,8_f_girl.spr,0,0.5,1
-1166,8_F_GRANDMOTHER,Granny,8_f_grandmother.spr,0,0.5,1
-1167,8_F,Jeweler,8_f.spr,0,0.5,1
-1168,8_M_JPNSOLDIER,Single Army,8_m_jpnsoldier.spr,0,0.5,1
-1169,8_M_TWSOLDIER,Single Army,8_m_twsoldier.spr,0,0.5,1
-1170,8W_SOLDIER,Librarian,8w_soldier.spr,0,0.5,1
-1171,CLEAR_NPC,battle_traces,clear_npc.spr,0,0.5,1
+1003,1_ETC_01,1Etc01,1_etc_01.spr,0,0.5,1
+1004,1_F_01,1F01,1_f_01.spr,0,0.5,1
+1005,1_F_02,1F02,1_f_02.spr,0,0.5,1
+1006,1_F_03,1F03,1_f_03.spr,0,0.5,1
+1007,1_F_04,1F04,1_f_04.spr,0,0.5,1
+1008,1_F_GYPSY,1FGypsy,1_f_gypsy.spr,0,0.5,1
+1009,1_F_LIBRARYGIRL,1FLibrarygirl,1_f_librarygirl.spr,0,0.5,1
+1010,1_F_MARIA,1FMaria,1_f_maria.spr,0,0.5,1
+1011,1_F_MERCHANT_01,1FMerchant01,1_f_merchant_01.spr,0,0.5,1
+1012,1_F_MERCHANT_02,1FMerchant02,1_f_merchant_02.spr,0,0.5,1
+1013,1_F_ORIENT_01,1FOrient01,1_f_orient_01.spr,0,0.5,1
+1014,1_F_ORIENT_02,1FOrient02,1_f_orient_02.spr,0,0.5,1
+1015,1_F_ORIENT_03,1FOrient03,1_f_orient_03.spr,0,0.5,1
+1016,1_F_ORIENT_04,1FOrient04,1_f_orient_04.spr,0,0.5,1
+1017,1_F_PRIEST,1FPriest,1_f_priest.spr,0,0.5,1
+1018,1_F_PUBGIRL,1FPubgirl,1_f_pubgirl.spr,0,0.5,1
+1019,1_F_SIGNZISK,1FSignzisk,1_f_signzisk.spr,0,0.5,1
+1020,1_M_01,1M01,1_m_01.spr,0,0.5,1
+1021,1_M_02,1M02,1_m_02.spr,0,0.5,1
+1022,1_M_03,1M03,1_m_03.spr,0,0.5,1
+1023,1_M_04,1M04,1_m_04.spr,0,0.5,1
+1024,1_M_BARD,1MBard,1_m_bard.spr,0,0.5,1
+1025,1_M_HOF,1MHof,1_m_hof.spr,0,0.5,1
+1026,1_M_INNKEEPER,1MInnkeeper,1_m_innkeeper.spr,0,0.5,1
+1027,1_M_JOBGUIDER,1MJobguider,1_m_jobguider.spr,0,0.5,1
+1028,1_M_JOBTESTER,1MJobtester,1_m_jobtester.spr,0,0.5,1
+1029,1_M_KNIGHTMASTER,1MKnightmaster,1_m_knightmaster.spr,0,0.5,1
+1030,1_M_LIBRARYMASTER,1MLibrarymaster,1_m_librarymaster.spr,0,0.5,1
+1031,1_M_MERCHANT,1MMerchant,1_m_merchant.spr,0,0.5,1
+1032,1_M_MOC_LORD,1MMocLord,1_m_moc_lord.spr,0,0.5,1
+1033,1_M_ORIENT01,1MOrient01,1_m_orient01.spr,0,0.5,1
+1034,1_M_PASTOR,1MPastor,1_m_pastor.spr,0,0.5,1
+1035,1_M_PAY_ELDER,1MPayElder,1_m_pay_elder.spr,0,0.5,1
+1036,1_M_PRON_KING,1MPronKing,1_m_pron_king.spr,0,0.5,1
+1037,1_M_PUBMASTER,1MPubmaster,1_m_pubmaster.spr,0,0.5,1
+1038,1_M_SIGN1,1MSign1,1_m_sign1.spr,0,0.5,1
+1039,1_M_SIGNALCHE,1MSignalche,1_m_signalche.spr,0,0.5,1
+1040,1_M_SIGNART,1MSignart,1_m_signart.spr,0,0.5,1
+1041,1_M_SIGNMCNT,1MSignmcnt,1_m_signmcnt.spr,0,0.5,1
+1042,1_M_SIGNMONK2,1MSignmonk2,1_m_signmonk2.spr,0,0.5,1
+1043,1_M_SIGNROGUE,1MSignrogue,1_m_signrogue.spr,0,0.5,1
+1044,1_M_SIZ,1MSiz,1_m_siz.spr,0,0.5,1
+1045,1_M_SMITH,1MSmith,1_m_smith.spr,0,0.5,1
+1046,1_M_WIZARD,1MWizard,1_m_wizard.spr,0,0.5,1
+1047,1_M_YOUNGKNIGHT,1MYoungknight,1_m_youngknight.spr,0,0.5,1
+1048,1_SHADOW_NPC,1ShadowNpc,1_shadow_npc.spr,0,0.5,1
+1049,2_BOARD1,2Board1,2_board1.spr,0,0.5,1
+1050,2_BOARD2,2Board2,2_board2.spr,0,0.5,1
+1051,2_BULLETIN_BOARD,2BulletinBoard,2_bulletin_board.spr,0,0.5,1
+1052,2_F_MAGICMASTER,2FMagicmaster,2_f_magicmaster.spr,0,0.5,1
+1053,2_M_ALCHE,2MAlche,2_m_alche.spr,0,0.5,1
+1054,2_M_BARD_ORIENT,2MBardOrient,2_m_bard_orient.spr,0,0.5,1
+1055,2_M_MOLGENSTEIN,2MMolgenstein,2_m_molgenstein.spr,0,0.5,1
+1056,2_M_OLDBLSMITH,2MOldblsmith,2_m_oldblsmith.spr,0,0.5,1
+1057,2_M_PHARMACIST,2MPharmacist,2_m_pharmacist.spr,0,0.5,1
+1058,2_M_SAGE_B,2MSageB,2_m_sage_b.spr,0,0.5,1
+1059,2_M_SAGE_OLD,2MSageOld,2_m_sage_old.spr,0,0.5,1
+1060,2_M_SWORDMASTER,2MSwordmaster,2_m_swordmaster.spr,0,0.5,1
+1061,2_M_THIEFMASTER,2MThiefmaster,2_m_thiefmaster.spr,0,0.5,1
+1062,4_BAPHOMET,4Baphomet,4_baphomet.spr,0,0.5,1
+1063,4_CAT,4Cat,4_cat.spr,0,0.5,1
+1064,4_COOK,4Cook,4_cook.spr,0,0.5,1
+1065,4_DARKLORD,4Darklord,4_darklord.spr,0,0.5,1
+1066,4_DEVIRUCHI,4Deviruchi,4_deviruchi.spr,0,0.5,1
+1067,4_DOG01,4Dog01,4_dog01.spr,0,0.5,1
+1068,4_F_01,4F01,4_f_01.spr,0,0.5,1
+1069,4_F_02,4F02,4_f_02.spr,0,0.5,1
+1070,4_F_03,4F03,4_f_03.spr,0,0.5,1
+1071,4_F_04,4F04,4_f_04.spr,0,0.5,1
+1072,4_F_05,4F05,4_f_05.spr,0,0.5,1
+1073,4_F_07,4F07,4_f_07.spr,0,0.5,1
+1074,4_F_AGENTKAFRA,4FAgentkafra,4_f_agentkafra.spr,0,0.5,1
+1075,4_F_ALCHE,4FAlche,4_f_alche.spr,0,0.5,1
+1076,4_F_CHNDRESS1,4FChndress1,4_f_chndress1.spr,0,0.5,1
+1077,4_F_CRU,4FCru,4_f_cru.spr,0,0.5,1
+1078,4_F_GODEMOM,4FGodemom,4_f_godemom.spr,0,0.5,1
+1079,4_F_GON,4FGon,4_f_gon.spr,0,0.5,1
+1080,4_F_JOB_ASSASSIN,4FJobAssassin,4_f_job_assassin.spr,0,0.5,1
+1081,4_F_JOB_BLACKSMITH,4FJobBlacksmith,4_f_job_blacksmith.spr,0,0.5,1
+1082,4_F_JOB_HUNTER,4FJobHunter,4_f_job_hunter.spr,0,0.5,1
+1083,4_F_JOB_KNIGHT,4FJobKnight,4_f_job_knight.spr,0,0.5,1
+1084,4_F_JPN,4FJpn,4_f_jpn.spr,0,0.5,1
+1085,4_F_JPN2,4FJpn2,4_f_jpn2.spr,0,0.5,1
+1086,4_F_JPNCHIBI,4FJpnchibi,4_f_jpnchibi.spr,0,0.5,1
+1087,4_F_JPNMU,4FJpnmu,4_f_jpnmu.spr,0,0.5,1
+1088,4_F_JPNOBA,4FJpnoba,4_f_jpnoba.spr,0,0.5,1
+1089,4_F_JPNOBA2,4FJpnoba2,4_f_jpnoba2.spr,0,0.5,1
+1090,4_F_KAFRA1,4FKafra1,4_f_kafra1.spr,0,0.5,1
+1091,4_F_KAFRA2,4FKafra2,4_f_kafra2.spr,0,0.5,1
+1092,4_F_KAFRA3,4FKafra3,4_f_kafra3.spr,0,0.5,1
+1093,4_F_KAFRA4,4FKafra4,4_f_kafra4.spr,0,0.5,1
+1094,4_F_KAFRA5,4FKafra5,4_f_kafra5.spr,0,0.5,1
+1095,4_F_KAFRA6,4FKafra6,4_f_kafra6.spr,0,0.5,1
+1096,4_F_KAFRA7,4FKafra7,4_f_kafra7.spr,0,0.5,1
+1097,4_F_KAFRA9,4FKafra9,4_f_kafra9.spr,0,0.5,1
+1098,4_F_KID2,4FKid2,4_f_kid2.spr,0,0.5,1
+1099,4_F_MAID,4FMaid,4_f_maid.spr,0,0.5,1
+1100,4_F_MONK,4FMonk,4_f_monk.spr,0,0.5,1
+1101,4_F_NFLOSTGIRL,4FNflostgirl,4_f_nflostgirl.spr,0,0.5,1
+1102,4_F_NOVICE,4FNovice,4_f_novice.spr,0,0.5,1
+1103,4_F_RACING,4FRacing,4_f_racing.spr,0,0.5,1
+1104,4_F_SISTER,4FSister,4_f_sister.spr,0,0.5,1
+1105,4_F_TELEPORTER,4FTeleporter,4_f_teleporter.spr,0,0.5,1
+1106,4_F_VALKYRIE,4FValkyrie,4_f_valkyrie.spr,0,0.5,1
+1107,4_F_YUNYANG,4FYunyang,4_f_yunyang.spr,0,0.5,1
+1108,4_KID01,4Kid01,4_kid01.spr,0,0.5,1
+1109,4_M_01,4M01,4_m_01.spr,0,0.5,1
+1110,4_M_02,4M02,4_m_02.spr,0,0.5,1
+1111,4_M_03,4M03,4_m_03.spr,0,0.5,1
+1112,4_M_04,4M04,4_m_04.spr,0,0.5,1
+1113,4_M_05,4M05,4_m_05.spr,0,0.5,1
+1114,4_M_06,4M06,4_m_06.spr,0,0.5,1
+1115,4_M_ALCHE_A,4MAlcheA,4_m_alche_a.spr,0,0.5,1
+1116,4_M_ALCHE_B,4MAlcheB,4_m_alche_b.spr,0,0.5,1
+1117,4_M_ALCHE_C,4MAlcheC,4_m_alche_c.spr,0,0.5,1
+1118,4_M_ALCHE_D,4MAlcheD,4_m_alche_d.spr,0,0.5,1
+1119,4_M_BARBER,4MBarber,4_m_barber.spr,0,0.5,1
+1120,4_M_BIBI,4MBibi,4_m_bibi.spr,0,0.5,1
+1121,4_M_CHNMONK,4MChnmonk,4_m_chnmonk.spr,0,0.5,1
+1122,4_M_CRU_OLD,4MCruOld,4_m_cru_old.spr,0,0.5,1
+1123,4_M_CRU,4MCru,4_m_cru.spr,0,0.5,1
+1124,4_M_DWARF,4MDwarf,4_m_dwarf.spr,0,0.5,1
+1125,4_M_GEF_SOLDIER,4MGefSoldier,4_m_gef_soldier.spr,0,0.5,1
+1126,4_M_JOB_ASSASSIN,4MJobAssassin,4_m_job_assassin.spr,0,0.5,1
+1127,4_M_JOB_BLACKSMITH,4MJobBlacksmith,4_m_job_blacksmith.spr,0,0.5,1
+1128,4_M_JOB_HUNTER,4MJobHunter,4_m_job_hunter.spr,0,0.5,1
+1129,4_M_JOB_KNIGHT1,4MJobKnight1,4_m_job_knight1.spr,0,0.5,1
+1130,4_M_JOB_KNIGHT2,4MJobKnight2,4_m_job_knight2.spr,0,0.5,1
+1131,4_M_JOB_WIZARD,4MJobWizard,4_m_job_wizard.spr,0,0.5,1
+1132,4_M_JPN,4MJpn,4_m_jpn.spr,0,0.5,1
+1133,4_M_JPN2,4MJpn2,4_m_jpn2.spr,0,0.5,1
+1134,4_M_JPNCHIBI,4MJpnchibi,4_m_jpnchibi.spr,0,0.5,1
+1135,4_M_JPNOJI,4MJpnoji,4_m_jpnoji.spr,0,0.5,1
+1136,4_M_JPNOJI2,4MJpnoji2,4_m_jpnoji2.spr,0,0.5,1
+1137,4_M_KID1,4MKid1,4_m_kid1.spr,0,0.5,1
+1138,4_M_KID2,4MKid2,4_m_kid2.spr,0,0.5,1
+1139,4_M_LGTGRAND,4MLgtgrand,4_m_lgtgrand.spr,0,0.5,1
+1140,4_M_MANAGER,4MManager,4_m_manager.spr,0,0.5,1
+1141,4_M_MINISTER,4MMinister,4_m_minister.spr,0,0.5,1
+1142,4_M_MOC_SOLDIER,4MMocSoldier,4_m_moc_soldier.spr,0,0.5,1
+1143,4_M_MONK,4MMonk,4_m_monk.spr,0,0.5,1
+1144,4_M_NFLOSTMAN,4MNflostman,4_m_nflostman.spr,0,0.5,1
+1145,4_M_NFMAN,4MNfman,4_m_nfman.spr,0,0.5,1
+1146,4_M_OILMAN,4MOilman,4_m_oilman.spr,0,0.5,1
+1147,4_M_ORIENT01,4MOrient01,4_m_orient01.spr,0,0.5,1
+1148,4_M_ORIENT02,4MOrient02,4_m_orient02.spr,0,0.5,1
+1149,4_M_PAY_SOLDIER,4MPaySoldier,4_m_pay_soldier.spr,0,0.5,1
+1150,4_M_PIERROT,4MPierrot,4_m_pierrot.spr,0,0.5,1
+1151,4_M_REIDIN_KURS,4MReidinKurs,4_m_reidin_kurs.spr,0,0.5,1
+1152,4_M_REPAIR,4MRepair,4_m_repair.spr,0,0.5,1
+1153,4_M_ROGUE,4MRogue,4_m_rogue.spr,0,0.5,1
+1154,4_M_SAGE_A,4MSageA,4_m_sage_a.spr,0,0.5,1
+1155,4_M_SAGE_C,4MSageC,4_m_sage_c.spr,0,0.5,1
+1156,4_M_SANTA,4MSanta,4_m_santa.spr,0,0.5,1
+1157,4_M_SEAMAN,4MSeaman,4_m_seaman.spr,0,0.5,1
+1158,4_M_SNOWMAN,4MSnowman,4_m_snowman.spr,0,0.5,1
+1159,4_M_TELEPORTER,4MTeleporter,4_m_teleporter.spr,0,0.5,1
+1160,4_M_THAIONGBAK,4MThaiongbak,4_m_thaiongbak.spr,0,0.5,1
+1161,4_M_TWMIDMAN,4MTwmidman,4_m_twmidman.spr,0,0.5,1
+1162,4_M_YOYOROGUE,4MYoyorogue,4_m_yoyorogue.spr,0,0.5,1
+1163,4_M_YURI,4MYuri,4_m_yuri.spr,0,0.5,1
+1164,4_M_ZONDAMAN,4MZondaman,4_m_zondaman.spr,0,0.5,1
+1165,4_M_ZONDAOYAJI,4MZondaoyaji,4_m_zondaoyaji.spr,0,0.5,1
+1166,4_NFWISP,4Nfwisp,4_nfwisp.spr,0,0.5,1
+1167,4W_F_01,4WF01,4w_f_01.spr,0,0.5,1
+1168,4W_KID,4WKid,4w_kid.spr,0,0.5,1
+1169,4W_M_01,4WM01,4w_m_01.spr,0,0.5,1
+1170,4W_M_02,4WM02,4w_m_02.spr,0,0.5,1
+1171,4W_M_03,4WM03,4w_m_03.spr,0,0.5,1
+1172,4W_SAILOR,4WSailor,4w_sailor.spr,0,0.5,1
+1173,8_DOPPEL,8Doppel,8_doppel.spr,0,0.5,1
+1174,8_F_GIRL,8FGirl,8_f_girl.spr,0,0.5,1
+1175,8_F_GRANDMOTHER,8FGrandmother,8_f_grandmother.spr,0,0.5,1
+1176,8_F,8F,8_f.spr,0,0.5,1
+1177,8_M_JPNMASTER,8MJpnmaster,8_m_jpnmaster.spr,0,0.5,1
+1178,8_M_JPNSOLDIER,8MJpnsoldier,8_m_jpnsoldier.spr,0,0.5,1
+1179,8_M_TWSOLDIER,8MTwsoldier,8_m_twsoldier.spr,0,0.5,1
+1180,8W_SOLDIER,8WSoldier,8w_soldier.spr,0,0.5,1
+1181,2_POSTBOX,2Postbox,2_postbox.spr,0,0.5,1
+1182,2_M_DYEINGER,2MDyeinger,2_m_dyeinger.spr,0,0.5,1
+1183,CLEAR_NPC,ClearNpc,clear_npc.spr,0,0.5,1

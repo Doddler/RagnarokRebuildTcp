@@ -1,4 +1,8 @@
 ﻿
+//--------------------------------------------------------------
+// Turtle Island
+//--------------------------------------------------------------
+
 Npc("alberta", "Sailor", "4_M_SEAMAN", 247, 122, S)
 {
     localstr name = "Gotanblue";
@@ -35,5 +39,30 @@ OnClick:
         case 0: 
             Dialog(name, "Heh heh... I hope you've found what you were looking for. Alright, even an adventurer needs to return home every now and then.\n<color=#3355FF>- choo-choo -</color>");
             MoveTo("alberta", 241, 115);
+    }
+}
+
+//--------------------------------------------------------------
+// Amatsu
+//--------------------------------------------------------------
+
+Npc("alberta", "Overseas Captain", "4_M_SEAMAN", 245, 93, SW) 
+{
+    localstr name = "Sea Captain";
+OnClick:
+    FocusNpc();
+    Dialog(name, "Hey, there. You've heard of Amatsu, the land beyond the sea? I wasn't planning on making the voyage any time soon, but I could get you there if you're willing to pay.");
+    Option("Travel to Amatsu -> 10000z", "Cancel");
+    switch(Result)
+    {
+        case 0:
+            if(GetZeny() < 10000)
+            {
+                Dialog(name, "Were you even listening? 10,000 zeny. You're an adventurer right? Go loot some dungeon or shipwreck or something and come back when you got the money.");
+                return;
+            }
+            Dialog(name, "Alright, I'll start the engine!");
+            DropZeny(10000);
+            MoveTo("amatsu", 197, 83);
     }
 }

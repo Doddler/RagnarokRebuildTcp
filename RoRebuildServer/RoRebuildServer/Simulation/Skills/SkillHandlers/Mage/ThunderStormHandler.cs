@@ -23,7 +23,7 @@ public class ThunderStormHandler : SkillHandlerBase
         if (lvl < 0 || lvl > 10)
             lvl = 10;
 
-        return 1f + lvl * 0.4f;
+        return 1.5f + lvl * 0.5f;
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

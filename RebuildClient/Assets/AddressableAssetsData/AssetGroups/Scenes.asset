@@ -1229,6 +1229,42 @@ MonoBehaviour:
     m_SerializedLabels:
     - Maps
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 208893ad149b79e4e95b97139f34c27e
+    m_Address: Assets/Scenes/Maps/ama_dun01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d184ee8e2cfa74d428f8b8a414695ee1
+    m_Address: Assets/Scenes/Maps/ama_dun02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6790b01b048d2445b814e0d8d901b35
+    m_Address: Assets/Scenes/Maps/ama_dun03.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb1f14bdb22914b4cb18019750158f49
+    m_Address: Assets/Scenes/Maps/ama_fild01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6fbe8958b413f9d4eae1c917bf6718e5
+    m_Address: Assets/Scenes/Maps/ama_in01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3ea376a684f1c24f85068d56001523e
+    m_Address: Assets/Scenes/Maps/ama_in02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

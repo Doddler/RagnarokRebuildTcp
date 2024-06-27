@@ -3,6 +3,7 @@ using Assets.Scripts;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
+using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -138,7 +139,7 @@ public class DamageIndicator : MonoBehaviour
 		var alpha = PathData.Alpha.Evaluate(f);
 
 		transform.localPosition = new Vector3(pos.x, pos.y + height * PathData.HeightMultiplier, pos.z);
-		transform.localScale = new Vector3(size, size, size);
+		transform.localScale = new Vector3(size, size, size) * GameConfig.Data.DamageNumberSize;
 		TextObject.color = new Color(1, 1, 1, alpha);
 	}
 

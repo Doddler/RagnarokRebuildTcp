@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Config;
+using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
@@ -22,6 +24,7 @@ public static class DataManager
     public static Dictionary<string, MonsterDatabaseInfo> MonsterCodeLookup;
     public static Dictionary<string, MonsterDatabaseInfo> MonsterNameLookup;
     public static Dictionary<string, MonsterSkillAiBase> MonsterSkillAiHandlers;
+    public static List<string> MvpMonsterCodes;
 
     private static List<List<MonsterAiEntry>> monsterAiList;
     
@@ -33,15 +36,18 @@ public static class DataManager
     public static List<InstanceEntry> InstanceList;
     public static Dictionary<string, Action<ServerMapConfig>> MapConfigs;
 
+    public static Dictionary<CharacterSkill, SkillData> SkillData;
     public static Dictionary<int, JobInfo> JobInfo;
     public static Dictionary<string, int> JobIdLookup;
     public static Dictionary<string, int> ItemIdByName;
     public static Dictionary<int, ItemInfo> ItemList;
-    public static List<string> MvpMonsterCodes;
+    public static Dictionary<int, PlayerSkillTree> SkillTree; //SkillTree[Job][Skill] { (Prereq, lvl) } 
 
     public static Dictionary<string, int> EffectIdForName;
 
     public static Dictionary<string, SavePosition> SavePoints;
+
+    public static Dictionary<int, int> JobExtendsList;
 
     public static List<MapEntry> Maps => mapList;
     
@@ -96,6 +102,7 @@ public static class DataManager
         EffectIdForName = loader.LoadEffectIds();
         SavePoints = loader.LoadSavePoints();
         MvpMonsterCodes = loader.LoadMvpList();
+        SkillData = loader.LoadSkillData();
 
         //rebuild script assemblies
         ScriptAssembly = ScriptLoader.LoadAssembly();
@@ -113,10 +120,12 @@ public static class DataManager
         }
 
         //the things we actually want to load
+        loader.LoadMonsterSpawnMinions();
         loader.LoadNpcScripts(ScriptAssembly);
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
         loader.LoadItemInteractions(ScriptAssembly);
         loader.LoadMonsterSkillAi(ScriptAssembly);
+        SkillTree = loader.LoadSkillTree();
     }
     
     public static void Initialize()
@@ -140,6 +149,8 @@ public static class DataManager
         EffectIdForName = loader.LoadEffectIds();
         JobInfo = loader.LoadJobs();
         JobIdLookup = loader.GetJobIdLookup(JobInfo);
+        SkillData = loader.LoadSkillData();
+        
         ItemList = loader.LoadItemList();
         ItemIdByName = loader.GenerateItemIdByNameLookup();
         SavePoints = loader.LoadSavePoints();
@@ -158,6 +169,7 @@ public static class DataManager
             MonsterNameLookup.TryAdd(m.Name, m);
         }
 
+        SkillTree = loader.LoadSkillTree();
         loader.LoadMonsterSpawnMinions();
         loader.LoadNpcScripts(ScriptAssembly);
         loader.LoadMonsterSkillAi(ScriptAssembly);

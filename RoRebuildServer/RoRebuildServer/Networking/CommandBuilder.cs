@@ -151,6 +151,25 @@ public static class CommandBuilder
         return packet;
     }
 
+    public static void SendUpdatePlayerData(Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.UpdatePlayerData, 256);
+
+        packet.Write(p.GetStat(CharacterStat.Hp));
+        packet.Write(p.GetStat(CharacterStat.MaxHp));
+        packet.Write(p.GetStat(CharacterStat.Sp));
+        packet.Write(p.GetStat(CharacterStat.MaxSp));
+        packet.Write(p.GetData(PlayerStat.SkillPoints));
+        packet.Write(p.LearnedSkills.Count);
+        foreach (var skill in p.LearnedSkills)
+        {
+            packet.Write((byte)skill.Key);
+            packet.Write((byte)skill.Value);
+        }
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
     public static void StartCastMulti(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl,
         float castTime)
     {
@@ -445,6 +464,7 @@ public static class CommandBuilder
         packet.Write(c.Map.Name);
         packet.Write(c.Player.Id.ToByteArray());
         NetworkManager.SendMessage(packet, p.Connection);
+        SendUpdatePlayerData(p);
     }
 
     public static void SendCreateEntityMulti(WorldObject c)
@@ -630,7 +650,7 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
-    public static void LevelUp(WorldObject c, int level)
+    public static void LevelUp(WorldObject c, int level, int curExp = 0)
     {
         if (!HasRecipients())
             return;
@@ -638,6 +658,7 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.LevelUp, 8);
         packet.Write(c.Id);
         packet.Write((byte)level);
+        packet.Write(curExp);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -711,6 +732,25 @@ public static class CommandBuilder
     {
         var packet = NetworkManager.StartPacket(PacketType.SkillError, 24);
         packet.Write((byte)res);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+
+    public static void ErrorMessage(Player p, string text)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.ErrorMessage, 64);
+        packet.Write(text);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void ApplySkillPoint(Player p, CharacterSkill skill)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.ApplySkillPoint, 32);
+        packet.Write((byte)skill);
+        packet.Write((byte)p.LearnedSkills[skill]);
+        packet.Write(p.GetData(PlayerStat.SkillPoints));
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

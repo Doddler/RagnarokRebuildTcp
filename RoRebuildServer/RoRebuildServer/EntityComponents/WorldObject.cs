@@ -74,7 +74,7 @@ public class WorldObject : IEntityAutoReset
     //    }
     //}
 
-    private const float DiagonalSpeedPenalty = 0.8f;
+    private const float DiagonalSpeedPenalty = 0.7f;
 
     public int StepsRemaining => TotalMoveSteps - MoveStep;
     public bool IsMoving => State == CharacterState.Moving;

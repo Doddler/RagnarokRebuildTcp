@@ -2,9 +2,9 @@
 
 SkillHandler("ELDER_WILLOW") {
 StateAttacking:
-	TryCast(FireBolt, 3, 500, 1500, 5000) -> SendEmote(29);
+	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(29);
 StateChase:
-	TryCast(FireBolt, 3, 500, 1500, 5000) -> SendEmote(29);
+	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(29);
 }
 
 

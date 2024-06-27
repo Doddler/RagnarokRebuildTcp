@@ -26,7 +26,7 @@ SkillHandler("PORING50") {
 StateIdle:
 	
 StateAttacking:
-	TryCast(Haste, 1, 1000, 0, 99h)[HpPercent < 99];
+	TryCast(TwoHandQuicken, 1, 1000, 0, 99h)[HpPercent < 99];
 }
 
 SkillHandler("STROUF") {
@@ -41,11 +41,13 @@ StateIdle:
 
 SkillHandler("ELDER") {
 StateAttacking:
-	TryCast(FireBolt, 7, 1000, 1500, 5000) -> SendEmote(11);
-	TryCast(LightningBolt, 7, 1000, 1500, 5000) -> SendEmote(12);
+	TryCast(FireBolt, 7, 1000, 1500, 10000) -> SendEmote(11);
+	TryCast(ColdBolt, 7, 1000, 1500, 10000) -> SendEmote(12);
+	TryCast(LightningBolt, 7, 1000, 1500, 10000) -> SendEmote(13);
 StateChase:
-	TryCast(FireBolt, 7, 1000, 1500, 5000) -> SendEmote(11);
-	TryCast(LightningBolt, 7, 1000, 1500, 5000) -> SendEmote(12);
+	TryCast(FireBolt, 7, 1000, 1500, 10000) -> SendEmote(11);
+	TryCast(ColdBolt, 7, 1000, 1500, 10000) -> SendEmote(12);
+	TryCast(LightningBolt, 7, 1000, 1500, 10000) -> SendEmote(13);
 }
 
 SkillHandler("MARDUK") {

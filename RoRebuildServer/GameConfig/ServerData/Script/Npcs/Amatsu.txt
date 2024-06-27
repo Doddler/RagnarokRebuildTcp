@@ -1,0 +1,49 @@
+﻿//Amatsu dungeon entrance. Simplified into one NPC instead of a full quest (for now)
+Npc("ama_in02", "Soldier#10", "8_M_JPNSOLDIER", 115, 177, E)
+{
+    localstr name = "Jyuichiro";
+OnClick:
+    FocusNpc();
+    Dialog(name, "What are you doing here? Is there something you want?");
+    Option( "Ask about the gate", "Enter the gate", "Leave")
+    switch(Result)
+    {
+        case 1:
+            Dialog(name, "Well if you know what you're getting into, I won't stop you. I'll open the gate right away.");
+            MoveTo("ama_dun01", 229, 10);
+        case 2:
+            return;
+    }
+    //"Ask about the gate"
+    Dialog(name, "This gate leads to a cursed space, you need to be careful in there not to get lost and killed.")
+    Dialog(name, "There's not much to say, I haven't explored it myself, but I did get some tips from those that entered before.");
+    Dialog(name, "First, you can't trust what you see. I don't quite get it myself but I think it means you shouldn't trust that everything you see is real.");
+    Dialog(name, "Second, curses are bound by strict rules. It's effects may look random but there is logic to it, even this one.");
+    Dialog(name, "That's all the help I can offer. Did you still want me to open the gate for you?");
+    Option( "Enter", "Leave")
+    switch(Result)
+    {
+        case 0:
+            Dialog(name, "Let me open the gate for you. Good luck and stay safe.");
+            MoveTo("ama_dun01", 229, 10);
+        case 1:
+            Dialog(name, "No shame in that, I wouldn't want to go in there either.");
+            return;
+    }
+}
+
+//Leaving Amatsu Dungeon
+Npc("ama_dun01", "Soldier#11", "8_M_JPNSOLDIER", 229, 7, N)
+{
+    localstr name = "Jyuichiro";
+OnClick:
+	FocusNpc();
+    Dialog(name, "Do you want to head back?");
+    Option("Return", "No, I'm staying");
+    switch(Result)
+    {
+        case 0:
+            Dialog(name, "Alright, let's get out of here.");
+            MoveTo("ama_in02", 119, 181);
+    }
+}

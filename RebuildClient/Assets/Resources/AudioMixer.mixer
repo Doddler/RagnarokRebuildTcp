@@ -70,6 +70,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: cec31ecc0b13cbd408ba493cb83185e4
     name: Environment
+  - guid: 36a8b38813086724894a3d08ba987835
+    name: Master
   - guid: 6c7820cdcd2da454e8f82a500dd7f94c
     name: Music
   - guid: 2f75581845d55ea42a00cd6f377edd11
@@ -132,7 +134,7 @@ AudioMixerSnapshotController:
     2f75581845d55ea42a00cd6f377edd11: -2.018035
     36a8b38813086724894a3d08ba987835: -25
     cec31ecc0b13cbd408ba493cb83185e4: -6.318927
-    6c7820cdcd2da454e8f82a500dd7f94c: -2
+    6c7820cdcd2da454e8f82a500dd7f94c: -2.3096974
   m_TransitionOverrides: {}
 --- !u!243 &4690089175395674820
 AudioMixerGroupController:

@@ -41,9 +41,17 @@ public static class RoDatabase
 
     public static Task ExecuteDbRequestAsync(IDbRequest request)
     {
-        using var scope = scopeFactory.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<RoContext>();
-        return request.ExecuteAsync(db);
+        try
+        {
+            using var scope = scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<RoContext>();
+            return request.ExecuteAsync(db);
+        }
+        catch (Exception ex)
+        {
+            ServerLogger.LogError($"Failed to execute database request {request.GetType()}: {ex}");
+            return Task.CompletedTask;
+        }
     }
 
     public static void EnqueueDbRequest(IDbRequest request)
@@ -60,11 +68,18 @@ public static class RoDatabase
         {
             while (dbRequestChannel.Reader.TryRead(out var req))
             {
-                var scope = scopeFactory.CreateScope();
-                var db = scope.ServiceProvider.GetRequiredService<RoContext>();
-                await req.ExecuteAsync(db);
+                try
+                {
+                    var scope = scopeFactory.CreateScope();
+                    var db = scope.ServiceProvider.GetRequiredService<RoContext>();
+                    await req.ExecuteAsync(db);
 
-                scope.Dispose();
+                    scope.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    ServerLogger.LogError($"Failed to perform database request {req.GetType()}: {ex}");
+                }
             }
         }
 

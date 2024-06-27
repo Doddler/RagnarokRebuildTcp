@@ -241,6 +241,74 @@ namespace Assets.Editor
             paletteData = br.ReadBytes(1024);
         }
 
+        public Texture2D LoadFirstSpriteTextureOnly(string sprPath)
+        {
+	        var filename = sprPath;
+	        var basename = Path.GetFileNameWithoutExtension(filename);
+
+	        var bytes = File.ReadAllBytes(filename);
+	        ms = new MemoryStream(bytes);
+	        br = new BinaryReader(ms);
+	        
+	        
+	        var header = new string(br.ReadChars(2));
+	        if (header != "SP")
+		        throw new Exception("Not sprite");
+
+	        var minorVersion = br.ReadByte();
+	        var majorVersion = br.ReadByte();
+	        version = majorVersion * 10 + minorVersion;
+
+	        indexCount = br.ReadUInt16();
+	        rgbaCount = 0;
+            
+	        if (version > 11)
+		        rgbaCount = br.ReadUInt16();
+
+	        //Debug.Log($"RGBA count: {rgbaCount}");
+
+	        var frameCount = indexCount + rgbaCount;
+	        var rgbaIndex = indexCount;
+
+	        spriteFrames = new List<SpriteFrameData>(frameCount);
+
+	        if (version < 21)
+		        ReadIndexedImage();
+	        else
+		        ReadRleIndexedImage();
+
+	        ReadRgbaImage();
+
+	        if(version > 10)
+		        ReadPalette();
+
+	        for (var i = 0; i < spriteFrames.Count; i++)
+	        {
+		        Texture2D image;
+		        if(spriteFrames[i].IsIndexed)
+			        image = IndexedToTexture(spriteFrames[i]);
+		        else
+			        image = RgbaToTexture(spriteFrames[i]);
+		        image.name = basename;
+		        // image.name = $"{basename}_{i:D4}";
+		        // image.hideFlags = HideFlags.HideInHierarchy;
+                
+		        //ctx.AddObjectToAsset(image.name, image);
+
+		        //var sprite = Sprite.Create(image, new Rect(0, 0, indexedFrames[i].Width, indexedFrames[i].Height),
+		        //    new Vector2(0.5f, 0.5f), 100);
+
+		        //sprite.name = $"sprite_{basename}_{i:D4}";
+
+		        //ctx.AddObjectToAsset(sprite.name, sprite);
+
+		        return image;
+		        //Sprites.Add(sprite);
+	        }
+
+	        return null;
+        }
+
         public void Load(UnityEditor.AssetImporters.AssetImportContext ctx)
         {
             var filename = ctx.assetPath;

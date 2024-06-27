@@ -5,6 +5,7 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using System;
+using RebuildSharedData.Enum;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -22,7 +23,7 @@ public class PacketSitStand : IClientPacketHandler
             ServerLogger.Debug("Player sit/stand action ignored due to cooldown.");
             return;
         }
-
+        
         if (player.IsInNpcInteraction)
             return;
 

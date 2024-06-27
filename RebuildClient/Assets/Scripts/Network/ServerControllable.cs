@@ -6,6 +6,7 @@ using Assets.Scripts.MapEditor;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
+using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace Assets.Scripts.Network
         public bool IsMainCharacter;
         public bool IsInteractable;
         public int Level;
-        public string Name;
+        public string Name { get; set; }
         public int Hp;
         public int MaxHp
         {
@@ -42,7 +43,7 @@ namespace Assets.Scripts.Network
         public GameObject PopupDialog;
         public List<Ragnarok3dEffect> EffectList;
 
-        public string DisplayName => CharacterType == CharacterType.NPC ? Name : $"Lv.{Level} {Name}";
+        public string DisplayName => CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay ? Name : $"Lv.{Level} {Name}";
 
         public Vector3 CounterHitDir;
 
@@ -66,6 +67,7 @@ namespace Assets.Scripts.Network
         private UniqueAttackAction uniqueAttackAction;
         private float uniqueAttackStart;
         private bool skipNextAttackMotion;
+        private Vector2 lastPosition;
 
         private bool isMoving;
         // {
@@ -120,9 +122,19 @@ namespace Assets.Scripts.Network
         
         public void SetHp(int hp)
         {
+            if (GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp)
+            {
+                if (FloatingDisplay == null)
+                    return;
+                FloatingDisplay.HideHpBar();
+                return;
+            }
+            
             EnsureFloatingDisplayCreated();
             if (IsMainCharacter)
+            {
                 FloatingDisplay.ForceHpBarOn();
+            }
             else
                 FloatingDisplay = FloatingDisplay;
             if(CharacterType != CharacterType.NPC)
@@ -226,6 +238,9 @@ namespace Assets.Scripts.Network
             
             var d = 70 / cf.Distance;
             var reverseScale = 1f / cf.CanvasScaler.scaleFactor;
+
+            if (!GameConfig.Data.ScalePlayerDisplayWithZoom)
+                d = 1f;
             
             rect.localScale = new Vector3(d,d,d);
             rect.anchoredPosition = new Vector2(screenPos.x * reverseScale, (screenPos.y - cf.UiCanvas.pixelRect.height) * reverseScale);
@@ -373,7 +388,7 @@ namespace Assets.Scripts.Network
                 {
                     var offset = movePath[1] - movePath[0];
                     if (IsDiagonal(GetDirectionForOffset(offset)))
-                        moveProgress -= Time.deltaTime / speed * 0.80f;
+                        moveProgress -= Time.deltaTime / speed * 0.70f;
                     else
                         moveProgress -= Time.deltaTime / speed;
                     SpriteAnimator.Direction = GetDirectionForOffset(offset);
@@ -575,7 +590,7 @@ namespace Assets.Scripts.Network
             }
 #endif
             
-            if (SpriteAnimator == null)
+            if (SpriteAnimator == null || SpriteAnimator.SpriteData == null)
             {
                 AttackAnimationSpeed = 1;
                 return;
@@ -821,6 +836,9 @@ namespace Assets.Scripts.Network
                 MinimapController.Instance.SetPlayerPosition(new Vector2Int((int)transform.position.x, (int)transform.position.z),
                     Directions.GetAngleForDirection(SpriteAnimator.Direction) + 180f);
             }
+            
+            if(SpriteAnimator.SpriteData == null)
+                return;
 
             //this is dumb
             tempSpeedTime -= Time.deltaTime;
@@ -830,7 +848,7 @@ namespace Assets.Scripts.Network
             
             if (hitDelay >= 0f)
                 return;
-
+            
             if (IsCasting && uniqueAttackAction != null && Time.timeSinceLevelLoad > uniqueAttackStart)
             {
                 SpriteAnimator.ChangeMotion((SpriteMotion)uniqueAttackAction.Animation);
@@ -840,6 +858,12 @@ namespace Assets.Scripts.Network
 
             if (isMoving)
             {
+                var newPosition = new Vector2(transform.position.x, transform.position.z);
+                var distance = Vector2.Distance(lastPosition, newPosition);
+                // Debug.Log($"{lastPosition} -> {newPosition} = {distance}");
+                SpriteAnimator.MoveDistance += distance;
+                lastPosition = newPosition;
+                
                 if (movePauseTime > 0f)
                 {
                     SpriteAnimator.AnimSpeed = 1f;
@@ -852,7 +876,14 @@ namespace Assets.Scripts.Network
 
                 if (SpriteAnimator.State != SpriteState.Walking && SpriteAnimator.CurrentMotion != SpriteMotion.Hit)
                 {
-                    SpriteAnimator.AnimSpeed = moveSpeed / 0.2f;
+                    SpriteAnimator.AnimSpeed = moveSpeed * 4f;
+                    // var action = SpriteAnimator.GetActionForMotion(SpriteMotion.Walk);
+                    // var frameTime = action.Frames.Length * (action.Delay / 1000f);
+                    // // Debug.Log($"{moveSpeed} {frameTime} {action.Frames.Length} {action.Delay}");
+                    // if(CharacterType == CharacterType.Player)
+                    //     SpriteAnimator.AnimSpeed = moveSpeed * 4f / frameTime;
+                    // else
+                    //     SpriteAnimator.AnimSpeed = 1f; //hack, you should calculate this properly
                     SpriteAnimator.State = SpriteState.Walking;
                     SpriteAnimator.ChangeMotion(SpriteMotion.Walk);
                 }

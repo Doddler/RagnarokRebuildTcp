@@ -13,16 +13,18 @@ namespace Assets.Scripts.Sprites
     {
         public RoSpriteData SpriteData;
         public IRoSpriteRenderer SpriteRenderer;
+
         public Direction Direction
         {
             get => RoAnimationHelper.GetFacingForAngle(Angle);
             set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
         }
+
         public float Angle;
         public SpriteType Type;
         public SpriteState State;
         public float AnimSpeed = 1;
-        
+
         public Color Color;
         public float Alpha { get; set; }
         public int SpriteOrder;
@@ -43,17 +45,17 @@ namespace Assets.Scripts.Sprites
 
         public bool SetAsDirty;
         //these just exist so you can trigger them in the editor without getting a message from the server
-        public bool Idle;
-        public bool Attack;
-        public bool Standby;
-        public bool Walk;
-        public bool Hit;
-        public bool Sit;
-        public bool Dead;
-        
+        // public bool Idle;
+        // public bool Attack;
+        // public bool Standby;
+        // public bool Walk;
+        // public bool Hit;
+        // public bool Sit;
+        // public bool Dead;
+
         public ServerControllable Controllable;
         private bool isInitialized;
-        
+
         private string spriteName;
 
         private Light directionalLight;
@@ -70,6 +72,8 @@ namespace Assets.Scripts.Sprites
 
         public SpriteMotion CurrentMotion;
         public int PreferredAttackMotion;
+
+        public float MoveDistance;
 
         private RoAction currentAction;
         private int currentActionIndex;
@@ -102,6 +106,8 @@ namespace Assets.Scripts.Sprites
 
         public bool Is8Direction => RoAnimationHelper.Is8Direction(SpriteData.Type, CurrentMotion);
 
+        public RoAction GetActionForMotion(SpriteMotion motion) => SpriteData.Actions[RoAnimationHelper.GetMotionIdForSprite(Type, motion)];
+
         public Action OnFinishAnimation;
 
         public void PauseAnimation(float time = 999_999_999f)
@@ -109,7 +115,7 @@ namespace Assets.Scripts.Sprites
             isPaused = true;
             pauseTime = time;
         }
-        
+
         public void Unpause() => isPaused = false;
 
         public void SetDirty()
@@ -119,14 +125,14 @@ namespace Assets.Scripts.Sprites
 
         public void SetRenderActive(bool isActive)
         {
-            if(Shadow)
+            if (Shadow)
                 Shadow.SetActive(isActive);
             gameObject.SetActive(isActive);
             if (SpriteRenderer != null)
             {
                 SpriteRenderer.SetActive(isActive);
                 foreach (var c in ChildrenSprites)
-                    c.SpriteRenderer.SetActive(isActive);
+                    c.SpriteRenderer?.SetActive(isActive);
             }
         }
 
@@ -167,7 +173,7 @@ namespace Assets.Scripts.Sprites
                 return frame.Pos[0].Position;
             if (IsHead && (State == SpriteState.Idle || State == SpriteState.Sit))
                 return frame.Pos[currentFrame].Position;
-            
+
             return Vector2.zero;
         }
 
@@ -236,7 +242,7 @@ namespace Assets.Scripts.Sprites
                 LightProbeAnchor = Parent.LightProbeAnchor;
 
             ChangeMotion(CurrentMotion, true);
-            
+
             if (Type == SpriteType.Player && State == SpriteState.Idle)
                 PauseAnimation();
 
@@ -275,7 +281,7 @@ namespace Assets.Scripts.Sprites
             SpriteRenderer.SetSprite(SpriteData);
             SpriteRenderer.SetColor(Color);
             SpriteRenderer.SetDirection(Direction);
-            
+
             if (Parent != null)
                 SpriteRenderer.SetOffset(Parent.SpriteData.Size / 125f);
 
@@ -320,6 +326,7 @@ namespace Assets.Scripts.Sprites
                 //return;
                 currentFrame = currentAction.Frames.Length - 1; //hold on last frame. This only happens if this is a child of an animation of a longer length
             }
+
             var frame = currentAction.Frames[currentFrame];
 
             if (frame.Sound > -1 && frame.Sound < SpriteData.Sounds.Length && lastFrame != currentFrame && !isPaused)
@@ -328,7 +335,7 @@ namespace Assets.Scripts.Sprites
                 if (distance < 50)
                 {
                     var sound = SpriteData.Sounds[frame.Sound];
-                    if(sound != null)
+                    if (sound != null)
                         AudioManager.Instance.AttachSoundToEntity(Controllable.Id, sound, gameObject);
                     // var src = AudioSources[frame.Sound];
                     // if (src != null)
@@ -341,9 +348,9 @@ namespace Assets.Scripts.Sprites
             }
 
             lastFrame = currentFrame;
-            
-            
-            if(Parent == null)
+
+
+            if (Parent == null)
                 SpriteRenderer.SetAction(currentActionIndex, Is8Direction);
             else
                 SpriteRenderer.SetAction(currentActionIndex, Parent.Is8Direction);
@@ -491,9 +498,12 @@ namespace Assets.Scripts.Sprites
             }
 
             if (State == SpriteState.Walking)
-                lastWalkFrame = currentFrame;
-
-            if (currentFrameTime < 0)
+            {
+                var newWalkFrame = MoveDistance * 4.5f * 0.37f * 4f / (currentAction.Delay/24f);
+                // Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
+                currentFrame = lastWalkFrame = Mathf.FloorToInt(newWalkFrame) % maxFrame;
+            }
+            else if (currentFrameTime < 0)
                 currentFrameTime += (float)currentAction.Delay / 1000f * AnimSpeed;
 
             if (!isPaused)
@@ -510,7 +520,7 @@ namespace Assets.Scripts.Sprites
 
             currentAction = SpriteData.Actions[currentActionIndex + currentAngleIndex];
             currentFrame = newCurrentFrame;
-            
+
             UpdateSpriteFrame();
             ChildUpdate();
         }
@@ -561,7 +571,6 @@ namespace Assets.Scripts.Sprites
                 lightPower = (lightPower * directionalLight.intensity + 1) / 2f;
                 lightPower *= directionalLight.shadowStrength;
                 ShadeLevel = shadeForShadow;
-
             }
 
             var srcPos = transform.position + new Vector3(0, 0.2f, 0);
@@ -728,47 +737,47 @@ namespace Assets.Scripts.Sprites
             //    DoSpin();
             //}
 
-            if (Attack) // || Input.GetKeyDown(KeyCode.F))
-            {
-                ChangeMotion(SpriteMotion.Attack1);
-                Attack = false;
-            }
-            if (Hit)
-            {
-                ChangeMotion(SpriteMotion.Hit);
-                Hit = false;
-            }
-            if (Idle)
-            {
-                State = SpriteState.Idle;
-                ChangeMotion(SpriteMotion.Idle);
-                Idle = false;
-            }
-            if (Walk)
-            {
-                State = SpriteState.Walking;
-                ChangeMotion(SpriteMotion.Walk);
-                Walk = false;
-            }
-
-            if (Sit)
-            {
-                State = SpriteState.Sit;
-                ChangeMotion(SpriteMotion.Sit);
-                Sit = false;
-            }
-            if (Dead)
-            {
-                State = SpriteState.Dead;
-                ChangeMotion(SpriteMotion.Dead);
-                Dead = false;
-            }
-            if (Standby)
-            {
-                State = SpriteState.Standby;
-                ChangeMotion(SpriteMotion.Standby);
-                Standby = false;
-            }
+            // if (Attack) // || Input.GetKeyDown(KeyCode.F))
+            // {
+            //     ChangeMotion(SpriteMotion.Attack1);
+            //     Attack = false;
+            // }
+            // if (Hit)
+            // {
+            //     ChangeMotion(SpriteMotion.Hit);
+            //     Hit = false;
+            // }
+            // if (Idle)
+            // {
+            //     State = SpriteState.Idle;
+            //     ChangeMotion(SpriteMotion.Idle);
+            //     Idle = false;
+            // }
+            // if (Walk)
+            // {
+            //     State = SpriteState.Walking;
+            //     ChangeMotion(SpriteMotion.Walk);
+            //     Walk = false;
+            // }
+            //
+            // if (Sit)
+            // {
+            //     State = SpriteState.Sit;
+            //     ChangeMotion(SpriteMotion.Sit);
+            //     Sit = false;
+            // }
+            // if (Dead)
+            // {
+            //     State = SpriteState.Dead;
+            //     ChangeMotion(SpriteMotion.Dead);
+            //     Dead = false;
+            // }
+            // if (Standby)
+            // {
+            //     State = SpriteState.Standby;
+            //     ChangeMotion(SpriteMotion.Standby);
+            //     Standby = false;
+            // }
 
             if (Parent == null)
                 currentFrameTime -= Time.deltaTime;
@@ -789,7 +798,7 @@ namespace Assets.Scripts.Sprites
                         ChildrenSprites[i].ChildSetFrameData(currentActionIndex, currentAngleIndex, currentFrame);
                     }
                 }
-               
+
                 isDirty = false;
             }
             //
@@ -799,7 +808,6 @@ namespace Assets.Scripts.Sprites
             //     SoundCleanup();
             //     soundUpdateTime += Random.Range(1f, 3f);
             // }
-
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Numerics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
@@ -37,6 +38,9 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public NpcInteractionState NpcInteractionState = new();
     [EntityIgnoreNullCheck] public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
+    public Dictionary<CharacterSkill, int> LearnedSkills = null!;
+
+    public bool DoesCharacterKnowSkill(CharacterSkill skill, int level) => LearnedSkills.TryGetValue(skill, out var learned) && learned >= level;
 
     public Entity Target { get; set; }
 
@@ -93,12 +97,15 @@ public class Player : IEntityAutoReset
             CharData[i] = 0;
         _weaponClass = -1;
         LastEmoteTime = 0;
+        LearnedSkills = null!;
 
         SavePosition.Reset();
     }
 
     public void Init()
     {
+        LearnedSkills ??= new Dictionary<CharacterSkill, int>();
+
         if (GetData(PlayerStat.Status) == 0)
         {
             SetData(PlayerStat.Level, 1);
@@ -112,6 +119,32 @@ public class Player : IEntityAutoReset
         SetStat(CharacterStat.Level, GetData(PlayerStat.Level));
 
         IsAdmin = true; //for now
+    }
+
+    public float GetJobBonus(CharacterStat stat)
+    {
+        var job = GetData(PlayerStat.Job);
+        switch (stat)
+        {
+            case CharacterStat.Attack:
+                if (job == DataManager.JobIdLookup["Mage"])
+                    return 0.4f;
+                return 1f;
+            case CharacterStat.MagicAtkMin:
+                if (job != DataManager.JobIdLookup["Mage"])
+                    return 0.4f;
+                return 1f;
+            case CharacterStat.MaxHp:
+                if (job == DataManager.JobIdLookup["Swordsman"] || job == DataManager.JobIdLookup["Merchant"])
+                    return 1.4f;
+                if (job == DataManager.JobIdLookup["Thief"])
+                    return 1.2f;
+                if (job == DataManager.JobIdLookup["Mage"])
+                    return 0.8f;
+                return 1f;
+        }
+
+        return 1;
     }
 
     public void UpdateStats()
@@ -132,24 +165,46 @@ public class Player : IEntityAutoReset
             Character.ClassId = job; //there should be more complex checks here to prevent GM and mounts from being lost but we'll deal with it later
         }
 
-        var aMotionTime = 0.5f;
-        var delayTime = 1.1f - level * 0.004f;
-        if (delayTime < aMotionTime)
-            delayTime = aMotionTime;
-        var spriteAttackTiming = 0.6f;
+        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100);
 
-        if (spriteAttackTiming > aMotionTime)
-            spriteAttackTiming = aMotionTime;
+        var recharge = (1.2f - level * 0.006f) * aspdBonus;
+        var motionTime = 0.8f;
+        var spriteTime = 0.5f;
 
-        SetTiming(TimingStat.AttackMotionTime, aMotionTime);
-        SetTiming(TimingStat.SpriteAttackTiming, 0.5f);
-        SetTiming(TimingStat.AttackDelayTime, delayTime);
-        SetTiming(TimingStat.HitDelayTime, 0.5f);
-        SetTiming(TimingStat.MoveSpeed, 0.15f);
-        SetStat(CharacterStat.Range, 2);
+        if (recharge < motionTime)
+        {
+            var ratio = recharge / motionTime;
+            motionTime *= ratio;
+            spriteTime *= ratio;
+        }
 
-        var atk = (level / 2f) * (level / 2f) + level * (int)(level / 10) + 28 + level;
+        SetTiming(TimingStat.AttackDelayTime, recharge);
+        SetTiming(TimingStat.AttackMotionTime, motionTime);
+        SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
+
+
+        //var aMotionTime = 0.5f;
+        //var delayTime = 1.1f - level * 0.004f * aspdBonus;
+        //if (delayTime < aMotionTime)
+        //    delayTime = aMotionTime;
+        //var spriteAttackTiming = 0.6f;
+
+        //if (spriteAttackTiming > aMotionTime)
+        //    spriteAttackTiming = aMotionTime;
+
+        //SetTiming(TimingStat.AttackMotionTime, aMotionTime);
+        //SetTiming(TimingStat.SpriteAttackTiming, 0.5f);
+        //SetTiming(TimingStat.AttackDelayTime, delayTime);
+        SetTiming(TimingStat.HitDelayTime, 0.288f);
+        //SetTiming(TimingStat.MoveSpeed, 0.15f);
+        if (GetData(PlayerStat.Job) == 2)
+            SetStat(CharacterStat.Range, 9);
+        else
+            SetStat(CharacterStat.Range, 1);
+
+        var atk = (level / 3f) * (level / 3f) + level * (int)(level / 20) + 28 + level;
         atk *= 1.2f;
+
 
         //lower damage below lv 60, raise above
         var proc = 0.5f + Math.Clamp(level, 0, 99f) / 120f;
@@ -158,27 +213,59 @@ public class Player : IEntityAutoReset
         var atk1 = (int)(atk * 0.90f - 1);
         var atk2 = (int)(atk * 1.10f + 1);
 
-        //var multiplier = 0.1f + level / 10f;
-        //if (multiplier > 1f)
-        //    multiplier = 1f;
+        var atkBonus = GetJobBonus(CharacterStat.Attack);
+        var matkBonus = GetJobBonus(CharacterStat.MagicAtkMin);
+        var hpBonus = GetJobBonus(CharacterStat.MaxHp);
 
-        SetStat(CharacterStat.Attack, atk1);
-        SetStat(CharacterStat.Attack2, atk2);
+        SetStat(CharacterStat.Attack, atk1 * atkBonus);
+        SetStat(CharacterStat.Attack2, atk2 * atkBonus);
+        SetStat(CharacterStat.MagicAtkMin, atk1 * matkBonus);
+        SetStat(CharacterStat.MagicAtkMax, atk2 * matkBonus);
         SetStat(CharacterStat.Def, level * 0.7f);
-        SetStat(CharacterStat.Vit, 3 + level * 1.5f);
-        SetStat(CharacterStat.MaxHp, 50 + 100 * level);
+        SetStat(CharacterStat.MDef, level * 0.4f);
+        SetStat(CharacterStat.Vit, 3 + level * 0.5f);
+        SetStat(CharacterStat.Int, 3 + level * 0.5f);
+        //SetStat(CharacterStat.MaxHp, 50 + 100 * level * hpBonus);
 
         //var newMaxHp = (level * level * level) / 20 + 80 * level;
-        var newMaxHp = (level * level * level) / 80 + 42 * level;
-        var updatedMaxHp = newMaxHp;// (int)(newMaxHp * multiplier) + 70;
+
+        var newMaxHp = (level * level) / 2 + (level * level * level) / 300 + 42 * level;
+        var updatedMaxHp = newMaxHp * hpBonus;// (int)(newMaxHp * multiplier) + 70;
 
         SetStat(CharacterStat.MaxHp, updatedMaxHp);
         if (GetStat(CharacterStat.Hp) <= 0)
             SetStat(CharacterStat.Hp, updatedMaxHp);
+        if (GetStat(CharacterStat.Hp) > updatedMaxHp)
+            SetStat(CharacterStat.Hp, updatedMaxHp);
 
-        var moveSpeed = 0.15f - (0.001f * level / 3f);
+        var moveSpeed = 0.15f - (0.001f * level / 5f);
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
+
+        int[] statsByLevel = new[]
+        {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+            28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 48, 49, 49, 50, 50, 51,
+            51, 52, 52, 53, 53, 54, 54, 55, 55, 56, 56, 57, 57, 58, 58, 59, 59, 60, 58, 58, 58, 58, 58, 58, 58, 58, 58,
+            58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58
+        };
+
+        var pointEarned = statsByLevel[level - 1];
+
+        if (job == 0 && pointEarned > 9)
+            pointEarned = 9;
+
+        var pointsUsed = 0;
+        foreach (var skill in LearnedSkills)
+            pointsUsed += skill.Value;
+
+        if (pointEarned < pointsUsed)
+            SetData(PlayerStat.SkillPoints, 0);
+        else
+            SetData(PlayerStat.SkillPoints, pointEarned - pointsUsed);
+
+        if(Connection.IsConnectedAndInGame)
+            CommandBuilder.SendUpdatePlayerData(this);
     }
 
     public void LevelUp()
@@ -223,13 +310,13 @@ public class Player : IEntityAutoReset
     public void SaveCharacterToData()
     {
         SetData(PlayerStat.Hp, GetStat(CharacterStat.Hp));
-        SetData(PlayerStat.Mp, GetStat(CharacterStat.Mp));
+        SetData(PlayerStat.Mp, GetStat(CharacterStat.Sp));
     }
 
     public void ApplyDataToCharacter()
     {
         SetStat(CharacterStat.Hp, GetData(PlayerStat.Hp));
-        SetStat(CharacterStat.Mp, GetData(PlayerStat.Mp));
+        SetStat(CharacterStat.Sp, GetData(PlayerStat.Mp));
     }
 
     public void EndNpcInteractions()
@@ -362,6 +449,8 @@ public class Player : IEntityAutoReset
 
         //WeaponClass = weapon;
 
+        UpdateStats();
+
         if (Character.Map != null)
             Character.Map.RefreshEntity(Character);
     }
@@ -395,7 +484,7 @@ public class Player : IEntityAutoReset
         if (DistanceCache.IntDistance(Character.Position, targetCharacter.Position) > GetStat(CharacterStat.Range))
         {
             if (InMoveReadyState)
-                Character.TryMove(targetCharacter.Position, CombatEntity.GetStat(CharacterStat.Range) - 1);
+                Character.TryMove(targetCharacter.Position, 1);
             return;
         }
 

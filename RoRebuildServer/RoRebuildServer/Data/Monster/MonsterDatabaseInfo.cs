@@ -15,7 +15,9 @@ public class MonsterDatabaseInfo
     public int AtkMin { get; set; }
     public int AtkMax { get; set; }
     public int Vit { get; set; }
+    public int Int { get; set; }
     public int Def { get; set; }
+    public int MDef { get; set; }
     public float RechargeTime { get; set; }
     public float AttackLockTime { get; set; }
     public float HitTime { get; set; }

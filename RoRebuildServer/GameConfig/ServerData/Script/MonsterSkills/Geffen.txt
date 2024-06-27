@@ -36,5 +36,5 @@ StateIdle:
 
 SkillHandler("DOPPELGANGER") {
 StateAttacking:
-	TryCast(Haste, 1, 1000, 0, 10h)[HpPercent <= 30];
+	TryCast(TwoHandQuicken, 10, 1000, 0, 10h)[HpPercent <= 40];
 }

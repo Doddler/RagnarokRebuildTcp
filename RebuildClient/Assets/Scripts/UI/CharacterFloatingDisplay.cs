@@ -1,4 +1,5 @@
 using Assets.Scripts.Objects;
+using Assets.Scripts.UI.ConfigWindow;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -112,11 +113,21 @@ namespace Assets.Scripts.UI
             chatEnd = Time.timeSinceLevelLoad + visibleTime;
             gameObject.SetActive(true);
         }
+        
+        
+        public void HideHpBar()
+        {
+            if (hpBar == null)
+                return;
+            Manager.ReturnHpBar(hpBar.gameObject);
+            hpBar = null;
+        }
 
         public void ForceHpBarOn()
         {
             if (hpBar != null)
                 return;
+            // if(GameConfig.Data.AutoHideFullHPBars)
 
             hpBar = Manager.AttachHpBar(gameObject);
             gameObject.SetActive(true);
@@ -128,7 +139,7 @@ namespace Assets.Scripts.UI
         {
             if (hpBar == null)
             {
-                if (hp == maxHp)
+                if (hp == maxHp || (!isPlayer && !GameConfig.Data.ShowMonsterHpBars))
                     return;
                 hpBar = Manager.AttachHpBar(gameObject);
                 gameObject.SetActive(true);
@@ -147,8 +158,15 @@ namespace Assets.Scripts.UI
             }
             else
             {
-                hpBar.SetColor(new Color32(0xC8, 0x45, 0xEA, 255));
-                ((RectTransform)hpBar.transform).sizeDelta = new Vector2(90f, 10f);
+                if (GameConfig.Data.ShowMonsterHpBars)
+                {
+                    hpBar.SetColor(new Color32(0xC8, 0x45, 0xEA, 255));
+                    ((RectTransform)hpBar.transform).sizeDelta = new Vector2(90f, 10f);
+                }
+                else
+                {
+                    Manager.ReturnHpBar(hpBar.gameObject);
+                }
             }
         }
 

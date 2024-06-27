@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
@@ -27,10 +28,29 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 case SkillTarget.Enemy: 
                     ProcessSingleTargetSkill(connection, msg);
                     return;
+                case SkillTarget.Self:
+                    ProcessSelfTargetedSkill(connection, msg);
+                    return;
             }
 
             ServerLogger.Log($"Player {connection.Character.Name} is attempting to use a skill of type {type}, but no handler exists for this class of skill");
             return;
+        }
+
+        private void ProcessSelfTargetedSkill(NetworkConnection connection, InboundMessage msg)
+        {
+            Debug.Assert(connection.Player != null, "connection.Player != null");
+
+            var skill = (CharacterSkill)msg.ReadInt16();
+            var lvl = msg.ReadByte();
+
+            if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
+            {
+                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.Failure);
+                return;
+            }
+
+            connection.Player.CombatEntity.AttemptStartSelfTargetSkill(skill, lvl);
         }
 
         private void ProcessGroundTargetedSkill(NetworkConnection connection, InboundMessage msg)
@@ -43,7 +63,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (map == null || caster == null)
                 throw new Exception($"Cannot ProcessGroundTargetedSkill, player or map is invalid.");
-
+            
             if (!map.WalkData.HasLineOfSight(caster.Position, groundTarget))
             {
                 CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.NoLineOfSight);
@@ -52,6 +72,12 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             var skill = (CharacterSkill)msg.ReadByte();
             var lvl = (int)msg.ReadByte();
+
+            if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
+            {
+                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.Failure);
+                return;
+            }
 
             caster.ResetSpawnImmunity();
             caster.CombatEntity.AttemptStartGroundTargetedSkill(groundTarget, skill, lvl);
@@ -69,6 +95,12 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             
             var skill = (CharacterSkill)msg.ReadByte();
             var lvl = (int)msg.ReadByte();
+
+            if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
+            {
+                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.Failure);
+                return;
+            }
 
             caster.ResetSpawnImmunity();
             caster.CombatEntity.AttemptStartSingleTargetSkillAttack(target, skill, lvl);

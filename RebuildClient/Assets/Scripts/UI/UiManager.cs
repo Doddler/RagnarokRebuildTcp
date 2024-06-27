@@ -1,17 +1,35 @@
+using System;
 using System.Collections.Generic;
+using Assets.Scripts;
+using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
+using Assets.Scripts.UI.ConfigWindow;
+using RebuildSharedData.Enum;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UiManager : MonoBehaviour
 {
+    public GameObject CharacterOverlayGroup;
     public GameObject WarpManager;
     public GameObject EmoteManager;
+    public SkillWindow SkillManager;
+    public OptionsWindow ConfigManager;
+    public SkillHotbar SkillHotbar;
+    public DragTrashBucket TrashBucket;
     public GameObject PrimaryUserUIContainer;
 
-    public List<IClosableWindow> WindowStack = new List<IClosableWindow>();
+    public ItemDragObject DragItemObject;
+    
+    public List<Draggable> FloatingDialogBoxes;
+    public List<IClosableWindow> WindowStack = new();
 
     private static UiManager _instance;
     private Canvas canvas;
+
+    [NonSerialized] public bool IsDraggingItem;
+    private IItemDropTarget HoveredDropTarget;
+    private bool canChangeSkillLevel;
 
     public static UiManager Instance
     {
@@ -28,6 +46,8 @@ public class UiManager : MonoBehaviour
     void Awake()
     {
         _instance = this;
+        
+        CharacterOverlayGroup.SetActive(true);
 
         //kinda dumb way to make sure the windows are initialized and their contents cached
         var warp = WarpManager.GetComponent<WarpWindow>();
@@ -37,14 +57,113 @@ public class UiManager : MonoBehaviour
         var emote = EmoteManager.GetComponent<EmoteWindow>();
         emote.ShowWindow();
         emote.HideWindow();
+        
+        //SkillManager.ShowWindow();
+        SkillManager.HideWindow();
+        
+        ConfigManager.ShowWindow();
+        ConfigManager.HideWindow();
 
         canvas = PrimaryUserUIContainer.GetComponent<Canvas>();
+        
+        ConfigManager.Initialize();
+        SkillHotbar.Initialize();
+        LoadWindowPositionData();
+    }
+
+    public void SyncFloatingBoxPositionsWithSaveData()
+    {
+        var positions = GameConfig.Data.WindowPositions;
+        for (var i = 0; i < positions.Length; i++)
+            positions[i] = FloatingDialogBoxes[i].Target.position;
+        GameConfig.Data.WindowPositions = positions;
+    }
+
+    public void LoadWindowPositionData()
+    {
+        if (FloatingDialogBoxes == null || FloatingDialogBoxes.Count <= 0)
+            return;
+        
+        var positions = GameConfig.Data.WindowPositions;
+        
+        if (positions == null)
+        {
+            Debug.Log($"We have no window positions saved, re-initializing.");
+            positions = new Vector2[FloatingDialogBoxes.Capacity];
+            for (var i = 0; i < positions.Length; i++)
+                positions[i] = FloatingDialogBoxes[i].Target.position;
+        }
+
+        if (positions.Length < FloatingDialogBoxes.Count)
+        {
+            Debug.Log($"We have fewer windows than we expected, time to expand teh array.");
+            var oldSize = positions.Length;
+            Array.Resize(ref positions, FloatingDialogBoxes.Count);
+            for(var i = oldSize; i < positions.Length; i++)
+                positions[i] = FloatingDialogBoxes[i].Target.position;
+        }
+
+        // Debug.Log($"{positions.Length} {FloatingDialogBoxes.Count}");
+        
+        for (var i = 0; i < FloatingDialogBoxes.Count; i++)
+        {
+            FloatingDialogBoxes[i].Target.position = positions[i];
+        }
+
+        GameConfig.Data.WindowPositions = positions;
     }
 
     public void MoveToLast(IClosableWindow entry)
     {
         WindowStack.Remove(entry);
         WindowStack.Add(entry);
+    }
+    
+    public void StartItemDrag(DragItemBase dragItem)
+    {
+        Debug.Log($"Starting Item Drag from {dragItem}");
+        IsDraggingItem = true;
+        DragItemObject.gameObject.SetActive(true);
+        DragItemObject.transform.position = Input.mousePosition;
+        DragItemObject.Assign(dragItem);
+        DragItemObject.Origin = ItemDragOrigin.None;
+        TrashBucket.gameObject.SetActive(true);
+        canChangeSkillLevel = false;
+        if (dragItem.Type == DragItemType.Skill)
+        {
+            canChangeSkillLevel = ClientDataLoader.Instance.GetSkillData((CharacterSkill)dragItem.ItemId).AdjustableLevel;
+            if (!canChangeSkillLevel)
+                DragItemObject.UpdateCount(0);
+        }
+    }
+    
+    public bool EndItemDrag()
+    {
+        Debug.Log("Ending item drag");
+        IsDraggingItem = false;
+        DragItemObject.gameObject.SetActive(false);
+        TrashBucket.gameObject.SetActive(false);
+        if (HoveredDropTarget != null)
+        {
+            HoveredDropTarget.DropItem();
+            HoveredDropTarget = null;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void RegisterDragTarget(IItemDropTarget target)
+    {
+        Debug.Log($"Registering drop target");
+        HoveredDropTarget = target;
+    }
+
+    public void UnregisterDragTarget(IItemDropTarget target)
+    {
+        Debug.Log($"Removing drop target");
+        if (HoveredDropTarget == target)
+            HoveredDropTarget = null;
     }
 
     public bool CloseLastWindow()
@@ -62,10 +181,13 @@ public class UiManager : MonoBehaviour
         return true;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void FitFloatingWindowsIntoPlayArea()
     {
+        if (FloatingDialogBoxes == null)
+            return;
         
+        for(var i = 0; i < FloatingDialogBoxes.Count; i++)
+            FloatingDialogBoxes[i].FitWindowIntoPlayArea();
     }
 
     public void SetEnabled(bool enabled)
@@ -80,6 +202,23 @@ public class UiManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F11) && canvas != null)
         {
             SetEnabled(!canvas.enabled);
+        }
+
+        if (!IsDraggingItem && !CameraFollower.Instance.InTextBox && !CameraFollower.Instance.IsInNPCInteraction)
+        {
+            SkillHotbar.UpdateHotkeyPresses();
+        }
+
+        if (IsDraggingItem && canChangeSkillLevel)
+        {
+            var oldLvl = (float)DragItemObject.ItemCount;
+            if (oldLvl == 0)
+                return;
+            var lvl = oldLvl + Input.GetAxis("Mouse ScrollWheel") * 10f;
+            lvl = Mathf.Clamp(lvl, 1, 10);
+            var newLevel = Mathf.RoundToInt(lvl);
+            if(newLevel != oldLvl)
+                DragItemObject.UpdateCount(newLevel);
         }
     }
 }

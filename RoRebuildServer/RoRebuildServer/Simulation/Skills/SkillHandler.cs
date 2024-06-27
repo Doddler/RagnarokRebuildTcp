@@ -62,7 +62,13 @@ namespace RoRebuildServer.Simulation.Skills
         {
             var handler = handlers[(int)skill];
             if (handler != null)
-                return handler.GetCastTime(src, target, level);
+            {
+                var castMultiplier = 1f;
+                if (src.Character.Type == CharacterType.Player)
+                    castMultiplier = 1 - (src.GetStat(CharacterStat.Level) * 0.0066f);
+                return handler.GetCastTime(src, target, level) * castMultiplier;
+            }
+
             return 0f;
         }
 

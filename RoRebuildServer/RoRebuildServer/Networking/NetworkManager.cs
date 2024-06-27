@@ -628,7 +628,7 @@ public class NetworkManager
 
         var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
 
-        var newReq = new SaveCharacterRequest(Guid.Empty, name, null, Position.Invalid, charData, new SavePosition());
+        var newReq = new SaveCharacterRequest(Guid.Empty, name, null, Position.Invalid, charData, new SavePosition(), new Dictionary<CharacterSkill, int>());
         await RoDatabase.ExecuteDbRequestAsync(newReq);
 
         ArrayPool<int>.Shared.Return(charData, true);

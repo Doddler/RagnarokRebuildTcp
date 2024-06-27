@@ -46,6 +46,11 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/icearrow.tga", "icearrow"));
             sprites.Add(ImportEffectTexture("texture/effect/lens1.tga", "lens1"));
             sprites.Add(ImportEffectTexture("texture/effect/lens2.tga", "lens2"));
+            sprites.Add(ImportEffectTexture("texture/effect/super1.bmp", "super1"));
+            sprites.Add(ImportEffectTexture("texture/effect/super2.bmp", "super2"));
+            sprites.Add(ImportEffectTexture("texture/effect/super3.bmp", "super3"));
+            sprites.Add(ImportEffectTexture("texture/effect/super4.bmp", "super4"));
+            sprites.Add(ImportEffectTexture("texture/effect/super5.bmp", "super5"));
             
 
             atlas.Add(sprites.ToArray());

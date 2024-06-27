@@ -7,6 +7,7 @@ using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using TMPro;
@@ -129,6 +130,7 @@ namespace Assets.Scripts.Utility
 		{
 			LoadingImage.gameObject.SetActive(true);
 			RoMapRenderSettings.ClearBakedLightmap();
+			GameConfig.SaveConfig();
 
 			yield return null;
 			yield return null;
@@ -163,6 +165,7 @@ namespace Assets.Scripts.Utility
             var newMap = mapEntries.FirstOrDefault(m => m.Code == newScene);
             
             LightProbes.Tetrahedralize();
+            UiManager.Instance.ConfigManager.RefreshAudioLevels(); //why unity does doing this in onAwake do literally nothing?
 
 			if (needAudioChange)
 			{
