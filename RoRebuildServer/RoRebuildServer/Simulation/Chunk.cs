@@ -20,7 +20,7 @@ public class Chunk
     public EntityList Monsters { get; set; } = new EntityList(8, true);
     public List<AreaOfEffect> AreaOfEffects { get; set; } = new List<AreaOfEffect>(2);
 
-    public override string ToString() => $"Chunk ({X},{Y})";
+    public override string ToString() => $"Chunk ({X * Size},{Y*Size}-{(X+1)*Size},{(Y+1)*Size})[P:{Players.Count} M:{Monsters.Count} AoE:{AreaOfEffects.Count}]";
 
     public void AddEntity(ref Entity entity, CharacterType type)
     {
@@ -31,6 +31,12 @@ public class Chunk
         var chunkY = character.Position.Y / Size;
         if (X != chunkX || Y != chunkY)
             throw new Exception("Sanity check failed: Entity added to incorrect chunk?");
+        if (type == CharacterType.Player && Players.Contains(entity))
+            throw new Exception("Trying to add player a second time to a chunk!");
+        if (type == CharacterType.Monster && Monsters.Contains(entity))
+            throw new Exception("Trying to add a monster a second time to a chunk!");
+        if (AllEntities.Contains(entity))
+            throw new Exception("Somehow we're trying to add an entity to a chunk a second time!");
 #endif
         AllEntities.Add(ref entity);
 

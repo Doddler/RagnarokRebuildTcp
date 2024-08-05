@@ -33,11 +33,11 @@ public class ThunderStormHandler : SkillHandlerBase
         
         var targetList = EntityListPool.Get();
         map.GatherEnemiesInArea(source.Character, position, 2, targetList, !isIndirect, true);
-        map?.GatherPlayersForMultiCast(source.Character);
+        map?.AddVisiblePlayersAsPacketRecipients(source.Character);
 
         foreach (var e in targetList)
         {
-            var res = source.CalculateCombatResult(e.Get<CombatEntity>(), 1, lvl, AttackFlags.Magical, AttackElement.Wind);
+            var res = source.CalculateCombatResult(e.Get<CombatEntity>(), 1, lvl, AttackFlags.Magical, CharacterSkill.ThunderStorm, AttackElement.Wind);
             source.ExecuteCombatResult(res, false);
             
             if(e.TryGet<WorldObject>(out var blastTarget))

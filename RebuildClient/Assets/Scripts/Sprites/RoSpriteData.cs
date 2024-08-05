@@ -99,7 +99,7 @@ namespace Assets.Scripts
 
     public static class RoAnimationHelper
     {
-        private static float AngleDir(Vector2 targetDir, Vector2 up)
+        public static float AngleDir(Vector2 targetDir, Vector2 up)
         {
             var dir = targetDir - up;
             var angle = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;

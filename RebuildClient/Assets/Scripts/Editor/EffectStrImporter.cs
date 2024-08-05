@@ -126,19 +126,27 @@ namespace Assets.Scripts.Editor
                     continue;
 
                 var prefabPath = $"Assets/Effects/Prefabs/{e.Name}.prefab";
-                
-                if (File.Exists(prefabPath))
-                    continue;
 
+                if (File.Exists(prefabPath))
+                {
+                    Debug.Log($"Skipping import of {prefabPath} as it already exists.");
+                    continue;
+                }
 
                 if (!string.IsNullOrWhiteSpace(e.StrFile))
                 {
                     try
                     {
+                        Debug.Log($"Importing str animation {e.StrFile}");
+                        
                         var loader = new RagnarokEffectLoader();
-                        var anim = loader.Load(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, @$"texture\effect\{e.StrFile}.str"), e.Name);
+                        var importPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, @$"texture\effect\{e.StrFile}.str");
+                        var anim = loader.Load(importPath, e.Name);
                         if (anim == null)
+                        {
+                            Debug.Log($"Could not load [{importPath}] as the file was not found.");
                             continue;
+                        }
 
                         loader.MakeAtlas(@"Assets/Effects/Atlas/");
 
@@ -198,7 +206,7 @@ namespace Assets.Scripts.Editor
                 }
             }
 
-            RagnarokMapImporterWindow.UpdateAddressables();
+            RagnarokMapImporterWindow.UpdateAddressables(false);
         }
     }
 }

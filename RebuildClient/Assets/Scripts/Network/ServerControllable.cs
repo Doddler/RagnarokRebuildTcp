@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Objects;
@@ -24,6 +25,7 @@ namespace Assets.Scripts.Network
         public RoSpriteAnimator SpriteAnimator;
         public int Id;
         public Vector2Int Position;
+        public Vector2 MoveStartPos;
         public Vector3 StartPos;
         public float ShadowSize;
         public bool IsAlly;
@@ -54,10 +56,12 @@ namespace Assets.Scripts.Network
         public CharacterFloatingDisplay FloatingDisplay;
         private List<Vector2Int> movePath;
         private Vector2Int[] tempPath;
+        private int currentMoveStep;
         private float moveSpeed = 0.2f;
         private float tempSpeed = -1f;
         private float tempSpeedTime = 0f;
         private float moveProgress;
+        private float moveLength;
         private float hitLockImmuneTime = 0f;
         private bool isDirectMove;
         private bool isHidden;
@@ -67,7 +71,7 @@ namespace Assets.Scripts.Network
         private UniqueAttackAction uniqueAttackAction;
         private float uniqueAttackStart;
         private bool skipNextAttackMotion;
-        private Vector2 lastPosition;
+        private Vector2 lastFramePosition;
 
         private bool isMoving;
         // {
@@ -122,7 +126,7 @@ namespace Assets.Scripts.Network
         
         public void SetHp(int hp)
         {
-            if (GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp)
+            if ((GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp) || !IsInteractable)
             {
                 if (FloatingDisplay == null)
                     return;
@@ -262,6 +266,7 @@ namespace Assets.Scripts.Network
             var start = new Vector3(worldPos.x + 0.5f, 0f, worldPos.y + 0.5f);
             var position = new Vector3(start.x, walkProvider.GetHeightForPosition(start) + offset, start.z);
 
+            // Debug.Log($"Configure entity on {name} setting position to {position}");
             transform.localPosition = position;
 
             if (SpriteMode == ClientSpriteType.Sprite)
@@ -311,6 +316,7 @@ namespace Assets.Scripts.Network
 
         public void DirectWalkMove(float speed, float time, Vector2Int dest)
         {
+            Debug.Log("WAIT NO WHY ARE YOU CALLING THIS CODE STOPPPPP");
             StartPos = transform.position - new Vector3(0.5f, 0f, 0.5f);
 
             if (movePath == null)
@@ -328,11 +334,41 @@ namespace Assets.Scripts.Network
             isDirectMove = true;
         }
 
+        public void StartMove2(float speed, float nextCellTime, int stepCount, int curStep, Vector2 startPosition, List<Vector2Int> steps)
+        {
+            // if (IsMainCharacter)
+            //     Debug.Log($"{name} Start Move - From {steps[0]}({startPosition} )to {steps[stepCount - 1]}\nSpeed:{speed} StepCount:{stepCount} CurStep:{curStep} StepLength:{steps.Count}");
+            
+            moveSpeed = speed;
+            
+            if (movePath == null)
+                movePath = new List<Vector2Int>(20);
+            else
+                movePath.Clear();
+
+            moveLength = nextCellTime;
+            moveProgress = 0;
+            currentMoveStep = curStep;
+            
+            for (var i = 0; i < stepCount; i++)
+                movePath.Add(steps[i]);
+
+            MoveStartPos = new Vector2(transform.localPosition.x, transform.localPosition.z); // startPosition;
+            LeanTween.cancel(gameObject);
+            isMoving = true;
+
+            var sb = new StringBuilder();
+            sb.Append(movePath[0]);
+            for (var i = 1; i < stepCount; i++)
+                sb.Append(", " + movePath[i]);
+            // Debug.Log($"Starting move from {startPosition} (but really we're starting from {MoveStartPos}). MoveData: \n{sb.ToString()}");
+        }
+
+
         public void StartMove(float speed, float progress, int stepCount, int curStep, List<Vector2Int> steps)
         {
             // if (IsMainCharacter)
-            //     Debug.Log(
-            //         $"{name} Start Move - From {steps[0]} to {steps[stepCount - 1]}\nSpeed:{speed} Progress:{progress} StepCount:{stepCount} CurStep:{curStep} StepLength:{steps.Count}");
+            //     Debug.Log($"{name} Start Move - From {steps[0]} to {steps[stepCount - 1]}\nSpeed:{speed} Progress:{progress} StepCount:{stepCount} CurStep:{curStep} StepLength:{steps.Count}");
 
             moveSpeed = speed;
             //tempSpeed = -1;
@@ -367,9 +403,62 @@ namespace Assets.Scripts.Network
 
             isMoving = true;
         }
+        
+        
+        public void UpdateMove2()
+        {
+            if (movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
+            var speed = 1f;
+            if (tempSpeedTime > 0)
+                speed = tempSpeed / moveSpeed;
+
+            moveProgress += speed * Time.deltaTime;
+            var totalSteps = movePath.Count;
+            var dir = SpriteAnimator.Direction;
+            while (moveProgress >= moveLength)
+            {
+                currentMoveStep++;
+                if (currentMoveStep >= totalSteps - 1)
+                {
+                    // Debug.Log($"Ending Move at {movePath[currentMoveStep].ToWorldPosition()}");
+                    transform.position = movePath[currentMoveStep].ToWorldPosition();
+                    Position = transform.position.ToTilePosition();
+                    movePath.Clear();
+                    isMoving = false;
+                    return;
+                }
+
+                moveProgress -= moveLength;
+                moveLength = moveSpeed;
+                dir = GetDirectionForOffset(movePath[currentMoveStep + 1] - movePath[currentMoveStep]);
+                if (IsDiagonal(dir))
+                    moveLength *= 1.4142f;
+            }
+
+            var prog = moveProgress / moveLength;
+            if (currentMoveStep == 0)
+            {
+                var x = Mathf.Lerp(MoveStartPos.x, movePath[1].x + 0.5f, prog);
+                var y = Mathf.Lerp(MoveStartPos.y, movePath[1].y + 0.5f, prog);
+                transform.localPosition = walkProvider.GetWorldPositionFor2DLocation(x, y);
+                Position = transform.position.ToTilePosition();
+                SpriteAnimator.Angle = RoAnimationHelper.AngleDir(movePath[1].ToMapPosition(), new Vector2(x, y));
+                // Debug.Log($"First step lerp from {MoveStartPos} to {movePath[currentMoveStep+1]} returns {transform.localPosition}");
+            }
+            else
+            {
+                var x = Mathf.Lerp(movePath[currentMoveStep].x, movePath[currentMoveStep+1].x, prog) + 0.5f;
+                var y = Mathf.Lerp(movePath[currentMoveStep].y, movePath[currentMoveStep+1].y, prog) + 0.5f;
+                transform.localPosition = walkProvider.GetWorldPositionFor2DLocation(x, y);
+                Position = transform.position.ToTilePosition();
+                SpriteAnimator.Direction = dir;
+                // Debug.Log($"Lerp from {movePath[currentMoveStep]} to {movePath[currentMoveStep+1]} returns {transform.localPosition}");
+            }
+        }
 
         public void UpdateMove(bool forceUpdate = false)
         {
+            Debug.Log("WHY NO STOP DON'T CALL THIS CODE");
             if (movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
             var speed = moveSpeed;
             if (tempSpeedTime > 0)
@@ -424,8 +513,8 @@ namespace Assets.Scripts.Network
             }
             else
             {
-                var xPos = Mathf.Lerp(StartPos.x, movePath[1].x, 1 - moveProgress);
-                var yPos = Mathf.Lerp(StartPos.z, movePath[1].y, 1 - moveProgress);
+                var xPos = Mathf.Lerp(StartPos.x, movePath[1].x, 1 - moveProgress) + 0.5f;
+                var yPos = Mathf.Lerp(StartPos.z, movePath[1].y, 1 - moveProgress) + 0.5f;
 
                 transform.position = new Vector3(xPos + 0.5f, walkProvider.GetHeightForPosition(transform.position), yPos + 0.5f);
 
@@ -435,7 +524,7 @@ namespace Assets.Scripts.Network
 
         public void MovePosition(Vector2Int targetPosition)
         {
-            transform.position = new Vector3(targetPosition.x + 0.5f, walkProvider.GetHeightForPosition(transform.position), targetPosition.y + 0.5f);
+            transform.position = targetPosition.ToWorldPosition(); // new Vector3(targetPosition.x + 0.5f, walkProvider.GetHeightForPosition(transform.position), targetPosition.y + 0.5f);
         }
 
         public void StopWalking()
@@ -682,10 +771,16 @@ namespace Assets.Scripts.Network
 
             var color = SpriteAnimator.Type == SpriteType.Player ? Color.blue : Color.red;
 
-            for (var i = 0; i < movePath.Count - 1; i++)
+            var p1 = transform.localPosition;
+            //p1.y = walkProvider.GetHeightForPosition(StartPos);
+
+            for (var i = currentMoveStep; i < movePath.Count - 1; i++)
             {
-                var p1 = new Vector3(movePath[i].x + 0.5f, 0f, movePath[i].y + 0.5f);
-                p1.y = walkProvider.GetHeightForPosition(p1);
+                if (i > currentMoveStep)
+                {
+                    p1 = new Vector3(movePath[i].x + 0.5f, 0f, movePath[i].y + 0.5f);
+                    p1.y = walkProvider.GetHeightForPosition(p1);
+                }
 
                 var p2 = new Vector3(movePath[i + 1].x + 0.5f, 0f, movePath[i + 1].y + 0.5f);
                 p2.y = walkProvider.GetHeightForPosition(p2);
@@ -859,20 +954,20 @@ namespace Assets.Scripts.Network
             if (isMoving)
             {
                 var newPosition = new Vector2(transform.position.x, transform.position.z);
-                var distance = Vector2.Distance(lastPosition, newPosition);
-                // Debug.Log($"{lastPosition} -> {newPosition} = {distance}");
+                var distance = Vector2.Distance(lastFramePosition, newPosition);
+                // Debug.Log($"{lastFramePosition} -> {newPosition} = {distance}");
                 SpriteAnimator.MoveDistance += distance;
-                lastPosition = newPosition;
+                lastFramePosition = newPosition;
                 
                 if (movePauseTime > 0f)
                 {
-                    SpriteAnimator.AnimSpeed = 1f;
-                    if (CharacterType == CharacterType.Player && SpriteAnimator.CurrentMotion != SpriteMotion.Hit)
-                        SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
+                    // SpriteAnimator.AnimSpeed = 1f;
+                    // if (CharacterType == CharacterType.Player && SpriteAnimator.CurrentMotion != SpriteMotion.Hit)
+                    //     SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
                     return;
                 }
 
-                UpdateMove();
+                UpdateMove2();
 
                 if (SpriteAnimator.State != SpriteState.Walking && SpriteAnimator.CurrentMotion != SpriteMotion.Hit)
                 {

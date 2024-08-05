@@ -7,10 +7,8 @@ StateChase:
 	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(29);
 }
 
-
-
-macro MoonlightCombatActions() {
-	if(HpPercent < 70 && IsNamedEventOffCooldown("Magic Combo")) {
+macro MoonlightCombatActionsOld() {
+	if(HpPercent < 50 && IsNamedEventOffCooldown("Magic Combo")) {
 		TryCast(ColdBolt, 5, 1000, 800, 10000, EventOnStartCast) -> SendEmote(29); //gg
 		TryCast(FireBolt, 5, 1000, 800, 10000);
 		TryCast(LightningBolt, 5, 1000, 800, 10000);
@@ -25,9 +23,76 @@ macro MoonlightCombatActions() {
 	}
 }
 
-SkillHandler("MOONLIGHT") {
+event NineTailWalkEvent {
+	local type = Param1;
+    StartTimer(100);
+    ChangeNpcClass("NINE_TAIL");
+    ShowNpc();
+    StartWalkToRandomTile(5, 150);
+OnTimer 100:
+    if(IsMoving)
+        ResetTimer();
+OnTimer 800:
+	PlayEffectAtMyLocation("PuffOfSmoke");
+	if(type == 0) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C1");
+	if(type == 1) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C2");
+	if(type == 2) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C3");
+	//MOONLIGHT_CLONE
+    EndEvent();
+}
+
+macro MoonlightCombatActions() {
+
+	if(HpPercent < 50 && IsNamedEventOffCooldown("Split")) {
+		TryCast(None, 1, 1000, 1300, 0) -> {
+			CreateEvent("NineTailWalkEvent", CurrentPosition, 0);
+			CreateEvent("NineTailWalkEvent", CurrentPosition, 1);
+			CreateEvent("NineTailWalkEvent", CurrentPosition, 2);
+			SetEventCooldown("Split", 999000000);
+			AdminHide();
+			return;
+		}
+	}
+	
+	if(HpPercent < 30 && IsNamedEventOffCooldown("Final Phase")) {
+		TryCast(None, 1, 1000, 0, 5000) -> SendEmote(7); //angry
+
+		ResetAllCooldowns();
+		SetEventCooldown("Split", 999000000); //we don't want this happening again. We know it already happened cause it's higher priority
+		SetEventCooldown("Final Phase", 999000000);
+		TryCast(CallMinion,1, 1000, 400, 30000) -> CallDefaultMinions();
+	}
+
+	if(HpPercent < 80 && IsNamedEventOffCooldown("Magic Combo")) {
+		TryCast(ColdBolt, 5, 1000, 800, 10000, EventOnStartCast) -> SendEmote(29); //gg
+		TryCast(FireBolt, 5, 1000, 800, 10000);
+		TryCast(LightningBolt, 5, 1000, 800, 10000);
+		SetEventCooldown("Magic Combo", 20000);
+	}
+
+	TryCast(CallMinion,1, 1000, 2000, 60000)[MinionCount < 3] -> CallDefaultMinions();
+}
+
+SkillHandler("MOONLIGHT_C1") {
 StateAny:
-	TryCast(CallMinion,1, 1000, 2000, 30000)[MinionCount < 3] -> CallDefaultMinions();
+	TryCast(ColdBolt, 5, 1000, 800, 10000, EventOnStartCast) -> SendEmote(29); //gg
+	TryCast(FireBolt, 5, 1000, 800, 10000);
+	TryCast(LightningBolt, 5, 1000, 800, 10000);
+}
+
+SkillHandler("MOONLIGHT_C2") {
+StateAttacking:
+	TryCast(Mammonite, 10, 1000, 0, 5000) -> SendEmote(8);
+}
+
+SkillHandler("MOONLIGHT_C3") {
+StateAny:
+	TryCast(CallMinion, 1, 1000, 2000, 30000)[MinionCount < 3] -> SummonMinions(5, "NINE_TAIL");
+}
+
+SkillHandler("MOONLIGHT") {
+StateIdle:
+	TryCast(CallMinion,1, 1000, 2000, 60000)[MinionCount < 3] -> CallDefaultMinions();
 
 StateChase:
 	@MoonlightCombatActions();
@@ -38,4 +103,16 @@ StateChase:
 StateAttacking:
 	@MoonlightCombatActions();
 	TryCast(Mammonite, 10, 200, 0, 5000) -> SendEmote(8);
+
+StateSpecial:
+	TryCast(None, 1, 1000, 300, 0) -> {
+		AdminHide();
+	}
+
+StateHidden:
+	if(TimeInAiState > 5s && MinionCount == 0)
+	{
+		AdminUnHide();
+		ChangeAiState(StateSearch);
+	}
 }

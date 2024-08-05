@@ -37,3 +37,6 @@
 35,MammoniteCoins,FALSE,FALSE,,,,0,Assets/Prefabs/MammoniteCoins.prefab
 36,LightningBolt,TRUE,TRUE,lightning,,ef_lightbolt,0,
 37,TwoHandQuicken,TRUE,TRUE,twohand,,knight_twohandquicken,0,
+38,Provoke,TRUE,TRUE,provoke,,,0,
+39,PuffOfSmoke,FALSE,FALSE,,,,0,Assets/Effects/Custom/SmokePuff.prefab
+40,Explosion,TRUE,TRUE,sui_explosion,,ef_hit2,0,

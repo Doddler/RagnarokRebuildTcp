@@ -18,9 +18,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
         {
             if (!connection.IsOnlineAdmin)
                 return;
-            
+
             var chara = connection.Entity.Get<WorldObject>();
-            
+
             if (chara.Map == null)
                 return;
 
@@ -40,13 +40,23 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
             if (count > 1000)
                 count = 1000; //yeah no
 
-            var area = Area.CreateAroundPoint(chara.Position, 5, 5);
-            area.ClipArea(chara.Map.MapBounds);
+            if (count < 0) //kinda a hack to let you use a non random position
+            {
+                World.Instance.CreateMonster(chara.Map, monster, Area.CreateAroundPoint(chara.Position, 0), null);
+                ServerLogger.Log($"Player '{chara.Name}' using summon monster admin command to summon monster '{mobName}' at fixed location {chara.Position}.");
+            }
+            else
+            {
+                var area = Area.CreateAroundPoint(chara.Position, 5, 5);
+                area.ClipArea(chara.Map.MapBounds);
 
-            for (int i = 0; i < count; i++)
-                World.Instance.CreateMonster(chara.Map, monster, area, null);
+                for (int i = 0; i < count; i++)
+                    World.Instance.CreateMonster(chara.Map, monster, area, null);
 
-            ServerLogger.Log($"Player '{chara.Name}' using summon monster admin command to summon {count} of monster '{mobName}'.");
+                ServerLogger.Log($"Player '{chara.Name}' using summon monster admin command to summon {count} of monster '{mobName}'.");
+            }
+
+
         }
     }
 }

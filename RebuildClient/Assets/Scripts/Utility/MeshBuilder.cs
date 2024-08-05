@@ -162,7 +162,7 @@ namespace Assets.Scripts.Utility
         }
 
         
-        public Mesh Build(string name = "Mesh", bool buildSecondaryUVs = false)
+        public Mesh Build(string name = "Mesh", bool buildSecondaryUVs = false, int compressionLevel = 0)
         {
             if (!HasMesh())
                 return new Mesh();
@@ -197,6 +197,13 @@ namespace Assets.Scripts.Utility
             mesh.OptimizeIndexBuffers();
             mesh.OptimizeReorderVertexBuffer();
 #if UNITY_EDITOR
+            if(compressionLevel == 1)
+                MeshUtility.SetMeshCompression(mesh, ModelImporterMeshCompression.Low);
+            if(compressionLevel == 2)
+                MeshUtility.SetMeshCompression(mesh, ModelImporterMeshCompression.Medium);
+            if(compressionLevel == 3)
+                MeshUtility.SetMeshCompression(mesh, ModelImporterMeshCompression.High);
+
             if(buildSecondaryUVs)
                 Unwrapping.GenerateSecondaryUVSet(mesh, MeshBuilder.GetUnwrapParam());
 #endif

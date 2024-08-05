@@ -19,6 +19,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 #pragma warning disable CS8618 //non nullable member is uninitialized
 
@@ -274,7 +275,7 @@ public class NetworkManager
 
         try
         {
-            if (connection.Entity.IsAlive())
+            if (connection.IsAlive && connection.Entity.IsAlive())
             {
                 //var player = connection.Entity.Get<Player>();
                 //var combatEntity = connection.Entity.Get<CombatEntity>();
@@ -284,6 +285,7 @@ public class NetworkManager
                 //connection.ClientConnection.Disconnect("Thanks for playing!");
 
                 World.FullyRemoveEntity(ref connection.Entity);
+                connection.IsAlive = false;
             }
 
 

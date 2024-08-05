@@ -319,6 +319,39 @@ public class ScriptBuilder
         itemDefinitions.Add($"DataManager.RegisterItem(\"{name}\", new {behaviorName}());");
     }
 
+    public void StartMonsterEventSection(string section)
+    {
+        if (methodName == section)
+            return;
+        
+        functionSources.Clear();
+        functionBaseClasses.Clear();
+        additionalVariables.Clear();
+        terminalFunctions.Clear();
+        
+        CloseScope();
+        StartIndentedBlockLine().AppendLine($"public override void {section}(MonsterSkillAiState state)");
+        OpenScope();
+        
+        UseStateMachine = false;
+        UseStateStorage = false;
+        UseLocalStorage = false;
+        
+        LoadObjectProperties(typeof(MonsterSkillAiState), "state");
+        LoadFunctionSource(typeof(MonsterSkillAiState), "state");
+        LoadFunctionSource(typeof(MonsterSkillAiBase), "this"); //probably don't need this but may as well...
+
+        foreach (var i in Enum.GetValues<CharacterSkill>())
+            additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
+
+        foreach (var i in Enum.GetValues<MonsterSkillAiFlags>())
+            additionalVariables.TryAdd(i.ToString(), $"MonsterSkillAiFlags.{i}");
+
+
+        foreach (var i in Enum.GetValues<MonsterAiState>())
+            additionalVariables.TryAdd(i.ToString(), $"MonsterAiState.{i}");
+    }
+
     public void StartMonsterSkillAiSection(string section)
     {
         if (methodName == section)

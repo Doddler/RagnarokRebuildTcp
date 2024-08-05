@@ -376,7 +376,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            zoomRange = new Vector2(30, 150);
+            zoomRange = new Vector2(30, 500);
 #endif
         }
 
@@ -827,7 +827,7 @@ namespace Assets.Scripts
             var hasGroundSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ground;
 
             var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill;
-            var canClickEnemy = canInteract && !mouseTarget.IsAlly && mouseTarget.CharacterType != CharacterType.NPC;
+            var canClickEnemy = canInteract && !mouseTarget.IsAlly && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickNpc = canInteract && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc;
             var canMove = ClickDelay <= 0 && isAlive && !isSitting;
@@ -1241,6 +1241,12 @@ namespace Assets.Scripts
                 Instance.ErrorNoticeUi.text = "<color=red>Error: </color>" + text;
                 Instance.IsInErrorState = true;
             });
+        }
+
+        public void OnApplicationFocus(bool hasFocus)
+        {
+            if (!hasFocus)
+                isHolding = false;
         }
 
         public void Update()

@@ -40,9 +40,9 @@ namespace Assets.Scripts.Editor
                 if(!string.IsNullOrWhiteSpace(skill.Icon) && !iconNames.Contains(skill.Icon))
                     iconNames.Add(skill.Icon);
             
-            var atlasPath = "Assets/Textures/Resources/ItemAtlas.spriteatlasv2";
+            var atlasPath = "Assets/Textures/ItemAtlas.spriteatlasv2";
             if (!File.Exists(atlasPath))
-                TextureImportHelper.CreateAtlas("ItemAtlas.spriteatlasv2", "Assets/Textures/Resources/");
+                TextureImportHelper.CreateAtlas("ItemAtlas.spriteatlasv2", "Assets/Textures/");
             
             var atlas = SpriteAtlasAsset.Load(atlasPath);
             var atlasObj = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(atlasPath);

@@ -233,7 +233,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 var fName = Path.GetFileNameWithoutExtension(path);
                 if (effects.Effects.All(m => m.Name != fName))
                 {
-                    //Debug.Log("Not found: " + fName + " " + effects.Effects[0].Name);
+                    // Debug.Log("Not found: " + fName + " " + effects.Effects[0].Name);
                     var existing = defGroup.GetAssetEntry(guids[i]);
                     if (existing == null)
                         continue;
@@ -243,7 +243,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 }
 
                 var entry = settings.CreateOrMoveEntry(guids[i], defGroup, readOnly: false, postEvent: false);
-                //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
                 entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
                 entry.labels.Add("Effect");
 

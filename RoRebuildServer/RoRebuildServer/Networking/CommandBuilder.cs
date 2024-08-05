@@ -65,6 +65,38 @@ public static class CommandBuilder
         return recipients != null && recipients.Count > 0;
     }
 
+    //alternate Move packet that sends floating point walk data
+    private static void WriteWalkData2(WorldObject c, OutboundMessage packet)
+    {
+        Debug.Assert(c.WalkPath != null);
+        Debug.Assert(c.IsMoving);
+        
+        packet.Write(c.WorldPosition);
+        packet.Write(c.MoveSpeed);
+        packet.Write(c.NextStepDuration - c.MoveProgress); //how long till we reach the next cell
+        packet.Write((byte)(c.TotalMoveSteps - c.MoveStep));
+        //packet.Write((byte)c.MoveStep);
+
+        if (c.TotalMoveSteps > 0)
+        {
+            var i = c.MoveStep + 1; //we can derive our starting cell from the MoveStartPosition above
+
+            //pack directions into 2 steps per byte
+            while (i < c.TotalMoveSteps)
+            {
+                var b = (byte)((byte)(c.WalkPath[i] - c.WalkPath[i - 1]).GetDirectionForOffset() << 4);
+                i++;
+                if (i < c.TotalMoveSteps)
+                    b |= (byte)(c.WalkPath[i] - c.WalkPath[i - 1]).GetDirectionForOffset();
+                i++;
+                packet.Write(b);
+            }
+
+            //var lockTime = c.MoveLockTime - Time.ElapsedTimeFloat;
+            packet.Write(c.InMoveLock);
+        }
+    }
+
     private static void WriteMoveData(WorldObject c, OutboundMessage packet)
     {
         if (c.WalkPath == null)
@@ -74,7 +106,7 @@ public static class CommandBuilder
         }
         
         packet.Write(c.MoveSpeed);
-        packet.Write(c.MoveCooldown);
+        packet.Write(c.MoveProgress);
         packet.Write((byte)c.TotalMoveSteps);
         packet.Write((byte)c.MoveStep);
         if (c.TotalMoveSteps > 0)
@@ -136,7 +168,7 @@ public static class CommandBuilder
 
         if (c.State == CharacterState.Moving)
         {
-            WriteMoveData(c, packet);
+            WriteWalkData2(c, packet);
         }
 
     }
@@ -168,6 +200,15 @@ public static class CommandBuilder
         }
 
         NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void ChangeCombatTargetableState(WorldObject target, bool canInteract)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.ChangeTargetableState, 8);
+        packet.Write(target.Id);
+        packet.Write(canInteract);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
     }
 
     public static void StartCastMulti(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl,
@@ -385,10 +426,10 @@ public static class CommandBuilder
     /// <param name="c"></param>
     public static void SendStartMoveEntityMulti(WorldObject c)
     {
-        var packet = NetworkManager.StartPacket(PacketType.StartMove, 256);
+        var packet = NetworkManager.StartPacket(PacketType.StartWalk, 256);
 
         packet.Write(c.Id);
-        WriteMoveData(c, packet);
+        WriteWalkData2(c, packet);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -396,17 +437,17 @@ public static class CommandBuilder
     /// <summary>
     /// Special action that informs the client that a character will move from their current position to a destination without regards to distance.
     /// </summary>
-    public static void SendMoveToFixedPositionMulti(WorldObject c, Position dest, float time)
-    {
-        var packet = NetworkManager.StartPacket(PacketType.FixedMove, 32);
+    //public static void SendMoveToFixedPositionMulti(WorldObject c, Position dest, float time)
+    //{
+    //    var packet = NetworkManager.StartPacket(PacketType.FixedMove, 32);
 
-        packet.Write(c.Id);
-        packet.Write(dest);
-        packet.Write(c.MoveSpeed);
-        packet.Write(time);
+    //    packet.Write(c.Id);
+    //    packet.Write(dest);
+    //    packet.Write(c.MoveSpeed);
+    //    packet.Write(time);
 
-        NetworkManager.SendMessageMulti(packet, recipients);
-    }
+    //    NetworkManager.SendMessageMulti(packet, recipients);
+    //}
 
     public static void SendServerMessage(string text)
     {
@@ -571,12 +612,10 @@ public static class CommandBuilder
 
         var packet = NetworkManager.StartPacket(PacketType.HitTarget, 32);
         packet.Write(c.Id);
-        packet.Write(delayTime);
+        //packet.Write(delayTime);
         packet.Write(damage);
         packet.Write(c.Position);
-        packet.Write(c.IsMoving);
-        if (c.IsMoving)
-            packet.Write(c.MoveCooldown);
+        packet.Write(c.InMoveLock);
         
         NetworkManager.SendMessageMulti(packet, recipients);
     }

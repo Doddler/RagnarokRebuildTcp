@@ -60,6 +60,8 @@ namespace Assets.Scripts.Sprites
 
         private Light directionalLight;
 
+        public Action OnFinishPlaying;
+
         public float CurrentShade = 1f;
         public float TargetShade;
         public float ShadeLevel = 0.85f;
@@ -363,7 +365,11 @@ namespace Assets.Scripts.Sprites
                 if (!DisableLoop)
                     currentFrame = 0;
                 else
+                {
                     currentFrame = currentAction.Frames.Length - 1;
+                    if (OnFinishPlaying != null)
+                        OnFinishPlaying();
+                }
             }
 
             SpriteRenderer.UpdateRenderer();
@@ -414,7 +420,7 @@ namespace Assets.Scripts.Sprites
         public void ChangeMotion(SpriteMotion nextMotion, bool forceUpdate = false)
         {
             // if(SpriteData?.Name == "초보자_남")
-            //     Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion}");
+            // Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion}");
 
             if (CurrentMotion == SpriteMotion.Dead && !forceUpdate)
                 Debug.LogWarning("Changing from dead to something else!");
@@ -500,8 +506,11 @@ namespace Assets.Scripts.Sprites
             if (State == SpriteState.Walking)
             {
                 var newWalkFrame = MoveDistance * 4.5f * 0.37f * 4f / (currentAction.Delay/24f);
-                // Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
+                 // Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
+                 // if(newWalkFrame != currentFrame)
+                 //     Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
                 currentFrame = lastWalkFrame = Mathf.FloorToInt(newWalkFrame) % maxFrame;
+                // Debug.Log(currentFrame);
             }
             else if (currentFrameTime < 0)
                 currentFrameTime += (float)currentAction.Delay / 1000f * AnimSpeed;

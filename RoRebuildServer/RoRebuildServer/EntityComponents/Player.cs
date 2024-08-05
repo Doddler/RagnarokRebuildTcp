@@ -44,7 +44,11 @@ public class Player : IEntityAutoReset
 
     public Entity Target { get; set; }
 
-    public bool AutoAttackLock { get; set; }
+    public bool AutoAttackLock
+    {
+        get; 
+        set;
+    }
     private float regenTickTime { get; set; }
     private int _weaponClass = -1;
     public int WeaponClass => _weaponClass != -1 ? _weaponClass : DefaultWeaponForJob(GetData(PlayerStat.Job));
@@ -76,6 +80,16 @@ public class Player : IEntityAutoReset
     public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
     public void SetStat(CharacterStat type, float val) => CombatEntity.SetStat(type, (int)val);
     public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
+
+    //this will get removed when we have proper job levels
+    private static readonly int[] statsByLevel = new[]
+    {
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25,
+        26, 28, 29, 31, 32, 34, 35, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+        50, 51, 51, 52, 52, 53, 53, 54, 54, 55, 55, 56, 56, 57, 57, 58, 58, 59, 59, 60,
+        60, 61, 61, 62, 62, 63, 63, 64, 64, 65, 65, 66, 66, 67, 67, 68, 68, 69, 69, 69,
+        69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69
+    };
 
     public void Reset()
     {
@@ -146,7 +160,7 @@ public class Player : IEntityAutoReset
 
         return 1;
     }
-
+    
     public void UpdateStats()
     {
         var level = GetData(PlayerStat.Level);
@@ -242,14 +256,6 @@ public class Player : IEntityAutoReset
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
 
-        int[] statsByLevel = new[]
-        {
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-            28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 48, 49, 49, 50, 50, 51,
-            51, 52, 52, 53, 53, 54, 54, 55, 55, 56, 56, 57, 57, 58, 58, 59, 59, 60, 58, 58, 58, 58, 58, 58, 58, 58, 58,
-            58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58
-        };
-
         var pointEarned = statsByLevel[level - 1];
 
         if (job == 0 && pointEarned > 9)
@@ -264,7 +270,7 @@ public class Player : IEntityAutoReset
         else
             SetData(PlayerStat.SkillPoints, pointEarned - pointsUsed);
 
-        if(Connection.IsConnectedAndInGame)
+        if (Connection.IsConnectedAndInGame)
             CommandBuilder.SendUpdatePlayerData(this);
     }
 
@@ -380,12 +386,12 @@ public class Player : IEntityAutoReset
         Character.StopMovingImmediately();
         Character.State = CharacterState.Dead;
         Character.QueuedAction = QueuedAction.None;
-        Character.MoveLockTime = 0f;
+        Character.InMoveLock = false;
         CombatEntity.IsCasting = false;
         CombatEntity.CastingSkill.Clear();
         CombatEntity.QueuedCastingSkill.Clear();
 
-        Character.Map.GatherPlayersForMultiCast(Character);
+        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.SendPlayerDeath(Character);
         CommandBuilder.ClearRecipients();
     }
@@ -568,6 +574,7 @@ public class Player : IEntityAutoReset
             return;
 
         ChangeTarget(enemy);
+        AutoAttackLock = true;
     }
 
     public bool VerifyCanUseSkill(CharacterSkill skill, int lvl)
@@ -645,22 +652,6 @@ public class Player : IEntityAutoReset
 
     public void UpdatePosition()
     {
-        //var connector = DataManager.GetConnector(Character.Map.Name, nextPos);
-
-        //if (connector != null)
-        //{
-        //    Character.State = CharacterState.Idle;
-
-        //    if (connector.Map == connector.Target)
-        //        Character.Map.MoveEntity(ref Entity, Character, connector.DstArea.RandomInArea());
-        //    else
-        //        Character.Map.World.MovePlayerMap(ref Entity, Character, connector.Target, connector.DstArea.RandomInArea());
-
-        //    CombatEntity.ClearDamageQueue();
-
-        //    return;
-        //}
-
         if (!ValidateTarget())
             return;
 
@@ -668,12 +659,8 @@ public class Player : IEntityAutoReset
 
         if (Character.State == CharacterState.Moving)
         {
-            var checkPosition = Character.Position;
-            if (Character.IsMoving && Character.WalkPath != null)
-                checkPosition = Character.WalkPath[Character.MoveStep + 1];
-            if (DistanceCache.IntDistance(checkPosition, targetCharacter.Position) <= GetStat(CharacterStat.Range))
+            if (DistanceCache.IntDistance(Character.Position, targetCharacter.Position) <= GetStat(CharacterStat.Range))
                 Character.StopMovingImmediately();
-            //PerformAttack(targetCharacter);
         }
 
         if (Character.State == CharacterState.Idle)
@@ -687,7 +674,8 @@ public class Player : IEntityAutoReset
     public void AddActionDelay(CooldownActionType type) => CurrentCooldown += ActionDelay.CooldownTime(type);
     public void AddActionDelay(float time) => CurrentCooldown += CurrentCooldown;
 
-    private bool InCombatReadyState => Character.State == CharacterState.Idle && !CombatEntity.IsCasting &&
+    private bool InCombatReadyState => (Character.State == CharacterState.Idle || Character.State == CharacterState.Moving)
+        && !CombatEntity.IsCasting &&
                                        Character.AttackCooldown < Time.ElapsedTimeFloat;
 
     private bool InMoveReadyState => Character.State == CharacterState.Idle && !CombatEntity.IsCasting;
@@ -753,7 +741,7 @@ public class Player : IEntityAutoReset
                 return;
 
             Character.QueuedAction = QueuedAction.None;
-            Character.TryMove(Character.TargetPosition, 0, false);
+            Character.TryMove(Character.TargetPosition, 0);
 
             return;
         }

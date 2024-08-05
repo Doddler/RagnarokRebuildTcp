@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Assets.Scripts.MapEditor;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
 
@@ -110,6 +112,31 @@ namespace Assets.Scripts
                 Mathf.Clamp(v.y, min.y, max.y)
             );
         }
+
+        //Position = Tile Position
+        //Vector2Int = Also Tile Position
+        //Vector2 = Map Position
+        //Vector3 = World Position
+        
+        public static Vector2 ToMapPosition(this Vector3 v) => new Vector2(v.x, v.z);
+        public static Vector2 ToMapPosition(this Position p) => new Vector2(p.X + 0.5f, p.Y + 0.5f);
+        public static Vector2 ToMapPosition(this Vector2Int p) => new Vector2(p.x + 0.5f, p.y + 0.5f);
+        public static Vector2Int ToTilePosition(this Vector3 v) => new(Mathf.FloorToInt(v.x), Mathf.FloorToInt(v.z));
+        public static Vector2Int ToTilePosition(this Vector2 v) => new(Mathf.FloorToInt(v.x), Mathf.FloorToInt(v.y));
+        public static Vector2Int ToTilePosition(this Vector2Int v) => new(v.x, v.y);
+
+        public static Vector3 ToWorldPosition(this Vector2 v)
+        {
+            var walkProvider = RoWalkDataProvider.Instance;
+            var pos = new Vector3(v.x, 0, v.y);
+            if (walkProvider != null)
+                pos.y = walkProvider.GetHeightForPosition(pos);
+            return pos;
+        }
+
+        public static Vector3 ToWorldPosition(this Position p) => ToWorldPosition(p.ToMapPosition());
+        public static Vector3 ToWorldPosition(this Vector2Int p) => ToWorldPosition(p.ToMapPosition());
+
     }
 
     public static class RectHelper

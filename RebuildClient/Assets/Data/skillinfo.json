@@ -546,6 +546,15 @@
     {
       "SkillId": 33,
       "Icon": "nv_basic",
+      "Name": "Self Destruct",
+      "Target": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 34,
+      "Icon": "nv_basic",
       "Name": "Power UP",
       "Target": 0,
       "MaxLevel": 0,

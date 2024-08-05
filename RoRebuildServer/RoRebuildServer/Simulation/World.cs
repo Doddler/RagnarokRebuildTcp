@@ -106,6 +106,7 @@ public class World
                 ch.Map?.RemoveAreaOfEffect(npc.AreaOfEffect);
 
             npc.RemoveSignal();
+            npc.EndAllEvents();
         }
 
         entityList.Remove(ch.Id);
@@ -115,7 +116,7 @@ public class World
 
         //ServerLogger.Log($"Recycling " + ch.Name);
 
-        EntityManager.Recycle(entity);
+        //EntityManager.Recycle(entity);
     }
 
     public void Update()
@@ -581,7 +582,7 @@ public class World
                 throw new Exception("removeList collection blocked while world performing entity removal!");
             
             if (entity.IsNull() || !entity.IsAlive())
-                return;
+                continue;
 
             ServerLogger.Debug($"Removing entity {entity} from world.");
 
@@ -659,9 +660,8 @@ public class World
 
     public void MovePlayerMap(ref Entity entity, WorldObject character, Map map, Position newPosition)
     {
-        moveRequests.Writer.TryWrite(new MapMoveRequest(entity, MoveRequestType.MapMove, character.Map, map, newPosition));
-
         character.IsActive = false;
+        moveRequests.Writer.TryWrite(new MapMoveRequest(entity, MoveRequestType.MapMove, character.Map, map, newPosition));
     }
 
 

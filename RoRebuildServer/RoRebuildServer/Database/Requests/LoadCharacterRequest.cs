@@ -32,7 +32,7 @@ public class LoadCharacterRequest : IDbRequest
     {
         try
         {
-            var ch = await dbContext.Character.FirstOrDefaultAsync(c => c.Id == Id);
+            var ch = await dbContext.Character.AsNoTracking().FirstOrDefaultAsync(c => c.Id == Id);
             if (ch == null)
             {
                 HasCharacter = false;

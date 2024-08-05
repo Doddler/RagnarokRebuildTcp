@@ -62,7 +62,7 @@ namespace Assets.Scripts.Sprites
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);
 
         public int GetJobIdForName(string name) => jobNameToIdTable.GetValueOrDefault(name, -1);
-        public string GetSkillName(CharacterSkill skill) => skillData[skill].Name;
+        public string GetSkillName(CharacterSkill skill) => skillData.TryGetValue(skill, out var skOut) ? skOut.Name : "";
         public SkillData GetSkillData(CharacterSkill skill) => skillData[skill];
         public SkillTarget GetSkillTarget(CharacterSkill skill) => skillData.TryGetValue(skill, out var target) ? target.Target : SkillTarget.Any;
         public Dictionary<CharacterSkill, SkillData> GetAllSkills() => skillData;
@@ -157,12 +157,11 @@ namespace Assets.Scripts.Sprites
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
             foreach (var skill in skills.Items)
                 skillData.Add(skill.SkillId, skill);
-            
+
             var trees = JsonUtility.FromJson<Wrapper<ClientSkillTree>>(SkillTreeData.text);
             foreach (var tree in trees.Items)
                 jobSkillTrees.Add(tree.ClassId, tree);
 
-            
 
             foreach (var mapDef in MapViewpointData.text.Split("\r\n"))
             {
@@ -183,22 +182,23 @@ namespace Assets.Scripts.Sprites
                     HeightIn = int.Parse(s[9]),
                 });
             }
+
             isInitialized = true;
         }
 
         private List<RoSpriteAnimator> tempList;
-        
+
         public void ChangePlayerClass(ServerControllable player, ref PlayerSpawnParameters param)
         {
             if (!isInitialized)
                 throw new Exception($"We shouldn't be changing the player class while not initialized!");
-            
+
             var pData = playerClassLookup[0]; //novice
             if (playerClassLookup.TryGetValue(param.ClassId, out var lookupData))
                 pData = lookupData;
             else
                 Debug.LogWarning("Failed to find player with id of " + param.ClassId);
-            
+
             var hData = playerHeadLookup[0]; //default;
             if (playerHeadLookup.TryGetValue(param.HeadId, out var lookupData2))
                 hData = lookupData2;
@@ -206,15 +206,15 @@ namespace Assets.Scripts.Sprites
                 Debug.LogWarning("Failed to find player head with id of " + param.ClassId);
 
             var bodySprite = player.SpriteAnimator;
-            
+
             //find the head child, discard everything else
             if (tempList == null)
                 tempList = new List<RoSpriteAnimator>();
             else
                 tempList.Clear();
-            
+
             RoSpriteAnimator headSprite = null;
-            
+
             for (var i = 0; i < bodySprite.ChildrenSprites.Count; i++)
             {
                 var type = bodySprite.ChildrenSprites[i].Type;
@@ -235,13 +235,12 @@ namespace Assets.Scripts.Sprites
 
             if (headSprite == null)
                 throw new Exception($"Existing player has no head!");
-            
+
             bodySprite.ChildrenSprites.Clear();
-            for(var i = 0; i < tempList.Count; i++)
+            for (var i = 0; i < tempList.Count; i++)
                 bodySprite.ChildrenSprites.Add(tempList[i]);
-    
         }
-        
+
         public ServerControllable InstantiatePlayer(ref PlayerSpawnParameters param)
         {
             if (!isInitialized)
@@ -344,7 +343,7 @@ namespace Assets.Scripts.Sprites
                 CameraFollower.Instance.CharacterJob.text = pData.Name;
                 CameraFollower.Instance.CharacterName.text = $"Lv. {control.Level} {control.Name}";
             }
-            
+
             // control.gameObject.AddComponent<RoSpriteTrailSpawner>();
 
             return control;
@@ -449,7 +448,7 @@ namespace Assets.Scripts.Sprites
             return control;
         }
 
-        public ServerControllable InstantiateMonster(ref MonsterSpawnParameters param)
+        public ServerControllable InstantiateMonster(ref MonsterSpawnParameters param, CharacterType entityType)
         {
             if (!isInitialized)
                 Initialize();
@@ -467,10 +466,11 @@ namespace Assets.Scripts.Sprites
             go.layer = LayerMask.NameToLayer("Characters");
             go.transform.localScale = new Vector3(1.5f * mData.Size, 1.5f * mData.Size, 1.5f * mData.Size);
             var control = go.AddComponent<ServerControllable>();
-            if (param.ClassId < 4000)
-                control.CharacterType = CharacterType.NPC;
-            else
-                control.CharacterType = CharacterType.Monster;
+            // if (param.ClassId < 4000)
+            //     control.CharacterType = CharacterType.NPC;
+            // else
+            //     control.CharacterType = CharacterType.Monster;
+            control.CharacterType = entityType;
             control.SpriteMode = ClientSpriteType.Sprite;
             control.IsInteractable = param.Interactable;
             var billboard = go.AddComponent<BillboardObject>();

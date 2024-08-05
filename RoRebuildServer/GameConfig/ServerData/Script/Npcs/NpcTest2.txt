@@ -1,0 +1,35 @@
+﻿
+
+event NpcWalkTest {
+    StartTimer(100);
+    ChangeNpcClass("4_F_KAFRA6");
+    ShowNpc();
+    StartWalkToRandomTile(9, 100);
+OnTimer 100:
+    if(IsMoving)
+        ResetTimer();
+OnTimer 300:
+    EndEvent();
+}
+
+Npc("guild_vs2", "Kafra Staff#DebugRoomVs2", "4_F_KAFRA6", 35, 45, SW, 1, 1) 
+{
+    local count = 0;
+OnClick:
+    count = 0;
+    HideNpc();
+    StartTimer(100);
+
+OnTimer 1000:
+    count = count + 1;
+    CreateEvent("NineTailWalkEvent", SelfPosition, 0);
+    CreateEvent("NineTailWalkEvent", SelfPosition, 1);
+    CreateEvent("NineTailWalkEvent", SelfPosition, 2);
+    if(count < 30)
+        ResetTimer();
+OnTimer 2000:
+    StopTimer();
+    ShowNpc();        
+}
+
+

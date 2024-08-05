@@ -56,3 +56,18 @@ StateAttacking:
 StateChase:
 	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(9);
 }
+
+SkillHandler("MARINE_SPHERE") {
+StateIdle:
+	//automatically self destruct if hit by another self destruct, but fast
+	TryCast(SelfDestruct, 1, 1000, 800, 5000, HideSkillName)[LastDamageSourceType == SelfDestruct];
+	
+	//self destruct chance is 5% per second increasing by 0.1% for every 1% HP it loses.
+	TryCast(SelfDestruct, 1, 50 + (100-HpPercent) * 2, 2000, 5000, HideSkillName)[HpPercent < 99];
+	
+OnDie:
+	EnterPostDeathPhase();
+	SetHpNoNotify(500);
+StateSpecial:
+    TryCast(SelfDestruct, 1, 1000, 4000, 0, EventOnStartCast | HideSkillName);
+}

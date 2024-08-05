@@ -37,6 +37,9 @@ namespace Assets.Scripts.MapEditor
         {
             if (globalMap == null)
                 return new Color32(0, 0, 0, 1);
+
+            if (position.x < 0 || position.y < 0 || position.x > mWidth || position.y > mHeight)
+                return new Color(0, 0, 0, 1f);
             
             var pos = new Vector2(Mathf.Clamp(position.x, 0, mWidth - 1), Mathf.Clamp(position.y, 0, mHeight - 1));
             var x1 = (int)Mathf.Floor(pos.x);

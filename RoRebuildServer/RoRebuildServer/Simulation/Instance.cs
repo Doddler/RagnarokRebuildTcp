@@ -76,8 +76,12 @@ public class Instance
 
         foreach (var entity in Entities)
         {
-            if(entity.IsAlive())
-                entity.Get<WorldObject>().Update();
+            if (entity.IsAlive())
+            {
+                var chara = entity.Get<WorldObject>();
+                if(chara.IsActive)
+                    chara.Update();
+            }
         }
     }
 }

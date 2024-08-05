@@ -2991,6 +2991,16 @@
       "AttackTiming": 0.624
     },
     {
+      "Id": 4298,
+      "Code": "MOONLIGHT_CLONE",
+      "Name": "Moonlight Flower",
+      "SpriteName": "moonlight.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.18
+    },
+    {
       "Id": 1000,
       "Code": "WARP",
       "Name": "Warp",

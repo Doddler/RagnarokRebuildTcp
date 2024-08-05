@@ -30,7 +30,9 @@ public enum MonsterAiState : byte
     StateAttacking,
     StateAdjust,
     StateDead,
-    StateFlee
+    StateFlee,
+    StateHidden,
+    StateSpecial,
 }
 
 public enum MonsterInputCheck : byte

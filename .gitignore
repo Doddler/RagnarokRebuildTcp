@@ -38,7 +38,8 @@ RebuildClient/log.txt
 RebuildClient/Assets/AddressableAssetsData/Windows/addressables_content_state.bin
 RebuildClient/.idea/
 RebuildClient/ServerData/
-RebuildClient/Assets/Effects/
+RebuildClient/Assets/Effects/*
+!RebuildClient/Assets/Effects/Custom/
 RebuildClient/Assets/AddressableAssetsData/AssetGroups/
 RebuildClient/Assets/AddressableAssetsData/link.xml
 RebuildClient/Assets/AddressableAssetsData/link.xml.meta

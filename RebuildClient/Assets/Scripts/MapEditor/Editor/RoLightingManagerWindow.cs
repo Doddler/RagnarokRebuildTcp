@@ -15,6 +15,7 @@ namespace Assets.Scripts.MapEditor.Editor
     class RoLightingManagerWindow : EditorWindow
     {
         public bool IsBaking;
+        public bool IsOcclusionBaking;
         public bool HasAmbient;
         public bool UseMultiMap;
         public bool ResetMapResources;
@@ -371,6 +372,51 @@ namespace Assets.Scripts.MapEditor.Editor
             }
         }
         
+        private IEnumerator BakeOcclusionCulling()
+        {
+            StaticOcclusionCulling.Compute();
+            yield return new EditorWaitForSeconds(0.1f);
+            while(StaticOcclusionCulling.isRunning)
+                yield return new EditorWaitForSeconds(0.1f);
+            
+            EditorSceneManager.MarkAllScenesDirty();
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.Refresh();
+        }
+        
+        private IEnumerator BakeOcclusionCullingMultiScene()
+        {
+            
+            
+            IsOcclusionBaking = true;
+            for (var i = 0; i < Scenes.Length; i++)
+            {
+                var path = AssetDatabase.GetAssetPath(Scenes[i]);
+                EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
+                
+                if (!TryFindMapEditor(out var map))
+                    continue;
+                
+                SceneView.lastActiveSceneView.pivot = new Vector3(map.MapData.InitialSize.x, -10f, map.MapData.Size.y*0.8f);
+                //var oldFog = RenderSettings.fog;
+                //RenderSettings.fog = false;
+              
+                StaticOcclusionCulling.Compute();
+                yield return new EditorWaitForSeconds(0.1f);
+                while (StaticOcclusionCulling.isRunning)
+                    yield return new EditorWaitForSeconds(0.1f);
+                
+                //RenderSettings.fog = oldFog;
+                EditorSceneManager.MarkAllScenesDirty();
+                EditorSceneManager.SaveOpenScenes();
+                AssetDatabase.Refresh();
+                if (!IsOcclusionBaking)
+                    break;
+            }
+
+            IsOcclusionBaking = false;
+        }
+        
         private IEnumerator StartBaking()
         {
             //this is really stupid but you can end up in a race where it starts baking before
@@ -720,6 +766,29 @@ namespace Assets.Scripts.MapEditor.Editor
                     editor.RebuildProbes();
             }
 
+            if (!IsOcclusionBaking && !IsBaking &&  !StaticOcclusionCulling.isRunning)
+            {
+                if (GUILayout.Button("Bake Occlusion"))
+                    lightBakeCoroutine = EditorCoroutineUtility.StartCoroutine(BakeOcclusionCulling(), this);
+
+                if (GUILayout.Button("Bake All Occlusion"))
+                {
+                    bakeIndex = 0;
+                    lightBakeCoroutine = EditorCoroutineUtility.StartCoroutine(BakeOcclusionCullingMultiScene(), this);
+                    
+
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Cancel"))
+                {
+                    Lightmapping.Cancel();
+                    IsBaking = false;
+                    IsOcclusionBaking = false;
+                }
+            }
+
             EditorGUILayout.EndHorizontal();
 
 
@@ -727,7 +796,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
             EditorGUILayout.BeginHorizontal();
 
-            if (!IsBaking)
+            if (!IsBaking && !IsOcclusionBaking)
             {
 
                 if (GUILayout.Button("Bake Without Ambient Occlusion"))
@@ -747,7 +816,7 @@ namespace Assets.Scripts.MapEditor.Editor
                     BakeAmbient();
                 }
 
-                if (GUILayout.Button("Do Light Probe Thing"))
+                if (GUILayout.Button("Build Sprite Lighting"))
                 {
                     if (TryFindMapEditor(out var map))
                     {
@@ -762,6 +831,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 {
                     Lightmapping.Cancel();
                     IsBaking = false;
+                    IsOcclusionBaking = false;
                 }
             }
 

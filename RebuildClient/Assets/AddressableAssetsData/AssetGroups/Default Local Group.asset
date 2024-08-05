@@ -10445,6 +10445,75 @@ MonoBehaviour:
     m_SerializedLabels:
     - Effect
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c569156e9dac454db70242462d1776a
+    m_Address: Assets/Textures/UI/UiAtlas.spriteatlasv2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81256b27eb27dbc439d2b23d1a2a584d
+    m_Address: Assets/Textures/ItemAtlas.spriteatlasv2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e6011902511a8240b3ddef8d1afa170
+    m_Address: Assets/Maps/minimap/valkyrie.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91f181be304428a4f89cf76101edd057
+    m_Address: Assets/Maps/minimap/valkyrie_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e55ff66aa68ecc45a9df6d91181950a
+    m_Address: "Assets/Sprites/Characters/Cart/\uC190\uC218\uB808.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67e318770165ff543a87150aab9a8be9
+    m_Address: "Assets/Sprites/Characters/Cart/\uC190\uC218\uB8081.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 631e961c5653deb4c91572198dcaf6e1
+    m_Address: "Assets/Sprites/Characters/Cart/\uC190\uC218\uB8082.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 799a2fbfd72fec14fb2c5f4120f543dd
+    m_Address: "Assets/Sprites/Characters/Cart/\uC190\uC218\uB8083.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 260e06f75c96fe94d8437fc4805d8fbe
+    m_Address: "Assets/Sprites/Characters/Cart/\uC190\uC218\uB8084.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2a10f668d8561f46a255b6f72ea470b
+    m_Address: Assets/Effects/Custom/SmokePuff.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3f36e46ae8aa9b44a74ed744bfff689
+    m_Address: Assets/Sprites/customsmoke.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae1b04ef0da216f4eaaffd18d8fa6f79
+    m_Address: Assets/Effects/Prefabs/Explosion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

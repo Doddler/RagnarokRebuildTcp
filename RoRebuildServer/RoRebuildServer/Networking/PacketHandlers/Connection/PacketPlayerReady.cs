@@ -11,10 +11,14 @@ public class PacketPlayerReady : IClientPacketHandler
         if (connection.Character == null || connection.Character.Map == null || connection.Player == null)
             return;
 
-        connection.Character.IsActive = true;
-        connection.Character.Map.SendAllEntitiesToPlayer(ref connection.Entity);
+        if (connection.Character.IsActive)
+            throw new Exception($"Woah! A player {connection.Character.Name} is trying to send a PlayerReady packet while they're already ready!");
 
-        connection.Character.Map.SendAddEntityAroundCharacter(ref connection.Entity, connection.Character);
+        connection.Character.Map.ActivatePlayerAndNotifyNearby(connection.Player);
+
+        //connection.Character.IsActive = true;
+        //connection.Character.Map.SendAllEntitiesToPlayer(ref connection.Entity);
+        //connection.Character.Map.SendAddEntityAroundCharacter(ref connection.Entity, connection.Character);
 
         CommandBuilder.SendExpGain(connection.Player, 0); //update their exp
 

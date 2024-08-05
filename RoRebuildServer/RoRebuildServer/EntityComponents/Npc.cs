@@ -4,6 +4,7 @@ using System.Diagnostics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
@@ -35,7 +36,7 @@ public class Npc : IEntityAutoReset
 
     private int[]? valuesInt;
     private string[]? valuesString;
-    
+
     public int[]? ParamsInt;
     public string? ParamString;
 
@@ -52,14 +53,14 @@ public class Npc : IEntityAutoReset
 
     private string? currentSignalTarget;
 
-    private SkillCastInfo? skillInfo;
+    //private SkillCastInfo? skillInfo;
 
     public bool IsHidden() => !Entity.Get<WorldObject>().Hidden;
     public Position SelfPosition => Character.Position;
 
     public int[] ValuesInt => valuesInt ??= ArrayPool<int>.Shared.Rent(NpcInteractionState.StorageCount);
     public string[] ValuesString => valuesString ??= ArrayPool<string>.Shared.Rent(NpcInteractionState.StorageCount);
-    
+
     public void Update()
     {
         if (TimerActive && TimerStart + LastTimerUpdate + TimerUpdateRate < Time.ElapsedTime)
@@ -93,10 +94,10 @@ public class Npc : IEntityAutoReset
             EntityListPool.Return(Events);
             Events = null;
         }
-        
-        if(valuesInt != null)
+
+        if (valuesInt != null)
             ArrayPool<int>.Shared.Return(valuesInt);
-        if(valuesString != null) 
+        if (valuesString != null)
             ArrayPool<string>.Shared.Return(valuesString);
 
         valuesInt = null!;
@@ -161,7 +162,7 @@ public class Npc : IEntityAutoReset
 
         player.IsInNpcInteraction = false;
         player.NpcInteractionState.Reset();
-        
+
         CommandBuilder.SendNpcEndInteraction(player);
     }
 
@@ -176,10 +177,10 @@ public class Npc : IEntityAutoReset
         player.IsInNpcInteraction = true;
         player.NpcInteractionState.IsTouchEvent = true;
         player.NpcInteractionState.BeginInteraction(ref Entity, player);
-        
+
         var res = Behavior.OnTouch(this, player, player.NpcInteractionState);
         player.NpcInteractionState.InteractionResult = res;
-        
+
         if (res == NpcInteractionResult.EndInteraction)
         {
             player.IsInNpcInteraction = false;
@@ -192,10 +193,10 @@ public class Npc : IEntityAutoReset
         player.IsInNpcInteraction = true;
         player.NpcInteractionState.IsTouchEvent = false;
         player.NpcInteractionState.BeginInteraction(ref Entity, player);
-        
+
         var res = Behavior.OnClick(this, player, player.NpcInteractionState);
         player.NpcInteractionState.InteractionResult = res;
-        
+
         if (res == NpcInteractionResult.EndInteraction)
         {
             player.IsInNpcInteraction = false;
@@ -208,14 +209,14 @@ public class Npc : IEntityAutoReset
     {
         player.NpcInteractionState.InteractionResult = NpcInteractionResult.None;
         NpcInteractionResult res;
-        
+
         if (player.NpcInteractionState.IsTouchEvent)
             res = Behavior.OnTouch(this, player, player.NpcInteractionState);
         else
             res = Behavior.OnClick(this, player, player.NpcInteractionState);
 
         player.NpcInteractionState.InteractionResult = res;
-        
+
         if (res == NpcInteractionResult.EndInteraction)
         {
             player.IsInNpcInteraction = false;
@@ -248,7 +249,7 @@ public class Npc : IEntityAutoReset
     {
         if (Character.Map == null)
             throw new Exception($"Could not perform function AssignSignalTarget on npc {FullName}, it is not currently assigned to a map!");
-        
+
         RemoveSignal();
 
         Character.Map?.Instance.NpcNameLookup.TryAdd(signal, Entity);
@@ -259,9 +260,9 @@ public class Npc : IEntityAutoReset
     {
         if (Character.Map == null)
         {
-            if(!string.IsNullOrWhiteSpace(currentSignalTarget))
+            if (!string.IsNullOrWhiteSpace(currentSignalTarget))
                 throw new Exception($"Npc '{FullName}' is attempting to remove the signal '{currentSignalTarget}' while not assigned to a map! The signal pointer is probably dangling.");
-            
+
             return;
         }
 
@@ -269,9 +270,49 @@ public class Npc : IEntityAutoReset
             Character.Map?.Instance.NpcNameLookup.Remove(currentSignalTarget);
     }
 
-    public void OnSignal(Npc srcNpc, string signal, int value1=0, int value2=0, int value3=0, int value4=0)
+    public void OnSignal(Npc srcNpc, string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
     {
         Behavior.OnSignal(this, srcNpc, signal, value1, value2, value3, value4);
+    }
+
+    public void RevealAvatar(string name)
+    {
+
+    }
+
+    private void EnsureMobListCreated(int capacity = 4)
+    {
+
+        var mobs = Mobs;
+        if (mobs == null)
+        {
+            mobs = new EntityList(capacity);
+            Mobs = mobs;
+        }
+        else
+            mobs.ClearInactive();
+    }
+
+    public void SummonMobWithType(string name, string type, int x = -1, int y = -1, int width = 0, int height = 0)
+    {
+        if (x < 0 || y < 0)
+        {
+            x = Character.Position.X;
+            y = Character.Position.Y;
+        }
+
+        if (Character.Map == null)
+            return;
+
+        var monster = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(new Position(x, y), width, height);
+
+        EnsureMobListCreated(1);
+        var mob = CreateSingleMonsterWithAutoOwnership(Character.Map, monster, area);
+
+        var m = mob.Get<Monster>();
+        m.ChangeAiSkillHandler(type);
     }
 
     public void SummonMobs(int count, string name, int x, int y, int width = 0, int height = 0)
@@ -285,19 +326,12 @@ public class Npc : IEntityAutoReset
 
         var area = Area.CreateAroundPoint(new Position(x, y), width, height);
 
-        var mobs = Mobs;
-        if (mobs == null)
-        {
-            mobs = new EntityList(count);
-            Mobs = mobs;
-        }
-        else
-            mobs.ClearInactive();
+        EnsureMobListCreated(count);
 
         for (int i = 0; i < count; i++)
-            mobs.Add(World.Instance.CreateMonster(chara.Map, monster, area, null));
+            CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
     }
-    
+
     public void SummonMobsNearby(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
     {
         var chara = Entity.Get<WorldObject>();
@@ -308,17 +342,24 @@ public class Npc : IEntityAutoReset
 
         var area = Area.CreateAroundPoint(chara.Position + new Position(offsetX, offsetY), width, height);
 
-        var mobs = Mobs;
-        if (mobs == null)
-        {
-            mobs = new EntityList(count);
-            Mobs = mobs;
-        }
-        else
-            mobs.ClearInactive();
+        EnsureMobListCreated(count);
 
         for (int i = 0; i < count; i++)
-            mobs.Add(World.Instance.CreateMonster(chara.Map, monster, area, null));
+            CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
+    }
+
+    private Entity CreateSingleMonsterWithAutoOwnership(Map map, MonsterDatabaseInfo monster, Area spawnArea)
+    {
+        var m = World.Instance.CreateMonster(map, monster, spawnArea, null);
+
+        if (IsEvent && Owner.TryGet<WorldObject>(out var owner) && owner.Type == CharacterType.Monster)
+            owner.Monster.AddChild(ref m);
+        else
+        {
+            Mobs.Add(m);
+        }
+
+        return m;
     }
 
     public bool CheckMonstersOfTypeInRange(string name, int x, int y, int distance)
@@ -326,6 +367,23 @@ public class Npc : IEntityAutoReset
         var chara = Entity.Get<WorldObject>();
         Debug.Assert(chara.Map != null, $"Npc {Name} cannot check monsters of type {name} nearby, it is not currently attached to a map.");
         return chara.Map.HasMonsterOfTypeInRange(new Position(x, y), distance, DataManager.MonsterCodeLookup[name]);
+    }
+
+    public void EndAllEvents()
+    {
+        var chara = Entity.Get<WorldObject>();
+        var npc = chara.Npc;
+
+        if (npc.Events == null)
+            return;
+
+        npc.Events.ClearInactive();
+
+        for (var i = 0; i < npc.Events.Count; i++)
+            npc.Events[i].Get<Npc>().EndEvent();
+
+        npc.Events.Clear();
+        //OnMobKill();
     }
 
     public void KillMyMobs()
@@ -378,7 +436,7 @@ public class Npc : IEntityAutoReset
         chara.Map.RemoveEntity(ref Entity, CharacterRemovalReason.OutOfSight, false);
         chara.Hidden = true;
 
-        if(HasTouch && AreaOfEffect != null)
+        if (HasTouch && AreaOfEffect != null)
             chara.Map.RemoveAreaOfEffect(AreaOfEffect);
     }
 
@@ -393,10 +451,27 @@ public class Npc : IEntityAutoReset
             throw new Exception($"Npc {FullName} attempting to execute ShowNpc, but the npc is not currently attached to a map.");
 
         chara.Hidden = false;
-        chara.Map.AddEntity(ref Entity, false);
+        if (!IsEvent)
+            chara.Map.AddEntity(ref Entity, false);
+        else
+            chara.Map.SendAddEntityAroundCharacter(ref Entity, Character);
 
         if (HasTouch && AreaOfEffect != null)
             chara.Map.CreateAreaOfEffect(AreaOfEffect);
+    }
+
+    public void ChangeNpcClass(string className)
+    {
+        if (!Character.Hidden)
+            ServerLogger.LogWarning($"Changing NPC class on a non hidden NPC! This hasn't been implemented, so you shouldn't do it.");
+
+        if (!DataManager.MonsterCodeLookup.TryGetValue(className, out var monInfo))
+        {
+            ServerLogger.LogError($"NPC {Character} not change NPC class to {className} as that class could not be found");
+            return;
+        }
+
+        Character.ClassId = monInfo.Id;
     }
 
     public void SignalMyEvents(string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
@@ -435,10 +510,30 @@ public class Npc : IEntityAutoReset
     {
         if (Character.Map != null && Character.Map.WalkData.FindWalkableCellInArea(Area.CreateAroundPoint(Character.Position, range), out var pos))
             return pos;
-        
+
         return Character.Position;
     }
-    
+
+    public bool IsMoving => Character.IsMoving;
+
+    public void StartWalkToRandomTile(int distance, int speed)
+    {
+        Character.MoveSpeed = speed / 1000f;
+        for (var d = distance; d > 0; d--)
+        {
+            var pos = Character.Map.GetRandomVisiblePositionInArea(Character.Position, distance / 2, distance);
+            if (pos == Character.Position) continue;
+            if (Character.TryMove(pos, 0))
+                return;
+        }
+    }
+
+    public void StartWalkDirect(int x, int y, int speed)
+    {
+        Character.MoveSpeed = speed / 1000f;
+        Character.TryMove(new Position(x, y), 0);
+    }
+
     public void CreateEvent(string eventName, Position pos, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, Position pos, int value1, int value2, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, 0, 0, valueString);
@@ -449,7 +544,7 @@ public class Npc : IEntityAutoReset
     public void CreateEvent(string eventName, int x, int y, int value1, string? valueString = null) => CreateEvent(eventName, x, y, value1, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, int x, int y, int value1, int value2, string? valueString = null) => CreateEvent(eventName, x, y, value1, value2, 0, 0, valueString);
     public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, string? valueString = null) => CreateEvent(eventName, x, y, value1, value2, value3, 0, valueString);
-    
+
     public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, int value4, string? valueString = null)
     {
         var chara = Entity.Get<WorldObject>();
@@ -466,6 +561,9 @@ public class Npc : IEntityAutoReset
 
     public void EndEvent()
     {
+        if (!IsHidden())
+            HideNpc();
+
         Owner = Entity.Null;
         World.Instance.FullyRemoveEntity(ref Entity);
     }
@@ -498,8 +596,8 @@ public class Npc : IEntityAutoReset
         if (chara.Map == null)
             throw new Exception($"Npc {FullName} attempting to play effect, but the npc is not currently attached to a map.");
 
-        chara.Map.GatherPlayersForMultiCast(chara);
-        CommandBuilder.StartCastCircleMulti(pos, size+1, duration/1000f, isAlly);
+        chara.Map.AddVisiblePlayersAsPacketRecipients(chara);
+        CommandBuilder.StartCastCircleMulti(pos, size + 1, duration / 1000f, isAlly);
         CommandBuilder.ClearRecipients();
     }
 
@@ -511,7 +609,7 @@ public class Npc : IEntityAutoReset
 
         var id = DataManager.EffectIdForName[effect];
 
-        chara.Map.GatherPlayersForMultiCast(chara);
+        chara.Map.AddVisiblePlayersAsPacketRecipients(chara);
         CommandBuilder.SendEffectAtLocationMulti(id, chara.Position, facing);
         CommandBuilder.ClearRecipients();
     }
@@ -527,7 +625,7 @@ public class Npc : IEntityAutoReset
 
         //DebugMessage($"Moving npc {Name} to {x},{y}");
 
-        chara.Map.ChangeEntityPosition(ref Entity, chara, new Position(x, y), false);
+        chara.Map.ChangeEntityPosition(ref Entity, chara, chara.WorldPosition, new Position(x, y));
     }
 
     public void DamagePlayersNearby(int damage, int area, int hitCount = 1)
@@ -551,9 +649,9 @@ public class Npc : IEntityAutoReset
                     continue;
 
                 var di = new DamageInfo()
-                    { Damage = (short)damage, HitCount = (byte)hitCount, KnockBack = 0, Source = Entity, Target = e, Time = 0.3f };
+                { Damage = (short)damage, HitCount = (byte)hitCount, KnockBack = 0, Source = Entity, Target = e, Time = 0.3f };
 
-                chara.Map.GatherPlayersForMultiCast(ch);
+                chara.Map.AddVisiblePlayersAsPacketRecipients(ch);
                 CommandBuilder.TakeDamageMulti(ch, di);
                 CommandBuilder.ClearRecipients();
 

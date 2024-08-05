@@ -44,7 +44,7 @@ public class PacketRespawn : IClientPacketHandler
         }
         else
         {
-            ch.Map.GatherPlayersForMultiCast(ch);
+            ch.Map.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.SendPlayerResurrection(ch);
             CommandBuilder.ClearRecipients();
         }

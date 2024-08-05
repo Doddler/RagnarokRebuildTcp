@@ -185,6 +185,8 @@ namespace Assets.Scripts.MapEditor
 
             return false;
         }
+        
+        public float GetHeightForPosition(float x, float y) => GetHeightForPosition(new Vector3(x, 0, y));
 
         public float GetHeightForPosition(Vector3 position)
         {
@@ -206,6 +208,8 @@ namespace Assets.Scripts.MapEditor
 
             return (v1 + v2 + v3 + v4) * 0.2f + 0.05f;
         }
+
+        public Vector3 GetWorldPositionFor2DLocation(float x, float y) => new Vector3(x, GetHeightForPosition(x, y), y);
 
         public Vector3 GetWorldPositionForTile(Vector2Int tile)
         {
@@ -266,6 +270,8 @@ namespace Assets.Scripts.MapEditor
         public bool GetNextWalkableTileForClick(Vector2Int start, Vector2Int dest, out Vector2Int modifiedPosition)
         {
             modifiedPosition = start;
+            
+            Debug.Log($"GetNextWalkableTileForClick({start}, {dest})");
 
             //we'll assume we can't walk on start, since this will only get called if the normal check fails
 
@@ -281,6 +287,8 @@ namespace Assets.Scripts.MapEditor
             if ((start - dest).SquareDistance() >= SharedConfig.MaxPathLength)
             {
                 next = GetClosestInRangePoint(dest, start, SharedConfig.MaxPathLength - 1);
+                
+                Debug.Log($"GetClosestInRangePoint({dest},{start}) returned {next}");
 
                 if ((WalkData.Cell(next).Type & CellType.Walkable) != 0)
                 {

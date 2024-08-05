@@ -43,6 +43,14 @@ public partial class Monster : IEntityAutoReset
 
     private float nextMoveUpdate;
     private float nextAiSkillUpdate;
+    private float timeofLastStateChange;
+    //private float timeEnteredCombat;
+    private float timeLeftCombat;
+
+    public void UpdateStateChangeTime() => timeofLastStateChange = Time.ElapsedTimeFloat;
+    public float TimeInCurrentAiState => Time.ElapsedTimeFloat - timeofLastStateChange;
+    //private float durationInCombat => Target.IsAlive() ? Time.ElapsedTimeFloat - timeEnteredCombat : -1f;
+    private float durationOutOfCombat => !Target.IsAlive() ? Time.ElapsedTimeFloat - timeLeftCombat : -1;
 
     //private float randomMoveCooldown;
 
@@ -69,11 +77,13 @@ public partial class Monster : IEntityAutoReset
     private MonsterSkillAiState skillState = null!;
     public Action<MonsterSkillAiState>? CastSuccessEvent = null;
     private MonsterSkillAiBase? skillAiHandler;
-
+    
     public bool LockMovementToSpawn;
 
     public MonsterAiState CurrentAiState;
-    
+    public MonsterAiState PreviousAiState;
+    public CharacterSkill LastDamageSourceType;
+
     //private WorldObject searchTarget = null!;
 
     private float deadTimeout;
@@ -90,6 +100,16 @@ public partial class Monster : IEntityAutoReset
     public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
     public int GetStat(CharacterStat type) => CombatEntity.GetStat(type);
     public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
+
+    public void CallDeathEvent() => skillAiHandler?.OnDie(skillState);
+
+    public void ChangeAiSkillHandler(string newHandler)
+    {
+        if (DataManager.MonsterSkillAiHandlers.TryGetValue(newHandler, out var handler))
+            skillAiHandler = handler;
+        else
+            ServerLogger.LogWarning($"Could not change monster {Character} Ai Skill handler to handler with name {newHandler}");
+    }
 
     public void Reset()
     {
@@ -109,7 +129,7 @@ public partial class Monster : IEntityAutoReset
         skillState = null!; //really should pool these?
         skillAiHandler = null;
         CastSuccessEvent = null;
-
+        
         Target = Entity.Null;
     }
 
@@ -124,6 +144,7 @@ public partial class Monster : IEntityAutoReset
         SpawnMap = mapName;
         aiEntries = DataManager.GetAiStateMachine(aiType);
         nextAiUpdate = Time.ElapsedTimeFloat + 1f;
+        LastDamageSourceType = CharacterSkill.None;
 
         if (SpawnRule != null)
         {
@@ -142,8 +163,12 @@ public partial class Monster : IEntityAutoReset
 
         if (DataManager.MonsterSkillAiHandlers.TryGetValue(monData.Code, out var handler))
             skillAiHandler = handler;
-    }
 
+        timeofLastStateChange = Time.ElapsedTimeFloat;
+        timeLeftCombat = Time.ElapsedTimeFloat;
+        //timeEnteredCombat = float.NegativeInfinity;
+    }
+    
     public void AddChild(ref Entity child)
     {
         if (!child.IsAlive() && child.Type != EntityType.Monster)
@@ -182,6 +207,9 @@ public partial class Monster : IEntityAutoReset
         SetStat(CharacterStat.Hp, MonsterBase.HP);
         SetStat(CharacterStat.MaxHp, MonsterBase.HP);
         SetStat(CharacterStat.Attack, MonsterBase.AtkMin);
+        SetStat(CharacterStat.Attack2, MonsterBase.AtkMax);
+        SetStat(CharacterStat.MagicAtkMin, MonsterBase.Int + MonsterBase.Int/7 * MonsterBase.Int/7);
+        SetStat(CharacterStat.MagicAtkMax, MonsterBase.Int + MonsterBase.Int/5 * MonsterBase.Int/5);
         SetStat(CharacterStat.Attack2, MonsterBase.AtkMax);
         SetStat(CharacterStat.Range, MonsterBase.Range);
         SetStat(CharacterStat.Def, MonsterBase.Def);
@@ -424,7 +452,7 @@ public partial class Monster : IEntityAutoReset
 
         var a = 0;
         if (skillAiHandler != null && nextAiSkillUpdate < Time.ElapsedTimeFloat && !Character.InAttackCooldown &&
-            Character.QueuedAction == QueuedAction.None)
+            Character.QueuedAction != QueuedAction.Cast)
             AiSkillScanUpdate();
         else
             a = 1;
@@ -459,9 +487,11 @@ public partial class Monster : IEntityAutoReset
                 ServerLogger.Debug($"{Entity}: AI state change from {CurrentAiState}: {entry.InputCheck} -> {entry.OutputCheck} = {entry.OutputState}");
 #endif
 
+            PreviousAiState = CurrentAiState;
             CurrentAiState = entry.OutputState;
+            timeofLastStateChange = Time.ElapsedTimeFloat;
         }
-
+        
         Character.LastAttacked = Entity.Null;
 
         if (Character.Map != null && Character.Map.PlayerCount == 0)
@@ -494,7 +524,7 @@ public partial class Monster : IEntityAutoReset
         if (CombatEntity.IsCasting)
             return;
         
-        if (Character.QueuedAction == QueuedAction.None)
+        if (Character.QueuedAction == QueuedAction.None || Character.QueuedAction == QueuedAction.Move)
             AiStateMachineUpdate();
         
         if (!InCombatReadyState)
@@ -506,11 +536,11 @@ public partial class Monster : IEntityAutoReset
         //a monster really shouldn't be queueing a move, how does that even happen...?
         if (Character.QueuedAction == QueuedAction.Move)
         {
-            if (Character.InMoveLock)
+            if (Character.UpdateAndCheckMoveLock())
                 return;
 
             Character.QueuedAction = QueuedAction.None;
-            Character.TryMove(Character.TargetPosition, 0, false);
+            Character.TryMove(Character.TargetPosition, 0);
 
             return;
         }

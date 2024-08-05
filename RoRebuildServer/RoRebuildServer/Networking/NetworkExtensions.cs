@@ -10,4 +10,10 @@ public static class NetworkExtensions
         buffer.Write((short)position.X);
         buffer.Write((short)position.Y);
     }
+
+    public static void Write(this OutboundMessage buffer, FloatPosition position)
+    {
+        buffer.Write(position.X);
+        buffer.Write(position.Y);
+    }
 }

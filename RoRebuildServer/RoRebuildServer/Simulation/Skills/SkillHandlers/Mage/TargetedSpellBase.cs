@@ -30,13 +30,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
             if (target == null || !target.IsValidTarget(source))
                 return;
 
-            var res = source.CalculateCombatResult(target, 1, lvl, AttackFlags.Magical, GetElement());
+            var res = source.CalculateCombatResult(target, 1, lvl, AttackFlags.Magical, GetSkill(), GetElement());
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);
 
             var ch = source.Character;
 
-            ch.Map?.GatherPlayersForMultiCast(ch);
+            ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.EnsureRecipient(target.Entity);
             CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, GetSkill(), lvl, res);
             CommandBuilder.ClearRecipients();

@@ -126,6 +126,13 @@ namespace Assets.Scripts.Utility
 			StartCoroutine(BeginTransitionScene());
 		}
 
+		private void FixOcclusionCulling(Scene scene, LoadSceneMode mode)
+		{
+			Debug.Log($"{scene.name} {newScene}");
+			if (scene.name == newScene)
+				SceneManager.SetActiveScene(scene);
+		}
+
 		private IEnumerator BeginTransitionScene()
 		{
 			LoadingImage.gameObject.SetActive(true);
@@ -145,6 +152,8 @@ namespace Assets.Scripts.Utility
 
 			var sceneName = $"Assets/Scenes/Maps/{newScene}.unity";
 
+			SceneManager.sceneLoaded += FixOcclusionCulling;
+
 			var trans = Addressables.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 			
 			while (!trans.IsDone)
@@ -154,6 +163,8 @@ namespace Assets.Scripts.Utility
 			}
 			
 			yield return trans;
+
+			SceneManager.sceneLoaded -= FixOcclusionCulling;
 
 			FinishSceneChange();
 		}

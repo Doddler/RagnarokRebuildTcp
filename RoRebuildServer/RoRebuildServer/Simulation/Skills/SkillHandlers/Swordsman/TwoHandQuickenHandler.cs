@@ -23,7 +23,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
             source.SetStat(CharacterStat.AspdBonus, timing);
             source.UpdateStats();
 
-            ch.Map?.GatherPlayersForMultiCast(ch);
+            ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.TwoHandQuicken, lvl);
             //CommandBuilder.SendEffectOnCharacterMulti(ch, DataManager.EffectIdForName["TwoHandQuicken"]); //Two Hand Quicken
             CommandBuilder.ClearRecipients();

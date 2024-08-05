@@ -7,12 +7,15 @@ namespace Assets.Scripts.Objects
     {
         public RoSpriteData SpriteData;
         public Material OverrideMaterial;
+        public AudioClip AudioClip;
 
         public bool IsLoop;
         public bool UseZTest;
         public bool RandomStart;
+        public bool DestroyOnFinish;
 
         private bool isInit;
+        private bool hasStartedAudio;
 
         private CullingGroup cullingGroup;
         private BoundingSphere boundingSphere;
@@ -46,7 +49,12 @@ namespace Assets.Scripts.Objects
             Sprite.State = SpriteState.Idle;
             Sprite.OnSpriteDataLoadNoCollider(SpriteData);
             Sprite.ChangeActionExact(0);
-            
+
+            if (DestroyOnFinish)
+            {
+                Sprite.DisableLoop = true;
+                Sprite.OnFinishAnimation = FinishPlaying;
+            }
             
             
             if(OverrideMaterial != null)
@@ -67,6 +75,11 @@ namespace Assets.Scripts.Objects
                 cullingGroup.SetBoundingSpheres(boundingSpheres);
                 cullingGroup.SetBoundingSphereCount(1);
             }
+        }
+
+        private void FinishPlaying()
+        {
+            Destroy(gameObject);
         }
         
         private void Awake()
@@ -90,7 +103,15 @@ namespace Assets.Scripts.Objects
         {
             if (!isInit)
                 return;
-            
+
+
+            if (AudioClip != null && !hasStartedAudio)
+            {
+                Debug.LogWarning(transform.position + " " + transform.localPosition);
+                AudioManager.Instance.OneShotSoundEffect(-1, AudioClip, transform.localPosition);
+                hasStartedAudio = true;
+            }
+
 #if UNITY_EDITOR
             if (CameraFollower.Instance.CinemachineMode)
             {

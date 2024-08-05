@@ -217,7 +217,11 @@ internal class ScriptTreeWalker
 
     public void SkillSectionHandler(StartSectionContext context)
     {
-        builder.StartMonsterSkillAiSection(context.IDENTIFIER().GetText());
+        var name = context.IDENTIFIER().GetText();
+        if (name == "OnDie")
+            builder.StartMonsterEventSection(name);
+        else
+            builder.StartMonsterSkillAiSection(name);
     }
 
     private string CleanString(string str)

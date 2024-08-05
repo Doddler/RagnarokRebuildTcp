@@ -105,10 +105,10 @@ namespace Assets.Scripts.Utility
 
             mr.enabled = CameraFollower.Instance.DebugVisualization;
 
-            if (target.Position == lastPosition)
+            if (target.transform.localPosition.ToTilePosition() == lastPosition)
                 return;
             
-            UpdateMesh(target.Position);
+            UpdateMesh(target.transform.position.ToTilePosition());
             
         }
     }

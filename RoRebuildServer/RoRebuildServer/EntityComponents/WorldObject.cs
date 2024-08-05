@@ -20,7 +20,8 @@ public enum QueuedAction
     None,
     Cast,
     Move,
-    NpcInteract
+    NpcInteract,
+    Attack
 }
 
 [EntityComponent(new[] { EntityType.Player, EntityType.Monster, EntityType.Npc, EntityType.Effect })]
@@ -33,12 +34,13 @@ public class WorldObject : IEntityAutoReset
     public bool Hidden { get; set; }
     public int ClassId;
     public Direction FacingDirection;
-    public CharacterState State;
+    public CharacterState State { get; set; }
     public CharacterType Type;
-    public Position Position;
     public Position TargetPosition;
     public float MoveModifier;
     public float MoveModifierTime;
+
+    public override string ToString() => $"WorldObject {Type}-{Id}({Name})";
 
     public Position[]? WalkPath;
 
@@ -46,19 +48,46 @@ public class WorldObject : IEntityAutoReset
 
     private EntityList? visiblePlayers;
 
+    public FloatPosition MoveStartPosition;
+    private Position cellPosition;
+    public Position Position
+    {
+        get => cellPosition;
+        set
+        {
+            cellPosition = value;
+            WorldPosition = value; //cast to FloatPosition
+        }
+    }
+
+    private FloatPosition worldPosition;
+    public FloatPosition WorldPosition
+    {
+        get => worldPosition;
+        set
+        {
+            cellPosition = value; //cast to regular Position
+            worldPosition = value;
+        }
+    }
+
     public float SpawnImmunity { get; set; } //you aren't seen as a valid target while this is active
     public float AttackCooldown { get; set; } //delay until you can attack again
     public float MoveSpeed { get; set; } //time it takes to traverse one tile
-    public float MoveCooldown { get; set; } //the amount of time that remains before you step to the next tile
+    public float MoveProgress { get; set; } //the amount of time that remains before you step to the next tile
+    public float NextStepDuration { get; set; }
     public float MoveLockTime { get; set; } //you cannot move while until this time is reached
 
-    public bool InMoveLock => MoveLockTime > Time.ElapsedTimeFloat;
+    public bool InMoveLock { get; set; }
+
+    public bool UpdateAndCheckMoveLock() => InMoveLock = MoveLockTime > Time.ElapsedTimeFloat;
+
     public bool InAttackCooldown => AttackCooldown > Time.ElapsedTimeFloat;
 
     public int MoveStep { get; set; }
     public int TotalMoveSteps { get; set; }
 
-    public float TimeToReachNextStep => FacingDirection.IsDiagonal() ? MoveCooldown * DiagonalSpeedPenalty : MoveCooldown;
+    public float TimeToReachNextStep => NextStepDuration - MoveProgress;
 
     public QueuedAction QueuedAction { get; set; }
 
@@ -153,9 +182,10 @@ public class WorldObject : IEntityAutoReset
         Map = null;
         Name = null!;
         State = CharacterState.Idle;
-        MoveCooldown = 0;
+        MoveProgress = 0;
         MoveSpeed = 0.15f;
         MoveStep = 0;
+        NextStepDuration = 0;
         Position = new Position();
         TargetPosition = new Position();
         FacingDirection = Direction.South;
@@ -199,7 +229,7 @@ public class WorldObject : IEntityAutoReset
 
     public void ResetState(bool resetIfDead = false)
     {
-        MoveCooldown = 0;
+        MoveProgress = 0;
         QueuedAction = QueuedAction.None;
 
         if (State != CharacterState.Dead || resetIfDead)
@@ -299,7 +329,7 @@ public class WorldObject : IEntityAutoReset
         var player = Entity.Get<Player>();
         player.UpdateSit(isSitting);
 
-        Map.GatherPlayersForMultiCast(this);
+        Map.AddVisiblePlayersAsPacketRecipients(this);
         CommandBuilder.ChangeSittingMulti(this);
         CommandBuilder.ClearRecipients();
     }
@@ -316,7 +346,7 @@ public class WorldObject : IEntityAutoReset
         var player = entity.Get<Player>();
         player.HeadFacing = facing;
 
-        Map.GatherPlayersForMultiCast(this);
+        Map.AddVisiblePlayersAsPacketRecipients(this);
         CommandBuilder.ChangeFacingMulti(this);
         CommandBuilder.ClearRecipients();
     }
@@ -327,16 +357,17 @@ public class WorldObject : IEntityAutoReset
 
         ChangeLookDirection(ref Entity, (entity.Get<WorldObject>().Position - Position).Normalize().GetDirectionForOffset(), HeadFacing.Center);
     }
-    public void StopMovingImmediately()
+    public void StopMovingImmediately(bool resetState = true)
     {
         Debug.Assert(Map != null);
 
         if (State == CharacterState.Moving)
         {
-            Map.GatherPlayersForMultiCast(this);
+            Map.AddVisiblePlayersAsPacketRecipients(this);
             CommandBuilder.CharacterStopImmediateMulti(this);
             CommandBuilder.ClearRecipients();
-            State = CharacterState.Idle;
+            if(resetState)
+                State = CharacterState.Idle;
         }
     }
 
@@ -344,10 +375,18 @@ public class WorldObject : IEntityAutoReset
     {
         Debug.Assert(Map != null);
 
-        if (MoveLockTime > Time.ElapsedTimeFloat)
+        if (delay <= 0f)
             return false;
 
+        if (InMoveLock && MoveLockTime < Time.ElapsedTimeFloat)
+            return false;
+        
+        if (!InMoveLock && State == CharacterState.Moving)
+            StopMovingImmediately(false); //tell the client we stop, but we don't want to leave move state
+
+
         MoveLockTime = Time.ElapsedTimeFloat + delay;
+        InMoveLock = true;
 
         return true;
     }
@@ -374,22 +413,19 @@ public class WorldObject : IEntityAutoReset
         return true;
     }
 
+    public float GetFirstStepDuration(FloatPosition nextTile)
+    {
+        var xDistance = WorldPosition.X - nextTile.X;
+        var yDistance = WorldPosition.Y - nextTile.Y;
+        var distance = MathF.Sqrt(xDistance * xDistance + yDistance * yDistance);
+        return MoveSpeed * distance;
+    }
 
-    /// <summary>
-    /// Attempt to move within a certain distance of the target.
-    /// </summary>
-    /// <param name="target">The target location.</param>
-    /// <param name="range">The distance to the target you wish to enter within.</param>
-    /// <param name="useOldNextStep">Should we force the first step of the next move to
-    /// be the step the player is currently on, if they're moving?</param>
-    /// <returns>True if a target position was set.</returns>
-    public bool TryMove(Position target, int range, bool useOldNextStep = true)
+    //updated TryMove function using float position instead
+    public bool TryMove(Position target, int desiredDistanceToTarget)
     {
         Debug.Assert(Map != null);
-        Debug.Assert(range <= 1);
-
-        //if(MoveLockTime > Time.ElapsedTimeFloat)
-        //    ServerLogger.Debug($"{Name} beginning a move while in hit lock state.");
+        Debug.Assert(desiredDistanceToTarget <= 1); //generally you will only move exactly onto the tile (0) or directly next to it (1)
 
         if (!CanMove())
             return false;
@@ -400,69 +436,124 @@ public class WorldObject : IEntityAutoReset
         if (WalkPath == null)
             WalkPath = new Position[PathFinder.MaxDistance + 2];
 
-        var hasOld = false;
-        var oldNext = new Position();
-        var oldCooldown = MoveCooldown;
-
-        if (MoveStep + 1 < TotalMoveSteps && State == CharacterState.Moving && useOldNextStep)
-        {
-            oldNext = WalkPath[MoveStep + 1];
-            if (oldNext.DistanceTo(Position) > 1)
-                throw new Exception("Our next move is a tile more than 1 tile away!");
-            hasOld = true;
-        }
-
-        int len;
-
-        //var moveRange = DistanceCache.FitSquareRangeInCircle(range);
-
-        //if (range <= 1)
-        //{
-        //we won't interrupt the next step we are currently taking, so append it to the start of our new path.
-        if (hasOld)
-            len = Map.Instance.Pathfinder.GetPathWithInitialStep(Map.WalkData, WalkPath[MoveStep], oldNext, target, WalkPath, range, (MoveSpeed - MoveCooldown) / MoveSpeed);
-        else
-            len = Map.Instance.Pathfinder.GetPath(Map.WalkData, Position, target, WalkPath, range);
-        //}
-        //else
-        //{
-        //    len = Map.Instance.Pathfinder.GetPathWithinAttackRange(Map.WalkData, Position, hasOld ? oldNext : Position.Invalid, target, WalkPath, range);
-        //}
-
+        var len = Map.Instance.Pathfinder.GetPath(Map.WalkData, Position, target, WalkPath, desiredDistanceToTarget);
         if (len == 0)
             return false;
 
-
-
-
-        TargetPosition = WalkPath[len - 1]; //reset to last point in walkpath
-        MoveCooldown = MoveSpeed;
+        TargetPosition = WalkPath[len - 1];
+        NextStepDuration = GetFirstStepDuration(WalkPath[1]);
+        MoveStartPosition = WorldPosition;
+        MoveProgress = 0;
         MoveStep = 0;
         TotalMoveSteps = len;
         FacingDirection = (WalkPath[1] - WalkPath[0]).GetDirectionForOffset();
-
-        if (hasOld)
-        {
-            QueuedAction = QueuedAction.None;
-            if (WalkPath[0] == oldNext)
-                MoveCooldown = MoveSpeed - oldCooldown;
-            else
-                MoveCooldown = oldCooldown;
-        }
+        //MoveLockTime = Time.ElapsedTimeFloat;
 
         if (HasCombatEntity && CombatEntity.IsCasting)
         {
-            QueuedAction = QueuedAction.Move;
+            QueuedAction = QueuedAction.Move; //if we're casting we need to wait until we finish before we can move
             return true;
         }
 
         State = CharacterState.Moving;
+        
 
-        Map.StartMove(ref Entity, this);
-        ChangeToActionState();
+        if(!InMoveLock)
+            Map.StartMove(ref Entity, this);
+
+        ChangeToActionState(); //does stuff like recenter the player's head and removes spawn immunity
 
         return true;
     }
+
+    ///// <summary>
+    ///// Attempt to move within a certain distance of the target.
+    ///// </summary>
+    ///// <param name="target">The target location.</param>
+    ///// <param name="range">The distance to the target you wish to enter within.</param>
+    ///// <param name="useOldNextStep">Should we force the first step of the next move to
+    ///// be the step the player is currently on, if they're moving?</param>
+    ///// <returns>True if a target position was set.</returns>
+    //public bool TryMoveOld(Position target, int range, bool useOldNextStep = true)
+    //{
+    //    Debug.Assert(Map != null);
+    //    Debug.Assert(range <= 1);
+
+    //    //if(MoveLockTime > Time.ElapsedTimeFloat)
+    //    //    ServerLogger.Debug($"{Name} beginning a move while in hit lock state.");
+
+    //    if (!CanMove())
+    //        return false;
+
+    //    if (!Map.WalkData.IsCellWalkable(target))
+    //        return false;
+
+    //    if (WalkPath == null)
+    //        WalkPath = new Position[PathFinder.MaxDistance + 2];
+
+    //    var hasOld = false;
+    //    var oldNext = new Position();
+    //    var oldCooldown = MoveProgress;
+
+    //    if (MoveStep + 1 < TotalMoveSteps && State == CharacterState.Moving && useOldNextStep)
+    //    {
+    //        oldNext = WalkPath[MoveStep + 1];
+    //        if (oldNext.DistanceTo(Position) > 1)
+    //            throw new Exception("Our next move is a tile more than 1 tile away!");
+    //        hasOld = true;
+    //    }
+
+    //    int len;
+
+    //    //var moveRange = DistanceCache.FitSquareRangeInCircle(range);
+
+    //    //if (range <= 1)
+    //    //{
+    //    //we won't interrupt the next step we are currently taking, so append it to the start of our new path.
+    //    if (hasOld)
+    //        len = Map.Instance.Pathfinder.GetPathWithInitialStep(Map.WalkData, WalkPath[MoveStep], oldNext, target, WalkPath, range, (MoveSpeed - MoveProgress) / MoveSpeed);
+    //    else
+    //        len = Map.Instance.Pathfinder.GetPath(Map.WalkData, Position, target, WalkPath, range);
+    //    //}
+    //    //else
+    //    //{
+    //    //    len = Map.Instance.Pathfinder.GetPathWithinAttackRange(Map.WalkData, Position, hasOld ? oldNext : Position.Invalid, target, WalkPath, range);
+    //    //}
+
+    //    if (len == 0)
+    //        return false;
+
+
+    //    var initialMoveLength = GetFirstStepDuration(WalkPath[1]);
+
+    //    TargetPosition = WalkPath[len - 1]; //reset to last point in walkpath
+    //    MoveProgress = MoveSpeed;
+    //    MoveStep = 0;
+    //    TotalMoveSteps = len;
+    //    FacingDirection = (WalkPath[1] - WalkPath[0]).GetDirectionForOffset();
+
+    //    if (hasOld)
+    //    {
+    //        QueuedAction = QueuedAction.None;
+    //        if (WalkPath[0] == oldNext)
+    //            MoveProgress = MoveSpeed - oldCooldown;
+    //        else
+    //            MoveProgress = oldCooldown;
+    //    }
+
+    //    if (HasCombatEntity && CombatEntity.IsCasting)
+    //    {
+    //        QueuedAction = QueuedAction.Move;
+    //        return true;
+    //    }
+
+    //    State = CharacterState.Moving;
+
+    //    Map.StartMove(ref Entity, this);
+    //    ChangeToActionState();
+
+    //    return true;
+    //}
 
     //this shortens the move path of any moving character so they only finish the next tile movement and stop
     public void ShortenMovePath()
@@ -470,99 +561,177 @@ public class WorldObject : IEntityAutoReset
         if (Map == null)
             return;
 
-        var needsStop = false;
-
         //if it's not MoveStep + 2, that means the next step is already the last step.
         if (State == CharacterState.Moving && MoveStep + 2 < TotalMoveSteps)
         {
             if (WalkPath == null)
                 throw new Exception($"Error stopping action of character {Name}, who is in the Moving state but it does not have a WalkPath object.");
 
-            TotalMoveSteps = MoveStep + 2;
-            TargetPosition = WalkPath[TotalMoveSteps - 1];
+            var target = WalkPath[MoveStep + 1];
+            if (Position == target) //we might already be inside the next cell, in which case we'll stop at the next one over
+            {
+                MoveStep++;
+                if (MoveStep + 2 >= TotalMoveSteps)
+                    return;
+                target = WalkPath[MoveStep + 1];
+            }
 
-            needsStop = true;
+            if(!TryMove(target, 0))
+                ServerLogger.LogWarning($"We can't shorten our move path because the shorter path is... invalid?");
+
+            //TotalMoveSteps = MoveStep + 2;
+            //TargetPosition = WalkPath[TotalMoveSteps - 1];
         }
 
-        QueuedAction = QueuedAction.None;
+        //QueuedAction = QueuedAction.None;
 
-        if (!needsStop)
-            return;
+        //Map.StartMove(ref Entity, this);
 
-        //ServerLogger.Log($"Stopping {Name} at: " + TargetPosition);
-
-        var time = MoveCooldown;
-        if (FacingDirection.IsDiagonal())
-            time *= 1 / DiagonalSpeedPenalty;
-
-        Map.SendFixedWalkMove(ref Entity, this, TargetPosition, time);
     }
 
-    private void PerformMoveUpdate()
+    //replacement for PerformMoveUpdate that uses floating point positions
+    private void PerformMoveUpdate2()
     {
-        if (MoveLockTime > Time.ElapsedTimeFloat)
-            return;
+        Debug.Assert(WalkPath != null);
+        Debug.Assert(Map != null);
 
-        MoveModifierTime -= Time.DeltaTimeFloat;
-        if (MoveModifierTime < 0)
-            MoveModifier = 1f;
-
-        if (FacingDirection.IsDiagonal())
-            MoveCooldown -= Time.DeltaTimeFloat * DiagonalSpeedPenalty * MoveModifier;
-        else
-            MoveCooldown -= Time.DeltaTimeFloat * MoveModifier;
-
-        if (MoveCooldown < MoveSpeed / 2f)
+        if (InMoveLock)
         {
-            var startPos = Position;
-            var nextPos = WalkPath[MoveStep + 1];
-            Map.ChangeEntityPosition(ref Entity, this, nextPos, true);
-
-            Map.TriggerAreaOfEffectForCharacter(this, startPos, nextPos);
+            if(MoveLockTime >= Time.ElapsedTimeFloat)
+                return;
+            InMoveLock = false;
+            Map.StartMove(ref Entity, this);
         }
 
-        if (MoveCooldown <= 0f)
+        MoveProgress += Time.DeltaTimeFloat;
+        var lastPosition = WorldPosition;
+        var lastCell = cellPosition;
+
+        var startPosition = MoveStep == 0 ? MoveStartPosition : (FloatPosition)WalkPath[MoveStep];
+        var endPosition = (FloatPosition)WalkPath[MoveStep + 1];
+        var dir = Direction.North;
+        var newPosition = WorldPosition;
+
+        while (MoveProgress > NextStepDuration)
         {
-            Debug.Assert(WalkPath != null);
-
-            FacingDirection = (WalkPath[MoveStep + 1] - WalkPath[MoveStep]).GetDirectionForOffset();
-
             MoveStep++;
-            var startPos = WalkPath[MoveStep];
-            var nextPos = WalkPath[MoveStep + 1];
+            if (MoveStep >= TotalMoveSteps - 1)
+            {
+                //we've reached our destination
+                State = CharacterState.Idle;
+                Position = WalkPath[MoveStep];
+                newPosition = Position;
+                TotalMoveSteps = 0;
+                break;
+            }
 
-            if (Map == null)
+            MoveProgress -= NextStepDuration;
+            startPosition = WalkPath[MoveStep];
+            endPosition = WalkPath[MoveStep + 1];
+            dir = (WalkPath[MoveStep + 1] - WalkPath[MoveStep]).GetDirectionForOffset();
+            if (dir.IsDiagonal())
+                NextStepDuration = MoveSpeed * 1.4142f;
+            else
+                NextStepDuration = MoveSpeed;
+        }
+
+        if (State == CharacterState.Moving)
+            newPosition = startPosition.Lerp(endPosition, MoveProgress / NextStepDuration);
+
+        var newCell = (Position)newPosition;
+
+        if (lastCell != newCell)
+        {
+            Map.ChangeEntityPosition(ref Entity, this, lastPosition, newPosition, true);
+            Map.TriggerAreaOfEffectForCharacter(this, lastPosition, newPosition);
+            FacingDirection = dir;
+        }
+
+        if (State == CharacterState.Moving)
+        {
+            WorldPosition = newPosition;
+            cellPosition = WorldPosition; //cast FloatPosition back to cell position
+        }
+        else
+        {
+            if (!Map.IsEntityStacked(this))
                 return;
 
-            if (MoveStep + 1 >= TotalMoveSteps)
-            {
-                Debug.Assert(CombatEntity != null);
-                State = CharacterState.Idle;
-                TotalMoveSteps = 0;
-                if (QueuedAction == QueuedAction.Cast && AttackCooldown < Time.ElapsedTimeFloat && CombatEntity.QueuedCastingSkill.IsValid)
-                    CombatEntity?.ResumeQueuedSkillAction();
-            }
-            else
-            {
-                FacingDirection = (WalkPath[MoveStep + 1] - WalkPath[MoveStep]).GetDirectionForOffset();
-                MoveCooldown += MoveSpeed;
-            }
+            if (Type == CharacterType.Player && Player.AutoAttackLock)
+                return;
+            if (Type == CharacterType.Monster && Monster.Target.IsAlive())
+                return;
 
-            if (Type == CharacterType.Player)
-            {
-                var player = Entity.Get<Player>();
-                player.UpdatePosition();
-                if (State == CharacterState.Idle && player.IsInNpcInteraction)
-                    LookAtEntity(ref player.NpcInteractionState.NpcEntity); //the player is already interacting with an npc, so we should turn to look at it
-            }
-
-            if (Type == CharacterType.Monster)
-            {
-                var monster = Entity.Get<Monster>();
-                monster.ResetDelay();
-            }
+            if (QueuedAction == QueuedAction.None && Map.FindUnoccupiedAdjacentTile(Position, out var newMove))
+                TryMove(newMove, 0);
         }
     }
+
+    //private void PerformMoveUpdate()
+    //{
+    //    if (MoveLockTime > Time.ElapsedTimeFloat)
+    //        return;
+
+    //    MoveModifierTime -= Time.DeltaTimeFloat;
+    //    if (MoveModifierTime < 0)
+    //        MoveModifier = 1f;
+
+    //    if (FacingDirection.IsDiagonal())
+    //        MoveProgress -= Time.DeltaTimeFloat * DiagonalSpeedPenalty * MoveModifier;
+    //    else
+    //        MoveProgress -= Time.DeltaTimeFloat * MoveModifier;
+
+    //    if (MoveProgress < MoveSpeed / 2f)
+    //    {
+    //        var startPos = Position;
+    //        var nextPos = WalkPath[MoveStep + 1];
+    //        Map.ChangeEntityPosition(ref Entity, this, startPos, nextPos);
+
+    //        Map.TriggerAreaOfEffectForCharacter(this, startPos, nextPos);
+    //    }
+
+    //    if (MoveProgress <= 0f)
+    //    {
+    //        Debug.Assert(WalkPath != null);
+
+    //        FacingDirection = (WalkPath[MoveStep + 1] - WalkPath[MoveStep]).GetDirectionForOffset();
+
+    //        MoveStep++;
+    //        var startPos = WalkPath[MoveStep];
+    //        var nextPos = WalkPath[MoveStep + 1];
+
+    //        if (Map == null)
+    //            return;
+
+    //        if (MoveStep + 1 >= TotalMoveSteps)
+    //        {
+    //            Debug.Assert(CombatEntity != null);
+    //            State = CharacterState.Idle;
+    //            TotalMoveSteps = 0;
+    //            if (QueuedAction == QueuedAction.Cast && AttackCooldown < Time.ElapsedTimeFloat && CombatEntity.QueuedCastingSkill.IsValid)
+    //                CombatEntity?.ResumeQueuedSkillAction();
+    //        }
+    //        else
+    //        {
+    //            FacingDirection = (WalkPath[MoveStep + 1] - WalkPath[MoveStep]).GetDirectionForOffset();
+    //            MoveProgress += MoveSpeed;
+    //        }
+
+    //        if (Type == CharacterType.Player)
+    //        {
+    //            var player = Entity.Get<Player>();
+    //            player.UpdatePosition();
+    //            if (State == CharacterState.Idle && player.IsInNpcInteraction)
+    //                LookAtEntity(ref player.NpcInteractionState.NpcEntity); //the player is already interacting with an npc, so we should turn to look at it
+    //        }
+
+    //        if (Type == CharacterType.Monster)
+    //        {
+    //            var monster = Entity.Get<Monster>();
+    //            monster.ResetDelay();
+    //        }
+    //    }
+    //}
 
     public void Update()
     {
@@ -576,6 +745,8 @@ public class WorldObject : IEntityAutoReset
         if (Type == CharacterType.NPC)
         {
             npc.Update();
+            if (IsActive && State == CharacterState.Moving)
+                PerformMoveUpdate2();
             return;
         }
 
@@ -598,7 +769,7 @@ public class WorldObject : IEntityAutoReset
             return;
 
         if (State == CharacterState.Moving)
-            PerformMoveUpdate();
+            PerformMoveUpdate2();
 
     }
 

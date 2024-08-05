@@ -6,7 +6,7 @@ using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
-[ClientPacketHandler(PacketType.StartMove)]
+[ClientPacketHandler(PacketType.StartWalk)]
 public class PacketStartMove : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)

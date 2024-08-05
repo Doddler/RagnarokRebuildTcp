@@ -21,7 +21,7 @@ public class PacketChangeName: IClientPacketHandler
 
         connection.Player.Name = str;
 
-        connection.Character.Map.GatherPlayersForMultiCast(connection.Character);
+        connection.Character.Map.AddVisiblePlayersAsPacketRecipients(connection.Character);
         CommandBuilder.SendChangeNameMulti(connection.Character, str);
         CommandBuilder.ClearRecipients();
     }

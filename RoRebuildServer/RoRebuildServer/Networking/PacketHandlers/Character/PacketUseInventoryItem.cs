@@ -48,7 +48,7 @@ public class PacketUseInventoryItem : IClientPacketHandler
 
         if (item.Effect >= 0)
         {
-            character.Map.GatherPlayersForMultiCast(character);
+            character.Map.AddVisiblePlayersAsPacketRecipients(character);
             CommandBuilder.SendEffectOnCharacterMulti(character, item.Effect);
             CommandBuilder.ClearRecipients();
         }

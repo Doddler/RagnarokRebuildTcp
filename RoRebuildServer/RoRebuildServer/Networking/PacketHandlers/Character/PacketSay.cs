@@ -25,7 +25,7 @@ public class PacketSay : IClientPacketHandler
         ServerLogger.Log($"Chat message from '{connection.Player!.Name}: {text}");
 #endif
 
-        map.GatherPlayersForMultiCast(connection.Character);
+        map.AddVisiblePlayersAsPacketRecipients(connection.Character);
         CommandBuilder.SendSayMulti(connection.Character, text);
         CommandBuilder.ClearRecipients();
     }

@@ -26,11 +26,16 @@ public class NetworkConnection
     public CancellationTokenSource CancellationSource { get; set; }
     public LoadCharacterRequest? LoadCharacterRequest { get; set; }
 
+    //when this connection has its entity removed from the world it is no longer alive. Used to prevent queueing removal while the entity is awaiting recycling.
+    //this happens because the server may remove the player AND the connection might also queue the removal of the player at the same time.
+    public bool IsAlive; 
+
     public NetworkConnection(WebSocket socket)
     {
         Socket = socket;
         CancellationSource = new CancellationTokenSource();
         Cancellation = CancellationSource.Token;
+        IsAlive = true;
     }
 
     public bool IsConnected => Status == ConnectionStatus.Connected;

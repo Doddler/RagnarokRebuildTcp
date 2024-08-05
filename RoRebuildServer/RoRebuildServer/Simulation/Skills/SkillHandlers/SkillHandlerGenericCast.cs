@@ -13,7 +13,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers
             
             source.ApplyCooldownForAttackAction();
 
-            ch.Map?.GatherPlayersForMultiCast(ch);
+            ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.SkillExecuteSelfTargetedSkill(source.Character, CharacterSkill.None, lvl);
             CommandBuilder.ClearRecipients();
         }

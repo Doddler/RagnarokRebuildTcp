@@ -302,7 +302,11 @@ namespace Assets.Scripts.MapEditor
             //needRebuild = true;
             delayToRebuild = Random.Range(4f, 8f);
 
-            Mesh = mesh.Build(name);
+            if (MapData.IsWalkTable)
+                Mesh = mesh.Build(name, false, 3);
+            else
+                Mesh = mesh.Build(name, false, 2);
+            
             if (shadow.HasMesh())
                 MakeShadowlessChild(shadow.Build(name + " shadow"));
             else

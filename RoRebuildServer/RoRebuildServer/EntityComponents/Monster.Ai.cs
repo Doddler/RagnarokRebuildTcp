@@ -378,10 +378,7 @@ public partial class Monster
     {
         if (CombatEntity.IsCasting || Character.InAttackCooldown || !FindRandomTargetInRange(9, out var newTarget))
             return false;
-
-        if(!CombatEntity.AttemptStartSingleTargetSkillAttack(newTarget.Get<CombatEntity>(), CharacterSkill.FireBolt, 5));
-            return false;
-
+        
         nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
 
         return true;
@@ -393,6 +390,9 @@ public partial class Monster
     /// </summary>
     private bool OutWaitStart()
     {
+        if (Target.IsAlive())
+            timeLeftCombat = Time.ElapsedTimeFloat;
+
         Target = Entity.Null;
 
         nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
@@ -581,6 +581,7 @@ public partial class Monster
             return false;
 
         CombatEntity.PerformMeleeAttack(targetEntity);
+        Character.QueuedAction = QueuedAction.None;
 
         //we should have our cooldown set by PerformMeleeAttack actually
         //nextAiUpdate += MonsterBase.AttackTime;
@@ -605,15 +606,16 @@ public partial class Monster
     private bool OutStartAttacking()
     {
         if (Character.IsMoving)
-        {
-            if (Character.StepsRemaining <= 1) //we're already stopping so we can just bail here.
-                return false;
-            //ServerLogger.Debug($"Monster {MonsterBase.Name} {Entity} stopping to attack. Current position {Character.Position} time to stop: {Character.MoveCooldown}");
-            //Character.ShortenMovePath();
             Character.StopMovingImmediately();
-            nextAiUpdate = Time.ElapsedTimeFloat + Character.TimeToReachNextStep;
-            return false;
-        }
+        //{
+        //    if (Character.StepsRemaining <= 1) //we're already stopping so we can just bail here.
+        //        return false;
+        //    //ServerLogger.Debug($"Monster {MonsterBase.Name} {Entity} stopping to attack. Current position {Character.Position} time to stop: {Character.MoveCooldown}");
+        //    //Character.ShortenMovePath();
+            
+        //    nextAiUpdate = Time.ElapsedTimeFloat + Character.TimeToReachNextStep;
+        //    return false;
+        //}
 
         nextAiUpdate = Time.ElapsedTimeFloat;
         nextAiSkillUpdate = nextAiUpdate;

@@ -20,13 +20,13 @@ public class MammoniteHandler : SkillHandlerBase
         //if (source.Entity.Type == EntityType.Monster && lvl == 10)
         //    lvl = 20;
             
-        var res = source.CalculateCombatResult(target, 1f + lvl * 0.5f, 1, AttackFlags.Physical);
+        var res = source.CalculateCombatResult(target, 1f + lvl * 0.5f, 1, AttackFlags.Physical, CharacterSkill.Mammonite);
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 
         var ch = source.Character;
 
-        ch.Map?.GatherPlayersForMultiCast(ch);
+        ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
         CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.Mammonite, lvl, res);
         CommandBuilder.ClearRecipients();
     }

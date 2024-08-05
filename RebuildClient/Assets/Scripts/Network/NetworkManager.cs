@@ -258,6 +258,38 @@ namespace Assets.Scripts.Network
             return new Vector2Int(x, y);
         }
 
+        private void LoadMoveData2(ClientInboundMessage msg, ServerControllable ctrl)
+        {
+            var startPos = new Vector2(msg.ReadFloat(), msg.ReadFloat());
+            var moveSpeed = msg.ReadFloat();
+            var moveDistance = msg.ReadFloat();
+            var totalSteps = (int)msg.ReadByte();
+            var curStep = 0;
+            
+            pathData.Clear();
+            if (totalSteps > 0) //should always be true but whatever
+            {
+                pathData.Add(new Vector2Int(Mathf.FloorToInt(startPos.x), Mathf.FloorToInt(startPos.y)));
+                var i = 1;
+                while (i < totalSteps)
+                {
+                    var b = msg.ReadByte();
+                    pathData.Add(pathData[i - 1].AddDirection((Direction)(b >> 4)));
+                    i++;
+                    if (i < totalSteps)
+                    {
+                        pathData.Add(pathData[i - 1].AddDirection((Direction)(b & 0xF)));
+                        i++;
+                    }
+                }
+            }
+            var isInMoveDelay = msg.ReadBoolean();
+            if(!isInMoveDelay) //we need to remove this and handle this properly
+                ctrl.StartMove2(moveSpeed, moveDistance, totalSteps, curStep, startPos, pathData);
+            
+            //ctrl.SetHitDelay(lockTime);
+        }
+
         private void LoadMoveData(ClientInboundMessage msg, ServerControllable ctrl)
         {
             var moveSpeed = msg.ReadFloat();
@@ -399,7 +431,7 @@ namespace Assets.Scripts.Network
                     Hp = hp,
                     Interactable = interactable
                 };
-                controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData);
+                controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);
             }
 
             controllable.EnsureFloatingDisplayCreated().SetUp(name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
@@ -410,6 +442,7 @@ namespace Assets.Scripts.Network
             }
 
             controllable.SetHp(hp);
+            controllable.IsInteractable = true;
 
             EntityList.Add(id, controllable);
 
@@ -417,7 +450,7 @@ namespace Assets.Scripts.Network
                 return controllable;
 
             if (state == CharacterState.Moving)
-                LoadMoveData(msg, controllable);
+                LoadMoveData2(msg, controllable);
             if (state == CharacterState.Sitting)
             {
                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Sit);
@@ -522,7 +555,7 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            LoadMoveData(msg, controllable);
+            LoadMoveData2(msg, controllable);
         }
 
         private void OnMessageFixedMove(ClientInboundMessage msg)
@@ -647,8 +680,9 @@ namespace Assets.Scripts.Network
             }
 
             var pos = ReadPosition(msg);
+            // Debug.Log($"Stoppping {controllable}");
 
-            controllable.StopImmediate(pos);
+            controllable.StopImmediate(pos, false);
         }
 
         private void OnMessageStopPlayer(ClientInboundMessage msg)
@@ -681,6 +715,7 @@ namespace Assets.Scripts.Network
             var dmg = msg.ReadInt32();
             var hitCount = msg.ReadByte();
             var damageTiming = msg.ReadFloat();
+            var lockTime = msg.ReadFloat();
 
             Debug.Log(hitCount);
 
@@ -940,8 +975,8 @@ namespace Assets.Scripts.Network
             yield return new WaitForSeconds(delay);
             if (target != null && target.SpriteAnimator.IsInitialized)
             {
-                if (hitCount > 1)
-                    target.SlowMove(0.5f, hitCount * 0.2f);
+                // if (hitCount > 1)
+                //     target.SlowMove(0.5f, hitCount * 0.2f);
 
                 for (var i = 0; i < hitCount; i++)
                 {
@@ -972,9 +1007,9 @@ namespace Assets.Scripts.Network
 
                     AttachDamageIndicator(damage, damage * (i + 1), target);
                     // target.SlowMove(0.7f, 0.3f);
-                    target.PosLockTime = 0.2f;
-                    if (target.IsMoving)
-                        target.UpdateMove(true); //this will snap them to the position in their path
+                    //target.PosLockTime = hitLockTime;
+                    // if (target.IsMoving)
+                    //     target.UpdateMove(true); //this will snap them to the position in their path
                     yield return new WaitForSeconds(0.2f);
                 }
             }
@@ -1000,10 +1035,10 @@ namespace Assets.Scripts.Network
         private void OnMessageHit(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
-            var delay = msg.ReadFloat();
+            //var delay = msg.ReadFloat();
             var damage = msg.ReadInt32();
             var pos = ReadPosition(msg);
-            var isMoving = msg.ReadBoolean();
+            var shouldStop = msg.ReadBoolean();
 
             if (!EntityList.TryGetValue(id, out var controllable))
             {
@@ -1025,11 +1060,18 @@ namespace Assets.Scripts.Network
                 controllable.SetHp(controllable.Hp);
             }
 
-            if (delay < 0)
-                return;
+            if (shouldStop)
+            {
+                controllable.StopImmediate(pos, false);
+                controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
+            }
+
+            //if (delay < 0)
+            //    return;
 
             //Debug.Log("Move delay is " + delay);
-            controllable.SetHitDelay(delay);
+            // controllable.SetHitDelay(delay);
+            
 
             // if (controllable.SpriteAnimator.CurrentMotion == SpriteMotion.Dead)
             //     return;
@@ -1042,16 +1084,16 @@ namespace Assets.Scripts.Network
             // if (!controllable.SpriteAnimator.IsAttackMotion)
             //     controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
 
-            if (isMoving && controllable.IsMoving)
-            {
-                var cooldown = msg.ReadFloat();
-
-                controllable.AdjustMovePathToMatchServerPosition(pos, cooldown);
-            }
-            else
-            {
-                controllable.SnapToTile(pos, 0.2f);
-            }
+            // if (isMoving && controllable.IsMoving)
+            // {
+            //     var cooldown = msg.ReadFloat();
+            //
+            //     controllable.AdjustMovePathToMatchServerPosition(pos, cooldown);
+            // }
+            // else
+            // {
+            //     controllable.SnapToTile(pos, 0.2f);
+            // }
         }
 
         public void OnMessageChangeTarget(ClientInboundMessage msg)
@@ -1486,12 +1528,12 @@ namespace Assets.Scripts.Network
                 case PacketType.ConnectionApproved:
                     isReady = true;
                     break;
-                case PacketType.StartMove:
+                case PacketType.StartWalk:
                     OnMessageStartMove(msg);
                     break;
-                case PacketType.FixedMove:
-                    OnMessageFixedMove(msg);
-                    break;
+                // case PacketType.FixedMove:
+                //     OnMessageFixedMove(msg);
+                //     break;
                 case PacketType.RemoveAllEntities:
                     OnMessageRemoveAllEntities(msg);
                     break;
@@ -1682,7 +1724,7 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage();
             //Debug.Log(position);
-            msg.Write((byte)PacketType.StartMove);
+            msg.Write((byte)PacketType.StartWalk);
             msg.Write((short)position.x);
             msg.Write((short)position.y);
 

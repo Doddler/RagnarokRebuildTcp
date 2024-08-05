@@ -1253,6 +1253,12 @@
       "Name": "Izlude Arena",
       "MapMode": 4,
       "Music": "52.mp3"
+    },
+    {
+      "Code": "valkyrie",
+      "Name": "The Hall of Honor",
+      "MapMode": 0,
+      "Music": "09.mp3"
     }
   ]
 }

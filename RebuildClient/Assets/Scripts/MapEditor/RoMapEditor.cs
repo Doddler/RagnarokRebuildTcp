@@ -579,7 +579,7 @@ namespace Assets.Scripts.MapEditor
                         {
                             for (var j = y * ChunkSizeInTiles; j < y * ChunkSizeInTiles + ChunkSizeInTiles; j++)
                             {
-                                Debug.Log($"{i},{j} {mapData.WalkCellData.Cell(i, j).Type}");
+                                // Debug.Log($"{i},{j} {mapData.WalkCellData.Cell(i, j).Type}");
                                 if (mapData.WalkCellData.Cell(i, j).Type != CellType.None)
                                 {
                                     hasUsableTile = true;

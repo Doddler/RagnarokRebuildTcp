@@ -10,6 +10,8 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
+using System;
+using System.Diagnostics;
 using System.Xml.Linq;
 
 namespace RoRebuildServer.EntityComponents.Monsters;
@@ -25,16 +27,49 @@ public class MonsterSkillAiState(Monster monster)
     public int HpPercent => monster.CombatEntity.GetStat(CharacterStat.Hp) * 100 / monster.CombatEntity.GetStat(CharacterStat.MaxHp);
     public int MinionCount => monster.ChildCount;
     private WorldObject? targetForSkill = null;
-    private bool failNextSkill = false;
+    //private bool failNextSkill = false;
 
     public EntityList? Events;
     public int EventsCount => Events?.Count ?? 0;
 
+    public Position CurrentPosition => Monster.Character.Position;
+
     private Dictionary<string, float>? specialCooldowns;
+
+    public CharacterSkill LastDamageSourceType => Monster.LastDamageSourceType;
+
+
+    //public void Debug(string hello) { ServerLogger.Log(hello); }
+
+    public void Die(bool giveExperience = true)
+    {
+        Monster.Die(giveExperience);
+    }
+
+    public void EnterPostDeathPhase()
+    {
+        var hp = Monster.CombatEntity.GetStat(CharacterStat.Hp);
+        var map = monster.Character.Map;
+        if (hp > 0)
+        {
+            ServerLogger.LogWarning($"Monster {Monster.Character} on map {map.Name} called CancelDeath but it is not actually at 0 hp!");
+        }
+
+        Monster.CurrentAiState = MonsterAiState.StateSpecial;
+        Monster.CombatEntity.IsTargetable = false;
+        Monster.CombatEntity.DamageQueue.Clear();
+        Monster.CombatEntity.SetStat(CharacterStat.Hp, 1);
+        Monster.CombatEntity.IsCasting = false;
+        Monster.CombatEntity.ResetSkillCooldowns();
+        Monster.Character.QueuedAction = QueuedAction.None;
+        Monster.Character.StopMovingImmediately();
+        
+        
+        map.AddVisiblePlayersAsPacketRecipients(monster.Character);
+        CommandBuilder.ChangeCombatTargetableState(Monster.Character, false);
+        CommandBuilder.ClearRecipients();
+    }
     
-
-    public void Debug(string hello) { ServerLogger.Log(hello); }
-
     private bool SkillFail()
     {
         SkillCastSuccess = false;
@@ -77,7 +112,62 @@ public class MonsterSkillAiState(Monster monster)
     public void ChangeAiState(MonsterAiState state)
     {
         monster.CurrentAiState = state;
+        Monster.UpdateStateChangeTime();
     }
+
+    public int TimeInAiState => (int)(Monster.TimeInCurrentAiState * 1000);
+
+    public void AdminHide()
+    {
+        var ch = Monster.Character;
+        if (ch.Hidden || ch.Map == null)
+            return;
+
+        ch.Map.RemoveEntity(ref ch.Entity, CharacterRemovalReason.OutOfSight, false);
+        ch.Hidden = true;
+
+        Monster.PreviousAiState = Monster.CurrentAiState;
+        Monster.CurrentAiState = MonsterAiState.StateHidden;
+        Monster.UpdateStateChangeTime();
+
+        Monster.CombatEntity.ClearDamageQueue();
+    }
+
+    public void AdminUnHide()
+    {
+        var ch = Monster.Character;
+        if (!ch.Hidden)
+            return;
+
+
+        if (ch.Map == null)
+            throw new Exception($"Monster {ch} attempting to execute AdminUnHide, but the npc is not currently attached to a map.");
+
+        ch.Hidden = false;
+        ch.Map.AddEntity(ref ch.Entity, false);
+
+        Monster.CurrentAiState = Monster.PreviousAiState;
+        Monster.PreviousAiState = MonsterAiState.StateHidden;
+        Monster.UpdateStateChangeTime();
+    }
+
+    public void SetHpNoNotify(int hp, bool ignoreMax = false)
+    {
+        if (!ignoreMax)
+        {
+            var max = Monster.GetStat(CharacterStat.MaxHp);
+            if (hp > max)
+                hp = max;
+        }
+
+        Monster.SetStat(CharacterStat.Hp, hp);
+    }
+
+    //public bool TriggerSelfTargetedSkillEffect(CharacterSkill skill, int level)
+    //{
+    //    monster.Character.AttackCooldown = 0f; //we always want this to cast
+    //    return monster.CombatEntity.AttemptStartSelfTargetSkill(skill, level);
+    //}
     
     public bool TryCast(CharacterSkill skill, int level, int chance, int castTime, int delay, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
     {
@@ -90,6 +180,8 @@ public class MonsterSkillAiState(Monster monster)
         var ce = monster.CombatEntity;
         var attr = SkillHandler.GetSkillAttributes(skill);
         var range = SkillHandler.GetSkillRange(ce, skill, level);
+
+        var hideSkillName = flags.HasFlag(MonsterSkillAiFlags.HideSkillName);
 
         ExecuteEventAtStartOfCast = flags.HasFlag(MonsterSkillAiFlags.EventOnStartCast);
 
@@ -110,7 +202,7 @@ public class MonsterSkillAiState(Monster monster)
 
         if (attr.SkillTarget == SkillTarget.Self)
         {
-            if(!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f))
+            if(!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f, hideSkillName))
                 return SkillFail();
             ce.SetSkillCooldown(skill, delay / 1000f);
             return SkillSuccess();
@@ -189,33 +281,28 @@ public class MonsterSkillAiState(Monster monster)
         }
     }
 
-    //public void SummonMinion(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
-    //{
-    //    var chara = Entity.Get<WorldObject>();
+    public void SummonMinions(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
+    {
+        Debug.Assert(Monster.Character.Map != null, $"Npc {Monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
 
-    //    Debug.Assert(chara.Map != null, $"Npc {Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+        var monsterDef = DataManager.MonsterCodeLookup[name];
 
-    //    var monster = DataManager.MonsterCodeLookup[name];
+        var area = Area.CreateAroundPoint(Monster.Character.Position + new Position(offsetX, offsetY), width, height);
 
-    //    var area = Area.CreateAroundPoint(chara.Position + new Position(offsetX, offsetY), width, height);
+        for (var i = 0; i < count; i++)
+        {
+            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, Area.CreateAroundPoint(monster.Character.Position, 3), null);
+            var minionMonster = minion.Get<Monster>();
+            minionMonster.ResetAiUpdateTime();
 
-    //    var mobs = Mobs;
-    //    if (mobs == null)
-    //    {
-    //        mobs = new EntityList(count);
-    //        Mobs = mobs;
-    //    }
-    //    else
-    //        mobs.ClearInactive();
-
-    //    for (int i = 0; i < count; i++)
-    //        mobs.Add(World.Instance.CreateMonster(chara.Map, monster, area, null));
-    //}
+            Monster.AddChild(ref minion);
+        }
+    }
 
     public void SendEmote(int emoteId)
     {
         var map = monster.Character.Map;
-        map.GatherPlayersForMultiCast(monster.Character);
+        map.AddVisiblePlayersAsPacketRecipients(monster.Character);
         CommandBuilder.SendEmoteMulti(monster.Character, emoteId);
         CommandBuilder.ClearRecipients();
     }
@@ -225,7 +312,7 @@ public class MonsterSkillAiState(Monster monster)
         if (targetForSkill == null)
             return;
         var map = targetForSkill.Map;
-        map.GatherPlayersForMultiCast(targetForSkill);
+        map.AddVisiblePlayersAsPacketRecipients(targetForSkill);
         CommandBuilder.SendEmoteMulti(targetForSkill, emoteId);
         CommandBuilder.ClearRecipients();
     }

@@ -76,7 +76,8 @@ public struct SkillCastInfo
     public float CastTime;
     public sbyte Range { get; set; }
     public bool IsIndirect { get; set; }
+    public bool HideName { get; set; }
 
     public bool IsValid => Level > 0 && Level <= 30;
-    public void Clear() { Level = 0; Range = -1; IsIndirect = false; }
+    public void Clear() { Level = 0; Range = -1; IsIndirect = false; HideName = false; }
 }

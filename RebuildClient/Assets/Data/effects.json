@@ -417,6 +417,39 @@
       "SoundFile": "knight_twohandquicken",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 38,
+      "Name": "Provoke",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "provoke",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 39,
+      "Name": "PuffOfSmoke",
+      "ImportEffect": false,
+      "Billboard": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": "Assets/Effects/Custom/SmokePuff.prefab"
+    },
+    {
+      "Id": 40,
+      "Name": "Explosion",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "sui_explosion",
+      "Sprite": "",
+      "SoundFile": "ef_hit2",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

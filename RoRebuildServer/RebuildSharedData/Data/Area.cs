@@ -91,7 +91,7 @@ public struct Area
     {
         return new Position(GameRandom.NextInclusive(MinX, MaxX), GameRandom.NextInclusive(MinY, MaxY));
     }
-
+    
     public Direction DirectionFromArea(int x, int y)
     {
         if (x < MinX)

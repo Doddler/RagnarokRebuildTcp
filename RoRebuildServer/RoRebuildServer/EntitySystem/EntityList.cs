@@ -118,6 +118,20 @@ public class EntityList
         return false;
     }
 
+    public bool Contains(ref Entity entity)
+    {
+        if (entities == null)
+            return false;
+
+        for (var i = 0; i < count; i++)
+        {
+            if (entities[i] == entity)
+                return true;
+        }
+
+        return false;
+    }
+
     public int ClearInactive()
     {
         if (entities == null)
