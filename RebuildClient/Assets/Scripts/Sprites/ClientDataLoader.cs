@@ -495,6 +495,8 @@ namespace Assets.Scripts.Sprites
             control.WeaponClass = 0;
             control.Hp = param.Hp;
             control.MaxHp = param.MaxHp;
+            if (ColorUtility.TryParseHtmlString(mData.Color, out var color))
+                sprite.BaseColor = color;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             // control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0);

@@ -94,6 +94,7 @@ public partial class Monster : IEntityAutoReset
 #endif
 
     public bool HasMaster => Master.IsAlive();
+    public Entity GetMaster() => Master;
 
     public static float MaxSpawnTimeInSeconds = 180;
 
@@ -144,6 +145,7 @@ public partial class Monster : IEntityAutoReset
         SpawnMap = mapName;
         aiEntries = DataManager.GetAiStateMachine(aiType);
         nextAiUpdate = Time.ElapsedTimeFloat + 1f;
+        aiTickRate = 0.05f;
         LastDamageSourceType = CharacterSkill.None;
 
         if (SpawnRule != null)
@@ -199,6 +201,17 @@ public partial class Monster : IEntityAutoReset
     public void RemoveChild(ref Entity child)
     {
         Children?.Remove(ref child);
+    }
+
+    public Entity GetRandomChild()
+    {
+        var childCount = Children?.Count ?? 0;
+
+        if(childCount == 0)
+            return Entity.Null;
+
+        var rnd = GameRandom.Next(0, childCount);
+        return Children![rnd];
     }
 
     private void InitializeStats()

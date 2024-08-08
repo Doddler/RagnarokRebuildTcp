@@ -41,4 +41,5 @@ public class CsvMonsterData
     public float ClientOffset { get; set; }
     public float ClientShadow { get; set; }
     public float ClientSize { get; set; }
+    public string Color { get; set; }
 }

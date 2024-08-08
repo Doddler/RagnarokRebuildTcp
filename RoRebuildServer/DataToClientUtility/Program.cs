@@ -234,7 +234,8 @@ class Program
                     Offset = monster.ClientOffset,
                     ShadowSize = monster.ClientShadow,
                     Size = monster.ClientSize,
-                    AttackTiming = monster.SpriteAttackTiming / 1000f
+                    AttackTiming = monster.SpriteAttackTiming / 1000f,
+                    Color = monster.Color
                 };
 
                 monsterData.Add(mc);

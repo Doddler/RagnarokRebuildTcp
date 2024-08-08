@@ -25,6 +25,7 @@ namespace Assets.Scripts.Sprites
         public SpriteState State;
         public float AnimSpeed = 1;
 
+        public Color BaseColor = UnityEngine.Color.white;
         public Color Color;
         public float Alpha { get; set; }
         public int SpriteOrder;
@@ -606,6 +607,7 @@ namespace Assets.Scripts.Sprites
         public void UpdateColor()
         {
             var c = new Color(Color.r * CurrentShade, Color.g * CurrentShade, Color.b * CurrentShade, Alpha);
+            c *= BaseColor;
 
             if (SpriteRenderer != null)
                 SpriteRenderer.SetColor(c);
@@ -617,6 +619,7 @@ namespace Assets.Scripts.Sprites
         public void UpdateChildColor()
         {
             var c = new Color(Parent.Color.r * Parent.CurrentShade, Parent.Color.g * Parent.CurrentShade, Parent.Color.b * Parent.CurrentShade, Parent.Alpha);
+            c *= Parent.BaseColor;
 
             if (SpriteRenderer != null)
                 SpriteRenderer.SetColor(c);

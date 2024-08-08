@@ -440,9 +440,12 @@ public class Npc : IEntityAutoReset
             chara.Map.RemoveAreaOfEffect(AreaOfEffect);
     }
 
-    public void ShowNpc()
+    public void ShowNpc(string? name = null)
     {
         var chara = Entity.Get<WorldObject>();
+
+        if (name != null)
+            chara.Name = name;
 
         if (!chara.Hidden)
             return; //npc is already visible

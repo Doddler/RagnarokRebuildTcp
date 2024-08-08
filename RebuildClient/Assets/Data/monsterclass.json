@@ -8,7 +8,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 5000,
@@ -18,7 +19,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1.1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4001,
@@ -28,7 +30,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4002,
@@ -38,7 +41,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.264
+      "AttackTiming": 0.264,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4003,
@@ -48,7 +52,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.768
+      "AttackTiming": 0.768,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4004,
@@ -58,7 +63,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4005,
@@ -68,7 +74,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4006,
@@ -78,7 +85,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4007,
@@ -88,7 +96,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4008,
@@ -98,7 +107,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4009,
@@ -108,7 +118,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4010,
@@ -118,7 +129,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.166
+      "AttackTiming": 0.166,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4011,
@@ -128,7 +140,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4012,
@@ -138,7 +151,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4013,
@@ -148,7 +162,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.166
+      "AttackTiming": 0.166,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4014,
@@ -158,7 +173,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.36
+      "AttackTiming": 0.36,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4015,
@@ -168,7 +184,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.252
+      "AttackTiming": 0.252,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4016,
@@ -178,7 +195,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1.5,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4017,
@@ -188,7 +206,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.182
+      "AttackTiming": 0.182,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4018,
@@ -198,7 +217,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4019,
@@ -208,7 +228,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.264
+      "AttackTiming": 0.264,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4020,
@@ -218,7 +239,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.36
+      "AttackTiming": 0.36,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4021,
@@ -228,7 +250,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4022,
@@ -238,7 +261,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.36
+      "AttackTiming": 0.36,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4023,
@@ -248,7 +272,8 @@
       "Offset": 0,
       "ShadowSize": 0.25,
       "Size": 1,
-      "AttackTiming": 0.312
+      "AttackTiming": 0.312,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4024,
@@ -258,7 +283,8 @@
       "Offset": 0,
       "ShadowSize": 0.35,
       "Size": 1,
-      "AttackTiming": 0.252
+      "AttackTiming": 0.252,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4025,
@@ -268,7 +294,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.672
+      "AttackTiming": 0.672,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4026,
@@ -278,7 +305,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4027,
@@ -288,7 +316,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.36
+      "AttackTiming": 0.36,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4028,
@@ -298,7 +327,8 @@
       "Offset": 0,
       "ShadowSize": 0.25,
       "Size": 1,
-      "AttackTiming": 0.144
+      "AttackTiming": 0.144,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4029,
@@ -308,7 +338,8 @@
       "Offset": 0,
       "ShadowSize": 0.25,
       "Size": 1,
-      "AttackTiming": 0.096
+      "AttackTiming": 0.096,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4030,
@@ -318,7 +349,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4031,
@@ -328,7 +360,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4032,
@@ -338,7 +371,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4033,
@@ -348,7 +382,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4034,
@@ -358,7 +393,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4035,
@@ -368,7 +404,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4036,
@@ -378,7 +415,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.528
+      "AttackTiming": 0.528,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4037,
@@ -388,7 +426,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.324
+      "AttackTiming": 0.324,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4038,
@@ -398,7 +437,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.324
+      "AttackTiming": 0.324,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4039,
@@ -408,7 +448,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 1.008
+      "AttackTiming": 1.008,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4040,
@@ -418,7 +459,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.603
+      "AttackTiming": 0.603,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4041,
@@ -428,7 +470,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.166
+      "AttackTiming": 0.166,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4042,
@@ -438,7 +481,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4043,
@@ -448,7 +492,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4044,
@@ -458,7 +503,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.528
+      "AttackTiming": 0.528,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4045,
@@ -468,7 +514,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4046,
@@ -478,7 +525,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.216
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4047,
@@ -488,7 +536,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4048,
@@ -498,7 +547,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4049,
@@ -508,7 +558,8 @@
       "Offset": 0,
       "ShadowSize": 0.75,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4050,
@@ -518,7 +569,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.312
+      "AttackTiming": 0.312,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4051,
@@ -528,7 +580,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.672
+      "AttackTiming": 0.672,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4052,
@@ -538,7 +591,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.36
+      "AttackTiming": 0.36,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4053,
@@ -548,7 +602,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.528
+      "AttackTiming": 0.528,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4054,
@@ -558,7 +613,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4055,
@@ -568,7 +624,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4056,
@@ -578,7 +635,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4057,
@@ -588,7 +646,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.84
+      "AttackTiming": 0.84,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4058,
@@ -598,7 +657,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.324
+      "AttackTiming": 0.324,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4059,
@@ -608,7 +668,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4060,
@@ -618,7 +679,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.816
+      "AttackTiming": 0.816,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4061,
@@ -628,7 +690,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.552
+      "AttackTiming": 0.552,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4062,
@@ -638,7 +701,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.36
+      "AttackTiming": 0.36,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4063,
@@ -648,7 +712,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.408
+      "AttackTiming": 0.408,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4064,
@@ -658,7 +723,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4065,
@@ -668,7 +734,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.504
+      "AttackTiming": 0.504,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4066,
@@ -678,7 +745,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4067,
@@ -688,7 +756,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.216
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4068,
@@ -698,7 +767,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4069,
@@ -708,7 +778,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4070,
@@ -718,7 +789,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4071,
@@ -728,7 +800,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.18
+      "AttackTiming": 0.18,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4072,
@@ -738,7 +811,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.144
+      "AttackTiming": 0.144,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4073,
@@ -748,7 +822,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.144
+      "AttackTiming": 0.144,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4074,
@@ -758,7 +833,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4075,
@@ -768,7 +844,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4076,
@@ -778,7 +855,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.624
+      "AttackTiming": 0.624,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4077,
@@ -788,7 +866,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.624
+      "AttackTiming": 0.624,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4078,
@@ -798,7 +877,8 @@
       "Offset": 0,
       "ShadowSize": 1,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4079,
@@ -808,7 +888,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4080,
@@ -818,7 +899,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.672
+      "AttackTiming": 0.672,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4081,
@@ -828,7 +910,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4082,
@@ -838,7 +921,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.324
+      "AttackTiming": 0.324,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4083,
@@ -848,7 +932,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.18
+      "AttackTiming": 0.18,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4084,
@@ -858,7 +943,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4085,
@@ -868,7 +954,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4086,
@@ -878,7 +965,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.324
+      "AttackTiming": 0.324,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4087,
@@ -888,7 +976,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4088,
@@ -898,7 +987,8 @@
       "Offset": 0,
       "ShadowSize": 0.25,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4089,
@@ -908,7 +998,8 @@
       "Offset": 0,
       "ShadowSize": 0.25,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4090,
@@ -918,7 +1009,8 @@
       "Offset": 0,
       "ShadowSize": 0.25,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4091,
@@ -928,7 +1020,8 @@
       "Offset": 0,
       "ShadowSize": 0.25,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4092,
@@ -938,7 +1031,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.216
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4093,
@@ -948,7 +1042,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4094,
@@ -958,7 +1053,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4095,
@@ -968,7 +1064,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4096,
@@ -978,7 +1075,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4097,
@@ -988,7 +1086,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.18
+      "AttackTiming": 0.18,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4098,
@@ -998,7 +1097,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4099,
@@ -1008,7 +1108,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.216
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4100,
@@ -1018,7 +1119,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4101,
@@ -1028,7 +1130,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4102,
@@ -1038,7 +1141,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.312
+      "AttackTiming": 0.312,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4103,
@@ -1048,7 +1152,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4104,
@@ -1058,7 +1163,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.252
+      "AttackTiming": 0.252,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4105,
@@ -1068,7 +1174,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.504
+      "AttackTiming": 0.504,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4106,
@@ -1078,7 +1185,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.166
+      "AttackTiming": 0.166,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4107,
@@ -1088,7 +1196,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4108,
@@ -1098,7 +1207,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4109,
@@ -1108,7 +1218,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.168
+      "AttackTiming": 0.168,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4110,
@@ -1118,7 +1229,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.562
+      "AttackTiming": 0.562,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4111,
@@ -1128,7 +1240,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.504
+      "AttackTiming": 0.504,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4112,
@@ -1138,7 +1251,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.24
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4113,
@@ -1148,7 +1262,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.24
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4114,
@@ -1158,7 +1273,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.24
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4115,
@@ -1168,7 +1284,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.24
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4116,
@@ -1178,7 +1295,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4117,
@@ -1188,7 +1306,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.624
+      "AttackTiming": 0.624,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4118,
@@ -1198,7 +1317,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.54
+      "AttackTiming": 0.54,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4119,
@@ -1208,7 +1328,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.504
+      "AttackTiming": 0.504,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4120,
@@ -1218,7 +1339,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4121,
@@ -1228,7 +1350,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.864
+      "AttackTiming": 0.864,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4122,
@@ -1238,7 +1361,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4123,
@@ -1248,7 +1372,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4124,
@@ -1258,7 +1383,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.768
+      "AttackTiming": 0.768,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4125,
@@ -1268,7 +1394,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4126,
@@ -1278,7 +1405,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4127,
@@ -1288,7 +1416,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4128,
@@ -1298,7 +1427,8 @@
       "Offset": 0.4,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4129,
@@ -1308,7 +1438,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.216
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4130,
@@ -1318,7 +1449,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.672
+      "AttackTiming": 0.672,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4131,
@@ -1328,7 +1460,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4132,
@@ -1338,7 +1471,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.144
+      "AttackTiming": 0.144,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4133,
@@ -1348,7 +1482,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4134,
@@ -1358,7 +1493,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4135,
@@ -1368,7 +1504,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4136,
@@ -1378,7 +1515,8 @@
       "Offset": 0,
       "ShadowSize": 1,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4137,
@@ -1388,7 +1526,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4138,
@@ -1398,7 +1537,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4139,
@@ -1408,7 +1548,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.816
+      "AttackTiming": 0.816,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4140,
@@ -1418,7 +1559,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4141,
@@ -1428,7 +1570,8 @@
       "Offset": 0.5,
       "ShadowSize": 0.75,
       "Size": 1,
-      "AttackTiming": 0.6
+      "AttackTiming": 0.6,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4142,
@@ -1438,7 +1581,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.672
+      "AttackTiming": 0.672,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4143,
@@ -1448,7 +1592,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4144,
@@ -1458,7 +1603,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4145,
@@ -1468,7 +1614,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4146,
@@ -1478,7 +1625,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4147,
@@ -1488,7 +1636,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 1.152
+      "AttackTiming": 1.152,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4148,
@@ -1498,7 +1647,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4149,
@@ -1508,7 +1658,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4150,
@@ -1518,7 +1669,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.12
+      "AttackTiming": 0.12,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4151,
@@ -1528,7 +1680,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.18
+      "AttackTiming": 0.18,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4152,
@@ -1538,7 +1691,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.216
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4153,
@@ -1548,7 +1702,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.166
+      "AttackTiming": 0.166,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4154,
@@ -1558,7 +1713,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.9
+      "AttackTiming": 0.9,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4155,
@@ -1568,7 +1724,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.468
+      "AttackTiming": 0.468,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4156,
@@ -1578,7 +1735,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4157,
@@ -1588,7 +1746,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4158,
@@ -1598,7 +1757,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4159,
@@ -1608,7 +1768,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.54
+      "AttackTiming": 0.54,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4160,
@@ -1618,7 +1779,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.768
+      "AttackTiming": 0.768,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4161,
@@ -1628,7 +1790,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.768
+      "AttackTiming": 0.768,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4162,
@@ -1638,7 +1801,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4163,
@@ -1648,7 +1812,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4164,
@@ -1658,7 +1823,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.62
+      "AttackTiming": 0.62,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4165,
@@ -1668,7 +1834,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.312
+      "AttackTiming": 0.312,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4166,
@@ -1678,7 +1845,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4167,
@@ -1688,7 +1856,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.768
+      "AttackTiming": 0.768,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4168,
@@ -1698,7 +1867,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4169,
@@ -1708,7 +1878,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4170,
@@ -1718,7 +1889,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4171,
@@ -1728,7 +1900,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.84
+      "AttackTiming": 0.84,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4172,
@@ -1738,7 +1911,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 1.08
+      "AttackTiming": 1.08,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4173,
@@ -1748,7 +1922,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.24
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4174,
@@ -1758,7 +1933,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4175,
@@ -1768,7 +1944,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.216
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4176,
@@ -1778,7 +1955,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4177,
@@ -1788,7 +1966,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.408
+      "AttackTiming": 0.408,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4178,
@@ -1798,7 +1977,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4179,
@@ -1808,7 +1988,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.78
+      "AttackTiming": 0.78,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4180,
@@ -1818,7 +1999,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.24
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4181,
@@ -1828,7 +2010,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4182,
@@ -1838,7 +2021,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4183,
@@ -1848,7 +2032,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4184,
@@ -1858,7 +2043,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4185,
@@ -1868,7 +2054,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4186,
@@ -1878,7 +2065,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4187,
@@ -1888,7 +2076,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4188,
@@ -1898,7 +2087,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4189,
@@ -1908,7 +2098,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4190,
@@ -1918,7 +2109,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4191,
@@ -1928,7 +2120,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4192,
@@ -1938,7 +2131,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.42
+      "AttackTiming": 0.42,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4193,
@@ -1948,7 +2142,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4194,
@@ -1958,7 +2153,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.468
+      "AttackTiming": 0.468,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4195,
@@ -1968,7 +2164,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4196,
@@ -1978,7 +2175,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4197,
@@ -1988,7 +2186,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4198,
@@ -1998,7 +2197,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.24
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4199,
@@ -2008,7 +2208,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.216
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4200,
@@ -2018,7 +2219,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.192
+      "AttackTiming": 0.192,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4201,
@@ -2028,7 +2230,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.108
+      "AttackTiming": 0.108,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4202,
@@ -2038,7 +2241,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4203,
@@ -2048,7 +2252,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.504
+      "AttackTiming": 0.504,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4204,
@@ -2058,7 +2263,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4205,
@@ -2068,7 +2274,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.36
+      "AttackTiming": 0.36,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4206,
@@ -2078,7 +2285,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 2.112
+      "AttackTiming": 2.112,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4207,
@@ -2088,7 +2296,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4208,
@@ -2098,7 +2307,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.972
+      "AttackTiming": 0.972,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4209,
@@ -2108,7 +2318,8 @@
       "Offset": 0,
       "ShadowSize": 1,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4210,
@@ -2118,7 +2329,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.168
+      "AttackTiming": 0.168,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4211,
@@ -2128,7 +2340,8 @@
       "Offset": 0,
       "ShadowSize": 1,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4212,
@@ -2138,7 +2351,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.24
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4213,
@@ -2148,7 +2362,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4214,
@@ -2158,7 +2373,8 @@
       "Offset": 0,
       "ShadowSize": 1,
       "Size": 1,
-      "AttackTiming": 0.269
+      "AttackTiming": 0.269,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4215,
@@ -2168,7 +2384,8 @@
       "Offset": 0,
       "ShadowSize": 1,
       "Size": 1,
-      "AttackTiming": 0.408
+      "AttackTiming": 0.408,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4216,
@@ -2178,7 +2395,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.864
+      "AttackTiming": 0.864,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4217,
@@ -2188,7 +2406,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4218,
@@ -2198,7 +2417,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4219,
@@ -2208,7 +2428,8 @@
       "Offset": 0,
       "ShadowSize": 1,
       "Size": 1,
-      "AttackTiming": 0.66
+      "AttackTiming": 0.66,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4220,
@@ -2218,7 +2439,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.6
+      "AttackTiming": 0.6,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4221,
@@ -2228,7 +2450,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4222,
@@ -2238,7 +2461,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.54
+      "AttackTiming": 0.54,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4223,
@@ -2248,7 +2472,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.9
+      "AttackTiming": 0.9,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4224,
@@ -2258,7 +2483,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 1.92
+      "AttackTiming": 1.92,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4225,
@@ -2268,7 +2494,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.96
+      "AttackTiming": 0.96,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4226,
@@ -2278,7 +2505,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.66
+      "AttackTiming": 0.66,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4227,
@@ -2288,7 +2516,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4228,
@@ -2298,7 +2527,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4229,
@@ -2308,7 +2538,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4230,
@@ -2318,7 +2549,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.36
+      "AttackTiming": 0.36,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4231,
@@ -2328,7 +2560,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.108
+      "AttackTiming": 0.108,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4232,
@@ -2338,7 +2571,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.756
+      "AttackTiming": 0.756,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4233,
@@ -2348,7 +2582,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.396
+      "AttackTiming": 0.396,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4234,
@@ -2358,7 +2593,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4235,
@@ -2368,7 +2604,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 1.248
+      "AttackTiming": 1.248,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4236,
@@ -2378,7 +2615,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.522
+      "AttackTiming": 0.522,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4237,
@@ -2388,7 +2626,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 1.2
+      "AttackTiming": 1.2,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4238,
@@ -2398,7 +2637,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.54
+      "AttackTiming": 0.54,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4239,
@@ -2408,7 +2648,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.624
+      "AttackTiming": 0.624,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4240,
@@ -2418,7 +2659,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4241,
@@ -2428,7 +2670,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.24
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4242,
@@ -2438,7 +2681,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4243,
@@ -2448,7 +2692,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4244,
@@ -2458,7 +2703,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4245,
@@ -2468,7 +2714,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4246,
@@ -2478,7 +2725,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.312
+      "AttackTiming": 0.312,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4247,
@@ -2488,7 +2736,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4248,
@@ -2498,7 +2747,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4249,
@@ -2508,7 +2758,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.672
+      "AttackTiming": 0.672,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4250,
@@ -2518,7 +2769,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.54
+      "AttackTiming": 0.54,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4251,
@@ -2528,7 +2780,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4252,
@@ -2538,7 +2791,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.42
+      "AttackTiming": 0.42,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4253,
@@ -2548,7 +2802,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.42
+      "AttackTiming": 0.42,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4254,
@@ -2558,7 +2813,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.42
+      "AttackTiming": 0.42,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4255,
@@ -2568,7 +2824,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.42
+      "AttackTiming": 0.42,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4256,
@@ -2578,7 +2835,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.108
+      "AttackTiming": 0.108,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4257,
@@ -2588,7 +2846,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4258,
@@ -2598,7 +2857,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 1.224
+      "AttackTiming": 1.224,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4259,
@@ -2608,7 +2868,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4260,
@@ -2618,7 +2879,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4261,
@@ -2628,7 +2890,8 @@
       "Offset": 0,
       "ShadowSize": 1,
       "Size": 1,
-      "AttackTiming": 0.312
+      "AttackTiming": 0.312,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4262,
@@ -2638,7 +2901,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4263,
@@ -2648,7 +2912,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.252
+      "AttackTiming": 0.252,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4264,
@@ -2658,7 +2923,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4265,
@@ -2668,7 +2934,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4266,
@@ -2678,7 +2945,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.468
+      "AttackTiming": 0.468,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4267,
@@ -2688,7 +2956,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.54
+      "AttackTiming": 0.54,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4268,
@@ -2698,7 +2967,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.336
+      "AttackTiming": 0.336,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4269,
@@ -2708,7 +2978,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4270,
@@ -2718,7 +2989,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.252
+      "AttackTiming": 0.252,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4271,
@@ -2728,7 +3000,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4272,
@@ -2738,7 +3011,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4273,
@@ -2748,7 +3022,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4274,
@@ -2758,7 +3033,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.9
+      "AttackTiming": 0.9,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4275,
@@ -2768,7 +3044,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4276,
@@ -2778,7 +3055,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.288
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4277,
@@ -2788,7 +3066,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 1.08
+      "AttackTiming": 1.08,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4278,
@@ -2798,7 +3077,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4279,
@@ -2808,7 +3088,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.54
+      "AttackTiming": 0.54,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4280,
@@ -2818,7 +3099,8 @@
       "Offset": 0,
       "ShadowSize": 1,
       "Size": 1,
-      "AttackTiming": 0.72
+      "AttackTiming": 0.72,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4281,
@@ -2828,7 +3110,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.696
+      "AttackTiming": 0.696,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4282,
@@ -2838,7 +3121,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0.936
+      "AttackTiming": 0.936,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4283,
@@ -2848,7 +3132,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4284,
@@ -2858,7 +3143,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4285,
@@ -2868,7 +3154,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.216
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4286,
@@ -2878,7 +3165,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.504
+      "AttackTiming": 0.504,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4287,
@@ -2888,7 +3176,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.504
+      "AttackTiming": 0.504,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4288,
@@ -2898,7 +3187,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.384
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4289,
@@ -2908,7 +3198,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4290,
@@ -2918,7 +3209,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.576
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4291,
@@ -2928,7 +3220,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.432
+      "AttackTiming": 0.432,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4292,
@@ -2938,7 +3231,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.624
+      "AttackTiming": 0.624,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4293,
@@ -2948,7 +3242,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.48
+      "AttackTiming": 0.48,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4294,
@@ -2958,7 +3253,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.425
+      "AttackTiming": 0.425,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4295,
@@ -2968,7 +3264,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.672
+      "AttackTiming": 0.672,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4296,
@@ -2978,7 +3275,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.54
+      "AttackTiming": 0.54,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4297,
@@ -2988,7 +3286,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.624
+      "AttackTiming": 0.624,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 4298,
@@ -2998,7 +3297,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0.18
+      "AttackTiming": 0.18,
+      "Color": "#FFFFFF80"
     },
     {
       "Id": 1000,
@@ -3008,7 +3308,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1001,
@@ -3018,7 +3319,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1002,
@@ -3028,7 +3330,8 @@
       "Offset": 0,
       "ShadowSize": -1,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1003,
@@ -3038,7 +3341,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1004,
@@ -3048,7 +3352,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1005,
@@ -3058,7 +3363,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1006,
@@ -3068,7 +3374,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1007,
@@ -3078,7 +3385,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1008,
@@ -3088,7 +3396,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1009,
@@ -3098,7 +3407,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1010,
@@ -3108,7 +3418,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1011,
@@ -3118,7 +3429,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1012,
@@ -3128,7 +3440,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1013,
@@ -3138,7 +3451,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1014,
@@ -3148,7 +3462,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1015,
@@ -3158,7 +3473,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1016,
@@ -3168,7 +3484,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1017,
@@ -3178,7 +3495,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1018,
@@ -3188,7 +3506,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1019,
@@ -3198,7 +3517,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1020,
@@ -3208,7 +3528,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1021,
@@ -3218,7 +3539,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1022,
@@ -3228,7 +3550,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1023,
@@ -3238,7 +3561,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1024,
@@ -3248,7 +3572,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1025,
@@ -3258,7 +3583,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1026,
@@ -3268,7 +3594,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1027,
@@ -3278,7 +3605,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1028,
@@ -3288,7 +3616,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1029,
@@ -3298,7 +3627,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1030,
@@ -3308,7 +3638,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1031,
@@ -3318,7 +3649,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1032,
@@ -3328,7 +3660,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1033,
@@ -3338,7 +3671,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1034,
@@ -3348,7 +3682,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1035,
@@ -3358,7 +3693,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1036,
@@ -3368,7 +3704,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1037,
@@ -3378,7 +3715,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1038,
@@ -3388,7 +3726,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1039,
@@ -3398,7 +3737,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1040,
@@ -3408,7 +3748,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1041,
@@ -3418,7 +3759,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1042,
@@ -3428,7 +3770,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1043,
@@ -3438,7 +3781,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1044,
@@ -3448,7 +3792,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1045,
@@ -3458,7 +3803,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1046,
@@ -3468,7 +3814,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1047,
@@ -3478,7 +3825,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1048,
@@ -3488,7 +3836,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1049,
@@ -3498,7 +3847,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1050,
@@ -3508,7 +3858,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1051,
@@ -3518,7 +3869,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1052,
@@ -3528,7 +3880,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1053,
@@ -3538,7 +3891,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1054,
@@ -3548,7 +3902,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1055,
@@ -3558,7 +3913,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1056,
@@ -3568,7 +3924,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1057,
@@ -3578,7 +3935,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1058,
@@ -3588,7 +3946,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1059,
@@ -3598,7 +3957,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1060,
@@ -3608,7 +3968,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1061,
@@ -3618,7 +3979,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1062,
@@ -3628,7 +3990,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1063,
@@ -3638,7 +4001,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1064,
@@ -3648,7 +4012,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1065,
@@ -3658,7 +4023,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1066,
@@ -3668,7 +4034,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1067,
@@ -3678,7 +4045,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1068,
@@ -3688,7 +4056,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1069,
@@ -3698,7 +4067,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1070,
@@ -3708,7 +4078,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1071,
@@ -3718,7 +4089,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1072,
@@ -3728,7 +4100,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1073,
@@ -3738,7 +4111,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1074,
@@ -3748,7 +4122,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1075,
@@ -3758,7 +4133,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1076,
@@ -3768,7 +4144,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1077,
@@ -3778,7 +4155,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1078,
@@ -3788,7 +4166,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1079,
@@ -3798,7 +4177,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1080,
@@ -3808,7 +4188,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1081,
@@ -3818,7 +4199,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1082,
@@ -3828,7 +4210,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1083,
@@ -3838,7 +4221,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1084,
@@ -3848,7 +4232,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1085,
@@ -3858,7 +4243,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1086,
@@ -3868,7 +4254,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1087,
@@ -3878,7 +4265,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1088,
@@ -3888,7 +4276,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1089,
@@ -3898,7 +4287,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1090,
@@ -3908,7 +4298,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1091,
@@ -3918,7 +4309,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1092,
@@ -3928,7 +4320,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1093,
@@ -3938,7 +4331,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1094,
@@ -3948,7 +4342,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1095,
@@ -3958,7 +4353,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1096,
@@ -3968,7 +4364,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1097,
@@ -3978,7 +4375,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1098,
@@ -3988,7 +4386,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1099,
@@ -3998,7 +4397,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1100,
@@ -4008,7 +4408,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1101,
@@ -4018,7 +4419,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1102,
@@ -4028,7 +4430,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1103,
@@ -4038,7 +4441,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1104,
@@ -4048,7 +4452,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1105,
@@ -4058,7 +4463,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1106,
@@ -4068,7 +4474,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1107,
@@ -4078,7 +4485,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1108,
@@ -4088,7 +4496,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1109,
@@ -4098,7 +4507,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1110,
@@ -4108,7 +4518,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1111,
@@ -4118,7 +4529,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1112,
@@ -4128,7 +4540,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1113,
@@ -4138,7 +4551,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1114,
@@ -4148,7 +4562,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1115,
@@ -4158,7 +4573,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1116,
@@ -4168,7 +4584,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1117,
@@ -4178,7 +4595,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1118,
@@ -4188,7 +4606,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1119,
@@ -4198,7 +4617,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1120,
@@ -4208,7 +4628,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1121,
@@ -4218,7 +4639,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1122,
@@ -4228,7 +4650,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1123,
@@ -4238,7 +4661,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1124,
@@ -4248,7 +4672,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1125,
@@ -4258,7 +4683,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1126,
@@ -4268,7 +4694,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1127,
@@ -4278,7 +4705,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1128,
@@ -4288,7 +4716,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1129,
@@ -4298,7 +4727,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1130,
@@ -4308,7 +4738,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1131,
@@ -4318,7 +4749,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1132,
@@ -4328,7 +4760,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1133,
@@ -4338,7 +4771,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1134,
@@ -4348,7 +4782,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1135,
@@ -4358,7 +4793,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1136,
@@ -4368,7 +4804,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1137,
@@ -4378,7 +4815,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1138,
@@ -4388,7 +4826,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1139,
@@ -4398,7 +4837,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1140,
@@ -4408,7 +4848,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1141,
@@ -4418,7 +4859,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1142,
@@ -4428,7 +4870,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1143,
@@ -4438,7 +4881,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1144,
@@ -4448,7 +4892,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1145,
@@ -4458,7 +4903,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1146,
@@ -4468,7 +4914,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1147,
@@ -4478,7 +4925,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1148,
@@ -4488,7 +4936,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1149,
@@ -4498,7 +4947,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1150,
@@ -4508,7 +4958,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1151,
@@ -4518,7 +4969,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1152,
@@ -4528,7 +4980,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1153,
@@ -4538,7 +4991,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1154,
@@ -4548,7 +5002,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1155,
@@ -4558,7 +5013,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1156,
@@ -4568,7 +5024,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1157,
@@ -4578,7 +5035,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1158,
@@ -4588,7 +5046,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1159,
@@ -4598,7 +5057,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1160,
@@ -4608,7 +5068,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1161,
@@ -4618,7 +5079,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1162,
@@ -4628,7 +5090,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1163,
@@ -4638,7 +5101,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1164,
@@ -4648,7 +5112,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1165,
@@ -4658,7 +5123,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1166,
@@ -4668,7 +5134,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1167,
@@ -4678,7 +5145,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1168,
@@ -4688,7 +5156,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1169,
@@ -4698,7 +5167,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1170,
@@ -4708,7 +5178,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1171,
@@ -4718,7 +5189,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1172,
@@ -4728,7 +5200,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1173,
@@ -4738,7 +5211,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1174,
@@ -4748,7 +5222,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1175,
@@ -4758,7 +5233,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1176,
@@ -4768,7 +5244,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1177,
@@ -4778,7 +5255,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1178,
@@ -4788,7 +5266,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1179,
@@ -4798,7 +5277,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1180,
@@ -4808,7 +5288,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1181,
@@ -4818,7 +5299,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1182,
@@ -4828,7 +5310,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     },
     {
       "Id": 1183,
@@ -4838,7 +5321,8 @@
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
-      "AttackTiming": 0
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     }
   ]
 }

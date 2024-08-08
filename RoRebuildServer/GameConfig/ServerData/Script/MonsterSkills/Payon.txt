@@ -7,49 +7,42 @@ StateChase:
 	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(29);
 }
 
-macro MoonlightCombatActionsOld() {
-	if(HpPercent < 50 && IsNamedEventOffCooldown("Magic Combo")) {
-		TryCast(ColdBolt, 5, 1000, 800, 10000, EventOnStartCast) -> SendEmote(29); //gg
-		TryCast(FireBolt, 5, 1000, 800, 10000);
-		TryCast(LightningBolt, 5, 1000, 800, 10000);
-		SetEventCooldown("Magic Combo", 20000);
-	}
+//------------------------------------
+// Moonlight Flower
+//------------------------------------
 
-	if(HpPercent < 30 && IsNamedEventOffCooldown("Final Phase")) {
-		TryCast(None, 1, 1000, 0, 5000) -> SendEmote(7); //angry
-		ResetAllCooldowns();
-		SetEventCooldown("Final Phase", 999000000);
-		TryCast(CallMinion,1, 1000, 400, 30000) -> CallDefaultMinions();
-	}
-}
-
+//ninetail npc that splits from moonlight to spawn a clone
 event NineTailWalkEvent {
 	local type = Param1;
     StartTimer(100);
     ChangeNpcClass("NINE_TAIL");
-    ShowNpc();
-    StartWalkToRandomTile(5, 150);
+    ShowNpc(""); //reveal this event npc with a blank name
+    StartWalkToRandomTile(5, 150); //5 tiles away, 150 move speed
 OnTimer 100:
     if(IsMoving)
         ResetTimer();
 OnTimer 800:
 	PlayEffectAtMyLocation("PuffOfSmoke");
-	if(type == 0) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C1");
-	if(type == 1) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C2");
-	if(type == 2) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C3");
-	//MOONLIGHT_CLONE
+	if(type == 0) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C1"); //caster clone
+	if(type == 1) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C2"); //mammonite clone
+	if(type == 2) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C3"); //summoner clone
     EndEvent();
 }
 
-macro MoonlightCombatActions() {
+//this macro is used both when she hits 50% hp after a cast or instantly if she dies before it's used
+macro MoonlightSplit() {
+	CreateEvent("NineTailWalkEvent", CurrentPosition, 0);
+	CreateEvent("NineTailWalkEvent", CurrentPosition, 1);
+	CreateEvent("NineTailWalkEvent", CurrentPosition, 2);
+	SetEventCooldown("Split", -1); //never repeat
+	AdminHide();
+}
 
+//skill block used for both idle and chase states
+macro MoonlightCombatActions() {
 	if(HpPercent < 50 && IsNamedEventOffCooldown("Split")) {
 		TryCast(None, 1, 1000, 1300, 0) -> {
-			CreateEvent("NineTailWalkEvent", CurrentPosition, 0);
-			CreateEvent("NineTailWalkEvent", CurrentPosition, 1);
-			CreateEvent("NineTailWalkEvent", CurrentPosition, 2);
-			SetEventCooldown("Split", 999000000);
-			AdminHide();
+			@MoonlightSplit();
 			return;
 		}
 	}
@@ -58,8 +51,8 @@ macro MoonlightCombatActions() {
 		TryCast(None, 1, 1000, 0, 5000) -> SendEmote(7); //angry
 
 		ResetAllCooldowns();
-		SetEventCooldown("Split", 999000000); //we don't want this happening again. We know it already happened cause it's higher priority
-		SetEventCooldown("Final Phase", 999000000);
+		SetEventCooldown("Split", -1); //we don't want this happening again. We know it already happened cause it's higher priority
+		SetEventCooldown("Final Phase", -1);
 		TryCast(CallMinion,1, 1000, 400, 30000) -> CallDefaultMinions();
 	}
 
@@ -73,46 +66,62 @@ macro MoonlightCombatActions() {
 	TryCast(CallMinion,1, 1000, 2000, 60000)[MinionCount < 3] -> CallDefaultMinions();
 }
 
+//caster clone AI
 SkillHandler("MOONLIGHT_C1") {
-StateAny:
-	TryCast(ColdBolt, 5, 1000, 800, 10000, EventOnStartCast) -> SendEmote(29); //gg
-	TryCast(FireBolt, 5, 1000, 800, 10000);
-	TryCast(LightningBolt, 5, 1000, 800, 10000);
+	StateAny:
+		TryCast(ColdBolt, 5, 1000, 800, 10000, EventOnStartCast) -> SendEmote(29); //gg
+		TryCast(FireBolt, 5, 1000, 800, 10000);
+		TryCast(LightningBolt, 5, 1000, 800, 10000);
+	OnDie:
+		CallHiddenParentToNearbyPosition();
 }
 
+//Mammonite clone AI
 SkillHandler("MOONLIGHT_C2") {
-StateAttacking:
-	TryCast(Mammonite, 10, 1000, 0, 5000) -> SendEmote(8);
+	StateAttacking:
+		TryCast(Mammonite, 10, 1000, 0, 5000) -> SendEmote(8);
+	OnDie:
+		CallHiddenParentToNearbyPosition();
 }
 
+//Minion clone AI
 SkillHandler("MOONLIGHT_C3") {
-StateAny:
-	TryCast(CallMinion, 1, 1000, 2000, 30000)[MinionCount < 3] -> SummonMinions(5, "NINE_TAIL");
+	StateAny:
+		TryCast(CallMinion, 1, 1000, 2000, 30000)[MinionCount < 3] -> SummonMinions(5, "NINE_TAIL");
+	OnDie:
+		CallHiddenParentToNearbyPosition();
 }
 
+//The real Moonlight Flower
 SkillHandler("MOONLIGHT") {
-StateIdle:
-	TryCast(CallMinion,1, 1000, 2000, 60000)[MinionCount < 3] -> CallDefaultMinions();
+	StateIdle:
+		TryCast(CallMinion,1, 1000, 2000, 60000)[MinionCount < 3] -> CallDefaultMinions();
 
-StateChase:
-	@MoonlightCombatActions();
-	TryCast(ColdBolt, 5, 200, 0, 5000);
-	TryCast(FireBolt, 5, 200, 0, 5000);
-	TryCast(LightningBolt, 5, 200, 0, 5000);
+	StateChase:
+		@MoonlightCombatActions();
+		TryCast(ColdBolt, 5, 200, 0, 5000);
+		TryCast(FireBolt, 5, 200, 0, 5000);
+		TryCast(LightningBolt, 5, 200, 0, 5000);
 
-StateAttacking:
-	@MoonlightCombatActions();
-	TryCast(Mammonite, 10, 200, 0, 5000) -> SendEmote(8);
+	StateAttacking:
+		@MoonlightCombatActions();
+		TryCast(Mammonite, 10, 200, 0, 5000) -> SendEmote(8);
 
-StateSpecial:
-	TryCast(None, 1, 1000, 300, 0) -> {
-		AdminHide();
-	}
+	StateHidden:
+		//TryCast(None, 1, 1000, 0, 5000)[MinionCount > 0] -> TeleportNearRandomMinion();
+		if(TimeInAiState > 5s && MinionCount == 0)
+		{
+			AdminUnHide();
+			ChangeAiState(StateSearch);
+		}
 
-StateHidden:
-	if(TimeInAiState > 5s && MinionCount == 0)
-	{
-		AdminUnHide();
-		ChangeAiState(StateSearch);
-	}
+	OnDie:
+		//if moonlight dies without splitting, instantly split and recover 10k hp
+		if(IsNamedEventOffCooldown("Split"))
+		{
+			CancelCast();
+			@MoonlightSplit();
+			SetHpNoNotify(10000);
+		}
 }
+

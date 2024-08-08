@@ -100,7 +100,10 @@ public class MonsterSkillAiState(Monster monster)
         if (specialCooldowns == null)
             specialCooldowns = new Dictionary<string, float>();
 
-        specialCooldowns[name] = Time.ElapsedTimeFloat + cooldown / 1000f;
+        if (cooldown < 0)
+            specialCooldowns[name] = float.MaxValue;
+        else
+            specialCooldowns[name] = Time.ElapsedTimeFloat + cooldown / 1000f;
     }
 
     public void ResetAllCooldowns()
@@ -163,12 +166,43 @@ public class MonsterSkillAiState(Monster monster)
         Monster.SetStat(CharacterStat.Hp, hp);
     }
 
+    public void TeleportNearRandomMinion(int distance = 5)
+    {
+        var child = Monster.GetRandomChild();
+        if (child == null || !child.TryGet<WorldObject>(out var target))
+            return;
+
+        var ch = Monster.Character;
+        var pos = Monster.Character.Map.GetRandomVisiblePositionInArea(target.Position, distance / 2, distance);
+
+        if (ch.Hidden)
+            Monster.Character.Position = pos;
+        else
+            Monster.Character.Map.TeleportEntity(ref ch.Entity, ch, pos, CharacterRemovalReason.OutOfSight);
+    }
+
+    public void CallHiddenParentToNearbyPosition(int distance = 5)
+    {
+        if (!Monster.HasMaster)
+            return;
+        var mEntity = Monster.GetMaster();
+        if (!mEntity.TryGet<WorldObject>(out var master))
+            return;
+        if (master.Type != CharacterType.Monster)
+            return;
+        if (!master.Hidden)
+            return;
+
+        var pos = Monster.Character.Map.GetRandomVisiblePositionInArea(Monster.Character.Position, distance / 2, distance);
+        master.Position = pos;
+    }
+
     //public bool TriggerSelfTargetedSkillEffect(CharacterSkill skill, int level)
     //{
     //    monster.Character.AttackCooldown = 0f; //we always want this to cast
     //    return monster.CombatEntity.AttemptStartSelfTargetSkill(skill, level);
     //}
-    
+
     public bool TryCast(CharacterSkill skill, int level, int chance, int castTime, int delay, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
     {
         if (monster.CombatEntity.IsSkillOnCooldown(skill))
@@ -251,6 +285,14 @@ public class MonsterSkillAiState(Monster monster)
         }
 
         return SkillFail();
+    }
+
+    public void CancelCast()
+    {
+        if (Monster.CombatEntity.IsCasting)
+        {
+            Monster.CombatEntity.IsCasting = false; //send packet! OMG!
+        }
     }
 
     public void CallDefaultMinions()
