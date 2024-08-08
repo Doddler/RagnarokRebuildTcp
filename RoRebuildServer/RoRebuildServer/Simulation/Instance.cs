@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.Data;
+﻿using RebuildSharedData.Enum;
+using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntitySystem;
@@ -79,7 +80,7 @@ public class Instance
             if (entity.IsAlive())
             {
                 var chara = entity.Get<WorldObject>();
-                if(chara.IsActive)
+                if(chara.IsActive || chara.Type == CharacterType.Monster)
                     chara.Update();
             }
         }
