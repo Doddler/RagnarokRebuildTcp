@@ -10,6 +10,7 @@ using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using static System.Collections.Specialized.BitVector32;
+using static System.Globalization.CultureInfo;
 
 namespace RoRebuildServer.ScriptSystem;
 
@@ -1029,7 +1030,10 @@ public class ScriptBuilder
             var timer = timerFunctions[i];
             var f = (float)timer.EventTime / 1000f;
 
-            StartIndentedBlockLine().AppendLine($"if (lastTime < {f}f && newTime >= {f}f)");
+            //force invariant culture here otherwise we might output invalid floats in certain locales
+            var str = string.Create(InvariantCulture, $"if (lastTime < {f}f && newTime >= {f}f)");
+
+            StartIndentedBlockLine().AppendLine(str);
             OpenScope();
             StartIndentedBlockLine().AppendLine($"this.OnTimer{timer.EventTime}(npc);");
             CloseScope();
