@@ -1,0 +1,25 @@
+{
+  "name": "roscripthighlighter",
+  "displayName": "RoScriptHighlighter",
+  "description": "Syntax Highlighting for ROScript",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "roscript",
+      "aliases": ["ROScript", "roscript"],
+      "extensions": [".txt"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "roscript",
+      "scopeName": "source.roscript",
+      "path": "./syntaxes/roscript.tmLanguage.json"
+    }]
+  }
+}
