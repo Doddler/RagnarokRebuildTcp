@@ -442,7 +442,8 @@ namespace Assets.Scripts.Network
             }
 
             controllable.SetHp(hp);
-            controllable.IsInteractable = true;
+            if(type != CharacterType.NPC)
+                controllable.IsInteractable = true;
 
             EntityList.Add(id, controllable);
 
@@ -830,13 +831,13 @@ namespace Assets.Scripts.Network
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
             // var moveAfter = msg.ReadBoolean();
-
+            
             if (!hasSource)
             {
                 //if the skill handler is not flagged to execute without a source this will do nothing.
                 //we still want to execute when a special effect plays on a target though.
 
-                ClientSkillHandler.ExecuteSkill(null, controllable2, skill, skillLvl);
+                ClientSkillHandler.ExecuteSkill(null, controllable2, skill, skillLvl, dmg);
                 StartCoroutine(DamageEvent(dmg, 0f, hits, 0, controllable2));
                 return;
             }
@@ -844,12 +845,19 @@ namespace Assets.Scripts.Network
             var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
             if (controllable.SpriteAnimator.Type == SpriteType.Player)
                 damageTiming = 0.5f;
+            if (result == AttackResult.Heal)
+            {
+                motionTime = 0;
+            }
+            else
+            {
+                var animationSpeed = 1f;
+                if (damageTiming > motionTime)
+                    animationSpeed = damageTiming / motionTime;
 
-            var animationSpeed = 1f;
-            if (damageTiming > motionTime)
-                animationSpeed = damageTiming / motionTime;
+                    AttackMotion(controllable, pos, dir, animationSpeed, controllable2);
+            }
 
-            AttackMotion(controllable, pos, dir, animationSpeed, controllable2);
             controllable.ShowSkillCastMessage(skill, 3);
 
             if (hasTarget && controllable.SpriteAnimator.IsInitialized)
@@ -859,7 +867,7 @@ namespace Assets.Scripts.Network
                     throw new Exception("AAA? " + controllable.gameObject.name + " " + controllable.gameObject);
                 }
 
-                ClientSkillHandler.ExecuteSkill(controllable, controllable2, skill, skillLvl);
+                ClientSkillHandler.ExecuteSkill(controllable, controllable2, skill, skillLvl, dmg);
 
                 if (hits < 1)
                     hits = 1;
@@ -978,6 +986,12 @@ namespace Assets.Scripts.Network
                 // if (hitCount > 1)
                 //     target.SlowMove(0.5f, hitCount * 0.2f);
 
+                if (damage < 0)
+                {
+                    AttachHealIndicator(-damage, target);
+                    yield break;
+                }
+
                 for (var i = 0; i < hitCount; i++)
                 {
                     //var go = GameObject.Instantiate(DamagePrefab, target.transform.localPosition, Quaternion.identity);
@@ -1014,6 +1028,16 @@ namespace Assets.Scripts.Network
                 }
             }
         }
+        
+        private void AttachHealIndicator(int damage, ServerControllable target)
+        {
+            var di = RagnarokEffectPool.GetDamageIndicator();
+            var height = 1f;
+            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), Vector3.zero, height,
+                target.SpriteAnimator.Direction, "green", false);
+            di.AttachDamageIndicator(target);
+        }
+
 
         private void AttachDamageIndicator(int damage, int totalDamage, ServerControllable target)
         {
@@ -1021,13 +1045,13 @@ namespace Assets.Scripts.Network
             var red = target.SpriteAnimator.Type == SpriteType.Player;
             var height = 1f;
             di.DoDamage(TextIndicatorType.Damage, damage.ToString(), target.gameObject.transform.localPosition, height,
-                target.SpriteAnimator.Direction, red, false);
+                target.SpriteAnimator.Direction, red ? "red" : null, false);
 
             if (damage != totalDamage && target.CharacterType != CharacterType.Player)
             {
                 var di2 = RagnarokEffectPool.GetDamageIndicator();
-                di2.DoDamage(TextIndicatorType.ComboDamage, $"<color=#FFFF00>{totalDamage}</color>", Vector3.zero, height,
-                    target.SpriteAnimator.Direction, false, false);
+                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
+                    target.SpriteAnimator.Direction, "#FFFF00", false);
                 di2.AttachComboIndicatorToControllable(target);
             }
         }
@@ -1059,11 +1083,12 @@ namespace Assets.Scripts.Network
                     CameraFollower.UpdatePlayerHP(controllable.Hp, controllable.MaxHp);
                 controllable.SetHp(controllable.Hp);
             }
-
+            
             if (shouldStop)
             {
                 controllable.StopImmediate(pos, false);
-                controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
+                if(controllable.CharacterType != CharacterType.Player || !controllable.SpriteAnimator.IsAttackMotion)
+                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
             }
 
             //if (delay < 0)
@@ -1140,8 +1165,8 @@ namespace Assets.Scripts.Network
                 if (controllable.SpriteAnimator != null)
                     height = controllable.SpriteAnimator.SpriteData.Size / 50f;
 
-                di.DoDamage(TextIndicatorType.Heal, $"<color=yellow>+{exp} Exp", controllable.gameObject.transform.localPosition,
-                    height, Direction.None, false, false);
+                di.DoDamage(TextIndicatorType.Heal, $"+{exp} Exp", controllable.gameObject.transform.localPosition,
+                    height, Direction.None, "yellow", false);
             }
 
             PlayerState.Exp += exp;
@@ -1243,16 +1268,13 @@ namespace Assets.Scripts.Network
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
                 return;
             }
-
+            
             controllable.Hp = hp;
             controllable.MaxHp = maxHp;
-
-            if (id == PlayerId)
-            {
-                if (controllable.IsMainCharacter)
-                    CameraFollower.UpdatePlayerHP(hp, maxHp);
-                controllable.SetHp(controllable.Hp, controllable.MaxHp);
-            }
+            
+            if (controllable.IsMainCharacter)
+                CameraFollower.UpdatePlayerHP(hp, maxHp);
+            controllable.SetHp(controllable.Hp, controllable.MaxHp);
         }
 
         public void OnMessageMonsterTarget(ClientInboundMessage msg)
@@ -1516,7 +1538,7 @@ namespace Assets.Scripts.Network
 
             if (ClientPacketHandler.HasValidHandler(type))
             {
-                Debug.Log($"Wow! Using new packet handler for packet type {type}");
+                // Debug.Log($"Wow! Using new packet handler for packet type {type}");
                 ClientPacketHandler.Execute(type, msg);
                 return;
             }

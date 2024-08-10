@@ -8,7 +8,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.TwoHandQuicken)]
     public class TwoHandQuickenHandler : SkillHandlerBase
     {
-        public override void ExecuteSkillTargeted(ServerControllable src, ServerControllable target, int lvl)
+        public override void ExecuteSkillTargeted(ServerControllable src, ServerControllable target, int lvl, int damage)
         {
             CameraFollower.Instance.AttachEffectToEntity("TwoHandQuicken", src.gameObject, src.Id);
             src.SpriteAnimator.Color = new Color(1, 1, 0.5f);

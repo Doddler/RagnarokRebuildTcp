@@ -24,6 +24,7 @@ public class MonsterDatabaseInfo
     public float AttackDamageTiming { get; set; }
     public int Range { get; set; }
     public CharacterElement Element { get; set; }
+    public CharacterRace Race { get; set; }
     public MonsterAiType AiType { get; set; }
     public List<MonsterSpawnMinions>? Minions { get; set; }
     public float MoveSpeed { get; set; }

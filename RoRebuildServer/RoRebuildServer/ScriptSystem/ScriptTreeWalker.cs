@@ -1010,23 +1010,29 @@ internal class ScriptTreeWalker
             for (var i = 0; i < value.Length; i++)
             {
                 var c = value[i];
-                if ((c >= '0' && c <= '9') || c == '-')
+                if ((c >= '0' && c <= '9') || c == '-' || c == '.')
                 {
                     decStringBuilder.Append(c);
                     continue;
                 }
 
                 if (c == 's')
-                    sum += int.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 1000;
+                    sum += (int)(float.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 1000);
                 if (c == 'm')
-                    sum += int.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 60 * 1000;
+                    sum += (int)(float.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 60 * 1000);
                 if (c == 'h')
-                    sum += int.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 60 * 60 * 1000;
+                    sum += (int)(float.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 60 * 60 * 1000);
+                if (c == '%')
+                {
+                    if (i + 1 < value.Length)
+                        ErrorResult(context, $"Could not parse string {value} into decimal, the '%' symbol was in an unexpected location.");
+                    sum = (int)(float.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 10);
+                }
                 decStringBuilder.Clear();
             }
 
             if (decStringBuilder.Length > 0)
-                sum += int.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture);
+                sum += (int)float.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture);
 
             return sum;
         }

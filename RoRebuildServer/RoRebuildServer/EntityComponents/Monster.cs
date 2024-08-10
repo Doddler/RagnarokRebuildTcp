@@ -45,12 +45,12 @@ public partial class Monster : IEntityAutoReset
     private float nextAiSkillUpdate;
     private float timeofLastStateChange;
     //private float timeEnteredCombat;
-    private float timeLeftCombat;
+    private float timeLastCombat;
 
     public void UpdateStateChangeTime() => timeofLastStateChange = Time.ElapsedTimeFloat;
     public float TimeInCurrentAiState => Time.ElapsedTimeFloat - timeofLastStateChange;
     //private float durationInCombat => Target.IsAlive() ? Time.ElapsedTimeFloat - timeEnteredCombat : -1f;
-    private float durationOutOfCombat => !Target.IsAlive() ? Time.ElapsedTimeFloat - timeLeftCombat : -1;
+    public float DurationOutOfCombat => !Target.IsAlive() ? Time.ElapsedTimeFloat - timeLastCombat : -1;
 
     //private float randomMoveCooldown;
 
@@ -79,6 +79,7 @@ public partial class Monster : IEntityAutoReset
     private MonsterSkillAiBase? skillAiHandler;
     
     public bool LockMovementToSpawn;
+    public bool GivesExperience;
 
     public MonsterAiState CurrentAiState;
     public MonsterAiState PreviousAiState;
@@ -147,6 +148,7 @@ public partial class Monster : IEntityAutoReset
         nextAiUpdate = Time.ElapsedTimeFloat + 1f;
         aiTickRate = 0.05f;
         LastDamageSourceType = CharacterSkill.None;
+        GivesExperience = true;
 
         if (SpawnRule != null)
         {
@@ -167,7 +169,7 @@ public partial class Monster : IEntityAutoReset
             skillAiHandler = handler;
 
         timeofLastStateChange = Time.ElapsedTimeFloat;
-        timeLeftCombat = Time.ElapsedTimeFloat;
+        timeLastCombat = Time.ElapsedTimeFloat;
         //timeEnteredCombat = float.NegativeInfinity;
     }
     
@@ -272,6 +274,8 @@ public partial class Monster : IEntityAutoReset
 
         Target = newTarget;
 
+        timeLastCombat = Time.ElapsedTimeFloat;
+
         if (Target.Type == EntityType.Player)
         {
             var p = newTarget.Get<Player>();
@@ -295,7 +299,7 @@ public partial class Monster : IEntityAutoReset
         CurrentAiState = MonsterAiState.StateDead;
         Character.State = CharacterState.Dead;
 
-        if (giveExperience)
+        if (giveExperience && GivesExperience)
             CombatEntity.DistributeExperience();
 
         Character.IsActive = false;
@@ -429,7 +433,7 @@ public partial class Monster : IEntityAutoReset
     {
         skillState.SkillCastSuccess = false;
         if(CurrentAiState != MonsterAiState.StateAttacking)
-            nextAiSkillUpdate = Time.ElapsedTimeFloat + 1f;
+            nextAiSkillUpdate = Time.ElapsedTimeFloat + 0.85f + GameRandom.NextFloat(0f, 0.3f); //we'd like to desync mob skill updates if possible
 
         skillAiHandler?.RunAiSkillUpdate(CurrentAiState, skillState);
 
@@ -464,8 +468,8 @@ public partial class Monster : IEntityAutoReset
 #endif
 
         var a = 0;
-        if (skillAiHandler != null && nextAiSkillUpdate < Time.ElapsedTimeFloat && !Character.InAttackCooldown &&
-            Character.QueuedAction != QueuedAction.Cast)
+        if (skillAiHandler != null && nextAiSkillUpdate < Time.ElapsedTimeFloat && !CombatEntity.IsCasting 
+            && !Character.InAttackCooldown && Character.QueuedAction != QueuedAction.Cast)
             AiSkillScanUpdate();
         else
             a = 1;
@@ -519,6 +523,9 @@ public partial class Monster : IEntityAutoReset
                     nextAiUpdate = Time.ElapsedTimeFloat + aiTickRate;
                 else
                     nextAiUpdate += aiTickRate;
+
+                if (!Character.HasVisiblePlayers())
+                    nextAiUpdate += 0.5f;
             }
         }
     }
@@ -530,6 +537,8 @@ public partial class Monster : IEntityAutoReset
     {
         if (Character.Map?.PlayerCount == 0)
             return;
+
+        
 
         if (nextAiUpdate > Time.ElapsedTimeFloat)
             return;

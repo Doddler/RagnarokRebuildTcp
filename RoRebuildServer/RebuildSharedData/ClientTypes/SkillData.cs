@@ -15,7 +15,9 @@ public class SkillData
     public string Icon;
     public string Name;
     public SkillTarget Target;
+    public SkillClass Type = SkillClass.None;
     public int MaxLevel;
     public int[] SpCost;
     public bool AdjustableLevel;
 }
+

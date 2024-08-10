@@ -138,7 +138,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4135,OSIRIS,Osiris,78,294336,79,102,79,113,102,1,1053,1288,1,25,25,396005,416904,10,12,Medium,Undead,Undead4,1072,384,672,100,Boss,AiAggressive,192,osiris.spr,0,0.5,1,#FFFFFFFF
 4136,MINOROUS,Minorous,52,4761,60,32,49,41,46,36,328,401,1,14,14,8403,6887,10,12,Large,Beast,Fire2,1360,432,960,200,Normal,AiAggressive,576,minorous.spr,0,1,1,#FFFFFFFF
 4137,ARCLOUSE,Arclouse,59,1591,38,38,42,60,59,33,257,314,1,24,16,5287,5886,10,12,Medium,Insect,Earth2,960,480,500,100,Normal,AiAggressive,480,arclouse.spr,0,0.5,1,#FFFFFFFF
-4138,AMON_RA,Amon Ra,88,340377,131,143,148,131,89,119,1763,2154,3,48,41,1117583,1093392,14,12,Large,Demihuman,Earth3,854,480,2016,-1,Boss,AiAggressiveImmobile,720,amon_ra.spr,0,-1,1,#FFFFFFFF
+4138,AMON_RA,Amon Ra,88,340377,131,143,148,131,89,119,1763,2154,3,48,41,1117583,1093392,14,12,Large,Demihuman,Earth3,854,480,2016,100,Boss,AiAggressiveImmobile,720,amon_ra.spr,0,-1,1,#FFFFFFFF
 4139,ZOMBIE,Zombie,15,348,9,11,9,13,11,1,36,44,1,4,4,51,53,10,12,Medium,Undead,Undead1,2612,288,912,400,Normal,AiAggressive,816,zombie.spr,0,0.5,1,#FFFFFFFF
 4140,SKELETON,Skeleton,10,241,6,8,6,9,8,1,25,30,1,2,2,18,19,10,12,Medium,Undead,Undead1,2228,576,528,200,Normal,AiPassive,336,skeleton.spr,0,0.5,1,#FFFFFFFF
 4141,ICE_TITAN,Ice Titan,60,15214,66,52,96,53,35,55,636,777,1,37,26,34402,29544,10,12,Large,Formless,Water3,861,144,660,250,Normal,AiAggressive,600,ice_titan.spr,0.5,0.75,1,#FFFFFFFF
@@ -244,7 +244,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4241,KIND_OF_BEETLE,Beetle King,34,752,28,27,28,27,27,27,127,156,1,12,11,897,925,10,12,Small,Insect,Earth1,1247,576,768,165,Normal,AiPassive,240,kind_of_beetle.spr,0,0.5,1,#FFFFFFFF
 4242,DELETER,Deleter,66,4538,63,48,52,53,58,53,544,665,1,21,21,10960,9846,10,12,Medium,Dragon,Fire2,1020,384,720,175,Normal,AiAggressive,336,deleter.spr,0,0.5,1,#FFFFFFFF
 4243,DELETER_,Deleter,65,4399,63,48,52,53,58,53,534,653,1,20,20,10309,9261,10,12,Medium,Dragon,Fire2,1024,336,624,175,Normal,AiAggressive,336,deleter_.spr,0,0.5,1,#FFFFFFFF
-4244,GEOGRAPHER,Geographer,56,2202,32,54,53,33,33,42,217,266,3,26,19,4529,4386,10,12,Medium,Plant,Earth3,1308,480,1008,-1,Normal,AiAggressiveImmobile,480,geographer.spr,0,0.5,1,#FFFFFFFF
+4244,GEOGRAPHER,Geographer,56,3344,35,64,70,33,33,33,282,345,3,30,20,7837,6772,10,12,Medium,Plant,Earth3,1308,480,1008,-1,Normal,AiAggressiveImmobile,480,geographer.spr,0,0.5,1,#FFFFFFFF
 4245,RAFFLESIA,Rafflesia,17,272,14,13,14,13,13,13,45,56,3,6,5,94,95,10,12,Small,Plant,Earth1,512,240,528,150,Normal,AiAggressive,432,rafflesia.spr,0,0.5,1,#FFFFFFFF
 4246,ARCHANGELING,Archangeling,60,40233,65,94,79,79,72,94,929,1136,1,25,31,122928,105807,10,12,Medium,Angel,Holy3,1072,480,672,180,Boss,AiAggressive,312,archangeling.spr,0,0.5,1,#FFFFFFFF
 4247,SLEEPER,Sleeper,67,4060,55,51,78,51,51,51,445,544,1,32,20,11016,9489,10,12,Medium,Formless,Earth2,1350,432,1200,195,Normal,AiAggressive,720,sleeper.spr,0,0.5,1,#FFFFFFFF
@@ -298,4 +298,4 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4295,MIYABI_NINGYO,Miyabi Doll,33,720,27,27,27,27,27,27,124,151,1,12,12,798,831,10,12,Medium,Demon,Dark1,1938,768,2112,250,Normal,AiPassive,672,miyabi_ningyo.spr,0,0.5,1,#FFFFFFFF
 4296,THE_PAPER,Ittan-Momen,56,1768,45,45,45,45,45,45,237,290,1,19,19,4719,4815,10,12,Medium,Formless,Neutral3,1160,336,960,170,Normal,AiAggressive,540,the_paper.spr,0,0.5,1,#FFFFFFFF
 4297,POISON_TOAD,Poison Toad,46,1272,37,37,37,37,37,35,194,237,3,16,15,2354,2261,10,12,Medium,Beast,Poison2,1148,864,1728,160,Normal,AiPassive,624,poison_toad.spr,0,0.5,1,#FFFFFFFF
-4298,MOONLIGHT_CLONE,Moonlight Flower,67,15190,106,95,73,99,95,120,836,1021,1,27,27,0,0,10,12,Medium,Demon,Fire3,1276,288,576,150,Boss,AiAggressive,180,moonlight.spr,0,0.5,1,#FFFFFF80
+4298,MOONLIGHT_CLONE,Moonlight Flower,67,15190,106,95,73,99,95,120,836,1021,1,27,27,0,0,10,12,Medium,Demon,Fire3,1276,288,576,150,Boss,AiAggressive,180,moonlight.spr,0,0.5,1,#FFFFFFAA

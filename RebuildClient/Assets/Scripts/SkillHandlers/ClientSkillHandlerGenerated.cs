@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[34];
+			handlers = new SkillHandlerBase[35];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new DefaultSkillHandler();
@@ -34,7 +34,8 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[21] = new DefaultSkillHandler();
 			handlers[22] = new DefaultSkillHandler();
 			handlers[23] = new DefaultSkillHandler();
-			handlers[24] = new DefaultSkillHandler();
+			handlers[24] = new HealHandler();
+			handlers[24].ExecuteWithoutSource = true;
 			handlers[25] = new DefaultSkillHandler();
 			handlers[26] = new DefaultSkillHandler();
 			handlers[27] = new DefaultSkillHandler();
@@ -44,6 +45,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[31] = new DefaultSkillHandler();
 			handlers[32] = new GrandThunderstormHandler();
 			handlers[33] = new DefaultSkillHandler();
+			handlers[34] = new DefaultSkillHandler();
 		}
 	}
 }

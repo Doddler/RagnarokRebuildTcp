@@ -1,0 +1,230 @@
+//------------------------------------
+// Golden Thiefbug
+//------------------------------------
+
+SkillHandler("GOLDEN_BUG") {
+StateAny: 
+    TryCast(CallMinion, 1, 100%, 0.7s, 15s)[MinionCount < 5] -> CallDefaultMinions();
+StateAttacking:
+	TryCast(Mammonite, 10, 20%, 0, 5s) -> SendEmote(8);
+}
+
+//------------------------------------
+// Osiris
+//------------------------------------
+
+SkillHandler("OSIRIS") {
+StateAny: 
+    TryCast(CallMinion, 1, 10%, 0.7s, 30s)[MinionCount < 3] -> SummonMinions(5, "ANCIENT_MUMMY");
+StateAttacking:
+	TryCast(Bash, 10, 20%, 0, 5s);
+}
+
+//------------------------------------
+// Amon Ra
+//------------------------------------
+
+macro AmonRaMinionSpawn() {
+    SummonMonstersNoExp(2, "ARCLOUSE");
+    SummonMonstersNoExp(2, "MIMIC");
+    SummonMonstersNoExp(1, "KHALITZBURG");
+}
+
+SkillHandler("AMON_RA") {
+StateAny:
+    //TryCast(CallMinion, 1, 10%, 0.7s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+StateIdle:
+	TryCast(ThunderStorm, 7, 20%, 1.2s, 5s, UnlimitedRange);
+    TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == FireBolt] -> { @AmonRaMinionSpawn() }
+    TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == ThunderStorm] -> { @AmonRaMinionSpawn() }
+    TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == LightningBolt] -> { @AmonRaMinionSpawn() }
+    TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == ColdBolt] -> { @AmonRaMinionSpawn() }
+}
+
+
+//------------------------------------
+// Edga
+//------------------------------------
+
+SkillHandler("EDDGA") {
+StateAny: 
+    TryCast(CallMinion, 1, 25%, 0.7s, 30s)[MinionCount < 3] -> SummonMinions(5, "LEIB_OLMAI");
+StateAttacking:
+	//TryCast(Bash, 10, 20%, 0, 5s);
+}
+
+
+//------------------------------------
+// Orc Hero
+//------------------------------------
+
+event GrandThunderObject {
+	local delay = Param1;
+	StartTimer();
+	SetTimer(2000-delay);
+	StartCastCircle(SelfPosition, 2, delay, false);
+OnTimer 2000:
+	AreaSkillIndirect(SelfPosition, ThunderStorm, 10);
+	EndEvent();
+}
+
+event GrandThunderstorm {
+	StartTimer();
+OnTimer 500: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 2000);
+OnTimer 600: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1950);
+OnTimer 700: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1900);
+OnTimer 800: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1850);
+OnTimer 900: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1800);
+OnTimer 1000: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1750);
+OnTimer 1100: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1700);
+OnTimer 1200: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1650);
+OnTimer 1300: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1600);
+OnTimer 1400: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1550);
+OnTimer 1500: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1500);
+OnTimer 1600: EndEvent();
+
+}
+
+SkillHandler("ORK_HERO") {
+StateAttacking:
+    TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+	TryCast(GrandThunderstorm, 10, 50%, 2.5s, 5s, EventOnStartCast)[HpPercent < 30] -> CreateEvent("GrandThunderstorm");
+    TryCast(TwoHandQuicken, 10, 100%, 0, 10h)[HpPercent < 30];
+	TryCast(ThunderStorm, 10, 20%, 2.5s, 5s)[HpPercent >= 30];
+StateIdle:
+	TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+}
+
+//------------------------------------
+// Doppelganger
+//------------------------------------
+
+SkillHandler("DOPPELGANGER") {
+StateAny: 
+    TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 5] -> SummonMinions(1, "NIGHTMARE");
+StateAttacking:
+	TryCast(TwoHandQuicken, 10, 100%, 0, 10h)[HpPercent <= 40];
+}
+
+//------------------------------------
+// Moonlight Flower
+//------------------------------------
+
+//ninetail npc that splits from moonlight to spawn a clone
+event NineTailWalkEvent {
+	local type = Param1;
+	StartTimer(100);
+	ChangeNpcClass("NINE_TAIL");
+	ShowNpc(""); //reveal this event npc with a blank name
+	StartWalkToRandomTile(5, 150); //5 tiles away, 150 move speed
+OnTimer 100:
+	if(IsMoving)
+		ResetTimer();
+OnTimer 800:
+	PlayEffectAtMyLocation("PuffOfSmoke");
+	if(type == 0) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C1"); //caster clone
+	if(type == 1) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C2"); //mammonite clone
+	if(type == 2) SummonMobWithType("MOONLIGHT_CLONE", "MOONLIGHT_C3"); //summoner clone
+	EndEvent();
+}
+
+//this macro is used both when she hits 50% hp after a cast or instantly if she dies before it's used
+macro MoonlightSplit() {
+	CreateEvent("NineTailWalkEvent", CurrentPosition, 0);
+	CreateEvent("NineTailWalkEvent", CurrentPosition, 1);
+	CreateEvent("NineTailWalkEvent", CurrentPosition, 2);
+	SetEventCooldown("Split", -1); //never repeat
+	AdminHide();
+}
+
+//skill block used for both idle and chase states
+macro MoonlightCombatActions() {
+	if(HpPercent < 50 && IsNamedEventOffCooldown("Split")) {
+		TryCast(None, 1, 100%, 1.3s, 0) -> {
+			@MoonlightSplit();
+			return;
+		}
+	}
+	
+	if(HpPercent < 30 && IsNamedEventOffCooldown("Final Phase")) {
+		TryCast(None, 1, 100%, 0, 5s) -> SendEmote(7); //angry
+
+		ResetAllCooldowns();
+		SetEventCooldown("Split", -1); //we don't want this happening again. We know it already happened cause it's higher priority
+		SetEventCooldown("Final Phase", -1);
+		TryCast(CallMinion,1, 100%, 0.4s, 30s) -> CallDefaultMinions();
+	}
+
+	if(HpPercent < 80 && IsNamedEventOffCooldown("Magic Combo")) {
+		TryCast(ColdBolt, 5, 100%, 0.8s, 10s, EventOnStartCast) -> SendEmote(29); //gg
+		TryCast(FireBolt, 5, 100%, 0.8s, 10s);
+		TryCast(LightningBolt, 5, 100%, 0.8s, 10s);
+		SetEventCooldown("Magic Combo", 20000);
+	}
+
+	TryCast(CallMinion,1, 1000, 2000, 60000)[MinionCount < 3] -> CallDefaultMinions();
+}
+
+//caster clone AI
+SkillHandler("MOONLIGHT_C1") {
+	StateAny:
+		TryCast(ColdBolt, 5, 100%, 0.8s, 10s, EventOnStartCast) -> SendEmote(29); //gg
+		TryCast(FireBolt, 5, 100%, 0.8s, 10s);
+		TryCast(LightningBolt, 5, 100%, 0.8s, 10s);
+	OnDie:
+		CallHiddenParentToNearbyPosition();
+}
+
+//Mammonite clone AI
+SkillHandler("MOONLIGHT_C2") {
+	StateAttacking:
+		TryCast(Mammonite, 10, 100%, 0, 5s) -> SendEmote(8);
+	OnDie:
+		CallHiddenParentToNearbyPosition();
+}
+
+//Minion clone AI
+SkillHandler("MOONLIGHT_C3") {
+	StateAny:
+		TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> SummonMinions(5, "NINE_TAIL");
+		TryCast(Heal, 4999, 100%, 0.7s, 5s)[FindAllyBelowHpPercent(60)];
+	OnDie:
+		CallHiddenParentToNearbyPosition();
+}
+
+//The real Moonlight Flower
+SkillHandler("MOONLIGHT") {
+	StateIdle:
+	TryCast(CallMinion, 1, 100%, 2s, 1m)[MinionCount < 3] -> CallDefaultMinions();
+	TryCast(Heal, 99999, 100%, 6s, 10s, EasyInterrupt)[HpPercent <= 99 && TimeOutOfCombat > 60s] -> ResetAllCooldowns();
+	TryCast(Heal, 9999, 100%, 3s, 10s)[HpPercent < 70];
+	
+
+	StateChase:
+		@MoonlightCombatActions();
+		TryCast(ColdBolt, 5, 20%, 0, 5s);
+		TryCast(FireBolt, 5, 20%, 0, 5s);
+		TryCast(LightningBolt, 5, 20%, 0, 5s);
+
+	StateAttacking:
+		@MoonlightCombatActions();
+		TryCast(Mammonite, 10, 20%, 0, 5s) -> SendEmote(8);
+
+	StateHidden:
+		//TryCast(None, 1, 1000, 0, 5000)[MinionCount > 0] -> TeleportNearRandomMinion();
+		if(TimeInAiState > 5s && MinionCount == 0)
+		{
+			AdminUnHide();
+			ChangeAiState(StateSearch);
+		}
+
+	OnDie:
+		//if moonlight dies without splitting, instantly split and recover 10k hp
+		if(IsNamedEventOffCooldown("Split"))
+		{
+			CancelCast();
+			@MoonlightSplit();
+			SetHpNoNotify(10000);
+		}
+}
+

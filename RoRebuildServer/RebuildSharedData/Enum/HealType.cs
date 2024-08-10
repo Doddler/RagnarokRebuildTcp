@@ -4,5 +4,5 @@ public enum HealType : byte
 {
     None,
     Item,
-    Heal
+    HealSkill
 }

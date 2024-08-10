@@ -256,6 +256,8 @@ public class WorldObject : IEntityAutoReset
         visiblePlayers.Add(e);
     }
 
+    public bool HasVisiblePlayers() => visiblePlayers != null && visiblePlayers.Count > 0;
+
     public bool IsPlayerVisible(Entity e)
     {
         if (visiblePlayers == null)

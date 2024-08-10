@@ -8,7 +8,8 @@ namespace Assets.Scripts.Effects
 
         public bool Active;
         public float Alpha;
-        public float Alpha2;
+        public float AlphaTime;
+        public float AlphaRate;
         public float Angle;
         public float CoverAngle;
         public float RiseAngle;
@@ -17,6 +18,7 @@ namespace Assets.Scripts.Effects
         public int Step;
         public float Distance;
         public Vector3 Position;
+        public Color32 Color = new Color32(255, 255, 255, 255);
 
         public float[] Heights = new float[SegmentCount];
         public int[] Flags = new int[SegmentCount];
@@ -25,7 +27,8 @@ namespace Assets.Scripts.Effects
         {
             Active = false;
             Alpha = 0;
-            Alpha2 = 0;
+            AlphaTime = 0;
+            AlphaRate = 0;
             Angle = 0f;
             CoverAngle = 0;
             RiseAngle = 0;
@@ -34,6 +37,7 @@ namespace Assets.Scripts.Effects
             Distance = 0;
             RotStart = 0;
             Step = 0;
+            Color = new Color32(255, 255, 255, 255);
             Position = Vector3.zero;
 
             for (var i = 0; i < SegmentCount; i++)

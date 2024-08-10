@@ -31,7 +31,7 @@ namespace Assets.Scripts.Network
         public bool IsAlly;
         public bool IsMale;
         public bool IsMainCharacter;
-        public bool IsInteractable;
+        public bool IsInteractable { get; set; }
         public int Level;
         public string Name { get; set; }
         public int Hp;
@@ -729,6 +729,33 @@ namespace Assets.Scripts.Network
             if (SpriteAnimator.State == SpriteState.Sit)
                 go.SetActive(false);
         }
+        
+        public void PerformSkillMotion()
+        {
+            if (skipNextAttackMotion) //if the character casts a skill indirectly they shouldn't play their attack motion
+            {
+                // Debug.Log($"{name}: Skipping attack motion");
+                skipNextAttackMotion = false;
+                return;
+            }
+            // Debug.Log($"{name}:Performing attack motion.");
+
+            if (SpriteAnimator.State == SpriteState.Standby)
+                SpriteAnimator.State = SpriteState.Idle;
+            
+            if (SpriteAnimator.Type == SpriteType.Player)
+            {
+                SpriteAnimator.ChangeMotion(SpriteMotion.Casting, true);
+            }
+            else
+                SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+            
+            // Debug.Log($"PerformBasicAttackMotion {name} speed {AttackAnimationSpeed}");
+            //SpriteAnimator.AnimSpeed = AttackAnimationSpeed;
+            
+            
+        }
+
 
         public void PerformBasicAttackMotion(CharacterSkill skill = CharacterSkill.None)
         {

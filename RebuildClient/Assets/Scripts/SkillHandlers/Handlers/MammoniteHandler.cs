@@ -8,7 +8,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.Mammonite)]
     public class MammoniteHandler : SkillHandlerBase
     {
-        public override void ExecuteSkillTargeted(ServerControllable src, ServerControllable target, int lvl)
+        public override void ExecuteSkillTargeted(ServerControllable src, ServerControllable target, int lvl, int damage)
         {
             DefaultSkillCastEffect.Create(src);
             src.PerformBasicAttackMotion();

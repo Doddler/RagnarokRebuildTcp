@@ -30,6 +30,12 @@ public class DamageIndicator : MonoBehaviour
 	private Vector3 end;
 	private Vector3 basePosition;
 
+	public void AttachDamageIndicator(ServerControllable controllable)
+	{
+		Controllable = controllable;
+		basePosition = controllable.transform.localPosition;
+	}
+	
 	public void AttachComboIndicatorToControllable(ServerControllable controllable)
 	{
 		RemoveComboIndicatorIfExists(controllable);
@@ -37,7 +43,7 @@ public class DamageIndicator : MonoBehaviour
 		Controllable.ComboIndicator = gameObject;
 		basePosition = controllable.transform.localPosition;
 	}
-
+	
 	private void RemoveComboIndicatorIfExists(ServerControllable controllable)
 	{
 		if (controllable.ComboIndicator == null)
@@ -53,7 +59,7 @@ public class DamageIndicator : MonoBehaviour
 		di.EndDamageIndicator();
 	}
 	
-	public void DoDamage(TextIndicatorType type, string value, Vector3 startPosition, float height, Direction direction, bool isRed, bool isCrit)
+	public void DoDamage(TextIndicatorType type, string value, Vector3 startPosition, float height, Direction direction, string colorCode, bool isCrit)
 	{
 		PathData = type switch
 		{
@@ -64,9 +70,10 @@ public class DamageIndicator : MonoBehaviour
 	    
         direction = direction.GetIntercardinalDirection();
 		var text = value.ToString();
+		var hasColor = !string.IsNullOrEmpty(colorCode);
 
-		if (isRed)
-			sb.Append("<color=#FF0000>");
+		if (hasColor)
+			sb.Append($"<color={colorCode}>");
 
 		var useTrueType = CameraFollower.Instance.UseTTFDamage;
         if (!int.TryParse(value, out var _))
@@ -82,7 +89,7 @@ public class DamageIndicator : MonoBehaviour
 			sb.Append(c);
 			if (!useTrueType)
 			{
-				if (isRed)
+				if (hasColor)
 					sb.Append(" tint");
 				sb.Append(">");
 			}

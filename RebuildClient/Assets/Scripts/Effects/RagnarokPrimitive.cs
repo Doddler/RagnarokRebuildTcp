@@ -30,6 +30,7 @@ namespace Assets.Scripts.Effects
 
         public EffectPart[] Parts;
         public int PartsCount;
+        public int[] Flags = new int[4];
 
         public float DelayTime;
         public float Duration;
@@ -109,6 +110,8 @@ namespace Assets.Scripts.Effects
                 billboard.Style = BillboardStyle.None;
             Velocity = Vector3.zero;
             EventTrigger = null;
+            for (var i = 0; i < 4; i++)
+                Flags[i] = 0;
         }
 
         public void SetBillboardMode(BillboardStyle style)
@@ -298,7 +301,7 @@ namespace Assets.Scripts.Effects
 
         
         public void AddTexturedSliceQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, int pos,
-            int sliceCount, Color c, float scale = 1)
+            int sliceCount, Color32 c, float scale = 1)
         {
             var uv1 = (pos - 1) / (float)sliceCount;
             var uv2 = pos / (float)sliceCount;
@@ -315,7 +318,7 @@ namespace Assets.Scripts.Effects
         }
 
         public void AddTexturedQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, Vector2 uv1,
-            Vector2 uv2, Vector2 uv3, Vector2 uv4, Color c, float scale = 1)
+            Vector2 uv2, Vector2 uv3, Vector2 uv4, Color32 c, float scale = 1)
         {
             //we get the uvs for a vertical slice for the position pos out of the number of parts used
 

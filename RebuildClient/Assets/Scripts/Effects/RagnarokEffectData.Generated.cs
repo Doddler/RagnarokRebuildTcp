@@ -12,6 +12,7 @@ namespace Assets.Scripts.Effects
 		DefaultSkillCastEffect,
 		FireArrow,
 		ForestLightEffect,
+		HealEffect,
 		IceArrow,
 		MapWarpEffect,
 	}
@@ -24,6 +25,7 @@ namespace Assets.Scripts.Effects
 		DirectionalBillboard,
 		Flash2D,
 		ForestLight,
+		Heal,
 		ProjectorPrimitive,
 		Texture3D,
 	}
@@ -39,6 +41,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.DefaultSkillCastEffect, new Assets.Scripts.Effects.EffectHandlers.DefaultSkillCastEffect());
 			effectHandlers.Add(EffectType.FireArrow, new Assets.Scripts.Effects.EffectHandlers.FireArrow());
 			effectHandlers.Add(EffectType.ForestLightEffect, new Assets.Scripts.Effects.EffectHandlers.ForestLightEffect());
+			effectHandlers.Add(EffectType.HealEffect, new Assets.Scripts.Effects.EffectHandlers.HealEffect());
 			effectHandlers.Add(EffectType.IceArrow, new Assets.Scripts.Effects.EffectHandlers.IceArrow());
 			effectHandlers.Add(EffectType.MapWarpEffect, new Assets.Scripts.Effects.EffectHandlers.MapWarpEffect());
 			primitiveHandlers.Add(PrimitiveType.Cylender, new Assets.Scripts.Effects.PrimitiveHandlers.CastingCylinderPrimitive());
@@ -51,6 +54,7 @@ namespace Assets.Scripts.Effects
 			primitiveHandlers.Add(PrimitiveType.Flash2D, new Assets.Scripts.Effects.PrimitiveHandlers.Flash2DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Flash2D, () => new Assets.Scripts.Effects.PrimitiveData.FlashData());
 			primitiveHandlers.Add(PrimitiveType.ForestLight, new Assets.Scripts.Effects.PrimitiveHandlers.ForestLightPrimitive());
+			primitiveHandlers.Add(PrimitiveType.Heal, new Assets.Scripts.Effects.PrimitiveHandlers.HealPrimitive());
 			primitiveHandlers.Add(PrimitiveType.ProjectorPrimitive, new Assets.Scripts.Effects.PrimitiveHandlers.ProjectorPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Texture3D, new Assets.Scripts.Effects.PrimitiveHandlers.Texture3DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Texture3D, () => new Assets.Scripts.Effects.PrimitiveData.Texture3DData());

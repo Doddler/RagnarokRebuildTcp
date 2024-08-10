@@ -18,7 +18,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             var mid = (EffectPart.SegmentCount - 1) / 2;
             var m2 = 90 / mid;
             
-            for (var ec = 0; ec < 4; ec++)
+            for (var ec = 0; ec < primitive.Parts.Length; ec++)
             {
                 //if (Mathf.Approximately(size, 3f) && ec < 3)
                 //    ec = 3;
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 }
                 else if (step < 20)
                 {
-                    if (p.Alpha2 != 1)
+                    if (p.AlphaTime != 1)
                     {
                         if (ec == 3)
                             p.Alpha = Mathf.Clamp(p.Alpha + 8 * 60 * Time.deltaTime, 0, 60);
@@ -85,7 +85,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             var mid = (EffectPart.SegmentCount - 1) / 2;
             var m2 = 90 / mid;
 
-            for (var ec = 0; ec < 4; ec++)
+            for (var ec = 0; ec < primitive.Parts.Length; ec++)
             {
                 var p = primitive.Parts[ec];
 
@@ -129,15 +129,12 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
         {
             mb.Clear();
 
-            for (var ec = 0; ec < 4; ec++)
+            for (var ec = 0; ec < primitive.Parts.Length; ec++)
             {
                 var p = primitive.Parts[ec];
                 if (!p.Active)
                     continue;
                 
-                if (p.Alpha < 0)
-                    p.Alpha = 0;
-
                 var baseAngle = p.CoverAngle / (EffectPart.SegmentCount - 1);
                 var pos = 0;
 
@@ -146,7 +143,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 var bottomLast = Vector3.zero;
                 var topLast = Vector3.zero;
 
-                var color = new Color(1f, 1f, 1f, p.Alpha / 255f);
+                var color = new Color32(p.Color.r, p.Color.g, p.Color.b, (byte)Mathf.Clamp((int)p.Alpha, 0, 255));
                 
                 for (var i = 0f; i <= p.CoverAngle; i += baseAngle)
                 {

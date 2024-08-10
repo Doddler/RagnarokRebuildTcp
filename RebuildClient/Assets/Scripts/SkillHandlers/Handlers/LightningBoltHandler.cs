@@ -27,7 +27,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.EndEffectOfType(EffectType.CastEffect);
         }
 
-        public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ServerControllable target, int lvl)
+        public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ServerControllable target, int lvl, int damage)
         {
             src?.PerformBasicAttackMotion();
             if(target != null)

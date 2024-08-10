@@ -15,7 +15,7 @@ namespace Assets.Scripts.SkillHandlers
         public static void StartCastingSkill(ServerControllable src, Vector2Int target, CharacterSkill skillId, int lvl, float castTime) =>
             handlers[(int)skillId].StartSkillCasting(src, target, lvl, castTime);
 
-        public static void ExecuteSkill(ServerControllable src, ServerControllable target, CharacterSkill skillId, int lvl)
+        public static void ExecuteSkill(ServerControllable src, ServerControllable target, CharacterSkill skillId, int lvl, int damage = 0)
         {
             var handler = handlers[(int)skillId];
 
@@ -27,7 +27,7 @@ namespace Assets.Scripts.SkillHandlers
             if(targetType == SkillTarget.Ground)
                 handler.ExecuteSkillGroundTargeted(src, Vector2Int.zero, lvl); //need to fix this whole thing to have the target position
             else
-                handler.ExecuteSkillTargeted(src, target, lvl);
+                handler.ExecuteSkillTargeted(src, target, lvl, damage);
         }
             
     }

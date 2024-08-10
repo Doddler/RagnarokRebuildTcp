@@ -1,6 +1,8 @@
-﻿namespace RoRebuildServer.EntitySystem;
+﻿using RoRebuildServer.Simulation.Util;
 
-public class EntityList
+namespace RoRebuildServer.EntitySystem;
+
+public class EntityList : IDisposable
 {
     private Entity[]? entities;
     //private Dictionary<EcsEntity, int> entityLookup;
@@ -185,5 +187,10 @@ public class EntityList
             index++;
             return index < count;
         }
+    }
+
+    public void Dispose()
+    {
+        EntityListPool.Return(this);
     }
 }

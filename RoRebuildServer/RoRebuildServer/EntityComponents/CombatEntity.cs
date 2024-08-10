@@ -84,6 +84,18 @@ public class CombatEntity : IEntityAutoReset
             Character.Player.UpdateStats();
     }
 
+    public void HealHp(int hp)
+    {
+        var curHp = GetStat(CharacterStat.Hp);
+        var maxHp = GetStat(CharacterStat.MaxHp);
+
+        if (curHp + hp > maxHp)
+            hp = maxHp - curHp;
+
+        SetStat(CharacterStat.Hp, curHp + hp);
+
+    }
+
     public void Heal(int hp, int hp2, bool showValue = false)
     {
         if (hp2 != -1 && hp2 > hp)
@@ -523,9 +535,9 @@ public class CombatEntity : IEntityAutoReset
                 return true;
             }
             
-            Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
-            //if(Character.Type == CharacterType.Player)
-            //    Character.Player.ChangeTarget(target.Character);
+            //don't turn character if you target yourself!
+            if(Character != target.Character)
+                Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
 
             if(castTime < 0f)
                 castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, target, skillInfo.Level);
@@ -576,6 +588,36 @@ public class CombatEntity : IEntityAutoReset
         SkillHandler.ExecuteSkill(info, this);
     }
 
+
+    public DamageInfo PrepareTargetedSkillResult(CombatEntity target, CharacterSkill skillSource = CharacterSkill.None)
+    {
+        //technically the motion time is how long it's locked in place, we use sprite timing if it's faster.
+        var spriteTiming = GetTiming(TimingStat.SpriteAttackTiming);
+        var delayTiming = GetTiming(TimingStat.AttackDelayTime);
+        var motionTiming = GetTiming(TimingStat.AttackMotionTime);
+        if (motionTiming > delayTiming)
+            delayTiming = motionTiming;
+
+        delayTiming -= 0.2f;
+        if (delayTiming < 0.2f)
+            delayTiming = 0.2f;
+
+        if (spriteTiming > delayTiming)
+            spriteTiming = delayTiming;
+
+        var di = new DamageInfo()
+        {
+            KnockBack = 0,
+            HitLockTime = target.GetTiming(TimingStat.HitDelayTime),
+            Source = Entity,
+            Target = target.Entity,
+            AttackSkill = skillSource,
+            Time = Time.ElapsedTimeFloat + spriteTiming,
+            AttackMotionTime = spriteTiming
+        };
+
+        return di;
+    }
 
     public DamageInfo CalculateCombatResultUsingSetAttackPower(CombatEntity target, int atk1, int atk2, float attackMultiplier, int hitCount,
                                             AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement element = AttackElement.None)
@@ -640,34 +682,11 @@ public class CombatEntity : IEntityAutoReset
         if (damage == 0)
             res = AttackResult.Miss;
 
-        //technically the motion time is how long it's locked in place, we use sprite timing if it's faster.
-        var spriteTiming = GetTiming(TimingStat.SpriteAttackTiming);
-        var delayTiming = GetTiming(TimingStat.AttackDelayTime);
-        var motionTiming = GetTiming(TimingStat.AttackMotionTime);
-        if (motionTiming > delayTiming)
-            delayTiming = motionTiming;
-
-        delayTiming -= 0.2f;
-        if (delayTiming < 0.2f)
-            delayTiming = 0.2f;
-
-        if (spriteTiming > delayTiming)
-            spriteTiming = delayTiming;
-
-        var di = new DamageInfo()
-        {
-            Result = res,
-            Damage = damage,
-            HitCount = (byte)hitCount,
-            KnockBack = 0,
-            HitLockTime = target.GetTiming(TimingStat.HitDelayTime),
-            Source = Entity,
-            Target = target.Entity,
-            AttackSkill = skillSource,
-            Time = Time.ElapsedTimeFloat + spriteTiming,
-            AttackMotionTime = spriteTiming
-        };
-
+        var di = PrepareTargetedSkillResult(target, skillSource);
+        di.Result = res;
+        di.Damage = damage;
+        di.HitCount = (byte)hitCount;
+        
         return di;
     }
 
@@ -766,11 +785,11 @@ public class CombatEntity : IEntityAutoReset
             mon.AddDelay(GetTiming(TimingStat.SpriteAttackTiming) * 2); //make sure it stops acting until it dies
         }
 
-        if (Character.Type == CharacterType.Player && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
-        {
-            var player = Entity.Get<Player>();
-            player.ClearTarget();
-        }
+        //if (Character.Type == CharacterType.Player && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
+        //{
+        //    var player = Entity.Get<Player>();
+        //    player.ClearTarget();
+        //}
     }
 
     public void PerformMeleeAttack(CombatEntity target)

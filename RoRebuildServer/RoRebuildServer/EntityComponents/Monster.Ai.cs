@@ -390,9 +390,6 @@ public partial class Monster
     /// </summary>
     private bool OutWaitStart()
     {
-        if (Target.IsAlive())
-            timeLeftCombat = Time.ElapsedTimeFloat;
-
         Target = Entity.Null;
 
         nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
@@ -518,6 +515,8 @@ public partial class Monster
         if (targetChar == null)
             return false;
 
+        timeLastCombat = Time.ElapsedTimeFloat;
+
         //var distance = Character.Position.DistanceTo(targetChar.Position);
         if (CombatEntity.CanAttackTarget(targetChar))
         {
@@ -582,6 +581,7 @@ public partial class Monster
 
         CombatEntity.PerformMeleeAttack(targetEntity);
         Character.QueuedAction = QueuedAction.None;
+        timeLastCombat = Time.ElapsedTimeFloat;
 
         //we should have our cooldown set by PerformMeleeAttack actually
         //nextAiUpdate += MonsterBase.AttackTime;

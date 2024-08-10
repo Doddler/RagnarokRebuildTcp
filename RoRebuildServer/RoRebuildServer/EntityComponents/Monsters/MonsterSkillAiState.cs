@@ -12,6 +12,7 @@ using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 using System;
 using System.Diagnostics;
+using System.Threading.Channels;
 using System.Xml.Linq;
 
 namespace RoRebuildServer.EntityComponents.Monsters;
@@ -63,13 +64,13 @@ public class MonsterSkillAiState(Monster monster)
         Monster.CombatEntity.ResetSkillCooldowns();
         Monster.Character.QueuedAction = QueuedAction.None;
         Monster.Character.StopMovingImmediately();
-        
-        
+
+
         map.AddVisiblePlayersAsPacketRecipients(monster.Character);
         CommandBuilder.ChangeCombatTargetableState(Monster.Character, false);
         CommandBuilder.ClearRecipients();
     }
-    
+
     private bool SkillFail()
     {
         SkillCastSuccess = false;
@@ -119,6 +120,7 @@ public class MonsterSkillAiState(Monster monster)
     }
 
     public int TimeInAiState => (int)(Monster.TimeInCurrentAiState * 1000);
+    public int TimeOutOfCombat => (int)(Monster.DurationOutOfCombat * 1000);
 
     public void AdminHide()
     {
@@ -203,17 +205,25 @@ public class MonsterSkillAiState(Monster monster)
     //    return monster.CombatEntity.AttemptStartSelfTargetSkill(skill, level);
     //}
 
-    public bool TryCast(CharacterSkill skill, int level, int chance, int castTime, int delay, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
+    public bool CheckCast(CharacterSkill skill, int chance)
     {
         if (monster.CombatEntity.IsSkillOnCooldown(skill))
-            return SkillFail();
+            return false;
 
         if (GameRandom.Next(0, 1000) > chance)
-            return SkillFail();
+            return false;
+
+        return true;
+    }
+
+    public bool Cast(CharacterSkill skill, int level, int castTime, int delay, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
+    {
 
         var ce = monster.CombatEntity;
         var attr = SkillHandler.GetSkillAttributes(skill);
         var range = SkillHandler.GetSkillRange(ce, skill, level);
+        if (flags.HasFlag(MonsterSkillAiFlags.UnlimitedRange))
+            range = 21;
 
         var hideSkillName = flags.HasFlag(MonsterSkillAiFlags.HideSkillName);
 
@@ -226,7 +236,17 @@ public class MonsterSkillAiState(Monster monster)
                 if (monster.Target.TryGet<WorldObject>(out var newTarget))
                     target = newTarget;
             if (target == null)
-                return SkillFail();
+            {
+                using var list = EntityListPool.Get();
+                monster.Character.Map?.GatherEnemiesInRange(monster.Character, range, list, true, true);
+                if (list.Count <= 0)
+                    return SkillFail(); //no enemies in range
+
+                if (list.Count == 1)
+                    target = list[0].Get<WorldObject>();
+                else
+                    target = list[GameRandom.Next(0, list.Count)].Get<WorldObject>();
+            }
 
             if (!ce.AttemptStartGroundTargetedSkill(target.Position, skill, level, castTime / 1000f))
                 return SkillFail();
@@ -234,9 +254,24 @@ public class MonsterSkillAiState(Monster monster)
             return SkillSuccess();
         }
 
+        if (attr.SkillTarget == SkillTarget.Ally)
+        {
+            if (targetForSkill != null)
+            {
+                if (!ce.CanAttackTarget(targetForSkill, range)) return SkillFail();
+                if (!ce.AttemptStartSingleTargetSkillAttack(targetForSkill.CombatEntity, skill, level, castTime / 1000f))
+                    return SkillFail();
+
+                ce.SetSkillCooldown(skill, delay / 1000f);
+                return SkillSuccess();
+            }
+            else
+                attr.SkillTarget = SkillTarget.Self;
+        }
+
         if (attr.SkillTarget == SkillTarget.Self)
         {
-            if(!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f, hideSkillName))
+            if (!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f, hideSkillName))
                 return SkillFail();
             ce.SetSkillCooldown(skill, delay / 1000f);
             return SkillSuccess();
@@ -247,7 +282,7 @@ public class MonsterSkillAiState(Monster monster)
             //if our conditional statement selected a target for us, use that, otherwise use our current target
             var target = targetForSkill;
             if (target == null || !target.CombatEntity.IsValidTarget(ce))
-                if(monster.Target.TryGet<WorldObject>(out var newTarget))
+                if (monster.Target.TryGet<WorldObject>(out var newTarget))
                     target = newTarget;
 
             //if we're in a state where we have a target, we only need to check if we can use this skill on that enemy
@@ -256,7 +291,7 @@ public class MonsterSkillAiState(Monster monster)
                 if (!ce.CanAttackTarget(target, range)) return SkillFail();
                 if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f))
                     return SkillFail();
-                
+
                 ce.SetSkillCooldown(skill, delay / 1000f);
                 return SkillSuccess();
             }
@@ -285,6 +320,14 @@ public class MonsterSkillAiState(Monster monster)
         }
 
         return SkillFail();
+    }
+
+    public bool TryCast(CharacterSkill skill, int level, int chance, int castTime, int delay, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
+    {
+        if (!CheckCast(skill, chance))
+            return SkillFail();
+
+        return Cast(skill, level, castTime, delay, flags);
     }
 
     public void CancelCast()
@@ -316,6 +359,7 @@ public class MonsterSkillAiState(Monster monster)
                     var minion = World.Instance.CreateMonster(map, minionDef.Monster, Area.CreateAroundPoint(monster.Character.Position, 3), null);
                     var minionMonster = minion.Get<Monster>();
                     minionMonster.ResetAiUpdateTime();
+                    minionMonster.GivesExperience = false;
 
                     monster.AddChild(ref minion);
                 }
@@ -336,8 +380,28 @@ public class MonsterSkillAiState(Monster monster)
             var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, Area.CreateAroundPoint(monster.Character.Position, 3), null);
             var minionMonster = minion.Get<Monster>();
             minionMonster.ResetAiUpdateTime();
+            minionMonster.GivesExperience = false;
 
             Monster.AddChild(ref minion);
+        }
+    }
+
+
+    public void SummonMonstersNoExp(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
+    {
+        Debug.Assert(Monster.Character.Map != null, $"Npc {Monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+        var monsterDef = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(Monster.Character.Position + new Position(offsetX, offsetY), width, height);
+
+        for (var i = 0; i < count; i++)
+        {
+            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, Area.CreateAroundPoint(monster.Character.Position, 3), null);
+            var minionMonster = minion.Get<Monster>();
+            minionMonster.ResetAiUpdateTime();
+
+            minionMonster.GivesExperience = false;
         }
     }
 
@@ -371,13 +435,18 @@ public class MonsterSkillAiState(Monster monster)
     {
         targetForSkill = null;
         var map = monster.Character.Map;
-        var pool = EntityListPool.Get();
+        using var pool = EntityListPool.Get();
+        
+        Debug.Assert(map != null);
         map.GatherAlliesInRange(monster.Character, 9, pool, true);
         if (pool.Count == 0)
             return false;
 
-        foreach (var e in pool)
+        var offset = GameRandom.Next(0, pool.Count);
+
+        for (var i = 0; i < pool.Count; i++)
         {
+            var e = pool[(i + offset) % pool.Count]; //we start at a random point in the list to make it at least slightly less predictable
             if (e.TryGet<CombatEntity>(out var target))
             {
                 if (target.GetStat(CharacterStat.Hp) * 100 / target.GetStat(CharacterStat.MaxHp) < percent)
@@ -414,6 +483,6 @@ public class MonsterSkillAiState(Monster monster)
         Events ??= EntityListPool.Get();
         Events.ClearInactive();
         Events.Add(eventObj);
-        
+
     }
 }

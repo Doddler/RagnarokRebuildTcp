@@ -494,7 +494,10 @@ public class World
 
         var spawnEntry = monster.SpawnRule;
         if (spawnEntry == null)
-            throw new Exception("Cannot respawn monster that has no spawn rule!");
+        {
+            ServerLogger.LogWarning($"A monster is attempting to respawn but it has no respawn rule!");
+            return false;
+        }
 
         var map = monster.Character.Map;
 

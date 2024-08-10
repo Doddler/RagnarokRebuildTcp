@@ -825,11 +825,12 @@ namespace Assets.Scripts
             var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
             var hasTargetedSkill = hasSkillOnCursor && (cursorSkillTarget == SkillTarget.Enemy || cursorSkillTarget == SkillTarget.Ally);
             var hasGroundSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ground;
-
+            
             var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill;
-            var canClickEnemy = canInteract && !mouseTarget.IsAlly && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
-            var canClickNpc = canInteract && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
-            var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc;
+            var canCurrentlyTarget = canInteract && ((hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally) ? mouseTarget.IsAlly : !mouseTarget.IsAlly);
+            var canClickEnemy = canCurrentlyTarget && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
+            var canClickNpc = canInteract && !hasSkillOnCursor && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
+            var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc && !hasTargetedSkill;
             var canMove = ClickDelay <= 0 && isAlive && !isSitting;
             var showEntityName = hasEntity && !isOverUi;
 

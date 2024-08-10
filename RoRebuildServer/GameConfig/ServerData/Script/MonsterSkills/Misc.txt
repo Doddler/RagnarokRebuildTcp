@@ -31,9 +31,9 @@ StateAttacking:
 
 SkillHandler("STROUF") {
 StateAttacking:
-	TryCast(LightningBolt, 3, 50, 0, 5000);
+	TryCast(LightningBolt, 3, 5%, 0, 5s);
 StateChase:
-	TryCast(LightningBolt, 3, 50, 0, 5000);
+	TryCast(LightningBolt, 3, 5%, 0, 5s);
 StateIdle:
 	TryCast(None, 3, 200, 0, 5000) -> SendEmote(32);
 }
@@ -52,9 +52,9 @@ StateChase:
 
 SkillHandler("MARDUK") {
 StateAttacking:
-	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(9);
+	TryCast(FireBolt, 3, 5%, 1.5s, 5s) -> SendEmote(9);
 StateChase:
-	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(9);
+	TryCast(FireBolt, 3, 5%, 1.5s, 5s) -> SendEmote(9);
 }
 
 SkillHandler("MARINE_SPHERE") {
@@ -70,4 +70,9 @@ OnDie:
 	SetHpNoNotify(500);
 StateSpecial:
     TryCast(SelfDestruct, 1, 1000, 4000, 0, EventOnStartCast | HideSkillName);
+}
+
+SkillHandler("GEOGRAPHER") {
+StateAny:
+    TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
 }

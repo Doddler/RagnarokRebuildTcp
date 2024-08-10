@@ -8,6 +8,7 @@ namespace RebuildSharedData.Enum
     {
         NormalDamage,
         CriticalDamage,
+        Heal,
         Miss,
         Invisible
     }
