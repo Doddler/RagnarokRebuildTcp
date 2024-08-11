@@ -20,7 +20,10 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.AttachEffect(CastEffect.Create(castTime, "ring_yellow", src.gameObject));
             
             var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
-            CastTargetCircle.Create("magic_target", targetCell, new Color(1f, 1f, 1f, 0.5f), 3, castTime);
+            if(src.IsAlly)
+                CastTargetCircle.Create("magic_target", targetCell, new Color(1f, 1f, 1f, 0.5f), 3, castTime);
+            else
+                CastTargetCircle.Create("magic_target_bad", targetCell, new Color(1f, 1f, 1f, 0.5f), 3, castTime);
         }
 
         public override void ExecuteSkillGroundTargeted(ServerControllable src, Vector2Int target, int lvl)

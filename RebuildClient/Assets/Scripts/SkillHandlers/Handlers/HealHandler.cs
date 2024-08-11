@@ -11,6 +11,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void ExecuteSkillTargeted(ServerControllable src, ServerControllable target, int lvl, int damage)
         {
             src?.PerformSkillMotion();
+
             switch (-damage)
             {
                 case < 200:

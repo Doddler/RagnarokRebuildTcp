@@ -31944,6 +31944,7 @@ MonoBehaviour:
   DamagePath: {fileID: 11400000, guid: 57b700ab3dcaac0489f42ba643a6f229, type: 2}
   HealPath: {fileID: 11400000, guid: 9d88478b1389e34489a765d9580a1983, type: 2}
   ComboPath: {fileID: 11400000, guid: 2b328f5af3561d948929181f1e883b63, type: 2}
+  ExpPath: {fileID: 11400000, guid: 2849831afb0ee0b468d1212452d8d74a, type: 2}
   LevelUpPrefab: {fileID: 13733402576028186, guid: df59853ba9b301d4db5560d3d2e0522e,
     type: 3}
   ResurrectPrefab: {fileID: 715747282247485443, guid: 71524991148b16e4c86090e51f10b668,

@@ -740,8 +740,7 @@ namespace Assets.Scripts.Network
             }
             // Debug.Log($"{name}:Performing attack motion.");
 
-            if (SpriteAnimator.State == SpriteState.Standby)
-                SpriteAnimator.State = SpriteState.Idle;
+            SpriteAnimator.State = SpriteState.Idle;
             
             if (SpriteAnimator.Type == SpriteType.Player)
             {

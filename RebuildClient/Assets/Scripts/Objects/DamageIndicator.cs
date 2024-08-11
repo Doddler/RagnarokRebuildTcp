@@ -14,7 +14,8 @@ public enum TextIndicatorType
 {
 	Damage,
 	Heal,
-	ComboDamage
+	ComboDamage,
+	Experience
 }
 
 public class DamageIndicator : MonoBehaviour
@@ -65,6 +66,7 @@ public class DamageIndicator : MonoBehaviour
 		{
 			TextIndicatorType.Heal => ClientConstants.Instance.HealPath,
 			TextIndicatorType.ComboDamage => ClientConstants.Instance.ComboPath,
+			TextIndicatorType.Experience => ClientConstants.Instance.ExpPath,
 			_ => ClientConstants.Instance.DamagePath
 		};
 	    

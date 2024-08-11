@@ -9,7 +9,7 @@ namespace Assets.Scripts.Objects
         public AnimationCurve Size;
         public AnimationCurve Alpha;
         public bool FliesAwayFromTarget = true;
-        public int HeightMultiplier = 6;
+        public float HeightMultiplier = 6;
         public float TweenTime = 1f;
     }
 }

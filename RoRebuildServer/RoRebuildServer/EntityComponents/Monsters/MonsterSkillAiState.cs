@@ -327,7 +327,11 @@ public class MonsterSkillAiState(Monster monster)
         if (!CheckCast(skill, chance))
             return SkillFail();
 
-        return Cast(skill, level, castTime, delay, flags);
+        var result = Cast(skill, level, castTime, delay, flags);
+        if (result)
+            Monster.LastDamageSourceType = CharacterSkill.None;
+
+        return result;
     }
 
     public void CancelCast()

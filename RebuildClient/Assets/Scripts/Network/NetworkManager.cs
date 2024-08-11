@@ -761,6 +761,7 @@ namespace Assets.Scripts.Network
         private void OnMessageSkill(ClientInboundMessage msg)
         {
             var type = (SkillTarget)msg.ReadByte();
+            Debug.Log($"Skill type {type}");
             switch (type)
             {
                 case SkillTarget.Ground:
@@ -809,7 +810,7 @@ namespace Assets.Scripts.Network
 
             if (!EntityList.TryGetValue(id, out var controllable))
                 return;
-
+            
             ClientSkillHandler.ExecuteSkill(controllable, null, skill, skillLvl);
             AttackMotion(controllable, pos, dir, motionTime, null);
         }
@@ -1033,7 +1034,7 @@ namespace Assets.Scripts.Network
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 1f;
-            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), Vector3.zero, height,
+            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height,
                 target.SpriteAnimator.Direction, "green", false);
             di.AttachDamageIndicator(target);
         }
@@ -1165,7 +1166,7 @@ namespace Assets.Scripts.Network
                 if (controllable.SpriteAnimator != null)
                     height = controllable.SpriteAnimator.SpriteData.Size / 50f;
 
-                di.DoDamage(TextIndicatorType.Heal, $"+{exp} Exp", controllable.gameObject.transform.localPosition,
+                di.DoDamage(TextIndicatorType.Experience, $"+{exp} Exp", controllable.gameObject.transform.localPosition,
                     height, Direction.None, "yellow", false);
             }
 
