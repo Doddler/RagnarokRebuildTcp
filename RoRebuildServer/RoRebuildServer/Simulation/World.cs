@@ -579,11 +579,14 @@ public class World
 
     public void PerformRemovals()
     {
-        for (var i = 0; i < removeList.Count; i++)
+        while(removeList.Count > 0)
         {
-            if (!removeList.TryPeek(out var entity))
-                throw new Exception("removeList collection blocked while world performing entity removal!");
-            
+            if (!removeList.TryTake(out var entity))
+            {
+                ServerLogger.LogError($"Read from entity remove list failed! This shouldn't happen if PerformRemovals is done on the main thread.");
+                return;
+            }
+
             if (entity.IsNull() || !entity.IsAlive())
                 continue;
 

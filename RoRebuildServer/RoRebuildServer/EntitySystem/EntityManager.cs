@@ -96,7 +96,7 @@ public static class EntityManager
             }
 
             entity.Gen++;
-
+            EntityCount--;
             Entities[e.Id] = entity;
         }
         finally
