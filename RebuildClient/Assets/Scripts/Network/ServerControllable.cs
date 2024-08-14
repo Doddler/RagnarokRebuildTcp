@@ -96,6 +96,7 @@ namespace Assets.Scripts.Network
         private float movePauseTime = 0f;
         public bool IsMoving => isMoving;
         public bool IsCasting;
+        public bool HideCastName;
 
         public bool IsWalking => movePath != null && movePath.Count > 1;
 
@@ -170,11 +171,14 @@ namespace Assets.Scripts.Network
             //     sName = "Mammonite";
 
             IsCasting = true;
-            
-            if(CharacterType == CharacterType.Player)
-                FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
-            else
-                FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
+
+            if (!HideCastName)
+            {
+                if (CharacterType == CharacterType.Player)
+                    FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
+                else
+                    FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
+            }
 
             if (SpriteAnimator != null && ClientDataLoader.Instance.GetUniqueAction(SpriteAnimator.SpriteData.Name, skill, out var action))
             {

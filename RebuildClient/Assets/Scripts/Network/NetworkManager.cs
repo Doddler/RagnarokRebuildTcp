@@ -885,12 +885,7 @@ namespace Assets.Scripts.Network
             var id1 = msg.ReadInt32();
             var id2 = msg.ReadInt32();
 
-            if (!EntityList.TryGetValue(id1, out var controllable))
-            {
-                Debug.LogWarning("Trying to attack entity " + id1 + ", but it does not exist in scene!");
-                return;
-            }
-
+            var hasSrc = EntityList.TryGetValue(id1, out var controllable);
             var hasTarget = EntityList.TryGetValue(id2, out var controllable2);
 
             var dir = (Direction)msg.ReadByte();
@@ -900,83 +895,38 @@ namespace Assets.Scripts.Network
             var motionTime = msg.ReadFloat();
             var showAttackAction = msg.ReadBoolean();
 
-            if (hasTarget)
-            {
-                var cd = controllable.transform.localPosition - controllable2.transform.localPosition;
-                cd.y = 0;
-                controllable2.CounterHitDir = cd.normalized;
-                //Debug.Log("Counter hit: " + cd);
-            }
-            else
-            {
-                var v = dir.GetVectorValue();
-                controllable.CounterHitDir = new Vector3(v.x, 0, v.y);
-            }
+            var weaponClass = 0;
 
-            //controllable.SpriteAnimator.AnimSpeed = 1f; //this will get reset when we resume walking anyways
-
-            // if (!moveAfter && controllable.SpriteAnimator.State == SpriteState.Walking)
-            // {
-            //     controllable.PauseMove(motionTime);
-            //     controllable.SpriteAnimator.State = SpriteState.Standby;
-            //     controllable.SpriteAnimator.Direction = dir;
-            // }
-            // else
+            if (hasSrc)
             {
+                if (hasTarget)
+                {
+                    var cd = controllable.transform.localPosition - controllable2.transform.localPosition;
+                    cd.y = 0;
+                    controllable2.CounterHitDir = cd.normalized;
+                    //Debug.Log("Counter hit: " + cd);
+                }
+                else
+                {
+                    var v = dir.GetVectorValue();
+                    controllable.CounterHitDir = new Vector3(v.x, 0, v.y);
+                }
+
                 controllable.StopImmediate(pos, false);
                 controllable.SpriteAnimator.Direction = dir;
                 controllable.SpriteAnimator.State = SpriteState.Standby;
+
+                controllable.SetAttackAnimationSpeed(motionTime);
+                controllable.PerformBasicAttackMotion();
+
+                weaponClass = controllable.WeaponClass;
             }
-            //
-            // if (showAttackAction)
-            // {
-            //     if (controllable.SpriteAnimator.Type == SpriteType.Player)
-            //     {
-            //         switch (controllable.SpriteAnimator.PreferredAttackMotion)
-            //         {
-            //             default:
-            //             case 1:
-            //                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
-            //                 break;
-            //             case 2:
-            //                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack2, true);
-            //                 break;
-            //             case 3:
-            //                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack3, true);
-            //                 break;
-            //         }
-            //     }
-            //     else
-            //         controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
-            // }
 
-            controllable.SetAttackAnimationSpeed(motionTime);
-            controllable.PerformBasicAttackMotion();
-
-            //controllable2.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
-
-            if (hasTarget && controllable.SpriteAnimator.IsInitialized)
+            if (hasTarget)
             {
-                if (controllable.SpriteAnimator.SpriteData == null)
-                {
-                    throw new Exception("AAA? " + controllable.gameObject.name + " " + controllable.gameObject);
-                }
-
                 var damageTiming = motionTime;
 
-                // var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
-                // if (controllable.SpriteAnimator.Type == SpriteType.Player)
-                //     damageTiming = 0.5f;
-
-                // if (hits > 1)
-                // {
-                //     DefaultSkillCastEffect.Create(controllable);
-                //     //FireArrow.Create(controllable, controllable2, hits);
-                //     dmg = (short)(dmg * hits);
-                //     hits = 1;
-                // }
-
-                StartCoroutine(DamageEvent(dmg, damageTiming, hits, controllable.WeaponClass, controllable2));
+                StartCoroutine(DamageEvent(dmg, damageTiming, hits, weaponClass, controllable2));
             }
         }
 
@@ -1503,6 +1453,7 @@ namespace Assets.Scripts.Network
             var dir = (Direction)msg.ReadByte();
             var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
             var castTime = msg.ReadFloat();
+            var hideName = msg.ReadBoolean();
 
             if (EntityList.TryGetValue(srcId, out var controllable))
             {
@@ -1516,6 +1467,7 @@ namespace Assets.Scripts.Network
                     controllable.SpriteAnimator.PauseAnimation();
                 }
 
+                controllable.HideCastName = hideName;
                 ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
                 controllable.StartCastBar(skill, castTime);
             }

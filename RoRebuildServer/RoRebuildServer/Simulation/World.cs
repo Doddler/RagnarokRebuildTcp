@@ -186,7 +186,8 @@ public class World
 
             if (e.Type == EntityType.Npc || e.Type == EntityType.Monster)
             {
-                FullyRemoveEntity(ref e);
+                if(e.IsAlive())
+                    FullyRemoveEntity(ref e);
                 ids.Add(entity.Key);
             }
         }

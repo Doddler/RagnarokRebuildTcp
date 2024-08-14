@@ -146,6 +146,7 @@ public partial class Monster : IEntityAutoReset
         SpawnMap = mapName;
         aiEntries = DataManager.GetAiStateMachine(aiType);
         nextAiUpdate = Time.ElapsedTimeFloat + 1f;
+        nextAiSkillUpdate = Time.ElapsedTimeFloat + 1f;
         aiTickRate = 0.05f;
         LastDamageSourceType = CharacterSkill.None;
         GivesExperience = true;
@@ -436,11 +437,14 @@ public partial class Monster : IEntityAutoReset
             nextAiSkillUpdate = Time.ElapsedTimeFloat + 0.85f + GameRandom.NextFloat(0f, 0.3f); //we'd like to desync mob skill updates if possible
 
         skillAiHandler?.RunAiSkillUpdate(CurrentAiState, skillState);
+        LastDamageSourceType = CharacterSkill.None; //clear this flag after doing a skill update
 
         if (!skillState.SkillCastSuccess)
+        {
+            if (CurrentAiState == MonsterAiState.StateIdle)
+                Target = Entity.Null;
             return false;
-
-        //CombatEntity.ApplyCooldownForAttackAction();
+        }
 
         if (skillState.CastSuccessEvent != null)
         {
@@ -453,6 +457,9 @@ public partial class Monster : IEntityAutoReset
             else
                 CastSuccessEvent = skillState.CastSuccessEvent;
         }
+
+        if (CurrentAiState == MonsterAiState.StateIdle)
+            Target = Entity.Null;
 
         return true;
     }
@@ -467,12 +474,13 @@ public partial class Monster : IEntityAutoReset
         }
 #endif
 
-        var a = 0;
-        if (skillAiHandler != null && nextAiSkillUpdate < Time.ElapsedTimeFloat && !CombatEntity.IsCasting 
-            && !Character.InAttackCooldown && Character.QueuedAction != QueuedAction.Cast)
+        if (skillAiHandler != null
+            && nextAiSkillUpdate < Time.ElapsedTimeFloat
+            && Character.State != CharacterState.Dead 
+            && !CombatEntity.IsCasting 
+            && !Character.InAttackCooldown 
+            && Character.QueuedAction != QueuedAction.Cast)
             AiSkillScanUpdate();
-        else
-            a = 1;
 
         //Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
 

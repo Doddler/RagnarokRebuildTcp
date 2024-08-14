@@ -300,7 +300,12 @@ Shader"Ragnarok/CharacterSpriteShader"
 				float2 maskUV = (v.vertex.xy - clampedRect.xy) / (clampedRect.zw - clampedRect.xy);
 				o.texcoord = float4(v.texcoord.x, v.texcoord.y, maskUV.x, maskUV.y);
 
+				#ifdef VERTEXLIGHT_ON
 				float4 light = float4(ShadeVertexLightsFull(v.vertex, float3(0,1,0), 8, true), 1.0);
+				#else
+				float4 light = float4(0, 0, 0, 0); 
+				#endif
+
 				light += float4(_EnvColor.rgb * min(_EnvColor.a, 1),0);
 				float lmax = max(light.r, max(light.g, light.b));
 				//lmax = clamp(lmax, 0, 0.5);

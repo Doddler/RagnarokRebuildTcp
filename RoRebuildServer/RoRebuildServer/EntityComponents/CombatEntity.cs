@@ -300,7 +300,7 @@ public class CombatEntity : IEntityAutoReset
 
         if (QueuedCastingSkill.TargetedPosition != Position.Invalid)
         {
-            AttemptStartGroundTargetedSkill(QueuedCastingSkill.TargetedPosition, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime);
+            AttemptStartGroundTargetedSkill(QueuedCastingSkill.TargetedPosition, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime, QueuedCastingSkill.HideName);
             return;
         }
 
@@ -309,11 +309,11 @@ public class CombatEntity : IEntityAutoReset
         
         if (target == this)
         {
-            AttemptStartSelfTargetSkill(QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime);
+            AttemptStartSelfTargetSkill(QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime, QueuedCastingSkill.HideName);
             return;
         }
 
-        AttemptStartSingleTargetSkillAttack(target, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime);
+        AttemptStartSingleTargetSkillAttack(target, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime, QueuedCastingSkill.HideName);
     }
 
     public void QueueCast(SkillCastInfo skillInfo)
@@ -322,7 +322,7 @@ public class CombatEntity : IEntityAutoReset
         Character.QueuedAction = QueuedAction.Cast;
     }
 
-    public bool AttemptStartGroundTargetedSkill(Position target, CharacterSkill skill, int level, float castTime = -1)
+    public bool AttemptStartGroundTargetedSkill(Position target, CharacterSkill skill, int level, float castTime = -1, bool hideSkillName = false)
     {
         Character.QueuedAction = QueuedAction.None;
         QueuedCastingSkill.Clear();
@@ -340,7 +340,8 @@ public class CombatEntity : IEntityAutoReset
             CastTime = castTime,
             TargetedPosition = target,
             Range = (sbyte)SkillHandler.GetSkillRange(this, skill, level),
-            IsIndirect = false
+            IsIndirect = false,
+            HideName = hideSkillName
         };
 
         if (IsCasting) //if we're already casting, queue up the next cast
@@ -367,7 +368,8 @@ public class CombatEntity : IEntityAutoReset
         }
 
         CastingSkill = skillInfo;
-        Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
+        if(target.IsValid())
+            Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
 
         if (castTime < 0f)
             castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, null, skillInfo.Level);
@@ -379,13 +381,13 @@ public class CombatEntity : IEntityAutoReset
             CastingTime = Time.ElapsedTimeFloat + castTime;
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-            CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime);
+            CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime, hideSkillName);
             CommandBuilder.ClearRecipients();
         }
         return true;
     }
 
-    public bool AttemptStartSelfTargetSkill(CharacterSkill skill, int level, float castTime = -1f, bool hideName = false)
+    public bool AttemptStartSelfTargetSkill(CharacterSkill skill, int level, float castTime = -1f, bool hideSkillName = false)
     {
         Character.QueuedAction = QueuedAction.None;
         QueuedCastingSkill.Clear();
@@ -407,7 +409,7 @@ public class CombatEntity : IEntityAutoReset
             CastTime = castTime,
             TargetedPosition = Position.Invalid,
             IsIndirect = false,
-            HideName = hideName
+            HideName = hideSkillName
         };
         
         if (IsCasting) //if we're already casting, queue up the next cast
@@ -446,15 +448,13 @@ public class CombatEntity : IEntityAutoReset
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             var clientSkill = skillInfo.Skill;
-            if (hideName)
-                clientSkill = CharacterSkill.None;
-            CommandBuilder.StartCastMulti(Character, null, clientSkill, skillInfo.Level, castTime);
+            CommandBuilder.StartCastMulti(Character, null, clientSkill, skillInfo.Level, castTime, hideSkillName);
             CommandBuilder.ClearRecipients();
         }
         return true;
     }
     
-    public bool AttemptStartSingleTargetSkillAttack(CombatEntity target, CharacterSkill skill, int level, float castTime = -1f)
+    public bool AttemptStartSingleTargetSkillAttack(CombatEntity target, CharacterSkill skill, int level, float castTime = -1f, bool hideSkillName = false)
     {
         Character.QueuedAction = QueuedAction.None;
         QueuedCastingSkill.Clear();
@@ -480,7 +480,8 @@ public class CombatEntity : IEntityAutoReset
             CastTime = castTime,
             Range = (sbyte)SkillHandler.GetSkillRange(this, skill, level),
             TargetedPosition = Position.Invalid,
-            IsIndirect = false
+            IsIndirect = false,
+            HideName = hideSkillName
         };
         
         if (IsCasting) //if we're already casting, queue up the next cast
@@ -549,7 +550,7 @@ public class CombatEntity : IEntityAutoReset
                 CastingTime = Time.ElapsedTimeFloat + castTime;
 
                 Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-                CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime);
+                CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime, hideSkillName);
                 CommandBuilder.ClearRecipients();
             }
             return true;

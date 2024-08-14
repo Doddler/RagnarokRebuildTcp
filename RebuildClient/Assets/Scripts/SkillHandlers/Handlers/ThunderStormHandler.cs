@@ -20,7 +20,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.AttachEffect(CastEffect.Create(castTime, "ring_yellow", src.gameObject));
             
             var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
-            CastTargetCircle.Create(src.IsAlly, targetCell, 3, castTime);
+            if(target != Vector2Int.zero)
+                CastTargetCircle.Create(src.IsAlly, targetCell, 3, castTime);
         }
 
         public override void ExecuteSkillGroundTargeted(ServerControllable src, Vector2Int target, int lvl)

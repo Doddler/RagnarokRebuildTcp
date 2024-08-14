@@ -336,7 +336,7 @@ public class WorldObject : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
-    public void ChangeLookDirection(ref Entity entity, Direction direction, HeadFacing facing)
+    public void ChangeLookDirection(ref Entity entity, Direction direction, HeadFacing facing = HeadFacing.Center)
     {
         Debug.Assert(Map != null);
 
@@ -345,8 +345,11 @@ public class WorldObject : IEntityAutoReset
 
         FacingDirection = direction;
 
-        var player = entity.Get<Player>();
-        player.HeadFacing = facing;
+        if (Type == CharacterType.Player)
+        {
+            var player = entity.Get<Player>();
+            player.HeadFacing = facing;
+        }
 
         Map.AddVisiblePlayersAsPacketRecipients(this);
         CommandBuilder.ChangeFacingMulti(this);

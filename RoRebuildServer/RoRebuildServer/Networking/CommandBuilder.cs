@@ -214,8 +214,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void StartCastMulti(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl,
-        float castTime)
+    public static void StartCastMulti(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, float castTime, bool hideSkillName)
     {
         if (!HasRecipients())
             return;
@@ -229,6 +228,7 @@ public static class CommandBuilder
         packet.Write((byte)caster.FacingDirection);
         packet.Write(caster.Position);
         packet.Write(castTime);
+        packet.Write(hideSkillName);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -249,7 +249,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void StartCastGroundTargetedMulti(WorldObject caster, Position target, CharacterSkill skill, int lvl, int size, float castTime)
+    public static void StartCastGroundTargetedMulti(WorldObject caster, Position target, CharacterSkill skill, int lvl, int size, float castTime, bool hideSkillName)
     {
         if (!HasRecipients())
             return;
@@ -264,12 +264,12 @@ public static class CommandBuilder
         packet.Write((byte)caster.FacingDirection);
         packet.Write(caster.Position);
         packet.Write(castTime);
+        packet.Write(hideSkillName);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SkillExecuteTargetedSkill(WorldObject caster, WorldObject target, CharacterSkill skill, int lvl,
-        DamageInfo di)
+    public static void SkillExecuteTargetedSkill(WorldObject caster, WorldObject target, CharacterSkill skill, int lvl, DamageInfo di)
     {
         if (!HasRecipients())
             return;

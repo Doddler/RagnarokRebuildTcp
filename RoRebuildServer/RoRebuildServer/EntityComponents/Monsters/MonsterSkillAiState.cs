@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Threading.Channels;
 using System.Xml.Linq;
 using RoRebuildServer.Simulation.Pathfinding;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents.Monsters;
 
@@ -225,9 +226,14 @@ public class MonsterSkillAiState(Monster monster)
         return true;
     }
 
+    public void LookAtPosition(Position p)
+    {
+        var dir = DistanceCache.Direction(Monster.Character.Position, p);
+        Monster.Character.ChangeLookDirection(ref Monster.Entity, dir);
+    }
+
     public bool Cast(CharacterSkill skill, int level, int castTime, int delay = 0, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
     {
-
         var ce = monster.CombatEntity;
         var attr = SkillHandler.GetSkillAttributes(skill);
         var range = SkillHandler.GetSkillRange(ce, skill, level);
@@ -235,29 +241,36 @@ public class MonsterSkillAiState(Monster monster)
             range = 21;
 
         var hideSkillName = flags.HasFlag(MonsterSkillAiFlags.HideSkillName);
-
+        var ignoreTargetRequirement = flags.HasFlag(MonsterSkillAiFlags.NoTarget);
         ExecuteEventAtStartOfCast = flags.HasFlag(MonsterSkillAiFlags.EventOnStartCast);
 
+        
         if (attr.SkillTarget == SkillTarget.Ground)
         {
-            var target = targetForSkill;
-            if (target == null || !target.CombatEntity.IsValidTarget(ce))
-                if (monster.Target.TryGet<WorldObject>(out var newTarget))
-                    target = newTarget;
-            if (target == null)
+            var pos = Position.Zero;
+            if (!ignoreTargetRequirement)
             {
-                using var list = EntityListPool.Get();
-                monster.Character.Map?.GatherEnemiesInRange(monster.Character, range, list, true, true);
-                if (list.Count <= 0)
-                    return SkillFail(); //no enemies in range
+                var target = targetForSkill;
+                if (target == null || !target.CombatEntity.IsValidTarget(ce))
+                    if (monster.Target.TryGet<WorldObject>(out var newTarget))
+                        target = newTarget;
+                if (target == null)
+                {
+                    using var list = EntityListPool.Get();
+                    monster.Character.Map?.GatherEnemiesInRange(monster.Character, range, list, true, true);
+                    if (list.Count <= 0)
+                        return SkillFail(); //no enemies in range
 
-                if (list.Count == 1)
-                    target = list[0].Get<WorldObject>();
-                else
-                    target = list[GameRandom.Next(0, list.Count)].Get<WorldObject>();
+                    if (list.Count == 1)
+                        target = list[0].Get<WorldObject>();
+                    else
+                        target = list[GameRandom.Next(0, list.Count)].Get<WorldObject>();
+                }
+
+                pos = target.Position;
             }
 
-            if (!ce.AttemptStartGroundTargetedSkill(target.Position, skill, level, castTime / 1000f))
+            if (!ce.AttemptStartGroundTargetedSkill(pos, skill, level, castTime / 1000f, hideSkillName))
                 return SkillFail();
             ce.SetSkillCooldown(skill, delay / 1000f);
             return SkillSuccess();
@@ -484,25 +497,27 @@ public class MonsterSkillAiState(Monster monster)
     public bool FindRandomPlayerOnMap()
     {
         Debug.Assert(monster.Character.Map != null);
+
         var players = monster.Character.Map.Players;
         if(players.Count == 0) return false;
 
-        var startId = GameRandom.Next(players.Count);
-
+        using var pool = EntityListPool.Get();
         for (var i = 0; i < players.Count; i++)
         {
-            var id = (startId + i) % players.Count;
+            if (players[i].TryGet<CombatEntity>(out var potentialTarget))
+                if(potentialTarget.IsValidTarget(Monster.CombatEntity))
+                    pool.Add(players[i]);
+        }
 
-            if (players[id].TryGet<WorldObject>(out var target))
+        if (pool.Count > 0)
+        {
+            if (pool[GameRandom.Next(0, pool.Count)].TryGet<WorldObject>(out var target))
             {
-                if (target.Hidden)
-                    continue;
-
                 targetForSkill = target;
                 return true;
             }
         }
-
+        
         return false;
     }
 

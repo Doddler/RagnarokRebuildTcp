@@ -169,10 +169,12 @@ namespace Assets.Scripts.MapEditor.Editor
             l.intensity = i;
             l.lightmapBakeType = LightmapBakeType.Baked;
             l.shadows = LightShadows.Soft;
+            l.cullingMask = 0;
 
             var sub = new GameObject("Sub Light");
             sub.transform.SetParent(lobj.transform);
             sub.transform.localPosition = Vector3.zero;
+            sub.isStatic = true;
             //sub.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
 
             l = sub.AddComponent<Light>();
@@ -182,6 +184,7 @@ namespace Assets.Scripts.MapEditor.Editor
             l.intensity = i;
             l.lightmapBakeType = LightmapBakeType.Baked;
             l.shadows = LightShadows.Soft;
+            l.cullingMask = 0;
         }
 
         private void LoadLights()

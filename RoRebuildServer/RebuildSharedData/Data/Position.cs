@@ -26,7 +26,7 @@ public struct Position : IEquatable<Position>
         Y = src.Y;
     }
 
-    public bool IsValid() => X >= 0 && Y >= 0;
+    public bool IsValid() => X > 0 && Y > 0;
     public Position Abs() => new(X < 0 ? X * -1 : X, Y < 0 ? Y * -1 : Y);
 
 

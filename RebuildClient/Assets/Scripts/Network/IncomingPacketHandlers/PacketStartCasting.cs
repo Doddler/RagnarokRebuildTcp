@@ -18,6 +18,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers
             var dir = (Direction)msg.ReadByte();
             var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
             var castTime = msg.ReadFloat();
+            var hideName = msg.ReadBoolean();
 
             Network.EntityList.TryGetValue(targetId, out var target);
 
@@ -35,6 +36,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers
                     controllable.SpriteAnimator.PauseAnimation();
                 }
 
+                controllable.HideCastName = hideName;
                 ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
                 controllable.StartCastBar(skill, castTime);
             }
