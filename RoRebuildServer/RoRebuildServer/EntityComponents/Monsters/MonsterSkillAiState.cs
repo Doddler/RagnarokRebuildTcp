@@ -14,6 +14,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Channels;
 using System.Xml.Linq;
+using RoRebuildServer.Simulation.Pathfinding;
 
 namespace RoRebuildServer.EntityComponents.Monsters;
 
@@ -38,6 +39,9 @@ public class MonsterSkillAiState(Monster monster)
     private Dictionary<string, float>? specialCooldowns;
 
     public CharacterSkill LastDamageSourceType => Monster.LastDamageSourceType;
+
+    public int DistanceToSelectedTarget => targetForSkill == null ? -1 : Monster.Character.Position.Distance(TargetPosition);
+    public Position TargetPosition => targetForSkill?.Position ?? Position.Invalid;
 
 
     //public void Debug(string hello) { ServerLogger.Log(hello); }
@@ -111,6 +115,11 @@ public class MonsterSkillAiState(Monster monster)
     {
         specialCooldowns?.Clear();
         monster.CombatEntity.ResetSkillCooldowns();
+    }
+
+    public void PutSkillOnCooldown(CharacterSkill skill, int cooldown)
+    {
+        monster.CombatEntity.SetSkillCooldown(skill, cooldown / 1000f);
     }
 
     public void ChangeAiState(MonsterAiState state)
@@ -216,7 +225,7 @@ public class MonsterSkillAiState(Monster monster)
         return true;
     }
 
-    public bool Cast(CharacterSkill skill, int level, int castTime, int delay, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
+    public bool Cast(CharacterSkill skill, int level, int castTime, int delay = 0, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
     {
 
         var ce = monster.CombatEntity;
@@ -458,6 +467,39 @@ public class MonsterSkillAiState(Monster monster)
                     targetForSkill = target.Character;
                     return true;
                 }
+            }
+        }
+
+        return false;
+    }
+
+    public Position RandomFreeTileInRange(int range)
+    {
+        if (monster.Character.Map != null && monster.Character.Map.WalkData.FindWalkableCellInArea(Area.CreateAroundPoint(monster.Character.Position, range), out var pos))
+            return pos;
+
+        return monster.Character.Position;
+    }
+
+    public bool FindRandomPlayerOnMap()
+    {
+        Debug.Assert(monster.Character.Map != null);
+        var players = monster.Character.Map.Players;
+        if(players.Count == 0) return false;
+
+        var startId = GameRandom.Next(players.Count);
+
+        for (var i = 0; i < players.Count; i++)
+        {
+            var id = (startId + i) % players.Count;
+
+            if (players[id].TryGet<WorldObject>(out var target))
+            {
+                if (target.Hidden)
+                    continue;
+
+                targetForSkill = target;
+                return true;
             }
         }
 

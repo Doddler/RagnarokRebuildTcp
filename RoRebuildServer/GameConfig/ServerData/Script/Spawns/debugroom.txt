@@ -14,7 +14,7 @@ MapConfig("pvp_n_1-5")
 	//CreateSpawn("PORING", 100);
 }
 
-//MapConfig("guild_vs2")
-//{
-//	CreateSpawn("TEST_DRONE", 1, %(50, 50, 3, 3), LockedArea);
-//}
+MapConfig("guild_vs2")
+{
+	CreateSpawn("TARGET_DUMMY", 1, %(50, 50, 3, 3), 5s, LockedArea);
+}

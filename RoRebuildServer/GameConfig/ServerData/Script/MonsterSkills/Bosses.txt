@@ -25,6 +25,16 @@ StateAttacking:
 // Amon Ra
 //------------------------------------
 
+event AmonRaThunderCall {
+	local delay = Param1;
+	StartTimer();
+	SetTimer(5s-delay);
+	StartCastCircleWithSound(SelfPosition, 2, delay, false);
+OnTimer 5s:
+	AreaSkillIndirect(SelfPosition, ThunderStorm, 7);
+	EndEvent();
+}
+
 macro AmonRaMinionSpawn() {
     SummonMonstersNoExp(2, "ARCLOUSE");
     SummonMonstersNoExp(2, "MIMIC");
@@ -35,7 +45,21 @@ SkillHandler("AMON_RA") {
 StateAny:
     //TryCast(CallMinion, 1, 10%, 0.7s, 30s)[MinionCount < 3] -> CallDefaultMinions();
 StateIdle:
-	TryCast(ThunderStorm, 7, 20%, 1.2s, 5s, UnlimitedRange);
+    if(CheckCast(ThunderStorm, 6.5%)) {
+        if(FindRandomPlayerOnMap()) {
+            var castTime = 0.8s; //cast time increases with distance
+            var distance = DistanceToSelectedTarget;
+            if(distance > 15)
+                castTime = castTime + 0.05s * (distance - 15);
+            if(castTime > 5s)
+                castTime = 5s;
+
+            CreateEvent("AmonRaThunderCall", TargetPosition, castTime);
+            Cast(None, 1, castTime) -> PutSkillOnCooldown(ThunderStorm, 6s);
+        }
+
+    }
+	TryCast(ThunderStorm, 7, 20%, 1.2s, 5s, HideSkillName|UnlimitedRange); //not actually unlimited, but anywhere he can see
     TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == FireBolt] -> { @AmonRaMinionSpawn() }
     TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == ThunderStorm] -> { @AmonRaMinionSpawn() }
     TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == LightningBolt] -> { @AmonRaMinionSpawn() }
@@ -81,7 +105,7 @@ OnTimer 1200: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1650)
 OnTimer 1300: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1600);
 OnTimer 1400: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1550);
 OnTimer 1500: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1500);
-OnTimer 1600: EndEvent();
+OnTimer 4200: EndEvent();
 
 }
 

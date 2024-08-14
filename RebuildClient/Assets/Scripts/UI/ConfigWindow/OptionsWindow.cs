@@ -12,6 +12,8 @@ namespace Assets.Scripts.UI.ConfigWindow
         public ScrollRect MainScrollArea;
         public List<GameObject> TabContents;
         public List<Button> TabButtons;
+        public GameObject ColorPickerObject;
+        public int colorPickerTab;
         private int currentTab;
         private Action uiUpdateEvent;
         private bool isInitialized;
@@ -40,6 +42,8 @@ namespace Assets.Scripts.UI.ConfigWindow
             InitializeUISettings();
             isInitialized = true;
             //RefreshGameSettings();
+            
+            ColorPickerObject.SetActive(currentTab == colorPickerTab);
         }
 
         public void ChangeTab(int id)
@@ -50,6 +54,9 @@ namespace Assets.Scripts.UI.ConfigWindow
             TabButtons[id].interactable = false;
             currentTab = id;
             MainScrollArea.content = TabContents[currentTab].transform as RectTransform;
+            
+            ColorPickerObject.SetActive(currentTab == colorPickerTab);
+                
         }
 
         public void Update()

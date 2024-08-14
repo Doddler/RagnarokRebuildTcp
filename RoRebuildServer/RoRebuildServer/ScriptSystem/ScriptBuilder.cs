@@ -372,6 +372,7 @@ public class ScriptBuilder
         methodName = section;
         eventHandlerTarget = "state.CastSuccessEvent";
         terminalFunctions.Add("TryCast");
+        terminalFunctions.Add("Cast");
 
         CloseScope();
         StartIndentedBlockLine().AppendLine($"public void {section}(MonsterSkillAiState state)");

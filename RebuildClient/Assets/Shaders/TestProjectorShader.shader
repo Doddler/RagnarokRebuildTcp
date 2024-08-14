@@ -45,8 +45,10 @@
              fixed4 frag (v2f i) : SV_Target
              {
                  // Apply alpha mask
-                 fixed4 texCookie = tex2Dproj (_ShadowTex, UNITY_PROJ_COORD(i.uvShadow));
-                 fixed4 outColor = _Color * texCookie;
+                 float4 texCookie = tex2Dproj (_ShadowTex, UNITY_PROJ_COORD(i.uvShadow));
+                 float4 outColor = 1 - (1 - _Color) * (1 - texCookie);
+                 outColor.a = _Color.a * texCookie.a;
+                                  
                  // Attenuation
                  float depth = i.uvShadow.z; // [-1 (near), 1 (far)]
                  return outColor * clamp(1.0 - abs(depth) + _Attenuation, 0.0, 1.0);

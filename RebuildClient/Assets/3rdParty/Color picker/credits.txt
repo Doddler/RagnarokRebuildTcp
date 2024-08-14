@@ -1,0 +1,1 @@
+Borrowed graciously (and probably modified a bit) from https://github.com/mmaletin/UnityColorPicker/

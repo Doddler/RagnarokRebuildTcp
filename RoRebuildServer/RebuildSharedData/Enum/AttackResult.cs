@@ -10,6 +10,7 @@ namespace RebuildSharedData.Enum
         CriticalDamage,
         Heal,
         Miss,
+        Block,
         Invisible
     }
 }

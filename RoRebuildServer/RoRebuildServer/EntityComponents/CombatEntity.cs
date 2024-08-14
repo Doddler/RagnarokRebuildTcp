@@ -233,7 +233,7 @@ public class CombatEntity : IEntityAutoReset
         if (Character.Map == null)
             return;
 
-        Character.Map.GatherPlayersInRange(Character, 12, list, false);
+        Character.Map.GatherPlayersInRange(Character.Position, 12, list, false);
         Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
 
         foreach (var e in list)
@@ -815,8 +815,8 @@ public class CombatEntity : IEntityAutoReset
             {
                 if (!enemy.IsActive || enemy.Map != Character.Map)
                     continue;
-                if (enemy.Position.SquareDistance(Character.Position) > 31)
-                    continue;
+                //if (enemy.Position.SquareDistance(Character.Position) > 31)
+                //    continue;
             }
 
             if (Character.State == CharacterState.Sitting)

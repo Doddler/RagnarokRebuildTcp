@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
@@ -37,6 +38,7 @@ public class Map
     private int chunkCheckId;
 
     public int PlayerCount { get; set; }
+    public EntityList Players { get; set; } = new EntityList(8);
 
     //private int playerCount;
     //public int PlayerCount
@@ -258,7 +260,7 @@ public class Map
         }
 
         //if anyone has been batched as part of the move, send it to everyone
-        if (!isWalkUpdate && CommandBuilder.HasRecipients())
+        if (!isWalkUpdate && CommandBuilder.HasRecipients() && !ch.Hidden)
         {
             CommandBuilder.SendMoveEntityMulti(ch);
             CommandBuilder.ClearRecipients();
@@ -303,8 +305,11 @@ public class Map
 
         if (ch.Type == CharacterType.Player)
         {
+            Debug.Assert(!Players.Contains(ref entity));
             PlayerCount++;
+            Players.Add(ref entity);
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
+
         }
 
         entityCount++;
@@ -372,7 +377,8 @@ public class Map
                 if (!ch.Hidden && ch != nearbyCharacter)
                 {
                     AddPlayerVisibility(ch, nearbyCharacter); //nearbyCharacter sees us
-                    entities.Add(nearbyEntity);
+                    if(!nearbyCharacter.Hidden)
+                        entities.Add(nearbyEntity); //we only want to notify of this character's existence if it is not hidden
                 }
             }
         }
@@ -842,9 +848,9 @@ public class Map
         return false;
     }
 
-    public void GatherPlayersInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
+    public void GatherPlayersInRange(Position position, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
-        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, ServerConfig.MaxViewDistance))
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, ServerConfig.MaxViewDistance))
         {
             foreach (var p in c.Players)
             {
@@ -858,9 +864,9 @@ public class Map
                         continue;
                 }
 
-                if (character.Position.InRange(ch.Position, distance))
+                if (position.InRange(ch.Position, distance))
                 {
-                    if (checkLineOfSight && !WalkData.HasLineOfSight(character.Position, ch.Position))
+                    if (checkLineOfSight && !WalkData.HasLineOfSight(position, ch.Position))
                         continue;
                     list.Add(p);
                 }
@@ -947,6 +953,7 @@ public class Map
     {
         PlayerCount -= Chunks[i].Players.ClearInactive();
         Chunks[i].Monsters.ClearInactive();
+        Chunks[i].AllEntities.ClearInactive();
     }
 
     private void LoadNpcs()
@@ -1027,6 +1034,8 @@ public class Map
 
         if (entity.Type == EntityType.Player)
         {
+            Debug.Assert(Players.Contains(ref entity));
+            Players.Remove(ref entity);
             PlayerCount--;
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
         }
@@ -1076,7 +1085,9 @@ public class Map
             {
                 foreach (var e in c.AllEntities)
                 {
-                    var obj = e.Get<WorldObject>();
+                    if (!e.TryGet<WorldObject>(out var obj))
+                        continue;
+
                     if (obj.TryGetVisiblePlayerList(out var list))
                     {
                         if (list.Count > 0)

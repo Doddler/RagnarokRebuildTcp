@@ -178,6 +178,9 @@ public static class CommandBuilder
         var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity;
         var packet = NetworkManager.StartPacket(type, 256);
 
+        if(c.Hidden && !isSelf)
+            ServerLogger.LogWarning($"We are unexpectedly sending data for the hidden object {c} to a player!");
+
         AddFullEntityData(packet, c, isSelf);
 
         return packet;
@@ -230,7 +233,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void StartCastCircleMulti(Position target, int size, float castTime, bool isAlly)
+    public static void StartCastCircleMulti(Position target, int size, float castTime, bool isAlly, bool hasSound)
     {
         if (!HasRecipients())
             return;
@@ -241,6 +244,7 @@ public static class CommandBuilder
         packet.Write((byte)size);
         packet.Write(castTime);
         packet.Write(isAlly);
+        packet.Write(hasSound);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -644,7 +648,19 @@ public static class CommandBuilder
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
-    
+
+    public static void SendPlaySoundAtLocationMulti(string fileName, Position pos)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.PlayOneShotSound, 48);
+        packet.Write(fileName);
+        packet.Write(pos);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void SendHealMulti(WorldObject p, int healAmount, HealType type)
     {
         if (!HasRecipients())

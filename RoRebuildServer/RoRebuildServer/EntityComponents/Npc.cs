@@ -600,7 +600,18 @@ public class Npc : IEntityAutoReset
             throw new Exception($"Npc {FullName} attempting to play effect, but the npc is not currently attached to a map.");
 
         chara.Map.AddVisiblePlayersAsPacketRecipients(chara);
-        CommandBuilder.StartCastCircleMulti(pos, size + 1, duration / 1000f, isAlly);
+        CommandBuilder.StartCastCircleMulti(pos, size + 1, duration / 1000f, isAlly, false);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void StartCastCircleWithSound(Position pos, int size, int duration, bool isAlly = false)
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to play effect, but the npc is not currently attached to a map.");
+
+        chara.Map.AddVisiblePlayersAsPacketRecipients(chara);
+        CommandBuilder.StartCastCircleMulti(pos, size + 1, duration / 1000f, isAlly, true);
         CommandBuilder.ClearRecipients();
     }
 
@@ -614,6 +625,17 @@ public class Npc : IEntityAutoReset
 
         chara.Map.AddVisiblePlayersAsPacketRecipients(chara);
         CommandBuilder.SendEffectAtLocationMulti(id, chara.Position, facing);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void PlaySoundEffect(string fileName)
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to play effect, but the npc is not currently attached to a map.");
+        
+        chara.Map.AddVisiblePlayersAsPacketRecipients(chara);
+        CommandBuilder.SendPlaySoundAtLocationMulti(fileName, chara.Position);
         CommandBuilder.ClearRecipients();
     }
 
@@ -639,7 +661,7 @@ public class Npc : IEntityAutoReset
 
         var el = EntityListPool.Get();
 
-        chara.Map.GatherPlayersInRange(chara, area, el, false);
+        chara.Map.GatherPlayersInRange(chara.Position, area, el, false);
 
         foreach (var e in el)
         {

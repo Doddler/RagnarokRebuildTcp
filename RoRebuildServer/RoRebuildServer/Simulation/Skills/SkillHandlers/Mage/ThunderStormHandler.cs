@@ -30,11 +30,18 @@ public class ThunderStormHandler : SkillHandlerBase
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
-        
-        var targetList = EntityListPool.Get();
-        map.GatherEnemiesInArea(source.Character, position, 2, targetList, !isIndirect, true);
-        map?.AddVisiblePlayersAsPacketRecipients(source.Character);
 
+        using var targetList = EntityListPool.Get();
+
+        //gather all players who can see the spell effect and make them packet recipients
+        map.GatherPlayersInRange(position, ServerConfig.MaxViewDistance+2, targetList, false, false);
+        CommandBuilder.AddRecipients(targetList);
+        targetList.Clear();
+
+        //now gather all players getting hit
+        map.GatherEnemiesInArea(source.Character, position, 2, targetList, !isIndirect, true);
+        
+        //deal damage to all enemies
         foreach (var e in targetList)
         {
             var res = source.CalculateCombatResult(e.Get<CombatEntity>(), 1, lvl, AttackFlags.Magical, CharacterSkill.ThunderStorm, AttackElement.Wind);
@@ -44,15 +51,20 @@ public class ThunderStormHandler : SkillHandlerBase
                 CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
         }
         
-        EntityListPool.Return(targetList);
-
+        //only add a cooldown if cast directly and not cast by an event on this entity's behalf
         if (!isIndirect)
             source.ApplyCooldownForAttackAction(position);
+        
+        //send the thunder aoe
         var id = DataManager.EffectIdForName["ThunderStorm"];
-
-        if(!isIndirect)
-            CommandBuilder.SkillExecuteAreaTargetedSkill(source.Character, position, CharacterSkill.ThunderStorm, lvl);
         CommandBuilder.SendEffectAtLocationMulti(id, position, 0);
         CommandBuilder.ClearRecipients();
+
+        //make the attacker execute the skill, switching to show the effect to those who can see the caster (can be different from aoe recipients)
+        if (!isIndirect)
+        {
+            map?.AddVisiblePlayersAsPacketRecipients(source.Character);
+            CommandBuilder.SkillExecuteAreaTargetedSkill(source.Character, position, CharacterSkill.ThunderStorm, lvl);
+        }
     }
 }

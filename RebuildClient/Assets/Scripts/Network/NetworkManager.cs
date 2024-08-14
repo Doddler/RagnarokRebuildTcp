@@ -44,7 +44,7 @@ namespace Assets.Scripts.Network
         public int PlayerId;
         public NetQueue<ClientInboundMessage> InboundMessages = new NetQueue<ClientInboundMessage>(30);
         public NetQueue<ClientOutgoingMessage> OutboundMessages = new NetQueue<ClientOutgoingMessage>(30);
-        
+
         public PlayerState PlayerState = new PlayerState();
 
         //private static NetClient client;
@@ -97,12 +97,12 @@ namespace Assets.Scripts.Network
         {
 #if WINDOWS_RUNTIME
             var op = Addressables.LoadContentCatalogAsync(Path.Combine(Application.streamingAssetsPath, "aa/catalog.json"));
-            yield return op;            
-            
+            yield return op;
+
 #else
             var updateCheck = Addressables.CheckForCatalogUpdates(true);
             yield return updateCheck;
-            
+
             if (updateCheck.IsValid() && updateCheck.Result != null && updateCheck.Result.Count > 0)
             {
                 AsyncOperationHandle<List<IResourceLocator>> updateHandle = Addressables.UpdateCatalogs();
@@ -134,7 +134,7 @@ namespace Assets.Scripts.Network
             }
 
             ClientPacketHandler.Init(this, PlayerState);
-            
+
 #if UNITY_EDITOR
             var target = "ws://127.0.0.1:5000/ws";
             StartConnectServer(target);
@@ -265,7 +265,7 @@ namespace Assets.Scripts.Network
             var moveDistance = msg.ReadFloat();
             var totalSteps = (int)msg.ReadByte();
             var curStep = 0;
-            
+
             pathData.Clear();
             if (totalSteps > 0) //should always be true but whatever
             {
@@ -283,10 +283,11 @@ namespace Assets.Scripts.Network
                     }
                 }
             }
+
             var isInMoveDelay = msg.ReadBoolean();
-            if(!isInMoveDelay) //we need to remove this and handle this properly
+            if (!isInMoveDelay) //we need to remove this and handle this properly
                 ctrl.StartMove2(moveSpeed, moveDistance, totalSteps, curStep, startPos, pathData);
-            
+
             //ctrl.SetHitDelay(lockTime);
         }
 
@@ -442,7 +443,7 @@ namespace Assets.Scripts.Network
             }
 
             controllable.SetHp(hp);
-            if(type != CharacterType.NPC)
+            if (type != CharacterType.NPC)
                 controllable.IsInteractable = true;
 
             EntityList.Add(id, controllable);
@@ -810,7 +811,7 @@ namespace Assets.Scripts.Network
 
             if (!EntityList.TryGetValue(id, out var controllable))
                 return;
-            
+
             ClientSkillHandler.ExecuteSkill(controllable, null, skill, skillLvl);
             AttackMotion(controllable, pos, dir, motionTime, null);
         }
@@ -832,7 +833,7 @@ namespace Assets.Scripts.Network
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
             // var moveAfter = msg.ReadBoolean();
-            
+
             if (!hasSource)
             {
                 //if the skill handler is not flagged to execute without a source this will do nothing.
@@ -856,7 +857,7 @@ namespace Assets.Scripts.Network
                 if (damageTiming > motionTime)
                     animationSpeed = damageTiming / motionTime;
 
-                    AttackMotion(controllable, pos, dir, animationSpeed, controllable2);
+                AttackMotion(controllable, pos, dir, animationSpeed, controllable2);
             }
 
             controllable.ShowSkillCastMessage(skill, 3);
@@ -1029,7 +1030,7 @@ namespace Assets.Scripts.Network
                 }
             }
         }
-        
+
         private void AttachHealIndicator(int damage, ServerControllable target)
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
@@ -1084,11 +1085,11 @@ namespace Assets.Scripts.Network
                     CameraFollower.UpdatePlayerHP(controllable.Hp, controllable.MaxHp);
                 controllable.SetHp(controllable.Hp);
             }
-            
+
             if (shouldStop)
             {
                 controllable.StopImmediate(pos, false);
-                if(controllable.CharacterType != CharacterType.Player || !controllable.SpriteAnimator.IsAttackMotion)
+                if (controllable.CharacterType != CharacterType.Player || !controllable.SpriteAnimator.IsAttackMotion)
                     controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
             }
 
@@ -1097,7 +1098,7 @@ namespace Assets.Scripts.Network
 
             //Debug.Log("Move delay is " + delay);
             // controllable.SetHitDelay(delay);
-            
+
 
             // if (controllable.SpriteAnimator.CurrentMotion == SpriteMotion.Dead)
             //     return;
@@ -1196,9 +1197,9 @@ namespace Assets.Scripts.Network
             controllable.Level = lvl;
             if (controllable.IsMainCharacter)
             {
-                if(PlayerState.JobId == 0 && oldLvl < 10 && lvl >= 10)
+                if (PlayerState.JobId == 0 && oldLvl < 10 && lvl >= 10)
                     CameraFollower.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached level 10! You are now eligible to change jobs.");
-                    
+
                 var req = CameraFollower.Instance.ExpForLevel(lvl);
                 PlayerState.Exp = curExp;
                 PlayerState.Level = lvl;
@@ -1269,10 +1270,10 @@ namespace Assets.Scripts.Network
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
                 return;
             }
-            
+
             controllable.Hp = hp;
             controllable.MaxHp = maxHp;
-            
+
             if (controllable.IsMainCharacter)
                 CameraFollower.UpdatePlayerHP(hp, maxHp);
             controllable.SetHp(controllable.Hp, controllable.MaxHp);
@@ -1526,11 +1527,19 @@ namespace Assets.Scripts.Network
             var size = (int)msg.ReadByte();
             var castTime = msg.ReadFloat();
             var isAlly = msg.ReadBoolean();
+            var hasSound = msg.ReadBoolean();
 
             var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
             var color = new Color(1f, 1f, 1f, 0.5f);
             //CastTargetCircle.Create(isAlly? "magic_target" : "magic_target_bad", targetCell, color, size, castTime);
-            CastTargetCircle.Create("magic_target", targetCell, color, size, castTime);
+            CastTargetCircle.Create(isAlly, targetCell, size, castTime);
+            if(hasSound)
+                AudioManager.Instance.OneShotSoundEffect(-1, $"ef_beginspell.ogg", targetCell);
+        }
+
+        public void OnMessagePlaySound(ClientInboundMessage msg)
+        {
+            
         }
 
         void HandleDataPacket(ClientInboundMessage msg)
@@ -1672,6 +1681,7 @@ namespace Assets.Scripts.Network
                     sb.Append("\n");
                 sb.Append(msg.ReadByte().ToString("X2"));
             }
+
             Debug.LogWarning(sb.ToString());
         }
 
@@ -2024,19 +2034,19 @@ namespace Assets.Scripts.Network
         public void SendApplySkillPoint(CharacterSkill skill)
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.ApplySkillPoint);
             msg.Write((byte)skill);
-            
+
             SendMessage(msg);
         }
 
         public void SendAdminResetSkillPoints()
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.AdminResetSkills);
-            
+
             SendMessage(msg);
         }
 

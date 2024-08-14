@@ -50,6 +50,7 @@ public enum PacketType : byte
     UseInventoryItem,
     [ServerOnlyPacket] EffectOnCharacter,
     [ServerOnlyPacket] EffectAtLocation,
+    [ServerOnlyPacket] PlayOneShotSound,
     Emote,
     ClientTextCommand,
     UpdatePlayerData,

@@ -76,3 +76,21 @@ SkillHandler("GEOGRAPHER") {
 StateAny:
     TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
 }
+
+event TestCastEvent {
+	local delay = Param1;
+	StartTimer();
+	SetTimer(2000-delay);
+	StartCastCircle(SelfPosition, 2, delay, false);
+OnTimer 2000:
+	AreaSkillIndirect(SelfPosition, ThunderStorm, 10);
+	EndEvent();
+}
+
+SkillHandler("TARGET_DUMMY") {
+    StateAny:
+    //TryCast(Heal, 9999, 1000, 1500, 3000)[HpPercent <= 99];
+    TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
+    TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];
+	
+}

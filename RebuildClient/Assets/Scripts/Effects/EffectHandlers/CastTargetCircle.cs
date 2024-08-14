@@ -10,6 +10,15 @@ namespace Assets.Scripts.Effects.EffectHandlers
         private static Stack<Material> materialPool = new();
         private static Texture texture;
         private static Dictionary<string, Texture2D> castTextures = new();
+
+        public static Ragnarok3dEffect CreateFriendly(Vector3 position, float size, float duration) =>
+            Create("magic_target_grey", position, new Color(0f, 0.6f, 1f, 0.5f), size, duration);
+        
+        public static Ragnarok3dEffect CreateUnfriendly(Vector3 position, float size, float duration) =>
+            Create("magic_target_bad", position, new Color(0.65f, 0f, 0.4f, 0.5f), size, duration);
+        
+        public static Ragnarok3dEffect Create(bool isAllied, Vector3 position, float size, float duration) => 
+            isAllied ? CreateFriendly(position, size, duration) : CreateUnfriendly(position, size, duration);
         
         public static Ragnarok3dEffect Create(string textureName, Vector3 position, Color color, float size, float duration)
         {
