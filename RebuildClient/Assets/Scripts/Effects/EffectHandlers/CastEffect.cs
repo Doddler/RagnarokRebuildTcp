@@ -30,7 +30,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             
             AudioManager.Instance.OneShotSoundEffect(effect.SourceEntityId, $"ef_beginspell.ogg", followTarget.transform.position);
             
-            var prim = effect.LaunchPrimitive(PrimitiveType.Cylender, mat, duration);
+            var prim = effect.LaunchPrimitive(PrimitiveType.Casting3D, mat, duration);
 
             prim.CreateParts(4);
             

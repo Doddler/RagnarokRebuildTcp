@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Network;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Object = System.Object;
 
 namespace Assets.Scripts.Effects
@@ -18,24 +19,25 @@ namespace Assets.Scripts.Effects
         public Vector3 PositionOffset = Vector3.zero;
         public ServerControllable SourceEntity;
         public GameObject FollowTarget;
+        public GameObject AimTarget;
         public Object EffectData;
 
         public bool DestroyOnTargetLost = false;
         public bool UpdateOnlyOnFrameChange = false;
 
-        public float activeDelay = 0f;
-        public float pauseTime = 0f;
+        public float ActiveDelay = 0f;
+        public float PauseTime = 0f;
 
         public IEffectHandler EffectHandler;
         public IEffectOwner EffectOwner;
-        public List<RagnarokPrimitive> primitives = new();
-        public List<GameObject> attachedObjects = new();
+        public readonly List<RagnarokPrimitive> Primitives = new();
+        public readonly List<GameObject> AttachedObjects = new();
         
         public bool IsInitialized = false;
 
         public int SourceEntityId => SourceEntity != null ? SourceEntity.Id : -1; 
 
-        public List<RagnarokPrimitive> GetPrimitives => primitives;
+        public List<RagnarokPrimitive> GetPrimitives => Primitives;
 
         public static Ragnarok3dEffect Create()
         {
@@ -67,7 +69,7 @@ namespace Assets.Scripts.Effects
         {
             obj.transform.SetParent(transform, false);
             obj.transform.localPosition = Vector3.zero;
-            attachedObjects.Add(obj);
+            AttachedObjects.Add(obj);
         }
 
         public void Reset()
@@ -75,11 +77,12 @@ namespace Assets.Scripts.Effects
             // Debug.Log("EffectReset");
             IsInitialized = false;
             FollowTarget = null;
-            activeDelay = 0;
-            pauseTime = 0;
+            ActiveDelay = 0;
+            PauseTime = 0;
             EffectHandler = null;
             EffectOwner = null;
             EffectData = null;
+            AimTarget = null;
             Duration = 0;
             CurrentPos = 0;
             Step = -1;
@@ -87,20 +90,20 @@ namespace Assets.Scripts.Effects
             PositionOffset = Vector3.zero;
             EffectType = 0;
             
-            for (var i = 0; i < primitives.Count; i++)
+            for (var i = 0; i < Primitives.Count; i++)
             {
-                var p = primitives[i];
+                var p = Primitives[i];
                 RagnarokEffectPool.ReturnPrimitive(p);
-                primitives[i] = null;
+                Primitives[i] = null;
             }
 
-            for (var i = 0; i < attachedObjects.Count; i++)
+            for (var i = 0; i < AttachedObjects.Count; i++)
             {
-                var obj = attachedObjects[i];
+                var obj = AttachedObjects[i];
                 GameObject.Destroy(obj);
             }
 
-            primitives.Clear();
+            Primitives.Clear();
         }
 
         public RagnarokPrimitive LaunchPrimitive(PrimitiveType type, Material mat, float duration = -1)
@@ -113,16 +116,16 @@ namespace Assets.Scripts.Effects
 
             primitive.Prepare(this, type, mat, duration);
             
-            primitives.Add(primitive);
+            Primitives.Add(primitive);
             
             return primitive;
         }
 
         private void RenderDirtyPrimitives()
         {
-            for (var i = 0; i < primitives.Count; i++)
+            for (var i = 0; i < Primitives.Count; i++)
             {
-                var p = primitives[i];
+                var p = Primitives[i];
                 if (p.IsDirty)
                     p.RenderPrimitive();
             }
@@ -144,14 +147,14 @@ namespace Assets.Scripts.Effects
 
         public void Update()
         {
-            activeDelay -= Time.deltaTime;
-            if (activeDelay > 0f)
+            ActiveDelay -= Time.deltaTime;
+            if (ActiveDelay > 0f)
                 return;
 
-            if (pauseTime > 0f)
+            if (PauseTime > 0f)
             {
-                pauseTime -= Time.deltaTime;
-                if (pauseTime > 0f)
+                PauseTime -= Time.deltaTime;
+                if (PauseTime > 0f)
                     return;
             }
 
@@ -181,9 +184,9 @@ namespace Assets.Scripts.Effects
                 active = EffectHandler.Update(this, CurrentPos, Step);
             var anyActive = active;
 
-            for (var i = 0; i < primitives.Count; i++)
+            for (var i = 0; i < Primitives.Count; i++)
             {
-                var p = primitives[i];
+                var p = Primitives[i];
 
                 if (!p.IsActive)
                     continue;

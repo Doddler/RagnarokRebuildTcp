@@ -43,13 +43,14 @@ OnTimer 5s:
 
 SkillHandler("AMON_RA") {
 StateAny:
-	TryCast(ThunderStorm, 7, 20%, 0.6s, 5s, UnlimitedRange); //not actually unlimited, but anywhere he can see
+	TryCast(ThunderStorm, 7, 20%, 0.5s, 3s); //Normal 9 cell range
+	TryCast(ThunderStorm, 7, 20%, 0.7s, 5s, UnlimitedRange); //not actually unlimited, but anywhere he can see
 StateIdle:
     if(CheckCast(ThunderStorm, 10%)) {
         if(FindRandomPlayerOnMap()) {
 			var distance = DistanceToSelectedTarget;
 			var castTime = 0.05s * distance; //cast time increases with distance
-            if(castTime < 0.6s) castTime = 0.6s;
+            if(castTime < 0.7s) castTime = 0.7s;
             if(castTime > 5s) castTime = 5s;
 
 			LookAtPosition(TargetPosition);
@@ -62,6 +63,7 @@ StateIdle:
     TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == ThunderStorm] -> { @AmonRaMinionSpawn() }
     TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == LightningBolt] -> { @AmonRaMinionSpawn() }
     TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == ColdBolt] -> { @AmonRaMinionSpawn() }
+    TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == DoubleStrafe] -> { @AmonRaMinionSpawn() }
 }
 
 

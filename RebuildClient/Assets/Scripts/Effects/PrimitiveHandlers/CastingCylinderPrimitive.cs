@@ -4,7 +4,7 @@ using static Assets.Scripts.Effects.RagnarokEffectData;
 
 namespace Assets.Scripts.Effects.PrimitiveHandlers
 {
-    [RoPrimitive("Cylender")]
+    [RoPrimitive("Casting3D")]
     public class CastingCylinderPrimitive : IPrimitiveHandler
     {
         public PrimitiveUpdateDelegate GetDefaultUpdateHandler() => Update3DCasting;

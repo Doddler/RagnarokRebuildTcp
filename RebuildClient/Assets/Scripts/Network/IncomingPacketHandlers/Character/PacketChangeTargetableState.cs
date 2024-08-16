@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Networking;
 
-namespace Assets.Scripts.Network.IncomingPacketHandlers
+namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 {
     [ClientPacketHandler(PacketType.ChangeTargetableState)]
     public class PacketChangeTargetableState : ClientPacketHandlerBase

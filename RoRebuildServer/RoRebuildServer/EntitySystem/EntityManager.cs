@@ -3,7 +3,7 @@
 public static class EntityManager
 {
     public static EntityData[] Entities = null!;
-    public static int EntityCount;
+    public static int EntitiesCreated;
     public static GrowList<int> FreeEntities = null!;
 
     internal static int ComponentTypeCount;
@@ -14,7 +14,7 @@ public static class EntityManager
     {
         Entities = new EntityData[initialCapacity];
         FreeEntities = new GrowList<int>(initialCapacity);
-        EntityCount = 0;
+        EntitiesCreated = 1; //entity 0 is considered null, so we start at 1
     }
 
     private static EntityData GenerateEntityData(EntityType type, int id)
@@ -23,10 +23,14 @@ public static class EntityManager
             Array.Resize(ref Entities, Entities.Length * 2);
 
         var data = Entities[id];
-
+       
         data.Type = type;
-        data.Gen++;
-        
+        if(data.Gen == 0)
+            data.Gen = 1;
+
+        //we don't advance gen here, we advance it on recycle so we can look up
+        //and see if an entity reference is of an older generation
+
         var typeCount = EntityComponentManager.MaxComponentPerType;
 
         if (data.Components == null)
@@ -56,20 +60,21 @@ public static class EntityManager
                 return new Entity() { Id = id, Gen = entityData.Gen, TypeId = (byte)type };
             }
 
-            if (EntityCount < Entities.Length)
+            if (EntitiesCreated < Entities.Length)
             {
-                EntityCount++;
-                var id = EntityCount;
+                
+                var id = EntitiesCreated;
                 var entityData = GenerateEntityData(type, id);
+                EntitiesCreated++;
 
                 return new Entity() { Id = id, Gen = entityData.Gen, TypeId = (byte)type };
             }
    
             Array.Resize(ref Entities, Entities.Length << 1);
 
-            EntityCount++;
-            var id2 = EntityCount;
+            var id2 = EntitiesCreated;
             var data = GenerateEntityData(type, id2);
+            EntitiesCreated++;
 
             return new Entity() { Id = id2, Gen = data.Gen, TypeId = (byte)type };
         }
@@ -81,6 +86,9 @@ public static class EntityManager
 
     public static void Recycle(Entity e)
     {
+        if (!e.IsAlive())
+            return;
+
         clientLock.EnterWriteLock();
 
         try
@@ -96,7 +104,6 @@ public static class EntityManager
             }
 
             entity.Gen++;
-            EntityCount--;
             Entities[e.Id] = entity;
         }
         finally

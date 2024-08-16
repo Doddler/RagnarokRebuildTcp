@@ -236,16 +236,18 @@ public class MonsterSkillAiState(Monster monster)
     {
         var ce = monster.CombatEntity;
         var attr = SkillHandler.GetSkillAttributes(skill);
+        var skillTarget = attr.SkillTarget;
         var range = SkillHandler.GetSkillRange(ce, skill, level);
         if (flags.HasFlag(MonsterSkillAiFlags.UnlimitedRange))
             range = 21;
+
 
         var hideSkillName = flags.HasFlag(MonsterSkillAiFlags.HideSkillName);
         var ignoreTargetRequirement = flags.HasFlag(MonsterSkillAiFlags.NoTarget);
         ExecuteEventAtStartOfCast = flags.HasFlag(MonsterSkillAiFlags.EventOnStartCast);
 
         
-        if (attr.SkillTarget == SkillTarget.Ground)
+        if (skillTarget == SkillTarget.Ground)
         {
             var pos = Position.Zero;
             if (!ignoreTargetRequirement)
@@ -276,7 +278,7 @@ public class MonsterSkillAiState(Monster monster)
             return SkillSuccess();
         }
 
-        if (attr.SkillTarget == SkillTarget.Ally)
+        if (skillTarget == SkillTarget.Ally)
         {
             if (targetForSkill != null)
             {
@@ -288,10 +290,10 @@ public class MonsterSkillAiState(Monster monster)
                 return SkillSuccess();
             }
             else
-                attr.SkillTarget = SkillTarget.Self;
+                skillTarget = SkillTarget.Self;
         }
 
-        if (attr.SkillTarget == SkillTarget.Self)
+        if (skillTarget == SkillTarget.Self)
         {
             if (!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f, hideSkillName))
                 return SkillFail();
@@ -299,7 +301,7 @@ public class MonsterSkillAiState(Monster monster)
             return SkillSuccess();
         }
 
-        if (attr.SkillTarget == SkillTarget.Enemy)
+        if (skillTarget == SkillTarget.Enemy)
         {
             //if our conditional statement selected a target for us, use that, otherwise use our current target
             var target = targetForSkill;

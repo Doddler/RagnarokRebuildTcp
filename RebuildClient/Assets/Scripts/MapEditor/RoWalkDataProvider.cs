@@ -271,7 +271,7 @@ namespace Assets.Scripts.MapEditor
         {
             modifiedPosition = start;
             
-            Debug.Log($"GetNextWalkableTileForClick({start}, {dest})");
+            // Debug.Log($"GetNextWalkableTileForClick({start}, {dest})");
 
             //we'll assume we can't walk on start, since this will only get called if the normal check fails
 
@@ -288,7 +288,7 @@ namespace Assets.Scripts.MapEditor
             {
                 next = GetClosestInRangePoint(dest, start, SharedConfig.MaxPathLength - 1);
                 
-                Debug.Log($"GetClosestInRangePoint({dest},{start}) returned {next}");
+                // Debug.Log($"GetClosestInRangePoint({dest},{start}) returned {next}");
 
                 if ((WalkData.Cell(next).Type & CellType.Walkable) != 0)
                 {

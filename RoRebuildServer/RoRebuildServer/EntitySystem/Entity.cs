@@ -146,7 +146,7 @@ public struct Entity
 #if DEBUG
     public override string ToString()
     {
-        return IsNull() ? "Entity-Null" : $"Entity[{Type}]-{Id.ToString()}:{Gen.ToString()}";
+        return IsNull() ? "Entity-Null" : $"Entity[{Type}]-{Id.ToString()}:{Gen.ToString()}({(IsAlive()?"Active":"Expired")})";
     }
 #endif
 }

@@ -12,7 +12,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         private static Dictionary<string, Texture2D> castTextures = new();
 
         public static Ragnarok3dEffect CreateFriendly(Vector3 position, float size, float duration) =>
-            Create("magic_target_grey", position, new Color(0.24f, 0.75f, 1f, 0.5f), size, duration);
+            Create("magic_target_grey", position, new Color(0.6f, 0.9f, 1f, 0.5f), size, duration);
         
         public static Ragnarok3dEffect CreateUnfriendly(Vector3 position, float size, float duration) =>
             Create("magic_target_bad", position, new Color(0.65f, 0f, 0.4f, 0.5f), size, duration);

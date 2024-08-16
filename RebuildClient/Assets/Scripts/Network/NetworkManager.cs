@@ -25,6 +25,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace Assets.Scripts.Network
 {
@@ -60,7 +61,7 @@ namespace Assets.Scripts.Network
 
         private List<Vector2Int> pathData = new List<Vector2Int>(20);
 
-        private Scene currentScene;
+        public Scene CurrentScene;
 
         private AsyncOperationHandle<RoSpriteData> spritePreload;
         private AsyncOperationHandle uiPreload;
@@ -577,42 +578,6 @@ namespace Assets.Scripts.Network
             controllable.DirectWalkMove(speed, time, dest);
         }
 
-        private void OnMessageChangeMaps(ClientInboundMessage msg)
-        {
-            var mapName = msg.ReadString();
-
-            EntityList.Clear();
-
-            CurrentMap = mapName;
-            //var mapLoad = SceneManager.LoadSceneAsync(mapName, LoadSceneMode.Additive);
-            //mapLoad.completed += OnMapLoad;
-
-            SceneTransitioner.Instance.DoTransitionToScene(currentScene, CurrentMap, OnMapLoad);
-
-            //SceneManager.UnloadSceneAsync(currentScene);
-        }
-
-        private void OnMessageEnterServer(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var mapName = msg.ReadString();
-            var bytes = new byte[16];
-            msg.ReadBytes(bytes, 16);
-            CharacterGuid = new Guid(bytes);
-            PlayerPrefs.SetString("characterid", CharacterGuid.ToString());
-
-            Debug.Log($"We're id {id} on map {mapName} with guid {CharacterGuid}");
-
-            CurrentMap = mapName;
-
-            //var mapLoad = SceneManager.LoadSceneAsync(mapName, LoadSceneMode.Additive);
-            //mapLoad.completed += OnMapLoad;
-
-            PlayerId = id;
-
-            SceneTransitioner.Instance.LoadScene(CurrentMap, OnMapLoad);
-        }
-
         private void OnMessageRemoveEntity(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -762,7 +727,7 @@ namespace Assets.Scripts.Network
         private void OnMessageSkill(ClientInboundMessage msg)
         {
             var type = (SkillTarget)msg.ReadByte();
-            Debug.Log($"Skill type {type}");
+            // Debug.Log($"Skill type {type}");
             switch (type)
             {
                 case SkillTarget.Ground:
@@ -905,6 +870,14 @@ namespace Assets.Scripts.Network
                     cd.y = 0;
                     controllable2.CounterHitDir = cd.normalized;
                     //Debug.Log("Counter hit: " + cd);
+
+                    if (controllable.WeaponClass == 12) //don't hardcode id for bow!! Change this!
+                    {
+                        var arrow = ArcherArrow.CreateArrow(controllable.gameObject, controllable2.gameObject, motionTime);
+                        controllable2.Messages.SendHitEffect(controllable, motionTime + arrow.Duration);
+                    }
+                    else
+                        controllable2.Messages.SendHitEffect(controllable, motionTime);
                 }
                 else
                 {
@@ -1527,17 +1500,11 @@ namespace Assets.Scripts.Network
                 case PacketType.CreateEntity:
                     OnMessageCreateEntity(msg);
                     break;
-                case PacketType.EnterServer:
-                    OnMessageEnterServer(msg);
-                    break;
                 case PacketType.LookTowards:
                     OnMessageChangeFacing(msg);
                     break;
                 case PacketType.SitStand:
                     OnMessageChangeSitStand(msg);
-                    break;
-                case PacketType.ChangeMaps:
-                    OnMessageChangeMaps(msg);
                     break;
                 case PacketType.StopAction:
                     OnMessageStopPlayer(msg);
@@ -1663,14 +1630,14 @@ namespace Assets.Scripts.Network
             }
         }
 
-        private void OnMapLoad()
+        public void OnMapLoad()
         {
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.PlayerReady);
 
-            currentScene = SceneManager.GetSceneByName(CurrentMap);
-            SceneManager.SetActiveScene(currentScene);
+            CurrentScene = SceneManager.GetSceneByName(CurrentMap);
+            SceneManager.SetActiveScene(CurrentScene);
 
             SendMessage(msg);
         }

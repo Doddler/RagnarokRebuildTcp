@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.MapEditor;
+using Assets.Scripts.Network.Messaging;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
@@ -97,6 +99,7 @@ namespace Assets.Scripts.Network
         public bool IsMoving => isMoving;
         public bool IsCasting;
         public bool HideCastName;
+        public EntityMessageQueue Messages = new();
 
         public bool IsWalking => movePath != null && movePath.Count > 1;
 
@@ -941,8 +944,44 @@ namespace Assets.Scripts.Network
         //          }
         //	if(gameObject != null)
         //	    GameObject.Destroy(gameObject);
-
         //}
+        private void OnMessageHitEffect(EntityMessage msg)
+        {
+            var hitPosition = transform.position + new Vector3(0, 2, 0);
+            if(msg.Entity != null)
+                HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition);
+            else
+            {
+                if (SpriteMode == ClientSpriteType.Sprite)
+                {
+                    var dir = RoAnimationHelper.FacingDirectionToVector(SpriteAnimator.Direction);
+                    var srcPos = hitPosition + new Vector3(dir.x, 0f, dir.y);
+                    HitEffect.Hit1(srcPos, hitPosition);
+                }
+                else
+                {
+                    var dir = transform.forward;
+                    var srcPos = hitPosition + dir;
+                    HitEffect.Hit1(srcPos, hitPosition);
+                }
+            }
+        }
+
+        public void HandleMessages()
+        {
+            while (Messages.TryGetMessage(out var msg))
+            {
+                switch (msg.Type)
+                {
+                    case EntityMessageType.HitEffect:
+                        OnMessageHitEffect(msg);
+                        break;
+                }
+                
+                EntityMessagePool.Return(msg);
+            }
+        }
+        
         private void Update()
         {
             if(FloatingDisplay != null)
@@ -964,6 +1003,8 @@ namespace Assets.Scripts.Network
             
             if(SpriteAnimator.SpriteData == null)
                 return;
+            
+            HandleMessages();
 
             //this is dumb
             tempSpeedTime -= Time.deltaTime;

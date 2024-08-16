@@ -23,6 +23,11 @@ namespace Assets.Scripts.Network
             var code = new StringBuilder();
 
             code.Append("using Assets.Scripts.Network;\nusing Assets.Scripts.Network.PacketBase;\nusing Assets.Scripts.Network.IncomingPacketHandlers;\n");
+            code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.Character;\n");
+            code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.Combat;\n");
+            code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.Environment;\n");
+            code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.Network;\n");
+            code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.System;\n");
             code.Append("using Assets.Scripts.Network.HandlerBase;\n\n");
             code.Append("namespace Assets.Scripts.Network.PacketBase\n{\n\tpublic static partial class ClientPacketHandler\n\t{\n\t\tstatic ClientPacketHandler()\n\t\t{\n");
             code.Append($"\t\t\thandlers = new ClientPacketHandlerBase[{count}];\n");

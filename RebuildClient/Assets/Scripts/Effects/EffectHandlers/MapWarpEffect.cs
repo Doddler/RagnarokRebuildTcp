@@ -46,7 +46,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             
             var angle = 60;
 
-            var prim = effect.LaunchPrimitive(PrimitiveType.Cylender, Ring1Material, float.MaxValue);
+            var prim = effect.LaunchPrimitive(PrimitiveType.Casting3D, Ring1Material, float.MaxValue);
             prim.CreateParts(4);
             prim.transform.localScale = new Vector3(2f, 2f, 2f);
             
@@ -101,7 +101,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 RiseAngle = angle - 10
             };
             
-            var prim2 = effect.LaunchPrimitive(PrimitiveType.Cylender, Ring2Material, float.MaxValue);
+            var prim2 = effect.LaunchPrimitive(PrimitiveType.Casting3D, Ring2Material, float.MaxValue);
             prim2.CreateParts(4);
             prim2.transform.localScale = new Vector3(2f, 2f, 2f);
             prim2.DelayTime = 1 / 60f;

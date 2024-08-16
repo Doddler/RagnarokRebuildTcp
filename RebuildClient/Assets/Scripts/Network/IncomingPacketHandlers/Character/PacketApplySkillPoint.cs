@@ -2,7 +2,7 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 
-namespace Assets.Scripts.Network.IncomingPacketHandlers
+namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 {
     [ClientPacketHandler(PacketType.ApplySkillPoint)]
     public class PacketApplySkillPoint : ClientPacketHandlerBase

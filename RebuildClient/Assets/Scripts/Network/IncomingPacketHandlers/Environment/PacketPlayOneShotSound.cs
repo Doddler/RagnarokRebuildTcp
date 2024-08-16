@@ -1,10 +1,9 @@
-﻿using Assets.Scripts.Effects.EffectHandlers;
-using Assets.Scripts.Network.HandlerBase;
+﻿using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Objects;
 using RebuildSharedData.Networking;
 using UnityEngine;
 
-namespace Assets.Scripts.Network.IncomingPacketHandlers
+namespace Assets.Scripts.Network.IncomingPacketHandlers.Environment
 {
     [ClientPacketHandler(PacketType.PlayOneShotSound)]
     public class PacketPlayOneShotSound : ClientPacketHandlerBase

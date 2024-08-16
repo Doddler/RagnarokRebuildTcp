@@ -4,7 +4,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
 
-namespace Assets.Scripts.Network.IncomingPacketHandlers
+namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 {
     [ClientPacketHandler(PacketType.StartCast)]
     public class PacketStartCasting : ClientPacketHandlerBase

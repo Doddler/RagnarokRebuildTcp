@@ -1,6 +1,11 @@
 using Assets.Scripts.Network;
 using Assets.Scripts.Network.PacketBase;
 using Assets.Scripts.Network.IncomingPacketHandlers;
+using Assets.Scripts.Network.IncomingPacketHandlers.Character;
+using Assets.Scripts.Network.IncomingPacketHandlers.Combat;
+using Assets.Scripts.Network.IncomingPacketHandlers.Environment;
+using Assets.Scripts.Network.IncomingPacketHandlers.Network;
+using Assets.Scripts.Network.IncomingPacketHandlers.System;
 using Assets.Scripts.Network.HandlerBase;
 
 namespace Assets.Scripts.Network.PacketBase
@@ -13,7 +18,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[0] = new InvalidPacket(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
-			handlers[3] = new InvalidPacket(); //EnterServer
+			handlers[3] = new PacketOnEnterServer(); //EnterServer
 			handlers[4] = new InvalidPacket(); //Ping
 			handlers[5] = new InvalidPacket(); //CreateEntity
 			handlers[6] = new InvalidPacket(); //StartWalk
@@ -27,7 +32,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[14] = new InvalidPacket(); //RemoveEntity
 			handlers[15] = new InvalidPacket(); //RemoveAllEntities
 			handlers[16] = new InvalidPacket(); //Disconnect
-			handlers[17] = new InvalidPacket(); //ChangeMaps
+			handlers[17] = new PacketOnChangeMaps(); //ChangeMaps
 			handlers[18] = new InvalidPacket(); //StopAction
 			handlers[19] = new InvalidPacket(); //StopImmediate
 			handlers[20] = new InvalidPacket(); //RandomTeleport

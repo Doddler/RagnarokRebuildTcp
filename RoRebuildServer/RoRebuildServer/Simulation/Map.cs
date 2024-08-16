@@ -597,8 +597,11 @@ public class Map
                 if (ch.Position != character.Position)
                     continue;
 
-                //if (ch.Type == CharacterType.NPC)
-                //    continue;
+                if (ch.Hidden)
+                    continue;
+
+                if (ch.Type == CharacterType.NPC && ch.Npc.IsEvent)
+                    continue;
 
                 if (ch.IsTargetImmune)
                     continue;
@@ -627,6 +630,9 @@ public class Map
                     continue;
 
                 if (ch.IsTargetImmune)
+                    continue;
+
+                if (ch.Type == CharacterType.NPC && ch.Npc.IsEvent)
                     continue;
 
                 return true;
