@@ -8,11 +8,13 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.Bash)]
     public class BashHandler : SkillHandlerBase
     {
-        public override void ExecuteSkillTargeted(ServerControllable src, ServerControllable target, int lvl, int damage)
+        public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             DefaultSkillCastEffect.Create(src);
             src.PerformBasicAttackMotion();
             AudioManager.Instance.AttachSoundToEntity(src.Id, "ef_bash.ogg", src.gameObject);
+            if(attack.Damage > 0)
+                attack.Target?.Messages.SendHitEffect(src, attack.MotionTime);
         }
     }
 }

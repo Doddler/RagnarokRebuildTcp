@@ -30,7 +30,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[17] = new DefaultSkillHandler();
 			handlers[18] = new ThunderStormHandler();
 			handlers[19] = new DefaultSkillHandler();
-			handlers[20] = new DefaultSkillHandler();
+			handlers[20] = new DoubleStrafeHandler();
 			handlers[21] = new DefaultSkillHandler();
 			handlers[22] = new DefaultSkillHandler();
 			handlers[23] = new DefaultSkillHandler();

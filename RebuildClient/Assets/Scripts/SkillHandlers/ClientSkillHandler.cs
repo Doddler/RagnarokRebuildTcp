@@ -15,8 +15,9 @@ namespace Assets.Scripts.SkillHandlers
         public static void StartCastingSkill(ServerControllable src, Vector2Int target, CharacterSkill skillId, int lvl, float castTime) =>
             handlers[(int)skillId].StartSkillCasting(src, target, lvl, castTime);
 
-        public static void ExecuteSkill(ServerControllable src, ServerControllable target, CharacterSkill skillId, int lvl, int damage = 0)
+        public static void ExecuteSkill(ServerControllable src, ref AttackResultData attack)
         {
+            var skillId = attack.Skill;
             var handler = handlers[(int)skillId];
 
             if (src == null && !handler.ExecuteWithoutSource)
@@ -25,10 +26,11 @@ namespace Assets.Scripts.SkillHandlers
             var targetType = ClientDataLoader.Instance.GetSkillTarget(skillId);
 
             if(targetType == SkillTarget.Ground)
-                handler.ExecuteSkillGroundTargeted(src, Vector2Int.zero, lvl); //need to fix this whole thing to have the target position
+                handler.ExecuteSkillGroundTargeted(src, Vector2Int.zero, attack.SkillLevel); //need to fix this whole thing to have the target position
             else
-                handler.ExecuteSkillTargeted(src, target, lvl, damage);
+                handler.ExecuteSkillTargeted(src, ref attack);
         }
-            
+        
+        
     }
 }

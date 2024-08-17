@@ -272,8 +272,10 @@ namespace Assets.Scripts
                 Recorder.gameObject.SetActive(false);
 
             clickEffectPrefab = Resources.Load<GameObject>($"MoveNotice");
-
+            
             LayoutRebuilder.ForceRebuildLayoutImmediate(UiCanvas.transform as RectTransform);
+
+            Height = 50;
 
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
@@ -1600,6 +1602,11 @@ namespace Assets.Scripts
                 CinemachineFollow();
 
             UpdateFog();
+        }
+
+        private void OnApplicationQuit()
+        {
+            SaveCurrentCameraSettings();
         }
     }
 }

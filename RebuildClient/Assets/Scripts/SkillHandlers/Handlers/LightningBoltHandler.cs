@@ -27,9 +27,10 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.EndEffectOfType(EffectType.CastEffect);
         }
 
-        public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ServerControllable target, int lvl, int damage)
+        public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ref AttackResultData attack)
         {
             src?.PerformBasicAttackMotion();
+            var target = attack.Target;
             if(target != null)
                 CameraFollower.Instance.AttachEffectToEntity("LightningBolt", target.gameObject, src.Id);
         }

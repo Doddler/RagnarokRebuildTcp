@@ -108,21 +108,21 @@ namespace Assets.Scripts
             return angle;
         }
 
-        public static Vector2 FacingDirectionToVector(Direction facing)
+        public static Vector2Int FacingDirectionToVector(Direction facing)
         {
             switch (facing)
             {
-                case Direction.South: return new Vector2(0, -1);
-                case Direction.SouthWest: return new Vector2(-1, -1);
-                case Direction.West: return new Vector2(-1, 0);
-                case Direction.NorthWest: return new Vector2(-1, 1);
-                case Direction.North: return new Vector2(0, 1);
-                case Direction.NorthEast: return new Vector2(1, 1);
-                case Direction.East: return new Vector2(1, 0);
-                case Direction.SouthEast: return new Vector2(1, -1);
+                case Direction.South: return new Vector2Int(0, -1);
+                case Direction.SouthWest: return new Vector2Int(-1, -1);
+                case Direction.West: return new Vector2Int(-1, 0);
+                case Direction.NorthWest: return new Vector2Int(-1, 1);
+                case Direction.North: return new Vector2Int(0, 1);
+                case Direction.NorthEast: return new Vector2Int(1, 1);
+                case Direction.East: return new Vector2Int(1, 0);
+                case Direction.SouthEast: return new Vector2Int(1, -1);
             }
 
-            return Vector2.zero;
+            return Vector2Int.zero;
         }
         
         
@@ -175,6 +175,24 @@ namespace Assets.Scripts
 
 
             return Mathf.Clamp(index, 0, 7); ;
+        }
+        
+        
+        public static int GetSpriteIndexForAngle(float angle, float cameraRotation)
+        {
+            var newAngle = (180 + (int)angle) % 360;
+            cameraRotation += newAngle;
+            if (cameraRotation > 360)
+                cameraRotation -= 360;
+            if (cameraRotation < 0)
+                cameraRotation += 360;
+
+            var index = Mathf.FloorToInt(cameraRotation / 45f);
+
+            // Debug.Log($"c: {cameraRotation} a: {newAngle} i: {index}");
+
+
+            return index % 8;
         }
 
         public static int GetFourDirectionSpriteIndexForAngle(Direction facing, float cameraRotation)

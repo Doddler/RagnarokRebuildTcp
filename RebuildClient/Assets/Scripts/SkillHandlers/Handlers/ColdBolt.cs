@@ -27,11 +27,11 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.EndEffectOfType(EffectType.CastEffect);
         }
 
-        public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ServerControllable target, int lvl, int damage)
+        public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ref AttackResultData attack)
         {
             src?.PerformBasicAttackMotion();
-            if(target != null)
-                IceArrow.Create(src, target, lvl); //don't attach to the entity so the effect stays if they get removed
+            if(attack.Target != null)
+                IceArrow.Create(src, attack.Target, attack.SkillLevel); //don't attach to the entity so the effect stays if they get removed
         }
     }
 }

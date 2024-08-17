@@ -470,20 +470,20 @@ namespace Assets.Scripts.Network
                 CameraFollower.Instance.SnapLookAt();
             }
 
-#if UNITY_EDITOR
-            switch (type)
-            {
-                case CharacterType.Player:
-                    GroundHighlighter.Create(controllable, "blue");
-                    break;
-                case CharacterType.Monster:
-                    GroundHighlighter.Create(controllable, "red");
-                    break;
-                case CharacterType.NPC:
-                    GroundHighlighter.Create(controllable, "orange");
-                    break;
-            }
-#endif
+// #if UNITY_EDITOR
+//             switch (type)
+//             {
+//                 case CharacterType.Player:
+//                     GroundHighlighter.Create(controllable, "blue");
+//                     break;
+//                 case CharacterType.Monster:
+//                     GroundHighlighter.Create(controllable, "red");
+//                     break;
+//                 case CharacterType.NPC:
+//                     GroundHighlighter.Create(controllable, "orange");
+//                     break;
+//             }
+// #endif
 
             return controllable;
         }
@@ -517,6 +517,7 @@ namespace Assets.Scripts.Network
         private void OnMessageChangeFacing(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
+            var lookAt = msg.ReadPosition();
             var facing = (Direction)msg.ReadByte();
 
             if (!EntityList.TryGetValue(id, out var controllable))
@@ -525,7 +526,7 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            controllable.SpriteAnimator.Direction = facing;
+            controllable.LookAt(lookAt.ToWorldPosition());
             if (controllable.SpriteAnimator.Type == SpriteType.Player)
                 controllable.SpriteAnimator.SetHeadFacing((HeadFacing)msg.ReadByte());
         }
@@ -605,7 +606,7 @@ namespace Assets.Scripts.Network
             {
                 if (controllable.SpriteAnimator.Type != SpriteType.Player)
                 {
-                    controllable.MonsterDie(1);
+                    controllable.MonsterDie();
                     //               var vDir = -controllable.CounterHitDir;
                     //Debug.Log(vDir);
                     //var newDir = new Vector3(vDir.x, 0, vDir.z).normalized * 8f;
@@ -689,7 +690,7 @@ namespace Assets.Scripts.Network
             StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, 0, controllable));
         }
 
-        private void AttackMotion(ServerControllable src, Vector2Int pos, Direction dir, float motionSpeed, [CanBeNull] ServerControllable target)
+        public void AttackMotion(ServerControllable src, Vector2Int pos, Direction dir, float motionSpeed, [CanBeNull] ServerControllable target)
         {
             var hasTarget = target != null;
 
@@ -719,187 +720,8 @@ namespace Assets.Scripts.Network
             // else
             {
                 src.StopImmediate(pos, false);
-                src.SpriteAnimator.Direction = dir;
+                //src.SpriteAnimator.Direction = dir;
                 src.SpriteAnimator.State = SpriteState.Standby;
-            }
-        }
-
-        private void OnMessageSkill(ClientInboundMessage msg)
-        {
-            var type = (SkillTarget)msg.ReadByte();
-            // Debug.Log($"Skill type {type}");
-            switch (type)
-            {
-                case SkillTarget.Ground:
-                    OnMessageAreaTargetedSkill(msg);
-                    break;
-                case SkillTarget.Self:
-                    OnMessageSelfTargetedSkill(msg);
-                    break;
-                case SkillTarget.Enemy:
-                case SkillTarget.Ally:
-                case SkillTarget.Any:
-                    OnMessageTargetedSkillAttack(msg);
-                    break;
-                default:
-                    throw new Exception($"Could not handle skill packet of type {type}");
-            }
-        }
-
-
-        private void OnMessageAreaTargetedSkill(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var target = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
-            var skill = (CharacterSkill)msg.ReadByte();
-            var skillLvl = (int)msg.ReadByte();
-            var dir = (Direction)msg.ReadByte();
-            var pos = ReadPosition(msg);
-            var motionTime = msg.ReadFloat();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-                return;
-
-            ClientSkillHandler.ExecuteSkill(controllable, null, skill, skillLvl);
-            AttackMotion(controllable, pos, dir, motionTime, null);
-        }
-
-
-        private void OnMessageSelfTargetedSkill(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var skill = (CharacterSkill)msg.ReadByte();
-            var skillLvl = (int)msg.ReadByte();
-            var dir = (Direction)msg.ReadByte();
-            var pos = ReadPosition(msg);
-            var motionTime = msg.ReadFloat();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-                return;
-
-            ClientSkillHandler.ExecuteSkill(controllable, null, skill, skillLvl);
-            AttackMotion(controllable, pos, dir, motionTime, null);
-        }
-
-        private void OnMessageTargetedSkillAttack(ClientInboundMessage msg)
-        {
-            var id1 = msg.ReadInt32();
-            var id2 = msg.ReadInt32();
-            var skill = (CharacterSkill)msg.ReadByte();
-            var skillLvl = (int)msg.ReadByte();
-
-            var hasSource = EntityList.TryGetValue(id1, out var controllable);
-            var hasTarget = EntityList.TryGetValue(id2, out var controllable2);
-
-            var dir = (Direction)msg.ReadByte();
-            var pos = ReadPosition(msg);
-            var dmg = msg.ReadInt32();
-            var result = (AttackResult)msg.ReadByte();
-            var hits = msg.ReadByte();
-            var motionTime = msg.ReadFloat();
-            // var moveAfter = msg.ReadBoolean();
-
-            if (!hasSource)
-            {
-                //if the skill handler is not flagged to execute without a source this will do nothing.
-                //we still want to execute when a special effect plays on a target though.
-
-                ClientSkillHandler.ExecuteSkill(null, controllable2, skill, skillLvl, dmg);
-                StartCoroutine(DamageEvent(dmg, 0f, hits, 0, controllable2));
-                return;
-            }
-
-            var damageTiming = controllable.SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
-            if (controllable.SpriteAnimator.Type == SpriteType.Player)
-                damageTiming = 0.5f;
-            if (result == AttackResult.Heal)
-            {
-                motionTime = 0;
-            }
-            else
-            {
-                var animationSpeed = 1f;
-                if (damageTiming > motionTime)
-                    animationSpeed = damageTiming / motionTime;
-
-                AttackMotion(controllable, pos, dir, animationSpeed, controllable2);
-            }
-
-            controllable.ShowSkillCastMessage(skill, 3);
-
-            if (hasTarget && controllable.SpriteAnimator.IsInitialized)
-            {
-                if (controllable.SpriteAnimator.SpriteData == null)
-                {
-                    throw new Exception("AAA? " + controllable.gameObject.name + " " + controllable.gameObject);
-                }
-
-                ClientSkillHandler.ExecuteSkill(controllable, controllable2, skill, skillLvl, dmg);
-
-                if (hits < 1)
-                    hits = 1;
-
-                StartCoroutine(DamageEvent(dmg, motionTime, hits, controllable.WeaponClass, controllable2));
-            }
-        }
-
-        private void OnMessageAttack(ClientInboundMessage msg)
-        {
-            // Debug.Log("OnMessageAttack");
-
-            var id1 = msg.ReadInt32();
-            var id2 = msg.ReadInt32();
-
-            var hasSrc = EntityList.TryGetValue(id1, out var controllable);
-            var hasTarget = EntityList.TryGetValue(id2, out var controllable2);
-
-            var dir = (Direction)msg.ReadByte();
-            var pos = ReadPosition(msg);
-            var dmg = msg.ReadInt32();
-            var hits = msg.ReadByte();
-            var motionTime = msg.ReadFloat();
-            var showAttackAction = msg.ReadBoolean();
-
-            var weaponClass = 0;
-
-            if (hasSrc)
-            {
-                if (hasTarget)
-                {
-                    var cd = controllable.transform.localPosition - controllable2.transform.localPosition;
-                    cd.y = 0;
-                    controllable2.CounterHitDir = cd.normalized;
-                    //Debug.Log("Counter hit: " + cd);
-
-                    if (controllable.WeaponClass == 12) //don't hardcode id for bow!! Change this!
-                    {
-                        var arrow = ArcherArrow.CreateArrow(controllable.gameObject, controllable2.gameObject, motionTime);
-                        controllable2.Messages.SendHitEffect(controllable, motionTime + arrow.Duration);
-                    }
-                    else
-                        controllable2.Messages.SendHitEffect(controllable, motionTime);
-                }
-                else
-                {
-                    var v = dir.GetVectorValue();
-                    controllable.CounterHitDir = new Vector3(v.x, 0, v.y);
-                }
-
-                controllable.StopImmediate(pos, false);
-                controllable.SpriteAnimator.Direction = dir;
-                controllable.SpriteAnimator.State = SpriteState.Standby;
-
-                controllable.SetAttackAnimationSpeed(motionTime);
-                controllable.PerformBasicAttackMotion();
-
-                weaponClass = controllable.WeaponClass;
-            }
-
-            if (hasTarget)
-            {
-                var damageTiming = motionTime;
-
-                StartCoroutine(DamageEvent(dmg, damageTiming, hits, weaponClass, controllable2));
             }
         }
 
@@ -1398,7 +1220,12 @@ namespace Assets.Scripts.Network
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Walking)
                     controllable.StopImmediate(casterPos, false);
-                controllable.SpriteAnimator.Direction = dir;
+                
+                if(target != null)
+                    controllable.LookAt(target.transform.position);
+                else
+                    controllable.SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(dir));
+                    
                 if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
                 {
                     controllable.SpriteAnimator.State = SpriteState.Standby;
@@ -1432,7 +1259,7 @@ namespace Assets.Scripts.Network
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Walking)
                     controllable.StopImmediate(casterPos, false);
-                controllable.SpriteAnimator.Direction = dir;
+                controllable.LookAt(target.ToWorldPosition());
                 if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
                 {
                     controllable.SpriteAnimator.State = SpriteState.Standby;
@@ -1517,12 +1344,6 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.TakeDamage:
                     OnMessageTakeDamage(msg);
-                    break;
-                case PacketType.Attack:
-                    OnMessageAttack(msg);
-                    break;
-                case PacketType.Skill:
-                    OnMessageSkill(msg);
                     break;
                 case PacketType.HitTarget:
                     OnMessageHit(msg);

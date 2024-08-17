@@ -20,6 +20,13 @@ namespace Assets.Scripts.Objects
             TextObject.ForceMeshUpdate();
 
             var rect = transform as RectTransform;
+
+            RefreshBorder();
+        }
+
+        public void RefreshBorder()
+        {
+            var rect = transform as RectTransform;
             
             rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, TextObject.textBounds.size.x + 18);
             rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, TextObject.textBounds.size.y + 13);

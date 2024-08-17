@@ -8,20 +8,23 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.Heal, true)]
     public class HealHandler : SkillHandlerBase
     {
-        public override void ExecuteSkillTargeted(ServerControllable src, ServerControllable target, int lvl, int damage)
+        public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             src?.PerformSkillMotion();
 
-            switch (-damage)
+            if (attack.Target == null)
+                return;
+            
+            switch (-attack.Damage)
             {
                 case < 200:
-                    HealEffect.Create(target.gameObject, 0);
+                    HealEffect.Create(attack.Target.gameObject, 0);
                     return;
                 case < 2000:
-                    HealEffect.Create(target.gameObject, 1);
+                    HealEffect.Create(attack.Target.gameObject, 1);
                     return;
                 default:
-                    HealEffect.Create(target.gameObject, 2);
+                    HealEffect.Create(attack.Target.gameObject, 2);
                     break;
             }
         }

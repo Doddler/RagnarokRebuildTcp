@@ -11284,7 +11284,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2088088635}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9401847
+  m_Size: 0.9401848
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15279,7 +15279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 0.5254902}
+  m_Color: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 0.4}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17308,7 +17308,7 @@ MonoBehaviour:
   ClickDelay: 0
   Rotation: 0
   Distance: 56
-  Height: 48
+  Height: 50
   TurnSpeed: 0
   MonSpawnCount: 1
   EffectConfigFile: {fileID: 4900000, guid: fe0085492b5724e42ba9fd5dd7248178, type: 3}
@@ -22114,7 +22114,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2000122720}
   m_HandleRect: {fileID: 2000122719}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -38919,6 +38919,8 @@ MonoBehaviour:
   PlayerId: 0
   FakeAmbient: {r: 1, g: 1, b: 1, a: 1}
   CurrentMap: 
+  CurrentScene:
+    m_Handle: 0
 --- !u!4 &2086025549
 Transform:
   m_ObjectHideFlags: 0

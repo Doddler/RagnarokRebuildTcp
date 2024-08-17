@@ -17,7 +17,7 @@ namespace Assets.Scripts.Sprites
         public Direction Direction
         {
             get => RoAnimationHelper.GetFacingForAngle(Angle);
-            set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
+            //set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
         }
 
         public float Angle;
@@ -45,14 +45,6 @@ namespace Assets.Scripts.Sprites
         public HeadFacing HeadFacing;
 
         public bool SetAsDirty;
-        //these just exist so you can trigger them in the editor without getting a message from the server
-        // public bool Idle;
-        // public bool Attack;
-        // public bool Standby;
-        // public bool Walk;
-        // public bool Hit;
-        // public bool Sit;
-        // public bool Dead;
 
         public ServerControllable Controllable;
         private bool isInitialized;
@@ -139,28 +131,10 @@ namespace Assets.Scripts.Sprites
             }
         }
 
-        //public void DoSpin()
-        //{
-        //    spinSpeed = Random.Range(240f, 640f);
-
-        //    var megaSpin = Random.Range(0, 100);
-        //    if (megaSpin == 10)
-        //        spinSpeed = Random.Range(640f, 6400f);
-
-        //    var dir = Random.Range(0, 2);
-        //    if (dir == 1)
-        //        spinSpeed *= -1;
-
-        //    spinSpeed *= 2f;
-
-        //    doSpin = true;
-        //}
-
         public Vector2 GetAnimationAnchor()
         {
             if (SpriteRenderer == null)
             {
-                // Debug.Log($"{name} has no sprite renderer!");
                 //probably hasn't finished loading yet, not much we can do.
                 return Vector2.zero;
             }
@@ -170,8 +144,6 @@ namespace Assets.Scripts.Sprites
             if (currentFrame >= currentAction.Frames.Length)
                 return Vector2.zero;
 
-            //var angle = SpriteRenderer.GetCurrentRenderAngleIndex();
-            //var frame = currentAction.Frames[currentActionIndex + angle];
             if (frame.Pos.Length > 0)
                 return frame.Pos[0].Position;
             if (IsHead && (State == SpriteState.Idle || State == SpriteState.Sit))
@@ -357,7 +329,8 @@ namespace Assets.Scripts.Sprites
                 SpriteRenderer.SetAction(currentActionIndex, Is8Direction);
             else
                 SpriteRenderer.SetAction(currentActionIndex, Parent.Is8Direction);
-            SpriteRenderer.SetDirection((Direction)currentAngleIndex);
+            //SpriteRenderer.SetDirection((Direction)currentAngleIndex);
+            SpriteRenderer.SetAngle(Angle);
             SpriteRenderer.SetFrame(currentFrame);
 
             if (currentFrame >= currentAction.Frames.Length)
@@ -377,10 +350,12 @@ namespace Assets.Scripts.Sprites
             SpriteRenderer.Rebuild();
         }
 
-        public void ChangeAngle(int newAngleIndex)
+        public void ChangeAngle(float angle)
         {
-            currentAngleIndex = newAngleIndex;
-            Direction = (Direction)currentAngleIndex;
+            if (Angle == angle)
+                return;
+            Angle = angle;
+            currentAngleIndex = (int)RoAnimationHelper.GetFacingForAngle(angle);
             if (!isInitialized)
                 return;
             currentAction = SpriteData.Actions[currentActionIndex + currentAngleIndex];
@@ -409,7 +384,7 @@ namespace Assets.Scripts.Sprites
             currentActionIndex = newActionIndex / 8 * 8;
             currentAngleIndex = newActionIndex % 8;
             currentAction = SpriteData.Actions[newActionIndex];
-            Direction = (Direction)currentAngleIndex;
+            Angle = RoAnimationHelper.FacingDirectionToRotation((Direction)currentAngleIndex);
             maxFrame = currentAction.Frames.Length - 1;
             currentFrameTime = 0; //reset current frame time
             if (currentFrame > maxFrame)
@@ -537,6 +512,13 @@ namespace Assets.Scripts.Sprites
 
         public void ChildUpdate()
         {
+            if (SpriteRenderer != null)
+            {
+                Angle = Parent.Angle;
+                SpriteRenderer.SetAngle(Angle);
+                currentAngleIndex = Parent.currentAngleIndex;
+            }
+
             if (!IgnoreAnchor)
             {
                 var parentAnchor = Parent.GetAnimationAnchor();
@@ -550,12 +532,8 @@ namespace Assets.Scripts.Sprites
 
                 var diff = parentAnchor - ourAnchor;
 
-                //Debug.Log($"Anchoring {name} to {Parent.name}: {ourAnchor} to {parentAnchor} ");
-
                 transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, 0f);
             }
-            //else
-            //    Debug.Log("Ignoring anchor on " + name);
         }
 
         private int GetFrameForHeadTurn(RoSpriteAnimator animator)
@@ -587,7 +565,6 @@ namespace Assets.Scripts.Sprites
 
             var destDir = directionalLight.transform.rotation * Vector3.forward * -1;
 
-            //Debug.Log(destDir + " : " + srcPos);
             var mask = ~LayerMask.GetMask("Characters");
 
             var ray = new Ray(srcPos, destDir);
@@ -611,9 +588,6 @@ namespace Assets.Scripts.Sprites
 
             if (SpriteRenderer != null)
                 SpriteRenderer.SetColor(c);
-
-            //mat.color = c;
-            //mat2.color = c;
         }
 
         public void UpdateChildColor()
@@ -623,9 +597,6 @@ namespace Assets.Scripts.Sprites
 
             if (SpriteRenderer != null)
                 SpriteRenderer.SetColor(c);
-
-            //mat.color = c;
-            //mat2.color = c;
         }
 
         public void LateUpdate()
@@ -650,23 +621,7 @@ namespace Assets.Scripts.Sprites
             var sortGroup = Mathf.RoundToInt(screenPos.y * Screen.width + screenPos.x);
             var ratio = 1f / (Screen.width * Screen.height / 20000f);
             var sortLayerNum = 10000 - Mathf.RoundToInt(sortGroup * ratio);
-
-            //SortingGroup.sortingOrder = sortLayerNum;
-            //if (ShadowSortingGroup != null)
-            //	ShadowSortingGroup.sortingOrder = -20001;
-
-
-            //trailCountdown -= Time.deltaTime;
-            //if (trailCountdown < 0)
-            //{
-            //    trailCountdown += 0.1f;
-            //    if (trailCountdown < 0)
-            //        trailCountdown = 0;
-            //    SpriteDataLoader.Instance.CloneObjectForTrail(this);
-            //}
         }
-
-        //private float trailCountdown = 0.1f;
 
         public void Update()
         {
@@ -688,9 +643,6 @@ namespace Assets.Scripts.Sprites
             if (Parent != null)
                 return;
 
-            //if (Type == SpriteType.Player)
-            //    isDirty = true; //haaaaaaaaaaaaaaaaaack for heads floating in webgl build for some reason
-
             UpdateShade();
             CurrentShade = Mathf.Lerp(CurrentShade, TargetShade, Time.deltaTime * 10f);
 
@@ -707,89 +659,10 @@ namespace Assets.Scripts.Sprites
             if (pauseTime < 0)
                 isPaused = false;
 
-            //var angleIndex = 0;
-            //var is4dir = RoAnimationHelper.IsFourDirectionAnimation(Type, CurrentMotion);
-
-            //if (is4dir)
-            //    angleIndex = RoAnimationHelper.GetFourDirectionSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
-            //else
-            //angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
-
-            //if (CurrentMotion == SpriteMotion.Dead)
-            //{
-            //	deadResetTime += Time.deltaTime;
-            //	if (deadResetTime > 5f)
-            //	{
-            //		State = SpriteState.Idle;
-            //		ChangeMotion(SpriteMotion.Idle);
-            //		deadResetTime = 0f;
-            //		return;
-            //	}
-
-            //}
-
             var angleIndex = (int)Direction;
 
-            if (currentAngleIndex != angleIndex && !LockAngle)
-                ChangeAngle(angleIndex);
-
-            //sadly disabled until I add support to RoSpriteRenderer
-            //if (doSpin)
-            //{
-            //    rotate += Time.deltaTime * spinSpeed;
-            //    if (rotate > 360)
-            //        rotate -= 360;
-            //    if (rotate < 0)
-            //        rotate += 360;
-            //    mat.SetFloat("_Rotation", rotate);
-            //}
-
-            //if (Input.GetKeyDown(KeyCode.F11))
-            //{
-            //    DoSpin();
-            //}
-
-            // if (Attack) // || Input.GetKeyDown(KeyCode.F))
-            // {
-            //     ChangeMotion(SpriteMotion.Attack1);
-            //     Attack = false;
-            // }
-            // if (Hit)
-            // {
-            //     ChangeMotion(SpriteMotion.Hit);
-            //     Hit = false;
-            // }
-            // if (Idle)
-            // {
-            //     State = SpriteState.Idle;
-            //     ChangeMotion(SpriteMotion.Idle);
-            //     Idle = false;
-            // }
-            // if (Walk)
-            // {
-            //     State = SpriteState.Walking;
-            //     ChangeMotion(SpriteMotion.Walk);
-            //     Walk = false;
-            // }
-            //
-            // if (Sit)
-            // {
-            //     State = SpriteState.Sit;
-            //     ChangeMotion(SpriteMotion.Sit);
-            //     Sit = false;
-            // }
-            // if (Dead)
-            // {
-            //     State = SpriteState.Dead;
-            //     ChangeMotion(SpriteMotion.Dead);
-            //     Dead = false;
-            // }
-            // if (Standby)
-            // {
-            //     State = SpriteState.Standby;
-            //     ChangeMotion(SpriteMotion.Standby);
-            //     Standby = false;
-            // }
+            if (currentAngleIndex != (int)RoAnimationHelper.GetFacingForAngle(Angle) && !LockAngle)
+                ChangeAngle(Angle);
 
             if (Parent == null)
                 currentFrameTime -= Time.deltaTime;
@@ -802,24 +675,15 @@ namespace Assets.Scripts.Sprites
                 UpdateSpriteFrame();
                 for (var i = 0; i < ChildrenSprites.Count; i++)
                 {
-                    if (ChildrenSprites[i].IsInitialized)
-                        ChildrenSprites[i].ChildSetFrameData(currentActionIndex, currentAngleIndex, currentFrame);
-                    else
-                    {
+                    if (!ChildrenSprites[i].IsInitialized)
                         ChildrenSprites[i].Initialize();
-                        ChildrenSprites[i].ChildSetFrameData(currentActionIndex, currentAngleIndex, currentFrame);
-                    }
+
+                    ChildrenSprites[i].ChangeAngle(Angle);
+                    ChildrenSprites[i].ChildSetFrameData(currentActionIndex, currentAngleIndex, currentFrame);
                 }
 
                 isDirty = false;
             }
-            //
-            // soundUpdateTime -= Time.deltaTime;
-            // if (soundUpdateTime < 0)
-            // {
-            //     SoundCleanup();
-            //     soundUpdateTime += Random.Range(1f, 3f);
-            // }
         }
     }
 }

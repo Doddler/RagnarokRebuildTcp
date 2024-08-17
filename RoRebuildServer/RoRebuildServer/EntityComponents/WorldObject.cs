@@ -336,31 +336,26 @@ public class WorldObject : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
-    public void ChangeLookDirection(ref Entity entity, Direction direction, HeadFacing facing = HeadFacing.Center)
+    public void ChangeLookDirection(Position lookAt, HeadFacing facing = HeadFacing.Center)
     {
         Debug.Assert(Map != null);
 
         if (State == CharacterState.Moving || State == CharacterState.Dead)
             return;
 
-        FacingDirection = direction;
+        FacingDirection = (lookAt - Position).Normalize().GetDirectionForOffset();
 
         if (Type == CharacterType.Player)
-        {
-            var player = entity.Get<Player>();
-            player.HeadFacing = facing;
-        }
-
+            Player.HeadFacing = facing;
+        
         Map.AddVisiblePlayersAsPacketRecipients(this);
-        CommandBuilder.ChangeFacingMulti(this);
+        CommandBuilder.ChangeFacingMulti(this, lookAt);
         CommandBuilder.ClearRecipients();
     }
     public void LookAtEntity(ref Entity entity)
     {
-        if (!entity.IsAlive())
-            return;
-
-        ChangeLookDirection(ref Entity, (entity.Get<WorldObject>().Position - Position).Normalize().GetDirectionForOffset(), HeadFacing.Center);
+        if(entity.TryGet<WorldObject>(out var chara))
+            ChangeLookDirection(chara.Position);
     }
     public void StopMovingImmediately(bool resetState = true)
     {

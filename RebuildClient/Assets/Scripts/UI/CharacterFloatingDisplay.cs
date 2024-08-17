@@ -172,10 +172,15 @@ namespace Assets.Scripts.UI
 
         public void Update()
         {
-            if (chatBubble != null && Time.timeSinceLevelLoad > chatEnd)
+            if (chatBubble != null)
             {
-                Manager.ReturnChatBubble(chatBubble.gameObject);
-                chatBubble = null;
+                if (Time.timeSinceLevelLoad > chatEnd)
+                {
+                    Manager.ReturnChatBubble(chatBubble.gameObject);
+                    chatBubble = null;
+                } 
+                else
+                    chatBubble.RefreshBorder();
             }
 
             if (castBar != null)

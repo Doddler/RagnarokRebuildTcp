@@ -5,6 +5,7 @@ namespace Assets.Scripts.Network.Messaging
 {
     public class EntityMessageQueue
     {
+        public ServerControllable Owner;
         private readonly List<EntityMessage> messages = new();
         private bool isDirty;
 
@@ -33,8 +34,27 @@ namespace Assets.Scripts.Network.Messaging
 
         public void EnqueueMessage(EntityMessage msg)
         {
+            if (msg.ActivationTime < Time.timeSinceLevelLoad)
+            {
+                Owner.ExecuteMessage(msg);
+                return;
+            }
+            
             messages.Add(msg);
             isDirty = true;
+        }
+
+        public float TimeUntilMessageLogClears(EntityMessageType type)
+        {
+            var min = 0f;
+            for(var i = 0; i < messages.Count; i++)
+                if (messages[i].Type == type && messages[i].ActivationTime > Time.timeSinceLevelLoad)
+                    min = messages[i].ActivationTime;
+
+            if (min > 0)
+                return min - Time.timeSinceLevelLoad;
+            
+            return 0f;
         }
 
         private int Compare(EntityMessage left, EntityMessage right) => left.ActivationTime.CompareTo(right.ActivationTime);
@@ -50,24 +70,20 @@ namespace Assets.Scripts.Network.Messaging
             EnqueueMessage(msg);
         }
 
-        public void SendShowDamage(float time, int damage)
+        public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount)
         {
-            var msg = EntityMessagePool.Borrow();
-            msg.ActivationTime = Time.timeSinceLevelLoad + time;
-            msg.Type = EntityMessageType.ShowDamage;
-            msg.Value1 = damage;
+            for (var i = 0; i < hitCount; i++)
+            {
+                var msg = EntityMessagePool.Borrow();
+                msg.ActivationTime = Time.timeSinceLevelLoad + time + 0.2f * i;
+                msg.Type = EntityMessageType.ShowDamage;
+                msg.Entity = src;
+                msg.Value1 = damage;
+                if(hitCount > 1)
+                    msg.Value2 = (i + 1) * damage;
 
-            EnqueueMessage(msg);
-        }
-
-        public void SendComboDamage(float time, int comboDamage)
-        {
-            var msg = EntityMessagePool.Borrow();
-            msg.ActivationTime = Time.timeSinceLevelLoad + time;
-            msg.Type = EntityMessageType.ComboDamage;
-            msg.Value1 = comboDamage;
-
-            EnqueueMessage(msg);
+                EnqueueMessage(msg);
+            }
         }
     }
 }

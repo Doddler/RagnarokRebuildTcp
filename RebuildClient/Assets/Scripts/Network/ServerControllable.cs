@@ -26,6 +26,7 @@ namespace Assets.Scripts.Network
         public CharacterType CharacterType;
         public RoSpriteAnimator SpriteAnimator;
         public int Id;
+        public int ClassId;
         public Vector2Int Position;
         public Vector2 MoveStartPos;
         public Vector3 StartPos;
@@ -99,7 +100,7 @@ namespace Assets.Scripts.Network
         public bool IsMoving => isMoving;
         public bool IsCasting;
         public bool HideCastName;
-        public EntityMessageQueue Messages = new();
+        public readonly EntityMessageQueue Messages = new();
 
         public bool IsWalking => movePath != null && movePath.Count > 1;
 
@@ -113,6 +114,11 @@ namespace Assets.Scripts.Network
             }
         }
 
+        public void Init()
+        {
+            Messages.Owner = this;
+        }
+
         public CharacterFloatingDisplay EnsureFloatingDisplayCreated(bool makeEnabled = false)
         {
             if (FloatingDisplay == null)
@@ -120,6 +126,27 @@ namespace Assets.Scripts.Network
             if(makeEnabled)
                 FloatingDisplay.gameObject.SetActive(true);
             return FloatingDisplay;
+        }
+
+        public void LookAt(Vector3 lookAt)
+        {
+            var pos1 = new Vector2(transform.position.x, transform.position.z);
+            var pos2 = new Vector2(lookAt.x, lookAt.z);
+            var dir = (pos2 - pos1).normalized;
+            var angle = Vector2.SignedAngle(dir, Vector2.up);
+            if (angle < 0)
+                angle += 360f;
+
+            if (SpriteAnimator != null)
+                SpriteAnimator.ChangeAngle(angle);
+        }
+
+        public void LookAtOrDefault(ServerControllable target, Direction fallbackDir)
+        {
+            if(target != null)
+                LookAt(target.transform.position);
+            else
+                SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(fallbackDir));
         }
 
         public void SetHp(int hp, int maxHp)
@@ -277,7 +304,7 @@ namespace Assets.Scripts.Network
             transform.localPosition = position;
 
             if (SpriteMode == ClientSpriteType.Sprite)
-                SpriteAnimator.Direction = direction;
+                SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(direction));
             else
                 gameObject.transform.rotation = Quaternion.Euler(0f, RoAnimationHelper.FacingDirectionToRotation(direction), 0f);
         }
@@ -458,7 +485,7 @@ namespace Assets.Scripts.Network
                 var y = Mathf.Lerp(movePath[currentMoveStep].y, movePath[currentMoveStep+1].y, prog) + 0.5f;
                 transform.localPosition = walkProvider.GetWorldPositionFor2DLocation(x, y);
                 Position = transform.position.ToTilePosition();
-                SpriteAnimator.Direction = dir;
+                SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(dir));
                 // Debug.Log($"Lerp from {movePath[currentMoveStep]} to {movePath[currentMoveStep+1]} returns {transform.localPosition}");
             }
         }
@@ -478,7 +505,7 @@ namespace Assets.Scripts.Network
                     moveProgress -= Time.deltaTime / speed;
                     var angle = Vector2.SignedAngle(Vector2.up, movePath[1] - new Vector2(StartPos.x, StartPos.z));
                     // Debug.Log($"Next Step {movePath[1]} curPosition {new Vector2(StartPos.x, StartPos.z)} angle {angle}");
-                    SpriteAnimator.Direction = Directions.GetFacingForAngle(angle);
+                    SpriteAnimator.ChangeAngle(angle);
                 }
                 else
                 {
@@ -487,7 +514,7 @@ namespace Assets.Scripts.Network
                         moveProgress -= Time.deltaTime / speed * 0.70f;
                     else
                         moveProgress -= Time.deltaTime / speed;
-                    SpriteAnimator.Direction = GetDirectionForOffset(offset);
+                    SpriteAnimator.ChangeAngle(RoAnimationHelper.AngleDir(offset, Vector2.up));
                 }
             }
 
@@ -694,14 +721,19 @@ namespace Assets.Scripts.Network
 
             var baseMotionTime = SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
             if (CharacterType == CharacterType.Player)
-                baseMotionTime = 0.5f;
-            if (baseMotionTime < motionTime)
+                baseMotionTime = 0.6f;
+            // if (ClassId == 2)
+            //     baseMotionTime = 0.6f;
+            
+            if (baseMotionTime < motionTime && ClassId != 2)
             {
                 AttackAnimationSpeed = 1;
                 return;
             }
-
+            
             AttackAnimationSpeed = motionTime / baseMotionTime;
+            
+            // Debug.Log($"Attack! speed {AttackAnimationSpeed} = motionTime {motionTime} / baseMotionTime {baseMotionTime}");
         }
 
         public void AttachShadow(Sprite spriteObj)
@@ -862,21 +894,19 @@ namespace Assets.Scripts.Network
             lt.setOnComplete(CompleteDestroy, gameObject);
         }
 
-        private IEnumerator MonsterDeathCoroutine(int hitCount)
+        private IEnumerator MonsterDeathCoroutine()
         {
-            if (hitCount > 1)
+            var time = Messages.TimeUntilMessageLogClears(EntityMessageType.ShowDamage);
+            
+            yield return new WaitForSeconds(time);
+            if (SpriteAnimator == null)
             {
-                var hitTiming = 0.2f; //SpriteAnimator.GetHitTiming();
-                for (var i = 0; i < hitCount; i++)
-                {
-                    SpriteAnimator.ChangeMotion(SpriteMotion.Hit, true);
-                    SpriteAnimator.AnimSpeed = 1f;
-                    if (i == hitCount - 1)
-                        hitTiming = SpriteAnimator.GetHitTiming();
-                    yield return new WaitForSeconds(hitTiming);
-                }
+                FadeOutAndVanish(2f);
+                yield break;
             }
-
+            
+            //yield return new WaitForSeconds(SpriteAnimator.GetHitTiming());
+            
             var deathTiming = SpriteAnimator.GetDeathTiming();
             SpriteAnimator.State = SpriteState.Dead;
             SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
@@ -892,7 +922,7 @@ namespace Assets.Scripts.Network
             FadeOutAndVanish(2f);
         }
 
-        public void MonsterDie(int hitCount)
+        public void MonsterDie()
         {
             isMoving = false;
             movePath = null;
@@ -902,7 +932,7 @@ namespace Assets.Scripts.Network
 
             StopCasting();
 
-            StartCoroutine(MonsterDeathCoroutine(hitCount));
+            StartCoroutine(MonsterDeathCoroutine());
         }
 
         public void UpdateHp(int hp)
@@ -945,6 +975,34 @@ namespace Assets.Scripts.Network
         //	if(gameObject != null)
         //	    GameObject.Destroy(gameObject);
         //}
+        
+        private void AttachHealIndicator(int damage)
+        {
+            var di = RagnarokEffectPool.GetDamageIndicator();
+            var height = 1f;
+            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height,
+                SpriteAnimator.Direction, "green", false);
+            di.AttachDamageIndicator(this);
+        }
+
+
+        private void AttachDamageIndicator(int damage, int totalDamage)
+        {
+            var di = RagnarokEffectPool.GetDamageIndicator();
+            var red = SpriteAnimator.Type == SpriteType.Player;
+            var height = 1f;
+            di.DoDamage(TextIndicatorType.Damage, damage.ToString(), gameObject.transform.localPosition, height,
+                SpriteAnimator.Direction, red ? "red" : null, false);
+
+            if (totalDamage > 0 && CharacterType != CharacterType.Player)
+            {
+                var di2 = RagnarokEffectPool.GetDamageIndicator();
+                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
+                    SpriteAnimator.Direction, "#FFFF00", false);
+                di2.AttachComboIndicatorToControllable(this);
+            }
+        }
+        
         private void OnMessageHitEffect(EntityMessage msg)
         {
             var hitPosition = transform.position + new Vector3(0, 2, 0);
@@ -967,19 +1025,62 @@ namespace Assets.Scripts.Network
             }
         }
 
+        public void OnMessageDamageEvent(EntityMessage msg)
+        {
+            var dmg = msg.Value1;
+            if (dmg < 0)
+            {
+                AttachHealIndicator(-dmg);
+                return;
+            }
+            
+            var weaponClass = 0;
+            if (msg.Entity != null)
+                weaponClass = msg.Entity.WeaponClass;
+            
+            if (SpriteAnimator.CurrentMotion != SpriteMotion.Dead)
+            {
+                if (SpriteAnimator.Type == SpriteType.Player)
+                    SpriteAnimator.State = SpriteState.Standby;
+
+                if (!SpriteAnimator.IsAttackMotion)
+                {
+                    SpriteAnimator.AnimSpeed = 1f;
+                    SpriteAnimator.ChangeMotion(SpriteMotion.Hit, true);
+                }
+            }
+
+            if (weaponClass >= 0)
+            {
+                var hitSound = ClientDataLoader.Instance.GetHitSoundForWeapon(weaponClass);
+                AudioManager.Instance.OneShotSoundEffect(Id, hitSound, transform.position, 1f);
+            }
+
+            AttachDamageIndicator(dmg, msg.Value2);
+        }
+
+        public void ExecuteMessage(EntityMessage msg)
+        {
+            switch (msg.Type)
+            {
+                case EntityMessageType.HitEffect:
+                    OnMessageHitEffect(msg);
+                    break;
+                case EntityMessageType.ShowDamage:
+                    OnMessageDamageEvent(msg);
+                    break;
+                default:
+                    Debug.LogError($"Unhandled entity message type {msg.Type} on entity {Name}!");
+                    break;
+            }
+                
+            EntityMessagePool.Return(msg);
+        }
+        
         public void HandleMessages()
         {
             while (Messages.TryGetMessage(out var msg))
-            {
-                switch (msg.Type)
-                {
-                    case EntityMessageType.HitEffect:
-                        OnMessageHitEffect(msg);
-                        break;
-                }
-                
-                EntityMessagePool.Return(msg);
-            }
+                ExecuteMessage(msg);
         }
         
         private void Update()

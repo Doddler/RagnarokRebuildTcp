@@ -48,7 +48,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
            
             var prim = effect.LaunchPrimitive(PrimitiveType.Cylinder3D, mat, effect.Duration);
             prim.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-            prim.transform.position = target + dir / 10f + Vector3.up * 0.5f;
+            prim.transform.position = target + dir / 5f + Vector3.up * 0.5f;
             prim.transform.localScale = Vector3.one * 0.2f;
             
             var data = prim.GetPrimitiveData<CylinderData>();

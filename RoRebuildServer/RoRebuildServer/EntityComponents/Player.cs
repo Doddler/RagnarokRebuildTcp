@@ -179,11 +179,20 @@ public class Player : IEntityAutoReset
             Character.ClassId = job; //there should be more complex checks here to prevent GM and mounts from being lost but we'll deal with it later
         }
 
-        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100);
+        var jobAspd = 1f;
+        if (job == 5)
+            jobAspd = 40f;
+        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100 + jobAspd);
 
-        var recharge = (1.2f - level * 0.006f) * aspdBonus;
+
+        var recharge = (1.4f - level * 0.008f) * aspdBonus;
         var motionTime = 0.8f;
-        var spriteTime = 0.5f;
+        var spriteTime = 0.6f;
+        if (job == 2)
+        {
+            motionTime = recharge * (6f / 8f);
+            spriteTime = recharge * (6f / 8f);
+        }
 
         if (recharge < motionTime)
         {

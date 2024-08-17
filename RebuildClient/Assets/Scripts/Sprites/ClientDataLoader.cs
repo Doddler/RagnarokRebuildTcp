@@ -69,6 +69,7 @@ namespace Assets.Scripts.Sprites
         public ClientSkillTree GetSkillTree(int jobId) => jobSkillTrees.GetValueOrDefault(jobId);
 
         public MapViewpoint GetMapViewpoint(string mapName) => mapViewpoints.GetValueOrDefault(mapName);
+        public MonsterClassData GetMonsterData(int classId) => monsterClassLookup.GetValueOrDefault(classId);
 
         public string GetHitSoundForWeapon(int weaponId)
         {
@@ -265,7 +266,7 @@ namespace Assets.Scripts.Sprites
             var control = go.AddComponent<ServerControllable>();
             var billboard = go.AddComponent<BillboardObject>();
             billboard.Style = BillboardStyle.Character;
-
+            
             var body = new GameObject("Sprite");
             body.layer = LayerMask.NameToLayer("Characters");
             body.transform.SetParent(go.transform, false);
@@ -280,6 +281,7 @@ namespace Assets.Scripts.Sprites
             var bodySprite = body.AddComponent<RoSpriteAnimator>();
             var headSprite = head.AddComponent<RoSpriteAnimator>();
 
+            control.ClassId = param.ClassId;
             control.SpriteAnimator = bodySprite;
             control.CharacterType = CharacterType.Player;
             control.SpriteMode = ClientSpriteType.Sprite;
@@ -344,7 +346,7 @@ namespace Assets.Scripts.Sprites
                 CameraFollower.Instance.CharacterName.text = $"Lv. {control.Level} {control.Name}";
             }
 
-            // control.gameObject.AddComponent<RoSpriteTrailSpawner>();
+            control.Init();
 
             return control;
         }
@@ -419,6 +421,7 @@ namespace Assets.Scripts.Sprites
             var obj = new GameObject(prefabName);
 
             var control = obj.AddComponent<ServerControllable>();
+            control.ClassId = param.ClassId;
             control.CharacterType = CharacterType.NPC;
             control.SpriteMode = ClientSpriteType.Prefab;
             control.EntityObject = obj;
@@ -444,6 +447,7 @@ namespace Assets.Scripts.Sprites
                 }
             };
 
+            control.Init();
 
             return control;
         }
@@ -470,6 +474,7 @@ namespace Assets.Scripts.Sprites
             //     control.CharacterType = CharacterType.NPC;
             // else
             //     control.CharacterType = CharacterType.Monster;
+            control.ClassId = param.ClassId;
             control.CharacterType = entityType;
             control.SpriteMode = ClientSpriteType.Sprite;
             control.IsInteractable = param.Interactable;
@@ -510,7 +515,7 @@ namespace Assets.Scripts.Sprites
             if (mData.ShadowSize > 0)
                 AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
 
-            // control.gameObject.AddComponent<RoSpriteTrailSpawner>();
+            control.Init();
 
             return control;
         }

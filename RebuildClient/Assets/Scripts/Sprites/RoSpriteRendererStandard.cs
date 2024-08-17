@@ -52,12 +52,12 @@ namespace Assets.Scripts.Sprites
         public float SpriteOffset;
         public RoSpriteData SpriteData;
 
-        public Direction Direction;
-        // public Direction Direction
-        // {
-        //     get => RoAnimationHelper.GetFacingForAngle(Angle);
-        //     set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
-        // }
+        //public Direction Direction;
+        public Direction Direction
+        {
+            get => RoAnimationHelper.GetFacingForAngle(Angle);
+            set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
+        }
         public Direction LastDirection;
         //public Texture2D AppliedPalette;
 
@@ -313,13 +313,13 @@ namespace Assets.Scripts.Sprites
                 // var subAngle = Vector3.SignedAngle(targetDir, CameraFollower.Instance.transform.forward, Vector3.up);
                 //
 
-                var rotation = 360 - CameraFollower.Instance.Rotation;
-                if(!is8Direction)
-                    rotation -= 22;
-                if (rotation < 0)
-                    rotation += 360;
+                var rotation = 360 - (int)CameraFollower.Instance.Rotation;
+                if(is8Direction)
+                    rotation += 22;
+                rotation %= 360;
                 
-                var angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, rotation);
+                var angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Angle, rotation);
+                // Debug.Log($"{SpriteData.Name} is8Direction:{is8Direction} Angle:{Angle} Camera:{CameraFollower.Instance.Rotation} -> {rotation} AngleIndex: {angleIndex}");
                 if (angleIndex != CurrentAngleIndex)
                 {
                     CurrentAngleIndex = angleIndex;

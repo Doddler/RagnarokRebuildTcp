@@ -377,7 +377,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void ChangeFacingMulti(WorldObject c)
+    public static void ChangeFacingMulti(WorldObject c, Position lookAtPos)
     {
         if (!HasRecipients())
             return;
@@ -385,7 +385,9 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.LookTowards, 48);
 
         packet.Write(c.Id);
+        packet.Write(lookAtPos);
         packet.Write((byte)c.FacingDirection);
+        
         if (c.Type == CharacterType.Player)
         {
             var player = c.Entity.Get<Player>();

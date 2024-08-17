@@ -13,6 +13,7 @@ public class MonsterClassData
     public float ShadowSize;
     public float Size;
     public float AttackTiming;
+    //public float HitTiming;
     public string Color = "FFFFFFFF";
 }
 

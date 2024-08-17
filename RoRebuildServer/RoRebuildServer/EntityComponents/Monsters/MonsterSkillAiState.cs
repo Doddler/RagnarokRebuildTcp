@@ -228,8 +228,8 @@ public class MonsterSkillAiState(Monster monster)
 
     public void LookAtPosition(Position p)
     {
-        var dir = DistanceCache.Direction(Monster.Character.Position, p);
-        Monster.Character.ChangeLookDirection(ref Monster.Entity, dir);
+        //var dir = DistanceCache.Direction(Monster.Character.Position, p);
+        Monster.Character.ChangeLookDirection(p);
     }
 
     public bool Cast(CharacterSkill skill, int level, int castTime, int delay = 0, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)

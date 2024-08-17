@@ -25,9 +25,9 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[7] = new InvalidPacket(); //PauseMove
 			handlers[8] = new InvalidPacket(); //ResumeMove
 			handlers[9] = new InvalidPacket(); //Move
-			handlers[10] = new InvalidPacket(); //Attack
+			handlers[10] = new PacketAttack(); //Attack
 			handlers[11] = new InvalidPacket(); //TakeDamage
-			handlers[12] = new InvalidPacket(); //LookTowards
+			handlers[12] = new PacketLookTowards(); //LookTowards
 			handlers[13] = new InvalidPacket(); //SitStand
 			handlers[14] = new InvalidPacket(); //RemoveEntity
 			handlers[15] = new InvalidPacket(); //RemoveAllEntities
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[23] = new PacketStartCasting(); //StartCast
 			handlers[24] = new InvalidPacket(); //StartAreaCast
 			handlers[25] = new InvalidPacket(); //CreateCastCircle
-			handlers[26] = new InvalidPacket(); //Skill
+			handlers[26] = new PacketOnSkill(); //Skill
 			handlers[27] = new InvalidPacket(); //SkillError
 			handlers[28] = new PacketErrorMessage(); //ErrorMessage
 			handlers[29] = new InvalidPacket(); //ChangeTarget

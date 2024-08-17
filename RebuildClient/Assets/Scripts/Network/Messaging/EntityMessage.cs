@@ -11,6 +11,7 @@ namespace Assets.Scripts.Network.Messaging
         public Vector3 Position;
         public int Value1;
         public int Value2;
+        public int Value3;
         public float Float1;
         public float Float2;
 

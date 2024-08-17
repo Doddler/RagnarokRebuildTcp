@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Text;
 using Lidgren.Network;
+using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 
 namespace Assets.Scripts.Network
 {
@@ -142,6 +144,13 @@ namespace Assets.Scripts.Network
             var str = Encoding.UTF8.GetString(buffer, 0, len);
             
             return str;
+        }
+        
+        public Vector2Int ReadPosition()
+        {
+            var x = ReadInt16();
+            var y = ReadInt16();
+            return new Vector2Int(x, y);
         }
     }
 }

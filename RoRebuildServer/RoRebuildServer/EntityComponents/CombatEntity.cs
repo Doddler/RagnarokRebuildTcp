@@ -599,9 +599,9 @@ public class CombatEntity : IEntityAutoReset
         if (motionTiming > delayTiming)
             delayTiming = motionTiming;
 
-        delayTiming -= 0.2f;
-        if (delayTiming < 0.2f)
-            delayTiming = 0.2f;
+        //delayTiming -= 0.2f;
+        //if (delayTiming < 0.2f)
+        //    delayTiming = 0.2f;
 
         if (spriteTiming > delayTiming)
             spriteTiming = delayTiming;
@@ -798,6 +798,8 @@ public class CombatEntity : IEntityAutoReset
         ApplyCooldownForAttackAction(target);
 
         var di = CalculateCombatResult(target, 1f, 1, AttackFlags.Physical);
+        if (Character.ClassId == 5 && GameRandom.Next(0, 20) < Character.Player.LearnedSkills.GetValueOrDefault(CharacterSkill.DoubleAttack, -1))
+            di.HitCount = 2;
 
         ExecuteCombatResult(di);
     }

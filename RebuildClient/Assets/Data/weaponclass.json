@@ -16,7 +16,7 @@
       "Name": "Dagger",
       "WeaponClass": "Dagger",
       "HitSounds": [
-        "_hit_dagger.ogg"
+        "_hit_sword.ogg"
       ]
     },
     {

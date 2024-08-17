@@ -27,7 +27,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 if (controllable.SpriteAnimator.State == SpriteState.Walking)
                     controllable.StopImmediate(casterPos, false);
                 
-                controllable.SpriteAnimator.Direction = dir;
+                controllable.LookAtOrDefault(target, dir);
                 
                 if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
                 {
