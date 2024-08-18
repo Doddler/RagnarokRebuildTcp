@@ -453,7 +453,6 @@ namespace Assets.Scripts
             var renderer = sprite.GetComponent<RoSpriteRendererStandard>();
             renderer.SetOverrideMaterial(mat);
 
-
             return go;
         }
 

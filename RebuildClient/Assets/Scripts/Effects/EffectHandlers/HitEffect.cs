@@ -68,7 +68,6 @@ namespace Assets.Scripts.Effects.EffectHandlers
             return null;
         }
 
-
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
             return step < effect.DurationFrames;

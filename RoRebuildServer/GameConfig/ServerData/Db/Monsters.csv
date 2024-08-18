@@ -50,7 +50,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4047,MARIN,Marin,15,293,8,14,15,10,10,13,34,41,1,7,7,61,64,10,12,Medium,Plant,Water2,1872,480,672,400,Normal,AiPassive,288,marin.spr,0,0.5,1,#FFFFFFFF
 4048,GHOSTRING,Ghostring,33,3935,20,67,18,49,45,22,214,261,1,7,22,12301,12098,10,12,Medium,Demon,Ghost4,1220,648,1080,300,Boss,AiAggressive,336,ghostring.spr,0,0.5,1,#FFFFFFFF
 4049,MASTERING,Mastering,10,2007,8,13,14,10,10,12,47,58,1,6,6,364,301,10,12,Medium,Plant,Water1,1072,480,672,300,Boss,AiAggressive,288,mastering.spr,0,0.75,1,#FFFFFFFF
-4050,ANGELING,Angeling,35,10058,40,58,49,49,44,58,324,396,1,15,18,19649,16913,10,12,Medium,Angel,Holy4,1072,672,672,200,Boss,AiAggressive,312,angeling.spr,0,0.5,1,#FFFFFFFF
+4050,ANGELING,Angeling,35,10058,40,104,49,49,44,58,324,396,1,15,18,19926,17154,10,12,Medium,Angel,Holy4,1072,672,672,200,Boss,AiAggressive,312,angeling.spr,0,0.5,1,#FFFFFFFF
 4051,DEVILING,Deviling,46,12160,59,64,48,54,52,51,415,508,1,20,20,44170,33307,10,12,Medium,Demon,Dark4,1072,384,1056,200,Boss,AiAggressive,672,deviling.spr,0,0.5,1,#FFFFFFFF
 4052,DRAGON_TAIL,Dragon Tail,61,2538,38,44,40,57,67,35,419,512,1,23,18,6129,7166,10,12,Medium,Insect,Wind2,862,312,534,175,Normal,AiAggressive,360,dragon_tail.spr,0,0.5,1,#FFFFFFFF
 4053,POISON_SPORE,Poison Spore,19,356,11,16,17,12,12,15,45,55,1,8,8,116,118,10,12,Medium,Plant,Poison1,1672,288,672,200,Normal,AiAggressive,528,poison_spore.spr,0,0.5,1,#FFFFFFFF
@@ -158,7 +158,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4155,RIDEWORD,Rideword,59,1662,48,48,48,62,48,52,266,325,1,18,18,5559,5956,10,12,Small,Formless,Neutral3,864,192,500,150,Normal,AiAggressive,468,rideword.spr,0,0.5,1,#FFFFFFFF
 4156,BATHORY,Bathory,44,1088,36,39,29,36,36,39,187,228,1,12,16,2022,1855,10,12,Medium,Demihuman,Dark1,1504,900,840,100,Normal,AiAggressive,288,bathory.spr,0,0.5,1,#FFFFFFFF
 4157,C_TOWER_MANAGER,Tower Keeper,63,12558,61,61,61,61,61,61,648,793,3,27,27,28195,23117,10,12,Large,Formless,Neutral4,1072,384,672,200,Normal,AiPassive,384,c_tower_manager.spr,0,0.5,1,#FFFFFFFF
-4158,ELDER,Elder,64,12940,62,81,62,62,62,62,594,726,3,27,27,30958,27046,10,12,Large,Demihuman,Neutral4,1552,336,1152,165,Normal,AiAggressive,720,elder.spr,0,0.5,1,#FFFFFFFF
+4158,ELDER,Elder,64,11646,62,93,56,68,49,62,594,726,3,24,30,32955,28711,10,12,Large,Demihuman,Neutral4,1552,336,1152,165,Normal,AiAggressive,720,elder.spr,0,0.5,1,#FFFFFFFF
 4159,ALARM,Alarm,58,3022,51,44,51,47,47,47,419,512,1,19,17,9046,6898,10,12,Medium,Formless,Neutral3,1020,768,500,300,Normal,AiAggressive,540,alarm.spr,0,0.5,1,#FFFFFFFF
 4160,OWL_DUKE,Owl Duke,75,20376,80,105,65,74,70,69,832,1017,1,30,31,60122,46930,10,12,Large,Demon,Neutral3,1345,440,824,195,Boss,AiAggressive,768,owl_duke.spr,0,0.5,1,#FFFFFFFF
 4161,OWL_BARON,Owl Baron,85,40643,91,129,74,84,76,78,1225,1498,2,33,37,125779,93064,10,12,Large,Demon,Neutral3,1345,440,824,175,Boss,AiAggressive,768,owl_baron.spr,0,0.5,1,#FFFFFFFF

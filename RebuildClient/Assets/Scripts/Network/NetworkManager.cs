@@ -599,8 +599,10 @@ namespace Assets.Scripts.Network
                 CameraFollower.Instance.Target = null;
             }
 
-
             EntityList.Remove(id);
+            
+            if (CameraFollower.SelectedTarget == controllable)
+                CameraFollower.ClearSelected();
 
             if (reason == CharacterRemovalReason.Dead)
             {
@@ -618,9 +620,6 @@ namespace Assets.Scripts.Network
             }
             else
             {
-                if (CameraFollower.SelectedTarget == controllable.gameObject)
-                    CameraFollower.ClearSelected();
-
                 controllable.FadeOutAndVanish(0.1f);
             }
             //GameObject.Destroy(controllable.gameObject);
@@ -988,6 +987,9 @@ namespace Assets.Scripts.Network
 
             if (id == PlayerId)
                 CameraFollower.AppendChatText("You have died! Press R key to respawn, or press shift + R to resurrect in place.");
+            
+            if(CameraFollower.SelectedTarget == controllable)
+                CameraFollower.ClearSelected();
 
             controllable.StopImmediate(pos);
             controllable.SpriteAnimator.State = SpriteState.Dead;
