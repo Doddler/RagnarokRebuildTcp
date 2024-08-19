@@ -494,6 +494,27 @@
     },
     {
       "SkillId": 28,
+      "Icon": "th_poison",
+      "Name": "Envenom",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 29,
       "Icon": "mc_mammonite",
       "Name": "Mammonite",
       "Target": 1,
@@ -514,7 +535,17 @@
       "AdjustableLevel": true
     },
     {
-      "SkillId": 29,
+      "SkillId": 30,
+      "Icon": "mc_pushcart",
+      "Name": "Push Cart",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": null,
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 31,
       "Icon": "kn_twohandquicken",
       "Name": "Two-Hand Quicken",
       "Target": 5,
@@ -535,7 +566,7 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 30,
+      "SkillId": 32,
       "Icon": "bs_hammerfall",
       "Name": "Hammer Fall",
       "Target": 4,
@@ -556,7 +587,7 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 31,
+      "SkillId": 33,
       "Icon": "nv_basic",
       "Name": "Call Minion",
       "Target": 0,
@@ -566,7 +597,7 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 32,
+      "SkillId": 34,
       "Icon": "nv_basic",
       "Name": "Grand Thunderstorm",
       "Target": 0,
@@ -576,7 +607,7 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 33,
+      "SkillId": 35,
       "Icon": "nv_basic",
       "Name": "Self Destruct",
       "Target": 0,
@@ -586,9 +617,19 @@
       "AdjustableLevel": false
     },
     {
-      "SkillId": 34,
+      "SkillId": 36,
       "Icon": "nv_basic",
       "Name": "Power UP",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false
+    },
+    {
+      "SkillId": 37,
+      "Icon": "nv_basic",
+      "Name": "NoCast",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,

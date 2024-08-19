@@ -193,12 +193,24 @@ Icon = "tf_double"
 Target = "Passive"
 MaxLevel = 10
 
+[Envenom]
+Icon = "th_poison"
+Target = "Enemy"
+SpCost = [1,2,3,4,5,6,7,8,9,10]
+MaxLevel = 10
+
 [Mammonite]
 Icon = "mc_mammonite"
 Target = "Enemy"
 MaxLevel = 10
 SpCost = [1,2,3,4,5,6,7,8,9,10]
 AdjustableLevel = true
+
+[PushCart]
+Name = "Push Cart"
+Icon = "mc_pushcart"
+Target = "Passive"
+MaxLevel = 1
 
 #Other skills
 [TwoHandQuicken]
@@ -226,3 +238,7 @@ Name = "Self Destruct"
 
 [PowerUp]
 Name = "Power UP"
+
+[NoCast]
+#use when you want the enemy to trigger something without the player knowing
+#use None instead if you want the skill flash to still show

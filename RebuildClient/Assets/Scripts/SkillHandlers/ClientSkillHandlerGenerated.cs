@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[35];
+			handlers = new SkillHandlerBase[38];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new DefaultSkillHandler();
@@ -39,13 +39,16 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[25] = new DefaultSkillHandler();
 			handlers[26] = new DefaultSkillHandler();
 			handlers[27] = new DefaultSkillHandler();
-			handlers[28] = new MammoniteHandler();
-			handlers[29] = new TwoHandQuickenHandler();
+			handlers[28] = new DefaultSkillHandler();
+			handlers[29] = new MammoniteHandler();
 			handlers[30] = new DefaultSkillHandler();
-			handlers[31] = new DefaultSkillHandler();
-			handlers[32] = new GrandThunderstormHandler();
+			handlers[31] = new TwoHandQuickenHandler();
+			handlers[32] = new DefaultSkillHandler();
 			handlers[33] = new DefaultSkillHandler();
-			handlers[34] = new DefaultSkillHandler();
+			handlers[34] = new GrandThunderstormHandler();
+			handlers[35] = new DefaultSkillHandler();
+			handlers[36] = new DefaultSkillHandler();
+			handlers[37] = new DefaultSkillHandler();
 		}
 	}
 }

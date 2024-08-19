@@ -466,7 +466,7 @@ namespace Assets.Scripts.Sprites
                 else
                 {
                     OnFinishAnimation?.Invoke();
-
+                    
                     if (State != SpriteState.Dead && !DisableLoop)
                     {
                         currentFrame = 0;
@@ -479,7 +479,7 @@ namespace Assets.Scripts.Sprites
                 }
             }
 
-            if (State == SpriteState.Walking)
+            if (State == SpriteState.Walking && CurrentMotion == SpriteMotion.Walk)
             {
                 var newWalkFrame = MoveDistance * 4.5f * 0.37f * 4f / (currentAction.Delay/24f);
                  // Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");

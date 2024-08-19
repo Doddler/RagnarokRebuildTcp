@@ -182,6 +182,8 @@ public class Player : IEntityAutoReset
         var jobAspd = 1f;
         if (job == 5)
             jobAspd = 40f;
+        if (job == 4)
+            jobAspd = 20f;
         var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100 + jobAspd);
 
 

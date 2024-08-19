@@ -158,9 +158,9 @@ public class Map
             CommandBuilder.SendRemoveAllEntities(movingPlayer);
             ch.IsActive = false; //we should set this after removing all entities from any given player
             ActivatePlayerAndNotifyNearby(movingPlayer);
-            
+
             //SendAllEntitiesToPlayer(ref entity);
-            
+
             if (ch.Hidden)
                 CommandBuilder.SendAdminHideStatus(ch.Player, ch.Hidden);
         }
@@ -197,7 +197,7 @@ public class Map
         var oldPosition = (Position)oldWorldPosition;
         var newPosition = (Position)newWorldPosition;
         var distance = ch.Position.SquareDistance(newPosition);
-        
+
         //find the midpoint of the move and a distance that encloses both the starting and end points.
         var midPoint = (oldPosition + newPosition) / 2;
         var dist2 = ServerConfig.MaxViewDistance + (distance / 2) + 1;
@@ -230,7 +230,8 @@ public class Map
                         if (targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
                             targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
                         {
-                            CommandBuilder.AddRecipient(player);
+                            if(!ch.Hidden)
+                                CommandBuilder.AddRecipient(player);
 
                             continue;
                         }
@@ -242,7 +243,8 @@ public class Map
                     if (!targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
                         targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
                     {
-                        CommandBuilder.SendCreateEntity(ch, playerObj);
+                        if (!ch.Hidden)
+                            CommandBuilder.SendCreateEntity(ch, playerObj);
                         AddPlayerVisibility(targetCharacter, ch);
                     }
 
@@ -250,7 +252,8 @@ public class Map
                     if (targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
                         !targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
                     {
-                        CommandBuilder.SendRemoveEntity(ch, playerObj, CharacterRemovalReason.OutOfSight);
+                        if (!ch.Hidden)
+                            CommandBuilder.SendRemoveEntity(ch, playerObj, CharacterRemovalReason.OutOfSight);
                         RemovePlayerVisibility(targetCharacter, ch);
                     }
                 }
@@ -265,6 +268,7 @@ public class Map
             CommandBuilder.SendMoveEntityMulti(ch);
             CommandBuilder.ClearRecipients();
         }
+
 
         //check if the move puts them over to a new chunk, and if so, move them to the new one
         var cOld = GetChunkForPosition(oldPosition);
@@ -299,6 +303,7 @@ public class Map
 
         var c = GetChunkForPosition(ch.Position);
         c.AddEntity(ref entity, ch.Type);
+    
 
         if (addToInstance)
             Instance.Entities.Add(ref entity);
@@ -314,7 +319,7 @@ public class Map
 
         entityCount++;
     }
-    
+
     public void SendAddEntityAroundCharacter(ref Entity entity, WorldObject ch)
     {
         CommandBuilder.ClearRecipients();
@@ -347,7 +352,7 @@ public class Map
         var ch = p.Character;
         var entities = EntityListPool.Get();
 
-        if(ch.IsActive)
+        if (ch.IsActive)
             ServerLogger.LogWarning($"Attempting to call ActivatePlayerAndNotifyNearby on player {p.Name} but they are already active!");
         ch.IsActive = true; //activate
 
@@ -377,7 +382,7 @@ public class Map
                 if (!ch.Hidden && ch != nearbyCharacter)
                 {
                     AddPlayerVisibility(ch, nearbyCharacter); //nearbyCharacter sees us
-                    if(!nearbyCharacter.Hidden)
+                    if (!nearbyCharacter.Hidden)
                         entities.Add(nearbyEntity); //we only want to notify of this character's existence if it is not hidden
                 }
             }
@@ -391,7 +396,7 @@ public class Map
         }
 
         //now add all the nearby entities to the player in question
-        foreach(var e in entities)
+        foreach (var e in entities)
             CommandBuilder.SendCreateEntity(e.Get<WorldObject>(), p);
 
         EntityListPool.Return(entities);
@@ -416,7 +421,7 @@ public class Map
 
             foreach (var target in chunk.AllEntities)
             {
-                if(!target.IsAlive())
+                if (!target.IsAlive())
                     ServerLogger.LogError(@"Whoa! Why is a dead entity in the chunk list?");
                 var targetCharacter = target.Get<WorldObject>();
                 if (!targetCharacter.IsActive)
@@ -471,7 +476,7 @@ public class Map
 #endif
                 if (ch.IsActive && ch.Position.InRange(playerChar.Position, ServerConfig.MaxViewDistance))
                 {
-                    if(!ch.Hidden || m == target)
+                    if (!ch.Hidden || m == target)
                         CommandBuilder.SendCreateEntity(ch, playerObj);
                     AddPlayerVisibility(playerChar, ch);
                 }
@@ -479,7 +484,7 @@ public class Map
             }
         }
     }
-    
+
     public void AddVisiblePlayersAsPacketRecipients(WorldObject character)
     {
         if (character.TryGetVisiblePlayerList(out var list))
@@ -648,12 +653,12 @@ public class Map
         var xSign = GameRandom.Next(2) == 0 ? -1 : 1;
         var ySign = GameRandom.Next(2) == 0 ? -1 : 1;
         var start = GameRandom.Next(27);
-        
+
         for (var i = start; i < start + 9; i++) //this is actually crazy but trust me it works
         {
             var x = (i / 3) % 3 - 1;
             var y = (i + 1) % 3 - 1;
-                
+
             if (x == 0 && y == 0)
                 continue;
             var test = new Position(pos.X + x * xSign, pos.Y + y * ySign);
@@ -899,7 +904,7 @@ public class Map
 
     public Position GetRandomVisiblePositionInArea(Position center, int minDistance, int distance, int checksPerDistance = 10)
     {
-        for(var i = 0; i < distance; i++)
+        for (var i = 0; i < distance; i++)
         {
             var d = distance - i;
             var md = minDistance - i;
@@ -1013,7 +1018,7 @@ public class Map
         var ch = entity.Get<WorldObject>();
 
         //if (!ch.Hidden)
-        if(ch.Type != CharacterType.NPC || !ch.Hidden)
+        if (ch.Type != CharacterType.NPC || !ch.Hidden)
             SendRemoveEntityAroundCharacter(ref entity, ch, reason);
         ch.ClearVisiblePlayerList();
 
@@ -1153,7 +1158,7 @@ public class Map
         var yr = area.Height / 2;
         if (xr < 1) xr = 1;
         if (yr < 1) yr = 1;
-        
+
         var xDir = (GameRandom.Next(0, 20000) % 2) == 1 ? 1 : -1;
         var yDir = (GameRandom.Next(0, 20000) % 2) == 1 ? 1 : -1;
 

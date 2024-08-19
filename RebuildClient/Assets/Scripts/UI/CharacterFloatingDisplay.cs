@@ -26,6 +26,9 @@ namespace Assets.Scripts.UI
         private float castEnd;
         private float chatEnd;
 
+        private bool isHovering;
+        private bool isTargeting;
+
         public void Close()
         {
             if (Manager == null)
@@ -66,7 +69,35 @@ namespace Assets.Scripts.UI
 
         public void UpdateName(string newName) => characterName = newName;
 
-        public void ShowNamePlate()
+        public void HoverNamePlate()
+        {
+            ShowNamePlate();
+            isHovering = true;
+        }
+
+        public void TargetingNamePlate()
+        {
+            ShowNamePlate();
+            isTargeting = true;
+        }
+
+        public void EndHoverNamePlate()
+        {
+            isHovering = false;
+            if (isTargeting)
+                return; //we still need this plate to show
+            HideNamePlate();
+        }
+
+        public void EndTargetingNamePlate()
+        {
+            isTargeting = false;
+            if (isHovering)
+                return; //we still need this plate to show
+            HideNamePlate();
+        }
+
+        private void ShowNamePlate()
         {
             if (namePlate != null)
                 return;
@@ -75,7 +106,7 @@ namespace Assets.Scripts.UI
             gameObject.SetActive(true);
         }
 
-        public void HideNamePlate()
+        private void HideNamePlate()
         {
             if (namePlate == null)
                 return;

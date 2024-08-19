@@ -423,10 +423,12 @@ public class CombatEntity : IEntityAutoReset
             if (Character.Type == CharacterType.Player)
                 Character.Player.ClearTarget(); //if we are currently moving we should dequeue attacking so we don't chase after casting
 
-            Character.ShortenMovePath(); //for some reason shorten move path cancels the queued action and I'm too lazy to find out why
-            QueueCast(skillInfo);
+            if(skill != CharacterSkill.NoCast || castTime > 0)
+                Character.StopMovingImmediately();
+            //Character.ShortenMovePath(); //for some reason shorten move path cancels the queued action and I'm too lazy to find out why
+            //QueueCast(skillInfo);
 
-            return true;
+            //return true;
         }
         
         if (Character.AttackCooldown > Time.ElapsedTimeFloat)

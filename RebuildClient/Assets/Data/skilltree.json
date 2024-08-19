@@ -69,7 +69,7 @@
           ]
         },
         {
-          "Skill": 29,
+          "Skill": 31,
           "Prerequisites": [
             {
               "Skill": 3,
@@ -214,7 +214,7 @@
       "JobRank": 1,
       "Skills": [
         {
-          "Skill": 28,
+          "Skill": 29,
           "Prerequisites": []
         }
       ]

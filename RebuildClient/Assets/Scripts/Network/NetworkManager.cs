@@ -678,13 +678,10 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-
             var dmg = msg.ReadInt32();
             var hitCount = msg.ReadByte();
             var damageTiming = msg.ReadFloat();
             var lockTime = msg.ReadFloat();
-
-            Debug.Log(hitCount);
 
             StartCoroutine(DamageEvent(dmg, damageTiming, hitCount, 0, controllable));
         }

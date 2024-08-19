@@ -90,6 +90,7 @@ namespace Assets.Scripts.Sprites
             renderer.SpriteOffset = sprite.SpriteOffset;
             renderer.MeshRenderer.sortingOrder = sprite.MeshRenderer.sortingOrder;
             renderer.transform.localRotation = sprite.gameObject.transform.localRotation;
+            renderer.transform.position = sprite.gameObject.transform.position;
             
             trail.AddTrailSprite(renderer, order);
         }

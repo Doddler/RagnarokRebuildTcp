@@ -2503,13 +2503,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 154548778}
+  - component: {fileID: 154548779}
   m_Layer: 5
   m_Name: SkillNotice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &154548778
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2531,6 +2532,23 @@ RectTransform:
   m_AnchoredPosition: {x: -1257.1155, y: 0}
   m_SizeDelta: {x: 0, y: 1371.5385}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &154548779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154548777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424ec94c381349f997ffa4de7efdf5f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Container: {fileID: 154548777}
+  TopTextArea: {fileID: 1034768992}
+  BottomTextArea: {fileID: 818349964}
+  TopLayoutGroup: {fileID: 1670027723}
+  BottomLayoutGroup: {fileID: 977381882}
 --- !u!1 &155225432
 GameObject:
   m_ObjectHideFlags: 0
@@ -14378,8 +14396,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92.675, y: -34.05}
-  m_SizeDelta: {x: 175.35, y: 29.05}
+  m_AnchoredPosition: {x: 97.675, y: -34.05}
+  m_SizeDelta: {x: 175.35, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &818349963
 MonoBehaviour:
@@ -15516,15 +15534,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 0.4}
+  m_Color: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 0.5019608}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 5eea9b63526de0f47afbd94619f70db2, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -17709,7 +17727,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1310.98, y: -197}
+  m_AnchoredPosition: {x: 1974, y: -260}
   m_SizeDelta: {x: 430, y: 456}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &975887163
@@ -17825,7 +17843,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 185.35, y: 39.05}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &977381883
 MonoBehaviour:
@@ -17892,8 +17910,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 5
-    m_Right: 5
+    m_Left: 10
+    m_Right: 10
     m_Top: 5
     m_Bottom: 5
   m_ChildAlignment: 1
@@ -19529,8 +19547,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 93.28, y: -34.05}
-  m_SizeDelta: {x: 176.56, y: 29.05}
+  m_AnchoredPosition: {x: 98.28, y: -34.05}
+  m_SizeDelta: {x: 176.56, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1034768992
 MonoBehaviour:
@@ -28550,8 +28568,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -30819,7 +30837,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 186.56, y: 39.05}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1670027724
 MonoBehaviour:
@@ -30886,8 +30904,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 5
-    m_Right: 5
+    m_Left: 10
+    m_Right: 10
     m_Top: 5
     m_Bottom: 5
   m_ChildAlignment: 7
@@ -38547,6 +38565,7 @@ MonoBehaviour:
   CharacterOverlayGroup: {fileID: 2123332623}
   WarpManager: {fileID: 515158752}
   EmoteManager: {fileID: 591157557}
+  ActionTextDisplay: {fileID: 154548779}
   SkillManager: {fileID: 975887165}
   ConfigManager: {fileID: 2001710694}
   SkillHotbar: {fileID: 950574772}

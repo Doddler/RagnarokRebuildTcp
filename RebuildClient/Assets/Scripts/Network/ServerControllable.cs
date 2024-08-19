@@ -240,20 +240,34 @@ namespace Assets.Scripts.Network
                 SpriteAnimator.SetRenderActive(!isHidden);
         }
 
-        public void ShowName(string name)
+        public void ShowTargetNamePlate(string name)
         {
             EnsureFloatingDisplayCreated();
             FloatingDisplay.UpdateName(name);
-            FloatingDisplay.ShowNamePlate();
+            FloatingDisplay.TargetingNamePlate();
+        }
+        
+        public void ShowHoverNamePlate(string name)
+        {
+            EnsureFloatingDisplayCreated();
+            FloatingDisplay.UpdateName(name);
+            FloatingDisplay.HoverNamePlate();
         }
 
-        public void HideName()
+        public void HideTargetNamePlate()
         {
             if (FloatingDisplay == null)
                 return;
-            FloatingDisplay.HideNamePlate();
+            FloatingDisplay.EndTargetingNamePlate();
         }
-
+        
+        public void HideHoverNamePlate()
+        {
+            if (FloatingDisplay == null)
+                return;
+            FloatingDisplay.EndHoverNamePlate();
+        }
+        
         public void DialogBox(string text)
         {
             EnsureFloatingDisplayCreated();

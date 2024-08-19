@@ -94,3 +94,20 @@ SkillHandler("TARGET_DUMMY") {
     TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];
 	
 }
+
+SkillHandler("CHEPET") {
+StateAny:
+    TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
+StateAttacking:
+	TryCast(NoCast, 3, 20%, 0, 5000) -> SendEmote(17);
+}
+
+SkillHandler("PERMETER") {
+StateAny:
+    TryCast(Heal, 9, 100%, 0.5s, 5s, HideSkillName)[FindAllyBelowHpPercent(60)] -> SendEmote(5);
+}
+
+SkillHandler("BATHORY") {
+StateChase:
+	TryCast(NoCast, 3, 100%, 0, 0) -> SendEmote(30);
+}

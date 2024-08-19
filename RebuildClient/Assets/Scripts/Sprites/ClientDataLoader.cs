@@ -397,7 +397,7 @@ namespace Assets.Scripts.Sprites
             var child = new GameObject("Sprite");
             //child.layer = LayerMask.NameToLayer("Characters");
             child.transform.SetParent(go.transform, false);
-            child.transform.localPosition = Vector3.zero;
+            child.transform.localPosition = Vector3.zero + new Vector3(0, 0, -0.01f);
             child.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             var sr = child.AddComponent<RoSpriteRendererStandard>();

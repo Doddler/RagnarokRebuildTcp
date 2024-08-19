@@ -360,6 +360,7 @@ public static class CommandBuilder
         packet.Write(di.Damage);
         packet.Write(di.HitCount);
         packet.Write(di.Time);
+        packet.Write(di.HitLockTime);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

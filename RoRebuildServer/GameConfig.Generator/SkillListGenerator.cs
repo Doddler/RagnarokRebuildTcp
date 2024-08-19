@@ -19,6 +19,7 @@ namespace GameConfig.Generator
 
         public void Execute(GeneratorExecutionContext context)
         {
+            //if (!Debugger.IsAttached) Debugger.Launch();
             Debug.WriteLine("Execute code generator");
             var myFiles = context.AdditionalFiles.Where(at => at.Path.EndsWith("Skills.toml"));
             foreach (var file in myFiles)

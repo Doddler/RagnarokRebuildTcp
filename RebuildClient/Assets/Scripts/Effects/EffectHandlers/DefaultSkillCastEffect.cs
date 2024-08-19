@@ -33,8 +33,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             effect.SetDurationByFrames(40);
             effect.FollowTarget = source.gameObject;
             effect.UpdateOnlyOnFrameChange = true;
-
-
+            
             var circlePrim = effect.LaunchPrimitive(PrimitiveType.Circle2D, CircleMaterial, 0.667f);
             var cData = circlePrim.GetPrimitiveData<CircleData>();
 

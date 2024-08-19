@@ -14,7 +14,7 @@ StateAny:
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(18);
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[HpPercent < 30] -> SendEmote(18);
 StateIdle:
-	TryCast(None, 3, 200, 0, 5000) -> SendEmote(22);
+	TryCast(NoCast, 3, 200, 0, 5000) -> SendEmote(22);
 StateChase:
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(18);
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[HpPercent < 30] -> SendEmote(18);

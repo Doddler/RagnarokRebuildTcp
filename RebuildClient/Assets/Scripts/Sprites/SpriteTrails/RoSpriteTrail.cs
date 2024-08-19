@@ -22,7 +22,7 @@ namespace Assets.Scripts.Sprites
         public void AddTrailSprite(RoSpriteTrailRenderer renderer, int order = 0)
         {
             renderer.transform.SetParent(transform);
-            renderer.transform.localPosition = new Vector3(0, 0, 0.15f);
+            renderer.transform.localPosition += new Vector3(0, 0, 0.15f);
             renderer.transform.localScale = Vector3.one;
             renderer.Parent = this;
             Renderers.Add(renderer);

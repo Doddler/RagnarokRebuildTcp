@@ -470,11 +470,11 @@ namespace Assets.Scripts
                 color = "<color=#FF4444>";
 
             if (SelectedTarget != null && SelectedTarget != target)
-                SelectedTarget.HideName();
+                SelectedTarget.HideTargetNamePlate();
 
             hasSelection = true;
             SelectedTarget = target;
-            SelectedTarget.ShowName(color + name);
+            SelectedTarget.ShowTargetNamePlate(color + name);
             //PlayerTargetUi.text = color + name;
             //PlayerTargetUi.gameObject.SetActive(true);
             selectedSprite.SetActive(true);
@@ -486,8 +486,8 @@ namespace Assets.Scripts
         {
             //Debug.Log("Clearing target.");
             hasSelection = false;
-            if (SelectedTarget != null && SelectedTarget != mouseHoverTarget)
-                SelectedTarget.HideName();
+            if (SelectedTarget != null)
+                SelectedTarget.HideTargetNamePlate();
             SelectedTarget = null;
             // PlayerTargetUi.text = "";
             // PlayerTargetUi.gameObject.SetActive(false);
@@ -851,20 +851,19 @@ namespace Assets.Scripts
                 //if our new mouseover target is different from last time, we need to swap over
                 if (mouseHoverTarget != mouseTarget)
                 {
-                    if (SelectedTarget != mouseTarget) //we don't want to hide it if it's our currently targeted enemy though, that stays
-                        mouseHoverTarget?.HideName();
+                    mouseHoverTarget?.HideHoverNamePlate();
 
                     mouseHoverTarget = mouseTarget;
 
                     if (mouseHoverTarget.IsAlly)
-                        mouseHoverTarget.ShowName(mouseHoverTarget.DisplayName);
+                        mouseHoverTarget.ShowHoverNamePlate(mouseHoverTarget.DisplayName);
                     else
-                        mouseHoverTarget.ShowName("<color=#FFAAAA>" + mouseHoverTarget.DisplayName); //yeah this is stupid
+                        mouseHoverTarget.ShowHoverNamePlate("<color=#FFAAAA>" + mouseHoverTarget.DisplayName); //yeah this is stupid
                 }
             }
             else
             {
-                mouseHoverTarget?.HideName();
+                mouseHoverTarget?.HideHoverNamePlate();
                 mouseHoverTarget = null;
             }
 
@@ -1511,9 +1510,16 @@ namespace Assets.Scripts
 
             var cursor = ScreenCastV2(pointerOverUi);
             if (cursor != GameCursorMode.SkillTarget)
+            {
                 CursorManager.UpdateCursor(cursor);
+                UiManager.Instance.ActionTextDisplay.EndActionTextDisplay();
+            }
             else
+            {
+                UiManager.Instance.ActionTextDisplay.SetSkillTargeting(cursorSkill, cursorSkillLvl);
                 CursorManager.UpdateCursor(cursor, cursorSkillLvl);
+            }
+
 
             UpdateSelectedTarget();
 

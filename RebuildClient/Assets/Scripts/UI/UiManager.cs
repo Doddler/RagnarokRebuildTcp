@@ -13,6 +13,7 @@ public class UiManager : MonoBehaviour
     public GameObject CharacterOverlayGroup;
     public GameObject WarpManager;
     public GameObject EmoteManager;
+    public ActionTextDisplay ActionTextDisplay;
     public SkillWindow SkillManager;
     public OptionsWindow ConfigManager;
     public SkillHotbar SkillHotbar;
@@ -69,6 +70,8 @@ public class UiManager : MonoBehaviour
         ConfigManager.Initialize();
         SkillHotbar.Initialize();
         LoadWindowPositionData();
+        
+        ActionTextDisplay.EndActionTextDisplay();
     }
 
     public void SyncFloatingBoxPositionsWithSaveData()

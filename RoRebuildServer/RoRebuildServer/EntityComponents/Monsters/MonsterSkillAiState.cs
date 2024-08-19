@@ -283,7 +283,7 @@ public class MonsterSkillAiState(Monster monster)
             if (targetForSkill != null)
             {
                 if (!ce.CanAttackTarget(targetForSkill, range)) return SkillFail();
-                if (!ce.AttemptStartSingleTargetSkillAttack(targetForSkill.CombatEntity, skill, level, castTime / 1000f))
+                if (!ce.AttemptStartSingleTargetSkillAttack(targetForSkill.CombatEntity, skill, level, castTime / 1000f, hideSkillName))
                     return SkillFail();
 
                 ce.SetSkillCooldown(skill, delay / 1000f);
@@ -350,6 +350,9 @@ public class MonsterSkillAiState(Monster monster)
     {
         if (!CheckCast(skill, chance))
             return SkillFail();
+
+        if (skill == CharacterSkill.NoCast)
+            flags |= MonsterSkillAiFlags.HideSkillName;
 
         var result = Cast(skill, level, castTime, delay, flags);
         if (result)
