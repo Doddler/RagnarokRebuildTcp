@@ -560,7 +560,7 @@ public class Player : IEntityAutoReset
 
         Character.ResetSpawnImmunity();
         CombatEntity.PerformMeleeAttack(targetEntity);
-        Character.AddMoveLockTime(GetTiming(TimingStat.AttackDelayTime));
+        Character.AddMoveLockTime(GetTiming(TimingStat.AttackMotionTime));
 
         Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackDelayTime);
     }
