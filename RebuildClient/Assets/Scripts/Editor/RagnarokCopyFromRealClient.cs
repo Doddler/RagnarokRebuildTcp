@@ -84,8 +84,10 @@ namespace Assets.Editor
             AssetDatabase.Refresh();
             
             EffectStrImporter.Import(); //effects
+            EffectStrImporter.ImportEffectTextures();
             RagnarokMapImporterWindow.ImportWater();
             RagnarokMapImporterWindow.ImportAllFiles();
+            ItemIconImporter.ImportItems();
             
             RoLightingManagerWindow.CreateOrOpen();
         }

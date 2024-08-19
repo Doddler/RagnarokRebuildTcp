@@ -165,6 +165,18 @@ namespace Assets.Scripts.Editor
                                 assetPath = $"Assets/Sounds/Effects/{e.SoundFile}.ogg";
                                 clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
                             }
+                            
+                            if (clip == null)
+                            {
+                                assetPath = $"Assets/Sounds/{e.SoundFile}.wav";
+                                clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+                            }
+                            
+                            if (clip == null)
+                            {
+                                assetPath = $"Assets/Sounds/Effects/{e.SoundFile}.wav";
+                                clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+                            }
 
                             if (clip != null)
                             {

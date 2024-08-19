@@ -59,7 +59,6 @@ RebuildClient/Assets/Test/
 RebuildClient/Assets/Cinemachine/
 RebuildClient/Logs/AssetImportWorker0.log
 RebuildClient/Assets/Textures/Guilds/
-RebuildClient/Assets/Textures/cursor/*.gif*
 RebuildClient/Logs/
 *.user
 Other/~$RoStatProcessing.xlsx

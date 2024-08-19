@@ -38,6 +38,9 @@ namespace Assets.Scripts
 
         public static Texture2D SaveAndUpdateTexture(Texture2D texture, string outputPath, Action<TextureImporter> callback = null, bool forceUpdate = true)
         {
+            var dir = Path.GetDirectoryName(outputPath);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
 	        var bytes = texture.EncodeToPNG();
 	        File.WriteAllBytes(outputPath, bytes);

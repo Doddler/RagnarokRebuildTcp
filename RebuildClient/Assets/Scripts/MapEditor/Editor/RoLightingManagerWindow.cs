@@ -49,6 +49,7 @@ namespace Assets.Scripts.MapEditor.Editor
         {
             var window = (RoLightingManagerWindow)GetWindow(typeof(RoLightingManagerWindow), false, "Ro Lighting");
             window.Show();
+            window.position = new Rect(0, 0, 100, 100);
         }
 
         public static RoLightingManagerWindow CreateOrOpen()

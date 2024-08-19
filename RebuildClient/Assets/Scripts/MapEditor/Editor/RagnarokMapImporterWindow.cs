@@ -330,7 +330,7 @@ namespace Assets.Scripts.MapEditor.Editor
             
             
             //update effect sounds
-            guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/Effects" });
+            guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/effect" });
 
             for (int i = 0; i < guids.Length; i++)
             {
@@ -339,7 +339,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 
                 var entry = settings.CreateOrMoveEntry(guids[i], soundsGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
-                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]).Replace("Assets/Sounds/effect", "Assets/Sounds/Effects").Replace(".wav", ".ogg");
                 entry.labels.Add("Sounds");
 
                 entriesAdded.Add(entry);
@@ -357,7 +357,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 
                 var entry = settings.CreateOrMoveEntry(guids[i], soundsGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
-                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]).Replace("Assets/Sounds", "Assets/Sounds/Effects");
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]).Replace("Assets/Sounds", "Assets/Sounds/Effects").Replace(".wav", ".ogg");
                 entry.labels.Add("Sounds");
 
                 entriesAdded.Add(entry);
