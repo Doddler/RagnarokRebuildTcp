@@ -165,7 +165,7 @@ namespace Assets.Scripts.MapEditor
                     if (!MapData.IsWalkTable)
                         t.gameObject.isStatic = true;
                     else
-                        GameObjectUtility.SetStaticEditorFlags(t.gameObject, StaticEditorFlags.BatchingStatic | StaticEditorFlags.NavigationStatic);
+                        GameObjectUtility.SetStaticEditorFlags(t.gameObject, StaticEditorFlags.BatchingStatic);
                 }
             }
 

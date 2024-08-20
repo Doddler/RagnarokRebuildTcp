@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
@@ -1179,6 +1180,21 @@ public class Map
         }
 
         return false;
+    }
+
+    public Position FindRandomPositionOnMap()
+    {
+        var area = MapBounds.Shrink(5, 5);
+        var pos = new Position(20, 20);
+        var count = 0;
+
+        do
+        {
+            pos = area.RandomInArea();
+            count++;
+        } while (!WalkData.IsCellWalkable(pos) && count < 50);
+
+        return pos;
     }
 
     public bool FindPositionInRange(Area area, out Position p)

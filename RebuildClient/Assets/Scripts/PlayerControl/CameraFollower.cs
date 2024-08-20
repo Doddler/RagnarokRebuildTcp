@@ -141,7 +141,6 @@ namespace Assets.Scripts
         public float FogNearRatio = 0.3f;
         public float FogFarRatio = 4f;
 
-
 #if DEBUG
         private const float MaxClickDistance = 500;
 
@@ -665,8 +664,9 @@ namespace Assets.Scripts
             var target = hit.transform.gameObject.GetComponent<RoSpriteAnimator>();
             return target.Parent ? target.Parent : target;
         }
+        
 
-        private RoSpriteAnimator GetClosestOrEnemy(RaycastHit[] hits)
+        private RoSpriteAnimator GetClosestOrEnemy(RaycastHit[] hits, bool preferEnemy)
         {
             var closestAnim = GetHitAnimator(hits[0]);
             var closestHit = hits[0];
@@ -683,15 +683,13 @@ namespace Assets.Scripts
             var isOk = closestAnim.State != SpriteState.Dead;
             var isAlly = closestAnim.Controllable.IsAlly;
 
+
             for (var i = 1; i < hits.Length; i++)
             {
                 var hit = hits[i];
                 var anim = GetHitAnimator(hit);
-
-                if (anim.State == SpriteState.Dead && anim.Type != SpriteType.Player)
-                    continue;
-
-                if (!isOk)
+                
+                void MakeTarget()
                 {
                     closestAnim = anim;
                     closestHit = hit;
@@ -699,17 +697,40 @@ namespace Assets.Scripts
                     isOk = true;
                 }
 
-                if (!isAlly && anim.Controllable.IsAlly)
+                if (anim.State == SpriteState.Dead && anim.Type != SpriteType.Player)
                     continue;
+
+                if (!isOk)
+                {
+                    MakeTarget();
+                    continue;
+                }
 
                 //log += $" {anim.Controllable.gameObject.name}{hit.distance}{anim.Controllable.IsAlly}-{anim.State}";
 
-                if ((hit.distance < closestHit.distance) || (isAlly && !anim.Controllable.IsAlly))
+                if (preferEnemy)
                 {
-                    closestHit = hit;
-                    closestAnim = anim;
-                    isAlly = anim.Controllable.IsAlly;
+                    if (!isAlly && anim.Controllable.IsAlly)
+                        continue;
+                    if (isAlly && !anim.Controllable.IsAlly)
+                    {
+                        MakeTarget();
+                        continue;
+                    }
                 }
+                else
+                {
+                    if (isAlly && !anim.Controllable.IsAlly)
+                        continue;
+                    if (!isAlly && anim.Controllable.IsAlly)
+                    {
+                        MakeTarget();
+                        continue;
+                    }
+                }
+
+                if ((hit.distance < closestHit.distance))
+                    MakeTarget();
             }
 
             //log += $" : {closestAnim.Controllable.gameObject.name}{closestHit.distance}{closestAnim.Controllable.IsAlly} {isOk}";
@@ -730,7 +751,7 @@ namespace Assets.Scripts
             if (characterHits.Length == 0)
                 return false;
 
-            var anim = GetClosestOrEnemy(characterHits);
+            var anim = GetClosestOrEnemy(characterHits, preferEnemy);
             if (anim == null)
                 return false;
 

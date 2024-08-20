@@ -282,8 +282,10 @@ namespace Assets.Editor
 	        if(version > 10)
 		        ReadPalette();
 
-	        for (var i = 0; i < spriteFrames.Count; i++)
+	        if(spriteFrames.Count > 0)
 	        {
+		        var i = 0;
+		        
 		        Texture2D image;
 		        if(spriteFrames[i].IsIndexed)
 			        image = IndexedToTexture(spriteFrames[i]);

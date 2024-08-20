@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
+using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -481,12 +482,12 @@ namespace Assets.Scripts.Sprites
 
             if (State == SpriteState.Walking && CurrentMotion == SpriteMotion.Walk)
             {
-                var newWalkFrame = MoveDistance * 4.5f * 0.37f * 4f / (currentAction.Delay/24f);
+                var stepSize = DebugValueHolder.GetOrDefault("stepSize", 4.6f);
+                var newWalkFrame = MoveDistance * stepSize * 0.37f * 4f / (currentAction.Delay/24f);
                  // Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
                  // if(newWalkFrame != currentFrame)
                  //     Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
-                currentFrame = lastWalkFrame = Mathf.FloorToInt(newWalkFrame) % maxFrame;
-                // Debug.Log(currentFrame);
+                currentFrame = lastWalkFrame = Mathf.FloorToInt(newWalkFrame) % (maxFrame + 1);
             }
             else if (currentFrameTime < 0)
                 currentFrameTime += (float)currentAction.Delay / 1000f * AnimSpeed;

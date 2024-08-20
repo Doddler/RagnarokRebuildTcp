@@ -32,15 +32,29 @@ public class PacketRespawn : IClientPacketHandler
 
         CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
 
-        if (!inPlace)
+        var savePoint = player.SavePosition.MapName;
+        var position = player.SavePosition.Position;
+        if (!World.Instance.TryGetWorldMapByName(savePoint, out var targetMap))
         {
-            if (ch.Map.Name == "prt_fild08")
-                ch.Map.TeleportEntity(ref connection.Entity, ch, new Position(170, 367), CharacterRemovalReason.OutOfSight);
+            World.Instance.TryGetWorldMapByName("prt_fild08", out targetMap);
+            position = new Position(170, 367);
+        }
+
+        if (!inPlace && targetMap != null)
+        {
+            if (ch.Map.Name == savePoint)
+            {
+                if (!ch.Map.MapBounds.Contains(position) || !ch.Map.WalkData.IsCellWalkable(position))
+                    position = ch.Map.FindRandomPositionOnMap();
+                ch.Map.TeleportEntity(ref connection.Entity, ch, position, CharacterRemovalReason.OutOfSight);
+            }
             else
             {
-                if(World.Instance.TryGetWorldMapByName("prt_fild08", out var dest))
-                    ch.Map.World.MovePlayerMap(ref connection.Entity, ch, dest, new Position(170, 367));
+                if (!targetMap.MapBounds.Contains(position) || !targetMap.WalkData.IsCellWalkable(position))
+                    position = targetMap.FindRandomPositionOnMap();
+                ch.Map.World.MovePlayerMap(ref connection.Entity, ch, targetMap, position);
             }
+
         }
         else
         {

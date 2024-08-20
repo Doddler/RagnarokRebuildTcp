@@ -60,8 +60,8 @@ public class SaveCharacterRequest : IDbRequest
             SavePoint = new DbSavePoint()
             {
                 MapName = savePoint.MapName,
-                X = pos.X,
-                Y = pos.Y,
+                X = savePoint.Position.X,
+                Y = savePoint.Position.Y,
                 Area = savePoint.Area,
             },
             SkillData = skillData

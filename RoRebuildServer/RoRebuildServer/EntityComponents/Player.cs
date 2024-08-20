@@ -188,7 +188,7 @@ public class Player : IEntityAutoReset
 
 
         var recharge = (1.4f - level * 0.008f) * aspdBonus;
-        var motionTime = 0.8f;
+        var motionTime = 1f;
         var spriteTime = 0.6f;
         if (job == 2)
         {
@@ -254,7 +254,7 @@ public class Player : IEntityAutoReset
 
         //var newMaxHp = (level * level * level) / 20 + 80 * level;
 
-        var newMaxHp = (level * level) / 2 + (level * level * level) / 300 + 42 * level;
+        var newMaxHp = (level * level) / 2 + (level * level * level) / 300 + 42 + 10 * level;
         var updatedMaxHp = newMaxHp * hpBonus;// (int)(newMaxHp * multiplier) + 70;
 
         SetStat(CharacterStat.MaxHp, updatedMaxHp);

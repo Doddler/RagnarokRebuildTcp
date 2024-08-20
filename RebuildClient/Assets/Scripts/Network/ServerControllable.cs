@@ -170,8 +170,7 @@ namespace Assets.Scripts.Network
             {
                 FloatingDisplay.ForceHpBarOn();
             }
-            else
-                FloatingDisplay = FloatingDisplay;
+
             if(CharacterType != CharacterType.NPC)
                 FloatingDisplay.UpdateHp(hp);
         }
@@ -735,15 +734,22 @@ namespace Assets.Scripts.Network
 
             var baseMotionTime = SpriteAnimator.SpriteData.AttackFrameTime / 1000f;
             if (CharacterType == CharacterType.Player)
+            {
                 baseMotionTime = 0.6f;
+                
+                if (motionTime > 1.5f)
+                    motionTime = 1.5f;
+            }
             // if (ClassId == 2)
             //     baseMotionTime = 0.6f;
             
-            if (baseMotionTime < motionTime && ClassId != 2)
-            {
-                AttackAnimationSpeed = 1;
-                return;
-            }
+            
+            //
+            // if (baseMotionTime < motionTime && ClassId != 2)
+            // {
+            //     AttackAnimationSpeed = 1;
+            //     return;
+            // }
             
             AttackAnimationSpeed = motionTime / baseMotionTime;
             

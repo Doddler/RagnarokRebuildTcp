@@ -612,7 +612,7 @@ namespace Assets.Scripts.MapEditor.Editor
                             var prefabRef = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
                             modelCache.Add(model.FileName, prefabRef);
                         }
-                        catch (FileNotFoundException ex)
+                        catch (FileNotFoundException)
                         {
                             Debug.LogError($"File not found loading model name {model.Name} at path '{modelPath}'!");
                             continue;

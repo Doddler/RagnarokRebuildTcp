@@ -6,6 +6,7 @@ using Assets.Scripts;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.Utility;
 using JetBrains.Annotations;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -255,6 +256,20 @@ namespace PlayerControl
                 
                 if(s[0] == "/clear" || s[0] == "/cls" || s[0] == "/clearchat")
                     cameraFollower.ResetChat();
+
+                if (s[0] == "/debug")
+                {
+                    if (s.Length < 3)
+                    {
+                        cameraFollower.AppendChatText("<color=yellow>Incorrect parameters. Usage:</color>/debug valueName value");
+                        return;
+                    }
+
+                    if (float.TryParse(s[2], out var f))
+                        DebugValueHolder.Set(s[1], f);
+                    else
+                        cameraFollower.AppendChatText("<color=yellow>Incorrect parameters. Usage:</color>/debug valueName float");
+                }
                 
                 if(emoteList.TryGetValue(s[0], out var emote))
                     NetworkManager.Instance.SendEmote(emote);

@@ -77,6 +77,7 @@ namespace Assets.Scripts.Effects
             // Debug.Log("EffectReset");
             IsInitialized = false;
             FollowTarget = null;
+            DestroyOnTargetLost = false;
             ActiveDelay = 0;
             PauseTime = 0;
             EffectHandler = null;
