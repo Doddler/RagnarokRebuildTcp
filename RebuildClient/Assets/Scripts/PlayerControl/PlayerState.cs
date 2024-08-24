@@ -7,6 +7,7 @@ namespace Assets.Scripts.PlayerControl
     public class PlayerState
     {
         public bool IsValid = false;
+        public int EntityId;
         public int Level;
         public int Exp;
         public ClientSkillTree SkillTree;

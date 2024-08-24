@@ -308,10 +308,10 @@ public class ScriptBuilder
         methodName = "Init";
     }
 
-    public void EndMonsterSkillHandler(string name)
+    public void EndMonsterSkillHandler(string name, bool isAltType)
     {
         var behaviorName = $"RoRebuildSkillAI_{name}";
-        monsterSkillDefinitions.Add($"DataManager.RegisterMonsterSkillHandler(\"{name}\", new {behaviorName}());");
+        monsterSkillDefinitions.Add($"DataManager.RegisterMonsterSkillHandler(\"{name}\", new {behaviorName}(), {(isAltType?"true":"false")});");
     }
 
     public void EndItem(string name)

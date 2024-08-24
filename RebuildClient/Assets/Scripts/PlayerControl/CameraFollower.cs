@@ -126,7 +126,7 @@ namespace Assets.Scripts
         private int cursorSkillLvl = 5;
         private int cursorMaxSkillLvl = 10;
         private float skillScroll = 5f;
-        private bool cursorShowSkillLevel = true;
+        //private bool cursorShowSkillLevel = true;
         public bool HasSkillOnCursor => hasSkillOnCursor;
 
         public bool CinemachineMode;
@@ -313,7 +313,8 @@ namespace Assets.Scripts
                 case SkillTarget.Ally:
                     hasSkillOnCursor = true;
                     cursorSkill = skill;
-                    skillScroll = Mathf.Clamp(id, 1, 10);
+                    cursorMaxSkillLvl = NetworkManager.Instance.PlayerState.KnownSkills.GetValueOrDefault(skill, 1);
+                    skillScroll = Mathf.Clamp(id, 1, cursorMaxSkillLvl);
                     cursorSkillLvl = Mathf.RoundToInt(skillScroll);
                     cursorSkillTarget = target;
                     return true;
@@ -830,13 +831,26 @@ namespace Assets.Scripts
             var leftClick = Input.GetMouseButtonDown(0);
             var rightClick = Input.GetMouseButtonDown(1);
 
-            var preferEnemyTarget = !(hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally);
+            var tempSkillTarget = cursorSkillTarget;
+
+            var preferEnemyTarget = !(hasSkillOnCursor && tempSkillTarget == SkillTarget.Ally);
             var isAlive = controllable.SpriteAnimator.State != SpriteState.Dead;
             var isSitting = controllable.SpriteAnimator.State == SpriteState.Sit;
 
+            var isSkillEnemyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Enemy;
+            var isSkillAllyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally;
+            
             //cancel skill on cursor if we can't use a skill
             if (hasSkillOnCursor && (!isAlive || isSitting))
                 hasSkillOnCursor = false;
+            if (hasSkillOnCursor && cursorSkill == CharacterSkill.Heal)
+            {
+                
+                if((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+                    preferEnemyTarget = true;
+                isSkillEnemyTargeted = true;
+            }
+            
 
             var walkMask = 1 << LayerMask.NameToLayer("WalkMap");
             var groundMask = 1 << LayerMask.NameToLayer("Ground");
@@ -845,11 +859,11 @@ namespace Assets.Scripts
             var hasGround = FindMapPositionUnderCursor(ray, out var groundPosition, out var intersectLocation, walkMask);
             if (!hasGround) hasGround = FindMapPositionUnderCursor(ray, out groundPosition, out intersectLocation, groundMask, true);
             var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
-            var hasTargetedSkill = hasSkillOnCursor && (cursorSkillTarget == SkillTarget.Enemy || cursorSkillTarget == SkillTarget.Ally);
-            var hasGroundSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ground;
+            var hasTargetedSkill = hasSkillOnCursor && (isSkillEnemyTargeted || isSkillAllyTargeted);
+            var hasGroundSkill = hasSkillOnCursor && tempSkillTarget == SkillTarget.Ground;
             
             var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill;
-            var canCurrentlyTarget = canInteract && ((hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally) ? mouseTarget.IsAlly : !mouseTarget.IsAlly);
+            var canCurrentlyTarget = canInteract && ((hasSkillOnCursor && ((mouseTarget.IsAlly && isSkillAllyTargeted) || (!mouseTarget.IsAlly && isSkillEnemyTargeted))) || !mouseTarget.IsAlly);
             var canClickEnemy = canCurrentlyTarget && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickNpc = canInteract && !hasSkillOnCursor && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc && !hasTargetedSkill;
@@ -1395,6 +1409,12 @@ namespace Assets.Scripts
                 NetworkManager.Instance.StopPlayer();
             }
 
+            if (!InTextBox && Input.GetKeyDown(KeyCode.S))
+                UiManager.Instance.SkillManager.ToggleVisibility();
+
+            if (!InTextBox && Input.GetKeyDown(KeyCode.O))
+                UiManager.Instance.ConfigManager.ToggleVisibility();
+
             if (!InTextBox && Input.GetKeyDown(KeyCode.W))
             {
                 if (!WarpPanel.activeInHierarchy)
@@ -1412,41 +1432,18 @@ namespace Assets.Scripts
                     EmotePanel.GetComponent<EmoteWindow>().HideWindow();
             }
 
-            // if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha1))
-            //     NetworkManager.Instance.SendUseItem(501);
-            //
-            // if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha2))
+            // if (!InTextBox && Input.GetKeyDown(KeyCode.D))
             // {
-            //     hasSkillOnCursor = true;
-            //     cursorSkill = CharacterSkill.ThunderStorm;
-            //     cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
-            //     // Debug.Log(cursorSkillTarget);
-            //     //cursorSkillLvl = 10;
-            //     //skillScroll = 10f;
-            // }
-            //
-            // if (!inTextBox && Input.GetKeyDown(KeyCode.Alpha3))
-            // {
-            //     hasSkillOnCursor = true;
-            //     cursorSkill = CharacterSkill.Bash;
-            //     cursorSkillTarget = ClientDataLoader.Instance.GetSkillTarget(cursorSkill);
-            //     // Debug.Log(cursorSkillTarget);
-            //     //cursorSkillLvl = 5;
-            //     //skillScroll = 5f;
+            //     DebugVisualization = !DebugVisualization;
+            //     //GroundHighlighter.Create(controllable, "blue");
             // }
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.D))
-            {
-                DebugVisualization = !DebugVisualization;
-                //GroundHighlighter.Create(controllable, "blue");
-            }
-
-
-            if (!InTextBox && Input.GetKeyDown(KeyCode.A))
-            {
-                DebugIgnoreAttackMotion = !DebugIgnoreAttackMotion;
-                //GroundHighlighter.Create(controllable, "blue");
-            }
+            //
+            // if (!InTextBox && Input.GetKeyDown(KeyCode.A))
+            // {
+            //     DebugIgnoreAttackMotion = !DebugIgnoreAttackMotion;
+            //     //GroundHighlighter.Create(controllable, "blue");
+            // }
 
 
             //remove the flag to enable cinemachine recording on this
@@ -1569,7 +1566,7 @@ namespace Assets.Scripts
                 else
                 {
                     skillScroll += Input.GetAxis("Mouse ScrollWheel") * 10f;
-                    skillScroll = Mathf.Clamp(skillScroll, 1, 10);
+                    skillScroll = Mathf.Clamp(skillScroll, 1, cursorMaxSkillLvl);
                     cursorSkillLvl = Mathf.RoundToInt(skillScroll);
                     // Debug.Log(skillScroll);
                 }

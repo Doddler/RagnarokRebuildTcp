@@ -41,6 +41,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] LevelUp,
     [ServerOnlyPacket] Death,
     [ServerOnlyPacket] HpRecovery,
+    [ServerOnlyPacket] ChangeSpValue,
     Respawn,
     [ServerOnlyPacket] RequestFailed,
     [ServerOnlyPacket] Targeted,
@@ -56,6 +57,7 @@ public enum PacketType : byte
     UpdatePlayerData,
     ApplySkillPoint,
     ChangeTargetableState,
+    UpdateMinimapMarker,
     
     AdminRequestMove,
     AdminServerAction,
@@ -93,7 +95,8 @@ public enum AdminAction : byte
 public enum ClientTextCommand : byte
 {
     Where,
-    Info
+    Info,
+    Adminify
 }
 
 public enum NpcInteractionType

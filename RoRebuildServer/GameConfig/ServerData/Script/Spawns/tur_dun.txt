@@ -26,7 +26,7 @@ MapConfig("tur_dun03")
 MapConfig("tur_dun04")
 {
 	CreateSpawn("WANDER_MAN", 1, %(99, 92, 10, 10), 60000, 30000);
-	CreateSpawn("TURTLE_GENERAL", 1, %(99, 93, 20, 20), 3600000, 720000);
+	CreateSpawn("TURTLE_GENERAL", 1, %(99, 93, 20, 20), 3600000, 720000, MVP);
 	CreateSpawn("HEATER", 3, %(100, 93, 20, 20), 120000, 60000);
 	CreateSpawn("ASSULTER", 10, %(100, 93, 20, 20), 120000, 60000);
 	CreateSpawn("FREEZER", 5, %(100, 93, 20, 20), 120000, 60000);

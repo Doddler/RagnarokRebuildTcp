@@ -50,6 +50,7 @@ namespace Assets.Scripts.UI
             entry.Id = id;
             entry.Parent = this;
             entry.enabled = false;
+            entry.CanDrag = true;
             entry.UIManager = UiManager.Instance;
             entry.Clear();
             entry.HotkeyText.text = id < HotKeyText.Length ? HotKeyText[id] : "";
@@ -63,9 +64,10 @@ namespace Assets.Scripts.UI
             entry.Id = id;
             entry.Parent = this;
             entry.enabled = true;
+            entry.CanDrag = false;
             entry.UIManager = UiManager.Instance;
             //entry.Clear();
-            entry.DragItem.ItemCount = 150;
+            entry.DragItem.ItemCount = 20;
             entry.HotkeyText.text = id < HotKeyText.Length ? HotKeyText[id] : "";
             entry.DragItem.CountText.text = entry.DragItem.ItemCount.ToString();
             entry.DragItem.Origin = ItemDragOrigin.HotBar;
@@ -73,6 +75,12 @@ namespace Assets.Scripts.UI
             entry.DragItem.OnDoubleClick = entry.OnDoubleClick;
         }
 
+        //this is cursed and only for the fixed red potion entry. This should be removed later.
+        public void UpdateItem1Count(int count)
+        {
+            HotBarEntries[0].DragItem.UpdateCount(count);
+        }
+        
         public void Initialize()
         {
             manager = UiManager.Instance;
@@ -117,11 +125,13 @@ namespace Assets.Scripts.UI
 
             if (entry.DragItem.Type == DragItemType.Item)
             {
+                if (entry.DragItem.ItemCount <= 0)
+                    return;
                 NetworkManager.Instance.SendUseItem(entry.DragItem.ItemId);
                 var cnt = entry.DragItem.ItemCount - 1;
-                if (cnt <= 0)
-                    entry.DragItem.Clear();
-                else
+                // if (cnt <= 0)
+                //     entry.DragItem.Clear();
+                // else
                     entry.DragItem.UpdateCount(cnt);
             }
         }
@@ -172,6 +182,12 @@ namespace Assets.Scripts.UI
             var len = Mathf.Min(data.Length, HotBarEntries.Count);
             for (var i = 0; i < len; i++)
             {
+                if (data[i] == null)
+                {
+                        data[i] = new HotBarSaveData() { Type = DragItemType.None };
+                        continue;
+                }
+                
                 if (data[i].Type == DragItemType.Skill)
                 {
                     var spriteName = ClientDataLoader.Instance.GetSkillData((CharacterSkill)data[i].ItemId).Icon;

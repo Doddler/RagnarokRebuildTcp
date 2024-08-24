@@ -72,7 +72,7 @@ MapConfig("prt_maze03")
 	CreateSpawn("ECLIPSE", 1, %(170, 170, 70, 70), 1920000, 150000);
 	CreateSpawn("MASTERING", 1, %(23, 23, 70, 70), 1920000, 150000);
 	CreateSpawn("BAPHOMET_", 25, %(100, 100, 80, 80));
-	CreateSpawn("BAPHOMET", 1, 7200000, 3600000);
+	CreateSpawn("BAPHOMET", 1, 7200000, 3600000, MVP);
 	CreateSpawn("SHINING_PLANT", 1, %(61, 98, 10, 10), 1800000, 900000);
 	CreateSpawn("BLUE_PLANT", 1, %(61, 98, 10, 10), 1800000, 900000);
 	CreateSpawn("YELLOW_PLANT", 1, %(61, 98, 10, 10), 1800000, 900000);

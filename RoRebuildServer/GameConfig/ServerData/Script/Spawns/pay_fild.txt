@@ -50,10 +50,10 @@ MapConfig("pay_fild04")
 	CreateSpawn("DROPS", 50);
 	CreateSpawn("POPORING", 50);
 	CreateSpawn("MARIN", 10);
-	CreateSpawn("GHOSTRING", 1, 3600000, 1800000);
-	CreateSpawn("MASTERING", 1, 3600000, 1800000);
-	CreateSpawn("ANGELING", 1, 3600000, 1800000);
-	CreateSpawn("DEVILING", 1, 7200000, 3600000);
+	CreateSpawn("GHOSTRING", 1, 3600000, 1800000, Boss);
+	CreateSpawn("MASTERING", 1, 3600000, 1800000, Boss);
+	CreateSpawn("ANGELING", 1, 3600000, 1800000, Boss);
+	CreateSpawn("DEVILING", 1, 7200000, 3600000, Boss);
 	CreateSpawn("SHINING_PLANT", 1, %(346, 335, 5, 5), 1800000, 900000);
 	CreateSpawn("GREEN_PLANT", 5, %(254, 193, 10, 10), 360000, 180000);
 }

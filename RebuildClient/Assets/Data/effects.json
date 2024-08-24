@@ -450,6 +450,17 @@
       "SoundFile": "ef_hit2",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 41,
+      "Name": "Hiding",
+      "ImportEffect": false,
+      "Billboard": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": "Assets/Effects/Custom/SmokePuff.prefab"
     }
   ]
 }

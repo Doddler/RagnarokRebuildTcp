@@ -6,7 +6,7 @@ MapConfig("anthell01")
 	CreateSpawn("DENIRO", 40);
 	CreateSpawn("VITATA", 10);
 	CreateSpawn("GIEARTH", 1, 60000, 30000);
-	CreateSpawn("MAYA_PUPLE", 1, 7200000, 3600000);
+	CreateSpawn("MAYA_PUPLE", 1, 7200000, 3600000, Boss);
 	CreateSpawn("ANT_EGG", 1, %(28, 266, 0, 0), 60000, 30000);
 	CreateSpawn("ANT_EGG", 1, %(29, 266, 0, 0), 60000, 30000);
 	CreateSpawn("ANT_EGG", 1, %(28, 265, 0, 0), 60000, 30000);
@@ -105,5 +105,5 @@ MapConfig("anthell02")
 	CreateSpawn("DENIRO", 15);
 	CreateSpawn("VITATA", 30);
 	CreateSpawn("GIEARTH", 3, 60000, 30000);
-	CreateSpawn("MAYA", 1, 7200000, 3600000);
+	CreateSpawn("MAYA", 1, 7200000, 3600000, MVP);
 }

@@ -36,7 +36,7 @@ public class SelfDestruct : SkillHandlerBase
                 continue;
             
             var res = source.CalculateCombatResultUsingSetAttackPower(e.Get<CombatEntity>(), minAtk, maxAtk, lvl, 1, 
-                AttackFlags.Physical | AttackFlags.CanHarmAllies | AttackFlags.IgnoreDefense, CharacterSkill.SelfDestruct, AttackElement.Fire);
+                AttackFlags.Physical | AttackFlags.CanHarmAllies | AttackFlags.IgnoreDefense | AttackFlags.IgnoreEvasion, CharacterSkill.SelfDestruct, AttackElement.Special);
             res.KnockBack = 3;
             
             if(res.Damage > 0)

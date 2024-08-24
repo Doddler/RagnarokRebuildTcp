@@ -17,9 +17,11 @@ public class PacketChangeName: IClientPacketHandler
         if (str.Length > SharedConfig.MaxPlayerName)
         {
             CommandBuilder.SendRequestFailed(connection.Player, ClientErrorType.RequestTooLong);
+            return;
         }
 
         connection.Player.Name = str;
+        connection.Character.Name = str;
 
         connection.Character.Map.AddVisiblePlayersAsPacketRecipients(connection.Character);
         CommandBuilder.SendChangeNameMulti(connection.Character, str);

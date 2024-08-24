@@ -1,0 +1,112 @@
+//----------------Novice-------------------
+::BasicMastery
+This skill is totally worthless but you need to get it to rank 8 before you can job change.
+
+::FirstAid
+This skill doesn't currently work but you also need it to job change for some reason.
+
+//----------------Swordsman-------------------
+
+::Bash
+Hit the enemy really hard.
+
+::Endure
+<color=red>This skill doesn't currently work.
+
+::IncreasedHPRecovery
+<color=red>This skill doesn't currently work.
+
+::MagnumBreak
+<color=red>This skill doesn't currently work.
+
+::Provoke
+This skill <i>might</i> work? Maybe? Worth trying I guess.
+
+::SwordMastery
+<color=red>This skill doesn't currently work.
+
+::TwoHandSwordMastery
+<color=red>This skill doesn't currently work.
+
+::TwoHandQuicken
+This is basically cheating. It also doesn't expire until you log off for some reason.
+
+//----------------Archer-------------------
+
+::DoubleStrafe
+The good ol' classic. Just as spammable as you remember it (maybe more because there's no SP cost yet)
+
+::ChargeArrow
+<color=red>This skill doesn't currently work.
+
+::ArrowShower
+<color=red>This skill doesn't currently work.
+
+::ImproveConcentration
+<color=red>This skill doesn't currently work.
+
+//----------------Mage-------------------
+
+::IncreaseSPRecovery
+<color=red>This skill doesn't currently work.
+
+::FireBolt
+Strikes a single target with a fire element attack. 
+Higher skill level increases cast time but deals more hits. 
+Deals increased damage against earth and undead element and less to fire and water.
+
+::ColdBolt
+Strikes a single target with a water element attack. 
+Higher skill level increases cast time but deals more hits. 
+Deals increased damage against fire element and less to water and wind.
+
+::LightningBolt
+Strikes a single target with an earth element attack. 
+Higher skill level increases cast time but deals more hits. 
+Deals increased damage against water element and less to wind and earth.
+
+::FireBall
+<color=red>This skill doesn't currently work.
+
+::FireWall
+<color=red>This skill doesn't currently work.
+
+::FrostDriver
+<color=red>This skill doesn't currently work.
+
+::SoulStrike
+<color=red>This skill doesn't currently work.
+
+::ThunderStorm
+The only working aoe ability in the game.
+
+::SafetyWall
+<color=red>This skill doesn't currently work.
+
+//----------------Acolyte-------------------
+
+::Heal
+Heals the enemy. Offensive healing does not currently work.
+
+::IncreaseAgility
+<color=red>This skill doesn't currently work.
+
+::Blessing
+<color=red>This skill doesn't currently work.
+
+//----------------Thief-------------------
+
+::DoubleAttack
+Adds a chance to double attack when performing regular melee attacks.
+
+::ImproveDodge
+Increases the chance to evade an enemy attack. Evasion doesn't fall off with more enemies so it's probably really good?
+
+//----------------Merchant-------------------
+
+::Mammonite
+This skill is really good until I actually implement zeny.
+
+::PushCart
+This is what makes merchant worth playing. Or it would be if it worked.
+<i>Too bad.</i>

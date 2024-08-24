@@ -10,6 +10,7 @@ using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -95,7 +96,7 @@ namespace Assets.Scripts.Network
         private Material shadowMaterial;
 
         private float hitDelay = 0f;
-        private float dialogCountdown = 0f;
+        //private float dialogCountdown = 0f;
         private float movePauseTime = 0f;
         public bool IsMoving => isMoving;
         public bool IsCasting;
@@ -450,16 +451,11 @@ namespace Assets.Scripts.Network
 
             isMoving = true;
         }
-        
-        
-        public void UpdateMove2()
-        {
-            if (movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
-            var speed = 1f;
-            if (tempSpeedTime > 0)
-                speed = tempSpeed / moveSpeed;
 
-            moveProgress += speed * Time.deltaTime;
+        private void UpdateMovePosition()
+        {
+            if (movePath == null || movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
+            
             var totalSteps = movePath.Count;
             var dir = SpriteAnimator.Direction;
             while (moveProgress >= moveLength)
@@ -501,6 +497,19 @@ namespace Assets.Scripts.Network
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(dir));
                 // Debug.Log($"Lerp from {movePath[currentMoveStep]} to {movePath[currentMoveStep+1]} returns {transform.localPosition}");
             }
+        }
+        
+        public void UpdateMove2()
+        {
+            if (movePath == null || movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
+            var speed = 1f;
+            if (tempSpeedTime > 0)
+                speed = tempSpeed / moveSpeed;
+
+            moveProgress += speed * Time.deltaTime;
+
+            if (movePauseTime <= 0)
+                UpdateMovePosition();
         }
 
         public void UpdateMove(bool forceUpdate = false)
@@ -798,8 +807,10 @@ namespace Assets.Scripts.Network
                 return;
             }
             // Debug.Log($"{name}:Performing attack motion.");
-
+            
             SpriteAnimator.State = SpriteState.Idle;
+
+            SpriteAnimator.AnimSpeed = 1f;
             
             if (SpriteAnimator.Type == SpriteType.Player)
             {
@@ -996,6 +1007,16 @@ namespace Assets.Scripts.Network
         //	    GameObject.Destroy(gameObject);
         //}
         
+        private void AttachMissIndicator()
+        {
+            var di = RagnarokEffectPool.GetDamageIndicator();
+            var height = 1f;
+            var color = IsAlly ? "red" : "white";
+            di.DoDamage(TextIndicatorType.Miss, "<font-weight=\"300\">Miss", new Vector3(0f, 0.6f, 0f), height,
+                SpriteAnimator.Direction, color, false);
+            di.AttachDamageIndicator(this);
+        }
+        
         private void AttachHealIndicator(int damage)
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
@@ -1025,6 +1046,13 @@ namespace Assets.Scripts.Network
         
         private void OnMessageHitEffect(EntityMessage msg)
         {
+            if (msg.Value1 == 2) //temporary bad way to handle hit2
+            {
+                if(msg.Entity != null)
+                    HitEffect.Hit2(this, msg.Entity);
+                return;
+            }
+
             var hitPosition = transform.position + new Vector3(0, 2, 0);
             if(msg.Entity != null)
                 HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition);
@@ -1043,6 +1071,8 @@ namespace Assets.Scripts.Network
                     HitEffect.Hit1(srcPos, hitPosition);
                 }
             }
+
+
         }
 
         public void OnMessageDamageEvent(EntityMessage msg)
@@ -1053,6 +1083,9 @@ namespace Assets.Scripts.Network
                 AttachHealIndicator(-dmg);
                 return;
             }
+            
+            movePauseTime = DebugValueHolder.GetOrDefault("movePauseTime", 0.2f);
+            UpdateMovePosition();
             
             var weaponClass = 0;
             if (msg.Entity != null)
@@ -1088,6 +1121,9 @@ namespace Assets.Scripts.Network
                     break;
                 case EntityMessageType.ShowDamage:
                     OnMessageDamageEvent(msg);
+                    break;
+                case EntityMessageType.Miss:
+                    AttachMissIndicator();
                     break;
                 default:
                     Debug.LogError($"Unhandled entity message type {msg.Type} on entity {Name}!");
@@ -1132,10 +1168,13 @@ namespace Assets.Scripts.Network
             hitDelay -= Time.deltaTime;
             movePauseTime -= Time.deltaTime;
             PosLockTime -= Time.deltaTime;
-            
+
             if (hitDelay >= 0f)
+            {
+                Debug.Log($"{name} hitDelay {hitDelay}");
                 return;
-            
+            }
+
             if (IsCasting && uniqueAttackAction != null && Time.timeSinceLevelLoad > uniqueAttackStart)
             {
                 SpriteAnimator.ChangeMotion((SpriteMotion)uniqueAttackAction.Animation);
@@ -1150,19 +1189,21 @@ namespace Assets.Scripts.Network
                 // Debug.Log($"{lastFramePosition} -> {newPosition} = {distance}");
                 SpriteAnimator.MoveDistance += distance;
                 lastFramePosition = newPosition;
+
+                UpdateMove2();
                 
                 if (movePauseTime > 0f)
                 {
+                    // Debug.Log($"{name} movePauseTime {movePauseTime}");
                     // SpriteAnimator.AnimSpeed = 1f;
                     // if (CharacterType == CharacterType.Player && SpriteAnimator.CurrentMotion != SpriteMotion.Hit)
                     //     SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
                     return;
                 }
 
-                UpdateMove2();
-
-                if (SpriteAnimator.State != SpriteState.Walking && SpriteAnimator.CurrentMotion != SpriteMotion.Hit)
+                if (SpriteAnimator.State != SpriteState.Walking || SpriteAnimator.CurrentMotion != SpriteMotion.Walk)
                 {
+                    // Debug.Log($"{name} switching to walking");
                     SpriteAnimator.AnimSpeed = moveSpeed * 4f;
                     // var action = SpriteAnimator.GetActionForMotion(SpriteMotion.Walk);
                     // var frameTime = action.Frames.Length * (action.Delay / 1000f);

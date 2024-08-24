@@ -63,6 +63,20 @@ namespace PlayerControl
             if (string.IsNullOrWhiteSpace(text))
                 return;
 
+            if (text.StartsWith("/sh "))
+            {
+                var msg = text.Substring(4);
+                NetworkManager.Instance.SendSay(msg, true);
+                return;
+            }
+            
+            if (text.StartsWith("/shout "))
+            {
+                var msg = text.Substring(7);
+                NetworkManager.Instance.SendSay(msg, true);
+                return;
+            }
+
             if (text.StartsWith("/"))
             {
                 var s = SplitStringCommand(text);
@@ -100,6 +114,12 @@ namespace PlayerControl
                 {
                     NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Info);
                 }
+                
+                
+                if (s[0] == "/adminify")
+                {
+                    NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Adminify);
+                }
 
                 if (s[0] == "/name" || s[0] == "/changename")
                 {
@@ -132,7 +152,12 @@ namespace PlayerControl
                     NetworkManager.Instance.SendAdminHideCharacter(!controllable.IsHidden);
                 }
 
-                if (s[0] == "/summon")
+                if (s[0] == "/return")
+                {
+                    NetworkManager.Instance.SendRespawn(false);
+                }
+
+                if (s[0] == "/summon" || s[0] == "/boss")
                 {
                     if (s.Length < 2)
                     {
@@ -152,13 +177,15 @@ namespace PlayerControl
                     
                     Debug.Log($"Summon '{name}' {count} {nameMax}");
 
+                    var isBoss = s[0] == "/boss";
+
                     if (s.Length > 2)
                         name = String.Join(" ", s.Skip(1).Take(nameMax-1));
 
                     if (!ClientDataLoader.Instance.IsValidMonsterName(name) && !ClientDataLoader.Instance.IsValidMonsterCode(name))
                         cameraFollower.AppendError($"The monster name '{name}' is not valid.");
                     else
-                        NetworkManager.Instance.SendAdminSummonMonster(name, count);
+                        NetworkManager.Instance.SendAdminSummonMonster(name, count, isBoss);
                 }
 
                 if (s[0] == "/bgm")
@@ -222,6 +249,14 @@ namespace PlayerControl
                 if (s[0] == "/killall")
                 {
                     NetworkManager.Instance.SendAdminKillMobAction(true);
+                }
+
+                if (s[0] == "/sit")
+                {
+                    if (controllable.SpriteAnimator.State == SpriteState.Idle || controllable.SpriteAnimator.State == SpriteState.Standby)
+                        NetworkManager.Instance.ChangePlayerSitStand(true);
+                    if (controllable.SpriteAnimator.State == SpriteState.Sit)
+                        NetworkManager.Instance.ChangePlayerSitStand(false);
                 }
 
                 if (s[0] == "/randomize" || s[0] == "/random")

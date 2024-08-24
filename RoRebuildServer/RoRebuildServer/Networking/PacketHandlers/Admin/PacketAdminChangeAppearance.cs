@@ -5,12 +5,12 @@ using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
-[AdminClientPacketHandler(PacketType.AdminChangeAppearance)]
+[ClientPacketHandler(PacketType.AdminChangeAppearance)]
 public class PacketAdminChangeAppearance : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (!connection.IsOnlineAdmin)
+        if (!connection.IsPlayerAlive)
             return;
 
         var p = connection.Player;
@@ -40,12 +40,17 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
                     p.SetData(PlayerStat.Gender, GameRandom.NextInclusive(0, 1));
                 break;
             case 3:
+                if (!p.IsAdmin)
+                    return;
                 if (val >= 0 && val <= 6)
                     p.ChangeJob(val);
                 else
                     p.ChangeJob(GameRandom.Next(0, 6));
                 return; //return as we don't want to double refresh (change job will refresh)
             case 4:
+                if (!p.IsAdmin)
+                    return;
+
                 if (val >= 0 && val <= 12)
                     p.SetWeaponClassOverride(val);
                 else

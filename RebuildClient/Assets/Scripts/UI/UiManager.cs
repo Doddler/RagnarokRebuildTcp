@@ -17,6 +17,7 @@ public class UiManager : MonoBehaviour
     public SkillWindow SkillManager;
     public OptionsWindow ConfigManager;
     public SkillHotbar SkillHotbar;
+    public HelpWindow HelpWindow;
     public DragTrashBucket TrashBucket;
     public GameObject PrimaryUserUIContainer;
 
@@ -71,6 +72,8 @@ public class UiManager : MonoBehaviour
         SkillHotbar.Initialize();
         LoadWindowPositionData();
         
+        HelpWindow.ShowWindow();
+        
         ActionTextDisplay.EndActionTextDisplay();
     }
 
@@ -92,6 +95,9 @@ public class UiManager : MonoBehaviour
         if (positions == null)
         {
             Debug.Log($"We have no window positions saved, re-initializing.");
+            
+            
+            
             positions = new Vector2[FloatingDialogBoxes.Capacity];
             for (var i = 0; i < positions.Length; i++)
                 positions[i] = FloatingDialogBoxes[i].Target.position;
@@ -206,7 +212,13 @@ public class UiManager : MonoBehaviour
         {
             SetEnabled(!canvas.enabled);
         }
-
+        
+        if(Input.GetKeyDown(KeyCode.F10) || Input.GetKeyDown(KeyCode.F12))
+            SkillHotbar.ToggleVisibility();
+        
+        if(Input.GetKeyDown(KeyCode.O) && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
+            ConfigManager.ToggleVisibility();
+        
         if (!IsDraggingItem && !CameraFollower.Instance.InTextBox && !CameraFollower.Instance.IsInNPCInteraction)
         {
             SkillHotbar.UpdateHotkeyPresses();
@@ -223,5 +235,6 @@ public class UiManager : MonoBehaviour
             if(newLevel != oldLvl)
                 DragItemObject.UpdateCount(newLevel);
         }
+
     }
 }

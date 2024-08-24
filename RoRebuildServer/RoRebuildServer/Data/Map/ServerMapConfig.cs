@@ -1,4 +1,5 @@
 ﻿using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
@@ -87,7 +88,13 @@ public class ServerMapConfig
 
         area = area.ClipArea(Map.MapBounds);
 
-        var spawn = new MapSpawnRule(SpawnRules.Count, mobStats, area, count, respawn, respawn + variance);
+        var displayType = CharacterDisplayType.Monster;
+        if (flags.HasFlag(SpawnCreateFlags.Boss))
+            displayType = CharacterDisplayType.Boss;
+        if (flags.HasFlag(SpawnCreateFlags.MVP))
+            displayType = CharacterDisplayType.Mvp;
+
+        var spawn = new MapSpawnRule(SpawnRules.Count, mobStats, area, count, respawn, respawn + variance, displayType);
         if (!area.IsZero)
         {
             spawn.UseStrictZone = flags.HasFlag(SpawnCreateFlags.StrictArea);
@@ -98,7 +105,7 @@ public class ServerMapConfig
 
         if(flags.HasFlag(SpawnCreateFlags.LockToSpawnZone))
             spawn.LockToSpawnZone();
-
+        
         //Console.WriteLine(mobName + "  BBB");
         return spawn;
     }

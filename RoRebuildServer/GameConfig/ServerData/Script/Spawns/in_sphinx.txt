@@ -46,6 +46,6 @@ MapConfig("in_sphinx5")
 	CreateSpawn("MARDUK", 30);
 	CreateSpawn("MIMIC", 7, 10m, 5m);
 	CreateSpawn("ANUBIS", 10, 1m, 2m);
-	CreateSpawn("PHARAOH", 1, 1h, 10m);
+	CreateSpawn("PHARAOH", 1, 1h, 10m, MVP);
 	
 }

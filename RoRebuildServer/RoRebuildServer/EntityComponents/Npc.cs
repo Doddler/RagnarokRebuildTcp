@@ -152,7 +152,7 @@ public class Npc : IEntityAutoReset
     {
         TimerActive = false;
     }
-
+    
     public void CancelInteraction(Player player)
     {
         if (!player.IsInNpcInteraction)
@@ -650,7 +650,7 @@ public class Npc : IEntityAutoReset
 
         //DebugMessage($"Moving npc {Name} to {x},{y}");
 
-        chara.Map.ChangeEntityPosition(ref Entity, chara, chara.WorldPosition, new Position(x, y));
+        chara.Map.ChangeEntityPosition3(chara, chara.Position, new Position(x, y), false);
     }
 
     public void DamagePlayersNearby(int damage, int area, int hitCount = 1)

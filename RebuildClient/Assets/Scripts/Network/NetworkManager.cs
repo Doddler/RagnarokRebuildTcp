@@ -138,6 +138,7 @@ namespace Assets.Scripts.Network
 
 #if UNITY_EDITOR
             var target = "ws://127.0.0.1:5000/ws";
+            //var target = "wss://roserver.dodsrv.com/ws";
             StartConnectServer(target);
             yield break; //end coroutine
 #endif
@@ -187,16 +188,16 @@ namespace Assets.Scripts.Network
             {
                 Debug.LogWarning("Socket connection closed: " + e);
                 if (!isConnected)
-                    CameraFollower.SetErrorUiText($"Could not connect to server at {serverPath}.");
+                    CameraFollower.SetErrorUiText($"Could not connect to server at {serverPath}.\n<size=-4>(Press space to try to reconnect)");
                 else
-                    CameraFollower.SetErrorUiText("Connection has been closed.");
+                    CameraFollower.SetErrorUiText("Connection has been closed.\n<size=-4>(Press space to try to reconnect)");
             };
 
 
             socket.OnError += e =>
             {
                 Debug.LogError("Socket connection had an error: " + e);
-                CameraFollower.SetErrorUiText("Socket connection generated an error.");
+                CameraFollower.SetErrorUiText("Socket connection generated an error.\n<size=-4>(Press space to try to reconnect)");
             };
 
             socket.OnMessage += bytes =>
@@ -366,6 +367,8 @@ namespace Assets.Scripts.Network
                 var isMale = msg.ReadBoolean();
                 var name = msg.ReadString();
                 var isMain = PlayerId == id;
+                if (isMain)
+                    PlayerState.EntityId = id;
 
                 Debug.Log("Name: " + name);
 
@@ -440,7 +443,7 @@ namespace Assets.Scripts.Network
             if (controllable.IsMainCharacter)
             {
                 CameraFollower.UpdatePlayerHP(hp, maxHp);
-                CameraFollower.UpdatePlayerSP(100, 100);
+                //CameraFollower.UpdatePlayerSP(100, 100);
             }
 
             controllable.SetHp(hp);
@@ -939,7 +942,8 @@ namespace Assets.Scripts.Network
             if (controllable.IsMainCharacter)
             {
                 if (PlayerState.JobId == 0 && oldLvl < 10 && lvl >= 10)
-                    CameraFollower.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached level 10! You are now eligible to change jobs.");
+                    CameraFollower.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached level 10! You are now eligible to change jobs. " 
+                                                  + "Speak to the bard south of Prontera to get started.</i></color>");
 
                 var req = CameraFollower.Instance.ExpForLevel(lvl);
                 PlayerState.Exp = curExp;
@@ -1041,6 +1045,8 @@ namespace Assets.Scripts.Network
         {
             var id = msg.ReadInt32();
             var text = msg.ReadString();
+            var name = msg.ReadString();
+            var isShout = msg.ReadBoolean();
 
             if (id == -1)
             {
@@ -1048,15 +1054,26 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            if (!EntityList.TryGetValue(id, out var controllable))
+            if (EntityList.TryGetValue(id, out var controllable))
             {
-                CameraFollower.AppendChatText("Unknown: " + text);
-                return;
+                if (isShout)
+                {
+                    controllable.DialogBox($"{name}: <i><color=#FFB051>{text}</color></i>");
+                    CameraFollower.AppendChatText($"{name} shouts: <i><color=#FFB051>{text}</color></i>");
+                }
+                else
+                {
+                    controllable.DialogBox($"{name}: {text}");
+                    CameraFollower.AppendChatText($"{name}: {text}");
+                }
             }
-
-            controllable.DialogBox(controllable.Name + ": " + text);
-
-            CameraFollower.AppendChatText(controllable.Name + ": " + text);
+            else
+            {
+                if (isShout)
+                    CameraFollower.AppendChatText($"{name} shouts: <i><color=#FFB051>{text}</color></i>");
+                else
+                    CameraFollower.AppendChatText($"{name} nearby: <i><color=#FFFF6A>{text}</color></i>");
+            }
         }
 
         public void OnMessageChangeName(ClientInboundMessage msg)
@@ -1104,7 +1121,7 @@ namespace Assets.Scripts.Network
                     CameraFollower.Instance.AppendChatText("<color=#FF3030>Error</color>: Request could not be completed due to malformed data.");
                     break;
                 case ClientErrorType.RequestTooLong:
-                    CameraFollower.Instance.AppendChatText("<color=#FF3030>Error</color>: The request data was too long.");
+                    CameraFollower.Instance.AppendChatText("<color=#FF3030>Error</color>: Your text was too long.");
                     break;
                 case ClientErrorType.InvalidInput:
                     CameraFollower.Instance.AppendChatText("<color=#FF3030>Error</color>: Server request could not be performed as the input was not valid.");
@@ -1158,8 +1175,9 @@ namespace Assets.Scripts.Network
                     var id = msg.ReadInt32();
                     if (!EntityList.TryGetValue(id, out var controllable))
                         return;
+                    var isFocus = msg.ReadBoolean();
 
-                    CameraFollower.OverrideTarget = controllable.gameObject;
+                    CameraFollower.OverrideTarget = isFocus ? controllable.gameObject : null;
                     break;
                 }
                 case NpcInteractionType.NpcShowSprite:
@@ -1561,12 +1579,13 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendSay(string text)
+        public void SendSay(string text, bool isShout = false)
         {
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.Say);
             msg.Write(text);
+            msg.Write(isShout);
 
             SendMessage(msg);
         }
@@ -1617,7 +1636,7 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendAdminSummonMonster(string name, int count)
+        public void SendAdminSummonMonster(string name, int count, bool isBoss = false)
         {
             var msg = StartMessage();
 
@@ -1626,6 +1645,7 @@ namespace Assets.Scripts.Network
             msg.Write((byte)PacketType.AdminSummonMonster);
             msg.Write(name);
             msg.Write((short)count);
+            msg.Write(isBoss);
 
             SendMessage(msg);
         }
@@ -1850,7 +1870,7 @@ namespace Assets.Scripts.Network
             if (isConnected && state != WebSocketState.Open && state != WebSocketState.Connecting)
             {
                 isConnected = false;
-                CameraFollower.SetErrorUiText("Lost connection to server!");
+                CameraFollower.SetErrorUiText("Lost connection to server!\n<size=-4>(Press space to try to reconnect)");
                 Debug.LogWarning("Client state has changed to: " + state);
             }
 

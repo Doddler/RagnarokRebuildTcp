@@ -27,5 +27,5 @@ MapConfig("gon_dun03")
 	CreateSpawn("WILD_GINSENG", 20, 600000, 300000);
 	CreateSpawn("WICKED_NYMPH", 50, 600000, 300000);
 	CreateSpawn("EVIL_CLOUD_HERMIT", 30);
-	CreateSpawn("DARK_SNAKE_LORD", 1, 5650000, 3650000);
+	CreateSpawn("DARK_SNAKE_LORD", 1, 5650000, 3650000, MVP);
 }

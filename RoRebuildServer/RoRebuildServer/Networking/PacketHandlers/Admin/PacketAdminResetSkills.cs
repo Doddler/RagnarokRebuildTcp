@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Networking;
+﻿using RebuildSharedData.Enum;
+using RebuildSharedData.Networking;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin
 {
@@ -10,8 +11,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
             if (connection.Player == null || !connection.IsConnectedAndInGame || !connection.Player.IsAdmin)
                 return;
 
-            connection.Player.LearnedSkills.Clear();
-            connection.Player.UpdateStats();
+            connection.Player.SkillReset();
         }
     }
 }

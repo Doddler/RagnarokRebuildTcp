@@ -17,7 +17,6 @@ public class ClientSkillTreeEntry
 {
     public CharacterSkill Skill;
     public ClientPrereq[]? Prerequisites;
-    
 }
 
 [Serializable]

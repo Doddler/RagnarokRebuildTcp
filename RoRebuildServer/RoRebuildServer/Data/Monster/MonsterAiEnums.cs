@@ -11,6 +11,7 @@ public enum MonsterAiType : byte
     AiLooter,
     AiAssist,
     AiAssistLooter,
+    AiAggressiveAssist,
     AiAggressiveLooter,
     AiAngry,
     AiPlant,

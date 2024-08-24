@@ -24,6 +24,7 @@ public class WarpButton : MonoBehaviour
         {
             Debug.Log("Click button: " + MapName);
             NetworkManager.Instance.SendMoveRequest(MapName, X, Y);
+            UiManager.Instance.WarpManager.GetComponent<WarpWindow>().HideWindow();
         }
     }
 

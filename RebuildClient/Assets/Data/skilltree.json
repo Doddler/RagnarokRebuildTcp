@@ -26,50 +26,15 @@
       "JobRank": 1,
       "Skills": [
         {
-          "Skill": 8,
-          "Prerequisites": []
-        },
-        {
-          "Skill": 9,
-          "Prerequisites": [
-            {
-              "Skill": 8,
-              "Level": 1
-            }
-          ]
-        },
-        {
-          "Skill": 5,
-          "Prerequisites": []
-        },
-        {
           "Skill": 3,
           "Prerequisites": []
-        },
-        {
-          "Skill": 6,
-          "Prerequisites": [
-            {
-              "Skill": 3,
-              "Level": 5
-            }
-          ]
         },
         {
           "Skill": 7,
           "Prerequisites": []
         },
         {
-          "Skill": 4,
-          "Prerequisites": [
-            {
-              "Skill": 7,
-              "Level": 5
-            }
-          ]
-        },
-        {
-          "Skill": 31,
+          "Skill": 32,
           "Prerequisites": [
             {
               "Skill": 3,
@@ -91,14 +56,6 @@
         {
           "Skill": 20,
           "Prerequisites": []
-        },
-        {
-          "Skill": 22,
-          "Prerequisites": []
-        },
-        {
-          "Skill": 23,
-          "Prerequisites": []
         }
       ]
     },
@@ -108,30 +65,8 @@
       "JobRank": 1,
       "Skills": [
         {
-          "Skill": 10,
-          "Prerequisites": []
-        },
-        {
           "Skill": 11,
           "Prerequisites": []
-        },
-        {
-          "Skill": 13,
-          "Prerequisites": [
-            {
-              "Skill": 11,
-              "Level": 4
-            }
-          ]
-        },
-        {
-          "Skill": 14,
-          "Prerequisites": [
-            {
-              "Skill": 13,
-              "Level": 5
-            }
-          ]
         },
         {
           "Skill": 16,
@@ -149,28 +84,6 @@
         {
           "Skill": 12,
           "Prerequisites": []
-        },
-        {
-          "Skill": 15,
-          "Prerequisites": [
-            {
-              "Skill": 12,
-              "Level": 5
-            }
-          ]
-        },
-        {
-          "Skill": 17,
-          "Prerequisites": []
-        },
-        {
-          "Skill": 19,
-          "Prerequisites": [
-            {
-              "Skill": 17,
-              "Level": 5
-            }
-          ]
         }
       ]
     },
@@ -186,14 +99,6 @@
         {
           "Skill": 24,
           "Prerequisites": []
-        },
-        {
-          "Skill": 26,
-          "Prerequisites": []
-        },
-        {
-          "Skill": 25,
-          "Prerequisites": []
         }
       ]
     },
@@ -205,6 +110,10 @@
         {
           "Skill": 27,
           "Prerequisites": []
+        },
+        {
+          "Skill": 29,
+          "Prerequisites": []
         }
       ]
     },
@@ -214,7 +123,11 @@
       "JobRank": 1,
       "Skills": [
         {
-          "Skill": 29,
+          "Skill": 30,
+          "Prerequisites": []
+        },
+        {
+          "Skill": 31,
           "Prerequisites": []
         }
       ]

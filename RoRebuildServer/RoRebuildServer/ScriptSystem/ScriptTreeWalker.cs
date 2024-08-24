@@ -89,7 +89,10 @@ internal class ScriptTreeWalker
                 EnterMapConfigStatement(context);
                 break;
             case "SkillHandler":
-                EnterSkillHandlerStatement(context);
+                EnterSkillHandlerStatement(context, false);
+                break;
+            case "AltSkillHandler":
+                EnterSkillHandlerStatement(context, true);
                 break;
             default:
                 throw new Exception("Unexpected top level statement: " + id);
@@ -179,7 +182,7 @@ internal class ScriptTreeWalker
         builder.EndClass();
     }
 
-    private void EnterSkillHandlerStatement(FunctionDefinitionContext functionContext)
+    private void EnterSkillHandlerStatement(FunctionDefinitionContext functionContext, bool isAltType)
     {
         //only expect one param, the item name
         var param = functionContext.functionparam();
@@ -212,7 +215,7 @@ internal class ScriptTreeWalker
         builder.CreateFinalSkillHandler();
         builder.EndClass();
 
-        builder.EndMonsterSkillHandler(str);
+        builder.EndMonsterSkillHandler(str, isAltType);
     }
 
     public void SkillSectionHandler(StartSectionContext context)

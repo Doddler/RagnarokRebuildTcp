@@ -125,7 +125,7 @@ public partial class Monster
         if (targetCharacter.Position == Character.Position)
             return false;
 
-        if (targetCharacter.Position.SquareDistance(Character.Position) > MonsterBase.ChaseDist)
+        if (targetCharacter.Position.SquareDistance(Character.Position) > MonsterBase.ChaseDist + 2)
             return true;
 
         if (Character.MoveSpeed < 0 && InEnemyOutOfAttackRange())
@@ -157,7 +157,7 @@ public partial class Monster
 
         //if we have a character still, check if we're in range.
         if (Target == Entity.Null || target == null) return false;
-        
+
         if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range)
             return Character.Map!.WalkData.HasLineOfSight(Character.Position, target.Position);
 
@@ -230,7 +230,7 @@ public partial class Monster
         if (!Character.Map!.QuickCheckPlayersNearby(Character, 15))
             return false;
 
-        if (CanAssistAlly(9, out var target))
+        if (CanAssistAlly(10, out var target))
         {
             SwapTarget(target);
             return true;
@@ -264,7 +264,7 @@ public partial class Monster
         var target = targetCharacter;
         if (target == null)
             return false;
-        
+
         if (target.Position.DistanceTo(Character.Position) > MonsterBase.Range)
             return true;
 
@@ -378,7 +378,7 @@ public partial class Monster
     {
         if (CombatEntity.IsCasting || Character.InAttackCooldown || !FindRandomTargetInRange(9, out var newTarget))
             return false;
-        
+
         nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
 
         return true;
@@ -579,6 +579,9 @@ public partial class Monster
         if (!targetEntity.IsValidTarget(CombatEntity))
             return false;
 
+        if (AiSkillScanUpdate())
+            return true;
+
         CombatEntity.PerformMeleeAttack(targetEntity);
         Character.QueuedAction = QueuedAction.None;
         timeLastCombat = Time.ElapsedTimeFloat;
@@ -612,7 +615,7 @@ public partial class Monster
         //        return false;
         //    //ServerLogger.Debug($"Monster {MonsterBase.Name} {Entity} stopping to attack. Current position {Character.Position} time to stop: {Character.MoveCooldown}");
         //    //Character.ShortenMovePath();
-            
+
         //    nextAiUpdate = Time.ElapsedTimeFloat + Character.TimeToReachNextStep;
         //    return false;
         //}

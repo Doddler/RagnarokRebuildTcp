@@ -18,4 +18,7 @@ public class DbCharacter
     public DbSavePoint? SavePoint { get; set; }
     public byte[]? Data { get; set; }
     public byte[]? SkillData { get; set; }
+    public byte[]? NpcFlags { get; set; }
+    public byte[]? ItemData { get; set; }
+
 }

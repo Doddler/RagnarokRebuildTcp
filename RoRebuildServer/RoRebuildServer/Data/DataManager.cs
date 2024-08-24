@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.ObjectModel;
+using System.Reflection;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Config;
@@ -45,7 +46,7 @@ public static class DataManager
 
     public static Dictionary<string, int> EffectIdForName;
 
-    public static Dictionary<string, SavePosition> SavePoints;
+    public static ReadOnlyDictionary<string, SavePosition> SavePoints;
 
     public static Dictionary<int, int> JobExtendsList;
 
@@ -57,6 +58,20 @@ public static class DataManager
     public static List<MonsterAiEntry> GetAiStateMachine(MonsterAiType monsterType)
     {
         return monsterAiList[(int)monsterType];
+    }
+
+    public static int GetSpForSkill(CharacterSkill skill, int level)
+    {
+        if (!DataManager.SkillData.TryGetValue(skill, out var data))
+            return 0;
+
+        if (data.SpCost == null || data.SpCost.Length == 0)
+            return 0;
+
+        if (data.SpCost.Length < level)
+            level = data.SpCost.Length;
+
+        return data.SpCost[level-1];
     }
     
     public static void RegisterItem(string name, ItemInteractionBase item)
@@ -86,9 +101,11 @@ public static class DataManager
         NpcManager.RegisterEvent(name, npcBehavior);
     }
 
-    public static void RegisterMonsterSkillHandler(string name, MonsterSkillAiBase handler)
+    public static void RegisterMonsterSkillHandler(string name, MonsterSkillAiBase handler, bool isUnassignedAiType = false)
     {
         MonsterSkillAiHandlers.Add(name, handler);
+        if (isUnassignedAiType)
+            handler.IsUnassignedAiType = true;
     }
 
     public static void ReloadScripts()
@@ -100,7 +117,7 @@ public static class DataManager
         monsterAiList = loader.LoadAiStateMachines();
         ExpChart = loader.LoadExpChart();
         EffectIdForName = loader.LoadEffectIds();
-        SavePoints = loader.LoadSavePoints();
+        SavePoints = loader.LoadSavePoints().AsReadOnly();
         MvpMonsterCodes = loader.LoadMvpList();
         SkillData = loader.LoadSkillData();
 
@@ -153,7 +170,7 @@ public static class DataManager
         
         ItemList = loader.LoadItemList();
         ItemIdByName = loader.GenerateItemIdByNameLookup();
-        SavePoints = loader.LoadSavePoints();
+        SavePoints = loader.LoadSavePoints().AsReadOnly();
         ElementChart = loader.LoadElementChart();
         MvpMonsterCodes = loader.LoadMvpList();
         loader.LoadItemInteractions(ScriptAssembly);

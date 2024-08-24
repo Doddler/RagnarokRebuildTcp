@@ -28,7 +28,7 @@ MapConfig("prt_fild02")
 	CreateSpawn("PUPA", 20);
 	CreateSpawn("LUNATIC", 60);
 	CreateSpawn("PORING", 30);
-	CreateSpawn("ECLIPSE", 1, 1800000, 1200000);
+	CreateSpawn("ECLIPSE", 1, 1800000, 1200000, Boss);
 	CreateSpawn("SHINING_PLANT", 1, %(339, 309, 3, 3), 1800000, 900000);
 	CreateSpawn("SHINING_PLANT", 2, 1800000, 900000);
 }
@@ -53,7 +53,7 @@ MapConfig("prt_fild04")
 	CreateSpawn("CREAMY", 40);
 	CreateSpawn("PUPA", 10);
 	CreateSpawn("PORING", 30);
-	CreateSpawn("VOCAL", 1, 1800000, 1200000);
+	CreateSpawn("VOCAL", 1, 1800000, 1200000, Boss);
 	CreateSpawn("GREEN_PLANT", 5, %(350, 114, 10, 10), 900000, 450000);
 }
 
@@ -83,6 +83,7 @@ MapConfig("prt_fild07")
 	CreateSpawn("ROCKER", 120);
 	CreateSpawn("POPORING", 30);
 	CreateSpawn("BLACK_MUSHROOM", 3, %(225, 110, 5, 5), 360000, 180000);
+	CreateSpawn("VOCAL", 1, 1800000, 1200000, Boss);
 }
 
 MapConfig("prt_fild08")
@@ -92,6 +93,7 @@ MapConfig("prt_fild08")
 	CreateSpawn("PORING", 100);
 	CreateSpawn("DROPS", 10);
 	CreateSpawn("GREEN_PLANT", 5, %(350, 114, 10, 10), 900000, 450000);
+	CreateSpawn("MASTERING", 1, 3600000, 1800000, Boss);
 }
 
 MapConfig("prt_fild09")

@@ -16,6 +16,7 @@ using System;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static System.Net.Mime.MediaTypeNames;
+using RoRebuildServer.Database.Domain;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -119,11 +120,11 @@ public class CombatEntity : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
-    public void FullRecovery(bool hp, bool mp)
+    public void FullRecovery(bool hp, bool sp)
     {
         if (hp)
             SetStat(CharacterStat.Hp, GetStat(CharacterStat.MaxHp));
-        if (mp)
+        if (sp)
             SetStat(CharacterStat.Sp, GetStat(CharacterStat.MaxSp));
     }
 
@@ -249,11 +250,14 @@ public class CombatEntity : IEntityAutoReset
                 continue;
 
             var curExp = player.GetData(PlayerStat.Experience);
-            curExp += exp;
-
             var requiredExp = DataManager.ExpChart.ExpRequired[level];
 
+            if (exp > requiredExp)
+                exp = requiredExp; //cap to 1 level per kill
+
             CommandBuilder.SendExpGain(player, exp);
+
+            curExp += exp;
 
             if (curExp < requiredExp)
             {
@@ -276,17 +280,22 @@ public class CombatEntity : IEntityAutoReset
 
             CommandBuilder.LevelUp(player.Character, level, curExp);
             CommandBuilder.SendHealMulti(player.Character, 0, HealType.None);
+            CommandBuilder.ChangeSpValue(player, player.GetStat(CharacterStat.Sp), player.GetStat(CharacterStat.MaxSp));
         }
-
         CommandBuilder.ClearRecipients();
-
         EntityListPool.Return(list);
     }
-
     private void FinishCasting()
     {
-        SkillHandler.ExecuteSkill(CastingSkill, this);
         IsCasting = false;
+
+        if (Character.Type == CharacterType.Player && !Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level))
+        {
+            CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
+            return;
+        }
+
+        SkillHandler.ExecuteSkill(CastingSkill, this);
         if(Character.Type == CharacterType.Monster)
             Character.Monster.RunCastSuccessEvent();
     }
@@ -367,6 +376,12 @@ public class CombatEntity : IEntityAutoReset
             return true;
         }
 
+        if (Character.Type == CharacterType.Player && !Player.HasSpForSkill(skill, level))
+        {
+            CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
+            return false;
+        }
+
         CastingSkill = skillInfo;
         if(target.IsValid())
             Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
@@ -435,6 +450,12 @@ public class CombatEntity : IEntityAutoReset
         {
             QueueCast(skillInfo);
             return true;
+        }
+
+        if (Character.Type == CharacterType.Player && !Player.HasSpForSkill(skill, level))
+        {
+            CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
+            return false;
         }
 
         CastingSkill = skillInfo;
@@ -524,6 +545,12 @@ public class CombatEntity : IEntityAutoReset
             return false;
         }
 
+        if (Character.Type == CharacterType.Player && !Player.HasSpForSkill(skill, level))
+        {
+            CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
+            return false;
+        }
+
         var res = SkillHandler.ValidateTarget(skillInfo, this);
 
         if (res == SkillValidationResult.Success)
@@ -537,9 +564,9 @@ public class CombatEntity : IEntityAutoReset
                 QueueCast(skillInfo);
                 return true;
             }
-            
+
             //don't turn character if you target yourself!
-            if(Character != target.Character)
+            if (Character != target.Character)
                 Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
 
             if(castTime < 0f)
@@ -550,7 +577,7 @@ public class CombatEntity : IEntityAutoReset
             {
                 IsCasting = true;
                 CastingTime = Time.ElapsedTimeFloat + castTime;
-
+                
                 Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
                 CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime, hideSkillName);
                 CommandBuilder.ClearRecipients();
@@ -580,6 +607,12 @@ public class CombatEntity : IEntityAutoReset
 #endif
         }
 
+        if (Character.Type == CharacterType.Player && !Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level))
+        {
+            CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
+            return;
+        }
+
         SkillHandler.ExecuteSkill(CastingSkill, this);
         CastingSkill.Clear();
         QueuedCastingSkill.Clear();
@@ -591,6 +624,26 @@ public class CombatEntity : IEntityAutoReset
         SkillHandler.ExecuteSkill(info, this);
     }
 
+    /// <summary>
+    /// Test to see if this character is able to hit the enemy.
+    /// </summary>
+    /// <returns>Returns true if the attack hits</returns>
+    public bool TestHitVsEvasion(CombatEntity target, int attackerHitBonus = 0, int defenderFleeBonus = 0)
+    {
+        var attackerHit = GetStat(CharacterStat.Level) + GetStat(CharacterStat.Dex);
+
+        var defenderAgi = target.GetStat(CharacterStat.Agi);
+        if (target.Character.Type == CharacterType.Player)
+            defenderAgi += target.Player.MaxLearnedLevelOfSkill(CharacterSkill.ImproveDodge) * 3;
+
+        var defenderFlee = target.GetStat(CharacterStat.Level) + defenderAgi;
+
+        var hitSuccessRate = attackerHit + attackerHitBonus + 75 - defenderFlee - defenderFleeBonus;
+        if (hitSuccessRate < 5) hitSuccessRate = 5;
+        if (hitSuccessRate > 95 && target.Character.Type == CharacterType.Player) hitSuccessRate = 95;
+
+        return hitSuccessRate > GameRandom.Next(0, 100);
+    }
 
     public DamageInfo PrepareTargetedSkillResult(CombatEntity target, CharacterSkill skillSource = CharacterSkill.None)
     {
@@ -641,18 +694,29 @@ public class CombatEntity : IEntityAutoReset
             eleMod = DataManager.ElementChart.GetAttackModifier(element, mon.MonsterBase.Element);
         }
 
+        var evade = false;
+
+        if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreEvasion))
+            evade = !TestHitVsEvasion(target);
+
         var defCut = 1f;
         var subDef = 0f;
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
-            defCut = MathF.Pow(0.99f, target.GetStat(CharacterStat.Def) - 1);
+            var def = target.GetStat(CharacterStat.Def);
+            defCut = MathF.Pow(0.99f,  - 1);
             subDef = target.GetStat(CharacterStat.Vit) * 0.7f;
+            if (def > 900)
+                subDef = 999999;
         }
 
         if (flags.HasFlag(AttackFlags.Magical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
-            defCut = MathF.Pow(0.99f, target.GetStat(CharacterStat.MDef) - 1);
+            var mDef = target.GetStat(CharacterStat.MDef);
+            defCut = MathF.Pow(0.99f, mDef - 1);
             subDef = target.GetStat(CharacterStat.Int) * 0.7f;
+            if (mDef > 900)
+                subDef = 999999;
         }
 
         var damage = (int)(baseDamage * attackMultiplier * (eleMod / 100f) * defCut - subDef);
@@ -678,12 +742,15 @@ public class CombatEntity : IEntityAutoReset
         if (damage < 1)
             damage = 1;
 
-        if (eleMod == 0)
+        if (eleMod == 0 || evade)
             damage = 0;
 
         var res = AttackResult.NormalDamage;
         if (damage == 0)
+        {
             res = AttackResult.Miss;
+            hitCount = 0;
+        }
 
         var di = PrepareTargetedSkillResult(target, skillSource);
         di.Result = res;
@@ -704,13 +771,13 @@ public class CombatEntity : IEntityAutoReset
         var atk1 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack) : GetStat(CharacterStat.MagicAtkMin);
         var atk2 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack2) : GetStat(CharacterStat.MagicAtkMax);
 
-        if (Character.Type == CharacterType.Monster && flags.HasFlag(AttackFlags.Magical))
-        {
-            //monster unique scaling, monster matk is 50% their physical, plus or minus a % equal to how much their int exceeds or is below their level
-            var magicScaleFactor = 100 + (GetStat(CharacterStat.Level) - GetStat(CharacterStat.Int));
-            atk1 = atk1 * 50 / magicScaleFactor;
-            atk2 = atk2 * 50 / magicScaleFactor;
-        }
+        //if (Character.Type == CharacterType.Monster && flags.HasFlag(AttackFlags.Magical))
+        //{
+        //    //monster unique scaling, monster matk is 50% their physical, plus or minus a % equal to how much their int exceeds or is below their level
+        //    var magicScaleFactor = 100 + (GetStat(CharacterStat.Level) - GetStat(CharacterStat.Int));
+        //    atk1 = atk1 * 50 / magicScaleFactor;
+        //    atk2 = atk2 * 50 / magicScaleFactor;
+        //}
 
         if (atk1 <= 0)
             atk1 = 1;
@@ -736,6 +803,36 @@ public class CombatEntity : IEntityAutoReset
         ApplyCooldownForAttackAction();
 
         Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
+    }
+
+    public void ApplyCooldownForSupportSkillAction()
+    {
+        if(Character.Type != CharacterType.Player)
+            ServerLogger.LogWarning($"We're calling ApplyCooldownForSupportSkillAction for entity {Character.Entity}, but this function should only be used for players.");
+
+        var motionTime = 0.5f;
+        var realDelayTime = 0.5f;
+
+        var attackMotionTime = GetTiming(TimingStat.AttackMotionTime); //time for actual weapon strike to occur
+        var delayTime = GetTiming(TimingStat.AttackDelayTime); //time before you can attack again
+
+        if (attackMotionTime < motionTime)
+            motionTime = attackMotionTime;
+        if(delayTime < realDelayTime)
+            realDelayTime = delayTime;
+
+        if (motionTime > realDelayTime)
+            realDelayTime = motionTime;
+
+        if (Character.AttackCooldown + Time.DeltaTimeFloat + 0.005f < Time.ElapsedTimeFloat)
+            Character.AttackCooldown = Time.ElapsedTimeFloat + realDelayTime; //they are consecutively attacking
+        else
+            Character.AttackCooldown += realDelayTime;
+
+        if (Character.Type == CharacterType.Monster)
+            Character.Monster.AddDelay(motionTime);
+
+        Character.AddMoveLockTime(motionTime);
     }
 
     public void ApplyCooldownForAttackAction()
@@ -776,22 +873,13 @@ public class CombatEntity : IEntityAutoReset
             CommandBuilder.ClearRecipients();
         }
 
-        target.QueueDamage(damageInfo);
-        //target.Character.MoveModifier = 0.5f;
-        //var hitSlowTime = 0.2f * damageInfo.HitCount;
-        //if (damageInfo.HitCount > 1 && target.Character.MoveModifierTime < hitSlowTime)
-        //    target.Character.MoveModifierTime = hitSlowTime;
-
-        if (target.Character.Type == CharacterType.Monster && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
-        {
-            var mon = target.Entity.Get<Monster>();
-            mon.AddDelay(GetTiming(TimingStat.SpriteAttackTiming) * 2); //make sure it stops acting until it dies
-        }
-
-        //if (Character.Type == CharacterType.Player && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
+        if(damageInfo.Damage != 0)
+            target.QueueDamage(damageInfo);
+        
+        //if (target.Character.Type == CharacterType.Monster && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
         //{
-        //    var player = Entity.Get<Player>();
-        //    player.ClearTarget();
+        //    var mon = target.Entity.Get<Monster>();
+        //    mon.AddDelay(GetTiming(TimingStat.SpriteAttackTiming) * 2); //make sure it stops acting until it dies
         //}
     }
 
@@ -813,16 +901,21 @@ public class CombatEntity : IEntityAutoReset
             var di = DamageQueue[0];
             DamageQueue.RemoveAt(0);
 
-            if (Character.State == CharacterState.Dead || !Entity.IsAlive())
+            if (Character.State == CharacterState.Dead || !Entity.IsAlive() || Character.IsTargetImmune)
                 break;
-            
-            if (di.Source.IsAlive() && di.Source.TryGet<WorldObject>(out var enemy))
-            {
-                if (!enemy.IsActive || enemy.Map != Character.Map)
-                    continue;
-                //if (enemy.Position.SquareDistance(Character.Position) > 31)
-                //    continue;
-            }
+
+            //if (di.Source.IsAlive() && di.Source.TryGet<WorldObject>(out var enemy))
+            //{
+            //    if (!enemy.IsActive || enemy.Map != Character.Map)
+            //        continue;
+            //    if (enemy.State == CharacterState.Dead)
+            //        continue; //if the attacker is dead we bail
+
+            //    //if (enemy.Position.SquareDistance(Character.Position) > 31)
+            //    //    continue;
+            //}
+            //else
+            //    continue;
 
             if (Character.State == CharacterState.Sitting)
                 Character.State = CharacterState.Idle;
@@ -831,6 +924,9 @@ public class CombatEntity : IEntityAutoReset
 
             //inform clients the player was hit and for how much
             var delayTime = GetTiming(TimingStat.HitDelayTime);
+
+            if (Character.Type == CharacterType.Monster && delayTime > 0.15f)
+                delayTime = 0.15f;
 
             Character.AddMoveLockTime(delayTime);
 

@@ -13,7 +13,7 @@ namespace Assets.Scripts.Sprites
         public float SpriteOffset;
         public RoSpriteData SpriteData;
         private MaterialPropertyBlock propertyBlock;
-        private bool skipFrame = true;
+        //private bool skipFrame = true;
         
 
         public void Init()

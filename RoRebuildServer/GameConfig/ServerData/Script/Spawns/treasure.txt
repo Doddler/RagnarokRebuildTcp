@@ -96,7 +96,7 @@ MapConfig("treasure01")
 
 MapConfig("treasure02")
 {
-	CreateSpawn("GHOSTRING", 1, 1980000, 1200000);
+	CreateSpawn("GHOSTRING", 1, 1980000, 1200000, Boss);
 	CreateSpawn("WHISPER", 8);
 	CreateSpawn("WANDER_MAN", 1, 600000, 300000);
 	CreateSpawn("PENOMENA", 19, 300000, 120000);
@@ -125,7 +125,7 @@ MapConfig("treasure02")
 	CreateSpawn("HYDRA", 1, %(102, 143, 0, 0), 300000, 100000);
 	CreateSpawn("HYDRA", 1, %(103, 143, 0, 0), 300000, 100000);
 	CreateSpawn("WHISPER", 4, %(101, 150, 15, 10), 200000, 100000);
-	CreateSpawn("DRAKE", 1, %(101, 151, 8, 8), 7200000, 3600000);
+	CreateSpawn("DRAKE", 1, %(101, 151, 8, 8), 7200000, 3600000, MVP);
 	CreateSpawn("MIMIC", 3, %(101, 151, 10, 10), 500000, 200000);
 	CreateSpawn("MIMIC", 2, %(101, 151, 10, 10), 100000, 100000);
 	CreateSpawn("PENOMENA", 4, %(101, 151, 10, 10), 100000, 100000);

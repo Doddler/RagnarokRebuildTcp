@@ -125,11 +125,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 ClientSkillHandler.ExecuteSkill(null, ref attack);
                 //StartCoroutine(DamageEvent(dmg, 0f, hits, 0, controllable2));
                 
-                controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits);
+                if(dmg != 0)
+                    controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits);
                 return;
             }
             
-            controllable.LookAtOrDefault(controllable2, dir);
+            if(controllable != controllable2)
+                controllable.LookAtOrDefault(controllable2, dir);
 
             if (result == AttackResult.Heal)
             {
@@ -152,6 +154,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             }
 
             controllable.ShowSkillCastMessage(skill, 3);
+            
+            if(result == AttackResult.Miss)
+                controllable.Messages.SendMissEffect(motionTime);
 
             if (hasTarget && controllable.SpriteAnimator.IsInitialized)
             {
@@ -162,10 +167,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
                 ClientSkillHandler.ExecuteSkill(controllable, ref attack);
 
-                if (hits < 1)
+                if (result == AttackResult.Heal && dmg != 0)
                     hits = 1;
-
-                controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits);
+                
+                if(hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
+                    controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits);
                 //StartCoroutine(DamageEvent(dmg, motionTime, hits, controllable.WeaponClass, controllable2));
             }
         }

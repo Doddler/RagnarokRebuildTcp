@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Network;
+using Assets.Scripts.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.Effects.EffectHandlers
@@ -65,6 +66,13 @@ namespace Assets.Scripts.Effects.EffectHandlers
             data.MaxAlpha = 255;
             data.FadeOutLength = effect.Duration / 2f;
 
+            return null;
+        }
+
+        public static Ragnarok3dEffect Hit2(ServerControllable src, ServerControllable target)
+        {
+            AudioManager.Instance.OneShotSoundEffect(target.Id, $"ef_hit2.ogg", target.transform.position);
+            
             return null;
         }
 

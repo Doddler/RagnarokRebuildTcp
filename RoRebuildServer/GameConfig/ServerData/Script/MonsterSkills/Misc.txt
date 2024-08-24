@@ -54,7 +54,18 @@ SkillHandler("MARDUK") {
 StateAttacking:
 	TryCast(FireBolt, 3, 5%, 1.5s, 5s) -> SendEmote(9);
 StateChase:
-	TryCast(FireBolt, 3, 5%, 1.5s, 5s) -> SendEmote(9);
+	TryCast(FireBolt, 3, 10%, 1.5s, 5s) -> SendEmote(9);
+}
+
+
+SkillHandler("SCORPION") {
+StateAttacking:
+	TryCast(Bash, 1, 100%, 0, 12s);
+}
+
+SkillHandler("IRON_FIST") {
+StateAttacking:
+	TryCast(Bash, 5, 100%, 0, 8s);
 }
 
 SkillHandler("MARINE_SPHERE") {
@@ -91,9 +102,24 @@ SkillHandler("TARGET_DUMMY") {
     StateAny:
     //TryCast(Heal, 9999, 1000, 1500, 3000)[HpPercent <= 99];
     //TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
+	TryCast(ColdBolt, 10, 1000, 1500, 5000);
     TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];
 	
 }
+
+SkillHandler("VITATA") {
+StateAny:
+    TryCast(Heal, 3, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(5);
+	TryCast(Heal, 3, 100%, 0.5s, 5s)[HpPercent < 40] -> SendEmote(5);
+}
+
+
+SkillHandler("ALICE") {
+StateAny:
+    TryCast(Heal, 8, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(90)];
+	TryCast(Heal, 8, 100%, 0.5s, 5s)[HpPercent < 60];
+}
+
 
 SkillHandler("CHEPET") {
 StateAny:

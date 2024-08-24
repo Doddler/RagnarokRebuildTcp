@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -13,9 +14,14 @@ public class MinimapController : MonoBehaviour
     public Material OverworldMaterial;
     public Material DungeonMaterial;
     public Sprite PlayerIcon;
+    public Sprite OtherPlayerIcon;
+    public Sprite BossIcon;
+    public Sprite MvpIcon;
+    public Sprite PortalIcon;
     public Slider ZoomSlider;
     
     private GameObject playerMapIconObject;
+    private Dictionary<int, MinimapEntityData> mapIcons = new();
 
     public MapType MapType;
 
@@ -37,6 +43,15 @@ public class MinimapController : MonoBehaviour
 
     private Sprite mapSprite;
     public Sprite walkSprite;
+    
+    private class MinimapEntityData
+    {
+        public GameObject MapIcon;
+        public Vector2Int Position;
+        public CharacterDisplayType Type;
+    }
+
+   
 
     public static MinimapController Instance
     {
@@ -47,6 +62,95 @@ public class MinimapController : MonoBehaviour
             instance = FindObjectOfType<MinimapController>();
             return instance;
         }
+    }
+
+    public void RemoveAllEntities()
+    {
+        if (mapIcons == null) return;
+        
+        foreach(var icon in mapIcons)
+            Destroy(icon.Value.MapIcon);
+        mapIcons.Clear();
+    }
+
+    public void RemoveEntity(int entityId)
+    {
+        if (mapIcons == null || !mapIcons.Remove(entityId, out var mapIcon))
+            return;
+
+        Destroy(mapIcon.MapIcon);
+    }
+
+    public void SetEntityPosition(int entityId, CharacterDisplayType type, Vector2Int pos)
+    {
+        if (!mapIcons.TryGetValue(entityId, out var iconData))
+        {
+            iconData = new MinimapEntityData() { MapIcon = null, Position = pos, Type = type };
+            mapIcons.Add(entityId, iconData);
+        }
+
+        if (!gameObject.activeInHierarchy || MapImage == null || mapSprite == null)
+            return;
+
+        var scale = 0.3f;
+        if (type == CharacterDisplayType.Boss || type == CharacterDisplayType.Mvp)
+            scale = 0.4f;
+        if (type == CharacterDisplayType.Portal)
+            scale = 0.08f;
+
+        GameObject mapIcon = iconData.MapIcon;
+
+        if (mapIcon == null)
+        {
+            mapIcon = new GameObject("PlayerIcon");
+            mapIcon.transform.SetParent(MapImage.transform, false);
+
+
+            var img = mapIcon.AddComponent<Image>();
+            switch (type)
+            {
+                case CharacterDisplayType.Player: img.sprite = OtherPlayerIcon; break;
+                case CharacterDisplayType.Boss: img.sprite = BossIcon; break;
+                case CharacterDisplayType.Mvp: img.sprite = MvpIcon; break;
+                case CharacterDisplayType.Portal: img.sprite = PortalIcon; break;
+                default: 
+                    Debug.Log($"Unknown character display type for minimap icon: {type}");
+                    img.sprite = OtherPlayerIcon;
+                    break;
+            }
+
+            iconData.MapIcon = mapIcon;
+        }
+        
+        var r = mapIcon.GetComponent<RectTransform>();
+
+        r.anchorMin = Vector2.zero;
+        r.anchorMax = Vector2.zero;
+
+        var w = mapSprite.texture.width;
+        var h = mapSprite.texture.height;
+        var offset = new Vector3(0.5f, 0.5f, 0);
+
+        r.localPosition = new Vector3(pos.x * MinimapPixelsPerTile / 2f, pos.y * MinimapPixelsPerTile / 2f - h, 0f) + offset;
+
+        var px = (pos.x * MinimapPixelsPerTile / 2f + offsetX) * curSize;
+        var py = ((h - pos.y * MinimapPixelsPerTile / 2f) + offsetY) * curSize;
+
+        var scrollx = px - 125f;
+        var scrolly = py - 125f;
+
+        var maxScroll = ((Mathf.Max(w, h) * curSize - 250f));
+
+        scrollx = Mathf.Clamp(-scrollx, -maxScroll, 0);
+        scrolly = Mathf.Clamp(scrolly, 0, maxScroll);
+
+        ContentContainer.GetComponent<RectTransform>().anchoredPosition = new Vector3(scrollx, scrolly, 0f);
+
+        var s = scale * ObjectScaleFactor * (1 / curSize);
+        
+        mapIcon.transform.localScale = Vector3.one * s;
+
+        playerMapIconObject?.transform.SetAsLastSibling();
     }
 
     public void SetPlayerPosition(Vector2Int pos, float angle)
@@ -166,6 +270,10 @@ public class MinimapController : MonoBehaviour
             MapImage.transform.localPosition = Vector3.zero;
 
         lastZoom = curSize;
+        
+        if(mapIcons.Count > 0)
+            foreach(var icon in mapIcons)
+                SetEntityPosition(icon.Key, icon.Value.Type, icon.Value.Position);
     }
 
     public void UpdateZoomFromSlider()
@@ -246,6 +354,12 @@ public class MinimapController : MonoBehaviour
         UpdateZoomFromSlider();
 
         ContentContainer.gameObject.SetActive(true);
+
+        if (mapIcons.Count > 0)
+        {
+            foreach(var icon in mapIcons)
+                SetEntityPosition(icon.Key, icon.Value.Type, icon.Value.Position);
+        }
     }
 
     void Awake()

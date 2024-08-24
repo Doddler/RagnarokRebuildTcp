@@ -14,6 +14,7 @@ namespace Assets.Scripts.UI
         public Image FlashImage;
         public TextMeshProUGUI HotkeyText;
         public int Id;
+        public bool CanDrag = true;
 
         public void PressKey()
         {
@@ -34,6 +35,9 @@ namespace Assets.Scripts.UI
         
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (!CanDrag)
+                return;
+            
             HighlightImage.SetActive(true);
             
             if (UIManager.IsDraggingItem)
@@ -44,6 +48,9 @@ namespace Assets.Scripts.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            if (!CanDrag)
+                return;
+            
             HighlightImage.SetActive(false);
             
             if (UIManager.IsDraggingItem)
@@ -74,6 +81,9 @@ namespace Assets.Scripts.UI
 
         public void Clear()
         {
+            if (!CanDrag)
+                return;
+            
             DragItem.Type = DragItemType.None;
             DragItem.gameObject.SetActive(false);
             HighlightImage.SetActive(false);

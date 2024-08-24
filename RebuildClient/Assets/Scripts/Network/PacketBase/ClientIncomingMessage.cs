@@ -112,7 +112,7 @@ namespace Assets.Scripts.Network
         {
             VerifyBufferSize(32);
 
-            if ((position % 7) == 0)
+            if ((position % 8) == 0)
             {
                 var ret = BitConverter.ToSingle(Message, position / 8);
                 position += 32;

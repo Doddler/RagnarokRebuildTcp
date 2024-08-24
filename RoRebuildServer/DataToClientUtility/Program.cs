@@ -375,6 +375,32 @@ class Program
             EffectFemale = string.IsNullOrWhiteSpace(w.EffectFemale) ? string.Empty : "Assets/Sprites/Weapons/" + w.EffectFemale
         };
 
+        //skill descriptions
+
+        var lines = File.ReadAllLines(Path.Combine(path, "../Skills/SkillDescriptions.txt"));
+        var sb = new StringBuilder();
+        var curSkill = CharacterSkill.None;
+        var skillDesc = new Dictionary<CharacterSkill, string>();
+        foreach (var line in lines)
+        {
+            if (line.StartsWith("//"))
+                continue;
+            if (line.StartsWith("::"))
+            {
+                if (!Enum.TryParse<CharacterSkill>(line.Substring(2), true, out var type))
+                    throw new Exception($"Could not parse skill {line} in SkillDescriptions.txt");
+                if(curSkill != CharacterSkill.None && sb.Length > 0)
+                    skillDesc.Add(curSkill, sb.ToString().Trim());
+                curSkill = type;
+                sb.Clear();
+                continue;
+            }
+
+            sb.AppendLine(line);
+        }
+        if (curSkill != CharacterSkill.None && sb.Length > 0)
+            skillDesc.Add(curSkill, sb.ToString().Trim());
+
         //skill data
         var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
         var skillData = Toml.ToModel<Dictionary<string, SkillData>>(File.ReadAllText(Path.Combine(path, "../Skills/Skills.toml"), Encoding.UTF8), null, options);
@@ -384,6 +410,8 @@ class Program
             skill.SkillId = Enum.Parse<CharacterSkill>(id);
             if (skill.Name == null) skill.Name = id;
             if (skill.Icon == null) skill.Icon = "nv_basic";
+            if(skillDesc.TryGetValue(skill.SkillId, out var desc))
+                skill.Description = desc;
             skillOut.Add(skill);
         }
 

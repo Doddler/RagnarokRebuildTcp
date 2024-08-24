@@ -170,7 +170,7 @@ OnTimer 4200: EndEvent();
 SkillHandler("ORK_HERO") {
 StateAttacking:
     TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
-	TryCast(GrandThunderstorm, 10, 50%, 2.5s, 5s, EventOnStartCast)[HpPercent < 30] -> CreateEvent("GrandThunderstorm");
+	TryCast(GrandThunderstorm, 10, 50%, 2.5s, 8s, EventOnStartCast)[HpPercent < 30] -> CreateEvent("GrandThunderstorm");
     TryCast(TwoHandQuicken, 10, 100%, 0, 10h)[HpPercent < 30];
 	TryCast(ThunderStorm, 10, 20%, 2.5s, 5s)[HpPercent >= 30];
 StateIdle:
@@ -252,7 +252,7 @@ macro MoonlightCombatActions() {
 }
 
 //caster clone AI
-SkillHandler("MOONLIGHT_C1") {
+AltSkillHandler("MOONLIGHT_C1") {
 	StateAny:
 		TryCast(ColdBolt, 5, 100%, 0.8s, 10s, EventOnStartCast) -> SendEmote(29); //gg
 		TryCast(FireBolt, 5, 100%, 0.8s, 10s);
@@ -262,7 +262,7 @@ SkillHandler("MOONLIGHT_C1") {
 }
 
 //Mammonite clone AI
-SkillHandler("MOONLIGHT_C2") {
+AltSkillHandler("MOONLIGHT_C2") {
 	StateAttacking:
 		TryCast(Mammonite, 10, 100%, 0, 5s) -> SendEmote(8);
 	OnDie:
@@ -270,7 +270,7 @@ SkillHandler("MOONLIGHT_C2") {
 }
 
 //Minion clone AI
-SkillHandler("MOONLIGHT_C3") {
+AltSkillHandler("MOONLIGHT_C3") {
 	StateAny:
 		TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> SummonMinions(5, "NINE_TAIL");
 		TryCast(Heal, 4999, 100%, 0.7s, 5s)[FindAllyBelowHpPercent(60)];

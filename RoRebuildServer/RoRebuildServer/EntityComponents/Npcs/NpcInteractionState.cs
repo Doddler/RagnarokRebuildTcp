@@ -8,7 +8,10 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Xml.Linq;
 using Microsoft.Extensions.Options;
 using RoRebuildServer.Data;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Simulation;
+using System;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
 
@@ -89,14 +92,83 @@ public class NpcInteractionState
         npc.OptionAdvance(Player, result);
     }
 
+    public void SetFlag(string name, int value)
+    {
+        if (name.Length > 16)
+            throw new Exception($"Npc flag '{name}' is too long! It must be 16 or fewer characters in length.");
+        Player?.SetNpcFlag(name, value);
+    }
+    public int GetFlag(string name) => Player?.GetNpcFlag(name) ?? 0;
+    public int Level => Player?.GetStat(CharacterStat.Level) ?? 0;
+    public int UnusedSkillPoints => Player?.GetData(PlayerStat.SkillPoints) ?? 99;
+    public int JobId => Player?.GetData(PlayerStat.Job) ?? 0;
+    public void ChangePlayerJob(int jobId) => Player?.ChangeJob(jobId);
+    public void SkillReset() => Player?.SkillReset();
+
     public void FocusNpc()
     {
         if (Player == null)
             return;
 
-        CommandBuilder.SendFocusNpc(Player, NpcEntity.Get<Npc>());
+        CommandBuilder.SendFocusNpc(Player, NpcEntity.Get<Npc>(), true);
     }
-    
+
+    public void ReleaseFocus()
+    {
+        if (Player == null)
+            return;
+
+        CommandBuilder.SendFocusNpc(Player, NpcEntity.Get<Npc>(), false);
+    }
+
+    public void ShowEffectOnPlayer(string effectName)
+    {
+        if (Player == null || Player.Character.Map == null) return;
+        if (!NpcEntity.TryGet<WorldObject>(out var npc)) return;
+
+        var id = DataManager.EffectIdForName[effectName];
+
+        Player.Character.Map.AddVisiblePlayersAsPacketRecipients(Player.Character);
+        CommandBuilder.SendEffectOnCharacterMulti(Player.Character, id);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void ChangePlayerGender()
+    {
+        if (Player == null || Player.Character.Map == null) return;
+        var gender = Player.GetData(PlayerStat.Gender);
+        Player.SetData(PlayerStat.Gender, gender == 0 ? 1 : 0);
+        Player.Character.Map.RefreshEntity(Player.Character);
+        Player.UpdateStats();
+    }
+
+    public void ChangePlayerHairToRandom()
+    {
+        if (Player == null || Player.Character.Map == null) return;
+        Player.SetData(PlayerStat.Head, GameRandom.NextInclusive(0, 28));
+        Player.Character.Map.RefreshEntity(Player.Character);
+        Player.UpdateStats();
+    }
+
+    public void ChangePlayerAppearanceToRandom()
+    {
+        if (Player == null || Player.Character.Map == null) return;
+        Player.SetData(PlayerStat.Gender, GameRandom.NextInclusive(0, 1));
+        Player.SetData(PlayerStat.Head, GameRandom.NextInclusive(0, 28));
+        Player.Character.Map.RefreshEntity(Player.Character);
+        Player.UpdateStats();
+    }
+
+    public void ResetCharacterToInitialState()
+    {
+        if (Player == null || Player.Character.Map == null) return;
+        Player.SetData(PlayerStat.Status, 0);
+        Player.Init();
+        Player.Character.Map.RefreshEntity(Player.Character);
+        Player.UpdateStats();
+    }
+
+
     public void ShowSprite(string spriteName, int pos)
     {
         //Console.WriteLine("ShowSprite " + spriteName);

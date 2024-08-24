@@ -36,5 +36,5 @@ MapConfig("prt_sewb4")
 	CreateSpawn("THIEF_BUG__", 70);
 	CreateSpawn("DRAINLIAR", 20);
 	CreateSpawn("CRAMP", 5);
-	CreateSpawn("GOLDEN_BUG", 1, 3600000, 1800000);
+	CreateSpawn("GOLDEN_BUG", 1, 3600000, 1800000, MVP);
 }

@@ -1,31 +1,266 @@
 ﻿
+macro BardAboutRebuild()
+{
+	Dialog(Name, "Ragnarok Rebuild is a remake of sorts, the whole thing including the client and server were built from the ground up. "
+			+ "It's not completely faithful to the original, but it should still feel pretty familiar if you've played before.");
+
+	Dialog(Name, "I wouldn't consider this a real server though, it's more of a developer testing ground for trying out new features. "
+			+ "Don't let that stop you from looking around though, you're more than welcome to do as you wish.")
+
+	Dialog(Name, "This whole thing is very much a work in progress so there's a lot of things missing that you might expect to work. "
+			+ "You can't interact with most NPCs, but the Kafra staff can still help you out. ");
+
+	Dialog(Name, "There's currently no items, equipment, stats, you simply get stronger as you level. "
+			+ "Skills are pretty limited, and if you need to job change you'll need to ask me about it.");
+
+	Dialog(Name, "I recommend checking the help menu in the bottom right, it'll help you figure out what you can do here. "
+			+ "You should also check out that warp button, it lets you jump to any map on the server.");
+
+	ShowSprite("bard_eland02", right);
+
+	Dialog(Name, "You're free to offer feedback at the @RoDoddler twitter account afterwards if you want. "
+			+ "I know it's possible to reach level 99 without cheating so be sure to let him know if you manage it yourself! :)");
+}
+
+macro BardChangeJob()
+{
+	ShowSprite("bard_eland01", right);
+	if(Level < 10)
+	{
+		Dialog(Name, "Looking to change jobs are you? I can help you out with that, but first you'll need to get to level 10.");
+		return;
+	}
+	if(JobId == 0 && UnusedSkillPoints > 0)
+	{
+		Dialog(Name, "Looking to change jobs are you? You're level 10 alright, but you'll need to spend your unused skill points before I can help.");
+		Dialog(Name, "I'm not actually sure what that basic mastery skill does but you still need to spend the points first.");
+		return;
+	}
+	Dialog(Name, "Looking to change jobs are you? Well then! What were you thinking of becoming?");
+	Option("Novice", "Swordsman", "Archer", "Mage", "Acolyte", "Thief", "Merchant", "Cancel");
+	if(result == 7)
+		Dialog(Name, "I'll be here to help you out if you change your mind!");
+
+	var jobChoice = result;
+	if(jobChoice == JobId)
+	{
+		Dialog(Name, "What a good choice! But that's already your job so there's not much I can help you out with.");
+		return;
+	}
+
+	if(jobChoice == 0) Dialog(Name, "A novice! What a weird thing to want to become. But if that's your choice I can still do it. What do you say?");
+	if(jobChoice == 1) Dialog(Name, "A swordsman? Very good! Are you sure you want to become a swordsman?");
+	if(jobChoice == 2) Dialog(Name, "An archer? Very good! Are you sure you want to become an archer?");
+	if(jobChoice == 3) Dialog(Name, "A mage? Very good! Are you sure you want to become a mage?");
+	if(jobChoice == 4) Dialog(Name, "A acolyte? Very good! Are you sure you want to become a acolyte?");
+	if(jobChoice == 5) Dialog(Name, "A thief? Very good! Are you sure you want to become a thief?");
+	if(jobChoice == 6) Dialog(Name, "A merchant? Very good! Are you sure you want to become a merchant?");
+
+	Option("I'm sure", "I changed my mind");
+	if(result == 1)
+	{
+		Dialog(Name, "I'll be here to help you out when you make up your mind.");
+		return;
+	}
+
+	ReleaseFocus();
+	ChangePlayerJob(jobChoice);
+	ShowEffectOnPlayer("JobUp");
+
+	ShowSprite("bard_eland02", right);
+	Dialog(Name, "It's done! Have fun, and while I'm not supposed to do this, if you regret your choice and want to change jobs again, just let me know.");
+
+	return;
+}
+
+macro BardSkillReset()
+{
+	ShowSprite("bard_eland01", right);
+	if(JobId == 0)
+	{
+		Dialog(Name, "Looking to reset your skills are you? Unfortunately I can't reset your novice skills so I can't help you out much there.");
+		return;
+	}
+	else
+	{
+		Dialog(Name, "You're looking to reest your skills are you? I can reset all of your skill points you used, except those put into your novice skills. Are you sure you want to?");
+		Option("Reset Skills", "No thanks");
+
+		if(result == 0)
+		{
+			SkillReset();
+			Dialog(Name, "It's done! Be sure to be more careful with those skill points next time.");
+			return;
+		}
+
+		Dialog(Name, "That's fine by me, let me know if you ever want that skill reset sometime.");
+
+	}
+}
+
+macro BardRandomizeAppearance()
+{
+	ShowSprite("bard_eland01", right);
+	Dialog(Name, "You want to randomize your appearance? Sure, what exactly do you want to change?");
+	Option("Change Gender", "Randomize Hair", "Randomize Both", "Cancel");
+
+	switch(result)
+	{
+		case 0: ReleaseFocus(); ChangePlayerGender();
+		case 1: ReleaseFocus(); ChangePlayerHairToRandom();
+		case 2: ReleaseFocus(); ChangePlayerAppearanceToRandom();
+		case 3: 
+			Dialog(Name, "No pressure, just let me know if you change your mind.");
+			return;
+	}
+
+	ShowSprite("bard_eland02", right);
+	Dialog(Name, "We're done! Enjoy the new you, and let me know if you ever need a change.");
+	return;
+}
+
+macro FullCharacterReset()
+{
+	ShowSprite("bard_eland01", right);
+	Dialog(Name, "Woah, you want to do a full character reset? I guess it makes sense, it's tricky to make a new character with how this is all set up, but are you sure?");
+	Option("I'd like to reset", "Cancel");
+	if(result == 0)
+	{
+		Dialog(Name, "Resetting your character will <i>set you to level 1 and reset all of your skills.</i>\nAre you <i>really</i> sure?");
+		Option("Reset my character", "Cancel");
+		if(result == 0)
+		{
+			ResetCharacterToInitialState();
+			return;
+		}
+	}
+}
+
+macro BardWarps1to10()
+{
+	Option("North of Morroc (Picky, Pecopeco Egg)", "South of Payon (Willow, Spore)", "North Geffen (Chonchon, Rodafrog)", "South-West of Prontera (Rocker)", "Cancel");
+	if(result < 4)
+		Dialog(Name, "I'll send you right over! <i>Hocus-Pocus!</i>");
+	switch(result)
+	{
+		case 0: MoveTo("moc_fild07", 198, 38);
+		case 1: MoveTo("pay_fild01", 333, 350);
+		case 2: MoveTo("gef_fild04", 188, 47);
+		case 3: MoveTo("prt_fild07", 368, 241);
+	}
+}
+
+macro BardWarps11to20()
+{
+	Option("North Morroc (Muka, Pecopeco)", "Mt. Mjolnir (Horn, Wolf)", "Byalan Dungeon (Vadon, Kukre)", "Prontera Culverts 2F (Thief Bug)",
+		   "Payon Dungeon 1F (Skeleton, Zombie)", "South-East Payon (Elder Willow)", "Ant Hell (Ants, More Ants)", "Cancel");
+	if(result < 7)
+		Dialog(Name, "I'll send you right over! <i>Hocus-Pocus!</i>");
+	switch(result)
+	{
+		case 0: MoveTo("moc_fild06", 31, 204);
+		case 1: MoveTo("mjolnir_09", 305, 34);
+		case 2: MoveTo("iz_dun00", 168, 168);
+		case 3: MoveTo("prt_sewb2", 20, 23);
+		case 4: MoveTo("pay_dun00", 21, 179);
+		case 5: MoveTo("pay_fild07", 280, 377);
+		case 6: MoveTo("anthell01", 38, 261);
+	}
+}
+
+macro BardWarps21to30()
+{
+	Option("Geffen Dungeon 1f (Poison Spore)", "Sphinx 1F (Anacondaq, Scorpion)", "Culverts 4F (Male Thiefbug)", "South Morroc Field (Hodes)",
+		   "Orc Dungeon 1F (Orc Zombie)", "Goblin Forest (goblins)", "Cancel");
+	if(result < 6)
+		Dialog(Name, "I'll send you right over! <i>Hocus-Pocus!</i>");
+	switch(result)
+	{
+		case 0: MoveTo("gef_dun00", 104, 99);
+		case 1: MoveTo("in_sphinx1", 288, 15);
+		case 2: MoveTo("prt_sewb4", 103, 91);
+		case 3: MoveTo("moc_fild18", 158, 376);
+		case 4: MoveTo("orcsdun01", 32, 168);
+		case 5: MoveTo("prt_fild11", 24, 282);
+	}
+}
+
+macro BardWarps31to40()
+{
+	Option("Pyramids 2F-3F (Skeletons, Mummies)", "Assassin's Guild (Sandman)", "Payon Dungeon 3F (Munak, Bongun)", "West Geffen Fields (Kobolds)",
+		   "Byalan Dungeon 4F (Marc, Swordfish)", "Cancel");
+	if(result < 5)
+		Dialog(Name, "I'll send you right over! <i>Hocus-Pocus!</i>");
+	switch(result)
+	{
+		case 0: MoveTo("moc_pryd02", 10, 190);
+		case 1: MoveTo("moc_fild16", 22, 181);
+		case 2: MoveTo("pay_dun02", 26, 64);
+		case 3: MoveTo("gef_fild08", 350, 188);
+		case 4: MoveTo("iz_dun03", 35, 64);
+	}
+}
+
+macro BardWarp41AndAbove()
+{
+	Dialog(Name, "Ah sorry, I wasn't able to get a full list of warps set up for anything level 41 and above. There's some spots worth checking out though you can warp to yourself like clocktower, Glast Heim church and catacombs (for anolians), orc village (geffen 14), bathories, etc.");
+	return;
+}
+
+macro BardWarps()
+{
+	ShowSprite("bard_eland01", right);
+	Dialog(Name, "You can use that warp button in the bottom right to go anywhere you want, but maybe you'd rather have suggestions?");
+	Option("Recommend me somewhere", "I'd like to chose", "Cancel");
+	if(result == 2) return;
+	var range = 0;
+	if(result == 0)
+	{
+		Dialog(Name, "Lets see, you're level " + Level + ", right? How about one of these maps?");
+		if(Level < 11) range = 0;
+		else if(Level < 21) range = 1;
+		else if(Level < 31) range = 2;
+		else if(Level < 41) range = 3;
+		else if(Level < 60) range = 4;
+		else if(Level < 80) range = 5;
+		else range = 6;
+	}
+	else
+	{
+		Option("Level 1-10", "Level 11-20", "Level 21-30", "Level 31-40", "Level 41-60", "Level 61-80", "As hard as it gets", "Cancel");
+		if(result > 6) return;
+		range = result;
+	}
+	
+	if(range == 0) @BardWarps1to10();
+	if(range == 1) @BardWarps11to20();
+	if(range == 2) @BardWarps21to30();
+	if(range == 3) @BardWarps31to40();
+	if(range > 3) @BardWarp41AndAbove();
+	return;
+}
+
 Npc("prt_fild08", "Bard", "1_M_BARD", 175, 374, SW, 1, 1) 
 {
 	OnClick:
 		FocusNpc();
 		ShowSprite("bard_eland01", right);
 
-		Dialog(Name, "Hey there, welcome to Ragnarok Rebuild! It's rare to see new faces here, links to this place aren't easy to come by. "
-				   + "Since you're already here though let me tell you a little bit about this place.");
+		Dialog(Name, "Hey there, welcome to Ragnarok Rebuild! I don't see new faces around very often you see, since you're here let me help you out.");
 
-		Dialog(Name, "Ragnarok Rebuild is a remake of sorts, the whole thing including the client and server were built from the ground up. "
-		           + "It's not completely faithful to the original, but it should still feel pretty familiar if you've played before.");
-
-		Dialog(Name, "I wouldn't consider this a real server though, it's more of a developer testing ground for trying out new features. "
-				   + "Don't let that stop you from looking around though, you're more than welcome to do as you wish.")
-
-		Dialog(Name, "This whole thing is very much a work in progress so there's a lot of things missing that you might expect to work. "
-				   + "You can't interact with most NPCs, but the Kafra staff can still help you out. ");
-
-		Dialog(Name, "There's currently no items, equipment, stats, you simply get stronger as you level. "
-		           + "There's not even any skills! Well that's not quite true, but you'll see what I mean later.");
-
-		Dialog(Name, "I recommend checking the help menu in the bottom right, it'll help you figure out what you can do here. You can even level yourself up! "
-				   + "You should also check out that warp button, it lets you jump to any map on the server.");
-
-		ShowSprite("bard_eland02", right);
-
-		Dialog(Name, "You're free to offer feedback at the @RoDoddler twitter account afterwards if you want. "
-				   + "I know it's possible to reach level 99 without cheating so be sure to let him know if you manage it yourself! :)");
+		result = 0;
+		while(result < 3)
+		{
+			Option("About Rebuild", "Job change", "Skill reset", "Change appearance", "Send me somewhere", "Full character reset", "Cancel");
+			switch(result) 
+			{
+				case 0: @BardAboutRebuild();
+				case 1:	@BardChangeJob();
+				case 2: @BardSkillReset();
+				case 3: @BardRandomizeAppearance();
+				case 4: @BardWarps();
+				case 4: @FullCharacterReset();
+			}
+		}
 
 }

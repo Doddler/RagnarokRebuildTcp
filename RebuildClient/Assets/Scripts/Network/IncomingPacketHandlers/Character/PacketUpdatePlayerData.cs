@@ -22,6 +22,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 State.KnownSkills.Add((CharacterSkill)msg.ReadByte(), msg.ReadByte());
             
             UiManager.SkillManager.UpdateAvailableSkills();
+            CameraFollower.Instance.UpdatePlayerSP(sp, maxSp);
         }
     }
 }

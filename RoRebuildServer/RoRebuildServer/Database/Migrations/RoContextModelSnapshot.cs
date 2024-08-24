@@ -15,7 +15,7 @@ namespace RoRebuildServer.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
             modelBuilder.Entity("RoRebuildServer.Database.Domain.DbCharacter", b =>
                 {
@@ -26,6 +26,9 @@ namespace RoRebuildServer.Migrations
                     b.Property<byte[]>("Data")
                         .HasColumnType("BLOB");
 
+                    b.Property<byte[]>("ItemData")
+                        .HasColumnType("BLOB");
+
                     b.Property<string>("Map")
                         .HasColumnType("TEXT");
 
@@ -33,6 +36,9 @@ namespace RoRebuildServer.Migrations
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("NpcFlags")
+                        .HasColumnType("BLOB");
 
                     b.Property<byte[]>("SkillData")
                         .HasColumnType("BLOB");

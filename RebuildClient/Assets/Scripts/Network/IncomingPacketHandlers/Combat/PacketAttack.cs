@@ -26,6 +26,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
             var showAttackAction = msg.ReadBoolean();
+            var resultType = (AttackResult)msg.ReadByte();
 
             var weaponClass = 0;
 
@@ -38,7 +39,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 HitCount = hits,
                 MotionTime = motionTime,
                 DamageTiming = motionTime,
-                Result = AttackResult.NormalDamage,
+                Result = resultType,
             };
 
             if (hasSrc)
@@ -56,7 +57,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                         //controllable2.Messages.SendHitEffect(controllable, motionTime + arrow.Duration);
                     }
                     //else
-                    controllable2.Messages.SendHitEffect(controllable, motionTime);
+                    if(dmg > 0)
+                        controllable2.Messages.SendHitEffect(controllable, motionTime);
                 }
                 else
                 {
@@ -76,13 +78,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
                 weaponClass = controllable.WeaponClass;
             }
+            
+            if(resultType == AttackResult.Miss)
+                controllable.Messages.SendMissEffect(motionTime);
 
             if (hasTarget)
             {
-                var damageTiming = motionTime;
+                if(dmg > 0)
+                    controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits);
                 
-                controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits);
-
                 //StartCoroutine(DamageEvent(dmg, damageTiming, hits, weaponClass, controllable2));
             }
         }

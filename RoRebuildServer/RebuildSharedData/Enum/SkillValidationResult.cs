@@ -10,6 +10,7 @@ namespace RebuildSharedData.Enum
         Success,
         InvalidTarget,
         NoLineOfSight,
-        IncorrectWeapon
+        IncorrectWeapon,
+        InsufficientSp
     }
 }

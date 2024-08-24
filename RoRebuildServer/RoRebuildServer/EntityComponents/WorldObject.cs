@@ -32,13 +32,16 @@ public class WorldObject : IEntityAutoReset
     public string Name = null!;
     public bool IsActive;
     public bool Hidden { get; set; }
+    public bool IsImportant { get; set; }
     public int ClassId;
     public Direction FacingDirection;
     public CharacterState State { get; set; }
     public CharacterType Type;
+    public CharacterDisplayType DisplayType; //used for minimap icons if they're flagged as map important
     public Position TargetPosition;
     public float MoveModifier;
     public float MoveModifierTime;
+    public int StepCount;
 
     public override string ToString() => $"WorldObject {Type}-{Id}({Name})";
 
@@ -57,6 +60,10 @@ public class WorldObject : IEntityAutoReset
         {
             cellPosition = value;
             WorldPosition = value; //cast to FloatPosition
+//#if DEBUG
+//            if (Map != null && !Map.GetChunkForPosition(cellPosition).AllEntities.Contains(Entity))
+//                throw new Exception("OHNO!");
+//#endif
         }
     }
 
@@ -191,6 +198,8 @@ public class WorldObject : IEntityAutoReset
         FacingDirection = Direction.South;
         WalkPath = null;
         QueuedAction = QueuedAction.None;
+        DisplayType = CharacterDisplayType.None;
+        StepCount = 0;
         ClearVisiblePlayerList();
     }
 
@@ -236,6 +245,15 @@ public class WorldObject : IEntityAutoReset
             State = CharacterState.Idle;
     }
 
+    public bool IsAbleToBeSeenBy(WorldObject target)
+    {
+        if (!IsActive)
+            return false;
+        if (this == target)
+            return true;
+        return !Hidden;
+    }
+
     public void AddVisiblePlayer(Entity e)
     {
         if (visiblePlayers == null)
@@ -257,13 +275,14 @@ public class WorldObject : IEntityAutoReset
     }
 
     public bool HasVisiblePlayers() => visiblePlayers != null && visiblePlayers.Count > 0;
+    public bool IsPlayerVisible(Entity e) => visiblePlayers?.Contains(e) ?? false;
 
-    public bool IsPlayerVisible(Entity e)
+    public int CountVisiblePlayers()
     {
         if (visiblePlayers == null)
-            return false;
-
-        return visiblePlayers.Contains(e);
+            return 0;
+        visiblePlayers.ClearInactive();
+        return visiblePlayers.Count;
     }
 
     public void RemoveVisiblePlayer(Entity e)
@@ -371,22 +390,25 @@ public class WorldObject : IEntityAutoReset
         }
     }
 
-    public bool AddMoveLockTime(float delay)
+    public bool AddMoveLockTime(float delay, bool force = false)
     {
         Debug.Assert(Map != null);
 
         if (delay <= 0f)
             return false;
 
-        if (InMoveLock && MoveLockTime < Time.ElapsedTimeFloat)
+        if (InMoveLock && MoveLockTime < Time.ElapsedTimeFloat && !force)
             return false;
         
         if (!InMoveLock && State == CharacterState.Moving)
             StopMovingImmediately(false); //tell the client we stop, but we don't want to leave move state
 
-
-        MoveLockTime = Time.ElapsedTimeFloat + delay;
+        if(!force || Time.ElapsedTimeFloat + delay > MoveLockTime)
+            MoveLockTime = Time.ElapsedTimeFloat + delay;
         InMoveLock = true;
+
+        if(Type == CharacterType.Monster)
+            Monster.AdjustAiUpdateIfShorter(MoveLockTime);
 
         return true;
     }
@@ -454,6 +476,8 @@ public class WorldObject : IEntityAutoReset
             QueuedAction = QueuedAction.Move; //if we're casting we need to wait until we finish before we can move
             return true;
         }
+
+        QueuedAction = QueuedAction.None;
 
         State = CharacterState.Moving;
         
@@ -642,8 +666,10 @@ public class WorldObject : IEntityAutoReset
 
         if (lastCell != newCell)
         {
-            Map.ChangeEntityPosition(ref Entity, this, lastPosition, newPosition, true);
-            Map.TriggerAreaOfEffectForCharacter(this, lastPosition, newPosition);
+            //Map.ChangeEntityPosition(ref Entity, this, lastCell, newCell, newPosition, true);
+            StepCount++;
+            Map.ChangeEntityPosition3(this, lastPosition, newPosition, true);
+            Map.TriggerAreaOfEffectForCharacter(this, lastCell, newCell);
             FacingDirection = dir;
         }
 

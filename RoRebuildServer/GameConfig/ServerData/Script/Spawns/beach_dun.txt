@@ -5,7 +5,7 @@ MapConfig("beach_dun")
 	CreateSpawn("NERAID", 15);
 	CreateSpawn("PEST", 15);
 	CreateSpawn("PENOMENA", 5, 30000);
-	CreateSpawn("TAO_GUNKA", 1, 7380000, 3600000);
+	CreateSpawn("TAO_GUNKA", 1, 7380000, 3600000, MVP);
 }
 
 MapConfig("beach_dun2")

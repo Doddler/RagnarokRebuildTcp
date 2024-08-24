@@ -32,7 +32,7 @@ MapConfig("cmd_fild02")
 
 MapConfig("cmd_fild03")
 {
-	CreateSpawn("MUTANT_DRAGON", 1, 3600000, 1800000);
+	CreateSpawn("MUTANT_DRAGON", 1, 3600000, 1800000, Boss);
 	CreateSpawn("PEST", 20);
 	CreateSpawn("POPORING", 10);
 	CreateSpawn("ANOLIAN", 70);
@@ -172,7 +172,7 @@ MapConfig("cmd_fild08")
 	CreateSpawn("SIDE_WINDER", 2, %(326, 258, 50, 110));
 	CreateSpawn("SIDE_WINDER", 3);
 	CreateSpawn("SIDE_WINDER", 15, %(130, 192, 110, 150));
-	CreateSpawn("GRYPHON", 1, 3600000, 1800000);
+	CreateSpawn("GRYPHON", 1, 3600000, 1800000, Boss);
 	CreateSpawn("YELLOW_PLANT", 4, %(60, 143, 10, 10), 1800000, 900000);
 	CreateSpawn("YELLOW_PLANT", 4, %(130, 201, 10, 10), 1800000, 900000);
 }

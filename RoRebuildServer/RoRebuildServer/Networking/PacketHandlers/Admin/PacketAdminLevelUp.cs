@@ -35,5 +35,6 @@ public class PacketAdminLevelUp : IClientPacketHandler
         CommandBuilder.ClearRecipients();
 
         CommandBuilder.SendExpGain(character.Player, 0);
+        CommandBuilder.ChangeSpValue(character.Player, character.Player.GetStat(CharacterStat.Sp), character.Player.GetStat(CharacterStat.MaxSp));
     }
 }

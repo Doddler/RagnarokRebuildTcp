@@ -15,18 +15,26 @@ public class PacketSay : IClientPacketHandler
             return;
 
         var text = msg.ReadString();
-        if (text.Length > 255)
+        var isShout = msg.ReadBoolean();
+        if (text.Length > 140)
         {
-            CommandBuilder.SendRequestFailed(connection.Player!, ClientErrorType.MalformedRequest);
+            CommandBuilder.SendRequestFailed(connection.Player!, ClientErrorType.RequestTooLong);
             return;
         }
 
 #if DEBUG
-        ServerLogger.Log($"Chat message from '{connection.Player!.Name}: {text}");
+        if(isShout)
+            ServerLogger.Log($"Shout chat message from [{connection.Player!.Name}]: {text}");
+        else
+            ServerLogger.Log($"Chat message from [{connection.Player!.Name}]: {text}");
 #endif
 
-        map.AddVisiblePlayersAsPacketRecipients(connection.Character);
-        CommandBuilder.SendSayMulti(connection.Character, text);
+        if(isShout)
+            CommandBuilder.AddAllPlayersAsRecipients();
+        else
+            CommandBuilder.AddRecipients(map.Players); //send to everyone on the map
+        //map.AddVisiblePlayersAsPacketRecipients(connection.Character);
+        CommandBuilder.SendSayMulti(connection.Character, connection.Character.Name, text, isShout);
         CommandBuilder.ClearRecipients();
     }
 

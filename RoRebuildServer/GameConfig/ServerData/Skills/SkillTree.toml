@@ -9,13 +9,13 @@ FirstAid = [["BasicMastery", 8]]
 JobRank = 1
 Extends = "Novice"
 [Swordsman.SkillTree]
-SwordMastery = []
-TwoHandSwordMastery = [["SwordMastery", 1]]
-IncreasedHPRecovery = []
+#SwordMastery = []
+#TwoHandSwordMastery = [["SwordMastery", 1]]
+#IncreasedHPRecovery = []
 Bash = []
-MagnumBreak = [["Bash", 5]]
+#MagnumBreak = [["Bash", 5]]
 Provoke = []
-Endure = [["Provoke", 5]]
+#Endure = [["Provoke", 5]]
 TwoHandQuicken = [["Bash", 10], ["Provoke", 5]] #just for testing
 
 [Archer]
@@ -23,23 +23,23 @@ JobRank = 1
 Extends = "Novice"
 [Archer.SkillTree]
 DoubleStrafe = []
-ArrowShower = []
-ImproveConcentration = []
+#ArrowShower = []
+#ImproveConcentration = []
 
 [Mage]
 JobRank = 1
 Extends = "Novice"
 [Mage.SkillTree]
-IncreaseSPRecovery = []
+#IncreaseSPRecovery = []
 FireBolt = []
-FireBall = [["FireBolt", 4]]
-FireWall = [["FireBall", 5]]
+#FireBall = [["FireBolt", 4]]
+#FireWall = [["FireBall", 5]]
 LightningBolt = []
 ThunderStorm = [["LightningBolt", 4]]
 ColdBolt = []
-FrostDriver = [["ColdBolt", 5]]
-SoulStrike = []
-SafetyWall = [["SoulStrike", 5]]
+#FrostDriver = [["ColdBolt", 5]]
+#SoulStrike = []
+#SafetyWall = [["SoulStrike", 5]]
 
 [Acolyte]
 JobRank = 1
@@ -47,18 +47,20 @@ Extends = "Novice"
 [Acolyte.SkillTree]
 IncreaseSPRecovery = []
 Heal = []
-Blessing = []
-IncreaseAgility = []
+#Blessing = []
+#IncreaseAgility = []
 
 [Thief]
 JobRank = 1
 Extends = "Novice"
 [Thief.SkillTree]
 DoubleAttack = []
+ImproveDodge = []
 
 [Merchant]
 JobRank = 1
 Extends = "Novice"
 [Merchant.SkillTree]
 Mammonite = []
+PushCart = []
 

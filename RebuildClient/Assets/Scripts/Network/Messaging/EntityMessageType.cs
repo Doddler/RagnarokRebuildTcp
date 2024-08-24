@@ -7,6 +7,7 @@
         ComboDamage,
         AttackMotion,
         TakeHit,
-        HitEffect
+        HitEffect,
+        Miss
     }
 }

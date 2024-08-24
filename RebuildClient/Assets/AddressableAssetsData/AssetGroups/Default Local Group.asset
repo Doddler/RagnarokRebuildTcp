@@ -10514,6 +10514,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Effect
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c07465723628e04d9065259ddb97c05
+    m_Address: "Assets/Sprites/Characters/HeadFemale/4_\uC5EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

@@ -506,7 +506,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 var c1 = new Color(1f, 1f, 1f, 1f);
 
                 var colors = new Color[4] { c, c, c, c };
-
+                
                 var count = 0;
                 var gos = new List<GameObject>();
 

@@ -15,5 +15,6 @@ public class NpcSpawnDefinition
     public required int Height { get; set; }
     public required bool HasInteract { get; set; }
     public required bool HasTouch { get; set; }
+    public required CharacterDisplayType DisplayType { get; set; }
     public required NpcBehaviorBase Behavior { get; set; }
 }

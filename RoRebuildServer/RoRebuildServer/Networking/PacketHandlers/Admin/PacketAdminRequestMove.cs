@@ -6,12 +6,13 @@ using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
-[AdminClientPacketHandler(PacketType.AdminRequestMove)]
+//NOTE! This is a regular client packet handler rather than an admin one
+[ClientPacketHandler(PacketType.AdminRequestMove)]
 public class PacketAdminRequestMove : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (!connection.IsConnectedAndInGame)
+        if (!connection.IsPlayerAlive)
             return;
 
         if (!connection.IsAdmin && !ServerConfig.DebugConfig.EnableWarpCommandForEveryone)

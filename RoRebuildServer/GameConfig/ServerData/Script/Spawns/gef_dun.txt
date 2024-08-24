@@ -42,7 +42,7 @@ MapConfig("gef_dun02")
 	CreateSpawn("MARIONETTE", 40);
 	CreateSpawn("DEVIRUCHI", 40);
 	CreateSpawn("NIGHTMARE", 80, 15000);
-	CreateSpawn("DOPPELGANGER", 1, 2h, 10m);
+	CreateSpawn("DOPPELGANGER", 1, 2h, 10m, MVP);
 	CreateSpawn("WHITE_PLANT", 3, %(214, 212, 10, 10), 180000, 90000);
 	CreateSpawn("WHITE_PLANT", 3, %(215, 67, 10, 10), 180000, 90000);
 	CreateSpawn("WHITE_PLANT", 3, %(72, 210, 20, 20), 180000, 90000);

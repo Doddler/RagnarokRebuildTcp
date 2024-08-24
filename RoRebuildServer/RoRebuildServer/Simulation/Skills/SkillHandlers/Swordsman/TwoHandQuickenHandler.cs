@@ -14,9 +14,9 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
         {
             var ch = source.Character;
 
-            source.ApplyCooldownForAttackAction();
+            source.ApplyCooldownForSupportSkillAction();
 
-            var timing = 100;
+            var timing = 10 * lvl;
             if (source.Character.Type == CharacterType.Monster && lvl >= 10)
                 timing = 200;
             

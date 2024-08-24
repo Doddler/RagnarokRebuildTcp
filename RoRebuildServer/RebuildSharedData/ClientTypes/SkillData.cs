@@ -19,5 +19,6 @@ public class SkillData
     public int MaxLevel;
     public int[] SpCost;
     public bool AdjustableLevel;
+    public string Description;
 }
 

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
+using Assets.Scripts.Objects;
 using RebuildSharedData.Enum;
 using UnityEngine;
 
@@ -15,6 +16,13 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             if (attack.Target == null)
                 return;
             
+            Debug.Log("Heal: " + attack.Damage);
+            
+            if (attack.Damage > 0)
+            {
+                attack.Target?.Messages.SendHitEffect(src, attack.MotionTime, 2);
+            }
+            
             switch (-attack.Damage)
             {
                 case < 200:
@@ -27,6 +35,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
                     HealEffect.Create(attack.Target.gameObject, 2);
                     break;
             }
+
+
         }
     }
 }

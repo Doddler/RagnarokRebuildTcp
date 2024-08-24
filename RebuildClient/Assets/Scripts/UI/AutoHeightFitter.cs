@@ -10,6 +10,8 @@ namespace Assets.Scripts.UI
     {
         public RectTransform[] MatchElements;
         private Vector2 lastSize;
+
+        public void UpdateRectSize() => OnRectTransformDimensionsChange();
         
         protected override void OnRectTransformDimensionsChange()
         {

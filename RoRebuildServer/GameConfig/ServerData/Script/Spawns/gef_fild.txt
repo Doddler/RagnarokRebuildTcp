@@ -14,7 +14,7 @@ MapConfig("gef_fild01")
 {
 	CreateSpawn("RODA_FROG", 50);
 	CreateSpawn("POPORING", 20);
-	CreateSpawn("TOAD", 1, 3600000, 1800000);
+	CreateSpawn("TOAD", 1, 3600000, 1800000, Boss);
 	CreateSpawn("GREEN_PLANT", 5, %(215, 225, 10, 10), 360000, 180000);
 }
 
@@ -157,7 +157,7 @@ MapConfig("gef_fild09")
 
 MapConfig("gef_fild10")
 {
-	CreateSpawn("ORC_LORD", 1, 7200000, 3600000);
+	CreateSpawn("ORC_LORD", 1, 7200000, 3600000, MVP);
 	CreateSpawn("ORK_WARRIOR", 15);
 	CreateSpawn("ORC_LADY", 75);
 	CreateSpawn("POPORING", 15);
@@ -169,7 +169,7 @@ MapConfig("gef_fild10")
 
 MapConfig("gef_fild11")
 {
-	CreateSpawn("GOBLIN_LEADER", 1, 1800000, 1200000);
+	CreateSpawn("GOBLIN_LEADER", 1, 1800000, 1200000, Boss);
 	CreateSpawn("GOBLIN_1", 30);
 	CreateSpawn("GOBLIN_2", 25);
 	CreateSpawn("GOBLIN_3", 25);
@@ -207,7 +207,7 @@ MapConfig("gef_fild13")
 MapConfig("gef_fild14")
 {
 	CreateSpawn("ORC_LADY", 40);
-	CreateSpawn("ORK_HERO", 1, 3600000, 1800000);
+	CreateSpawn("ORK_HERO", 1, 3600000, 1800000, MVP);
 	CreateSpawn("ORK_WARRIOR", 20);
 	CreateSpawn("ORC_ARCHER", 30);
 	CreateSpawn("HIGH_ORC", 60);

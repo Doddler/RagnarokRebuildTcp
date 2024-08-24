@@ -14,7 +14,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[63];
+			handlers = new ClientPacketHandlerBase[65];
 			handlers[0] = new InvalidPacket(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -49,35 +49,37 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[31] = new InvalidPacket(); //LevelUp
 			handlers[32] = new InvalidPacket(); //Death
 			handlers[33] = new InvalidPacket(); //HpRecovery
-			handlers[34] = new InvalidPacket(); //Respawn
-			handlers[35] = new InvalidPacket(); //RequestFailed
-			handlers[36] = new InvalidPacket(); //Targeted
-			handlers[37] = new InvalidPacket(); //Say
-			handlers[38] = new InvalidPacket(); //ChangeName
-			handlers[39] = new InvalidPacket(); //Resurrection
-			handlers[40] = new InvalidPacket(); //UseInventoryItem
-			handlers[41] = new InvalidPacket(); //EffectOnCharacter
-			handlers[42] = new InvalidPacket(); //EffectAtLocation
-			handlers[43] = new PacketPlayOneShotSound(); //PlayOneShotSound
-			handlers[44] = new InvalidPacket(); //Emote
-			handlers[45] = new InvalidPacket(); //ClientTextCommand
-			handlers[46] = new PacketUpdatePlayerData(); //UpdatePlayerData
-			handlers[47] = new PacketApplySkillPoint(); //ApplySkillPoint
-			handlers[48] = new PacketChangeTargetableState(); //ChangeTargetableState
-			handlers[49] = new InvalidPacket(); //AdminRequestMove
-			handlers[50] = new InvalidPacket(); //AdminServerAction
-			handlers[51] = new InvalidPacket(); //AdminLevelUp
-			handlers[52] = new InvalidPacket(); //AdminEnterServerSpecificMap
-			handlers[53] = new InvalidPacket(); //AdminChangeAppearance
-			handlers[54] = new InvalidPacket(); //AdminSummonMonster
-			handlers[55] = new InvalidPacket(); //AdminHideCharacter
-			handlers[56] = new InvalidPacket(); //AdminChangeSpeed
-			handlers[57] = new InvalidPacket(); //AdminFindTarget
-			handlers[58] = new InvalidPacket(); //AdminResetSkills
-			handlers[59] = new InvalidPacket(); //NpcClick
-			handlers[60] = new InvalidPacket(); //NpcInteraction
-			handlers[61] = new InvalidPacket(); //NpcAdvance
-			handlers[62] = new InvalidPacket(); //NpcSelectOption
+			handlers[34] = new PacketChangeSpValue(); //ChangeSpValue
+			handlers[35] = new InvalidPacket(); //Respawn
+			handlers[36] = new InvalidPacket(); //RequestFailed
+			handlers[37] = new InvalidPacket(); //Targeted
+			handlers[38] = new InvalidPacket(); //Say
+			handlers[39] = new InvalidPacket(); //ChangeName
+			handlers[40] = new InvalidPacket(); //Resurrection
+			handlers[41] = new InvalidPacket(); //UseInventoryItem
+			handlers[42] = new InvalidPacket(); //EffectOnCharacter
+			handlers[43] = new InvalidPacket(); //EffectAtLocation
+			handlers[44] = new PacketPlayOneShotSound(); //PlayOneShotSound
+			handlers[45] = new InvalidPacket(); //Emote
+			handlers[46] = new InvalidPacket(); //ClientTextCommand
+			handlers[47] = new PacketUpdatePlayerData(); //UpdatePlayerData
+			handlers[48] = new PacketApplySkillPoint(); //ApplySkillPoint
+			handlers[49] = new PacketChangeTargetableState(); //ChangeTargetableState
+			handlers[50] = new PacketUpdateMinimapMarker(); //UpdateMinimapMarker
+			handlers[51] = new InvalidPacket(); //AdminRequestMove
+			handlers[52] = new InvalidPacket(); //AdminServerAction
+			handlers[53] = new InvalidPacket(); //AdminLevelUp
+			handlers[54] = new InvalidPacket(); //AdminEnterServerSpecificMap
+			handlers[55] = new InvalidPacket(); //AdminChangeAppearance
+			handlers[56] = new InvalidPacket(); //AdminSummonMonster
+			handlers[57] = new InvalidPacket(); //AdminHideCharacter
+			handlers[58] = new InvalidPacket(); //AdminChangeSpeed
+			handlers[59] = new InvalidPacket(); //AdminFindTarget
+			handlers[60] = new InvalidPacket(); //AdminResetSkills
+			handlers[61] = new InvalidPacket(); //NpcClick
+			handlers[62] = new InvalidPacket(); //NpcInteraction
+			handlers[63] = new InvalidPacket(); //NpcAdvance
+			handlers[64] = new InvalidPacket(); //NpcSelectOption
 		}
 	}
 }

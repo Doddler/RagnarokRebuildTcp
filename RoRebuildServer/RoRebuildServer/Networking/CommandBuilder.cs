@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.VisualBasic;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
@@ -345,6 +346,7 @@ public static class CommandBuilder
         packet.Write((byte)di.HitCount);
         packet.Write(di.AttackMotionTime);
         packet.Write(showAttackMotion);
+        packet.Write((byte)di.Result);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -456,25 +458,73 @@ public static class CommandBuilder
     //    NetworkManager.SendMessageMulti(packet, recipients);
     //}
 
+    public static void SendAllMapImportantEntities(Player p, EntityList mapImportantEntities)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.UpdateMinimapMarker, 64);
+
+        mapImportantEntities.ClearInactive();
+        packet.Write((short)mapImportantEntities.Count);
+        for (var i = 0; i < mapImportantEntities.Count; i++)
+        {
+            var chara = mapImportantEntities[i].Get<WorldObject>();
+            packet.Write(chara.Id);
+            packet.Write(chara.Position);
+            packet.Write((byte)chara.DisplayType);
+        }
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void SendUpdateMapImportantEntityMulti(WorldObject o)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.UpdateMinimapMarker, 32);
+
+        packet.Write((short)1);
+        packet.Write(o.Id);
+        packet.Write(o.Position);
+        packet.Write((byte)o.DisplayType);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+    public static void SendRemoveMapImportantEntityMulti(WorldObject o)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.UpdateMinimapMarker, 32);
+
+        packet.Write((short)1);
+        packet.Write(o.Id);
+        packet.Write(Position.Zero);
+        packet.Write((byte)CharacterDisplayType.None);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void SendServerMessage(string text)
     {
         var packet = NetworkManager.StartPacket(PacketType.Say, 364);
 
         packet.Write(-1);
         packet.Write(text);
+        packet.Write("Server");
+        packet.Write(false);
         
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SendSayMulti(WorldObject c, string text)
+    public static void SendSayMulti(WorldObject? c, string name, string text, bool isShout)
     {
         if (!HasRecipients())
             return;
 
         var packet = NetworkManager.StartPacket(PacketType.Say, 364);
 
-        packet.Write(c.Id);
+        if(c == null)
+            packet.Write(-1);
+        else
+            packet.Write(c.Id);
         packet.Write(text);
+        packet.Write(name);
+        packet.Write(isShout);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -691,6 +741,15 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void ChangeSpValue(Player p, int sp, int maxSp)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.ChangeSpValue, 8);
+        packet.Write(sp);
+        packet.Write(maxSp);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
     public static void SendExpGain(Player p, int exp)
     {
         var packet = NetworkManager.StartPacket(PacketType.GainExp, 8);
@@ -732,7 +791,7 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
-    public static void SendFocusNpc(Player p, Npc target)
+    public static void SendFocusNpc(Player p, Npc target, bool isFocus)
     {
         var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 32);
 
@@ -740,6 +799,7 @@ public static class CommandBuilder
 
         packet.Write((byte)NpcInteractionType.NpcFocusNpc);
         packet.Write(obj.Id);
+        packet.Write(isFocus);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

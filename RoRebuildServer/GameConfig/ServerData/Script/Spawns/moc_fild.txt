@@ -40,7 +40,7 @@ MapConfig("moc_fild03")
 	CreateSpawn("POPORING", 30);
 	CreateSpawn("EGGYRA", 20);
 	CreateSpawn("WILOW", 30);
-	CreateSpawn("VAGABOND_WOLF", 1, 1800000, 1200000);
+	CreateSpawn("VAGABOND_WOLF", 1, 1800000, 1200000, Boss);
 	CreateSpawn("GREEN_PLANT", 2, %(77, 311, 5, 5), 180000, 90000);
 	CreateSpawn("GREEN_PLANT", 2, %(108, 199, 5, 5), 180000, 90000);
 	CreateSpawn("GREEN_PLANT", 2, %(96, 65, 5, 5), 180000, 90000);
@@ -212,7 +212,7 @@ MapConfig("moc_fild15")
 	CreateSpawn("MAGNOLIA", 25);
 	CreateSpawn("ANDRE", 40);
 	CreateSpawn("ANT_EGG", 10);
-	CreateSpawn("PHREEONI", 1, 7200000, 3600000);
+	CreateSpawn("PHREEONI", 1, 7200000, 3600000, MVP);
 	CreateSpawn("YELLOW_PLANT", 1, %(40, 126, 0, 0), 180000, 90000);
 	CreateSpawn("YELLOW_PLANT", 1, %(57, 39, 0, 0), 180000, 90000);
 	CreateSpawn("YELLOW_PLANT", 1, %(46, 250, 0, 0), 180000, 90000);
@@ -275,7 +275,7 @@ MapConfig("moc_fild18")
 	//CreateSpawn("DENIRO", 5);
 	//CreateSpawn("PIERE", 5);
 	//CreateSpawn("ANT_EGG", 5);
-	CreateSpawn("DRAGON_FLY", 1, %(198, 138, 8,8), 3600000, 1800000).LockToSpawnZone();
+	CreateSpawn("DRAGON_FLY", 1, %(198, 138, 8,8), 3600000, 1800000, Boss).LockToSpawnZone();
 	CreateSpawn("HUNTER_FLY", 1, 7200000, 3600000);
 	CreateSpawn("YELLOW_PLANT", 1, %(143, 352, 0, 0), 180000, 90000);
 	CreateSpawn("YELLOW_PLANT", 1, %(72, 333, 0, 0), 180000, 90000);

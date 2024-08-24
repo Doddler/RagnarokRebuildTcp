@@ -94,7 +94,7 @@ public class World
             var player = ch.Player;
             player.EndNpcInteractions();
             player.SaveCharacterToData();
-            var req = new SaveCharacterRequest(player.Id, player.Name, ch.Map?.Name, ch.Position, player.CharData, player.SavePosition, player.LearnedSkills);
+            var req = new SaveCharacterRequest(player.Id, player.Name, ch.Map?.Name, ch.Position, player.CharData, player.SavePosition, player.LearnedSkills, player.NpcFlags);
             RoDatabase.EnqueueDbRequest(req);
         }
 
@@ -219,6 +219,7 @@ public class World
         ch.Type = CharacterType.NPC;
         ch.FacingDirection = spawn.FacingDirection;
         ch.Name = spawn.FullName;
+        ch.DisplayType = spawn.DisplayType;
         ch.Init(ref e);
         npc.FullName = spawn.FullName;
         npc.Name = spawn.Name;
@@ -229,6 +230,8 @@ public class World
         npc.Character = ch;
 
         map.AddEntity(ref e);
+        if(spawn.DisplayType == CharacterDisplayType.Portal)
+            map.RegisterImportantEntity(ch);
         
         if (npc.HasTouch)
         {
@@ -359,6 +362,7 @@ public class World
             player.Id = connection.LoadCharacterRequest.Id;
             player.SavePosition = connection.LoadCharacterRequest.SavePosition;
             player.LearnedSkills = connection.LoadCharacterRequest.SkillsLearned;
+            player.NpcFlags = connection.LoadCharacterRequest.NpcFlags;
             var data = connection.LoadCharacterRequest.Data;
 
             if (data != null)
@@ -469,6 +473,22 @@ public class World
         
         map.AddEntity(ref e);
 
+        if (spawnRule != null && (spawnRule.DisplayType == CharacterDisplayType.Boss || spawnRule.DisplayType == CharacterDisplayType.Mvp))
+        {
+            ch.IsImportant = true;
+            ch.DisplayType = spawnRule.DisplayType;
+            map.RegisterImportantEntity(ch);
+        }
+
+        if (spawnRule == null)
+        {
+            if (DataManager.MvpMonsterCodes.Contains(monsterDef.Code))
+            {
+                ch.IsImportant = true;
+                ch.DisplayType = CharacterDisplayType.Mvp;
+                map.RegisterImportantEntity(ch);
+            }
+        }
 
         if (monsterDef.Minions != null && monsterDef.Minions.Count > 0)
         {
@@ -558,6 +578,11 @@ public class World
         monster.Initialize(ref e, ch, ce, monster.MonsterBase, monster.MonsterBase.AiType, spawnEntry, map.Name);
         
         map.AddEntity(ref e, false);
+        if (spawnEntry.DisplayType == CharacterDisplayType.Boss || spawnEntry.DisplayType == CharacterDisplayType.Mvp)
+        {
+            ch.IsImportant = true;
+            map.RegisterImportantEntity(ch);
+        }
 
         var monsterDef = monster.MonsterBase;
 
@@ -648,7 +673,7 @@ public class World
                 CommandBuilder.SendChangeMap(character, player);
 
                 player.SaveCharacterToData();
-                var req = new SaveCharacterRequest(player.Id, player.Name, character.Map?.Name, character.Position, player.CharData, player.SavePosition, player.LearnedSkills);
+                var req = new SaveCharacterRequest(player.Id, player.Name, character.Map?.Name, character.Position, player.CharData, player.SavePosition, player.LearnedSkills, player.NpcFlags);
                 RoDatabase.EnqueueDbRequest(req);
             }
         }

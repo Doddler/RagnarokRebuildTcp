@@ -25,5 +25,5 @@ MapConfig("ama_dun03")
 	CreateSpawn("SHINOBI", 20, 20m, 10m);
 	CreateSpawn("TENGU", 40);
 	CreateSpawn("TENGU", 15, 20m, 10m);
-	CreateSpawn("INCANTATION_SAMURAI", 1, 1h30m, 10m);
+	CreateSpawn("INCANTATION_SAMURAI", 1, 1h30m, 10m, MVP);
 }

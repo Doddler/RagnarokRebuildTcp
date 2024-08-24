@@ -502,8 +502,9 @@ public class NetworkManager
         //if it's an admin packet and not an admin
         if (AdminPacketLookup.TryGetValue((int)type, out var isAdmin) && isAdmin && !connection.IsAdmin)
         {
-            DisconnectPlayer(connection);
-            ServerLogger.Log($"Player {connection.Character?.Name} is using an admin command without admin privileges. Disconnecting.");
+            //DisconnectPlayer(connection);
+            //ServerLogger.Log($"Player {connection.Character?.Name} is using an admin command without admin privileges. Disconnecting.");
+            ServerLogger.Log($"Player {connection.Character?.Name} is trying to use an admin packet {type} but is not an admin.");
             return;
         }
 
@@ -630,7 +631,7 @@ public class NetworkManager
 
         var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
 
-        var newReq = new SaveCharacterRequest(Guid.Empty, name, null, Position.Invalid, charData, new SavePosition(), new Dictionary<CharacterSkill, int>());
+        var newReq = new SaveCharacterRequest(Guid.Empty, name, null, Position.Invalid, charData, new SavePosition(), new Dictionary<CharacterSkill, int>(), null);
         await RoDatabase.ExecuteDbRequestAsync(newReq);
 
         ArrayPool<int>.Shared.Return(charData, true);

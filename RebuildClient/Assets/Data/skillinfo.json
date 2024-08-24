@@ -8,7 +8,8 @@
       "Type": 0,
       "MaxLevel": 8,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "This skill is totally worthless but you need to get it to rank 8 before you can job change."
     },
     {
       "SkillId": 2,
@@ -20,7 +21,8 @@
       "SpCost": [
         10
       ],
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "This skill doesn\u0027t currently work but you also need it to job change for some reason."
     },
     {
       "SkillId": 3,
@@ -41,7 +43,8 @@
         15,
         15
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "Hit the enemy really hard."
     },
     {
       "SkillId": 4,
@@ -62,7 +65,8 @@
         9,
         10
       ],
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 5,
@@ -72,7 +76,8 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 6,
@@ -93,7 +98,8 @@
         9,
         10
       ],
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 7,
@@ -103,18 +109,19 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
         5,
-        6,
-        7,
-        8,
-        9,
-        10
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
       ],
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "This skill \u003Ci\u003Emight\u003C/i\u003E work? Maybe? Worth trying I guess."
     },
     {
       "SkillId": 8,
@@ -124,7 +131,8 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 9,
@@ -134,7 +142,8 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 10,
@@ -144,7 +153,8 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 11,
@@ -154,18 +164,19 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "Strikes a single target with a fire element attack. \r\nHigher skill level increases cast time but deals more hits. \r\nDeals increased damage against earth and undead element and less to fire and water."
     },
     {
       "SkillId": 12,
@@ -175,18 +186,19 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "Strikes a single target with a water element attack. \r\nHigher skill level increases cast time but deals more hits. \r\nDeals increased damage against fire element and less to water and wind."
     },
     {
       "SkillId": 13,
@@ -207,7 +219,8 @@
         9,
         10
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 14,
@@ -228,7 +241,8 @@
         9,
         10
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 15,
@@ -249,7 +263,8 @@
         9,
         10
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 16,
@@ -259,18 +274,19 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "Strikes a single target with an earth element attack. \r\nHigher skill level increases cast time but deals more hits. \r\nDeals increased damage against water element and less to wind and earth."
     },
     {
       "SkillId": 17,
@@ -291,7 +307,8 @@
         9,
         10
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 18,
@@ -301,18 +318,19 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        29,
+        34,
+        39,
+        44,
+        49,
+        54,
+        59,
+        64,
+        69,
+        74
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "The only working aoe ability in the game."
     },
     {
       "SkillId": 19,
@@ -333,7 +351,8 @@
         9,
         10
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 20,
@@ -343,18 +362,19 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "The good ol\u0027 classic. Just as spammable as you remember it (maybe more because there\u0027s no SP cost yet)"
     },
     {
       "SkillId": 21,
@@ -375,7 +395,8 @@
         9,
         10
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 22,
@@ -396,7 +417,8 @@
         9,
         10
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 23,
@@ -417,7 +439,8 @@
         9,
         10
       ],
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 24,
@@ -427,18 +450,19 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        13,
+        16,
+        19,
+        22,
+        25,
+        28,
+        31,
+        34,
+        37,
+        40
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "Heals the enemy. Offensive healing does not currently work."
     },
     {
       "SkillId": 25,
@@ -459,7 +483,8 @@
         9,
         10
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 26,
@@ -480,7 +505,8 @@
         9,
         10
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 27,
@@ -490,11 +516,12 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "Adds a chance to double attack when performing regular melee attacks."
     },
     {
       "SkillId": 28,
-      "Icon": "th_poison",
+      "Icon": "tf_poison",
       "Name": "Envenom",
       "Target": 1,
       "Type": 0,
@@ -511,62 +538,77 @@
         9,
         10
       ],
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": null
     },
     {
       "SkillId": 29,
+      "Icon": "tf_miss",
+      "Name": "Improve Dodge",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": "Increases the chance to evade an enemy attack. Evasion doesn\u0027t fall off with more enemies so it\u0027s probably really good?"
+    },
+    {
+      "SkillId": 30,
       "Icon": "mc_mammonite",
       "Name": "Mammonite",
       "Target": 1,
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
         6,
         7,
         8,
         9,
-        10
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
       ],
-      "AdjustableLevel": true
+      "AdjustableLevel": true,
+      "Description": "This skill is really good until I actually implement zeny."
     },
     {
-      "SkillId": 30,
+      "SkillId": 31,
       "Icon": "mc_pushcart",
       "Name": "Push Cart",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 1,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "This is what makes merchant worth playing. Or it would be if it worked.\r\n\u003Ci\u003EToo bad.\u003C/i\u003E"
     },
     {
-      "SkillId": 31,
+      "SkillId": 32,
       "Icon": "kn_twohandquicken",
       "Name": "Two-Hand Quicken",
       "Target": 5,
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        14,
+        18,
+        22,
+        26,
+        30,
+        34,
+        38,
+        42,
+        46,
+        50
       ],
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": "This is basically cheating. It also doesn\u0027t expire until you log off for some reason."
     },
     {
-      "SkillId": 32,
+      "SkillId": 33,
       "Icon": "bs_hammerfall",
       "Name": "Hammer Fall",
       "Target": 4,
@@ -584,57 +626,63 @@
         9,
         10
       ],
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": null
     },
     {
-      "SkillId": 33,
+      "SkillId": 34,
       "Icon": "nv_basic",
       "Name": "Call Minion",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": null
     },
     {
-      "SkillId": 34,
+      "SkillId": 35,
       "Icon": "nv_basic",
       "Name": "Grand Thunderstorm",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": null
     },
     {
-      "SkillId": 35,
+      "SkillId": 36,
       "Icon": "nv_basic",
       "Name": "Self Destruct",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": null
     },
     {
-      "SkillId": 36,
+      "SkillId": 37,
       "Icon": "nv_basic",
       "Name": "Power UP",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": null
     },
     {
-      "SkillId": 37,
+      "SkillId": 38,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
-      "AdjustableLevel": false
+      "AdjustableLevel": false,
+      "Description": null
     }
   ]
 }

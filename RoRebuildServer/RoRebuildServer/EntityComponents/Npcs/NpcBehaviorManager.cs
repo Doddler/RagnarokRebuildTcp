@@ -31,7 +31,8 @@ public class NpcBehaviorManager
             Height = h,
             HasInteract = hasInteract,
             HasTouch = hasTouch,
-            Behavior = behavior
+            Behavior = behavior,
+            DisplayType = spriteId == 1000 ? CharacterDisplayType.Portal : CharacterDisplayType.None,
         };
 
         if(!NpcSpawnsForMaps.ContainsKey(map))

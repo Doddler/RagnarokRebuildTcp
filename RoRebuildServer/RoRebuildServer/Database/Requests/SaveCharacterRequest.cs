@@ -3,6 +3,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Database.Requests;
 
@@ -15,8 +16,9 @@ public class SaveCharacterRequest : IDbRequest
     private readonly SavePosition savePoint;
     private byte[]? data;
     private byte[]? skillData;
+    private byte[]? npcData;
 
-    public SaveCharacterRequest(Guid id, string name, string? map, Position pos, int[] charData, SavePosition savePoint, Dictionary<CharacterSkill, int>? skills)
+    public SaveCharacterRequest(Guid id, string name, string? map, Position pos, int[] charData, SavePosition savePoint, Dictionary<CharacterSkill, int>? skills, Dictionary<string, int>? npcFlags)
     {
         Id = id;
         this.name = name;
@@ -36,15 +38,18 @@ public class SaveCharacterRequest : IDbRequest
             return;
         }
 
-        skillData = ArrayPool<byte>.Shared.Rent(skills.Count * 3 + 1);
-        using var ms = new MemoryStream(skillData);
-        using var bw = new BinaryWriter(ms);
-        bw.Write((byte)skills.Count);
-        foreach (var skill in skills)
-        {
-            bw.Write((short)skill.Key);
-            bw.Write((byte)skill.Value);
-        }
+        skillData = DbHelper.BorrowArrayAndWriteDictionary(skills);
+        npcData = DbHelper.BorrowArrayAndWriteDictionary(npcFlags);
+
+        //skillData = ArrayPool<byte>.Shared.Rent(skills.Count * 3 + 1);
+        //using var ms = new MemoryStream(skillData);
+        //using var bw = new BinaryWriter(ms);
+        //bw.Write((byte)skills.Count);
+        //foreach (var skill in skills)
+        //{
+        //    bw.Write((short)skill.Key);
+        //    bw.Write((byte)skill.Value);
+        //}
     }
 
     public async Task ExecuteAsync(RoContext dbContext)
@@ -64,14 +69,16 @@ public class SaveCharacterRequest : IDbRequest
                 Y = savePoint.Position.Y,
                 Area = savePoint.Area,
             },
-            SkillData = skillData
+            SkillData = skillData,
+            NpcFlags = npcData
         };
 
         dbContext.Update(ch);
         await dbContext.SaveChangesAsync();
 
         if (skillData != null) ArrayPool<byte>.Shared.Return(skillData);
-        //if(data != null) ArrayPool<byte>.Shared.Return(data);
+        if (npcData != null) ArrayPool<byte>.Shared.Return(npcData);
+
         skillData = null;
         data = null;
 

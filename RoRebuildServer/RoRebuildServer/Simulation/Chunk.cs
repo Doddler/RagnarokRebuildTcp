@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -57,6 +58,10 @@ public class Chunk
 
     public bool RemoveEntity(ref Entity entity, CharacterType type)
     {
+//#if DEBUG
+//        if (!AllEntities.Contains(ref entity))
+//            throw new Exception($"Cannot remove entity {entity} from chunk {this}!!");
+//#endif
         AllEntities.Remove(ref entity);
 
         switch (type)

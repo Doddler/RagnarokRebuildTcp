@@ -88,7 +88,7 @@ MapConfig("mjolnir_04")
 	CreateSpawn("POPORING", 30);
 	CreateSpawn("ARGIOPE", 20);
 	CreateSpawn("FLORA", 30);
-	CreateSpawn("MISTRESS", 1, 7200000, 3600000);
+	CreateSpawn("MISTRESS", 1, 7200000, 3600000, MVP);
 	CreateSpawn("SHINING_PLANT", 3, %(200, 200, 30, 30), 1800000, 900000);
 	CreateSpawn("GREEN_PLANT", 1, %(177, 34, 0, 0), 180000, 90000);
 	CreateSpawn("GREEN_PLANT", 1, %(122, 28, 0, 0), 180000, 90000);

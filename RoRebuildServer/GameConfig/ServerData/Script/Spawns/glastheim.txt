@@ -32,7 +32,7 @@ MapConfig("gl_cas02")
 	CreateSpawn("MYSTELTAINN", 1, %(104, 145, 5, 5), 7200000, 3600000);
 	CreateSpawn("WHISPER_", 1, %(102, 180, 0, 0), 1800000, 900000);
 	CreateSpawn("WHISPER_", 1, %(105, 180, 0, 0), 1800000, 900000);
-	CreateSpawn("CHIMERA", 1, %(182, 12, 3, 3), 3600000, 1800000);
+	CreateSpawn("CHIMERA", 1, %(182, 12, 3, 3), 3600000, 1800000, Boss);
 	CreateSpawn("RIDEWORD", 4, %(185, 11, 8, 8), 120000, 60000);
 	CreateSpawn("EVIL_DRUID", 4, %(174, 11, 8, 8), 120000, 60000);
 	CreateSpawn("KNIGHT_OF_ABYSS", 1, %(104, 38, 4, 4), 1800000, 900000);
@@ -53,6 +53,7 @@ MapConfig("gl_cas02")
 	CreateSpawn("KHALITZBURG", 1, %(189, 20, 1, 1), 360000, 180000);
 	CreateSpawn("WANDER_MAN", 1, %(190, 23, 1, 1), 360000, 180000);
 	CreateSpawn("RAYDRIC_ARCHER", 1, %(190, 38, 1, 1), 360000, 180000);
+	CreateSpawn("BAPHOMET", 1, 7200000, 3600000, MVP); //just for fun
 }
 
 MapConfig("gl_church")
@@ -75,7 +76,7 @@ MapConfig("gl_chyard")
 	CreateSpawn("EVIL_DRUID", 10);
 	CreateSpawn("HUNTER_FLY", 5);
 	CreateSpawn("MIMIC", 3);
-	CreateSpawn("DARK_LORD", 1, 3600000, 1800000);
+	CreateSpawn("DARK_LORD", 1, 3600000, 1800000, MVP);
 	CreateSpawn("SKEL_PRISONER", 25);
 	CreateSpawn("ZOMBIE_PRISONER", 25);
 }
@@ -145,7 +146,7 @@ MapConfig("gl_knt02")
 	CreateSpawn("RAYDRIC", 55);
 	CreateSpawn("RAYDRIC_ARCHER", 25);
 	CreateSpawn("KHALITZBURG", 20);
-	CreateSpawn("BLOODY_KNIGHT", 1, 3600000, 1800000);
+	CreateSpawn("BLOODY_KNIGHT", 1, 3600000, 1800000, Boss);
 	CreateSpawn("ALICE", 1);
 	CreateSpawn("MYSTELTAINN", 1, 1800000, 1200000);
 	CreateSpawn("KNIGHT_OF_ABYSS", 5);

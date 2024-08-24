@@ -11,7 +11,7 @@ public class PacketRespawn : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (connection.Character == null || connection.Player == null || connection.Character.Map == null || connection.Character.State != CharacterState.Dead)
+        if (connection.Character == null || connection.Player == null || connection.Character.Map == null)
             return;
 
         var inPlace = msg.ReadByte() == 1;
@@ -22,15 +22,22 @@ public class PacketRespawn : IClientPacketHandler
 
         if (player.InActionCooldown())
             return;
-
+        
+        var isDead = ch.State == CharacterState.Dead;
+        
         player.AddActionDelay(1.1f); //add 1s to the player's cooldown times. Should lock out immediate re-use.
         ch.ResetState(true);
         ch.SetSpawnImmunity();
 
         ce.ClearDamageQueue();
-        ce.SetStat(CharacterStat.Hp, ce.GetStat(CharacterStat.MaxHp));
 
-        CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
+        if (isDead)
+        {
+            ce.SetStat(CharacterStat.Hp, ce.GetStat(CharacterStat.MaxHp));
+            CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
+        }
+        else
+            inPlace = false;
 
         var savePoint = player.SavePosition.MapName;
         var position = player.SavePosition.Position;

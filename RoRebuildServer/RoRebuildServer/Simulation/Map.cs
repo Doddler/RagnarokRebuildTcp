@@ -1,5 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.Numerics;
+using System.Threading;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
@@ -40,6 +43,7 @@ public class Map
 
     public int PlayerCount { get; set; }
     public EntityList Players { get; set; } = new EntityList(8);
+    public EntityList MapImportantEntities { get; set; } = new EntityList(8);
 
     //private int playerCount;
     //public int PlayerCount
@@ -74,60 +78,7 @@ public class Map
         //    ServerLogger.LogWarning($"Attempted to remove player {player.Name} from visibility list of entity {other.Name}:{other.Id}, but it can't actually see this player.");
         //}
     }
-
-    /// <summary>
-    /// Called on a player after their move is completed to update that player's visibility of nearby objects.
-    /// </summary>
-    public void UpdatePlayerAfterMove(ref Entity movingEntity, WorldObject movingCharacter, Position oldPosition, Position newPosition)
-    {
-        var movingPlayer = movingEntity.Get<Player>();
-
-        var distance = oldPosition.SquareDistance(newPosition);
-        var midPoint = (oldPosition + newPosition) / 2;
-        var dist2 = ServerConfig.MaxViewDistance + (distance / 2) + 1;
-
-        if (distance > ServerConfig.MaxViewDistance)
-        {
-            //ServerLogger.Log("Player moved long distance, having him remove all entities and reload.");
-            //player can't see any of the old entities, so have them remove all of them, and add the new ones they see
-            CommandBuilder.SendRemoveAllEntities(movingPlayer);
-            movingCharacter.ClearVisiblePlayerList();
-            movingCharacter.IsActive = false;
-            ActivatePlayerAndNotifyNearby(movingPlayer);
-            return;
-        }
-
-        //optimization idea: exclude chunks that are fully in both the old and new view, as they never need updating
-
-        foreach (var chunk in GetChunkEnumeratorAroundPosition(midPoint, dist2))
-        {
-            foreach (var entity in chunk.AllEntities)
-            {
-                var targetCharacter = entity.Get<WorldObject>();
-
-                //if the player couldn't see the entity before, and can now, have that player add the entity
-                if (!targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
-                    targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
-                {
-                    if (targetCharacter.IsActive && !targetCharacter.Hidden)
-                        CommandBuilder.SendCreateEntity(targetCharacter, movingPlayer);
-                    if (targetCharacter.Type != CharacterType.Player) //players are added to each other during the MoveEntity step
-                        AddPlayerVisibility(movingCharacter, targetCharacter);
-                }
-
-                //if the player could see the entity before, but can't now, have them remove the entity
-                if (targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
-                    !targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
-                {
-                    if (targetCharacter.IsActive)
-                        CommandBuilder.SendRemoveEntity(targetCharacter, movingPlayer, CharacterRemovalReason.OutOfSight);
-                    if (targetCharacter.Type != CharacterType.Player)
-                        RemovePlayerVisibility(movingCharacter, targetCharacter);
-                }
-            }
-        }
-    }
-
+    
     /// <summary>
     /// Simplified variation of MoveEntity for any move where the entity is removed from it's old location and
     /// appears in a new one. Takes a move reason so the client can play the appropriate effect.
@@ -188,105 +139,167 @@ public class Map
     }
 
     /// <summary>
-    /// Move an entity from one location to another and update nearby entities' visibility of the moving entity.
+    /// A character is moving!! We need to update the visibility between our entity and other players that we could not see before that we can see now,
+    /// as well as those we could see us before that we are now out of range of.
     /// </summary>
-    public void ChangeEntityPosition(ref Entity entity, WorldObject ch, FloatPosition oldWorldPosition, FloatPosition newWorldPosition, bool isWalkUpdate = false)
+    /// <param name="movingCharacter">The moving character.</param>
+    /// <param name="otherCharacter">A character that the player can or could see.</param>
+    /// <param name="removeList">The batch of players to be informed that our character is going out of range.</param>
+    /// <param name="addList">The batch of players to be informed that our character is now visible.</param>
+    /// <returns></returns>
+    private bool ResolveVisibilityForMovingCharacter(WorldObject movingCharacter, WorldObject otherCharacter, EntityList removeList, EntityList addList)
     {
-        //if(ch.Type == CharacterType.Player)
-        //	ServerLogger.Log($"Moving {entity} from {ch.Position} to {newPosition}");
+        var inRange = movingCharacter.Position.InRange(otherCharacter.Position, ServerConfig.MaxViewDistance);
+        var hasChange = false;
 
-        var oldPosition = (Position)oldWorldPosition;
-        var newPosition = (Position)newWorldPosition;
-        var distance = ch.Position.SquareDistance(newPosition);
-
-        //find the midpoint of the move and a distance that encloses both the starting and end points.
-        var midPoint = (oldPosition + newPosition) / 2;
-        var dist2 = ServerConfig.MaxViewDistance + (distance / 2) + 1;
-
-        if (distance > ServerConfig.MaxViewDistance * 2 + 1)
+        //if the moving entity is a player, update the other entity's visible player list and update them on our client
+        if (movingCharacter.Type == CharacterType.Player)
         {
-            //the character has moved more than one full screen, no entities that knew of the old position can see the new position
-            SendRemoveEntityAroundCharacter(ref entity, ch, CharacterRemovalReason.OutOfSight);
-            ch.ClearVisiblePlayerList();
-            ch.Position = newPosition;
-            SendAddEntityAroundCharacter(ref entity, ch);
-        }
-        else
-        {
-            //update all players in range of this entity
-            foreach (var chunk in GetChunkEnumeratorAroundPosition(midPoint, dist2))
+            var shouldBeSeen = movingCharacter.IsAbleToBeSeenBy(otherCharacter) && inRange;
+            var canBeSeen = otherCharacter.IsPlayerVisible(movingCharacter.Entity);
+
+            if (canBeSeen && !shouldBeSeen)
             {
-                foreach (var player in chunk.Players)
-                {
-                    var targetCharacter = player.Get<WorldObject>();
-
-                    if (targetCharacter == ch) //the player will get told separately of his own movement
-                        continue;
-
-                    if (!targetCharacter.IsActive)
-                        continue;
-
-                    if (!isWalkUpdate) //if you can see the start and end point, and it's just a walk update, the client can do the update themselves
-                    {
-                        if (targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
-                            targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
-                        {
-                            if(!ch.Hidden)
-                                CommandBuilder.AddRecipient(player);
-
-                            continue;
-                        }
-                    }
-
-                    var playerObj = player.Get<Player>();
-
-                    //if the player couldn't see the entity before, and can now, have that player add the entity
-                    if (!targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
-                        targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
-                    {
-                        if (!ch.Hidden)
-                            CommandBuilder.SendCreateEntity(ch, playerObj);
-                        AddPlayerVisibility(targetCharacter, ch);
-                    }
-
-                    //if the player could see the entity before, but can't now, have them remove the entity
-                    if (targetCharacter.Position.InRange(oldPosition, ServerConfig.MaxViewDistance) &&
-                        !targetCharacter.Position.InRange(newPosition, ServerConfig.MaxViewDistance))
-                    {
-                        if (!ch.Hidden)
-                            CommandBuilder.SendRemoveEntity(ch, playerObj, CharacterRemovalReason.OutOfSight);
-                        RemovePlayerVisibility(targetCharacter, ch);
-                    }
-                }
+                otherCharacter.RemoveVisiblePlayer(movingCharacter.Entity);
+                if(otherCharacter.IsAbleToBeSeenBy(movingCharacter))
+                    CommandBuilder.SendRemoveEntity(otherCharacter, movingCharacter.Player, CharacterRemovalReason.OutOfSight);
+                hasChange = true;
             }
 
-            ch.WorldPosition = newWorldPosition;
+            if (!canBeSeen && shouldBeSeen)
+            {
+                otherCharacter.AddVisiblePlayer(movingCharacter.Entity);
+                if (otherCharacter.IsAbleToBeSeenBy(movingCharacter))
+                    CommandBuilder.SendCreateEntity(otherCharacter, movingCharacter.Player);
+                hasChange = true;
+            }
         }
 
-        //if anyone has been batched as part of the move, send it to everyone
-        if (!isWalkUpdate && CommandBuilder.HasRecipients() && !ch.Hidden)
+        //if the other character is a player, update our character's visibility set and update their client
+        if (otherCharacter.Type == CharacterType.Player)
         {
-            CommandBuilder.SendMoveEntityMulti(ch);
-            CommandBuilder.ClearRecipients();
+            var shouldSee = otherCharacter.IsAbleToBeSeenBy(movingCharacter) && inRange;
+            var canSee = movingCharacter.IsPlayerVisible(otherCharacter.Entity);
+
+            if (canSee && !shouldSee)
+            {
+                movingCharacter.RemoveVisiblePlayer(otherCharacter.Entity);
+                if (movingCharacter.IsAbleToBeSeenBy(otherCharacter))
+                    removeList.Add(otherCharacter.Entity);
+                hasChange = true;
+            }
+
+            if (!canSee && shouldSee)
+            {
+                movingCharacter.AddVisiblePlayer(otherCharacter.Entity);
+                if (movingCharacter.IsAbleToBeSeenBy(otherCharacter))
+                    addList.Add(otherCharacter.Entity);
+                hasChange = true;
+            }
         }
 
+        return hasChange;
+    }
 
-        //check if the move puts them over to a new chunk, and if so, move them to the new one
+    //yes I rewrote this 3 times
+    public void ChangeEntityPosition3(WorldObject movingCharacter, FloatPosition oldWorldPosition, FloatPosition newWorldPosition, bool isWalkUpdate)
+    {
+        var oldPosition = (Position)oldWorldPosition;
+        var newPosition = (Position)newWorldPosition;
+        var distance = movingCharacter.Position.SquareDistance(newPosition);
+
+        movingCharacter.WorldPosition = newWorldPosition;
+
+        CommandBuilder.ClearRecipients();
+
+        //check if the move puts us over to a new chunk, and if so, move us to the new one
         var cOld = GetChunkForPosition(oldPosition);
         var cNew = GetChunkForPosition(newPosition);
 
+        var movingEntity = movingCharacter.Entity;
+
         if (cOld != cNew)
         {
-            if (!cOld.RemoveEntity(ref entity, ch.Type))
+            if (!cOld.RemoveEntity(ref movingEntity, movingCharacter.Type))
                 throw new Exception($"For some reason the entity doesn't exist in the old chunk when moving chunks.");
-            cNew.AddEntity(ref entity, ch.Type);
+            cNew.AddEntity(ref movingCharacter.Entity, movingCharacter.Type);
         }
 
-        ////if the moving entity is a player, he needs to know of the new/removed entities from his sight
-        if (ch.Type == CharacterType.Player)
+        //Case 1: The easy case. We've moved so far away from our old position that we are guaranteed that no entity that could
+        //        see us before can see us after moving.
+        if (distance > ServerConfig.MaxViewDistance * 2 + 1)
         {
-            //ServerLogger.Log($"Sending update after move: {oldPosition} {newPosition}. Player is currently at: {ch.Position}");
-            UpdatePlayerAfterMove(ref entity, ch, oldPosition, newPosition);
+            //tell all nearby players and monsters we're gone (including ourselves!)
+            SendRemoveEntityAroundCharacter(ref movingEntity, movingCharacter, CharacterRemovalReason.OutOfSight);
+            movingCharacter.ClearVisiblePlayerList();
+
+            //let's tell everyone we can now see that we're here now
+            if (movingCharacter.Type == CharacterType.Monster)
+                SendAddEntityAroundCharacter(ref movingEntity, movingCharacter); //if we are a monster, tell all nearby players about us
+            else
+            {
+                movingCharacter.IsActive = false; //Needed to not have ActivatePlayerAndNotifyNearby complain about activating an active player
+                ActivatePlayerAndNotifyNearby(movingCharacter.Player); //tell everyone we're here and tell us everyone we can see
+            }
+
+            return;
+        }
+
+        //Case 2: The hard case. We've moved a short distance. We need to resolve visibility with those we can no longer see,
+        //        update those who can see us, and inform those we can now see that we couldn't before.
+        using var addList = EntityListPool.Get();
+        using var removeList = EntityListPool.Get();
+        CommandBuilder.ClearRecipients();
+
+        var midPoint = (oldPosition + newPosition) / 2;
+        var dist2 = ServerConfig.MaxViewDistance + (distance / 2) + 1;
+        foreach (var chunk in GetChunkEnumeratorAroundPosition(midPoint, dist2))
+        {
+            //a monster moving only needs to notify players but a player moving needs to notify everyone
+            var list = movingCharacter.Type == CharacterType.Player ? chunk.AllEntities : chunk.Players;
+
+            foreach (var entity in list)
+            {
+                if (!entity.TryGet<WorldObject>(out var otherCharacter))
+                    continue;
+                
+                var addedOrRemoved = ResolveVisibilityForMovingCharacter(movingCharacter, otherCharacter, removeList, addList);
+
+                if (!isWalkUpdate && !addedOrRemoved && movingCharacter.Position.InRange(otherCharacter.Position, ServerConfig.MaxViewDistance))
+                {
+                    //the player is in range and was in range before we moved, so if it's not a walk update we need to send a move event
+                    if(movingCharacter.Type == CharacterType.Player)
+                        CommandBuilder.AddRecipient(movingCharacter.Entity);
+                    if(otherCharacter.Type == CharacterType.Player && movingCharacter.IsAbleToBeSeenBy(otherCharacter))
+                        CommandBuilder.AddRecipient(otherCharacter.Entity);
+                }
+            }
+        }
+
+        if (CommandBuilder.HasRecipients()) //happens if it's not a walk update and the player could see the moving character before and after
+        {
+            CommandBuilder.SendMoveEntityMulti(movingCharacter);
+            CommandBuilder.ClearRecipients();
+        }
+
+        if (addList.Count > 0) //happens when a player can see a moving entity that it could not see before
+        {
+            CommandBuilder.AddRecipients(addList);
+            CommandBuilder.SendCreateEntityMulti(movingCharacter);
+            CommandBuilder.ClearRecipients();
+        }
+
+        if (removeList.Count > 0) //happens when a player can no longer see the moving entity when it used to be able to
+        {
+            CommandBuilder.AddRecipients(removeList);
+            CommandBuilder.SendRemoveEntityMulti(movingCharacter, CharacterRemovalReason.OutOfSight);
+            CommandBuilder.ClearRecipients();
+        }
+
+        if (movingCharacter.IsImportant)
+        {
+            if(!isWalkUpdate || movingCharacter.StepCount % 4 == 0)
+                UpdateImportantEntity(movingCharacter);
         }
     }
 
@@ -304,7 +317,7 @@ public class Map
 
         var c = GetChunkForPosition(ch.Position);
         c.AddEntity(ref entity, ch.Type);
-    
+
 
         if (addToInstance)
             Instance.Entities.Add(ref entity);
@@ -356,6 +369,7 @@ public class Map
         if (ch.IsActive)
             ServerLogger.LogWarning($"Attempting to call ActivatePlayerAndNotifyNearby on player {p.Name} but they are already active!");
         ch.IsActive = true; //activate
+        ch.IsImportant = true;
 
         CommandBuilder.ClearRecipients();
 
@@ -401,6 +415,10 @@ public class Map
             CommandBuilder.SendCreateEntity(e.Get<WorldObject>(), p);
 
         EntityListPool.Return(entities);
+
+        RegisterImportantEntity(ch);
+        CommandBuilder.SendAllMapImportantEntities(p, MapImportantEntities);
+
     }
 
     private void SendRemoveEntityAroundCharacter(ref Entity entity, WorldObject ch, CharacterRemovalReason reason)
@@ -412,7 +430,7 @@ public class Map
             CommandBuilder.ClearRecipients();
         }
 
-        if (ch.Type != CharacterType.Player)
+        if (ch.Type != CharacterType.Player || ch.Hidden)
             return;
 
         //players must have themselves removed from visibility from nearby entities
@@ -860,8 +878,11 @@ public class Map
         return false;
     }
 
-    public void GatherPlayersInRange(Position position, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
+    public int GatherPlayersInRange(Position position, int distance, EntityList? list, bool checkLineOfSight, bool checkImmunity = false)
     {
+        var hasList = list != null;
+        var count = 0;
+
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, ServerConfig.MaxViewDistance))
         {
             foreach (var p in c.Players)
@@ -880,10 +901,14 @@ public class Map
                 {
                     if (checkLineOfSight && !WalkData.HasLineOfSight(position, ch.Position))
                         continue;
-                    list.Add(p);
+                    if (hasList)
+                        list.Add(p);
+                    count++;
                 }
             }
         }
+
+        return count;
     }
 
     public void TriggerAreaOfEffectForCharacter(WorldObject character, Position initialPos, Position targetPosition)
@@ -981,6 +1006,40 @@ public class Map
         }
     }
 
+    public void UpdateImportantEntity(WorldObject character)
+    {
+        CommandBuilder.AddRecipients(Players);
+        CommandBuilder.SendUpdateMapImportantEntityMulti(character);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void RegisterImportantEntity(WorldObject character)
+    {
+        var e = character.Entity;
+        if(!MapImportantEntities.Contains(ref e))
+            MapImportantEntities.Add(ref e);
+
+        if (Players.Count <= 0)
+            return;
+
+        CommandBuilder.AddRecipients(Players);
+        CommandBuilder.SendUpdateMapImportantEntityMulti(character);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void RemoveImportantEntity(WorldObject character)
+    {
+        var e = character.Entity;
+        MapImportantEntities.Remove(ref e);
+
+        if (Players.Count <= 0)
+            return;
+
+        CommandBuilder.AddRecipients(Players);
+        CommandBuilder.SendRemoveMapImportantEntityMulti(character);
+        CommandBuilder.ClearRecipients();
+    }
+
     public void CreateAreaOfEffect(AreaOfEffect aoe)
     {
         //add the aoe to every chunk touched by the aoe
@@ -1052,6 +1111,8 @@ public class Map
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
         }
 
+        if(ch.IsImportant)
+            RemoveImportantEntity(ch);
     }
 
     //private void RunEntityUpdates()
@@ -1087,7 +1148,11 @@ public class Map
 
         chunkCheckId++;
         if (chunkCheckId >= chunkWidth * chunkHeight)
+        {
             chunkCheckId = 0;
+            Players.ClearInactive(); //should never happen
+            MapImportantEntities.ClearInactive(); //but why risk it?
+        }
 
 #if DEBUG
         //sanity checks
@@ -1118,8 +1183,7 @@ public class Map
         }
 #endif
     }
-
-
+    
     public ChunkAreaEnumerator GetChunkEnumeratorAroundPosition(Position p, int distance)
     {
         var area = Area.CreateAroundPoint(p, distance).ClipArea(MapBounds);

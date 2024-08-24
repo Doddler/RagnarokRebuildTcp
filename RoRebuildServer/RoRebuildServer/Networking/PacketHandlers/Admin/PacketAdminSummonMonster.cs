@@ -26,6 +26,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
 
             var mobName = msg.ReadString();
             var count = msg.ReadInt16();
+            var isBoss = msg.ReadBoolean();
 
             //try by code, then by name. Name is less accurate as multiple monster could have the same name
             if (!DataManager.MonsterCodeLookup.TryGetValue(mobName.ToUpper(), out var monster))
@@ -51,7 +52,16 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
                 area.ClipArea(chara.Map.MapBounds);
 
                 for (int i = 0; i < count; i++)
-                    World.Instance.CreateMonster(chara.Map, monster, area, null);
+                {
+                    var e = World.Instance.CreateMonster(chara.Map, monster, area, null);
+                    if (isBoss)
+                    {
+                        var mon = e.Get<Monster>();
+                        mon.Character.IsImportant = true;
+                        mon.Character.DisplayType = CharacterDisplayType.Boss;
+                        mon.Character.Map?.RegisterImportantEntity(mon.Character);
+                    }
+                }
 
                 ServerLogger.Log($"Player '{chara.Name}' using summon monster admin command to summon {count} of monster '{mobName}'.");
             }

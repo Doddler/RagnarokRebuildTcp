@@ -17,7 +17,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
                 return;
 
             target.Character.LastAttacked = source.Entity;
-            source.ApplyCooldownForAttackAction(target);
+            source.ApplyCooldownForSupportSkillAction();
+
+            if (target.Character.Type == CharacterType.Monster)
+            {
+                if (target.CanAttackTarget(source.Character))
+                    target.Character.Monster.Target = source.Entity;
+            }
 
             var ch = source.Character;
             var di = DamageInfo.EmptyResult(source.Entity, target.Entity);

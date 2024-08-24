@@ -40,8 +40,8 @@ namespace Assets.Scripts.Sprites
 
 			var tIndex = 0;
 
-			var min = new Vector2(-0.2f, -0.2f);
-			var max = new Vector2(0.2f, 0.2f);
+			var min = new Vector2(-0.4f, -0f);
+			var max = new Vector2(0.4f, 0.4f);
 
 			for (var i = 0; i < frame.Layers.Length; i++)
 			{

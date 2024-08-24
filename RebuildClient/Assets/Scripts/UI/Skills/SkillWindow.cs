@@ -26,6 +26,7 @@ namespace Assets.Scripts.UI
         public RectTransform TooltipBox;
         public TextMeshProUGUI TooltipText;
         public TextMeshProUGUI PointsText;
+        public AutoHeightFitter TooltipResizeArea;
         public List<Button> Tabs;
 
         [NonSerialized] public SkillWindowEntry HighlightedEntry;
@@ -81,10 +82,12 @@ namespace Assets.Scripts.UI
                         tooltipBuilder.Append($"<color=#FF4444>{name} {requiredSkills[i].Level}</color>");
                 }
             }
-
-            tooltipBuilder.Append($"\n<line-height=5>\n</line-height>A skill.");
+            
+            if(!string.IsNullOrWhiteSpace(data.Description))
+            tooltipBuilder.Append($"\n<line-height=5>\n</line-height>{data.Description}");
 
             TooltipText.text = tooltipBuilder.ToString();
+
             
             // TooltipText.text = tooltipTextTemplate.Replace("{SkillName}", data.Name)
             //                                       .Replace("{Prereqs}", "<color=#4444FF>None</color>")
@@ -101,6 +104,15 @@ namespace Assets.Scripts.UI
             TooltipBox.localPosition = new Vector3(x, y, TooltipBox.localPosition.z);
             
             TooltipBox.gameObject.SetActive(true);
+            TooltipText.ForceMeshUpdate();
+            
+            Vector2 preferredDimensions = TooltipText.GetPreferredValues(280, 0); //300 minus 20 for margins
+            TooltipBox.sizeDelta = new Vector2(300, preferredDimensions.y);
+            //
+            // LayoutRebuilder.ForceRebuildLayoutImmediate(TooltipBox);
+            //
+            
+            // TooltipResizeArea.UpdateRectSize();
         }
 
         public void HideTooltip()

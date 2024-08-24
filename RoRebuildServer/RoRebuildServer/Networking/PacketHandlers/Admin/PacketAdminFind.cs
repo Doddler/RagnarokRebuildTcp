@@ -32,6 +32,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
                     if(entity.Type == EntityType.Monster)
                         if (entity.Get<Monster>().MonsterBase.Code == targetNameUpper)
                             valid = true;
+                    if(entity.Type == EntityType.Player)
+                        if (entity.Get<Player>().Name.ToUpper() == targetNameUpper)
+                            valid = true;
 
                     var chara = entity.Get<WorldObject>();
                     if (chara.Name == targetName)

@@ -15,6 +15,7 @@ public class LoadCharacterRequest : IDbRequest
     public Position Position;
     public SavePosition SavePosition;
     public Dictionary<CharacterSkill, int> SkillsLearned;
+    public Dictionary<string, int>? NpcFlags;
 
     public byte[]? Data;
     public bool HasCharacter;
@@ -58,16 +59,11 @@ public class LoadCharacterRequest : IDbRequest
             else
                 SavePosition = new SavePosition();
 
-            SkillsLearned = new Dictionary<CharacterSkill, int>();
-            if (ch.SkillData != null && ch.SkillData.Length > 0)
-            {
-                using var ms = new MemoryStream(ch.SkillData);
-                using var br = new BinaryReader(ms);
-                var count = br.ReadByte();
-                for (var i = 0; i < count; i++)
-                    SkillsLearned.Add((CharacterSkill)br.ReadInt16(), br.ReadByte());
-            }
+            var skills = DbHelper.ReadDictionary<CharacterSkill>(ch.SkillData);
+            SkillsLearned = skills ?? new Dictionary<CharacterSkill, int>();
 
+            NpcFlags = DbHelper.ReadDictionary(ch.NpcFlags);
+            
             HasCharacter = true;
         }
         catch (Exception ex)

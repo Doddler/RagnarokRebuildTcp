@@ -48,8 +48,8 @@ MapConfig("alde_dun04")
 {
 	CreateSpawn("BATHORY", 65);
 	CreateSpawn("JOKER", 12);
-	CreateSpawn("EXECUTIONER", 1, 3600000, 1800000);
-	CreateSpawn("MYSTELTAINN", 1, 3600000, 1800000);
-	CreateSpawn("TIRFING", 1, 3600000, 1800000);
+	CreateSpawn("EXECUTIONER", 1, 3600000, 1800000, Boss);
+	CreateSpawn("MYSTELTAINN", 1, 3600000, 1800000, Boss);
+	CreateSpawn("TIRFING", 1, 3600000, 1800000, Boss);
 	CreateSpawn("WHISPER", 15);
 }

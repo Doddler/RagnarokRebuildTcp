@@ -23,6 +23,15 @@ public struct DamageInfo
         set => skillId = (byte)value;
     }
 
+    public void SetAttackToMiss()
+    {
+        Result = AttackResult.Miss;
+        HitLockTime = 0;
+        Damage = 0;
+        HitCount = 0;
+        KnockBack = 0;
+    }
+
     public static DamageInfo EmptyResult(Entity src, Entity target)
     {
         return new DamageInfo()

@@ -59,13 +59,22 @@ namespace Assets.Scripts.Network.Messaging
 
         private int Compare(EntityMessage left, EntityMessage right) => left.ActivationTime.CompareTo(right.ActivationTime);
         
-        public void SendHitEffect(ServerControllable src, float time)
+        public void SendHitEffect(ServerControllable src, float time, int hitType = 1)
         {
             var msg = EntityMessagePool.Borrow();
             msg.ActivationTime = Time.timeSinceLevelLoad + time;
             msg.Type = EntityMessageType.HitEffect;
             msg.Entity = src; //the hit will come from this entity's position
-            msg.Value1 = 0;
+            msg.Value1 = hitType;
+
+            EnqueueMessage(msg);
+        }
+        
+        public void SendMissEffect(float time)
+        {
+            var msg = EntityMessagePool.Borrow();
+            msg.ActivationTime = Time.timeSinceLevelLoad + time;
+            msg.Type = EntityMessageType.Miss;
 
             EnqueueMessage(msg);
         }

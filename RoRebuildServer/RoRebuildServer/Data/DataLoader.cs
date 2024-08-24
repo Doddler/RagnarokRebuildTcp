@@ -329,7 +329,7 @@ internal class DataLoader
 
         foreach (var entry in DataManager.MonsterSkillAiHandlers)
         {
-            if(!DataManager.MonsterCodeLookup.TryGetValue(entry.Key, out _))
+            if(!entry.Value.IsUnassignedAiType && !DataManager.MonsterCodeLookup.TryGetValue(entry.Key, out _))
                 ServerLogger.LogWarning($"Ai skill handler exists for monster {entry.Key}, but a monster by that name does not exist.");
         }
     }
@@ -357,8 +357,12 @@ internal class DataLoader
                 Exp = monster.Exp,
                 Def = monster.Def,
                 MDef = monster.MDef,
+                Str = monster.Str,
+                Agi = monster.Agi,
                 Vit = monster.Vit,
                 Int = monster.Int,
+                Dex = monster.Dex,
+                Luk = monster.Luk,
                 Range = monster.Range > 0 ? monster.Range : 1,
                 ScanDist = monster.ScanDist,
                 ChaseDist = monster.ChaseDist,
@@ -370,6 +374,7 @@ internal class DataLoader
                 MoveSpeed = monster.MoveSpeed / 1000f,
                 AttackDamageTiming = monster.SpriteAttackTiming / 1000f,
                 Element = monster.Element,
+                Race = monster.Race,
                 AiType = (MonsterAiType)Enum.Parse(typeof(MonsterAiType), monster.MonsterAi),
                 Name = monster.Name
             });
