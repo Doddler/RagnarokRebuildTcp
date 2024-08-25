@@ -931,11 +931,13 @@ namespace Assets.Scripts.Network
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
                 return;
             }
-
-            var go = GameObject.Instantiate(ClientConstants.Instance.LevelUpPrefab);
-            go.transform.SetParent(controllable.transform, true);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
+            
+            CameraFollower.AttachEffectToEntity("LevelUp", controllable.gameObject, id);
+            //
+            // var go = GameObject.Instantiate(ClientConstants.Instance.LevelUpPrefab);
+            // go.transform.SetParent(controllable.transform, true);
+            // go.transform.localPosition = Vector3.zero;
+            // go.transform.localRotation = Quaternion.identity;
 
             var oldLvl = controllable.Level;
             controllable.Level = lvl;
@@ -964,10 +966,7 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            var go = GameObject.Instantiate(ClientConstants.Instance.ResurrectPrefab);
-            go.transform.SetParent(controllable.transform, true);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
+            CameraFollower.AttachEffectToEntity("LevelUp", controllable.gameObject, id);
 
             controllable.SpriteAnimator.State = SpriteState.Idle;
             controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Idle, true);
@@ -998,10 +997,7 @@ namespace Assets.Scripts.Network
 
             if (id == PlayerId)
             {
-                var go = GameObject.Instantiate(ClientConstants.Instance.DeathPrefab);
-                go.transform.SetParent(controllable.transform, true);
-                go.transform.localPosition = Vector3.zero;
-                go.transform.localRotation = Quaternion.identity;
+                CameraFollower.AttachEffectToEntity("Death", controllable.gameObject, id);
             }
         }
 

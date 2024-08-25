@@ -52,7 +52,7 @@ namespace Assets.Scripts
         // public Texture2D TalkCursorTexture;
         // public Texture2D TargetCursorTexture;
         // public Texture2D TargetCursorNoTargetTexture;
-        public RoSpriteData TargetSprite;
+        private RoSpriteData TargetSprite { get; set; }
 
         // public GameObject LevelUpPrefab;
         // public GameObject ResurrectPrefab;
@@ -275,7 +275,7 @@ namespace Assets.Scripts
             LayoutRebuilder.ForceRebuildLayoutImmediate(UiCanvas.transform as RectTransform);
 
             Height = 50;
-
+            
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
             //    targetWalkable = Target.AddComponent<EntityWalkable>();
@@ -443,26 +443,26 @@ namespace Assets.Scripts
             sprite.LockAngle = true;
             sprite.SpriteOrder = 19999; //be in front of everything damn you
 
-            sprite.SpriteData = TargetSprite;
-            sprite.Initialize(false);
-            sprite.ChangeActionExact(3);
+            var loader = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/cursors.spr");
+            loader.Completed += ah =>
+            {
+                sprite.OnSpriteDataLoadNoCollider(ah.Result);
+                sprite.ChangeActionExact(3);
+                
+                var mat = new Material(ShaderCache.Instance.SpriteShaderNoZTest);
+                mat.renderQueue = 3005; //above water and all other sprites
 
-            var mat = new Material(ShaderCache.Instance.SpriteShaderNoZTest);
-            mat.renderQueue = 3005; //above water and all other sprites
-
-            var renderer = sprite.GetComponent<RoSpriteRendererStandard>();
-            renderer.SetOverrideMaterial(mat);
+                var renderer = sprite.GetComponent<RoSpriteRendererStandard>();
+                renderer.SetOverrideMaterial(mat);
+            };
 
             return go;
         }
 
         public void SetSelectedTarget(ServerControllable target, string name, bool isAlly, bool isHard)
         {
-            if (selectedSprite == null)
-            {
-                selectedSprite = CreateSelectedCursorObject();
-            }
-
+            selectedSprite = CreateSelectedCursorObject();
+            
             var color = "";
             if (!isAlly)
                 color = "<color=#FFAAAA>";

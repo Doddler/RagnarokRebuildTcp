@@ -576,13 +576,11 @@ public class World
 
         ce.Init(ref e, ch);
         monster.Initialize(ref e, ch, ce, monster.MonsterBase, monster.MonsterBase.AiType, spawnEntry, map.Name);
+
+        if(ch.IsImportant)
+            map.RegisterImportantEntity(ch);
         
         map.AddEntity(ref e, false);
-        if (spawnEntry.DisplayType == CharacterDisplayType.Boss || spawnEntry.DisplayType == CharacterDisplayType.Mvp)
-        {
-            ch.IsImportant = true;
-            map.RegisterImportantEntity(ch);
-        }
 
         var monsterDef = monster.MonsterBase;
 

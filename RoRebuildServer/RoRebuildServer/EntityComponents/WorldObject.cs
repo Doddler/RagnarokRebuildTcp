@@ -200,6 +200,7 @@ public class WorldObject : IEntityAutoReset
         QueuedAction = QueuedAction.None;
         DisplayType = CharacterDisplayType.None;
         StepCount = 0;
+        IsImportant = false;
         ClearVisiblePlayerList();
     }
 

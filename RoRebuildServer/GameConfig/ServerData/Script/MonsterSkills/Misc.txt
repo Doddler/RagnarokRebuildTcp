@@ -35,7 +35,7 @@ StateAttacking:
 StateChase:
 	TryCast(LightningBolt, 3, 5%, 0, 5s);
 StateIdle:
-	TryCast(None, 3, 200, 0, 5000) -> SendEmote(32);
+	TryCast(NoCast, 3, 200, 0, 5000) -> SendEmote(32);
 }
 
 

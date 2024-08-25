@@ -116,9 +116,11 @@ public class Map
             if (ch.Hidden)
                 CommandBuilder.SendAdminHideStatus(ch.Player, ch.Hidden);
         }
-
-        //if (!ch.Hidden)
-        //    SendAddEntityAroundCharacter(ref entity, ch); //do this after moving them to the new chunk
+        else
+        {
+            //monsters and npcs
+            SendAddEntityAroundCharacter(ref entity, ch); //if we are a monster, tell all nearby players about us
+        }
     }
 
 
@@ -419,6 +421,8 @@ public class Map
         RegisterImportantEntity(ch);
         CommandBuilder.SendAllMapImportantEntities(p, MapImportantEntities);
 
+        if (ch.Hidden)
+            CommandBuilder.SendAdminHideStatus(ch.Player, ch.Hidden);
     }
 
     private void SendRemoveEntityAroundCharacter(ref Entity entity, WorldObject ch, CharacterRemovalReason reason)
