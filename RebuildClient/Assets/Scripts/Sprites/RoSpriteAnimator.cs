@@ -134,7 +134,7 @@ namespace Assets.Scripts.Sprites
 
         public Vector2 GetAnimationAnchor()
         {
-            if (SpriteRenderer == null)
+            if (SpriteRenderer == null || SpriteData == null)
             {
                 //probably hasn't finished loading yet, not much we can do.
                 return Vector2.zero;

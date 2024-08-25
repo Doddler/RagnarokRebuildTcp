@@ -11,8 +11,5 @@ namespace Assets.Scripts.Utility
         public DamageIndicatorPathData ComboPath;
         public DamageIndicatorPathData ExpPath;
         public DamageIndicatorPathData MissPath;
-        public GameObject LevelUpPrefab;
-        public GameObject ResurrectPrefab;
-        public GameObject DeathPrefab;
     }
 }
