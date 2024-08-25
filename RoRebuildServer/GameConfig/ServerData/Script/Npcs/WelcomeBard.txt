@@ -39,7 +39,10 @@ macro BardChangeJob()
 	Dialog(Name, "Looking to change jobs are you? Well then! What were you thinking of becoming?");
 	Option("Novice", "Swordsman", "Archer", "Mage", "Acolyte", "Thief", "Merchant", "Cancel");
 	if(result == 7)
+	{
 		Dialog(Name, "I'll be here to help you out if you change your mind!");
+		return;
+	}
 
 	var jobChoice = result;
 	if(jobChoice == JobId)
