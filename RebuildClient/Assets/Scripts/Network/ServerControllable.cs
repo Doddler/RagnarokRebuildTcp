@@ -68,7 +68,6 @@ namespace Assets.Scripts.Network
         private float moveLength;
         private float hitLockImmuneTime = 0f;
         private bool isDirectMove;
-        private bool isHidden;
         public float PosLockTime;
         public float AttackAnimationSpeed = 1f;
 
@@ -105,15 +104,7 @@ namespace Assets.Scripts.Network
 
         public bool IsWalking => movePath != null && movePath.Count > 1;
 
-        public bool IsHidden
-        {
-            get => isHidden;
-            set
-            {
-                isHidden = value;
-                RefreshHiddenState();
-            }
-        }
+        public bool IsHidden { get; set; }
 
         public void Init()
         {
@@ -232,13 +223,13 @@ namespace Assets.Scripts.Network
             FloatingDisplay?.CancelCasting();
         }
 
-        public void RefreshHiddenState()
-        {
-            if (shadowSprite)
-                shadowSprite.enabled = !isHidden;
-            if (SpriteAnimator)
-                SpriteAnimator.SetRenderActive(!isHidden);
-        }
+        // public void RefreshHiddenState()
+        // {
+        //     if (shadowSprite)
+        //         shadowSprite.enabled = !isHidden;
+        //     if (SpriteAnimator)
+        //         SpriteAnimator.SetRenderActive(!isHidden);
+        // }
 
         public void ShowTargetNamePlate(string name)
         {
@@ -1163,6 +1154,12 @@ namespace Assets.Scripts.Network
             
             HandleMessages();
 
+            var noShadowState = SpriteAnimator.CurrentMotion == SpriteMotion.Sit || SpriteAnimator.CurrentMotion == SpriteMotion.Dead || IsHidden;
+            if(shadowSprite != null && (noShadowState != !shadowSprite.gameObject.activeInHierarchy))
+                shadowSprite.gameObject.SetActive(!noShadowState);
+            
+            if (SpriteAnimator) SpriteAnimator.SetRenderActive(!IsHidden);
+
             //this is dumb
             tempSpeedTime -= Time.deltaTime;
             hitDelay -= Time.deltaTime;
@@ -1225,9 +1222,6 @@ namespace Assets.Scripts.Network
                     SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
                 }
             }
-
-            if (IsMainCharacter)
-                RefreshHiddenState();
         }
 
         private void OnDestroy()

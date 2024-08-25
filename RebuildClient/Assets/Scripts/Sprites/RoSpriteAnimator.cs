@@ -121,8 +121,8 @@ namespace Assets.Scripts.Sprites
 
         public void SetRenderActive(bool isActive)
         {
-            if (Shadow)
-                Shadow.SetActive(isActive);
+            // if (Shadow)
+            //     Shadow.SetActive(isActive);
             gameObject.SetActive(isActive);
             if (SpriteRenderer != null)
             {
