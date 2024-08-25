@@ -67,7 +67,7 @@ public class HealHandler : SkillHandlerBase
 
                 source.ApplyCooldownForAttackAction(target);
                 target.ExecuteCombatResult(res, false, false);
-                
+
                 ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
                 CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.Heal, lvl, res);
                 CommandBuilder.SendHealMulti(target.Character, healValue, HealType.None);
@@ -82,8 +82,10 @@ public class HealHandler : SkillHandlerBase
             res.HitCount = 0;
 
             target.HealHp(healValue);
-
-            source.ApplyCooldownForSupportSkillAction();
+            if (source.Character.Type == CharacterType.Player)
+                source.ApplyCooldownForSupportSkillAction();
+            else
+                source.ApplyCooldownForAttackAction();
 
             ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.Heal, lvl, res);

@@ -1,5 +1,5 @@
 ﻿
-
+/*
 event NpcWalkTest {
     StartTimer(100);
     ChangeNpcClass("4_F_KAFRA6");
@@ -31,5 +31,4 @@ OnTimer 2000:
     StopTimer();
     ShowNpc();        
 }
-
-
+*/
