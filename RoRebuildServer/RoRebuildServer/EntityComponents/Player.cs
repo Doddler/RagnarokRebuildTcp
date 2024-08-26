@@ -762,7 +762,7 @@ public class Player : IEntityAutoReset
         if (!World.Instance.TryGetWorldMapByName(mapName, out var map))
             return false;
 
-        AddActionDelay(2f); //block character input for 1+ seconds.
+        AddActionDelay(CooldownActionType.Teleport);
         Character.ResetState();
         Character.SetSpawnImmunity();
 
@@ -812,7 +812,7 @@ public class Player : IEntityAutoReset
 
     public bool InActionCooldown() => CurrentCooldown > 1f;
     public void AddActionDelay(CooldownActionType type) => CurrentCooldown += ActionDelay.CooldownTime(type);
-    public void AddActionDelay(float time) => CurrentCooldown += CurrentCooldown;
+    public void AddActionDelay(float time) => CurrentCooldown += time;
 
     private bool InCombatReadyState => (Character.State == CharacterState.Idle || Character.State == CharacterState.Moving)
         && !CombatEntity.IsCasting &&

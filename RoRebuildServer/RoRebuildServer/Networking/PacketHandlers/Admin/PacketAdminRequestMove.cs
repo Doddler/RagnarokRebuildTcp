@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
@@ -44,7 +45,7 @@ public class PacketAdminRequestMove : IClientPacketHandler
         if (player.IsInNpcInteraction)
             return;
 
-        player.AddActionDelay(2f); //block character input for 1+ seconds.
+        player.AddActionDelay(CooldownActionType.Teleport);
         ch.ResetState();
         ch.SetSpawnImmunity();
 

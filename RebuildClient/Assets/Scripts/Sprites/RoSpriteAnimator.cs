@@ -489,8 +489,13 @@ namespace Assets.Scripts.Sprites
                  //     Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
                 currentFrame = lastWalkFrame = Mathf.FloorToInt(newWalkFrame) % (maxFrame + 1);
             }
-            else if (currentFrameTime < 0)
-                currentFrameTime += (float)currentAction.Delay / 1000f * AnimSpeed;
+            else
+            {
+                if (currentFrameTime < 0)
+                    currentFrameTime += (float)currentAction.Delay / 1000f * AnimSpeed;
+                if (currentFrameTime < 0)
+                    currentFrameTime = 0; //if we're more than a full frame behind lets just reset the clock
+            }
 
             if (!isPaused)
                 isDirty = true;

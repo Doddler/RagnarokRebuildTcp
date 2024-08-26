@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
@@ -21,7 +22,7 @@ public class PacketRandomTeleport : IClientPacketHandler
             return;
         }
 
-        if (player.Character.State == CharacterState.Dead)
+        if (player.Character.State == CharacterState.Dead || player.Character.IsActive == false)
             return;
 
         if (player.IsInNpcInteraction)
@@ -50,7 +51,7 @@ public class PacketRandomTeleport : IClientPacketHandler
 
         ServerLogger.Log($"Player {player.Name} executes a random teleport from {ch.Position} to {p}");
 
-        player.AddActionDelay(1.1f); //add 1s to the player's cooldown times. Should lock out immediate re-use.
+        player.AddActionDelay(CooldownActionType.Teleport);
         ch.ResetState();
         ch.SetSpawnImmunity();
         map.TeleportEntity(ref connection.Entity, ch, p);

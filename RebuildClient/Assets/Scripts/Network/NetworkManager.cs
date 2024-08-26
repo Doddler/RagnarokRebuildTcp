@@ -134,6 +134,8 @@ namespace Assets.Scripts.Network
                 yield return 0;
             }
 
+
+            CameraFollower.PlayerState = PlayerState;
             ClientPacketHandler.Init(this, PlayerState);
 
 #if UNITY_EDITOR
@@ -955,23 +957,6 @@ namespace Assets.Scripts.Network
             }
         }
 
-        public void OnMessageResurrection(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var pos = ReadPosition(msg);
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
-                return;
-            }
-
-            CameraFollower.AttachEffectToEntity("LevelUp", controllable.gameObject, id);
-
-            controllable.SpriteAnimator.State = SpriteState.Idle;
-            controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Idle, true);
-        }
-
         public void OnMessageDeath(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -1369,9 +1354,6 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.LevelUp:
                     OnMessageLevelUp(msg);
-                    break;
-                case PacketType.Resurrection:
-                    OnMessageResurrection(msg);
                     break;
                 case PacketType.Death:
                     OnMessageDeath(msg);

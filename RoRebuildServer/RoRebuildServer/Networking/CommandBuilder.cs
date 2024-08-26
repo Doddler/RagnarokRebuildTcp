@@ -659,6 +659,12 @@ public static class CommandBuilder
         packet.Write(c.Id);
         packet.Write(c.Position);
 
+        var hp = 0;
+        if (c.Type == CharacterType.Player)
+            hp = c.Player.GetStat(CharacterStat.Hp);
+
+        packet.Write(hp);
+
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 

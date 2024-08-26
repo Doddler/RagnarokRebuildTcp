@@ -9,6 +9,7 @@ public enum CooldownActionType
     SitStand,
     StopAction,
     UseItem,
+    Teleport
 }
 
 public static class ActionDelay
@@ -18,6 +19,7 @@ public static class ActionDelay
     public const float SitStandCooldown = 0.25f;
     private const float StopActionCooldown = 0.20f;
     private const float UseItemCooldown = 0.10f;
+    private const float TeleportCooldown = 0.5f;
 
     public static float CooldownTime(CooldownActionType type)
     {
@@ -28,6 +30,7 @@ public static class ActionDelay
             case CooldownActionType.SitStand: return SitStandCooldown;
             case CooldownActionType.StopAction: return StopActionCooldown;
             case CooldownActionType.UseItem: return UseItemCooldown;
+            case CooldownActionType.Teleport: return TeleportCooldown;
             default:
                 ServerLogger.LogWarning($"Could not get ActionDelay Cooldown for type {type} (value {(int)type}.");
                 return 0.3f;

@@ -13,9 +13,11 @@ public class PacketClientTextCommand : IClientPacketHandler
         if (!connection.IsConnectedAndInGame || connection.Character == null || connection.Player == null)
             return;
 
+        if (connection.Player.InActionCooldown())
+            return;
+
         connection.Player.AddActionDelay(0.8f);
-
-
+        
         var type = (ClientTextCommand)msg.ReadByte();
 
         if(type == ClientTextCommand.Adminify)
@@ -25,9 +27,10 @@ public class PacketClientTextCommand : IClientPacketHandler
             if (!string.IsNullOrWhiteSpace(serverPass) && text != serverPass)
             {
                 CommandBuilder.ErrorMessage(connection.Player, $"Invalid parameters.");
+                connection.Player.AddActionDelay(1.2f);
                 return;
             }
-            connection.Player.IsAdmin = true; //lol
+            connection.Player.IsAdmin = true;
 
             CommandBuilder.AddRecipient(connection.Entity);
             CommandBuilder.SendServerMessage($"You are now an admin! Have fun!");

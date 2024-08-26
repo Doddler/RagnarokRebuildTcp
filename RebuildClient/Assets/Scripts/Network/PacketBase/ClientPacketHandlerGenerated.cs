@@ -55,7 +55,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[37] = new InvalidPacket(); //Targeted
 			handlers[38] = new InvalidPacket(); //Say
 			handlers[39] = new InvalidPacket(); //ChangeName
-			handlers[40] = new InvalidPacket(); //Resurrection
+			handlers[40] = new PacketResurrection(); //Resurrection
 			handlers[41] = new InvalidPacket(); //UseInventoryItem
 			handlers[42] = new InvalidPacket(); //EffectOnCharacter
 			handlers[43] = new InvalidPacket(); //EffectAtLocation

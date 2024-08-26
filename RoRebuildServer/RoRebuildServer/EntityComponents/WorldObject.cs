@@ -34,7 +34,7 @@ public class WorldObject : IEntityAutoReset
     public bool Hidden { get; set; }
     public bool IsImportant { get; set; }
     public int ClassId;
-    public Direction FacingDirection;
+    public Direction FacingDirection { get; set; }
     public CharacterState State { get; set; }
     public CharacterType Type;
     public CharacterDisplayType DisplayType; //used for minimap icons if they're flagged as map important
@@ -634,7 +634,7 @@ public class WorldObject : IEntityAutoReset
 
         var startPosition = MoveStep == 0 ? MoveStartPosition : (FloatPosition)WalkPath[MoveStep];
         var endPosition = (FloatPosition)WalkPath[MoveStep + 1];
-        var dir = Direction.North;
+        var dir = FacingDirection;
         var newPosition = WorldPosition;
 
         while (MoveProgress > NextStepDuration)

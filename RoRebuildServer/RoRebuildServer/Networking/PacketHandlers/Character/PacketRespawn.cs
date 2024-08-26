@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
@@ -25,7 +26,6 @@ public class PacketRespawn : IClientPacketHandler
         
         var isDead = ch.State == CharacterState.Dead;
         
-        player.AddActionDelay(1.1f); //add 1s to the player's cooldown times. Should lock out immediate re-use.
         ch.ResetState(true);
         ch.SetSpawnImmunity();
 
@@ -33,8 +33,8 @@ public class PacketRespawn : IClientPacketHandler
 
         if (isDead)
         {
-            ce.SetStat(CharacterStat.Hp, ce.GetStat(CharacterStat.MaxHp));
-            CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
+            var recoverHp = ce.GetStat(CharacterStat.MaxHp);
+            ce.SetStat(CharacterStat.Hp, recoverHp);
         }
         else
             inPlace = false;
@@ -49,6 +49,8 @@ public class PacketRespawn : IClientPacketHandler
 
         if (!inPlace && targetMap != null)
         {
+            player.AddActionDelay(CooldownActionType.Teleport);
+
             if (ch.Map.Name == savePoint)
             {
                 if (!ch.Map.MapBounds.Contains(position) || !ch.Map.WalkData.IsCellWalkable(position))
@@ -61,10 +63,11 @@ public class PacketRespawn : IClientPacketHandler
                     position = targetMap.FindRandomPositionOnMap();
                 ch.Map.World.MovePlayerMap(ref connection.Entity, ch, targetMap, position);
             }
-
         }
         else
         {
+            player.AddActionDelay(CooldownActionType.Click);
+
             ch.Map.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.SendPlayerResurrection(ch);
             CommandBuilder.ClearRecipients();

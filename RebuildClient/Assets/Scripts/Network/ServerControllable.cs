@@ -143,12 +143,15 @@ namespace Assets.Scripts.Network
 
         public void SetHp(int hp, int maxHp)
         {
+            MaxHp = maxHp;
             FloatingDisplay.UpdateMaxHp(maxHp);
             SetHp(hp);
         }
         
         public void SetHp(int hp)
         {
+            Hp = hp;
+            
             if ((GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp) || !IsInteractable)
             {
                 if (FloatingDisplay == null)

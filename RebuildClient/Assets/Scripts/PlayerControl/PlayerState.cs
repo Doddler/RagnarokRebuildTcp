@@ -10,6 +10,10 @@ namespace Assets.Scripts.PlayerControl
         public int EntityId;
         public int Level;
         public int Exp;
+        public int Hp;
+        public int MaxHp;
+        public int Sp;
+        public int MaxSp;
         public ClientSkillTree SkillTree;
         public int SkillPoints;
         public int JobId;
