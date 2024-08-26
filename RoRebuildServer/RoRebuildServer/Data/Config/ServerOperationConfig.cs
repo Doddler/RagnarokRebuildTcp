@@ -6,4 +6,6 @@ public class ServerOperationConfig
     public int MapChunkSize { get; set; }
     public int ClientTimeoutSeconds { get; set; }
     public bool UseAccurateSpawnZoneFormula { get; set; }
+    public bool AllowAdminifyCommand { get; set; }
+    public string AdminifyPasscode { get; set; }
 }

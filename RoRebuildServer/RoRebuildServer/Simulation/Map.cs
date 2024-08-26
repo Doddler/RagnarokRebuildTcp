@@ -99,7 +99,8 @@ public class Map
 
         if (cOld != cNew)
         {
-            cOld.RemoveEntity(ref entity, ch.Type);
+            if (!cOld.RemoveEntity(ref entity, ch.Type))
+                throw new Exception($"For some reason the entity doesn't exist in the old chunk when moving chunks.");
             cNew.AddEntity(ref entity, ch.Type);
         }
 

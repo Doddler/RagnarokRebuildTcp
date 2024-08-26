@@ -1,4 +1,5 @@
 ﻿using RebuildSharedData.Networking;
+using RoRebuildServer.Data;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
 
@@ -19,6 +20,13 @@ public class PacketClientTextCommand : IClientPacketHandler
 
         if(type == ClientTextCommand.Adminify)
         {
+            var text = msg.ReadString();
+            var serverPass = ServerConfig.OperationConfig.AdminifyPasscode;
+            if (!string.IsNullOrWhiteSpace(serverPass) && text != serverPass)
+            {
+                CommandBuilder.ErrorMessage(connection.Player, $"Invalid parameters.");
+                return;
+            }
             connection.Player.IsAdmin = true; //lol
 
             CommandBuilder.AddRecipient(connection.Entity);

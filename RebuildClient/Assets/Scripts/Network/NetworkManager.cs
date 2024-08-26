@@ -1606,12 +1606,13 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendClientTextCommand(ClientTextCommand cmd)
+        public void SendClientTextCommand(ClientTextCommand cmd, string text = "")
         {
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.ClientTextCommand);
             msg.Write((byte)cmd);
+            msg.Write(text);
 
             SendMessage(msg);
         }

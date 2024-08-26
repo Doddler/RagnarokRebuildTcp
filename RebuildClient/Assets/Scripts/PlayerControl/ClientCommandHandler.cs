@@ -118,7 +118,13 @@ namespace PlayerControl
                 
                 if (s[0] == "/adminify")
                 {
-                    NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Adminify);
+                    if (s.Length > 1)
+                    {
+                        var cmdText = text.Substring(10);
+                        NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Adminify, cmdText);
+                    }
+                    else
+                        NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Adminify);
                 }
 
                 if (s[0] == "/name" || s[0] == "/changename")
