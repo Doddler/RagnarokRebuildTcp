@@ -234,9 +234,11 @@ OnTimer 4200: EndEvent();
 SkillHandler("ORK_HERO") {
 StateAttacking:
     TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
-	TryCast(GrandThunderstorm, 10, 50%, 2.5s, 8s, EventOnStartCast)[HpPercent < 30] -> CreateEvent("GrandThunderstorm");
-    TryCast(TwoHandQuicken, 10, 100%, 0, 10h)[HpPercent < 30];
-	TryCast(ThunderStorm, 10, 20%, 2.5s, 5s)[HpPercent >= 30];
+	TryCast(TwoHandQuicken, 10, 100%, 0, 10h)[HpPercent < 30];
+	if(HpPercent > 30)
+		TryCast(ThunderStorm, 10, 20%, 2.5s, 5s);
+	else
+		TryCast(GrandThunderstorm, 10, 50%, 2.5s, 8s, EventOnStartCast) -> CreateEvent("GrandThunderstorm");
 StateIdle:
 	TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
 	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
@@ -249,7 +251,7 @@ StateIdle:
 SkillHandler("DOPPELGANGER") {
 StateAny: 
     TryCast(CallMinion, 1, 100%, 0.3s, 30s)[MinionCount < 3 && HpPercent < 30] -> SummonMinions(1, "NIGHTMARE");
-    TryCast(CallMinion, 1, 100%, 1.4s, 30s)[MinionCount < 3] -> SummonMinions(1, "NIGHTMARE");
+    TryCast(CallMinion, 1, 100%, 0.7s, 30s)[MinionCount < 3] -> SummonMinions(1, "NIGHTMARE");
 	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
 	TryCast(Heal, 9999, 100%, 0s, 10s)[FindAllyBelowHpPercent(60)];
 StateAttacking:
@@ -266,7 +268,7 @@ event NineTailWalkEvent {
 	StartTimer(100);
 	ChangeNpcClass("NINE_TAIL");
 	ShowNpc(""); //reveal this event npc with a blank name
-	StartWalkToRandomTile(5, 150); //5 tiles away, 150 move speed
+	StartWalkToRandomTile(6, 150); //5 tiles away, 150 move speed
 OnTimer 100:
 	if(IsMoving)
 		ResetTimer();
