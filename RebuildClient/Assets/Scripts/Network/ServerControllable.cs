@@ -17,6 +17,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Assertions;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 namespace Assets.Scripts.Network
 {
@@ -28,9 +29,11 @@ namespace Assets.Scripts.Network
         public RoSpriteAnimator SpriteAnimator;
         public int Id;
         public int ClassId;
-        public Vector2Int Position;
+        public Vector2Int CellPosition;
         public Vector2 MoveStartPos;
         public Vector3 StartPos;
+        public Vector3 PositionOffset;
+        public Vector3 RealPosition;
         public float ShadowSize;
         public bool IsAlly;
         public bool IsMale;
@@ -39,11 +42,7 @@ namespace Assets.Scripts.Network
         public int Level;
         public string Name { get; set; }
         public int Hp;
-        public int MaxHp
-        {
-            get;
-            set;
-        }
+        public int MaxHp { get; set; }
         public int WeaponClass;
 
         public GameObject PopupDialog;
@@ -95,6 +94,7 @@ namespace Assets.Scripts.Network
         private Material shadowMaterial;
 
         private float hitDelay = 0f;
+
         //private float dialogCountdown = 0f;
         private float movePauseTime = 0f;
         public bool IsMoving => isMoving;
@@ -115,7 +115,7 @@ namespace Assets.Scripts.Network
         {
             if (FloatingDisplay == null)
                 FloatingDisplay = NetworkManager.Instance.OverlayManager.GetNewFloatingDisplay();
-            if(makeEnabled)
+            if (makeEnabled)
                 FloatingDisplay.gameObject.SetActive(true);
             return FloatingDisplay;
         }
@@ -135,7 +135,7 @@ namespace Assets.Scripts.Network
 
         public void LookAtOrDefault(ServerControllable target, Direction fallbackDir)
         {
-            if(target != null)
+            if (target != null)
                 LookAt(target.transform.position);
             else
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(fallbackDir));
@@ -147,11 +147,11 @@ namespace Assets.Scripts.Network
             FloatingDisplay.UpdateMaxHp(maxHp);
             SetHp(hp);
         }
-        
+
         public void SetHp(int hp)
         {
             Hp = hp;
-            
+
             if ((GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp) || !IsInteractable)
             {
                 if (FloatingDisplay == null)
@@ -159,14 +159,14 @@ namespace Assets.Scripts.Network
                 FloatingDisplay.HideHpBar();
                 return;
             }
-            
+
             EnsureFloatingDisplayCreated();
             if (IsMainCharacter)
             {
                 FloatingDisplay.ForceHpBarOn();
             }
 
-            if(CharacterType != CharacterType.NPC)
+            if (CharacterType != CharacterType.NPC)
                 FloatingDisplay.UpdateHp(hp);
         }
 
@@ -174,7 +174,7 @@ namespace Assets.Scripts.Network
         {
             if (CharacterType != CharacterType.Player)
                 return;
-            
+
             var sName = ClientDataLoader.Instance.GetSkillName(skill);
             FloatingDisplay.ShowChatBubbleMessage(sName + "!!", duration);
         }
@@ -240,7 +240,7 @@ namespace Assets.Scripts.Network
             FloatingDisplay.UpdateName(name);
             FloatingDisplay.TargetingNamePlate();
         }
-        
+
         public void ShowHoverNamePlate(string name)
         {
             EnsureFloatingDisplayCreated();
@@ -254,14 +254,14 @@ namespace Assets.Scripts.Network
                 return;
             FloatingDisplay.EndTargetingNamePlate();
         }
-        
+
         public void HideHoverNamePlate()
         {
             if (FloatingDisplay == null)
                 return;
             FloatingDisplay.EndHoverNamePlate();
         }
-        
+
         public void DialogBox(string text)
         {
             EnsureFloatingDisplayCreated();
@@ -274,21 +274,21 @@ namespace Assets.Scripts.Network
         {
             if (FloatingDisplay == null)
                 return;
-            
-            if(IsMainCharacter)
+
+            if (IsMainCharacter)
                 FloatingDisplay.transform.SetAsLastSibling();
 
             var cf = CameraFollower.Instance;
             var rect = FloatingDisplay.transform as RectTransform;
             var screenPos = cf.Camera.WorldToScreenPoint(transform.position);
-            
+
             var d = 70 / cf.Distance;
             var reverseScale = 1f / cf.CanvasScaler.scaleFactor;
 
             if (!GameConfig.Data.ScalePlayerDisplayWithZoom)
                 d = 1f;
-            
-            rect.localScale = new Vector3(d,d,d);
+
+            rect.localScale = new Vector3(d, d, d);
             rect.anchoredPosition = new Vector2(screenPos.x * reverseScale, (screenPos.y - cf.UiCanvas.pixelRect.height) * reverseScale);
         }
 
@@ -299,7 +299,7 @@ namespace Assets.Scripts.Network
 
             Id = id;
 
-            Position = worldPos;
+            CellPosition = worldPos;
 
             var offset = 0f;
             if (SpriteMode == ClientSpriteType.Prefab)
@@ -309,7 +309,9 @@ namespace Assets.Scripts.Network
             var position = new Vector3(start.x, walkProvider.GetHeightForPosition(start) + offset, start.z);
 
             // Debug.Log($"Configure entity on {name} setting position to {position}");
-            transform.localPosition = position;
+            RealPosition = position;
+            transform.localPosition = RealPosition + PositionOffset;
+            
 
             if (SpriteMode == ClientSpriteType.Sprite)
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(direction));
@@ -329,7 +331,7 @@ namespace Assets.Scripts.Network
 
         private Direction GetDirectionForHeading(Vector2Int dest)
         {
-            var src = new Vector2(transform.position.x - 0.5f, transform.position.z - 0.5f);
+            var src = new Vector2(RealPosition.x - 0.5f, RealPosition.z - 0.5f);
             var angle = Vector2.SignedAngle(src, dest);
             return Directions.GetFacingForAngle(angle);
         }
@@ -380,9 +382,9 @@ namespace Assets.Scripts.Network
         {
             // if (IsMainCharacter)
             //     Debug.Log($"{name} Start Move - From {steps[0]}({startPosition} )to {steps[stepCount - 1]}\nSpeed:{speed} StepCount:{stepCount} CurStep:{curStep} StepLength:{steps.Count}");
-            
+
             moveSpeed = speed;
-            
+
             if (movePath == null)
                 movePath = new List<Vector2Int>(20);
             else
@@ -391,11 +393,11 @@ namespace Assets.Scripts.Network
             moveLength = nextCellTime;
             moveProgress = 0;
             currentMoveStep = curStep;
-            
+
             for (var i = 0; i < stepCount; i++)
                 movePath.Add(steps[i]);
 
-            MoveStartPos = new Vector2(transform.localPosition.x, transform.localPosition.z); // startPosition;
+            MoveStartPos = new Vector2(RealPosition.x, RealPosition.z); // startPosition;
             LeanTween.cancel(gameObject);
             isMoving = true;
 
@@ -419,7 +421,7 @@ namespace Assets.Scripts.Network
             //don't reset start pos if the next tile is the same
             if (movePath == null || movePath.Count <= 1 || movePath[1] != steps[1])
                 //    if (stepCount > 1)
-                StartPos = transform.position - new Vector3(0.5f, 0f, 0.5f);
+                StartPos = RealPosition - new Vector3(0.5f, 0f, 0.5f);
 
             moveProgress = progress / speed; //hack please fix
 
@@ -449,7 +451,7 @@ namespace Assets.Scripts.Network
         private void UpdateMovePosition()
         {
             if (movePath == null || movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
-            
+
             var totalSteps = movePath.Count;
             var dir = SpriteAnimator.Direction;
             while (moveProgress >= moveLength)
@@ -458,8 +460,9 @@ namespace Assets.Scripts.Network
                 if (currentMoveStep >= totalSteps - 1)
                 {
                     // Debug.Log($"Ending Move at {movePath[currentMoveStep].ToWorldPosition()}");
-                    transform.position = movePath[currentMoveStep].ToWorldPosition();
-                    Position = transform.position.ToTilePosition();
+                    RealPosition = movePath[currentMoveStep].ToWorldPosition();
+                    transform.localPosition = RealPosition + PositionOffset;
+                    CellPosition = RealPosition.ToTilePosition();
                     movePath.Clear();
                     isMoving = false;
                     return;
@@ -477,22 +480,24 @@ namespace Assets.Scripts.Network
             {
                 var x = Mathf.Lerp(MoveStartPos.x, movePath[1].x + 0.5f, prog);
                 var y = Mathf.Lerp(MoveStartPos.y, movePath[1].y + 0.5f, prog);
-                transform.localPosition = walkProvider.GetWorldPositionFor2DLocation(x, y);
-                Position = transform.position.ToTilePosition();
+                RealPosition = walkProvider.GetWorldPositionFor2DLocation(x, y);
+                transform.localPosition = RealPosition + PositionOffset;
+                CellPosition = RealPosition.ToTilePosition();
                 SpriteAnimator.Angle = RoAnimationHelper.AngleDir(movePath[1].ToMapPosition(), new Vector2(x, y));
                 // Debug.Log($"First step lerp from {MoveStartPos} to {movePath[currentMoveStep+1]} returns {transform.localPosition}");
             }
             else
             {
-                var x = Mathf.Lerp(movePath[currentMoveStep].x, movePath[currentMoveStep+1].x, prog) + 0.5f;
-                var y = Mathf.Lerp(movePath[currentMoveStep].y, movePath[currentMoveStep+1].y, prog) + 0.5f;
-                transform.localPosition = walkProvider.GetWorldPositionFor2DLocation(x, y);
-                Position = transform.position.ToTilePosition();
+                var x = Mathf.Lerp(movePath[currentMoveStep].x, movePath[currentMoveStep + 1].x, prog) + 0.5f;
+                var y = Mathf.Lerp(movePath[currentMoveStep].y, movePath[currentMoveStep + 1].y, prog) + 0.5f;
+                RealPosition = walkProvider.GetWorldPositionFor2DLocation(x, y);
+                transform.localPosition = RealPosition + PositionOffset;
+                CellPosition = RealPosition.ToTilePosition();
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(dir));
                 // Debug.Log($"Lerp from {movePath[currentMoveStep]} to {movePath[currentMoveStep+1]} returns {transform.localPosition}");
             }
         }
-        
+
         public void UpdateMove2()
         {
             if (movePath == null || movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
@@ -535,13 +540,13 @@ namespace Assets.Scripts.Network
             }
 
             if (moveProgress < 0.5f)
-                Position = movePath[1];
-            
+                CellPosition = movePath[1];
+
             while (moveProgress < 0f && movePath.Count > 1)
             {
                 movePath.RemoveAt(0);
-                StartPos = new Vector3(movePath[0].x, walkProvider.GetHeightForPosition(transform.position), movePath[0].y);
-                Position = movePath[0];
+                StartPos = new Vector3(movePath[0].x, walkProvider.GetHeightForPosition(RealPosition), movePath[0].y);
+                CellPosition = movePath[0];
                 moveProgress += 1f;
                 // tempSpeed = -1;
             }
@@ -554,8 +559,9 @@ namespace Assets.Scripts.Network
 
             if (movePath.Count == 1)
             {
-                Position = movePath[0];
-                transform.position = new Vector3(Position.x + 0.5f, walkProvider.GetHeightForPosition(transform.position), Position.y + 0.5f);
+                CellPosition = movePath[0];
+                RealPosition = new Vector3(CellPosition.x + 0.5f, walkProvider.GetHeightForPosition(RealPosition), CellPosition.y + 0.5f);
+                transform.localPosition = RealPosition + PositionOffset;
                 movePath.Clear();
                 // if (IsMainCharacter)
                 //     Debug.Log($"We've finished pathing, stopping character.");
@@ -566,7 +572,8 @@ namespace Assets.Scripts.Network
                 var xPos = Mathf.Lerp(StartPos.x, movePath[1].x, 1 - moveProgress) + 0.5f;
                 var yPos = Mathf.Lerp(StartPos.z, movePath[1].y, 1 - moveProgress) + 0.5f;
 
-                transform.position = new Vector3(xPos + 0.5f, walkProvider.GetHeightForPosition(transform.position), yPos + 0.5f);
+                RealPosition = new Vector3(xPos + 0.5f, walkProvider.GetHeightForPosition(transform.position), yPos + 0.5f);
+                transform.localPosition = RealPosition + PositionOffset;
 
                 //var offset = movePath[1] - movePath[0];
             }
@@ -574,7 +581,8 @@ namespace Assets.Scripts.Network
 
         public void MovePosition(Vector2Int targetPosition)
         {
-            transform.position = targetPosition.ToWorldPosition(); // new Vector3(targetPosition.x + 0.5f, walkProvider.GetHeightForPosition(transform.position), targetPosition.y + 0.5f);
+            RealPosition = targetPosition.ToWorldPosition();
+            transform.localPosition = RealPosition + PositionOffset;
         }
 
         public void StopWalking()
@@ -650,7 +658,7 @@ namespace Assets.Scripts.Network
 
         public void SnapToTile(Vector2Int position, float snapSpeed = 0.07f, float leeway = 0.75f)
         {
-            var targetPos = new Vector3(position.x + 0.5f, walkProvider.GetHeightForPosition(transform.position), position.y + 0.5f);
+            var targetPos = new Vector3(position.x + 0.5f, walkProvider.GetHeightForPosition(RealPosition), position.y + 0.5f);
 
             LeanTween.cancel(gameObject);
 
@@ -658,9 +666,10 @@ namespace Assets.Scripts.Network
             //     Debug.Log(
             //         $"SnapToTile {Name} has distance {(transform.localPosition - targetPos).magnitude} and speed of {snapSpeed}f. {leeway}f required to execute snap.");
 
+            RealPosition = targetPos;
 
-            if ((transform.localPosition - targetPos).magnitude > 0.75f)
-                LeanTween.move(gameObject, targetPos, 0.07f);
+            if ((RealPosition - targetPos).magnitude > 0.75f)
+                LeanTween.move(gameObject, RealPosition + PositionOffset, 0.07f);
         }
 
         public void StopImmediate(Vector2Int position, bool snapToTile = true)
@@ -680,9 +689,9 @@ namespace Assets.Scripts.Network
 
         public void AttachEffect(Ragnarok3dEffect effect)
         {
-            if(EffectList == null)
+            if (EffectList == null)
                 EffectList = new List<Ragnarok3dEffect>();
-            
+
 #if UNITY_EDITOR
             if (EffectList.Contains(effect))
             {
@@ -721,14 +730,14 @@ namespace Assets.Scripts.Network
 
         public void SetAttackAnimationSpeed(float motionTime)
         {
-            #if DEBUG
+#if DEBUG
             if (CameraFollower.Instance.DebugIgnoreAttackMotion)
             {
                 AttackAnimationSpeed = 1;
                 return;
             }
 #endif
-            
+
             if (SpriteAnimator == null || SpriteAnimator.SpriteData == null)
             {
                 AttackAnimationSpeed = 1;
@@ -739,23 +748,23 @@ namespace Assets.Scripts.Network
             if (CharacterType == CharacterType.Player)
             {
                 baseMotionTime = 0.6f;
-                
+
                 if (motionTime > 1.5f)
                     motionTime = 1.5f;
             }
             // if (ClassId == 2)
             //     baseMotionTime = 0.6f;
-            
-            
+
+
             //
             // if (baseMotionTime < motionTime && ClassId != 2)
             // {
             //     AttackAnimationSpeed = 1;
             //     return;
             // }
-            
+
             AttackAnimationSpeed = motionTime / baseMotionTime;
-            
+
             // Debug.Log($"Attack! speed {AttackAnimationSpeed} = motionTime {motionTime} / baseMotionTime {baseMotionTime}");
         }
 
@@ -791,7 +800,7 @@ namespace Assets.Scripts.Network
             if (SpriteAnimator.State == SpriteState.Sit)
                 go.SetActive(false);
         }
-        
+
         public void PerformSkillMotion()
         {
             if (skipNextAttackMotion) //if the character casts a skill indirectly they shouldn't play their attack motion
@@ -801,22 +810,20 @@ namespace Assets.Scripts.Network
                 return;
             }
             // Debug.Log($"{name}:Performing attack motion.");
-            
+
             SpriteAnimator.State = SpriteState.Idle;
 
             SpriteAnimator.AnimSpeed = 1f;
-            
+
             if (SpriteAnimator.Type == SpriteType.Player)
             {
                 SpriteAnimator.ChangeMotion(SpriteMotion.Casting, true);
             }
             else
                 SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
-            
+
             // Debug.Log($"PerformBasicAttackMotion {name} speed {AttackAnimationSpeed}");
             //SpriteAnimator.AnimSpeed = AttackAnimationSpeed;
-            
-            
         }
 
 
@@ -829,7 +836,7 @@ namespace Assets.Scripts.Network
                 return;
             }
             // Debug.Log($"{name}:Performing attack motion.");
-            
+
             if (SpriteAnimator.Type == SpriteType.Player)
             {
                 switch (SpriteAnimator.PreferredAttackMotion)
@@ -848,7 +855,7 @@ namespace Assets.Scripts.Network
             }
             else
                 SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
-            
+
             // Debug.Log($"PerformBasicAttackMotion {name} speed {AttackAnimationSpeed}");
             SpriteAnimator.AnimSpeed = AttackAnimationSpeed;
         }
@@ -922,16 +929,16 @@ namespace Assets.Scripts.Network
         private IEnumerator MonsterDeathCoroutine()
         {
             var time = Messages.TimeUntilMessageLogClears(EntityMessageType.ShowDamage);
-            
+
             yield return new WaitForSeconds(time);
             if (SpriteAnimator == null)
             {
                 FadeOutAndVanish(2f);
                 yield break;
             }
-            
+
             //yield return new WaitForSeconds(SpriteAnimator.GetHitTiming());
-            
+
             var deathTiming = SpriteAnimator.GetDeathTiming();
             SpriteAnimator.State = SpriteState.Dead;
             SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
@@ -951,7 +958,7 @@ namespace Assets.Scripts.Network
         {
             isMoving = false;
             movePath = null;
-            
+
             FloatingDisplay.Close();
             FloatingDisplay = null;
 
@@ -1000,7 +1007,7 @@ namespace Assets.Scripts.Network
         //	if(gameObject != null)
         //	    GameObject.Destroy(gameObject);
         //}
-        
+
         private void AttachMissIndicator()
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
@@ -1010,7 +1017,7 @@ namespace Assets.Scripts.Network
                 SpriteAnimator.Direction, color, false);
             di.AttachDamageIndicator(this);
         }
-        
+
         private void AttachHealIndicator(int damage)
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
@@ -1037,18 +1044,18 @@ namespace Assets.Scripts.Network
                 di2.AttachComboIndicatorToControllable(this);
             }
         }
-        
+
         private void OnMessageHitEffect(EntityMessage msg)
         {
             if (msg.Value1 == 2) //temporary bad way to handle hit2
             {
-                if(msg.Entity != null)
+                if (msg.Entity != null)
                     HitEffect.Hit2(this, msg.Entity);
                 return;
             }
 
             var hitPosition = transform.position + new Vector3(0, 2, 0);
-            if(msg.Entity != null)
+            if (msg.Entity != null)
                 HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition);
             else
             {
@@ -1065,8 +1072,6 @@ namespace Assets.Scripts.Network
                     HitEffect.Hit1(srcPos, hitPosition);
                 }
             }
-
-
         }
 
         public void OnMessageDamageEvent(EntityMessage msg)
@@ -1077,14 +1082,14 @@ namespace Assets.Scripts.Network
                 AttachHealIndicator(-dmg);
                 return;
             }
-            
+
             movePauseTime = DebugValueHolder.GetOrDefault("movePauseTime", 0.2f);
             UpdateMovePosition();
-            
+
             var weaponClass = 0;
             if (msg.Entity != null)
                 weaponClass = msg.Entity.WeaponClass;
-            
+
             if (SpriteAnimator.CurrentMotion != SpriteMotion.Dead)
             {
                 if (SpriteAnimator.Type == SpriteType.Player)
@@ -1123,44 +1128,42 @@ namespace Assets.Scripts.Network
                     Debug.LogError($"Unhandled entity message type {msg.Type} on entity {Name}!");
                     break;
             }
-                
+
             EntityMessagePool.Return(msg);
         }
-        
+
         public void HandleMessages()
         {
             while (Messages.TryGetMessage(out var msg))
                 ExecuteMessage(msg);
         }
-        
+
         private void Update()
         {
-            if(FloatingDisplay != null)
+            if (FloatingDisplay != null)
                 SnapDialog();
-            
+
             if (SpriteMode == ClientSpriteType.Prefab)
                 return;
-            
+
             if (IsMainCharacter)
             {
                 var mc = MinimapController.Instance;
                 if (mc == null || SpriteAnimator == null)
                     return;
 
-                //Debug.Log(transform.position);
-                MinimapController.Instance.SetPlayerPosition(new Vector2Int((int)transform.position.x, (int)transform.position.z),
-                    Directions.GetAngleForDirection(SpriteAnimator.Direction) + 180f);
+                MinimapController.Instance.SetPlayerPosition(CellPosition, Directions.GetAngleForDirection(SpriteAnimator.Direction) + 180f);
             }
-            
-            if(SpriteAnimator.SpriteData == null)
+
+            if (SpriteAnimator.SpriteData == null)
                 return;
-            
+
             HandleMessages();
 
             var noShadowState = SpriteAnimator.CurrentMotion == SpriteMotion.Sit || SpriteAnimator.CurrentMotion == SpriteMotion.Dead || IsHidden;
-            if(shadowSprite != null && (noShadowState != !shadowSprite.gameObject.activeInHierarchy))
+            if (shadowSprite != null && (noShadowState != !shadowSprite.gameObject.activeInHierarchy))
                 shadowSprite.gameObject.SetActive(!noShadowState);
-            
+
             if (SpriteAnimator) SpriteAnimator.SetRenderActive(!IsHidden);
 
             //this is dumb
@@ -1184,14 +1187,14 @@ namespace Assets.Scripts.Network
 
             if (isMoving)
             {
-                var newPosition = new Vector2(transform.position.x, transform.position.z);
+                var newPosition = new Vector2(RealPosition.x, RealPosition.z);
                 var distance = Vector2.Distance(lastFramePosition, newPosition);
                 // Debug.Log($"{lastFramePosition} -> {newPosition} = {distance}");
                 SpriteAnimator.MoveDistance += distance;
                 lastFramePosition = newPosition;
 
                 UpdateMove2();
-                
+
                 if (movePauseTime > 0f)
                 {
                     // Debug.Log($"{name} movePauseTime {movePauseTime}");

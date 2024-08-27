@@ -262,7 +262,7 @@ namespace Assets.Scripts.Network
             return new Vector2Int(x, y);
         }
 
-        private void LoadMoveData2(ClientInboundMessage msg, ServerControllable ctrl)
+        public void LoadMoveData2(ClientInboundMessage msg, ServerControllable ctrl)
         {
             var startPos = new Vector2(msg.ReadFloat(), msg.ReadFloat());
             var moveSpeed = msg.ReadFloat();
@@ -344,7 +344,6 @@ namespace Assets.Scripts.Network
             var maxHp = 0;
             var hp = 0;
 
-
             if (type == CharacterType.Player || type == CharacterType.Monster)
             {
                 lvl = (int)msg.ReadByte();
@@ -358,7 +357,6 @@ namespace Assets.Scripts.Network
                 oldEntity.FadeOutAndVanish(0.1f);
                 EntityList.Remove(id);
             }
-
 
             ServerControllable controllable;
             if (type == CharacterType.Player)

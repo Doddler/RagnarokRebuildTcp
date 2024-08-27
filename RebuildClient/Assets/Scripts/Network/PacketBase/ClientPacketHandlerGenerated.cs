@@ -20,7 +20,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[2] = new InvalidPacket(); //PlayerReady
 			handlers[3] = new PacketOnEnterServer(); //EnterServer
 			handlers[4] = new InvalidPacket(); //Ping
-			handlers[5] = new InvalidPacket(); //CreateEntity
+			handlers[5] = new PacketCreateEntity(); //CreateEntity
 			handlers[6] = new InvalidPacket(); //StartWalk
 			handlers[7] = new InvalidPacket(); //PauseMove
 			handlers[8] = new InvalidPacket(); //ResumeMove

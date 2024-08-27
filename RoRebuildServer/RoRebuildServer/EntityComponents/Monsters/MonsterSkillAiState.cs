@@ -28,6 +28,7 @@ public class MonsterSkillAiState(Monster monster)
     public bool FinishedProcessing;
     //public CharacterSkillB Test;
     public int HpPercent => monster.CombatEntity.GetStat(CharacterStat.Hp) * 100 / monster.CombatEntity.GetStat(CharacterStat.MaxHp);
+    public int HpValue => monster.CombatEntity.GetStat(CharacterStat.Hp);
     public int MinionCount => monster.ChildCount;
     private WorldObject? targetForSkill = null;
     //private bool failNextSkill = false;
@@ -38,18 +39,43 @@ public class MonsterSkillAiState(Monster monster)
     public Position CurrentPosition => Monster.Character.Position;
 
     private Dictionary<string, float>? specialCooldowns;
+    private int[]? stateFlags;
 
     public CharacterSkill LastDamageSourceType => Monster.LastDamageSourceType;
 
     public int DistanceToSelectedTarget => targetForSkill == null ? -1 : Monster.Character.Position.Distance(TargetPosition);
     public Position TargetPosition => targetForSkill?.Position ?? Position.Invalid;
+    public int TimeAlive => (int)(Monster.TimeAlive * 1000);
 
+    public bool IsMasterAlive => Monster.HasMaster && Monster.GetMaster().TryGet<WorldObject>(out var chara) && chara.IsActive &&  chara.State != CharacterState.Dead;
 
+    public void SetStateFlag(int id, int value)
+    {
+        if (stateFlags == null)
+            stateFlags = new int[4];
+        stateFlags[id] = value;
+    }
+
+    public int GetStateFlag(int id)
+    {
+        if (stateFlags == null)
+            return 0;
+        return stateFlags[id];
+    }
+    
     //public void Debug(string hello) { ServerLogger.Log(hello); }
+
+    public int Random(int low, int high) => GameRandom.NextInclusive(low, high);
+    public int Random(int high) => GameRandom.NextInclusive(high);
 
     public void Die(bool giveExperience = true)
     {
         Monster.Die(giveExperience);
+    }
+
+    public void Leave()
+    {
+        Monster.Die(false, false, CharacterRemovalReason.Teleport);
     }
 
     public void EnterPostDeathPhase()
@@ -73,6 +99,32 @@ public class MonsterSkillAiState(Monster monster)
 
         map.AddVisiblePlayersAsPacketRecipients(monster.Character);
         CommandBuilder.ChangeCombatTargetableState(Monster.Character, false);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void HealMyMaster(int val) => HealMyMaster(val, val);
+    public void HealMyMaster(int min, int max)
+    {
+        if (!IsMasterAlive)
+            return;
+        if (!Monster.GetMaster().TryGet<WorldObject>(out var master))
+            return;
+
+        var heal = min;
+        if(min != max)
+            heal = GameRandom.NextInclusive(min, max);
+
+        var res = Monster.CombatEntity.PrepareTargetedSkillResult(master.CombatEntity, CharacterSkill.Heal);
+        res.Damage = -heal;
+        res.Result = AttackResult.Heal;
+        res.AttackMotionTime = 0;
+        res.HitCount = 1;
+        
+        master.CombatEntity.HealHp(heal);
+        
+        Monster.Character.Map?.AddVisiblePlayersAsPacketRecipients(master);
+        CommandBuilder.SkillExecuteTargetedSkill(Monster.Character, master, CharacterSkill.Heal, 10, res);
+        CommandBuilder.SendHealMulti(master, heal, HealType.None);
         CommandBuilder.ClearRecipients();
     }
 
@@ -428,11 +480,54 @@ public class MonsterSkillAiState(Monster monster)
 
         for (var i = 0; i < count; i++)
         {
-            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, Area.CreateAroundPoint(monster.Character.Position, 3), null);
+            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, area, null);
             var minionMonster = minion.Get<Monster>();
             minionMonster.ResetAiUpdateTime();
+            minionMonster.SetMaster(Monster.Entity); //these monsters have masters but are not minions of the parent
 
             minionMonster.GivesExperience = false;
+        }
+    }
+
+
+    public void SummonMonstersUnderMyMaster(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
+    {
+        Debug.Assert(Monster.Character.Map != null, $"Npc {Monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+        var monsterDef = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(Monster.Character.Position + new Position(offsetX, offsetY), width, height);
+
+        for (var i = 0; i < count; i++)
+        {
+            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, area, null);
+            var minionMonster = minion.Get<Monster>();
+            minionMonster.ResetAiUpdateTime();
+            if(Monster.HasMaster)
+                minionMonster.SetMaster(Monster.GetMaster()); //these monsters have masters but are not minions of the parent
+
+            minionMonster.GivesExperience = false;
+        }
+    }
+
+    public void TossSummonMonster(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
+    {
+        Debug.Assert(Monster.Character.Map != null, $"Npc {Monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+        var monsterDef = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(Monster.Character.Position + new Position(offsetX, offsetY), width, height);
+
+        for (var i = 0; i < count; i++)
+        {
+            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, area, null, false);
+            var minionMonster = minion.Get<Monster>();
+            minionMonster.ResetAiUpdateTime();
+            minionMonster.SetMaster(Monster.Entity); //these monsters have masters but are not minions of the parent
+
+            minionMonster.GivesExperience = false;
+
+            Monster.Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Toss, Monster.Character.Position);
         }
     }
 

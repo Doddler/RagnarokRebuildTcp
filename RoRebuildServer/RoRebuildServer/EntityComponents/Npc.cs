@@ -60,6 +60,7 @@ public class Npc : IEntityAutoReset
 
     public int[] ValuesInt => valuesInt ??= ArrayPool<int>.Shared.Rent(NpcInteractionState.StorageCount);
     public string[] ValuesString => valuesString ??= ArrayPool<string>.Shared.Rent(NpcInteractionState.StorageCount);
+    public bool IsOwnerAlive => Owner.IsAlive() && Owner.TryGet<WorldObject>(out var obj) && obj.State != CharacterState.Dead;
 
     public void Update()
     {
@@ -360,6 +361,26 @@ public class Npc : IEntityAutoReset
         }
 
         return m;
+    }
+
+    public void TossSummonMonster(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
+    {
+        Debug.Assert(Character.Map != null, $"Npc {Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+        var monsterDef = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(Character.Position + new Position(offsetX, offsetY), width, height);
+
+        for (var i = 0; i < count; i++)
+        {
+            var minion = World.Instance.CreateMonster(Character.Map, monsterDef, area, null, false);
+            var minionMonster = minion.Get<Monster>();
+            minionMonster.ResetAiUpdateTime();
+            if(IsOwnerAlive)
+                minionMonster.SetMaster(Owner); //these monsters have masters but are not minions of the parent
+            
+            Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Toss, Character.Position);
+        }
     }
 
     public bool CheckMonstersOfTypeInRange(string name, int x, int y, int distance)

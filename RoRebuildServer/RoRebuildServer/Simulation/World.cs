@@ -400,7 +400,7 @@ public class World
         return e;
     }
 
-    public Entity CreateMonster(Map map, MonsterDatabaseInfo monsterDef, Area spawnArea, MapSpawnRule? spawnRule)
+    public Entity CreateMonster(Map map, MonsterDatabaseInfo monsterDef, Area spawnArea, MapSpawnRule? spawnRule, bool addToMap = true)
     {
         var e = EntityManager.New(EntityType.Monster);
         var ch = e.Get<WorldObject>();
@@ -470,23 +470,27 @@ public class World
 
         ce.Init(ref e, ch);
         m.Initialize(ref e, ch, ce, monsterDef, monsterDef.AiType, spawnRule, map.Name);
-        
-        map.AddEntity(ref e);
 
-        if (spawnRule != null && (spawnRule.DisplayType == CharacterDisplayType.Boss || spawnRule.DisplayType == CharacterDisplayType.Mvp))
+        if (addToMap)
         {
-            ch.IsImportant = true;
-            ch.DisplayType = spawnRule.DisplayType;
-            map.RegisterImportantEntity(ch);
-        }
+            map.AddEntity(ref e);
 
-        if (spawnRule == null)
-        {
-            if (DataManager.MvpMonsterCodes.Contains(monsterDef.Code))
+            if (spawnRule != null && (spawnRule.DisplayType == CharacterDisplayType.Boss ||
+                                      spawnRule.DisplayType == CharacterDisplayType.Mvp))
             {
                 ch.IsImportant = true;
-                ch.DisplayType = CharacterDisplayType.Mvp;
+                ch.DisplayType = spawnRule.DisplayType;
                 map.RegisterImportantEntity(ch);
+            }
+
+            if (spawnRule == null)
+            {
+                if (DataManager.MvpMonsterCodes.Contains(monsterDef.Code))
+                {
+                    ch.IsImportant = true;
+                    ch.DisplayType = CharacterDisplayType.Mvp;
+                    map.RegisterImportantEntity(ch);
+                }
             }
         }
 

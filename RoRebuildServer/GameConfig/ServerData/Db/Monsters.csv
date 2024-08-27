@@ -66,7 +66,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4063,EDDGA,Eddga,65,107780,95,95,90,100,95,95,867,1060,1,29,29,158415,156200,10,12,Large,Beast,Fire1,872,432,1344,300,Boss,AiAggressive,408,eddga.spr,0,0.5,1,#FFFFFFFF
 4064,THIEF_BUG_,Female Thief Bug,20,272,13,14,14,25,22,12,65,80,1,7,6,108,127,10,12,Medium,Insect,Dark1,988,768,288,200,Normal,AiAssist,480,thief_bug_female.spr,0,0.5,1,#FFFFFFFF
 4065,THIEF_BUG__,Male Thief Bug,29,642,21,19,22,34,31,17,117,143,1,11,8,423,469,10,12,Medium,Insect,Dark1,988,768,288,300,Normal,AiAggressive,504,thief_bug_male.spr,0,0.5,1,#FFFFFFFF
-4066,GOLDEN_BUG,Golden Thief Bug,35,52669,41,45,79,86,67,37,429,524,1,34,14,20887,22180,10,12,Large,Insect,Fire2,768,480,768,100,Boss,AiPassive,720,golden_bug.spr,0,0.5,1,#FFFFFFFF
+4066,GOLDEN_BUG,Golden Thief Bug,39,59927,46,49,87,94,74,41,374,457,1,40,16,36294,38995,10,12,Large,Insect,Fire2,768,480,768,100,Boss,AiPassive,720,golden_bug.spr,0,0.5,1,#FFFFFFFF
 4067,VAGABOND_WOLF,Vagabond Wolf,38,8568,43,42,44,47,42,42,264,323,1,17,15,10590,9051,10,12,Medium,Beast,Earth1,1048,432,648,150,Boss,AiAggressive,216,vagabond_wolf.spr,0,0.5,1,#FFFFFFFF
 4068,SCORPION,Scorpion,24,318,16,17,16,29,26,14,77,94,1,9,7,175,211,2,12,Small,Insect,Fire1,1564,576,864,200,Normal,AiAggressiveAssist,384,scorpion.spr,0,0.5,1,#FFFFFFFF
 4069,METALLER,Metaller,22,291,14,15,14,26,23,12,72,89,1,8,6,140,152,10,12,Medium,Insect,Fire1,1708,540,1008,200,Normal,AiAssist,432,metaller.spr,0,0.5,1,#FFFFFFFF
@@ -299,3 +299,5 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4296,THE_PAPER,The Paper,56,1768,45,45,45,50,45,45,237,290,1,19,19,3725,3800,10,12,Medium,Formless,Neutral3,1160,336,960,170,Normal,AiAggressive,540,the_paper.spr,0,0.5,1,#FFFFFFFF
 4297,POISON_TOAD,Poison Toad,46,1272,37,37,37,42,37,35,194,237,3,16,15,1759,1690,10,12,Medium,Beast,Poison2,1148,864,1728,160,Normal,AiPassive,624,poison_toad.spr,0,0.5,1,#FFFFFFFF
 4298,MOONLIGHT_CLONE,Moonlight Flower,67,15190,106,95,73,104,95,120,689,842,1,27,27,0,0,10,12,Medium,Demon,Fire3,1276,288,576,150,Boss,AiAggressive,180,moonlight.spr,0,0.5,1,#FFFFFFAA
+4299,GTB_EGG,Thief Bug Egg,31,1178,10,32,38,6,16,1,11,14,0,48,39,0,0,1,1,Small,Insect,Dark1,701,1,1,-1,Normal,AiPlant,288,thief_bug_egg.spr,0,-1,1.2,#FFFFFFFF
+4300,GTB_SUMMON,Angry Thief Bug,31,1878,24,25,25,41,39,21,198,243,1,14,11,0,0,12,12,Medium,Insect,Dark1,500,288,288,120,Normal,AiAggressive,504,thief_bug_female.spr,0,0.5,0.7,#FF6F6FFF

@@ -52,11 +52,13 @@ public partial class Monster : IEntityAutoReset
     private float timeofLastStateChange;
     //private float timeEnteredCombat;
     private float timeLastCombat;
+    private float createTime;
 
     public void UpdateStateChangeTime() => timeofLastStateChange = Time.ElapsedTimeFloat;
     public float TimeInCurrentAiState => Time.ElapsedTimeFloat - timeofLastStateChange;
     //private float durationInCombat => Target.IsAlive() ? Time.ElapsedTimeFloat - timeEnteredCombat : -1f;
     public float DurationOutOfCombat => !Target.IsAlive() ? Time.ElapsedTimeFloat - timeLastCombat : -1;
+    public float TimeAlive => Time.ElapsedTimeFloat - createTime;
 
     //private float randomMoveCooldown;
 
@@ -102,6 +104,7 @@ public partial class Monster : IEntityAutoReset
 
     public bool HasMaster => Master.IsAlive();
     public Entity GetMaster() => Master;
+    public Entity SetMaster(Entity master) => Master = master;
 
     public static float MaxSpawnTimeInSeconds = 180;
 
@@ -177,6 +180,7 @@ public partial class Monster : IEntityAutoReset
 
         timeofLastStateChange = Time.ElapsedTimeFloat;
         timeLastCombat = Time.ElapsedTimeFloat;
+        createTime = Time.ElapsedTimeFloat;
         //timeEnteredCombat = float.NegativeInfinity;
     }
 
@@ -311,7 +315,7 @@ public partial class Monster : IEntityAutoReset
     /// </summary>
     /// <param name="giveExperience">Whether killing this monster should reward experience to contributing players.</param>
     /// <param name="isMasterCommand">Is the issuer of this die command the master of this monster? If so, set this to suppress the RemoveChild callback.</param>
-    public void Die(bool giveExperience = true, bool isMasterCommand = false)
+    public void Die(bool giveExperience = true, bool isMasterCommand = false, CharacterRemovalReason reason = CharacterRemovalReason.Dead)
     {
         if (CurrentAiState == MonsterAiState.StateDead)
             return;
@@ -340,21 +344,21 @@ public partial class Monster : IEntityAutoReset
         if (Master.IsAlive() && !isMasterCommand)
         {
             var monster = Master.Get<Monster>();
-            monster.RemoveChild(ref Entity);
+            monster.RemoveChild(ref Entity); //they might not be registered as a child but we should try anyways
         }
 
         if (SpawnRule == null)
         {
             //ServerLogger.LogWarning("Attempting to remove entity without spawn data! How?? " + Character.ClassId);
 
-            World.Instance.FullyRemoveEntity(ref Entity, CharacterRemovalReason.Dead);
+            World.Instance.FullyRemoveEntity(ref Entity, reason);
             nextAiUpdate = float.MaxValue;
             nextAiSkillUpdate = float.MaxValue;
             //Character.ClearVisiblePlayerList();
             return;
         }
 
-        Character.Map?.RemoveEntity(ref Entity, CharacterRemovalReason.Dead, false);
+        Character.Map?.RemoveEntity(ref Entity, reason, false);
         deadTimeout = GameRandom.NextFloat(SpawnRule.MinSpawnTime / 1000f, SpawnRule.MaxSpawnTime / 1000f);
         if (deadTimeout < 0.4f)
             deadTimeout = 0.4f; //minimum respawn time
@@ -500,9 +504,14 @@ public partial class Monster : IEntityAutoReset
             && Character.State != CharacterState.Dead
             && !CombatEntity.IsCasting
             && !Character.InAttackCooldown
-            && CurrentAiState != MonsterAiState.StateAttacking //we handle this check on every attack in OnPerformAttack in Monster.Ai.cs
+            && CurrentAiState !=
+            MonsterAiState.StateAttacking //we handle this check on every attack in OnPerformAttack in Monster.Ai.cs
             && Character.QueuedAction != QueuedAction.Cast)
+        {
             AiSkillScanUpdate();
+            if (Character.State == CharacterState.Dead) //if we died during our own skill handler, bail
+                return;
+        }
 
         //Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
 

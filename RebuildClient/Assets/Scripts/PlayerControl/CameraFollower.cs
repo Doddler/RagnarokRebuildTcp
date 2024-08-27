@@ -1004,7 +1004,7 @@ namespace Assets.Scripts
             var dest = groundPosition;
 
             //if we can't path to the tile they clicked on, instead get the closest tile that is valid and we'll walk to that instead.
-            if (!hasValidPath && WalkProvider.GetNextWalkableTileForClick(controllable.Position, groundPosition, out dest))
+            if (!hasValidPath && WalkProvider.GetNextWalkableTileForClick(controllable.CellPosition, groundPosition, out dest))
                 hasValidPath = true;
 
             if (hasValidPath)

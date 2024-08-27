@@ -18,5 +18,6 @@ namespace Assets.Scripts.PlayerControl
         public int SkillPoints;
         public int JobId;
         public Dictionary<CharacterSkill, int> KnownSkills = new();
+        public bool IsAdminHidden = false;
     }
 }

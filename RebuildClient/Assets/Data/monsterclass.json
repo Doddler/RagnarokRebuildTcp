@@ -3301,6 +3301,28 @@
       "Color": "#FFFFFFAA"
     },
     {
+      "Id": 4299,
+      "Code": "GTB_EGG",
+      "Name": "Thief Bug Egg",
+      "SpriteName": "thief_bug_egg.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1.2,
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4300,
+      "Code": "GTB_SUMMON",
+      "Name": "Angry Thief Bug",
+      "SpriteName": "thief_bug_female.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 0.7,
+      "AttackTiming": 0.504,
+      "Color": "#FF6F6FFF"
+    },
+    {
       "Id": 1000,
       "Code": "WARP",
       "Name": "Warp",

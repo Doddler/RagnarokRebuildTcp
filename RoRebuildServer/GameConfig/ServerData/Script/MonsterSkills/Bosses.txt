@@ -2,14 +2,78 @@
 // Golden Thiefbug
 //------------------------------------
 
+macro GtbEmptyEvent() {}
+macro GtbPutLowHpTossOnCooldown() {SetEventCooldown("LowHpToss", 1m);}
+
+macro GoldenBugEggToss(%chance, %min, %max, %delay, %castEvent) {
+	if(CheckCast(SummonMonster, %chance))
+	{
+		count = Random(%min, %max);
+		CreateEvent("GtbSummonArray", CurrentPosition, count);
+		@%castEvent();
+		Cast(SummonMonster, 1, count*0.2s, %delay, HideSkillName);
+	}
+}
+
 SkillHandler("GOLDEN_BUG") {
 StateAny: 
     TryCast(CallMinion, 1, 100%, 0.7s, 15s)[MinionCount < 5] -> CallDefaultMinions();
 StateAttacking:
-	TryCast(Mammonite, 10, 20%, 0, 5s) -> SendEmote(8);
-    TryCast(CallMinion, 1, 10%, 0.7s, 15s)[MinionCount < 20] -> CallDefaultMinions();
+	var count = 0; //have to define variables at the start or there'll be scope issues
+	if(HpPercent < 50 && IsNamedEventOffCooldown("LowHpToss")) {
+		@GoldenBugEggToss(100%, 4, 8, 7s, GtbPutLowHpTossOnCooldown);
+	}
+	if(HpPercent < 90) {
+		@GoldenBugEggToss(30%, 1, (100-HpPercent)/10, 7s, GtbEmptyEvent);
+	}
+
+	TryCast(Mammonite, 5, 20%, 0, 5s) -> SendEmote(8);
+    TryCast(CallMinion, 1, 10%, 0.7s, 15s)[MinionCount < 15] -> CallDefaultMinions();
+StateChase:
+	TryCast(Heal, 4999, 10%, 0s, 15s)[HpPercent < 30];
 StateIdle:
-	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
+	TryCast(Heal, 9999, 10%, 0s, 10s)[HpPercent < 70];
+}
+
+event GtbSummonArray {
+	local total = Param1;
+	local count = 0;
+	StartTimer();
+OnTimer 200:
+	if(IsOwnerAlive == false) { EndEvent(); return; }
+	count = count + 1;
+	PlaySoundEffect("t_회피"); //throwing sound
+	TossSummonMonster(1, "GTB_EGG", 9, 9); //toss out an egg every 200ms
+	if(count < total)
+		ResetTimer();
+	else
+		EndEvent();
+}
+
+SkillHandler("GTB_EGG") {
+	StateAny:
+	if(TimeAlive > 5s) {
+		TryCast(NoCast, 1, 100%, 0, 0s)[IsMasterAlive == false] -> Die();
+		TryCast(None, 1, 15%, 6s, 0s) -> {
+			if(IsMasterAlive)
+				SummonMonstersUnderMyMaster(Random(1,3), "GTB_SUMMON");
+			Die();
+		}
+	}
+}
+
+SkillHandler("GTB_SUMMON") {
+	StateAny:
+		TryCast(NoCast, 1, 100%, 0, 0s)[IsMasterAlive == false] -> Die();
+	StateIdle:
+		if(TimeAlive > 5s)
+		{
+			TryCast(None, 1, 10%, 0.3s, 0s) -> {
+				HealMyMaster(HpValue); //heal master remaining HP
+				Leave(); //and then vanish
+				return;
+			}
+		}
 }
 
 //------------------------------------

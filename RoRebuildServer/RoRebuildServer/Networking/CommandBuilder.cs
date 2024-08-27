@@ -571,16 +571,26 @@ public static class CommandBuilder
             return;
 
         var packet = BuildCreateEntity(c);
+        packet.Write((byte)CreateEntityEventType.Normal);
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
     public static void SendCreateEntity(WorldObject c, Player player)
     {
         var packet = BuildCreateEntity(c);
-        //if (packet == null)
-        //	return;
-
+        packet.Write((byte)CreateEntityEventType.Normal);
         NetworkManager.SendMessage(packet, player.Connection);
+    }
+
+    public static void SendCreateEntityWithEventMulti(WorldObject c, CreateEntityEventType eventType, Position pos)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = BuildCreateEntity(c);
+        packet.Write((byte)eventType);
+        packet.Write(pos);
+        NetworkManager.SendMessageMulti(packet, recipients);
     }
 
     public static void SendRemoveEntityMulti(WorldObject c, CharacterRemovalReason reason)
