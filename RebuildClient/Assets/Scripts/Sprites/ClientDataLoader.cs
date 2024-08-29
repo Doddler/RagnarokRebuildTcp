@@ -257,7 +257,7 @@ namespace Assets.Scripts.Sprites
             if (playerHeadLookup.TryGetValue(param.HeadId, out var lookupData2))
                 hData = lookupData2;
             else
-                Debug.LogWarning("Failed to find player head with id of " + param.ClassId);
+                Debug.LogWarning("Failed to find player head with id of " + param.HeadId);
 
 
             var go = new GameObject(pData.Name);
@@ -302,6 +302,11 @@ namespace Assets.Scripts.Sprites
                 bodySprite.State = SpriteState.Sit;
             if (param.State == CharacterState.Moving)
                 bodySprite.State = SpriteState.Walking;
+            if (param.State == CharacterState.Dead)
+            {
+                bodySprite.State = SpriteState.Dead;
+                bodySprite.ChangeMotion(SpriteMotion.Dead, true);
+            }
 
             headSprite.Parent = bodySprite;
             headSprite.SpriteOrder = 1;
@@ -329,6 +334,10 @@ namespace Assets.Scripts.Sprites
                 LoadAndAttachWeapon(go, body.transform, bodySprite, weapon, false, param.IsMale);
                 LoadAndAttachWeapon(go, body.transform, bodySprite, weapon, true, param.IsMale);
             }
+
+            LoadAndAttachHeadgear(go, body.transform, bodySprite, "여_고양이머리띠", false);
+
+
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.Name = param.Name;
@@ -373,7 +382,7 @@ namespace Assets.Scripts.Sprites
             var weaponSprite = weaponObj.AddComponent<RoSpriteAnimator>();
 
             weaponSprite.Parent = bodySprite;
-            weaponSprite.SpriteOrder = 2;
+            weaponSprite.SpriteOrder = 5;
             if (isEffect)
                 weaponSprite.SpriteOrder = 20;
 
@@ -381,6 +390,26 @@ namespace Assets.Scripts.Sprites
             bodySprite.ChildrenSprites.Add(weaponSprite);
 
             AddressableUtility.LoadRoSpriteData(parent, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
+        }
+        
+
+        private void LoadAndAttachHeadgear(GameObject parent, Transform bodyTransform, RoSpriteAnimator bodySprite, string headgearName,
+            bool isMale)
+        {
+            var headgearObj = new GameObject("Headgear(Upper)");
+            headgearObj.layer = LayerMask.NameToLayer("Characters");
+            headgearObj.transform.SetParent(bodyTransform, false);
+            headgearObj.transform.localPosition = Vector3.zero;
+
+            var headgearSprite = headgearObj.AddComponent<RoSpriteAnimator>();
+
+            headgearSprite.Parent = bodySprite;
+            headgearSprite.SpriteOrder = 4;
+            bodySprite.ChildrenSprites.Add(headgearSprite);
+
+            var spriteName = $"Assets/Sprites/Headgear/{(isMale ? "Male" : "Female")}/{headgearName}.spr";
+
+            AddressableUtility.LoadRoSpriteData(parent, spriteName, headgearSprite.OnSpriteDataLoad);
         }
 
         public void AttachEmote(GameObject target, int emoteId)

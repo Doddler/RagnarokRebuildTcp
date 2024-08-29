@@ -676,6 +676,50 @@
     {
       "SkillId": 38,
       "Icon": "nv_basic",
+      "Name": "Summon Monster",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 39,
+      "Icon": "as_sonicblow",
+      "Name": "Sonic Blow",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30,
+        32,
+        34
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 40,
+      "Icon": "nv_basic",
+      "Name": "Suicide",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 41,
+      "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,
       "Type": 0,

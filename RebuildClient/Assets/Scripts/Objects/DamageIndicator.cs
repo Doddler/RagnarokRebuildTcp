@@ -16,6 +16,7 @@ public enum TextIndicatorType
 	Heal,
 	ComboDamage,
 	Experience,
+	Critical,
 	Miss
 }
 
@@ -25,12 +26,14 @@ public class DamageIndicator : MonoBehaviour
 
     public DamageIndicatorPathData PathData;
     public ServerControllable Controllable;
+    public CriticalDamageSprite CritSprite;
 
 	private static StringBuilder sb = new StringBuilder(128);
 
 	private Vector3 start;
 	private Vector3 end;
 	private Vector3 basePosition;
+	private bool isCrit;
 
 	public void AttachDamageIndicator(ServerControllable controllable)
 	{
@@ -69,9 +72,12 @@ public class DamageIndicator : MonoBehaviour
 			TextIndicatorType.ComboDamage => ClientConstants.Instance.ComboPath,
 			TextIndicatorType.Experience => ClientConstants.Instance.ExpPath,
 			TextIndicatorType.Miss => ClientConstants.Instance.MissPath,
+			TextIndicatorType.Critical => ClientConstants.Instance.CriticalPath,
 			_ => ClientConstants.Instance.DamagePath
 		};
 	    
+		// Debug.Log($"{Time.timeSinceLevelLoad} DoDamage {direction} {direction.GetIntercardinalDirection()}");
+		
         direction = direction.GetIntercardinalDirection();
 		var text = value.ToString();
 		var hasColor = !string.IsNullOrEmpty(colorCode);
@@ -82,9 +88,9 @@ public class DamageIndicator : MonoBehaviour
 		var useTrueType = CameraFollower.Instance.UseTTFDamage;
         if (!int.TryParse(value, out var _))
             useTrueType = true;
-
-		if (useTrueType)
-			sb.Append("<cspace=0.4>");
+		//
+		// if (useTrueType)
+		// 	sb.Append("<cspace=0.4>");
 
 		foreach (var c in text)
 		{
@@ -108,7 +114,7 @@ public class DamageIndicator : MonoBehaviour
 		start = new Vector3(startPosition.x, startPosition.y + height * 1.25f, startPosition.z);
 		//end = start;
         if (PathData.FliesAwayFromTarget)
-            end = start + dirVector * 4;
+            end = start + dirVector * PathData.DistanceMultiplier;
         else
             end = start;
 
@@ -121,6 +127,12 @@ public class DamageIndicator : MonoBehaviour
 
 		var lt = LeanTween.value(gameObject, OnUpdate, 0, 1, PathData.TweenTime);
 		lt.setOnComplete(onComplete: OnComplete);
+		OnUpdate(0); //do one early for our first frame
+
+		this.isCrit = isCrit;
+		CritSprite.gameObject.SetActive(isCrit);
+		if (isCrit)
+			CritSprite.Reset();
 	}
 
 	private void OnComplete()
@@ -151,7 +163,12 @@ public class DamageIndicator : MonoBehaviour
 
 		transform.localPosition = new Vector3(pos.x, pos.y + height * PathData.HeightMultiplier, pos.z);
 		transform.localScale = new Vector3(size, size, size) * GameConfig.Data.DamageNumberSize;
+
 		TextObject.color = new Color(1, 1, 1, alpha);
+		
+		if(isCrit)
+			CritSprite.SpriteRenderer.color = new Color(0.8f, 0.8f, 0.8f, alpha);
+
 	}
 
 }

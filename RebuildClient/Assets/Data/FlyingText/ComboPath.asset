@@ -113,4 +113,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   FliesAwayFromTarget: 0
   HeightMultiplier: 6
-  TweenTime: 2
+  DistanceMultiplier: 4
+  TweenTime: 3

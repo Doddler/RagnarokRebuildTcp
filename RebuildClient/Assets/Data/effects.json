@@ -461,6 +461,17 @@
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": "Assets/Effects/Custom/SmokePuff.prefab"
+    },
+    {
+      "Id": 42,
+      "Name": "SonicBlow",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "SonicBlow",
+      "Sprite": "",
+      "SoundFile": "ef_stonecurse",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

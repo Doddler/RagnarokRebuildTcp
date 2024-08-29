@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.EntitySystem;
+﻿using System.Diagnostics;
+using RoRebuildServer.EntitySystem;
 
 namespace RoRebuildServer.Simulation.Util;
 
@@ -75,6 +76,12 @@ public class SwapList<T> where T : struct, IEquatable<T>
 
 		count--;
 	}
+
+    public void Remove(int index)
+    {
+		Debug.Assert(index < count);
+		SwapFromBack(index);
+    }
 
 	public bool Remove(ref T entity)
 	{

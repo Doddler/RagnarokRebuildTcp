@@ -17,7 +17,7 @@ MapConfig("gl_cas01")
 	CreateSpawn("DARK_FRAME", 20);
 	CreateSpawn("WHISPER", 20);
 	CreateSpawn("ALICE", 1);
-	CreateSpawn("TIRFING", 1, 7200000, 3600000);
+	CreateSpawn("TIRFING", 1, 7200000, 3600000, Boss);
 	CreateSpawn("OWL_BARON", 3);
 }
 
@@ -177,7 +177,7 @@ MapConfig("gl_prison1")
 	CreateSpawn("CRAMP", 20);
 	CreateSpawn("HUNTER_FLY", 10);
 	CreateSpawn("INJUSTICE", 40);
-	CreateSpawn("ZHERLTHSH", 1, 3600000, 1800000);
+	CreateSpawn("ZHERLTHSH", 1, 3600000, 1800000, Boss);
 	CreateSpawn("RYBIO", 10);
 	CreateSpawn("PHENDARK", 10);
 }

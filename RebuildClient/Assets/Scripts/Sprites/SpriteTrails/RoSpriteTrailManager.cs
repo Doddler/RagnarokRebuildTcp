@@ -48,6 +48,18 @@ namespace Assets.Scripts.Sprites
             return -1;
         }
 
+        public void RemoveTrailFromEntity(ServerControllable target)
+        {
+            for (var i = 0; i < Trails.Count; i++)
+            {
+                if (Trails[i].Entity == target)
+                {
+                    Trails.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
         public void AttachTrailToEntity(ServerControllable entity, float interval = 0.1f, float lifetime = 0.5f)
         {
             var existingId = GetActiveTrailId(entity);

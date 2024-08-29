@@ -54,7 +54,7 @@ namespace Assets.Scripts.Network
         private bool isReady;
         private bool isConnected;
 
-        public Color FakeAmbient = Color.white;
+        // public Color FakeAmbient = Color.white;
 
         public string CurrentMap = "";
 

@@ -14,10 +14,14 @@
 
 	<ItemGroup>
 	  <None Remove="ServerData\Skills\Skills.toml" />
+	  <None Remove="ServerData\Skills\StatusEffects.toml" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <AdditionalFiles Include="ServerData\Skills\Skills.toml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </AdditionalFiles>
+	  <AdditionalFiles Include="ServerData\Skills\StatusEffects.toml">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </AdditionalFiles>
 	</ItemGroup>

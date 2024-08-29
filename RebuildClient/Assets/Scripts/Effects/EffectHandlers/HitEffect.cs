@@ -2,18 +2,21 @@
 using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
+using Assets.Scripts.Sprites;
 using UnityEngine;
+using UnityEngine.U2D;
 
 namespace Assets.Scripts.Effects.EffectHandlers
 {
     [RoEffect("HitEffect")]
     public class HitEffect : IEffectHandler
     {
-        private static readonly Dictionary<string, Material> materials = new();
-        
-        public static Ragnarok3dEffect Hit1(Vector3 src, Vector3 target)
+        private static readonly Dictionary<string, Material> Materials = new();
+        private static Sprite[] lensSprite;
+
+
+        private static void LaunchHitParticles(Vector3 src, Vector3 target)
         {
-            //generate hit particles
             var dir = (src - target).normalized;
             for (var i = 0; i < 4; i++)
             {
@@ -27,35 +30,41 @@ namespace Assets.Scripts.Effects.EffectHandlers
                     gravity = Random.Range(10f, 40f);
                     pVelocity = -pVelocity;
                 }
-                        
+
                 var duration = 0.2f + Random.Range(0, 0.3f);
-                EffectParticleManager.Instance.AddParticle(Random.Range(6f, 16f)/5f, target, pVelocity, 
-                    duration, new Color32(255, 255, 255, 20), -pVelocity.magnitude / (1 / duration) / 2f, gravity);
+                EffectParticleManager.Instance.AddParticle(Random.Range(6f, 16f) / 5f, target, pVelocity,
+                    duration, new Color32(255, 255, 255, 40), -pVelocity.magnitude / (1 / duration) / 2f, gravity);
             }
+        }
+        
+        public static Ragnarok3dEffect Hit1(Vector3 src, Vector3 target)
+        {
+            //generate hit particles
+            LaunchHitParticles(src, target);
+            var dir = (src - target).normalized;
             
             //generate ring effect
-            if (!materials.TryGetValue("ring_blue", out var mat))
+            if (!Materials.TryGetValue("ring_blue", out var mat))
             {
                 mat = new Material(ShaderCache.Instance.PerspectiveAlphaShader);
                 mat.mainTexture = Resources.Load<Texture2D>("ring_blue");
                 mat.renderQueue = 3001;
-                materials.Add("ring_blue", mat);
+                Materials.Add("ring_blue", mat);
             }
-            
+
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
             effect.SetDurationByFrames(9);
-            
             // Debug.Log(effect.Duration);
-           
+
             var prim = effect.LaunchPrimitive(PrimitiveType.Cylinder3D, mat, effect.Duration);
             prim.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
             prim.transform.position = target + dir / 5f + Vector3.up * 0.5f;
             prim.transform.localScale = Vector3.one * 0.2f;
-            
+
             var data = prim.GetPrimitiveData<CylinderData>();
 
             var speed = (0.7f * 60) / 5f;
-            
+
             data.Velocity = dir * speed;
             data.Acceleration = -(speed / effect.Duration) / 2f;
             data.Height = 3.5f;
@@ -71,14 +80,73 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
         public static Ragnarok3dEffect Hit2(ServerControllable src, ServerControllable target)
         {
+            //generate ring effect
+            if (!Materials.TryGetValue("lens", out var mat1))
+            {
+                mat1 = new Material(ShaderCache.Instance.AlphaBlendNoZTestShader);
+                mat1.renderQueue = 3007;
+            }
+
+            if (lensSprite == null)
+            {
+                var skillAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
+                lensSprite = new Sprite[2];
+                //lensSprite[0] = skillAtlas.GetSprite("testarrow"); //lens1
+                lensSprite[0] = skillAtlas.GetSprite("lens1"); //lens1
+                lensSprite[1] = skillAtlas.GetSprite("lens2"); //lens2
+            }
+
             AudioManager.Instance.OneShotSoundEffect(target.Id, $"ef_hit2.ogg", target.transform.position);
-            
+            LaunchHitParticles(src.transform.position, target.transform.position);
+
+            var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
+            effect.SetDurationByFrames(30);
+            effect.SetBillboardMode(BillboardStyle.Normal);
+            effect.transform.position = target.transform.position + new Vector3(0, 1f, 0);
+            effect.transform.localScale = Vector3.one/4f;
+
+            for (var i = 0; i < 8; i++)
+            {
+                var angle = i * 45 + Random.Range(-15f, 15f);
+                var duration = Random.Range(0.16f, 0.5f);
+                var prim = effect.LaunchPrimitive(PrimitiveType.Texture2D, mat1, duration);
+
+                var width = Random.Range(4f, 8f) / 5f;
+                var height = Random.Range(1f, 4f) / 5f;
+                var speed = Random.Range(1f, 10f);
+                var accel = -(speed / duration) / 2f;
+                var widthSpeed = -(width / duration);
+                var heightSpeed = 1.5f / 2.5f * 60f;
+                var heightAccel = 0.25f / 5f * 60f;
+                var startDistance = Random.Range(0f, 0.5f);
+
+                var x = Mathf.Sin(angle * Mathf.Deg2Rad);
+                var y = Mathf.Cos(angle * Mathf.Deg2Rad);
+                var position = new Vector2(x, y) * startDistance;
+                var data = prim.GetPrimitiveData<Texture2DData>();
+                data.MinSize = Vector2.negativeInfinity;
+                data.MaxSize = Vector2.positiveInfinity;
+                data.Size = new Vector2(width, height);
+                data.ScalingSpeed = new Vector2(widthSpeed, heightSpeed);
+                data.ScalingAccel = new Vector2(0, heightAccel);
+                data.Alpha = 1f;
+                data.AlphaSpeed = 4.8f;
+                data.Speed = position.normalized * speed;
+                data.Acceleration = position.normalized * accel;
+                data.Sprite = lensSprite[Random.Range(0, 2)];
+
+                prim.transform.localPosition = new Vector3(position.x, position.y, 0f);
+                prim.transform.localRotation = Quaternion.Euler(0, 0, -angle);
+            }
+
             return null;
         }
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
-            return step < effect.DurationFrames;
+            if (effect.DurationFrames == 0)
+                Debug.LogWarning("AAFAFASF");
+            return effect.CurrentPos < effect.Duration;
         }
     }
 }

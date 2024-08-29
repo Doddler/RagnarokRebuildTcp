@@ -1027,6 +1027,22 @@ namespace Assets.Scripts.Network
             di.AttachDamageIndicator(this);
         }
 
+        private void AttachCriticalDamageIndicator(int damage, int totalDamage)
+        {
+            var di = RagnarokEffectPool.GetDamageIndicator();
+            var red = SpriteAnimator.Type == SpriteType.Player;
+            var height = 1f;
+            di.DoDamage(TextIndicatorType.Critical, damage.ToString(), gameObject.transform.localPosition, height,
+                SpriteAnimator.Direction, "#FFFF00", true);
+
+            if (totalDamage > 0 && CharacterType != CharacterType.Player)
+            {
+                var di2 = RagnarokEffectPool.GetDamageIndicator();
+                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
+                    SpriteAnimator.Direction, "#FFFF00", false);
+                di2.AttachComboIndicatorToControllable(this);
+            }
+        }
 
         private void AttachDamageIndicator(int damage, int totalDamage)
         {
@@ -1045,12 +1061,31 @@ namespace Assets.Scripts.Network
             }
         }
 
+        private void OnMessageFaceDirection(EntityMessage msg)
+        {
+            SpriteAnimator.Angle = RoAnimationHelper.FacingDirectionToRotation((Direction)msg.Value1);
+            // Debug.Log($"{Time.timeSinceLevelLoad} - {Name}: OnMessageFacingDirection({(Direction)msg.Value1})");
+            
+        }
+        
+        private void OnMessageAttackMotion(EntityMessage msg)
+        {
+            if(msg.Entity != null)
+                LookAt(msg.Entity.transform.position);
+            
+            // Debug.Log($"{Time.timeSinceLevelLoad} - {Name}: OnMessageAttackMotion({msg.Float1})");
+
+            SetAttackAnimationSpeed(msg.Float1);
+            
+            PerformBasicAttackMotion((CharacterSkill)msg.Value1);
+        }
+
         private void OnMessageHitEffect(EntityMessage msg)
         {
             if (msg.Value1 == 2) //temporary bad way to handle hit2
             {
                 if (msg.Entity != null)
-                    HitEffect.Hit2(this, msg.Entity);
+                    HitEffect.Hit2(msg.Entity, this);
                 return;
             }
 
@@ -1108,7 +1143,10 @@ namespace Assets.Scripts.Network
                 AudioManager.Instance.OneShotSoundEffect(Id, hitSound, transform.position, 1f);
             }
 
-            AttachDamageIndicator(dmg, msg.Value2);
+            if(msg.Value3 > 0)
+                AttachCriticalDamageIndicator(dmg, msg.Value2);//DamageIndicator(dmg, msg.Value2);
+            else
+                AttachDamageIndicator(dmg, msg.Value2);
         }
 
         public void ExecuteMessage(EntityMessage msg)
@@ -1124,11 +1162,17 @@ namespace Assets.Scripts.Network
                 case EntityMessageType.Miss:
                     AttachMissIndicator();
                     break;
+                case EntityMessageType.AttackMotion:
+                    OnMessageAttackMotion(msg);
+                    break;
+                case EntityMessageType.FaceDirection:
+                    OnMessageFaceDirection(msg);
+                    break;
                 default:
                     Debug.LogError($"Unhandled entity message type {msg.Type} on entity {Name}!");
                     break;
             }
-
+            
             EntityMessagePool.Return(msg);
         }
 

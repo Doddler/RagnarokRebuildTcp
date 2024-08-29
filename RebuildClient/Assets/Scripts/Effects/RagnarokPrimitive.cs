@@ -245,14 +245,13 @@ namespace Assets.Scripts.Effects
             colors[2] = c;
             colors[3] = c;
             
-            verts[0] = new Vector3(-width, height);
-            verts[1] = new Vector3(width, height);
-            verts[2] = new Vector3(-width, -height);
-            verts[3] = new Vector3(width, -height);
+            verts[0] = new Vector3(-width, height) + offset;
+            verts[1] = new Vector3(width, height) + offset;
+            verts[2] = new Vector3(-width, -height) + offset;
+            verts[3] = new Vector3(width, -height) + offset;
 
             var spriteUVs = sprite.uv;
             var rect = sprite.textureRect;
-            
             
             uvs[0] = spriteUVs[0];
             uvs[1] = spriteUVs[1];

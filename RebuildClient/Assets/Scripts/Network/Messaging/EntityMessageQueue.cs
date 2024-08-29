@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RebuildSharedData.Enum;
 using UnityEngine;
 
 namespace Assets.Scripts.Network.Messaging
@@ -58,6 +59,28 @@ namespace Assets.Scripts.Network.Messaging
         }
 
         private int Compare(EntityMessage left, EntityMessage right) => left.ActivationTime.CompareTo(right.ActivationTime);
+
+        public void SendAttackMotion(ServerControllable target, float motionTime, float time, CharacterSkill skill = CharacterSkill.None)
+        {
+            var msg = EntityMessagePool.Borrow();
+            msg.Type = EntityMessageType.AttackMotion;
+            msg.Entity = target;
+            msg.ActivationTime = Time.timeSinceLevelLoad + time;
+            msg.Value1 = (int)skill;
+            msg.Float1 = motionTime;
+            
+            EnqueueMessage(msg);
+        }
+
+        public void SendFaceDirection(FacingDirection direction, float time)
+        {
+            var msg = EntityMessagePool.Borrow();
+            msg.Type = EntityMessageType.FaceDirection;
+            msg.ActivationTime = Time.timeSinceLevelLoad + time;
+            msg.Value1 = (int)direction;
+            
+            EnqueueMessage(msg);
+        }
         
         public void SendHitEffect(ServerControllable src, float time, int hitType = 1)
         {
@@ -79,7 +102,7 @@ namespace Assets.Scripts.Network.Messaging
             EnqueueMessage(msg);
         }
 
-        public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount)
+        public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false)
         {
             for (var i = 0; i < hitCount; i++)
             {
@@ -90,6 +113,7 @@ namespace Assets.Scripts.Network.Messaging
                 msg.Value1 = damage;
                 if(hitCount > 1)
                     msg.Value2 = (i + 1) * damage;
+                msg.Value3 = isCrit ? 1 : 0;
 
                 EnqueueMessage(msg);
             }

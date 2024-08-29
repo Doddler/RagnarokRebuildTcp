@@ -1,0 +1,17 @@
+[TwoHandQuicken]
+Name = "Two-Hand Quicken"
+Type = "Buff"
+Dispellable = true
+Disableable = true
+
+[Blessing]
+Name = "Blessing"
+Type = "Buff"
+Dispellable = true
+Disableable = true
+
+[Curse]
+Name = "Curse"
+Type = "Debuff"
+Dispellable = true
+Disableable = false

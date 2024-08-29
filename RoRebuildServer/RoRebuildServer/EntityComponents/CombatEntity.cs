@@ -32,6 +32,7 @@ public class CombatEntity : IEntityAutoReset
     public bool IsTargetable;
     public float CastingTime;
     public bool IsCasting;
+    public float nextStatusUpdate;
 
     public SkillCastInfo CastingSkill { get; set; }
     public SkillCastInfo QueuedCastingSkill { get; set; }
@@ -45,7 +46,7 @@ public class CombatEntity : IEntityAutoReset
 
     [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> skillCooldowns = new();
     [EntityIgnoreNullCheck] public List<DamageInfo> DamageQueue { get; set; } = null!;
-    [EntityIgnoreNullCheck] public List<StatusEffectState>? StatusEffects { get; set; }
+    [EntityIgnoreNullCheck] public CharacterStatusContainer StatusContainer { get; set; } = new();
 
     public int GetStat(CharacterStat type) => statData[(int)type];
     public void SetStat(CharacterStat type, int val) => statData[(int)type] = val;
@@ -68,8 +69,8 @@ public class CombatEntity : IEntityAutoReset
         IsTargetable = true;
         IsCasting = false;
         skillCooldowns.Clear();
-        if (StatusEffects != null)
-            StatusEffects.Clear();
+        StatusContainer.ClearAll();
+        nextStatusUpdate = 0;
 
         Array.Copy(statResetData, statData, statData.Length);
 
@@ -94,7 +95,6 @@ public class CombatEntity : IEntityAutoReset
             hp = maxHp - curHp;
 
         SetStat(CharacterStat.Hp, curHp + hp);
-
     }
 
     public void Heal(int hp, int hp2, bool showValue = false)
@@ -693,18 +693,32 @@ public class CombatEntity : IEntityAutoReset
                 element = AttackElement.Neutral; //for now default to neutral, but we should pull from the weapon here if none is set
             eleMod = DataManager.ElementChart.GetAttackModifier(element, mon.MonsterBase.Element);
         }
-
+        
         var evade = false;
+        var isCrit = false;
 
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreEvasion))
             evade = !TestHitVsEvasion(target);
+
+        if (flags.HasFlag(AttackFlags.CanCrit))
+        {
+            var critRate = 1 + GetStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.Level) / 5;
+            var counterCrit = target.GetStat(CharacterStat.Luck) / 5 + GetStat(CharacterStat.Level) / 7;
+            if (GameRandom.NextInclusive(0, 100) <= critRate - counterCrit)
+            {
+                baseDamage = atk2;
+                evade = false;
+                isCrit = true;
+                flags |= AttackFlags.IgnoreDefense;
+            }
+        }
 
         var defCut = 1f;
         var subDef = 0f;
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
             var def = target.GetStat(CharacterStat.Def);
-            defCut = MathF.Pow(0.99f, -1);
+            defCut = MathF.Pow(0.99f, def-1);
             subDef = target.GetStat(CharacterStat.Vit) * 0.7f;
             if (def > 900)
                 subDef = 999999;
@@ -751,6 +765,9 @@ public class CombatEntity : IEntityAutoReset
             res = AttackResult.Miss;
             hitCount = 0;
         }
+
+        if (res == AttackResult.NormalDamage && isCrit)
+            res = AttackResult.CriticalDamage;
 
         var di = PrepareTargetedSkillResult(target, skillSource);
         di.Result = res;
@@ -890,8 +907,12 @@ public class CombatEntity : IEntityAutoReset
     {
         ApplyCooldownForAttackAction(target);
 
-        var di = CalculateCombatResult(target, 1f, 1, AttackFlags.Physical);
-        if (Character.ClassId == 5 && GameRandom.Next(0, 20) < Character.Player.LearnedSkills.GetValueOrDefault(CharacterSkill.DoubleAttack, -1))
+        var flags = AttackFlags.Physical;
+        if (Character.Type == CharacterType.Player)
+            flags |= AttackFlags.CanCrit;
+
+        var di = CalculateCombatResult(target, 1f, 1, flags);
+        if (di.Result != AttackResult.CriticalDamage && Character.ClassId == 5 && GameRandom.Next(0, 20) < Character.Player.LearnedSkills.GetValueOrDefault(CharacterSkill.DoubleAttack, -1))
             di.HitCount = 2;
 
         ExecuteCombatResult(di);
@@ -995,6 +1016,7 @@ public class CombatEntity : IEntityAutoReset
         IsTargetable = true;
         if (e.Type == EntityType.Player)
             Player = ch.Player;
+        StatusContainer.Owner = this;
 
         if (DamageQueue == null!)
             DamageQueue = new List<DamageInfo>(4);
@@ -1014,5 +1036,11 @@ public class CombatEntity : IEntityAutoReset
 
         if (DamageQueue.Count > 0)
             AttackUpdate();
+
+        if (nextStatusUpdate < Time.ElapsedTimeFloat)
+        {
+            nextStatusUpdate = Time.ElapsedTimeFloat + 1f;
+            StatusContainer.UpdateStatusEffects();
+        }
     }
 }

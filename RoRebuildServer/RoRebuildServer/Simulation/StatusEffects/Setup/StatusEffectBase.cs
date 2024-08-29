@@ -3,7 +3,7 @@ using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Simulation.StatusEffects.Setup
 {
-    public abstract class StatusEffectBase
+    public class StatusEffectBase
     {
         public virtual float Duration => 5f;
         public virtual StatusUpdateMode UpdateMode { get; set; }

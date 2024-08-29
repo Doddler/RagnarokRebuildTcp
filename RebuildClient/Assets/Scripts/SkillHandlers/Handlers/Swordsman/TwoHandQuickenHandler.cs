@@ -11,8 +11,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             CameraFollower.Instance.AttachEffectToEntity("TwoHandQuicken", src.gameObject, src.Id);
-            src.SpriteAnimator.Color = new Color(1, 1, 0.5f);
-            RoSpriteTrailManager.Instance.AttachTrailToEntity(src);
+
             
             if(src.CharacterType == CharacterType.Player)
                 src.FloatingDisplay.ShowChatBubbleMessage("Two-Hand Quicken" + "!!");

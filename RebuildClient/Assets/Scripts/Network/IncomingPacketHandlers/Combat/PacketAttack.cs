@@ -57,8 +57,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                         //controllable2.Messages.SendHitEffect(controllable, motionTime + arrow.Duration);
                     }
                     //else
+                    var hitType = 1;
+                    if (resultType == AttackResult.CriticalDamage)
+                        hitType = 2;
                     if(dmg > 0)
-                        controllable2.Messages.SendHitEffect(controllable, motionTime);
+                        controllable2.Messages.SendHitEffect(controllable, motionTime, hitType);
                 }
                 else
                 {
@@ -77,15 +80,16 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 controllable.PerformBasicAttackMotion();
 
                 weaponClass = controllable.WeaponClass;
+                
+                if(resultType == AttackResult.Miss)
+                    controllable.Messages.SendMissEffect(motionTime);
             }
             
-            if(resultType == AttackResult.Miss)
-                controllable.Messages.SendMissEffect(motionTime);
 
             if (hasTarget)
             {
                 if(dmg > 0)
-                    controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits);
+                    controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits, resultType == AttackResult.CriticalDamage);
                 
                 //StartCoroutine(DamageEvent(dmg, damageTiming, hits, weaponClass, controllable2));
             }

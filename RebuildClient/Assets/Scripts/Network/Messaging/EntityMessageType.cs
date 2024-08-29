@@ -8,6 +8,7 @@
         AttackMotion,
         TakeHit,
         HitEffect,
-        Miss
+        Miss,
+        FaceDirection
     }
 }

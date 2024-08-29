@@ -14,7 +14,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.PerformBasicAttackMotion();
             AudioManager.Instance.AttachSoundToEntity(src.Id, "ef_bash.ogg", src.gameObject);
             if(attack.Damage > 0)
-                attack.Target?.Messages.SendHitEffect(src, attack.MotionTime);
+                attack.Target?.Messages.SendHitEffect(src, attack.MotionTime, 2);
         }
     }
 }

@@ -114,6 +114,10 @@
         {
           "Skill": 29,
           "Prerequisites": []
+        },
+        {
+          "Skill": 39,
+          "Prerequisites": []
         }
       ]
     },

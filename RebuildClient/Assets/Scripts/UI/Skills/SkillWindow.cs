@@ -285,7 +285,7 @@ namespace Assets.Scripts.UI
             var id = state.JobId;
             var tree = ClientDataLoader.Instance.GetSkillTree(id);
             
-            Debug.Log($"Loading skill tree data for job {id}");
+            // Debug.Log($"Loading skill tree data for job {id}");
             
             for (var i = 0; i < Tabs.Count; i++)
             {

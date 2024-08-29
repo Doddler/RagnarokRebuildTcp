@@ -18,29 +18,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0.0019874573
       value: -0.0014190674
-      inSlope: 3.2377849
-      outSlope: 3.2377849
+      inSlope: 4.052195
+      outSlope: 4.052195
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.06380338
+      outWeight: 0.025439344
     - serializedVersion: 3
-      time: 0.50076574
-      value: 1.0114313
-      inSlope: 0.041715454
-      outSlope: 0.041715454
+      time: 0.9942106
+      value: 0.011132479
+      inSlope: -3.9042158
+      outSlope: -3.9042158
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.99982965
-      value: 0.008030534
-      inSlope: -3.428474
-      outSlope: -3.428474
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.09118307
+      inWeight: 0.024188457
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -121,5 +112,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   FliesAwayFromTarget: 1
-  HeightMultiplier: 6
+  HeightMultiplier: 4
+  DistanceMultiplier: 4
   TweenTime: 1

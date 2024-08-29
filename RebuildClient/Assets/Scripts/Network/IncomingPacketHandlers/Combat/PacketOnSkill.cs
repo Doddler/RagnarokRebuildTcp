@@ -126,7 +126,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 //StartCoroutine(DamageEvent(dmg, 0f, hits, 0, controllable2));
                 
                 if(dmg != 0)
-                    controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits);
+                    controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits, result == AttackResult.CriticalDamage);
                 return;
             }
             
@@ -154,9 +154,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             }
 
             controllable.ShowSkillCastMessage(skill, 3);
-            
-            if(result == AttackResult.Miss)
-                controllable.Messages.SendMissEffect(motionTime);
+
+            if (result == AttackResult.Miss)
+            {
+                for(var i = 0; i < attack.HitCount; i++)
+                    controllable.Messages.SendMissEffect(motionTime + 0.2f * i);
+            }
 
             if (hasTarget && controllable.SpriteAnimator.IsInitialized)
             {
@@ -171,7 +174,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     hits = 1;
                 
                 if(hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
-                    controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits);
+                    controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits, result == AttackResult.CriticalDamage);
                 //StartCoroutine(DamageEvent(dmg, motionTime, hits, controllable.WeaponClass, controllable2));
             }
         }

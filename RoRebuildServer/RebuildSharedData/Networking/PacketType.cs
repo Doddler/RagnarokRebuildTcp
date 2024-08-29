@@ -58,6 +58,8 @@ public enum PacketType : byte
     ApplySkillPoint,
     ChangeTargetableState,
     UpdateMinimapMarker,
+    ApplyStatusEffect,
+    RemoveStatusEffect,
     
     AdminRequestMove,
     AdminServerAction,

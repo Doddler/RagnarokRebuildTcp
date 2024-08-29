@@ -1831,7 +1831,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1319599711}
   m_HandleRect: {fileID: 1319599710}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7406,8 +7406,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 346502354}
   m_HandleRect: {fileID: 346502353}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.46095496
+  m_Value: 1.0000001
+  m_Size: 0.46095493
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11393,8 +11393,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2088088636}
   m_HandleRect: {fileID: 2088088635}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.9401847
+  m_Value: 1.0000036
+  m_Size: 0.9401848
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -22669,7 +22669,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2000122720}
   m_HandleRect: {fileID: 2000122719}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -28729,7 +28729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -33961,6 +33961,7 @@ MonoBehaviour:
   ComboPath: {fileID: 11400000, guid: 2b328f5af3561d948929181f1e883b63, type: 2}
   ExpPath: {fileID: 11400000, guid: 2849831afb0ee0b468d1212452d8d74a, type: 2}
   MissPath: {fileID: 11400000, guid: 1f45bf06a8c394945ab75506b7228c5d, type: 2}
+  CriticalPath: {fileID: 11400000, guid: 7db6349ac946bc3408e5027710574d97, type: 2}
 --- !u!4 &1814519204
 Transform:
   m_ObjectHideFlags: 0
@@ -38849,7 +38850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -39775,7 +39776,6 @@ MonoBehaviour:
     type: 3}
   LoadingText: {fileID: 1294248145}
   PlayerId: 0
-  FakeAmbient: {r: 1, g: 1, b: 1, a: 1}
   CurrentMap: 
   CurrentScene:
     m_Handle: 0

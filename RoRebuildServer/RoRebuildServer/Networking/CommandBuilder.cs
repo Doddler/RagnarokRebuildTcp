@@ -9,6 +9,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Networking;
@@ -726,6 +727,31 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.PlayOneShotSound, 48);
         packet.Write(fileName);
         packet.Write(pos);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+    public static void SendApplyStatusEffect(WorldObject p, ref StatusEffectState state)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.ApplyStatusEffect, 16);
+        packet.Write(p.Id);
+        packet.Write((byte)state.Type);
+        packet.Write(state.Expiration - Time.ElapsedTimeFloat);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+    public static void SendRemoveStatusEffect(WorldObject p, ref StatusEffectState state)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.RemoveStatusEffect, 16);
+        packet.Write(p.Id);
+        packet.Write((byte)state.Type);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

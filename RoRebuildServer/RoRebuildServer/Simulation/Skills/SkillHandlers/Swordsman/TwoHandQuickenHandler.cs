@@ -4,6 +4,7 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
 {
@@ -19,9 +20,12 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
             var timing = 10 * lvl;
             if (source.Character.Type == CharacterType.Monster && lvl >= 10)
                 timing = 200;
+
+            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.TwoHandQuicken, 180f, timing);
+            source.StatusContainer.AddNewStatusEffect(status);
             
-            source.SetStat(CharacterStat.AspdBonus, timing);
-            source.UpdateStats();
+            //source.SetStat(CharacterStat.AspdBonus, timing);
+            //source.UpdateStats();
 
             ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.TwoHandQuicken, lvl);
