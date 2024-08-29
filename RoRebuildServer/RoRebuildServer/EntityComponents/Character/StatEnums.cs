@@ -61,6 +61,14 @@ public enum CharacterStat
     MagicDefense = MDef,
     AspdBonus,
     MoveSpeedBonus,
+    AddStr,
+    AddAgi,
+    AddDex,
+    AddInt,
+    AddVit,
+    AddLuk,
+    AddDef,
+    AddMDef,
     CharacterStatsMax
 }
 

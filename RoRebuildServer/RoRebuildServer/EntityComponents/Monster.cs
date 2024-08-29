@@ -325,6 +325,8 @@ public partial class Monster : IEntityAutoReset
         if (CurrentAiState == MonsterAiState.StateDead)
             return;
 
+        CombatEntity.StatusContainer.RemoveAll();
+
         CurrentAiState = MonsterAiState.StateDead;
         Character.State = CharacterState.Dead;
 

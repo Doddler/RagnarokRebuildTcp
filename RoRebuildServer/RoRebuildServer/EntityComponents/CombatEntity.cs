@@ -69,7 +69,7 @@ public class CombatEntity : IEntityAutoReset
         IsTargetable = true;
         IsCasting = false;
         skillCooldowns.Clear();
-        StatusContainer.ClearAll();
+        StatusContainer.ClearAllWithoutRemoveHandler();
         nextStatusUpdate = 0;
 
         Array.Copy(statResetData, statData, statData.Length);
@@ -78,34 +78,34 @@ public class CombatEntity : IEntityAutoReset
             statData[i] = 0;
     }
 
-    //public int GetEffectiveStat(CharacterStat type)
-    //{
-    //    var stat = GetStat(type);
-        
-    //    switch (type)
-    //    {
-    //        case CharacterStat.Str:
-    //            stat += GetStat(CharacterStat.AddStr);
-    //            break;
-    //        case CharacterStat.Agi:
-    //            stat += GetStat(CharacterStat.AddAgi);
-    //            break;
-    //        case CharacterStat.Vit:
-    //            stat += GetStat(CharacterStat.AddVit);
-    //            break;
-    //        case CharacterStat.Dex:
-    //            stat += GetStat(CharacterStat.AddDex);
-    //            break;
-    //        case CharacterStat.Int:
-    //            stat += GetStat(CharacterStat.AddInt);
-    //            break;
-    //        case CharacterStat.Luk:
-    //            stat += GetStat(CharacterStat.AddLuk);
-    //            break;
-    //    }
+    public int GetEffectiveStat(CharacterStat type)
+    {
+        var stat = GetStat(type);
 
-    //    return stat;
-    //}
+        switch (type)
+        {
+            case CharacterStat.Str:
+                stat += GetStat(CharacterStat.AddStr);
+                break;
+            case CharacterStat.Agi:
+                stat += GetStat(CharacterStat.AddAgi);
+                break;
+            case CharacterStat.Vit:
+                stat += GetStat(CharacterStat.AddVit);
+                break;
+            case CharacterStat.Dex:
+                stat += GetStat(CharacterStat.AddDex);
+                break;
+            case CharacterStat.Int:
+                stat += GetStat(CharacterStat.AddInt);
+                break;
+            case CharacterStat.Luk:
+                stat += GetStat(CharacterStat.AddLuk);
+                break;
+        }
+
+        return stat;
+    }
 
     public void UpdateStats()
     {
@@ -659,9 +659,9 @@ public class CombatEntity : IEntityAutoReset
     /// <returns>Returns true if the attack hits</returns>
     public bool TestHitVsEvasion(CombatEntity target, int attackerHitBonus = 0, int defenderFleeBonus = 0)
     {
-        var attackerHit = GetStat(CharacterStat.Level) + GetStat(CharacterStat.Dex);
+        var attackerHit = GetStat(CharacterStat.Level) + GetEffectiveStat(CharacterStat.Dex);
 
-        var defenderAgi = target.GetStat(CharacterStat.Agi);
+        var defenderAgi = target.GetEffectiveStat(CharacterStat.Agi);
         if (target.Character.Type == CharacterType.Player)
             defenderAgi += target.Player.MaxLearnedLevelOfSkill(CharacterSkill.ImproveDodge) * 3;
 

@@ -106,7 +106,28 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
             Owner.UpdateStats();
         }
 
-        public void ClearAll() => statusEffects?.Clear();
+        public void RemoveAll()
+        {
+            if (statusEffects == null)
+                return;
+
+            for (var i = 0; i < statusEffects.Count; i++)
+            {
+                var status = statusEffects[i];
+                if (StatusEffectHandler.GetStatusVisibility(status.Type) != StatusClientVisibility.None)
+                {
+                    Debug.Assert(Character.Map != null);
+                    Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+                    CommandBuilder.SendRemoveStatusEffect(Character, ref status);
+                    CommandBuilder.ClearRecipients();
+                }
+
+                StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
+            }
+            statusEffects.Clear();
+        }
+
+        public void ClearAllWithoutRemoveHandler() => statusEffects?.Clear();
 
         public void PrepareCreateEntityMessage(OutboundMessage msg)
         {

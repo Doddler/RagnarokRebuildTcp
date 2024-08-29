@@ -87,6 +87,7 @@ public class Player : IEntityAutoReset
     public int GetData(PlayerStat type) => CharData[(int)type];
     public void SetData(PlayerStat type, int val) => CharData[(int)type] = val;
     public int GetStat(CharacterStat type) => CombatEntity.GetStat(type);
+    public int GetEffectiveStat(CharacterStat type) => CombatEntity.GetEffectiveStat(type);
     public float GetTiming(TimingStat type) => CombatEntity.GetTiming(type);
     public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
     public void SetStat(CharacterStat type, float val) => CombatEntity.SetStat(type, (int)val);
@@ -246,37 +247,7 @@ public class Player : IEntityAutoReset
         {
             Character.ClassId = job; //there should be more complex checks here to prevent GM and mounts from being lost but we'll deal with it later
         }
-
-        var jobAspd = GetJobBonus(CharacterStat.AspdBonus);
-        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100 * jobAspd);
         
-        var recharge = (1.2f - level * 0.007f) * aspdBonus;
-        if(job == 2)
-            recharge = (1.4f - level * 0.009f) * aspdBonus;
-
-        if (recharge > 1.2f)
-            recharge = 1.4f;
-
-        var motionTime = 1f;
-        var spriteTime = 0.6f;
-        if (job == 2)
-        {
-            motionTime = recharge * (6f / 8f);
-            spriteTime = recharge * (6f / 8f);
-        }
-
-        if (recharge < motionTime)
-        {
-            var ratio = recharge / motionTime;
-            motionTime *= ratio;
-            spriteTime *= ratio;
-        }
-
-        SetTiming(TimingStat.AttackDelayTime, recharge);
-        SetTiming(TimingStat.AttackMotionTime, motionTime);
-        SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
-
-
         //var aMotionTime = 0.5f;
         //var delayTime = 1.1f - level * 0.004f * aspdBonus;
         //if (delayTime < aMotionTime)
@@ -331,6 +302,37 @@ public class Player : IEntityAutoReset
         //SetStat(CharacterStat.MaxHp, 50 + 100 * level * hpBonus);
 
         //var newMaxHp = (level * level * level) / 20 + 80 * level;
+
+
+        var jobAspd = GetJobBonus(CharacterStat.AspdBonus);
+        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100 * jobAspd);
+        var agiAspdBonus = 100f / (100 + GetEffectiveStat(CharacterStat.Agi));
+
+        var recharge = 1.2f * aspdBonus * agiAspdBonus;
+        if (job == 2)
+            recharge = 1.4f * aspdBonus * agiAspdBonus;
+
+        if (recharge > 1.4f)
+            recharge = 1.4f;
+
+        var motionTime = 1f;
+        var spriteTime = 0.6f;
+        if (job == 2)
+        {
+            motionTime = recharge * (6f / 8f);
+            spriteTime = recharge * (6f / 8f);
+        }
+
+        if (recharge < motionTime)
+        {
+            var ratio = recharge / motionTime;
+            motionTime *= ratio;
+            spriteTime *= ratio;
+        }
+
+        SetTiming(TimingStat.AttackDelayTime, recharge);
+        SetTiming(TimingStat.AttackMotionTime, motionTime);
+        SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
 
         var newMaxHp = (level * level) / 2 + (level * level * level) / 300 + 42 + 10 * level;
         var updatedMaxHp = newMaxHp * hpBonus;// (int)(newMaxHp * multiplier) + 70;
@@ -534,6 +536,8 @@ public class Player : IEntityAutoReset
         CombatEntity.IsCasting = false;
         CombatEntity.CastingSkill.Clear();
         CombatEntity.QueuedCastingSkill.Clear();
+        CombatEntity.StatusContainer.RemoveAll();
+        UpdateStats();
 
         Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.SendPlayerDeath(Character);

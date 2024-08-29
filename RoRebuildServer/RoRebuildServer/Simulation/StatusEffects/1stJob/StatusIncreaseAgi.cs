@@ -15,13 +15,13 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
             state.Value2 = 25; //25% move speed bonus
             if (lvl > 10)
                 state.Value2 = 100;
-            ch.AddStat(CharacterStat.Agi, state.Value1);
+            ch.AddStat(CharacterStat.AddAgi, state.Value1);
             ch.AddStat(CharacterStat.MoveSpeedBonus, state.Value2);
         }
 
         public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
         {
-            ch.SubStat(CharacterStat.Agi, state.Value1);
+            ch.SubStat(CharacterStat.AddAgi, state.Value1);
             ch.SubStat(CharacterStat.MoveSpeedBonus, state.Value2);
         }
     }
