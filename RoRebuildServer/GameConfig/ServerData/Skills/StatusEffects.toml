@@ -1,17 +1,23 @@
 [TwoHandQuicken]
 Name = "Two-Hand Quicken"
 Type = "Buff"
-Dispellable = true
-Disableable = true
+CanDispel = true
+CanDisable = true
 
 [Blessing]
 Name = "Blessing"
 Type = "Buff"
-Dispellable = true
-Disableable = true
+CanDispel = true
+CanDisable = true
+
+[IncreaseAgi]
+Name = "Increase Agi"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
 
 [Curse]
 Name = "Curse"
 Type = "Debuff"
-Dispellable = true
-Disableable = false
+CanDispel = true
+CanDisable = false

@@ -826,7 +826,6 @@ namespace Assets.Scripts.Network
             //SpriteAnimator.AnimSpeed = AttackAnimationSpeed;
         }
 
-
         public void PerformBasicAttackMotion(CharacterSkill skill = CharacterSkill.None)
         {
             if (skipNextAttackMotion) //if the character casts a skill indirectly they shouldn't play their attack motion
@@ -1008,6 +1007,17 @@ namespace Assets.Scripts.Network
         //	    GameObject.Destroy(gameObject);
         //}
 
+        public void AttachFloatingTextIndicator(string text)
+        {
+            var di = RagnarokEffectPool.GetDamageIndicator();
+            var height = 1f;
+            var color = "white";
+            di.DoDamage(TextIndicatorType.Miss, text, new Vector3(0f, 0.6f, 0f), height,
+                SpriteAnimator.Direction, color, false);
+            di.AttachDamageIndicator(this);
+        }
+
+        
         private void AttachMissIndicator()
         {
             var di = RagnarokEffectPool.GetDamageIndicator();

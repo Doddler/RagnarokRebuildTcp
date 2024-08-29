@@ -352,7 +352,10 @@ public class Player : IEntityAutoReset
         if(GetStat(CharacterStat.Sp) > sp)
             SetStat(CharacterStat.Sp, sp);
 
-        var moveSpeed = 0.15f - (0.001f * level / 5f);
+        var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
+
+        //var moveSpeed = 0.15f - (0.001f * level / 5f);
+        var moveSpeed = 0.15f * moveBonus;
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
 

@@ -279,6 +279,11 @@ public partial class Monster : IEntityAutoReset
         SetTiming(TimingStat.AttackDelayTime, recharge);
         SetTiming(TimingStat.AttackMotionTime, motionTime);
         SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
+
+        var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
+        var moveSpeed = MonsterBase.MoveSpeed * moveBonus;
+        SetTiming(TimingStat.MoveSpeed, moveSpeed);
+        Character.MoveSpeed = moveSpeed;
     }
 
     private bool ValidateTarget()

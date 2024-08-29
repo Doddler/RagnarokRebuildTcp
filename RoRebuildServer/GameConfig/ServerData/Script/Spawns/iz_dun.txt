@@ -5,6 +5,7 @@ MapConfig("iz_dun00")
 	CreateSpawn("KUKRE", 30);
 	CreateSpawn("HYDRA", 15);
 	CreateSpawn("VADON", 30);
+	CreateSpawn("RODA_FROG", 6, %(236, 68, 108, 9), 1m);
 	CreateSpawn("BLACK_MUSHROOM", 5, 180000, 90000);
 }
 
@@ -16,6 +17,8 @@ MapConfig("iz_dun01")
 	CreateSpawn("HYDRA", 30);
 	CreateSpawn("VADON", 60);
 	CreateSpawn("CORNUTUS", 50);
+	CreateSpawn("RODA_FROG", 2, %(216, 70, 26, 31), 1m);
+	CreateSpawn("THARA_FROG", 6, %(216, 70, 26, 31), 30s);
 	CreateSpawn("OBEAUNE", 5, %(120, 171, 69, 77), 10m, 5m);
 	CreateSpawn("MARSE", 10, %(120, 171, 69, 77), 10m, 5m);
 	CreateSpawn("BLACK_MUSHROOM", 10, 3m, 1m30s);

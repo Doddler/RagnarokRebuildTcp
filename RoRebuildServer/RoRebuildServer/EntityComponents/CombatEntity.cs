@@ -78,6 +78,35 @@ public class CombatEntity : IEntityAutoReset
             statData[i] = 0;
     }
 
+    //public int GetEffectiveStat(CharacterStat type)
+    //{
+    //    var stat = GetStat(type);
+        
+    //    switch (type)
+    //    {
+    //        case CharacterStat.Str:
+    //            stat += GetStat(CharacterStat.AddStr);
+    //            break;
+    //        case CharacterStat.Agi:
+    //            stat += GetStat(CharacterStat.AddAgi);
+    //            break;
+    //        case CharacterStat.Vit:
+    //            stat += GetStat(CharacterStat.AddVit);
+    //            break;
+    //        case CharacterStat.Dex:
+    //            stat += GetStat(CharacterStat.AddDex);
+    //            break;
+    //        case CharacterStat.Int:
+    //            stat += GetStat(CharacterStat.AddInt);
+    //            break;
+    //        case CharacterStat.Luk:
+    //            stat += GetStat(CharacterStat.AddLuk);
+    //            break;
+    //    }
+
+    //    return stat;
+    //}
+
     public void UpdateStats()
     {
         if (Character.Type == CharacterType.Monster)

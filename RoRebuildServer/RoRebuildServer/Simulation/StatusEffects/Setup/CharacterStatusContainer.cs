@@ -51,15 +51,21 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         {
             if (statusEffects == null || statusEffects.Count == 0) return;
 
+            var hasUpdate = false;
+
             for (var i = 0; i < statusEffects.Count; i++)
             {
                 var status = statusEffects[i];
                 if (status.Expiration < Time.ElapsedTimeFloat)
                 {
+                    hasUpdate = true;
                     RemoveExistingStatusEffect(ref status);
                     i--;
                 }
             }
+
+            if(hasUpdate)
+                Owner.UpdateStats();
         }
 
         private void RemoveExistingStatusEffect(ref StatusEffectState status)
@@ -96,6 +102,8 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
                 CommandBuilder.SendApplyStatusEffect(Character, ref state);
                 CommandBuilder.ClearRecipients();
             }
+
+            Owner.UpdateStats();
         }
 
         public void ClearAll() => statusEffects?.Clear();

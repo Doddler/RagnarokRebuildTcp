@@ -13,13 +13,11 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
             ch.AddStat(CharacterStat.AspdBonus, state.Value1);
-            ch.UpdateStats();
         }
 
         public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
         {
             ch.SubStat(CharacterStat.AspdBonus, state.Value1);
-            ch.UpdateStats();
         }
     }
 }

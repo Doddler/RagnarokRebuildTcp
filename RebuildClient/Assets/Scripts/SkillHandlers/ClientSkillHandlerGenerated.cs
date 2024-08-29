@@ -36,7 +36,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[23] = new DefaultSkillHandler();
 			handlers[24] = new HealHandler();
 			handlers[24].ExecuteWithoutSource = true;
-			handlers[25] = new DefaultSkillHandler();
+			handlers[25] = new IncreaseAgiHandler();
 			handlers[26] = new DefaultSkillHandler();
 			handlers[27] = new DefaultSkillHandler();
 			handlers[28] = new DefaultSkillHandler();
