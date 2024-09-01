@@ -13,6 +13,7 @@ using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
+using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -57,7 +58,7 @@ public class Player : IEntityAutoReset
 
     public bool AutoAttackLock
     {
-        get; 
+        get;
         set;
     }
     private float regenTickTime { get; set; }
@@ -84,6 +85,9 @@ public class Player : IEntityAutoReset
     public float LastEmoteTime; //we'll probably need to have like, a bunch of timers at some point...
 
 
+    //stats that can't apply to monsters
+    [EntityIgnoreNullCheck] public readonly int[] PlayerStatData = new int[(int)(CharacterStat.CharacterStatsMax - CharacterStat.MonsterStatsMax)];
+
     public int GetData(PlayerStat type) => CharData[(int)type];
     public void SetData(PlayerStat type, int val) => CharData[(int)type] = val;
     public int GetStat(CharacterStat type) => CombatEntity.GetStat(type);
@@ -98,7 +102,7 @@ public class Player : IEntityAutoReset
     {
         0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
         21, 22, 23, 24, 25, 26, 27, 28, 29, 29, 30, 31, 31, 32, 32, 33, 33, 34, 34,35,
-        35, 36, 36, 37, 37, 38, 38, 39, 39, 40, 40, 41, 41, 42, 42, 43, 43, 44, 44, 45, 
+        35, 36, 36, 37, 37, 38, 38, 39, 39, 40, 40, 41, 41, 42, 42, 43, 43, 44, 44, 45,
         45, 46, 46, 47, 47, 48, 48, 49, 49, 50, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55,
         55, 56, 56, 57, 57, 58, 58, 59, 59, 60, 60, 61, 61, 62, 62, 63, 63, 64, 64, 64
     };
@@ -119,12 +123,13 @@ public class Player : IEntityAutoReset
         regenTickTime = 0f;
         NpcInteractionState.Reset();
         IsAdmin = false;
-        for (var i = 0; i < CharData.Length; i++)
-            CharData[i] = 0;
+        Array.Clear(CharData);
+        Array.Clear(PlayerStatData);
         _weaponClass = -1;
         LastEmoteTime = 0;
         LearnedSkills = null!;
         NpcFlags = null!;
+
 
         SavePosition.Reset();
     }
@@ -135,15 +140,18 @@ public class Player : IEntityAutoReset
 
         if (GetData(PlayerStat.Status) == 0)
         {
-            for (var i = 0; i < CharData.Length; i++)
-                CharData[i] = 0;
-            
+            Array.Clear(CharData);
+            Array.Clear(PlayerStatData);
+
             LearnedSkills.Clear();
             SetData(PlayerStat.Level, 1);
             SetData(PlayerStat.Head, GameRandom.NextInclusive(0, 31));
             SetData(PlayerStat.Gender, GameRandom.NextInclusive(0, 1));
             SetData(PlayerStat.Status, 1);
         }
+
+        foreach (var skill in LearnedSkills)
+            SkillHandler.ApplyPassiveEffects(skill.Key, CombatEntity, skill.Value);
 
         UpdateStats();
 
@@ -159,12 +167,6 @@ public class Player : IEntityAutoReset
         var job = GetData(PlayerStat.Job);
         switch (stat)
         {
-            case CharacterStat.Attack:
-                if (job == DataManager.JobIdLookup["Mage"])
-                    return 0.4f;
-                if (job == DataManager.JobIdLookup["Merchant"])
-                    return 1.1f;
-                return 1f;
             case CharacterStat.MagicAtkMin:
                 if (job != DataManager.JobIdLookup["Mage"])
                     return 0.4f; //everything but mage
@@ -187,9 +189,15 @@ public class Player : IEntityAutoReset
                 if (job == DataManager.JobIdLookup["Mage"])
                     return 2f;
                 return 1f;
+            case CharacterStat.Str:
+                if (job == DataManager.JobIdLookup["Mage"])
+                    return 0.4f;
+                if (job == DataManager.JobIdLookup["Merchant"])
+                    return 1.1f;
+                return 1f;
             case CharacterStat.Dex:
                 if (job == DataManager.JobIdLookup["Archer"])
-                    return 1.4f;
+                    return 1.2f;
                 return 1f;
             case CharacterStat.Agi:
                 if (job == DataManager.JobIdLookup["Thief"])
@@ -216,20 +224,23 @@ public class Player : IEntityAutoReset
 
         return 1;
     }
-    
+
     public void SkillReset()
     {
         var basic = LearnedSkills.TryGetValue(CharacterSkill.BasicMastery, out var level) ? level : 0;
         var firstAid = LearnedSkills.TryGetValue(CharacterSkill.FirstAid, out var aidLevel) ? aidLevel : 0;
 
+        foreach (var skill in LearnedSkills)
+            SkillHandler.RemovePassiveEffects(skill.Key, CombatEntity, skill.Value);
+
         LearnedSkills.Clear();
 
-        if(basic > 0) LearnedSkills.Add(CharacterSkill.BasicMastery, basic);
-        if(firstAid > 0) LearnedSkills.Add(CharacterSkill.FirstAid, firstAid);
+        if (basic > 0) LearnedSkills.Add(CharacterSkill.BasicMastery, basic);
+        if (firstAid > 0) LearnedSkills.Add(CharacterSkill.FirstAid, firstAid);
 
         UpdateStats();
     }
-    
+
     public void UpdateStats()
     {
         var level = GetData(PlayerStat.Level);
@@ -247,7 +258,7 @@ public class Player : IEntityAutoReset
         {
             Character.ClassId = job; //there should be more complex checks here to prevent GM and mounts from being lost but we'll deal with it later
         }
-        
+
         //var aMotionTime = 0.5f;
         //var delayTime = 1.1f - level * 0.004f * aspdBonus;
         //if (delayTime < aMotionTime)
@@ -263,13 +274,12 @@ public class Player : IEntityAutoReset
         SetTiming(TimingStat.HitDelayTime, 0.288f);
         //SetTiming(TimingStat.MoveSpeed, 0.15f);
         if (GetData(PlayerStat.Job) == 2)
-            SetStat(CharacterStat.Range, 9);
+            SetStat(CharacterStat.Range, 4 + MaxLearnedLevelOfSkill(CharacterSkill.VultureEye));
         else
             SetStat(CharacterStat.Range, 1);
 
-        var atk = (level / 3f) * (level / 3f) + level * (int)(level / 20) + 28 + level;
-        atk *= 1.2f;
-
+        var atk = level * (level / 20f) + 28 + level;
+        //atk *= 1.2f;
 
         //lower damage below lv 60, raise above
         var proc = 0.5f + Math.Clamp(level, 0, 99f) / 120f;
@@ -287,26 +297,41 @@ public class Player : IEntityAutoReset
         var defBonus = GetJobBonus(CharacterStat.Def);
         var mdefBonus = GetJobBonus(CharacterStat.MDef);
 
-        SetStat(CharacterStat.Attack, atk1 * atkBonus);
-        SetStat(CharacterStat.Attack2, atk2 * atkBonus);
-        SetStat(CharacterStat.MagicAtkMin, atk1 * matkBonus);
-        SetStat(CharacterStat.MagicAtkMax, atk2 * matkBonus);
+
         SetStat(CharacterStat.Def, (level * 0.7f) * defBonus);
         SetStat(CharacterStat.MDef, (level * 0.4f) * mdefBonus);
         SetStat(CharacterStat.Vit, (3 + level * 0.5f));
-        SetStat(CharacterStat.Int, (3 + level * 0.5f));
-        SetStat(CharacterStat.Str, (3 + level * 0.5f));
+        SetStat(CharacterStat.Int, (15 + level * 0.9f));
+        SetStat(CharacterStat.Str, (15 + level * 0.9f));
         SetStat(CharacterStat.Agi, (3 + level * 0.5f) * agiBonus);
         SetStat(CharacterStat.Dex, (15 + level * 0.9f) * dexBonus);
         SetStat(CharacterStat.Luk, (3 + level * 0.5f));
         //SetStat(CharacterStat.MaxHp, 50 + 100 * level * hpBonus);
 
+        //dex for bow, str for everything else
+        var dmgStat = GetEffectiveStat(WeaponClass == 12 ? CharacterStat.Dex : CharacterStat.Str);
+        atkBonus += (float)((dmgStat + (int)(dmgStat / 10) * (int)(dmgStat / 10)) / 100f);
+
+        var matkStat = GetEffectiveStat(CharacterStat.Int);
+        matkBonus += (float)((matkStat + (int)(matkStat / 10) * (int)(matkStat / 10)) / 100f);
+
+        SetStat(CharacterStat.Attack, atk1 * atkBonus);
+        SetStat(CharacterStat.Attack2, atk2 * atkBonus);
+        SetStat(CharacterStat.MagicAtkMin, atk1 * matkBonus);
+        SetStat(CharacterStat.MagicAtkMax, atk2 * matkBonus);
+
+
         //var newMaxHp = (level * level * level) / 20 + 80 * level;
+
+        if (WeaponClass == 2) //sword
+            SetStat(CharacterStat.WeaponMastery, MaxLearnedLevelOfSkill(CharacterSkill.SwordMastery));
+        if (WeaponClass == 3) //2hand sword
+            SetStat(CharacterStat.WeaponMastery, MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery));
 
 
         var jobAspd = GetJobBonus(CharacterStat.AspdBonus);
         var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100 * jobAspd);
-        var agiAspdBonus = 100f / (100 + GetEffectiveStat(CharacterStat.Agi));
+        var agiAspdBonus = 100f / (100 + GetEffectiveStat(CharacterStat.Agi) + GetEffectiveStat(CharacterStat.Dex) / 3f);
 
         var recharge = 1.2f * aspdBonus * agiAspdBonus;
         if (job == 2)
@@ -351,7 +376,7 @@ public class Player : IEntityAutoReset
             sp += 20; //little boost early on
 
         SetStat(CharacterStat.MaxSp, sp);
-        if(GetStat(CharacterStat.Sp) > sp)
+        if (GetStat(CharacterStat.Sp) > sp)
             SetStat(CharacterStat.Sp, sp);
 
         var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
@@ -481,6 +506,18 @@ public class Player : IEntityAutoReset
         return true;
     }
 
+    public void AddSkillToCharacter(CharacterSkill skill, int level)
+    {
+        if (LearnedSkills.TryGetValue(skill, out var curLevel))
+            SkillHandler.RemovePassiveEffects(skill, CombatEntity, curLevel); //remove the old passive if they currently know it
+
+        SkillHandler.ApplyPassiveEffects(skill, CombatEntity, level);
+        LearnedSkills[skill] = level;
+
+        if (SkillHandler.GetSkillAttributes(skill).SkillTarget == SkillTarget.Passive)
+            UpdateStats();
+    }
+
     public void RegenTick()
     {
         if (!Character.IsActive || Character.State == CharacterState.Dead)
@@ -509,9 +546,9 @@ public class Player : IEntityAutoReset
         if (sp < maxSp)
         {
             var regen = maxSp / 10 + 4;
-            if(Character.State == CharacterState.Sitting)
+            if (Character.State == CharacterState.Sitting)
                 regen *= 2;
-            if(regen + sp > maxSp)
+            if (regen + sp > maxSp)
                 regen = maxSp - sp;
 
             SetStat(CharacterStat.Sp, sp + regen);
@@ -914,7 +951,7 @@ public class Player : IEntityAutoReset
         if (Character.Map != null)
         {
             var count = Character.Map.GatherPlayersInRange(Character.Position, ServerConfig.MaxViewDistance, null, false, false);
-            if(Character.CountVisiblePlayers() != count)
+            if (Character.CountVisiblePlayers() != count)
                 ServerLogger.LogWarning($"Player {Character.Name} says it can see {Character.CountVisiblePlayers()} players, but there are {count} players in range.");
         }
 #endif

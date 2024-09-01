@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Effects.PrimitiveData
+﻿using UnityEngine;
+
+namespace Assets.Scripts.Effects.PrimitiveData
 {
     public class CircleData
     {
@@ -11,6 +13,7 @@
         public float Alpha;
         public float ArcAngle = 36f;
         public float InnerSize;
+        public Color Color;
         public bool FillCircle;
     }
 }

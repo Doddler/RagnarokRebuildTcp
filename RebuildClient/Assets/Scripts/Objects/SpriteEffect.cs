@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Sprites;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.Scripts.Objects
 {
@@ -9,28 +10,35 @@ namespace Assets.Scripts.Objects
         public Material OverrideMaterial;
         public AudioClip AudioClip;
 
+        public Color SpriteColor = Color.white;
+
         public bool IsLoop;
         public bool UseZTest;
         public bool RandomStart;
         public bool DestroyOnFinish;
+        public float Duration;
+        public bool DestroyAtEndOfDuration;
 
         private bool isInit;
         private bool hasStartedAudio;
-
+        
         private CullingGroup cullingGroup;
         private BoundingSphere boundingSphere;
         private BoundingSphere[] boundingSpheres;
 
         private GameObject spriteObject;
 
-        protected RoSpriteAnimator Sprite;
+        [FormerlySerializedAs("Sprite")] public RoSpriteAnimator SpriteAnimator;
         
 
-        public void Initialize()
+        public void Initialize(bool useBillboard = true)
         {
-            var billboard = gameObject.AddComponent<BillboardObject>();
-            billboard.Style = BillboardStyle.Character;
-            
+            if (useBillboard)
+            {
+                var billboard = gameObject.AddComponent<BillboardObject>();
+                billboard.Style = BillboardStyle.Character;
+            }
+
             var child = new GameObject("Sprite");
             child.layer = LayerMask.NameToLayer("Characters");
             child.transform.SetParent(gameObject.transform, false);
@@ -40,25 +48,26 @@ namespace Assets.Scripts.Objects
             // sr.SecondPassForWater = false;
             // sr.UpdateAngleWithCamera = false;
             //
-            Sprite = child.AddComponent<RoSpriteAnimator>();
-            Sprite.Type = SpriteType.Npc;
+            SpriteAnimator = child.AddComponent<RoSpriteAnimator>();
+            SpriteAnimator.Type = SpriteType.Npc;
             // sprite.State = SpriteState.Dead;
             // sprite.SpriteRenderer = sr;
-            Sprite.LockAngle = true;
-            Sprite.RaycastForShadow = false;
-            Sprite.State = SpriteState.Idle;
-            Sprite.OnSpriteDataLoadNoCollider(SpriteData);
-            Sprite.ChangeActionExact(0);
+            SpriteAnimator.LockAngle = true;
+            SpriteAnimator.RaycastForShadow = false;
+            SpriteAnimator.State = SpriteState.Idle;
+            SpriteAnimator.BaseColor = SpriteColor;
+            SpriteAnimator.OnSpriteDataLoadNoCollider(SpriteData);
+            SpriteAnimator.ChangeActionExact(0);
 
             if (DestroyOnFinish)
             {
-                Sprite.DisableLoop = true;
-                Sprite.OnFinishAnimation = FinishPlaying;
+                SpriteAnimator.DisableLoop = true;
+                SpriteAnimator.OnFinishAnimation = FinishPlaying;
             }
             
             
             if(OverrideMaterial != null)
-                Sprite.SpriteRenderer.SetOverrideMaterial(OverrideMaterial);
+                SpriteAnimator.SpriteRenderer.SetOverrideMaterial(OverrideMaterial);
             
             //sprite.LockAngle = true;
             
@@ -104,6 +113,13 @@ namespace Assets.Scripts.Objects
             if (!isInit)
                 return;
 
+            if (DestroyAtEndOfDuration)
+            {
+                Duration -= Time.deltaTime;
+                if (Duration < 0)
+                    FinishPlaying();
+                return;
+            }
 
             if (AudioClip != null && !hasStartedAudio)
             {
@@ -121,7 +137,7 @@ namespace Assets.Scripts.Objects
             }
 #endif
             
-            if (IsLoop)
+            if (IsLoop && cullingGroup != null)
                 spriteObject.SetActive(cullingGroup.IsVisible(0));
             
             UpdateSpriteEffect();

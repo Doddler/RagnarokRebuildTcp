@@ -7,7 +7,7 @@
     }
     SubShader
     {
-        Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
+        Tags { "Queue"="Transparent+15" "IgnoreProjector"="True" "RenderType"="Transparent" }
         Blend One OneMinusSrcAlpha
         Cull Off Lighting Off ZWrite Off ZTest Off
         LOD 100

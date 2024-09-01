@@ -169,18 +169,25 @@ namespace Assets.Scripts.UI
             }
         }
 
+        public void HoverTooltip()
+        {
+            if (!Input.GetMouseButton(0) && !CameraFollower.Instance.HasSkillOnCursor) //if we're not dragging anything basically
+                parent.ShowTooltip(data.SkillId, this);
+        }
+
+        public void LeaveHoverTooltip()
+        {
+            parent.HideTooltip();
+        }
+        
         public void OnPointerEnter(PointerEventData eventData)
         {
             HighlightSkillBox();
-            if (!Input.GetMouseButton(0)) //if we're not dragging anything basically
-                parent.ShowTooltip(data.SkillId, this);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            parent.HideTooltip();
-            if (!CameraFollower.Instance.HasSkillOnCursor)
-                ReleaseHighlightSkillBox();
+            ReleaseHighlightSkillBox();
         }
     }
 }

@@ -8,7 +8,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
 {
-    [SkillHandler(CharacterSkill.IncreaseAgility, SkillClass.Magic, SkillTarget.Ally)]
+    [SkillHandler(CharacterSkill.IncreaseAgility, SkillClass.Magic, SkillTarget.Any)]
     public class IncreaseAgiHandler : SkillHandlerBase
     {
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

@@ -88,6 +88,18 @@ StateAttacking:
 }
 
 //------------------------------------
+// Turtle General
+//------------------------------------
+
+SkillHandler("TURTLE_GENERAL") {
+StateAny: 
+    TryCast(CallMinion, 1, 10%, 0.7s, 45s)[MinionCount <= 3] -> CallDefaultMinions();
+StateAttacking:
+	TryCast(SonicBlow, 10, 20%, 0, 5s) -> SendEmote(18);
+}
+
+
+//------------------------------------
 // Baphomet
 //------------------------------------
 

@@ -4,6 +4,7 @@ using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.U2D;
 
 namespace Assets.Scripts.Effects.EffectHandlers
@@ -13,7 +14,6 @@ namespace Assets.Scripts.Effects.EffectHandlers
     {
         private static readonly Dictionary<string, Material> Materials = new();
         private static Sprite[] lensSprite;
-
 
         private static void LaunchHitParticles(Vector3 src, Vector3 target)
         {
@@ -32,17 +32,17 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 }
 
                 var duration = 0.2f + Random.Range(0, 0.3f);
-                EffectParticleManager.Instance.AddParticle(Random.Range(6f, 16f) / 5f, target, pVelocity,
-                    duration, new Color32(255, 255, 255, 40), -pVelocity.magnitude / (1 / duration) / 2f, gravity);
+                EffectParticleManager.Instance.AddTrailParticle(Random.Range(6f, 16f) / 10f, target, pVelocity,
+                    duration, new Color32(255, 255, 255, 80), -pVelocity.magnitude / (1 / duration) / 2f, gravity);
             }
         }
-        
+
         public static Ragnarok3dEffect Hit1(Vector3 src, Vector3 target)
         {
             //generate hit particles
             LaunchHitParticles(src, target);
             var dir = (src - target).normalized;
-            
+
             //generate ring effect
             if (!Materials.TryGetValue("ring_blue", out var mat))
             {
@@ -84,7 +84,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             if (!Materials.TryGetValue("lens", out var mat1))
             {
                 mat1 = new Material(ShaderCache.Instance.AlphaBlendNoZTestShader);
-                mat1.renderQueue = 3007;
+                mat1.renderQueue = 3015; //always front
             }
 
             if (lensSprite == null)
@@ -97,13 +97,15 @@ namespace Assets.Scripts.Effects.EffectHandlers
             }
 
             AudioManager.Instance.OneShotSoundEffect(target.Id, $"ef_hit2.ogg", target.transform.position);
-            LaunchHitParticles(src.transform.position, target.transform.position);
+            LaunchHitParticles(src.transform.position, target.transform.position + new Vector3(0, 1, 0));
 
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
             effect.SetDurationByFrames(30);
             effect.SetBillboardMode(BillboardStyle.Normal);
             effect.transform.position = target.transform.position + new Vector3(0, 1f, 0);
-            effect.transform.localScale = Vector3.one/4f;
+            effect.transform.localScale = Vector3.one / 4f;
+            effect.SetSortingGroup("FrontEffect", 10); //appear in front of damage indicators
+
 
             for (var i = 0; i < 8; i++)
             {

@@ -132,7 +132,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "Increases damage when using a one-handed sword by 1% per level to a max of \u002B10%."
     },
     {
       "SkillId": 9,
@@ -143,7 +143,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "This skill would increase damage when using a two-handed sword if you could actually equip one, but you can\u0027t."
     },
     {
       "SkillId": 10,
@@ -290,6 +290,28 @@
     },
     {
       "SkillId": 17,
+      "Icon": "mg_napalmbeat",
+      "Name": "Napalm Beat",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        9,
+        9,
+        9,
+        12,
+        12,
+        12,
+        15,
+        15,
+        15,
+        18
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 18,
       "Icon": "mg_soulstrike",
       "Name": "Soul Strike",
       "Target": 1,
@@ -311,7 +333,7 @@
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
-      "SkillId": 18,
+      "SkillId": 19,
       "Icon": "mg_thunderstorm",
       "Name": "Thunderstorm",
       "Target": 4,
@@ -333,7 +355,7 @@
       "Description": "The only working aoe ability in the game."
     },
     {
-      "SkillId": 19,
+      "SkillId": 20,
       "Icon": "mg_safetywall",
       "Name": "Safety Wall",
       "Target": 4,
@@ -355,7 +377,7 @@
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
-      "SkillId": 20,
+      "SkillId": 21,
       "Icon": "ac_double",
       "Name": "Double Strafe",
       "Target": 1,
@@ -377,73 +399,86 @@
       "Description": "The good ol\u0027 classic. Just as spammable as you remember it (maybe more because there\u0027s no SP cost yet)"
     },
     {
-      "SkillId": 21,
+      "SkillId": 22,
       "Icon": "ac_chargearrow",
       "Name": "Charge Arrow",
       "Target": 1,
       "Type": 0,
-      "MaxLevel": 10,
+      "MaxLevel": 1,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        15
       ],
-      "AdjustableLevel": true,
+      "AdjustableLevel": false,
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
-      "SkillId": 22,
+      "SkillId": 23,
       "Icon": "ac_shower",
       "Name": "Arrow Shower",
       "Target": 4,
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
-      ],
-      "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
-    },
-    {
-      "SkillId": 23,
-      "Icon": "ac_concentration",
-      "Name": "Improve Concentration",
-      "Target": 5,
-      "Type": 0,
-      "MaxLevel": 10,
-      "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15
       ],
       "AdjustableLevel": false,
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
       "SkillId": 24,
+      "Icon": "ac_concentration",
+      "Name": "Improve Concentration",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        25,
+        30,
+        35,
+        40,
+        45,
+        50,
+        55,
+        60,
+        65,
+        70
+      ],
+      "AdjustableLevel": true,
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+    },
+    {
+      "SkillId": 25,
+      "Icon": "ac_owl",
+      "Name": "Owl\u0027s Eye",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 26,
+      "Icon": "ac_vulture",
+      "Name": "Vulture\u0027s Eye",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 27,
       "Icon": "al_heal",
       "Name": "Heal",
       "Target": 2,
@@ -462,54 +497,232 @@
         40
       ],
       "AdjustableLevel": true,
-      "Description": "Heals the enemy. Offensive healing does not currently work."
+      "Description": "Heals an ally. Deals damage when cast on an undead (use shift to target an enemy)."
     },
     {
-      "SkillId": 25,
+      "SkillId": 28,
       "Icon": "al_incagi",
       "Name": "Increase Agility",
       "Target": 2,
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        18,
+        21,
+        24,
+        27,
+        30,
+        33,
+        36,
+        39,
+        42,
+        45
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "Increases movement speed by 25% and increases agi by \u002B3 at level one and increasing to \u002B12 at level 10."
     },
     {
-      "SkillId": 26,
+      "SkillId": 29,
+      "Icon": "al_decagi",
+      "Name": "Decrease Agility",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 5,
+      "SpCost": [
+        17,
+        21,
+        25,
+        29,
+        33
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 30,
       "Icon": "al_blessing",
       "Name": "Blessing",
       "Target": 2,
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        28,
+        32,
+        36,
+        50,
+        55,
+        58,
+        62,
+        67,
+        70,
+        64
       ],
       "AdjustableLevel": true,
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
     },
     {
-      "SkillId": 27,
+      "SkillId": 31,
+      "Icon": "al_demonbane",
+      "Name": "Demon Bane",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": "Increases damage against demon and undead races by \u002B1% per level to a max of \u002B10%."
+    },
+    {
+      "SkillId": 32,
+      "Icon": "al_dp",
+      "Name": "Divine Protection",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 33,
+      "Icon": "al_angelus",
+      "Name": "Angelus",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        23,
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 34,
+      "Icon": "al_crucis",
+      "Name": "Signum Crusis",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 35,
+      "Icon": "al_cure",
+      "Name": "Cure",
+      "Target": 2,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        15
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 36,
+      "Icon": "al_holywater",
+      "Name": "Aqua Benedicta",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 37,
+      "Icon": "al_pneuma",
+      "Name": "Pneuma",
+      "Target": 4,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 38,
+      "Icon": "al_ruwach",
+      "Name": "Ruwach",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 39,
+      "Icon": "al_teleport",
+      "Name": "Teleport",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 2,
+      "SpCost": [
+        10,
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 40,
+      "Icon": "al_warp",
+      "Name": "Warp Portal",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 4,
+      "SpCost": [
+        35,
+        32,
+        29,
+        26
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 41,
+      "Icon": "al_holylight",
+      "Name": "Holy Light",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        15
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 42,
       "Icon": "tf_double",
       "Name": "Double Attack",
       "Target": 0,
@@ -520,7 +733,7 @@
       "Description": "Adds a chance to double attack when performing regular melee attacks."
     },
     {
-      "SkillId": 28,
+      "SkillId": 43,
       "Icon": "tf_poison",
       "Name": "Envenom",
       "Target": 1,
@@ -542,7 +755,103 @@
       "Description": null
     },
     {
-      "SkillId": 29,
+      "SkillId": 44,
+      "Icon": "tf_detoxify",
+      "Name": "Detoxify",
+      "Target": 2,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 45,
+      "Icon": "tf_backsliding",
+      "Name": "Back Slide",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        7
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 46,
+      "Icon": "tf_steal",
+      "Name": "Steal",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 47,
+      "Icon": "tf_sprinklesand",
+      "Name": "Sand Attack",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        9
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 48,
+      "Icon": "tf_throwstone",
+      "Name": "Stone Fling",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        2
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 49,
+      "Icon": "tf_hiding",
+      "Name": "Hiding",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 50,
       "Icon": "tf_miss",
       "Name": "Improve Dodge",
       "Target": 0,
@@ -553,7 +862,73 @@
       "Description": "Increases the chance to evade an enemy attack. Evasion doesn\u0027t fall off with more enemies so it\u0027s probably really good?"
     },
     {
-      "SkillId": 30,
+      "SkillId": 51,
+      "Icon": "mc_inccarry",
+      "Name": "Enlarge Weight Limit",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 52,
+      "Icon": "mc_discount",
+      "Name": "Discount",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 53,
+      "Icon": "mc_overcharge",
+      "Name": "Overcharge",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 54,
+      "Icon": "mc_vending",
+      "Name": "Vending",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 55,
+      "Icon": "mc_identify",
+      "Name": "Item Appraisal",
+      "Target": 2,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 56,
       "Icon": "mc_mammonite",
       "Name": "Mammonite",
       "Target": 1,
@@ -575,7 +950,7 @@
       "Description": "This skill is really good until I actually implement zeny."
     },
     {
-      "SkillId": 31,
+      "SkillId": 57,
       "Icon": "mc_pushcart",
       "Name": "Push Cart",
       "Target": 0,
@@ -586,7 +961,33 @@
       "Description": "This is what makes merchant worth playing. Or it would be if it worked.\r\n\u003Ci\u003EToo bad.\u003C/i\u003E"
     },
     {
-      "SkillId": 32,
+      "SkillId": 58,
+      "Icon": "mc_loud",
+      "Name": "Crazy Uproar",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        8
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 59,
+      "Icon": "mc_cartrevolution",
+      "Name": "Cart Revolution",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        12
+      ],
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 60,
       "Icon": "kn_twohandquicken",
       "Name": "Two-Hand Quicken",
       "Target": 5,
@@ -605,10 +1006,10 @@
         50
       ],
       "AdjustableLevel": false,
-      "Description": "This is basically cheating. It also doesn\u0027t expire until you log off for some reason."
+      "Description": "So good it\u0027s basically cheating."
     },
     {
-      "SkillId": 33,
+      "SkillId": 61,
       "Icon": "bs_hammerfall",
       "Name": "Hammer Fall",
       "Target": 4,
@@ -630,7 +1031,7 @@
       "Description": null
     },
     {
-      "SkillId": 34,
+      "SkillId": 62,
       "Icon": "nv_basic",
       "Name": "Call Minion",
       "Target": 0,
@@ -641,7 +1042,7 @@
       "Description": null
     },
     {
-      "SkillId": 35,
+      "SkillId": 63,
       "Icon": "nv_basic",
       "Name": "Grand Thunderstorm",
       "Target": 0,
@@ -652,7 +1053,7 @@
       "Description": null
     },
     {
-      "SkillId": 36,
+      "SkillId": 64,
       "Icon": "nv_basic",
       "Name": "Self Destruct",
       "Target": 0,
@@ -663,7 +1064,7 @@
       "Description": null
     },
     {
-      "SkillId": 37,
+      "SkillId": 65,
       "Icon": "nv_basic",
       "Name": "Power UP",
       "Target": 0,
@@ -674,7 +1075,7 @@
       "Description": null
     },
     {
-      "SkillId": 38,
+      "SkillId": 66,
       "Icon": "nv_basic",
       "Name": "Summon Monster",
       "Target": 0,
@@ -685,7 +1086,7 @@
       "Description": null
     },
     {
-      "SkillId": 39,
+      "SkillId": 67,
       "Icon": "as_sonicblow",
       "Name": "Sonic Blow",
       "Target": 1,
@@ -707,7 +1108,7 @@
       "Description": null
     },
     {
-      "SkillId": 40,
+      "SkillId": 68,
       "Icon": "nv_basic",
       "Name": "Suicide",
       "Target": 0,
@@ -718,7 +1119,18 @@
       "Description": null
     },
     {
-      "SkillId": 41,
+      "SkillId": 69,
+      "Icon": "nv_basic",
+      "Name": "Reward for Quest",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null
+    },
+    {
+      "SkillId": 70,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,

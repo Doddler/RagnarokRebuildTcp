@@ -16,6 +16,12 @@ Type = "Buff"
 CanDispel = true
 CanDisable = true
 
+[ImproveConcentration]
+Name = "Improve Concentration"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
+
 [Curse]
 Name = "Curse"
 Type = "Debuff"

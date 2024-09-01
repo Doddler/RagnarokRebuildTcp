@@ -12,8 +12,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         {
             src?.PerformSkillMotion();
             attack.Target?.AttachFloatingTextIndicator("<font-weight=300><cspace=-0.5>AGI UP!");
-            if(src != null)
-                AudioManager.Instance.AttachSoundToEntity(src.Id, "ef_incagility.ogg", src.gameObject);
+            if(attack.Target != null)
+                AudioManager.Instance.AttachSoundToEntity(src.Id, "ef_incagility.ogg", attack.Target.gameObject);
         }
     }
 }

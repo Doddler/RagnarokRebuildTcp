@@ -271,7 +271,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SkillExecuteTargetedSkill(WorldObject caster, WorldObject target, CharacterSkill skill, int lvl, DamageInfo di)
+    public static void SkillExecuteTargetedSkill(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, DamageInfo di)
     {
         if (!HasRecipients())
             return;
@@ -280,7 +280,7 @@ public static class CommandBuilder
 
         packet.Write((byte)SkillTarget.Enemy);
         packet.Write(caster.Id);
-        packet.Write(target.Id);
+        packet.Write(target?.Id ?? -1);
         packet.Write((byte)skill);
         packet.Write((byte)lvl);
         packet.Write((byte)caster.FacingDirection);

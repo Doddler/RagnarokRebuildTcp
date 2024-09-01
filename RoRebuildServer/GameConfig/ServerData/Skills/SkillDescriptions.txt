@@ -23,13 +23,13 @@ Hit the enemy really hard.
 This skill <i>might</i> work? Maybe? Worth trying I guess.
 
 ::SwordMastery
-<color=red>This skill doesn't currently work.
+Increases damage when using a one-handed sword by 1% per level to a max of +10%.
 
 ::TwoHandSwordMastery
-<color=red>This skill doesn't currently work.
+This skill would increase damage when using a two-handed sword if you could actually equip one, but you can't.
 
 ::TwoHandQuicken
-This is basically cheating. It also doesn't expire until you log off for some reason.
+So good it's basically cheating.
 
 //----------------Archer-------------------
 
@@ -86,13 +86,16 @@ The only working aoe ability in the game.
 //----------------Acolyte-------------------
 
 ::Heal
-Heals the enemy. Offensive healing does not currently work.
+Heals an ally. Deals damage when cast on an undead (use shift to target an enemy).
 
 ::IncreaseAgility
-<color=red>This skill doesn't currently work.
+Increases movement speed by 25% and increases agi by +3 at level one and increasing to +12 at level 10.
 
 ::Blessing
 <color=red>This skill doesn't currently work.
+
+::DemonBane
+Increases damage against demon and undead races by +1% per level to a max of +10%.
 
 //----------------Thief-------------------
 

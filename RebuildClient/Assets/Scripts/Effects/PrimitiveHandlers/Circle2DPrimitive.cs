@@ -36,7 +36,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             var span = 360;
             var v = 0f;
 
-            var color = new Color(1f, 1f, 1f, data.Alpha / 255f);
+            var color = new Color(data.Color.r, data.Color.g, data.Color.b, data.Alpha / 255f);
 
             var size = data.InnerSize;
             if (data.FillCircle || data.Radius < data.InnerSize)

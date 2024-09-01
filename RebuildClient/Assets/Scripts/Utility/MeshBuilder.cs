@@ -25,6 +25,7 @@ namespace Assets.Scripts.Utility
         public bool HasData => vertices.Count > 0;
         public bool RequiresMultipleMeshes => vertices.Count > 65000;
         public void StartTriangle() => startIndex = vertices.Count;
+        public int TriangleCount => triangles.Count;
 
         //public int VertexCount => vertices.Count;
 

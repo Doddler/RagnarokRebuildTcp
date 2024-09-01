@@ -94,6 +94,7 @@ MapConfig("moc_fild07")
 	CreateSpawn("PECOPECO_EGG", 50);
 	CreateSpawn("PICKY_", 30);
 	CreateSpawn("PICKY", 30);
+	CreateSpawn("CONDOR", 25);
 	CreateSpawn("YELLOW_PLANT", 5, %(162, 333, 12, 12), 360000, 180000);
 }
 
@@ -126,10 +127,11 @@ MapConfig("moc_fild09")
 
 MapConfig("moc_fild10")
 {
-	CreateSpawn("DROPS", 30);
-	CreateSpawn("PECOPECO_EGG", 70);
-	CreateSpawn("PICKY", 50);
-	CreateSpawn("PICKY_", 50);
+	CreateSpawn("DROPS", 15);
+	CreateSpawn("PECOPECO_EGG", 20);
+	CreateSpawn("CONDOR", 70);
+	CreateSpawn("PICKY", 30);
+	CreateSpawn("PICKY_", 30);
 	CreateSpawn("MAGNOLIA", 1);
 	CreateSpawn("ANT_EGG", 10);
 	CreateSpawn("YELLOW_PLANT", 10, %(198, 150, 40, 30), 180000, 90000);

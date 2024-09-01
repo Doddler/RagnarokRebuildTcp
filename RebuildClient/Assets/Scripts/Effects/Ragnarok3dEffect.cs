@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Network;
+using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using Object = System.Object;
 
@@ -21,9 +23,11 @@ namespace Assets.Scripts.Effects
         public ServerControllable SourceEntity;
         public GameObject FollowTarget;
         public GameObject AimTarget;
+        public BillboardObject BillboardGroup;
         public Object EffectData;
+        public SortingGroup SortingGroup;
         private BillboardObject billboard;
-
+        
         public bool DestroyOnTargetLost = false;
         public bool UpdateOnlyOnFrameChange = false;
 
@@ -33,6 +37,7 @@ namespace Assets.Scripts.Effects
         public IEffectHandler EffectHandler;
         public IEffectOwner EffectOwner;
         public readonly List<RagnarokPrimitive> Primitives = new();
+        public readonly List<SpriteEffect> SpriteEffects = new();
         public readonly List<GameObject> AttachedObjects = new();
         
         public bool IsInitialized = false;
@@ -46,6 +51,13 @@ namespace Assets.Scripts.Effects
             var go = new GameObject("Effect");
             var effect = go.AddComponent<Ragnarok3dEffect>();
             return effect;
+        }
+
+        public void ResetStep()
+        {
+            Step = -1;
+            LastStep = -1;
+            CurrentPos = 0;
         }
 
         public void SetEffectType(EffectType type)
@@ -65,6 +77,16 @@ namespace Assets.Scripts.Effects
         {
             Duration = (frame + 1) * (1f / 60f);
             DurationFrames = frame;
+        }
+
+        public void SetSortingGroup(string layerName, int position)
+        {
+            if (SortingGroup == null)
+                SortingGroup = gameObject.AddComponent<SortingGroup>();
+            else
+                SortingGroup.enabled = true;
+            SortingGroup.sortingLayerID = SortingLayer.NameToID(layerName); 
+            SortingGroup.sortingOrder = position;
         }
 
         public void AttachChildObject(GameObject obj)
@@ -92,7 +114,13 @@ namespace Assets.Scripts.Effects
             LastStep = -1;
             PositionOffset = Vector3.zero;
             EffectType = 0;
-            
+
+            if (SortingGroup != null)
+            {
+                SortingGroup.enabled = false;
+                SortingGroup.sortingLayerID = 0;
+            }
+
             if (billboard != null)
                 billboard.Style = BillboardStyle.None;
             
@@ -119,9 +147,49 @@ namespace Assets.Scripts.Effects
             billboard.Style = style;
         }
 
+        public void CreateBillboardGroup(BillboardStyle style)
+        {
+            if (BillboardGroup == null)
+            {
+                var go = new GameObject("Billboard Group");
+                go.transform.parent = transform;
+                go.transform.localPosition = Vector3.zero;
+                BillboardGroup = go.AddComponent<BillboardObject>();
+            }
+
+            BillboardGroup.Style = BillboardStyle.Character;
+        }
+
+        public void AttachToBillboardGroup(BillboardStyle style, GameObject go)
+        {
+            if(BillboardGroup == null)
+                CreateBillboardGroup(style);
+            
+            go.transform.parent = BillboardGroup.transform;
+        }
+
         public void SetBillboardAxis(Vector3 axis) => billboard.Axis = axis;
         public void SetBillboardSubRotation(Quaternion subRotation) => billboard.SubRotation = subRotation;
 
+        public SpriteEffect LaunchSpriteEffect(RoSpriteData sprite, float time, int index = 0)
+        {
+            var go = new GameObject($"SpriteEffect {sprite.Name}");
+            go.transform.SetParent(this.transform, false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            
+            var effect = go.AddComponent<SpriteEffect>();
+            effect.SpriteData = sprite;
+            effect.IsLoop = false;
+            effect.Duration = time;
+            if (time > 0)
+                effect.DestroyAtEndOfDuration = true;
+            effect.Initialize(false);
+            
+            SpriteEffects.Add(effect);
+
+            return effect;
+        }
 
         public RagnarokPrimitive LaunchPrimitive(PrimitiveType type, Material mat, float duration = -1)
         {

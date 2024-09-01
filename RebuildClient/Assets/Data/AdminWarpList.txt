@@ -241,6 +241,9 @@ Debug
 	Test Room A,guild_vs1
 	Test Room B,guild_vs2
 	Test Room C,guild_vs5
+	Admin Room 1,sec_in01
+	Admin Room 2,sec_in02
+	Admin Room 3,sec_pri
 	Juperos 1F,juperos_01
 	Elevator,jupe_ele
 	Arena Room,arena_room

@@ -1,4 +1,8 @@
 ﻿
+#----------------------------------
+# Novice
+#----------------------------------
+
 [BasicMastery]
 Name = "Basic Mastery"
 Icon = "nv_basic"
@@ -11,6 +15,10 @@ Icon = "nv_firstaid"
 Target = "Self"
 MaxLevel = 1
 SpCost = [10]
+
+#----------------------------------
+# Swordsman
+#----------------------------------
 
 [Bash]
 Icon = "sm_bash"
@@ -55,6 +63,11 @@ Name = "Two-Hand Sword Mastery"
 Icon = "sm_twohand"
 Target = "Passive"
 MaxLevel = 10
+
+
+#----------------------------------
+# Mage
+#----------------------------------
 
 [IncreaseSPRecovery]
 Name = "Improved Spiritual Recovery"
@@ -110,6 +123,13 @@ MaxLevel = 10
 SpCost = [12,14,16,18,20,22,24,26,28,30]
 AdjustableLevel = true
 
+[NapalmBeat]
+Name = "Napalm Beat"
+Icon = "mg_napalmbeat"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [9,9,9,12,12,12,15,15,15,18]
+
 [SoulStrike]
 Name = "Soul Strike"
 Icon = "mg_soulstrike"
@@ -134,6 +154,10 @@ MaxLevel = 10
 SpCost = [1,2,3,4,5,6,7,8,9,10]
 AdjustableLevel = true
 
+#----------------------------------
+# Archer
+#----------------------------------
+
 [DoubleStrafe]
 Name = "Double Strafe"
 Icon = "ac_double"
@@ -146,24 +170,39 @@ AdjustableLevel = true
 Name = "Charge Arrow"
 Icon = "ac_chargearrow"
 Target = "Enemy"
-MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
-AdjustableLevel = true
+MaxLevel = 1
+SpCost = [15]
 
 [ArrowShower]
 Name = "Arrow Shower"
 Icon = "ac_shower"
 Target = "Ground"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
-AdjustableLevel = true
+SpCost = [15,15,15,15,15,15,15,15,15,15]
 
 [ImproveConcentration]
 Name = "Improve Concentration"
 Icon = "ac_concentration"
 Target = "Self"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [25,30,35,40,45,50,55,60,65,70]
+AdjustableLevel = true
+
+[OwlEye]
+Name = "Owl's Eye"
+Icon = "ac_owl"
+Target = "Passive"
+MaxLevel = 10
+
+[VultureEye]
+Name = "Vulture's Eye"
+Icon = "ac_vulture"
+Target = "Passive"
+MaxLevel = 10
+
+#----------------------------------
+# Acolyte
+#----------------------------------
 
 [Heal]
 Icon = "al_heal"
@@ -180,12 +219,93 @@ MaxLevel = 10
 SpCost = [18,21,24,27,30,33,36,39,42,45]
 AdjustableLevel = true
 
+[DecreaseAgility]
+Name = "Decrease Agility"
+Icon = "al_decagi"
+Target = "Enemy"
+MaxLevel = 5
+SpCost = [17,21,25,29,33]
+
 [Blessing]
 Icon = "al_blessing"
 Target = "Ally"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [28,32,36,50,55,58,62,67,70,64]
 AdjustableLevel = true
+
+[DemonBane]
+Name = "Demon Bane"
+Icon = "al_demonbane"
+Target = "Passive"
+MaxLevel = 10
+
+[DivineProtection]
+Name = "Divine Protection"
+Icon = "al_dp"
+Target = "Passive"
+MaxLevel = 10
+
+[Angelus]
+Name = "Angelus"
+Icon = "al_angelus"
+Target = "Self"
+MaxLevel = 10
+SpCost = [23,26,29,32,35,38,41,44,47,50]
+
+[SignumCrusis]
+Name = "Signum Crusis"
+Icon = "al_crucis"
+Target = "Self"
+MaxLevel = 10
+SpCost = [35,35,35,35,35,35,35,35,35,35]
+
+[Cure]
+Icon = "al_cure"
+Target = "Ally"
+MaxLevel = 1
+SpCost = [15]
+
+[AquaBenedicta]
+Name = "Aqua Benedicta"
+Icon = "al_holywater"
+Target = "Self"
+MaxLevel = 1
+SpCost = [10]
+
+[Pneuma]
+Icon = "al_pneuma"
+Target = "Ground"
+MaxLevel = 1
+SpCost = [10]
+
+[Ruwach]
+Icon = "al_ruwach"
+Target = "Self"
+MaxLevel = 1
+SpCost = [10]
+
+[Teleport]
+Icon = "al_teleport"
+Target = "Self"
+MaxLevel = 2
+SpCost = [10, 10]
+
+[WarpPortal]
+Name = "Warp Portal"
+Icon = "al_warp"
+MaxLevel = 4
+SpCost = [35,32,29,26]
+
+[HolyLight]
+Name = "Holy Light"
+Icon = "al_holylight"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [15]
+
+#----------------------------------
+# Thief
+#----------------------------------
 
 [DoubleAttack]
 Name = "Double Attack"
@@ -199,11 +319,86 @@ Target = "Enemy"
 SpCost = [1,2,3,4,5,6,7,8,9,10]
 MaxLevel = 10
 
+[Detoxify]
+Icon = "tf_detoxify"
+Target = "Ally"
+MaxLevel = 1
+SpCost = [10]
+
+[BackSlide]
+Name = "Back Slide"
+Icon = "tf_backsliding"
+Target = "Self"
+MaxLevel = 1
+SpCost = [7]
+
+[Steal]
+Name = "Steal"
+Icon = "tf_steal"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [10,10,10,10,10,10,10,10,10,10]
+
+[SandAttack]
+Name = "Sand Attack"
+Icon = "tf_sprinklesand"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [9]
+
+[ThrowStone]
+Name = "Stone Fling"
+Icon = "tf_throwstone"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [2]
+#tf_pickstone
+
+[Hiding]
+Name = "Hiding"
+Icon = "tf_hiding"
+Target = "Self"
+MaxLevel = 10
+SpCost = [10,10,10,10,10,10,10,10,10,10]
+
 [ImproveDodge]
 Name = "Improve Dodge"
 Icon = "tf_miss"
 Target = "Passive"
 MaxLevel = 10
+
+
+#----------------------------------
+# Merchant
+#----------------------------------
+
+[EnlargeWeightLimit]
+Name = "Enlarge Weight Limit"
+Icon = "mc_inccarry"
+Target = "Passive"
+MaxLevel = 10
+
+[Discount]
+Icon = "mc_discount"
+Target = "Passive"
+MaxLevel = 10
+
+[Overcharge]
+Icon = "mc_overcharge"
+Target = "Passive"
+MaxLevel = 10
+
+[Vending]
+Icon = "mc_vending"
+Target = "Passive"
+MaxLevel = 10
+SpCost = [10,10,10,10,10,10,10,10,10,10]
+
+[ItemAppraisal]
+Name = "Item Appraisal"
+Icon = "mc_identify"
+Target = "Ally"
+MaxLevel = 1
 
 [Mammonite]
 Icon = "mc_mammonite"
@@ -218,7 +413,25 @@ Icon = "mc_pushcart"
 Target = "Passive"
 MaxLevel = 1
 
-#Other skills
+[CrazyUproar]
+Name = "Crazy Uproar"
+Icon = "mc_loud"
+Target = "Self"
+MaxLevel = 1
+SpCost = [8]
+
+[CartRevolution]
+Name = "Cart Revolution"
+Icon = "mc_cartrevolution"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [12]
+
+
+#----------------------------------
+# Other skills
+#----------------------------------
+
 [TwoHandQuicken]
 Name = "Two-Hand Quicken"
 Icon = "kn_twohandquicken"
@@ -233,7 +446,10 @@ Target = "Ground"
 MaxLevel = 5
 SpCost = [1,2,3,4,5,6,7,8,9,10]
 
-#Monster Skills
+#----------------------------------
+# Monster skills
+#----------------------------------
+
 [CallMinion]
 Name = "Call Minion"
 [GrandThunderstorm]
@@ -254,6 +470,9 @@ MaxLevel = 10
 SpCost = [16,18,20,22,24,26,28,30,32,34]
 [Suicide]
 
+#used to show in skill prereqs
+[QuestSkill]
+Name = "Reward for Quest"
 
 [NoCast]
 #use when you want the enemy to trigger something without the player knowing

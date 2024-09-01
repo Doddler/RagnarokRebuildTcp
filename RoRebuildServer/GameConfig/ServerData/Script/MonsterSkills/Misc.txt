@@ -68,6 +68,56 @@ StateAttacking:
 	TryCast(Bash, 5, 100%, 0, 8s);
 }
 
+
+SkillHandler("ASSULTER") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s);
+}
+
+SkillHandler("INJUSTICE") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(2);
+}
+
+SkillHandler("RYBIO") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(4);
+}
+
+SkillHandler("ZHERLTHSH") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(3);
+}
+
+
+SkillHandler("TIRFING") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(18);
+}
+
+SkillHandler("WILD_ROSE") {
+StateAttacking:
+	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6);
+}
+
+SkillHandler("SKELETON_GENERAL") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(2);
+}
+
+
+SkillHandler("MATYR") {
+StateAttacking:
+	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6);
+}
+
+SkillHandler("PECOPECO") {
+StateChase:
+	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(6);
+StateAttacking:
+	TryCast(SonicBlow, 2, 5%, 0.8s, 5s) -> SendEmote(6);
+}
+
 SkillHandler("MARINE_SPHERE") {
 StateIdle:
 	//automatically self destruct if hit by another self destruct, but fast
@@ -98,14 +148,17 @@ OnTimer 2000:
 	EndEvent();
 }
 
-SkillHandler("TARGET_DUMMY") {
-    StateAny:
-    //TryCast(Heal, 9999, 1000, 1500, 3000)[HpPercent <= 99];
-    //TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
-	TryCast(ColdBolt, 10, 1000, 1500, 5000);
-    TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];
-	
-}
+// SkillHandler("TARGET_DUMMY") {
+//     StateAny:
+//     //TryCast(Heal, 9999, 1000, 1500, 3000)[HpPercent <= 99];
+//     //TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
+// 	//TryCast(ColdBolt, 10, 1000, 1500, 5000);
+// 	TryCast(NoCast, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> {
+// 		TossSummonMonster(5,"GTB_EGG",9,9);
+// 	};
+//     TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];	
+// }
+
 
 SkillHandler("VITATA") {
 StateAny:

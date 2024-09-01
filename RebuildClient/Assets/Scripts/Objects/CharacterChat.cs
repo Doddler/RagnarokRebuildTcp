@@ -18,8 +18,10 @@ namespace Assets.Scripts.Objects
         {
             TextObject.text = text;
             TextObject.ForceMeshUpdate();
+            
 
-            var rect = transform as RectTransform;
+            var rect = TextObject.transform as RectTransform;
+            rect.anchoredPosition = new Vector3(0, 5f, 0f);
 
             RefreshBorder();
         }

@@ -50,6 +50,13 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 return;
             }
 
+            var target = SkillHandler.GetSkillAttributes(skill).SkillTarget;
+            if (target == SkillTarget.Passive)
+            {
+                ServerLogger.LogWarning($"Player {connection.Character.Name} is incorrectly trying to target self with the skill {skill}.");
+                return;
+            }
+
             connection.Player.CombatEntity.AttemptStartSelfTargetSkill(skill, lvl);
         }
 
@@ -79,6 +86,13 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 return;
             }
 
+            var target = SkillHandler.GetSkillAttributes(skill).SkillTarget;
+            if (target != SkillTarget.Ground)
+            {
+                ServerLogger.LogWarning($"Player {connection.Character.Name} is incorrectly trying to target self with the skill {skill}.");
+                return;
+            }
+
             caster.ResetSpawnImmunity();
             caster.CombatEntity.AttemptStartGroundTargetedSkill(groundTarget, skill, lvl);
         }
@@ -99,6 +113,23 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
             {
                 CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.Failure);
+                return;
+            }
+
+            var isAlly = target.IsValidAlly(caster.CombatEntity);
+            var targetType = SkillHandler.GetSkillAttributes(skill).SkillTarget;
+            var isValidTarget = targetType == SkillTarget.Any;
+            if (isAlly && (targetType == SkillTarget.Ally || targetType == SkillTarget.Any))
+                isValidTarget = true;
+            if (!isAlly & (targetType == SkillTarget.Enemy || targetType == SkillTarget.Any))
+                isValidTarget = true;
+            if (caster.Id == target.Character.Id && (targetType == SkillTarget.Self || targetType == SkillTarget.Ally ||
+                                                     targetType == SkillTarget.Any))
+                isValidTarget = true;
+
+            if (!isValidTarget)
+            {
+                ServerLogger.LogWarning($"Player '{connection.Character.Name}' is incorrectly trying to target '{target.Character.Name}' with the skill {skill}.");
                 return;
             }
 

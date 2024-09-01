@@ -19,11 +19,10 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
             if (target == null || !target.IsValidTarget(source))
                 return;
 
-            var res = source.CalculateCombatResult(target, 1f + lvl * 0.3f, 1, AttackFlags.Physical | AttackFlags.IgnoreEvasion, CharacterSkill.Bash);
-
-            //test evasion separately as we want to test it with a +20 to hit
-            if(!source.TestHitVsEvasion(target, 20))
-                res.SetAttackToMiss();
+            //surely there's a better way to do it than this?
+            source.AddStat(CharacterStat.AddHit, 20);
+            var res = source.CalculateCombatResult(target, 1f + lvl * 0.3f, 1, AttackFlags.Physical, CharacterSkill.Bash);
+            source.SubStat(CharacterStat.AddHit, 20);
 
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);

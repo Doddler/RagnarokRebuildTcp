@@ -32,6 +32,22 @@ public struct DamageInfo
         KnockBack = 0;
     }
 
+
+    public static DamageInfo SupportSkillResult(Entity src, Entity target, CharacterSkill skill)
+    {
+        return new DamageInfo()
+        {
+            Source = src,
+            Target = target,
+            AttackMotionTime = 0,
+            Damage = 0,
+            HitCount = 0,
+            KnockBack = 0,
+            skillId = (byte)skill,
+            Result = AttackResult.Invisible
+        };
+    }
+
     public static DamageInfo EmptyResult(Entity src, Entity target)
     {
         return new DamageInfo()

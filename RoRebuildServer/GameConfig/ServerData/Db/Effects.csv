@@ -42,3 +42,4 @@
 40,Explosion,TRUE,TRUE,sui_explosion,,ef_hit2,0,,
 41,Hiding,FALSE,FALSE,,,,0,Assets/Effects/Custom/SmokePuff.prefab,
 42,SonicBlow,TRUE,TRUE,SonicBlow,,ef_stonecurse,0,,
+43,Concentration,TRUE,TRUE,concentration,,ac_concentration,0,,

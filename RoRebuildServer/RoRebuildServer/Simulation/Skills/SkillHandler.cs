@@ -13,6 +13,9 @@ namespace RoRebuildServer.Simulation.Skills
 
         public static SkillHandlerAttribute GetSkillAttributes(CharacterSkill skill) => skillAttributes[(int)skill];
 
+        public static void ApplyPassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.ApplyPassiveEffects(owner, level);
+        public static void RemovePassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.RemovePassiveEffects(owner, level);
+
         static SkillHandler()
         {
             var count = Enum.GetNames(typeof(CharacterSkill)).Length;
@@ -89,7 +92,10 @@ namespace RoRebuildServer.Simulation.Skills
             CombatEntity? target = info.TargetEntity.GetIfAlive<CombatEntity>();
             var handler = handlers[(int)info.Skill];
             if (handler != null)
-                handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
+            {
+                if (skillAttributes[(int)info.Skill].SkillTarget != SkillTarget.Passive)
+                    handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
+            }
         }
         
     }

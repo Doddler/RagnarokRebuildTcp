@@ -32,6 +32,7 @@ namespace RebuildSharedData.Enum
         CanCrit = 4,
         CanHarmAllies = 8,
         IgnoreDefense = 16,
-        IgnoreEvasion = 32
+        IgnoreEvasion = 32,
+        NoDamageModifiers = 64,
     }
 }

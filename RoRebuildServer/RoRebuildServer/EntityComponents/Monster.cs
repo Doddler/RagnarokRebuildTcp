@@ -337,6 +337,8 @@ public partial class Monster : IEntityAutoReset
         Character.QueuedAction = QueuedAction.None;
         CombatEntity.IsCasting = false;
 
+        skillState.ResetAllCooldowns();
+
         if (Children != null && Children.Count > 0)
         {
             foreach (var child in Children)

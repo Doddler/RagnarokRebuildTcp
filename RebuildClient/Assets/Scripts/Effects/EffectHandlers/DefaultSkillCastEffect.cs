@@ -10,8 +10,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
     {
         public static Material CircleMaterial;
         public static Material FlashMaterial;
-        
-        public static Ragnarok3dEffect Create(ServerControllable source)
+
+        public static Material GetCircleMaterial()
         {
             if (CircleMaterial == null)
             {
@@ -19,6 +19,13 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 CircleMaterial.mainTexture = Resources.Load<Texture2D>("alpha_down");
                 CircleMaterial.renderQueue = 3003; //this material will render above everything
             }
+
+            return CircleMaterial;
+        }
+        
+        public static Ragnarok3dEffect Create(ServerControllable source)
+        {
+            GetCircleMaterial();
             
             if (FlashMaterial == null)
             {
@@ -48,6 +55,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             cData.FadeOutLength = 0.166f;
             cData.Radius = 100f;
             cData.FillCircle = true;
+            cData.Color = Color.white;
             
             for (var i = 0; i < 20; i++)
             {

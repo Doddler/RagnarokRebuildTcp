@@ -127,6 +127,8 @@ namespace Assets.Scripts
         private int cursorSkillLvl = 5;
         private int cursorMaxSkillLvl = 10;
         private float skillScroll = 5f;
+
+        private bool canChangeCursorLevel;
         //private bool cursorShowSkillLevel = true;
         public bool HasSkillOnCursor => hasSkillOnCursor;
 
@@ -315,9 +317,12 @@ namespace Assets.Scripts
                 case SkillTarget.Ground:
                 case SkillTarget.Ally:
                     hasSkillOnCursor = true;
+                    canChangeCursorLevel = ClientDataLoader.Instance.GetSkillData(skill).AdjustableLevel;
                     cursorSkill = skill;
                     cursorMaxSkillLvl = NetworkManager.Instance.PlayerState.KnownSkills.GetValueOrDefault(skill, 1);
                     skillScroll = Mathf.Clamp(id, 1, cursorMaxSkillLvl);
+                    if (!canChangeCursorLevel)
+                        skillScroll = cursorMaxSkillLvl;
                     cursorSkillLvl = Mathf.RoundToInt(skillScroll);
                     cursorSkillTarget = target;
                     return true;
@@ -877,7 +882,7 @@ namespace Assets.Scripts
             var canClickEnemy = canCurrentlyTarget && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickNpc = canInteract && !hasSkillOnCursor && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc && !hasTargetedSkill;
-            var canMove = ClickDelay <= 0 && isAlive && !isSitting;
+            var canMove = ClickDelay <= 0 && isAlive && !isSitting && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl);
             var showEntityName = hasEntity && !isOverUi;
 
             var cancelSkill = (hasSkillOnCursor && rightClick) || (hasSkillOnCursor && leftClick && hasTargetedSkill && !hasEntity);
@@ -1575,9 +1580,12 @@ namespace Assets.Scripts
                     Distance += Input.GetAxis("Mouse ScrollWheel") * 20 * ctrlKey;
                 else
                 {
-                    skillScroll += Input.GetAxis("Mouse ScrollWheel") * 10f;
-                    skillScroll = Mathf.Clamp(skillScroll, 1, cursorMaxSkillLvl);
-                    cursorSkillLvl = Mathf.RoundToInt(skillScroll);
+                    if (canChangeCursorLevel)
+                    {
+                        skillScroll += Input.GetAxis("Mouse ScrollWheel") * 10f;
+                        skillScroll = Mathf.Clamp(skillScroll, 1, cursorMaxSkillLvl);
+                        cursorSkillLvl = Mathf.RoundToInt(skillScroll);
+                    }
                     // Debug.Log(skillScroll);
                 }
             }

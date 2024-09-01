@@ -6,6 +6,7 @@ namespace Assets.Scripts.Effects
 	public enum EffectType
 	{
 		ArcherArrow,
+		Blessing,
 		BlueWaterfallEffect,
 		CastEffect,
 		CastLockOn,
@@ -39,6 +40,7 @@ namespace Assets.Scripts.Effects
 		static RagnarokEffectData()
 		{
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.ArcherArrow());
+			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.BlessingEffect());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.BlueWaterfallEffect());
 			effectHandlers.Add(EffectType.CastEffect, new Assets.Scripts.Effects.EffectHandlers.CastEffect());
 			effectHandlers.Add(EffectType.CastLockOn, new Assets.Scripts.Effects.EffectHandlers.CastLockOnEffect());

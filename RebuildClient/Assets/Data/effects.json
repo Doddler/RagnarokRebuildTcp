@@ -472,6 +472,17 @@
       "SoundFile": "ef_stonecurse",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 43,
+      "Name": "Concentration",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "concentration",
+      "Sprite": "",
+      "SoundFile": "ac_concentration",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

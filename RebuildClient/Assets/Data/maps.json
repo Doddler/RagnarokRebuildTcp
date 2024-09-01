@@ -1259,6 +1259,24 @@
       "Name": "The Hall of Honor",
       "MapMode": 0,
       "Music": "09.mp3"
+    },
+    {
+      "Code": "sec_in01",
+      "Name": "Admin Room 1",
+      "MapMode": 0,
+      "Music": "21.mp3"
+    },
+    {
+      "Code": "sec_in02",
+      "Name": "Admin Room 2",
+      "MapMode": 0,
+      "Music": "21.mp3"
+    },
+    {
+      "Code": "sec_pri",
+      "Name": "Admin Room 3",
+      "MapMode": 0,
+      "Music": "42.mp3"
     }
   ]
 }

@@ -38,8 +38,7 @@ public class CombatEntity : IEntityAutoReset
     public SkillCastInfo QueuedCastingSkill { get; set; }
 
     [EntityIgnoreNullCheck]
-    private readonly int[] statData = new int[(int)CharacterStat.CharacterStatsMax];
-    private static readonly int[] statResetData = new int[(int)CharacterStat.CharacterStatsMax]; //to quickly reset we'll just array copy this over statData
+    private readonly int[] statData = new int[(int)CharacterStat.MonsterStatsMax];
 
     [EntityIgnoreNullCheck]
     private float[] timingData = new float[(int)TimingStat.TimingStatsMax];
@@ -48,10 +47,54 @@ public class CombatEntity : IEntityAutoReset
     [EntityIgnoreNullCheck] public List<DamageInfo> DamageQueue { get; set; } = null!;
     [EntityIgnoreNullCheck] public CharacterStatusContainer StatusContainer { get; set; } = new();
 
-    public int GetStat(CharacterStat type) => statData[(int)type];
-    public void SetStat(CharacterStat type, int val) => statData[(int)type] = val;
-    public void AddStat(CharacterStat type, int val) => statData[(int)type] += val;
-    public void SubStat(CharacterStat type, int val) => statData[(int)type] -= val;
+    public int GetStat(CharacterStat type)
+    {
+        if (type < CharacterStat.MonsterStatsMax)
+            return statData[(int)type];
+        if (Entity.Type != EntityType.Player)
+            return 0;
+        return Player.PlayerStatData[type - CharacterStat.MonsterStatsMax];
+    }
+
+    public void SetStat(CharacterStat type, int val)
+    {
+        if (type < CharacterStat.MonsterStatsMax)
+        {
+            statData[(int)type] = val;
+            return;
+        }
+
+        if (Entity.Type != EntityType.Player)
+            return;
+        Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] = val;
+    }
+
+    public void AddStat(CharacterStat type, int val)
+    {
+        if (type < CharacterStat.MonsterStatsMax)
+        {
+            statData[(int)type] += val;
+            return;
+        }
+
+        if (Entity.Type != EntityType.Player)
+            return;
+        Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] += val;
+    }
+
+    public void SubStat(CharacterStat type, int val)
+    {
+        if (type < CharacterStat.MonsterStatsMax)
+        {
+            statData[(int)type] -= val;
+            return;
+        }
+
+        if (Entity.Type != EntityType.Player)
+            return;
+        Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] -= val;
+    }
+
     public float GetTiming(TimingStat type) => timingData[(int)type];
     public void SetTiming(TimingStat type, float val) => timingData[(int)type] = val;
 
@@ -72,7 +115,7 @@ public class CombatEntity : IEntityAutoReset
         StatusContainer.ClearAllWithoutRemoveHandler();
         nextStatusUpdate = 0;
 
-        Array.Copy(statResetData, statData, statData.Length);
+        //Array.Copy(statResetData, statData, statData.Length);
 
         for (var i = 0; i < statData.Length; i++)
             statData[i] = 0;
@@ -659,13 +702,10 @@ public class CombatEntity : IEntityAutoReset
     /// <returns>Returns true if the attack hits</returns>
     public bool TestHitVsEvasion(CombatEntity target, int attackerHitBonus = 0, int defenderFleeBonus = 0)
     {
-        var attackerHit = GetStat(CharacterStat.Level) + GetEffectiveStat(CharacterStat.Dex);
+        var attackerHit = GetStat(CharacterStat.Level) + GetEffectiveStat(CharacterStat.Dex) + GetStat(CharacterStat.AddHit);
 
         var defenderAgi = target.GetEffectiveStat(CharacterStat.Agi);
-        if (target.Character.Type == CharacterType.Player)
-            defenderAgi += target.Player.MaxLearnedLevelOfSkill(CharacterSkill.ImproveDodge) * 3;
-
-        var defenderFlee = target.GetStat(CharacterStat.Level) + defenderAgi;
+        var defenderFlee = target.GetStat(CharacterStat.Level) + defenderAgi + target.GetStat(CharacterStat.AddFlee);
 
         var hitSuccessRate = attackerHit + attackerHitBonus + 75 - defenderFlee - defenderFleeBonus;
         if (hitSuccessRate < 5) hitSuccessRate = 5;
@@ -722,6 +762,45 @@ public class CombatEntity : IEntityAutoReset
                 element = AttackElement.Neutral; //for now default to neutral, but we should pull from the weapon here if none is set
             eleMod = DataManager.ElementChart.GetAttackModifier(element, mon.MonsterBase.Element);
         }
+
+        var racialMod = 100;
+        if (!flags.HasFlag(AttackFlags.NoDamageModifiers))
+        {
+            if (target.Entity.Type == EntityType.Player) //monsters can't get race reductions
+            {
+                var sourceRace = Character.Type == CharacterType.Monster ? Character.Monster.MonsterBase.Race : CharacterRace.Demihuman;
+                switch (sourceRace)
+                {
+                    case CharacterRace.Demon:
+                        racialMod -= target.GetStat(CharacterStat.ReductionFromDemon);
+                        break;
+                    case CharacterRace.Undead:
+                        racialMod -= target.GetStat(CharacterStat.ReductionFromUndead);
+                        break;
+                }
+            }
+
+            if (Entity.Type == EntityType.Player) //only players will get bonus damage against a target race
+            {
+                var targetRace = target.Character.Type == CharacterType.Monster ? target.Character.Monster.MonsterBase.Race : CharacterRace.Demihuman;
+
+                switch (targetRace)
+                {
+                    case CharacterRace.Demon:
+                        racialMod += GetStat(CharacterStat.PercentVsDemon);
+                        break;
+                    case CharacterRace.Undead:
+                        racialMod += GetStat(CharacterStat.PercentVsUndead);
+                        break;
+                }
+            }
+
+            if (Character.Type == CharacterType.Player)
+            {
+                var mastery = GetStat(CharacterStat.WeaponMastery);
+                attackMultiplier *= (1 + (mastery / 100f));
+            }
+        }
         
         var evade = false;
         var isCrit = false;
@@ -761,8 +840,9 @@ public class CombatEntity : IEntityAutoReset
             if (mDef > 900)
                 subDef = 999999;
         }
+        
 
-        var damage = (int)(baseDamage * attackMultiplier * (eleMod / 100f) * defCut - subDef);
+        var damage = (int)(baseDamage * attackMultiplier * (eleMod / 100f) * (racialMod / 100f) * defCut - subDef);
         if (damage < 1)
             damage = 1;
 
@@ -790,10 +870,7 @@ public class CombatEntity : IEntityAutoReset
 
         var res = AttackResult.NormalDamage;
         if (damage == 0)
-        {
             res = AttackResult.Miss;
-            hitCount = 0;
-        }
 
         if (res == AttackResult.NormalDamage && isCrit)
             res = AttackResult.CriticalDamage;
@@ -941,8 +1018,12 @@ public class CombatEntity : IEntityAutoReset
             flags |= AttackFlags.CanCrit;
 
         var di = CalculateCombatResult(target, 1f, 1, flags);
-        if (di.Result != AttackResult.CriticalDamage && Character.ClassId == 5 && GameRandom.Next(0, 20) < Character.Player.LearnedSkills.GetValueOrDefault(CharacterSkill.DoubleAttack, -1))
-            di.HitCount = 2;
+        if (di.Result != AttackResult.CriticalDamage && Character.Type == CharacterType.Player)
+        {
+            var doubleChance = GetStat(CharacterStat.DoubleAttackChance);
+            if(doubleChance > 0 && GameRandom.Next(0,100) <= doubleChance) 
+                di.HitCount = 2;
+        }
 
         ExecuteCombatResult(di);
     }

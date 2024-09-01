@@ -22,9 +22,12 @@ TwoHandQuicken = [["Bash", 10], ["Provoke", 5]] #just for testing
 JobRank = 1
 Extends = "Novice"
 [Archer.SkillTree]
-DoubleStrafe = []
-ArrowShower = []
-ImproveConcentration = []
+OwlEye = []
+VultureEye = [["OwlEye", 3]]
+DoubleStrafe = [["VultureEye", 10]]
+ArrowShower = [["DoubleStrafe", 10]]
+ImproveConcentration = [["VultureEye", 1]]
+ChargeArrow = [["OwlEye", 10], ["VultureEye", 5]]
 
 [Mage]
 JobRank = 1
@@ -46,9 +49,21 @@ JobRank = 1
 Extends = "Novice"
 [Acolyte.SkillTree]
 IncreaseSPRecovery = []
+DivineProtection = []
+DemonBane = [["DivineProtection", 1]]
 Heal = []
-Blessing = []
-IncreaseAgility = []
+Angelus = [["DivineProtection", 3]]
+Blessing = [["DivineProtection", 5]]
+IncreaseAgility = [["Heal", 3]]
+DecreaseAgility = [["IncreaseAgility", 1]]
+Cure = [["Heal", 2]]
+Ruwach = []
+Teleport = [["Ruwach", 1]]
+WarpPortal = [["Teleport", 2]]
+Pneuma = [["WarpPortal", 4]]
+HolyLight = [["DemonBane", 5]]
+SignumCrusis = [["DemonBane", 3]]
+AquaBenedicta = []
 
 [Thief]
 JobRank = 1
@@ -57,12 +72,26 @@ Extends = "Novice"
 DoubleAttack = []
 ImproveDodge = []
 Envenom = []
-SonicBlow = []
+Detoxify = [["Envenom", 3]]
+Steal = []
+Hiding = [["Steal", 5]]
+BackSlide = []
+SandAttack = [["Envenom", 5]]
+ThrowStone = []
+SonicBlow = [["DoubleAttack", 10],["ImproveDodge",10]]
 
 [Merchant]
 JobRank = 1
 Extends = "Novice"
 [Merchant.SkillTree]
+EnlargeWeightLimit = []
+Discount = [["EnlargeWeightLimit",3]]
+Overcharge = [["Discount",3]]
+PushCart = [["EnlargeWeightLimit",5]]
+Vending = [["PushCart",1]]
 Mammonite = []
-PushCart = []
+CrazyUproar = [["Mammonite", 3]]
+ItemAppraisal = [["Discount",5]]
+
+
 

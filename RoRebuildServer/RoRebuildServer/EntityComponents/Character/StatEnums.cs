@@ -69,6 +69,16 @@ public enum CharacterStat
     AddLuk,
     AddDef,
     AddMDef,
+    AddFlee,
+    AddHit,
+    MonsterStatsMax, //any stats after this are stats only players will be able to hold.
+
+    WeaponMastery,
+    DoubleAttackChance,
+    PercentVsDemon,
+    PercentVsUndead,
+    ReductionFromDemon,
+    ReductionFromUndead,
     CharacterStatsMax
 }
 

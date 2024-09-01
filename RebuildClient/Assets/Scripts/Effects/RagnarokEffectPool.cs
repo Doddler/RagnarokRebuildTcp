@@ -43,6 +43,11 @@ namespace Assets.Scripts.Effects
             if (effectList.Contains(effect))
                 throw new Exception($"Attempting to return a 3d effect that is already in the pool!");
             
+            foreach(var sprite in effect.SpriteEffects)
+                if(sprite != null)
+                    Destroy(sprite.gameObject);
+            effect.SpriteEffects.Clear();
+            
             effect.Reset();
             effect.gameObject.transform.SetParent(Instance.transform);
             effect.gameObject.SetActive(false);

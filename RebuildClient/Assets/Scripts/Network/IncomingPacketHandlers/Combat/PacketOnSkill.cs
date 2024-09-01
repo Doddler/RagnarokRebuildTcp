@@ -83,8 +83,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 DamageTiming = motionTime,
             };
 
-            ClientSkillHandler.ExecuteSkill(controllable, ref attack);
             Network.AttackMotion(controllable, pos, dir, motionTime, null);
+            ClientSkillHandler.ExecuteSkill(controllable, ref attack);
         }
 
         private void OnMessageTargetedSkillAttack(ClientInboundMessage msg)
@@ -133,7 +133,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             if(controllable != controllable2)
                 controllable.LookAtOrDefault(controllable2, dir);
 
-            if (result == AttackResult.Heal)
+            if (result == AttackResult.Heal || result == AttackResult.Invisible)
             {
                 motionTime = 0;
             }

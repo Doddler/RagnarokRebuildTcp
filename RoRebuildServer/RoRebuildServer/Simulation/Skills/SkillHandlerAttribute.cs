@@ -1,7 +1,9 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
+using RoRebuildServer.Networking;
 
 namespace RoRebuildServer.Simulation.Skills;
 
@@ -20,6 +22,8 @@ public abstract class SkillHandlerBase
     public float GetCastTime(CombatEntity source, Position position, int lvl) => GetCastTime(source, null, position, lvl);
     public void Process(CombatEntity source, Position position, int lvl, bool isIndirect = false) => Process(source, null, position, lvl, isIndirect);
     public void Process(CombatEntity source, CombatEntity target, int lvl, bool isIndirect = false) => Process(source, target, Position.Invalid, lvl, isIndirect);
+    public virtual void ApplyPassiveEffects(CombatEntity owner, int lvl) { }
+    public virtual void RemovePassiveEffects(CombatEntity owner, int lvl) { }
 
     public virtual int GetSkillRange(CombatEntity source, int lvl)
     {
@@ -29,7 +33,7 @@ public abstract class SkillHandlerBase
             default: return -1;
         }
     }
-
+    
     public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position)
     {
         if (target != null)
@@ -50,6 +54,18 @@ public abstract class SkillHandlerBase
         }
             
         return SkillValidationResult.Failure;
+    }
+
+    protected void GenericCastAndInformSupportSkill(CombatEntity source, CombatEntity? target, CharacterSkill skill, int lvl, ref readonly DamageInfo damage)
+    {
+        source.Character.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);
+        CommandBuilder.SkillExecuteTargetedSkill(source.Character, target?.Character, skill, lvl, damage);
+        CommandBuilder.ClearRecipients();
+
+        if (source.Character.Type == CharacterType.Player)
+            source.ApplyCooldownForSupportSkillAction();
+        else
+            source.ApplyCooldownForAttackAction();
     }
 }
 

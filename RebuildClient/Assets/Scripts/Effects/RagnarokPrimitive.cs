@@ -237,7 +237,7 @@ namespace Assets.Scripts.Effects
             
             mb.AddQuad(verts, normals, uvs, colors);
         }
-
+        
         public void AddTexturedSpriteQuad(Sprite sprite, Vector3 offset, float width, float height, Color32 c)
         {
             colors[0] = c;

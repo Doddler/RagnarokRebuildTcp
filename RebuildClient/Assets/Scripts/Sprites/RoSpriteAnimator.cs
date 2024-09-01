@@ -85,6 +85,14 @@ namespace Assets.Scripts.Sprites
         private bool isDirty;
         private bool isActive;
 
+        public void OverrideCurrentFrame(int frame)
+        {
+            lastFrame = frame - 1;
+            currentFrame = frame - 1;
+            AdvanceFrame();
+            UpdateSpriteFrame();
+        }
+
         public static RoSpriteData FallbackSpriteData;
 
         //private float rotate = 0;

@@ -604,7 +604,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 1000
+    maxNumParticles: 5000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -1368,14 +1368,14 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 0
-    mode: 0
+    enabled: 1
+    mode: 1
     timeMode: 0
     fps: 30
     frameOverTime:
       serializedVersion: 2
-      minMaxState: 1
-      scalar: 0.9999
+      minMaxState: 0
+      scalar: 0.14285715
       minScalar: 0.9999
       maxCurve:
         serializedVersion: 2
@@ -1487,7 +1487,13 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 0}
+    - sprite: {fileID: 21300000, guid: 086b573dcce2c5342a175a304c09889f, type: 3}
+    - sprite: {fileID: 21300000, guid: 419517934bb58934cabae77b02738a4c, type: 3}
+    - sprite: {fileID: 21300000, guid: c5414f2eb230fdb4d97c1e9f942ed31e, type: 3}
+    - sprite: {fileID: 21300000, guid: 787657223bc8ca94180062e89a78e108, type: 3}
+    - sprite: {fileID: 21300000, guid: 24c3b310a0c3bf44dbbfad4c35e1487d, type: 3}
+    - sprite: {fileID: 21300000, guid: bb4b5a4643325dd449be9a7efcf9daed, type: 3}
+    - sprite: {fileID: 21300000, guid: b159df02e0646cd44aeff045760de513, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -4187,7 +4193,7 @@ ParticleSystem:
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
   CustomDataModule:
-    enabled: 0
+    enabled: 1
     mode0: 0
     vectorComponentCount0: 4
     color0:

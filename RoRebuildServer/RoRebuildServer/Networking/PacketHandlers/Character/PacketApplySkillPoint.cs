@@ -65,8 +65,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 CommandBuilder.ErrorMessage(player, "You do not meet the requirements to level up this skill.");
                 return;
             }
-
-            player.LearnedSkills[skillId] = knownLevel + 1;
+            player.AddSkillToCharacter(skillId, knownLevel + 1);
             player.SetData(PlayerStat.SkillPoints, points - 1);
 
             CommandBuilder.ApplySkillPoint(player, skillId);

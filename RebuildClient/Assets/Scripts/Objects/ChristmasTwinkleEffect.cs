@@ -19,8 +19,8 @@ namespace Objects
             
             var rnd = Random.Range(0, 10);
             
-            Sprite.ChangeActionExact(rnd % 5);
-            Sprite.AnimSpeed = AnimSpeed;
+            SpriteAnimator.ChangeActionExact(rnd % 5);
+            SpriteAnimator.AnimSpeed = AnimSpeed;
             
             transform.localScale = rnd % 3 == 1 ? Vector3.one * 0.01f : Vector3.one * SpriteScale;
             waitTime += 2.2f;

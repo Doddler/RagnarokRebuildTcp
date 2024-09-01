@@ -9,7 +9,7 @@ using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 
-[SkillHandler(CharacterSkill.Heal, SkillClass.Magic, SkillTarget.Ally)]
+[SkillHandler(CharacterSkill.Heal, SkillClass.Magic, SkillTarget.Any)]
 public class HealHandler : SkillHandlerBase
 {
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position)
@@ -44,14 +44,12 @@ public class HealHandler : SkillHandlerBase
         if (lvl <= 10)
         {
             var chLevel = source.GetStat(CharacterStat.Level);
-            var statInt = source.GetStat(CharacterStat.Int);
+            var statInt = source.GetEffectiveStat(CharacterStat.Int);
             var matk = GameRandom.Next(source.GetStat(CharacterStat.MagicAtkMin),
                 source.GetStat(CharacterStat.MagicAtkMax));
 
             healValue = (chLevel + statInt) / 5 * lvl * 3 + matk;
-            healValue = (int)(healValue * (0.5f + 0.5f * chLevel / 99));
 
-            healValue = healValue * 5 / 2; //this isn't normally part of the formula
         }
 
         if (source.Character.Type == CharacterType.Player && target.Character.Type == CharacterType.Monster)

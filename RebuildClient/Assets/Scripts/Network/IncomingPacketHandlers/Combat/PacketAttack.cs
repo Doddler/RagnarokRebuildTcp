@@ -69,15 +69,18 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     controllable.CounterHitDir = new Vector3(v.x, 0, v.y);
                 }
 
-                controllable.StopImmediate(pos, false);
-                
-                controllable.SpriteAnimator.State = SpriteState.Standby;
-                controllable.LookAtOrDefault(controllable2, dir);
-                
-                Network.AttackMotion(controllable, pos, dir, motionTime, controllable2);
-                
-                //controllable.SetAttackAnimationSpeed(motionTime);
-                controllable.PerformBasicAttackMotion();
+                if (controllable.SpriteAnimator.State != SpriteState.Dead)
+                {
+                    controllable.StopImmediate(pos, false);
+
+                    controllable.SpriteAnimator.State = SpriteState.Standby;
+                    controllable.LookAtOrDefault(controllable2, dir);
+
+                    Network.AttackMotion(controllable, pos, dir, motionTime, controllable2);
+
+                    //controllable.SetAttackAnimationSpeed(motionTime);
+                    controllable.PerformBasicAttackMotion();
+                }
 
                 weaponClass = controllable.WeaponClass;
                 
