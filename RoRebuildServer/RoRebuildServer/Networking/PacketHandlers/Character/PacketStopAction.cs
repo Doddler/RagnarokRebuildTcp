@@ -14,13 +14,7 @@ public class PacketStopAction : IClientPacketHandler
 
         var player = connection.Player;
 
-        if (player.InActionCooldown())
-        {
-            ServerLogger.Debug("Player stop action ignored due to cooldown.");
-            return;
-        }
-
-        if (player.IsInNpcInteraction)
+        if (!player.CanPerformCharacterActions())
             return;
 
         player.AddActionDelay(CooldownActionType.StopAction);

@@ -1,23 +1,29 @@
 using System;
 using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers.Environment;
+using Assets.Scripts.Effects.EffectHandlers.General;
+using Assets.Scripts.Effects.EffectHandlers.Skills;
+using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
 
 namespace Assets.Scripts.Effects
 {
 	public enum EffectType
 	{
-		ArcherArrow,
-		Blessing,
 		BlueWaterfallEffect,
+		ForestLightEffect,
+		MapWarpEffect,
+		ArcherArrow,
 		CastEffect,
 		CastLockOn,
 		CastTargetCircle,
 		DefaultSkillCastEffect,
-		FireArrow,
-		ForestLightEffect,
-		HealEffect,
 		HitEffect,
+		Blessing,
+		FireArrow,
+		HammerFall,
+		HealEffect,
 		IceArrow,
-		MapWarpEffect,
+		Stun,
 	}
 
 	public enum PrimitiveType
@@ -39,19 +45,21 @@ namespace Assets.Scripts.Effects
 	{
 		static RagnarokEffectData()
 		{
-			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.ArcherArrow());
-			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.BlessingEffect());
-			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.BlueWaterfallEffect());
+			effectHandlers.Add(EffectType.BlueWaterfallEffect, new BlueWaterfallEffect());
+			effectHandlers.Add(EffectType.ForestLightEffect, new Assets.Scripts.Effects.EffectHandlers.ForestLightEffect());
+			effectHandlers.Add(EffectType.MapWarpEffect, new Assets.Scripts.Effects.EffectHandlers.MapWarpEffect());
+			effectHandlers.Add(EffectType.ArcherArrow, new ArcherArrow());
 			effectHandlers.Add(EffectType.CastEffect, new Assets.Scripts.Effects.EffectHandlers.CastEffect());
 			effectHandlers.Add(EffectType.CastLockOn, new Assets.Scripts.Effects.EffectHandlers.CastLockOnEffect());
 			effectHandlers.Add(EffectType.CastTargetCircle, new Assets.Scripts.Effects.EffectHandlers.CastTargetCircle());
 			effectHandlers.Add(EffectType.DefaultSkillCastEffect, new Assets.Scripts.Effects.EffectHandlers.DefaultSkillCastEffect());
-			effectHandlers.Add(EffectType.FireArrow, new Assets.Scripts.Effects.EffectHandlers.FireArrow());
-			effectHandlers.Add(EffectType.ForestLightEffect, new Assets.Scripts.Effects.EffectHandlers.ForestLightEffect());
-			effectHandlers.Add(EffectType.HealEffect, new Assets.Scripts.Effects.EffectHandlers.HealEffect());
 			effectHandlers.Add(EffectType.HitEffect, new Assets.Scripts.Effects.EffectHandlers.HitEffect());
+			effectHandlers.Add(EffectType.Blessing, new BlessingEffect());
+			effectHandlers.Add(EffectType.FireArrow, new Assets.Scripts.Effects.EffectHandlers.FireArrow());
+			effectHandlers.Add(EffectType.HammerFall, new Assets.Scripts.Effects.EffectHandlers.HammerFallEffect());
+			effectHandlers.Add(EffectType.HealEffect, new Assets.Scripts.Effects.EffectHandlers.HealEffect());
 			effectHandlers.Add(EffectType.IceArrow, new Assets.Scripts.Effects.EffectHandlers.IceArrow());
-			effectHandlers.Add(EffectType.MapWarpEffect, new Assets.Scripts.Effects.EffectHandlers.MapWarpEffect());
+			effectHandlers.Add(EffectType.Stun, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.StunEffect());
 			primitiveHandlers.Add(PrimitiveType.Casting3D, new Assets.Scripts.Effects.PrimitiveHandlers.CastingCylinderPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Circle2D, new Assets.Scripts.Effects.PrimitiveHandlers.Circle2DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Circle2D, () => new Assets.Scripts.Effects.PrimitiveData.CircleData());

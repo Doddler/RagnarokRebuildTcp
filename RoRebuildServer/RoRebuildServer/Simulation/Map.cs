@@ -930,6 +930,17 @@ public class Map
         return false;
     }
 
+    public void SendVisualEffectToPlayers(int effectId, Position pos, int facing)
+    {
+        using var targetList = EntityListPool.Get();
+        GatherAllPlayersInViewDistance(pos, targetList);
+        CommandBuilder.AddRecipients(targetList);
+        CommandBuilder.SendEffectAtLocationMulti(effectId, pos, facing);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public int GatherAllPlayersInViewDistance(Position position, EntityList list) => GatherPlayersInRange(position, ServerConfig.MaxViewDistance+2, list, false,false);
+
     public int GatherPlayersInRange(Position position, int distance, EntityList? list, bool checkLineOfSight, bool checkImmunity = false)
     {
         var hasList = list != null;

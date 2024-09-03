@@ -20,7 +20,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
             }
 
             var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Blessing, 40f + 20 * lvl, lvl);
-            target.StatusContainer.AddNewStatusEffect(status);
+            target.AddStatusEffect(status);
 
             var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.Blessing);
             GenericCastAndInformSupportSkill(source, target, CharacterSkill.Blessing, lvl, ref res);

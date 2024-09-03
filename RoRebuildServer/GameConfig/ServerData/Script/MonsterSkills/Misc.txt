@@ -89,6 +89,11 @@ StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(3);
 }
 
+SkillHandler("ANUBIS") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s);
+}
+
 
 SkillHandler("TIRFING") {
 StateAttacking:
@@ -109,6 +114,11 @@ StateAttacking:
 SkillHandler("MATYR") {
 StateAttacking:
 	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6);
+}
+
+SkillHandler("MINOROUS") {
+StateAttacking:
+	TryCast(HammerFall, 10, 5%, 1.5s, 5s);
 }
 
 SkillHandler("PECOPECO") {

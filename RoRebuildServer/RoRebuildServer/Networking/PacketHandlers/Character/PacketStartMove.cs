@@ -3,6 +3,7 @@ using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
+using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -11,18 +12,17 @@ public class PacketStartMove : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (connection.Character == null)
-            return; //we don't accept the keep-alive packet if they haven't entered the world yet
-
-        var player = connection.Entity.Get<Player>();
-        if (player.InActionCooldown())
-        {
-            ServerLogger.Debug("Player click ignored due to cooldown.");
+        if (!connection.IsPlayerAlive)
             return;
-        }
 
-        if (player.IsInNpcInteraction)
+        Debug.Assert(connection.Player != null);
+        Debug.Assert(connection.Character != null);
+        Debug.Assert(connection.Character.Map != null);
+
+        if (!connection.Player.CanPerformCharacterActions())
             return;
+
+        var player = connection.Player;
 
         player.AddActionDelay(CooldownActionType.Click);
 

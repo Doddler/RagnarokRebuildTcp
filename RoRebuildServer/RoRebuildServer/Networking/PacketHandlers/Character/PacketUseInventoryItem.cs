@@ -1,8 +1,10 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
+using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -11,24 +13,24 @@ public class PacketUseInventoryItem : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        var character = connection.Character;
-
-        if (character == null
-            || character.Map == null
-            || character.Player == null
-            || character.State == CharacterState.Sitting
-            || character.State == CharacterState.Dead
-            || character.Player.IsInNpcInteraction)
+        if (!connection.IsPlayerAlive)
             return;
+
+        Debug.Assert(connection.Player != null);
+        Debug.Assert(connection.Character != null);
+        Debug.Assert(connection.Character.Map != null);
+
+        if (!connection.Player.CanPerformCharacterActions())
+            return;
+
+        var character = connection.Character;
+        var player = connection.Player;
 
         var itemId = msg.ReadInt32();
 
         //obviously you should check if the item is in your inventory, but we have no inventory!
-
-
-        if (character.Player.InActionCooldown())
-            return;
-        character.Player.AddActionDelay(CooldownActionType.UseItem);
+        
+        player.AddActionDelay(CooldownActionType.UseItem);
 
         if (!DataManager.ItemList.TryGetValue(itemId, out var item))
         {

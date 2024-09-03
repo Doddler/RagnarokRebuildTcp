@@ -92,6 +92,7 @@ Vending = [["PushCart",1]]
 Mammonite = []
 CrazyUproar = [["Mammonite", 3]]
 ItemAppraisal = [["Discount",5]]
+HammerFall = []
 
 
 

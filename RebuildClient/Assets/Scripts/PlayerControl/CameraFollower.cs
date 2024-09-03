@@ -25,6 +25,7 @@ using UnityEngine.UI;
 using Utility;
 using CursorMode = UnityEngine.CursorMode;
 using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 #if UNITY_EDITOR
 #endif
@@ -128,7 +129,13 @@ namespace Assets.Scripts
         private int cursorMaxSkillLvl = 10;
         private float skillScroll = 5f;
 
+        public float ShakeTime = 0f;
+        private float shakeStepProgress = 0f;
+        private Vector3 shakePos = Vector3.zero;
+        private Vector3 shakeTarget = Vector3.zero;
+
         private bool canChangeCursorLevel;
+
         //private bool cursorShowSkillLevel = true;
         public bool HasSkillOnCursor => hasSkillOnCursor;
 
@@ -276,7 +283,7 @@ namespace Assets.Scripts
                 Recorder.gameObject.SetActive(false);
 
             clickEffectPrefab = Resources.Load<GameObject>($"MoveNotice");
-            
+
             LayoutRebuilder.ForceRebuildLayoutImmediate(UiCanvas.transform as RectTransform);
 
             Height = 50;
@@ -308,7 +315,7 @@ namespace Assets.Scripts
         {
             if (TargetControllable.SpriteAnimator.State == SpriteState.Dead)
                 return false;
-            
+
             var target = ClientDataLoader.Instance.GetSkillTarget(skill);
             switch (target)
             {
@@ -403,7 +410,7 @@ namespace Assets.Scripts
             PlayerState.Hp = hp;
             PlayerState.MaxHp = maxHp;
         }
-        
+
         public void UpdatePlayerSP(int sp, int maxSp)
         {
             if (sp < 0)
@@ -413,7 +420,7 @@ namespace Assets.Scripts
             SpDisplay.gameObject.SetActive(true);
             SpDisplay.text = $"SP: {sp} / {maxSp} ({percent * 100f:F1}%)";
             SpSlider.value = (float)sp / (float)maxSp;
-            
+
             PlayerState.Sp = sp;
             PlayerState.MaxSp = maxSp;
         }
@@ -462,9 +469,8 @@ namespace Assets.Scripts
             {
                 sprite.OnSpriteDataLoadNoCollider(ah.Result);
                 sprite.ChangeActionExact(3);
-                
-                var mat = new Material(ShaderCache.Instance.SpriteShaderNoZTest);
-                mat.renderQueue = 3005; //above water and all other sprites
+
+                var mat = EffectHelpers.NoZTestMaterial;
 
                 var renderer = sprite.GetComponent<RoSpriteRendererStandard>();
                 renderer.SetOverrideMaterial(mat);
@@ -475,9 +481,9 @@ namespace Assets.Scripts
 
         public void SetSelectedTarget(ServerControllable target, string name, bool isAlly, bool isHard)
         {
-            if(selectedSprite == null)
+            if (selectedSprite == null)
                 selectedSprite = CreateSelectedCursorObject();
-            
+
             var color = "";
             if (!isAlly)
                 color = "<color=#FFAAAA>";
@@ -680,7 +686,7 @@ namespace Assets.Scripts
             var target = hit.transform.gameObject.GetComponent<RoSpriteAnimator>();
             return target.Parent ? target.Parent : target;
         }
-        
+
 
         private RoSpriteAnimator GetClosestOrEnemy(RaycastHit[] hits, bool preferEnemy)
         {
@@ -704,7 +710,7 @@ namespace Assets.Scripts
             {
                 var hit = hits[i];
                 var anim = GetHitAnimator(hit);
-                
+
                 void MakeTarget()
                 {
                     closestAnim = anim;
@@ -854,18 +860,17 @@ namespace Assets.Scripts
 
             var isSkillEnemyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Enemy;
             var isSkillAllyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally;
-            
+
             //cancel skill on cursor if we can't use a skill
             if (hasSkillOnCursor && (!isAlive || isSitting))
                 hasSkillOnCursor = false;
             if (hasSkillOnCursor && cursorSkill == CharacterSkill.Heal)
             {
-                
-                if((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+                if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
                     preferEnemyTarget = true;
                 isSkillEnemyTargeted = true;
             }
-            
+
 
             var walkMask = 1 << LayerMask.NameToLayer("WalkMap");
             var groundMask = 1 << LayerMask.NameToLayer("Ground");
@@ -876,9 +881,11 @@ namespace Assets.Scripts
             var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
             var hasTargetedSkill = hasSkillOnCursor && (isSkillEnemyTargeted || isSkillAllyTargeted);
             var hasGroundSkill = hasSkillOnCursor && tempSkillTarget == SkillTarget.Ground;
-            
+
             var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill;
-            var canCurrentlyTarget = canInteract && ((hasSkillOnCursor && ((mouseTarget.IsAlly && isSkillAllyTargeted) || (!mouseTarget.IsAlly && isSkillEnemyTargeted))) || !mouseTarget.IsAlly);
+            var canCurrentlyTarget = canInteract &&
+                                     ((hasSkillOnCursor && ((mouseTarget.IsAlly && isSkillAllyTargeted) || (!mouseTarget.IsAlly && isSkillEnemyTargeted))) ||
+                                      !mouseTarget.IsAlly);
             var canClickEnemy = canCurrentlyTarget && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickNpc = canInteract && !hasSkillOnCursor && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc && !hasTargetedSkill;
@@ -893,7 +900,7 @@ namespace Assets.Scripts
             if (hasSkillOnCursor) displayCursor = GameCursorMode.SkillTarget;
 
             //Debug.Log($"{hasEntity} {}");
-            
+
             // Debug.Log($"CanInteract:{canInteract} MouseTarget:{mouseTarget} IsInteractable:{mouseTarget?.IsInteractable}");
 
             if (showEntityName)
@@ -936,12 +943,19 @@ namespace Assets.Scripts
                 return displayCursor;
             }
 
+            if (leftClick && hasSkillOnCursor && hasTargetedSkill && !canClickEnemy)
+            {
+                //they clicked, they have a targeted skill, but they have no target
+                hasSkillOnCursor = false;
+                return displayCursor;
+            }
+            
             //if our cursor isn't over ground there's no real point in continuing.
             if (!hasGround)
                 return displayCursor;
 
             //while sitting or holding shift and clicking turns your character to face where you clicked
-            if (!isOverUi && leftClick & 
+            if (!isOverUi && leftClick &
                 (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || controllable.SpriteAnimator.State == SpriteState.Sit))
             {
                 ClickDelay = 0.1f;
@@ -1300,6 +1314,21 @@ namespace Assets.Scripts
                 isHolding = false;
         }
 
+        public void FixedUpdate()
+        {
+            if (ShakeTime <= 0)
+            {
+                shakeTarget = Vector3.zero;
+                return;
+            }
+
+            if (shakeStepProgress <= 0)
+                shakeStepProgress += 1f;
+            
+            shakePos = shakeTarget;
+            shakeTarget = Random.insideUnitSphere * Mathf.Clamp(ShakeTime, 0, 0.5f);
+        }
+
         public void Update()
         {
             if (IsInErrorState && Input.GetKeyDown(KeyCode.Space))
@@ -1328,6 +1357,12 @@ namespace Assets.Scripts
 
             var pointerOverUi = EventSystem.current.IsPointerOverGameObject();
             var selected = EventSystem.current.currentSelectedGameObject;
+
+            if (!UiManager.Instance.IsCanvasVisible)
+            {
+                pointerOverUi = false;
+                selected = null;
+            }
 
             InTextBox = false;
             if (selected != null)
@@ -1446,20 +1481,6 @@ namespace Assets.Scripts
                 else
                     EmotePanel.GetComponent<EmoteWindow>().HideWindow();
             }
-
-            // if (!InTextBox && Input.GetKeyDown(KeyCode.D))
-            // {
-            //     DebugVisualization = !DebugVisualization;
-            //     //GroundHighlighter.Create(controllable, "blue");
-            // }
-
-            //
-            // if (!InTextBox && Input.GetKeyDown(KeyCode.A))
-            // {
-            //     DebugIgnoreAttackMotion = !DebugIgnoreAttackMotion;
-            //     //GroundHighlighter.Create(controllable, "blue");
-            // }
-
 
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
@@ -1616,9 +1637,14 @@ namespace Assets.Scripts
             Camera.transparencySortMode = TransparencySortMode.CustomAxis;
             Camera.transparencySortAxis = Quaternion.Euler(0, Rotation, 0) * Vector3.forward;
 
+            ShakeTime -= Time.deltaTime;
+            shakeStepProgress -= Time.deltaTime;
+            var curShake = Vector3.Lerp(shakePos, shakeTarget, Mathf.Clamp01(1 - shakeStepProgress));
+
             transform.position = CurLookAt + pos;
             transform.LookAt(CurLookAt + new Vector3(0f, 1f, 0f), Vector3.up);
 
+            transform.position += curShake;
 
             if (!InTextBox && Input.GetKeyDown(KeyCode.T))
                 NetworkManager.Instance.RandomTeleport();

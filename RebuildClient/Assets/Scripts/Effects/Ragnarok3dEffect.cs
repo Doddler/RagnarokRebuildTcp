@@ -166,12 +166,13 @@ namespace Assets.Scripts.Effects
                 CreateBillboardGroup(style);
             
             go.transform.parent = BillboardGroup.transform;
+            BillboardGroup.transform.localScale = Vector3.one;
         }
 
         public void SetBillboardAxis(Vector3 axis) => billboard.Axis = axis;
         public void SetBillboardSubRotation(Quaternion subRotation) => billboard.SubRotation = subRotation;
 
-        public SpriteEffect LaunchSpriteEffect(RoSpriteData sprite, float time, int index = 0)
+        public SpriteEffect LaunchSpriteEffect(RoSpriteData sprite, float time, float vOffset = 0, int index = 0)
         {
             var go = new GameObject($"SpriteEffect {sprite.Name}");
             go.transform.SetParent(this.transform, false);
@@ -182,6 +183,7 @@ namespace Assets.Scripts.Effects
             effect.SpriteData = sprite;
             effect.IsLoop = false;
             effect.Duration = time;
+            effect.VerticalOffset = vOffset;
             if (time > 0)
                 effect.DestroyAtEndOfDuration = true;
             effect.Initialize(false);

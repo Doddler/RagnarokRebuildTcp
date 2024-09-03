@@ -69,6 +69,7 @@ public class ThunderStormHandler : SkillHandlerBase
         {
             map?.AddVisiblePlayersAsPacketRecipients(source.Character);
             CommandBuilder.SkillExecuteAreaTargetedSkill(source.Character, position, CharacterSkill.ThunderStorm, lvl);
+            CommandBuilder.ClearRecipients();
         }
     }
 }

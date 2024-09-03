@@ -45,7 +45,38 @@ public class CombatEntity : IEntityAutoReset
 
     [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> skillCooldowns = new();
     [EntityIgnoreNullCheck] public List<DamageInfo> DamageQueue { get; set; } = null!;
-    [EntityIgnoreNullCheck] public CharacterStatusContainer StatusContainer { get; set; } = new();
+    private CharacterStatusContainer? statusContainer;
+
+    public float GetTiming(TimingStat type) => timingData[(int)type];
+    public void SetTiming(TimingStat type, float val) => timingData[(int)type] = val;
+
+    public bool IsSkillOnCooldown(CharacterSkill skill) => skillCooldowns.TryGetValue(skill, out var t) && t > Time.ElapsedTimeFloat;
+    public void SetSkillCooldown(CharacterSkill skill, float val) => skillCooldowns[skill] = Time.ElapsedTimeFloat + val;
+    public void ResetSkillCooldowns() => skillCooldowns.Clear();
+
+    public void Reset()
+    {
+        Entity = Entity.Null;
+        Character = null!;
+        Player = null!;
+        Faction = -1;
+        Party = -1;
+        IsTargetable = true;
+        IsCasting = false;
+        skillCooldowns.Clear();
+        nextStatusUpdate = 0;
+        if (statusContainer != null)
+        {
+            statusContainer.ClearAllWithoutRemoveHandler();
+            StatusEffectPoolManager.ReturnStatusContainer(statusContainer);
+            statusContainer = null;
+        }
+
+        //Array.Copy(statResetData, statData, statData.Length);
+
+        for (var i = 0; i < statData.Length; i++)
+            statData[i] = 0;
+    }
 
     public int GetStat(CharacterStat type)
     {
@@ -95,30 +126,89 @@ public class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] -= val;
     }
 
-    public float GetTiming(TimingStat type) => timingData[(int)type];
-    public void SetTiming(TimingStat type, float val) => timingData[(int)type] = val;
-
-    public bool IsSkillOnCooldown(CharacterSkill skill) => skillCooldowns.TryGetValue(skill, out var t) && t > Time.ElapsedTimeFloat;
-    public void SetSkillCooldown(CharacterSkill skill, float val) => skillCooldowns[skill] = Time.ElapsedTimeFloat + val;
-    public void ResetSkillCooldowns() => skillCooldowns.Clear();
-
-    public void Reset()
+    public void AddStatusEffect(StatusEffectState state, bool replaceExisting = true, float delay = 0)
     {
-        Entity = Entity.Null;
-        Character = null!;
-        Player = null!;
-        Faction = -1;
-        Party = -1;
-        IsTargetable = true;
-        IsCasting = false;
-        skillCooldowns.Clear();
-        StatusContainer.ClearAllWithoutRemoveHandler();
-        nextStatusUpdate = 0;
+        if (statusContainer == null)
+        {
+            statusContainer = StatusEffectPoolManager.BorrowStatusContainer();
+            statusContainer.Owner = this;
+        }
 
-        //Array.Copy(statResetData, statData, statData.Length);
+        if (delay <= 0)
+            statusContainer.AddNewStatusEffect(state, replaceExisting);
+        else
+            statusContainer.AddPendingStatusEffect(state, replaceExisting, delay);
+    }
 
-        for (var i = 0; i < statData.Length; i++)
-            statData[i] = 0;
+    public void RemoveStatusOfTypeIfExists(CharacterStatusEffect type)
+    {
+        if (statusContainer == null)
+            return;
+        statusContainer.RemoveStatusEffectOfType(type);
+        if (!statusContainer.HasStatusEffects())
+        {
+            StatusEffectPoolManager.ReturnStatusContainer(statusContainer);
+            statusContainer = null;
+        }
+    }
+
+
+    public void ClearAllStatusEffects(bool doRemoveUpdate = true)
+    {
+        if (statusContainer == null)
+            return;
+        if (doRemoveUpdate)
+            statusContainer.RemoveAll();
+        else
+            statusContainer.ClearAllWithoutRemoveHandler();
+
+        if (!statusContainer.HasStatusEffects() || !doRemoveUpdate)
+        {
+            StatusEffectPoolManager.ReturnStatusContainer(statusContainer);
+            statusContainer = null;
+        }
+    }
+
+    public bool HasStatusEffectOfType(CharacterStatusEffect type) => statusContainer?.HasStatusEffectOfType(type) ?? false;
+
+
+    public void AddDisabledState()
+    {
+        if (Character.State == CharacterState.Dead)
+            return;
+
+        if (IsCasting)
+        {
+            Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+            CommandBuilder.StopCastMulti(Character);
+            CommandBuilder.ClearRecipients();
+            IsCasting = false;
+        }
+
+        Character.QueuedAction = QueuedAction.None;
+        if (Character.IsMoving)
+            Character.StopMovingImmediately();
+
+        if (Character.Type == CharacterType.Player)
+            Player.ClearTarget();
+
+        AddStat(CharacterStat.Disabled, 1);
+    }
+
+    public void SubDisabledState()
+    {
+#if DEBUG
+        if (GetStat(CharacterStat.Disabled) <= 0)
+            ServerLogger.LogWarning($"Trying to remove disabled state while target is not disabled!");
+#endif
+
+        SubStat(CharacterStat.Disabled, 1);
+
+        if (Character.Type == CharacterType.Monster && GetStat(CharacterStat.Disabled) <= 0)
+        {
+            Character.Monster.ResetAiUpdateTime();
+            Character.Monster.ResetAiSkillUpdateTime();
+        }
     }
 
     public int GetEffectiveStat(CharacterStat type)
@@ -436,10 +526,28 @@ public class CombatEntity : IEntityAutoReset
             if (Character.Type == CharacterType.Player)
                 Character.Player.ClearTarget(); //if we are currently moving we should dequeue attacking so we don't chase after casting
 
-            Character.ShortenMovePath(); //for some reason shorten move path cancels the queued action and I'm too lazy to find out why
-            QueueCast(skillInfo);
+            Character.StopMovingImmediately();
+            //QueueCast(skillInfo);
 
-            return true;
+            //return true;
+        }
+
+        if (Character.Type == CharacterType.Player && Character.Position.DistanceTo(target) > skillInfo.Range) //if we are out of range, try to move closer
+        {
+            Character.Player.ClearTarget();
+            if (Character.InMoveLock && Character.MoveLockTime > Time.ElapsedTimeFloat) //we need to queue a cast so we both move and cast once the lock ends
+            {
+                QueueCast(skillInfo);
+                return true;
+            }
+
+            if (Character.TryMove(target, 1))
+            {
+                QueueCast(skillInfo);
+                return true;
+            }
+
+            return false;
         }
 
         if (Character.AttackCooldown > Time.ElapsedTimeFloat)
@@ -801,7 +909,7 @@ public class CombatEntity : IEntityAutoReset
                 attackMultiplier *= (1 + (mastery / 100f));
             }
         }
-        
+
         var evade = false;
         var isCrit = false;
 
@@ -826,7 +934,7 @@ public class CombatEntity : IEntityAutoReset
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
             var def = target.GetStat(CharacterStat.Def);
-            defCut = MathF.Pow(0.99f, def-1);
+            defCut = MathF.Pow(0.99f, def - 1);
             subDef = target.GetStat(CharacterStat.Vit) * 0.7f;
             if (def > 900)
                 subDef = 999999;
@@ -840,7 +948,7 @@ public class CombatEntity : IEntityAutoReset
             if (mDef > 900)
                 subDef = 999999;
         }
-        
+
 
         var damage = (int)(baseDamage * attackMultiplier * (eleMod / 100f) * (racialMod / 100f) * defCut - subDef);
         if (damage < 1)
@@ -1021,7 +1129,7 @@ public class CombatEntity : IEntityAutoReset
         if (di.Result != AttackResult.CriticalDamage && Character.Type == CharacterType.Player)
         {
             var doubleChance = GetStat(CharacterStat.DoubleAttackChance);
-            if(doubleChance > 0 && GameRandom.Next(0,100) <= doubleChance) 
+            if (doubleChance > 0 && GameRandom.Next(0, 100) <= doubleChance)
                 di.HitCount = 2;
         }
 
@@ -1126,7 +1234,6 @@ public class CombatEntity : IEntityAutoReset
         IsTargetable = true;
         if (e.Type == EntityType.Player)
             Player = ch.Player;
-        StatusContainer.Owner = this;
 
         if (DamageQueue == null!)
             DamageQueue = new List<DamageInfo>(4);
@@ -1150,7 +1257,7 @@ public class CombatEntity : IEntityAutoReset
         if (nextStatusUpdate < Time.ElapsedTimeFloat)
         {
             nextStatusUpdate = Time.ElapsedTimeFloat + 1f;
-            StatusContainer.UpdateStatusEffects();
+            statusContainer?.UpdateStatusEffects();
         }
     }
 }

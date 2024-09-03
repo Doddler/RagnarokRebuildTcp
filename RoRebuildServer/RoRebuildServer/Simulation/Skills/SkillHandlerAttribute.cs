@@ -51,6 +51,8 @@ public abstract class SkillHandlerBase
         {
             if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, position))
                 return SkillValidationResult.NoLineOfSight;
+            
+            return SkillValidationResult.Success;
         }
             
         return SkillValidationResult.Failure;

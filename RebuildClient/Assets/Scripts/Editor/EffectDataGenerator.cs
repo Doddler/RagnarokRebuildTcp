@@ -53,6 +53,10 @@ namespace Assets.Editor
 
             text.Add("using System;");
             text.Add("using Assets.Scripts.Effects.EffectHandlers;");
+            text.Add("using Assets.Scripts.Effects.EffectHandlers.Environment;");
+            text.Add("using Assets.Scripts.Effects.EffectHandlers.General;");
+            text.Add("using Assets.Scripts.Effects.EffectHandlers.Skills;");
+            text.Add("using Assets.Scripts.Effects.EffectHandlers.StatusEffects;");
             text.Add("");
             text.Add("namespace Assets.Scripts.Effects");
             text.Add("{");

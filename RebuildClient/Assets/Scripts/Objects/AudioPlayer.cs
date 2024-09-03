@@ -20,6 +20,8 @@ namespace Assets.Scripts.Objects
         private AsyncOperationHandle<AudioClip> loadHandle;
 
         private float endTime;
+        private float delayTime;
+        private bool isDelayed;
 
         public void Init(AudioManager manager, int id)
         {
@@ -62,6 +64,7 @@ namespace Assets.Scripts.Objects
             //var targetVolume = Mathf.Pow(10f, db / 20f) * volume;
             isInUse = true;
             isLoading = false;
+            isDelayed = false;
             gameObject.SetActive(true);
             
             gameObject.transform.localPosition = position;
@@ -79,6 +82,7 @@ namespace Assets.Scripts.Objects
         {
             isInUse = true;
             isLoading = true;
+            isDelayed = false;
             gameObject.SetActive(true);
 
             hasFollowTarget = true;
@@ -95,12 +99,21 @@ namespace Assets.Scripts.Objects
             return true;
         }
 
-        public bool PlayAudioClip(string filename, Vector3 position, float volume)
+        public bool PlayAudioClip(string filename, Vector3 position, float volume, float delay)
         {
             //AudioManager.Mixer.GetFloat("Sounds", out var db);
             //var targetVolume = Mathf.Pow(10f, db / 20f) * volume;
             isInUse = true;
             isLoading = true;
+
+            if (delay > 0)
+            {
+                isDelayed = true;
+                delayTime = delay;
+            }
+            else
+                isDelayed = false;
+            
             gameObject.SetActive(true);
             
             gameObject.transform.localPosition = position;
@@ -120,8 +133,9 @@ namespace Assets.Scripts.Objects
                 return; //why would this happen?
 
             audioSource.clip = clip;
-            audioSource.Play();
-            endTime = Time.fixedTime + clip.length;
+            if(!isDelayed)
+                audioSource.Play();
+            endTime = Time.fixedTime + clip.length + delayTime;
         }
 
         public void Update()
@@ -145,10 +159,20 @@ namespace Assets.Scripts.Objects
                 
                 if(loadHandle.Status == AsyncOperationStatus.Succeeded)
                     isLoading = false;
-
+                
                 return;
             }
-            
+
+            if (isDelayed)
+            {
+                delayTime -= Time.deltaTime;
+                if (delayTime < 0)
+                {
+                    isDelayed = false;
+                    audioSource.Play();
+                }
+            }
+
             if (!isLoading && Time.fixedTime > endTime)
             {
                 audioSource.Stop();

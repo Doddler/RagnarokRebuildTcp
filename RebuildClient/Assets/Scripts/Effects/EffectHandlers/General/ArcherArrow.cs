@@ -3,7 +3,7 @@ using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
 using UnityEngine;
 
-namespace Assets.Scripts.Effects.EffectHandlers
+namespace Assets.Scripts.Effects.EffectHandlers.General
 {
     [RoEffect("ArcherArrow")]
     public class ArcherArrow : IEffectHandler

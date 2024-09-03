@@ -1,3 +1,38 @@
+#----------------------------------
+# General Negative Status Effects
+#----------------------------------
+
+[Curse]
+Type = "Debuff"
+
+[Stun]
+Type = "Debuff"
+
+[Frozen]
+Type = "Debuff"
+
+[Blind]
+Type = "Debuff"
+
+[Silence]
+Type = "Debuff"
+
+[Confusion]
+Type = "Debuff"
+
+[Poison]
+Type = "Debuff"
+
+[Petrifying]
+Type = "Debuff"
+
+[Stone]
+Type = "Debuff"
+
+#----------------------------------
+# Player Buffs
+#----------------------------------
+
 [TwoHandQuicken]
 Name = "Two-Hand Quicken"
 Type = "Buff"
@@ -21,9 +56,3 @@ Name = "Improve Concentration"
 Type = "Buff"
 CanDispel = true
 CanDisable = true
-
-[Curse]
-Name = "Curse"
-Type = "Debuff"
-CanDispel = true
-CanDisable = false

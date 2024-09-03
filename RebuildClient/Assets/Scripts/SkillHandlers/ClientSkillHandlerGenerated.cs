@@ -73,7 +73,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[58] = new DefaultSkillHandler();
 			handlers[59] = new DefaultSkillHandler();
 			handlers[60] = new TwoHandQuickenHandler();
-			handlers[61] = new DefaultSkillHandler();
+			handlers[61] = new HammerFallHandler();
 			handlers[62] = new DefaultSkillHandler();
 			handlers[63] = new GrandThunderstormHandler();
 			handlers[64] = new DefaultSkillHandler();

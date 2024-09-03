@@ -478,6 +478,10 @@
               "Level": 5
             }
           ]
+        },
+        {
+          "Skill": 61,
+          "Prerequisites": []
         }
       ]
     }

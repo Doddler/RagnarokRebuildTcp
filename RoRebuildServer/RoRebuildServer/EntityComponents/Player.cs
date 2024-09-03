@@ -573,7 +573,7 @@ public class Player : IEntityAutoReset
         CombatEntity.IsCasting = false;
         CombatEntity.CastingSkill.Clear();
         CombatEntity.QueuedCastingSkill.Clear();
-        CombatEntity.StatusContainer.RemoveAll();
+        CombatEntity.ClearAllStatusEffects();
         UpdateStats();
 
         Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
@@ -854,7 +854,6 @@ public class Player : IEntityAutoReset
         }
     }
 
-
     public bool InActionCooldown() => CurrentCooldown > 1f;
     public void AddActionDelay(CooldownActionType type) => CurrentCooldown += ActionDelay.CooldownTime(type);
     public void AddActionDelay(float time) => CurrentCooldown += time;
@@ -865,11 +864,27 @@ public class Player : IEntityAutoReset
 
     private bool InMoveReadyState => Character.State == CharacterState.Idle && !CombatEntity.IsCasting;
 
+    public bool CanPerformCharacterActions()
+    {
+        if (InActionCooldown())
+            return false;
+        if (Character.State == CharacterState.Dead)
+            return false;
+        if (IsInNpcInteraction)
+            return false;
+        if (GetStat(CharacterStat.Disabled) > 0)
+            return false;
+
+        return true;
+    }
+
     public void Update()
     {
         CurrentCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
         if (CurrentCooldown < 0)
             CurrentCooldown = 0;
+
+        Debug.Assert(Character.Map != null);
 
         if (Character.State == CharacterState.Dead || Character.State == CharacterState.Sitting)
         {
@@ -890,19 +905,26 @@ public class Player : IEntityAutoReset
 
         if (Character.QueuedAction == QueuedAction.Cast)
         {
-            if (CombatEntity.QueuedCastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
+            var cast = CombatEntity.QueuedCastingSkill;
+            if (cast.TargetedPosition != Position.Invalid)
             {
+                //targeted at the ground
                 var isValid = true;
-                var canAttack = CombatEntity.CanAttackTarget(targetCharacter, CombatEntity.QueuedCastingSkill.Range);
+                var canAttack = cast.TargetedPosition.InRange(Character.Position, cast.Range);
+                if (canAttack && !Character.Map.WalkData.HasLineOfSight(Character.Position, cast.TargetedPosition))
+                    canAttack = false;
+
                 if (Character.State == CharacterState.Moving && canAttack)
                     Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
-                if (Character.State == CharacterState.Idle && !canAttack)
+                if (Character.State == CharacterState.Idle && !canAttack && !Character.InAttackCooldown)
                 {
                     var target = CombatEntity.CastingSkill.TargetEntity;
-                    isValid = Character.TryMove(targetCharacter.Position, 1);
+                    isValid = Character.TryMove(cast.TargetedPosition, 1);
+                    if (isValid)
+                        Character.QueuedAction = QueuedAction.Cast; //trymove will reset this...
                 }
 
-                if (InCombatReadyState && isValid)
+                if (InCombatReadyState && isValid && canAttack)
                 {
                     if (CombatEntity.QueuedCastingSkill.IsValid)
                         CombatEntity?.ResumeQueuedSkillAction();
@@ -915,8 +937,36 @@ public class Player : IEntityAutoReset
             }
             else
             {
-                Character.QueuedAction = QueuedAction.None;
-                Target = Entity.Null;
+                //targeted at an enemy
+                if (CombatEntity.QueuedCastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
+                {
+                    var isValid = true;
+                    var canAttack =
+                        CombatEntity.CanAttackTarget(targetCharacter, CombatEntity.QueuedCastingSkill.Range);
+                    if (Character.State == CharacterState.Moving && canAttack)
+                        Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
+                    if (Character.State == CharacterState.Idle && !canAttack)
+                    {
+                        var target = CombatEntity.CastingSkill.TargetEntity;
+                        isValid = Character.TryMove(targetCharacter.Position, 1);
+                    }
+
+                    if (InCombatReadyState && isValid)
+                    {
+                        if (CombatEntity.QueuedCastingSkill.IsValid)
+                            CombatEntity?.ResumeQueuedSkillAction();
+                        else
+                            Character.QueuedAction = QueuedAction.None;
+                    }
+
+                    if (!isValid)
+                        Character.QueuedAction = QueuedAction.None;
+                }
+                else
+                {
+                    Character.QueuedAction = QueuedAction.None;
+                    Target = Entity.Null;
+                }
             }
         }
 

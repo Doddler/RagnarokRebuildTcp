@@ -76,16 +76,16 @@ namespace Assets.Scripts.Network
         private Vector2 lastFramePosition;
 
         private bool isMoving;
-        // {
-        //     get => _isMoving;
-        //     set
-        //     {
-        //         if (IsMainCharacter && isMoving && !value)
-        //             Debug.Log($"Stopping main character.");
-        //         _isMoving = value;
-        //     }
-        // }
-        //private bool _isMoving;
+        //  {
+        //      get => _isMoving;
+        //      set
+        //      {
+        //          if (IsMainCharacter)
+        //              Debug.Log($"Changing main character move state.");
+        //          _isMoving = value;
+        //      }
+        //  }
+        // private bool _isMoving;
 
         private Vector3 snapStartPos;
         private LTDescr snapAnim;
@@ -204,7 +204,7 @@ namespace Assets.Scripts.Network
                     FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
             }
 
-            if (SpriteAnimator != null && ClientDataLoader.Instance.GetUniqueAction(SpriteAnimator.SpriteData.Name, skill, out var action))
+            if (SpriteAnimator != null && SpriteAnimator.SpriteData != null && ClientDataLoader.Instance.GetUniqueAction(SpriteAnimator.SpriteData.Name, skill, out var action))
             {
                 skipNextAttackMotion = true;
                 var start = action.StartAt / 1000f;
@@ -224,6 +224,7 @@ namespace Assets.Scripts.Network
         {
             uniqueAttackAction = null;
             FloatingDisplay?.CancelCasting();
+            EndEffectOfType(EffectType.CastEffect);
         }
 
         // public void RefreshHiddenState()
@@ -676,9 +677,13 @@ namespace Assets.Scripts.Network
         {
             isMoving = false;
             isDirectMove = false;
-            movePath = null;
+            movePath?.Clear();
             if (SpriteAnimator.State == SpriteState.Walking)
+            {
+                SpriteAnimator.State = SpriteState.Idle;
                 SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
+                SpriteAnimator.AnimSpeed = 1f;
+            }
 
             // if (IsMainCharacter)
             //     Debug.Log($"Character asked to stop immediately.\nSnap to tile if out of range:{snapToTile}");
@@ -1261,7 +1266,7 @@ namespace Assets.Scripts.Network
                 if (SpriteAnimator.State != SpriteState.Walking || SpriteAnimator.CurrentMotion != SpriteMotion.Walk)
                 {
                     // Debug.Log($"{name} switching to walking");
-                    SpriteAnimator.AnimSpeed = moveSpeed * 4f;
+                    SpriteAnimator.AnimSpeed = 1f; //moveSpeed * 4f;
                     // var action = SpriteAnimator.GetActionForMotion(SpriteMotion.Walk);
                     // var frameTime = action.Frames.Length * (action.Delay / 1000f);
                     // // Debug.Log($"{moveSpeed} {frameTime} {action.Frames.Length} {action.Delay}");

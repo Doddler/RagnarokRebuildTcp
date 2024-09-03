@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Enum;
+﻿using System.Diagnostics;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Util;
@@ -10,10 +11,12 @@ public class PacketEmote : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        var map = connection.Character?.Map;
-
-        if (connection.Character == null || connection.Player == null || map == null)
+        if (!connection.IsConnectedAndInGame)
             return;
+
+        Debug.Assert(connection.Player != null);
+        Debug.Assert(connection.Character != null);
+        Debug.Assert(connection.Character.Map != null);
 
         var emote = msg.ReadInt32();
         if (emote > 100)
@@ -26,7 +29,7 @@ public class PacketEmote : IClientPacketHandler
         if (player.InActionCooldown() || player.LastEmoteTime + 1f > Time.ElapsedTimeFloat)
             return;
         
-        map.AddVisiblePlayersAsPacketRecipients(connection.Character);
+        connection.Character.Map.AddVisiblePlayersAsPacketRecipients(connection.Character);
         CommandBuilder.SendEmoteMulti(connection.Character, emote);
         CommandBuilder.ClearRecipients();
 

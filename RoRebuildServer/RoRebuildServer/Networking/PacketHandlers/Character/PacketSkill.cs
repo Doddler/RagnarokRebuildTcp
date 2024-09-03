@@ -18,6 +18,13 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             if (!connection.IsPlayerAlive)
                 return;
 
+            Debug.Assert(connection.Player != null);
+            Debug.Assert(connection.Character != null);
+            Debug.Assert(connection.Character.Map != null);
+
+            if (!connection.Player.CanPerformCharacterActions())
+                return;
+
             var type = (SkillTarget)msg.ReadByte();
 
             switch (type)

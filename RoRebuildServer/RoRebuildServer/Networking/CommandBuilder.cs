@@ -44,8 +44,8 @@ public static class CommandBuilder
         if (!entity.TryGet<Player>(out var player))
             return;
 
-        if(recipients != null)
-            for(var i = 0; i < recipients.Count; i++)
+        if (recipients != null)
+            for (var i = 0; i < recipients.Count; i++)
                 if (recipients[i] == player.Connection)
                     return;
 
@@ -72,7 +72,7 @@ public static class CommandBuilder
     {
         Debug.Assert(c.WalkPath != null);
         Debug.Assert(c.IsMoving);
-        
+
         packet.Write(c.WorldPosition);
         packet.Write(c.MoveSpeed);
         packet.Write(c.NextStepDuration - c.MoveProgress); //how long till we reach the next cell
@@ -106,7 +106,7 @@ public static class CommandBuilder
             ServerLogger.LogWarning("Attempting to send empty movepath to player");
             return;
         }
-        
+
         packet.Write(c.MoveSpeed);
         packet.Write(c.MoveProgress);
         packet.Write((byte)c.TotalMoveSteps);
@@ -180,7 +180,7 @@ public static class CommandBuilder
         var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity;
         var packet = NetworkManager.StartPacket(type, 256);
 
-        if(c.Hidden && !isSelf)
+        if (c.Hidden && !isSelf)
             ServerLogger.LogWarning($"We are unexpectedly sending data for the hidden object {c} to a player!");
 
         AddFullEntityData(packet, c, isSelf);
@@ -216,6 +216,18 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
+    public static void StopCastMulti(WorldObject caster)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.StopCast, 8);
+
+        packet.Write(caster.Id);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void StartCastMulti(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, float castTime, bool hideSkillName)
     {
         if (!HasRecipients())
@@ -224,7 +236,7 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.StartCast, 48);
 
         packet.Write(caster.Id);
-        packet.Write(target?.Id ?? -1 );
+        packet.Write(target?.Id ?? -1);
         packet.Write((byte)skill);
         packet.Write((byte)lvl);
         packet.Write((byte)caster.FacingDirection);
@@ -358,7 +370,7 @@ public static class CommandBuilder
             return;
 
         var packet = NetworkManager.StartPacket(PacketType.TakeDamage, 48);
-        
+
         packet.Write(target.Id);
         packet.Write(di.Damage);
         packet.Write(di.HitCount);
@@ -391,7 +403,7 @@ public static class CommandBuilder
         packet.Write(c.Id);
         packet.Write(lookAtPos);
         packet.Write((byte)c.FacingDirection);
-        
+
         if (c.Type == CharacterType.Player)
         {
             var player = c.Entity.Get<Player>();
@@ -508,7 +520,7 @@ public static class CommandBuilder
         packet.Write(text);
         packet.Write("Server");
         packet.Write(false);
-        
+
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
@@ -519,7 +531,7 @@ public static class CommandBuilder
 
         var packet = NetworkManager.StartPacket(PacketType.Say, 364);
 
-        if(c == null)
+        if (c == null)
             packet.Write(-1);
         else
             packet.Write(c.Id);
@@ -690,7 +702,7 @@ public static class CommandBuilder
         packet.Write(damage);
         packet.Write(c.Position);
         packet.Write(c.InMoveLock);
-        
+
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
@@ -698,19 +710,19 @@ public static class CommandBuilder
     {
         if (!HasRecipients())
             return;
-        
+
         var packet = NetworkManager.StartPacket(PacketType.EffectOnCharacter, 16);
         packet.Write(p.Id);
         packet.Write(effectId);
-        
+
         NetworkManager.SendMessageMulti(packet, recipients);
     }
-    
+
     public static void SendEffectAtLocationMulti(int effectId, Position pos, int facing)
     {
         if (!HasRecipients())
             return;
-        
+
         var packet = NetworkManager.StartPacket(PacketType.EffectAtLocation, 16);
         packet.Write(effectId);
         packet.Write(pos);
@@ -797,7 +809,7 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.GainExp, 8);
         packet.Write(p.GetData(PlayerStat.Experience));
         packet.Write(exp);
-        
+
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
@@ -856,7 +868,7 @@ public static class CommandBuilder
         {
             packet.Write(options[i]);
         }
-        
+
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
@@ -864,7 +876,7 @@ public static class CommandBuilder
     {
         var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 8);
         packet.Write((byte)NpcInteractionType.NpcEndInteraction);
-        
+
         NetworkManager.SendMessage(packet, p.Connection);
     }
 

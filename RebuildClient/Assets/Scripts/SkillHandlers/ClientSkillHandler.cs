@@ -19,6 +19,8 @@ namespace Assets.Scripts.SkillHandlers
         {
             var skillId = attack.Skill;
             var handler = handlers[(int)skillId];
+            
+            // Debug.Log($"Execute skill {attack.Skill}");
 
             if (src == null && !handler.ExecuteWithoutSource)
                 return;

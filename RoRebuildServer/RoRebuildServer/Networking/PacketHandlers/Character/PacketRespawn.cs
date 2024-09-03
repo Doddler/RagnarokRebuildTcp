@@ -4,6 +4,7 @@ using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation;
+using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -12,8 +13,12 @@ public class PacketRespawn : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-        if (connection.Character == null || connection.Player == null || connection.Character.Map == null)
+        if (!connection.IsConnectedAndInGame)
             return;
+
+        Debug.Assert(connection.Player != null);
+        Debug.Assert(connection.Character != null);
+        Debug.Assert(connection.Character.Map != null);
 
         var inPlace = msg.ReadByte() == 1;
 

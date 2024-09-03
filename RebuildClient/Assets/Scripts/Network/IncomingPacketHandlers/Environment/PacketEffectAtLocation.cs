@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Network.HandlerBase;
+﻿using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.Sprites;
 using RebuildSharedData.Networking;
 using UnityEngine;
 
@@ -14,7 +16,24 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Environment
             var facing = msg.ReadInt32();
 
             var spawn = Camera.WalkProvider.GetWorldPositionForTile(pos);
-            Camera.CreateEffect(effect, spawn, facing);
+
+            if (!Camera.EffectList.TryGetValue(effect, out var asset))
+                return;
+
+            switch (asset.Name)
+            {
+                case "Explosion":
+                    Camera.ShakeTime = 0.5f;
+                    break;
+                case "HammerFall":
+                    HammerFallEffect.CreateHammerFall(spawn);
+                    break;
+                default:
+                    Camera.CreateEffect(effect, spawn, facing);
+                    break;
+            }
+            
+            
         }
     }
 }

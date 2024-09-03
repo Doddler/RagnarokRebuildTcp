@@ -20,7 +20,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
             var agi = (int)(source.GetStat(CharacterStat.Agi) * (0.02f + 0.01f * lvl) + 1);
             
             var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.ImproveConcentration, 40f + 20 * lvl, agi, dex);
-            source.StatusContainer.AddNewStatusEffect(status);
+            source.AddStatusEffect(status);
 
             ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.ImproveConcentration, lvl);

@@ -1,14 +1,11 @@
 ﻿using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Network;
-using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.Utility;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Assets.Scripts.Effects.EffectHandlers
+namespace Assets.Scripts.Effects.EffectHandlers.Skills
 {
     [RoEffect("Blessing")]
     public class BlessingEffect : IEffectHandler
@@ -22,7 +19,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.Blessing);
 
-            effect.transform.localScale = new Vector3(2f, 2f, 2f);
+            effect.transform.localScale = Vector3.one;
             effect.SourceEntity = target;
             effect.SetDurationByFrames(120);
             effect.FollowTarget = target.gameObject;
@@ -74,16 +71,16 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             if (step < 10 && step % 3 == 0)
             {
-                var sprite = effect.LaunchSpriteEffect(BlessingEffectSprite, 2f);
+                var sprite = effect.LaunchSpriteEffect(BlessingEffectSprite, 2f, 2.666f);
                 sprite.SpriteAnimator.BaseColor = new Color(1f, 1f, 1f, (200 - step * 12) / 255f);
                 sprite.SpriteAnimator.AnimSpeed = 0.33f;
                 sprite.SpriteAnimator.OverrideCurrentFrame(10);
-                sprite.SpriteAnimator.SpriteRenderer.SetOffset(6f); //pull offset towards camera as it's root is tilted away due to the billboard
+                //sprite.SpriteAnimator.SpriteRenderer.SetOffset(6f); //pull offset towards camera as it's root is tilted away due to the billboard
                 sprite.IsLoop = true;
 
                 effect.AttachToBillboardGroup(BillboardStyle.Character, sprite.gameObject);
 
-                sprite.transform.localPosition = new Vector3(0f, 4f, 0f);
+                sprite.transform.localPosition = new Vector3(0f, 0f, 0f);
                 sprite.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 sprite.transform.localRotation = Quaternion.identity;
             }

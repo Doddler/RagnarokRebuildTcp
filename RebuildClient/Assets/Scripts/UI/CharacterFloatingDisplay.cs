@@ -133,6 +133,13 @@ namespace Assets.Scripts.UI
                 Manager.ReturnCastBar(castBar.gameObject);
                 castBar = null;
             }
+
+            //this is the biggest hack I've ever seen. End the chat bubble if it's showing monster cast name
+            if (chatBubble != null && chatBubble.TextObject.text.Contains("<color=#FF8888>"))
+            {
+                Manager.ReturnChatBubble(chatBubble.gameObject);
+                chatBubble = null;
+            }
         }
 
         public void ShowChatBubbleMessage(string message, float visibleTime = 5f)

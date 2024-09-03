@@ -4,6 +4,7 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation;
+using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -14,16 +15,20 @@ public class PacketAttack : IClientPacketHandler
     {
 		var id = msg.ReadInt32();
 
-        var character = connection.Character;
+        if (!connection.IsPlayerAlive)
+            return;
 
-        if (character == null
-            || connection.Player == null
-            || character.State is CharacterState.Sitting or CharacterState.Dead 
-            || character.Player.IsInNpcInteraction)
+        Debug.Assert(connection.Player != null);
+        Debug.Assert(connection.Character != null);
+        Debug.Assert(connection.Character.Map != null);
+
+        if (!connection.Player.CanPerformCharacterActions())
+            return;
+
+        var character = connection.Character;
+        if (character.State == CharacterState.Sitting)
             return;
         
-        if (connection.Player.InActionCooldown())
-            return;
         character.Player.AddActionDelay(CooldownActionType.Click);
 
         var target = World.Instance.GetEntityById(id);

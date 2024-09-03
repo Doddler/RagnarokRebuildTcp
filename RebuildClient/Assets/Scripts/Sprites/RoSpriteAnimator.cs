@@ -40,6 +40,7 @@ namespace Assets.Scripts.Sprites
         public GameObject Shadow;
         public GameObject LightProbeAnchor;
         public SortingGroup ShadowSortingGroup { get; set; }
+        public float VerticalOffset;
 
         public bool IgnoreAnchor = false;
         public bool IsHead = false;
@@ -258,13 +259,15 @@ namespace Assets.Scripts.Sprites
                 stdRenderer.SecondPassForWater = !LockAngle; //anything you'd want to lock angle for probably doesn't need a water pass
                 stdRenderer.UpdateAngleWithCamera = !LockAngle;
                 stdRenderer.SortingOrder = SpriteOrder;
-
                 SpriteRenderer = stdRenderer;
             }
 
             SpriteRenderer.SetSprite(SpriteData);
             SpriteRenderer.SetColor(Color);
             SpriteRenderer.SetDirection(Direction);
+
+            if (SpriteRenderer is RoSpriteRendererStandard std)
+                std.VerticalOffset = VerticalOffset;
 
             if (Parent != null)
                 SpriteRenderer.SetOffset(Parent.SpriteData.Size / 125f);

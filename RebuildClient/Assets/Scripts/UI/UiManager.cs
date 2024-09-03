@@ -32,6 +32,7 @@ public class UiManager : MonoBehaviour
     [NonSerialized] public bool IsDraggingItem;
     private IItemDropTarget HoveredDropTarget;
     private bool canChangeSkillLevel;
+    public bool IsCanvasVisible => canvas.enabled;
 
     public static UiManager Instance
     {

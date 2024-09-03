@@ -124,11 +124,11 @@ namespace Assets.Scripts.Sprites
 			return mesh;
 		}
 
-        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex, int currentFrame, float alpha = 1) 
-            => BuildSpriteMesh(spriteData, currentActionIndex + currentAngleIndex, currentFrame, alpha);
+        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex, int currentFrame, float alpha = 1, float vOffset = 0f) 
+            => BuildSpriteMesh(spriteData, currentActionIndex + currentAngleIndex, currentFrame, alpha, vOffset);
         
 		
-        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentFrame, float alpha = 1)
+        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentFrame, float alpha = 1, float vOffset = 0f)
         {
 	        currentActionIndex = Mathf.Clamp(currentActionIndex, 0, spriteData.Actions.Length - 1);
             var actions = spriteData.Actions[currentActionIndex];
@@ -172,13 +172,14 @@ namespace Assets.Scripts.Sprites
 
 				var offsetX = (Mathf.RoundToInt(sprite.rect.width) % 2 == 1) ? 0.5f : 0f;
 				var offsetY = (Mathf.RoundToInt(sprite.rect.height) % 2 == 1) ? 0.5f : 0f;
-
+				
 				maxX = Mathf.Max(maxX, sprite.rect.width);
 				maxY = Mathf.Max(maxY, sprite.rect.height);
 
 				for (var j = 0; j < verts.Length; j++)
 				{
 					var v = rotation * (verts[j] * scale);
+					v += new Vector3(0, vOffset, 0);
 					outVertices.Add(v + new Vector3(layer.Position.x - offsetX, -(layer.Position.y) + offsetY) / 50f);
 					outUvs.Add(uvs[j]);
 

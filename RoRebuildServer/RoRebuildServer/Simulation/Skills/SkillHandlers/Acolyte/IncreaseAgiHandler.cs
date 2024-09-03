@@ -25,7 +25,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
                 duration = 60;
 
             var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.IncreaseAgi, duration, lvl);
-            target.StatusContainer.AddNewStatusEffect(status);
+            target.AddStatusEffect(status);
 
             var res = DamageInfo.EmptyResult(source.Entity, target.Entity);
             res.AttackSkill = CharacterSkill.IncreaseAgility;

@@ -18,6 +18,7 @@ namespace Assets.Scripts.Objects
         public bool DestroyOnFinish;
         public float Duration;
         public bool DestroyAtEndOfDuration;
+        public float VerticalOffset;
 
         private bool isInit;
         private bool hasStartedAudio;
@@ -56,6 +57,7 @@ namespace Assets.Scripts.Objects
             SpriteAnimator.RaycastForShadow = false;
             SpriteAnimator.State = SpriteState.Idle;
             SpriteAnimator.BaseColor = SpriteColor;
+            SpriteAnimator.VerticalOffset = VerticalOffset;
             SpriteAnimator.OnSpriteDataLoadNoCollider(SpriteData);
             SpriteAnimator.ChangeActionExact(0);
 

@@ -1,8 +1,7 @@
 ﻿using Assets.Scripts.Effects.PrimitiveData;
-using Assets.Scripts.Effects.PrimitiveHandlers;
 using UnityEngine;
 
-namespace Assets.Scripts.Effects.EffectHandlers
+namespace Assets.Scripts.Effects.EffectHandlers.Environment
 {
     [RoEffect("BlueWaterfallEffect")]
     public class BlueWaterfallEffect : IEffectHandler

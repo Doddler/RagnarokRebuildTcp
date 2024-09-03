@@ -4,6 +4,7 @@ using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
+using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -12,22 +13,17 @@ public class PacketRandomTeleport : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-		if (connection.Character == null || connection.Player == null || connection.Character.Map == null)
+        if (!connection.IsPlayerAlive)
+            return;
+
+        Debug.Assert(connection.Player != null);
+        Debug.Assert(connection.Character != null);
+        Debug.Assert(connection.Character.Map != null);
+
+        if (!connection.Player.CanPerformCharacterActions())
             return;
 
         var player = connection.Player;
-        if (player.InActionCooldown())
-        {
-            ServerLogger.Debug("Player random teleport ignored due to cooldown.");
-            return;
-        }
-
-        if (player.Character.State == CharacterState.Dead || player.Character.IsActive == false)
-            return;
-
-        if (player.IsInNpcInteraction)
-            return;
-
         var ch = connection.Character;
         var map = ch.Map;
         

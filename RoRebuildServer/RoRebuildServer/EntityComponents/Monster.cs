@@ -40,6 +40,7 @@ public partial class Monster : IEntityAutoReset
     //private float nextAiUpdate;
 
     public void ResetAiUpdateTime() => nextAiUpdate = 0;
+    public void ResetAiSkillUpdateTime() => nextAiSkillUpdate = 0;
 
     public void AdjustAiUpdateIfShorter(float time)
     {
@@ -325,7 +326,7 @@ public partial class Monster : IEntityAutoReset
         if (CurrentAiState == MonsterAiState.StateDead)
             return;
 
-        CombatEntity.StatusContainer.RemoveAll();
+        CombatEntity.ClearAllStatusEffects();
 
         CurrentAiState = MonsterAiState.StateDead;
         Character.State = CharacterState.Dead;
@@ -336,6 +337,7 @@ public partial class Monster : IEntityAutoReset
         Character.IsActive = false;
         Character.QueuedAction = QueuedAction.None;
         CombatEntity.IsCasting = false;
+        CombatEntity.SetStat(CharacterStat.Disabled, 0); //if it's disabled in death it might not be able to TryRespawn
 
         skillState.ResetAllCooldowns();
 
@@ -513,8 +515,7 @@ public partial class Monster : IEntityAutoReset
             && Character.State != CharacterState.Dead
             && !CombatEntity.IsCasting
             && !Character.InAttackCooldown
-            && CurrentAiState !=
-            MonsterAiState.StateAttacking //we handle this check on every attack in OnPerformAttack in Monster.Ai.cs
+            && CurrentAiState != MonsterAiState.StateAttacking //we handle this check on every attack in OnPerformAttack in Monster.Ai.cs
             && Character.QueuedAction != QueuedAction.Cast)
         {
             AiSkillScanUpdate();
@@ -585,13 +586,11 @@ public partial class Monster : IEntityAutoReset
     {
         if (Character.Map?.PlayerCount == 0)
             return;
-
-
-
+        
         if (nextAiUpdate > Time.ElapsedTimeFloat)
             return;
 
-        if (CombatEntity.IsCasting)
+        if (GetStat(CharacterStat.Disabled) > 0 || CombatEntity.IsCasting)
             return;
 
         if (Character.QueuedAction == QueuedAction.None || Character.QueuedAction == QueuedAction.Move)

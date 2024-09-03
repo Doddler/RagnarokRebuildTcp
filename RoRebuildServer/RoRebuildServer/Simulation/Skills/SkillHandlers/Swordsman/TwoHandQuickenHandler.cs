@@ -22,7 +22,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
                 timing = 200;
 
             var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.TwoHandQuicken, 180f, timing);
-            source.StatusContainer.AddNewStatusEffect(status);
+            source.AddStatusEffect(status);
             
             //source.SetStat(CharacterStat.AspdBonus, timing);
             //source.UpdateStats();

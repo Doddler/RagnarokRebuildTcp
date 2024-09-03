@@ -4,6 +4,20 @@ namespace Assets.Scripts.Effects
 {
     public static class EffectHelpers
     {
+        private static Material noZTestMaterial;
+
+        public static Material NoZTestMaterial
+        {
+            get
+            {
+                if (noZTestMaterial != null)
+                    return noZTestMaterial;
+                noZTestMaterial = new Material(ShaderCache.Instance.SpriteShaderNoZTest);
+                noZTestMaterial.renderQueue = 3005; //above water and all other sprites
+                return noZTestMaterial;
+            }
+        }
+
         public static bool TryChangeAndCycleColor(Color color, Vector3 change, out Color colorOut)
         {
             var needsCycle = false;
@@ -14,7 +28,7 @@ namespace Assets.Scripts.Effects
             colorOut = new Color(red, blue, green, color.a);
             return needsCycle;
         }
-        
+
         public static bool TryChangeAndCycleValue(float val, float change, float lowBounds, float highBounds, out float valOut)
         {
             if (val >= highBounds)

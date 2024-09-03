@@ -30,6 +30,7 @@ namespace Assets.Scripts.Sprites
         public SortingGroup SortingGroup;
 
         public Material OverrideMaterial;
+        public float VerticalOffset;
 
         private static Material belowWaterMat;
         private static Material aboveWaterMat;
@@ -281,7 +282,7 @@ namespace Assets.Scripts.Sprites
             if (meshCache.TryGetValue(id, out var mesh))
                 return mesh;
 
-            var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, ActionId, CurrentAngleIndex, CurrentFrame);
+            var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, ActionId, CurrentAngleIndex, CurrentFrame, 1f, VerticalOffset);
 
             meshCache.Add(id, newMesh);
 

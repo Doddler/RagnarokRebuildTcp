@@ -483,6 +483,17 @@
       "SoundFile": "ac_concentration",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 44,
+      "Name": "HammerFall",
+      "ImportEffect": true,
+      "Billboard": true,
+      "StrFile": "crashearth",
+      "Sprite": "",
+      "SoundFile": "black_hammerfall",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

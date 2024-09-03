@@ -71,6 +71,7 @@ public enum CharacterStat
     AddMDef,
     AddFlee,
     AddHit,
+    Disabled,
     MonsterStatsMax, //any stats after this are stats only players will be able to hold.
 
     WeaponMastery,

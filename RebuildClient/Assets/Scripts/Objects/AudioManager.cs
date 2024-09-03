@@ -180,7 +180,7 @@ namespace Assets.Scripts.Objects
         }
 
 
-        public void OneShotSoundEffect(int ownerId, string filename, Vector3 position, float volume = 1f)
+        public void OneShotSoundEffect(int ownerId, string filename, Vector3 position, float volume = 1f, float delayTime = 0f)
         {
             var channel = FindFreeAudioChannel(ownerId, filename);
 
@@ -189,7 +189,7 @@ namespace Assets.Scripts.Objects
                 channelUsageInfo[channel].Filename = filename;
                 channelUsageInfo[channel].OwnerId = ownerId;
                 
-                entityChannelInUse[channel] = entityChannels[channel].PlayAudioClip(filename, position, volume);
+                entityChannelInUse[channel] = entityChannels[channel].PlayAudioClip(filename, position, volume, delayTime);
             }
         }
         //
@@ -233,7 +233,7 @@ namespace Assets.Scripts.Objects
         {
             AddressableUtility.Load<AudioClip>(gameObject, "Assets/Music/" + name, OnLoad);
         }
-
+        
         public void Update()
         {
         }

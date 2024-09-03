@@ -4,6 +4,7 @@ using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
+using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
@@ -14,6 +15,13 @@ public class PacketAdminRequestMove : IClientPacketHandler
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
         if (!connection.IsPlayerAlive)
+            return;
+
+        Debug.Assert(connection.Player != null);
+        Debug.Assert(connection.Character != null);
+        Debug.Assert(connection.Character.Map != null);
+
+        if (!connection.Player.CanPerformCharacterActions())
             return;
 
         if (!connection.IsAdmin && !ServerConfig.DebugConfig.EnableWarpCommandForEveryone)
