@@ -51,6 +51,7 @@ namespace Assets.Scripts.Sprites
         public Color Color;
         public float Angle;
         public float SpriteOffset;
+        public int PaletteId;
         public RoSpriteData SpriteData;
 
         //public Direction Direction;
@@ -282,7 +283,7 @@ namespace Assets.Scripts.Sprites
             if (meshCache.TryGetValue(id, out var mesh))
                 return mesh;
 
-            var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, ActionId, CurrentAngleIndex, CurrentFrame, 1f, VerticalOffset);
+            var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, ActionId, CurrentAngleIndex, CurrentFrame, 1f, VerticalOffset, PaletteId);
 
             meshCache.Add(id, newMesh);
 

@@ -25,14 +25,12 @@ public class Npc : IEntityAutoReset
     public WorldObject Character = null!;
     public string FullName { get; set; } = null!;
     public string Name { get; set; } = null!; //making this a property makes it accessible via npc scripting
+    public string EventType = null!;
 
     public AreaOfEffect? AreaOfEffect;
 
     public EntityList? Mobs;
     public int MobCount => Mobs?.Count ?? 0;
-
-    public EntityList? Events;
-    public int EventsCount => Events?.Count ?? 0;
 
     private int[]? valuesInt;
     private string[]? valuesString;
@@ -61,6 +59,7 @@ public class Npc : IEntityAutoReset
     public int[] ValuesInt => valuesInt ??= ArrayPool<int>.Shared.Rent(NpcInteractionState.StorageCount);
     public string[] ValuesString => valuesString ??= ArrayPool<string>.Shared.Rent(NpcInteractionState.StorageCount);
     public bool IsOwnerAlive => Owner.IsAlive() && Owner.TryGet<WorldObject>(out var obj) && obj.State != CharacterState.Dead;
+    public int EventsCount => Character.Events?.Count ?? 0;
 
     public void Update()
     {
@@ -84,16 +83,10 @@ public class Npc : IEntityAutoReset
     {
         if (AreaOfEffect != null)
         {
+            ServerLogger.LogWarning($"We are resetting the area of effect state of NPC '{Name}', but it shouldn't have one at this point.");
             AreaOfEffect.Reset();
             World.Instance.ReturnAreaOfEffect(AreaOfEffect);
             AreaOfEffect = null!;
-        }
-
-        if (Events != null)
-        {
-            Events.Clear();
-            EntityListPool.Return(Events);
-            Events = null;
         }
 
         if (valuesInt != null)
@@ -110,6 +103,8 @@ public class Npc : IEntityAutoReset
         ParamString = null;
         Character = null!;
         currentSignalTarget = null;
+        Name = "";
+        EventType = null!;
     }
 
     public void OnMobKill()
@@ -310,7 +305,7 @@ public class Npc : IEntityAutoReset
         var area = Area.CreateAroundPoint(new Position(x, y), width, height);
 
         EnsureMobListCreated(1);
-        var mob = CreateSingleMonsterWithAutoOwnership(Character.Map, monster, area);
+        var mob = CreateSingleMonsterWithAutoOwnership(Character.Map, monster, area, MonsterAiType.AiEmpty);
 
         var m = mob.Get<Monster>();
         m.ChangeAiSkillHandler(type);
@@ -349,12 +344,12 @@ public class Npc : IEntityAutoReset
             CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
     }
 
-    private Entity CreateSingleMonsterWithAutoOwnership(Map map, MonsterDatabaseInfo monster, Area spawnArea)
+    private Entity CreateSingleMonsterWithAutoOwnership(Map map, MonsterDatabaseInfo monster, Area spawnArea, MonsterAiType aiType = MonsterAiType.AiMinion)
     {
         var m = World.Instance.CreateMonster(map, monster, spawnArea, null);
 
         if (IsEvent && Owner.TryGet<WorldObject>(out var owner) && owner.Type == CharacterType.Monster)
-            owner.Monster.AddChild(ref m);
+            owner.Monster.AddChild(ref m, aiType);
         else
         {
             Mobs.Add(m);
@@ -395,15 +390,16 @@ public class Npc : IEntityAutoReset
         var chara = Entity.Get<WorldObject>();
         var npc = chara.Npc;
 
-        if (npc.Events == null)
+
+        if (chara.Events == null)
             return;
 
-        npc.Events.ClearInactive();
+        chara.Events.ClearInactive();
 
-        for (var i = 0; i < npc.Events.Count; i++)
-            npc.Events[i].Get<Npc>().EndEvent();
+        for (var i = 0; i < chara.Events.Count; i++)
+            chara.Events[i].Get<Npc>().EndEvent();
 
-        npc.Events.Clear();
+        chara.Events.Clear();
         //OnMobKill();
     }
 
@@ -500,15 +496,16 @@ public class Npc : IEntityAutoReset
 
     public void SignalMyEvents(string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
     {
-        if (Events == null)
+        var events = Character.Events;
+        if (events == null)
             return;
 
-        for (var i = 0; i < Events.Count; i++)
+        for (var i = 0; i < events.Count; i++)
         {
-            var evt = Events[i];
+            var evt = events[i];
             if (!evt.IsAlive())
                 continue;
-            var npc = Events[i].Get<Npc>();
+            var npc = events[i].Get<Npc>();
             npc.OnSignal(this, signal, value1, value2, value3, value4);
         }
     }
@@ -575,18 +572,26 @@ public class Npc : IEntityAutoReset
         if (chara.Map == null)
             throw new Exception($"Npc {FullName} attempting to create event, but the npc is not currently attached to a map.");
 
-        var eventObj = World.Instance.CreateEvent(chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
+        var eventObj = World.Instance.CreateEvent(Character.Entity, chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
         if (Owner.IsAlive())
             eventObj.Get<Npc>().Owner = Owner;
-        Events ??= EntityListPool.Get();
-        Events.ClearInactive();
-        Events.Add(eventObj);
+        Character.Events ??= EntityListPool.Get();
+        Character.Events.ClearInactive();
+        Character.Events.Add(eventObj);
     }
 
     public void EndEvent()
     {
         if (!IsHidden())
             HideNpc();
+
+        if (AreaOfEffect != null)
+        {
+            Character.Map?.RemoveAreaOfEffect(AreaOfEffect);
+            AreaOfEffect.Reset();
+            World.Instance.ReturnAreaOfEffect(AreaOfEffect);
+            AreaOfEffect = null;
+        }
 
         Owner = Entity.Null;
         World.Instance.FullyRemoveEntity(ref Entity);

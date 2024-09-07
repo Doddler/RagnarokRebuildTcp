@@ -376,6 +376,7 @@ internal class DataLoader
                 Element = monster.Element,
                 Race = monster.Race,
                 AiType = (MonsterAiType)Enum.Parse(typeof(MonsterAiType), monster.MonsterAi),
+                Special = monster.Special,
                 Name = monster.Name
             });
         }
@@ -428,6 +429,8 @@ internal class DataLoader
         var itemType = typeof(INpcLoader);
         foreach (var type in assembly.GetTypes().Where(t => t.IsAssignableTo(itemType)))
         {
+            if (type == itemType)
+                continue;
             var handler = (INpcLoader)Activator.CreateInstance(type)!;
             handler.Load();
         }

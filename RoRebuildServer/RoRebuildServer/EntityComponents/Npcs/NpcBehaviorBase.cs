@@ -1,4 +1,5 @@
 ﻿using RebuildSharedData.Enum;
+using RoRebuildServer.EntityComponents.Util;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
 
@@ -24,6 +25,8 @@ public abstract class NpcBehaviorBase
     {
         
     }
+
+    public virtual void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
 
     public virtual void OnTimer(Npc npc, float lastTime, float newTime)
     {

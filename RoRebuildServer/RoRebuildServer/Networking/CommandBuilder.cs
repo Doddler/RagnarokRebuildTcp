@@ -147,12 +147,19 @@ public static class CommandBuilder
             packet.Write((byte)ce.GetStat(CharacterStat.Level));
             packet.Write(ce.GetStat(CharacterStat.MaxHp));
             packet.Write(ce.GetStat(CharacterStat.Hp));
+
+            var status = ce.GetStatusEffectData();
+            if(status == null)
+                packet.Write(false);
+            else
+                status.PrepareCreateEntityMessage(packet);
         }
         if (c.Type == CharacterType.Player)
         {
             var player = c.Entity.Get<Player>();
             packet.Write((byte)player.HeadFacing);
-            packet.Write((byte)player.HeadId);
+            packet.Write((byte)player.GetData(PlayerStat.Head));
+            packet.Write((byte)player.GetData(PlayerStat.HairId));
             packet.Write((byte)player.WeaponClass);
             packet.Write(player.IsMale);
             packet.Write(player.Name);
@@ -164,7 +171,7 @@ public static class CommandBuilder
             packet.Write(npc.Name);
             packet.Write(npc.HasInteract);
         }
-
+        
         if (c.Hidden && !isSelf)
             ServerLogger.LogWarning($"We are sending the data of hidden character \"{c.Name}\" to the client!");
 
@@ -301,8 +308,25 @@ public static class CommandBuilder
         packet.Write((byte)di.Result);
         packet.Write((byte)di.HitCount);
         packet.Write(di.AttackMotionTime);
-        //packet.Write(caster.IsMoving);
+        
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
 
+    public static void SkillExecuteIndirect(WorldObject caster, WorldObject target, DamageInfo di)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.SkillIndirect, 48);
+
+        packet.Write(caster.Id);
+        packet.Write(target.Id);
+        packet.Write(caster.Position);
+        packet.Write(di.Damage);
+        packet.Write((byte)di.AttackSkill);
+        packet.Write((byte)di.HitCount);
+        packet.Write((byte)di.Result);
+        
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
@@ -354,12 +378,14 @@ public static class CommandBuilder
         packet.Write(attacker.Id);
         packet.Write(target.Id);
         packet.Write((byte)attacker.FacingDirection);
+        packet.Write((byte)di.AttackSkill);
+        packet.Write((byte)di.HitCount);
+        packet.Write((byte)di.Result);
         packet.Write(attacker.Position);
         packet.Write(di.Damage);
-        packet.Write((byte)di.HitCount);
         packet.Write(di.AttackMotionTime);
         packet.Write(showAttackMotion);
-        packet.Write((byte)di.Result);
+
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -375,7 +401,6 @@ public static class CommandBuilder
         packet.Write(di.Damage);
         packet.Write(di.HitCount);
         packet.Write(di.Time);
-        packet.Write(di.HitLockTime);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -691,7 +716,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SendHitMulti(WorldObject c, float delayTime, int damage)
+    public static void SendHitMulti(WorldObject c, int damage)
     {
         if (!HasRecipients())
             return;

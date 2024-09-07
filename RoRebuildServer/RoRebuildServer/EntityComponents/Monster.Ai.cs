@@ -109,8 +109,7 @@ public partial class Monster
 
         return false;
     }
-
-
+    
     /// <summary>
     /// Checks the status of the monster's current target, and returns true if the monster can no longer see or reach that target.
     /// </summary>
@@ -125,10 +124,15 @@ public partial class Monster
         if (targetCharacter.Position == Character.Position)
             return false;
 
+        var outOfAttackRange = InEnemyOutOfAttackRange();
+
+        if (CombatEntity.BodyState.HasFlag(BodyStateFlags.Blind) && outOfAttackRange)
+            return true;
+
         if (targetCharacter.Position.SquareDistance(Character.Position) > MonsterBase.ChaseDist + 2)
             return true;
 
-        if (Character.MoveSpeed < 0 && InEnemyOutOfAttackRange())
+        if (Character.MoveSpeed < 0 && outOfAttackRange)
             return true;
 
         if (Character.Map != null && !Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
@@ -282,6 +286,9 @@ public partial class Monster
     private bool InTargetSearch()
     {
         if (Character.Map == null || Character.Map.PlayerCount == 0)
+            return false;
+
+        if (CombatEntity.BodyState.HasFlag(BodyStateFlags.Blind))
             return false;
 
         if (!FindRandomTargetInRange(MonsterBase.ScanDist, out var newTarget))

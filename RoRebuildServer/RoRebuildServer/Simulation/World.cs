@@ -57,6 +57,7 @@ public class World
         Instance = this;
 
         EntityManager.Initialize(initialEntityCount);
+        AoEPool = new DefaultObjectPool<AreaOfEffect>(new AreaOfEffectPoolPolicy(), 128);
 
         foreach (var instanceEntry in DataManager.InstanceList)
         {
@@ -75,7 +76,7 @@ public class World
             }
         }
 
-        AoEPool = new DefaultObjectPool<AreaOfEffect>(new AreaOfEffectPoolPolicy(), 64);
+        
         moveRequests = Channel.CreateUnbounded<MapMoveRequest>(new UnboundedChannelOptions() {AllowSynchronousContinuations = false, SingleReader = true, SingleWriter = false});
 
         ServerLogger.Log($"World created using {mapCount} maps across {Instances.Count} instances placing a total of {nextEntityId} entities.");
@@ -235,16 +236,15 @@ public class World
         
         if (npc.HasTouch)
         {
-            var aoe = new AreaOfEffect()
-            {
-                Area = Area.CreateAroundPoint(spawn.Position, spawn.Width, spawn.Height),
-                Expiration = float.MaxValue,
-                IsActive = true,
-                NextTick = float.MaxValue,
-                SourceEntity = e,
-                Type = AoeType.NpcTouch
-            };
-
+            var aoe = AoEPool.Get();
+            
+            aoe.Area = Area.CreateAroundPoint(spawn.Position, spawn.Width, spawn.Height);
+            aoe.Expiration = float.MaxValue;
+            aoe.IsActive = true;
+            aoe.NextTick = float.MaxValue;
+            aoe.SourceEntity = e;
+            aoe.Type = AoeType.NpcTouch;
+            
             map.CreateAreaOfEffect(aoe);
             npc.AreaOfEffect = aoe;
         }
@@ -258,7 +258,7 @@ public class World
     }
 
     //event is an invisible npc without a spawn definition intended to be transient
-    public Entity CreateEvent(Map map, string eventName, Position pos, int param1, int param2, int param3, int param4, string? paramString)
+    public Entity CreateEvent(Entity owner, Map map, string eventName, Position pos, int param1, int param2, int param3, int param4, string? paramString)
     {
         var e = EntityManager.New(EntityType.Npc);
         var ch = e.Get<WorldObject>();
@@ -279,12 +279,14 @@ public class World
         ch.Init(ref e);
         npc.FullName = eventName;
         npc.Name = eventName;
+        npc.EventType = eventName;
         npc.HasInteract = false;
         npc.HasTouch = false;
         npc.Entity = e;
         npc.Behavior = behavior;
         npc.Character = ch;
         npc.IsEvent = true;
+        npc.Owner = owner;
 
         map.AddEntity(ref e);
 

@@ -392,7 +392,9 @@ namespace Assets.Scripts
         public Texture2D Atlas;
         public int Size;
         public float AverageWidth;
+        public float StandingHeight;
         public AudioClip[] Sounds;
         public int AttackFrameTime;
+        public int SpritesPerPalette;
     }
 }

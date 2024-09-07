@@ -19,7 +19,8 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
 
         var id = msg.ReadInt32();
         var val = msg.ReadInt32();
-        
+        var subId = msg.ReadInt32();
+
         switch (id)
         {
             default:
@@ -28,10 +29,13 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
                 p.SetData(PlayerStat.Gender, GameRandom.NextInclusive(0, 1));
                 break;
             case 1:
-                if(val >= 0 && val <= 31)
+                if (subId == -1)
+                    subId = GameRandom.NextInclusive(0, 8);
+                if(val >= 0 && val <= 41)
                     p.SetData(PlayerStat.Head, val);
                 else
                     p.SetData(PlayerStat.Head, GameRandom.NextInclusive(0, 31));
+                p.SetData(PlayerStat.HairId, subId);
                 break;
             case 2:
                 if(val >= 0 && val <= 1)

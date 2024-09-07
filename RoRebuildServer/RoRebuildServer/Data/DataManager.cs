@@ -13,6 +13,7 @@ using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
+using RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 
 namespace RoRebuildServer.Data;
 
@@ -138,6 +139,7 @@ public static class DataManager
 
         //the things we actually want to load
         loader.LoadMonsterSpawnMinions();
+        loader.LoadNpcScripts(Assembly.GetAssembly(typeof(FirewallObjectEvent))!); //load from local assembly
         loader.LoadNpcScripts(ScriptAssembly);
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
         loader.LoadItemInteractions(ScriptAssembly);
@@ -188,6 +190,7 @@ public static class DataManager
 
         SkillTree = loader.LoadSkillTree();
         loader.LoadMonsterSpawnMinions();
+        loader.LoadNpcScripts(Assembly.GetAssembly(typeof(FirewallObjectEvent))!);
         loader.LoadNpcScripts(ScriptAssembly);
         loader.LoadMonsterSkillAi(ScriptAssembly);
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);

@@ -4,146 +4,337 @@
 		"Id": 0,
 		"Name": "Head1",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/1_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/1_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/1_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/1_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/1_남_<id>.spr"
+
 	},{
 		"Id": 1,
 		"Name": "Head2",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/2_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/2_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/2_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/2_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/2_남_<id>.spr"
+
 	},{
 		"Id": 2,
 		"Name": "Head3",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/3_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/3_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/3_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/3_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/3_남_<id>.spr"
+
 	},{
 		"Id": 3,
 		"Name": "Head4",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/4_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/4_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/4_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/4_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/4_남_<id>.spr"
+
 	},{
 		"Id": 4,
 		"Name": "Head5",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/5_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/5_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/5_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/5_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/5_남_<id>.spr"
+
 	},{
 		"Id": 5,
 		"Name": "Head6",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/6_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/6_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/6_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/6_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/6_남_<id>.spr"
+
 	},{
 		"Id": 6,
 		"Name": "Head7",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/7_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/7_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/7_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/7_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/7_남_<id>.spr"
+
 	},{
 		"Id": 7,
 		"Name": "Head8",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/8_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/8_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/8_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/8_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/8_남_<id>.spr"
+
 	},{
 		"Id": 8,
 		"Name": "Head9",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/9_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/9_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/9_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/9_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/9_남_<id>.spr"
+
 	},{
 		"Id": 9,
 		"Name": "Head10",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/10_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/10_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/10_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/10_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/10_남_<id>.spr"
+
 	},{
 		"Id": 10,
 		"Name": "Head11",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/11_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/11_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/11_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/11_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/11_남_<id>.spr"
+
 	},{
 		"Id": 11,
 		"Name": "Head12",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/12_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/12_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/12_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/12_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/12_남_<id>.spr"
+
 	},{
 		"Id": 12,
 		"Name": "Head13",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/13_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/13_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/13_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/13_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/13_남_<id>.spr"
+
 	},{
 		"Id": 13,
 		"Name": "Head14",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/14_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/14_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/14_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/14_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/14_남_<id>.spr"
+
 	},{
 		"Id": 14,
 		"Name": "Head15",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/15_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/15_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/15_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/15_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/15_남_<id>.spr"
+
 	},{
 		"Id": 15,
 		"Name": "Head16",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/16_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/16_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/16_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/16_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/16_남_<id>.spr"
+
 	},{
 		"Id": 16,
 		"Name": "Head17",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/17_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/17_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/17_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/17_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/17_남_<id>.spr"
+
 	},{
 		"Id": 17,
 		"Name": "Head18",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/18_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/18_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/18_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/18_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/18_남_<id>.spr"
+
 	},{
 		"Id": 18,
 		"Name": "Head19",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/19_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/19_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/19_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/19_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/19_남_<id>.spr"
+
 	},{
 		"Id": 19,
 		"Name": "Head20",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/20_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/20_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/20_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/20_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/20_남_<id>.spr"
+
 	},{
 		"Id": 20,
 		"Name": "Head21",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/21_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/21_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/21_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/21_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/21_남_<id>.spr"
+
 	},{
 		"Id": 21,
 		"Name": "Head22",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/22_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/22_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/22_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/22_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/22_남_<id>.spr"
+
 	},{
 		"Id": 22,
 		"Name": "Head23",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/23_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/23_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/23_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/23_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/23_남_<id>.spr"
+
 	},{
 		"Id": 23,
 		"Name": "Head24",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/24_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/24_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/24_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/24_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/24_남_<id>.spr"
+
 	},{
 		"Id": 24,
 		"Name": "Head25",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/25_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/25_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/25_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/25_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/25_남_<id>.spr"
+
 	},{
 		"Id": 25,
 		"Name": "Head26",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/26_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/26_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/26_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/26_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/26_남_<id>.spr"
+
 	},{
 		"Id": 26,
 		"Name": "Head27",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/27_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/27_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/27_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/27_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/27_남_<id>.spr"
+
 	},{
 		"Id": 27,
 		"Name": "Head28",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/28_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/28_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/28_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/28_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/28_남_<id>.spr"
+
 	},{
 		"Id": 28,
 		"Name": "Head29",
 		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/29_여.spr",
-		"SpriteMale": "Assets/Sprites/Characters/HeadMale/29_남.spr"
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/29_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/29_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/29_남_<id>.spr"
+
+	},{
+		"Id": 29,
+		"Name": "Head30",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/30_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/30_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/30_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/30_남_<id>.spr"
+
+	},{
+		"Id": 30,
+		"Name": "Head31",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/31_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/31_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/31_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/31_남_<id>.spr"
+
+	},{
+		"Id": 31,
+		"Name": "Head32",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/32_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/32_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/32_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/32_남_<id>.spr"
+
+	},{
+		"Id": 32,
+		"Name": "Head33",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/33_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/33_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/33_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/33_남_<id>.spr"
+
+	},{
+		"Id": 33,
+		"Name": "Head34",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/34_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/34_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/34_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/34_남_<id>.spr"
+
+	},{
+		"Id": 34,
+		"Name": "Head35",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/35_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/35_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/35_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/35_남_<id>.spr"
+
+	},{
+		"Id": 35,
+		"Name": "Head36",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/36_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/36_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/36_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/36_남_<id>.spr"
+
+	},{
+		"Id": 36,
+		"Name": "Head37",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/37_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/37_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/37_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/37_남_<id>.spr"
+
+	},{
+		"Id": 37,
+		"Name": "Head38",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/38_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/38_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/38_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/38_남_<id>.spr"
+
+	},{
+		"Id": 38,
+		"Name": "Head39",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/39_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/39_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/39_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/39_남_<id>.spr"
+
+	},{
+		"Id": 39,
+		"Name": "Head40",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/40_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/40_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/40_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/40_남_<id>.spr"
+
+	},{
+		"Id": 40,
+		"Name": "Head41",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/41_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/41_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/41_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/41_남_<id>.spr"
+
+	},{
+		"Id": 41,
+		"Name": "Head42",
+		"SpriteFemale": "Assets/Sprites/Characters/HeadFemale/42_여.spr",
+		"SpriteMale": "Assets/Sprites/Characters/HeadMale/42_남.spr",
+		"AltFemale": "Assets/Sprites/Characters/HeadFemale/42_여_<id>.spr",
+		"AltMale": "Assets/Sprites/Characters/HeadMale/42_남_<id>.spr"
+
 	}]
 }

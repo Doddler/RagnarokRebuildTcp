@@ -33,6 +33,12 @@ Type = "Debuff"
 # Player Buffs
 #----------------------------------
 
+[PushCart]
+Name = "Push Cart"
+Type = "Buff"
+CanDispel = false
+CanDisable = false
+
 [TwoHandQuicken]
 Name = "Two-Hand Quicken"
 Type = "Buff"

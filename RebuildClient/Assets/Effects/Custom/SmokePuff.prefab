@@ -44,11 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b66725d8a7497bb4b55dcd2f9bbe22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpriteData: {fileID: -539152567261871314, guid: cb0ab61f3a229b24bb8319dbf187fac9,
-    type: 3}
+  SpriteData: {fileID: 11400000, guid: 1efe7ae83c54ced48aeb8dd67c779509, type: 2}
   OverrideMaterial: {fileID: 0}
   AudioClip: {fileID: 8300000, guid: 6069e12b513367e4ba6a461bce4d85c1, type: 3}
+  SpriteColor: {r: 1, g: 1, b: 1, a: 1}
   IsLoop: 0
   UseZTest: 0
-  RandomStart: 0
+  RandomStart: 1
   DestroyOnFinish: 1
+  Duration: 0
+  DestroyAtEndOfDuration: 0
+  VerticalOffset: 0
+  SpriteAnimator: {fileID: 0}

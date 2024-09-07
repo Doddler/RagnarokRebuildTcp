@@ -179,11 +179,7 @@ StateIdle:
         }
     }
 
-	TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == FireBolt] -> { @AmonRaMinionSpawn() }
-    TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == ThunderStorm] -> { @AmonRaMinionSpawn() }
-    TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == LightningBolt] -> { @AmonRaMinionSpawn() }
-    TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == ColdBolt] -> { @AmonRaMinionSpawn() }
-    TryCast(CallMinion, 1, 1000, 0.3s, 5000, HideSkillName)[LastDamageSourceType == DoubleStrafe] -> { @AmonRaMinionSpawn() }
+	TryCast(CallMinion, 1, 100%, 0.3s, 5s, HideSkillName)[WasRangedAttacked] -> { @AmonRaMinionSpawn() }
 }
 
 

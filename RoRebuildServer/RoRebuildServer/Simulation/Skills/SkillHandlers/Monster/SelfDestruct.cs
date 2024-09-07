@@ -25,7 +25,7 @@ public class SelfDestruct : SkillHandlerBase
         map.GatherEnemiesInArea(ch, ch.Position, 3, targetList, true, true);
         map.GatherAlliesInRange(ch, 3, targetList, true, true);
         
-        var baseDamage = source.GetStat(CharacterStat.Hp);
+        var baseDamage = source.GetStat(CharacterStat.Hp) / 2;
         var minAtk = (int)(baseDamage * 0.8f);
         var maxAtk = (int)(baseDamage * 1.2f);
         
@@ -37,7 +37,11 @@ public class SelfDestruct : SkillHandlerBase
             
             var res = source.CalculateCombatResultUsingSetAttackPower(e.Get<CombatEntity>(), minAtk, maxAtk, lvl, 1, 
                 AttackFlags.Physical | AttackFlags.CanHarmAllies | AttackFlags.IgnoreDefense | AttackFlags.IgnoreEvasion, CharacterSkill.SelfDestruct, AttackElement.Special);
-            res.KnockBack = 3;
+            res.KnockBack = res.Damage switch
+            {
+                >5000 => 7,
+                _ => 5
+            };
             
             if(res.Damage > 0)
                 source.ExecuteCombatResult(res, true, false);

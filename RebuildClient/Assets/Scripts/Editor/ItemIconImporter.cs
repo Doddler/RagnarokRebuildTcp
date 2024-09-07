@@ -98,6 +98,9 @@ namespace Assets.Scripts.Editor
                 // Debug.Log(sprite);
                 // var texOut = TextureImportHelper.SaveAndUpdateTexture(texture, );
             
+                if(sprite == null)
+                    Debug.LogWarning($"Unexpectedly we do not have a sprite! Expected to load {destPath}");
+                
                 if(!sprites.Contains(sprite))
                     sprites.Add(sprite);
             }

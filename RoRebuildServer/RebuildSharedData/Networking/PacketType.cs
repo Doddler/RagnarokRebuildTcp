@@ -35,6 +35,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] StopCast,
     [ServerOnlyPacket] CreateCastCircle,
     Skill,
+    [ServerOnlyPacket] SkillIndirect,
     [ServerOnlyPacket] SkillError,
     [ServerOnlyPacket] ErrorMessage,
     ChangeTarget,

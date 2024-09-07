@@ -124,11 +124,11 @@ namespace Assets.Scripts.Sprites
 			return mesh;
 		}
 
-        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex, int currentFrame, float alpha = 1, float vOffset = 0f) 
-            => BuildSpriteMesh(spriteData, currentActionIndex + currentAngleIndex, currentFrame, alpha, vOffset);
+        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentAngleIndex, int currentFrame, float alpha = 1, float vOffset = 0f, int paletteId = 0) 
+            => BuildSpriteMesh(spriteData, currentActionIndex + currentAngleIndex, currentFrame, alpha, vOffset, paletteId);
         
 		
-        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentFrame, float alpha = 1, float vOffset = 0f)
+        public static Mesh BuildSpriteMesh(RoSpriteData spriteData, int currentActionIndex, int currentFrame, float alpha = 1, float vOffset = 0f, int paletteId = 0)
         {
 	        currentActionIndex = Mathf.Clamp(currentActionIndex, 0, spriteData.Actions.Length - 1);
             var actions = spriteData.Actions[currentActionIndex];
@@ -156,6 +156,9 @@ namespace Assets.Scripts.Sprites
 
 			var maxX = 0f;
 			var maxY = 0f;
+			var layersPerPalette = spriteData.Sprites.Length / spriteData.SpritesPerPalette;
+			if (paletteId * layersPerPalette > spriteData.Sprites.Length)
+				paletteId = 0;
 
 			for (var i = 0; i < frame.Layers.Length; i++)
 			{
@@ -163,7 +166,7 @@ namespace Assets.Scripts.Sprites
 
 				if (layer.Index < 0)
 					continue;
-				var sprite = spriteData.Sprites[layer.Index];
+				var sprite = spriteData.Sprites[layersPerPalette * paletteId + layer.Index];
 				var verts = sprite.vertices;
 				var uvs = sprite.uv;
 

@@ -103,7 +103,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var result = (AttackResult)msg.ReadByte();
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
-            // var moveAfter = msg.ReadBoolean();
 
             var attack = new AttackResultData()
             {
@@ -121,9 +120,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             {
                 //if the skill handler is not flagged to execute without a source this will do nothing.
                 //we still want to execute when a special effect plays on a target though.
-
                 ClientSkillHandler.ExecuteSkill(null, ref attack);
-                //StartCoroutine(DamageEvent(dmg, 0f, hits, 0, controllable2));
                 
                 if(dmg != 0)
                     controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits, result == AttackResult.CriticalDamage);
@@ -134,24 +131,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 controllable.LookAtOrDefault(controllable2, dir);
 
             if (result == AttackResult.Heal || result == AttackResult.Invisible)
-            {
                 motionTime = 0;
-            }
             else
-            {
-                // if (hasTarget)
-                // {
-                //     if (controllable.WeaponClass == 12) //don't hardcode id for bow!! Change this!
-                //     {
-                //         var arrow = ArcherArrow.CreateArrow(controllable.gameObject, controllable2.gameObject, motionTime);
-                //         controllable2.Messages.SendHitEffect(controllable, motionTime + arrow.Duration);
-                //     }
-                //     else
-                //         controllable2.Messages.SendHitEffect(controllable, motionTime);
-                // }
-
                 Network.AttackMotion(controllable, pos, dir, motionTime, controllable2);
-            }
 
             controllable.ShowSkillCastMessage(skill, 3);
 
@@ -161,13 +143,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     controllable.Messages.SendMissEffect(motionTime + 0.2f * i);
             }
 
-            if (hasTarget && controllable.SpriteAnimator.IsInitialized)
+            if (hasTarget)
             {
-                if (controllable.SpriteAnimator.SpriteData == null)
-                {
-                    throw new Exception("AAA? " + controllable.gameObject.name + " " + controllable.gameObject);
-                }
-
                 ClientSkillHandler.ExecuteSkill(controllable, ref attack);
 
                 if (result == AttackResult.Heal && dmg != 0)
@@ -175,7 +152,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 
                 if(hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
                     controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits, result == AttackResult.CriticalDamage);
-                //StartCoroutine(DamageEvent(dmg, motionTime, hits, controllable.WeaponClass, controllable2));
             }
         }
 

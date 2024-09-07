@@ -14,6 +14,9 @@ namespace Assets.Scripts.SkillHandlers
         
         public static void StartCastingSkill(ServerControllable src, Vector2Int target, CharacterSkill skillId, int lvl, float castTime) =>
             handlers[(int)skillId].StartSkillCasting(src, target, lvl, castTime);
+        
+        public static void OnHitEffect(ServerControllable target, ref AttackResultData attack) =>
+            handlers[(int)attack.Skill].OnHitEffect(target, ref attack);
 
         public static void ExecuteSkill(ServerControllable src, ref AttackResultData attack)
         {
@@ -32,7 +35,7 @@ namespace Assets.Scripts.SkillHandlers
             else
                 handler.ExecuteSkillTargeted(src, ref attack);
         }
-        
-        
+
+
     }
 }

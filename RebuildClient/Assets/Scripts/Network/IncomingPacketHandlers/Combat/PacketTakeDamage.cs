@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.SkillHandlers;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
 
@@ -20,7 +22,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var dmg = msg.ReadInt32();
             var hitCount = msg.ReadByte();
             var damageTiming = msg.ReadFloat();
-            var lockTime = msg.ReadFloat();
             
             controllable.Messages.SendDamageEvent(null, damageTiming, dmg, hitCount);
         }

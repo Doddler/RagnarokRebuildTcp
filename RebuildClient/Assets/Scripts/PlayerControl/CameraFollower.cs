@@ -464,7 +464,7 @@ namespace Assets.Scripts
             sprite.LockAngle = true;
             sprite.SpriteOrder = 19999; //be in front of everything damn you
 
-            var loader = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/cursors.spr");
+            var loader = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/Misc/cursors.spr");
             loader.Completed += ah =>
             {
                 sprite.OnSpriteDataLoadNoCollider(ah.Result);
@@ -1663,6 +1663,14 @@ namespace Assets.Scripts
                         r.enabled = !r.enabled;
                     }
                 }
+            }
+
+            if (!InTextBox && Input.GetKeyDown(KeyCode.Z))
+            {
+                if (Mathf.Approximately(Time.timeScale, 1f))
+                    Time.timeScale = 0.1f;
+                else
+                    Time.timeScale = 1f;
             }
 
             if (CinemachineMode)

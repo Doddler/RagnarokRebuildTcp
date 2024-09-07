@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
@@ -10,6 +11,7 @@ using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntityComponents;
@@ -53,12 +55,14 @@ public partial class Monster : IEntityAutoReset
     private float timeofLastStateChange;
     //private float timeEnteredCombat;
     private float timeLastCombat;
+    private float timeSinceLastDamage;
     private float createTime;
 
     public void UpdateStateChangeTime() => timeofLastStateChange = Time.ElapsedTimeFloat;
     public float TimeInCurrentAiState => Time.ElapsedTimeFloat - timeofLastStateChange;
     //private float durationInCombat => Target.IsAlive() ? Time.ElapsedTimeFloat - timeEnteredCombat : -1f;
     public float DurationOutOfCombat => !Target.IsAlive() ? Time.ElapsedTimeFloat - timeLastCombat : -1;
+    public float TimeSinceLastDamage => Time.ElapsedTimeFloat - timeSinceLastDamage;
     public float TimeAlive => Time.ElapsedTimeFloat - createTime;
 
     //private float randomMoveCooldown;
@@ -93,6 +97,8 @@ public partial class Monster : IEntityAutoReset
     public MonsterAiState CurrentAiState;
     public MonsterAiState PreviousAiState;
     public CharacterSkill LastDamageSourceType;
+    public int LastAttackRange;
+    public bool WasAttacked;
 
     //private WorldObject searchTarget = null!;
 
@@ -123,6 +129,17 @@ public partial class Monster : IEntityAutoReset
             ServerLogger.LogWarning($"Could not change monster {Character} Ai Skill handler to handler with name {newHandler}");
     }
 
+    public void NotifyOfAttack(ref DamageInfo di)
+    {
+        timeSinceLastDamage = Time.ElapsedTimeFloat;
+        LastDamageSourceType = di.AttackSkill;
+        if (di.Source.TryGet<WorldObject>(out var src))
+            LastAttackRange = Character.Position.DistanceTo(src.Position);
+        else
+            LastAttackRange = 0;
+        WasAttacked = true;
+    }
+
     public void Reset()
     {
         Entity = Entity.Null;
@@ -141,6 +158,9 @@ public partial class Monster : IEntityAutoReset
         skillState = null!; //really should pool these?
         skillAiHandler = null;
         CastSuccessEvent = null;
+        WasAttacked = false;
+        timeSinceLastDamage = 0;
+        LastAttackRange = 0;
 
         Target = Entity.Null;
     }
@@ -185,7 +205,7 @@ public partial class Monster : IEntityAutoReset
         //timeEnteredCombat = float.NegativeInfinity;
     }
 
-    public void AddChild(ref Entity child)
+    public void AddChild(ref Entity child, MonsterAiType newAiType = MonsterAiType.AiEmpty)
     {
         if (!child.IsAlive() && child.Type != EntityType.Monster)
             ServerLogger.LogError($"Cannot AddChild on monster {Character.Name} when child entity {child} is not alive or not a monster.");
@@ -195,7 +215,10 @@ public partial class Monster : IEntityAutoReset
         Children ??= new EntityList();
         Children.Add(child);
 
-        childMon.MakeChild(ref Entity);
+        if(newAiType != MonsterAiType.AiEmpty)
+            childMon.MakeChild(ref Entity);
+        else
+            childMon.MakeChild(ref Entity, newAiType);
     }
 
     public void MakeChild(ref Entity parent, MonsterAiType newAiType = MonsterAiType.AiMinion)
@@ -282,6 +305,8 @@ public partial class Monster : IEntityAutoReset
         SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
 
         var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
+        if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Curse))
+            moveBonus = 0.1f;
         var moveSpeed = MonsterBase.MoveSpeed * moveBonus;
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
@@ -326,7 +351,7 @@ public partial class Monster : IEntityAutoReset
         if (CurrentAiState == MonsterAiState.StateDead)
             return;
 
-        CombatEntity.ClearAllStatusEffects();
+        CombatEntity.OnDeathClearStatusEffects();
 
         CurrentAiState = MonsterAiState.StateDead;
         Character.State = CharacterState.Dead;
@@ -337,6 +362,9 @@ public partial class Monster : IEntityAutoReset
         Character.IsActive = false;
         Character.QueuedAction = QueuedAction.None;
         CombatEntity.IsCasting = false;
+        WasAttacked = false;
+        timeSinceLastDamage = 0;
+        LastAttackRange = 0;
         CombatEntity.SetStat(CharacterStat.Disabled, 0); //if it's disabled in death it might not be able to TryRespawn
 
         skillState.ResetAllCooldowns();
@@ -521,6 +549,7 @@ public partial class Monster : IEntityAutoReset
             AiSkillScanUpdate();
             if (Character.State == CharacterState.Dead) //if we died during our own skill handler, bail
                 return;
+            WasAttacked = false;
         }
 
         //Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
@@ -559,7 +588,7 @@ public partial class Monster : IEntityAutoReset
         }
 
         Character.LastAttacked = Entity.Null;
-
+        
         if (Character.Map != null && Character.Map.PlayerCount == 0)
         {
             nextAiUpdate = Time.ElapsedTimeFloat + 2f + GameRandom.NextFloat(0f, 1f);
@@ -586,7 +615,7 @@ public partial class Monster : IEntityAutoReset
     {
         if (Character.Map?.PlayerCount == 0)
             return;
-        
+
         if (nextAiUpdate > Time.ElapsedTimeFloat)
             return;
 

@@ -30,11 +30,7 @@ public class MonsterDatabaseInfo
     public CharacterElement Element { get; set; }
     public CharacterRace Race { get; set; }
     public MonsterAiType AiType { get; set; }
+    public CharacterSpecialType Special { get; set; }
     public List<MonsterSpawnMinions>? Minions { get; set; }
     public float MoveSpeed { get; set; }
-
-    public bool IsElementBaseType(CharacterElement targetType)
-    {
-        return Element >= targetType && Element <= targetType + 3; //checks if element 1-4 is equal to targetType (assuming we pass element 1)
-    }
 }

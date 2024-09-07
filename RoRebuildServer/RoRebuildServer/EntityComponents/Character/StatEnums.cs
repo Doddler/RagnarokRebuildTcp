@@ -6,6 +6,7 @@ public enum PlayerStat
     Status,
     Gender,
     Head,
+    HairId,
     Job,
     Exp,
     Experience = Exp,
@@ -71,7 +72,10 @@ public enum CharacterStat
     AddMDef,
     AddFlee,
     AddHit,
+    AddDefPercent,
+    AddMDefPercent,
     Disabled,
+    OverrideElement,
     MonsterStatsMax, //any stats after this are stats only players will be able to hold.
 
     WeaponMastery,

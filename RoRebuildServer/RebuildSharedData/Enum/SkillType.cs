@@ -34,5 +34,6 @@ namespace RebuildSharedData.Enum
         IgnoreDefense = 16,
         IgnoreEvasion = 32,
         NoDamageModifiers = 64,
+        NoElement = 128
     }
 }

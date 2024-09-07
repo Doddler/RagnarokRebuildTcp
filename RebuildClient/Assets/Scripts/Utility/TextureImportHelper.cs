@@ -38,6 +38,7 @@ namespace Assets.Scripts
 
         public static Texture2D SaveAndUpdateTexture(Texture2D texture, string outputPath, Action<TextureImporter> callback = null, bool forceUpdate = true)
         {
+            outputPath = outputPath.Replace("\\", "/");
             var dir = Path.GetDirectoryName(outputPath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);

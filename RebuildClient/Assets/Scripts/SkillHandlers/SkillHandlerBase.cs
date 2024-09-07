@@ -26,6 +26,11 @@ namespace Assets.Scripts.SkillHandlers
         public virtual void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ref AttackResultData attack) {}
         public virtual void ExecuteSkillGroundTargeted([CanBeNull] ServerControllable src, Vector2Int target, int lvl) {}
 
+        public virtual void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            target.Messages.SendHitEffect(attack.Src, attack.MotionTime, 1);
+        }
+
         public bool ExecuteWithoutSource = false;
 
     }

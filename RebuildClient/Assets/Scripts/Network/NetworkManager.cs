@@ -680,7 +680,7 @@ namespace Assets.Scripts.Network
             var damage = msg.ReadInt32();
             var pos = ReadPosition(msg);
             var shouldStop = msg.ReadBoolean();
-
+     
             if (!EntityList.TryGetValue(id, out var controllable))
             {
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
@@ -691,9 +691,7 @@ namespace Assets.Scripts.Network
             if (controllable.Hp < 0)
                 controllable.Hp = 0;
 
-            // Debug.Log(controllable.MaxHp);
 
-            //if (id == PlayerId)
             if (controllable.CharacterType != CharacterType.NPC && controllable.MaxHp > 0)
             {
                 if (controllable.IsMainCharacter)
@@ -708,34 +706,7 @@ namespace Assets.Scripts.Network
                     controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
             }
 
-            //if (delay < 0)
-            //    return;
-
-            //Debug.Log("Move delay is " + delay);
-            // controllable.SetHitDelay(delay);
-
-
-            // if (controllable.SpriteAnimator.CurrentMotion == SpriteMotion.Dead)
-            //     return;
-            //
-            // if (controllable.SpriteAnimator.Type == SpriteType.Player)
-            //     controllable.SpriteAnimator.State = SpriteState.Standby;
-            //
-            // //controllable.SnapToTile(controllable.Position, 0.2f);
-            //
-            // if (!controllable.SpriteAnimator.IsAttackMotion)
-            //     controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
-
-            // if (isMoving && controllable.IsMoving)
-            // {
-            //     var cooldown = msg.ReadFloat();
-            //
-            //     controllable.AdjustMovePathToMatchServerPosition(pos, cooldown);
-            // }
-            // else
-            // {
-            //     controllable.SnapToTile(pos, 0.2f);
-            // }
+            
         }
 
         public void OnMessageGainExp(ClientInboundMessage msg)
@@ -1236,13 +1207,14 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendChangeAppearance(int mode, int id = -1)
+        public void SendChangeAppearance(int mode, int id = -1, int subId = -1)
         {
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.AdminChangeAppearance);
             msg.Write(mode);
             msg.Write(id);
+            msg.Write(subId);
 
             SendMessage(msg);
         }

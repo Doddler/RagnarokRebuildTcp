@@ -196,8 +196,10 @@ namespace Assets.Scripts.MapEditor.Editor
             for (int i = 0; i < guids.Length; i++)
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
-                var fName = Path.GetFileName(path);
-                if (path.Contains("Monsters") && monsters.MonsterClassData.All(m => m.SpriteName != fName))
+                var altPath = path.Replace("Imported/", "").Replace(".asset", ".spr");
+                var fName = Path.GetFileNameWithoutExtension(path);
+                if ((path.Contains("Monsters") && monsters.MonsterClassData.All(m => m.SpriteName.Replace(".spr","") != fName.ToLowerInvariant())) 
+                    || !path.Contains("Imported"))
                 {
                     //Debug.Log("Not found: " + fName);
                     var existing = defGroup.GetAssetEntry(guids[i]);
@@ -210,7 +212,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 var entry = settings.CreateOrMoveEntry(guids[i], defGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
-                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
+                entry.address = altPath;
                 entry.labels.Add("Sprite");
 
                 entriesAdded.Add(entry);

@@ -9,7 +9,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
     public class StatusTwoHandQuicken : StatusEffectBase
     {
         public override float Duration => 180f; //unused??
-        public override StatusUpdateMode UpdateMode => StatusUpdateMode.None;
+        public override StatusUpdateMode UpdateMode => StatusUpdateMode.Default;
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
             ch.AddStat(CharacterStat.AspdBonus, state.Value1);

@@ -34,7 +34,6 @@ public class Player : IEntityAutoReset
     //public PlayerData Data { get; set; }
     public bool IsAdmin { get; set; }
     public bool IsInNpcInteraction { get; set; }
-    public int HeadId => GetData(PlayerStat.Head);
     public bool IsMale => GetData(PlayerStat.Gender) == 0;
 
     [EntityIgnoreNullCheck] public NpcInteractionState NpcInteractionState = new();
@@ -380,6 +379,8 @@ public class Player : IEntityAutoReset
             SetStat(CharacterStat.Sp, sp);
 
         var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
+        if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Curse))
+            moveBonus = 0.1f;
 
         //var moveSpeed = 0.15f - (0.001f * level / 5f);
         var moveSpeed = 0.15f * moveBonus;
@@ -573,7 +574,7 @@ public class Player : IEntityAutoReset
         CombatEntity.IsCasting = false;
         CombatEntity.CastingSkill.Clear();
         CombatEntity.QueuedCastingSkill.Clear();
-        CombatEntity.ClearAllStatusEffects();
+        CombatEntity.OnDeathClearStatusEffects();
         UpdateStats();
 
         Character.Map.AddVisiblePlayersAsPacketRecipients(Character);

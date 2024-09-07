@@ -131,14 +131,14 @@ StateAttacking:
 SkillHandler("MARINE_SPHERE") {
 StateIdle:
 	//automatically self destruct if hit by another self destruct, but fast
-	TryCast(SelfDestruct, 1, 1000, 800, 5000, HideSkillName)[LastDamageSourceType == SelfDestruct];
+	TryCast(SelfDestruct, 1, 100%, 0.8s, 5s, HideSkillName)[LastDamageSourceType == SelfDestruct];
 	
 	//self destruct chance is 5% per second increasing by 0.1% for every 1% HP it loses.
-	TryCast(SelfDestruct, 1, 50 + (100-HpPercent) * 2, 2000, 5000, HideSkillName)[HpPercent < 99];
+	TryCast(SelfDestruct, 1, 50 + (100-HpPercent) * 2, 2s, 5s, HideSkillName)[HpPercent < 99 && TimeSinceLastDamage < 15s];
 	
 OnDie:
 	EnterPostDeathPhase();
-	SetHpNoNotify(500);
+	SetHpNoNotify(1200); //will self destruct for 600 damage roughly
 StateSpecial:
     TryCast(SelfDestruct, 1, 1000, 4000, 0, EventOnStartCast | HideSkillName);
 }

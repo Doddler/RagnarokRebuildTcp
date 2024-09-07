@@ -12,6 +12,8 @@ public class EntityList : IDisposable
 
     public int Count => count;
 
+    public Entity[]? InternalList => entities;
+
     public EntityList() : this(32) { }
 
     public EntityList(int initialCapacity, bool delayCreate = false)
@@ -32,6 +34,23 @@ public class EntityList : IDisposable
         }
     }
 
+    public void CopyEntities(EntityList other)
+    {
+        var otherList = other.InternalList;
+        var otherCount = other.Count;
+        if (otherList == null || otherCount == 0)
+        {
+            Clear();
+            return;
+        }
+        entities ??= new Entity[otherCount];
+        if(entities.Length < otherCount)
+            Array.Resize(ref entities, otherCount);
+        Array.Copy(otherList, entities, otherCount);
+        count = otherCount;
+
+    }
+
     private void ResizeIfNeeded()
     {
         entities ??= new Entity[capacity];
@@ -42,6 +61,21 @@ public class EntityList : IDisposable
             Array.Resize(ref entities, capacity);
         }
     }
+
+    public void AddIfNotExists(ref Entity entity)
+    {
+        if (!entity.IsAlive())
+            throw new Exception("Can't add entity to EntityList as it's not active.");
+
+        if (Contains(ref entity))
+            return;
+
+        ResizeIfNeeded();
+
+        entities![count] = entity;
+        count++;
+    }
+
 
     public void Add(ref Entity entity)
     {

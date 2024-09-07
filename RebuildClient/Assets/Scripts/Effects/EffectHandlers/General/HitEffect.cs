@@ -101,6 +101,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
             effect.SetDurationByFrames(30);
+            effect.FollowTarget = target.gameObject;
+            effect.DestroyOnTargetLost = false;
             effect.SetBillboardMode(BillboardStyle.Normal);
             effect.transform.position = target.transform.position + new Vector3(0, 1f, 0);
             effect.transform.localScale = Vector3.one / 4f;

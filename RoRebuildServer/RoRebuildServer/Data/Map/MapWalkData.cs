@@ -1,5 +1,6 @@
 ﻿using RebuildSharedData.Data;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation.Pathfinding;
 
 namespace RoRebuildServer.Data.Map;
 
@@ -114,6 +115,35 @@ public class MapWalkData
 
         p = Position.Invalid;
         return false;
+    }
+
+
+    public Position CalcKnockbackFromPosition(Position chPos, Position attackSrc, int maxDist)
+    {
+        var x0 = chPos.X;
+        var y0 = chPos.Y;
+        var x1 = chPos.X + ((chPos.X - attackSrc.X) * 50);
+        var y1 = chPos.Y + ((chPos.Y - attackSrc.Y) * 50);
+
+        //algorithm from https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm#C.23
+        int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+        int dy = Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+        int err = (dx > dy ? dx : -dy) / 2;
+        var target = chPos;
+        var dist = 0;
+        for (; ; )
+        {
+            if (x0 == x1 && y0 == y1) break;
+            if (!IsCellWalkable(x0, y0))
+                return target;
+            target = new Position(x0, y0);
+            var e2 = err;
+            if (e2 > -dx) { err -= dy; x0 += sx; }
+            if (e2 < dy) { err += dx; y0 += sy; }
+            if(chPos.DistanceTo(target) >= maxDist) return target;
+        }
+
+        return target;
     }
 
     public bool HasLineOfSight(Position pos1, Position pos2)

@@ -13,6 +13,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         private static StatusEffectHandlerAttribute[] attributes;
 
         public static StatusClientVisibility GetStatusVisibility(CharacterStatusEffect status) => attributes[(int)status].VisibilityMode;
+        public static bool HasFlag(CharacterStatusEffect status, StatusEffectFlags flag) => attributes[(int)status].Flags.HasFlag(flag);
 
         static StatusEffectHandler()
         {

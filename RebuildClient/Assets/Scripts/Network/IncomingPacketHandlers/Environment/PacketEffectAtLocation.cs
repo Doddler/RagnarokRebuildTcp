@@ -24,6 +24,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Environment
             {
                 case "Explosion":
                     Camera.ShakeTime = 0.5f;
+                    Camera.CreateEffect(effect, spawn, facing);
                     break;
                 case "HammerFall":
                     HammerFallEffect.CreateHammerFall(spawn);

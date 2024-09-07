@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.EntityComponents;
+﻿using RebuildSharedData.Enum;
+using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Simulation.StatusEffects.Setup
@@ -11,6 +12,6 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public virtual void OnApply(CombatEntity ch, ref StatusEffectState state) { }
         public virtual void OnExpiration(CombatEntity ch, ref StatusEffectState state) { }
         public virtual void OnAttack(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) { }
-        public virtual void OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) { }
+        public virtual StatusUpdateResult OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => StatusUpdateResult.Continue;
     }
 }

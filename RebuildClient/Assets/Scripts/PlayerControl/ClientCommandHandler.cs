@@ -231,6 +231,13 @@ namespace PlayerControl
                                 NetworkManager.Instance.SendChangeAppearance(4, id);
                         }
                     }
+
+                    if (s.Length == 4)
+                    {
+                        if (int.TryParse(s[2], out var id) && int.TryParse(s[3], out var subId))
+                            if (s[1].ToLower() == "hair")
+                                NetworkManager.Instance.SendChangeAppearance(1, id, subId);
+                    }
                 }
 
                 if (s[0] == "/speed")

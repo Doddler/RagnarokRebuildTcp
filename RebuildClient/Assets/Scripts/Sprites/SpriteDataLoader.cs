@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Collections.Generic;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
 
@@ -8,7 +9,8 @@ namespace Assets.Scripts.Sprites
     {
 		public int ServerId;
 		public int ClassId;
-		public int HeadId;
+		public short HeadId;
+		public short HairDyeId;
 		public HeadFacing HeadFacing;
 		public Direction Facing;
 		public CharacterState State;
@@ -20,6 +22,7 @@ namespace Assets.Scripts.Sprites
         public int Hp;
         public int MaxHp;
         public int WeaponClass;
+        public List<CharacterStatusEffect> CharacterStatusEffects;
     }
 
 	public struct MonsterSpawnParameters
@@ -34,5 +37,6 @@ namespace Assets.Scripts.Sprites
         public int Hp;
         public int MaxHp;
         public bool Interactable;
+        public List<CharacterStatusEffect> CharacterStatusEffects;
     }
 }

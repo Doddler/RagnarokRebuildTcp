@@ -1105,11 +1105,23 @@ public class Map
 
     public void CreateAreaOfEffect(AreaOfEffect aoe)
     {
+        var chunkEntities = EntityListPool.Get();
         //add the aoe to every chunk touched by the aoe
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(aoe.Area)))
         {
             chunk.AreaOfEffects.Add(aoe);
+            //since our interactions can cause entities to get added or removed from this chunk
+            //we want an enumerator that will not change
+            chunkEntities.CopyEntities(chunk.AllEntities); 
+
+            foreach (var e in chunkEntities)
+            {
+                if(e.TryGet<CombatEntity>(out var ce) && aoe.Area.Contains(ce.Character.Position))
+                    aoe.OnAoETouch(ce.Character);
+            }
         }
+
+        EntityListPool.Return(chunkEntities);
     }
 
     public void RemoveAreaOfEffect(AreaOfEffect aoe)
@@ -1216,10 +1228,25 @@ public class Map
             Players.ClearInactive(); //should never happen
             MapImportantEntities.ClearInactive(); //but why risk it?
         }
+        
+        foreach (var c in Chunks)
+        {
+            for(var i = 0; i < c.AreaOfEffects.Count; i++)
+            {
+                var a = c.AreaOfEffects[i];
+                if (a.CheckStayTouching)
+                {
+                    a.Update();
+                    if (!a.IsActive)
+                        i--; //we've ended this aoe so step back on the iterator and continue. Probably dangerous.
+                }
+
+            }
+        }
 
 #if DEBUG
-        //sanity checks
-        if (chunkCheckId == 0 && PlayerCount == 0)
+            //sanity checks
+            if (chunkCheckId == 0 && PlayerCount == 0)
         {
             foreach (var c in Chunks)
             {

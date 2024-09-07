@@ -22,12 +22,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var hasTarget = Network.EntityList.TryGetValue(id2, out var controllable2);
 
             var dir = (Direction)msg.ReadByte();
+            var skill = (CharacterSkill)msg.ReadByte();
+            var hits = msg.ReadByte();
+            var resultType = (AttackResult)msg.ReadByte();
             var pos = msg.ReadPosition();
             var dmg = msg.ReadInt32();
-            var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
             var showAttackAction = msg.ReadBoolean();
-            var resultType = (AttackResult)msg.ReadByte();
 
             var weaponClass = 0;
 
@@ -35,7 +36,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             {
                 Src = controllable,
                 Target = controllable2,
-                Skill = CharacterSkill.None,
+                Skill = skill,
                 Damage = dmg,
                 HitCount = hits,
                 MotionTime = motionTime,
@@ -58,11 +59,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                         //controllable2.Messages.SendHitEffect(controllable, motionTime + arrow.Duration);
                     }
                     //else
-                    var hitType = 1;
-                    if (resultType == AttackResult.CriticalDamage)
-                        hitType = 2;
-                    if(dmg > 0)
-                        controllable2.Messages.SendHitEffect(controllable, motionTime, hitType);
+                    
                 }
                 else
                 {
@@ -92,6 +89,17 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
             if (hasTarget)
             {
+                if (result.Skill != CharacterSkill.None)
+                    ClientSkillHandler.OnHitEffect(controllable2, ref result);
+                else
+                {
+                    var hitType = 1;
+                    if (resultType == AttackResult.CriticalDamage)
+                        hitType = 2;
+                    if (dmg > 0)
+                        controllable2.Messages.SendHitEffect(controllable, motionTime, hitType);
+                }
+                
                 if(dmg > 0)
                     controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits, resultType == AttackResult.CriticalDamage);
                 

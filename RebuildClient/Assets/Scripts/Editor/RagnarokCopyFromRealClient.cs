@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Assets.Scripts;
 using Assets.Scripts.Editor;
 using Assets.Scripts.MapEditor.Editor;
@@ -9,6 +10,34 @@ namespace Assets.Editor
 {
     public class RagnarokCopyFromRealClient : EditorWindow
     {
+        [MenuItem("Ragnarok/TestCopy")]
+        public static void TestCopy()
+        {
+            var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
+
+            Func<string, string> updateHeadName = (str) => str.Replace("머리", "");
+            Func<string, string> updateBodyName = (str) => str.Replace("몸", "");
+
+            var headPath = Path.Combine(dataDir, "palette/머리");
+            var bodyPath = Path.Combine(dataDir, "palette/몸");
+
+            if (Directory.Exists(headPath))
+            {
+                CopyFolder(headPath, "Assets/Sprites/Characters/HeadFemale/Palette/", false, false, "*_여_*.pal", updateHeadName);
+                CopyFolder(headPath, "Assets/Sprites/Characters/HeadMale/Palette/", false, false, "*_남_*.pal", updateHeadName);
+            }
+            
+            headPath = Path.Combine(dataDir, "palette/머리/costume_1");
+            bodyPath = Path.Combine(dataDir, "palette/몸/costume_1");
+
+            if(Directory.Exists(bodyPath))
+            {
+                CopyFolder(bodyPath, "Assets/Sprites/Characters/BodyFemale/Palette/", false, false, "*_여_*.pal", updateHeadName);
+                CopyFolder(bodyPath, "Assets/Sprites/Characters/BodyMale/Palette/", false, false, "*_남_*.pal");
+            }
+
+        }
+        
         [MenuItem("Ragnarok/Copy data from client data folder", priority = 1)]
         public static void CopyClientData()
         {
@@ -60,6 +89,8 @@ namespace Assets.Editor
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/여"), "Assets/Sprites/Characters/HeadFemale/");
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
+            CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadFemale/", false, false, "*_여_*.pal");
+            CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadMale/", false, false, "*_남_*.pal");
             
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
@@ -74,12 +105,12 @@ namespace Assets.Editor
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true);
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true);
 
-            CopySingleFile(Path.Combine(dataDir, "sprite/cursors.act"), "Assets/Sprites/");
-            CopySingleFile(Path.Combine(dataDir, "sprite/cursors.spr"), "Assets/Sprites/");
-            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.act"), "Assets/Sprites/");
-            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.spr"), "Assets/Sprites/");
-            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.act"), "Assets/Sprites/damagenumbers.act");
-            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.spr"), "Assets/Sprites/damagenumbers.spr");
+            CopySingleFile(Path.Combine(dataDir, "sprite/cursors.act"), "Assets/Sprites/Misc/");
+            CopySingleFile(Path.Combine(dataDir, "sprite/cursors.spr"), "Assets/Sprites/Misc/");
+            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.act"), "Assets/Sprites/Misc/");
+            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.spr"), "Assets/Sprites/Misc/");
+            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.act"), "Assets/Sprites/Misc/damagenumbers.act");
+            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.spr"), "Assets/Sprites/Misc/damagenumbers.spr");
             
             AssetDatabase.Refresh();
             
@@ -108,7 +139,7 @@ namespace Assets.Editor
                 File.Copy(src, dest, false);
         }
 
-        private static bool CopyFolder(string src, string dest, bool recursive = false, bool maleFemaleSplit = false)
+        private static bool CopyFolder(string src, string dest, bool recursive = false, bool maleFemaleSplit = false, string filter = "*", Func<string,string> updateFileName = null)
         {
             var opt = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
@@ -117,7 +148,7 @@ namespace Assets.Editor
             if (!Directory.Exists(dest))
                 Directory.CreateDirectory(dest);
 
-            foreach (var path in Directory.GetFiles(src, "*", opt))
+            foreach (var path in Directory.GetFiles(src, filter, opt))
             {
                 var rel = Path.GetRelativePath(src, path);
                 var destPath = Path.Combine(dest, rel);
@@ -135,6 +166,9 @@ namespace Assets.Editor
                 if (File.Exists(destPath.Replace(".bmp", ".png")))
                     continue;
 
+                if (updateFileName != null)
+                    destPath = updateFileName(destPath);
+
                 var outDir = Path.GetDirectoryName(destPath);
                 if (!Directory.Exists(outDir))
                     Directory.CreateDirectory(outDir);
@@ -149,11 +183,16 @@ namespace Assets.Editor
                     {
                         ti.textureType = TextureImporterType.Sprite;
                         ti.spriteImportMode = SpriteImportMode.Single;
+                        ti.crunchedCompression = false;
+                        ti.textureCompression = TextureImporterCompression.CompressedHQ;
                     });
                     //TextureImportHelper.GetOrImportTextureToProject(fName, path, destPath);
                 }
                 else
-                    File.Copy(path, destPath, false);
+                {
+                    if(!File.Exists(destPath))
+                        File.Copy(path, destPath, false);
+                }
             }
 
             AssetDatabase.Refresh();

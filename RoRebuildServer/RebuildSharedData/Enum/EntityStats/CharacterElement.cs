@@ -1,4 +1,6 @@
-﻿namespace RebuildSharedData.Enum.EntityStats;
+﻿using System.Xml.Linq;
+
+namespace RebuildSharedData.Enum.EntityStats;
 
 public enum CharacterElement : byte
 {
@@ -42,4 +44,13 @@ public enum CharacterElement : byte
     Ghost2,
     Ghost3,
     Ghost4,
+    None
+}
+
+public static class CharacterElementExtensions
+{
+    public static bool IsElementBaseType(this CharacterElement element, CharacterElement targetType)
+    {
+        return element >= targetType && element <= targetType + 3; //checks if element 1-4 is equal to targetType (assuming we pass element 1)
+    }
 }

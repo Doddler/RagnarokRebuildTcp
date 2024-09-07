@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Utility;
 using JetBrains.Annotations;
 using RebuildSharedData.ClientTypes;
@@ -112,6 +113,38 @@ namespace Assets.Scripts.Sprites
             foreach (var h in headData.Items)
             {
                 playerHeadLookup.Add(h.Id, h);
+
+                for (var i = 0; i < 9; i++)
+                {
+                    var colorHead = h.Id + ((i + 1) << 8);
+                    if (!string.IsNullOrWhiteSpace(h.AltMale))
+                    {
+                        var mPath = h.AltMale.Replace("<id>", i.ToString());
+                        var fPath = h.AltFemale.Replace("<id>", i.ToString());
+                    
+                        var handle = Addressables.LoadResourceLocationsAsync(mPath);
+                        handle.WaitForCompletion();
+                        var handle2 = Addressables.LoadResourceLocationsAsync(fPath);
+                        handle2.WaitForCompletion();
+                        if (handle.Result.Count > 0 && handle2.Result.Count > 0)
+                        {
+                            playerHeadLookup.Add(colorHead, new PlayerHeadData()
+                            {
+                                Id = colorHead,
+                                SpriteMale = mPath,
+                                SpriteFemale = fPath
+                            });
+                        }                            
+                    }
+                    else
+                    {
+                        //no palettes were loaded, so we'll just use the default sprite for this head/color combo
+                        playerHeadLookup.Add(colorHead, h);
+                    }
+                    
+
+                }
+                
             }
 
             var playerData = JsonUtility.FromJson<Wrapper<PlayerClassData>>(PlayerClassData.text);
@@ -252,12 +285,13 @@ namespace Assets.Scripts.Sprites
                 pData = lookupData;
             else
                 Debug.LogWarning("Failed to find player with id of " + param.ClassId);
-
             var hData = playerHeadLookup[0]; //default;
-            if (playerHeadLookup.TryGetValue(param.HeadId, out var lookupData2))
+            if (playerHeadLookup.TryGetValue(param.HeadId + ((param.HairDyeId + 1) << 8), out var lookupData2)) //see if we have a head with the right palette
+                hData = lookupData2;
+            else if (playerHeadLookup.TryGetValue(param.HeadId, out lookupData2)) //fallback to default color
                 hData = lookupData2;
             else
-                Debug.LogWarning("Failed to find player head with id of " + param.HeadId);
+                Debug.LogWarning("Failed to find player head with id of " + param.HeadId); //we will fall back to head 0 in this case
 
 
             var go = new GameObject(pData.Name);
@@ -317,6 +351,8 @@ namespace Assets.Scripts.Sprites
             var bodySpriteName = param.IsMale ? pData.SpriteMale : pData.SpriteFemale;
             var headSpriteName = param.IsMale ? hData.SpriteMale : hData.SpriteFemale;
 
+            bodySpriteName = bodySpriteName.Replace(".spr", "_4.spr");
+
             Debug.Log($"Instantiate player sprite with job {param.ClassId} weapon {param.WeaponClass}");
 
             PlayerWeaponData weapon = null;
@@ -335,8 +371,17 @@ namespace Assets.Scripts.Sprites
                 LoadAndAttachWeapon(go, body.transform, bodySprite, weapon, true, param.IsMale);
             }
 
-            LoadAndAttachHeadgear(go, body.transform, bodySprite, "여_고양이머리띠", false);
-
+            var gender = "여_";
+            if (control.IsMale)
+                gender = "남_";
+            
+            //비레타 beret
+            //간호모 nurse band
+            //장식용알껍질 eggshell hat
+            //흰수염 moustache
+            //헬름 helm
+            LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + "꽃", control.IsMale);
+            //LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + "하트파운데이션", control.IsMale);
 
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
@@ -356,7 +401,11 @@ namespace Assets.Scripts.Sprites
             }
 
             control.Init();
-
+            
+            if(param.CharacterStatusEffects != null)
+                foreach(var s in param.CharacterStatusEffects)
+                    StatusEffectApplicator.AddStatusToTarget(control, s);
+            
             return control;
         }
 
@@ -440,7 +489,7 @@ namespace Assets.Scripts.Sprites
             //sprite.LockAngle = true;
             sprite.SpriteRenderer = sr;
 
-            AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/emotion.spr", emote.OnFinishLoad);
+            AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/Misc/emotion.spr", emote.OnFinishLoad);
         }
 
         private ServerControllable PrefabMonster(MonsterClassData mData, ref MonsterSpawnParameters param)
@@ -545,6 +594,10 @@ namespace Assets.Scripts.Sprites
                 AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
 
             control.Init();
+            
+            if(param.CharacterStatusEffects != null)
+                foreach(var s in param.CharacterStatusEffects)
+                    StatusEffectApplicator.AddStatusToTarget(control, s);
 
             return control;
         }

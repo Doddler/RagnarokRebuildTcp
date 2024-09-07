@@ -5,6 +5,7 @@ using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.MapEditor;
+using Assets.Scripts.Misc;
 using Assets.Scripts.Network.Messaging;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
@@ -55,6 +56,7 @@ namespace Assets.Scripts.Network
         public ClientSpriteType SpriteMode;
         public GameObject EntityObject;
         public GameObject ComboIndicator;
+        public GameObject FollowerObject;
 
         public CharacterFloatingDisplay FloatingDisplay;
         private List<Vector2Int> movePath;

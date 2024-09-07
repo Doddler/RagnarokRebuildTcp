@@ -4,15 +4,17 @@ using System.Text;
 
 namespace RebuildSharedData.Enum;
 
-public enum StatusEffectUpdateFlags : byte
+public enum StatusUpdateMode : byte
 {
-    None = 0,
-    OnApply = 1,
-    OnRemove = 2,
-    TestApply = 4,
-    //------combined-------
-    SupportBuff = 3, //OnApply + OnRemove
-    OffensiveDebuff = 7 //TestApply + OnApply + OnRemove
+    Default = 0,
+    OnTakeDamage = 1,
+    OnDealDamage = 2,
+}
+
+public enum StatusUpdateResult : byte
+{
+    Continue,
+    EndStatus
 }
 
 public enum StatusEffectClass : byte
@@ -20,6 +22,14 @@ public enum StatusEffectClass : byte
     None,
     Buff,
     Debuff
+}
+
+[Flags]
+public enum StatusEffectFlags : byte
+{
+    None = 0,
+    StayOnClear = 1,
+    NoSave = 2,
 }
 
 public enum StatusClientVisibility : byte

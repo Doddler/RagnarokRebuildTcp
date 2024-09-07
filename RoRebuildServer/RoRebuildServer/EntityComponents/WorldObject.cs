@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Database.Domain;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
@@ -132,6 +133,9 @@ public class WorldObject : IEntityAutoReset
     private Npc npc = null!;
     private CombatEntity combatEntity = null!;
 
+    public EntityList? Events;
+    public int EventsCount => Events?.Count ?? 0;
+
     public bool HasCombatEntity => Entity.IsAlive() && (Entity.Type == EntityType.Player || Entity.Type == EntityType.Monster);
 
     public Player Player
@@ -202,6 +206,13 @@ public class WorldObject : IEntityAutoReset
         StepCount = 0;
         IsImportant = false;
         ClearVisiblePlayerList();
+
+        if (Events != null)
+        {
+            Events.Clear();
+            EntityListPool.Return(Events);
+            Events = null;
+        }
     }
 
     public void Init(ref Entity entity)
@@ -266,13 +277,13 @@ public class WorldObject : IEntityAutoReset
 #if DEBUG
         if (e.Type != EntityType.Player)
             ServerLogger.LogWarning($"WorldObject {Name} is attempting to add {obj2.Name} to it's visible players list, but that object is not a player.");
-        else if (visiblePlayers.Contains(e))
-            ServerLogger.Debug($"WorldObject {Name} is attempting to add a visible player {obj2.Name}, but that player is already tagged as visible.");
+        //if (visiblePlayers.Contains(e))
+        //    ServerLogger.LogWarning($"WorldObject {Name} is attempting to add a visible player {obj2.Name}, but that player is already tagged as visible.");
         //else
         //ServerLogger.Log($"WorldObject {Name} is adding a visible player {obj2.Name} to it's visible list.\n{Environment.StackTrace}");
 #endif
 
-        visiblePlayers.Add(e);
+        visiblePlayers.AddIfNotExists(ref e);
     }
 
     public bool HasVisiblePlayers() => visiblePlayers != null && visiblePlayers.Count > 0;
@@ -331,6 +342,28 @@ public class WorldObject : IEntityAutoReset
 
         entityList = visiblePlayers;
         return true;
+    }
+
+    public void AttachEvent(Entity eventEntity)
+    {
+        Events ??= EntityListPool.Get();
+
+        Events.Add(eventEntity);
+    }
+
+    public int CountEventsOfType(string eventType)
+    {
+        if (Events == null)
+            return 0;
+
+        var count = 0;
+        foreach (var e in Events)
+        {
+            if(e.TryGet<Npc>(out var npc) && npc.EventType == eventType)
+                count++;
+        }
+
+        return count;
     }
 
     public void SitStand(bool isSitting)
@@ -433,6 +466,9 @@ public class WorldObject : IEntityAutoReset
         if (MoveSpeed <= 0)
             return false;
 
+        if (Type != CharacterType.NPC && CombatEntity.GetStat(CharacterStat.MoveSpeedBonus) < -100)
+            return false;
+
         return true;
     }
 
@@ -472,6 +508,8 @@ public class WorldObject : IEntityAutoReset
         FacingDirection = (WalkPath[1] - WalkPath[0]).GetDirectionForOffset();
         //MoveLockTime = Time.ElapsedTimeFloat;
 
+        //ServerLogger.Log($"{Name} TryMove: World:{WorldPosition} NextStepDuration: {NextStepDuration}");
+
         if (HasCombatEntity && CombatEntity.IsCasting)
         {
             QueuedAction = QueuedAction.Move; //if we're casting we need to wait until we finish before we can move
@@ -490,96 +528,7 @@ public class WorldObject : IEntityAutoReset
 
         return true;
     }
-
-    ///// <summary>
-    ///// Attempt to move within a certain distance of the target.
-    ///// </summary>
-    ///// <param name="target">The target location.</param>
-    ///// <param name="range">The distance to the target you wish to enter within.</param>
-    ///// <param name="useOldNextStep">Should we force the first step of the next move to
-    ///// be the step the player is currently on, if they're moving?</param>
-    ///// <returns>True if a target position was set.</returns>
-    //public bool TryMoveOld(Position target, int range, bool useOldNextStep = true)
-    //{
-    //    Debug.Assert(Map != null);
-    //    Debug.Assert(range <= 1);
-
-    //    //if(MoveLockTime > Time.ElapsedTimeFloat)
-    //    //    ServerLogger.Debug($"{Name} beginning a move while in hit lock state.");
-
-    //    if (!CanMove())
-    //        return false;
-
-    //    if (!Map.WalkData.IsCellWalkable(target))
-    //        return false;
-
-    //    if (WalkPath == null)
-    //        WalkPath = new Position[PathFinder.MaxDistance + 2];
-
-    //    var hasOld = false;
-    //    var oldNext = new Position();
-    //    var oldCooldown = MoveProgress;
-
-    //    if (MoveStep + 1 < TotalMoveSteps && State == CharacterState.Moving && useOldNextStep)
-    //    {
-    //        oldNext = WalkPath[MoveStep + 1];
-    //        if (oldNext.DistanceTo(Position) > 1)
-    //            throw new Exception("Our next move is a tile more than 1 tile away!");
-    //        hasOld = true;
-    //    }
-
-    //    int len;
-
-    //    //var moveRange = DistanceCache.FitSquareRangeInCircle(range);
-
-    //    //if (range <= 1)
-    //    //{
-    //    //we won't interrupt the next step we are currently taking, so append it to the start of our new path.
-    //    if (hasOld)
-    //        len = Map.Instance.Pathfinder.GetPathWithInitialStep(Map.WalkData, WalkPath[MoveStep], oldNext, target, WalkPath, range, (MoveSpeed - MoveProgress) / MoveSpeed);
-    //    else
-    //        len = Map.Instance.Pathfinder.GetPath(Map.WalkData, Position, target, WalkPath, range);
-    //    //}
-    //    //else
-    //    //{
-    //    //    len = Map.Instance.Pathfinder.GetPathWithinAttackRange(Map.WalkData, Position, hasOld ? oldNext : Position.Invalid, target, WalkPath, range);
-    //    //}
-
-    //    if (len == 0)
-    //        return false;
-
-
-    //    var initialMoveLength = GetFirstStepDuration(WalkPath[1]);
-
-    //    TargetPosition = WalkPath[len - 1]; //reset to last point in walkpath
-    //    MoveProgress = MoveSpeed;
-    //    MoveStep = 0;
-    //    TotalMoveSteps = len;
-    //    FacingDirection = (WalkPath[1] - WalkPath[0]).GetDirectionForOffset();
-
-    //    if (hasOld)
-    //    {
-    //        QueuedAction = QueuedAction.None;
-    //        if (WalkPath[0] == oldNext)
-    //            MoveProgress = MoveSpeed - oldCooldown;
-    //        else
-    //            MoveProgress = oldCooldown;
-    //    }
-
-    //    if (HasCombatEntity && CombatEntity.IsCasting)
-    //    {
-    //        QueuedAction = QueuedAction.Move;
-    //        return true;
-    //    }
-
-    //    State = CharacterState.Moving;
-
-    //    Map.StartMove(ref Entity, this);
-    //    ChangeToActionState();
-
-    //    return true;
-    //}
-
+    
     //this shortens the move path of any moving character so they only finish the next tile movement and stop
     public void ShortenMovePath()
     {
@@ -665,21 +614,25 @@ public class WorldObject : IEntityAutoReset
 
         var newCell = (Position)newPosition;
 
+        //ServerLogger.Log($"{Name}: MoveUpdate2: {InMoveLock} {MoveStep} {MoveProgress}");
+
         if (lastCell != newCell)
         {
             //Map.ChangeEntityPosition(ref Entity, this, lastCell, newCell, newPosition, true);
+            FacingDirection = (newCell - lastCell).Normalize().GetDirectionForOffset();
+            //FacingDirection = dir;
             StepCount++;
             Map.ChangeEntityPosition3(this, lastPosition, newPosition, true);
             Map.TriggerAreaOfEffectForCharacter(this, lastCell, newCell);
-            FacingDirection = dir;
-        }
 
-        if (State == CharacterState.Moving)
-        {
-            WorldPosition = newPosition;
-            cellPosition = WorldPosition; //cast FloatPosition back to cell position
+
+            if (!IsActive || State == CharacterState.Dead) //we died after triggering an aoe
+                return;
         }
         else
+            WorldPosition = newPosition; //we still need to update our world position if we aren't doing a full cell move
+
+        if (State == CharacterState.Idle)
         {
             if (!Map.IsEntityStacked(this))
                 return;

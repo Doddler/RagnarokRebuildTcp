@@ -23,7 +23,7 @@ public class HealHandler : SkillHandlerBase
 
         if (target.Character.Type == CharacterType.Monster)
         {
-            if (target.Character.Type == CharacterType.Monster && target.Character.Monster.MonsterBase.IsElementBaseType(CharacterElement.Undead1))
+            if (target.Character.Type == CharacterType.Monster && target.IsElementBaseType(CharacterElement.Undead1))
                 return SkillValidationResult.Success;
         }
 
@@ -55,10 +55,11 @@ public class HealHandler : SkillHandlerBase
         if (source.Character.Type == CharacterType.Player && target.Character.Type == CharacterType.Monster)
         {
             var monBase = target.Character.Monster.MonsterBase;
-            if (monBase.IsElementBaseType(CharacterElement.Undead1))
+            var element = target.GetElement();
+            if (element.IsElementBaseType(CharacterElement.Undead1))
             {
                 var res = source.PrepareTargetedSkillResult(target, CharacterSkill.Heal);
-                var mod = DataManager.ElementChart.GetAttackModifier(AttackElement.Holy, monBase.Element);
+                var mod = DataManager.ElementChart.GetAttackModifier(AttackElement.Holy, element);
                 res.Damage = (healValue / 2) * mod / 100;
                 res.HitCount = 1;
                 res.Result = AttackResult.NormalDamage;

@@ -29,7 +29,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
             if (BlessingEffectSprite == null && !IsLoadingSprite)
             {
                 IsLoadingSprite = true;
-                spriteLoadTask = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Effects/Custom/blessing_edited.spr");
+                spriteLoadTask = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Effects/Custom/blessingedited.spr");
             }
 
             return null;

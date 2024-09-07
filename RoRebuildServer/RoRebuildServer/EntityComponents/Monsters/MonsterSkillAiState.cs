@@ -42,6 +42,7 @@ public class MonsterSkillAiState(Monster monster)
     private int[]? stateFlags;
 
     public CharacterSkill LastDamageSourceType => Monster.LastDamageSourceType;
+    public bool CanSeePlayers => Monster.Character.HasVisiblePlayers();
 
     public int DistanceToSelectedTarget => targetForSkill == null ? -1 : Monster.Character.Position.Distance(TargetPosition);
     public Position TargetPosition => targetForSkill?.Position ?? Position.Invalid;
@@ -183,6 +184,8 @@ public class MonsterSkillAiState(Monster monster)
 
     public int TimeInAiState => (int)(Monster.TimeInCurrentAiState * 1000);
     public int TimeOutOfCombat => (int)(Monster.DurationOutOfCombat * 1000);
+    public int TimeSinceLastDamage => (int)(Monster.TimeSinceLastDamage * 1000);
+    public bool WasRangedAttacked => Monster.WasAttacked && Monster.LastAttackRange > 4;
 
     public void AdminHide()
     {
@@ -444,7 +447,7 @@ public class MonsterSkillAiState(Monster monster)
                     minionMonster.ResetAiUpdateTime();
                     minionMonster.GivesExperience = false;
 
-                    monster.AddChild(ref minion);
+                    monster.AddChild(ref minion, MonsterAiType.AiMinion);
                 }
             }
         }
@@ -465,7 +468,7 @@ public class MonsterSkillAiState(Monster monster)
             minionMonster.ResetAiUpdateTime();
             minionMonster.GivesExperience = false;
 
-            Monster.AddChild(ref minion);
+            Monster.AddChild(ref minion, MonsterAiType.AiMinion);
         }
     }
 
@@ -639,7 +642,7 @@ public class MonsterSkillAiState(Monster monster)
         if (chara.Map == null)
             throw new Exception($"Npc {chara.Name} attempting to create event, but the monster is not currently attached to a map.");
 
-        var eventObj = World.Instance.CreateEvent(chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
+        var eventObj = World.Instance.CreateEvent(Monster.Entity, chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
         eventObj.Get<Npc>().Owner = Monster.Entity;
         Events ??= EntityListPool.Get();
         Events.ClearInactive();

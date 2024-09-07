@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Misc;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Misc;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
@@ -39,12 +40,20 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             var lvl = -1;
             var maxHp = 0;
             var hp = 0;
+            List<CharacterStatusEffect> statuses = null; 
 
             if (type == CharacterType.Player || type == CharacterType.Monster)
             {
                 lvl = (int)msg.ReadByte();
                 maxHp = (int)msg.ReadInt32();
                 hp = (int)msg.ReadInt32();
+
+                while(msg.ReadBoolean()) //has status effects
+                {
+                    statuses = new List<CharacterStatusEffect>();
+                    statuses.Add((CharacterStatusEffect)msg.ReadByte());
+                    msg.ReadFloat(); //duration, we're ignoring this for now
+                }
             }
 
             if (Network.EntityList.TryGetValue(id, out var oldEntity))
@@ -59,6 +68,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             {
                 var headFacing = (HeadFacing)msg.ReadByte();
                 var headId = msg.ReadByte();
+                var hairDyeId = msg.ReadByte();
                 var weapon = msg.ReadByte();
                 var isMale = msg.ReadBoolean();
                 var name = msg.ReadString();
@@ -77,6 +87,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     State = state,
                     HeadFacing = headFacing,
                     HeadId = headId,
+                    HairDyeId = hairDyeId,
                     IsMale = isMale,
                     Name = name,
                     Level = lvl,
@@ -84,6 +95,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     Hp = hp,
                     WeaponClass = weapon,
                     IsMainCharacter = isMain,
+                    CharacterStatusEffects = statuses,
                 };
 
                 controllable = ClientDataLoader.Instance.InstantiatePlayer(ref playerData);
@@ -122,7 +134,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     Level = lvl,
                     MaxHp = maxHp,
                     Hp = hp,
-                    Interactable = interactable
+                    Interactable = interactable,
+                    CharacterStatusEffects = statuses,
                 };
                 controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);
             }

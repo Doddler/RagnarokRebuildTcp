@@ -3,5 +3,6 @@
 public enum AoeType : byte
 {
     Inactive,
-    NpcTouch
+    NpcTouch,
+    DamageAoE,
 }

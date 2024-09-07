@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Effects;
 using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
@@ -17,19 +18,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             if (Network.EntityList.TryGetValue(id, out var controllable))
             {
-                Debug.Log($"Removing status {status} from {controllable.Name}");
-                if (status == CharacterStatusEffect.Stun)
-                {
-                    controllable.EndEffectOfType(EffectType.Stun);
-                    // controllable.SpriteAnimator.Color = new Color(1, 1, 1);
-                    // if(controllable.SpriteAnimator.CurrentMotion == SpriteMotion.Idle)
-                    //     controllable.SpriteAnimator.AnimSpeed = 1;
-                }
-                if (status == CharacterStatusEffect.TwoHandQuicken)
-                {
-                    controllable.SpriteAnimator.Color = new Color(1, 1, 1f);
-                    RoSpriteTrailManager.Instance.RemoveTrailFromEntity(controllable);
-                }
+                //Debug.Log($"Removing status {status} from {controllable.Name}");
+
+                StatusEffectApplicator.RemoveStatusFromTarget(controllable, status);
             }
         }
     }

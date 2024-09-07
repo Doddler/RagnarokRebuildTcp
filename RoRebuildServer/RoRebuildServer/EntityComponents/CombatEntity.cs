@@ -17,6 +17,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static System.Net.Mime.MediaTypeNames;
 using RoRebuildServer.Database.Domain;
+using System.Xml.Linq;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -34,6 +35,8 @@ public class CombatEntity : IEntityAutoReset
     public bool IsCasting;
     public float nextStatusUpdate;
 
+    public BodyStateFlags BodyState;
+
     public SkillCastInfo CastingSkill { get; set; }
     public SkillCastInfo QueuedCastingSkill { get; set; }
 
@@ -44,6 +47,7 @@ public class CombatEntity : IEntityAutoReset
     private float[] timingData = new float[(int)TimingStat.TimingStatsMax];
 
     [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> skillCooldowns = new();
+    [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> damageCooldowns = new();
     [EntityIgnoreNullCheck] public List<DamageInfo> DamageQueue { get; set; } = null!;
     private CharacterStatusContainer? statusContainer;
 
@@ -53,6 +57,12 @@ public class CombatEntity : IEntityAutoReset
     public bool IsSkillOnCooldown(CharacterSkill skill) => skillCooldowns.TryGetValue(skill, out var t) && t > Time.ElapsedTimeFloat;
     public void SetSkillCooldown(CharacterSkill skill, float val) => skillCooldowns[skill] = Time.ElapsedTimeFloat + val;
     public void ResetSkillCooldowns() => skillCooldowns.Clear();
+
+    public bool IsInSkillDamageCooldown(CharacterSkill skill) => damageCooldowns.TryGetValue(skill, out var t) && t >= Time.ElapsedTimeFloat;
+
+    public void SetSkillDamageCooldown(CharacterSkill skill, float cooldown) => damageCooldowns[skill] = Time.ElapsedTimeFloat + cooldown;
+    public void ResetSkillDamageCooldowns() => damageCooldowns.Clear();
+
 
     public void Reset()
     {
@@ -64,6 +74,7 @@ public class CombatEntity : IEntityAutoReset
         IsTargetable = true;
         IsCasting = false;
         skillCooldowns.Clear();
+        damageCooldowns.Clear();
         nextStatusUpdate = 0;
         if (statusContainer != null)
         {
@@ -126,6 +137,8 @@ public class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] -= val;
     }
 
+
+
     public void AddStatusEffect(StatusEffectState state, bool replaceExisting = true, float delay = 0)
     {
         if (statusContainer == null)
@@ -153,7 +166,7 @@ public class CombatEntity : IEntityAutoReset
     }
 
 
-    public void ClearAllStatusEffects(bool doRemoveUpdate = true)
+    public void OnDeathClearStatusEffects(bool doRemoveUpdate = true)
     {
         if (statusContainer == null)
             return;
@@ -169,6 +182,7 @@ public class CombatEntity : IEntityAutoReset
         }
     }
 
+    public CharacterStatusContainer? GetStatusEffectData() => statusContainer;
     public bool HasStatusEffectOfType(CharacterStatusEffect type) => statusContainer?.HasStatusEffectOfType(type) ?? false;
 
 
@@ -233,7 +247,15 @@ public class CombatEntity : IEntityAutoReset
                 stat += GetStat(CharacterStat.AddInt);
                 break;
             case CharacterStat.Luk:
+                if (BodyState.HasFlag(BodyStateFlags.Curse))
+                    return 0;
                 stat += GetStat(CharacterStat.AddLuk);
+                break;
+            case CharacterStat.Def:
+                stat = (int)((stat + GetStat(CharacterStat.AddDef)) * (1 + GetStat(CharacterStat.AddDefPercent) / 100f));
+                break;
+            case CharacterStat.MDef:
+                stat = (int)((stat + GetStat(CharacterStat.AddMDef)) * (1 + GetStat(CharacterStat.AddMDef) / 100f));
                 break;
         }
 
@@ -799,6 +821,29 @@ public class CombatEntity : IEntityAutoReset
         Character.ResetSpawnImmunity();
     }
 
+    public CharacterRace GetRace()
+    {
+        return Character.Type == CharacterType.Monster ? Character.Monster.MonsterBase.Race : CharacterRace.Demihuman;
+    }
+
+    public CharacterElement GetElement()
+    {
+        var element = CharacterElement.Neutral1;
+        if (Character.Type == CharacterType.Monster)
+            element = Character.Monster.MonsterBase.Element;
+
+        var overrideElement = (CharacterElement)GetStat(CharacterStat.OverrideElement);
+        if (overrideElement != 0 && overrideElement != CharacterElement.None)
+            element = overrideElement;
+        return element;
+    }
+
+    public bool IsElementBaseType(CharacterElement targetType)
+    {
+        var element = GetElement();
+        return element >= targetType && element <= targetType + 3; //checks if element 1-4 is equal to targetType (assuming we pass element 1)
+    }
+
     public void ExecuteIndirectSkillAttack(SkillCastInfo info)
     {
         SkillHandler.ExecuteSkill(info, this);
@@ -841,19 +886,20 @@ public class CombatEntity : IEntityAutoReset
         var di = new DamageInfo()
         {
             KnockBack = 0,
-            HitLockTime = target.GetTiming(TimingStat.HitDelayTime),
             Source = Entity,
             Target = target.Entity,
             AttackSkill = skillSource,
             Time = Time.ElapsedTimeFloat + spriteTiming,
-            AttackMotionTime = spriteTiming
+            AttackMotionTime = spriteTiming,
+            AttackPosition = Character.Position,
+            ApplyHitLock = true
         };
 
         return di;
     }
 
     public DamageInfo CalculateCombatResultUsingSetAttackPower(CombatEntity target, int atk1, int atk2, float attackMultiplier, int hitCount,
-                                            AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement element = AttackElement.None)
+                                            AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement attackElement = AttackElement.None)
     {
 #if DEBUG
         if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies)))
@@ -863,12 +909,15 @@ public class CombatEntity : IEntityAutoReset
         var baseDamage = GameRandom.NextInclusive(atk1, atk2);
 
         var eleMod = 100;
-        if (target.Character.Type == CharacterType.Monster)
+        if (!flags.HasFlag(AttackFlags.NoElement))
         {
-            var mon = target.Character.Monster;
-            if (element == AttackElement.None)
-                element = AttackElement.Neutral; //for now default to neutral, but we should pull from the weapon here if none is set
-            eleMod = DataManager.ElementChart.GetAttackModifier(element, mon.MonsterBase.Element);
+            var defenderElement = target.GetElement();
+                
+            if (attackElement == AttackElement.None)
+                attackElement = AttackElement.Neutral; //for now default to neutral, but we should pull from the weapon here if none is set
+
+            if (defenderElement != CharacterElement.None)
+                eleMod = DataManager.ElementChart.GetAttackModifier(attackElement, defenderElement);
         }
 
         var racialMod = 100;
@@ -876,7 +925,7 @@ public class CombatEntity : IEntityAutoReset
         {
             if (target.Entity.Type == EntityType.Player) //monsters can't get race reductions
             {
-                var sourceRace = Character.Type == CharacterType.Monster ? Character.Monster.MonsterBase.Race : CharacterRace.Demihuman;
+                var sourceRace = GetRace();
                 switch (sourceRace)
                 {
                     case CharacterRace.Demon:
@@ -890,7 +939,7 @@ public class CombatEntity : IEntityAutoReset
 
             if (Entity.Type == EntityType.Player) //only players will get bonus damage against a target race
             {
-                var targetRace = target.Character.Type == CharacterType.Monster ? target.Character.Monster.MonsterBase.Race : CharacterRace.Demihuman;
+                var targetRace = target.GetRace();
 
                 switch (targetRace)
                 {
@@ -918,8 +967,8 @@ public class CombatEntity : IEntityAutoReset
 
         if (flags.HasFlag(AttackFlags.CanCrit))
         {
-            var critRate = 1 + GetStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.Level) / 5;
-            var counterCrit = target.GetStat(CharacterStat.Luck) / 5 + GetStat(CharacterStat.Level) / 7;
+            var critRate = 1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.Level) / 5;
+            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) / 5 + GetStat(CharacterStat.Level) / 7;
             if (GameRandom.NextInclusive(0, 100) <= critRate - counterCrit)
             {
                 baseDamage = atk2;
@@ -933,18 +982,18 @@ public class CombatEntity : IEntityAutoReset
         var subDef = 0f;
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
-            var def = target.GetStat(CharacterStat.Def);
+            var def = target.GetEffectiveStat(CharacterStat.Def);
             defCut = MathF.Pow(0.99f, def - 1);
-            subDef = target.GetStat(CharacterStat.Vit) * 0.7f;
+            subDef = target.GetEffectiveStat(CharacterStat.Vit) * 0.7f;
             if (def > 900)
                 subDef = 999999;
         }
 
         if (flags.HasFlag(AttackFlags.Magical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
-            var mDef = target.GetStat(CharacterStat.MDef);
+            var mDef = target.GetEffectiveStat(CharacterStat.MDef);
             defCut = MathF.Pow(0.99f, mDef - 1);
-            subDef = target.GetStat(CharacterStat.Int) * 0.7f;
+            subDef = target.GetEffectiveStat(CharacterStat.Int) * 0.7f;
             if (mDef > 900)
                 subDef = 999999;
         }
@@ -1108,7 +1157,12 @@ public class CombatEntity : IEntityAutoReset
         }
 
         if (damageInfo.Damage != 0)
-            target.QueueDamage(damageInfo);
+        {
+            if(damageInfo.Time < Time.ElapsedTimeFloat)
+                target.ApplyQueuedCombatResult(ref damageInfo);
+            else
+                target.QueueDamage(damageInfo);
+        }
 
         //if (target.Character.Type == CharacterType.Monster && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
         //{
@@ -1136,6 +1190,117 @@ public class CombatEntity : IEntityAutoReset
         ExecuteCombatResult(di);
     }
 
+    private void ApplyQueuedCombatResult(ref DamageInfo di)
+    {
+
+        if (Character.State == CharacterState.Dead || !Entity.IsAlive() || Character.IsTargetImmune || Character.Map == null)
+            return;
+
+        //if (di.Source.IsAlive() && di.Source.TryGet<WorldObject>(out var enemy))
+        //{
+        //    if (!enemy.IsActive || enemy.Map != Character.Map)
+        //        continue;
+        //    if (enemy.State == CharacterState.Dead)
+        //        continue; //if the attacker is dead we bail
+
+        //    //if (enemy.Position.SquareDistance(Character.Position) > 31)
+        //    //    continue;
+        //}
+        //else
+        //    continue;
+
+        if (Character.State == CharacterState.Sitting)
+            Character.State = CharacterState.Idle;
+
+        var damage = di.Damage * di.HitCount;
+
+        //inform clients the player was hit and for how much
+        var delayTime = GetTiming(TimingStat.HitDelayTime);
+
+        var knockback = di.KnockBack;
+        if (Character.Type == CharacterType.Monster && Character.Monster.MonsterBase.Special == CharacterSpecialType.Boss)
+            knockback = 0;
+
+        if (Character.Type == CharacterType.Monster && delayTime > 0.15f)
+            delayTime = 0.15f;
+        if (!di.ApplyHitLock || knockback > 0)
+            delayTime = 0.01f;
+        
+        Character.AddMoveLockTime(delayTime);
+
+        var oldPosition = Character.Position;
+        
+        if (knockback > 0)
+        {
+            var pos = Character.Map.WalkData.CalcKnockbackFromPosition(Character.Position, di.AttackPosition,
+                di.KnockBack);
+            if (Character.Position != pos)
+                Character.Map.ChangeEntityPosition3(Character, Character.WorldPosition, pos, false);
+        }
+
+        CommandBuilder.SendMoveEntityMulti(Character);
+
+        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.SendHitMulti(Character, damage);
+        CommandBuilder.ClearRecipients();
+
+        if (!di.Target.IsNull() && di.Source.IsAlive())
+            Character.LastAttacked = di.Source;
+
+        var ec = di.Target.Get<CombatEntity>();
+        var hp = GetStat(CharacterStat.Hp);
+        hp -= damage;
+
+        SetStat(CharacterStat.Hp, hp);
+
+        if (Character.Type == CharacterType.Monster)
+            Character.Monster.NotifyOfAttack(ref di);
+
+        if (hp <= 0)
+        {
+            ResetSkillDamageCooldowns();
+
+            if (Character.Type == CharacterType.Monster)
+            {
+                Character.ResetState();
+                var monster = Entity.Get<Monster>();
+
+                monster.CallDeathEvent();
+
+                if (GetStat(CharacterStat.Hp) > 0)
+                {
+                    //death is cancelled!
+                    return;
+                }
+
+                if (di.Source.IsAlive() && di.Source.TryGet<WorldObject>(out var attacker) && attacker.Type == CharacterType.Player && DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
+                {
+                    //if we're an mvp, give the attacker the effect
+                    Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+                    CommandBuilder.SendEffectOnCharacterMulti(attacker, DataManager.EffectIdForName["MVP"]);
+                    CommandBuilder.ClearRecipients();
+                }
+
+                monster.Die();
+                DamageQueue.Clear();
+
+                return;
+            }
+
+            if (Character.Type == CharacterType.Player)
+            {
+                SetStat(CharacterStat.Hp, 0);
+                Player.Die();
+                return;
+            }
+
+            return;
+        }
+
+        if(oldPosition != Character.Position)
+            Character.Map?.TriggerAreaOfEffectForCharacter(Character, oldPosition, Character.Position);
+    }
+
     private void AttackUpdate()
     {
         while (DamageQueue.Count > 0 && DamageQueue[0].Time < Time.ElapsedTimeFloat)
@@ -1143,87 +1308,7 @@ public class CombatEntity : IEntityAutoReset
             var di = DamageQueue[0];
             DamageQueue.RemoveAt(0);
 
-            if (Character.State == CharacterState.Dead || !Entity.IsAlive() || Character.IsTargetImmune)
-                break;
-
-            //if (di.Source.IsAlive() && di.Source.TryGet<WorldObject>(out var enemy))
-            //{
-            //    if (!enemy.IsActive || enemy.Map != Character.Map)
-            //        continue;
-            //    if (enemy.State == CharacterState.Dead)
-            //        continue; //if the attacker is dead we bail
-
-            //    //if (enemy.Position.SquareDistance(Character.Position) > 31)
-            //    //    continue;
-            //}
-            //else
-            //    continue;
-
-            if (Character.State == CharacterState.Sitting)
-                Character.State = CharacterState.Idle;
-
-            var damage = di.Damage * di.HitCount;
-
-            //inform clients the player was hit and for how much
-            var delayTime = GetTiming(TimingStat.HitDelayTime);
-
-            if (Character.Type == CharacterType.Monster && delayTime > 0.15f)
-                delayTime = 0.15f;
-
-            Character.AddMoveLockTime(delayTime);
-
-            Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-            CommandBuilder.SendHitMulti(Character, Character.MoveLockTime, damage);
-            CommandBuilder.ClearRecipients();
-
-            if (!di.Target.IsNull() && di.Source.IsAlive())
-                Character.LastAttacked = di.Source;
-
-            var ec = di.Target.Get<CombatEntity>();
-            var hp = GetStat(CharacterStat.Hp);
-            hp -= damage;
-
-            SetStat(CharacterStat.Hp, hp);
-
-            if (Character.Type == CharacterType.Monster)
-                Character.Monster.LastDamageSourceType = di.AttackSkill;
-
-            if (hp <= 0)
-            {
-                if (Character.Type == CharacterType.Monster)
-                {
-                    Character.ResetState();
-                    var monster = Entity.Get<Monster>();
-
-                    monster.CallDeathEvent();
-
-                    if (GetStat(CharacterStat.Hp) > 0)
-                    {
-                        //death is cancelled!
-                        return;
-                    }
-
-                    if (di.Source.IsAlive() && di.Source.TryGet<WorldObject>(out var attacker) && attacker.Type == CharacterType.Player && DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
-                    {
-                        //if we're an mvp, give the attacker the effect
-                        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-                        CommandBuilder.SendEffectOnCharacterMulti(attacker, DataManager.EffectIdForName["MVP"]);
-                        CommandBuilder.ClearRecipients();
-                    }
-
-                    monster.Die();
-                    DamageQueue.Clear();
-
-                    return;
-                }
-
-                if (Character.Type == CharacterType.Player)
-                {
-                    SetStat(CharacterStat.Hp, 0);
-                    Player.Die();
-                    return;
-                }
-            }
+            ApplyQueuedCombatResult(ref di);
         }
     }
 

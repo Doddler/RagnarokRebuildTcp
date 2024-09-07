@@ -651,12 +651,6 @@ namespace Assets.Scripts.Sprites
                 SetAsDirty = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.F2))
-            {
-                SpriteData.Atlas.filterMode = nextUseSmoothRender ? FilterMode.Bilinear : FilterMode.Point;
-                canUpdateRenderer = true;
-            }
-
             if (Parent != null)
                 return;
 

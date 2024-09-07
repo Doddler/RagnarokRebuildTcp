@@ -23,7 +23,8 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[12] = new ColdBoltHandler();
 			handlers[12].ExecuteWithoutSource = true;
 			handlers[13] = new DefaultSkillHandler();
-			handlers[14] = new DefaultSkillHandler();
+			handlers[14] = new FireWallHandler();
+			handlers[14].ExecuteWithoutSource = true;
 			handlers[15] = new DefaultSkillHandler();
 			handlers[16] = new LightningBoltHandler();
 			handlers[16].ExecuteWithoutSource = true;
@@ -76,7 +77,8 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[61] = new HammerFallHandler();
 			handlers[62] = new DefaultSkillHandler();
 			handlers[63] = new GrandThunderstormHandler();
-			handlers[64] = new DefaultSkillHandler();
+			handlers[64] = new SelfDestructHandler();
+			handlers[64].ExecuteWithoutSource = true;
 			handlers[65] = new DefaultSkillHandler();
 			handlers[66] = new DefaultSkillHandler();
 			handlers[67] = new SonicBlowHandler();
