@@ -82,6 +82,7 @@ public class Player : IEntityAutoReset
 #endif
 
     public float LastEmoteTime; //we'll probably need to have like, a bunch of timers at some point...
+    public float SkillCooldownTime;
 
 
     //stats that can't apply to monsters

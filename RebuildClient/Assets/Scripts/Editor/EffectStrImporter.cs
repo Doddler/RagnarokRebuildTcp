@@ -192,7 +192,9 @@ namespace Assets.Scripts.Editor
                         }
 
                         renderer.Anim = anim;
-
+                        renderer.IsLoop = e.IsLooping;
+                        renderer.RandomStart = e.IsLooping;
+                        
                         PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
                         Object.DestroyImmediate(obj);
                     }

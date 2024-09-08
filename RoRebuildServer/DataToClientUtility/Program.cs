@@ -60,7 +60,8 @@ class Program
                     Sprite = e.Sprite,
                     SoundFile = e.SoundFile,
                     Offset = e.Offset,
-                    PrefabName = e.PrefabName
+                    PrefabName = e.PrefabName,
+                    IsLooping = e.Flags?.Contains("Loop") ?? false,
                 });
             }
 

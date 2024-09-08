@@ -15,4 +15,5 @@ public class CsvEffects
     public string? SoundFile { get; set; }
     public float Offset { get; set; }
     public string? PrefabName { get; set; }
+    public string? Flags { get; set; }
 }

@@ -31,8 +31,19 @@ public class FirewallHandler : SkillHandlerBase
         }
 
         Debug.Assert(source.Character.Map != null);
-        var e = World.Instance.CreateEvent(source.Entity, source.Character.Map, "FirewallBaseEvent", position, lvl, 0, 0, 0, null);
-        source.Character.AttachEvent(e);
+
+        var ch = source.Character;
+        var map = ch.Map;
+
+        var e = World.Instance.CreateEvent(source.Entity, map, "FirewallBaseEvent", position, lvl, 0, 0, 0, null);
+        ch.AttachEvent(e);
+
+        if (!isIndirect)
+        {
+            map.AddVisiblePlayersAsPacketRecipients(ch);
+            CommandBuilder.SkillExecuteAreaTargetedSkill(ch, position, CharacterSkill.FireWall, lvl);
+            CommandBuilder.ClearRecipients();
+        }
     }
 }
 
@@ -89,7 +100,8 @@ public class FirewallBaseEvent : NpcBehaviorBase
 
     private void CreateWallPiece(Npc npc, Position pos, int hitCount)
     {
-        npc.CreateEvent("FirewallObjectEvent", pos, hitCount); //param is max hit count
+        if(npc.Character.Map!.WalkData.IsCellWalkable(pos))
+            npc.CreateEvent("FirewallObjectEvent", pos, hitCount); //param is max hit count
     }
 
     public override void OnTimer(Npc npc, float lastTime, float newTime)
@@ -116,8 +128,7 @@ public class FirewallObjectEvent : NpcBehaviorBase
         npc.ParamsInt = new int[4];
         npc.ParamsInt[0] = param1; //hitCount
 
-        npc.ChangeNpcClass("PORING");
-        npc.ShowNpc("Firewall");
+        npc.RevealAsEffect(NpcEffectType.Firewall, "Firewall");
 
         if (!npc.Owner.TryGet<Npc>(out var parent) || !parent.Owner.TryGet<CombatEntity>(out var source))
         {
@@ -155,7 +166,7 @@ public class FirewallObjectEvent : NpcBehaviorBase
         if (!target.IsValidTarget(src) || target.IsInSkillDamageCooldown(CharacterSkill.FireWall))
             return;
 
-        var res = src.CalculateCombatResult(target, 0.4f, 1, AttackFlags.Magical, CharacterSkill.FireWall, AttackElement.Fire);
+        var res = src.CalculateCombatResult(target, 0.1f, 1, AttackFlags.Magical, CharacterSkill.FireWall, AttackElement.Fire);
         res.KnockBack = 2;
         if (target.IsElementBaseType(CharacterElement.Undead1))
         {

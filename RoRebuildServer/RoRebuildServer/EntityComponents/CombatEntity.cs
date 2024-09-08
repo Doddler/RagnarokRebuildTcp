@@ -578,10 +578,19 @@ public class CombatEntity : IEntityAutoReset
             return true;
         }
 
-        if (Character.Type == CharacterType.Player && !Player.HasSpForSkill(skill, level))
+        if (Character.Type == CharacterType.Player)
         {
-            CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
-            return false;
+            if (!Player.HasSpForSkill(skill, level))
+            {
+                CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
+                return false;
+            }
+
+            if (Player.SkillCooldownTime > Time.ElapsedTimeFloat)
+            {
+                QueueCast(skillInfo);
+                return true;
+            }
         }
 
         CastingSkill = skillInfo;
@@ -654,10 +663,19 @@ public class CombatEntity : IEntityAutoReset
             return true;
         }
 
-        if (Character.Type == CharacterType.Player && !Player.HasSpForSkill(skill, level))
+        if (Character.Type == CharacterType.Player)
         {
-            CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
-            return false;
+            if (!Player.HasSpForSkill(skill, level))
+            {
+                CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
+                return false;
+            }
+
+            if (Player.SkillCooldownTime > Time.ElapsedTimeFloat)
+            {
+                QueueCast(skillInfo);
+                return true;
+            }
         }
 
         CastingSkill = skillInfo;
@@ -747,10 +765,19 @@ public class CombatEntity : IEntityAutoReset
             return false;
         }
 
-        if (Character.Type == CharacterType.Player && !Player.HasSpForSkill(skill, level))
+        if (Character.Type == CharacterType.Player)
         {
-            CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
-            return false;
+            if (!Player.HasSpForSkill(skill, level))
+            {
+                CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
+                return false;
+            }
+
+            if (Player.SkillCooldownTime > Time.ElapsedTimeFloat)
+            {
+                QueueCast(skillInfo);
+                return true;
+            }
         }
 
         var res = SkillHandler.ValidateTarget(skillInfo, this);
@@ -1218,29 +1245,40 @@ public class CombatEntity : IEntityAutoReset
         var delayTime = GetTiming(TimingStat.HitDelayTime);
 
         var knockback = di.KnockBack;
-        if (Character.Type == CharacterType.Monster && Character.Monster.MonsterBase.Special == CharacterSpecialType.Boss)
-            knockback = 0;
+
 
         if (Character.Type == CharacterType.Monster && delayTime > 0.15f)
             delayTime = 0.15f;
         if (!di.ApplyHitLock || knockback > 0)
             delayTime = 0.01f;
         
+        var oldPosition = Character.Position;
+
+        var sendMove = false;
+
+        if (Character.Type == CharacterType.Monster &&
+            Character.Monster.MonsterBase.Special == CharacterSpecialType.Boss)
+        {
+            knockback = 0;
+            delayTime = 0.03f;
+            sendMove = true;
+        }
+
         Character.AddMoveLockTime(delayTime);
 
-        var oldPosition = Character.Position;
-        
         if (knockback > 0)
         {
-            var pos = Character.Map.WalkData.CalcKnockbackFromPosition(Character.Position, di.AttackPosition,
-                di.KnockBack);
+            var pos = Character.Map.WalkData.CalcKnockbackFromPosition(Character.Position, di.AttackPosition, di.KnockBack);
             if (Character.Position != pos)
                 Character.Map.ChangeEntityPosition3(Character, Character.WorldPosition, pos, false);
         }
 
-        CommandBuilder.SendMoveEntityMulti(Character);
-
+        if (Character.Type == CharacterType.Monster)
+            Character.Monster.NotifyOfAttack(ref di);
+        
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+        if(!di.ApplyHitLock || sendMove)
+            CommandBuilder.SendMoveEntityMulti(Character);
         CommandBuilder.SendHitMulti(Character, damage);
         CommandBuilder.ClearRecipients();
 
@@ -1253,8 +1291,6 @@ public class CombatEntity : IEntityAutoReset
 
         SetStat(CharacterStat.Hp, hp);
 
-        if (Character.Type == CharacterType.Monster)
-            Character.Monster.NotifyOfAttack(ref di);
 
         if (hp <= 0)
         {

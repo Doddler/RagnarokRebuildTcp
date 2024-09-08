@@ -27,6 +27,9 @@ public class Npc : IEntityAutoReset
     public string Name { get; set; } = null!; //making this a property makes it accessible via npc scripting
     public string EventType = null!;
 
+    public NpcDisplayType DisplayType { get; set; }
+    public NpcEffectType EffectType { get; set; }
+
     public AreaOfEffect? AreaOfEffect;
 
     public EntityList? Mobs;
@@ -105,6 +108,9 @@ public class Npc : IEntityAutoReset
         currentSignalTarget = null;
         Name = "";
         EventType = null!;
+
+        DisplayType = NpcDisplayType.Sprite;
+        EffectType = NpcEffectType.None;
     }
 
     public void OnMobKill()
@@ -462,7 +468,10 @@ public class Npc : IEntityAutoReset
         var chara = Entity.Get<WorldObject>();
 
         if (name != null)
+        {
             chara.Name = name;
+            Name = name;
+        }
 
         if (!chara.Hidden)
             return; //npc is already visible
@@ -492,6 +501,15 @@ public class Npc : IEntityAutoReset
         }
 
         Character.ClassId = monInfo.Id;
+    }
+
+    public void RevealAsEffect(NpcEffectType type, string name)
+    {
+        ChangeNpcClass("EFFECT");
+        DisplayType = NpcDisplayType.Effect;
+        EffectType = type;
+
+        ShowNpc(name);
     }
 
     public void SignalMyEvents(string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)

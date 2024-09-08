@@ -253,6 +253,9 @@ public partial class Monster
         if (!Character.LastAttacked.IsAlive())
             return false;
 
+        if (!Character.CombatEntity.IsValidTarget(CombatEntity))
+            return false;
+
         if (swapToNewAttacker && Target != Character.LastAttacked)
             SwapTarget(Character.LastAttacked);
 

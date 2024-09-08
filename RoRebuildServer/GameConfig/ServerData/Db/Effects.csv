@@ -44,3 +44,4 @@
 42,SonicBlow,TRUE,TRUE,SonicBlow,,ef_stonecurse,0,,
 43,Concentration,TRUE,TRUE,concentration,,ac_concentration,0,,
 44,HammerFall,TRUE,TRUE,crashearth,,black_hammerfall,0,,
+45,FirewallEffect,TRUE,TRUE,firewall2,,,0,,Loop

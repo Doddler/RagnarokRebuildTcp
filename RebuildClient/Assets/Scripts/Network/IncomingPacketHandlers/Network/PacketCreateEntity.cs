@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Effects;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
@@ -115,11 +116,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             {
                 var interactable = false;
                 var name = string.Empty;
-
+                var displayType = NpcDisplayType.Sprite;
+                var effectType = NpcEffectType.None;
+                
                 if (type == CharacterType.NPC)
                 {
                     name = msg.ReadString();
                     interactable = msg.ReadBoolean();
+                    displayType = (NpcDisplayType)msg.ReadByte();
+                    effectType = (NpcEffectType)msg.ReadByte();
                     //Debug.Log(name);
                 }
 
@@ -137,7 +142,16 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     Interactable = interactable,
                     CharacterStatusEffects = statuses,
                 };
-                controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);
+
+                if (displayType == NpcDisplayType.Effect)
+                {
+                    
+                    controllable = ClientDataLoader.Instance.InstantiateEffect(ref monData, effectType);
+                    Network.EntityList.Add(id, controllable);
+                    return controllable;
+                }
+
+                controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);    
             }
 
             controllable.EnsureFloatingDisplayCreated().SetUp(controllable.Name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);

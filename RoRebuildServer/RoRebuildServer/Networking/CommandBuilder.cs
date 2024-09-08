@@ -170,6 +170,8 @@ public static class CommandBuilder
             var npc = c.Entity.Get<Npc>();
             packet.Write(npc.Name);
             packet.Write(npc.HasInteract);
+            packet.Write((byte)npc.DisplayType);
+            packet.Write((byte)npc.EffectType);
         }
         
         if (c.Hidden && !isSelf)

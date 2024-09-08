@@ -1,4 +1,5 @@
 Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,JExp,ScanDist,ChaseDist,Size,Race,Element,RechargeTime,HitTime,AttackTime,MoveSpeed,Special,MonsterAi,SpriteAttackTiming,ClientSprite,ClientOffset,ClientShadow,ClientSize,Color
+3999,EFFECT,Effect,1,42,1,1,1,6,1,1,5,6,1,0,0,2,3,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiPassive,288,poring.spr,0,0.5,1,#FFFFFFFF
 4000,PORING,Poring,1,34,1,1,1,6,1,1,5,6,1,0,0,2,3,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiPassive,288,poring.spr,0,0.5,1,#FFFFFFFF
 5000,PORING50,Poring,50,1742,22,34,37,31,26,33,235,260,1,10,10,1927,2038,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiPassive,288,poring.spr,0,0.5,1.1,#FFFFFFFF
 4001,FABRE,Fabre,2,35,1,1,1,7,2,1,8,9,1,0,0,4,4,10,12,Small,Insect,Earth1,1672,480,672,400,Normal,AiPassive,192,fabre.spr,0,0.5,1,#FFFFFFFF

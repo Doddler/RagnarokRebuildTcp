@@ -57,6 +57,7 @@ namespace Assets.Scripts.Sprites
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
 
+        private static int EffectClassId = 3999;
         private bool isInitialized;
 
         public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
@@ -490,6 +491,43 @@ namespace Assets.Scripts.Sprites
             sprite.SpriteRenderer = sr;
 
             AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/Misc/emotion.spr", emote.OnFinishLoad);
+        }
+
+        public ServerControllable InstantiateEffect(ref MonsterSpawnParameters param, NpcEffectType type)
+        {
+            if (type == NpcEffectType.None)
+            {
+                Debug.LogError($"Attempting to instantiate effect with type None!");
+                return null;
+            }
+            
+            // Debug.Log($"Instantiating effect {type}");
+            
+            var obj = new GameObject(type.ToString());
+            obj.layer = LayerMask.NameToLayer("Characters");
+            obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
+            var control = obj.AddComponent<ServerControllable>();
+            control.ClassId = param.ClassId;
+            control.CharacterType = CharacterType.NPC;
+            control.SpriteMode = ClientSpriteType.Prefab;
+            control.EntityObject = obj;
+            control.Level = param.Level;
+            control.Name = param.Name;
+            control.IsAlly = true;
+            control.IsInteractable = false;
+            
+            control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
+            obj.AddComponent<BillboardObject>();
+
+            switch (type)
+            {
+                case NpcEffectType.Firewall:
+                    CameraFollower.Instance.AttachEffectToEntity("FirewallEffect", obj);
+                    break;
+            }
+            
+            return control;
         }
 
         private ServerControllable PrefabMonster(MonsterClassData mData, ref MonsterSpawnParameters param)

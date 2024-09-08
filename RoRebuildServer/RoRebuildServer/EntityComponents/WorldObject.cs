@@ -733,6 +733,10 @@ public class WorldObject : IEntityAutoReset
         if (visiblePlayers != null)
             visiblePlayers.ClearInactive();
 
+        if (State == CharacterState.Moving)
+            PerformMoveUpdate2();
+
+
         if (Entity.Type == EntityType.Player)
         {
             player.Update();
@@ -744,13 +748,5 @@ public class WorldObject : IEntityAutoReset
             monster.Update();
             combatEntity.Update();
         }
-
-        if (State == CharacterState.Idle)
-            return;
-
-        if (State == CharacterState.Moving)
-            PerformMoveUpdate2();
-
     }
-
 }

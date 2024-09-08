@@ -45,6 +45,7 @@ public class AreaOfEffect
 
     public bool IsActive = false;
     public bool CheckStayTouching = false;
+    public bool TriggerOnFirstTouch = true;
 
     public void Init(WorldObject sourceCharacter, Area area, AoeType type, TargetingInfo targetingInfo, float duration, float tickRate, int value1, int value2)
     {
@@ -63,6 +64,7 @@ public class AreaOfEffect
         IsActive = true;
         CheckStayTouching = false;
         SkillSource = CharacterSkill.None;
+        TriggerOnFirstTouch = type == AoeType.NpcTouch;
     }
 
     public void Reset()
@@ -103,7 +105,8 @@ public class AreaOfEffect
                 return;
             if (!character.CombatEntity.IsValidTarget(attacker))
                 return;
-            npc.Behavior.OnAoEInteraction(npc, character.CombatEntity, this);
+            if(TriggerOnFirstTouch)
+                npc.Behavior.OnAoEInteraction(npc, character.CombatEntity, this);
             if (IsActive && CheckStayTouching && Area.Contains(character.Position)) //it might have moved so we check position again
             {
                 if (TouchingEntities == null)

@@ -504,7 +504,7 @@ public class World
                 for (var j = 0; j < minionDef.Count; j++)
                 {
                     var minion = CreateMonster(map, minionDef.Monster, Area.CreateAroundPoint(p, 2), null);
-                    m.AddChild(ref minion);
+                    m.AddChild(ref minion, MonsterAiType.AiMinion);
                 }
             }
         }

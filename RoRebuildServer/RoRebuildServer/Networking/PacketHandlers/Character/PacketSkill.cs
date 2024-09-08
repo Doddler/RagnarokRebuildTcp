@@ -7,6 +7,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Skills;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character
 {
@@ -24,7 +25,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (!connection.Player.CanPerformCharacterActions())
                 return;
-
+            
             var type = (SkillTarget)msg.ReadByte();
 
             switch (type)

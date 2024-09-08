@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
+using Assets.Scripts.Objects;
 using RebuildSharedData.Enum;
 using UnityEngine;
 
@@ -26,12 +27,14 @@ namespace Assets.Scripts.SkillHandlers.Handlers
 
         public override void ExecuteSkillGroundTargeted(ServerControllable src, Vector2Int target, int lvl)
         {
-            src.PerformBasicAttackMotion();
+            src.PerformSkillMotion();
+            AudioManager.Instance.OneShotSoundEffect(src.Id, $"ef_firewall.ogg", target.ToWorldPosition());
         }
 
         public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
         {
-            Debug.Log("OnHitEffect Firewall");
+            //Debug.Log("OnHitEffect Firewall");
+            CameraFollower.Instance.AttachEffectToEntity("firehit1", target.gameObject, target.Id);
         }
     }
 }

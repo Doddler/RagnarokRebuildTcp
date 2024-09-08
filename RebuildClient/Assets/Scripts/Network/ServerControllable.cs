@@ -585,7 +585,7 @@ namespace Assets.Scripts.Network
         public void MovePosition(Vector2Int targetPosition)
         {
             RealPosition = targetPosition.ToWorldPosition();
-            transform.localPosition = RealPosition + PositionOffset;
+            //transform.localPosition = RealPosition + PositionOffset;
         }
 
         public void StopWalking()
@@ -1288,6 +1288,9 @@ namespace Assets.Scripts.Network
                     SpriteAnimator.State = SpriteState.Idle;
                     SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
                 }
+
+                
+                transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
             }
         }
 

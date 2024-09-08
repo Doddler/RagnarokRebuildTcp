@@ -137,6 +137,8 @@ public partial class Monster : IEntityAutoReset
             LastAttackRange = Character.Position.DistanceTo(src.Position);
         else
             LastAttackRange = 0;
+        ResetAiUpdateTime();
+        Character.StopMovingImmediately();
         WasAttacked = true;
     }
 

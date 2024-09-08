@@ -14,7 +14,7 @@ namespace Assets.Scripts.Objects
         public bool UseZTest;
         public bool RandomStart;
         public float LoopDelay;
-        
+
         private bool isInit;
 
         private CullingGroup cullingGroup;
@@ -43,6 +43,7 @@ namespace Assets.Scripts.Objects
 
         // private bool hasAudio;
         private bool hasDisabledChildren;
+        private bool hasLooped;
 
         private Material GetEffectMaterial(int layer, int srcBlend, int destBlend)
         {
@@ -118,12 +119,14 @@ namespace Assets.Scripts.Objects
                 angles[i] = -1;
             }
 
-            time = 0;
-            frame = -1;
+            time = 1f / Anim.FrameRate;
+            frame = 0;
             isInit = true;
 
             if (RandomStart)
                 time = Random.Range(0, (float)Anim.MaxKey / (float)Anim.FrameRate + LoopDelay);
+
+            // Debug.Log($"Start Time {time}");
 
             if (IsLoop)
             {
@@ -135,7 +138,7 @@ namespace Assets.Scripts.Objects
                 cullingGroup.SetBoundingSpheres(boundingSpheres);
                 cullingGroup.SetBoundingSphereCount(1);
             }
-            
+
             AudioSource = GetComponent<EffectAudioSource>();
             if (AudioSource != null)
             {
@@ -152,7 +155,6 @@ namespace Assets.Scripts.Objects
         {
             // if (Anim != null)
             //     Initialize(Anim);
-
         }
 
         private void UpdateMesh(MeshFilter mf, Mesh mesh, Vector2[] pos, Vector2[] uvs, float angle, int imageId)
@@ -219,6 +221,25 @@ namespace Assets.Scripts.Objects
             layerRenderers[layerNum].sortingOrder = layerNum;
         }
 
+        private void RenderLayerFixedFrame(int layerNum, int animationKey)
+        {
+            var layer = Anim.Layers[layerNum];
+            var from = layer.Animations[animationKey];
+            var fixedFrame = layer.Textures[(int)from.Aniframe];
+            
+            var blendSrc = (int)from.SrcAlpha;
+            var blendDest = (int)from.DstAlpha;
+            var mat = GetEffectMaterial(layerNum, blendSrc, blendDest);
+            var go = layerObjects[layerNum];
+            var mr = layerRenderers[layerNum];
+            var mf = layerFilters[layerNum];
+            var mesh = layerMeshes[layerNum];
+            mr.material = mat;
+            
+            UpdateMesh(mf, mesh, from.XY, from.UVs, from.Angle, fixedFrame);
+            UpdateLayerData(go, mat, from.Position, from.Color, layerNum);
+        }
+
         private bool UpdateAnimationLayer(int layerNum)
         {
             var layer = Anim.Layers[layerNum];
@@ -228,6 +249,8 @@ namespace Assets.Scripts.Objects
             var startAnim = -1;
             var nextAnim = -1;
 
+            var lastAnim = -1;
+            
             for (var i = 0; i < layer.AnimationCount; i++)
             {
                 var a = layer.Animations[i];
@@ -241,11 +264,22 @@ namespace Assets.Scripts.Objects
 
                 lastFrame = Mathf.Max(lastFrame, a.Frame);
                 if (a.Type == 0)
+                {
                     lastSource = Mathf.Max(lastSource, a.Frame);
+                    lastAnim = i;
+                }
+
             }
 
             if (startAnim < 0 || (nextAnim < 0 && lastFrame < frame))
+            {
+                if (hasLooped && lastAnim != 0 && lastFrame == lastSource)
+                {
+                    RenderLayerFixedFrame(layerNum, lastAnim);
+                    return true;
+                }
                 return false;
+            }
 
             var from = layer.Animations[startAnim];
             StrAnimationEntry to = null;
@@ -321,7 +355,7 @@ namespace Assets.Scripts.Objects
             {
                 if (Anim.Layers[i].AnimationCount == 0)
                     continue;
- 
+
                 var res = UpdateAnimationLayer(i);
                 layerObjects[i].SetActive(res);
             }
@@ -332,15 +366,15 @@ namespace Assets.Scripts.Objects
         {
             if (!isInit)
                 Initialize(Anim);
-            
+
 
             if (IsLoop)
             {
                 //if (CameraFollower.Instance.Target != null && (CameraFollower.Instance.Target.transform.position - transform.position).magnitude > 30)
                 if (!cullingGroup.IsVisible(0))
                     return;
-                
-                if(frame > Anim.MaxKey)
+
+                if (frame > Anim.MaxKey)
                     waitTime += Time.deltaTime;
             }
 
@@ -368,9 +402,10 @@ namespace Assets.Scripts.Objects
 
                 if (IsLoop)
                 {
-                    time = 0f;
                     //time -= (float)Anim.MaxKey / (float)Anim.FrameRate + LoopDelay;
+                    time = 1f / Anim.FrameRate;
                     frame = Mathf.FloorToInt(time * Anim.FrameRate);
+                    hasLooped = true;
                     waitTime = 0f;
                     hasDisabledChildren = false;
                 }

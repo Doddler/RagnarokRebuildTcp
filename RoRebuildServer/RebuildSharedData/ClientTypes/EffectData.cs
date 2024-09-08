@@ -11,6 +11,7 @@ public class EffectTypeEntry
     public string Name = null!;
     public bool ImportEffect;
     public bool Billboard;
+    public bool IsLooping;
     public string? StrFile;
     public string? Sprite;
     public string? SoundFile;
