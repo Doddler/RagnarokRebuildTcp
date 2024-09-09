@@ -58,6 +58,14 @@ public abstract class SkillHandlerBase
         return SkillValidationResult.Failure;
     }
 
+    protected void GenericCastAndInformSelfSkill(WorldObject ch, CharacterSkill skill, int level)
+    {
+        ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
+        CommandBuilder.SkillExecuteSelfTargetedSkill(ch, skill, level);
+        //CommandBuilder.SendEffectOnCharacterMulti(ch, DataManager.EffectIdForName["TwoHandQuicken"]); //Two Hand Quicken
+        CommandBuilder.ClearRecipients();
+    }
+
     protected void GenericCastAndInformSupportSkill(CombatEntity source, CombatEntity? target, CharacterSkill skill, int lvl, ref readonly DamageInfo damage)
     {
         source.Character.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);

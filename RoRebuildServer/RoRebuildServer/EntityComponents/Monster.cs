@@ -99,6 +99,8 @@ public partial class Monster : IEntityAutoReset
     public CharacterSkill LastDamageSourceType;
     public int LastAttackRange;
     public bool WasAttacked;
+    public bool WasMagicLocked;
+    private bool canResetAttackedState;
 
     //private WorldObject searchTarget = null!;
 
@@ -129,6 +131,12 @@ public partial class Monster : IEntityAutoReset
             ServerLogger.LogWarning($"Could not change monster {Character} Ai Skill handler to handler with name {newHandler}");
     }
 
+    public void ChangeAiStateMachine(MonsterAiType type)
+    {
+        aiType = type;
+        aiEntries = DataManager.GetAiStateMachine(type);
+    }
+
     public void NotifyOfAttack(ref DamageInfo di)
     {
         timeSinceLastDamage = Time.ElapsedTimeFloat;
@@ -140,6 +148,14 @@ public partial class Monster : IEntityAutoReset
         ResetAiUpdateTime();
         Character.StopMovingImmediately();
         WasAttacked = true;
+    }
+
+    public void MagicLock(CombatEntity src)
+    {
+        if (WasAttacked)
+            return; //we don't want to overwrite an attacked state
+        Character.LastAttacked = src.Entity;
+        WasMagicLocked = true;
     }
 
     public void Reset()
@@ -161,6 +177,8 @@ public partial class Monster : IEntityAutoReset
         skillAiHandler = null;
         CastSuccessEvent = null;
         WasAttacked = false;
+        WasMagicLocked = false;
+        canResetAttackedState = false;
         timeSinceLastDamage = 0;
         LastAttackRange = 0;
 
@@ -365,6 +383,8 @@ public partial class Monster : IEntityAutoReset
         Character.QueuedAction = QueuedAction.None;
         CombatEntity.IsCasting = false;
         WasAttacked = false;
+        WasMagicLocked = false;
+        canResetAttackedState = false;
         timeSinceLastDamage = 0;
         LastAttackRange = 0;
         CombatEntity.SetStat(CharacterStat.Disabled, 0); //if it's disabled in death it might not be able to TryRespawn
@@ -496,6 +516,13 @@ public partial class Monster : IEntityAutoReset
         CastSuccessEvent = null;
     }
 
+    private void ResetFlagsAfterSkillHandler()
+    {
+        WasAttacked = false;
+        WasMagicLocked = false;
+        Character.LastAttacked = Entity.Null;
+    }
+
     public bool AiSkillScanUpdate()
     {
         skillState.SkillCastSuccess = false;
@@ -505,6 +532,8 @@ public partial class Monster : IEntityAutoReset
         skillAiHandler?.RunAiSkillUpdate(CurrentAiState, skillState);
         LastDamageSourceType = CharacterSkill.None; //clear this flag after doing a skill update
 
+        canResetAttackedState = true;
+        
         if (!skillState.SkillCastSuccess)
         {
             if (CurrentAiState == MonsterAiState.StateIdle)
@@ -540,6 +569,8 @@ public partial class Monster : IEntityAutoReset
         }
 #endif
 
+        canResetAttackedState = false;
+
         if (skillAiHandler != null
             && nextAiSkillUpdate < Time.ElapsedTimeFloat
             && Character.State != CharacterState.Dead
@@ -551,13 +582,8 @@ public partial class Monster : IEntityAutoReset
             AiSkillScanUpdate();
             if (Character.State == CharacterState.Dead) //if we died during our own skill handler, bail
                 return;
-            WasAttacked = false;
         }
-
-        //Profiler.Event(ProfilerEvent.MonsterStateMachineUpdate);
-
-        //ServerLogger.Debug($"{Entity}: Checking AI for state {CurrentAiState}");
-
+        
         for (var i = 0; i < aiEntries.Count; i++)
         {
             var entry = aiEntries[i];
@@ -589,7 +615,9 @@ public partial class Monster : IEntityAutoReset
             timeofLastStateChange = Time.ElapsedTimeFloat;
         }
 
-        Character.LastAttacked = Entity.Null;
+
+        if (canResetAttackedState)
+            ResetFlagsAfterSkillHandler();
         
         if (Character.Map != null && Character.Map.PlayerCount == 0)
         {

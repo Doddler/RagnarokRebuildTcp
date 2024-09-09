@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using RebuildSharedData.Enum;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
@@ -59,8 +60,98 @@ public class CharacterStatusContainer
         }
 
         outEffect = default;
-
+        
         return false;
+    }
+
+    private void RemoveIdList(ref Span<int> remove, int removeCount)
+    {
+        Debug.Assert(statusEffects != null);
+
+        if (removeCount > 0)
+        {
+            //loop through the removals in reverse order, which should be safe
+            for (var i = removeCount - 1; i >= 0; i--)
+            {
+                var s = statusEffects[i];
+                
+                statusEffects.Remove(remove[i]);
+                if (Character.Map == null)
+                    continue;
+
+                switch (StatusEffectHandler.GetStatusVisibility(s.Type))
+                {
+                    case StatusClientVisibility.Everyone: //for now everyone sees every status
+                    case StatusClientVisibility.Owner:
+                    case StatusClientVisibility.Ally:
+                        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+                        CommandBuilder.SendRemoveStatusEffect(Character, ref s);
+                        CommandBuilder.ClearRecipients();
+                        break;
+                    default:
+                        //notify no-one
+                        break;
+                }
+                
+            }
+        }
+    }
+
+    public void OnAttack(ref DamageInfo di)
+    {
+        if (statusEffects == null)
+            return;
+
+        Span<int> remove = stackalloc int[statusEffects.Count];
+        var removeCount = 0;
+        
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var s = statusEffects[i];
+            if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnDealDamage))
+            {
+                var res = StatusEffectHandler.OnAttack(s.Type, Owner, ref s, ref di);
+                if (res == StatusUpdateResult.EndStatus)
+                {
+                    remove[removeCount] = i;
+                    removeCount++;
+                }
+                else
+                    statusEffects[i] = s; //update any changed data
+            }
+        }
+
+        if (removeCount > 0)
+            RemoveIdList(ref remove, removeCount);
+    }
+
+
+    public void OnTakeDamage(ref DamageInfo di)
+    {
+        if (statusEffects == null)
+            return;
+
+        Span<int> remove = stackalloc int[statusEffects.Count];
+        var removeCount = 0;
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var s = statusEffects[i];
+            if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnTakeDamage))
+            {
+                var res = StatusEffectHandler.OnTakeDamage(s.Type, Owner, ref s, ref di);
+                if (res == StatusUpdateResult.EndStatus)
+                {
+                    remove[removeCount] = i;
+                    removeCount++;
+                }
+                else
+                    statusEffects[i] = s;
+            }
+        }
+
+        if (removeCount > 0)
+            RemoveIdList(ref remove, removeCount);
     }
 
     public void UpdateStatusEffects()

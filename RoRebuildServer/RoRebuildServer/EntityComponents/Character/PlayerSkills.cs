@@ -8,9 +8,5 @@ namespace RoRebuildServer.EntityComponents.Character
         [NotMapped]
         public Dictionary<CharacterSkill, int> UnlockedSkills { get; set; } = new();
 
-        public string SaveData
-        {
-            get;
-        }
     }
 }

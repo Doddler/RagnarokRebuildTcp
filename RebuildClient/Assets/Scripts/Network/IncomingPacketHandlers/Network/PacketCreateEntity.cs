@@ -154,7 +154,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);    
             }
 
-            controllable.EnsureFloatingDisplayCreated().SetUp(controllable.Name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
+            controllable.EnsureFloatingDisplayCreated().SetUp(controllable, controllable.Name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
             if (controllable.IsMainCharacter)
             {
                 Camera.UpdatePlayerHP(hp, maxHp);

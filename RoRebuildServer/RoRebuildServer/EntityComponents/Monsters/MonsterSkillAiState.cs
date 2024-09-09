@@ -19,9 +19,9 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents.Monsters;
 
-public class MonsterSkillAiState(Monster monster)
+public class MonsterSkillAiState(Monster monsterIn)
 {
-    public Monster Monster = monster;
+    private readonly Monster monster = monsterIn;
     public Action<MonsterSkillAiState>? CastSuccessEvent = null;
     public bool SkillCastSuccess;
     public bool ExecuteEventAtStartOfCast;
@@ -36,19 +36,20 @@ public class MonsterSkillAiState(Monster monster)
     public EntityList? Events;
     public int EventsCount => Events?.Count ?? 0;
 
-    public Position CurrentPosition => Monster.Character.Position;
+    public Position CurrentPosition => monster.Character.Position;
 
     private Dictionary<string, float>? specialCooldowns;
     private int[]? stateFlags;
+    
 
-    public CharacterSkill LastDamageSourceType => Monster.LastDamageSourceType;
-    public bool CanSeePlayers => Monster.Character.HasVisiblePlayers();
+    public CharacterSkill LastDamageSourceType => monster.LastDamageSourceType;
+    public bool CanSeePlayers => monster.Character.HasVisiblePlayers();
 
-    public int DistanceToSelectedTarget => targetForSkill == null ? -1 : Monster.Character.Position.Distance(TargetPosition);
+    public int DistanceToSelectedTarget => targetForSkill == null ? -1 : monster.Character.Position.Distance(TargetPosition);
     public Position TargetPosition => targetForSkill?.Position ?? Position.Invalid;
-    public int TimeAlive => (int)(Monster.TimeAlive * 1000);
+    public int TimeAlive => (int)(monster.TimeAlive * 1000);
 
-    public bool IsMasterAlive => Monster.HasMaster && Monster.GetMaster().TryGet<WorldObject>(out var chara) && chara.IsActive &&  chara.State != CharacterState.Dead;
+    public bool IsMasterAlive => monster.HasMaster && monster.GetMaster().TryGet<WorldObject>(out var chara) && chara.IsActive &&  chara.State != CharacterState.Dead;
 
     public void SetStateFlag(int id, int value)
     {
@@ -71,35 +72,35 @@ public class MonsterSkillAiState(Monster monster)
 
     public void Die(bool giveExperience = true)
     {
-        Monster.Die(giveExperience);
+        monster.Die(giveExperience);
     }
 
     public void Leave()
     {
-        Monster.Die(false, false, CharacterRemovalReason.Teleport);
+        monster.Die(false, false, CharacterRemovalReason.Teleport);
     }
 
     public void EnterPostDeathPhase()
     {
-        var hp = Monster.CombatEntity.GetStat(CharacterStat.Hp);
+        var hp = monster.CombatEntity.GetStat(CharacterStat.Hp);
         var map = monster.Character.Map;
         if (hp > 0)
         {
-            ServerLogger.LogWarning($"Monster {Monster.Character} on map {map.Name} called CancelDeath but it is not actually at 0 hp!");
+            ServerLogger.LogWarning($"Monster {monster.Character} on map {map?.Name} called CancelDeath but it is not actually at 0 hp!");
         }
 
-        Monster.CurrentAiState = MonsterAiState.StateSpecial;
-        Monster.CombatEntity.IsTargetable = false;
-        Monster.CombatEntity.DamageQueue.Clear();
-        Monster.CombatEntity.SetStat(CharacterStat.Hp, 1);
-        Monster.CombatEntity.IsCasting = false;
-        Monster.CombatEntity.ResetSkillCooldowns();
-        Monster.Character.QueuedAction = QueuedAction.None;
-        Monster.Character.StopMovingImmediately();
+        monster.CurrentAiState = MonsterAiState.StateSpecial;
+        monster.CombatEntity.IsTargetable = false;
+        monster.CombatEntity.DamageQueue.Clear();
+        monster.CombatEntity.SetStat(CharacterStat.Hp, 1);
+        monster.CombatEntity.IsCasting = false;
+        monster.CombatEntity.ResetSkillCooldowns();
+        monster.Character.QueuedAction = QueuedAction.None;
+        monster.Character.StopMovingImmediately();
 
 
-        map.AddVisiblePlayersAsPacketRecipients(monster.Character);
-        CommandBuilder.ChangeCombatTargetableState(Monster.Character, false);
+        map?.AddVisiblePlayersAsPacketRecipients(monster.Character);
+        CommandBuilder.ChangeCombatTargetableState(monster.Character, false);
         CommandBuilder.ClearRecipients();
     }
 
@@ -108,14 +109,14 @@ public class MonsterSkillAiState(Monster monster)
     {
         if (!IsMasterAlive)
             return;
-        if (!Monster.GetMaster().TryGet<WorldObject>(out var master))
+        if (!monster.GetMaster().TryGet<WorldObject>(out var master))
             return;
 
         var heal = min;
         if(min != max)
             heal = GameRandom.NextInclusive(min, max);
 
-        var res = Monster.CombatEntity.PrepareTargetedSkillResult(master.CombatEntity, CharacterSkill.Heal);
+        var res = monster.CombatEntity.PrepareTargetedSkillResult(master.CombatEntity, CharacterSkill.Heal);
         res.Damage = -heal;
         res.Result = AttackResult.Heal;
         res.AttackMotionTime = 0;
@@ -123,8 +124,8 @@ public class MonsterSkillAiState(Monster monster)
         
         master.CombatEntity.HealHp(heal);
         
-        Monster.Character.Map?.AddVisiblePlayersAsPacketRecipients(master);
-        CommandBuilder.SkillExecuteTargetedSkill(Monster.Character, master, CharacterSkill.Heal, 10, res);
+        monster.Character.Map?.AddVisiblePlayersAsPacketRecipients(master);
+        CommandBuilder.SkillExecuteTargetedSkill(monster.Character, master, CharacterSkill.Heal, 10, res);
         CommandBuilder.SendHealMulti(master, heal, HealType.None);
         CommandBuilder.ClearRecipients();
     }
@@ -176,36 +177,41 @@ public class MonsterSkillAiState(Monster monster)
         monster.CombatEntity.SetSkillCooldown(skill, cooldown / 1000f);
     }
 
+    public void ChangeAiClass(MonsterAiType type)
+    {
+        monster.ChangeAiStateMachine(type);
+    }
+
     public void ChangeAiState(MonsterAiState state)
     {
         monster.CurrentAiState = state;
-        Monster.UpdateStateChangeTime();
+        monster.UpdateStateChangeTime();
     }
 
-    public int TimeInAiState => (int)(Monster.TimeInCurrentAiState * 1000);
-    public int TimeOutOfCombat => (int)(Monster.DurationOutOfCombat * 1000);
-    public int TimeSinceLastDamage => (int)(Monster.TimeSinceLastDamage * 1000);
-    public bool WasRangedAttacked => Monster.WasAttacked && Monster.LastAttackRange > 4;
+    public int TimeInAiState => (int)(monster.TimeInCurrentAiState * 1000);
+    public int TimeOutOfCombat => (int)(monster.DurationOutOfCombat * 1000);
+    public int TimeSinceLastDamage => (int)(monster.TimeSinceLastDamage * 1000);
+    public bool WasRangedAttacked => monster.WasAttacked && monster.LastAttackRange > 4;
 
     public void AdminHide()
     {
-        var ch = Monster.Character;
+        var ch = monster.Character;
         if (ch.Hidden || ch.Map == null)
             return;
 
         ch.Map.RemoveEntity(ref ch.Entity, CharacterRemovalReason.OutOfSight, false);
         ch.Hidden = true;
 
-        Monster.PreviousAiState = Monster.CurrentAiState;
-        Monster.CurrentAiState = MonsterAiState.StateHidden;
-        Monster.UpdateStateChangeTime();
+        monster.PreviousAiState = monster.CurrentAiState;
+        monster.CurrentAiState = MonsterAiState.StateHidden;
+        monster.UpdateStateChangeTime();
 
-        Monster.CombatEntity.ClearDamageQueue();
+        monster.CombatEntity.ClearDamageQueue();
     }
 
     public void AdminUnHide()
     {
-        var ch = Monster.Character;
+        var ch = monster.Character;
         if (!ch.Hidden)
             return;
 
@@ -216,43 +222,43 @@ public class MonsterSkillAiState(Monster monster)
         ch.Hidden = false;
         ch.Map.AddEntity(ref ch.Entity, false);
 
-        Monster.CurrentAiState = Monster.PreviousAiState;
-        Monster.PreviousAiState = MonsterAiState.StateHidden;
-        Monster.UpdateStateChangeTime();
+        monster.CurrentAiState = monster.PreviousAiState;
+        monster.PreviousAiState = MonsterAiState.StateHidden;
+        monster.UpdateStateChangeTime();
     }
 
     public void SetHpNoNotify(int hp, bool ignoreMax = false)
     {
         if (!ignoreMax)
         {
-            var max = Monster.GetStat(CharacterStat.MaxHp);
+            var max = monster.GetStat(CharacterStat.MaxHp);
             if (hp > max)
                 hp = max;
         }
 
-        Monster.SetStat(CharacterStat.Hp, hp);
+        monster.SetStat(CharacterStat.Hp, hp);
     }
 
     public void TeleportNearRandomMinion(int distance = 5)
     {
-        var child = Monster.GetRandomChild();
-        if (child == null || !child.TryGet<WorldObject>(out var target))
+        var child = monster.GetRandomChild();
+        if (!child.TryGet<WorldObject>(out var target))
             return;
 
-        var ch = Monster.Character;
-        var pos = Monster.Character.Map.GetRandomVisiblePositionInArea(target.Position, distance / 2, distance);
+        var ch = monster.Character;
+        var pos = monster.Character.Map!.GetRandomVisiblePositionInArea(target.Position, distance / 2, distance);
 
         if (ch.Hidden)
-            Monster.Character.Position = pos;
+            monster.Character.Position = pos;
         else
-            Monster.Character.Map.TeleportEntity(ref ch.Entity, ch, pos, CharacterRemovalReason.OutOfSight);
+            monster.Character.Map.TeleportEntity(ref ch.Entity, ch, pos, CharacterRemovalReason.OutOfSight);
     }
 
     public void CallHiddenParentToNearbyPosition(int distance = 5)
     {
-        if (!Monster.HasMaster)
+        if (!monster.HasMaster)
             return;
-        var mEntity = Monster.GetMaster();
+        var mEntity = monster.GetMaster();
         if (!mEntity.TryGet<WorldObject>(out var master))
             return;
         if (master.Type != CharacterType.Monster)
@@ -260,7 +266,7 @@ public class MonsterSkillAiState(Monster monster)
         if (!master.Hidden)
             return;
 
-        var pos = Monster.Character.Map.GetRandomVisiblePositionInArea(Monster.Character.Position, distance / 2, distance);
+        var pos = monster.Character.Map.GetRandomVisiblePositionInArea(monster.Character.Position, distance / 2, distance);
         master.Position = pos;
     }
 
@@ -284,7 +290,7 @@ public class MonsterSkillAiState(Monster monster)
     public void LookAtPosition(Position p)
     {
         //var dir = DistanceCache.Direction(Monster.Character.Position, p);
-        Monster.Character.ChangeLookDirection(p);
+        monster.Character.ChangeLookDirection(p);
     }
 
     public bool Cast(CharacterSkill skill, int level, int castTime, int delay = 0, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
@@ -411,16 +417,16 @@ public class MonsterSkillAiState(Monster monster)
 
         var result = Cast(skill, level, castTime, delay, flags);
         if (result)
-            Monster.LastDamageSourceType = CharacterSkill.None;
+            monster.LastDamageSourceType = CharacterSkill.None;
 
         return result;
     }
 
     public void CancelCast()
     {
-        if (Monster.CombatEntity.IsCasting)
+        if (monster.CombatEntity.IsCasting)
         {
-            Monster.CombatEntity.IsCasting = false; //send packet! OMG!
+            monster.CombatEntity.IsCasting = false; //send packet! OMG!
         }
     }
 
@@ -455,38 +461,38 @@ public class MonsterSkillAiState(Monster monster)
 
     public void SummonMinions(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
     {
-        Debug.Assert(Monster.Character.Map != null, $"Npc {Monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+        Debug.Assert(monster.Character.Map != null, $"Npc {monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
 
         var monsterDef = DataManager.MonsterCodeLookup[name];
 
-        var area = Area.CreateAroundPoint(Monster.Character.Position + new Position(offsetX, offsetY), width, height);
+        var area = Area.CreateAroundPoint(monster.Character.Position + new Position(offsetX, offsetY), width, height);
 
         for (var i = 0; i < count; i++)
         {
-            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, Area.CreateAroundPoint(monster.Character.Position, 3), null);
+            var minion = World.Instance.CreateMonster(monster.Character.Map, monsterDef, Area.CreateAroundPoint(monster.Character.Position, 3), null);
             var minionMonster = minion.Get<Monster>();
             minionMonster.ResetAiUpdateTime();
             minionMonster.GivesExperience = false;
 
-            Monster.AddChild(ref minion, MonsterAiType.AiMinion);
+            monster.AddChild(ref minion, MonsterAiType.AiMinion);
         }
     }
 
 
     public void SummonMonstersNoExp(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
     {
-        Debug.Assert(Monster.Character.Map != null, $"Npc {Monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+        Debug.Assert(monster.Character.Map != null, $"Npc {monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
 
         var monsterDef = DataManager.MonsterCodeLookup[name];
 
-        var area = Area.CreateAroundPoint(Monster.Character.Position + new Position(offsetX, offsetY), width, height);
+        var area = Area.CreateAroundPoint(monster.Character.Position + new Position(offsetX, offsetY), width, height);
 
         for (var i = 0; i < count; i++)
         {
-            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, area, null);
+            var minion = World.Instance.CreateMonster(monster.Character.Map, monsterDef, area, null);
             var minionMonster = minion.Get<Monster>();
             minionMonster.ResetAiUpdateTime();
-            minionMonster.SetMaster(Monster.Entity); //these monsters have masters but are not minions of the parent
+            minionMonster.SetMaster(monster.Entity); //these monsters have masters but are not minions of the parent
 
             minionMonster.GivesExperience = false;
         }
@@ -495,19 +501,19 @@ public class MonsterSkillAiState(Monster monster)
 
     public void SummonMonstersUnderMyMaster(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
     {
-        Debug.Assert(Monster.Character.Map != null, $"Npc {Monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+        Debug.Assert(monster.Character.Map != null, $"Npc {monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
 
         var monsterDef = DataManager.MonsterCodeLookup[name];
 
-        var area = Area.CreateAroundPoint(Monster.Character.Position + new Position(offsetX, offsetY), width, height);
+        var area = Area.CreateAroundPoint(monster.Character.Position + new Position(offsetX, offsetY), width, height);
 
         for (var i = 0; i < count; i++)
         {
-            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, area, null);
+            var minion = World.Instance.CreateMonster(monster.Character.Map, monsterDef, area, null);
             var minionMonster = minion.Get<Monster>();
             minionMonster.ResetAiUpdateTime();
-            if(Monster.HasMaster)
-                minionMonster.SetMaster(Monster.GetMaster()); //these monsters have masters but are not minions of the parent
+            if(monster.HasMaster)
+                minionMonster.SetMaster(monster.GetMaster()); //these monsters have masters but are not minions of the parent
 
             minionMonster.GivesExperience = false;
         }
@@ -515,22 +521,22 @@ public class MonsterSkillAiState(Monster monster)
 
     public void TossSummonMonster(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
     {
-        Debug.Assert(Monster.Character.Map != null, $"Npc {Monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+        Debug.Assert(monster.Character.Map != null, $"Npc {monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
 
         var monsterDef = DataManager.MonsterCodeLookup[name];
 
-        var area = Area.CreateAroundPoint(Monster.Character.Position + new Position(offsetX, offsetY), width, height);
+        var area = Area.CreateAroundPoint(monster.Character.Position + new Position(offsetX, offsetY), width, height);
 
         for (var i = 0; i < count; i++)
         {
-            var minion = World.Instance.CreateMonster(Monster.Character.Map, monsterDef, area, null, false);
+            var minion = World.Instance.CreateMonster(monster.Character.Map, monsterDef, area, null, false);
             var minionMonster = minion.Get<Monster>();
             minionMonster.ResetAiUpdateTime();
-            minionMonster.SetMaster(Monster.Entity); //these monsters have masters but are not minions of the parent
+            minionMonster.SetMaster(monster.Entity); //these monsters have masters but are not minions of the parent
 
             minionMonster.GivesExperience = false;
 
-            Monster.Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Toss, Monster.Character.Position);
+            monster.Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Toss, monster.Character.Position);
         }
     }
 
@@ -608,7 +614,7 @@ public class MonsterSkillAiState(Monster monster)
         for (var i = 0; i < players.Count; i++)
         {
             if (players[i].TryGet<CombatEntity>(out var potentialTarget))
-                if(potentialTarget.IsValidTarget(Monster.CombatEntity))
+                if(potentialTarget.IsValidTarget(monster.CombatEntity))
                     pool.Add(players[i]);
         }
 
@@ -624,7 +630,7 @@ public class MonsterSkillAiState(Monster monster)
         return false;
     }
 
-    public void CreateEvent(string eventName, string? valueString = null) => CreateEvent(eventName, Monster.Character.Position, 0, 0, 0, 0, valueString);
+    public void CreateEvent(string eventName, string? valueString = null) => CreateEvent(eventName, monster.Character.Position, 0, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, Position pos, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, Position pos, int value1, int value2, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, 0, 0, valueString);
@@ -642,8 +648,8 @@ public class MonsterSkillAiState(Monster monster)
         if (chara.Map == null)
             throw new Exception($"Npc {chara.Name} attempting to create event, but the monster is not currently attached to a map.");
 
-        var eventObj = World.Instance.CreateEvent(Monster.Entity, chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
-        eventObj.Get<Npc>().Owner = Monster.Entity;
+        var eventObj = World.Instance.CreateEvent(monster.Entity, chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
+        eventObj.Get<Npc>().Owner = monster.Entity;
         Events ??= EntityListPool.Get();
         Events.ClearInactive();
         Events.Add(eventObj);

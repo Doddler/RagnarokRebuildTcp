@@ -29,6 +29,9 @@ Type = "Debuff"
 [Stone]
 Type = "Debuff"
 
+[Provoke]
+Type = "Debuff"
+
 #----------------------------------
 # Player Buffs
 #----------------------------------
@@ -59,6 +62,12 @@ CanDisable = true
 
 [ImproveConcentration]
 Name = "Improve Concentration"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
+
+[Endure]
+Name = "Endure"
 Type = "Buff"
 CanDispel = true
 CanDisable = true

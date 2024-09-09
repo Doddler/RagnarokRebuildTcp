@@ -20,7 +20,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (Network.EntityList.TryGetValue(id, out var controllable))
             {
                 // Debug.Log($"Applying status {status} to {controllable.Name}");
-                StatusEffectApplicator.AddStatusToTarget(controllable, status);
+                StatusEffectState.AddStatusToTarget(controllable, status);
             }
         }
     }

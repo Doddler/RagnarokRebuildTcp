@@ -86,7 +86,7 @@ public class Npc : IEntityAutoReset
     {
         if (AreaOfEffect != null)
         {
-            ServerLogger.LogWarning($"We are resetting the area of effect state of NPC '{Name}', but it shouldn't have one at this point.");
+            //ServerLogger.LogWarning($"We are resetting the area of effect state of NPC '{Name}', but it shouldn't have one at this point.");
             AreaOfEffect.Reset();
             World.Instance.ReturnAreaOfEffect(AreaOfEffect);
             AreaOfEffect = null!;
@@ -111,6 +111,17 @@ public class Npc : IEntityAutoReset
 
         DisplayType = NpcDisplayType.Sprite;
         EffectType = NpcEffectType.None;
+    }
+
+    public void RemoveAreaOfEffect()
+    {
+        if (AreaOfEffect != null) {
+            Debug.Assert(Character.Map != null);
+            Character.Map.RemoveAreaOfEffect(AreaOfEffect);
+            AreaOfEffect.Reset();
+            World.Instance.ReturnAreaOfEffect(AreaOfEffect);
+            AreaOfEffect = null;
+        }
     }
 
     public void OnMobKill()
@@ -560,7 +571,7 @@ public class Npc : IEntityAutoReset
         Character.MoveSpeed = speed / 1000f;
         for (var d = distance; d > 0; d--)
         {
-            var pos = Character.Map.GetRandomVisiblePositionInArea(Character.Position, distance / 2, distance);
+            var pos = Character.Map!.GetRandomVisiblePositionInArea(Character.Position, distance / 2, distance);
             if (pos == Character.Position) continue;
             if (Character.TryMove(pos, 0))
                 return;

@@ -103,11 +103,10 @@ public class World
         {
             var npc = ch.Npc;
 
-            if (npc.HasTouch && npc.AreaOfEffect != null)
-                ch.Map?.RemoveAreaOfEffect(npc.AreaOfEffect);
-
+            npc.RemoveAreaOfEffect();
             npc.RemoveSignal();
             npc.EndAllEvents();
+            
         }
 
         entityList.Remove(ch.Id);
@@ -337,7 +336,6 @@ public class World
             } while (!map.WalkData.IsCellWalkable(p));
         }
         
-
         ch.Id = GetNextEntityId();
         ch.IsActive = false; //start off inactive
 
@@ -363,7 +361,7 @@ public class World
             player.Name = connection.LoadCharacterRequest.Name;
             player.Id = connection.LoadCharacterRequest.Id;
             player.SavePosition = connection.LoadCharacterRequest.SavePosition;
-            player.LearnedSkills = connection.LoadCharacterRequest.SkillsLearned;
+            player.LearnedSkills = connection.LoadCharacterRequest.SkillsLearned ?? new Dictionary<CharacterSkill, int>();
             player.NpcFlags = connection.LoadCharacterRequest.NpcFlags;
             var data = connection.LoadCharacterRequest.Data;
 

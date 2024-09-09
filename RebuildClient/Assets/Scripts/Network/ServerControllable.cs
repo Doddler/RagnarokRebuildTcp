@@ -8,6 +8,7 @@ using Assets.Scripts.MapEditor;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network.Messaging;
 using Assets.Scripts.Objects;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
@@ -51,14 +52,15 @@ namespace Assets.Scripts.Network
 
         public string DisplayName => CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay ? Name : $"Lv.{Level} {Name}";
 
-        public Vector3 CounterHitDir;
+        [NonSerialized] public Vector3 CounterHitDir;
 
-        public ClientSpriteType SpriteMode;
-        public GameObject EntityObject;
-        public GameObject ComboIndicator;
-        public GameObject FollowerObject;
+        [NonSerialized] public ClientSpriteType SpriteMode;
+        [NonSerialized] public GameObject EntityObject;
+        [NonSerialized]public GameObject ComboIndicator;
+        [NonSerialized]public GameObject FollowerObject;
+        [NonSerialized] public StatusEffectState StatusEffectState;
 
-        public CharacterFloatingDisplay FloatingDisplay;
+        [NonSerialized] public CharacterFloatingDisplay FloatingDisplay;
         private List<Vector2Int> movePath;
         private Vector2Int[] tempPath;
         private int currentMoveStep;
@@ -227,6 +229,15 @@ namespace Assets.Scripts.Network
             uniqueAttackAction = null;
             FloatingDisplay?.CancelCasting();
             EndEffectOfType(EffectType.CastEffect);
+        }
+
+        public void StopCastingAnimation()
+        {
+            if (SpriteAnimator == null)
+                return;
+            if (SpriteAnimator.CurrentMotion == SpriteMotion.Casting)
+                SpriteAnimator.Unpause();
+
         }
 
         // public void RefreshHiddenState()
@@ -1048,15 +1059,16 @@ namespace Assets.Scripts.Network
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
             var red = SpriteAnimator.Type == SpriteType.Player;
+            var color = red ? "#FF8888" : "#FFFF00";
             var height = 1f;
             di.DoDamage(TextIndicatorType.Critical, damage.ToString(), gameObject.transform.localPosition, height,
-                SpriteAnimator.Direction, "#FFFF00", true);
+                SpriteAnimator.Direction, color, true);
 
             if (totalDamage > 0 && CharacterType != CharacterType.Player)
             {
                 var di2 = RagnarokEffectPool.GetDamageIndicator();
                 di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
-                    SpriteAnimator.Direction, "#FFFF00", false);
+                    SpriteAnimator.Direction, color, false);
                 di2.AttachComboIndicatorToControllable(this);
             }
         }
@@ -1135,14 +1147,17 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            movePauseTime = DebugValueHolder.GetOrDefault("movePauseTime", 0.2f);
+            var hasEndure = StatusEffectState != null && StatusEffectState.HasStatusEffect(CharacterStatusEffect.Endure);
+
+            if(!hasEndure)
+                movePauseTime = DebugValueHolder.GetOrDefault("movePauseTime", 0.2f);
             UpdateMovePosition();
 
             var weaponClass = 0;
             if (msg.Entity != null)
                 weaponClass = msg.Entity.WeaponClass;
-
-            if (SpriteAnimator.CurrentMotion != SpriteMotion.Dead)
+            
+            if (SpriteAnimator.CurrentMotion != SpriteMotion.Dead && !hasEndure)
             {
                 if (SpriteAnimator.Type == SpriteType.Player)
                     SpriteAnimator.State = SpriteState.Standby;

@@ -832,7 +832,7 @@ internal class ScriptTreeWalker
             if (isConditional)
             {
                 builder.OutputRaw("if (");
-                VisitExpression(functionContext.condition);
+                VisitExpression(functionContext.condition!);
                 builder.OutputRaw(")");
                 builder.EndLine();
                 builder.OpenScope();

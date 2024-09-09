@@ -74,6 +74,30 @@ StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s);
 }
 
+macro JokerStateSwap() {
+	TryCast(NoCast, 10, 1%, 0.8s, 60s) -> {
+		var i = Random(0, 4);
+		if(i == 4) {
+			if(Random(0, 4) == 3)
+				ChangeAiClass(AiHyperPacifist); //4% chance
+			else
+				i = Random(0, 3);
+		}
+		if(i == 0) ChangeAiClass(AiPassive); //24%
+		if(i == 1) ChangeAiClass(AiPassiveSense); //24%
+		if(i == 2) ChangeAiClass(AiAssist); //24%
+		if(i == 3) ChangeAiClass(AiAggressive); //24%
+		//remember to stick looter in here when loot exists
+	}
+}
+
+SkillHandler("JOKER") {
+StateIdle:
+	@JokerStateSwap();
+StateRandomMove:
+	@JokerStateSwap();
+}
+
 SkillHandler("INJUSTICE") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(2);

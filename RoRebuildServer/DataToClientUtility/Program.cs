@@ -136,7 +136,7 @@ class Program
         while (csv.Read())
         {
 
-            if (csv.Context.Parser.Record == null)
+            if (csv.Context?.Parser?.Record == null)
                 continue; //piss off possible null exceptions
             var instance = new InstanceEntry
             {
@@ -425,13 +425,13 @@ class Program
         foreach (var (id, tree) in skillTreeData)
         {
             var job = jobs.FirstOrDefault(j => id == j.Name);
-            if (job == null) throw new Exception($"SkillTree.toml could not identify job by name {id}");
+            if (job == null || tree == null) throw new Exception($"SkillTree.toml could not identify job by name {id}");
 
             int extends = -1;
             if (tree.Extends != null)
             {
                 var extendJobClass = jobs.FirstOrDefault(j => j.Name == tree.Extends);
-                if (job == null) throw new Exception($"SkillTree.toml could not identify extension job by name {id}");
+                if (job == null || extendJobClass == null) throw new Exception($"SkillTree.toml could not identify extension job by name {id}");
                 extends = extendJobClass.Id;
             }
 
@@ -443,25 +443,27 @@ class Program
                 Skills = new List<ClientSkillTreeEntry>()
             };
 
-            foreach (var skills in tree.SkillTree)
-            {
-                var skill = new ClientSkillTreeEntry()
+            if (tree.SkillTree != null)
+                foreach (var skills in tree.SkillTree)
                 {
-                    Skill = skillData[skills.Key.ToString()].SkillId,
-                    Prerequisites = new ClientPrereq[skills.Value.Count]
-                };
-                
-                for(var i = 0; i < skills.Value.Count; i++)
-                {
-                    var prereq = skills.Value[i];
-                    skill.Prerequisites[i] = new ClientPrereq()
+                    var skill = new ClientSkillTreeEntry()
                     {
-                        Skill = prereq.Skill,
-                        Level = prereq.RequiredLevel
+                        Skill = skillData[skills.Key.ToString()].SkillId,
+                        Prerequisites = new ClientPrereq[skills.Value!.Count]
                     };
+
+                    for (var i = 0; i < skills.Value.Count; i++)
+                    {
+                        var prereq = skills.Value[i];
+                        skill.Prerequisites[i] = new ClientPrereq()
+                        {
+                            Skill = prereq.Skill,
+                            Level = prereq.RequiredLevel
+                        };
+                    }
+
+                    entry.Skills.Add(skill);
                 }
-                entry.Skills.Add(skill);
-            }
 
             skillTreeOut.Add(entry);
         }

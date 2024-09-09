@@ -82,6 +82,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 MotionTime = motionTime,
                 DamageTiming = motionTime,
             };
+            
+            controllable.ShowSkillCastMessage(skill, 3);
 
             Network.AttackMotion(controllable, pos, dir, motionTime, null);
             ClientSkillHandler.ExecuteSkill(controllable, ref attack);

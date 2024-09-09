@@ -42,6 +42,7 @@ public partial class Monster
             case MonsterInputCheck.InAllyInCombat: return InAllyInCombat();
             case MonsterInputCheck.InOwnerOutOfSight: return InOwnerOutOfSight();
             case MonsterInputCheck.InOwnerAttacked: return InOwnerAttacked();
+            case MonsterInputCheck.InTargetedForSkill: return InTargetLocked();
             case MonsterInputCheck.InNoCondition: return true;
         }
 
@@ -65,7 +66,7 @@ public partial class Monster
 
         return false;
     }
-
+    
     private bool AdjustToAdjacentTile()
     {
         var start = GameRandom.NextInclusive(1) == 1 ? -1 : 1;
@@ -80,7 +81,7 @@ public partial class Monster
 
                 var pos = Character.Position + new Position(x, y);
 
-                if (!Character.Map.IsTileOccupied(pos))
+                if (!Character.Map!.IsTileOccupied(pos))
                 {
                     if (Character.TryMove(pos, 0))
                         return true;
@@ -248,15 +249,28 @@ public partial class Monster
     /// TODO: We should not commit to switching target until the output state check occurs.
     private bool InAttacked(bool swapToNewAttacker = true)
     {
-        if (Character.LastAttacked.IsNull())
-            return false;
-        if (!Character.LastAttacked.IsAlive())
+        if (!WasAttacked)
             return false;
 
-        if (!Character.CombatEntity.IsValidTarget(CombatEntity))
+        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.IsValidTarget(CombatEntity))
             return false;
 
         if (swapToNewAttacker && Target != Character.LastAttacked)
+            SwapTarget(Character.LastAttacked);
+
+        return true;
+    }
+
+    // did a player lock onto us with a spell?
+    private bool InTargetLocked()
+    {
+        if (!WasMagicLocked)
+            return false;
+
+        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.IsValidTarget(CombatEntity))
+            return false;
+
+        if (Target != Character.LastAttacked)
             SwapTarget(Character.LastAttacked);
 
         return true;

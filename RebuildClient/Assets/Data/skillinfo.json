@@ -66,7 +66,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "Resists flinching from enemy attacks, allowing you to escape without being slowed down by damage.\r\nLasts [Skill Level \u002B 2] hits. Provides a bonus to magic defense while active."
     },
     {
       "SkillId": 5,
@@ -121,7 +121,7 @@
         5
       ],
       "AdjustableLevel": false,
-      "Description": "This skill \u003Ci\u003Emight\u003C/i\u003E work? Maybe? Worth trying I guess."
+      "Description": "Enrages an enemy by taunting them, causing them drop their guard. \r\nEach level lowers the target\u0027s defense by 3% but increases their attack power by 2%. \r\nThe enemy has a low chance of dealing extra damage against you specifically."
     },
     {
       "SkillId": 8,

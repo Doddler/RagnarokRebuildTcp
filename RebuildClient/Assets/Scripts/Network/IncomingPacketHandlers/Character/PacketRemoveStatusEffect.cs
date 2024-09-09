@@ -20,7 +20,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             {
                 //Debug.Log($"Removing status {status} from {controllable.Name}");
 
-                StatusEffectApplicator.RemoveStatusFromTarget(controllable, status);
+                StatusEffectState.RemoveStatusFromTarget(controllable, status);
             }
         }
     }

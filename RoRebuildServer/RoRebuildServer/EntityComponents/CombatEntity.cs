@@ -13,6 +13,7 @@ using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static System.Net.Mime.MediaTypeNames;
@@ -50,6 +51,7 @@ public class CombatEntity : IEntityAutoReset
     [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> damageCooldowns = new();
     [EntityIgnoreNullCheck] public List<DamageInfo> DamageQueue { get; set; } = null!;
     private CharacterStatusContainer? statusContainer;
+    
 
     public float GetTiming(TimingStat type) => timingData[(int)type];
     public void SetTiming(TimingStat type, float val) => timingData[(int)type] = val;
@@ -184,6 +186,15 @@ public class CombatEntity : IEntityAutoReset
 
     public CharacterStatusContainer? GetStatusEffectData() => statusContainer;
     public bool HasStatusEffectOfType(CharacterStatusEffect type) => statusContainer?.HasStatusEffectOfType(type) ?? false;
+
+    public bool TryGetStatusContainer([NotNullWhen(returnValue:true)] out CharacterStatusContainer? status)
+    {
+        status = null;
+        if (statusContainer == null)
+            return false;
+        status = statusContainer;
+        return true;
+    }
 
 
     public void AddDisabledState()
@@ -605,7 +616,7 @@ public class CombatEntity : IEntityAutoReset
         {
             IsCasting = true;
             CastingTime = Time.ElapsedTimeFloat + castTime;
-
+            
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime, hideSkillName);
             CommandBuilder.ClearRecipients();
@@ -810,6 +821,9 @@ public class CombatEntity : IEntityAutoReset
                 Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
                 CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime, hideSkillName);
                 CommandBuilder.ClearRecipients();
+
+                if(target.Character.Type == CharacterType.Monster)
+                    target.Character.Monster.MagicLock(this);
             }
             return true;
         }
@@ -1064,6 +1078,12 @@ public class CombatEntity : IEntityAutoReset
         di.Damage = damage;
         di.HitCount = (byte)hitCount;
 
+        if (statusContainer != null)
+            statusContainer.OnAttack(ref di);
+
+        if(target.TryGetStatusContainer(out var targetStatus))
+            targetStatus.OnTakeDamage(ref di);
+
         return di;
     }
 
@@ -1075,17 +1095,24 @@ public class CombatEntity : IEntityAutoReset
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResult.");
 #endif
 
+        var isMagic = flags.HasFlag(AttackFlags.Magical);
+
         var atk1 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack) : GetStat(CharacterStat.MagicAtkMin);
         var atk2 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack2) : GetStat(CharacterStat.MagicAtkMax);
 
-        //if (Character.Type == CharacterType.Monster && flags.HasFlag(AttackFlags.Magical))
-        //{
-        //    //monster unique scaling, monster matk is 50% their physical, plus or minus a % equal to how much their int exceeds or is below their level
-        //    var magicScaleFactor = 100 + (GetStat(CharacterStat.Level) - GetStat(CharacterStat.Int));
-        //    atk1 = atk1 * 50 / magicScaleFactor;
-        //    atk2 = atk2 * 50 / magicScaleFactor;
-        //}
-
+        if (!isMagic)
+        {
+            var attackPercent = 1f + (GetStat(CharacterStat.AddAttackPercent) / 100f);
+            atk1 = (int)(atk1 * attackPercent);
+            atk2 = (int)(atk2 * attackPercent);
+        }
+        else
+        {
+            var magicPercent = 1f + (GetStat(CharacterStat.AddMagicAttackPercent) / 100f);
+            atk1 = (int)(atk1 * magicPercent);
+            atk2 = (int)(atk2 * magicPercent);
+        }
+        
         if (atk1 <= 0)
             atk1 = 1;
         if (atk2 < atk1)
@@ -1250,14 +1277,12 @@ public class CombatEntity : IEntityAutoReset
         if (Character.Type == CharacterType.Monster && delayTime > 0.15f)
             delayTime = 0.15f;
         if (!di.ApplyHitLock || knockback > 0)
-            delayTime = 0.01f;
-        
+            delayTime = 0f;
         var oldPosition = Character.Position;
 
         var sendMove = false;
 
-        if (Character.Type == CharacterType.Monster &&
-            Character.Monster.MonsterBase.Special == CharacterSpecialType.Boss)
+        if (Character.Type == CharacterType.Monster && knockback > 0 && Character.Monster.MonsterBase.Special == CharacterSpecialType.Boss)
         {
             knockback = 0;
             delayTime = 0.03f;
@@ -1271,15 +1296,16 @@ public class CombatEntity : IEntityAutoReset
             var pos = Character.Map.WalkData.CalcKnockbackFromPosition(Character.Position, di.AttackPosition, di.KnockBack);
             if (Character.Position != pos)
                 Character.Map.ChangeEntityPosition3(Character, Character.WorldPosition, pos, false);
+            sendMove = true;
         }
 
         if (Character.Type == CharacterType.Monster)
             Character.Monster.NotifyOfAttack(ref di);
         
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-        if(!di.ApplyHitLock || sendMove)
+        if(sendMove)
             CommandBuilder.SendMoveEntityMulti(Character);
-        CommandBuilder.SendHitMulti(Character, damage);
+        CommandBuilder.SendHitMulti(Character, damage, di.ApplyHitLock);
         CommandBuilder.ClearRecipients();
 
         if (!di.Target.IsNull() && di.Source.IsAlive())

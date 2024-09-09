@@ -10,7 +10,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
     public class StatusFreeze : StatusEffectBase
     {
         public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnTakeDamage;
-
+        
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
             var defDown = ch.GetEffectiveStat(CharacterStat.Def) / 2;

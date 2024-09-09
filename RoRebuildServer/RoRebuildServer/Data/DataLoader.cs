@@ -49,7 +49,7 @@ internal class DataLoader
         while (csv.Read())
         {
             
-            if (csv.Context.Parser.Record == null)
+            if (csv.Context?.Parser?.Record == null)
                 continue; //piss off possible null exceptions
             var instance = new InstanceEntry
             {

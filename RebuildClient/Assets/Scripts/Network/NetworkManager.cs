@@ -402,7 +402,7 @@ namespace Assets.Scripts.Network
                 controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);
             }
 
-            controllable.EnsureFloatingDisplayCreated().SetUp(name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
+            controllable.EnsureFloatingDisplayCreated().SetUp(controllable, name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
             if (controllable.IsMainCharacter)
             {
                 CameraFollower.UpdatePlayerHP(hp, maxHp);

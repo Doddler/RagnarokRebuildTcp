@@ -166,7 +166,7 @@ public class FirewallObjectEvent : NpcBehaviorBase
         if (!target.IsValidTarget(src) || target.IsInSkillDamageCooldown(CharacterSkill.FireWall))
             return;
 
-        var res = src.CalculateCombatResult(target, 0.1f, 1, AttackFlags.Magical, CharacterSkill.FireWall, AttackElement.Fire);
+        var res = src.CalculateCombatResult(target, 0.5f, 1, AttackFlags.Magical, CharacterSkill.FireWall, AttackElement.Fire);
         res.KnockBack = 2;
         if (target.IsElementBaseType(CharacterElement.Undead1))
         {

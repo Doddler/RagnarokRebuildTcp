@@ -42,5 +42,5 @@ public class NetworkConnection
     public bool IsConnectedAndInGame => IsConnected && Character?.IsActive == true && Character?.Map != null;
     public bool IsAdmin => Player?.IsAdmin == true;
     public bool IsOnlineAdmin => IsAdmin && IsConnectedAndInGame;
-    public bool IsPlayerAlive => IsConnectedAndInGame && Character.State != CharacterState.Dead;
+    public bool IsPlayerAlive => IsConnectedAndInGame && Character!.State != CharacterState.Dead;
 }

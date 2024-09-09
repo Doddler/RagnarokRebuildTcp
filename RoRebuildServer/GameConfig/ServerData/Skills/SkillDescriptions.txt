@@ -11,7 +11,8 @@ This skill doesn't currently work but you also need it to job change for some re
 Hit the enemy really hard.
 
 ::Endure
-<color=red>This skill doesn't currently work.
+Resists flinching from enemy attacks, allowing you to escape without being slowed down by damage.
+Lasts [Skill Level + 2] hits. Provides a bonus to magic defense while active.
 
 ::IncreasedHPRecovery
 <color=red>This skill doesn't currently work.
@@ -20,7 +21,9 @@ Hit the enemy really hard.
 <color=red>This skill doesn't currently work.
 
 ::Provoke
-This skill <i>might</i> work? Maybe? Worth trying I guess.
+Enrages an enemy by taunting them, causing them drop their guard. 
+Each level lowers the target's defense by 3% but increases their attack power by 2%. 
+The enemy has a low chance of dealing extra damage against you specifically.
 
 ::SwordMastery
 Increases damage when using a one-handed sword by 1% per level to a max of +10%.

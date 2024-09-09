@@ -31,6 +31,12 @@ public class SwapList<T> where T : struct, IEquatable<T>
 				throw new IndexOutOfRangeException();
 			return entities[index];
 		}
+        set
+        {
+            if (index < 0 || index >= count)
+                throw new IndexOutOfRangeException();
+            entities[index] = value;
+        }
 	}
 
 	private void ResizeIfNeeded()

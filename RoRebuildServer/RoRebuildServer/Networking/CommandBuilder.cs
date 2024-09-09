@@ -718,7 +718,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SendHitMulti(WorldObject c, int damage)
+    public static void SendHitMulti(WorldObject c, int damage, bool isHitStopped)
     {
         if (!HasRecipients())
             return;
@@ -728,7 +728,7 @@ public static class CommandBuilder
         //packet.Write(delayTime);
         packet.Write(damage);
         packet.Write(c.Position);
-        packet.Write(c.InMoveLock);
+        packet.Write(c.InMoveLock && isHitStopped);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

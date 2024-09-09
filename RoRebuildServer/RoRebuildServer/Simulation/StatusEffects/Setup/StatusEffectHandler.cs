@@ -12,6 +12,9 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         private static StatusEffectBase[] handlers;
         private static StatusEffectHandlerAttribute[] attributes;
 
+        private static StatusUpdateMode[] updateModes;
+
+        public static StatusUpdateMode GetUpdateMode(CharacterStatusEffect status) => updateModes[(int)status];
         public static StatusClientVisibility GetStatusVisibility(CharacterStatusEffect status) => attributes[(int)status].VisibilityMode;
         public static bool HasFlag(CharacterStatusEffect status, StatusEffectFlags flag) => attributes[(int)status].Flags.HasFlag(flag);
 
@@ -20,6 +23,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
             var count = Enum.GetNames(typeof(CharacterStatusEffect)).Length;
             handlers = new StatusEffectBase[count];
             attributes = new StatusEffectHandlerAttribute[count];
+            updateModes = new StatusUpdateMode[count];
             
             foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.GetCustomAttribute<StatusEffectHandlerAttribute>() != null))
             {
@@ -31,6 +35,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
 
                 handlers[(int)status] = handler;
                 attributes[(int)status] = attr;
+                updateModes[(int)status] = handler.UpdateMode;
             }
 
             for (var i = 0; i < count; i++)
@@ -46,7 +51,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public static bool TestApplication(CharacterStatusEffect type, CombatEntity ch, float testValue) => handlers[(int)type].TestApplication(ch, testValue);
         public static void OnApply(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnApply(ch, ref state);
         public static void OnExpiration(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnExpiration(ch, ref state);
-        public static void OnAttack(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnAttack(ch, ref state, ref info);
-        public static void OnTakeDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnTakeDamage(ch, ref state, ref info);
+        public static StatusUpdateResult OnAttack(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnAttack(ch, ref state, ref info);
+        public static StatusUpdateResult OnTakeDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnTakeDamage(ch, ref state, ref info);
     }
 }

@@ -1,6 +1,17 @@
 {
   "MonsterClassData": [
     {
+      "Id": 3999,
+      "Code": "EFFECT",
+      "Name": "Effect",
+      "SpriteName": "poring.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
+    },
+    {
       "Id": 4000,
       "Code": "PORING",
       "Name": "Poring",

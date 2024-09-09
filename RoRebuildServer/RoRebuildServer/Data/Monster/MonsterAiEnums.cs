@@ -5,6 +5,7 @@ public enum MonsterAiType : byte
     AiEmpty,
     AiDebug,
     AiPassive,
+    AiPassiveSense,
     AiPassiveImmobile,
     AiAggressive,
     AiAggressiveImmobile,
@@ -55,6 +56,7 @@ public enum MonsterInputCheck : byte
     InAllyInCombat,
     InOwnerAttacked,
     InOwnerOutOfSight,
+    InTargetedForSkill,
     InNoCondition,
 }
 

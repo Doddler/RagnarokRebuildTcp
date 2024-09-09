@@ -72,6 +72,8 @@ public enum CharacterStat
     AddMDef,
     AddFlee,
     AddHit,
+    AddAttackPercent,
+    AddMagicAttackPercent,
     AddDefPercent,
     AddMDefPercent,
     Disabled,

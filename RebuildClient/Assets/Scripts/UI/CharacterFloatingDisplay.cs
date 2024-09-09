@@ -1,3 +1,4 @@
+using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.UI.ConfigWindow;
 using TMPro;
@@ -8,6 +9,7 @@ namespace Assets.Scripts.UI
 {
     public class CharacterFloatingDisplay : MonoBehaviour
     {
+        private ServerControllable controllable;
         private TextMeshProUGUI namePlate;
         private SliderBar castBar;
         private SliderBar hpBar;
@@ -55,11 +57,13 @@ namespace Assets.Scripts.UI
             hpBar = null;
             mpBar = null;
             chatBubble = null;
+            controllable = null;
         }
 
-        public void SetUp(string name, int maxHp, int maxMp, bool isPlayer, bool isMain)
+        public void SetUp(ServerControllable controllable, string name, int maxHp, int maxMp, bool isPlayer, bool isMain)
         {
             characterName = name;
+            this.controllable = controllable;
             this.maxHp = maxHp;
             this.maxMp = maxMp;
             this.isPlayer = isPlayer;
@@ -140,6 +144,8 @@ namespace Assets.Scripts.UI
                 Manager.ReturnChatBubble(chatBubble.gameObject);
                 chatBubble = null;
             }
+            
+            controllable.StopCastingAnimation();
         }
 
         public void ShowChatBubbleMessage(string message, float visibleTime = 5f)
@@ -151,7 +157,6 @@ namespace Assets.Scripts.UI
             chatEnd = Time.timeSinceLevelLoad + visibleTime;
             gameObject.SetActive(true);
         }
-        
         
         public void HideHpBar()
         {

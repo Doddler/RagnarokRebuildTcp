@@ -130,7 +130,7 @@ public class MapWalkData
         int dy = Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
         int err = (dx > dy ? dx : -dy) / 2;
         var target = chPos;
-        var dist = 0;
+        //var dist = 0;
         for (; ; )
         {
             if (x0 == x1 && y0 == y1) break;

@@ -14,7 +14,7 @@ public class LoadCharacterRequest : IDbRequest
     public string Map;
     public Position Position;
     public SavePosition SavePosition;
-    public Dictionary<CharacterSkill, int> SkillsLearned;
+    public Dictionary<CharacterSkill, int>? SkillsLearned;
     public Dictionary<string, int>? NpcFlags;
 
     public byte[]? Data;

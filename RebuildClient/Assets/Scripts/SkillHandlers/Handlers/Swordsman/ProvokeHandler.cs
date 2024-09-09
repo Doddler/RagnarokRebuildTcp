@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Network;
+﻿using Assets.Scripts.Effects.EffectHandlers.Skills;
+using Assets.Scripts.Network;
 using RebuildSharedData.Enum;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
@@ -10,7 +11,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         {
             if (attack.Target != null)
             {
-                CameraFollower.Instance.AttachEffectToEntity("Provoke", attack.Target.gameObject, src.Id);
+                ProvokeEffect.Provoke(attack.Target);
                 src.LookAt(attack.Target.transform.position);
             }
             

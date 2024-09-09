@@ -965,7 +965,7 @@ public class Map
                     if (checkLineOfSight && !WalkData.HasLineOfSight(position, ch.Position))
                         continue;
                     if (hasList)
-                        list.Add(p);
+                        list!.Add(p);
                     count++;
                 }
             }

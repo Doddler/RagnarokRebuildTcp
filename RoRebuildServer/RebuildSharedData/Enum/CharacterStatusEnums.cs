@@ -4,6 +4,7 @@ using System.Text;
 
 namespace RebuildSharedData.Enum;
 
+[Flags]
 public enum StatusUpdateMode : byte
 {
     Default = 0,

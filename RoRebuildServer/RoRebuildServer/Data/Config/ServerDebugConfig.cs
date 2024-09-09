@@ -14,6 +14,7 @@ public class ServerDebugConfig
     public bool AddSimulatedLag { get; set; } = false;
     public int InboundSimulatedLag { get; set; } //in ms
     public int OutboundSimulatedLag { get; set; }
+    public bool UnlimitedSkillPoints { get; set; }
     //public bool UseForceEnterMap { get; set; }
     //public string ForceEnterMapName { get; set; }
 }

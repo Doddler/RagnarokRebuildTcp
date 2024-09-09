@@ -58,6 +58,15 @@ namespace Assets.Scripts.Sprites
         private readonly List<string> validMonsterCodes = new();
 
         private static int EffectClassId = 3999;
+        
+        List<string> headgear = new() //remove me
+        {
+            "간호모", "골든헤드기어", "광대모자", "귀마개", "깃털모자", "꽃머리띠", "꽃잎", "두건", "둥근모자", "리본", "마제스틱고우트", "망자의머리띠", "머리끈", "머리띠", "머리안경", "명사수의사과", "무낙모자", "반다나",
+            "본헬름", "비레타", "사슴뿔", "산타모자", "삿갓", "새끼악마모자", "새하얀뿔", "샤프헤드기어", "서클릿", "선글래스", "성직자의모자", "스마일", "스위트젠틀", "스타더스트", "스핀글래스", "심지", "악마의머리띠", "안전모",
+            "안테나", "연극소도구", "영혼고리", "오크족헬름", "올드스터로맨스", "옵저버", "왕리본", "요정의귀", "용접마스크", "원주민머리띠", "웨스턴그레이스", "위저드햇", "의사머리띠", "장식용알껍질", "장식용해바라기", "정지표지판",
+            "쥬얼크라운", "천사의머리띠", "초록더듬이", "캡", "커세어", "코로넷", "크라운", "토끼머리띠", "티아라", "풀잎", "프로펠라", "하트파운데이션", "학사모", "학생모", "해적두건", "햇", "헤드폰",
+        };
+
         private bool isInitialized;
 
         public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
@@ -191,7 +200,10 @@ namespace Assets.Scripts.Sprites
 
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
             foreach (var skill in skills.Items)
+            {
+                skill.Description = skill.Description.Replace("\n", "<line-height=25>\n</line-height>"); //should do this elsewhere honestly...
                 skillData.Add(skill.SkillId, skill);
+            }
 
             var trees = JsonUtility.FromJson<Wrapper<ClientSkillTree>>(SkillTreeData.text);
             foreach (var tree in trees.Items)
@@ -301,7 +313,7 @@ namespace Assets.Scripts.Sprites
             var control = go.AddComponent<ServerControllable>();
             var billboard = go.AddComponent<BillboardObject>();
             billboard.Style = BillboardStyle.Character;
-            
+
             var body = new GameObject("Sprite");
             body.layer = LayerMask.NameToLayer("Characters");
             body.transform.SetParent(go.transform, false);
@@ -352,7 +364,7 @@ namespace Assets.Scripts.Sprites
             var bodySpriteName = param.IsMale ? pData.SpriteMale : pData.SpriteFemale;
             var headSpriteName = param.IsMale ? hData.SpriteMale : hData.SpriteFemale;
 
-            bodySpriteName = bodySpriteName.Replace(".spr", "_4.spr");
+            // bodySpriteName = bodySpriteName.Replace(".spr", "_4.spr");
 
             Debug.Log($"Instantiate player sprite with job {param.ClassId} weapon {param.WeaponClass}");
 
@@ -375,13 +387,17 @@ namespace Assets.Scripts.Sprites
             var gender = "여_";
             if (control.IsMale)
                 gender = "남_";
-            
+
             //비레타 beret
             //간호모 nurse band
             //장식용알껍질 eggshell hat
             //흰수염 moustache
             //헬름 helm
-            LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + "꽃", control.IsMale);
+
+            var chosenGear = headgear[Random.Range(0, headgear.Count)];
+        
+
+            LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + chosenGear, control.IsMale);
             //LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + "하트파운데이션", control.IsMale);
 
 
@@ -405,7 +421,7 @@ namespace Assets.Scripts.Sprites
             
             if(param.CharacterStatusEffects != null)
                 foreach(var s in param.CharacterStatusEffects)
-                    StatusEffectApplicator.AddStatusToTarget(control, s);
+                    StatusEffectState.AddStatusToTarget(control, s);
             
             return control;
         }
@@ -547,7 +563,7 @@ namespace Assets.Scripts.Sprites
             control.IsInteractable = false;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0, false, false);
+            control.EnsureFloatingDisplayCreated().SetUp(control, param.Name, param.MaxHp, 0, false, false);
 
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
             loader.Completed += ah =>
@@ -635,7 +651,7 @@ namespace Assets.Scripts.Sprites
             
             if(param.CharacterStatusEffects != null)
                 foreach(var s in param.CharacterStatusEffects)
-                    StatusEffectApplicator.AddStatusToTarget(control, s);
+                    StatusEffectState.AddStatusToTarget(control, s);
 
             return control;
         }

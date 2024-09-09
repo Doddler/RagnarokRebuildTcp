@@ -67,7 +67,7 @@ namespace Assets.Scripts.UI
             entry.CanDrag = false;
             entry.UIManager = UiManager.Instance;
             //entry.Clear();
-            entry.DragItem.ItemCount = 20;
+            entry.DragItem.ItemCount = 200;
             entry.HotkeyText.text = id < HotKeyText.Length ? HotKeyText[id] : "";
             entry.DragItem.CountText.text = entry.DragItem.ItemCount.ToString();
             entry.DragItem.Origin = ItemDragOrigin.HotBar;

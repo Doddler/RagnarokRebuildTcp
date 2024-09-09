@@ -393,10 +393,13 @@ public class Player : IEntityAutoReset
         if (job == 0 && pointEarned > 9)
             pointEarned = 9;
 
+        if (ServerConfig.DebugConfig.UnlimitedSkillPoints)
+            pointEarned = 999;
+        
         var pointsUsed = 0;
         foreach (var skill in LearnedSkills)
             pointsUsed += skill.Value;
-
+        
         if (pointEarned < pointsUsed)
             SetData(PlayerStat.SkillPoints, 0);
         else

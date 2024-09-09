@@ -320,24 +320,22 @@ public class ScriptBuilder
         itemDefinitions.Add($"DataManager.RegisterItem(\"{name}\", new {behaviorName}());");
     }
 
-    public void StartMonsterEventSection(string section)
+    private void ClearVariables()
     {
-        if (methodName == section)
-            return;
-        
         functionSources.Clear();
         functionBaseClasses.Clear();
         additionalVariables.Clear();
         terminalFunctions.Clear();
-        
-        CloseScope();
-        StartIndentedBlockLine().AppendLine($"public override void {section}(MonsterSkillAiState state)");
-        OpenScope();
-        
+        stateIntVariables.Clear();
+        stateStringVariables.Clear();
+    }
+
+    private void SetupMonsterHandlerVariables()
+    {
         UseStateMachine = false;
         UseStateStorage = false;
         UseLocalStorage = false;
-        
+
         LoadObjectProperties(typeof(MonsterSkillAiState), "state");
         LoadFunctionSource(typeof(MonsterSkillAiState), "state");
         LoadFunctionSource(typeof(MonsterSkillAiBase), "this"); //probably don't need this but may as well...
@@ -351,6 +349,23 @@ public class ScriptBuilder
 
         foreach (var i in Enum.GetValues<MonsterAiState>())
             additionalVariables.TryAdd(i.ToString(), $"MonsterAiState.{i}");
+
+        foreach (var i in Enum.GetValues<MonsterAiType>())
+            additionalVariables.TryAdd(i.ToString(), $"MonsterAiType.{i}");
+    }
+
+    public void StartMonsterEventSection(string section)
+    {
+        if (methodName == section)
+            return;
+
+        ClearVariables();
+
+        CloseScope();
+        StartIndentedBlockLine().AppendLine($"public override void {section}(MonsterSkillAiState state)");
+        OpenScope();
+        
+        SetupMonsterHandlerVariables();
     }
 
     public void StartMonsterSkillAiSection(string section)
@@ -363,10 +378,7 @@ public class ScriptBuilder
         if(monsterStatesWithHandlers.Contains(state))
             throw new Exception($"Error in {className} line {lineNumber} : the section '{section}' is defined twice.");
 
-        functionSources.Clear();
-        functionBaseClasses.Clear();
-        additionalVariables.Clear();
-        terminalFunctions.Clear();
+        ClearVariables();
 
         monsterStatesWithHandlers.Add(state);
         methodName = section;
@@ -378,31 +390,18 @@ public class ScriptBuilder
         StartIndentedBlockLine().AppendLine($"public void {section}(MonsterSkillAiState state)");
         OpenScope();
 
-        UseStateMachine = false;
-        UseStateStorage = false;
-        UseLocalStorage = false;
-
-        LoadObjectProperties(typeof(MonsterSkillAiState), "state");
-        LoadFunctionSource(typeof(MonsterSkillAiState), "state");
-        LoadFunctionSource(typeof(MonsterSkillAiBase), "this"); //probably don't need this but may as well...
-
-        foreach (var i in Enum.GetValues<CharacterSkill>())
-            additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
-
-        foreach (var i in Enum.GetValues<MonsterSkillAiFlags>())
-            additionalVariables.TryAdd(i.ToString(), $"MonsterSkillAiFlags.{i}");
-
-
-        foreach (var i in Enum.GetValues<MonsterAiState>())
-            additionalVariables.TryAdd(i.ToString(), $"MonsterAiState.{i}");
+        SetupMonsterHandlerVariables();
     }
 
     public void StartSkillEventMethod(string eventName)
     {
+        ClearVariables();
+
         methodName = eventName;
         StartIndentedScriptLine().AppendLine($"private void {eventName}(MonsterSkillAiState state)");
         OpenScope();
-        //we can keep the same registered function sources
+
+        SetupMonsterHandlerVariables();
     }
 
     public void CreateFinalSkillHandler()

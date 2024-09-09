@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Effects;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network;
@@ -8,10 +9,24 @@ using UnityEngine;
 
 namespace Assets.Scripts.PlayerControl
 {
-    public static class StatusEffectApplicator
+    public class StatusEffectState
     {
+        private readonly List<CharacterStatusEffect> activeStatusEffects = new();
+
+        public bool HasStatusEffect(CharacterStatusEffect status) => activeStatusEffects.Contains(status);
+        
         public static void AddStatusToTarget(ServerControllable controllable, CharacterStatusEffect status)
         {
+            if (controllable.StatusEffectState == null)
+                controllable.StatusEffectState = new StatusEffectState();
+
+            var state = controllable.StatusEffectState;
+            
+            if(!state.activeStatusEffects.Contains(status))
+                state.activeStatusEffects.Add(status);
+            
+            Debug.Log($"Character {controllable.DisplayName} gained status {status}");
+            
             switch (status)
             {
                 case CharacterStatusEffect.PushCart:
@@ -37,6 +52,10 @@ namespace Assets.Scripts.PlayerControl
         
         public static void RemoveStatusFromTarget(ServerControllable controllable, CharacterStatusEffect status)
         {
+            controllable.StatusEffectState?.activeStatusEffects.Remove(status);
+            
+            Debug.Log($"Character {controllable.DisplayName} loses status {status}");
+
             switch (status)
             {
                 case CharacterStatusEffect.PushCart:

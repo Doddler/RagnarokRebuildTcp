@@ -13,8 +13,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             CameraFollower.Instance.AttachEffectToEntity("TwoHandQuicken", src.gameObject, src.Id);
 
             
-            if(src.CharacterType == CharacterType.Player)
-                src.FloatingDisplay.ShowChatBubbleMessage("Two-Hand Quicken" + "!!");
+            // if(src.CharacterType == CharacterType.Player)
+            //     src.FloatingDisplay.ShowChatBubbleMessage("Two-Hand Quicken" + "!!");
         }
     }
 }
