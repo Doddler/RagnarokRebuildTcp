@@ -374,6 +374,7 @@ SkillHandler("MOONLIGHT") {
 	StateAttacking:
 		@MoonlightCombatActions();
 		TryCast(Mammonite, 10, 20%, 0, 5s) -> SendEmote(8);
+		TryCast(HammerFall, 10, 20%, 0, 15s)[HpPercent < 90] -> SendEmote(0);
 
 	StateHidden:
 		//TryCast(None, 1, 1000, 0, 5000)[MinionCount > 0] -> TeleportNearRandomMinion();
