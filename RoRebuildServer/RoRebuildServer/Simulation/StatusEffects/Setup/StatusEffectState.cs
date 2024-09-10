@@ -8,9 +8,11 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public float Expiration;
         public int Value1;
         public int Value2;
+        public short Value3;
+        public byte Value4;
         public CharacterStatusEffect Type;
 
-        public static StatusEffectState NewStatusEffect(CharacterStatusEffect type, float expiration, int val1 = 0, int val2 = 0)
+        public static StatusEffectState NewStatusEffect(CharacterStatusEffect type, float expiration, int val1 = 0, int val2 = 0, short val3 = 0, byte val4 = 0)
         {
             var statusEffect = new StatusEffectState()
             {
@@ -18,6 +20,8 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
                 Expiration = expiration >= 0 ? expiration + Time.ElapsedTimeFloat : float.MaxValue,
                 Value1 = val1,
                 Value2 = val2,
+                Value3 = val3,
+                Value4 = val4,
             };
             return statusEffect;
         }

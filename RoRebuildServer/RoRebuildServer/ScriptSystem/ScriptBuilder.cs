@@ -70,6 +70,7 @@ public class ScriptBuilder
     public bool UseLocalStorage;
     public int StateStorageLimit = 0;
     public bool IsEvent;
+    public string? defaultReturn = null;
 
     private int indentation = 1;
     private int uniqueVal = 0;
@@ -241,6 +242,7 @@ public class ScriptBuilder
         UseStateMachine = false;
         UseStateStorage = false;
         UseLocalStorage = false;
+        defaultReturn = null;
         blockBuilder.Clear();
         terminalFunctions.Clear();
 
@@ -270,6 +272,7 @@ public class ScriptBuilder
         UseStateMachine = false;
         UseStateStorage = false;
         UseLocalStorage = false;
+        defaultReturn = null;
         blockBuilder.Clear();
         terminalFunctions.Clear();
 
@@ -293,6 +296,7 @@ public class ScriptBuilder
         UseStateMachine = false;
         UseStateStorage = false;
         UseLocalStorage = false;
+        defaultReturn = null;
         blockBuilder.Clear();
         monsterStatesWithHandlers.Clear();
         terminalFunctions.Clear();
@@ -328,6 +332,7 @@ public class ScriptBuilder
         terminalFunctions.Clear();
         stateIntVariables.Clear();
         stateStringVariables.Clear();
+        defaultReturn = null;
     }
 
     private void SetupMonsterHandlerVariables()
@@ -455,6 +460,7 @@ public class ScriptBuilder
         functionBaseClasses.Clear();
         additionalVariables.Clear();
         terminalFunctions.Clear();
+        defaultReturn = null;
 
         methodName = section;
 
@@ -479,12 +485,13 @@ public class ScriptBuilder
         {
 
             CloseScope();
-            StartIndentedBlockLine().AppendLine($"public override void {section}(Player player, CombatEntity combatEntity)");
+            StartIndentedBlockLine().AppendLine($"public override bool {section}(Player player, CombatEntity combatEntity)");
             OpenScope();
 
             UseStateMachine = false;
             UseStateStorage = false;
             UseLocalStorage = false;
+            defaultReturn = "true";
 
             LoadFunctionSource(typeof(Player), "player");
             LoadFunctionSource(typeof(CombatEntity), "combatEntity");
@@ -507,6 +514,7 @@ public class ScriptBuilder
         terminalFunctions.Clear();
         hasTouch = false;
         hasInteract = false;
+        defaultReturn = null;
 
         name += "_" + Guid.NewGuid().ToString().Replace("-", "_");
 
@@ -556,6 +564,7 @@ public class ScriptBuilder
         terminalFunctions.Clear();
         hasTouch = false;
         hasInteract = false;
+        defaultReturn = null;
 
         name += "_" + Guid.NewGuid().ToString().Replace("-", "_").Replace("'", "").Replace("[", "").Replace("]", "");
         
@@ -620,10 +629,8 @@ public class ScriptBuilder
             return;
 
         EndMethod();
-        functionSources.Clear();
-        functionBaseClasses.Clear();
-        additionalVariables.Clear();
-        terminalFunctions.Clear();
+
+        ClearVariables();
 
         methodName = section;
 
@@ -769,7 +776,12 @@ public class ScriptBuilder
         if (UseStateMachine)
             lineBuilder.Append("return NpcInteractionResult.EndInteraction;");
         else
-            lineBuilder.Append("return;");
+        {
+            if (string.IsNullOrWhiteSpace(defaultReturn))
+                lineBuilder.Append("return;");
+            else
+                lineBuilder.Append($"return {defaultReturn};");
+        }
 
         EndLine();
     }
@@ -998,6 +1010,9 @@ public class ScriptBuilder
             StartIndentedBlockLine().AppendLine("}").AppendLine("");
             StartIndentedBlockLine().AppendLine("return NpcInteractionResult.EndInteraction;");
         }
+
+        if (!string.IsNullOrWhiteSpace(defaultReturn))
+            StartIndentedBlockLine().AppendLine($"return {defaultReturn};");
 
         indentation--;
         StartIndentedBlockLine().AppendLine("}").AppendLine("");

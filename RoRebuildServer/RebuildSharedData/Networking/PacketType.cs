@@ -78,6 +78,10 @@ public enum PacketType : byte
     [ServerOnlyPacket] NpcInteraction,
     NpcAdvance,
     NpcSelectOption,
+
+    DropItem,
+    PickUpItem,
+    [ServerOnlyPacket] ItemUpdate,
 }
 
 public enum MessageType : byte

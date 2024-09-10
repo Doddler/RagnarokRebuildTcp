@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
+using JetBrains.Annotations;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
@@ -39,11 +41,7 @@ public class FirewallHandler : SkillHandlerBase
         ch.AttachEvent(e);
 
         if (!isIndirect)
-        {
-            map.AddVisiblePlayersAsPacketRecipients(ch);
-            CommandBuilder.SkillExecuteAreaTargetedSkill(ch, position, CharacterSkill.FireWall, lvl);
-            CommandBuilder.ClearRecipients();
-        }
+            CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(ch, position, CharacterSkill.FireWall, lvl);
     }
 }
 
@@ -157,6 +155,8 @@ public class FirewallObjectEvent : NpcBehaviorBase
 
     public override void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe)
     {
+        Debug.Assert(npc.ParamsInt != null && npc.ParamsInt.Length >= 4);
+
         if (!aoe.TargetingInfo.SourceEntity.TryGet<CombatEntity>(out var src))
             return;
 
@@ -168,22 +168,19 @@ public class FirewallObjectEvent : NpcBehaviorBase
 
         var res = src.CalculateCombatResult(target, 0.5f, 1, AttackFlags.Magical, CharacterSkill.FireWall, AttackElement.Fire);
         res.KnockBack = 2;
+        res.AttackPosition = target.Character.Position.AddDirectionToPosition(target.Character.FacingDirection);
+        res.AttackMotionTime = 0;
+        res.Time = 0;
+        res.IsIndirect = true;
+
         if (target.IsElementBaseType(CharacterElement.Undead1))
         {
             res.KnockBack = 0;
-            res.ApplyHitLock = false;
+            res.Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.UpdatePosition;
         }
-
-        res.AttackPosition = target.Character.Position.AddDirectionToPosition(target.Character.FacingDirection);
-        res.AttackMotionTime = 0;
         
-        res.IsIndirect = true;
-        res.Time = 0;
+        CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, target.Character, res);
         
-        target.Character.Map?.AddVisiblePlayersAsPacketRecipients(target.Character);
-        CommandBuilder.SkillExecuteIndirect(npc.Character, target.Character, res);
-        CommandBuilder.ClearRecipients();
-
         npc.ParamsInt[0]--;
         if (npc.ParamsInt[0] <= 0)
             npc.EndEvent();
@@ -192,7 +189,6 @@ public class FirewallObjectEvent : NpcBehaviorBase
         src.ExecuteCombatResult(res, false);
     }
 }
-
 
 public class NpcLoaderFirewallEvents : INpcLoader
 {

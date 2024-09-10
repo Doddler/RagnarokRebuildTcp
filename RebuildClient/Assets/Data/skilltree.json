@@ -402,10 +402,10 @@
           "Prerequisites": [
             {
               "Skill": 42,
-              "Level": 10
+              "Level": 5
             },
             {
-              "Skill": 50,
+              "Skill": 43,
               "Level": 10
             }
           ]

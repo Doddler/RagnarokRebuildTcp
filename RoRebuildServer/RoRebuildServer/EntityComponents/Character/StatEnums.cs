@@ -86,7 +86,9 @@ public enum CharacterStat
     PercentVsUndead,
     ReductionFromDemon,
     ReductionFromUndead,
-    CharacterStatsMax
+    CharacterStatsMax,
+    AddSpRecoveryPercent,
+    AddHpRecoveryPercent
 }
 
 public enum TimingStat

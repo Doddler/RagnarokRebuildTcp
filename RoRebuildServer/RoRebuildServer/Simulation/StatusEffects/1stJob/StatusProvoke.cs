@@ -19,13 +19,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
             //if our current target matches the one that provoked this character, add a chance to do big damage
             if (info.Result == AttackResult.NormalDamage && target.Character.Id == state.Value2)
             {
-                var attackerLuck = ch.GetEffectiveStat(CharacterStat.Luck);
-                var provokerLuck = target.GetEffectiveStat(CharacterStat.Luck);
-                if (provokerLuck < 0) provokerLuck = 0;
-
-                var chance = 20 * (attackerLuck + 10) / (provokerLuck + 10); //2%, modified by the ratio of luck between the two of you
-
-                if (GameRandom.NextInclusive(0, 1000) < chance)
+                if(ch.CheckLuckModifiedRandomChanceVsTarget(target, 10, 1000))
                 {
                     info.Damage *= 2;
                     info.Result = AttackResult.CriticalDamage;

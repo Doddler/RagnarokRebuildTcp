@@ -19,6 +19,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static System.Net.Mime.MediaTypeNames;
 using RoRebuildServer.Database.Domain;
 using System.Xml.Linq;
+using System.Threading;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -34,8 +35,7 @@ public class CombatEntity : IEntityAutoReset
     public bool IsTargetable;
     public float CastingTime;
     public bool IsCasting;
-    public float nextStatusUpdate;
-
+    
     public BodyStateFlags BodyState;
 
     public SkillCastInfo CastingSkill { get; set; }
@@ -64,6 +64,7 @@ public class CombatEntity : IEntityAutoReset
 
     public void SetSkillDamageCooldown(CharacterSkill skill, float cooldown) => damageCooldowns[skill] = Time.ElapsedTimeFloat + cooldown;
     public void ResetSkillDamageCooldowns() => damageCooldowns.Clear();
+    public int HpPercent => GetStat(CharacterStat.Hp) * 100 / GetStat(CharacterStat.MaxHp);
 
 
     public void Reset()
@@ -77,7 +78,6 @@ public class CombatEntity : IEntityAutoReset
         IsCasting = false;
         skillCooldowns.Clear();
         damageCooldowns.Clear();
-        nextStatusUpdate = 0;
         if (statusContainer != null)
         {
             statusContainer.ClearAllWithoutRemoveHandler();
@@ -143,6 +143,9 @@ public class CombatEntity : IEntityAutoReset
 
     public void AddStatusEffect(StatusEffectState state, bool replaceExisting = true, float delay = 0)
     {
+        if (!Character.IsActive)
+            return;
+
         if (statusContainer == null)
         {
             statusContainer = StatusEffectPoolManager.BorrowStatusContainer();
@@ -890,6 +893,19 @@ public class CombatEntity : IEntityAutoReset
         SkillHandler.ExecuteSkill(info, this);
     }
 
+    public bool CheckLuckModifiedRandomChanceVsTarget(CombatEntity target, int chance, int outOf)
+    {
+        var attackerLuck = GetEffectiveStat(CharacterStat.Luck);
+        var provokerLuck = target.GetEffectiveStat(CharacterStat.Luck);
+        if (provokerLuck < 0) provokerLuck = 0;
+
+        var realChance = chance * 10 * (attackerLuck + 40) / (provokerLuck + 40);
+        if (realChance <= 0)
+            return false;
+
+        return GameRandom.NextInclusive(0, outOf * 10) < realChance;
+    }
+
     /// <summary>
     /// Test to see if this character is able to hit the enemy.
     /// </summary>
@@ -933,7 +949,7 @@ public class CombatEntity : IEntityAutoReset
             Time = Time.ElapsedTimeFloat + spriteTiming,
             AttackMotionTime = spriteTiming,
             AttackPosition = Character.Position,
-            ApplyHitLock = true
+            Flags = DamageApplicationFlags.None
         };
 
         return di;
@@ -1212,9 +1228,9 @@ public class CombatEntity : IEntityAutoReset
 
         if (damageInfo.Damage != 0)
         {
-            if(damageInfo.Time < Time.ElapsedTimeFloat)
-                target.ApplyQueuedCombatResult(ref damageInfo);
-            else
+            //if(damageInfo.Time < Time.ElapsedTimeFloat)
+            //    target.ApplyQueuedCombatResult(ref damageInfo);
+            //else
                 target.QueueDamage(damageInfo);
         }
 
@@ -1272,15 +1288,15 @@ public class CombatEntity : IEntityAutoReset
         var delayTime = GetTiming(TimingStat.HitDelayTime);
 
         var knockback = di.KnockBack;
-
-
+        var hasHitStop = !di.Flags.HasFlag(DamageApplicationFlags.NoHitLock);
+        
         if (Character.Type == CharacterType.Monster && delayTime > 0.15f)
             delayTime = 0.15f;
-        if (!di.ApplyHitLock || knockback > 0)
+        if (!hasHitStop)
             delayTime = 0f;
         var oldPosition = Character.Position;
 
-        var sendMove = false;
+        var sendMove = di.Flags.HasFlag(DamageApplicationFlags.UpdatePosition);
 
         if (Character.Type == CharacterType.Monster && knockback > 0 && Character.Monster.MonsterBase.Special == CharacterSpecialType.Boss)
         {
@@ -1296,7 +1312,7 @@ public class CombatEntity : IEntityAutoReset
             var pos = Character.Map.WalkData.CalcKnockbackFromPosition(Character.Position, di.AttackPosition, di.KnockBack);
             if (Character.Position != pos)
                 Character.Map.ChangeEntityPosition3(Character, Character.WorldPosition, pos, false);
-            sendMove = true;
+            sendMove = false;
         }
 
         if (Character.Type == CharacterType.Monster)
@@ -1305,7 +1321,7 @@ public class CombatEntity : IEntityAutoReset
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
         if(sendMove)
             CommandBuilder.SendMoveEntityMulti(Character);
-        CommandBuilder.SendHitMulti(Character, damage, di.ApplyHitLock);
+        CommandBuilder.SendHitMulti(Character, damage, hasHitStop);
         CommandBuilder.ClearRecipients();
 
         if (!di.Target.IsNull() && di.Source.IsAlive())
@@ -1395,16 +1411,15 @@ public class CombatEntity : IEntityAutoReset
         if (!Character.IsActive)
             return;
 
-        if (IsCasting && CastingTime < Time.ElapsedTimeFloat)
+        var time = Time.ElapsedTimeFloat;
+
+        if (IsCasting && CastingTime < time)
             FinishCasting();
+
+        if (statusContainer != null)
+            statusContainer.UpdateStatusEffects();
 
         if (DamageQueue.Count > 0)
             AttackUpdate();
-
-        if (nextStatusUpdate < Time.ElapsedTimeFloat)
-        {
-            nextStatusUpdate = Time.ElapsedTimeFloat + 1f;
-            statusContainer?.UpdateStatusEffects();
-        }
     }
 }

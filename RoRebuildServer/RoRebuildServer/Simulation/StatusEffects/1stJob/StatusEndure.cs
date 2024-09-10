@@ -14,7 +14,7 @@ public class StatusEndure : StatusEffectBase
     {
         if (info.Result != AttackResult.NormalDamage && info.Result != AttackResult.CriticalDamage)
             return StatusUpdateResult.Continue;
-        info.ApplyHitLock = false;
+        info.Flags |= DamageApplicationFlags.NoHitLock;
         state.Value1--;
         if (state.Value1 <= 0)
             return StatusUpdateResult.EndStatus;

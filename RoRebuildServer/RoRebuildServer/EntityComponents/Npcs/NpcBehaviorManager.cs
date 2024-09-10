@@ -1,8 +1,11 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithInheritors)]
 public interface INpcLoader
 {
     public void Load();

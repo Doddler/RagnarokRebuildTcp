@@ -10,6 +10,7 @@ public enum StatusUpdateMode : byte
     Default = 0,
     OnTakeDamage = 1,
     OnDealDamage = 2,
+    OnUpdate = 4,
 }
 
 public enum StatusUpdateResult : byte

@@ -42,7 +42,7 @@ public static class DataManager
     public static Dictionary<int, JobInfo> JobInfo;
     public static Dictionary<string, int> JobIdLookup;
     public static Dictionary<string, int> ItemIdByName;
-    public static Dictionary<int, ItemInfo> ItemList;
+    public static Dictionary<int, ItemInfo> ItemList { get; set; }
     public static Dictionary<int, PlayerSkillTree> SkillTree; //SkillTree[Job][Skill] { (Prereq, lvl) } 
 
     public static Dictionary<string, int> EffectIdForName;

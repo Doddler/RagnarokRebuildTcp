@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using JetBrains.Annotations;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
@@ -7,6 +8,7 @@ using RoRebuildServer.Networking;
 
 namespace RoRebuildServer.Simulation.Skills;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithInheritors)]
 public abstract class SkillHandlerBase
 {
     public CharacterSkill Skill;

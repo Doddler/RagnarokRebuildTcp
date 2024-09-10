@@ -67,7 +67,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     controllable.CounterHitDir = new Vector3(v.x, 0, v.y);
                 }
 
-                if (controllable.SpriteAnimator.State != SpriteState.Dead)
+                if (controllable.SpriteAnimator.State != SpriteState.Dead && showAttackAction)
                 {
                     controllable.StopImmediate(pos, false);
 
@@ -89,17 +89,20 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
             if (hasTarget)
             {
-                if (result.Skill != CharacterSkill.None)
-                    ClientSkillHandler.OnHitEffect(controllable2, ref result);
-                else
+                if (result.Skill != CharacterSkill.NoCast)
                 {
-                    var hitType = 1;
-                    if (resultType == AttackResult.CriticalDamage)
-                        hitType = 2;
-                    if (dmg > 0)
-                        controllable2.Messages.SendHitEffect(controllable, motionTime, hitType);
+                    if (result.Skill != CharacterSkill.None)
+                        ClientSkillHandler.OnHitEffect(controllable2, ref result);
+                    else
+                    {
+                        var hitType = 1;
+                        if (resultType == AttackResult.CriticalDamage)
+                            hitType = 2;
+                        if (dmg > 0)
+                            controllable2.Messages.SendHitEffect(controllable, motionTime, hitType);
+                    }
                 }
-                
+
                 if(dmg > 0)
                     controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits, resultType == AttackResult.CriticalDamage);
                 

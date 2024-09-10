@@ -38,7 +38,7 @@ public class ThunderStormHandler : SkillHandlerBase
             //gather all players who can see the spell effect and make them packet recipients
             map.GatherPlayersInRange(position, ServerConfig.MaxViewDistance + 2, targetList, false, false);
             CommandBuilder.AddRecipients(targetList);
-            targetList.Clear();
+            targetList.Clear(); //reused, first we use it to gather visible targets, then players hit by the aoe
 
             //now gather all players getting hit
             map.GatherEnemiesInArea(source.Character, position, 2, targetList, !isIndirect, true);
@@ -66,10 +66,6 @@ public class ThunderStormHandler : SkillHandlerBase
 
         //make the attacker execute the skill, switching to show the effect to those who can see the caster (can be different from aoe recipients)
         if (!isIndirect)
-        {
-            map?.AddVisiblePlayersAsPacketRecipients(source.Character);
-            CommandBuilder.SkillExecuteAreaTargetedSkill(source.Character, position, CharacterSkill.ThunderStorm, lvl);
-            CommandBuilder.ClearRecipients();
-        }
+            CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(source.Character, position, CharacterSkill.ThunderStorm, lvl);
     }
 }

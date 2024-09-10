@@ -20,11 +20,21 @@ public class CharacterStatusContainer
     private SwapList<StatusEffectState>? statusEffects;
     private SwapList<PendingStatusEffect>? pendingStatusEffects;
 
+    private int onAttackEffects;
+    private int onHitEffects;
+    private int onUpdateEffects;
+
+    private float nextStatusUpdate;
+    
     public void Reset()
     {
         Owner = null!;
         statusEffects?.Clear();
         pendingStatusEffects?.Clear();
+        onAttackEffects = 0;
+        onHitEffects = 0;
+        onUpdateEffects = 0;
+        nextStatusUpdate = 0f;
         if (pendingStatusEffects != null)
         {
             StatusEffectPoolManager.ReturnPendingContainer(pendingStatusEffects);
@@ -60,7 +70,7 @@ public class CharacterStatusContainer
         }
 
         outEffect = default;
-        
+
         return false;
     }
 
@@ -74,7 +84,7 @@ public class CharacterStatusContainer
             for (var i = removeCount - 1; i >= 0; i--)
             {
                 var s = statusEffects[i];
-                
+
                 statusEffects.Remove(remove[i]);
                 if (Character.Map == null)
                     continue;
@@ -92,19 +102,49 @@ public class CharacterStatusContainer
                         //notify no-one
                         break;
                 }
-                
+
             }
         }
     }
 
-    public void OnAttack(ref DamageInfo di)
+    public void OnUpdate()
     {
-        if (statusEffects == null)
+        Debug.Assert(Owner != null);
+        if (statusEffects == null || onUpdateEffects <= 0)
             return;
 
         Span<int> remove = stackalloc int[statusEffects.Count];
         var removeCount = 0;
-        
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var s = statusEffects[i];
+            if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnUpdate))
+            {
+                var res = StatusEffectHandler.OnUpdateTick(s.Type, Owner, ref s);
+                if (res == StatusUpdateResult.EndStatus)
+                {
+                    remove[removeCount] = i;
+                    removeCount++;
+                }
+                else
+                    statusEffects[i] = s; //update any changed data
+            }
+        }
+
+        if (removeCount > 0)
+            RemoveIdList(ref remove, removeCount);
+    }
+
+    public void OnAttack(ref DamageInfo di)
+    {
+        Debug.Assert(Owner != null);
+        if (statusEffects == null || onAttackEffects <= 0)
+            return;
+
+        Span<int> remove = stackalloc int[statusEffects.Count];
+        var removeCount = 0;
+
         for (var i = 0; i < statusEffects.Count; i++)
         {
             var s = statusEffects[i];
@@ -128,7 +168,8 @@ public class CharacterStatusContainer
 
     public void OnTakeDamage(ref DamageInfo di)
     {
-        if (statusEffects == null)
+        Debug.Assert(Owner != null);
+        if (statusEffects == null || onHitEffects <= 0)
             return;
 
         Span<int> remove = stackalloc int[statusEffects.Count];
@@ -156,10 +197,19 @@ public class CharacterStatusContainer
 
     public void UpdateStatusEffects()
     {
-        var hasUpdate = false;
+        Debug.Assert(Owner != null);
 
-        if (statusEffects != null)
+        var hasUpdate = false;
+        var time = Time.ElapsedTimeFloat;
+        var performUpdateTick = false;
+
+        if (statusEffects != null && nextStatusUpdate < time)
         {
+            performUpdateTick = true;
+            nextStatusUpdate += 1f;
+            if (nextStatusUpdate < time)
+                nextStatusUpdate = time + 1f;
+
             for (var i = 0; i < statusEffects.Count; i++)
             {
                 var status = statusEffects[i];
@@ -171,7 +221,7 @@ public class CharacterStatusContainer
                 }
             }
         }
-
+        
         if (pendingStatusEffects != null)
         {
             for (var i = 0; i < pendingStatusEffects.Count; i++)
@@ -193,10 +243,17 @@ public class CharacterStatusContainer
 
         if (hasUpdate)
             Owner.UpdateStats();
+
+        if(performUpdateTick)
+            OnUpdate();
     }
 
     public void RemoveStatusEffectOfType(CharacterStatusEffect type)
     {
+        Debug.Assert(Owner != null);
+        if (statusEffects == null)
+            return;
+
         for (var i = 0; i < statusEffects.Count; i++)
         {
             var status = statusEffects[i];
@@ -210,6 +267,8 @@ public class CharacterStatusContainer
 
     private void RemoveExistingStatusEffect(ref StatusEffectState status)
     {
+        Debug.Assert(Owner != null);
+
         if (StatusEffectHandler.GetStatusVisibility(status.Type) != StatusClientVisibility.None)
         {
             Debug.Assert(Character.Map != null);
@@ -220,10 +279,21 @@ public class CharacterStatusContainer
 
         StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
         statusEffects!.Remove(ref status);
+
+        var updateMode = StatusEffectHandler.GetUpdateMode(status.Type);
+        if (updateMode.HasFlag(StatusUpdateMode.OnTakeDamage))
+            onHitEffects--;
+        if (updateMode.HasFlag(StatusUpdateMode.OnDealDamage))
+            onAttackEffects--;
+        if (updateMode.HasFlag(StatusUpdateMode.OnUpdate))
+            onUpdateEffects--;
+
     }
 
     public void AddNewStatusEffect(StatusEffectState state, bool replaceExisting = true)
     {
+        Debug.Assert(Owner != null);
+
         if (statusEffects != null && TryGetExistingStatus(state.Type, out var oldEffect))
         {
             if (!replaceExisting)
@@ -249,10 +319,20 @@ public class CharacterStatusContainer
         }
 
         Owner.UpdateStats();
+
+        var updateMode = StatusEffectHandler.GetUpdateMode(state.Type);
+        if (updateMode.HasFlag(StatusUpdateMode.OnTakeDamage))
+            onHitEffects++;
+        if (updateMode.HasFlag(StatusUpdateMode.OnDealDamage))
+            onAttackEffects++;
+        if (updateMode.HasFlag(StatusUpdateMode.OnUpdate))
+            onUpdateEffects++;
     }
 
     public void AddPendingStatusEffect(StatusEffectState state, bool replaceExisting, float time)
     {
+        Debug.Assert(Owner != null);
+
         if (pendingStatusEffects == null)
             pendingStatusEffects = StatusEffectPoolManager.BorrowPendingContainer();
 
@@ -269,6 +349,8 @@ public class CharacterStatusContainer
     //doing this in an unsafe context is kinda bad but it should be safe to stackalloc effect states to hold onto them. probably.
     public unsafe void RemoveAll()
     {
+        Debug.Assert(Owner != null);
+
         if (statusEffects == null)
             return;
 

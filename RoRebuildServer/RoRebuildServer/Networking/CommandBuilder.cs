@@ -9,6 +9,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 
@@ -314,6 +315,13 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
+    public static void SkillExecuteIndirectAutoVisibility(WorldObject caster, WorldObject target, DamageInfo di)
+    {
+        caster.Map?.AddVisiblePlayersAsPacketRecipients(target);
+        CommandBuilder.SkillExecuteIndirect(caster, target, di);
+        CommandBuilder.ClearRecipients();
+    }
+
     public static void SkillExecuteIndirect(WorldObject caster, WorldObject target, DamageInfo di)
     {
         if (!HasRecipients())
@@ -351,6 +359,14 @@ public static class CommandBuilder
     }
 
 
+    public static void SkillExecuteAreaTargetedSkillAutoVis(WorldObject caster, Position target, CharacterSkill skill,
+        int lvl)
+    {
+        caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
+        SkillExecuteAreaTargetedSkill(caster, target, CharacterSkill.ThunderStorm, lvl);
+        ClearRecipients();
+    }
+
     public static void SkillExecuteAreaTargetedSkill(WorldObject caster, Position target, CharacterSkill skill, int lvl)
     {
         if (!HasRecipients())
@@ -370,20 +386,28 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void AttackMulti(WorldObject attacker, WorldObject target, DamageInfo di, bool showAttackMotion = true)
+    public static void AttackMulti(WorldObject? attacker, WorldObject target, DamageInfo di, bool showAttackMotion = true)
     {
         if (!HasRecipients())
             return;
 
         var packet = NetworkManager.StartPacket(PacketType.Attack, 48);
 
-        packet.Write(attacker.Id);
+        var dir = target.FacingDirection;
+        if (attacker != null)
+            dir = attacker.FacingDirection;
+
+        var pos = target.Position;
+        if (attacker != null)
+            pos = attacker.Position;
+
+        packet.Write(attacker?.Id ?? -1);
         packet.Write(target.Id);
-        packet.Write((byte)attacker.FacingDirection);
+        packet.Write((byte)dir);
         packet.Write((byte)di.AttackSkill);
         packet.Write((byte)di.HitCount);
         packet.Write((byte)di.Result);
-        packet.Write(attacker.Position);
+        packet.Write(pos);
         packet.Write(di.Damage);
         packet.Write(di.AttackMotionTime);
         packet.Write(showAttackMotion);

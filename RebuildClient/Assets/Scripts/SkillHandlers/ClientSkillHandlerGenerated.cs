@@ -11,7 +11,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new DefaultSkillHandler();
 			handlers[3] = new BashHandler();
-			handlers[4] = new DefaultSkillHandler();
+			handlers[4] = new EndureSkillHandler();
 			handlers[5] = new DefaultSkillHandler();
 			handlers[6] = new DefaultSkillHandler();
 			handlers[7] = new ProvokeHandler();

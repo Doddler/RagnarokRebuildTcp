@@ -47,6 +47,9 @@ namespace Assets.Scripts.PlayerControl
                     controllable.SpriteAnimator.Color = new Color(1, 1, 0.5f);
                     RoSpriteTrailManager.Instance.AttachTrailToEntity(controllable);
                     break;
+                case CharacterStatusEffect.Poison:
+                    controllable.SpriteAnimator.Color = new Color(0.8f, 0.4f, 0.8f);
+                    break;
             }
         }
         
@@ -73,6 +76,9 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.TwoHandQuicken:
                     controllable.SpriteAnimator.Color = new Color(1, 1, 1f);
                     RoSpriteTrailManager.Instance.RemoveTrailFromEntity(controllable);
+                    break;
+                case CharacterStatusEffect.Poison:
+                    controllable.SpriteAnimator.Color = new Color(1, 1, 1f);
                     break;
             }
         }

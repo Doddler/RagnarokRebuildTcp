@@ -5,6 +5,14 @@ using RoRebuildServer.EntitySystem;
 
 namespace RoRebuildServer.EntityComponents.Character;
 
+[Flags]
+public enum DamageApplicationFlags : byte
+{
+    None = 0,
+    NoHitLock = 1,
+    UpdatePosition = 2,
+}
+
 public struct DamageInfo
 {
     public Entity Source;
@@ -17,8 +25,10 @@ public struct DamageInfo
     public byte KnockBack;
     public AttackResult Result;
     private byte skillId;
-    public bool ApplyHitLock;
+    public DamageApplicationFlags Flags;
     public bool IsIndirect;
+
+    public bool IsDamageResult => Result == AttackResult.NormalDamage || Result == AttackResult.CriticalDamage;
 
     public CharacterSkill AttackSkill
     {
@@ -32,7 +42,7 @@ public struct DamageInfo
         Damage = 0;
         HitCount = 0;
         KnockBack = 0;
-        ApplyHitLock = false;
+        Flags = DamageApplicationFlags.NoHitLock;
     }
 
 
@@ -48,7 +58,7 @@ public struct DamageInfo
             KnockBack = 0,
             skillId = (byte)skill,
             Result = AttackResult.Invisible,
-            ApplyHitLock = false
+            Flags = DamageApplicationFlags.NoHitLock
         };
     }
 
@@ -64,7 +74,7 @@ public struct DamageInfo
             KnockBack = 0,
             skillId = 0,
             Result = AttackResult.Invisible,
-            ApplyHitLock = false
+            Flags = DamageApplicationFlags.NoHitLock
         };
     }
 }

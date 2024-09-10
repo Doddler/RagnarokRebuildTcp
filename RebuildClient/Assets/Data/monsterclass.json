@@ -875,8 +875,8 @@
       "Name": "Maya Puple",
       "SpriteName": "maya_puple.spr",
       "Offset": 0,
-      "ShadowSize": 0.5,
-      "Size": 1,
+      "ShadowSize": 1,
+      "Size": 0.8,
       "AttackTiming": 0.624,
       "Color": "#FFFFFFFF"
     },

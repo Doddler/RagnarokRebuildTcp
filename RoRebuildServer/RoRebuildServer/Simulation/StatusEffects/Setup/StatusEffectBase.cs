@@ -12,6 +12,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public virtual void OnApply(CombatEntity ch, ref StatusEffectState state) { }
         public virtual void OnExpiration(CombatEntity ch, ref StatusEffectState state) { }
 
+        public virtual StatusUpdateResult OnUpdateTick(CombatEntity ch, ref StatusEffectState state) => StatusUpdateResult.Continue;
         public virtual StatusUpdateResult OnAttack(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => StatusUpdateResult.Continue;
         public virtual StatusUpdateResult OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => StatusUpdateResult.Continue;
     }

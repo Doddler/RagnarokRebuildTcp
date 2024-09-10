@@ -78,7 +78,7 @@ Hiding = [["Steal", 5]]
 BackSlide = []
 SandAttack = [["Envenom", 5]]
 ThrowStone = []
-SonicBlow = [["DoubleAttack", 10],["ImproveDodge",10]]
+SonicBlow = [["DoubleAttack", 5],["Envenom",10]]
 
 [Merchant]
 JobRank = 1
