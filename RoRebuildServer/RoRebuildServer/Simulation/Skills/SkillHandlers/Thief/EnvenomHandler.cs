@@ -21,12 +21,10 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
             var res = source.CalculateCombatResult(target, 0.5f + lvl * 0.1f, 1, AttackFlags.Physical | AttackFlags.CanCrit, CharacterSkill.Envenom, AttackElement.Poison);
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);
-            
+
             var ch = source.Character;
 
-            ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
-            CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.Envenom, lvl, res);
-            CommandBuilder.ClearRecipients();
+            CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Envenom, lvl, res);
 
             if (!res.IsDamageResult)
                 return;
@@ -35,8 +33,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
             if (race == CharacterRace.Undead)
                 return;
 
-            var chance = 500 + lvl * 50;
-            var resist = MathHelper.ResistCalc(target.GetEffectiveStat(CharacterStat.Vit));
+            var chance = 500 + lvl * 50; //50%-100%
+            var resist = MathHelper.ResistCalc(target.GetEffectiveStat(CharacterStat.Vit)); //1% resist per vit, stacking
             if (!source.CheckLuckModifiedRandomChanceVsTarget(target, (int)(chance * resist), 1000))
                 return; //failed to poison
 
@@ -48,7 +46,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
                 _ => 21f //7 ticks
             };
 
-            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Poison, duration, source.Character.Id, res.Damage / 2);
+            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Poison, duration + 2, source.Character.Id, res.Damage / 2);
             target.AddStatusEffect(status, true, res.AttackMotionTime);
         }
     }

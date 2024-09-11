@@ -42,8 +42,6 @@ public class ProvokeHandler : SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Provoke, 30f, lvl, source.Character.Id);
         target.AddStatusEffect(status);
 
-        ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
-        CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.Provoke, lvl, di);
-        CommandBuilder.ClearRecipients();
+        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Provoke, lvl, di);
     }
 }

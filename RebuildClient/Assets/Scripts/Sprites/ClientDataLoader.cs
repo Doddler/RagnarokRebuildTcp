@@ -201,7 +201,9 @@ namespace Assets.Scripts.Sprites
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
             foreach (var skill in skills.Items)
             {
-                skill.Description = skill.Description.Replace("\n", "<line-height=25>\n</line-height>"); //should do this elsewhere honestly...
+                skill.Description = skill.Description.Replace("\r\n", "\n");
+                skill.Description = skill.Description.Replace("<br>\n", "<br>"); //should do this elsewhere honestly...
+                skill.Description = skill.Description.Replace("\n", "<line-height=25>\n</line-height>");
                 skillData.Add(skill.SkillId, skill);
             }
 

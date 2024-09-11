@@ -1,4 +1,5 @@
 ﻿using RebuildSharedData.Data;
+using System;
 
 namespace RoRebuildServer.Simulation.Util
 {
@@ -18,7 +19,7 @@ namespace RoRebuildServer.Simulation.Util
                 BoostTable[i] = MathF.Pow(0.01f, i);
             }
         }
-
+        
         public static float ResistCalc(int value)
         {
             if(value < ResistTable.Length)
@@ -32,11 +33,38 @@ namespace RoRebuildServer.Simulation.Util
                 return BoostTable[value];
             return MathF.Pow(0.01f, value);
         }
-        
+
+        public static int Clamp(this int val, int min, int max)
+        {
+            if (val < min)
+                val = min;
+            else if (val > max)
+                val = max;
+            return val;
+        }
+
+
+        public static float Clamp(this float val, float min, float max)
+        {
+            if (val < min)
+                val = min;
+            else if (val > max)
+                val = max;
+            return val;
+        }
+
+        public static float Clamp01(this float val)
+        {
+            if (val < 0f)
+                val = 0f;
+            else if (val > 1f)
+                val = 1f;
+            return val;
+        }
+
         public static float Lerp(float firstFloat, float secondFloat, float by)
         {
             return firstFloat * (1 - by) + secondFloat * by;
         }
-        
     }
 }

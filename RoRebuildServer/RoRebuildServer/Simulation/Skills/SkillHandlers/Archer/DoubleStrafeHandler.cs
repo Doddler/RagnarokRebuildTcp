@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
 {
@@ -20,8 +21,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
 
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
-            if (lvl < 0 || lvl > 10)
-                lvl = 10;
+            lvl = lvl.Clamp(1, 10);
 
             if (target == null || !target.IsValidTarget(source))
                 return;
@@ -32,9 +32,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
 
             var ch = source.Character;
 
-            ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
-            CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.DoubleStrafe, lvl, res);
-            CommandBuilder.ClearRecipients();
+            CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.DoubleStrafe, lvl, res);
         }
     }
 }

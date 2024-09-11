@@ -293,6 +293,14 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
+    public static void SkillExecuteTargetedSkillAutoVis(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, DamageInfo di)
+    {
+        caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
+        if(target != null) EnsureRecipient(target.Entity);
+        SkillExecuteTargetedSkill(caster, target, skill, lvl, di);
+        ClearRecipients();
+    }
+
     public static void SkillExecuteTargetedSkill(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, DamageInfo di)
     {
         if (!HasRecipients())
@@ -338,6 +346,13 @@ public static class CommandBuilder
         packet.Write((byte)di.Result);
         
         NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+    public static void SkillExecuteSelfTargetedSkillAutoVis(WorldObject caster, CharacterSkill skill, int lvl)
+    {
+        caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
+        SkillExecuteSelfTargetedSkill(caster, skill, lvl);
+        ClearRecipients();
     }
 
     public static void SkillExecuteSelfTargetedSkill(WorldObject caster, CharacterSkill skill, int lvl)

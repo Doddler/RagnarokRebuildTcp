@@ -242,7 +242,7 @@
         10
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "Creates a wall of flame at a targeted location dealing 50% fire magic damage and knocking enemies back upon contact.\r\nHigher levels increases the duration, number of hits, and speeds up casting."
     },
     {
       "SkillId": 15,
@@ -396,7 +396,7 @@
         12
       ],
       "AdjustableLevel": true,
-      "Description": "The good ol\u0027 classic. Just as spammable as you remember it (maybe more because there\u0027s no SP cost yet)"
+      "Description": "Strikes a target with two arrows dealing 2 hits of 100% attack at level 1 (200% total) increasing to 190% at level 10 (380% total)."
     },
     {
       "SkillId": 22,
@@ -453,7 +453,7 @@
         70
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "Focuses your thoughts providing bonus to AGI and DEX.\r\n\u003Cpos=2%\u003ELevel \u003Cpos=22%\u003EStat Boost\u003Cpos=52%\u003EDuration\u003Cbr\u003E\r\n\u003Cpos=5%\u003E1\u003Cpos=25%\u003E\u002B3%\u003Cpos=55%\u003E60s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E2\u003Cpos=25%\u003E\u002B4%\u003Cpos=55%\u003E80s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E3\u003Cpos=25%\u003E\u002B5%\u003Cpos=55%\u003E100s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E4\u003Cpos=25%\u003E\u002B6%\u003Cpos=55%\u003E120s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E5\u003Cpos=25%\u003E\u002B7%\u003Cpos=55%\u003E140s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E6\u003Cpos=25%\u003E\u002B8%\u003Cpos=55%\u003E160s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E7\u003Cpos=25%\u003E\u002B9%\u003Cpos=55%\u003E180s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E8\u003Cpos=25%\u003E\u002B10%\u003Cpos=55%\u003E200s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E9\u003Cpos=25%\u003E\u002B11%\u003Cpos=55%\u003E220s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E10\u003Cpos=25%\u003E\u002B12%\u003Cpos=55%\u003E240s"
     },
     {
       "SkillId": 25,
@@ -464,7 +464,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": "Adds \u002B1 DEX per level."
     },
     {
       "SkillId": 26,
@@ -475,7 +475,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": "Adds \u002B1 range per level when attacking with a bow."
     },
     {
       "SkillId": 27,
@@ -752,7 +752,7 @@
         12
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": "Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target\u0027s VIT.\r\nHigher skill levels increase success rate of poison as well as duration.\r\nPoison Effect: Deals 1/2 the received damage every 3 seconds."
     },
     {
       "SkillId": 44,
@@ -947,7 +947,7 @@
         15
       ],
       "AdjustableLevel": true,
-      "Description": "This skill is really good until I actually implement zeny."
+      "Description": "Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.\r\nEach level adds \u002B50% damage and costs an additional 100 zeny to use (dealing 600% @ 1000z at level 10)."
     },
     {
       "SkillId": 57,
@@ -958,7 +958,7 @@
       "MaxLevel": 1,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "This is what makes merchant worth playing. Or it would be if it worked.\r\n\u003Ci\u003EToo bad.\u003C/i\u003E"
+      "Description": "Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.\r\nThe cart has a weight capacity of 8000 and can store up to 100 items."
     },
     {
       "SkillId": 58,
@@ -1006,7 +1006,7 @@
         50
       ],
       "AdjustableLevel": false,
-      "Description": "So good it\u0027s basically cheating."
+      "Description": "Increases attack speed when using two-handed swords by 10% per skill level."
     },
     {
       "SkillId": 61,

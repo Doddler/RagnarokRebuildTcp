@@ -55,10 +55,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
            
             map.SendVisualEffectToPlayers(DataManager.EffectIdForName["HammerFall"], position, 0);
 
-            map?.AddVisiblePlayersAsPacketRecipients(source.Character);
-            CommandBuilder.SkillExecuteAreaTargetedSkill(source.Character, position, CharacterSkill.HammerFall, lvl);
-            CommandBuilder.ClearRecipients();
-
+            CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(source.Character, position, CharacterSkill.HammerFall, lvl);
         }
     }
 }

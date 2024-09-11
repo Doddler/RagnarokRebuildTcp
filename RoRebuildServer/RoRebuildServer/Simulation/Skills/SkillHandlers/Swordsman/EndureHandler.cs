@@ -15,6 +15,6 @@ public class EndureHandler : SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Endure, 7f + lvl * 3f, 2 + lvl, lvl);
         source.AddStatusEffect(status);
         
-        GenericCastAndInformSelfSkill(source.Character, CharacterSkill.Endure, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Endure, lvl);
     }
 }

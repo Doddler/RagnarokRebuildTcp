@@ -893,13 +893,13 @@ public class CombatEntity : IEntityAutoReset
         SkillHandler.ExecuteSkill(info, this);
     }
 
-    public bool CheckLuckModifiedRandomChanceVsTarget(CombatEntity target, int chance, int outOf)
+    public bool CheckLuckModifiedRandomChanceVsTarget(CombatEntity target, int chance, int outOf, int luckMod = 100)
     {
         var attackerLuck = GetEffectiveStat(CharacterStat.Luck);
         var provokerLuck = target.GetEffectiveStat(CharacterStat.Luck);
         if (provokerLuck < 0) provokerLuck = 0;
 
-        var realChance = chance * 10 * (attackerLuck + 40) / (provokerLuck + 40);
+        var realChance = chance * 10 * (attackerLuck + luckMod) / (provokerLuck + luckMod);
         if (realChance <= 0)
             return false;
 

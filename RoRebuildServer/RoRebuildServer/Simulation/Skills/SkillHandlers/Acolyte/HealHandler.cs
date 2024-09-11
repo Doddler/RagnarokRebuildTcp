@@ -19,8 +19,6 @@ public class HealHandler : SkillHandlerBase
         if (source == target || source.IsValidAlly(target))
             return SkillValidationResult.Success;
 
-        //TODO: Allow targeting undead enemies
-
         if (target.Character.Type == CharacterType.Monster)
         {
             if (target.Character.Type == CharacterType.Monster && target.IsElementBaseType(CharacterElement.Undead1))

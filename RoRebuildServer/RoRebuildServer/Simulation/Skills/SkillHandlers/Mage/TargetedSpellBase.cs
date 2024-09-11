@@ -36,10 +36,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
 
             var ch = source.Character;
 
-            ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
-            CommandBuilder.EnsureRecipient(target.Entity);
-            CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, GetSkill(), lvl, res);
-            CommandBuilder.ClearRecipients();
+            CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, GetSkill(), lvl, res);
         }
     }
 }
