@@ -8,4 +8,5 @@ public class ServerOperationConfig
     public bool UseAccurateSpawnZoneFormula { get; set; }
     public bool AllowAdminifyCommand { get; set; }
     public string? AdminifyPasscode { get; set; }
+    public int DropRateFactor { get; set; }
 }

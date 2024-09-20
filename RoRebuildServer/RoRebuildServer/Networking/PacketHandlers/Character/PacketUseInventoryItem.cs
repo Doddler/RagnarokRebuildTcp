@@ -29,7 +29,7 @@ public class PacketUseInventoryItem : IClientPacketHandler
         var itemId = msg.ReadInt32();
 
         //obviously you should check if the item is in your inventory, but we have no inventory!
-        
+
         player.AddActionDelay(CooldownActionType.UseItem);
 
         if (!DataManager.ItemList.TryGetValue(itemId, out var item))
@@ -42,6 +42,12 @@ public class PacketUseInventoryItem : IClientPacketHandler
         if (!item.IsUseable)
         {
             ServerLogger.LogWarning($"User is attempting to use item {item.Code}, but it is not usable.");
+            return;
+        }
+
+        if (!player.TryRemoveItemFromInventory(itemId, 1))
+        {
+            CommandBuilder.SkillFailed(player, SkillValidationResult.InsufficientItemCount);
             return;
         }
 

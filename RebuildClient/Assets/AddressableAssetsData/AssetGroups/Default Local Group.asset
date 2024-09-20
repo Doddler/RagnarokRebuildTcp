@@ -9208,11 +9208,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 81256b27eb27dbc439d2b23d1a2a584d
-    m_Address: Assets/Textures/ItemAtlas.spriteatlasv2
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6e6011902511a8240b3ddef8d1afa170
     m_Address: Assets/Maps/minimap/valkyrie.png
     m_ReadOnly: 0

@@ -765,6 +765,20 @@ namespace Assets.Scripts
             return null;
         }
 
+        private bool FindItemUnderCursor(Ray ray, out GroundItem item)
+        {
+            item = null;
+
+            var itemHits = Physics.Raycast(ray, out var hit, MaxClickDistance, 1 << LayerMask.NameToLayer("Item"));
+            if (itemHits)
+            {
+                item = hit.transform.parent.GetComponent<GroundItem>();
+                return item != null;
+            }
+
+            return false;
+        }
+
         private bool FindEntityUnderCursor(Ray ray, bool preferEnemy, out ServerControllable target)
         {
             //one of these days we'll be able to target allies and that preferEnemy value will matter
@@ -871,9 +885,10 @@ namespace Assets.Scripts
                 isSkillEnemyTargeted = true;
             }
 
-
             var walkMask = 1 << LayerMask.NameToLayer("WalkMap");
             var groundMask = 1 << LayerMask.NameToLayer("Ground");
+
+            var ignoreEntity = (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt));
 
             var hasEntity = FindEntityUnderCursor(ray, preferEnemyTarget, out var mouseTarget);
             var hasGround = FindMapPositionUnderCursor(ray, out var groundPosition, out var intersectLocation, walkMask);
@@ -881,14 +896,16 @@ namespace Assets.Scripts
             var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
             var hasTargetedSkill = hasSkillOnCursor && (isSkillEnemyTargeted || isSkillAllyTargeted);
             var hasGroundSkill = hasSkillOnCursor && tempSkillTarget == SkillTarget.Ground;
-
-            var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill;
+            var hasItem = FindItemUnderCursor(ray, out var item);
+            
+            var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill && !ignoreEntity;
             var canCurrentlyTarget = canInteract &&
                                      ((hasSkillOnCursor && ((mouseTarget.IsAlly && isSkillAllyTargeted) || (!mouseTarget.IsAlly && isSkillEnemyTargeted))) ||
                                       !mouseTarget.IsAlly);
             var canClickEnemy = canCurrentlyTarget && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickNpc = canInteract && !hasSkillOnCursor && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
-            var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc && !hasTargetedSkill;
+            var canClickItem = hasItem && !canClickEnemy;
+            var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc && !hasTargetedSkill && !canClickItem;
             var canMove = ClickDelay <= 0 && isAlive && !isSitting && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl);
             var showEntityName = hasEntity && !isOverUi;
 
@@ -898,10 +915,8 @@ namespace Assets.Scripts
             var displayCursor = canClickEnemy ? GameCursorMode.Attack : GameCursorMode.Normal;
             if (canClickNpc) displayCursor = GameCursorMode.Dialog;
             if (hasSkillOnCursor) displayCursor = GameCursorMode.SkillTarget;
-
-            //Debug.Log($"{hasEntity} {}");
-
-            // Debug.Log($"CanInteract:{canInteract} MouseTarget:{mouseTarget} IsInteractable:{mouseTarget?.IsInteractable}");
+            if (hasItem && showEntityName && mouseTarget.IsAlly)
+                showEntityName = false; //don't show friendly names if you could instead pick up an item
 
             if (showEntityName)
             {
@@ -942,6 +957,21 @@ namespace Assets.Scripts
 
                 return displayCursor;
             }
+
+            if (canClickItem)
+            {
+                WalkProvider.DisableRenderer();
+                UiManager.Instance.ItemOverlay.ShowItem(item);
+                
+                if (leftClick)
+                {
+                    NetworkManager.Instance.SendPickUpItem(item.EntityId);
+                }
+
+                return Input.GetMouseButton(0) ? GameCursorMode.PickUpMouseDown : GameCursorMode.PickUp;
+            }
+            else
+                UiManager.Instance.ItemOverlay.HideItem();
 
             if (leftClick && hasSkillOnCursor && hasTargetedSkill && !canClickEnemy)
             {

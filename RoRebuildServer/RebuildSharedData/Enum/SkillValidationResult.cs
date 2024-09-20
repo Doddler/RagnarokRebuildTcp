@@ -13,5 +13,6 @@ namespace RebuildSharedData.Enum
         IncorrectWeapon,
         InsufficientSp,
         CannotCreateMore,
+        InsufficientItemCount
     }
 }

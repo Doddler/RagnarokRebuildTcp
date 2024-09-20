@@ -8,6 +8,7 @@ namespace RoRebuildServer.Data.Player
         public string Code = null!;
         public int Weight;
         public int Price;
+        public bool IsUnique;
         public bool IsUseable;
         public int Effect;
         public ItemInteractionBase? Interaction = null!;

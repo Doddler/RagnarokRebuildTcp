@@ -47,6 +47,9 @@ public class World
     private int mapCount = 0;
     const int initialEntityCount = 10_000;
 
+    private int currentDropIndex = 5000;
+    public int GetNextDropId() => Interlocked.Increment(ref currentDropIndex);
+
     public void TriggerReloadServerScripts() => reloadScriptsFlag = true;
     private bool reloadScriptsFlag = false;
 
@@ -81,7 +84,7 @@ public class World
 
         ServerLogger.Log($"World created using {mapCount} maps across {Instances.Count} instances placing a total of {nextEntityId} entities.");
     }
-
+    
     public void FullyRemoveEntity(ref Entity entity, CharacterRemovalReason reason = CharacterRemovalReason.OutOfSight)
     {
         //important that this only happens on the player's map thread or between server updates on the main thread
@@ -95,7 +98,7 @@ public class World
             var player = ch.Player;
             player.EndNpcInteractions();
             player.SaveCharacterToData();
-            var req = new SaveCharacterRequest(player.Id, player.Name, ch.Map?.Name, ch.Position, player.CharData, player.SavePosition, player.LearnedSkills, player.NpcFlags);
+            var req = new SaveCharacterRequest(player);
             RoDatabase.EnqueueDbRequest(req);
         }
 
@@ -137,6 +140,9 @@ public class World
             DoScriptReload();
             reloadScriptsFlag = false;
         }
+
+        if (currentDropIndex + 2000 > short.MaxValue)
+            currentDropIndex = 5000;
     }
 
     public AreaOfEffect GetNewAreaOfEffect()
@@ -363,6 +369,10 @@ public class World
             player.SavePosition = connection.LoadCharacterRequest.SavePosition;
             player.LearnedSkills = connection.LoadCharacterRequest.SkillsLearned ?? new Dictionary<CharacterSkill, int>();
             player.NpcFlags = connection.LoadCharacterRequest.NpcFlags;
+            player.Inventory = connection.LoadCharacterRequest.Inventory;
+            player.CartInventory = connection.LoadCharacterRequest.Cart;
+            player.StorageInventory = connection.LoadCharacterRequest.Storage;
+
             var data = connection.LoadCharacterRequest.Data;
 
             if (data != null)
@@ -596,7 +606,7 @@ public class World
                 for (var j = 0; j < minionDef.Count; j++)
                 {
                     var minion = CreateMonster(map, minionDef.Monster, Area.CreateAroundPoint(p, 2), null);
-                    monster.AddChild(ref minion);
+                    monster.AddChild(ref minion, MonsterAiType.AiMinion);
                 }
             }
         }
@@ -675,7 +685,7 @@ public class World
                 CommandBuilder.SendChangeMap(character, player);
 
                 player.SaveCharacterToData();
-                var req = new SaveCharacterRequest(player.Id, player.Name, character.Map?.Name, character.Position, player.CharData, player.SavePosition, player.LearnedSkills, player.NpcFlags);
+                var req = new SaveCharacterRequest(player);
                 RoDatabase.EnqueueDbRequest(req);
             }
         }

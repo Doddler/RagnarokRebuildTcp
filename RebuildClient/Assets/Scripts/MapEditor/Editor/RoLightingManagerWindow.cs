@@ -9,6 +9,7 @@ using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.MapEditor.Editor
 {
@@ -25,7 +26,7 @@ namespace Assets.Scripts.MapEditor.Editor
         private Vector2 scrollPosition;
 
         private Dictionary<string, byte[]> ambientTextures;
-        private List<Light> lights;
+        private static List<Light> lights;
 
         private string mapName;
 
@@ -162,7 +163,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 if(l)
                     l.enabled = true;
                 else
-                    Debug.LogWarning($"For some reason, the light {l} on game object {l.name} has been destroyed.");
+                    Debug.LogWarning($"For some reason we have a light in the list of lights to restore but it no longer is a valid reference (scene {SceneManager.GetActiveScene().name}).");
             }
 
 
@@ -264,6 +265,11 @@ namespace Assets.Scripts.MapEditor.Editor
             
             if(AlwaysRebuildLightprobes && shouldBakeLightProbes)
                 map.RebuildProbes();
+            
+            DisableAllLights();
+            RestoreLights();
+            EditorSceneManager.MarkAllScenesDirty();
+            EditorSceneManager.SaveOpenScenes();
 
             //Debug.Log("Lights: " + lights.Count);
 

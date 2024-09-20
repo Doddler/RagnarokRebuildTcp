@@ -157,12 +157,15 @@ Shader"Ragnarok/CharacterSpriteShaderNoZWrite"
 				UNITY_TRANSFER_FOG(o, tempVertex);
 	
 				//smoothpixelshader stuff here
-
+				#ifdef SMOOTHPIXEL
 				float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);
 				float2 maskUV = (v.vertex.xy - clampedRect.xy) / (clampedRect.zw - clampedRect.xy);
 				o.texcoord = float4(v.texcoord.x, v.texcoord.y, maskUV.x, maskUV.y);
-
+				#else
+				o.texcoord = v.texcoord;
+				#endif
 				//end of smooth pixel
+				
 				#ifndef WATER_OFF
 
 					//this mess fully removes the rotation from the matrix	
@@ -192,6 +195,7 @@ Shader"Ragnarok/CharacterSpriteShaderNoZWrite"
 	
 				//smoothpixel
 				// apply anti-aliasing
+				#ifdef SMOOTHPIXEL
 				float2 texturePosition = i.texcoord * _MainTex_TexelSize.zw;
 				float2 nearestBoundary = round(texturePosition);
 				float2 delta = float2(abs(ddx(texturePosition.x)) + abs(ddx(texturePosition.y)),
@@ -201,7 +205,11 @@ Shader"Ragnarok/CharacterSpriteShaderNoZWrite"
 				samplePosition = clamp(samplePosition, -0.5, 0.5) + nearestBoundary;
 
 				fixed4 diff = tex2D(_MainTex, samplePosition * _MainTex_TexelSize.xy);
+				#else
+				fixed4 diff = tex2D(_MainTex,i.texcoord.xy);
+				#endif
 				//endsmoothpixel
+
 
 				fixed4 c = diff * i.color * float4(env.rgb,1);
 

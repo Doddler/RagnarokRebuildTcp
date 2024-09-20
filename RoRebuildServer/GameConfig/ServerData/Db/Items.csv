@@ -1,10 +1,90 @@
-﻿Id,Code,Name,Weight,Price,IsUseable,Effect,Sprite
-501,Red_Potion,"Red Potion",70,50,true,RedPotion,빨간포션
-502,Orange_Potion,"Orange Potion",70,50,true,OrangePotion,주홍포션
-503,Yellow_Potion,"Yellow Potion",70,50,true,YellowPotion,노란포션
-504,White_Potion,"White Potion",70,50,true,WhitePotion,하얀포션
-505,Blue_Potion,"Blue Potion",70,50,true,BluePotion,파란포션
-506,Green_Potion,"Green Potion",70,50,true,GreenPotion,초록포션
-601,Fly_Wing,"Fly Wing",70,200,true,,파리의날개
-602,Butterfly_Wing,"Butterfly Wing",70,300,true,,나비의날개
-1101,Sword,"Sword",500,5000,false,,소드
+﻿Id,Code,Name,Weight,Price,IsUnique,IsUseable,Effect,Sprite
+501,Red_Potion,Red Potion,70,50,FALSE,TRUE,RedPotion,빨간포션
+502,Orange_Potion,Orange Potion,100,200,FALSE,TRUE,OrangePotion,주홍포션
+503,Yellow_Potion,Yellow Potion,130,550,FALSE,TRUE,YellowPotion,노란포션
+504,White_Potion,White Potion,150,1200,FALSE,TRUE,WhitePotion,하얀포션
+505,Blue_Potion,Blue Potion,150,5000,FALSE,TRUE,BluePotion,파란포션
+506,Green_Potion,Green Potion,70,40,FALSE,TRUE,GreenPotion,초록포션
+507,Red_Herb,Red Herb,30,18,FALSE,TRUE,,빨간허브
+508,Yellow_Herb,Yellow Herb,50,40,FALSE,TRUE,,노란허브
+509,White_Herb,White Herb,70,120,FALSE,TRUE,,하얀허브
+510,Blue_Herb,Blue Herb,70,60,FALSE,TRUE,,파란허브
+511,Green_Herb,Green Herb,30,10,FALSE,TRUE,,초록허브
+512,Apple,Apple,20,15,FALSE,TRUE,,사과
+513,Banana,Banana,20,15,FALSE,TRUE,,바나나
+514,Grape,Grape,20,200,FALSE,TRUE,,포도
+515,Carrot,Carrot,20,15,FALSE,TRUE,,당근
+516,Potato,Potato,20,15,FALSE,TRUE,,고구마
+517,Meat,Meat,150,50,FALSE,TRUE,,고기
+518,Honey,Honey,100,500,FALSE,TRUE,,꿀
+519,Milk,Milk,30,25,FALSE,TRUE,,우유
+520,Hinalle_Leaflet,Hinalle Leaflet,10,150,FALSE,TRUE,,히나레의잎사귀
+521,Aloe_Leaflet,Aloe Leaflet,20,360,FALSE,TRUE,,알로에잎사귀
+522,Mastela_Fruit,Mastela Fruit,30,8500,FALSE,TRUE,,마스테라의열매
+523,Holy_Water,Holy Water,30,20,FALSE,TRUE,,성수
+525,Panacea,Panacea,100,500,FALSE,TRUE,,만능약
+526,Royal_Jelly,Royal Jelly,150,7000,FALSE,TRUE,,로얄제리
+528,Monster_Feed,Monster Feed,150,60,FALSE,TRUE,,괴물의먹이
+601,Fly_Wing,Fly Wing,70,200,FALSE,TRUE,,파리의날개
+602,Butterfly_Wing,Butterfly Wing,70,300,FALSE,TRUE,,나비의날개
+603,Old_Blue_Box,Old Blue Box,200,10000,FALSE,TRUE,,오래된파란상자
+604,Dead_Branch,Dead Branch,50,50,FALSE,TRUE,,고목나무가지
+610,Yggdrasil_Leaf,Yggdrasil Leaf,100,4000,FALSE,TRUE,,이그드라실잎
+616,Old_Card_Album,Old Card Album,50,10000,FALSE,TRUE,,낡은카드첩
+617,Old Purple Box,Old Purple Box,200,10000,FALSE,TRUE,,오래된보라상자
+713,Empty_Bottle,Empty bottle,20,6,FALSE,FALSE,,빈병
+909,Jellopy,Jellopy,10,6,FALSE,FALSE,,젤로피
+910,Garlet,Garlet,10,40,FALSE,FALSE,,가렛
+911,Scell,Scell,10,160,FALSE,FALSE,,셀
+912,Zargon,Zargon,10,480,FALSE,FALSE,,자르곤
+913,Bat_Tooth,Bat Tooth,10,34,FALSE,FALSE,,박쥐의이빨
+914,Fluff,Fluff,10,8,FALSE,FALSE,,솜털
+915,Chrysalis,Chrysalis,10,8,FALSE,FALSE,,번데기껍질
+916,Feather,Feather,10,10,FALSE,FALSE,,새의깃털
+917,Talon,Talon,10,20,FALSE,FALSE,,새의발톱
+918,Sticky_Webfoot,Sticky Webfoot,10,20,FALSE,FALSE,,끈적이는물갈퀴
+919,Animal_Skin,Animal Skin,10,36,FALSE,FALSE,,동물가죽
+920,Wolf_Claw,Wolf Claw,10,58,FALSE,FALSE,,늑대의발톱
+921,Mushroom_Spore,Mushroom Spore,10,36,FALSE,FALSE,,버섯포자
+922,Orc_Tooth,Orc's Fang,10,220,FALSE,FALSE,,오크의송곳니
+923,Evil_Horn,Evil Horn,10,1200,FALSE,FALSE,,악마의뿔
+924,Powder_Of_Butterfly,Powder of Butterfly,10,90,FALSE,FALSE,,나비날개분
+925,Bill_Of_Birds,Bird Bill,10,64,FALSE,FALSE,,새의부리
+926,Scale_Of_Snakes,Snak Scale,10,82,FALSE,FALSE,,뱀의비늘
+928,Insect_Feeler,Insect Feeler,10,114,FALSE,FALSE,,벌레더듬이
+929,Immortal_Heart,Immortal Heart,10,374,FALSE,FALSE,,멈추지않는심장
+930,Rotten_Bandage,Rotten Bandage,10,350,FALSE,FALSE,,썩은붕대
+931,Orcish_Voucher,Orcish Voucher,10,142,FALSE,FALSE,,오크전사의증표
+932,Skel_Bone,Skel Bone,10,232,FALSE,FALSE,,스켈본
+934,Mementos,Memento,10,600,FALSE,FALSE,,사자의유품
+935,Shell,Shell,10,14,FALSE,FALSE,,단단한껍질
+936,Scale_Shell,Scale Shell,10,466,FALSE,FALSE,,비늘피부
+937,Venom_Canine,Venom Canine,10,148,FALSE,FALSE,,독송곳니
+938,Sticky_Mucus,Sticky Mucus,10,70,FALSE,FALSE,,끈적끈적한액체
+939,Bee_Sting,Bee Sting,10,32,FALSE,FALSE,,벌의뒷침
+940,Grasshopper_Leg,Grasshopper's Leg,10,36,FALSE,FALSE,,메뚜기뒷다리
+1101,Sword,Sword,500,100,TRUE,FALSE,,소드
+1201,Knife,Knife,400,50,TRUE,FALSE,,나이프
+1301,Axe,Axe,800,500,TRUE,FALSE,,액스
+1401,Javelin,Javelin,700,150,TRUE,FALSE,,쟈벨린
+1501,Club,Club,700,120,TRUE,FALSE,,클럽
+1601,Rod,Rod,400,50,TRUE,FALSE,,롯드
+1701,Bow,Bow,500,1000,TRUE,FALSE,,보우
+4000,Blank_Card,Blank Card,10,20,FALSE,FALSE,,이름없는카드
+4001,Poring_Card,Poring Card,10,20,FALSE,FALSE,,이름없는카드
+4002,Fabre_Card,Fabre Card,10,20,FALSE,FALSE,,이름없는카드
+4003,Pupa_Card,Pupa Card,10,20,FALSE,FALSE,,이름없는카드
+4004,Drops_Card,Drops Card,10,20,FALSE,FALSE,,이름없는카드
+4005,Santa_Poring_Card,Santa Poring Card,10,20,FALSE,FALSE,,이름없는카드
+4006,Lunatic_Card,Lunatic Card,10,20,FALSE,FALSE,,이름없는카드
+4007,Peco_Peco_Egg_Card,Peco Peco Egg Card,10,20,FALSE,FALSE,,이름없는카드
+4008,Picky_Card,Picky Card,10,20,FALSE,FALSE,,이름없는카드
+4009,Chonchon_Card,Chonchon Card,10,20,FALSE,FALSE,,이름없는카드
+4010,Willow_Card,Willow Card,10,20,FALSE,FALSE,,이름없는카드
+4011,Picky_Egg_Card,Picky Egg Card,10,20,FALSE,FALSE,,이름없는카드
+4012,Thief_Bug_Egg_Card,Thief Bug Egg Card,10,20,FALSE,FALSE,,이름없는카드
+4013,Ant_Egg_Card,Ant Egg Card,10,20,FALSE,FALSE,,이름없는카드
+4014,Roda_Frog_Card,Roda Frog Card,10,20,FALSE,FALSE,,이름없는카드
+4015,Condor_Card,Condor Card,10,20,FALSE,FALSE,,이름없는카드
+4016,Thief_Bug_Card,Thief Bug Card,10,20,FALSE,FALSE,,이름없는카드
+4017,Savage_Babe_Card,Savage Babe Card,10,20,FALSE,FALSE,,이름없는카드

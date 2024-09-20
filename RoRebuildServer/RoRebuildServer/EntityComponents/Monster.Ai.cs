@@ -7,6 +7,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
 
@@ -27,6 +28,7 @@ public partial class Monster
         switch (inCheckType)
         {
             case MonsterInputCheck.InWaitEnd: return InWaitEnd();
+            case MonsterInputCheck.InChangeNormal: return InChangeNormal();
             case MonsterInputCheck.InEnemyOutOfSight: return InEnemyOutOfSight();
             case MonsterInputCheck.InEnemyOutOfAttackRange: return InEnemyOutOfAttackRange();
             case MonsterInputCheck.InReachedTarget: return InReachedTarget();
@@ -38,11 +40,15 @@ public partial class Monster
             case MonsterInputCheck.InAttackDelayEnd: return InAttackDelayEnd();
             case MonsterInputCheck.InAttacked: return InAttacked();
             case MonsterInputCheck.InAttackedNoSwap: return InAttacked(false);
+            case MonsterInputCheck.InMeleeAttacked: return InMeleeAttacked();
             case MonsterInputCheck.InDeadTimeoutEnd: return InDeadTimeoutEnd();
             case MonsterInputCheck.InAllyInCombat: return InAllyInCombat();
             case MonsterInputCheck.InOwnerOutOfSight: return InOwnerOutOfSight();
             case MonsterInputCheck.InOwnerAttacked: return InOwnerAttacked();
             case MonsterInputCheck.InTargetedForSkill: return InTargetLocked();
+            case MonsterInputCheck.InItemInSight: return InItemInSight();
+            case MonsterInputCheck.InItemGone: return InItemGone();
+            case MonsterInputCheck.InReachedItem: return InReachedItem();
             case MonsterInputCheck.InNoCondition: return true;
         }
 
@@ -65,6 +71,11 @@ public partial class Monster
             return true;
 
         return false;
+    }
+
+    private bool InChangeNormal()
+    {
+        return CombatEntity.GetStat(CharacterStat.Disabled) <= 0;
     }
     
     private bool AdjustToAdjacentTile()
@@ -261,6 +272,23 @@ public partial class Monster
         return true;
     }
 
+    //similar to InAttacked, but only returns true if the attacker is close enough for us to attack back
+    private bool InMeleeAttacked()
+    {
+        if (!WasAttacked)
+            return false;
+
+        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.IsValidTarget(CombatEntity))
+            return false;
+
+        var target = ce.Character;
+
+        if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range)
+            return Character.Map!.WalkData.HasLineOfSight(Character.Position, target.Position);
+
+        return true;
+    }
+
     // did a player lock onto us with a spell?
     private bool InTargetLocked()
     {
@@ -368,6 +396,37 @@ public partial class Monster
         return false;
     }
 
+    private bool InItemInSight()
+    {
+        if (Character.Map == null || Character.Map.ItemChunkLookup.Count == 0)
+            return false;
+
+        GroundItem item = default;
+        if (!Character.Map.FindOldestGroundItemInRange(Character.Position, 9, ref item))
+            return false;
+
+        Character.TargetPosition = item.Position;
+        Character.ItemTarget = item.Id;
+
+        return true;
+    }
+
+    private bool InItemGone()
+    {
+        if (Character.Map == null)
+            return false;
+
+        if (Character.Map.ItemChunkLookup.ContainsKey(Character.ItemTarget))
+            return false;
+
+        return true;
+    }
+
+    private bool InReachedItem()
+    {
+        return Character.Position == Character.TargetPosition;
+    }
+
     #endregion
 
     #region OutputStateChecks
@@ -392,6 +451,9 @@ public partial class Monster
             case MonsterOutputCheck.OutAttackingAdjust: return OutAttackingAdjust();
             case MonsterOutputCheck.OutTryRevival: return OutTryRevival();
             case MonsterOutputCheck.OutMoveToOwner: return OutMoveToOwner();
+            case MonsterOutputCheck.OutMoveToItem: return OutMoveToItem();
+            case MonsterOutputCheck.OutPickUpItem: return OutPickUpItem();
+            case MonsterOutputCheck.OutStopMoving: return OutStopMoving();
             case MonsterOutputCheck.OutDebug: return OutDebug();
         }
 
@@ -669,6 +731,36 @@ public partial class Monster
             return true;
 
         return false;
+    }
+
+    private bool OutMoveToItem()
+    {
+        if (Character.Position == Character.TargetPosition)
+            return true;
+        if (Character.TryMove(Character.TargetPosition, 0))
+            return true;
+
+        return false;
+    }
+
+    private bool OutStopMoving()
+    {
+        Character.ShortenMovePath();
+        nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
+        return true;
+    }
+
+    private bool OutPickUpItem()
+    {
+        if (!Character.Map!.TryGetGroundItemByDropId(Character.ItemTarget, out var item))
+            return false;
+
+        Character.Map!.PickUpOrRemoveItem(Character, item.Id);
+
+        AddItemToInventory(item.ToItemReference());
+        nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
+
+        return true;
     }
 
     #endregion

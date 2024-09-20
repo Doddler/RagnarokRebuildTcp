@@ -1,13 +1,16 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics.CodeAnalysis;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
+using RoRebuildServer.Simulation.Items;
 
 namespace RoRebuildServer.Simulation;
 
 public class Chunk
 {
+    public int Id;
     public int X;
     public int Y;
     public int WalkableTiles;
@@ -19,6 +22,7 @@ public class Chunk
     public EntityList AllEntities { get; set; } = new EntityList(16, true);
     public EntityList Players { get; set; } = new EntityList(8, true);
     public EntityList Monsters { get; set; } = new EntityList(8, true);
+    public GroundItemList GroundItems { get; set; } = new GroundItemList(8, true);
     public List<AreaOfEffect> AreaOfEffects { get; set; } = new List<AreaOfEffect>(2);
 
     public override string ToString() => $"Chunk ({X * Size},{Y*Size}-{(X+1)*Size},{(Y+1)*Size})[P:{Players.Count} M:{Monsters.Count} AoE:{AreaOfEffects.Count}]";
@@ -75,6 +79,19 @@ public class Chunk
             default:
                 throw new Exception("Unhandled character type: " + type);
         }
+    }
+
+    public bool AddGroundItem(ref GroundItem item)
+    {
+        GroundItems.Add(item);
+        return true;
+    }
+
+    public bool TryGetGroundItem(int itemId, out GroundItem item) => GroundItems.TryGet(itemId, out item);
+    
+    public bool RemoveGroundItem(int itemId)
+    {
+        return GroundItems.Remove(itemId);
     }
 
     public void VerifyChunkData()

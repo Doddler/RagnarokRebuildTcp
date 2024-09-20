@@ -19,5 +19,8 @@ namespace Assets.Scripts.PlayerControl
         public int JobId;
         public Dictionary<CharacterSkill, int> KnownSkills = new();
         public bool IsAdminHidden = false;
+        public ClientInventory Inventory = new();
+        public ClientInventory Cart = new();
+        public ClientInventory Storage = new();
     }
 }

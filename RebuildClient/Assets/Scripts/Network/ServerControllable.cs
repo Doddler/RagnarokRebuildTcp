@@ -12,6 +12,7 @@ using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Hud;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -966,7 +967,7 @@ namespace Assets.Scripts.Network
             if (CameraFollower.Instance.SelectedTarget == gameObject)
                 CameraFollower.Instance.ClearSelected();
 
-            yield return new WaitForSeconds(2f);
+            //yield return new WaitForSeconds(2f);
 
             FadeOutAndVanish(2f);
         }

@@ -420,7 +420,9 @@ public class ScriptBuilder
 
         if (monsterStatesWithHandlers.Contains(MonsterAiState.StateAny))
         {
-            StartIndentedScriptLine().AppendLine($"StateAny(skillState);");
+            //don't call stateAny if we're disabled. We might want skill handler to run while disabled for some boss mechanics down the line.
+            StartIndentedScriptLine().AppendLine($"if(!skillState.IsDisabled())"); 
+            StartIndentedScriptLine().AppendLine($"\tStateAny(skillState);");
             StartIndentedScriptLine().AppendLine($"if(skillState.FinishedProcessing) return;");
 
             //
@@ -543,6 +545,7 @@ public class ScriptBuilder
         waitingFunctions.Clear();
         waitingFunctions.Add("Dialog", NpcInteractionResult.WaitForContinue);
         waitingFunctions.Add("Option", NpcInteractionResult.WaitForInput);
+        waitingFunctions.Add("OpenShop", NpcInteractionResult.WaitForShop);
         waitingFunctions.Add("MoveTo", NpcInteractionResult.EndInteraction);
 
         LoadFunctionSource(typeof(Npc), "npc");
@@ -586,6 +589,7 @@ public class ScriptBuilder
         waitingFunctions.Clear();
         waitingFunctions.Add("Dialog", NpcInteractionResult.WaitForContinue);
         waitingFunctions.Add("Option", NpcInteractionResult.WaitForInput);
+        waitingFunctions.Add("OpenShop", NpcInteractionResult.WaitForShop);
         waitingFunctions.Add("MoveTo", NpcInteractionResult.EndInteraction);
 
         LoadFunctionSource(typeof(Npc), "npc");

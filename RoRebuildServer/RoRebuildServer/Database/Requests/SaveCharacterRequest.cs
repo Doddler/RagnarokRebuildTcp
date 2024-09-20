@@ -1,8 +1,14 @@
 ﻿using System.Buffers;
+using System.Drawing;
+using System.Numerics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Util;
+using RebuildZoneServer.Networking;
 using RoRebuildServer.Database.Domain;
+using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Database.Requests;
@@ -17,14 +23,32 @@ public class SaveCharacterRequest : IDbRequest
     private byte[]? data;
     private byte[]? skillData;
     private byte[]? npcData;
+    private byte[]? itemData;
 
-    public SaveCharacterRequest(Guid id, string name, string? map, Position pos, int[] charData, SavePosition savePoint, Dictionary<CharacterSkill, int>? skills, Dictionary<string, int>? npcFlags)
+    public SaveCharacterRequest(string newCharacterName)
     {
-        Id = id;
-        this.name = name;
-        this.map = map;
-        this.pos = pos;
-        this.savePoint = savePoint;
+        Id = Guid.Empty; //database will generate a new key for us
+        name = newCharacterName;
+        map = null;
+        pos = Position.Invalid;
+        savePoint = new SavePosition();
+        skillData = null;
+        data = null;
+        npcData = null;
+        itemData = null;
+    }
+
+    public SaveCharacterRequest(Player player)
+    {
+        var character = player.Character;
+
+        Id = player.Id;
+        name = player.Name;
+        map = character.Map?.Name;
+        pos = character.Position;
+        savePoint = player.SavePosition;
+
+        var charData = player.CharData;
 
         //we can reuse this, char data array never changes size
         if (data == null || data.Length != charData.Length * sizeof(int))
@@ -32,24 +56,24 @@ public class SaveCharacterRequest : IDbRequest
 
         Buffer.BlockCopy(charData, 0, data, 0, charData.Length * sizeof(int));
 
-        if (skills == null)
+        skillData = DbHelper.BorrowArrayAndWriteDictionary(player.LearnedSkills);
+        npcData = DbHelper.BorrowArrayAndWriteDictionary(player.NpcFlags);
+
+        var inventorySize = player.Inventory.TryGetSize() + player.CartInventory.TryGetSize() + player.StorageInventory.TryGetSize();
+        if (inventorySize > 0)
         {
-            skillData = null;
-            return;
+            //add 3 bytes since each bag will also write if it exists or not
+            var buffer = ArrayPool<byte>.Shared.Rent(inventorySize + 3); 
+            using var ms = new MemoryStream(buffer);
+            using var bw = new BinaryMessageWriter(ms);
+            player.Inventory.TryWrite(bw, false);
+            player.CartInventory.TryWrite(bw, false);
+            player.StorageInventory.TryWrite(bw, false);
+
+            itemData = buffer;
         }
-
-        skillData = DbHelper.BorrowArrayAndWriteDictionary(skills);
-        npcData = DbHelper.BorrowArrayAndWriteDictionary(npcFlags);
-
-        //skillData = ArrayPool<byte>.Shared.Rent(skills.Count * 3 + 1);
-        //using var ms = new MemoryStream(skillData);
-        //using var bw = new BinaryWriter(ms);
-        //bw.Write((byte)skills.Count);
-        //foreach (var skill in skills)
-        //{
-        //    bw.Write((short)skill.Key);
-        //    bw.Write((byte)skill.Value);
-        //}
+        else
+            itemData = null;
     }
 
     public async Task ExecuteAsync(RoContext dbContext)
@@ -70,7 +94,8 @@ public class SaveCharacterRequest : IDbRequest
                 Area = savePoint.Area,
             },
             SkillData = skillData,
-            NpcFlags = npcData
+            NpcFlags = npcData,
+            ItemData = itemData
         };
 
         dbContext.Update(ch);
@@ -78,6 +103,7 @@ public class SaveCharacterRequest : IDbRequest
 
         if (skillData != null) ArrayPool<byte>.Shared.Return(skillData);
         if (npcData != null) ArrayPool<byte>.Shared.Return(npcData);
+        if (itemData != null) ArrayPool<byte>.Shared.Return(itemData);
 
         skillData = null;
         data = null;

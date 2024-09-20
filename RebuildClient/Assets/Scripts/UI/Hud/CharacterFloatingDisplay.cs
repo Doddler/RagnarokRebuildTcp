@@ -3,9 +3,8 @@ using Assets.Scripts.Objects;
 using Assets.Scripts.UI.ConfigWindow;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Assets.Scripts.UI
+namespace Assets.Scripts.UI.Hud
 {
     public class CharacterFloatingDisplay : MonoBehaviour
     {

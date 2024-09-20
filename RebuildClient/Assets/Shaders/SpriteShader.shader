@@ -156,6 +156,8 @@ Shader"Ragnarok/CharacterSpriteShader"
 			#pragma multi_compile _ PIXELSNAP_ON
 			#pragma multi_compile _ PALETTE_ON
 			//#pragma multi_compile _ WATER_OFF
+
+			//#define SMOOTHPIXEL
 		
 
 			#include "UnityCG.cginc"
@@ -295,10 +297,13 @@ Shader"Ragnarok/CharacterSpriteShader"
 				UNITY_TRANSFER_FOG(o, tempVertex);
 	
 				//smoothpixelshader stuff here
-
+				#ifdef SMOOTHPIXEL
 				float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);
 				float2 maskUV = (v.vertex.xy - clampedRect.xy) / (clampedRect.zw - clampedRect.xy);
 				o.texcoord = float4(v.texcoord.x, v.texcoord.y, maskUV.x, maskUV.y);
+				#else
+				o.texcoord = v.texcoord;
+				#endif
 
 				#ifdef VERTEXLIGHT_ON
 				float4 light = float4(ShadeVertexLightsFull(v.vertex, float3(0,1,0), 8, true), 1.0);
@@ -356,6 +361,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 					
 				//smoothpixel
 				// apply anti-aliasing
+				#ifdef SMOOTHPIXEL
 				float2 texturePosition = i.texcoord * _MainTex_TexelSize.zw;
 				float2 nearestBoundary = round(texturePosition);
 				float2 delta = float2(abs(ddx(texturePosition.x)) + abs(ddx(texturePosition.y)),
@@ -365,6 +371,9 @@ Shader"Ragnarok/CharacterSpriteShader"
 				samplePosition = clamp(samplePosition, -0.5, 0.5) + nearestBoundary;
 
 				fixed4 diff = tex2D(_MainTex, samplePosition * _MainTex_TexelSize.xy);
+				#else
+				fixed4 diff = tex2D(_MainTex,i.texcoord.xy);
+				#endif
 				// fixed4 diff = tex2D(_MainTex,i.texcoord.xy);
 				//endsmoothpixel
 

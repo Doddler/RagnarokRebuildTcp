@@ -64,6 +64,8 @@ public class MonsterSkillAiState(Monster monsterIn)
             return 0;
         return stateFlags[id];
     }
+
+    public bool IsDisabled() => monster.GetStat(CharacterStat.Disabled) > 0;
     
     //public void Debug(string hello) { ServerLogger.Log(hello); }
 

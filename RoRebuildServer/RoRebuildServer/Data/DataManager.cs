@@ -43,6 +43,7 @@ public static class DataManager
     public static Dictionary<string, int> JobIdLookup;
     public static Dictionary<string, int> ItemIdByName;
     public static Dictionary<int, ItemInfo> ItemList { get; set; }
+    public static Dictionary<string, MonsterDropData> MonsterDropData { get; set; }
     public static Dictionary<int, PlayerSkillTree> SkillTree; //SkillTree[Job][Skill] { (Prereq, lvl) } 
 
     public static Dictionary<string, int> EffectIdForName;
@@ -145,6 +146,7 @@ public static class DataManager
         loader.LoadItemInteractions(ScriptAssembly);
         loader.LoadMonsterSkillAi(ScriptAssembly);
         SkillTree = loader.LoadSkillTree();
+        MonsterDropData = loader.LoadMonsterDropChanceData();
     }
     
     public static void Initialize()
@@ -177,6 +179,7 @@ public static class DataManager
         MvpMonsterCodes = loader.LoadMvpList();
         loader.LoadItemInteractions(ScriptAssembly);
         
+
         MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
         MonsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
         MonsterNameLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
@@ -188,6 +191,7 @@ public static class DataManager
             MonsterNameLookup.TryAdd(m.Name, m);
         }
 
+        MonsterDropData = loader.LoadMonsterDropChanceData();
         SkillTree = loader.LoadSkillTree();
         loader.LoadMonsterSpawnMinions();
         loader.LoadNpcScripts(Assembly.GetAssembly(typeof(FirewallObjectEvent))!);

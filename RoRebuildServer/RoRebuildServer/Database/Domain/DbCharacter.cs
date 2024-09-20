@@ -20,5 +20,4 @@ public class DbCharacter
     public byte[]? SkillData { get; set; }
     public byte[]? NpcFlags { get; set; }
     public byte[]? ItemData { get; set; }
-
 }

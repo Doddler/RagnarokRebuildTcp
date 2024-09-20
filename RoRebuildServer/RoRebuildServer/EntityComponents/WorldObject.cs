@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RoRebuildServer.Data;
 using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
@@ -22,7 +24,8 @@ public enum QueuedAction
     Cast,
     Move,
     NpcInteract,
-    Attack
+    Attack,
+    PickUpItem
 }
 
 [EntityComponent(new[] { EntityType.Player, EntityType.Monster, EntityType.Npc, EntityType.Effect })]
@@ -43,6 +46,7 @@ public class WorldObject : IEntityAutoReset
     public float MoveModifier;
     public float MoveModifierTime;
     public int StepCount;
+    public int ItemTarget;
 
     public override string ToString() => $"WorldObject {Type}-{Id}({Name})";
 
@@ -126,7 +130,7 @@ public class WorldObject : IEntityAutoReset
 #endif
 
     public Map? Map;
-
+    
     //really silly to suppress null on these when they could actually be null but, well...
     private Player player = null!;
     private Monster monster = null!;
@@ -247,7 +251,7 @@ public class WorldObject : IEntityAutoReset
         else
             CommandBuilder.SendServerMessage($"{message}");
     }
-
+    
     public void ResetState(bool resetIfDead = false)
     {
         MoveProgress = 0;

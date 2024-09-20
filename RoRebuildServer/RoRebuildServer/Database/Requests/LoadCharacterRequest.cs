@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Util;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Database.Requests;
@@ -16,6 +18,9 @@ public class LoadCharacterRequest : IDbRequest
     public SavePosition SavePosition;
     public Dictionary<CharacterSkill, int>? SkillsLearned;
     public Dictionary<string, int>? NpcFlags;
+    public CharacterBag? Inventory;
+    public CharacterBag? Cart;
+    public CharacterBag? Storage;
 
     public byte[]? Data;
     public bool HasCharacter;
@@ -63,6 +68,15 @@ public class LoadCharacterRequest : IDbRequest
             SkillsLearned = skills ?? new Dictionary<CharacterSkill, int>();
 
             NpcFlags = DbHelper.ReadDictionary(ch.NpcFlags);
+
+            if (ch.ItemData != null && ch.ItemData.Length >= 3)
+            {
+                using var ms = new MemoryStream(ch.ItemData);
+                using var br = new BinaryMessageReader(ms);
+                Inventory = CharacterBag.TryRead(br);
+                Cart = CharacterBag.TryRead(br);
+                Storage = CharacterBag.TryRead(br);
+            }
             
             HasCharacter = true;
         }

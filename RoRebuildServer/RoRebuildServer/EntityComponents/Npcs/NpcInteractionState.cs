@@ -191,6 +191,16 @@ public class NpcInteractionState
         CommandBuilder.SendNpcOption(Player, options);
     }
 
+    public void OpenShop()
+    {
+
+    }
+
+    public void OpenShop(string[] items)
+    {
+
+    }
+
     public void MoveTo(string mapName, int x, int y)
     {
         MoveTo(mapName, x, y, 1, 1);

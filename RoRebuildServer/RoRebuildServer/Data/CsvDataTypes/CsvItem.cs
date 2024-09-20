@@ -4,8 +4,10 @@
     {
         public required int Id { get; set; }
         public required string Code { get; set; }
+        public required string Name { get; set; }
         public required int Weight { get; set; }
         public required int Price { get; set; }
+        public required bool IsUnique { get; set; }
         public required bool IsUseable { get; set; }
         public required string Effect { get; set; }
         public required string Sprite { get; set; }

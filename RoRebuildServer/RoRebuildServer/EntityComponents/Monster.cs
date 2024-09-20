@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Buffers;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -6,11 +7,13 @@ using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
 
@@ -90,7 +93,10 @@ public partial class Monster : IEntityAutoReset
     private MonsterSkillAiState skillState = null!;
     public Action<MonsterSkillAiState>? CastSuccessEvent = null;
     private MonsterSkillAiBase? skillAiHandler;
-
+    private ItemReference[]? monsterInventory;
+    private int inventoryCount;
+    private int inventoryIndex;
+    
     public bool LockMovementToSpawn;
     public bool GivesExperience;
 
@@ -181,6 +187,11 @@ public partial class Monster : IEntityAutoReset
         canResetAttackedState = false;
         timeSinceLastDamage = 0;
         LastAttackRange = 0;
+        if(monsterInventory != null)
+            ArrayPool<ItemReference>.Shared.Return(monsterInventory, true);
+        monsterInventory = null;
+        inventoryCount = 0;
+        inventoryIndex = 0;
 
         Target = Entity.Null;
     }
@@ -271,6 +282,18 @@ public partial class Monster : IEntityAutoReset
         return Children![rnd];
     }
 
+    public void AddItemToInventory(ItemReference item)
+    {
+        if (monsterInventory == null)
+            monsterInventory = ArrayPool<ItemReference>.Shared.Rent(10);
+        monsterInventory[inventoryIndex] = item;
+        inventoryIndex++;
+        if(inventoryIndex > inventoryCount)
+            inventoryCount = inventoryIndex;
+        if (inventoryIndex >= 10)
+            inventoryIndex = 0;
+    }
+
     private void InitializeStats()
     {
         var magicMin = MonsterBase.Int + MonsterBase.Int / 7 * MonsterBase.Int / 7;
@@ -358,7 +381,64 @@ public partial class Monster : IEntityAutoReset
                 ServerLogger.LogWarning($"Monster {Character.Name} is attempting to change target to a dead player!");
             CommandBuilder.SendMonsterTarget(p, Character);
         }
+    }
 
+    private Position GetNextTileForDrop(int dropId)
+    {
+        if (dropId == 0)
+            return Character.Position;
+
+        var pos = dropId % 3;
+        var tile = pos switch
+        {
+            0 => Character.Position.AddDirectionToPosition(Direction.North),
+            1 => Character.Position.AddDirectionToPosition(Direction.SouthEast),
+            2 => Character.Position.AddDirectionToPosition(Direction.West),
+            _ => throw new Exception("Invalid drop position.")
+        };
+        var map = Character.Map!;
+        if (map.WalkData.IsCellWalkable(tile) && !map.IsTileOccupied(tile, true))
+            return tile;
+        if (map.FindUnoccupiedAdjacentTile(tile, out var adjustTile, true))
+            return adjustTile;
+        return Character.Position;
+    }
+
+    public void DoMonsterDrops()
+    {
+        if (Character.Map == null)
+            return;
+
+        int dropId = 0;
+        if (DataManager.MonsterDropData.TryGetValue(MonsterBase.Code, out var drops))
+        {
+            for (var i = 0; i < drops.DropChances.Count; i++)
+            {
+                var d = drops.DropChances[i];
+                if (GameRandom.Next(10000) <= d.Item2)
+                {
+                    var dropPos = GetNextTileForDrop(dropId);
+                    var item = new GroundItem(dropPos, d.Item1, 1);
+                    Character.Map.DropGroundItem(ref item);
+                    dropId++;
+                }
+            }
+        }
+
+        dropId = 3; //bonus drops start north
+        if (inventoryCount > 0 && monsterInventory != null)
+        {
+            for (var i = 0; i < inventoryCount; i++)
+            {
+                var dropPos = GetNextTileForDrop(dropId);
+                var item = new GroundItem(dropPos, ref monsterInventory[i]);
+                Character.Map.DropGroundItem(ref item);
+                dropId++;
+            }
+
+            inventoryIndex = 0;
+            inventoryCount = 0;
+        }
     }
 
     /// <summary>
@@ -370,6 +450,8 @@ public partial class Monster : IEntityAutoReset
     {
         if (CurrentAiState == MonsterAiState.StateDead)
             return;
+
+        DoMonsterDrops();
 
         CombatEntity.OnDeathClearStatusEffects();
 
@@ -583,6 +665,9 @@ public partial class Monster : IEntityAutoReset
             if (Character.State == CharacterState.Dead) //if we died during our own skill handler, bail
                 return;
         }
+
+        if (skillAiHandler == null)
+            canResetAttackedState = true;
         
         for (var i = 0; i < aiEntries.Count; i++)
         {

@@ -1,0 +1,8 @@
+Id,Name,Attack,Magic,Range,Slot,Str,Agi,Int,Vit,Dex,Luk,Type,Rank,Property,EquipGroup,Hand,Refinable,Breakable
+1101,Sword,25,0,1,3,0,0,0,0,0,0,Sword,1,None,SwordUser,Left,Yes,Yes
+1201,Knife,17,0,1,3,0,0,0,0,0,0,Dagger,1,,DaggerUser,Left,Yes,Yes
+1301,Axe,38,0,1,3,0,0,0,0,0,0,Axe,1,,AxeUser,Left,Yes,Yes
+1401,Javelin,28,0,3,3,0,0,0,0,0,0,Spear,1,,Swordsman,Left,Yes,Yes
+1501,Club,23,0,1,3,0,0,0,0,0,0,Mace,1,,Any,Left,Yes,Yes
+1601,Rod,15,15,1,3,0,0,0,0,0,0,Rod,1,,Caster,Left,Yes,Yes
+1701,Bow,15,0,5,3,0,0,0,0,0,0,Bow,1,,Archer,Both,Yes,Yes

@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using Assets.Scripts.Objects;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Assets.Scripts.UI
+namespace Assets.Scripts.UI.Hud
 {
     public class CharacterOverlayManager : MonoBehaviour
     {
@@ -14,7 +13,7 @@ namespace Assets.Scripts.UI
         public GameObject MpBarTemplate;
         public GameObject TextBubbleTemplate;
         public GameObject DisplayRootTemplate;
-
+        
         public Transform PoolRoot;
 
         private Stack<GameObject> namePlatePool = new();

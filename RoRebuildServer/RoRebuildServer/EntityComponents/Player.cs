@@ -4,14 +4,17 @@ using System.Numerics;
 using Antlr4.Runtime.Tree.Xpath;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
@@ -41,6 +44,10 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
     public Dictionary<string, int>? NpcFlags = null!;
+    public CharacterBag? Inventory;
+    public CharacterBag? CartInventory;
+    public CharacterBag? StorageInventory;
+    public bool isStorageLoaded = false;
 
     public bool DoesCharacterKnowSkill(CharacterSkill skill, int level) => LearnedSkills.TryGetValue(skill, out var learned) && learned >= level;
     public int MaxLearnedLevelOfSkill(CharacterSkill skill) => LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0;
@@ -129,7 +136,20 @@ public class Player : IEntityAutoReset
         LastEmoteTime = 0;
         LearnedSkills = null!;
         NpcFlags = null!;
+        isStorageLoaded = false;
 
+        if (Inventory != null)
+            CharacterBag.Return(Inventory);
+        
+        if (CartInventory != null)
+            CharacterBag.Return(CartInventory);
+
+        if(StorageInventory != null)
+            CharacterBag.Return(StorageInventory);
+
+        Inventory = null;
+        CartInventory = null;
+        StorageInventory = null;
 
         SavePosition.Reset();
     }
@@ -160,6 +180,32 @@ public class Player : IEntityAutoReset
 
         IsAdmin = ServerConfig.DebugConfig.UseDebugMode;
         //IsAdmin = true; //for now
+    }
+    public int AddItemToInventory(ItemReference item)
+    {
+        Inventory ??= CharacterBag.Borrow();
+        return Inventory.AddItem(item);
+    }
+
+    public bool CanPickUpItem(ItemReference item)
+    {
+        if (Inventory == null)
+            return true;
+        if (Inventory.UsedSlots >= 200)
+            return false;
+
+        if (item.Type == ItemType.RegularItem && Inventory.RegularItems.TryGetValue(item.Item.Id, out var existing))
+            return item.Count + existing.Count < 30000;
+        
+        //unique items will end up as a separate entry no matter the id so no need to see if stack size exceeds limits
+
+        return true;
+    }
+
+    public bool TryRemoveItemFromInventory(int type, int count)
+    {
+        Debug.Assert(count < short.MaxValue);
+        return Inventory != null && Inventory.RemoveItem(new RegularItem() { Id = type, Count = (short)count });
     }
 
     public float GetJobBonus(CharacterStat stat)
@@ -219,7 +265,6 @@ public class Player : IEntityAutoReset
                 if (job == DataManager.JobIdLookup["Mage"])
                     return 0.6f;
                 return 1f;
-                break;
         }
 
         return 1;
@@ -772,6 +817,36 @@ public class Player : IEntityAutoReset
         return true; //lol
     }
 
+    public bool TryPickup(GroundItem groundItem)
+    {
+        var item = groundItem.ToItemReference();
+
+        if (!CanPickUpItem(item))
+            return false;
+        
+        var change = item.Count;
+        Character.Map!.PickUpOrRemoveItem(Character, groundItem.Id);
+        var updatedCount = (short)AddItemToInventory(item);
+        if (item.Type == ItemType.RegularItem)
+            item.Item.Count = updatedCount; //unique items can't stack so this won't change, but we should send updated regular item count to the client
+        CommandBuilder.AddOrRemoveItemFromInventory(this, item, change);
+        Character.AttackCooldown = Time.ElapsedTimeFloat + 0.3f; //no attacking for 0.3s after picking up an item
+        return true;
+    }
+
+    public void AttemptQueuedPickupAction()
+    {
+        if (Character.Map!.TryGetGroundItemByDropId(Character.ItemTarget, out var groundItem))
+        {
+            if (Character.Position.SquareDistance(groundItem.Position) <= 1)
+                TryPickup(groundItem);
+        }
+
+        Character.ItemTarget = -1;
+        Character.QueuedAction = QueuedAction.None;
+
+    }
+
     public void PerformSkill()
     {
         Debug.Assert(Character.Map != null, $"Player {Name} cannot perform skill, it is not attached to a map.");
@@ -890,6 +965,7 @@ public class Player : IEntityAutoReset
             CurrentCooldown = 0;
 
         Debug.Assert(Character.Map != null);
+        Debug.Assert(CombatEntity != null);
 
         if (Character.State == CharacterState.Dead || Character.State == CharacterState.Sitting)
         {
@@ -932,7 +1008,7 @@ public class Player : IEntityAutoReset
                 if (InCombatReadyState && isValid && canAttack)
                 {
                     if (CombatEntity.QueuedCastingSkill.IsValid)
-                        CombatEntity?.ResumeQueuedSkillAction();
+                        CombatEntity.ResumeQueuedSkillAction();
                     else
                         Character.QueuedAction = QueuedAction.None;
                 }
@@ -959,7 +1035,7 @@ public class Player : IEntityAutoReset
                     if (InCombatReadyState && isValid)
                     {
                         if (CombatEntity.QueuedCastingSkill.IsValid)
-                            CombatEntity?.ResumeQueuedSkillAction();
+                            CombatEntity.ResumeQueuedSkillAction();
                         else
                             Character.QueuedAction = QueuedAction.None;
                     }
@@ -973,6 +1049,7 @@ public class Player : IEntityAutoReset
                     Target = Entity.Null;
                 }
             }
+
         }
 
         if (Character.QueuedAction == QueuedAction.Move && InMoveReadyState)
@@ -986,6 +1063,11 @@ public class Player : IEntityAutoReset
             return;
         }
 
+        if (Character.QueuedAction == QueuedAction.PickUpItem && Character.State == CharacterState.Idle && !Character.InAttackCooldown)
+        {
+            AttemptQueuedPickupAction();
+        }
+
         if (AutoAttackLock)
         {
             if (!Target.TryGet<WorldObject>(out var targetCharacter))
@@ -994,6 +1076,7 @@ public class Player : IEntityAutoReset
                 Target = Entity.Null;
                 return;
             }
+
 
             if (Character.InMoveLock && !Character.InAttackCooldown && CombatEntity.CanAttackTarget(targetCharacter))
                 Character.StopMovingImmediately();

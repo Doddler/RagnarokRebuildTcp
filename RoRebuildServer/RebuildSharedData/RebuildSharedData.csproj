@@ -6,6 +6,7 @@
 	  <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
 	<EnforceExtendedAnalyserRules>true</EnforceExtendedAnalyserRules>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>

@@ -182,16 +182,16 @@ OnTimer 2000:
 	EndEvent();
 }
 
-// SkillHandler("TARGET_DUMMY") {
-//     StateAny:
-//     //TryCast(Heal, 9999, 1000, 1500, 3000)[HpPercent <= 99];
-//     //TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
-// 	//TryCast(ColdBolt, 10, 1000, 1500, 5000);
-// 	TryCast(NoCast, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> {
-// 		TossSummonMonster(5,"GTB_EGG",9,9);
-// 	};
-//     TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];	
-// }
+SkillHandler("TARGET_DUMMY") {
+    StateAny:
+    //TryCast(Heal, 9999, 1000, 1500, 3000)[HpPercent <= 99];
+    //TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
+	//TryCast(ColdBolt, 5, 100%, 10s, 5s);
+	//TryCast(NoCast, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> {
+	//	TossSummonMonster(5,"GTB_EGG",9,9);
+	//};
+    //TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];	
+}
 
 
 SkillHandler("VITATA") {

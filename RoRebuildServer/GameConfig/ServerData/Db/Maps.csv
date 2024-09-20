@@ -93,7 +93,7 @@ Payon Field 9,pay_fild09,pay_fild09.walk,Field,36.mp3
 Payon Field 10,pay_fild10,pay_fild10.walk,Field,36.mp3
 Payon Field 11,pay_fild11,pay_fild11.walk,Field,03.mp3
 Payon,payon,payon.walk,Town,14.mp3
-Old Payon,payon_mem,payon_mem.walk,Town,14.mp3
+Old Payon,payon_p,payon_p.walk,Town,14.mp3
 Payon Indoors,payon_in01,payon_in01.walk,Indoor,14.mp3
 Payon Indoors,payon_in02,payon_in02.walk,Indoor,14.mp3
 Payon Indoors,payon_in03,payon_in03.walk,Indoor,14.mp3
@@ -267,3 +267,6 @@ Baldr Realm,pay_gld,pay_gld.walk,Field,66.mp3
 "Amatsu Field",ama_fild01,ama_fild01.walk,Field,73.mp3
 "Izlude Arena",arena_room,arena_room.walk,Indoor,52.mp3
 "The Hall of Honor",valkyrie,valkyrie.walk,None,09.mp3
+"Admin Room 1",sec_in01,sec_in01.walk,None,21.mp3
+"Admin Room 2",sec_in02,sec_in02.walk,None,21.mp3
+"Admin Room 3",sec_pri,sec_pri.walk,None,42.mp3

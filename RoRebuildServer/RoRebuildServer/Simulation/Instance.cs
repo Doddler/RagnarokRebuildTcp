@@ -20,7 +20,7 @@ public class Instance
     private List<Entity> removeList = new(30);
 
     public PathFinder Pathfinder { get; set; }
-    
+
     public Instance(World world, InstanceEntry instanceDetails)
     {
         this.world = world;

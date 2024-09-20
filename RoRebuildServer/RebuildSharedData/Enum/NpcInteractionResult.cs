@@ -6,5 +6,6 @@ public enum NpcInteractionResult : byte
     WaitForContinue,
     WaitForInput,
     WaitForTime,
+    WaitForShop,
     EndInteraction
 }

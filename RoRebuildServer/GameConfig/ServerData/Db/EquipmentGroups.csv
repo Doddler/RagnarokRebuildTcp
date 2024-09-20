@@ -1,0 +1,12 @@
+GroupName,Novice,Swordsman,Archer,Mage,Acolyte,Thief,Merchant
+Any,Y,Y,Y,Y,Y,Y,Y
+Swordsman,,Y,,,,,
+Archer,,,Y,,,,
+Mage,,,,Y,,,
+Acolyte,,,,,Y,,
+Thief,,,,,,Y,
+Merchant,,,,,,,Y
+SwordUser,Y,Y,,,,Y,Y
+DaggerUser,Y,Y,Y,Y,,Y,Y
+AxeUser,,Y,,,,,Y
+Caster,,,,Y,Y,,

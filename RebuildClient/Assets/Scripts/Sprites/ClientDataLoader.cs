@@ -41,6 +41,7 @@ namespace Assets.Scripts.Sprites
         public TextAsset SkillTreeData;
         public TextAsset MapViewpointData;
         public TextAsset UniqueAttackActionData;
+        public TextAsset ItemData;
         public SpriteAtlas ItemIconAtlas;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
@@ -53,6 +54,8 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<string, Dictionary<CharacterSkill, UniqueAttackAction>> uniqueSpriteActions = new();
         private readonly Dictionary<int, ClientSkillTree> jobSkillTrees = new();
         private readonly Dictionary<string, int> jobNameToIdTable = new();
+        private readonly Dictionary<int, ItemData> itemIdLookup = new();
+        private readonly Dictionary<string, ItemData> itemNameLookup = new();
 
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
@@ -81,6 +84,8 @@ namespace Assets.Scripts.Sprites
 
         public MapViewpoint GetMapViewpoint(string mapName) => mapViewpoints.GetValueOrDefault(mapName);
         public MonsterClassData GetMonsterData(int classId) => monsterClassLookup.GetValueOrDefault(classId);
+        public ItemData GetItemById(int id) => itemIdLookup[id];
+        public ItemData GetItemByName(string name) => itemNameLookup[name];
 
         public string GetHitSoundForWeapon(int weaponId)
         {
@@ -182,6 +187,17 @@ namespace Assets.Scripts.Sprites
             var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
             foreach (var weapon in weaponClass.Items)
                 weaponClassData.TryAdd(weapon.Id, weapon);
+            
+            var items = JsonUtility.FromJson<Wrapper<ItemData>>(ItemData.text);
+            var itemIcons = new Dictionary<string, string>();
+            foreach (var item in items.Items)
+            {
+                itemIdLookup.Add(item.Id, item);
+                itemNameLookup.Add(item.Code, item);
+                if(!itemIcons.ContainsKey(item.Sprite))
+                    itemIcons.Add(item.Sprite, item.Code);
+                item.Sprite = itemIcons[item.Sprite];
+            }
 
             var uniqueAttacks = JsonUtility.FromJson<Wrapper<UniqueAttackAction>>(UniqueAttackActionData.text);
             foreach (var action in uniqueAttacks.Items)
@@ -201,6 +217,7 @@ namespace Assets.Scripts.Sprites
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
             foreach (var skill in skills.Items)
             {
+                skill.Icon = "skill_" + skill.Icon;
                 skill.Description = skill.Description.Replace("\r\n", "\n");
                 skill.Description = skill.Description.Replace("<br>\n", "<br>"); //should do this elsewhere honestly...
                 skill.Description = skill.Description.Replace("\n", "<line-height=25>\n</line-height>");

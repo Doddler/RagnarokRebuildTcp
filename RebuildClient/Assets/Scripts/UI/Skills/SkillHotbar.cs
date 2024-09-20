@@ -80,6 +80,17 @@ namespace Assets.Scripts.UI
         {
             HotBarEntries[0].DragItem.UpdateCount(count);
         }
+
+        public void UpdateItemCounts()
+        {
+            var inventory = NetworkManager.Instance.PlayerState.Inventory;
+            for (var i = 0; i < HotBarEntries.Count; i++)
+            {
+                var entry = HotBarEntries[i].DragItem;
+                if(entry.Type == DragItemType.Item)
+                    entry.UpdateCount(inventory.GetItemCount(entry.ItemId));
+            }
+        }
         
         public void Initialize()
         {

@@ -51,16 +51,21 @@ namespace Assets.Scripts
 	        AssetDatabase.Refresh();
 
 	        TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(outputPath);
-	        importer.textureType = TextureImporterType.Default;
+            importer.textureType = TextureImporterType.Default;
 	        importer.npotScale = TextureImporterNPOTScale.None;
 	        importer.textureCompression = TextureImporterCompression.Compressed;
 	        importer.crunchedCompression = true;
 	        importer.compressionQuality = 50;
-	        importer.wrapMode = TextureWrapMode.Clamp;
+            importer.wrapMode = TextureWrapMode.Clamp;
 	        importer.isReadable = false;
 	        importer.mipmapEnabled = false;
 	        importer.alphaIsTransparency = true;
             importer.maxTextureSize = 4096;
+            
+            var settings = new TextureImporterSettings();
+            importer.ReadTextureSettings(settings);
+            settings.spriteMeshType = SpriteMeshType.FullRect;
+            importer.SetTextureSettings(settings);
 
             if (callback != null)
                 callback(importer);

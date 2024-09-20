@@ -129,14 +129,20 @@ MonoBehaviour:
   - name: PickUp Cursor (No Animation)
     CursorType: 7
     AnimFrames:
-    - {fileID: 21300000, guid: 335f4906a1712a64287aa077e7862d3b, type: 3}
-    HotSpot: {x: 0, y: 0}
+    - {fileID: 21300000, guid: 9268c7690b0451648a4188ca8b955d26, type: 3}
+    HotSpot: {x: 15, y: 26}
     frameRate: 0
   - name: SpinCamera Cursor (No Animation)
     CursorType: 3
     AnimFrames:
     - {fileID: 21300000, guid: 335f4906a1712a64287aa077e7862d3b, type: 3}
     HotSpot: {x: 0, y: 0}
+    frameRate: 0
+  - name: PickUpMouseDown Cursor (No Animation)
+    CursorType: 9
+    AnimFrames:
+    - {fileID: 21300000, guid: 1fd775e026276fe47823c88b7bdd15ff, type: 3}
+    HotSpot: {x: 15, y: 26}
     frameRate: 0
   NumberSprites:
   - {fileID: 21300000, guid: 83d139e728d7a094fbe8424a32bc657c, type: 3}

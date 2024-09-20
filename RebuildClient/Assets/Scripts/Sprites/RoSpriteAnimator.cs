@@ -582,7 +582,7 @@ namespace Assets.Scripts.Sprites
 
             var destDir = directionalLight.transform.rotation * Vector3.forward * -1;
 
-            var mask = ~LayerMask.GetMask("Characters");
+            var mask = LayerMask.GetMask("Ground") | LayerMask.GetMask("Object");
 
             var ray = new Ray(srcPos, destDir);
 

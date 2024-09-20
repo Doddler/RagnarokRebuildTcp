@@ -31,7 +31,7 @@ public class ProvokeHandler : SkillHandlerBase
         var ch = source.Character;
         var di = DamageInfo.EmptyResult(source.Entity, target.Entity);
         di.AttackSkill = CharacterSkill.Provoke;
-        var applyStatus = true;
+        //var applyStatus = true;
 
         if (target.Character.Type == CharacterType.Monster)
         {

@@ -51,6 +51,7 @@ public enum PacketType : byte
     ChangeName,
     [ServerOnlyPacket] Resurrection,
     UseInventoryItem,
+    [ServerOnlyPacket] AddOrRemoveInventoryItem,
     [ServerOnlyPacket] EffectOnCharacter,
     [ServerOnlyPacket] EffectAtLocation,
     [ServerOnlyPacket] PlayOneShotSound,
@@ -81,6 +82,8 @@ public enum PacketType : byte
 
     DropItem,
     PickUpItem,
+    [ServerOnlyPacket] OpenShop,
+    ShopBuySell,
     [ServerOnlyPacket] ItemUpdate,
 }
 

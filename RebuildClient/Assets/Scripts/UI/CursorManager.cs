@@ -21,6 +21,7 @@ namespace Assets.Scripts.UI
         Unavailable,
         PickUp,
         SkillTarget,
+        PickUpMouseDown
     }
 
     [Serializable]

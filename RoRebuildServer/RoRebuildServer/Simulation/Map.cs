@@ -14,6 +14,7 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
 
@@ -44,6 +45,7 @@ public class Map
     public int PlayerCount { get; set; }
     public EntityList Players { get; set; } = new EntityList(8);
     public EntityList MapImportantEntities { get; set; } = new EntityList(8);
+    public Dictionary<int, int> ItemChunkLookup = new();
 
     //private int playerCount;
     //public int PlayerCount
@@ -277,6 +279,22 @@ public class Map
                         CommandBuilder.AddRecipient(otherCharacter.Entity);
                 }
             }
+
+            if (movingCharacter.Type == CharacterType.Player)
+            {
+                foreach (var item in chunk.GroundItems)
+                {
+                    var pos = (Position)item.Position;
+
+                    var couldSeeItem = pos.InRange(oldPosition, ServerConfig.MaxViewDistance);
+                    var canSeeItem = pos.InRange(newPosition, ServerConfig.MaxViewDistance);
+
+                    if(canSeeItem && !couldSeeItem)
+                        CommandBuilder.RevealDropItemForPlayer(item, false, movingCharacter.Player);
+                    if (couldSeeItem && !canSeeItem)
+                        CommandBuilder.RemoveDropItemForSinglePlayer(item, movingCharacter.Player);
+                }
+            }
         }
 
         if (CommandBuilder.HasRecipients()) //happens if it's not a walk update and the player could see the moving character before and after
@@ -451,6 +469,14 @@ public class Map
                         entities.Add(nearbyEntity); //we only want to notify of this character's existence if it is not hidden
                 }
             }
+
+            foreach (var item in chunk.GroundItems)
+            {
+                var pos = (Position)item.Position;
+                if (!pos.InRange(ch.Position, ServerConfig.MaxViewDistance))
+                    continue;
+                CommandBuilder.RevealDropItemForPlayer(item, false, p);
+            }
         }
 
         //first notify all nearby players of this player's activation
@@ -463,6 +489,8 @@ public class Map
         //now add all the nearby entities to the player in question
         foreach (var e in entities)
             CommandBuilder.SendCreateEntity(e.Get<WorldObject>(), p);
+
+
 
         EntityListPool.Return(entities);
 
@@ -576,6 +604,29 @@ public class Map
         //}
     }
 
+    public bool FindOldestGroundItemInRange(Position center, int range, ref GroundItem itemOut)
+    {
+        var hasItem = false;
+        var lowestId = int.MaxValue;
+
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(center, range))
+        {
+            foreach (var item in c.GroundItems)
+            {
+                var pos = (Position)item.Position;
+
+                if (pos.InRange(center, 9) && item.Id < lowestId)
+                {
+                    hasItem = true;
+                    lowestId = item.Id;
+                    itemOut = item;
+                }
+            }
+        }
+
+        return hasItem;
+    }
+
     public void GatherMonstersOfTypeInRange(Position position, int distance, EntityList list, MonsterDatabaseInfo monsterType)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
@@ -673,7 +724,7 @@ public class Map
                 if (ch.Position != character.Position)
                     continue;
 
-                if (ch.Hidden)
+                if (ch.Hidden || ch.State == CharacterState.Moving)
                     continue;
 
                 if (ch.Type == CharacterType.NPC && ch.Npc.IsEvent)
@@ -689,11 +740,14 @@ public class Map
         return false;
     }
 
-    public bool IsTileOccupied(Position pos)
+    public bool IsTileOccupied(Position pos, bool playersOnly = false)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(pos, 0))
         {
-            foreach (var m in c.AllEntities)
+            var list = c.AllEntities;
+            if (playersOnly)
+                list = c.Players;
+            foreach (var m in list)
             {
                 var ch = m.Get<WorldObject>();
                 if (!ch.IsActive)
@@ -718,7 +772,7 @@ public class Map
         return false;
     }
 
-    public bool FindUnoccupiedAdjacentTile(Position pos, out Position freeTile)
+    public bool FindUnoccupiedAdjacentTile(Position pos, out Position freeTile, bool playersOnly = false)
     {
         freeTile = pos;
         var xSign = GameRandom.Next(2) == 0 ? -1 : 1;
@@ -733,7 +787,7 @@ public class Map
             if (x == 0 && y == 0)
                 continue;
             var test = new Position(pos.X + x * xSign, pos.Y + y * ySign);
-            if (WalkData.IsCellWalkable(test) && !IsTileOccupied(test))
+            if (WalkData.IsCellWalkable(test) && !IsTileOccupied(test, playersOnly))
             {
                 freeTile = test;
                 return true;
@@ -1049,13 +1103,35 @@ public class Map
         return p;
     }
 
-    private void ClearInactive(int i)
+    private void ClearInactive(int id)
     {
-        PlayerCount -= Chunks[i].Players.ClearInactive();
-        Chunks[i].Monsters.ClearInactive();
-        Chunks[i].AllEntities.ClearInactive();
+        PlayerCount -= Chunks[id].Players.ClearInactive();
+        Chunks[id].Monsters.ClearInactive();
+        Chunks[id].AllEntities.ClearInactive();
+        ClearExpiredDropsForChunk(id);
     }
 
+    private void ClearExpiredDropsForChunk(int id)
+    {
+        var drops = Chunks[id].GroundItems;
+        for (var i = 0; i < drops.Count; i++)
+        {
+            var drop = drops[i];
+            if (drop.Expiration < Time.ElapsedTimeFloat)
+            {
+                using var entities = EntityListPool.Get();
+                GatherAllPlayersInViewDistance(drop.Position, entities);
+                CommandBuilder.AddRecipients(entities);
+                CommandBuilder.PickUpOrRemoveItemMulti(null, drop);
+                CommandBuilder.ClearRecipients();
+
+                ItemChunkLookup.Remove(drop.Id);
+                drops.SwapFromBack(i);
+                i--;
+            }
+        }
+    }
+    
     private void LoadNpcs()
     {
         if (!DataManager.NpcManager.NpcSpawnsForMaps.TryGetValue(Name, out var spawns))
@@ -1131,6 +1207,54 @@ public class Map
             chunk.AreaOfEffects.Remove(aoe);
         }
     }
+
+    public void DropGroundItem(ref GroundItem item)
+    {
+        var chunk = GetChunkForPosition(item.Position);
+        chunk.AddGroundItem(ref item);
+        ItemChunkLookup.Add(item.Id, chunk.Id);
+
+        using var entityList = EntityListPool.Get();
+        GatherAllPlayersInViewDistance(item.Position, entityList);
+        CommandBuilder.AddRecipients(entityList);
+        CommandBuilder.DropItemMulti(item, true);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public bool PickUpOrRemoveItem(WorldObject? pickerUpper, int groundId)
+    {
+        if (!ItemChunkLookup.TryGetValue(groundId, out var chunkId))
+            return false;
+
+        if(!Chunks[chunkId].TryGetGroundItem(groundId, out var item))
+            return false;
+
+        using var entityList = EntityListPool.Get();
+        GatherAllPlayersInViewDistance(item.Position, entityList);
+        CommandBuilder.AddRecipients(entityList);
+        CommandBuilder.PickUpOrRemoveItemMulti(pickerUpper, item);
+        CommandBuilder.ClearRecipients();
+
+        Chunks[chunkId].RemoveGroundItem(groundId);
+        ItemChunkLookup.Remove(groundId);
+
+        return true;
+    }
+
+    public bool TryGetGroundItemByDropId(int groundId, out GroundItem item)
+    {
+        if (!ItemChunkLookup.TryGetValue(groundId, out var chunkId))
+        {
+            item = default;
+            return false;
+        }
+
+        if (!Chunks[chunkId].TryGetGroundItem(groundId, out item))
+            return false;
+
+        return true;
+    }
+
 
     private void LoadMapConfig()
     {
@@ -1419,6 +1543,7 @@ public class Map
                     }
                 }
                 Chunks[x + y * chunkWidth] = new Chunk();
+                Chunks[x + y * chunkWidth].Id = x + y * chunkWidth;
                 Chunks[x + y * chunkWidth].Size = ChunkSize;
                 Chunks[x + y * chunkWidth].X = x;
                 Chunks[x + y * chunkWidth].Y = y;

@@ -11,6 +11,7 @@ using RebuildSharedData.Util;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents.Monsters;
 using Tomlyn;
 
@@ -29,6 +30,7 @@ class Program
         //WriteServerConfig();
         WriteMapList();
         WriteEffectsList();
+        WriteItemsList();
         WriteJobDataStuff();
     }
 
@@ -41,9 +43,7 @@ class Program
         using (var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader)
         using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
         {
-
             var entries = csv.GetRecords<CsvEffects>().ToList();
-
 
             var effectList = new EffectTypeList();
             effectList.Effects = new List<EffectTypeEntry>();
@@ -79,6 +79,50 @@ class Program
         File.Delete(tempPath);
     }
 
+    private static void WriteItemsList()
+    {
+        var itemList = new ItemDataList();
+        itemList.Items = new List<ItemData>();
+
+        var inPath = Path.Combine(path, "Items.csv");
+        var tempPath = Path.Combine(Path.GetTempPath(), @"Items.csv"); //copy in case file is locked
+        File.Copy(inPath, tempPath, true);
+
+        using (var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader)
+        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
+        {
+            var entries = csv.GetRecords<CsvItem>().ToList();
+            
+            foreach (var entry in entries)
+            {
+                var item = new ItemData()
+                {
+                    Code = entry.Code,
+                    Name = entry.Name,
+                    Id = entry.Id,
+                    IsUnique = entry.IsUnique,
+                    IsUseable = entry.IsUseable,
+                    Price = entry.Price,
+                    Weight = entry.Weight,
+                    Effect = entry.Effect,
+                    Sprite = entry.Sprite,
+                    
+                };
+                itemList.Items.Add(item);
+            }
+
+            JsonSerializerOptions options = new JsonSerializerOptions();
+            options.SetupExtensions();
+            options.WriteIndented = true;
+
+            var json = JsonSerializer.Serialize(itemList, options);
+            var itemDir = Path.Combine(outPath, "items.json");
+
+            File.WriteAllText(itemDir, json);
+        }
+
+        File.Delete(tempPath);
+    }
 
     private static void WriteServerConfig()
     {
@@ -390,7 +434,7 @@ class Program
             {
                 if (!Enum.TryParse<CharacterSkill>(line.Substring(2), true, out var type))
                     throw new Exception($"Could not parse skill {line} in SkillDescriptions.txt");
-                if(curSkill != CharacterSkill.None && sb.Length > 0)
+                if (curSkill != CharacterSkill.None && sb.Length > 0)
                     skillDesc.Add(curSkill, sb.ToString().Trim());
                 curSkill = type;
                 sb.Clear();
@@ -411,7 +455,7 @@ class Program
             skill.SkillId = Enum.Parse<CharacterSkill>(id);
             if (skill.Name == null) skill.Name = id;
             if (skill.Icon == null) skill.Icon = "nv_basic";
-            if(skillDesc.TryGetValue(skill.SkillId, out var desc))
+            if (skillDesc.TryGetValue(skill.SkillId, out var desc))
                 skill.Description = desc;
             skillOut.Add(skill);
         }

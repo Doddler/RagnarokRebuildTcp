@@ -82,6 +82,9 @@ internal class ScriptTreeWalker
             case "Npc":
                 EnterNpcStatement(context);
                 break;
+            case "Trader":
+                EnterNpcStatement(context, true);
+                break;
             case "Item":
                 EnterItemStatement(context);
                 break;
@@ -256,7 +259,7 @@ internal class ScriptTreeWalker
     }
 
 
-    private void EnterNpcStatement(FunctionDefinitionContext functionContext)
+    private void EnterNpcStatement(FunctionDefinitionContext functionContext, bool isTrader = false)
     {
         //only expect one param, the map name
         var param = functionContext.functionparam();
@@ -297,7 +300,20 @@ internal class ScriptTreeWalker
 
         //methodBuilder.WithBody(block);
 
-        builder.EndMethod();
+        
+
+        if (isTrader)
+        {
+            builder.StartNpcSection("OnClick");
+            builder.FunctionCall("OpenShop", false);
+            builder.FunctionCallEnd();
+            builder.OutputRaw(";");
+            builder.EndLine();
+            builder.EndMethod();
+        }
+        else
+            builder.EndMethod();
+
         builder.EndClass();
 
         builder.EndNpc(name, displayName, mapName, displayName, spriteName, facingTxt, x, y, w, h);

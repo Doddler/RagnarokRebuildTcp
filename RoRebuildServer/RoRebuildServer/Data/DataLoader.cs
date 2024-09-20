@@ -8,6 +8,7 @@ using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
+using RebuildSharedData.Extensions;
 using RoRebuildServer.Data.Config;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
@@ -260,38 +261,120 @@ internal class DataLoader
         return treeOut;
     }
 
+    public Dictionary<string, MonsterDropData> LoadMonsterDropChanceData()
+    {
+        var drops = new Dictionary<string, MonsterDropData>();
+        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Drops.csv");
+
+        var factor = ServerConfig.OperationConfig.DropRateFactor;
+        if (factor < 1)
+            factor = 1;
+
+#if DEBUG
+        //if the file is open in excel, we can't read it... so while in debug build we'll make a copy
+        var tempPath = Path.Combine(Path.GetTempPath(), @"Drops.csv");
+        File.Copy(inPath, tempPath, true);
+        inPath = tempPath;
+#endif
+        using (var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader)
+        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
+        {
+            var entries = csv.GetRecords<dynamic>();
+            foreach (var entry in entries)
+            {
+                if (entry is IDictionary<string, object> obj)
+                {
+                    var monster = ((string)obj["Monster"]).Replace(" ", "_").ToUpper();
+                    var data = new MonsterDropData();
+
+                    if(!DataManager.MonsterCodeLookup.ContainsKey(monster))
+                        ServerLogger.LogWarning($"Item drops defined for monster {monster} but that monster could not be found.");
+
+                    for (var i = 1; i <= 8; i++)
+                    {
+                        var key = $"Item{i}";
+                        if (obj.ContainsKey(key))
+                        {
+                            var itemName = (string)obj[key];
+                            if (string.IsNullOrWhiteSpace(itemName))
+                                continue;
+
+                            if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
+                            {
+                                ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
+                                continue;
+                            }
+
+                            var chance = (int)int.Parse((string)obj[$"Chance{i}"]);
+                            if (chance <= 0)
+                                continue;
+
+                            if (factor > 1)
+                                chance = (int)((float)chance).Remap(0, 10000, factor, 10000);
+
+                            data.DropChances.Add((item, chance));
+                        }
+                    }
+
+                    drops.Add(monster, data);
+                }
+            }
+        }
+
+#if DEBUG
+        File.Delete(tempPath);
+#endif
+
+        return drops;
+    }
+
     public Dictionary<int, ItemInfo> LoadItemList()
     {
         var items = new Dictionary<int, ItemInfo>();
 
-        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Items.csv"), Encoding.UTF8) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Items.csv");
 
-        var entries = csv.GetRecords<CsvItem>().ToList();
-        
-        foreach (var entry in entries)
+#if DEBUG
+        //if the file is open in excel, we can't read it... so while in debug build we'll make a copy
+        var tempPath = Path.Combine(Path.GetTempPath(), @"Items.csv");
+        File.Copy(inPath, tempPath, true);
+        inPath = tempPath;
+#endif
+
+        using (var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader)
+        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
         {
-            var item = new ItemInfo()
-            {
-                Code = entry.Code,
-                Id = entry.Id,
-                IsUseable = entry.IsUseable,
-                Price = entry.Price,
-                Weight = entry.Weight,
-                Effect = -1,
-            };
+            var entries = csv.GetRecords<CsvItem>().ToList();
 
-            if (!string.IsNullOrWhiteSpace(entry.Effect))
+            foreach (var entry in entries)
             {
-                if (DataManager.EffectIdForName.TryGetValue(entry.Effect, out var effectId))
-                    item.Effect = effectId;
-                else
-                    ServerLogger.LogWarning($"Could not find effect '{entry.Effect}' with name '{item.Code}'.");
+                var item = new ItemInfo()
+                {
+                    Code = entry.Code,
+                    Id = entry.Id,
+                    IsUnique = entry.IsUnique,
+                    IsUseable = entry.IsUseable,
+                    Price = entry.Price,
+                    Weight = entry.Weight,
+                    Effect = -1,
+                };
+
+                if (!string.IsNullOrWhiteSpace(entry.Effect))
+                {
+                    if (DataManager.EffectIdForName.TryGetValue(entry.Effect, out var effectId))
+                        item.Effect = effectId;
+                    else
+                        ServerLogger.LogWarning($"Could not find effect '{entry.Effect}' with name '{item.Code}'.");
+                }
+
+                items.Add(item.Id, item);
             }
 
-            items.Add(item.Id, item);
+            
         }
-
+#if DEBUG
+        File.Delete(tempPath);
+#endif
         return items;
     }
 
@@ -462,11 +545,23 @@ internal class DataLoader
         for (var i = 0; i < aiTypeCount; i++)
             entryList.Add(new List<MonsterAiEntry>());
 
-        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/MonsterAI.csv")) as TextReader;
+        //most of this nonsense is because I want comments in a csv file...
+        var updatedCsv = new StringBuilder();
+        foreach(var l in File.ReadAllLines(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/MonsterAI.csv"), Encoding.UTF8))
+        {
+            if(string.IsNullOrWhiteSpace(l) || l.Trim().StartsWith("//"))
+                continue;
+            updatedCsv.AppendLine(l);
+        }
+
+        var updated = updatedCsv.ToString();
+
+        using var ms = new MemoryStream(Encoding.UTF8.GetBytes(updated));
+        using var tr = new StreamReader(ms) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
         var states = csv.GetRecords<CsvMonsterAI>().ToList();
-
+        
         foreach (var entry in states)
         {
             if (entry.AiType.Contains("//"))

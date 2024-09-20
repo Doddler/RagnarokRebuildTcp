@@ -2,15 +2,16 @@
 using System.Diagnostics;
 using System.Text;
 using Lidgren.Network;
+using RebuildSharedData.Util;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 
 namespace Assets.Scripts.Network
 {
-    public class ClientInboundMessage
+    public class ClientInboundMessage : IBinaryMessageReader
     {
         public byte[] Message;
-        public int Length;
+        public int Length { get; private set; }
 
         private int position;
 
@@ -66,6 +67,12 @@ namespace Assets.Scripts.Network
             return ret;
         }
 
+        public byte[] ReadBytes(int len)
+        {
+            var b = new byte[len];
+            ReadBytes(b, len);
+            return b;
+        }
 
         public void ReadBytes(byte[] buffer, int len)
         {
@@ -145,7 +152,7 @@ namespace Assets.Scripts.Network
             
             return str;
         }
-        
+
         public Vector2Int ReadPosition()
         {
             var x = ReadInt16();

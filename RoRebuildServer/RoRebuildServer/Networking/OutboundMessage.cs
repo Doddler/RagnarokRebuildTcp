@@ -3,6 +3,7 @@ using System.Text;
 using Lidgren.Network;
 using Microsoft.Extensions.ObjectPool;
 using RebuildSharedData.Networking;
+using RebuildSharedData.Util;
 using RoRebuildServer.Networking;
 
 namespace RebuildZoneServer.Networking;
@@ -21,7 +22,7 @@ public class OutboundMessagePooledObjectPolicy : IPooledObjectPolicy<OutboundMes
     }
 }
 
-public class OutboundMessage
+public class OutboundMessage : IBinaryMessageWriter
 {
     public List<NetworkConnection> Clients;
     public byte[] Message;
@@ -40,7 +41,7 @@ public class OutboundMessage
         IsInitialized = false;
         IsQueued = false;
     }
-
+    
     public OutboundMessage(List<NetworkConnection> clients, byte[] message, int length)
     {
         Clients = clients;

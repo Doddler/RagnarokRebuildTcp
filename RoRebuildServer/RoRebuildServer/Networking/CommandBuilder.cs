@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 using Microsoft.VisualBasic;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -7,9 +8,11 @@ using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 
@@ -164,6 +167,8 @@ public static class CommandBuilder
             packet.Write((byte)player.WeaponClass);
             packet.Write(player.IsMale);
             packet.Write(player.Name);
+
+            packet.Write(isSelf);
         }
 
         if (c.Type == CharacterType.NPC)
@@ -174,6 +179,7 @@ public static class CommandBuilder
             packet.Write((byte)npc.DisplayType);
             packet.Write((byte)npc.EffectType);
         }
+
         
         if (c.Hidden && !isSelf)
             ServerLogger.LogWarning($"We are sending the data of hidden character \"{c.Name}\" to the client!");
@@ -213,6 +219,10 @@ public static class CommandBuilder
             packet.Write((byte)skill.Key);
             packet.Write((byte)skill.Value);
         }
+        
+        p.Inventory.TryWrite(packet, true);
+        p.CartInventory.TryWrite(packet, true);
+        p.StorageInventory.TryWrite(packet, true);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
@@ -634,12 +644,12 @@ public static class CommandBuilder
 
     public static void InformEnterServer(WorldObject c, Player p)
     {
-        var packet = BuildCreateEntity(c, true);
-        packet = NetworkManager.StartPacket(PacketType.EnterServer, 32);
+        var packet = NetworkManager.StartPacket(PacketType.EnterServer, 32);
         packet.Write(c.Id);
         Debug.Assert(c.Map != null, $"Player {p} not attached to map to inform of server enter.");
         packet.Write(c.Map.Name);
         packet.Write(c.Player.Id.ToByteArray());
+        
         NetworkManager.SendMessage(packet, p.Connection);
         SendUpdatePlayerData(p);
     }
@@ -946,6 +956,21 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void SendNpcOpenShop(Player p, Npc npc)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.OpenShop, 128);
+        var count = 0;
+        if (npc.ItemsForSale != null)
+            count = npc.ItemsForSale.Count;
+        
+        packet.Write(count);
+        
+        for (var i = 0; i < count; i++)
+            packet.Write(npc.ItemsForSale![i]);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
     public static void SendNpcShowSprite(Player p, string spriteName, int pos)
     {
         var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 8);
@@ -956,7 +981,6 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
-
     public static void SendAdminHideStatus(Player p, bool isHidden)
     {
         var packet = NetworkManager.StartPacket(PacketType.AdminHideCharacter, 8);
@@ -965,7 +989,52 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void DropItemMulti(GroundItem item, bool isNewDrop)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.DropItem, 48);
+        item.Serialize(packet);
+        packet.Write(isNewDrop);
+        
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
 
+    public static void RevealDropItemForPlayer(GroundItem item, bool isNewDrop, Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.DropItem, 48);
+        item.Serialize(packet);
+        packet.Write(isNewDrop);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+    
+    public static void PickUpOrRemoveItemMulti(WorldObject? pickup, GroundItem item)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.PickUpItem, 32);
+        packet.Write(pickup?.Id ?? -1);
+        packet.Write(item.Id);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+    public static void RemoveDropItemForSinglePlayer(GroundItem item, Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.PickUpItem, 32);
+        packet.Write(-1);
+        packet.Write(item.Id);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void AddOrRemoveItemFromInventory(Player p, ItemReference item, int change)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.AddOrRemoveInventoryItem, 48);
+        packet.Write((byte)ItemType.RegularItem);
+        packet.Write(change);
+        item.Serialize(packet);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+    
     public static void SkillFailed(Player p, SkillValidationResult res)
     {
         var packet = NetworkManager.StartPacket(PacketType.SkillError, 24);

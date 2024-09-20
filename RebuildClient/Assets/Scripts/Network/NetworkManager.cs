@@ -12,6 +12,7 @@ using Assets.Scripts.SkillHandlers;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Hud;
 using Assets.Scripts.Utility;
 using HybridWebSocket;
 using JetBrains.Annotations;
@@ -42,6 +43,7 @@ namespace Assets.Scripts.Network
         public GameObject TargetNoticePrefab;
         public TextMeshProUGUI LoadingText;
         public Dictionary<int, ServerControllable> EntityList = new Dictionary<int, ServerControllable>();
+        public Dictionary<int, GroundItem> GroundItemList = new Dictionary<int, GroundItem>();
         public int PlayerId;
         public NetQueue<ClientInboundMessage> InboundMessages = new NetQueue<ClientInboundMessage>(30);
         public NetQueue<ClientOutgoingMessage> OutboundMessages = new NetQueue<ClientOutgoingMessage>(30);
@@ -1352,6 +1354,16 @@ namespace Assets.Scripts.Network
             msg.Write((byte)AdminAction.KillMobs);
             msg.Write(clearMap);
 
+            SendMessage(msg);
+        }
+
+        public void SendPickUpItem(int target)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.PickUpItem);
+            msg.Write(target);
+            
             SendMessage(msg);
         }
 

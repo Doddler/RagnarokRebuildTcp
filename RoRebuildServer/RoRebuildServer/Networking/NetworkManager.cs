@@ -631,12 +631,12 @@ public class NetworkManager
 
         var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
 
-        var newReq = new SaveCharacterRequest(Guid.Empty, name, null, Position.Invalid, charData, new SavePosition(), new Dictionary<CharacterSkill, int>(), null);
+        var newReq = new SaveCharacterRequest(name);
         await RoDatabase.ExecuteDbRequestAsync(newReq);
 
         ArrayPool<int>.Shared.Return(charData, true);
 
-        var loadReq = new LoadCharacterRequest(newReq.Id);
+        var loadReq = new LoadCharacterRequest(newReq.Id); //database will assign us a guid, use that to load back the character
         await RoDatabase.ExecuteDbRequestAsync(loadReq);
 
         return loadReq;

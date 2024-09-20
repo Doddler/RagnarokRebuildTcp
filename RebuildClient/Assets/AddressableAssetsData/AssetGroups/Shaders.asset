@@ -32,11 +32,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a185cd5d85f2f8546aecfacafaacc03b
-    m_Address: Assets/Shaders/EffectShader.shader
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3795cf92a1c70984aaf26dd87707e274
     m_Address: Assets/Shaders/ModelShader.shader
     m_ReadOnly: 0

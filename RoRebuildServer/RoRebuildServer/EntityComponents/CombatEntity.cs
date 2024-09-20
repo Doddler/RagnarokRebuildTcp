@@ -888,6 +888,13 @@ public class CombatEntity : IEntityAutoReset
         return element >= targetType && element <= targetType + 3; //checks if element 1-4 is equal to targetType (assuming we pass element 1)
     }
 
+    public CharacterSpecialType GetSpecialType()
+    {
+        if (Character.Type != CharacterType.Monster)
+            return CharacterSpecialType.Normal;
+        return Character.Monster.MonsterBase.Special;
+    }
+
     public void ExecuteIndirectSkillAttack(SkillCastInfo info)
     {
         SkillHandler.ExecuteSkill(info, this);

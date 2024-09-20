@@ -868,15 +868,9 @@ Npc("prontera", "Ahel", "1_F_PRIEST", 183, 333, NW) { }
 Npc("prontera", "Arthail", "1_M_BARD", 126, 335, SE) { }
 Npc("prontera", "Beeyo", "1_M_04", 197, 188, W) { }
 Npc("prontera", "Bulletin Board", "2_BULLETIN_BOARD", 148, 49, N) { }
-Npc("prontera", "Butcher", "4_M_BARBER", 64, 125, N) { }
 Npc("prontera", "Chef Assistant", "8_F_GIRL", 156, 212, NW) { }
 Npc("prontera", "Clanux Heffron", "1_M_04", 269, 326, SW) { }
 Npc("prontera", "Dairenne", "4_F_01", 78, 150, SW) { }
-Npc("prontera", "Doll Supplier", "4_M_03", 248, 153, N) { }
-Npc("prontera", "Flower Girl", "4_F_01", 113, 42, N) { }
-Npc("prontera", "Flower Girl", "4W_KID", 58, 182, N) { }
-Npc("prontera", "Fruit Gardener", "8_F", 104, 49, N) { }
-Npc("prontera", "Gift Merchant", "4_F_02", 105, 87, N) { }
 Npc("prontera", "Guard", "8W_SOLDIER", 160, 330, N) { }
 Npc("prontera", "Guard", "8W_SOLDIER", 160, 330, N) { }
 Npc("prontera", "Guard", "8W_SOLDIER", 223, 99, NW) { }
@@ -906,7 +900,6 @@ Npc("prontera", "New Guild Master", "4_M_MONK", 167, 281, SW) { }
 Npc("prontera", "North Gate Guide", "8W_SOLDIER", 151, 330, S) { }
 Npc("prontera", "Peco Peco Breeder", "8W_SOLDIER", 55, 350, SE) { }
 Npc("prontera", "Peco Peco Trainer", "8W_SOLDIER", 232, 318, SW) { }
-Npc("prontera", "Pet Groomer", "4_M_TELEPORTER", 218, 211, S) { }
 Npc("prontera", "Sagle", "4_KID01", 66, 111, N) { }
 Npc("prontera", "Sagle", "4_KID01", 66, 111, SW) { }
 Npc("prontera", "Shuger", "4W_M_02", 101, 288, SW) { }
@@ -919,8 +912,6 @@ Npc("prontera", "Valkryie Castle 2", "GUILD_FLAG", 146, 194, SW) { }
 Npc("prontera", "Valkyrie Castle 3", "GUILD_FLAG", 155, 190, S) { }
 Npc("prontera", "Valkyrie Castle 4", "GUILD_FLAG", 165, 194, SE) { }
 Npc("prontera", "Valkyrie Castle 5", "GUILD_FLAG", 167, 203, E) { }
-Npc("prontera", "Vegetable Gardener", "4_F_02", 48, 58, N) { }
-Npc("prontera", "Vendor from Milk Ranch", "4_F_01", 73, 134, N) { }
 Npc("prontera", "Woman", "4W_F_01", 260, 354, S) { }
 Npc("prontera", "Young man", "4W_M_01", 275, 86, W) { }
 Npc("prontera", "YuNa", "8_F_GIRL", 149, 202, W) { }
@@ -946,7 +937,6 @@ Npc("prt_church", "Garnet", "1_F_02", 103, 76, N) { }
 Npc("prt_church", "Henson", "2_M_PHARMACIST", 103, 71, N) { }
 Npc("prt_church", "High Priest", "1_M_PASTOR", 16, 41, S) { }
 Npc("prt_church", "Marry Happy", "1_F_LIBRARYGIRL", 94, 100, S) { }
-Npc("prt_church", "Nun", "1_F_PRIEST", 108, 124, S) { }
 Npc("prt_church", "Praying Man", "4_M_NFMAN", 113, 103, NW) { }
 Npc("prt_church", "Priest Praupin", "4_M_MINISTER", 179, 15, NW) { }
 Npc("prt_church", "Priest Praupin", "4_M_MINISTER", 179, 15, S) { }
@@ -959,7 +949,6 @@ Npc("prt_fild01", "Roskva", "4_F_KID2", 196, 47, SW) { }
 Npc("prt_fild03", "Ascetic", "4_M_ORIENT02", 365, 255, W) { }
 Npc("prt_fild05", "Bulletin Board", "2_BULLETIN_BOARD", 278, 220, N) { }
 Npc("prt_fild05", "Kafra Employee", "4_F_KAFRA4", 290, 224, W) { }
-Npc("prt_fild05", "Tool Dealer", "4_M_01", 290, 221, W) { }
 //Npc("prt_fild08", "Bard", "1_M_BARD", 175, 374, SW) { }
 Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 131, 60, E) { }
 Npc("prt_gld", "Valkyrie Castle 1", "GUILD_FLAG", 135, 60, E) { }
@@ -986,7 +975,6 @@ Npc("prt_in", "Aigie", "4_F_03", 169, 11, SE) { }
 Npc("prt_in", "Aigie", "4_F_03", 169, 11, SW) { }
 Npc("prt_in", "Aleuce", "4_F_03", 161, 20, SW) { }
 Npc("prt_in", "Archeologist", "1_M_SIGN1", 227, 45, N) { }
-Npc("prt_in", "Armor Dealer", "1_M_02", 172, 132, N) { }
 Npc("prt_in", "Bartender", "1_M_PUBMASTER", 180, 20, W) { }
 Npc("prt_in", "Carter", "4_M_04", 162, 11, W) { }
 Npc("prt_in", "Chivalry Captain Herman", "1_M_KNIGHTMASTER", 88, 101, S) { }
@@ -1028,12 +1016,7 @@ Npc("prt_in", "Sir Windsor", "4_M_JOB_KNIGHT1", 79, 94, S) { }
 Npc("prt_in", "Steward", "1_M_JOBTESTER", 228, 26, SE) { }
 Npc("prt_in", "Teacher", "1_M_INNKEEPER", 38, 108, S) { }
 Npc("prt_in", "TenSue", "4W_M_01", 177, 20, W) { }
-Npc("prt_in", "Tool Dealer", "1_M_INNKEEPER", 126, 76, N) { }
 Npc("prt_in", "Vurewell", "4_M_04", 56, 68, SE) { }
-Npc("prt_in", "Weapon Dealer", "1_F_01", 164, 140, S) { }
-Npc("prt_in", "Weapon Dealer", "1_M_01", 171, 140, N) { }
-Npc("prt_in", "Weapon Dealer", "1_M_JOBGUIDER", 172, 130, N) { }
-Npc("prt_in", "Wedding Shop Dealer", "1_F_LIBRARYGIRL", 211, 169, N) { }
 Npc("prt_maze02", "Gordon", "1_M_BARD", 14, 183, S) { }
 Npc("prt_maze02", "Guard", "8W_SOLDIER", 100, 69, N) { }
 Npc("prt_maze02", "Guard", "8W_SOLDIER", 110, 69, N) { }
@@ -1053,7 +1036,6 @@ Npc("prt_monk", "Monk", "4_M_CHNMONK", 129, 263, SE) { }
 Npc("prt_monk", "Puhae", "4_M_MINISTER", 57, 179, NW) { }
 Npc("prt_monk", "Training Monk", "4_M_MONK", 270, 198, SW) { }
 Npc("prt_monk", "Veiner", "4_M_ORIENT02", 197, 228, SW) { }
-Npc("prt_monk", "Weapon Dealer", "4_F_JOB_BLACKSMITH", 135, 263, SE) { }
 Npc("prtg_cas01", "Abrai", "1_M_JOBTESTER", 112, 181, N) { }
 Npc("prtg_cas01", "Emperium", "EMPERIUM", 197, 197, N) { }
 Npc("prtg_cas01", "Kafra Service", "4_F_KAFRA1", 96, 173, N) { }

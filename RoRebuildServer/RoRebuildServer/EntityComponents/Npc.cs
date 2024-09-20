@@ -41,6 +41,8 @@ public class Npc : IEntityAutoReset
     public int[]? ParamsInt;
     public string? ParamString;
 
+    public List<int>? ItemsForSale;
+
     public NpcBehaviorBase Behavior = null!;
 
     public float TimerUpdateRate;
@@ -101,13 +103,16 @@ public class Npc : IEntityAutoReset
         valuesString = null!;
         Entity = Entity.Null;
         Behavior = null!;
-        Mobs = null;
         ParamsInt = null;
         ParamString = null;
         Character = null!;
         currentSignalTarget = null;
         Name = "";
         EventType = null!;
+
+        if(Mobs != null)
+            EntityListPool.Return(Mobs);
+        Mobs = null;
 
         DisplayType = NpcDisplayType.Sprite;
         EffectType = NpcEffectType.None;
@@ -369,6 +374,7 @@ public class Npc : IEntityAutoReset
             owner.Monster.AddChild(ref m, aiType);
         else
         {
+            Mobs ??= EntityListPool.Get();
             Mobs.Add(m);
         }
 
@@ -418,6 +424,15 @@ public class Npc : IEntityAutoReset
 
         chara.Events.Clear();
         //OnMobKill();
+    }
+
+    public void SellItem(string itemName)
+    {
+        ItemsForSale ??= new List<int>();
+        if(DataManager.ItemIdByName.TryGetValue(itemName, out var id))
+            ItemsForSale.Add(id);
+        else
+            ServerLogger.LogWarning($"Npc {FullName} unable to sell item {itemName} as it could not be found.");
     }
 
     public void KillMyMobs()

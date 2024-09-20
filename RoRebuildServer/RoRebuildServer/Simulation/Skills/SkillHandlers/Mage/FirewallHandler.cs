@@ -10,6 +10,7 @@ using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 
@@ -166,27 +167,34 @@ public class FirewallObjectEvent : NpcBehaviorBase
         if (!target.IsValidTarget(src) || target.IsInSkillDamageCooldown(CharacterSkill.FireWall))
             return;
 
-        var res = src.CalculateCombatResult(target, 0.5f, 1, AttackFlags.Magical, CharacterSkill.FireWall, AttackElement.Fire);
-        res.KnockBack = 2;
-        res.AttackPosition = target.Character.Position.AddDirectionToPosition(target.Character.FacingDirection);
-        res.AttackMotionTime = 0;
-        res.Time = 0;
-        res.IsIndirect = true;
-
-        if (target.IsElementBaseType(CharacterElement.Undead1))
+        void DoAttack(float delay = 0f)
         {
-            res.KnockBack = 0;
-            res.Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.UpdatePosition;
-        }
-        
-        CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, target.Character, res);
-        
-        npc.ParamsInt[0]--;
-        if (npc.ParamsInt[0] <= 0)
-            npc.EndEvent();
+            var res = src.CalculateCombatResult(target, 0.5f, 1, AttackFlags.Magical, CharacterSkill.FireWall, AttackElement.Fire);
+            res.KnockBack = 2;
+            res.AttackPosition = target.Character.Position.AddDirectionToPosition(target.Character.FacingDirection);
+            res.AttackMotionTime = delay;
+            res.Time = Time.ElapsedTimeFloat + delay;
+            res.IsIndirect = true;
 
-        target.SetSkillDamageCooldown(CharacterSkill.FireWall, 0.01f); //make it so they can't get hit by firewall again this frame
-        src.ExecuteCombatResult(res, false);
+            if (target.IsElementBaseType(CharacterElement.Undead1))
+            {
+                res.KnockBack = 0;
+                res.Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.UpdatePosition;
+            }
+
+            CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, target.Character, res);
+
+            npc.ParamsInt[0]--;
+            if (npc.ParamsInt[0] <= 0)
+                npc.EndEvent();
+
+            target.SetSkillDamageCooldown(CharacterSkill.FireWall, 0.01f); //make it so they can't get hit by firewall again this frame
+            src.ExecuteCombatResult(res, false);
+        }
+
+        DoAttack();
+        if(target.GetSpecialType() == CharacterSpecialType.Boss && npc.ParamsInt[0] > 0)
+            DoAttack(0.025f); //eat tiles faster on boss monsters 2 per update tick, artificially delaying the damage by half the update rate (it becomes 40 hits per second)
     }
 }
 

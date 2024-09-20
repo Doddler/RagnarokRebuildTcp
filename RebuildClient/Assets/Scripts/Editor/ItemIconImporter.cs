@@ -34,12 +34,28 @@ namespace Assets.Scripts.Editor
         public static void ImportItems()
         {
             var iconNames = new List<string>();
+            var convertName = new Dictionary<string, string>();
             var skillDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/skillinfo.json");
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(skillDataFile.text);
             foreach (var skill in skills.Items)
-                if(!string.IsNullOrWhiteSpace(skill.Icon) && !iconNames.Contains(skill.Icon))
+                if (!string.IsNullOrWhiteSpace(skill.Icon) && !iconNames.Contains(skill.Icon))
+                {
                     iconNames.Add(skill.Icon);
+                    convertName.Add(skill.Icon, "skill_" + skill.Icon);
+                }
             
+            var itemDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/items.json");
+            var items = JsonUtility.FromJson<Wrapper<ItemData>>(itemDataFile.text);
+            
+            foreach(var item in items.Items)
+                if (!string.IsNullOrWhiteSpace(item.Sprite) && !iconNames.Contains(item.Code))
+                {
+                    if (iconNames.Contains(item.Sprite))
+                        continue;
+                    iconNames.Add(item.Sprite);
+                    convertName.Add(item.Sprite, item.Code);
+                }
+
             var atlasPath = "Assets/Textures/ItemAtlas.spriteatlasv2";
             if (!File.Exists(atlasPath))
                 TextureImportHelper.CreateAtlas("ItemAtlas.spriteatlasv2", "Assets/Textures/");
@@ -57,36 +73,67 @@ namespace Assets.Scripts.Editor
             var i = 0;
             foreach (var icon in iconNames)
             {
-                
                 i++;
-                
+
                 var fName = icon;
-                var destPath = $@"Assets/Sprites/Icons/{fName}.png";
+                var newName = convertName[icon];
+                if(fName != icon)
+                    Debug.Log(icon);
+                var destPath = $@"Assets/Sprites/Imported/Icons/Sprites/{newName}.png";
+                var importedAssetName = $"Assets/Sprites/Imported/Icons/{fName}.asset";
                 // Debug.Log(destPath);
 
                 if (!File.Exists(destPath))
                 {
                     var sprPath = Path.Combine(srcPath, fName + ".spr");
-                    if (!File.Exists(sprPath))
+                    var actPath = Path.Combine(srcPath, fName + ".act");
+                    if (!File.Exists(sprPath) || !File.Exists(actPath))
                     {
                         Debug.LogWarning($"Could not find spr file with name {sprPath}");
                         continue;
                     }
 
-                    var sprImporter = new RagnarokSpriteLoader();
-                    var texture = sprImporter.LoadFirstSpriteTextureOnly(Path.Combine(srcPath, fName + ".spr"));
-                    // texture = BlowUpTexture(texture);
-                    texture.alphaIsTransparency = true;
+                    var newSprPath = $"Assets/Sprites/Icons/{fName}.spr";
+                    var newActPath = $"Assets/Sprites/Icons/{fName}.act";
                     
+                    if(!File.Exists(newSprPath))
+                        File.Copy(sprPath, newSprPath);
+                    if(!File.Exists(newActPath))
+                        File.Copy(actPath, newActPath);
+                    
+                    AssetDatabase.ImportAsset(actPath, ImportAssetOptions.ForceUpdate);
+                    AssetDatabase.Refresh();
+                    
+                    var spriteData = AssetDatabase.LoadAssetAtPath<RoSpriteData>(importedAssetName);
+                    var iconAtlas = spriteData.Atlas;
+                    var curIcon = spriteData.Sprites[0];
+                    var offset = spriteData.Actions[0].Frames[0].Layers[0].Position;
+
+                    var bounds = curIcon.rect;
+                    bounds = new Rect(offset.x, offset.y, curIcon.rect.width, curIcon.rect.height);
+                    
+                    var newTex = new Texture2D((int)bounds.width, (int)bounds.height, TextureFormat.ARGB32, false);
+
+                    Graphics.CopyTexture(iconAtlas, 0, 0, (int)curIcon.textureRect.xMin, (int)curIcon.textureRect.yMin, 
+                        (int)curIcon.rect.width, (int)curIcon.rect.height, newTex, 0, 0, 0, 0);
+                    //newTex.SetPixels(24, 24, texture.width, texture.height, texture.ReadPixels(new Rect(0, 0, texture.width, texture.height), 0, 0, false));
+                
                     //
                     // var bytes = texture.EncodeToPNG();
                     // File.WriteAllBytes(destPath, bytes);
                     //
-                    TextureImportHelper.SaveAndUpdateTexture(texture, destPath, ti =>
+                    TextureImportHelper.SaveAndUpdateTexture(newTex, destPath, ti =>
                     {
                         ti.textureType = TextureImporterType.Sprite;
                         ti.spriteImportMode = SpriteImportMode.Single;
                         ti.textureCompression = TextureImporterCompression.Uncompressed;
+                        ti.spritePivot = offset;
+                        
+                        var settings = new TextureImporterSettings();
+                        ti.ReadTextureSettings(settings);
+                        settings.spriteAlignment = (int)SpriteAlignment.Custom;
+                        settings.spritePivot = new Vector2(0.5f + (offset.x/curIcon.rect.width/2f), 0.5f + (offset.y/curIcon.rect.height/2f));
+                        ti.SetTextureSettings(settings);
                     });
 
                     AssetDatabase.ImportAsset(destPath, ImportAssetOptions.ForceUpdate);

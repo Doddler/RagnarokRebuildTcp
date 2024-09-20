@@ -39,7 +39,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
                 if (enemy.HasStatusEffectOfType(CharacterStatusEffect.Stun))
                     continue;
 
-                var vit = enemy.GetEffectiveStat(CharacterStat.Vit);
+                var vit = enemy.GetEffectiveStat(CharacterStat.Vit) * 3 / 2; //+50% to make it less weird
                 
                 var resist = MathF.Pow(0.99f, vit);
                 if (GameRandom.NextFloat(0, 100) > rate * resist)
@@ -48,7 +48,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
                 var len = 5f * resist;
 
                 var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Stun, len);
-                enemy.AddStatusEffect(status, false, 0.25f);
+                enemy.AddStatusEffect(status, false, 0.3f);
             }
 
             source.ApplyCooldownForAttackAction();

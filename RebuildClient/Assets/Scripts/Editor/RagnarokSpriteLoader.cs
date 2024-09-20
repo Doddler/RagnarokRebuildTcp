@@ -424,11 +424,15 @@ namespace Assets.Editor
 
             //var atlasDir = Path.Combine(dirName, "atlas/");
             //var atlasPath = Path.Combine(atlasDir, supertexture.name + "_.png");
+            var compression = TextureImporterCompression.CompressedHQ;
+            if (atlasPath.Replace("\\", "/").Contains("/Icons/"))
+                compression = TextureImporterCompression.Uncompressed;
+                
             supertexture = TextureImportHelper.SaveAndUpdateTexture(supertexture, atlasPath, ti =>
             {
                 ti.textureType = TextureImporterType.Sprite;
                 ti.spriteImportMode = SpriteImportMode.Single;
-                ti.textureCompression = TextureImporterCompression.CompressedHQ;
+                ti.textureCompression = compression;
                 ti.crunchedCompression = false;
             });
             //
