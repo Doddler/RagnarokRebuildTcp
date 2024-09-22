@@ -44,6 +44,7 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
     public Dictionary<string, int>? NpcFlags = null!;
+    public ItemEquipState Equipment = null!;
     public CharacterBag? Inventory;
     public CharacterBag? CartInventory;
     public CharacterBag? StorageInventory;
@@ -150,6 +151,7 @@ public class Player : IEntityAutoReset
         Inventory = null;
         CartInventory = null;
         StorageInventory = null;
+        Equipment = null!;
 
         SavePosition.Reset();
     }
@@ -172,6 +174,11 @@ public class Player : IEntityAutoReset
 
         foreach (var skill in LearnedSkills)
             SkillHandler.ApplyPassiveEffects(skill.Key, CombatEntity, skill.Value);
+
+        Equipment.Player = this;
+        Equipment.RunAllOnEquip();
+        if (Equipment == null!)
+            Equipment = new ItemEquipState();
 
         UpdateStats();
 
@@ -827,9 +834,12 @@ public class Player : IEntityAutoReset
         var change = item.Count;
         Character.Map!.PickUpOrRemoveItem(Character, groundItem.Id);
         var updatedCount = (short)AddItemToInventory(item);
+        var bagId = item.Id;
         if (item.Type == ItemType.RegularItem)
-            item.Item.Count = updatedCount; //unique items can't stack so this won't change, but we should send updated regular item count to the client
-        CommandBuilder.AddOrRemoveItemFromInventory(this, item, change);
+            item.Item.Count = updatedCount; //AddItemToInventory returns the updated count for regular items
+        else
+            bagId = updatedCount; //AddItemToInventory returns the bagId for unique items (yeah this is scuffed)
+        CommandBuilder.AddItemToInventory(this, item, bagId, change);
         Character.AttackCooldown = Time.ElapsedTimeFloat + 0.3f; //no attacking for 0.3s after picking up an item
         return true;
     }

@@ -163,7 +163,7 @@ namespace PlayerControl
                     NetworkManager.Instance.SendRespawn(false);
                 }
 
-                if (s[0] == "/summon" || s[0] == "/boss")
+                if (s[0] == "/summon" || s[0] == "/boss" || s[0] == "/monster")
                 {
                     if (s.Length < 2)
                     {

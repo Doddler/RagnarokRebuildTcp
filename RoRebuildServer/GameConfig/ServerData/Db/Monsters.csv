@@ -245,7 +245,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4241,KIND_OF_BEETLE,Beetle King,34,1349,28,27,28,32,27,27,145,178,1,12,11,591,609,10,12,Small,Insect,Earth1,1247,576,768,165,Normal,AiPassive,240,kind_of_beetle.spr,0,0.5,1,#FFFFFFFF
 4242,DELETER,Deleter,66,7252,63,48,52,58,58,53,693,847,1,21,21,8957,8047,10,12,Medium,Dragon,Fire2,1020,384,720,175,Normal,AiAggressiveAssist,336,deleter.spr,0,0.5,1,#FFFFFFFF
 4243,DELETER_,Deleter,65,7066,63,48,52,58,58,53,683,834,1,20,20,8400,7546,10,12,Medium,Dragon,Fire2,1024,336,624,175,Normal,AiAggressiveAssist,336,deleter_.spr,0,0.5,1,#FFFFFFFF
-4244,GEOGRAPHER,Geographer,56,5468,35,64,70,38,33,33,335,410,3,30,20,4910,4301,10,12,Medium,Plant,Earth3,1308,480,1008,-1,Normal,AiAggressiveImmobile,480,geographer.spr,0,0.5,1,#FFFFFFFF
+4244,GEOGRAPHER,Geographer,56,5468,35,104,70,38,33,33,335,410,3,30,20,4954,4340,10,12,Medium,Plant,Earth3,1308,480,1008,-1,Normal,AiAggressiveImmobile,480,geographer.spr,0,0.5,1,#FFFFFFFF
 4245,RAFFLESIA,Rafflesia,37,1542,30,29,30,34,29,29,153,188,3,13,12,754,762,10,12,Small,Plant,Earth1,512,240,528,150,Normal,AiAggressive,432,rafflesia.spr,0,0.5,1,#FFFFFFFF
 4246,ARCHANGELING,Archangeling,60,62035,65,94,79,84,72,94,1212,1481,1,25,31,65566,59384,10,12,Medium,Angel,Holy3,1072,480,672,180,Boss,AiAggressive,312,archangeling.spr,0,0.5,1,#FFFFFFFF
 4247,SLEEPER,Sleeper,67,7038,55,51,78,56,51,51,565,690,1,32,20,9029,7778,10,12,Medium,Formless,Earth2,1350,432,1200,195,Normal,AiAggressive,720,sleeper.spr,0,0.5,1,#FFFFFFFF

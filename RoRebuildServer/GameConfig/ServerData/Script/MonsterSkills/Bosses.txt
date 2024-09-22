@@ -267,7 +267,7 @@ StateAny:
 	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
 	TryCast(Heal, 9999, 100%, 0s, 10s)[FindAllyBelowHpPercent(60)];
 StateAttacking:
-	TryCast(TwoHandQuicken, 10, 100%, 0, 10h)[HpPercent <= 40];
+	TryCast(TwoHandQuicken, 10, 100%, 0, 1m)[HpPercent <= 40];
 	TryCast(HammerFall, 10, 20%, 0, 5s);
 }
 

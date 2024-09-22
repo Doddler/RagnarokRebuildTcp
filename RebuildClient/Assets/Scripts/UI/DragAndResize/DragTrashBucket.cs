@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Network;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.UI
@@ -24,6 +25,10 @@ namespace Assets.Scripts.UI
             {
                 case ItemDragOrigin.HotBar:
                     UiManager.Instance.SkillHotbar.GetEntryById(obj.OriginId).Clear();
+                    break;
+                case ItemDragOrigin.ItemWindow:
+                    Debug.Log($"Dropped item from inventory onto ground area.");
+                    NetworkManager.Instance.SendDropItem(obj.ItemId, obj.ItemCount);
                     break;
             }
         }

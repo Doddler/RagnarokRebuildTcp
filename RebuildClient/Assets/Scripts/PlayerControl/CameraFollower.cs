@@ -113,6 +113,8 @@ namespace Assets.Scripts
         public GameObject NpcOptionPanel;
         public GameObject EmotePanel;
 
+        private GlobalKeyword smoothPixelKeyword;
+        public bool UseSmoothPixel = false;
         public bool UseTTFDamage = false;
         public bool IsInNPCInteraction = false;
 
@@ -287,6 +289,10 @@ namespace Assets.Scripts
             LayoutRebuilder.ForceRebuildLayoutImmediate(UiCanvas.transform as RectTransform);
 
             Height = 50;
+
+            smoothPixelKeyword = GlobalKeyword.Create("SMOOTHPIXEL");
+            UseSmoothPixel = false;
+            Shader.SetKeyword(smoothPixelKeyword, UseSmoothPixel);
 
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
@@ -1681,6 +1687,12 @@ namespace Assets.Scripts
 
             if (!InTextBox && Input.GetKeyDown(KeyCode.F3))
                 UseTTFDamage = !UseTTFDamage;
+
+            if (Input.GetKeyDown(KeyCode.F4))
+            {
+                UseSmoothPixel = !UseSmoothPixel;
+                Shader.SetKeyword(smoothPixelKeyword, UseSmoothPixel);
+            }
 
             if (!InTextBox && Input.GetKeyDown(KeyCode.Tab))
             {

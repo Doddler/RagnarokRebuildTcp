@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net.Sockets;
 using System.Numerics;
 using Microsoft.VisualBasic;
 using RebuildSharedData.Data;
@@ -1025,12 +1026,24 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
-    public static void AddOrRemoveItemFromInventory(Player p, ItemReference item, int change)
+    public static void AddItemToInventory(Player p, ItemReference item, int bagId, int change)
     {
         var packet = NetworkManager.StartPacket(PacketType.AddOrRemoveInventoryItem, 48);
-        packet.Write((byte)ItemType.RegularItem);
-        packet.Write(change);
+        packet.Write(true); //isAdd
+        packet.Write((byte)item.Type);
+        packet.Write(bagId);
+        packet.Write((short)change);
         item.Serialize(packet);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void RemoveItemFromInventory(Player p, int bagId, int change)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.AddOrRemoveInventoryItem, 24);
+        packet.Write(false); //isAdd
+        packet.Write(bagId);
+        packet.Write((short)change);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

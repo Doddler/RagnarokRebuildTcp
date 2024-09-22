@@ -398,6 +398,9 @@ public partial class Monster
 
     private bool InItemInSight()
     {
+        if (IsInventoryFull)
+            return false;
+
         if (Character.Map == null || Character.Map.ItemChunkLookup.Count == 0)
             return false;
 

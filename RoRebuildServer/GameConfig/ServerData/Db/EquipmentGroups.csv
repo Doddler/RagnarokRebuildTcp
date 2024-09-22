@@ -1,5 +1,6 @@
 GroupName,Novice,Swordsman,Archer,Mage,Acolyte,Thief,Merchant
 Any,Y,Y,Y,Y,Y,Y,Y
+Novice,Y,,,,,,
 Swordsman,,Y,,,,,
 Archer,,,Y,,,,
 Mage,,,,Y,,,

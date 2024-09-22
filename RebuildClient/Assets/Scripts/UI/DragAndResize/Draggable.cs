@@ -67,7 +67,7 @@ namespace Assets.Scripts.UI
             {
                 if (CanvasGroup != null)
                 {
-                    CanvasGroup.alpha = Mathf.Lerp(CanvasGroup.alpha, 0.6f, Time.deltaTime * 10f);
+                    CanvasGroup.alpha = Mathf.Lerp(CanvasGroup.alpha, 0.8f, Time.deltaTime * 10f);
                     adjustCanvasAlpha = true;
                 }
 

@@ -34,6 +34,8 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 var dropPos = map.GetRandomWalkablePositionInArea(Area.CreateAroundPoint(player.Character.Position, 2));
                 var groundItem = new GroundItem(dropPos, ref removedItem);
                 map.DropGroundItem(ref groundItem);
+
+                CommandBuilder.RemoveItemFromInventory(player, id, count);
             }
             else
             {

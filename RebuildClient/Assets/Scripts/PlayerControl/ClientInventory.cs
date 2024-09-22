@@ -28,8 +28,26 @@ namespace Assets.Scripts.PlayerControl
             UniqueItem = default;
         }
 
-        public int Count => Type == ItemType.RegularItem ? Item.Count : UniqueItem.Count;
-            
+        public int Count
+        {
+            get => Type == ItemType.RegularItem ? Item.Count : UniqueItem.Count;
+            set
+            {
+                if (Type == ItemType.RegularItem) 
+                    Item.Count = (short)value; 
+                else
+                    UniqueItem.Count = (short)value; 
+            }
+        }
+
+        public static InventoryItem Deserialize(ClientInboundMessage msg, ItemType type, int bagId)
+        {
+            if (type == ItemType.RegularItem)
+                return DeserializeRegular(msg);
+            else
+                return DeserializeUnique(msg, bagId);
+        }
+
         public static InventoryItem DeserializeRegular(ClientInboundMessage message)
         {
             var item = RegularItem.Deserialize(message);
@@ -69,7 +87,7 @@ namespace Assets.Scripts.PlayerControl
     {
         private readonly Dictionary<int, InventoryItem> inventoryLookup = new();
 
-        public Dictionary<int, InventoryItem> GetInventoryData => inventoryLookup;
+        public Dictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
 
         public int GetItemCount(int itemId)
         {
@@ -78,15 +96,25 @@ namespace Assets.Scripts.PlayerControl
             return 0;
         }
 
-        public void UpdateItem(RegularItem item)
+        public bool RemoveItem(int itemId, int count)
         {
-            if (inventoryLookup.TryGetValue(item.Id, out var existing))
-            {
-                existing.Item = item;
-                inventoryLookup[item.Id] = existing;
-            }
+            if (!inventoryLookup.TryGetValue(itemId, out var item))
+                return false;
+
+            if (item.Count <= count || item.Type == ItemType.UniqueItem)
+                inventoryLookup.Remove(itemId);
             else
-                inventoryLookup.Add(item.Id, new InventoryItem(item));
+            {
+                item.Count -= count;
+                inventoryLookup[itemId] = item;
+            }
+
+            return true;
+        }
+
+        public void UpdateItem(InventoryItem item)
+        {
+            inventoryLookup[item.BagSlotId] = item;
         }
         
         public void Deserialize(ClientInboundMessage msg)

@@ -5,6 +5,7 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
+using Assets.Scripts.UI.Inventory;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -18,6 +19,7 @@ public class UiManager : MonoBehaviour
     public SkillWindow SkillManager;
     public OptionsWindow ConfigManager;
     public SkillHotbar SkillHotbar;
+    public PlayerInventoryWindow InventoryWindow;
     public HelpWindow HelpWindow;
     public DragTrashBucket TrashBucket;
     public GameObject PrimaryUserUIContainer;

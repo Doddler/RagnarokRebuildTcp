@@ -9,6 +9,7 @@ using RebuildSharedData.Util;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Items;
+using System.Linq;
 
 namespace RoRebuildServer.EntityComponents.Items;
 
@@ -39,8 +40,7 @@ public class CharacterBag : IResettable
 
     public Dictionary<int, RegularItem> RegularItems = new();
     public Dictionary<int, UniqueItem> UniqueItems = new();
-
-    private readonly HashSet<Guid> existingUniqueIds = new();
+    public Dictionary<Guid, int> UniqueItemBagIds = new();
 
     public int UsedSlots;
     private int idIndex = 10000; //make sure we don't collide with regular item ids
@@ -59,9 +59,9 @@ public class CharacterBag : IResettable
     {
         RegularItems.Clear();
         UniqueItems.Clear();
-        existingUniqueIds.Clear();
+        UniqueItemBagIds.Clear();
         UsedSlots = 0;
-        idIndex = 0;
+        idIndex = 10000;
         return true;
     }
 
@@ -82,6 +82,8 @@ public class CharacterBag : IResettable
         item = default;
         return false;
     }
+
+    public Guid GetGuidByUniqueItemId(int id) => UniqueItems[id].UniqueId;
     
     public int AddItem(ItemReference item)
     {
@@ -113,14 +115,43 @@ public class CharacterBag : IResettable
         return item.Count;
     }
 
+    public int GetUniqueItemIdByGuid(Guid id)
+    {
+        //boring and slow linear search
+        foreach (var item in UniqueItems)
+        {
+            if (item.Value.UniqueId == id)
+                return item.Key;
+        }
+
+        return -1;
+    }
+
+    public int GetUniqueItemByGuid(Guid id, out UniqueItem itemOut)
+    {
+        //boring and slow linear search
+        foreach (var item in UniqueItems)
+        {
+            if (item.Value.UniqueId == id)
+            {
+                itemOut = item.Value;
+                return item.Key;
+            }
+        }
+
+        itemOut = default;
+        return -1;
+    }
+    
     public bool RemoveItemByBagIdAndGetRemovedItem(int id, int removeCount, out ItemReference itemOut)
     {
         if (RegularItems.TryGetValue(id, out var regular))
         {
+            var startCount = (int)regular.Count;
             regular.Count = (short)(regular.Count - removeCount);
             if (regular.Count <= 0)
             {
-                removeCount = regular.Count;
+                removeCount = startCount;
                 RegularItems.Remove(id);
                 UsedSlots--;
             }
@@ -136,8 +167,9 @@ public class CharacterBag : IResettable
             if (unique.Count != removeCount)
                 throw new Exception($"Cannot split stacks on unique items!");
             UniqueItems.Remove(id);
-            existingUniqueIds.Remove(unique.UniqueId);
+            UniqueItemBagIds.Remove(unique.UniqueId);
             itemOut = new ItemReference(unique);
+            UsedSlots--;
             return true;
         }
 
@@ -163,12 +195,13 @@ public class CharacterBag : IResettable
 
     public int AddItem(UniqueItem item)
     {
-        if (existingUniqueIds.Contains(item.UniqueId))
+        if (UniqueItemBagIds.ContainsKey(item.UniqueId))
             throw new Exception($"Attempting to add a unique item a second time to the character's inventory!");
 
         var id = idIndex;
         UniqueItems.Add(idIndex, item);
-        existingUniqueIds.Add(item.UniqueId);
+        UniqueItemBagIds.Add(item.UniqueId, id);
+        UsedSlots++;
         idIndex++;
         return id;
     }
@@ -177,8 +210,9 @@ public class CharacterBag : IResettable
     {
         if (!UniqueItems.TryGetValue(bagIndex, out var existing))
             return false;
-        existingUniqueIds.Remove(existing.UniqueId);
+        UniqueItemBagIds.Remove(existing.UniqueId);
         UniqueItems.Remove(bagIndex);
+        UsedSlots--;
         return true;
     }
 
@@ -213,7 +247,9 @@ public class CharacterBag : IResettable
         {
             var id = idIndex;
             idIndex++;
-            UniqueItems.Add(id, UniqueItem.Deserialize(br));
+            var item = UniqueItem.Deserialize(br);
+            UniqueItems.Add(id, item);
+            UniqueItemBagIds.Add(item.UniqueId, id);
         }
 
         var sanity = br.ReadInt32();

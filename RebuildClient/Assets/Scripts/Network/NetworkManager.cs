@@ -1473,6 +1473,17 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendDropItem(int bagId, int count)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.DropItem);
+            msg.Write(bagId);
+            msg.Write((short)count);
+            
+            SendMessage(msg);
+        }
+
         public void AttachEffectToEntity(int effectId)
         {
         }

@@ -5,6 +5,7 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
@@ -469,7 +470,7 @@ public class ScriptBuilder
         if (section == "OnEquip" || section == "OnUnequip")
         {
             CloseScope();
-            StartIndentedBlockLine().AppendLine($"public override void {section}(Player player, CombatEntity combatEntity, ItemEquipState state)");
+            StartIndentedBlockLine().AppendLine($"public override void {section}(Player player, CombatEntity combatEntity, ItemEquipState state, UniqueItem item, EquipSlot position)");
             OpenScope();
 
             stateVariable = "state";
@@ -478,9 +479,9 @@ public class ScriptBuilder
             UseLocalStorage = true;
             StateStorageLimit = 4;
 
+            LoadFunctionSource(typeof(ItemEquipState), "state");
             LoadFunctionSource(typeof(Player), "player");
-            LoadFunctionSource(typeof(CombatEntity), "combatEntity");
-            LoadFunctionSource(typeof(ItemInteractionBase), "item");
+            //LoadFunctionSource(typeof(CombatEntity), "combatEntity"); //we don't want them using the addstat/substat directly, ti should come from ItemEquipState
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
         }
         else
@@ -498,6 +499,13 @@ public class ScriptBuilder
             LoadFunctionSource(typeof(Player), "player");
             LoadFunctionSource(typeof(CombatEntity), "combatEntity");
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+        }
+
+        foreach (var i in Enum.GetValues<CharacterStat>())
+        {
+            var str = i.ToString();
+            if (!additionalVariables.ContainsKey(str))
+                additionalVariables.Add(str, $"CharacterStat.{i}");
         }
     }
 

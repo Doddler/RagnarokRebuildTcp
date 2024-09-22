@@ -62,6 +62,7 @@ public class SaveCharacterRequest : IDbRequest
         var inventorySize = player.Inventory.TryGetSize() + player.CartInventory.TryGetSize() + player.StorageInventory.TryGetSize();
         if (inventorySize > 0)
         {
+            inventorySize += 16 * 10 + 4; //max size of equipped items. Obviously you can't have equipped items if you have no inventory.
             //add 3 bytes since each bag will also write if it exists or not
             var buffer = ArrayPool<byte>.Shared.Rent(inventorySize + 3); 
             using var ms = new MemoryStream(buffer);
@@ -69,6 +70,7 @@ public class SaveCharacterRequest : IDbRequest
             player.Inventory.TryWrite(bw, false);
             player.CartInventory.TryWrite(bw, false);
             player.StorageInventory.TryWrite(bw, false);
+            player.Equipment.Serialize(bw);
 
             itemData = buffer;
         }

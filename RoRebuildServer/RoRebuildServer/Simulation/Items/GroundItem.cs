@@ -26,7 +26,7 @@ public struct GroundItem : IEquatable<GroundItem>
         if(!data.IsUnique)
             InitializeRegularItem(tile, new RegularItem() {Id = id, Count = (short)count});
         else
-            InitializeUniqueItem(tile, new UniqueItem() {Id = id, Count = (short)count, UniqueId = new Guid()});
+            InitializeUniqueItem(tile, new UniqueItem() {Id = id, Count = (short)count, UniqueId = Guid.NewGuid()});
     }
 
     public GroundItem(Position tile, ref ItemReference item)
@@ -45,7 +45,6 @@ public struct GroundItem : IEquatable<GroundItem>
     {
         Debug.Assert(item.Id > 0);
         Debug.Assert(item.Count > 0);
-
         Id = World.Instance.GetNextDropId();
         Position = new FloatPosition(tile.X + GameRandom.NextFloat(0.1f, 0.9f), tile.Y + GameRandom.NextFloat(0.1f, 0.9f));
         Type = ItemType.UniqueItem;

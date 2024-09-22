@@ -25,7 +25,7 @@ internal class ScriptTreeWalker
         builder = new ScriptBuilder(inputName.Replace(" ", "_"), uniqueNames, "System", "System.Linq",
             "RoRebuildServer.Data.Map", "RebuildSharedData.Data", "RoRebuildServer.Data", "RoRebuildServer.EntityComponents", "RoRebuildServer.ScriptSystem",
             "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util", "RoRebuildServer.EntityComponents.Items",
-            "RoRebuildServer.EntityComponents.Monsters", "RoRebuildServer.Data.Monster");
+            "RoRebuildServer.EntityComponents.Monsters", "RoRebuildServer.Data.Monster", "RoRebuildServer.EntityComponents.Character");
 
         var ruleSet = parser.rule_set();
 

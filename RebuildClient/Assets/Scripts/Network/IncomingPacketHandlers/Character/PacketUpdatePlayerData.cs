@@ -32,18 +32,33 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             
             CameraFollower.Instance.UpdatePlayerSP(sp, maxSp);
             UiManager.Instance.SkillHotbar.UpdateItemCounts();
-
+            UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
+            
+#if UNITY_EDITOR
             var sb = new StringBuilder(); 
             if (State.Inventory != null)
             {
-                foreach (var i in State.Inventory.GetInventoryData)
+                foreach (var i in State.Inventory.GetInventoryData())
                 {
                     var data = ClientDataLoader.Instance.GetItemById(i.Value.Id);
-                    sb.AppendLine($"{data.Name}: {i.Value.Count} ea.");
+                    if(i.Value.Type == ItemType.RegularItem)
+                        sb.AppendLine($"{i} - {data.Name}: {i.Value.Count} ea.");
+                    else
+                    {
+                        sb.Append($"{i} - {data.Name}: {i.Value.Count} ea. [");
+                        for (var j = 0; j < 4; j++)
+                        {
+                            if (j > 0) sb.Append(", ");
+                            sb.Append(i.Value.UniqueItem.SlotData(j));
+                        }
+
+                        sb.AppendLine($"] : {i.Value.UniqueItem.UniqueId}");
+                    }
                 }
             }
 
-            Debug.Log($"Loaded inventory with following data:\n{sb.ToString()}");
+            Debug.Log($"Loaded inventory with following data:\n{sb}");
+#endif
         }
     }
 }

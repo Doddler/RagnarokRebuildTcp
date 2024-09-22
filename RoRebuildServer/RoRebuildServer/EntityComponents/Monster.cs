@@ -96,6 +96,7 @@ public partial class Monster : IEntityAutoReset
     private ItemReference[]? monsterInventory;
     private int inventoryCount;
     private int inventoryIndex;
+    public bool IsInventoryFull => inventoryCount >= 10;
     
     public bool LockMovementToSpawn;
     public bool GivesExperience;

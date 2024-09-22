@@ -21,6 +21,7 @@ public class LoadCharacterRequest : IDbRequest
     public CharacterBag? Inventory;
     public CharacterBag? Cart;
     public CharacterBag? Storage;
+    public ItemEquipState? EquipState;
 
     public byte[]? Data;
     public bool HasCharacter;
@@ -32,6 +33,7 @@ public class LoadCharacterRequest : IDbRequest
         Map = string.Empty;
         Position = Position.Invalid;
         SavePosition = null!;
+        EquipState = null;
     }
 
     public async Task ExecuteAsync(RoContext dbContext)
@@ -76,6 +78,12 @@ public class LoadCharacterRequest : IDbRequest
                 Inventory = CharacterBag.TryRead(br);
                 Cart = CharacterBag.TryRead(br);
                 Storage = CharacterBag.TryRead(br);
+
+                if (Inventory != null)
+                {
+                    EquipState = new ItemEquipState();
+                    EquipState.DeSerialize(br, Inventory);
+                }
             }
             
             HasCharacter = true;

@@ -29,6 +29,13 @@ StateAttacking:
 	TryCast(TwoHandQuicken, 1, 1000, 0, 99h)[HpPercent < 99];
 }
 
+SkillHandler("PORING") {
+StateIdle:
+	TryCast(NoCast, 1, 100%, 0, 2m)[InventoryFull] -> SendEmote(32);
+StateMovingToItem:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2);
+}
+
 SkillHandler("STROUF") {
 StateAttacking:
 	TryCast(LightningBolt, 3, 5%, 0, 5s);
@@ -169,7 +176,7 @@ StateSpecial:
 
 SkillHandler("GEOGRAPHER") {
 StateAny:
-    TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
+    TryCast(Heal, 10, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
 }
 
 event TestCastEvent {

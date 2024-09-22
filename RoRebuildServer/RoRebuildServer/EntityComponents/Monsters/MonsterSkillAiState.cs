@@ -30,6 +30,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     public int HpPercent => monster.CombatEntity.GetStat(CharacterStat.Hp) * 100 / monster.CombatEntity.GetStat(CharacterStat.MaxHp);
     public int HpValue => monster.CombatEntity.GetStat(CharacterStat.Hp);
     public int MinionCount => monster.ChildCount;
+    public bool InventoryFull => monster.IsInventoryFull;
     private WorldObject? targetForSkill = null;
     //private bool failNextSkill = false;
 
@@ -341,7 +342,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             return SkillSuccess();
         }
 
-        if (skillTarget == SkillTarget.Ally)
+        if (skillTarget == SkillTarget.Ally || (skillTarget == SkillTarget.Any && targetForSkill != null))
         {
             if (targetForSkill != null)
             {
@@ -356,7 +357,7 @@ public class MonsterSkillAiState(Monster monsterIn)
                 skillTarget = SkillTarget.Self;
         }
 
-        if (skillTarget == SkillTarget.Self)
+        if (skillTarget == SkillTarget.Self || (skillTarget == SkillTarget.Any && targetForSkill == null))
         {
             if (!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f, hideSkillName))
                 return SkillFail();

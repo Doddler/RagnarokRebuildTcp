@@ -32,11 +32,8 @@ namespace Assets.Scripts.UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (ItemId == 501)
-                return; //no
-            
             manager.StartItemDrag(this);
-            manager.DragItemObject.Origin = ItemDragOrigin.HotBar;
+            manager.DragItemObject.Origin = Origin;
             manager.DragItemObject.OriginId = OriginId;
             Image.enabled = false;
             CountText.enabled = false;

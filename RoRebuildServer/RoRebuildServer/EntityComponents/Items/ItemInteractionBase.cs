@@ -1,4 +1,7 @@
-﻿namespace RoRebuildServer.EntityComponents.Items;
+﻿using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
+
+namespace RoRebuildServer.EntityComponents.Items;
 
 public interface IItemLoader
 {
@@ -13,5 +16,9 @@ public class ItemInteractionBase
     {
         return true;
     }
-    
+
+    public virtual void OnEquip(Player player, CombatEntity combatEntity, ItemEquipState state, UniqueItem item, EquipSlot position) { }
+
+    public virtual void OnUnequip(Player player, CombatEntity combatEntity, ItemEquipState state, UniqueItem item, EquipSlot position) { }
+
 }

@@ -6,6 +6,7 @@ using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.Build;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 [InitializeOnLoad]
@@ -161,6 +162,15 @@ public class BuildTool : IActiveBuildTargetChanged
 //        settings.RemoteCatalogLoadPath.
         //ContentUpdateScript.BuildContentUpdate(settings, path);
 
+    }
+
+    [MenuItem("Ragnarok/Open Main Scene", priority = 20)]
+    private static void LoadMainScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene($"Assets/Scenes/MainScene.unity", OpenSceneMode.Single);
+        }
     }
 
     [MenuItem("Build/Update Addressables (Current Platform)", false, 100)]

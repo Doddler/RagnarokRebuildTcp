@@ -372,6 +372,8 @@ public class World
             player.Inventory = connection.LoadCharacterRequest.Inventory;
             player.CartInventory = connection.LoadCharacterRequest.Cart;
             player.StorageInventory = connection.LoadCharacterRequest.Storage;
+            if(connection.LoadCharacterRequest.EquipState != null)
+                player.Equipment = connection.LoadCharacterRequest.EquipState;
 
             var data = connection.LoadCharacterRequest.Data;
 
