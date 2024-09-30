@@ -95,13 +95,15 @@ class Program
             
             foreach (var entry in entries)
             {
+                var itemClass = entry.ItemClass;
                 var item = new ItemData()
                 {
                     Code = entry.Code,
                     Name = entry.Name,
                     Id = entry.Id,
-                    IsUnique = entry.IsUnique,
-                    IsUseable = entry.IsUseable,
+                    IsUnique = itemClass == ItemClass.Weapon || itemClass == ItemClass.Equipment,
+                    IsUseable = itemClass == ItemClass.Useable,
+                    ItemClass = itemClass,
                     Price = entry.Price,
                     Weight = entry.Weight,
                     Effect = entry.Effect,

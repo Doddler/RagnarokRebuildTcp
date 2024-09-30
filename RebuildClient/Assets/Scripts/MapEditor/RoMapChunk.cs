@@ -303,9 +303,9 @@ namespace Assets.Scripts.MapEditor
             delayToRebuild = Random.Range(4f, 8f);
 
             if (MapData.IsWalkTable)
-                Mesh = mesh.Build(name, false, 3);
-            else
                 Mesh = mesh.Build(name, false, 2);
+            else
+                Mesh = mesh.Build(name, false, 1);
             
             if (shadow.HasMesh())
                 MakeShadowlessChild(shadow.Build(name + " shadow"));

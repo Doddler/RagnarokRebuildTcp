@@ -106,10 +106,10 @@ MonoBehaviour:
   Image: {fileID: 6177812489370029218}
   CanvasGroup: {fileID: 0}
   CountText: {fileID: 720370485359444379}
-  Type: 2
+  Type: 0
   Sprite: {fileID: 21300000, guid: e86954f9d3e940349aca865f075de444, type: 3}
-  ItemId: 501
-  ItemCount: 150
+  ItemId: -1
+  ItemCount: 0
   Origin: 1
   OriginId: 0
 --- !u!1 &2189526092363524912

@@ -13,6 +13,7 @@ namespace Assets.Scripts.UI
     {
         public Transform SkillBarContainer;
         public GameObject SkillBarRowTemplate;
+        public GameObject EntryPrefab;
         [FormerlySerializedAs("DragHandle")] public ResizeHandle ResizeHandle;
 
         private List<GameObject> HotBarRows = new();
@@ -98,12 +99,11 @@ namespace Assets.Scripts.UI
             for (var i = 0; i < 3; i++)
             {
                 var row = GameObject.Instantiate(SkillBarRowTemplate, SkillBarContainer);
-                var firstEntry = row.transform.GetChild(0).GetComponent<SkillHotbarEntry>();
-                SetupFirstDeleteMe(firstEntry, i * 10);
-                HotBarEntries.Add(firstEntry);
-                for (var j = 1; j < 10; j++)
+                //SetupFirstDeleteMe(firstEntry, i * 10);
+                //HotBarEntries.Add(firstEntry);
+                for (var j = 0; j < 10; j++)
                 {
-                    var go = GameObject.Instantiate(firstEntry, row.transform);
+                    var go = GameObject.Instantiate(EntryPrefab, row.transform);
                     var entry = go.GetComponent<SkillHotbarEntry>();
                     SetUpEntry(entry, i * 10 + j);
                     HotBarEntries.Add(entry);
@@ -122,6 +122,9 @@ namespace Assets.Scripts.UI
 
         public void ActivateHotBarEntry(SkillHotbarEntry entry)
         {
+            if (!NetworkManager.Instance.PlayerState.IsValid)
+                return;
+            
             if (entry.DragItem.Type == DragItemType.Skill)
             {
                 var onCursor = CameraFollower.Instance.PressSkillButton((CharacterSkill)entry.DragItem.ItemId, entry.DragItem.ItemCount);
@@ -201,14 +204,31 @@ namespace Assets.Scripts.UI
                 
                 if (data[i].Type == DragItemType.Skill)
                 {
+                    var skillData = ClientDataLoader.Instance.GetSkillData((CharacterSkill)data[i].ItemId);
                     var spriteName = ClientDataLoader.Instance.GetSkillData((CharacterSkill)data[i].ItemId).Icon;
                     var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(spriteName);
                     if (sprite != null)
                     {
                         HotBarEntries[i].DragItem.gameObject.SetActive(true);
                         HotBarEntries[i].DragItem.Assign(data[i].Type, sprite, data[i].ItemId, data[i].ItemCount);
+                        if(skillData.AdjustableLevel == false)
+                             HotBarEntries[i].DragItem.UpdateCount(0);
                     }
                 }
+
+                if (data[i].Type == DragItemType.Item)
+                {
+                    if (!ClientDataLoader.Instance.TryGetItemById(data[i].ItemId, out var item))
+                        continue;
+
+                    var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.Sprite);
+                    if (sprite != null)
+                    {
+                        HotBarEntries[i].DragItem.gameObject.SetActive(true);
+                        HotBarEntries[i].DragItem.Assign(data[i].Type, sprite, data[i].ItemId, 0);
+                    }
+                }
+                
             }
         }
 

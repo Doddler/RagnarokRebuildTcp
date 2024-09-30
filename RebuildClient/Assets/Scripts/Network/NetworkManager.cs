@@ -13,6 +13,7 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
+using Assets.Scripts.UI.TitleScreen;
 using Assets.Scripts.Utility;
 using HybridWebSocket;
 using JetBrains.Annotations;
@@ -38,8 +39,8 @@ namespace Assets.Scripts.Network
 
         public CameraFollower CameraFollower;
         public CharacterOverlayManager OverlayManager;
-        public GameObject DamagePrefab;
-        public GameObject HealPrefab;
+        public TitleScreen TitleScreen;
+        public LoginBox LoginBox;
         public GameObject TargetNoticePrefab;
         public TextMeshProUGUI LoadingText;
         public Dictionary<int, ServerControllable> EntityList = new Dictionary<int, ServerControllable>();
@@ -68,6 +69,20 @@ namespace Assets.Scripts.Network
         private AsyncOperationHandle uiPreload;
 
         public Guid CharacterGuid;
+
+        private WebSocketOpenEventHandler openEventHandler;
+        private WebSocketMessageEventHandler messageEventHandler;
+
+        //login stuff
+        private bool isOnLoginScreen;
+        private bool hasAttemptedConnection;
+        private string webUrl;
+        private string username;
+        private string password;
+        private bool isNewUser;
+        private bool isTokenLogin;
+        private bool isInErrorState;
+        private bool requestLoginToken;
 
 
 #if DEBUG
@@ -135,20 +150,31 @@ namespace Assets.Scripts.Network
                 yield return 0;
             }
 
-
             CameraFollower.PlayerState = PlayerState;
             ClientPacketHandler.Init(this, PlayerState);
 
+            isOnLoginScreen = true;
+            TitleScreen.gameObject.SetActive(true);
+            LoginBox.gameObject.SetActive(true);
+            LoginBox.Init();
+            CameraFollower.UpdateCameraSize();
+            SceneTransitioner.Instance.FadeIn(); //show login window
+            AudioManager.Instance.PlayBgm("01.mp3");
+            }
+
+        private IEnumerator BeginConnection(string username, string password)
+        {
+            
 #if UNITY_EDITOR
             var target = "ws://127.0.0.1:5000/ws";
             //var target = "wss://roserver.dodsrv.com/ws";
-            StartConnectServer(target);
+            StartConnectServer(target, username, password);
             yield break; //end coroutine
 #endif
             if (Application.platform == RuntimePlatform.WindowsPlayer)
             {
                 var path = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "serverconfig.txt"));
-                StartConnectServer(path);
+                StartConnectServer(path, username, password);
                 yield break;
             }
 
@@ -167,11 +193,173 @@ namespace Assets.Scripts.Network
                 while (!spritePreload.IsDone || !uiPreload.IsDone)
                     yield return new WaitForSeconds(0.1f);
 
-                StartConnectServer(www.text);
+                StartConnectServer(www.text, username, password);
+            }
+        }
+        
+        public void StartConnectWithNewAccount(string serverPath, string connectUserName, string connectPassword)
+        {
+            if (socket != null && socket.GetState() != WebSocketState.Closed)
+                return;
+            
+            socket = WebSocketFactory.CreateInstance(serverPath);
+            
+            webUrl = serverPath;
+            this.username = connectUserName;
+            this.password = connectPassword;
+            isConnected = false;
+            isReady = false;
+            isTokenLogin = false;
+            isInErrorState = false;
+            isOnLoginScreen = true;
+            requestLoginToken = false;
+            
+            socket.OnOpen += OnOpenConnectionNewUser;
+            socket.OnClose += OnCloseLoginScreenHandler;
+            socket.OnError += OnErrorLoginScreenHandler;
+            socket.OnMessage += LoginScreenMessageHandler;
+            
+            Debug.Log($"Connecting to server at target {serverPath}...");
+
+            lastPing = Time.time;
+
+            socket.Connect();
+        }
+
+        public void StartConnectWithRegularLogin(string serverPath, string connectUserName, string connectPassword, bool usePasswordToken, bool askForLoginToken)
+        {
+            if (socket != null && socket.GetState() != WebSocketState.Closed)
+                return;
+            
+            socket = WebSocketFactory.CreateInstance(serverPath);
+            
+            webUrl = serverPath;
+            this.username = connectUserName;
+            this.password = connectPassword;
+            requestLoginToken = askForLoginToken;
+            isConnected = false;
+            isReady = false;
+            isTokenLogin = usePasswordToken;
+            isNewUser = false;
+            isInErrorState = false;
+            isOnLoginScreen = true;
+            
+            socket.OnOpen += OnOpenConnectionRegularLogin;
+            socket.OnClose += OnCloseLoginScreenHandler;
+            socket.OnError += OnErrorLoginScreenHandler;
+            socket.OnMessage += LoginScreenMessageHandler;
+            
+            Debug.Log($"Connecting to server at target {serverPath}...");
+
+            lastPing = Time.time;
+
+            socket.Connect();
+        }
+
+        private void OnCloseLoginScreenHandler(WebSocketCloseCode code)
+        {
+            Debug.Log($"OnCloseLoginScreenHandler called: " + code);
+            
+            if (isInErrorState)
+                return; //we've already handled the error
+            Dispatcher.RunOnMainThread(() =>
+            {
+                if(isConnected || TitleScreen.TitleState != TitleScreen.TitleScreenState.LogIn)
+                    TitleScreen.LogInError($"You have been disconnected from the server.");
+                else
+                    TitleScreen.LogInError($"Unable to connect to server at url: {webUrl}");
+            });
+            
+            socket = null;
+        }
+        
+        private void OnErrorLoginScreenHandler(string message)
+        {
+            Debug.Log($"OnErrorLoginScreenHandler called: " + message);
+            
+            if (isInErrorState)
+                return;
+            
+            Dispatcher.RunOnMainThread(() =>
+            {
+                TitleScreen.LogInError($"An error has occured: {message}");       
+                socket.Close();
+                socket = null;
+            });
+            
+        }
+        
+        private void LoginScreenMessageHandler(byte[] bytes)
+        {
+            var msg = new ClientInboundMessage(bytes, bytes.Length);
+            var type = (PacketType)msg.ReadByte();
+            Debug.Log($"LoginScreenMessageHandler called: " + type);
+            switch (type)
+            {
+                case PacketType.ConnectionApproved:
+                    InboundMessages.Enqueue(new ClientInboundMessage(bytes, bytes.Length));
+                    break;
+                case PacketType.EnterServer:
+                    socket.OnMessage -= LoginScreenMessageHandler;
+                    socket.OnMessage += NormalOperationMessageHandler;
+                    socket.OnError -= OnErrorLoginScreenHandler;
+                    socket.OnError += NormalOperationErrorHandler;
+                    socket.OnClose -= OnCloseLoginScreenHandler;
+                    socket.OnClose += NormalOperationCloseHandler;
+                    isConnected = true;
+                    InboundMessages.Enqueue(new ClientInboundMessage(bytes, bytes.Length));
+                    break;
+                case PacketType.ConnectionDenied:
+                    isInErrorState = true;
+                    InboundMessages.Enqueue(new ClientInboundMessage(bytes, bytes.Length));
+                    break;
+                case PacketType.ErrorMessage:
+                    Dispatcher.RunOnMainThread(() => TitleScreen.ErrorMessage(msg.ReadString()));
+                    break;
+                default:
+                    Debug.LogWarning($"Unhandled packet type {type} in LoginScreenMessageHandler");
+                    break;
             }
         }
 
-        private void StartConnectServer(string serverPath)
+        private void NormalOperationCloseHandler(WebSocketCloseCode code)
+        {
+            Debug.LogWarning("Socket connection closed: " + code);
+            if (!isConnected)
+                CameraFollower.SetErrorUiText($"Could not connect to server at {webUrl}.\n<size=-4>(Press space to try to reconnect)");
+            else
+                CameraFollower.SetErrorUiText("Connection has been closed.\n<size=-4>(Press space to try to reconnect)");
+        }
+
+        private void NormalOperationErrorHandler(string message)
+        {
+            Debug.LogError("Socket connection had an error: " + message);
+            CameraFollower.SetErrorUiText("Socket connection generated an error.\n<size=-4>(Press space to try to reconnect)");
+        }
+        
+        private void NormalOperationMessageHandler(byte[] bytes)
+        {
+            InboundMessages.Enqueue(new ClientInboundMessage(bytes, bytes.Length));
+        }
+
+        public void Disconnect()
+        {
+            if (socket == null || socket.GetState() != WebSocketState.Open)
+                return;
+            var outmsg = StartMessage();
+            outmsg.Write((byte)PacketType.Disconnect);
+            SendMessage(outmsg);
+            socket.Close();
+            socket.OnError -= NormalOperationErrorHandler;
+            socket.OnClose -= NormalOperationCloseHandler;
+            socket.OnClose -= OnCloseLoginScreenHandler;
+            socket.OnError -= OnErrorLoginScreenHandler;
+            isConnected = false;
+            isReady = false;
+            socket = null;
+        }
+
+        private void StartConnectServer(string serverPath, string username, string password)
         {
             socket = WebSocketFactory.CreateInstance(serverPath);
 
@@ -217,6 +405,49 @@ namespace Assets.Scripts.Network
 
             socket.Connect();
         }
+
+        private void OnOpenConnectionRegularLogin()
+        {
+            Debug.Log("Socket connection opened!");
+
+            using var ms = new MemoryStream();
+            using var bw = new BinaryWriter(ms);
+
+            bw.Write(false);
+            bw.Write(isTokenLogin);
+            bw.Write(requestLoginToken);
+            bw.Write(username);
+            if(!isTokenLogin)
+                bw.Write(password);
+            else
+            {
+                var tokenData = System.Convert.FromBase64String(password);
+                bw.Write(""); //password
+                bw.Write(tokenData.Length);
+                bw.Write(tokenData);
+            }
+
+            socket.Send(ms.ToArray());
+        }
+        
+        
+        private void OnOpenConnectionNewUser()
+        {
+            Debug.Log("Socket connection opened!");
+
+            using var ms = new MemoryStream();
+            using var bw = new BinaryWriter(ms);
+
+            bw.Write(true); //isNewAccount
+            bw.Write(false); //isTokenLogin
+            bw.Write(false); //requestLoginToken
+            bw.Write(username);
+            bw.Write(password);
+
+            socket.Send(ms.ToArray());
+        }
+
+        
 
         public ClientOutgoingMessage StartMessage()
         {
@@ -800,7 +1031,7 @@ namespace Assets.Scripts.Network
             if(CameraFollower.SelectedTarget == controllable)
                 CameraFollower.ClearSelected();
 
-            controllable.StopImmediate(pos);
+            controllable.StopImmediate(pos, false);
             controllable.SpriteAnimator.State = SpriteState.Dead;
             controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
 
@@ -847,17 +1078,6 @@ namespace Assets.Scripts.Network
                 CameraFollower.Instance.CharacterName.text = $"Lv. {controllable.Level} {controllable.Name}";
         }
 
-        public void OnMessageEffectOnCharacter(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var effect = msg.ReadInt32();
-
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-                return;
-
-            CameraFollower.AttachEffectToEntity(effect, controllable.gameObject, controllable.Id);
-        }
 
         public void OnMessageNpcInteraction(ClientInboundMessage msg)
         {
@@ -1022,6 +1242,10 @@ namespace Assets.Scripts.Network
             {
                 case PacketType.ConnectionApproved:
                     isReady = true;
+                    AudioManager.Instance.FadeOutCurrentBgm(); //end title screen bgm
+                    break;
+                case PacketType.ConnectionDenied:
+                    TitleScreen.LogInError(msg.ReadString());
                     break;
                 case PacketType.StartWalk:
                     OnMessageStartMove(msg);
@@ -1055,9 +1279,6 @@ namespace Assets.Scripts.Network
                     break;
                 case PacketType.ChangeName:
                     OnMessageChangeName(msg);
-                    break;
-                case PacketType.EffectOnCharacter:
-                    OnMessageEffectOnCharacter(msg);
                     break;
                 case PacketType.NpcInteraction:
                     OnMessageNpcInteraction(msg);
@@ -1099,24 +1320,6 @@ namespace Assets.Scripts.Network
             while (InboundMessages.TryDequeue(out var msg))
             {
                 HandleDataPacket(msg);
-                //switch (msg.MessageType)
-                //{
-                //	case NetIncomingMessageType.Data:
-                //		HandleDataPacket(msg);
-                //		break;
-                //	case NetIncomingMessageType.DebugMessage:
-                //	case NetIncomingMessageType.VerboseDebugMessage:
-                //	case NetIncomingMessageType.WarningMessage:
-                //	case NetIncomingMessageType.ErrorMessage:
-                //		Debug.Log(msg.MessageType + ": " + msg.ReadString());
-                //		break;
-                //	case NetIncomingMessageType.StatusChanged:
-                //		Debug.Log("Status changed: " + client.Status);
-                //		break;
-                //	default:
-                //		Debug.Log("We received a packet type we didn't handle: " + msg.MessageType);
-                //		break;
-                //}
             }
         }
 
@@ -1287,6 +1490,17 @@ namespace Assets.Scripts.Network
             msg.Write((short)y);
             msg.Write(forcePosition);
 
+            SendMessage(msg);
+        }
+
+        public void SendAdminCreateItem(int itemId, int count)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.AdminCreateItem);
+            msg.Write(itemId);
+            msg.Write(count);
+            
             SendMessage(msg);
         }
 
@@ -1483,6 +1697,17 @@ namespace Assets.Scripts.Network
             
             SendMessage(msg);
         }
+        
+        public void SendEnterServerMessage(string loginName)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.EnterServer);
+            msg.Write(false);
+            msg.Write(loginName);
+            
+            SendMessage(msg);
+        }
 
         public void AttachEffectToEntity(int effectId)
         {
@@ -1490,8 +1715,6 @@ namespace Assets.Scripts.Network
 
         private void Update()
         {
-            
-
             if (socket == null)
                 return;
 
@@ -1503,44 +1726,55 @@ namespace Assets.Scripts.Network
 
             var state = socket.GetState();
 
-            if (state == WebSocketState.Open)
+            if (InboundMessages.Count > 0)
                 DoPacketHandling();
 
-            if (state == WebSocketState.Open && isReady && !isConnected)
+            if (state == WebSocketState.Open)
             {
-                Debug.Log("We've been accepted! Lets try to enter the game.");
-                SendPing();
-                var msg = StartMessage();
-#if DEBUG
-                if (!string.IsNullOrWhiteSpace(SpawnMap))
+                if (lastPing + 5 < Time.time)
                 {
-                    msg.Write((byte)PacketType.AdminEnterServerSpecificMap);
-                    msg.Write(SpawnMap);
+                    SendPing();
+                    //Debug.Log("Sending keep alive packet.");
 
-                    var prefx = PlayerPrefs.GetInt("DebugStartX", -1);
-                    var prefy = PlayerPrefs.GetInt("DebugStartY", -1);
-
-                    //Debug.Log(prefx + " : " + prefy);
-
-                    if (prefx > 0 && prefy > 0)
-                    {
-                        msg.Write(true);
-                        msg.Write((short)prefx);
-                        msg.Write((short)prefy);
-                        PlayerPrefs.DeleteKey("DebugStartX");
-                        PlayerPrefs.DeleteKey("DebugStartY");
-                    }
-
-                    msg.Write(false);
+                    lastPing = Time.time;
                 }
-                else
-                    msg.Write((byte)PacketType.EnterServer);
-#else
-				msg.Write((byte)PacketType.EnterServer);
-#endif
-                SendMessage(msg);
-                isConnected = true;
             }
+//
+//             if (state == WebSocketState.Open && isReady && !isConnected)
+//             {
+//                 Debug.Log("We've been accepted! Lets try to enter the game.");
+//                 SendPing();
+//                 var msg = StartMessage();
+// #if DEBUG
+//                 if (!string.IsNullOrWhiteSpace(SpawnMap))
+//                 {
+//                     msg.Write((byte)PacketType.AdminEnterServerSpecificMap);
+//                     msg.Write(SpawnMap);
+//
+//                     var prefx = PlayerPrefs.GetInt("DebugStartX", -1);
+//                     var prefy = PlayerPrefs.GetInt("DebugStartY", -1);
+//
+//                     //Debug.Log(prefx + " : " + prefy);
+//
+//                     if (prefx > 0 && prefy > 0)
+//                     {
+//                         msg.Write(true);
+//                         msg.Write((short)prefx);
+//                         msg.Write((short)prefy);
+//                         PlayerPrefs.DeleteKey("DebugStartX");
+//                         PlayerPrefs.DeleteKey("DebugStartY");
+//                     }
+//
+//                     msg.Write(false);
+//                 }
+//                 else
+//                     msg.Write((byte)PacketType.EnterServer);
+// #else
+// 				msg.Write((byte)PacketType.EnterServer);
+// #endif
+//                 SendMessage(msg);
+//                 isConnected = true;
+//             }
 
             if (isConnected && state != WebSocketState.Open && state != WebSocketState.Connecting)
             {
@@ -1558,23 +1792,16 @@ namespace Assets.Scripts.Network
                 Console.WriteLine("Disconnected!");
                 return;
             }
+        }
 
-            if (lastPing + 5 < Time.time)
-            {
-                SendPing();
-                //Debug.Log("Sending keep alive packet.");
-
-                lastPing = Time.time;
-            }
+        public void OnDestroy()
+        {
+            Disconnect();
         }
 
         public void OnApplicationQuit()
         {
-            if (socket == null)
-                return;
-            var outmsg = StartMessage();
-            outmsg.Write((byte)PacketType.Disconnect);
-            SendMessage(outmsg);
+            Disconnect();
         }
     }
 }

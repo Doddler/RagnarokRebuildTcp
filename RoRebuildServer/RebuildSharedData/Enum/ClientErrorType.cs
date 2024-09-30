@@ -10,4 +10,5 @@ public enum ClientErrorType : byte
     MalformedRequest,
     RequestTooLong,
     DisallowedCharacters,
+    CommandUnavailable
 }

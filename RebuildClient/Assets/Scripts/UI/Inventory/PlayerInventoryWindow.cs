@@ -14,9 +14,10 @@ namespace Assets.Scripts.UI.Inventory
         public RectTransform ItemBoxRoot;
         public RectTransform ViewBoxTransform;
         public GameObject ItemEntryPrefab;
-        private List<InventoryEntry> entryList;
+        private List<InventoryEntry> entryList = new();
         private int activeEntryCount;
         private int activeItemSection;
+        private bool isInit;
 
         public void Awake()
         {
@@ -29,7 +30,7 @@ namespace Assets.Scripts.UI.Inventory
             base.ShowWindow();
             UpdateActiveVisibleBag();
         }
-
+        
         public void ClickTabButton(int tab)
         {
             switch (tab)
@@ -64,12 +65,12 @@ namespace Assets.Scripts.UI.Inventory
         
         public void UpdateActiveVisibleBag()
         {
-            if (!gameObject.activeSelf)
+            if (!gameObject.activeSelf || NetworkManager.Instance?.PlayerState == null)
                 return;
             
             var inventory = NetworkManager.Instance.PlayerState.Inventory;
             activeEntryCount = 0;
-
+            
             foreach (var bagEntry in inventory.GetInventoryData())
             {
                 var item = bagEntry.Value;
@@ -77,7 +78,6 @@ namespace Assets.Scripts.UI.Inventory
                 if (activeItemSection == 1 && (!item.ItemData.IsUnique)) continue;
                 if (activeItemSection == 2 && (item.ItemData.IsUnique || item.ItemData.IsUseable)) continue;
 
-                entryList ??= new List<InventoryEntry>();
                 if (entryList.Count <= activeEntryCount)
                 {
                     var newEntry = GameObject.Instantiate(ItemEntryPrefab, ItemBoxRoot, false);
@@ -90,9 +90,14 @@ namespace Assets.Scripts.UI.Inventory
                 itemEntry.DragItem.Assign(DragItemType.Item, sprite, bagEntry.Key, item.Count);
                 itemEntry.DragItem.gameObject.SetActive(true);
 
+                if (item.ItemData.IsUseable)
+                    itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendUseItem(bagEntry.Key);
+                else
+                    itemEntry.DragItem.OnDoubleClick = null;
+
                 activeEntryCount++;
             }
-
+            
             var left = ItemBoxRoot.anchoredPosition;
             var entriesPerRow = (int)((ViewBoxTransform.rect.width - 20 + 5 - left.x) / UnitSize.x); //the 5 is cause there's no spacing after the last item in a row
             var requiredRows = Mathf.CeilToInt((float)activeEntryCount / entriesPerRow);

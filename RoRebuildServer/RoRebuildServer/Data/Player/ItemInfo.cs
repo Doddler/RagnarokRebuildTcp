@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.EntityComponents.Items;
+﻿using RebuildSharedData.Enum;
+using RoRebuildServer.EntityComponents.Items;
 
 namespace RoRebuildServer.Data.Player
 {
@@ -10,6 +11,7 @@ namespace RoRebuildServer.Data.Player
         public int Price;
         public bool IsUnique;
         public bool IsUseable;
+        public ItemClass ItemClass;
         public int Effect;
         public ItemInteractionBase? Interaction = null!;
     }

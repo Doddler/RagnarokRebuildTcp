@@ -9,6 +9,7 @@ using Microsoft.VisualBasic;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
@@ -23,6 +24,7 @@ using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.Simulation;
 
@@ -299,6 +301,47 @@ public class World
         
         return e;
     }
+
+    public void FinalizeEnterServer(LoadCharacterRequest request, NetworkConnection connection)
+    {
+        var config = ServerConfig.EntryConfig;
+        var debug = ServerConfig.DebugConfig;
+
+        var map = config.Map;
+        var area = Area.CreateAroundPoint(config.Position, config.Area);
+
+        //if (connection.LoadCharacterRequest != null)
+        //{
+        //    var req = connection.LoadCharacterRequest;
+        //    if (req != null && !string.IsNullOrEmpty(req.Map))
+        //    {
+        //        map = req.Map;
+        //        area = Area.CreateAroundPoint(req.Position, 0);
+        //    }
+        //}
+
+        connection.LoadCharacterRequest = request;
+
+        if (debug.DebugMapOnly && !string.IsNullOrWhiteSpace(debug.DebugMapName))
+        {
+            map = debug.DebugMapName;
+            area = Area.CreateAroundPoint(Position.Zero, 0);
+        }
+
+        var playerEntity = NetworkManager.World.CreatePlayer(connection, map, area);
+        //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prt_fild08", Area.CreateAroundPoint(new Position(170, 367), 5));
+        //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prontera", Area.CreateAroundPoint(new Position(248, 42), 5));
+        connection.Entity = playerEntity;
+        connection.LastKeepAlive = Time.ElapsedTime;
+        connection.Character = playerEntity.Get<WorldObject>();
+        connection.Character.IsActive = false;
+        var networkPlayer = playerEntity.Get<Player>();
+        networkPlayer.Connection = connection;
+        connection.Player = networkPlayer;
+        CommandBuilder.SendUpdatePlayerData(connection.Player);
+
+        ServerLogger.Debug($"Player assigned entity {playerEntity}, creating entity at location {connection.Character.Position}.");
+    }
     
     public Entity CreatePlayer(NetworkConnection connection, string mapName, Area spawnArea)
     {
@@ -374,6 +417,7 @@ public class World
             player.StorageInventory = connection.LoadCharacterRequest.Storage;
             if(connection.LoadCharacterRequest.EquipState != null)
                 player.Equipment = connection.LoadCharacterRequest.EquipState;
+            player.CharacterSlot = connection.LoadCharacterRequest.CharacterSlot;
 
             var data = connection.LoadCharacterRequest.Data;
 

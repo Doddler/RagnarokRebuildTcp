@@ -3,7 +3,7 @@
 This skill is totally worthless but you need to get it to rank 8 before you can job change.
 
 ::FirstAid
-This skill doesn't currently work but you also need it to job change for some reason.
+Heal's yourself by either 5 HP or 1% of your max HP, whichever is higher.
 
 //----------------Swordsman-------------------
 

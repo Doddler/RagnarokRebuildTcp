@@ -22,6 +22,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
             Network.CurrentMap = mapName;
             Network.PlayerId = id;
+            
+            UiManager.OnLogIn();
 
             SceneTransitioner.Instance.LoadScene(Network.CurrentMap, Network.OnMapLoad);
 

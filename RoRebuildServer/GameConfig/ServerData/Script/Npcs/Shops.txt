@@ -73,14 +73,14 @@ Trader("prt_in", "Tool Dealer", "1_M_INNKEEPER", 126, 76, N) {
     SellItem("White_Potion");
     SellItem("Concentration_Potion");
     SellItem("Awakening_Potion");
-    SellItem("HunterTrap");
+    SellItem("Trap");
 }
 
 Trader("prt_in", "Wedding Shop Dealer", "1_F_LIBRARYGIRL", 211, 169, N) { }
 
 Trader("prt_in", "Weapon Dealer", "1_F_01", 164, 140, S) { 
     SellItem("Arrow");
-    //SellItem("Silver_Arrow");
+    SellItem("Silver_Arrow");
     SellItem("Knife");
     SellItem("Sword");
     SellItem("Bow");

@@ -2,9 +2,13 @@
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Config;
+using RoRebuildServer.Database;
+using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Util;
+using System.Buffers;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Connection;
 
@@ -17,43 +21,43 @@ public class PacketEnterServer : IClientPacketHandler
         if (connection.Character != null)
             return;
 
-        var config = ServerConfig.EntryConfig;
-        var debug = ServerConfig.DebugConfig;
-
-        var map = config.Map;
-        var area = Area.CreateAroundPoint(config.Position, config.Area);
-
-        if (connection.LoadCharacterRequest != null)
+        var accountId = connection.AccountId;
+        var isNewCharacter = msg.ReadBoolean();
+        if (isNewCharacter)
         {
-            var req = connection.LoadCharacterRequest;
-            if (req != null && !string.IsNullOrEmpty(req.Map))
-            {
-                map = req.Map;
-                area = Area.CreateAroundPoint(req.Position, 0);
-            }
+            return; //fixme
         }
 
-        if (debug.DebugMapOnly && !string.IsNullOrWhiteSpace(debug.DebugMapName))
+        var chName = msg.ReadString();
+
+        //ServerLogger.Log($"Running Enter for accountId {accountId}");
+
+        var req = new LoadCharacterRequest(accountId, chName);
+        RoDatabase.EnqueueDbRequest(req);
+
+        if (req.HasCharacter)
         {
-            map = debug.DebugMapName;
-            area = Area.CreateAroundPoint(Position.Zero, 0);
+            ServerLogger.Log($"Client has an existing character! Character name {req.Name}.");
+            return;
         }
 
-        var playerEntity = NetworkManager.World.CreatePlayer(connection, map, area);
-        //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prt_fild08", Area.CreateAroundPoint(new Position(170, 367), 5));
-        //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prontera", Area.CreateAroundPoint(new Position(248, 42), 5));
-        connection.Entity = playerEntity;
-        connection.LastKeepAlive = Time.ElapsedTime;
-        connection.Character = playerEntity.Get<WorldObject>();
-        connection.Character.IsActive = false;
-        var networkPlayer = playerEntity.Get<Player>();
-        networkPlayer.Connection = connection;
-        connection.Player = networkPlayer;
+        ////var name = "Player " + GameRandom.NextInclusive(0, 999);
+        //var name = accountName;
 
-        CommandBuilder.SendUpdatePlayerData(connection.Player);
+        //var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
 
-        ServerLogger.Debug($"Player assigned entity {playerEntity}, creating entity at location {connection.Character.Position}.");
+        //var newReq = new SaveCharacterRequest(name, accountId);
+        //await RoDatabase.ExecuteDbRequestAsync(newReq);
 
-        //CommandBuilder.InformEnterServer(connection.Character, networkPlayer);
+        //ArrayPool<int>.Shared.Return(charData, true);
+
+        //var loadReq = new LoadCharacterRequest(accountId); //database will assign us a guid, use that to load back the character
+        //await RoDatabase.ExecuteDbRequestAsync(loadReq);
+
+        //return loadReq;
+
+        //RoDatabase.EnqueueDbRequest();
+
+        ////CommandBuilder.InformEnterServer(connection.Character, networkPlayer);
     }
 }

@@ -74,6 +74,7 @@ public enum PacketType : byte
     AdminChangeSpeed,
     AdminFindTarget,
     AdminResetSkills,
+    AdminCreateItem,
 
     NpcClick,
     [ServerOnlyPacket] NpcInteraction,

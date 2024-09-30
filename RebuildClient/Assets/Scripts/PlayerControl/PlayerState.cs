@@ -6,8 +6,8 @@ namespace Assets.Scripts.PlayerControl
 {
     public class PlayerState
     {
-        public bool IsValid = false;
-        public int EntityId;
+        public bool IsValid { get; set; } = false;
+        public int EntityId { get; set; }
         public int Level;
         public int Exp;
         public int Hp;

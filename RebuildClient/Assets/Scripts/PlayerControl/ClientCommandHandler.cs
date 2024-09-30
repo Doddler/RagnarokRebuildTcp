@@ -10,6 +10,7 @@ using Assets.Scripts.Utility;
 using JetBrains.Annotations;
 using RebuildSharedData.Networking;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace PlayerControl
 {
@@ -161,6 +162,40 @@ namespace PlayerControl
                 if (s[0] == "/return")
                 {
                     NetworkManager.Instance.SendRespawn(false);
+                }
+
+                if (s[0] == "/logout")
+                {
+                    NetworkManager.Instance.Disconnect();
+                    SceneManager.LoadScene(0);
+                }
+
+                if (s[0] == "/item")
+                {
+                    if (s.Length < 2)
+                    {
+                        cameraFollower.AppendError("Invalid item request.");
+                    }
+                    
+                    var count = 1;
+                    var name = s[1];
+                    var nameMax = s.Length;
+                    
+                    if (s.Length >= 3 && int.TryParse(s[s.Length - 1], out var newCount))
+                    {
+                        count = newCount;
+                        nameMax--;
+                    }
+                    
+                    Debug.Log($"Item '{name}' {count} {nameMax}");
+
+                    if (s.Length > 2)
+                        name = String.Join(" ", s.Skip(1).Take(nameMax-1));
+                    
+                    if(!ClientDataLoader.Instance.TryGetItemByName(name, out var item))
+                        cameraFollower.AppendError($"The item name '{name}' is not valid.");
+                    else
+                        NetworkManager.Instance.SendAdminCreateItem(item.Id, count);
                 }
 
                 if (s[0] == "/summon" || s[0] == "/boss" || s[0] == "/monster")

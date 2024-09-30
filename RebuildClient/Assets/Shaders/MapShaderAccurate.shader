@@ -142,36 +142,12 @@ Shader "Custom/MapShaderAccurate"
 					ambienttex = bakedDirTex * _RoLightmapAOStrength + (1 - _RoLightmapAOStrength);
 #endif
 					
-
-					//attenuation = saturate(0.6 + attenuation * 0.4);
-					//return attenuation;
-
 					float shadowStr = 1 - (saturate(1 - attenuation * NdotL * 2) * _Opacity); //NdotL here is to force things facing away from sun to be unlit
 					float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 
-					//float4 s = env;
-					//float m = max(max(s.r, s.g), s.b);
-					//float world = saturate(0.5 + (s / m) * 0.5);
-					//return s / m;
-
-					//return lm;
-
-					
-					//return lm;
-
-					//lm = (lm * 2) + saturate(attenuation * 2);
-					//float lmMax = max(max(lm.r,lm.g),lm.b);
-					//return lm/lmMax;
-
-					//lm = floor(lm * 32) / 32;
-					//lm = floor(lm * 16) / 16;
-					//return lm;
-
-					//return env;
-
 					NdotL = 0.5 + NdotL * 0.5;
 
-					float4 finalColor = tex; // *0.9; //Controversial! But I think it's right.
+					float4 finalColor = tex;
 
 					finalColor *= saturate(NdotL * _RoDiffuseColor + _RoAmbientColor) * ambienttex;
 					finalColor *= saturate(i.color);
@@ -182,17 +158,6 @@ Shader "Custom/MapShaderAccurate"
 					UNITY_APPLY_FOG(i.fogCoord, finalColor);
 					finalColor.a = 1; //reject transparancy, we're opaque and using cuttoff elsewhere. Fixes minimap generation having holes.
 					return finalColor;
-
-
-					//float4 finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor,0,1)) * shadowStr * diffuse * ambienttex * i.color + lm * saturate(i.color.a);
-
-					//float a = i.color.a;
-					//i.color.a = 1;
-
-					//UNITY_APPLY_FOG(i.fogCoord, finalColor);
-
-
-				
 				}
 
 			ENDCG

@@ -101,7 +101,7 @@ namespace Assets.Scripts.Editor
                     if(!File.Exists(newActPath))
                         File.Copy(actPath, newActPath);
                     
-                    AssetDatabase.ImportAsset(actPath, ImportAssetOptions.ForceUpdate);
+                    //AssetDatabase.ImportAsset(actPath, ImportAssetOptions.ForceUpdate);
                     AssetDatabase.Refresh();
                     
                     var spriteData = AssetDatabase.LoadAssetAtPath<RoSpriteData>(importedAssetName);

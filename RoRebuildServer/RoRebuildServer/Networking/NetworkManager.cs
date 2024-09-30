@@ -1,10 +1,13 @@
 ﻿using System.Buffers;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Reflection;
 using System.Text;
 using System.Threading.Channels;
 using Lidgren.Network;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.VisualBasic;
 using RebuildSharedData.Data;
@@ -30,6 +33,8 @@ public class NetworkManager
     public static World World { get; private set; }
 
     public static int PlayerCount => ConnectionLookup.Count;
+
+    public static ConcurrentDictionary<int, NetworkConnection> ConnectedAccounts = new();
 
     public static Dictionary<WebSocket, NetworkConnection> ConnectionLookup = new(ServerConfig.InitialConnectionCapacity);
     public static List<NetworkConnection> Players = new();
@@ -609,39 +614,78 @@ public class NetworkManager
         return Guid.TryParse(sp, out id);
     }
 
-    private static async Task<LoadCharacterRequest> LoadOrCreateCharacter(string connectString)
+    //private static async Task<LoadCharacterRequest> LoadOrCreateCharacter(int accountId, string accountName)
+    //{
+    //    ServerLogger.Log($"Running LoadOrCreateCharacter for accountId {accountId}");
+
+    //    var req = new LoadCharacterRequest(accountId, "");
+    //    await RoDatabase.ExecuteDbRequestAsync(req);
+
+    //    if (req.HasCharacter)
+    //    {
+    //        ServerLogger.Log($"Client has an existing character! Character name {req.Name}.");
+    //        return req;
+    //    }
+
+    //    //var name = "Player " + GameRandom.NextInclusive(0, 999);
+    //    var name = accountName;
+
+    //    var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
+
+    //    var newReq = new SaveCharacterRequest(name, accountId, 0);
+    //    await RoDatabase.ExecuteDbRequestAsync(newReq);
+
+    //    ArrayPool<int>.Shared.Return(charData, true);
+
+    //    var loadReq = new LoadCharacterRequest(accountId, ""); //database will assign us a guid, use that to load back the character
+    //    await RoDatabase.ExecuteDbRequestAsync(loadReq);
+
+    //    return loadReq;
+    //}
+
+    private static async Task ReturnFailedToLogin(WebSocket socket, IdentityResult result)
     {
-        ServerLogger.Log("Received connection with connection string: " + connectString);
-        if (connectString.Length > 7)
-        {
-            if (GetCharId(connectString, out var id))
-            {
-                var req = new LoadCharacterRequest(id);
-                await RoDatabase.ExecuteDbRequestAsync(req);
+        var sb = new StringBuilder(100);
+        sb.AppendLine("Failed to create login. Error: ");
+        foreach (var err in result.Errors)
+            sb.AppendLine(err.Description);
 
-                if (req.HasCharacter)
-                {
-                    ServerLogger.Log($"Client has an existing character! Character name {req.Name}.");
-                    return req;
-                }
-            }
-        }
+        var buffer = ArrayPool<byte>.Shared.Rent(16 + sb.Length * 2);
+        using var ms = new MemoryStream(buffer);
+        using var bw = new BinaryWriter(ms);
 
-        var name = "Player " + GameRandom.NextInclusive(0, 999);
+        bw.Write((byte)PacketType.ConnectionDenied);
+        bw.Write((short)sb.Length);
+        bw.Write(Encoding.UTF8.GetBytes(sb.ToString()));
 
-        var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
-
-        var newReq = new SaveCharacterRequest(name);
-        await RoDatabase.ExecuteDbRequestAsync(newReq);
-
-        ArrayPool<int>.Shared.Return(charData, true);
-
-        var loadReq = new LoadCharacterRequest(newReq.Id); //database will assign us a guid, use that to load back the character
-        await RoDatabase.ExecuteDbRequestAsync(loadReq);
-
-        return loadReq;
+        var data = new ArraySegment<byte>(buffer, 0, (int)ms.Position);
+        
+        await socket.SendAsync(data, WebSocketMessageType.Binary, true, CancellationToken.None);
+        await socket.CloseAsync(WebSocketCloseStatus.ProtocolError, "Disconnected", CancellationToken.None);
+        
+        return;
     }
-    
+
+
+    private static async Task ReturnServerErrorAndDisconnect(WebSocket socket, string message)
+    {
+        var buffer = ArrayPool<byte>.Shared.Rent(16 + message.Length * 2);
+        using var ms = new MemoryStream(buffer);
+        using var bw = new BinaryWriter(ms);
+
+        bw.Write((byte)PacketType.ConnectionDenied);
+        bw.Write((short)message.Length);
+        bw.Write(Encoding.UTF8.GetBytes(message));
+
+        var data = new ArraySegment<byte>(buffer, 0, (int)ms.Position);
+
+        await socket.SendAsync(data, WebSocketMessageType.Binary, true, CancellationToken.None);
+        await socket.CloseAsync(WebSocketCloseStatus.ProtocolError, "Disconnected", CancellationToken.None);
+
+        ArrayPool<byte>.Shared.Return(buffer);
+        return;
+    }
+
     public static async Task ReceiveConnection(HttpContext context, WebSocket socket)
     {
         var buffer = new byte[1024 * 4];
@@ -661,21 +705,100 @@ public class NetworkManager
             return;
         }
 
-        var txt = Encoding.UTF8.GetString(new ReadOnlySpan<byte>(buffer, 0, result.Count));
+        var watch = Stopwatch.StartNew();
 
-        //ServerLogger.Log(txt);
+        bool isNewCharacter = false;
+        bool isTokenConnection = false;
+        bool requestToken = false;
+        string userName;
+        string password;
+        byte[]? token = null;
+        var userId = -1;
 
-        if (!txt.StartsWith("Connect"))
+        using (var ms = new MemoryStream(buffer))
+        using (var br = new BinaryReader(ms))
         {
-            ServerLogger.Log("Client failed to connect properly, disconnecting...");
-            timeoutToken = new CancellationTokenSource(15000).Token;
-            await socket.CloseAsync(WebSocketCloseStatus.ProtocolError, "Server did not have valid connection string.", CancellationToken.None);
-            return;
+            isNewCharacter = br.ReadBoolean();
+            isTokenConnection = br.ReadBoolean();
+            requestToken = br.ReadBoolean();
+            userName = br.ReadString();
+            password = br.ReadString();
+            if (isTokenConnection)
+            {
+                var len = br.ReadInt32();
+                token = br.ReadBytes(len);
+            }
+        }
+
+        //isNewCharacter = true;
+
+        if (isNewCharacter)
+        {
+            var res = await RoDatabase.CreateUser(userName, password);
+            if (!res.Succeeded)
+            {
+                await ReturnFailedToLogin(socket, res);
+                ServerLogger.Log($"Failed to create user, disconnecting.");
+                return;
+            }
+        }
+
+        if (isTokenConnection)
+        {
+            if (token == null) throw new Exception($"User token is unexpectedly null!");
+            var res = await RoDatabase.LogInWithToken(userName, token);
+            if (res.ResultCode != ServerConnectResult.Success)
+            {
+                await ReturnServerErrorAndDisconnect(socket, "Failed to login using stored password. Please re-enter your password and try again.");
+                return;
+            }
+
+            userId = res.AccountId;
+            userName = res.AccountName; //just because they may have provided some weird capitalization or something
+            token = res.AccountToken; //if they're using a token, they always want a new one
+        }
+        else
+        {
+            var (res, userData) = await RoDatabase.LogIn(userName, password, requestToken);
+            if (res != ServerConnectResult.Success)
+            {
+                var failMessage = res switch
+                {
+                    ServerConnectResult.Banned => "Could not connect: account is locked.",
+                    ServerConnectResult.FailedLogin => "Could not log in, your username or password were incorrect.",
+                    _ => "Failed to login."
+                };
+                ServerLogger.Log($"User failed to login, disconnecting.");
+                await ReturnServerErrorAndDisconnect(socket, failMessage);
+                return;
+            }
+
+            userId = userData.AccountId;
+            userName = userData.AccountName; //just because they may have provided some weird capitalization or something
+            token = userData.AccountToken;
         }
 
         var playerConnection = new NetworkConnection(socket);
         playerConnection.LastKeepAlive = Time.ElapsedTime + 20;
         playerConnection.Confirmed = true;
+        playerConnection.AccountId = userId;
+        playerConnection.AccountName = userName;
+        playerConnection.LoginTime = Time.ElapsedTimeFloat;
+
+        if (!ConnectedAccounts.TryAdd(userId, playerConnection))
+        {
+            if (ConnectedAccounts.TryGetValue(userId, out var existing))
+                await existing.CancellationSource.CancelAsync(); //if they are currently connected, trigger a disconnect
+            else
+            {
+                ConnectedAccounts.TryRemove(userId, out var _); //if they aren't, remove them from the list of connected accounts.
+                ServerLogger.LogWarning($"We were unable to add {userId} to the connected accounts list, even though it doesn't appear to be currently connected.");
+            }
+
+            await ReturnServerErrorAndDisconnect(socket, "The server still sees you as logged in. Please wait a moment and try again.");
+
+            return;
+        }
 
         var cancellation = playerConnection.Cancellation;
 
@@ -683,7 +806,7 @@ public class NetworkManager
 
         //var hasCharacter = false;
 
-        playerConnection.LoadCharacterRequest = await LoadOrCreateCharacter(txt);
+        //playerConnection.LoadCharacterRequest = await LoadOrCreateCharacter(userId, userName);
         
         clientLock.EnterWriteLock();
 
@@ -697,10 +820,27 @@ public class NetworkManager
             clientLock.ExitWriteLock();
         }
 
+        if (requestToken && token == null)
+            requestToken = false;
+
         var msg = CreateOutboundMessage(playerConnection);
         msg.WritePacketType(PacketType.ConnectionApproved);
+        msg.Write(requestToken);
+        if (requestToken)
+        {
+            msg.Write(token!.Length);
+            msg.Write(token!); //no it can't be null fuck you
+        }
+
+        await RoDatabase.LoadCharacterSelectDataForPlayer(msg, userId);
+
         playerConnection.Status = ConnectionStatus.Connected;
         outboundChannel.Enqueue(msg);
+
+        watch.Stop();
+        var elapsedMs = watch.ElapsedMilliseconds;
+        ServerLogger.Log($"Connection for user {userName} created and character loaded in {elapsedMs} ms.");
+        watch = null; //so we can collect it in GC
 
         while (socket.State == WebSocketState.Open)
         {
@@ -743,6 +883,7 @@ public class NetworkManager
         }
 
         playerConnection.Status = ConnectionStatus.Disconnected;
+        ConnectedAccounts.Remove(userId, out var _);
 
         //timeoutToken = new CancellationTokenSource(15000).Token;
 

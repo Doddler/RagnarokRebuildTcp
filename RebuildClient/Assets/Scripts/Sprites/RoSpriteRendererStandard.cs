@@ -106,7 +106,7 @@ namespace Assets.Scripts.Sprites
 
             SortingGroup = gameObject.GetOrAddComponent<SortingGroup>();
             SortingGroup.sortingOrder = SortingOrder;
-
+            
             MeshRenderer.receiveShadows = false;
             MeshRenderer.lightProbeUsage = LightProbeUsage.BlendProbes;
             MeshRenderer.shadowCastingMode = ShadowCastingMode.Off;

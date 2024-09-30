@@ -9,6 +9,7 @@ using Assets.Scripts.UI.Inventory;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
@@ -49,7 +50,7 @@ public class UiManager : MonoBehaviour
             return _instance;
         }
     }
-
+    
     void Awake()
     {
         _instance = this;
@@ -77,9 +78,20 @@ public class UiManager : MonoBehaviour
         SkillHotbar.Initialize();
         LoadWindowPositionData();
         
-        HelpWindow.ShowWindow();
+        HelpWindow.HideWindow();
+        
+        InventoryWindow.ShowWindow();
+        //InventoryWindow.HideWindow();
         
         ActionTextDisplay.EndActionTextDisplay();
+
+        canvas.enabled = false;
+    }
+
+    public void OnLogIn()
+    {
+        InventoryWindow.UpdateActiveVisibleBag();
+        InventoryWindow.HideWindow();
     }
 
     public void SyncFloatingBoxPositionsWithSaveData()
@@ -206,7 +218,7 @@ public class UiManager : MonoBehaviour
 
     public void SetEnabled(bool enabled)
     {
-        var c = PrimaryUserUIContainer.GetComponent<Canvas>();
+        // var c = PrimaryUserUIContainer.GetComponent<Canvas>();
         canvas.enabled = enabled;
     }
 

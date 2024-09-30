@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using RebuildSharedData.Enum;
 
 namespace RebuildSharedData.ClientTypes;
 
@@ -14,6 +15,7 @@ public class ItemData
     public int Price;
     public bool IsUnique;
     public bool IsUseable;
+    public ItemClass ItemClass;
     public string Effect;
     public string Sprite;
 }

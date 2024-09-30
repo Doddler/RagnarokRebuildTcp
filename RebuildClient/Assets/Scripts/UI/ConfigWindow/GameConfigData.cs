@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -42,8 +43,13 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ShowLevelsInOverlay = true;
         //ui
         public float MasterUIScale = 1f;
+        //visuals
+        public bool UseSmoothPixel = true;
 
         public HotBarSaveData[] HotBarSaveData;
+        
+        //user
+        [CanBeNull] public string SavedLoginToken;
         
         public void InitDefaultValues()
         {

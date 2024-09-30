@@ -9,7 +9,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers = new SkillHandlerBase[71];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
-			handlers[2] = new DefaultSkillHandler();
+			handlers[2] = new FirstAidHandler();
 			handlers[3] = new BashHandler();
 			handlers[4] = new EndureSkillHandler();
 			handlers[5] = new DefaultSkillHandler();

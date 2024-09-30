@@ -1161,8 +1161,8 @@ public class CombatEntity : IEntityAutoReset
 
         Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
     }
-
-    public void ApplyCooldownForSupportSkillAction()
+    
+    public void ApplyCooldownForSupportSkillAction(float minCooldownTime = 0f)
     {
         if (Character.Type != CharacterType.Player)
         {
@@ -1175,6 +1175,9 @@ public class CombatEntity : IEntityAutoReset
 
         var attackMotionTime = GetTiming(TimingStat.AttackMotionTime); //time for actual weapon strike to occur
         var delayTime = GetTiming(TimingStat.AttackDelayTime); //time before you can attack again
+
+        if (delayTime < minCooldownTime)
+            delayTime = minCooldownTime;
 
         if (attackMotionTime < motionTime)
             motionTime = attackMotionTime;

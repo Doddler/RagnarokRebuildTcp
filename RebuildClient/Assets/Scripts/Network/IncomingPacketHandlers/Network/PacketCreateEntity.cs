@@ -75,7 +75,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var name = msg.ReadString();
                 var isMain = Network.PlayerId == id;
                 if (isMain)
+                {
                     State.EntityId = id;
+                    State.IsValid = true;
+                }
 
                 Debug.Log("Name: " + name);
 

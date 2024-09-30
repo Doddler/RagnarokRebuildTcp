@@ -169,7 +169,19 @@ public class BuildTool : IActiveBuildTargetChanged
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
         {
+            
+            // Debug.Log((SceneView)SceneView.sceneViews[0]);
+            // Debug.Log(SceneView.currentDrawingSceneView.camera);
+            // ((SceneView)SceneView.sceneViews[0]).camera.transform.position = new Vector3(802.82f, 496.01f, -1131.95f);
+            // ((SceneView)SceneView.sceneViews[0]).camera.transform.rotation = Quaternion.identity;
+
+
+            var bounds = new Bounds(new Vector3(800, 500, 0), new Vector3(600, 600, 600));
+            SceneView.lastActiveSceneView.Frame(bounds, true);
+            SceneView.lastActiveSceneView.in2DMode = true;
+            
             EditorSceneManager.OpenScene($"Assets/Scenes/MainScene.unity", OpenSceneMode.Single);
+            
         }
     }
 

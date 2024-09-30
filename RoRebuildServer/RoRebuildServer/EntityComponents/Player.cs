@@ -5,6 +5,7 @@ using Antlr4.Runtime.Tree.Xpath;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
+using RebuildSharedData.Util;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
@@ -32,6 +33,7 @@ public class Player : IEntityAutoReset
     public NetworkConnection Connection = null!;
 
     public Guid Id { get; set; }
+    public int CharacterSlot { get; set; }
     public string Name { get; set; } = "Uninitialized Player";
     public HeadFacing HeadFacing;
     //public PlayerData Data { get; set; }
@@ -175,10 +177,11 @@ public class Player : IEntityAutoReset
         foreach (var skill in LearnedSkills)
             SkillHandler.ApplyPassiveEffects(skill.Key, CombatEntity, skill.Value);
 
-        Equipment.Player = this;
-        Equipment.RunAllOnEquip();
         if (Equipment == null!)
             Equipment = new ItemEquipState();
+
+        Equipment.Player = this;
+        Equipment.RunAllOnEquip();
 
         UpdateStats();
 
@@ -207,6 +210,28 @@ public class Player : IEntityAutoReset
         //unique items will end up as a separate entry no matter the id so no need to see if stack size exceeds limits
 
         return true;
+    }
+
+    public void PackPlayerSummaryData(int[] buffer)
+    {
+        buffer[(int)PlayerSummaryData.Level] = GetData(PlayerStat.Level);
+        buffer[(int)PlayerSummaryData.JobId] = GetData(PlayerStat.Job);
+        buffer[(int)PlayerSummaryData.HeadId] = GetData(PlayerStat.Head);
+        buffer[(int)PlayerSummaryData.HairColor] = GetData(PlayerStat.HairId);
+        buffer[(int)PlayerSummaryData.Hp] = GetStat(CharacterStat.Hp);
+        buffer[(int)PlayerSummaryData.MaxHp] = GetStat(CharacterStat.MaxHp);
+        buffer[(int)PlayerSummaryData.Sp] = GetStat(CharacterStat.Sp);
+        buffer[(int)PlayerSummaryData.MaxSp] = GetStat(CharacterStat.MaxSp);
+        buffer[(int)PlayerSummaryData.Headgear1] = Equipment.ItemSlots[(int)EquipSlot.HeadTop];
+        buffer[(int)PlayerSummaryData.Headgear2] = Equipment.ItemSlots[(int)EquipSlot.HeadMid];
+        buffer[(int)PlayerSummaryData.Headgear3] = Equipment.ItemSlots[(int)EquipSlot.HeadBottom];
+        buffer[(int)PlayerSummaryData.Str] = GetStat(CharacterStat.Str);
+        buffer[(int)PlayerSummaryData.Agi] = GetStat(CharacterStat.Agi);
+        buffer[(int)PlayerSummaryData.Int] = GetStat(CharacterStat.Int);
+        buffer[(int)PlayerSummaryData.Vit] = GetStat(CharacterStat.Vit);
+        buffer[(int)PlayerSummaryData.Dex] = GetStat(CharacterStat.Dex);
+        buffer[(int)PlayerSummaryData.Luk] = GetStat(CharacterStat.Luk);
+        buffer[(int)PlayerSummaryData.Gender] = GetData(PlayerStat.Gender);
     }
 
     public bool TryRemoveItemFromInventory(int type, int count)
@@ -830,9 +855,16 @@ public class Player : IEntityAutoReset
 
         if (!CanPickUpItem(item))
             return false;
-        
-        var change = item.Count;
+
         Character.Map!.PickUpOrRemoveItem(Character, groundItem.Id);
+        Character.AttackCooldown = Time.ElapsedTimeFloat + 0.3f; //no attacking for 0.3s after picking up an item
+        CreateItemInInventory(item);
+        return true;
+    }
+
+    public bool CreateItemInInventory(ItemReference item)
+    {
+        var change = item.Count;
         var updatedCount = (short)AddItemToInventory(item);
         var bagId = item.Id;
         if (item.Type == ItemType.RegularItem)
@@ -840,7 +872,7 @@ public class Player : IEntityAutoReset
         else
             bagId = updatedCount; //AddItemToInventory returns the bagId for unique items (yeah this is scuffed)
         CommandBuilder.AddItemToInventory(this, item, bagId, change);
-        Character.AttackCooldown = Time.ElapsedTimeFloat + 0.3f; //no attacking for 0.3s after picking up an item
+        
         return true;
     }
 

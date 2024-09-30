@@ -157,7 +157,7 @@ namespace Assets.Scripts.Editor
             
             for (var i = 0; i < textureNames.Count; i++)
             {
-                var texout = TextureImportHelper.GetOrImportTextureToProject(textureNames[i], basePath, "Assets/Effects/Textures/" + baseName);
+                var texout = TextureImportHelper.GetOrImportTextureToProject(textureNames[i], basePath, "Assets/Effects/Textures/" + baseName, true);
                 textures.Add(texout);
             }
             

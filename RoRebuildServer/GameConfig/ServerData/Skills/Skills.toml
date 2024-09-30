@@ -14,7 +14,7 @@ Name = "First Aid"
 Icon = "nv_firstaid"
 Target = "Self"
 MaxLevel = 1
-SpCost = [10]
+SpCost = [4]
 
 #----------------------------------
 # Swordsman

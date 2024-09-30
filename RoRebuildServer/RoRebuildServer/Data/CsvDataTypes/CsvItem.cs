@@ -1,4 +1,6 @@
-﻿namespace RoRebuildServer.Data.CsvDataTypes
+﻿using RebuildSharedData.Enum;
+
+namespace RoRebuildServer.Data.CsvDataTypes
 {
     public class CsvItem
     {
@@ -7,8 +9,7 @@
         public required string Name { get; set; }
         public required int Weight { get; set; }
         public required int Price { get; set; }
-        public required bool IsUnique { get; set; }
-        public required bool IsUseable { get; set; }
+        public required ItemClass ItemClass { get; set; }
         public required string Effect { get; set; }
         public required string Sprite { get; set; }
     }

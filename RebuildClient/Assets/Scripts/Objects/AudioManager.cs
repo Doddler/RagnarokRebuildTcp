@@ -14,8 +14,10 @@ namespace Assets.Scripts.Objects
         private bool muteBgm;
 
         private AudioMixerGroup musicGroup;
+        private AudioMixerGroup soundGroup;
 
         private AudioSource[] bgmChannels;
+        private AudioSource[] uiChannels;
         private int curBgmChannel;
 
         public struct ChannelUsage
@@ -24,7 +26,7 @@ namespace Assets.Scripts.Objects
             public string Filename;
         }
 
-        //Channels 0-19: Anyone can use, first come first serve
+        //Channels 0-19: Anyone can use, first come, first served
         //Channels 20-29: Will play if the owner is not currently playing that clip
         //Channels 30-39: Will play if no one is currently playing that clip
         //Channels 40-47: Reserved for environmental sounds, UI, and BGM
@@ -40,7 +42,9 @@ namespace Assets.Scripts.Objects
         public void Awake()
         {
             bgmChannels = new AudioSource[2];
+            uiChannels = new AudioSource[2];
             musicGroup = Mixer.FindMatchingGroups("Music")[0];
+            soundGroup = Mixer.FindMatchingGroups("Sounds")[0];
             Mixer.GetFloat("Music", out bgmLevel);
 
             for (var i = 0; i < 2; i++)
@@ -51,6 +55,16 @@ namespace Assets.Scripts.Objects
                 bgmChannels[i].outputAudioMixerGroup = musicGroup;
                 bgmChannels[i].priority = 1;
             }
+
+            for (var i = 0; i < 2; i++)
+            {
+                var go = new GameObject("UIChannel " + (i + 1));
+                go.transform.SetParent(gameObject.transform);
+                uiChannels[i] = go.AddComponent<AudioSource>();
+                uiChannels[i].outputAudioMixerGroup = soundGroup;
+                uiChannels[i].priority = 1;
+            }
+            
 
             var channelCount = LastEntityChannel + 1;
 
@@ -83,6 +97,30 @@ namespace Assets.Scripts.Objects
             bgmChannels[curBgmChannel].volume = 1f;
             bgmChannels[curBgmChannel].loop = true;
             bgmChannels[curBgmChannel].Play();
+        }
+        
+        public void PlaySystemSound(AudioClip clip)
+        {
+            var curChannel = -1;
+            for (var i = 0; i < uiChannels.Length; i++)
+            {
+                if (!uiChannels[i].isPlaying)
+                {
+                    curChannel = i;
+                    break;
+                }
+            }
+
+            if (curChannel == -1)
+            {
+                Debug.Log($"Unable to play sound {clip}, there are no free channels.");
+                return;
+            }
+
+            uiChannels[curChannel].clip = clip;
+            uiChannels[curChannel].volume = 1f;
+            uiChannels[curChannel].loop = false;
+            uiChannels[curChannel].Play();
         }
 
         public void FadeOutCurrentBgm()
@@ -228,7 +266,11 @@ namespace Assets.Scripts.Objects
             muteBgm = !muteBgm;
         }
 
-
+        public void PlaySystemSound(string name)
+        {
+            AddressableUtility.Load<AudioClip>(gameObject, "Assets/Sounds/Effects/" + name, PlaySystemSound);
+        }
+        
         public void PlayBgm(string name)
         {
             AddressableUtility.Load<AudioClip>(gameObject, "Assets/Music/" + name, OnLoad);

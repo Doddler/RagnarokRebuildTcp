@@ -25,11 +25,11 @@ Orc Dungeon 1F,orcsdun01,orcsdun01.walk,Dungeon,48.mp3
 Orc Dungeon 2F,orcsdun02,orcsdun02.walk,Dungeon,48.mp3
 Izlude,izlude,izlude.walk,Town,26.mp3
 Izlude Indoors,izlude_in,izlude_in.walk,Indoor,26.mp3
-Undersea Tunnel 1F,iz_dun00,iz_dun00.walk,Dungeon,29.mp3
-Undersea Tunnel 2F,iz_dun01,iz_dun01.walk,Dungeon,29.mp3
-Undersea Tunnel 3F,iz_dun02,iz_dun02.walk,Dungeon,29.mp3
-Undersea Tunnel 4F,iz_dun03,iz_dun03.walk,Dungeon,49.mp3
-Undersea Tunnel 5F,iz_dun04,iz_dun04.walk,Dungeon,49.mp3
+Byalan Undersea Tunnel 1F,iz_dun00,iz_dun00.walk,Dungeon,29.mp3
+Byalan Undersea Tunnel 2F,iz_dun01,iz_dun01.walk,Dungeon,29.mp3
+Byalan Undersea Tunnel 3F,iz_dun02,iz_dun02.walk,Dungeon,29.mp3
+Byalan Undersea Tunnel 4F,iz_dun03,iz_dun03.walk,Dungeon,49.mp3
+Byalan Undersea Tunnel 5F,iz_dun04,iz_dun04.walk,Dungeon,49.mp3
 Juperos 1F,juperos_01,juperos_01.walk,Dungeon,89.mp3
 Juperos Core Elevator,jupe_ele,jupe_ele.walk,Indoor,89.mp3
 Mt. Mjolnir 1,mjolnir_01,mjolnir_01.walk,Field,31.mp3
@@ -134,22 +134,22 @@ Debug Room 4,pvp_n_1-5,pvp_n_1-5.walk,None,51.mp3
 Test Room A,guild_vs1,guild_vs1.walk,None,07.mp3
 Test Room B,guild_vs2,guild_vs2.walk,None,07.mp3
 Test Room C,guild_vs5,guild_vs5.walk,None,51.mp3
-Clock Tower B1f,alde_dun01,alde_dun01.walk,Dungeon,61.mp3
-Clock Tower B2f,alde_dun02,alde_dun02.walk,Dungeon,61.mp3
-Clock Tower B3f,alde_dun03,alde_dun03.walk,Dungeon,61.mp3
-Clock Tower B4f,alde_dun04,alde_dun04.walk,Dungeon,61.mp3
-Clock Tower 1f,c_tower1,c_tower1.walk,Dungeon,60.mp3
-Clock Tower 2f,c_tower2,c_tower2.walk,Dungeon,60.mp3
-Clock Tower 3f,c_tower3,c_tower3.walk,Dungeon,60.mp3
-Clock Tower 4f,c_tower4,c_tower4.walk,Dungeon,60.mp3
+Clock Tower B1F,alde_dun01,alde_dun01.walk,Dungeon,61.mp3
+Clock Tower B2F,alde_dun02,alde_dun02.walk,Dungeon,61.mp3
+Clock Tower B3F,alde_dun03,alde_dun03.walk,Dungeon,61.mp3
+Clock Tower B4F,alde_dun04,alde_dun04.walk,Dungeon,61.mp3
+Clock Tower 1F,c_tower1,c_tower1.walk,Dungeon,60.mp3
+Clock Tower 2F,c_tower2,c_tower2.walk,Dungeon,60.mp3
+Clock Tower 3F,c_tower3,c_tower3.walk,Dungeon,60.mp3
+Clock Tower 4F,c_tower4,c_tower4.walk,Dungeon,60.mp3
 Valkyrie Realm,prt_gld,prt_gld.walk,Field,66.mp3
 Glast Heim,glast_01,glast_01.walk,Field,42.mp3
 Glast Heim Castle 1F,gl_cas01,gl_cas01.walk,Dungeon,43.mp3
 Glast Heim Castle 2F,gl_cas02,gl_cas02.walk,Dungeon,43.mp3
 Glast Heim St. Abbey,gl_church,gl_church.walk,Dungeon,40.mp3
 Glast Heim Catacombs,gl_chyard,gl_chyard.walk,Dungeon,40.mp3
-The Lowest Cave in Glast Heim B1F,gl_dun01,gl_dun01.walk,Dungeon,42.mp3
-The Lowest Cave in Glast Heim B2F,gl_dun02,gl_dun02.walk,Dungeon,42.mp3
+Underground Glast Heim,gl_dun01,gl_dun01.walk,Dungeon,42.mp3
+Deep Underground Glast Heim,gl_dun02,gl_dun02.walk,Dungeon,42.mp3
 Glast Heim Keep,gl_in01,gl_in01.walk,Dungeon,42.mp3
 Glast Heim Chivalry 1F,gl_knt01,gl_knt01.walk,Dungeon,44.mp3
 Glast Heim Chivalry 2F,gl_knt02,gl_knt02.walk,Dungeon,44.mp3
@@ -185,7 +185,7 @@ Schwaltzwald Guard Camp,yuno_fild09,yuno_fild09.walk,Field,71.mp3
 Juno Field,yuno_fild10,yuno_fild10.walk,Field,72.mp3
 Juno Field,yuno_fild11,yuno_fild11.walk,Field,71.mp3
 Border Checkpoint,yuno_fild12,yuno_fild12.walk,Field,71.mp3
-"Juno, Capital of the Schwarzwald Republic",yuno,yuno.walk,Town,70.mp3
+"Juno, Capital of Schwarzwald",yuno,yuno.walk,Town,70.mp3
 Inside Juno,yuno_in01,yuno_in01.walk,Indoor,70.mp3
 Inside the Sage Castle,yuno_in02,yuno_in02.walk,Indoor,70.mp3
 Inside Juno,yuno_in03,yuno_in03.walk,Indoor,70.mp3
@@ -261,9 +261,9 @@ Baldr Realm,pay_gld,pay_gld.walk,Field,66.mp3
 "Amatsu, the Land of Destiny",amatsu,amatsu.walk,Town,76.mp3
 "Amatsu [Indoors]",ama_in01,ama_in01.walk,Indoor,76.mp3
 "Amatsu [Himeji Castle]",ama_in02,ama_in02.walk,Indoor,76.mp3
-"Amatsu Dungeon 1F - Tatami Maze",ama_dun01,ama_dun01.walk,None,77.mp3
-"Amatsu Dungeon 2F - Underground Forest",ama_dun02,ama_dun02.walk,Dungeon,77.mp3
-"Amatsu Dungeon 1F - Underground Shrine",ama_dun03,ama_dun03.walk,Dungeon,77.mp3
+"Amatsu Dungeon 1F: Tatami Maze",ama_dun01,ama_dun01.walk,None,77.mp3
+"Amatsu Dungeon 2F: Underground Forest",ama_dun02,ama_dun02.walk,Dungeon,77.mp3
+"Amatsu DUngeon 3F: Underground Shrine",ama_dun03,ama_dun03.walk,Dungeon,77.mp3
 "Amatsu Field",ama_fild01,ama_fild01.walk,Field,73.mp3
 "Izlude Arena",arena_room,arena_room.walk,Indoor,52.mp3
 "The Hall of Honor",valkyrie,valkyrie.walk,None,09.mp3

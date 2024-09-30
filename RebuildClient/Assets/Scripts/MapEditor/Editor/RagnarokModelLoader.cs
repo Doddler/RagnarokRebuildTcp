@@ -558,7 +558,8 @@ namespace Assets.Scripts.MapEditor.Editor
 				//var modelName = @"글래스트\글래스트_부서진의자1.rsm"; //Glast\Glast_BrokenChair1
 				//var modelName = @"내부소품\탁상1.rsm"; //props\desk1
 				
-				var modelName = @"프론테라\민가04.rsm"; //prontera armory
+				//var modelName = @"프론테라\민가04.rsm"; //prontera armory
+				var modelName = @"splen\민가침대02.rsm";
 				
 				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, $@"model\{modelName}"); //prontera armory
 				var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));

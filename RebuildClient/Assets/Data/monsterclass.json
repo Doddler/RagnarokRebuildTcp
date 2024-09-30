@@ -3334,6 +3334,28 @@
       "Color": "#FF6F6FFF"
     },
     {
+      "Id": 4301,
+      "Code": "WERE_WOLF",
+      "Name": "Werewolf",
+      "SpriteName": "were_wolf.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.216,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4302,
+      "Code": "RAPTICE",
+      "Name": "Raptice",
+      "SpriteName": "frilldora.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.324,
+      "Color": "#FFFFFFFF"
+    },
+    {
       "Id": 1000,
       "Code": "WARP",
       "Name": "Warp",

@@ -158,31 +158,31 @@
     },
     {
       "Code": "iz_dun00",
-      "Name": "Undersea Tunnel 1F",
+      "Name": "Byalan Undersea Tunnel 1F",
       "MapMode": 2,
       "Music": "29.mp3"
     },
     {
       "Code": "iz_dun01",
-      "Name": "Undersea Tunnel 2F",
+      "Name": "Byalan Undersea Tunnel 2F",
       "MapMode": 2,
       "Music": "29.mp3"
     },
     {
       "Code": "iz_dun02",
-      "Name": "Undersea Tunnel 3F",
+      "Name": "Byalan Undersea Tunnel 3F",
       "MapMode": 2,
       "Music": "29.mp3"
     },
     {
       "Code": "iz_dun03",
-      "Name": "Undersea Tunnel 4F",
+      "Name": "Byalan Undersea Tunnel 4F",
       "MapMode": 2,
       "Music": "49.mp3"
     },
     {
       "Code": "iz_dun04",
-      "Name": "Undersea Tunnel 5F",
+      "Name": "Byalan Undersea Tunnel 5F",
       "MapMode": 2,
       "Music": "49.mp3"
     },
@@ -806,49 +806,49 @@
     },
     {
       "Code": "alde_dun01",
-      "Name": "Clock Tower B1f",
+      "Name": "Clock Tower B1F",
       "MapMode": 2,
       "Music": "61.mp3"
     },
     {
       "Code": "alde_dun02",
-      "Name": "Clock Tower B2f",
+      "Name": "Clock Tower B2F",
       "MapMode": 2,
       "Music": "61.mp3"
     },
     {
       "Code": "alde_dun03",
-      "Name": "Clock Tower B3f",
+      "Name": "Clock Tower B3F",
       "MapMode": 2,
       "Music": "61.mp3"
     },
     {
       "Code": "alde_dun04",
-      "Name": "Clock Tower B4f",
+      "Name": "Clock Tower B4F",
       "MapMode": 2,
       "Music": "61.mp3"
     },
     {
       "Code": "c_tower1",
-      "Name": "Clock Tower 1f",
+      "Name": "Clock Tower 1F",
       "MapMode": 2,
       "Music": "60.mp3"
     },
     {
       "Code": "c_tower2",
-      "Name": "Clock Tower 2f",
+      "Name": "Clock Tower 2F",
       "MapMode": 2,
       "Music": "60.mp3"
     },
     {
       "Code": "c_tower3",
-      "Name": "Clock Tower 3f",
+      "Name": "Clock Tower 3F",
       "MapMode": 2,
       "Music": "60.mp3"
     },
     {
       "Code": "c_tower4",
-      "Name": "Clock Tower 4f",
+      "Name": "Clock Tower 4F",
       "MapMode": 2,
       "Music": "60.mp3"
     },
@@ -890,13 +890,13 @@
     },
     {
       "Code": "gl_dun01",
-      "Name": "The Lowest Cave in Glast Heim B1F",
+      "Name": "Underground Glast Heim",
       "MapMode": 2,
       "Music": "42.mp3"
     },
     {
       "Code": "gl_dun02",
-      "Name": "The Lowest Cave in Glast Heim B2F",
+      "Name": "Deep Underground Glast Heim",
       "MapMode": 2,
       "Music": "42.mp3"
     },
@@ -1040,7 +1040,7 @@
     },
     {
       "Code": "yuno",
-      "Name": "Juno, Capital of the Schwarzwald Republic",
+      "Name": "Juno, Capital of Schwarzwald",
       "MapMode": 1,
       "Music": "70.mp3"
     },
@@ -1226,19 +1226,19 @@
     },
     {
       "Code": "ama_dun01",
-      "Name": "Amatsu Dungeon 1F - Tatami Maze",
+      "Name": "Amatsu Dungeon: Tatami Maze",
       "MapMode": 0,
       "Music": "77.mp3"
     },
     {
       "Code": "ama_dun02",
-      "Name": "Amatsu Dungeon 2F - Underground Forest",
+      "Name": "Amatsu Dungeon: Underground Forest",
       "MapMode": 2,
       "Music": "77.mp3"
     },
     {
       "Code": "ama_dun03",
-      "Name": "Amatsu Dungeon 1F - Underground Shrine",
+      "Name": "Amatsu DUngeon: Underground Shrine",
       "MapMode": 2,
       "Music": "77.mp3"
     },

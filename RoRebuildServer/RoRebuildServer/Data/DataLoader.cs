@@ -1,7 +1,9 @@
 ﻿using System.Globalization;
 using System.IO;
+using System.Numerics;
 using System.Reflection;
 using System.Text;
+using Antlr4.Runtime.Tree.Xpath;
 using CsvHelper;
 using Microsoft.Extensions.Options;
 using RebuildSharedData.ClientTypes;
@@ -18,6 +20,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
+using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
 using Tomlyn;
@@ -134,7 +137,6 @@ internal class DataLoader
         }
 
         return savePoints;
-    
     }
 
     public Dictionary<string, int> LoadEffectIds()
@@ -263,13 +265,36 @@ internal class DataLoader
 
     public Dictionary<string, MonsterDropData> LoadMonsterDropChanceData()
     {
+        var remap = new Dictionary<(int, int), (int, int)>();
+
+        var remapDrops = ServerConfig.OperationConfig.RemapDropRates;
+
+        if (remapDrops)
+        {
+            var remapFile = new Dictionary<string, MonsterDropData>();
+            var remapPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/DropRateRemapping.csv");
+
+            using var tr = new StreamReader(remapPath, Encoding.UTF8) as TextReader;
+            using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+            
+            var entries = csv.GetRecords<dynamic>();
+            foreach (var entry in entries)
+            {
+                if (entry is IDictionary<string, object> obj)
+                {
+                    var origMin = int.Parse((string)obj["OriginalMin"]);
+                    var origMax = int.Parse((string)obj["OriginalMax"]);
+                    var afterMin = int.Parse((string)obj["AfterMin"]);
+                    var afterMax = int.Parse((string)obj["AfterMax"]);
+                    remap.Add((origMin, origMax), (afterMin, afterMax));
+                }
+            }
+        }
+
         var drops = new Dictionary<string, MonsterDropData>();
         var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Drops.csv");
 
-        var factor = ServerConfig.OperationConfig.DropRateFactor;
-        if (factor < 1)
-            factor = 1;
-
+        
 #if DEBUG
         //if the file is open in excel, we can't read it... so while in debug build we'll make a copy
         var tempPath = Path.Combine(Path.GetTempPath(), @"Drops.csv");
@@ -302,17 +327,27 @@ internal class DataLoader
                             if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
                             {
                                 ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
-                                continue;
+                                //continue;
                             }
 
                             var chance = (int)int.Parse((string)obj[$"Chance{i}"]);
                             if (chance <= 0)
                                 continue;
 
-                            if (factor > 1)
-                                chance = (int)((float)chance).Remap(0, 10000, factor, 10000);
+                            if (remapDrops)
+                            {
+                                foreach (var range in remap)
+                                {
+                                    if (chance >= range.Key.Item1 && chance < range.Key.Item2)
+                                    {
+                                        chance = (int)((float)chance).Remap(range.Key.Item1, range.Key.Item2, range.Value.Item1, range.Value.Item2);
+                                        break;
+                                    }
+                                }
+                            }
 
-                            data.DropChances.Add((item, chance));
+                            if(item > 0) //for debug reasons mostly
+                                data.DropChances.Add((item, chance));
                         }
                     }
 
@@ -348,12 +383,14 @@ internal class DataLoader
 
             foreach (var entry in entries)
             {
+                var itemClass = entry.ItemClass;
                 var item = new ItemInfo()
                 {
                     Code = entry.Code,
                     Id = entry.Id,
-                    IsUnique = entry.IsUnique,
-                    IsUseable = entry.IsUseable,
+                    IsUnique = itemClass == ItemClass.Equipment || itemClass == ItemClass.Weapon,
+                    IsUseable = itemClass == ItemClass.Useable,
+                    ItemClass = itemClass,
                     Price = entry.Price,
                     Weight = entry.Weight,
                     Effect = -1,

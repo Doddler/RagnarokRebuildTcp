@@ -259,6 +259,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var mapText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/maps.json", typeof(TextAsset)) as TextAsset;
             var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(mapText.text);
             var musicNames = new List<string>();
+            musicNames.Add("01.mp3");
 
             //update scenes
             guids = AssetDatabase.FindAssets("t:Scene", new[] { "Assets/Scenes/Maps" });
@@ -354,7 +355,7 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 var fName = Path.GetFileName(path);
-                if (!Path.GetFileName(fName).StartsWith("_"))
+                if (!Path.GetFileName(fName).StartsWith("_") && !fName.Contains("버튼소리")) //exception for title screen button lol
                     continue;
                 
                 var entry = settings.CreateOrMoveEntry(guids[i], soundsGroup, readOnly: false, postEvent: false);

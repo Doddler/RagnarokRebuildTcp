@@ -1065,6 +1065,15 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+
+    public static void ErrorMessage(NetworkConnection connection, string text)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.ErrorMessage, 64);
+        packet.Write(text);
+
+        NetworkManager.SendMessage(packet, connection);
+    }
+
     public static void ApplySkillPoint(Player p, CharacterSkill skill)
     {
         var packet = NetworkManager.StartPacket(PacketType.ApplySkillPoint, 32);

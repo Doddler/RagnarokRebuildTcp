@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Util;
+using RoRebuildServer.Data;
 
 namespace RoRebuildServer.EntityComponents.Items
 {
@@ -40,6 +41,21 @@ namespace RoRebuildServer.EntityComponents.Items
             ItemType.UniqueItem => UniqueItem.Id,
             _ => -1
         };
+
+        public ItemReference(int itemId, int count)
+        {
+            var data = DataManager.ItemList[itemId];
+            if (!data.IsUnique)
+            {
+                Type = ItemType.RegularItem;
+                Item = new RegularItem() { Id = itemId, Count = (short)count };
+            }
+            else
+            {
+                Type = ItemType.UniqueItem;
+                UniqueItem = new UniqueItem() { Id = itemId, Count = (short)1, UniqueId = Guid.NewGuid() }; //ignore count on unique items
+            }
+        }
 
         public ItemReference(RegularItem item)
         {

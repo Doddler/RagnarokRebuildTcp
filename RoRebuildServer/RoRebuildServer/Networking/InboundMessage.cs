@@ -142,7 +142,7 @@ public class InboundMessage
         var temp = ArrayPool<byte>.Shared.Rent(len);
 
         ReadBytes(temp, len);
-        var str = Encoding.UTF8.GetString(temp);
+        var str = Encoding.UTF8.GetString(temp, 0, len);
 
         ArrayPool<byte>.Shared.Return(temp);
         return str;

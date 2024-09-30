@@ -37,7 +37,7 @@ namespace Assets.Editor
 					Color = Color.white,
 				};
 
-				if (version > 20)
+				if (version >= 20)
 				{
 					var r = br.ReadByte();
 					var g = br.ReadByte();

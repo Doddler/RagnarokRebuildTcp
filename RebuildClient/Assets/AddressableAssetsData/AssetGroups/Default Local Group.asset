@@ -26847,6 +26847,4374 @@ MonoBehaviour:
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a18158149725db64593848f2aa111055
+    m_Address: "Assets/Sprites/Icons/\uAC01\uAD81.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c47d8989ead8f44e92ae370b4047402
+    m_Address: "Assets/Sprites/Icons/\uACE8\uB4E0\uBA54\uC774\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4856a1479fe196b4488a0386c89ece03
+    m_Address: "Assets/Sprites/Icons/\uADC0\uC0BC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aeafe827b6fdf9b47b7536801c105e34
+    m_Address: "Assets/Sprites/Icons/\uADF8\uB77C\uB514\uC6B0\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ca16430b2de901498c3da013e560983
+    m_Address: "Assets/Sprites/Icons/\uADF8\uB79C\uB4DC\uD06C\uB85C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0fdf34781ccf2224ca46916d8b867e54
+    m_Address: "Assets/Sprites/Icons/\uADF8\uB808\uC774\uD2B8\uBCF4\uC6B0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06c9551f1d158414e927420b8b4e4955
+    m_Address: "Assets/Sprites/Icons/\uADF8\uB808\uC774\uD2B8\uC561\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24c2b25dac064e04c972219deffa7c1b
+    m_Address: "Assets/Sprites/Icons/\uAE00\uB808\uC774\uBE0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37a44ec03d7a5514c8424d427d2297cb
+    m_Address: "Assets/Sprites/Icons/\uAE38\uB85C\uD2F4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61d412ee4f1c4da4facbfc531deef979
+    m_Address: "Assets/Sprites/Icons/\uB124\uC774\uAC74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79ac186b370a70f45bb79deebedae632
+    m_Address: "Assets/Sprites/Icons/\uB2E4\uB9C8\uC2A4\uCEE4\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c547ae08c4135ee42bcbc3d4fabf7584
+    m_Address: "Assets/Sprites/Icons/\uB300\uAC70.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b6cc67f990286b4aa31335dce243abb
+    m_Address: "Assets/Sprites/Icons/\uB354\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c131082279316ac46a68eab16e049dcf
+    m_Address: "Assets/Sprites/Icons/\uB3C4\uB451\uC758\uD65C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab7509c9d5448174186bc7bbe29173b1
+    m_Address: "Assets/Sprites/Icons/\uB4DC\uB798\uACE4\uC2AC\uB808\uC774\uC5B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5aae3d1cdd8f9604ea1800cf4d7e6194
+    m_Address: "Assets/Sprites/Icons/\uB77C\uC774\uD2B8\uC5E1\uC2E4\uB860.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45df9c6fa5f18774fad4014e836b7a25
+    m_Address: "Assets/Sprites/Icons/\uB79C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c309b017eac2b434c8bef608f8c80ef0
+    m_Address: "Assets/Sprites/Icons/\uB808\uC774\uD53C\uC5B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6b5d6249b214c54bb466443c889485c
+    m_Address: "Assets/Sprites/Icons/\uB871\uBA54\uC774\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af60942299902344e9b57c331affb509
+    m_Address: "Assets/Sprites/Icons/\uB8E8\uB4DC\uB77C\uC758\uD65C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aaf847fbb7e475b45b60109c51599c87
+    m_Address: "Assets/Sprites/Icons/\uB9C8\uC0AC\uBB34\uB124.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b595147d17a1d844867a98e311fe20f
+    m_Address: "Assets/Sprites/Icons/\uB9C8\uC774\uD2B8\uC2A4\uD0DC\uD504.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c921dc3a51cc38e42b9816f8e16de278
+    m_Address: "Assets/Sprites/Icons/\uB9DD\uACE0\uC288.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a10a67f9c107ec34ca0cc75a20494c7d
+    m_Address: "Assets/Sprites/Icons/\uBA54\uC774\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6410a73bc3f00ba4cbcfbfd992ddc0d1
+    m_Address: "Assets/Sprites/Icons/\uBAA8\uB2DD\uC2A4\uD0C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a658e6d2b2b344440a16c52b91774ae4
+    m_Address: "Assets/Sprites/Icons/\uBB34\uB77C\uB9C8\uC0AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 13183af2f13175343940717bcf6fd84a
+    m_Address: "Assets/Sprites/Icons/\uBB34\uD615\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75c9b28370d51544e803ec4194a4bfa5
+    m_Address: "Assets/Sprites/Icons/\uBBF8\uC2A4\uD2F8\uD14C\uC778.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87a387f1a2b1ef24e84f4a54b2d16e27
+    m_Address: "Assets/Sprites/Icons/\uBC14\uC2A4\uD0C0\uB4DC\uC18C\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ee861a74e632a04e8bb7bb3c608ee38
+    m_Address: "Assets/Sprites/Icons/\uBC1C\uBB49.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2465b1b190839034081516f64fe82edc
+    m_Address: "Assets/Sprites/Icons/\uBC30\uD2C0\uC561\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e35a30cc2836076409a3462db9ffb620
+    m_Address: "Assets/Sprites/Icons/\uBC84\uC2A4\uD130.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce238af33c3b4c44daa421f3c967c261
+    m_Address: "Assets/Sprites/Icons/\uBCC4\uC6B4\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d636ce6d49e7e0142ae91b5bd3ce8a43
+    m_Address: "Assets/Sprites/Icons/\uBE0C\uB85C\uB4DC\uC18C\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0fec3ded04c04e42a36c5a034c0960a
+    m_Address: "Assets/Sprites/Icons/\uBE14\uB7EC\uB4DC\uC561\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b03ba1b358828f459c81f43cc99f51b
+    m_Address: "Assets/Sprites/Icons/\uBE14\uB808\uC774\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d447942161015fa4c830283d795860a8
+    m_Address: "Assets/Sprites/Icons/\uC0C8\uBC84\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c73b4f365c80a2b4fa5bf08472cc87bf
+    m_Address: "Assets/Sprites/Icons/\uC138\uC774\uBC84.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d218e8367a8d1fc448b3eacabb1a92a3
+    m_Address: "Assets/Sprites/Icons/\uC18C\uB4DC\uBA54\uC774\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6595b62c406173c4a9b083851aabcceb
+    m_Address: "Assets/Sprites/Icons/\uC288\uBC14\uC774\uCCB4\uB974\uC0E4\uBCA8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6d2f3b02afbeae479ef084915f876ce
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uB9E4\uC154.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e597d920e00997547a26ae09d9da10d1
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uD0DC\uD504.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca9e9e80247660d4bafa758b9473b776
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uD130\uB108.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1706d03a8944a64b870233daf69947b
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uD2F8\uB808\uD1A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70c85d655b5edc44aa20ee591508975f
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uD30C\uC774\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d172dbdedafea3408110d1f9d970a7d
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uD53C\uC5B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6946779c31fd2d447bb1110f8dcaa1c6
+    m_Address: "Assets/Sprites/Icons/\uC2AC\uB798\uC26C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 00ea26d760bee9249bff43a53aa34e80
+    m_Address: "Assets/Sprites/Icons/\uC2AC\uB7EC\uD130.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edba04b1190954e43a160596d147bbe7
+    m_Address: "Assets/Sprites/Icons/\uC2AC\uB808\uC774\uC5B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3b3671745700b6469423c405fdc5af5
+    m_Address: "Assets/Sprites/Icons/\uC2DC\uBBF8\uD130.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67a77e2d2b3d0f0468adcf99e00badab
+    m_Address: "Assets/Sprites/Icons/\uC2DC\uC800\uC988\uC18C\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e9f99241b36bde4ba097ee0d7a053b3
+    m_Address: "Assets/Sprites/Icons/\uC2E0\uAD00\uC758\uC9C0\uD321\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22a5e890d09d0634e96237a3b851ba0a
+    m_Address: "Assets/Sprites/Icons/\uC544\uC774\uC2A4\uD314\uC2DC\uC628.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 181ab63c2323def44b3fec1ce7ffbb96
+    m_Address: "Assets/Sprites/Icons/\uC544\uC774\uC5B8\uB4DC\uB77C\uC774\uBC84.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19d7fc1d5ec48bf44a9f3868af412aeb
+    m_Address: "Assets/Sprites/Icons/\uC544\uD06C\uC644\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51149e8bc2cff3d4a8a6ceca942539f1
+    m_Address: "Assets/Sprites/Icons/\uC54C\uBC14\uB808\uC2A4\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7237c300767fce4b9492ea0e83ec259
+    m_Address: "Assets/Sprites/Icons/\uC561\uC11C\uD050\uC154\uB108.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6b341543c74d5b489fa2d54afc59993
+    m_Address: "Assets/Sprites/Icons/\uC5D1\uC2A4\uCE7C\uB9AC\uBC84.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17968546a3187ca4cac2e759cb1bdfb5
+    m_Address: "Assets/Sprites/Icons/\uC5E3\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60dd3525f378b8346b7de10d0eafb5b0
+    m_Address: "Assets/Sprites/Icons/\uC624\uD0A4\uC26C\uC18C\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 507e559dc30a89d41889557b1f939b5b
+    m_Address: "Assets/Sprites/Icons/\uC624\uD0A4\uC26C\uC561\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6cdebcfb59fe5ad4b9702c47a70fbc10
+    m_Address: "Assets/Sprites/Icons/\uC644\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b3d93cf3bdec0e49a71a8b12545d6eb
+    m_Address: "Assets/Sprites/Icons/\uC6CC\uC561\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d26434a916aabcb449b07bead3d4a5c8
+    m_Address: "Assets/Sprites/Icons/\uC6CC\uD574\uBA38.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 908aad1c154720a409ef33b553ec08c0
+    m_Address: "Assets/Sprites/Icons/\uC988\uBC14\uC774\uD578\uB354.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 327a7051e303ecc4d9d9825cbbc10dd5
+    m_Address: "Assets/Sprites/Icons/\uCCB4\uC778.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ee7436bc5196bf449caa1a0f66ca7aa
+    m_Address: "Assets/Sprites/Icons/\uCE20\uB8E8\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0a258a7071c93ba44a3fd16b8cd27af6
+    m_Address: "Assets/Sprites/Icons/\uCE74\uCE20\uBC1C\uAC8C\uB974.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cae9a25415d6444eab9550ab0ee7b4a
+    m_Address: "Assets/Sprites/Icons/\uCE74\uD0C0\uB098.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c47e48a5fe1689a44bb95690ce4e1775
+    m_Address: "Assets/Sprites/Icons/\uCEE4\uD130.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6868d51cd991b98408139ce270485724
+    m_Address: "Assets/Sprites/Icons/\uCEE4\uD2C0\uB7EC\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc202f2ad22d1514cb9877652ce7ee9b
+    m_Address: "Assets/Sprites/Icons/\uCEF4\uD3EC\uC9C0\uD2B8\uBCF4\uC6B0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03d0c23e3d19f7341a13c9d28faa2c0a
+    m_Address: "Assets/Sprites/Icons/\uCFFC\uB4DC\uB9B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d0f5c91733d83b47bd75a8f59accfd3
+    m_Address: "Assets/Sprites/Icons/\uD06C\uB808\uC13C\uD2B8\uC0AC\uC774\uB354.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b06782a73a29e64ca4f5e5e63002feb
+    m_Address: "Assets/Sprites/Icons/\uD06C\uB808\uC774\uBAA8\uC5B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e308f186b2f43b8469b84f77bd92d9ed
+    m_Address: "Assets/Sprites/Icons/\uD06C\uB85C\uC2A4\uBCF4\uC6B0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 703746614b44b5b40a47db0163ef525c
+    m_Address: "Assets/Sprites/Icons/\uD074\uB9AC\uBC84.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f82a90415f3d2304994b25ad4b372477
+    m_Address: "Assets/Sprites/Icons/\uD0DC\uC591\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76f4d13f25de2a5448b59d50fb740043
+    m_Address: "Assets/Sprites/Icons/\uD14C\uC77C\uD551.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96b7839693302c340a157e9df15c126c
+    m_Address: "Assets/Sprites/Icons/\uD1A0\uB9C8\uD638\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 02c26c2fc3e2bb64b8a9536eebaa400e
+    m_Address: "Assets/Sprites/Icons/\uD22C\uD578\uB4DC\uC18C\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd26bd1b0b48c3b4c95550e3e279a7b6
+    m_Address: "Assets/Sprites/Icons/\uD22C\uD578\uB4DC\uC561\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e76b1f30801a804a89025bb037be557
+    m_Address: "Assets/Sprites/Icons/\uD2B8\uB77C\uC774\uB358\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e86c5cf0267a1324aa191de0de78e824
+    m_Address: "Assets/Sprites/Icons/\uD30C\uC774\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b27c3f254aa0bd849ba97d9650faac3b
+    m_Address: "Assets/Sprites/Icons/\uD30C\uD2F0\uC794.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e0f53909aba514459834111806e6134
+    m_Address: "Assets/Sprites/Icons/\uD3EC\uCE08\uC18C\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 825bdc9dffcc9f744a46fa2ca4c5e17b
+    m_Address: "Assets/Sprites/Icons/\uD3F4\uCCD4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a72add29cd405243b90bb25f6fdac9c
+    m_Address: "Assets/Sprites/Icons/\uD504\uB78C\uBCA0\uB974\uADF8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0dbeba37695d42a4383178efec07a87d
+    m_Address: "Assets/Sprites/Icons/\uD50C\uB808\uC77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1761d4e4ff1793647ae412bc2fbc67ef
+    m_Address: "Assets/Sprites/Icons/\uD574\uACE8\uC9C0\uD321\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d556826497ae1364d9be6a093afd9f6a
+    m_Address: "Assets/Sprites/Icons/\uD574\uB3D9\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77cf2b461b1bb7947ac1fb77e33ad1ab
+    m_Address: "Assets/Sprites/Icons/\uD57C\uBC84\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d753eac532da824dafa231707d7f512
+    m_Address: "Assets/Sprites/Icons/\uD5CC\uD130\uBCF4\uC6B0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82e0a2f31b2a7ba4bb7fc2ff26e954da
+    m_Address: "Assets/Sprites/Icons/\uD654\uC774\uC5B4\uBE0C\uB79C\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2db7d867280bec499f95f736f2d4604
+    m_Address: "Assets/Sprites/Icons/\uD658\uB450\uD0DC\uB3C4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b5fe73e9c46d3c44b70efd48d6071a9
+    m_Address: Assets/Effects/Prefabs/CartRevolution.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7c748427462d964198c47e50f2c36e7
+    m_Address: Assets/Effects/Prefabs/ComboAttack1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b556149e31418f14180cbecf6b1b3ddb
+    m_Address: Assets/Effects/Prefabs/ComboAttack2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e27afbea3767364abca454134030849
+    m_Address: Assets/Effects/Prefabs/ComboAttack3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28e15d9c36a090f4f80bdd6b5cbe2ba9
+    m_Address: Assets/Effects/Prefabs/ComboAttack4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff452235d68e5764096d1ad600c7f13e
+    m_Address: Assets/Effects/Prefabs/ComboAttack5.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b1d7ac9d0eb2f342955bd4b49e17436
+    m_Address: Assets/Effects/Prefabs/Cure.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f45749437c97aa43972071d54198de4
+    m_Address: Assets/Effects/Prefabs/FruitHp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc9fcaba5bb6dfb4dac05474d6cfa735
+    m_Address: Assets/Effects/Prefabs/FruitSp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 245efe12c8effb640aa61f19a9698476
+    m_Address: Assets/Effects/Prefabs/LoudVoice.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28a132aff62ca3e48ab1b55561dadb70
+    m_Address: Assets/Effects/Prefabs/Meteor1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 554a24f6a9e1a2545962558399e47188
+    m_Address: Assets/Effects/Prefabs/Meteor2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d079c401cd30b245a3d0dd770181ce4
+    m_Address: Assets/Effects/Prefabs/Meteor3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa5bc5fa66b4d7440bcc23289b880076
+    m_Address: Assets/Effects/Prefabs/Meteor4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea8328d45a8e1b54fba943af3798ed87
+    m_Address: Assets/Effects/Prefabs/Pneuma1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 658f606abb0203e448170ee82f16a688
+    m_Address: Assets/Effects/Prefabs/Pneuma2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e86d95f43e865e4880c127c8e6c145f
+    m_Address: Assets/Effects/Prefabs/Pneuma3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac97f4766c0edfb498a6af33fedb0ed3
+    m_Address: Assets/Effects/Prefabs/PoisonAttack.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41acc4cfb10d19f4ab904753b7e4cab3
+    m_Address: Assets/Effects/Prefabs/PotionAwakening.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1900d56c940c48144bf5fc25b9e5afff
+    m_Address: Assets/Effects/Prefabs/SignumCrusis.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 018287b71eee3f1498abcaa0eb0a9427
+    m_Address: Assets/Effects/Prefabs/SilenceAttack.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ca963515828ed94d9c565fb4249109c
+    m_Address: Assets/Effects/Prefabs/SleepAttack.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0a444c725df297344a3cf27e39f71bcd
+    m_Address: Assets/Effects/Prefabs/StoneSkin.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58f435dcd8e2f6a46acf71f859636cc7
+    m_Address: Assets/Effects/Prefabs/StunAttack.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e636d5f53edb27e48afa982bd44de5d5
+    m_Address: Assets/Effects/Prefabs/Suicide.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e046bdedf1b4f24e83f6c3e35624b46
+    m_Address: Assets/Effects/Prefabs/WindHit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0ff78b256e2bd74090f8cd7d75219de
+    m_Address: Assets/Effects/Prefabs/WindHit1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 984f94a64b2aee346980184e211fa9f7
+    m_Address: Assets/Effects/Prefabs/WindHit2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ed986a2c104ce54a96a92e56cb9dd96
+    m_Address: Assets/Effects/Prefabs/WindHit3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d46c8b878a5a7624086e7e03402ec24f
+    m_Address: Assets/Effects/Prefabs/MaximizePower.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ecd71205b5e83940b581d3409b818d7
+    m_Address: Assets/Effects/Prefabs/SafetyWall.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 260ef6e791a4a62459d99b32f0c6820e
+    m_Address: Assets/Effects/Prefabs/GuidedAttack.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4086dec57935f6049bdc13a040564710
+    m_Address: Assets/Sprites/Misc/ef_particle2.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f04f9a17d7432874989d7d29de219068
+    m_Address: Assets/Sprites/Misc/ef_particle3.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4159cf457d56f34a81adc7e41726c05
+    m_Address: Assets/Sprites/Misc/ef_particle5.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e3b06020898e8144a8bf5f23dd6e0f8
+    m_Address: Assets/Sprites/Misc/ef_particle6.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 696243830c5e9a345935ed806547065e
+    m_Address: Assets/Sprites/Misc/ef_particle7.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a68ebd2f72b61d6419432a5ab4cca0e6
+    m_Address: Assets/Sprites/Misc/particle4.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 620be47a46d3efd4da5eecb22de3c47c
+    m_Address: "Assets/Sprites/Icons/\uAC00\uB294\uC904\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76f125bcc8ecfcd439f33aceecfae7f4
+    m_Address: "Assets/Sprites/Icons/\uAC00\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec4933abd21100c4eab1d5a4197bde07
+    m_Address: "Assets/Sprites/Icons/\uAC00\uB984\uC758\uC774\uBE68.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f18f1a82a6543a4e8e3f2ecabcf6e6b
+    m_Address: "Assets/Sprites/Icons/\uAC00\uBA74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 407bbc4d19eb64e4eac4ffe133cdd9d8
+    m_Address: "Assets/Sprites/Icons/\uAC00\uC2DC\uB2EC\uB9B0\uC544\uAC00\uBBF8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de6b15bde8665c94182d89ecefd8798a
+    m_Address: "Assets/Sprites/Icons/\uAC00\uC8FD\uC7AC\uD0B7.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4ecb62c5610b2c47bcb52d783ed7c36
+    m_Address: "Assets/Sprites/Icons/\uAC00\uC9DC\uC601\uD63C\uC758\uACE0\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f00ecc74a63ae9847a406691846f831f
+    m_Address: "Assets/Sprites/Icons/\uAC00\uC9DC\uCC9C\uC0AC\uC758\uB0A0\uAC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4747a2044971e3468e7c9eb2066f634
+    m_Address: "Assets/Sprites/Icons/\uAC00\uCD95\uC758\uD53C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2623d1bd8e355c0449ea350ae6aae45d
+    m_Address: "Assets/Sprites/Icons/\uAC01\uC131\uD3EC\uC158.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d95f5d1b726ccd4fad7ece4f01010b2
+    m_Address: "Assets/Sprites/Icons/\uAC04\uD638\uBAA8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a60cf191b50ed784cb99205b04145472
+    m_Address: "Assets/Sprites/Icons/\uAC08\uC0C9\uBFCC\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64aff4c7352320c419ac702b777847ab
+    m_Address: "Assets/Sprites/Icons/\uAC15\uCCA0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d7792783c7441b4d9396137792bfc9c
+    m_Address: "Assets/Sprites/Icons/\uAC15\uCCA0\uC804\uAC08\uC758\uAF2C\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74d183a1cbf00224aaf3268128b0bf48
+    m_Address: "Assets/Sprites/Icons/\uAC1C\uAD6C\uB9AC\uC54C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffc37c6123f0fa944936c6e4ec84748a
+    m_Address: "Assets/Sprites/Icons/\uAC1C\uBBF8\uC758\uD131\uBF08.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ba50e359cc6a994280bfa437f6e14dd
+    m_Address: "Assets/Sprites/Icons/\uAC70\uBBF8\uC904.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7904b242890b17458b7c103e279fc33
+    m_Address: "Assets/Sprites/Icons/\uAC70\uBD81\uC774\uB4F1\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55f10cdd7e08d2b419a0b6bff6ebdc63
+    m_Address: "Assets/Sprites/Icons/\uAC70\uC2DC\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c62307b0c3df6148b7eab208595fd57
+    m_Address: "Assets/Sprites/Icons/\uAC74\uBC18.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9cc99d708413274b974c73dae52b893
+    m_Address: "Assets/Sprites/Icons/\uAC80\uBD89\uC740\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5f15ab05baab0b4c8110ee01e6842a0
+    m_Address: "Assets/Sprites/Icons/\uAC80\uC740\uACF0\uC758\uD138\uAC00\uC8FD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4358968a33576349b9787ba65879e15
+    m_Address: "Assets/Sprites/Icons/\uAC80\uC740\uAD6D\uC790.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 273f6e83b75016b41b85447ae8e59082
+    m_Address: "Assets/Sprites/Icons/\uAC80\uC740\uBCF5\uBA74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21b10530d7144f14a96a35c2387c5abf
+    m_Address: "Assets/Sprites/Icons/\uAC80\uC740\uC0C9\uC5FC\uB8CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b151a320813544e42a4d7364f6ac681b
+    m_Address: "Assets/Sprites/Icons/\uAC80\uC740\uCC9C\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47dfc45ca0dd8ff49a8dc30a04a995cf
+    m_Address: "Assets/Sprites/Icons/\uAC8C\uB4F1\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93c7c475b2f1da3499136e090c7686ac
+    m_Address: "Assets/Sprites/Icons/\uACE0\uAE00.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27fec460e29c8244f8595052728862de
+    m_Address: "Assets/Sprites/Icons/\uACE0\uAE09\uC120\uAE00\uB798\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 413e0a3ba813a554192cd9b8416e5b76
+    m_Address: "Assets/Sprites/Icons/\uACE0\uB300\uC5B4\uC758\uC774\uBE68.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86a958533d621f742a41f1730796151b
+    m_Address: "Assets/Sprites/Icons/\uACE0\uB300\uC5B4\uC758\uC785\uC220.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53eaae1c8a293e34a87b3a02ef03623c
+    m_Address: "Assets/Sprites/Icons/\uACE0\uBAA9\uB098\uBB34\uC9C4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52ea7f03448cd7a43b149df1fe44a7ad
+    m_Address: "Assets/Sprites/Icons/\uACE0\uBE14\uB9B0\uC871\uAC00\uBA74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9caf4a32c4c1ccf42a5d3803cda9c7cc
+    m_Address: "Assets/Sprites/Icons/\uACE0\uC2B4\uB3C4\uCE58\uAC00\uC2DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5cb0ec107f3d26c43952df21150abe78
+    m_Address: "Assets/Sprites/Icons/\uACE0\uC591\uC774\uBA38\uB9AC\uB760.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 504e913f01b1fef4a902328024c0ddb6
+    m_Address: "Assets/Sprites/Icons/\uACE0\uC591\uC774\uC758\uBC1C\uC18C\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b552f0fb6b1550f46b103fb5e31006fd
+    m_Address: "Assets/Sprites/Icons/\uACE0\uC591\uC774\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7cbad47766acc714fa24768e705aa4e2
+    m_Address: "Assets/Sprites/Icons/\uACE8\uB4E0\uD5E4\uB4DC\uAE30\uC5B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e66d990daa08d394ea6ec8901805a004
+    m_Address: "Assets/Sprites/Icons/\uACF0\uBC1C\uBC14\uB2E5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 049e67d71459a9e40bc8c154c6e43fbd
+    m_Address: "Assets/Sprites/Icons/\uACF0\uC758\uD798\uC904.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63a33588e0f0f1047bb1d96177ea7a4e
+    m_Address: "Assets/Sprites/Icons/\uACF0\uD321\uC774\uAC00\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd39e63a2af4c214aae3a625f535c326
+    m_Address: "Assets/Sprites/Icons/\uAD11\uB300\uCF54.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fab8d9757db4c1f4b97ae741b79bfd75
+    m_Address: "Assets/Sprites/Icons/\uAD6C\uB984\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e2b8d92eec8dc04ea168ac9e7794c00
+    m_Address: "Assets/Sprites/Icons/\uAD6C\uBA4D\uB09C\uBE68\uAC04\uC591\uB9D0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03585c1e73fcb8a488321ae386058e64
+    m_Address: "Assets/Sprites/Icons/\uAD6C\uC6B4\uACE0\uAD6C\uB9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b09e5dc5e5bdf44ebe0a8bb5a8688a1
+    m_Address: "Assets/Sprites/Icons/\uAD73\uC5B4\uBC84\uB9B0\uC6A9\uC554.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e432f231739c66f418d3e12b661cc2f8
+    m_Address: "Assets/Sprites/Icons/\uAD81\uC218\uC804\uC9C1\uB098\uBB34.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44166f0c3b82b9046ac632ab5ea8fc7a
+    m_Address: "Assets/Sprites/Icons/\uADC0\uB9C8\uAC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03bed6fa71918f947817771234dfb3db
+    m_Address: "Assets/Sprites/Icons/\uADE0\uC0AC\uCCB4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 517153307e100024282a9eb9c717a604
+    m_Address: "Assets/Sprites/Icons/\uADF8\uB140\uC758\uB9C8\uC74C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 635198e0628122143aba8828870b7950
+    m_Address: "Assets/Sprites/Icons/\uADF8\uB808\uC774\uD2B8\uB124\uC774\uCCD0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ce813e1d7b87c54c87031573a6a6c78
+    m_Address: "Assets/Sprites/Icons/\uADF8\uB9AC\uBE0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a384a231165fa7f47a9416eacb2f1bf5
+    m_Address: "Assets/Sprites/Icons/\uAE00\uB77C\uC774\uD504\uB2C8\uB974.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7eb7d1262a7aa544c882427354944363
+    m_Address: "Assets/Sprites/Icons/\uAE00\uB798\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d00b804d591f86c42b508d87eacb1e14
+    m_Address: "Assets/Sprites/Icons/\uAE00\uB7EC\uBE0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a1d4723fa504094eaccef2d942770cd
+    m_Address: "Assets/Sprites/Icons/\uAE00\uB9AC\uD130\uB9C1\uD074\uB85C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 204d8bbcf6c8b6e4db6ef6a8ac247e77
+    m_Address: "Assets/Sprites/Icons/\uAE08\uB2E8\uC758\uBD89\uC740\uC591\uCD08.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07fd33bbb516cdf4d9626e89e4c9b59e
+    m_Address: "Assets/Sprites/Icons/\uAE08\uBC18\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9a2b7ac69094f84493779fad08e6c15
+    m_Address: "Assets/Sprites/Icons/\uAE08\uBE5B\uBA38\uB9AC\uCE74\uB77D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c45a9ab8b6d45e34ea547b03649df434
+    m_Address: "Assets/Sprites/Icons/\uAE30\uB8B0\uBCD1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 390d5a25c0524964798413078c7975b5
+    m_Address: "Assets/Sprites/Icons/\uAE30\uB8B0\uBCD1\uC81C\uC870\uCC45.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5909a7f90287fe644ae4116f973eb8c0
+    m_Address: "Assets/Sprites/Icons/\uAE30\uB984\uC885\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 883f7e1a392613541a148c967ab77de3
+    m_Address: "Assets/Sprites/Icons/\uAE34\uBA38\uB9AC\uCE74\uB77D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8df701204156ad54093de64d7a07e55c
+    m_Address: "Assets/Sprites/Icons/\uAE38\uACE0\uAC00\uB290\uB2E4\uB780\uD600.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c61739aba6f8de245a746d66ae058f45
+    m_Address: "Assets/Sprites/Icons/\uAE68\uC9C4\uAC11\uC637\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62e8aa37fd2a8f0479cba75a9b5b62cc
+    m_Address: "Assets/Sprites/Icons/\uAE68\uC9C4\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9b0574bb76d69e459651ac75becff5a
+    m_Address: "Assets/Sprites/Icons/\uAE68\uC9C4\uAE08\uC18D\uD30C\uD3B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1691b7004f51ada4694e361b01f55c93
+    m_Address: "Assets/Sprites/Icons/\uAE68\uC9C4\uB4F1\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d44d4856b34fb049ab2d6521e2c1d68
+    m_Address: "Assets/Sprites/Icons/\uAE68\uC9C4\uBC29\uD328\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1751c4b3b2281948994b1859172009f
+    m_Address: "Assets/Sprites/Icons/\uAE68\uC9C4\uC220\uB3D9\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 028bb7f420ced7a4d86ff744b7ccaee9
+    m_Address: "Assets/Sprites/Icons/\uAE68\uC9C4\uC288\uB9AC\uCF04.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: deef93b96e8ed2c4d9d4d45bd4e9b03b
+    m_Address: "Assets/Sprites/Icons/\uAE68\uC9C4\uD30C\uB77C\uC624\uC0C1\uC9D5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 148cc3169f81f7645af7d8086f15314e
+    m_Address: "Assets/Sprites/Icons/\uAF43.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50af2db06890c1b4a991772e6d698656
+    m_Address: "Assets/Sprites/Icons/\uAF43\uB2E4\uBC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68dd979988d3af54cbb6a8f32e18ca13
+    m_Address: "Assets/Sprites/Icons/\uAF43\uBA38\uB9AC\uB760.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 232641940f241bd46ad686899a63f61e
+    m_Address: "Assets/Sprites/Icons/\uAF43\uBC18\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec93f7f8f5b7e714090315dfd6606714
+    m_Address: "Assets/Sprites/Icons/\uAF43\uC78E.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24a08c974e5c9cb48b127648504c2d88
+    m_Address: "Assets/Sprites/Icons/\uAFC0\uB2E8\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12ec00d83b960c14c87861e64fc479cd
+    m_Address: "Assets/Sprites/Icons/\uB048.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb5cf734b0a67e44ea6bfe35c5876b37
+    m_Address: "Assets/Sprites/Icons/\uB098\uBB34\uBFCC\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0321e3a68a06a474da1db2fefc8e66e5
+    m_Address: "Assets/Sprites/Icons/\uB098\uBB34\uC2EC\uC7A5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4085fd7907601d4e806b9e2019993dc
+    m_Address: "Assets/Sprites/Icons/\uB098\uBB34\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91757e35865b9a3418ba9bf26d231d66
+    m_Address: "Assets/Sprites/Icons/\uB098\uBC29\uC758\uB0A0\uAC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 771a349c4a360ad47b3db91027f4c41a
+    m_Address: "Assets/Sprites/Icons/\uB098\uBC29\uC758\uB0A0\uAC1C\uAC00\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fbb4423596a132d478c4901c4e6e6c55
+    m_Address: "Assets/Sprites/Icons/\uB098\uBE44\uAC00\uBA74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 420096045168e8b40a025796852dc6d5
+    m_Address: "Assets/Sprites/Icons/\uB0A0\uCE74\uB85C\uC6B4\uB354\uB4EC\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05875b40d7d3a5f46bdb0d21a5594a5d
+    m_Address: "Assets/Sprites/Icons/\uB0A0\uCE74\uB85C\uC6B4\uBE44\uB298.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3614454f4fb2a84cb038ac7c0a2b678
+    m_Address: "Assets/Sprites/Icons/\uB0A0\uCE74\uB85C\uC6B4\uC1A1\uACF3\uB2C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc5ae358667926f46a7125df6a2434d1
+    m_Address: "Assets/Sprites/Icons/\uB0A0\uCE74\uB85C\uC6B4\uC78E\uC0AC\uADC0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 197ece5f7db8942428c98b6199294adc
+    m_Address: "Assets/Sprites/Icons/\uB0A1\uC740\uAE30\uBAA8\uB178.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe89e5711c2715842b7a829b00273d9e
+    m_Address: "Assets/Sprites/Icons/\uB0A1\uC740\uB450\uB8E8\uB9C8\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5fc36defe75781e4986f6f71284811fe
+    m_Address: "Assets/Sprites/Icons/\uB0A1\uC740\uB9C8\uBC95\uC9C4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f47f11d11c1cf404a8dd622c53d9c8c3
+    m_Address: "Assets/Sprites/Icons/\uB0A1\uC740\uC190\uC7A1\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74d94098b6bdcda47af3cc48c6793a1c
+    m_Address: "Assets/Sprites/Icons/\uB0A1\uC740\uC22B\uAC00\uB77D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acdee66e6490eda4fa401b502bc892dd
+    m_Address: "Assets/Sprites/Icons/\uB0A1\uC740\uC790\uD654\uC0C1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6585c71059837e240814c145d3932018
+    m_Address: "Assets/Sprites/Icons/\uB0A1\uC740\uC8C4\uC218\uBCF5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 04d9aa35ba0153f43b0275cfe4d846c3
+    m_Address: "Assets/Sprites/Icons/\uB0A1\uC740\uCC45\uC7A5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3bb52d39f037f2b4390eb6b91489e36d
+    m_Address: "Assets/Sprites/Icons/\uB108\uAD6C\uB9AC\uB098\uBB47\uC78E.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64492cf2f72b391438860a75e168f10b
+    m_Address: "Assets/Sprites/Icons/\uB108\uAD6C\uB9AC\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38e8cb96fa329ca4eb34879e5231845b
+    m_Address: "Assets/Sprites/Icons/\uB108\uB35C\uAC70\uB9AC\uB294\uB9DD\uD1A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05c7982fbfd4ab64aa34cfdd6fd6b6ae
+    m_Address: "Assets/Sprites/Icons/\uB108\uB35C\uB108\uB35C\uD55C\uC637.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2d79ac84a5f25b42852f99fc19c3183
+    m_Address: "Assets/Sprites/Icons/\uB124\uC78E\uD074\uB85C\uBC84.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 412bd6e4329b4094a976f35d819f96ea
+    m_Address: "Assets/Sprites/Icons/\uB124\uD074\uB9AC\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab617e797fa36224fa33065a5a69b2b9
+    m_Address: "Assets/Sprites/Icons/\uB178\uB780\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21d4e50aae351ed4d99f4ea608d0d883
+    m_Address: "Assets/Sprites/Icons/\uB178\uB780\uC0C9\uC5FC\uB8CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1060fe8af5b2cd24ab49270f7b00a896
+    m_Address: "Assets/Sprites/Icons/\uB178\uB780\uC811\uC2DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c975c7d708d93cb4fb78f7b05fc67c6a
+    m_Address: "Assets/Sprites/Icons/\uB178\uB798\uD558\uB294\uAF43.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a12bbfe5195c6645bf18743b754b58f
+    m_Address: "Assets/Sprites/Icons/\uB178\uB798\uD558\uB294\uD480.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 003e2bc0433193b48b24ed0ec83b764e
+    m_Address: "Assets/Sprites/Icons/\uB178\uBE44\uC2A4\uC554\uB9BF.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b677b8aacddac8044b4875876c127164
+    m_Address: "Assets/Sprites/Icons/\uB179\uC2A8\uC218\uB9AC\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d745312e1d73354b8c73b7bbc85e013
+    m_Address: "Assets/Sprites/Icons/\uB179\uC2A8\uC2DD\uCE7C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63ee1f40d5693464291616812e08558d
+    m_Address: "Assets/Sprites/Icons/\uB179\uC2AC\uC5B4\uBC84\uB9B0\uCCA0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0897ca0bdb3ec714d92c9ee344e52bd9
+    m_Address: "Assets/Sprites/Icons/\uB1CC\uAD00.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8087cfab7d5bbcf44822033196875efd
+    m_Address: "Assets/Sprites/Icons/\uB204\uB354\uAE30\uB9DD\uD1A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c69fbb856a911a4a982dd3e76b62932
+    m_Address: "Assets/Sprites/Icons/\uB208\uAC00\uB9AC\uAC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21cf499cc9d5bc74487f2d44e87a07fa
+    m_Address: "Assets/Sprites/Icons/\uB208\uC758\uACB0\uC815.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b255ceeda10907248ba2adaad9122ead
+    m_Address: "Assets/Sprites/Icons/\uB299\uC740\uC694\uC815\uC758\uC218\uC5FC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: adc7f2d4df0b8cb448c2cd5698aa5107
+    m_Address: "Assets/Sprites/Icons/\uB2CC\uC790\uC288\uCE20.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0d60d32764796d4fb4842624e002636
+    m_Address: "Assets/Sprites/Icons/\uB2E4\uC774\uC544\uBC18\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfa0d09d5bec79749afdb8e135a4e596
+    m_Address: "Assets/Sprites/Icons/\uB2E8\uB2E8\uD55C\uB4F1\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 736e033ce09e59f45bd3268c73814e51
+    m_Address: "Assets/Sprites/Icons/\uB2E8\uB2E8\uD55C\uBCF5\uC22D\uC544.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 830c6582fd0e10f4897e203167bad2dc
+    m_Address: "Assets/Sprites/Icons/\uB2E8\uC138\uD3EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fceaae8b865d68940890bc7b4cacdc2b
+    m_Address: "Assets/Sprites/Icons/\uB2EC\uAC40\uAECD\uC9C8\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d22229df94cb2f478861f287462f31c
+    m_Address: "Assets/Sprites/Icons/\uB2EC\uCF64\uD55C\uC6B0\uC720.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df6f226fa4f91f94ba1c071ecd655d4c
+    m_Address: "Assets/Sprites/Icons/\uB2EC\uD33D\uC774\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 04865c0a9207fd843a3567f70e6357d4
+    m_Address: "Assets/Sprites/Icons/\uB2F4\uBC30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45c882cd209a6ee4699aa13650540f6e
+    m_Address: "Assets/Sprites/Icons/\uB2F9\uADFC\uC96C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d1165861c435fb4ba7ba1648c8fee4f
+    m_Address: "Assets/Sprites/Icons/\uB300\uB098\uBB34\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9c6ca476af922146812678cbc494039
+    m_Address: "Assets/Sprites/Icons/\uB300\uC7A5\uC7A5\uC774\uC758\uB9DD\uCE58.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 693e8e655d51cac40ace119e2cf1164b
+    m_Address: "Assets/Sprites/Icons/\uB315\uAE30\uBA38\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dba4ab08073d8d8408680d5e18e25aef
+    m_Address: "Assets/Sprites/Icons/\uB35C\uC775\uC740\uC0AC\uACFC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a6d56c5b78a68e44a4cf1daf92d247c
+    m_Address: "Assets/Sprites/Icons/\uB3C4\uAE68\uBE44\uC758\uBFD4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8ee5200460d9574db1512c1421518f1
+    m_Address: "Assets/Sprites/Icons/\uB3C4\uB07C\uB208.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f120a7f81639ed4691651a01893b297
+    m_Address: "Assets/Sprites/Icons/\uB3C4\uB451\uC804\uC9C1\uBC84\uC12F.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a69a093f691781646aca480e6b3dbac1
+    m_Address: "Assets/Sprites/Icons/\uB3C4\uB9C8\uBC40\uC758\uBAA9\uB35C\uBBF8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 187c4a6d148ad1541b28ea1111890e66
+    m_Address: "Assets/Sprites/Icons/\uB3C4\uC801\uC758\uBC18\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f31c04400678994fa9355106585770c
+    m_Address: "Assets/Sprites/Icons/\uB3C4\uD1A0\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da9e45ced0c36e843b858ef6e6ad3011
+    m_Address: "Assets/Sprites/Icons/\uB3C5\uAC00\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eab736f64eda4684a955268f6e444aa8
+    m_Address: "Assets/Sprites/Icons/\uB3C5\uB450\uAEBC\uBE44\uC758\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc70f7de8dca9584bb0afae848ff2de1
+    m_Address: "Assets/Sprites/Icons/\uB3CB\uBCF4\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ad5d42d3c85ca14fa166717f12ac516
+    m_Address: "Assets/Sprites/Icons/\uB3CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa47a4b1fae5fa0479c347c21fa611a9
+    m_Address: "Assets/Sprites/Icons/\uB3CC\uC2EC\uC7A5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9f5ab03b021d124a9e295749e502b9f
+    m_Address: "Assets/Sprites/Icons/\uB3CC\uC758\uBFCC\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5e033612443f96438810fa14996efd5
+    m_Address: "Assets/Sprites/Icons/\uB450\uAC74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dbe881113e38ff14eb83311e5f393359
+    m_Address: "Assets/Sprites/Icons/\uB450\uB354\uC9C0\uC758\uC190\uD1B1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1834e6dc15fbabf45a46b40f7a4426f6
+    m_Address: "Assets/Sprites/Icons/\uB450\uB354\uC9C0\uC758\uC218\uC5FC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d6edc9082b43bb4e9927eb1011c8930
+    m_Address: "Assets/Sprites/Icons/\uB465\uADFC\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ade8c875d762e234293008ceb87a46af
+    m_Address: "Assets/Sprites/Icons/\uB465\uADFC\uBAA8\uC790.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74d6d9f28cdb1904bba089bf3d8cae36
+    m_Address: "Assets/Sprites/Icons/\uB4C0\uB77C\uD55C\uAC11\uC637\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b89f87e770a9b84f82eeae5a275eadf
+    m_Address: "Assets/Sprites/Icons/\uB4C0\uB77C\uD55C\uC544\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 263ed8de6ed43c24bb20fdaff11f393e
+    m_Address: "Assets/Sprites/Icons/\uB4C0\uB77C\uD55C\uC758\uD22C\uAD6C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4552bec7687e8f4daef5a4c35b87970
+    m_Address: "Assets/Sprites/Icons/\uB4DC\uB798\uACE4\uC758\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 545e8824416ba07439f0a983b2bcb8e3
+    m_Address: "Assets/Sprites/Icons/\uB4DC\uB798\uACE4\uC758\uAF2C\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 657f09e27d236c8429fd92602246d797
+    m_Address: "Assets/Sprites/Icons/\uB4DC\uB798\uACE4\uC758\uBE44\uB298.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f48f43d8d6de8d47bec947a3b738de5
+    m_Address: "Assets/Sprites/Icons/\uB4DC\uB798\uACE4\uC758\uC774\uBE68.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc654d6d6deb3d64296f70585b8c051f
+    m_Address: "Assets/Sprites/Icons/\uB4F1\uBD88.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60b747cfcc586ce408f6261f6984e63c
+    m_Address: "Assets/Sprites/Icons/\uB4F1\uC9C0\uB290\uB7EC\uBBF8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25d47a4dc31c3ef409c5afe24f80dde9
+    m_Address: "Assets/Sprites/Icons/\uB514\uD2B8\uB9AC\uBBFC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd55fc7f6c0d03942abe2d91abcae1b9
+    m_Address: "Assets/Sprites/Icons/\uB531\uB531\uD55C\uBFD4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e714b606aa3ba64f8b56789b4bdfcd1
+    m_Address: "Assets/Sprites/Icons/\uB538\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 200383d756699034ebc595836bc23da2
+    m_Address: "Assets/Sprites/Icons/\uB728\uAC70\uC6B4\uD138.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 481cb9395fb40bc46965d7c6f93068b4
+    m_Address: "Assets/Sprites/Icons/\uB77C\uC9C0\uC824\uB85C\uD53C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be2f11f77c5654745b42ee47af7a9dba
+    m_Address: "Assets/Sprites/Icons/\uB79C\uD134.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2768ca56d3a684d40b4b12b0e881a6c0
+    m_Address: "Assets/Sprites/Icons/\uB7EC\uD504\uC708\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55c964bdd5db59a43a67a14cd87c47d4
+    m_Address: "Assets/Sprites/Icons/\uB808\uB4DC\uBE14\uB7EC\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8de8197e62ed80d4c87a242aa5d6993b
+    m_Address: "Assets/Sprites/Icons/\uB808\uB4DC\uC82C\uC2A4\uD1A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da6e1502369b28a458fdb87369e8817a
+    m_Address: "Assets/Sprites/Icons/\uB85C\uB4DC\uD074\uB85C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f624a32ac25b9ab4fb4052e60badaf36
+    m_Address: "Assets/Sprites/Icons/\uB85C\uC790\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b3d237550e307e4ab9fd978a0aae9d3
+    m_Address: "Assets/Sprites/Icons/\uB85C\uC81C\uD0C0\uC2A4\uD1A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4079c151584fb194699a3c84dba05c34
+    m_Address: "Assets/Sprites/Icons/\uB85C\uD0A4\uC758\uC18D\uC0AD\uC784.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ab0c9e666f7bff4e8f1a45ffdd32cf5
+    m_Address: "Assets/Sprites/Icons/\uB871\uCF54\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4dd2499d74414a4aaf57cb37f7f79c6
+    m_Address: "Assets/Sprites/Icons/\uB9AC\uBCF8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2901a0139209969458747b5a121a9970
+    m_Address: "Assets/Sprites/Icons/\uB9C1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 73b2121f674c47f43896b6f094c4985d
+    m_Address: "Assets/Sprites/Icons/\uB9C8\uB140\uC758\uBCC4\uBAA8\uB798.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c48cea347ae73bd4093ad3d5c01f098a
+    m_Address: "Assets/Sprites/Icons/\uB9C8\uC2A4\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b29c7637102ca3a47ae2629de30736f5
+    m_Address: "Assets/Sprites/Icons/\uB9C8\uC655\uC758\uC2AC\uD514.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ddf0d820a0e71949bd4456352be4706
+    m_Address: "Assets/Sprites/Icons/\uB9C8\uC81C\uC2A4\uD2F1\uACE0\uC6B0\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3561d81a98c425478ed766fa866d1f0
+    m_Address: "Assets/Sprites/Icons/\uB9C8\uD0C0\uC758\uBAA9\uAC78\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec5c6067a8d4b244fbb56600482fd28a
+    m_Address: "Assets/Sprites/Icons/\uB9C8\uD328.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65c70e82c0ccc1e4f94f1aa4587861d2
+    m_Address: "Assets/Sprites/Icons/\uB9C9\uB300\uC0AC\uD0D5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45804080d3f87d1458d88034371b808c
+    m_Address: "Assets/Sprites/Icons/\uB9D0\uACE0\uC090.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 299eda8522e57d14cb2bac9895442ede
+    m_Address: "Assets/Sprites/Icons/\uB9D0\uB9B0\uBF08\uB2E4\uADC0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12ff5dec6e930084283c7610739f4073
+    m_Address: "Assets/Sprites/Icons/\uB9D0\uBC1C\uAD7D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58ac972bd3519994092ab9712afbf1df
+    m_Address: "Assets/Sprites/Icons/\uB9DD\uC6D0\uACBD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67d73a9ce540cc9448751c841e29d73b
+    m_Address: "Assets/Sprites/Icons/\uB9DD\uC790\uC758\uBA38\uB9AC\uB760.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5bdc8dc52d6419146add65d25d25d7e2
+    m_Address: "Assets/Sprites/Icons/\uB9DD\uC790\uC758\uC190\uD1B1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 285f2111e5f393740bf773393dc55a94
+    m_Address: "Assets/Sprites/Icons/\uB9DD\uC790\uC758\uC774\uBE68.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c35bd9a5320293439ea2484a188b808
+    m_Address: "Assets/Sprites/Icons/\uB9DD\uD1A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0dd30bb4b2d27f48ae98908d1ad9010
+    m_Address: "Assets/Sprites/Icons/\uB9E4\uB048\uD55C\uC885\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75c0de4bab329114eb1d694be5af4ad4
+    m_Address: "Assets/Sprites/Icons/\uB9E4\uB2EC\uB9B0\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff76231cadb605f44823d870fe6aeebe
+    m_Address: "Assets/Sprites/Icons/\uB9E4\uC6B0\uB2E8\uB2E8\uD55C\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e49cd17782c657a498a344154749a023
+    m_Address: "Assets/Sprites/Icons/\uB9E4\uC6B0\uB531\uB531\uD55C\uBFD4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e24a487cb25943640bc9b5eb04886f6b
+    m_Address: "Assets/Sprites/Icons/\uB9E4\uC9C1\uCF54\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1d0c223f1f2eac4f816752d9bf29f94
+    m_Address: "Assets/Sprites/Icons/\uB9E8\uD2C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 34608fbece5cb0c4fb3e1c671b586596
+    m_Address: "Assets/Sprites/Icons/\uB9F7\uB3FC\uC9C0\uC758\uAC08\uAE30\uD138.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3225553c602634847814d8949f4edc0c
+    m_Address: "Assets/Sprites/Icons/\uB9F9\uB3C5\uCD08.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 095db10f74761d446968d0e7ac96ec19
+    m_Address: "Assets/Sprites/Icons/\uBA38\uB9AC\uB048.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0f1c027e3be1bb4fa4e038d3d339ee0
+    m_Address: "Assets/Sprites/Icons/\uBA38\uB9AC\uB760.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c9dba47e91f6584493d67688c196a15
+    m_Address: "Assets/Sprites/Icons/\uBA38\uB9AC\uC548\uACBD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a40017cc74dc49743b052b9b3b0e025b
+    m_Address: "Assets/Sprites/Icons/\uBA38\uB9AC\uCE74\uB77D\uBC40.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f6fb5abb4ae6444c8e5645e59567005
+    m_Address: "Assets/Sprites/Icons/\uBA38\uD50C\uB7EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 421c7f022f6043344b22099aab88e815
+    m_Address: "Assets/Sprites/Icons/\uBA39\uBB3C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6950037aa933fb459d0002d56fa8048
+    m_Address: "Assets/Sprites/Icons/\uBA4B\uC7C1\uC774\uC9C0\uB801\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c1464237ac22704f981be15cb0aacd5
+    m_Address: "Assets/Sprites/Icons/\uBA54\uB450\uC0AC\uC758\uBA38\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 309e131992ed58c4db9694fd2dc0a98d
+    m_Address: "Assets/Sprites/Icons/\uBA54\uB69C\uAE30\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: badb1402988a17d4d8695807b3ec44e7
+    m_Address: "Assets/Sprites/Icons/\uBA54\uBAA8\uB77C\uC774\uC988\uBD81.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11ecbc6dc5c947145ab293d058118fdd
+    m_Address: "Assets/Sprites/Icons/\uBA54\uC77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32e1a76f5a22a644a84474a785b8760b
+    m_Address: "Assets/Sprites/Icons/\uBA58\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d39de3d81ec5c67438d0bb2e640f96b2
+    m_Address: "Assets/Sprites/Icons/\uBA74\uC0AC\uD3EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6c8119f18b76564eab3646e16687984
+    m_Address: "Assets/Sprites/Icons/\uBA85\uC0AC\uC218\uC758\uC0AC\uACFC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9849f618b4f8474dad877fb44fa4b1f
+    m_Address: "Assets/Sprites/Icons/\uBAA8\uB798\uB369\uC5B4\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33554424e29a41c41b3885913aafb1e4
+    m_Address: "Assets/Sprites/Icons/\uBAA8\uB798\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81c2bd244294aad40bb3c39cca3ae50d
+    m_Address: "Assets/Sprites/Icons/\uBAA8\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 536cf2dafd845ba41a63bf4883385aeb
+    m_Address: "Assets/Sprites/Icons/\uBAAC\uC2A4\uD130\uC96C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22813857e94a16f4fb27710341cc793b
+    m_Address: "Assets/Sprites/Icons/\uBAB0\uC544\uCE58\uB294\uD30C\uB3C4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce371c390d7bebb4795efaa5b4e3c4e3
+    m_Address: "Assets/Sprites/Icons/\uBB34\uB099\uBAA8\uC790.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5614ca3671482a54092e7b9769dfed6a
+    m_Address: "Assets/Sprites/Icons/\uBB34\uC9C0\uAC1C\uB2F9\uADFC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48fafcf8af70d574aa160cd059730c0f
+    m_Address: "Assets/Sprites/Icons/\uBB34\uD55C\uAC00\uC8FD\uC8FC\uBA38\uB2C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d755c71917e3e4f43ba78555bdd49591
+    m_Address: "Assets/Sprites/Icons/\uBB3C\uACE0\uAE30\uC758\uC601\uD63C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f5adb007a8fc1d459080d39aadaddc0
+    m_Address: "Assets/Sprites/Icons/\uBB3C\uC548\uACBD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 209761e354491af42a2120a57caab4c6
+    m_Address: "Assets/Sprites/Icons/\uBB3C\uD488\uC601\uC218\uC99D_01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1d29ca27ec21e3408080b9866cc8acf
+    m_Address: "Assets/Sprites/Icons/\uBBF8\uB2C8\uAE00\uB798\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66f62c9d04c637f42a25ddf7cd83726c
+    m_Address: "Assets/Sprites/Icons/\uBBF8\uB7EC\uC274\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3643f120149365645ad7c20c8773973b
+    m_Address: "Assets/Sprites/Icons/\uBBF8\uC2A4\uD2F1\uD504\uB85C\uC98C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 779f2b3bc51f66743b29d5181f982b20
+    m_Address: "Assets/Sprites/Icons/\uBBF8\uC9C0\uC758\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4513997afa8c9d94cb8af49dabc501e4
+    m_Address: "Assets/Sprites/Icons/\uBBF8\uC9C0\uC758\uD1B1\uB2C8\uBC14\uD034.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 127e1a66b961a664d8efcd174517fada
+    m_Address: "Assets/Sprites/Icons/\uBC0D\uD06C\uCF54\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93251f86a46ac96429c85b89ca4c0a9a
+    m_Address: "Assets/Sprites/Icons/\uBC14\uB098\uB098\uC96C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3633185030424c946b985476bb944caa
+    m_Address: "Assets/Sprites/Icons/\uBC14\uB298\uC308\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3890a7b7e3e33e74283f2043f70bb23c
+    m_Address: "Assets/Sprites/Icons/\uBC14\uB78C\uAC1C\uBE44\uC758\uCE7C\uB0A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46d020b2590ec21429ce22154b7af3f5
+    m_Address: "Assets/Sprites/Icons/\uBC14\uD3EC\uBA54\uD2B8\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2adf359a991a75a4db3960e2ba0f8ac9
+    m_Address: "Assets/Sprites/Icons/\uBC15\uC950\uC6B0\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac6cecdc9feac0e47a47988a9e839a67
+    m_Address: "Assets/Sprites/Icons/\uBC18\uB2E4\uB098.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80fca6f47bc6ffa48bcde090e27916a1
+    m_Address: "Assets/Sprites/Icons/\uBC18\uC9DD\uC774\uB294\uB3CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 26134751180f94c4e9c466f1195388de
+    m_Address: "Assets/Sprites/Icons/\uBC18\uD63C\uBD80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dcd03c25e610ad48a366377cd919536
+    m_Address: "Assets/Sprites/Icons/\uBC1C\uC544\uC0C8\uC2F9.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbb0e5aa9e63a534aa6c63aa71840003
+    m_Address: "Assets/Sprites/Icons/\uBC1C\uD0A4\uB9AC\uC758\uBD84\uB178.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 011e096acd9ca204895b738b3b059fd6
+    m_Address: "Assets/Sprites/Icons/\uBC84\uC11C\uD06C\uD3EC\uC158.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de3d210418699c74da297711e63028c9
+    m_Address: "Assets/Sprites/Icons/\uBC84\uD074\uB7EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbf775dcb081e214a8463063ec9a7729
+    m_Address: "Assets/Sprites/Icons/\uBC8C\uB808\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 720e7ee92bf8a5e438b4ff88390ae230
+    m_Address: "Assets/Sprites/Icons/\uBCA8\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36d181e5245d9d74cb31bf22aeb46943
+    m_Address: "Assets/Sprites/Icons/\uBCC4\uC758\uAC00\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 392c939130265284d9933ff3537a01cf
+    m_Address: "Assets/Sprites/Icons/\uBCC4\uC758\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1edcd04408c99334ea94be60127c369d
+    m_Address: "Assets/Sprites/Icons/\uBCC4\uC758\uD750\uB290\uB08C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e72eaa21c468d3d498b6d65ed7e89447
+    m_Address: "Assets/Sprites/Icons/\uBCC4\uC758\uD750\uB290\uB08C\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0c32a74a9951dc46bc9be8e9cb79666
+    m_Address: "Assets/Sprites/Icons/\uBCF4\uB77C\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa40b079e0bd28748b626708938ca249
+    m_Address: "Assets/Sprites/Icons/\uBCF4\uB77C\uC0C9\uC5FC\uB8CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1af279dd5e13c2846a2fec2063ed786e
+    m_Address: "Assets/Sprites/Icons/\uBCF5\uC885\uC758\uD314\uCC0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fccd67e3296cc334bb8d44787ee67ff4
+    m_Address: "Assets/Sprites/Icons/\uBD09\uC81C\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7307aeaf363643468a06f1e434908fe
+    m_Address: "Assets/Sprites/Icons/\uBD80\uB4DC\uB7EC\uC6B4\uAE43\uD138.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ad1f302b6ed64946b19481c3f668b08
+    m_Address: "Assets/Sprites/Icons/\uBD80\uB4DC\uB7EC\uC6B4\uBE44\uB2E8\uCC9C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df21b2d48bf57cc478e97f8710f4fb95
+    m_Address: "Assets/Sprites/Icons/\uBD80\uB4DC\uB7EC\uC6B4\uD138.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7af134287e8408a45911771ecd83866f
+    m_Address: "Assets/Sprites/Icons/\uBD80\uB4DC\uB7EC\uC6B4\uD480\uC78E.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 224372fc3f48a8f41990fecfb936a409
+    m_Address: "Assets/Sprites/Icons/\uBD80\uB7EC\uC9C4\uBC14\uB298.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e471dee24e7eafd46a417733355079b8
+    m_Address: "Assets/Sprites/Icons/\uBD80\uCE20.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee2d448de621ec14d865828e6c2badf9
+    m_Address: "Assets/Sprites/Icons/\uBD80\uCF00.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dda99bfb92a0491478bbd184f4fcaea2
+    m_Address: "Assets/Sprites/Icons/\uBD84\uD64D\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 54a1ee5e06e5f0d4d92bcdf9ec15e7da
+    m_Address: "Assets/Sprites/Icons/\uBD88\uC528.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 479b4f1fde1d5ae45921439fe95857e5
+    m_Address: "Assets/Sprites/Icons/\uBD88\uD0C0\uB294\uB9D0\uBC1C\uAD7D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d78974f1b20be44189497cb3f7d5d1a
+    m_Address: "Assets/Sprites/Icons/\uBD88\uD0C0\uB294\uC2EC\uC7A5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a71b0f4ac066094385c38f42aef0f86
+    m_Address: "Assets/Sprites/Icons/\uBD88\uD654\uC0B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d234633d704348408dd0e3514d03aa3
+    m_Address: "Assets/Sprites/Icons/\uBD89\uC740\uBC15\uC950\uC758\uB0A0\uAC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e1f11e7b6cd8c2488f97a3dea294103
+    m_Address: "Assets/Sprites/Icons/\uBD89\uC740\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e900e5fcd6ec37644b192f313179cd10
+    m_Address: "Assets/Sprites/Icons/\uBD89\uC740\uC561\uC790.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 54ea2f43b77d166458c3b71bff9e71a1
+    m_Address: "Assets/Sprites/Icons/\uBE0C\uB85C\uCE58.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14d4bdfb8a9de4147ae328c9979c331d
+    m_Address: "Assets/Sprites/Icons/\uBE0C\uB9AC\uAC04.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c6f9c27a3b14474e9f39b3e0259706c
+    m_Address: "Assets/Sprites/Icons/\uBE14\uB8E8\uC82C\uC2A4\uD1A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d811dd71bdbdd6148bbc58ba1d66ac2a
+    m_Address: "Assets/Sprites/Icons/\uBE44\uB298\uC904\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 273e7d226ceabd3408c5a1ae0a9df436
+    m_Address: "Assets/Sprites/Icons/\uBE44\uB808\uD0C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0dc54938785cb14092fcc87282752c7
+    m_Address: "Assets/Sprites/Icons/\uBE44\uC815\uD55C\uB9C8\uC74C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 224086d4267fb034a98f4e7373f2115f
+    m_Address: "Assets/Sprites/Icons/\uBE48\uC2DC\uD5D8\uAD00.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a604aa17b4f23c241857dee58860f84a
+    m_Address: "Assets/Sprites/Icons/\uBE48\uD3EC\uC158\uBCD1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f851819d582f3744a9e86e59361e3d4
+    m_Address: "Assets/Sprites/Icons/\uBE5B\uB098\uB294\uBE44\uB298.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 703126e7df33da248bd8d64b62065dff
+    m_Address: "Assets/Sprites/Icons/\uBE5B\uB098\uB294\uCC3D\uB0A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9b50c1da22736e429b5b2d2980596d0
+    m_Address: "Assets/Sprites/Icons/\uBE68\uAC04\uB9C8\uD6C4\uB77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e91cf50664763c348b1c758998d948c7
+    m_Address: "Assets/Sprites/Icons/\uBE68\uAC04\uC0C9\uC5FC\uB8CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 805ced38bf9e4674498d18cd19bbcb31
+    m_Address: "Assets/Sprites/Icons/\uBFB0\uC871\uAD6C\uB450.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0086cef55a816db4e806e7a7f2a223b1
+    m_Address: "Assets/Sprites/Icons/\uC0AC\uACFC\uC96C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c2a7f1e2a045a2a458e0679d38ee8a7c
+    m_Address: "Assets/Sprites/Icons/\uC0AC\uB9C8\uADC0\uC758\uD314.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21a6867a279187e4ca4dcdeb4e3271b9
+    m_Address: "Assets/Sprites/Icons/\uC0AC\uC2B4\uBFD4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc88445987fe597429efe877370ae026
+    m_Address: "Assets/Sprites/Icons/\uC0AC\uC774\uD30C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a41922d5044435448a170e41abac0ee
+    m_Address: "Assets/Sprites/Icons/\uC0AC\uD0D5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ebe60d2be4b54d478d3c1d4f830fcad
+    m_Address: "Assets/Sprites/Icons/\uC0B0\uC591\uC758\uBAA8\uD53C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19e82b99567fafd47ac8bd3ce11cc8dd
+    m_Address: "Assets/Sprites/Icons/\uC0B0\uC591\uC758\uBFD4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0aede2164f106674e904f6854a394e1f
+    m_Address: "Assets/Sprites/Icons/\uC0B0\uD0C0\uBAA8\uC790.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9707702babcf54449b506ef2bb6080c2
+    m_Address: "Assets/Sprites/Icons/\uC0B0\uD638\uCD08.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c24225e551ddc3e4a93fe2e3620743ed
+    m_Address: "Assets/Sprites/Icons/\uC0BC\uAC01\uD32C\uD2F0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd2690b424bfb7749838e2ade4081865
+    m_Address: "Assets/Sprites/Icons/\uC0BF\uAC13.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8ffe3610ec2a774d9ac0124c2a9b3ae
+    m_Address: "Assets/Sprites/Icons/\uC0C1\uC778\uB9CC\uC218\uD3B8\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 475fbf8394f5eec4ebec901788a068e3
+    m_Address: "Assets/Sprites/Icons/\uC0C8\uB07C\uC545\uB9C8\uC758\uB0A0\uAC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97db2ab74a542f24aa199950c3918f3e
+    m_Address: "Assets/Sprites/Icons/\uC0C8\uB07C\uC545\uB9C8\uC758\uBFD4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3721b5f65bf327b408ed260855aaf6b5
+    m_Address: "Assets/Sprites/Icons/\uC0C8\uC2F9.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6993ec7f2431b25409ce56260fafa45e
+    m_Address: "Assets/Sprites/Icons/\uC0C8\uC758\uCE68.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c3ffb16ba6fadd42bd2f3e8e3b059e2
+    m_Address: "Assets/Sprites/Icons/\uC0C8\uCD1D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 653ee3cb341c84a44a28fce7d3ba4268
+    m_Address: "Assets/Sprites/Icons/\uC0C8\uD558\uC580\uBFD4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 655539d11663c574185e645b78d245a1
+    m_Address: "Assets/Sprites/Icons/\uC0CC\uB4E4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0b279750753ff149a561dbdcff9bd52
+    m_Address: "Assets/Sprites/Icons/\uC0DD\uBA85\uC758\uC528\uC557.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f478775af73a1f94bafa5887df6d0822
+    m_Address: "Assets/Sprites/Icons/\uC0DD\uC120\uC758\uAF2C\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b906928cf6ec5ae4586a3629087fce4a
+    m_Address: "Assets/Sprites/Icons/\uC0E4\uD504\uD5E4\uB4DC\uAE30\uC5B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3eb90ef0656023d4e8abe167d65639c5
+    m_Address: "Assets/Sprites/Icons/\uC11C\uD074\uB9BF.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 715e438facb8ae742a84dd087ad27c3a
+    m_Address: "Assets/Sprites/Icons/\uC11D\uD0C4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6f5fde706e208742a7377652318a3aa
+    m_Address: "Assets/Sprites/Icons/\uC120\uAE00\uB798\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b43c8f7fad8ea8478d63b6a6f8b25df
+    m_Address: "Assets/Sprites/Icons/\uC120\uBB3C\uC0C1\uC790.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bae84c8674f16343840f7887f647b97
+    m_Address: "Assets/Sprites/Icons/\uC120\uC778\uC7A5\uCE68.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89e8bfdcbd73634489fe8f3247f5a425
+    m_Address: "Assets/Sprites/Icons/\uC12C\uB729\uD55C\uC885\uC774\uCE7C\uB0A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3aa2dbaa01cd6cb4daa6fdb83574b79c
+    m_Address: "Assets/Sprites/Icons/\uC131\uB0E5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b424a7f5870b5014cb88a008eff19d0a
+    m_Address: "Assets/Sprites/Icons/\uC131\uC9C1\uC790\uC758\uBAA8\uC790.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fd1e8c5ee199454f9a5426ad8f94b40
+    m_Address: "Assets/Sprites/Icons/\uC131\uD754.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97ab204c71bb4284b9d763e696471ea5
+    m_Address: "Assets/Sprites/Icons/\uC138\uC774\uD504\uD2F0\uB9C1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6945c6eaf92cb3940ad3b64cc73fe43e
+    m_Address: "Assets/Sprites/Icons/\uC138\uC778\uD2B8\uB85C\uBE0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4cb5dd9051141e44bb98ada7d1deee3
+    m_Address: "Assets/Sprites/Icons/\uC18C\uB77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 673f63f49eab1e143bfbb5cf0e3d7390
+    m_Address: "Assets/Sprites/Icons/\uC1E0\uACE0\uB791.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 680c0f812afbd88438b4e89109f35208
+    m_Address: "Assets/Sprites/Icons/\uC218\uAC11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ea820a6712d79340abb4bedb6a17af6
+    m_Address: "Assets/Sprites/Icons/\uC218\uC815\uAC70\uC6B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e8c94ac7f0655a48b4f243fdb282753
+    m_Address: "Assets/Sprites/Icons/\uC218\uCDE8\uC778\uBD88\uBA85.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e96c7467e54b3dd4c9102f107cd7b662
+    m_Address: "Assets/Sprites/Icons/\uC21C\uACB0\uC758\uC740\uC7A5\uB3C4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad288c64da06e114e8b29c1f3ffd84ed
+    m_Address: "Assets/Sprites/Icons/\uC274\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a80d5fab2272084c96fff11adb6c246
+    m_Address: "Assets/Sprites/Icons/\uC288\uC988.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c31a1132c1967b34bbcdd9eb8f46b958
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uB9C8\uC77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8a0e17538cef4c4caed990fd3a587ee
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uC704\uD2B8\uC820\uD2C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 317921675ba68964fab9110492405f72
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uCE90\uD4F0\uB7EC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31f359b1072e56f478b678e553fa3eef
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uD06C\uB798\uCE58\uB9C8\uC2A4\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 711fadbca0fbbdb4e84e65de16cae08b
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uD0C0\uB354\uC2A4\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b28586aef94dea5499de19c3de9d4895
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uD3EC\uC544\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 071d519b120dcee40995ce6c55bacee7
+    m_Address: "Assets/Sprites/Icons/\uC2A4\uD540\uAE00\uB798\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69f489f8166505e478d9c7085165a0df
+    m_Address: "Assets/Sprites/Icons/\uC2AC\uB808\uC774\uD504\uB2C8\uB974.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ef3c5214a5047b40b7832fc55b9dd71
+    m_Address: "Assets/Sprites/Icons/\uC2AC\uB9BC\uD3EC\uC158\uC81C\uC870\uCC45.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f2289a426b3e7841a56d73b2a6ef411
+    m_Address: "Assets/Sprites/Icons/\uC2DC\uACC4\uBC14\uB298.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: abe99d1ffccb4144f80f8ed65841da8a
+    m_Address: "Assets/Sprites/Icons/\uC2DC\uACC4\uD0D1\uC5F4\uC1E0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b72ef6deb2d840e46807d7085cd7fcae
+    m_Address: "Assets/Sprites/Icons/\uC2DC\uB4E4\uC9C0\uC54A\uB294\uC7A5\uBBF8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e8cfa789d68c9e4697a06a72d2f7f24
+    m_Address: "Assets/Sprites/Icons/\uC2DC\uC704\uC6A9\uB9C8\uC2A4\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5151d3c32721e9643b9f2253250b7792
+    m_Address: "Assets/Sprites/Icons/\uC2DD\uBB3C\uBCD1\uC81C\uC870\uCC45.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4aab931694f49df44ada56de44369363
+    m_Address: "Assets/Sprites/Icons/\uC2DD\uBB3C\uC758\uC904\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0e6eeb2f6a9a004abe152f85af20284
+    m_Address: "Assets/Sprites/Icons/\uC2DD\uC778\uC218\uC758\uAF43.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4cf260c08c2a7840a1e41e8ccd96924
+    m_Address: "Assets/Sprites/Icons/\uC2DD\uC778\uC218\uC758\uBFCC\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e923c63f03bed6d479e0e42a9f591bab
+    m_Address: "Assets/Sprites/Icons/\uC2DD\uC778\uC2DD\uBB3C\uBCD1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb5e067c05138d14a9151cd75fa7dca0
+    m_Address: "Assets/Sprites/Icons/\uC2E0\uAD00\uC758\uAC00\uBA74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57b4b94ed45c0c849aa124d93444e732
+    m_Address: "Assets/Sprites/Icons/\uC2E0\uAD00\uC758\uC7A5\uAC11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d115250e2a838994fa02008144a79f59
+    m_Address: "Assets/Sprites/Icons/\uC2E4\uBC84\uB85C\uBE0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db3c31d70f4ba3b46a5f3af61b9b8070
+    m_Address: "Assets/Sprites/Icons/\uC2E4\uD06C\uB85C\uBE0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc440b370b7be0143b412d8800c92b95
+    m_Address: "Assets/Sprites/Icons/\uC2E4\uD328.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c66ce4a3adc49f45a6c258215845b06
+    m_Address: "Assets/Sprites/Icons/\uC2EC\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 492f0c230744ada4e98b350fa8d1d4f2
+    m_Address: "Assets/Sprites/Icons/\uC369\uC740\uBC27\uC904.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9abcffb30eff4a74c94f6f2857f97baf
+    m_Address: "Assets/Sprites/Icons/\uC369\uC740\uBE44\uB298.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32dc65f974273054dac7c0a3db188947
+    m_Address: "Assets/Sprites/Icons/\uC369\uC740\uC0DD\uC120.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ada165a907b9f6b48a868399a94da1a5
+    m_Address: "Assets/Sprites/Icons/\uC4F0\uB514\uC4F4\uD480.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3556e045211c514c80fca4c484cd03f
+    m_Address: "Assets/Sprites/Icons/\uC528\uD504\uD074\uB85C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7c61383e3b005f44aee39ba38dac7a5
+    m_Address: "Assets/Sprites/Icons/\uC544\uB180\uB9AC\uC548\uD53C\uBD80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d67f2f693eb15df4381d045b7f828419
+    m_Address: "Assets/Sprites/Icons/\uC544\uBA38.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84ae064bb6fe1274e8dc5cad394fb222
+    m_Address: "Assets/Sprites/Icons/\uC544\uC774\uC2A4\uD06C\uB9BC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e74f49c42f7a3a240a376bd98a31de3f
+    m_Address: "Assets/Sprites/Icons/\uC544\uC774\uC5B8\uBA54\uC774\uB4E0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a270aedd01ce52a4b83685f5bcec9a78
+    m_Address: "Assets/Sprites/Icons/\uC544\uC774\uC5B8\uCF00\uC778.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e0873d7dd4fe3840ad28db16e0749b2
+    m_Address: "Assets/Sprites/Icons/\uC544\uCE68\uC774\uC2AC\uC774\uB07C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f30403f9a61682043925fbf12758cd58
+    m_Address: "Assets/Sprites/Icons/\uC545\uB9C8\uC18C\uD658\uC11C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f1b7489d337a754b875e8d355247632
+    m_Address: "Assets/Sprites/Icons/\uC545\uB9C8\uC758\uBA38\uB9AC\uB760.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 85c6b575b6fc85a4cb6ea0a56718cc20
+    m_Address: "Assets/Sprites/Icons/\uC548\uB300.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1674a849c4f763c48aa7cad0876044a0
+    m_Address: "Assets/Sprites/Icons/\uC548\uD2F0\uD398\uC778\uBA58\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 822678dc027911042bf19ddbec8935e1
+    m_Address: "Assets/Sprites/Icons/\uC54C\uB85C\uC5D0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 325cdef5e0728c144848f48b93ff7535
+    m_Address: "Assets/Sprites/Icons/\uC54C\uB85C\uC5D0\uBCA0\uB77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 345ae1679d691d24cbd67fbf21fd48ed
+    m_Address: "Assets/Sprites/Icons/\uC54C\uB85D\uB2EC\uB85D\uD55C\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19fae3a5bb8e2a545a5a30874766d53c
+    m_Address: "Assets/Sprites/Icons/\uC54C\uB85D\uB2EC\uB85D\uD55C\uC591\uB9D0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69d526007ea3b9147a7e8fd98d93f6b2
+    m_Address: "Assets/Sprites/Icons/\uC54C\uBD80\uD654\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bacb22f6e4ac2e049bd0297cb0819154
+    m_Address: "Assets/Sprites/Icons/\uC54C\uCF54\uC62C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69bbf52f56f27d64b8afc2f59d526f61
+    m_Address: "Assets/Sprites/Icons/\uC54C\uCF5C\uC81C\uC870\uCC45.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28fe9431a45b5f347a5740b637d44a2b
+    m_Address: "Assets/Sprites/Icons/\uC561\uD1A0\uD50C\uB77C\uC998.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee1b0b42f182bc2498c561df335cb186
+    m_Address: "Assets/Sprites/Icons/\uC57D\uC0AC\uBC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 632ce45a4ad87b9438c2cb05dbc42d41
+    m_Address: "Assets/Sprites/Icons/\uC5B4\uAE68\uBCF4\uD638\uB300.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b548d1e08949f34ea653ab598541b3d
+    m_Address: "Assets/Sprites/Icons/\uC5B4\uB460\uC5D0\uC7A0\uAE34\uCE7C\uB0A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d4b079c5d44d3c49a59b0febc6bdc99
+    m_Address: "Assets/Sprites/Icons/\uC5B4\uB460\uC758\uACC4\uC57D\uC11C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28d6398f58d5be743b57f8337ea8a001
+    m_Address: "Assets/Sprites/Icons/\uC5B4\uB4DC\uBC34\uCCD0\uC288\uCE20.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 334c0af431b167648b63eb24528f40bd
+    m_Address: "Assets/Sprites/Icons/\uC5B4\uB9B0\uB098\uBB47\uAC00\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f91e216494def746baba7c8cf01315b
+    m_Address: "Assets/Sprites/Icons/\uC5B4\uBA38\uB2C8\uC758\uC545\uBABD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0ffe842bf97f6642920ec1ce1694f5e
+    m_Address: "Assets/Sprites/Icons/\uC5BC\uC74C\uC7A5\uBBF8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23363b64225f3a745b85002948daca9e
+    m_Address: "Assets/Sprites/Icons/\uC5BC\uC74C\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8427f6a28bf1f7b43a445e68cd5ccad3
+    m_Address: "Assets/Sprites/Icons/\uC5BD\uC5B4\uB9E8\uC0AC\uC2AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d4de2c54c4cd7a40a837f74d0b1c516
+    m_Address: "Assets/Sprites/Icons/\uC5D0\uB974\uB284.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 962585fbe5551ef498ea9eb547a3875d
+    m_Address: "Assets/Sprites/Icons/\uC5D0\uB974\uB284\uC6D0\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5c4c7258ddc68a4da50757fd7d1b622
+    m_Address: "Assets/Sprites/Icons/\uC5D8\uB9AC\uC2A4\uC758\uC55E\uCE58\uB9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eaae0cf26d237cd4bbff88088d8c73b8
+    m_Address: "Assets/Sprites/Icons/\uC5E0\uBCA0\uB974\uD0C0\uCF58.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b1832d9634bd8446bb58b1ababfa39e
+    m_Address: "Assets/Sprites/Icons/\uC5E0\uBE0C\uB9AC\uC624.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 01e25782cb9609e4a9cae8824ae2fa2e
+    m_Address: "Assets/Sprites/Icons/\uC5E0\uD3A0\uB9AC\uC6C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99a9420f434411c49822542bc6ce4b23
+    m_Address: "Assets/Sprites/Icons/\uC5E0\uD3A0\uB9AC\uC6C0\uBAA8\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee5e13735faafde4aaf95e6d4a76156c
+    m_Address: "Assets/Sprites/Icons/\uC5EC\uC6B0\uC758\uAF2C\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 592b6cd49c8193c47992ae6385fe0439
+    m_Address: "Assets/Sprites/Icons/\uC5EC\uC778\uC758\uC218\uC5FC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ee05e80665d9534d89767ae307c4678
+    m_Address: "Assets/Sprites/Icons/\uC5F0\uADF9\uC18C\uB3C4\uAD6C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf2475ada6180f04d821dd1c86e3de9e
+    m_Address: "Assets/Sprites/Icons/\uC5F0\uD544\uAF43\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c1ca467fcf41bd4687738f7d0d6a5d4
+    m_Address: "Assets/Sprites/Icons/\uC5F4\uB300\uC758\uBC14\uB098\uB098.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac200dbcc10a7d74c8f55d9d00eb80b0
+    m_Address: "Assets/Sprites/Icons/\uC5FC\uC0B0\uBCD1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b93b03fb13757c349a889d118ef9cac2
+    m_Address: "Assets/Sprites/Icons/\uC5FC\uC0B0\uBCD1\uC81C\uC870\uCC45.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 961bfa1cea7e10445830a76350d184c2
+    m_Address: "Assets/Sprites/Icons/\uC601\uC8FC\uC758\uD1B5\uD589\uC99D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14956294be0c2694784980495daeb52b
+    m_Address: "Assets/Sprites/Icons/\uC601\uD63C\uACE0\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69d6cf1a33ab9e64296017b11b867d07
+    m_Address: "Assets/Sprites/Icons/\uC601\uD63C\uC758\uC228\uC18C\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ebe6c8ab58bea7146b36bd7485229154
+    m_Address: "Assets/Sprites/Icons/\uC610\uB85C\uC6B0\uB77C\uC774\uBE0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71c0070ef5db0d3488d7d879d4d987fd
+    m_Address: "Assets/Sprites/Icons/\uC610\uB85C\uC6B0\uC82C\uC2A4\uD1A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f06a5b8e29dcf7a4c9b538a65ebe17fe
+    m_Address: "Assets/Sprites/Icons/\uC61B\uC601\uC8FC\uC758\uB9DD\uD1A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93221e7111a752349a2d6d8a21059e39
+    m_Address: "Assets/Sprites/Icons/\uC624\uB77C\uC624\uB77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd6bc623aa7016d49b99da0a3947e0ad
+    m_Address: "Assets/Sprites/Icons/\uC624\uB798\uB41C\uB9C8\uBC95\uC11C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a226f02ae7170fe4a8d9a5df90fc629e
+    m_Address: "Assets/Sprites/Icons/\uC624\uB80C\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76a30a39e37d1324ea36b64fdc236f60
+    m_Address: "Assets/Sprites/Icons/\uC624\uB80C\uC9C0\uC96C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3026f87952bc7a408f778bf67cc38ca
+    m_Address: "Assets/Sprites/Icons/\uC624\uB9AC\uB370\uC624\uCF58.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dec7df1b2fd959c43a6d70f923833ce3
+    m_Address: "Assets/Sprites/Icons/\uC624\uB9AC\uB370\uC624\uCF58\uBAA8\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ac5b3cda3adb274792cf66717c15be8
+    m_Address: "Assets/Sprites/Icons/\uC624\uB9AC\uB370\uC624\uCF58\uC6D0\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a83c4da8fe6cf1499382a12225dd815
+    m_Address: "Assets/Sprites/Icons/\uC624\uBB18\uD55C\uCCA0\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25287eaefd594364f9f150b08b02bc97
+    m_Address: "Assets/Sprites/Icons/\uC624\uC2DC\uB9AC\uC2A4\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2167031222b9aae4ba719c827fcedae1
+    m_Address: "Assets/Sprites/Icons/\uC624\uC6B0\uAC70\uC758\uC774\uBE68.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5bd19663581d1bb48ad8f9af07e07979
+    m_Address: "Assets/Sprites/Icons/\uC624\uD06C\uC6A9\uC790\uC758\uC99D\uD45C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b5f786d54fd9b4459fc48e58bb02a43
+    m_Address: "Assets/Sprites/Icons/\uC624\uD06C\uC758\uC190\uD1B1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0714111f20ccad940816e02f037accd7
+    m_Address: "Assets/Sprites/Icons/\uC624\uD06C\uC871\uD5EC\uB984.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aba37fbfd7e901348847d6f7067ef77e
+    m_Address: "Assets/Sprites/Icons/\uC624\uD398\uB77C\uAC00\uBA74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 42b18965e2130a645afbf34ef34807fc
+    m_Address: "Assets/Sprites/Icons/\uC62C\uB4DC\uC2A4\uD130\uB85C\uB9E8\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28b7fd043a791834e95b8e9e43c33ac0
+    m_Address: "Assets/Sprites/Icons/\uC639\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 194331f3fc337914083c3e671dbcce0f
+    m_Address: "Assets/Sprites/Icons/\uC655\uB9AC\uBCF8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4ef371eeaa01e34fa55d4b6abe03479
+    m_Address: "Assets/Sprites/Icons/\uC678\uB208\uC548\uACBD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 079424b6c3f08054ab2464b26751743a
+    m_Address: "Assets/Sprites/Icons/\uC694\uC815\uC758\uADC0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f376ac8a2835fe74290911ee81fd6e08
+    m_Address: "Assets/Sprites/Icons/\uC6A9\uC811\uB9C8\uC2A4\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 071139ca54174e94e9443a9e8dc7b458
+    m_Address: "Assets/Sprites/Icons/\uC6B0\uB4E0\uBA54\uC77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0573c21269d4feb439e2f98adde8f843
+    m_Address: "Assets/Sprites/Icons/\uC6D0\uC22D\uC774\uAF2C\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c15a88c0d29a6f448d1aa2769afbef7
+    m_Address: "Assets/Sprites/Icons/\uC6D0\uC22D\uC774\uC758\uC190\uD1B1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61f26b61fd16bd44abe9ced00c3a9b9c
+    m_Address: "Assets/Sprites/Icons/\uC6D0\uC22D\uC774\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b7007230a3e69943bea8c42a0ec89a4
+    m_Address: "Assets/Sprites/Icons/\uC6D4\uAD11\uAC80.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b45ae3bf1bac433428e629f5963e2afb
+    m_Address: "Assets/Sprites/Icons/\uC6E8\uB529\uB4DC\uB808\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0aab9e53dc089074caf4f234956966cb
+    m_Address: "Assets/Sprites/Icons/\uC6E8\uC2A4\uD134\uADF8\uB808\uC774\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4a50f03409f5064bb0ba4ad34b117ec
+    m_Address: "Assets/Sprites/Icons/\uC704\uC800\uB4DC\uD587.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6bccfa3b78f65341905c8c8f077dd42
+    m_Address: "Assets/Sprites/Icons/\uC708\uB4DC\uC624\uBE0C\uBC84\uB4C0\uC5B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8309a4fbcd3b9c54d9692cdd94758d12
+    m_Address: "Assets/Sprites/Icons/\uC720\uB9AC\uAD00.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a8c9227628850f4bab10c383446daf8
+    m_Address: "Assets/Sprites/Icons/\uC720\uB9AC\uAD6C\uB450.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7858607ee414c8d4fbf3e5d542f5c3ed
+    m_Address: "Assets/Sprites/Icons/\uC720\uB9AC\uAD6C\uC2AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10003756a86bc0d4ab517d11fe87fb53
+    m_Address: "Assets/Sprites/Icons/\uC724\uAE30\uC788\uB294\uBA38\uB9AC\uCE7C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7d688f0db008d84fa9f1b557d96e212
+    m_Address: "Assets/Sprites/Icons/\uC740\uBC18\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12aff1706792ffd41a6193c8558dc952
+    m_Address: "Assets/Sprites/Icons/\uC740\uC7A5\uC2DD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81ccbc28ec16c7245bd8d0b5cfe230d2
+    m_Address: "Assets/Sprites/Icons/\uC740\uD654\uC0B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba0ca7bb88d08fb49a5273e7f776ab76
+    m_Address: "Assets/Sprites/Icons/\uC758\uC0AC\uBA38\uB9AC\uB760.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71a05e30165878443a17b35c5d5b6e60
+    m_Address: "Assets/Sprites/Icons/\uC758\uC801\uC548\uB300.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 724209581522ba84d804dca3aaf4c304
+    m_Address: "Assets/Sprites/Icons/\uC774\uADF8\uB4DC\uB77C\uC2E4\uC528\uC557.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4446218afea11243b7c82bc2f9d1da2
+    m_Address: "Assets/Sprites/Icons/\uC774\uADF8\uB4DC\uB77C\uC2E4\uC5F4\uB9E4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 720e8d1517588304494ade24d636b9af
+    m_Address: "Assets/Sprites/Icons/\uC774\uADF8\uB4DC\uB77C\uC2E4\uC774\uC2AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3cee9b31dd947841827e2f79af3b01d
+    m_Address: "Assets/Sprites/Icons/\uC774\uC5B4\uB9C1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e958179c8fe131409c24240f67cef61
+    m_Address: "Assets/Sprites/Icons/\uC774\uC9C0\uB3C4\uB974.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9170763654c8b5a4aa9a9454d6d54eb5
+    m_Address: "Assets/Sprites/Icons/\uC778\uC5B4\uC758\uC2EC\uC7A5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2662b9c1c8055c3459833feda575ba93
+    m_Address: "Assets/Sprites/Icons/\uC77C\uADF8\uB7EC\uC9C4\uC790\uD654\uC0C1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2391b073fd8da5e4b808bcd0d047810f
+    m_Address: "Assets/Sprites/Icons/\uC77C\uBC18\uD3EC\uC158\uC81C\uC870\uCC45.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d5183d225d576948a797f662484d8c8
+    m_Address: "Assets/Sprites/Icons/\uC798\uAD6C\uC6B4\uCFE0\uD0A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e9586755b5576f49a5b8cd1e40178f4
+    m_Address: "Assets/Sprites/Icons/\uC7A0\uC790\uB9AC\uC758\uB0A0\uAC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12e338e679ad6dc4385d9b92ec224a59
+    m_Address: "Assets/Sprites/Icons/\uC7A5\uB2D8\uC758\uC5B4\uB9AC\uC11D\uC74C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c65fba93e1668114780864d0b34fd726
+    m_Address: "Assets/Sprites/Icons/\uC7A5\uB840\uAC74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 707c3291f2a3ce6419ffcbecf05da3e0
+    m_Address: "Assets/Sprites/Icons/\uC7A5\uC2DD\uC6A9\uAF43.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e525025835344c468fc390da6dca029
+    m_Address: "Assets/Sprites/Icons/\uC7A5\uC2DD\uC6A9\uD574\uBC14\uB77C\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1adf9f8c2b7d31549906a3f1688fb7a8
+    m_Address: "Assets/Sprites/Icons/\uC804\uAC08\uC758\uAF2C\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1528023da5a4b60439b14cfce18b80e0
+    m_Address: "Assets/Sprites/Icons/\uC804\uAC08\uC758\uC9D1\uAC8C\uBC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e25008c82996c3440bcabaaf0463fc9a
+    m_Address: "Assets/Sprites/Icons/\uC804\uAC08\uC758\uC9D1\uAC8C\uC190.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6dcd0c57f15fd3d43a119f61f5cfb752
+    m_Address: "Assets/Sprites/Icons/\uC815\uC9C0\uD45C\uC9C0\uD310.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f915c78f79c6e5f45b05a9191bdd3e88
+    m_Address: "Assets/Sprites/Icons/\uC81C\uB178\uD06C\uC758\uC774\uBE68.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68aaee8c65e8621469a79143ffa43d18
+    m_Address: "Assets/Sprites/Icons/\uC870\uAC01\uCF00\uC774\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91312aa843d0a224f9e207347dc91f48
+    m_Address: "Assets/Sprites/Icons/\uC870\uAC1C\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9590250fe5c76c2449c6e3603c4fa93d
+    m_Address: "Assets/Sprites/Icons/\uC870\uAC1C\uC0B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46e470b6b0239594ea0725c1753b82b3
+    m_Address: "Assets/Sprites/Icons/\uC870\uC6A9\uD55C\uBB3C\uACB0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c2983095334b6d2488b595d21b8a4573
+    m_Address: "Assets/Sprites/Icons/\uC870\uC9C1\uC758\uB2E8\uACB0\uB825.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b060bbd0dc63fca4bb3c29df8f180a8f
+    m_Address: "Assets/Sprites/Icons/\uC870\uC9C1\uC758\uC4F4\uB9DB.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa7628aa4c021f848a09ab19b1dd9610
+    m_Address: "Assets/Sprites/Icons/\uC871\uC1E0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd92f39e795f3964ab938fe0ce4776bb
+    m_Address: "Assets/Sprites/Icons/\uC8FC\uD64D\uC0C9\uC5FC\uB8CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3bb07fac5b7e90d49ae5aa450b5e5f59
+    m_Address: "Assets/Sprites/Icons/\uC911\uD654\uC81C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c106f8046c036ed4ba7463aff7c724ad
+    m_Address: "Assets/Sprites/Icons/\uC950\uC758\uAF2C\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acb6907c15761ba40a598a205b76fe90
+    m_Address: "Assets/Sprites/Icons/\uC96C\uC5BC\uD5EC\uB984.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb059cab868aeda49b9635651eabeb00
+    m_Address: "Assets/Sprites/Icons/\uC9C0\uB801\uC774\uAC00\uC8FD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: efa6ecb4275f2f14ea73bb69579dcd29
+    m_Address: "Assets/Sprites/Icons/\uC9C4\uD64D\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a2d998f1a982e94c8c9117ec19f503d
+    m_Address: "Assets/Sprites/Icons/\uC9C4\uD759\uB369\uC5B4\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87319860bb478e940abbb66df5cbc605
+    m_Address: "Assets/Sprites/Icons/\uC9C8\uAE34\uB098\uBB34\uB369\uCFE8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ca30001ab726be458238435e9e7789b
+    m_Address: "Assets/Sprites/Icons/\uC9C8\uAE34\uBE44\uB298\uC904\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92fa41f2588d56f4e8967a0c551e69fc
+    m_Address: "Assets/Sprites/Icons/\uC9D1\uAC8C\uBC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7997463a21551424c82f0524973e721a
+    m_Address: "Assets/Sprites/Icons/\uC9D1\uC911\uD3EC\uC158.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2fef4460dc541f24b814bc3ff13db70f
+    m_Address: "Assets/Sprites/Icons/\uC9D1\uD589\uC778\uC758\uC7A5\uAC11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b6226c583e245b4487e150b41ffd289
+    m_Address: "Assets/Sprites/Icons/\uC9E7\uC740\uB2E4\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 049f8788fb0425841bd51410eedea33c
+    m_Address: "Assets/Sprites/Icons/\uC9E7\uC740\uB315\uAE30\uBA38\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da3477096fcca7f4da7b40865f13d5aa
+    m_Address: "Assets/Sprites/Icons/\uCC22\uC5B4\uC9C4\uB9C8\uBC95\uC11C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b1b8602746ef284e99c6fdde437614f
+    m_Address: "Assets/Sprites/Icons/\uCC22\uC5B4\uC9C4\uC2A4\uD06C\uB864.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36d162c766fdadb4db83c0b268905903
+    m_Address: "Assets/Sprites/Icons/\uCC98\uB140\uC758\uC637\uC790\uB77D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c2ce736af4ff114185eefdbf92ed02e
+    m_Address: "Assets/Sprites/Icons/\uCC9C\uAD6C\uC758\uCF54.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3bf9398528c18f14a9d6931317ce9f88
+    m_Address: "Assets/Sprites/Icons/\uCC9C\uC0AC\uC758\uB0A0\uAC1C\uAE43\uD138.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 740ad80dc13631c479b61989bdac6da4
+    m_Address: "Assets/Sprites/Icons/\uCC9C\uC0AC\uC758\uBA38\uB9AC\uB760.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd750fd65b00f89408cd447c9f9e3362
+    m_Address: "Assets/Sprites/Icons/\uCCA0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb64a4b1abb4d7b4c81a9edda95ac9a8
+    m_Address: "Assets/Sprites/Icons/\uCCA0\uAD11\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d26f5e571c273d24dbbed1d8fcb7dd7a
+    m_Address: "Assets/Sprites/Icons/\uCCAD\uB85D\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0a202b3b2b34f4348a1c42eccfab6af8
+    m_Address: "Assets/Sprites/Icons/\uCD08\uB85D\uB354\uB4EC\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe8d489cf32faf942964a4ca918681f5
+    m_Address: "Assets/Sprites/Icons/\uCD08\uB85D\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 273d568d71c62cf4eaaf3107b65c9499
+    m_Address: "Assets/Sprites/Icons/\uCD08\uB85D\uC0C9\uC5FC\uB8CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a65d27e51f18f2a4692c8d4017d0e641
+    m_Address: "Assets/Sprites/Icons/\uCD08\uBCF4\uC790\uC6A9\uD749\uAC11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68f4edd8cf6bd2a4fb76ccb033946eb1
+    m_Address: "Assets/Sprites/Icons/\uCD09\uC218.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f9565c7b0b38a947832f7288c53027d
+    m_Address: "Assets/Sprites/Icons/\uCD0C\uCD0C\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 163fc624bb1df6748868f2709d132132
+    m_Address: "Assets/Sprites/Icons/\uCD94\uC5B5\uC758\uCC45\uAC08\uD53C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64e0d58ec2f12e9498123cf6b7b8d855
+    m_Address: "Assets/Sprites/Icons/\uCDA9\uC808\uC758\uC99D\uAC70.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3bb00858e9a4f254896ee4aa43e174cb
+    m_Address: "Assets/Sprites/Icons/\uCE74\uB974\uBCF4\uB51C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc5579129fbb5914c943fa8b47802200
+    m_Address: "Assets/Sprites/Icons/\uCE74\uCE74\uC624.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcd257f045c603446904cb02b62310cd
+    m_Address: "Assets/Sprites/Icons/\uCE90\uC2A4\uD305\uC758\uB85C\uBE0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acb980470071a8b49bb3019403e9c2d6
+    m_Address: "Assets/Sprites/Icons/\uCEA1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d2a30a27a417d8428d085fbdf728fc8
+    m_Address: "Assets/Sprites/Icons/\uCEE4\uB2E4\uB780\uB0A0\uAC1C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e5eb7a77d1edd448b1b2a2e5a8c277d
+    m_Address: "Assets/Sprites/Icons/\uCEE4\uB2E4\uB780\uC78E\uC0AC\uADC0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5de964d31a23eb4aa30b847673be5c6
+    m_Address: "Assets/Sprites/Icons/\uCF54\uB85C\uB137.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c237ee2cd4803a240a4f0833374e9536
+    m_Address: "Assets/Sprites/Icons/\uCF54\uBCFC\uD2B8\uC758\uD138.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9d4d7d4c11124441b30325a5f61f9fe
+    m_Address: "Assets/Sprites/Icons/\uCF54\uD2BC\uC154\uCE20.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f5ade8cefc034748bc3350a3f5a8a92
+    m_Address: "Assets/Sprites/Icons/\uCF54\uD305\uC57D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec44714dd072e0341bcd872a9bba6494
+    m_Address: "Assets/Sprites/Icons/\uCF54\uD305\uC57D\uC81C\uC870\uCC45.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c48bacd6c300d9a489e8c08d4f034606
+    m_Address: "Assets/Sprites/Icons/\uCFE0\uD3F0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c675fbd4da55f9f458d3a0cabafecf36
+    m_Address: "Assets/Sprites/Icons/\uD06C\uB77C\uC6B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4ee280a5700a2e48917e049a8c1a436
+    m_Address: "Assets/Sprites/Icons/\uD06C\uB9AC\uC2A4\uD0C8\uBE14\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c88ad57541f0b0442b0e7a2c3f5ac812
+    m_Address: "Assets/Sprites/Icons/\uD06C\uB9AC\uD2F0\uCEEC\uB9C1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2f89ca61fe899c418141e97e1ae3315
+    m_Address: "Assets/Sprites/Icons/\uD070\uC950\uC758\uBC1C\uD1B1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aad622ff0e88ff6428a0223cfd074f26
+    m_Address: "Assets/Sprites/Icons/\uD074\uB85C\uBC84.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4af9aa1f4ceb144d83a604fee32a64e
+    m_Address: "Assets/Sprites/Icons/\uD074\uB9BD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d154baf0a4ce67842ba2c2dcc1ca66a2
+    m_Address: "Assets/Sprites/Icons/\uD0C0\uB2E4\uB9CC\uC7A5\uC791.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f52a57e64595b244a2ed57b1732e2e5
+    m_Address: "Assets/Sprites/Icons/\uD0C0\uC774\uC988.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af7573aa609f4c14d99a8eec8183a47f
+    m_Address: "Assets/Sprites/Icons/\uD0C4\uB825\uC788\uB294\uC904.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c682cc92a9c8bfb47abc1ffc38e6579e
+    m_Address: "Assets/Sprites/Icons/\uD0D1\uC9C0\uD558\uC5F4\uC1E0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f12cf6b1334fa894d9ef95dcc1ea5f48
+    m_Address: "Assets/Sprites/Icons/\uD0DC\uADF9\uD328.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d856dc7021d8b524ebe00b6c8cf9f49a
+    m_Address: "Assets/Sprites/Icons/\uD0DC\uC591\uC2E0\uC758\uC0C1\uC9D5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba4773ce1b2abd54b80573caab8c2d11
+    m_Address: "Assets/Sprites/Icons/\uD131\uC2DC\uB3C4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8ef92688fbb87e438da99721aff476d
+    m_Address: "Assets/Sprites/Icons/\uD138\uC2E4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6a80baa8cbd0cc439f221712b128473
+    m_Address: "Assets/Sprites/Icons/\uD1A0\uB07C\uBA38\uB9AC\uB760.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f42bc5e640416541ac35027cd08fd1a
+    m_Address: "Assets/Sprites/Icons/\uD1A0\uB974\uC758\uC1E0\uC7A5\uAC11.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac45c5fb602b5214b823586c1247035e
+    m_Address: "Assets/Sprites/Icons/\uD1A0\uC2E4\uD1A0\uC2E4\uC9C0\uB801\uC774.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a26a723873732f4083240dce1ffbbc7
+    m_Address: "Assets/Sprites/Icons/\uD1B1\uB2C8\uBC14\uD034.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5795d0376c0cbb489920331a35b8999
+    m_Address: "Assets/Sprites/Icons/\uD1B5\uB098\uBB34.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5433e1583dd8c643bf5f79d2665f7e1
+    m_Address: "Assets/Sprites/Icons/\uD22C\uAD6C\uBC8C\uB808\uC758\uC9D1\uAC8C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e5bde3febc5cfa46a5ad11d7d28a6e5
+    m_Address: "Assets/Sprites/Icons/\uD22C\uBA85\uD55C\uB0A0\uAC1C\uC637.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c2fa62ee79704a48bd7c0dadd53c9bf
+    m_Address: "Assets/Sprites/Icons/\uD22C\uBA85\uD55C\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc918e9611d0b5845ab65d1efaafcd2c
+    m_Address: "Assets/Sprites/Icons/\uD22C\uBA85\uD55C\uCC9C\uC870\uAC01.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edbf60f6043011a47865b39a8a56f126
+    m_Address: "Assets/Sprites/Icons/\uD22C\uD0C4\uCE74\uBA58\uB9C8\uC2A4\uD06C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b7dd4cc5cc00bf4488be424ea0662ae
+    m_Address: "Assets/Sprites/Icons/\uD2B8\uB7A9.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 160347eab3c09c447a812b0f2e1d8f62
+    m_Address: "Assets/Sprites/Icons/\uD2BC\uD2BC\uD55C\uB098\uBB34\uAC00\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a33b4d52923b9f41957e8ac750bb941
+    m_Address: "Assets/Sprites/Icons/\uD2F0\uC544\uB77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38b744cb96c65664e912f58134127058
+    m_Address: "Assets/Sprites/Icons/\uD30C\uB780\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9650f4b4ca3b064f8e9f4b919a1f93e
+    m_Address: "Assets/Sprites/Icons/\uD30C\uB780\uC0C9\uC5FC\uB8CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c833cd6bf7d5fc74fa9e769bef7d2eca
+    m_Address: "Assets/Sprites/Icons/\uD30C\uC774\uD504\uB2F4\uBC30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b639599854db3b3488357aa9793dfba8
+    m_Address: "Assets/Sprites/Icons/\uD30C\uCDA9\uB958\uD613\uBC14\uB2E5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee4b5eebf096baf4fb57f7ad1717a1bf
+    m_Address: "Assets/Sprites/Icons/\uD398\uCF54\uB0A0\uAC1C\uAE43\uD138.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d20048181a6fbc541b6e9566c78ccc6d
+    m_Address: "Assets/Sprites/Icons/\uD3B8\uC9C001.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b22845f0a27b6d478c86bfa1d063e33
+    m_Address: "Assets/Sprites/Icons/\uD3EC\uB3C4\uC96C\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da739ad9e34047f4390edcf46c1d6d5d
+    m_Address: "Assets/Sprites/Icons/\uD3EC\uB9C1\uC778\uD615.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fbb8fbe92da3824d87bb65948bbd18d
+    m_Address: "Assets/Sprites/Icons/\uD3EC\uBA40\uB4DC\uB808\uC2A4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c29e691562016ad4c990eca56eb90aff
+    m_Address: "Assets/Sprites/Icons/\uD3EC\uC7A5\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b446ea57c2fee3438f80d8069a1a332
+    m_Address: "Assets/Sprites/Icons/\uD3ED\uD48D\uC6B0\uC758\uC9D5\uC870.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbf30d6acc634f240953df3fa131ee9d
+    m_Address: "Assets/Sprites/Icons/\uD45C\uBC94\uC758\uAC00\uC8FD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1e3c8518e00b4f49b21d5de34ae6d5f
+    m_Address: "Assets/Sprites/Icons/\uD45C\uBC94\uC758\uBC1C\uD1B1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c6603e972315e0541ae71050228d0759
+    m_Address: "Assets/Sprites/Icons/\uD478\uB978\uB3C4\uC790\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0f96588452f20149a1bd6de2413ad2c
+    m_Address: "Assets/Sprites/Icons/\uD480\uC78E.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48600eae4c997cc4fb1ec9a01edfc1cf
+    m_Address: "Assets/Sprites/Icons/\uD480\uD50C\uB808\uC774\uD2B8\uC544\uBA38.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46970a09fdfa96f40941ebb89b6c52d7
+    m_Address: "Assets/Sprites/Icons/\uD504\uB77C\uCF58.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e94d04bc7927ed4898fccecc0ff1301
+    m_Address: "Assets/Sprites/Icons/\uD504\uB808\uC774\uC57C\uC758\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f6e5abc92bab4b46b2ca3e6054a95dd
+    m_Address: "Assets/Sprites/Icons/\uD504\uB808\uC784\uD558\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0783475cddf4f2146ac927f8f8e67e8c
+    m_Address: "Assets/Sprites/Icons/\uD504\uB85C\uD3A0\uB77C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b4e2eac3fc588546a3dc9ada958197e
+    m_Address: "Assets/Sprites/Icons/\uD504\uB860\uD14C\uB77C\uAD70\uBAA8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac673ecf3195ee64fa925c0f9d5e6fea
+    m_Address: "Assets/Sprites/Icons/\uD50C\uB808\uC774\uD2B8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 502d9e76f1050bd40b0729dd58906527
+    m_Address: "Assets/Sprites/Icons/\uD53C\uB85C\uBB3C\uB4E0\uCE7C\uB0A0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f997e4f4a7315c4d86059f19bb61977
+    m_Address: "Assets/Sprites/Icons/\uD558\uB298\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7e89fe78e3e5314ca8f94ba968d4255
+    m_Address: "Assets/Sprites/Icons/\uD558\uB298\uD558\uB298\uC55E\uCE58\uB9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29717ef7275dfff4292fff104213a584
+    m_Address: "Assets/Sprites/Icons/\uD558\uC580\uC0C9\uBCF4\uC11D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2680f581eafb76b489483ee0f775216f
+    m_Address: "Assets/Sprites/Icons/\uD558\uC580\uC0C9\uC5FC\uB8CC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d765e331513ec6e4f8bf84b800af9a87
+    m_Address: "Assets/Sprites/Icons/\uD558\uC580\uC811\uC2DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5549da115c6a17f46a37ad45f9a301f2
+    m_Address: "Assets/Sprites/Icons/\uD558\uD53C\uC758\uAE43\uD138.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49965de0fa555d1418267f771b2262eb
+    m_Address: "Assets/Sprites/Icons/\uD558\uD53C\uC758\uBC1C\uD1B1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c0503e13db53124288fa26d1f0e9034
+    m_Address: "Assets/Sprites/Icons/\uD574\uACE8\uBC14\uAC00\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edece31fbd36b804999e3a62d800851b
+    m_Address: "Assets/Sprites/Icons/\uD574\uACE8\uBC18\uC9C0.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce22ca8515d805e41a7fd288994b73fe
+    m_Address: "Assets/Sprites/Icons/\uD574\uB2EC\uC758\uAC00\uC8FD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f61da88ef4b1d34db6720e907a1c24c
+    m_Address: "Assets/Sprites/Icons/\uD574\uC801\uB450\uAC74.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a89e0f01e6a219147b7e0df1828b8d2c
+    m_Address: "Assets/Sprites/Icons/\uD587.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f11b62556d83664abba1b7f5d4e61c6
+    m_Address: "Assets/Sprites/Icons/\uD5CC\uBE57\uC790\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fef06c8ed509cc140aeab85e576c19fd
+    m_Address: "Assets/Sprites/Icons/\uD5CC\uD6C4\uB77C\uC774\uD39C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8b652c15f226744097c384e1b9c47dc
+    m_Address: "Assets/Sprites/Icons/\uD5EC\uB984.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a55300db2f820642921ab781d8bd93b
+    m_Address: "Assets/Sprites/Icons/\uD61C\uC548.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 658bd38fc8a20c24dadbbf4e592c46f5
+    m_Address: "Assets/Sprites/Icons/\uD638\uB791\uC774\uC758\uAC00\uC8FD.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41f8f84ed5aa0014c8d7206a642b2f5f
+    m_Address: "Assets/Sprites/Icons/\uD638\uB791\uC774\uC758\uBC1C\uBC14\uB2E5.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 664e0cd3e1a8708439753a1b01dca2f5
+    m_Address: "Assets/Sprites/Icons/\uD638\uBC15.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd36bdd9bc9aece429183afe32fe5f21
+    m_Address: "Assets/Sprites/Icons/\uD638\uBC15\uBA38\uB9AC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b72b161b1e4a614db7fe1915ec2b036
+    m_Address: "Assets/Sprites/Icons/\uD638\uBC15\uCD08\uB871.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 027ec923979d7ba4398c1516c22086e9
+    m_Address: "Assets/Sprites/Icons/\uD63C\uD569\uC81C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2091ab9b43ad06f46a84ee6195838235
+    m_Address: "Assets/Sprites/Icons/\uD640\uB9AC\uAC00\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7aa757b57cd017646b994e1f2ddea060
+    m_Address: "Assets/Sprites/Icons/\uD640\uB9AC\uB85C\uBE0C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c10413a0283906942b0db05aa2ae00a5
+    m_Address: "Assets/Sprites/Icons/\uD654\uB824\uD55C\uAECD\uC9C8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e38d6692465124941be0617cedd578a8
+    m_Address: "Assets/Sprites/Icons/\uD654\uC0B4.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afd4eb35a9d4d874a830a591c1522947
+    m_Address: "Assets/Sprites/Icons/\uD654\uC57D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 804c770c6b74d134e879f2ae327dd8f3
+    m_Address: "Assets/Sprites/Icons/\uD654\uC5FC\uBCD1.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86d48182f22a85642830bb861996f726
+    m_Address: "Assets/Sprites/Icons/\uD654\uC5FC\uBCD1\uC81C\uC870\uCC45.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bed5f9951339c8742a4e4bea780466d6
+    m_Address: "Assets/Sprites/Icons/\uD654\uC7A5\uD488.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9271b3892b5db6741baf021d77ec567e
+    m_Address: "Assets/Sprites/Icons/\uD655\uC131\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69b30bc85a4233f4b9ff37651d723c5e
+    m_Address: "Assets/Sprites/Icons/\uD658\uC0C1\uC758\uAF43.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c9476adfaabe7547909c6485f6be970
+    m_Address: "Assets/Sprites/Icons/\uD658\uC57D.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 032274111bb9c904da036fd59567c71d
+    m_Address: "Assets/Sprites/Icons/\uD65C\uACE8\uBB34.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03e9faa7391859445b8bc5fc41f5aaa4
+    m_Address: "Assets/Sprites/Icons/\uD669\uAE08.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40cc159b4809ece4a8536339b32e4309
+    m_Address: "Assets/Sprites/Icons/\uD669\uAE08\uC758\uBAA8\uB8E8.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22e6b986d9d65d245bfa36cc1fc33f71
+    m_Address: "Assets/Sprites/Icons/\uD68C.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a1e9ef475d90b1418674135556cdff1
+    m_Address: "Assets/Sprites/Icons/\uD6C4\uB4DC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5014672d7441c14bb55f2916fc7179e
+    m_Address: "Assets/Sprites/Icons/\uD750\uB974\uB294\uACF5\uAE30.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 310327a479cf93746b3582cf38bd5542
+    m_Address: "Assets/Sprites/Icons/\uD770\uC218\uC5FC.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dfc5138d7f937f44e88fb869ab1f693d
+    m_Address: "Assets/Sprites/Icons/\uD788\uB098\uB808.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dcd74924b040d8642953176c12437c9f
+    m_Address: "Assets/Sprites/Icons/\uD798\uC904.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5eda62790f296a74cb6e7b8012a8a7f2
+    m_Address: Assets/Sprites/Monsters/were_wolf.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

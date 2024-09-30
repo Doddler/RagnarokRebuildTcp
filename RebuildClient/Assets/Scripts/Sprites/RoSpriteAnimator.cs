@@ -478,7 +478,7 @@ namespace Assets.Scripts.Sprites
                 else
                 {
                     OnFinishAnimation?.Invoke();
-                    
+
                     if (State != SpriteState.Dead && !DisableLoop)
                     {
                         currentFrame = 0;
@@ -494,10 +494,10 @@ namespace Assets.Scripts.Sprites
             if (State == SpriteState.Walking && CurrentMotion == SpriteMotion.Walk)
             {
                 var stepSize = DebugValueHolder.GetOrDefault("stepSize", 4.6f);
-                var newWalkFrame = MoveDistance * stepSize * 0.37f * 4f / (currentAction.Delay/24f);
-                 // Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
-                 // if(newWalkFrame != currentFrame)
-                 //     Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
+                var newWalkFrame = MoveDistance * stepSize * 0.37f * 4f / (currentAction.Delay / 24f);
+                // Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
+                // if(newWalkFrame != currentFrame)
+                //     Debug.Log($"{newWalkFrame} {MoveDistance} {currentAction.Delay}");
                 currentFrame = lastWalkFrame = Mathf.FloorToInt(newWalkFrame) % (maxFrame + 1);
             }
             else
@@ -549,7 +549,7 @@ namespace Assets.Scripts.Sprites
 
                 var diff = parentAnchor - ourAnchor;
 
-                transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, 0f);
+                transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
             }
         }
 

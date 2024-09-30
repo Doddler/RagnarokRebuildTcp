@@ -77,7 +77,7 @@ namespace Assets.Scripts
             return texture;
         }
         
-        public static Texture2D GetOrImportTextureToProject(string textureName, string importPath, string outputPath)
+        public static Texture2D GetOrImportTextureToProject(string textureName, string importPath, string outputPath, bool keyOnBlack = false)
         {
 
             var texPath = Path.Combine(importPath, "texture", textureName);
@@ -99,7 +99,7 @@ namespace Assets.Scripts
                 
                 if (!File.Exists(pngPath))
                 {
-                    var tex2D = LoadTexture(texPath);
+                    var tex2D = LoadTexture(texPath, keyOnBlack);
 
                     tex2D.name = textureName;
 
@@ -140,8 +140,9 @@ namespace Assets.Scripts
                     if (x + y * width >= colors.Length)
                         Debug.LogWarning($"For some reason looking out of bounds on color table on texture {tex} w{width} h{height} position {x} {y} ({x + y * width}");
                     var color = colors[x + y * width];
+                    var posterized = new Color32((byte)(color.r & 0xF0), (byte)(color.g & 0xF0), (byte)(color.b & 0xF0), color.a);
                     //Debug.Log(color);
-                    if (color.r < 254 || color.g != 0 || color.b < 254)
+                    if (posterized.r < 254 || posterized.g > 4 || posterized.b < 254)
                         continue;
 
                     //Debug.Log("OHWOW: " + color);
@@ -190,8 +191,11 @@ namespace Assets.Scripts
             return texOut;
         }
 
-        public static Texture2D LoadTexture(string path)
+        public static Texture2D LoadTexture(string path, bool keyOnBlack = false)
         {
+            var keyColor = new Color32(255, 0, 255, 0);
+            var posterizedMask = new Color32((byte)(keyColor.r & 0xF0), (byte)(keyColor.g & 0xF0), (byte)(keyColor.b & 0xF0), keyColor.a);
+            
             if (Path.GetExtension(path).ToLower() == ".tga")
             {
                 return TGALoader.LoadTGA(path);
@@ -222,46 +226,66 @@ namespace Assets.Scripts
                     if (x + y * width >= colors.Length)
                         Debug.LogWarning($"For some reason looking out of bounds on color table on texture {path} w{width} h{height} position {x} {y} ({x + y * width}");
                     var color = colors[x + y * width];
-                    //Debug.Log(color);
-                    if (color.r < 254 || color.g != 0 || color.b < 254)
-                        continue;
+                    
+                    var posterized = new Color32((byte)(color.r & 0xF0), (byte)(color.g & 0xF0), (byte)(color.b & 0xF0), color.a);
+
+                    img.imageData[x + y * width] = color;
+                    
+                    if (posterized.r == posterizedMask.r && posterized.g == posterizedMask.g && posterized.b == posterizedMask.b)
+                        img.imageData[x + y * width] = new Color32(0, 0, 0, 0);
+                    
+                    if(keyOnBlack && color.r == 0 && color.g == 0 && color.b == 0)
+                        img.imageData[x + y * width] = new Color32(0, 0, 0, 0);
+                    
+                    //
+                    // //
+                    // //Debug.Log(color);
+                    // if (posterized.r != keyColor.r || posterized.g != keyColor.g || posterized.b != keyColor.b)
+                    // {
+                    //     if(!keyOnBlack || color.r > 0 || color.g > 0 || color.b > 0)
+                    //         continue;
+                    // }
 
                     //Debug.Log("OHWOW: " + color);
-
-                    for (var y2 = -1; y2 <= 1; y2++)
-                    {
-                        for (var x2 = -1; x2 <= 1; x2++)
-                        {
-                            if (y + y2 < 0 || y + y2 >= height)
-                                continue;
-                            if (x + x2 < 0 || x + x2 >= width)
-                                continue;
-
-                            var color2 = colors[x + x2 + (y + y2) * width];
-
-                            if (color2.r >= 254 && color2.g == 0 && color2.b >= 254)
-                                continue;
-
-                            count++;
-
-                            r += color2.r;
-                            g += color2.g;
-                            b += color2.b;
-                        }
-                    }
-
-                    if (count > 0)
-                    {
-                        var r2 = (byte)Mathf.Clamp(r / count, 0, 255);
-                        var g2 = (byte)Mathf.Clamp(g / count, 0, 255);
-                        var b2 = (byte)Mathf.Clamp(b / count, 0, 255);
-
-                        //Debug.Log($"{x},{y} - change {color} to {r2},{g2},{b2}");
-
-                        img.imageData[x + y * width] = new Color32(r2, g2, b2, 0);
-                    }
-                    else
-                        img.imageData[x + y * width] = new Color32(0, 0, 0, 0);
+                    //
+                    // for (var y2 = -1; y2 <= 1; y2++)
+                    // {
+                    //     for (var x2 = -1; x2 <= 1; x2++)
+                    //     {
+                    //         if (y + y2 < 0 || y + y2 >= height)
+                    //             continue;
+                    //         if (x + x2 < 0 || x + x2 >= width)
+                    //             continue;
+                    //
+                    //         var color2 = colors[x + x2 + (y + y2) * width];
+                    //
+                    //         var isKeyed = color2.r == keyColor.r && color2.g == keyColor.g && color2.b == keyColor.b;
+                    //         if (keyOnBlack)
+                    //             isKeyed = color2.r == 0 && color2.g == 0 && color2.b == 0;
+                    //
+                    //         if (isKeyed)
+                    //             continue;
+                    //         
+                    //         count++;
+                    //
+                    //         r += color2.r;
+                    //         g += color2.g;
+                    //         b += color2.b;
+                    //     }
+                    // }
+                    //
+                    // if (count > 0)
+                    // {
+                    //     var r2 = (byte)Mathf.Clamp(r / count, 0, 255);
+                    //     var g2 = (byte)Mathf.Clamp(g / count, 0, 255);
+                    //     var b2 = (byte)Mathf.Clamp(b / count, 0, 255);
+                    //
+                    //     //Debug.Log($"{x},{y} - change {color} to {r2},{g2},{b2}");
+                    //
+                    //     img.imageData[x + y * width] = new Color32(r2, g2, b2, 0);
+                    // }
+                    // else
+                        // img.imageData[x + y * width] = new Color32(0, 0, 0, 0);
                 }
             }
 

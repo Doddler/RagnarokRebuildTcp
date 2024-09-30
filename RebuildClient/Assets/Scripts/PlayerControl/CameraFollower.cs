@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
@@ -548,12 +549,11 @@ namespace Assets.Scripts
             if (Screen.width == 0)
                 return; //wut?
             var scale = 1f / (1080f / Screen.height);
-            CanvasScaler.scaleFactor = scale * GameConfig.Data.MasterUIScale;
+            CanvasScaler.scaleFactor = GameConfig.Data.MasterUIScale;
             lastWidth = Screen.width;
             lastHeight = Screen.height;
             UiManager.Instance.FitFloatingWindowsIntoPlayArea();
         }
-
 
         private FacingDirection GetFacingForAngle(float angle)
         {
@@ -567,7 +567,6 @@ namespace Assets.Scripts
             if (angle > -157.5f) return FacingDirection.SouthEast;
             return FacingDirection.South;
         }
-
 
         private Direction GetFacingForPoint(Vector2Int point)
         {
@@ -1138,6 +1137,19 @@ namespace Assets.Scripts
             {
                 AppendError($"Could not find effect with id {effect}.");
                 return;
+            }
+
+            switch (asset.Name)
+            {
+                case "HealLow":
+                    HealEffect.Create(target, 0);
+                    return;
+                case "HealMid":
+                    HealEffect.Create(target, 1);
+                    return;
+                case "HealHigh":
+                    HealEffect.Create(target, 2);
+                    return;
             }
 
             if (EffectCache.TryGetValue(effect, out var prefab) && prefab != null)

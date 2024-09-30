@@ -53,6 +53,12 @@ namespace Assets.Scripts.Objects
 
             var mat = new Material(Shader.Find("Ragnarok/EffectShader"));
 
+            if (srcBlend == 2 && destBlend == 1)
+            {
+                srcBlend = 5;
+                destBlend = 10;
+            }
+            
             if (srcBlend == 5 && destBlend == 6)
                 destBlend = 10;
 

@@ -14,8 +14,8 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[73];
-			handlers[0] = new InvalidPacket(); //ConnectionApproved
+			handlers = new ClientPacketHandlerBase[76];
+			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
 			handlers[3] = new PacketOnEnterServer(); //EnterServer
@@ -60,7 +60,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[42] = new PacketResurrection(); //Resurrection
 			handlers[43] = new InvalidPacket(); //UseInventoryItem
 			handlers[44] = new PacketAddOrRemoveInventoryItem(); //AddOrRemoveInventoryItem
-			handlers[45] = new InvalidPacket(); //EffectOnCharacter
+			handlers[45] = new PacketEffectOnCharacter(); //EffectOnCharacter
 			handlers[46] = new PacketEffectAtLocation(); //EffectAtLocation
 			handlers[47] = new PacketPlayOneShotSound(); //PlayOneShotSound
 			handlers[48] = new PacketEmote(); //Emote
@@ -81,13 +81,16 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[63] = new InvalidPacket(); //AdminChangeSpeed
 			handlers[64] = new InvalidPacket(); //AdminFindTarget
 			handlers[65] = new InvalidPacket(); //AdminResetSkills
-			handlers[66] = new InvalidPacket(); //NpcClick
-			handlers[67] = new InvalidPacket(); //NpcInteraction
-			handlers[68] = new InvalidPacket(); //NpcAdvance
-			handlers[69] = new InvalidPacket(); //NpcSelectOption
-			handlers[70] = new PacketDropItem(); //DropItem
-			handlers[71] = new PacketPickUpItem(); //PickUpItem
-			handlers[72] = new InvalidPacket(); //ItemUpdate
+			handlers[66] = new InvalidPacket(); //AdminCreateItem
+			handlers[67] = new InvalidPacket(); //NpcClick
+			handlers[68] = new InvalidPacket(); //NpcInteraction
+			handlers[69] = new InvalidPacket(); //NpcAdvance
+			handlers[70] = new InvalidPacket(); //NpcSelectOption
+			handlers[71] = new PacketDropItem(); //DropItem
+			handlers[72] = new PacketPickUpItem(); //PickUpItem
+			handlers[73] = new InvalidPacket(); //OpenShop
+			handlers[74] = new InvalidPacket(); //ShopBuySell
+			handlers[75] = new InvalidPacket(); //ItemUpdate
 		}
 	}
 }

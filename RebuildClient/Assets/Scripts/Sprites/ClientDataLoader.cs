@@ -42,6 +42,7 @@ namespace Assets.Scripts.Sprites
         public TextAsset MapViewpointData;
         public TextAsset UniqueAttackActionData;
         public TextAsset ItemData;
+        public TextAsset MapData;
         public SpriteAtlas ItemIconAtlas;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
@@ -56,6 +57,7 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<string, int> jobNameToIdTable = new();
         private readonly Dictionary<int, ItemData> itemIdLookup = new();
         private readonly Dictionary<string, ItemData> itemNameLookup = new();
+        private readonly Dictionary<string, ClientMapEntry> mapDataLookup = new();
 
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
@@ -76,6 +78,8 @@ namespace Assets.Scripts.Sprites
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);
 
         public int GetJobIdForName(string name) => jobNameToIdTable.GetValueOrDefault(name, -1);
+        public string GetFullNameForMap(string mapName) => mapDataLookup.TryGetValue(mapName, out var map) ? map.Name : "Unknown Map";
+        public string GetJobNameForId(int id) => playerClassLookup.TryGetValue(id, out var job) ? job.Name : "-";
         public string GetSkillName(CharacterSkill skill) => skillData.TryGetValue(skill, out var skOut) ? skOut.Name : "";
         public SkillData GetSkillData(CharacterSkill skill) => skillData[skill];
         public SkillTarget GetSkillTarget(CharacterSkill skill) => skillData.TryGetValue(skill, out var target) ? target.Target : SkillTarget.Any;
@@ -86,6 +90,8 @@ namespace Assets.Scripts.Sprites
         public MonsterClassData GetMonsterData(int classId) => monsterClassLookup.GetValueOrDefault(classId);
         public ItemData GetItemById(int id) => itemIdLookup[id];
         public ItemData GetItemByName(string name) => itemNameLookup[name];
+        public bool TryGetItemByName(string name, out ItemData item) => itemNameLookup.TryGetValue(name, out item);
+        public bool TryGetItemById(int id, out ItemData item) => itemIdLookup.TryGetValue(id, out item);
 
         public string GetHitSoundForWeapon(int weaponId)
         {
@@ -188,6 +194,7 @@ namespace Assets.Scripts.Sprites
             foreach (var weapon in weaponClass.Items)
                 weaponClassData.TryAdd(weapon.Id, weapon);
             
+            
             var items = JsonUtility.FromJson<Wrapper<ItemData>>(ItemData.text);
             var itemIcons = new Dictionary<string, string>();
             foreach (var item in items.Items)
@@ -248,6 +255,11 @@ namespace Assets.Scripts.Sprites
                     HeightIn = int.Parse(s[9]),
                 });
             }
+            
+            
+            var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapData.text);
+            foreach (var map in mapClass.Items)
+                mapDataLookup.TryAdd(map.Code, map);
 
             isInitialized = true;
         }
@@ -305,6 +317,36 @@ namespace Assets.Scripts.Sprites
             bodySprite.ChildrenSprites.Clear();
             for (var i = 0; i < tempList.Count; i++)
                 bodySprite.ChildrenSprites.Add(tempList[i]);
+        }
+
+        public string GetPlayerBodySpriteName(int jobId, bool isMale)
+        {
+            var pData = playerClassLookup[0]; //novice
+            if (playerClassLookup.TryGetValue(jobId, out var lookupData))
+                pData = lookupData;
+            else
+                Debug.LogWarning("Failed to find player with id of " + jobId);
+
+            return isMale ? pData.SpriteMale : pData.SpriteFemale;
+        }
+
+        public string GetPlayerHeadSpriteName(int headId, int color, bool isMale)
+        {
+            var hData = playerHeadLookup[0]; //default;
+            if (playerHeadLookup.TryGetValue(headId + ((color + 1) << 8), out var lookupData2)) //see if we have a head with the right palette
+                hData = lookupData2;
+            else if (playerHeadLookup.TryGetValue(headId, out lookupData2)) //fallback to default color
+                hData = lookupData2;
+
+            return isMale ? hData.SpriteMale : hData.SpriteFemale;
+        }
+
+        public string GetHeadgearSpriteName(int itemId, bool isMale)
+        {
+            if (!itemIdLookup.TryGetValue(itemId, out var item))
+                return null;
+
+            return $"Assets/Sprites/Headgear/{(isMale ? "Male" : "Female")}/{item.Sprite}.spr";
         }
 
         public ServerControllable InstantiatePlayer(ref PlayerSpawnParameters param)
@@ -413,10 +455,10 @@ namespace Assets.Scripts.Sprites
             //흰수염 moustache
             //헬름 helm
 
-            var chosenGear = headgear[Random.Range(0, headgear.Count)];
+            //var chosenGear = headgear[Random.Range(0, headgear.Count)];
         
 
-            LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + chosenGear, control.IsMale);
+            //LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + chosenGear, control.IsMale);
             //LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + "하트파운데이션", control.IsMale);
 
 
@@ -484,7 +526,7 @@ namespace Assets.Scripts.Sprites
             var headgearObj = new GameObject("Headgear(Upper)");
             headgearObj.layer = LayerMask.NameToLayer("Characters");
             headgearObj.transform.SetParent(bodyTransform, false);
-            headgearObj.transform.localPosition = Vector3.zero;
+            headgearObj.transform.localPosition = new Vector3(0f, 0f, -0.05f);
 
             var headgearSprite = headgearObj.AddComponent<RoSpriteAnimator>();
 

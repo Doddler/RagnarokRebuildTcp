@@ -12,19 +12,22 @@ public class PacketChangeName: IClientPacketHandler
         if (connection.Character == null || connection.Player == null || connection.Character.Map == null)
             return;
 
-        var str = msg.ReadString();
+        CommandBuilder.ErrorMessage(connection, "Change name command no longer available.");
+        CommandBuilder.SendRequestFailed(connection.Player, ClientErrorType.CommandUnavailable);
 
-        if (str.Length > SharedConfig.MaxPlayerName)
-        {
-            CommandBuilder.SendRequestFailed(connection.Player, ClientErrorType.RequestTooLong);
-            return;
-        }
+        //var str = msg.ReadString();
 
-        connection.Player.Name = str;
-        connection.Character.Name = str;
+        //if (str.Length > SharedConfig.MaxPlayerName)
+        //{
+        //    CommandBuilder.SendRequestFailed(connection.Player, ClientErrorType.RequestTooLong);
+        //    return;
+        //}
 
-        connection.Character.Map.AddVisiblePlayersAsPacketRecipients(connection.Character);
-        CommandBuilder.SendChangeNameMulti(connection.Character, str);
-        CommandBuilder.ClearRecipients();
+        //connection.Player.Name = str;
+        //connection.Character.Name = str;
+
+        //connection.Character.Map.AddVisiblePlayersAsPacketRecipients(connection.Character);
+        //CommandBuilder.SendChangeNameMulti(connection.Character, str);
+        //CommandBuilder.ClearRecipients();
     }
 }

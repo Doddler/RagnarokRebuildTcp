@@ -14,9 +14,12 @@ namespace RebuildSharedData.Enum
     public enum ItemClass : byte
     {
         None,
-        UseItem,
+        Useable,
+        Weapon,
         Equipment,
-        Ammunition
+        Ammo,
+        Card,
+        Etc
     }
 
     [Flags]

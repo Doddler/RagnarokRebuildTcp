@@ -132,6 +132,13 @@ public class OutboundMessage : IBinaryMessageWriter
         position += b.Length * 8;
     }
 
+    public void Write(byte[] b, int length)
+    {
+        EnsureBufferSize(length * 8);
+        NetBitWriter.WriteBytes(b, 0, length, Message, position);
+        position += length * 8;
+    }
+
     public void Write(string s)
     {
         if (string.IsNullOrWhiteSpace(s))

@@ -1,13 +1,24 @@
-GroupName,Novice,Swordsman,Archer,Mage,Acolyte,Thief,Merchant
-Any,Y,Y,Y,Y,Y,Y,Y
-Novice,Y,,,,,,
-Swordsman,,Y,,,,,
-Archer,,,Y,,,,
-Mage,,,,Y,,,
-Acolyte,,,,,Y,,
-Thief,,,,,,Y,
-Merchant,,,,,,,Y
-SwordUser,Y,Y,,,,Y,Y
-DaggerUser,Y,Y,Y,Y,,Y,Y
-AxeUser,,Y,,,,,Y
-Caster,,,,Y,Y,,
+GroupName,Novice,Swordsman,Archer,Mage,Acolyte,Thief,Merchant,Desc,,
+Any,Y,Y,Y,Y,Y,Y,Y,All jobs,,1048575
+NotNovice,,Y,Y,Y,Y,Y,Y,All except novice,,
+Novice,Y,,,,,,,Novice Only,,
+Swordsman,,Y,,,,,,Swordsman,,8322
+Archer,,,Y,,,,,Archer,,
+Mage,,,,Y,,,,Mage,,
+Acolyte,,,,,Y,,,Acolyte,,
+Thief,,,,,,Y,,Thief,,
+Merchant,,,,,,,Y,Merchant,,
+MeleeUser,,Y,,,Y,Y,Y,All minus mage & archer,,1031410
+NonCaster,,Y,Y,,,Y,Y,All minus mage & acolyte,,899818
+SwordUser,Y,Y,,,,Y,Y,"Novice, Swordsman, Thief, Merchant",,
+SwordUser-N,,Y,,,,Y,Y,"Swordsman, Thief, Merchant",,
+SwordUser2nd,,,,,,,,Knight,,
+HeavySword,,Y,,,,,Y,"Swordsman, Merchant",,
+DaggerUser,Y,Y,Y,Y,,Y,Y,All jobs excluding acolyte,,
+DaggerUser-N,,Y,Y,Y,,Y,Y,All jobs excluding acolyte and novice,,
+AxeUser,,Y,,,,,Y,"Swordsman, Merchant",,
+MaceUser,Y,Y,,,Y,,Y,"Novice, Swordsman, Acolyte, Merchant",,
+MaceUser-N,,Y,,,Y,,Y,"Swordsman, Acolyte, Merchant",,
+RodUser,Y,,,Y,Y,,,"Novice, Mage, Acolyte",,
+RodUser-N,,,,Y,Y,,,"Mage, Acolyte",,
+Crusader,,,,,,,,Crusader,,

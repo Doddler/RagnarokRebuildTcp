@@ -2759,6 +2759,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - Sounds
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa10e1a86beed7b499745c187466809b
+    m_Address: "Assets/Sounds/Effects/\uBC84\uD2BC\uC18C\uB9AC.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d2578a3e1c05134aa6b4a818dba719e
+    m_Address: "Assets/Sounds/Effects/\uBC84\uD2BC\uC18C\uB9AC_.ogg"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sounds
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

@@ -19,10 +19,10 @@
       "Type": 0,
       "MaxLevel": 1,
       "SpCost": [
-        10
+        4
       ],
       "AdjustableLevel": false,
-      "Description": "This skill doesn\u0027t currently work but you also need it to job change for some reason."
+      "Description": "Heal\u0027s yourself by either 5 HP or 1% of your max HP, whichever is higher."
     },
     {
       "SkillId": 3,

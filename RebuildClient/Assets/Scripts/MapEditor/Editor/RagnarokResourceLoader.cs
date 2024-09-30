@@ -276,6 +276,9 @@ namespace Assets.Scripts.MapEditor.Editor
         public bool CheckUseMapAmbient(string baseDir, string mapName)
         {
             var lightPath = Path.Combine(baseDir, "mapobjlighttable.txt");
+            if (!File.Exists(lightPath))
+	            return true;
+            
             var lines = File.ReadAllLines(lightPath);
 
             var line = lines.FirstOrDefault(l => l.Contains(mapName + ".rsw"));
@@ -289,6 +292,8 @@ namespace Assets.Scripts.MapEditor.Editor
 		public RoFogSetup LoadFogData(string baseDir, string mapName)
 		{
 			var fogPath = Path.Combine(baseDir, "fogparametertable.txt");
+			if (!File.Exists(fogPath))
+				return null;
 			var lines = File.ReadAllLines(fogPath);
 
 			var lineId = -1;

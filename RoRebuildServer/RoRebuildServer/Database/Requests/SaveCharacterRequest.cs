@@ -16,6 +16,8 @@ namespace RoRebuildServer.Database.Requests;
 public class SaveCharacterRequest : IDbRequest
 {
     public Guid Id;
+    public int AccountId;
+    private int charaSlot;
     private readonly string name;
     private readonly string? map;
     private readonly Position pos;
@@ -24,11 +26,14 @@ public class SaveCharacterRequest : IDbRequest
     private byte[]? skillData;
     private byte[]? npcData;
     private byte[]? itemData;
+    private byte[]? summaryData;
 
-    public SaveCharacterRequest(string newCharacterName)
+    public SaveCharacterRequest(string newCharacterName, int accountId, int slotId)
     {
+        AccountId = accountId;
         Id = Guid.Empty; //database will generate a new key for us
         name = newCharacterName;
+        charaSlot = slotId;
         map = null;
         pos = Position.Invalid;
         savePoint = new SavePosition();
@@ -36,21 +41,24 @@ public class SaveCharacterRequest : IDbRequest
         data = null;
         npcData = null;
         itemData = null;
+        summaryData = null;
     }
 
     public SaveCharacterRequest(Player player)
     {
         var character = player.Character;
 
+        AccountId = player.Connection.AccountId;
         Id = player.Id;
         name = player.Name;
         map = character.Map?.Name;
         pos = character.Position;
         savePoint = player.SavePosition;
+        charaSlot = player.CharacterSlot;
 
         var charData = player.CharData;
 
-        //we can reuse this, char data array never changes size
+        //we should reuse this, char data array never changes size
         if (data == null || data.Length != charData.Length * sizeof(int))
             data = new byte[charData.Length * sizeof(int)];
 
@@ -58,6 +66,12 @@ public class SaveCharacterRequest : IDbRequest
 
         skillData = DbHelper.BorrowArrayAndWriteDictionary(player.LearnedSkills);
         npcData = DbHelper.BorrowArrayAndWriteDictionary(player.NpcFlags);
+        summaryData = ArrayPool<byte>.Shared.Rent((int)PlayerSummaryData.SummaryDataMax * sizeof(int));
+
+        var summary = ArrayPool<int>.Shared.Rent((int)PlayerSummaryData.SummaryDataMax);
+        player.PackPlayerSummaryData(summary);
+        Buffer.BlockCopy(summary, 0, summaryData, 0, (int)PlayerSummaryData.SummaryDataMax * sizeof(int));
+        ArrayPool<int>.Shared.Return(summary);
 
         var inventorySize = player.Inventory.TryGetSize() + player.CartInventory.TryGetSize() + player.StorageInventory.TryGetSize();
         if (inventorySize > 0)
@@ -83,6 +97,7 @@ public class SaveCharacterRequest : IDbRequest
         var ch = new DbCharacter()
         {
             Id = Id,
+            AccountId = AccountId,
             Name = name,
             Map = map,
             X = pos.X,
@@ -97,7 +112,9 @@ public class SaveCharacterRequest : IDbRequest
             },
             SkillData = skillData,
             NpcFlags = npcData,
-            ItemData = itemData
+            CharacterSummary = summaryData,
+            ItemData = itemData,
+            CharacterSlot = charaSlot
         };
 
         dbContext.Update(ch);
@@ -106,6 +123,7 @@ public class SaveCharacterRequest : IDbRequest
         if (skillData != null) ArrayPool<byte>.Shared.Return(skillData);
         if (npcData != null) ArrayPool<byte>.Shared.Return(npcData);
         if (itemData != null) ArrayPool<byte>.Shared.Return(itemData);
+        if (summaryData != null) ArrayPool<byte>.Shared.Return(summaryData);
 
         skillData = null;
         data = null;

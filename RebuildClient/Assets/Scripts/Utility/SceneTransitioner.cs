@@ -120,7 +120,11 @@ namespace Assets.Scripts.Utility
 			finishCallback = onFinish;
 			needAudioChange = CheckMapAudioChange(null, sceneName);
 
-			StartTransitionScene();
+			BlackoutImage.gameObject.SetActive(true);
+			var tween = LeanTween.value(gameObject, UpdateAlpha, 0, 1, 0.3f);
+			tween.setOnComplete(StartTransitionScene);
+			
+			//StartTransitionScene();
 		}
 
 		private void StartTransitionScene()
@@ -137,6 +141,13 @@ namespace Assets.Scripts.Utility
 
 		private IEnumerator BeginTransitionScene()
 		{
+			if (NetworkManager.Instance.TitleScreen != null)
+			{
+				Destroy(NetworkManager.Instance.TitleScreen.gameObject); //we won't need this until we implement return to character select.
+				CameraFollower.Instance.UpdateCameraSize(); //we scale the login screen larger than the main game UI
+			}
+
+			//NetworkManager.Instance.TitleScreen?.gameObject.SetActive(false);
 			LoadingImage.gameObject.SetActive(true);
 			RoMapRenderSettings.ClearBakedLightmap();
 			GameConfig.SaveConfig();
@@ -175,6 +186,8 @@ namespace Assets.Scripts.Utility
 		private void FinishSceneChange()
 		{
 			finishCallback();
+			
+			UiManager.Instance.SetEnabled(true);
 			
             var newMap = mapEntries.FirstOrDefault(m => m.Code == newScene);
             

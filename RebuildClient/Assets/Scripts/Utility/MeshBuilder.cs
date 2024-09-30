@@ -198,6 +198,8 @@ namespace Assets.Scripts.Utility
             mesh.OptimizeIndexBuffers();
             mesh.OptimizeReorderVertexBuffer();
 #if UNITY_EDITOR
+            if(compressionLevel == 0)
+                MeshUtility.SetMeshCompression(mesh, ModelImporterMeshCompression.Off);
             if(compressionLevel == 1)
                 MeshUtility.SetMeshCompression(mesh, ModelImporterMeshCompression.Low);
             if(compressionLevel == 2)

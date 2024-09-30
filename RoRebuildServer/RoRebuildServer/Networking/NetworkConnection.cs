@@ -20,6 +20,9 @@ public class NetworkConnection
     public Entity Entity;
     public WorldObject? Character { get; set; }
     public Player? Player { get; set; }
+    public int AccountId { get; set; }
+    public string AccountName { get; set; }
+    public float LoginTime { get; set; }
     public double LastKeepAlive { get; set; }
     public bool Confirmed { get; set; } = false;
     public CancellationToken Cancellation { get; set; }
