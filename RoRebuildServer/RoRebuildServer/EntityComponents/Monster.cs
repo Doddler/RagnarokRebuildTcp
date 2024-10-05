@@ -452,7 +452,8 @@ public partial class Monster : IEntityAutoReset
         if (CurrentAiState == MonsterAiState.StateDead)
             return;
 
-        DoMonsterDrops();
+        if(giveExperience)
+            DoMonsterDrops();
 
         CombatEntity.OnDeathClearStatusEffects();
 

@@ -168,6 +168,9 @@ public static class CommandBuilder
             packet.Write((byte)player.WeaponClass);
             packet.Write(player.IsMale);
             packet.Write(player.Name);
+            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
+            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid));
+            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom));
 
             packet.Write(isSelf);
         }
@@ -389,7 +392,7 @@ public static class CommandBuilder
         int lvl)
     {
         caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
-        SkillExecuteAreaTargetedSkill(caster, target, CharacterSkill.ThunderStorm, lvl);
+        SkillExecuteAreaTargetedSkill(caster, target, skill, lvl);
         ClearRecipients();
     }
 

@@ -121,6 +121,7 @@ namespace Assets.Scripts.Objects
             audioSource.volume = volume;
 
             var path = "Assets/Sounds/Effects/" + filename;
+            Debug.Log(path);
 
             loadHandle = AddressableUtility.Load<AudioClip>(gameObject, path, OnFinishLoad);
             
@@ -129,8 +130,12 @@ namespace Assets.Scripts.Objects
 
         private void OnFinishLoad(AudioClip clip)
         {
+            Debug.Log("OnFinishLoad " + clip);
             if (!isInUse)
+            {
+                Debug.LogWarning($"OnFinishLoad called on audioclip {clip} but the source is already in use playing {audioSource.clip}");
                 return; //why would this happen?
+            }
 
             audioSource.clip = clip;
             if(!isDelayed)

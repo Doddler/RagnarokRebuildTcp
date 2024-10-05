@@ -37,6 +37,11 @@ namespace Assets.Scripts.UI.TitleScreen
         private List<ClientCharacterSummary> summaries;
         private int selectedSlot;
 
+        public void ShowPane()
+        {
+            DisplayPane.SetActive(true);
+        }
+        
         public void HidePane()
         {
             DisplayPane.SetActive(false);
@@ -52,6 +57,10 @@ namespace Assets.Scripts.UI.TitleScreen
                 Parent.TitleState = TitleScreen.TitleScreenState.Waiting;
                 gameObject.SetActive(false);
             }
+            else
+            {
+                Parent.OpenCharacterCreator(selectedSlot);
+            }
         }
 
         public void ClickCancel()
@@ -63,6 +72,8 @@ namespace Assets.Scripts.UI.TitleScreen
         {
             parent = titleScreen;
             summaries = characters;
+            
+            DisplayPane.SetActive(true);
             
             var charCount = characters.Count;
             // if (charCount > 1)

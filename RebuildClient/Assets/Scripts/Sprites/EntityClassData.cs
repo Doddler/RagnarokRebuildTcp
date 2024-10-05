@@ -11,8 +11,8 @@ namespace Assets.Scripts.Sprites
 		public string Name;
 		public string SpriteMale;
 		public string SpriteFemale;
-		public string AltMale;
-		public string AltFemale;
+		public string[] FemaleIds;
+		public string[] MaleIds;
 	}
 
 

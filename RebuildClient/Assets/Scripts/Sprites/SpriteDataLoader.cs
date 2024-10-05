@@ -22,6 +22,9 @@ namespace Assets.Scripts.Sprites
         public int Hp;
         public int MaxHp;
         public int WeaponClass;
+        public int Headgear1;
+        public int Headgear2;
+        public int Headgear3;
         public List<CharacterStatusEffect> CharacterStatusEffects;
     }
 

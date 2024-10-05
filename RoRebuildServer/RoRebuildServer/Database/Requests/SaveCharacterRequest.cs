@@ -17,7 +17,6 @@ public class SaveCharacterRequest : IDbRequest
 {
     public Guid Id;
     public int AccountId;
-    private int charaSlot;
     private readonly string name;
     private readonly string? map;
     private readonly Position pos;
@@ -27,13 +26,13 @@ public class SaveCharacterRequest : IDbRequest
     private byte[]? npcData;
     private byte[]? itemData;
     private byte[]? summaryData;
+    private int slot;
 
-    public SaveCharacterRequest(string newCharacterName, int accountId, int slotId)
+    public SaveCharacterRequest(string newCharacterName, int accountId)
     {
         AccountId = accountId;
         Id = Guid.Empty; //database will generate a new key for us
         name = newCharacterName;
-        charaSlot = slotId;
         map = null;
         pos = Position.Invalid;
         savePoint = new SavePosition();
@@ -54,7 +53,7 @@ public class SaveCharacterRequest : IDbRequest
         map = character.Map?.Name;
         pos = character.Position;
         savePoint = player.SavePosition;
-        charaSlot = player.CharacterSlot;
+        slot = player.CharacterSlot;
 
         var charData = player.CharData;
 
@@ -103,6 +102,7 @@ public class SaveCharacterRequest : IDbRequest
             X = pos.X,
             Y = pos.Y,
             Data = data,
+            CharacterSlot = slot,
             SavePoint = new DbSavePoint()
             {
                 MapName = savePoint.MapName,
@@ -113,8 +113,7 @@ public class SaveCharacterRequest : IDbRequest
             SkillData = skillData,
             NpcFlags = npcData,
             CharacterSummary = summaryData,
-            ItemData = itemData,
-            CharacterSlot = charaSlot
+            ItemData = itemData
         };
 
         dbContext.Update(ch);

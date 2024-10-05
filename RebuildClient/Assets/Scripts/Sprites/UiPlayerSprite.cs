@@ -14,6 +14,7 @@ namespace Assets.Scripts.Sprites
         {
             public RoSpriteRendererUI SpriteRenderer;
             public RoSpriteData SpriteData;
+            public string SpriteName;
             public bool IsActive;
         }
         
@@ -37,6 +38,7 @@ namespace Assets.Scripts.Sprites
                     var sr = go.AddComponent<RoSpriteRendererUI>();
                     go.AddComponent<CanvasRenderer>();
                     sr.material = Material;
+                    sr.raycastTarget = false;
                     var spData = new UIPlayerSpriteData { SpriteRenderer = sr, IsActive = false, SpriteData = null };
                     sprites.Add(spData);
                 }
@@ -44,7 +46,10 @@ namespace Assets.Scripts.Sprites
             else
             {
                 foreach (var s in sprites)
+                {
                     s.IsActive = false;
+                    s.SpriteName = null;
+                }
             }
 
             var d = ClientDataLoader.Instance;
@@ -64,13 +69,17 @@ namespace Assets.Scripts.Sprites
         {
             loadCount++;
             sprites[slot].IsActive = true;
-            AddressableUtility.LoadRoSpriteData(gameObject, spriteName, sData => OnLoadSpriteData(sData, slot));
+            sprites[slot].SpriteName = spriteName;
+            AddressableUtility.LoadRoSpriteData(gameObject, spriteName, sData => OnLoadSpriteData(sData, spriteName, slot));
         }
 
-        public void OnLoadSpriteData(RoSpriteData data, int id)
+        public void OnLoadSpriteData(RoSpriteData data, string spriteName, int id)
         {
             loadedCount++;
-            sprites[id].SpriteData = data;
+            if(spriteName == sprites[id].SpriteName)
+                sprites[id].SpriteData = data;
+            // else
+            //     Debug.Log($"Ignored UiPlayerSprite OnLoad for {spriteName} as the sprite that finished loading was not the one we expected (expecting {sprites[id].SpriteName}");
             if(loadedCount >= loadCount)
                 AssembleCompleteSprite();
         }
@@ -100,7 +109,7 @@ namespace Assets.Scripts.Sprites
                 if (i > 0 && frame.Pos.Length > 0)
                 {
                     var diff = rootAnchor - frame.Pos[0].Position;
-                    sr.gameObject.transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -i * 0.01f);
+                    sr.gameObject.transform.localPosition = new Vector3(diff.x * 2, -diff.y * 2, -i * 0.01f);
                 }
                 
                 sr.gameObject.SetActive(true);

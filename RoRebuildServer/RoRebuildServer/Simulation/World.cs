@@ -309,18 +309,14 @@ public class World
 
         var map = config.Map;
         var area = Area.CreateAroundPoint(config.Position, config.Area);
-
-        //if (connection.LoadCharacterRequest != null)
-        //{
-        //    var req = connection.LoadCharacterRequest;
-        //    if (req != null && !string.IsNullOrEmpty(req.Map))
-        //    {
-        //        map = req.Map;
-        //        area = Area.CreateAroundPoint(req.Position, 0);
-        //    }
-        //}
-
+        
         connection.LoadCharacterRequest = request;
+
+        if (request.Map != null)
+        {
+            map = request.Map;
+            area = Area.CreateAroundPoint(request.Position, 0);
+        }
 
         if (debug.DebugMapOnly && !string.IsNullOrWhiteSpace(debug.DebugMapName))
         {
@@ -329,8 +325,7 @@ public class World
         }
 
         var playerEntity = NetworkManager.World.CreatePlayer(connection, map, area);
-        //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prt_fild08", Area.CreateAroundPoint(new Position(170, 367), 5));
-        //var playerEntity = NetworkManager.World.CreatePlayer(connection, "prontera", Area.CreateAroundPoint(new Position(248, 42), 5));
+        
         connection.Entity = playerEntity;
         connection.LastKeepAlive = Time.ElapsedTime;
         connection.Character = playerEntity.Get<WorldObject>();
@@ -423,8 +418,8 @@ public class World
 
             if (data != null)
             {
-                if(data.Length == player.CharData.Length * 4)
-                    Buffer.BlockCopy(data, 0, player.CharData, 0, data.Length);
+                if(data.Length >= player.CharData.Length * 4)
+                    Buffer.BlockCopy(data, 0, player.CharData, 0, player.CharData.Length * 4);
                 else
                     ServerLogger.LogWarning($"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
             }

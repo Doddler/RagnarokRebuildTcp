@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -18,7 +19,7 @@ public class LoadCharacterRequest : IDbRequest
     public Guid Id;
     public int CharacterSlot;
     public string Name;
-    public string Map;
+    public string? Map;
     public Position Position;
     public SavePosition SavePosition;
     public Dictionary<CharacterSkill, int>? SkillsLearned;
@@ -51,7 +52,7 @@ public class LoadCharacterRequest : IDbRequest
 
             if (ch == null)
             {
-                CommandBuilder.ErrorMessage(connection, "The server failed to log into this character.");
+                CommandBuilder.ErrorMessage(connection, $"Failed to log in on character {Name}.");
                 HasCharacter = false;
                 return;
             }

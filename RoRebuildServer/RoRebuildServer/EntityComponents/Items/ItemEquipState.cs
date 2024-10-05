@@ -39,7 +39,7 @@ public class ItemEquipState
     public int AmmoType;
     private readonly SwapList<EquipStatChange> equipmentEffects = new();
     private EquipSlot activeSlot;
-
+    private int[] headgearMultiSlotInfo = new int[3];
 
     public void Reset()
     {
@@ -48,13 +48,15 @@ public class ItemEquipState
         AmmoType = -1;
     }
 
+    public int GetEquipmentIdBySlot(EquipSlot slot) => ItemSlots[(int)slot];
+    
     public void OnEquipEvent(EquipSlot slot)
     {
         Debug.Assert(Player.Inventory != null);
 
         if (ItemSlots[(int)slot] <= 0)
             return;
-
+        
         activeSlot = slot;
         var bagId = ItemSlots[(int)slot];
         var item = Player.Inventory.UniqueItems[bagId];

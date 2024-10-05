@@ -1708,6 +1708,24 @@ namespace Assets.Scripts.Network
             
             SendMessage(msg);
         }
+        
+        
+        public void SendEnterServerNewCharacterMessage(string chName, int slot, int head, int hair, int[] stats, bool isMale)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.EnterServer);
+            msg.Write(true);
+            msg.Write(chName);
+            msg.Write(head);
+            msg.Write(hair);
+            msg.Write((byte)slot);
+            for(var i = 0; i < 6; i++)
+                msg.Write((byte)stats[i]);
+            msg.Write(isMale);
+            
+            SendMessage(msg);
+        }
 
         public void AttachEffectToEntity(int effectId)
         {

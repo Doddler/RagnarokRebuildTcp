@@ -24,14 +24,14 @@ MapConfig("gef_dun01")
 	CreateSpawn("NIGHTMARE", 2, %(189, 58, 10, 24), 15000);
 	
 	CreateSpawn("TIRFING", 1, 20m, 10m);
-	CreateSpawn("DRACULA", 1, 3600000, 1800000, MVP);
+	CreateSpawn("DRACULA", 1, 1h, 10m, MVP);
 
-	CreateSpawn("BLUE_PLANT", 1, %(234, 121, 0, 0), 300000, 100000);
-	CreateSpawn("BLACK_MUSHROOM", 50, %(208, 145, 5, 7));
-	CreateSpawn("WHITE_PLANT", 3, %(188, 104, 10, 10), 180000, 90000);
-	CreateSpawn("WHITE_PLANT", 3, %(263, 115, 10, 10), 180000, 90000);
-	CreateSpawn("WHITE_PLANT", 2, %(48, 67, 10, 10), 180000, 90000);
-	CreateSpawn("WHITE_PLANT", 2, %(150, 237, 10, 10), 180000, 90000);
+	CreateSpawn("BLUE_PLANT", 1, %(234, 121, 0, 0), 30m, 90m);
+	CreateSpawn("BLACK_MUSHROOM", 2, %(208, 145, 5, 7), 3m, 2m);
+	CreateSpawn("WHITE_PLANT", 3, %(188, 104, 10, 10), 20m, 10m);
+	CreateSpawn("WHITE_PLANT", 3, %(263, 115, 10, 10), 20m, 10m);
+	CreateSpawn("WHITE_PLANT", 2, %(48, 67, 10, 10), 20m, 10m);
+	CreateSpawn("WHITE_PLANT", 2, %(150, 237, 10, 10), 20m, 10m);
 }
 
 MapConfig("gef_dun02")
@@ -42,7 +42,7 @@ MapConfig("gef_dun02")
 	CreateSpawn("MARIONETTE", 40);
 	CreateSpawn("DEVIRUCHI", 40);
 	CreateSpawn("NIGHTMARE", 80, 15000);
-	CreateSpawn("DOPPELGANGER", 1, 2h, 10m, MVP);
+	CreateSpawn("DOPPELGANGER", 1, 1h, 10m, MVP);
 	CreateSpawn("WHITE_PLANT", 3, %(214, 212, 10, 10), 180000, 90000);
 	CreateSpawn("WHITE_PLANT", 3, %(215, 67, 10, 10), 180000, 90000);
 	CreateSpawn("WHITE_PLANT", 3, %(72, 210, 20, 20), 180000, 90000);

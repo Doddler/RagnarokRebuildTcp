@@ -22,12 +22,11 @@
         }
         LOD 100
 
-        Cull [_Cull]
         Lighting Off
+        Cull [_Cull]
+        Blend [_SrcBlend] [_DstBlend]
         ZWrite [_ZWrite]
         ZTest[_myCustomCompare]
-        Blend [_SrcBlend] [_DstBlend]
-
 
         Pass
         {

@@ -73,6 +73,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var weapon = msg.ReadByte();
                 var isMale = msg.ReadBoolean();
                 var name = msg.ReadString();
+                var head1 = msg.ReadInt32();
+                var head2 = msg.ReadInt32();
+                var head3 = msg.ReadInt32();
                 var isMain = Network.PlayerId == id;
                 if (isMain)
                 {
@@ -100,6 +103,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     WeaponClass = weapon,
                     IsMainCharacter = isMain,
                     CharacterStatusEffects = statuses,
+                    Headgear1 = head1,
+                    Headgear2 = head2,
+                    Headgear3 = head3
                 };
 
                 controllable = ClientDataLoader.Instance.InstantiatePlayer(ref playerData);

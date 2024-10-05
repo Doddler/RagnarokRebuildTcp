@@ -45,6 +45,7 @@ public static class DataManager
     public static Dictionary<int, ItemInfo> ItemList { get; set; }
     public static Dictionary<string, MonsterDropData> MonsterDropData { get; set; }
     public static Dictionary<int, PlayerSkillTree> SkillTree; //SkillTree[Job][Skill] { (Prereq, lvl) } 
+    public static Dictionary<int, Dictionary<int, int>> JobMaxHpLookup;
 
     public static Dictionary<string, int> EffectIdForName;
 
@@ -171,6 +172,7 @@ public static class DataManager
         JobInfo = loader.LoadJobs();
         JobIdLookup = loader.GetJobIdLookup(JobInfo);
         SkillData = loader.LoadSkillData();
+        JobMaxHpLookup = loader.LoadMaxHpChart();
         
         ItemList = loader.LoadItemList();
         ItemIdByName = loader.GenerateItemIdByNameLookup();

@@ -13,7 +13,14 @@ namespace Assets.Scripts.UI.TitleScreen
 {
     public class TitleScreen : MonoBehaviour
     {
-        public enum TitleScreenState { LogIn, CharacterSelect, CharacterCreation, NoticeBox, Waiting }
+        public enum TitleScreenState
+        {
+            LogIn,
+            CharacterSelect,
+            CharacterCreation,
+            NoticeBox,
+            Waiting
+        }
 
         public TitleScreenState TitleState = TitleScreenState.LogIn;
         public TitleScreenState LastTitleState = TitleScreenState.LogIn;
@@ -24,10 +31,10 @@ namespace Assets.Scripts.UI.TitleScreen
         public CharacterSelectWindow CharacterSelectWindow;
         public CharacterCreatorWindow CharacterCreatorWindow;
 
-        
         public TextMeshProUGUI NoticeBoxText;
         public GameObject NoticeBox;
-        
+
+        [NonSerialized] public int SelectedSlot;
 
         private bool isInErrorState;
         private float loginTimeoutTime;
@@ -37,7 +44,28 @@ namespace Assets.Scripts.UI.TitleScreen
 
         private const float timeoutLength = 30f;
 
-        
+
+        public void OpenCharacterCreator(int slot)
+        {
+            isLoginTimerActive = false;
+            CharacterSelectWindow.gameObject.SetActive(true);
+            CharacterSelectWindow.HidePane();
+            CharacterCreatorWindow.Open();
+            SelectedSlot = slot;
+
+            LastTitleState = TitleState;
+            TitleState = TitleScreenState.CharacterCreation;
+        }
+
+        public void ReturnToCharacterSelect()
+        {
+            CharacterSelectWindow.gameObject.SetActive(true);
+            TitleState = TitleScreenState.CharacterSelect;
+
+            CharacterCreatorWindow.HidePane();
+            CharacterSelectWindow.ShowPane();
+        }
+
         public void OpenCharacterSelect(List<ClientCharacterSummary> characters)
         {
             isLoginTimerActive = false;
@@ -80,7 +108,7 @@ namespace Assets.Scripts.UI.TitleScreen
 
         public void ErrorMessage(string message)
         {
-            if(TitleState != TitleScreenState.Waiting)
+            if (TitleState != TitleScreenState.Waiting)
                 LastTitleState = TitleState;
             TitleState = TitleScreenState.NoticeBox;
             NoticeBoxText.text = message;
@@ -99,24 +127,26 @@ namespace Assets.Scripts.UI.TitleScreen
                 case TitleScreenState.NoticeBox:
                     TitleState = LastTitleState;
                     NoticeBox.gameObject.SetActive(false);
+                    if (TitleState == TitleScreenState.CharacterCreation) CharacterSelectWindow.gameObject.SetActive(true);
+                    if (TitleState == TitleScreenState.CharacterSelect) CharacterSelectWindow.gameObject.SetActive(true);
                     return;
             }
         }
-        
+
         // Start is called before the first frame update
         void Awake()
         {
             BackgroundArea.sprite = Backgrounds[Random.Range(0, Backgrounds.Count)];
             NoticeBox.gameObject.SetActive(false);
             CharacterSelectWindow.gameObject.SetActive(false);
-            
+
             AddressableUtility.Load<AudioClip>(gameObject, "Assets/Sounds/Effects/버튼소리.ogg", a => ButtonSound = a);
         }
 
         // Update is called once per frame
         void Update()
         {
-            if(isInErrorState && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
+            if (isInErrorState && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
                 NoticeBoxOk();
 
             if (isLoginTimerActive && Time.timeSinceLevelLoad > loginTimeoutTime)

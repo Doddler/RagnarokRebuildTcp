@@ -221,6 +221,7 @@ namespace Assets.Scripts.Objects
         public void OneShotSoundEffect(int ownerId, string filename, Vector3 position, float volume = 1f, float delayTime = 0f)
         {
             var channel = FindFreeAudioChannel(ownerId, filename);
+            Debug.Log($"Free audio channel: " + channel);
 
             if (channel >= 0)
             {

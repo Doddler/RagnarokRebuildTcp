@@ -363,6 +363,34 @@ internal class DataLoader
         return drops;
     }
 
+    public Dictionary<int, Dictionary<int, int>> LoadMaxHpChart()
+    {
+        var dict = new Dictionary<int, Dictionary<int, int>>();
+
+        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobHpChart.csv");
+
+        using var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+        var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
+
+        for (var i = 0; i < 7; i++)
+            dict.Add(i, new Dictionary<int, int>());
+
+        foreach (var entry in entries)
+        {
+            var lvl = entry.Level;
+            dict[0].Add(lvl, entry.Novice);
+            dict[1].Add(lvl, entry.Swordsman);
+            dict[2].Add(lvl, entry.Archer);
+            dict[3].Add(lvl, entry.Mage);
+            dict[4].Add(lvl, entry.Acolyte);
+            dict[6].Add(lvl, entry.Merchant);
+            dict[5].Add(lvl, entry.Thief);
+        }
+
+        return dict;
+    }
+
     public Dictionary<int, ItemInfo> LoadItemList()
     {
         var items = new Dictionary<int, ItemInfo>();

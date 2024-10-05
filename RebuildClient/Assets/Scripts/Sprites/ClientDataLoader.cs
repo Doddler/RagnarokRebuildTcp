@@ -63,7 +63,7 @@ namespace Assets.Scripts.Sprites
         private readonly List<string> validMonsterCodes = new();
 
         private static int EffectClassId = 3999;
-        
+
         List<string> headgear = new() //remove me
         {
             "간호모", "골든헤드기어", "광대모자", "귀마개", "깃털모자", "꽃머리띠", "꽃잎", "두건", "둥근모자", "리본", "마제스틱고우트", "망자의머리띠", "머리끈", "머리띠", "머리안경", "명사수의사과", "무낙모자", "반다나",
@@ -133,40 +133,33 @@ namespace Assets.Scripts.Sprites
             var headData = JsonUtility.FromJson<Wrapper<PlayerHeadData>>(PlayerHeadData.text);
             foreach (var h in headData.Items)
             {
-                playerHeadLookup.Add(h.Id, h);
+                //playerHeadLookup.Add(h.Id, h);
 
-                for (var i = 0; i < 9; i++)
+                for (var i = 0; i < Mathf.Min(h.FemaleIds.Length, h.MaleIds.Length); i++)
                 {
-                    var colorHead = h.Id + ((i + 1) << 8);
-                    if (!string.IsNullOrWhiteSpace(h.AltMale))
+                    var colorHead = h.Id + (i << 8);
+
+                    var mPath = h.SpriteMale.Replace("<id>", h.MaleIds[i]);
+                    var fPath = h.SpriteFemale.Replace("<id>", h.FemaleIds[i]);
+
+                    var handle = Addressables.LoadResourceLocationsAsync(mPath);
+                    handle.WaitForCompletion();
+                    var handle2 = Addressables.LoadResourceLocationsAsync(fPath);
+                    handle2.WaitForCompletion();
+                    if (handle.Result.Count > 0 && handle2.Result.Count > 0)
                     {
-                        var mPath = h.AltMale.Replace("<id>", i.ToString());
-                        var fPath = h.AltFemale.Replace("<id>", i.ToString());
-                    
-                        var handle = Addressables.LoadResourceLocationsAsync(mPath);
-                        handle.WaitForCompletion();
-                        var handle2 = Addressables.LoadResourceLocationsAsync(fPath);
-                        handle2.WaitForCompletion();
-                        if (handle.Result.Count > 0 && handle2.Result.Count > 0)
+                        playerHeadLookup.Add(colorHead, new PlayerHeadData()
                         {
-                            playerHeadLookup.Add(colorHead, new PlayerHeadData()
-                            {
-                                Id = colorHead,
-                                SpriteMale = mPath,
-                                SpriteFemale = fPath
-                            });
-                        }                            
+                            Id = colorHead,
+                            SpriteMale = mPath,
+                            SpriteFemale = fPath
+                        });
                     }
                     else
-                    {
-                        //no palettes were loaded, so we'll just use the default sprite for this head/color combo
-                        playerHeadLookup.Add(colorHead, h);
-                    }
-                    
-
+                        Debug.LogWarning($"Failed to find expected head variation {h.MaleIds[i]} and {h.FemaleIds[i]}");
                 }
-                
             }
+
 
             var playerData = JsonUtility.FromJson<Wrapper<PlayerClassData>>(PlayerClassData.text);
             foreach (var p in playerData.Items)
@@ -193,15 +186,16 @@ namespace Assets.Scripts.Sprites
             var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
             foreach (var weapon in weaponClass.Items)
                 weaponClassData.TryAdd(weapon.Id, weapon);
-            
-            
+
+
             var items = JsonUtility.FromJson<Wrapper<ItemData>>(ItemData.text);
+
             var itemIcons = new Dictionary<string, string>();
             foreach (var item in items.Items)
             {
                 itemIdLookup.Add(item.Id, item);
                 itemNameLookup.Add(item.Code, item);
-                if(!itemIcons.ContainsKey(item.Sprite))
+                if (!itemIcons.ContainsKey(item.Sprite))
                     itemIcons.Add(item.Sprite, item.Code);
                 item.Sprite = itemIcons[item.Sprite];
             }
@@ -255,8 +249,8 @@ namespace Assets.Scripts.Sprites
                     HeightIn = int.Parse(s[9]),
                 });
             }
-            
-            
+
+
             var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapData.text);
             foreach (var map in mapClass.Items)
                 mapDataLookup.TryAdd(map.Code, map);
@@ -333,7 +327,7 @@ namespace Assets.Scripts.Sprites
         public string GetPlayerHeadSpriteName(int headId, int color, bool isMale)
         {
             var hData = playerHeadLookup[0]; //default;
-            if (playerHeadLookup.TryGetValue(headId + ((color + 1) << 8), out var lookupData2)) //see if we have a head with the right palette
+            if (playerHeadLookup.TryGetValue(headId + (color << 8), out var lookupData2)) //see if we have a head with the right palette
                 hData = lookupData2;
             else if (playerHeadLookup.TryGetValue(headId, out lookupData2)) //fallback to default color
                 hData = lookupData2;
@@ -422,8 +416,8 @@ namespace Assets.Scripts.Sprites
             control.ShadowSize = 0.5f;
             control.WeaponClass = param.WeaponClass;
 
-            var bodySpriteName = param.IsMale ? pData.SpriteMale : pData.SpriteFemale;
-            var headSpriteName = param.IsMale ? hData.SpriteMale : hData.SpriteFemale;
+            var bodySpriteName = GetPlayerBodySpriteName(param.ClassId, param.IsMale);
+            var headSpriteName = GetPlayerHeadSpriteName(param.HeadId, param.HairDyeId, param.IsMale);
 
             // bodySpriteName = bodySpriteName.Replace(".spr", "_4.spr");
 
@@ -445,10 +439,6 @@ namespace Assets.Scripts.Sprites
                 LoadAndAttachWeapon(go, body.transform, bodySprite, weapon, true, param.IsMale);
             }
 
-            var gender = "여_";
-            if (control.IsMale)
-                gender = "남_";
-
             //비레타 beret
             //간호모 nurse band
             //장식용알껍질 eggshell hat
@@ -456,7 +446,7 @@ namespace Assets.Scripts.Sprites
             //헬름 helm
 
             //var chosenGear = headgear[Random.Range(0, headgear.Count)];
-        
+
 
             //LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + chosenGear, control.IsMale);
             //LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + "하트파운데이션", control.IsMale);
@@ -479,11 +469,11 @@ namespace Assets.Scripts.Sprites
             }
 
             control.Init();
-            
-            if(param.CharacterStatusEffects != null)
-                foreach(var s in param.CharacterStatusEffects)
+
+            if (param.CharacterStatusEffects != null)
+                foreach (var s in param.CharacterStatusEffects)
                     StatusEffectState.AddStatusToTarget(control, s);
-            
+
             return control;
         }
 
@@ -518,7 +508,7 @@ namespace Assets.Scripts.Sprites
 
             AddressableUtility.LoadRoSpriteData(parent, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
         }
-        
+
 
         private void LoadAndAttachHeadgear(GameObject parent, Transform bodyTransform, RoSpriteAnimator bodySprite, string headgearName,
             bool isMale)
@@ -577,9 +567,9 @@ namespace Assets.Scripts.Sprites
                 Debug.LogError($"Attempting to instantiate effect with type None!");
                 return null;
             }
-            
+
             // Debug.Log($"Instantiating effect {type}");
-            
+
             var obj = new GameObject(type.ToString());
             obj.layer = LayerMask.NameToLayer("Characters");
             obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
@@ -593,7 +583,7 @@ namespace Assets.Scripts.Sprites
             control.Name = param.Name;
             control.IsAlly = true;
             control.IsInteractable = false;
-            
+
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             obj.AddComponent<BillboardObject>();
 
@@ -603,7 +593,7 @@ namespace Assets.Scripts.Sprites
                     CameraFollower.Instance.AttachEffectToEntity("FirewallEffect", obj);
                     break;
             }
-            
+
             return control;
         }
 
@@ -709,9 +699,9 @@ namespace Assets.Scripts.Sprites
                 AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
 
             control.Init();
-            
-            if(param.CharacterStatusEffects != null)
-                foreach(var s in param.CharacterStatusEffects)
+
+            if (param.CharacterStatusEffects != null)
+                foreach (var s in param.CharacterStatusEffects)
                     StatusEffectState.AddStatusToTarget(control, s);
 
             return control;

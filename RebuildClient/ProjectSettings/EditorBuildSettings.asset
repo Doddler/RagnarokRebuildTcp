@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Debug.unity
     guid: 1218af27d15fa774090ed73da168506e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Cinemachine.unity
     guid: b1f2e48d783928f49a83c152c543de47
   m_configObjects:

@@ -68,7 +68,7 @@
     },
     {
       "Code": "gef_fild11",
-      "Name": "Geffen Field 11",
+      "Name": "Goblin Raider\u0027s Camp",
       "MapMode": 3,
       "Music": "04.mp3"
     },
@@ -1226,19 +1226,19 @@
     },
     {
       "Code": "ama_dun01",
-      "Name": "Amatsu Dungeon: Tatami Maze",
+      "Name": "Amatsu Dungeon 1F: Tatami Maze",
       "MapMode": 0,
       "Music": "77.mp3"
     },
     {
       "Code": "ama_dun02",
-      "Name": "Amatsu Dungeon: Underground Forest",
+      "Name": "Amatsu Dungeon 2F: Underground Forest",
       "MapMode": 2,
       "Music": "77.mp3"
     },
     {
       "Code": "ama_dun03",
-      "Name": "Amatsu DUngeon: Underground Shrine",
+      "Name": "Amatsu DUngeon 3F: Underground Shrine",
       "MapMode": 2,
       "Music": "77.mp3"
     },

@@ -143,11 +143,11 @@ public class Player : IEntityAutoReset
 
         if (Inventory != null)
             CharacterBag.Return(Inventory);
-        
+
         if (CartInventory != null)
             CharacterBag.Return(CartInventory);
 
-        if(StorageInventory != null)
+        if (StorageInventory != null)
             CharacterBag.Return(StorageInventory);
 
         Inventory = null;
@@ -206,7 +206,7 @@ public class Player : IEntityAutoReset
 
         if (item.Type == ItemType.RegularItem && Inventory.RegularItems.TryGetValue(item.Item.Id, out var existing))
             return item.Count + existing.Count < 30000;
-        
+
         //unique items will end up as a separate entry no matter the id so no need to see if stack size exceeds limits
 
         return true;
@@ -367,7 +367,7 @@ public class Player : IEntityAutoReset
 
         var atkBonus = GetJobBonus(CharacterStat.Attack);
         var matkBonus = GetJobBonus(CharacterStat.MagicAtkMin);
-        var hpBonus = GetJobBonus(CharacterStat.MaxHp);
+        //var hpBonus = GetJobBonus(CharacterStat.MaxHp);
 
         var agiBonus = GetJobBonus(CharacterStat.Agi);
         var dexBonus = GetJobBonus(CharacterStat.Dex);
@@ -436,8 +436,9 @@ public class Player : IEntityAutoReset
         SetTiming(TimingStat.AttackMotionTime, motionTime);
         SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
 
-        var newMaxHp = (level * level) / 2 + (level * level * level) / 300 + 42 + 10 * level;
-        var updatedMaxHp = newMaxHp * hpBonus;// (int)(newMaxHp * multiplier) + 70;
+        //var newMaxHp = (level * level) / 2 + (level * level * level) / 300 + 42 + 10 * level;
+        var newMaxHp = DataManager.JobMaxHpLookup[job][level] * (1 + GetEffectiveStat(CharacterStat.Vit) / 100f);
+        var updatedMaxHp = newMaxHp; // * hpBonus;// (int)(newMaxHp * multiplier) + 70;
 
         SetStat(CharacterStat.MaxHp, updatedMaxHp);
         if (GetStat(CharacterStat.Hp) <= 0)
@@ -472,11 +473,11 @@ public class Player : IEntityAutoReset
 
         if (ServerConfig.DebugConfig.UnlimitedSkillPoints)
             pointEarned = 999;
-        
+
         var pointsUsed = 0;
         foreach (var skill in LearnedSkills)
             pointsUsed += skill.Value;
-        
+
         if (pointEarned < pointsUsed)
             SetData(PlayerStat.SkillPoints, 0);
         else
@@ -872,7 +873,7 @@ public class Player : IEntityAutoReset
         else
             bagId = updatedCount; //AddItemToInventory returns the bagId for unique items (yeah this is scuffed)
         CommandBuilder.AddItemToInventory(this, item, bagId, change);
-        
+
         return true;
     }
 

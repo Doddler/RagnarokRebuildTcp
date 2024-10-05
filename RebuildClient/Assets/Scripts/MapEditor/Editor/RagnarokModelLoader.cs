@@ -77,7 +77,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 				node.UVs.Add(uv);
 			}
-
+			
 			var faceCount = br.ReadInt32();
 
 			for (var i = 0; i < faceCount; i++)
@@ -278,7 +278,8 @@ namespace Assets.Scripts.MapEditor.Editor
 			go.transform.localRotation = rotation;
 			go.transform.localScale = scale;
 
-			var vTrans = new List<Vector3>();
+			//var vTrans = new List<Vector3>();
+			var vTrans2 = new List<Vector3>();
 			var tris = new List<RsmTriangle>();
 
 			foreach (var f in node.Faces)
@@ -290,7 +291,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				for (var i = 0; i < 3; i++)
 				{
 					var v = node.Vertices[f.VertexIds[i]].FlipY() + offset.FlipY();
-					vTrans.Add(go.transform.TransformPoint(v));
+					//vTrans.Add(go.transform.TransformPoint(v));
 					tri.Vertices[i] = v;
 					tri.UVs[i] = VectorHelper.RemapUV(node.UVs[f.UVIds[i]], atlasRects[realTexId]);
 					tri.Colors[i] = node.Colors[f.UVIds[i]];
@@ -299,12 +300,15 @@ namespace Assets.Scripts.MapEditor.Editor
 				tri.CalcNormals();
 				tris.Add(tri);
 			}
+			
+			foreach(var v in node.Vertices)
+				vTrans2.Add(go.transform.TransformPoint(v.FlipY() + offset.FlipY()));
 
 			if (model.ShadingType == RsmShadingType.Smooth)
 				SmoothNodeTriangles(node, tris);
 
-			if (vTrans.Count > 0)
-				node.Bounds = GeometryUtility.CalculateBounds(vTrans.ToArray(), Matrix4x4.identity);
+			if (vTrans2.Count > 0)
+				node.Bounds = GeometryUtility.CalculateBounds(vTrans2.ToArray(), Matrix4x4.identity);
 			else
 				node.Bounds = new Bounds(Vector3.zero, Vector3.zero);
 
@@ -417,7 +421,7 @@ namespace Assets.Scripts.MapEditor.Editor
 			var filename = path;
 			var basedir = Path.GetDirectoryName(path);
 
-			//Debug.Log(filename);
+			Debug.Log(filename);
 
 			savePath = subPath;
 			baseName = Path.GetFileNameWithoutExtension(filename);
@@ -559,7 +563,8 @@ namespace Assets.Scripts.MapEditor.Editor
 				//var modelName = @"내부소품\탁상1.rsm"; //props\desk1
 				
 				//var modelName = @"프론테라\민가04.rsm"; //prontera armory
-				var modelName = @"splen\민가침대02.rsm";
+				//var modelName = @"splen\민가침대02.rsm";
+				var modelName = @"외부소품\광산_레일01.rsm";
 				
 				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, $@"model\{modelName}"); //prontera armory
 				var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
@@ -572,6 +577,8 @@ namespace Assets.Scripts.MapEditor.Editor
 		
 				model.transform.SetParent(go.transform, false);
 				model.transform.localScale = new Vector3(1f, 1f, 1f);
+				
+				PrefabUtility.SaveAsPrefabAssetAndConnect(model, "Assets/Models/prefabs/외부소품/광산_레일01.prefab", InteractionMode.AutomatedAction);
 			}
 			finally
 			{

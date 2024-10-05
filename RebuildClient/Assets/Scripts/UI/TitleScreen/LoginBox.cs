@@ -52,7 +52,7 @@ namespace Assets.Scripts.UI.TitleScreen
         private IEnumerator StartEvent()
         {
             UsernameBox.text = PlayerPrefs.GetString("LoginUsername", "");
-            if (!string.IsNullOrWhiteSpace(GameConfig.Data?.SavedLoginToken))
+            if (!string.IsNullOrWhiteSpace(GameConfig.Data?.SavedLoginToken) && !string.IsNullOrWhiteSpace(UsernameBox.text) && UsernameBox.text != "ID")
             {
                 PasswordBox.text = TokenLoginPass;
                 RememberLoginToggle.isOn = true;
@@ -73,13 +73,13 @@ namespace Assets.Scripts.UI.TitleScreen
 
             if (currentTab == 0)
             {
-                loginUserName = UsernameLabelText.text;
+                loginUserName = UsernameBox.text;
                 loginPassword = PasswordBox.text; 
             }
 
             if (currentTab == 1)
             {
-                createUserName = UsernameLabelText.text;
+                createUserName = UsernameBox.text;
                 createUserPassword = PasswordBox.text;
             }
 

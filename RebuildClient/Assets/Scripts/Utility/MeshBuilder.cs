@@ -8,10 +8,9 @@ using UnityEditor;
 
 namespace Assets.Scripts.Utility
 {
-
     public class MeshBuilder
     {
-        private List<Vector3>  vertices = new();
+        private List<Vector3> vertices = new();
         private List<Vector3> normals = new();
         private List<Vector2> uvs = new();
         private List<Vector3> uv3s = new();
@@ -56,18 +55,18 @@ namespace Assets.Scripts.Utility
             AddVertices(vertArray);
             AddNormals(normalArray);
             AddUVs(uvArray);
-            if(colors != null)
+            if (colors != null)
                 AddColor32s(colorArray);
 
             AddTriangles(triangleArray);
         }
-        
+
         public void AddQuad(Vector3[] vertArray, Vector3[] normalArray, Vector2[] uvArray, Color32[] colorArray)
         {
             var tri = vertices.Count;
 
 #if DEBUG
-            if(vertArray.Length != 4 || normalArray.Length != 4 || uvArray.Length != 4)
+            if (vertArray.Length != 4 || normalArray.Length != 4 || uvArray.Length != 4)
                 throw new Exception("AddQuad was passed incorrect parameters! Oh no!");
 #endif
 
@@ -76,19 +75,19 @@ namespace Assets.Scripts.Utility
             AddUVs(uvArray);
             AddColor32s(colorArray);
             triangles.Add(tri);
-            triangles.Add(tri+1);
-            triangles.Add(tri+2);
-            triangles.Add(tri+1);
-            triangles.Add(tri+3);
-            triangles.Add(tri+2);
+            triangles.Add(tri + 1);
+            triangles.Add(tri + 2);
+            triangles.Add(tri + 1);
+            triangles.Add(tri + 3);
+            triangles.Add(tri + 2);
         }
-        
+
         public void AddPerspectiveQuad(Vector3[] vertArray, Vector3[] normalArray, Vector3[] uvArray, Color32[] colorArray)
         {
             var tri = vertices.Count;
 
 #if DEBUG
-            if(vertArray.Length != 4 || normalArray.Length != 4 || uvArray.Length != 4)
+            if (vertArray.Length != 4 || normalArray.Length != 4 || uvArray.Length != 4)
                 throw new Exception("AddPerspectiveQuad was passed incorrect parameters! Oh no!");
 #endif
 
@@ -97,22 +96,22 @@ namespace Assets.Scripts.Utility
             AddUV3s(uvArray);
             AddColor32s(colorArray);
             triangles.Add(tri);
-            triangles.Add(tri+1);
-            triangles.Add(tri+2);
-            triangles.Add(tri+1);
-            triangles.Add(tri+3);
-            triangles.Add(tri+2);
+            triangles.Add(tri + 1);
+            triangles.Add(tri + 2);
+            triangles.Add(tri + 1);
+            triangles.Add(tri + 3);
+            triangles.Add(tri + 2);
         }
-        
+
         public void AddVertices(Vector3[] vertArray)
         {
-            foreach(var v in vertArray)
+            foreach (var v in vertArray)
                 vertices.Add(v);
         }
 
         public void AddNormals(Vector3[] normalArray)
         {
-            foreach(var n in normalArray)
+            foreach (var n in normalArray)
                 normals.Add(n);
         }
 
@@ -122,17 +121,17 @@ namespace Assets.Scripts.Utility
             if (uv3s.Count > 0)
                 throw new Exception("Cannot use UV2 and UV3 in the same mesh!");
 #endif
-            foreach(var uv in uvArray)
+            foreach (var uv in uvArray)
                 uvs.Add(uv);
         }
-        
+
         public void AddUV3s(Vector3[] uvArray)
         {
 #if UNITY_EDITOR
             if (uvs.Count > 0)
                 throw new Exception("Cannot use UV2 and UV3 in the same mesh!");
 #endif
-            foreach(var uv in uvArray)
+            foreach (var uv in uvArray)
                 uv3s.Add(uv);
 
             useUv3 = true;
@@ -141,7 +140,7 @@ namespace Assets.Scripts.Utility
 
         public void AddTriangles(int[] triArray)
         {
-            foreach(var t in triArray)
+            foreach (var t in triArray)
                 triangles.Add(startIndex + t);
         }
 
@@ -149,20 +148,19 @@ namespace Assets.Scripts.Utility
         {
             if (colorArray == null)
                 return;
-            foreach(var c in colorArray)
+            foreach (var c in colorArray)
                 color32s.Add(c);
         }
-        
-        
+
+
         public void AddColor32s(Color32[] colorArray)
         {
             if (colorArray == null)
                 return;
-            foreach(var c in colorArray)
+            foreach (var c in colorArray)
                 color32s.Add(c);
         }
 
-        
         public Mesh Build(string name = "Mesh", bool buildSecondaryUVs = false, int compressionLevel = 0)
         {
             if (!HasMesh())
@@ -170,20 +168,20 @@ namespace Assets.Scripts.Utility
 
             var mesh = new Mesh();
             mesh.name = name;
-            
-            if(vertices.Count != color32s.Count && colors.Count == 0)
+
+            if (vertices.Count != color32s.Count && colors.Count == 0)
                 Console.WriteLine("AAAAA");
 
             mesh.SetVertices(vertices);
             mesh.SetNormals(normals);
             mesh.SetTriangles(triangles, 0);
-            if(!useUv3)
+            if (!useUv3)
                 mesh.SetUVs(0, uvs);
             else
                 mesh.SetUVs(0, uv3s);
-            if(colors.Count > 0)
+            if (colors.Count > 0)
                 mesh.SetColors(colors);
-            if(color32s.Count > 0)
+            if (color32s.Count > 0)
                 mesh.SetColors(color32s);
 
             //mesh.vertices = vertices.ToArray();
@@ -198,16 +196,16 @@ namespace Assets.Scripts.Utility
             mesh.OptimizeIndexBuffers();
             mesh.OptimizeReorderVertexBuffer();
 #if UNITY_EDITOR
-            if(compressionLevel == 0)
+            if (compressionLevel == 0)
                 MeshUtility.SetMeshCompression(mesh, ModelImporterMeshCompression.Off);
-            if(compressionLevel == 1)
+            if (compressionLevel == 1)
                 MeshUtility.SetMeshCompression(mesh, ModelImporterMeshCompression.Low);
-            if(compressionLevel == 2)
+            if (compressionLevel == 2)
                 MeshUtility.SetMeshCompression(mesh, ModelImporterMeshCompression.Medium);
-            if(compressionLevel == 3)
+            if (compressionLevel == 3)
                 MeshUtility.SetMeshCompression(mesh, ModelImporterMeshCompression.High);
 
-            if(buildSecondaryUVs)
+            if (buildSecondaryUVs)
                 Unwrapping.GenerateSecondaryUVSet(mesh, MeshBuilder.GetUnwrapParam());
 #endif
             return mesh;
@@ -216,7 +214,7 @@ namespace Assets.Scripts.Utility
         public Mesh[] BuildMulti(string name = "Mesh", bool buildSecondaryUVs = false)
         {
             if (!HasMesh())
-                return new Mesh[] {};
+                return new Mesh[] { };
 
             var meshCount = Mathf.CeilToInt(vertices.Count / 40000f);
             var meshes = new Mesh[meshCount];
@@ -229,20 +227,20 @@ namespace Assets.Scripts.Utility
                 var count = Mathf.Clamp(vertices.Count - start, 0, 40000);
                 var triCount = count / 4 * 6;
                 Debug.Log($"{start} {count} {triCount}");
-            
-                if(vertices.Count != color32s.Count && colors.Count == 0)
+
+                if (vertices.Count != color32s.Count && colors.Count == 0)
                     Console.WriteLine("AAAAA");
 
                 mesh.SetVertices(vertices.GetRange(start, count));
                 mesh.SetNormals(normals.GetRange(start, count));
                 mesh.SetTriangles(triangles.GetRange(0, triCount), 0);
-                if(!useUv3)
+                if (!useUv3)
                     mesh.SetUVs(0, uvs.GetRange(start, count));
                 else
                     mesh.SetUVs(0, uv3s.GetRange(start, count));
-                if(colors.Count > 0)
+                if (colors.Count > 0)
                     mesh.SetColors(colors.GetRange(start, count));
-                if(color32s.Count > 0)
+                if (color32s.Count > 0)
                     mesh.SetColors(color32s.GetRange(start, count));
 
                 mesh.RecalculateBounds();
@@ -260,15 +258,15 @@ namespace Assets.Scripts.Utility
             mesh.SetVertices(vertices);
             mesh.SetNormals(normals);
             mesh.SetTriangles(triangles, 0);
-            if(!useUv3)
+            if (!useUv3)
                 mesh.SetUVs(0, uvs);
             else
                 mesh.SetUVs(0, uv3s);
-            if(colors.Count > 0)
+            if (colors.Count > 0)
                 mesh.SetColors(colors);
-            if(color32s.Count > 0)
+            if (color32s.Count > 0)
                 mesh.SetColors(color32s);
-            
+
             mesh.RecalculateBounds();
             //mesh.RecalculateTangents();
             //mesh.Optimize();
@@ -298,7 +296,6 @@ namespace Assets.Scripts.Utility
 
         public MeshBuilder()
         {
-
         }
     }
 }

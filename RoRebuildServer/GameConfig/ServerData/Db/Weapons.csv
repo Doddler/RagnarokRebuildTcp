@@ -27,7 +27,7 @@ Id,Name,Attack,Magic,Range,Slot,Type,Rank,Property,MinLvl,EquipGroup,Hand,Refina
 1126,Saber,115,0,1,2,Sword,3,Neutral,27,SwordUser-N,Left,Yes,Yes,
 1127,Saber_,115,0,1,3,Sword,3,Neutral,27,SwordUser-N,Left,Yes,Yes,
 1128,Haedonggum_,120,0,1,2,Sword,3,Neutral,27,SwordUser-N,Left,Yes,Yes,
-1129,Flamberge,150,0,1,0,Sword,3,Neutral,27,Swordsman2nd,Left,Yes,Yes,
+1129,Flamberge,150,0,1,0,Sword,3,Neutral,27,Swordsman,Left,Yes,Yes,Should exclude 1st job
 1130,Nagan,120,0,1,0,Sword,4,Neutral,40,SwordUser-N,Left,Yes,Yes,
 1131,Ice_Falchion,100,50,1,0,Sword,4,Water,40,SwordUser-N,Left,Yes,Yes,
 1132,Edge,115,0,1,0,Sword,4,Neutral,40,SwordUser-N,Left,Yes,Yes,
@@ -35,10 +35,10 @@ Id,Name,Attack,Magic,Range,Slot,Type,Rank,Property,MinLvl,EquipGroup,Hand,Refina
 1134,Scissors_Sword,140,0,1,0,Sword,4,Neutral,40,SwordUser-N,Left,Yes,Yes,
 1135,Cutlus,150,0,1,0,Sword,4,Neutral,40,SwordUser-N,Left,Yes,Yes,
 1136,Solar_Sword,85,0,1,0,Sword,4,Fire,40,SwordUser-N,Left,Yes,Yes,
-1137,Excalibur,150,0,1,0,Sword,4,Holy,40,SwordUser-N,Left,Yes,Yes,
+1137,Excalibur,150,75,1,0,Sword,4,Holy,40,SwordUser-N,Left,Yes,Yes,Luk+10
 1138,Mistilteinn,170,0,1,0,Sword,4,Dark,40,SwordUser-N,Left,Yes,Yes,
 1139,Tyrfing,200,0,1,0,Sword,4,Dark,40,SwordUser-N,Left,Yes,Yes,
-1140,Byeol-ungeom,150,0,1,0,Sword,4,Neutral,40,SwordUser-N,Left,Yes,Yes,
+1140,Byeol-ungeom,150,0,1,0,Sword,4,Neutral,40,SwordUser-N,Left,Yes,Yes,All Stats+2
 1141,Immaterial_Sword,140,0,1,0,Sword,4,Neutral,40,SwordUser-N,Left,Yes,Yes,
 1151,Slayer,90,0,1,2,2HSword,2,Neutral,18,Swordsman,Both,Yes,No,
 1152,Slayer_,90,0,1,3,2HSword,2,Neutral,18,Swordsman,Both,Yes,No,
@@ -90,7 +90,7 @@ Id,Name,Attack,Magic,Range,Slot,Type,Rank,Property,MinLvl,EquipGroup,Hand,Refina
 1303,Axe__,38,0,1,0,Axe,1,Neutral,3,AxeUser,Left,Yes,Yes,
 1304,Orcish_Axe,75,0,1,0,Axe,3,Neutral,3,AxeUser,Left,Yes,Yes,
 1305,Cleaver,140,0,1,0,Axe,4,Neutral,44,HeavySword,Left,Yes,Yes,
-1306,War_Axe,140,0,1,1,Axe,3,Neutral,76,Merchant,Left,Yes,Yes,Should be blacksmith
+1306,War_Axe,140,0,1,1,Axe,3,Neutral,76,Merchant,Left,Yes,Yes,DEX+2 LUK+2 Should be blacksmith
 1351,Battle_Axe,80,0,1,3,2HAxe,1,Neutral,3,HeavySword,Both,Yes,No,
 1352,Battle_Axe_,80,0,1,4,2HAxe,1,Neutral,3,HeavySword,Both,Yes,No,
 1353,Battle_Axe__,80,0,1,0,2HAxe,1,Neutral,3,HeavySword,Both,Yes,No,
@@ -179,7 +179,7 @@ Id,Name,Attack,Magic,Range,Slot,Type,Rank,Property,MinLvl,EquipGroup,Hand,Refina
 1610,Arc_Wand,60,95,1,1,Rod,3,Neutral,24,RodUser-N,Left,Yes,Yes,INT+3
 1611,Arc_Wand_,60,95,1,2,Rod,3,Neutral,24,RodUser-N,Left,Yes,Yes,INT+3
 1612,Arc_Wand__,60,95,1,0,Rod,3,Neutral,24,RodUser-N,Left,Yes,Yes,INT+3
-1613,Mighty_Staff,130,100,1,0,Rod,3,Neutral,24,RodUser-N,Left,Yes,Yes,STR+10
+1613,Mighty_Staff,130,100,1,0,Rod,3,Neutral,24,Mage,Left,Yes,Yes,STR+10
 1614,Occult_Wand,75,105,1,0,Rod,3,Neutral,24,RodUser-N,Left,Yes,Yes,INT+3
 1615,Bone_Wand,40,110,1,0,Rod,3,Dark,24,RodUser-N,Left,Yes,Yes,INT+4
 1701,Bow,15,0,5,3,Bow,1,Neutral,4,BowUser,Both,Yes,No,

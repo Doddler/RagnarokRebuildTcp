@@ -23,41 +23,78 @@ public class PacketEnterServer : IClientPacketHandler
 
         var accountId = connection.AccountId;
         var isNewCharacter = msg.ReadBoolean();
-        if (isNewCharacter)
-        {
-            return; //fixme
-        }
-
         var chName = msg.ReadString();
 
-        //ServerLogger.Log($"Running Enter for accountId {accountId}");
-
-        var req = new LoadCharacterRequest(accountId, chName);
-        RoDatabase.EnqueueDbRequest(req);
-
-        if (req.HasCharacter)
+        if (!isNewCharacter)
         {
-            ServerLogger.Log($"Client has an existing character! Character name {req.Name}.");
+
+            var req = new LoadCharacterRequest(accountId, chName);
+            RoDatabase.EnqueueDbRequest(req);
             return;
         }
 
-        ////var name = "Player " + GameRandom.NextInclusive(0, 999);
-        //var name = accountName;
+        if (chName.Length > 30)
+        {
+            CommandBuilder.ErrorMessage(connection, $"The character name you entered is too long, it must be 30 or fewer characters in length.");
+            return;
+        }
 
-        //var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
+        var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
 
-        //var newReq = new SaveCharacterRequest(name, accountId);
-        //await RoDatabase.ExecuteDbRequestAsync(newReq);
+        var head = msg.ReadInt32();
+        var hair = msg.ReadInt32();
+        var slot = (int)msg.ReadByte();
+        
+        var total = 0;
+        var error = false;
+        for (var i = (int)PlayerStat.Str; i <= (int)PlayerStat.Luck; i++)
+        {
+            var stat = (int)msg.ReadByte();
+            total += stat;
+            charData[i] = stat;
+            if (stat < 1 || stat > 9)
+                error = true;
+        }
+        var isMale = msg.ReadBoolean();
 
-        //ArrayPool<int>.Shared.Return(charData, true);
+        if (total != 33) error = true;
+        if (head < 0 || head > 19) error = true;
+        if (hair < 0 || hair > 8) error = true;
+        if (slot < 0 || slot > 2) error = true;
 
-        //var loadReq = new LoadCharacterRequest(accountId); //database will assign us a guid, use that to load back the character
-        //await RoDatabase.ExecuteDbRequestAsync(loadReq);
+        if (error)
+        {
+            CommandBuilder.ErrorMessage(connection, $"Cannot create character, the server rejected the request for incorrectly submitted data.");
+            ArrayPool<int>.Shared.Return(charData);
+            return;
+        }
 
-        //return loadReq;
+        charData[(int)PlayerStat.Level] = 1;
+        charData[(int)PlayerStat.Head] = head;
+        charData[(int)PlayerStat.HairId] = hair;
+        charData[(int)PlayerStat.Gender] = isMale ? 0 : 1;
+        charData[(int)PlayerStat.Status] = 1;
 
-        //RoDatabase.EnqueueDbRequest();
-
-        ////CommandBuilder.InformEnterServer(connection.Character, networkPlayer);
+        var newReq = new CreateCharacterRequest(connection, accountId, slot, chName, charData);
+        RoDatabase.EnqueueDbRequest(newReq);
     }
+
+    ////var name = "Player " + GameRandom.NextInclusive(0, 999);
+    //var name = accountName;
+
+    //var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
+
+    //var newReq = new SaveCharacterRequest(name, accountId);
+    //await RoDatabase.ExecuteDbRequestAsync(newReq);
+
+    //ArrayPool<int>.Shared.Return(charData, true);
+
+    //var loadReq = new LoadCharacterRequest(accountId); //database will assign us a guid, use that to load back the character
+    //await RoDatabase.ExecuteDbRequestAsync(loadReq);
+
+    //return loadReq;
+
+    //RoDatabase.EnqueueDbRequest();
+
+    ////CommandBuilder.InformEnterServer(connection.Character, networkPlayer);
 }

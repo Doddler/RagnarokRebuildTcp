@@ -22,6 +22,7 @@ namespace Assets.Scripts.Sprites
         
         private bool isInitialized;
         private bool isEnabled;
+        private string lastSprite;
 
         public void SetAction(int action, bool is8Direction) => ActionId = action;
         public void SetColor(Color color) => Color = color;
@@ -122,9 +123,9 @@ namespace Assets.Scripts.Sprites
         public Mesh GetMeshForFrame()
         {
             //just a simple hash
-            var id = ((ActionId + (int)Direction) << 16) + CurrentFrame;
+            var id = ((ActionId * 10 + (int)Direction) << 16) + CurrentFrame;
             
-            if (meshCache == null)
+            //if (meshCache == null || SpriteData.Name != lastSprite)
                 meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
 
             if (meshCache.TryGetValue(id, out var mesh))
@@ -133,6 +134,7 @@ namespace Assets.Scripts.Sprites
             var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, ActionId, (int)Direction, CurrentFrame);
 
             meshCache.Add(id, newMesh);
+            lastSprite = SpriteData.Name;
 
             return newMesh;
         }

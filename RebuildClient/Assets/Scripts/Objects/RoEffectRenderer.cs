@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Objects
@@ -53,24 +54,23 @@ namespace Assets.Scripts.Objects
 
             var mat = new Material(Shader.Find("Ragnarok/EffectShader"));
 
-            if (srcBlend == 2 && destBlend == 1)
+            if (srcBlend == 2 && destBlend == 1) //One, Zero
             {
-                srcBlend = 5;
-                destBlend = 10;
+                srcBlend = 5; //srcAlpha
+                destBlend = 10; //oneMinusSrcAlpha
             }
             
-            if (srcBlend == 5 && destBlend == 6)
-                destBlend = 10;
+            if (srcBlend == 5 && destBlend == 6) //srcAlpha, invSrcAlpha
+                destBlend = 10; //oneMinusSrcAlpha
 
-            if (srcBlend == 5 && destBlend == 7)
+            if (srcBlend == 5 && destBlend == 7) //srcAlpha, destAlpha
             {
-                srcBlend = 1;
-                destBlend = 1;
+                srcBlend = 1; //One
+                destBlend = 1; //One
                 mat.EnableKeyword("MULTIPLY_ALPHA");
             }
             else
             {
-                //Debug.Log("MultiplyAlpha ON");
                 mat.DisableKeyword("MULTIPLY_ALPHA");
             }
 

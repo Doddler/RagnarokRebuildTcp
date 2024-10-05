@@ -673,7 +673,16 @@ namespace Assets.Scripts.MapEditor.Editor
 
             foreach (var f in files)
             {
-                ImportMap(f);
+                try
+                {
+                    ImportMap(f);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Exception generated while importing map {f}!");
+                    Debug.LogException(e);
+                    
+                }
             }
         }
 
