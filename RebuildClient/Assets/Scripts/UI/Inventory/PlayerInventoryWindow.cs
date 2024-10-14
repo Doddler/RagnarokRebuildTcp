@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
+using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ namespace Assets.Scripts.UI.Inventory
         public RectTransform ItemBoxRoot;
         public RectTransform ViewBoxTransform;
         public GameObject ItemEntryPrefab;
+        public ScrollRect ScrollArea;
         private List<InventoryEntry> entryList = new();
         private int activeEntryCount;
         private int activeItemSection;
@@ -74,9 +76,9 @@ namespace Assets.Scripts.UI.Inventory
             foreach (var bagEntry in inventory.GetInventoryData())
             {
                 var item = bagEntry.Value;
-                if (activeItemSection == 0 && (item.ItemData.IsUnique || !item.ItemData.IsUseable)) continue;
-                if (activeItemSection == 1 && (!item.ItemData.IsUnique)) continue;
-                if (activeItemSection == 2 && (item.ItemData.IsUnique || item.ItemData.IsUseable)) continue;
+                if (activeItemSection == 0 && (item.ItemData.IsUnique || item.ItemData.UseType == ItemUseType.NotUsable)) continue;
+                if (activeItemSection == 1 && (!item.ItemData.IsUnique || item.ItemData.Id < 0)) continue;
+                if (activeItemSection == 2 && (item.ItemData.IsUnique || item.ItemData.UseType != ItemUseType.NotUsable) && item.ItemData.Id > 0) continue;
 
                 if (entryList.Count <= activeEntryCount)
                 {
@@ -88,9 +90,10 @@ namespace Assets.Scripts.UI.Inventory
                 var itemEntry = entryList[activeEntryCount];
                 var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.ItemData.Sprite);
                 itemEntry.DragItem.Assign(DragItemType.Item, sprite, bagEntry.Key, item.Count);
+                itemEntry.gameObject.SetActive(true);
                 itemEntry.DragItem.gameObject.SetActive(true);
 
-                if (item.ItemData.IsUseable)
+                if (item.ItemData.UseType == ItemUseType.Use)
                     itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendUseItem(bagEntry.Key);
                 else
                     itemEntry.DragItem.OnDoubleClick = null;
@@ -103,9 +106,11 @@ namespace Assets.Scripts.UI.Inventory
             var requiredRows = Mathf.CeilToInt((float)activeEntryCount / entriesPerRow);
             var requiredBoxes = entriesPerRow * requiredRows;
 
-            var minRows = (int)((ViewBoxTransform.rect.height - 20) / UnitSize.y);
+            var minRows = (int)((ViewBoxTransform.rect.height - 10) / UnitSize.y);
             var minBoxes = entriesPerRow * minRows;
             var totalBoxes = Mathf.Max(requiredBoxes, minBoxes);
+            
+            // Debug.Log($"TotalBoxes: {totalBoxes} EntryList.Count: {entryList.Count} ActiveEntryCount: {activeEntryCount}");
 
             while (totalBoxes > entryList.Count)
             {

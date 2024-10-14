@@ -167,9 +167,21 @@ namespace Assets.Scripts.UI.TitleScreen
 
         public void Update()
         {
-            if (Parent.TitleState == TitleScreen.TitleScreenState.CharacterSelect && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
-                ClickOk();
-            
+            if (Parent.TitleState == TitleScreen.TitleScreenState.CharacterSelect)
+            {
+                if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+                    ClickOk();
+                if (Input.GetKeyDown(KeyCode.RightArrow))
+                    SetCharacterInfo(selectedSlot.AddAndWrapValue(1, 0, 2));
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                    SetCharacterInfo(selectedSlot.AddAndWrapValue(-1, 0, 2));
+                if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    var isShift = Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift);
+                    SetCharacterInfo(selectedSlot.AddAndWrapValue(isShift ? -1 : 1, 0, 2));
+                }
+            }
+
         }
     }
 }

@@ -117,7 +117,7 @@ namespace Assets.Scripts
         //Vector2Int = Also Tile Position
         //Vector2 = Map Position
         //Vector3 = World Position
-        
+
         public static Vector2 ToMapPosition(this Vector3 v) => new Vector2(v.x, v.z);
         public static Vector2 ToMapPosition(this Position p) => new Vector2(p.X + 0.5f, p.Y + 0.5f);
         public static Vector2 ToMapPosition(this Vector2Int p) => new Vector2(p.x + 0.5f, p.y + 0.5f);
@@ -138,27 +138,30 @@ namespace Assets.Scripts
         public static Vector3 ToWorldPosition(this Vector2Int p) => ToWorldPosition(p.ToMapPosition());
 
         //graciously borrowed from an answer on unity discussion board: https://discussions.unity.com/t/generating-dynamic-parabola/520467/11
-        public static Vector3 SampleParabola ( Vector3 start, Vector3 end, float height, float t ) {
+        public static Vector3 SampleParabola(Vector3 start, Vector3 end, float height, float t)
+        {
             float parabolicT = t * 2 - 1;
-            if ( Mathf.Abs( start.y - end.y ) < 0.1f ) {
+            if (Mathf.Abs(start.y - end.y) < 0.1f)
+            {
                 //start and end are roughly level, pretend they are - simpler solution with less steps
                 Vector3 travelDirection = end - start;
                 Vector3 result = start + t * travelDirection;
-                result.y += ( -parabolicT * parabolicT + 1 ) * height;
+                result.y += (-parabolicT * parabolicT + 1) * height;
                 return result;
-            } else {
+            }
+            else
+            {
                 //start and end are not level, gets more complicated
                 Vector3 travelDirection = end - start;
-                Vector3 levelDirection = end - new Vector3( start.x, end.y, start.z );
-                Vector3 right = Vector3.Cross( travelDirection, levelDirection );
+                Vector3 levelDirection = end - new Vector3(start.x, end.y, start.z);
+                Vector3 right = Vector3.Cross(travelDirection, levelDirection);
                 Vector3 up = Vector3.Cross(right, levelDirection);
-                if ( end.y > start.y ) up = -up;
+                if (end.y > start.y) up = -up;
                 Vector3 result = start + t * travelDirection;
-                result += ( ( -parabolicT * parabolicT + 1 ) * height ) * up.normalized;
+                result += ((-parabolicT * parabolicT + 1) * height) * up.normalized;
                 return result;
             }
         }
-        
     }
 
     public static class RectHelper
@@ -213,6 +216,19 @@ namespace Assets.Scripts
         public static bool CloseEnough(float value, float target)
         {
             return Mathf.Abs(value - target) < 0.001f;
+        }
+
+        public static int AddAndWrapValue(this int value, int add, int min, int max)
+        {
+            var wrapAdjust = max - min + 1; //for example, a range of 5-10 has 6 valid values
+            value += add;
+            if (value < min)
+                while (value < min)
+                    value += wrapAdjust;
+            if (value > max)
+                while (value > max)
+                    value -= wrapAdjust;
+            return value;
         }
     }
 

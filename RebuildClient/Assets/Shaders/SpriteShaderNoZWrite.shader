@@ -35,7 +35,7 @@ Shader"Ragnarok/CharacterSpriteShaderNoZWrite"
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma multi_compile_fog
-			#pragma multi_compile _ PIXELSNAP_ON
+			//#pragma multi_compile _ PIXELSNAP_ON
 			//#pragma multi_compile _ WATER_OFF
 		
 

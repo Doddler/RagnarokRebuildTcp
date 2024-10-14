@@ -10,6 +10,7 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public Vector2 MaxSize = new Vector2(100000, 100000);
     public bool SnapToStep;
     public int StepSize;
+    public int StepSizeY;
     public Vector2 BaseSize;
     [NonSerialized] public Vector2Int CurrentStepSize = Vector2Int.one;
 
@@ -26,6 +27,10 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public void Awake()
     {
+        
+        if (StepSizeY == 0 && StepSize != 0)
+            StepSizeY = StepSize;
+        
         if (SnapToStep)
             maxStepSize = new Vector2Int(Mathf.RoundToInt(MaxSize.x), Mathf.RoundToInt(MaxSize.y));
     }
@@ -66,11 +71,12 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
             var rect = Target.GetComponent<RectTransform>();
 
+
             var newSize = startSize + new Vector2(diff.x / rect.transform.lossyScale.x, -diff.y / rect.transform.lossyScale.y);
 
             if (SnapToStep)
             {
-                var stepCount = new Vector2(newSize.x - BaseSize.x, newSize.y - BaseSize.y) / StepSize;
+                var stepCount = new Vector2((newSize.x - BaseSize.x) / StepSize, (newSize.y - BaseSize.y) / StepSize);
                 CurrentStepSize = new Vector2Int(Mathf.RoundToInt(stepCount.x), Mathf.RoundToInt(stepCount.y));
                 newSize = BaseSize + CurrentStepSize * StepSize;
             }

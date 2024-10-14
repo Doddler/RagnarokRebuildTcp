@@ -232,15 +232,6 @@ namespace Assets.Scripts.Utility
 			}
 			
 			CameraFollower.Instance.ResetCursor();
-
-			var refreshMaps = new List<string>() { "prt_fild08", "prontera", "morocc", "geffen", "izlude", "alberta", "payon", "pay_arche", "aldebaran" };
-
-			if (refreshMaps.Contains(newMap.Code))
-			{
-				var level = NetworkManager.Instance.PlayerState.Level;
-				if(level > 0)
-					UiManager.Instance.SkillHotbar.UpdateItem1Count(Mathf.Clamp(level * 2, 20, 150));
-			}
 		}
 
 		// private void FinishSceneChange(AsyncOperation op)

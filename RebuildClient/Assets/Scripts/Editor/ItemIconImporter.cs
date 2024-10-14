@@ -101,13 +101,16 @@ namespace Assets.Scripts.Editor
                     if(!File.Exists(newActPath))
                         File.Copy(actPath, newActPath);
                     
-                    //AssetDatabase.ImportAsset(actPath, ImportAssetOptions.ForceUpdate);
+                    AssetDatabase.ImportAsset(newSprPath, ImportAssetOptions.ForceUpdate);
                     AssetDatabase.Refresh();
                     
                     var spriteData = AssetDatabase.LoadAssetAtPath<RoSpriteData>(importedAssetName);
-                    var iconAtlas = spriteData.Atlas;
                     var curIcon = spriteData.Sprites[0];
                     var offset = spriteData.Actions[0].Frames[0].Layers[0].Position;
+                    
+                    //this is stupid, but if we load the texture asset normally it might not be readable
+                    var iconAtlas = new Texture2D(2, 2);
+                    iconAtlas.LoadImage(File.ReadAllBytes($"Assets/Sprites/Imported/Icons/Atlas/{spriteData.Atlas.name}.png"));
 
                     var bounds = curIcon.rect;
                     bounds = new Rect(offset.x, offset.y, curIcon.rect.width, curIcon.rect.height);
@@ -138,6 +141,8 @@ namespace Assets.Scripts.Editor
 
                     AssetDatabase.ImportAsset(destPath, ImportAssetOptions.ForceUpdate);
                     AssetDatabase.Refresh();
+
+                    GameObject.DestroyImmediate(iconAtlas);
                 }
 
                 var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(destPath);

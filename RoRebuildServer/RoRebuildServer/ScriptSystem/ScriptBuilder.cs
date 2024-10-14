@@ -319,9 +319,9 @@ public class ScriptBuilder
         monsterSkillDefinitions.Add($"DataManager.RegisterMonsterSkillHandler(\"{name}\", new {behaviorName}(), {(isAltType?"true":"false")});");
     }
 
-    public void EndItem(string name)
+    public void EndItem(string name, string className)
     {
-        var behaviorName = $"RoRebuildItemGen_{name}";
+        var behaviorName = $"RoRebuildItemGen_{className}";
         itemDefinitions.Add($"DataManager.RegisterItem(\"{name}\", new {behaviorName}());");
     }
 
@@ -488,14 +488,20 @@ public class ScriptBuilder
         {
 
             CloseScope();
-            StartIndentedBlockLine().AppendLine($"public override bool {section}(Player player, CombatEntity combatEntity)");
+            if (section == "OnValidate")
+            {
+                defaultReturn = "true";
+                StartIndentedBlockLine().AppendLine($"public override bool {section}(Player player, CombatEntity combatEntity)");
+            }
+            else
+                StartIndentedBlockLine().AppendLine($"public override void {section}(Player player, CombatEntity combatEntity)");
+
             OpenScope();
 
             UseStateMachine = false;
             UseStateStorage = false;
             UseLocalStorage = false;
-            defaultReturn = "true";
-
+            
             LoadFunctionSource(typeof(Player), "player");
             LoadFunctionSource(typeof(CombatEntity), "combatEntity");
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
@@ -780,7 +786,7 @@ public class ScriptBuilder
         lineBuilder.Append(text);
     }
 
-    public void OutputReturn()
+    public void OutputReturn(string? expr = null)
     {
         if (lineBuilder.Length > 0)
             EndLine();
@@ -791,6 +797,8 @@ public class ScriptBuilder
         {
             if (string.IsNullOrWhiteSpace(defaultReturn))
                 lineBuilder.Append("return;");
+            else if (!string.IsNullOrWhiteSpace(expr))
+                lineBuilder.Append($"return {expr};");
             else
                 lineBuilder.Append($"return {defaultReturn};");
         }
@@ -1014,7 +1022,6 @@ public class ScriptBuilder
 
     public void EndMethod()
     {
-
         if (UseStateMachine)
         {
             StartIndentedBlockLine().AppendLine("return NpcInteractionResult.EndInteraction;");

@@ -88,7 +88,7 @@ namespace Assets.Scripts.Sprites
 
         public MapViewpoint GetMapViewpoint(string mapName) => mapViewpoints.GetValueOrDefault(mapName);
         public MonsterClassData GetMonsterData(int classId) => monsterClassLookup.GetValueOrDefault(classId);
-        public ItemData GetItemById(int id) => itemIdLookup[id];
+        public ItemData GetItemById(int id) => itemIdLookup.TryGetValue(id, out var item) ? item : itemIdLookup[-1];
         public ItemData GetItemByName(string name) => itemNameLookup[name];
         public bool TryGetItemByName(string name, out ItemData item) => itemNameLookup.TryGetValue(name, out item);
         public bool TryGetItemById(int id, out ItemData item) => itemIdLookup.TryGetValue(id, out item);
@@ -199,6 +199,16 @@ namespace Assets.Scripts.Sprites
                     itemIcons.Add(item.Sprite, item.Code);
                 item.Sprite = itemIcons[item.Sprite];
             }
+            
+            itemIdLookup.Add(-1, new ItemData()
+            {
+                Code = "UNKNOWN_ITEM",
+                Id = -1,
+                IsUnique = true,
+                ItemClass = ItemClass.Etc,
+                Name = "Unknown Item",
+                Sprite = "Apple"
+            });
 
             var uniqueAttacks = JsonUtility.FromJson<Wrapper<UniqueAttackAction>>(UniqueAttackActionData.text);
             foreach (var action in uniqueAttacks.Items)

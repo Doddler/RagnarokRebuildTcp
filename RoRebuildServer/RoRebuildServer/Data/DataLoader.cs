@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using Antlr4.Runtime.Tree.Xpath;
 using CsvHelper;
+using CsvHelper.Configuration;
 using Microsoft.Extensions.Options;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
@@ -16,6 +17,7 @@ using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
+using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Monsters;
@@ -23,6 +25,7 @@ using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
+using RoRebuildServer.Simulation;
 using Tomlyn;
 
 namespace RoRebuildServer.Data;
@@ -52,7 +55,7 @@ internal class DataLoader
 
         while (csv.Read())
         {
-            
+
             if (csv.Context?.Parser?.Record == null)
                 continue; //piss off possible null exceptions
             var instance = new InstanceEntry
@@ -68,7 +71,7 @@ internal class DataLoader
 
         return instances;
     }
-    
+
     public ExpChart LoadExpChart()
     {
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/ExpChart.csv")) as TextReader;
@@ -77,7 +80,7 @@ internal class DataLoader
         var entries = csv.GetRecords<CsvExpChart>().ToList();
 
         var chart = new ExpChart { ExpRequired = new int[100] };
-        
+
         chart.ExpRequired[0] = 0; //should always be true but why not!
 
         foreach (var e in entries)
@@ -107,8 +110,8 @@ internal class DataLoader
 
             for (var j = 0; j < attackTypes; j++)
             {
-                if(int.TryParse((string)values[j+1], out var percent))
-                   chart[i][j] = percent;
+                if (int.TryParse((string)values[j + 1], out var percent))
+                    chart[i][j] = percent;
             }
 
         }
@@ -118,7 +121,7 @@ internal class DataLoader
 
     public Dictionary<string, SavePosition> LoadSavePoints()
     {
-        
+
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/SavePoints.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
@@ -156,7 +159,7 @@ internal class DataLoader
         return effects;
     }
 
-    public Dictionary<int,JobInfo> LoadJobs()
+    public Dictionary<int, JobInfo> LoadJobs()
     {
         var jobs = new Dictionary<int, JobInfo>();
 
@@ -173,9 +176,9 @@ internal class DataLoader
 
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Jobs.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-        
+
         var entries = csv.GetRecords<CsvJobs>().ToList();
-        
+
         foreach (var entry in entries)
         {
             if (!timings.ContainsKey(entry.Class))
@@ -213,7 +216,7 @@ internal class DataLoader
         {
             mvps.Add(line);
         }
-        
+
         return mvps;
     }
 
@@ -263,6 +266,31 @@ internal class DataLoader
         return treeOut;
     }
 
+    private new Dictionary<(int, int), (int, int)> LoadRemapDrops()
+    {
+        var remap = new Dictionary<(int, int), (int, int)>();
+        var remapFile = new Dictionary<string, MonsterDropData>();
+        var remapPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/DropRateRemapping.csv");
+
+        using var tr = new StreamReader(remapPath, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+
+        var entries = csv.GetRecords<dynamic>();
+        foreach (var entry in entries)
+        {
+            if (entry is IDictionary<string, object> obj)
+            {
+                var origMin = int.Parse((string)obj["OriginalMin"]);
+                var origMax = int.Parse((string)obj["OriginalMax"]);
+                var afterMin = int.Parse((string)obj["AfterMin"]);
+                var afterMax = int.Parse((string)obj["AfterMax"]);
+                remap.Add((origMin, origMax), (afterMin, afterMax));
+            }
+        }
+
+        return remap;
+    }
+
     public Dictionary<string, MonsterDropData> LoadMonsterDropChanceData()
     {
         var remap = new Dictionary<(int, int), (int, int)>();
@@ -270,95 +298,62 @@ internal class DataLoader
         var remapDrops = ServerConfig.OperationConfig.RemapDropRates;
 
         if (remapDrops)
-        {
-            var remapFile = new Dictionary<string, MonsterDropData>();
-            var remapPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/DropRateRemapping.csv");
-
-            using var tr = new StreamReader(remapPath, Encoding.UTF8) as TextReader;
-            using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-            
-            var entries = csv.GetRecords<dynamic>();
-            foreach (var entry in entries)
-            {
-                if (entry is IDictionary<string, object> obj)
-                {
-                    var origMin = int.Parse((string)obj["OriginalMin"]);
-                    var origMax = int.Parse((string)obj["OriginalMax"]);
-                    var afterMin = int.Parse((string)obj["AfterMin"]);
-                    var afterMax = int.Parse((string)obj["AfterMax"]);
-                    remap.Add((origMin, origMax), (afterMin, afterMax));
-                }
-            }
-        }
+            remap = LoadRemapDrops();
 
         var drops = new Dictionary<string, MonsterDropData>();
-        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Drops.csv");
-
-        
-#if DEBUG
-        //if the file is open in excel, we can't read it... so while in debug build we'll make a copy
-        var tempPath = Path.Combine(Path.GetTempPath(), @"Drops.csv");
-        File.Copy(inPath, tempPath, true);
-        inPath = tempPath;
-#endif
-        using (var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader)
-        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
+        using var inPath = new TemporaryFile(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/DropData.csv"));
+        using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+        var entries = csv.GetRecords<dynamic>();
+        foreach (var entry in entries)
         {
-            var entries = csv.GetRecords<dynamic>();
-            foreach (var entry in entries)
+            if (entry is IDictionary<string, object> obj)
             {
-                if (entry is IDictionary<string, object> obj)
+                var monster = ((string)obj["Monster"]).Replace(" ", "_").ToUpper();
+                var data = new MonsterDropData();
+
+                if (!DataManager.MonsterCodeLookup.ContainsKey(monster))
+                    ServerLogger.LogWarning($"Item drops defined for monster {monster} but that monster could not be found.");
+
+                for (var i = 1; i <= 12; i++)
                 {
-                    var monster = ((string)obj["Monster"]).Replace(" ", "_").ToUpper();
-                    var data = new MonsterDropData();
-
-                    if(!DataManager.MonsterCodeLookup.ContainsKey(monster))
-                        ServerLogger.LogWarning($"Item drops defined for monster {monster} but that monster could not be found.");
-
-                    for (var i = 1; i <= 8; i++)
+                    var key = $"Item{i}";
+                    if (obj.ContainsKey(key))
                     {
-                        var key = $"Item{i}";
-                        if (obj.ContainsKey(key))
+                        var itemName = (string)obj[key];
+                        if (string.IsNullOrWhiteSpace(itemName))
+                            continue;
+
+                        if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
                         {
-                            var itemName = (string)obj[key];
-                            if (string.IsNullOrWhiteSpace(itemName))
-                                continue;
+                            ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
+                            //continue;
+                        }
 
-                            if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
+                        var chance = (int)int.Parse((string)obj[$"Chance{i}"]);
+                        if (chance <= 0)
+                            continue;
+
+                        if (remapDrops)
+                        {
+                            foreach (var range in remap)
                             {
-                                ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
-                                //continue;
-                            }
-
-                            var chance = (int)int.Parse((string)obj[$"Chance{i}"]);
-                            if (chance <= 0)
-                                continue;
-
-                            if (remapDrops)
-                            {
-                                foreach (var range in remap)
+                                if (chance >= range.Key.Item1 && chance < range.Key.Item2)
                                 {
-                                    if (chance >= range.Key.Item1 && chance < range.Key.Item2)
-                                    {
-                                        chance = (int)((float)chance).Remap(range.Key.Item1, range.Key.Item2, range.Value.Item1, range.Value.Item2);
-                                        break;
-                                    }
+                                    chance = (int)((float)chance).Remap(range.Key.Item1, range.Key.Item2, range.Value.Item1, range.Value.Item2);
+                                    break;
                                 }
                             }
-
-                            if(item > 0) //for debug reasons mostly
-                                data.DropChances.Add((item, chance));
                         }
-                    }
 
-                    drops.Add(monster, data);
+                        if (item > 0) //for debug reasons mostly
+                            data.DropChances.Add((item, chance));
+                    }
                 }
+
+                drops.Add(monster, data);
             }
         }
-
-#if DEBUG
-        File.Delete(tempPath);
-#endif
 
         return drops;
     }
@@ -391,57 +386,293 @@ internal class DataLoader
         return dict;
     }
 
-    public Dictionary<int, ItemInfo> LoadItemList()
+
+    public Dictionary<int, Dictionary<int, int>> LoadMaxSpChart()
+    {
+        var dict = new Dictionary<int, Dictionary<int, int>>();
+
+        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobSpChart.csv");
+
+        using var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+        var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
+
+        for (var i = 0; i < 7; i++)
+            dict.Add(i, new Dictionary<int, int>());
+
+        foreach (var entry in entries)
+        {
+            var lvl = entry.Level;
+            dict[0].Add(lvl, entry.Novice);
+            dict[1].Add(lvl, entry.Swordsman);
+            dict[2].Add(lvl, entry.Archer);
+            dict[3].Add(lvl, entry.Mage);
+            dict[4].Add(lvl, entry.Acolyte);
+            dict[6].Add(lvl, entry.Merchant);
+            dict[5].Add(lvl, entry.Thief);
+        }
+
+        return dict;
+    }
+
+    private static List<T> GetCsvRows<T>(string fileName)
+    {
+        var inPath = new TemporaryFile(Path.Combine(ServerConfig.DataConfig.DataPath, fileName));
+        using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+
+        return csv.GetRecords<T>().ToList();
+    }
+
+    public Dictionary<string, HashSet<int>> LoadEquipGroups()
+    {
+        var equipableJobs = new Dictionary<string, HashSet<int>>();
+
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false };
+        using var tr = new StreamReader(@"F:\ProjectsSSD\RagnarokRebuildTcp\RoRebuildServer\GameConfig\ServerData\Db\EquipmentGroups.csv") as TextReader;
+        using var csv = new CsvReader(tr, config);
+
+        var entries = csv.GetRecords<dynamic>().ToList();
+        var autoDesc = new StringBuilder();
+
+        foreach (IDictionary<string, object> e in entries)
+        {
+            var s = e.Values.ToList();
+            var jobGroup = (string)s[0];
+            var hasExisting = equipableJobs.TryGetValue(jobGroup, out var set);
+            if (!hasExisting || set == null)
+                set = new HashSet<int>();
+
+            for (var i = 2; i < s.Count; i++)
+            {
+                var job = (string)s[i];
+                if (equipableJobs.TryGetValue(job, out var refSet))
+                {
+                    foreach (var r in refSet)
+                        set.Add(r);
+                }
+                else if (DataManager.JobIdLookup.TryGetValue(job, out var jobId))
+                    set.Add(jobId);
+                else
+                    ServerLogger.Debug($"LoadEquipmentGroups: Could not find job with the name of {job}");
+            }
+
+            if (!hasExisting)
+                equipableJobs.Add(jobGroup, set);
+        }
+
+        return equipableJobs;
+    }
+
+    public Dictionary<int, ItemInfo> LoadItemsRegular()
     {
         var items = new Dictionary<int, ItemInfo>();
 
-        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Items.csv");
-
-#if DEBUG
-        //if the file is open in excel, we can't read it... so while in debug build we'll make a copy
-        var tempPath = Path.Combine(Path.GetTempPath(), @"Items.csv");
-        File.Copy(inPath, tempPath, true);
-        inPath = tempPath;
-#endif
-
-        using (var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader)
-        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
+        foreach (var entry in GetCsvRows<CsvItemRegular>("Db/ItemsRegular.csv"))
         {
-            var entries = csv.GetRecords<CsvItem>().ToList();
-
-            foreach (var entry in entries)
+            var item = new ItemInfo()
             {
-                var itemClass = entry.ItemClass;
-                var item = new ItemInfo()
-                {
-                    Code = entry.Code,
-                    Id = entry.Id,
-                    IsUnique = itemClass == ItemClass.Equipment || itemClass == ItemClass.Weapon,
-                    IsUseable = itemClass == ItemClass.Useable,
-                    ItemClass = itemClass,
-                    Price = entry.Price,
-                    Weight = entry.Weight,
-                    Effect = -1,
-                };
-
-                if (!string.IsNullOrWhiteSpace(entry.Effect))
-                {
-                    if (DataManager.EffectIdForName.TryGetValue(entry.Effect, out var effectId))
-                        item.Effect = effectId;
-                    else
-                        ServerLogger.LogWarning($"Could not find effect '{entry.Effect}' with name '{item.Code}'.");
-                }
-
-                items.Add(item.Id, item);
-            }
-
-            
+                Code = entry.Code,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Useable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+            };
+            items.Add(item.Id, item);
         }
-#if DEBUG
-        File.Delete(tempPath);
-#endif
+
         return items;
     }
+
+    public Dictionary<int, ArmorInfo> LoadItemsArmor(Dictionary<int, ItemInfo> itemList)
+    {
+        var returnList = new Dictionary<int, ArmorInfo>();
+        foreach (var entry in GetCsvRows<CsvItemEquipment>("Db/ItemsEquipment.csv"))
+        {
+            var item = new ItemInfo()
+            {
+                Code = entry.Code,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Useable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+            };
+            itemList.Add(item.Id, item);
+
+            var weaponInfo = new ArmorInfo()
+            {
+                Defense = entry.Defense,
+                MagicDefense = entry.MagicDef,
+                CardSlots = entry.Slot,
+                Element = entry.Property ?? CharacterElement.Neutral1,
+                EquipGroup = entry.EquipGroup,
+                IsBreakable = entry.Breakable == "Yes",
+                IsRefinable = entry.Refinable == "Yes",
+                EquipPosition = entry.Type,
+                MinLvl = entry.MinLvl
+            };
+            returnList.Add(entry.Id, weaponInfo);
+        }
+
+        return returnList;
+    }
+
+    public Dictionary<int, WeaponInfo> LoadItemsWeapon(Dictionary<int, ItemInfo> itemList)
+    {
+        var returnList = new Dictionary<int, WeaponInfo>();
+        foreach (var entry in GetCsvRows<CsvItemWeapon>("Db/ItemsWeapons.csv"))
+        {
+            var item = new ItemInfo()
+            {
+                Code = entry.Code,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Useable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+            };
+            itemList.Add(item.Id, item);
+
+            var weaponInfo = new WeaponInfo()
+            {
+                Attack = entry.Attack,
+                CardSlots = entry.Slot,
+                Element = entry.Property,
+                EquipGroup = entry.EquipGroup,
+                IsBreakable = entry.Breakable == "Yes",
+                IsRefinable = entry.Refinable == "Yes"
+            };
+            returnList.Add(entry.Id, weaponInfo);
+        }
+
+        return returnList;
+    }
+
+    public Dictionary<int, CardInfo> LoadItemsCards(Dictionary<int, ItemInfo> itemList)
+    {
+        var returnList = new Dictionary<int, CardInfo>();
+        foreach (var entry in GetCsvRows<CsvItemCard>("Db/ItemsCards.csv"))
+        {
+            var item = new ItemInfo()
+            {
+                Code = entry.Code,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Useable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+            };
+            itemList.Add(item.Id, item);
+
+            var cardInfo = new CardInfo() { EquipPosition = entry.EquipableSlot };
+
+            returnList.Add(entry.Id, cardInfo);
+        }
+
+        return returnList;
+    }
+
+    public Dictionary<int, AmmoInfo> LoadItemsAmmo(Dictionary<int, ItemInfo> itemList)
+    {
+        var returnList = new Dictionary<int, AmmoInfo>();
+        foreach (var entry in GetCsvRows<CsvItemAmmo>("Db/ItemsAmmo.csv"))
+        {
+            var item = new ItemInfo()
+            {
+                Code = entry.Code,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Useable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+            };
+            itemList.Add(item.Id, item);
+
+            var ammoInfo = new AmmoInfo() { Type = entry.Type, Attack = entry.Attack, MinLvl = entry.EquipLevel};
+            returnList.Add(entry.Id, ammoInfo);
+        }
+
+        return returnList;
+    }
+
+    public Dictionary<int, UseItemInfo> LoadUseableItems(Dictionary<int, ItemInfo> itemList)
+    {
+        var returnList = new Dictionary<int, UseItemInfo>();
+        foreach (var entry in GetCsvRows<CsvItemUseable>("Db/ItemsUsable.csv"))
+        {
+            var item = new ItemInfo()
+            {
+                Code = entry.Code,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Useable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+            };
+            itemList.Add(item.Id, item);
+
+            var useItem = new UseItemInfo() { UseType = entry.UseMode, Effect = -1 };
+            if (DataManager.EffectIdForName.TryGetValue(entry.UseEffect, out var effectId))
+                useItem.Effect = effectId;
+            returnList.Add(entry.Id, useItem);
+        }
+
+        return returnList;
+    }
+
+    //    public Dictionary<int, ItemInfo> LoadItemList()
+    //    {
+    //        var items = new Dictionary<int, ItemInfo>();
+
+    //        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Items.csv");
+
+    //#if DEBUG
+    //        //if the file is open in excel, we can't read it... so while in debug build we'll make a copy
+    //        var tempPath = Path.Combine(Path.GetTempPath(), @"Items.csv");
+    //        File.Copy(inPath, tempPath, true);
+    //        inPath = tempPath;
+    //#endif
+
+    //        using (var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader)
+    //        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
+    //        {
+    //            var entries = csv.GetRecords<CsvItem>().ToList();
+
+    //            foreach (var entry in entries)
+    //            {
+    //                var itemClass = entry.ItemClass;
+    //                var item = new ItemInfo()
+    //                {
+    //                    Code = entry.Code,
+    //                    Id = entry.Id,
+    //                    IsUnique = itemClass == ItemClass.Equipment || itemClass == ItemClass.Weapon,
+    //                    IsUseable = itemClass == ItemClass.Useable,
+    //                    ItemClass = itemClass,
+    //                    Price = entry.Price,
+    //                    Weight = entry.Weight,
+    //                    Effect = -1,
+    //                };
+
+    //                if (!string.IsNullOrWhiteSpace(entry.Effect))
+    //                {
+    //                    if (DataManager.EffectIdForName.TryGetValue(entry.Effect, out var effectId))
+    //                        item.Effect = effectId;
+    //                    else
+    //                        ServerLogger.LogWarning($"Could not find effect '{entry.Effect}' with name '{item.Code}'.");
+    //                }
+
+    //                items.Add(item.Id, item);
+    //            }
+
+
+    //        }
+    //#if DEBUG
+    //        File.Delete(tempPath);
+    //#endif
+    //        return items;
+    //    }
 
     public Dictionary<string, int> GenerateItemIdByNameLookup()
     {
@@ -477,7 +708,7 @@ internal class DataLoader
 
         foreach (var entry in DataManager.MonsterSkillAiHandlers)
         {
-            if(!entry.Value.IsUnassignedAiType && !DataManager.MonsterCodeLookup.TryGetValue(entry.Key, out _))
+            if (!entry.Value.IsUnassignedAiType && !DataManager.MonsterCodeLookup.TryGetValue(entry.Key, out _))
                 ServerLogger.LogWarning($"Ai skill handler exists for monster {entry.Key}, but a monster by that name does not exist.");
         }
     }
@@ -554,7 +785,7 @@ internal class DataLoader
 
         return obj;
     }
-    
+
     public Dictionary<string, string> LoadServerConfig()
     {
         var config = new Dictionary<string, string>();
@@ -571,7 +802,7 @@ internal class DataLoader
 
         return config;
     }
-    
+
     public void LoadNpcScripts(Assembly assembly)
     {
         var itemType = typeof(INpcLoader);
@@ -583,7 +814,7 @@ internal class DataLoader
             handler.Load();
         }
     }
-    
+
     public Dictionary<string, Action<ServerMapConfig>> LoadMapConfigs(Assembly assembly)
     {
         var configs = new Dictionary<string, Action<ServerMapConfig>>();
@@ -612,9 +843,9 @@ internal class DataLoader
 
         //most of this nonsense is because I want comments in a csv file...
         var updatedCsv = new StringBuilder();
-        foreach(var l in File.ReadAllLines(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/MonsterAI.csv"), Encoding.UTF8))
+        foreach (var l in File.ReadAllLines(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/MonsterAI.csv"), Encoding.UTF8))
         {
-            if(string.IsNullOrWhiteSpace(l) || l.Trim().StartsWith("//"))
+            if (string.IsNullOrWhiteSpace(l) || l.Trim().StartsWith("//"))
                 continue;
             updatedCsv.AppendLine(l);
         }
@@ -626,7 +857,7 @@ internal class DataLoader
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
         var states = csv.GetRecords<CsvMonsterAI>().ToList();
-        
+
         foreach (var entry in states)
         {
             if (entry.AiType.Contains("//"))
@@ -638,7 +869,7 @@ internal class DataLoader
             hasError |= !Enum.TryParse(entry.InputCheck, out MonsterInputCheck inCheck);
             hasError |= !Enum.TryParse(entry.OutputCheck, out MonsterOutputCheck outCheck);
             hasError |= !Enum.TryParse(entry.EndState, out MonsterAiState outState);
-            
+
             if (hasError)
                 throw new Exception($"Could not parse Ai States: {entry.AiType},{entry.State},{entry.InputCheck},{entry.OutputCheck},{entry.EndState}");
 
@@ -671,7 +902,7 @@ internal class DataLoader
                 throw new Exception($"Error loading SpawnMinionTable.csv, could not find minion named {entry.Minion}.");
 
             targetMonster.Minions ??= new List<MonsterSpawnMinions>();
-            targetMonster.Minions.Add(new MonsterSpawnMinions() {Count = entry.Count, Monster = minion});
+            targetMonster.Minions.Add(new MonsterSpawnMinions() { Count = entry.Count, Monster = minion });
         }
     }
 

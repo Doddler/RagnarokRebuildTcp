@@ -135,15 +135,15 @@ internal class ScriptTreeWalker
         if (param.expression().Length != 1)
             throw new Exception($"Incorrect number of parameters on MapConfig expression on line {param.start.Line}");
 
-        var str = param.expression()[0].GetText();
-        if (str.StartsWith("\""))
-            str = str.Substring(1, str.Length - 2);
+        var itemName = param.expression()[0].GetText();
+        if (itemName.StartsWith("\""))
+            itemName = itemName.Substring(1, itemName.Length - 2);
 
-        str = str.Replace(" ", "_");
+        var className = itemName.Replace(" ", "_").Replace(".", "").Replace("'", "").Replace("-", "_");
 
         sectionHandler = ItemSectionHandler;
 
-        builder.StartItem(str);
+        builder.StartItem(className);
 
         var statements = functionContext.block1;
         VisitStatementBlock(statements);
@@ -152,7 +152,7 @@ internal class ScriptTreeWalker
         builder.EndMethod();
         builder.EndClass();
 
-        builder.EndItem(str);
+        builder.EndItem(itemName, className);
     }
 
     public void ItemSectionHandler(StartSectionContext context)
@@ -327,27 +327,33 @@ internal class ScriptTreeWalker
         if (expr.Length != 5)
             throw new Exception($"Incorrect number of parameters on RecoveryItem expression on line {param.start.Line}");
 
-        var str = param.expression()[0].GetText();
-        if (str.StartsWith("\""))
-            str = str.Substring(1, str.Length - 2);
-        str = str.Replace(" ", "_");
+        var itemName = param.expression()[0].GetText();
+        if (itemName.StartsWith("\""))
+            itemName = itemName.Substring(1, itemName.Length - 2);
+
+        var className = itemName.Replace(" ", "_").Replace(".", "").Replace("'", "").Replace("-", "_");
 
         var hp1 = int.Parse(expr[1].GetText());
         var hp2 = int.Parse(expr[2].GetText());
         var sp1 = int.Parse(expr[3].GetText());
         var sp2 = int.Parse(expr[4].GetText());
 
-        builder.StartItem(str);
+        builder.StartItem(className);
         builder.StartItemSection("OnUse");
         if (hp1 > 0 || hp2 > 0)
         {
-            builder.OutputRaw($"combatEntity.Heal({hp1}, {hp2})");
+            builder.OutputRaw($"combatEntity.HealRange({hp1}, {hp2})");
+            builder.EndLine(functionContext.start.Line);
+        }
+        if (sp1 > 0 || sp2 > 0)
+        {
+            builder.OutputRaw($"combatEntity.RecoverSpRange({sp1}, {sp2})");
             builder.EndLine(functionContext.start.Line);
         }
 
         builder.EndMethod();
         builder.EndClass();
-        builder.EndItem(str);
+        builder.EndItem(itemName, className);
     }
 
     private void OutputWarpStatement(ExpressionContext expression)
@@ -442,8 +448,11 @@ internal class ScriptTreeWalker
                 if (sectionHandler != null)
                     sectionHandler(context);
                 break;
-            case ReturnStatementContext:
-                builder.OutputReturn();
+            case ReturnStatementContext context:
+                if(context.IDENTIFIER() != null)
+                    builder.OutputReturn(context.IDENTIFIER().GetText());
+                else
+                    builder.OutputReturn();
                 break;
             case SwitchStatementContext context:
                 VisitSwitchStatement(context);

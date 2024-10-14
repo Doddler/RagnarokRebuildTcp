@@ -38,7 +38,7 @@ namespace Assets.Scripts.UI.TitleScreen
         {
             base.OnRectTransformDimensionsChange();
 
-            SetAllDirty();
+            SetVerticesDirty();
         }
 
         protected override void UpdateMaterial()

@@ -35,7 +35,7 @@ public class CombatEntity : IEntityAutoReset
     public bool IsTargetable;
     public float CastingTime;
     public bool IsCasting;
-    
+
     public BodyStateFlags BodyState;
 
     public SkillCastInfo CastingSkill { get; set; }
@@ -51,7 +51,7 @@ public class CombatEntity : IEntityAutoReset
     [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> damageCooldowns = new();
     [EntityIgnoreNullCheck] public List<DamageInfo> DamageQueue { get; set; } = null!;
     private CharacterStatusContainer? statusContainer;
-    
+
 
     public float GetTiming(TimingStat type) => timingData[(int)type];
     public void SetTiming(TimingStat type, float val) => timingData[(int)type] = val;
@@ -190,7 +190,7 @@ public class CombatEntity : IEntityAutoReset
     public CharacterStatusContainer? GetStatusEffectData() => statusContainer;
     public bool HasStatusEffectOfType(CharacterStatusEffect type) => statusContainer?.HasStatusEffectOfType(type) ?? false;
 
-    public bool TryGetStatusContainer([NotNullWhen(returnValue:true)] out CharacterStatusContainer? status)
+    public bool TryGetStatusContainer([NotNullWhen(returnValue: true)] out CharacterStatusContainer? status)
     {
         status = null;
         if (statusContainer == null)
@@ -295,15 +295,15 @@ public class CombatEntity : IEntityAutoReset
         SetStat(CharacterStat.Hp, curHp + hp);
     }
 
-    public void Heal(int hp, int hp2, bool showValue = false)
+    public void HealRange(int hp, int hp2, bool showValue = false)
     {
         if (hp2 != -1 && hp2 > hp)
             hp = GameRandom.NextInclusive(hp, hp2);
 
         var curHp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
-
-        hp += (int)(maxHp * 0.06f); //kinda cheat and force give an extra 6% hp back
+        var chVit = GetEffectiveStat(CharacterStat.Vit);
+        hp += hp * chVit / 100;
 
         if (curHp + hp > maxHp)
             hp = maxHp - curHp;
@@ -318,7 +318,31 @@ public class CombatEntity : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
-    public void FullRecovery(bool hp, bool sp)
+
+    public void RecoverSpRange(int sp, int sp2, bool showValue = false)
+    {
+        if (sp2 != -1 && sp2 > sp)
+            sp = GameRandom.NextInclusive(sp, sp2);
+
+        var curSp = GetStat(CharacterStat.Sp);
+        var maxSp = GetStat(CharacterStat.MaxSp);
+        var chInt = GetEffectiveStat(CharacterStat.Int);
+        sp += sp * chInt / 100;
+
+        if (curSp + sp > maxSp)
+            sp = maxSp - curSp;
+
+        SetStat(CharacterStat.Sp, curSp + sp);
+
+        if (Character.Map == null || Character.Type != CharacterType.Player)
+            return;
+
+        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.ChangeSpValue(Player, curSp + sp, maxSp);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void FullRecovery(bool hp = true, bool sp = false)
     {
         if (hp)
             SetStat(CharacterStat.Hp, GetStat(CharacterStat.MaxHp));
@@ -619,7 +643,7 @@ public class CombatEntity : IEntityAutoReset
         {
             IsCasting = true;
             CastingTime = Time.ElapsedTimeFloat + castTime;
-            
+
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime, hideSkillName);
             CommandBuilder.ClearRecipients();
@@ -825,7 +849,7 @@ public class CombatEntity : IEntityAutoReset
                 CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime, hideSkillName);
                 CommandBuilder.ClearRecipients();
 
-                if(target.Character.Type == CharacterType.Monster)
+                if (target.Character.Type == CharacterType.Monster)
                     target.Character.Monster.MagicLock(this);
             }
             return true;
@@ -900,8 +924,24 @@ public class CombatEntity : IEntityAutoReset
         SkillHandler.ExecuteSkill(info, this);
     }
 
-    public bool CheckLuckModifiedRandomChanceVsTarget(CombatEntity target, int chance, int outOf, int luckMod = 100)
+    /// <summary>
+    /// Scales a chance by the luck difference between targets using a sliding modifier value.
+    /// On most rolls a luck difference of 100 will double or halve your chance of success.
+    /// On rolls higher than 10% the benefit luck provides decreases.
+    /// (at 100 luck difference, a roll of 10% chance increases to 20%, but a roll of 50% it only boosts it to 75%)
+    /// </summary>
+    /// <param name="target">The defender of the attack</param>
+    /// <param name="chance">The highest random value that counts as a success</param>
+    /// <param name="outOf">The maximum value used when rolling on a chance of success</param>
+    /// <returns></returns>
+    public bool CheckLuckModifiedRandomChanceVsTarget(CombatEntity target, int chance, int outOf)
     {
+
+        var luckMod = 100;
+        var successRate = chance / (float)outOf;
+        if (successRate > 0.1f)
+            luckMod += (int)((successRate * 1000 - 100) / 4f);
+
         var attackerLuck = GetEffectiveStat(CharacterStat.Luck);
         var provokerLuck = target.GetEffectiveStat(CharacterStat.Luck);
         if (provokerLuck < 0) provokerLuck = 0;
@@ -976,7 +1016,7 @@ public class CombatEntity : IEntityAutoReset
         if (!flags.HasFlag(AttackFlags.NoElement))
         {
             var defenderElement = target.GetElement();
-                
+
             if (attackElement == AttackElement.None)
                 attackElement = AttackElement.Neutral; //for now default to neutral, but we should pull from the weapon here if none is set
 
@@ -1104,7 +1144,7 @@ public class CombatEntity : IEntityAutoReset
         if (statusContainer != null)
             statusContainer.OnAttack(ref di);
 
-        if(target.TryGetStatusContainer(out var targetStatus))
+        if (target.TryGetStatusContainer(out var targetStatus))
             targetStatus.OnTakeDamage(ref di);
 
         return di;
@@ -1135,7 +1175,7 @@ public class CombatEntity : IEntityAutoReset
             atk1 = (int)(atk1 * magicPercent);
             atk2 = (int)(atk2 * magicPercent);
         }
-        
+
         if (atk1 <= 0)
             atk1 = 1;
         if (atk2 < atk1)
@@ -1161,7 +1201,7 @@ public class CombatEntity : IEntityAutoReset
 
         Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
     }
-    
+
     public void ApplyCooldownForSupportSkillAction(float minCooldownTime = 0f)
     {
         if (Character.Type != CharacterType.Player)
@@ -1241,7 +1281,7 @@ public class CombatEntity : IEntityAutoReset
             //if(damageInfo.Time < Time.ElapsedTimeFloat)
             //    target.ApplyQueuedCombatResult(ref damageInfo);
             //else
-                target.QueueDamage(damageInfo);
+            target.QueueDamage(damageInfo);
         }
 
         //if (target.Character.Type == CharacterType.Monster && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
@@ -1299,7 +1339,7 @@ public class CombatEntity : IEntityAutoReset
 
         var knockback = di.KnockBack;
         var hasHitStop = !di.Flags.HasFlag(DamageApplicationFlags.NoHitLock);
-        
+
         if (Character.Type == CharacterType.Monster && delayTime > 0.15f)
             delayTime = 0.15f;
         if (!hasHitStop)
@@ -1327,9 +1367,9 @@ public class CombatEntity : IEntityAutoReset
 
         if (Character.Type == CharacterType.Monster)
             Character.Monster.NotifyOfAttack(ref di);
-        
+
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-        if(sendMove)
+        if (sendMove)
             CommandBuilder.SendMoveEntityMulti(Character);
         CommandBuilder.SendHitMulti(Character, damage, hasHitStop);
         CommandBuilder.ClearRecipients();
@@ -1385,7 +1425,7 @@ public class CombatEntity : IEntityAutoReset
             return;
         }
 
-        if(oldPosition != Character.Position)
+        if (oldPosition != Character.Position)
             Character.Map?.TriggerAreaOfEffectForCharacter(Character, oldPosition, Character.Position);
     }
 

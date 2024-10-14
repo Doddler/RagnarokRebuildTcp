@@ -1,0 +1,283 @@
+RecoveryItem("Red_Potion", 45, 65, 0, 0);
+RecoveryItem("Orange_Potion", 105, 145, 0, 0);
+RecoveryItem("Yellow_Potion", 175, 235, 0, 0);
+RecoveryItem("White_Potion", 325, 405, 0, 0);
+RecoveryItem("Blue_Potion", 0, 0, 40, 60);
+Item("Green_Potion") { OnValidate: return false; OnUse: }
+RecoveryItem("Red_Herb", 18, 28, 0, 0);
+RecoveryItem("Yellow_Herb", 38, 58, 0, 0);
+RecoveryItem("White_Herb", 75, 115, 0, 0);
+RecoveryItem("Blue_Herb", 0, 0, 15, 30);
+Item("Green_Herb") { OnValidate: return false; OnUse: }
+RecoveryItem("Apple", 16, 22, 0, 0);
+RecoveryItem("Banana", 17, 21, 0, 0);
+RecoveryItem("Grape", 0, 0, 10, 15);
+RecoveryItem("Carrot", 18, 20, 0, 0);
+RecoveryItem("Potato", 15, 23, 0, 0);
+RecoveryItem("Meat", 70, 100, 0, 0);
+RecoveryItem("Honey", 70, 100, 20, 40);
+RecoveryItem("Milk", 27, 37, 0, 0);
+RecoveryItem("Hinalle_Leaflet", 175, 235, 0, 0);
+RecoveryItem("Aloe_Leaflet", 325, 405, 0, 0);
+RecoveryItem("Mastela_Fruit", 400, 600, 0, 0);
+Item("Holy_Water") { OnValidate: return false; OnUse: }
+Item("Panacea") { OnValidate: return false; OnUse: }
+RecoveryItem("Royal_Jelly", 325, 405, 40, 60);
+RecoveryItem("Monster's_Feed", 72, 108, 0, 0);
+RecoveryItem("Candy", 45, 65, 0, 0);
+RecoveryItem("Candy_Cane", 105, 145, 0, 0);
+RecoveryItem("Apple_Juice", 25, 35, 0, 0);
+RecoveryItem("Banana_Juice", 26, 34, 0, 0);
+RecoveryItem("Grape_Juice", 0, 0, 15, 25);
+RecoveryItem("Carrot_Juice", 27, 33, 0, 0);
+RecoveryItem("Pumpkin", 19, 19, 0, 0);
+RecoveryItem("Ice_Cream", 105, 145, 0, 0);
+RecoveryItem("Pet_Food", 50, 90, 0, 0);
+RecoveryItem("Well-Baked_Cookie", 160, 200, 0, 0);
+RecoveryItem("Piece_of_Cake", 270, 330, 0, 0);
+RecoveryItem("Raw_Fish", 25, 60, 0, 0);
+RecoveryItem("Condensed_Red_Potion", 45, 65, 0, 0);
+RecoveryItem("Condensed_Yellow_Potion", 175, 235, 0, 0);
+RecoveryItem("Condensed_White_Potion", 325, 405, 0, 0);
+RecoveryItem("Cheese", 0, 0, 10, 15);
+RecoveryItem("Yam", 50, 100, 0, 0);
+RecoveryItem("Rice_Cake", 10, 15, 0, 0);
+RecoveryItem("Sushi", 50, 60, 0, 0);
+RecoveryItem("Bao", 35, 70, 0, 0);
+RecoveryItem("Mochi", 105, 145, 0, 0);
+RecoveryItem("Traditional_Rice_Cake", 105, 145, 0, 0);
+RecoveryItem("Rice_Cake_Stick", 20, 25, 0, 0);
+RecoveryItem("Neatly_Sliced_Rice_Cake", 25, 30, 0, 0);
+RecoveryItem("Chocolate", 1, 1, 1, 1);
+RecoveryItem("Handmade_Dark_Chocolate", 50, 50, 50, 50);
+RecoveryItem("Handmade_White_Chocolate", 50, 50, 50, 50);
+RecoveryItem("White_Chocolate", 50, 50, 50, 50);
+RecoveryItem("Rice_Ball", 200, 200, 0, 0);
+RecoveryItem("Tom_Yum_Goong", 244, 350, 10, 30);
+RecoveryItem("Shrimp", 117, 192, 0, 0);
+RecoveryItem("Lemon", 0, 0, 10, 20);
+RecoveryItem("Novice_Potion", 22, 33, 0, 0);
+RecoveryItem("Lucky_Candy", 45, 65, 0, 0);
+RecoveryItem("Lucky_Candy_Cane", 105, 145, 0, 0);
+RecoveryItem("Lucky_Cookie", 160, 200, 0, 0);
+RecoveryItem("Chocolate_Drink", 330, 410, 45, 65);
+RecoveryItem("Egg", 33, 42, 0, 0);
+RecoveryItem("Prickly_Fruit", 150, 300, 20, 30);
+RecoveryItem("Bag_of_Grain", 60, 70, 0, 0);
+RecoveryItem("Strawberry", 0, 0, 16, 28);
+RecoveryItem("Fresh_Fish", 100, 150, 0, 0);
+RecoveryItem("Bread", 50, 90, 0, 0);
+RecoveryItem("Edible_Mushroom", 20, 30, 0, 0);
+RecoveryItem("Orange", 10, 20, 10, 20);
+RecoveryItem("Fish_Cake_Soup", 40, 70, 0, 0);
+RecoveryItem("Red_Prickly_Fruit", 270, 330, 20, 30);
+RecoveryItem("Caviar_Pancake", 325, 405, 40, 60);
+RecoveryItem("Jam_Pancake", 325, 405, 40, 60);
+RecoveryItem("Honey_Pancake", 325, 405, 40, 60);
+RecoveryItem("Sour_Cream_Pancake", 325, 405, 40, 60);
+RecoveryItem("Mushroom_Pancake", 325, 405, 40, 60);
+Item("Fly_Wing") { OnValidate: return false; OnUse: }
+Item("Butterfly_Wing") { OnValidate: return false; OnUse: }
+Item("Old_Blue_Box") { OnValidate: return false; OnUse: }
+Item("Dead_Branch") { OnValidate: return false; OnUse: }
+Item("Anodyne") { OnValidate: return false; OnUse: }
+Item("Aloevera") { OnValidate: return false; OnUse: }
+Item("Yggdrasil_Berry") { OnValidate: return false; OnUse: }
+Item("Yggdrasil_Seed") { OnValidate: return false; OnUse: }
+Item("Amulet") { OnValidate: return false; OnUse: }
+Item("Yggdrasil_Leaf") { OnValidate: return false; OnUse: }
+Item("Magnifier") { OnValidate: return false; OnUse: }
+Item("Mini_Furnace") { OnValidate: return false; OnUse: }
+Item("Iron_Hammer") { OnValidate: return false; OnUse: }
+Item("Golden_Hammer") { OnValidate: return false; OnUse: }
+Item("Oridecon_Hammer") { OnValidate: return false; OnUse: }
+Item("Old_Card_Album") { OnValidate: return false; OnUse: }
+Item("Old_Purple_Box") { OnValidate: return false; OnUse: }
+Item("Worn_Out_Scroll") { OnValidate: return false; OnUse: }
+Item("Unripe_Apple") { OnValidate: return false; OnUse: }
+Item("Orange_Juice") { OnValidate: return false; OnUse: }
+Item("Bitter_Herb") { OnValidate: return false; OnUse: }
+Item("Rainbow_Carrot") { OnValidate: return false; OnUse: }
+Item("Earthworm_the_Dude") { OnValidate: return false; OnUse: }
+Item("Rotten_Fish") { OnValidate: return false; OnUse: }
+Item("Rusty_Iron") { OnValidate: return false; OnUse: }
+Item("Monster_Juice") { OnValidate: return false; OnUse: }
+Item("Sweet_Milk") { OnValidate: return false; OnUse: }
+Item("Well-Dried_Bone") { OnValidate: return false; OnUse: }
+Item("Singing_Flower") { OnValidate: return false; OnUse: }
+Item("Dew_Laden_Moss") { OnValidate: return false; OnUse: }
+Item("Deadly_Noxious_Herb") { OnValidate: return false; OnUse: }
+Item("Fatty_Chubby_Earthworm") { OnValidate: return false; OnUse: }
+Item("Sweet_Potato") { OnValidate: return false; OnUse: }
+Item("Tropical_Banana") { OnValidate: return false; OnUse: }
+Item("Orc_Trophy") { OnValidate: return false; OnUse: }
+Item("No_Recipient") { OnValidate: return false; OnUse: }
+Item("Old_Broom") { OnValidate: return false; OnUse: }
+Item("Silver_Knife_of_Chastity") { OnValidate: return false; OnUse: }
+Item("Armlet_of_Obedience") { OnValidate: return false; OnUse: }
+Item("Shining_Stone") { OnValidate: return false; OnUse: }
+Item("Contract_in_Shadow") { OnValidate: return false; OnUse: }
+Item("Book_of_the_Devil") { OnValidate: return false; OnUse: }
+Item("Pet_Incubator") { OnValidate: return false; OnUse: }
+Item("Gift_Box") { OnValidate: return false; OnUse: }
+Item("Concentration_Potion") { OnValidate: return false; OnUse: }
+Item("Awakening_Potion") { OnValidate: return false; OnUse: }
+Item("Berserk_Potion") { OnValidate: return false; OnUse: }
+Item("Union_of_Tribe") { OnValidate: return false; OnUse: }
+Item("Her_Heart") { OnValidate: return false; OnUse: }
+Item("Forbidden_Red_Candle") { OnValidate: return false; OnUse: }
+Item("Soft_Apron") { OnValidate: return false; OnUse: }
+Item("Authoritative_Badge") { OnValidate: return false; OnUse: }
+Item("Korean_Rice_Cake") { OnValidate: return false; OnUse: }
+Item("Gift_Box_") { OnValidate: return false; OnUse: }
+Item("Gift_Box__") { OnValidate: return false; OnUse: }
+Item("Gift_Box___") { OnValidate: return false; OnUse: }
+Item("Gift_Box____") { OnValidate: return false; OnUse: }
+Item("Red_Envelope") { OnValidate: return false; OnUse: }
+Item("Poison_Bottle") { OnValidate: return false; OnUse: }
+Item("Pilule") { OnValidate: return false; OnUse: }
+Item("Sweet_Memory_of_Marriage") { OnValidate: return false; OnUse: }
+Item("Quiver") { OnValidate: return false; OnUse: }
+Item("Iron_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Steel_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Oridecon_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Fire_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Silver_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Wind_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Stone_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Crystal_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Shadow_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Immaterial_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Rusty_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Speed_Potion") { OnValidate: return false; OnUse: }
+Item("Slow_Potion") { OnValidate: return false; OnUse: }
+Item("Firecracker") { OnValidate: return false; OnUse: }
+Item("Cursed_Water") { OnValidate: return false; OnUse: }
+Item("Pork") { OnValidate: return false; OnUse: }
+Item("Galbi") { OnValidate: return false; OnUse: }
+Item("Box_of_Laughter") { OnValidate: return false; OnUse: }
+Item("Box_of_Thunder") { OnValidate: return false; OnUse: }
+Item("Box_of_Gloom") { OnValidate: return false; OnUse: }
+Item("Box_of_Resentment") { OnValidate: return false; OnUse: }
+Item("Box_of_Drowsiness") { OnValidate: return false; OnUse: }
+Item("Box_of_Storms") { OnValidate: return false; OnUse: }
+Item("Box_of_Sunlight") { OnValidate: return false; OnUse: }
+Item("Box_of_Panting") { OnValidate: return false; OnUse: }
+Item("Stone_of_Sage") { OnValidate: return false; OnUse: }
+Item("Fried_Grasshopper_Legs") { OnValidate: return false; OnUse: }
+Item("Seasoned_Sticky_Webfoot") { OnValidate: return false; OnUse: }
+Item("Bomber_Steak") { OnValidate: return false; OnUse: }
+Item("Herb_Marinade_Beef") { OnValidate: return false; OnUse: }
+Item("Lutie_Lady's_Pancake") { OnValidate: return false; OnUse: }
+Item("Grape_Juice_Herbal_Tea") { OnValidate: return false; OnUse: }
+Item("Autumn_Red_Tea") { OnValidate: return false; OnUse: }
+Item("Honey_Herbal_Tea") { OnValidate: return false; OnUse: }
+Item("Morroc_Fruit_Wine") { OnValidate: return false; OnUse: }
+Item("Mastela_Fruit_Wine") { OnValidate: return false; OnUse: }
+Item("Steamed_Crab_Nippers") { OnValidate: return false; OnUse: }
+Item("Assorted_Seafood") { OnValidate: return false; OnUse: }
+Item("Clam_Soup") { OnValidate: return false; OnUse: }
+Item("Seasoned_Jellyfish") { OnValidate: return false; OnUse: }
+Item("Spicy_Fried_Bao") { OnValidate: return false; OnUse: }
+Item("Frog_Egg_Squid_Ink_Soup") { OnValidate: return false; OnUse: }
+Item("Smooth_Noodle") { OnValidate: return false; OnUse: }
+Item("Tentacle_Cheese_Gratin") { OnValidate: return false; OnUse: }
+Item("Lutie_Cold_Noodle") { OnValidate: return false; OnUse: }
+Item("Steamed_Bat_Wing_in_Pumpkin") { OnValidate: return false; OnUse: }
+Item("Honey_Grape_Juice") { OnValidate: return false; OnUse: }
+Item("Chocolate_Mousse_Cake") { OnValidate: return false; OnUse: }
+Item("Fruit_Mix") { OnValidate: return false; OnUse: }
+Item("Cream_Sandwich") { OnValidate: return false; OnUse: }
+Item("Green_Salad") { OnValidate: return false; OnUse: }
+Item("Fried_Monkey_Tails") { OnValidate: return false; OnUse: }
+Item("Mixed_Juice") { OnValidate: return false; OnUse: }
+Item("Fried_Sweet_Potato") { OnValidate: return false; OnUse: }
+Item("Steamed_Ancient_Lips") { OnValidate: return false; OnUse: }
+Item("Fried_Scorpion_Tails") { OnValidate: return false; OnUse: }
+Item("Shiny_Marinade_Beef") { OnValidate: return false; OnUse: }
+Item("Whole_Roast") { OnValidate: return false; OnUse: }
+Item("Bearfoot_Special") { OnValidate: return false; OnUse: }
+Item("Tendon_Satay") { OnValidate: return false; OnUse: }
+Item("Steamed_Tongue") { OnValidate: return false; OnUse: }
+Item("Red_Mushroom_Wine") { OnValidate: return false; OnUse: }
+Item("Special_Royal_Jelly_Herbal_Tea") { OnValidate: return false; OnUse: }
+Item("Royal_Family_Tea") { OnValidate: return false; OnUse: }
+Item("Tristan_III") { OnValidate: return false; OnUse: }
+Item("Dragon_Breath_Cocktail") { OnValidate: return false; OnUse: }
+Item("Awfully_Bitter_Bracer") { OnValidate: return false; OnUse: }
+Item("Sumptuous_Feast") { OnValidate: return false; OnUse: }
+Item("Giant_Burito") { OnValidate: return false; OnUse: }
+Item("Ascending_Dragon_Soup") { OnValidate: return false; OnUse: }
+Item("Immortal_Stew") { OnValidate: return false; OnUse: }
+Item("Chile_Shrimp_Gratin") { OnValidate: return false; OnUse: }
+Item("Steamed_Alligator_with_Vegetable") { OnValidate: return false; OnUse: }
+Item("Incredibly_Spicy_Curry") { OnValidate: return false; OnUse: }
+Item("Special_Meat_Stew") { OnValidate: return false; OnUse: }
+Item("Steamed_Desert_Scorpions") { OnValidate: return false; OnUse: }
+Item("Peach_Cake") { OnValidate: return false; OnUse: }
+Item("Soul_Haunted_Bread") { OnValidate: return false; OnUse: }
+Item("Special_Toast") { OnValidate: return false; OnUse: }
+Item("Heavenly_Fruit_Juice") { OnValidate: return false; OnUse: }
+Item("Hwergelmir's_Tonic") { OnValidate: return false; OnUse: }
+Item("Lucky_Soup") { OnValidate: return false; OnUse: }
+Item("Assorted_Shish_Kebob") { OnValidate: return false; OnUse: }
+Item("Strawberry_Flavored_Rice_Ball") { OnValidate: return false; OnUse: }
+Item("Blood_Flavored_Soda") { OnValidate: return false; OnUse: }
+Item("Cooked_Nine_Tail's_Tails") { OnValidate: return false; OnUse: }
+Item("Bloody_Branch") { OnValidate: return false; OnUse: }
+Item("Random_Quiver") { OnValidate: return false; OnUse: }
+Item("Taming_Gift_Set") { OnValidate: return false; OnUse: }
+Item("Jewelry_Box") { OnValidate: return false; OnUse: }
+Item("Wrapped_Mask") { OnValidate: return false; OnUse: }
+Item("Santa's_Bag") { OnValidate: return false; OnUse: }
+Item("Red_Envelope_") { OnValidate: return false; OnUse: }
+Item("Lightning_Grenade_Pack") { OnValidate: return false; OnUse: }
+Item("Blind_Grenade_Pack") { OnValidate: return false; OnUse: }
+Item("Poison_Grenade_Pack") { OnValidate: return false; OnUse: }
+Item("Freezing_Grenade_Pack") { OnValidate: return false; OnUse: }
+Item("Flare_Grenadee_Pack") { OnValidate: return false; OnUse: }
+Item("Cartridge") { OnValidate: return false; OnUse: }
+Item("Blood_Cartridge") { OnValidate: return false; OnUse: }
+Item("Silver_Cartridge") { OnValidate: return false; OnUse: }
+Item("Battle_Manual") { OnValidate: return false; OnUse: }
+Item("Life_Insurance") { OnValidate: return false; OnUse: }
+Item("Bubble_Gum") { OnValidate: return false; OnUse: }
+Item("Kafra_Card") { OnValidate: return false; OnUse: }
+Item("Giant_Fly_Wing") { OnValidate: return false; OnUse: }
+Item("Neuralizer") { OnValidate: return false; OnUse: }
+Item("Convex_Mirror") { OnValidate: return false; OnUse: }
+Item("Blessing_Scroll") { OnValidate: return false; OnUse: }
+Item("Increase_Agi_Scroll") { OnValidate: return false; OnUse: }
+Item("Aspersio_Scroll") { OnValidate: return false; OnUse: }
+Item("Assumptio_Scroll") { OnValidate: return false; OnUse: }
+Item("Megaphone") { OnValidate: return false; OnUse: }
+Item("Sweet_Candy_Cane") { OnValidate: return false; OnUse: }
+Item("New_Year_Rice_Cake") { OnValidate: return false; OnUse: }
+Item("New_Year_Rice_Cake_") { OnValidate: return false; OnUse: }
+Item("Mercenary_Concentration_Potion") { OnValidate: return false; OnUse: }
+Item("Mercenary_Awakening_Potion") { OnValidate: return false; OnUse: }
+Item("Mercenary_Berserk_Potion") { OnValidate: return false; OnUse: }
+Item("Cool_Summer_Outfit") { OnValidate: return false; OnUse: }
+Item("Tasty_Pink_Ration") { OnValidate: return false; OnUse: }
+Item("Tasty_White_Ration") { OnValidate: return false; OnUse: }
+Item("Military_Ration_A") { OnValidate: return false; OnUse: }
+Item("Military_Ration_B") { OnValidate: return false; OnUse: }
+Item("Military_Ration_C") { OnValidate: return false; OnUse: }
+Item("Rune_Strawberry_Cake") { OnValidate: return false; OnUse: }
+Item("Schwartzwald_Pine_Jubilee") { OnValidate: return false; OnUse: }
+Item("Arunafeltz_Desert_Sandwich") { OnValidate: return false; OnUse: }
+Item("Chocolate_Pie") { OnValidate: return false; OnUse: }
+Item("Novice_Fly_Wing") { OnValidate: return false; OnUse: }
+Item("Novice_Butterfly_Wing") { OnValidate: return false; OnUse: }
+Item("Novice_Magnifier") { OnValidate: return false; OnUse: }
+Item("Old_Navy_Box") { OnValidate: return false; OnUse: }
+Item("I_Love_You_Firecracker") { OnValidate: return false; OnUse: }
+Item("Whiteday_Firecracker") { OnValidate: return false; OnUse: }
+Item("Valentine's_Day_Firecracker") { OnValidate: return false; OnUse: }
+Item("Birthday_Firecracker") { OnValidate: return false; OnUse: }
+Item("Xmas_Firecracker") { OnValidate: return false; OnUse: }
+Item("Party_Blessing_Scroll") { OnValidate: return false; OnUse: }
+Item("Party_Increase_Agi_Scroll") { OnValidate: return false; OnUse: }
+Item("Party_Assumptio_Scroll") { OnValidate: return false; OnUse: }
+Item("Unsealed_Magic_Spell") { OnValidate: return false; OnUse: }
+Item("Pierre's_Treasurebox") { OnValidate: return false; OnUse: }

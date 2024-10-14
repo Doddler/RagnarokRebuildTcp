@@ -1,0 +1,439 @@
+Id,Code,Name,Price,Weight,EquipableSlot,Prefix,Postfix,Sprite
+4001,Poring_Card,Poring Card,10,20,Armor,Lucky,,이름없는카드
+4002,Fabre_Card,Fabre Card,10,20,Weapon,Vital,,이름없는카드
+4003,Pupa_Card,Pupa Card,10,20,Armor,Hard,,이름없는카드
+4004,Drops_Card,Drops Card,10,20,Weapon,Dexterous,,이름없는카드
+4005,Santa_Poring_Card,Santa Poring Card,10,20,Weapon,Hallowed,,이름없는카드
+4006,Lunatic_Card,Lunatic Card,10,20,Weapon,Lucky,,이름없는카드
+4007,Peco_Peco_Egg_Card,Peco Peco Egg Card,10,20,Weapon,Beholder,,이름없는카드
+4008,Picky_Card,Picky Card,10,20,Armor,Extra,,이름없는카드
+4009,Chonchon_Card,Chonchon Card,10,20,Boots,Light,,이름없는카드
+4010,Willow_Card,Willow Card,10,20,Headgear,Wise,,이름없는카드
+4011,Picky_Egg_Card,Picky Egg Card,10,20,Armor,Dynamic,,이름없는카드
+4012,Thief_Bug_Egg_Card,Thief Bug Egg Card,10,20,Shield,Rigid,,이름없는카드
+4013,Ant_Egg_Card,Ant Egg Card,10,20,Shield,Excellent,,이름없는카드
+4014,Roda_Frog_Card,Roda Frog Card,10,20,Armor,,of Champion,이름없는카드
+4015,Condor_Card,Condor Card,10,20,Garment,Quick,,이름없는카드
+4016,Thief_Bug_Card,Thief Bug Card,10,20,Armor,Speedy,,이름없는카드
+4017,Savage_Babe_Card,Savage Babe Card,10,20,Weapon,Stun,,이름없는카드
+4019,Hornet_Card,Hornet Card,10,20,Weapon,Martyr,,이름없는카드
+4020,Familiar_Card,Familiar Card,10,20,Weapon,Blink,,이름없는카드
+4021,Rocker_Card,Rocker Card,10,20,Armor,Skillful,,이름없는카드
+4022,Spore_Card,Spore Card,10,20,Accessory,,of Spore,이름없는카드
+4023,Baby_Desert_Wolf_Card,Baby Desert Wolf Card,10,20,Armor,,of Desert,이름없는카드
+4024,Plankton_Card,Plankton Card,10,20,Weapon,Drowsy,,이름없는카드
+4025,Skeleton_Card,Skeleton Card,10,20,Weapon,Keen,,이름없는카드
+4026,Female_Thief_Bug_Card,Female Thief Bug Card,10,20,Weapon,Shrewd,,이름없는카드
+4027,Kukre_Card,Kukre Card,10,20,Accessory,Athletic,,이름없는카드
+4028,Tarou_Card,Tarou Card,10,20,Accessory,Double-forced,,이름없는카드
+4029,Wolf_Card,Wolf Card,10,20,Weapon,Wolverine,,이름없는카드
+4030,Mandragora_Card,Mandragora Card,10,20,Weapon,Windy,,이름없는카드
+4031,Peco_Peco_Card,Peco Peco Card,10,20,Armor,,of Mars,이름없는카드
+4032,Ambernite_Card,Ambernite Card,10,20,Shield,,of Athena,이름없는카드
+4033,Poporing_Card,Poporing Card,10,20,Accessory,Detoxication,,이름없는카드
+4034,Wormtail_Card,Wormtail Card,10,20,Accessory,Clever,,이름없는카드
+4035,Hydra_Card,Hydra Card,10,20,Weapon,Bloody,,이름없는카드
+4036,Muka_Card,Muka Card,10,20,Accessory,Robust,,이름없는카드
+4037,Boa_Card,Boa Card,10,20,Weapon,Untouchable,,이름없는카드
+4038,Zombie_Card,Zombie Card,10,20,Boots,,of Health,이름없는카드
+4039,Stainer_Card,Stainer Card,10,20,Headgear,,of Aristotle,이름없는카드
+4040,Creamy_Card,Creamy Card,10,20,Accessory,Teleport,,이름없는카드
+4041,Coco_Card,Coco Card,10,20,Headgear,,of Sandman,이름없는카드
+4042,Steel_Chonchon_Card,Steel Chonchon Card,10,20,Armor,,of Heman,이름없는카드
+4043,Andre_Card,Andre Card,10,20,Weapon,Hurricane,,이름없는카드
+4044,Smokie_Card,Smokie Card,10,20,Accessory,Hiding,,이름없는카드
+4045,Horn_Card,Horn Card,10,20,Shield,Heavy,,이름없는카드
+4046,Martin_Card,Martin Card,10,20,Headgear,,of Cleric,이름없는카드
+4047,Ghostring_Card,Ghostring Card,10,20,Armor,Ghost,,이름없는카드
+4048,Poison_Spore_Card,Poison Spore Card,10,20,Accessory,Poison,,이름없는카드
+4049,Vadon_Card,Vadon Card,10,20,Weapon,Flammable,,이름없는카드
+4050,Male_Thief_Bug_Card,Male Thief Bug Card,10,20,Boots,,of Hermes,이름없는카드
+4051,Yoyo_Card,Yoyo Card,10,20,Accessory,,of Flash,이름없는카드
+4052,Elder_Willow_Card,Elder Willow Card,10,20,Headgear,Erudite,,이름없는카드
+4053,Vitata_Card,Vitata Card,10,20,Accessory,Healing,,이름없는카드
+4054,Angeling_Card,Angeling Card,10,20,Armor,Holy,,이름없는카드
+4055,Marina_Card,Marina Card,10,20,Weapon,Ice,,이름없는카드
+4056,Dustiness_Card,Dustiness Card,10,20,Garment,,of Warmth,이름없는카드
+4057,Metaller_Card,Metaller Card,10,20,Weapon,Silence,,이름없는카드
+4058,Thara_Frog_Card,Thara Frog Card,10,20,Shield,Cranial,,이름없는카드
+4060,Goblin_Card,Goblin Card,10,20,Weapon,Clamorous,,이름없는카드
+4061,Cornutus_Card,Cornutus Card,10,20,Armor,Immortal,,이름없는카드
+4062,Anaconda_Card,Anaconda Card,10,20,Weapon,Envenom,,이름없는카드
+4063,Caramel_Card,Caramel Card,10,20,Weapon,Insecticide,,이름없는카드
+4064,Zerom_Card,Zerom Card,10,20,Accessory,Nimble,,이름없는카드
+4065,Kaho_Card,Kaho Card,10,20,Weapon,Underneath,,이름없는카드
+4066,Orc_Warrior_Card,Orc Warrior Card,10,20,Shield,Brutal,,이름없는카드
+4067,Megalodon_Card,Megalodon Card,10,20,Shield,Atomic,,이름없는카드
+4068,Scorpion_Card,Scorpion Card,10,20,Weapon,Chemical,,이름없는카드
+4069,Drainliar_Card,Drainliar Card,10,20,Weapon,Saharic,,이름없는카드
+4070,Eggyra_Card,Eggyra Card,10,20,Boots,,of Witch,이름없는카드
+4071,Orc_Zombie_Card,Orc Zombie Card,10,20,Garment,Angelic,,이름없는카드
+4072,Golem_Card,Golem Card,10,20,Weapon,Solid,,이름없는카드
+4073,Pirate_Skel_Card,Pirate Skel Card,10,20,Accessory,Discount,,이름없는카드
+4074,Bigfoot_Card,Bigfoot Card,10,20,Shield,,of Gargantua,이름없는카드
+4075,Argos_Card,Argos Card,10,20,Shield,Hypnotic,,이름없는카드
+4076,Magnolia_Card,Magnolia Card,10,20,Weapon,Cursing,,이름없는카드
+4077,Phen_Card,Phen Card,10,20,Accessory,,Under a Cast,이름없는카드
+4078,Savage_Card,Savage Card,10,20,Armor,,of Recovery,이름없는카드
+4079,Mantis_Card,Mantis Card,10,20,Accessory,,of Muscle,이름없는카드
+4080,Flora_Card,Flora Card,10,20,Weapon,Fisher,,이름없는카드
+4081,Hode_Card,Hode Card,10,20,Garment,Glorious,,이름없는카드
+4082,Desert_Wolf_Card,Desert Wolf Card,10,20,Weapon,Gigantic,,이름없는카드
+4083,Rafflesia_Card,Rafflesia Card,10,20,Shield,Homer's,,이름없는카드
+4084,Marine_Sphere_Card,Marine Sphere Card,10,20,Accessory,Blast,,이름없는카드
+4085,Orc_Skeleton_Card,Orc Skeleton Card,10,20,Weapon,Damned,,이름없는카드
+4086,Soldier_Skeleton_Card,Soldier Skeleton Card,10,20,Weapon,Critical,,이름없는카드
+4087,Giearth_Card,Giearth Card,10,20,Headgear,Order,,이름없는카드
+4088,Frilldora_Card,Frilldora Card,10,20,Garment,Guard,,이름없는카드
+4089,Swordfish_Card,Swordfish Card,10,20,Armor,Aqua,,이름없는카드
+4090,Munak_Card,Munak Card,10,20,Shield,Amulet,,이름없는카드
+4091,Kobold_Card,Kobold Card,10,20,Accessory,,of Counter,이름없는카드
+4092,Skel_Worker_Card,Skel Worker Card,10,20,Weapon,Boned,,이름없는카드
+4093,Obeaune_Card,Obeaune Card,10,20,Accessory,Cure,,이름없는카드
+4094,Archer_Skeleton_Card,Archer Skeleton Card,10,20,Weapon,Kingbird,,이름없는카드
+4095,Marse_Card,Marse Card,10,20,Garment,Genie's,,이름없는카드
+4096,Zenorc_Card,Zenorc Card,10,20,Weapon,Venomer's,,이름없는카드
+4097,Matyr_Card,Matyr Card,10,20,Boots,Green,,이름없는카드
+4098,Dokebi_Card,Dokebi Card,10,20,Armor,,of Zephyrus,이름없는카드
+4099,Pasana_Card,Pasana Card,10,20,Armor,,of Ifrit,이름없는카드
+4100,Sohee_Card,Sohee Card,10,20,Boots,Soul-Enchanted,,이름없는카드
+4101,Sandman_Card,Sandman Card,10,20,Armor,,of Gnome,이름없는카드
+4102,Whisper_Card,Whisper Card,10,20,Garment,Mocking,,이름없는카드
+4103,Horong_Card,Horong Card,10,20,Accessory,Clairvoyant,,이름없는카드
+4104,Requiem_Card,Requiem Card,10,20,Weapon,Chaos,,이름없는카드
+4105,Marc_Card,Marc Card,10,20,Armor,Unfrozen,,이름없는카드
+4106,Mummy_Card,Mummy Card,10,20,Weapon,Ancient,,이름없는카드
+4107,Verit_Card,Verit Card,10,20,Boots,Fledged,,이름없는카드
+4108,Myst_Card,Myst Card,10,20,Garment,Innoxious,,이름없는카드
+4109,Jakk_Card,Jakk Card,10,20,Garment,Flameguard,,이름없는카드
+4110,Ghoul_Card,Ghoul Card,10,20,Headgear,Viper's,,이름없는카드
+4111,Strouf_Card,Strouf Card,10,20,Weapon,Decussate,,이름없는카드
+4112,Marduk_Card,Marduk Card,10,20,Headgear,Peerless,,이름없는카드
+4113,Marionette_Card,Marionette Card,10,20,Garment,,of Ghost,이름없는카드
+4114,Argiope_Card,Argiope Card,10,20,Armor,Poisoning,,이름없는카드
+4115,Hunter_Fly_Card,Hunter Fly Card,10,20,Weapon,Malicious,,이름없는카드
+4116,Isis_Card,Isis Card,10,20,Garment,Divine,,이름없는카드
+4117,Sidewinder_Card,Sidewinder Card,10,20,Weapon,Hybrid,,이름없는카드
+4118,Earth_Petite_Card,Earth Petite Card,10,20,Weapon,Dragoon,,이름없는카드
+4119,Bathory_Card,Bathory Card,10,20,Armor,Evil,,이름없는카드
+4120,Sky_Petite_Card,Sky Petite Card,10,20,Shield,,of Dragoon,이름없는카드
+4121,Phreeoni_Card,Phreeoni Card,10,20,Weapon,Perfect,,이름없는카드
+4122,Deviruchi_Card,Deviruchi Card,10,20,Headgear,Adurate,,이름없는카드
+4123,Eddga_Card,Eddga Card,10,20,Boots,Bearer's,,이름없는카드
+4124,Medusa_Card,Medusa Card,10,20,Shield,Plasterer's,,이름없는카드
+4125,Deviace_Card,Deviace Card,10,20,Weapon,Aqua,,이름없는카드
+4126,Minorous_Card,Minorous Card,10,20,Weapon,Titan,,이름없는카드
+4127,Nightmare_Card,Nightmare Card,10,20,Headgear,Insomniac,,이름없는카드
+4128,Golden_Thief_Bug_Card,Golden Thief Bug Card,10,20,Shield,,of Deaf,이름없는카드
+4129,Baphomet_Jr._Card,Baphomet Jr. Card,10,20,Garment,,of Rogue,이름없는카드
+4131,Moonlight_Flower_Card,Moonlight Flower Card,10,20,Boots,Hasty,,이름없는카드
+4132,Mistress_Card,Mistress Card,10,20,Headgear,,of Gemstone,이름없는카드
+4133,Raydric_Card,Raydric Card,10,20,Garment,Immune,,이름없는카드
+4134,Dracula_Card,Dracula Card,10,20,Weapon,Spiritual,,이름없는카드
+4135,Orc_Lord_Card,Orc Lord Card,10,20,Armor,Mirror,,이름없는카드
+4136,Khalitzburg_Card,Khalitzburg Card,10,20,Shield,,from Hell,이름없는카드
+4137,Drake_Card,Drake Card,10,20,Weapon,,of Infinity,이름없는카드
+4138,Anubis_Card,Anubis Card,10,20,Shield,Satanic,,이름없는카드
+4139,Joker_Card,Joker Card,10,20,Accessory,,of Moonlight,이름없는카드
+4140,Abyssal_Knight_Card,Abyssal Knight Card,10,20,Weapon,Liberation,,이름없는카드
+4141,Evil_Druid_Card,Evil Druid Card,10,20,Armor,Deadly,,이름없는카드
+4142,Doppelganger_Card,Doppelganger Card,10,20,Weapon,,of Berserk,이름없는카드
+4143,Orc_Hero_Card,Orc Hero Card,10,20,Headgear,Neutral,,이름없는카드
+4144,Osiris_Card,Osiris Card,10,20,Accessory,,of Eternity,이름없는카드
+4145,Beelzebub_Card,Beelzebub Card,10,20,Accessory,,of Bigmouth,이름없는카드
+4146,Maya_Card,Maya Card,10,20,Shield,Reflect,,이름없는카드
+4147,Baphomet_Card,Baphomet Card,10,20,Weapon,Scythe-like,,이름없는카드
+4148,Pharaoh_Card,Pharaoh Card,10,20,Headgear,,of Kirin,이름없는카드
+4149,Gargoyle_Card,Gargoyle Card,10,20,Accessory,,of Serenity,이름없는카드
+4150,Goat_Card,Goat Card,10,20,Armor,Spell-Proof,,이름없는카드
+4151,Gajomart_Card,Gajomart Card,10,20,Boots,Havoc Bringer's,,이름없는카드
+4152,Galapago_Card,Galapago Card,10,20,Accessory,Sprightly,,이름없는카드
+4153,Crab_Card,Crab Card,10,20,Weapon,,of Cancer,이름없는카드
+4154,Dumpling_Kid_Card,Dumpling Kid Card,10,20,Accessory,Sweet Scented,,이름없는카드
+4155,Goblin_Leader_Card,Goblin Leader Card,10,20,Weapon,Deadly Goblin's,,이름없는카드
+4156,Goblin_Steamrider_Card,Goblin Steamrider Card,10,20,Weapon,,of Fatal Flame,이름없는카드
+4157,Goblin_Archer_Card,Goblin Archer Card,10,20,Weapon,Piercing,,이름없는카드
+4158,Sky_Deleter_Card,Sky Deleter Card,10,20,Armor,Slaughter,,이름없는카드
+4159,Nine_Tail_Card,Nine Tail Card,10,20,Garment,Deluxe,,이름없는카드
+4160,Firelock_Soldier_Card,Firelock Soldier Card,10,20,Boots,Superior,,이름없는카드
+4161,Grand_Peco_Card,Grand Peco Card,10,20,Headgear,Anti-Magic,,이름없는카드
+4162,Grizzly_Card,Grizzly Card,10,20,Armor,Sightless,,이름없는카드
+4163,Gryphon_Card,Gryphon Card,10,20,Weapon,Wild,,이름없는카드
+4164,Gullinbursti_Card,Gullinbursti Card,10,20,Boots,Fisherman's,,이름없는카드
+4165,Gig_Card,Gig Card,10,20,Weapon,,of Insect Soul Eater,이름없는카드
+4166,Nightmare_Terror_Card,Nightmare Terror Card,10,20,Armor,,of Jinx,이름없는카드
+4167,Nereid_Card,Nereid Card,10,20,Weapon,,of Beast Soul Eater,이름없는카드
+4168,Dark_Lord_Card,Dark Lord Card,10,20,Boots,,of Doom,이름없는카드
+4169,Dark_Illusion_Card,Dark Illusion Card,10,20,Headgear,Spell Master's,,이름없는카드
+4170,Dark_Frame_Card,Dark Frame Card,10,20,Armor,Solidifying,,이름없는카드
+4171,Dark_Priest_Card,Dark Priest Card,10,20,Weapon,Soul Draining,,이름없는카드
+4172,The_Paper_Card,The Paper Card,10,20,Weapon,Slicing,,이름없는카드
+4173,Demon_Fungus_Card,Demon Fungus Card,10,20,Armor,Mesmerizing,,이름없는카드
+4174,Deviling_Card,Deviling Card,10,20,Garment,Deviant,,이름없는카드
+4175,Poisonous_Toad_Card,Poisonous Toad Card,10,20,Accessory,Shoving,,이름없는카드
+4176,Dullahan_Card,Dullahan Card,10,20,Weapon,Fatal Serpentine,,이름없는카드
+4177,Dryad_Card,Dryad Card,10,20,Headgear,Green Stone,,이름없는카드
+4178,Dragon_Tail_Card,Dragon Tail Card,10,20,Garment,Bow-Master's,,이름없는카드
+4179,Dragon_Fly_Card,Dragon Fly Card,10,20,Garment,,of Highlight,이름없는카드
+4180,Driller_Card,Driller Card,10,20,Weapon,,of Dragon Soul Eater,이름없는카드
+4181,Disguise_Card,Disguise Card,10,20,Armor,Soundless,,이름없는카드
+4182,Diabolic_Card,Diabolic Card,10,20,Weapon,,of Demon Soul Eater,이름없는카드
+4183,Vagabond_Wolf_Card,Vagabond Wolf Card,10,20,Garment,Werewolf,,이름없는카드
+4184,Lava_Golem_Card,Lava Golem Card,10,20,Weapon,Crushing,,이름없는카드
+4185,Rideword_Card,Rideword Card,10,20,Headgear,,of Wisdom,이름없는카드
+4186,Raggler_Card,Raggler Card,10,20,Boots,Strenuous,,이름없는카드
+4187,Raydric_Archer_Card,Raydric Archer Card,10,20,Accessory,,of the Spooky Night,이름없는카드
+4188,Leib_Olmai_Card,Leib Olmai Card,10,20,Headgear,Red Stone,,이름없는카드
+4189,Wraith_Dead_Card,Wraith Dead Card,10,20,Armor,,of Misfortune,이름없는카드
+4190,Wraith_Card,Wraith Card,10,20,Accessory,,of Last Laugh,이름없는카드
+4191,Loli_Ruri_Card,Loli Ruri Card,10,20,Armor,,of the Stix,이름없는카드
+4192,Rotar_Zairo_Card,Rotar Zairo Card,10,20,Weapon,,of Fatal Pisces,이름없는카드
+4193,Lude_Card,Lude Card,10,20,Accessory,,of Patience,이름없는카드
+4194,Rybio_Card,Rybio Card,10,20,Armor,Overpowering,,이름없는카드
+4195,Leaf_Cat_Card,Leaf Cat Card,10,20,Headgear,Blue Stone,,이름없는카드
+4196,Marin_Card,Marin Card,10,20,Accessory,,of Jellopy,이름없는카드
+4197,Mastering_Card,Mastering Card,10,20,Garment,Lucky Streak,,이름없는카드
+4198,Maya_Purple_Card,Maya Purple Card,10,20,Headgear,,of True Sight,이름없는카드
+4199,Merman_Card,Merman Card,10,20,Boots,Dashing,,이름없는카드
+4200,Megalith_Card,Megalith Card,10,20,Boots,,of Mystical Resistance,이름없는카드
+4201,Majorous_Card,Majorous Card,10,20,Armor,Crippling,,이름없는카드
+4202,Mao_Guai_Card,Mao Guai Card,10,20,Weapon,,of Exorcism,이름없는카드
+4203,Mutant_Dragonoid_Card,Mutant Dragonoid Card,10,20,Weapon,Blazing,,이름없는카드
+4204,Mini_Demon_Card,Mini Demon Card,10,20,Boots,Poacher's,,이름없는카드
+4205,Mimic_Card,Mimic Card,10,20,Accessory,Blue Cubic,,이름없는카드
+4206,Myst_Case_Card,Myst Case Card,10,20,Headgear,Cubic,,이름없는카드
+4207,Mistilteinn_Card,Mistilteinn Card,10,20,Shield,Anti-Small,,이름없는카드
+4208,Miyabi_Doll_Card,Miyabi Doll Card,10,20,Boots,Energetic,,이름없는카드
+4209,Violy_Card,Violy Card,10,20,Accessory,Fiddler's,,이름없는카드
+4210,Wanderer_Card,Wanderer Card,10,20,Garment,Pressure,,이름없는카드
+4211,Vocal_Card,Vocal Card,10,20,Garment,Virtuoso's,,이름없는카드
+4212,Bongun_Card,Bongun Card,10,20,Accessory,,of Knock-Back,이름없는카드
+4213,Brilight_Card,Brilight Card,10,20,Armor,,of Reticence,이름없는카드
+4214,Bloody_Murderer_Card,Bloody Murderer Card,10,20,Weapon,Man-Eater's,,이름없는카드
+4215,Blazer_Card,Blazer Card,10,20,Accessory,Rationing,,이름없는카드
+4216,Sasquatch_Card,Sasquatch Card,10,20,Armor,Freezing,,이름없는카드
+4217,Enchanted_Peach_Tree_Card,Enchanted Peach Tree Card,10,20,Shield,Rejuvenating,,이름없는카드
+4218,Succubus_Card,Succubus Card,10,20,Armor,Nightmarish,,이름없는카드
+4219,Sage_Worm_Card,Sage Worm Card,10,20,Accessory,Magic Stone,,이름없는카드
+4220,Solider_Card,Solider Card,10,20,Armor,Faithful,,이름없는카드
+4221,Skeleton_General_Card,Skeleton General Card,10,20,Boots,Insect Collector's,,이름없는카드
+4222,Skel_Prisoner_Card,Skel Prisoner Card,10,20,Armor,,of Sleep,이름없는카드
+4223,Stalactic_Golem_Card,Stalactic Golem Card,10,20,Headgear,Stun-Proof,,이름없는카드
+4224,Stem_Worm_Card,Stem Worm Card,10,20,Accessory,Monsoon,,이름없는카드
+4225,Stone_Shooter_Card,Stone Shooter Card,10,20,Weapon,Slingshot,,이름없는카드
+4226,Sting_Card,Sting Card,10,20,Shield,Supreme,,이름없는카드
+4227,Spring_Rabbit_Card,Spring Rabbit Card,10,20,Accessory,Roast Scented,,이름없는카드
+4228,Sleeper_Card,Sleeper Card,10,20,Accessory,,of Siesta,이름없는카드
+4229,Cloud_Tower_Manager_Card,Cloud Tower Manager Card,10,20,Headgear,,of Torment,이름없는카드
+4230,Shinobi_Card,Shinobi Card,10,20,Accessory,Coward's,,이름없는카드
+4231,Mi_Gao_Card,Mi Gao Card,10,20,Shield,Charging,,이름없는카드
+4232,Hermit_Plant_Card,Hermit Plant Card,10,20,Accessory,Refreshing,,이름없는카드
+4233,Baby_Leopard_Card,Baby Leopard Card,10,20,Armor,Lucky Fluke,,이름없는카드
+4234,Anolian_Card,Anolian Card,10,20,Armor,,of Clarity,이름없는카드
+4235,Christmas_Cookie_Card,Christmas Cookie Card,10,20,Boots,Fallen Angel's,,이름없는카드
+4236,Amon_Ra_Card,Amon Ra Card,10,20,Boots,Protective,,이름없는카드
+4237,Owl_Duke_Card,Owl Duke Card,10,20,Accessory,,of Godly Wrath,이름없는카드
+4238,Owl_Baron_Card,Owl Baron Card,10,20,Accessory,,of Doubled Power,이름없는카드
+4239,Iron_Fist_Card,Iron Fist Card,10,20,Boots,Veteran Hunter's,,이름없는카드
+4240,Arclouse_Card,Arclouse Card,10,20,Shield,Magic-Proof,,이름없는카드
+4241,Archangeling_Card,Archangeling Card,10,20,Headgear,Miraculous,,이름없는카드
+4242,Apocalypse_Card,Apocalypse Card,10,20,Armor,Prime,,이름없는카드
+4243,Antonio_Card,Antonio Card,10,20,Armor,,of Escape,이름없는카드
+4244,Alarm_Card,Alarm Card,10,20,Boots,Seeker's,,이름없는카드
+4245,Am_Mut_Card,Am Mut Card,10,20,Boots,Assassinator's,,이름없는카드
+4246,Assaulter_Card,Assaulter Card,10,20,Weapon,Killing,,이름없는카드
+4247,Aster_Card,Aster Card,10,20,Weapon,Starfish's,,이름없는카드
+4248,Ancient_Mummy_Card,Ancient Mummy Card,10,20,Shield,Shining Cross,,이름없는카드
+4249,Ancient_Worm_Card,Ancient Worm Card,10,20,Boots,Witch Doctor's,,이름없는카드
+4250,Executioner_Card,Executioner Card,10,20,Shield,Anti-Large,,이름없는카드
+4251,Elder_Card,Elder Card,10,20,Weapon,Invasion,,이름없는카드
+4252,Alligator_Card,Alligator Card,10,20,Accessory,Four Leaf Clover,,이름없는카드
+4253,Alice_Card,Alice Card,10,20,Shield,,of Royal Guard,이름없는카드
+4254,Tyrfing_Card,Tyrfing Card,10,20,Shield,Anti-Medium,,이름없는카드
+4255,Orc_Lady_Card,Orc Lady Card,10,20,Weapon,Smashing,,이름없는카드
+4256,Orc_Archer_Card,Orc Archer Card,10,20,Accessory,Desirable,,이름없는카드
+4257,Wild_Rose_Card,Wild Rose Card,10,20,Boots,Wing,,이름없는카드
+4258,Evil_Nymph_Card,Evil Nymph Card,10,20,Headgear,Prodigy,,이름없는카드
+4259,Wooden_Golem_Card,Wooden Golem Card,10,20,Armor,,of Nature,이름없는카드
+4260,Wootan_Shooter_Card,Wootan Shooter Card,10,20,Headgear,Confusion Resistant,,이름없는카드
+4261,Wootan_Fighter_Card,Wootan Fighter Card,10,20,Headgear,Bleed Resistant,,이름없는카드
+4262,Cloud_Hermit_Card,Cloud Hermit Card,10,20,Accessory,Dark Sky,,이름없는카드
+4263,Samurai_Specter_Card,Samurai Specter Card,10,20,Weapon,Bloodlust,,이름없는카드
+4264,Wind_Ghost_Card,Wind Ghost Card,10,20,Accessory,Thunderbolt,,이름없는카드
+4265,Jing_Guai_Card,Jing Guai Card,10,20,Accessory,,of Dawn,이름없는카드
+4266,Eclipse_Card,Eclipse Card,10,20,Garment,Magic Resistant,,이름없는카드
+4267,Explosion_Card,Explosion Card,10,20,Boots,Dragon Slayer's,,이름없는카드
+4268,Injustice_Card,Injustice Card,10,20,Weapon,Extending,,이름없는카드
+4269,Incubus_Card,Incubus Card,10,20,Headgear,Fatasm,,이름없는카드
+4270,Giant_Spider_Card,Giant Spider Card,10,20,Armor,,of Venom,이름없는카드
+4271,Giant_Hornet_Card,Giant Hornet Card,10,20,Headgear,Yellow Stone,,이름없는카드
+4272,Zhu_Po_Long_Card,Zhu Po Long Card,10,20,Accessory,Swift,,이름없는카드
+4273,Shellfish_Card,Shellfish Card,10,20,Weapon,Shell,,이름없는카드
+4274,Zombie_Master_Card,Zombie Master Card,10,20,Weapon,,of Undead Soul Eater,이름없는카드
+4275,Zombie_Prisoner_Card,Zombie Prisoner Card,10,20,Boots,Undead Killer's,,이름없는카드
+4276,Lord_of_The_Dead_Card,Lord of The Dead Card,10,20,Weapon,Crucial,,이름없는카드
+4277,Zealotus_Card,Zealotus Card,10,20,Shield,Dominatrix,,이름없는카드
+4278,Gibbet_Card,Gibbet Card,10,20,Headgear,,of Magical Immunity,이름없는카드
+4279,Earth_Deleter_Card,Earth Deleter Card,10,20,Armor,Soul Collector's,,이름없는카드
+4280,Geographer_Card,Geographer Card,10,20,Armor,Blessed,,이름없는카드
+4281,Zipper_Bear_Card,Zipper Bear Card,10,20,Weapon,Diligent,,이름없는카드
+4282,Tengu_Card,Tengu Card,10,20,Accessory,,of Reservoir,이름없는카드
+4283,Greatest_General_Card,Greatest General Card,10,20,Accessory,Mana Sphere,,이름없는카드
+4284,Chepet_Card,Chepet Card,10,20,Weapon,,of Caress,이름없는카드
+4285,Choco_Card,Choco Card,10,20,Garment,Elven-Enchanted,,이름없는카드
+4286,Karakasa_Card,Karakasa Card,10,20,Armor,Terrorizing,,이름없는카드
+4287,Kappa_Card,Kappa Card,10,20,Garment,Magically Shielded,,이름없는카드
+4288,Carat_Card,Carat Card,10,20,Headgear,Maestro,,이름없는카드
+4289,Caterpillar_Card,Caterpillar Card,10,20,Weapon,,of Plant Soul Eater,이름없는카드
+4290,Cat_O'_Nine_Tails_Card,Cat O' Nine Tails Card,10,20,Boots,Mirror,,이름없는카드
+4291,Kobold_Leader_Card,Kobold Leader Card,10,20,Weapon,Deadly Kobold's,,이름없는카드
+4292,Kobold_Archer_Card,Kobold Archer Card,10,20,Weapon,Deadly Plant's,,이름없는카드
+4293,Cookie_Card,Cookie Card,10,20,Accessory,,of Chance,이름없는카드
+4294,Quve_Card,Quve Card,10,20,Accessory,Sneaky,,이름없는카드
+4295,Kraben_Card,Kraben Card,10,20,Armor,,of Blackout,이름없는카드
+4296,Cramp_Card,Cramp Card,10,20,Headgear,Greedy,,이름없는카드
+4297,Cruiser_Card,Cruiser Card,10,20,Weapon,Poaching,,이름없는카드
+4298,Creamy_Fear_Card,Creamy Fear Card,10,20,Armor,,of Mayhem,이름없는카드
+4299,Clock_Card,Clock Card,10,20,Armor,Guardian's,,이름없는카드
+4300,Chimera_Card,Chimera Card,10,20,Armor,Venomous Charge,,이름없는카드
+4301,Killer_Mantis_Card,Killer Mantis Card,10,20,Armor,Traumatic,,이름없는카드
+4302,Tao_Gunka_Card,Tao Gunka Card,10,20,Armor,High Risk,,이름없는카드
+4303,Giant_Whisper_Card,Giant Whisper Card,10,20,Garment,Mystic,,이름없는카드
+4304,Tamruan_Card,Tamruan Card,10,20,Shield,Shield Master's,,이름없는카드
+4305,Turtle_General_Card,Turtle General Card,10,20,Weapon,Explosive,,이름없는카드
+4306,Toad_Card,Toad Card,10,20,Garment,King's,,이름없는카드
+4307,Beetle_King_Card,Beetle King Card,10,20,Weapon,,of Marine Soul Eater,이름없는카드
+4308,Tri_Joint_Card,Tri Joint Card,10,20,Weapon,Power Draining,,이름없는카드
+4309,Parasite_Card,Parasite Card,10,20,Shield,Reinforced,,이름없는카드
+4310,Panzer_Goblin_Card,Panzer Goblin Card,10,20,Weapon,Fatally Evil,,이름없는카드
+4311,Permeter_Card,Permeter Card,10,20,Headgear,Anti-Evil,,이름없는카드
+4312,Fur_Seal_Card,Fur Seal Card,10,20,Weapon,,of the Soul,이름없는카드
+4313,Punk_Card,Punk Card,10,20,Garment,Bogie,,이름없는카드
+4314,Penomena_Card,Penomena Card,10,20,Shield,Fire-Proof,,이름없는카드
+4315,Pest_Card,Pest Card,10,20,Armor,,of Stone Curse,이름없는카드
+4316,False_Angel_Card,False Angel Card,10,20,Weapon,,of Angel Soul Eater,이름없는카드
+4317,Mobster_Card,Mobster Card,10,20,Weapon,Aural,,이름없는카드
+4318,Stormy_Knight_Card,Stormy Knight Card,10,20,Weapon,Storm-Bringer's,,이름없는카드
+4319,Freezer_Card,Freezer Card,10,20,Boots,Sword-Master's,,이름없는카드
+4320,Bloody_Knight_Card,Bloody Knight Card,10,20,Weapon,Meteoric,,이름없는카드
+4321,Hylozoist_Card,Hylozoist Card,10,20,Accessory,Polymorphic,,이름없는카드
+4322,High_Orc_Card,High Orc Card,10,20,Shield,,of Retaliation,이름없는카드
+4323,Hati_Baby_Card,Hati Baby Card,10,20,Weapon,,of Frost,이름없는카드
+4324,Hati_Card,Hati Card,10,20,Armor,Arctic,,이름없는카드
+4325,Harpy_Card,Harpy Card,10,20,Garment,Vicious,,이름없는카드
+4326,Sea_Otter_Card,Sea Otter Card,10,20,Accessory,Ocean Scented,,이름없는카드
+4327,Bloody_Butterfly_Card,Bloody Butterfly Card,10,20,Accessory,Spell Flow,,이름없는카드
+4328,Yao_Jun_Card,Yao Jun Card,10,20,Garment,Hyper,,이름없는카드
+4329,Phendark_Card,Phendark Card,10,20,Weapon,Soul Gain,,이름없는카드
+4330,Evil_Snake_Lord_Card,Evil Snake Lord Card,10,20,Headgear,Curse Lift,,이름없는카드
+4331,Heater_Card,Heater Card,10,20,Accessory,Evasion,,이름없는카드
+4332,Waste_Stove_Card,Waste Stove Card,10,20,Armor,,of Talent,이름없는카드
+4333,Venomous_Card,Venomous Card,10,20,Armor,,of Chaotic Venom,이름없는카드
+4334,Noxious_Card,Noxious Card,10,20,Garment,Anti-Sniping,,이름없는카드
+4335,Pitman_Card,Pitman Card,10,20,Weapon,Gnome,,이름없는카드
+4336,Ungoliant_Card,Ungoliant Card,10,20,Headgear,,of Vitality,이름없는카드
+4337,Porcellio_Card,Porcellio Card,10,20,Armor,,of Wildcat,이름없는카드
+4338,Obsidian_Card,Obsidian Card,10,20,Armor,,of Vital Switching,이름없는카드
+4339,Mineral_Card,Mineral Card,10,20,Armor,,of Stone Wall,이름없는카드
+4340,Teddy_Bear_Card,Teddy Bear Card,10,20,Shield,,of Requiem,이름없는카드
+4341,Metaling_Card,Metaling Card,10,20,Weapon,Disarm,,이름없는카드
+4342,RSX-0806_Card,RSX-0806 Card,10,20,Armor,Mammoth,,이름없는카드
+4343,Holden_Card,Holden Card,10,20,Headgear,,of Creator,이름없는카드
+4344,Anopheles_Card,Anopheles Card,10,20,Accessory,,of Value,이름없는카드
+4345,Hill_Wind_Card,Hill Wind Card,10,20,Weapon,Sylph,,이름없는카드
+4346,Egnigem_Cenia_Card,Egnigem Cenia Card,10,20,Armor,,of Power Switching,이름없는카드
+4347,Armeyer_Dinze_Card,Armeyer Dinze Card,10,20,Accessory,Stamina,,이름없는카드
+4348,Wickebine_Tres_Card,Wickebine Tres Card,10,20,Accessory,Gangster,,이름없는카드
+4349,Errende_Ebecee_Card,Errende Ebecee Card,10,20,Accessory,Anti-Arrow,,이름없는카드
+4350,Laurell_Weinder_Card,Laurell Weinder Card,10,20,Weapon,Undine,,이름없는카드
+4351,Kavach_Icarus_Card,Kavach Icarus Card,10,20,Garment,Low Level,,이름없는카드
+4352,Swordman_Card,Swordman Card,10,20,Boots,,of Regeneration,이름없는카드
+4353,Remover_Card,Remover Card,10,20,Armor,,of Rejuvenation,이름없는카드
+4354,Gemini-S58_Card,Gemini-S58 Card,10,20,Headgear,,of Stability,이름없는카드
+4355,Gremlin_Card,Gremlin Card,10,20,Accessory,Healthy,,이름없는카드
+4356,Beholder_Card,Beholder Card,10,20,Accessory,Magic Cancel,,이름없는카드
+4357,Lord_Knight_Card,Lord Knight Card,10,20,Headgear,,of Fury,이름없는카드
+4358,Seyren_Windsor_Card,Seyren Windsor Card,10,20,Headgear,Lost-Power,,이름없는카드
+4359,Assassin_Cross_Card,Assassin Cross Card,10,20,Garment,,of Shadow,이름없는카드
+4360,Eremes_Guile_Card,Eremes Guile Card,10,20,Weapon,Assassin,,이름없는카드
+4361,Mastersmith_Card,Mastersmith Card,10,20,Weapon,,of Hollgrehenn,이름없는카드
+4362,Howard_Alt-Eisen_Card,Howard Alt-Eisen Card,10,20,Weapon,Heat,,이름없는카드
+4363,High_Priest_Card,High Priest Card,10,20,Armor,Protection,,이름없는카드
+4364,Margaretha_Sorin_Card,Margaretha Sorin Card,10,20,Headgear,,of Magic Sealing,이름없는카드
+4365,High_Wizard_Card,High Wizard Card,10,20,Headgear,,of Tempest,이름없는카드
+4366,Kathryne_Keyron_Card,Kathryne Keyron Card,10,20,Headgear,,of Caster,이름없는카드
+4367,Sniper_Card,Sniper Card,10,20,Weapon,,of Squeezing,이름없는카드
+4368,Cecil_Damon_Card,Cecil Damon Card,10,20,Weapon,Rapid,,이름없는카드
+4369,Venatu_Card,Venatu Card,10,20,Armor,,of Luck Switching,이름없는카드
+4370,Dimik_Card,Dimik Card,10,20,Armor,Weakening,,이름없는카드
+4371,Archdam_Card,Archdam Card,10,20,Armor,,of Paladin,이름없는카드
+4372,White_Lady_Card,White Lady Card,10,20,Headgear,Life Stream,,이름없는카드
+4373,Green_Maiden_Card,Green Maiden Card,10,20,Garment,Cursed,,이름없는카드
+4374,Vesper_Card,Vesper Card,10,20,Headgear,,of Vision,이름없는카드
+4375,Orc_Baby_Card,Orc Baby Card,10,20,Garment,Extra High Level,,이름없는카드
+4376,Lady_Tanee_Card,Lady Tanee Card,10,20,Boots,Manful,,이름없는카드
+4377,Grove_Card,Grove Card,10,20,Accessory,Sweetie,,이름없는카드
+4378,Gold_Acidus_Card,Gold Acidus Card,10,20,Boots,Low Level,,이름없는카드
+4379,Blue_Acidus_Card,Blue Acidus Card,10,20,Headgear,Low Level,,이름없는카드
+4380,Red_Ferus_Card,Red Ferus Card,10,20,Weapon,Salamander,,이름없는카드
+4381,Green_Ferus_Card,Green Ferus Card,10,20,Boots,,of Wanderer,이름없는카드
+4382,Yellow_Novus_Card,Yellow Novus Card,10,20,Armor,,of Scholar,이름없는카드
+4383,Red_Novus_Card,Red Novus Card,10,20,Armor,Chaotic,,이름없는카드
+4384,Hydrolancer_Card,Hydrolancer Card,10,20,Accessory,Magic Eater,,이름없는카드
+4385,Dragon_Egg_Card,Dragon Egg Card,10,20,Accessory,Drink,,이름없는카드
+4386,Detale_Card,Detale Card,10,20,Armor,,of Magic Shelter,이름없는카드
+4387,Ancient_Mimic_Card,Ancient Mimic Card,10,20,Armor,,of Agility Switching,이름없는카드
+4388,Death_Word_Card,Death Word Card,10,20,Weapon,Soul,,이름없는카드
+4389,Plasma_Card,Plasma Card,10,20,Accessory,Elemental,,이름없는카드
+4390,Breeze_Card,Breeze Card,10,20,Weapon,Blooding,,이름없는카드
+4391,Baroness_of_Retribution_Card,Baroness of Retribution Card,10,20,Accessory,Snack,,이름없는카드
+4392,Dame_of_Sentinel_Card,Dame of Sentinel Card,10,20,Armor,,of Dexterity Switching,이름없는카드
+4393,Mistress_of_Shelter_Card,Mistress of Shelter Card,10,20,Armor,,of Intelligence Switching,이름없는카드
+4394,Lady_Solace_Card,Lady Solace Card,10,20,Weapon,Divine Cross,,이름없는카드
+4395,Thanatos_Maero_Card,Thanatos Maero Card,10,20,Weapon,Slug,,이름없는카드
+4396,Thanatos_Odium_Card,Thanatos Odium Card,10,20,Boots,Dull,,이름없는카드
+4397,Thanatos_Despero_Card,Thanatos Despero Card,10,20,Shield,Stupidity,,이름없는카드
+4398,Thanatos_Dolor_Card,Thanatos Dolor Card,10,20,Weapon,Darkness,,이름없는카드
+4399,Thanatos_Phantom_Card,Thanatos Phantom Card,10,20,Weapon,Penetration,,이름없는카드
+4400,Aliza_Card,Aliza Card,10,20,Armor,,of Temptation,이름없는카드
+4401,Alicel_Card,Alicel Card,10,20,Armor,Swift,,이름없는카드
+4402,Aliot_Card,Aliot Card,10,20,Garment,Strange,,이름없는카드
+4403,Kiel_D-01_Card,Kiel D-01 Card,10,20,Headgear,,of Reload,이름없는카드
+4404,Skogul_Card,Skogul Card,10,20,Armor,,of Chaotic Bleeding,이름없는카드
+4405,Frus_Card,Frus Card,10,20,Armor,,of Magic Mirror,이름없는카드
+4406,Skeggiold_Card,Skeggiold Card,10,20,Weapon,Twinkle,,이름없는카드
+4407,Valkyrie_Randgris_Card,Valkyrie Randgris Card,10,20,Weapon,,of Elimination,이름없는카드
+4408,Gloom_Under_Night_Card,Gloom Under Night Card,10,10000,Armor,Abyss,,이름없는카드
+4409,Agav_Card,Agav Card,10,10000,Armor,Panic,,이름없는카드
+4410,Echio_Card,Echio Card,10,10000,Armor,Madness,,이름없는카드
+4411,Vanberk_Card,Vanberk Card,10,10000,Headgear,Arta's,,이름없는카드
+4412,Isilla_Card,Isilla Card,10,10000,Headgear,Aria,,이름없는카드
+4413,Hodremlin_Card,Hodremlin Card,10,10000,Shield,Resistance,,이름없는카드
+4414,Seeker_Card,Seeker Card,10,10000,Shield,Gorgon's,,이름없는카드
+4415,Snowier_Card,Snowier Card,10,10000,Accessory,Sweet,,이름없는카드
+4416,Siroma_Card,Siroma Card,10,10000,Accessory,,of Grain,이름없는카드
+4417,Ice_Titan_Card,Ice Titan Card,10,10000,Boots,,of Flow,이름없는카드
+4418,Gazeti_Card,Gazeti Card,10,10000,Accessory,,of Hail,이름없는카드
+4419,Ktullanux_Card,Ktullanux Card,10,10000,Armor,Jack Frost,,이름없는카드
+4420,Muscipular_Card,Muscipular Card,10,10000,Shield,,of Comfort,이름없는카드
+4421,Drosera_Card,Drosera Card,10,10000,Weapon,,of Chinook,이름없는카드
+4422,Roween_Card,Roween Card,10,10000,Garment,Breeze,,이름없는카드
+4423,Galion_Card,Galion Card,10,10000,Accessory,,of Sharkia,이름없는카드
+4424,Stapo_Card,Stapo Card,10,10000,Accessory,Stony,,이름없는카드
+4425,Atroce_Card,Atroce Card,10,10000,Weapon,Beast,,이름없는카드
+4426,Byorgue_Card,Byorgue Card,10,10000,Armor,Exceeding,,이름없는카드
+4427,Sword_Guardian_Card,Sword Guardian Card,10,10000,Weapon,,of Force,이름없는카드
+4428,Bow_Guardian_Card,Bow Guardian Card,10,10000,Weapon,,of Shaft,이름없는카드
+4429,Salamander_Card,Salamander Card,10,10000,Garment,Nessus's,,이름없는카드
+4430,Ifrit_Card,Ifrit Card,10,10000,Accessory,,of Inferno,이름없는카드
+4431,Kasa_Card,Kasa Card,10,10000,Garment,Stygian,,이름없는카드
+4432,Magmaring_Card,Magmaring Card,10,10000,Garment,Scorching,,이름없는카드
+4433,Imp_Card,Imp Card,10,10000,Accessory,,of Ignis,이름없는카드
+4434,Knocker_Card,Knocker Card,10,10000,Headgear,Miner's,,이름없는카드
+4435,Zombie_Slaughterer_Card,Zombie Slaughterer Card,10,10000,Boots,Outrageous,,이름없는카드
+4436,Ragged_Zombie_Card,Ragged Zombie Card,10,10000,Accessory,Lunatic,,이름없는카드
+4437,Hell_Poodle_Card,Hell Poodle Card,10,10000,Accessory,Rabid,,이름없는카드
+4438,Banshee_Card,Banshee Card,10,10000,Headgear,Mental,,이름없는카드
+4439,Flame_Skull_Card,Flame Skull Card,10,10000,Shield,,of Anathema,이름없는카드
+4440,Necromancer_Card,Necromancer Card,10,10000,Weapon,,of Ignoring,이름없는카드
+4441,Fallen_Bishop_Card,Fallen Bishop Card,10,10000,Boots,Arrogant,,이름없는카드

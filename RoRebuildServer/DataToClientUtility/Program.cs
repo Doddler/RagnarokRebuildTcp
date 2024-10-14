@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using CsvHelper;
 using Dahomey.Json;
+using Microsoft.Extensions.Options;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Util;
@@ -79,61 +80,155 @@ class Program
         File.Delete(tempPath);
     }
 
+    private static List<T> GetCsvRows<T>(string fileName)
+    {
+        var inPath = new TemporaryFile(Path.Combine(path, fileName));
+        using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+        
+        return csv.GetRecords<T>().ToList();
+    }
+
     private static void WriteItemsList()
     {
         var itemList = new ItemDataList();
         itemList.Items = new List<ItemData>();
+        var prefixList = new CardPrefixDataList();
+        prefixList.Items = new List<CardPrefixData>();
+        var displaySpriteList = new StringBuilder();
 
-        var inPath = Path.Combine(path, "Items.csv");
-        var tempPath = Path.Combine(Path.GetTempPath(), @"Items.csv"); //copy in case file is locked
-        File.Copy(inPath, tempPath, true);
-
-        using (var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader)
-        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
+        foreach (var entry in GetCsvRows<CsvItemUseable>("ItemsUsable.csv"))
         {
-            var entries = csv.GetRecords<CsvItem>().ToList();
-            
-            foreach (var entry in entries)
+            var item = new ItemData()
             {
-                var itemClass = entry.ItemClass;
-                var item = new ItemData()
-                {
-                    Code = entry.Code,
-                    Name = entry.Name,
-                    Id = entry.Id,
-                    IsUnique = itemClass == ItemClass.Weapon || itemClass == ItemClass.Equipment,
-                    IsUseable = itemClass == ItemClass.Useable,
-                    ItemClass = itemClass,
-                    Price = entry.Price,
-                    Weight = entry.Weight,
-                    Effect = entry.Effect,
-                    Sprite = entry.Sprite,
-                    
-                };
-                itemList.Items.Add(item);
-            }
-
-            JsonSerializerOptions options = new JsonSerializerOptions();
-            options.SetupExtensions();
-            options.WriteIndented = true;
-
-            var json = JsonSerializer.Serialize(itemList, options);
-            var itemDir = Path.Combine(outPath, "items.json");
-
-            File.WriteAllText(itemDir, json);
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Useable,
+                UseType = entry.UseMode,
+                Price = entry.Price,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+            };
+            itemList.Items.Add(item);
         }
 
-        File.Delete(tempPath);
+        foreach (var entry in GetCsvRows<CsvItemRegular>("ItemsRegular.csv"))
+        {
+            var item = new ItemData()
+            {
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Etc,
+                UseType = ItemUseType.NotUsable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+            };
+            itemList.Items.Add(item);
+        }
+
+        foreach (var entry in GetCsvRows<CsvItemWeapon>("ItemsWeapons.csv"))
+        {
+            var item = new ItemData()
+            {
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                IsUnique = true,
+                ItemClass = ItemClass.Weapon,
+                UseType = ItemUseType.NotUsable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+                Position = entry.Position == WeaponPosition.MainHand ? EquipPosition.MainHand : EquipPosition.BothHands
+            };
+            itemList.Items.Add(item);
+
+            if (!string.IsNullOrWhiteSpace(entry.WeaponSprite)) 
+                displaySpriteList.AppendLine($"{entry.Code}\t{entry.WeaponSprite}");
+        }
+        
+        foreach (var entry in GetCsvRows<CsvItemEquipment>("ItemsEquipment.csv"))
+        {
+            var pos = (entry.Type & ~EquipPosition.Headgear) | (EquipPosition) entry.Position;
+            
+            var item = new ItemData()
+            {
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                IsUnique = true,
+                ItemClass = ItemClass.Equipment,
+                UseType = ItemUseType.NotUsable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+                Position = pos
+            };
+            itemList.Items.Add(item);
+
+            if (!string.IsNullOrWhiteSpace(entry.DisplaySprite))
+                displaySpriteList.AppendLine($"{entry.Code}\t{entry.DisplaySprite}");
+        }
+
+        foreach (var entry in GetCsvRows<CsvItemCard>("ItemsCards.csv"))
+        {
+            var item = new ItemData()
+            {
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Card,
+                UseType = ItemUseType.NotUsable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+                Position = entry.EquipableSlot
+            };
+            itemList.Items.Add(item);
+            prefixList.Items.Add(new CardPrefixData() {Id = entry.Id, Prefix = entry.Prefix, Postfix = entry.Postfix});
+        }
+
+        foreach (var entry in GetCsvRows<CsvItemAmmo>("ItemsAmmo.csv"))
+        {
+            var item = new ItemData()
+            {
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Ammo,
+                UseType = ItemUseType.NotUsable,
+                Price = entry.Price,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+            };
+            itemList.Items.Add(item);
+        }
+
+        JsonSerializerOptions options = new JsonSerializerOptions();
+        options.SetupExtensions();
+        options.WriteIndented = true;
+
+        var json = JsonSerializer.Serialize(itemList, options);
+        var itemDir = Path.Combine(outPath, "items.json");
+
+
+        var cardJson = JsonSerializer.Serialize(prefixList, options);
+        var cardDir = Path.Combine(outPath, "cardprefixes.json");
+
+        File.WriteAllText(itemDir, json);
+        File.WriteAllText(cardDir, cardJson);
+        File.WriteAllText(Path.Combine(outPath, "displaySpriteTable.txt"), displaySpriteList.ToString());
     }
 
     private static void WriteServerConfig()
     {
-        //Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
-
-        //ServerConfig.LoadConfigFromPath(configPath);
-
-        //var config = ServerConfig.OperationConfig;
-
         var inPath = Path.Combine(path, "ServerSettings.csv");
         var tempPath = Path.Combine(Path.GetTempPath(), @"ServerSettings.csv"); //copy in case file is locked
         File.Copy(inPath, tempPath);
@@ -410,16 +505,17 @@ class Program
             jobs => jobs.Select(j => new PlayerClassData() { Id = j.Id, Name = j.Class, SpriteFemale = j.SpriteFemale, SpriteMale = j.SpriteMale }).ToList()
             );
 
+
         PlayerWeaponData CsvWeaponDataToClient(CsvJobWeaponInfo w) => new()
         {
             Job = jobs.First(j => j.Name == w.Job).Id,
             Class = classes.First(c => c.WeaponClass == w.Class).Id,
             AttackMale = w.AttackMale,
             AttackFemale = w.AttackFemale,
-            SpriteFemale = string.IsNullOrWhiteSpace(w.SpriteFemale) ? string.Empty : "Assets/Sprites/Weapons/" + w.SpriteFemale,
-            SpriteMale = string.IsNullOrWhiteSpace(w.SpriteMale) ? string.Empty : "Assets/Sprites/Weapons/" + w.SpriteMale,
-            EffectMale = string.IsNullOrWhiteSpace(w.EffectMale) ? string.Empty : "Assets/Sprites/Weapons/" + w.EffectMale,
-            EffectFemale = string.IsNullOrWhiteSpace(w.EffectFemale) ? string.Empty : "Assets/Sprites/Weapons/" + w.EffectFemale
+            SpriteFemale = string.IsNullOrWhiteSpace(w.SpriteFemale) ? string.Empty : $"Assets/Sprites/Weapons/{w.Job}/Female/" + w.SpriteFemale,
+            SpriteMale = string.IsNullOrWhiteSpace(w.SpriteMale) ? string.Empty : $"Assets/Sprites/Weapons/{w.Job}/Male/" + w.SpriteMale,
+            EffectMale = string.IsNullOrWhiteSpace(w.EffectMale) ? string.Empty : $"Assets/Sprites/Weapons/{w.Job}/Male/" + w.EffectMale,
+            EffectFemale = string.IsNullOrWhiteSpace(w.EffectFemale) ? string.Empty : $"Assets/Sprites/Weapons/{w.Job}/Female/" + w.EffectFemale
         };
 
         //skill descriptions

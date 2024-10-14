@@ -11,6 +11,13 @@ namespace RebuildSharedData.Enum
         UniqueItem
     }
 
+    public enum ItemUseType : byte
+    {
+        NotUsable,
+        Use,
+        UseOnTarget
+    }
+
     public enum ItemClass : byte
     {
         None,
@@ -20,6 +27,22 @@ namespace RebuildSharedData.Enum
         Ammo,
         Card,
         Etc
+    }
+
+    public enum WeaponPosition : byte
+    {
+        MainHand,
+        BothHands
+    }
+
+    public enum AmmoType : byte
+    {
+        Arrow,
+        ThrowingDagger,
+        Bullet,
+        Grenade,
+        Shuriken,
+        Kunai
     }
 
     [Flags]
@@ -44,5 +67,13 @@ namespace RebuildSharedData.Enum
         Garment = 64,
         Footgear = 128,
         Accessory = 256,
+        Weapon = MainHand,
+        Shield = OffHand,
+        Armor = Body,
+        Boots = Footgear,
+        BothHands = MainHand | OffHand,
+        Headgear = HeadUpper | HeadMid | HeadLower
     }
+
+    
 }

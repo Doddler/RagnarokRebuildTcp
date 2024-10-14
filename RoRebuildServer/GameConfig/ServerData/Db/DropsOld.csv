@@ -34,7 +34,7 @@ Red_Mushroom,Alchol,50,Karvodailnirol,50,Dew_Laden_Moss,20,Soft_Fur,2000,Red_Blo
 Goblin_1,Iron,270,Scell,9000,Oridecon_Stone,43,Goblin_Mask,3,Dirk_,10,Buckler_,5,Red_Herb,1800,Goblin_Card,1
 Goblin_2,Iron,250,Scell,9000,Indian_Hair_Piece,3,Flail_,10,Buckler_,1,Red_Herb,1550,Goblin_Mask,3,Goblin_Card,1
 Goblin_3,Iron,230,Scell,9000,Red_Bandana,3,Goblin_Mask,15,Buckler_,1,Red_Herb,1550,Yellow_Herb,220,Goblin_Card,1
-Goblin_4,Yellow_Live,100,Iron,170,Goblin_Mask,15,Gangster_Patch,3,Smasher_,10,Buckler_,1,Red_Herb,1500,Goblin_Card,1
+Goblin_4,Yellow_Live,100,Iron,170,Goblin_Mask,15,Zorro_Mask,3,Smasher_,10,Buckler_,1,Red_Herb,1500,Goblin_Card,1
 Goblin_5,Iron,150,Scell,9000,Wand_,15,Buckler_,1,Goblin_Mask,15,Red_Herb,1500,Yellow_Herb,220,Goblin_Card,1
 Goblin_Archer,Goblin_Mask,3,Iron,250,Scell,1000,Silver_Arrow,3000,Red_Herb,600,Composite_Bow_,25,Grape,300,Goblin_Archer_Card,1
 Panzer_Goblin,Cyfar,4413,Brigan,3500,Steel,180,Iron,360,Coal,580,Battle_Axe_,5,Flame_Heart,160,Panzer_Goblin_Card,1
@@ -65,7 +65,7 @@ Horong,Stone_Heart,6500,Zargon,500,Bomb_Wick,5,Fire_Arrow,10000,Elunium_Stone,11
 Nine_Tail,Fox_Tail,4656,Glass_Bead,200,Old_Blue_Box,100,Dead_Branch,100,Royal_Jelly,250,Panacea,350,Oridecon_Stone,100,Nine_Tail_Card,1
 Eddga,Fire_Brand,150,Smoking_Pipe,250,Honey,10000,Katar_Of_Raging_Blaze,500,Tiger_Footskin,250,Elunium,2300,Oridecon,1700,Eddga_Card,1
 Thief_Bug_,Worm_Peeling,3500,Garlet,250,Blade_,15,Insect_Feeler,200,Red_Herb,400,Red_Gemstone,50,Iron_Ore,300,Thief_Bug_Female_Card,1
-Thief_Bug__,Emveretarcon,40,Insect_Feeler,5500,Worm_Peeling,1500,Slayer_,10,Yellow_Herb,90,Bluish_Green_Jewel,5,Katana,50,Thief_Bug_Male_Card,1
+Thief_Bug__,Emveretarcon,40,Insect_Feeler,5500,Worm_Peeling,1500,Slayer_,10,Yellow_Herb,90,Zircon,5,Katana,50,Thief_Bug_Male_Card,1
 Golden_Bug,Gold,1000,Golden_Mace,150,Golden_Gear,250,Golden_Bell,500,Emperium,300,Elunium,2000,Oridecon,1500,Golden_Bug_Card,1
 Vagabond_Wolf,,,,,,,,,,,,,,,,
 Scorpion,,,,,,,,,,,,,,,,

@@ -14,6 +14,7 @@ using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
+using RoServerScript;
 
 namespace RoRebuildServer.Data;
 
@@ -46,6 +47,7 @@ public static class DataManager
     public static Dictionary<string, MonsterDropData> MonsterDropData { get; set; }
     public static Dictionary<int, PlayerSkillTree> SkillTree; //SkillTree[Job][Skill] { (Prereq, lvl) } 
     public static Dictionary<int, Dictionary<int, int>> JobMaxHpLookup;
+    public static Dictionary<int, Dictionary<int, int>> JobMaxSpLookup;
 
     public static Dictionary<string, int> EffectIdForName;
 
@@ -53,10 +55,20 @@ public static class DataManager
 
     public static Dictionary<int, int> JobExtendsList;
 
+    public static Dictionary<string, HashSet<int>> EquipGroupInfo;
+    public static Dictionary<int, WeaponInfo> WeaponInfo;
+    public static Dictionary<int, ArmorInfo> ArmorInfo;
+    public static Dictionary<int, CardInfo> CardInfo;
+    public static Dictionary<int, AmmoInfo> AmmoInfo;
+    public static Dictionary<int, UseItemInfo> UseItemInfo;
+
     public static List<MapEntry> Maps => mapList;
     
     public static ExpChart ExpChart;
     public static ElementChart ElementChart;
+    
+    public static bool IsJobInEquipGroup(string equipGroup, int job) => EquipGroupInfo.TryGetValue(equipGroup, out var set) && set.Contains(job);
+    public static int GetEffectForItem(int item) => UseItemInfo.TryGetValue(item, out var effect) ? effect.Effect : -1;
     
     public static List<MonsterAiEntry> GetAiStateMachine(MonsterAiType monsterType)
     {
@@ -115,73 +127,34 @@ public static class DataManager
     {
         var loader = new DataLoader();
 
-        //only things that are safe to reload
         monsterStats = loader.LoadMonsterStats();
-        monsterAiList = loader.LoadAiStateMachines();
-        ExpChart = loader.LoadExpChart();
-        EffectIdForName = loader.LoadEffectIds();
-        SavePoints = loader.LoadSavePoints().AsReadOnly();
-        MvpMonsterCodes = loader.LoadMvpList();
-        SkillData = loader.LoadSkillData();
-
-        //rebuild script assemblies
-        ScriptAssembly = ScriptLoader.LoadAssembly();
-        NpcManager = new NpcBehaviorManager();
-        
-        MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
-        MonsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
-        MonsterNameLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
-
-        foreach (var m in monsterStats)
-        {
-            MonsterIdLookup.Add(m.Id, m);
-            MonsterCodeLookup.Add(m.Code, m);
-            MonsterNameLookup.TryAdd(m.Name, m);
-        }
-
-        //the things we actually want to load
-        loader.LoadMonsterSpawnMinions();
-        loader.LoadNpcScripts(Assembly.GetAssembly(typeof(FirewallObjectEvent))!); //load from local assembly
-        loader.LoadNpcScripts(ScriptAssembly);
-        MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
-        loader.LoadItemInteractions(ScriptAssembly);
-        loader.LoadMonsterSkillAi(ScriptAssembly);
-        SkillTree = loader.LoadSkillTree();
-        MonsterDropData = loader.LoadMonsterDropChanceData();
-    }
-    
-    public static void Initialize()
-    {
-        //Config = ServerConfig.GetConfigSection<ServerDataConfig>();
-        //ServerLogger.Log($"Loading server data at path: " + Config.DataPath);
-
-        var loader = new DataLoader();
-
-        ScriptAssembly = ScriptLoader.LoadAssembly();
-        NpcManager = new NpcBehaviorManager();
-
-        //configValues = loader.LoadServerConfig();
-        mapList = loader.LoadMaps();
-        InstanceList = loader.LoadInstances();
-        //mapConnectorLookup = loader.LoadConnectors(mapList);
-        monsterStats = loader.LoadMonsterStats();
-        //mapSpawnInfo = loader.LoadSpawnInfo();
         monsterAiList = loader.LoadAiStateMachines();
         ExpChart = loader.LoadExpChart();
         EffectIdForName = loader.LoadEffectIds();
         JobInfo = loader.LoadJobs();
         JobIdLookup = loader.GetJobIdLookup(JobInfo);
+        MvpMonsterCodes = loader.LoadMvpList();
         SkillData = loader.LoadSkillData();
         JobMaxHpLookup = loader.LoadMaxHpChart();
-        
-        ItemList = loader.LoadItemList();
+        JobMaxSpLookup = loader.LoadMaxSpChart();
+
+        EquipGroupInfo = loader.LoadEquipGroups();
+        ItemList = loader.LoadItemsRegular();
+        ArmorInfo = loader.LoadItemsArmor(ItemList);
+        WeaponInfo = loader.LoadItemsWeapon(ItemList);
+        CardInfo = loader.LoadItemsCards(ItemList);
+        UseItemInfo = loader.LoadUseableItems(ItemList); //dependent on effectId loaded earlier
+        AmmoInfo = loader.LoadItemsAmmo(ItemList);
+
         ItemIdByName = loader.GenerateItemIdByNameLookup();
         SavePoints = loader.LoadSavePoints().AsReadOnly();
         ElementChart = loader.LoadElementChart();
         MvpMonsterCodes = loader.LoadMvpList();
-        loader.LoadItemInteractions(ScriptAssembly);
         
-
+        //load our compiled script assemblies
+        ScriptAssembly = ScriptLoader.LoadAssembly();
+        NpcManager = new NpcBehaviorManager();
+        
         MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
         MonsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
         MonsterNameLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
@@ -193,14 +166,28 @@ public static class DataManager
             MonsterNameLookup.TryAdd(m.Name, m);
         }
 
-        MonsterDropData = loader.LoadMonsterDropChanceData();
-        SkillTree = loader.LoadSkillTree();
+        //things that require our compiled scripts
         loader.LoadMonsterSpawnMinions();
-        loader.LoadNpcScripts(Assembly.GetAssembly(typeof(FirewallObjectEvent))!);
+        loader.LoadNpcScripts(Assembly.GetAssembly(typeof(FirewallObjectEvent))!); //load from local assembly
         loader.LoadNpcScripts(ScriptAssembly);
+        loader.LoadItemInteractions(ScriptAssembly);
         loader.LoadMonsterSkillAi(ScriptAssembly);
+        
+        //things that require other things loaded first
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
+        SkillTree = loader.LoadSkillTree();
+        MonsterDropData = loader.LoadMonsterDropChanceData();
+        
+    }
+    
+    public static void Initialize()
+    {
+        var loader = new DataLoader();
 
+        mapList = loader.LoadMaps();
+        InstanceList = loader.LoadInstances();
+
+        ReloadScripts();
 
         //special handling for if we start the map in single map only mode, removes all other maps from the server instance list
         var debug = ServerConfig.DebugConfig;

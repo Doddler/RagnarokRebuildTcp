@@ -446,16 +446,17 @@ public class Player : IEntityAutoReset
         if (GetStat(CharacterStat.Hp) > updatedMaxHp)
             SetStat(CharacterStat.Hp, updatedMaxHp);
 
-        var spBonus = GetJobBonus(CharacterStat.MaxSp);
+        var newMaxSp = DataManager.JobMaxSpLookup[job][level] * (1 + GetEffectiveStat(CharacterStat.Int) / 100f);
+        newMaxSp += GetStat(CharacterStat.AddMaxSp);
 
-        var sp = (40 + level + level * (level / 7)) / 2;
-        sp = (int)(sp * spBonus);
-        if (Character.ClassId == 3)
-            sp += 20; //little boost early on
+        //var sp = (40 + level + level * (level / 7)) / 2;
+        //sp = (int)(sp * spBonus);
+        //if (Character.ClassId == 3)
+        //    sp += 20; //little boost early on
 
-        SetStat(CharacterStat.MaxSp, sp);
-        if (GetStat(CharacterStat.Sp) > sp)
-            SetStat(CharacterStat.Sp, sp);
+        SetStat(CharacterStat.MaxSp, newMaxSp);
+        if (GetStat(CharacterStat.Sp) > newMaxSp)
+            SetStat(CharacterStat.Sp, newMaxSp);
 
         var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
         if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Curse))
@@ -608,15 +609,19 @@ public class Player : IEntityAutoReset
 
         var hp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
+        var vit = GetEffectiveStat(CharacterStat.Vit);
 
         if (hp < maxHp)
         {
-            var regen = maxHp / 10;
+            var regen = (maxHp / 50 + vit / 5) * (200 + vit) / 200;
+            //var regen = 1 + (maxHp / 50) * vit / 100; //original formula
+            if (Character.State == CharacterState.Moving)
+                regen /= 2;
             if (Character.State == CharacterState.Sitting)
                 regen *= 2;
+            if (regen < 1) regen = 1;
             if (regen + hp > maxHp)
                 regen = maxHp - hp;
-
 
             SetStat(CharacterStat.Hp, hp + regen);
 
@@ -625,12 +630,17 @@ public class Player : IEntityAutoReset
 
         var sp = GetStat(CharacterStat.Sp);
         var maxSp = GetStat(CharacterStat.MaxSp);
+        var chInt = GetEffectiveStat(CharacterStat.Int);
 
         if (sp < maxSp)
         {
-            var regen = maxSp / 10 + 4;
+            var regen = (maxSp / 100 + chInt / 6) * (200 + chInt) / 200;
+            //var regen = maxSp / 100 + chInt / 5; //original formula
+            if (chInt > 120) regen += chInt - 120;
+
             if (Character.State == CharacterState.Sitting)
                 regen *= 2;
+
             if (regen + sp > maxSp)
                 regen = maxSp - sp;
 
@@ -1022,9 +1032,9 @@ public class Player : IEntityAutoReset
         {
             RegenTick();
             if (Character.State == CharacterState.Sitting)
-                regenTickTime = Time.ElapsedTimeFloat + 4f;
+                regenTickTime = Time.ElapsedTimeFloat + 3f;
             else
-                regenTickTime = Time.ElapsedTimeFloat + 8f;
+                regenTickTime = Time.ElapsedTimeFloat + 6f;
         }
 
         if (Character.QueuedAction == QueuedAction.Cast)

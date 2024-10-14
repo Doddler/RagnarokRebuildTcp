@@ -153,8 +153,8 @@ Shader"Ragnarok/CharacterSpriteShader"
 			#pragma fragment frag
 			#pragma multi_compile_fwdbase
 			#pragma multi_compile_fog
-			#pragma multi_compile _ PIXELSNAP_ON
-			#pragma multi_compile _ PALETTE_ON
+			//#pragma multi_compile _ PIXELSNAP_ON
+			//#pragma multi_compile _ PALETTE_ON
 			#pragma multi_compile _ SMOOTHPIXEL
 			//#pragma multi_compile _ WATER_OFF
 

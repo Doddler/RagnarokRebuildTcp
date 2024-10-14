@@ -32,16 +32,31 @@ public class PacketUseInventoryItem : IClientPacketHandler
 
         player.AddActionDelay(CooldownActionType.UseItem);
 
-        if (!DataManager.ItemList.TryGetValue(itemId, out var item))
+        if (!DataManager.ItemList.TryGetValue(itemId, out var item) || !DataManager.UseItemInfo.TryGetValue(itemId, out var useInfo))
         {
             ServerLogger.LogError($"User is attempting to use invalid item id {itemId}. Due to the error, the player will be disconnected.");
             NetworkManager.DisconnectPlayer(connection);
             return;
         }
 
-        if (!item.IsUseable)
+        if (item.ItemClass != ItemClass.Useable)
         {
             ServerLogger.LogWarning($"User is attempting to use item {item.Code}, but it is not usable.");
+            return;
+        }
+
+        if (useInfo.UseType == ItemUseType.NotUsable || item.Interaction == null)
+        {
+            CommandBuilder.ErrorMessage(player, $"This item is not currently usable.");
+            return;
+        }
+
+        if (!item.Interaction.OnValidate(character.Player, character.CombatEntity))
+            return;
+
+        if (useInfo.UseType == ItemUseType.UseOnTarget)
+        {
+            CommandBuilder.ErrorMessage(player, $"Targeted on-use items do not currently function. Sorry!");
             return;
         }
 
@@ -51,13 +66,10 @@ public class PacketUseInventoryItem : IClientPacketHandler
             return;
         }
 
-        if (item.Interaction == null)
-            return;
-
-        if (item.Effect >= 0)
+        if (useInfo.Effect >= 0)
         {
             character.Map.AddVisiblePlayersAsPacketRecipients(character);
-            CommandBuilder.SendEffectOnCharacterMulti(character, item.Effect);
+            CommandBuilder.SendEffectOnCharacterMulti(character, useInfo.Effect);
             CommandBuilder.ClearRecipients();
         }
 

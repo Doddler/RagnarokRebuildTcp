@@ -1,27 +1,83 @@
-GroupName,Novice,Swordsman,Archer,Mage,Acolyte,Thief,Merchant,Desc,,,
-Any,Y,Y,Y,Y,Y,Y,Y,All jobs,,1048575,
-NotNovice,,Y,Y,Y,Y,Y,Y,All except novice,,,
-Novice,Y,,,,,,,Novice Only,,,
-Swordsman,,Y,,,,,,Swordsman,,8322,
-Archer,,,Y,,,,,Archer,,,
-Mage,,,,Y,,,,Mage,,,
-Acolyte,,,,,Y,,,Acolyte,,,
-Thief,,,,,,Y,,Thief,,,
-Merchant,,,,,,,Y,Merchant,,,
-MeleeUser,,Y,,,Y,Y,Y,All minus mage & archer,,1031410,70
-MagicUser,,,,Y,Y,,,"Mage, Acolyte",,148756,
-NonCaster,,Y,Y,,,Y,Y,All minus mage & acolyte,,899818,
-SwordUser,Y,Y,,,,Y,Y,"Novice, Swordsman, Thief, Merchant",,,
-SwordUser-N,,Y,,,,Y,Y,"Swordsman, Thief, Merchant",,800994,
-SwordUser2nd,,,,,,,,Knight,,,
-HeavySword,,Y,,,,,Y,"Swordsman, Merchant",,,
-DaggerUser,Y,Y,Y,Y,,Y,Y,All jobs excluding acolyte,,,
-DaggerUser-N,,Y,Y,Y,,Y,Y,All jobs excluding acolyte and novice,,,
-AxeUser,,Y,,,,,Y,"Swordsman, Merchant",,,
-MaceUser,Y,Y,,,Y,,Y,"Novice, Swordsman, Acolyte, Merchant",,,
-MaceUser-N,,Y,,,Y,,Y,"Swordsman, Acolyte, Merchant",,,
-RodUser,Y,,,Y,Y,,,"Novice, Mage, Acolyte",,148756,
-RodUser-N,,,,Y,Y,,,"Mage, Acolyte",,,
-Crusader,,,,,,,,Crusader,,,
-NotArcherThief,,Y,,Y,Y,,Y,Not Archer or Thief,,421302,
-MerchantAcolyte,,,,,Y,,Y,Swordsman or Acolyte,,,
+Novice,"Novice",Novice,NoviceHigh,SuperNovice
+Knight,"Knight",Knight,KnightHigh
+Priest,"Priest",Priest,PriestHigh
+Wizard,"Wizard",Wizard,WizardHigh
+Blacksmith,"Blacksmith",Blacksmith,BlacksmithHigh
+Hunter,"Hunter",Hunter,HunterHigh
+Assassin,"Assassin",Assassin,AssassinHigh
+Crusader,"Crusader",Crusader,CrusaderHigh
+Rogue,"Rogue",Rogue,RogueHigh
+Sage,"Sage",Sage,SageHigh
+Alchemist,"Alchemist",Alchemist,AlchemistHigh
+Monk,"Monk",Monk,MonkHigh
+Bard,"Bard",Bard,BardHigh
+Dancer,"Dancer",Dancer,DancerHigh
+Swordsman,"Swordsman",Swordsman,SwordsmanHigh,Knight,Crusader
+Merchant,"Merchant",Merchant,MerchantHigh,Blacksmith,Alchemist
+Mage,"Mage",Mage,MageHigh,Wizard,Sage
+Archer,"Archer (Excluding Bard/Dancer)",Archer,ArcherHigh,Hunter
+ArcherGroup,"Archer",Archer,ArcherHigh,Hunter,Bard,Dancer
+Acolyte,"Acolyte",Acolyte,AcolyteHigh,Priest,Monk
+Thief,"Thief",Thief,ThiefHigh,Assassin,Rogue
+KnightHigh,"Lord Knight",KnightHigh
+PriestHigh,"High Priest",PriestHigh
+WizardHigh,"High Wizard",WizardHigh
+BlacksmithHigh,"Mastersmith",BlacksmithHigh
+HunterHigh,"Ranger",HunterHigh
+AssassinHigh,"Assassin Cross",AssassinHigh
+CrusaderHigh,"Paladin",CrusaderHigh
+RogueHigh,"Stalker",RogueHigh
+SageHigh,"Scholar",SageHigh
+AlchemistHigh,"Biochemist",AlchemistHigh
+MonkHigh,"Champion",MonkHigh
+BardHigh,"Minstrel",BardHigh
+DancerHigh,"Gypsy",DancerHigh
+SoulLinker,"Soul Linker",SoulLinker
+StarGladiator,"Star Gladiator",StarGladiator
+SwordsmanHigh,"High Swordsman",SwordsmanHigh,KnightHigh,CrusaderHigh,SwordsmanHigh,KnightHigh,CrusaderHigh
+MerchantHigh,"High Merchant",MerchantHigh,BlacksmithHigh,AlchemistHigh,MerchantHigh,BlacksmithHigh,AlchemistHigh
+MageHigh,"High Mage",MageHigh,WizardHigh,SageHigh,MageHigh,WizardHigh,SageHigh
+ArcherHighGroup,"High Archer",ArcherHigh,HunterHigh,BardHigh,Dancer,ArcherHigh,HunterHigh,BardHigh,Dancer
+AcolyteHigh,"High Acolyte",AcolyteHigh,PriestHigh,MonkHigh,AcolyteHigh,PriestHigh,MonkHigh
+ThiefHigh,"High Thief",ThiefHigh,AssassinHigh,RogueHigh,ThiefHigh,AssassinHigh,RogueHigh
+TaekwonGroup,"Taekwon (Excluding Soul Linker)",Taekwon,StarGladiator
+Swordsman2ndJob,"Swordsman 2nd Job",Knight,Crusader
+Mage2ndPlusLinker,"<Auto>",Wizard,Sage,SoulLinker
+MagePlusLinker,"<Auto>",Mage,SoulLinker
+BookUser,"<Auto>",Priest,Sage
+Archer2ndJob,"Archer 2nd Job",Hunter,Bard,Dancer
+Acolyte2ndJob,"Acolyte 2nd Job",Priest,Monk
+CasterGroup,"<Auto>",Mage,Acolyte,SoulLinker
+NoviceCasterGroup,"<Auto>",Novice,Mage,Acolyte,SoulLinker
+Merchant2ndJob,"Merchant 2nd Job",Blacksmith,Alchemist
+KnightCrusaderAlchemist,"<Auto>",Knight,Crusader,Alchemist
+SwordsmanMerchant,"<Auto>",Swordsman,Merchant
+AcolyteMerchant,"<Auto>",Acolyte,Merchant
+RobeUser,"<Auto>",Swordsman,Mage,Acolyte,Merchant,SoulLinker
+ThiefHunter,"<Auto>",Thief,Hunter,Rogue
+StealthGroup,"<Auto>",Thief,Ninja
+ArcherRogue,"<Auto>",Archer,Rogue,RogueHigh
+ArcherThief,"<Auto>",ArcherGroup,Thief,Rogue
+SwordUser1stJob,"<Auto>",Swordsman,Merchant,Thief
+SwordUser,"<Auto>",Novice,Swordsman,Merchant,Thief
+MediumArmor,"<Auto>",Swordsman,ArcherGroup,Merchant,Thief
+DaggerUser1stJob,"<Auto>",Swordsman,Mage,ArcherGroup,Merchant,Thief,SoulLinker,Ninja
+DaggerUser,"<Auto>",Novice,Swordsman,Mage,ArcherGroup,Merchant,Thief,SoulLinker,Ninja
+Melee1stJob,"<Auto>",Swordsman,Acolyte,Merchant,Thief
+MeleeJob,"<Auto>",Novice,Swordsman,Acolyte,Merchant,Thief
+MeleeAndBardDancer,"<Auto>",Swordsman,Acolyte,Merchant,Thief,Bard,Dancer
+SecondJob,"Second Jobs",Knight,Priest,Wizard,Blacksmith,Hunter,Assassin,Crusader,Monk,Sage,Rogue,Alchemist,Bard,Dancer,StarGladiator,SoulLinker
+AxeUser,"<Auto>",Novice,Swordsman,Merchant,Assassin
+MaceUser1stJob,"<Auto>",Swordsman,Acolyte,Merchant
+MaceUser,"<Auto>",Swordsman,Acolyte,Merchant,Novice
+BookUser,"<Auto>",Priest,Sage,StarGladiator
+SwordsmanStar,"<Auto>",Swordsman,StarGladiator
+SwordUserTaekwon,"<Auto>",Swordsman,Merchant,Thief,Taekwon
+BootsUser,"<Auto>",Swordsman,Merchant,Thief,ArcherGroup,Taekwon,Gunslinger
+MeleeJobTaekwon,"<Auto>",Swordsman,Acolyte,Merchant,Thief,Taekwon
+SwordMerchantTaekwon,"<Auto>",Swordsman,Merchant,Taekwon
+PriestAssassin,"<Auto>",Priest,Assassin
+Trans2ndJob,"Transcended Second Jobs",KnightHigh,PriestHigh,WizardHigh,BlacksmithHigh,HunterHigh,AssassinHigh,CrusaderHigh,MonkHigh,SageHigh,RogueHigh,AlchemistHigh,BardHigh,DancerHigh
+Trans1stJob,"Transcended First Job",SwordsmanHigh,MerchantHigh,MageHigh,ArcherHighGroup,AcolyteHigh,ThiefHigh
+AllJobs,"All Jobs",Novice,Swordsman,Merchant,Mage,ArcherGroup,Acolyte,Thief,Taekwon,StarGladiator,SoulLinker,Ninja,Gunslinger
+AllExceptNovice,"All Jobs Excluding Novice",Swordsman,Merchant,Mage,ArcherGroup,Acolyte,Thief,Taekwon,StarGladiator,SoulLinker,Ninja,Gunslinger

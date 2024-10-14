@@ -12,6 +12,8 @@ if (args.Length > 0 && args[0] == "compile")
     return;
 }
 
+Console.Clear();
+
 CreateHostBuilder(args).Build().Run();
 
 IHostBuilder CreateHostBuilder(string[] args) =>

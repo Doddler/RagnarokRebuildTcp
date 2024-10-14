@@ -37,9 +37,7 @@ Shader "Custom/MapShaderAccurate"
 				// make fog work
 				#pragma multi_compile_fog
 				#pragma multi_compile_fwdbase
-
 				#pragma multi_compile _ LIGHTMAP_ON
-
 				#pragma multi_compile _ SHADOWS_SCREEN
 				#pragma multi_compile _ VERTEXLIGHT_ON
 

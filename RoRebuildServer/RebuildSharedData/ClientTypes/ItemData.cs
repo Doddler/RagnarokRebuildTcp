@@ -14,9 +14,9 @@ public class ItemData
     public int Weight;
     public int Price;
     public bool IsUnique;
-    public bool IsUseable;
     public ItemClass ItemClass;
-    public string Effect;
+    public ItemUseType UseType;
+    public EquipPosition Position;
     public string Sprite;
 }
 
@@ -25,3 +25,4 @@ public class ItemDataList
 {
     public List<ItemData> Items = null!;
 }
+

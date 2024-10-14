@@ -76,12 +76,6 @@ namespace Assets.Scripts.UI
             entry.DragItem.OnDoubleClick = entry.OnDoubleClick;
         }
 
-        //this is cursed and only for the fixed red potion entry. This should be removed later.
-        public void UpdateItem1Count(int count)
-        {
-            HotBarEntries[0].DragItem.UpdateCount(count);
-        }
-
         public void UpdateItemCounts()
         {
             var inventory = NetworkManager.Instance.PlayerState.Inventory;
@@ -141,12 +135,16 @@ namespace Assets.Scripts.UI
             {
                 if (entry.DragItem.ItemCount <= 0)
                     return;
-                NetworkManager.Instance.SendUseItem(entry.DragItem.ItemId);
-                var cnt = entry.DragItem.ItemCount - 1;
+                var item = ClientDataLoader.Instance.GetItemById(entry.DragItem.ItemId);
+                if (item.UseType == ItemUseType.NotUsable)
+                    return;
+                if(item.UseType == ItemUseType.Use)
+                    NetworkManager.Instance.SendUseItem(entry.DragItem.ItemId);
+                //var cnt = entry.DragItem.ItemCount - 1;
                 // if (cnt <= 0)
                 //     entry.DragItem.Clear();
                 // else
-                    entry.DragItem.UpdateCount(cnt);
+                    //entry.DragItem.UpdateCount(cnt);
             }
         }
 

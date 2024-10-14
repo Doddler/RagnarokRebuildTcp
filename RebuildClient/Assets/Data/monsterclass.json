@@ -3348,12 +3348,23 @@
       "Id": 4302,
       "Code": "RAPTICE",
       "Name": "Raptice",
-      "SpriteName": "frilldora.spr",
+      "SpriteName": "raptice.spr",
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,
       "AttackTiming": 0.324,
       "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4303,
+      "Code": "STITCH",
+      "Name": "Stitch",
+      "SpriteName": "tarou.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.62,
+      "Color": "#F9EFBAFF"
     },
     {
       "Id": 1000,

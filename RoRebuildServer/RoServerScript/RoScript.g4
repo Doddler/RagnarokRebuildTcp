@@ -18,7 +18,7 @@ statement : IF LPAREN expression RPAREN block1=statementblock (ELSE block2=state
 		  | expression SEMI?																			# StatementExpression
 		  | IDENTIFIER DECIMAL? COLON																	# StartSection
 		  | SWITCH LPAREN expr=expression RPAREN LBRACKET switchblock* RBRACKET							# SwitchStatement
-		  | RETURN SEMI																					# ReturnStatement
+		  | RETURN IDENTIFIER? SEMI																		# ReturnStatement
 		  ;
 
 switchblock : CASE entity COLON statement*															# SwitchCase

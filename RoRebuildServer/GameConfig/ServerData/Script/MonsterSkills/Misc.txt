@@ -75,6 +75,11 @@ StateAttacking:
 	TryCast(Bash, 5, 100%, 0, 8s);
 }
 
+SkillHandler("WERE_WOLF") {
+StateAttacking:
+	TryCast(SonicBlow, 1, 5%, 0.8s, 5s);
+	TryCast(TwoHandQuicken, 1, 100%, 0, 1m)[HpPercent <= 40] -> SendEmote(36);
+}
 
 SkillHandler("ASSULTER") {
 StateAttacking:
