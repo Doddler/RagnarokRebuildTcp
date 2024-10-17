@@ -26,5 +26,7 @@ public enum EquipSlot
     Accessory2,
     CostumeTop,
     CostumeMid,
-    CostumeBottom
+    CostumeBottom,
+    Weapon = LeftHand,
+    Shield = RightHand
 }

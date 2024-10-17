@@ -26,7 +26,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 return StatusUpdateResult.Continue; //only do this every 3 seconds
             state.Value4 = 3;
 
-            if (ch.HpPercent < 25)
+            if (ch.Character.Type != CharacterType.Player && ch.HpPercent < 20)
                 return StatusUpdateResult.Continue;
 
             var attackerEntity = World.Instance.GetEntityById(state.Value1);
@@ -34,9 +34,17 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 attacker = ch;
 
             var damage = GameRandom.Next(state.Value2 * 90 / 100, state.Value2 * 110 / 100);
-            if(damage <= 0)
+            if (ch.Character.Type == CharacterType.Player)
+            {
+                var remainingHp = ch.GetStat(CharacterStat.Hp);
+                if (damage > remainingHp)
+                    damage = remainingHp - 1; //players drop down to 1hp but don't die
+            }
+            
+            if (damage <= 0)
                 return StatusUpdateResult.Continue;
-
+            
+            
             var di = new DamageInfo()
             {
                 Damage = damage,
@@ -49,7 +57,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 Time = 0,
                 AttackMotionTime = 0,
                 AttackPosition = ch.Character.Position,
-                Flags = DamageApplicationFlags.None
+                Flags = DamageApplicationFlags.NoHitLock
             };
             
             ch.ExecuteCombatResult(di, false, false);

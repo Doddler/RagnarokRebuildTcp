@@ -44,11 +44,11 @@ namespace Assets.Scripts.PlayerControl
                     //     controllable.SpriteAnimator.AnimSpeed = 2f;
                     break;
                 case CharacterStatusEffect.TwoHandQuicken:
-                    controllable.SpriteAnimator.Color = new Color(1, 1, 0.5f);
+                    controllable.SpriteAnimator.Color = new Color(1, 1, 0.7f);
                     RoSpriteTrailManager.Instance.AttachTrailToEntity(controllable);
                     break;
                 case CharacterStatusEffect.Poison:
-                    controllable.SpriteAnimator.Color = new Color(0.8f, 0.4f, 0.8f);
+                    controllable.SpriteAnimator.Color = new Color(1f, 0.7f, 1f);
                     break;
             }
         }

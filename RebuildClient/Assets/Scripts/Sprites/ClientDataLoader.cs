@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Utility;
@@ -9,6 +10,7 @@ using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering;
+using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.U2D;
 using Random = UnityEngine.Random;
 
@@ -43,12 +45,13 @@ namespace Assets.Scripts.Sprites
         public TextAsset UniqueAttackActionData;
         public TextAsset ItemData;
         public TextAsset MapData;
+        public TextAsset EquipmentSpriteData;
         public SpriteAtlas ItemIconAtlas;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
         private readonly Dictionary<int, PlayerHeadData> playerHeadLookup = new();
         private readonly Dictionary<int, PlayerClassData> playerClassLookup = new();
-        private readonly Dictionary<int, Dictionary<int, List<PlayerWeaponData>>> playerWeaponLookup = new();
+        private readonly Dictionary<int, Dictionary<int, PlayerWeaponData>> playerWeaponLookup = new();
         private readonly Dictionary<int, WeaponClassData> weaponClassData = new();
         private readonly Dictionary<CharacterSkill, SkillData> skillData = new();
         private readonly Dictionary<string, MapViewpoint> mapViewpoints = new();
@@ -58,19 +61,12 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<int, ItemData> itemIdLookup = new();
         private readonly Dictionary<string, ItemData> itemNameLookup = new();
         private readonly Dictionary<string, ClientMapEntry> mapDataLookup = new();
+        private readonly Dictionary<string, string> displaySpriteList = new();
 
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
 
         private static int EffectClassId = 3999;
-
-        List<string> headgear = new() //remove me
-        {
-            "간호모", "골든헤드기어", "광대모자", "귀마개", "깃털모자", "꽃머리띠", "꽃잎", "두건", "둥근모자", "리본", "마제스틱고우트", "망자의머리띠", "머리끈", "머리띠", "머리안경", "명사수의사과", "무낙모자", "반다나",
-            "본헬름", "비레타", "사슴뿔", "산타모자", "삿갓", "새끼악마모자", "새하얀뿔", "샤프헤드기어", "서클릿", "선글래스", "성직자의모자", "스마일", "스위트젠틀", "스타더스트", "스핀글래스", "심지", "악마의머리띠", "안전모",
-            "안테나", "연극소도구", "영혼고리", "오크족헬름", "올드스터로맨스", "옵저버", "왕리본", "요정의귀", "용접마스크", "원주민머리띠", "웨스턴그레이스", "위저드햇", "의사머리띠", "장식용알껍질", "장식용해바라기", "정지표지판",
-            "쥬얼크라운", "천사의머리띠", "초록더듬이", "캡", "커세어", "코로넷", "크라운", "토끼머리띠", "티아라", "풀잎", "프로펠라", "하트파운데이션", "학사모", "학생모", "해적두건", "햇", "헤드폰",
-        };
 
         private bool isInitialized;
 
@@ -122,8 +118,8 @@ namespace Assets.Scripts.Sprites
         private void Initialize()
         {
             Instance = this;
-            var entityData = JsonUtility.FromJson<DatabaseMonsterClassData>(MonsterClassData.text);
-            foreach (var m in entityData.MonsterClassData)
+            var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(MonsterClassData.text);
+            foreach (var m in entityData.Items)
             {
                 monsterClassLookup.Add(m.Id, m);
                 validMonsterClasses.Add(m.Name);
@@ -173,14 +169,11 @@ namespace Assets.Scripts.Sprites
             foreach (var weapon in weaponData.Items)
             {
                 if (!playerWeaponLookup.ContainsKey(weapon.Job))
-                    playerWeaponLookup.Add(weapon.Job, new Dictionary<int, List<PlayerWeaponData>>());
+                    playerWeaponLookup.Add(weapon.Job, new Dictionary<int, PlayerWeaponData>());
 
                 var jList = playerWeaponLookup[weapon.Job];
                 if (!jList.ContainsKey(weapon.Class))
-                    jList.Add(weapon.Class, new List<PlayerWeaponData>());
-
-                var cList = jList[weapon.Class];
-                cList.Add(weapon);
+                    jList.Add(weapon.Class, weapon);
             }
 
             var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
@@ -199,7 +192,7 @@ namespace Assets.Scripts.Sprites
                     itemIcons.Add(item.Sprite, item.Code);
                 item.Sprite = itemIcons[item.Sprite];
             }
-            
+
             itemIdLookup.Add(-1, new ItemData()
             {
                 Code = "UNKNOWN_ITEM",
@@ -209,6 +202,15 @@ namespace Assets.Scripts.Sprites
                 Name = "Unknown Item",
                 Sprite = "Apple"
             });
+
+            foreach (var l in Regex.Split(EquipmentSpriteData.text, "\n|\r|\r\n"))
+            {
+                if (string.IsNullOrWhiteSpace(l))
+                    continue;
+                // Debug.Log(l);
+                var l2 = l.Trim().Split('\t');
+                displaySpriteList.Add(l2[0], l2[1]);
+            }
 
             var uniqueAttacks = JsonUtility.FromJson<Wrapper<UniqueAttackAction>>(UniqueAttackActionData.text);
             foreach (var action in uniqueAttacks.Items)
@@ -353,6 +355,26 @@ namespace Assets.Scripts.Sprites
             return $"Assets/Sprites/Headgear/{(isMale ? "Male" : "Female")}/{item.Sprite}.spr";
         }
 
+        public static bool DoesAddressableExist<T>(string key)
+        {
+            foreach (var local in Addressables.ResourceLocators)
+            {
+                local.Locate(key, typeof(T), out IList<IResourceLocation> resourceLocations);
+                if (resourceLocations != null)
+                {
+                    if (resourceLocations.Count >= 2)
+                        Debug.LogWarning($"key = {key} type = {typeof(T).Name} was found in {resourceLocations.Count} locations.");
+                    //location = resourceLocations[0];
+                    return true;
+                }
+            }
+
+            Debug.LogWarning($"Addressable {key} not found.");
+
+            return false;
+        }
+
+
         public ServerControllable InstantiatePlayer(ref PlayerSpawnParameters param)
         {
             if (!isInitialized)
@@ -363,14 +385,6 @@ namespace Assets.Scripts.Sprites
                 pData = lookupData;
             else
                 Debug.LogWarning("Failed to find player with id of " + param.ClassId);
-            var hData = playerHeadLookup[0]; //default;
-            if (playerHeadLookup.TryGetValue(param.HeadId + ((param.HairDyeId + 1) << 8), out var lookupData2)) //see if we have a head with the right palette
-                hData = lookupData2;
-            else if (playerHeadLookup.TryGetValue(param.HeadId, out lookupData2)) //fallback to default color
-                hData = lookupData2;
-            else
-                Debug.LogWarning("Failed to find player head with id of " + param.HeadId); //we will fall back to head 0 in this case
-
 
             var go = new GameObject(pData.Name);
             go.layer = LayerMask.NameToLayer("Characters");
@@ -433,35 +447,12 @@ namespace Assets.Scripts.Sprites
 
             Debug.Log($"Instantiate player sprite with job {param.ClassId} weapon {param.WeaponClass}");
 
-            PlayerWeaponData weapon = null;
-
-            if (playerWeaponLookup.TryGetValue(param.ClassId, out var weaponsByJob))
-            {
-                if (weaponsByJob.TryGetValue(param.WeaponClass, out var weapons) && weapons.Count > 0)
-                {
-                    weapon = weapons[0]; //cheeeat, will need to change when we can have multiple sprites per weapon type
-                }
-            }
-
-            if (weapon != null)
-            {
-                LoadAndAttachWeapon(go, body.transform, bodySprite, weapon, false, param.IsMale);
-                LoadAndAttachWeapon(go, body.transform, bodySprite, weapon, true, param.IsMale);
-            }
-
-            //비레타 beret
-            //간호모 nurse band
-            //장식용알껍질 eggshell hat
-            //흰수염 moustache
-            //헬름 helm
-
-            //var chosenGear = headgear[Random.Range(0, headgear.Count)];
-
-
-            //LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + chosenGear, control.IsMale);
-            //LoadAndAttachHeadgear(go, body.transform, bodySprite, gender + "하트파운데이션", control.IsMale);
-
-
+            LoadAndAttachWeapon(control, param.Weapon);
+            
+            LoadAndAttachEquipmentSprite(control, param.Headgear1, EquipPosition.HeadUpper, 4);
+            LoadAndAttachEquipmentSprite(control, param.Headgear2, EquipPosition.HeadMid, 3);
+            LoadAndAttachEquipmentSprite(control, param.Headgear3, EquipPosition.HeadLower, 2);
+            
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.Name = param.Name;
             control.Hp = param.Hp;
@@ -487,19 +478,47 @@ namespace Assets.Scripts.Sprites
             return control;
         }
 
-        private void LoadAndAttachWeapon(GameObject parent, Transform bodyTransform, RoSpriteAnimator bodySprite, PlayerWeaponData weapon, bool isEffect,
-            bool isMale)
+        public void LoadAndAttachWeapon(ServerControllable ctrl, int item)
         {
-            var weaponSpriteFile = isMale ? weapon.SpriteMale : weapon.SpriteFemale;
-            if (isEffect)
-                weaponSpriteFile = isMale ? weapon.EffectMale : weapon.EffectFemale;
-
-            if (string.IsNullOrEmpty(weaponSpriteFile))
+            var weaponSpriteFile = "";
+            var isEffect = item == int.MaxValue;
+            
+            var attachPosition = isEffect ? EquipPosition.Accessory : EquipPosition.Weapon; //it's not an accessory but too lazy to make a new option
+            if (ctrl.AttachedComponents.TryGetValue(attachPosition, out var existing))
             {
-                Debug.Log(
-                    $"Not loading sprite for weapon as the requested weapon class does not have one. (GO: {parent} Sprite: {bodySprite?.SpriteData?.Name})");
+                ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
+                Destroy(existing);
+            }
+            
+            var data = GetItemById(item);
+            if (data.Id > 0)
+            {
+                var spr = $"Assets/Sprites/Weapon/{GetJobNameForId(ctrl.ClassId)}/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{data.Sprite}.spr";
+                if (DoesAddressableExist<RoSpriteData>(spr))
+                {
+                    weaponSpriteFile = spr;
+                }
+                else
+                    Debug.Log($"Weapon sprite {data.Sprite} could not be loaded for {ctrl.Name}");
+            }
+
+            if (!playerWeaponLookup.TryGetValue(ctrl.ClassId, out var weaponsByJob))
+                return;
+            
+            if (!weaponsByJob.TryGetValue(ctrl.WeaponClass, out var weapon))
+            {
+                Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.ClassId}");
                 return;
             }
+
+            if (string.IsNullOrWhiteSpace(weaponSpriteFile))
+            {
+                weaponSpriteFile = ctrl.IsMale ? weapon.SpriteMale : weapon.SpriteFemale;
+                if (isEffect)
+                    weaponSpriteFile = ctrl.IsMale ? weapon.EffectMale : weapon.EffectFemale;
+            }
+
+            var bodyTransform = ctrl.SpriteAnimator.transform;
 
             var weaponObj = new GameObject("Weapon");
             weaponObj.layer = LayerMask.NameToLayer("Characters");
@@ -508,39 +527,58 @@ namespace Assets.Scripts.Sprites
 
             var weaponSprite = weaponObj.AddComponent<RoSpriteAnimator>();
 
-            weaponSprite.Parent = bodySprite;
+            weaponSprite.Parent = ctrl.SpriteAnimator;
             weaponSprite.SpriteOrder = 5;
             if (isEffect)
                 weaponSprite.SpriteOrder = 20;
 
-            bodySprite.PreferredAttackMotion = isMale ? weapon.AttackMale : weapon.AttackFemale;
-            bodySprite.ChildrenSprites.Add(weaponSprite);
+            ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? weapon.AttackMale : weapon.AttackFemale;
+            ctrl.SpriteAnimator.ChildrenSprites.Add(weaponSprite);
 
-            AddressableUtility.LoadRoSpriteData(parent, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
+            ctrl.AttachedComponents[attachPosition] = weaponObj;
+
+            AddressableUtility.LoadRoSpriteData(ctrl.gameObject, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
+            if(!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue); //attach effect sprite too
         }
 
 
-        private void LoadAndAttachHeadgear(GameObject parent, Transform bodyTransform, RoSpriteAnimator bodySprite, string headgearName,
-            bool isMale)
+        public void LoadAndAttachEquipmentSprite(ServerControllable ctrl, int itemId, EquipPosition position, int priority)
         {
-            var headgearObj = new GameObject("Headgear(Upper)");
+            if (ctrl.AttachedComponents.TryGetValue(position, out var existing))
+            {
+                ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
+                Destroy(existing);
+            }
+
+            if (!itemIdLookup.TryGetValue(itemId, out var hat) || !displaySpriteList.TryGetValue(hat.Code, out var hatSprite))
+                return;
+
+            var headgearObj = new GameObject(position.ToString());
             headgearObj.layer = LayerMask.NameToLayer("Characters");
-            headgearObj.transform.SetParent(bodyTransform, false);
+            headgearObj.transform.SetParent(ctrl.SpriteAnimator.transform, false);
             headgearObj.transform.localPosition = new Vector3(0f, 0f, -0.05f);
 
             var headgearSprite = headgearObj.AddComponent<RoSpriteAnimator>();
+            
+            headgearSprite.Parent = ctrl.SpriteAnimator;
+            headgearSprite.SpriteOrder = priority; //weapon is 5 so we should be below that
+            ctrl.SpriteAnimator.ChildrenSprites.Add(headgearSprite);
 
-            headgearSprite.Parent = bodySprite;
-            headgearSprite.SpriteOrder = 4;
-            bodySprite.ChildrenSprites.Add(headgearSprite);
+            var spriteName = $"Assets/Sprites/{(position != EquipPosition.Shield ? "Headgear" : "Shield")}/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
 
-            var spriteName = $"Assets/Sprites/Headgear/{(isMale ? "Male" : "Female")}/{headgearName}.spr";
+            ctrl.AttachedComponents[position] = headgearObj;
 
-            AddressableUtility.LoadRoSpriteData(parent, spriteName, headgearSprite.OnSpriteDataLoad);
+            if (!DoesAddressableExist<RoSpriteData>(spriteName))
+                Debug.LogWarning($"Could not load equipment sprite at path: {spriteName}");
+            else
+                AddressableUtility.LoadRoSpriteData(ctrl.gameObject, spriteName, headgearSprite.OnSpriteDataLoad);
         }
 
         public void AttachEmote(GameObject target, int emoteId)
         {
+            if (emoteId >= 34)
+                emoteId--; //34 is the chat prohibited marker, but it isn't actually an emote within emotes.spr
+
             var go = new GameObject("Emote");
             //go.layer = LayerMask.NameToLayer("Characters");
             var billboard = go.AddComponent<BillboardObject>();

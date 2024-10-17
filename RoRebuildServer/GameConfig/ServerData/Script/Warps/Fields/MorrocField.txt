@@ -86,7 +86,7 @@ Warp("moc_fild14", "morrocfieldwarp084", 196, 382, 4, 2, "moc_fild08", 204, 19);
 Warp("moc_fild15", "morrocfieldwarp085", 38, 105, 2, 4, "moc_fild11", 376, 197);
 Warp("moc_fild15", "morrocfieldwarp086", 104, 16, 9, 2, "moc_fild16", 125, 380);
 Warp("moc_fild15", "morrocfieldwarp087", 158, 363, 6, 2, "moc_fild09", 126, 23);
-Warp("moc_fild15", "morrocfieldwarp088", 258, 253, 3, 3, "anthell01", 35, 262);
+Warp("moc_fild15", "morrocfieldwarp088", 258, 253, 3, 3, "anthell02", 167, 170);
 Warp("moc_fild15", "morrocfieldwarp089", 348, 18, 5, 2, "moc_fild16", 334, 379);
 Warp("moc_fild15", "morrocfieldwarp090", 367, 276, 2, 4, "moc_fild14", 19, 278);
 Warp("moc_fild16", "morrocfieldwarp091", 16, 179, 2, 6, "moc_fild17", 366, 272);

@@ -2,6 +2,7 @@
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ namespace Assets.Scripts.UI.Inventory
         public GameObject ItemEntryPrefab;
         public ScrollRect ScrollArea;
         private List<InventoryEntry> entryList = new();
+        public TextMeshProUGUI WeightText;
         private int activeEntryCount;
         private int activeItemSection;
         private bool isInit;
@@ -69,11 +71,21 @@ namespace Assets.Scripts.UI.Inventory
         {
             if (!gameObject.activeSelf || NetworkManager.Instance?.PlayerState == null)
                 return;
-            
-            var inventory = NetworkManager.Instance.PlayerState.Inventory;
+
+            var state = NetworkManager.Instance.PlayerState;
+            var inventory = state.Inventory;
             activeEntryCount = 0;
+            var bagItems = inventory.GetInventoryData();
+            var curWeight = state.CurrentWeight / 10;
+            var totalWeight = state.MaxWeight / 10;
+
+            var weightPercent = curWeight * 100 / totalWeight;
+            var countText = bagItems.Count < 190 ? $"{bagItems.Count}/200" : $"<color=red>{bagItems.Count}</color>/200";
+            var percentText = weightPercent < 90 ? $"{weightPercent}%" : $"<color=red>{weightPercent}%</color>";
             
-            foreach (var bagEntry in inventory.GetInventoryData())
+            WeightText.text = $"Items: {countText}  Weight: {curWeight}/{totalWeight} ({percentText})";
+            
+            foreach (var bagEntry in bagItems)
             {
                 var item = bagEntry.Value;
                 if (activeItemSection == 0 && (item.ItemData.IsUnique || item.ItemData.UseType == ItemUseType.NotUsable)) continue;
@@ -89,6 +101,12 @@ namespace Assets.Scripts.UI.Inventory
 
                 var itemEntry = entryList[activeEntryCount];
                 var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.ItemData.Sprite);
+                if (sprite == null)
+                {
+                    Debug.LogWarning($"Failed to load sprite {item.ItemData.Sprite} for item {item.ItemData.Name}");
+                    sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite("Apple");
+                }
+
                 itemEntry.DragItem.Assign(DragItemType.Item, sprite, bagEntry.Key, item.Count);
                 itemEntry.gameObject.SetActive(true);
                 itemEntry.DragItem.gameObject.SetActive(true);
@@ -102,11 +120,11 @@ namespace Assets.Scripts.UI.Inventory
             }
             
             var left = ItemBoxRoot.anchoredPosition;
-            var entriesPerRow = (int)((ViewBoxTransform.rect.width - 20 + 5 - left.x) / UnitSize.x); //the 5 is cause there's no spacing after the last item in a row
+            var entriesPerRow = (int)((ViewBoxTransform.rect.width - 40 + 5 - left.x) / UnitSize.x); //the 5 is cause there's no spacing after the last item in a row
             var requiredRows = Mathf.CeilToInt((float)activeEntryCount / entriesPerRow);
             var requiredBoxes = entriesPerRow * requiredRows;
 
-            var minRows = (int)((ViewBoxTransform.rect.height - 10) / UnitSize.y);
+            var minRows = (int)((ViewBoxTransform.rect.height - 8) / UnitSize.y);
             var minBoxes = entriesPerRow * minRows;
             var totalBoxes = Mathf.Max(requiredBoxes, minBoxes);
             

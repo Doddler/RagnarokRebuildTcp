@@ -76,6 +76,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var head1 = msg.ReadInt32();
                 var head2 = msg.ReadInt32();
                 var head3 = msg.ReadInt32();
+                var weaponId = msg.ReadInt32();
+                var shieldId = msg.ReadInt32();
                 var isMain = Network.PlayerId == id;
                 if (isMain)
                 {
@@ -105,7 +107,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     CharacterStatusEffects = statuses,
                     Headgear1 = head1,
                     Headgear2 = head2,
-                    Headgear3 = head3
+                    Headgear3 = head3,
+                    Weapon = weaponId,
+                    Shield = shieldId
                 };
 
                 controllable = ClientDataLoader.Instance.InstantiatePlayer(ref playerData);

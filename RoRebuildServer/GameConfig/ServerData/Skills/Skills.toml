@@ -455,6 +455,24 @@ Name = "Call Minion"
 [GrandThunderstorm]
 Name = "Grand Thunderstorm"
 
+[FireAttack]
+Name = "Fire Attack"
+[IceAttack]
+Name = "Ice Attack"
+[WindAttack]
+Name = "Wind Attack"
+[EarthAttack]
+Name = "Earth Attack"
+[DarkAttack]
+Name = "Dark Attack"
+[HolyAttack]
+Name = "Holy Attack"
+[PoisonAttack]
+Name = "Poison Attack"
+[UndeadAttack]
+Name = "Undead Attack"
+[GhostAttack]
+Name = "Immaterial Attack"
 [SelfDestruct]
 Name = "Self Destruct"
 

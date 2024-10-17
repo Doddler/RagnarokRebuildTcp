@@ -123,8 +123,8 @@ GraphicsSettings:
   m_LightmapKeepShadowMask: 0
   m_LightmapKeepSubtractive: 0
   m_FogKeepLinear: 1
-  m_FogKeepExp: 1
-  m_FogKeepExp2: 1
+  m_FogKeepExp: 0
+  m_FogKeepExp2: 0
   m_AlbedoSwatchInfos: []
   m_LightsUseLinearIntensity: 0
   m_LightsUseColorTemperature: 0

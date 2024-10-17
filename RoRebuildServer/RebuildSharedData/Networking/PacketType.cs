@@ -51,6 +51,8 @@ public enum PacketType : byte
     ChangeName,
     [ServerOnlyPacket] Resurrection,
     UseInventoryItem,
+    EquipUnequipGear,
+    [ServerOnlyPacket] UpdateCharacterDisplayState,
     [ServerOnlyPacket] AddOrRemoveInventoryItem,
     [ServerOnlyPacket] EffectOnCharacter,
     [ServerOnlyPacket] EffectAtLocation,

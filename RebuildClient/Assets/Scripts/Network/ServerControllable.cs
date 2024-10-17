@@ -51,6 +51,8 @@ namespace Assets.Scripts.Network
         public GameObject PopupDialog;
         public List<Ragnarok3dEffect> EffectList;
 
+        public Dictionary<EquipPosition, GameObject> AttachedComponents = new();
+
         public string DisplayName => CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay ? Name : $"Lv.{Level} {Name}";
 
         [NonSerialized] public Vector3 CounterHitDir;

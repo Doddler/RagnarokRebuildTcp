@@ -27,3 +27,7 @@ Server and client for a Ragnarok Online-like game. Some assembly required.
 - Finally, select 'Ragnarok -> Update Addressables' to link all the newly imported assets. Any time you add sprites or maps, you will need to do this again.
 - At this point, you should be able to run the server. Make sure you set visual studio to run the server as a standalone rather than via IIS or IIS express (drop down next to the run button).
 - Once the server is running, hitting play in the editor should allow you to connect.
+
+## Special Considerations
+
+- A number of custom monsters exist within the project for which existing sprites do not exist, but like the other RO sprites these are excluded to avoid the project holding copywritten material. If you don't do something with these monsters they will appear in game with the default poring sprite so you may want to matching sprites for these monsters, adjust the sprite they use to other monsters, or simply remove them. These monsters are defined in ServerData/Db/Monsters.csv and have an ID starting with 6000 onwards, you can change the sprite field here or remove the monster entry entirely (the server will start with ignorable warnings). Remember when making changes to the server data to run updateclient.bat afterwards so the client remains up to date.

@@ -16,7 +16,7 @@ namespace Assets.Scripts.PlayerControl
         public ItemType Type;
         public RegularItem Item;
         public UniqueItem UniqueItem;
-
+        
         public int Id => Type == ItemType.RegularItem ? Item.Id : UniqueItem.Id;
 
         public InventoryItem(RegularItem item)
@@ -85,9 +85,9 @@ namespace Assets.Scripts.PlayerControl
     
     public class ClientInventory
     {
-        private readonly Dictionary<int, InventoryItem> inventoryLookup = new();
+        private readonly SortedDictionary<int, InventoryItem> inventoryLookup = new();
 
-        public Dictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
+        public SortedDictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
 
         public int GetItemCount(int itemId)
         {
@@ -114,6 +114,9 @@ namespace Assets.Scripts.PlayerControl
 
         public void UpdateItem(InventoryItem item)
         {
+            var change = item.Count;
+            if (inventoryLookup.TryGetValue(item.BagSlotId, out var existing))
+                change -= existing.Count;
             inventoryLookup[item.BagSlotId] = item;
         }
         

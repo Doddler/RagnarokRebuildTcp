@@ -1,9 +1,10 @@
-﻿namespace RoRebuildServer.EntityComponents.Monsters
+﻿namespace RoRebuildServer.EntityComponents.Monsters;
+
+public class MonsterDropData
 {
-    public class MonsterDropData
-    {
-        public List<(int, int)> DropChances = new();
+    public record MonsterDropEntry(int Id, int Chance, int CountMin = 1, int CountMax = 1);
+
+    public List<MonsterDropEntry> DropChances = new();
 
 
-    }
 }

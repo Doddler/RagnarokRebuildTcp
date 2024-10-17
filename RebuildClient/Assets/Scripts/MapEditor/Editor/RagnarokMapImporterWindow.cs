@@ -185,7 +185,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var entriesRemoved = new List<AddressableAssetEntry>();
 
             var monText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/monsterclass.json", typeof(TextAsset)) as TextAsset;
-            var monsters = JsonUtility.FromJson<DatabaseMonsterClassData>(monText.text);
+            var monsters = JsonUtility.FromJson<Wrapper<MonsterClassData>>(monText.text);
 
             //---------------------------------------------------------
             // Sprites
@@ -197,8 +197,8 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 var altPath = path.Replace("Imported/", "").Replace(".asset", ".spr");
-                var fName = Path.GetFileNameWithoutExtension(path);
-                if ((path.Contains("Monsters") && monsters.MonsterClassData.All(m => m.SpriteName.Replace(".spr","") != fName.ToLowerInvariant())) 
+                var fName = Path.GetFileNameWithoutExtension(altPath);
+                if ((path.Contains("Monsters") && monsters.Items.All(m => m.SpriteName.Replace(".spr","") != fName.ToLowerInvariant())) 
                     || !path.Contains("Imported"))
                 {
                     //Debug.Log("Not found: " + fName);

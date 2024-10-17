@@ -110,16 +110,24 @@ StateAny:
 }
 
 //------------------------------------
-// Mistress
+// Maya
 //------------------------------------
 
 SkillHandler("MAYA") {
-StateAny: 
-    TryCast(CallMinion, 1, 20%, 0.7s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
+StateAny: 
+    TryCast(CallMinion, 1, 20%, 0.7s, 45s)[MinionCount < 3] -> {
+		SummonMinions(1, "SOLDIER_ANDRE");
+		SummonMinions(1, "SOLDIER_PIERE");
+		SummonMinions(1, "SOLDIER_DENIRO");
+	};
 	TryCast(Heal, 9, 100%, 0s, 5s)[FindAllyBelowHpPercent(60)];
+StateChase:
+	TryCast(Heal, 4000, 20%, 0s, 10s)[HpPercent < 30];
+StateAttacking:
+	TryCast(Heal, 4000, 20%, 0s, 10s)[HpPercent < 30];
 }
-
 
 //------------------------------------
 // PHREEONI
@@ -181,7 +189,6 @@ StateIdle:
 
 	TryCast(CallMinion, 1, 100%, 0.3s, 5s, HideSkillName)[WasRangedAttacked] -> { @AmonRaMinionSpawn() }
 }
-
 
 //------------------------------------
 // Edga

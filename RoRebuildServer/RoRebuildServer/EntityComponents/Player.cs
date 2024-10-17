@@ -191,6 +191,7 @@ public class Player : IEntityAutoReset
         IsAdmin = ServerConfig.DebugConfig.UseDebugMode;
         //IsAdmin = true; //for now
     }
+
     public int AddItemToInventory(ItemReference item)
     {
         Inventory ??= CharacterBag.Borrow();
@@ -202,6 +203,9 @@ public class Player : IEntityAutoReset
         if (Inventory == null)
             return true;
         if (Inventory.UsedSlots >= 200)
+            return false;
+
+        if (item.Weight * item.Count + Inventory.BagWeight > GetStat(CharacterStat.WeightCapacity))
             return false;
 
         if (item.Type == ItemType.RegularItem && Inventory.RegularItems.TryGetValue(item.Item.Id, out var existing))
@@ -458,6 +462,8 @@ public class Player : IEntityAutoReset
         if (GetStat(CharacterStat.Sp) > newMaxSp)
             SetStat(CharacterStat.Sp, newMaxSp);
 
+        SetStat(CharacterStat.WeightCapacity, 24000 + GetEffectiveStat(CharacterStat.Str) * 300);
+
         var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
         if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Curse))
             moveBonus = 0.1f;
@@ -609,11 +615,13 @@ public class Player : IEntityAutoReset
 
         var hp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
-        var vit = GetEffectiveStat(CharacterStat.Vit);
+        var hpAddPercent = GetStat(CharacterStat.AddHpRecoveryPercent);
 
-        if (hp < maxHp)
+        if (hp < maxHp && hpAddPercent >= 0)
         {
+            var vit = GetEffectiveStat(CharacterStat.Vit);
             var regen = (maxHp / 50 + vit / 5) * (200 + vit) / 200;
+            regen = regen * (100 + hpAddPercent) / 100;
             //var regen = 1 + (maxHp / 50) * vit / 100; //original formula
             if (Character.State == CharacterState.Moving)
                 regen /= 2;
@@ -630,22 +638,29 @@ public class Player : IEntityAutoReset
 
         var sp = GetStat(CharacterStat.Sp);
         var maxSp = GetStat(CharacterStat.MaxSp);
-        var chInt = GetEffectiveStat(CharacterStat.Int);
+        var spAddPercent = GetStat(CharacterStat.AddSpRecoveryPercent);
 
-        if (sp < maxSp)
+        if (sp < maxSp && spAddPercent >= 0)
         {
+            var chInt = GetEffectiveStat(CharacterStat.Int);
             var regen = (maxSp / 100 + chInt / 6) * (200 + chInt) / 200;
             //var regen = maxSp / 100 + chInt / 5; //original formula
-            if (chInt > 120) regen += chInt - 120;
 
+            if (chInt > 120) regen += chInt - 120;
+            regen = regen * (100 + spAddPercent) / 100;
+            
             if (Character.State == CharacterState.Sitting)
                 regen *= 2;
+
+            if(regen < 1)
+                regen = 1;
 
             if (regen + sp > maxSp)
                 regen = maxSp - sp;
 
             SetStat(CharacterStat.Sp, sp + regen);
             CommandBuilder.ChangeSpValue(this, sp + regen, maxSp);
+        
         }
     }
 

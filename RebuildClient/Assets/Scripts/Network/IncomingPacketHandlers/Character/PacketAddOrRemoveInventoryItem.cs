@@ -14,22 +14,26 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
         public override void ReceivePacket(ClientInboundMessage msg)
         {
             var isAddItem = msg.ReadBoolean();
+            var oldWeight = State.CurrentWeight;
             if (isAddItem)
             {
                 var type = (ItemType)msg.ReadByte();
                 var bagId = msg.ReadInt32();
                 var change = (int)msg.ReadInt16();
+                State.CurrentWeight = msg.ReadInt32();
                 var item = InventoryItem.Deserialize(msg, type, bagId);
                 State.Inventory.UpdateItem(item);
-                Debug.Log($"Added {change} of item type {item.Id}");
+                Debug.Log($"Added {change} of item type {item.Id} (weight changed {State.CurrentWeight - oldWeight} to {State.CurrentWeight})");
             }
             else
             {
                 var bagId = msg.ReadInt32();
                 var change = (int)msg.ReadInt16();
+                State.CurrentWeight = msg.ReadInt32();
                 State.Inventory.RemoveItem(bagId, change);
-                Debug.Log($"Removed {change} of item with a bag Id {bagId}");
+                Debug.Log($"Removed {change} of item with a bag Id {bagId} (weight changed {State.CurrentWeight - oldWeight} to {State.CurrentWeight})");
             }
+
             UiManager.SkillHotbar.UpdateItemCounts();
             UiManager.InventoryWindow.UpdateActiveVisibleBag();
         }

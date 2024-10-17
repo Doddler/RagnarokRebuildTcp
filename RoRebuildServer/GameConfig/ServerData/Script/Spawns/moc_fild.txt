@@ -7,7 +7,7 @@ MapConfig("moc_fild01")
 	CreateSpawn("DROPS", 20);
 	CreateSpawn("DROPS", 10, %(319, 172, 53, 52));
 	CreateSpawn("PORING", 10, %(257, 240, 116, 127));
-	CreateSpawn("YELLOW_PLANT", 10, %(194, 51, 10, 10), 900000, 450000);
+	CreateSpawn("YELLOW_PLANT", 10, %(194, 51, 10, 10), 1m30s, 45s);
 }
 
 MapConfig("moc_fild02")
@@ -17,20 +17,20 @@ MapConfig("moc_fild02")
 	CreateSpawn("PECOPECO_EGG", 40);
 	CreateSpawn("PICKY", 10);
 	CreateSpawn("DROPS", 30);
-	CreateSpawn("YELLOW_PLANT", 1, %(89, 315, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(99, 261, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(94, 195, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(139, 222, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(132, 307, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(194, 294, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(275, 241, 0, 0), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 1, %(342, 267, 0, 0), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 1, %(359, 215, 0, 0), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 1, %(313, 149, 0, 0), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 1, %(230, 62, 0, 0), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 1, %(299, 61, 0, 0), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 1, %(353, 103, 0, 0), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 1, %(337, 35, 0, 0), 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 1, %(89, 315, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(99, 261, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(94, 195, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(139, 222, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(132, 307, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(194, 294, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(275, 241, 0, 0), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 1, %(342, 267, 0, 0), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 1, %(359, 215, 0, 0), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 1, %(313, 149, 0, 0), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 1, %(230, 62, 0, 0), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 1, %(299, 61, 0, 0), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 1, %(353, 103, 0, 0), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 1, %(337, 35, 0, 0), 2m, 2m);
 }
 
 MapConfig("moc_fild03")
@@ -40,14 +40,14 @@ MapConfig("moc_fild03")
 	CreateSpawn("POPORING", 30);
 	CreateSpawn("EGGYRA", 20);
 	CreateSpawn("WILOW", 30);
-	CreateSpawn("VAGABOND_WOLF", 1, 1800000, 1200000, Boss);
-	CreateSpawn("GREEN_PLANT", 2, %(77, 311, 5, 5), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 2, %(108, 199, 5, 5), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 2, %(96, 65, 5, 5), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 2, %(216, 69, 5, 5), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 2, %(261, 161, 5, 5), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 2, %(213, 201, 5, 5), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 2, %(200, 263, 5, 5), 180000, 90000);
+	CreateSpawn("VAGABOND_WOLF", 1, 30m, 20m, Boss);
+	CreateSpawn("GREEN_PLANT", 2, %(77, 311, 5, 5), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 2, %(108, 199, 5, 5), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 2, %(96, 65, 5, 5), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 2, %(216, 69, 5, 5), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 2, %(261, 161, 5, 5), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 2, %(213, 201, 5, 5), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 2, %(200, 263, 5, 5), 2m, 2m);
 }
 
 MapConfig("moc_fild04")
@@ -60,7 +60,7 @@ MapConfig("moc_fild04")
 	CreateSpawn("ANDRE", 20);
 	CreateSpawn("DENIRO", 20);
 	CreateSpawn("PIERE", 20);
-	CreateSpawn("YELLOW_PLANT", 10, %(313, 84, 10, 10), 900000, 450000);
+	CreateSpawn("YELLOW_PLANT", 10, %(313, 84, 10, 10), 1m30s, 45s);
 }
 
 MapConfig("moc_fild05")
@@ -85,7 +85,7 @@ MapConfig("moc_fild06")
 	CreateSpawn("DENIRO", 5);
 	CreateSpawn("PIERE", 5);
 	CreateSpawn("ANT_EGG", 10);
-	CreateSpawn("YELLOW_PLANT", 10, %(193, 203, 10, 10), 900000, 450000);
+	CreateSpawn("YELLOW_PLANT", 10, %(193, 203, 10, 10), 1m30s, 45s);
 }
 
 MapConfig("moc_fild07")
@@ -118,11 +118,11 @@ MapConfig("moc_fild09")
 	CreateSpawn("DENIRO", 5);
 	CreateSpawn("PIERE", 5);
 	CreateSpawn("FRILLDORA", 6);
-	CreateSpawn("YELLOW_PLANT", 2, %(332, 341, 5, 5), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 2, %(240, 313, 5, 5), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 2, %(305, 62, 5, 5), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 2, %(64, 78, 5, 5), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 2, %(54, 325, 5, 5), 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 2, %(332, 341, 5, 5), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 2, %(240, 313, 5, 5), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 2, %(305, 62, 5, 5), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 2, %(64, 78, 5, 5), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 2, %(54, 325, 5, 5), 2m, 2m);
 }
 
 MapConfig("moc_fild10")
@@ -134,8 +134,8 @@ MapConfig("moc_fild10")
 	CreateSpawn("PICKY_", 30);
 	CreateSpawn("MAGNOLIA", 1);
 	CreateSpawn("ANT_EGG", 10);
-	CreateSpawn("YELLOW_PLANT", 10, %(198, 150, 40, 30), 180000, 90000);
-	CreateSpawn("GREEN_PLANT", 5, %(198, 150, 40, 30), 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, %(198, 150, 40, 30), 2m, 2m);
+	CreateSpawn("GREEN_PLANT", 5, %(198, 150, 40, 30), 2m, 2m);
 }
 
 MapConfig("moc_fild11")
@@ -148,7 +148,7 @@ MapConfig("moc_fild11")
 	CreateSpawn("ANT_EGG", 10);
 	CreateSpawn("MAGNOLIA", 20);
 	CreateSpawn("MUKA", 20);
-	CreateSpawn("SHINING_PLANT", 1, %(197, 216, 0, 0), 1800000, 900000);
+	CreateSpawn("SHINING_PLANT", 1, %(197, 216, 0, 0), 30m, 15m);
 }
 
 MapConfig("moc_fild12")
@@ -157,7 +157,7 @@ MapConfig("moc_fild12")
 	CreateSpawn("PICKY", 50);
 	CreateSpawn("PECOPECO_EGG", 35);
 	CreateSpawn("DROPS", 35);
-	CreateSpawn("YELLOW_PLANT", 10, %(181, 336, 40, 20), 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, %(181, 336, 40, 20), 2m, 2m);
 }
 
 MapConfig("moc_fild13")
@@ -168,28 +168,28 @@ MapConfig("moc_fild13")
 	CreateSpawn("SIDE_WINDER", 40);
 	CreateSpawn("POPORING", 20);
 	CreateSpawn("DROPS", 20);
-	CreateSpawn("RED_MUSHROOM", 1, %(280, 99, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(264, 64, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(305, 91, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(264, 136, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(282, 155, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(265, 197, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(284, 227, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(304, 244, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(266, 289, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(307, 307, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(281, 333, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(304, 333, 0, 0), 180000, 90000);
-	CreateSpawn("RED_MUSHROOM", 1, %(295, 358, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(84, 329, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(93, 301, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(101, 297, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(89, 92, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(108, 150, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(109, 168, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 3, %(101, 185, 5, 5), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 3, %(106, 258, 5, 5), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 3, %(161, 273, 5, 5), 180000, 90000);
+	CreateSpawn("RED_MUSHROOM", 1, %(280, 99, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(264, 64, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(305, 91, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(264, 136, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(282, 155, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(265, 197, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(284, 227, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(304, 244, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(266, 289, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(307, 307, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(281, 333, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(304, 333, 0, 0), 2m, 2m);
+	CreateSpawn("RED_MUSHROOM", 1, %(295, 358, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(84, 329, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(93, 301, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(101, 297, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(89, 92, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(108, 150, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(109, 168, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 3, %(101, 185, 5, 5), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 3, %(106, 258, 5, 5), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 3, %(161, 273, 5, 5), 2m, 2m);
 }
 
 MapConfig("moc_fild14")
@@ -198,12 +198,12 @@ MapConfig("moc_fild14")
 	CreateSpawn("SIDE_WINDER", 40);
 	CreateSpawn("DESERT_WOLF_B", 10);
 	CreateSpawn("MAGNOLIA", 25);
-	CreateSpawn("SHINING_PLANT", 1, %(124, 93, 5, 5), 1800000, 900000);
-	CreateSpawn("YELLOW_PLANT", 1, %(85, 271, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(165, 282, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(149, 333, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(64, 342, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(160, 366, 0, 0), 180000, 90000);
+	CreateSpawn("SHINING_PLANT", 1, %(124, 93, 5, 5), 30m, 15m);
+	CreateSpawn("YELLOW_PLANT", 1, %(85, 271, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(165, 282, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(149, 333, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(64, 342, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(160, 366, 0, 0), 2m, 2m);
 }
 
 MapConfig("moc_fild15")
@@ -214,19 +214,20 @@ MapConfig("moc_fild15")
 	CreateSpawn("MAGNOLIA", 25);
 	CreateSpawn("ANDRE", 40);
 	CreateSpawn("ANT_EGG", 10);
-	CreateSpawn("PHREEONI", 1, 7200000, 3600000, MVP);
-	CreateSpawn("YELLOW_PLANT", 1, %(40, 126, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(57, 39, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(46, 250, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(104, 347, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(195, 373, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(341, 365, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(353, 230, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(341, 164, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(370, 85, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(158, 144, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(232, 126, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(294, 74, 0, 0), 180000, 90000);
+	CreateSpawn("SOLDIER_ANDRE", 6, %(257, 250, 25, 25), 2m, 1m, LockedArea);
+	CreateSpawn("PHREEONI", 1, 2h, 1h, MVP);
+	CreateSpawn("YELLOW_PLANT", 1, %(40, 126, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(57, 39, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(46, 250, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(104, 347, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(195, 373, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(341, 365, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(353, 230, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(341, 164, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(370, 85, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(158, 144, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(232, 126, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(294, 74, 0, 0), 2m, 2m);
 }
 
 MapConfig("moc_fild16")
@@ -251,13 +252,13 @@ MapConfig("moc_fild17")
 	CreateSpawn("ANT_EGG", 10);
 	CreateSpawn("SCORPION", 5);
 	CreateSpawn("SAND_MAN", 5);
-	CreateSpawn("YELLOW_PLANT", 1, %(40, 258, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(144, 151, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(243, 138, 0, 0), 180000, 90000);
-	CreateSpawn("BLUE_PLANT", 1, %(270, 106, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(335, 191, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(347, 224, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(359, 258, 0, 0), 180000, 90000);
+	CreateSpawn("YELLOW_PLANT", 1, %(40, 258, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(144, 151, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(243, 138, 0, 0), 2m, 2m);
+	CreateSpawn("BLUE_PLANT", 1, %(270, 106, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(335, 191, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(347, 224, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(359, 258, 0, 0), 2m, 2m);
 }
 
 MapConfig("moc_fild18")
@@ -277,14 +278,14 @@ MapConfig("moc_fild18")
 	//CreateSpawn("DENIRO", 5);
 	//CreateSpawn("PIERE", 5);
 	//CreateSpawn("ANT_EGG", 5);
-	CreateSpawn("DRAGON_FLY", 1, %(198, 138, 8,8), 3600000, 1800000, Boss).LockToSpawnZone();
-	CreateSpawn("HUNTER_FLY", 1, 7200000, 3600000);
-	CreateSpawn("YELLOW_PLANT", 1, %(143, 352, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(72, 333, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(119, 285, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(71, 210, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(135, 119, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(230, 144, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(325, 207, 0, 0), 180000, 90000);
-	CreateSpawn("YELLOW_PLANT", 1, %(325, 272, 0, 0), 180000, 90000);
+	CreateSpawn("DRAGON_FLY", 1, %(198, 138, 8,8), 30m, 15m, Boss).LockToSpawnZone();
+	CreateSpawn("HUNTER_FLY", 1, 60m, 30m);
+	CreateSpawn("YELLOW_PLANT", 1, %(143, 352, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(72, 333, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(119, 285, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(71, 210, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(135, 119, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(230, 144, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(325, 207, 0, 0), 2m, 2m);
+	CreateSpawn("YELLOW_PLANT", 1, %(325, 272, 0, 0), 2m, 2m);
 }

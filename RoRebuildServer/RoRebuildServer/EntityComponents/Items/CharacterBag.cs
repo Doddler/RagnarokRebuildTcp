@@ -10,6 +10,7 @@ using RebuildZoneServer.Networking;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Items;
 using System.Linq;
+using RoRebuildServer.Data;
 
 namespace RoRebuildServer.EntityComponents.Items;
 
@@ -43,6 +44,7 @@ public class CharacterBag : IResettable
     public Dictionary<Guid, int> UniqueItemBagIds = new();
 
     public int UsedSlots;
+    public int BagWeight;
     private int idIndex = 10000; //make sure we don't collide with regular item ids
 
     public static CharacterBag Borrow() => bagPool.Get();
@@ -87,19 +89,20 @@ public class CharacterBag : IResettable
     
     public int AddItem(ItemReference item)
     {
+        BagWeight += item.Count * DataManager.GetWeightForItem(item.Id);
         if (item.Type == ItemType.RegularItem)
             return AddItem(item.Item);
         else
             return AddItem(item.UniqueItem);
     }
     
-    public void AddItem(GroundItem item)
-    {
-        if (item.Type == ItemType.RegularItem)
-            AddItem(item.Item);
-        else
-            AddItem(item.UniqueItem);
-    }
+    //public void AddItem(GroundItem item)
+    //{
+    //    if (item.Type == ItemType.RegularItem)
+    //        AddItem(item.Item);
+    //    else
+    //        AddItem(item.UniqueItem);
+    //}
 
     public int AddItem(RegularItem item)
     {
@@ -159,6 +162,7 @@ public class CharacterBag : IResettable
                 RegularItems[id] = regular;
 
             itemOut = new ItemReference(new RegularItem() { Id = id, Count = (short) removeCount });
+            BagWeight -= removeCount * DataManager.GetWeightForItem(id);
             return true;
         }
 
@@ -170,6 +174,7 @@ public class CharacterBag : IResettable
             UniqueItemBagIds.Remove(unique.UniqueId);
             itemOut = new ItemReference(unique);
             UsedSlots--;
+            BagWeight -= removeCount * DataManager.GetWeightForItem(unique.Id);
             return true;
         }
 
@@ -190,6 +195,7 @@ public class CharacterBag : IResettable
         }
         else
             RegularItems[item.Id] = existing;
+        BagWeight -= item.Count * DataManager.GetWeightForItem(item.Id);
         return true;
     }
 
@@ -234,12 +240,14 @@ public class CharacterBag : IResettable
         Debug.Assert(RegularItems.Count == 0);
         Debug.Assert(UniqueItems.Count == 0);
 
+        BagWeight = 0;
         br.ReadInt32(); //reserved, if the bag format changes we'll use a version number here to do migrations
         var regularCount = br.ReadInt32();
         for (var i = 0; i < regularCount; i++)
         {
             var item = RegularItem.Deserialize(br);
             RegularItems.Add(item.Id, item);
+            BagWeight += item.Count * DataManager.GetWeightForItem(item.Id);
         }
 
         var uniqueCount = br.ReadInt32();
@@ -250,6 +258,7 @@ public class CharacterBag : IResettable
             var item = UniqueItem.Deserialize(br);
             UniqueItems.Add(id, item);
             UniqueItemBagIds.Add(item.UniqueId, id);
+            BagWeight += item.Count * DataManager.GetWeightForItem(item.Id);
         }
 
         var sanity = br.ReadInt32();

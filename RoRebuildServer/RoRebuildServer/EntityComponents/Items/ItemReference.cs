@@ -24,10 +24,10 @@ namespace RoRebuildServer.EntityComponents.Items
                 switch (Type)
                 {
                     case ItemType.RegularItem:
-                        Item.Count = (short) value;
+                        Item.Count = (short)value;
                         break;
                     case ItemType.UniqueItem:
-                        UniqueItem.Count = (short) value;
+                        UniqueItem.Count = (short)value;
                         break;
                     default:
                         throw new Exception($"Cannot increase count on an ItemReference as it is not a valid item reference (type = none)");
@@ -35,7 +35,14 @@ namespace RoRebuildServer.EntityComponents.Items
             }
         }
 
-    public int Id => Type switch
+        public int Weight => Type switch
+        {
+            ItemType.RegularItem => DataManager.GetWeightForItem(Item.Id),
+            ItemType.UniqueItem => DataManager.GetWeightForItem(UniqueItem.Id), 
+            _ => 0
+        };
+
+        public int Id => Type switch
         {
             ItemType.RegularItem => Item.Id,
             ItemType.UniqueItem => UniqueItem.Id,
@@ -75,7 +82,7 @@ namespace RoRebuildServer.EntityComponents.Items
                 Item.Serialize(msg);
             else
             {
-                if(asRegularItem)
+                if (asRegularItem)
                     UniqueItem.SerializeAsRegularItem(msg);
                 else
                     UniqueItem.Serialize(msg);

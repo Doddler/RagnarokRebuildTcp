@@ -69,7 +69,9 @@ public static class DataManager
     
     public static bool IsJobInEquipGroup(string equipGroup, int job) => EquipGroupInfo.TryGetValue(equipGroup, out var set) && set.Contains(job);
     public static int GetEffectForItem(int item) => UseItemInfo.TryGetValue(item, out var effect) ? effect.Effect : -1;
-    
+    public static int GetWeightForItem(int item) => ItemList.TryGetValue(item, out var itemOut) ? itemOut.Weight : 0;
+    public static ItemInfo? GetItemInfoById(int id) => ItemList.TryGetValue(id, out var item) ? item : null;
+
     public static List<MonsterAiEntry> GetAiStateMachine(MonsterAiType monsterType)
     {
         return monsterAiList[(int)monsterType];

@@ -10,6 +10,13 @@ StateChase:
     TryCast(NoCast, 3, 2%, 0, 5s) -> SendEmote(19); //sweating
 }
 
+SkillHandler("FUNGUS") {
+StateIdle:
+	TryCast(NoCast, 3, 5%, 0, 5s) -> SendEmote(7); //angry
+StateChase:
+    TryCast(NoCast, 3, 2%, 0, 5s) -> SendEmote(19); //sweating
+}
+
 SkillHandler("SAVAGE") {
 StateRandomMove:
     TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle

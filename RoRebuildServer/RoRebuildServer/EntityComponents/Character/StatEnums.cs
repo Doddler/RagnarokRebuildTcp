@@ -82,15 +82,18 @@ public enum CharacterStat
     OverrideElement,
     MonsterStatsMax, //any stats after this are stats only players will be able to hold.
 
+    WeightCapacity,
     WeaponMastery,
     DoubleAttackChance,
     PercentVsDemon,
     PercentVsUndead,
     ReductionFromDemon,
     ReductionFromUndead,
-    CharacterStatsMax,
     AddSpRecoveryPercent,
-    AddHpRecoveryPercent
+    AddHpRecoveryPercent,
+
+
+    CharacterStatsMax,
 }
 
 public enum TimingStat

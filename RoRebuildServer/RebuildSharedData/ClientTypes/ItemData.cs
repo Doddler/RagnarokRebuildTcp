@@ -25,4 +25,3 @@ public class ItemDataList
 {
     public List<ItemData> Items = null!;
 }
-

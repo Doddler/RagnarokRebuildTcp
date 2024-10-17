@@ -14,11 +14,12 @@ MapConfig("mjolnir_01")
 
 MapConfig("mjolnir_02")
 {
-	CreateSpawn("HORNET", 30);
+	CreateSpawn("HORNET", 20);
 	CreateSpawn("CREAMY", 20);
-	CreateSpawn("PETIT", 35);
+	CreateSpawn("FUNGUS", 55);
 	CreateSpawn("POPORING", 10);
-	CreateSpawn("FLORA", 30);
+	CreateSpawn("FLORA", 40);
+	CreateSpawn("DEATHSPORE", 1, 30m, 15m, Boss);
 	CreateSpawn("GREEN_PLANT", 1, %(86, 270, 0, 0), 180000, 90000);
 	CreateSpawn("GREEN_PLANT", 1, %(80, 211, 0, 0), 180000, 90000);
 	CreateSpawn("GREEN_PLANT", 1, %(86, 270, 0, 0), 180000, 90000);
@@ -82,11 +83,11 @@ MapConfig("mjolnir_03")
 
 MapConfig("mjolnir_04")
 {
-	CreateSpawn("MANTIS", 20);
+	CreateSpawn("MANTIS", 15);
 	CreateSpawn("HORNET", 70);
-	CreateSpawn("POPORING", 10);
-	CreateSpawn("POPORING", 30);
-	CreateSpawn("ARGIOPE", 20);
+	CreateSpawn("PETIT", 35);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("ARGIOPE", 10);
 	CreateSpawn("FLORA", 30);
 	CreateSpawn("MISTRESS", 1, 7200000, 3600000, MVP);
 	CreateSpawn("SHINING_PLANT", 3, %(200, 200, 30, 30), 1800000, 900000);
@@ -130,6 +131,7 @@ MapConfig("mjolnir_06")
 	CreateSpawn("COCO", 20);
 	CreateSpawn("POPORING", 20);
 	CreateSpawn("CARAMEL", 40);
+	CreateSpawn("POISON_SPORE", 10, %(301, 204, 68, 145), 2m, 1m);
 	CreateSpawn("BLUE_PLANT", 1, %(162, 285, 0, 0), 360000, 180000);
 	CreateSpawn("BLUE_PLANT", 1, %(162, 255, 0, 0), 360000, 180000);
 	CreateSpawn("RED_MUSHROOM", 1, %(304, 98, 0, 0), 180000, 90000);
@@ -149,7 +151,8 @@ MapConfig("mjolnir_07")
 	CreateSpawn("COCO", 20);
 	CreateSpawn("HORN", 20);
 	CreateSpawn("POPORING", 20);
-	CreateSpawn("HORNET", 20);
+	CreateSpawn("HORNET", 15);
+	CreateSpawn("FUNGUS", 7, %(193, 333, 176, 46), 5m, 1m);
 	CreateSpawn("GREEN_PLANT", 1, %(314, 133, 0, 0), 180000, 90000);
 	CreateSpawn("GREEN_PLANT", 1, %(299, 145, 0, 0), 180000, 90000);
 	CreateSpawn("GREEN_PLANT", 1, %(272, 152, 0, 0), 180000, 90000);

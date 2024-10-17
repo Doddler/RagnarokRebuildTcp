@@ -17,6 +17,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             var maxHp = msg.ReadInt32();
             var sp = msg.ReadInt32();
             var maxSp = msg.ReadInt32();
+            State.CurrentWeight = msg.ReadInt32();
+            State.MaxWeight = msg.ReadInt32();
             State.SkillPoints = msg.ReadInt32();
             var skills = msg.ReadInt32();
             

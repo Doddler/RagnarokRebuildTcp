@@ -77,7 +77,7 @@ public partial class Monster
     {
         return CombatEntity.GetStat(CharacterStat.Disabled) <= 0;
     }
-    
+
     private bool AdjustToAdjacentTile()
     {
         var start = GameRandom.NextInclusive(1) == 1 ? -1 : 1;
@@ -121,7 +121,7 @@ public partial class Monster
 
         return false;
     }
-    
+
     /// <summary>
     /// Checks the status of the monster's current target, and returns true if the monster can no longer see or reach that target.
     /// </summary>
@@ -481,7 +481,13 @@ public partial class Monster
     {
         Target = Entity.Null;
 
-        nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
+        var extraTime = 0f;
+
+        if (Character.Map!.IsEntityStacked(Character))
+            if (AdjustToAdjacentTile())
+                extraTime = 2f;
+        
+        nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f) + extraTime;
         inAdjustMove = false;
 
         return true;

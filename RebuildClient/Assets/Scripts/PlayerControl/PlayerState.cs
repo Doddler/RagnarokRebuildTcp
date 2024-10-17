@@ -17,6 +17,8 @@ namespace Assets.Scripts.PlayerControl
         public ClientSkillTree SkillTree;
         public int SkillPoints;
         public int JobId;
+        public int CurrentWeight = 0;
+        public int MaxWeight = 3000;
         public Dictionary<CharacterSkill, int> KnownSkills = new();
         public bool IsAdminHidden = false;
         public ClientInventory Inventory = new();

@@ -1,5 +1,5 @@
 {
-  "MonsterClassData": [
+  "Items": [
     {
       "Id": 3999,
       "Code": "EFFECT",
@@ -3365,6 +3365,105 @@
       "Size": 1,
       "AttackTiming": 0.62,
       "Color": "#F9EFBAFF"
+    },
+    {
+      "Id": 4304,
+      "Code": "SOLDIER_ANDRE",
+      "Name": "Soldier Andre",
+      "SpriteName": "soldier_andre.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.18,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4305,
+      "Code": "SOLDIER_DENIRO",
+      "Name": "Soldier Deniro",
+      "SpriteName": "soldier_deniro.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.144,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4306,
+      "Code": "SOLDIER_PIERE",
+      "Name": "Soldier Piere",
+      "SpriteName": "soldier_piere.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.144,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4307,
+      "Code": "ANDRE_LARVA",
+      "Name": "Andre Larva",
+      "SpriteName": "andre_larva.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1,
+      "AttackTiming": 0.18,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4308,
+      "Code": "DENIRO_LARVA",
+      "Name": "Deniro Larva",
+      "SpriteName": "deniro_larva.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1,
+      "AttackTiming": 0.144,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4309,
+      "Code": "PIERE_LARVA",
+      "Name": "Piere Larva",
+      "SpriteName": "piere_larva.spr",
+      "Offset": 0,
+      "ShadowSize": 0.25,
+      "Size": 1,
+      "AttackTiming": 0.144,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4310,
+      "Code": "ANT_EGG2",
+      "Name": "Mature Ant Egg",
+      "SpriteName": "ant_egg.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1.05,
+      "AttackTiming": 0.672,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4311,
+      "Code": "FUNGUS",
+      "Name": "Fungus",
+      "SpriteName": "fungus.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.528,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 4312,
+      "Code": "DEATHSPORE",
+      "Name": "Deathspore",
+      "SpriteName": "deathspore.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.528,
+      "Color": "#FFFFFFFF"
     },
     {
       "Id": 1000,

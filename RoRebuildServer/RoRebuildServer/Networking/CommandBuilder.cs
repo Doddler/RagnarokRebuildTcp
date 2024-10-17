@@ -168,9 +168,13 @@ public static class CommandBuilder
             packet.Write((byte)player.WeaponClass);
             packet.Write(player.IsMale);
             packet.Write(player.Name);
-            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
-            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid));
+            packet.Write(2253);
+            packet.Write(5176);
+            //packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
+            //packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid));
             packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom));
+            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon));
+            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Shield));
 
             packet.Write(isSelf);
         }
@@ -216,6 +220,8 @@ public static class CommandBuilder
         packet.Write(p.GetStat(CharacterStat.MaxHp));
         packet.Write(p.GetStat(CharacterStat.Sp));
         packet.Write(p.GetStat(CharacterStat.MaxSp));
+        packet.Write(p.Inventory?.BagWeight ?? 0);
+        packet.Write(p.GetStat(CharacterStat.WeightCapacity));
         packet.Write(p.GetData(PlayerStat.SkillPoints));
         packet.Write(p.LearnedSkills.Count);
         foreach (var skill in p.LearnedSkills)
@@ -1036,6 +1042,7 @@ public static class CommandBuilder
         packet.Write((byte)item.Type);
         packet.Write(bagId);
         packet.Write((short)change);
+        packet.Write(p.Inventory?.BagWeight ?? 0);
         item.Serialize(packet);
 
         NetworkManager.SendMessage(packet, p.Connection);
@@ -1047,6 +1054,7 @@ public static class CommandBuilder
         packet.Write(false); //isAdd
         packet.Write(bagId);
         packet.Write((short)change);
+        packet.Write(p.Inventory?.BagWeight ?? 0);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

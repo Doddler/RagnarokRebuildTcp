@@ -98,11 +98,16 @@ MapConfig("anthell01")
 
 MapConfig("anthell02")
 {
-	CreateSpawn("ANT_EGG", 15);
-	CreateSpawn("FARMILIAR", 20);
-	CreateSpawn("ANDRE", 40);
-	CreateSpawn("PIERE", 15);
-	CreateSpawn("DENIRO", 15);
+	CreateSpawn("ANT_EGG2", 15);
+	CreateSpawn("FARMILIAR", 5);
+	CreateSpawn("DRAINLIAR", 15);
+	CreateSpawn("SOLDIER_ANDRE", 40);
+	CreateSpawn("SOLDIER_PIERE", 15);
+	CreateSpawn("SOLDIER_DENIRO", 15);
+	CreateSpawn("ANDRE_LARVA", 10);
+	CreateSpawn("PIERE_LARVA", 5);
+	CreateSpawn("DENIRO_LARVA", 5);
+	//CreateSpawn("ARCLOUSE", 1);
 	CreateSpawn("VITATA", 30);
 	CreateSpawn("GIEARTH", 3, 60000, 30000);
 	CreateSpawn("MAYA", 1, 7200000, 3600000, MVP);

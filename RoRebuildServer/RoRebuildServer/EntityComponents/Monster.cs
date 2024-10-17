@@ -416,10 +416,13 @@ public partial class Monster : IEntityAutoReset
             for (var i = 0; i < drops.DropChances.Count; i++)
             {
                 var d = drops.DropChances[i];
-                if (GameRandom.Next(10000) <= d.Item2)
+                if (GameRandom.Next(10000) <= d.Chance)
                 {
+                    var count = 1;
+                    if (d.CountMax > 1)
+                        count = GameRandom.NextInclusive(d.CountMin, d.CountMax);
                     var dropPos = GetNextTileForDrop(dropId);
-                    var item = new GroundItem(dropPos, d.Item1, 1);
+                    var item = new GroundItem(dropPos, d.Id, count);
                     Character.Map.DropGroundItem(ref item);
                     dropId++;
                 }

@@ -95,6 +95,7 @@ class Program
         itemList.Items = new List<ItemData>();
         var prefixList = new CardPrefixDataList();
         prefixList.Items = new List<CardPrefixData>();
+
         var displaySpriteList = new StringBuilder();
 
         foreach (var entry in GetCsvRows<CsvItemUseable>("ItemsUsable.csv"))
@@ -428,18 +429,20 @@ class Program
         LoadNpcData(mData);
         WriteExpChart();
 
-        var dbTable = new DatabaseMonsterClassData();
-        dbTable.MonsterClassData = mData;
+        SaveToClient("monsterclass.json", mData);
 
-        JsonSerializerOptions options = new JsonSerializerOptions();
-        options.SetupExtensions();
-        options.WriteIndented = true;
+        //var dbTable = new DatabaseMonsterClassData();
+        //dbTable.MonsterClassData = mData;
 
-        var json = JsonSerializer.Serialize(dbTable, options);
+        //JsonSerializerOptions options = new JsonSerializerOptions();
+        //options.SetupExtensions();
+        //options.WriteIndented = true;
 
-        var monsterDir = Path.Combine(outPath, "monsterclass.json");
+        //var json = JsonSerializer.Serialize(dbTable, options);
 
-        File.WriteAllText(monsterDir, json);
+        //var monsterDir = Path.Combine(outPath, "monsterclass.json");
+
+        //File.WriteAllText(monsterDir, json);
 
     }
 

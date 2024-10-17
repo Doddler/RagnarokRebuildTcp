@@ -324,6 +324,20 @@ internal class DataLoader
                         if (string.IsNullOrWhiteSpace(itemName))
                             continue;
 
+                        var rangeMin = 1;
+                        var rangeMax = 1;
+                        if (itemName.Contains("#"))
+                        {
+                            var countSection = itemName.AsSpan(itemName.IndexOf('#') + 1);
+                            if (countSection.Contains('-'))
+                            {
+                                rangeMin = int.Parse(countSection[..countSection.IndexOf('-')]);
+                                rangeMax = int.Parse(countSection[(countSection.IndexOf('-') + 1)..]);
+                            }
+
+                            itemName = itemName.Substring(0, itemName.IndexOf('#'));
+                        }
+
                         if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
                         {
                             ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
@@ -347,7 +361,7 @@ internal class DataLoader
                         }
 
                         if (item > 0) //for debug reasons mostly
-                            data.DropChances.Add((item, chance));
+                            data.DropChances.Add(new MonsterDropData.MonsterDropEntry(item, chance, rangeMin, rangeMax));
                     }
                 }
 
@@ -494,14 +508,14 @@ internal class DataLoader
             {
                 Code = entry.Code,
                 Id = entry.Id,
-                IsUnique = false,
-                ItemClass = ItemClass.Useable,
+                IsUnique = true,
+                ItemClass = ItemClass.Equipment,
                 Price = entry.Price,
                 Weight = entry.Weight,
             };
             itemList.Add(item.Id, item);
 
-            var weaponInfo = new ArmorInfo()
+            var armorInfo = new ArmorInfo()
             {
                 Defense = entry.Defense,
                 MagicDefense = entry.MagicDef,
@@ -513,7 +527,7 @@ internal class DataLoader
                 EquipPosition = entry.Type,
                 MinLvl = entry.MinLvl
             };
-            returnList.Add(entry.Id, weaponInfo);
+            returnList.Add(entry.Id, armorInfo);
         }
 
         return returnList;
@@ -528,8 +542,8 @@ internal class DataLoader
             {
                 Code = entry.Code,
                 Id = entry.Id,
-                IsUnique = false,
-                ItemClass = ItemClass.Useable,
+                IsUnique = true,
+                ItemClass = ItemClass.Weapon,
                 Price = entry.Price,
                 Weight = entry.Weight,
             };
