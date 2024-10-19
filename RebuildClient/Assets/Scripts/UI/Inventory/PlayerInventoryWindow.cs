@@ -113,6 +113,8 @@ namespace Assets.Scripts.UI.Inventory
 
                 if (item.ItemData.UseType == ItemUseType.Use)
                     itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendUseItem(bagEntry.Key);
+                else if (item.ItemData.ItemClass == ItemClass.Weapon || item.ItemData.ItemClass == ItemClass.Equipment)
+                    itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendEquipItem(bagEntry.Key);
                 else
                     itemEntry.DragItem.OnDoubleClick = null;
 

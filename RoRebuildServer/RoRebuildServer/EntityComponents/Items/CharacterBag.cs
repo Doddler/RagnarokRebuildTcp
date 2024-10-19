@@ -39,9 +39,20 @@ public class CharacterBag : IResettable
 {
     private static ObjectPool<CharacterBag> bagPool = new DefaultObjectPool<CharacterBag>(new CharacterBagPool(), 128);
 
+    //ok this kinda sucks. Here's how this mess works.
+
+    // First have regular items, which are indexed by item id. These are any items that stack.
     public Dictionary<int, RegularItem> RegularItems = new();
+
+    // Then we have unique items, they are indexed by a unique bag index so the player can refer to duplicates of the same id.
     public Dictionary<int, UniqueItem> UniqueItems = new();
-    public Dictionary<Guid, int> UniqueItemBagIds = new();
+
+    // Since we may need to know via script if you have a specific type of unique item, we store the amount of that item you have separately.
+    public Dictionary<int, int> UniqueItemCounts = new();
+
+    // Lastly we need to sometimes know if the player is holding a specific unique item, so we have a lookup for unique guid to bag id.
+    public Dictionary<Guid, int> UniqueItemBagIds = new(); //is this even used?
+    
 
     public int UsedSlots;
     public int BagWeight;
@@ -49,12 +60,23 @@ public class CharacterBag : IResettable
 
     public static CharacterBag Borrow() => bagPool.Get();
     public static void Return(CharacterBag bag) => bagPool.Return(bag);
-
+    
     public static CharacterBag FromExisting(IBinaryMessageReader br)
     {
         var bag = Borrow();
         bag.Deserialize(br);
         return bag;
+    }
+
+    public bool HasItem(int id) => RegularItems.ContainsKey(id) || UniqueItemCounts.ContainsKey(id);
+
+    public int GetItemCount(int id)
+    {
+        if(RegularItems.TryGetValue(id, out var regItem))
+            return regItem.Count;
+        if (UniqueItemCounts.TryGetValue(id, out var uniqueCount))
+            return uniqueCount;
+        return 0;
     }
 
     public bool TryReset()
@@ -117,7 +139,7 @@ public class CharacterBag : IResettable
         RegularItems.Add(item.Id, item);
         return item.Count;
     }
-
+    
     public int GetUniqueItemIdByGuid(Guid id)
     {
         //boring and slow linear search
@@ -170,11 +192,14 @@ public class CharacterBag : IResettable
         {
             if (unique.Count != removeCount)
                 throw new Exception($"Cannot split stacks on unique items!");
+            
             UniqueItems.Remove(id);
             UniqueItemBagIds.Remove(unique.UniqueId);
             itemOut = new ItemReference(unique);
             UsedSlots--;
             BagWeight -= removeCount * DataManager.GetWeightForItem(unique.Id);
+            if (UniqueItemCounts.TryGetValue(id, out var curCount))
+                UniqueItemCounts[id] = curCount - unique.Count;
             return true;
         }
 
@@ -209,6 +234,10 @@ public class CharacterBag : IResettable
         UniqueItemBagIds.Add(item.UniqueId, id);
         UsedSlots++;
         idIndex++;
+        if (UniqueItemCounts.TryGetValue(item.Id, out var curCount))
+            UniqueItemCounts[item.Id] = curCount + item.Count;
+        else
+            UniqueItemCounts.Add(item.Id, item.Count);
         return id;
     }
 
@@ -259,6 +288,10 @@ public class CharacterBag : IResettable
             UniqueItems.Add(id, item);
             UniqueItemBagIds.Add(item.UniqueId, id);
             BagWeight += item.Count * DataManager.GetWeightForItem(item.Id);
+            if (UniqueItemCounts.TryGetValue(item.Id, out var curCount))
+                UniqueItemCounts[item.Id] = curCount + item.Count;
+            else
+                UniqueItemCounts.Add(item.Id, item.Count);
         }
 
         var sanity = br.ReadInt32();

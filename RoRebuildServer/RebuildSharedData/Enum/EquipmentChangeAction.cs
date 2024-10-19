@@ -10,3 +10,12 @@ public enum EquipmentChangeAction
     Unequip,
     UnequipAll
 }
+
+public enum EquipChangeResult
+{
+    Success,
+    InvalidItem,
+    LevelTooLow,
+    NotApplicableJob,
+    InvalidPosition
+}

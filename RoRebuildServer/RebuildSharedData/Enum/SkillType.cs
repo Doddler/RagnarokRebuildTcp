@@ -24,16 +24,17 @@ namespace RebuildSharedData.Enum
     }
 
     [Flags]
-    public enum AttackFlags : byte
+    public enum AttackFlags : short
     {
         Neutral = 0,
         Physical = 1,
         Magical = 2,
         CanCrit = 4,
-        CanHarmAllies = 8,
-        IgnoreDefense = 16,
-        IgnoreEvasion = 32,
-        NoDamageModifiers = 64,
-        NoElement = 128
+        GuaranteeCrit = 8,
+        CanHarmAllies = 16,
+        IgnoreDefense = 32,
+        IgnoreEvasion = 64,
+        NoDamageModifiers = 128,
+        NoElement = 256
     }
 }

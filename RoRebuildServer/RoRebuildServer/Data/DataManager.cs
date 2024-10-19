@@ -22,45 +22,41 @@ namespace RoRebuildServer.Data;
 
 public static class DataManager
 {
-    private static List<MonsterDatabaseInfo> monsterStats;
-    public static Dictionary<int, MonsterDatabaseInfo> MonsterIdLookup;
-    public static Dictionary<string, MonsterDatabaseInfo> MonsterCodeLookup;
-    public static Dictionary<string, MonsterDatabaseInfo> MonsterNameLookup;
+    public static ReadOnlyDictionary<int, MonsterDatabaseInfo> MonsterIdLookup;
+    public static ReadOnlyDictionary<string, MonsterDatabaseInfo> MonsterCodeLookup;
+    public static ReadOnlyDictionary<string, MonsterDatabaseInfo> MonsterNameLookup;
     public static Dictionary<string, MonsterSkillAiBase> MonsterSkillAiHandlers;
     public static List<string> MvpMonsterCodes;
-
-    private static List<List<MonsterAiEntry>> monsterAiList;
-    
-    private static List<MapEntry> mapList;
+    public static List<InstanceEntry> InstanceList;
+    public static ReadOnlyDictionary<string, Action<ServerMapConfig>> MapConfigs;
 
     public static Assembly ScriptAssembly;
     public static NpcBehaviorManager NpcManager;
-    
-    public static List<InstanceEntry> InstanceList;
-    public static Dictionary<string, Action<ServerMapConfig>> MapConfigs;
 
-    public static Dictionary<CharacterSkill, SkillData> SkillData;
-    public static Dictionary<int, JobInfo> JobInfo;
-    public static Dictionary<string, int> JobIdLookup;
-    public static Dictionary<string, int> ItemIdByName;
-    public static Dictionary<int, ItemInfo> ItemList { get; set; }
-    public static Dictionary<string, MonsterDropData> MonsterDropData { get; set; }
-    public static Dictionary<int, PlayerSkillTree> SkillTree; //SkillTree[Job][Skill] { (Prereq, lvl) } 
-    public static Dictionary<int, Dictionary<int, int>> JobMaxHpLookup;
-    public static Dictionary<int, Dictionary<int, int>> JobMaxSpLookup;
-
+    public static ReadOnlyDictionary<CharacterSkill, SkillData> SkillData;
+    public static ReadOnlyDictionary<int, JobInfo> JobInfo;
+    public static ReadOnlyDictionary<string, int> JobIdLookup;
+    public static ReadOnlyDictionary<string, int> ItemIdByName;
+    public static ReadOnlyDictionary<int, ItemInfo> ItemList;
     public static Dictionary<string, int> EffectIdForName;
-
+    public static ReadOnlyDictionary<string, MonsterDropData> MonsterDropData;
+    public static ReadOnlyDictionary<int, PlayerSkillTree> SkillTree; //SkillTree[Job][Skill] { (Prereq, lvl) } 
+    public static ReadOnlyDictionary<int, int[]> JobMaxHpLookup;
+    public static ReadOnlyDictionary<int, int[]> JobMaxSpLookup;
     public static ReadOnlyDictionary<string, SavePosition> SavePoints;
+    public static ReadOnlyDictionary<int, int> JobExtendsList;
 
-    public static Dictionary<int, int> JobExtendsList;
+    public static ReadOnlyDictionary<string, int> WeaponClasses;
+    public static ReadOnlyDictionary<string, HashSet<int>> EquipGroupInfo;
+    public static ReadOnlyDictionary<int, WeaponInfo> WeaponInfo;
+    public static ReadOnlyDictionary<int, ArmorInfo> ArmorInfo;
+    public static ReadOnlyDictionary<int, CardInfo> CardInfo;
+    public static ReadOnlyDictionary<int, AmmoInfo> AmmoInfo;
+    public static ReadOnlyDictionary<int, UseItemInfo> UseItemInfo;
 
-    public static Dictionary<string, HashSet<int>> EquipGroupInfo;
-    public static Dictionary<int, WeaponInfo> WeaponInfo;
-    public static Dictionary<int, ArmorInfo> ArmorInfo;
-    public static Dictionary<int, CardInfo> CardInfo;
-    public static Dictionary<int, AmmoInfo> AmmoInfo;
-    public static Dictionary<int, UseItemInfo> UseItemInfo;
+    private static List<MonsterDatabaseInfo> monsterStats;
+    private static List<List<MonsterAiEntry>> monsterAiList;
+    private static List<MapEntry> mapList;
 
     public static List<MapEntry> Maps => mapList;
     
@@ -140,13 +136,16 @@ public static class DataManager
         JobMaxHpLookup = loader.LoadMaxHpChart();
         JobMaxSpLookup = loader.LoadMaxSpChart();
 
+        WeaponClasses = loader.LoadWeaponClasses();
         EquipGroupInfo = loader.LoadEquipGroups();
-        ItemList = loader.LoadItemsRegular();
-        ArmorInfo = loader.LoadItemsArmor(ItemList);
-        WeaponInfo = loader.LoadItemsWeapon(ItemList);
-        CardInfo = loader.LoadItemsCards(ItemList);
-        UseItemInfo = loader.LoadUseableItems(ItemList); //dependent on effectId loaded earlier
-        AmmoInfo = loader.LoadItemsAmmo(ItemList);
+        var items = loader.LoadItemsRegular();
+        ArmorInfo = loader.LoadItemsArmor(items);
+        WeaponInfo = loader.LoadItemsWeapon(items);
+        CardInfo = loader.LoadItemsCards(items);
+        UseItemInfo = loader.LoadUseableItems(items); //dependent on effectId loaded earlier
+        AmmoInfo = loader.LoadItemsAmmo(items);
+
+        ItemList = items.AsReadOnly();
 
         ItemIdByName = loader.GenerateItemIdByNameLookup();
         SavePoints = loader.LoadSavePoints().AsReadOnly();
@@ -157,16 +156,20 @@ public static class DataManager
         ScriptAssembly = ScriptLoader.LoadAssembly();
         NpcManager = new NpcBehaviorManager();
         
-        MonsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
-        MonsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
-        MonsterNameLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
+        var monsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
+        var monsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
+        var monsterNameLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
 
         foreach (var m in monsterStats)
         {
-            MonsterIdLookup.Add(m.Id, m);
-            MonsterCodeLookup.Add(m.Code, m);
-            MonsterNameLookup.TryAdd(m.Name, m);
+            monsterIdLookup.Add(m.Id, m);
+            monsterCodeLookup.Add(m.Code, m);
+            monsterNameLookup.TryAdd(m.Name, m);
         }
+
+        MonsterIdLookup = monsterIdLookup.AsReadOnly();
+        MonsterCodeLookup = monsterCodeLookup.AsReadOnly();
+        MonsterNameLookup = monsterNameLookup.AsReadOnly();
 
         //things that require our compiled scripts
         loader.LoadMonsterSpawnMinions();

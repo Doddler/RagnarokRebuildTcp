@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Numerics;
 using System.Reflection;
@@ -159,7 +160,7 @@ internal class DataLoader
         return effects;
     }
 
-    public Dictionary<int, JobInfo> LoadJobs()
+    public ReadOnlyDictionary<int, JobInfo> LoadJobs()
     {
         var jobs = new Dictionary<int, JobInfo>();
 
@@ -194,10 +195,10 @@ internal class DataLoader
             };
             jobs.Add(job.Id, job);
         }
-        return jobs;
+        return jobs.AsReadOnly();
     }
 
-    public Dictionary<string, int> GetJobIdLookup(Dictionary<int, JobInfo> jobs)
+    public ReadOnlyDictionary<string, int> GetJobIdLookup(ReadOnlyDictionary<int, JobInfo> jobs)
     {
         var lookup = new Dictionary<string, int>();
         foreach (var j in jobs)
@@ -205,7 +206,7 @@ internal class DataLoader
             lookup.Add(j.Value.Class, j.Key);
         }
 
-        return lookup;
+        return lookup.AsReadOnly();
     }
 
     public List<string> LoadMvpList()
@@ -220,7 +221,7 @@ internal class DataLoader
         return mvps;
     }
 
-    public Dictionary<CharacterSkill, SkillData> LoadSkillData()
+    public ReadOnlyDictionary<CharacterSkill, SkillData> LoadSkillData()
     {
         var path = Path.Combine(ServerConfig.DataConfig.DataPath, @"Skills/Skills.toml");
         var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
@@ -234,7 +235,7 @@ internal class DataLoader
             skillOut.Add(skill.SkillId, skill);
         }
 
-        return skillOut;
+        return skillOut.AsReadOnly();
     }
 
     private CharacterSkill LookupSkillIdByName(string skill)
@@ -246,7 +247,7 @@ internal class DataLoader
     }
 
     //SkillTree[Job][Skill] { (Prereq, lvl) } 
-    public Dictionary<int, PlayerSkillTree> LoadSkillTree()
+    public ReadOnlyDictionary<int, PlayerSkillTree> LoadSkillTree()
     {
         var path = Path.Combine(ServerConfig.DataConfig.DataPath, @"Skills/SkillTree.toml");
         var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
@@ -261,9 +262,9 @@ internal class DataLoader
                 extendList.Add(DataManager.JobIdLookup[id], DataManager.JobIdLookup[tree.Extends]); //save this so we can chase skill requirements from previous jobs
         }
 
-        DataManager.JobExtendsList = extendList;
+        DataManager.JobExtendsList = extendList.AsReadOnly();
 
-        return treeOut;
+        return treeOut.AsReadOnly();
     }
 
     private new Dictionary<(int, int), (int, int)> LoadRemapDrops()
@@ -291,7 +292,7 @@ internal class DataLoader
         return remap;
     }
 
-    public Dictionary<string, MonsterDropData> LoadMonsterDropChanceData()
+    public ReadOnlyDictionary<string, MonsterDropData> LoadMonsterDropChanceData()
     {
         var remap = new Dictionary<(int, int), (int, int)>();
 
@@ -369,12 +370,12 @@ internal class DataLoader
             }
         }
 
-        return drops;
+        return drops.AsReadOnly();
     }
 
-    public Dictionary<int, Dictionary<int, int>> LoadMaxHpChart()
+    public ReadOnlyDictionary<int, int[]> LoadMaxHpChart()
     {
-        var dict = new Dictionary<int, Dictionary<int, int>>();
+        var dict = new Dictionary<int, int[]>();
 
         var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobHpChart.csv");
 
@@ -383,27 +384,27 @@ internal class DataLoader
         var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
 
         for (var i = 0; i < 7; i++)
-            dict.Add(i, new Dictionary<int, int>());
+            dict.Add(i, new int[100]);
 
         foreach (var entry in entries)
         {
             var lvl = entry.Level;
-            dict[0].Add(lvl, entry.Novice);
-            dict[1].Add(lvl, entry.Swordsman);
-            dict[2].Add(lvl, entry.Archer);
-            dict[3].Add(lvl, entry.Mage);
-            dict[4].Add(lvl, entry.Acolyte);
-            dict[6].Add(lvl, entry.Merchant);
-            dict[5].Add(lvl, entry.Thief);
+            dict[0][lvl] = entry.Novice;
+            dict[1][lvl] = entry.Swordsman;
+            dict[2][lvl] = entry.Archer;
+            dict[3][lvl] = entry.Mage;
+            dict[4][lvl] = entry.Acolyte;
+            dict[6][lvl] = entry.Merchant;
+            dict[5][lvl] = entry.Thief;
         }
 
-        return dict;
+        return dict.AsReadOnly();
     }
 
 
-    public Dictionary<int, Dictionary<int, int>> LoadMaxSpChart()
+    public ReadOnlyDictionary<int, int[]> LoadMaxSpChart()
     {
-        var dict = new Dictionary<int, Dictionary<int, int>>();
+        var dict = new Dictionary<int, int[]>();
 
         var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobSpChart.csv");
 
@@ -412,41 +413,55 @@ internal class DataLoader
         var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
 
         for (var i = 0; i < 7; i++)
-            dict.Add(i, new Dictionary<int, int>());
+            dict.Add(i, new int[100]);
 
         foreach (var entry in entries)
         {
             var lvl = entry.Level;
-            dict[0].Add(lvl, entry.Novice);
-            dict[1].Add(lvl, entry.Swordsman);
-            dict[2].Add(lvl, entry.Archer);
-            dict[3].Add(lvl, entry.Mage);
-            dict[4].Add(lvl, entry.Acolyte);
-            dict[6].Add(lvl, entry.Merchant);
-            dict[5].Add(lvl, entry.Thief);
+            dict[0][lvl] = entry.Novice;
+            dict[1][lvl] = entry.Swordsman;
+            dict[2][lvl] = entry.Archer;
+            dict[3][lvl] = entry.Mage;
+            dict[4][lvl] = entry.Acolyte;
+            dict[6][lvl] = entry.Merchant;
+            dict[5][lvl] = entry.Thief;
         }
 
-        return dict;
+        return dict.AsReadOnly();
     }
 
-    private static List<T> GetCsvRows<T>(string fileName)
+    private static List<T> GetCsvRows<T>(string fileName, bool hasHeader = true)
     {
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = hasHeader };
+
         var inPath = new TemporaryFile(Path.Combine(ServerConfig.DataConfig.DataPath, fileName));
         using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+        using var csv = new CsvReader(tr, config);
 
         return csv.GetRecords<T>().ToList();
     }
 
-    public Dictionary<string, HashSet<int>> LoadEquipGroups()
+    public ReadOnlyDictionary<string, int> LoadWeaponClasses()
+    {
+        var weaponClasses = new Dictionary<string, int>();
+
+        var csv = GetCsvRows<CsvWeaponClass>("Db/WeaponClass.csv");
+        foreach (var entry in csv)
+            weaponClasses.Add(entry.WeaponClass, entry.Id);
+        
+        return weaponClasses.AsReadOnly();
+    }
+
+    public ReadOnlyDictionary<string, HashSet<int>> LoadEquipGroups()
     {
         var equipableJobs = new Dictionary<string, HashSet<int>>();
 
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false };
-        using var tr = new StreamReader(@"F:\ProjectsSSD\RagnarokRebuildTcp\RoRebuildServer\GameConfig\ServerData\Db\EquipmentGroups.csv") as TextReader;
-        using var csv = new CsvReader(tr, config);
+        //var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false };
+        //using var tr = new StreamReader(@"F:\ProjectsSSD\RagnarokRebuildTcp\RoRebuildServer\GameConfig\ServerData\Db\EquipmentGroups.csv") as TextReader;
+        //using var csv = new CsvReader(tr, config);
 
-        var entries = csv.GetRecords<dynamic>().ToList();
+        //var entries = csv.GetRecords<dynamic>().ToList();
+        var entries = GetCsvRows<dynamic>("Db/EquipmentGroups.csv", false);
         var autoDesc = new StringBuilder();
 
         foreach (IDictionary<string, object> e in entries)
@@ -475,7 +490,7 @@ internal class DataLoader
                 equipableJobs.Add(jobGroup, set);
         }
 
-        return equipableJobs;
+        return equipableJobs.AsReadOnly();
     }
 
     public Dictionary<int, ItemInfo> LoadItemsRegular()
@@ -499,7 +514,7 @@ internal class DataLoader
         return items;
     }
 
-    public Dictionary<int, ArmorInfo> LoadItemsArmor(Dictionary<int, ItemInfo> itemList)
+    public ReadOnlyDictionary<int, ArmorInfo> LoadItemsArmor(Dictionary<int, ItemInfo> itemList)
     {
         var returnList = new Dictionary<int, ArmorInfo>();
         foreach (var entry in GetCsvRows<CsvItemEquipment>("Db/ItemsEquipment.csv"))
@@ -525,15 +540,16 @@ internal class DataLoader
                 IsBreakable = entry.Breakable == "Yes",
                 IsRefinable = entry.Refinable == "Yes",
                 EquipPosition = entry.Type,
+                HeadPosition = entry.Position,
                 MinLvl = entry.MinLvl
             };
             returnList.Add(entry.Id, armorInfo);
         }
 
-        return returnList;
+        return returnList.AsReadOnly();
     }
 
-    public Dictionary<int, WeaponInfo> LoadItemsWeapon(Dictionary<int, ItemInfo> itemList)
+    public ReadOnlyDictionary<int, WeaponInfo> LoadItemsWeapon(Dictionary<int, ItemInfo> itemList)
     {
         var returnList = new Dictionary<int, WeaponInfo>();
         foreach (var entry in GetCsvRows<CsvItemWeapon>("Db/ItemsWeapons.csv"))
@@ -549,22 +565,27 @@ internal class DataLoader
             };
             itemList.Add(item.Id, item);
 
+            if (!DataManager.WeaponClasses.TryGetValue(entry.Type, out var weaponType))
+                weaponType = 0;
+
             var weaponInfo = new WeaponInfo()
             {
                 Attack = entry.Attack,
                 CardSlots = entry.Slot,
                 Element = entry.Property,
+                WeaponClass = weaponType,
                 EquipGroup = entry.EquipGroup,
+                IsTwoHanded = entry.Position == WeaponPosition.BothHands,
                 IsBreakable = entry.Breakable == "Yes",
                 IsRefinable = entry.Refinable == "Yes"
             };
             returnList.Add(entry.Id, weaponInfo);
         }
 
-        return returnList;
+        return returnList.AsReadOnly();
     }
 
-    public Dictionary<int, CardInfo> LoadItemsCards(Dictionary<int, ItemInfo> itemList)
+    public ReadOnlyDictionary<int, CardInfo> LoadItemsCards(Dictionary<int, ItemInfo> itemList)
     {
         var returnList = new Dictionary<int, CardInfo>();
         foreach (var entry in GetCsvRows<CsvItemCard>("Db/ItemsCards.csv"))
@@ -585,10 +606,10 @@ internal class DataLoader
             returnList.Add(entry.Id, cardInfo);
         }
 
-        return returnList;
+        return returnList.AsReadOnly();
     }
 
-    public Dictionary<int, AmmoInfo> LoadItemsAmmo(Dictionary<int, ItemInfo> itemList)
+    public ReadOnlyDictionary<int, AmmoInfo> LoadItemsAmmo(Dictionary<int, ItemInfo> itemList)
     {
         var returnList = new Dictionary<int, AmmoInfo>();
         foreach (var entry in GetCsvRows<CsvItemAmmo>("Db/ItemsAmmo.csv"))
@@ -608,10 +629,10 @@ internal class DataLoader
             returnList.Add(entry.Id, ammoInfo);
         }
 
-        return returnList;
+        return returnList.AsReadOnly();
     }
 
-    public Dictionary<int, UseItemInfo> LoadUseableItems(Dictionary<int, ItemInfo> itemList)
+    public ReadOnlyDictionary<int, UseItemInfo> LoadUseableItems(Dictionary<int, ItemInfo> itemList)
     {
         var returnList = new Dictionary<int, UseItemInfo>();
         foreach (var entry in GetCsvRows<CsvItemUseable>("Db/ItemsUsable.csv"))
@@ -633,7 +654,7 @@ internal class DataLoader
             returnList.Add(entry.Id, useItem);
         }
 
-        return returnList;
+        return returnList.AsReadOnly();
     }
 
     //    public Dictionary<int, ItemInfo> LoadItemList()
@@ -688,7 +709,7 @@ internal class DataLoader
     //        return items;
     //    }
 
-    public Dictionary<string, int> GenerateItemIdByNameLookup()
+    public ReadOnlyDictionary<string, int> GenerateItemIdByNameLookup()
     {
         var lookup = new Dictionary<string, int>();
 
@@ -697,7 +718,7 @@ internal class DataLoader
             lookup.Add(item.Value.Code, item.Value.Id);
         }
 
-        return lookup;
+        return lookup.AsReadOnly();
     }
 
     public void LoadItemInteractions(Assembly assembly)
@@ -829,7 +850,7 @@ internal class DataLoader
         }
     }
 
-    public Dictionary<string, Action<ServerMapConfig>> LoadMapConfigs(Assembly assembly)
+    public ReadOnlyDictionary<string, Action<ServerMapConfig>> LoadMapConfigs(Assembly assembly)
     {
         var configs = new Dictionary<string, Action<ServerMapConfig>>();
 
@@ -845,7 +866,7 @@ internal class DataLoader
             if (at != null) configs.Add(at.MapName, action);
         }
 
-        return configs;
+        return configs.AsReadOnly();
     }
 
     public List<List<MonsterAiEntry>> LoadAiStateMachines()

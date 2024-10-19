@@ -1,5 +1,6 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
+using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.EntityComponents.Items;
 
 namespace RoRebuildServer.Data.Player;
@@ -20,6 +21,7 @@ public class WeaponInfo
     public int Attack;
     public int Range;
     public int CardSlots;
+    public int WeaponClass;
     public bool IsTwoHanded;
     public AttackElement Element;
     public int MinLvl;
@@ -34,6 +36,7 @@ public class ArmorInfo
     public int MagicDefense;
     public int CardSlots;
     public EquipPosition EquipPosition;
+    public HeadgearPosition HeadPosition;
     public CharacterElement Element;
     public int MinLvl;
     public required string EquipGroup;

@@ -3301,7 +3301,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4298,
+      "Id": 6000,
       "Code": "MOONLIGHT_CLONE",
       "Name": "Moonlight Flower",
       "SpriteName": "moonlight.spr",
@@ -3312,7 +3312,7 @@
       "Color": "#FFFFFFAA"
     },
     {
-      "Id": 4299,
+      "Id": 6001,
       "Code": "GTB_EGG",
       "Name": "Thief Bug Egg",
       "SpriteName": "thief_bug_egg.spr",
@@ -3323,7 +3323,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4300,
+      "Id": 6002,
       "Code": "GTB_SUMMON",
       "Name": "Angry Thief Bug",
       "SpriteName": "thief_bug_female.spr",
@@ -3334,7 +3334,7 @@
       "Color": "#FF6F6FFF"
     },
     {
-      "Id": 4301,
+      "Id": 6003,
       "Code": "WERE_WOLF",
       "Name": "Werewolf",
       "SpriteName": "were_wolf.spr",
@@ -3345,7 +3345,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4302,
+      "Id": 6004,
       "Code": "RAPTICE",
       "Name": "Raptice",
       "SpriteName": "raptice.spr",
@@ -3356,7 +3356,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4303,
+      "Id": 6005,
       "Code": "STITCH",
       "Name": "Stitch",
       "SpriteName": "tarou.spr",
@@ -3367,7 +3367,7 @@
       "Color": "#F9EFBAFF"
     },
     {
-      "Id": 4304,
+      "Id": 6006,
       "Code": "SOLDIER_ANDRE",
       "Name": "Soldier Andre",
       "SpriteName": "soldier_andre.spr",
@@ -3378,7 +3378,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4305,
+      "Id": 6007,
       "Code": "SOLDIER_DENIRO",
       "Name": "Soldier Deniro",
       "SpriteName": "soldier_deniro.spr",
@@ -3389,7 +3389,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4306,
+      "Id": 6008,
       "Code": "SOLDIER_PIERE",
       "Name": "Soldier Piere",
       "SpriteName": "soldier_piere.spr",
@@ -3400,7 +3400,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4307,
+      "Id": 6009,
       "Code": "ANDRE_LARVA",
       "Name": "Andre Larva",
       "SpriteName": "andre_larva.spr",
@@ -3411,7 +3411,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4308,
+      "Id": 6010,
       "Code": "DENIRO_LARVA",
       "Name": "Deniro Larva",
       "SpriteName": "deniro_larva.spr",
@@ -3422,7 +3422,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4309,
+      "Id": 6011,
       "Code": "PIERE_LARVA",
       "Name": "Piere Larva",
       "SpriteName": "piere_larva.spr",
@@ -3433,7 +3433,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4310,
+      "Id": 6012,
       "Code": "ANT_EGG2",
       "Name": "Mature Ant Egg",
       "SpriteName": "ant_egg.spr",
@@ -3444,7 +3444,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4311,
+      "Id": 6013,
       "Code": "FUNGUS",
       "Name": "Fungus",
       "SpriteName": "fungus.spr",
@@ -3455,7 +3455,7 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 4312,
+      "Id": 6014,
       "Code": "DEATHSPORE",
       "Name": "Deathspore",
       "SpriteName": "deathspore.spr",

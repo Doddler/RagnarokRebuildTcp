@@ -29,6 +29,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (player.Inventory == null) return;
 
+            if (player.Equipment.IsItemEquipped(id))
+                return;
+
             if (player.Inventory.RemoveItemByBagIdAndGetRemovedItem(id, count, out var removedItem))
             {
                 var dropPos = map.GetRandomWalkablePositionInArea(Area.CreateAroundPoint(player.Character.Position, 2));

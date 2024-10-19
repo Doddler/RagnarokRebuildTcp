@@ -39,9 +39,9 @@ MapConfig("gef_dun02")
 	//CreateSpawn("GHOUL", 20);
 	CreateSpawn("WHISPER", 15);
 	CreateSpawn("HUNTER_FLY", 2, 30m, 30m);
-	CreateSpawn("MARIONETTE", 40);
-	CreateSpawn("DEVIRUCHI", 40);
-	CreateSpawn("NIGHTMARE", 80, 15000);
+	CreateSpawn("MARIONETTE", 30);
+	CreateSpawn("DEVIRUCHI", 30);
+	CreateSpawn("NIGHTMARE", 60, 15000);
 	CreateSpawn("DOPPELGANGER", 1, 1h, 10m, MVP);
 	CreateSpawn("WHITE_PLANT", 3, %(214, 212, 10, 10), 180000, 90000);
 	CreateSpawn("WHITE_PLANT", 3, %(215, 67, 10, 10), 180000, 90000);

@@ -25,6 +25,8 @@ namespace Assets.Scripts.Sprites
 
         public void PrepareDisplayPlayerCharacter(int jobId, int headId, int hairColor, int headgear1, int headgear2, int headgear3, bool isMale)
         {
+            Debug.Log($"PrepareDisplayPlayerCharacter job:{jobId} head:{headId} hairColor:{hairColor} headgear1:{headgear1} headgear2:{headgear2} headgear3:{headgear3} isMale:{isMale}");
+            
             if (sprites == null)
             {
                 sprites = new List<UIPlayerSpriteData>(5);
@@ -67,6 +69,11 @@ namespace Assets.Scripts.Sprites
 
         private void LoadSpriteIntoSlot(string spriteName, int slot)
         {
+            if (string.IsNullOrWhiteSpace(spriteName))
+            {
+                Debug.LogWarning($"Unable to perform LoadSpriteIntoSlot: Not provided a valid sprite name.");
+                return;
+            }
             loadCount++;
             sprites[slot].IsActive = true;
             sprites[slot].SpriteName = spriteName;

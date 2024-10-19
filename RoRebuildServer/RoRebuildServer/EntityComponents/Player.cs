@@ -71,9 +71,7 @@ public class Player : IEntityAutoReset
         set;
     }
     private float regenTickTime { get; set; }
-    private int _weaponClass = -1;
-    public int WeaponClass => _weaponClass != -1 ? _weaponClass : DefaultWeaponForJob(GetData(PlayerStat.Job));
-    public void SetWeaponClassOverride(int id) => _weaponClass = id;
+    public int WeaponClass;
 
 #if DEBUG
     private float currentCooldown;
@@ -105,6 +103,8 @@ public class Player : IEntityAutoReset
     public float GetTiming(TimingStat type) => CombatEntity.GetTiming(type);
     public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
     public void SetStat(CharacterStat type, float val) => CombatEntity.SetStat(type, (int)val);
+    public void AddStat(CharacterStat type, int val) => CombatEntity.AddStat(type, val);
+    public void SubStat(CharacterStat type, int val) => CombatEntity.SubStat(type, val);
     public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
 
     //this will get removed when we have proper job levels
@@ -135,7 +135,7 @@ public class Player : IEntityAutoReset
         IsAdmin = false;
         Array.Clear(CharData);
         Array.Clear(PlayerStatData);
-        _weaponClass = -1;
+        WeaponClass = 0;
         LastEmoteTime = 0;
         LearnedSkills = null!;
         NpcFlags = null!;
@@ -226,9 +226,9 @@ public class Player : IEntityAutoReset
         buffer[(int)PlayerSummaryData.MaxHp] = GetStat(CharacterStat.MaxHp);
         buffer[(int)PlayerSummaryData.Sp] = GetStat(CharacterStat.Sp);
         buffer[(int)PlayerSummaryData.MaxSp] = GetStat(CharacterStat.MaxSp);
-        buffer[(int)PlayerSummaryData.Headgear1] = Equipment.ItemSlots[(int)EquipSlot.HeadTop];
-        buffer[(int)PlayerSummaryData.Headgear2] = Equipment.ItemSlots[(int)EquipSlot.HeadMid];
-        buffer[(int)PlayerSummaryData.Headgear3] = Equipment.ItemSlots[(int)EquipSlot.HeadBottom];
+        buffer[(int)PlayerSummaryData.Headgear1] = Equipment.ItemIds[(int)EquipSlot.HeadTop];
+        buffer[(int)PlayerSummaryData.Headgear2] = Equipment.ItemIds[(int)EquipSlot.HeadMid];
+        buffer[(int)PlayerSummaryData.Headgear3] = Equipment.ItemIds[(int)EquipSlot.HeadBottom];
         buffer[(int)PlayerSummaryData.Str] = GetStat(CharacterStat.Str);
         buffer[(int)PlayerSummaryData.Agi] = GetStat(CharacterStat.Agi);
         buffer[(int)PlayerSummaryData.Int] = GetStat(CharacterStat.Int);
@@ -237,7 +237,7 @@ public class Player : IEntityAutoReset
         buffer[(int)PlayerSummaryData.Luk] = GetStat(CharacterStat.Luk);
         buffer[(int)PlayerSummaryData.Gender] = GetData(PlayerStat.Gender);
     }
-
+    
     public bool TryRemoveItemFromInventory(int type, int count)
     {
         Debug.Assert(count < short.MaxValue);
@@ -359,18 +359,18 @@ public class Player : IEntityAutoReset
         else
             SetStat(CharacterStat.Range, 1);
 
-        var atk = level * (level / 20f) + 28 + level;
-        //atk *= 1.2f;
+        //var atk = level * (level / 20f) + 28 + level;
+        ////atk *= 1.2f;
 
-        //lower damage below lv 60, raise above
-        var proc = 0.5f + Math.Clamp(level, 0, 99f) / 120f;
-        atk *= proc;
+        ////lower damage below lv 60, raise above
+        //var proc = 0.5f + Math.Clamp(level, 0, 99f) / 120f;
+        //atk *= proc;
 
-        var atk1 = (int)(atk * 0.90f - 1);
-        var atk2 = (int)(atk * 1.10f + 1);
+        //var atk1 = (int)(atk * 0.90f - 1);
+        //var atk2 = (int)(atk * 1.10f + 1);
 
-        var atkBonus = GetJobBonus(CharacterStat.Attack);
-        var matkBonus = GetJobBonus(CharacterStat.MagicAtkMin);
+        //var atkBonus = GetJobBonus(CharacterStat.Attack);
+        //var matkBonus = GetJobBonus(CharacterStat.MagicAtkMin);
         //var hpBonus = GetJobBonus(CharacterStat.MaxHp);
 
         var agiBonus = GetJobBonus(CharacterStat.Agi);
@@ -389,27 +389,19 @@ public class Player : IEntityAutoReset
         SetStat(CharacterStat.Luk, (3 + level * 0.5f));
         //SetStat(CharacterStat.MaxHp, 50 + 100 * level * hpBonus);
 
-        //dex for bow, str for everything else
-        var dmgStat = GetEffectiveStat(WeaponClass == 12 ? CharacterStat.Dex : CharacterStat.Str);
-        atkBonus += (float)((dmgStat + (int)(dmgStat / 10) * (int)(dmgStat / 10)) / 100f);
+        ////dex for bow, str for everything else
+        //var dmgStat = GetEffectiveStat(WeaponClass == 12 ? CharacterStat.Dex : CharacterStat.Str);
+        //var attackPower = (float)((dmgStat + (int)(dmgStat / 10) * (int)(dmgStat / 10)) / 100f);
 
-        var matkStat = GetEffectiveStat(CharacterStat.Int);
-        matkBonus += (float)((matkStat + (int)(matkStat / 10) * (int)(matkStat / 10)) / 100f);
+        //var matkStat = GetEffectiveStat(CharacterStat.Int);
+        //matkBonus += (float)((matkStat + (int)(matkStat / 10) * (int)(matkStat / 10)) / 100f);
 
-        SetStat(CharacterStat.Attack, atk1 * atkBonus);
-        SetStat(CharacterStat.Attack2, atk2 * atkBonus);
-        SetStat(CharacterStat.MagicAtkMin, atk1 * matkBonus);
-        SetStat(CharacterStat.MagicAtkMax, atk2 * matkBonus);
+        //SetStat(CharacterStat.MagicAtkMin, atk1 * matkBonus);
+        //SetStat(CharacterStat.MagicAtkMax, atk2 * matkBonus);
 
 
         //var newMaxHp = (level * level * level) / 20 + 80 * level;
-
-        if (WeaponClass == 2) //sword
-            SetStat(CharacterStat.WeaponMastery, MaxLearnedLevelOfSkill(CharacterSkill.SwordMastery));
-        if (WeaponClass == 3) //2hand sword
-            SetStat(CharacterStat.WeaponMastery, MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery));
-
-
+        
         var jobAspd = GetJobBonus(CharacterStat.AspdBonus);
         var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100 * jobAspd);
         var agiAspdBonus = 100f / (100 + GetEffectiveStat(CharacterStat.Agi) + GetEffectiveStat(CharacterStat.Dex) / 3f);
@@ -492,6 +484,22 @@ public class Player : IEntityAutoReset
 
         if (Connection.IsConnectedAndInGame)
             CommandBuilder.SendUpdatePlayerData(this);
+    }
+
+    public void RefreshWeaponMastery()
+    {
+        switch (WeaponClass)
+        {
+            case 2: //sword
+                SetStat(CharacterStat.WeaponMastery, MaxLearnedLevelOfSkill(CharacterSkill.SwordMastery));
+                return;
+            case 3: //2hand sword
+                SetStat(CharacterStat.WeaponMastery, MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery));
+                return;
+            case 0:
+                SetStat(CharacterStat.WeaponMastery, 0);
+                return;
+        }
     }
 
     public void LevelUp()

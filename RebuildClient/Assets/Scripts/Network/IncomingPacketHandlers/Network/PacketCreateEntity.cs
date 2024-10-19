@@ -85,7 +85,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     State.IsValid = true;
                 }
 
-                Debug.Log("Name: " + name);
+                Debug.Log("Name: " + name );
+                Debug.Log($"New player entity: {name} Headgear: {head1} {head2} {head3} WeaponClass:{weapon} WeaponId: {weaponId}");
 
                 var playerData = new PlayerSpawnParameters()
                 {

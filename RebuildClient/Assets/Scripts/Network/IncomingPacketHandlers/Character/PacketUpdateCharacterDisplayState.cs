@@ -12,22 +12,24 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
         public override void ReceivePacket(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
-            var position = (EquipPosition)msg.ReadByte();
-            var itemId = msg.ReadInt32();
-
+            
             if (!Network.EntityList.TryGetValue(id, out var controllable))
                 return;
 
-            if (position == EquipPosition.Weapon)
-                controllable.WeaponClass = msg.ReadInt32();
-
-            switch (position)
-            {
-                case EquipPosition.Weapon: ClientDataLoader.Instance.LoadAndAttachWeapon(controllable, itemId); break;
-                case EquipPosition.HeadUpper: ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, itemId, EquipPosition.HeadUpper, 4); break;
-                case EquipPosition.HeadMid: ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, itemId, EquipPosition.HeadMid, 3); break;
-                case EquipPosition.HeadLower: ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, itemId, EquipPosition.HeadLower, 2); break;
-            }
+            var headUpper = msg.ReadInt32();
+            var headMid = msg.ReadInt32();
+            var headLower = msg.ReadInt32();
+            var weapon = msg.ReadInt32();
+            var shield = msg.ReadInt32();
+            controllable.WeaponClass = msg.ReadInt32();
+            
+            ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headUpper, EquipPosition.HeadUpper, 4);
+            ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headMid, EquipPosition.HeadMid, 3);
+            ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headLower, EquipPosition.HeadLower, 2);
+            ClientDataLoader.Instance.LoadAndAttachWeapon(controllable, weapon);
+            ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, shield, EquipPosition.Shield, 4);
+            
+            Debug.Log($"Updating appearance data. New weapon class: {controllable.WeaponClass}");
         }
     }
 }

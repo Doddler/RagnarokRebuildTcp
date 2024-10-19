@@ -66,6 +66,7 @@ public class CsvItemWeapon
     public required string Name { get; set; }
     public required int Attack { get; set; }
     public required int Slot { get; set; }
+    public required string Type { get; set; }
     public required int Range { get; set; }
     public required int Price { get; set; }
     public required int Weight { get; set; }

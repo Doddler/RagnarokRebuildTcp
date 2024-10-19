@@ -1527,6 +1527,29 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
+        
+        public void SendUnEquipItem(int id)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.EquipUnequipGear);
+            msg.Write(id);
+            msg.Write(false);
+
+            SendMessage(msg);
+        }
+
+
+        public void SendEquipItem(int id)
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.EquipUnequipGear);
+            msg.Write(id);
+            msg.Write(true);
+
+            SendMessage(msg);
+        }
 
         public void SendUseItem(int id)
         {

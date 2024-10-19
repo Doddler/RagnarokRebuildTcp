@@ -1,0 +1,17 @@
+
+
+Npc("mjo_dun02", "Sign Board", "2_BULLETIN_BOARD", 334, 370, SW) { 
+OnClick:
+	Dialog("Sign Board", "\n<align=center><size=+20>Shortcut Passage</size>");
+	if(GetItemCount("Old_Pick") <= 0)
+	{
+		Dialog("", "<i>This sign has an arrow pointing to a passage through the wall. Rocks block the way, but if you had an <color=blue>Old Pick</color> you would be able to get through.");
+		return;
+	}
+
+	Dialog("", "<i>This sign has an arrow pointing to a passage through the wall. Rocks block the way, but you can use the <color=blue>Old Pick</color> in your inventory to get through.");
+
+	Option("Take Shortcut", "Leave");
+	if(result == 0)
+		MoveTo("mjo_dun02", 155, 21);
+}

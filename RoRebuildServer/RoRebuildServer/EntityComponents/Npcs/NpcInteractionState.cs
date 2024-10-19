@@ -240,6 +240,22 @@ public class NpcInteractionState
         Console.WriteLine("OpenStorage");
     }
 
+    public int GetItemCount(string str)
+    {
+        if (Player?.Inventory == null || !DataManager.ItemIdByName.TryGetValue(str, out var itemId))
+            return 0;
+
+        return Player.Inventory.GetItemCount(itemId);
+    }
+
+    public bool HasItem(string str)
+    {
+        if (Player?.Inventory == null || !DataManager.ItemIdByName.TryGetValue(str, out var itemId))
+            return false;
+
+        return Player.Inventory.HasItem(itemId);
+    }
+
     public int GetZeny()
     {
         return 99999;

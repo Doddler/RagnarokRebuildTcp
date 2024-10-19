@@ -350,9 +350,18 @@ namespace Assets.Scripts.Sprites
         public string GetHeadgearSpriteName(int itemId, bool isMale)
         {
             if (!itemIdLookup.TryGetValue(itemId, out var item))
+            {
+                Debug.LogWarning($"Failed to find headgear with itemId {itemId}");
                 return null;
+            }
 
-            return $"Assets/Sprites/Headgear/{(isMale ? "Male" : "Female")}/{item.Sprite}.spr";
+            if (!displaySpriteList.TryGetValue(item.Code, out var hatSprite))
+            {
+                Debug.LogWarning($"Failed to find headgear with itemId {itemId}");
+                return null;
+            }
+
+            return $"Assets/Sprites/Headgear/{(isMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
         }
 
         public static bool DoesAddressableExist<T>(string key)
@@ -487,19 +496,24 @@ namespace Assets.Scripts.Sprites
             if (ctrl.AttachedComponents.TryGetValue(attachPosition, out var existing))
             {
                 ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
+                ctrl.AttachedComponents.Remove(attachPosition);
                 Destroy(existing);
             }
+
+            if (ctrl.WeaponClass == 0)
+                return;
             
             var data = GetItemById(item);
-            if (data.Id > 0)
+            if (data.Id > 0 && displaySpriteList.TryGetValue(data.Code, out var sprite))
             {
-                var spr = $"Assets/Sprites/Weapon/{GetJobNameForId(ctrl.ClassId)}/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{data.Sprite}.spr";
+                
+                var spr = $"Assets/Sprites/Weapons/{GetJobNameForId(ctrl.ClassId)}/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{sprite}.spr";
                 if (DoesAddressableExist<RoSpriteData>(spr))
                 {
                     weaponSpriteFile = spr;
                 }
                 else
-                    Debug.Log($"Weapon sprite {data.Sprite} could not be loaded for {ctrl.Name}");
+                    Debug.Log($"Weapon sprite {data.Sprite} could not be loaded for {ctrl.Name} (Full path {spr})");
             }
 
             if (!playerWeaponLookup.TryGetValue(ctrl.ClassId, out var weaponsByJob))
@@ -547,6 +561,7 @@ namespace Assets.Scripts.Sprites
             if (ctrl.AttachedComponents.TryGetValue(position, out var existing))
             {
                 ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
+                ctrl.AttachedComponents.Remove(position);
                 Destroy(existing);
             }
 
@@ -564,7 +579,8 @@ namespace Assets.Scripts.Sprites
             headgearSprite.SpriteOrder = priority; //weapon is 5 so we should be below that
             ctrl.SpriteAnimator.ChildrenSprites.Add(headgearSprite);
 
-            var spriteName = $"Assets/Sprites/{(position != EquipPosition.Shield ? "Headgear" : "Shield")}/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
+            var folderName = position != EquipPosition.Shield ? "Headgear" : $"Shields/{GetJobNameForId(ctrl.ClassId)}";
+            var spriteName = $"Assets/Sprites/{folderName}/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
 
             ctrl.AttachedComponents[position] = headgearObj;
 

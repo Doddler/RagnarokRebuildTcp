@@ -168,10 +168,8 @@ public static class CommandBuilder
             packet.Write((byte)player.WeaponClass);
             packet.Write(player.IsMale);
             packet.Write(player.Name);
-            packet.Write(2253);
-            packet.Write(5176);
-            //packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
-            //packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid));
+            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
+            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid));
             packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom));
             packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon));
             packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Shield));
@@ -187,7 +185,6 @@ public static class CommandBuilder
             packet.Write((byte)npc.DisplayType);
             packet.Write((byte)npc.EffectType);
         }
-
         
         if (c.Hidden && !isSelf)
             ServerLogger.LogWarning($"We are sending the data of hidden character \"{c.Name}\" to the client!");
@@ -196,9 +193,8 @@ public static class CommandBuilder
         {
             WriteWalkData2(c, packet);
         }
-
     }
-
+    
     private static OutboundMessage BuildCreateEntity(WorldObject c, bool isSelf = false)
     {
         var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity;
@@ -235,6 +231,34 @@ public static class CommandBuilder
         p.StorageInventory.TryWrite(packet, true);
 
         NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void PlayerEquipItem(Player player, int bagId, EquipSlot slot, bool isEquip)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.EquipUnequipGear, 12);
+        packet.Write(bagId);
+        packet.Write((byte)slot);
+        packet.Write(isEquip);
+
+        NetworkManager.SendMessage(packet, player.Connection);
+    }
+
+    public static void UpdatePlayerAppearanceAuto(Player player)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.UpdateCharacterDisplayState, 48);
+
+        packet.Write(player.Character.Id);
+        packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
+        packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid));
+        packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom));
+        packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon));
+        packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Shield));
+        packet.Write(player.WeaponClass);
+
+        player.Character.Map?.AddVisiblePlayersAsPacketRecipients(player.Character);
+        EnsureRecipient(player.Entity);
+        NetworkManager.SendMessageMulti(packet, recipients);
+        ClearRecipients();
     }
 
     public static void ChangeCombatTargetableState(WorldObject target, bool canInteract)

@@ -63,7 +63,7 @@ namespace Assets.Scripts.UI.TitleScreen
 
             UnavailableText.gameObject.SetActive(false);
             PlayerSprite.gameObject.SetActive(true);
-
+            
             var isMale = summary.SummaryData[(int)PlayerSummaryData.Gender] == 0;
             var body = summary.SummaryData[(int)PlayerSummaryData.JobId];
             var head = summary.SummaryData[(int)PlayerSummaryData.HeadId];

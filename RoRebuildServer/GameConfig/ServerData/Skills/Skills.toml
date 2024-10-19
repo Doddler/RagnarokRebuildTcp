@@ -446,6 +446,13 @@ Target = "Ground"
 MaxLevel = 5
 SpCost = [10,10,10,10,10]
 
+[SonicBlow]
+Name = "Sonic Blow"
+Icon = "as_sonicblow"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [16,18,20,22,24,26,28,30,32,34]
+
 #----------------------------------
 # Monster skills
 #----------------------------------
@@ -473,19 +480,25 @@ Name = "Poison Attack"
 Name = "Undead Attack"
 [GhostAttack]
 Name = "Immaterial Attack"
+[CriticalAttack]
+Name = "Critical Slash"
+[Poison]
+Name = "Poison"
+[Sleep]
+Name = "Sleep"
+[Stun]
+Name = "Stun"
+[Blind]
+Name = "Blind"
+[Silence]
+Name = "Silence"
 [SelfDestruct]
 Name = "Self Destruct"
-
 [PowerUp]
 Name = "Power UP"
 [SummonMonster]
 Name = "Summon Monster"
-[SonicBlow]
-Name = "Sonic Blow"
-Icon = "as_sonicblow"
-Target = "Enemy"
-MaxLevel = 10
-SpCost = [16,18,20,22,24,26,28,30,32,34]
+
 [Suicide]
 
 #used to show in skill prereqs

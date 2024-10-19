@@ -29,17 +29,17 @@ MapConfig("mjo_dun03")
 	CreateSpawn("SKEL_WORKER", 10);
 	CreateSpawn("MYST", 10);
 
-	CreateSpawn("MYST", 5, %(97, 138, 69, 111)); //left side
-	CreateSpawn("SKEL_WORKER", 25, %(97, 138, 69, 111)); //left side
+	CreateSpawn("MYST", 5, %(97, 138, 69, 111), 5s, 10s); //left side
+	CreateSpawn("SKEL_WORKER", 25, %(97, 138, 69, 111), 5s, 10s); //left side
 
-	CreateSpawn("MYST", 20, %(242, 146, 73, 106)); //right side
-	CreateSpawn("SKEL_WORKER", 10, %(242, 146, 73, 106)); //right side
+	CreateSpawn("MYST", 20, %(242, 146, 73, 106), 5s, 10s); //right side
+	CreateSpawn("SKEL_WORKER", 10, %(242, 146, 73, 106), 5s, 10s); //right side
 
-	CreateSpawn("MYST", 5, %(170, 203, 142, 61)); //top side
-	CreateSpawn("SKEL_WORKER", 20, %(170, 203, 142, 61)); //top side
+	CreateSpawn("MYST", 5, %(170, 203, 142, 61), 5s, 10s); //top side
+	CreateSpawn("SKEL_WORKER", 20, %(170, 203, 142, 61), 5s, 10s); //top side
 
-	CreateSpawn("MYST", 15, %(166, 89, 145, 55)); //bottom side
-	CreateSpawn("SKEL_WORKER", 15, %(166, 89, 145, 55)); //bottom side
+	CreateSpawn("MYST", 15, %(166, 89, 145, 55), 5s, 10s); //bottom side
+	CreateSpawn("SKEL_WORKER", 15, %(166, 89, 145, 55), 5s, 10s); //bottom side
 	
 	CreateSpawn("CRAMP", 10, 15m, 15m);
 	CreateSpawn("EVIL_DRUID", 1, 3m);

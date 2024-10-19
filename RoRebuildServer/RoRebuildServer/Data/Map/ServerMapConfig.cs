@@ -106,14 +106,12 @@ public class ServerMapConfig
         if(flags.HasFlag(SpawnCreateFlags.LockToSpawnZone))
             spawn.LockToSpawnZone();
         
-        //Console.WriteLine(mobName + "  BBB");
         return spawn;
     }
 
     public MapSpawnRule? CreateSpawn(string mobName, int count, int respawn, int variance, SpawnCreateFlags flags = SpawnCreateFlags.None) =>
         CreateSpawn(mobName, count, Area.Zero, respawn, variance, flags);
-        
-
+    
     public MapSpawnRule? CreateSpawn(string mobName, int count, Area area, int respawn, SpawnCreateFlags flags = SpawnCreateFlags.None) =>
         CreateSpawn(mobName, count, area, respawn, 0, flags);
 
