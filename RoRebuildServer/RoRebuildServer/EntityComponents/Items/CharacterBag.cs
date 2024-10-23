@@ -56,7 +56,7 @@ public class CharacterBag : IResettable
 
     public int UsedSlots;
     public int BagWeight;
-    private int idIndex = 10000; //make sure we don't collide with regular item ids
+    private int idIndex = 20000; //make sure we don't collide with regular item ids
 
     public static CharacterBag Borrow() => bagPool.Get();
     public static void Return(CharacterBag bag) => bagPool.Return(bag);
@@ -85,7 +85,7 @@ public class CharacterBag : IResettable
         UniqueItems.Clear();
         UniqueItemBagIds.Clear();
         UsedSlots = 0;
-        idIndex = 10000;
+        idIndex = 20000;
         return true;
     }
 

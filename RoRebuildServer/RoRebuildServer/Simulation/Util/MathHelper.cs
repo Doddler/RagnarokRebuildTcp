@@ -16,7 +16,7 @@ namespace RoRebuildServer.Simulation.Util
             for (var i = 0; i < 1000; i++)
             {
                 ResistTable[i] = MathF.Pow(0.99f, i);
-                BoostTable[i] = MathF.Pow(0.01f, i);
+                BoostTable[i] = MathF.Pow(1.01f, i);
             }
         }
         
@@ -31,7 +31,7 @@ namespace RoRebuildServer.Simulation.Util
         {
             if (value < BoostTable.Length)
                 return BoostTable[value];
-            return MathF.Pow(0.01f, value);
+            return MathF.Pow(1.01f, value);
         }
 
         public static int Clamp(this int val, int min, int max)

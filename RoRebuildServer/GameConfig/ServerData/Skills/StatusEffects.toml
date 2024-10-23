@@ -71,3 +71,19 @@ Name = "Endure"
 Type = "Buff"
 CanDispel = true
 CanDisable = true
+
+#----------------------------------
+# Item Buffs
+#----------------------------------
+
+[IncreasedMoveSpeed]
+Name = "Movement Speed UP"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
+
+[IncreasedAttackSpeed]
+Name = "Attack Speed UP"
+Type = "Buff"
+CanDispel = true
+CanDisable = true

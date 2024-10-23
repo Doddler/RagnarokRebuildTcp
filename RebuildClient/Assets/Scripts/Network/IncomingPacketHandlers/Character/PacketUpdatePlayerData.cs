@@ -26,17 +26,28 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             for(var i = 0; i < skills; i++)
                 State.KnownSkills.Add((CharacterSkill)msg.ReadByte(), msg.ReadByte());
             
+            Debug.Log("UpdatePLayerData");
+            
             UiManager.SkillManager.UpdateAvailableSkills();
-            
-            State.Inventory.Deserialize(msg);
-            State.Cart.Deserialize(msg);
-            State.Storage.Deserialize(msg);
-            
+
+            var hasInventory = msg.ReadBoolean();
+
+            if (hasInventory)
+            {
+                State.Inventory.Deserialize(msg);
+                State.Cart.Deserialize(msg);
+                State.Storage.Deserialize(msg);
+            }
+
+            CameraFollower.Instance.UpdatePlayerHP(hp, maxHp);
             CameraFollower.Instance.UpdatePlayerSP(sp, maxSp);
             UiManager.Instance.SkillHotbar.UpdateItemCounts();
             UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
             
 #if UNITY_EDITOR
+            if (!hasInventory)
+                return;
+            
             var sb = new StringBuilder(); 
             if (State.Inventory != null)
             {
@@ -59,6 +70,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 }
             }
 
+            
             Debug.Log($"Loaded inventory with following data:\n{sb}");
 #endif
         }

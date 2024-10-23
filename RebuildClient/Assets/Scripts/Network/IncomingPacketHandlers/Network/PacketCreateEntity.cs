@@ -86,7 +86,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 }
 
                 Debug.Log("Name: " + name );
-                Debug.Log($"New player entity: {name} Headgear: {head1} {head2} {head3} WeaponClass:{weapon} WeaponId: {weaponId}");
+                Debug.Log($"New player entity: {name} Headgear: {head1} {head2} {head3} WeaponClass:{weapon} WeaponId: {weaponId} Shield:{shieldId}");
 
                 var playerData = new PlayerSpawnParameters()
                 {

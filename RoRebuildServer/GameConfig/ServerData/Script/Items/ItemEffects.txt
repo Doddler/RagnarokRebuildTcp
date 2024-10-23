@@ -127,7 +127,7 @@ Item("Union_of_Tribe") { OnValidate: return false; OnUse: }
 Item("Her_Heart") { OnValidate: return false; OnUse: }
 Item("Forbidden_Red_Candle") { OnValidate: return false; OnUse: }
 Item("Soft_Apron") { OnValidate: return false; OnUse: }
-Item("Authoritative_Badge") { OnValidate: return false; OnUse: }
+Item("Authoritative_Badge") { OnUse: AddStatusEffect(StatusIncreasedMoveSpeed, 3m, 25); }
 Item("Korean_Rice_Cake") { OnValidate: return false; OnUse: }
 Item("Gift_Box_") { OnValidate: return false; OnUse: }
 Item("Gift_Box__") { OnValidate: return false; OnUse: }

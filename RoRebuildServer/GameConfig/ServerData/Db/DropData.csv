@@ -12,7 +12,7 @@ ANGELING,Angel_Wing,100,Scapulare_,60,Yggdrasil_Leaf,500,Halo,1,White_Herb,2000,
 ANOLIAN,Anolian_Skin,4850,Crystal_Arrow,2000,Royal_Jelly,5,,0,Solid_Shell,5335,Brooch_,1,Oridecon,134,Anolian_Card,1
 ANT_EGG,Phracon,320,Shell,2000,Jellopy,2000,Sticky_Mucus,650,Empty_Bottle,2000,Iron_Ore,200,,0,Ant_Egg_Card,1
 ANTIQUE_FIRELOCK,Iron,5500,Apple_of_Archer,1,Large_Jellopy,1400,Yellow_Herb,40,Yam,350,Panacea,250,Cyclone_,5,Firelock_Soldier_Card,1
-ANUBIS,Earring,5,Healing_Staff,10,Ring,5,Necklace_of_Wisdom,15,,0,,0,,0,Anubis_Card,1
+ANUBIS,Rotten_Bandage,3000,Healing_Staff,10,Memento,550,Oridecon,105,Cultish_Masque,4365,Celebrant's_Mitten,1,Wand_of_Occult,3,Anubis_Card,1
 ARCHANGELING,Evil_Wing,5,Yggdrasil_Leaf,1800,Yggdrasil_Seed,150,Agate,1500,Angel_Wing,5,Full_Plate_,3,Turquoise,1500,Archangeling_Card,1
 ARCHER_SKELETON,Skel-Bone,4500,Rough_Oridecon,70,Apple_of_Archer,3,Great_Bow_,35,Fire_Arrow,1000,Red_Herb,1800,Bow,150,Archer_Skeleton_Card,1
 ARCLOUSE,Round_Shell,3500,Sticky_Mucus,3000,Solid_Shell,800,Zargon,450,Red_Gemstone,300,Great_Nature,20,Zargon,2500,Arclouse_Card,1
@@ -82,7 +82,7 @@ FREEZER,Turtle_Shell,4413,Broken_Shell,850,Ice_Cubic,1250,Zargon,1800,Royal_Jell
 FRILLDORA,Frill,5500,Rough_Elunium,90,Reptile_Tongue,1500,Emerald,15,Yellow_Gemstone,200,Red_Herb,800,Zargon,120,Frilldora_Card,1
 FUR_SEAL,Zargon,4365,Blue_Herb,250,Coat_,5,Cyfar,1200,Guisarme_,1,Panacea,200,Glass_Bead,120,Fur_Seal_Card,1
 GALAPAGO,Cyfar,5335,Yggdrasil_Leaf,100,Yellow_Herb,3500,Aloevera,100,Anodyne,100,Galapago_Cap,1,Orange,1000,Galapago_Card,1
-GARGOYLE,Zargon,3880,Little_Evil_Wing,500,,0,,0,Bow_Thimble,1,Mute_Arrow,2000,Rough_Elunium,238,Gargoyle_Card,1
+GARGOYLE,Zargon,3880,Little_Evil_Wing,500,Manteau_,2,,0,Bow_Thimble,1,Mute_Arrow,2000,Rough_Elunium,238,Gargoyle_Card,1
 GARM,Fang_of_Hati,5500,Ice_Falchion,150,Katar_of_Frozen_Icicle,500,Hati_Claw,500,,0,Elunium,3977,Oridecon,2900,Hati_Card,1
 GARM_BABY,Nursing_Bottle,1500,Pinafore,2500,Ice_Cubic,4365,Frozen_Rose,100,,0,,0,,0,Hati_Baby_Card,1
 GEOGRAPHER,Maneater_Blossom,6200,Maneater_Root,5500,Sunflower,30,Fancy_Flower,50,,0,,0,,0,Geographer_Card,1
@@ -129,7 +129,7 @@ KNIGHT_OF_ABYSS,Reins,5335,Blade_Lost_in_Darkness,5,Lord's_Clothes,1,Lance,25,Br
 KNIGHT_OF_WINDSTORM,Zephyrus,150,Old_Blue_Box,3000,Old_Purple_Box,4000,Ring_,200,Manteau_,500,Elunium,4559,Grand_Circlet,1,Stormy_Knight_Card,1
 KOBOLD_1,Steel,100,Blue_Hair,5335,Zargon,700,Rough_Elunium,25,Gladius_,2,Buckler_,5,,0,Kobold_Card,1
 KOBOLD_2,Steel,100,Blue_Hair,5335,Zargon,200,Buckler_,3,Yellow_Herb,100,Guard,100,,0,Kobold_Card,1
-KOBOLD_3,Red_Blood,35,Steel,100,Blue_Hair,5335,Zargon,200,,0,Buckler_,3,Yellow_Herb,100,Kobold_Card,1
+KOBOLD_3,Red_Blood,35,Steel,100,Blue_Hair,5335,Zargon,200,Hammer_,5,Buckler_,3,Yellow_Herb,100,Kobold_Card,1
 KOBOLD_ARCHER,Zargon,250,Steel,60,Blue_Hair,4850,Puppy_Headband,50,Poison_Arrow,2000,Cross_Bow_,5,Rough_Oridecon,79,Kobold_Archer_Card,1
 KOBOLD_LEADER,Steel,450,Blue_Hair,6305,Zargon,1200,Flail_,6,Mighty_Staff,2,Panacea,150,Royal_Jelly,100,Kobold_Leader_Card,1
 KUKRE,Crystal_Blue,30,Insect_Peeling,5500,Garlet,400,Monster's_Feed,500,Red_Herb,650,Insect_Feeler,450,Earthworm_the_Dude,20,Kukre_Card,1
@@ -166,7 +166,7 @@ MUKA,Green_Live,70,Cactus_Needle,9000,Empty_Bottle,2000,Green_Herb,400,Red_Herb,
 MUMMY,Rotten_Bandage,9000,Rough_Oridecon,100,Memento,550,Glove,1,Silver_Ring,10,Panacea,250,Yellow_Herb,850,Mummy_Card,1
 MUNAK,Daenggie,9000,Munak_Hat,2,Shoes_,15,Amulet,20,Ninja_Suit,1,Adventurer's_Suit,100,Girl's_Diary,5,Munak_Card,1
 MUTANT_DRAGON,Brigan,4850,Dragon_Canine,500,Dragon_Scale,500,Rotten_Bandage,500,Legacy_of_Dragon,400,Pyroxene,1500,Dragon_Breath,50,Mutant_Dragonoid_Card,1
-MYST,Gas_Mask,2,Trunk,800,,0,Rough_Oridecon,65,Rough_Elunium,97,Anodyne,20,Grape,35,Myst_Card,1
+MYST,Gas_Mask,2,Trunk,800,,0,Rough_Oridecon,65,Rough_Elunium,97,Anodyne,20,Grape,35,Ring,1,Myst_Card,1
 MYSTCASE,Candy_Cane,90,Zargon,1500,Old_Blue_Box,20,Piece_of_Cake,800,Pearl,150,2_Carat_Diamond,5,Candy,340,Myst_Case_Card,1
 MYSTELTAINN,Loki's_Whispers,1,Biotite,1500,Slayer_,70,Bastard_Sword_,40,Claymore,2,Steel,120,Oridecon,243,Mistilteinn_Card,1
 NERAID,Earthworm_Peeling,5100,Cyfar,1000,Blue_Herb,230,Icicle_Whip,10,Grape,250,Rough_Elunium,180,Elunium,37,Nereid_Card,1
@@ -250,7 +250,7 @@ STEAM_GOBLIN,Scell,2500,Cyfar,3880,Iron,300,Steel,55,Coal,320,Garrison,5,Rough_E
 STEEL_CHONCHON,Wind_of_Verdure,90,Steel,30,Garlet,2400,Shell,9000,Solid_Shell,30,Iron,200,Iron_Ore,300,Steel_Chonchon_Card,1
 STEM_WORM,Tough_Scalelike_Stem,5335,White_Herb,1800,Skipping_Rope,10,Rough_Oridecon,115,Great_Nature,5,Glaive,20,Yggdrasil_Seed,45,Stem_Worm_Card,1
 STING,Mud_Lump,4850,Stone_Arrow,1500,Glove_,1,Coal,130,Great_Nature,25,,0,Amethyst,3,Sting_Card,1
-STROUF,Fin,5335,Rough_Oridecon,115,Grampa_Beard,2,Trident_,2,Soft_Fluff,3000,Aquamarine,20,Gill,1500,Strouf_Card,1
+STROUF,Fin,5335,Rough_Oridecon,115,Grampa_Beard,2,Trident_,2,Soft_Fluff,3000,Aquamarine,20,Gill,1500,Chain_Mail_,2,Strouf_Card,1
 SWORD_FISH,Mystic_Frozen,10,Sharp_Scale,9000,Rough_Oridecon,33,Unicorn_Horn,2,Rough_Elunium,50,Katana_,25,Gill,600,Swordfish_Card,1
 TAO_GUNKA,Gemstone,4850,Stone_Fragment,4850,Topaz,1000,Binoculars,400,White_Potion,3000,Iron_Ore,1000,Gemmed_Sallet_,5,Tao_Gunka_Card,1
 TAROU,Rat_Tail,9000,Animal_Skin,3000,Soft_Fluff,800,Monster's_Feed,1000,Ora_Ora,2,,0,,0,Tarou_Card,1
@@ -296,12 +296,12 @@ ZOMBIE_PRISONER,Worn_Out_Prison_Uniform,3500,Spoon_Stub,105,Iron_Cain,1,Red_Gems
 WERE_WOLF,Gelerdria,80,Wolf_Claw#1-6,8000,Topaz,800,Emerald,100,Ruby,800,Sardonyx,10,Monster_Juice,50,Sombrero,10
 RAPTICE,Tulip_Hairpin,10,Rough_Elunium,90,Reptile_Tongue,1500,Emerald,15,Yellow_Gemstone,200,Red_Herb,800,Zargon,120,Beanie,1
 STITCH,Rat_Tail,9000,Animal_Skin,3000,Monster's_Feed,1000,Claw_of_Rat,500,Glass_Bead,50,Party_Hat,1,Blue_Herb,70,Rough_Oridecon,95,Tarou_Card,1
-SOLDIER_ANDRE,Ant_Jaw,5500,Zargon,500,Solid_Shell,500,Green_Live,100,X_Hairpin,10,Iron_Ore,350,Rough_Elunium,80,Soldier_Andre_Card,1
-SOLDIER_PIERE,Ant_Jaw,5500,Zargon,700,Solid_Shell,600,Wind_of_Verdure,120,Crescent_Hairpin,10,Iron_Ore,400,Rough_Elunium,100,Soldier_Andre_Card,1
-SOLDIER_DENIRO,Ant_Jaw,5500,Zargon,900,Solid_Shell,800,Red_Blood,140,Heart_Hairpin,10,Iron_Ore,450,Rough_Elunium,120,Soldier_Andre_Card,1
+SOLDIER_ANDRE,Ant_Jaw,2700,Scell,800,Green_Live,100,Rough_Elunium,10,Rapier_,15,Star_Dust,30,Solid_Shell,150,X_Hairpin,10,Soldier_Andre_Card,1
+SOLDIER_PIERE,Ant_Jaw,3100,Scell,800,Red_Blood,140,Rough_Elunium,12,Scimiter_,15,Star_Dust,35,Solid_Shell,200,Heart_Hairpin,10,Soldier_Andre_Card,1
+SOLDIER_DENIRO,Ant_Jaw,5500,Scell,2000,Wind_of_Verdure,120,Rough_Elunium,15,Rapier_,20,Star_Dust,50,Solid_Shell,270,Crescent_Hairpin,10,Soldier_Andre_Card,1
 ANDRE_LARVA,Insect_Peeling,5500,Garlet,400,Sticky_Mucus,200,Green_Live,30,Giant_Band_Aid,10,Iron_Ore,150,Rough_Elunium,28,Andre_Larva_Card,1
 PIERE_LARVA,Insect_Peeling,5500,Garlet,800,Sticky_Mucus,400,Wind_of_Verdure,40,Striped_Hairband,10,Iron_Ore,200,Rough_Elunium,31,Andre_Larva_Card,1
 DENIRO_LARVA,Insect_Peeling,5500,Garlet,1200,Sticky_Mucus,600,Red_Blood,50,Blue_Hairband,10,Iron_Ore,250,Rough_Elunium,34,Andre_Larva_Card,1
 ANT_EGG2,Phracon,320,Shell,2000,Jellopy,2000,Sticky_Mucus,650,Empty_Bottle,3000,Iron_Ore,200,Rainbow_Eggshell,10,Ant_Egg_Card,1
 FUNGUS,Poison_Spore,9000,Mould_Powder,500,Green_Herb,550,Blue_Herb,120,Alcohol,50,Karvodailnirol,20,Mushroom_Spore,1200,Zargon,5,Spore_Hat,1,Poison_Spore_Card,1
-DEATHSPORE,Cyfar,9000,Toxic_Gas,1500,Oridecon,120,Headset,200,Spore_Hat,10,Buckler_,20,Alcohol,1500,Karvodailnirol,1500,Spore_Card,1,Poison_Spore_Card,1
+DEATHSPORE,Cyfar,9000,Toxic_Gas,1500,Oridecon,120,Headset,200,Spore_Hat,50,Buckler_,20,Alcohol,1500,Karvodailnirol,1500,Spore_Card,1,Poison_Spore_Card,1

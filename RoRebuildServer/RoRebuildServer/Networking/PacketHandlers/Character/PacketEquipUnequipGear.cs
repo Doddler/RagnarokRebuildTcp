@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Networking;
 using System.Diagnostics;
 using RebuildSharedData.Enum;
+using RoRebuildServer.EntityComponents;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -25,6 +26,7 @@ public class PacketEquipUnequipGear : IClientPacketHandler
         if (!isEquip)
         {
             connection.Player.Equipment.UnEquipItem(bagId);
+            connection.Player.UpdateStats();
             return;
         }
     
@@ -43,7 +45,10 @@ public class PacketEquipUnequipGear : IClientPacketHandler
                 CommandBuilder.ErrorMessage(connection.Player, "Cannot equip this item to this position.");
                 return;
             default:
+                connection.Player.UpdateStats();
                 return; //if it succeeds we'll have already sent a response
         }
+
+        
     }
 }

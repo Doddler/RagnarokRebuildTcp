@@ -62,9 +62,9 @@ namespace Assets.Scripts.Sprites
             LoadSpriteIntoSlot(d.GetPlayerBodySpriteName(jobId, isMale), 0);
             LoadSpriteIntoSlot(d.GetPlayerHeadSpriteName(headId, hairColor, isMale), 1);
 
-            if (headgear1 > 0) LoadSpriteIntoSlot(d.GetHeadgearSpriteName(headgear1, isMale), 2);
+            if (headgear1 > 0) LoadSpriteIntoSlot(d.GetHeadgearSpriteName(headgear1, isMale), 4);
             if (headgear2 > 0) LoadSpriteIntoSlot(d.GetHeadgearSpriteName(headgear2, isMale), 3);
-            if (headgear3 > 0) LoadSpriteIntoSlot(d.GetHeadgearSpriteName(headgear3, isMale), 4);
+            if (headgear3 > 0) LoadSpriteIntoSlot(d.GetHeadgearSpriteName(headgear3, isMale), 2);
         }
 
         private void LoadSpriteIntoSlot(string spriteName, int slot)

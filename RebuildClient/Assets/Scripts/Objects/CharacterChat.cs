@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -6,12 +7,14 @@ namespace Assets.Scripts.Objects
     public class CharacterChat : MonoBehaviour
     {
         public TextMeshProUGUI TextObject;
+
+        [NonSerialized] public RectTransform RectTransform;
         //public string Text;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
-        
+            RectTransform = (RectTransform)transform;
         }
 
         public void SetText(string text)
@@ -19,8 +22,7 @@ namespace Assets.Scripts.Objects
             TextObject.text = text;
             TextObject.ForceMeshUpdate();
             
-
-            var rect = TextObject.transform as RectTransform;
+            var rect = (RectTransform)TextObject.transform;
             rect.anchoredPosition = new Vector3(0, 5f, 0f);
 
             RefreshBorder();

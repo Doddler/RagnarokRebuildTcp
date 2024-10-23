@@ -23,7 +23,7 @@ namespace Assets.Scripts.Sprites
         public int SortingOrder;
         public Vector2Int LastPosition;
         public bool HasWater;
-
+        
         public MeshFilter MeshFilter;
         public MeshRenderer MeshRenderer;
         public MeshCollider MeshCollider;
@@ -220,9 +220,16 @@ namespace Assets.Scripts.Sprites
                 }
             }
 
-
             if (!UpdateAngleWithCamera)
                 CurrentAngleIndex = (int)Direction;
+
+            if (SpriteData.ReverseSortingWhenFacingNorth)
+            {
+                if (CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5)
+                    SortingGroup.sortingOrder = -SortingOrder;
+                else
+                    SortingGroup.sortingOrder = SortingOrder;
+            }
 
             var mesh = GetMeshForFrame();
             var cMesh = GetColliderForFrame();
@@ -308,7 +315,7 @@ namespace Assets.Scripts.Sprites
         {
             if (!isInitialized)
                 return false;
-
+            
             if (UpdateAngleWithCamera)
             {
                 // var targetDir = transform.position - CameraFollower.Instance.transform.position;

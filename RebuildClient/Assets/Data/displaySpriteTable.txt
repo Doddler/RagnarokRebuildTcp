@@ -260,7 +260,7 @@ Cowboy_Hat	카우보이모자
 Beanie	털모자
 Tulip_Hairpin	튤립머리핀
 Sea_Otter_Hat	해달모자
-X_Hairpin	X자머리핀
+X_Hairpin	x자머리핀
 Crown_of_Ancient_Queen	여왕의투구
 Crown_of_Mistress	미스트레스왕관
 Decorative_Mushroom	버섯머리띠

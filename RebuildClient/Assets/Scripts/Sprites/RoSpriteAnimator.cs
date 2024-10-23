@@ -238,7 +238,7 @@ namespace Assets.Scripts.Sprites
             }
 
             spriteName = SpriteData.Name;
-
+            IgnoreAnchor = SpriteData.IgnoreAnchor;
             Color = Color.white;
             Alpha = 1;
 

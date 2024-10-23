@@ -396,5 +396,7 @@ namespace Assets.Scripts
         public AudioClip[] Sounds;
         public int AttackFrameTime;
         public int SpritesPerPalette;
+        public bool ReverseSortingWhenFacingNorth;
+        public bool IgnoreAnchor;
     }
 }

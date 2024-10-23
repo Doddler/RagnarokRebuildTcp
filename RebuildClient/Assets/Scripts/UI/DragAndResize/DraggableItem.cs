@@ -1,4 +1,8 @@
 ﻿using System;
+using Assets.Scripts.Network;
+using Assets.Scripts.SkillHandlers;
+using Assets.Scripts.Sprites;
+using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,8 +16,8 @@ namespace Assets.Scripts.UI
         Skill,
         Item
     }
-    
-    public class DraggableItem : DragItemBase, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler
+
+    public class DraggableItem : DragItemBase, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         private bool isMouseDown = false;
         private Vector3 startMousePosition;
@@ -56,7 +60,47 @@ namespace Assets.Scripts.UI
         {
             if (Type != DragItemType.None && eventData.clickCount >= 2 && OnDoubleClick != null)
                 OnDoubleClick();
+        }
 
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (Type != DragItemType.None)
+            {
+                var text = "";
+                if (Type == DragItemType.Skill)
+                {
+                    var skill = ClientDataLoader.Instance.GetSkillData((CharacterSkill)ItemId);
+                    if (skill.AdjustableLevel)
+                        text = $"{skill.Name} Lv {ItemCount}";
+                    else
+                        text = skill.Name;
+                }
+
+                if (Type == DragItemType.Item)
+                {
+                    var inventory = NetworkManager.Instance.PlayerState.Inventory.GetInventoryData();
+                    if (!inventory.TryGetValue(ItemId, out var dat))
+                        return;
+                    if (dat.ItemData.IsUnique)
+                    {
+                        if (dat.ItemData.Slots == 0)
+                            text = dat.ItemData.Name;
+                        else
+                            text = $"{dat.ItemData.Name} [{dat.ItemData.Slots}]";
+                    }
+                    else
+                    {
+                        text = $"{dat.ItemData.Name}: {ItemCount} ea.";
+                    }
+                }
+
+                UiManager.Instance.ShowTooltip(gameObject, text);
+            }
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            UiManager.Instance.HideTooltip(gameObject);
         }
     }
 }

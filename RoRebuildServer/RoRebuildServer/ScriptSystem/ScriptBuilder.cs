@@ -513,6 +513,13 @@ public class ScriptBuilder
             if (!additionalVariables.ContainsKey(str))
                 additionalVariables.Add(str, $"CharacterStat.{i}");
         }
+
+        foreach (var i in Enum.GetValues<CharacterStatusEffect>())
+        {
+            var str = "Status" + i.ToString();
+            if (!additionalVariables.ContainsKey(str))
+                additionalVariables.Add(str, $"CharacterStatusEffect.{i}");
+        }
     }
 
 

@@ -139,7 +139,11 @@ public class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] -= val;
     }
 
-
+    public void AddStatusEffect(CharacterStatusEffect effect, float duration, int val1 = 0, int val2 = 0)
+    {
+        var status = StatusEffectState.NewStatusEffect(effect, duration, val1, val2);
+        AddStatusEffect(status);
+    }
 
     public void AddStatusEffect(StatusEffectState state, bool replaceExisting = true, float delay = 0)
     {
@@ -1023,7 +1027,7 @@ public class CombatEntity : IEntityAutoReset
                     attackElement = Player.Equipment.WeaponElement;
                 else
                     attackElement = AttackElement.Neutral; //for now default to neutral, but we should pull from the weapon here if none is set
-                
+
             }
 
             if (defenderElement != CharacterElement.None)
@@ -1074,7 +1078,7 @@ public class CombatEntity : IEntityAutoReset
 
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreEvasion))
             evade = !TestHitVsEvasion(target);
-        
+
         if (flags.HasFlag(AttackFlags.CanCrit))
         {
             var critRate = 1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.Level) / 5;
@@ -1175,36 +1179,45 @@ public class CombatEntity : IEntityAutoReset
         var atk1 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack) : GetStat(CharacterStat.MagicAtkMin);
         var atk2 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack2) : GetStat(CharacterStat.MagicAtkMax);
 
-        var addAtk = 0;
-        var statWeaponBonus = 0f;
-        
         if (Character.Type == CharacterType.Player)
         {
             if (!isMagic)
             {
-                var dmgStat = GetEffectiveStat(Player.WeaponClass == 12 ? CharacterStat.Dex : CharacterStat.Str);
-                addAtk = dmgStat + (dmgStat / 10) * (dmgStat / 10);
-                statWeaponBonus = dmgStat / 200f;
+                var mainStat = GetEffectiveStat(Player.WeaponClass == 12 ? CharacterStat.Dex : CharacterStat.Str);
+                var secondaryStat = GetEffectiveStat(Player.WeaponClass == 12 ? CharacterStat.Str : CharacterStat.Dex);
+
+                var statAtk = GetStat(CharacterStat.AddAttackPower) + mainStat + (secondaryStat / 5) + (mainStat / 10) * (mainStat / 10);
+                var statWeaponBonus = mainStat / 400f;
+                var attackPercent = 1f + (GetStat(CharacterStat.AddAttackPercent) / 100f);
+                atk1 = (int)((statAtk + atk1 * (1 + statWeaponBonus)) * attackPercent);
+                atk2 = (int)((statAtk + atk2 * (1 + statWeaponBonus)) * attackPercent);
             }
             else
             {
                 var matkStat = GetEffectiveStat(CharacterStat.Int);
-                addAtk = matkStat + (matkStat) / 10 * (matkStat / 10);
-                statWeaponBonus = matkStat / 200f;
+                var addMatk = GetStat(CharacterStat.AddMagicAttackPower);
+                var statMatkMin = addMatk + matkStat + (matkStat / 7) * (matkStat / 7);
+                var statMatkMax = addMatk + matkStat + (matkStat / 5) * (matkStat / 5);
+                var statWeaponBonus = matkStat / 400f;
+                var magicPercent = 1f + (GetStat(CharacterStat.AddMagicAttackPercent) / 100f);
+                atk1 = (int)((statMatkMin + atk1 * (1 + statWeaponBonus)) * magicPercent);
+                atk2 = (int)((statMatkMax + atk2 * (1 + statWeaponBonus)) * magicPercent);
             }
-        }
-
-        if (!isMagic)
-        {
-            var attackPercent = 1f + (GetStat(CharacterStat.AddAttackPercent) / 100f);
-            atk1 = (int)((addAtk + atk1 * (1 + statWeaponBonus)) * attackPercent);
-            atk2 = (int)((addAtk + atk2 * (1 + statWeaponBonus)) * attackPercent);
         }
         else
         {
-            var magicPercent = 1f + (GetStat(CharacterStat.AddMagicAttackPercent) / 100f);
-            atk1 = (int)((addAtk + atk1 * (1 + statWeaponBonus)) * magicPercent);
-            atk2 = (int)((addAtk + atk2 * (1 + statWeaponBonus)) * magicPercent);
+            if (!isMagic)
+            {
+                var attackPercent = 1f + (GetStat(CharacterStat.AddAttackPercent) / 100f);
+                atk1 = (int)(atk1 * attackPercent);
+                atk2 = (int)(atk2 * attackPercent);
+            }
+            else
+            {
+                var magicPercent = 1f + (GetStat(CharacterStat.AddMagicAttackPercent) / 100f);
+                atk1 = (int)(atk1 * magicPercent);
+                atk2 = (int)(atk2 * magicPercent);
+            }
         }
 
         if (atk1 <= 0)

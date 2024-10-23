@@ -52,6 +52,8 @@ public class Player : IEntityAutoReset
     public CharacterBag? StorageInventory;
     public bool isStorageLoaded = false;
 
+    public int GetItemIdForEquipSlot(EquipSlot slot) => Equipment.ItemIds[(int)slot];
+
     public bool DoesCharacterKnowSkill(CharacterSkill skill, int level) => LearnedSkills.TryGetValue(skill, out var learned) && learned >= level;
     public int MaxLearnedLevelOfSkill(CharacterSkill skill) => LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0;
 
@@ -335,50 +337,19 @@ public class Player : IEntityAutoReset
             SetData(PlayerStat.Level, level);
         }
 
-        //if (Character.ClassId != job)
-        {
-            Character.ClassId = job; //there should be more complex checks here to prevent GM and mounts from being lost but we'll deal with it later
-        }
-
-        //var aMotionTime = 0.5f;
-        //var delayTime = 1.1f - level * 0.004f * aspdBonus;
-        //if (delayTime < aMotionTime)
-        //    delayTime = aMotionTime;
-        //var spriteAttackTiming = 0.6f;
-
-        //if (spriteAttackTiming > aMotionTime)
-        //    spriteAttackTiming = aMotionTime;
-
-        //SetTiming(TimingStat.AttackMotionTime, aMotionTime);
-        //SetTiming(TimingStat.SpriteAttackTiming, 0.5f);
-        //SetTiming(TimingStat.AttackDelayTime, delayTime);
+        Character.ClassId = job;
+        
         SetTiming(TimingStat.HitDelayTime, 0.288f);
-        //SetTiming(TimingStat.MoveSpeed, 0.15f);
-        if (GetData(PlayerStat.Job) == 2)
+        if (WeaponClass == 12) //bow
             SetStat(CharacterStat.Range, 4 + MaxLearnedLevelOfSkill(CharacterSkill.VultureEye));
         else
             SetStat(CharacterStat.Range, 1);
-
-        //var atk = level * (level / 20f) + 28 + level;
-        ////atk *= 1.2f;
-
-        ////lower damage below lv 60, raise above
-        //var proc = 0.5f + Math.Clamp(level, 0, 99f) / 120f;
-        //atk *= proc;
-
-        //var atk1 = (int)(atk * 0.90f - 1);
-        //var atk2 = (int)(atk * 1.10f + 1);
-
-        //var atkBonus = GetJobBonus(CharacterStat.Attack);
-        //var matkBonus = GetJobBonus(CharacterStat.MagicAtkMin);
-        //var hpBonus = GetJobBonus(CharacterStat.MaxHp);
-
+        
         var agiBonus = GetJobBonus(CharacterStat.Agi);
         var dexBonus = GetJobBonus(CharacterStat.Dex);
         var defBonus = GetJobBonus(CharacterStat.Def);
         var mdefBonus = GetJobBonus(CharacterStat.MDef);
-
-
+        
         SetStat(CharacterStat.Def, (level * 0.7f) * defBonus);
         SetStat(CharacterStat.MDef, (level * 0.4f) * mdefBonus);
         SetStat(CharacterStat.Vit, (3 + level * 0.5f));
@@ -387,38 +358,31 @@ public class Player : IEntityAutoReset
         SetStat(CharacterStat.Agi, (3 + level * 0.5f) * agiBonus);
         SetStat(CharacterStat.Dex, (15 + level * 0.9f) * dexBonus);
         SetStat(CharacterStat.Luk, (3 + level * 0.5f));
-        //SetStat(CharacterStat.MaxHp, 50 + 100 * level * hpBonus);
-
-        ////dex for bow, str for everything else
-        //var dmgStat = GetEffectiveStat(WeaponClass == 12 ? CharacterStat.Dex : CharacterStat.Str);
-        //var attackPower = (float)((dmgStat + (int)(dmgStat / 10) * (int)(dmgStat / 10)) / 100f);
-
-        //var matkStat = GetEffectiveStat(CharacterStat.Int);
-        //matkBonus += (float)((matkStat + (int)(matkStat / 10) * (int)(matkStat / 10)) / 100f);
-
-        //SetStat(CharacterStat.MagicAtkMin, atk1 * matkBonus);
-        //SetStat(CharacterStat.MagicAtkMax, atk2 * matkBonus);
-
-
-        //var newMaxHp = (level * level * level) / 20 + 80 * level;
         
-        var jobAspd = GetJobBonus(CharacterStat.AspdBonus);
-        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100 * jobAspd);
-        var agiAspdBonus = 100f / (100 + GetEffectiveStat(CharacterStat.Agi) + GetEffectiveStat(CharacterStat.Dex) / 3f);
+        var jobAspd = jobInfo.WeaponTimings[WeaponClass];
+        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100);
+        //var agiAspdBonus = GetEffectiveStat(CharacterStat.Agi) / 3 * 3 + GetEffectiveStat(CharacterStat.Dex) / 3; //we set an aspd breakpoint on 3s
+        //var agiAspdValue = 100f / (100 + agiAspdBonus);
 
-        var recharge = 1.2f * aspdBonus * agiAspdBonus;
-        if (job == 2)
-            recharge = 1.4f * aspdBonus * agiAspdBonus;
+        var agi = GetEffectiveStat(CharacterStat.Agi);
+        var dex = GetEffectiveStat(CharacterStat.Dex);
 
-        if (recharge > 1.4f)
-            recharge = 1.4f;
+        // Trust me this works. I think!
+        var speedScore = (agi + dex / 4) * 5 / 3; //agi * 1.6667
+        var speedBoost = 1 + ((MathHelper.BoostCalc(speedScore) - 1) / 4.8f);
+        var statSpeedValue = 1f / speedBoost;
+
+        var recharge = jobAspd * aspdBonus * statSpeedValue;
+
+        if (recharge > 2f)
+            recharge = 2f;
 
         var motionTime = 1f;
         var spriteTime = 0.6f;
-        if (job == 2)
+        if (WeaponClass == 12) //bow
         {
-            motionTime = recharge * (6f / 8f);
-            spriteTime = recharge * (6f / 8f);
+            motionTime = recharge * 0.75f;
+            spriteTime = recharge * 0.75f;
         }
 
         if (recharge < motionTime)
@@ -458,7 +422,10 @@ public class Player : IEntityAutoReset
 
         var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
         if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Curse))
-            moveBonus = 0.1f;
+            moveBonus = 1 / 0.1f;
+
+        if (moveBonus < 0.8f)
+            moveBonus = 0.8f;
 
         //var moveSpeed = 0.15f - (0.001f * level / 5f);
         var moveSpeed = 0.15f * moveBonus;

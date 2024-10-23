@@ -208,7 +208,7 @@ public static class CommandBuilder
         return packet;
     }
 
-    public static void SendUpdatePlayerData(Player p)
+    public static void SendUpdatePlayerData(Player p, bool sendInventory = false)
     {
         var packet = NetworkManager.StartPacket(PacketType.UpdatePlayerData, 256);
 
@@ -225,10 +225,13 @@ public static class CommandBuilder
             packet.Write((byte)skill.Key);
             packet.Write((byte)skill.Value);
         }
-        
-        p.Inventory.TryWrite(packet, true);
-        p.CartInventory.TryWrite(packet, true);
-        p.StorageInventory.TryWrite(packet, true);
+        packet.Write(sendInventory);
+        if (sendInventory)
+        {
+            p.Inventory.TryWrite(packet, true);
+            p.CartInventory.TryWrite(packet, true);
+            p.StorageInventory.TryWrite(packet, true);
+        }
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
@@ -685,7 +688,7 @@ public static class CommandBuilder
         packet.Write(c.Player.Id.ToByteArray());
         
         NetworkManager.SendMessage(packet, p.Connection);
-        SendUpdatePlayerData(p);
+        SendUpdatePlayerData(p, true);
     }
 
     public static void SendCreateEntityMulti(WorldObject c)

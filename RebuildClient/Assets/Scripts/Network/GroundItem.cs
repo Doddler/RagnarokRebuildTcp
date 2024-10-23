@@ -39,7 +39,7 @@ namespace Assets.Scripts.Network
             item.Count = count;
             item.ItemType = ItemType.RegularItem;
             item.Sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(data.Sprite);
-            item.ItemName = data.Name;
+            item.ItemName = data.Slots == 0 ? data.Name : $"{data.Name} [{data.Slots}]";
             item.EntityId = entityId;
 
             var subObject = new GameObject("Sprite");

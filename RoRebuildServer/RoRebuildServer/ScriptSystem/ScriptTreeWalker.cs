@@ -3,7 +3,10 @@ using System.Globalization;
 using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Util;
+using RoRebuildServer.EntityComponents.Items;
+using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoServerScript;
 using static RoServerScript.RoScriptParser;
@@ -22,10 +25,27 @@ internal class ScriptTreeWalker
     public string BuildClass(string inputName, RoScriptParser parser, HashSet<string> uniqueNames)
     {
         name = inputName;
-        builder = new ScriptBuilder(inputName.Replace(" ", "_"), uniqueNames, "System", "System.Linq",
-            "RoRebuildServer.Data.Map", "RebuildSharedData.Data", "RoRebuildServer.Data", "RoRebuildServer.EntityComponents", "RoRebuildServer.ScriptSystem",
-            "RebuildSharedData.Enum", "RoRebuildServer.EntityComponents.Npcs", "RoRebuildServer.Simulation.Util", "RoRebuildServer.EntityComponents.Items",
-            "RoRebuildServer.EntityComponents.Monsters", "RoRebuildServer.Data.Monster", "RoRebuildServer.EntityComponents.Character");
+
+        //this is silly and I really should do something better
+        builder = new ScriptBuilder(inputName.Replace(" ", "_"), uniqueNames, 
+            "System", 
+            "System.Linq",
+            "RoRebuildServer.Data.Map", 
+            "RebuildSharedData.Data", 
+            "RoRebuildServer.Data", 
+            "RoRebuildServer.EntityComponents", 
+            "RoRebuildServer.ScriptSystem",
+            "RebuildSharedData.Enum", 
+            "RoRebuildServer.EntityComponents.Npcs", 
+            "RoRebuildServer.Simulation.Util", 
+            "RoRebuildServer.EntityComponents.Items",
+            "RoRebuildServer.EntityComponents.Monsters", 
+            "RoRebuildServer.Data.Monster", 
+            "RoRebuildServer.EntityComponents.Character",
+            "RoRebuildServer.Simulation.StatusEffects",
+            "RoRebuildServer.Simulation.StatusEffects._1stJob",
+            "RoRebuildServer.Simulation.StatusEffects.ItemEffects",
+            "RoRebuildServer.Simulation.StatusEffects.GenericDebuffs");
 
         var ruleSet = parser.rule_set();
 

@@ -84,5 +84,6 @@
 82,CartRevolution,TRUE,TRUE,FALSE,cartrevolution,,,0,,
 83,SignumCrusis,TRUE,TRUE,FALSE,cross,,,0,,
 84,Cure,TRUE,TRUE,FALSE,cure,,,0,,
-85,LoudVoice,TRUE,TRUE,FALSE,loud,,,0,,
+85,LoudVoice,TRUE,TRUE,FALSE,loud,,고성방가,0,,
 86,StoneSkin,TRUE,TRUE,FALSE,keeping,,,-0.4,,
+87,SpeedBadge,TRUE,TRUE,FALSE,mapae,,mapae,0,,

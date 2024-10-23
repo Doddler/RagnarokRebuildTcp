@@ -12,7 +12,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
         {
             var lvl = state.Value1;
             state.Value1 = 2 + lvl; //agi bonus
-            state.Value2 = 25; //25% move speed bonus
+            state.Value2 = 25; //will cap out player move speed buff
             if (lvl > 10)
                 state.Value2 = 100;
             ch.AddStat(CharacterStat.AddAgi, state.Value1);

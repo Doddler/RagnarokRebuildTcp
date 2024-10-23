@@ -54,5 +54,6 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public static StatusUpdateResult OnUpdateTick(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnUpdateTick(ch, ref state);
         public static StatusUpdateResult OnAttack(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnAttack(ch, ref state, ref info);
         public static StatusUpdateResult OnTakeDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnTakeDamage(ch, ref state, ref info);
+        public static StatusUpdateResult OnChangeEquipment(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnChangeEquipment(ch, ref state);
     }
 }

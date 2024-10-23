@@ -461,6 +461,7 @@ namespace Assets.Scripts.Sprites
             LoadAndAttachEquipmentSprite(control, param.Headgear1, EquipPosition.HeadUpper, 4);
             LoadAndAttachEquipmentSprite(control, param.Headgear2, EquipPosition.HeadMid, 3);
             LoadAndAttachEquipmentSprite(control, param.Headgear3, EquipPosition.HeadLower, 2);
+            LoadAndAttachEquipmentSprite(control, param.Shield, EquipPosition.Shield, 1);
             
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.Name = param.Name;

@@ -15,9 +15,9 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
         {
             source.ApplyCooldownForSupportSkillAction();
             
-            var timing = 10 * lvl; //+10% aspd per level, to a max of 2x attack speed
+            var timing = 6 * lvl; //+6% aspd per level, to a max of +60% attack speed
             if (source.Character.Type == CharacterType.Monster && lvl >= 10)
-                timing = 200; //monsters with lvl 10 get 3x attack speed instead
+                timing = 200; //monsters with lvl 10 get 3x attack speed instead (+200%)
 
             var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.TwoHandQuicken, 180f, timing);
             source.AddStatusEffect(status);

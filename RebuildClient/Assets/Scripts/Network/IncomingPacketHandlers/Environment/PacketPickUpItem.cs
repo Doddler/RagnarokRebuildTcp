@@ -16,7 +16,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Environment
             
             if (Network.GroundItemList.TryGetValue(itemId, out var item))
             {
-                Debug.Log($"Pick up item {itemId}");
+                // Debug.Log($"Pick up item {itemId}");
                 if (hasPickerUpper)
                     character.LookAt(item.transform.position);
 

@@ -10,6 +10,7 @@ using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntityComponents.Items;
@@ -100,6 +101,18 @@ public class ItemEquipState
         if(equipInfo.EquipPosition.HasFlag(EquipPosition.HeadMid)) UnEquipItem(EquipSlot.HeadMid);
         if(equipInfo.EquipPosition.HasFlag(EquipPosition.HeadLower)) UnEquipItem(EquipSlot.HeadBottom);
         if(equipInfo.EquipPosition.HasFlag(EquipPosition.Shield)) UnEquipItem(EquipSlot.Shield);
+        if(equipInfo.EquipPosition.HasFlag(EquipPosition.Armor)) UnEquipItem(EquipSlot.Body);
+        if(equipInfo.EquipPosition.HasFlag(EquipPosition.Garment)) UnEquipItem(EquipSlot.Garment);
+        if(equipInfo.EquipPosition.HasFlag(EquipPosition.Boots)) UnEquipItem(EquipSlot.Footgear);
+        if (equipInfo.EquipPosition.HasFlag(EquipPosition.Accessory))
+        {
+            if (ItemSlots[(int)EquipSlot.Accessory1] == bagId) UnEquipItem(EquipSlot.Accessory1);
+            if (ItemSlots[(int)EquipSlot.Accessory2] == bagId) UnEquipItem(EquipSlot.Accessory2);
+        }
+
+        if (Player.CombatEntity.TryGetStatusContainer(out var status))
+            status.OnChangeEquipment();
+        Player.UpdateStats();
     }
     
     private void UnEquipItem(EquipSlot slot)
@@ -201,6 +214,9 @@ public class ItemEquipState
         OnEquipEvent(equipSlot);
         CommandBuilder.UpdatePlayerAppearanceAuto(Player);
 
+        if (Player.CombatEntity.TryGetStatusContainer(out var status))
+            status.OnChangeEquipment();
+        
         return EquipChangeResult.Success;
     }
 
@@ -240,6 +256,9 @@ public class ItemEquipState
 
         OnEquipEvent(equipSlot);
         CommandBuilder.UpdatePlayerAppearanceAuto(Player);
+
+        if (Player.CombatEntity.TryGetStatusContainer(out var status))
+            status.OnChangeEquipment();
 
         return EquipChangeResult.Success;
     }
@@ -388,8 +407,14 @@ public class ItemEquipState
         equipmentEffects.Add(ref equipState);
         Player.CombatEntity.AddStat(stat, change);
     }
-
+    
     public void SubStat(CharacterStat stat, int change) => AddStat(stat, -change); //lol
+
+    public void AddStatusEffect(CharacterStatusEffect statusEffect, int duration, int val1 = 0, int val2 = 0)
+    {
+        var status = StatusEffectState.NewStatusEffect(statusEffect, duration, val1, val2);
+        Player.CombatEntity.AddStatusEffect(status);
+    }
 
     public void Serialize(IBinaryMessageWriter bw)
     {

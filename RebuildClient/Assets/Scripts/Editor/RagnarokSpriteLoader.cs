@@ -468,6 +468,12 @@ namespace Assets.Editor
                 Sprites.Add(sprite);
             }
 
+            if (atlasPath.Contains("Shields"))
+            {
+                dataObject.ReverseSortingWhenFacingNorth = true;
+                dataObject.IgnoreAnchor = true;
+            }
+            
             br.Dispose();
             ms.Dispose();
         }

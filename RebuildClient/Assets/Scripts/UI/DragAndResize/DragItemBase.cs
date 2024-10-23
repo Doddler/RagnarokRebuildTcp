@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,7 @@ namespace Assets.Scripts.UI
 
         public void UpdateCount(int count)
         {
+            // Debug.Log($"Update item count for {ItemId} to {count}");
             ItemCount = count;
             if (CountText != null)
             {

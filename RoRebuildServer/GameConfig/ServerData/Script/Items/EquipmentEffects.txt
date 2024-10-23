@@ -175,31 +175,50 @@ Item("Principles_of_Magic") { OnEquip:  AddStat(AddInt, 3); }
 Item("Ancient_Magic") { OnEquip:  AddStat(AddInt, 4); }
 Item("Brave_Book") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 1); }
 Item("Valorous_Book") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 2); }
-Item("Angra_Manyu") { OnEquip:  AddStat(AddStr, 50); AddStat(AddInt, 50); AddStat(AddVit, 50); AddStat(AddDex, 50); AddStat(AddAgi, 50); AddStat(AddLuk, 50); }
-Item("Wand") { OnEquip:  AddStat(AddInt, 1); }
-Item("Wand_") { OnEquip:  AddStat(AddInt, 1); }
-Item("Staff") { OnEquip:  AddStat(AddInt, 2); }
-Item("Staff_") { OnEquip:  AddStat(AddInt, 2); }
-Item("Arc_Wand") { OnEquip:  AddStat(AddInt, 3); }
-Item("Arc_Wand_") { OnEquip:  AddStat(AddInt, 3); }
-Item("Mighty_Staff") { OnEquip:  AddStat(AddStr, 10); }
-Item("Wand_of_Occult") { OnEquip:  AddStat(AddInt, 3); }
-Item("Evil_Bone_Wand") { OnEquip:  AddStat(AddInt, 4); }
-Item("Survivor's_Rod") { OnEquip:  AddStat(AddDex, 2); }
-Item("Survivor's_Rod_") { OnEquip:  AddStat(AddDex, 3); }
-Item("Survivor's_Rod__") { OnEquip:  AddStat(AddInt, 2); }
-Item("Survivor's_Rod___") { OnEquip:  AddStat(AddInt, 3); }
-Item("Hypnotist's_Staff") { OnEquip:  AddStat(AddInt, 1); }
-Item("Hypnotist's_Staff_") { OnEquip:  AddStat(AddInt, 1); }
-Item("Lich's_Bone_Wand") { OnEquip:  AddStat(AddInt, 1); AddStat(AddDex, 1); }
-Item("Piercing_Staff") { OnEquip:  AddStat(AddInt, 4); }
-Item("Gentleman_Staff") { OnEquip:  AddStat(AddDex, 1); }
-Item("Release_of_Wish") { OnEquip:  AddStat(AddInt, 3); }
-Item("Brave_Arc_Wand") { OnEquip:  AddStat(AddInt, 4); AddStat(AddDex, 3); }
-Item("Valorous_Arc_Wand") { OnEquip:  AddStat(AddInt, 3); AddStat(AddDex, 3); }
-Item("Valorous_Recovery_Wand") { OnEquip:  AddStat(AddInt, 3); AddStat(AddDex, 2); }
-Item("Thorn_Staff_of_Darkness") { OnEquip:  AddStat(AddInt, 3); AddStat(AddDex, 3); }
-Item("Eraser") { OnEquip:  AddStat(AddInt, 3); AddStat(AddDex, 2); }
+Item("Angra_Manyu") { 
+OnEquip: 
+	AddStat(AddAttackPower, 3000);
+	AddStat(AddMagicAttackPower, 3000); 
+	AddStat(AddStr, 50); 
+	AddStat(AddInt, 50); 
+	AddStat(AddVit, 50); 
+	AddStat(AddDex, 50); 
+	AddStat(AddAgi, 50); 
+	AddStat(AddLuk, 50); 
+}
+Item("Rod") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
+Item("Rod_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
+Item("Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
+Item("Wand_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
+Item("Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 2); }
+Item("Staff_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 2); }
+Item("Arc_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
+Item("Arc_Wand_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
+Item("Mighty_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddStr, 10); }
+Item("Wand_of_Occult") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
+Item("Evil_Bone_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); }
+Item("Wing_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
+Item("Survivor's_Rod") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 2); }
+Item("Survivor's_Rod_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 3); }
+Item("Survivor's_Rod__") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 2); }
+Item("Survivor's_Rod___") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
+Item("Hypnotist's_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
+Item("Hypnotist's_Staff_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
+Item("Lich's_Bone_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); AddStat(AddDex, 1); }
+Item("Healing_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
+Item("Piercing_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); }
+Item("Gentleman_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 1); }
+Item("Release_of_Wish") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
+Item("Holy_Stick") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
+Item("Brave_Arc_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); AddStat(AddDex, 3); }
+Item("Valorous_Arc_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 3); }
+Item("Brave_Recovery_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
+Item("Valorous_Recovery_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 2); }
+Item("Thorn_Staff_of_Darkness") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 3); }
+Item("Eraser") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 2); }
+Item("Novice_Rod") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
+Item("Glorious_Arc_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
+Item("Glorious_Recovery_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
 Item("Claw") { OnEquip:  AddStat(AddStr, 2); }
 Item("Claw_") { OnEquip:  AddStat(AddStr, 2); }
 Item("Brave_Fist") { OnEquip:  AddStat(AddStr, 2); AddStat(AddAgi, 1); }
@@ -232,11 +251,11 @@ Item("Katar") { OnEquip:  AddStat(AddDex, 1); }
 Item("Katar_") { OnEquip:  AddStat(AddDex, 1); }
 Item("Brave_Katar") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); }
 Item("Valorous_Katar") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); }
-Item("Bloody_Axe") { OnEquip:  AddStat(AddStr, 10); }
+Item("Bloody_Axe") { OnEquip: AddStat(MoveSpeedBonus, 34); AddStat(AddStr, 10); }
 Item("Brave_Battle_Axe") { OnEquip:  AddStat(AddStr, 3); }
 Item("Valorous_Battle_Axe") { OnEquip:  AddStat(AddStr, 3); }
-Item("Soul_Staff") { OnEquip:  AddStat(AddInt, 5); AddStat(AddAgi, 2); }
-Item("Wizardry_Staff") { OnEquip:  AddStat(AddInt, 6); AddStat(AddDex, 2); }
+Item("Soul_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 20); AddStat(AddInt, 5); AddStat(AddAgi, 2); }
+Item("Wizardry_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 20); AddStat(AddInt, 6); AddStat(AddDex, 2); }
 Item("Assaulter_Lance") { OnEquip:  AddStat(AddStr, 2); }
 Item("Ivory_Lance") { OnEquip:  AddStat(AddAgi, 2); }
 Item("Staff_of_Destruction") { OnEquip:  AddStat(AddInt, 3); AddStat(AddAgi, 10); }

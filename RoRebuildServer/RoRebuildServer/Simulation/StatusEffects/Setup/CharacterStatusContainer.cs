@@ -23,6 +23,7 @@ public class CharacterStatusContainer
     private int onAttackEffects;
     private int onHitEffects;
     private int onUpdateEffects;
+    private int onEquipmentChangeEffects;
 
     private float nextStatusUpdate;
     
@@ -34,6 +35,7 @@ public class CharacterStatusContainer
         onAttackEffects = 0;
         onHitEffects = 0;
         onUpdateEffects = 0;
+        onEquipmentChangeEffects = 0;
         nextStatusUpdate = 0f;
         if (pendingStatusEffects != null)
         {
@@ -82,28 +84,7 @@ public class CharacterStatusContainer
         {
             //loop through the removals in reverse order, which should be safe
             for (var i = removeCount - 1; i >= 0; i--)
-            {
-                var s = statusEffects[i];
-
-                statusEffects.Remove(remove[i]);
-                if (Character.Map == null)
-                    continue;
-
-                switch (StatusEffectHandler.GetStatusVisibility(s.Type))
-                {
-                    case StatusClientVisibility.Everyone: //for now everyone sees every status
-                    case StatusClientVisibility.Owner:
-                    case StatusClientVisibility.Ally:
-                        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
-                        CommandBuilder.SendRemoveStatusEffect(Character, ref s);
-                        CommandBuilder.ClearRecipients();
-                        break;
-                    default:
-                        //notify no-one
-                        break;
-                }
-
-            }
+                RemoveExistingStatusEffect(remove[i]);
         }
     }
 
@@ -195,6 +176,35 @@ public class CharacterStatusContainer
             RemoveIdList(ref remove, removeCount);
     }
 
+    public void OnChangeEquipment()
+    {
+        Debug.Assert(Owner != null);
+        if (statusEffects == null || onEquipmentChangeEffects <= 0)
+            return;
+
+        Span<int> remove = stackalloc int[statusEffects.Count];
+        var removeCount = 0;
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var s = statusEffects[i];
+            if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnChangeEquipment))
+            {
+                var res = StatusEffectHandler.OnChangeEquipment(s.Type, Owner, ref s);
+                if (res == StatusUpdateResult.EndStatus)
+                {
+                    remove[removeCount] = i;
+                    removeCount++;
+                }
+                else
+                    statusEffects[i] = s;
+            }
+        }
+
+        if (removeCount > 0)
+            RemoveIdList(ref remove, removeCount);
+    }
+
     public void UpdateStatusEffects()
     {
         Debug.Assert(Owner != null);
@@ -265,6 +275,33 @@ public class CharacterStatusContainer
         }
     }
 
+    private void RemoveExistingStatusEffect(int id)
+    {
+        Debug.Assert(Owner != null && statusEffects != null);
+        var status = statusEffects[id];
+
+        if (StatusEffectHandler.GetStatusVisibility(status.Type) != StatusClientVisibility.None)
+        {
+            Debug.Assert(Character.Map != null);
+            Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+            CommandBuilder.SendRemoveStatusEffect(Character, ref status);
+            CommandBuilder.ClearRecipients();
+        }
+
+        StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
+        statusEffects!.Remove(id);
+
+        var updateMode = StatusEffectHandler.GetUpdateMode(status.Type);
+        if (updateMode.HasFlag(StatusUpdateMode.OnTakeDamage))
+            onHitEffects--;
+        if (updateMode.HasFlag(StatusUpdateMode.OnDealDamage))
+            onAttackEffects--;
+        if (updateMode.HasFlag(StatusUpdateMode.OnUpdate))
+            onUpdateEffects--;
+        if (updateMode.HasFlag(StatusUpdateMode.OnChangeEquipment))
+            onEquipmentChangeEffects--;
+    }
+    
     private void RemoveExistingStatusEffect(ref StatusEffectState status)
     {
         Debug.Assert(Owner != null);
@@ -287,7 +324,8 @@ public class CharacterStatusContainer
             onAttackEffects--;
         if (updateMode.HasFlag(StatusUpdateMode.OnUpdate))
             onUpdateEffects--;
-
+        if (updateMode.HasFlag(StatusUpdateMode.OnChangeEquipment))
+            onEquipmentChangeEffects--;
     }
 
     public void AddNewStatusEffect(StatusEffectState state, bool replaceExisting = true)
@@ -327,6 +365,8 @@ public class CharacterStatusContainer
             onAttackEffects++;
         if (updateMode.HasFlag(StatusUpdateMode.OnUpdate))
             onUpdateEffects++;
+        if (updateMode.HasFlag(StatusUpdateMode.OnChangeEquipment))
+            onEquipmentChangeEffects++;
     }
 
     public void AddPendingStatusEffect(StatusEffectState state, bool replaceExisting, float time)

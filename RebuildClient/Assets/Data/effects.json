@@ -1028,7 +1028,7 @@
       "IsLooping": false,
       "StrFile": "loud",
       "Sprite": "",
-      "SoundFile": "",
+      "SoundFile": "\uACE0\uC131\uBC29\uAC00",
       "Offset": 0,
       "PrefabName": ""
     },
@@ -1042,6 +1042,18 @@
       "Sprite": "",
       "SoundFile": "",
       "Offset": -0.4,
+      "PrefabName": ""
+    },
+    {
+      "Id": 87,
+      "Name": "SpeedBadge",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "mapae",
+      "Sprite": "",
+      "SoundFile": "mapae",
+      "Offset": 0,
       "PrefabName": ""
     }
   ]

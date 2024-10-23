@@ -909,7 +909,7 @@ namespace Assets.Scripts
                                       !mouseTarget.IsAlly);
             var canClickEnemy = canCurrentlyTarget && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickNpc = canInteract && !hasSkillOnCursor && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
-            var canClickItem = hasItem && !canClickEnemy;
+            var canClickItem = hasItem && !canClickEnemy && !hasSkillOnCursor && !isOverUi;
             var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc && !hasTargetedSkill && !canClickItem;
             var canMove = ClickDelay <= 0 && isAlive && !isSitting && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl);
             var showEntityName = hasEntity && !isOverUi;

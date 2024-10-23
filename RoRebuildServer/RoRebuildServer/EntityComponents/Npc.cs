@@ -109,6 +109,7 @@ public class Npc : IEntityAutoReset
         currentSignalTarget = null;
         Name = "";
         EventType = null!;
+        ItemsForSale = null; //no point in pooling these, we don't place vendor npcs during runtime usually
 
         if(Mobs != null)
             EntityListPool.Return(Mobs);

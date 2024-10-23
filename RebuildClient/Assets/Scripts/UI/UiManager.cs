@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts;
+using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
@@ -25,6 +26,7 @@ public class UiManager : MonoBehaviour
     public DragTrashBucket TrashBucket;
     public GameObject PrimaryUserUIContainer;
     public ItemOverlay ItemOverlay;
+    public CharacterChat TooltipOverlay;
 
     public ItemDragObject DragItemObject;
     
@@ -38,6 +40,7 @@ public class UiManager : MonoBehaviour
     private IItemDropTarget HoveredDropTarget;
     private bool canChangeSkillLevel;
     public bool IsCanvasVisible => canvas.enabled;
+    private GameObject hoveredObject;
 
     public static UiManager Instance
     {
@@ -84,8 +87,80 @@ public class UiManager : MonoBehaviour
         //InventoryWindow.HideWindow();
         
         ActionTextDisplay.EndActionTextDisplay();
+        
+        TooltipOverlay.gameObject.SetActive(false);
 
         canvas.enabled = false;
+    }
+
+    public void ShowTooltip(GameObject src, string text)
+    {
+        var pos = Input.mousePosition;
+        hoveredObject = src.gameObject;
+        TooltipOverlay.gameObject.SetActive(true);
+        TooltipOverlay.SetText(text);
+
+        UpdateOverlayPosition();
+    }
+    
+    public void HideTooltip(GameObject src)
+    {
+        //if a different tooltip took over, we don't want to hide it
+        if (hoveredObject != null && hoveredObject.activeInHierarchy && src != hoveredObject)
+            return;
+        TooltipOverlay.gameObject.SetActive(false);
+        hoveredObject = null;
+    }
+
+    public void RefreshTooltip()
+    {
+        if (hoveredObject == null || !hoveredObject.activeInHierarchy)
+        {
+            TooltipOverlay.gameObject.SetActive(false);
+            hoveredObject = null;
+            return;
+        }
+
+        var drag = hoveredObject.GetComponent<DraggableItem>();
+        if (drag == null)
+            return;
+
+        if (drag.Type == DragItemType.Item && drag.ItemCount == 0)
+        {
+            TooltipOverlay.gameObject.SetActive(false);
+            hoveredObject = null;
+            return;
+        }
+        
+        drag.OnPointerEnter(null);
+    }
+
+    private void UpdateOverlayPosition()
+    {
+        if (!TooltipOverlay.gameObject.activeInHierarchy)
+            return;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,
+            Input.mousePosition, canvas.worldCamera, out var screenPos);
+
+        var initialScreenPos = canvas.transform.TransformPoint(screenPos);
+        screenPos = initialScreenPos;
+
+        var scale = GameConfig.Data.MasterUIScale;
+        var height = TooltipOverlay.RectTransform.rect.yMax * scale;
+        var width = TooltipOverlay.RectTransform.rect.xMax * scale;
+
+        screenPos.y += 10;
+
+        if (screenPos.y + height > Screen.height)
+            screenPos.y = Screen.height - height;
+
+        if (screenPos.x + width > Screen.width)
+            screenPos.x -= width;
+        
+        TooltipOverlay.transform.position = screenPos;
+
+        // Debug.Log($"{screenPos} {initialScreenPos} {width} {height} {GameConfig.Data.MasterUIScale}");
     }
 
     public void OnLogIn()
@@ -240,7 +315,12 @@ public class UiManager : MonoBehaviour
         {
             SkillHotbar.UpdateHotkeyPresses();
         }
-
+        
+        if(IsDraggingItem || CameraFollower.Instance.InTextBox || CameraFollower.Instance.IsInNPCInteraction)
+            TooltipOverlay.gameObject.SetActive(false);
+        
+        UpdateOverlayPosition();
+            
         if (IsDraggingItem && canChangeSkillLevel)
         {
             var oldLvl = (float)DragItemObject.ItemCount;

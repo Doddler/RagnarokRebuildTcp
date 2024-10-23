@@ -142,6 +142,7 @@ class Program
                 IsUnique = true,
                 ItemClass = ItemClass.Weapon,
                 UseType = ItemUseType.NotUsable,
+                Slots = entry.Slot,
                 Price = entry.Price,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
@@ -165,6 +166,7 @@ class Program
                 IsUnique = true,
                 ItemClass = ItemClass.Equipment,
                 UseType = ItemUseType.NotUsable,
+                Slots = entry.Slot,
                 Price = entry.Price,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
@@ -173,7 +175,7 @@ class Program
             itemList.Items.Add(item);
 
             if (!string.IsNullOrWhiteSpace(entry.DisplaySprite))
-                displaySpriteList.AppendLine($"{entry.Code}\t{entry.DisplaySprite}");
+                displaySpriteList.AppendLine($"{entry.Code}\t{entry.DisplaySprite.ToLowerInvariant()}");
         }
 
         foreach (var entry in GetCsvRows<CsvItemCard>("ItemsCards.csv"))

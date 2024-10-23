@@ -93,6 +93,7 @@ namespace Assets.Scripts.Sprites
                 var go = new GameObject("Renderer");
                 renderer = go.AddComponent<RoSpriteTrailRenderer>();
             }
+            
 
             renderer.Init();
             renderer.MeshRenderer.sharedMaterial = sprite.MeshRenderer.sharedMaterial;
@@ -102,7 +103,7 @@ namespace Assets.Scripts.Sprites
             renderer.SpriteOffset = sprite.SpriteOffset;
             renderer.MeshRenderer.sortingOrder = sprite.MeshRenderer.sortingOrder;
             renderer.transform.localRotation = sprite.gameObject.transform.localRotation;
-            renderer.transform.position = sprite.gameObject.transform.position;
+            renderer.transform.localPosition = sprite.gameObject.transform.localPosition;
             
             trail.AddTrailSprite(renderer, order);
         }
@@ -145,7 +146,7 @@ namespace Assets.Scripts.Sprites
             CloneSpriteForTrail(renderer, trail, 0);
             for (var i = 0; i < animator.ChildrenSprites.Count; i++)
             {
-                CloneSpriteForTrail((RoSpriteRendererStandard)animator.ChildrenSprites[i].SpriteRenderer, trail, i + 1);
+                CloneSpriteForTrail((RoSpriteRendererStandard)animator.ChildrenSprites[i].SpriteRenderer, trail, animator.ChildrenSprites[i].SpriteOrder);
             }
         }
 
