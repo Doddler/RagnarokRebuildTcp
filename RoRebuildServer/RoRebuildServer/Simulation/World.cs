@@ -324,6 +324,20 @@ public class World
             area = Area.CreateAroundPoint(Position.Zero, 0);
         }
 
+        if (string.IsNullOrWhiteSpace(map))
+        {
+            if (!string.IsNullOrWhiteSpace(request.SavePosition.MapName))
+            {
+                map = request.SavePosition.MapName;
+                area = Area.CreateAroundPoint(request.SavePosition.Position, request.SavePosition.Area);
+            }
+            else
+            {
+                map = ServerConfig.EntryConfig.Map;
+                area = Area.CreateAroundPoint(ServerConfig.EntryConfig.Position, ServerConfig.EntryConfig.Area);
+            }
+        }
+
         var playerEntity = NetworkManager.World.CreatePlayer(connection, map, area);
         
         connection.Entity = playerEntity;
