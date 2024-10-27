@@ -83,6 +83,9 @@ namespace Assets.Scripts.Editor
                 var importedAssetName = $"Assets/Sprites/Imported/Icons/{fName}.asset";
                 // Debug.Log(destPath);
 
+                if (!Directory.Exists("Assets/Sprites/Icons/"))
+                    Directory.CreateDirectory("Assets/Sprites/Icons/");
+
                 if (!File.Exists(destPath))
                 {
                     var sprPath = Path.Combine(srcPath, fName + ".spr");
@@ -92,7 +95,7 @@ namespace Assets.Scripts.Editor
                         Debug.LogWarning($"Could not find spr file with name {sprPath}");
                         continue;
                     }
-
+                    
                     var newSprPath = $"Assets/Sprites/Icons/{fName}.spr";
                     var newActPath = $"Assets/Sprites/Icons/{fName}.act";
                     
