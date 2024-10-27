@@ -24,7 +24,7 @@ namespace Utility
         public string StateName;
 
 
-        private Camera camera;
+        private new Camera camera;
 
 #if UNITY_EDITOR
         private RecorderController recorderController;
@@ -114,7 +114,7 @@ namespace Utility
                 var videoRecorder = ScriptableObject.CreateInstance<MovieRecorderSettings>();
                 videoRecorder.name = "My Video Recorder";
                 videoRecorder.Enabled = true;
-                videoRecorder.VideoBitRateMode = VideoBitrateMode.Low;
+                //videoRecorder.VideoBitRateMode = VideoBitrateMode.Low;
 
                 videoRecorder.ImageInputSettings = new GameViewInputSettings
                 {

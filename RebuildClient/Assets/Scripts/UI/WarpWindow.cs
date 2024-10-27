@@ -47,8 +47,7 @@ public class WarpWindow : WindowBase
             return;
 
         var text = WarpListFile.text.Split("\r\n");
-        WarpButton lastButton = null;
-
+        
         var rows = 0;
         //var width = 0f;
 

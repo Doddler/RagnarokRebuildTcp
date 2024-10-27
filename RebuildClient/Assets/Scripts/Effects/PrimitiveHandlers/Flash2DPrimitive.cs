@@ -49,8 +49,6 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             var angle = data.RotationAngle;
             var arc = data.ArcLength;
             
-            var i = 0;
-            
             var c1 = Mathf.Cos((angle - arc) * Mathf.Deg2Rad);
             var s1 = Mathf.Sin((angle - arc) * Mathf.Deg2Rad);
             var c2 = Mathf.Cos((angle + arc) * Mathf.Deg2Rad);

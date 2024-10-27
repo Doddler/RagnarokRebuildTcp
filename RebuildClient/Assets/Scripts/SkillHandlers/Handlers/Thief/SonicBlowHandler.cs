@@ -18,7 +18,6 @@ namespace Assets.Scripts.SkillHandlers.Handlers
                 CameraFollower.Instance.AttachEffectToEntity("SonicBlow", src.gameObject, src.Id);
             }
 
-            var angle = 0;
             var target = attack.Target;
             if (target != null && (attack.Result == AttackResult.NormalDamage || attack.Result == AttackResult.CriticalDamage))
             {

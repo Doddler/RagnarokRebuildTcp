@@ -681,6 +681,11 @@ namespace Assets.Scripts.Sprites
             if (currentFrameTime < 0 || currentFrame > maxFrame)
                 AdvanceFrame();
 
+            if (isDirty)
+            {
+                //probably should do something
+            }
+
             //if (isDirty)
             {
                 UpdateSpriteFrame();

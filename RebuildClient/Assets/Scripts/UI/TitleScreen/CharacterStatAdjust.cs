@@ -7,18 +7,6 @@ namespace Assets.Scripts.UI.TitleScreen
     {
         public UnityEvent ScrollUpEvent; 
         public UnityEvent ScrollDownEvent; 
-    
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
 
         public void OnScroll(PointerEventData eventData)
         {

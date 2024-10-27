@@ -16,7 +16,7 @@ namespace Assets.Scripts.UI.TitleScreen
         private Vector3[] verts = new Vector3[3];
         private Vector2[] uvs = new Vector2[3];
 
-        public void Awake()
+        public new void Awake()
         {
             Refresh();
             cr = GetComponent<CanvasRenderer>();

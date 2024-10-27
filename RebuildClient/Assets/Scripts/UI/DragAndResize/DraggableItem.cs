@@ -19,7 +19,7 @@ namespace Assets.Scripts.UI
 
     public class DraggableItem : DragItemBase, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        private bool isMouseDown = false;
+        // private bool isMouseDown = false;
         private Vector3 startMousePosition;
         private Vector3 startPosition;
         private bool adjustCanvasAlpha;

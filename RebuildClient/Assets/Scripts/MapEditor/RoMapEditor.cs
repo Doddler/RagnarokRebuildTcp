@@ -260,7 +260,7 @@ namespace Assets.Scripts.MapEditor
             TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(destPath);
             importer.textureType = TextureImporterType.Default;
             importer.npotScale = TextureImporterNPOTScale.None;
-            importer.textureFormat = TextureImporterFormat.Automatic;
+            //importer.textureFormat = TextureImporterFormat.Automatic;
             importer.textureCompression = TextureImporterCompression.CompressedHQ;
             importer.wrapMode = TextureWrapMode.Clamp;
             importer.isReadable = true;
@@ -328,7 +328,7 @@ namespace Assets.Scripts.MapEditor
 
             ProbeGroup.gameObject.name = "LightProbes";
 
-            var layerMask = ~0; // ~(1 << LayerMask.NameToLayer("DynamicObject"));
+            //var layerMask = ~0; // ~(1 << LayerMask.NameToLayer("DynamicObject"));
 
             var probePositions = new List<Vector3>();
 
@@ -656,7 +656,7 @@ namespace Assets.Scripts.MapEditor
                 return;
             
             SceneView.duringSceneGui += OnSceneGUI;
-            EditorApplication.playmodeStateChanged += OnDisable;
+            EditorApplication.playModeStateChanged += OnChangePlayMode;
 
 
             if (!mapData.IsWalkTable)
@@ -728,10 +728,15 @@ namespace Assets.Scripts.MapEditor
             OnDisable();
         }
 
+        public void OnChangePlayMode(PlayModeStateChange change)
+        {
+            OnDisable();
+        }
+
         public void OnDisable()
         {
             SceneView.duringSceneGui -= OnSceneGUI;
-            EditorApplication.playmodeStateChanged -= OnDisable;
+            EditorApplication.playModeStateChanged -= OnChangePlayMode;
 
             if (mapData == null || !mapData.IsWalkTable)
                 Lightmapping.ResetDelegate();
@@ -746,7 +751,7 @@ namespace Assets.Scripts.MapEditor
             if (Application.isPlaying)
             {
                 SceneView.duringSceneGui -= OnSceneGUI;
-                EditorApplication.playmodeStateChanged -= OnDisable;
+                EditorApplication.playModeStateChanged -= OnChangePlayMode;
             }
 
             if (!Application.isEditor && HasSelection)

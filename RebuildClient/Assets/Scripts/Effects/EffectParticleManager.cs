@@ -43,7 +43,7 @@ namespace Assets.Scripts.Effects
         public int ParticlesInUse = 0;
         private bool isInit;
 
-        private CameraFollower camera;
+        private new CameraFollower camera;
 
         private MeshBuilder mb;
         private MeshRenderer mr;
@@ -55,7 +55,7 @@ namespace Assets.Scripts.Effects
         private Vector3[] normals = new Vector3[4];
         private Color32[] colors = new Color32[4];
         private Vector2[] uvs = new Vector2[4];
-        private Vector3[] uv3s = new Vector3[4];
+        //private Vector3[] uv3s = new Vector3[4];
         private int[] tris;
 
         private void Initialize()

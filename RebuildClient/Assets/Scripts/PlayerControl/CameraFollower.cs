@@ -102,7 +102,7 @@ namespace Assets.Scripts
 
         private Vector2Int lastTile;
         private bool lastPathValid;
-        private bool noHold = false;
+        //private bool noHold = false;
         private bool hasSelection;
         public ServerControllable SelectedTarget;
         private GameObject selectedSprite;
@@ -1604,7 +1604,7 @@ namespace Assets.Scripts
             {
                 NetworkManager.Instance.SendNpcAdvance();
                 isHolding = false;
-                noHold = true;
+                //noHold = true;
                 return; //no point in doing other screencast stuff if we're still talking to the npc.
             }
 

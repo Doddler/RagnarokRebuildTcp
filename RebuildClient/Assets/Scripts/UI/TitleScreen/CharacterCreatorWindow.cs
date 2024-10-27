@@ -71,7 +71,7 @@ namespace Assets.Scripts.UI.TitleScreen
             
         }
 
-        public void Awake()
+        public new void Awake()
         {
             Pane.SetActive(false);
             statsRemaining = TotalStatPoints;

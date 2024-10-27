@@ -79,7 +79,7 @@ namespace Assets.Scripts.Network
         private string webUrl;
         private string username;
         private string password;
-        private bool isNewUser;
+        // private bool isNewUser;
         private bool isTokenLogin;
         private bool isInErrorState;
         private bool requestLoginToken;
@@ -170,7 +170,7 @@ namespace Assets.Scripts.Network
             //var target = "wss://roserver.dodsrv.com/ws";
             StartConnectServer(target, username, password);
             yield break; //end coroutine
-#endif
+#else
             if (Application.platform == RuntimePlatform.WindowsPlayer)
             {
                 var path = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "serverconfig.txt"));
@@ -195,6 +195,7 @@ namespace Assets.Scripts.Network
 
                 StartConnectServer(www.text, username, password);
             }
+#endif
         }
         
         public void StartConnectWithNewAccount(string serverPath, string connectUserName, string connectPassword)
@@ -240,7 +241,7 @@ namespace Assets.Scripts.Network
             isConnected = false;
             isReady = false;
             isTokenLogin = usePasswordToken;
-            isNewUser = false;
+            // isNewUser = false;
             isInErrorState = false;
             isOnLoginScreen = true;
             
@@ -1821,12 +1822,15 @@ namespace Assets.Scripts.Network
             {
                 isConnected = false;
                 CameraFollower.SetErrorUiText("Lost connection to server!\n<size=-4>(Press space to try to reconnect)");
-                Debug.LogWarning("Client state has changed to: " + state);
+                if(isOnLoginScreen)
+                    Debug.LogWarning($"Client state has changed to: {state} (OnLoginScreen)");
+                else
+                    Debug.LogWarning($"Client state has changed to: {state} (Previous ready state: {isReady})");
+                isReady = false;
             }
 
             if (!isConnected)
                 return;
-
 
             if (state == WebSocketState.Closed)
             {

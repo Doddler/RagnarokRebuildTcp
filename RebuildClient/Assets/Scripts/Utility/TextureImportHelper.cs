@@ -218,10 +218,10 @@ namespace Assets.Scripts
             {
                 for (var x = 0; x < width; x++)
                 {
-                    var count = 0;
-                    var r = 0;
-                    var g = 0;
-                    var b = 0;
+                    //var count = 0;
+                    //var r = 0;
+                    //var g = 0;
+                    //var b = 0;
 
                     if (x + y * width >= colors.Length)
                         Debug.LogWarning($"For some reason looking out of bounds on color table on texture {path} w{width} h{height} position {x} {y} ({x + y * width}");
