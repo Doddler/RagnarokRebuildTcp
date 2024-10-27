@@ -124,7 +124,8 @@ namespace Assets.Scripts.UI
             MaxLevel = learnedLevel;
             CurrentLevel = MaxLevel;
             Icon.sprite = skillWindow.SkillAtlas.GetSprite(skillData.Icon);
-            ((RectTransform)Icon.transform).sizeDelta = Icon.sprite.rect.size * 2;
+            if(Icon.sprite != null)
+                ((RectTransform)Icon.transform).sizeDelta = Icon.sprite.rect.size * 2;
             
             availableToLevelUp = hasRequiredSkills;
             if (!hasRequiredSkills || learnedLevel == 0)
