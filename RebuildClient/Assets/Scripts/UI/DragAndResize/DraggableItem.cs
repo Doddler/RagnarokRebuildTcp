@@ -81,17 +81,18 @@ namespace Assets.Scripts.UI
                     var inventory = NetworkManager.Instance.PlayerState.Inventory.GetInventoryData();
                     if (!inventory.TryGetValue(ItemId, out var dat))
                         return;
-                    if (dat.ItemData.IsUnique)
-                    {
-                        if (dat.ItemData.Slots == 0)
-                            text = dat.ItemData.Name;
-                        else
-                            text = $"{dat.ItemData.Name} [{dat.ItemData.Slots}]";
-                    }
-                    else
-                    {
-                        text = $"{dat.ItemData.Name}: {ItemCount} ea.";
-                    }
+                    text = dat.ToString();
+                    // if (dat.ItemData.IsUnique)
+                    // {
+                    //     if (dat.ItemData.Slots == 0)
+                    //         text = dat.ItemData.Name;
+                    //     else
+                    //         text = $"{dat.ItemData.Name} [{dat.ItemData.Slots}]";
+                    // }
+                    // else
+                    // {
+                    //     text = $"{dat.ItemData.Name}: {ItemCount} ea.";
+                    // }
                 }
 
                 UiManager.Instance.ShowTooltip(gameObject, text);

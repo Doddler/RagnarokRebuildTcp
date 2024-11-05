@@ -135,16 +135,23 @@ namespace Assets.Scripts.UI
             {
                 if (entry.DragItem.ItemCount <= 0)
                     return;
-                var item = ClientDataLoader.Instance.GetItemById(entry.DragItem.ItemId);
-                if (item.UseType == ItemUseType.NotUsable)
+                if (!NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(entry.DragItem.ItemId, out var item))
                     return;
-                if(item.UseType == ItemUseType.Use)
+                
+                
+                if(item.ItemData.UseType == ItemUseType.Use)
                     NetworkManager.Instance.SendUseItem(entry.DragItem.ItemId);
+                if (item.ItemData.ItemClass == ItemClass.Weapon || item.ItemData.ItemClass == ItemClass.Equipment)
+                    NetworkManager.Instance.SendEquipItem(entry.DragItem.ItemId);
+                    
+                if (item.ItemData.UseType == ItemUseType.NotUsable)
+                    return;
+
                 //var cnt = entry.DragItem.ItemCount - 1;
                 // if (cnt <= 0)
                 //     entry.DragItem.Clear();
                 // else
-                    //entry.DragItem.UpdateCount(cnt);
+                //entry.DragItem.UpdateCount(cnt);
             }
         }
 

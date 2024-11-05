@@ -44,6 +44,7 @@ namespace Assets.Scripts.Network
         public bool IsInteractable { get; set; }
         public int Level;
         public string Name { get; set; }
+
         public int Hp;
         public int MaxHp { get; set; }
         public int WeaponClass;
@@ -151,12 +152,14 @@ namespace Assets.Scripts.Network
         public void SetHp(int hp, int maxHp)
         {
             MaxHp = maxHp;
+            Hp = hp;
             FloatingDisplay.UpdateMaxHp(maxHp);
             SetHp(hp);
         }
 
         public void SetHp(int hp)
         {
+            var oldHp = Hp;
             Hp = hp;
 
             if ((GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp) || !IsInteractable)
@@ -174,7 +177,7 @@ namespace Assets.Scripts.Network
             }
 
             if (CharacterType != CharacterType.NPC)
-                FloatingDisplay.UpdateHp(hp);
+                FloatingDisplay.UpdateHp(oldHp, hp);
         }
 
         public void ShowSkillCastMessage(CharacterSkill skill, float duration = 5f)

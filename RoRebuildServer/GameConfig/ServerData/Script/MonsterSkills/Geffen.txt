@@ -45,16 +45,10 @@ StateIdle:
     TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
 }
 
-SkillHandler("SKELETON") {
-StateChase:
-    TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(1); //question mark
-}
-
 SkillHandler("THIEF_BUG_EGG") {
 StateChase:
     TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(19); //question mark
 }
-
 
 SkillHandler("WANDER_MAN") {
 StateIdle:

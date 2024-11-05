@@ -34,6 +34,7 @@ namespace Assets.Scripts
         public RoPos[] Pos;
         public int Sound;
         public bool IsAttackFrame;
+        public bool IsForeground;
     }
 
     [Serializable]

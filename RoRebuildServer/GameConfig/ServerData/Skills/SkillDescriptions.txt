@@ -22,8 +22,11 @@ Lasts [Skill Level + 2] hits. Provides a bonus to magic defense while active.
 
 ::Provoke
 Enrages an enemy by taunting them, causing them drop their guard. 
-Each level lowers the target's defense by 3% but increases their attack power by 2%. 
-The enemy has a low chance of dealing extra damage against you specifically.
+While under the effect of provoke a target has reduced defense but deals more damage. The enemy has a low chance of dealing extra damage against you specifically.
+The effectivness of this skill is halved on boss type monsters.
+Level 1: -10% DEF, +5% ATK
+...
+Level 10: -55% DEF, +32% ATK
 
 ::SwordMastery
 Increases damage when using a one-handed sword by 1% per level to a max of +10%.

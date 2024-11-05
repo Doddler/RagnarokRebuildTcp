@@ -642,7 +642,11 @@ namespace Assets.Scripts.Network
                 CameraFollower.UpdatePlayerHP(hp, maxHp);
                 //CameraFollower.UpdatePlayerSP(100, 100);
             }
-
+            else
+                controllable.Hp = hp;
+            
+            Debug.Log($"Create Entity {name} hp:{hp} maxhp:{maxHp}");
+            
             controllable.SetHp(hp);
             if (type != CharacterType.NPC)
                 controllable.IsInteractable = true;
@@ -921,17 +925,19 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            controllable.Hp -= damage;
-            if (controllable.Hp < 0)
-                controllable.Hp = 0;
-
-
+            var newHp = controllable.Hp - damage;
+            
             if (controllable.CharacterType != CharacterType.NPC && controllable.MaxHp > 0)
             {
                 if (controllable.IsMainCharacter)
-                    CameraFollower.UpdatePlayerHP(controllable.Hp, controllable.MaxHp);
-                controllable.SetHp(controllable.Hp);
+                    CameraFollower.UpdatePlayerHP(newHp, controllable.MaxHp);
+                controllable.SetHp(newHp);
             }
+            
+            controllable.Hp = newHp;
+            if (controllable.Hp < 0)
+                controllable.Hp = 0;
+
 
             if (shouldStop)
             {

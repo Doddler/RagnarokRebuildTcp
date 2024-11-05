@@ -328,8 +328,7 @@ namespace Assets.Editor
             Textures.Add(image);
         }
 
-
-        public void Load(string filename, string atlasPath, RoSpriteData dataObject, string paletteFile)
+        public void Load(string filename, string atlasPath, RoSpriteData dataObject, string paletteFile, string imfPath = null)
         {
             //var filename = ctx.assetPath;
             var basename = Path.GetFileNameWithoutExtension(filename);
@@ -385,7 +384,6 @@ namespace Assets.Editor
             //var palPath = Path.Combine("G:\\Games\\RagnarokJP\\data\\palette\\몸\\costume_1", $"{basename}_0_1.pal");
 
             //Debug.Log(palPath);
-
 
             if (File.Exists(paletteFile))
             {

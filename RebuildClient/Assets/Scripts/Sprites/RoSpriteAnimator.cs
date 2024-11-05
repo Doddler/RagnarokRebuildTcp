@@ -205,13 +205,15 @@ namespace Assets.Scripts.Sprites
             Type = SpriteData.Type;
             SpriteData.Atlas.filterMode = FilterMode.Bilinear;
 
-            var parent = gameObject.transform.parent;
-
-            if (parent != null)
+            if (Parent == null)
             {
-                Parent = parent.gameObject.GetComponent<RoSpriteAnimator>();
-                if (Parent != null)
-                    Controllable = Parent.Controllable;
+                var parent = gameObject.transform.parent;
+                if (parent != null)
+                {
+                    Parent = parent.gameObject.GetComponent<RoSpriteAnimator>();
+                    if (Parent != null)
+                        Controllable = Parent.Controllable;
+                }
             }
 
             isInitialized = true;
@@ -689,16 +691,32 @@ namespace Assets.Scripts.Sprites
             //if (isDirty)
             {
                 UpdateSpriteFrame();
-                for (var i = 0; i < ChildrenSprites.Count; i++)
+                if (ChildrenSprites.Count > 0)
                 {
-                    if (!ChildrenSprites[i].IsInitialized)
-                        ChildrenSprites[i].Initialize();
+                    var frame = SpriteRenderer.GetActiveRendererFrame();
+                    for (var i = 0; i < ChildrenSprites.Count; i++)
+                    {
+                        if (!ChildrenSprites[i].IsInitialized)
+                            ChildrenSprites[i].Initialize();
 
-                    ChildrenSprites[i].ChangeAngle(Angle);
-                    ChildrenSprites[i].ChildSetFrameData(currentActionIndex, currentAngleIndex, currentFrame);
+                        if (frame.IsForeground)
+                        {
+                            Debug.Log($"Animation frame has reverse sorting!");
+                            if(ChildrenSprites[i].SpriteRenderer is RoSpriteRendererStandard sr)
+                                sr.SortingOrder = i - 10;
+                        }
+                        else
+                        {
+                            if(ChildrenSprites[i].SpriteRenderer is RoSpriteRendererStandard sr)
+                                sr.SortingOrder = i;
+                        }
+
+                        ChildrenSprites[i].ChangeAngle(Angle);
+                        ChildrenSprites[i].ChildSetFrameData(currentActionIndex, currentAngleIndex, currentFrame);
+                    }
+
+                    isDirty = false;
                 }
-
-                isDirty = false;
             }
         }
     }

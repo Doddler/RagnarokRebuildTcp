@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Assets.Editor;
 using Assets.Scripts;
+using Assets.Scripts.MapEditor.Editor;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
@@ -30,6 +31,7 @@ public class ActImporter : ScriptedImporter
         //var palettePath = Path.Combine("G:\\Games\\RagnarokJP\\data\\palette\\몸\\costume_1", $"{basename}_0_1.pal");
         var palettePath = Path.Combine(dir, "Palette/");
         var palettes = new List<string>();
+        
         for (var i = 0; i < 10; i++)
         {
             var pName = Path.Combine(palettePath, $"{baseName}_{i}_1.pal");
@@ -69,8 +71,12 @@ public class ActImporter : ScriptedImporter
     private static void SetUpSpriteData(RagnarokSpriteLoader spr, RoSpriteData asset, string basePath, string baseName, string outName)
     {
         var actName = Path.Combine(basePath, baseName + ".act");
+        var imfFile = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectorySafe, "imf/", baseName + ".imf");
+        if (!File.Exists(imfFile))
+            imfFile = null;
+        
         var actLoader = new RagnarokActLoader();
-        var actions = actLoader.Load(spr, actName);
+        var actions = actLoader.Load(spr, actName, imfFile);
 
         asset.Actions = actions.ToArray();
         asset.Sprites = spr.Sprites.ToArray();

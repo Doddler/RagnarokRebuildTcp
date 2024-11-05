@@ -177,7 +177,7 @@ namespace Assets.Scripts.UI.Hud
 
         public void UpdateMaxHp(int maxHp) => this.maxHp = maxHp;
 
-        public void UpdateHp(int hp)
+        public void UpdateHp(int oldHp, int hp)
         {
             if (hpBar == null)
             {
@@ -185,9 +185,16 @@ namespace Assets.Scripts.UI.Hud
                     return;
                 hpBar = Manager.AttachHpBar(gameObject);
                 gameObject.SetActive(true);
+                hpBar.SetProgress((float)oldHp / maxHp);
             }
 
-            hpBar.SetProgress((float)hp / maxHp);
+            if (oldHp >= 0)
+            {
+                hpBar.SetProgress((float)hp / maxHp, false);
+            }
+            else
+                hpBar.SetProgress((float)hp / maxHp);
+                
             // Debug.Log($"Update HP on {characterName}: {hp}/{maxHp}");
             gameObject.SetActive(true);
             if (isPlayer)

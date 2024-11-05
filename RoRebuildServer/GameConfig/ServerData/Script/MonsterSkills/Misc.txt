@@ -75,12 +75,6 @@ StateAttacking:
 	TryCast(Envenom, 5, 100%, 0, 8s);
 }
 
-SkillHandler("WERE_WOLF") {
-StateAttacking:
-	TryCast(SonicBlow, 1, 10%, 0.8s, 8s);
-	TryCast(TwoHandQuicken, 9, 100%, 0, 1m)[HpPercent <= 40] -> SendEmote(36);
-}
-
 SkillHandler("ASSULTER") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s);
@@ -205,13 +199,11 @@ SkillHandler("TARGET_DUMMY") {
     //TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];	
 }
 
-
 SkillHandler("VITATA") {
 StateAny:
     TryCast(Heal, 5, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(5);
 	TryCast(Heal, 5, 100%, 0.5s, 5s)[HpPercent < 60] -> SendEmote(19);
 }
-
 
 SkillHandler("ALICE") {
 StateAny:
@@ -219,12 +211,11 @@ StateAny:
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[HpPercent < 60];
 }
 
-
 SkillHandler("CHEPET") {
 StateAny:
     TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
 StateAttacking:
-	TryCast(NoCast, 3, 20%, 0, 5000) -> SendEmote(17);
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(17);
 }
 
 SkillHandler("PERMETER") {
@@ -234,5 +225,5 @@ StateAny:
 
 SkillHandler("BATHORY") {
 StateChase:
-	TryCast(NoCast, 3, 100%, 0, 0) -> SendEmote(30);
+	TryCast(NoCast, 3, 100%, 0, 5s) -> SendEmote(30);
 }

@@ -410,7 +410,7 @@ namespace Assets.Scripts.Sprites
 
             var head = new GameObject("Head");
             head.layer = LayerMask.NameToLayer("Characters");
-            head.transform.SetParent(body.transform, false);
+            head.transform.SetParent(go.transform, false);
             head.transform.localPosition = Vector3.zero;
 
             var bodySprite = body.AddComponent<RoSpriteAnimator>();

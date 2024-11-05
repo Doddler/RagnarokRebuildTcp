@@ -223,13 +223,10 @@ namespace Assets.Scripts.Sprites
             if (!UpdateAngleWithCamera)
                 CurrentAngleIndex = (int)Direction;
 
-            if (SpriteData.ReverseSortingWhenFacingNorth)
-            {
-                if (CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5)
-                    SortingGroup.sortingOrder = -SortingOrder;
-                else
-                    SortingGroup.sortingOrder = SortingOrder;
-            }
+            if (SpriteData.ReverseSortingWhenFacingNorth && CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5)
+                SortingGroup.sortingOrder = SortingOrder - 10; //this puts the shield behind the other sprite parts
+            else
+                SortingGroup.sortingOrder = SortingOrder; //we update this each frame because the parent might have changed our order based on the animation.
 
             var mesh = GetMeshForFrame();
             var cMesh = GetColliderForFrame();

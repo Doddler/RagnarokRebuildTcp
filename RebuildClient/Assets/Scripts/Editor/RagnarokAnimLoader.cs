@@ -130,8 +130,39 @@ namespace Assets.Editor
 
 			return actions;
 		}
+		
+		
+		private void LoadImf(string imfPath, RoAction[] actions)
+		{
+			var b = File.ReadAllBytes(imfPath);
+			using var ms = new MemoryStream(b);
+			using var br = new BinaryReader(ms);
 
-		public List<RoAction> Load(RagnarokSpriteLoader spriteLoader, string actfile)
+			var ver = br.ReadSingle();
+			var unknown1 = br.ReadInt32();
+			var unknown2 = br.ReadInt32();
+			var actionCount = br.ReadInt32();
+			
+			// Debug.Log($"Loading related imf file {imfPath}");
+
+			for (var i = 0; i < actionCount; i++)
+			{
+				var action = actions[i];
+				var frameCount = br.ReadInt32();
+				for (var j = 0; j < frameCount; j++)
+				{
+					var dat1 = br.ReadInt32();
+					var dat2 = br.ReadInt32();
+					var dat3 = br.ReadInt32();
+					action.Frames[j].IsForeground = dat1 == 0;
+					// Debug.Log($"Action {i} Frame {j} isForeground = {dat1 == 0}");
+				}
+			}
+			
+			//technically the foreground/background option for heads is also in the imf but it's always opposite of body so we don't care
+		}
+
+		public List<RoAction> Load(RagnarokSpriteLoader spriteLoader, string actfile, string imfFile)
 		{
 			sprite = spriteLoader;
 
@@ -191,6 +222,9 @@ namespace Assets.Editor
 			}
 			
 			fs.Close();
+			
+			if(File.Exists(imfFile))
+				LoadImf(imfFile, actions);
 
 			return new List<RoAction>(actions);
 		}

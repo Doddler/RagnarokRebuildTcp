@@ -1,0 +1,11 @@
+SkillHandler("ARGOS") {
+StateAttacking:
+    TryCast(Poison, 5, 20%, 0.8s, 5s);
+    TryCast(PoisonAttack, 1, 5%, 0s, 5s);
+}
+
+SkillHandler("ARGIOPE") {
+StateAttacking:
+    TryCast(Poison, 3, 15%, 0.8s, 5s);
+    TryCast(PoisonAttack, 2, 5%, 0.5s, 5s);
+}

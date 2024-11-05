@@ -81,6 +81,21 @@ namespace Assets.Scripts.PlayerControl
         {
             return BagSlotId;
         }
+
+        public override string ToString()
+        {
+            if (ItemData == null)
+                return $"Unknown Item";
+            
+            if (ItemData.IsUnique)
+            {
+                if (ItemData.Slots == 0)
+                    return ItemData.Name;
+                return $"{ItemData.Name} [{ItemData.Slots}]";
+            }
+
+            return $"{ItemData.Name}: {Count} ea.";
+        }
     }
     
     public class ClientInventory
