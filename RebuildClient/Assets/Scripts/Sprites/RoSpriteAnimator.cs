@@ -703,12 +703,12 @@ namespace Assets.Scripts.Sprites
                         {
                             Debug.Log($"Animation frame has reverse sorting!");
                             if(ChildrenSprites[i].SpriteRenderer is RoSpriteRendererStandard sr)
-                                sr.SortingOrder = i - 10;
+                                sr.SortingOrder = i + 1 - 10;
                         }
                         else
                         {
                             if(ChildrenSprites[i].SpriteRenderer is RoSpriteRendererStandard sr)
-                                sr.SortingOrder = i;
+                                sr.SortingOrder = i + 1;
                         }
 
                         ChildrenSprites[i].ChangeAngle(Angle);

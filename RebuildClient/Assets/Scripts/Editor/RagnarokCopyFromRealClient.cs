@@ -146,6 +146,18 @@ namespace Assets.Editor
             CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.act"), "Assets/Sprites/Misc/damagenumbers.act");
             CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.spr"), "Assets/Sprites/Misc/damagenumbers.spr");
             
+            //the project has custom monsters, but for copyright reasons the sprites aren't part of the repo
+            //to make things still run without the custom sprites we substitute a similar sprite if necessary
+            CreateTemporarySpriteIfRequired("andre", "andre_larva");
+            CreateTemporarySpriteIfRequired("deniro", "deniro_larva");
+            CreateTemporarySpriteIfRequired("piere", "piere_larva");
+            CreateTemporarySpriteIfRequired("andre", "soldier_andre");
+            CreateTemporarySpriteIfRequired("deniro", "soldier_deniro");
+            CreateTemporarySpriteIfRequired("piere", "soldier_piere");
+            CreateTemporarySpriteIfRequired("vagabond_wolf", "were_wolf");
+            CreateTemporarySpriteIfRequired("frilldora", "raptice");
+            CreateTemporarySpriteIfRequired("poison_spore", "deathspore");
+            
             AssetDatabase.Refresh();
             
             EffectStrImporter.Import(); //effects
@@ -157,6 +169,17 @@ namespace Assets.Editor
             RoLightingManagerWindow.CreateOrOpen();
         }
 
+        private static void CreateTemporarySpriteIfRequired(string dummySpriteName, string spriteName)
+        {
+            var destSprPath = $"Assets/Sprites/Monsters/{spriteName}.spr";
+            var destActPath = $"Assets/Sprites/Monsters/{spriteName}.act";
+            if (File.Exists(destSprPath) || File.Exists(destActPath))
+                return;
+            var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
+            CopySingleFile(Path.Combine(dataDir, $"sprite/몬스터/{dummySpriteName}.spr"), destSprPath);
+            CopySingleFile(Path.Combine(dataDir, $"sprite/몬스터/{dummySpriteName}.act"), destActPath);
+        }
+        
         private static void CopySingleFile(string src, string dest)
         {
             var fName = Path.GetFileName(dest);
