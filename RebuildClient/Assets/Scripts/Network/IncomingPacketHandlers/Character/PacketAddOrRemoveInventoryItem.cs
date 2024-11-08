@@ -23,6 +23,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 State.CurrentWeight = msg.ReadInt32();
                 var item = InventoryItem.Deserialize(msg, type, bagId);
                 State.Inventory.UpdateItem(item);
+                UiManager.Instance.ItemObtainedPopup.SetText(item.Id, change);
                 Debug.Log($"Added {change} of item type {item.Id} (weight changed {State.CurrentWeight - oldWeight} to {State.CurrentWeight})");
             }
             else

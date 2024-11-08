@@ -401,6 +401,7 @@ namespace Assets.Scripts.Sprites
             var control = go.AddComponent<ServerControllable>();
             var billboard = go.AddComponent<BillboardObject>();
             billboard.Style = BillboardStyle.Character;
+            go.AddComponent<SortingGroup>();
 
             var body = new GameObject("Sprite");
             body.layer = LayerMask.NameToLayer("Characters");
@@ -456,12 +457,12 @@ namespace Assets.Scripts.Sprites
 
             Debug.Log($"Instantiate player sprite with job {param.ClassId} weapon {param.WeaponClass}");
 
-            LoadAndAttachWeapon(control, param.Weapon);
-            
             LoadAndAttachEquipmentSprite(control, param.Headgear1, EquipPosition.HeadUpper, 4);
             LoadAndAttachEquipmentSprite(control, param.Headgear2, EquipPosition.HeadMid, 3);
             LoadAndAttachEquipmentSprite(control, param.Headgear3, EquipPosition.HeadLower, 2);
             LoadAndAttachEquipmentSprite(control, param.Shield, EquipPosition.Shield, 1);
+
+            LoadAndAttachWeapon(control, param.Weapon);
             
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.Name = param.Name;
@@ -537,7 +538,7 @@ namespace Assets.Scripts.Sprites
 
             var weaponObj = new GameObject("Weapon");
             weaponObj.layer = LayerMask.NameToLayer("Characters");
-            weaponObj.transform.SetParent(bodyTransform, false);
+            weaponObj.transform.SetParent(ctrl.transform, false);
             weaponObj.transform.localPosition = Vector3.zero;
 
             var weaponSprite = weaponObj.AddComponent<RoSpriteAnimator>();
@@ -571,7 +572,7 @@ namespace Assets.Scripts.Sprites
 
             var headgearObj = new GameObject(position.ToString());
             headgearObj.layer = LayerMask.NameToLayer("Characters");
-            headgearObj.transform.SetParent(ctrl.SpriteAnimator.transform, false);
+            headgearObj.transform.SetParent(ctrl.transform, false);
             headgearObj.transform.localPosition = new Vector3(0f, 0f, -0.05f);
 
             var headgearSprite = headgearObj.AddComponent<RoSpriteAnimator>();

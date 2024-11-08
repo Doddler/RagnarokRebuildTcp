@@ -29,6 +29,7 @@ public class UiManager : MonoBehaviour
     public CharacterChat TooltipOverlay;
 
     public ItemDragObject DragItemObject;
+    public ItemObtainedToast ItemObtainedPopup;
     
     public List<Draggable> FloatingDialogBoxes;
     public List<IClosableWindow> WindowStack = new();
