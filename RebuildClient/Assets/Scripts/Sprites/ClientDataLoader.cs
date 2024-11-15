@@ -503,17 +503,18 @@ namespace Assets.Scripts.Sprites
             }
 
             if (ctrl.WeaponClass == 0)
+            {
+                if(!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue);
                 return;
-            
+            }
+
             var data = GetItemById(item);
             if (data.Id > 0 && displaySpriteList.TryGetValue(data.Code, out var sprite))
             {
-                
-                var spr = $"Assets/Sprites/Weapons/{GetJobNameForId(ctrl.ClassId)}/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{sprite}.spr";
+                var jobName = GetJobNameForId(ctrl.ClassId);
+                var spr = $"Assets/Sprites/Weapons/{jobName}/{(ctrl.IsMale ? $"Male/{jobName}_M_" : $"Female/{jobName}_F_")}{sprite}.spr";
                 if (DoesAddressableExist<RoSpriteData>(spr))
-                {
                     weaponSpriteFile = spr;
-                }
                 else
                     Debug.Log($"Weapon sprite {data.Sprite} could not be loaded for {ctrl.Name} (Full path {spr})");
             }
@@ -544,9 +545,9 @@ namespace Assets.Scripts.Sprites
             var weaponSprite = weaponObj.AddComponent<RoSpriteAnimator>();
 
             weaponSprite.Parent = ctrl.SpriteAnimator;
-            weaponSprite.SpriteOrder = 5;
+            weaponSprite.SpriteOrder = 8;
             if (isEffect)
-                weaponSprite.SpriteOrder = 20;
+                weaponSprite.SpriteOrder = 5;
 
             ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? weapon.AttackMale : weapon.AttackFemale;
             ctrl.SpriteAnimator.ChildrenSprites.Add(weaponSprite);
@@ -581,8 +582,20 @@ namespace Assets.Scripts.Sprites
             headgearSprite.SpriteOrder = priority; //weapon is 5 so we should be below that
             ctrl.SpriteAnimator.ChildrenSprites.Add(headgearSprite);
 
-            var folderName = position != EquipPosition.Shield ? "Headgear" : $"Shields/{GetJobNameForId(ctrl.ClassId)}";
-            var spriteName = $"Assets/Sprites/{folderName}/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
+            string spriteName;
+            if (position == EquipPosition.Shield)
+            {
+                var jobName = GetJobNameForId(ctrl.ClassId);
+                spriteName = $"Assets/Sprites/Shields/{jobName}/{(ctrl.IsMale ? $"Male/{jobName}_M_" : $"Female/{jobName}_F_")}{hatSprite}.spr";
+            }
+            else
+            {
+                spriteName = $"Assets/Sprites/Headgear/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
+            }
+            
+            // var folderName = position != EquipPosition.Shield ? "Headgear" : $"Shields/{GetJobNameForId(ctrl.ClassId)}";
+            
+            
 
             ctrl.AttachedComponents[position] = headgearObj;
 

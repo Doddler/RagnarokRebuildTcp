@@ -10,7 +10,6 @@ namespace Assets.Editor
 {
     public class RagnarokCopyFromRealClient : EditorWindow
     {
-        
         public static void TestCopy()
         {
             var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
@@ -26,41 +25,57 @@ namespace Assets.Editor
                 CopyFolder(headPath, "Assets/Sprites/Characters/HeadFemale/Palette/", false, false, "*_여_*.pal", updateHeadName);
                 CopyFolder(headPath, "Assets/Sprites/Characters/HeadMale/Palette/", false, false, "*_남_*.pal", updateHeadName);
             }
-            
+
             headPath = Path.Combine(dataDir, "palette/머리/costume_1");
             bodyPath = Path.Combine(dataDir, "palette/몸/costume_1");
 
-            if(Directory.Exists(bodyPath))
+            if (Directory.Exists(bodyPath))
             {
                 CopyFolder(bodyPath, "Assets/Sprites/Characters/BodyFemale/Palette/", false, false, "*_여_*.pal", updateHeadName);
                 CopyFolder(bodyPath, "Assets/Sprites/Characters/BodyMale/Palette/", false, false, "*_남_*.pal");
             }
-
         }
+
+        private static string UpdateSpriteName(string name)
+        {
+            name = name.Replace("성직자_", "Acolyte_");
+            name = name.Replace("궁수_", "Archer_");
+            name = name.Replace("마법사_", "Mage_");
+            name = name.Replace("상인_", "Merchant_");
+            name = name.Replace("초보자_", "Novice_");
+            name = name.Replace("검사_", "Swordsman_");
+            name = name.Replace("도둑_", "Thief_");
+            name = name.Replace("여_", "F_");
+            name = name.Replace("남_", "M_");
+
+            return name;
+        }
+
 
         [MenuItem("Ragnarok/TestCopy")]
         public static void TestCopy2()
         {
             var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/성직자"), "Assets/Sprites/Weapons/Acolyte/", false, true, "*", s => s.Replace("성직자_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/궁수"), "Assets/Sprites/Weapons/Archer/", false, true, "*", s => s.Replace("궁수_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/마법사"), "Assets/Sprites/Weapons/Mage/", false, true, "*", s => s.Replace("마법사_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/상인"), "Assets/Sprites/Weapons/Merchant/", false, true, "*", s => s.Replace("상인_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/초보자"), "Assets/Sprites/Weapons/Novice/", false, true, "*", s => s.Replace("초보자_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/검사"), "Assets/Sprites/Weapons/Swordsman/", false, true, "*", s => s.Replace("검사_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true, "*", s => s.Replace("도둑_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true, "*", s => s.Replace("슈퍼노비스_", ""));
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/성직자"), "Assets/Sprites/Weapons/Acolyte/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/궁수"), "Assets/Sprites/Weapons/Archer/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/마법사"), "Assets/Sprites/Weapons/Mage/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/상인"), "Assets/Sprites/Weapons/Merchant/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/초보자"), "Assets/Sprites/Weapons/Novice/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/검사"), "Assets/Sprites/Weapons/Swordsman/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true, "*", UpdateSpriteName);
 
-            
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/궁수"), "Assets/Sprites/Shields/Archer/", false, true, "*", s => s.Replace("궁수_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/마법사"), "Assets/Sprites/Shields/Mage/", false, true, "*", s => s.Replace("마법사_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/상인"), "Assets/Sprites/Shields/Merchant/", false, true, "*", s => s.Replace("상인_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/초보자"), "Assets/Sprites/Shields/Novice/", false, true, "*", s => s.Replace("초보자_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/검사"), "Assets/Sprites/Shields/Swordsman/", false, true, "*", s => s.Replace("검사_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/도둑"), "Assets/Sprites/Shields/Thief/", false, true, "*", s => s.Replace("도둑_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/슈퍼노비스"), "Assets/Sprites/Shields/SuperNovice/", false, true, "*", s => s.Replace("슈퍼노비스_", ""));
+
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/성직자"), "Assets/Sprites/Shields/Acolyte/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/궁수"), "Assets/Sprites/Shields/Archer/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/마법사"), "Assets/Sprites/Shields/Mage/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/상인"), "Assets/Sprites/Shields/Merchant/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/초보자"), "Assets/Sprites/Shields/Novice/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/검사"), "Assets/Sprites/Shields/Swordsman/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/도둑"), "Assets/Sprites/Shields/Thief/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/슈퍼노비스"), "Assets/Sprites/Shields/SuperNovice/", false, true, "*", UpdateSpriteName);
         }
-        
+
         [MenuItem("Ragnarok/Copy data from client data folder", priority = 1)]
         public static void CopyClientData()
         {
@@ -95,7 +110,7 @@ namespace Assets.Editor
             if (!TestPath("prontera.gat") || !TestPath(@"texture\워터\water000.jpg"))
                 return;
 
-            var prompt2 = @"This import process will copy files from your data folder into this project. " 
+            var prompt2 = @"This import process will copy files from your data folder into this project. "
                           + "Because this includes converting all maps and objects, expect this process to take more than an hour."
                           + "\n\nWhen complete, the lighting window will load where you can bake the lighting for all the scenes (accessible via 'Ragnarok->Lighting Manager'). "
                           + "You will also need to manually copy over your BGM into the music folder if you want music."
@@ -116,28 +131,28 @@ namespace Assets.Editor
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
             CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadFemale/", false, false, "*_여_*.pal");
             CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadMale/", false, false, "*_남_*.pal");
-            
+
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
             CopyFolder(Path.Combine(dataDir, "texture/유저인터페이스/illust"), "Assets/Sprites/Cutins/");
-            
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/성직자"), "Assets/Sprites/Weapons/Acolyte/", false, true, "*", s => s.Replace("성직자_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/궁수"), "Assets/Sprites/Weapons/Archer/", false, true, "*", s => s.Replace("궁수_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/마법사"), "Assets/Sprites/Weapons/Mage/", false, true, "*", s => s.Replace("마법사_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/상인"), "Assets/Sprites/Weapons/Merchant/", false, true, "*", s => s.Replace("상인_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/초보자"), "Assets/Sprites/Weapons/Novice/", false, true, "*", s => s.Replace("초보자_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/검사"), "Assets/Sprites/Weapons/Swordsman/", false, true, "*", s => s.Replace("검사_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true, "*", s => s.Replace("도둑_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true, "*", s => s.Replace("슈퍼노비스_", ""));
-            
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/성직자"), "Assets/Sprites/Shields/Acolyte/", false, true, "*", s => s.Replace("성직자_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/궁수"), "Assets/Sprites/Shields/Archer/", false, true, "*", s => s.Replace("궁수_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/마법사"), "Assets/Sprites/Shields/Mage/", false, true, "*", s => s.Replace("마법사_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/상인"), "Assets/Sprites/Shields/Merchant/", false, true, "*", s => s.Replace("상인_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/초보자"), "Assets/Sprites/Shields/Novice/", false, true, "*", s => s.Replace("초보자_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/검사"), "Assets/Sprites/Shields/Swordsman/", false, true, "*", s => s.Replace("검사_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/도둑"), "Assets/Sprites/Shields/Thief/", false, true, "*", s => s.Replace("도둑_", ""));
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/슈퍼노비스"), "Assets/Sprites/Shields/SuperNovice/", false, true, "*", s => s.Replace("슈퍼노비스_", ""));
+
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/성직자"), "Assets/Sprites/Weapons/Acolyte/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/궁수"), "Assets/Sprites/Weapons/Archer/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/마법사"), "Assets/Sprites/Weapons/Mage/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/상인"), "Assets/Sprites/Weapons/Merchant/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/초보자"), "Assets/Sprites/Weapons/Novice/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/검사"), "Assets/Sprites/Weapons/Swordsman/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true, "*", UpdateSpriteName);
+
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/성직자"), "Assets/Sprites/Shields/Acolyte/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/궁수"), "Assets/Sprites/Shields/Archer/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/마법사"), "Assets/Sprites/Shields/Mage/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/상인"), "Assets/Sprites/Shields/Merchant/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/초보자"), "Assets/Sprites/Shields/Novice/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/검사"), "Assets/Sprites/Shields/Swordsman/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/도둑"), "Assets/Sprites/Shields/Thief/", false, true, "*", UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/슈퍼노비스"), "Assets/Sprites/Shields/SuperNovice/", false, true, "*", UpdateSpriteName);
 
             CopySingleFile(Path.Combine(dataDir, "sprite/cursors.act"), "Assets/Sprites/Misc/");
             CopySingleFile(Path.Combine(dataDir, "sprite/cursors.spr"), "Assets/Sprites/Misc/");
@@ -145,7 +160,7 @@ namespace Assets.Editor
             CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.spr"), "Assets/Sprites/Misc/");
             CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.act"), "Assets/Sprites/Misc/damagenumbers.act");
             CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.spr"), "Assets/Sprites/Misc/damagenumbers.spr");
-            
+
             //the project has custom monsters, but for copyright reasons the sprites aren't part of the repo
             //to make things still run without the custom sprites we substitute a similar sprite if necessary
             CreateTemporarySpriteIfRequired("andre", "andre_larva");
@@ -157,15 +172,15 @@ namespace Assets.Editor
             CreateTemporarySpriteIfRequired("vagabond_wolf", "were_wolf");
             CreateTemporarySpriteIfRequired("frilldora", "raptice");
             CreateTemporarySpriteIfRequired("poison_spore", "deathspore");
-            
+
             AssetDatabase.Refresh();
-            
+
             EffectStrImporter.Import(); //effects
             EffectStrImporter.ImportEffectTextures();
             RagnarokMapImporterWindow.ImportWater();
             RagnarokMapImporterWindow.ImportAllFiles();
             ItemIconImporter.ImportItems();
-            
+
             RoLightingManagerWindow.CreateOrOpen();
         }
 
@@ -179,7 +194,7 @@ namespace Assets.Editor
             CopySingleFile(Path.Combine(dataDir, $"sprite/몬스터/{dummySpriteName}.spr"), destSprPath);
             CopySingleFile(Path.Combine(dataDir, $"sprite/몬스터/{dummySpriteName}.act"), destActPath);
         }
-        
+
         private static void CopySingleFile(string src, string dest)
         {
             var fName = Path.GetFileName(dest);
@@ -192,11 +207,12 @@ namespace Assets.Editor
 
             // Debug.Log($"${src}  :::  {dest}");
 
-            if(!File.Exists(dest))
+            if (!File.Exists(dest))
                 File.Copy(src, dest, false);
         }
 
-        private static bool CopyFolder(string src, string dest, bool recursive = false, bool maleFemaleSplit = false, string filter = "*", Func<string,string> updateFileName = null)
+        private static bool CopyFolder(string src, string dest, bool recursive = false, bool maleFemaleSplit = false, string filter = "*",
+            Func<string, string> updateFileName = null)
         {
             var opt = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
@@ -247,7 +263,7 @@ namespace Assets.Editor
                 }
                 else
                 {
-                    if(!File.Exists(destPath))
+                    if (!File.Exists(destPath))
                         File.Copy(path, destPath, false);
                 }
             }
