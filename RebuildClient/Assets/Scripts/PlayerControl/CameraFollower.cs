@@ -1093,6 +1093,11 @@ namespace Assets.Scripts
             TextBoxScrollRect.verticalNormalizedPosition = 0;
         }
 
+        public void AppendNotice(string text)
+        {
+            AppendChatText($"<color=yellow><i>{text}</i></color>");
+        }
+
         public void AppendError(string txt)
         {
             if (string.IsNullOrWhiteSpace(txt))

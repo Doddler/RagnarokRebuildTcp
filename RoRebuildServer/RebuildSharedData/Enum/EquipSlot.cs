@@ -19,8 +19,8 @@ public enum EquipSlot
     HeadMid,
     HeadBottom,
     Body,
-    LeftHand,
     RightHand,
+    LeftHand,
     Garment,
     Footgear,
     Accessory1,
@@ -28,7 +28,7 @@ public enum EquipSlot
     CostumeTop,
     CostumeMid,
     CostumeBottom,
-    Weapon = LeftHand,
-    Shield = RightHand,
+    Weapon = RightHand,
+    Shield = LeftHand,
     None = -1
 }

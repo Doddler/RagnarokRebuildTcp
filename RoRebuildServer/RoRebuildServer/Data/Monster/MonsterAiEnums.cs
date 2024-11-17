@@ -18,7 +18,6 @@ public enum MonsterAiType : byte
     AiLooterAssist,
     AiLooterSense,
     AiAssist,
-    AiAssistLooter,
     AiStandardBoss,
     AiPlant,
     AiPacifist,

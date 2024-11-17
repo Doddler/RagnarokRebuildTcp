@@ -28,6 +28,7 @@ namespace Assets.Scripts.UI.Hud
             var itemName = item.Slots == 0 ? item.Name : $"{item.Name} [{item.Slots}]";
             
             Icon.sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.Sprite);
+            Icon.rectTransform.sizeDelta = Icon.sprite.rect.size * 2;
             Text.text = $"{itemName} - {itemCount} obtained.";
             
             Container.SetActive(true);

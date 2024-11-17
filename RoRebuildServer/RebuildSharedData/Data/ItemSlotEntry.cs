@@ -38,7 +38,8 @@ public unsafe struct UniqueItem : ISerializableItem
 {
     public int Id;
     public short Count;
-    public short Flags;
+    public byte Flags;
+    public byte Refine;
     public Guid UniqueId;
     public fixed int Data[4];
 
@@ -51,6 +52,7 @@ public unsafe struct UniqueItem : ISerializableItem
         msg.Write(Id);
         msg.Write(Count);
         msg.Write(Flags);
+        msg.Write(Refine);
         msg.Write(UniqueId.ToByteArray());
         for (var i = 0; i < 4; i++)
             msg.Write(Data[i]);
@@ -68,7 +70,8 @@ public unsafe struct UniqueItem : ISerializableItem
         {
             Id = br.ReadInt32(),
             Count = br.ReadInt16(),
-            Flags = br.ReadInt16(),
+            Flags = br.ReadByte(),
+            Refine = br.ReadByte(),
             UniqueId = new Guid(br.ReadBytes(16)),
         };
 

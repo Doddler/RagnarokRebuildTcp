@@ -26,7 +26,7 @@ public class PacketEquipUnequipGear : IClientPacketHandler
         if (!isEquip)
         {
             connection.Player.Equipment.UnEquipItem(bagId);
-            connection.Player.UpdateStats();
+            //connection.Player.UpdateStats();
             return;
         }
     

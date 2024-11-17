@@ -20,6 +20,7 @@ using static System.Net.Mime.MediaTypeNames;
 using RoRebuildServer.Database.Domain;
 using System.Xml.Linq;
 using System.Threading;
+using RebuildSharedData.ClientTypes;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -35,6 +36,7 @@ public class CombatEntity : IEntityAutoReset
     public bool IsTargetable;
     public float CastingTime;
     public bool IsCasting;
+    public CastInterruptionMode CastInterruptionMode;
 
     public BodyStateFlags BodyState;
 
@@ -65,6 +67,8 @@ public class CombatEntity : IEntityAutoReset
     public void SetSkillDamageCooldown(CharacterSkill skill, float cooldown) => damageCooldowns[skill] = Time.ElapsedTimeFloat + cooldown;
     public void ResetSkillDamageCooldowns() => damageCooldowns.Clear();
     public int HpPercent => GetStat(CharacterStat.Hp) * 100 / GetStat(CharacterStat.MaxHp);
+
+    public float CastTimeRemaining => !IsCasting ? 0 : CastingTime - Time.ElapsedTimeFloat;
 
 
     public void Reset()
@@ -647,6 +651,11 @@ public class CombatEntity : IEntityAutoReset
         {
             IsCasting = true;
             CastingTime = Time.ElapsedTimeFloat + castTime;
+            if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
+            {
+                var skillData = DataManager.SkillData[skill];
+                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+            }
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime, hideSkillName);
@@ -730,6 +739,11 @@ public class CombatEntity : IEntityAutoReset
         {
             IsCasting = true;
             CastingTime = Time.ElapsedTimeFloat + castTime;
+            if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
+            {
+                var skillData = DataManager.SkillData[skill];
+                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+            }
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             var clientSkill = skillInfo.Skill;
@@ -848,6 +862,11 @@ public class CombatEntity : IEntityAutoReset
             {
                 IsCasting = true;
                 CastingTime = Time.ElapsedTimeFloat + castTime;
+                if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
+                {
+                    var skillData = DataManager.SkillData[skill];
+                    CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                }
 
                 Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
                 CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime, hideSkillName);
@@ -1354,6 +1373,20 @@ public class CombatEntity : IEntityAutoReset
         ExecuteCombatResult(di);
     }
 
+    public void CancelCast()
+    {
+        if (!IsCasting)
+            return;
+        IsCasting = false;
+        if (!Character.HasVisiblePlayers())
+            return;
+
+        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.StopCastMulti(Character);
+        CommandBuilder.ClearRecipients();
+
+    }
+
     private void ApplyQueuedCombatResult(ref DamageInfo di)
     {
 
@@ -1416,6 +1449,22 @@ public class CombatEntity : IEntityAutoReset
         if (sendMove)
             CommandBuilder.SendMoveEntityMulti(Character);
         CommandBuilder.SendHitMulti(Character, damage, hasHitStop);
+
+        if (IsCasting)
+        {
+            if (  (CastInterruptionMode == CastInterruptionMode.InterruptOnDamage && di.Damage > 0) 
+               || (CastInterruptionMode != CastInterruptionMode.NeverInterrupt && di.KnockBack > 0)
+               || (CastInterruptionMode == CastInterruptionMode.InterruptOnSkill && di.AttackSkill != CharacterSkill.None))
+            {
+                //character casts aren't interrupted by attacks if they are close to executing
+                if (Character.Type != CharacterType.Player || CastTimeRemaining > 0.3f)
+                {
+                    IsCasting = false;
+                    CommandBuilder.StopCastMulti(Character);
+                }
+            }
+        }
+
         CommandBuilder.ClearRecipients();
 
         if (!di.Target.IsNull() && di.Source.IsAlive())

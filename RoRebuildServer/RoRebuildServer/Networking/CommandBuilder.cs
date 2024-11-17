@@ -231,6 +231,8 @@ public static class CommandBuilder
             p.Inventory.TryWrite(packet, true);
             p.CartInventory.TryWrite(packet, true);
             p.StorageInventory.TryWrite(packet, true);
+            for (var i = 0; i < 10; i++)
+                packet.Write(p.Equipment.ItemSlots[i]);
         }
 
         NetworkManager.SendMessage(packet, p.Connection);

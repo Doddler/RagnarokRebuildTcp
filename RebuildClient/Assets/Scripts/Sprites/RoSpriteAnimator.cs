@@ -10,6 +10,8 @@ using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Sprites
 {
+    public record QueuedMotionTransition(bool isActive, float TransitionTime = 0, SpriteMotion CurrentMotion = SpriteMotion.Idle, SpriteMotion TargetMotion = SpriteMotion.Idle);
+    
     public class RoSpriteAnimator : MonoBehaviour
     {
         public RoSpriteData SpriteData;
@@ -85,6 +87,8 @@ namespace Assets.Scripts.Sprites
         private bool isPaused;
         private bool isDirty;
         private bool isActive;
+
+        private QueuedMotionTransition queuedMotionTransition;
 
         public void OverrideCurrentFrame(int frame)
         {
@@ -407,6 +411,13 @@ namespace Assets.Scripts.Sprites
             isPaused = false;
         }
 
+        public void QueueMotionTransition(SpriteMotion nextMotion, float activationTime)
+        {
+            if (queuedMotionTransition.isActive && queuedMotionTransition.TargetMotion == nextMotion)
+                return;
+            queuedMotionTransition = new QueuedMotionTransition(true, activationTime, CurrentMotion, nextMotion);
+        }
+
         public void ChangeMotion(SpriteMotion nextMotion, bool forceUpdate = false)
         {
             // if(SpriteData?.Name == "초보자_남")
@@ -417,6 +428,8 @@ namespace Assets.Scripts.Sprites
 
             if (CurrentMotion == nextMotion && !forceUpdate)
                 return;
+
+            queuedMotionTransition = new QueuedMotionTransition(false);
 
             CurrentMotion = nextMotion;
             currentFrame = 0;
@@ -473,8 +486,19 @@ namespace Assets.Scripts.Sprites
                 var nextMotion = RoAnimationHelper.GetMotionForState(State);
                 if (nextMotion != CurrentMotion)
                 {
+                    if (queuedMotionTransition.isActive && queuedMotionTransition.CurrentMotion == CurrentMotion && queuedMotionTransition.TargetMotion == nextMotion)
+                        return;
                     if (nextMotion == SpriteMotion.Idle || nextMotion == SpriteMotion.Standby || nextMotion == SpriteMotion.Dead)
+                    {
+                        if (CurrentMotion == SpriteMotion.Attack1 || CurrentMotion == SpriteMotion.Attack2 || CurrentMotion == SpriteMotion.Attack3)
+                        {
+                            QueueMotionTransition(nextMotion, Time.timeSinceLevelLoad + 3 / 60f); //hold the last step of attack for an extra 0.05s
+                            return;
+                        }
+
                         AnimSpeed = 1;
+                    }
+
                     ChangeMotion(nextMotion);
                 }
                 else
@@ -680,6 +704,19 @@ namespace Assets.Scripts.Sprites
             if (Parent == null)
                 currentFrameTime -= Time.deltaTime;
 
+            if (queuedMotionTransition.isActive && queuedMotionTransition.TransitionTime <= Time.timeSinceLevelLoad)
+            {
+                if (queuedMotionTransition.CurrentMotion != CurrentMotion)
+                    queuedMotionTransition = new QueuedMotionTransition(false);
+                else
+                {
+                    var target = queuedMotionTransition.TargetMotion;
+                    if (target == SpriteMotion.Idle || target == SpriteMotion.Standby || target == SpriteMotion.Dead)
+                        AnimSpeed = 1f;
+                    ChangeMotion(queuedMotionTransition.TargetMotion);
+                }
+            }
+
             if (currentFrameTime < 0 || currentFrame > maxFrame)
                 AdvanceFrame();
 
@@ -701,14 +738,14 @@ namespace Assets.Scripts.Sprites
 
                         if (frame.IsForeground)
                         {
-                            Debug.Log($"Animation frame has reverse sorting!");
+                            // Debug.Log($"Animation frame has reverse sorting!");
                             if(ChildrenSprites[i].SpriteRenderer is RoSpriteRendererStandard sr)
-                                sr.SortingOrder = i + 1 - 10;
+                                sr.SortingOrder = ChildrenSprites[i].SpriteOrder - 10;
                         }
                         else
                         {
                             if(ChildrenSprites[i].SpriteRenderer is RoSpriteRendererStandard sr)
-                                sr.SortingOrder = i + 1;
+                                sr.SortingOrder = ChildrenSprites[i].SpriteOrder;
                         }
 
                         ChildrenSprites[i].ChangeAngle(Angle);

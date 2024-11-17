@@ -123,7 +123,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     Camera.UpdatePlayerExp(State.Exp, max);
                     controllable.IsHidden = State.IsAdminHidden;
                     State.JobId = classId;
+                    State.IsMale = isMale;
+                    State.HairStyleId = headId;
+                    State.HairColorId = hairDyeId;
+                    
                     UiManager.Instance.SkillManager.UpdateAvailableSkills();
+                    UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(head1, head2, head3);
                 }
             }
             else

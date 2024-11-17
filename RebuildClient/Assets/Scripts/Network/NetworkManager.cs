@@ -488,6 +488,17 @@ namespace Assets.Scripts.Network
             EntityList.Clear();
         }
 
+        public void ClearGroundItemList()
+        {
+            if (GroundItemList == null)
+                return;
+
+            foreach (var item in GroundItemList)
+                GameObject.Destroy(item.Value.gameObject);
+
+            GroundItemList.Clear();
+        }
+
         private Vector2Int ReadPosition(ClientInboundMessage msg)
         {
             var x = msg.ReadInt16();

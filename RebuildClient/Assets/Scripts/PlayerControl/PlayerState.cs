@@ -17,6 +17,9 @@ namespace Assets.Scripts.PlayerControl
         public ClientSkillTree SkillTree;
         public int SkillPoints;
         public int JobId;
+        public bool IsMale;
+        public int HairStyleId;
+        public int HairColorId;
         public int CurrentWeight = 0;
         public int MaxWeight = 3000;
         public Dictionary<CharacterSkill, int> KnownSkills = new();
@@ -24,5 +27,7 @@ namespace Assets.Scripts.PlayerControl
         public ClientInventory Inventory = new();
         public ClientInventory Cart = new();
         public ClientInventory Storage = new();
+        public int[] EquippedItems = new int[10];
+        public HashSet<int> EquippedBagIdHashes = new();
     }
 }

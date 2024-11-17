@@ -1305,6 +1305,8 @@ namespace Assets.Scripts.Network
             {
                 if (SpriteAnimator.State == SpriteState.Walking && SpriteAnimator.CurrentMotion != SpriteMotion.Hit)
                 {
+                    //hold in the move animation for 0.05s. Keeps us from falling to idle between server move updates for continuous moving.
+                    //SpriteAnimator.QueueMotionTransition(SpriteMotion.Idle, 3/60f); 
                     SpriteAnimator.AnimSpeed = 1f;
                     SpriteAnimator.State = SpriteState.Idle;
                     SpriteAnimator.ChangeMotion(SpriteMotion.Idle);

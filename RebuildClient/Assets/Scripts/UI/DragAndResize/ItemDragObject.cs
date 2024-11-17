@@ -8,7 +8,8 @@ namespace Assets.Scripts.UI
     {
         None,
         HotBar,
-        ItemWindow
+        ItemWindow,
+        EquipmentWindow,
     }
     
     public class ItemDragObject : DragItemBase

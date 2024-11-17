@@ -14,18 +14,20 @@ public enum MonsterSkillAiFlags
 {
     None = 0,
     NoInterrupt = 1,
-    EasyInterrupt = 2,
-    EventOnStartCast = 4,
-    RandomTarget = 8,
-    HideSkillName = 16,
-    UnlimitedRange = 32,
-    NoTarget = 64
+    NeverInterrupt = 2,
+    EasyInterrupt = 4,
+    EventOnStartCast = 8,
+    RandomTarget = 16,
+    HideSkillName = 32,
+    UnlimitedRange = 64,
+    NoTarget = 128
     
 }
 
 public abstract class MonsterSkillAiBase
 {
-    public virtual void OnDie(MonsterSkillAiState skillState) {}
+    public virtual void OnInit(MonsterSkillAiState skillState) {}
+    public virtual void OnDie(MonsterSkillAiState skillState) { }
     public virtual void RunAiSkillUpdate(MonsterAiState aiState, MonsterSkillAiState skillState) {}
     public bool IsUnassignedAiType = false;
 }

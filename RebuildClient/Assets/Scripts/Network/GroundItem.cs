@@ -49,7 +49,7 @@ namespace Assets.Scripts.Network
             subObject.layer = LayerMask.NameToLayer("Item");
             subObject.AddComponent<BillboardObject>();
             if (data.IsUnique)
-                subObject.transform.localScale *= 1.5f;
+                subObject.transform.localScale *= 1.4f;
 
             var sr = subObject.AddComponent<SpriteRenderer>();
             sr.sprite = item.Sprite;

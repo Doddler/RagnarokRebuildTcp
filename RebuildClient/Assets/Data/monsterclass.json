@@ -23,17 +23,6 @@
       "Color": "#FFFFFFFF"
     },
     {
-      "Id": 5000,
-      "Code": "PORING50",
-      "Name": "Poring",
-      "SpriteName": "poring.spr",
-      "Offset": 0,
-      "ShadowSize": 0.5,
-      "Size": 1.1,
-      "AttackTiming": 0.288,
-      "Color": "#FFFFFFFF"
-    },
-    {
       "Id": 4001,
       "Code": "FABRE",
       "Name": "Fabre",
@@ -2095,7 +2084,7 @@
       "Code": "PHARAOH",
       "Name": "Pharaoh",
       "SpriteName": "pharaoh.spr",
-      "Offset": 0,
+      "Offset": 2.5,
       "ShadowSize": 0.5,
       "Size": 1,
       "AttackTiming": 0.576,
@@ -3301,9 +3290,20 @@
       "Color": "#FFFFFFFF"
     },
     {
+      "Id": 5000,
+      "Code": "PORING50",
+      "Name": "Poring",
+      "SpriteName": "poring.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1.1,
+      "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
+    },
+    {
       "Id": 6000,
       "Code": "MOONLIGHT_CLONE",
-      "Name": "Moonlight Flower",
+      "Name": "Moonlight Illusion",
       "SpriteName": "moonlight.spr",
       "Offset": 0,
       "ShadowSize": 0.5,

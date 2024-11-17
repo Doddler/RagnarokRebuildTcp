@@ -14,7 +14,8 @@ namespace Assets.Scripts.UI
     {
         None,
         Skill,
-        Item
+        Item,
+        Equipment,
     }
 
     public class DraggableItem : DragItemBase, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -59,7 +60,10 @@ namespace Assets.Scripts.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             if (Type != DragItemType.None && eventData.clickCount >= 2 && OnDoubleClick != null)
+            {
                 OnDoubleClick();
+                UiManager.Instance.HideTooltip(gameObject);
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)

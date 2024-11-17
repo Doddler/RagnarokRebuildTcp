@@ -26,6 +26,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
                 Debug.LogWarning("Whoa! Trying to delete player object. Is that right...?");
                 Camera.Target = null;
+                Network.ClearGroundItemList();
             }
 
             Network.EntityList.Remove(id);

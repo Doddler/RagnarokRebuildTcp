@@ -12,6 +12,7 @@ using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
+using Wintellect.PowerCollections;
 
 namespace RoRebuildServer.EntityComponents.Items;
 
@@ -55,7 +56,7 @@ public class ItemEquipState
     {
         for (var i = 0; i < ItemSlots.Length; i++)
             ItemSlots[i] = 0;
-        for(var i = 0; i < 3; i ++)
+        for (var i = 0; i < 3; i++)
             headgearMultiSlotInfo[i] = 0;
         AmmoType = -1;
     }
@@ -64,12 +65,33 @@ public class ItemEquipState
 
     public bool IsItemEquipped(int bagId)
     {
-        for(var i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
             if (ItemSlots[i] == bagId)
                 return true;
         return false;
     }
-    
+
+    public void UnequipAllItems()
+    {
+        for (var i = 0; i < 10; i++)
+        {
+            if (ItemSlots[i] <= 0)
+                continue;
+
+            UnEquipEvent((EquipSlot)i);
+            CommandBuilder.PlayerEquipItem(Player, ItemSlots[i], (EquipSlot)i, false);
+
+            ItemSlots[i] = -1;
+            ItemIds[i] = -1;
+            AmmoType = -1;
+            IsDualWielding = false;
+            isTwoHandedWeapon = false;
+        }
+        for (var i = 0; i < 3; i++)
+            headgearMultiSlotInfo[i] = HeadgearPosition.None;
+
+    }
+
     public void UpdateAppearanceIfNecessary(EquipSlot slot)
     {
         switch (slot)
@@ -90,31 +112,45 @@ public class ItemEquipState
             return;
 
         var itemData = DataManager.ItemList[item.Id];
+        var updateAppearance = false;
         if (itemData.ItemClass == ItemClass.Weapon)
         {
             UnEquipItem(EquipSlot.Weapon);
-            return;
+            updateAppearance = true;
         }
-
-        var equipInfo = DataManager.ArmorInfo[item.Id];
-        if(equipInfo.EquipPosition.HasFlag(EquipPosition.HeadUpper)) UnEquipItem(EquipSlot.HeadTop);
-        if(equipInfo.EquipPosition.HasFlag(EquipPosition.HeadMid)) UnEquipItem(EquipSlot.HeadMid);
-        if(equipInfo.EquipPosition.HasFlag(EquipPosition.HeadLower)) UnEquipItem(EquipSlot.HeadBottom);
-        if(equipInfo.EquipPosition.HasFlag(EquipPosition.Shield)) UnEquipItem(EquipSlot.Shield);
-        if(equipInfo.EquipPosition.HasFlag(EquipPosition.Armor)) UnEquipItem(EquipSlot.Body);
-        if(equipInfo.EquipPosition.HasFlag(EquipPosition.Garment)) UnEquipItem(EquipSlot.Garment);
-        if(equipInfo.EquipPosition.HasFlag(EquipPosition.Boots)) UnEquipItem(EquipSlot.Footgear);
-        if (equipInfo.EquipPosition.HasFlag(EquipPosition.Accessory))
+        else
         {
-            if (ItemSlots[(int)EquipSlot.Accessory1] == bagId) UnEquipItem(EquipSlot.Accessory1);
-            if (ItemSlots[(int)EquipSlot.Accessory2] == bagId) UnEquipItem(EquipSlot.Accessory2);
+            var equipInfo = DataManager.ArmorInfo[item.Id];
+            if (equipInfo.EquipPosition.HasFlag(EquipPosition.Headgear))
+            {
+                if (equipInfo.HeadPosition.HasFlag(HeadgearPosition.Top)) UnEquipItem(EquipSlot.HeadTop);
+                if (equipInfo.HeadPosition.HasFlag(HeadgearPosition.Mid)) UnEquipItem(EquipSlot.HeadMid);
+                if (equipInfo.HeadPosition.HasFlag(HeadgearPosition.Bottom)) UnEquipItem(EquipSlot.HeadBottom);
+                updateAppearance = true;
+            }
+
+            if (equipInfo.EquipPosition.HasFlag(EquipPosition.Shield))
+            {
+                UnEquipItem(EquipSlot.Shield);
+                updateAppearance = true;
+            }
+            if (equipInfo.EquipPosition.HasFlag(EquipPosition.Armor)) UnEquipItem(EquipSlot.Body);
+            if (equipInfo.EquipPosition.HasFlag(EquipPosition.Garment)) UnEquipItem(EquipSlot.Garment);
+            if (equipInfo.EquipPosition.HasFlag(EquipPosition.Boots)) UnEquipItem(EquipSlot.Footgear);
+            if (equipInfo.EquipPosition.HasFlag(EquipPosition.Accessory))
+            {
+                if (ItemSlots[(int)EquipSlot.Accessory1] == bagId) UnEquipItem(EquipSlot.Accessory1);
+                if (ItemSlots[(int)EquipSlot.Accessory2] == bagId) UnEquipItem(EquipSlot.Accessory2);
+            }
         }
 
         if (Player.CombatEntity.TryGetStatusContainer(out var status))
             status.OnChangeEquipment();
+        if (updateAppearance)
+            CommandBuilder.UpdatePlayerAppearanceAuto(Player);
         Player.UpdateStats();
     }
-    
+
     private void UnEquipItem(EquipSlot slot)
     {
         var bagId = ItemSlots[(int)slot];
@@ -150,11 +186,11 @@ public class ItemEquipState
             if (info.HeadPosition.HasFlag(HeadgearPosition.Mid)) return EquipSlot.HeadMid;
             if (info.HeadPosition.HasFlag(HeadgearPosition.Bottom)) return EquipSlot.HeadBottom;
         }
-        if(info.EquipPosition.HasFlag(EquipPosition.Body)) return EquipSlot.Body;
-        if(info.EquipPosition.HasFlag(EquipPosition.Garment)) return EquipSlot.Garment;
-        if(info.EquipPosition.HasFlag(EquipPosition.Shield)) return EquipSlot.Shield;
-        if(info.EquipPosition.HasFlag(EquipPosition.Boots)) return EquipSlot.Footgear;
-        if(info.EquipPosition.HasFlag(EquipPosition.Accessory))
+        if (info.EquipPosition.HasFlag(EquipPosition.Body)) return EquipSlot.Body;
+        if (info.EquipPosition.HasFlag(EquipPosition.Garment)) return EquipSlot.Garment;
+        if (info.EquipPosition.HasFlag(EquipPosition.Shield)) return EquipSlot.Shield;
+        if (info.EquipPosition.HasFlag(EquipPosition.Boots)) return EquipSlot.Footgear;
+        if (info.EquipPosition.HasFlag(EquipPosition.Accessory))
             if (ItemSlots[(int)EquipSlot.Accessory1] > 0 && ItemSlots[(int)EquipSlot.Accessory2] <= 0)
                 return EquipSlot.Accessory2;
             else
@@ -200,6 +236,11 @@ public class ItemEquipState
         if (equipSlot == EquipSlot.Shield && Player.Character.ClassId != 11 && !weaponInfo.IsTwoHanded)
             return EquipChangeResult.InvalidItem;
 
+        //make sure they don't equip the same weapon in both hands
+        if ((equipSlot == EquipSlot.Shield && ItemSlots[(int)EquipSlot.Weapon] == bagId)
+            || (equipSlot == EquipSlot.Weapon && ItemSlots[(int)EquipSlot.Shield] == bagId))
+            return EquipChangeResult.InvalidItem;
+        
         if (weaponInfo.IsTwoHanded)
             UnEquipItem(EquipSlot.Shield);
 
@@ -207,16 +248,18 @@ public class ItemEquipState
 
         IsDualWielding = equipSlot == EquipSlot.Shield;
         isTwoHandedWeapon = weaponInfo.IsTwoHanded;
-        
+
         ItemSlots[(int)equipSlot] = bagId;
         ItemIds[(int)equipSlot] = itemData.Id;
-        
+
         OnEquipEvent(equipSlot);
         CommandBuilder.UpdatePlayerAppearanceAuto(Player);
 
         if (Player.CombatEntity.TryGetStatusContainer(out var status))
             status.OnChangeEquipment();
-        
+
+        CommandBuilder.PlayerEquipItem(Player, bagId, equipSlot, true);
+
         return EquipChangeResult.Success;
     }
 
@@ -229,10 +272,23 @@ public class ItemEquipState
         if (!DataManager.IsJobInEquipGroup(equipInfo.EquipGroup, Player.Character.ClassId))
             return EquipChangeResult.NotApplicableJob;
 
+
         if (equipSlot == EquipSlot.None || equipInfo.EquipPosition == EquipPosition.Headgear)
             equipSlot = EquipSlotForEquipment(equipInfo, itemData.Id);
         else if (!IsValidSlotForEquipment(equipInfo, equipSlot))
             return EquipChangeResult.InvalidPosition;
+
+        //make sure they don't equip the same accessory in both slots
+        if (equipSlot == EquipSlot.Accessory1)
+        {
+            if (ItemSlots[(int)EquipSlot.Accessory2] == bagId)
+                return EquipChangeResult.InvalidItem;
+        }
+        else if (equipSlot == EquipSlot.Accessory2)
+        {
+            if (ItemSlots[(int)EquipSlot.Accessory1] == bagId)
+                return EquipChangeResult.InvalidItem;
+        }
 
         if (equipInfo.EquipPosition == EquipPosition.Shield && isTwoHandedWeapon)
             UnEquipItem(EquipSlot.Weapon);
@@ -244,7 +300,7 @@ public class ItemEquipState
             for (var i = 0; i < 3; i++)
             {
                 //if any of the other headgear block this slot, we'll need to unequip them as well
-                if ((equipInfo.HeadPosition & headgearMultiSlotInfo[i]) > 0) 
+                if ((equipInfo.HeadPosition & headgearMultiSlotInfo[i]) > 0)
                     UnEquipItem((EquipSlot)i);
             }
 
@@ -260,6 +316,8 @@ public class ItemEquipState
         if (Player.CombatEntity.TryGetStatusContainer(out var status))
             status.OnChangeEquipment();
 
+        CommandBuilder.PlayerEquipItem(Player, bagId, equipSlot, true);
+
         return EquipChangeResult.Success;
     }
 
@@ -269,7 +327,7 @@ public class ItemEquipState
             return EquipChangeResult.InvalidItem;
 
         var itemData = DataManager.ItemList[item.Id];
-        
+
         if (itemData.ItemClass == ItemClass.Weapon)
             return EquipWeapon(bagId, equipSlot, itemData);
 
@@ -278,14 +336,14 @@ public class ItemEquipState
 
         return EquipChangeResult.InvalidItem;
     }
-    
+
     private void OnEquipEvent(EquipSlot slot)
     {
         Debug.Assert(Player.Inventory != null);
 
         if (slot == EquipSlot.None || ItemSlots[(int)slot] <= 0)
             return;
-        
+
         activeSlot = slot;
         var bagId = ItemSlots[(int)slot];
         var item = Player.Inventory.UniqueItems[bagId];
@@ -395,7 +453,7 @@ public class ItemEquipState
     public void AddStat(CharacterStat stat, int change)
     {
 #if DEBUG
-        if(stat >= CharacterStat.Str && stat <= CharacterStat.Luk)
+        if (stat >= CharacterStat.Str && stat <= CharacterStat.Luk)
             ServerLogger.LogWarning($"Warning! Adding directly to a base stat {stat} in equip handler for {Player.Inventory?.UniqueItems[(int)activeSlot]}! You probably want AddStat.");
 #endif
         var equipState = new EquipStatChange()
@@ -407,7 +465,7 @@ public class ItemEquipState
         equipmentEffects.Add(ref equipState);
         Player.CombatEntity.AddStat(stat, change);
     }
-    
+
     public void SubStat(CharacterStat stat, int change) => AddStat(stat, -change); //lol
 
     public void AddStatusEffect(CharacterStatusEffect statusEffect, int duration, int val1 = 0, int val2 = 0)
@@ -438,11 +496,17 @@ public class ItemEquipState
             {
                 var guid = new Guid(br.ReadBytes(16)); //we have a guid, we want to store a bag id
                 var bagId = bag.GetUniqueItemByGuid(guid, out var item);
-                
+
                 if (bagId > 0)
                 {
                     ItemSlots[i] = bagId;
                     ItemIds[i] = item.Id;
+                }
+
+                if (i < 3)
+                {
+                    var equipInfo = DataManager.ArmorInfo[item.Id];
+                    headgearMultiSlotInfo[i] = equipInfo.HeadPosition;
                 }
             }
         }

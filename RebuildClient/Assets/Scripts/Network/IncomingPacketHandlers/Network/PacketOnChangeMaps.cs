@@ -12,7 +12,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             var mapName = msg.ReadString();
             
             Network.EntityList.Clear();
-            Network.GroundItemList.Clear();
+            Network.ClearGroundItemList();
             Network.CurrentMap = mapName;
             
             SceneTransitioner.Instance.DoTransitionToScene(Network.CurrentScene, Network.CurrentMap, Network.OnMapLoad);

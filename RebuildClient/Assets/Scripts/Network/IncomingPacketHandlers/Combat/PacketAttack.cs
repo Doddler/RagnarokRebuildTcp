@@ -30,6 +30,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var motionTime = msg.ReadFloat();
             var showAttackAction = msg.ReadBoolean();
 
+            //this is a hack, but we want to make sure the client attack motion is slightly longer than the server so attacks can be seamlessly chained.
+            if (hasSrc)
+                motionTime = Mathf.Min(motionTime * 1.1f, motionTime + 0.1f);
+
             var weaponClass = 0;
 
             var result = new AttackResultData()

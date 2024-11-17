@@ -67,10 +67,7 @@ public partial class Monster
     /// <summary> Checks if the monster has reached it's destination yet. </summary>
     private bool InReachedTarget()
     {
-        if (Character.State != CharacterState.Moving)
-            return true;
-
-        return false;
+        return Character.State != CharacterState.Moving || Character.Position == Character.TargetPosition;
     }
 
     private bool InChangeNormal()

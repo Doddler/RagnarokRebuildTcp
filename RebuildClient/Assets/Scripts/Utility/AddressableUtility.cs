@@ -9,12 +9,15 @@ namespace Assets.Scripts.Utility
 {
 	public static class AddressableUtility
 	{
-		public static AsyncOperationHandle<RoSpriteData> LoadRoSpriteData(GameObject owner, string spritePath, Action<RoSpriteData> onComplete)
+		public static void LoadRoSpriteData(GameObject owner, string spritePath, Action<RoSpriteData> onComplete)
         {
-            if (string.IsNullOrWhiteSpace(spritePath))
-                throw new Exception($"Attempting to load RoSpriteData but the spritePath was empty!");
+	        if (string.IsNullOrWhiteSpace(spritePath))
+	        {
+		        Debug.LogError($"Attempting to load RoSpriteData but the spritePath was empty!");
+		        return;
+	        }
 
-			var load = Addressables.LoadAssetAsync<RoSpriteData>(spritePath);
+	        var load = Addressables.LoadAssetAsync<RoSpriteData>(spritePath);
 			load.Completed += handle =>
 			{
 				if(handle.Status != AsyncOperationStatus.Succeeded)
@@ -22,7 +25,6 @@ namespace Assets.Scripts.Utility
 				if (owner != null)
 					onComplete(handle.Result);
 			};
-			return load;
         }
 		
 		public static void LoadSprite(GameObject owner, string spritePath, Action<Sprite> onComplete)

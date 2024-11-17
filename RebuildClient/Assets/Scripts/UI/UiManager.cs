@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Assets.Scripts;
 using Assets.Scripts.Objects;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
@@ -27,6 +28,7 @@ public class UiManager : MonoBehaviour
     public GameObject PrimaryUserUIContainer;
     public ItemOverlay ItemOverlay;
     public CharacterChat TooltipOverlay;
+    public EquipmentWindow EquipmentWindow;
 
     public ItemDragObject DragItemObject;
     public ItemObtainedToast ItemObtainedPopup;
@@ -220,6 +222,19 @@ public class UiManager : MonoBehaviour
         WindowStack.Remove(entry);
         WindowStack.Add(entry);
     }
+
+    public void StartEquipmentDrag(InventoryItem item, Sprite sprite)
+    {
+        Debug.Log($"Starting Equipment Drag for {item}");
+        IsDraggingItem = true;
+        DragItemObject.gameObject.SetActive(true);
+        DragItemObject.transform.position = Input.mousePosition;
+        DragItemObject.Assign(DragItemType.Equipment, sprite, item.ItemData.Id, 0);
+        DragItemObject.Origin = ItemDragOrigin.EquipmentWindow;
+        DragItemObject.OriginId = item.BagSlotId;
+        TrashBucket.gameObject.SetActive(true);
+        canChangeSkillLevel = false;
+    }
     
     public void StartItemDrag(DragItemBase dragItem)
     {
@@ -237,6 +252,7 @@ public class UiManager : MonoBehaviour
             if (!canChangeSkillLevel)
                 DragItemObject.UpdateCount(0);
         }
+        
     }
     
     public bool EndItemDrag()

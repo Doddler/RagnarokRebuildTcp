@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
@@ -26,8 +27,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             for(var i = 0; i < skills; i++)
                 State.KnownSkills.Add((CharacterSkill)msg.ReadByte(), msg.ReadByte());
             
-            Debug.Log("UpdatePLayerData");
-            
             UiManager.SkillManager.UpdateAvailableSkills();
 
             var hasInventory = msg.ReadBoolean();
@@ -37,6 +36,18 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 State.Inventory.Deserialize(msg);
                 State.Cart.Deserialize(msg);
                 State.Storage.Deserialize(msg);
+                State.EquippedBagIdHashes.Clear();
+                for (var i = 0; i < 10; i++)
+                {
+                    var bagId = msg.ReadInt32();
+                    State.EquippedItems[i] = bagId;
+                    State.EquippedBagIdHashes.Add(bagId);
+                }
+                
+                UiManager.EquipmentWindow.RefreshEquipmentWindow();
+
+                if(Application.isEditor)
+                    Debug.Log($"Equipped items: " + string.Join(", ", State.EquippedItems));
             }
 
             CameraFollower.Instance.UpdatePlayerHP(hp, maxHp);
@@ -53,19 +64,20 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             {
                 foreach (var i in State.Inventory.GetInventoryData())
                 {
-                    var data = ClientDataLoader.Instance.GetItemById(i.Value.Id);
+                    // var data = ClientDataLoader.Instance.GetItemById(i.Value.Id);
                     if(i.Value.Type == ItemType.RegularItem)
-                        sb.AppendLine($"{i} - {data.Name}: {i.Value.Count} ea.");
+                        sb.AppendLine($"{i.Key} - {i.Value}");
                     else
                     {
-                        sb.Append($"{i} - {data.Name}: {i.Value.Count} ea. [");
+                        var eq = State.EquippedBagIdHashes.Contains(i.Key) ? " *Equipped*" : "";
+                        sb.Append($"{i.Key} - {i.Value} <");
                         for (var j = 0; j < 4; j++)
                         {
                             if (j > 0) sb.Append(", ");
                             sb.Append(i.Value.UniqueItem.SlotData(j));
                         }
 
-                        sb.AppendLine($"] : {i.Value.UniqueItem.UniqueId}");
+                        sb.AppendLine($"> : (Guid {i.Value.UniqueItem.UniqueId}) {eq}");
                     }
                 }
             }

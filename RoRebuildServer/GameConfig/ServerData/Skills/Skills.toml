@@ -459,8 +459,11 @@ SpCost = [16,18,20,22,24,26,28,30,32,34]
 
 [CallMinion]
 Name = "Call Minion"
+InterruptMode = "NoInterrupt"
+
 [GrandThunderstorm]
 Name = "Grand Thunderstorm"
+InterruptMode = "NoInterrupt"
 
 [FireAttack]
 Name = "Fire Attack"
@@ -492,12 +495,18 @@ Name = "Stun"
 Name = "Blind"
 [Silence]
 Name = "Silence"
+
 [SelfDestruct]
 Name = "Self Destruct"
+InterruptMode = "NoInterrupt"
+
 [PowerUp]
-Name = "Power UP"
+Name = "Power Up"
+InterruptMode = "NoInterrupt"
+
 [SummonMonster]
 Name = "Summon Monster"
+InterruptMode = "NoInterrupt"
 
 [Suicide]
 

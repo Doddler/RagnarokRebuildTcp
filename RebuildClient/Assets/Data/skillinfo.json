@@ -9,7 +9,8 @@
       "MaxLevel": 8,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "This skill is totally worthless but you need to get it to rank 8 before you can job change."
+      "Description": "This skill is totally worthless but you need to get it to rank 8 before you can job change.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 2,
@@ -22,7 +23,8 @@
         4
       ],
       "AdjustableLevel": false,
-      "Description": "Heal\u0027s yourself by either 5 HP or 1% of your max HP, whichever is higher."
+      "Description": "Heal\u0027s yourself by either 5 HP or 1% of your max HP, whichever is higher.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 3,
@@ -44,7 +46,8 @@
         15
       ],
       "AdjustableLevel": true,
-      "Description": "Hit the enemy really hard."
+      "Description": "Hit the enemy really hard.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 4,
@@ -66,7 +69,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": "Resists flinching from enemy attacks, allowing you to escape without being slowed down by damage.\r\nLasts [Skill Level \u002B 2] hits. Provides a bonus to magic defense while active."
+      "Description": "Resists flinching from enemy attacks, allowing you to escape without being slowed down by damage.\r\nLasts [Skill Level \u002B 2] hits. Provides a bonus to magic defense while active.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 5,
@@ -77,7 +81,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 6,
@@ -99,7 +104,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 7,
@@ -121,7 +127,8 @@
         5
       ],
       "AdjustableLevel": false,
-      "Description": "Enrages an enemy by taunting them, causing them drop their guard. \r\nEach level lowers the target\u0027s defense by 3% but increases their attack power by 2%. \r\nThe enemy has a low chance of dealing extra damage against you specifically."
+      "Description": "Enrages an enemy by taunting them, causing them drop their guard. \r\nWhile under the effect of provoke a target has reduced defense but deals more damage. The enemy has a low chance of dealing extra damage against you specifically.\r\nThe effectivness of this skill is halved on boss type monsters.\r\nLevel 1: -10% DEF, \u002B5% ATK\r\n...\r\nLevel 10: -55% DEF, \u002B32% ATK",
+      "InterruptMode": 0
     },
     {
       "SkillId": 8,
@@ -132,7 +139,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases damage when using a one-handed sword by 1% per level to a max of \u002B10%."
+      "Description": "Increases damage when using a one-handed sword by 1% per level to a max of \u002B10%.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 9,
@@ -143,7 +151,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "This skill would increase damage when using a two-handed sword if you could actually equip one, but you can\u0027t."
+      "Description": "This skill would increase damage when using a two-handed sword if you could actually equip one, but you can\u0027t.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 10,
@@ -154,7 +163,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 11,
@@ -176,7 +186,8 @@
         30
       ],
       "AdjustableLevel": true,
-      "Description": "Strikes a single target with a fire element attack. \r\nHigher skill level increases cast time but deals more hits. \r\nDeals increased damage against earth and undead element and less to fire and water."
+      "Description": "Strikes a single target with a fire element attack. \r\nHigher skill level increases cast time but deals more hits. \r\nDeals increased damage against earth and undead element and less to fire and water.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 12,
@@ -198,7 +209,8 @@
         30
       ],
       "AdjustableLevel": true,
-      "Description": "Strikes a single target with a water element attack. \r\nHigher skill level increases cast time but deals more hits. \r\nDeals increased damage against fire element and less to water and wind."
+      "Description": "Strikes a single target with a water element attack. \r\nHigher skill level increases cast time but deals more hits. \r\nDeals increased damage against fire element and less to water and wind.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 13,
@@ -220,7 +232,8 @@
         10
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 14,
@@ -242,7 +255,8 @@
         10
       ],
       "AdjustableLevel": true,
-      "Description": "Creates a wall of flame at a targeted location dealing 50% fire magic damage and knocking enemies back upon contact.\r\nHigher levels increases the duration, number of hits, and speeds up casting."
+      "Description": "Creates a wall of flame at a targeted location dealing 50% fire magic damage and knocking enemies back upon contact.\r\nHigher levels increases the duration, number of hits, and speeds up casting.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 15,
@@ -264,7 +278,8 @@
         10
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 16,
@@ -286,7 +301,8 @@
         30
       ],
       "AdjustableLevel": true,
-      "Description": "Strikes a single target with an earth element attack. \r\nHigher skill level increases cast time but deals more hits. \r\nDeals increased damage against water element and less to wind and earth."
+      "Description": "Strikes a single target with an earth element attack. \r\nHigher skill level increases cast time but deals more hits. \r\nDeals increased damage against water element and less to wind and earth.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 17,
@@ -308,7 +324,8 @@
         18
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 18,
@@ -330,7 +347,8 @@
         10
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 19,
@@ -352,7 +370,8 @@
         74
       ],
       "AdjustableLevel": true,
-      "Description": "The only working aoe ability in the game."
+      "Description": "The only working aoe ability in the game.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 20,
@@ -374,7 +393,8 @@
         10
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 21,
@@ -396,7 +416,8 @@
         12
       ],
       "AdjustableLevel": true,
-      "Description": "Strikes a target with two arrows dealing 2 hits of 100% attack at level 1 (200% total) increasing to 190% at level 10 (380% total)."
+      "Description": "Strikes a target with two arrows dealing 2 hits of 100% attack at level 1 (200% total) increasing to 190% at level 10 (380% total).",
+      "InterruptMode": 0
     },
     {
       "SkillId": 22,
@@ -409,7 +430,8 @@
         15
       ],
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 23,
@@ -431,7 +453,8 @@
         15
       ],
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 24,
@@ -453,7 +476,8 @@
         70
       ],
       "AdjustableLevel": true,
-      "Description": "Focuses your thoughts providing bonus to AGI and DEX.\r\n\u003Cpos=2%\u003ELevel \u003Cpos=22%\u003EStat Boost\u003Cpos=52%\u003EDuration\u003Cbr\u003E\r\n\u003Cpos=5%\u003E1\u003Cpos=25%\u003E\u002B3%\u003Cpos=55%\u003E60s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E2\u003Cpos=25%\u003E\u002B4%\u003Cpos=55%\u003E80s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E3\u003Cpos=25%\u003E\u002B5%\u003Cpos=55%\u003E100s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E4\u003Cpos=25%\u003E\u002B6%\u003Cpos=55%\u003E120s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E5\u003Cpos=25%\u003E\u002B7%\u003Cpos=55%\u003E140s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E6\u003Cpos=25%\u003E\u002B8%\u003Cpos=55%\u003E160s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E7\u003Cpos=25%\u003E\u002B9%\u003Cpos=55%\u003E180s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E8\u003Cpos=25%\u003E\u002B10%\u003Cpos=55%\u003E200s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E9\u003Cpos=25%\u003E\u002B11%\u003Cpos=55%\u003E220s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E10\u003Cpos=25%\u003E\u002B12%\u003Cpos=55%\u003E240s"
+      "Description": "Focuses your thoughts providing bonus to AGI and DEX.\r\n\u003Cpos=2%\u003ELevel \u003Cpos=22%\u003EStat Boost\u003Cpos=52%\u003EDuration\u003Cbr\u003E\r\n\u003Cpos=5%\u003E1\u003Cpos=25%\u003E\u002B3%\u003Cpos=55%\u003E60s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E2\u003Cpos=25%\u003E\u002B4%\u003Cpos=55%\u003E80s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E3\u003Cpos=25%\u003E\u002B5%\u003Cpos=55%\u003E100s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E4\u003Cpos=25%\u003E\u002B6%\u003Cpos=55%\u003E120s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E5\u003Cpos=25%\u003E\u002B7%\u003Cpos=55%\u003E140s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E6\u003Cpos=25%\u003E\u002B8%\u003Cpos=55%\u003E160s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E7\u003Cpos=25%\u003E\u002B9%\u003Cpos=55%\u003E180s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E8\u003Cpos=25%\u003E\u002B10%\u003Cpos=55%\u003E200s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E9\u003Cpos=25%\u003E\u002B11%\u003Cpos=55%\u003E220s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E10\u003Cpos=25%\u003E\u002B12%\u003Cpos=55%\u003E240s",
+      "InterruptMode": 0
     },
     {
       "SkillId": 25,
@@ -464,7 +488,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Adds \u002B1 DEX per level."
+      "Description": "Adds \u002B1 DEX per level.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 26,
@@ -475,7 +500,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Adds \u002B1 range per level when attacking with a bow."
+      "Description": "Adds \u002B1 range per level when attacking with a bow.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 27,
@@ -497,7 +523,8 @@
         40
       ],
       "AdjustableLevel": true,
-      "Description": "Heals an ally. Deals damage when cast on an undead (use shift to target an enemy)."
+      "Description": "Heals an ally. Deals damage when cast on an undead (use shift to target an enemy).",
+      "InterruptMode": 0
     },
     {
       "SkillId": 28,
@@ -519,7 +546,8 @@
         45
       ],
       "AdjustableLevel": true,
-      "Description": "Increases movement speed by 25% and increases agi by \u002B3 at level one and increasing to \u002B12 at level 10."
+      "Description": "Increases movement speed by 25% and increases agi by \u002B3 at level one and increasing to \u002B12 at level 10.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 29,
@@ -536,7 +564,8 @@
         33
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 30,
@@ -558,7 +587,8 @@
         64
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work."
+      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 31,
@@ -569,7 +599,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases damage against demon and undead races by \u002B1% per level to a max of \u002B10%."
+      "Description": "Increases damage against demon and undead races by \u002B1% per level to a max of \u002B10%.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 32,
@@ -580,7 +611,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 33,
@@ -602,7 +634,8 @@
         50
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 34,
@@ -624,7 +657,8 @@
         35
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 35,
@@ -637,7 +671,8 @@
         15
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 36,
@@ -650,7 +685,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 37,
@@ -663,7 +699,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 38,
@@ -676,7 +713,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 39,
@@ -690,7 +728,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 40,
@@ -706,7 +745,8 @@
         26
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 41,
@@ -719,7 +759,8 @@
         15
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 42,
@@ -730,7 +771,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Adds a chance to double attack when performing regular melee attacks."
+      "Description": "Adds a chance to double attack when performing regular melee attacks.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 43,
@@ -752,7 +794,8 @@
         12
       ],
       "AdjustableLevel": false,
-      "Description": "Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target\u0027s VIT.\r\nHigher skill levels increase success rate of poison as well as duration.\r\nPoison Effect: Deals 1/2 the received damage every 3 seconds."
+      "Description": "Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target\u0027s VIT.\r\nHigher skill levels increase success rate of poison as well as duration.\r\nPoison Effect: Deals 1/2 the received damage every 3 seconds.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 44,
@@ -765,7 +808,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 45,
@@ -778,7 +822,8 @@
         7
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 46,
@@ -800,7 +845,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 47,
@@ -813,7 +859,8 @@
         9
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 48,
@@ -826,7 +873,8 @@
         2
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 49,
@@ -848,7 +896,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 50,
@@ -859,7 +908,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases the chance to evade an enemy attack. Evasion doesn\u0027t fall off with more enemies so it\u0027s probably really good?"
+      "Description": "Increases the chance to evade an enemy attack. Evasion doesn\u0027t fall off with more enemies so it\u0027s probably really good?",
+      "InterruptMode": 0
     },
     {
       "SkillId": 51,
@@ -870,7 +920,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 52,
@@ -881,7 +932,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 53,
@@ -892,7 +944,8 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 54,
@@ -914,7 +967,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 55,
@@ -925,7 +979,8 @@
       "MaxLevel": 1,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 56,
@@ -947,7 +1002,8 @@
         15
       ],
       "AdjustableLevel": true,
-      "Description": "Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.\r\nEach level adds \u002B50% damage and costs an additional 100 zeny to use (dealing 600% @ 1000z at level 10)."
+      "Description": "Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.\r\nEach level adds \u002B50% damage and costs an additional 100 zeny to use (dealing 600% @ 1000z at level 10).",
+      "InterruptMode": 0
     },
     {
       "SkillId": 57,
@@ -958,7 +1014,8 @@
       "MaxLevel": 1,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.\r\nThe cart has a weight capacity of 8000 and can store up to 100 items."
+      "Description": "Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.\r\nThe cart has a weight capacity of 8000 and can store up to 100 items.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 58,
@@ -971,7 +1028,8 @@
         8
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 59,
@@ -984,7 +1042,8 @@
         12
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 60,
@@ -1006,7 +1065,8 @@
         50
       ],
       "AdjustableLevel": false,
-      "Description": "Increases attack speed when using two-handed swords by 10% per skill level."
+      "Description": "Increases attack speed when using two-handed swords by 10% per skill level.",
+      "InterruptMode": 0
     },
     {
       "SkillId": 61,
@@ -1023,7 +1083,8 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 62,
@@ -1045,7 +1106,8 @@
         34
       ],
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 63,
@@ -1056,7 +1118,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 3
     },
     {
       "SkillId": 64,
@@ -1067,7 +1130,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 3
     },
     {
       "SkillId": 65,
@@ -1078,7 +1142,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 66,
@@ -1089,7 +1154,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 67,
@@ -1100,7 +1166,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 68,
@@ -1111,7 +1178,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 69,
@@ -1122,7 +1190,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 70,
@@ -1133,7 +1202,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 71,
@@ -1144,7 +1214,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 72,
@@ -1155,7 +1226,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 73,
@@ -1166,7 +1238,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 74,
@@ -1177,7 +1250,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 75,
@@ -1188,7 +1262,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 76,
@@ -1199,7 +1274,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 77,
@@ -1210,7 +1286,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 78,
@@ -1221,7 +1298,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 79,
@@ -1232,7 +1310,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 80,
@@ -1243,18 +1322,20 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 3
     },
     {
       "SkillId": 81,
       "Icon": "nv_basic",
-      "Name": "Power UP",
+      "Name": "Power Up",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 3
     },
     {
       "SkillId": 82,
@@ -1265,7 +1346,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 3
     },
     {
       "SkillId": 83,
@@ -1276,7 +1358,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 84,
@@ -1287,7 +1370,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     },
     {
       "SkillId": 85,
@@ -1298,7 +1382,8 @@
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null
+      "Description": null,
+      "InterruptMode": 0
     }
   ]
 }

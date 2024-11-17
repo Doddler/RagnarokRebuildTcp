@@ -59,7 +59,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[41] = new InvalidPacket(); //ChangeName
 			handlers[42] = new PacketResurrection(); //Resurrection
 			handlers[43] = new InvalidPacket(); //UseInventoryItem
-			handlers[44] = new InvalidPacket(); //EquipUnequipGear
+			handlers[44] = new PacketEquipUnequipGear(); //EquipUnequipGear
 			handlers[45] = new PacketUpdateCharacterDisplayState(); //UpdateCharacterDisplayState
 			handlers[46] = new PacketAddOrRemoveInventoryItem(); //AddOrRemoveInventoryItem
 			handlers[47] = new PacketEffectOnCharacter(); //EffectOnCharacter

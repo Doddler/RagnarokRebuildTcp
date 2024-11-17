@@ -27,8 +27,17 @@ namespace Assets.Scripts.UI
                     UiManager.Instance.SkillHotbar.GetEntryById(obj.OriginId).Clear();
                     break;
                 case ItemDragOrigin.ItemWindow:
+                    if (UiManager.Instance.EquipmentWindow.isActiveAndEnabled)
+                    {
+                        CameraFollower.Instance.AppendNotice($"Cannot drop items while equipment window is open.");
+                        return;
+                    }
+
                     Debug.Log($"Dropped item from inventory onto ground area.");
                     NetworkManager.Instance.SendDropItem(obj.ItemId, obj.ItemCount);
+                    break;
+                case ItemDragOrigin.EquipmentWindow:
+                    NetworkManager.Instance.SendUnEquipItem(obj.OriginId);
                     break;
             }
         }

@@ -14,6 +14,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Channels;
 using System.Xml.Linq;
+using RebuildSharedData.ClientTypes;
 using RoRebuildServer.Simulation.Pathfinding;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -81,6 +82,13 @@ public class MonsterSkillAiState(Monster monsterIn)
     public void Leave()
     {
         monster.Die(false, false, CharacterRemovalReason.Teleport);
+    }
+
+    public void FlagAsMvp()
+    {
+        monster.Character.IsImportant = true;
+        monster.Character.DisplayType = CharacterDisplayType.Mvp;
+        monster.Character.Map?.RegisterImportantEntity(monster.Character);
     }
 
     public void EnterPostDeathPhase()
@@ -309,8 +317,17 @@ public class MonsterSkillAiState(Monster monsterIn)
         var hideSkillName = flags.HasFlag(MonsterSkillAiFlags.HideSkillName);
         var ignoreTargetRequirement = flags.HasFlag(MonsterSkillAiFlags.NoTarget);
         ExecuteEventAtStartOfCast = flags.HasFlag(MonsterSkillAiFlags.EventOnStartCast);
-
         
+        if (flags.HasFlag(MonsterSkillAiFlags.EasyInterrupt))
+            ce.CastInterruptionMode = CastInterruptionMode.InterruptOnDamage;
+        else if (flags.HasFlag(MonsterSkillAiFlags.NoInterrupt))
+            ce.CastInterruptionMode = CastInterruptionMode.NeverInterrupt;
+        else
+        {
+            var skillData = DataManager.SkillData[skill];
+            ce.CastInterruptionMode = skillData.InterruptMode;
+        }
+
         if (skillTarget == SkillTarget.Ground)
         {
             var pos = Position.Zero;
@@ -410,6 +427,25 @@ public class MonsterSkillAiState(Monster monsterIn)
         return SkillFail();
     }
 
+    //a named cast has no effect, but it will trigger the post effect event handler where you can add custom results
+    public bool TryCast(string cooldownName, int level, int chance, int castTime, int delay, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
+    {
+        if (!IsNamedEventOffCooldown(cooldownName))
+            return SkillFail();
+
+        if (GameRandom.Next(0, 1000) > chance)
+            return SkillFail();
+
+        var result = Cast(CharacterSkill.None, level, castTime, 0, flags);
+        if (result)
+        {
+            monster.LastDamageSourceType = CharacterSkill.None;
+            SetEventCooldown(cooldownName, delay);
+        }
+
+        return result;
+    }
+
     public bool TryCast(CharacterSkill skill, int level, int chance, int castTime, int delay, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
     {
         if (!CheckCast(skill, chance))
@@ -427,10 +463,7 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     public void CancelCast()
     {
-        if (monster.CombatEntity.IsCasting)
-        {
-            monster.CombatEntity.IsCasting = false; //send packet! OMG!
-        }
+        monster.CombatEntity.CancelCast();
     }
 
     public void CallDefaultMinions()

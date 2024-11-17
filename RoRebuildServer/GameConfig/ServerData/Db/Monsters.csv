@@ -1,7 +1,6 @@
 Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,JExp,ScanDist,ChaseDist,Size,Race,Element,RechargeTime,HitTime,AttackTime,MoveSpeed,Special,MonsterAi,SpriteAttackTiming,ClientSprite,ClientOffset,ClientShadow,ClientSize,Color
 3999,EFFECT,Effect,1,56,1,1,1,6,1,1,4,5,1,0,0,3,2,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiPassive,288,poring.spr,0,0.5,1,#FFFFFFFF
 4000,PORING,Poring,1,44,1,1,1,6,1,1,4,5,1,0,0,3,2,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiLooter,288,poring.spr,0,0.5,1,#FFFFFFFF
-5000,PORING50,Poring,50,4610,22,34,37,31,26,20,362,401,1,10,10,3114,3221,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiLooter,288,poring.spr,0,0.5,1.1,#FFFFFFFF
 4001,FABRE,Fabre,2,42,1,1,1,7,2,1,6,7,1,0,0,4,4,10,12,Small,Insect,Earth1,1672,480,672,400,Normal,AiPassive,192,fabre.spr,0,0.5,1,#FFFFFFFF
 4002,LUNATIC,Lunatic,3,74,3,2,3,7,3,1,7,8,1,1,1,7,6,10,12,Small,Beast,Neutral3,1456,336,456,200,Normal,AiPassive,264,lunatic.spr,0,0.5,1,#FFFFFFFF
 4003,PUPA,Pupa,6,232,2,7,7,6,2,1,1,1,0,12,11,16,29,10,12,Small,Insect,Earth1,1001,1,1,-1,Normal,AiPlant,768,pupa.spr,0,-1,1,#FFFFFFFF
@@ -67,7 +66,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4063,EDDGA,Eddga,65,126802,95,95,90,100,95,57,1096,1483,1,29,29,84464,110987,10,12,Large,Beast,Fire1,872,432,1344,300,Boss,AiStandardBoss,408,eddga.spr,0,0.5,1,#FFFFFFFF
 4064,THIEF_BUG_,Female Thief Bug,14,372,9,10,10,19,15,5,36,44,1,5,4,76,89,10,12,Medium,Insect,Dark1,988,768,288,200,Normal,AiLooterAssist,480,thief_bug_female.spr,0,0.5,1,#FFFFFFFF
 4065,THIEF_BUG__,Male Thief Bug,23,1207,16,15,17,27,24,8,90,110,1,9,6,405,482,10,12,Medium,Insect,Dark1,988,768,288,300,Normal,AiAggressiveAssist,504,thief_bug_male.spr,0,0.5,1,#FFFFFFFF
-4066,GOLDEN_BUG,Golden Thief Bug,44,73838,51,56,78,90,83,27,491,664,1,43,17,32248,45665,10,12,Large,Insect,Fire2,768,480,768,100,Boss,AiAssistLooter,720,golden_bug.spr,0,0.5,1,#FFFFFFFF
+4066,GOLDEN_BUG,Golden Thief Bug,44,73838,51,56,78,90,83,27,491,664,1,43,17,32248,45665,10,12,Large,Insect,Fire2,768,480,768,100,Boss,AiLooterAssist,720,golden_bug.spr,0,0.5,1,#FFFFFFFF
 4067,VAGABOND_WOLF,Vagabond Wolf,38,15351,43,42,44,47,42,25,288,352,1,17,15,5323,5112,10,12,Medium,Beast,Earth1,1048,432,648,150,Boss,AiStandardBoss,216,vagabond_wolf.spr,0,0.5,1,#FFFFFFFF
 4068,SCORPION,Scorpion,24,971,16,17,16,29,26,8,86,105,1,9,7,401,480,2,12,Small,Insect,Fire1,1564,576,864,200,Normal,AiAggressiveSense,384,scorpion.spr,0,0.5,1,#FFFFFFFF
 4069,METALLER,Metaller,22,825,14,15,14,26,23,7,73,90,1,8,6,331,358,10,12,Medium,Insect,Fire1,1708,540,1008,200,Normal,AiLooterAssist,432,metaller.spr,0,0.5,1,#FFFFFFFF
@@ -189,7 +188,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4185,ZEROM,Zerom,32,2114,26,26,24,31,26,15,144,176,1,10,10,1006,1027,10,12,Medium,Demihuman,Fire1,1780,432,1080,200,Normal,AiAggressive,720,zerom.spr,0,0.5,1,#FFFFFFFF
 4186,PASANA,Pasana,61,7305,49,49,44,54,49,29,675,826,1,19,19,8471,8471,10,12,Medium,Demihuman,Fire2,976,288,576,165,Normal,AiAggressiveSense,288,pasana.spr,0,0.5,1,#FFFFFFFF
 4187,MARDUK,Marduk,46,4282,37,44,35,42,37,22,328,401,1,15,15,2554,2454,10,12,Large,Demihuman,Fire1,1540,504,840,300,Normal,AiAggressiveSense,432,marduk.spr,0,0.5,1,#FFFFFFFF
-4188,PHARAOH,Pharaoh,79,195998,118,118,118,123,118,71,1632,2448,1,38,38,180889,251985,10,12,Large,Demihuman,Dark3,210,288,768,100,Boss,AiStandardBoss,576,pharaoh.spr,0,0.5,1,#FFFFFFFF
+4188,PHARAOH,Pharaoh,79,195998,118,118,118,123,118,71,1632,2448,1,38,38,180889,251985,10,12,Large,Demihuman,Dark3,210,288,768,100,Boss,AiStandardBoss,576,pharaoh.spr,2.5,0.5,1,#FFFFFFFF
 4189,PLANKTON,Plankton,14,540,7,13,4,12,7,7,29,34,1,1,6,72,73,10,12,Small,Plant,Water3,2208,324,1008,400,Normal,AiPassive,576,plankton.spr,0,0.5,1,#FFFFFFFF
 4190,MARINA,Marina,24,1425,19,21,21,23,20,12,73,98,1,9,9,466,444,10,12,Small,Plant,Water2,2280,864,1080,400,Normal,AiPassive,720,marina.spr,0,0.5,1,#FFFFFFFF
 4191,KUKRE,Kukre,16,601,12,13,13,16,13,7,42,51,1,6,6,120,124,10,12,Small,Aquatic,Water1,1776,288,576,150,Normal,AiLooter,480,kukre.spr,0,0.5,1,#FFFFFFFF
@@ -299,7 +298,8 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4295,MIYABI_NINGYO,Miyabi Doll,33,2312,27,27,27,32,27,16,151,184,1,12,12,1049,1092,10,12,Medium,Demon,Dark1,1938,768,2112,250,Normal,AiPassiveSense,672,miyabi_ningyo.spr,0,0.5,1,#FFFFFFFF
 4296,THE_PAPER,The Paper,56,6558,45,45,45,50,45,27,518,633,1,19,19,5341,5450,10,12,Medium,Formless,Neutral3,1160,336,960,170,Normal,AiAggressive,540,the_paper.spr,0,0.5,1,#FFFFFFFF
 4297,POISON_TOAD,Poison Toad,46,4370,37,37,37,42,37,21,322,393,3,16,15,2504,2405,10,12,Medium,Beast,Poison2,1148,864,1728,160,Normal,AiPassive,624,poison_toad.spr,0,0.5,1,#FFFFFFFF
-6000,MOONLIGHT_CLONE,Moonlight Flower,65,16781,104,94,72,102,93,70,841,1138,1,26,26,0,0,10,12,Medium,Demon,Fire3,1276,288,576,150,Boss,AiStandardBoss,180,moonlight.spr,0,0.5,1,#FFFFFFAA
+5000,PORING50,Poring,50,4610,22,34,37,31,26,20,362,401,1,10,10,3114,3221,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiLooter,288,poring.spr,0,0.5,1.1,#FFFFFFFF
+6000,MOONLIGHT_CLONE,Moonlight Illusion,65,16781,104,94,72,102,93,70,841,1138,1,26,26,0,0,10,12,Medium,Demon,Fire3,1276,288,576,150,Boss,AiStandardBoss,180,moonlight.spr,0,0.5,1,#FFFFFFAA
 6001,GTB_EGG,Thief Bug Egg,15,952,5,16,20,6,8,1,3,4,0,27,22,0,0,1,1,Small,Insect,Dark3,701,1,1,-1,Normal,AiPlant,288,thief_bug_egg.spr,0,-1,1.2,#FFFFFFFF
 6002,GTB_SUMMON,Angry Thief Bug,25,1440,18,17,19,30,27,9,106,129,1,10,7,0,0,12,12,Medium,Insect,Dark3,500,288,288,120,Normal,AiStandardBoss,504,thief_bug_female.spr,0,0.5,0.7,#FF6F6FFF
 6003,WERE_WOLF,Werewolf,48,9785,56,56,56,61,56,33,480,649,1,180,180,11660,11838,10,12,Medium,Beast,Dark3,902,432,648,150,Boss,AiStandardBoss,216,were_wolf.spr,0,0.5,1,#FFFFFFFF

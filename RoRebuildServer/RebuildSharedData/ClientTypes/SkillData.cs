@@ -8,6 +8,18 @@ namespace RebuildSharedData.ClientTypes;
 
 #nullable disable
 
+
+public enum CastInterruptionMode : byte
+{
+    Default,
+    InterruptOnDamage,
+    InterruptOnSkill,
+    InterruptOnKnockback,
+    NeverInterrupt,
+    NoInterrupt = InterruptOnKnockback,
+}
+
+
 [Serializable]
 public class SkillData
 {
@@ -20,5 +32,6 @@ public class SkillData
     public int[] SpCost;
     public bool AdjustableLevel;
     public string Description;
+    public CastInterruptionMode InterruptMode;
 }
 

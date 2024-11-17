@@ -719,10 +719,11 @@ public class Player : IEntityAutoReset
             Character.ClassId = newJobId;
 
         //until equipment is real pick weapon based on job
-        var weapon = DefaultWeaponForJob(newJobId);
+        //var weapon = DefaultWeaponForJob(newJobId);
 
         //WeaponClass = weapon;
 
+        Equipment.UnequipAllItems();
         UpdateStats();
 
         if (Character.Map != null)

@@ -48,20 +48,21 @@ StateIdle:
 
 SkillHandler("ELDER") {
 StateAttacking:
-	TryCast(FireBolt, 7, 1000, 1500, 10000) -> SendEmote(11);
-	TryCast(ColdBolt, 7, 1000, 1500, 10000) -> SendEmote(12);
-	TryCast(LightningBolt, 7, 1000, 1500, 10000) -> SendEmote(13);
+	TryCast(FireBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(11);
+	TryCast(ColdBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(12);
+	TryCast(LightningBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(13);
 StateChase:
-	TryCast(FireBolt, 7, 1000, 1500, 10000) -> SendEmote(11);
-	TryCast(ColdBolt, 7, 1000, 1500, 10000) -> SendEmote(12);
-	TryCast(LightningBolt, 7, 1000, 1500, 10000) -> SendEmote(13);
+	TryCast(FireBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(11);
+	TryCast(ColdBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(12);
+	TryCast(LightningBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(13);
 }
 
 SkillHandler("MARDUK") {
 StateAttacking:
-	TryCast(FireBolt, 3, 5%, 1.5s, 5s) -> SendEmote(9);
+	TryCast(FireBolt, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(9);
 StateChase:
-	TryCast(FireBolt, 3, 10%, 1.5s, 5s) -> SendEmote(9);
+	TryCast(FireBolt, 3, 10%, 1.5s, 5s, NoInterrupt) -> SendEmote(9);
+	TryCast(FireWall, 5, 10%, 0.5s, 5s, NoInterrupt);
 }
 
 
@@ -77,7 +78,7 @@ StateAttacking:
 
 SkillHandler("ASSULTER") {
 StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s);
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt);
 }
 
 macro JokerStateSwap() {
@@ -190,7 +191,7 @@ OnTimer 2000:
 
 SkillHandler("TARGET_DUMMY") {
     StateAny:
-    //TryCast(Heal, 9999, 1000, 1500, 3000)[HpPercent <= 99];
+    TryCast(Heal, 9999, 1000, 1500, 5000, EasyInterrupt)[HpPercent <= 99];
     //TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
 	//TryCast(ColdBolt, 5, 100%, 10s, 5s);
 	//TryCast(NoCast, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> {

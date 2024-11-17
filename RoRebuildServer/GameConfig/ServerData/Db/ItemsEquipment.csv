@@ -387,7 +387,7 @@ Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,Eq
 5014,Fin_Helm,Fin Helm,2,0,0,20,300,Headgear,Mid,,65,Swordsman,No,No,핀헬름,핀헬름
 5015,Egg_Shell,Egg Shell,3,0,0,20,200,Headgear,Top,,0,AllJobs,No,No,장식용알껍질,장식용알껍질
 5016,Boy's_Cap,Boy's Cap,2,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,학생모,학생모
-5017,Bone_Helm,Bone Helm,7,0,0,20,800,Headgear,Top,,70,Merchant2ndJob,Yes,No,본헬름,본헬름
+5017,Bone_Helm,Bone Helm,7,0,0,20,800,Headgear,Top,,70,Merchant,Yes,No,본헬름,본헬름
 5018,Feather_Bonnet,Feather Bonnet,4,0,0,20,300,Headgear,Top,,0,ArcherGroup,Yes,No,깃털모자,깃털모자
 5019,Corsair,Corsair,5,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,No,커세어,커세어
 5021,Grief_for_Greed,Grief for Greed,4,0,0,20,1200,Headgear,Top,,38,Merchant,Yes,No,돈잃은자의마음,돈잃은자의마음

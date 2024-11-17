@@ -62,11 +62,12 @@ namespace Assets.Scripts.UI
         public void DropItem()
         {
             Debug.Log($"Dropped item into {name}");
-            if (UIManager.DragItemObject.Origin == ItemDragOrigin.HotBar)
+            var dragObject = UIManager.DragItemObject;
+            if (dragObject.Origin == ItemDragOrigin.HotBar)
             {
                 if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
                 {
-                    var src = Parent.GetEntryById(UIManager.DragItemObject.OriginId);
+                    var src = Parent.GetEntryById(dragObject.OriginId);
                     if (DragItem.Type == DragItemType.None)
                         src.DragItem.Clear();
                     else
@@ -74,8 +75,12 @@ namespace Assets.Scripts.UI
                 }
             }
 
-            DragItem.gameObject.SetActive(true);
-            DragItem.Assign(UIManager.DragItemObject);
+            if (dragObject.Type != DragItemType.Equipment) //we can't accept a drag from the equipment window
+            {
+                DragItem.gameObject.SetActive(true);
+                DragItem.Assign(dragObject);
+            }
+
             HighlightImage.SetActive(false);
         }
 

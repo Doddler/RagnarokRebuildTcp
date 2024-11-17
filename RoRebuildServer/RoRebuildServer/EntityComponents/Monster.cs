@@ -133,7 +133,10 @@ public partial class Monster : IEntityAutoReset
     public void ChangeAiSkillHandler(string newHandler)
     {
         if (DataManager.MonsterSkillAiHandlers.TryGetValue(newHandler, out var handler))
+        {
             skillAiHandler = handler;
+            handler.OnInit(skillState);
+        }
         else
             ServerLogger.LogWarning($"Could not change monster {Character} Ai Skill handler to handler with name {newHandler}");
     }
@@ -228,13 +231,17 @@ public partial class Monster : IEntityAutoReset
         CurrentAiState = MonsterAiState.StateIdle;
         skillState = new MonsterSkillAiState(this);
 
-        if (DataManager.MonsterSkillAiHandlers.TryGetValue(monData.Code, out var handler))
-            skillAiHandler = handler;
-
         timeofLastStateChange = Time.ElapsedTimeFloat;
         timeLastCombat = Time.ElapsedTimeFloat;
         createTime = Time.ElapsedTimeFloat;
         //timeEnteredCombat = float.NegativeInfinity;
+
+        if (DataManager.MonsterSkillAiHandlers.TryGetValue(monData.Code, out var handler))
+        {
+            skillAiHandler = handler;
+            handler.OnInit(skillState);
+        }
+
     }
 
     public void AddChild(ref Entity child, MonsterAiType newAiType = MonsterAiType.AiEmpty)
@@ -741,7 +748,7 @@ public partial class Monster : IEntityAutoReset
 
         if (GetStat(CharacterStat.Disabled) > 0 || CombatEntity.IsCasting)
             return;
-
+        
         if (Character.QueuedAction == QueuedAction.None || Character.QueuedAction == QueuedAction.Move)
             AiStateMachineUpdate();
 

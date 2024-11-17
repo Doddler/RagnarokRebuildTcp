@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
@@ -92,6 +93,9 @@ namespace Assets.Scripts.UI.Inventory
                 if (activeItemSection == 1 && (!item.ItemData.IsUnique || item.ItemData.Id < 0)) continue;
                 if (activeItemSection == 2 && (item.ItemData.IsUnique || item.ItemData.UseType != ItemUseType.NotUsable) && item.ItemData.Id > 0) continue;
 
+                // if (state.EquippedItems.Contains(item.BagSlotId))
+                //     continue;
+
                 if (entryList.Count <= activeEntryCount)
                 {
                     var newEntry = GameObject.Instantiate(ItemEntryPrefab, ItemBoxRoot, false);
@@ -114,7 +118,18 @@ namespace Assets.Scripts.UI.Inventory
                 if (item.ItemData.UseType == ItemUseType.Use)
                     itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendUseItem(bagEntry.Key);
                 else if (item.ItemData.ItemClass == ItemClass.Weapon || item.ItemData.ItemClass == ItemClass.Equipment)
-                    itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendEquipItem(bagEntry.Key);
+                {
+                    if (state.EquippedItems.Contains(item.BagSlotId))
+                    {
+                        itemEntry.DragItem.SetEquipped();
+                        itemEntry.DragItem.OnDoubleClick = null;
+                    }
+                    else
+                    {
+                        itemEntry.DragItem.HideCount();
+                        itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendEquipItem(bagEntry.Key);
+                    }
+                }
                 else
                     itemEntry.DragItem.OnDoubleClick = null;
 

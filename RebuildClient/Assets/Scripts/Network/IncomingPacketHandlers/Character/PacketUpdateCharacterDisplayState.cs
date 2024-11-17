@@ -29,6 +29,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             ClientDataLoader.Instance.LoadAndAttachWeapon(controllable, weapon);
             ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, shield, EquipPosition.Shield, 4);
             
+            if(controllable.IsMainCharacter)
+                UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(headUpper, headMid, headLower);
+            
             Debug.Log($"Updating appearance data. New weapon class: {controllable.WeaponClass}");
         }
     }
