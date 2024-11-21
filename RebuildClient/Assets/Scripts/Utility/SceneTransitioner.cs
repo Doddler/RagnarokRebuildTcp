@@ -193,6 +193,7 @@ namespace Assets.Scripts.Utility
             
             LightProbes.Tetrahedralize();
             UiManager.Instance.ConfigManager.RefreshAudioLevels(); //why unity does doing this in onAwake do literally nothing?
+            UiManager.Instance.StatusWindow.ResetStatChanges(); //clear existing changes
 
 			if (needAudioChange)
 			{

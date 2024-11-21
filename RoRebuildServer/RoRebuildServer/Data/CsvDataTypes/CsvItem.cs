@@ -116,3 +116,10 @@ public enum HeadgearPosition : byte
     MidBottom = Mid | Bottom,
     All = Top | Mid | Bottom
 }
+
+public class CsvItemMonsterSummonEntry
+{   
+    public required string Type { get; set; }
+    public required string Monster { get; set; }
+    public required int Chance { get; set; }
+}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network.HandlerBase;
@@ -189,8 +190,17 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             if (controllable.SpriteMode == ClientSpriteType.Prefab)
                 return controllable;
 
-            if (state == CharacterState.Moving)
-                Network.LoadMoveData2(msg, controllable);
+            try
+            {
+                if (state == CharacterState.Moving)
+                    Network.LoadMoveData2(msg, controllable);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to load move data for type {type} id {classId}: {controllable.Name}");
+                Debug.LogException(e);
+            }
+
             if (state == CharacterState.Sitting)
             {
                 controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Sit);

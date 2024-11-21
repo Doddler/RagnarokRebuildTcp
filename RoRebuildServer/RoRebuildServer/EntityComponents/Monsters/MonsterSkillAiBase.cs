@@ -21,7 +21,6 @@ public enum MonsterSkillAiFlags
     HideSkillName = 32,
     UnlimitedRange = 64,
     NoTarget = 128
-    
 }
 
 public abstract class MonsterSkillAiBase

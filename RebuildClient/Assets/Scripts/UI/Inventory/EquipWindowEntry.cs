@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Network;
+﻿using System;
+using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
@@ -17,12 +18,13 @@ namespace Assets.Scripts.UI.Inventory
         public int ItemId;
         public int ItemCount;
         public EquipSlot Slot;
-        private InventoryItem inventoryItem;
+        [NonSerialized] public InventoryItem InventoryItem;
         private bool isActive;
 
         public void RefreshSlot(InventoryItem item)
         {
-            inventoryItem = item;
+            InventoryItem = item;
+            ItemId = item.ItemData.Id;
             Sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.ItemData.Sprite);
             Image.sprite = Sprite;
             Image.rectTransform.sizeDelta = Sprite.rect.size * 2;
@@ -36,6 +38,8 @@ namespace Assets.Scripts.UI.Inventory
         public void ClearSlot()
         {
             Image.gameObject.SetActive(false);
+            InventoryItem = new InventoryItem();
+            ItemId = 0;
             ItemName.text = "";
             isActive = false;
 
@@ -50,7 +54,7 @@ namespace Assets.Scripts.UI.Inventory
         {
             if (!isActive)
                 return;
-            UiManager.Instance.StartEquipmentDrag(inventoryItem, Sprite);
+            UiManager.Instance.StartEquipmentDrag(InventoryItem, Sprite);
             // Image.gameObject.SetActive(false);
             // ItemName.gameObject.SetActive(false);
         }
@@ -70,7 +74,7 @@ namespace Assets.Scripts.UI.Inventory
             if (!isActive || eventData.clickCount != 2)
                 return;
             
-            NetworkManager.Instance.SendUnEquipItem(inventoryItem.BagSlotId);
+            NetworkManager.Instance.SendUnEquipItem(InventoryItem.BagSlotId);
         }
     }
 }

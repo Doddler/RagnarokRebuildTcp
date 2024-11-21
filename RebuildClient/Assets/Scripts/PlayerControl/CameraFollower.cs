@@ -1526,15 +1526,15 @@ namespace Assets.Scripts
                     WarpPanel.GetComponent<WarpWindow>().HideWindow();
             }
 
-
             if (!InTextBox && Input.GetKeyDown(KeyCode.E))
-            {
-                if (!EmotePanel.activeInHierarchy)
-                    EmotePanel.GetComponent<EmoteWindow>().ShowWindow();
-                else
-                    EmotePanel.GetComponent<EmoteWindow>().HideWindow();
-            }
+                UiManager.Instance.EquipmentWindow.ToggleVisibility();
 
+            if (!InTextBox && Input.GetKeyDown(KeyCode.Q))
+                UiManager.Instance.InventoryWindow.ToggleVisibility();
+
+            if (!InTextBox && Input.GetKeyDown(KeyCode.A))
+                UiManager.Instance.StatusWindow.ToggleVisibility();
+                
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
             if ((Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.F6)) && Application.isEditor && Recorder != null)

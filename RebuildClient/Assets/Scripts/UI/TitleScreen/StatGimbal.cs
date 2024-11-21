@@ -45,10 +45,10 @@ namespace Assets.Scripts.UI.TitleScreen
         {
             if (cr == null)
                 cr = GetComponent<CanvasRenderer>();
-            
+
             base.UpdateMaterial();
-            
-            if(Texture != null)
+
+            if (Texture != null)
                 cr.SetTexture(Texture);
         }
 
@@ -59,7 +59,7 @@ namespace Assets.Scripts.UI.TitleScreen
             uvs[0] = new Vector2(0, 0);
             uvs[2] = new Vector2(0.5f, 1f);
             uvs[1] = new Vector2(1, 0);
-            
+
             for (var i = 0; i < 6; i++)
             {
                 var curAngle = i * 60;
@@ -81,10 +81,12 @@ namespace Assets.Scripts.UI.TitleScreen
                 vh.AddTriangle(i, i + 1, i + 2);
         }
 
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             SetVerticesDirty();
             SetMaterialDirty();
         }
+#endif
     }
 }

@@ -53,6 +53,7 @@ public static class DataManager
     public static ReadOnlyDictionary<int, CardInfo> CardInfo;
     public static ReadOnlyDictionary<int, AmmoInfo> AmmoInfo;
     public static ReadOnlyDictionary<int, UseItemInfo> UseItemInfo;
+    public static ReadOnlyDictionary<string, List<string>> ItemMonsterSummonList;
 
     private static List<MonsterDatabaseInfo> monsterStats;
     private static List<List<MonsterAiEntry>> monsterAiList;
@@ -182,9 +183,9 @@ public static class DataManager
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
         SkillTree = loader.LoadSkillTree();
         MonsterDropData = loader.LoadMonsterDropChanceData();
-        
+        ItemMonsterSummonList = loader.LoadMonsterSummonItemList();
     }
-    
+
     public static void Initialize()
     {
         var loader = new DataLoader();

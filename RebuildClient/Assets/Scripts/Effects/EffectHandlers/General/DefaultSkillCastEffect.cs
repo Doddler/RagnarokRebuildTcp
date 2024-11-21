@@ -50,7 +50,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             circlePrim.transform.localPosition += new Vector3(0f, 2f, -0f);
             circlePrim.SetBillboardMode(BillboardStyle.Normal);
             cData.Alpha = 0f;
-            cData.MaxAlpha = 170;
+            cData.MaxAlpha = 130;
             cData.AlphaSpeed = cData.MaxAlpha / 0.166f;
             cData.FadeOutLength = 0.166f;
             cData.Radius = 100f;
@@ -71,7 +71,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 fData.LengthSpeed = Random.Range(20, 50) / 0.166f;
                 fData.ArcLength = Random.Range(5, 30) / 10f;
                 fData.Alpha = 0;
-                fData.MaxAlpha = 200;
+                fData.MaxAlpha = 170;
                 fData.AlphaSpeed = fData.MaxAlpha / 0.1f;
                 fData.FadeOutLength = 0.667f - (0.667f / 3f);
             }

@@ -1,0 +1,27 @@
+//Clock Tower!
+
+SkillHandler("ELDER") {
+StateAttacking:
+	TryCast(FireBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(11);
+	TryCast(ColdBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(12);
+	TryCast(LightningBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(13);
+StateChase:
+	TryCast(FireBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(11);
+	TryCast(ColdBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(12);
+	TryCast(LightningBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(13);
+}
+
+SkillHandler("OWL_DUKE") {
+StateAttacking:
+	TryCast(LightningBolt, 3, 20%, 0, 5s);
+StateChase:
+	TryCast(LightningBolt, 3, 20%, 0, 5s);
+}
+
+
+SkillHandler("OWL_BARON") {
+StateAttacking:
+	TryCast(LightningBolt, 5, 20%, 0, 5s);
+StateChase:
+	TryCast(LightningBolt, 5, 20%, 0, 5s);
+}

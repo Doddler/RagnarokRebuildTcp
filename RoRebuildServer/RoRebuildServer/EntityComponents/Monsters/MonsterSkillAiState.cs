@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Threading.Channels;
 using System.Xml.Linq;
 using RebuildSharedData.ClientTypes;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Simulation.Pathfinding;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -203,6 +204,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     public int TimeOutOfCombat => (int)(monster.DurationOutOfCombat * 1000);
     public int TimeSinceLastDamage => (int)(monster.TimeSinceLastDamage * 1000);
     public bool WasRangedAttacked => monster.WasAttacked && monster.LastAttackRange > 4;
+    public MonsterAiState PreviousAiState => monster.PreviousAiState;
 
     public void AdminHide()
     {
@@ -307,7 +309,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     public bool Cast(CharacterSkill skill, int level, int castTime, int delay = 0, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
     {
         var ce = monster.CombatEntity;
-        var attr = SkillHandler.GetSkillAttributes(skill);
+        var attr = SkillHandler.GetMonsterSkillAttributes(skill);
         var skillTarget = attr.SkillTarget;
         var range = SkillHandler.GetSkillRange(ce, skill, level);
         if (flags.HasFlag(MonsterSkillAiFlags.UnlimitedRange))
@@ -324,8 +326,10 @@ public class MonsterSkillAiState(Monster monsterIn)
             ce.CastInterruptionMode = CastInterruptionMode.NeverInterrupt;
         else
         {
-            var skillData = DataManager.SkillData[skill];
-            ce.CastInterruptionMode = skillData.InterruptMode;
+            if (DataManager.SkillData.TryGetValue(skill, out var skillData))
+                ce.CastInterruptionMode = skillData.InterruptMode;
+            else
+                ce.CastInterruptionMode = CastInterruptionMode.InterruptOnKnockback;
         }
 
         if (skillTarget == SkillTarget.Ground)

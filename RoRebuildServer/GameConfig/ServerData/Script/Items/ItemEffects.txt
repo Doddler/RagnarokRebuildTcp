@@ -76,14 +76,15 @@ RecoveryItem("Jam_Pancake", 325, 405, 40, 60);
 RecoveryItem("Honey_Pancake", 325, 405, 40, 60);
 RecoveryItem("Sour_Cream_Pancake", 325, 405, 40, 60);
 RecoveryItem("Mushroom_Pancake", 325, 405, 40, 60);
-Item("Fly_Wing") { OnValidate: return false; OnUse: }
-Item("Butterfly_Wing") { OnValidate: return false; OnUse: }
+Item("Fly_Wing") { OnValidate: return CanTeleport(); OnUse: RandomTeleport(); }
+Item("Butterfly_Wing") { OnValidate: return true; OnUse: ReturnToSavePoint(); }
 Item("Old_Blue_Box") { OnValidate: return false; OnUse: }
-Item("Dead_Branch") { OnValidate: return false; OnUse: }
+Item("Dead_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("DeadBranch", 2h); }
+Item("Bloody_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("BloodyBranch", 24h); }
 Item("Anodyne") { OnValidate: return false; OnUse: }
 Item("Aloevera") { OnValidate: return false; OnUse: }
-Item("Yggdrasil_Berry") { OnValidate: return false; OnUse: }
-Item("Yggdrasil_Seed") { OnValidate: return false; OnUse: }
+Item("Yggdrasil_Berry") { OnUse: HealHpPercent(100); HealSpPercent(100); }
+Item("Yggdrasil_Seed") { OnUse: HealHpPercent(50); HealSpPercent(100); }
 Item("Amulet") { OnValidate: return false; OnUse: }
 Item("Yggdrasil_Leaf") { OnValidate: return false; OnUse: }
 Item("Magnifier") { OnValidate: return false; OnUse: }
@@ -120,9 +121,9 @@ Item("Contract_in_Shadow") { OnValidate: return false; OnUse: }
 Item("Book_of_the_Devil") { OnValidate: return false; OnUse: }
 Item("Pet_Incubator") { OnValidate: return false; OnUse: }
 Item("Gift_Box") { OnValidate: return false; OnUse: }
-Item("Concentration_Potion") { OnValidate: return false; OnUse: }
-Item("Awakening_Potion") { OnValidate: return false; OnUse: }
-Item("Berserk_Potion") { OnValidate: return false; OnUse: }
+Item("Concentration_Potion") { OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 10); }
+Item("Awakening_Potion") { OnValidate: return CharacterLevel > 40 && JobId != 4; OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 15); }
+Item("Berserk_Potion") { OnValidate: return CharacterLevel > 80 && (JobId == 1 || JobId == 3 || JobId == 6); OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 20); }
 Item("Union_of_Tribe") { OnValidate: return false; OnUse: }
 Item("Her_Heart") { OnValidate: return false; OnUse: }
 Item("Forbidden_Red_Candle") { OnValidate: return false; OnUse: }
@@ -224,7 +225,6 @@ Item("Assorted_Shish_Kebob") { OnValidate: return false; OnUse: }
 Item("Strawberry_Flavored_Rice_Ball") { OnValidate: return false; OnUse: }
 Item("Blood_Flavored_Soda") { OnValidate: return false; OnUse: }
 Item("Cooked_Nine_Tail's_Tails") { OnValidate: return false; OnUse: }
-Item("Bloody_Branch") { OnValidate: return false; OnUse: }
 Item("Random_Quiver") { OnValidate: return false; OnUse: }
 Item("Taming_Gift_Set") { OnValidate: return false; OnUse: }
 Item("Jewelry_Box") { OnValidate: return false; OnUse: }

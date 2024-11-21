@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
@@ -341,12 +342,14 @@ public partial class Monster : IEntityAutoReset
     {
         var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100);
 
+        
         var recharge = MonsterBase.RechargeTime * aspdBonus;
         var motionTime = MonsterBase.AttackLockTime;
         var spriteTime = MonsterBase.AttackDamageTiming;
-        if (recharge < motionTime)
+        var updateTime = MathF.Max(recharge, MonsterBase.AttackLockTime * aspdBonus);
+        if (motionTime > updateTime)
         {
-            var ratio = recharge / motionTime;
+            var ratio = updateTime / motionTime;
             motionTime *= ratio;
             spriteTime *= ratio;
         }
@@ -466,6 +469,7 @@ public partial class Monster : IEntityAutoReset
             DoMonsterDrops();
 
         CombatEntity.OnDeathClearStatusEffects();
+        Character.OnDeathCleanupEvents();
 
         CurrentAiState = MonsterAiState.StateDead;
         Character.State = CharacterState.Dead;
@@ -522,6 +526,7 @@ public partial class Monster : IEntityAutoReset
         nextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
         deadTimeout += Time.ElapsedTimeFloat;
 
+        CombatEntity.ClearDamageQueue();
         Character.ClearVisiblePlayerList(); //make sure this is at the end or the player may not be notified of the monster's death
     }
 
@@ -663,6 +668,9 @@ public partial class Monster : IEntityAutoReset
         }
 #endif
 
+        //if (CurrentAiState == MonsterAiState.StateChase)
+        //    CurrentAiState = CurrentAiState;
+
         canResetAttackedState = false;
 
         if (skillAiHandler != null
@@ -715,6 +723,9 @@ public partial class Monster : IEntityAutoReset
 
         if (canResetAttackedState)
             ResetFlagsAfterSkillHandler();
+
+        if (nextAiUpdate < 0)
+            return; //we set this to ensure we do an update next frame, so we'll do an update next frame
         
         if (Character.Map != null && Character.Map.PlayerCount == 0)
         {

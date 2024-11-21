@@ -13,7 +13,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
         {
             if(source.Character.Type != CharacterType.Player)
                 return base.ValidateTarget(source, target, position);
-            if(source.Character.ClassId == 2) //archer only!
+            if(source.Character.Player.WeaponClass == 12) //bows only!
                 return base.ValidateTarget(source, target, position);
 
             return SkillValidationResult.IncorrectWeapon;

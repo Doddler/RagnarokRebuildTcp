@@ -2,6 +2,7 @@
 using System.Text;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents;
@@ -812,6 +813,17 @@ public class ScriptBuilder
 
         EndLine();
     }
+
+    public void StartReturn()
+    {
+        lineBuilder.Append("return ");
+    }
+
+    public void EndReturn()
+    {
+        lineBuilder.Append(";");
+    }
+
 
     public void OutputBreak()
     {

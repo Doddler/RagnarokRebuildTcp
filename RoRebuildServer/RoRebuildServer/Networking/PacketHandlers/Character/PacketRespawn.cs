@@ -5,6 +5,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation;
 using System.Diagnostics;
+using RebuildSharedData.Enum.EntityStats;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -52,22 +53,23 @@ public class PacketRespawn : IClientPacketHandler
             position = new Position(170, 367);
         }
 
-        if (!inPlace && targetMap != null)
+        if (!inPlace)
         {
-            player.AddActionDelay(CooldownActionType.Teleport);
+            player.ReturnToSavePoint();
+            //player.AddActionDelay(CooldownActionType.Teleport);
 
-            if (ch.Map.Name == savePoint)
-            {
-                if (!ch.Map.MapBounds.Contains(position) || !ch.Map.WalkData.IsCellWalkable(position))
-                    position = ch.Map.FindRandomPositionOnMap();
-                ch.Map.TeleportEntity(ref connection.Entity, ch, position, CharacterRemovalReason.OutOfSight);
-            }
-            else
-            {
-                if (!targetMap.MapBounds.Contains(position) || !targetMap.WalkData.IsCellWalkable(position))
-                    position = targetMap.FindRandomPositionOnMap();
-                ch.Map.World.MovePlayerMap(ref connection.Entity, ch, targetMap, position);
-            }
+            //if (ch.Map.Name == savePoint)
+            //{
+            //    if (!ch.Map.MapBounds.Contains(position) || !ch.Map.WalkData.IsCellWalkable(position))
+            //        position = ch.Map.FindRandomPositionOnMap();
+            //    ch.Map.TeleportEntity(ref connection.Entity, ch, position, CharacterRemovalReason.OutOfSight);
+            //}
+            //else
+            //{
+            //    if (!targetMap.MapBounds.Contains(position) || !targetMap.WalkData.IsCellWalkable(position))
+            //        position = targetMap.FindRandomPositionOnMap();
+            //    ch.Map.World.MovePlayerMap(ref connection.Entity, ch, targetMap, position);
+            //}
         }
         else
         {

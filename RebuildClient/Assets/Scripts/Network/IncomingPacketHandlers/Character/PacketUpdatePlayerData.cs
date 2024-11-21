@@ -3,6 +3,7 @@ using System.Text;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using UnityEditor;
 using UnityEngine;
@@ -14,20 +15,45 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
     {
         public override void ReceivePacket(ClientInboundMessage msg)
         {
-            var hp = msg.ReadInt32();
-            var maxHp = msg.ReadInt32();
-            var sp = msg.ReadInt32();
-            var maxSp = msg.ReadInt32();
+            var hasStatChange = false;
+            foreach (var data in PlayerClientStatusDef.PlayerUpdateData)
+            {
+                var newVal = msg.ReadInt32();
+                if(data >= PlayerStat.Str && data <= PlayerStat.Luk)
+                    if (State.CharacterData[(int)data] != newVal)
+                        hasStatChange = true;
+                State.CharacterData[(int)data] = newVal;
+            }
+
+            if(hasStatChange)
+                UiManager.Instance.StatusWindow.ResetStatChanges();
+            
+            foreach (var stats in PlayerClientStatusDef.PlayerUpdateStats)
+                State.CharacterStats[(int)stats] = msg.ReadInt32();
+
+            State.AttackSpeed = msg.ReadFloat();
             State.CurrentWeight = msg.ReadInt32();
-            State.MaxWeight = msg.ReadInt32();
-            State.SkillPoints = msg.ReadInt32();
-            var skills = msg.ReadInt32();
+
+            var hp = State.GetStat(CharacterStat.Hp); //we don't assign these to player state directly so we can do the health bar animation thing
+            var maxHp = State.GetStat(CharacterStat.MaxHp);
+            var sp = State.GetStat(CharacterStat.Sp);
+            var maxSp = State.GetStat(CharacterStat.MaxSp);
             
-            State.KnownSkills.Clear();
-            for(var i = 0; i < skills; i++)
-                State.KnownSkills.Add((CharacterSkill)msg.ReadByte(), msg.ReadByte());
-            
-            UiManager.SkillManager.UpdateAvailableSkills();
+            State.MaxWeight = State.GetStat(CharacterStat.WeightCapacity);
+            State.SkillPoints = State.GetData(PlayerStat.SkillPoints);
+
+            var hasSkills = msg.ReadBoolean();
+
+            if (hasSkills)
+            {
+                var skills = msg.ReadInt32();
+
+                State.KnownSkills.Clear();
+                for (var i = 0; i < skills; i++)
+                    State.KnownSkills.Add((CharacterSkill)msg.ReadByte(), msg.ReadByte());
+
+                UiManager.SkillManager.UpdateAvailableSkills();
+            }
 
             var hasInventory = msg.ReadBoolean();
 
@@ -54,6 +80,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             CameraFollower.Instance.UpdatePlayerSP(sp, maxSp);
             UiManager.Instance.SkillHotbar.UpdateItemCounts();
             UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
+            UiManager.Instance.StatusWindow.UpdateCharacterStats();
             
 #if UNITY_EDITOR
             if (!hasInventory)

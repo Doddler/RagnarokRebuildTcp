@@ -1,4 +1,5 @@
 ﻿using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;

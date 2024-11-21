@@ -8,6 +8,7 @@ using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
 using Assets.Scripts.UI.Inventory;
+using Assets.Scripts.UI.Stats;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -29,6 +30,13 @@ public class UiManager : MonoBehaviour
     public ItemOverlay ItemOverlay;
     public CharacterChat TooltipOverlay;
     public EquipmentWindow EquipmentWindow;
+    public StatsWindow StatusWindow;
+
+    public GameObject InventoryDropArea;
+    public GameObject EquipmentDropArea;
+
+    private IItemDropTarget inventoryDropTarget;
+    private IItemDropTarget equipmentWindowDropTarget;
 
     public ItemDragObject DragItemObject;
     public ItemObtainedToast ItemObtainedPopup;
@@ -40,7 +48,7 @@ public class UiManager : MonoBehaviour
     private Canvas canvas;
 
     [NonSerialized] public bool IsDraggingItem;
-    private IItemDropTarget HoveredDropTarget;
+    private IItemDropTarget hoveredDropTarget;
     private bool canChangeSkillLevel;
     public bool IsCanvasVisible => canvas.enabled;
     private GameObject hoveredObject;
@@ -92,6 +100,9 @@ public class UiManager : MonoBehaviour
         ActionTextDisplay.EndActionTextDisplay();
         
         TooltipOverlay.gameObject.SetActive(false);
+
+        inventoryDropTarget = InventoryDropArea.GetComponent<InventoryDropZone>();
+        equipmentWindowDropTarget = EquipmentDropArea.GetComponent<InventoryDropZone>();
 
         canvas.enabled = false;
     }
@@ -170,6 +181,8 @@ public class UiManager : MonoBehaviour
     {
         InventoryWindow.UpdateActiveVisibleBag();
         InventoryWindow.HideWindow();
+        EquipmentWindow.HideWindow();
+        StatusWindow.HideWindow();
     }
 
     public void SyncFloatingBoxPositionsWithSaveData()
@@ -234,6 +247,7 @@ public class UiManager : MonoBehaviour
         DragItemObject.OriginId = item.BagSlotId;
         TrashBucket.gameObject.SetActive(true);
         canChangeSkillLevel = false;
+        InventoryDropArea.SetActive(true);
     }
     
     public void StartItemDrag(DragItemBase dragItem)
@@ -252,7 +266,13 @@ public class UiManager : MonoBehaviour
             if (!canChangeSkillLevel)
                 DragItemObject.UpdateCount(0);
         }
-        
+
+        if (dragItem.Type == DragItemType.Item)
+        {
+            var itemData = ClientDataLoader.Instance.GetItemById(dragItem.ItemId);
+            if(itemData.IsUnique)
+                EquipmentDropArea.SetActive(true);
+        }
     }
     
     public bool EndItemDrag()
@@ -261,10 +281,14 @@ public class UiManager : MonoBehaviour
         IsDraggingItem = false;
         DragItemObject.gameObject.SetActive(false);
         TrashBucket.gameObject.SetActive(false);
-        if (HoveredDropTarget != null)
+        inventoryDropTarget.DisableDropArea();
+        equipmentWindowDropTarget.DisableDropArea();
+        InventoryDropArea.SetActive(false);
+        EquipmentDropArea.SetActive(false);
+        if (hoveredDropTarget != null)
         {
-            HoveredDropTarget.DropItem();
-            HoveredDropTarget = null;
+            hoveredDropTarget.DropItem();
+            hoveredDropTarget = null;
             return true;
         }
 
@@ -274,14 +298,14 @@ public class UiManager : MonoBehaviour
     public void RegisterDragTarget(IItemDropTarget target)
     {
         Debug.Log($"Registering drop target");
-        HoveredDropTarget = target;
+        hoveredDropTarget = target;
     }
 
     public void UnregisterDragTarget(IItemDropTarget target)
     {
         Debug.Log($"Removing drop target");
-        if (HoveredDropTarget == target)
-            HoveredDropTarget = null;
+        if (hoveredDropTarget == target)
+            hoveredDropTarget = null;
     }
 
     public bool CloseLastWindow()

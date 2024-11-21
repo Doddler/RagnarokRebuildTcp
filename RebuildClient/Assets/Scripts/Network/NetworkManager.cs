@@ -1728,6 +1728,26 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendAdminResetStatPoints()
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.AdminResetStats);
+
+            SendMessage(msg);
+        }
+
+        public void SendApplyStatPoints(int[] statChanges)
+        {
+            var msg = StartMessage();
+            msg.Write((byte)PacketType.ApplyStatPoints);
+            
+            for(var i = 0; i < 6; i++)
+                msg.Write(statChanges[i]);
+            
+            SendMessage(msg);
+        }
+
         public void SendDropItem(int bagId, int count)
         {
             var msg = StartMessage();

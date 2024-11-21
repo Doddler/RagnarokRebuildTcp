@@ -535,6 +535,9 @@ namespace Assets.Scripts.Sprites
                     weaponSpriteFile = ctrl.IsMale ? weapon.EffectMale : weapon.EffectFemale;
             }
 
+            if (string.IsNullOrWhiteSpace(weaponSpriteFile) && isEffect)
+                return;
+
             var bodyTransform = ctrl.SpriteAnimator.transform;
 
             var weaponObj = new GameObject("Weapon");

@@ -299,17 +299,12 @@ public class Npc : IEntityAutoReset
 
     }
 
-    private void EnsureMobListCreated(int capacity = 4)
+    private void EnsureMobListCreated()
     {
-
-        var mobs = Mobs;
-        if (mobs == null)
-        {
-            mobs = new EntityList(capacity);
-            Mobs = mobs;
-        }
+        if (Mobs == null)
+            Mobs = EntityListPool.Get();
         else
-            mobs.ClearInactive();
+            Mobs.ClearInactive();
     }
 
     public void SummonMobWithType(string name, string type, int x = -1, int y = -1, int width = 0, int height = 0)
@@ -327,7 +322,7 @@ public class Npc : IEntityAutoReset
 
         var area = Area.CreateAroundPoint(new Position(x, y), width, height);
 
-        EnsureMobListCreated(1);
+        EnsureMobListCreated();
         var mob = CreateSingleMonsterWithAutoOwnership(Character.Map, monster, area, MonsterAiType.AiEmpty);
 
         var m = mob.Get<Monster>();
@@ -345,7 +340,7 @@ public class Npc : IEntityAutoReset
 
         var area = Area.CreateAroundPoint(new Position(x, y), width, height);
 
-        EnsureMobListCreated(count);
+        EnsureMobListCreated();
 
         for (int i = 0; i < count; i++)
             CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
@@ -361,7 +356,7 @@ public class Npc : IEntityAutoReset
 
         var area = Area.CreateAroundPoint(chara.Position + new Position(offsetX, offsetY), width, height);
 
-        EnsureMobListCreated(count);
+        EnsureMobListCreated();
 
         for (int i = 0; i < count; i++)
             CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
@@ -375,7 +370,7 @@ public class Npc : IEntityAutoReset
             owner.Monster.AddChild(ref m, aiType);
         else
         {
-            Mobs ??= EntityListPool.Get();
+            EnsureMobListCreated();
             Mobs.Add(m);
         }
 

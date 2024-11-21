@@ -11,6 +11,7 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Simulation;
 using System;
+using RebuildSharedData.Enum.EntityStats;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents.Npcs;

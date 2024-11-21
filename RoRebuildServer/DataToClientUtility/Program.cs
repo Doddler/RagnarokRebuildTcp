@@ -562,7 +562,7 @@ class Program
                 skill.Description = desc;
             skillOut.Add(skill);
         }
-
+        
         SaveToClient("skillinfo.json", skillOut);
 
         //skill tree

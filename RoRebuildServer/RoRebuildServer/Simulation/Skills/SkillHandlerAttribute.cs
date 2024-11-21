@@ -95,6 +95,22 @@ public class SkillHandlerAttribute : Attribute
     }
 }
 
+//monsters may have different targeting modes... but we don't extend SkillHandlerAttribute because it breaks reflection in certain cases
+public class MonsterSkillHandlerAttribute : Attribute
+{
+    public CharacterSkill SkillType;
+    public SkillClass SkillClassification;
+    public SkillTarget SkillTarget;
+
+    public MonsterSkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None, SkillTarget skillTarget = SkillTarget.Enemy)
+    {
+        SkillType = skillType;
+        SkillClassification = skillClassification;
+        SkillTarget = skillTarget;
+    }
+}
+
+
 public struct SkillCastInfo
 {
     public Entity TargetEntity;

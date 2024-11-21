@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Simulation.Skills.SkillHandlers;
@@ -10,8 +11,10 @@ namespace RoRebuildServer.Simulation.Skills
     {
         private static SkillHandlerBase?[] handlers;
         private static SkillHandlerAttribute[] skillAttributes;
+        private static MonsterSkillHandlerAttribute[] monsterSkillAttributes;
 
         public static SkillHandlerAttribute GetSkillAttributes(CharacterSkill skill) => skillAttributes[(int)skill];
+        public static MonsterSkillHandlerAttribute GetMonsterSkillAttributes(CharacterSkill skill) => monsterSkillAttributes[(int)skill];
 
         public static void ApplyPassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.ApplyPassiveEffects(owner, level);
         public static void RemovePassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.RemovePassiveEffects(owner, level);
@@ -21,8 +24,9 @@ namespace RoRebuildServer.Simulation.Skills
             var count = Enum.GetNames(typeof(CharacterSkill)).Length;
             handlers = new SkillHandlerBase[count];
             skillAttributes = new SkillHandlerAttribute[count];
-            
-            foreach(var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.GetCustomAttribute<SkillHandlerAttribute>() != null))
+            monsterSkillAttributes = new MonsterSkillHandlerAttribute[count];
+
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.GetCustomAttribute<SkillHandlerAttribute>() != null))
             {
                 var handler = (SkillHandlerBase)Activator.CreateInstance(type)!;
                 var attr = type.GetCustomAttribute<SkillHandlerAttribute>();
@@ -36,6 +40,21 @@ namespace RoRebuildServer.Simulation.Skills
                 skillAttributes[(int)skill] = attr;
             }
 
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.GetCustomAttribute<MonsterSkillHandlerAttribute>() != null))
+            {
+                var handler = (SkillHandlerBase)Activator.CreateInstance(type)!;
+                var attr = type.GetCustomAttribute<MonsterSkillHandlerAttribute>();
+                var skill = attr.SkillType;
+                if (skill == CharacterSkill.None)
+                    continue; //you can disable a handler by setting it's skill to None
+                handler.SkillClassification = attr.SkillClassification;
+                handler.Skill = attr.SkillType;
+
+                //we use the same handler as players
+                //handlers[(int)skill] = handler;
+                monsterSkillAttributes[(int)skill] = attr;
+            }
+
             for (var i = 0; i < count; i++)
             {
                 if (handlers[i] == null)
@@ -47,6 +66,9 @@ namespace RoRebuildServer.Simulation.Skills
                     };
                     skillAttributes[i] = new SkillHandlerAttribute((CharacterSkill)i, SkillClass.None, SkillTarget.Self);
                 }
+
+                if (monsterSkillAttributes[i] == null!)
+                    monsterSkillAttributes[i] = new MonsterSkillHandlerAttribute(skillAttributes[i].SkillType, skillAttributes[i].SkillClassification, skillAttributes[i].SkillTarget);
             }
         }
 

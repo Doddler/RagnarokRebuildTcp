@@ -9,6 +9,7 @@ using Microsoft.VisualBasic;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;

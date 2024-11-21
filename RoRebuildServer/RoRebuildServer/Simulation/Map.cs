@@ -46,7 +46,7 @@ public class Map
     public EntityList Players { get; set; } = new EntityList(8);
     public EntityList MapImportantEntities { get; set; } = new EntityList(8);
     public Dictionary<int, int> ItemChunkLookup = new();
-
+    
     //private int playerCount;
     //public int PlayerCount
     //{
@@ -62,6 +62,8 @@ public class Map
     private int entityCount = 0;
 
     private int ChunkSize { get; set; } = 8;
+
+    public bool CanTeleport;
 
     public void AddPlayerVisibility(WorldObject player, WorldObject observer)
     {
@@ -255,6 +257,9 @@ public class Map
         using var addList = EntityListPool.Get();
         using var removeList = EntityListPool.Get();
         CommandBuilder.ClearRecipients();
+
+        if(removeList.Count > 0)
+            ServerLogger.LogWarning("AAAA");
 
         var midPoint = (oldPosition + newPosition) / 2;
         var dist2 = ServerConfig.MaxViewDistance + (distance / 2) + 1;

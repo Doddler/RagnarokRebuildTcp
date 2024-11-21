@@ -61,6 +61,7 @@ public enum PacketType : byte
     ClientTextCommand,
     UpdatePlayerData,
     ApplySkillPoint,
+    ApplyStatPoints,
     ChangeTargetableState,
     UpdateMinimapMarker,
     ApplyStatusEffect,
@@ -76,7 +77,9 @@ public enum PacketType : byte
     AdminChangeSpeed,
     AdminFindTarget,
     AdminResetSkills,
+    AdminResetStats,
     AdminCreateItem,
+
 
     NpcClick,
     [ServerOnlyPacket] NpcInteraction,
@@ -88,6 +91,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] OpenShop,
     ShopBuySell,
     [ServerOnlyPacket] ItemUpdate,
+    DebugEntry
 }
 
 public enum MessageType : byte

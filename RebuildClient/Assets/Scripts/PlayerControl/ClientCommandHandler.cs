@@ -154,6 +154,11 @@ namespace PlayerControl
                     NetworkManager.Instance.SendAdminResetSkillPoints();
                 }
 
+                if (s[0] == "/statreset")
+                {
+                    NetworkManager.Instance.SendAdminResetStatPoints();
+                }
+
                 if (s[0] == "/hide")
                 {
                     NetworkManager.Instance.SendAdminHideCharacter(!controllable.IsHidden);

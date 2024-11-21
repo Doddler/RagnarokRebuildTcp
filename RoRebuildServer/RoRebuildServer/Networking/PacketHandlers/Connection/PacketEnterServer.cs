@@ -9,6 +9,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Util;
 using System.Buffers;
+using RebuildSharedData.Enum.EntityStats;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Connection;
 

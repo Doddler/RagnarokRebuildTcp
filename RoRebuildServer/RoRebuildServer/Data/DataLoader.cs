@@ -657,6 +657,27 @@ internal class DataLoader
         return returnList.AsReadOnly();
     }
 
+    public ReadOnlyDictionary<string, List<string>> LoadMonsterSummonItemList()
+    {
+        var returnList = new Dictionary<string, List<string>>();
+        foreach (var entry in GetCsvRows<CsvItemMonsterSummonEntry>("Db/ItemMonsterSummonList.csv"))
+        {
+            if (!DataManager.MonsterCodeLookup.TryGetValue(entry.Monster, out var _))
+            {
+                ServerLogger.LogWarning($"ItemMonsterSummonList.csv references the monster {entry.Monster}, but that monster could not be found.");
+                continue;
+            }
+
+            if(!returnList.ContainsKey(entry.Type))
+                returnList.Add(entry.Type, new List<string>());
+
+            for(var i = 0; i < entry.Chance; i++)
+                returnList[entry.Type].Add(entry.Monster);
+        }
+
+        return returnList.AsReadOnly();
+    }
+
     //    public Dictionary<int, ItemInfo> LoadItemList()
     //    {
     //        var items = new Dictionary<int, ItemInfo>();

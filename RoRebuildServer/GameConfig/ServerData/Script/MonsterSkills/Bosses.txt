@@ -149,6 +149,21 @@ StateAny:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
 }
 
+
+//------------------------------------
+// Pharaoh
+//------------------------------------
+
+SkillHandler("PHARAOH") {
+StateAny: 
+    TryCast(CallMinion, 1, 20%, 1.4s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+StateChase:
+	TryCast(ChargeArrow, 1, 20%, 0, 0);
+StateAttacking:
+	TryCast(ChargeArrow, 1, 20%, 0, 0);
+}
+
+
 //------------------------------------
 // Amon Ra
 //------------------------------------

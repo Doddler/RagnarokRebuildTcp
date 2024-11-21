@@ -87,3 +87,14 @@ Name = "Attack Speed UP"
 Type = "Buff"
 CanDispel = true
 CanDisable = true
+
+#----------------------------------
+# Monster Status Effects
+#----------------------------------
+
+#Doom is used to kill monsters after a set period of time
+[Doom]
+Name = "Doom"
+Type = "Debuff"
+CanDispel = false
+CanDisable = true

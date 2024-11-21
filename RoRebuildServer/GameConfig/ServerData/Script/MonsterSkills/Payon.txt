@@ -7,7 +7,6 @@ StateChase:
 	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(29);
 }
 
-
 SkillHandler("ANGELING") {
 StateAny:
 	TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionCount < 3] -> { CallDefaultMinions();  SendEmote(18) }
@@ -34,6 +33,11 @@ SkillHandler("DOKEBI") {
 		TryCast(Mammonite, 5, 20%, 0.8s, 5s) -> SendEmote(2);
 }
 
+SkillHandler("SOHEE") {
+	StateAttacking:
+		TryCast(Suicide, 1, 5%, 0, 5s)[HpPercent < 80];
+}
+
 SkillHandler("AM_MUT") {
 	StateAttacking:
 		TryCast(Mammonite, 9, 5%, 0.8s, 5s) -> SendEmote(8);
@@ -47,6 +51,11 @@ StateChase:
 SkillHandler("ARCHER_SKELETON") {
 StateChase:
     TryCast(DoubleStrafe, 1, 5%, 1s, 5s);
+}
+
+SkillHandler("SKELETON_GENERAL") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(2);
 }
 
 SkillHandler("WERE_WOLF") {

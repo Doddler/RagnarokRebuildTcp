@@ -3,5 +3,6 @@
     public interface IItemDropTarget
     {
         public void DropItem();
+        public void DisableDropArea() {}
     }
 }

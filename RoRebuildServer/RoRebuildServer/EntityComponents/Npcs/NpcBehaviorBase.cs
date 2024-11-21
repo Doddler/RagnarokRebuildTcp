@@ -20,26 +20,22 @@ public abstract class NpcBehaviorBase
         return NpcInteractionResult.EndInteraction;
     }
 
-
-    public virtual void OnCancel(Npc npc, Player player, NpcInteractionState state)
-    {
-        
-    }
+    public virtual void OnCancel(Npc npc, Player player, NpcInteractionState state) { }
 
     public virtual void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
 
-    public virtual void OnTimer(Npc npc, float lastTime, float newTime)
+    public virtual void OnTimer(Npc npc, float lastTime, float newTime) { }
+
+    public virtual void OnSignal(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4) { }
+
+    public virtual void OnMobKill(Npc npc) { }
+
+    public virtual EventOwnerDeathResult OnOwnerDeath(Npc npc, CombatEntity owner) => EventOwnerDeathResult.NoAction;
+
+    public enum EventOwnerDeathResult
     {
-
-    }
-
-    public virtual void OnSignal(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4)
-    {
-
-    }
-
-    public virtual void OnMobKill(Npc npc)
-    {
-
+        NoAction,
+        RemoveEvent,
+        DetachEvent
     }
 }

@@ -8,12 +8,11 @@ namespace RebuildSharedData.ClientTypes;
 
 #nullable disable
 
-
 public enum CastInterruptionMode : byte
 {
     Default,
     InterruptOnDamage,
-    InterruptOnSkill,
+    InterruptOnSkill, //this is actually the default
     InterruptOnKnockback,
     NeverInterrupt,
     NoInterrupt = InterruptOnKnockback,

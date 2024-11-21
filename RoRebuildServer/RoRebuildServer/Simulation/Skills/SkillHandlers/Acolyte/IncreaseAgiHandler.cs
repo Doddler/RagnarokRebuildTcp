@@ -11,6 +11,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
     [SkillHandler(CharacterSkill.IncreaseAgility, SkillClass.Magic, SkillTarget.Any)]
     public class IncreaseAgiHandler : SkillHandlerBase
     {
+        public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1f;
+
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
             if (target == null)

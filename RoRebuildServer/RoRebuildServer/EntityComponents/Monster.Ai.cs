@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
@@ -613,13 +614,15 @@ public partial class Monster
         if (CombatEntity.CanAttackTarget(targetChar))
         {
             //hasTarget = true;
-            nextAiUpdate = Time.ElapsedTimeFloat;
+            nextAiUpdate = -1;
             return true;
         }
 
         if (Character.TryMove(targetChar.Position, 1))
         {
             nextMoveUpdate = 0;
+            nextAiUpdate = -1;
+            nextAiSkillUpdate = -1;
             //hasTarget = true;
             return true;
         }

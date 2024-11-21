@@ -4,6 +4,7 @@ using System.Numerics;
 using Microsoft.VisualBasic;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
@@ -208,32 +209,11 @@ public static class CommandBuilder
         return packet;
     }
 
-    public static void SendUpdatePlayerData(Player p, bool sendInventory = false)
+    public static void SendUpdatePlayerData(Player p, bool sendInventory = false, bool sendSkills = false)
     {
-        var packet = NetworkManager.StartPacket(PacketType.UpdatePlayerData, 256);
+        var packet = NetworkManager.StartPacket(PacketType.UpdatePlayerData, 512);
 
-        packet.Write(p.GetStat(CharacterStat.Hp));
-        packet.Write(p.GetStat(CharacterStat.MaxHp));
-        packet.Write(p.GetStat(CharacterStat.Sp));
-        packet.Write(p.GetStat(CharacterStat.MaxSp));
-        packet.Write(p.Inventory?.BagWeight ?? 0);
-        packet.Write(p.GetStat(CharacterStat.WeightCapacity));
-        packet.Write(p.GetData(PlayerStat.SkillPoints));
-        packet.Write(p.LearnedSkills.Count);
-        foreach (var skill in p.LearnedSkills)
-        {
-            packet.Write((byte)skill.Key);
-            packet.Write((byte)skill.Value);
-        }
-        packet.Write(sendInventory);
-        if (sendInventory)
-        {
-            p.Inventory.TryWrite(packet, true);
-            p.CartInventory.TryWrite(packet, true);
-            p.StorageInventory.TryWrite(packet, true);
-            for (var i = 0; i < 10; i++)
-                packet.Write(p.Equipment.ItemSlots[i]);
-        }
+        p.SendPlayerUpdateData(packet, sendInventory, sendSkills);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
@@ -735,6 +715,7 @@ public static class CommandBuilder
 
     public static void SendRemoveEntity(WorldObject c, Player player, CharacterRemovalReason reason)
     {
+        
         var packet = NetworkManager.StartPacket(PacketType.RemoveEntity, 32);
         packet.Write(c.Id);
         packet.Write((byte)reason);

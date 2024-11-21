@@ -29,33 +29,6 @@ StateAttacking:
 	TryCast(TwoHandQuicken, 1, 1000, 0, 99h)[HpPercent < 99];
 }
 
-SkillHandler("PORING") {
-StateIdle:
-	TryCast(NoCast, 1, 100%, 0, 2m)[InventoryFull] -> SendEmote(32);
-StateMovingToItem:
-	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2);
-}
-
-SkillHandler("STROUF") {
-StateAttacking:
-	TryCast(LightningBolt, 3, 5%, 0, 5s);
-StateChase:
-	TryCast(LightningBolt, 3, 5%, 0, 5s);
-StateIdle:
-	TryCast(NoCast, 3, 200, 0, 5000) -> SendEmote(32);
-}
-
-
-SkillHandler("ELDER") {
-StateAttacking:
-	TryCast(FireBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(11);
-	TryCast(ColdBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(12);
-	TryCast(LightningBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(13);
-StateChase:
-	TryCast(FireBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(11);
-	TryCast(ColdBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(12);
-	TryCast(LightningBolt, 7, 1000, 1500, 10000, NoInterrupt) -> SendEmote(13);
-}
 
 SkillHandler("MARDUK") {
 StateAttacking:
@@ -67,6 +40,8 @@ StateChase:
 
 
 SkillHandler("SCORPION") {
+StateChase:
+	TryCast(NoCast, 1, 100%, 0, 15s)[(PreviousAiState == StateIdle || PreviousAiState == StateRandomMove) && TimeInAiState < 1s && TimeSinceLastDamage > 5s] -> SendEmote(0);
 StateAttacking:
 	TryCast(Envenom, 1, 100%, 0, 12s);
 }
@@ -81,45 +56,6 @@ StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt);
 }
 
-macro JokerStateSwap() {
-	TryCast(NoCast, 10, 1%, 0.8s, 60s) -> {
-		var i = Random(0, 4);
-		if(i == 4) {
-			if(Random(0, 4) == 3)
-				ChangeAiClass(AiHyperPacifist); //4% chance
-			else
-				i = Random(0, 3);
-		}
-		if(i == 0) ChangeAiClass(AiPassive); //24%
-		if(i == 1) ChangeAiClass(AiPassiveSense); //24%
-		if(i == 2) ChangeAiClass(AiAssist); //24%
-		if(i == 3) ChangeAiClass(AiAggressive); //24%
-		//remember to stick looter in here when loot exists
-	}
-}
-
-SkillHandler("JOKER") {
-StateIdle:
-	@JokerStateSwap();
-StateRandomMove:
-	@JokerStateSwap();
-}
-
-SkillHandler("INJUSTICE") {
-StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(2);
-}
-
-SkillHandler("RYBIO") {
-StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(4);
-}
-
-SkillHandler("ZHERLTHSH") {
-StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(3);
-}
-
 SkillHandler("ANUBIS") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s);
@@ -129,16 +65,6 @@ StateAttacking:
 SkillHandler("TIRFING") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(18);
-}
-
-SkillHandler("WILD_ROSE") {
-StateAttacking:
-	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6);
-}
-
-SkillHandler("SKELETON_GENERAL") {
-StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(2);
 }
 
 
@@ -152,6 +78,11 @@ StateAttacking:
 	TryCast(HammerFall, 10, 5%, 1.5s, 5s);
 }
 
+SkillHandler("MAJORUROS") {
+StateAttacking:
+	TryCast(HammerFall, 10, 5%, 1.5s, 5s);
+}
+
 SkillHandler("PECOPECO") {
 StateChase:
 	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(6);
@@ -159,20 +90,6 @@ StateAttacking:
 	TryCast(SonicBlow, 2, 5%, 0.8s, 5s) -> SendEmote(6);
 }
 
-SkillHandler("MARINE_SPHERE") {
-StateIdle:
-	//automatically self destruct if hit by another self destruct, but fast
-	TryCast(SelfDestruct, 1, 100%, 0.8s, 5s, HideSkillName)[LastDamageSourceType == SelfDestruct];
-	
-	//self destruct chance is 5% per second increasing by 0.1% for every 1% HP it loses.
-	TryCast(SelfDestruct, 1, 50 + (100-HpPercent) * 2, 2s, 5s, HideSkillName)[HpPercent < 99 && TimeSinceLastDamage < 15s];
-	
-OnDie:
-	EnterPostDeathPhase();
-	SetHpNoNotify(1200); //will self destruct for 600 damage roughly
-StateSpecial:
-    TryCast(SelfDestruct, 1, 1000, 4000, 0, EventOnStartCast | HideSkillName);
-}
 
 SkillHandler("GEOGRAPHER") {
 StateAny:
@@ -193,24 +110,13 @@ SkillHandler("TARGET_DUMMY") {
     StateAny:
     TryCast(Heal, 9999, 1000, 1500, 5000, EasyInterrupt)[HpPercent <= 99];
     //TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
-	//TryCast(ColdBolt, 5, 100%, 10s, 5s);
+	//TryCast(ChargeArrow, 1, 100%, 0.8s, 5s);
 	//TryCast(NoCast, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> {
 	//	TossSummonMonster(5,"GTB_EGG",9,9);
 	//};
     //TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];	
 }
 
-SkillHandler("VITATA") {
-StateAny:
-    TryCast(Heal, 5, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(5);
-	TryCast(Heal, 5, 100%, 0.5s, 5s)[HpPercent < 60] -> SendEmote(19);
-}
-
-SkillHandler("ALICE") {
-StateAny:
-    TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(90)];
-	TryCast(Heal, 9, 100%, 0.5s, 5s)[HpPercent < 60];
-}
 
 SkillHandler("CHEPET") {
 StateAny:

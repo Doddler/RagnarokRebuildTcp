@@ -367,6 +367,15 @@ public class ItemEquipState
             }
         }
 
+        if (data.ItemClass == ItemClass.Equipment)
+        {
+            if (DataManager.ArmorInfo.TryGetValue(item.Id, out var armor))
+            {
+                Player.AddStat(CharacterStat.Def, armor.Defense);
+                Player.AddStat(CharacterStat.MDef, armor.MagicDefense);
+            }
+        }
+
         data.Interaction?.OnEquip(Player, Player.CombatEntity, this, item, slot);
         for (var j = 0; j < 4; j++)
         {
@@ -403,6 +412,15 @@ public class ItemEquipState
             Player.SetStat(CharacterStat.Attack2, 0);
             WeaponElement = AttackElement.Neutral;
             Player.RefreshWeaponMastery();
+        }
+        
+        if (data.ItemClass == ItemClass.Equipment)
+        {
+            if (DataManager.ArmorInfo.TryGetValue(item.Id, out var armor))
+            {
+                Player.SubStat(CharacterStat.Def, armor.Defense);
+                Player.SubStat(CharacterStat.MDef, armor.MagicDefense);
+            }
         }
 
         data.Interaction?.OnUnequip(Player, Player.CombatEntity, this, item, slot);
@@ -473,7 +491,7 @@ public class ItemEquipState
         var status = StatusEffectState.NewStatusEffect(statusEffect, duration, val1, val2);
         Player.CombatEntity.AddStatusEffect(status);
     }
-
+    
     public void Serialize(IBinaryMessageWriter bw)
     {
         if (Player.Inventory == null)

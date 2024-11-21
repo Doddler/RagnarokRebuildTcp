@@ -1,4 +1,9 @@
-﻿namespace RoRebuildServer.EntityComponents.Character;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace RebuildSharedData.Enum.EntityStats;
+
 
 public enum PlayerStat
 {
@@ -14,17 +19,16 @@ public enum PlayerStat
     JobExperience = JobExp,
     Str,
     Strength = Str,
-    Dex,
-    Dexterity = Dex,
     Agi,
     Agility = Agi,
-    Int,
-    Intelligence = Int,
     Vit,
     Vitality = Vit,
+    Int,
+    Intelligence = Int,
+    Dex,
+    Dexterity = Dex,
     Luk,
     Luck = Luk,
-    Facing,
     Hp,
     Mp,
     SkillPoints,
@@ -46,14 +50,14 @@ public enum CharacterStat
     MagicAtkMax,
     Str,
     Strength = Str,
-    Dex,
-    Dexterity = Dex,
     Agi,
     Agility = Agi,
-    Int,
-    Intelligence = Int,
     Vit,
     Vitality = Vit,
+    Int,
+    Intelligence = Int,
+    Dex,
+    Dexterity = Dex,
     Luk,
     Luck = Luk,
     Def,
@@ -70,6 +74,8 @@ public enum CharacterStat
     AddLuk,
     AddDef,
     AddMDef,
+    AddSoftDef,
+    AddSoftMDef,
     AddFlee,
     AddHit,
     AddMaxHp,
@@ -94,7 +100,6 @@ public enum CharacterStat
     AddSpRecoveryPercent,
     AddHpRecoveryPercent,
 
-
     CharacterStatsMax,
 }
 
@@ -106,4 +111,43 @@ public enum TimingStat
     HitDelayTime,
     SpriteAttackTiming,
     TimingStatsMax
+}
+
+public static class PlayerClientStatusDef
+{
+    public static PlayerStat[] PlayerUpdateData = new[]
+    {
+        PlayerStat.Level,
+        PlayerStat.Str,
+        PlayerStat.Agi,
+        PlayerStat.Int,
+        PlayerStat.Vit,
+        PlayerStat.Dex,
+        PlayerStat.Luk,
+        PlayerStat.SkillPoints,
+        PlayerStat.StatPoints
+    };
+
+    public static CharacterStat[] PlayerUpdateStats = new[]
+    {
+        CharacterStat.Hp,
+        CharacterStat.MaxHp,
+        CharacterStat.Sp,
+        CharacterStat.MaxSp,
+        CharacterStat.AddStr,
+        CharacterStat.AddAgi,
+        CharacterStat.AddInt,
+        CharacterStat.AddVit,
+        CharacterStat.AddDex,
+        CharacterStat.AddLuk,
+        CharacterStat.Def,
+        CharacterStat.MDef,
+        CharacterStat.Attack,
+        CharacterStat.Attack2,
+        CharacterStat.MagicAtkMin,
+        CharacterStat.MagicAtkMax,
+        CharacterStat.AddFlee,
+        CharacterStat.AddHit,
+        CharacterStat.WeightCapacity,
+    };
 }

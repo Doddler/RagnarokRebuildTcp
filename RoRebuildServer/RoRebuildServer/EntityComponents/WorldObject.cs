@@ -3,10 +3,12 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
+using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
@@ -137,7 +139,7 @@ public class WorldObject : IEntityAutoReset
     private Npc npc = null!;
     private CombatEntity combatEntity = null!;
 
-    public EntityList? Events;
+    public EntityList? Events { get; set; }
     public int EventsCount => Events?.Count ?? 0;
 
     public bool HasCombatEntity => Entity.IsAlive() && (Entity.Type == EntityType.Player || Entity.Type == EntityType.Monster);
@@ -370,6 +372,41 @@ public class WorldObject : IEntityAutoReset
         return count;
     }
 
+    public void OnDeathCleanupEvents()
+    {
+        if (Events == null)
+            return;
+
+        for (var i = 0; i < Events.Count; i++)
+        {
+            if (Events[i].TryGet<Npc>(out var npc))
+            {
+                var result = npc.Behavior.OnOwnerDeath(npc, CombatEntity);
+                switch (result)
+                {
+                    case NpcBehaviorBase.EventOwnerDeathResult.DetachEvent:
+                        npc.Owner = Entity.Null;
+                        break;
+                    case NpcBehaviorBase.EventOwnerDeathResult.RemoveEvent:
+                        npc.EndEvent();
+                        Events.SwapFromBack(i);
+                        i--;
+                        break;
+                }
+            }
+        }
+
+        Events.ClearInactive();
+        
+        if(Events.Count <= 0)
+        {
+            Events.Clear();
+            EntityListPool.Return(Events);
+            Events = null;
+            return;
+        }
+    }
+    
     public void SitStand(bool isSitting)
     {
         Debug.Assert(Map != null);

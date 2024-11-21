@@ -14,6 +14,7 @@ using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 
+[MonsterSkillHandler(CharacterSkill.FireWall, SkillClass.Magic, SkillTarget.Enemy)] //firewall from monsters is targeted
 [SkillHandler(CharacterSkill.FireWall, SkillClass.Magic, SkillTarget.Ground)]
 public class FirewallHandler : SkillHandlerBase
 {
@@ -34,6 +35,17 @@ public class FirewallHandler : SkillHandlerBase
         }
 
         Debug.Assert(source.Character.Map != null);
+
+        if (target != null)
+        {
+            position = target.Character.Position;
+            if (target.Character.IsMoving)
+            {
+                var forwardPosition = position.AddDirectionToPosition(target.Character.FacingDirection);
+                if (source.Character.Map.WalkData.IsCellWalkable(forwardPosition))
+                    position = forwardPosition;
+            }
+        }
 
         var ch = source.Character;
         var map = ch.Map;
@@ -118,6 +130,17 @@ public class FirewallBaseEvent : NpcBehaviorBase
         if(newTime > npc.ParamsInt[1])
             npc.EndAllEvents();
     }
+
+    public override EventOwnerDeathResult OnOwnerDeath(Npc npc, CombatEntity owner)
+    {
+        if (owner.Character.Type == CharacterType.Monster)
+        {
+            npc.EndAllEvents();
+            return EventOwnerDeathResult.RemoveEvent;
+        }
+
+        return EventOwnerDeathResult.NoAction;
+    }
 }
 
 public class FirewallObjectEvent : NpcBehaviorBase
@@ -170,7 +193,7 @@ public class FirewallObjectEvent : NpcBehaviorBase
         void DoAttack(float delay = 0f)
         {
             var res = src.CalculateCombatResult(target, 0.5f, 1, AttackFlags.Magical, CharacterSkill.FireWall, AttackElement.Fire);
-            res.KnockBack = 2;
+            res.KnockBack = 1;
             res.AttackPosition = target.Character.Position.AddDirectionToPosition(target.Character.FacingDirection);
             res.AttackMotionTime = delay;
             res.Time = Time.ElapsedTimeFloat + delay;

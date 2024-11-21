@@ -292,6 +292,38 @@ public class CombatEntity : IEntityAutoReset
             Character.Player.UpdateStats();
     }
 
+    public void HealHpPercent(int percent)
+    {
+        var curHp = GetStat(CharacterStat.Hp);
+        var maxHp = GetStat(CharacterStat.MaxHp);
+        var hp = maxHp * percent / 100;
+
+        if (curHp + hp > maxHp)
+            hp = maxHp - curHp;
+
+        SetStat(CharacterStat.Hp, curHp + hp);
+
+        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.SendHealMulti(Character, hp, HealType.Item);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void HealSpPercent(int percent)
+    {
+        var curSp = GetStat(CharacterStat.Sp);
+        var maxSp = GetStat(CharacterStat.MaxSp);
+        var sp = maxSp * percent / 100;
+
+        if (curSp + sp > maxSp)
+            sp = maxSp - curSp;
+
+        SetStat(CharacterStat.Sp, curSp + sp);
+
+        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.ChangeSpValue(Player, curSp + sp, maxSp);
+        CommandBuilder.ClearRecipients();
+    }
+
     public void HealHp(int hp)
     {
         var curHp = GetStat(CharacterStat.Hp);
@@ -307,6 +339,9 @@ public class CombatEntity : IEntityAutoReset
     {
         if (hp2 != -1 && hp2 > hp)
             hp = GameRandom.NextInclusive(hp, hp2);
+
+        if (Character.Type == CharacterType.Player)
+            hp += hp * 10 * Character.Player.MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery) / 100;
 
         var curHp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
@@ -331,6 +366,9 @@ public class CombatEntity : IEntityAutoReset
     {
         if (sp2 != -1 && sp2 > sp)
             sp = GameRandom.NextInclusive(sp, sp2);
+
+        if (Character.Type == CharacterType.Player)
+            sp += sp * 10 * Character.Player.MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery) / 100;
 
         var curSp = GetStat(CharacterStat.Sp);
         var maxSp = GetStat(CharacterStat.MaxSp);
@@ -1122,7 +1160,9 @@ public class CombatEntity : IEntityAutoReset
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
             var def = target.GetEffectiveStat(CharacterStat.Def);
-            defCut = MathF.Pow(0.99f, def - 1);
+            if (target.Character.Type == CharacterType.Player)
+                def = def * 120 / 100; //+20% bonus, to offset the fact that have diminishing returns
+            defCut = MathF.Pow(0.99f, def);
             subDef = target.GetEffectiveStat(CharacterStat.Vit) * 0.7f;
             if (def > 900)
                 subDef = 999999;
@@ -1131,7 +1171,7 @@ public class CombatEntity : IEntityAutoReset
         if (flags.HasFlag(AttackFlags.Magical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
             var mDef = target.GetEffectiveStat(CharacterStat.MDef);
-            defCut = MathF.Pow(0.99f, mDef - 1);
+            defCut = MathF.Pow(0.99f, mDef);
             subDef = target.GetEffectiveStat(CharacterStat.Int) * 0.7f;
             if (mDef > 900)
                 subDef = 999999;
@@ -1185,18 +1225,11 @@ public class CombatEntity : IEntityAutoReset
         return di;
     }
 
-    public DamageInfo CalculateCombatResult(CombatEntity target, float attackMultiplier, int hitCount,
-                                            AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement element = AttackElement.None)
+    public (int atk1, int atk2) CalculateAttackPowerRange(bool isMagic)
     {
-#if DEBUG
-        if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies)))
-            throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResult.");
-#endif
 
-        var isMagic = flags.HasFlag(AttackFlags.Magical);
-
-        var atk1 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack) : GetStat(CharacterStat.MagicAtkMin);
-        var atk2 = !flags.HasFlag(AttackFlags.Magical) ? GetStat(CharacterStat.Attack2) : GetStat(CharacterStat.MagicAtkMax);
+        var atk1 = !isMagic ? GetStat(CharacterStat.Attack) : GetStat(CharacterStat.MagicAtkMin);
+        var atk2 = !isMagic ? GetStat(CharacterStat.Attack2) : GetStat(CharacterStat.MagicAtkMax);
 
         if (Character.Type == CharacterType.Player)
         {
@@ -1243,6 +1276,20 @@ public class CombatEntity : IEntityAutoReset
             atk1 = 1;
         if (atk2 < atk1)
             atk2 = atk1;
+
+        return (atk1, atk2);
+    }
+
+    public DamageInfo CalculateCombatResult(CombatEntity target, float attackMultiplier, int hitCount,
+                                            AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement element = AttackElement.None)
+    {
+#if DEBUG
+        if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies)))
+            throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResult.");
+#endif
+
+        var isMagic = flags.HasFlag(AttackFlags.Magical);
+        var (atk1, atk2) = CalculateAttackPowerRange(isMagic);
 
         return CalculateCombatResultUsingSetAttackPower(target, atk1, atk2, attackMultiplier, hitCount, flags, skillSource, element);
     }
@@ -1439,6 +1486,8 @@ public class CombatEntity : IEntityAutoReset
             var pos = Character.Map.WalkData.CalcKnockbackFromPosition(Character.Position, di.AttackPosition, di.KnockBack);
             if (Character.Position != pos)
                 Character.Map.ChangeEntityPosition3(Character, Character.WorldPosition, pos, false);
+            
+            Character.StopMovingImmediately();
             sendMove = false;
         }
 

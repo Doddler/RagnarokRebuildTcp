@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 
 namespace Assets.Scripts.PlayerControl
 {
@@ -14,6 +15,9 @@ namespace Assets.Scripts.PlayerControl
         public int MaxHp;
         public int Sp;
         public int MaxSp;
+        public int[] CharacterData = new int[(int)PlayerStat.PlayerStatsMax];
+        public int[] CharacterStats = new int[(int)CharacterStat.CharacterStatsMax];
+        public float AttackSpeed;
         public ClientSkillTree SkillTree;
         public int SkillPoints;
         public int JobId;
@@ -29,5 +33,8 @@ namespace Assets.Scripts.PlayerControl
         public ClientInventory Storage = new();
         public int[] EquippedItems = new int[10];
         public HashSet<int> EquippedBagIdHashes = new();
+
+        public int GetData(PlayerStat stat) => CharacterData[(int)stat];
+        public int GetStat(CharacterStat stat) => CharacterStats[(int)stat];
     }
 }

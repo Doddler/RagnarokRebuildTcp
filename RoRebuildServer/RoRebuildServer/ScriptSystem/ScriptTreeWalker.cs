@@ -35,7 +35,8 @@ internal class ScriptTreeWalker
             "RoRebuildServer.Data", 
             "RoRebuildServer.EntityComponents", 
             "RoRebuildServer.ScriptSystem",
-            "RebuildSharedData.Enum", 
+            "RebuildSharedData.Enum",
+            "RebuildSharedData.Enum.EntityStats",
             "RoRebuildServer.EntityComponents.Npcs", 
             "RoRebuildServer.Simulation.Util", 
             "RoRebuildServer.EntityComponents.Items",
@@ -469,8 +470,12 @@ internal class ScriptTreeWalker
                     sectionHandler(context);
                 break;
             case ReturnStatementContext context:
-                if(context.IDENTIFIER() != null)
-                    builder.OutputReturn(context.IDENTIFIER().GetText());
+                if (context.expression() != null)
+                {
+                    builder.StartReturn();
+                    VisitExpression(context.expression());
+                    builder.EndReturn();
+                }
                 else
                     builder.OutputReturn();
                 break;
