@@ -987,7 +987,13 @@ public class Player : IEntityAutoReset
 
         ChangeTarget(targetCharacter);
         if (PerformAttack(targetCharacter))
-            Inventory?.RemoveItemByBagId(Equipment.AmmoId, 1);
+        {
+            if (usingAmmo && Inventory!.RemoveItemByBagId(Equipment.AmmoId, 1))
+            {
+                CommandBuilder.RemoveItemFromInventory(this, Equipment.AmmoId, 1);
+            }
+            
+        }
     }
     public bool PerformAttack(WorldObject targetCharacter)
     {
@@ -1040,8 +1046,10 @@ public class Player : IEntityAutoReset
 
     public void TargetForAttack(WorldObject enemy)
     {
+        var usingAmmo = false;
         if (WeaponClass == 12)
         {
+            usingAmmo = true;
             if (!ValidateAmmoBasedWeapon())
                 return;
         }
@@ -1057,7 +1065,13 @@ public class Player : IEntityAutoReset
         {
             ChangeTarget(enemy);
             //PerformQueuedAttack();
-            PerformAttack(enemy);
+            if (PerformAttack(enemy))
+            {
+                if (usingAmmo && Inventory!.RemoveItemByBagId(Equipment.AmmoId, 1))
+                {
+                    CommandBuilder.RemoveItemFromInventory(this, Equipment.AmmoId, 1);
+                }
+            }
             return;
         }
 

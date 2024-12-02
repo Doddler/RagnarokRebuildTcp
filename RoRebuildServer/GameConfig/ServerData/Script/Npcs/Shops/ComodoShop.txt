@@ -1,0 +1,98 @@
+
+//comodo trader
+Trader("cmd_in01", "Tool Dealer", "4_M_01", 79, 182, SE) {
+	SellItem("Iron_Arrow");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Berserk_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Magnifier");
+	SellItem("Trap");
+}
+
+Trader("cmd_in01", "Weapon Dealer", "1_M_03", 128, 165, W) {
+	SellItem("Violin");
+	SellItem("Mandolin");
+	SellItem("Lute");
+	SellItem("Harp");
+	SellItem("Gumoongoh");
+	SellItem("Guitar");
+	SellItem("Rope");
+	SellItem("Cord");
+	SellItem("Wire_Whip");
+	SellItem("Tail_Whip");
+	SellItem("Leather_Whip");
+	SellItem("Rante_Whip");
+}
+
+Trader("cmd_in01", "Armor Dealer", "4W_F_01", 117, 165, S) {
+	SellItem("Cap");
+	SellItem("Helm");
+	SellItem("Buckler");
+	SellItem("Shield");
+	SellItem("Boots");
+	SellItem("Muffler");
+	SellItem("Manteau");
+	SellItem("Adventurer's_Suit");
+	SellItem("Silk_Robe");
+	SellItem("Mantle");
+	SellItem("Coat");
+	SellItem("Thief_Clothes");
+	SellItem("Padded_Armor");
+	SellItem("Chain_Mail");
+	SellItem("Full_Plate");
+}
+
+Trader("comodo", "Souvenir Vendor", "4W_F_01", 296, 125, S) {
+	SellItem("Clam_Shell");
+	SellItem("Crab_Shell");
+}
+
+Trader("cmd_fild07", "Tool Dealer", "4_M_01", 257, 126, SE) {
+	SellItem("Iron_Arrow");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Magnifier");
+	SellItem("Trap");
+}
+
+Trader("cmd_fild07", "Weapon Dealer", "1_M_03", 250, 98, W) {
+	SellItem("Javelin");
+	SellItem("Spear");
+	SellItem("Pike");
+	SellItem("Guisarme");
+	SellItem("Glaive");
+	SellItem("Partizan");
+	SellItem("Trident");
+	SellItem("Halberd");
+	SellItem("Lance");
+}
+
+Trader("cmd_fild07", "Armor Dealer", "4W_F_01", 277, 85, S) {
+	SellItem("Cap");
+	SellItem("Helm");
+	SellItem("Buckler");
+	SellItem("Shield");
+	SellItem("Boots");
+	SellItem("Muffler");
+	SellItem("Manteau");
+	SellItem("Adventurer's_Suit");
+	SellItem("Silk_Robe");
+	SellItem("Mantle");
+	SellItem("Coat");
+	SellItem("Thief_Clothes");
+	SellItem("Padded_Armor");
+	SellItem("Chain_Mail");
+	SellItem("Full_Plate");
+}

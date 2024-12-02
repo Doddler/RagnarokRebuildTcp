@@ -16,10 +16,17 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             var item = State.Inventory.GetInventoryItem(bagId);
             if (item.ItemData.ItemClass == ItemClass.Ammo)
             {
-                if(isEquip)
+                if (isEquip)
+                {
                     Camera.AppendChatText($"<color=#00f6c7>Equipped {item.ProperName()}.</color>");
+                    State.AmmoId = bagId;
+                }
                 else
+                {
                     Camera.AppendChatText($"<color=#c80000>Unequipped {item.ProperName()}.</color>");
+                    State.AmmoId = -1;
+                }
+                UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
             }
             else
             {

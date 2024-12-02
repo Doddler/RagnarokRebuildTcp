@@ -50,7 +50,7 @@ macro BardChangeJob()
 	} else {
 		
 	}
-	if(GetNpcFlag("PrtBardStatus") > 1)
+	if(GetNpcFlag(bardFlag) > 1)
 		Dialog(Name, "Want to change your job again? I'll have to reset your skills and stat points to do it, but i can do it. What are you looking for?");
 	else
 		Dialog(Name, "Looking to change jobs are you? Well then! What were you thinking of becoming?");
@@ -89,18 +89,19 @@ macro BardChangeJob()
 	ShowEffectOnPlayer("JobUp");
 
 	ShowSprite("bard_eland02", right);
-	if(GetNpcFlag("PrtBardStatus") == 1) 
+	if(GetNpcFlag(bardFlag) == 1) 
 	{
-		GiveItem("Novice_Potion", 40);
+		GiveZeny(2000);
+		GiveItem("Novice_Potion", 60);
 
 		if(jobChoice == 0) GiveItem("Sword");
-		if(jobChoice == 1) { GiveItem("Arrow", 250); GiveItem("Bow"); }
+		if(jobChoice == 1) { GiveItem("Arrow", 500); GiveItem("Bow"); }
 		if(jobChoice == 2) GiveItem("Novice_Rod");
 		if(jobChoice == 3) GiveItem("Mace");
 		if(jobChoice == 4) GiveItem("Cutter");
 		if(jobChoice == 5) GiveItem("Sword");
 
-		SetNpcFlag("PrtBardStatus", 2);
+		SetNpcFlag(bardFlag, 2);
 		Dialog(Name, "It's done! I tossed in a little extra for you to get started. If you regret your choice and want to change jobs, just let me know.");
 	} 
 	else 
@@ -280,18 +281,19 @@ macro BardWarps()
 
 Npc("prt_fild08", "Bard", "1_M_BARD", 175, 374, SW, 1, 1) 
 {
+	localstr bardFlag = "PrtBardStatus";
 	OnClick:
 		FocusNpc();
 		ShowSprite("bard_eland01", right);
 
-		if(GetNpcFlag("PrtBardStatus") == 0)
+		if(GetNpcFlag(bardFlag) == 0)
 		{
 			Dialog(Name, "Hey there, welcome to Ragnarok Rebuild! Nice to see a new face around here. " + 
 						 "The job trainers are all on vacation so it's up to me to help adventurers like yourself.");
 			Dialog(Name, "Since it's your first time here, let me give you a little something to help you out.");
-			SetNpcFlag("PrtBardStatus", 1);
+			SetNpcFlag(bardFlag, 1);
 			GiveZeny(1000);
-			GiveItem("Novice_Potion", 20);
+			GiveItem("Novice_Potion", 30);
 			Dialog(Name, "So, is there anything I can help you with?");
 		}
 		else

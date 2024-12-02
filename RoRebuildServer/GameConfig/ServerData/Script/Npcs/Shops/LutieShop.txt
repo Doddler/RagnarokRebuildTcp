@@ -1,0 +1,49 @@
+
+//xmas trader
+Trader("xmas_in", "Tool Dealer", "4_M_01", 40, 38, SE) {
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	//SellItem("Magnifier");
+	SellItem("Yggdrasil_Leaf");
+}
+
+Trader("xmas_in", "Weapon Dealer", "1_M_03", 174, 98, W) {
+	SellItem("Knife");
+	SellItem("Cutter");
+	SellItem("Main_Gauche");
+	SellItem("Dirk");
+	SellItem("Dagger");
+	SellItem("Stiletto");
+	SellItem("Gladius");
+	SellItem("Damascus");
+}
+
+Trader("xmas_in", "Armor Dealer", "4W_F_01", 168, 104, S) {
+	SellItem("Helm");
+	SellItem("Buckler");
+	SellItem("Shield");
+	SellItem("Mantle");
+	SellItem("Coat");
+	SellItem("Padded_Armor");
+	SellItem("Chain_Mail");
+	SellItem("Full_Plate");
+	SellItem("Manteau");
+	SellItem("Boots");
+}
+
+Trader("xmas_in", "Gift Merchant", "4_F_GON", 169, 34, W) {
+	SellItem("Flower_Ring");
+	SellItem("Bouquet");
+	SellItem("Witherless_Rose");
+	SellItem("China");
+	SellItem("Glass_Bead");
+	SellItem("Puppet");
+	SellItem("Diamond_Ring");
+}

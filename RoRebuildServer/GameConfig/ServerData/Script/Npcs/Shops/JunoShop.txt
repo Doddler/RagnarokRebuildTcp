@@ -1,0 +1,91 @@
+
+//juno trader
+Trader("yuno_in01", "Weapon Dealer", "1_M_03", 103, 35, W) {
+	SellItem("Arrow");
+	SellItem("Silver_Arrow");
+	SellItem("Sword");
+	SellItem("Bow");
+	SellItem("Knife");
+	SellItem("Cutter");
+	SellItem("Main_Gauche");
+	SellItem("Dirk");
+	SellItem("Dagger");
+	SellItem("Stiletto");
+	SellItem("Rod");
+	SellItem("Wand");
+	SellItem("Staff");
+	SellItem("Arc_Wand");
+}
+
+Trader("yuno_in01", "Armor Dealer", "4W_F_01", 112, 26, S) {
+	SellItem("Novice_Armlet");
+	SellItem("Guard");
+	SellItem("Mirror_Shield");
+	SellItem("Sandals");
+	SellItem("Hood");
+	SellItem("Gemmed_Sallet");
+	SellItem("Cotton_Shirt");
+	SellItem("Jacket");
+	SellItem("Adventurer's_Suit");
+	SellItem("Silk_Robe");
+	SellItem("Silver_Robe");
+}
+
+Trader("yuno_in01", "Tool Dealer", "4_M_01", 25, 34, SE) {
+	SellItem("Arrow");
+	SellItem("Magnifier");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+}
+
+Trader("yuno", "Pet Groomer", "4_F_TELEPORTER", 197, 114, S) {
+	SellItem("Pet_Food");
+	SellItem("Pet_Incubator");
+}
+
+Trader("yuno", "Mr. King's Shop", "4_M_TELEPORTER", 205, 103, S) {
+	SellItem("Novice_Breastplate");
+	SellItem("Legion_Plate_Armor");
+	SellItem("Greaves");
+	SellItem("Turban");
+	SellItem("Gemmed_Sallet");
+	SellItem("Repeating_Crossbow");
+}
+
+Trader("yuno", "Tool Dealer", "4_M_02", 218, 97, SE) {
+	SellItem("Arrow");
+	SellItem("Magnifier");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+}
+
+Trader("yuno", "Jeweler", "4_M_01", 226, 107, SE) {
+	SellItem("Scell");
+	SellItem("Garlet");
+	SellItem("Zargon");
+}
+
+Trader("yuno", "Magical Item Seller", "4_F_01", 163, 187, SE) {
+	SellItem("Blue_Gemstone");
+	SellItem("Rod");
+	SellItem("Wand");
+	SellItem("Staff");
+	SellItem("Arc_Wand");
+	SellItem("Circlet");
+	SellItem("Silk_Robe");
+	SellItem("Silver_Robe");
+}

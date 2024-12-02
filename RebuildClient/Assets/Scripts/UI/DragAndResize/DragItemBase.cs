@@ -42,6 +42,11 @@ namespace Assets.Scripts.UI
             CountText.text = "E";
         }
 
+        public void BlueCount()
+        {
+            CountText.text = $"<color=#0000ed>{CountText.text}</color>";
+        }
+        
         public void UpdateCount(int count)
         {
             // Debug.Log($"Update item count for {ItemId} to {count}");

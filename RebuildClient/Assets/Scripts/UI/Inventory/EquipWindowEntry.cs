@@ -28,7 +28,7 @@ namespace Assets.Scripts.UI.Inventory
             Sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.ItemData.Sprite);
             Image.sprite = Sprite;
             Image.rectTransform.sizeDelta = Sprite.rect.size * 2;
-            ItemName.text = item.ToString();
+            ItemName.text = item.ProperName();
             
             Image.gameObject.SetActive(true);
             ItemName.gameObject.SetActive(true);
@@ -71,6 +71,15 @@ namespace Assets.Scripts.UI.Inventory
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (!isActive)
+                return;
+
+            if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(InventoryItem);
+                return;
+            }
+
             if (!isActive || eventData.clickCount != 2)
                 return;
             

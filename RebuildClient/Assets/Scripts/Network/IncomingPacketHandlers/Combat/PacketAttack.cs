@@ -89,16 +89,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 
                 if(resultType == AttackResult.Miss)
                     controllable.Messages.SendMissEffect(motionTime);
-
-                if (controllable.IsMainCharacter && controllable.WeaponClass == 12)
-                {
-                    //consume arrow. hopefully we match the server or it'll get weird.
-                    var item = ClientDataLoader.Instance.GetItemById(State.AmmoId);
-                    State.Inventory.RemoveItem(item.Id, 1);
-                    State.CurrentWeight -= item.Weight; //oh boy I hope this doesn't get out of sync
-                    if(UiManager.InventoryWindow.isActiveAndEnabled)
-                        UiManager.InventoryWindow.UpdateActiveVisibleBag();
-                }
             }
             
 

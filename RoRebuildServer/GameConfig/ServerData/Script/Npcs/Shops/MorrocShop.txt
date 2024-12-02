@@ -1,0 +1,139 @@
+
+//morocc trader
+Trader("morocc", "Tool Dealer", "4_F_04", 147, 102, S) {
+	SellItem("Arrow");
+	SellItem("Magnifier");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Trap");
+}
+
+Trader("morocc", "Tool Dealer", "4W_M_03", 151, 243, E) {
+	SellItem("Arrow");
+	SellItem("Magnifier");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Trap");
+	SellItem("Purple_Glasses");
+}
+
+Trader("morocc", "Item Collector", "4_M_03", 170, 101, W) {
+	SellItem("Scell");
+	SellItem("Monster's_Feed");
+	SellItem("Animal_Skin");
+	SellItem("Bill_of_Bird");
+}
+
+Trader("morocc", "Item Collector", "4_M_03", 206, 250, N) {
+	SellItem("Scell");
+	SellItem("Monster's_Feed");
+	SellItem("Animal_Skin");
+	SellItem("Bill_of_Bird");
+}
+
+Trader("morocc", "Jeweler", "8_F", 166, 51, W) {
+	SellItem("Emerald");
+	SellItem("Ruby");
+	SellItem("Sapphire");
+	SellItem("Topaz");
+	SellItem("Zircon");
+}
+
+Trader("morocc", "Jeweler", "4W_M_03", 145, 44, E) {
+	SellItem("1_Carat_Diamond");
+	SellItem("Diamond_Ring");
+}
+
+Trader("morocc", "Trader", "4W_M_03", 259, 193, S) {
+	SellItem("Crystal_Mirror");
+}
+
+Trader("morocc", "Trader", "4_F_04", 268, 193, N) {
+	SellItem("Witherless_Rose");
+}
+
+Trader("morocc", "Trader", "4_F_04", 244, 134, SE) {
+	SellItem("Flower_Ring");
+}
+
+Trader("morocc", "Trader", "4_M_ORIENT02", 35, 69, E) {
+	SellItem("Skull_Ring");
+	SellItem("Sword_Mace");
+	SellItem("Stunner");
+}
+
+Trader("morocc", "Butcher", "4_M_03", 157, 72, E) {
+	SellItem("Meat");
+}
+
+Trader("morocc", "Trader", "4W_M_03", 139, 92, E) {
+	SellItem("Banana");
+	SellItem("Banana");
+	SellItem("Banana");
+	SellItem("Banana");
+	SellItem("Banana");
+	SellItem("Banana");
+}
+
+Trader("morocc", "Pet Groomer", "4_M_TELEPORTER", 269, 167, S) {
+	SellItem("Pet_Food");
+	SellItem("Pet_Incubator");
+}
+
+Trader("morocc_in", "Weapon Dealer", "1_M_MERCHANT", 141, 67, N) {
+	SellItem("Arrow");
+	SellItem("Silver_Arrow");
+	SellItem("Bow");
+	SellItem("Rod");
+	SellItem("Knife");
+	SellItem("Cutter");
+	SellItem("Main_Gauche");
+	SellItem("Dirk");
+	SellItem("Dagger");
+	SellItem("Stiletto");
+	SellItem("Gladius");
+	SellItem("Damascus");
+	SellItem("Jur");
+	SellItem("Katar");
+	SellItem("Jamadhar");
+}
+
+Trader("morocc_in", "Armor Dealer", "1_M_MERCHANT", 141, 60, N) {
+	SellItem("Guard");
+	SellItem("Buckler");
+	SellItem("Sandals");
+	SellItem("Shoes");
+	SellItem("Boots");
+	SellItem("Hood");
+	SellItem("Muffler");
+	SellItem("Flu_Mask");
+	SellItem("Cotton_Shirt");
+	SellItem("Jacket");
+	SellItem("Adventurer's_Suit");
+	SellItem("Silk_Robe");
+	SellItem("Wooden_Mail");
+	SellItem("Silver_Robe");
+	SellItem("Mantle");
+	SellItem("Coat");
+	SellItem("Thief_Clothes");
+	SellItem("Novice_Armlet");
+}
+
+Trader("morocc_in", "Weapon Dealer", "4W_M_03", 132, 57, N) {
+	SellItem("Town_Sword");
+	SellItem("Cinquedea");
+}

@@ -39,17 +39,17 @@ public abstract class SkillHandlerBase
     public SkillValidationResult ValidateTargetForAmmunitionWeapon(CombatEntity source, CombatEntity? target, Position position, int weaponClass, AmmoType ammoType)
     {
         if (source.Character.Type != CharacterType.Player)
-            return ValidateTarget(source, target, position);
+            return StandardValidation(source, target, position);
         if (source.Player.WeaponClass != weaponClass)
             return SkillValidationResult.IncorrectWeapon;
         var equip = source.Player.Equipment;
         if (equip.AmmoId <= 0 || equip.AmmoType != ammoType)
             return SkillValidationResult.IncorrectAmmunition;
 
-        return ValidateTarget(source, target, position);
+        return StandardValidation(source, target, position);
     }
-    
-    public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position)
+
+    public virtual SkillValidationResult StandardValidation(CombatEntity source, CombatEntity? target, Position position)
     {
         if (target != null)
         {
@@ -66,12 +66,15 @@ public abstract class SkillHandlerBase
         {
             if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, position))
                 return SkillValidationResult.NoLineOfSight;
-            
+
             return SkillValidationResult.Success;
         }
-            
+
         return SkillValidationResult.Failure;
     }
+
+    public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position) =>
+        StandardValidation(source, target, position);
 
     protected void GenericCastAndInformSelfSkill(WorldObject ch, CharacterSkill skill, int level)
     {

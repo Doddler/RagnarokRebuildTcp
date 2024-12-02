@@ -1,0 +1,83 @@
+
+//alberta trader
+Trader("alberta_in", "Tool Dealer", "1_F_MERCHANT_01", 182, 97, N) {
+	SellItem("Arrow");
+	SellItem("Magnifier");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Geek_Glasses");
+}
+
+Trader("alberta_in", "Item Collector", "1_F_MERCHANT_02", 165, 96, N) {
+	SellItem("Scell");
+	SellItem("Monster's_Feed");
+}
+
+Trader("alberta_in", "Weapon Dealer", "1_M_03", 188, 21, N) {
+	SellItem("Arrow");
+	SellItem("Silver_Arrow");
+	SellItem("Sword");
+	SellItem("Falchion");
+	SellItem("Blade");
+	SellItem("Knife");
+	SellItem("Cutter");
+	SellItem("Main_Gauche");
+	SellItem("Rod");
+	SellItem("Bow");
+	SellItem("Axe");
+	SellItem("Battle_Axe");
+	SellItem("Hammer");
+	SellItem("Buster");
+	SellItem("Two-Handed_Axe");
+}
+
+Trader("alberta_in", "Armor Dealer", "4W_F_01", 180, 15, N) {
+	SellItem("Guard");
+	SellItem("Buckler");
+	SellItem("Sandals");
+	SellItem("Shoes");
+	SellItem("Boots");
+	SellItem("Hood");
+	SellItem("Muffler");
+	SellItem("Manteau");
+	SellItem("Glasses");
+	SellItem("Sunglasses");
+	SellItem("Diver_Goggles");
+	SellItem("Cap");
+	SellItem("Cotton_Shirt");
+	SellItem("Jacket");
+	SellItem("Adventurer's_Suit");
+	SellItem("Silk_Robe");
+	SellItem("Wooden_Mail");
+	SellItem("Silver_Robe");
+	SellItem("Mantle");
+	SellItem("Coat");
+	SellItem("Padded_Armor");
+	SellItem("Chain_Mail");
+	SellItem("Novice_Armlet");
+}
+
+Trader("alberta_in", "Weapon Dealer", "4_KID01", 175, 97, S) {
+	SellItem("Town_Sword");
+	SellItem("Cinquedea");
+}
+
+Trader("alb2trea", "Tool Dealer", "4_M_01", 87, 65, SE) {
+	SellItem("Arrow");
+	SellItem("Silver_Arrow");
+	SellItem("Fire_Arrow");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+}

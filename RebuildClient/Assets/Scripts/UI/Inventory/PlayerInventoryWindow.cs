@@ -118,21 +118,32 @@ namespace Assets.Scripts.UI.Inventory
 
                 if (item.ItemData.UseType == ItemUseType.Use)
                     itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendUseItem(bagEntry.Key);
-                else if (item.ItemData.ItemClass == ItemClass.Weapon || item.ItemData.ItemClass == ItemClass.Equipment)
+                else
                 {
-                    if (state.EquippedItems.Contains(item.BagSlotId))
+                    var itemClass = item.ItemData.ItemClass;
+                    if (itemClass == ItemClass.Weapon || itemClass == ItemClass.Equipment || itemClass == ItemClass.Ammo)
                     {
-                        itemEntry.DragItem.SetEquipped();
-                        itemEntry.DragItem.OnDoubleClick = null;
+                        if (state.EquippedItems.Contains(item.BagSlotId))
+                        {
+                            itemEntry.DragItem.SetEquipped();
+                            itemEntry.DragItem.OnDoubleClick = null;
+                        }
+                        else
+                        {
+                            if (itemClass == ItemClass.Ammo)
+                            {
+                                if(state.AmmoId == item.Id)
+                                    itemEntry.DragItem.BlueCount();
+                            }
+                            else
+                                itemEntry.DragItem.HideCount();
+                            
+                            itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendEquipItem(bagEntry.Key);
+                        }
                     }
                     else
-                    {
-                        itemEntry.DragItem.HideCount();
-                        itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendEquipItem(bagEntry.Key);
-                    }
+                        itemEntry.DragItem.OnDoubleClick = null;
                 }
-                else
-                    itemEntry.DragItem.OnDoubleClick = null;
 
                 activeEntryCount++;
             }

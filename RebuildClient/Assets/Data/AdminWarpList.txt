@@ -2,7 +2,7 @@
 	Home (Prontera Field 8), prt_fild08, 170, 367
 Towns
 	Prontera, prontera, 118, 83
-	Payon, payon
+	Payon, payon, 157, 28
 	Morroc, morocc, 159, 273
 	Geffen, geffen, 120, 62
 	Izlude, izlude, 128, 96

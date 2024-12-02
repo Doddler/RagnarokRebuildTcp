@@ -1,0 +1,75 @@
+
+//izlude trader
+Trader("izlude", "Fruit gardener", "1_M_INNKEEPER", 94, 98, S) {
+	SellItem("Apple");
+	SellItem("Banana");
+	SellItem("Carrot");
+	SellItem("Potato");
+}
+
+Trader("izlude", "Butcher", "1_M_JOBGUIDER", 105, 99, N) {
+	SellItem("Meat");
+}
+
+Trader("izlude", "Vendor from Milk Ranch", "4_F_01", 105, 92, NE) {
+	SellItem("Milk");
+}
+
+Trader("izlude_in", "Weapon Dealer", "1_F_MARIA", 60, 127, S) {
+	SellItem("Arrow");
+	SellItem("Silver_Arrow");
+	SellItem("Bow");
+	SellItem("Rod");
+	SellItem("Knife");
+	SellItem("Cutter");
+	SellItem("Main_Gauche");
+	SellItem("Sword");
+	SellItem("Falchion");
+	SellItem("Blade");
+	SellItem("Katana");
+	SellItem("Slayer");
+	SellItem("Bastard_Sword");
+	SellItem("Two-Handed_Sword");
+	SellItem("Broad_Sword");
+	SellItem("Axe");
+}
+
+Trader("izlude_in", "Armor Dealer", "1_M_SIZ", 70, 127, S) {
+	SellItem("Buckler");
+	SellItem("Shield");
+	SellItem("Shoes");
+	SellItem("Boots");
+	SellItem("Muffler");
+	SellItem("Manteau");
+	SellItem("Cap");
+	SellItem("Helm");
+	SellItem("Jacket");
+	SellItem("Adventurer's_Suit");
+	SellItem("Wooden_Mail");
+	SellItem("Mantle");
+	SellItem("Coat");
+	SellItem("Padded_Armor");
+	SellItem("Chain_Mail");
+	SellItem("Full_Plate");
+	SellItem("Novice_Armlet");
+}
+
+Trader("izlude_in", "Tool Dealer", "1_M_01", 115, 61, N) {
+	SellItem("Magnifier");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Trap");
+	SellItem("Arrow");
+}
+
+Trader("izlude", "Pet Groomer", "4_F_TELEPORTER", 164, 138, S) {
+	SellItem("Pet_Food");
+	SellItem("Pet_Incubator");
+}

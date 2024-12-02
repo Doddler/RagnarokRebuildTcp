@@ -66,3 +66,46 @@ OnClick:
             MoveTo("amatsu", 197, 83);
     }
 }
+
+//--------------------------------------------------------------
+// Sunken Ship
+//--------------------------------------------------------------
+
+Npc("alberta", "Fisk", "4W_SAILOR", 189, 151, SE) { 
+OnClick:
+    FocusNpc();
+    Dialog(Name, "Ahoy mate, where'd ya wanna go?");
+    Option("Sunken Ship -> 250 zeny.", "Izlude Marina -> 500 zeny.", "Never mind.");
+    switch(Result)
+    {
+        case 0:
+            if(GetZeny() < 250)
+            {
+                Dialog(Name, "Hey now, don't try to cheat me! I said 250 zeny!");
+                return;
+            }
+            DropZeny(250);
+            MoveTo("alb2trea", 43, 53);
+        case 1:
+            if(GetZeny() < 500)
+            {
+                Dialog(Name, "Ain't no way yer getting there without the 500 zeny first!");
+                return;
+            }
+            DropZeny(500);
+            MoveTo("izlude", 176, 182);
+        case 2:
+            Dialog(Name, "Alright... Landlubber.");
+    }
+}
+
+Npc("alb2trea", "Fisk", "4W_SAILOR", 39, 50, E) { 
+OnClick:
+    FocusNpc();
+    Dialog(Name, "So you wanna head back to the mainland in Alberta, eh?");
+    Option("Yes please.", "I changed my mind." );
+    switch(Result)
+    {
+        case 0: MoveTo("alberta", 192, 169);
+    }
+}

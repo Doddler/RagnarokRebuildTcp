@@ -1,0 +1,165 @@
+
+//prontera trader
+Trader("prontera", "Vendor from Milk Ranch", "4_F_01", 73, 134, N) {
+	SellItem("Milk");
+}
+
+Trader("prontera", "Fruit Gardener", "8_F", 104, 49, N) {
+	SellItem("Apple");
+	SellItem("Banana");
+}
+
+Trader("prontera", "Vegetable Gardener", "4_F_02", 48, 58, N) {
+	SellItem("Carrot");
+	SellItem("Potato");
+	SellItem("Pumpkin");
+}
+
+Trader("prontera", "Butcher", "4_M_BARBER", 64, 125, N) {
+	SellItem("Meat");
+	SellItem("Monster's_Feed");
+}
+
+Trader("prontera", "Flower Girl", "4W_KID", 58, 182, N) {
+	SellItem("Flower");
+	SellItem("Bouquet");
+}
+
+Trader("prontera", "Flower Girl", "4_F_01", 113, 42, N) {
+	SellItem("Flower");
+	SellItem("Bouquet");
+}
+
+Trader("prontera", "Gift Merchant", "4_F_02", 105, 87, N) {
+	SellItem("Red_Frame");
+	SellItem("Chung_Jah");
+	SellItem("China");
+	SellItem("Black_Ladle");
+	SellItem("Glass_Bead");
+}
+
+Trader("prontera", "Doll Supplier", "4_M_03", 248, 153, N) {
+	SellItem("Puppet");
+	SellItem("Poring_Doll");
+	SellItem("Chonchon_Doll");
+}
+
+Trader("prontera", "Pet Groomer", "4_M_TELEPORTER", 218, 211, S) {
+	SellItem("Pet_Food");
+	SellItem("Pet_Incubator");
+}
+
+Trader("prt_fild05", "Tool Dealer", "4_M_01", 290, 221, W) {
+	SellItem("Arrow");
+	//SellItem("Magnifier");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+}
+
+Trader("prt_church", "Nun", "1_F_PRIEST", 108, 124, S) {
+	SellItem("Rosary");
+	SellItem("Biretta");
+	SellItem("Coif");
+	SellItem("Scapulare");
+	SellItem("Saint's_Robe");
+	SellItem("Club");
+	SellItem("Mace");
+	SellItem("Smasher");
+	SellItem("Flail");
+	SellItem("Morning_Star");
+	SellItem("Chain");
+}
+
+Trader("prt_in", "Tool Dealer", "1_M_INNKEEPER", 126, 76, N) {
+	//SellItem("Magnifier");
+	SellItem("Arrow");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	//SellItem("Trap");
+	SellItem("Monocle");
+}
+
+Trader("prt_in", "Wedding Shop Dealer", "1_F_LIBRARYGIRL", 211, 169, N) {
+	SellItem("Bouquet");
+	SellItem("Wedding_Bouquet");
+	SellItem("Wedding_Dress");
+	SellItem("Wedding_Veil");
+	SellItem("Tuxedo");
+}
+
+Trader("prt_in", "Weapon Dealer", "1_M_JOBGUIDER", 172, 130, N) {
+	SellItem("Arrow");
+	SellItem("Silver_Arrow");
+	SellItem("Bow");
+	SellItem("Knife");
+	SellItem("Cutter");
+	SellItem("Main_Gauche");
+	SellItem("Rod");
+	SellItem("Sword");
+	SellItem("Falchion");
+	SellItem("Blade");
+	SellItem("Rapier");
+	SellItem("Scimiter");
+	SellItem("Ring_Pommel_Saber");
+	SellItem("Tsurugi");
+	SellItem("Haedonggum");
+	SellItem("Saber");
+	SellItem("Flamberge");
+	SellItem("Katana");
+	SellItem("Axe");
+}
+
+Trader("prt_in", "Weapon Dealer", "1_M_01", 171, 140, N) {
+	SellItem("Javelin");
+	SellItem("Spear");
+	SellItem("Pike");
+	SellItem("Guisarme");
+	SellItem("Glaive");
+	SellItem("Partizan");
+	SellItem("Trident");
+	SellItem("Halberd");
+	SellItem("Lance");
+}
+
+Trader("prt_in", "Armor Dealer", "1_M_02", 172, 132, N) {
+	SellItem("Guard");
+	SellItem("Buckler");
+	SellItem("Sandals");
+	SellItem("Shoes");
+	SellItem("Hood");
+	SellItem("Muffler");
+	SellItem("Hat");
+	SellItem("Cap");
+	SellItem("Cotton_Shirt");
+	SellItem("Jacket");
+	SellItem("Adventurer's_Suit");
+	SellItem("Wooden_Mail");
+	SellItem("Mantle");
+	SellItem("Coat");
+	SellItem("Padded_Armor");
+	SellItem("Chain_Mail");
+	SellItem("Novice_Armlet");
+	SellItem("Belt");
+}
+
+Trader("prt_in", "Weapon Dealer", "1_F_01", 164, 140, S) {
+	SellItem("Town_Sword");
+	SellItem("Cinquedea");
+}
+
+Trader("prt_monk", "Weapon Dealer", "4_F_JOB_BLACKSMITH", 135, 263, SE) {
+	SellItem("Waghnak");
+	SellItem("Knuckle_Dusters");
+	SellItem("Studded_Knuckles");
+}

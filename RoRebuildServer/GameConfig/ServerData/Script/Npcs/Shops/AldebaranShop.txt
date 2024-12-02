@@ -1,0 +1,52 @@
+
+//aldebaran trader
+Trader("aldeba_in", "Tool Dealer", "4_M_01", 94, 56, SE) {
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Magnifier");
+	SellItem("Yggdrasil_Leaf");
+}
+
+Trader("aldeba_in", "Weapon Dealer", "1_M_03", 28, 54, N) {
+	SellItem("Knife");
+	SellItem("Cutter");
+	SellItem("Main_Gauche");
+	SellItem("Dirk");
+	SellItem("Dagger");
+	SellItem("Stiletto");
+	SellItem("Gladius");
+	SellItem("Damascus");
+}
+
+Trader("aldeba_in", "Weapon Dealer", "4_M_06", 22, 47, S) {
+	SellItem("Town_Sword");
+	SellItem("Cinquedea");
+}
+
+Trader("aldeba_in", "Armor Dealer", "4W_F_01", 20, 60, N) {
+	SellItem("Helm");
+	SellItem("Buckler");
+	SellItem("Shield");
+	SellItem("Mantle");
+	SellItem("Coat");
+	SellItem("Padded_Armor");
+	SellItem("Chain_Mail");
+	SellItem("Full_Plate");
+	SellItem("Manteau");
+	SellItem("Boots");
+	SellItem("Novice_Armlet");
+	SellItem("Belt");
+}
+
+Trader("alde_alche", "Material Seller", "4_M_SAGE_C", 38, 184, W) {
+	SellItem("Glass_Tube");
+	SellItem("Morning_Dew_of_Yggdrasil");
+	SellItem("Seed_of_Life");
+}

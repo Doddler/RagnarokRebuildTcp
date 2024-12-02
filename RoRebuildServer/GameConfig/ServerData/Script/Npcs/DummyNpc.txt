@@ -1,5 +1,5 @@
 ﻿Npc("alb2trea", "Bulletin Board", "2_BULLETIN_BOARD", 75, 101, N) { }
-Npc("alb2trea", "Fisk", "4W_SAILOR", 39, 50, E) { }
+//Npc("alb2trea", "Fisk", "4W_SAILOR", 39, 50, E) { }
 Npc("alb2trea", "Kafra Employee", "4_F_KAFRA1", 59, 69, SE) { }
 //Npc("alb2trea", "Tool Dealer", "4_M_01", 87, 65, SE) { }
 Npc("alberta", "Aibakthing", "4_M_THAIONGBAK", 247, 42, SW) { }
@@ -13,7 +13,7 @@ Npc("alberta", "Elin", "4W_KID", 117, 135, N) { }
 Npc("alberta", "Fabian", "4_M_02", 97, 51, N) { }
 Npc("alberta", "Fastidious Old Man", "4_M_SAGE_C", 165, 83, S) { }
 Npc("alberta", "Fastidious Old Man", "4_M_SAGE_C", 165, 83, S) { }
-Npc("alberta", "Fisk", "4W_SAILOR", 189, 151, SE) { }
+//Npc("alberta", "Fisk", "4W_SAILOR", 189, 151, SE) { }
 Npc("alberta", "Gershaun", "1_M_LIBRARYMASTER", 232, 106, E) { }
 Npc("alberta", "Girl", "4_F_CHNDRESS1", 245, 45, SW) { }
 Npc("alberta", "Grandmother Alma", "8_F_GRANDMOTHER", 93, 174, W) { }

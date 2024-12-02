@@ -229,7 +229,7 @@ Recover<color=#008000> 117~192</color> HP
 Recover<color=#008000> 10~20</color> SP
 
 ::Novice_Potion //569
-<color=#808080>A potion from the Novice Training Grounds.</color>
+<color=#808080>A potion from the Novice Training Grounds. Less effective than regular red potions, but lighter.</color>
 Recover<color=#008000> 22~33</color> HP
 
 ::Lucky_Candy //570

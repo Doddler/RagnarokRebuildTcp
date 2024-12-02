@@ -1,0 +1,45 @@
+
+//amatsu trader
+Trader("ama_in01", "Tool Dealer", "4_M_JPN", 24, 30, SE) {
+	SellItem("Arrow");
+	SellItem("Iron_Arrow");
+	SellItem("Magnifier");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Trap");
+}
+
+Trader("ama_in01", "Armor Dealer", "4_F_JPN2", 89, 28, SE) {
+	SellItem("Bandana");
+	SellItem("Sandals");
+	SellItem("Shoes");
+	SellItem("Hood");
+	SellItem("Muffler");
+	SellItem("Guard");
+	SellItem("Buckler");
+	SellItem("Adventurer's_Suit");
+	SellItem("Silk_Robe");
+	SellItem("Silver_Robe");
+	SellItem("Wooden_Mail");
+	SellItem("Belt");
+}
+
+Trader("ama_in01", "Weapon Dealer", "4_M_JPNOJI", 102, 28, SW) {
+	SellItem("Main_Gauche");
+	SellItem("Stiletto");
+	SellItem("Blade");
+	SellItem("Ring_Pommel_Saber");
+	SellItem("Katana");
+	SellItem("Bastard_Sword");
+	SellItem("Pike");
+	SellItem("Partizan");
+	SellItem("Hammer");
+	SellItem("Chain");
+}

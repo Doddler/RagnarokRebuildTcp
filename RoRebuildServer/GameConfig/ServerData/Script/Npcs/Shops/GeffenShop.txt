@@ -1,0 +1,79 @@
+
+//geffen trader
+Trader("geffen_in", "Tool Dealer", "1_F_03", 77, 167, N) {
+	SellItem("Arrow");
+	SellItem("Magnifier");
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Grampa_Beard");
+}
+
+Trader("geffen_in", "Magical Item Seller", "1_M_WIZARD", 77, 173, N) {
+	SellItem("Blue_Gemstone");
+	SellItem("Rod");
+	SellItem("Wand");
+	SellItem("Staff");
+	SellItem("Arc_Wand");
+	SellItem("Circlet");
+	SellItem("Silk_Robe");
+	SellItem("Silver_Robe");
+}
+
+Trader("geffen_in", "Armor Dealer", "1_F_01", 26, 178, S) {
+	SellItem("Novice_Armlet");
+	SellItem("Guard");
+	SellItem("Mirror_Shield");
+	SellItem("Sandals");
+	SellItem("Hood");
+	SellItem("Gemmed_Sallet");
+	SellItem("Cotton_Shirt");
+	SellItem("Jacket");
+	SellItem("Adventurer's_Suit");
+	SellItem("Silk_Robe");
+	SellItem("Silver_Robe");
+}
+
+Trader("geffen_in", "Weapon Dealer", "1_M_01", 30, 178, S) {
+	SellItem("Arrow");
+	SellItem("Silver_Arrow");
+	SellItem("Sword");
+	SellItem("Bow");
+	SellItem("Knife");
+	SellItem("Cutter");
+	SellItem("Main_Gauche");
+	SellItem("Dirk");
+	SellItem("Dagger");
+	SellItem("Stiletto");
+	SellItem("Rod");
+	SellItem("Wand");
+	SellItem("Staff");
+	SellItem("Arc_Wand");
+}
+
+Trader("geffen_in", "Weapon Dealer", "4_M_02", 22, 171, E) {
+	SellItem("Town_Sword");
+	SellItem("Cinquedea");
+}
+
+Trader("geffen_in", "Trader", "1_F_01", 74, 144, N) {
+	SellItem("Scell");
+	SellItem("Garlet");
+	SellItem("Zargon");
+}
+
+Trader("geffen_in", "Tool Dealer", "1_M_WIZARD", 171, 123, S) {
+	SellItem("Empty_Test_Tube");
+	SellItem("Empty_Potion_Bottle");
+}
+
+Trader("geffen", "Pet Groomer", "4_F_TELEPORTER", 193, 152, S) {
+	SellItem("Pet_Food");
+	SellItem("Pet_Incubator");
+}
