@@ -21,6 +21,7 @@ using RoRebuildServer.Database.Domain;
 using System.Xml.Linq;
 using System.Threading;
 using RebuildSharedData.ClientTypes;
+using Microsoft.EntityFrameworkCore;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -151,8 +152,8 @@ public class CombatEntity : IEntityAutoReset
 
     public void AddStatusEffect(StatusEffectState state, bool replaceExisting = true, float delay = 0)
     {
-        if (!Character.IsActive)
-            return;
+        //if (!Character.IsActive)
+        //    return;
 
         if (statusContainer == null)
         {
@@ -274,7 +275,8 @@ public class CombatEntity : IEntityAutoReset
                 stat += GetStat(CharacterStat.AddLuk);
                 break;
             case CharacterStat.Def:
-                stat = (int)((stat + GetStat(CharacterStat.AddDef)) * (1 + GetStat(CharacterStat.AddDefPercent) / 100f));
+                var addDef = GetStat(CharacterStat.AddDef);
+                stat = (int)((stat + addDef) * (1 + GetStat(CharacterStat.AddDefPercent) / 100f));
                 break;
             case CharacterStat.MDef:
                 stat = (int)((stat + GetStat(CharacterStat.AddMDef)) * (1 + GetStat(CharacterStat.AddMDef) / 100f));
@@ -1018,16 +1020,22 @@ public class CombatEntity : IEntityAutoReset
     /// Test to see if this character is able to hit the enemy.
     /// </summary>
     /// <returns>Returns true if the attack hits</returns>
-    public bool TestHitVsEvasion(CombatEntity target, int attackerHitBonus = 0, int defenderFleeBonus = 0)
+    public bool TestHitVsEvasion(CombatEntity target, int attackerHitBonus = 0, int defenderFleeBonus = 0, int flatEvasionPenalty = 0)
     {
         var attackerHit = GetStat(CharacterStat.Level) + GetEffectiveStat(CharacterStat.Dex) + GetStat(CharacterStat.AddHit);
 
         var defenderAgi = target.GetEffectiveStat(CharacterStat.Agi);
         var defenderFlee = target.GetStat(CharacterStat.Level) + defenderAgi + target.GetStat(CharacterStat.AddFlee);
-
+        
         var hitSuccessRate = attackerHit + attackerHitBonus + 75 - defenderFlee - defenderFleeBonus;
+
         if (hitSuccessRate < 5) hitSuccessRate = 5;
         if (hitSuccessRate > 95 && target.Character.Type == CharacterType.Player) hitSuccessRate = 95;
+
+        if (flatEvasionPenalty > 0)
+        {
+            hitSuccessRate = int.Clamp(hitSuccessRate + flatEvasionPenalty, 5, 100);
+        }
 
         return hitSuccessRate > GameRandom.Next(0, 100);
     }
@@ -1081,7 +1089,15 @@ public class CombatEntity : IEntityAutoReset
             if (attackElement == AttackElement.None)
             {
                 if (Character.Type == CharacterType.Player)
+                {
                     attackElement = Player.Equipment.WeaponElement;
+                    if (Player.WeaponClass == 12)
+                    {
+                        var arrowElement = Player.Equipment.AmmoElement;
+                        if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
+                            attackElement = arrowElement;
+                    }
+                }
                 else
                     attackElement = AttackElement.Neutral; //for now default to neutral, but we should pull from the weapon here if none is set
 
@@ -1132,15 +1148,26 @@ public class CombatEntity : IEntityAutoReset
 
         var evade = false;
         var isCrit = false;
+        var srcLevel = GetStat(CharacterStat.Level);
+        var targetLevel = target.GetStat(CharacterStat.Level);
 
+        var attackerPenalty = 0; //number of attackers above 2 (player only consideration)
+        if (target.Character.Type == CharacterType.Player)
+        {
+            target.Player.RegisterRecentAttacker(ref Entity);
+
+            var attackerCount = target.Player.GetCurrentAttackerCount();
+            attackerPenalty = attackerCount > 2 ? attackerCount - 2 : 0;
+        }
+        
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreEvasion))
-            evade = !TestHitVsEvasion(target);
+            evade = !TestHitVsEvasion(target, 0, 0, attackerPenalty * 10);
 
         if (flags.HasFlag(AttackFlags.CanCrit))
         {
-            var critRate = 1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.Level) / 5;
-            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) / 5 + GetStat(CharacterStat.Level) / 7;
-            if (GameRandom.NextInclusive(0, 100) <= critRate - counterCrit)
+            var critRate = 1 + GetEffectiveStat(CharacterStat.Luck) / 3 + srcLevel / 5;
+            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) / 5 + targetLevel / 7;
+            if (CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 100))
                 isCrit = true;
         }
 
@@ -1156,24 +1183,62 @@ public class CombatEntity : IEntityAutoReset
         }
 
         var defCut = 1f;
-        var subDef = 0f;
+        var subDef = 0;
+        var vit = target.GetEffectiveStat(CharacterStat.Vit);
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
+            //armor def
             var def = target.GetEffectiveStat(CharacterStat.Def);
             if (target.Character.Type == CharacterType.Player)
-                def = def * 120 / 100; //+20% bonus, to offset the fact that have diminishing returns
-            defCut = MathF.Pow(0.99f, def);
-            subDef = target.GetEffectiveStat(CharacterStat.Vit) * 0.7f;
-            if (def > 900)
+            {
+                def = def * 120 / 100; //+20% bonus, for balance reasons
+                def += target.GetStat(CharacterStat.EquipmentRefineDef);
+            }
+
+            //soft def
+            if (target.Character.Type == CharacterType.Player)
+            {
+                //this formula is weird, but it is official
+                //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
+                //you also gain a random bonus that kicks in at 46 def and increases at higher values
+                var vit30Percent = 3 * vit / 10;
+                var vitRng = vit * vit / 150 - vit30Percent;
+                if (vitRng < 1) vitRng = 1;
+                subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
+
+                //attacker penalty (players only)
+                if (attackerPenalty > 0)
+                {
+                    def -= 5 * def * attackerPenalty / 100;
+                    subDef -= 5 * subDef * attackerPenalty / 100;
+                }
+
+                if (def < 0) def = 0;
+                if (subDef < 0) subDef = 0;
+            }
+            else
+            {
+                //monsters vit defense is also weird
+                var vitRng = (vit / 20) * (vit / 20);
+                if (vitRng <= 0)
+                    subDef = vit;
+                else
+                    subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
+            }
+
+            //convert def to damage reduction %
+            defCut = MathHelper.DefValueLookup(def);
+            
+            if (def >= 200)
                 subDef = 999999;
         }
 
         if (flags.HasFlag(AttackFlags.Magical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
         {
             var mDef = target.GetEffectiveStat(CharacterStat.MDef);
-            defCut = MathF.Pow(0.99f, mDef);
-            subDef = target.GetEffectiveStat(CharacterStat.Int) * 0.7f;
-            if (mDef > 900)
+            defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
+            subDef = target.GetEffectiveStat(CharacterStat.Int) + vit / 2;
+            if (mDef >= 200)
                 subDef = 999999;
         }
 
@@ -1186,14 +1251,14 @@ public class CombatEntity : IEntityAutoReset
         if (target.Character.Type == CharacterType.Monster)
         {
             //players deal 1.5% less damage per level they are below a monster, to a max of -90%
-            lvCut -= 0.015f * (target.GetStat(CharacterStat.Level) - GetStat(CharacterStat.Level));
-            lvCut = Math.Clamp(lvCut, 0.1f, 1f);
+            lvCut -= 0.015f * (targetLevel - srcLevel);
+            lvCut = float.Clamp(lvCut, 0.1f, 1f);
         }
         else
         {
             //monsters deal 0.5% less damage per level they are below the player, to a max of -50%
-            lvCut -= 0.005f * (target.GetStat(CharacterStat.Level) - GetStat(CharacterStat.Level));
-            lvCut = Math.Clamp(lvCut, 0.5f, 1f);
+            lvCut -= 0.005f * (targetLevel - srcLevel);
+            lvCut = float.Clamp(lvCut, 0.5f, 1f);
         }
 
         damage = (int)(lvCut * damage);
@@ -1239,8 +1304,11 @@ public class CombatEntity : IEntityAutoReset
                 var secondaryStat = GetEffectiveStat(Player.WeaponClass == 12 ? CharacterStat.Str : CharacterStat.Dex);
 
                 var statAtk = GetStat(CharacterStat.AddAttackPower) + mainStat + (secondaryStat / 5) + (mainStat / 10) * (mainStat / 10);
-                var statWeaponBonus = mainStat / 400f;
+                var statWeaponBonus = mainStat / 400f; //sneaky
                 var attackPercent = 1f + (GetStat(CharacterStat.AddAttackPercent) / 100f);
+                if (Player.WeaponClass == 12 && Player.Equipment.AmmoId > 0 && Player.Equipment.AmmoType == AmmoType.Arrow) //bow with arrow
+                    statAtk += Player.Equipment.AmmoAttackPower;
+                    
                 atk1 = (int)((statAtk + atk1 * (1 + statWeaponBonus)) * attackPercent);
                 atk2 = (int)((statAtk + atk2 * (1 + statWeaponBonus)) * attackPercent);
             }
@@ -1250,7 +1318,7 @@ public class CombatEntity : IEntityAutoReset
                 var addMatk = GetStat(CharacterStat.AddMagicAttackPower);
                 var statMatkMin = addMatk + matkStat + (matkStat / 7) * (matkStat / 7);
                 var statMatkMax = addMatk + matkStat + (matkStat / 5) * (matkStat / 5);
-                var statWeaponBonus = matkStat / 400f;
+                var statWeaponBonus = matkStat / 400f; //sneaky
                 var magicPercent = 1f + (GetStat(CharacterStat.AddMagicAttackPercent) / 100f);
                 atk1 = (int)((statMatkMin + atk1 * (1 + statWeaponBonus)) * magicPercent);
                 atk2 = (int)((statMatkMax + atk2 * (1 + statWeaponBonus)) * magicPercent);
@@ -1525,7 +1593,6 @@ public class CombatEntity : IEntityAutoReset
 
         SetStat(CharacterStat.Hp, hp);
 
-
         if (hp <= 0)
         {
             ResetSkillDamageCooldowns();
@@ -1543,14 +1610,9 @@ public class CombatEntity : IEntityAutoReset
                     return;
                 }
 
-                if (di.Source.IsAlive() && di.Source.TryGet<WorldObject>(out var attacker) && attacker.Type == CharacterType.Player && DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
-                {
-                    //if we're an mvp, give the attacker the effect
-                    Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-                    CommandBuilder.SendEffectOnCharacterMulti(attacker, DataManager.EffectIdForName["MVP"]);
-                    CommandBuilder.ClearRecipients();
-                }
-
+                if (DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
+                    monster.RewardMVP();
+                
                 monster.Die();
                 DamageQueue.Clear();
 

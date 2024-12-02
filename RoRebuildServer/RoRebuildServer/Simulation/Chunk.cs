@@ -27,6 +27,15 @@ public class Chunk
 
     public override string ToString() => $"Chunk ({X * Size},{Y*Size}-{(X+1)*Size},{(Y+1)*Size})[P:{Players.Count} M:{Monsters.Count} AoE:{AreaOfEffects.Count}]";
 
+#if DEBUG
+    public Chunk()
+    {
+        AllEntities.IsActive = true; //get around borrow tracking for entity lists
+        Players.IsActive = true;
+        Monsters.IsActive = true;
+    }
+#endif
+
     public void AddEntity(ref Entity entity, CharacterType type)
     {
 #if DEBUG

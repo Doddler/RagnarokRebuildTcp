@@ -16,6 +16,7 @@ namespace Assets.Scripts.UI
         Skill,
         Item,
         Equipment,
+        ShopItem
     }
 
     public class DraggableItem : DragItemBase, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -27,6 +28,7 @@ namespace Assets.Scripts.UI
         public ItemDragOrigin Origin;
         public int OriginId;
         public Action OnDoubleClick;
+        public Action OnRightClick;
 
         private UiManager manager;
 
@@ -59,7 +61,9 @@ namespace Assets.Scripts.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (Type != DragItemType.None && eventData.clickCount >= 2 && OnDoubleClick != null)
+            if (eventData.button == PointerEventData.InputButton.Right && (Type == DragItemType.Item || Type == DragItemType.Equipment))
+                OnRightClick();
+            if (Type != DragItemType.None && eventData.button == PointerEventData.InputButton.Left && eventData.clickCount >= 2 && OnDoubleClick != null)
             {
                 OnDoubleClick();
                 UiManager.Instance.HideTooltip(gameObject);
@@ -74,10 +78,19 @@ namespace Assets.Scripts.UI
                 if (Type == DragItemType.Skill)
                 {
                     var skill = ClientDataLoader.Instance.GetSkillData((CharacterSkill)ItemId);
+
+                    var spCost = "";
+                    if (skill.Target != SkillTarget.Passive && skill.SpCost != null && skill.SpCost.Length > 0)
+                    {
+                        var lvl = Mathf.Clamp(ItemCount, 1, skill.SpCost.Length);
+                        spCost = $" (SP: {skill.SpCost[lvl - 1]})";
+                    }
+
                     if (skill.AdjustableLevel)
-                        text = $"{skill.Name} Lv {ItemCount}";
+                        text = $"{skill.Name} Lv {ItemCount}{spCost}";
                     else
-                        text = skill.Name;
+                        text = $"{skill.Name}{spCost}";
+                    
                 }
 
                 if (Type == DragItemType.Item)

@@ -14,6 +14,11 @@ public class EntityList : IDisposable
 
     public Entity[]? InternalList => entities;
 
+#if DEBUG
+    public bool IsActive;
+    public readonly Guid UniqueId = Guid.NewGuid();
+#endif
+
     public EntityList() : this(32) { }
 
     public EntityList(int initialCapacity, bool delayCreate = false)
@@ -79,6 +84,11 @@ public class EntityList : IDisposable
 
     public void Add(ref Entity entity)
     {
+#if DEBUG
+        if (!IsActive)
+            throw new Exception($"Attempting to use an entity list that wasn't borrowed from the EntityListPool, or has already been returned!");
+#endif
+
         if (!entity.IsAlive())
             throw new Exception("Can't add entity to EntityList as it's not active.");
 
@@ -91,6 +101,11 @@ public class EntityList : IDisposable
 
     public void Add(Entity entity)
     {
+#if DEBUG
+        if (!IsActive)
+            throw new Exception($"Attempting to use an entity list that wasn't borrowed from the EntityListPool, or has already been returned!");
+#endif
+
         if (!entity.IsAlive())
             throw new Exception("Can't add entity to EntityList as it's not active.");
 

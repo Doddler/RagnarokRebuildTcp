@@ -110,6 +110,8 @@ public partial class Monster : IEntityAutoReset
     public bool WasMagicLocked;
     private bool canResetAttackedState;
 
+    private EntityValueList<int>? TotalDamageReceived;
+
     //private WorldObject searchTarget = null!;
 
     private float deadTimeout;
@@ -159,6 +161,9 @@ public partial class Monster : IEntityAutoReset
         ResetAiUpdateTime();
         Character.StopMovingImmediately();
         WasAttacked = true;
+        
+        TotalDamageReceived ??= EntityValueListPool<int>.Get();
+        TotalDamageReceived.AddOrIncreaseValue(ref di.Source, di.Damage);
     }
 
     public void MagicLock(CombatEntity src)
@@ -197,6 +202,8 @@ public partial class Monster : IEntityAutoReset
         monsterInventory = null;
         inventoryCount = 0;
         inventoryIndex = 0;
+        TotalDamageReceived?.Dispose();
+        TotalDamageReceived = null;
 
         Target = Entity.Null;
     }
@@ -252,7 +259,7 @@ public partial class Monster : IEntityAutoReset
 
         var childMon = child.Get<Monster>();
 
-        Children ??= new EntityList();
+        Children ??= EntityListPool.Get();
         Children.Add(child);
 
         if(newAiType != MonsterAiType.AiEmpty)
@@ -455,6 +462,34 @@ public partial class Monster : IEntityAutoReset
         }
     }
 
+    public void RewardMVP()
+    {
+        var maxDamage = 0;
+        WorldObject? damageDealer = null;
+        if (TotalDamageReceived == null || TotalDamageReceived.Count == 0)
+            return;
+
+        foreach (var (attacker, damage) in TotalDamageReceived)
+        {
+            if (damage < maxDamage)
+                continue;
+            if (!attacker.TryGet<WorldObject>(out var player))
+                continue;
+            if (player.State == CharacterState.Dead || Character.Map != player.Map)
+                continue;
+            damageDealer = player;
+            maxDamage = damage;
+        }
+
+        if (damageDealer == null)
+            return;
+
+        //if we're an mvp, give the attacker the effect
+        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.SendEffectOnCharacterMulti(damageDealer, DataManager.EffectIdForName["MVP"]);
+        CommandBuilder.ClearRecipients();
+    }
+
     /// <summary>
     /// This kills the monster.
     /// </summary>
@@ -486,6 +521,8 @@ public partial class Monster : IEntityAutoReset
         timeSinceLastDamage = 0;
         LastAttackRange = 0;
         CombatEntity.SetStat(CharacterStat.Disabled, 0); //if it's disabled in death it might not be able to TryRespawn
+        TotalDamageReceived?.Dispose();
+        TotalDamageReceived = null;
 
         skillState.ResetAllCooldowns();
 

@@ -102,6 +102,8 @@ public class WorldObject : IEntityAutoReset
     public int TotalMoveSteps { get; set; }
 
     public float TimeToReachNextStep => NextStepDuration - MoveProgress;
+    public float TimeOfLastMove;
+    public float TimeSinceStoppedMoving => Time.ElapsedTimeFloat - TimeOfLastMove;
 
     public QueuedAction QueuedAction { get; set; }
 
@@ -118,7 +120,7 @@ public class WorldObject : IEntityAutoReset
     //}
 
     private const float DiagonalSpeedPenalty = 0.7f;
-
+    
     public int StepsRemaining => TotalMoveSteps - MoveStep;
     public bool IsMoving => State == CharacterState.Moving;
     public bool HasMoveInProgress => WalkPath != null && WalkPath.Length > 0;
@@ -665,7 +667,7 @@ public class WorldObject : IEntityAutoReset
             StepCount++;
             Map.ChangeEntityPosition3(this, lastPosition, newPosition, true);
             Map.TriggerAreaOfEffectForCharacter(this, lastCell, newCell);
-
+            TimeOfLastMove = Time.ElapsedTimeFloat;
 
             if (!IsActive || State == CharacterState.Dead) //we died after triggering an aoe
                 return;

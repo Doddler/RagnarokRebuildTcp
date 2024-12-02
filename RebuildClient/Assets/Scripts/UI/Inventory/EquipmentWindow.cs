@@ -1,6 +1,10 @@
-﻿using Assets.Scripts.Network;
+﻿using System;
+using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.UI.Inventory
 {
@@ -8,7 +12,19 @@ namespace Assets.Scripts.UI.Inventory
     {
         public EquipWindowEntry[] EquipEntries;
         public UiPlayerSprite PlayerSprite;
-        
+        public TextMeshProUGUI AmmoType;
+
+        public override void OnPointerDown(PointerEventData eventData)
+        {
+            base.OnPointerDown(eventData);
+            var link = TMP_TextUtilities.FindIntersectingLink(AmmoType, eventData.position, null);
+            if (link < 0)
+                return;
+            var ammo = NetworkManager.Instance.PlayerState.AmmoId;
+            if(ammo > 0)
+                NetworkManager.Instance.SendUnEquipItem(ammo);
+        }
+
         public void RefreshEquipmentWindow()
         {
             var state = NetworkManager.Instance.PlayerState;
@@ -42,6 +58,15 @@ namespace Assets.Scripts.UI.Inventory
             var weapon = EquipEntries[(int)EquipSlot.Weapon];
             if(weapon.ItemId > 0 && weapon.InventoryItem.ItemData.Position == EquipPosition.BothHands)
                 EquipEntries[(int)EquipSlot.Shield].RefreshSlot(weapon.InventoryItem);
+
+            if (state.AmmoId > 0)
+            {
+                var ammo = ClientDataLoader.Instance.GetItemById(state.AmmoId);
+                AmmoType.text = $"Ammo Type: {ammo.Name} (<color=#0000FF><link=\"RemoveAmmo\">Unequip</link></color>)";
+                
+            }
+            else
+                AmmoType.text = "";
         }
 
         private void FixMultiSlotHeadgear(EquipSlot slot)

@@ -33,6 +33,7 @@ public enum PlayerStat
     Mp,
     SkillPoints,
     StatPoints,
+    Zeny,
     PlayerStatsMax
 }
 
@@ -92,6 +93,7 @@ public enum CharacterStat
 
     WeightCapacity,
     WeaponMastery,
+    EquipmentRefineDef,
     DoubleAttackChance,
     PercentVsDemon,
     PercentVsUndead,
@@ -118,6 +120,7 @@ public static class PlayerClientStatusDef
     public static PlayerStat[] PlayerUpdateData = new[]
     {
         PlayerStat.Level,
+        PlayerStat.Zeny,
         PlayerStat.Str,
         PlayerStat.Agi,
         PlayerStat.Int,

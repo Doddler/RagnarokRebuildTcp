@@ -1,556 +1,556 @@
 Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,EquipGroup,Refinable,Breakable,Sprite,DisplaySprite
-2101,Guard,Guard,3,0,0,500,300,Shield,,,0,AllJobs,Yes,No,가드,가드
-2102,Guard_,Guard,3,0,1,500,300,Shield,,,0,AllJobs,Yes,No,가드,가드
-2103,Buckler,Buckler,4,0,0,14000,600,Shield,,,0,MeleeAndBardDancer,Yes,No,버클러,버클러
-2104,Buckler_,Buckler,4,0,1,14000,600,Shield,,,0,MeleeAndBardDancer,Yes,No,버클러,버클러
-2105,Shield,Shield,6,0,0,56000,1300,Shield,,,0,Swordsman,Yes,No,쉴드,쉴드
-2106,Shield_,Shield,6,0,1,56000,1300,Shield,,,0,Swordsman,Yes,No,쉴드,쉴드
-2107,Mirror_Shield,Mirror Shield,4,5,0,60000,1000,Shield,,,0,SwordsmanStar,Yes,No,미러쉴드,미러쉴드
-2108,Mirror_Shield_,Mirror Shield,4,5,1,60000,1000,Shield,,,0,SwordsmanStar,Yes,No,미러쉴드,미러쉴드
-2109,Memory_Book,Memory Book,3,2,0,20,1000,Shield,,,0,MagePlusLinker,Yes,No,메모라이즈북,메모라이즈북
-2110,Holy_Guard,Holy Guard,5,2,0,85000,1400,Shield,,,68,Crusader,No,No,홀리가드,미러쉴드
-2111,Sacred_Mission,Sacred Mission,6,3,0,128000,1600,Shield,,,83,Crusader,Yes,Yes,신의사자,미러쉴드
-2112,Novice_Guard,Novice Guard,3,0,0,1,1,Shield,,,0,NoviceGroup,No,No,가드,가드
-2113,Novice_Shield,Novice Shield,3,0,1,5000,1000,Shield,,,40,NoviceGroup,Yes,No,초보자용쉴드,쉴드
-2114,Stone_Buckler,Stone Buckler,3,0,1,30000,1500,Shield,,,65,AllExceptNovice,Yes,No,스톤버클러,버클러
-2115,Valkyrja's_Shield,Valkyrja's Shield,3,5,1,30000,500,Shield,,,65,AllExceptNovice,Yes,No,발키리아쉴드,미러쉴드
-2116,Angel's_Guard,Angel's Guard,2,0,1,10000,400,Shield,,,20,NoviceGroup,Yes,No,천사의보호,가드
-2117,Arm_Guard,Arm Guard,5,0,0,10000,150,Shield,,,20,Ninja,Yes,No,팔목토시,가드
-2118,Arm_Guard_,Arm Guard,5,0,1,10000,150,Shield,,,20,Ninja,Yes,No,팔목토시,가드
-2119,Advanced_Arm_Guard,Advanced Arm Guard,4,5,0,40000,150,Shield,,,50,Ninja,Yes,No,팔목토시개량,가드
-2120,Advanced_Arm_Guard_,Advanced Arm Guard,4,5,1,40000,150,Shield,,,50,Ninja,Yes,No,팔목토시개량,가드
-2121,Memory_Book_,Memory Book,3,2,1,20,1000,Shield,,,0,MagePlusLinker,Yes,No,메모라이즈북,메모라이즈북
-2122,Platinum_Shield,Platinum Shield,5,5,0,10000,1200,Shield,,,68,Trans1stJob,Yes,No,플래티넘쉴드,미러쉴드
-2123,Orleans's_Server,Orleans's Server,5,2,1,10000,1000,Shield,,,55,Trans1stJob,Yes,No,오를레앙의서버,미러쉴드
-2124,Thorny_Buckler,Thorny Buckler,5,2,1,10000,1000,Shield,,,55,Trans1stJob,Yes,No,가시방패,버클러
-2125,Strong_Shield,Strong Shield,4,0,1,10000,2500,Shield,,,75,JC_087,Yes,No,스트롱쉴드,미러쉴드
-2128,Sacred_Mission_,Sacred Mission,6,3,1,128000,1600,Shield,,,83,Crusader,Yes,Yes,신의사자,미러쉴드
-2129,Exorcism_Bible,Exorcism Bible,5,0,0,20,600,Shield,,,50,Acolyte2ndJob,Yes,No,구마의성서,메모라이즈북
-2130,Cross_Shield,Cross Shield,6,0,1,20,2000,Shield,,,80,Crusader,Yes,No,크로스쉴드,미러쉴드
-2131,Magic_Bible_Vol1,Magic Bible Vol1,2,3,0,20,1000,Shield,,,70,MagePlusLinker,Yes,No,마력의서제1권,메모라이즈북
-2133,Tournament_Shield,Tournament Shield,5,0,1,20,1000,Shield,,,50,JC_080,Yes,No,토너먼트쉴드,미러쉴드
-2134,Shield_of_Naga,Shield of Naga,3,3,1,20,500,Shield,,,0,Trans2ndJob,Yes,No,나가의비늘방패,버클러
-2199,Ahura_Mazdah,Ahura Mazdah,100,99,0,1,10,Shield,,,1,AllJobs,No,Yes,아후라마즈다,버클러
-2201,Sunglasses,Sunglasses,0,0,0,5000,100,Headgear,Mid,,0,AllJobs,No,No,선글래스,선글래스
-2202,Sunglasses_,Sunglasses,0,0,1,5000,100,Headgear,Mid,,0,AllJobs,No,No,선글래스,선글래스
-2203,Glasses,Glasses,0,0,0,4000,100,Headgear,Mid,,0,AllJobs,No,No,글래스,글래스
-2204,Glasses_,Glasses,0,0,1,4000,100,Headgear,Mid,,0,AllJobs,No,No,글래스,글래스
-2205,Diver_Goggles,Diver Goggles,0,0,0,3500,100,Headgear,Mid,,0,AllJobs,No,No,물안경,물안경
-2206,Wedding_Veil,Wedding Veil,0,5,0,23000,100,Headgear,Top,,0,AllJobs,Yes,No,면사포,면사포
-2207,Fancy_Flower,Fancy Flower,0,0,0,20,100,Headgear,Top,,0,AllJobs,No,No,장식용꽃,꽃
-2208,Ribbon,Ribbon,1,3,0,800,100,Headgear,Top,,0,AllJobs,Yes,No,리본,리본
-2209,Ribbon_,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,No,리본,리본
-2210,Hair_Band,Hair Band,1,0,0,500,100,Headgear,Top,,0,AllJobs,No,No,머리띠,머리띠
-2211,Bandana,Bandana,1,0,0,400,100,Headgear,Top,,0,AllJobs,Yes,No,두건,두건
-2212,Eye_Patch,Eye Patch,0,0,0,1000,100,Headgear,Mid,,0,AllJobs,No,No,안대,안대
-2213,Kitty_Band,Kitty Band,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,고양이머리띠,고양이머리띠
-2214,Bunny_Band,Bunny Band,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,토끼머리띠,토끼머리띠
-2215,Flower_Band,Flower Band,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,꽃머리띠,꽃머리띠
-2216,Biretta,Biretta,4,0,0,9000,100,Headgear,Top,,0,Acolyte,Yes,No,비레타,비레타
-2217,Biretta_,Biretta,4,0,1,9000,100,Headgear,Top,,0,Acolyte,Yes,No,비레타,비레타
-2218,Flu_Mask,Flu Mask,0,0,0,300,100,Headgear,Bottom,,0,AllJobs,No,No,마스크,마스크
-2220,Hat,Hat,2,0,0,1000,200,Headgear,Top,,0,AllJobs,Yes,No,햇,햇
-2221,Hat_,Hat,2,0,1,1000,200,Headgear,Top,,0,AllJobs,Yes,No,햇,햇
-2222,Turban,Turban,3,0,0,4500,300,Headgear,Top,,0,AllExceptNovice,Yes,No,둥근모자,둥근모자
-2223,Turban_,Turban,3,0,1,4500,300,Headgear,Top,,0,AllExceptNovice,Yes,No,둥근모자,둥근모자
-2224,Goggles,Goggles,5,0,0,20,300,Headgear,TopMid,,0,MediumArmor,Yes,No,고글,고글
-2225,Goggles_,Goggles,5,0,1,20,300,Headgear,TopMid,,0,MediumArmor,Yes,No,고글,고글
-2226,Cap,Cap,4,0,0,12000,400,Headgear,Top,,0,MediumArmor,Yes,No,캡,캡
-2227,Cap_,Cap,4,0,1,12000,400,Headgear,Top,,0,MediumArmor,Yes,No,캡,캡
-2228,Helm,Helm,6,0,0,44000,600,Headgear,Top,,0,Swordsman,Yes,No,헬름,헬름
-2229,Helm_,Helm,6,0,1,44000,600,Headgear,Top,,0,Swordsman,Yes,No,헬름,헬름
-2230,Gemmed_Sallet,Gemmed Sallet,4,3,0,50000,500,Headgear,Top,,0,SwordUser1stJob,Yes,No,쥬얼헬름,
-2231,Gemmed_Sallet_,Gemmed Sallet,4,3,1,50000,500,Headgear,Top,,0,SwordUser1stJob,Yes,No,쥬얼헬름,
-2232,Circlet,Circlet,3,3,0,7500,300,Headgear,Top,,0,CasterGroup,Yes,No,서클릿,서클릿
-2233,Circlet_,Circlet,3,3,1,7500,300,Headgear,Top,,0,CasterGroup,Yes,No,서클릿,서클릿
-2234,Tiara,Tiara,4,0,0,20,400,Headgear,Top,,45,AllExceptNovice,Yes,No,티아라,티아라
-2235,Crown,Crown,4,0,0,20,400,Headgear,Top,,45,AllExceptNovice,Yes,No,크라운,크라운
-2236,Santa_Hat,Santa Hat,1,1,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,산타모자,산타모자
-2239,Monocle,Monocle,0,0,0,10000,100,Headgear,Mid,,0,AllJobs,No,No,외눈안경,외눈안경
-2241,Grampa_Beard,Grampa Beard,0,0,0,5000,100,Headgear,Bottom,,0,AllJobs,No,No,흰수염,흰수염
-2242,Purple_Glasses,Purple Glasses,1,0,0,24000,100,Headgear,Mid,,0,AllJobs,No,No,고급선글래스,고급선글래스
-2243,Geek_Glasses,Geek Glasses,1,0,0,20000,100,Headgear,Mid,,0,AllJobs,No,No,스핀글래스,스핀글래스
-2244,Big_Ribbon,Big Ribbon,2,3,0,15000,200,Headgear,Top,,0,AllExceptNovice,Yes,No,왕리본,왕리본
-2245,Sweet_Gent,Sweet Gent,3,0,0,15000,400,Headgear,Top,,0,AllExceptNovice,Yes,No,스위트젠틀,스위트젠틀
-2246,Golden_Gear,Golden Gear,5,0,0,20,900,Headgear,Top,,40,AllExceptNovice,Yes,Yes,골든헤드기어,골든헤드기어
-2247,Romantic_Gent,Romantic Gent,3,0,0,15000,400,Headgear,Top,,0,AllExceptNovice,Yes,No,올드스터로맨스,올드스터로맨스
-2248,Western_Grace,Western Grace,3,0,0,15000,400,Headgear,Top,,0,AllExceptNovice,Yes,No,웨스턴그레이스,웨스턴그레이스
-2249,Coronet,Coronet,3,0,0,20,300,Headgear,Top,,0,AllExceptNovice,Yes,No,코로넷,코로넷
-2250,Cute_Ribbon,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,No,머리끈,머리끈
-2251,Monk_Hat,Monk Hat,5,3,0,30000,100,Headgear,Top,,0,Acolyte,Yes,No,성직자의모자,성직자의모자
-2252,Wizard_Hat,Wizard Hat,4,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,No,위저드햇,위저드햇
-2253,Sunflower,Sunflower,1,0,0,20,100,Headgear,Top,,0,AllJobs,No,No,장식용해바라기,장식용해바라기
-2254,Angel_Wing,Angel Wing,2,3,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,천사의머리띠,천사의머리띠
-2255,Evil_Wing,Evil Wing,3,2,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,악마의머리띠,악마의머리띠
-2256,Majestic_Goat,Majestic Goat,5,0,0,20,800,Headgear,Top,,0,SwordMerchantTaekwon,Yes,No,마제스틱고우트,마제스틱고우트
-2257,Unicorn_Horn,Unicorn Horn,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,새하얀뿔,새하얀뿔
-2258,Spiky_Band,Spiky Band,6,0,0,20,1000,Headgear,Top,,50,MeleeJobTaekwon,Yes,No,샤프헤드기어,샤프헤드기어
-2259,Mini_Propeller,Mini Propeller,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,프로펠라,프로펠라
-2260,Mini_Glasses,Mini Glasses,1,0,0,28000,100,Headgear,Mid,,0,AllExceptNovice,No,No,미니글래스,미니글래스
-2261,Army_Cap,Army Cap,4,0,0,20,400,Headgear,Top,,0,SwordUser1stJob,Yes,No,프론테라군모,프론테라군모
-2262,Clown_Nose,Clown Nose,0,0,0,20,100,Headgear,Bottom,,0,AllJobs,No,No,광대코,광대코
-2263,Zorro_Masque,Zorro Masque,0,0,0,20,100,Headgear,Mid,,0,AllExceptNovice,No,No,의적안대,의적안대
-2264,Munak_Hat,Munak Hat,5,0,0,20,300,Headgear,All,,0,AllJobs,No,No,무낙모자,무낙모자
-2265,Gangster_Mask,Gangster Mask,0,0,0,20,100,Headgear,Bottom,,0,AllJobs,No,No,시위용마스크,시위용마스크
-2266,Iron_Cain,Iron Cain,1,0,0,20,300,Headgear,Bottom,,50,Swordsman,No,No,아이언케인,아이언케인
-2267,Cigarette,Cigarette,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,No,담배,담배
-2268,Pipe,Pipe,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,No,파이프담배,파이프담배
-2269,Romantic_Flower,Romantic Flower,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,No,꽃잎,꽃잎
-2270,Romantic_Leaf,Romantic Leaf,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,No,풀잎,풀잎
-2271,Jack_be_Dandy,Jack be Dandy,1,0,0,45000,100,Headgear,Top,,0,AllExceptNovice,No,No,머리안경,머리안경
-2272,Stop_Post,Stop Post,1,0,0,20,400,Headgear,Top,,0,AllJobs,Yes,No,정지표지판,정지표지판
-2273,Doctor_Band,Doctor Band,3,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,의사머리띠,의사머리띠
-2274,Ghost_Bandana,Ghost Bandana,0,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,망자의머리띠,망자의머리띠
-2275,Red_Bandana,Red Bandana,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,반다나,반다나
-2276,Angled_Glasses,Angled Glasses,1,0,0,20,100,Headgear,Mid,,0,AllJobs,No,No,도끼눈,도끼눈
-2277,Nurse_Cap,Nurse Cap,2,0,0,20,100,Headgear,Top,,0,Acolyte,Yes,No,간호모,간호모
-2278,Mr._Smile,Mr. Smile,1,0,0,60,100,Headgear,MidBottom,,0,AllJobs,No,No,스마일,스마일
-2279,Bomb_Wick,Bomb Wick,1,0,0,20,100,Headgear,Top,,0,AllJobs,No,No,심지,심지
-2280,Sakkat,Sakkat,3,0,0,20,300,Headgear,Top,,0,AllJobs,Yes,No,삿갓,삿갓
-2281,Opera_Masque,Opera Masque,2,0,0,20,200,Headgear,MidBottom,,0,AllExceptNovice,No,No,오페라가면,오페라가면
-2282,Halo,Halo,0,0,0,20,100,Headgear,Top,,0,AllJobs,No,No,영혼고리,영혼고리
-2283,Ear_Muffs,Ear Muffs,3,0,0,20,200,Headgear,Top,,0,AllJobs,Yes,No,귀마개,귀마개
-2284,Antlers,Antlers,4,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,No,사슴뿔,사슴뿔
-2285,Apple_of_Archer,Apple of Archer,0,0,0,20,200,Headgear,Top,,30,AllExceptNovice,Yes,No,명사수의사과,명사수의사과
-2286,Elven_Ears,Elven Ears,0,0,0,20,100,Headgear,Mid,,70,AllExceptNovice,No,No,요정의귀,요정의귀
-2287,Pirate_Bandana,Pirate Bandana,3,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,해적두건,해적두건
-2288,Mr._Scream,Mr. Scream,1,0,0,20,100,Headgear,MidBottom,,0,AllExceptNovice,No,No,스크래치마스크,스크래치마스크
-2289,Poo_Poo_Hat,Poo Poo Hat,0,0,0,20,700,Headgear,Top,,0,AllJobs,No,No,거시기,거시기
-2290,Funeral_Hat,Funeral Hat,1,0,0,3000,100,Headgear,Top,,0,AllJobs,No,No,장례건,장례건
-2291,Masquerade,Masquerade,0,0,0,20,100,Headgear,Mid,,0,AllExceptNovice,No,No,나비가면,나비가면
-2292,Welding_Mask,Welding Mask,2,0,0,20,300,Headgear,MidBottom,,50,Merchant,No,No,용접마스크,용접마스크
-2293,Pretend_Murdered,Pretend Murdered,1,0,0,20,100,Headgear,Top,,0,AllJobs,No,No,연극소도구,연극소도구
-2294,Stellar,Stellar,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,스타더스트,스타더스트
-2295,Blinder,Blinder,0,0,0,1500,100,Headgear,Mid,,0,AllExceptNovice,No,No,눈가리개,눈가리개
-2296,Binoculars,Binoculars,1,0,0,20,100,Headgear,Mid,,50,ArcherGroup,No,No,망원경,망원경
-2297,Goblin_Mask,Goblin Mask,1,0,0,20,100,Headgear,MidBottom,,0,AllExceptNovice,No,No,고블린족가면,고블린족가면
-2298,Green_Feeler,Green Feeler,2,0,0,20,100,Headgear,Top,,0,AllJobs,No,No,초록더듬이,초록더듬이
-2299,Orc_Helm,Orc Helm,5,0,0,20,500,Headgear,Top,,0,SwordUser1stJob,Yes,No,오크족헬름,오크족헬름
-2301,Cotton_Shirt,Cotton Shirt,1,0,0,10,100,Armor,,,0,AllJobs,Yes,No,코튼셔츠,
-2302,Cotton_Shirt_,Cotton Shirt,1,0,1,10,100,Armor,,,0,AllJobs,Yes,No,코튼셔츠,
-2303,Jacket,Jacket,2,0,0,200,200,Armor,,,0,AllJobs,Yes,No,가죽재킷,
-2304,Jacket_,Jacket,2,0,1,200,200,Armor,,,0,AllJobs,Yes,No,가죽재킷,
-2305,Adventurer's_Suit,Adventurer's Suit,3,0,0,1000,300,Armor,,,0,AllJobs,Yes,No,어드밴쳐슈츠,
-2306,Adventurer's_Suit_,Adventurer's Suit,3,0,1,1000,300,Armor,,,0,AllJobs,Yes,No,어드밴쳐슈츠,
-2307,Mantle,Mantle,4,0,0,10000,600,Armor,,,0,AllExceptNovice,Yes,No,맨틀,
-2308,Mantle_,Mantle,4,0,1,10000,600,Armor,,,0,AllExceptNovice,Yes,No,맨틀,
-2309,Coat,Coat,5,0,0,22000,1200,Armor,,,0,AllExceptNovice,Yes,No,롱코트,
-2310,Coat_,Coat,5,0,1,22000,1200,Armor,,,0,AllExceptNovice,Yes,No,롱코트,
-2311,Mink_Coat,Mink Coat,6,0,1,20,2300,Armor,,,30,AllExceptNovice,Yes,No,밍크코트,
-2312,Padded_Armor,Padded Armor,7,0,0,48000,2800,Armor,,,0,SwordUser1stJob,Yes,No,아머,
-2313,Padded_Armor_,Padded Armor,7,0,1,48000,2800,Armor,,,0,SwordUser1stJob,Yes,No,아머,
-2314,Chain_Mail,Chain Mail,8,0,0,65000,3300,Armor,,,0,SwordUser1stJob,Yes,No,메일,
-2315,Chain_Mail_,Chain Mail,8,0,1,65000,3300,Armor,,,0,SwordUser1stJob,Yes,No,메일,
-2316,Full_Plate,Full Plate,10,0,0,80000,4500,Armor,,,40,Swordsman,Yes,No,플레이트,
-2317,Full_Plate_,Full Plate,10,0,1,80000,4500,Armor,,,40,Swordsman,Yes,No,플레이트,
-2318,Lord's_Clothes,Lord's Clothes,8,5,1,20,2500,Armor,,,70,Merchant,Yes,No,로드클로스,
-2319,Glittering_Jacket,Glittering Jacket,7,5,1,20,2500,Armor,,,60,AllExceptNovice,Yes,No,글리터링클로스,
-2320,Formal_Suit,Formal Suit,5,0,1,20,300,Armor,,,0,AllExceptNovice,Yes,No,포멀드레스,
-2321,Silk_Robe,Silk Robe,3,10,0,8000,400,Armor,,,0,RobeUser,Yes,No,실크로브,
-2322,Silk_Robe_,Silk Robe,3,10,1,8000,400,Armor,,,0,RobeUser,Yes,No,실크로브,
-2323,Scapulare,Scapulare,4,0,0,6500,400,Armor,,,0,Acolyte,Yes,No,스캐퓰러,
-2324,Scapulare_,Scapulare,4,0,1,6500,400,Armor,,,0,Acolyte,Yes,No,스캐퓰러,
-2325,Saint's_Robe,Saint's Robe,6,5,0,54000,600,Armor,,,0,AcolyteMerchant,Yes,No,세인트로브,
-2326,Saint's_Robe_,Saint's Robe,6,5,1,54000,600,Armor,,,0,AcolyteMerchant,Yes,No,세인트로브,
-2327,Holy_Robe,Holy Robe,7,5,0,20,1700,Armor,,,60,Acolyte,Yes,No,홀리로브,
-2328,Wooden_Mail,Wooden Mail,4,0,0,5500,1000,Armor,,,0,Merchant2ndJob,Yes,No,우든메일,
-2329,Wooden_Mail_,Wooden Mail,4,0,1,5500,1000,Armor,,,0,Merchant2ndJob,Yes,No,우든메일,
-2330,Tights,Tights,6,0,0,71000,500,Armor,,,45,ArcherGroup,Yes,No,타이즈,
-2331,Tights_,Tights,6,0,1,71000,500,Armor,,,45,ArcherGroup,Yes,No,타이즈,
-2332,Silver_Robe,Silver Robe,4,0,0,7000,700,Armor,,,0,MagePlusLinker,Yes,No,실버로브,
-2333,Silver_Robe_,Silver Robe,4,0,1,7000,700,Armor,,,0,MagePlusLinker,Yes,No,실버로브,
-2334,Mage_Coat,Mage Coat,5,5,0,20,600,Armor,,,50,MagePlusLinker,Yes,No,매직코트,
-2335,Thief_Clothes,Thief Clothes,6,0,0,74000,100,Armor,,,0,StealthGroup,Yes,No,씨프클로스,
-2336,Thief_Clothes_,Thief Clothes,6,0,1,74000,100,Armor,,,0,StealthGroup,Yes,No,씨프클로스,
-2337,Ninja_Suit,Ninja Suit,7,3,0,20,1500,Armor,,,50,StealthGroup,Yes,No,닌자슈츠,
-2338,Wedding_Dress,Wedding Dress,0,15,0,43000,500,Armor,,,0,AllExceptNovice,Yes,No,웨딩드레스,
-2339,Pantie,Pantie,4,0,0,1000,100,Armor,,,0,AllJobs,Yes,No,삼각팬티,
-2340,Novice_Breastplate,Novice Breastplate,4,0,1,1,500,Armor,,,10,NoviceGroup,Yes,No,초보자용흉갑,
-2341,Legion_Plate_Armor,Legion Plate Armor,11,0,0,94000,5500,Armor,,,70,Crusader,Yes,No,풀플레이트아머,
-2342,Legion_Plate_Armor_,Legion Plate Armor,11,0,1,102500,5500,Armor,,,70,Crusader,Yes,No,풀플레이트아머,
-2343,Robe_of_Cast,Robe of Cast,5,4,0,124800,1100,Armor,,,75,Mage2ndPlusLinker,Yes,No,캐스팅의로브,
-2344,Lucius's_Volcano_Armor,Lucius's Volcano Armor,4,0,0,136000,2200,Armor,,,45,Merchant2ndJob,Yes,No,불의갑옷,
-2345,Lucius's_Volcano_Armor_,Lucius's Volcano Armor,4,0,1,136000,2200,Armor,,,45,AllExceptNovice,Yes,No,불의갑옷,
-2346,Saphien's_Ocean_Armor,Saphien's Ocean Armor,4,0,0,136000,2200,Armor,,,45,Merchant2ndJob,Yes,No,물의갑옷,
-2347,Saphien's_Ocean_Armor_,Saphien's Ocean Armor,4,0,1,136000,2200,Armor,,,45,AllExceptNovice,Yes,No,물의갑옷,
-2348,Aebecee's_Typhoon_Armor,Aebecee's Typhoon Armor,4,0,0,136000,2200,Armor,,,45,Merchant2ndJob,Yes,No,바람의갑옷,
-2349,Aebecee's_Typhoon_Armor_,Aebecee's Typhoon Armor,4,0,1,136000,2200,Armor,,,45,AllExceptNovice,Yes,No,바람의갑옷,
-2350,Claytos_Earth_Armor,Claytos Earth Armor,4,0,0,136000,2200,Armor,,,45,Merchant2ndJob,Yes,No,땅의갑옷,
-2351,Claytos_Earth_Armor_,Claytos Earth Armor,4,0,1,136000,2200,Armor,,,45,AllExceptNovice,Yes,No,땅의갑옷,
-2352,Novice_Ninja_Suit,Novice Ninja Suit,4,0,0,1,1,Armor,,,0,NoviceGroup,No,No,어드밴쳐슈츠,
-2353,Odin's_Blessing,Odin's Blessing,6,0,1,30000,2500,Armor,,,65,AllExceptNovice,Yes,No,오딘의축복,
-2354,Goibne's_Armor,Goibne's Armor,7,0,0,50000,3500,Armor,,,54,AllExceptNovice,Yes,No,게브네이의갑옷,
-2355,Angel's_Protection,Angel's Protection,4,20,1,10000,600,Armor,,,40,NoviceGroup,Yes,No,천사의가호,
-2357,Valkyrian_Armor,Valkyrian Armor,6,0,1,0,2800,Armor,,,1,Trans1stJob,Yes,Yes,발키리의갑옷,
-2359,Ninja_Suit_,Ninja Suit,7,3,1,20,1500,Armor,,,50,StealthGroup,Yes,No,닌자슈츠,
-2360,Robe_of_Cast_,Robe of Cast,5,4,1,124800,1100,Armor,,,75,Mage2ndPlusLinker,Yes,No,캐스팅의로브,
-2364,Meteo_Plate_Armor,Meteo Plate Armor,10,3,1,10000,3000,Armor,,,55,JC_089,Yes,No,메테오플레이트,
-2365,Orleans's_Gown,Orleans's Gown,2,0,1,10000,300,Armor,,,55,Trans1stJob,Yes,No,오를레앙의제복,
-2366,Divine_Cloth,Divine Cloth,6,0,1,10000,1500,Armor,,,55,Trans1stJob,Yes,No,디바인클로스,
-2371,Pantie_,Pantie,4,0,1,1000,100,Armor,,,0,AllJobs,Yes,No,삼각팬티,
-2372,Mage_Coat_,Mage Coat,5,5,1,20,600,Armor,,,50,MagePlusLinker,Yes,No,매직코트,
-2373,Holy_Robe_,Holy Robe,7,5,1,20,1700,Armor,,,60,Acolyte,Yes,No,홀리로브,
-2374,Diabolus_Robe,Diabolus Robe,6,5,1,20,300,Armor,,,60,JC_088,Yes,No,디아볼루스로브,
-2375,Diabolus_Armor,Diabolus Armor,7,5,1,20,600,Armor,,,60,JC_087,Yes,No,디아볼루스아머,
-2376,Assaulter_Plate,Assaulter Plate,7,2,1,10,0,Armor,,,80,SwordMerchantTaekwon,Yes,No,플레이트,
-2377,Elite_Engineer_Armor,Elite Engineer Armor,7,2,1,10,0,Armor,,,80,Merchant,Yes,No,메일,
-2378,Assassin_Robe,Assassin Robe,7,2,1,10,0,Armor,,,80,StealthGroup,Yes,No,씨프클로스,
-2379,Warlock's_Battle_Robe,Warlock's Battle Robe,3,2,1,10,0,Armor,,,80,MagePlusLinker,Yes,No,천사의가호,
-2380,Medic's_Robe,Medic's Robe,3,2,1,10,0,Armor,,,80,Acolyte,Yes,No,은혜의성의,
-2381,Elite_Archer_Suit,Elite Archer Suit,5,2,1,10,0,Armor,,,80,ArcherGroup,Yes,No,스나이핑슈츠,
-2382,Elite_Shooter_Suit,Elite Shooter Suit,5,2,1,10,0,Armor,,,80,Gunslinger,Yes,No,오를레앙의제복,
-2383,Brynhild,Brynhild,10,10,0,20,400,Armor,,,94,AllJobs,No,Yes,브륀힐트,
-2386,Chameleon_Armor,Chameleon Armor,5,0,0,20,1700,Armor,,,70,Trans2ndJob,Yes,No,카멜레온아머,
-2387,Sprint_Mail,Sprint Mail,3,0,1,20,1000,Armor,,,0,Trans2ndJob,Yes,No,스프린트메일,
-2389,Armor_of_Naga,Armor of Naga,5,2,1,20,1000,Armor,,,0,Trans2ndJob,Yes,No,나가의비늘갑옷,
-2390,Improved_Tights,Improved Tights,6,2,1,20,400,Armor,,,75,JC_085,Yes,No,개량형타이즈,
-2391,Life_Link,Life Link,9,5,1,20,3500,Armor,,,82,JC_080,Yes,No,라이프링크,
-2394,Glorious_Suit,Glorious Suit,0,0,0,20,0,Armor,,,81,AllExceptNovice,Yes,No,어드밴쳐슈츠,
-2395,Glorious_Popularized_Suit,Glorious Popularized Suit,0,0,0,20,0,Armor,,,61,AllExceptNovice,Yes,No,어드밴쳐슈츠,
-2396,Glorious_Mass-Produced_Suit,Glorious Mass-Produced Suit,0,0,0,20,0,Armor,,,0,AllExceptNovice,Yes,No,어드밴쳐슈츠,
-2401,Sandals,Sandals,1,0,0,400,200,Boots,,,0,AllJobs,Yes,No,샌들,
-2402,Sandals_,Sandals,1,0,1,400,200,Boots,,,0,AllJobs,Yes,No,샌들,
-2403,Shoes,Shoes,2,0,0,3500,400,Boots,,,0,AllExceptNovice,Yes,No,슈즈,
-2404,Shoes_,Shoes,2,0,1,3500,400,Boots,,,0,AllExceptNovice,Yes,No,슈즈,
-2405,Boots,Boots,4,0,0,18000,600,Boots,,,0,BootsUser,Yes,No,부츠,
-2406,Boots_,Boots,4,0,1,18000,600,Boots,,,0,BootsUser,Yes,No,부츠,
-2407,Crystal_Pumps,Crystal Pumps,0,10,0,20,100,Boots,,,0,AllExceptNovice,Yes,No,유리구두,
-2408,Shackles,Shackles,3,0,0,5000,3000,Boots,,,0,AllJobs,Yes,No,족쇠,
-2409,High_Heels,High Heels,2,5,0,8500,600,Boots,,,0,AllExceptNovice,Yes,No,뾰족구두,
-2410,Sleipnir,Sleipnir,5,10,0,20,3500,Boots,,,94,AllJobs,No,No,슬레이프니르,
-2411,Greaves,Greaves,5,0,0,48000,750,Boots,,,65,Swordsman2ndJob,Yes,No,그리브,
-2412,Greaves_,Greaves,5,0,1,54000,750,Boots,,,65,Swordsman2ndJob,Yes,No,그리브,
-2414,Novice_Slippers,Novice Slippers,2,0,0,1,1,Boots,,,0,NoviceGroup,No,No,샌들,
-2416,Novice_Shoes,Novice Shoes,2,0,1,35000,500,Boots,,,40,NoviceGroup,Yes,No,초보자용슈즈,
-2417,Fricco's_Shoes,Fricco's Shoes,3,0,0,30000,500,Boots,,,65,AllExceptNovice,Yes,No,프리코슈즈,
-2418,Vidar's_Boots,Vidar's Boots,4,0,0,30000,650,Boots,,,65,AllExceptNovice,Yes,No,비다르의부츠,
-2419,Goibne's_Greaves,Goibne's Greaves,4,3,0,30000,700,Boots,,,54,AllExceptNovice,Yes,No,게브네이의군화,
-2420,Angel's_Reincarnation,Angel's Reincarnation,2,0,1,10000,300,Boots,,,25,NoviceGroup,Yes,No,천사의재래,
-2421,Valkyrian_Shoes,Valkyrian Shoes,4,0,1,0,500,Boots,,,1,Trans1stJob,Yes,Yes,발키리의슈즈,
-2422,High_Fashion_Sandals,High Fashion Sandals,2,10,1,24000,200,Boots,,,40,CasterGroup,Yes,No,고급샌들,
-2423,Variant_Shoes,Variant Shoes,3,1,0,10000,500,Boots,,,85,Trans1stJob,Yes,No,배리언트슈즈,
-2424,Tidal_Shoes,Tidal Shoes,3,0,1,10000,300,Boots,,,55,Trans1stJob,Yes,No,타이달슈즈,
-2425,Black_Leather_Boots,Black Leather Boots,4,0,0,10000,500,Boots,,,55,Trans1stJob,Yes,No,검은가죽부츠,
-2426,Shadow_Walk,Shadow Walk,0,10,0,10000,2000,Boots,,,75,Trans1stJob,Yes,No,쉐도우워크,
-2429,Iron_Boots,Iron Boots,5,0,0,0,1500,Boots,,,0,MediumArmor,Yes,No,그리브,
-2430,Iron_Boots_,Iron Boots,5,0,0,0,800,Boots,,,0,NoviceCasterGroup,Yes,No,그리브,
-2432,High_Heels_,High Heels,2,5,1,8500,600,Boots,,,0,AllExceptNovice,Yes,No,뾰족구두,
-2433,Diabolus_Boots,Diabolus Boots,4,0,1,20,250,Boots,,,0,Trans2ndJob,Yes,No,디아볼루스부츠,
-2434,Black_Leather_Boots_,Black Leather Boots,4,0,1,20,500,Boots,,,55,Trans1stJob,Yes,No,검은가죽부츠,
-2437,Battle_Boots,Battle Boots,3,1,1,10,0,Boots,,,80,Gunslinger,Yes,No,안전화,
-2440,Sprint_Shoes,Sprint Shoes,2,0,1,20,300,Boots,,,0,Trans2ndJob,Yes,No,스프린트슈즈,
-2444,Glorious_Shoes,Glorious Shoes,0,0,0,20,0,Boots,,,81,AllExceptNovice,Yes,No,안전화,
-2445,Glorious_Popularized_Shoes,Glorious Popularized Shoes,0,0,0,20,0,Boots,,,61,AllExceptNovice,Yes,No,안전화,
-2446,Glorious_Mass-Produced_Shoes,Glorious Mass-Produced Shoes,0,0,0,20,0,Boots,,,0,AllExceptNovice,Yes,No,안전화,
-2501,Hood,Hood,1,0,0,1000,200,Garment,,,0,AllJobs,Yes,No,후드,
-2502,Hood_,Hood,1,0,1,1000,200,Garment,,,0,AllJobs,Yes,No,후드,
-2503,Muffler,Muffler,2,0,0,5000,400,Garment,,,0,AllExceptNovice,Yes,No,머플러,
-2504,Muffler_,Muffler,2,0,1,5000,400,Garment,,,0,AllExceptNovice,Yes,No,머플러,
-2505,Manteau,Manteau,4,0,0,32000,600,Garment,,,0,SwordUserTaekwon,Yes,No,망토,
-2506,Manteau_,Manteau,4,0,1,32000,600,Garment,,,0,SwordUserTaekwon,Yes,No,망토,
-2507,Ancient_Cape,Ancient Cape,2,0,0,82000,600,Garment,,,40,AllExceptNovice,Yes,No,옛영주의망토,
-2508,Ragamuffin_Manteau,Ragamuffin Manteau,1,10,0,56000,500,Garment,,,0,AllExceptNovice,Yes,Yes,누더기망토,
-2509,Survivor's_Manteau,Survivor's Manteau,0,5,0,20000,550,Garment,,,75,MagePlusLinker,Yes,No,생존의망토,
-2510,Somber_Novice_Hood,Somber Novice Hood,2,0,0,1,1,Garment,,,0,NoviceGroup,No,No,후드,
-2512,Novice_Manteau,Novice Manteau,2,0,1,50000,500,Garment,,,40,NoviceGroup,Yes,No,초보자용망토,
-2513,Heavenly_Maiden_Robe,Heavenly Maiden Robe,3,0,1,20,500,Garment,,,80,AllExceptNovice,Yes,No,목보호대,
-2514,Pauldron,Pauldron,5,0,1,20,800,Garment,,,80,SwordUser1stJob,Yes,No,폴드런,
-2515,Eagle_Wing,Eagle Wing,1,0,1,20000,300,Garment,,,85,MagePlusLinker,Yes,No,윙오브이글,
-2516,Falcon_Muffler,Falcon Muffler,3,0,0,30000,400,Garment,,,65,AllExceptNovice,Yes,No,매의날개옷,
-2517,Vali's_Manteau,Vali's Manteau,4,0,0,30000,600,Garment,,,65,AllExceptNovice,Yes,No,발리의망토,
-2518,Morpheus's_Shawl,Morpheus's Shawl,3,3,0,30000,600,Garment,,,33,AllExceptNovice,Yes,No,모르피셔스쇼올,
-2519,Morrigane's_Manteau,Morrigane's Manteau,3,0,0,30000,600,Garment,,,61,AllExceptNovice,Yes,No,모리아네의망토,
-2520,Goibne's_Spaulders,Goibne's Spaulders,3,2,0,30000,700,Garment,,,54,AllExceptNovice,Yes,No,게브네이어깨장식,
-2521,Angel's_Cardigan,Angel's Cardigan,2,0,1,10000,400,Garment,,,20,NoviceGroup,Yes,No,천사의온기,
-2522,Undershirt,Undershirt,2,1,0,20000,150,Garment,,,1,AllJobs,Yes,No,런닝셔츠,
-2523,Undershirt_,Undershirt,2,1,1,20000,150,Garment,,,1,AllJobs,Yes,No,런닝셔츠,
-2524,Valkyrian_Manteau,Valkyrian Manteau,3,0,1,0,500,Garment,,,1,Trans1stJob,Yes,Yes,발키리의망토,
-2525,Ancient_Cape_,Ancient Cape,2,0,1,82000,600,Garment,,,40,AllExceptNovice,Yes,No,옛영주의망토,
-2527,Dragon_Breath,Dragon Breath,4,0,1,10000,600,Garment,,,48,Trans1stJob,Yes,No,드래곤의숨결,
-2528,Wool_Scarf,Wool Scarf,3,4,1,10000,500,Garment,,,55,Trans1stJob,Yes,No,울스카프,
-2529,Rider_Insignia,Rider Insignia,4,0,0,10000,500,Garment,,,55,Trans1stJob,Yes,No,라이더휘장,
-2530,Rider_Insignia_,Rider Insignia,4,0,1,10000,500,Garment,,,55,Trans1stJob,Yes,No,라이더휘장,
-2531,Ulfhedinn,Ulfhedinn,3,0,1,10000,700,Garment,,,70,JC_087,Yes,No,울프헤딘,
-2532,Mithril_Magic_Cape,Mithril Magic Cape,3,3,1,10000,400,Garment,,,70,JC_088,Yes,No,미스릴마법망토,
-2536,Skin_of_Ventus,Skin of Ventus,2,2,1,20,250,Garment,,,0,AllExceptNovice,Yes,No,스킨오브벤투스,
-2537,Diabolus_Manteau,Diabolus Manteau,5,0,1,20,250,Garment,,,0,Trans2ndJob,Yes,No,디아볼루스망토,
-2540,Sheriff's_Manteau,Sheriff's Manteau,3,1,1,10,0,Garment,,,80,Gunslinger,Yes,No,누더기망토,
-2541,Asprika,Asprika,5,5,0,20,400,Garment,,,94,AllJobs,No,Yes,아스프리카,
-2542,Flame_Manteau_of_Naght_Sieger,Flame Manteau of Naght Sieger,4,2,1,20,500,Garment,,,70,Trans1stJob,Yes,No,옛영주의망토,
-2544,Leather_of_Tendrilion,Leather of Tendrilion,3,0,1,20,500,Garment,,,0,Trans2ndJob,Yes,No,텐드릴리온의가죽,
-2549,Glorious_Muffler,Glorious Muffler,0,0,0,20,0,Garment,,,80,AllExceptNovice,Yes,No,울프헤딘,
-2601,Ring,Ring,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,Yes,링,
-2602,Earring,Earring,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,Yes,이어링,
-2603,Necklace,Necklace,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,Yes,네클리스,
-2604,Glove,Glove,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,Yes,글러브,
-2605,Brooch,Brooch,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,Yes,브로치,
-2607,Clip,Clip,0,0,1,30000,100,Accessory,,,0,AllJobs,No,Yes,클립,
-2608,Rosary,Rosary,0,5,0,15000,100,Accessory,,,20,AllExceptNovice,No,Yes,로자리,
-2609,Skull_Ring,Skull Ring,0,0,0,10000,100,Accessory,,,0,AllJobs,No,Yes,해골반지,
-2610,Gold_Ring,Gold Ring,0,0,0,30000,100,Accessory,,,0,AllJobs,No,Yes,금반지,
-2611,Silver_Ring,Silver Ring,0,0,0,20000,100,Accessory,,,0,AllJobs,No,Yes,은반지,
-2612,Flower_Ring,Flower Ring,0,0,0,1500,100,Accessory,,,0,AllJobs,No,Yes,꽃반지,
-2613,Diamond_Ring,Diamond Ring,0,0,0,45000,100,Accessory,,,0,AllJobs,No,Yes,다이아반지,
-2614,Eye_of_Dullahan,Eye of Dullahan,0,0,0,90000,100,Accessory,,,50,AllExceptNovice,No,Yes,듀라한아이,
-2615,Safety_Ring,Safety Ring,3,3,0,75000,100,Accessory,,,40,AllExceptNovice,No,Yes,세이프티링,
-2616,Critical_Ring,Critical Ring,0,0,0,75000,100,Accessory,,,40,AllExceptNovice,No,Yes,크리티컬링,
-2617,Celebrant's_Mitten,Celebrant's Mitten,1,0,0,2,100,Accessory,,,35,AllExceptNovice,No,Yes,신관의장갑,
-2618,Matyr's_Leash,Matyr's Leash,1,0,0,2,100,Accessory,,,35,AllExceptNovice,No,Yes,마타의목걸이,
-2619,Bow_Thimble,Bow Thimble,0,0,0,10000,100,Accessory,,,65,ArcherGroup,No,No,활골무,
-2620,Rogue's_Treasure,Rogue's Treasure,0,0,0,10000,100,Accessory,,,70,StealthGroup,No,No,도적의반지,
-2621,Ring_,Ring,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,Yes,링,
-2622,Earring_,Earring,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,Yes,이어링,
-2623,Necklace_,Necklace,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,Yes,네클리스,
-2624,Glove_,Glove,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,Yes,글러브,
-2625,Brooch_,Brooch,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,Yes,브로치,
-2626,Rosary_,Rosary,0,3,1,15000,100,Accessory,,,90,AllExceptNovice,No,Yes,로자리,
-2627,Belt,Belt,0,0,1,20000,1200,Accessory,,,25,AllJobs,No,Yes,벨트,
-2628,Novice_Armlet,Novice Armlet,0,0,1,400,200,Accessory,,,1,NoviceGroup,No,Yes,노비스암릿,
-2629,Megingjard,Megingjard,2,7,0,20,8000,Accessory,,,94,AllJobs,No,Yes,메긴기오르드,
-2630,Brisingamen,Brisingamen,1,5,0,20,1500,Accessory,,,94,AllJobs,No,Yes,브리싱가멘,
-2634,Wedding_Ring,Wedding Ring,0,0,0,0,0,Accessory,,,0,AllJobs,No,Yes,신랑결혼반지,
-2635,Wedding_Ring_,Wedding Ring,0,0,0,0,0,Accessory,,,0,AllJobs,No,Yes,신부결혼반지,
-2642,Serin's_Gold_Ring,Serin's Gold Ring,0,0,0,20,0,Accessory,,,0,AllJobs,No,Yes,세린의금반지,
-2643,Serin's_Gold_Ring_,Serin's Gold Ring,0,0,0,45000,100,Accessory,,,0,AllJobs,No,Yes,세린의금반지,
-2644,The_Sign,The Sign,0,0,0,2,0,Accessory,,,0,AllJobs,No,Yes,더사인_,
-2647,Nile_Rose,Nile Rose,0,0,1,2,100,Accessory,,,0,AllJobs,No,Yes,나일로즈,
-2648,Morpheus's_Ring,Morpheus's Ring,0,0,0,30000,100,Accessory,,,33,AllExceptNovice,No,Yes,모르피셔스반지,
-2649,Morpheus's_Bracelet,Morpheus's Bracelet,0,0,0,30000,100,Accessory,,,33,AllExceptNovice,No,Yes,모르피셔스팔찌,
-2650,Morrigane's_Belt,Morrigane's Belt,0,0,0,30000,200,Accessory,,,61,AllExceptNovice,No,Yes,모리아네의벨트,
-2651,Morrigane's_Pendant,Morrigane's Pendant,0,0,0,30000,200,Accessory,,,61,AllExceptNovice,No,Yes,모리아네팬던트,
-2652,Cursed_Brooch,Cursed Brooch,0,0,0,20,100,Accessory,,,40,AllJobs,No,Yes,저주행운브로치,
-2654,Shinobi_Sash,Shinobi Sash,1,1,0,20000,300,Accessory,,,30,StealthGroup,No,Yes,시노비의허리띠,
-2655,Bloodied_Shackle_Ball,Bloodied Shackle Ball,0,0,0,50000,4000,Accessory,,,1,AllExceptNovice,No,Yes,피묻은철구,
-2656,Armor_Charm,Armor Charm,0,0,0,20000,1000,Accessory,,,1,SwordUser1stJob,No,Yes,하이퍼체인저,
-2657,Laboratory_Permit,Laboratory Permit,0,0,0,20,100,Accessory,,,1,AllJobs,No,Yes,출입카드,
-2658,Nile_Rose_,Nile Rose,0,0,1,2,100,Accessory,,,0,AllJobs,No,Yes,나일로즈,
-2659,Vesper_Core_01,Vesper Core 01,1,3,0,20,100,Accessory,,,1,Trans2ndJob,No,Yes,베스퍼코어,
-2660,Vesper_Core_02,Vesper Core 02,1,3,0,20,100,Accessory,,,1,Trans2ndJob,No,Yes,베스퍼코어,
-2661,Vesper_Core_03,Vesper Core 03,1,3,0,20,100,Accessory,,,1,Trans2ndJob,No,Yes,베스퍼코어,
-2662,Vesper_Core_04,Vesper Core 04,1,3,0,20,100,Accessory,,,1,Trans2ndJob,No,Yes,베스퍼코어,
-2671,Bow_Thimble_,Bow Thimble,0,0,1,10000,100,Accessory,,,65,ArcherGroup,No,No,활골무,
-2677,Spiritual_Ring,Spiritual Ring,0,0,0,20,100,Accessory,,,0,AllJobs,No,Yes,스피리츄얼링,
-2678,Ring_of_Flame_Lord,Ring of Flame Lord,0,0,0,20,100,Accessory,,,0,Trans2ndJob,No,Yes,링오브플레임로드,
-2679,Ring_of_Resonance,Ring of Resonance,2,2,0,20,100,Accessory,,,0,Trans2ndJob,No,Yes,링오브레조넌스,
-2680,Lesser_Elemental_Ring,Lesser Elemental Ring,0,0,0,20,100,Accessory,,,0,AllJobs,No,Yes,스피리츄얼링,
-2700,Red_Silk_Seal,Red Silk Seal,0,0,0,10000,100,Accessory,,,60,JC_080,No,Yes,봉인의붉은비단,
-2701,Orleans's_Glove,Orleans's Glove,0,0,1,10000,100,Accessory,,,90,Trans1stJob,No,Yes,오를레앙의장갑,
-2702,Bison_Horn,Bison Horn,0,0,1,10000,100,Accessory,,,90,Trans1stJob,No,Yes,들소의뿔,
-2703,Expert_Ring,Expert Ring,0,0,1,10000,150,Accessory,,,50,Trans1stJob,No,Yes,익스퍼트링,
-2707,Gusli,Gusli,0,0,0,20,100,Accessory,,,0,AllJobs,No,Yes,GUSLI,
-2715,Skull_Ring_,Skull Ring,0,0,1,10000,100,Accessory,,,0,AllJobs,No,Yes,해골반지,
-2716,Librarian_Glove,Librarian Glove,0,0,1,20,100,Accessory,,,80,Mage2ndPlusLinker,No,Yes,사서의장갑,
-2717,Pocket_Watch,Pocket Watch,1,0,0,20,200,Accessory,,,80,MagePlusLinker,No,Yes,회중시계_,
-2718,Lunatic_Brooch,Lunatic Brooch,0,0,1,20,200,Accessory,,,65,ArcherGroup,No,Yes,루나틱브로치,
-2719,Iron_Wrist,Iron Wrist,1,0,0,20,700,Accessory,,,50,JC_078,No,Yes,아이언리스트,
-2720,Medal_of_Honor_(Swordman),Medal of Honor (Swordman),1,0,0,20,0,Accessory,,,70,SwordsmanStar,No,Yes,훈장_검사,
-2721,Medal_of_Honor_(Thief),Medal of Honor (Thief),1,0,0,20,0,Accessory,,,70,StealthGroup,No,Yes,훈장_도둑,
-2722,Medal_of_Honor_(Acolyte),Medal of Honor (Acolyte),1,6,0,20,0,Accessory,,,70,Acolyte,No,Yes,훈장_복사,
-2723,Medal_of_Honor_(Mage),Medal of Honor (Mage),7,0,0,20,0,Accessory,,,70,MagePlusLinker,No,Yes,훈장_마법사,
-2724,Medal_of_Honor_(Archer),Medal of Honor (Archer),1,0,0,20,0,Accessory,,,70,ArcherGroup,No,Yes,훈장_궁수,
-2725,Medal_of_Honor_(Merchant),Medal of Honor (Merchant),1,0,0,20,0,Accessory,,,70,Merchant,No,Yes,훈장_상인,
-2728,Cursed_Hand,Cursed Hand,0,0,1,20,50,Accessory,,,80,AllExceptNovice,No,Yes,저주받은손,
-2729,Diabolus_Ring,Diabolus Ring,0,0,1,20,50,Accessory,,,0,Trans2ndJob,No,Yes,디아볼루스링,
-2730,Seal_of_Continental_Guard,Seal of Continental Guard,0,0,1,20,50,Accessory,,,80,AllExceptNovice,No,Yes,컨티넨탈가드인장,
-2731,Rune_Spellstone,Rune Spellstone,0,0,1,20,50,Accessory,,,80,AllExceptNovice,No,Yes,룬문자주문석,
-2732,Death_Loop,Death Loop,0,0,1,20,50,Accessory,,,80,AllExceptNovice,No,Yes,죽음의고리,
-2733,Medal_of_Honor,Medal of Honor,1,0,0,20,0,Accessory,,,70,Gunslinger,No,Yes,전투휘장,
-2743,Angelic_Ring,Angelic Ring,0,2,0,20,100,Accessory,,,70,Trans2ndJob,No,Yes,앤젤릭링,
-2744,Sprint_Ring,Sprint Ring,0,0,0,20,100,Accessory,,,0,Trans2ndJob,No,Yes,스프린트반지,
-2745,Pinguicula_Corsage,Pinguicula Corsage,0,2,1,20,200,Accessory,,,0,Trans2ndJob,No,Yes,핀귀큘라코르사주,
-2748,Cursed_Star,Cursed Star,0,3,0,20,200,Accessory,,,84,JC_085,No,Yes,커즈드스타,
-2749,Linen_Glove,Linen Glove,1,1,1,20,120,Accessory,,,90,Trans2ndJob,No,Yes,리넨글러브,
-2765,Novice_Figure,Novice Figure,0,0,0,0,100,Accessory,,,0,AllJobs,No,Yes,피규어,
-2766,Swordman_Figure,Swordman Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,Yes,검사피규어,
-2767,Acolyte_Figure,Acolyte Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,Yes,복사피규어,
-2768,Mage_Figure,Mage Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,Yes,마술사피규어,
-2769,Archer_Figure,Archer Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,Yes,궁수피규어,
-2770,Thief_Figure,Thief Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,Yes,도둑피규어,
-2771,Merchant_Figure,Merchant Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,Yes,상인피규어,
-2772,Glorious_Ring,Glorious Ring,0,0,0,20,0,Accessory,,,81,AllExceptNovice,No,Yes,모르피셔스반지,
-2773,Glorious_Popularized_Ring,Glorious Popularized Ring,0,0,0,20,0,Accessory,,,61,AllExceptNovice,No,Yes,모르피셔스반지,
-2774,Glorious_Mass-Produced_Ring,Glorious Mass-Produced Ring,0,0,0,20,0,Accessory,,,0,AllExceptNovice,No,Yes,모르피셔스반지,
-2775,Lure,Lure,0,0,0,20,100,Accessory,,,0,AllJobs,No,Yes,멋쟁이지렁이,
-5001,Headset,Headset,3,0,0,20,200,Headgear,Top,,1,AllExceptNovice,Yes,No,헤드폰,헤드폰
-5002,Jewel_Crown,Jewel Crown,4,3,0,20,600,Headgear,Top,,60,SwordUser1stJob,Yes,No,쥬얼크라운,쥬얼크라운
-5003,Joker_Jester,Joker Jester,1,5,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,광대모자,광대모자
-5004,Oxygen_Mask,Oxygen Mask,0,0,0,20,200,Headgear,Bottom,,0,AllExceptNovice,No,No,산소마스크,산소마스크
-5005,Gas_Mask,Gas Mask,1,0,0,20,100,Headgear,MidBottom,,0,AllExceptNovice,No,No,가스마스크,가스마스크
-5006,Machoman's_Glasses,Machoman's Glasses,1,0,0,36000,100,Headgear,Mid,,0,AllExceptNovice,No,No,하트파운데이션,하트파운데이션
-5007,Grand_Circlet,Grand Circlet,3,4,0,20,200,Headgear,Top,,55,AllExceptNovice,Yes,No,로드서클릿,로드서클릿
-5008,Puppy_Love,Puppy Love,1,0,0,20,100,Headgear,Top,,0,AllExceptNovice,No,No,풋사랑,풋사랑
-5009,Safety_Helmet,Safety Helmet,3,3,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,안전모,안전모
-5010,Indian_Fillet,Indian Fillet,3,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,원주민머리띠,원주민머리띠
-5011,Aerial,Aerial,3,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,안테나,안테나
-5012,Ph.D_Hat,Ph.D Hat,3,0,0,20,200,Headgear,Top,,0,AllExceptNovice,Yes,No,학사모,학사모
-5013,Lord_Kaho's_Horns,Lord Kaho's Horns,5,10,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,로드카호의뿔,로드카호의뿔
-5014,Fin_Helm,Fin Helm,2,0,0,20,300,Headgear,Mid,,65,Swordsman,No,No,핀헬름,핀헬름
-5015,Egg_Shell,Egg Shell,3,0,0,20,200,Headgear,Top,,0,AllJobs,No,No,장식용알껍질,장식용알껍질
-5016,Boy's_Cap,Boy's Cap,2,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,학생모,학생모
-5017,Bone_Helm,Bone Helm,7,0,0,20,800,Headgear,Top,,70,Merchant,Yes,No,본헬름,본헬름
-5018,Feather_Bonnet,Feather Bonnet,4,0,0,20,300,Headgear,Top,,0,ArcherGroup,Yes,No,깃털모자,깃털모자
-5019,Corsair,Corsair,5,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,No,커세어,커세어
-5021,Grief_for_Greed,Grief for Greed,4,0,0,20,1200,Headgear,Top,,38,Merchant,Yes,No,돈잃은자의마음,돈잃은자의마음
-5022,Hat_of_the_Sun_God,Hat of the Sun God,4,0,0,20,2400,Headgear,TopMid,,0,SecondJob,Yes,No,태양신의모자,태양신의모자
-5023,Parcel_Hat,Parcel Hat,0,0,0,20,1000,Headgear,Top,,0,Merchant,Yes,No,보따리모,보따리모
-5024,Cake_Hat,Cake Hat,1,0,0,20,1000,Headgear,Top,,0,AllJobs,Yes,No,케이크모자,케이크모자
-5025,Helm_of_Angel,Helm of Angel,5,3,0,20,1600,Headgear,Top,,74,SecondJob,Yes,No,천사의투구,천사의투구
-5026,Chef_Hat,Chef Hat,1,0,0,20,300,Headgear,Top,,50,AllExceptNovice,Yes,No,요리사의모자,요리사의모자
-5027,Mage_Hat,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,No,마법사의모자,마법사의모자
-5028,Candle,Candle,0,0,0,20,150,Headgear,Top,,0,AllJobs,Yes,No,촛불,촛불
-5029,Spore_Hat,Spore Hat,3,0,0,20,900,Headgear,Top,,20,AllExceptNovice,Yes,No,스포아모자,스포아모자
-5030,Panda_Hat,Panda Hat,3,0,0,20,800,Headgear,Top,,40,AllExceptNovice,Yes,No,팬더곰모자,팬더곰모자
-5031,Mine_Hat,Mine Hat,4,0,0,20,1500,Headgear,Top,,55,Melee1stJob,Yes,No,광산헬멧,광산헬멧
-5032,Sunday_Hat,Sunday Hat,1,0,0,20,800,Headgear,Top,,0,AllExceptNovice,Yes,No,나들이모자,나들이모자
-5033,Raccoon_Hat,Raccoon Hat,3,0,0,20,900,Headgear,Top,,50,AllExceptNovice,Yes,No,너구리모자,너구리모자
-5034,Bulb_Band,Bulb Band,0,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,No,전구머리띠,전구머리띠
-5035,Poring_Hat,Poring Hat,2,0,0,20,700,Headgear,Top,,38,AllExceptNovice,Yes,No,포링모자,포링모자
-5036,Cross_Hat,Cross Hat,1,0,0,20,250,Headgear,Top,,10,AllExceptNovice,Yes,No,십자머리띠,십자머리띠
-5037,Nut_Shell,Nut Shell,4,0,0,20,150,Headgear,Top,,5,AllJobs,No,No,열매껍질,열매껍질
-5038,Deviruchi_Hat,Deviruchi Hat,2,0,0,20,800,Headgear,Top,,64,AllExceptNovice,Yes,No,새끼악마모자,새끼악마모자
-5039,Rainbow_Eggshell,Rainbow Eggshell,4,0,0,20,400,Headgear,Top,,19,AllJobs,No,No,알록달록알껍질,알록달록알껍질
-5040,Blush,Blush,0,0,0,20,100,Headgear,Mid,,0,AllJobs,No,No,발그레,발그레
-5041,Heart_Hairpin,Heart Hairpin,0,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,하트머리핀,하트머리핀
-5042,Bao_Bao,Bao Bao,0,0,0,20,150,Headgear,Top,,14,AllExceptNovice,Yes,No,머리포자기,머리포자기
-5043,Opera_Phantom_Mask,Opera Phantom Mask,1,0,0,20,200,Headgear,Mid,,20,AllExceptNovice,No,No,오페라유령가면,오페라유령가면
-5045,Magician_Hat,Magician Hat,3,0,0,20,500,Headgear,Top,,50,CasterGroup,Yes,No,마술사의모자,마술사의모자
-5046,Bongun_Hat,Bongun Hat,5,0,0,20,300,Headgear,All,,0,AllJobs,No,No,본건모자,본건모자
-5047,Fashionable_Glasses,Fashionable Glasses,0,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,패션선글래스,패션선글래스
-5048,Crescent_Hairpin,Crescent Hairpin,0,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,초승달머리핀,초승달머리핀
-5049,Striped_Hairband,Striped Hairband,1,0,0,20,150,Headgear,Top,,0,AllJobs,No,No,줄무늬머리띠,줄무늬머리띠
-5050,Wonder_Nutshell,Wonder Nutshell,5,0,0,20,300,Headgear,Top,,30,AllJobs,No,No,신비한열매껍질,신비한열매껍질
-5052,Blue_Hairband,Blue Hairband,1,0,0,20,150,Headgear,Top,,0,AllJobs,Yes,No,청색머리띠,청색머리띠
-5053,Sphinx_Hat,Sphinx Hat,5,0,0,20,3000,Headgear,TopBottom,,65,Swordsman,No,No,스핑크스모자,스핑크스모자
-5055,Novice_Eggshell,Novice Eggshell,3,0,0,1,1,Headgear,Top,,0,NoviceGroup,No,No,장식용알껍질,장식용알껍질
-5057,Black_Cat_Ears,Black Cat Ears,2,0,0,16000,200,Headgear,Top,,45,AllJobs,Yes,No,검은고양이귀,검은고양이귀
-5058,Drooping_Cat,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,No,늘어진고양이,늘어진고양이
-5059,Teddybear_Hat,Teddybear Hat,3,0,0,20,800,Headgear,Top,,50,AllJobs,Yes,No,곰돌이모자,곰돌이모자
-5060,Party_Hat,Party Hat,3,0,0,20,300,Headgear,Top,,0,AllJobs,Yes,No,꼬깔모자,꼬깔모자
-5061,Flower_Hairpin,Flower Hairpin,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,꽃머리핀,꽃머리핀
-5062,Straw_Hat,Straw Hat,3,0,0,20,200,Headgear,Top,,50,AllJobs,Yes,No,밀짚모자,밀짚모자
-5063,Giant_Band_Aid,Giant Band Aid,1,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,반창고,반창고
-5064,Smokie_Leaf,Smokie Leaf,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,나뭇잎투구,나뭇잎투구
-5065,Blue_Fish,Blue Fish,2,0,0,20,500,Headgear,Top,,50,AllJobs,Yes,No,생선모자,생선모자
-5066,Succubus_Horn,Succubus Horn,4,10,0,20,800,Headgear,Top,,70,AllExceptNovice,Yes,No,서큐버스뿔,서큐버스뿔
-5067,Sombrero,Sombrero,4,0,0,20,350,Headgear,Top,,0,AllExceptNovice,Yes,No,솜브레로,솜브레로
-5068,Evil_Wing_Ears,Evil Wing Ears,1,0,0,20,100,Headgear,Mid,,70,AllJobs,No,No,악마날개귀,악마날개귀
-5069,Kitsune_Mask,Kitsune Mask,1,0,0,20,300,Headgear,Top,,0,AllExceptNovice,Yes,No,여우가면,여우가면
-5070,Hot-Blooded_Headband,Hot-Blooded Headband,1,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,열혈머리띠,열혈머리띠
-5071,Indian_Headband,Indian Headband,1,0,0,20,200,Headgear,Top,,0,AllExceptNovice,Yes,No,인디안머리띠,인디안머리띠
-5072,Incubus_Horn,Incubus Horn,4,10,0,20,800,Headgear,Top,,70,AllExceptNovice,Yes,No,인큐버스뿔,인큐버스뿔
-5073,Model_Training_Hat,Model Training Hat,2,0,0,20,700,Headgear,Top,,0,AllExceptNovice,Yes,No,자세교정모자,자세교정모자
-5074,Angel_Wing_Ears,Angel Wing Ears,1,0,0,20,100,Headgear,Mid,,70,AllJobs,No,No,천사날개귀,천사날개귀
-5075,Cowboy_Hat,Cowboy Hat,4,0,0,20,500,Headgear,Top,,0,AllJobs,Yes,No,카우보이모자,카우보이모자
-5076,Beanie,Beanie,2,0,0,20,350,Headgear,Top,,0,AllJobs,Yes,No,털모자,털모자
-5077,Tulip_Hairpin,Tulip Hairpin,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,튤립머리핀,튤립머리핀
-5078,Sea_Otter_Hat,Sea Otter Hat,3,0,0,20,800,Headgear,Top,,50,AllJobs,Yes,No,해달모자,해달모자
-5079,X_Hairpin,X Hairpin,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,X자머리핀,X자머리핀
-5080,Crown_of_Ancient_Queen,Crown of Ancient Queen,4,0,0,20,400,Headgear,Top,,45,AllJobs,Yes,No,여왕의투구,여왕의투구
-5081,Crown_of_Mistress,Crown of Mistress,0,0,0,20,100,Headgear,Top,,75,AllExceptNovice,Yes,Yes,미스트레스왕관,미스트레스왕관
-5082,Decorative_Mushroom,Decorative Mushroom,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,버섯머리띠,버섯머리띠
-5083,Red_Ribbon,Red Ribbon,1,10,0,20,200,Headgear,Top,,45,AllJobs,Yes,No,빨간테일리본,빨간테일리본
-5084,Lazy_Smokie,Lazy Smokie,1,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,No,귀찮은너구리,귀찮은너구리
-5085,Small_Ribbons,Small Ribbons,1,0,0,20,100,Headgear,Mid,,45,AllJobs,No,No,양쪽귀밑리본,양쪽귀밑리본
-5086,Alarm_Mask,Alarm Mask,2,0,0,20,100,Headgear,MidBottom,,0,AllExceptNovice,No,No,알람가면,알람가면
-5087,Poker_Face,Poker Face,1,0,0,20,100,Headgear,MidBottom,,0,AllJobs,No,No,고블린가면1호,고블린가면1호
-5088,Surprised_Mask,Surprised Mask,1,0,0,20,100,Headgear,MidBottom,,0,AllJobs,No,No,고블린가면2호,고블린가면2호
-5089,Annoyed_Mask,Annoyed Mask,1,0,0,20,100,Headgear,MidBottom,,0,AllJobs,No,No,고블린가면3호,고블린가면3호
-5090,Goblin_Leader_Mask,Goblin Leader Mask,2,0,0,20,100,Headgear,MidBottom,,0,AllJobs,No,No,고블린가면4호,고블린가면4호
-5091,Decorative_Golden_Bell,Decorative Golden Bell,2,0,0,20,200,Headgear,TopMid,,35,AllExceptNovice,Yes,No,대형금방울,대형금방울
-5092,Coif,Coif,5,0,0,150000,300,Headgear,TopMid,,65,PriestAssassin,Yes,No,수녀모자,수녀모자
-5093,Coif_,Coif,5,0,1,150000,300,Headgear,TopMid,,65,PriestAssassin,Yes,No,수녀모자,수녀모자
-5094,Orc_Hero_Helm,Orc Hero Helm,5,0,0,500000,900,Headgear,TopMid,,55,AllExceptNovice,Yes,No,오크히어로투구,오크히어로투구
-5096,Assassin_Mask,Assassin Mask,0,0,0,20,100,Headgear,Bottom,,70,PriestAssassin,No,No,어새신마스크,어새신마스크
-5097,Holiday_Hat,Holiday Hat,0,0,0,0,400,Headgear,Top,,0,AllJobs,Yes,No,꼬깔모자_,꼬깔모자
-5104,Dark_Blinder,Dark Blinder,0,0,0,20,100,Headgear,Mid,,0,AllExceptNovice,No,No,검은눈가리개,검은눈가리개
-5107,Crunch_Toast,Crunch Toast,0,0,0,20,50,Headgear,Bottom,,0,AllJobs,No,No,토스트,토스트
-5108,Detective's_Cap,Detective's Cap,3,0,1,20,350,Headgear,Top,,0,AllJobs,Yes,No,탐정모자,탐정모자
-5109,Red_Bonnet,Red Bonnet,2,0,0,20,400,Headgear,Top,,0,AllJobs,Yes,No,차양모자,차양모자
-5110,Baby_Pacifier,Baby Pacifier,0,0,0,20,50,Headgear,Bottom,,0,AllJobs,No,No,젖꼭지,젖꼭지
-5111,Galapago_Cap,Galapago Cap,2,0,0,20,500,Headgear,Top,,55,AllJobs,Yes,No,오리모자,오리모자
-5112,Super_Novice_Hat,Super Novice Hat,4,0,0,8500,400,Headgear,Top,,40,NoviceGroup,Yes,No,슈노모자,슈노모자
-5113,Angry_Snarl,Angry Snarl,0,0,0,20,50,Headgear,Bottom,,0,AllJobs,No,No,분노입,분노입
-5114,Bucket_Hat,Bucket Hat,3,0,0,6000,300,Headgear,Top,,0,AllJobs,Yes,No,벙거지모자,벙거지모자
-5115,Winter_Hat,Winter Hat,3,0,0,20,500,Headgear,Top,,0,AllJobs,Yes,No,방한모자,방한모자
-5116,Banana_Hat,Banana Hat,1,0,0,20,200,Headgear,Top,,0,AllJobs,Yes,No,바나나모자,바나나모자
-5117,Mystic_Rose,Mystic Rose,0,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,미스틱로즈,미스틱로즈
-5118,Puppy_Headband,Puppy Headband,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,강아지귀,강아지귀
-5119,Super_Novice_Hat_,Super Novice Hat,4,0,1,8500,400,Headgear,Top,,40,NoviceGroup,Yes,No,슈노모자,슈노모자
-5120,Bucket_Hat_,Bucket Hat,3,0,1,6000,300,Headgear,Top,,0,AllJobs,Yes,No,벙거지모자,벙거지모자
-5121,Zealotus_Mask,Zealotus Mask,3,0,0,20,400,Headgear,TopMid,,70,AllExceptNovice,Yes,No,지르타스가면,지르타스가면
-5122,Magni's_Cap,Magni's Cap,5,0,0,30000,1000,Headgear,Top,,65,AllExceptNovice,Yes,No,메긴캡,메긴캡
-5123,Ulle's_Cap,Ulle's Cap,3,0,1,30000,500,Headgear,Top,,65,AllExceptNovice,Yes,No,울캡,울캡
-5124,Fricca's_Circlet,Fricca's Circlet,3,10,0,30000,300,Headgear,Top,,65,AllExceptNovice,Yes,No,프리카서클릿,프리카서클릿
-5125,Angel's_Kiss,Angel's Kiss,3,0,1,10000,300,Headgear,Top,,50,NoviceGroup,Yes,No,천사의입맞춤,천사의입맞춤
-5126,Morpheus's_Hood,Morpheus's Hood,1,0,0,30000,200,Headgear,Top,,33,AllExceptNovice,Yes,No,모르피셔스두건,모르피셔스두건
-5127,Morrigane's_Helm,Morrigane's Helm,4,0,0,30000,500,Headgear,Top,,61,AllExceptNovice,Yes,No,모리아네헬름,모리아네헬름
-5128,Goibne's_Helm,Goibne's Helm,5,3,0,30000,500,Headgear,Top,,54,AllExceptNovice,Yes,No,게브네이투구,게브네이투구
-5136,Antonio's_Santa_Hat,Antonio's Santa Hat,3,1,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,산타모자,산타모자
-5141,Marionette_Doll,Marionette Doll,0,0,1,20,400,Headgear,Top,,30,AllExceptNovice,Yes,No,마리오넷모자,마리오넷모자
-5147,Baseball_Cap,Baseball Cap,3,0,1,0,200,Headgear,Top,,0,AllJobs,Yes,No,야구모자,야구모자
-5157,Orc_Helm_,Orc Helm,5,0,1,20,500,Headgear,Top,,0,SwordUser1stJob,Yes,No,오크족헬름,오크족헬름
-5158,Monk_Hat_,Monk Hat,5,3,1,30000,100,Headgear,Top,,0,Acolyte,Yes,No,성직자의모자,성직자의모자
-5159,Golden_Gear_,Golden Gear,5,0,1,20,900,Headgear,Top,,40,AllExceptNovice,Yes,Yes,골든헤드기어,골든헤드기어
-5160,Majestic_Goat_,Majestic Goat,5,0,1,20,800,Headgear,Top,,0,SwordMerchantTaekwon,Yes,No,마제스틱고우트,마제스틱고우트
-5161,Spiky_Band_,Spiky Band,6,0,1,20,1000,Headgear,Top,,50,MeleeJobTaekwon,Yes,No,샤프헤드기어,샤프헤드기어
-5162,Bone_Helm_,Bone Helm,7,0,1,20,800,Headgear,Top,,70,Merchant2ndJob,Yes,No,본헬름,본헬름
-5163,Corsair_,Corsair,5,0,1,20,500,Headgear,Top,,0,AllExceptNovice,Yes,No,커세어,커세어
-5164,Tiara_,Tiara,4,0,1,20,400,Headgear,Top,,45,AllExceptNovice,Yes,No,티아라,티아라
-5165,Crown_,Crown,4,0,1,20,400,Headgear,Top,,45,AllExceptNovice,Yes,No,크라운,크라운
-5166,Sphinx_Hat_,Sphinx Hat,5,0,1,20,3000,Headgear,TopBottom,,65,Swordsman,No,No,스핑크스모자,스핑크스모자
-5167,Munak_Hat_,Munak Hat,5,0,1,20,300,Headgear,All,,0,AllJobs,No,No,무낙모자,무낙모자
-5168,Bongun_Hat_,Bongun Hat,5,0,1,20,300,Headgear,All,,0,AllJobs,No,No,본건모자,본건모자
-5169,Bride_Mask,Bride Mask,4,0,1,30000,500,Headgear,TopMid,,40,AllJobs,Yes,No,각시탈,각시탈
-5170,Feather_Beret,Feather Beret,1,1,0,30000,600,Headgear,Top,,0,AllExceptNovice,Yes,No,깃털베레모,깃털베레모
-5171,Valkyrian_Helm,Valkyrian Helm,5,5,1,100000,1000,Headgear,Top,,0,Trans1stJob,Yes,No,발키리투구,발키리투구
-5172,Beret,Beret,0,0,0,30000,700,Headgear,Top,,0,AllJobs,No,No,베레모,베레모
-5173,Magistrate_Hat,Magistrate Hat,3,0,1,30000,400,Headgear,Top,,60,AllJobs,Yes,No,사또모자,사또모자
-5174,Ayam,Ayam,3,0,1,30000,400,Headgear,Top,,60,AllJobs,Yes,No,아얌,아얌
-5175,Censor_Bar,Censor Bar,0,1,0,30000,100,Headgear,Mid,,0,AllJobs,No,No,익명요청,익명요청
-5176,Hahoe_Mask,Hahoe Mask,2,0,0,30000,100,Headgear,MidBottom,,30,AllJobs,No,No,하회탈,하회탈
-5177,Mythical_Lion_Mask,Mythical Lion Mask,5,0,1,30000,500,Headgear,TopMid,,40,AllJobs,Yes,No,사자탈,사자탈
-5191,Ribbon__,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,No,리본_검정,리본_검정
-5192,Ribbon___,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,No,리본_노랑,리본_노랑
-5193,Ribbon____,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,No,리본_초록,리본_초록
-5194,Ribbon_____,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,No,리본_분홍,리본_분홍
-5195,Ribbon______,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,No,리본_빨강,리본_빨강
-5196,Ribbon_______,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,No,리본_주홍,리본_주홍
-5197,Ribbon________,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,No,리본_하양,리본_하양
-5206,Romantic_White_Flower,Romantic White Flower,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,No,하얀꽃잎,하얀꽃잎
-5227,Deviruchi_Hat_,Deviruchi Hat,2,0,0,20,800,Headgear,Top,,64,AllExceptNovice,Yes,No,빨강새끼악마모자,빨강새끼악마모자
-5228,Deviruchi_Hat__,Deviruchi Hat,2,0,0,20,800,Headgear,Top,,64,AllExceptNovice,Yes,No,흰색새끼악마모자,흰색새끼악마모자
-5229,Deviruchi_Hat___,Deviruchi Hat,2,0,0,20,800,Headgear,Top,,64,AllExceptNovice,Yes,No,회색새끼악마모자,회색새끼악마모자
-5230,Drooping_Cat_,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,No,흰색늘어진고양이,흰색늘어진고양이
-5231,Drooping_Cat__,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,No,회색늘어진고양이,회색늘어진고양이
-5232,Drooping_Cat___,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,No,분홍늘어진고양이,분홍늘어진고양이
-5233,Drooping_Cat____,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,No,파랑늘어진고양이,파랑늘어진고양이
-5234,Drooping_Cat_____,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,No,노랑늘어진고양이,노랑늘어진고양이
-5235,Beanie_,Beanie,2,0,0,20,350,Headgear,Top,,0,AllJobs,Yes,No,회색털모자,회색털모자
-5236,Beanie__,Beanie,2,0,0,20,350,Headgear,Top,,0,AllJobs,Yes,No,파랑털모자,파랑털모자
-5237,Beanie___,Beanie,2,0,0,20,350,Headgear,Top,,0,AllJobs,Yes,No,분홍털모자,분홍털모자
-5238,Mage_Hat_,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,No,빨강마법사의모자,빨강마법사의모자
-5239,Mage_Hat__,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,No,흰색마법사의모자,흰색마법사의모자
-5240,Mage_Hat___,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,No,회색마법사의모자,회색마법사의모자
-5241,Mage_Hat____,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,No,파랑마법사의모자,파랑마법사의모자
-5242,Mage_Hat_____,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,No,노랑마법사의모자,노랑마법사의모자
-5243,Shafka,Shafka,2,0,1,20,800,Headgear,TopMid,,1,AllJobs,Yes,No,귀마개모자,귀마개모자
-5302,Water_Lily_Hat,Water Lily Hat,1,0,0,0,100,Headgear,Top,,30,AllJobs,Yes,No,연꽃모자,연꽃모자
-5305,Pirate_Dagger,Pirate Dagger,0,0,0,20,100,Headgear,Bottom,,0,AllJobs,No,No,해적의대거,해적의대거
-5347,Ph.D_Hat_,Ph.D Hat,3,0,1,20,200,Headgear,Top,,0,AllExceptNovice,Yes,No,학사모,학사모
-5348,Big_Ribbon_,Big Ribbon,2,3,1,15000,200,Headgear,Top,,0,AllExceptNovice,Yes,No,왕리본,왕리본
-5349,Boy's_Cap_,Boy's Cap,2,0,1,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,학생모,학생모
-5350,Pirate_Bandana_,Pirate Bandana,3,0,1,20,100,Headgear,Top,,0,AllExceptNovice,Yes,No,해적두건,해적두건
-5351,Sunflower_,Sunflower,1,0,1,20,100,Headgear,Top,,0,AllJobs,No,No,장식용해바라기,장식용해바라기
-5353,Hat_of_the_Sun_God_,Hat of the Sun God,4,0,1,20,2400,Headgear,TopMid,,0,SecondJob,Yes,No,태양신의모자,태양신의모자
-5374,Gigantic_Majestic_Goat,Gigantic Majestic Goat,5,0,0,20,800,Headgear,Top,,0,AllJobs,Yes,No,대형마제스틱고우트,대형마제스틱고우트
-5398,Bone_Head,Bone Head,5,5,1,20,1200,Headgear,Top,,85,JC_089,Yes,Yes,본헤드,본헤드
-5399,Mandragora_Cap,Mandragora Cap,1,0,1,20,300,Headgear,Top,,85,Trans2ndJob,No,No,만드라고라캡,만드라고라캡
-5436,Bride's_Corolla,Bride's Corolla,1,2,0,20,200,Headgear,Top,,0,AllJobs,Yes,No,신부의화관,신부의화관
-5438,Cute_Ribbon_,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,No,머리끈_녹색,머리끈_녹색
-5439,Cute_Ribbon__,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,No,머리끈_빨강,머리끈_빨강
-5440,Cute_Ribbon___,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,No,머리끈_파랑,머리끈_파랑
-5441,Cute_Ribbon____,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,No,머리끈_하양,머리끈_하양
-5442,Necktie,Necktie,3,0,1,20,100,Headgear,Top,,70,AllJobs,Yes,No,넥타이,넥타이
-5444,Hair_Brush,Hair Brush,0,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,No,머리빗,머리빗
-5446,Catfoot_Hairpin,Catfoot Hairpin,0,0,1,20,200,Headgear,Top,,0,AllJobs,Yes,No,고양이발머리핀,고양이발머리핀
-5808,Dark_Bacilium,Dark Bacilium,5,0,1,20,250,Headgear,All,,0,Trans2ndJob,Yes,No,다크바실리움,클로스헬멧
+2101,Guard,Guard,3,0,0,500,300,Shield,,,0,AllJobs,Yes,Yes,가드,가드
+2102,Guard_,Guard,3,0,1,500,300,Shield,,,0,AllJobs,Yes,Yes,가드,가드
+2103,Buckler,Buckler,4,0,0,14000,600,Shield,,,0,MeleeAndBardDancer,Yes,Yes,버클러,버클러
+2104,Buckler_,Buckler,4,0,1,14000,600,Shield,,,0,MeleeAndBardDancer,Yes,Yes,버클러,버클러
+2105,Shield,Shield,6,0,0,56000,1300,Shield,,,0,Swordsman,Yes,Yes,쉴드,쉴드
+2106,Shield_,Shield,6,0,1,56000,1300,Shield,,,0,Swordsman,Yes,Yes,쉴드,쉴드
+2107,Mirror_Shield,Mirror Shield,4,5,0,60000,1000,Shield,,,0,SwordsmanStar,Yes,Yes,미러쉴드,미러쉴드
+2108,Mirror_Shield_,Mirror Shield,4,5,1,60000,1000,Shield,,,0,SwordsmanStar,Yes,Yes,미러쉴드,미러쉴드
+2109,Memory_Book,Memory Book,3,2,0,20,1000,Shield,,,0,MagePlusLinker,Yes,Yes,메모라이즈북,메모라이즈북
+2110,Holy_Guard,Holy Guard,5,2,0,85000,1400,Shield,,,68,Crusader,No,Yes,홀리가드,미러쉴드
+2111,Sacred_Mission,Sacred Mission,6,3,0,128000,1600,Shield,,,83,Crusader,Yes,No,신의사자,미러쉴드
+2112,Novice_Guard,Novice Guard,3,0,0,1,1,Shield,,,0,NoviceGroup,No,Yes,가드,가드
+2113,Novice_Shield,Novice Shield,3,0,1,5000,1000,Shield,,,40,NoviceGroup,Yes,Yes,초보자용쉴드,쉴드
+2114,Stone_Buckler,Stone Buckler,3,0,1,30000,1500,Shield,,,65,AllExceptNovice,Yes,Yes,스톤버클러,버클러
+2115,Valkyrja's_Shield,Valkyrja's Shield,3,5,1,30000,500,Shield,,,65,AllExceptNovice,Yes,Yes,발키리아쉴드,미러쉴드
+2116,Angel's_Guard,Angel's Guard,2,0,1,10000,400,Shield,,,20,NoviceGroup,Yes,Yes,천사의보호,가드
+2117,Arm_Guard,Arm Guard,5,0,0,10000,150,Shield,,,20,Ninja,Yes,Yes,팔목토시,가드
+2118,Arm_Guard_,Arm Guard,5,0,1,10000,150,Shield,,,20,Ninja,Yes,Yes,팔목토시,가드
+2119,Advanced_Arm_Guard,Advanced Arm Guard,4,5,0,40000,150,Shield,,,50,Ninja,Yes,Yes,팔목토시개량,가드
+2120,Advanced_Arm_Guard_,Advanced Arm Guard,4,5,1,40000,150,Shield,,,50,Ninja,Yes,Yes,팔목토시개량,가드
+2121,Memory_Book_,Memory Book,3,2,1,20,1000,Shield,,,0,MagePlusLinker,Yes,Yes,메모라이즈북,메모라이즈북
+2122,Platinum_Shield,Platinum Shield,5,5,0,10000,1200,Shield,,,68,Trans1stJob,Yes,Yes,플래티넘쉴드,미러쉴드
+2123,Orleans's_Server,Orleans's Server,5,2,1,10000,1000,Shield,,,55,Trans1stJob,Yes,Yes,오를레앙의서버,미러쉴드
+2124,Thorny_Buckler,Thorny Buckler,5,2,1,10000,1000,Shield,,,55,Trans1stJob,Yes,Yes,가시방패,버클러
+2125,Strong_Shield,Strong Shield,4,0,1,10000,2500,Shield,,,75,JC_087,Yes,Yes,스트롱쉴드,미러쉴드
+2128,Sacred_Mission_,Sacred Mission,6,3,1,128000,1600,Shield,,,83,Crusader,Yes,No,신의사자,미러쉴드
+2129,Exorcism_Bible,Exorcism Bible,5,0,0,20,600,Shield,,,50,Acolyte2ndJob,Yes,Yes,구마의성서,메모라이즈북
+2130,Cross_Shield,Cross Shield,6,0,1,20,2000,Shield,,,80,Crusader,Yes,Yes,크로스쉴드,미러쉴드
+2131,Magic_Bible_Vol1,Magic Bible Vol1,2,3,0,20,1000,Shield,,,70,MagePlusLinker,Yes,Yes,마력의서제1권,메모라이즈북
+2133,Tournament_Shield,Tournament Shield,5,0,1,20,1000,Shield,,,50,JC_080,Yes,Yes,토너먼트쉴드,미러쉴드
+2134,Shield_of_Naga,Shield of Naga,3,3,1,20,500,Shield,,,0,Trans2ndJob,Yes,Yes,나가의비늘방패,버클러
+2199,Ahura_Mazdah,Ahura Mazdah,50,50,0,1,10,Shield,,,1,AllJobs,No,No,아후라마즈다,버클러
+2201,Sunglasses,Sunglasses,0,0,0,5000,100,Headgear,Mid,,0,AllJobs,No,Yes,선글래스,선글래스
+2202,Sunglasses_,Sunglasses,0,0,1,5000,100,Headgear,Mid,,0,AllJobs,No,Yes,선글래스,선글래스
+2203,Glasses,Glasses,0,0,0,4000,100,Headgear,Mid,,0,AllJobs,No,Yes,글래스,글래스
+2204,Glasses_,Glasses,0,0,1,4000,100,Headgear,Mid,,0,AllJobs,No,Yes,글래스,글래스
+2205,Diver_Goggles,Diver Goggles,0,0,0,3500,100,Headgear,Mid,,0,AllJobs,No,Yes,물안경,물안경
+2206,Wedding_Veil,Wedding Veil,0,5,0,23000,100,Headgear,Top,,0,AllJobs,Yes,Yes,면사포,면사포
+2207,Fancy_Flower,Fancy Flower,0,0,0,20,100,Headgear,Top,,0,AllJobs,No,Yes,장식용꽃,꽃
+2208,Ribbon,Ribbon,1,3,0,800,100,Headgear,Top,,0,AllJobs,Yes,Yes,리본,리본
+2209,Ribbon_,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,Yes,리본,리본
+2210,Hair_Band,Hair Band,1,0,0,500,100,Headgear,Top,,0,AllJobs,No,Yes,머리띠,머리띠
+2211,Bandana,Bandana,1,0,0,400,100,Headgear,Top,,0,AllJobs,Yes,Yes,두건,두건
+2212,Eye_Patch,Eye Patch,0,0,0,1000,100,Headgear,Mid,,0,AllJobs,No,Yes,안대,안대
+2213,Kitty_Band,Kitty Band,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,고양이머리띠,고양이머리띠
+2214,Bunny_Band,Bunny Band,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,토끼머리띠,토끼머리띠
+2215,Flower_Band,Flower Band,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,꽃머리띠,꽃머리띠
+2216,Biretta,Biretta,4,0,0,9000,100,Headgear,Top,,0,Acolyte,Yes,Yes,비레타,비레타
+2217,Biretta_,Biretta,4,0,1,9000,100,Headgear,Top,,0,Acolyte,Yes,Yes,비레타,비레타
+2218,Flu_Mask,Flu Mask,0,0,0,300,100,Headgear,Bottom,,0,AllJobs,No,Yes,마스크,마스크
+2220,Hat,Hat,2,0,0,1000,200,Headgear,Top,,0,AllJobs,Yes,Yes,햇,햇
+2221,Hat_,Hat,2,0,1,1000,200,Headgear,Top,,0,AllJobs,Yes,Yes,햇,햇
+2222,Turban,Turban,3,0,0,4500,300,Headgear,Top,,0,AllExceptNovice,Yes,Yes,둥근모자,둥근모자
+2223,Turban_,Turban,3,0,1,4500,300,Headgear,Top,,0,AllExceptNovice,Yes,Yes,둥근모자,둥근모자
+2224,Goggles,Goggles,5,0,0,20,300,Headgear,TopMid,,0,MediumArmor,Yes,Yes,고글,고글
+2225,Goggles_,Goggles,5,0,1,20,300,Headgear,TopMid,,0,MediumArmor,Yes,Yes,고글,고글
+2226,Cap,Cap,4,0,0,12000,400,Headgear,Top,,0,MediumArmor,Yes,Yes,캡,캡
+2227,Cap_,Cap,4,0,1,12000,400,Headgear,Top,,0,MediumArmor,Yes,Yes,캡,캡
+2228,Helm,Helm,6,0,0,44000,600,Headgear,Top,,0,Swordsman,Yes,Yes,헬름,헬름
+2229,Helm_,Helm,6,0,1,44000,600,Headgear,Top,,0,Swordsman,Yes,Yes,헬름,헬름
+2230,Gemmed_Sallet,Gemmed Sallet,4,3,0,50000,500,Headgear,Top,,0,SwordUser1stJob,Yes,Yes,쥬얼헬름,
+2231,Gemmed_Sallet_,Gemmed Sallet,4,3,1,50000,500,Headgear,Top,,0,SwordUser1stJob,Yes,Yes,쥬얼헬름,
+2232,Circlet,Circlet,3,3,0,7500,300,Headgear,Top,,0,CasterGroup,Yes,Yes,서클릿,서클릿
+2233,Circlet_,Circlet,3,3,1,7500,300,Headgear,Top,,0,CasterGroup,Yes,Yes,서클릿,서클릿
+2234,Tiara,Tiara,4,0,0,20,400,Headgear,Top,,45,AllExceptNovice,Yes,Yes,티아라,티아라
+2235,Crown,Crown,4,0,0,20,400,Headgear,Top,,45,AllExceptNovice,Yes,Yes,크라운,크라운
+2236,Santa_Hat,Santa Hat,1,1,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,산타모자,산타모자
+2239,Monocle,Monocle,0,0,0,10000,100,Headgear,Mid,,0,AllJobs,No,Yes,외눈안경,외눈안경
+2241,Grampa_Beard,Grampa Beard,0,0,0,5000,100,Headgear,Bottom,,0,AllJobs,No,Yes,흰수염,흰수염
+2242,Purple_Glasses,Purple Glasses,1,0,0,24000,100,Headgear,Mid,,0,AllJobs,No,Yes,고급선글래스,고급선글래스
+2243,Geek_Glasses,Geek Glasses,1,0,0,20000,100,Headgear,Mid,,0,AllJobs,No,Yes,스핀글래스,스핀글래스
+2244,Big_Ribbon,Big Ribbon,2,3,0,15000,200,Headgear,Top,,0,AllExceptNovice,Yes,Yes,왕리본,왕리본
+2245,Sweet_Gent,Sweet Gent,3,0,0,15000,400,Headgear,Top,,0,AllExceptNovice,Yes,Yes,스위트젠틀,스위트젠틀
+2246,Golden_Gear,Golden Gear,5,0,0,20,900,Headgear,Top,,40,AllExceptNovice,Yes,No,골든헤드기어,골든헤드기어
+2247,Romantic_Gent,Romantic Gent,3,0,0,15000,400,Headgear,Top,,0,AllExceptNovice,Yes,Yes,올드스터로맨스,올드스터로맨스
+2248,Western_Grace,Western Grace,3,0,0,15000,400,Headgear,Top,,0,AllExceptNovice,Yes,Yes,웨스턴그레이스,웨스턴그레이스
+2249,Coronet,Coronet,3,0,0,20,300,Headgear,Top,,0,AllExceptNovice,Yes,Yes,코로넷,코로넷
+2250,Cute_Ribbon,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,Yes,머리끈,머리끈
+2251,Monk_Hat,Monk Hat,5,3,0,30000,100,Headgear,Top,,0,Acolyte,Yes,Yes,성직자의모자,성직자의모자
+2252,Wizard_Hat,Wizard Hat,4,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,Yes,위저드햇,위저드햇
+2253,Sunflower,Sunflower,1,0,0,20,100,Headgear,Top,,0,AllJobs,No,Yes,장식용해바라기,장식용해바라기
+2254,Angel_Wing,Angel Wing,2,3,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,천사의머리띠,천사의머리띠
+2255,Evil_Wing,Evil Wing,3,2,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,악마의머리띠,악마의머리띠
+2256,Majestic_Goat,Majestic Goat,5,0,0,20,800,Headgear,Top,,0,SwordMerchantTaekwon,Yes,Yes,마제스틱고우트,마제스틱고우트
+2257,Unicorn_Horn,Unicorn Horn,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,새하얀뿔,새하얀뿔
+2258,Spiky_Band,Spiky Band,6,0,0,20,1000,Headgear,Top,,50,MeleeJobTaekwon,Yes,Yes,샤프헤드기어,샤프헤드기어
+2259,Mini_Propeller,Mini Propeller,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,프로펠라,프로펠라
+2260,Mini_Glasses,Mini Glasses,1,0,0,28000,100,Headgear,Mid,,0,AllExceptNovice,No,Yes,미니글래스,미니글래스
+2261,Army_Cap,Army Cap,4,0,0,20,400,Headgear,Top,,0,SwordUser1stJob,Yes,Yes,프론테라군모,프론테라군모
+2262,Clown_Nose,Clown Nose,0,0,0,20,100,Headgear,Bottom,,0,AllJobs,No,Yes,광대코,광대코
+2263,Zorro_Masque,Zorro Masque,0,0,0,20,100,Headgear,Mid,,0,AllExceptNovice,No,Yes,의적안대,의적안대
+2264,Munak_Hat,Munak Hat,5,0,0,20,300,Headgear,All,,0,AllJobs,No,Yes,무낙모자,무낙모자
+2265,Gangster_Mask,Gangster Mask,0,0,0,20,100,Headgear,Bottom,,0,AllJobs,No,Yes,시위용마스크,시위용마스크
+2266,Iron_Cain,Iron Cain,1,0,0,20,300,Headgear,Bottom,,50,Swordsman,No,Yes,아이언케인,아이언케인
+2267,Cigarette,Cigarette,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,Yes,담배,담배
+2268,Pipe,Pipe,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,Yes,파이프담배,파이프담배
+2269,Romantic_Flower,Romantic Flower,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,Yes,꽃잎,꽃잎
+2270,Romantic_Leaf,Romantic Leaf,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,Yes,풀잎,풀잎
+2271,Jack_be_Dandy,Jack be Dandy,1,0,0,45000,100,Headgear,Top,,0,AllExceptNovice,No,Yes,머리안경,머리안경
+2272,Stop_Post,Stop Post,1,0,0,20,400,Headgear,Top,,0,AllJobs,Yes,Yes,정지표지판,정지표지판
+2273,Doctor_Band,Doctor Band,3,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,의사머리띠,의사머리띠
+2274,Ghost_Bandana,Ghost Bandana,0,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,망자의머리띠,망자의머리띠
+2275,Red_Bandana,Red Bandana,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,반다나,반다나
+2276,Angled_Glasses,Angled Glasses,1,0,0,20,100,Headgear,Mid,,0,AllJobs,No,Yes,도끼눈,도끼눈
+2277,Nurse_Cap,Nurse Cap,2,0,0,20,100,Headgear,Top,,0,Acolyte,Yes,Yes,간호모,간호모
+2278,Mr._Smile,Mr. Smile,1,0,0,60,100,Headgear,MidBottom,,0,AllJobs,No,Yes,스마일,스마일
+2279,Bomb_Wick,Bomb Wick,1,0,0,20,100,Headgear,Top,,0,AllJobs,No,Yes,심지,심지
+2280,Sakkat,Sakkat,3,0,0,20,300,Headgear,Top,,0,AllJobs,Yes,Yes,삿갓,삿갓
+2281,Opera_Masque,Opera Masque,2,0,0,20,200,Headgear,MidBottom,,0,AllExceptNovice,No,Yes,오페라가면,오페라가면
+2282,Halo,Halo,0,0,0,20,100,Headgear,Top,,0,AllJobs,No,Yes,영혼고리,영혼고리
+2283,Ear_Muffs,Ear Muffs,3,0,0,20,200,Headgear,Top,,0,AllJobs,Yes,Yes,귀마개,귀마개
+2284,Antlers,Antlers,4,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,사슴뿔,사슴뿔
+2285,Apple_of_Archer,Apple of Archer,0,0,0,20,200,Headgear,Top,,30,AllExceptNovice,Yes,Yes,명사수의사과,명사수의사과
+2286,Elven_Ears,Elven Ears,0,0,0,20,100,Headgear,Mid,,70,AllExceptNovice,No,Yes,요정의귀,요정의귀
+2287,Pirate_Bandana,Pirate Bandana,3,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,해적두건,해적두건
+2288,Mr._Scream,Mr. Scream,1,0,0,20,100,Headgear,MidBottom,,0,AllExceptNovice,No,Yes,스크래치마스크,스크래치마스크
+2289,Poo_Poo_Hat,Poo Poo Hat,0,0,0,20,700,Headgear,Top,,0,AllJobs,No,Yes,거시기,거시기
+2290,Funeral_Hat,Funeral Hat,1,0,0,3000,100,Headgear,Top,,0,AllJobs,No,Yes,장례건,장례건
+2291,Masquerade,Masquerade,0,0,0,20,100,Headgear,Mid,,0,AllExceptNovice,No,Yes,나비가면,나비가면
+2292,Welding_Mask,Welding Mask,2,0,0,20,300,Headgear,MidBottom,,50,Merchant,No,Yes,용접마스크,용접마스크
+2293,Pretend_Murdered,Pretend Murdered,1,0,0,20,100,Headgear,Top,,0,AllJobs,No,Yes,연극소도구,연극소도구
+2294,Stellar,Stellar,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,스타더스트,스타더스트
+2295,Blinder,Blinder,0,0,0,1500,100,Headgear,Mid,,0,AllExceptNovice,No,Yes,눈가리개,눈가리개
+2296,Binoculars,Binoculars,1,0,0,20,100,Headgear,Mid,,50,ArcherGroup,No,Yes,망원경,망원경
+2297,Goblin_Mask,Goblin Mask,1,0,0,20,100,Headgear,MidBottom,,0,AllExceptNovice,No,Yes,고블린족가면,고블린족가면
+2298,Green_Feeler,Green Feeler,2,0,0,20,100,Headgear,Top,,0,AllJobs,No,Yes,초록더듬이,초록더듬이
+2299,Orc_Helm,Orc Helm,5,0,0,20,500,Headgear,Top,,0,SwordUser1stJob,Yes,Yes,오크족헬름,오크족헬름
+2301,Cotton_Shirt,Cotton Shirt,1,0,0,10,100,Armor,,,0,AllJobs,Yes,Yes,코튼셔츠,
+2302,Cotton_Shirt_,Cotton Shirt,1,0,1,10,100,Armor,,,0,AllJobs,Yes,Yes,코튼셔츠,
+2303,Jacket,Jacket,2,0,0,200,200,Armor,,,0,AllJobs,Yes,Yes,가죽재킷,
+2304,Jacket_,Jacket,2,0,1,200,200,Armor,,,0,AllJobs,Yes,Yes,가죽재킷,
+2305,Adventurer's_Suit,Adventurer's Suit,3,0,0,1000,300,Armor,,,0,AllJobs,Yes,Yes,어드밴쳐슈츠,
+2306,Adventurer's_Suit_,Adventurer's Suit,3,0,1,1000,300,Armor,,,0,AllJobs,Yes,Yes,어드밴쳐슈츠,
+2307,Mantle,Mantle,4,0,0,10000,600,Armor,,,0,AllExceptNovice,Yes,Yes,맨틀,
+2308,Mantle_,Mantle,4,0,1,10000,600,Armor,,,0,AllExceptNovice,Yes,Yes,맨틀,
+2309,Coat,Coat,5,0,0,22000,1200,Armor,,,0,AllExceptNovice,Yes,Yes,롱코트,
+2310,Coat_,Coat,5,0,1,22000,1200,Armor,,,0,AllExceptNovice,Yes,Yes,롱코트,
+2311,Mink_Coat,Mink Coat,6,0,1,20,2300,Armor,,,30,AllExceptNovice,Yes,Yes,밍크코트,
+2312,Padded_Armor,Padded Armor,7,0,0,48000,2800,Armor,,,0,SwordUser1stJob,Yes,Yes,아머,
+2313,Padded_Armor_,Padded Armor,7,0,1,48000,2800,Armor,,,0,SwordUser1stJob,Yes,Yes,아머,
+2314,Chain_Mail,Chain Mail,8,0,0,65000,3300,Armor,,,0,SwordUser1stJob,Yes,Yes,메일,
+2315,Chain_Mail_,Chain Mail,8,0,1,65000,3300,Armor,,,0,SwordUser1stJob,Yes,Yes,메일,
+2316,Full_Plate,Full Plate,10,0,0,80000,4500,Armor,,,40,Swordsman,Yes,Yes,플레이트,
+2317,Full_Plate_,Full Plate,10,0,1,80000,4500,Armor,,,40,Swordsman,Yes,Yes,플레이트,
+2318,Lord's_Clothes,Lord's Clothes,8,5,1,20,2500,Armor,,,70,Merchant,Yes,Yes,로드클로스,
+2319,Glittering_Jacket,Glittering Jacket,7,5,1,20,2500,Armor,,,60,AllExceptNovice,Yes,Yes,글리터링클로스,
+2320,Formal_Suit,Formal Suit,5,0,1,20,300,Armor,,,0,AllExceptNovice,Yes,Yes,포멀드레스,
+2321,Silk_Robe,Silk Robe,3,10,0,8000,400,Armor,,,0,RobeUser,Yes,Yes,실크로브,
+2322,Silk_Robe_,Silk Robe,3,10,1,8000,400,Armor,,,0,RobeUser,Yes,Yes,실크로브,
+2323,Scapulare,Scapulare,4,0,0,6500,400,Armor,,,0,Acolyte,Yes,Yes,스캐퓰러,
+2324,Scapulare_,Scapulare,4,0,1,6500,400,Armor,,,0,Acolyte,Yes,Yes,스캐퓰러,
+2325,Saint's_Robe,Saint's Robe,6,5,0,54000,600,Armor,,,0,AcolyteMerchant,Yes,Yes,세인트로브,
+2326,Saint's_Robe_,Saint's Robe,6,5,1,54000,600,Armor,,,0,AcolyteMerchant,Yes,Yes,세인트로브,
+2327,Holy_Robe,Holy Robe,7,5,0,20,1700,Armor,,,60,Acolyte,Yes,Yes,홀리로브,
+2328,Wooden_Mail,Wooden Mail,4,0,0,5500,1000,Armor,,,0,SwordsmanMerchant,Yes,Yes,우든메일,
+2329,Wooden_Mail_,Wooden Mail,4,0,1,5500,1000,Armor,,,0,SwordsmanMerchant,Yes,Yes,우든메일,
+2330,Tights,Tights,6,0,0,71000,500,Armor,,,45,ArcherGroup,Yes,Yes,타이즈,
+2331,Tights_,Tights,6,0,1,71000,500,Armor,,,45,ArcherGroup,Yes,Yes,타이즈,
+2332,Silver_Robe,Silver Robe,4,0,0,7000,700,Armor,,,0,MagePlusLinker,Yes,Yes,실버로브,
+2333,Silver_Robe_,Silver Robe,4,0,1,7000,700,Armor,,,0,MagePlusLinker,Yes,Yes,실버로브,
+2334,Mage_Coat,Mage Coat,5,5,0,20,600,Armor,,,50,MagePlusLinker,Yes,Yes,매직코트,
+2335,Thief_Clothes,Thief Clothes,6,0,0,74000,100,Armor,,,0,StealthGroup,Yes,Yes,씨프클로스,
+2336,Thief_Clothes_,Thief Clothes,6,0,1,74000,100,Armor,,,0,StealthGroup,Yes,Yes,씨프클로스,
+2337,Ninja_Suit,Ninja Suit,7,3,0,20,1500,Armor,,,50,StealthGroup,Yes,Yes,닌자슈츠,
+2338,Wedding_Dress,Wedding Dress,0,15,0,43000,500,Armor,,,0,AllExceptNovice,Yes,Yes,웨딩드레스,
+2339,Pantie,Pantie,4,0,0,1000,100,Armor,,,0,AllJobs,Yes,Yes,삼각팬티,
+2340,Novice_Breastplate,Novice Breastplate,4,0,1,1,500,Armor,,,10,NoviceGroup,Yes,Yes,초보자용흉갑,
+2341,Legion_Plate_Armor,Legion Plate Armor,11,0,0,94000,5500,Armor,,,70,Crusader,Yes,Yes,풀플레이트아머,
+2342,Legion_Plate_Armor_,Legion Plate Armor,11,0,1,102500,5500,Armor,,,70,Crusader,Yes,Yes,풀플레이트아머,
+2343,Robe_of_Cast,Robe of Cast,5,4,0,124800,1100,Armor,,,75,Mage2ndPlusLinker,Yes,Yes,캐스팅의로브,
+2344,Lucius's_Volcano_Armor,Lucius's Volcano Armor,4,0,0,136000,2200,Armor,,,45,SwordsmanMerchant,Yes,Yes,불의갑옷,
+2345,Lucius's_Volcano_Armor_,Lucius's Volcano Armor,4,0,1,136000,2200,Armor,,,45,AllExceptNovice,Yes,Yes,불의갑옷,
+2346,Saphien's_Ocean_Armor,Saphien's Ocean Armor,4,0,0,136000,2200,Armor,,,45,SwordsmanMerchant,Yes,Yes,물의갑옷,
+2347,Saphien's_Ocean_Armor_,Saphien's Ocean Armor,4,0,1,136000,2200,Armor,,,45,AllExceptNovice,Yes,Yes,물의갑옷,
+2348,Aebecee's_Typhoon_Armor,Aebecee's Typhoon Armor,4,0,0,136000,2200,Armor,,,45,SwordsmanMerchant,Yes,Yes,바람의갑옷,
+2349,Aebecee's_Typhoon_Armor_,Aebecee's Typhoon Armor,4,0,1,136000,2200,Armor,,,45,AllExceptNovice,Yes,Yes,바람의갑옷,
+2350,Claytos_Earth_Armor,Claytos Earth Armor,4,0,0,136000,2200,Armor,,,45,SwordsmanMerchant,Yes,Yes,땅의갑옷,
+2351,Claytos_Earth_Armor_,Claytos Earth Armor,4,0,1,136000,2200,Armor,,,45,AllExceptNovice,Yes,Yes,땅의갑옷,
+2352,Novice_Ninja_Suit,Novice Ninja Suit,4,0,0,1,1,Armor,,,0,NoviceGroup,No,Yes,어드밴쳐슈츠,
+2353,Odin's_Blessing,Odin's Blessing,6,0,1,30000,2500,Armor,,,65,AllExceptNovice,Yes,Yes,오딘의축복,
+2354,Goibne's_Armor,Goibne's Armor,7,0,0,50000,3500,Armor,,,54,AllExceptNovice,Yes,Yes,게브네이의갑옷,
+2355,Angel's_Protection,Angel's Protection,4,20,1,10000,600,Armor,,,40,NoviceGroup,Yes,Yes,천사의가호,
+2357,Valkyrian_Armor,Valkyrian Armor,6,0,1,0,2800,Armor,,,1,Trans1stJob,Yes,No,발키리의갑옷,
+2359,Ninja_Suit_,Ninja Suit,7,3,1,20,1500,Armor,,,50,StealthGroup,Yes,Yes,닌자슈츠,
+2360,Robe_of_Cast_,Robe of Cast,5,4,1,124800,1100,Armor,,,75,Mage2ndPlusLinker,Yes,Yes,캐스팅의로브,
+2364,Meteo_Plate_Armor,Meteo Plate Armor,10,3,1,10000,3000,Armor,,,55,JC_089,Yes,Yes,메테오플레이트,
+2365,Orleans's_Gown,Orleans's Gown,2,0,1,10000,300,Armor,,,55,Trans1stJob,Yes,Yes,오를레앙의제복,
+2366,Divine_Cloth,Divine Cloth,6,0,1,10000,1500,Armor,,,55,Trans1stJob,Yes,Yes,디바인클로스,
+2371,Pantie_,Pantie,4,0,1,1000,100,Armor,,,0,AllJobs,Yes,Yes,삼각팬티,
+2372,Mage_Coat_,Mage Coat,5,5,1,20,600,Armor,,,50,MagePlusLinker,Yes,Yes,매직코트,
+2373,Holy_Robe_,Holy Robe,7,5,1,20,1700,Armor,,,60,Acolyte,Yes,Yes,홀리로브,
+2374,Diabolus_Robe,Diabolus Robe,6,5,1,20,300,Armor,,,60,JC_088,Yes,Yes,디아볼루스로브,
+2375,Diabolus_Armor,Diabolus Armor,7,5,1,20,600,Armor,,,60,JC_087,Yes,Yes,디아볼루스아머,
+2376,Assaulter_Plate,Assaulter Plate,7,2,1,10,0,Armor,,,80,SwordMerchantTaekwon,Yes,Yes,플레이트,
+2377,Elite_Engineer_Armor,Elite Engineer Armor,7,2,1,10,0,Armor,,,80,Merchant,Yes,Yes,메일,
+2378,Assassin_Robe,Assassin Robe,7,2,1,10,0,Armor,,,80,StealthGroup,Yes,Yes,씨프클로스,
+2379,Warlock's_Battle_Robe,Warlock's Battle Robe,3,2,1,10,0,Armor,,,80,MagePlusLinker,Yes,Yes,천사의가호,
+2380,Medic's_Robe,Medic's Robe,3,2,1,10,0,Armor,,,80,Acolyte,Yes,Yes,은혜의성의,
+2381,Elite_Archer_Suit,Elite Archer Suit,5,2,1,10,0,Armor,,,80,ArcherGroup,Yes,Yes,스나이핑슈츠,
+2382,Elite_Shooter_Suit,Elite Shooter Suit,5,2,1,10,0,Armor,,,80,Gunslinger,Yes,Yes,오를레앙의제복,
+2383,Brynhild,Brynhild,10,10,0,20,400,Armor,,,94,AllJobs,No,No,브륀힐트,
+2386,Chameleon_Armor,Chameleon Armor,5,0,0,20,1700,Armor,,,70,Trans2ndJob,Yes,Yes,카멜레온아머,
+2387,Sprint_Mail,Sprint Mail,3,0,1,20,1000,Armor,,,0,Trans2ndJob,Yes,Yes,스프린트메일,
+2389,Armor_of_Naga,Armor of Naga,5,2,1,20,1000,Armor,,,0,Trans2ndJob,Yes,Yes,나가의비늘갑옷,
+2390,Improved_Tights,Improved Tights,6,2,1,20,400,Armor,,,75,JC_085,Yes,Yes,개량형타이즈,
+2391,Life_Link,Life Link,9,5,1,20,3500,Armor,,,82,JC_080,Yes,Yes,라이프링크,
+2394,Glorious_Suit,Glorious Suit,0,0,0,20,0,Armor,,,81,AllExceptNovice,Yes,Yes,어드밴쳐슈츠,
+2395,Glorious_Popularized_Suit,Glorious Popularized Suit,0,0,0,20,0,Armor,,,61,AllExceptNovice,Yes,Yes,어드밴쳐슈츠,
+2396,Glorious_Mass-Produced_Suit,Glorious Mass-Produced Suit,0,0,0,20,0,Armor,,,0,AllExceptNovice,Yes,Yes,어드밴쳐슈츠,
+2401,Sandals,Sandals,1,0,0,400,200,Boots,,,0,AllJobs,Yes,Yes,샌들,
+2402,Sandals_,Sandals,1,0,1,400,200,Boots,,,0,AllJobs,Yes,Yes,샌들,
+2403,Shoes,Shoes,2,0,0,3500,400,Boots,,,0,AllExceptNovice,Yes,Yes,슈즈,
+2404,Shoes_,Shoes,2,0,1,3500,400,Boots,,,0,AllExceptNovice,Yes,Yes,슈즈,
+2405,Boots,Boots,4,0,0,18000,600,Boots,,,0,BootsUser,Yes,Yes,부츠,
+2406,Boots_,Boots,4,0,1,18000,600,Boots,,,0,BootsUser,Yes,Yes,부츠,
+2407,Crystal_Pumps,Crystal Pumps,0,10,0,20,100,Boots,,,0,AllExceptNovice,Yes,Yes,유리구두,
+2408,Shackles,Shackles,3,0,0,5000,3000,Boots,,,0,AllJobs,Yes,Yes,족쇠,
+2409,High_Heels,High Heels,2,5,0,8500,600,Boots,,,0,AllExceptNovice,Yes,Yes,뾰족구두,
+2410,Sleipnir,Sleipnir,5,10,0,20,3500,Boots,,,94,AllJobs,No,Yes,슬레이프니르,
+2411,Greaves,Greaves,5,0,0,48000,750,Boots,,,65,Swordsman2ndJob,Yes,Yes,그리브,
+2412,Greaves_,Greaves,5,0,1,54000,750,Boots,,,65,Swordsman2ndJob,Yes,Yes,그리브,
+2414,Novice_Slippers,Novice Slippers,2,0,0,1,1,Boots,,,0,NoviceGroup,No,Yes,샌들,
+2416,Novice_Shoes,Novice Shoes,2,0,1,35000,500,Boots,,,40,NoviceGroup,Yes,Yes,초보자용슈즈,
+2417,Fricco's_Shoes,Fricco's Shoes,3,0,0,30000,500,Boots,,,65,AllExceptNovice,Yes,Yes,프리코슈즈,
+2418,Vidar's_Boots,Vidar's Boots,4,0,0,30000,650,Boots,,,65,AllExceptNovice,Yes,Yes,비다르의부츠,
+2419,Goibne's_Greaves,Goibne's Greaves,4,3,0,30000,700,Boots,,,54,AllExceptNovice,Yes,Yes,게브네이의군화,
+2420,Angel's_Reincarnation,Angel's Reincarnation,2,0,1,10000,300,Boots,,,25,NoviceGroup,Yes,Yes,천사의재래,
+2421,Valkyrian_Shoes,Valkyrian Shoes,4,0,1,0,500,Boots,,,1,Trans1stJob,Yes,No,발키리의슈즈,
+2422,High_Fashion_Sandals,High Fashion Sandals,2,10,1,24000,200,Boots,,,40,CasterGroup,Yes,Yes,고급샌들,
+2423,Variant_Shoes,Variant Shoes,3,1,0,10000,500,Boots,,,85,Trans1stJob,Yes,Yes,배리언트슈즈,
+2424,Tidal_Shoes,Tidal Shoes,3,0,1,10000,300,Boots,,,55,Trans1stJob,Yes,Yes,타이달슈즈,
+2425,Black_Leather_Boots,Black Leather Boots,4,0,0,10000,500,Boots,,,55,Trans1stJob,Yes,Yes,검은가죽부츠,
+2426,Shadow_Walk,Shadow Walk,0,10,0,10000,2000,Boots,,,75,Trans1stJob,Yes,Yes,쉐도우워크,
+2429,Iron_Boots,Iron Boots,5,0,0,0,1500,Boots,,,0,MediumArmor,Yes,Yes,그리브,
+2430,Iron_Boots_,Iron Boots,5,0,0,0,800,Boots,,,0,NoviceCasterGroup,Yes,Yes,그리브,
+2432,High_Heels_,High Heels,2,5,1,8500,600,Boots,,,0,AllExceptNovice,Yes,Yes,뾰족구두,
+2433,Diabolus_Boots,Diabolus Boots,4,0,1,20,250,Boots,,,0,Trans2ndJob,Yes,Yes,디아볼루스부츠,
+2434,Black_Leather_Boots_,Black Leather Boots,4,0,1,20,500,Boots,,,55,Trans1stJob,Yes,Yes,검은가죽부츠,
+2437,Battle_Boots,Battle Boots,3,1,1,10,0,Boots,,,80,Gunslinger,Yes,Yes,안전화,
+2440,Sprint_Shoes,Sprint Shoes,2,0,1,20,300,Boots,,,0,Trans2ndJob,Yes,Yes,스프린트슈즈,
+2444,Glorious_Shoes,Glorious Shoes,0,0,0,20,0,Boots,,,81,AllExceptNovice,Yes,Yes,안전화,
+2445,Glorious_Popularized_Shoes,Glorious Popularized Shoes,0,0,0,20,0,Boots,,,61,AllExceptNovice,Yes,Yes,안전화,
+2446,Glorious_Mass-Produced_Shoes,Glorious Mass-Produced Shoes,0,0,0,20,0,Boots,,,0,AllExceptNovice,Yes,Yes,안전화,
+2501,Hood,Hood,1,0,0,1000,200,Garment,,,0,AllJobs,Yes,Yes,후드,
+2502,Hood_,Hood,1,0,1,1000,200,Garment,,,0,AllJobs,Yes,Yes,후드,
+2503,Muffler,Muffler,2,0,0,5000,400,Garment,,,0,AllExceptNovice,Yes,Yes,머플러,
+2504,Muffler_,Muffler,2,0,1,5000,400,Garment,,,0,AllExceptNovice,Yes,Yes,머플러,
+2505,Manteau,Manteau,4,0,0,32000,600,Garment,,,0,SwordUserTaekwon,Yes,Yes,망토,
+2506,Manteau_,Manteau,4,0,1,32000,600,Garment,,,0,SwordUserTaekwon,Yes,Yes,망토,
+2507,Ancient_Cape,Ancient Cape,2,0,0,82000,600,Garment,,,40,AllExceptNovice,Yes,Yes,옛영주의망토,
+2508,Ragamuffin_Manteau,Ragamuffin Manteau,1,10,0,56000,500,Garment,,,0,AllExceptNovice,Yes,No,누더기망토,
+2509,Survivor's_Manteau,Survivor's Manteau,0,5,0,20000,550,Garment,,,75,MagePlusLinker,Yes,Yes,생존의망토,
+2510,Somber_Novice_Hood,Somber Novice Hood,2,0,0,1,1,Garment,,,0,NoviceGroup,No,Yes,후드,
+2512,Novice_Manteau,Novice Manteau,2,0,1,50000,500,Garment,,,40,NoviceGroup,Yes,Yes,초보자용망토,
+2513,Heavenly_Maiden_Robe,Heavenly Maiden Robe,3,0,1,20,500,Garment,,,80,AllExceptNovice,Yes,Yes,목보호대,
+2514,Pauldron,Pauldron,5,0,1,20,800,Garment,,,80,SwordUser1stJob,Yes,Yes,폴드런,
+2515,Eagle_Wing,Eagle Wing,1,0,1,20000,300,Garment,,,85,MagePlusLinker,Yes,Yes,윙오브이글,
+2516,Falcon_Muffler,Falcon Muffler,3,0,0,30000,400,Garment,,,65,AllExceptNovice,Yes,Yes,매의날개옷,
+2517,Vali's_Manteau,Vali's Manteau,4,0,0,30000,600,Garment,,,65,AllExceptNovice,Yes,Yes,발리의망토,
+2518,Morpheus's_Shawl,Morpheus's Shawl,3,3,0,30000,600,Garment,,,33,AllExceptNovice,Yes,Yes,모르피셔스쇼올,
+2519,Morrigane's_Manteau,Morrigane's Manteau,3,0,0,30000,600,Garment,,,61,AllExceptNovice,Yes,Yes,모리아네의망토,
+2520,Goibne's_Spaulders,Goibne's Spaulders,3,2,0,30000,700,Garment,,,54,AllExceptNovice,Yes,Yes,게브네이어깨장식,
+2521,Angel's_Cardigan,Angel's Cardigan,2,0,1,10000,400,Garment,,,20,NoviceGroup,Yes,Yes,천사의온기,
+2522,Undershirt,Undershirt,2,1,0,20000,150,Garment,,,1,AllJobs,Yes,Yes,런닝셔츠,
+2523,Undershirt_,Undershirt,2,1,1,20000,150,Garment,,,1,AllJobs,Yes,Yes,런닝셔츠,
+2524,Valkyrian_Manteau,Valkyrian Manteau,3,0,1,0,500,Garment,,,1,Trans1stJob,Yes,No,발키리의망토,
+2525,Ancient_Cape_,Ancient Cape,2,0,1,82000,600,Garment,,,40,AllExceptNovice,Yes,Yes,옛영주의망토,
+2527,Dragon_Breath,Dragon Breath,4,0,1,10000,600,Garment,,,48,Trans1stJob,Yes,Yes,드래곤의숨결,
+2528,Wool_Scarf,Wool Scarf,3,4,1,10000,500,Garment,,,55,Trans1stJob,Yes,Yes,울스카프,
+2529,Rider_Insignia,Rider Insignia,4,0,0,10000,500,Garment,,,55,Trans1stJob,Yes,Yes,라이더휘장,
+2530,Rider_Insignia_,Rider Insignia,4,0,1,10000,500,Garment,,,55,Trans1stJob,Yes,Yes,라이더휘장,
+2531,Ulfhedinn,Ulfhedinn,3,0,1,10000,700,Garment,,,70,JC_087,Yes,Yes,울프헤딘,
+2532,Mithril_Magic_Cape,Mithril Magic Cape,3,3,1,10000,400,Garment,,,70,JC_088,Yes,Yes,미스릴마법망토,
+2536,Skin_of_Ventus,Skin of Ventus,2,2,1,20,250,Garment,,,0,AllExceptNovice,Yes,Yes,스킨오브벤투스,
+2537,Diabolus_Manteau,Diabolus Manteau,5,0,1,20,250,Garment,,,0,Trans2ndJob,Yes,Yes,디아볼루스망토,
+2540,Sheriff's_Manteau,Sheriff's Manteau,3,1,1,10,0,Garment,,,80,Gunslinger,Yes,Yes,누더기망토,
+2541,Asprika,Asprika,5,5,0,20,400,Garment,,,94,AllJobs,No,No,아스프리카,
+2542,Flame_Manteau_of_Naght_Sieger,Flame Manteau of Naght Sieger,4,2,1,20,500,Garment,,,70,Trans1stJob,Yes,Yes,옛영주의망토,
+2544,Leather_of_Tendrilion,Leather of Tendrilion,3,0,1,20,500,Garment,,,0,Trans2ndJob,Yes,Yes,텐드릴리온의가죽,
+2549,Glorious_Muffler,Glorious Muffler,0,0,0,20,0,Garment,,,80,AllExceptNovice,Yes,Yes,울프헤딘,
+2601,Ring,Ring,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,No,링,
+2602,Earring,Earring,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,No,이어링,
+2603,Necklace,Necklace,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,No,네클리스,
+2604,Glove,Glove,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,No,글러브,
+2605,Brooch,Brooch,0,0,0,30000,100,Accessory,,,20,AllExceptNovice,No,No,브로치,
+2607,Clip,Clip,0,0,1,30000,100,Accessory,,,0,AllJobs,No,No,클립,
+2608,Rosary,Rosary,0,5,0,15000,100,Accessory,,,20,AllExceptNovice,No,No,로자리,
+2609,Skull_Ring,Skull Ring,0,0,0,10000,100,Accessory,,,0,AllJobs,No,No,해골반지,
+2610,Gold_Ring,Gold Ring,0,0,0,30000,100,Accessory,,,0,AllJobs,No,No,금반지,
+2611,Silver_Ring,Silver Ring,0,0,0,20000,100,Accessory,,,0,AllJobs,No,No,은반지,
+2612,Flower_Ring,Flower Ring,0,0,0,1500,100,Accessory,,,0,AllJobs,No,No,꽃반지,
+2613,Diamond_Ring,Diamond Ring,0,0,0,45000,100,Accessory,,,0,AllJobs,No,No,다이아반지,
+2614,Eye_of_Dullahan,Eye of Dullahan,0,0,0,90000,100,Accessory,,,50,AllExceptNovice,No,No,듀라한아이,
+2615,Safety_Ring,Safety Ring,3,3,0,75000,100,Accessory,,,40,AllExceptNovice,No,No,세이프티링,
+2616,Critical_Ring,Critical Ring,0,0,0,75000,100,Accessory,,,40,AllExceptNovice,No,No,크리티컬링,
+2617,Celebrant's_Mitten,Celebrant's Mitten,1,0,0,2,100,Accessory,,,35,AllExceptNovice,No,No,신관의장갑,
+2618,Matyr's_Leash,Matyr's Leash,1,0,0,2,100,Accessory,,,35,AllExceptNovice,No,No,마타의목걸이,
+2619,Bow_Thimble,Bow Thimble,0,0,0,10000,100,Accessory,,,65,ArcherGroup,No,Yes,활골무,
+2620,Rogue's_Treasure,Rogue's Treasure,0,0,0,10000,100,Accessory,,,70,StealthGroup,No,Yes,도적의반지,
+2621,Ring_,Ring,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,No,링,
+2622,Earring_,Earring,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,No,이어링,
+2623,Necklace_,Necklace,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,No,네클리스,
+2624,Glove_,Glove,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,No,글러브,
+2625,Brooch_,Brooch,0,0,1,30000,100,Accessory,,,90,AllExceptNovice,No,No,브로치,
+2626,Rosary_,Rosary,0,3,1,15000,100,Accessory,,,90,AllExceptNovice,No,No,로자리,
+2627,Belt,Belt,0,0,1,20000,1200,Accessory,,,25,AllJobs,No,No,벨트,
+2628,Novice_Armlet,Novice Armlet,0,0,1,400,200,Accessory,,,1,NoviceGroup,No,No,노비스암릿,
+2629,Megingjard,Megingjard,2,7,0,20,8000,Accessory,,,94,AllJobs,No,No,메긴기오르드,
+2630,Brisingamen,Brisingamen,1,5,0,20,1500,Accessory,,,94,AllJobs,No,No,브리싱가멘,
+2634,Wedding_Ring,Wedding Ring,0,0,0,0,0,Accessory,,,0,AllJobs,No,No,신랑결혼반지,
+2635,Wedding_Ring_,Wedding Ring,0,0,0,0,0,Accessory,,,0,AllJobs,No,No,신부결혼반지,
+2642,Serin's_Gold_Ring,Serin's Gold Ring,0,0,0,20,0,Accessory,,,0,AllJobs,No,No,세린의금반지,
+2643,Serin's_Gold_Ring_,Serin's Gold Ring,0,0,0,45000,100,Accessory,,,0,AllJobs,No,No,세린의금반지,
+2644,The_Sign,The Sign,0,0,0,2,0,Accessory,,,0,AllJobs,No,No,더사인_,
+2647,Nile_Rose,Nile Rose,0,0,1,2,100,Accessory,,,0,AllJobs,No,No,나일로즈,
+2648,Morpheus's_Ring,Morpheus's Ring,0,0,0,30000,100,Accessory,,,33,AllExceptNovice,No,No,모르피셔스반지,
+2649,Morpheus's_Bracelet,Morpheus's Bracelet,0,0,0,30000,100,Accessory,,,33,AllExceptNovice,No,No,모르피셔스팔찌,
+2650,Morrigane's_Belt,Morrigane's Belt,0,0,0,30000,200,Accessory,,,61,AllExceptNovice,No,No,모리아네의벨트,
+2651,Morrigane's_Pendant,Morrigane's Pendant,0,0,0,30000,200,Accessory,,,61,AllExceptNovice,No,No,모리아네팬던트,
+2652,Cursed_Brooch,Cursed Brooch,0,0,0,20,100,Accessory,,,40,AllJobs,No,No,저주행운브로치,
+2654,Shinobi_Sash,Shinobi Sash,1,1,0,20000,300,Accessory,,,30,StealthGroup,No,No,시노비의허리띠,
+2655,Bloodied_Shackle_Ball,Bloodied Shackle Ball,0,0,0,50000,4000,Accessory,,,1,AllExceptNovice,No,No,피묻은철구,
+2656,Armor_Charm,Armor Charm,0,0,0,20000,1000,Accessory,,,1,SwordUser1stJob,No,No,하이퍼체인저,
+2657,Laboratory_Permit,Laboratory Permit,0,0,0,20,100,Accessory,,,1,AllJobs,No,No,출입카드,
+2658,Nile_Rose_,Nile Rose,0,0,1,2,100,Accessory,,,0,AllJobs,No,No,나일로즈,
+2659,Vesper_Core_01,Vesper Core 01,1,3,0,20,100,Accessory,,,1,Trans2ndJob,No,No,베스퍼코어,
+2660,Vesper_Core_02,Vesper Core 02,1,3,0,20,100,Accessory,,,1,Trans2ndJob,No,No,베스퍼코어,
+2661,Vesper_Core_03,Vesper Core 03,1,3,0,20,100,Accessory,,,1,Trans2ndJob,No,No,베스퍼코어,
+2662,Vesper_Core_04,Vesper Core 04,1,3,0,20,100,Accessory,,,1,Trans2ndJob,No,No,베스퍼코어,
+2671,Bow_Thimble_,Bow Thimble,0,0,1,10000,100,Accessory,,,65,ArcherGroup,No,Yes,활골무,
+2677,Spiritual_Ring,Spiritual Ring,0,0,0,20,100,Accessory,,,0,AllJobs,No,No,스피리츄얼링,
+2678,Ring_of_Flame_Lord,Ring of Flame Lord,0,0,0,20,100,Accessory,,,0,Trans2ndJob,No,No,링오브플레임로드,
+2679,Ring_of_Resonance,Ring of Resonance,2,2,0,20,100,Accessory,,,0,Trans2ndJob,No,No,링오브레조넌스,
+2680,Lesser_Elemental_Ring,Lesser Elemental Ring,0,0,0,20,100,Accessory,,,0,AllJobs,No,No,스피리츄얼링,
+2700,Red_Silk_Seal,Red Silk Seal,0,0,0,10000,100,Accessory,,,60,JC_080,No,No,봉인의붉은비단,
+2701,Orleans's_Glove,Orleans's Glove,0,0,1,10000,100,Accessory,,,90,Trans1stJob,No,No,오를레앙의장갑,
+2702,Bison_Horn,Bison Horn,0,0,1,10000,100,Accessory,,,90,Trans1stJob,No,No,들소의뿔,
+2703,Expert_Ring,Expert Ring,0,0,1,10000,150,Accessory,,,50,Trans1stJob,No,No,익스퍼트링,
+2707,Gusli,Gusli,0,0,0,20,100,Accessory,,,0,AllJobs,No,No,GUSLI,
+2715,Skull_Ring_,Skull Ring,0,0,1,10000,100,Accessory,,,0,AllJobs,No,No,해골반지,
+2716,Librarian_Glove,Librarian Glove,0,0,1,20,100,Accessory,,,80,Mage2ndPlusLinker,No,No,사서의장갑,
+2717,Pocket_Watch,Pocket Watch,1,0,0,20,200,Accessory,,,80,MagePlusLinker,No,No,회중시계_,
+2718,Lunatic_Brooch,Lunatic Brooch,0,0,1,20,200,Accessory,,,65,ArcherGroup,No,No,루나틱브로치,
+2719,Iron_Wrist,Iron Wrist,1,0,0,20,700,Accessory,,,50,JC_078,No,No,아이언리스트,
+2720,Medal_of_Honor_(Swordman),Medal of Honor (Swordman),1,0,0,20,0,Accessory,,,70,SwordsmanStar,No,No,훈장_검사,
+2721,Medal_of_Honor_(Thief),Medal of Honor (Thief),1,0,0,20,0,Accessory,,,70,StealthGroup,No,No,훈장_도둑,
+2722,Medal_of_Honor_(Acolyte),Medal of Honor (Acolyte),1,6,0,20,0,Accessory,,,70,Acolyte,No,No,훈장_복사,
+2723,Medal_of_Honor_(Mage),Medal of Honor (Mage),7,0,0,20,0,Accessory,,,70,MagePlusLinker,No,No,훈장_마법사,
+2724,Medal_of_Honor_(Archer),Medal of Honor (Archer),1,0,0,20,0,Accessory,,,70,ArcherGroup,No,No,훈장_궁수,
+2725,Medal_of_Honor_(Merchant),Medal of Honor (Merchant),1,0,0,20,0,Accessory,,,70,Merchant,No,No,훈장_상인,
+2728,Cursed_Hand,Cursed Hand,0,0,1,20,50,Accessory,,,80,AllExceptNovice,No,No,저주받은손,
+2729,Diabolus_Ring,Diabolus Ring,0,0,1,20,50,Accessory,,,0,Trans2ndJob,No,No,디아볼루스링,
+2730,Seal_of_Continental_Guard,Seal of Continental Guard,0,0,1,20,50,Accessory,,,80,AllExceptNovice,No,No,컨티넨탈가드인장,
+2731,Rune_Spellstone,Rune Spellstone,0,0,1,20,50,Accessory,,,80,AllExceptNovice,No,No,룬문자주문석,
+2732,Death_Loop,Death Loop,0,0,1,20,50,Accessory,,,80,AllExceptNovice,No,No,죽음의고리,
+2733,Medal_of_Honor,Medal of Honor,1,0,0,20,0,Accessory,,,70,Gunslinger,No,No,전투휘장,
+2743,Angelic_Ring,Angelic Ring,0,2,0,20,100,Accessory,,,70,Trans2ndJob,No,No,앤젤릭링,
+2744,Sprint_Ring,Sprint Ring,0,0,0,20,100,Accessory,,,0,Trans2ndJob,No,No,스프린트반지,
+2745,Pinguicula_Corsage,Pinguicula Corsage,0,2,1,20,200,Accessory,,,0,Trans2ndJob,No,No,핀귀큘라코르사주,
+2748,Cursed_Star,Cursed Star,0,3,0,20,200,Accessory,,,84,JC_085,No,No,커즈드스타,
+2749,Linen_Glove,Linen Glove,1,1,1,20,120,Accessory,,,90,Trans2ndJob,No,No,리넨글러브,
+2765,Novice_Figure,Novice Figure,0,0,0,0,100,Accessory,,,0,AllJobs,No,No,피규어,
+2766,Swordman_Figure,Swordman Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,No,검사피규어,
+2767,Acolyte_Figure,Acolyte Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,No,복사피규어,
+2768,Mage_Figure,Mage Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,No,마술사피규어,
+2769,Archer_Figure,Archer Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,No,궁수피규어,
+2770,Thief_Figure,Thief Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,No,도둑피규어,
+2771,Merchant_Figure,Merchant Figure,0,0,0,0,0,Accessory,,,0,AllJobs,No,No,상인피규어,
+2772,Glorious_Ring,Glorious Ring,0,0,0,20,0,Accessory,,,81,AllExceptNovice,No,No,모르피셔스반지,
+2773,Glorious_Popularized_Ring,Glorious Popularized Ring,0,0,0,20,0,Accessory,,,61,AllExceptNovice,No,No,모르피셔스반지,
+2774,Glorious_Mass-Produced_Ring,Glorious Mass-Produced Ring,0,0,0,20,0,Accessory,,,0,AllExceptNovice,No,No,모르피셔스반지,
+2775,Lure,Lure,0,0,0,20,100,Accessory,,,0,AllJobs,No,No,멋쟁이지렁이,
+5001,Headset,Headset,3,0,0,20,200,Headgear,Top,,1,AllExceptNovice,Yes,Yes,헤드폰,헤드폰
+5002,Jewel_Crown,Jewel Crown,4,3,0,20,600,Headgear,Top,,60,SwordUser1stJob,Yes,Yes,쥬얼크라운,쥬얼크라운
+5003,Joker_Jester,Joker Jester,1,5,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,광대모자,광대모자
+5004,Oxygen_Mask,Oxygen Mask,0,0,0,20,200,Headgear,Bottom,,0,AllExceptNovice,No,Yes,산소마스크,산소마스크
+5005,Gas_Mask,Gas Mask,1,0,0,20,100,Headgear,MidBottom,,0,AllExceptNovice,No,Yes,가스마스크,가스마스크
+5006,Machoman's_Glasses,Machoman's Glasses,1,0,0,36000,100,Headgear,Mid,,0,AllExceptNovice,No,Yes,하트파운데이션,하트파운데이션
+5007,Grand_Circlet,Grand Circlet,3,4,0,20,200,Headgear,Top,,55,AllExceptNovice,Yes,Yes,로드서클릿,로드서클릿
+5008,Puppy_Love,Puppy Love,1,0,0,20,100,Headgear,Top,,0,AllExceptNovice,No,Yes,풋사랑,풋사랑
+5009,Safety_Helmet,Safety Helmet,3,3,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,No,안전모,안전모
+5010,Indian_Fillet,Indian Fillet,3,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,원주민머리띠,원주민머리띠
+5011,Aerial,Aerial,3,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,안테나,안테나
+5012,Ph.D_Hat,Ph.D Hat,3,0,0,20,200,Headgear,Top,,0,AllExceptNovice,Yes,Yes,학사모,학사모
+5013,Lord_Kaho's_Horns,Lord Kaho's Horns,5,10,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,로드카호의뿔,로드카호의뿔
+5014,Fin_Helm,Fin Helm,2,0,0,20,300,Headgear,Mid,,65,Swordsman,No,Yes,핀헬름,핀헬름
+5015,Egg_Shell,Egg Shell,3,0,0,20,200,Headgear,Top,,0,AllJobs,No,Yes,장식용알껍질,장식용알껍질
+5016,Boy's_Cap,Boy's Cap,2,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,학생모,학생모
+5017,Bone_Helm,Bone Helm,7,0,0,20,800,Headgear,Top,,70,SwordsmanMerchant,Yes,Yes,본헬름,본헬름
+5018,Feather_Bonnet,Feather Bonnet,4,0,0,20,300,Headgear,Top,,0,ArcherGroup,Yes,Yes,깃털모자,깃털모자
+5019,Corsair,Corsair,5,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,커세어,커세어
+5021,Grief_for_Greed,Grief for Greed,4,0,0,20,1200,Headgear,Top,,38,Merchant,Yes,Yes,돈잃은자의마음,돈잃은자의마음
+5022,Hat_of_the_Sun_God,Hat of the Sun God,4,0,0,20,2400,Headgear,TopMid,,0,SecondJob,Yes,Yes,태양신의모자,태양신의모자
+5023,Parcel_Hat,Parcel Hat,0,0,0,20,1000,Headgear,Top,,0,Merchant,Yes,Yes,보따리모,보따리모
+5024,Cake_Hat,Cake Hat,1,0,0,20,1000,Headgear,Top,,0,AllJobs,Yes,Yes,케이크모자,케이크모자
+5025,Helm_of_Angel,Helm of Angel,5,3,0,20,1600,Headgear,Top,,74,SecondJob,Yes,Yes,천사의투구,천사의투구
+5026,Chef_Hat,Chef Hat,1,0,0,20,300,Headgear,Top,,50,AllExceptNovice,Yes,Yes,요리사의모자,요리사의모자
+5027,Mage_Hat,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,Yes,마법사의모자,마법사의모자
+5028,Candle,Candle,0,0,0,20,150,Headgear,Top,,0,AllJobs,Yes,Yes,촛불,촛불
+5029,Spore_Hat,Spore Hat,3,0,0,20,900,Headgear,Top,,20,AllExceptNovice,Yes,Yes,스포아모자,스포아모자
+5030,Panda_Hat,Panda Hat,3,0,0,20,800,Headgear,Top,,40,AllExceptNovice,Yes,Yes,팬더곰모자,팬더곰모자
+5031,Mine_Hat,Mine Hat,4,0,0,20,1500,Headgear,Top,,55,Melee1stJob,Yes,Yes,광산헬멧,광산헬멧
+5032,Sunday_Hat,Sunday Hat,1,0,0,20,800,Headgear,Top,,0,AllExceptNovice,Yes,Yes,나들이모자,나들이모자
+5033,Raccoon_Hat,Raccoon Hat,3,0,0,20,900,Headgear,Top,,50,AllExceptNovice,Yes,Yes,너구리모자,너구리모자
+5034,Bulb_Band,Bulb Band,0,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,전구머리띠,전구머리띠
+5035,Poring_Hat,Poring Hat,2,0,0,20,700,Headgear,Top,,38,AllExceptNovice,Yes,Yes,포링모자,포링모자
+5036,Cross_Hat,Cross Hat,1,0,0,20,250,Headgear,Top,,10,AllExceptNovice,Yes,Yes,십자머리띠,십자머리띠
+5037,Nut_Shell,Nut Shell,4,0,0,20,150,Headgear,Top,,5,AllJobs,No,Yes,열매껍질,열매껍질
+5038,Deviruchi_Hat,Deviruchi Hat,2,0,0,20,800,Headgear,Top,,64,AllExceptNovice,Yes,Yes,새끼악마모자,새끼악마모자
+5039,Rainbow_Eggshell,Rainbow Eggshell,4,0,0,20,400,Headgear,Top,,19,AllJobs,No,Yes,알록달록알껍질,알록달록알껍질
+5040,Blush,Blush,0,0,0,20,100,Headgear,Mid,,0,AllJobs,No,Yes,발그레,발그레
+5041,Heart_Hairpin,Heart Hairpin,0,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,하트머리핀,하트머리핀
+5042,Bao_Bao,Bao Bao,0,0,0,20,150,Headgear,Top,,14,AllExceptNovice,Yes,Yes,머리포자기,머리포자기
+5043,Opera_Phantom_Mask,Opera Phantom Mask,1,0,0,20,200,Headgear,Mid,,20,AllExceptNovice,No,Yes,오페라유령가면,오페라유령가면
+5045,Magician_Hat,Magician Hat,3,0,0,20,500,Headgear,Top,,50,CasterGroup,Yes,Yes,마술사의모자,마술사의모자
+5046,Bongun_Hat,Bongun Hat,5,0,0,20,300,Headgear,All,,0,AllJobs,No,Yes,본건모자,본건모자
+5047,Fashionable_Glasses,Fashionable Glasses,0,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,패션선글래스,패션선글래스
+5048,Crescent_Hairpin,Crescent Hairpin,0,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,초승달머리핀,초승달머리핀
+5049,Striped_Hairband,Striped Hairband,1,0,0,20,150,Headgear,Top,,0,AllJobs,No,Yes,줄무늬머리띠,줄무늬머리띠
+5050,Wonder_Nutshell,Wonder Nutshell,5,0,0,20,300,Headgear,Top,,30,AllJobs,No,Yes,신비한열매껍질,신비한열매껍질
+5052,Blue_Hairband,Blue Hairband,1,0,0,20,150,Headgear,Top,,0,AllJobs,Yes,Yes,청색머리띠,청색머리띠
+5053,Sphinx_Hat,Sphinx Hat,5,0,0,20,3000,Headgear,TopBottom,,65,Swordsman,No,Yes,스핑크스모자,스핑크스모자
+5055,Novice_Eggshell,Novice Eggshell,3,0,0,1,1,Headgear,Top,,0,NoviceGroup,No,Yes,장식용알껍질,장식용알껍질
+5057,Black_Cat_Ears,Black Cat Ears,2,0,0,16000,200,Headgear,Top,,45,AllJobs,Yes,Yes,검은고양이귀,검은고양이귀
+5058,Drooping_Cat,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,늘어진고양이,늘어진고양이
+5059,Teddybear_Hat,Teddybear Hat,3,0,0,20,800,Headgear,Top,,50,AllJobs,Yes,Yes,곰돌이모자,곰돌이모자
+5060,Party_Hat,Party Hat,3,0,0,20,300,Headgear,Top,,0,AllJobs,Yes,Yes,꼬깔모자,꼬깔모자
+5061,Flower_Hairpin,Flower Hairpin,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,꽃머리핀,꽃머리핀
+5062,Straw_Hat,Straw Hat,3,0,0,20,200,Headgear,Top,,50,AllJobs,Yes,Yes,밀짚모자,밀짚모자
+5063,Giant_Band_Aid,Giant Band Aid,1,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,반창고,반창고
+5064,Smokie_Leaf,Smokie Leaf,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,나뭇잎투구,나뭇잎투구
+5065,Blue_Fish,Blue Fish,2,0,0,20,500,Headgear,Top,,50,AllJobs,Yes,Yes,생선모자,생선모자
+5066,Succubus_Horn,Succubus Horn,4,10,0,20,800,Headgear,Top,,70,AllExceptNovice,Yes,Yes,서큐버스뿔,서큐버스뿔
+5067,Sombrero,Sombrero,4,0,0,20,350,Headgear,Top,,0,AllExceptNovice,Yes,Yes,솜브레로,솜브레로
+5068,Evil_Wing_Ears,Evil Wing Ears,1,0,0,20,100,Headgear,Mid,,70,AllJobs,No,Yes,악마날개귀,악마날개귀
+5069,Kitsune_Mask,Kitsune Mask,1,0,0,20,300,Headgear,Top,,0,AllExceptNovice,Yes,Yes,여우가면,여우가면
+5070,Hot-Blooded_Headband,Hot-Blooded Headband,1,0,0,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,열혈머리띠,열혈머리띠
+5071,Indian_Headband,Indian Headband,1,0,0,20,200,Headgear,Top,,0,AllExceptNovice,Yes,Yes,인디안머리띠,인디안머리띠
+5072,Incubus_Horn,Incubus Horn,4,10,0,20,800,Headgear,Top,,70,AllExceptNovice,Yes,Yes,인큐버스뿔,인큐버스뿔
+5073,Model_Training_Hat,Model Training Hat,2,0,0,20,700,Headgear,Top,,0,AllExceptNovice,Yes,Yes,자세교정모자,자세교정모자
+5074,Angel_Wing_Ears,Angel Wing Ears,1,0,0,20,100,Headgear,Mid,,70,AllJobs,No,Yes,천사날개귀,천사날개귀
+5075,Cowboy_Hat,Cowboy Hat,4,0,0,20,500,Headgear,Top,,0,AllJobs,Yes,Yes,카우보이모자,카우보이모자
+5076,Beanie,Beanie,2,0,0,20,350,Headgear,Top,,0,AllJobs,Yes,Yes,털모자,털모자
+5077,Tulip_Hairpin,Tulip Hairpin,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,튤립머리핀,튤립머리핀
+5078,Sea_Otter_Hat,Sea Otter Hat,3,0,0,20,800,Headgear,Top,,50,AllJobs,Yes,Yes,해달모자,해달모자
+5079,X_Hairpin,X Hairpin,1,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,X자머리핀,x자머리핀
+5080,Crown_of_Ancient_Queen,Crown of Ancient Queen,4,0,0,20,400,Headgear,Top,,45,AllJobs,Yes,Yes,여왕의투구,여왕의투구
+5081,Crown_of_Mistress,Crown of Mistress,0,0,0,20,100,Headgear,Top,,75,AllExceptNovice,Yes,No,미스트레스왕관,미스트레스왕관
+5082,Decorative_Mushroom,Decorative Mushroom,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,버섯머리띠,버섯머리띠
+5083,Red_Ribbon,Red Ribbon,1,10,0,20,200,Headgear,Top,,45,AllJobs,Yes,Yes,빨간테일리본,빨간테일리본
+5084,Lazy_Smokie,Lazy Smokie,1,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,귀찮은너구리,귀찮은너구리
+5085,Small_Ribbons,Small Ribbons,1,0,0,20,100,Headgear,Mid,,45,AllJobs,No,Yes,양쪽귀밑리본,양쪽귀밑리본
+5086,Alarm_Mask,Alarm Mask,2,0,0,20,100,Headgear,MidBottom,,0,AllExceptNovice,No,Yes,알람가면,알람가면
+5087,Poker_Face,Poker Face,1,0,0,20,100,Headgear,MidBottom,,0,AllJobs,No,Yes,고블린가면1호,고블린가면1호
+5088,Surprised_Mask,Surprised Mask,1,0,0,20,100,Headgear,MidBottom,,0,AllJobs,No,Yes,고블린가면2호,고블린가면2호
+5089,Annoyed_Mask,Annoyed Mask,1,0,0,20,100,Headgear,MidBottom,,0,AllJobs,No,Yes,고블린가면3호,고블린가면3호
+5090,Goblin_Leader_Mask,Goblin Leader Mask,2,0,0,20,100,Headgear,MidBottom,,0,AllJobs,No,Yes,고블린가면4호,고블린가면4호
+5091,Decorative_Golden_Bell,Decorative Golden Bell,2,0,0,20,200,Headgear,TopMid,,35,AllExceptNovice,Yes,Yes,대형금방울,대형금방울
+5092,Coif,Coif,5,0,0,150000,300,Headgear,TopMid,,65,PriestAssassin,Yes,Yes,수녀모자,수녀모자
+5093,Coif_,Coif,5,0,1,150000,300,Headgear,TopMid,,65,PriestAssassin,Yes,Yes,수녀모자,수녀모자
+5094,Orc_Hero_Helm,Orc Hero Helm,5,0,0,500000,900,Headgear,TopMid,,55,AllExceptNovice,Yes,Yes,오크히어로투구,오크히어로투구
+5096,Assassin_Mask,Assassin Mask,0,0,0,20,100,Headgear,Bottom,,70,PriestAssassin,No,Yes,어새신마스크,어새신마스크
+5097,Holiday_Hat,Holiday Hat,0,0,0,0,400,Headgear,Top,,0,AllJobs,Yes,Yes,꼬깔모자_,꼬깔모자
+5104,Dark_Blinder,Dark Blinder,0,0,0,20,100,Headgear,Mid,,0,AllExceptNovice,No,Yes,검은눈가리개,검은눈가리개
+5107,Crunch_Toast,Crunch Toast,0,0,0,20,50,Headgear,Bottom,,0,AllJobs,No,Yes,토스트,토스트
+5108,Detective's_Cap,Detective's Cap,3,0,1,20,350,Headgear,Top,,0,AllJobs,Yes,Yes,탐정모자,탐정모자
+5109,Red_Bonnet,Red Bonnet,2,0,0,20,400,Headgear,Top,,0,AllJobs,Yes,Yes,차양모자,차양모자
+5110,Baby_Pacifier,Baby Pacifier,0,0,0,20,50,Headgear,Bottom,,0,AllJobs,No,Yes,젖꼭지,젖꼭지
+5111,Galapago_Cap,Galapago Cap,2,0,0,20,500,Headgear,Top,,55,AllJobs,Yes,Yes,오리모자,오리모자
+5112,Super_Novice_Hat,Super Novice Hat,4,0,0,8500,400,Headgear,Top,,40,NoviceGroup,Yes,Yes,슈노모자,슈노모자
+5113,Angry_Snarl,Angry Snarl,0,0,0,20,50,Headgear,Bottom,,0,AllJobs,No,Yes,분노입,분노입
+5114,Bucket_Hat,Bucket Hat,3,0,0,6000,300,Headgear,Top,,0,AllJobs,Yes,Yes,벙거지모자,벙거지모자
+5115,Winter_Hat,Winter Hat,3,0,0,20,500,Headgear,Top,,0,AllJobs,Yes,Yes,방한모자,방한모자
+5116,Banana_Hat,Banana Hat,1,0,0,20,200,Headgear,Top,,0,AllJobs,Yes,Yes,바나나모자,바나나모자
+5117,Mystic_Rose,Mystic Rose,0,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,미스틱로즈,미스틱로즈
+5118,Puppy_Headband,Puppy Headband,2,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,강아지귀,강아지귀
+5119,Super_Novice_Hat_,Super Novice Hat,4,0,1,8500,400,Headgear,Top,,40,NoviceGroup,Yes,Yes,슈노모자,슈노모자
+5120,Bucket_Hat_,Bucket Hat,3,0,1,6000,300,Headgear,Top,,0,AllJobs,Yes,Yes,벙거지모자,벙거지모자
+5121,Zealotus_Mask,Zealotus Mask,3,0,0,20,400,Headgear,TopMid,,70,AllExceptNovice,Yes,Yes,지르타스가면,지르타스가면
+5122,Magni's_Cap,Magni's Cap,5,0,0,30000,1000,Headgear,Top,,65,AllExceptNovice,Yes,Yes,메긴캡,메긴캡
+5123,Ulle's_Cap,Ulle's Cap,3,0,1,30000,500,Headgear,Top,,65,AllExceptNovice,Yes,Yes,울캡,울캡
+5124,Fricca's_Circlet,Fricca's Circlet,3,10,0,30000,300,Headgear,Top,,65,AllExceptNovice,Yes,Yes,프리카서클릿,프리카서클릿
+5125,Angel's_Kiss,Angel's Kiss,3,0,1,10000,300,Headgear,Top,,50,NoviceGroup,Yes,Yes,천사의입맞춤,천사의입맞춤
+5126,Morpheus's_Hood,Morpheus's Hood,1,0,0,30000,200,Headgear,Top,,33,AllExceptNovice,Yes,Yes,모르피셔스두건,모르피셔스두건
+5127,Morrigane's_Helm,Morrigane's Helm,4,0,0,30000,500,Headgear,Top,,61,AllExceptNovice,Yes,Yes,모리아네헬름,모리아네헬름
+5128,Goibne's_Helm,Goibne's Helm,5,3,0,30000,500,Headgear,Top,,54,AllExceptNovice,Yes,Yes,게브네이투구,게브네이투구
+5136,Antonio's_Santa_Hat,Antonio's Santa Hat,3,1,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,산타모자,산타모자
+5141,Marionette_Doll,Marionette Doll,0,0,1,20,400,Headgear,Top,,30,AllExceptNovice,Yes,Yes,마리오넷모자,마리오넷모자
+5147,Baseball_Cap,Baseball Cap,3,0,1,0,200,Headgear,Top,,0,AllJobs,Yes,Yes,야구모자,야구모자
+5157,Orc_Helm_,Orc Helm,5,0,1,20,500,Headgear,Top,,0,SwordUser1stJob,Yes,Yes,오크족헬름,오크족헬름
+5158,Monk_Hat_,Monk Hat,5,3,1,30000,100,Headgear,Top,,0,Acolyte,Yes,Yes,성직자의모자,성직자의모자
+5159,Golden_Gear_,Golden Gear,5,0,1,20,900,Headgear,Top,,40,AllExceptNovice,Yes,No,골든헤드기어,골든헤드기어
+5160,Majestic_Goat_,Majestic Goat,5,0,1,20,800,Headgear,Top,,0,SwordMerchantTaekwon,Yes,Yes,마제스틱고우트,마제스틱고우트
+5161,Spiky_Band_,Spiky Band,6,0,1,20,1000,Headgear,Top,,50,MeleeJobTaekwon,Yes,Yes,샤프헤드기어,샤프헤드기어
+5162,Bone_Helm_,Bone Helm,7,0,1,20,800,Headgear,Top,,70,SwordsmanMerchant,Yes,Yes,본헬름,본헬름
+5163,Corsair_,Corsair,5,0,1,20,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,커세어,커세어
+5164,Tiara_,Tiara,4,0,1,20,400,Headgear,Top,,45,AllExceptNovice,Yes,Yes,티아라,티아라
+5165,Crown_,Crown,4,0,1,20,400,Headgear,Top,,45,AllExceptNovice,Yes,Yes,크라운,크라운
+5166,Sphinx_Hat_,Sphinx Hat,5,0,1,20,3000,Headgear,TopBottom,,65,Swordsman,No,Yes,스핑크스모자,스핑크스모자
+5167,Munak_Hat_,Munak Hat,5,0,1,20,300,Headgear,All,,0,AllJobs,No,Yes,무낙모자,무낙모자
+5168,Bongun_Hat_,Bongun Hat,5,0,1,20,300,Headgear,All,,0,AllJobs,No,Yes,본건모자,본건모자
+5169,Bride_Mask,Bride Mask,4,0,1,30000,500,Headgear,TopMid,,40,AllJobs,Yes,Yes,각시탈,각시탈
+5170,Feather_Beret,Feather Beret,1,1,0,30000,600,Headgear,Top,,0,AllExceptNovice,Yes,Yes,깃털베레모,깃털베레모
+5171,Valkyrian_Helm,Valkyrian Helm,5,5,1,100000,1000,Headgear,Top,,0,Trans1stJob,Yes,Yes,발키리투구,발키리투구
+5172,Beret,Beret,0,0,0,30000,700,Headgear,Top,,0,AllJobs,No,Yes,베레모,베레모
+5173,Magistrate_Hat,Magistrate Hat,3,0,1,30000,400,Headgear,Top,,60,AllJobs,Yes,Yes,사또모자,사또모자
+5174,Ayam,Ayam,3,0,1,30000,400,Headgear,Top,,60,AllJobs,Yes,Yes,아얌,아얌
+5175,Censor_Bar,Censor Bar,0,1,0,30000,100,Headgear,Mid,,0,AllJobs,No,Yes,익명요청,익명요청
+5176,Hahoe_Mask,Hahoe Mask,2,0,0,30000,100,Headgear,MidBottom,,30,AllJobs,No,Yes,하회탈,하회탈
+5177,Mythical_Lion_Mask,Mythical Lion Mask,5,0,1,30000,500,Headgear,TopMid,,40,AllJobs,Yes,Yes,사자탈,사자탈
+5191,Ribbon__,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,Yes,리본_검정,리본_검정
+5192,Ribbon___,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,Yes,리본_노랑,리본_노랑
+5193,Ribbon____,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,Yes,리본_초록,리본_초록
+5194,Ribbon_____,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,Yes,리본_분홍,리본_분홍
+5195,Ribbon______,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,Yes,리본_빨강,리본_빨강
+5196,Ribbon_______,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,Yes,리본_주홍,리본_주홍
+5197,Ribbon________,Ribbon,1,3,1,800,100,Headgear,Top,,0,AllJobs,Yes,Yes,리본_하양,리본_하양
+5206,Romantic_White_Flower,Romantic White Flower,0,0,0,20,100,Headgear,Bottom,,0,AllExceptNovice,No,Yes,하얀꽃잎,하얀꽃잎
+5227,Deviruchi_Hat_,Deviruchi Hat,2,0,0,20,800,Headgear,Top,,64,AllExceptNovice,Yes,Yes,빨강새끼악마모자,빨강새끼악마모자
+5228,Deviruchi_Hat__,Deviruchi Hat,2,0,0,20,800,Headgear,Top,,64,AllExceptNovice,Yes,Yes,흰색새끼악마모자,흰색새끼악마모자
+5229,Deviruchi_Hat___,Deviruchi Hat,2,0,0,20,800,Headgear,Top,,64,AllExceptNovice,Yes,Yes,회색새끼악마모자,회색새끼악마모자
+5230,Drooping_Cat_,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,흰색늘어진고양이,흰색늘어진고양이
+5231,Drooping_Cat__,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,회색늘어진고양이,회색늘어진고양이
+5232,Drooping_Cat___,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,분홍늘어진고양이,분홍늘어진고양이
+5233,Drooping_Cat____,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,파랑늘어진고양이,파랑늘어진고양이
+5234,Drooping_Cat_____,Drooping Cat,1,15,0,250000,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,노랑늘어진고양이,노랑늘어진고양이
+5235,Beanie_,Beanie,2,0,0,20,350,Headgear,Top,,0,AllJobs,Yes,Yes,회색털모자,회색털모자
+5236,Beanie__,Beanie,2,0,0,20,350,Headgear,Top,,0,AllJobs,Yes,Yes,파랑털모자,파랑털모자
+5237,Beanie___,Beanie,2,0,0,20,350,Headgear,Top,,0,AllJobs,Yes,Yes,분홍털모자,분홍털모자
+5238,Mage_Hat_,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,Yes,빨강마법사의모자,빨강마법사의모자
+5239,Mage_Hat__,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,Yes,흰색마법사의모자,흰색마법사의모자
+5240,Mage_Hat___,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,Yes,회색마법사의모자,회색마법사의모자
+5241,Mage_Hat____,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,Yes,파랑마법사의모자,파랑마법사의모자
+5242,Mage_Hat_____,Mage Hat,1,0,0,20,300,Headgear,Top,,0,MagePlusLinker,Yes,Yes,노랑마법사의모자,노랑마법사의모자
+5243,Shafka,Shafka,2,0,1,20,800,Headgear,TopMid,,1,AllJobs,Yes,Yes,귀마개모자,귀마개모자
+5302,Water_Lily_Hat,Water Lily Hat,1,0,0,0,100,Headgear,Top,,30,AllJobs,Yes,Yes,연꽃모자,연꽃모자
+5305,Pirate_Dagger,Pirate Dagger,0,0,0,20,100,Headgear,Bottom,,0,AllJobs,No,Yes,해적의대거,해적의대거
+5347,Ph.D_Hat_,Ph.D Hat,3,0,1,20,200,Headgear,Top,,0,AllExceptNovice,Yes,Yes,학사모,학사모
+5348,Big_Ribbon_,Big Ribbon,2,3,1,15000,200,Headgear,Top,,0,AllExceptNovice,Yes,Yes,왕리본,왕리본
+5349,Boy's_Cap_,Boy's Cap,2,0,1,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,학생모,학생모
+5350,Pirate_Bandana_,Pirate Bandana,3,0,1,20,100,Headgear,Top,,0,AllExceptNovice,Yes,Yes,해적두건,해적두건
+5351,Sunflower_,Sunflower,1,0,1,20,100,Headgear,Top,,0,AllJobs,No,Yes,장식용해바라기,장식용해바라기
+5353,Hat_of_the_Sun_God_,Hat of the Sun God,4,0,1,20,2400,Headgear,TopMid,,0,SecondJob,Yes,Yes,태양신의모자,태양신의모자
+5374,Gigantic_Majestic_Goat,Gigantic Majestic Goat,5,0,0,20,800,Headgear,Top,,0,AllJobs,Yes,Yes,대형마제스틱고우트,대형마제스틱고우트
+5398,Bone_Head,Bone Head,5,5,1,20,1200,Headgear,Top,,85,JC_089,Yes,No,본헤드,본헤드
+5399,Mandragora_Cap,Mandragora Cap,1,0,1,20,300,Headgear,Top,,85,Trans2ndJob,No,Yes,만드라고라캡,만드라고라캡
+5436,Bride's_Corolla,Bride's Corolla,1,2,0,20,200,Headgear,Top,,0,AllJobs,Yes,Yes,신부의화관,신부의화관
+5438,Cute_Ribbon_,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,Yes,머리끈_녹색,머리끈_녹색
+5439,Cute_Ribbon__,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,Yes,머리끈_빨강,머리끈_빨강
+5440,Cute_Ribbon___,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,Yes,머리끈_파랑,머리끈_파랑
+5441,Cute_Ribbon____,Cute Ribbon,1,0,0,500,100,Headgear,Top,,0,AllExceptNovice,No,Yes,머리끈_하양,머리끈_하양
+5442,Necktie,Necktie,3,0,1,20,100,Headgear,Top,,70,AllJobs,Yes,Yes,넥타이,넥타이
+5444,Hair_Brush,Hair Brush,0,0,0,20,100,Headgear,Top,,0,AllJobs,Yes,Yes,머리빗,머리빗
+5446,Catfoot_Hairpin,Catfoot Hairpin,0,0,1,20,200,Headgear,Top,,0,AllJobs,Yes,Yes,고양이발머리핀,고양이발머리핀
+5808,Dark_Bacilium,Dark Bacilium,5,0,1,20,250,Headgear,All,,0,Trans2ndJob,Yes,Yes,다크바실리움,클로스헬멧

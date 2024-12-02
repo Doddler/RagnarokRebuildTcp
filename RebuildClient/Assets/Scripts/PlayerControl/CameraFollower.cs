@@ -85,6 +85,7 @@ namespace Assets.Scripts
 
         public TextMeshProUGUI CharacterName;
         public TextMeshProUGUI CharacterJob;
+        public TextMeshProUGUI CharacterZeny;
 
         public Camera WaterCamera;
         public RenderTexture WaterTexture;
@@ -239,6 +240,7 @@ namespace Assets.Scripts
         private Vector2 heightRange;
         private Vector2 zoomRange = new Vector2(30, 70);
         public bool InTextBox;
+        public bool InItemInputBox;
 
         public void ResetCursor() => isHolding = false;
 
@@ -944,6 +946,12 @@ namespace Assets.Scripts
                 mouseHoverTarget = null;
             }
 
+            if (!isOverUi && InItemInputBox && leftClick)
+            {
+                UiManager.Instance.DropCountConfirmationWindow.gameObject.SetActive(false);
+                InItemInputBox = false;
+            }
+
             if (canClickNpc && leftClick)
             {
                 NetworkManager.Instance.SendNpcClick(mouseTarget.Id);
@@ -1418,8 +1426,10 @@ namespace Assets.Scripts
             }
 
             InTextBox = false;
-            if (selected != null)
+            if (selected != null && !InItemInputBox)
                 InTextBox = selected.GetComponent<TMP_InputField>() != null;
+            
+            var inInputUI = InTextBox || InItemInputBox;
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -1429,7 +1439,12 @@ namespace Assets.Scripts
                 if (hasSkillOnCursor)
                     hasSkillOnCursor = false;
 
-                if (InTextBox)
+                if (InItemInputBox)
+                {
+                    UiManager.Instance.DropCountConfirmationWindow.gameObject.SetActive(false);
+                    InItemInputBox = false;
+                }
+                else if (InTextBox)
                 {
                     InTextBox = false;
                     TextBoxInputField.text = "";
@@ -1454,7 +1469,12 @@ namespace Assets.Scripts
 
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
-                if (!InTextBox)
+                if (InItemInputBox)
+                {
+                    UiManager.Instance.DropCountConfirmationWindow.SubmitDrop();
+                    EventSystem.current.SetSelectedGameObject(null);
+                }
+                else if (!InTextBox)
                 {
                     //EventSystem.current.SetSelectedGameObject(TextBoxInputField.gameObject);
                     TextBoxInputField.ActivateInputField();
@@ -1482,14 +1502,13 @@ namespace Assets.Scripts
                 }
             }
 
-
-            if (!InTextBox && Input.GetKeyDown(KeyCode.R))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.R))
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Dead)
                     NetworkManager.Instance.SendRespawn(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             }
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.Insert))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.Insert))
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Idle || controllable.SpriteAnimator.State == SpriteState.Standby)
                     NetworkManager.Instance.ChangePlayerSitStand(true);
@@ -1497,7 +1516,7 @@ namespace Assets.Scripts
                     NetworkManager.Instance.ChangePlayerSitStand(false);
             }
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.M))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.M))
             {
                 AudioManager.Instance.ToggleMute();
             }
@@ -1505,20 +1524,20 @@ namespace Assets.Scripts
             //if (Input.GetKeyDown(KeyCode.S))
             //	controllable.SpriteAnimator.Standby = true;
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.Space))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.Space))
             {
                 //Debug.Log(controllable.IsWalking);
                 //if(controllable.IsWalking)
                 NetworkManager.Instance.StopPlayer();
             }
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.S))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.S))
                 UiManager.Instance.SkillManager.ToggleVisibility();
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.O))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.O))
                 UiManager.Instance.ConfigManager.ToggleVisibility();
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.W))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.W))
             {
                 if (!WarpPanel.activeInHierarchy)
                     WarpPanel.GetComponent<WarpWindow>().ShowWindow();
@@ -1526,13 +1545,13 @@ namespace Assets.Scripts
                     WarpPanel.GetComponent<WarpWindow>().HideWindow();
             }
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.E))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.E))
                 UiManager.Instance.EquipmentWindow.ToggleVisibility();
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.Q))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.Q))
                 UiManager.Instance.InventoryWindow.ToggleVisibility();
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.A))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.A))
                 UiManager.Instance.StatusWindow.ToggleVisibility();
                 
             //remove the flag to enable cinemachine recording on this
@@ -1556,7 +1575,7 @@ namespace Assets.Scripts
             }
 #endif
 
-            if (!InTextBox && !pointerOverUi && Input.GetMouseButtonDown(1))
+            if (!inInputUI && !pointerOverUi && Input.GetMouseButtonDown(1))
             {
                 if (Time.timeSinceLevelLoad - LastRightClick < 0.3f)
                 {
@@ -1569,7 +1588,7 @@ namespace Assets.Scripts
                 LastRightClick = Time.timeSinceLevelLoad;
             }
 
-            if (!InTextBox && !pointerOverUi && Input.GetMouseButton(1))
+            if (!inInputUI && !pointerOverUi && Input.GetMouseButton(1))
             {
                 if (Input.GetMouseButton(1) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
                 {
@@ -1699,10 +1718,10 @@ namespace Assets.Scripts
 
             transform.position += curShake;
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.T))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.T))
                 NetworkManager.Instance.RandomTeleport();
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.F3))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.F3))
                 UseTTFDamage = !UseTTFDamage;
 
             if (Input.GetKeyDown(KeyCode.F4))
@@ -1711,7 +1730,7 @@ namespace Assets.Scripts
                 Shader.SetKeyword(smoothPixelKeyword, UseSmoothPixel);
             }
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.Tab))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.Tab))
             {
                 var chunks = GameObject.FindObjectsOfType<RoMapChunk>();
                 foreach (var c in chunks)
@@ -1724,7 +1743,7 @@ namespace Assets.Scripts
                 }
             }
 
-            if (!InTextBox && Input.GetKeyDown(KeyCode.Z))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.Z))
             {
                 if (Mathf.Approximately(Time.timeScale, 1f))
                     Time.timeScale = 0.1f;

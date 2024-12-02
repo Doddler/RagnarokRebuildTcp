@@ -22,6 +22,7 @@ public class WeaponInfo
     public int Range;
     public int CardSlots;
     public int WeaponClass;
+    public int WeaponLevel;
     public bool IsTwoHanded;
     public AttackElement Element;
     public int MinLvl;
@@ -53,6 +54,7 @@ public class AmmoInfo
 {
     public int Attack;
     public AmmoType Type;
+    public AttackElement Element;
     public int MinLvl;
 }
 

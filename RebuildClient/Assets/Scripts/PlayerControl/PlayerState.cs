@@ -15,6 +15,7 @@ namespace Assets.Scripts.PlayerControl
         public int MaxHp;
         public int Sp;
         public int MaxSp;
+        public int AmmoId;
         public int[] CharacterData = new int[(int)PlayerStat.PlayerStatsMax];
         public int[] CharacterStats = new int[(int)CharacterStat.CharacterStatsMax];
         public float AttackSpeed;
@@ -26,6 +27,7 @@ namespace Assets.Scripts.PlayerControl
         public int HairColorId;
         public int CurrentWeight = 0;
         public int MaxWeight = 3000;
+        public int Zeny = 0;
         public Dictionary<CharacterSkill, int> KnownSkills = new();
         public bool IsAdminHidden = false;
         public ClientInventory Inventory = new();

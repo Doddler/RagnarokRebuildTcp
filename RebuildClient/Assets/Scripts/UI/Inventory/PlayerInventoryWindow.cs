@@ -114,6 +114,7 @@ namespace Assets.Scripts.UI.Inventory
                 itemEntry.DragItem.Assign(DragItemType.Item, sprite, bagEntry.Key, item.Count);
                 itemEntry.gameObject.SetActive(true);
                 itemEntry.DragItem.gameObject.SetActive(true);
+                itemEntry.DragItem.OnRightClick = () => UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(item);
 
                 if (item.ItemData.UseType == ItemUseType.Use)
                     itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendUseItem(bagEntry.Key);

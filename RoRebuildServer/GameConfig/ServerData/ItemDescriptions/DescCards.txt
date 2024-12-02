@@ -1,0 +1,1325 @@
+//Cards
+
+::Poring_Card //id 4001 - slotted on Armor
+LUK +2
+
+::Fabre_Card //id 4002 - slotted on Weapon
+HP +100, VIT +1
+
+::Pupa_Card //id 4003 - slotted on Armor
+HP +700 
+
+::Drops_Card //id 4004 - slotted on Weapon
+DEX +1, HIT +3
+
+::Santa_Poring_Card //id 4005 - slotted on Weapon
++20% physical damage vs. Shadow
+
+::Lunatic_Card //id 4006 - slotted on Weapon
+LUK +1
+
+::Peco_Peco_Egg_Card //id 4007 - slotted on Weapon
++20% physical damage vs. Formless
+
+::Picky_Card //id 4008 - slotted on Armor
+STR +1, ATK +10
+
+::Chonchon_Card //id 4009 - slotted on Boots
+AGI +1, FLEE +2
+
+::Willow_Card //id 4010 - slotted on Headgear
+SP +80
+
+::Picky_Egg_Card //id 4011 - slotted on Armor
+HP +100, VIT +1
+
+::Thief_Bug_Egg_Card //id 4012 - slotted on Shield
+HP +400
+
+::Ant_Egg_Card //id 4013 - slotted on Shield
+HP +5%
+
+::Roda_Frog_Card //id 4014 - slotted on Armor
+HP +400, SP +50
+
+::Condor_Card //id 4015 - slotted on Garment
+FLEE +10
+
+::Thief_Bug_Card //id 4016 - slotted on Armor
+AGI +1
+
+::Savage_Babe_Card //id 4017 - slotted on Weapon
++5% chance of <color=#800000>Stun</color> on physical attack
+
+::Andre_Larva_Card //id 4018 - slotted on Weapon
+INT + 1
+
+::Hornet_Card //id 4019 - slotted on Weapon
+STR +1, ATK +3
+
+::Familiar_Card //id 4020 - slotted on Weapon
+ATK +5
+
+::Rocker_Card //id 4021 - slotted on Armor
+DEX +1, ATK +5
+
+::Spore_Card //id 4022 - slotted on Accessory
+VIT +2
+
+::Baby_Desert_Wolf_Card //id 4023 - slotted on Armor
+INT +1
+
+::Plankton_Card //id 4024 - slotted on Weapon
+ATK +5
+
+::Skeleton_Card //id 4025 - slotted on Weapon
+ATK +10
+
+::Female_Thief_Bug_Card //id 4026 - slotted on Weapon
+AGI +1, FLEE +1
+
+::Kukre_Card //id 4027 - slotted on Accessory
+AGI +2
+
+::Tarou_Card //id 4028 - slotted on Accessory
+STR +2
+
+::Wolf_Card //id 4029 - slotted on Weapon
+ATK +15, CRIT +1
+
+::Mandragora_Card //id 4030 - slotted on Weapon
++20% physical damage vs. Wind
+
+::Peco_Peco_Card //id 4031 - slotted on Armor
+HP +10%
+
+::Ambernite_Card //id 4032 - slotted on Shield
+DEF +2
+
+::Poporing_Card //id 4033 - slotted on Accessory
+Enable <color=#0000FF>Detoxify</color>
+
+::Wormtail_Card //id 4034 - slotted on Accessory
+DEX +2
+
+::Hydra_Card //id 4035 - slotted on Weapon
++20% physical damage vs. Demi-Human
+
+::Muka_Card //id 4036 - slotted on Accessory
+HP Regeneration +10%
+
+::Boa_Card //id 4037 - slotted on Weapon
+ATK +5
+
+::Zombie_Card //id 4038 - slotted on Boots
+HP Regeneration +20%
+
+::Stainer_Card //id 4039 - slotted on Headgear
+DEF +1
+
+::Creamy_Card //id 4040 - slotted on Accessory
+Enable <color=#0000FF>Teleport 1</color>
+
+::Coco_Card //id 4041 - slotted on Headgear
+DEF +1
+
+::Steel_Chonchon_Card //id 4042 - slotted on Armor
+DEF +2
+
+::Andre_Card //id 4043 - slotted on Weapon
+ATK +20
+
+::Smokie_Card //id 4044 - slotted on Accessory
+Enable <color=#0000FF>Hide 1</color>
+
+::Horn_Card //id 4045 - slotted on Shield
+-35% damage from range
+
+::Martin_Card //id 4046 - slotted on Headgear
+DEF +1
+
+::Ghostring_Card //id 4047 - slotted on Armor
+HP Regeneration -25%
+
+::Poison_Spore_Card //id 4048 - slotted on Accessory
+Enable <color=#0000FF>Envenom 3</color>
+
+::Vadon_Card //id 4049 - slotted on Weapon
++20% physical damage vs. Fire
+
+::Male_Thief_Bug_Card //id 4050 - slotted on Boots
+AGI +2
+
+::Yoyo_Card //id 4051 - slotted on Accessory
+AGI +1
+
+::Elder_Willow_Card //id 4052 - slotted on Headgear
+INT +2
+
+::Vitata_Card //id 4053 - slotted on Accessory
+SP Consumption +25%
+
+::Angeling_Card //id 4054 - slotted on Armor
+Holy Property Armor
+
+::Marina_Card //id 4055 - slotted on Weapon
+ATK +5
+
+::Dustiness_Card //id 4056 - slotted on Garment
+FLEE +5
+
+::Metaller_Card //id 4057 - slotted on Weapon
+ATK +5
+
+::Thara_Frog_Card //id 4058 - slotted on Shield
+-30% damage from Demi-Human
+
+::Soldier_Andre_Card //id 4059 - slotted on Shield
+植物形モンスターからのダメージ50%減少。
+
+::Goblin_Card //id 4060 - slotted on Weapon
++20% physical damage vs. Brute
+
+::Cornutus_Card //id 4061 - slotted on Armor
+DEF +1
+
+::Anaconda_Card //id 4062 - slotted on Weapon
++20% physical damage vs. Poison
+
+::Caramel_Card //id 4063 - slotted on Weapon
++20% physical damage vs. Insect 
+
+::Zerom_Card //id 4064 - slotted on Accessory
+DEX +3
+
+::Kaho_Card //id 4065 - slotted on Weapon
++20% physical damage vs. Earth
+
+::Orc_Warrior_Card //id 4066 - slotted on Shield
+-30% damage from Brute
+
+::Megalodon_Card //id 4067 - slotted on Shield
+DEF +1
+
+::Scorpion_Card //id 4068 - slotted on Weapon
++20% physical damage vs. Plant
+
+::Drainliar_Card //id 4069 - slotted on Weapon
++20% physical damage vs. Water
+
+::Eggyra_Card //id 4070 - slotted on Boots
+SP Regeneration +15%
+
+::Orc_Zombie_Card //id 4071 - slotted on Garment
+FLEE +5
+
+::Golem_Card //id 4072 - slotted on Weapon
+ATK +5
+
+::Pirate_Skel_Card //id 4073 - slotted on Accessory
+Enable <color=#0000FF>Discount 5</color>
+
+::Bigfoot_Card //id 4074 - slotted on Shield
+-30% damage from Insect
+
+::Argos_Card //id 4075 - slotted on Shield
+DEF +1
+
+::Magnolia_Card //id 4076 - slotted on Weapon
+ATK +5
+
+::Phen_Card //id 4077 - slotted on Accessory
+Cast Time +25%
+
+::Savage_Card //id 4078 - slotted on Armor
+VIT +3
+
+::Mantis_Card //id 4079 - slotted on Accessory
+STR +3
+
+::Flora_Card //id 4080 - slotted on Weapon
++20% physical damage vs. Fish
+
+::Hode_Card //id 4081 - slotted on Garment
+FLEE +5
+
+::Desert_Wolf_Card //id 4082 - slotted on Weapon
+ATK +5
+
+::Rafflesia_Card //id 4083 - slotted on Shield
+-30% damage from Fish
+
+::Marine_Sphere_Card //id 4084 - slotted on Accessory
+Enable <color=#0000FF>Magnum Break 3</color>
+
+::Orc_Skeleton_Card //id 4085 - slotted on Weapon
++20% physical damage vs. Holy
+
+::Soldier_Skeleton_Card //id 4086 - slotted on Weapon
+CRIT +9
+
+::Giearth_Card //id 4087 - slotted on Headgear
++100% <color=#800000>Chaos</color> resist
+
+::Frilldora_Card //id 4088 - slotted on Garment
+Enable <color=#0000FF>Cloak 1</color>
+
+::Swordfish_Card //id 4089 - slotted on Armor
+DEF +1
+
+::Munak_Card //id 4090 - slotted on Shield
+DEF +1
+
+::Kobold_Card //id 4091 - slotted on Accessory
+STR +1, CRIT +4
+
+::Skel_Worker_Card //id 4092 - slotted on Weapon
+ATK +5
+
+::Obeaune_Card //id 4093 - slotted on Accessory
+Enable <color=#0000FF>Cure</color>
+
+::Archer_Skeleton_Card //id 4094 - slotted on Weapon
++10% range physical damage
+
+::Marse_Card //id 4095 - slotted on Garment
+FLEE +5
+
+::Zenorc_Card //id 4096 - slotted on Weapon
+ATK +10
+
+::Matyr_Card //id 4097 - slotted on Boots
+HP +10%, Agi +1
+
+::Dokebi_Card //id 4098 - slotted on Armor
+DEF +1
+
+::Pasana_Card //id 4099 - slotted on Armor
+DEF +1
+
+::Sohee_Card //id 4100 - slotted on Boots
+SP +15%, SP Regeneration +3%
+
+::Sandman_Card //id 4101 - slotted on Armor
+DEF +1
+
+::Whisper_Card //id 4102 - slotted on Garment
+FLEE +20
+
+::Horong_Card //id 4103 - slotted on Accessory
+Enable <color=#0000FF>Sight 1</color>
+
+::Requiem_Card //id 4104 - slotted on Weapon
++5% chance of <color=#800000>Chaos</color> on physical attack
+
+::Marc_Card //id 4105 - slotted on Armor
++100% <color=#800000>Freeze</color> resist
+
+::Mummy_Card //id 4106 - slotted on Weapon
+HIT +20
+
+::Verit_Card //id 4107 - slotted on Boots
+HP +8%, SP +8%
+
+::Myst_Card //id 4108 - slotted on Garment
+FLEE +5
+
+::Jakk_Card //id 4109 - slotted on Garment
+FLEE +5
+
+::Ghoul_Card //id 4110 - slotted on Headgear
+DEF +1
+
+::Strouf_Card //id 4111 - slotted on Weapon
++20% physical damage vs. Demon
+
+::Marduk_Card //id 4112 - slotted on Headgear
++100% <color=#800000>Silence</color> resist
+
+::Marionette_Card //id 4113 - slotted on Garment
+FLEE +5
+
+::Argiope_Card //id 4114 - slotted on Armor
+DEF +1
+
+::Hunter_Fly_Card //id 4115 - slotted on Weapon
++3% chance to recover 15% physical damage as HP
+
+::Isis_Card //id 4116 - slotted on Garment
+FLEE +5
+
+::Sidewinder_Card //id 4117 - slotted on Weapon
+Enable <color=#0000FF>Double Attack 1</color> or known Lv
+
+::Earth_Petite_Card //id 4118 - slotted on Weapon
++20% physical damage vs. Dragon
+
+::Bathory_Card //id 4119 - slotted on Armor
+Shadow Property Armor
+
+::Sky_Petite_Card //id 4120 - slotted on Shield
+-30% damage from Dragon
+
+::Phreeoni_Card //id 4121 - slotted on Weapon
+HIT +100
+
+::Deviruchi_Card //id 4122 - slotted on Headgear
+STR +1
+
+::Eddga_Card //id 4123 - slotted on Boots
+HP -25%
+
+::Medusa_Card //id 4124 - slotted on Shield
+-15% damage from Demon
+
+::Deviace_Card //id 4125 - slotted on Weapon
++7% physical damage vs. Demi-Human, Brute, Plant, and Insect
+
+::Minorous_Card //id 4126 - slotted on Weapon
+ATK +5
+
+::Nightmare_Card //id 4127 - slotted on Headgear
+AGI +1
+
+::Golden_Thief_Bug_Card //id 4128 - slotted on Shield
+SP Consumption +100%
+
+::Baphomet_Jr._Card //id 4129 - slotted on Garment
+AGI +3, CRIT +1
+
+::Moonlight_Flower_Card //id 4131 - slotted on Boots
+Movement Speed +100%
+
+::Mistress_Card //id 4132 - slotted on Headgear
+SP Consumption +25%
+
+::Raydric_Card //id 4133 - slotted on Garment
+-20% damage from Neutral attacks
+
+::Dracula_Card //id 4134 - slotted on Weapon
++10% chance to recover 5% physical damage as SP
+
+::Orc_Lord_Card //id 4135 - slotted on Armor
++30% melee damage reflect
+
+::Khalitzburg_Card //id 4136 - slotted on Shield
+-30% damage from Demon
+
+::Drake_Card //id 4137 - slotted on Weapon
+Ignore Weapon Size Penalty
+
+::Anubis_Card //id 4138 - slotted on Shield
+-30% damage from Angel
+
+::Joker_Card //id 4139 - slotted on Accessory
+Enable <color=#0000FF>Steal 1</color>
+
+::Abyssal_Knight_Card //id 4140 - slotted on Weapon
++25% physical damage vs. Boss
+
+::Evil_Druid_Card //id 4141 - slotted on Armor
+INT +1, DEF +1
+
+::Doppelganger_Card //id 4142 - slotted on Weapon
+ASPD +10%
+
+::Orc_Hero_Card //id 4143 - slotted on Headgear
+VIT +3
+
+::Osiris_Card //id 4144 - slotted on Accessory
+Recover 100% HP and SP on Resurrection
+
+::Beelzebub_Card //id 4145 - slotted on Accessory
+Cast Time -30%
+
+::Maya_Card //id 4146 - slotted on Shield
++50% chance of single target magic reflect
+
+::Baphomet_Card //id 4147 - slotted on Weapon
+HIT -10
+
+::Pharaoh_Card //id 4148 - slotted on Headgear
+SP Consumption -30%
+
+::Gargoyle_Card //id 4149 - slotted on Accessory
++1% chance to find <color=#008080>Box of Thunder</color> on Insect kill
+
+::Goat_Card //id 4150 - slotted on Armor
+if Refine < 6: DEF +2, MDEF +5
+
+::Gajomart_Card //id 4151 - slotted on Boots
++10% EXP from Plant
+
+::Galapago_Card //id 4152 - slotted on Accessory
++3% chance to find <color=#008080>Apple Juice</color>, <color=#008080>Banana Juice</color>, <color=#008080>Carrot Juice</color> on Insect kill
+
+::Crab_Card //id 4153 - slotted on Weapon
+ATK +5
+
+::Dumpling_Kid_Card //id 4154 - slotted on Accessory
++3% chance to find <color=#008080>Candy</color>,
+
+::Goblin_Leader_Card //id 4155 - slotted on Weapon
++30% physical damage vs. Goblin
+
+::Goblin_Steamrider_Card //id 4156 - slotted on Weapon
+CRIT damage +10%
+
+::Goblin_Archer_Card //id 4157 - slotted on Weapon
+CRIT damage +10%
+
+::Sky_Deleter_Card //id 4158 - slotted on Armor
+HP Regeneration -100%
+
+::Nine_Tail_Card //id 4159 - slotted on Garment
+AGI +2
+
+::Firelock_Soldier_Card //id 4160 - slotted on Boots
+STR +2
+
+::Grand_Peco_Card //id 4161 - slotted on Headgear
++5% Autospell <color=#0000FF>Gloria 1</color> on receive physical damage
+
+::Grizzly_Card //id 4162 - slotted on Armor
++3% chance of <color=#800000>Blind</color> on receive physical damage
+
+::Gryphon_Card //id 4163 - slotted on Weapon
+FLEE +2, CRIT +7
+
+::Gullinbursti_Card //id 4164 - slotted on Boots
++10% EXP from Fish
+
+::Gig_Card //id 4165 - slotted on Weapon
+Recover 5 SP/melee kill vs. Insect
+
+::Nightmare_Terror_Card //id 4166 - slotted on Armor
++3% chance of <color=#800000>Curse</color> on receive physical damage
+
+::Nereid_Card //id 4167 - slotted on Weapon
+Recover 5 SP/melee kill vs. Brute
+
+::Dark_Lord_Card //id 4168 - slotted on Boots
++10% Autospell <color=#0000FF>Meteor Storm 5</color> on receive physical damage
+
+::Dark_Illusion_Card //id 4169 - slotted on Headgear
+HP -10%, SP -10%
+
+::Dark_Frame_Card //id 4170 - slotted on Armor
++6% chance of <color=#800000>Petrify</color> on receive physical damage
+
+::Dark_Priest_Card //id 4171 - slotted on Weapon
++5% chance 10% SP drain on physical attack
+
+::The_Paper_Card //id 4172 - slotted on Weapon
+CRIT damage +20%
+
+::Demon_Fungus_Card //id 4173 - slotted on Armor
++6% chance of <color=#800000>Sleep</color> on receive physical damage
+
+::Deviling_Card //id 4174 - slotted on Garment
+-50% damage from Neutral attacks
+
+::Poisonous_Toad_Card //id 4175 - slotted on Accessory
++2% Autospell <color=#0000FF>Envenom 1</color> on non-skill attack
+
+::Dullahan_Card //id 4176 - slotted on Weapon
+CRIT damage +10%
+
+::Dryad_Card //id 4177 - slotted on Headgear
+-10% damage from Earth attacks
+
+::Dragon_Tail_Card //id 4178 - slotted on Garment
+AGI +1, FLEE +10
+
+::Dragon_Fly_Card //id 4179 - slotted on Garment
+AGI +1
+
+::Driller_Card //id 4180 - slotted on Weapon
+Recover 5 SP/melee kill vs. Dragon
+
+::Disguise_Card //id 4181 - slotted on Armor
++3% chance of <color=#800000>Silence</color> on receive physical damage
+
+::Diabolic_Card //id 4182 - slotted on Weapon
+Recover 5 SP/melee kill vs. Demon
+
+::Vagabond_Wolf_Card //id 4183 - slotted on Garment
+STR +1
+
+::Lava_Golem_Card //id 4184 - slotted on Weapon
++30% physical damage vs. Golem
+
+::Rideword_Card //id 4185 - slotted on Headgear
+INT +1
+
+::Raggler_Card //id 4186 - slotted on Boots
+STR +1, VIT +1
+
+::Raydric_Archer_Card //id 4187 - slotted on Accessory
++1% chance to find <color=#008080>Box of Resentment</color> on Demon kill
+
+::Leib_Olmai_Card //id 4188 - slotted on Headgear
+-10% damage from Fire attacks
+
+::Wraith_Dead_Card //id 4189 - slotted on Armor
++6% chance of <color=#800000>Curse</color> on receive physical damage
+
+::Wraith_Card //id 4190 - slotted on Accessory
++1% chance to find <color=#008080>Giggling Box</color> on Undead kill
+
+::Loli_Ruri_Card //id 4191 - slotted on Armor
++5% Autospell <color=#0000FF>Heal 3</color> on receive physical damage
+
+::Rotar_Zairo_Card //id 4192 - slotted on Weapon
+CRIT damage +10%
+
+::Lude_Card //id 4193 - slotted on Accessory
+if Novice:
+
+::Rybio_Card //id 4194 - slotted on Armor
++3% chance of <color=#800000>Stun</color> on receive physical damage
+
+::Leaf_Cat_Card //id 4195 - slotted on Headgear
+-10% damage from Water attacks
+
+::Marin_Card //id 4196 - slotted on Accessory
++20% chance to find <color=#008080>Jellopy</color>,
+
+::Mastering_Card //id 4197 - slotted on Garment
+LUK +1
+
+::Maya_Purple_Card //id 4198 - slotted on Headgear
+See Hidden Targets
+
+::Merman_Card //id 4199 - slotted on Boots
+HP Regeneration +10%
+
+::Megalith_Card //id 4200 - slotted on Boots
+if Refine < 6: MDEF +7
+
+::Majorous_Card //id 4201 - slotted on Armor
++6% chance of <color=#800000>Stun</color> on receive physical damage
+
+::Mao_Guai_Card //id 4202 - slotted on Weapon
++20% physical damage vs. Ghost
+
+::Mutant_Dragonoid_Card //id 4203 - slotted on Weapon
+ATK +15
+
+::Mini_Demon_Card //id 4204 - slotted on Boots
++10% EXP from Brute
+
+::Mimic_Card //id 4205 - slotted on Accessory
++0.1% chance to find <color=#008080>Old Blue Box</color> on monster kill
+
+::Myst_Case_Card //id 4206 - slotted on Headgear
++0.3% chance to find <color=#008080>Gift Box</color> on monster kill
+
+::Mistilteinn_Card //id 4207 - slotted on Shield
+DEF +1
+
+::Miyabi_Doll_Card //id 4208 - slotted on Boots
+SP +10%
+
+::Violy_Card //id 4209 - slotted on Accessory
++2% Autospell <color=#0000FF>Unbarring Octave 1</color> on non-skill attack
+
+::Wanderer_Card //id 4210 - slotted on Garment
++2% Autospell <color=#0000FF>Snatch 1</color> on non-skill attack
+
+::Vocal_Card //id 4211 - slotted on Garment
+MDEF +3
+
+::Bongun_Card //id 4212 - slotted on Accessory
++2% Autospell <color=#0000FF>Bash 1</color> on non-skill attack
+
+::Brilight_Card //id 4213 - slotted on Armor
++6% chance of <color=#800000>Silence</color> on receive physical damage
+
+::Bloody_Murderer_Card //id 4214 - slotted on Weapon
+CRIT damage +10%
+
+::Blazer_Card //id 4215 - slotted on Accessory
++6% chance to find <color=#008080>Apple</color>,
+
+::Sasquatch_Card //id 4216 - slotted on Armor
++6% chance of <color=#800000>Freeze</color> on receive physical damage
+
+::Enchanted_Peach_Tree_Card //id 4217 - slotted on Shield
++2% Autospell <color=#0000FF>Heal 1</color> (self) on non-skill attack
+
+::Succubus_Card //id 4218 - slotted on Armor
+HP +1000, VIT -3
+
+::Sage_Worm_Card //id 4219 - slotted on Accessory
++0.3% chance to find <color=#008080>Blue Gemstone</color>, <color=#008080>Red Gemstone</color>, <color=#008080>Yellow Gemstone</color> on monster kill
+
+::Solider_Card //id 4220 - slotted on Armor
+DEF +2, MDEF +2
+
+::Skeleton_General_Card //id 4221 - slotted on Boots
++10% EXP from Insect
+
+::Skel_Prisoner_Card //id 4222 - slotted on Armor
++3% chance of <color=#800000>Sleep</color> on receive physical damage
+
+::Stalactic_Golem_Card //id 4223 - slotted on Headgear
+DEF +1
+
+::Stem_Worm_Card //id 4224 - slotted on Accessory
++1% chance to find <color=#008080>Box of Storms</color> on Brute kill
+
+::Stone_Shooter_Card //id 4225 - slotted on Weapon
+ATK +10, HIT +10
+
+::Sting_Card //id 4226 - slotted on Shield
+DEF +2
+
+::Spring_Rabbit_Card //id 4227 - slotted on Accessory
++2% chance to find <color=#008080>Meat</color>, <color=#008080>Monster's Feed</color> on Brute kill
+
+::Sleeper_Card //id 4228 - slotted on Accessory
++1% chance to find <color=#008080>Box of Drowsiness</color> on Fish kill
+
+::Cloud_Tower_Manager_Card //id 4229 - slotted on Headgear
+INT +1
+
+::Shinobi_Card //id 4230 - slotted on Accessory
+AGI +1
+
+::Mi_Gao_Card //id 4231 - slotted on Shield
+-50% damage from WoE Guardians
+
+::Hermit_Plant_Card //id 4232 - slotted on Accessory
++3% chance to find <color=#008080>Red Herb</color>,
+
+::Baby_Leopard_Card //id 4233 - slotted on Armor
+LUK +3
+
+::Anolian_Card //id 4234 - slotted on Armor
++3% Autospell <color=#0000FF>Improve Concentration 1</color> on receive physical damage
+
+::Christmas_Cookie_Card //id 4235 - slotted on Boots
++10% EXP from Angel
+
+::Amon_Ra_Card //id 4236 - slotted on Boots
+STR, VIT, INT, DEX, AGI, LUK +1
+
+::Owl_Duke_Card //id 4237 - slotted on Accessory
++0.3% Autospell <color=#0000FF>Impositio Manus 3</color> on non-skill attack
+
+::Owl_Baron_Card //id 4238 - slotted on Accessory
++3% Autospell <color=#0000FF>Lex Aeterna</color> on non-skill attack
+
+::Iron_Fist_Card //id 4239 - slotted on Boots
++10% EXP from Formless
+
+::Arclouse_Card //id 4240 - slotted on Shield
+if Refine < 6: DEF +2, MDEF +3
+
+::Archangeling_Card //id 4241 - slotted on Headgear
+HP +300
+
+::Apocalypse_Card //id 4242 - slotted on Armor
+VIT +2
+
+::Antonio_Card //id 4243 - slotted on Armor
++50% Autospell <color=#0000FF>Teleport 1</color> on receive physical damage
+
+::Alarm_Card //id 4244 - slotted on Boots
+HP +300, VIT +1
+
+::Am_Mut_Card //id 4245 - slotted on Boots
++10% EXP from Demi-Human
+
+::Assaulter_Card //id 4246 - slotted on Weapon
+CRIT damage +10%
+
+::Aster_Card //id 4247 - slotted on Weapon
+ATK +5
+
+::Ancient_Mummy_Card //id 4248 - slotted on Shield
++3% Autospell <color=#0000FF>Signum Crucis 5</color> on receive physical damage
+
+::Ancient_Worm_Card //id 4249 - slotted on Boots
++10% EXP from Demon
+
+::Executioner_Card //id 4250 - slotted on Shield
+DEF +1
+
+::Elder_Card //id 4251 - slotted on Weapon
++40% physical damage vs. WoE Guardians
+
+::Alligator_Card //id 4252 - slotted on Accessory
+-5% damage from range
+
+::Alice_Card //id 4253 - slotted on Shield
+-40% damage from Boss
+
+::Tyrfing_Card //id 4254 - slotted on Shield
+DEF +1
+
+::Orc_Lady_Card //id 4255 - slotted on Weapon
++30% physical damage vs. non-Boss Orc
+
+::Orc_Archer_Card //id 4256 - slotted on Accessory
++1% chance to find <color=#008080>Box of Panting</color> on Demi-Human kill
+
+::Wild_Rose_Card //id 4257 - slotted on Boots
+AGI +1
+
+::Evil_Nymph_Card //id 4258 - slotted on Headgear
+SP +50, INT +1
+
+::Wooden_Golem_Card //id 4259 - slotted on Armor
+DEF +1
+
+::Wootan_Shooter_Card //id 4260 - slotted on Headgear
+DEF +1
+
+::Wootan_Fighter_Card //id 4261 - slotted on Headgear
+DEF +1
+
+::Cloud_Hermit_Card //id 4262 - slotted on Accessory
++1% chance to find <color=#008080>Box of Gloom</color> on Plant kill
+
+::Samurai_Specter_Card //id 4263 - slotted on Weapon
+HP Regeneration -100%
+
+::Wind_Ghost_Card //id 4264 - slotted on Accessory
++2% Autospell <color=#0000FF>Jupitel Thunder 3</color> on non-skill attack
+
+::Jing_Guai_Card //id 4265 - slotted on Accessory
++1% chance to find <color=#008080>Box of Sunlight</color> on Angel kill
+
+::Eclipse_Card //id 4266 - slotted on Garment
+VIT +1
+
+::Explosion_Card //id 4267 - slotted on Boots
++10% EXP from Dragon
+
+::Injustice_Card //id 4268 - slotted on Weapon
++5% Autospell <color=#0000FF>Sonic Blow 1</color> on non-skill attack
+
+::Incubus_Card //id 4269 - slotted on Headgear
+SP +150, INT -3
+
+::Giant_Spider_Card //id 4270 - slotted on Armor
++6% chance of <color=#800000>Poison</color> on receive physical damage
+
+::Giant_Hornet_Card //id 4271 - slotted on Headgear
+-10% damage from Wind attacks
+
+::Zhu_Po_Long_Card //id 4272 - slotted on Accessory
+AGI +1, CRIT +3
+
+::Shellfish_Card //id 4273 - slotted on Weapon
+ATK +5
+
+::Zombie_Master_Card //id 4274 - slotted on Weapon
+Recover 5 SP/melee kill vs. Undead
+
+::Zombie_Prisoner_Card //id 4275 - slotted on Boots
++10% EXP from Undead
+
+::Lord_of_The_Dead_Card //id 4276 - slotted on Weapon
++5% chance of <color=#800000>Stun</color>, <color=#800000>Curse</color>, <color=#800000>Silence</color>, <color=#800000>Poison</color>, <color=#800000>Bleed</color> on melee attack
+
+::Zealotus_Card //id 4277 - slotted on Shield
+LUK +2
+
+::Gibbet_Card //id 4278 - slotted on Headgear
+if Refine < 6: MDEF +5
+
+::Earth_Deleter_Card //id 4279 - slotted on Armor
+SP Regeneration -100%
+Recover 10 SP/melee kill
+
+::Geographer_Card //id 4280 - slotted on Armor
++3% Autospell <color=#0000FF>Blessing 2</color> (self) on receive physical damage
+
+::Zipper_Bear_Card //id 4281 - slotted on Weapon
+ATK +30
+
+::Tengu_Card //id 4282 - slotted on Accessory
++6% chance to find <color=#008080>Rice Cake</color>,
+
+::Greatest_General_Card //id 4283 - slotted on Accessory
++0.2% Autospell <color=#0000FF>Summon Spirit Sphere 5</color> on non-skill attack
+
+::Chepet_Card //id 4284 - slotted on Weapon
++5% Autospell <color=#0000FF>Heal 5</color> (enemy) on non-skill attack
+
+::Choco_Card //id 4285 - slotted on Garment
+FLEE +10
+
+::Karakasa_Card //id 4286 - slotted on Armor
++3% chance of <color=#800000>Chaos</color> on receive physical damage
+
+::Kappa_Card //id 4287 - slotted on Garment
+if Refine < 6: MDEF +8
+
+::Carat_Card //id 4288 - slotted on Headgear
+INT +2
+
+::Caterpillar_Card //id 4289 - slotted on Weapon
+Recover 5 SP/melee kill vs. Plant
+
+::Cat_O'_Nine_Tails_Card //id 4290 - slotted on Boots
+MDEF +3
+
+::Kobold_Leader_Card //id 4291 - slotted on Weapon
++30% physical damage vs. Kobold
+
+::Kobold_Archer_Card //id 4292 - slotted on Weapon
+CRIT damage +10%
+
+::Cookie_Card //id 4293 - slotted on Accessory
+LUK +2
+
+::Quve_Card //id 4294 - slotted on Accessory
+if Novice:
+
+::Kraben_Card //id 4295 - slotted on Armor
++6% chance of <color=#800000>Blind</color> on receive physical damage
+
+::Cramp_Card //id 4296 - slotted on Headgear
++1% chance to find <color=#008080>1~500 zeny</color> on monster kill
+
+::Cruiser_Card //id 4297 - slotted on Weapon
+CRIT damage +10%
+
+::Creamy_Fear_Card //id 4298 - slotted on Armor
++6% chance of <color=#800000>Chaos</color> on receive physical damage
+
+::Clock_Card //id 4299 - slotted on Armor
++3% Autospell <color=#0000FF>Guard 3</color> on receive physical damage
+
+::Chimera_Card //id 4300 - slotted on Armor
++3% chance of <color=#800000>Poison</color> on receive physical damage
+
+::Killer_Mantis_Card //id 4301 - slotted on Armor
++6% chance of <color=#800000>Bleed</color> on receive physical damage
+
+::Tao_Gunka_Card //id 4302 - slotted on Armor
+HP +100%, DEF -50, MDEF -50
+
+::Giant_Whisper_Card //id 4303 - slotted on Garment
+FLEE +10
+
+::Tamruan_Card //id 4304 - slotted on Shield
+DEF +2
+
+::Turtle_General_Card //id 4305 - slotted on Weapon
++20% physical damage
+
+::Toad_Card //id 4306 - slotted on Garment
+Perfect Dodge +1
+
+::Beetle_King_Card //id 4307 - slotted on Weapon
+Recover 5 SP/melee kill vs. Fish
+
+::Tri_Joint_Card //id 4308 - slotted on Weapon
+Recover 5 SP/melee kill vs. Formless
+
+::Parasite_Card //id 4309 - slotted on Shield
+DEF +1
+
+::Panzer_Goblin_Card //id 4310 - slotted on Weapon
+CRIT damage +10%
+
+::Permeter_Card //id 4311 - slotted on Headgear
+-15% damage from Shadow, Decay attacks
+
+::Fur_Seal_Card //id 4312 - slotted on Weapon
+HIT +10, FLEE +3
+
+::Punk_Card //id 4313 - slotted on Garment
++5% Autospell <color=#0000FF>Quagmire 1</color> on receive physical damage
+
+::Penomena_Card //id 4314 - slotted on Shield
+-30% damage from Formless
+
+::Pest_Card //id 4315 - slotted on Armor
++3% chance of <color=#800000>Petrify</color> on receive physical damage
+
+::False_Angel_Card //id 4316 - slotted on Weapon
+Recover 5 SP/melee kill vs. Angel
+
+::Mobster_Card //id 4317 - slotted on Weapon
+CRIT damage +15%
+
+::Stormy_Knight_Card //id 4318 - slotted on Weapon
++20% chance of <color=#800000>Freeze</color> on physical attack
+
+::Freezer_Card //id 4319 - slotted on Boots
+HP +300
+
+::Bloody_Knight_Card //id 4320 - slotted on Weapon
++2% Autospell <color=#0000FF>Meteor Storm 1</color> on non-skill attack
+
+::Hylozoist_Card //id 4321 - slotted on Accessory
++1% chance of polymorph vs. non-Boss monster on physical attack
+
+::High_Orc_Card //id 4322 - slotted on Shield
+DEF +1
+
+::Hati_Baby_Card //id 4323 - slotted on Weapon
++5% Autospell <color=#0000FF>Frost Diver 3</color> on non-skill attack
+
+::Hati_Card //id 4324 - slotted on Armor
++50% chance of <color=#800000>Freeze</color> on receive physical damage
+
+::Harpy_Card //id 4325 - slotted on Garment
++5% <color=#0000FF>Napalm Beat</color> damage
+
+::Sea_Otter_Card //id 4326 - slotted on Accessory
++3% chance to find <color=#008080>Sushi</color>, <color=#008080>Raw Fish</color> on Fish kill
+
+::Bloody_Butterfly_Card //id 4327 - slotted on Accessory
+Cast Time +30%
+
+::Yao_Jun_Card //id 4328 - slotted on Garment
+FLEE +15, CRIT +1
+
+::Phendark_Card //id 4329 - slotted on Weapon
+Recover 5 SP/melee kill vs. Demi-Human
+
+::Evil_Snake_Lord_Card //id 4330 - slotted on Headgear
+INT +3
+
+::Heater_Card //id 4331 - slotted on Accessory
+CRIT +3
+
+::Waste_Stove_Card //id 4332 - slotted on Armor
+INT +1, ATK +5
+
+::Venomous_Card //id 4333 - slotted on Armor
++30% chance of <color=#800000>Poison</color> on receive physical damage
+
+::Noxious_Card //id 4334 - slotted on Garment
+-10% damage from Neutral attacks
+
+::Pitman_Card //id 4335 - slotted on Weapon
++5% <color=#0000FF>Earth Spike</color>, <color=#0000FF>Heaven's Drive</color> damage
+
+::Ungoliant_Card //id 4336 - slotted on Headgear
+HP Regeneration +10%
+
+::Porcellio_Card //id 4337 - slotted on Armor
+ATK +25, DEF -5
+
+::Obsidian_Card //id 4338 - slotted on Armor
+VIT +(floor bDEX/18)
+
+::Mineral_Card //id 4339 - slotted on Armor
+ATK -25, DEF +3
+
+::Teddy_Bear_Card //id 4340 - slotted on Shield
+-30% damage from Undead
+
+::Metaling_Card //id 4341 - slotted on Weapon
++5% Autospell <color=#0000FF>Divest Weapon 1</color> on non-skill attack
+
+::RSX-0806_Card //id 4342 - slotted on Armor
+VIT +3
+
+::Holden_Card //id 4343 - slotted on Headgear
+LUK +2
+
+::Anopheles_Card //id 4344 - slotted on Accessory
++0.5 chance to find <color=#008080>Tentacle Cheese Gratin</color> on Insect kill
+
+::Hill_Wind_Card //id 4345 - slotted on Weapon
++5% <color=#0000FF>Thunderstorm</color>, <color=#0000FF>Jupitel Thunder</color>, <color=#0000FF>Lord of Vermilion</color> damage
+
+::Egnigem_Cenia_Card //id 4346 - slotted on Armor
+STR +(floor bINT/18)
+
+::Armeyer_Dinze_Card //id 4347 - slotted on Accessory
++0.5% chance to find <color=#008080>Clam Soup</color> on Fish kill
+
+::Wickebine_Tres_Card //id 4348 - slotted on Accessory
++5% Autospell <color=#0000FF>Strip Armor 1</color> on non-skill attack
+
+::Errende_Ebecee_Card //id 4349 - slotted on Accessory
++5% Autospell <color=#0000FF>Pneuma</color> on receive physical damage
+
+::Laurell_Weinder_Card //id 4350 - slotted on Weapon
++5% <color=#0000FF>Frost Nova</color>, <color=#0000FF>Storm Gust</color> damage
+
+::Kavach_Icarus_Card //id 4351 - slotted on Garment
+FLEE +10
+
+::Swordman_Card //id 4352 - slotted on Boots
+HP +10%, SP +10%
+Recover 50 HP and 10 SP/10 seconds
+
+::Remover_Card //id 4353 - slotted on Armor
+HP +(800 - 40*Refine)
+
+::Gemini-S58_Card //id 4354 - slotted on Headgear
+if bAGI > 89:
+
+::Gremlin_Card //id 4355 - slotted on Accessory
++0.5% chance to find <color=#008080>Bomber Steak</color> on Brute kill
+
+::Beholder_Card //id 4356 - slotted on Accessory
+Enable <color=#0000FF>Cast Cancel 1</color>
+
+::Lord_Knight_Card //id 4357 - slotted on Headgear
+HP -50%
+
+::Seyren_Windsor_Card //id 4358 - slotted on Headgear
+STR +(Refine - 6)
+
+::Assassin_Cross_Card //id 4359 - slotted on Garment
+Enable <color=#0000FF>Cloak 3</color>
+
+::Eremes_Guile_Card //id 4360 - slotted on Weapon
+CRIT +10 vs. Demi-Human
+
+::Mastersmith_Card //id 4361 - slotted on Weapon
++10% chance WpnBreak on physical attack
+
+::Howard_Alt-Eisen_Card //id 4362 - slotted on Weapon
+HIT +30, ASPD -5%
+
+::High_Priest_Card //id 4363 - slotted on Armor
++5% Autospell <color=#0000FF>Assumptio 1</color> on receive damage
+
+::Margaretha_Sorin_Card //id 4364 - slotted on Headgear
+INT +1
+
+::High_Wizard_Card //id 4365 - slotted on Headgear
+SP Regeneration -100%
+
+::Kathryne_Keyron_Card //id 4366 - slotted on Headgear
+Cast Time -(Refine)%
+
+::Sniper_Card //id 4367 - slotted on Weapon
+HP Regeneration -10%
+
+::Cecil_Damon_Card //id 4368 - slotted on Weapon
+HIT -30, ASPD +5%
+
+::Venatu_Card //id 4369 - slotted on Armor
+LUK +(floor bAGI/18)
+
+::Dimik_Card //id 4370 - slotted on Armor
+VIT +(Refine - 5)
+
+::Archdam_Card //id 4371 - slotted on Armor
+ATK +10, Cast Time +20%
+
+::White_Lady_Card //id 4372 - slotted on Headgear
+SP Consumption +15%
+
+::Green_Maiden_Card //id 4373 - slotted on Garment
+LUK +(Refine - 5)
+
+::Vesper_Card //id 4374 - slotted on Headgear
+DEX +2
+
+::Orc_Baby_Card //id 4375 - slotted on Garment
+FLEE +10
+
+::Lady_Tanee_Card //id 4376 - slotted on Boots
+HP -40%, SP +50%
+
+::Grove_Card //id 4377 - slotted on Accessory
++0.5% chance to find <color=#008080>Fruit Mix</color> on Formless kill
+
+::Gold_Acidus_Card //id 4378 - slotted on Boots
+HP +4%, SP +4%
+
+::Blue_Acidus_Card //id 4379 - slotted on Headgear
+SP +40
+
+::Red_Ferus_Card //id 4380 - slotted on Weapon
++5% <color=#0000FF>Fire Pillar</color>, <color=#0000FF>Meteor Storm</color> damage
+
+::Green_Ferus_Card //id 4381 - slotted on Boots
+HP +10%, VIT +1
+
+::Yellow_Novus_Card //id 4382 - slotted on Armor
+HP +500
+
+::Red_Novus_Card //id 4383 - slotted on Armor
++30% chance of <color=#800000>Chaos</color> on receive physical damage
+
+::Hydrolancer_Card //id 4384 - slotted on Accessory
++10% Autospell <color=#0000FF>Spell Breaker 1</color> on non-skill attack
+
+::Dragon_Egg_Card //id 4385 - slotted on Accessory
++0.5% chance to find <color=#008080>Honey Herbal Tea</color> on Dragon kill
+
+::Detale_Card //id 4386 - slotted on Armor
+MDEF -20
+
+::Ancient_Mimic_Card //id 4387 - slotted on Armor
+AGI +(floor bLUK/18)
+
+::Death_Word_Card //id 4388 - slotted on Weapon
++5% <color=#0000FF>Napalm Beat</color>, <color=#0000FF>Soul Strike</color>, <color=#0000FF>Napalm Vulcan</color> damage
+
+::Plasma_Card //id 4389 - slotted on Accessory
++0.5% chance to find <color=#008080>Fireproof Potion</color>, <color=#008080>Coldproof Potion</color>, <color=#008080>Earthproof Potion</color>, <color=#008080>Thunderproof Potion</color> on monster kill
+
+::Breeze_Card //id 4390 - slotted on Weapon
+ATK +5
+
+::Baroness_of_Retribution_Card //id 4391 - slotted on Accessory
++0.5% chance to find <color=#008080>Fried Sweet Potato</color> on Angel kill
+
+::Dame_of_Sentinel_Card //id 4392 - slotted on Armor
+DEX +(floor bVIT/18)
+
+::Mistress_of_Shelter_Card //id 4393 - slotted on Armor
+INT +(floor bSTR/18)
+
+::Lady_Solace_Card //id 4394 - slotted on Weapon
+if Priest:
+
+::Thanatos_Maero_Card //id 4395 - slotted on Weapon
+ATK +5
+
+::Thanatos_Odium_Card //id 4396 - slotted on Boots
+AGI +(Refine - 5)
+
+::Thanatos_Despero_Card //id 4397 - slotted on Shield
+INT +(Refine - 6)
+
+::Thanatos_Dolor_Card //id 4398 - slotted on Weapon
++10% magical damage vs. Angel
+
+::Thanatos_Phantom_Card //id 4399 - slotted on Weapon
+DEF -30, FLEE -30
+
+::Aliza_Card //id 4400 - slotted on Armor
++5% Autospell <color=#0000FF>Charming Wink</color> on receive physical damage
+
+::Alicel_Card //id 4401 - slotted on Armor
+DEF -5, FLEE +10
+
+::Aliot_Card //id 4402 - slotted on Garment
+if Swordman, Merchant, Thief:
+
+::Kiel_D-01_Card //id 4403 - slotted on Headgear
+Cast Delay -30%
+
+::Skogul_Card //id 4404 - slotted on Armor
++30% chance of <color=#800000>Bleed</color> on receive physical damage
+
+::Frus_Card //id 4405 - slotted on Armor
++(2*Refine)% chance single target magic reflect
+
+::Skeggiold_Card //id 4406 - slotted on Weapon
++2% magical damage vs. Demon
+
+::Valkyrie_Randgris_Card //id 4407 - slotted on Weapon
++10% physical damage
+
+::Gloom_Under_Night_Card //id 4408 - slotted on Armor
++40% physical damage vs. Holy, Shadow, Angel, Demon
+
+::Agav_Card //id 4409 - slotted on Armor
+DEF -10, MATK +5%
+
+::Echio_Card //id 4410 - slotted on Armor
+ATK +15
+
+::Vanberk_Card //id 4411 - slotted on Headgear
+STR +2
+
+::Isilla_Card //id 4412 - slotted on Headgear
+INT +2
+
+::Hodremlin_Card //id 4413 - slotted on Shield
+-15% damage from Small, Medium, Large
+
+::Seeker_Card //id 4414 - slotted on Shield
+MDEF +10
+
+::Snowier_Card //id 4415 - slotted on Accessory
++20% chance to find <color=#008080>Ice Cream</color> on monster kill
+
+::Siroma_Card //id 4416 - slotted on Accessory
++25% <color=#0000FF>Cold Bolt</color> damage
+
+::Ice_Titan_Card //id 4417 - slotted on Boots
+VIT +2
+
+::Gazeti_Card //id 4418 - slotted on Accessory
++10% Autospell <color=#0000FF>Cold Bolt 2</color> on non-skill attack
+
+::Ktullanux_Card //id 4419 - slotted on Armor
++50% physical damage vs. Fire
+
+::Muscipular_Card //id 4420 - slotted on Shield
++10% Autospell <color=#0000FF>Heal 1</color>, <color=#0000FF>Increase AGI 1</color> on receive physical damage
+
+::Drosera_Card //id 4421 - slotted on Weapon
+CRIT +15 (range attack)
+
+::Roween_Card //id 4422 - slotted on Garment
+FLEE +5, Perfect Dodge +3
+
+::Galion_Card //id 4423 - slotted on Accessory
+HIT +5
+
+::Stapo_Card //id 4424 - slotted on Accessory
+Enable <color=#0000FF>Find Stone</color>, <color=#0000FF>Stone Fling</color>
+
+::Atroce_Card //id 4425 - slotted on Weapon
+ATK +25
+
+::Byorgue_Card //id 4426 - slotted on Armor
+if Rogue:
+
+::Sword_Guardian_Card //id 4427 - slotted on Weapon
+if One or Two-Handed Sword:
+
+::Bow_Guardian_Card //id 4428 - slotted on Weapon
+if Bow:
+
+::Salamander_Card //id 4429 - slotted on Garment
++40% <color=#0000FF>Fire Pillar</color>, <color=#0000FF>Meteor Storm</color> damage
+
+::Ifrit_Card //id 4430 - slotted on Accessory
+CRIT +0.1*jLv 
+
+::Kasa_Card //id 4431 - slotted on Garment
++2% Autospell <color=#0000FF>Fireball 5</color>, <color=#0000FF>Fire Bolt 5</color> on non-skill attack
+
+::Magmaring_Card //id 4432 - slotted on Garment
+ATK +5
+
+::Imp_Card //id 4433 - slotted on Accessory
++25% <color=#0000FF>Fire Bolt</color> damage
+
+::Knocker_Card //id 4434 - slotted on Headgear
++5% physical damage vs. Formless
+
+::Zombie_Slaughterer_Card //id 4435 - slotted on Boots
++1% physical, magical damage vs. Demi-Human
+Recover 50 HP/melee kill
+
+::Ragged_Zombie_Card //id 4436 - slotted on Accessory
+CRIT +5 vs. Demi-Human
+
+::Hell_Poodle_Card //id 4437 - slotted on Accessory
+HIT +1
+
+::Banshee_Card //id 4438 - slotted on Headgear
+if Mage: HP -100, SP +100
+
+::Flame_Skull_Card //id 4439 - slotted on Shield
++30% <color=#800000>Stun</color>, <color=#800000>Curse</color>, <color=#800000>Blind</color>, <color=#800000>Petrify</color> resist
+
+::Necromancer_Card //id 4440 - slotted on Weapon
+if One or Two-Handed Staff:
+
+::Fallen_Bishop_Card //id 4441 - slotted on Boots
+SP -50%, MATK +10% 
+

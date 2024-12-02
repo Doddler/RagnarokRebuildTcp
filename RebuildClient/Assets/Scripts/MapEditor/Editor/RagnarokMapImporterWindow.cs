@@ -366,7 +366,21 @@ namespace Assets.Scripts.MapEditor.Editor
                 entriesAdded.Add(entry);
             }
 
+            //update sprites
+            guids = AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets/Sprites/Imported/Collections" });
 
+            for (int i = 0; i < guids.Length; i++)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                var fName = Path.GetFileName(path);
+
+                var entry = settings.CreateOrMoveEntry(guids[i], defGroup, readOnly: false, postEvent: false);
+                //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]);
+                entry.labels.Add("Collections");
+
+                entriesAdded.Add(entry);
+            }
 
             //update sprites
             guids = AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets/Sprites/Cutins" });

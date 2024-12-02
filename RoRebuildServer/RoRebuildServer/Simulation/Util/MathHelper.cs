@@ -7,31 +7,41 @@ namespace RoRebuildServer.Simulation.Util
     {
         private static readonly float[] ResistTable;
         private static readonly float[] BoostTable;
+        private static readonly float[] DefTable;
 
         static MathHelper()
         {
             ResistTable = new float[1000];
             BoostTable = new float[1000];
+            DefTable = new float[1000];
 
             for (var i = 0; i < 1000; i++)
             {
                 ResistTable[i] = MathF.Pow(0.99f, i);
                 BoostTable[i] = MathF.Pow(1.01f, i);
+                DefTable[i] = MathF.Pow(0.99f, i * MathF.Pow(1.01f, i));
             }
         }
         
-        public static float ResistCalc(int value)
+        public static float PowScaleDown(int value)
         {
             if(value < ResistTable.Length)
                 return ResistTable[value];
             return MathF.Pow(0.99f, value);
         }
 
-        public static float BoostCalc(int value)
+        public static float PowScaleUp(int value)
         {
             if (value < BoostTable.Length)
                 return BoostTable[value];
             return MathF.Pow(1.01f, value);
+        }
+
+        public static float DefValueLookup(int value)
+        {
+            if (value < DefTable.Length)
+                return DefTable[value];
+            return MathF.Pow(0.99f, value * MathF.Pow(1.01f, value));
         }
 
         public static int Clamp(this int val, int min, int max)

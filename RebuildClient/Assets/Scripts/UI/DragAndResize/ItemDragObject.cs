@@ -10,11 +10,12 @@ namespace Assets.Scripts.UI
         HotBar,
         ItemWindow,
         EquipmentWindow,
+        ShopWindow
     }
     
     public class ItemDragObject : DragItemBase
     {
-        public ItemDragOrigin Origin;
+        public ItemDragOrigin Origin { get; set; }
         public int OriginId;
         
         public void Update()

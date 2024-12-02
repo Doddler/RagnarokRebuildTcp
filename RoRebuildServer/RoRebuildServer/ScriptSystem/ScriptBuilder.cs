@@ -524,7 +524,7 @@ public class ScriptBuilder
     }
 
 
-    public string StartNpc(string name)
+    public string StartNpc(string name, bool isTrader)
     {
         methodName = name.Replace(" ", "");
         UseStateMachine = false;
@@ -542,6 +542,13 @@ public class ScriptBuilder
 
         name += "_" + Guid.NewGuid().ToString().Replace("-", "_");
 
+        var baseClass = "NpcBehaviorBase";
+        if (isTrader)
+        {
+            baseClass = "NpcTraderBase";
+            hasInteract = true;
+        }
+
         //if (UniqueNames.Contains(name))
         //{
         //    if (name.Contains("#"))
@@ -551,9 +558,9 @@ public class ScriptBuilder
         //        name += "_" + GameRandom.Next(0, 999_999_999);
         //}
 
-        //UniqueNames.Add(name);
+            //UniqueNames.Add(name);
 
-        StartIndentedScriptLine().AppendLine($"public class RoRebuildNpcGen_{name} : NpcBehaviorBase");
+        StartIndentedScriptLine().AppendLine($"public class RoRebuildNpcGen_{name} : {baseClass}");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
 

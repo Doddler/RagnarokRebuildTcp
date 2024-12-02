@@ -10,7 +10,9 @@ using RebuildSharedData.Util;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.Database;
 using RoRebuildServer.Database.Domain;
+using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
@@ -55,6 +57,8 @@ public class Player : IEntityAutoReset
     public CharacterBag? CartInventory;
     public CharacterBag? StorageInventory;
     public bool isStorageLoaded = false;
+    public EntityValueList<float> RecentAttackersList;
+    private float lastAttackerListCheckUpdate;
 
     public int GetItemIdForEquipSlot(EquipSlot slot) => Equipment.ItemIds[(int)slot];
 
@@ -102,7 +106,6 @@ public class Player : IEntityAutoReset
     public int CharacterLevel => GetData(PlayerStat.Level);
     public int JobId => GetData(PlayerStat.Job);
 
-
     //stats that can't apply to monsters
     [EntityIgnoreNullCheck] public readonly int[] PlayerStatData = new int[(int)(CharacterStat.CharacterStatsMax - CharacterStat.MonsterStatsMax)];
 
@@ -116,6 +119,8 @@ public class Player : IEntityAutoReset
     public void AddStat(CharacterStat type, int val) => CombatEntity.AddStat(type, val);
     public void SubStat(CharacterStat type, int val) => CombatEntity.SubStat(type, val);
     public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
+    public int GetZeny() => CharData[(int)PlayerStat.Zeny];
+    public void AddZeny(int val) => CharData[(int)PlayerStat.Zeny] += val;
 
     //this will get removed when we have proper job levels
     private static readonly int[] skillPointsByLevel = new[]
@@ -184,26 +189,16 @@ public class Player : IEntityAutoReset
         CartInventory = null;
         StorageInventory = null;
         Equipment = null!;
-
+        EntityValueListPool<float>.Return(RecentAttackersList);
+        RecentAttackersList = null!;
+        
         SavePosition.Reset();
     }
 
     public void Init()
     {
         LearnedSkills ??= new Dictionary<CharacterSkill, int>();
-
-        if (GetData(PlayerStat.Status) == 0)
-        {
-            Array.Clear(CharData);
-            Array.Clear(PlayerStatData);
-
-            LearnedSkills.Clear();
-            SetData(PlayerStat.Level, 1);
-            SetData(PlayerStat.Head, GameRandom.NextInclusive(0, 31));
-            SetData(PlayerStat.Gender, GameRandom.NextInclusive(0, 1));
-            SetData(PlayerStat.Status, 1);
-        }
-
+        
         foreach (var skill in LearnedSkills)
             SkillHandler.ApplyPassiveEffects(skill.Key, CombatEntity, skill.Value);
 
@@ -212,14 +207,51 @@ public class Player : IEntityAutoReset
 
         Equipment.Player = this;
         Equipment.RunAllOnEquip();
-
-        UpdateStats();
-
+        
         SetStat(CharacterStat.Level, GetData(PlayerStat.Level));
         Character.DisplayType = CharacterDisplayType.Player;
 
         IsAdmin = ServerConfig.DebugConfig.UseDebugMode;
+        RecentAttackersList = EntityValueListPool<float>.Get();
+
+        //if this is their first time logging in, they get a free Knife
+        var isNewCharacter = GetData(PlayerStat.Status) == 0;
+        if (isNewCharacter)
+        {
+            if (DataManager.ItemIdByName.TryGetValue("Knife", out var knife))
+            {
+                var item = new ItemReference(knife, 1);
+                var bagId = AddItemToInventory(item);
+                Equipment.EquipItem(bagId, EquipSlot.Weapon);
+            }
+            if (DataManager.ItemIdByName.TryGetValue("Cotton Shirt", out var shirt))
+            {
+                var item = new ItemReference(shirt, 1);
+                var bagId = AddItemToInventory(item);
+                Equipment.EquipItem(bagId, EquipSlot.Body);
+            }
+
+            if (DataManager.ItemIdByName.TryGetValue("Apple", out var apple))
+            {
+                var item = new ItemReference(apple, 15);
+                AddItemToInventory(item);
+            }
+            SetData(PlayerStat.Status, 1);
+            UpdateStats(false, false); //update without sending update because we want to trigger inventory update too
+            CommandBuilder.SendUpdatePlayerData(this, true, false);
+        }
+        else
+            UpdateStats();
+
+
         //IsAdmin = true; //for now
+    }
+
+    public void WriteCharacterToDatabase()
+    {
+        SaveCharacterToData();
+        var req = new SaveCharacterRequest(this);
+        RoDatabase.EnqueueDbRequest(req);
     }
 
     public int AddItemToInventory(ItemReference item)
@@ -232,7 +264,7 @@ public class Player : IEntityAutoReset
     {
         if (Inventory == null)
             return true;
-        if (Inventory.UsedSlots >= 200)
+        if (Inventory.UsedSlots >= CharacterBag.MaxBagSlots)
             return false;
 
         if (item.Weight * item.Count + Inventory.BagWeight > GetStat(CharacterStat.WeightCapacity))
@@ -267,6 +299,7 @@ public class Player : IEntityAutoReset
         buffer[(int)PlayerSummaryData.Luk] = GetData(PlayerStat.Luk);
         buffer[(int)PlayerSummaryData.Gender] = GetData(PlayerStat.Gender);
     }
+
     public void SendPlayerUpdateData(OutboundMessage packet, bool sendInventory, bool refreshSkills)
     {
         foreach (var dataType in PlayerClientStatusDef.PlayerUpdateData)
@@ -304,15 +337,9 @@ public class Player : IEntityAutoReset
         }
 
         packet.Write(GetTiming(TimingStat.AttackDelayTime));
-
-        //packet.Write(GetStat(CharacterStat.Hp));
-        //packet.Write(GetStat(CharacterStat.MaxHp));
-        //packet.Write(GetStat(CharacterStat.Sp));
-        //packet.Write(GetStat(CharacterStat.MaxSp));
         packet.Write(Inventory?.BagWeight ?? 0);
-        //packet.Write(GetStat(CharacterStat.WeightCapacity));
-        //packet.Write(GetData(PlayerStat.SkillPoints));
         packet.Write(refreshSkills);
+
         if (refreshSkills)
         {
             packet.Write(LearnedSkills.Count);
@@ -330,9 +357,9 @@ public class Player : IEntityAutoReset
             StorageInventory.TryWrite(packet, true);
             for (var i = 0; i < 10; i++)
                 packet.Write(Equipment.ItemSlots[i]);
+            packet.Write(Equipment.AmmoId);
         }
     }
-
 
     public bool TryRemoveItemFromInventory(int type, int count)
     {
@@ -402,69 +429,7 @@ public class Player : IEntityAutoReset
         UpdateStats();
     }
 
-    //public float GetJobBonus(CharacterStat stat)
-    //{
-    //    var job = GetData(PlayerStat.Job);
-    //    switch (stat)
-    //    {
-    //        case CharacterStat.MagicAtkMin:
-    //            if (job != DataManager.JobIdLookup["Mage"])
-    //                return 0.4f; //everything but mage
-    //            return 1f;
-    //        case CharacterStat.MaxHp:
-    //            if (job == DataManager.JobIdLookup["Swordsman"] || job == DataManager.JobIdLookup["Merchant"])
-    //                return 1.4f;
-    //            if (job == DataManager.JobIdLookup["Thief"])
-    //                return 1.2f;
-    //            if (job == DataManager.JobIdLookup["Mage"])
-    //                return 0.8f;
-    //            return 1f;
-    //        case CharacterStat.MaxSp:
-    //            if (job == DataManager.JobIdLookup["Swordsman"] || job == DataManager.JobIdLookup["Merchant"])
-    //                return 0.7f;
-    //            if (job == DataManager.JobIdLookup["Thief"])
-    //                return 0.9f;
-    //            if (job == DataManager.JobIdLookup["Acolyte"])
-    //                return 1.5f;
-    //            if (job == DataManager.JobIdLookup["Mage"])
-    //                return 2f;
-    //            return 1f;
-    //        case CharacterStat.Str:
-    //            if (job == DataManager.JobIdLookup["Mage"])
-    //                return 0.4f;
-    //            if (job == DataManager.JobIdLookup["Merchant"])
-    //                return 1.1f;
-    //            return 1f;
-    //        case CharacterStat.Dex:
-    //            if (job == DataManager.JobIdLookup["Archer"])
-    //                return 1.2f;
-    //            return 1f;
-    //        case CharacterStat.Agi:
-    //            if (job == DataManager.JobIdLookup["Thief"])
-    //                return 1.4f;
-    //            return 1f;
-    //        case CharacterStat.Def:
-    //            if (job == DataManager.JobIdLookup["Swordsman"] || job == DataManager.JobIdLookup["Merchant"])
-    //                return 1.2f;
-    //            return 1f;
-    //        case CharacterStat.MDef:
-    //            if (job == DataManager.JobIdLookup["Mage"])
-    //                return 1.2f;
-    //            return 1f;
-    //        case CharacterStat.AspdBonus:
-    //            if (job == DataManager.JobIdLookup["Thief"])
-    //                return 1.4f;
-    //            if (job == DataManager.JobIdLookup["Acolyte"])
-    //                return 1.2f;
-    //            if (job == DataManager.JobIdLookup["Mage"])
-    //                return 0.6f;
-    //            return 1f;
-    //    }
-
-    //    return 1;
-    //}
-
-    public void UpdateStats(bool updateSkillData = true)
+    public void UpdateStats(bool updateSkillData = true, bool sendUpdate = true)
     {
         var level = GetData(PlayerStat.Level);
         var job = GetData(PlayerStat.Job);
@@ -481,31 +446,10 @@ public class Player : IEntityAutoReset
         
         SetTiming(TimingStat.HitDelayTime, 0.288f);
         if (WeaponClass == 12) //bow
-            SetStat(CharacterStat.Range, 4 + MaxLearnedLevelOfSkill(CharacterSkill.VultureEye));
+            SetStat(CharacterStat.Range, Equipment.WeaponRange + MaxLearnedLevelOfSkill(CharacterSkill.VultureEye));
         else
-            SetStat(CharacterStat.Range, 1);
-
-        //var agiBonus = GetJobBonus(CharacterStat.Agi);
-        //var dexBonus = GetJobBonus(CharacterStat.Dex);
-        //var defBonus = GetJobBonus(CharacterStat.Def);
-        //var mdefBonus = GetJobBonus(CharacterStat.MDef);
-
-        //SetStat(CharacterStat.Def, (level * 0.7f) * defBonus);
-        //SetStat(CharacterStat.MDef, (level * 0.4f) * mdefBonus);
-        //SetStat(CharacterStat.Vit, (3 + level * 0.5f));
-        //SetStat(CharacterStat.Int, (15 + level * 0.9f));
-        //SetStat(CharacterStat.Str, (15 + level * 0.9f));
-        //SetStat(CharacterStat.Agi, (3 + level * 0.5f) * agiBonus);
-        //SetStat(CharacterStat.Dex, (15 + level * 0.9f) * dexBonus);
-        //SetStat(CharacterStat.Luk, (3 + level * 0.5f));
-
-        //SetData(PlayerStat.Str, GetStat(CharacterStat.Str));
-        //SetData(PlayerStat.Agi, GetStat(CharacterStat.Agi));
-        //SetData(PlayerStat.Vit, GetStat(CharacterStat.Vit));
-        //SetData(PlayerStat.Int, GetStat(CharacterStat.Int));
-        //SetData(PlayerStat.Dex, GetStat(CharacterStat.Dex));
-        //SetData(PlayerStat.Luk, GetStat(CharacterStat.Luk));
-
+            SetStat(CharacterStat.Range, Equipment.WeaponRange);
+        
         SetStat(CharacterStat.Str, GetData(PlayerStat.Str));
         SetStat(CharacterStat.Agi, GetData(PlayerStat.Agi));
         SetStat(CharacterStat.Vit, GetData(PlayerStat.Vit));
@@ -515,15 +459,13 @@ public class Player : IEntityAutoReset
 
         var jobAspd = jobInfo.WeaponTimings[WeaponClass];
         var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100);
-        //var agiAspdBonus = GetEffectiveStat(CharacterStat.Agi) / 3 * 3 + GetEffectiveStat(CharacterStat.Dex) / 3; //we set an aspd breakpoint on 3s
-        //var agiAspdValue = 100f / (100 + agiAspdBonus);
 
         var agi = GetEffectiveStat(CharacterStat.Agi);
         var dex = GetEffectiveStat(CharacterStat.Dex);
 
         // Trust me this works. I think!
         var speedScore = (agi + dex / 4) * 5 / 3; //agi * 1.6667
-        var speedBoost = 1 + ((MathHelper.BoostCalc(speedScore) - 1) / 4.8f);
+        var speedBoost = 1 + ((MathHelper.PowScaleUp(speedScore) - 1) / 4.8f);
         var statSpeedValue = 1f / speedBoost;
 
         var recharge = jobAspd * aspdBonus * statSpeedValue;
@@ -550,7 +492,6 @@ public class Player : IEntityAutoReset
         SetTiming(TimingStat.AttackMotionTime, motionTime);
         SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
 
-        //var newMaxHp = (level * level) / 2 + (level * level * level) / 300 + 42 + 10 * level;
         var newMaxHp = DataManager.JobMaxHpLookup[job][level] * (1 + GetEffectiveStat(CharacterStat.Vit) / 100f);
         var updatedMaxHp = newMaxHp; // * hpBonus;// (int)(newMaxHp * multiplier) + 70;
 
@@ -563,16 +504,12 @@ public class Player : IEntityAutoReset
         var newMaxSp = DataManager.JobMaxSpLookup[job][level] * (1 + GetEffectiveStat(CharacterStat.Int) / 100f);
         newMaxSp += GetStat(CharacterStat.AddMaxSp);
 
-        //var sp = (40 + level + level * (level / 7)) / 2;
-        //sp = (int)(sp * spBonus);
-        //if (Character.ClassId == 3)
-        //    sp += 20; //little boost early on
-
         SetStat(CharacterStat.MaxSp, newMaxSp);
         if (GetStat(CharacterStat.Sp) > newMaxSp)
             SetStat(CharacterStat.Sp, newMaxSp);
 
-        SetStat(CharacterStat.WeightCapacity, 24000 + GetEffectiveStat(CharacterStat.Str) * 300);
+        var weightBonus = (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.PushCart) ? 20000 : 0) + MaxLearnedLevelOfSkill(CharacterSkill.EnlargeWeightLimit) * 2000;
+        SetStat(CharacterStat.WeightCapacity, 24000 + GetEffectiveStat(CharacterStat.Str) * 300 + weightBonus);
 
         var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
         if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Curse))
@@ -585,7 +522,6 @@ public class Player : IEntityAutoReset
         var moveSpeed = 0.15f * moveBonus;
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
-
 
         //update skill points! Ideally, this only should happen when you change your skills, but, well...
         var skillPointEarned = skillPointsByLevel[level - 1];
@@ -617,7 +553,7 @@ public class Player : IEntityAutoReset
 
         SetData(PlayerStat.StatPoints, statPointsEarned - statPointsUsed);
 
-        if (Connection.IsConnectedAndInGame)
+        if (Connection.IsConnectedAndInGame && sendUpdate)
             CommandBuilder.SendUpdatePlayerData(this, false, updateSkillData);
     }
 
@@ -643,9 +579,6 @@ public class Player : IEntityAutoReset
 
         if (level + 1 > 99)
             return; //hard lock levels above 99
-
-        //var aMotionTime = 1.1f - level * 0.006f;
-        //var spriteAttackTiming = 0.6f;
 
         level++;
 
@@ -798,15 +731,17 @@ public class Player : IEntityAutoReset
         var hp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
         var hpAddPercent = GetStat(CharacterStat.AddHpRecoveryPercent);
+        var plusHpRegen = 0;
 
         var hpRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery);
         if (hpRegenSkill > 0)
-            hpAddPercent += maxHp * hpRegenSkill / 500; //+2% of max HP per tick at lvl 10
+            plusHpRegen = maxHp * hpRegenSkill / 500; //+2% of max HP per tick at lvl 10
 
         if (hp < maxHp && hpAddPercent >= 0)
         {
             var vit = GetEffectiveStat(CharacterStat.Vit);
             var regen = (maxHp / 50 + vit / 5) * (200 + vit) / 200;
+            regen += plusHpRegen;
             regen = regen * (100 + hpAddPercent) / 100;
             //var regen = 1 + (maxHp / 50) * vit / 100; //original formula
             if (Character.State == CharacterState.Moving)
@@ -825,17 +760,22 @@ public class Player : IEntityAutoReset
         var sp = GetStat(CharacterStat.Sp);
         var maxSp = GetStat(CharacterStat.MaxSp);
         var spAddPercent = GetStat(CharacterStat.AddSpRecoveryPercent);
+        var plusSpRegen = 0;
 
         var spRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery);
         if (spRegenSkill > 0)
-            spAddPercent += maxSp * spRegenSkill / 500; //+2% of max SP per tick at lvl 10
+        {
+            plusSpRegen = maxSp * spRegenSkill / 500; //+2% of max SP per tick at lvl 10
+            if (plusSpRegen < 1)
+                plusSpRegen = 1;
+        }
 
         if (sp < maxSp && spAddPercent >= 0)
         {
             var chInt = GetEffectiveStat(CharacterStat.Int);
             var regen = 1 + (maxSp / 100 + chInt / 6) * (200 + chInt) / 200;
             //var regen = maxSp / 100 + chInt / 5; //original formula
-
+            regen += plusSpRegen;
             if (chInt > 120) regen += chInt - 120;
             regen = regen * (100 + spAddPercent) / 100;
             
@@ -977,6 +917,30 @@ public class Player : IEntityAutoReset
         monster.ChangeAiStateMachine(MonsterAiType.AiAggressiveActiveSense);
         monster.ResetAiUpdateTime(); //make it active instantly
     }
+
+    private bool ValidateAmmoBasedWeapon()
+    {
+        if (Equipment.AmmoId <= 0) //bow
+        {
+            CommandBuilder.SendServerEvent(this, ServerEvent.NoAmmoEquipped);
+            return false;
+        }
+
+        if (WeaponClass == 12 && Equipment.AmmoType != AmmoType.Arrow)
+        {
+            CommandBuilder.SendServerEvent(this, ServerEvent.WrongAmmoEquipped);
+            return false;
+        }
+
+        if (Inventory == null || !Inventory.HasItem(Equipment.AmmoId))
+        {
+            CommandBuilder.SendServerEvent(this, ServerEvent.OutOfAmmo);
+            return false;
+        }
+
+        return true;
+    }
+
     public void PerformQueuedAttack()
     {
         if (Character.State == CharacterState.Sitting
@@ -985,6 +949,17 @@ public class Player : IEntityAutoReset
         {
             AutoAttackLock = false;
             return;
+        }
+
+        var usingAmmo = false;
+        if (WeaponClass == 12)
+        {
+            usingAmmo = true;
+            if (!ValidateAmmoBasedWeapon())
+            {
+                AutoAttackLock = false;
+                return;
+            }
         }
 
         var targetCharacter = Target.Get<WorldObject>();
@@ -1011,22 +986,23 @@ public class Player : IEntityAutoReset
         }
 
         ChangeTarget(targetCharacter);
-        PerformAttack(targetCharacter);
+        if (PerformAttack(targetCharacter))
+            Inventory?.RemoveItemByBagId(Equipment.AmmoId, 1);
     }
-    public void PerformAttack(WorldObject targetCharacter)
+    public bool PerformAttack(WorldObject targetCharacter)
     {
         if (targetCharacter.Type == CharacterType.NPC || Character.Map == null)
         {
             ChangeTarget(null);
 
-            return;
+            return false;
         }
 
         var targetEntity = targetCharacter.Entity.Get<CombatEntity>();
         if (!targetEntity.IsValidTarget(CombatEntity) || !Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
         {
             ClearTarget();
-            return;
+            return false;
         }
 
         AutoAttackLock = true;
@@ -1041,7 +1017,7 @@ public class Player : IEntityAutoReset
             if (Target != targetCharacter.Entity)
                 ChangeTarget(targetCharacter);
 
-            return;
+            return false;
         }
 
         //Character.StopMovingImmediately();
@@ -1051,7 +1027,7 @@ public class Player : IEntityAutoReset
             if (Target != targetCharacter.Entity)
                 ChangeTarget(targetCharacter);
 
-            return;
+            return false;
         }
 
         Character.ResetSpawnImmunity();
@@ -1059,10 +1035,17 @@ public class Player : IEntityAutoReset
         Character.AddMoveLockTime(GetTiming(TimingStat.AttackMotionTime), true);
 
         Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackDelayTime);
+        return true;
     }
 
     public void TargetForAttack(WorldObject enemy)
     {
+        if (WeaponClass == 12)
+        {
+            if (!ValidateAmmoBasedWeapon())
+                return;
+        }
+
         if (CombatEntity.IsCasting)
         {
             ChangeTarget(enemy);
@@ -1073,6 +1056,7 @@ public class Player : IEntityAutoReset
         if (DistanceCache.IntDistance(Character.Position, enemy.Position) <= GetStat(CharacterStat.Range))
         {
             ChangeTarget(enemy);
+            //PerformQueuedAttack();
             PerformAttack(enemy);
             return;
         }
@@ -1127,42 +1111,58 @@ public class Player : IEntityAutoReset
         Character.ItemTarget = -1;
         Character.QueuedAction = QueuedAction.None;
 
+        if (!Character.Map.IsEntityStacked(Character))
+            return;
+
+        if (Character.Map.FindUnoccupiedAdjacentTile(Character.Position, out var newMove))
+            Character.TryMove(newMove, 0);
     }
 
-    public void PerformSkill()
+    public void RegisterRecentAttacker(ref Entity src) => RecentAttackersList.AddOrSetValue(ref src, Time.ElapsedTimeFloat);
+
+    public int GetCurrentAttackerCount()
     {
-        Debug.Assert(Character.Map != null, $"Player {Name} cannot perform skill, it is not attached to a map.");
-
-        var pool = EntityListPool.Get();
-        Character.Map.GatherEnemiesInRange(Character, 7, pool, true);
-
-        if (Character.AttackCooldown > Time.ElapsedTimeFloat)
-            return;
-
-        if (pool.Count == 0)
-        {
-            EntityListPool.Return(pool);
-            return;
-        }
-
-        Character.StopMovingImmediately();
-        ClearTarget();
-
-        for (var i = 0; i < pool.Count; i++)
-        {
-            var e = pool[i];
-            if (e.IsNull() || !e.IsAlive())
-                continue;
-            var target = e.Get<CombatEntity>();
-            if (target == CombatEntity || target.Character.Type == CharacterType.Player)
-                continue;
-
-            CombatEntity.PerformMeleeAttack(target);
-            Character.AddMoveLockTime(GetTiming(TimingStat.AttackDelayTime));
-        }
-
-        Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackDelayTime);
+        if (lastAttackerListCheckUpdate >= Time.ElapsedTimeFloat) //iterating the list doesn't need to be done each time you take damage
+            return RecentAttackersList.Count;
+        lastAttackerListCheckUpdate = Time.ElapsedTimeFloat + 0.2f;
+        return RecentAttackersList.CountEntitiesAboveValueAndRemoveBelow(Time.ElapsedTimeFloat - 1.8f);
     }
+    
+
+    //public void PerformSkill()
+    //{
+    //    Debug.Assert(Character.Map != null, $"Player {Name} cannot perform skill, it is not attached to a map.");
+
+    //    var pool = EntityListPool.Get();
+    //    Character.Map.GatherEnemiesInRange(Character, 7, pool, true);
+
+    //    if (Character.AttackCooldown > Time.ElapsedTimeFloat)
+    //        return;
+
+    //    if (pool.Count == 0)
+    //    {
+    //        EntityListPool.Return(pool);
+    //        return;
+    //    }
+
+    //    Character.StopMovingImmediately();
+    //    ClearTarget();
+
+    //    for (var i = 0; i < pool.Count; i++)
+    //    {
+    //        var e = pool[i];
+    //        if (e.IsNull() || !e.IsAlive())
+    //            continue;
+    //        var target = e.Get<CombatEntity>();
+    //        if (target == CombatEntity || target.Character.Type == CharacterType.Player)
+    //            continue;
+
+    //        CombatEntity.PerformMeleeAttack(target);
+    //        Character.AddMoveLockTime(GetTiming(TimingStat.AttackDelayTime));
+    //    }
+
+    //    Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackDelayTime);
+    //}
 
     public bool WarpPlayer(string mapName, int x, int y, int width, int height, bool failIfNotWalkable)
     {
@@ -1180,7 +1180,7 @@ public class Player : IEntityAutoReset
         if (Character.Map != null && (width > 1 || height > 1))
         {
             var area = Area.CreateAroundPoint(x, y, width, height);
-            p = Character.Map.GetRandomWalkablePositionInArea(area);
+            p = map.GetRandomWalkablePositionInArea(area);
             if (p == Position.Invalid)
             {
                 ServerLogger.LogWarning($"Could not warp player to map {mapName} area {area} is blocked.");
@@ -1304,8 +1304,7 @@ public class Player : IEntityAutoReset
                 if (CombatEntity.QueuedCastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
                 {
                     var isValid = true;
-                    var canAttack =
-                        CombatEntity.CanAttackTarget(targetCharacter, CombatEntity.QueuedCastingSkill.Range);
+                    var canAttack = CombatEntity.CanAttackTarget(targetCharacter, CombatEntity.QueuedCastingSkill.Range);
                     if (Character.State == CharacterState.Moving && canAttack)
                         Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
                     if (Character.State == CharacterState.Idle && !canAttack)

@@ -21,10 +21,10 @@ StateAny:
 StateAttacking:
 	var count = 0; //have to define variables at the start or there'll be scope issues
 	if(HpPercent < 50 && IsNamedEventOffCooldown("LowHpToss")) {
-		@GoldenBugEggToss(100%, 4, 8, 7s, GtbPutLowHpTossOnCooldown);
+		@GoldenBugEggToss(100%, 4, 8, 15s, GtbPutLowHpTossOnCooldown);
 	}
 	if(HpPercent < 90) {
-		@GoldenBugEggToss(30%, 1, (100-HpPercent)/10, 7s, GtbEmptyEvent);
+		@GoldenBugEggToss(30%, 1, (100-HpPercent)/10, 15s, GtbEmptyEvent);
 	}
 
 	TryCast(Mammonite, 5, 20%, 0, 5s) -> SendEmote(8);

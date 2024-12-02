@@ -1,0 +1,1667 @@
+//Armor
+
+::Guard //id 2101 - Shield 
+<color=#808080>A square shield that is small, yet effective in combat.</color>
+
+::Guard_ //id 2102 - Shield 
+<color=#808080>A square shield that is small, yet effective in combat.</color>
+
+::Buckler //id 2103 - Shield 
+<color=#808080>A rounded shield that readily absorbs impact from attacks.</color>
+
+::Buckler_ //id 2104 - Shield 
+<color=#808080>A rounded shield that readily absorbs impact from attacks.</color>
+
+::Shield //id 2105 - Shield 
+<color=#808080>A well crafted shield which most attacks cannot penetrate.</color>
+
+::Shield_ //id 2106 - Shield 
+<color=#808080>A well crafted shield which most attacks cannot penetrate.</color>
+
+::Mirror_Shield //id 2107 - Shield 
+<color=#808080>A shield with a mirrored surface that defends against harmful magic.</color>
+
+::Mirror_Shield_ //id 2108 - Shield 
+<color=#808080>A shield with a mirrored surface that defends against harmful magic.</color>
+
+::Memory_Book //id 2109 - Shield 
+<color=#808080>A magic spellbook that is so large it can be used as a shield.</color>
+
+::Holy_Guard //id 2110 - Shield 
+<color=#808080>A blessed guard engraved with God's symbol.</color>
+
+::Sacred_Mission //id 2111 - Shield 
+<color=#808080>A shield symbolic of God's gift to the church.</color>
+
+::Novice_Guard //id 2112 - Shield 
+<color=#808080>A shield exclusive to the Novice Training Grounds.</color>
+
+::Novice_Shield //id 2113 - Shield 
+<color=#808080>A shield exclusively for Novices!</color>
+
+::Stone_Buckler //id 2114 - Shield 
+<color=#808080>A stone shield which Thor obtained by killing Hrungnir, king of giants.</color>
+
+::Valkyrja's_Shield //id 2115 - Shield 
+<color=#808080>A shield used by Gna, messenger of Freyja, when she served as a Valkyrie.</color>
+
+::Angel's_Guard //id 2116 - Shield 
+<color=#808080>A shield which contains a holy power that can nullify evil.</color>
+
+::Arm_Guard //id 2117 - Shield 
+<color=#808080>A wrist protector padded with a steel plate for increased durability.</color>
+
+::Arm_Guard_ //id 2118 - Shield 
+<color=#808080>A wrist protector padded with a steel plate for increased durability.</color>
+
+::Advanced_Arm_Guard //id 2119 - Shield 
+<color=#808080>A wrist protector enhanced with magic resistance by a gifted artisan.</color>
+
+::Advanced_Arm_Guard_ //id 2120 - Shield 
+<color=#808080>A wrist protector enhanced with magic resistance by a gifted artisan.</color>
+
+::Memory_Book_ //id 2121 - Shield 
+<color=#808080>A magic spellbook that is so large it can be used as a shield.</color>
+
+::Platinum_Shield //id 2122 - Shield 
+<color=#808080>A magnificent platinum shield reflects harmful magic.</color>
+
+::Orleans's_Server //id 2123 - Shield 
+<color=#808080>A shiny, round, silver food platter.</color>
+
+::Thorny_Buckler //id 2124 - Shield 
+<color=#808080>A rough shield covered in spikes that deter rushing enemies.</color>
+
+::Strong_Shield //id 2125 - Shield 
+<color=#808080>A massive shield that can withstand any attack but lacks shock absorption.</color>
+
+::Sacred_Mission_ //id 2128 - Shield 
+<color=#808080>A shield symbolic of God's gift to the church.</color>
+
+::Exorcism_Bible //id 2129 - Shield 
+<color=#808080>A thick book that details how to perform an exorcism.</color>
+
+::Cross_Shield //id 2130 - Shield 
+<color=#808080>A massive, thick cross-shaped shield.</color>
+
+::Magic_Bible_Vol1 //id 2131 - Shield 
+<color=#808080>A massive book known as "the spellcasting bible".</color>
+
+::Tournament_Shield //id 2133 - Shield 
+<color=#808080>A shield used in jousting tournaments, best used with a spear.</color>
+
+::Shield_of_Naga //id 2134 - Shield 
+<color=#808080>A hard, firm-looking shield made from Naga scales.</color>
+
+::Ahura_Mazdah //id 2199 - Shield 
+<color=#808080>The shield of shields.</color>
+All Stats + 50
+
+::Sunglasses //id 2201 - Headgear Mid
+<color=#808080>A pair of glasses with darkened lenses that block ultraviolet light.</color>
+
+::Sunglasses_ //id 2202 - Headgear Mid
+<color=#808080>A pair of glasses with darkened lenses that block ultraviolet light.</color>
+
+::Glasses //id 2203 - Headgear Mid
+<color=#808080>A pair of prescription glasses that compensate for vision defects.</color>
+
+::Glasses_ //id 2204 - Headgear Mid
+<color=#808080>A pair of prescription glasses that compensate for vision defects.</color>
+
+::Diver_Goggles //id 2205 - Headgear Mid
+<color=#808080>A pair of sturdy goggles worn by ocean divers.</color>
+
+::Wedding_Veil //id 2206 - Headgear Top
+<color=#808080>A transparent veil worn by brides on their wedding day.</color>
+
+::Fancy_Flower //id 2207 - Headgear Top
+<color=#808080>A floral decoration that may be worn.</color>
+
+::Ribbon //id 2208 - Headgear Top
+<color=#808080>A blue satin hairpin that wards off harmful magic.</color>
+
+::Ribbon_ //id 2209 - Headgear Top
+<color=#808080>A blue satin hairpin that wards off harmful magic.</color>
+
+::Hair_Band //id 2210 - Headgear Top
+<color=#808080>A hairband that holds hair in place, it's cute on gals but on guys it's something else.</color>
+
+::Bandana //id 2211 - Headgear Top
+<color=#808080>A common, ivory colored bandana.</color>
+
+::Eye_Patch //id 2212 - Headgear Mid
+<color=#808080>A patch used to cover one eye.</color>
+
+::Kitty_Band //id 2213 - Headgear Top
+<color=#808080>A hairband fashioned with cute kitty ears, meow!</color>
+
+::Bunny_Band //id 2214 - Headgear Top
+<color=#808080>A hairband fashioned with rabbit ears, a symbol of good luck.</color>
+
+::Flower_Band //id 2215 - Headgear Top
+<color=#808080>A fragrant hairband crafted from only the daintiest of flowers.</color>
+
+::Biretta //id 2216 - Headgear Top
+<color=#808080>A stiff, squarish formal hat worn by clerics.</color>
+
+::Biretta_ //id 2217 - Headgear Top
+<color=#808080>A stiff, squarish formal hat worn by clerics.</color>
+
+::Flu_Mask //id 2218 - Headgear Bottom
+<color=#808080>A mask worn by considerate people to mitigate an airborn illness.</color>
+
+::Hat //id 2220 - Headgear Top
+<color=#808080>A simple pink hat.</color>
+
+::Hat_ //id 2221 - Headgear Top
+<color=#808080>A simple pink hat.</color>
+
+::Turban //id 2222 - Headgear Top
+<color=#808080>A small, tight fitting headdress made of fine silk.</color>
+
+::Turban_ //id 2223 - Headgear Top
+<color=#808080>A small, tight fitting headdress made of fine silk.</color>
+
+::Goggles //id 2224 - Headgear TopMid
+<color=#808080>A pair of pilot goggles that protect the eyes.</color>
+
+::Goggles_ //id 2225 - Headgear TopMid
+<color=#808080>A pair of pilot goggles that protect the eyes.</color>
+
+::Cap //id 2226 - Headgear Top
+<color=#808080>A brimless hat that offers little in the way of fashion but provide decent defense.</color>
+
+::Cap_ //id 2227 - Headgear Top
+<color=#808080>A brimless hat that offers little in the way of fashion but provide decent defense.</color>
+
+::Helm //id 2228 - Headgear Top
+<color=#808080>A steel helmet that offers great protection.</color>
+
+::Helm_ //id 2229 - Headgear Top
+<color=#808080>A steel helmet that offers great protection.</color>
+
+::Gemmed_Sallet //id 2230 - Headgear Top
+<color=#808080>A jeweled headdress that wards off harmful magic.</color>
+
+::Gemmed_Sallet_ //id 2231 - Headgear Top
+<color=#808080>A jeweled headdress that wards off harmful magic.</color>
+
+::Circlet //id 2232 - Headgear Top
+<color=#808080>A jeweled, metal band that wards off harmful magic.</color>
+
+::Circlet_ //id 2233 - Headgear Top
+<color=#808080>A jeweled, metal band that wards off harmful magic.</color>
+
+::Tiara //id 2234 - Headgear Top
+<color=#808080>A jeweled coronet that grants the wisdom of an ancient queen.</color>
+
+::Crown //id 2235 - Headgear Top
+<color=#808080>A jeweled crown that grants the wisdom of an ancient king.</color>
+
+::Santa_Hat //id 2236 - Headgear Top
+<color=#808080>A red, pompom topped cap associated with the Santa Claus legend.</color>
+
+::Monocle //id 2239 - Headgear Mid
+<color=#808080>An aristrocratically stylish lens that is worn over one eye.</color>
+
+::Grampa_Beard //id 2241 - Headgear Bottom
+<color=#808080>A white colored moustache, a symbol of experience and sophistication.</color>
+
+::Purple_Glasses //id 2242 - Headgear Mid
+<color=#808080>A pair of high quality sunglasses that effectively block the sun.</color>
+
+::Geek_Glasses //id 2243 - Headgear Mid
+<color=#808080>A pair of glasses that make the wearer's eyes look like they're spinning without focus.</color>
+
+::Big_Ribbon //id 2244 - Headgear Top
+<color=#808080>An oversized red ribbon that contains hidden magical power.</color>
+
+::Sweet_Gent //id 2245 - Headgear Top
+<color=#808080>A dark and stylish hat that was popularized by smooth crooners.</color>
+
+::Golden_Gear //id 2246 - Headgear Top
+<color=#808080>A helmet forged from pure gold which provides effective defense but is also unaffordable.</color>
+
+::Romantic_Gent //id 2247 - Headgear Top
+<color=#808080>An ivory hat worn by classy men on classy occasions.</color>
+
+::Western_Grace //id 2248 - Headgear Top
+<color=#808080>A broad brimmed casual hat, usually worn by cowboys and ranchers, that is rustically stylish.</color>
+
+::Coronet //id 2249 - Headgear Top
+<color=#808080>A small crown, fashioned out of pure gold, worn by members of nobility.</color>
+
+::Cute_Ribbon //id 2250 - Headgear Top
+<color=#808080>A small, decorative ribbon.</color>
+
+::Monk_Hat //id 2251 - Headgear Top
+<color=#808080>A ceremonial hat worn by monks that offers protection from evil.</color>
+
+::Wizard_Hat //id 2252 - Headgear Top
+<color=#808080>A mystic hat for wizards that amplifies pyschic power.</color>
+
+::Sunflower //id 2253 - Headgear Top
+<color=#808080>A headgear designed to look like a sunflower.</color>
+
+::Angel_Wing //id 2254 - Headgear Top
+<color=#808080>A headband adorned with the wings of an angel that offers protection from dark powers.</color>
+
+::Evil_Wing //id 2255 - Headgear Top
+<color=#808080>A headgear adorned with the wings of a demon that offers protection from holy powers.</color>
+
+::Majestic_Goat //id 2256 - Headgear Top
+<color=#808080>A helmet that has mighty goat horns.</color>
+
+::Unicorn_Horn //id 2257 - Headgear Top
+<color=#808080>A pristinely white horn that almost resembles a unicorn.</color>
+
+::Spiky_Band //id 2258 - Headgear Top
+<color=#808080>A headband with two dangerous, yet fashionable, spikes.</color>
+
+::Mini_Propeller //id 2259 - Headgear Top
+<color=#808080>A headgear topped with a fashionably experimental propeller.</color>
+
+::Mini_Glasses //id 2260 - Headgear Mid
+<color=#808080>A pair of sophisticated glasses.</color>
+
+::Army_Cap //id 2261 - Headgear Top
+<color=#808080>A squad cap issued by the Prontera Military.</color>
+
+::Clown_Nose //id 2262 - Headgear Bottom
+<color=#808080>A fashion accessory used in clown or town drunk costumes.</color>
+
+::Zorro_Masque //id 2263 - Headgear Mid
+<color=#808080>A mask inspired by a legendary fencer who kept his identity as a wealthy don a secret.</color>
+
+::Munak_Hat //id 2264 - Headgear All
+<color=#808080>A replica of Munak's turban, complete with an amulet.</color>
+
+::Gangster_Mask //id 2265 - Headgear Bottom
+<color=#808080>A mask marked with an X that is a popular fashion statement for bona fide street toughs.</color>
+
+::Iron_Cain //id 2266 - Headgear Bottom
+<color=#808080>A specialized face armor that protects the jawline.</color>
+
+::Cigarette //id 2267 - Headgear Bottom
+<color=#808080>A narrow, short roll of finely cut tobacco wrapped in thin paper.</color>
+
+::Pipe //id 2268 - Headgear Bottom
+<color=#808080>A refined, wooden pipe used for smoking high quality tobacco.</color>
+
+::Romantic_Flower //id 2269 - Headgear Bottom
+<color=#808080>A delicate flower that is placed in the mouth for a seductive look.</color>
+
+::Romantic_Leaf //id 2270 - Headgear Bottom
+<color=#808080>A slender leaf that is placed in the mouth for a seductive look.</color>
+
+::Jack_be_Dandy //id 2271 - Headgear Top
+<color=#808080>A pair of fashionable glasses worn for a charming appearance instead of vision improvement.</color>
+
+::Stop_Post //id 2272 - Headgear Top
+<color=#808080>A signpost that declares disapproval, it causes catastrophes during weddings.</color>
+
+::Doctor_Band //id 2273 - Headgear Top
+<color=#808080>A headband worn by doctors during medical examinations.</color>
+
+::Ghost_Bandana //id 2274 - Headgear Top
+<color=#808080>A traditional headpiece associated with the afterlife.</color>
+
+::Red_Bandana //id 2275 - Headgear Top
+<color=#808080>A boldly red bandana that was leftover from the 80's.</color>
+
+::Angled_Glasses //id 2276 - Headgear Mid
+<color=#808080>A pair of glasses with lenses angled upward and outward.</color>
+
+::Nurse_Cap //id 2277 - Headgear Top
+<color=#808080>A cap worn by nurses both great and small.</color>
+
+::Mr._Smile //id 2278 - Headgear MidBottom
+<color=#808080>A simple mask with a smile carved into it.</color>
+
+::Bomb_Wick //id 2279 - Headgear Top
+<color=#808080>A wick-like ornament worn for a dangerous look.</color>
+
+::Sakkat //id 2280 - Headgear Top
+<color=#808080>A rustic hat knit from rough reeds and bamboo that shields against the rain and sun.</color>
+
+::Opera_Masque //id 2281 - Headgear MidBottom
+<color=#808080>A mysterious mask worn by opera phantoms.</color>
+
+::Halo //id 2282 - Headgear Top
+<color=#808080>A spiritual symbol that appears over the heads of the holy.</color>
+
+::Ear_Muffs //id 2283 - Headgear Top
+<color=#808080>A set of ear coverings that protect them from the cold.</color>
+
+::Antlers //id 2284 - Headgear Top
+<color=#808080>A set of deer antlers that humans can proudly wear.</color>
+
+::Apple_of_Archer //id 2285 - Headgear Top
+<color=#808080>A headgear that honors the legendary archer who shot an apple on friend's head from a great distance.</color>
+
+::Elven_Ears //id 2286 - Headgear Mid
+<color=#808080>An accessory that gives the ears an elvish look, and for some, it is an incredible turn-on.</color>
+
+::Pirate_Bandana //id 2287 - Headgear Top
+<color=#808080>A bandana that is the mark of the lawless ocean pirates.</color>
+
+::Mr._Scream //id 2288 - Headgear MidBottom
+<color=#808080>A mask that expresses anguish and despair.</color>
+
+::Poo_Poo_Hat //id 2289 - Headgear Top
+<color=#808080>A hat shaped like fecal matter that is guaranteed to end a date on a tragic note.</color>
+
+::Funeral_Hat //id 2290 - Headgear Top
+<color=#808080>A traditional headdress worn during funeral ceremonies.</color>
+
+::Masquerade //id 2291 - Headgear Mid
+<color=#808080>A black leather mask shaped like butterfly wings.</color>
+
+::Welding_Mask //id 2292 - Headgear MidBottom
+<color=#808080>A durable mask for welders made from a fat metal plate.</color>
+
+::Pretend_Murdered //id 2293 - Headgear Top
+<color=#808080>A stage prop that creates the illusion that the wearer has been stabbed.</color>
+
+::Stellar //id 2294 - Headgear Top
+<color=#808080>A small, star shaped hairclip that makes a great present for ladies.</color>
+
+::Blinder //id 2295 - Headgear Mid
+<color=#808080>A face mask worn by those who have trouble sleeping.</color>
+
+::Binoculars //id 2296 - Headgear Mid
+<color=#808080>An optical tool that enables one to observe objects from a great distance.</color>
+
+::Goblin_Mask //id 2297 - Headgear MidBottom
+<color=#808080>A mask worn by Goblins to scare and intimidate unsuspecting enemies.</color>
+
+::Green_Feeler //id 2298 - Headgear Top
+<color=#808080>A large insect antennae that humans can wear.</color>
+
+::Orc_Helm //id 2299 - Headgear Top
+<color=#808080>A hardy helmet crafted by orc smiths.</color>
+
+::Cotton_Shirt //id 2301 - Armor 
+<color=#808080>A simple, sturdily made shirt of cotton.</color>
+
+::Cotton_Shirt_ //id 2302 - Armor 
+<color=#808080>A simple, sturdily made shirt of cotton.</color>
+
+::Jacket //id 2303 - Armor 
+<color=#808080>A jacket made out of mediocre leather.</color>
+
+::Jacket_ //id 2304 - Armor 
+<color=#808080>A jacket made out of mediocre leather.</color>
+
+::Adventurer's_Suit //id 2305 - Armor 
+<color=#808080>A light, comfortable suit made just for young adventurers.</color>
+
+::Adventurer's_Suit_ //id 2306 - Armor 
+<color=#808080>A light, comfortable suit made just for young adventurers.</color>
+
+::Mantle //id 2307 - Armor 
+<color=#808080>A cloak that is simple, yet elegant.</color>
+
+::Mantle_ //id 2308 - Armor 
+<color=#808080>A cloak that is simple, yet elegant.</color>
+
+::Coat //id 2309 - Armor 
+<color=#808080>A long coat that provides remarkable warmth in cold weather.</color>
+
+::Coat_ //id 2310 - Armor 
+<color=#808080>A long coat that provides remarkable warmth in cold weather.</color>
+
+::Mink_Coat //id 2311 - Armor 
+<color=#808080>A fur coat made from Lunatic hide.</color>
+
+::Padded_Armor //id 2312 - Armor 
+<color=#808080>An armor constructed of solid metal plates that have been padded on the inside for comfort.</color>
+
+::Padded_Armor_ //id 2313 - Armor 
+<color=#808080>An armor constructed of solid metal plates that have been padded on the inside for comfort.</color>
+
+::Chain_Mail //id 2314 - Armor 
+<color=#808080>A heavy mail made entirely of polished, metal chain links.</color>
+
+::Chain_Mail_ //id 2315 - Armor 
+<color=#808080>A heavy mail made entirely of polished, metal chain links.</color>
+
+::Full_Plate //id 2316 - Armor 
+<color=#808080>A heavy, solid armor made of durable plates of impenetrable metal.</color>
+
+::Full_Plate_ //id 2317 - Armor 
+<color=#808080>A heavy, solid armor made of durable plates of impenetrable metal.</color>
+
+::Lord's_Clothes //id 2318 - Armor 
+<color=#808080>A Renaissance style suit that evokes thoughts of romance and elegance.</color>
+
+::Glittering_Jacket //id 2319 - Armor 
+<color=#808080>A jacket covered in fake, yet glamorous, rhinestones favored by hipsters and lounge singers.</color>
+
+::Formal_Suit //id 2320 - Armor 
+<color=#808080>A formal suit for formal occassions.</color>
+
+::Silk_Robe //id 2321 - Armor 
+<color=#808080>A finely woven, silk robe that has been enchanted with magic.</color>
+
+::Silk_Robe_ //id 2322 - Armor 
+<color=#808080>A finely woven, silk robe that has been enchanted with magic.</color>
+
+::Scapulare //id 2323 - Armor 
+<color=#808080>A blessed outer garment worn by clerics for religious ceremonies.</color>
+
+::Scapulare_ //id 2324 - Armor 
+<color=#808080>A blessed outer garment worn by clerics for religious ceremonies.</color>
+
+::Saint's_Robe //id 2325 - Armor 
+<color=#808080>A robe that has been baptized with saintly power.</color>
+
+::Saint's_Robe_ //id 2326 - Armor 
+<color=#808080>A robe that has been baptized with saintly power.</color>
+
+::Holy_Robe //id 2327 - Armor 
+<color=#808080>A robe that emanates an aura of holiness.</color>
+
+::Wooden_Mail //id 2328 - Armor 
+<color=#808080>A simple set of armor carved out of solid wood.</color>
+
+::Wooden_Mail_ //id 2329 - Armor 
+<color=#808080>A simple set of armor carved out of solid wood.</color>
+
+::Tights //id 2330 - Armor 
+<color=#808080>A skintight, form fitting clothing that allows for easy movement.</color>
+
+::Tights_ //id 2331 - Armor 
+<color=#808080>A skintight, form fitting clothing that allows for easy movement.</color>
+
+::Silver_Robe //id 2332 - Armor 
+<color=#808080>A robe knit out of silver thread.</color>
+
+::Silver_Robe_ //id 2333 - Armor 
+<color=#808080>A robe knit out of silver thread.</color>
+
+::Mage_Coat //id 2334 - Armor 
+<color=#808080>An exclusive robe for mages that contains magic power.</color>
+
+::Thief_Clothes //id 2335 - Armor 
+<color=#808080>An extremely light outfit with many pockets, making it handy for stashing stolen goods.</color>
+
+::Thief_Clothes_ //id 2336 - Armor 
+<color=#808080>An extremely light outfit with many pockets, making it handy for stashing stolen goods.</color>
+
+::Ninja_Suit //id 2337 - Armor 
+<color=#808080>An assassin suit that enables the wearer to move quickly and stealthily.</color>
+
+::Wedding_Dress //id 2338 - Armor 
+<color=#808080>A wedding dress that is immaculately white.</color>
+
+::Pantie //id 2339 - Armor 
+<color=#808080>A risque undergarment that is comfortable to wear but provides little defense.</color>
+
+::Novice_Breastplate //id 2340 - Armor 
+<color=#808080>A breastplate exclusively for Novices!</color>
+
+::Legion_Plate_Armor //id 2341 - Armor 
+<color=#808080>An extremely heavy piece of armor worn by members of the Legion.</color>
+
+::Legion_Plate_Armor_ //id 2342 - Armor 
+<color=#808080>An extremely heavy piece of armor worn by members of the Legion.</color>
+
+::Robe_of_Cast //id 2343 - Armor 
+<color=#808080>A robe which reduces magic cast time.</color>
+
+::Lucius's_Volcano_Armor //id 2344 - Armor 
+<color=#808080>An armor enchanted with fire.</color>
+
+::Lucius's_Volcano_Armor_ //id 2345 - Armor 
+<color=#808080>An armor enchanted with fire.</color>
+
+::Saphien's_Ocean_Armor //id 2346 - Armor 
+<color=#808080>An armor enchanted with water.</color>
+
+::Saphien's_Ocean_Armor_ //id 2347 - Armor 
+<color=#808080>An armor enchanted with water.</color>
+
+::Aebecee's_Typhoon_Armor //id 2348 - Armor 
+<color=#808080>An armor enchanted with wind.</color>
+
+::Aebecee's_Typhoon_Armor_ //id 2349 - Armor 
+<color=#808080>An armor enchanted with wind.</color>
+
+::Claytos_Earth_Armor //id 2350 - Armor 
+<color=#808080>An armor enchanted with earth.</color>
+
+::Claytos_Earth_Armor_ //id 2351 - Armor 
+<color=#808080>An armor that is enchanted with earth.</color>
+
+::Novice_Ninja_Suit //id 2352 - Armor 
+<color=#808080>An armor exclusive to the Novice Training Grounds.</color>
+
+::Odin's_Blessing //id 2353 - Armor 
+<color=#808080>The main component of the Hermod armor set.</color>
+
+::Goibne's_Armor //id 2354 - Armor 
+<color=#808080>An armor accidentally enchanted by Goibne when he spilled the mystic ale of life on it.</color>
+
+::Angel's_Protection //id 2355 - Armor 
+<color=#808080>Super Novice Guardian Angel's robe.</color>
+
+::Valkyrian_Armor //id 2357 - Armor 
+<color=#808080>A set of shining armor worn by the Valkyries, Odin's battle maidens.</color>
+
+::Ninja_Suit_ //id 2359 - Armor 
+<color=#808080>An assassin suit that enables the wearer to move quickly and stealthily.</color>
+
+::Robe_of_Cast_ //id 2360 - Armor 
+<color=#808080>A robe which reduces magic cast time.</color>
+
+::Meteo_Plate_Armor //id 2364 - Armor 
+<color=#808080>A plate armor forged from a meteor.</color>
+
+::Orleans's_Gown //id 2365 - Armor 
+<color=#808080>A uniform worn by an obsessed chef that nobody could stop from talking about cuisine.</color>
+
+::Divine_Cloth //id 2366 - Armor 
+<color=#808080>A holy garment purified by a series of religious rituals.</color>
+
+::Pantie_ //id 2371 - Armor 
+<color=#808080>A risque undergarment that is comfortable to wear but provides little defense.</color>
+
+::Mage_Coat_ //id 2372 - Armor 
+<color=#808080>An exclusive robe for mages that contains magic power.</color>
+
+::Holy_Robe_ //id 2373 - Armor 
+<color=#808080>A robe that emanates an aura of holiness.</color>
+
+::Diabolus_Robe //id 2374 - Armor 
+<color=#808080>A robe decorated with unknown letters.</color>
+
+::Diabolus_Armor //id 2375 - Armor 
+<color=#808080>An armor made from an unknown metal.</color>
+
+::Assaulter_Plate //id 2376 - Armor 
+HP +150, MDEF +2
+
+::Elite_Engineer_Armor //id 2377 - Armor 
+HP +150, MDEF +2
+
+::Assassin_Robe //id 2378 - Armor 
+HP +150, MDEF +2
+
+::Warlock's_Battle_Robe //id 2379 - Armor 
+HP +150, MDEF +2
+
+::Medic's_Robe //id 2380 - Armor 
+HP +150, MDEF +2
+
+::Elite_Archer_Suit //id 2381 - Armor 
+HP +150, MDEF +2
+
+::Elite_Shooter_Suit //id 2382 - Armor 
+HP +150, MDEF +2
+
+::Brynhild //id 2383 - Armor 
+<color=#808080>Brynhild, the warrior's armor, inherits its name from the most the valiant of valkyries.</color>
+
+::Chameleon_Armor //id 2386 - Armor 
+<color=#808080>A miraculous armor that adapts to its wearer.</color>
+
+::Sprint_Mail //id 2387 - Armor 
+<color=#808080>A nimble armor that lets you gallop like a Peco Peco.</color>
+
+::Armor_of_Naga //id 2389 - Armor 
+<color=#808080>An armor made from Naga scales that is both shiny and incredibly sharp.</color>
+
+::Improved_Tights //id 2390 - Armor 
+<color=#808080>An improved tights developed by Rekenber Corp. made from advanced materials.</color>
+
+::Life_Link //id 2391 - Armor 
+<color=#808080>A holy armor blessed by the goddess of vitality.</color>
+
+::Glorious_Suit //id 2394 - Armor 
+HP +20%
+
+::Glorious_Popularized_Suit //id 2395 - Armor 
+HP +600, SP Regeneration +10%
+
+::Glorious_Mass-Produced_Suit //id 2396 - Armor 
+HP +500
+
+::Sandals //id 2401 - Boots 
+<color=#808080>A pair of cute, unisex shoes that are a part of a school uniform.</color>
+
+::Sandals_ //id 2402 - Boots 
+<color=#808080>A pair of cute, unisex shoes that are a part of a school uniform.</color>
+
+::Shoes //id 2403 - Boots 
+<color=#808080>A pair of shoes made of supple, high quality leather.</color>
+
+::Shoes_ //id 2404 - Boots 
+<color=#808080>A pair of shoes made of supple, high quality leather.</color>
+
+::Boots //id 2405 - Boots 
+<color=#808080>A pair of heavy leather boots, padded with Lunatic fur.</color>
+
+::Boots_ //id 2406 - Boots 
+<color=#808080>A pair of heavy leather boots, padded with Lunatic fur.</color>
+
+::Crystal_Pumps //id 2407 - Boots 
+<color=#808080>A pair of feminine high heeled shoes made of fine crystal.</color>
+
+::Shackles //id 2408 - Boots 
+<color=#808080>A pair of heavy steel shackles that are clamped on the ankles of prisoners.</color>
+
+::High_Heels //id 2409 - Boots 
+<color=#808080>A pair of striped high heeled shoes worn by a wicked witch to enhanced her magical powers.</color>
+
+::Sleipnir //id 2410 - Boots 
+<color=#808080>A pair of shoes named after Odin's trusty steed.</color>
+
+::Greaves //id 2411 - Boots 
+<color=#808080>A pair of steel boots which offer dependable protection.</color>
+
+::Greaves_ //id 2412 - Boots 
+<color=#808080>A pair of steel boots which offer dependable protection.</color>
+
+::Novice_Slippers //id 2414 - Boots 
+<color=#808080>A pair of shoes exclusive to the Novice Training Grounds.</color>
+
+::Novice_Shoes //id 2416 - Boots 
+<color=#808080>A pair of shoes exclusively for Novices!</color>
+
+::Fricco's_Shoes //id 2417 - Boots 
+<color=#808080>A pair of shoes blessed by Freyr, the god of earth.</color>
+
+::Vidar's_Boots //id 2418 - Boots 
+<color=#808080>The boots worn by Vidar, son of Odin, when he killed the Fenrir Wolf.</color>
+
+::Goibne's_Greaves //id 2419 - Boots 
+<color=#808080>A pair of shoes forged by Goibne in response to competition from his rival, Dulb.</color>
+
+::Angel's_Reincarnation //id 2420 - Boots 
+<color=#808080>Heavenly sandals worn by the Guardian Angel of Super Novices.</color>
+
+::Valkyrian_Shoes //id 2421 - Boots 
+<color=#808080>A pair of shoes worn by the Valkyries, Odin's battle maidens.</color>
+
+::High_Fashion_Sandals //id 2422 - Boots 
+<color=#808080>Jeweled, golden strapped sandals that offer casual, yet fashionable, comfort.</color>
+
+::Variant_Shoes //id 2423 - Boots 
+<color=#808080>A pair of adaptable boots crafted by an indecisive genius.</color>
+
+::Tidal_Shoes //id 2424 - Boots 
+<color=#808080>A pair of shoes that incorporates a waterproof coating.</color>
+
+::Black_Leather_Boots //id 2425 - Boots 
+<color=#808080>A pair of boots made of light, resilient leather that makes you want to run.</color>
+
+::Shadow_Walk //id 2426 - Boots 
+<color=#808080>A pair of shadowy shoes enchanted with a spell to protect their wearer from danger.</color>
+
+::Iron_Boots //id 2429 - Boots 
+<color=#808080>A pair of boots made for those seeking the Golden Key.</color>
+
+::Iron_Boots_ //id 2430 - Boots 
+<color=#808080>A pair of boots made for those seeking the Golden Key.</color>
+
+::High_Heels_ //id 2432 - Boots 
+<color=#808080>A pair of striped high heeled shoes worn by a wicked witch to enhanced her magical powers.</color>
+
+::Diabolus_Boots //id 2433 - Boots 
+<color=#808080>A pair of mysterious boots that feel alive and adjust their size to the wearer.</color>
+
+::Black_Leather_Boots_ //id 2434 - Boots 
+<color=#808080>A pair of boots made of light, resilient leather that makes you want to run.</color>
+
+::Battle_Boots //id 2437 - Boots 
+HP +100, MDEF +1
+
+::Sprint_Shoes //id 2440 - Boots 
+<color=#808080>A pair of shoes made for running, tighten the laces and you're off to the races!</color>
+
+::Glorious_Shoes //id 2444 - Boots 
+HP +10%
+
+::Glorious_Popularized_Shoes //id 2445 - Boots 
+HP +5%, SP +5%
+
+::Glorious_Mass-Produced_Shoes //id 2446 - Boots 
+HP +5%
+
+::Hood //id 2501 - Garment 
+<color=#808080>A simple, soft garment that covers the head and neck.</color>
+
+::Hood_ //id 2502 - Garment 
+<color=#808080>A simple, soft garment that covers the head and neck.</color>
+
+::Muffler //id 2503 - Garment 
+<color=#808080>A warm scarf that is worn around the neck and shoulders.</color>
+
+::Muffler_ //id 2504 - Garment 
+<color=#808080>A warm scarf that is worn around the neck and shoulders.</color>
+
+::Manteau //id 2505 - Garment 
+<color=#808080>A long, loose cape-like garment that protects its wearer from harsh weather.</color>
+
+::Manteau_ //id 2506 - Garment 
+<color=#808080>A long, loose cape-like garment that protects its wearer from harsh weather.</color>
+
+::Ancient_Cape //id 2507 - Garment 
+<color=#808080>A fancy cape said to have once been worn by marquises long ago.</color>
+
+::Ragamuffin_Manteau //id 2508 - Garment 
+<color=#808080>An old, worn-out cape that can protect its wearer from magical harm.</color>
+
+::Survivor's_Manteau //id 2509 - Garment 
+<color=#808080>A manteau which protects its wearer from the elements.</color>
+
+::Somber_Novice_Hood //id 2510 - Garment 
+<color=#808080>A garment exclusive to the Novice Training Grounds.</color>
+
+::Novice_Manteau //id 2512 - Garment 
+<color=#808080>A manteau exclusively for Novices!</color>
+
+::Heavenly_Maiden_Robe //id 2513 - Garment 
+<color=#808080>A faint, transparent robe worn by celestial maidens when they fly through the heavens.</color>
+
+::Pauldron //id 2514 - Garment 
+<color=#808080>A pair of heavy shoulder coverings that provide effective protection.</color>
+
+::Eagle_Wing //id 2515 - Garment 
+<color=#808080>A robe which helped Odin escape a fatal threat.</color>
+
+::Falcon_Muffler //id 2516 - Garment 
+<color=#808080>A muffler owned by Freyja, daughter of Njord, that was often borrowed by Loki.</color>
+
+::Vali's_Manteau //id 2517 - Garment 
+<color=#808080>A manteau once owned by Vali, son of Odin, who defeated Hoedr the warrior despite his blindness.</color>
+
+::Morpheus's_Shawl //id 2518 - Garment 
+<color=#808080>A shawl marked with ancient conjuration patterns.</color>
+
+::Morrigane's_Manteau //id 2519 - Garment 
+<color=#808080>A manteau made from gray crow feathers that were enchanted by Morrigane.</color>
+
+::Goibne's_Spaulders //id 2520 - Garment 
+<color=#808080>Goibne's first creation, his much prized and precious armor.</color>
+
+::Angel's_Cardigan //id 2521 - Garment 
+<color=#808080>The Super Novice Guardian Angel's warm and comforatble cardigan.</color>
+
+::Undershirt //id 2522 - Garment 
+<color=#808080>A lightweight, 100% cotton, shirt that is quite durable.</color>
+
+::Undershirt_ //id 2523 - Garment 
+<color=#808080>A lightweight, 100% cotton, shirt that is quite durable.</color>
+
+::Valkyrian_Manteau //id 2524 - Garment 
+<color=#808080>A manteau worn by the Valkyries, Odin's battle maidens.</color>
+
+::Ancient_Cape_ //id 2525 - Garment 
+<color=#808080>A fancy cape fashioned after those worn by genteel marquises of a bygone age.</color>
+
+::Dragon_Breath //id 2527 - Garment 
+<color=#808080>A garment that's so warm, it makes the wearer feel as if a dragon is breathing on them.</color>
+
+::Wool_Scarf //id 2528 - Garment 
+<color=#808080>A scarf made from the highest quality wool.</color>
+
+::Rider_Insignia //id 2529 - Garment 
+<color=#808080>A symbol worn by runners that just makes you want to sprint.</color>
+
+::Rider_Insignia_ //id 2530 - Garment 
+<color=#808080>A symbol worn by runners that just makes you want to sprint.</color>
+
+::Ulfhedinn //id 2531 - Garment 
+<color=#808080>A mysterious cape enchanted with a protective spell.</color>
+
+::Mithril_Magic_Cape //id 2532 - Garment 
+<color=#808080>A mysterious cape enchanted with a protective spell.</color>
+
+::Skin_of_Ventus //id 2536 - Garment 
+<color=#808080>A garment fashioned out of Lucifer's skin.</color>
+
+::Diabolus_Manteau //id 2537 - Garment 
+<color=#808080>A manteau that remains a persistent shadow.</color>
+
+::Sheriff's_Manteau //id 2540 - Garment 
+HP +50, MDEF +1
+
+::Asprika //id 2541 - Garment 
+<color=#808080>Asprika, the light of the gods, is a rainbow in physical form.</color>
+
+::Flame_Manteau_of_Naght_Sieger //id 2542 - Garment 
+<color=#808080>A manteau of flame worn by Naght Sieger.</color>
+
+::Leather_of_Tendrilion //id 2544 - Garment 
+<color=#808080>A garment fashioned from Tendrilion leather covered in plant matter.</color>
+
+::Glorious_Muffler //id 2549 - Garment 
+HP +5%
+
+::Ring //id 2601 - Accessory 
+<color=#808080>An enchanted ring that enhances strength.</color>
+
+::Earring //id 2602 - Accessory 
+<color=#808080>An enchanted earring that enhances intelligence.</color>
+
+::Necklace //id 2603 - Accessory 
+<color=#808080>An enchanted necklace that enhances vitality.</color>
+
+::Glove //id 2604 - Accessory 
+<color=#808080>An enchanted glove that enhances dexterity.</color>
+
+::Brooch //id 2605 - Accessory 
+<color=#808080>An enchanted brooch that enhances agility.</color>
+
+::Clip //id 2607 - Accessory 
+<color=#808080>A versatile clip that can attach to pretty much anything.</color>
+
+::Rosary //id 2608 - Accessory 
+<color=#808080>A string of beads used to count the number of repetitions that prayers are recited.</color>
+
+::Skull_Ring //id 2609 - Accessory 
+<color=#808080>A ring engraved with <color=#990000>forever or until death<color=#808080>, be careful using this as a gift!</color>
+
+::Gold_Ring //id 2610 - Accessory 
+<color=#808080>A simple, common ring made of gold.</color>
+
+::Silver_Ring //id 2611 - Accessory 
+<color=#808080>A simple, modest ring made of silver.</color>
+
+::Flower_Ring //id 2612 - Accessory 
+<color=#808080>A simple, pretty ring made of wildflowers.</color>
+
+::Diamond_Ring //id 2613 - Accessory 
+<color=#808080>A ring adorned with a diamond which can fetch a hefty price.</color>
+
+::Eye_of_Dullahan //id 2614 - Accessory 
+<color=#808080>Wait, Dullahan has no head, how did I acquire this!?</color>
+
+::Safety_Ring //id 2615 - Accessory 
+<color=#808080>A strange ring that raises its wearer's defense.</color>
+
+::Critical_Ring //id 2616 - Accessory 
+<color=#808080>An esoteric ring which enables its wearer to amplify their hidden power.</color>
+
+::Celebrant's_Mitten //id 2617 - Accessory 
+<color=#808080>A blessed glove that increases intelligence.</color>
+
+::Matyr's_Leash //id 2618 - Accessory 
+<color=#808080>A Matyr's leash.</color>
+
+::Bow_Thimble //id 2619 - Accessory 
+<color=#808080>A thimble for archers that enhances power.</color>
+
+::Rogue's_Treasure //id 2620 - Accessory 
+<color=#808080>An exclusive ring for thieves and ninjas.</color>
+
+::Ring_ //id 2621 - Accessory 
+<color=#808080>An ancient ring.</color>
+
+::Earring_ //id 2622 - Accessory 
+<color=#808080>An ancient earring.</color>
+
+::Necklace_ //id 2623 - Accessory 
+<color=#808080>An ancient necklace.</color>
+
+::Glove_ //id 2624 - Accessory 
+<color=#808080>An ancient glove.</color>
+
+::Brooch_ //id 2625 - Accessory 
+<color=#808080>An ancient brooch.</color>
+
+::Rosary_ //id 2626 - Accessory 
+<color=#808080>An ancient rosary.</color>
+
+::Belt //id 2627 - Accessory 
+<color=#808080>A simple, practical belt that has little fashion value.</color>
+
+::Novice_Armlet //id 2628 - Accessory 
+<color=#808080>An easy to wear bracelet made just for young novices.</color>
+
+::Megingjard //id 2629 - Accessory 
+<color=#808080>A reproduction of the girdle of might worn by Thor.</color>
+
+::Brisingamen //id 2630 - Accessory 
+<color=#808080>A reproduction of the necklace of beauty worn by Freya.</color>
+
+::Wedding_Ring //id 2634 - Accessory 
+<color=#808080>A wedding ring for a groom which symbolizes ever-lasting love.</color>
+
+::Wedding_Ring_ //id 2635 - Accessory 
+<color=#808080>A wedding ring for a bride which symbolizes ever-lasting trust.</color>
+
+::Serin's_Gold_Ring //id 2642 - Accessory 
+<color=#808080>A beautiful golden ring engraved with "In celebration of Serin's 17th birthday".</color>
+
+::Serin's_Gold_Ring_ //id 2643 - Accessory 
+<color=#808080>A beautiful golden ring engraved with "In celebration of Serin's 17th birthday".</color>
+
+::The_Sign //id 2644 - Accessory 
+<color=#808080>A captivatingly beautiful artifact rewarded by the gods.</color>
+
+::Nile_Rose //id 2647 - Accessory 
+
+::Morpheus's_Ring //id 2648 - Accessory 
+<color=#808080>A ring, enchanted with the power of the fate stone.</color>
+
+::Morpheus's_Bracelet //id 2649 - Accessory 
+<color=#808080>A bracelet that is a memento of Morpheus's beloved.</color>
+
+::Morrigane's_Belt //id 2650 - Accessory 
+<color=#808080>The belt that Morrigane kept as a memento of CuChulain after he perished in battle.</color>
+
+::Morrigane's_Pendant //id 2651 - Accessory 
+<color=#808080>The pendant that ChuChulain gave to Morrigane when they were in love.</color>
+
+::Cursed_Brooch //id 2652 - Accessory 
+<color=#808080>A cursed brooch which, ironically, was owned by the goddess of fortune.</color>
+
+::Shinobi_Sash //id 2654 - Accessory 
+<color=#808080>Am embroidered sash with a mysterious power that was owned by a renowned ninja.</color>
+
+::Bloodied_Shackle_Ball //id 2655 - Accessory 
+<color=#808080>A heavy steel ball that kept prisoners from escaping, however some prisoners managed to weaponize it.</color>
+
+::Armor_Charm //id 2656 - Accessory 
+<color=#808080>A mysterious, ancient artifact that can endow armor with great defensive power.</color>
+
+::Laboratory_Permit //id 2657 - Accessory 
+<color=#808080>A pass for Regenschirm Laboratory employees that allows lab access.</color>
+
+::Nile_Rose_ //id 2658 - Accessory 
+<color=#808080>A bracelet affixed with a dark red jewel.</color>
+
+::Vesper_Core_01 //id 2659 - Accessory 
+<color=#808080>A fragment of Vesper that endows intelligence.</color>
+
+::Vesper_Core_02 //id 2660 - Accessory 
+<color=#808080>A fragment of Vesper which endows strength.</color>
+
+::Vesper_Core_03 //id 2661 - Accessory 
+<color=#808080>A fragment of Vesper that endows agility.</color>
+
+::Vesper_Core_04 //id 2662 - Accessory 
+<color=#808080>A fragment of Vesper that endows dexterity.</color>
+
+::Bow_Thimble_ //id 2671 - Accessory 
+<color=#808080>A thimble for archers that enhances power.</color>
+
+::Spiritual_Ring //id 2677 - Accessory 
+<color=#808080>A beautiful ring imbued with spiritual powers and surprising effects.</color>
+
+::Ring_of_Flame_Lord //id 2678 - Accessory 
+<color=#808080>A ring imbued with the fire spirit's strength.</color>
+
+::Ring_of_Resonance //id 2679 - Accessory 
+<color=#808080>A ring imbued with the fire spirit's agility.</color>
+
+::Lesser_Elemental_Ring //id 2680 - Accessory 
+<color=#808080>A ring that holds the power of lesser elemental spirits.</color>
+
+::Red_Silk_Seal //id 2700 - Accessory 
+<color=#808080>A red silk that a female saint used to seal evil.</color>
+
+::Orleans's_Glove //id 2701 - Accessory 
+<color=#808080>A glove worn by a palace chef with exceptional dexterity.</color>
+
+::Bison_Horn //id 2702 - Accessory 
+<color=#808080>An ornament made from wild bison horns.</color>
+
+::Expert_Ring //id 2703 - Accessory 
+<color=#808080>This ring promises an ultimate power for a price.</color>
+
+::Gusli //id 2707 - Accessory 
+<color=#808080>This musical instrument from a mysterious old man, its very beautiful.</color>
+
+::Skull_Ring_ //id 2715 - Accessory 
+<color=#808080>A ring engraved with <color=#990000>forever or until death<color=#808080>, be careful using this as a gift!</color>
+
+::Librarian_Glove //id 2716 - Accessory 
+<color=#808080>A glove that is a favorite amongst librarians.</color>
+
+::Pocket_Watch //id 2717 - Accessory 
+<color=#808080>A silver watch with connecting chain.</color>
+
+::Lunatic_Brooch //id 2718 - Accessory 
+<color=#808080>A crescent shaped golden brooch.</color>
+
+::Iron_Wrist //id 2719 - Accessory 
+<color=#808080>A strong steel wrist protector.</color>
+
+::Medal_of_Honor_(Swordman) //id 2720 - Accessory 
+HP +500, SP +50, HIT +10
+
+::Medal_of_Honor_(Thief) //id 2721 - Accessory 
+HP +300, SP +80, FLEE +10
+
+::Medal_of_Honor_(Acolyte) //id 2722 - Accessory 
+HP +600, MDEF +6 
+
+::Medal_of_Honor_(Mage) //id 2723 - Accessory 
+HP +600, MDEF +6
+
+::Medal_of_Honor_(Archer) //id 2724 - Accessory 
+HP +300, SP +80, CRIT +10
+
+::Medal_of_Honor_(Merchant) //id 2725 - Accessory 
+HP +500, SP +50, ASPD +10%
+
+::Cursed_Hand //id 2728 - Accessory 
+<color=#808080>A dried bone hand, it has an air of mystery.</color>
+
+::Diabolus_Ring //id 2729 - Accessory 
+<color=#808080>A ring engraved with mysterious letters that evokes mortal desire.</color>
+
+::Seal_of_Continental_Guard //id 2730 - Accessory 
+<color=#808080>A royal gift to a member of the Continental Guard.</color>
+
+::Rune_Spellstone //id 2731 - Accessory 
+<color=#808080>A royal gift to a member of the Continental Guard.</color>
+
+::Death_Loop //id 2732 - Accessory 
+<color=#808080>A royal gift to a member of the Continental Guard.</color>
+
+::Medal_of_Honor //id 2733 - Accessory 
+HP +300, SP +80, CRIT +10
+
+::Angelic_Ring //id 2743 - Accessory 
+<color=#808080>A ring that responds to healing abilities and strenthens their potency.</color>
+
+::Sprint_Ring //id 2744 - Accessory 
+<color=#808080>A ring that extrudes the feeling of flying through the wind.</color>
+
+::Pinguicula_Corsage //id 2745 - Accessory 
+<color=#808080>A small corsage that resembles a Pinguicula.</color>
+
+::Cursed_Star //id 2748 - Accessory 
+<color=#808080>A necklace crafted by a mechanic born under a cursed star for self protection.</color>
+
+::Linen_Glove //id 2749 - Accessory 
+<color=#808080>A glove that is amazingly light and is suitable with any weapon.</color>
+
+::Novice_Figure //id 2765 - Accessory 
+<color=#808080>A novice figure that radiates naviety.</color>
+
+::Swordman_Figure //id 2766 - Accessory 
+<color=#808080>A swordman figure that radiates honor.</color>
+
+::Acolyte_Figure //id 2767 - Accessory 
+<color=#808080>An acolyte figure that radiates wisdom.</color>
+
+::Mage_Figure //id 2768 - Accessory 
+<color=#808080>A mage figure that radiates intellect.</color>
+
+::Archer_Figure //id 2769 - Accessory 
+<color=#808080>An archer figure that radiates foresight.</color>
+
+::Thief_Figure //id 2770 - Accessory 
+<color=#808080>A thief figure that radiates cunning.</color>
+
+::Merchant_Figure //id 2771 - Accessory 
+<color=#808080>A merchant figure that radiates strength.</color>
+
+::Glorious_Ring //id 2772 - Accessory 
+HP +300
+
+::Glorious_Popularized_Ring //id 2773 - Accessory 
+STR, VIT, INT, DEX, AGI, LUK +2
+
+::Glorious_Mass-Produced_Ring //id 2774 - Accessory 
+STR, VIT, INT, DEX, AGI, LUK +1
+
+::Lure //id 2775 - Accessory 
+<color=#808080>A fishing lure.</color>
+
+::Headset //id 5001 - Headgear Top
+<color=#808080>A strange device that was invented by an old craftsman.</color>
+
+::Jewel_Crown //id 5002 - Headgear Top
+<color=#808080>A crown adorned with precious gems.</color>
+
+::Joker_Jester //id 5003 - Headgear Top
+<color=#808080>A comical hat worn by clowns and jesters.</color>
+
+::Oxygen_Mask //id 5004 - Headgear Bottom
+<color=#808080>A mask ideal for polluted locations that supplies pure oxygen.</color>
+
+::Gas_Mask //id 5005 - Headgear MidBottom
+<color=#808080>A special mask that filters out poisons from the air.</color>
+
+::Machoman's_Glasses //id 5006 - Headgear Mid
+<color=#808080>A pair of 70's tough guy style sunglasses that give a manly swagger.</color>
+
+::Grand_Circlet //id 5007 - Headgear Top
+<color=#808080>An exquisitely made circlet for rulers or gentry.</color>
+
+::Puppy_Love //id 5008 - Headgear Top
+<color=#808080>A wreath of wildflowers made by a woman in love.</color>
+
+::Safety_Helmet //id 5009 - Headgear Top
+<color=#808080>A durable safety helmet.</color>
+
+::Indian_Fillet //id 5010 - Headgear Top
+<color=#808080>A traditional headdress worn by natives.</color>
+
+::Aerial //id 5011 - Headgear Top
+<color=#808080>A mysterious object discovered in the depths of the ocean.</color>
+
+::Ph.D_Hat //id 5012 - Headgear Top
+<color=#808080>A ceremonial hat worn during one's graduation.</color>
+
+::Lord_Kaho's_Horns //id 5013 - Headgear Top
+<color=#808080>A special headgear created specifically for Lord Kaho.</color>
+
+::Fin_Helm //id 5014 - Headgear Mid
+<color=#808080>A pair of helment accessories that look just like fins.</color>
+
+::Egg_Shell //id 5015 - Headgear Top
+<color=#808080>A peculiar hat that makes its wearer look freshly hatched.</color>
+
+::Boy's_Cap //id 5016 - Headgear Top
+<color=#808080>A black cap that is part of a schoolboy's uniform.</color>
+
+::Bone_Helm //id 5017 - Headgear Top
+<color=#808080>A helmet constructed of solid bone that is nearly impenetrable.</color>
+
+::Feather_Bonnet //id 5018 - Headgear Top
+<color=#808080>A fabulous, feathered hat that turns men into womanizers and women into manizers.</color>
+
+::Corsair //id 5019 - Headgear Top
+<color=#808080>A flamboyant hat worn by the strongest pirates.</color>
+
+::Grief_for_Greed //id 5021 - Headgear Top
+<color=#808080>A unique headgear that symbolizes a merchant's grief.</color>
+
+::Hat_of_the_Sun_God //id 5022 - Headgear TopMid
+<color=#808080>A hat worn by the god of the sun.</color>
+
+::Parcel_Hat //id 5023 - Headgear Top
+<color=#808080>A large piece of cloth wrapped around goods carried on the head.</color>
+
+::Cake_Hat //id 5024 - Headgear Top
+<color=#808080>A birthday cake that is comfortable, yet fashionable. What did you expect?</color>
+
+::Helm_of_Angel //id 5025 - Headgear Top
+<color=#808080>A wondrous helmet adorned with angel wings made by a smithing genius.</color>
+
+::Chef_Hat //id 5026 - Headgear Top
+<color=#808080>A hat to cool a chef's head in a hot kitchen.</color>
+
+::Mage_Hat //id 5027 - Headgear Top
+<color=#808080>A stylish formal hat worn by talented magicians.</color>
+
+::Candle //id 5028 - Headgear Top
+<color=#808080>A large, slightly used candlestick that can be worn.</color>
+
+::Spore_Hat //id 5029 - Headgear Top
+<color=#808080>A cute headgear made in the form of a Spore.</color>
+
+::Panda_Hat //id 5030 - Headgear Top
+<color=#808080>A cute headgear made in the form of a Panda.</color>
+
+::Mine_Hat //id 5031 - Headgear Top
+<color=#808080>A durable safety helmet with a flashlight attachment for exploring dark areas.</color>
+
+::Sunday_Hat //id 5032 - Headgear Top
+<color=#808080>A fashionable, wide brimmed hat that's perfect for blocking the sun.</color>
+
+::Raccoon_Hat //id 5033 - Headgear Top
+<color=#808080>A cute headgear made in the form of a Smokie.</color>
+
+::Bulb_Band //id 5034 - Headgear Top
+<color=#808080>A hairband with a light bulb attached.</color>
+
+::Poring_Hat //id 5035 - Headgear Top
+<color=#808080>A cute headgear made in the form of a Poring.</color>
+
+::Cross_Hat //id 5036 - Headgear Top
+<color=#808080>A hairband with a cross attached.</color>
+
+::Nut_Shell //id 5037 - Headgear Top
+<color=#808080>A hat fashioned from a nut shell, it provides excellent defence but is very delicate.</color>
+
+::Deviruchi_Hat //id 5038 - Headgear Top
+<color=#808080>A cute headgear made in the form of a Deviruchi.</color>
+
+::Rainbow_Eggshell //id 5039 - Headgear Top
+<color=#808080>A mysteriously colorful egg shell.</color>
+
+::Blush //id 5040 - Headgear Mid
+<color=#808080>A pair of red dots that give a blushing impression.</color>
+
+::Heart_Hairpin //id 5041 - Headgear Top
+<color=#808080>A cute hairpin with a heart attached to it, both adorable and charming!</color>
+
+::Bao_Bao //id 5042 - Headgear Top
+<color=#808080>A headgear worn by a great woman warrior in ancient times.</color>
+
+::Opera_Phantom_Mask //id 5043 - Headgear Mid
+<color=#808080>A mask worn by a romantic hero with an unknown fate.</color>
+
+::Magician_Hat //id 5045 - Headgear Top
+<color=#808080>A stout hat worn by magicians that contains a seemingly endless supply of rabbits.</color>
+
+::Bongun_Hat //id 5046 - Headgear All
+<color=#808080>A replica of Bongun's turban, complete with a torn amulet.</color>
+
+::Fashionable_Glasses //id 5047 - Headgear Top
+<color=#808080>A pair of fashionable sunglasses.</color>
+
+::Crescent_Hairpin //id 5048 - Headgear Top
+<color=#808080>A hairpin in the shape of a crescent.</color>
+
+::Striped_Hairband //id 5049 - Headgear Top
+<color=#808080>A striped hair band which is good for preventing hair from covering the eyes.</color>
+
+::Wonder_Nutshell //id 5050 - Headgear Top
+<color=#808080>A head piece made from a nutshell that has been cut in half.</color>
+
+::Blue_Hairband //id 5052 - Headgear Top
+<color=#808080>A blue colored hair band worn with a rakish slant.</color>
+
+::Sphinx_Hat //id 5053 - Headgear TopBottom
+<color=#808080>A traditional headpiece that symbolizes the traditional gods.</color>
+
+::Novice_Eggshell //id 5055 - Headgear Top
+<color=#808080>A headgear exclusive to the Novice Training Grounds.</color>
+
+::Black_Cat_Ears //id 5057 - Headgear Top
+<color=#808080>A Wickebine inspired hairband with tiny little black ears attached.</color>
+
+::Drooping_Cat //id 5058 - Headgear Top
+<color=#808080>A cute kitty doll that is just adorable.</color>
+
+::Teddybear_Hat //id 5059 - Headgear Top
+<color=#808080>A hat that looks just like a teddy bear.</color>
+
+::Party_Hat //id 5060 - Headgear Top
+<color=#808080>A festive hat for celebrations and parties.</color>
+
+::Flower_Hairpin //id 5061 - Headgear Top
+<color=#808080>A hairpin with a red flower attached.</color>
+
+::Straw_Hat //id 5062 - Headgear Top
+<color=#808080>A hat knitted together with straw.</color>
+
+::Giant_Band_Aid //id 5063 - Headgear Top
+<color=#808080>A hair accessory that looks like two crossed band aids.</color>
+
+::Smokie_Leaf //id 5064 - Headgear Top
+<color=#808080>A leaf worn by the Smokie monster.</color>
+
+::Blue_Fish //id 5065 - Headgear Top
+<color=#808080>A headgear which resembles a fish, smell included!</color>
+
+::Succubus_Horn //id 5066 - Headgear Top
+<color=#808080>A headgear which resembles Succubus horns.</color>
+
+::Sombrero //id 5067 - Headgear Top
+<color=#808080>A traditional hat with a wide, round brim.</color>
+
+::Evil_Wing_Ears //id 5068 - Headgear Mid
+<color=#808080>An ear accesory with dark, sinister demon wings.</color>
+
+::Kitsune_Mask //id 5069 - Headgear Top
+<color=#808080>A mask worn by assassins in order to hide themselves.</color>
+
+::Hot-Blooded_Headband //id 5070 - Headgear Top
+<color=#808080>A headgear which symbolizes hot-blooded battle vigor.</color>
+
+::Indian_Headband //id 5071 - Headgear Top
+<color=#808080>A tribal headgear adorned with a long, white feather.</color>
+
+::Incubus_Horn //id 5072 - Headgear Top
+<color=#808080>A headgear which resembles Incubus horns.</color>
+
+::Model_Training_Hat //id 5073 - Headgear Top
+<color=#808080>A headgear made to improve the wearer's posture.</color>
+
+::Angel_Wing_Ears //id 5074 - Headgear Mid
+<color=#808080>An ear accesory with white, beautiful angel wings.</color>
+
+::Cowboy_Hat //id 5075 - Headgear Top
+<color=#808080>A cowboy hat that makes men manly and women cute.</color>
+
+::Beanie //id 5076 - Headgear Top
+<color=#808080>A knit beanie that offers some protection from the cold, but only some.</color>
+
+::Tulip_Hairpin //id 5077 - Headgear Top
+<color=#808080>A tiny little hairpin shaped like a tulip.</color>
+
+::Sea_Otter_Hat //id 5078 - Headgear Top
+<color=#808080>A cute headgear made in the form of a Sea Otter.</color>
+
+::X_Hairpin //id 5079 - Headgear Top
+<color=#808080>A hair accessory shaped like an X.</color>
+
+::Crown_of_Ancient_Queen //id 5080 - Headgear Top
+<color=#808080>A hair ornament worn by ancient queens.</color>
+
+::Crown_of_Mistress //id 5081 - Headgear Top
+<color=#808080>A crown fashioned after the one worn by Mistress.</color>
+
+::Decorative_Mushroom //id 5082 - Headgear Top
+<color=#808080>A headgear fashioned to resemble a mushroom.</color>
+
+::Red_Ribbon //id 5083 - Headgear Top
+<color=#808080>A big red ribbon made in the style of a legendary female shaman who loved nature.</color>
+
+::Lazy_Smokie //id 5084 - Headgear Top
+<color=#808080>A headgear made to look like an annoyed Smokie exhausted by the summer heat.</color>
+
+::Small_Ribbons //id 5085 - Headgear Mid
+<color=#808080>A pair of small red ribbons.</color>
+
+::Alarm_Mask //id 5086 - Headgear MidBottom
+<color=#808080>A mask which resembles an Alarm monster.</color>
+
+::Poker_Face //id 5087 - Headgear MidBottom
+<color=#808080>A mask with a blank expression.</color>
+
+::Surprised_Mask //id 5088 - Headgear MidBottom
+<color=#808080>A mask with a surprised expression.</color>
+
+::Annoyed_Mask //id 5089 - Headgear MidBottom
+<color=#808080>A mask with an annoyed expression.</color>
+
+::Goblin_Leader_Mask //id 5090 - Headgear MidBottom
+<color=#808080>A mask worn by the Goblin leader, it looks so ferocious it's almost ridiculous.</color>
+
+::Decorative_Golden_Bell //id 5091 - Headgear TopMid
+<color=#808080>A hair accessory fashioned after Sohee's golden bells.</color>
+
+::Coif //id 5092 - Headgear TopMid
+<color=#808080>A tight-fitting cap worn under a veil.</color>
+
+::Coif_ //id 5093 - Headgear TopMid
+<color=#808080>A tight-fitting cap worn under a veil.</color>
+
+::Orc_Hero_Helm //id 5094 - Headgear TopMid
+<color=#808080>A headgear bestowed only to true Orc Heroes.</color>
+
+::Assassin_Mask //id 5096 - Headgear Bottom
+<color=#808080>A dark mask worn by assassins.</color>
+
+::Holiday_Hat //id 5097 - Headgear Top
+<color=#808080>A festive party hat.</color>
+
+::Dark_Blinder //id 5104 - Headgear Mid
+<color=#808080>A blinder enchanted with dark magic.</color>
+
+::Crunch_Toast //id 5107 - Headgear Bottom
+<color=#808080>A noble headgear created in the proud image of crunchy toast, part of a balanced breakfast.</color>
+
+::Detective's_Cap //id 5108 - Headgear Top
+<color=#808080>A cap worn by a world famous detective.</color>
+
+::Red_Bonnet //id 5109 - Headgear Top
+<color=#808080>A bonnet favored by women of nobility, it causes an inexplicable craving for tea.</color>
+
+::Baby_Pacifier //id 5110 - Headgear Bottom
+<color=#808080>A hat that looks just like a pacifier, it brings you back to the good old days of hanging in the crib.</color>
+
+::Galapago_Cap //id 5111 - Headgear Top
+<color=#808080>A cute cap that makes its wearer almost as cool as a Galapago, but only almost.</color>
+
+::Super_Novice_Hat //id 5112 - Headgear Top
+<color=#808080>A headgear exclusively for Novices!</color>
+
+::Angry_Snarl //id 5113 - Headgear Bottom
+<color=#808080>A headgear that allows its wearer to express inner rage or slight disgust.</color>
+
+::Bucket_Hat //id 5114 - Headgear Top
+<color=#808080>A trendy hat based on a style worn by enlisted military men.</color>
+
+::Winter_Hat //id 5115 - Headgear Top
+<color=#808080>A furry hat that is an all time favorite during the winter.</color>
+
+::Banana_Hat //id 5116 - Headgear Top
+<color=#808080>A hat made to resemble a banana peel that causes a primal reaction of pure rage.</color>
+
+::Mystic_Rose //id 5117 - Headgear Top
+<color=#808080>A white rose that enhances the wearer's beauty.</color>
+
+::Puppy_Headband //id 5118 - Headgear Top
+<color=#808080>A cute pair of adorable puppy ears.</color>
+
+::Super_Novice_Hat_ //id 5119 - Headgear Top
+<color=#808080>A headgear exclusively for Novices!</color>
+
+::Bucket_Hat_ //id 5120 - Headgear Top
+<color=#808080>A trendy hat based on a style worn by enlisted military men.</color>
+
+::Zealotus_Mask //id 5121 - Headgear TopMid
+<color=#808080>A mask that makes its wearer feel like looking down on normal human peons.</color>
+
+::Magni's_Cap //id 5122 - Headgear Top
+<color=#808080>A cap owned by Magni, son of Thor, it grants a measure of Magni's awesome might.</color>
+
+::Ulle's_Cap //id 5123 - Headgear Top
+<color=#808080>A cap owned by Ulle, god of hunting, it makes you feel like you can hunt down any beast.</color>
+
+::Fricca's_Circlet //id 5124 - Headgear Top
+<color=#808080>A circlet blessed by Freyja, mother of Baldur.</color>
+
+::Angel's_Kiss //id 5125 - Headgear Top
+<color=#808080>A hair ornament that was kissed by the Super Novice's Guardian Angel.</color>
+
+::Morpheus's_Hood //id 5126 - Headgear Top
+<color=#808080>A hood that grants Morpheus's clarity and foresight.</color>
+
+::Morrigane's_Helm //id 5127 - Headgear Top
+<color=#808080>A helm owned by Morrigane, the goddess of war.</color>
+
+::Goibne's_Helm //id 5128 - Headgear Top
+<color=#808080>One of the few armors forged by Goibne, it is said that the gods valued his armors more than his weapons.</color>
+
+::Antonio's_Santa_Hat //id 5136 - Headgear Top
+<color=#808080>A hat that Antonio used to wear.</color>
+
+::Marionette_Doll //id 5141 - Headgear Top
+<color=#808080>A Marionette doll that gives you chills when you wear it.</color>
+
+::Baseball_Cap //id 5147 - Headgear Top
+<color=#808080>A cap worn to block the sun from your eyes.</color>
+
+::Orc_Helm_ //id 5157 - Headgear Top
+<color=#808080>A hardy helmet crafted by orc smiths.</color>
+
+::Monk_Hat_ //id 5158 - Headgear Top
+<color=#808080>A ceremonial hat worn by monks that offers protection from evil.</color>
+
+::Golden_Gear_ //id 5159 - Headgear Top
+<color=#808080>A helmet forged from pure gold which provides effective defense but is also unaffordable.</color>
+
+::Majestic_Goat_ //id 5160 - Headgear Top
+<color=#808080>A helmet that has mighty goat horns.</color>
+
+::Spiky_Band_ //id 5161 - Headgear Top
+<color=#808080>A headband with two dangerous, yet fashionable, spikes.</color>
+
+::Bone_Helm_ //id 5162 - Headgear Top
+<color=#808080>A helmet constructed of solid bone that is nearly impenetrable.</color>
+
+::Corsair_ //id 5163 - Headgear Top
+<color=#808080>A flamboyant hat worn by the strongest pirates.</color>
+
+::Tiara_ //id 5164 - Headgear Top
+<color=#808080>A jeweled coronet that grants the wisdom of an ancient queen.</color>
+
+::Crown_ //id 5165 - Headgear Top
+<color=#808080>A jeweled crown that grants the wisdom of an ancient king.</color>
+
+::Sphinx_Hat_ //id 5166 - Headgear TopBottom
+<color=#808080>A traditional headpiece that symbolizes the traditional gods.</color>
+
+::Munak_Hat_ //id 5167 - Headgear All
+<color=#808080>A replica of Munak's turban, complete with an amulet.</color>
+
+::Bongun_Hat_ //id 5168 - Headgear All
+<color=#808080>A replica of Bongun's turban, complete with a torn amulet.</color>
+
+::Bride_Mask //id 5169 - Headgear TopMid
+<color=#808080>A white mask with red blush that is worn by the actor playing the bride in a play.</color>
+
+::Feather_Beret //id 5170 - Headgear Top
+<color=#808080>A fancy, feathered cap made of smooth, sky blue material.</color>
+
+::Valkyrian_Helm //id 5171 - Headgear Top
+<color=#808080>An ornate, winged helmet worn by the Valkyries, Odin's battle maidens.</color>
+
+::Beret //id 5172 - Headgear Top
+<color=#808080>A bright green, flattened cap that represents bravery.</color>
+
+::Magistrate_Hat //id 5173 - Headgear Top
+<color=#808080>A hat that was once worn by Satto, an official from an ancient eastern land.</color>
+
+::Ayam //id 5174 - Headgear Top
+<color=#808080>A red, silken hat that is supposed to be worn by women, but men can wear it too.</color>
+
+::Censor_Bar //id 5175 - Headgear Mid
+<color=#808080>A black mosiac to place over your eyes to protect your identity.</color>
+
+::Hahoe_Mask //id 5176 - Headgear MidBottom
+<color=#808080>A traditional oriental mask that is always perpetualy smiling.</color>
+
+::Mythical_Lion_Mask //id 5177 - Headgear TopMid
+<color=#808080>An oriental lion mask with menacing, angry eyes.</color>
+
+::Ribbon__ //id 5191 - Headgear Top
+<color=#808080>A black satin hairpin that wards off harmful magic.</color>
+
+::Ribbon___ //id 5192 - Headgear Top
+<color=#808080>A yellow satin hairpin that wards off harmful magic.</color>
+
+::Ribbon____ //id 5193 - Headgear Top
+<color=#808080>A green satin hairpin that wards off harmful magic.</color>
+
+::Ribbon_____ //id 5194 - Headgear Top
+<color=#808080>A pink satin hairpin that wards off harmful magic.</color>
+
+::Ribbon______ //id 5195 - Headgear Top
+<color=#808080>A red satin hairpin that wards off harmful magic.</color>
+
+::Ribbon_______ //id 5196 - Headgear Top
+<color=#808080>A orange satin hairpin that wards off harmful magic.</color>
+
+::Ribbon________ //id 5197 - Headgear Top
+<color=#808080>A white satin hairpin that wards off harmful magic.</color>
+
+::Romantic_White_Flower //id 5206 - Headgear Bottom
+<color=#808080>A cute and romantic white flower that is both fashionable and functional.</color>
+
+::Deviruchi_Hat_ //id 5227 - Headgear Top
+<color=#808080>A cute headgear made in the form of a Deviruchi.</color>
+
+::Deviruchi_Hat__ //id 5228 - Headgear Top
+<color=#808080>A cute headgear made in the form of a Deviruchi.</color>
+
+::Deviruchi_Hat___ //id 5229 - Headgear Top
+<color=#808080>A cute headgear made in the form of a Deviruchi.</color>
+
+::Drooping_Cat_ //id 5230 - Headgear Top
+<color=#808080>A cute kitty doll that is just adorable.</color>
+
+::Drooping_Cat__ //id 5231 - Headgear Top
+<color=#808080>A cute kitty doll that is just adorable.</color>
+
+::Drooping_Cat___ //id 5232 - Headgear Top
+<color=#808080>A cute kitty doll that is just adorable.</color>
+
+::Drooping_Cat____ //id 5233 - Headgear Top
+<color=#808080>A cute kitty doll that is just adorable.</color>
+
+::Drooping_Cat_____ //id 5234 - Headgear Top
+<color=#808080>A cute kitty doll that is just adorable.</color>
+
+::Beanie_ //id 5235 - Headgear Top
+<color=#808080>A knit beanie that offers some protection from the cold, but only some.</color>
+
+::Beanie__ //id 5236 - Headgear Top
+<color=#808080>A knit beanie that offers some protection from the cold, but only some.</color>
+
+::Beanie___ //id 5237 - Headgear Top
+<color=#808080>A knit beanie that offers some protection from the cold, but only some.</color>
+
+::Mage_Hat_ //id 5238 - Headgear Top
+<color=#808080>A stylish formal hat worn by talented magicians.</color>
+
+::Mage_Hat__ //id 5239 - Headgear Top
+<color=#808080>A stylish formal hat worn by talented magicians.</color>
+
+::Mage_Hat___ //id 5240 - Headgear Top
+<color=#808080>A stylish formal hat worn by talented magicians.</color>
+
+::Mage_Hat____ //id 5241 - Headgear Top
+<color=#808080>A stylish formal hat worn by talented magicians.</color>
+
+::Mage_Hat_____ //id 5242 - Headgear Top
+<color=#808080>A stylish formal hat worn by talented magicians.</color>
+
+::Shafka //id 5243 - Headgear TopMid
+<color=#808080>A hat made from animal fur that keeps your ears warm in the bitter cold.</color>
+
+::Water_Lily_Hat //id 5302 - Headgear Top
+<color=#808080>A hat resembling a blooming water lily.</color>
+
+::Pirate_Dagger //id 5305 - Headgear Bottom
+<color=#808080>A small silver knife that is held between your teeth.</color>
+
+::Ph.D_Hat_ //id 5347 - Headgear Top
+<color=#808080>A ceremonial hat worn during a graduation ceremony.</color>
+
+::Big_Ribbon_ //id 5348 - Headgear Top
+<color=#808080>An oversized red ribbon that contains hidden magical power.</color>
+
+::Boy's_Cap_ //id 5349 - Headgear Top
+<color=#808080>A black cap that is part of a schoolboy's uniform.</color>
+
+::Pirate_Bandana_ //id 5350 - Headgear Top
+<color=#808080>A bandana that is the mark of the lawless pirates of the oceans.</color>
+
+::Sunflower_ //id 5351 - Headgear Top
+<color=#808080>A headgear designed to look like a sunflower.</color>
+
+::Hat_of_the_Sun_God_ //id 5353 - Headgear TopMid
+<color=#808080>A hat worn by the god of the sun.</color>
+
+::Gigantic_Majestic_Goat //id 5374 - Headgear Top
+<color=#808080>A headgear forged from the horns of the Unsealed Baphomet.</color>
+
+::Bone_Head //id 5398 - Headgear Top
+<color=#808080>A headgear made with a dragon's skull.</color>
+
+::Mandragora_Cap //id 5399 - Headgear Top
+<color=#808080>A Mandragora has bloomed on this hat, don't even think about plucking the flower!</color>
+
+::Bride's_Corolla //id 5436 - Headgear Top
+<color=#808080>A neatly made wedding corolla, a huge silk ribbon is attached to the back.</color>
+
+::Cute_Ribbon_ //id 5438 - Headgear Top
+<color=#808080>A small green ribbon that emphasizes its wearer's cuteness.</color>
+
+::Cute_Ribbon__ //id 5439 - Headgear Top
+<color=#808080>A small red ribbon that emphasizes its wearer's cuteness.</color>
+
+::Cute_Ribbon___ //id 5440 - Headgear Top
+<color=#808080>A small blue ribbon that emphasizes its wearer's cuteness.</color>
+
+::Cute_Ribbon____ //id 5441 - Headgear Top
+<color=#808080>A small white ribbon that emphasizes its wearer's cuteness.</color>
+
+::Necktie //id 5442 - Headgear Top
+<color=#808080>A salaryman's necktie worn as a headband.</color>
+
+::Hair_Brush //id 5444 - Headgear Top
+<color=#808080>A bright red brush worn as a last-minute accessory.</color>
+
+::Catfoot_Hairpin //id 5446 - Headgear Top
+<color=#808080>A hairpin which resembles the shape of a cat's paw.</color>
+
+::Dark_Bacilium //id 5808 - Headgear All
+<color=#808080>A strong diadem reflective of a desire to overcome hardship.</color>
+

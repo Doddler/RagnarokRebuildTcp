@@ -1,41 +1,41 @@
-Id,Code,Name,Attack,Price,Weight,EquipLevel,Type,Sprite
-1750,Arrow,Arrow,25,1,0,0,Arrow,화살
-1751,Silver_Arrow,Silver Arrow,30,3,0,6,Arrow,은화살
-1752,Fire_Arrow,Fire Arrow,30,3,0,3,Arrow,불화살
-1753,Steel_Arrow,Steel Arrow,40,4,0,0,Arrow,강철화살
-1754,Crystal_Arrow,Crystal Arrow,30,3,0,1,Arrow,수정화살
-1755,Wind_Arrow,Wind Arrow,30,3,0,4,Arrow,바람의화살
-1756,Stone_Arrow,Stone Arrow,30,3,0,2,Arrow,암석화살
-1757,Immaterial_Arrow,Immaterial Arrow,30,3,0,8,Arrow,무형의화살
-1758,Stun_Arrow,Stun Arrow,1,10,0,0,Arrow,스턴애로우
-1759,Frozen_Arrow,Frozen Arrow,1,10,0,1,Arrow,프리징애로우
-1760,Flash_Arrow,Flash Arrow,1,10,0,0,Arrow,스턴애로우
-1761,Cursed_Arrow,Cursed Arrow,1,10,0,0,Arrow,커스애로우
-1762,Rusty_Arrow,Rusty Arrow,30,3,0,5,Arrow,녹슨화살
-1763,Poison_Arrow,Poison Arrow,1,10,0,5,Arrow,독화살
-1764,Sharp_Arrow,Sharp Arrow,10,20,0,0,Arrow,날카로운화살
-1765,Oridecon_Arrow,Oridecon Arrow,50,30,0,0,Arrow,강철화살
-1767,Shadow_Arrow,Shadow Arrow,30,3,0,7,Arrow,그림자의화살
-1768,Sleep_Arrow,Sleep Arrow,1,10,0,0,Arrow,슬립애로우
-1769,Mute_Arrow,Mute Arrow,1,10,0,0,Arrow,사일런스애로우
-1770,Iron_Arrow,Iron Arrow,30,2,0,0,Arrow,화살
-1771,Venom_Knife,Venom Knife,30,50,0,0,ThrowingDagger,베넘나이프
-1772,Holy_Arrow,Holy Arrow,50,3,0,6,Arrow,강철화살
-13200,Bullet,Bullet,10,1,0,0,Bullet,블릿
-13201,Silver_Bullet,Silver Bullet,15,15,0,6,Bullet,실버블릿
-13202,Bloody_Shell,Bloody Shell,30,30,0,0,Bullet,블러디셀
-13203,Incendiary_Grenade,Incendiary Grenade,50,80,0,3,Grenade,플레어스피어
-13204,Lightning_Grenade,Lightning Grenade,50,80,0,4,Grenade,라이트닝스피어
-13205,Poison_Grenade,Poison Grenade,50,80,0,5,Grenade,포이즌스피어
-13206,Flash_Grenade,Flash Grenade,50,80,0,7,Grenade,블라인드스피어
-13207,Cryo_Grenade,Cryo Grenade,50,80,0,1,Grenade,프리징스피어
-13250,Shuriken,Shuriken,10,4,1,0,Shuriken,수리검
-13251,Nimbus_Shuriken,Nimbus Shuriken,30,10,20,0,Shuriken,수리검_통운
-13252,Flash_Shuriken,Flash Shuriken,45,20,40,0,Shuriken,수리검_비환
-13253,Sharp_Leaf_Shuriken,Sharp Leaf Shuriken,70,40,60,0,Shuriken,수리검_선엽
-13254,Thorn_Needle_Shuriken,Thorn Needle Shuriken,100,100,80,0,Shuriken,수리검_침서
-13255,Icicle_Kunai,Icicle Kunai,30,10,1,1,Kunai,쿠나이_수
-13256,Black_Earth_Kunai,Black Earth Kunai,30,10,1,2,Kunai,쿠나이_토
-13257,High_Wind_Kunai,High Wind Kunai,30,10,1,4,Kunai,쿠나이_풍
-13258,Heat_Wave_Kunai,Heat Wave Kunai,30,10,1,3,Kunai,쿠나이_화
-13259,Fell_Poison_Kunai,Fell Poison Kunai,30,10,1,5,Kunai,쿠나이_독
+Id,Code,Name,Attack,Price,Weight,Property,MinLvl,Type,Sprite
+1750,Arrow,Arrow,25,1,1,Neutral,0,Arrow,화살
+1751,Silver_Arrow,Silver Arrow,30,3,2,Holy,0,Arrow,은화살
+1752,Fire_Arrow,Fire Arrow,30,3,2,Fire,0,Arrow,불화살
+1753,Steel_Arrow,Steel Arrow,40,4,2,Neutral,0,Arrow,강철화살
+1754,Crystal_Arrow,Crystal Arrow,30,3,2,Water,0,Arrow,수정화살
+1755,Wind_Arrow,Wind Arrow,30,3,2,Wind,0,Arrow,바람의화살
+1756,Stone_Arrow,Stone Arrow,30,3,2,Earth,0,Arrow,암석화살
+1757,Immaterial_Arrow,Immaterial Arrow,30,3,1,Ghost,0,Arrow,무형의화살
+1758,Stun_Arrow,Stun Arrow,1,10,3,Neutral,0,Arrow,스턴애로우
+1759,Frozen_Arrow,Frozen Arrow,1,10,3,Water,0,Arrow,프리징애로우
+1760,Flash_Arrow,Flash Arrow,1,10,3,Neutral,0,Arrow,스턴애로우
+1761,Cursed_Arrow,Cursed Arrow,1,10,3,Neutral,0,Arrow,커스애로우
+1762,Rusty_Arrow,Rusty Arrow,30,3,2,Poison,0,Arrow,녹슨화살
+1763,Poison_Arrow,Poison Arrow,1,10,3,Poison,0,Arrow,독화살
+1764,Sharp_Arrow,Sharp Arrow,10,20,3,Neutral,0,Arrow,날카로운화살
+1765,Oridecon_Arrow,Oridecon Arrow,50,30,3,Neutral,0,Arrow,강철화살
+1767,Shadow_Arrow,Shadow Arrow,30,3,2,Dark,0,Arrow,그림자의화살
+1768,Sleep_Arrow,Sleep Arrow,1,10,3,Neutral,0,Arrow,슬립애로우
+1769,Mute_Arrow,Mute Arrow,1,10,3,Neutral,0,Arrow,사일런스애로우
+1770,Iron_Arrow,Iron Arrow,30,2,1,Neutral,0,Arrow,화살
+1771,Venom_Knife,Venom Knife,30,50,5,Neutral,0,ThrowingDagger,베넘나이프
+1772,Holy_Arrow,Holy Arrow,50,3,2,Holy,0,Arrow,강철화살
+13200,Bullet,Bullet,10,1,2,Neutral,0,Bullet,블릿
+13201,Silver_Bullet,Silver Bullet,15,15,2,Holy,0,Bullet,실버블릿
+13202,Bloody_Shell,Bloody Shell,30,30,2,Neutral,0,Bullet,블러디셀
+13203,Incendiary_Grenade,Incendiary Grenade,50,80,5,Fire,0,Grenade,플레어스피어
+13204,Lightning_Grenade,Lightning Grenade,50,80,5,Wind,0,Grenade,라이트닝스피어
+13205,Poison_Grenade,Poison Grenade,50,80,5,Poison,0,Grenade,포이즌스피어
+13206,Flash_Grenade,Flash Grenade,50,80,5,Dark,0,Grenade,블라인드스피어
+13207,Cryo_Grenade,Cryo Grenade,50,80,5,Water,0,Grenade,프리징스피어
+13250,Shuriken,Shuriken,10,4,5,Neutral,1,Shuriken,수리검
+13251,Nimbus_Shuriken,Nimbus Shuriken,30,10,5,Neutral,20,Shuriken,수리검_통운
+13252,Flash_Shuriken,Flash Shuriken,45,20,5,Neutral,40,Shuriken,수리검_비환
+13253,Sharp_Leaf_Shuriken,Sharp Leaf Shuriken,70,40,5,Neutral,60,Shuriken,수리검_선엽
+13254,Thorn_Needle_Shuriken,Thorn Needle Shuriken,100,100,5,Neutral,80,Shuriken,수리검_침서
+13255,Icicle_Kunai,Icicle Kunai,30,10,20,Water,1,Kunai,쿠나이_수
+13256,Black_Earth_Kunai,Black Earth Kunai,30,10,20,Earth,1,Kunai,쿠나이_토
+13257,High_Wind_Kunai,High Wind Kunai,30,10,20,Wind,1,Kunai,쿠나이_풍
+13258,Heat_Wave_Kunai,Heat Wave Kunai,30,10,20,Fire,1,Kunai,쿠나이_화
+13259,Fell_Poison_Kunai,Fell Poison Kunai,30,10,20,Poison,1,Kunai,쿠나이_독

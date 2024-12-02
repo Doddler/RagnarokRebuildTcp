@@ -284,7 +284,7 @@ public partial class Monster
         if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range)
             return Character.Map!.WalkData.HasLineOfSight(Character.Position, target.Position);
 
-        return true;
+        return false;
     }
 
     // did a player lock onto us with a spell?
@@ -403,7 +403,7 @@ public partial class Monster
             return false;
 
         GroundItem item = default;
-        if (!Character.Map.FindOldestGroundItemInRange(Character.Position, 9, ref item))
+        if (!Character.Map.FindRandomGroundItemInRange(Character.Position, 9, ref item))
             return false;
 
         Character.TargetPosition = item.Position;

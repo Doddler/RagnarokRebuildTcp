@@ -1,19 +1,24 @@
-﻿using System.Dynamic;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Dynamic;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using CsvHelper;
+using CsvHelper.Configuration;
 using Dahomey.Json;
 using Microsoft.Extensions.Options;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Util;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents.Monsters;
+using RoRebuildServer.Logging;
 using Tomlyn;
 
 namespace DataToClientUtility;
@@ -25,14 +30,18 @@ class Program
     private const string outPathStreaming = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\";
     private const string configPath = @"..\..\..\..\..\RebuildServer\";
 
+    private static List<PlayerWeaponClass> weaponClasses;
+    private static Dictionary<string, string> equipGroupDescriptions = new();
+
     static void Main(string[] args)
     {
         WriteMonsterData();
         //WriteServerConfig();
         WriteMapList();
         WriteEffectsList();
-        WriteItemsList();
         WriteJobDataStuff();
+        WriteItemsList();
+        
     }
 
     private static void WriteEffectsList()
@@ -88,6 +97,52 @@ class Program
         
         return csv.GetRecords<T>().ToList();
     }
+    
+    private static void BuildJobMatrix()
+    {
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false };
+        using var tr = new StreamReader(Path.Combine(path, "EquipmentGroups.csv")) as TextReader;
+        using var csv = new CsvReader(tr, config);
+
+        var entries = csv.GetRecords<dynamic>().ToList();
+        var autoDesc = new StringBuilder();
+
+        foreach (IDictionary<string, object> e in entries)
+        {
+            var s = e.Values.ToList();
+            var jobGroup = (string)s[0];
+            var desc = (string)s[1];
+
+            var parentGroups = new List<string>();
+            for (var i = 2; i < s.Count; i++)
+            {
+                var job = (string)s[i];
+                parentGroups.Add(job);
+            }
+
+            if (desc != "<Auto>")
+            {
+                equipGroupDescriptions[jobGroup] = desc;
+            }
+            else
+            {
+                autoDesc.Clear();
+                foreach (var p in parentGroups)
+                {
+                    if (autoDesc.Length > 0)
+                        autoDesc.Append(", ");
+                    if (equipGroupDescriptions.TryGetValue(p, out var existingDesc))
+                        autoDesc.Append(existingDesc);
+                    else
+                        autoDesc.Append(p);
+                }
+
+                equipGroupDescriptions[jobGroup] = autoDesc.ToString();
+            }
+        }
+
+        //Console.WriteLine($"Finished building job matrix");
+    }
 
     private static void WriteItemsList()
     {
@@ -96,7 +151,61 @@ class Program
         var prefixList = new CardPrefixDataList();
         prefixList.Items = new List<CardPrefixData>();
 
+        //item descriptions
+        var itemDescLookup = new Dictionary<string, string>();
+        var itemDescriptions = new List<ItemDescription>();
+        var missingItemDescriptions = new List<string>();
+
+        BuildJobMatrix();
+
+        foreach (var descFile in Directory.GetFiles(Path.Combine(path, "../ItemDescriptions/")))
+        {
+            var lines = File.ReadAllLines(descFile);
+            var sb = new StringBuilder();
+            var curItem = "";
+            var itemDesc = new Dictionary<string, string>();
+            var lineNum = 0;
+            var hasDescription = false;
+            foreach (var line in lines)
+            {
+                if (line.StartsWith("//"))
+                    continue;
+                if (line.StartsWith("::"))
+                {
+                    var l = line;
+                    if (line.Contains("//"))
+                        l = line.Split("//")[0].Trim();
+                    var newItem = l.Substring(2);
+                    if (curItem != "" && sb.Length > 0)
+                        itemDescLookup.Add(curItem, sb.ToString().Trim());
+                    curItem = newItem;
+                    sb.Clear();
+                    hasDescription = false;
+                    lineNum = 0;
+                    continue;
+                }
+
+                if (line.StartsWith("<color=#808080>"))
+                    hasDescription = true;
+                if (lineNum > 0)
+                {
+                    if (hasDescription && lineNum == 1 && !string.IsNullOrWhiteSpace(line.Trim()))
+                        sb.Append("<line-height=120%>\n<line-height=100%>");
+                    else
+                        sb.Append("\n");
+                }
+
+                sb.Append(line);
+
+                lineNum++;
+            }
+
+            if (!string.IsNullOrWhiteSpace(curItem) && sb.Length > 0)
+                itemDescLookup.Add(curItem, sb.ToString().Trim());
+        }
+        
         var displaySpriteList = new StringBuilder();
+        var desc = "";
 
         foreach (var entry in GetCsvRows<CsvItemUseable>("ItemsUsable.csv"))
         {
@@ -113,6 +222,17 @@ class Program
                 Sprite = entry.Sprite,
             };
             itemList.Items.Add(item);
+
+            //fill in item description data
+            if (!itemDescLookup.TryGetValue(item.Code, out var curDesc))
+            {
+                missingItemDescriptions.Add(entry.Code);
+                desc = $"<color=#080808><i>An item with unknown properties.</i></color>";
+            }
+            else
+                desc = curDesc;
+            desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f:0.#}</color>";
+            itemDescriptions.Add(new ItemDescription() {Code = item.Code, Description = desc});
         }
 
         foreach (var entry in GetCsvRows<CsvItemRegular>("ItemsRegular.csv"))
@@ -130,6 +250,17 @@ class Program
                 Sprite = entry.Sprite,
             };
             itemList.Items.Add(item);
+
+            //fill in item description data
+            if (!itemDescLookup.TryGetValue(item.Code, out var curDesc))
+            {
+                missingItemDescriptions.Add(entry.Code);
+                desc = $"<color=#080808><i>An item with unknown properties.</i></color>";
+            }
+            else
+                desc = curDesc;
+            desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f}</color>";
+            itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
 
         foreach (var entry in GetCsvRows<CsvItemWeapon>("ItemsWeapons.csv"))
@@ -152,6 +283,44 @@ class Program
 
             if (!string.IsNullOrWhiteSpace(entry.WeaponSprite)) 
                 displaySpriteList.AppendLine($"{entry.Code}\t{entry.WeaponSprite}");
+
+            //fill in item description data
+            if (!itemDescLookup.TryGetValue(item.Code, out var curDesc))
+            {
+                missingItemDescriptions.Add(entry.Code);
+                desc = $"<color=#080808><i>A weapon with unknown properties.</i></color>";
+            }
+            else
+                desc = curDesc;
+
+            var breakable = entry.Breakable.ToLower() == "yes";
+            var refinable = entry.Refinable.ToLower() == "yes";
+            
+            var classDef = weaponClasses.FirstOrDefault(w => w.WeaponClass == entry.Type, new PlayerWeaponClass() { Name = entry.Type });
+            var equipGroup = equipGroupDescriptions.TryGetValue(entry.EquipGroup, out var groupName) ? groupName : "<i>Currently unequippable by any job</i>";
+            desc += $"<line-height=120%>\n</line-height=100%>";
+            //desc += $"<line-height=120%>\n</line-height=100%>Type: <color=#777777>Weapon</color>";
+            desc += $"Class: <color=#777777>{classDef.Name}</color>\n";
+
+            if (classDef.Name == "Bow" && classDef.Name == "Rod")
+                breakable = true; //this isn't actually true but we don't need to show this value for bows and rods
+
+            if (!breakable && !refinable)
+                desc += "Durability: <color=#777777>Unbreakable, Unrefinable</color>\n";
+            else if (!refinable)
+                desc += "Durability: <color=#777777>Unrefinable</color>\n";
+            else if (!breakable)
+                desc += "Durability: <color=#777777>Unbreakable</color>\n";
+        
+            desc += $"Attack: <color=#777777>{entry.Attack}</color>\n";
+            if(entry.Property != AttackElement.Neutral && entry.Property != AttackElement.None)
+                desc += $"Property: <color=#777777>{entry.Property}</color>\n";
+            desc += $"Weight: <color=#777777>{item.Weight / 10f}</color>\n";
+            desc += $"Weapon Level: <color=#777777>{entry.Rank}</color>\n";
+            if(entry.MinLvl > 1)
+                desc += $"Required Level: <color=#777777>{entry.MinLvl}</color>\n";
+            desc += $"Jobs: <color=#777777>{equipGroup}</color>";
+            itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
         
         foreach (var entry in GetCsvRows<CsvItemEquipment>("ItemsEquipment.csv"))
@@ -176,6 +345,69 @@ class Program
 
             if (!string.IsNullOrWhiteSpace(entry.DisplaySprite))
                 displaySpriteList.AppendLine($"{entry.Code}\t{entry.DisplaySprite.ToLowerInvariant()}");
+
+            //fill in item description data
+            if (!itemDescLookup.TryGetValue(item.Code, out var curDesc))
+            {
+                missingItemDescriptions.Add(entry.Code);
+                desc = $"<color=#080808><i>A piece of equipment with unknown properties.</i></color>";
+            }
+            else
+                desc = curDesc;
+
+
+            var equipGroup = equipGroupDescriptions.TryGetValue(entry.EquipGroup, out var groupName) ? groupName : "<i>Currently unequippable by any job</i>";
+            var type = entry.Type switch
+            {
+                EquipPosition.Headgear => "Headgear",
+                EquipPosition.Armor => "Body",
+                EquipPosition.Boots => "Foodgear",
+                EquipPosition.Garment => "Garment",
+                EquipPosition.Accessory => "Accessory",
+                EquipPosition.Shield => "Shield",
+                _ => "Unknown"
+            };
+            
+            if (entry.Type == EquipPosition.Headgear)
+            {
+                var headPosition = entry.Position switch
+                {
+                    HeadgearPosition.Top => "Top",
+                    HeadgearPosition.Mid => "Mid",
+                    HeadgearPosition.Bottom => "Lower",
+                    HeadgearPosition.TopMid => "Top + Mid",
+                    HeadgearPosition.TopBottom => "Top + Lower",
+                    HeadgearPosition.MidBottom => "Mid + Lower",
+                    HeadgearPosition.All => "All",
+                    _ => "N/A"
+                };
+                type += $" ({headPosition})";
+            }
+            
+            desc += $"<line-height=120%>\n</line-height=100%>Type: <color=#777777>{type}</color>";
+
+            //this is a mess, but basically you can't refine or break accessories or headgear that don't occupy the top headgear slot
+            bool IsMidOrLower(HeadgearPosition p) => ((p & HeadgearPosition.Mid) > 0 || (p & HeadgearPosition.Bottom) > 0);
+
+            if (entry.Type != EquipPosition.Accessory)
+            {
+                if (entry.Breakable.ToLower() == "no" && entry.Refinable.ToLower() == "no" && !IsMidOrLower(entry.Position))
+                    desc += "\nDurability: <color=#777777>Unbreakable, Unrefinable</color>";
+                else if (entry.Refinable.ToLower() == "no" && (entry.Type != EquipPosition.Headgear || (entry.Position & HeadgearPosition.Top) > 0))
+                    desc += "\nDurability: <color=#777777>Unrefinable</color>";
+                else if (entry.Breakable.ToLower() == "no" && !IsMidOrLower(entry.Position))
+                    desc += "\nDurability: <color=#777777>Unbreakable</color>";
+            }
+
+            desc += $"\nDefense: <color=#777777>{entry.Defense}</color>";
+            if(entry.MagicDef > 0)
+                desc += $"\nMagic Defense: <color=#777777>{entry.MagicDef}</color>";
+            desc += $"\nWeight: <color=#777777>{item.Weight / 10f}</color>";
+            if (entry.MinLvl > 1)
+                desc += $"\nRequired Level: <color=#777777>{entry.MinLvl}</color>";
+            if (entry.EquipGroup != "AllJobs")
+                desc += $"\nJobs: <color=#777777>{equipGroup}</color>";
+            itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
 
         foreach (var entry in GetCsvRows<CsvItemCard>("ItemsCards.csv"))
@@ -195,6 +427,19 @@ class Program
             };
             itemList.Items.Add(item);
             prefixList.Items.Add(new CardPrefixData() {Id = entry.Id, Prefix = entry.Prefix, Postfix = entry.Postfix});
+
+            //fill in item description data
+            //if (!itemDescLookup.TryGetValue(item.Code, out var curDesc))
+            //{
+            //    missingItemDescriptions.Add(entry.Code);
+            //    desc = $"<color=#080808><i>A card with unknown properties.</i></color>";
+            //}
+            //else
+            //    desc = curDesc;
+            desc = "<color=#808080>A card with an illustration of a monster on it.</color>";
+            desc += "<line-height=120%>\n</line-height=100%><i>This item currently has no use, but it might be valuable in the future.";
+            desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f}</color>";
+            itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
 
         foreach (var entry in GetCsvRows<CsvItemAmmo>("ItemsAmmo.csv"))
@@ -212,6 +457,21 @@ class Program
                 Sprite = entry.Sprite,
             };
             itemList.Items.Add(item);
+
+            //fill in item description data
+            if (!itemDescLookup.TryGetValue(item.Code, out var curDesc))
+            {
+                missingItemDescriptions.Add(entry.Code);
+                desc = $"<color=#080808><i>A projectile with unknown properties.</i></color>";
+            }
+            else
+                desc = curDesc;
+
+            desc += $"<line-height=120%>\n</line-height=100%>Attack: <color=#777777>{entry.Attack}</color>\n";
+            if (entry.Property != AttackElement.Neutral && entry.Property != AttackElement.None)
+                desc += $"Property: <color=#777777>{entry.Property}</color>\n";
+            desc += $"Weight: <color=#777777>{item.Weight / 10f:0.#}</color>";
+            itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
 
         JsonSerializerOptions options = new JsonSerializerOptions();
@@ -228,6 +488,9 @@ class Program
         File.WriteAllText(itemDir, json);
         File.WriteAllText(cardDir, cardJson);
         File.WriteAllText(Path.Combine(outPath, "displaySpriteTable.txt"), displaySpriteList.ToString());
+
+        File.WriteAllText(Path.Combine(outPath, "missingItemDescriptions.txt"), string.Join("\n", missingItemDescriptions));
+        SaveToClient("itemDescriptions.json", itemDescriptions);
     }
 
     private static void WriteServerConfig()
@@ -504,6 +767,8 @@ class Program
                 HitSounds = w.HitSound.Split('/').Select(a => a + ".ogg").ToList()
             }).ToList()
         );
+
+        weaponClasses = classes;
 
         //job list
         var jobs = ConvertToClient<CsvJobs, PlayerClassData>("Jobs.csv", "playerclass.json",

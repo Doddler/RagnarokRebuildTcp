@@ -920,7 +920,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Increases your weight capacity by \u002B200 per skill level.",
       "InterruptMode": 0
     },
     {
@@ -1014,7 +1014,7 @@
       "MaxLevel": 1,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.\r\nThe cart has a weight capacity of 8000 and can store up to 100 items.",
+      "Description": "Rent a pushcart, increasing your character\u0027s weight capacity by \u002B2000.\r\n\u003Ci\u003EThe skill\u0027s current effect is temporary until cart storage and rental is implemented.\u003C/i\u003E",
       "InterruptMode": 0
     },
     {

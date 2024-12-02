@@ -75,7 +75,7 @@ namespace Assets.Scripts.UI
                 }
             }
 
-            if (dragObject.Type != DragItemType.Equipment) //we can't accept a drag from the equipment window
+            if (dragObject.Type != DragItemType.Equipment && dragObject.Type != DragItemType.ShopItem) //we can't accept a drag from the equipment window
             {
                 DragItem.gameObject.SetActive(true);
                 DragItem.Assign(dragObject);

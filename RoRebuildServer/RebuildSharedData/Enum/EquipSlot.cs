@@ -28,7 +28,9 @@ public enum EquipSlot
     CostumeTop,
     CostumeMid,
     CostumeBottom,
+    Ammunition,
     Weapon = RightHand,
     Shield = LeftHand,
-    None = -1
+    None = -1,
+    
 }

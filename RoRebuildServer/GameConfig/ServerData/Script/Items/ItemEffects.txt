@@ -122,7 +122,7 @@ Item("Book_of_the_Devil") { OnValidate: return false; OnUse: }
 Item("Pet_Incubator") { OnValidate: return false; OnUse: }
 Item("Gift_Box") { OnValidate: return false; OnUse: }
 Item("Concentration_Potion") { OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 10); }
-Item("Awakening_Potion") { OnValidate: return CharacterLevel > 40 && JobId != 4; OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 15); }
+Item("Awakening_Potion") { OnValidate: return CharacterLevel >= 40 && JobId != 4; OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 15); }
 Item("Berserk_Potion") { OnValidate: return CharacterLevel > 80 && (JobId == 1 || JobId == 3 || JobId == 6); OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 20); }
 Item("Union_of_Tribe") { OnValidate: return false; OnUse: }
 Item("Her_Heart") { OnValidate: return false; OnUse: }

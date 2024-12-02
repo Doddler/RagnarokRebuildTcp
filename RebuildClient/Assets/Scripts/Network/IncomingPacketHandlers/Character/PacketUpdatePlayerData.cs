@@ -24,13 +24,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                         hasStatChange = true;
                 State.CharacterData[(int)data] = newVal;
             }
-
-            if(hasStatChange)
-                UiManager.Instance.StatusWindow.ResetStatChanges();
             
             foreach (var stats in PlayerClientStatusDef.PlayerUpdateStats)
                 State.CharacterStats[(int)stats] = msg.ReadInt32();
 
+            State.Level = State.GetData(PlayerStat.Level);
             State.AttackSpeed = msg.ReadFloat();
             State.CurrentWeight = msg.ReadInt32();
 
@@ -41,6 +39,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             
             State.MaxWeight = State.GetStat(CharacterStat.WeightCapacity);
             State.SkillPoints = State.GetData(PlayerStat.SkillPoints);
+            State.Zeny = State.GetData(PlayerStat.Zeny);
 
             var hasSkills = msg.ReadBoolean();
 
@@ -69,6 +68,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                     State.EquippedItems[i] = bagId;
                     State.EquippedBagIdHashes.Add(bagId);
                 }
+
+                State.AmmoId = msg.ReadInt32();
                 
                 UiManager.EquipmentWindow.RefreshEquipmentWindow();
 
@@ -78,9 +79,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             CameraFollower.Instance.UpdatePlayerHP(hp, maxHp);
             CameraFollower.Instance.UpdatePlayerSP(sp, maxSp);
+            CameraFollower.Instance.CharacterZeny.text = $"Zeny: {State.Zeny:N0}";
             UiManager.Instance.SkillHotbar.UpdateItemCounts();
             UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
-            UiManager.Instance.StatusWindow.UpdateCharacterStats();
+            if(hasStatChange)
+                UiManager.Instance.StatusWindow.ResetStatChanges();
+            else
+                UiManager.Instance.StatusWindow.UpdateCharacterStats();
             
 #if UNITY_EDITOR
             if (!hasInventory)

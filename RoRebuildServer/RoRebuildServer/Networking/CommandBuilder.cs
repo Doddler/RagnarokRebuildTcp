@@ -607,16 +607,27 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SendServerMessage(string text)
+    public static void SendServerMessage(string text, string name = "Server")
     {
         var packet = NetworkManager.StartPacket(PacketType.Say, 364);
 
         packet.Write(-1);
         packet.Write(text);
-        packet.Write("Server");
+        packet.Write(name);
         packet.Write(false);
 
         NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+    public static void SendServerEvent(Player p, ServerEvent eventType, int id = 0, string text = "")
+    {
+        var packet = NetworkManager.StartPacket(PacketType.ServerEvent, 128);
+
+        packet.Write((byte)eventType);
+        packet.Write(id);
+        packet.Write(text);
+
+        NetworkManager.SendMessage(packet, p.Connection);
     }
 
     public static void SendSayMulti(WorldObject? c, string name, string text, bool isShout)
@@ -670,7 +681,7 @@ public static class CommandBuilder
         packet.Write(c.Player.Id.ToByteArray());
         
         NetworkManager.SendMessage(packet, p.Connection);
-        SendUpdatePlayerData(p, true);
+        SendUpdatePlayerData(p, true, true);
     }
 
     public static void SendCreateEntityMulti(WorldObject c)
@@ -982,11 +993,24 @@ public static class CommandBuilder
         var count = 0;
         if (npc.ItemsForSale != null)
             count = npc.ItemsForSale.Count;
-        
+
+        packet.Write((byte)1); //buy from NPC
         packet.Write(count);
-        
+
         for (var i = 0; i < count; i++)
-            packet.Write(npc.ItemsForSale![i]);
+        {
+            var (item, cost) = npc.ItemsForSale![i];
+            packet.Write(item);
+            packet.Write(cost);
+        }
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void SendNpcStartTrade(Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.OpenShop, 128);
+        packet.Write((byte)0); //sell to NPC
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

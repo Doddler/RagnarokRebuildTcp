@@ -3,6 +3,7 @@ using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network;
+using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -49,6 +50,7 @@ namespace Assets.Scripts.PlayerControl
                     break;
                 case CharacterStatusEffect.Poison:
                     controllable.SpriteAnimator.Color = new Color(1f, 0.7f, 1f);
+                    AudioManager.Instance.AttachSoundToEntity(controllable.Id, "ef_poisonattack.ogg", controllable.gameObject);
                     break;
             }
         }

@@ -307,6 +307,8 @@ namespace Assets.Scripts.Network
 
             if (!GameConfig.Data.ScalePlayerDisplayWithZoom)
                 d = 1f;
+            var screenScale = Screen.height / 1920f * 2f;
+            d *= screenScale;
 
             rect.localScale = new Vector3(d, d, d);
             rect.anchoredPosition = new Vector2(screenPos.x * reverseScale, (screenPos.y - cf.UiCanvas.pixelRect.height) * reverseScale);

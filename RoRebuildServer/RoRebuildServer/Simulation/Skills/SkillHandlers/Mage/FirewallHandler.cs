@@ -41,6 +41,7 @@ public class FirewallHandler : SkillHandlerBase
             position = target.Character.Position;
             if (target.Character.IsMoving)
             {
+                //monsters will lead the player 1 tile with firewall if they're moving in order to block them
                 var forwardPosition = position.AddDirectionToPosition(target.Character.FacingDirection);
                 if (source.Character.Map.WalkData.IsCellWalkable(forwardPosition))
                     position = forwardPosition;
@@ -193,7 +194,7 @@ public class FirewallObjectEvent : NpcBehaviorBase
         void DoAttack(float delay = 0f)
         {
             var res = src.CalculateCombatResult(target, 0.5f, 1, AttackFlags.Magical, CharacterSkill.FireWall, AttackElement.Fire);
-            res.KnockBack = 1;
+            res.KnockBack = 2;
             res.AttackPosition = target.Character.Position.AddDirectionToPosition(target.Character.FacingDirection);
             res.AttackMotionTime = delay;
             res.Time = Time.ElapsedTimeFloat + delay;

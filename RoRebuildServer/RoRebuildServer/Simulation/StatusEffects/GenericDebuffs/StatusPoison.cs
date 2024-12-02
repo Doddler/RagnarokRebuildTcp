@@ -27,7 +27,9 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 return StatusUpdateResult.Continue; //only do this every 3 seconds
             state.Value4 = 3;
 
-            if (ch.Character.Type != CharacterType.Player && ch.HpPercent < 20)
+            //basically monsters will stop taking poison damage below 20% if they are not also taking active damage from another source.
+            //poison ticks are 3s apart, so a check to see if it has been damaged in the last 2 seconds should mean we can't count our own damage.
+            if (ch.Character.Type == CharacterType.Monster && ch.HpPercent < 20 && ch.Character.Monster.TimeSinceLastDamage > 2f)
                 return StatusUpdateResult.Continue;
 
             var attackerEntity = World.Instance.GetEntityById(state.Value1);
@@ -73,15 +75,21 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
             var negativeVit = ch.GetStat(CharacterStat.Vit) / 4;
+            var defPenalty = ch.GetSpecialType() == CharacterSpecialType.Boss ? -10 : -25;
+
             state.Value3 = (short)-negativeVit;
             state.Value4 = 3;
-            ch.AddStat(CharacterStat.Vit, state.Value3);
+            ch.AddStat(CharacterStat.AddVit, state.Value3);
+            ch.AddStat(CharacterStat.AddDefPercent, defPenalty);
             ch.AddStat(CharacterStat.AddSpRecoveryPercent, -999);
         }
 
         public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
         {
-            ch.SubStat(CharacterStat.Vit, state.Value3);
+            var defPenalty = ch.GetSpecialType() == CharacterSpecialType.Boss ? -10 : -25;
+
+            ch.SubStat(CharacterStat.AddVit, state.Value3);
+            ch.SubStat(CharacterStat.AddDefPercent, defPenalty);
             ch.SubStat(CharacterStat.AddSpRecoveryPercent, -999);
         }
     }

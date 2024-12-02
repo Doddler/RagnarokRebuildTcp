@@ -1,25 +1,36 @@
 ﻿
+//south prontera bard
+
+//flags: 
+//PrtBardStatus = 0 : Not yet talked to the bard
+//PrtBardStatus = 1 : Received initial gift item
+//PrtBardStatus = 2 : Received job change gift
+
+
 macro BardAboutRebuild()
 {
 	Dialog(Name, "Ragnarok Rebuild is a remake of sorts, the whole thing including the client and server were built from the ground up. "
 			+ "It's not completely faithful to the original, but it should still feel pretty familiar if you've played before.");
 
-	Dialog(Name, "I wouldn't consider this a real server though, it's more of a developer testing ground for trying out new features. "
-			+ "Don't let that stop you from looking around though, you're more than welcome to do as you wish.")
+	Dialog(Name, "I wouldn't consider this a real server though, and likely never will be one. "
+			+ "It's more of an... experiment. It lacks a lot of basic features and differ mechanically in a number of ways.");
+
+Dialog(Name, "It's a bit rough out there, harder than the last test, but you should be OK if you're familiar with the world of Ragnarok Online. "
+			+ "Or even if you aren't familiar with it, if you're tenacious enough.")
 
 	Dialog(Name, "This whole thing is very much a work in progress so there's a lot of things missing that you might expect to work. "
-			+ "You can't interact with most NPCs, but the Kafra staff can still help you out. ");
+			+ "Be sure to check descriptions to make sure things you're expecting to work still function the wya you expect.");
 
-	Dialog(Name, "There's currently no items, equipment, stats, you simply get stronger as you level. "
-			+ "Skills are pretty limited, and if you need to job change you'll need to ask me about it.");
-
-	Dialog(Name, "I recommend checking the help menu in the bottom right, it'll help you figure out what you can do here. "
-			+ "You should also check out that warp button, it lets you jump to any map on the server.");
+	Dialog(Name, "Most of the NPCs you'll run into can't talk yet, but traders and item vendors still sell their wares. "
+			+ "The kafra staff still offer their save and warp services, and those warp services are free to use.");
+	
+	// Dialog(Name, "I recommend checking the help menu in the bottom right, it'll help you figure out what you can do here. "
+	// 		+ "You should also check out that warp button, it lets you jump to any map on the server.");
 
 	ShowSprite("bard_eland02", right);
 
-	Dialog(Name, "You're free to offer feedback at the @RoDoddler twitter account afterwards if you want. "
-			+ "I know it's possible to reach level 99 without cheating so be sure to let him know if you manage it yourself! :)");
+	Dialog(Name, "Be sure to let me know on the @RoDoddler twitter account if you get up to anything fun, or just want to offer feedback."
+			+ "I don't get notifications for direct messages so make sure to reply to one of the threads. :)");
 }
 
 macro BardChangeJob()
@@ -30,15 +41,22 @@ macro BardChangeJob()
 		Dialog(Name, "Looking to change jobs are you? I can help you out with that, but first you'll need to get to level 10.");
 		return;
 	}
+
 	if(JobId == 0 && UnusedSkillPoints > 0)
 	{
 		Dialog(Name, "Looking to change jobs are you? You're level 10 alright, but you'll need to spend your unused skill points before I can help.");
 		Dialog(Name, "I'm not actually sure what that basic mastery skill does but you still need to spend the points first.");
 		return;
+	} else {
+		
 	}
-	Dialog(Name, "Looking to change jobs are you? Well then! What were you thinking of becoming?");
-	Option("Novice", "Swordsman", "Archer", "Mage", "Acolyte", "Thief", "Merchant", "Cancel");
-	if(result == 7)
+	if(GetNpcFlag("PrtBardStatus") > 1)
+		Dialog(Name, "Want to change your job again? I'll have to reset your skills and stat points to do it, but i can do it. What are you looking for?");
+	else
+		Dialog(Name, "Looking to change jobs are you? Well then! What were you thinking of becoming?");
+
+	Option("Swordsman", "Archer", "Mage", "Acolyte", "Thief", "Merchant", "Cancel");
+	if(result == 6)
 	{
 		Dialog(Name, "I'll be here to help you out if you change your mind!");
 		return;
@@ -51,13 +69,13 @@ macro BardChangeJob()
 		return;
 	}
 
-	if(jobChoice == 0) Dialog(Name, "A novice! What a weird thing to want to become. But if that's your choice I can still do it. What do you say?");
-	if(jobChoice == 1) Dialog(Name, "A swordsman? Very good! Are you sure you want to become a swordsman?");
-	if(jobChoice == 2) Dialog(Name, "An archer? Very good! Are you sure you want to become an archer?");
-	if(jobChoice == 3) Dialog(Name, "A mage? Very good! Are you sure you want to become a mage?");
-	if(jobChoice == 4) Dialog(Name, "A acolyte? Very good! Are you sure you want to become a acolyte?");
-	if(jobChoice == 5) Dialog(Name, "A thief? Very good! Are you sure you want to become a thief?");
-	if(jobChoice == 6) Dialog(Name, "A merchant? Very good! Are you sure you want to become a merchant?");
+	//if(jobChoice == 0) Dialog(Name, "A novice! What a weird thing to want to become. But if that's your choice I can still do it. What do you say?");
+	if(jobChoice == 0) Dialog(Name, "A swordsman? Very good! Are you sure you want to become a swordsman?");
+	if(jobChoice == 1) Dialog(Name, "An archer? Very good! Are you sure you want to become an archer?");
+	if(jobChoice == 2) Dialog(Name, "A mage? Very good! Are you sure you want to become a mage?");
+	if(jobChoice == 3) Dialog(Name, "A acolyte? Very good! Are you sure you want to become a acolyte?");
+	if(jobChoice == 4) Dialog(Name, "A thief? Very good! Are you sure you want to become a thief?");
+	if(jobChoice == 5) Dialog(Name, "A merchant? Very good! Are you sure you want to become a merchant?");
 
 	Option("I'm sure", "I changed my mind");
 	if(result == 1)
@@ -67,11 +85,28 @@ macro BardChangeJob()
 	}
 
 	ReleaseFocus();
-	ChangePlayerJob(jobChoice);
+	ChangePlayerJob(jobChoice + 1);
 	ShowEffectOnPlayer("JobUp");
 
 	ShowSprite("bard_eland02", right);
-	Dialog(Name, "It's done! Have fun, and while I'm not supposed to do this, if you regret your choice and want to change jobs again, just let me know.");
+	if(GetNpcFlag("PrtBardStatus") == 1) 
+	{
+		GiveItem("Novice_Potion", 40);
+
+		if(jobChoice == 0) GiveItem("Sword");
+		if(jobChoice == 1) { GiveItem("Arrow", 250); GiveItem("Bow"); }
+		if(jobChoice == 2) GiveItem("Novice_Rod");
+		if(jobChoice == 3) GiveItem("Mace");
+		if(jobChoice == 4) GiveItem("Cutter");
+		if(jobChoice == 5) GiveItem("Sword");
+
+		SetNpcFlag("PrtBardStatus", 2);
+		Dialog(Name, "It's done! I tossed in a little extra for you to get started. If you regret your choice and want to change jobs, just let me know.");
+	} 
+	else 
+	{
+		Dialog(Name, "It's done! Let me know again if you ever need another to change.");
+	}
 
 	return;
 }
@@ -249,7 +284,20 @@ Npc("prt_fild08", "Bard", "1_M_BARD", 175, 374, SW, 1, 1)
 		FocusNpc();
 		ShowSprite("bard_eland01", right);
 
-		Dialog(Name, "Hey there, welcome to Ragnarok Rebuild! I don't see new faces around very often you see, since you're here let me help you out.");
+		if(GetNpcFlag("PrtBardStatus") == 0)
+		{
+			Dialog(Name, "Hey there, welcome to Ragnarok Rebuild! Nice to see a new face around here. " + 
+						 "The job trainers are all on vacation so it's up to me to help adventurers like yourself.");
+			Dialog(Name, "Since it's your first time here, let me give you a little something to help you out.");
+			SetNpcFlag("PrtBardStatus", 1);
+			GiveZeny(1000);
+			GiveItem("Novice_Potion", 20);
+			Dialog(Name, "So, is there anything I can help you with?");
+		}
+		else
+		{
+			Dialog(Name, "Welcome back! Anything I can help you with?");
+		}
 
 		result = 0;
 		while(result < 3)

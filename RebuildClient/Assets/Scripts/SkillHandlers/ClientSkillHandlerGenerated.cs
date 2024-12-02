@@ -56,7 +56,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[40] = new DefaultSkillHandler();
 			handlers[41] = new DefaultSkillHandler();
 			handlers[42] = new DefaultSkillHandler();
-			handlers[43] = new DefaultSkillHandler();
+			handlers[43] = new EnvenomHandler();
 			handlers[44] = new DefaultSkillHandler();
 			handlers[45] = new DefaultSkillHandler();
 			handlers[46] = new DefaultSkillHandler();

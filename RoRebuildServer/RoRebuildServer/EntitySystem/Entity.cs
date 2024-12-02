@@ -32,6 +32,7 @@ public struct Entity
 
     public EntityType Type => (EntityType)TypeId;
     public static Entity Null = new();
+    public static Entity Invalid = new() {Gen = 0, Id = -1, TypeId = 0};
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsAlive()

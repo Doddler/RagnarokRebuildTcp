@@ -43,22 +43,26 @@ public class ItemEquipState
     public Player Player;
     public int[] ItemSlots = new int[10];
     public int[] ItemIds = new int[10];
-    public int AmmoType;
+    public int AmmoId;
+    public AmmoType AmmoType;
+    public int AmmoAttackPower;
     public bool IsDualWielding;
+    public int WeaponRange;
     public AttackElement WeaponElement;
+    public AttackElement AmmoElement;
     public CharacterElement ArmorElement;
     private readonly SwapList<EquipStatChange> equipmentEffects = new();
     private EquipSlot activeSlot;
     private readonly HeadgearPosition[] headgearMultiSlotInfo = new HeadgearPosition[3];
     private bool isTwoHandedWeapon;
-
+    
     public void Reset()
     {
         for (var i = 0; i < ItemSlots.Length; i++)
             ItemSlots[i] = 0;
         for (var i = 0; i < 3; i++)
             headgearMultiSlotInfo[i] = 0;
-        AmmoType = -1;
+        AmmoId = -1;
     }
 
     public int GetEquipmentIdBySlot(EquipSlot slot) => ItemIds[(int)slot];
@@ -83,13 +87,12 @@ public class ItemEquipState
 
             ItemSlots[i] = -1;
             ItemIds[i] = -1;
-            AmmoType = -1;
+            AmmoId = -1;
             IsDualWielding = false;
             isTwoHandedWeapon = false;
         }
         for (var i = 0; i < 3; i++)
             headgearMultiSlotInfo[i] = HeadgearPosition.None;
-
     }
 
     public void UpdateAppearanceIfNecessary(EquipSlot slot)
@@ -108,11 +111,21 @@ public class ItemEquipState
 
     public void UnEquipItem(int bagId)
     {
-        if (Player.Inventory == null || !Player.Inventory.UniqueItems.TryGetValue(bagId, out var item))
+        if (Player.Inventory == null || !Player.Inventory.GetItem(bagId, out var item))
             return;
 
         var itemData = DataManager.ItemList[item.Id];
         var updateAppearance = false;
+
+        if (itemData.ItemClass == ItemClass.Ammo)
+        {
+            AmmoId = -1;
+            AmmoAttackPower = 0;
+            AmmoElement = AttackElement.None;
+            CommandBuilder.PlayerEquipItem(Player, bagId, EquipSlot.Ammunition, false);
+            return;
+        }
+
         if (itemData.ItemClass == ItemClass.Weapon)
         {
             UnEquipItem(EquipSlot.Weapon);
@@ -162,7 +175,11 @@ public class ItemEquipState
         ItemIds[(int)slot] = 0;
         CommandBuilder.PlayerEquipItem(Player, bagId, slot, false);
         if (slot == EquipSlot.Weapon)
+        {
             isTwoHandedWeapon = false;
+            WeaponRange = 1;
+        }
+
         if (slot == EquipSlot.Shield)
             IsDualWielding = false; //probably not but may as well
         if (slot == EquipSlot.HeadTop || slot == EquipSlot.HeadMid || slot == EquipSlot.HeadBottom)
@@ -251,7 +268,7 @@ public class ItemEquipState
 
         ItemSlots[(int)equipSlot] = bagId;
         ItemIds[(int)equipSlot] = itemData.Id;
-
+        
         OnEquipEvent(equipSlot);
         CommandBuilder.UpdatePlayerAppearanceAuto(Player);
 
@@ -292,7 +309,7 @@ public class ItemEquipState
 
         if (equipInfo.EquipPosition == EquipPosition.Shield && isTwoHandedWeapon)
             UnEquipItem(EquipSlot.Weapon);
-
+        
         UnEquipItem(equipSlot);
 
         if (equipInfo.EquipPosition == EquipPosition.Headgear)
@@ -323,10 +340,13 @@ public class ItemEquipState
 
     public EquipChangeResult EquipItem(int bagId, EquipSlot equipSlot = EquipSlot.None)
     {
-        if (Player.Inventory == null || !Player.Inventory.UniqueItems.TryGetValue(bagId, out var item))
+        if (Player.Inventory == null || !Player.Inventory.GetItem(bagId, out var item))
             return EquipChangeResult.InvalidItem;
 
         var itemData = DataManager.ItemList[item.Id];
+
+        if(itemData.ItemClass == ItemClass.Ammo)
+            return EquipAmmo(item.Id) ? EquipChangeResult.Success : EquipChangeResult.InvalidItem;
 
         if (itemData.ItemClass == ItemClass.Weapon)
             return EquipWeapon(bagId, equipSlot, itemData);
@@ -335,6 +355,22 @@ public class ItemEquipState
             return EquipArmorOrAccessory(bagId, equipSlot, itemData);
 
         return EquipChangeResult.InvalidItem;
+    }
+
+    public bool EquipAmmo(int ammoId, bool notify = true)
+    {
+        if (!DataManager.AmmoInfo.TryGetValue(ammoId, out var ammo))
+            return false;
+
+        AmmoId = ammoId;
+        AmmoType = ammo.Type;
+        AmmoAttackPower = ammo.Attack;
+        AmmoElement = ammo.Element;
+
+        if(notify)
+            CommandBuilder.PlayerEquipItem(Player, ammoId, EquipSlot.Ammunition, true);
+
+        return true;
     }
 
     private void OnEquipEvent(EquipSlot slot)
@@ -364,6 +400,8 @@ public class ItemEquipState
                 Player.SetStat(CharacterStat.Attack2, weapon.Attack * 110 / 100);
                 Player.RefreshWeaponMastery();
                 WeaponElement = weapon.Element;
+                if(slot == EquipSlot.Weapon)
+                    WeaponRange = weapon.Range;
             }
         }
 
@@ -373,6 +411,10 @@ public class ItemEquipState
             {
                 Player.AddStat(CharacterStat.Def, armor.Defense);
                 Player.AddStat(CharacterStat.MDef, armor.MagicDefense);
+
+                //this code should apply equipment upgrades when they are implemented, but for now we assume anything refinable is +4
+                if (armor.IsRefinable)
+                    Player.AddStat(CharacterStat.EquipmentRefineDef, 4);
             }
         }
 
@@ -420,9 +462,13 @@ public class ItemEquipState
             {
                 Player.SubStat(CharacterStat.Def, armor.Defense);
                 Player.SubStat(CharacterStat.MDef, armor.MagicDefense);
+
+                //this code should apply equipment upgrades when they are implemented, but for now we assume anything refinable is +4
+                if (armor.IsRefinable)
+                    Player.SubStat(CharacterStat.EquipmentRefineDef, 4);
             }
         }
-
+        
         data.Interaction?.OnUnequip(Player, Player.CombatEntity, this, item, slot);
         for (var j = 0; j < 4; j++)
         {
@@ -503,7 +549,7 @@ public class ItemEquipState
             if (itemId > 0)
                 bw.Write(Player.Inventory.GetGuidByUniqueItemId(itemId).ToByteArray()); //we have a bag id, we want to store the guid
         }
-        bw.Write(AmmoType);
+        bw.Write(AmmoId);
     }
 
     public void DeSerialize(IBinaryMessageReader br, CharacterBag bag)
@@ -529,6 +575,6 @@ public class ItemEquipState
             }
         }
 
-        AmmoType = br.ReadInt32();
+        EquipAmmo(br.ReadInt32(), false);
     }
 }

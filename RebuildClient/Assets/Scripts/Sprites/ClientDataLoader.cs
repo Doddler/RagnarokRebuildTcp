@@ -46,6 +46,7 @@ namespace Assets.Scripts.Sprites
         public TextAsset ItemData;
         public TextAsset MapData;
         public TextAsset EquipmentSpriteData;
+        public TextAsset ItemDescData;
         public SpriteAtlas ItemIconAtlas;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
@@ -62,6 +63,7 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<string, ItemData> itemNameLookup = new();
         private readonly Dictionary<string, ClientMapEntry> mapDataLookup = new();
         private readonly Dictionary<string, string> displaySpriteList = new();
+        private readonly Dictionary<string, string> itemDescriptionTable = new();
 
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
@@ -88,6 +90,7 @@ namespace Assets.Scripts.Sprites
         public ItemData GetItemByName(string name) => itemNameLookup[name];
         public bool TryGetItemByName(string name, out ItemData item) => itemNameLookup.TryGetValue(name, out item);
         public bool TryGetItemById(int id, out ItemData item) => itemIdLookup.TryGetValue(id, out item);
+        public string GetItemDescription(string itemCode) => itemDescriptionTable.GetValueOrDefault(itemCode, "No description available.");
 
         public string GetHitSoundForWeapon(int weaponId)
         {
@@ -266,6 +269,11 @@ namespace Assets.Scripts.Sprites
             var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapData.text);
             foreach (var map in mapClass.Items)
                 mapDataLookup.TryAdd(map.Code, map);
+            
+            var itemDescriptions = JsonUtility.FromJson<Wrapper<ItemDescription>>(ItemDescData.text);
+            foreach(var desc in itemDescriptions.Items)
+                itemDescriptionTable.Add(desc.Code, desc.Description);
+                
 
             isInitialized = true;
         }

@@ -1,0 +1,1543 @@
+//Weapons
+
+::Sword //id 1101 - Sword
+<color=#808080>A basic sword.</color>
+
+::Sword_ //id 1102 - Sword
+<color=#808080>A basic sword.</color>
+
+::Falchion //id 1104 - Sword
+<color=#808080>A sword with a rounded blade.</color>
+
+::Falchion_ //id 1105 - Sword
+<color=#808080>A sword with a rounded blade.</color>
+
+::Blade //id 1107 - Sword
+<color=#808080>A sword with a thick, flat blade.</color>
+
+::Blade_ //id 1108 - Sword
+<color=#808080>A sword with a thick, flat blade.</color>
+
+::Rapier //id 1110 - Sword
+<color=#808080>A sword with an elegant blade and cross guard.</color>
+
+::Rapier_ //id 1111 - Sword
+<color=#808080>A sword with an elegant blade and cross guard.</color>
+
+::Scimiter //id 1113 - Sword
+<color=#808080>A strong, swift sword with a curved blade.</color>
+
+::Scimiter_ //id 1114 - Sword
+<color=#808080>A strong, swift sword with a curved blade.</color>
+
+::Katana //id 1116 - 2HSword
+<color=#808080>A straight bladed sword inspired by eastern warriors.</color>
+
+::Katana_ //id 1117 - 2HSword
+<color=#808080>A straight bladed sword inspired by eastern warriors.</color>
+
+::Tsurugi //id 1119 - Sword
+<color=#808080>One of the most powerful common one-handed swords.</color>
+
+::Tsurugi_ //id 1120 - Sword
+<color=#808080>One of the most powerful common one-handed swords.</color>
+
+::Ring_Pommel_Saber //id 1122 - Sword
+<color=#808080>A sword with an elaborately designed hilt.</color>
+
+::Haedonggum //id 1123 - Sword
+<color=#808080>A ancient sword said to have the mysterious power to control minds.</color>
+
+::Orcish_Sword //id 1124 - Sword
+<color=#808080>A sword crafted by orcish smiths that is symbolic to orc tribes.</color>
+
+::Ring_Pommel_Saber_ //id 1125 - Sword
+<color=#808080>A sword with an elaborately designed hilt.</color>
+
+::Saber //id 1126 - Sword
+<color=#808080>A heavy cavalry sword with a slightly curved blade.</color>
+
+::Saber_ //id 1127 - Sword
+<color=#808080>A heavy cavalry sword with a slightly curved blade.</color>
+
+::Haedonggum_ //id 1128 - Sword
+<color=#808080>A ancient sword said to have the mysterious power to control minds.</color>
+
+::Flamberge //id 1129 - Sword
+<color=#808080>A powerful sword with a decoratively wavy, flame-like blade.</color>
+
+::Nagan //id 1130 - Sword
+<color=#808080>A sword topped with several extra edges for making wounds deeper and more unsightly.</color>
+
+::Ice_Falchion //id 1131 - Sword
+<color=#808080>A formal decorative sword imbued with water.</color>
+
+::Edge //id 1132 - Sword
+<color=#808080>A sword with an extremely sharp blade.</color>
+
+::Fire_Brand //id 1133 - Sword
+<color=#808080>A formal decorative sword imbued with fire.</color>
+
+::Caesar's_Sword //id 1134 - Sword
+<color=#808080>A sword that looks like a pair of giant scissors.</color>
+
+::Cutlus //id 1135 - Sword
+<color=#808080>A sword popularized by sea adventurers.</color>
+
+::Solar_Sword //id 1136 - Sword
+<color=#808080>A sword adorned with an engraving of the sun, symbolizing battle spirit and vigor.</color>
+
+::Excalibur //id 1137 - Sword
+<color=#808080>The sword of legend that supposedly selects its owner by its own will.</color>
+
+::Mistilteinn //id 1138 - Sword
+<color=#808080>A sword inspired by the legendary twig that killed Baldur, god of light.</color>
+
+::Tyrfing //id 1139 - Sword
+<color=#808080>A sword rumored to bring a horrific fate to whoever wields it.</color>
+
+::Byeol-ungeom //id 1140 - Sword
+<color=#808080>A giant sword used by ancient war generals.</color>
+
+::Immaterial_Sword //id 1141 - Sword
+<color=#808080>A formless sword that can ravage the enemy's mind.</color>
+
+::Jeweled_Sword //id 1142 - Sword
+<color=#808080>A sword with a beautiful, transparent blade and a hilt adorned with a princely jewel.</color>
+
+::Gaia_Sword //id 1143 - Sword
+<color=#808080>An enchanted sword that draws ore from fallen monsters.</color>
+
+::Sashimi //id 1144 - Sword
+<color=#808080>An extremely sharp, thin bladed sword easily slices fish.</color>
+
+::Holy_Avenger //id 1145 - Sword
+神聖な力で敵を攻撃する剣。
+
+
+::Town_Sword //id 1146 - Sword
+<color=#808080>A common, humbly made sword that is intended for the use by those without sword expertise.</color>
+
+::Town_Sword_ //id 1147 - Sword
+<color=#808080>A common, humbly made sword that is intended for the use by those without sword expertise.</color>
+
+::Star_Dust_Blade //id 1148 - Sword
+<color=#808080>A spectacular sword with a blade forged out of meteorite that shines like starlight during the night.</color>
+
+::Flamberge_ //id 1149 - Sword
+<color=#808080>A powerful sword with a decoratively wavy, flame-like blade.</color>
+
+::Slayer //id 1151 - 2HSword
+<color=#808080>A fearsome sword that has slain many warriors in battle.</color>
+
+::Slayer_ //id 1152 - 2HSword
+<color=#808080>A fearsome sword that has slain many warriors in battle.</color>
+
+::Bastard_Sword //id 1154 - 2HSword
+<color=#808080>A straight bladed sword that can be brutally swung like a baseball bat.</color>
+
+::Bastard_Sword_ //id 1155 - 2HSword
+<color=#808080>A straight bladed sword that can be brutally swung like a baseball bat.</color>
+
+::Two-Handed_Sword //id 1157 - 2HSword
+<color=#808080>A mighty, yet awfully basic, sword.</color>
+
+::Two-Handed_Sword_ //id 1158 - 2HSword
+<color=#808080>A mighty, yet awfully basic, sword.</color>
+
+::Broad_Sword //id 1160 - 2HSword
+<color=#808080>A sword with a wide, double sided blade.</color>
+
+::Balmung //id 1161 - 2HSword
+<color=#808080>Sword wielded by mighty GOD-POING, the lawless heroine.</color>
+
+::Broad_Sword_ //id 1162 - 2HSword
+<color=#808080>A sword with a wide, double sided blade.</color>
+
+::Claymore //id 1163 - 2HSword
+<color=#808080>A large, double-edged broad sword that was used by the highlanders.</color>
+
+::Muramasa //id 1164 - 2HSword
+<color=#808080>An oriental sword named after the legendary swordsmith, Muramasa.</color>
+
+::Masamune //id 1165 - 2HSword
+<color=#808080>An oriental sword named after the legendary swordsmith, Masamune.</color>
+
+::Dragon_Slayer //id 1166 - 2HSword
+<color=#808080>A giant sword, made from a dragon's tooth, that can easily cut through dragon scales.</color>
+
+::Schweizersabel //id 1167 - 2HSword
+<color=#808080>A formal decorative sword imbued with wind.</color>
+
+::Zweihander //id 1168 - 2HSword
+<color=#808080>An enormous sword designed for two hands.</color>
+
+::Executioner //id 1169 - 2HSword
+<color=#808080>A gruesome sword used to behead criminals judged with the death penalty.</color>
+
+::Katzbalger //id 1170 - 2HSword
+<color=#808080>A sword with a unique "S" shaped hilt.</color>
+
+::Zweihander_ //id 1171 - 2HSword
+<color=#808080>An enormous sword designed for two hands.</color>
+
+::Claymore_ //id 1172 - 2HSword
+<color=#808080>A large, double-edged broad sword that was used by the highlanders.</color>
+
+::Atlas_Weapon //id 1175 - 2HSword
+<color=#808080>A massive sword wielded by Atroce that is too large to be handled by ordinary warriors.</color>
+
+::Muscle_Cutter //id 1176 - 2HSword
+<color=#808080>A weapon that is designed to easily slice muscles.</color>
+
+::Schweizersabel_ //id 1178 - 2HSword
+<color=#808080>A formal decorative sword imbued with wind.</color>
+
+::Executioner_ //id 1179 - 2HSword
+<color=#808080>A gruesome sword used to behead criminals judged with the death penalty.</color>
+
+::Dragon_Slayer_ //id 1180 - 2HSword
+<color=#808080>A giant sword, made from a dragon's tooth, that can easily cut through dragon scales.</color>
+
+::Tae_Goo_Lyeon //id 1181 - 2HSword
+<color=#808080>A sword passed down from master to master.</color>
+
+::Bloody_Eater //id 1182 - 2HSword
+<color=#808080>A magical sword that emits a dismal black aura.</color>
+Recover 100 HP/melee kill
+
+::Brave_Katzbalger //id 1183 - 2HSword
+STR +2
+
+::Valorous_Katzbalger //id 1184 - 2HSword
+CRIT +20
+
+::Violet_Fear //id 1185 - 2HSword
+<color=#808080>A huge violet sword made from the twin swords of Naght Sieger.</color>
+
+::Death_Guidance //id 1186 - 2HSword
+<color=#808080>A cursed weapon that longs for the destruction of all living beings, including its owner, and secludes them to a life of misery.</color>
+
+::Glorious_Claymore //id 1187 - 2HSword
++25% DEF ignore vs. Demi-Human
+
+::Knife //id 1201 - Dagger
+<color=#808080>A simple knife.</color>
+
+::Knife_ //id 1202 - Dagger
+<color=#808080>A simple knife.</color>
+
+::Cutter //id 1204 - Dagger
+<color=#808080>A knife used for cutting.</color>
+
+::Cutter_ //id 1205 - Dagger
+<color=#808080>A knife used for cutting.</color>
+
+::Main_Gauche //id 1207 - Dagger
+<color=#808080>A dagger held in the left hand to parry attacks.</color>
+
+::Main_Gauche_ //id 1208 - Dagger
+<color=#808080>A dagger held in the left hand to parry attacks.</color>
+
+::Dirk //id 1210 - Dagger
+<color=#808080>An ancient knife used by highlanders.</color>
+
+::Dirk_ //id 1211 - Dagger
+<color=#808080>An ancient knife used by highlanders.</color>
+
+::Dagger //id 1213 - Dagger
+<color=#808080>A knife used for stabbing.</color>
+
+::Dagger_ //id 1214 - Dagger
+<color=#808080>A knife used for stabbing.</color>
+
+::Stiletto //id 1216 - Dagger
+<color=#808080>A long, thin blade that is used as a concealed weapon by assassins.</color>
+
+::Stiletto_ //id 1217 - Dagger
+<color=#808080>A long, thin blade that is used as a concealed weapon by assassins.</color>
+
+::Gladius //id 1219 - Dagger
+<color=#808080>A strong dagger crafted by traditional artisans.</color>
+
+::Gladius_ //id 1220 - Dagger
+<color=#808080>A strong dagger crafted by traditional artisans.</color>
+
+::Damascus //id 1222 - Dagger
+<color=#808080>A knife made of a special metal alloy that is incredibly strong.</color>
+
+::Fortune_Sword //id 1223 - Dagger
+<color=#808080>A knife with a gold handle that brings great fortune to whoever holds it.</color>
+
+::Swordbreaker //id 1224 - Dagger
+<color=#808080>A powerful dagger built to catch and destroy weapons.</color>
+
+::Mailbreaker //id 1225 - Dagger
+<color=#808080>A sharp dagger built to puncture and destroy armor.</color>
+
+::Damascus_ //id 1226 - Dagger
+<color=#808080>A knife made of a special metal alloy that is incredibly strong.</color>
+
+::Weeder_Knife //id 1227 - Dagger
+<color=#808080>A blade created to cut down stubborn weeds.</color>
+
+::Combat_Knife //id 1228 - Dagger
+<color=#808080>A military knife crafted for battle against humanoids.</color>
+
+::Kitchen_Knife //id 1229 - Dagger
+<color=#808080>A domestic knife used by housewives, or househusbands, for cooking.</color>
+
+::Ice_pick //id 1230 - Dagger
+<color=#808080>A thin, sharp blade capable of piercing the strongest of armors.</color>
+
+::Bazerald //id 1231 - Dagger
+<color=#808080>A decorative dagger engraved with luxurious emblems.</color>
+
+::Assassin_Dagger //id 1232 - Dagger
+<color=#808080>A dagger commonly used by assassins.</color>
+
+::Exorciser //id 1233 - Dagger
+<color=#808080>A ceremonial dagger used in exorcisms.</color>
+
+::Moonlight_Dagger //id 1234 - Dagger
+<color=#808080>A dagger imbued with the lunar spirit that drains the enemy's soul.</color>
+
+::Azoth //id 1235 - Dagger
+<color=#808080>A dagger that symbolizes the potential of Alchemy.</color>
+
+::Sucsamad //id 1236 - Dagger
+<color=#808080>A dagger crafted in the ancient, traditional ways of a small desert tribe.</color>
+
+::Grimtooth //id 1237 - Dagger
+<color=#808080>A cursed dagger forged out of a monster's tooth that causes insanity to whoever wields it.</color>
+
+::Zeny_Knife //id 1238 - Dagger
+<color=#808080>A dagger crafted by pickpockets to assist them in their daily life.</color>
+
+::Poison_Knife //id 1239 - Dagger
+<color=#808080>A dreadful dagger that has been soaked in toxin.</color>
+
+::Cursed_Dagger //id 1241 - Dagger
+<color=#808080>A dagger possessed by evil and given power by hatred and malice.</color>
+
+::Dagger_of_Counter //id 1242 - Dagger
+<color=#808080>A dagger that has a high chance to do critical damage.</color>
+
+::Novice_Main_Gauche //id 1243 - Dagger
+<color=#808080>An exclusive main gauche for new adventurers.</color>
+
+::Cinquedea //id 1245 - Dagger
+<color=#808080>A wide bladed short sword crafted in a western country.</color>
+
+::Cinquedea_ //id 1246 - Dagger
+<color=#808080>A wide bladed short sword crafted in a western country.</color>
+
+::Kindle_Dagger //id 1247 - Dagger
+<color=#808080>A dagger that can be effectively used to start a fire.</color>
+
+::Obsidian_Dagger //id 1248 - Dagger
+<color=#808080>A dagger made from pure obsidian glass that shines eerily.</color>
+
+::Fisherman's_Dagger //id 1249 - Dagger
+<color=#808080>A dagger used by fishermen to catch shellfish and oysters.</color>
+
+::Jur //id 1250 - Katar
+<color=#808080>A set of blades worn on the back of both hands.</color>
+
+::Jur_ //id 1251 - Katar
+<color=#808080>A set of blades worn on the back of both hands.</color>
+
+::Katar //id 1252 - Katar
+<color=#808080>A set of daggers in which the blades are positioned above the knuckles.</color>
+
+::Katar_ //id 1253 - Katar
+<color=#808080>A set of daggers in which the blades are positioned above the knuckles.</color>
+
+::Jamadhar //id 1254 - Katar
+<color=#808080>A katar with two blades that move like scissors to reveal a third blade from within.</color>
+
+::Jamadhar_ //id 1255 - Katar
+<color=#808080>A katar with two blades that move like scissors to reveal a third blade from within.</color>
+
+::Katar_of_Frozen_Icicle //id 1256 - Katar
+<color=#808080>A katar fashioned from a cold, sharp icicle.</color>
+
+::Katar_of_Quaking //id 1257 - Katar
+<color=#808080>A katar sculpted from the desert.</color>
+
+::Katar_of_Raging_Blaze //id 1258 - Katar
+<color=#808080>A katar molded from an inferno.</color>
+
+::Katar_of_Piercing_Wind //id 1259 - Katar
+<color=#808080>A katar forged from powerful stormy winds.</color>
+
+::Sharpened_Legbone_of_Ghoul //id 1260 - Katar
+<color=#808080>A katar crafted from a ghoul's femur that radiates a dark, deathly aura.</color>
+
+::Infiltrator //id 1261 - Katar
+<color=#808080>A katar designed for quick human assassinations.</color>
+
+::Loki's_Nail //id 1262 - Katar
+<color=#808080>A double bladed katar that inflicts incurable wounds.</color>
+
+::Unholy_Touch //id 1263 - Katar
+<color=#808080>A katar forged out of resentment for the living.</color>
+
+::Specialty_Jur //id 1264 - Katar
+<color=#808080>A katar with many slots that is difficult to handle.</color>
+
+::Bloody_Roar //id 1265 - Katar
+<color=#808080>A katar designed to kill human that evokes a bestial roar when drenched in blood.</color>
+
+::Infiltrator_ //id 1266 - Katar
+<color=#808080>A katar designed for quick human assassinations.</color>
+
+::Katar_of_Frozen_Icicle_ //id 1275 - Katar
+<color=#808080>A katar fashioned from a cold, sharp icicle.</color>
+
+::Katar_of_Quaking_ //id 1276 - Katar
+<color=#808080>A katar sculpted from the desert.</color>
+
+::Katar_of_Raging_Blaze_ //id 1277 - Katar
+<color=#808080>A katar molded from an inferno.</color>
+
+::Katar_of_Piercing_Wind_ //id 1278 - Katar
+<color=#808080>A katar forged from powerful stormy winds.</color>
+
+::Brave_Katar //id 1279 - Katar
+STR +1, DEX +1, LUK +1
+
+::Valorous_Katar //id 1280 - Katar
+STR +1, DEX +1, LUK +1
+
+::Glorious_Bloody_Roar //id 1281 - Katar
++20% DEF ignore vs. Demi-Human
+
+::Glorious_Jamadhar //id 1282 - Katar
++70% physical damage vs. Demi-Human
+
+::Axe //id 1301 - Axe
+<color=#808080>A common axe.</color>
+
+::Axe_ //id 1302 - Axe
+<color=#808080>A common axe.</color>
+
+::Orcish_Axe //id 1304 - Axe
+<color=#808080>An axe crafted by orc smiths for orc warriors.</color>
+
+::Cleaver //id 1305 - Axe
+<color=#808080>A heavy, broad bladed hatchet used by butchers.</color>
+
+::War_Axe //id 1306 - Axe
+<color=#808080>A bloodthirsty axe that has aided many warriors in battle.</color>
+
+::Windhawk //id 1307 - Axe
+<color=#808080>An axe that summons wind around it, granting unprecedented speed.</color>
+
+::Orcish_Axe_ //id 1309 - Axe
+<color=#808080>An axe crafted by orc smiths for orc warriors.</color>
+
+::Glorious_Cleaver //id 1310 - Axe
++20% DEF ignore vs. Demi-Human
+
+::Battle_Axe //id 1351 - 2HAxe
+<color=#808080>A sturdy axe for fighting multiple enemies at once.</color>
+
+::Battle_Axe_ //id 1352 - 2HAxe
+<color=#808080>A sturdy axe for fighting multiple enemies at once.</color>
+
+::Hammer //id 1354 - 2HAxe
+<color=#808080>A really big hammer.</color>
+
+::Hammer_ //id 1355 - 2HAxe
+<color=#808080>A really big hammer.</color>
+
+::Buster //id 1357 - 2HAxe
+<color=#808080>A powerful axe that lives up to its mighty appearance.</color>
+
+::Buster_ //id 1358 - 2HAxe
+<color=#808080>A powerful axe that lives up to its mighty appearance.</color>
+
+::Two-Handed_Axe //id 1360 - 2HAxe
+<color=#808080>A two-handed, double bladed axe.</color>
+
+::Two-Handed_Axe_ //id 1361 - 2HAxe
+<color=#808080>A two-handed, double bladed axe.</color>
+
+::Bloody_Axe //id 1363 - 2HAxe
+<color=#808080>A terrifying axe that drenches the battlefield with blood once it cuts flesh.</color>
+
+::Great_Axe //id 1364 - 2HAxe
+<color=#808080>A humongous, double bladed axe.</color>
+
+::Sabbath //id 1365 - 2HAxe
+<color=#808080>An axe that guides lost souls to the afterlife.</color>
+
+::Light_Epsilon //id 1366 - 2HAxe
+<color=#808080>A ceremonial axe that possesses a holy power.</color>
+
+::Slaughter //id 1367 - 2HAxe
+<color=#808080>An axe that brutally slaughters enemies.</color>
+
+::Tomahawk //id 1368 - 2HAxe
+<color=#808080>A light, windy axe that can be thrown.</color>
+
+::Guillotine //id 1369 - 2HAxe
+<color=#808080>A huge guillotine blade welded to a handle for combat use.</color>
+Recover 2 SP/melee attack vs. Demi-Human
+
+::Doom_Slayer //id 1370 - 2HAxe
+<color=#808080>A gigantic, ridiculously heavy axe that requires great strength to use.</color>
+
+::Doom_Slayer_ //id 1371 - 2HAxe
+<color=#808080>A gigantic, ridiculously heavy axe that requires great strength to use.</color>
+
+::Bardiche //id 1375 - 2HAxe
+<color=#808080>A long bladed axe that deflects enemy attacks.</color>
+
+::Heart_Breaker //id 1376 - 2HAxe
+<color=#808080>An axe that breaks faces like Kafra Jasmine breaks hearts.</color>
+
+::Hurricane_Fury //id 1377 - 2HAxe
+<color=#808080>A massive axe embedded with an orb imbued with the power of a hurricane.</color>
+
+::Brave_Battle_Axe //id 1379 - 2HAxe
+STR +3
+
+::Valorous_Battle_Axe //id 1380 - 2HAxe
+STR +3
+
+::Glorious_Two-Handed_Axe //id 1382 - 2HAxe
++25% DEF ignore vs. Demi-Human
+
+::Javelin //id 1401 - Spear
+<color=#808080>A light spear that can be thrown, its safer to hold on to it though.</color>
+
+::Javelin_ //id 1402 - Spear
+<color=#808080>A light spear that can be thrown, its safer to hold on to it though.</color>
+
+::Spear //id 1404 - Spear
+<color=#808080>A basic spear that enables slightly longer ranged melee attacks.</color>
+
+::Spear_ //id 1405 - Spear
+<color=#808080>A basic spear that enables slightly longer ranged melee attacks.</color>
+
+::Pike //id 1407 - Spear
+<color=#808080>A long spear issued to foot soldiers.</color>
+
+::Pike_ //id 1408 - Spear
+<color=#808080>A long spear issued to foot soldiers.</color>
+
+::Lance //id 1410 - 2HSpear
+<color=#808080>A spear commonly used by mounted knights.</color>
+
+::Lance_ //id 1411 - 2HSpear
+<color=#808080>A spear commonly used by mounted knights.</color>
+
+::Gungnir //id 1413 - Spear
+<color=#808080>A legendary spear known for its accuracy.</color>
+
+::Gelerdria //id 1414 - Spear
+<color=#808080>A unique spear from a desert land.</color>
+
+::Brocca //id 1415 - Spear
+<color=#808080>A spear that pierces through enemy armor.</color>
+
+::Tjungkuletti //id 1416 - Spear
+<color=#808080>A spear that drains the souls of defeated enemies.</color>
+Recover 1 SP/melee attack
+
+::Pole_Axe //id 1417 - Spear
+<color=#808080>An axe head mounted on a long pole that breaks through thick armored plates.</color>
+
+::Gungnir_ //id 1418 - Spear
+<color=#808080>A legendary spear known for its accuracy.</color>
+
+::Long_Horn //id 1420 - Spear
+<color=#808080>A spear fashioned from a unicorn's horn, enabling it to neutralize poisons and inflict deep wounds.</color>
+
+::Battle_Hook //id 1421 - Spear
+<color=#808080>A spear tipped with a hook that can push and pull enemies.</color>
+
+::Hunting_Spear //id 1422 - Spear
+<color=#808080>A spear with a leaf shaped point that inflicts damage with its heavy weight.</color>
+
+::Assaulter_Spear //id 1425 - Spear
+STR +2
+
+::Glorious_Spear //id 1426 - Spear
++20% DEF ignore vs. Demi-Human
+
+::Guisarme //id 1451 - 2HSpear
+<color=#808080>A spear with a curved blade and puncturing spike that excels in mounted combat.</color>
+
+::Guisarme_ //id 1452 - 2HSpear
+<color=#808080>A spear with a curved blade and puncturing spike that excels in mounted combat.</color>
+
+::Glaive //id 1454 - 2HSpear
+<color=#808080>A spear with a huge sword-like spearhead.</color>
+
+::Glaive_ //id 1455 - 2HSpear
+<color=#808080>A spear with a huge sword-like spearhead.</color>
+
+::Partizan //id 1457 - 2HSpear
+<color=#808080>A spear topped with a double edged blade.</color>
+
+::Partizan_ //id 1458 - 2HSpear
+<color=#808080>A spear topped with a double edged blade.</color>
+
+::Trident //id 1460 - 2HSpear
+<color=#808080>A triple pronged spear that can also be used for fishing.</color>
+
+::Trident_ //id 1461 - 2HSpear
+<color=#808080>A triple pronged spear that can also be used for fishing.</color>
+
+::Halberd //id 1463 - 2HSpear
+<color=#808080>A spear with a steel spike and axe-blade which enables both piercing and hacking.</color>
+
+::Halberd_ //id 1464 - 2HSpear
+<color=#808080>A spear with a steel spike and axe-blade which enables both piercing and hacking.</color>
+
+::Crescent_Scythe //id 1466 - 2HSpear
+<color=#808080>A heavy scythe carried by the Grim Reaper.</color>
+
+::Bill_Guisarme //id 1467 - 2HSpear
+<color=#808080>A spear with a hooked blade that has proven its versatility in battle.</color>
+
+::Zephyrus //id 1468 - 2HSpear
+<color=#808080>A decorative spear imbued with wind.</color>
+
+::Longinus'_Spear //id 1469 - 2HSpear
+<color=#808080>A legendary spear owned by the tragic soldier, Longinus.</color>
+
+::Brionac //id 1470 - 2HSpear
+<color=#808080>A spear that radiates with the warm, glowing light of pure holiness.</color>
+
+::Hellfire //id 1471 - 2HSpear
+<color=#808080>A spear enchanted with the power to summon flame.</color>
+
+::Soul_Staff //id 1472 - Rod
+<color=#808080>A high quality staff that amplifies psychic power.</color>
+
+::Wizardry_Staff //id 1473 - Rod
+<color=#808080>An awesome staff crafted by an ancient wizard.</color>
+
+::Gae_Bolg //id 1474 - 2HSpear
+<color=#808080>A spear, created from the body of a dead, giant sea creature.</color>
+
+::Crescent_Scythe_ //id 1476 - 2HSpear
+<color=#808080>A heavy scythe carried by the Grim Reaper.</color>
+
+::Spectral_Spear //id 1477 - 2HSpear
+<color=#808080>The creator of this formidable spear sacrificed his own life to forge it, resulting in a curse that will try to dominate the wearer's soul.</color>
+
+::Ahlspiess //id 1478 - 2HSpear
+<color=#808080>An auger-shaped spear designed for striking enemy weak points.</color>
+
+::Spectral_Spear_ //id 1479 - 2HSpear
+<color=#808080>The creator of this formidable spear sacrificed his own life to forge it, resulting in a curse that will try to dominate the wearer's soul.</color>
+
+::Gae_Bolg_ //id 1480 - 2HSpear
+<color=#808080>A spear, created from the body of a dead, giant sea creature.</color>
+
+::Zephyrus_ //id 1481 - 2HSpear
+<color=#808080>A decorative spear imbued with wind.</color>
+
+::Assaulter_Lance //id 1482 - 2HSpear
+STR +2
+
+::Ivory_Lance //id 1483 - 2HSpear
+<color=#808080>A two handed spear crafted from fine ivory.</color>
+
+::Cardo //id 1484 - 2HSpear
+<color=#808080>A massive spear that could be mistaken for a temple pillar.</color>
+
+::Battle_Fork //id 1485 - 2HSpear
+<color=#808080>A three-pronged fork that doubles as a spear, it is lightweight despite its size.</color>
+
+::Glorious_Lance //id 1486 - 2HSpear
++25% DEF ignore vs. Demi-Human
+
+::Club //id 1501 - Mace
+<color=#808080>A heavy bludgeon that makes a handy weapon in a pinch.</color>
+
+::Club_ //id 1502 - Mace
+<color=#808080>A heavy bludgeon that makes a handy weapon in a pinch.</color>
+
+::Mace //id 1504 - Mace
+<color=#808080>A flanged, solid club that is effective for simple smashing.</color>
+
+::Mace_ //id 1505 - Mace
+<color=#808080>A flanged, solid club that is effective for simple smashing.</color>
+
+::Smasher //id 1507 - Mace
+<color=#808080>A basic, big hammer with spikes, it's excellent for breaking all sorts of things.</color>
+
+::Smasher_ //id 1508 - Mace
+<color=#808080>A basic, big hammer with spikes, it's excellent for breaking all sorts of things.</color>
+
+::Flail //id 1510 - Mace
+<color=#808080>An itimidating spiked metal ball that swings freely from a chain.</color>
+
+::Flail_ //id 1511 - Mace
+<color=#808080>An itimidating spiked metal ball that swings freely from a chain.</color>
+
+::Morning_Star //id 1513 - Mace
+<color=#808080>A metal club topped with a solid steel ball that's covered in spikes.</color>
+
+::Morning_Star_ //id 1514 - Mace
+<color=#808080>A metal club topped with a solid steel ball that's covered in spikes.</color>
+
+::Sword_Mace //id 1516 - Mace
+<color=#808080>A specialty weapon that beautifully combines combines the power of swords and maces.</color>
+
+::Sword_Mace_ //id 1517 - Mace
+<color=#808080>A specialty weapon that beautifully combines combines the power of swords and maces.</color>
+
+::Chain //id 1519 - Mace
+<color=#808080>A simple flail that consists of a thin mace attached to a chain of iron links.</color>
+
+::Chain_ //id 1520 - Mace
+<color=#808080>A simple flail that consists of a thin mace attached to a chain of iron links.</color>
+
+::Stunner //id 1522 - Mace
+<color=#808080>A huge, unwieldy club that can knock enemies unconscious.</color>
+
+::Spike //id 1523 - Mace
+<color=#808080>A flail, entirely covered in spikes, that swing wildly and haphazardly.</color>
+
+::Golden_Mace //id 1524 - Mace
+<color=#808080>A mace forged out of pure gold.</color>
+
+::Long_Mace //id 1525 - Mace
+<color=#808080>A long, thin mace built like a spear.</color>
+
+::Slash //id 1526 - Mace
+<color=#808080>A hefty mace with curved, sharp blades.</color>
+
+::Quadrille //id 1527 - Mace
+<color=#808080>A heavy and powerful iron mace with a rounded top.</color>
+
+::Grand_Cross //id 1528 - Mace
+<color=#808080>A cruciform mace that was blessed by the pope of the Rune Midgard kingdom.</color>
+Recover 1 SP/melee attack vs. Undead
+
+::Iron_Driver //id 1529 - Mace
+<color=#808080>A heavy, round headed club intended for athletic competitions.</color>
+
+::Mjolnir //id 1530 - Mace
+<color=#808080>A facsimile of the mighty hammer wielded by Thor, god of thunder.</color>
+
+::Wrench //id 1531 - Mace
+<color=#808080>A heavy tool with many practical applications.</color>
+
+::Stunner_ //id 1532 - Mace
+<color=#808080>A blow from this hefty mace can cause someone to black out.</color>
+
+::Spike_ //id 1538 - Mace
+<color=#808080>A flail, entirely covered in spikes, that swing wildly and haphazardly.</color>
+
+::Golden_Mace_ //id 1539 - Mace
+<color=#808080>A mace forged out of pure gold.</color>
+
+::Grand_Cross_ //id 1540 - Mace
+<color=#808080>A cruciform mace that was blessed by the pope of the Rune Midgard kingdom.</color>
+Recover 1 SP/melee attack vs. Undead
+
+::Nemesis //id 1541 - Mace
+<color=#808080>A large silver mace made for exorcisms.</color>
+
+::Brave_Morning_Star //id 1542 - Mace
+STR +1, DEX +1
+
+::Valorous_Morning_Star //id 1543 - Mace
+STR +1, DEX +1
+
+::Lunakaligo //id 1544 - Mace
+<color=#808080>An old, large black frying pan.</color>
+
+::Glorious_Morning_Star //id 1546 - Mace
++20% DEF ignore vs. Demi-Human
+
+::Book //id 1550 - Book
+<color=#808080>A book that's sturdy enough to be wielded as a weapon in an emergency.</color>
+
+::Bible //id 1551 - Book
+<color=#808080>A book containing a compilation of ancient and sacred writings.</color>
+
+::Tablet //id 1552 - Book
+<color=#808080>A tablet on which the words of the ancients have been engraved and immortalized.</color>
+
+::Book_of_Billows //id 1553 - Book
+<color=#808080>A hefty hard cover book enchanted with water.</color>
+
+::Book_of_Mother_Earth //id 1554 - Book
+<color=#808080>A hefty hard cover book enchanted with earth.</color>
+
+::Book_of_Blazing_Sun //id 1555 - Book
+<color=#808080>A hefty hard cover book enchanted with fire.</color>
+
+::Book_of_Gust_of_Wind //id 1556 - Book
+<color=#808080>A hefty hard cover book enchanted with wind.</color>
+
+::Book_of_the_Apocalypse //id 1557 - Book
+<color=#808080>A book that details prophesies concerning the end of the world.</color>
+
+::Girl's_Diary //id 1558 - Book
+<color=#808080>A cute diary which details a young girl's closest secrets, you can't bear the thought of reading it.</color>
+
+::Legacy_of_Dragon //id 1559 - Book
+<color=#808080>A book which details the origin and history of dragons.</color>
+
+::Sage's_Diary //id 1560 - Book
+<color=#808080>The diary of a great sage, published without his knowledge.</color>
+
+::Hardcover_Book //id 1561 - Book
+<color=#808080>A thick and heavy hardcover book that could really do some harm if swung around.</color>
+
+::Encyclopedia //id 1564 - Book
+<color=#808080>An encyclopedia crafted by a Prontera publisher famous for its craftsmanship.</color>
+
+::Ledger_of_Death //id 1565 - Book
+<color=#808080>A book used by demons to kill humans by inscribing their names. The last name, "Hollg--" looks like it wasn't completed.</color>
+
+::Book_of_Billows_ //id 1568 - Book
+<color=#808080>A hefty hard cover book enchanted with water.</color>
+
+::Book_of_Mother_Earth_ //id 1569 - Book
+<color=#808080>A hefty hard cover book enchanted with earth.</color>
+
+::Book_of_Blazing_Sun_ //id 1570 - Book
+<color=#808080>A hefty hard cover book enchanted with fire.</color>
+
+::Book_of_Gust_of_Wind_ //id 1571 - Book
+<color=#808080>A hefty hard cover book enchanted wind.</color>
+
+::Principles_of_Magic //id 1572 - Book
+<color=#808080>A book that helps students build a strong foundation in magic.</color>
+
+::Ancient_Magic //id 1573 - Book
+<color=#808080>A book with the impressive phrase, "There is no royal road to learning" on its cover.</color>
+
+::Brave_Book //id 1574 - Book
+STR +2, INT +1, MATK +15%
+
+::Valorous_Book //id 1575 - Book
+STR +1, INT +2, MATK +15%
+
+::Glorious_Tablet //id 1576 - Book
+MATK +15%
+
+::Glorious_Book //id 1577 - Book
+MATK +15%
+
+::Angra_Manyu //id 1599 - Mace
+<color=#808080>The Real Holy Cross.</color>
+ATK + 3000, MATK + 3000
+All Stats + 50
+
+::Rod //id 1601 - Rod
+<color=#808080>A simple magic wand.</color>
+MATK + 15%
+
+::Rod_ //id 1602 - Rod
+<color=#808080>A simple magic wand.</color>
+MATK + 15%
+
+::Wand //id 1604 - Rod
+<color=#808080>A rough-hewn wand that's great for spell casting.</color>
+INT + 1, MATK + 15%
+
+::Wand_ //id 1605 - Rod
+<color=#808080>A rough-hewn wand that's great for spell casting.</color>
+INT + 1, MATK + 15%
+
+::Staff //id 1607 - Rod
+<color=#808080>A wooden staff adorned with an enchanted jewel.</color>
+INT + 2, MATK + 15%
+
+::Staff_ //id 1608 - Rod
+<color=#808080>A wooden staff adorned with an enchanted jewel.</color>
+INT + 2, MATK + 15%
+
+::Arc_Wand //id 1610 - Rod
+<color=#808080>An ornate, elegantly crafted wand.</color>
+INT + 3, MATK + 15%
+
+::Arc_Wand_ //id 1611 - Rod
+<color=#808080>An ornate, elegantly crafted wand.</color>
+INT + 3, MATK + 15%
+
+::Mighty_Staff //id 1613 - Rod
+<color=#808080>A rare staff that converts psychic energy into brute strength.</color>
+STR + 10, MATK +15%
+
+::Wand_of_Occult //id 1614 - Rod
+<color=#808080>A shamanic wand topped with a goat's skull.</color>
+INT + 3, MATK + 15%
+
+::Evil_Bone_Wand //id 1615 - Rod
+<color=#808080>A wand of human bone, its dark aura can be sensed by those who wield it.</color>
+INT + 4, MATK + 15%
+
+::Wing_Staff //id 1616 - Rod
+<color=#808080>A staff containing a wind fairy that grants the essence of speed.</color>
+MATK + 15%
+
+::Survivor's_Rod //id 1617 - Rod
+<color=#808080>One of two staves developed through the united efforts of the Mage Guild and Prontera Church.</color>
+INT + 2, MATK + 15%
+
+::Survivor's_Rod_ //id 1618 - Rod
+<color=#808080>One of two staves developed through the united efforts of the Mage Guild and Prontera Church.</color>
+INT + 3, MATK + 15%
+
+::Survivor's_Rod__ //id 1619 - Rod
+<color=#808080>One of two staves developed through the united efforts of the Mage Guild and Prontera Church.</color>
+DEX + 2, MATK + 15%
+
+::Survivor's_Rod___ //id 1620 - Rod
+<color=#808080>One of two staves developed through the united efforts of the Mage Guild and Prontera Church.</color>
+DEX + 3, MATK + 15%
+
+::Hypnotist's_Staff //id 1621 - Rod
+<color=#808080>A staff with a hypnotizing effect that can make a Novice feel just like a High Wizard, sort of.</color>
+MATK + 15%
+
+::Hypnotist's_Staff_ //id 1622 - Rod
+<color=#808080>A staff with a hypnotizing effect that can make a Novice feel just like a High Wizard, sort of.</color>
+MATK + 15%
+
+::Lich's_Bone_Wand //id 1624 - Rod
+<color=#808080>A wand crafted from a lich's skull that threatens to curse anyone that harms its owner.</color>
+INT + 1, DEX + 1, MATK + 15%
+
+::Healing_Staff //id 1625 - Rod
+<color=#808080>A staff made from the Yggdrasil Tree branches with the engraving "Health and Longevity".</color>
+MATK + 15%
+
+::Piercing_Staff //id 1626 - Rod
+<color=#808080>A staff inset with a gem that disrupts magical protection.</color>
+INT + 4, MATK + 15%
+
+::Gentleman_Staff //id 1629 - Rod
+<color=#808080>A staff owned by a gentleman somewhere long ago.</color>
+DEX + 1, MATK + 15%
+
+::Release_of_Wish //id 1630 - Rod
+<color=#808080>A crystal staff that shines beautifully in sunlight.</color>
+INT + 3, MATK + 15%
+
+::Holy_Stick //id 1631 - Rod
+<color=#808080>A holy stick modified for exorcisms.</color>
+MATK + 15%
+
+::Brave_Arc_Wand //id 1632 - Rod
+INT +4, DEX +3, MATK +15%
+
+::Valorous_Arc_Wand //id 1633 - Rod
+INT +3, DEX +3, MATK +15%
+
+::Brave_Recovery_Wand //id 1634 - Rod
+MATK +15%
+
+::Valorous_Recovery_Wand //id 1635 - Rod
+INT +3, DEX +2, MATK +15%
+
+::Thorn_Staff_of_Darkness //id 1636 - Rod
+<color=#808080>A dark staff that is covered with thorns.</color>
+INT +3, DEX +3, MATK +15%
+
+::Eraser //id 1637 - Rod
+<color=#808080>A staff that disrupts the cognitive ability of foes.</color>
+INT +3, DEX +2, MATK +15%
+
+::Novice_Rod //id 1639 - Rod
+<color=#808080>A rod for beginners. Provides a small amount of magic power, useful for those without the talent for a traditional amplifying rod.</color>
+MATK + 8
+
+::Glorious_Arc_Wand //id 1640 - Rod
+MATK +15%
+
+::Glorious_Recovery_Wand //id 1641 - Rod
+MATK +15%
+
+::Bow //id 1701 - Bow
+<color=#808080>A common bow.</color>
+
+::Bow_ //id 1702 - Bow
+<color=#808080>A common bow.</color>
+
+::Composite_Bow //id 1704 - Bow
+<color=#808080>An average bow used for small game hunting.</color>
+
+::Composite_Bow_ //id 1705 - Bow
+<color=#808080>An average bow used for small game hunting.</color>
+
+::Great_Bow //id 1707 - Bow
+<color=#808080>A simply constructed bow that offers balanced performance.</color>
+
+::Great_Bow_ //id 1708 - Bow
+<color=#808080>A simply constructed bow that offers balanced performance.</color>
+
+::Cross_Bow //id 1710 - Bow
+<color=#808080>A specially bow that uses a mechanical firing mechanism.</color>
+
+::Cross_Bow_ //id 1711 - Bow
+<color=#808080>A specially bow that uses a mechanical firing mechanism.</color>
+
+::Arbalest_Bow //id 1713 - Bow
+<color=#808080>A powerful siege weapon that is, in essence, a huge crossbow.</color>
+
+::Gakkung_Bow //id 1714 - Bow
+<color=#808080>A bow made famous by its use by Goongso, a legendary archer.</color>
+
+::Arbalest_Bow_ //id 1715 - Bow
+<color=#808080>A powerful siege weapon that is, in essence, a huge crossbow.</color>
+
+::Gakkung_Bow_ //id 1716 - Bow
+<color=#808080>A bow made famous by its use by Goongso, a legendary archer.</color>
+
+::Hunter_Bow //id 1718 - Bow
+<color=#808080>A mighty bow that can only be effectively used by Hunters.</color>
+
+::Roguemaster's_Bow //id 1719 - Bow
+<color=#808080>A bow, created just for Thieves, that has excellent range.</color>
+
+::Rudra_Bow //id 1720 - Bow
+<color=#808080>A bow imbued with the sacred essence of Rudra, one of the ancient gods.</color>
+
+::Repeating_Crossbow //id 1721 - Bow
+<color=#808080>A crossbow that has improved range.</color>
+
+::Ballista //id 1722 - Bow
+<color=#808080>A huge bow inspired by giant siege weapons.</color>
+
+::Luna_Bow //id 1723 - Bow
+<color=#808080>A heavy moonstone bow that deflects attacks.</color>
+
+::Dragon_Wing //id 1724 - Bow
+<color=#808080>A bow constructed out of dragon bone.</color>
+
+::Hunter_Bow_ //id 1726 - Bow
+<color=#808080>A mighty bow that can only be effectively used by Hunters.</color>
+
+::Ballista_ //id 1727 - Bow
+<color=#808080>A huge bow inspired by giant siege weapons.</color>
+
+::Burning_Bow //id 1730 - Bow
+<color=#808080>A flaming bow that seems dangerous to grasp but is cool to the touch.</color>
+
+::Frozen_Bow //id 1731 - Bow
+<color=#808080>A frozen bow whose drawstring seems too solid to be pulled.</color>
+
+::Earthen_Bow //id 1732 - Bow
+<color=#808080>A warm bow that draws its power from the plains.</color>
+
+::Gust_Bow //id 1733 - Bow
+<color=#808080>A light bow that has been enhanced with the power of whirlwinds.</color>
+
+::Orc_Archer_Bow //id 1734 - Bow
+<color=#808080>A large, powerful bow used by Orc Archers.</color>
+
+::Brave_Cross_Bow //id 1738 - Bow
+DEX +2
+
+::Valorous_Cross_Bow //id 1739 - Bow
+INT +10, DEX +2
+
+::Cursed_Lyre //id 1741 - Bow
+<color=#808080>A cursed bow that killed a hero of an ancient nation long ago.</color>
+
+::Glorious_Bow //id 1743 - Bow
+CRIT damage +(2*Refine)%
+
+::Waghnak //id 1801 - Knuckle
+<color=#808080>A common, yet effective claw that's known as the "Tiger's Fang".</color>
+
+::Waghnak_ //id 1802 - Knuckle
+<color=#808080>A common, yet effective claw that's known as the "Tiger's Fang".</color>
+
+::Knuckle_Dusters //id 1803 - Knuckle
+<color=#808080>A protective covering that shields the back of the hand and forearm.</color>
+
+::Knuckle_Dusters_ //id 1804 - Knuckle
+<color=#808080>A protective covering that shields the back of the hand and forearm.</color>
+
+::Studded_Knuckles //id 1805 - Knuckle
+<color=#808080>A silver, spiked knuckle with diamond studs.</color>
+
+::Studded_Knuckles_ //id 1806 - Knuckle
+<color=#808080>A silver, spiked knuckle with diamond studs.</color>
+
+::Fist //id 1807 - Knuckle
+<color=#808080>A fist covering that enhances your physical strength.</color>
+
+::Fist_ //id 1808 - Knuckle
+<color=#808080>A fist covering that enhances your physical strength.</color>
+
+::Claw //id 1809 - Knuckle
+<color=#808080>A knuckle with three long steel claws.</color>
+
+::Claw_ //id 1810 - Knuckle
+<color=#808080>A knuckle with three long steel claws.</color>
+
+::Finger //id 1811 - Knuckle
+<color=#808080>A knuckle shaped like human fingers with long, sharp nails.</color>
+
+::Finger_ //id 1812 - Knuckle
+<color=#808080>A knuckle shaped like human fingers with long, sharp nails.</color>
+
+::Kaiser_Knuckle //id 1813 - Knuckle
+<color=#808080>A knuckle blessed by Zephyrus, god of the west wind.</color>
+
+::Berserk //id 1814 - Knuckle
+<color=#808080>A knuckle imbued with the essence of madness.</color>
+
+::Hati_Claw //id 1815 - Knuckle
+<color=#808080>A blood stained weapon created from the claws of Hati.</color>
+
+::Berserk_ //id 1816 - Knuckle
+<color=#808080>A claw imbued with the essence of madness.</color>
+
+::Magma_Fist //id 1818 - Knuckle
+<color=#808080>A knuckle imbued with the power of a volcano.</color>
+
+::Icicle_Fist //id 1819 - Knuckle
+<color=#808080>A knuckle imbued with the power of ice.</color>
+
+::Electric_Fist //id 1820 - Knuckle
+<color=#808080>A knuckle imbued with the power of lightning.</color>
+
+::Seismic_Fist //id 1821 - Knuckle
+<color=#808080>A knuckle imbued with the power of Mother Earth.</color>
+
+::Combo_Battle_Glove //id 1822 - Knuckle
+<color=#808080>A knuckle engraved with magic glyphs that grant incredible power.</color>
+
+::Brave_Fist //id 1823 - Knuckle
+STR +2, AGI +1
+
+::Valorous_Fist //id 1824 - Knuckle
+STR +2, INT +1
+
+::Glorious_Claw //id 1826 - Knuckle
++25% DEF ignore vs. Demi-Human
+
+::Glorious_Fist //id 1827 - Knuckle
++20% DEF ignore vs. Demi-Human
+
+::Violin //id 1901 - Instrument
+<color=#808080>A classical stringed instrument favored by Rocker, who'd rather play music than do actual work.</color>
+
+::Violin_ //id 1902 - Instrument
+<color=#808080>A classical stringed instrument favored by Rocker, who'd rather play music than do actual work.</color>
+
+::Mandolin //id 1903 - Instrument
+<color=#808080>A small instrument used in baroque, classical, country, and folk music.</color>
+
+::Mandolin_ //id 1904 - Instrument
+<color=#808080>A small instrument used in baroque, classical, country, and folk music.</color>
+
+::Lute //id 1905 - Instrument
+<color=#808080>A classical plucked string instrument that is difficult to tune.</color>
+
+::Lute_ //id 1906 - Instrument
+<color=#808080>A classical plucked string instrument that is difficult to tune.</color>
+
+::Guitar //id 1907 - Instrument
+<color=#808080>A six stringed instrument that is played by plucking the strings with a pick.</color>
+
+::Guitar_ //id 1908 - Instrument
+<color=#808080>A six-stringed instrument that is played by plucking the strings with a pick.</color>
+
+::Harp //id 1909 - Instrument
+<color=#808080>A stringed instrument known for its beautiful sound.</color>
+
+::Harp_ //id 1910 - Instrument
+<color=#808080>A stringed instrument known for its beautiful sound.</color>
+
+::Gumoongoh //id 1911 - Instrument
+<color=#808080>A traditional chordophone, favored by the aristocracy in days past.</color>
+
+::Gumoongoh_ //id 1912 - Instrument
+<color=#808080>A traditional chordophone, favored by the aristocracy in days past.</color>
+
+::Electric_Guitar //id 1913 - Instrument
+<color=#808080>An electric guitar which amplifies its user's power.</color>
+
+::Burning_Passion_Guitar //id 1914 - Instrument
+<color=#808080>A dazzling guitar that bewitches its user to play songs of passion.</color>
+
+::Loner's_Guitar //id 1915 - Instrument
+<color=#808080>A loner's guitar which makes a depressing sound when strummed.</color>
+
+::Green_Acre_Guitar //id 1916 - Instrument
+<color=#808080>A quaint guitar that resonates with the earth itself.</color>
+
+::Gentle_Breeze_Guitar //id 1917 - Instrument
+<color=#808080>A whimsical guitar that inspires a desire for travel.</color>
+
+::Oriental_Lute //id 1918 - Instrument
+<color=#808080>An ancient lute seen on display in oriental towns such as Payon, Amatsu or Kunlun.</color>
+
+::Oriental_Lute_ //id 1922 - Instrument
+<color=#808080>An ancient lute seen on display in oriental towns such as Payon, Amatsu or Kunlun.</color>
+
+::Brave_Guitar //id 1923 - Instrument
+DEX +2
+
+::Valorous_Guitar //id 1924 - Instrument
+DEX +2
+
+::Glorious_Guitar //id 1927 - Instrument
++95% physical damage vs. Demi-Human
+
+::Rope //id 1950 - Whip
+<color=#808080>A strong, thick cord composed of tightly braided fibers.</color>
+
+::Rope_ //id 1951 - Whip
+<color=#808080>A strong, thick cord composed of tightly braided fibers.</color>
+
+::Cord //id 1952 - Whip
+<color=#808080>A standard whip that's perfect for adventuring Dancers.</color>
+
+::Cord_ //id 1953 - Whip
+<color=#808080>A standard whip that's perfect for adventuring Dancers.</color>
+
+::Wire_Whip //id 1954 - Whip
+<color=#808080>A whip made of a flexible wire attached to an iron handle.</color>
+
+::Wire_Whip_ //id 1955 - Whip
+<color=#808080>A whip made of a flexible wire attached to an iron handle.</color>
+
+::Rante_Whip //id 1956 - Whip
+<color=#808080>A whip with a spiked ball attached at the end.</color>
+
+::Rante_Whip_ //id 1957 - Whip
+<color=#808080>A whip with a spiked ball attached at the end.</color>
+
+::Tail_Whip //id 1958 - Whip
+<color=#808080>A whip fashioned out of an animal's tail that brings good fortune.</color>
+
+::Tail_Whip_ //id 1959 - Whip
+<color=#808080>A whip fashioned out of an animal's tail that brings good fortune.</color>
+
+::Leather_Whip //id 1960 - Whip
+<color=#808080>A common and normal whip.</color>
+
+::Leather_Whip_ //id 1961 - Whip
+<color=#808080>A common and normal whip.</color>
+
+::Lariat_Whip //id 1962 - Whip
+<color=#808080>A hefty whip made from toughened snake skin.</color>
+
+::Rapture_Rose //id 1963 - Whip
+<color=#808080>A whip constructed purely of thorny rosebush stems.</color>
+
+::Chemeti_Whip //id 1964 - Whip
+<color=#808080>A powerful whip made of steel chain for heavy duty battles.</color>
+
+::Red_Flame_Whip //id 1965 - Whip
+<color=#808080>A whip fashioned from worn, hot leather dried in the desert sun.</color>
+
+::Icicle_Whip //id 1966 - Whip
+<color=#808080>A whip fashioned from enchanted, eternally frozen, icicles.</color>
+
+::Gaia_Whip //id 1967 - Whip
+<color=#808080>A whip fashioned from tough braided tree roots.</color>
+
+::Skipping_Rope //id 1968 - Whip
+<color=#808080>A skipping rope with wooden handles.</color>
+
+::Blade_Whip //id 1969 - Whip
+<color=#808080>A wire in which blade fragments are interwoven, that makes this whip as sharp as a sword.</color>
+
+::Queen's_Whip //id 1970 - Whip
+<color=#808080>A whip fit for a queen.</color>
+
+::Electric_Wire //id 1971 - Whip
+<color=#808080>A whip fashioned from a live electric wire.</color>
+
+::Queen's_Whip_ //id 1976 - Whip
+<color=#808080>A whip thats the best of the best.</color>
+
+::Brave_Lariat //id 1977 - Whip
+DEX +2
+
+::Valorous_Lariat //id 1978 - Whip
+DEX +2
+
+::Glorious_Lariat //id 1981 - Whip
++20% DEF ignore vs. Demi-Human
+
+::Staff_of_Destruction //id 2000 - 2HRod
+<color=#808080>A tremendously powerful staff that can be wielded by the spiritually strong.</color>
+
+::Divine_Cross //id 2001 - 2HRod
+<color=#808080>A staff that is composed of two parts to form a cross.</color>
+
+::Glorious_Staff //id 2002 - 2HRod
+MATK +15%
+
+::Jujube_Dagger //id 13000 - Dagger
+<color=#808080>This dagger is made from Jujube tree struck by lightning.</color>
+
+::Dragon_Killer //id 13001 - Dagger
+<color=#808080>A dagger crafted from a dragon's fang that can easily pierce dragon scales.</color>
+
+::Ginnungagap //id 13002 - Dagger
+<color=#808080>A dagger with an unnaturally dark colored blade, there is an instinctive sense of danger wielding this weapon.</color>
+
+::Cowardice_Blade //id 13003 - Dagger
+<color=#808080>A dagger invented by a cowardly thief who prioritized defense.</color>
+
+::Cowardice_Blade_ //id 13004 - Dagger
+<color=#808080>A dagger invented by a cowardly thief who prioritized defense.</color>
+
+::Khukri //id 13006 - Dagger
+<color=#808080>A dark dagger whose hilt is crafted from a black dragon scale.</color>
+
+::Jitte //id 13007 - Dagger
+<color=#808080>A dagger topped with a hook that can catch and break weapons.</color>
+
+::Jitte_ //id 13008 - Dagger
+<color=#808080>A dagger topped with a hook that can catch and break weapons.</color>
+
+::Kamaitachi //id 13009 - Dagger
+<color=#808080>A legendary weapon with extremely sharp blades.</color>
+
+::Asura //id 13010 - Dagger
+<color=#808080>A legendary dagger that is said to have been given to mankind by the gods.</color>
+
+::Asura_ //id 13011 - Dagger
+<color=#808080>A legendary dagger that is said to have been given to mankind by the gods.</color>
+
+::Murasame //id 13012 - Dagger
+<color=#808080>A famous sword sharp enough to divide oceans or cut the air to make it bleed water.</color>
+
+::Murasame_ //id 13013 - Dagger
+<color=#808080>A famous sword sharp enough to divide oceans or cut the air to make it bleed water.</color>
+
+::Hakujin //id 13014 - Dagger
+<color=#808080>A dagger that has a shining white blade crafted of bone.</color>
+
+::Hakujin_ //id 13015 - Dagger
+<color=#808080>A dagger that has a shining white blade crafted of bone.</color>
+
+::Poison_Knife_ //id 13016 - Dagger
+<color=#808080>A dreadful dagger that has been soaked in toxin.</color>
+
+::Ice_Pick //id 13017 - Dagger
+<color=#808080>A thin, sharp blade capable of piercing the strongest of armors.</color>
+
+::Sucsamad_ //id 13018 - Dagger
+<color=#808080>A dagger crafted in the ancient, traditional ways of a small desert tribe.</color>
+
+::Ginnungagap_ //id 13019 - Dagger
+<color=#808080>A dagger with an unnaturally dark colored blade, there is an instinctive sense of danger wielding this weapon.</color>
+
+::Scalpel //id 13027 - Dagger
+<color=#808080>A small, light, and sharp dagger optimized for swift strikes.</color>
+
+::Tooth_Blade //id 13028 - Dagger
+<color=#808080>A dentist's scalpel that can impede the victim's ability to speak.</color>
+
+::Dragon_Killer_ //id 13030 - Dagger
+<color=#808080>A dagger crafted from a dragon's fang that can easily pierce dragon scales.</color>
+
+::Swordbreaker_ //id 13031 - Dagger
+<color=#808080>A powerful dagger built to catch and destroy weapons.</color>
+
+::Mailbreaker_ //id 13032 - Dagger
+<color=#808080>A sharp dagger built to puncture and destroy armor.</color>
+
+::Assassin_Dagger_ //id 13033 - Dagger
+<color=#808080>A dagger commonly used by assassins.</color>
+
+::Brave_Damascus //id 13036 - Dagger
+STR +1, AGI +1
+
+::Valorous_Damascus //id 13037 - Dagger
+STR +1, AGI +1
+
+::Ivory_Knife //id 13039 - Dagger
+<color=#808080>An ivory dagger, its sharp tip makes it effective for stabbing.</color>
+
+::Glorious_Gladius //id 13042 - Dagger
++20% DEF ignore vs. Demi-Human
+
+::Six_Shooter //id 13100 - Handgun
+<color=#808080>A basic six chambered pistol.</color>
+
+::Six_Shooter_ //id 13101 - Handgun
+<color=#808080>A basic six chambered pistol.</color>
+
+::Crimson_Bolt //id 13102 - Handgun
+<color=#808080>A bloody red pistol that is rumored to be cursed, but it's only a rumor.</color>
+
+::Crimson_Bolt_ //id 13103 - Handgun
+<color=#808080>A bloody red pistol that is rumored to be cursed, but it's only a rumor.</color>
+
+::Garrison //id 13104 - Handgun
+<color=#808080>A rare pistol whose authenticity can be verified by the engraving.</color>
+
+::Garrison_ //id 13105 - Handgun
+<color=#808080>A rare pistol whose authenticity can be verified by the engraving.</color>
+
+::Gold_Lux //id 13106 - Handgun
+<color=#808080>A decorative, beautiful golden pistol.</color>
+
+::Wasteland's_Outlaw //id 13107 - Handgun
+<color=#808080>A firearm used by gunslingers to brave the wilderness.</color>
+
+::Soldier_Pistol //id 13108 - Handgun
+DEX +2, HIT -10
+
+::Glorious_Pistol //id 13110 - Handgun
++20% DEF ignore vs. Demi-Human
+
+::Branch //id 13150 - Rifle
+<color=#808080>A firearm with a focus on range and accuracy.</color>
+
+::Cyclone //id 13151 - Rifle
+<color=#808080>A high performance rifle with great range and power.</color>
+
+::Cyclone_ //id 13152 - Rifle
+<color=#808080>A high performance rifle with great range and power.</color>
+
+::Dusk //id 13153 - Rifle
+<color=#808080>An advanced rifle with reinforced explosive power.</color>
+
+::Rolling_Stone //id 13154 - Shotgun
+<color=#808080>A heavy shotgun which sounds like flint striking steel.</color>
+
+::Black_Rose //id 13155 - Shotgun
+<color=#808080>A dark, stylish shotgun.</color>
+
+::Gate_Keeper //id 13156 - Shotgun
+<color=#808080>The most powerful shotgun available, a Gunslinger's best friend.</color>
+
+::Drifter //id 13157 - GatlingGun
+<color=#808080>A gatling gun which evokes the image of a lonely traveler.</color>
+
+::Butcher //id 13158 - GatlingGun
+<color=#808080>A gatling gun with enormous destructive power.</color>
+
+::Butcher_ //id 13159 - GatlingGun
+<color=#808080>A gatling gun with enormous destructive power.</color>
+
+::Destroyer //id 13160 - Grenade
+<color=#808080>A top of the line, high performance grenade launcher.</color>
+
+::Destroyer_ //id 13161 - Grenade
+<color=#808080>A top of the line, high performance grenade launcher.</color>
+
+::Inferno //id 13162 - Grenade
+<color=#808080>A grenade launcher that propels bullets with hellfire.</color>
+
+::Long_Barrel //id 13163 - Rifle
+<color=#808080>A sniping rifle with a lengthened barrel for improved accuracy.</color>
+
+::Long_Barrel_ //id 13164 - Rifle
+<color=#808080>A sniping rifle with a lengthened barrel for improved accuracy.</color>
+
+::Jungle_Carbine //id 13165 - Rifle
+<color=#808080>A short barrel rifle suited close quarters combat in the jungle.</color>
+
+::Jungle_Carbine_ //id 13166 - Rifle
+<color=#808080>A short barrel rifle suited close quarters combat in the jungle.</color>
+
+::Gate_Keeper-DD //id 13167 - Shotgun
+<color=#808080>TA modified Gate Keeper with a barrel coated in pure oridecon.</color>
+
+::Thunder_P //id 13168 - Shotgun
+<color=#808080>A sawed off shotgun that fires rapidly at the cost of reduced accuracy.</color>
+
+::Thunder_P_ //id 13169 - Shotgun
+<color=#808080>A sawed off shotgun that fires rapidly at the cost of reduced accuracy.</color>
+
+::Lever_Action_Rifle //id 13170 - Rifle
+<color=#808080>An ornate rifle that fires penetrating shots but reloads slowly.</color>
+
+::Soldier_Rifle //id 13171 - Rifle
+DEX +2, HIT +10, CRIT +10
+
+::Soldier_Gatling_Gun //id 13172 - GatlingGun
+DEX +2
+
+::Soldier_Shotgun //id 13173 - Shotgun
+DEX +2
+
+::Soldier_Grenade_Launcher //id 13174 - Grenade
+DEX +2
+
+::Glorious_Rifle //id 13176 - Rifle
++20% DEF ignore vs. Demi-Human
+
+::Glorious_Gatling_Gun //id 13177 - GatlingGun
++20% DEF ignore vs. Demi-Human
+
+::Glorious_Shotgun //id 13178 - Shotgun
+splash 3x3 AoE on non-skill attack
+
+::Glorious_Grenade_Launcher //id 13179 - Grenade
++20% DEF ignore vs. Demi-Human
+
+::Huuma_Wing_Shuriken //id 13300 - Shuriken
+<color=#808080>A famous huuma that is shaped like a wing.</color>
+
+::Huuma_Giant_Wheel_Shuriken //id 13301 - Shuriken
+<color=#808080>A heavy, giant huuma shaped like a bladed wheel.</color>
+
+::Huuma_Giant_Wheel_Shuriken_ //id 13302 - Shuriken
+<color=#808080>A heavy, giant huuma shaped like a bladed wheel.</color>
+
+::Huuma_Blaze_Shuriken //id 13303 - Shuriken
+<color=#808080>A huuma that sparks like a firecracker when it strikes enemies.</color>
+
+::Huuma_of_Calm_Mind //id 13304 - Shuriken
+<color=#808080>A huuma that enables the user to remain calm in any situation.</color>
+
+::Brave_Huuma //id 13305 - Shuriken
+STR +2, DEX +1
+
+::Valorous_Huuma //id 13306 - Shuriken
+STR +2, DEX +1
+
+::Glorious_Huuma //id 13307 - Shuriken
+MATK +15%
+
+::Cutlus_ //id 13400 - Sword
+<color=#808080>A sword popularized by sea adventurers.</color>
+
+::Platinum_Shotel //id 13404 - Sword
+<color=#808080>A fearsome weapon with a unique curved blade.</color>
+
+::Curved_Sword //id 13405 - Sword
+<color=#808080>A thick, flexible sword forged from an elastic alloy.</color>
+
+::Brave_Blade //id 13410 - Sword
+STR +1, DEX +1
+
+::Valorous_Blade //id 13411 - Sword
+STR +1, DEX +1
+
+::Twin_Edge_of_Naght_Sieger //id 13412 - Sword
+<color=#808080>One of the twin swords of Naght Sieger, this blue blade exerts raw technique.</color>
+
+::Twin_Edge_of_Naght_Sieger_ //id 13413 - Sword
+<color=#808080>One of the twin swords of Naght Sieger, this red blade exerts raw strength.</color>
+
+::Elemental_Sword //id 13414 - Sword
+<color=#808080>A magical sword that attacks with a variety of elements.</color>
+
+::Glorious_Flamberge //id 13416 - Sword
++20% DEF ignore vs. Demi-Human
+
+::Glorious_Rapier //id 13417 - Sword
+INT +(Refine + 1)
+
+::Glorious_Holy_Avenger //id 13418 - Sword
+INT +(1 + Refine)
+

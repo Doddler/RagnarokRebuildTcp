@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Buffers;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -41,7 +45,8 @@ public class Npc : IEntityAutoReset
     public int[]? ParamsInt;
     public string? ParamString;
 
-    public List<int>? ItemsForSale;
+    public List<(int, int)>? ItemsForSale;
+    public HashSet<int>? SaleItemHashes;
 
     public NpcBehaviorBase Behavior = null!;
 
@@ -110,6 +115,7 @@ public class Npc : IEntityAutoReset
         Name = "";
         EventType = null!;
         ItemsForSale = null; //no point in pooling these, we don't place vendor npcs during runtime usually
+        SaleItemHashes = null;
 
         if(Mobs != null)
             EntityListPool.Return(Mobs);
@@ -421,12 +427,174 @@ public class Npc : IEntityAutoReset
         chara.Events.Clear();
         //OnMobKill();
     }
+    
+    //finish npc shop purchase. We don't use the array sizes directly because they're borrowed and might be larger than expected
+    public void SubmitPlayerPurchaseFromNpc(Player player, int[] itemIds, int[] itemCounts, int numItems)
+    {
+        if (ItemsForSale == null || SaleItemHashes == null || SaleItemHashes.Count <= 0)
+            return;
+
+        var totalCost = 0;
+        var totalWeight = 0;
+        var addItemCount = 0;
+        var inventory = player.Inventory;
+
+        for (var i = 0; i < numItems; i++)
+        {
+            var id = itemIds[i];
+            var count = itemCounts[i];
+            if(count <= 0)
+                goto Error;
+            if (!SaleItemHashes.Contains(id))
+            {
+                ServerLogger.LogWarning($"Player {player} is attempting to buy item id {id} from {Character.Name}, but that item is not for sale.");
+                goto Error; //lol goto
+            }
+            if(inventory == null || !inventory.HasItem(id))
+                addItemCount++;
+            var info = DataManager.GetItemInfoById(id);
+            if (info == null)
+            {
+                ServerLogger.LogWarning($"Player {player} is attempting to buy item id {id} from {Character.Name}, but that item is not a valid item.");
+                goto Error;
+            }
+
+            totalCost += info.Price * count;
+            totalWeight += info.Weight * count;
+        }
+
+        var zeny = player.GetData(PlayerStat.Zeny);
+        if (totalCost > zeny)
+        {
+            CommandBuilder.ErrorMessage(player, $"Could not complete purchase, you don't have enough zeny.");
+            return;
+        }
+
+        var existingWeight = inventory != null ? inventory.BagWeight : 0;
+        var existingCount = inventory != null ? inventory.UsedSlots : 0;
+
+        if (existingWeight + totalWeight > player.GetStat(CharacterStat.WeightCapacity))
+        {
+            CommandBuilder.ErrorMessage(player, $"Could not complete purchase, you can't carry that much weight.");
+            return;
+        }
+        
+        if (existingCount + addItemCount > CharacterBag.MaxBagSlots)
+        {
+            CommandBuilder.ErrorMessage(player, $"Could not complete purchase, you don't have enough free space.");
+            return;
+        }
+
+        //we got this far, lets go
+        player.SetData(PlayerStat.Zeny, zeny - totalCost); //do this first
+        for (var i = 0; i < numItems; i++)
+        {
+            var item = new ItemReference(itemIds[i], itemCounts[i]);
+            player.CreateItemInInventory(item);
+        }
+
+        CommandBuilder.SendServerEvent(player, ServerEvent.TradeSuccess, -totalCost);
+
+        player.WriteCharacterToDatabase(); //save immediately, no shenanigans
+        CommandBuilder.SendUpdatePlayerData(player, true, false);
+
+        return;
+        Error:
+            CommandBuilder.ErrorMessage(player, $"Could not complete purchase.");
+    }
+
+    public void SubmitPlayerSellItemsToNpc(Player player, int[] itemIds, int[] itemCounts, int numItems)
+    {
+        var inventory = player.Inventory;
+        if (inventory == null)
+            throw new Exception($"Player {player} is attempting to sell items when it has no inventory!");
+        if (numItems > inventory.UsedSlots)
+            return;
+
+        var zenyGained = 0;
+        for (var i = 0; i < numItems; i++)
+        {
+            if (!inventory.GetItem(itemIds[i], out var item))
+            {
+                CommandBuilder.ErrorMessage(player, $"Could not complete sale, one or more items that you have tried to sell are not available.");
+                return;
+            }
+            if (item.Count < itemCounts[i])
+            {
+                CommandBuilder.ErrorMessage(player, $"Could not complete sale, the items in your request do not match the number you have in your inventory.");
+                return;
+            }
+
+            if (player.Equipment.IsItemEquipped(itemIds[i]))
+            {
+                CommandBuilder.ErrorMessage(player, $"Could not complete sale, you are unable to sell items you currently have equipped.");
+                return;
+            }
+
+            var info = DataManager.GetItemInfoById(item.Id);
+            if (info.ItemClass != ItemClass.Ammo) //ammo always sells to the NPC for 0, allows NPCs to sell quivers and the like without worry of exploit.
+                zenyGained += (int)(info.Price/2) * itemCounts[i];
+        }
+
+        //all good, lets get to discarding
+        for (var i = 0; i < numItems; i++)
+        {
+            inventory.RemoveItemByBagId(itemIds[i], itemCounts[i]);
+        }
+
+        ServerLogger.Log($"Player {player} sold {numItems} types of items to the NPC {Character.Name} for a total of {zenyGained}z.");
+        CommandBuilder.SendServerEvent(player, ServerEvent.TradeSuccess, zenyGained);
+
+        var curZeny = player.GetData(PlayerStat.Zeny);
+        player.SetData(PlayerStat.Zeny, zenyGained + curZeny);
+
+        player.WriteCharacterToDatabase(); //save immediately, no shenanigans
+        CommandBuilder.SendUpdatePlayerData(player, true, false);
+    }
 
     public void SellItem(string itemName)
     {
-        ItemsForSale ??= new List<int>();
-        if(DataManager.ItemIdByName.TryGetValue(itemName, out var id))
-            ItemsForSale.Add(id);
+        ItemsForSale ??= new List<(int, int)>();
+        SaleItemHashes ??= new HashSet<int>();
+        if (DataManager.ItemIdByName.TryGetValue(itemName, out var id))
+        {
+            if (DataManager.ItemList.TryGetValue(id, out var info))
+            {
+                ItemsForSale.Add((id, info.Price));
+                if (!SaleItemHashes.Contains(id))
+                {
+                    
+                    SaleItemHashes.Add(id);
+                }
+                //else
+                //    ServerLogger.LogWarning($"Npc {FullName} unable to sell item {itemName} more than once!");
+            }
+            else
+                ServerLogger.LogWarning($"Npc {FullName} unable to sell item {itemName} it's item details could not be found in the item list.");
+        }
+        else
+            ServerLogger.LogWarning($"Npc {FullName} unable to sell item {itemName} as it could not be found.");
+    }
+
+    public void SellItem(string itemName, int price)
+    {
+        ItemsForSale ??= new List<(int, int)>();
+        if (DataManager.ItemIdByName.TryGetValue(itemName, out var id))
+        {
+            if (DataManager.ItemList.TryGetValue(id, out var info))
+            {
+                var sellValue = float.Ceiling(info.Price / 2f);
+                var profit = sellValue - price * 0.5f;
+                if (profit > 0)
+                {
+                    throw new Exception($"Npc {Character.Name} is selling {info.Code} for {price:N0}z when it could be sold back for {sellValue:N0}z, for a profit of {profit:N0}z!");
+                }
+
+                ItemsForSale.Add((id, price));
+            }
+            else
+                ServerLogger.LogWarning($"Npc {FullName} unable to sell item {itemName} it's item details could not be found in the item list.");
+        }
         else
             ServerLogger.LogWarning($"Npc {FullName} unable to sell item {itemName} as it could not be found.");
     }

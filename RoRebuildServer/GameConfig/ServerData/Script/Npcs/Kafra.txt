@@ -49,7 +49,8 @@ macro KafraNoSave(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %
 
 macro KafraTeleportListProntera()
 {
-	Option("Izlude → 600z", "Geffen → 1200z", "Payon → 1200z", "Morroc → 1200z", "Orc Dungeon → 1700z", "Alberta → 1800z", "Cancel" );
+	//Option("Izlude → 600z", "Geffen → 1200z", "Payon → 1200z", "Morroc → 1200z", "Orc Dungeon → 1700z", "Alberta → 1800z", "Cancel" );
+	Option("Izlude", "Geffen", "Payon", "Morroc", "Orc Dungeon", "Alberta", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("izlude", 91, 105, 600);
@@ -63,7 +64,8 @@ macro KafraTeleportListProntera()
 
 macro KafraTeleportListAlberta()
 {
-	Option("Payon → 1200z", "Morroc → 1800z", "Prontera → 1800z", "Cancel" );
+	//Option("Payon → 1200z", "Morroc → 1800z", "Prontera → 1800z", "Cancel" );
+	Option("Payon", "Morroc", "Prontera", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("payon", 161, 58, 1200);
@@ -74,7 +76,8 @@ macro KafraTeleportListAlberta()
 
 macro KafraTeleportListMorroc()
 {
-	Option("Prontera → 1200z", "Payon → 1200z", "Alberta → 1800z", "Comodo → 1800z", "Paros Lighthouse → 1200z", "Cancel" );
+	//Option("Prontera → 1200z", "Payon → 1200z", "Alberta → 1800z", "Comodo → 1800z", "Paros Lighthouse → 1200z", "Cancel" );
+	Option("Prontera", "Payon", "Alberta", "Comodo", "Paros Lighthouse", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("prontera", 116, 72, 1200);
@@ -87,7 +90,8 @@ macro KafraTeleportListMorroc()
 
 macro KafraTeleportListGeffen()
 {
-	Option("Prontera → 1200z", "Al De Baran → 1200z", "Orc Dungeon → 1800z", "Mjolnir Dead Pit → 1800z", "Cancel" );
+	//Option("Prontera → 1200z", "Al De Baran → 1200z", "Orc Dungeon → 1800z", "Mjolnir Dead Pit → 1800z", "Cancel" );
+	Option("Prontera", "Al De Baran", "Orc Dungeon", "Mjolnir Dead Pit", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("prontera", 116, 72, 1200);
@@ -99,7 +103,8 @@ macro KafraTeleportListGeffen()
 
 macro KafraTeleportListPayon()
 {
-	Option("Archer Village → 200z", "Prontera → 1200z", "Alberta → 1200z", "Morroc → 1200z", "Cancel" );
+	//Option("Archer Village → 200z", "Prontera → 1200z", "Alberta → 1200z", "Morroc → 1200z", "Cancel" );
+	Option("Archer Village", "Prontera", "Alberta", "Morroc", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("pay_arche", 65, 138, 200);
@@ -111,7 +116,8 @@ macro KafraTeleportListPayon()
 
 macro KafraTeleportListComodo()
 {
-	Option("Morroc→ 1200z", "Alberta → 1800z", "Paros Lighthouse → 1200z", "Cancel" );
+	//Option("Morroc→ 1200z", "Alberta → 1800z", "Paros Lighthouse → 1200z", "Cancel" );
+	Option("Morroc", "Alberta", "Paros Lighthouse", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("morocc", 156, 46, 1200);
@@ -122,7 +128,8 @@ macro KafraTeleportListComodo()
 
 macro KafraTeleportListIzlude()
 {
-	Option("Geffen → 1200z", "Payon → 1200z", "Morroc → 1200z", "Al De Baran → 1800z", "Cancel" );
+	//Option("Geffen → 1200z", "Payon → 1200z", "Morroc → 1200z", "Al De Baran → 1800z", "Cancel" );
+	Option("Geffen", "Payon", "Morroc", "Al De Baran", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("geffen", 120, 39, 1200);
@@ -134,7 +141,8 @@ macro KafraTeleportListIzlude()
 
 macro KafraTeleportListAldebaran()
 {
-	Option("Geffen → 1200z", "Juno → 1200z", "Izlude → 1200z", "Mjolnir Dead Pit → 1700z", "Cancel" );
+	//Option("Geffen → 1200z", "Juno → 1200z", "Izlude → 1200z", "Mjolnir Dead Pit → 1700z", "Cancel" );
+	Option("Geffen", "Juno", "Izlude", "Mjolnir Dead Pit", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("geffen", 120, 39, 1200);
@@ -146,7 +154,8 @@ macro KafraTeleportListAldebaran()
 
 macro KafraTeleportListArcherVillage()
 {
-	Option("Payon → 200z", "Prontera → 1200z", "Alberta → 1200z", "Morroc → 1200z", "Cancel" );
+	//Option("Payon → 200z", "Prontera → 1200z", "Alberta → 1200z", "Morroc → 1200z", "Cancel" );
+	Option("Payon", "Prontera", "Alberta", "Morroc", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("payon", 161, 58, 200);
@@ -158,7 +167,8 @@ macro KafraTeleportListArcherVillage()
 
 macro KafraTeleportListOrcDungeon()
 {
-	Option("Geffen → 1200z", "Prontera → 1200z", "Cancel" );
+	//Option("Geffen → 1200z", "Prontera → 1200z", "Cancel" );
+	Option("Geffen", "Prontera", "Cancel" );
 	switch(Result)
 	{
 		case 0: @TeleportCase("geffen", 120, 39, 1200);
@@ -173,7 +183,7 @@ macro TeleportCase(%map, %x, %y, %zeny)
 		Dialog(name, "Sorry, you currently don't have enough zeny to use this teleport.");
 		return;
 	}
-	DropZeny(%zeny);
+	//DropZeny(%zeny);
 	MoveTo(%map, %x, %y);
 	return;
 }

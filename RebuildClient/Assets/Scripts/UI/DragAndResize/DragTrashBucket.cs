@@ -34,10 +34,23 @@ namespace Assets.Scripts.UI
                     }
 
                     Debug.Log($"Dropped item from inventory onto ground area.");
-                    NetworkManager.Instance.SendDropItem(obj.ItemId, obj.ItemCount);
+                    
+                    if(obj.ItemCount == 1)
+                        NetworkManager.Instance.SendDropItem(obj.ItemId, obj.ItemCount);
+                    else
+                    {
+                        if(NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(obj.ItemId, out var item))
+                        {
+                            UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item);
+                        }
+                    }
+                        
                     break;
                 case ItemDragOrigin.EquipmentWindow:
                     NetworkManager.Instance.SendUnEquipItem(obj.OriginId);
+                    break;
+                case ItemDragOrigin.ShopWindow:
+                    ShopUI.Instance.OnDropTrash(obj);
                     break;
             }
         }

@@ -40,6 +40,7 @@ Book_of_Blazing_Sun	1555
 Book_of_Gust_of_Wind	1556
 Book_of_the_Apocalypse	1557
 Girl's_Diary	1558
+Angra_Manyu	1366
 Arc_Wand	1610
 Mighty_Staff	1613
 Wand_of_Occult	1614

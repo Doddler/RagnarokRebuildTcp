@@ -12,6 +12,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Simulation;
 using System;
 using RebuildSharedData.Enum.EntityStats;
+using RoRebuildServer.EntityComponents.Items;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
@@ -30,6 +31,7 @@ public class NpcInteractionState
 
     public NpcInteractionResult InteractionResult { get; set; }
     public bool IsTouchEvent { get; set; }
+    public bool IsBuyingFromNpc { get; set; }
 
 
     public void Reset()
@@ -122,6 +124,29 @@ public class NpcInteractionState
         CommandBuilder.SendFocusNpc(Player, NpcEntity.Get<Npc>(), false);
     }
 
+    public void GiveZeny(int val)
+    {
+        if (Player == null) return;
+        Player.AddZeny(val);
+        CommandBuilder.SendServerEvent(Player, ServerEvent.GetZeny, val);
+    }
+
+    public void GiveItem(string itemName, int count = 1)
+    {
+        if (Player == null) return;
+
+        if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
+        {
+            ServerLogger.LogWarning($"NPC {NpcEntity.Get<WorldObject>()} attempted to give player {Player} item {itemName}, but that item doesn't seem to be valid.");
+            return;
+        }
+
+        var itemRef = new ItemReference(item, count);
+        var bagId = Player.AddItemToInventory(itemRef);
+        
+        CommandBuilder.AddItemToInventory(Player, itemRef, bagId, count);
+    }
+
     public void ShowEffectOnPlayer(string effectName)
     {
         if (Player == null || Player.Character.Map == null) return;
@@ -163,7 +188,10 @@ public class NpcInteractionState
     public void ResetCharacterToInitialState()
     {
         if (Player == null || Player.Character.Map == null) return;
-        Player.SetData(PlayerStat.Status, 0);
+        Player.ChangeJob(0);
+        Player.JumpToLevel(1);
+        Player.SkillReset();
+        Player.StatPointReset();
         Player.Init();
         Player.Character.Map.RefreshEntity(Player.Character);
         Player.UpdateStats();
@@ -194,6 +222,18 @@ public class NpcInteractionState
 
     public void OpenShop()
     {
+        if (Player == null)
+            return;
+        CommandBuilder.SendNpcOpenShop(Player, NpcEntity.Get<Npc>());
+        IsBuyingFromNpc = true;
+    }
+
+    public void StartSellToNpc()
+    {
+        if (Player == null)
+            return;
+        CommandBuilder.SendNpcStartTrade(Player);
+        IsBuyingFromNpc = false;
 
     }
 

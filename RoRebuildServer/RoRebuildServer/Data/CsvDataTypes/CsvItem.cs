@@ -40,11 +40,11 @@ public class CsvItemAmmo
     public required int Attack { get; set; }
     public required int Price { get; set; }
     public required int Weight { get; set; }
-    public required int EquipLevel { get; set; }
+    public required AttackElement Property { get; set; }
+    public required int MinLvl { get; set; }
     public required AmmoType Type { get; set; }
     public required string Sprite { get; set; }
 }
-
 
 public class CsvItemCard
 {
@@ -73,6 +73,7 @@ public class CsvItemWeapon
     public required WeaponPosition Position { get; set; }
     public required AttackElement Property { get; set; }
     public required int MinLvl { get; set; }
+    public required int Rank { get; set; }
     public required string EquipGroup { get; set; }
     public required string Refinable { get; set; }
     public required string Breakable { get; set; }

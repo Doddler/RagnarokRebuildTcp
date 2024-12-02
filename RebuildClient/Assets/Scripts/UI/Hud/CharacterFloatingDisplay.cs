@@ -1,6 +1,7 @@
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.UI.ConfigWindow;
+using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace Assets.Scripts.UI.Hud
         private CharacterChat chatBubble;
 
         public CharacterOverlayManager Manager;
+        public float StandingHeight;
 
         private string characterName;
         private int maxHp;
@@ -57,6 +59,7 @@ namespace Assets.Scripts.UI.Hud
             mpBar = null;
             chatBubble = null;
             controllable = null;
+            StandingHeight = 0;
         }
 
         public void SetUp(ServerControllable controllable, string name, int maxHp, int maxMp, bool isPlayer, bool isMain)
@@ -122,6 +125,14 @@ namespace Assets.Scripts.UI.Hud
             if (castBar == null)
                 castBar = Manager.AttachCastBar(gameObject);
 
+            if (controllable.SpriteAnimator != null && StandingHeight == 0)
+            {
+                StandingHeight = controllable.SpriteAnimator.SpriteData.StandingHeight;
+                if (controllable.CharacterType == CharacterType.Player)
+                    StandingHeight += 20;
+            }
+            
+            castBar.transform.localPosition = new Vector3(0, StandingHeight * 2f, 0);
             castBar.SetProgress(0);
             castStart = Time.timeSinceLevelLoad;
             castEnd = castStart + castTime;
@@ -151,6 +162,15 @@ namespace Assets.Scripts.UI.Hud
         {
             if (chatBubble == null)
                 chatBubble = Manager.AttachChatBubble(gameObject);
+
+            if (controllable.SpriteAnimator != null && StandingHeight == 0)
+            {
+                StandingHeight = controllable.SpriteAnimator.SpriteData.StandingHeight;
+                if (controllable.CharacterType == CharacterType.Player)
+                    StandingHeight += 20;
+            }
+
+            chatBubble.transform.localPosition = new Vector3(0, StandingHeight * 2f + 13, 0);
 
             chatBubble.SetText(message);
             chatEnd = Time.timeSinceLevelLoad + visibleTime;

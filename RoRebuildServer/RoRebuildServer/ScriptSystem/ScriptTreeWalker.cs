@@ -311,7 +311,7 @@ internal class ScriptTreeWalker
         if (!int.TryParse(facingTxt, out var _))
             facingTxt = builder.GetConstValue(facingTxt);
 
-        var name = builder.StartNpc(str);
+        var name = builder.StartNpc(str, isTrader);
 
         sectionHandler = NpcSectionHandler;
 
@@ -320,21 +320,19 @@ internal class ScriptTreeWalker
         VisitStatementBlock(statements);
 
         //methodBuilder.WithBody(block);
-
         
-
-        if (isTrader)
-        {
-            builder.StartNpcSection("OnClick");
-            builder.FunctionCall("OpenShop", false);
-            builder.FunctionCallEnd();
-            builder.OutputRaw(";");
-            builder.EndLine();
-            builder.EndMethod();
-        }
-        else
-            builder.EndMethod();
-
+        //if (isTrader)
+        //{
+        //    builder.StartNpcSection("OnClick");
+        //    builder.FunctionCall("OpenShop", false);
+        //    builder.FunctionCallEnd();
+        //    builder.OutputRaw(";");
+        //    builder.EndLine();
+        //    builder.EndMethod();
+        //}
+        //else
+        
+        builder.EndMethod();
         builder.EndClass();
 
         builder.EndNpc(name, displayName, mapName, displayName, spriteName, facingTxt, x, y, w, h);
@@ -406,7 +404,7 @@ internal class ScriptTreeWalker
             str = "UnnamedWarp_" + v["mapName"].String.Unescape();
         str = ScriptUtilityFunctions.CleanCsString(str);
 
-        var name = builder.StartNpc(str);
+        var name = builder.StartNpc(str, false);
         builder.StartNpcSection("OnTouch");
         builder.OutputRaw($"state.MoveTo({v["destMap"]}, {v["dx"]}, {v["dy"]}, {v["dw"]}, {v["dh"]})");
         builder.EndLine(functionContext.start.Line);

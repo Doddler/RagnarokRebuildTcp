@@ -632,6 +632,37 @@ public class Map
         return hasItem;
     }
 
+    public bool FindRandomGroundItemInRange(Position center, int range, ref GroundItem itemOut)
+    {
+        var count = 0;
+        const int maxCount = 20;
+
+        Span<GroundItem> items = stackalloc GroundItem[maxCount];
+
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(center, range))
+        {
+            foreach (var item in c.GroundItems)
+            {
+                items[count] = item;
+                count++;
+                if (count >= maxCount)
+                    break;
+            }
+
+            if (count >= maxCount)
+                break;
+        }
+
+        if (count == 0)
+        {
+            itemOut = default;
+            return false;
+        }
+
+        itemOut = items[GameRandom.Next(0, count)];
+        return true;
+    }
+
     public void GatherMonstersOfTypeInRange(Position position, int distance, EntityList list, MonsterDatabaseInfo monsterType)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
@@ -1510,6 +1541,11 @@ public class Map
 
     public Map(World world, Instance instance, string name, string walkData)
     {
+#if DEBUG
+        Players.IsActive = true; //bypass EntityListPool borrow tracking
+        MapImportantEntities.IsActive = true;
+#endif
+
         World = world;
         Name = name;
         MapConfig = new ServerMapConfig(this);

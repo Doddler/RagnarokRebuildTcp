@@ -58,6 +58,8 @@ public class CharacterBag : IResettable
     public int BagWeight;
     private int idIndex = 20000; //make sure we don't collide with regular item ids
 
+    public const int MaxBagSlots = 200;
+
     public static CharacterBag Borrow() => bagPool.Get();
     public static void Return(CharacterBag bag) => bagPool.Return(bag);
     
@@ -167,7 +169,44 @@ public class CharacterBag : IResettable
         itemOut = default;
         return -1;
     }
-    
+
+
+    public bool RemoveItemByBagId(int id, int removeCount)
+    {
+        if (RegularItems.TryGetValue(id, out var regular))
+        {
+            var startCount = (int)regular.Count;
+            regular.Count = (short)(regular.Count - removeCount);
+            if (regular.Count <= 0)
+            {
+                removeCount = startCount;
+                RegularItems.Remove(id);
+                UsedSlots--;
+            }
+            else
+                RegularItems[id] = regular;
+
+            BagWeight -= removeCount * DataManager.GetWeightForItem(id);
+            return true;
+        }
+
+        if (UniqueItems.TryGetValue(id, out var unique))
+        {
+            if (unique.Count != removeCount)
+                throw new Exception($"Cannot split stacks on unique items!");
+
+            UniqueItems.Remove(id);
+            UniqueItemBagIds.Remove(unique.UniqueId);
+            UsedSlots--;
+            BagWeight -= removeCount * DataManager.GetWeightForItem(unique.Id);
+            if (UniqueItemCounts.TryGetValue(id, out var curCount))
+                UniqueItemCounts[id] = curCount - unique.Count;
+            return true;
+        }
+
+        return false;
+    }
+
     public bool RemoveItemByBagIdAndGetRemovedItem(int id, int removeCount, out ItemReference itemOut)
     {
         if (RegularItems.TryGetValue(id, out var regular))

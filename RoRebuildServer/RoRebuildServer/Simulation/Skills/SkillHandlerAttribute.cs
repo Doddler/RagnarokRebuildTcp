@@ -35,6 +35,19 @@ public abstract class SkillHandlerBase
             default: return -1;
         }
     }
+
+    public SkillValidationResult ValidateTargetForAmmunitionWeapon(CombatEntity source, CombatEntity? target, Position position, int weaponClass, AmmoType ammoType)
+    {
+        if (source.Character.Type != CharacterType.Player)
+            return ValidateTarget(source, target, position);
+        if (source.Player.WeaponClass != weaponClass)
+            return SkillValidationResult.IncorrectWeapon;
+        var equip = source.Player.Equipment;
+        if (equip.AmmoId <= 0 || equip.AmmoType != ammoType)
+            return SkillValidationResult.IncorrectAmmunition;
+
+        return ValidateTarget(source, target, position);
+    }
     
     public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position)
     {

@@ -49,39 +49,42 @@ namespace Assets.Scripts.UI.Stats
             NetworkManager.Instance.SendApplyStatPoints(adjustValue);
         }
 
-        public void AddStat(int stat) => ChangeStatValue(stat, 1);
+        public void AddStat(int stat) => ChangeStatValue(stat,  1);
         public void SubStat(int stat) => ChangeStatValue(stat, -1);
         
         private void ChangeStatValue(int stat, int change)
         {
+            var count = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? 10 : 1; 
             var state = NetworkManager.Instance.PlayerState;
             var curStatPoints = state.GetData(PlayerStat.StatPoints);
             var existing = NetworkManager.Instance.PlayerState.GetData(PlayerStat.Str + stat);
-            if (existing + adjustValue[stat] + change < existing)
-                return;
-            if (existing + adjustValue[stat] + change > 99 || existing + adjustValue[stat] + change < 1)
-                return;
 
-            
-            adjustValue[stat] += change;
-
-            
-            var totalChange = 0;
-            for (var i = 0; i < 6; i++)
+            for (var j = 0; j < count; j++)
             {
-                var curStatCost = CumulativeStatPointCost[Mathf.Clamp(state.GetData(PlayerStat.Str + i), 1, 99) - 1];
-                var newStatCost = CumulativeStatPointCost[Mathf.Clamp(state.GetData(PlayerStat.Str + i) + adjustValue[i], 1, 99) - 1];
-                totalChange += newStatCost - curStatCost;
-            }
+                if (existing + adjustValue[stat] + change < existing)
+                    break;
+                if (existing + adjustValue[stat] + change > 99 || existing + adjustValue[stat] + change < 1)
+                    break;
 
-            if (totalChange < 0 || totalChange > curStatPoints)
-            {
-                
-                adjustValue[stat] -= change;
-                return;
-            }
+                adjustValue[stat] += change;
 
-            statPointsRequired = totalChange;
+                var totalChange = 0;
+                for (var i = 0; i < 6; i++)
+                {
+                    var curStatCost = CumulativeStatPointCost[Mathf.Clamp(state.GetData(PlayerStat.Str + i), 1, 99) - 1];
+                    var newStatCost = CumulativeStatPointCost[Mathf.Clamp(state.GetData(PlayerStat.Str + i) + adjustValue[i], 1, 99) - 1];
+                    totalChange += newStatCost - curStatCost;
+                }
+
+                if (totalChange < 0 || totalChange > curStatPoints)
+                {
+
+                    adjustValue[stat] -= change;
+                    break;
+                }
+
+                statPointsRequired = totalChange;
+            }
 
             UpdateCharacterStats();
             
@@ -146,11 +149,11 @@ namespace Assets.Scripts.UI.Stats
 
             AttributeText[0].text = $"{state.GetStat(CharacterStat.Attack)} ~ {state.GetStat(CharacterStat.Attack2)}";
             AttributeText[1].text = $"{state.GetStat(CharacterStat.MagicAtkMin)} ~ {state.GetStat(CharacterStat.MagicAtkMax)}";
-            AttributeText[2].text = $"{totalDex + state.Level + 75}";
+            AttributeText[2].text = $"{totalDex + state.Level + 75 + state.GetStat(CharacterStat.AddHit)}";
             AttributeText[3].text = $"{1 + totalLuk / 3}";
             AttributeText[4].text = $"{state.GetStat(CharacterStat.Def)} + {totalVit}";
             AttributeText[5].text = $"{state.GetStat(CharacterStat.MDef)} + {totalInt}";
-            AttributeText[6].text = $"{totalAgi + state.Level}";
+            AttributeText[6].text = $"{totalAgi + state.Level + state.GetStat(CharacterStat.AddFlee)}";
             AttributeText[7].text = $"{(1 / state.AttackSpeed):F2}/sec";
             if(statPointsRequired == 0)
                 AttributeText[8].text = $"{state.GetData(PlayerStat.StatPoints)}";

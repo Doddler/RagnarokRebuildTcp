@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Sprites;
+﻿using Assets.Scripts.PlayerControl;
+using Assets.Scripts.Sprites;
 using RebuildSharedData.ClientTypes;
 using TMPro;
 using UnityEngine;
@@ -20,16 +21,19 @@ namespace Assets.Scripts.UI.Hud
             Container.SetActive(false);
         }
 
-        public void SetText(int itemId, int itemCount)
+        public void SetText(InventoryItem inventoryItem, int itemCount)
         {
-            if (!ClientDataLoader.Instance.TryGetItemById(itemId, out var item))
-                return;
-
-            var itemName = item.Slots == 0 ? item.Name : $"{item.Name} [{item.Slots}]";
+            //var itemName = item.Slots == 0 ? item.Name : $"{item.Name} [{item.Slots}]";
+            var obtainedText = $"{inventoryItem.ProperName()} - {itemCount} obtained.";
             
-            Icon.sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.Sprite);
+            if(itemCount == 1)
+                CameraFollower.Instance.AppendChatText($"<color=#00fbfb>You got {inventoryItem.ProperName()}.</color>");
+            else
+                CameraFollower.Instance.AppendChatText($"<color=#00fbfb>You got {itemCount}x {inventoryItem.ProperName()}.</color>");
+            
+            Icon.sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(inventoryItem.ItemData.Sprite);
             Icon.rectTransform.sizeDelta = Icon.sprite.rect.size * 2;
-            Text.text = $"{itemName} - {itemCount} obtained.";
+            Text.text = obtainedText;
             
             Container.SetActive(true);
             endTime = Time.timeSinceLevelLoad + 3f;

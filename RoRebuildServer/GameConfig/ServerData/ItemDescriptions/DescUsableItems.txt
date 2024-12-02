@@ -1,0 +1,937 @@
+//Usable Items
+
+::Red_Potion //501
+<color=#808080>A potion made from ground Red Herbs.</color>
+Recover<color=#008000> 45~65</color> HP
+
+::Orange_Potion //502
+<color=#808080>A potion made from ground Red and Yellow Herbs.</color>
+Recover<color=#008000> 105~145</color> HP
+
+::Yellow_Potion //503
+<color=#808080>A potion made from ground Yellow Herbs.</color>
+Recover<color=#008000> 175~235</color> HP
+
+::White_Potion //504
+<color=#808080>A potion made from ground White Herbs.</color>
+Recover<color=#008000> 325~405</color> HP
+
+::Blue_Potion //505
+<color=#808080>A potion made from ground Blue Herbs.</color>
+Recover<color=#008000> 40~60</color> SP
+
+::Green_Potion //506
+<color=#808080>A potion made from ground Green Herbs.</color>
+
+::Red_Herb //507
+<color=#808080>Red herbs found in the wild, often from slain monsters, that have a mild healing effect.</color>
+Recover<color=#008000> 18~28</color> HP
+
+::Yellow_Herb //508
+<color=#808080>Yellow herbs found in the wild, these give a slightly stronger hit than Red Herbs.</color>
+Recover<color=#008000> 38~58</color> HP
+
+::White_Herb //509
+<color=#808080>White herbs found in the wild, as any alchemist can tell you, this is the good stuff.</color>
+Recover<color=#008000> 75~115</color> HP
+
+::Blue_Herb //510
+<color=#808080>Blue herbs found in the wild, these are addictive, consult your local alchemist before use.</color>
+Recover<color=#008000> 15~30</color> SP
+
+::Green_Herb //511
+<color=#808080>Green herbs which counteract the effects of poison.</color>
+
+::Apple //512
+<color=#808080>A round, edible fruit that, when eaten once a day, keeps the doctor away.</color>
+Recover<color=#008000> 16~22</color> HP
+
+::Banana //513
+<color=#808080>A sweet tropical fruit made famous by its use in slapstick comedy.</color>
+Recover<color=#008000> 17~21</color> HP
+
+::Grape //514
+<color=#808080>A cluster of berries with smooth skin that can be fermented to make wine.</color>
+Recover<color=#008000> 10~15</color> SP
+
+::Carrot //515
+<color=#808080>An orange root that is supposedly good for your vision.</color>
+Recover<color=#008000> 18~20</color> HP
+
+::Potato //516
+<color=#808080>A tuber that can be eaten fried, baked, and even boiled.</color>
+Recover<color=#008000> 15~23</color> HP
+
+::Meat //517
+<color=#808080>A leg of meat that's been cooked to perfection.</color>
+Recover<color=#008000> 70~100</color> HP
+
+::Honey //518
+<color=#808080>A sweet product made by bees endowed with yummy flavor and medicinal uses.</color>
+Recover<color=#008000> 70~100</color> HP and<color=#008000> 20~40</color> SP
+
+::Milk //519
+<color=#808080>A bottle of pasteurized cow milk that is chock full of bovine goodness.</color>
+Recover<color=#008000> 27~37</color> HP
+
+::Hinalle_Leaflet //520
+<color=#808080>A leaf cut from a hinalle plant which has a cool, fresh scent.</color>
+Recover<color=#008000> 175~235</color> HP
+
+::Aloe_Leaflet //521
+<color=#808080>A leaf cut from an aloe plant that has a thick, moist texture.</color>
+Recover<color=#008000> 325~405</color> HP
+
+::Mastela_Fruit //522
+<color=#808080>A shiny, purple fruit picked from the boughs of a mastela tree.</color>
+Recover<color=#008000> 400~600</color> HP
+
+::Holy_Water //523
+<color=#808080>A bottle of blessed water used in sacred ceremonies.</color>
+
+::Panacea //525
+<color=#808080>A mystic remedy for all illnesses.</color>
+
+::Royal_Jelly //526
+<color=#808080>A highly nutritious jelly secreted from honeybees fed to larvae and future queens.</color>
+Recover<color=#008000> 325~405</color> HP and<color=#008000> 40~60</color> SP
+
+::Monster's_Feed //528
+<color=#808080>A entree of processed food for monsters.</color>
+Recover<color=#008000> 72~108</color> HP
+
+::Candy //529
+<color=#808080>A confection of sugar, chocolate and other flavors.</color>
+Recover<color=#008000> 45~65</color> HP
+
+::Candy_Cane //530
+<color=#808080>A striped cane of peppermint candy.</color>
+Recover<color=#008000> 105~145</color> HP
+
+::Apple_Juice //531
+<color=#808080>A bottle of apple juice that's easy to digest.</color>
+Recover<color=#008000> 25~35</color> HP
+
+::Banana_Juice //532
+<color=#808080>A bottle of banana juice that's easy to digest.</color>
+Recover<color=#008000> 26~34</color> HP
+
+::Grape_Juice //533
+<color=#808080>A bottle of grape juice that's easy to digest.</color>
+Recover<color=#008000> 15~25</color> SP
+
+::Carrot_Juice //534
+<color=#808080>A bottle of carrot juice that's easy to digest.</color>
+Recover<color=#008000> 27~33</color> HP
+
+::Pumpkin //535
+<color=#808080>A large orange fruit that's used in pies and few other dishes.</color>
+Recover<color=#008000> 19</color> HP
+
+::Ice_Cream //536
+<color=#808080>A delicious, frosty ice cream that can cause a brain freeze.</color>
+Recover<color=#008000> 105~145</color> HP
+
+::Pet_Food //537
+<color=#808080>An entree of sterilized pet food fortified with vitamins and minerals.</color>
+Recover<color=#008000> 50~90</color> HP
+
+::Well-Baked_Cookie //538
+<color=#808080>A scrumptious cookie.</color>
+Recover<color=#008000> 160~200</color> HP
+
+::Piece_of_Cake //539
+<color=#808080>A sweet slice of cake covered with icing and topped with a cherry.</color>
+Recover<color=#008000> 270~330</color> HP
+
+::Raw_Fish //544
+<color=#808080>A raw, fresh fish.</color>
+Recover<color=#008000> 25~60</color> HP
+
+::Condensed_Red_Potion //545
+<color=#808080>A condensed Red Potion that weighs significantly less.</color>
+Recover<color=#008000> 45~65</color> HP
+
+::Condensed_Yellow_Potion //546
+<color=#808080>A condensed Yellow Potion that weighs significantly less.</color>
+Recover<color=#008000> 175~235</color> HP
+
+::Condensed_White_Potion //547
+<color=#808080>A condensed White Potion that weighs significantly less.</color>
+Recover<color=#008000> 325~405</color> HP
+
+::Cheese //548
+<color=#808080>A food with an acquired taste and unique scent.</color>
+Recover<color=#008000> 10~15</color> SP
+
+::Yam //549
+<color=#808080>An edible plant root that should be eaten slowly to avoid choking.</color>
+Recover<color=#008000> 50~100</color> HP
+
+::Rice_Cake //550
+<color=#808080>A snack made out of rice that doesn't contain any fat.</color>
+Recover<color=#008000> 10~15</color> HP
+
+::Sushi //551
+<color=#808080>An eastern delicacy of marinated rice, dried seaweed, and raw fish.</color>
+Recover<color=#008000> 50~60</color> HP
+
+::Bao //553
+<color=#808080>A steamed dumpling filled with ground meat and is usually served hot.</color>
+Recover<color=#008000> 35~70</color> HP
+
+::Mochi //554
+<color=#808080>A tasty rice cake made for celebrating the Lunar New Year.</color>
+Recover<color=#008000> 105~145</color> HP
+
+::Traditional_Rice_Cake //555
+<color=#808080>A traditional food made from rice powder, there are many recipes to make this, but all of them are absolutely delicious.</color>
+Recover<color=#008000> 105~145</color> HP
+
+::Rice_Cake_Stick //556
+<color=#808080>A moist and sticky rice cake prepared in sticks.</color>
+Recover<color=#008000> 20~25</color> HP
+
+::Neatly_Sliced_Rice_Cake //557
+<color=#808080>A moisty and sticky rice cake prepared in slices.</color>
+Recover<color=#008000> 25~30</color> HP
+
+::Chocolate //558
+<color=#808080>A delicious and sweet treat made from ground cacao and milk.</color>
+Recover<color=#008000> 1</color> HP and<color=#008000> 1</color> SP
+
+::Handmade_Dark_Chocolate //559
+<color=#808080>A collection of chocolates gathered in a beautiful arrangement. This is often used in courtship, and sometimes, even used effectively.</color>
+Recover<color=#008000> 50</color> HP and<color=#008000> 50</color> SP
+
+::Handmade_White_Chocolate //560
+<color=#808080>A white chocolate used to propose to a girl by a boy during White Day.</color>
+Recover<color=#008000> 50</color> HP and<color=#008000> 50</color> SP
+
+::White_Chocolate //561
+<color=#808080>A white cacao.</color>
+Recover<color=#008000> 50</color> HP and<color=#008000> 50</color> SP
+
+::Rice_Ball //564
+<color=#808080>A lump of rice which can be eaten for lunch.</color>
+Recover<color=#008000> 200</color> HP
+
+::Tom_Yum_Goong //566
+<color=#808080>An incredibly famous soup that has a spicy, sweet and sour taste with shrimp, lemons and chiles.</color>
+Recover<color=#008000> 244~350</color> HP and<color=#008000> 10~30</color> SP
+
+::Shrimp //567
+<color=#808080>A shellfish which has a long tail and many legs. When cooked, the color of the body turns red with a unique scent, and is very tasty.</color>
+Recover<color=#008000> 117~192</color> HP
+
+::Lemon //568
+<color=#808080>A bright yellow fruit with very sour juice and a fresh scent.</color>
+Recover<color=#008000> 10~20</color> SP
+
+::Novice_Potion //569
+<color=#808080>A potion from the Novice Training Grounds.</color>
+Recover<color=#008000> 22~33</color> HP
+
+::Lucky_Candy //570
+<color=#808080>A candy rumored to bring good good luck.</color>
+Recover<color=#008000> 45~65</color> HP
+
+::Lucky_Candy_Cane //571
+<color=#808080>A candy cane rumored to bring good luck.</color>
+Recover<color=#008000> 105~145</color> HP
+
+::Lucky_Cookie //572
+<color=#808080>A cookie rumored to bring good luck.</color>
+Recover<color=#008000> 160~200</color> HP
+
+::Chocolate_Drink //573
+<color=#808080>A drink made from chocolate and milk from one of the Royal Court Dessert Specialist's recipes. Although the chef wishes for people to drink this treat elegantly, it's usually gulped down.</color>
+Recover<color=#008000> 330~410</color> HP and<color=#008000> 45~65</color> SP
+
+::Egg //574
+<color=#808080>An egg from a bird. It's full of nutrition, making it an ideal food for growing children.</color>
+Recover<color=#008000> 33~42</color> HP
+
+::Prickly_Fruit //576
+<color=#808080>A scented and thorny tree fruit.</color>
+Recover<color=#008000> 150~300</color> HP and<color=#008000> 20~30</color> SP
+
+::Bag_of_Grain //577
+<color=#808080>A bag of dried grain commonly used in cuisine.</color>
+Recover<color=#008000> 60~70</color> HP
+
+::Strawberry //578
+<color=#808080>A red berry renown for its slightly sweet and sour taste.</color>
+Recover<color=#008000> 16~28</color> SP
+
+::Fresh_Fish //579
+<color=#808080>A fresh fish that can be cooked in a variety of ways.</color>
+Recover<color=#008000> 100~150</color> HP
+
+::Bread //580
+<color=#808080>A fresh loaf of bread that gives off a wholesome scent.</color>
+Recover<color=#008000> 50~90</color> HP
+
+::Edible_Mushroom //581
+<color=#808080>An edible mushroom that can be eaten raw or cooked.</color>
+Recover<color=#008000> 20~30</color> HP
+
+::Orange //582
+<color=#808080>A sweet citrus fruit that can be eaten raw, juiced, or cooked into a jam.</color>
+Recover<color=#008000> 10~20</color> HP and<color=#008000> 10~20</color> SP
+
+::Fish_Cake_Soup //584
+<color=#808080>A bowl filled with hot, hearty fish broth and a generous helping of fish cake.</color>
+Recover<color=#008000> 40~70</color> HP
+
+::Red_Prickly_Fruit //587
+<color=#808080>A freshly scented and thorny tree fruit.</color>
+Recover<color=#008000> 270~330</color> HP and<color=#008000> 20~30</color> SP
+
+::Caviar_Pancake //591
+<color=#808080>A pancake topped with caviar.</color>
+Recover<color=#008000> 325~405</color> HP and<color=#008000> 40~60</color> SP
+
+::Jam_Pancake //592
+<color=#808080>A pancake topped with strawberry jam.</color>
+Recover<color=#008000> 325~405</color> HP and<color=#008000> 40~60</color> SP
+
+::Honey_Pancake //593
+<color=#808080>A pancake topped with honey.</color>
+Recover<color=#008000> 325~405</color> HP and<color=#008000> 40~60</color> SP
+
+::Sour_Cream_Pancake //594
+<color=#808080>A pancake topped with sour cream.</color>
+Recover<color=#008000> 325~405</color> HP and<color=#008000> 40~60</color> SP
+
+::Mushroom_Pancake //595
+<color=#808080>A pancake topped with mushrooms.</color>
+Recover<color=#008000> 325~405</color> HP and<color=#008000> 40~60</color> SP
+
+::Fly_Wing //601
+<color=#808080>An enchanted fly's wing that instantly sends its user to a random spot when waved in the air.</color>
+Teleports you to a random map location
+
+::Butterfly_Wing //602
+<color=#808080>An enchanted butterfly's wing that instantly sends its user to their Save Point when waved in the air.</color>
+Returns you to your save location
+
+::Old_Blue_Box //603
+<color=#808080>An old blue box with unknown contents.</color>
+
+::Dead_Branch //604
+<color=#808080>A twig which contains the mysterious power of eternity, capable of summoning a living creature.</color>
+Summons 1 random monster
+
+::Anodyne //605
+<color=#808080>A medicine made from ground mint that is used to ease pain and relax muscle tension.</color>
+
+::Aloevera //606
+<color=#808080>An herbal emollient made from aloe extract, despite its sour taste, it's addictive if regularly eaten.</color>
+
+::Yggdrasil_Berry //607
+<color=#808080>A fruit from the Yggdrasil tree, its fantastic taste is full of life.</color>
+Recover 100% HP and SP
+
+::Yggdrasil_Seed //608
+<color=#808080>A seed from the Yggdrasil tree, it has a strange and energizing pungence.</color>
+Recover 50% HP and SP
+
+::Amulet //609
+<color=#808080>A forbidden talisman that can reanimate the dead, resulting in a walking corpse or undead zombie.</color>
+
+::Yggdrasil_Leaf //610
+<color=#808080>A leaf from the Yggdrasil tree, it can bring life to fallen characters.</color>
+
+::Magnifier //611
+<color=#808080>A magnifying glass used for scrutinizing objects. Rumor has it that adventurers once needed to use these to identify items.</color>
+
+::Mini_Furnace //612
+<color=#808080>A disposable, miniature blast furnace that can be easily carried and is consumed when forging metals.</color>
+
+::Iron_Hammer //613
+<color=#808080>A disposable steel hammer that is is used to forge <color=#000088>Lv 1 Weapons<color=#808080>.</color>
+
+::Golden_Hammer //614
+<color=#808080>A disposable gold hammer that is is used to forge <color=#000088>Lv 2 Weapons<color=#808080>.</color>
+
+::Oridecon_Hammer //615
+<color=#808080>A disposable oridecon hammer that is used to forge <color=#000088>Lv 3 Weapons<color=#808080>.</color>
+
+::Old_Card_Album //616
+<color=#808080>An antique album which contains an unknown card.</color>
+
+::Old_Purple_Box //617
+<color=#808080>An old purple box with unknown contents.</color>
+
+::Worn_Out_Scroll //618
+<color=#808080>A rolled up piece of parchment, now brittle with age, on which faded text can scarcely be read.</color>
+
+::Unripe_Apple //619
+<color=#808080>An apple that isn't ripe enough for humans to eat.</color>
+
+::Orange_Juice //620
+<color=#808080>A small bottle of orange juice.</color>
+
+::Bitter_Herb //621
+<color=#808080>An herb that is too bitter for the human palate.</color>
+
+::Rainbow_Carrot //622
+<color=#808080>A fragrant carrot colored with all the hues of the rainbow.</color>
+
+::Earthworm_the_Dude //623
+<color=#808080>A rather suave looking earthworm gifted with womanizing debonairness.</color>
+
+::Rotten_Fish //624
+<color=#808080>A rotting, dirty fish that attracts flies.</color>
+
+::Rusty_Iron //625
+<color=#808080>A rusty piece of iron that would only interest scavengers and vermin.</color>
+
+::Monster_Juice //626
+<color=#808080>A fetid drink made of monster blood.</color>
+
+::Sweet_Milk //627
+<color=#808080>A Sweet, luscious, full bodied milk.</color>
+
+::Well-Dried_Bone //628
+<color=#808080>A tough, crunchy bone that has been dried in the sun.</color>
+
+::Singing_Flower //629
+<color=#808080>A flower that has been miraculously blessed with the gift of song.</color>
+
+::Dew_Laden_Moss //630
+<color=#808080>A dewy, green moss that grows in cool places.</color>
+
+::Deadly_Noxious_Herb //631
+<color=#808080>A poisonous plant that would harm most living creatures.</color>
+
+::Fatty_Chubby_Earthworm //632
+<color=#808080>An earthworm that stopped caring about its figure years ago.</color>
+
+::Sweet_Potato //633
+<color=#808080>A baked sweet potato with an appetizing scent.</color>
+
+::Tropical_Banana //634
+<color=#808080>A premium banana grown in the tropics.</color>
+
+::Orc_Trophy //635
+<color=#808080>A trophy awarded to the bravest of orcs.</color>
+
+::No_Recipient //636
+<color=#808080>An old, heartfelt letter with an empty recipient field.</color>
+
+::Old_Broom //637
+<color=#808080>An old broom that has been handed down through the generations.</color>
+
+::Silver_Knife_of_Chastity //638
+<color=#808080>A silver knife that is a symbol of a virgin's chastity.</color>
+
+::Armlet_of_Obedience //639
+<color=#808080>A fancy, intricately decorated bracelet.</color>
+
+::Shining_Stone //640
+<color=#808080>A stone that softly glimmers with faint light.</color>
+
+::Contract_in_Shadow //641
+<color=#808080>A contract drawn in darkness.</color>
+
+::Book_of_the_Devil //642
+<color=#808080>A forbidden book that details the secret for summoning high level demons.</color>
+
+::Pet_Incubator //643
+<color=#808080>A portable incubator that is used to hatch Cute Pet monster eggs.</color>
+
+::Gift_Box //644
+<color=#808080>A box that contains a present.</color>
+
+::Concentration_Potion //645
+<color=#808080>A potent tonic that stimulates concentration.</color>
+Increases attack speed by 10% for 30 minutes.
+
+::Awakening_Potion //656
+<color=#808080>A special tonic that combats drowsiness.</color>
+Increases attack speed by 15% for 30 minutes.
+
+::Berserk_Potion //657
+<color=#808080>A powerful tonic that amplifies quickness.</color>
+Increases attack speed by 20% for 30 minutes.
+
+::Union_of_Tribe //658
+<color=#808080>A symbol of solidarity that evokes feelings of nobility in those who see it.</color>
+
+::Her_Heart //659
+<color=#808080>An old book enchanted by a girl whose name has been forgotten with time.</color>
+
+::Forbidden_Red_Candle //660
+<color=#808080>A candle with a mysterious purpose.</color>
+
+::Soft_Apron //661
+<color=#808080>A soft apron that is double stitched for better quality.</color>
+
+::Authoritative_Badge //662
+<color=#808080>A bronze badge given to government officials on business trips, allowing them to rent horses anywhere.</color>
+Increases movement speed by 25% for 3 minutes. Does not stack with Increase Agi.
+
+::Korean_Rice_Cake //663
+<color=#808080>A a popular food in traditional festivals.</color>
+Recover 10% HP
+
+::Gift_Box_ //664
+<color=#808080>A box that contains a present.</color>
+
+::Gift_Box__ //665
+<color=#808080>A box that contains a present.</color>
+
+::Gift_Box___ //666
+<color=#808080>A box that contains a present.</color>
+
+::Gift_Box____ //667
+<color=#808080>A box that contains a present.</color>
+
+::Red_Envelope //668
+<color=#808080>A red envelope containing money given to children on New Year's Day.</color>
+
+::Poison_Bottle //678
+<color=#808080>A skeleton shaped bottle which contains deadly poison.</color>
+
+::Pilule //679
+<color=#808080>An herbal medicine from an old eastern country that is rumored to cure every illness.</color>
+
+::Sweet_Memory_of_Marriage //681
+<color=#808080>A picture album of memories from a wedding ceremony.</color>
+
+::Quiver //12004
+<color=#808080>A quiver that contains 500 arrows.</color>
+
+::Iron_Arrow_Quiver //12005
+<color=#808080>A quiver that contains 500 iron arrows.</color>
+
+::Steel_Arrow_Quiver //12006
+<color=#808080>A quiver that contains 500 steel arrows.</color>
+
+::Oridecon_Arrow_Quiver //12007
+<color=#808080>A quiver that contains 500 oridecon arrows.</color>
+
+::Fire_Arrow_Quiver //12008
+<color=#808080>A quiver that contains 500 fire arrows.</color>
+
+::Silver_Arrow_Quiver //12009
+<color=#808080>A quiver that contains 500 silver arrows.</color>
+
+::Wind_Arrow_Quiver //12010
+<color=#808080>A quiver that contains 500 wind arrows.</color>
+
+::Stone_Arrow_Quiver //12011
+<color=#808080>A quiver that contains 500 stone arrows.</color>
+
+::Crystal_Arrow_Quiver //12012
+<color=#808080>A quiver that contains 500 crystal arrows.</color>
+
+::Shadow_Arrow_Quiver //12013
+<color=#808080>A quiver that contains 500 shadow arrows.</color>
+
+::Immaterial_Arrow_Quiver //12014
+<color=#808080>A quiver that contains 500 immaterial arrows.</color>
+
+::Rusty_Arrow_Quiver //12015
+<color=#808080>A quiver that contains 500 rusty arrows.</color>
+
+::Speed_Potion //12016
+Move Quickly for 5 seconds
+
+::Slow_Potion //12017
+Move slowly for 5 seconds
+
+::Firecracker //12018
+<color=#808080>An explosive which makes beatiful figures in the sky.</color>
+
+::Cursed_Water //12020
+<color=#808080>A bottle of cursed water.</color>
+
+::Pork //12021
+<color=#808080>Savory pork that is very tempting.</color>
+
+::Galbi //12022
+<color=#808080>Delicious beef specially marinated in soy sauce.</color>
+
+::Box_of_Laughter //12027
+Recover 9% HP
+
+::Box_of_Thunder //12028
+Movement Speed +100% for 20 seconds
+
+::Box_of_Gloom //12029
+Cast<color=#0000FF> Improve Concentration 1</color>
+
+::Box_of_Resentment //12030
+ATK +20 for 60 seconds
+
+::Box_of_Drowsiness //12031
+MATK +20 for 60 seconds
+
+::Box_of_Storms //12032
+Enchant weapon with Water for 3 minutes
+
+::Box_of_Sunlight //12033
+See Hidden Targets for 30 seconds
+
+::Box_of_Panting //12034
+Recover 9% SP
+
+::Stone_of_Sage //12040
+<color=#808080>An enchanted stone rumored to transmute matter into gold.</color>
+
+::Fried_Grasshopper_Legs //12041
+<color=#808080>A dish that is easy for beginner chefs; it has a fresh, grassy taste.</color>
+
+::Seasoned_Sticky_Webfoot //12042
+<color=#808080>A dish that looks unappetizing, but its taste and scent are quite pleasant.</color>
+
+::Bomber_Steak //12043
+<color=#808080>A steak that looks ordinary, but it is explosively flavorful and juicy.</color>
+
+::Herb_Marinade_Beef //12044
+<color=#808080>A secret Payon recipe of marinated tender beef with herbs and sauces.</color>
+
+::Lutie_Lady's_Pancake //12045
+<color=#808080>A sweet pancake inspired by Thachentze, the kind Lutie chef.</color>
+
+::Grape_Juice_Herbal_Tea //12046
+<color=#808080>A sweetly scented tea of mixed herbs and grape juice.</color>
+
+::Autumn_Red_Tea //12047
+<color=#808080>A mixed tea made with a refreshingly strong scent that is somehow bland.</color>
+
+::Honey_Herbal_Tea //12048
+<color=#808080>An invigorating herbal tea enhanced with the sweetness of honey.</color>
+
+::Morroc_Fruit_Wine //12049
+<color=#808080>A sweet and sour fruit wine that was invented by a Morroc merchant.</color>
+
+::Mastela_Fruit_Wine //12050
+<color=#808080>Wine distilled from mastela fruit that inspires clarity.</color>
+
+::Steamed_Crab_Nippers //12051
+<color=#808080>A simple dish made from steamed crab nippers and herbs.</color>
+
+::Assorted_Seafood //12052
+<color=#808080>Assorted seafood that makes people that live near the sea feel homesick.</color>
+
+::Clam_Soup //12053
+<color=#808080>A soup made with boiled clam meat.</color>
+
+::Seasoned_Jellyfish //12054
+<color=#808080>Steamed tenacles flavored with herbs and squid ink dressing.</color>
+
+::Spicy_Fried_Bao //12055
+<color=#808080>A bao that is fried and then seasoned with a spicy sauce.</color>
+
+::Frog_Egg_Squid_Ink_Soup //12056
+<color=#808080>A soup made with squid ink broth and frog eggs.</color>
+
+::Smooth_Noodle //12057
+<color=#808080>Incredibly smooth, slick, and slippery noodles that are difficult to eat.</color>
+
+::Tentacle_Cheese_Gratin //12058
+<color=#808080>Cheese gratin with mixed steamed tentacles.</color>
+
+::Lutie_Cold_Noodle //12059
+<color=#808080>Spicy, cold noodles garnished with sliced pumpkin.</color>
+
+::Steamed_Bat_Wing_in_Pumpkin //12060
+<color=#808080>Steamed pumpkin and bat wings wrapped in a leaflet.</color>
+
+::Honey_Grape_Juice //12061
+<color=#808080>An irresistable mixed drink of grape juice and honey.</color>
+
+::Chocolate_Mousse_Cake //12062
+<color=#808080>A chocolate mousse cake with a luxurious flavor that Charles Orleans would be proud of.</color>
+
+::Fruit_Mix //12063
+<color=#808080>A mix of various, crisp fruit flavored with light, sweet syrup.</color>
+
+::Cream_Sandwich //12064
+<color=#808080>A sandwich made with slices of freshly baked bread, ground meat and cream cheese.</color>
+
+::Green_Salad //12065
+<color=#808080>A trendy green salad topped with sweet Umbala dressing.</color>
+
+::Fried_Monkey_Tails //12066
+<color=#808080>Lightly spiced monkey tails deep fried in oil.</color>
+
+::Mixed_Juice //12067
+<color=#808080>A fruit juice cocktail perfectly chilled.</color>
+
+::Fried_Sweet_Potato //12068
+<color=#808080>Crunchy, fried sweet potatoes topped with a light syrup.</color>
+
+::Steamed_Ancient_Lips //12069
+<color=#808080>Steamed fish with ancient lips wrapped in a fresh leaf.</color>
+
+::Fried_Scorpion_Tails //12070
+<color=#808080>A fried scorpion tail, that is as nutritious as it is tasty.</color>
+
+::Shiny_Marinade_Beef //12071
+<color=#808080>A marinated beef dish that can only be described as shiny.</color>
+
+::Whole_Roast //12072
+<color=#808080>A meal for meat lovers, this roast is spiced with a special sauce.</color>
+
+::Bearfoot_Special //12073
+<color=#808080>A Luoyang speciality, grilled bear foot.</color>
+
+::Tendon_Satay //12074
+<color=#808080>A fresh and juicy satay made from thick tendons.</color>
+
+::Steamed_Tongue //12075
+<color=#808080>An expensive Luoyang dish that tastes absolutely superb.</color>
+
+::Red_Mushroom_Wine //12076
+<color=#808080>A fragrant grape and red mushroom wine.</color>
+
+::Special_Royal_Jelly_Herbal_Tea //12077
+<color=#808080>An herbal tea with royal jelly that has a pungent scent but a refreshing flavor.</color>
+
+::Royal_Family_Tea //12078
+<color=#808080>A sweetly scented tea that is one of Charles Orleans's specialties.</color>
+
+::Tristan_III //12079
+<color=#808080>An exquisite drink that was presented at the coronation of King Tristan III.</color>
+
+::Dragon_Breath_Cocktail //12080
+<color=#808080>A cocktail whose unforgettable flavor is as potent as a dragon's breath.</color>
+
+::Awfully_Bitter_Bracer //12081
+<color=#808080>A medicine said to have as much healing power as bitterness.</color>
+
+::Sumptuous_Feast //12082
+<color=#808080>A magnificent feast fit for the gods.</color>
+
+::Giant_Burito //12083
+<color=#808080>A jumbo sized burrito for jumbo sized appetites.</color>
+
+::Ascending_Dragon_Soup //12084
+<color=#808080>A spicy soup with dragon meat which gives one the sensation of vitality.</color>
+
+::Immortal_Stew //12085
+<color=#808080>A funky smelling, and suspicious looking, stew that makes you feel immortal.</color>
+
+::Chile_Shrimp_Gratin //12086
+<color=#808080>Shrimp and chile gratin that is so spicy, it burns.</color>
+
+::Steamed_Alligator_with_Vegetable //12087
+<color=#808080>A special Umbala dish made with steamed alligator meat wrapped in vegetables.</color>
+
+::Incredibly_Spicy_Curry //12088
+<color=#808080>A spicy curry, balanced with pumpkin, known to have the flavor of patience.</color>
+
+::Special_Meat_Stew //12089
+<color=#808080>Luoyang's specialty stew laced with meat that has a tempting scent.</color>
+
+::Steamed_Desert_Scorpions //12090
+<color=#808080>This dish is cooked with the heat of the desert sand and is the best dish in Sograt Desert cuisine.</color>
+
+::Peach_Cake //12091
+<color=#808080>A sweet and light scrumptious cake made with peaches grown in Kunlun.</color>
+
+::Soul_Haunted_Bread //12092
+<color=#808080>A deliciously sweet bread, haunted by flavor.</color>
+
+::Special_Toast //12093
+<color=#808080>Large toasted bread garnished with huge amounts of meat, cheese, and vegetables.</color>
+
+::Heavenly_Fruit_Juice //12094
+<color=#808080>Heavenly tasting juice that makes you feel refreshed and relaxed.</color>
+
+::Hwergelmir's_Tonic //12095
+<color=#808080>This beverage is famous for its pure, amazing taste.</color>
+
+::Lucky_Soup //12096
+<color=#808080>A soup that brings good luck when eaten hot.</color>
+
+::Assorted_Shish_Kebob //12097
+<color=#808080>Marinated meat and vegetables roasted on a skewer.</color>
+
+::Strawberry_Flavored_Rice_Ball //12098
+<color=#808080>A riceball garnished with strawberries for a delicious taste.</color>
+
+::Blood_Flavored_Soda //12099
+<color=#808080>A sweet drink that children seem to like with a gross aftertaste.</color>
+
+::Cooked_Nine_Tail's_Tails //12100
+<color=#808080>A rare, Payon dish that bestows luck to those fortunate enough to eat it.</color>
+
+::Bloody_Branch //12103
+<color=#808080>An ancient, gnarled branch that summons stronger creatures than regular Dead Branches.</color>
+
+::Random_Quiver //12104
+<color=#808080>An unlabeled arrow quiver.</color>
+
+::Taming_Gift_Set //12105
+<color=#808080>A beautifully decorated gift set that contains a taming item and Pet Armor.</color>
+
+::Jewelry_Box //12106
+<color=#808080>A beautiful box that contains an unknown accessory.</color>
+
+::Wrapped_Mask //12107
+<color=#808080>A mask that has been carefully wrapped.</color>
+
+::Santa's_Bag //12132
+<color=#808080>A small, red bag that magically changes your clothes.</color>
+
+::Red_Envelope_ //12134
+<color=#808080>A red envelope filled given by married couples to friends and family to celebrate.</color>
+
+::Lightning_Grenade_Pack //12144
+<color=#808080>A grenade pack that contains 500 Lightning Grenades.</color>
+
+::Blind_Grenade_Pack //12145
+<color=#808080>A grenade pack that contains 500 Blind Grenades.</color>
+
+::Poison_Grenade_Pack //12146
+<color=#808080>A grenade pack that contains 500 Poison Grenades.</color>
+
+::Freezing_Grenade_Pack //12147
+<color=#808080>A grenade pack that contains 500 Freezing Grenades.</color>
+
+::Flare_Grenadee_Pack //12148
+<color=#808080>A grenade pack that contains 500 Flare Grenades.</color>
+
+::Cartridge //12149
+<color=#808080>A bullet cartridge that contains 500 regular Bullets.</color>
+
+::Blood_Cartridge //12150
+<color=#808080>A bullet cartridge that contains 500 Bloody Bullets.</color>
+
+::Silver_Cartridge //12151
+<color=#808080>A bullet cartridge that contains 500 Silver Bullets.</color>
+
+::Battle_Manual //12208
+<color=#808080>A well written, detailed battle manual.</color>
+
+::Life_Insurance //12209
+<color=#808080>A life insurance certificate issued by Kafra Headquarters.</color>
+
+::Bubble_Gum //12210
+<color=#808080>Sweet, tasty, and lucky bubble gum.</color>
+
+::Kafra_Card //12211
+<color=#808080>A Kafra card issued by Kafra HQ.</color>
+
+::Giant_Fly_Wing //12212
+<color=#808080>An enchanted, giant wing from an ancient creature.</color>
+
+::Neuralizer //12213
+<color=#808080>Pressing the button on this stick will flash blinding light that seems to cause memory loss.</color>
+
+::Convex_Mirror //12214
+<color=#808080>A clean convex mirror that can be used to detect the presence of MVP monsters.</color>
+
+::Blessing_Scroll //12215
+<color=#808080>A scroll in which a single use of Lv 10 Blessing has been recorded.</color>
+
+::Increase_Agi_Scroll //12216
+<color=#808080>A scroll in which a single use of Lv 10 Increase AGI has been recorded.</color>
+
+::Aspersio_Scroll //12217
+<color=#808080>A scroll in which a single use of Lv 5 Aspersio has been recorded.</color>
+
+::Assumptio_Scroll //12218
+<color=#808080>A scroll in which a single use of Lv 5 Assumptio has been recorded.</color>
+
+::Megaphone //12221
+<color=#808080>A really, really, big microphone.</color>
+
+::Sweet_Candy_Cane //12225
+<color=#808080>A candy cane that is so sweet, it can melt the human tongue.</color>
+
+::New_Year_Rice_Cake //12238
+<color=#808080>This dish has been left out for so long that you are guranteed to get an upset stomach if you eat it.</color>
+
+::New_Year_Rice_Cake_ //12239
+<color=#808080>This dish has been left out for so long that you are guranteed to get an upset stomach if you eat it.</color>
+
+::Mercenary_Concentration_Potion //12241
+<color=#808080>A potion for mercenaries that slightly increases attack speed.</color>
+
+::Mercenary_Awakening_Potion //12242
+<color=#808080>A potion for mercenaries that moderately increases attack speed.</color>
+
+::Mercenary_Berserk_Potion //12243
+<color=#808080>A potion for mercenaries that greatly increases attack speed.</color>
+
+::Cool_Summer_Outfit //12260
+<color=#808080>A set of summer clothes that are absolutely perfect for the beach!</color>
+
+::Tasty_Pink_Ration //12269
+<color=#808080>Foodstuffs for urgent situations, don't eat it too quickly!</color>
+
+::Tasty_White_Ration //12270
+<color=#808080>Foodstuffs for urgent situations, don't eat it too quickly!</color>
+
+::Military_Ration_A //12271
+<color=#808080>Improved ration A, a meal ready to eat.</color>
+Recover 5% HP
+
+::Military_Ration_B //12272
+<color=#808080>Improved ration B, a meal ready to eat.</color>
+
+::Military_Ration_C //12273
+<color=#808080>Improved ration C, a meal ready to eat.</color>
+
+::Rune_Strawberry_Cake //12319
+<color=#808080>A snack sent from Rune Midgard, its flavored with strawberries.</color>
+
+::Schwartzwald_Pine_Jubilee //12320
+<color=#808080>A snack sent from Schwartzwald, its fruit juice cools your whole body.</color>
+
+::Arunafeltz_Desert_Sandwich //12321
+<color=#808080>A snack sent from Arunafeltz, it has a spicy taste.</color>
+
+::Chocolate_Pie //12322
+<color=#808080>A pie covered with sweet chocolate, it isn't pretty but the taste is excellent.</color>
+Recover 5% HP
+
+::Novice_Fly_Wing //12323
+<color=#808080>A fly wing from the Novice Training Grounds.</color>
+
+::Novice_Butterfly_Wing //12324
+<color=#808080>A butterfly wing from the Novice Training Grounds.</color>
+
+::Novice_Magnifier //12325
+<color=#808080>A magnifying glass from the Novice Training Grounds.</color>
+
+::Old_Navy_Box //12702
+<color=#808080>A mysterious blue box whose appearance resembles Old Blue Box.</color>
+
+::I_Love_You_Firecracker //14546
+<color=#808080>A firecracker that reads 'I love you'.</color>
+
+::Whiteday_Firecracker //14547
+<color=#808080>A firecracker that reads 'Happy Whiteday'.</color>
+
+::Valentine's_Day_Firecracker //14548
+<color=#808080>A firecracker that reads 'Happy Valentine's Day'.</color>
+
+::Birthday_Firecracker //14549
+<color=#808080>A firecracker that reads 'Happy Birthday'.</color>
+
+::Xmas_Firecracker //14550
+<color=#808080>A firecracker that reads 'Merry Christmas'.</color>
+
+::Party_Blessing_Scroll //14588
+<color=#808080>A scroll, exclusive to High Priests, casts Lv 10 Party Blessing.</color>
+
+::Party_Increase_Agi_Scroll //14589
+<color=#808080>A scroll, exclusive to High Priest, casts Lv 10 Party Increase AGI.</color>
+
+::Party_Assumptio_Scroll //14590
+<color=#808080>A scroll, exclusive to High Priests, casts Lv 5 Party Assumptio.</color>
+
+::Unsealed_Magic_Spell //14595
+<color=#808080>A spell scroll, that when unraveled, will teleport the reader to Schwaltzwald Guard Camp.</color>
+
+::Pierre's_Treasurebox //14596
+<color=#808080>A box full of something heavy.</color>
+

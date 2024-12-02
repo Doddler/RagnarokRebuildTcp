@@ -7,7 +7,7 @@ AiPassive,StateRandomMove,InAttacked,OutStartChase,StateChase
 AiPassive,StateRandomMove,InReachedRandomMoveTarget,OutWaitStart,StateIdle
 AiPassive,StateChase,InAttackRange,OutStartAttacking,StateAttacking
 AiPassive,StateChase,InReachedTarget,OutSearch,StateSearch
-AiPassive,StateChase,InAttackedNoSwap,OutStartChase,StateChase
+AiPassive,StateChase,InAttacked,OutStartChase,StateChase
 AiPassive,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiPassive,StateSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiPassive,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
@@ -30,7 +30,7 @@ AiLooter,StateRandomMove,InAttacked,OutStartChase,StateChase
 AiLooter,StateRandomMove,InReachedRandomMoveTarget,OutWaitStart,StateIdle
 AiLooter,StateChase,InAttackRange,OutStartAttacking,StateAttacking
 AiLooter,StateChase,InReachedTarget,OutSearch,StateSearch
-AiLooter,StateChase,InAttackedNoSwap,OutStartChase,StateChase
+AiLooter,StateChase,InAttacked,OutStartChase,StateChase
 AiLooter,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiLooter,StateSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiLooter,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
@@ -56,7 +56,7 @@ AiAssist,StateRandomMove,InAllyInCombat,OutStartChase,StateChase
 AiAssist,StateRandomMove,InReachedRandomMoveTarget,OutWaitStart,StateIdle
 AiAssist,StateChase,InAttackRange,OutStartAttacking,StateAttacking
 AiAssist,StateChase,InReachedTarget,OutSearch,StateSearch
-AiAssist,StateChase,InAttackedNoSwap,OutStartChase,StateChase
+AiAssist,StateChase,InAttacked,OutStartChase,StateChase
 AiAssist,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiAssist,StateSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiAssist,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
@@ -111,7 +111,7 @@ AiLooterAssist,StateRandomMove,InAllyInCombat,OutStartChase,StateChase
 AiLooterAssist,StateRandomMove,InReachedRandomMoveTarget,OutWaitStart,StateIdle
 AiLooterAssist,StateChase,InAttackRange,OutStartAttacking,StateAttacking
 AiLooterAssist,StateChase,InReachedTarget,OutSearch,StateSearch
-AiLooterAssist,StateChase,InAttackedNoSwap,OutStartChase,StateChase
+AiLooterAssist,StateChase,InAttacked,OutStartChase,StateChase
 AiLooterAssist,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiLooterAssist,StateSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiLooterAssist,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
@@ -229,7 +229,7 @@ AiAggressiveActiveSense,StateRandomMove,InReachedRandomMoveTarget,OutWaitStart,S
 AiAggressiveActiveSense,StateChase,InTargetedForSkill,OutStartChase,StateChase
 AiAggressiveActiveSense,StateChase,InAttackRange,OutStartAttacking,StateAttacking
 AiAggressiveActiveSense,StateChase,InReachedTarget,OutSearch,StateSearch
-AiAggressiveActiveSense,StateChase,InAttackedNoSwap,OutStartChase,StateChase
+AiAggressiveActiveSense,StateChase,InAttacked,OutStartChase,StateChase
 AiAggressiveActiveSense,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiAggressiveActiveSense,StateSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiAggressiveActiveSense,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
@@ -256,7 +256,7 @@ AiStandardBoss,StateChase,InTargetedForSkill,OutStartChase,StateChase
 AiStandardBoss,StateChase,InAttackRange,OutStartAttacking,StateAttacking
 AiStandardBoss,StateChase,InAttackRangeAny,OutStartAttacking,StateAttacking
 AiStandardBoss,StateChase,InReachedTarget,OutSearch,StateSearch
-AiStandardBoss,StateChase,InAttackedNoSwap,OutStartChase,StateChase
+AiStandardBoss,StateChase,InAttacked,OutStartChase,StateChase
 AiStandardBoss,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiStandardBoss,StateSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiStandardBoss,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase

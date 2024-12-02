@@ -38,7 +38,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
                 return;
 
             var chance = 500 + lvl * 50; //50%-100%
-            var resist = MathHelper.ResistCalc(target.GetEffectiveStat(CharacterStat.Vit)); //1% resist per vit, stacking
+            var resist = MathHelper.PowScaleDown(target.GetEffectiveStat(CharacterStat.Vit)); //1% resist per vit, stacking
             if (!source.CheckLuckModifiedRandomChanceVsTarget(target, (int)(chance * resist), 1000))
                 return; //failed to poison
 

@@ -6,6 +6,7 @@ using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEditor;
+using UnityEngine;
 
 namespace Assets.Scripts.PlayerControl
 {
@@ -40,6 +41,16 @@ namespace Assets.Scripts.PlayerControl
             }
         }
 
+        public int SalePrice 
+        {
+            get
+            {
+                if (ItemData.ItemClass == ItemClass.Ammo)
+                    return 0;
+                return Mathf.FloorToInt(ItemData.Price / 2f);
+            }
+        }
+
         public static InventoryItem Deserialize(ClientInboundMessage msg, ItemType type, int bagId)
         {
             if (type == ItemType.RegularItem)
@@ -66,7 +77,7 @@ namespace Assets.Scripts.PlayerControl
             item.ItemData = ClientDataLoader.Instance.GetItemById(item.UniqueItem.Id);
             return item;
         }
-
+        
         public bool Equals(InventoryItem other)
         {
             return BagSlotId == other.BagSlotId;
@@ -80,6 +91,21 @@ namespace Assets.Scripts.PlayerControl
         public override int GetHashCode()
         {
             return BagSlotId;
+        }
+
+        public string ProperName()
+        {
+            if (ItemData == null)
+                return $"Unknown Item";
+            
+            if (ItemData.IsUnique)
+            {
+                if (ItemData.Slots == 0)
+                    return ItemData.Name;
+                return $"{ItemData.Name} [{ItemData.Slots}]";
+            }
+
+            return $"{ItemData.Name}";
         }
 
         public override string ToString()
@@ -103,6 +129,7 @@ namespace Assets.Scripts.PlayerControl
         private readonly SortedDictionary<int, InventoryItem> inventoryLookup = new();
 
         public SortedDictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
+        public InventoryItem GetInventoryItem(int bagId) => inventoryLookup[bagId];
 
         public int GetItemCount(int itemId)
         {

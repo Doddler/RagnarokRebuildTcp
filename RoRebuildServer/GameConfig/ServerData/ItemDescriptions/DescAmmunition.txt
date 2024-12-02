@@ -1,0 +1,122 @@
+//Ammunition
+
+::Arrow //1750
+<color=#808080>A common arrow.</color>
+
+::Silver_Arrow //1751
+<color=#808080>A silver tipped arrow.</color>
+
+::Fire_Arrow //1752
+<color=#808080>A flaming arrow.</color>
+
+::Steel_Arrow //1753
+<color=#808080>A steel arrow.</color>
+
+::Crystal_Arrow //1754
+<color=#808080>A crystal arrow.</color>
+
+::Wind_Arrow //1755
+<color=#808080>An airy arrow.</color>
+
+::Stone_Arrow //1756
+<color=#808080>A stone arrow.</color>
+
+::Immaterial_Arrow //1757
+<color=#808080>An arrow without a discernible shape.</color>
+
+::Stun_Arrow //1758
+<color=#808080>A thick, heavy arrow.</color>
+
+::Frozen_Arrow //1759
+<color=#808080>An arrow enchanted with the power of ice.</color>
+
+::Flash_Arrow //1760
+<color=#808080>An arrow that explodes on impact with a flash of light.</color>
+
+::Cursed_Arrow //1761
+<color=#808080>An arrow enchanted with curse magic.</color>
+
+::Rusty_Arrow //1762
+<color=#808080>An old, rusty arrow.</color>
+
+::Poison_Arrow //1763
+<color=#808080>An arrow whose tip has been dipped in lethal poison.</color>
+
+::Sharp_Arrow //1764
+<color=#808080>An arrow topped with a serrated blade.</color>
+
+::Oridecon_Arrow //1765
+<color=#808080>An oridecon arrow.</color>
+
+::Shadow_Arrow //1767
+<color=#808080>An arrow imbued with the power of darkness.</color>
+
+::Sleep_Arrow //1768
+<color=#808080>An arrow that can render targets unconscious.</color>
+
+::Mute_Arrow //1769
+<color=#808080>An arrow coated with a mouth paralyzing chemical.</color>
+
+::Iron_Arrow //1770
+<color=#808080>An iron arrow.</color>
+
+::Venom_Knife //1771
+<color=#808080>A throwing knife laced with toxin.</color>
+
+::Holy_Arrow //1772
+<color=#808080>An arrow blessed with holy water.</color>
+
+::Bullet //13200
+<color=#808080>A small metal bullet.</color>
+
+::Silver_Bullet //13201
+<color=#808080>A small silver bullet.</color>
+
+::Bloody_Shell //13202
+<color=#808080>A small blood red bullet.</color>
+
+::Incendiary_Grenade //13203
+<color=#808080>A grenade shell imbued with the fire property.</color>
+
+::Lightning_Grenade //13204
+<color=#808080>A grenade shell imbued with the wind property.</color>
+
+::Poison_Grenade //13205
+<color=#808080>A grenade shell that contains deadly poison.</color>
+
+::Flash_Grenade //13206
+<color=#808080>A grenade shell imbued with the shadow property.</color>
+
+::Cryo_Grenade //13207
+<color=#808080>A grenade shell imbued with the water property.</color>
+
+::Shuriken //13250
+<color=#808080>A shuriken that is easy to conceal.</color>
+
+::Nimbus_Shuriken //13251
+<color=#808080>A shuriken that cuts like the rain.</color>
+
+::Flash_Shuriken //13252
+<color=#808080>A shuriken that can be thrown easily.</color>
+
+::Sharp_Leaf_Shuriken //13253
+<color=#808080>A shuriken that is as thin as a leaf.</color>
+
+::Thorn_Needle_Shuriken //13254
+<color=#808080>A shuriken thas has thorn like barbs.</color>
+
+::Icicle_Kunai //13255
+<color=#808080>A kunai that bites like the cold.</color>
+
+::Black_Earth_Kunai //13256
+<color=#808080>A kunai that hits like the earth.</color>
+
+::High_Wind_Kunai //13257
+<color=#808080>A kunai that cuts like the wind.</color>
+
+::Heat_Wave_Kunai //13258
+<color=#808080>A kunai that burns like a fire.</color>
+
+::Fell_Poison_Kunai //13259
+<color=#808080>A kunai coated with deadly poison.</color>
+

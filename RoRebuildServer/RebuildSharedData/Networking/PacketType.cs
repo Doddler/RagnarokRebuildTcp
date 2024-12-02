@@ -91,6 +91,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] OpenShop,
     ShopBuySell,
     [ServerOnlyPacket] ItemUpdate,
+    [ServerOnlyPacket] ServerEvent,
     DebugEntry
 }
 

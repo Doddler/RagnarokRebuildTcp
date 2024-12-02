@@ -33,7 +33,7 @@ public class SkillPoison : SkillHandlerBase
             return;
 
         var chance = lvl * 100; //10% at lvl 1, 100% at lvl 10
-        var resist = MathHelper.ResistCalc(target.GetEffectiveStat(CharacterStat.Vit)); //1% resist per vit, stacking
+        var resist = MathHelper.PowScaleDown(target.GetEffectiveStat(CharacterStat.Vit)); //1% resist per vit, stacking
         if (!source.CheckLuckModifiedRandomChanceVsTarget(target, (int)(chance * resist), 1000))
             return; //failed to poison
 

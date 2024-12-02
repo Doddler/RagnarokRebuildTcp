@@ -571,9 +571,11 @@ internal class DataLoader
             var weaponInfo = new WeaponInfo()
             {
                 Attack = entry.Attack,
+                Range = entry.Range,
                 CardSlots = entry.Slot,
                 Element = entry.Property,
                 WeaponClass = weaponType,
+                WeaponLevel = entry.Rank,
                 EquipGroup = entry.EquipGroup,
                 IsTwoHanded = entry.Position == WeaponPosition.BothHands,
                 IsBreakable = entry.Breakable == "Yes",
@@ -619,13 +621,13 @@ internal class DataLoader
                 Code = entry.Code,
                 Id = entry.Id,
                 IsUnique = false,
-                ItemClass = ItemClass.Useable,
+                ItemClass = ItemClass.Ammo,
                 Price = entry.Price,
                 Weight = entry.Weight,
             };
             itemList.Add(item.Id, item);
 
-            var ammoInfo = new AmmoInfo() { Type = entry.Type, Attack = entry.Attack, MinLvl = entry.EquipLevel};
+            var ammoInfo = new AmmoInfo() { Type = entry.Type, Attack = entry.Attack, MinLvl = entry.MinLvl, Element = entry.Property};
             returnList.Add(entry.Id, ammoInfo);
         }
 

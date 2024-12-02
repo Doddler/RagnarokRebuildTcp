@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class WindowBase : MonoBehaviour, IClosableWindow
+    public class WindowBase : MonoBehaviour, IClosableWindow, IPointerDownHandler
     {
-        public void MoveToTop()
+        public virtual void MoveToTop()
         {
             // Debug.Log($"MoveToTop {name}");
             transform.SetAsLastSibling(); //move to top
@@ -48,14 +49,22 @@ namespace Assets.Scripts.UI
             //Init();
         }
 
-        public void HideWindow()
+        public virtual void HideWindow()
         {
             gameObject.SetActive(false);
             var mgr = UiManager.Instance;
             if (mgr.WindowStack.Contains(this))
+            {
                 mgr.WindowStack.Remove(this);
-            
+                mgr.ForceHideTooltip();
+            }
+
             // Debug.Log(name + " : " + gameObject.activeInHierarchy);
+        }
+
+        public virtual void OnPointerDown(PointerEventData eventData)
+        {
+            MoveToTop();
         }
     }
 }

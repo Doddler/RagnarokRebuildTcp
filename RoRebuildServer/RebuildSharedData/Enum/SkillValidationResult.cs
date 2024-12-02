@@ -11,6 +11,7 @@ namespace RebuildSharedData.Enum
         InvalidTarget,
         NoLineOfSight,
         IncorrectWeapon,
+        IncorrectAmmunition,
         InsufficientSp,
         CannotCreateMore,
         InsufficientItemCount

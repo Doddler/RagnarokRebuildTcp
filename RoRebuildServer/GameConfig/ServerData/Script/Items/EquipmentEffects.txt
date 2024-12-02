@@ -216,7 +216,7 @@ Item("Brave_Recovery_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
 Item("Valorous_Recovery_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 2); }
 Item("Thorn_Staff_of_Darkness") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 3); }
 Item("Eraser") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 2); }
-Item("Novice_Rod") { OnEquip:  AddStat(AddMagicAttackPower, 22); }
+Item("Novice_Rod") { OnEquip:  AddStat(AddMagicAttackPower, 8); }
 Item("Glorious_Arc_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
 Item("Glorious_Recovery_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
 Item("Claw") { OnEquip:  AddStat(AddStr, 2); }

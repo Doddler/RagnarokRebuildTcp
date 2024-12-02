@@ -1,0 +1,2194 @@
+//Etc Items
+
+::Ora_Ora //701
+<color=#808080>A trap that uses sticky, sweet scented liquid to lure and ensnare bugs.</color>
+
+::Animal_Gore //702
+<color=#808080>Bottled blood from a freshly slain beast.</color>
+
+::Hinalle //703
+<color=#808080>A plant with healing properties, its leaves give a nice and smoothing sensation.</color>
+
+::Aloe //704
+<color=#808080>A plant with curative properties, its leaves are commonly used in medicine and food.</color>
+
+::Clover //705
+<color=#808080>A plant with three heart shaped leaves that is plentiful in meadows.</color>
+
+::Four_Leaf_Clover //706
+<color=#808080>An extremely rare clover, legend says that merely holding one is a sign of great fortune.</color>
+
+::Singing_Plant //707
+<color=#808080>A mysterious plant that sings melancholic songs under a full moon.</color>
+
+::Ment //708
+<color=#808080>A flower containing oils that relieve pain and aches.</color>
+
+::Izidor //709
+<color=#808080>A flower with a very strong scent that induces powerful hallucinations if eaten.</color>
+
+::Illusion_Flower //710
+<color=#808080>A flower rarely seen by humans, it shines brilliantly under the light of the moon.</color>
+
+::Shoot //711
+<color=#808080>A delicate and fragile plant that is in the early stages of growth.</color>
+
+::Flower //712
+<color=#808080>An ordinary, thornless wildflower that doesn't have any particular scent.</color>
+
+::Empty_Bottle //713
+<color=#808080>An empty bottle for carrying liquid.</color>
+
+::Emperium //714
+<color=#808080>Merely owning this gloriously resplendent gem is a sign of being chosen by fate to wield great power.</color>
+
+::Yellow_Gemstone //715
+<color=#808080>A crystal that acts as catalyst for certain magic spells. Once used, it becomes powerless and is destroyed.</color>
+
+::Red_Gemstone //716
+<color=#808080>A crystal that acts as catalyst for certain magic spells. Once used, it becomes powerless and is destroyed.</color>
+
+::Blue_Gemstone //717
+<color=#808080>A crystal that acts as catalyst for certain magic spells. Once used, it becomes powerless and is destroyed.</color>
+
+::Garnet //718
+<color=#808080>A dark red jewel that is the birthstone for January.</color>
+
+::Amethyst //719
+<color=#808080>A purple jewel that is the birthstone for February.</color>
+
+::Aquamarine //720
+<color=#808080>A sky blue jewel that is the birthstone for March.</color>
+
+::Emerald //721
+<color=#808080>A green jewel that is the birthstone for May.</color>
+
+::Pearl //722
+<color=#808080>A pink jewel that is the birthstone for June.</color>
+
+::Ruby //723
+<color=#808080>A maroon jewel that is the birthstone for July.</color>
+
+::Cursed_Ruby //724
+<color=#808080>A ruby containing mysterious powers.</color>
+
+::Sardonyx //725
+<color=#808080>An onyx jewel that is the birthstone for August.</color>
+
+::Sapphire //726
+<color=#808080>A dark blue jewel that is the birthstone for September.</color>
+
+::Opal //727
+<color=#808080>A rainbow jewel that is the birthstone for October.</color>
+
+::Topaz //728
+<color=#808080>A golden jewel that is the birthstone for November.</color>
+
+::Zircon //729
+<color=#808080>A white blue jewel that is the birthstone for December.</color>
+
+::1_Carat_Diamond //730
+<color=#808080>A small, twinkling gem that can be sold at a good price.</color>
+
+::2_Carat_Diamond //731
+<color=#808080>A medium, sparkling gem that can be sold at a high price.</color>
+
+::3_Carat_Diamond //732
+<color=#808080>A huge, dazzling gem that can be sold at an outrageous price.</color>
+
+::Cracked_Diamond //733
+<color=#808080>A damaged diamond with obvious imperfections.</color>
+
+::Red_Frame //734
+<color=#808080>A red frame that would make a nice present.</color>
+
+::Chung_Jah //735
+<color=#808080>A blue porcelain that would make a nice gift.</color>
+
+::China //736
+<color=#808080>A white plate that would make a nice gift.</color>
+
+::Black_Ladle //737
+<color=#808080>A black ladle, it is very durable and would make a nice gift.</color>
+
+::Pencil_Case //738
+<color=#808080>A pencil case, it'd be a nice gift for artists, writers, and students.</color>
+
+::Rouge //739
+<color=#808080>A case of make-up that shines with a lustrous, attractive red color.</color>
+
+::Puppet //740
+<color=#808080>A cute cotton doll that's a frequent favorite for little girls.</color>
+
+::Poring_Doll //741
+<color=#808080>A cute doll that resembles a Poring.</color>
+
+::Chonchon_Doll //742
+<color=#808080>A repulsive doll that resembles a Chonchon.</color>
+
+::Spore_Doll //743
+<color=#808080>A stuffy doll that resembles a Spore.</color>
+
+::Bouquet //744
+<color=#808080>A bunch of flowers given to express love, thanks, or appreciation.</color>
+
+::Wedding_Bouquet //745
+<color=#808080>A small bouquet thrown by brides during the wedding ceremony. Supposedly, the woman who catches it is next to be married.</color>
+
+::Glass_Bead //746
+<color=#808080>A toy for young boys that's sort of like a marble.</color>
+
+::Crystal_Mirror //747
+<color=#808080>A gorgeous mirror of polished crystal that is an essential for women everywhere.</color>
+
+::Witherless_Rose //748
+<color=#808080>A symbol of eternal love, this enchanted (and expensive) rose will never wither.</color>
+
+::Frozen_Rose //749
+<color=#808080>A symbol of eternal love, this unique rose of sculpted ice makes a great gift.</color>
+
+::Baphomet_Doll //750
+<color=#808080>An exquisite doll that resembles Baphomet, enemy of all that is righteous.</color>
+
+::Osiris_Doll //751
+<color=#808080>An exquisite doll that resembles Osiris, king of darkness.</color>
+
+::Rocker_Doll //752
+<color=#808080>A doll that resembles a Rocker, a grasshopper that plays its violin.</color>
+
+::Yoyo_Doll //753
+<color=#808080>A doll that resembles a Yoyo, a monkey that is familiar with humans.</color>
+
+::Racoon_Doll //754
+<color=#808080>A doll that resembles a Smokie, a raccoon that has the power of invisibility.</color>
+
+::Rough_Oridecon //756
+<color=#808080>A raw ore that mostly consists of oridecon.</color>
+
+::Rough_Elunium //757
+<color=#808080>A raw ore that mostly consists of elunium.</color>
+
+::Daenggie //901
+<color=#808080>A braided pigtail that has been cut from the head of a young girl.</color>
+
+::Tree_Root //902
+<color=#808080>A handful of roots that are fibrous enough to be used as rope.</color>
+
+::Reptile_Tongue //903
+<color=#808080>A reptile's severed tongue.</color>
+
+::Scorpion_Tail //904
+<color=#808080>A scorpion's severed tail.</color>
+
+::Stem //905
+<color=#808080>A handful of plant stems that can be used in alchemy.</color>
+
+::Pointed_Scale //906
+<color=#808080>A single scale from a Worm Tail.</color>
+
+::Resin //907
+<color=#808080>A viscous plant substance used in carpentry.</color>
+
+::Spawn //908
+<color=#808080>A collection of frog eggs.</color>
+
+::Jellopy //909
+<color=#808080>A small crystallization created by monsters.</color>
+
+::Garlet //910
+<color=#808080>A small crystallization created by monsters.</color>
+
+::Scell //911
+<color=#808080>A small crystallization created by monsters.</color>
+
+::Zargon //912
+<color=#808080>A small crystallization created by monsters.</color>
+
+::Tooth_of_Bat //913
+<color=#808080>A Farmiliar's sharp tooth.</color>
+
+::Fluff //914
+<color=#808080>A clump of monster fur and fuzz that can be used to make thread and fabric.</color>
+
+::Chrysalis //915
+<color=#808080>A larva skin that has been shed or peeled off.</color>
+
+::Bird_Feather //916
+<color=#808080>A bird's feather that can be used in decor.</color>
+
+::Talon //917
+<color=#808080>A sharp talon from a bird's foot.</color>
+
+::Sticky_Webfoot //918
+<color=#808080>A webbed foot from a monster's leg.</color>
+
+::Animal_Skin //919
+<color=#808080>An animal hide that can be used in clothes, coverings, or bedding.</color>
+
+::Wolf_Claw //920
+<color=#808080>A claw severed from a wolf's paw.</color>
+
+::Mushroom_Spore //921
+<color=#808080>A spore discharged from a mushroom.</color>
+
+::Orc's_Fang //922
+<color=#808080>A cuspid wrenched from a gruesome orc's jaw.</color>
+
+::Evil_Horn //923
+<color=#808080>A small goat horn, the symbol of evil.</color>
+
+::Powder_of_Butterfly //924
+<color=#808080>A fistful of butterfly wing powder that sparkles with the power of fantasy.</color>
+
+::Bill_of_Bird //925
+<color=#808080>A bird's beak, waste not want not.</color>
+
+::Snake_Scale //926
+<color=#808080>A handful of snake scales that can make flamboyant clothes.</color>
+
+::Insect_Feeler //928
+<color=#808080>An antennae that serves as a sensory organ for insects.</color>
+
+::Immortal_Heart //929
+<color=#808080>A heart which won't stop beating, it contains a dreadful power.</color>
+
+::Rotten_Bandage //930
+<color=#808080>An old, dirty bandage that's so soiled it's almost worthless.</color>
+
+::Orcish_Voucher //931
+<color=#808080>A small sculpture that is a symbol of pride for Orc Warriors.</color>
+
+::Skel-Bone //932
+<color=#808080>A bone taken from an undead skeleton.</color>
+
+::Memento //934
+<color=#808080>A box that is buried with the dead containing gems and momentos.</color>
+
+::Shell //935
+<color=#808080>A hard shell that was used for protection.</color>
+
+::Scale_Shell //936
+<color=#808080>A shell-like piece of tough skin that is covered with hard scales.</color>
+
+::Venom_Canine //937
+<color=#808080>A sharp, poisonous fang.</color>
+
+::Sticky_Mucus //938
+<color=#808080>A mysteriously sticky liquid.</color>
+
+::Bee_Sting //939
+<color=#808080>A stinger from a hornet or bee.</color>
+
+::Grasshopper's_Leg //940
+<color=#808080>A Rocker's hind leg.</color>
+
+::Nose_Ring //941
+<color=#808080>A ring placed in a cow's nose so that it can be easily steered.</color>
+
+::Yoyo_Tail //942
+<color=#808080>A prehensile tail from a Yoyo.</color>
+
+::Solid_Shell //943
+<color=#808080>A solid, durable shell.</color>
+
+::Horseshoe //944
+<color=#808080>A piece of iron fitted on a horse's hoof for its protection.</color>
+
+::Raccoon_Leaf //945
+<color=#808080>A leaf that gives Smokies the power to become invisible.</color>
+
+::Snail's_Shell //946
+<color=#808080>A hard, spiral shaped snail shell.</color>
+
+::Horn //947
+<color=#808080>A hard and sharp horn.</color>
+
+::Bear's_Footskin //948
+<color=#808080>A bear's foot that is rumored to restore male vigor.</color>
+
+::Soft_Fluff //949
+<color=#808080>Soft down used in making high quality clothes.</color>
+
+::Heart_of_Mermaid //950
+<color=#808080>A heart of a mermaid.</color>
+
+::Fin //951
+<color=#808080>An oily fish fin.</color>
+
+::Cactus_Needle //952
+<color=#808080>A sharp cactus needle.</color>
+
+::Stone_Heart //953
+<color=#808080>A heart constructed entirely out of stone.</color>
+
+::Shining_Scale //954
+<color=#808080>A shimmering, reflective scale.</color>
+
+::Insect_Peeling //955
+<color=#808080>A skin shed from a worm or insect.</color>
+
+::Gill //956
+<color=#808080>A part of a fish breathing apparatus.</color>
+
+::Decayed_Nail //957
+<color=#808080>A putrid and incredibly pungent corpse's nail.</color>
+
+::Horrendous_Mouth //958
+<color=#808080>A complete set of corpse's teeth, well, as complete as it can get.</color>
+
+::Rotten_Scale //959
+<color=#808080>A nasty scale with a horribly offensive odor.</color>
+
+::Nipper //960
+<color=#808080>A crustacean's claw.</color>
+
+::Conch //961
+<color=#808080>The shell of a marine mollusk.</color>
+
+::Tentacle //962
+<color=#808080>A flexible, prehensile, and boneless appendage.</color>
+
+::Sharp_Scale //963
+<color=#808080>A scale that is much sharper than a razor.</color>
+
+::Crab_Shell //964
+<color=#808080>A hard crab shell that smells horrible.</color>
+
+::Clam_Shell //965
+<color=#808080>A hard shell taken from a dead clam.</color>
+
+::Clam_Flesh //966
+<color=#808080>A muscular and fatty clam tissue that can be cooked in many ways.</color>
+
+::Turtle_Shell //967
+<color=#808080>A hard shell that obviously failed to protect a turtle.</color>
+
+::Heroic_Emblem //968
+<color=#808080>An emblem given to an Orc Hero or Lord that is proof of their heroism.</color>
+
+::Gold //969
+<color=#808080>A valuable metal used to make coins and jewelry.</color>
+
+::Alcohol //970
+<color=#808080>This colorless liquid is the secret behind beers and wine.</color>
+
+::Detrimindexta //971
+<color=#808080>A liquid with unique properties that repels water.</color>
+
+::Karvodailnirol //972
+<color=#808080>A liquid with unique characteristics that repels water.</color>
+
+::Counteragent //973
+<color=#808080>A mixture of chemicals that can only be produced by geniuses.</color>
+
+::Mixture //974
+<color=#808080>A special compound that can only be produced by geniuses.</color>
+
+::Scarlet_Dyestuffs //975
+<color=#808080>Red dye made from ground Red Herbs.</color>
+
+::Lemon_Dyestuffs //976
+<color=#808080>Yellow dye made from ground Yellow Herbs.</color>
+
+::Cobaltblue_Dyestuffs //978
+<color=#808080>Blue dye made from ground Blue Herbs.</color>
+
+::Darkgreen_Dyestuffs //979
+<color=#808080>Green dye made from ground Green Herbs.</color>
+
+::Orange_Dyestuffs //980
+<color=#808080>Orange dye made from ground Red and Yellow Herbs.</color>
+
+::Violet_Dyestuffs //981
+<color=#808080>Purple dye made from ground Blue and Red Herbs.</color>
+
+::White_Dyestuffs //982
+<color=#808080>White dye made from ground White Herbs.</color>
+
+::Black_Dyestuffs //983
+<color=#808080>Black dye made from various ground herbs.</color>
+
+::Oridecon //984
+<color=#808080>Pure oridecon, a tough metal used in refining high level weapons.</color>
+
+::Elunium //985
+<color=#808080>Pure elunium, a light, non-toxic metal used in refining armor.</color>
+
+::Anvil //986
+<color=#808080>A smithing tool made of iron on which heated metals are placed and hammered into shape.</color>
+
+::Oridecon_Anvil //987
+<color=#808080>An oridecon anvil, quality products can be made with this.</color>
+
+::Golden_Anvil //988
+<color=#808080>A golden anvil, high quality products can be made with this!</color>
+
+::Emperium_Anvil //989
+<color=#808080>An emperium anvil, pristine products can be made with this!</color>
+
+::Red_Blood //990
+<color=#808080>A vivid red ore that glows with the power of a volcano.</color>
+
+::Crystal_Blue //991
+<color=#808080>A vivid blue ore that glows with the power of the ocean.</color>
+
+::Wind_of_Verdure //992
+<color=#808080>A vivid yellow ore that glows with the power of the sky.</color>
+
+::Green_Live //993
+<color=#808080>A vivid green ore that glows with the power of the earth.</color>
+
+::Flame_Heart //994
+<color=#808080>A dark red, heart shaped stone imbued with fire.</color>
+
+::Mystic_Frozen //995
+<color=#808080>A light blue, crystal stone imbued with water.</color>
+
+::Rough_Wind //996
+<color=#808080>A pale yellow, lightning bolt shaped stone imbued with wind.</color>
+
+::Great_Nature //997
+<color=#808080>A citrus green, bud shaped stone imbued with earth.</color>
+
+::Iron //998
+<color=#808080>A malleable metal that's easy to temper and is commonly used to create arms and other goods.</color>
+
+::Steel //999
+<color=#808080>An iron and carbon alloy known for its structural durability and use in crafting high-quality arms.</color>
+
+::Star_Crumb //1000
+<color=#808080>A small stellar crystal, fallen from the heavens, which can be used to craft strengthened weapons.</color>
+
+::Star_Dust //1001
+<color=#808080>A collection of stardust which can be refined into a Star Crumb.</color>
+
+::Iron_Ore //1002
+<color=#808080>An impure ore that can be refined into Iron.</color>
+
+::Coal //1003
+<color=#808080>A black mineral that can be combined with Iron to craft Steel.</color>
+
+::Chivalry_Emblem //1004
+<color=#808080>A token which proves a knight's loyalty to their lord.</color>
+
+::Hammer_of_Blacksmith //1005
+<color=#808080>A hammer that has been used for refinement.</color>
+
+::Old_Magicbook //1006
+<color=#808080>A spell book containing powerful, ancient magic.</color>
+
+::Necklace_of_Wisdom //1007
+<color=#808080>A mysterious necklace that is rumored to possess the power of clairvoyance.</color>
+
+::Necklace_of_Oblivion //1008
+<color=#808080>A necklace given to those capable of joining the Assassin Guild.</color>
+
+::Hand_of_God //1009
+<color=#808080>A figure of a hand that contains great religious symbolism.</color>
+
+::Phracon //1010
+<color=#808080>A metal that can be used to refine Lv 1 weapons.</color>
+
+::Emveretarcon //1011
+<color=#808080>A metal that can be used to refine Lv 2 weapons.</color>
+
+::Frill //1012
+<color=#808080>A scruff of neckskin from a desert lizard.</color>
+
+::Rainbow_Shell //1013
+<color=#808080>A bug shell that reflects the colors of the rainbow.</color>
+
+::Ant_Jaw //1014
+<color=#808080>A tough, sharp jaw from an ant.</color>
+
+::Tongue //1015
+<color=#808080>A tongue, it has a disgusting coating of sticky saliva.</color>
+
+::Rat_Tail //1016
+<color=#808080>A thin rat's tail.</color>
+
+::Mole_Whiskers //1017
+<color=#808080>A fistfull of whiskers from a mole.</color>
+
+::Mole_Claw //1018
+<color=#808080>A mole's claw that is sturdy enough to dig into the ground.</color>
+
+::Trunk //1019
+<color=#808080>A piece of wood, or a Ninja, and you're pretty sure its wood.</color>
+
+::Black_Hair //1020
+<color=#808080>A lustrous, well brushed, set of hair.</color>
+
+::Dokebi_Horn //1021
+<color=#808080>A Dokebi horn rumored to bring great fortune.</color>
+
+::Nine_Tails //1022
+<color=#808080>A set of tails that belonged to a fox, but not anymore, obviously.</color>
+
+::Fish_Tail //1023
+<color=#808080>A stinky fish tail.</color>
+
+::Squid_Ink //1024
+<color=#808080>A bottle of black squid ink that failed to provide sufficient self defense.</color>
+
+::Cobweb //1025
+<color=#808080>A sticky spider web made of surprisingly strong threadlike fibers.</color>
+
+::Acorn //1026
+<color=#808080>A tough, woody shelled nut from an oak tree.</color>
+
+::Porcupine_Quill //1027
+<color=#808080>A fistful of sharp, hollow quills that used to protect a porcupine.</color>
+
+::Mane //1028
+<color=#808080>A fistful of bristly, tough hair from a wild boar.</color>
+
+::Tiger_Skin //1029
+<color=#808080>A tiger's hide that's soft, furry, nice, and feral.</color>
+
+::Tiger_Footskin //1030
+<color=#808080>A tiger's paw known to the elderly as the King of Invigoration.</color>
+
+::Mantis_Scythe //1031
+<color=#808080>A sharp, front limb severed from a Mantis.</color>
+
+::Maneater_Blossom //1032
+<color=#808080>A carnivorous flower with a digestive system similar to a human's.</color>
+
+::Maneater_Root //1033
+<color=#808080>A pair of roots that almost look capable of walking.</color>
+
+::Blue_Hair //1034
+<color=#808080>A fistful of Kobold hair that appears bristly but is actually downy soft.</color>
+
+::Dragon_Canine //1035
+<color=#808080>A dragon's cuspid that is sharp enough to pierce dragon scales.</color>
+
+::Dragon_Scale //1036
+<color=#808080>An iridescent dragon's scale that provides great protection.</color>
+
+::Dragon_Tail //1037
+<color=#808080>A tail cut off from a dragon that, sadly, will never grow back.</color>
+
+::Little_Evil_Horn //1038
+<color=#808080>A pair of horns from a small demon.</color>
+
+::Little_Evil_Wing //1039
+<color=#808080>A pair wings from a small demon.</color>
+
+::Elder_Pixie's_Moustache //1040
+<color=#808080>A mustache shaved off a dwarf that somehow maintained its shape and form.</color>
+
+::Lantern //1041
+<color=#808080>A portable case with glass panes that allow a contained light to illuminate dark areas.</color>
+
+::Bug_Leg //1042
+<color=#808080>A hind leg that has been cut from a bug.</color>
+
+::Orc_Claw //1043
+<color=#808080>A thick, sharp fingernail from a decayed orc.</color>
+
+::Zenorc's_Fang //1044
+<color=#808080>A gnarly, sharp cuspid from a cursed orc.</color>
+
+::Cultish_Masque //1045
+<color=#808080>A ceremonial mask used by an ancient shaman.</color>
+
+::Scorpion_Nipper //1046
+<color=#808080>A sharp forelimb claw from a scorpion.</color>
+
+::Dead_Medusa //1047
+<color=#808080>A medusa head that, naturally, looks sad and depressed.</color>
+
+::Horrendous_Hair //1048
+<color=#808080>A lock of medusa hair, that is essentially just a bunch of snakes.</color>
+
+::Skirt_of_Virgin //1049
+<color=#808080>A traditional skirt that symbolizes virginity.</color>
+
+::Tendon //1050
+<color=#808080>A bunch of tough, strong tendons.</color>
+
+::Detonator //1051
+<color=#808080>A weird organic clump that seems to be a marine sphere brain.</color>
+
+::Single_Cell //1052
+<color=#808080>A single, functioning cell taken from an aquatic lifeform.</color>
+
+::Ancient_Tooth //1053
+<color=#808080>A sharp, serrated tooth pulled from the mouth of a giant deep sea fish.</color>
+
+::Ancient_Lips //1054
+<color=#808080>A set of fat lips cut from a giant deep sea fish.</color>
+
+::Earthworm_Peeling //1055
+<color=#808080>A shed skin peeling from an earthworm.</color>
+
+::Grit //1056
+<color=#808080>A cubic grain of sand that sparkles brightly.</color>
+
+::Moth_Dust //1057
+<color=#808080>A bottle moth wing powder.</color>
+
+::Moth_Wings //1058
+<color=#808080>A set of moth wings.</color>
+
+::Fabric //1059
+<color=#808080>A piece of nearly transparent fabric.</color>
+
+::Golden_Hair //1060
+<color=#808080>A beautiful lock of golden human hair.</color>
+
+::Witch_Starsand //1061
+<color=#808080>A bottle of sand from witch broom bristles that sparkles like the stars.</color>
+
+::Jack_o'_Pumpkin //1062
+<color=#808080>A pumpkin with a carved, spooky face.</color>
+
+::Fang //1063
+<color=#808080>A sharp cuspid yanked from an orc archer's mouth.</color>
+
+::Reins //1064
+<color=#808080>A set of reins that can help steer a mounted animal.</color>
+
+::Trap //1065
+<color=#808080>An item used by Hunters, or wanna-be Hunters, to place traps.</color>
+
+::Fine-Grained_Trunk //1066
+<color=#808080>A tree trunk of a high quality; this grain pattern is excellent!</color>
+
+::Solid_Trunk //1067
+<color=#808080>A tree trunk of a medium quality; it's nice and solid.</color>
+
+::Barren_Trunk //1068
+<color=#808080>A tree trunk of a low quality; knots are everywhere.</color>
+
+::Orange_Net_Mushroom //1069
+<color=#808080>A firm, smelly, mushroom used in medicinal purposes.</color>
+
+::Orange_Gooey_Mushroom //1070
+<color=#808080>A gooey, scented, mushroom used in medicinal purposes.</color>
+
+::Unknown_Test_Tube //1071
+<color=#808080>A test tube that contains an unidentified fluid.</color>
+
+::Delivery_Message //1072
+<color=#808080>A personal letter written by Mahnsoo, chief of the Merchant Guild.</color>
+
+::Receipt //1073
+<color=#808080>A receipt for a successful delivery.</color>
+
+::Delivery_Box //1081
+<color=#808080>A small, wooden box marked with the word "Fragile".</color>
+
+::Unknown_Test_Tube_ //1085
+<color=#808080>A test tube that contains an unidentified fluid.</color>
+
+::Unknown_Test_Tube__ //1086
+<color=#808080>A test tube that contains an unidentified fluid.</color>
+
+::Unknown_Test_Tube___ //1087
+<color=#808080>A test tube that contains an unidentified fluid.</color>
+
+::Morroc_Solution //1088
+<color=#808080>A test tube that contains the Morroc solution.</color>
+
+::Payon_Solution //1089
+<color=#808080>A test tube that contains the Payon solution.</color>
+
+::Unknown_Test_Tube____ //1090
+<color=#808080>A test tube that contains an unidentified fluid.</color>
+
+::Delivery_Box_ //1091
+<color=#808080>A small, wooden box marked with the word "Fragile".</color>
+
+::Empty_Test_Tube //1092
+<color=#808080>An empty test tube.</color>
+
+::Empty_Potion_Bottle //1093
+<color=#808080>An empty potion bottle.</color>
+
+::Short_Daenggie //1094
+<color=#808080>A short lock of braided hair.</color>
+
+::Needle_of_Alarm //1095
+<color=#808080>A set of hands from the clock face.</color>
+
+::Round_Shell //1096
+<color=#808080>A short, round shell from an insect.</color>
+
+::Worn_Out_Page //1097
+<color=#808080>A worn, tattered page torn from an old book.</color>
+
+::Manacles //1098
+<color=#808080>An old, used prisoner wrist restraint.</color>
+
+::Worn_Out_Prison_Uniform //1099
+<color=#808080>An old, used prison uniform.</color>
+
+::Ashes_of_Darkness //6000
+<color=#808080>A dark ash imbued with mysterious magical power and darkness.</color>
+
+::Essence_of_Fire //6001
+<color=#808080>An essence of fire that holds the pure spirit of Thor, god of thunder.</color>
+
+::Token_of_Apostle //6002
+<color=#808080>A token that certifies its owner obeys evil; and proves a member of the diabolists.</color>
+
+::Pendant_of_Spirit //6003
+<color=#808080>A pendant that confined wandering souls from unknown places.</color>
+
+::Cursed_Baphomet_Doll //6004
+<color=#808080>A doll imbued with Baphomet's curse.</color>
+
+::Hoe //6010
+<color=#808080>A gardening tool that could also be a fearful weapon.</color>
+
+::Fur //6020
+<color=#808080>Beautiful silver colored fur.</color>
+
+::Peaked_Hat //6021
+<color=#808080>A small, red colored peaked hat.</color>
+
+::Hard_Skin //6022
+<color=#808080>A hard, gray skin.</color>
+
+::Mystic_Horn //6023
+<color=#808080>A beautiful long, white colored horn with a magical power.</color>
+
+::Crystal_of_Feardom //6027
+<color=#808080>A bloodstained crystal that evokes the feeling of evil.</color>
+
+::Sealed_Scroll //6028
+<color=#808080>A sealed scroll consealing magic spells.</color>
+
+::Morroc_Tracing_Log //6029
+<color=#808080>A record of R. Moore, the leader of unsealing Satan Morroc. The writing is second rate at best.
+
+::Glittering_Paper //6030
+<color=#808080>This isn't it! Where is the treasure paper?</color>
+
+::Glittering_Paper_ //6031
+<color=#808080>This is it! Run to Pierre before too late!</color>
+
+::Horn_of_Hillslion //6032
+<color=#808080>A hard horn that grows on Hilsrion's head.</color>
+
+::Horn_of_Tendrilion //6033
+<color=#808080>A hard horn that grows on Tendrilion's head.</color>
+
+::Decaying_Stem //6035
+<color=#808080>An old, decaying stem of a plant.</color>
+
+::Meeting_Invitation //6036
+<color=#808080>A meeting invite completed by Ryosen, Rune Midgard's investigator.</color>
+
+::Messy_File //6037
+<color=#808080>A bundle of ripped and crumpled files.</color>
+
+::Neat_Report //6038
+<color=#808080>A nicely sorted file, a small thank you note is attached on the bottom.</color>
+
+::Piece_of_Fish //6039
+<color=#808080>A piece of raw fish.</color>
+
+::Part_of_a_Report //6040
+<color=#808080>A part of the expedition report, some parts are destroyed and wrinkled.</color>
+
+::Strong_Vine //6041
+<color=#808080>A strong looking vine with various uses.</color>
+
+::Ordinary_Branch //6042
+<color=#808080>A strong branch with various uses.</color>
+
+::Letter_from_Lugen //6043
+<color=#808080>A letter written by Lugen to his close friend, Otto.</color>
+
+::Letter_from_Otto //6044
+<color=#808080>A letter written by Otto's in response to Lugen.</color>
+
+::Supply_Box //6045
+<color=#808080>A box with various supplies.</color>
+
+::Clothing_Voucher //6046
+<color=#808080>A voucher which may be exchanged for a new clothing style.</color>
+
+::Unidentified_Mineral //6048
+<color=#808080>A mineral not found in Rune Midgard that any scientist would love to study.</color>
+
+::Marlin //6049
+<color=#808080>A Marlin fish, it looks a bit different from what you saw in a book.</color>
+
+::Mould_Powder //7001
+<color=#808080>A handful of soft, powdery mold that is silken to the touch.</color>
+
+::Ogre_Tooth //7002
+<color=#808080>A tooth extracted from the mouth of a proud Orc Warrior.</color>
+
+::Anolian_Skin //7003
+<color=#808080>A sticky piece of Anolian skin.</color>
+
+::Mud_Lump //7004
+<color=#808080>A gloppy, unpleasant lump of wet, dirty mud.</color>
+
+::Skull //7005
+<color=#808080>A skull taken from a corpse.</color>
+
+::Wing_of_Red_Bat //7006
+<color=#808080>A wing from a red bat.</color>
+
+::Claw_of_Rat //7007
+<color=#808080>A toe nail from a huge, disease ridden rodent.</color>
+
+::Stiff_Horn //7008
+<color=#808080>A tough horn that might break, but will never bend.</color>
+
+::Glitter_Shell //7009
+<color=#808080>A shell that sparkles with dazzling light.</color>
+
+::Tail_of_Steel_Scorpion //7010
+<color=#808080>A stinger ripped out of the body of a steel scorpion.</color>
+
+::Claw_of_Monkey //7011
+<color=#808080>A monkey's claw that peeled many a banana.</color>
+
+::Tough_Scalelike_Stem //7012
+<color=#808080>A stem with a tough surface covered with thick, protective scales.</color>
+
+::Coral_Reef //7013
+<color=#808080>A small chunk of a coral reef formed in clear, tropical waters.</color>
+
+::Old_Portrait //7014
+<color=#808080>An old, fragile portrait of a girl that you can't identify, although she seems very pretty.</color>
+
+::Bookclip_in_Memory //7015
+<color=#808080>An old leaf that is used as a bookmark.</color>
+
+::Spoon_Stub //7016
+<color=#808080>A spoon that was used to dig an underground tunnel.</color>
+
+::Executioner's_Mitten //7017
+<color=#808080>A glove worn during executions that absorbed memories related to death and obligation.</color>
+
+::Young_Twig //7018
+<color=#808080>A fresh, young twig that evokes feelings of purity and innocence.</color>
+
+::Loki's_Whispers //7019
+<color=#808080>A strange object in which the seductive whispers of Loki can be faintly heard.</color>
+
+::Mother's_Nightmare //7020
+<color=#808080>A mother's nightmare that has been given physical form.</color>
+
+::Foolishness_of_the_Blind //7021
+<color=#808080>A symbol of Hod, the blind god who was tricked into killing his brother Balder, god of light.</color>
+
+::Old_Hilt //7022
+<color=#808080>An old hilt broken off a heavy sword.</color>
+
+::Blade_Lost_in_Darkness //7023
+<color=#808080>A blade imbued with a suffocating aura that repels light.</color>
+
+::Bloody_Edge //7024
+<color=#808080>A blade stained with blood that can't be cleansed.</color>
+
+::Lucifer's_Lament //7025
+<color=#808080>A gem that is key to opening the path to the mysterious, ancient land of Geffenia.</color>
+
+::Key_of_Clock_Tower //7026
+<color=#808080>A key that can unlock the Clock Tower attic.</color>
+
+::Key_of_Underground //7027
+<color=#808080>A key that can unlock the Clock Tower basement.</color>
+
+::Claw_of_Desert_Wolf //7030
+<color=#808080>A claw pried from a Desert Wolf's paw.</color>
+
+::Old_Frying_Pan //7031
+<color=#808080>An old frying pan that has outlived its usefulness.</color>
+
+::Piece_of_Egg_Shell //7032
+<color=#808080>An eggshell fragment that protected its egg to the final, tragic end.</color>
+
+::Poison_Spore //7033
+<color=#808080>A clump of spores from a toxic mushroom.</color>
+
+::Red_Stocking //7034
+<color=#808080>A Christmas stocking where presents were stolen through a hole in the bottom.</color>
+
+::Matchstick //7035
+<color=#808080>A phosphorus tipped stick that can start a fire.</color>
+
+::Fang_of_Hati //7036
+<color=#808080>A sharp fang dislodged from Hati's mouth.</color>
+
+::Yarn //7038
+<color=#808080>A wound up ball of fluffy knitting yarn.</color>
+
+::Megaphone_ //7040
+<color=#808080>A funnel shaped device that can amplify one's voice.</color>
+
+::Fine_Grit //7041
+<color=#808080>A crystal made entirely of fine sand.</color>
+
+::Leather_Bag_of_Infinity //7042
+<color=#808080>A mysterious leather bag that contains a limitless supply of sand.</color>
+
+::Fine_Sand //7043
+<color=#808080>A pocket of sand grains that are so fine that they cannot be gathered by hand.</color>
+
+::Vigorgra //7044
+<color=#808080>An awesome tonic that brings insurmountable vigor.</color>
+
+::Alice's_Apron //7047
+<color=#808080>An apron worn by Alice, its super cute!</color>
+
+::Talon_of_Griffon //7048
+<color=#808080>A Griffon's sharp talon.</color>
+
+::Stone //7049
+<color=#808080>A simple stone that you can find anywhere.</color>
+
+::Cyfar //7053
+<color=#808080>A blue crystal that faintly shines with muddled light.</color>
+
+::Brigan //7054
+<color=#808080>A rare, red mineral.</color>
+
+::Gleipnir //7058
+<color=#808080>Impossibly strong thread woven from impossibly rare items.</color>
+
+::Free_Storage_Voucher //7059
+<color=#808080>A ticket that waives the Kafra Storage service fee.</color>
+
+::Free_Transit_Voucher //7060
+<color=#808080>A ticket that waives the Kafra Teleport service fee.</color>
+
+::Free_Pushcart_Voucher //7061
+<color=#808080>A ticket that waives the Kafra Pushcart rental fee.</color>
+
+::Soft_Feather //7063
+<color=#808080>A feather that is soft enough to be used as stuffing in a quilt.</color>
+
+::Wing_of_Dragonfly //7064
+<color=#808080>A dragonfly wing.</color>
+
+::Sea_Otter_Fur //7065
+<color=#808080>A bunch of sea otter fur that is soft and downy enough to be used in clothing.</color>
+
+::Ice_Cubic //7066
+<color=#808080>A miraculous lump of ice that wil never melt.</color>
+
+::Stone_Fragment //7067
+<color=#808080>A small piece of rock that has been broken from a larger stone.</color>
+
+::Burnt_Tree //7068
+<color=#808080>A burnt piece of wood has little practical value.</color>
+
+::Destroyed_Armor //7069
+<color=#808080>A piece of armor that has been damaged beyond repair.</color>
+
+::Broken_Shell //7070
+<color=#808080>A damaged turtle's shell, that in ancient times, was used to foretell the future.</color>
+
+::Tattered_Clothes //7071
+<color=#808080>Worn out clothes.</color>
+
+::Old_Shuriken //7072
+<color=#808080>An old, rusty shuriken that has little hope of being thrown by an awesome ninja.</color>
+
+::Freya's_Jewel //7073
+<color=#808080>A sparkling clear gemstone formed from the tears of the goddess Freya.</color>
+
+::Thor's_Gauntlets //7074
+<color=#808080>A pair of steel gauntlets worn by Thor, god of thunder.</color>
+
+::Iron_Maiden //7075
+<color=#808080>An instrument used for torture.</color>
+
+::Wheel_of_the_Unknown //7076
+<color=#808080>A wheel whose purpose is truly mysterious.</color>
+
+::Silver_Ornament //7077
+<color=#808080>An ornament made with silver.</color>
+
+::Wrath_of_Valkyrie //7078
+<color=#808080>A physical manifestation of a valkyrie's rage.</color>
+
+::Feather_of_Angel_Wing //7079
+<color=#808080>A feather from an angel's wing.</color>
+
+::Cat_Tread //7080
+<color=#808080>A physical manifestation of the sound of cat footsteps.</color>
+
+::Woman's_Moustache //7081
+<color=#808080>A grasp of facial hair from a woman, in theory, this should be very rare.</color>
+
+::Root_of_Stone //7082
+<color=#808080>A bunch of stone roots, a rare item considering stones have been proven to not have any.</color>
+
+::Spirit_of_Fish //7083
+<color=#808080>A transparent blue bottle that contains a fish spirit.</color>
+
+::Sputum_of_Bird //7084
+<color=#808080>A bottle containing bird sputum, a rare item considering that birds do not salivate.</color>
+
+::Sinew_of_Bear //7085
+<color=#808080>A small bunch of rare bear sinew.</color>
+
+::Emblem_of_the_Sun_God //7086
+<color=#808080>A golden, shining bead that is the symbol of the sun god.</color>
+
+::Breath_of_Spirit //7087
+<color=#808080>A spirit breath that emits an unnatural chill.</color>
+
+::Snow_Crystal //7088
+<color=#808080>A perfect ice crystal from a snowy sky.</color>
+
+::Omen_of_Tempest //7089
+<color=#808080>A strange orb that can predict when windstorms.</color>
+
+::Ripple //7090
+<color=#808080>A receptacle that captured a ripple from the ocean.</color>
+
+::Billow //7091
+<color=#808080>A sculpture of a billow crushing against the shore.</color>
+
+::Drifting_Air //7092
+<color=#808080>A sculpture of drifting air captured by a gifted artist.</color>
+
+::Cogwheel //7093
+<color=#808080>A cogwheel used in a machine.</color>
+
+::Fragment //7094
+<color=#808080>A strange object with metal pieces attached.</color>
+
+::Metal_Fragment //7095
+<color=#808080>An unidentified metal fragment.</color>
+
+::Lava //7096
+<color=#808080>A chunk of smoldering lava.</color>
+
+::Burning_Heart //7097
+<color=#808080>A stone heart that is aflame with magic.</color>
+
+::Live_Coal //7098
+<color=#808080>A live coal.</color>
+
+::Worn_Out_Magic_Scroll //7099
+<color=#808080>An old, worn out magic scroll that is valuable to the Mage Academy.</color>
+
+::Sharp_Leaf //7100
+<color=#808080>A sharp leaf.</color>
+
+::Peco_Peco_Feather //7101
+<color=#808080>A rare feather from the wing of a Peco Peco.</color>
+
+::False_Angel_Wing //7104
+<color=#808080>A wing from a phony angel.</color>
+
+::False_Heaven_Ring //7105
+<color=#808080>A heavenly halo from a phony angel.</color>
+
+::Antelope_Horn //7106
+<color=#808080>A impressive horn from an antelope.</color>
+
+::Antelope_Skin //7107
+<color=#808080>A patch of dirty fur from an antelope.</color>
+
+::Piece_of_Shield //7108
+<color=#808080>A piece of shield is strong and durable.</color>
+
+::Shining_Spear_Blade //7109
+<color=#808080>A shiny spear blade.</color>
+
+::Broken_Sword //7110
+<color=#808080>A damaged sword that is no longer usable.</color>
+
+::Slick_Paper //7111
+<color=#808080>A smooth, sleek paper suitable for writing love letters.</color>
+
+::Sharp_Paper //7112
+<color=#808080>Incredibly sharp, and stout paper that could be used like a knife.</color>
+
+::Broken_Pharaoh_Emblem //7113
+<color=#808080>A broken emblem of Pharaoh that possess a mysterious power.</color>
+
+::Masque_of_Tutankhamen //7114
+<color=#808080>A golden masque worn by an ancient king.</color>
+
+::Harpy_Feather //7115
+<color=#808080>A feather from a Harpy.</color>
+
+::Harpy_Talon //7116
+<color=#808080>A talon from a Harpy.</color>
+
+::Torn_Magic_Book //7117
+<color=#808080>An old magic book that is seriously damaged.</color>
+
+::Torn_Scroll //7118
+<color=#808080>A piece of a scroll.</color>
+
+::Bacillus //7119
+<color=#808080>A sample of aerobic bacteria that resides on metal chains.</color>
+
+::Burning_Horseshoe //7120
+<color=#808080>A burning horseshoe, useful only on burning horses for burning rangers.</color>
+
+::Honey_Pot //7121
+<color=#808080>An empty pot that carried honey once upon a time.</color>
+
+::Burning_Hair //7122
+<color=#808080>A bunch of tussled red hair that looks like it's on fire.</color>
+
+::Dragon_Skin //7123
+<color=#808080>A piece of skin from a dragon.</color>
+
+::Sand_Clump //7124
+<color=#808080>A lump of wet sand.</color>
+
+::Scorpion_Claw //7125
+<color=#808080>A claw from a scorpion.</color>
+
+::Large_Jellopy //7126
+<color=#808080>A huge jellopy.</color>
+
+::Alcohol_Creation_Guide //7127
+<color=#808080>A book with instructions for creating Alcohol.</color>
+
+::Bottle_Grenade_Creation_Guide //7128
+<color=#808080>A book with instructions for creating Bottle Grenades.</color>
+
+::Acid_Bottle_Creation_Guide //7129
+<color=#808080>A book with instructions for creating Acid Bottles.</color>
+
+::Plant_Bottle_Creation_Guide //7130
+<color=#808080>A book with instructions for creating Floras.</color>
+
+::Marine_Sphere_Creation_Guide //7131
+<color=#808080>A book with instructions for creating Marine Spheres.</color>
+
+::Coating_Bottle_Creation_Guide //7132
+<color=#808080>A book with instructions for creating Glistening Coats.</color>
+
+::Condensed_Potion_Creation_Guide //7133
+<color=#808080>A book with instructions for creating Condensed Potions.</color>
+
+::Medicine_Bowl //7134
+<color=#808080>A porcelain bowl used for grinding herbs or other substances.</color>
+
+::Grenade_Bottle //7135
+<color=#808080>A bottle containing flammable liquid.</color>
+
+::Acid_Bottle //7136
+<color=#808080>A bottle containing corrosive acid.</color>
+
+::Plant_Bottle //7137
+<color=#808080>A bottle containing a dormant Flora.</color>
+
+::Marine_Sphere_Bottle //7138
+<color=#808080>A bottle containing a dormant Marine Sphere.</color>
+
+::Coating_Bottle //7139
+<color=#808080>A bottle containing a shining liquid.</color>
+
+::Seed_of_Life //7140
+<color=#808080>A seed filled with vitality.</color>
+
+::Morning_Dew_of_Yggdrasil //7141
+<color=#808080>Morning dew gathered from Yggdrasilberries.</color>
+
+::Embryo //7142
+<color=#808080>An embryo of a dormant homunculus.</color>
+
+::Glass_Tube //7143
+<color=#808080>An empty tube that can hold a creature.</color>
+
+::Potion_Creation_Gude //7144
+<color=#808080>A book with instructions for creating potions.</color>
+
+::Mother's_Letter //7148
+<color=#808080>A letter of loving words written by a warm hearted mother to her children.</color>
+
+::Yellow_Plate //7149
+<color=#808080>A polished plate made from yellow clay.</color>
+
+::Piece_of_Bamboo //7150
+<color=#808080>A piece of bamboo from a bamboo tree.</color>
+
+::Oil_Paper //7151
+<color=#808080>A piece of waxy, yellow paper that repels water.</color>
+
+::Glossy_Hair //7152
+<color=#808080>A tied bunch of shining human hair.</color>
+
+::Worn_Out_Kimono //7153
+<color=#808080>A beautiful but worn out kimono.</color>
+
+::Poisonous_Powder //7154
+<color=#808080>A bottle of powder which could form poison if mixed with water or alcohol.</color>
+
+::Poisonous_Toad_Skin //7155
+<color=#808080>A piece of back skin from a poisonous toad.</color>
+
+::Broken_Shuriken //7156
+<color=#808080>A broken shuriken that is no longer useful.</color>
+
+::Dark_Mask //7157
+<color=#808080>A dark colored mask that covers the entire face.</color>
+
+::Broken_Liquor_Jar //7158
+<color=#808080>A piece of a broken liquor jar which still reeks of alcohol.</color>
+
+::Tengu_Nose //7159
+<color=#808080>A nose from a Tengu mask that is quite long and ugly.</color>
+
+::Feudal_Lord_Permit //7160
+<color=#808080>A permit that allows entry into the Amatsu dungeon.</color>
+
+::Black_Bear_Skin //7161
+<color=#808080>A stinky piece of skin peeled from a black bear.</color>
+
+::Cloud_Crumb //7162
+<color=#808080>A bottle which contains cloud crumbs.</color>
+
+::Hard_Feeler //7163
+<color=#808080>A sharp, solid feeler.</color>
+
+::Solid_Peach //7164
+<color=#808080>A peach that is so stout and solid, that it can withstand blows from a sword.</color>
+
+::Transparent_Celestial_Robe //7165
+<color=#808080>A transparent celestial robe made from light and soft fabric.</color>
+
+::Soft_Silk //7166
+<color=#808080>An expensive fabric that is knit from high quality silk threads.</color>
+
+::Strange_Steel_Piece //7167
+<color=#808080>An unidentified piece of steel that could be used as a hinge.</color>
+
+::Giant_Butterfly_Wing //7168
+<color=#808080>A wing from a giant butterfly that strangly lacks the properties of a normal butterfly wing.</color>
+
+::Ba_Gua //7169
+<color=#808080>A talisman with a yin-yang symbol carved in the middle.</color>
+
+::Tuxedo //7170
+<color=#808080>A formal suit worn by the groom during a wedding ceremony.</color>
+
+::Leopard_Skin //7171
+<color=#808080>A piece of leopard skin that could serve as a loincloth in a pinch.</color>
+
+::Leopard_Claw //7172
+<color=#808080>A sharp claw extracted from a leopard.</color>
+
+::Wrapping_Lace //7174
+<color=#808080>Long and thin lace used to decorate a gift box.</color>
+
+::Wrapping_Paper //7175
+<color=#808080>Shiny, beautiful paper used to decorate a gift box.</color>
+
+::Crumb_of_Sobbing_Starlight //7177
+<color=#808080>A piece of the sobbing starlight, it might be possible to reassemble it.</color>
+
+::Sobbing_Starlight //7178
+<color=#808080>A beautiful jewel named after a star, you can barely see a transcription in direct light.</color>
+
+::Receipt_ //7181
+<color=#808080>A small paper used as a proof of purchase.</color>
+
+::Cacao //7182
+<color=#808080>A nut from the cacao tree found in warm climates.</color>
+
+::Letter_from_Sister //7183
+<color=#808080>A letter written by a younger sister to her brother.</color>
+
+::Piano_Key //7184
+<color=#808080>A white key that came from a broken piano.</color>
+
+::Thin_Trunk //7186
+<color=#808080>A thin trunk used to climb up to higher places.</color>
+
+::Festival_Mask //7187
+<color=#808080>A mask that is worn during festivals.</color>
+
+::Brown_Root //7188
+<color=#808080>A tree root that still has soil clinging to it.</color>
+
+::Wooden_Heart //7189
+<color=#808080>An artificial wood heart that gave life to a Wooden Golem.</color>
+
+::Solid_Husk //7190
+<color=#808080>An insect husk that is hard and stout.</color>
+
+::Lamp //7191
+<color=#808080>A beautiful lamp made with red paper.</color>
+
+::Vane //7192
+<color=#808080>A metal pinwheel from a festival with unusually sharp blades.</color>
+
+::Sprout //7193
+<color=#808080>A sprout grown out of a vegetable seed.</color>
+
+::Soft_Blade_of_Grass //7194
+<color=#808080>A soft blade of grass.</color>
+
+::Slingshot //7195
+<color=#808080>A primitive weapon consisting of a wooden stick, an elastic band, and small rocks.</color>
+
+::Shoulder_Protector //7196
+<color=#808080>A primitive wood garment that is worn on the shoulders.</color>
+
+::Tough_Vines //7197
+<color=#808080>A tough vine that can be used as rope.</color>
+
+::Huge_Leaf //7198
+<color=#808080>A huge leaf that can be used as a makeshift umbrella.</color>
+
+::Elastic_Band //7200
+<color=#808080>A flexible material that returns to its original form after being stretched.</color>
+
+::Log //7201
+<color=#808080>A woody stem from a tree that's used as lumber.</color>
+
+::Pincher_of_Beetle //7202
+<color=#808080>A pincher from a beetle.</color>
+
+::Strong_Branch //7203
+<color=#808080>A tree branch that can be used as a simple tool.</color>
+
+::Gunpowder //7204
+<color=#808080>A pile of explosive powder.</color>
+
+::Piece_of_Black_Cloth //7205
+<color=#808080>A piece of jet black cloth that cannot be seen in the dark.</color>
+
+::Black_Cat_Doll //7206
+<color=#808080>A black cat doll that almost seems alive.</color>
+
+::Old_Manteau //7207
+<color=#808080>A old, exhausted manteau.</color>
+
+::Rusty_Kitchen_Knife //7208
+<color=#808080>A dull edged, rusty kitchen knife stained with blood.</color>
+
+::Helm_of_Dullahan //7209
+<color=#808080>A helm worn by Dullahan.</color>
+
+::Armor_Piece_of_Dullahan //7210
+<color=#808080>A broken piece of armor worn by Dullahan.</color>
+
+::Fragment_of_Rossata_Stone //7211
+<color=#808080>A broken piece of a stone with engravings in an ancient language.</color>
+
+::Hung_Doll //7212
+<color=#808080>A cursed doll hung on a rope.</color>
+
+::Needle_Packet //7213
+<color=#808080>A fabric packet that holds needles in place.</color>
+
+::Bat_Cage //7214
+<color=#808080>A cage which could, emphasis on could, hold a bat.</color>
+
+::Broken_Needle //7215
+<color=#808080>A needle severed into two halves.</color>
+
+::Red_Muffler //7216
+<color=#808080>A red scarf that protects its wearer from the cold.</color>
+
+::Spool //7217
+<color=#808080>A sewing tool on which thread is wound.</color>
+
+::Decomposed_Rope //7218
+<color=#808080>An old, rotten rope.</color>
+
+::Striped_Sock //7219
+<color=#808080>A sock decorated with colored stripes.</color>
+
+::Ectoplasm //7220
+<color=#808080>A green translucent liquid that is disgustingly sticky.</color>
+
+::Tangled_Chains //7221
+<color=#808080>A clump of chains that are hard to untangle.</color>
+
+::Wooden_Gnarl //7222
+<color=#808080>A gnarl of a tree.</color>
+
+::Contorted_Self-Portrait //7223
+<color=#808080>A self portrait of someone contorting his facial expression.</color>
+
+::Pumpkin_Lantern //7225
+<color=#808080>A jack o' lantern with a smily face.</color>
+
+::Pellet //7226
+<color=#808080>A pill of medicine that looks as bitter as it tastes.</color>
+
+::Spirit_of_Guild //7234
+<color=#808080>A statue that symbolizes comraderie.</color>
+
+::Spirit_of_Charge //7235
+<color=#808080>A statue that symbolizes bravery.</color>
+
+::Spirit_of_Association //7237
+<color=#808080>A statue that symbolizes cooperation.</color>
+
+::Spirit_of_Coordination //7238
+<color=#808080>A statue that symbolizes harmony.</color>
+
+::Spirit_of_Advance //7239
+<color=#808080>A statue that symbolizes leadership.</color>
+
+::Spirit_of_Trust //7240
+<color=#808080>A statue that symbolizes trust.</color>
+
+::Spirit_of_Union //7241
+<color=#808080>A statue that symbolizes spirit.</color>
+
+::Spirit_of_Combination //7242
+<color=#808080>A statue that symbolizes teamwork.</color>
+
+::Spirit_of_Solidarity //7244
+<color=#808080>A statue that symbolizes unity.</color>
+
+::Spirit_of_Friendship //7245
+<color=#808080>A statue that symbolizes friendship.</color>
+
+::Spirit_of_Peace //7246
+<color=#808080>A statue that symbolizes peace.</color>
+
+::Spirit_of_Determination //7247
+<color=#808080>A statue that symbolizes challenge.</color>
+
+::Spirit_of_Service //7249
+<color=#808080>A statue that symbolizes sacrifice.</color>
+
+::Spirit_of_Glory //7250
+<color=#808080>A statue that symbolizes achievement.</color>
+
+::Spirit_of_Victory //7251
+<color=#808080>A statue that symbolizes victory.</color>
+
+::Herbal_Medicine //7252
+<color=#808080>An herbal medicine used in the eastern countries.</color>
+
+::Folding_Fan_of_Cat_Ghost //7262
+<color=#808080>A folding fan that is useful in summer.</color>
+
+::Cat's_Eye //7263
+<color=#808080>A rare and beautiful gem that looks like the eye of a cat.</color>
+
+::Dry_Sand //7264
+<color=#808080>A collection of sand that can be found on the street, but somehow, is worth serious coin.</color>
+
+::Dragon_Horn //7265
+<color=#808080>A decorative horn from a wooden dragon mask.</color>
+
+::Denture_from_Dragon_Mask //7266
+<color=#808080>A tooth cut from a wooden dragon mask.</color>
+
+::Tiger_Panty //7267
+<color=#808080>A panty made of tiger skin, what a wild and untamed idea.</color>
+
+::Little_Ghost_Doll //7268
+<color=#808080>A spirit with a red ribbon on its head.</color>
+
+::Pinafore //7269
+<color=#808080>A soft cloth worn around an infant's neck to capture spilled milk and baby drool.</color>
+
+::Nursing_Bottle //7270
+<color=#808080>A bottle of milk for infants.</color>
+
+::Translated_Ancient_Language //7274
+<color=#808080>"The door can be found under the twilight sky near the mage's tower, the key is west of the tower in the grass under the sun."</color>
+
+::Record_of_Ancient_Language //7275
+<color=#808080>A transcription in an ancient language from the Sobbing Starlight.</color>
+
+::Doodled_Message //7276
+<color=#808080>A message, with doodles, from a young girl.</color>
+
+::Munak_Doll //7277
+<color=#808080>A doll made in the appearance of a young girl.</color>
+
+::Letter_to_Wife //7278
+<color=#808080>A letter written by an anxious husband to his wife.</color>
+
+::Holy_Threads //7285
+<color=#808080>A skein of threads which possess a holy power.</color>
+
+::Red_Chili //7286
+<color=#808080>A vivid red spice that adds a spicy taste to food.</color>
+
+::Holier_Threads //7287
+<color=#808080>A skein of threads which possess a holier power.</color>
+
+::Engagement_Ring //7288
+<color=#808080>A solid, beautiful engagement ring engraved with "Slave of Love".</color>
+
+::Peridot //7289
+<color=#808080>An peridot, it symbolizes wisdom.</color>
+
+::Phlogopite //7290
+<color=#808080>A phlogopite, it symbolizes motherly love.</color>
+
+::Agate //7291
+<color=#808080>An agate, it symbolizes protection.</color>
+
+::Muscovite //7292
+<color=#808080>A muscovite, it symbolizes self motivation.</color>
+
+::Rose_Quartz //7293
+<color=#808080>A rose quartz, it symbolizes self esteem.</color>
+
+::Turquoise //7294
+<color=#808080>A turquoise, it symbolizes mental power.</color>
+
+::Citrin //7295
+<color=#808080>A topaz, it symbolizes mental calm.</color>
+
+::Pyroxene //7296
+<color=#808080>A pyroxene, it symbolizes restoration.</color>
+
+::Biotite //7297
+<color=#808080>A biotite, it symbolizes spiritual support.</color>
+
+::Fig_Leaf //7298
+<color=#808080>A pair of two giant leaves that could be used as clothes in an emergency.</color>
+
+::Straw_Basket //7299
+<color=#808080>A basket made with straws.</color>
+
+::Gemstone //7300
+<color=#808080>A gem-rich ore, you wonder if it is possible to extract them somehow.</color>
+
+::Tassel //7301
+<color=#808080>A bunch of short and red threads used for decorating the hilt of a sword.</color>
+
+::Witch's_Spell_Scroll //7304
+<color=#808080>A worn out scroll with text written in an ancient language, the only word you can read is "Kirkana".</color>
+
+::Symbol_of_the_Nine_Realms //7305
+<color=#808080>An emblem that grants authority to rule over the nine realms of the dead.</color>
+
+::Piece_of_Spirit //7306
+<color=#808080>A strange object with a tiny soul is flickering from within.</color>
+
+::Spiritual_Whispers //7307
+<color=#808080>A curious object that almost seems alive and it faintly whispers to you.</color>
+
+::Witch's_Tonic //7308
+<color=#808080>An enchanted tonic that causes selective memory loss.</color>
+
+::Crow_Wing //7309
+<color=#808080>A crow's wing that can temporarily grant a person the power of flight.</color>
+
+::Peco_Voucher //7310
+<color=#808080>A ticket that can waive the fee for a Peco Peco rental.</color>
+
+::Airship_Ticket //7311
+<color=#808080>A ticket required to board the Airship.</color>
+
+::Jubilee //7312
+<color=#808080>A crystallization, dropped from monsters, whose name means joyous celebration.</color>
+
+::Witch's_Medal //7313
+<color=#808080>A medal rewarded to honorable witches.</color>
+
+::The_Sign_ //7314
+<color=#808080>A captivatingly beautiful artifact rewarded by the gods.</color>
+
+::Dark_Crystal_Fragment //7315
+<color=#808080>A sharp, shiny fragment broken off a dark crystal.</color>
+
+::Insect_Leg //7316
+<color=#808080>A severed bug's leg that is as sharp as a scythe.</color>
+
+::Rusty_Screw //7317
+<color=#808080>A rusty screw that has come off a machine.</color>
+
+::Old_Pick //7318
+<color=#808080>A tool used to break rocks or the ground.</color>
+
+::Used_Iron_Plate //7319
+<color=#808080>A battered iron plate that seems to have fallen off a machine.</color>
+
+::Dust_Pollutant //7320
+<color=#808080>A collection of small, dry particles that are a major source of environmental pollution.</color>
+
+::Crystal_Fragment //7321
+<color=#808080>A small piece of a pretty crystal that looks like it has a symbol of an eye in its center.</color>
+
+::Toxic_Gas //7322
+<color=#808080>Poisonous gas that can be very harmful, if not lethal, when inhaled.</color>
+
+::Battered_Kettle //7323
+<color=#808080>This kettle isn't in the best condition, but it can still be used.</color>
+
+::Flexible_Tube //7325
+<color=#808080>A long, thin, pipe like tube made to transport liquids or gases.</color>
+
+::Fluorescent_Liquid //7326
+<color=#808080>A sticky, flourescent liquid which glows in the darkness.</color>
+
+::Flashlight //7327
+<color=#808080>A flashlight that used to be attached to a miner's helmet.</color>
+
+::Old_Bronze_Key //7329
+<color=#808080>A small bronze key.</color>
+
+::Complete_Tablet //7332
+<color=#808080>A solid tablet that is cold to the touch.</color>
+
+::Prontera_Tablet //7333
+<color=#808080>"In the town of Prontera I fell sick, I needed something from forest to make my blood thick" - The First Man</color>
+
+::Payon_Tablet //7334
+<color=#808080>"We're on our way now, soon we will venture to the desert in high spirits" - The Second Man</color>
+
+::Morroc_Tablet //7335
+<color=#808080>"There is a strange feeling in the air here, almost as if I can do magic myself" - The Third Man</color>
+
+::Geffen_Tablet //7336
+<color=#808080>"We ventured north of the giant beautiful Jolnir flower, and that's where our journey began" - The Fourth Man</color>
+
+::Eye_of_Hellion //7337
+<color=#808080>An eye from the Hellion Revenant.</color>
+
+::Will_of_the_Darkness //7340
+<color=#808080>A dark oval stone with seven red eyes that's believed to act as a monster nucleus.</color>
+
+::Old_Pendant //7341
+<color=#808080>An old pendant, damaged with age, that confers a feeling of dread for some inexplicable reason.</color>
+
+::File_Folder //7342
+<color=#808080>A file folder that holds unknown documents.</color>
+
+::Sealed_File_Folder //7343
+<color=#808080>A file folder, protected by a seal, that contains unknown documents.</color>
+
+::Shinokas_Case_File //7344
+<color=#808080>A file containing all of the details of the Shinokas case.</color>
+
+::Handcuffs //7345
+<color=#808080>A pair of metal restraints which still smell of blood.</color>
+
+::Ymir's_Heart_Piece //7346
+<color=#808080>A piece of Ymir's Heart that glows with a strange and unearthly light.</color>
+
+::Research_Chart //7347
+<color=#808080>A chart, written in a language you can't recognize, that details research history.</color>
+
+::Membership_Card //7348
+<color=#808080>A Secret Wing membership card.</color>
+
+::Archive_Permit //7349
+<color=#808080>A permit which allows the holder to enter the archive, "738495" is written on the back.</color>
+
+::Pass //7350
+<color=#808080>A pass that grants authorization to the Lighthalzen slums.</color>
+
+::Friend's_Diary //7351
+<color=#808080>An old diary in which many petty, personal secrets have been written.</color>
+
+::Transparent_Plate_1 //7352
+<color=#808080>A marvelous, light, transparent plate that is etched with strange writing in an unknown language.</color>
+
+::Transparent_Plate_2 //7353
+<color=#808080>A marvelous, light, transparent plate that is etched with strange writing in an unknown language.</color>
+
+::Transparent_Plate_3 //7354
+<color=#808080>A marvelous, light, transparent plate that is etched with strange writing in an unknown language.</color>
+
+::Transparent_Plate_4 //7355
+<color=#808080>A marvelous, light, transparent plate that is etched with strange writing in an unknown language.</color>
+
+::Crest_Piece_1 //7356
+<color=#808080>A piece of an ancient crest, whose purpose is unknown, that has many spikes nailed on its backside.</color>
+
+::Crest_Piece_2 //7357
+<color=#808080>A piece of an ancient crest, whose purpose is unknown, that has many spikes nailed on its backside.</color>
+
+::Crest_Piece_3 //7358
+<color=#808080>A piece of an ancient crest, whose purpose is unknown, that has many spikes nailed on its backside.</color>
+
+::Crest_Piece_4 //7359
+<color=#808080>A piece of an ancient crest, whose purpose is unknown, that has many spikes nailed on its backside.</color>
+
+::Letter_of_Recommendation //7416
+<color=#808080>A well written letter of recommendation recognized by the Assassin Guild.</color>
+
+::Written_Request_A //7417
+<color=#808080>A written request from the Dandelion Organization, asking you to capture Raiyan Moore.</color>
+
+::Written_Request_B //7418
+<color=#808080>A written request from Mr. R, asking you to protect him and help complete his research.</color>
+
+::Skull_ //7420
+<color=#808080>A skull on which someone's name has been carved.</color>
+
+::Red_Key //7421
+<color=#808080>A thin, transparent, and shining red key.</color>
+
+::Yellow_Key //7422
+<color=#808080>A thin, transparent, and shining yellow key.</color>
+
+::Blue_Key //7423
+<color=#808080>A thin, transparent, and shining blue key.</color>
+
+::Green_Key //7424
+<color=#808080>A thin, transparent, and shining green key.</color>
+
+::Black_Key //7425
+<color=#808080>A thin, transparent, and shining black key.</color>
+
+::Red_Charm_Stone //7426
+<color=#808080>A mysterious red charm stone in which fantastic powers are stored.</color>
+
+::Yellow_Charm_Stone //7427
+<color=#808080>A mysterious yellow charm stone in which fantastic powers are stored.</color>
+
+::Blue_Charm_Stone //7428
+<color=#808080>A mysterious blue charm stone in which fantastic powers are stored.</color>
+
+::Green_Charm_Stone //7429
+<color=#808080>A mysterious green charm stone in which fantastic powers are stored.</color>
+
+::Black_Charm_Stone //7430
+<color=#808080>A mysterious black charm stone in which fantastic powers are stored.</color>
+
+::Pile_of_Books //7431
+<color=#808080>A heavy pile of books.</color>
+
+::Leather_Pouch //7432
+<color=#808080>A sturdy, leather pouch used to contain goods.</color>
+
+::Blank_Scroll //7433
+<color=#808080>A blank scroll on which magic spells can be written.</color>
+
+::Elemental_Potion_Creation_Guide //7434
+<color=#808080>Even Porings can craft Elemental-Proof Potions with this handy, easy to read reference.</color>
+
+::Golden_Ornament //7435
+<color=#808080>A beautiful golden ornament created by an otherworldly power.</color>
+
+::Fragment_of_Agony //7436
+<color=#808080>A fragment that is the manifestation of sheer agony.</color>
+
+::Fragment_of_Misery //7437
+<color=#808080>A fragment that is the manifestation of pure misery.</color>
+
+::Fragment_of_Hatred //7438
+<color=#808080>A fragment that is the manifestation of intense hatred.</color>
+
+::Fragment_of_Despair //7439
+<color=#808080>A fragment that is the manifestation of unfathomable despair.</color>
+
+::Red_Feather //7440
+<color=#808080>A large, yet light, white feather that has a red gleam.</color>
+
+::Blue_Feather //7441
+<color=#808080>A large, yet light, white feather that has a blue gleam.</color>
+
+::Cursed_Seal //7442
+<color=#808080>A dark heart stamped with a bloody seal.</color>
+
+::Three-Headed_Dragon's_Head //7443
+<color=#808080>The head from a fearsome three-headed dragon that is still very threatening.</color>
+
+::Treasure_Box //7444
+<color=#808080>A treasure box filled with old coins, ornaments, and jewelry.</color>
+
+::Green_Bijou //7445
+<color=#808080>A beautiful green bijou that is symbolic of the earth.</color>
+
+::Blue_Bijou //7446
+<color=#808080>A beautiful blue bijou that is symbolic of the ocean.</color>
+
+::Red_Bijou //7447
+<color=#808080>A beautiful red bijou that is symbolic of a fiery blaze.</color>
+
+::Yellow_Bijou //7448
+<color=#808080>A beautiful gold bijou that is sybolic of the sun.</color>
+
+::Bloody_Page //7449
+<color=#808080>A page with a surface marked with old, dried blood stains.</color>
+
+::Skeletal_Armor_Piece //7450
+<color=#808080>A broken piece of armor worn by a ghostly swordman.</color>
+
+::Fire_Dragon_Scale //7451
+<color=#808080>A red dragon's scale that seems to possess a magical power.</color>
+
+::Yellow_Spice //7452
+<color=#808080>A yellow spice that adds a unique scent and flavor to almost any food.</color>
+
+::Sweet_Sauce //7453
+<color=#808080>A sweet sauce that accentuates the flavor of foods but is disgusting by itself.</color>
+
+::Savory_Sauce //7454
+<color=#808080>A special sauce that enhances the savory quality of most foods.</color>
+
+::Spicy_Sauce //7455
+<color=#808080>An extremely spicy hot sauce that can make people cry just by smelling it.</color>
+
+::Red_Spice //7456
+<color=#808080>A spicy flavoring that complements few foods, but is a necessary ingredient for some dishes.</color>
+
+::Cooking_Oil //7457
+<color=#808080>A healthy cooking oil for stir or deep frying.</color>
+
+::Culinary_Wine //7487
+<color=#808080>A bottle of fine, sweet scented culinary wine.</color>
+
+::Delivery_Package //7488
+<color=#808080>A delivery package containing a bag of flour and eggs.</color>
+
+::Cottage_Key //7489
+<color=#808080>A extra key for Kiel Hyre's Cottage back door.</color>
+
+::Letter_to_Elly //7490
+<color=#808080>A letter that is addressed to Elly and closed with a distinctive red seal.</color>
+
+::Steel_Box //7491
+<color=#808080>A steel box with a tiny keyhole on the lid, you suspect Kiel Hyre wanted to give this to Elly.</color>
+
+::Yellow_Keycard //7492
+<color=#808080>A flat, translucent yellow keycard that grants access to Kiel Hyre laboratory.</color>
+
+::Golden_Key //7493
+<color=#808080>Elly's golden key which can be used to open a special box.</color>
+
+::Luxurious_Button //7494
+<color=#808080>A shiny and elegant gold button engraved with a beautiful rose.</color>
+
+::Blue_Keycard //7495
+<color=#808080>A flat, translucent blue keycard that grants access to Allysia's hideout.</color>
+
+::Red_Keycard //7496
+<color=#808080>A flat, translucent red keycard that grants access to a restricted area.</color>
+
+::Metal_Fragment_ //7497
+<color=#808080>A peculiar looking metallic fragment.</color>
+
+::Rosimier_Mansion_Keys //7498
+<color=#808080>A keyring for the Rosimier Mansion.</color>
+
+::Family_Portrait //7499
+<color=#808080>A portrait of an elite, high class family with 4 members.</color>
+
+::Woman's_Portrait //7500
+<color=#808080>A portrait of beautiful woman named Allysia. Her warm, welcoming smile can be felt in the depths of your heart.</color>
+
+::K.H.'s_Letter //7501
+<color=#808080>A letter for to Allysia and signed by a man with the initials K.H.</color>
+
+::James's_Note //7502
+<color=#808080>A letter for to Allysia and signed by a man named James.</color>
+
+::Man's_Portrait //7503
+<color=#808080>A portrait of a young man that looks fairly depressed.</color>
+
+::Power_Device //7504
+<color=#808080>A complex mechanical device that can disrupt the energy in a robot.</color>
+
+::Toy_Key //7505
+<color=#808080>An elaborate toy key made of plastic.</color>
+
+::Black_Keycard //7506
+<color=#808080>A flat and transparent black key which enables access to a front door.</color>
+
+::Solid_Iron_Piece //7507
+<color=#808080>A square piece of rusty iron.</color>
+
+::Allysia's_Ring //7508
+<color=#808080>The engagement ring that belonged to Allysia.</color>
+
+::Luxurious_Keycard //7509
+<color=#808080>A fancy, rainbow colored key that enables access to Kiel Hyre's Factory and Laboratory.</color>
+
+::Valhalla's_Flower //7510
+<color=#808080>An enigmantic flower that can only be seen within Valhalla, the sacred battlegrounds of the ancient gods.</color>
+
+::Rune_of_Darkness //7511
+<color=#808080>A glowing, dark black rune with ancient symbols engraved within.</color>
+
+::Burnt_Part //7512
+<color=#808080>A burnt part of some device.</color>
+
+::Pocket_Watch_ //7513
+<color=#808080>An old silver pocket watch.</color>
+
+::Monster_Ticket //7514
+<color=#808080>A confirmation receipt for a bet on a Hugel monster race.</color>
+
+::Prize_Medal //7515
+<color=#808080>A medal crafted from a rare and mysterious metal that can only be found in Hugel.</color>
+
+::Green_Keycard //7516
+<color=#808080>A flat, translucent green keycard that enables access to a secret safe.</color>
+
+::Flame_Stone //7521
+<color=#808080>A bead, imbued with fire, that acts as a catalyst for select Ninja arts.</color>
+
+::Ice_Stone //7522
+<color=#808080>A bead, imbued with water, that acts as a catalyst for select Ninja arts.</color>
+
+::Wind_Stone //7523
+<color=#808080>A bead, imbued with wind, that acts as a catalyst for select Ninja arts.</color>
+
+::Shadow_Orb //7524
+<color=#808080>A bead, imbued with shadow, that acts as a catalyst for select Ninja arts.</color>
+
+::Poring_Coin //7539
+<color=#808080>A small coin with a Poring engraved on it.</color>
+
+::Water_Lily //7553
+<color=#808080>A delicate flower found in the depths of Brasilis.</color>
+
+::Glacial_Heart //7561
+<color=#808080>A frozen heart that gives you chill when you touch it.</color>
+
+::Ice_Scale //7562
+<color=#808080>A scale made of thin ice that, mysteriously, won't melt.</color>
+
+::Bloody_Rune //7563
+<color=#808080>A glowing, blood red rune with ancient symbols engraved within.</color>
+
+::Rotten_Meat //7564
+<color=#808080>A rotting piece of meat that is definitely unsafe for you to eat.</color>
+
+::Sticky_Poison //7565
+<color=#808080>Sticky, poisonous fluid from plants with numerous applications.</color>
+
+::Will_of_Red_Darkness //7566
+<color=#808080>A stone embedded with seven bright red eyes, just looking at it makes you feel uneasy.</color>
+
+::Suspicious_Hat //7567
+<color=#808080>A hat that covers the entire face, but it has two holes that you can see through.</color>
+
+::White_Mask //7568
+<color=#808080>A spooky mask that effectively conceals the wearer's identity.</color>
+
+::Wind_Hammer //7569
+<color=#808080>A strong, sturdy hammer imbued with the power of wind.</color>
+
+::Temple_Lottery_Ticket //7570
+<color=#808080>A lottery ticket given to those who contribute to the Rachel Temple restoration effort.</color>
+
+::Bruspetti's_Diary //7571
+<color=#808080>An effeminate diary with the word, "Bruspetti" written on the cover.</color>
+
+::Ashy_Necklace //7572
+<color=#808080>A necklace crafted by skilled Dwarves.</color>
+
+::Sparkling_Necklace //7573
+<color=#808080>A glowing necklace enchanted with an ancient magic.</color>
+
+::Freezing_Snow_Powder //7574
+<color=#808080>A very cold powder enchanted with very powerful ice magic.</color>
+
+::Red_Jewel //7575
+<color=#808080>A shiny red jewel.</color>
+
+::Blue_Jewel //7576
+<color=#808080>A shiny blue jewel.</color>
+
+::Token_of_Siegfried //7621
+<color=#808080>A manifestation of a soldier who literally willed himself back to life.</color>
+
+::Hairstyle_Voucher //7622
+<color=#808080>A voucher which may be exchanged for a new hair style.</color>
+
+::Broken_Thermometer //7704
+<color=#808080>A device that can measure the ground's temperature, however it isn't very reliable.</color>
+
+::Note_of_Geologist //7705
+<color=#808080>A note written by a Geologist (1WN 2ES 2EC).</color>
+
+::Debt_Note //7722
+<color=#808080>A loan document that includes the amount lended and the signatures of the loaner and lendee.</color>
+
+::Diamond_of_Ruin //7723
+<color=#808080>A diamond that emits an ominous vibe; it seems that it would be incredibly valuable.</color>
+
+::Forbidden_Secret_Art //7724
+<color=#808080>A book that contains forbidden secrets of alchemy and magic.</color>
+
+::Unlucky_Emerald //7725
+<color=#808080>An emerald that brings an impending sense of great misfortune to whomever holds it.</color>
+
+::Token_of_King //7726
+<color=#808080>The perfectly crafted, intricate, and official royal seal of the King of the Rune Midgard Kingdom.</color>
+
+::Mission_Ticket_1 //7730
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_2 //7731
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_3 //7732
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_4 //7733
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_5 //7734
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_6 //7735
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_7 //7736
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_8 //7737
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_9 //7738
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_10 //7739
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_11 //7740
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Mission_Ticket_12 //7741
+<color=#808080>A ticket which proves mission completion.</color>
+
+::Old_White_Cloth //7751
+<color=#808080>A worn-out white cloth.</color>
+
+::Clattering_Skull //7752
+<color=#808080>A clattering skull that occasionally breaks out in song.</color>
+
+::Broken_Farming_Utensil //7753
+<color=#808080>A seemingly useless farming tool.</color>
+
+::Broken_Crown //7754
+<color=#808080>An antique crown that used to sparkle with magnificence.</color>
+
+::Research_Note //7755
+<color=#808080>A note that is barely legible as it is heavily damaged.</color>
+
+::Magic_Gourd_Bottle //7761
+<color=#808080>A marvelous bottle that can carry languages.</color>
+
+::Yaga's_Pestle //7762
+<color=#808080>A pestle carried by Baba Yaga that is well worn.</color>
+
+::Sticky_Herb //7763
+<color=#808080>An herb containing a sticky liquid that can be ground into a glue.</color>
+
+::High_Strength_Adhesive //7764
+<color=#808080>The highest strength adhesive around.</color>
+
+::Baba_Yaga's_Secret_Medicine //7765
+<color=#808080>A unique liquid made by Baba Yaga that will ensure winter does not come again!</color>
+
+::Gym_Pass //7776
+
+::Mammi's_Photo_Album //7795
+<color=#808080>A photo album that contains pictures of Mammi, a former envoy of Morroc Public Relations.</color>
+
+::Author's_Autograph //7796
+<color=#808080>A note from Oliver Hilpert, you can tell by his poor handwriting... and by his autograph.</color>
+
+::Author's_Memo //7797
+<color=#808080>An ancient weapon with an unknown motive
+
+::Fragment_of_Darkness //7798
+<color=#808080>A dark fragment that seems to absorb any light you shine onto it.</color>
+
+::Crystal_of_Darkness //7799
+<color=#808080>A dark crystal kept in perpetual shadow, regardless of your attempts to place it in sunlight.</color>
+
+::Morroc_Skin //7820
+<color=#808080>A seared piece of skin from Satan Morroc.</color>
+
+::Continental_Guard_Paper //7826
+<color=#808080>A certificate that proves an adventurer is a member of the Continental Guard.</color>
+
+::Badge_of_Bravery //7828
+<color=#808080>A badge provided to warriors who have shown bravery.</color>
+
+::Badge_of_Valor //7829
+<color=#808080>A badge provided to warriors who have shown valor.</color>
+
+::Goddess_Tear //7830
+<color=#808080>A physical manifestation of the tears wept for fallen warriors.</color>
+
+::Valkyrie's_Token //7831
+<color=#808080>A physical manifestation of the trust of the Valkyries.</color>
+
+::Brynhild_Armor_Piece //7832
+<color=#808080>A fragment of armor from the fallen valkyrie, Breunhilt.</color>
+
+::Hero's_Remains //7833
+<color=#808080>A fragment of ashes of the fallen hero, Siglude.</color>
+
+::Andvari's_Ring //7834
+<color=#808080>A fragment of the ring of Andvary protected by the dragon Pavvnir.</color>
+
+::Dusk_Glow //7835
+<color=#808080>A physical manifestation of a sunset.</color>
+
+::Dawn_Essence //7836
+<color=#808080>A physical manifestation of a sunrise.</color>
+
+::Cold_Moonlight //7837
+<color=#808080>A physical manifestation of moonlight.</color>
+
+::Hazy_Starlight //7838
+<color=#808080>A physical manifestation of starlight.</color>
+
+::Crystal_Key //7839
+<color=#808080>A piece of crystal required to progress into Okolnir.</color>
+
+::Valkyrie's_Gift //7840
+<color=#808080>A flower from Wishmaiden Valkyrie.</color>
+
+::Gold_Key //7876
+<color=#808080>A shiny gold key rumored to be able to open enchanted locks.</color>
+
+::Red_Ring //7877
+<color=#808080>Mashenka's red ring, it seems to have a sad story.</color>
+
+::Lusalka's_Hair //7878
+<color=#808080>Hair of the water fairy Lusalka, who drowned on the eve of her marriage.</color>
+
+::Golden_Thread //7879
+<color=#808080>A spool wrapped with fine golden thread.</color>
+
+::Baba_Yaga's_Silver_Spoon //7880
+<color=#808080>Baba Yaga's silver spoon stolen by pirates.</color>
+
+::Mystery_Magic_Book //7881
+<color=#808080>A mysterious magic book published by MOMOTARO Publishing.</color>
+
+::Sharp_Branch //7882
+<color=#808080>A branch broken off from a thornbush.</color>
+
+::Wooden_Flute //7883
+<color=#808080>A flute made by a shepherd who has a talent for music.</color>
+
+::Chef_King_Orleans_Vol.1 //11002
+<color=#808080>A famous novel by a kRO player that details Chef Orleans</color>
+
+::Kafra_Legend_Vol.1 //11003
+<color=#808080>A famous novel by a kRO player that details the Kafra Corporation.</color>
+
+::Expedition_Report //11012
+<color=#808080>The first report of the expedition with the Commander's seal. The report records all the information related to ecological environment, situations of the species and the expedition in another world.</color>
+
+::Expedition_Report_Vol1 //11013
+<color=#808080>Expedition Report Vol.1, sorted by Abidal. The information on the expedition's settlement and occupation are all here.</color>
+
+::Expedition_Report_Vol2 //11014
+<color=#808080>Expedition Report Vol.2 which details the dimensional gorge and the traces of Satan Morroc.</color>
+
+::Expedition_Report_Vol3 //11015
+<color=#808080>Expedition Report Vol.3 which details the ecological environment and the species.</color>
+
+::Expedition_Report_Vol4 //11016
+<color=#808080>Expedition Report Vol.4 which details the internal investigation.</color>
+

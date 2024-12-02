@@ -9,16 +9,9 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
     [SkillHandler(CharacterSkill.DoubleStrafe, SkillClass.Physical, SkillTarget.Enemy)]
     public class DoubleStrafeHandler : SkillHandlerBase
     {
-        public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position)
-        {
-            if(source.Character.Type != CharacterType.Player)
-                return base.ValidateTarget(source, target, position);
-            if(source.Character.Player.WeaponClass == 12) //bows only!
-                return base.ValidateTarget(source, target, position);
-
-            return SkillValidationResult.IncorrectWeapon;
-        }
-
+        public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position) =>
+            ValidateTargetForAmmunitionWeapon(source, target, position, 12, AmmoType.Arrow);
+        
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
             lvl = lvl.Clamp(1, 10);

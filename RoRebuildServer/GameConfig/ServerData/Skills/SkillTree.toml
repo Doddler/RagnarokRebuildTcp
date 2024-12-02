@@ -3,7 +3,7 @@
 JobRank = 0
 [Novice.SkillTree]
 BasicMastery = []
-FirstAid = [["BasicMastery", 8]]
+FirstAid = [["BasicMastery", 2]]
 
 [Swordsman]
 JobRank = 1

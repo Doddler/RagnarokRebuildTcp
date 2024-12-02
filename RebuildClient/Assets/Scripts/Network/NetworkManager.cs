@@ -1758,6 +1758,26 @@ namespace Assets.Scripts.Network
             
             SendMessage(msg);
         }
+
+        public void SubmitShopPurchase(List<ShopEntry> items)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.ShopBuySell);
+            if(items == null || items.Count == 0)
+                msg.Write(0);
+            else
+            {
+                msg.Write(items.Count);
+                for (var i = 0; i < items.Count; i++)
+                {
+                    msg.Write(items[i].ItemId);
+                    msg.Write(items[i].Count);
+                }
+            }
+            
+            SendMessage(msg);
+        }
         
         public void SendEnterServerMessage(string loginName)
         {

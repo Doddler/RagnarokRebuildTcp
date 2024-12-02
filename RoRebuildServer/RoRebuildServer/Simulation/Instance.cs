@@ -28,6 +28,9 @@ public class Instance
         Maps = new List<Map>(instanceDetails.Maps.Count);
         Entities = new EntityList(128);
         Pathfinder = new PathFinder();
+#if DEBUG
+        Entities.IsActive = true; //bypass EntityListPool borrow tracking
+#endif
 
         foreach (var mapId in instanceDetails.Maps)
         {

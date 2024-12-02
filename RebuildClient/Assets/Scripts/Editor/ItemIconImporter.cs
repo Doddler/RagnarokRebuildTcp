@@ -68,6 +68,7 @@ namespace Assets.Scripts.Editor
             var sprites = new List<Sprite>();
 
             var srcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "sprite/아이템");
+            var collectionSrcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/유저인터페이스/collection");
             Debug.Log(srcPath);
 
             var i = 0;
@@ -77,14 +78,35 @@ namespace Assets.Scripts.Editor
 
                 var fName = icon;
                 var newName = convertName[icon];
-                if(fName != icon)
+                if(newName == "Amulet")
                     Debug.Log(icon);
                 var destPath = $@"Assets/Sprites/Imported/Icons/Sprites/{newName}.png";
+                var collectionDestPath = $"Assets/Sprites/Imported/Collections/{newName}.png";
                 var importedAssetName = $"Assets/Sprites/Imported/Icons/{fName}.asset";
                 // Debug.Log(destPath);
 
                 if (!Directory.Exists("Assets/Sprites/Icons/"))
                     Directory.CreateDirectory("Assets/Sprites/Icons/");
+                
+                
+                if (!Directory.Exists("Assets/Sprites/Imported/Collections/"))
+                    Directory.CreateDirectory("Assets/Sprites/Imported/Collections/");
+
+                if (!File.Exists(collectionDestPath))
+                {
+                    var collectionSrc = Path.Combine(collectionSrcPath, $"{fName}.bmp");
+                    if (File.Exists(collectionSrc))
+                    {
+                        var tex = TextureImportHelper.LoadTexture(collectionSrc);
+                        TextureImportHelper.SaveAndUpdateTexture(tex, collectionDestPath, ti =>
+                        {
+                            ti.textureType = TextureImporterType.Sprite;
+                            ti.spriteImportMode = SpriteImportMode.Single;
+                            ti.textureCompression = TextureImporterCompression.CompressedHQ;
+                            ti.crunchedCompression = true;
+                        });
+                    }
+                }
 
                 if (!File.Exists(destPath))
                 {
