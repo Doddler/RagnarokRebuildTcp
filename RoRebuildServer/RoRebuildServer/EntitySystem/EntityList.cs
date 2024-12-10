@@ -81,6 +81,20 @@ public class EntityList : IDisposable
         count++;
     }
 
+    public void AddIfNotExists(Entity entity)
+    {
+        if (!entity.IsAlive())
+            throw new Exception("Can't add entity to EntityList as it's not active.");
+
+        if (Contains(ref entity))
+            return;
+
+        ResizeIfNeeded();
+
+        entities![count] = entity;
+        count++;
+    }
+
 
     public void Add(ref Entity entity)
     {

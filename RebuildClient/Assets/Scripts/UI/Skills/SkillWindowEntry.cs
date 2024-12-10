@@ -35,6 +35,11 @@ namespace Assets.Scripts.UI
         private Image background;
         private bool availableToLevelUp;
 
+        public void Awake()
+        {
+            ReleaseHighlightSkillBox();
+        }
+        
         public void ChangeSelectedLevel(int dir)
         {
             CurrentLevel = Mathf.Clamp(CurrentLevel + dir, 1, MaxLevel);
@@ -159,6 +164,7 @@ namespace Assets.Scripts.UI
 
             RefreshLevelText();
             RefreshSpCost();
+            ReleaseHighlightSkillBox();
 
             dragSource = GetComponent<SkillDragSource>();
             dragSource.Assign(DragItemType.Skill, Icon.sprite, (int)skillData.SkillId, learnedLevel);

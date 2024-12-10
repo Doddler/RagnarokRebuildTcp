@@ -9,7 +9,8 @@ public enum TargetingType : byte
     Player = 1,
     Party = 2,
     Faction = 4,
-    Enemies = 8
+    Enemies = 8,
+    Everyone = Player | Party | Faction | Enemies
 }
 
 
@@ -47,6 +48,9 @@ public struct TargetingInfo
 
     public bool IsValidTarget(CombatEntity target)
     {
+        if (TargetingType == TargetingType.Everyone)
+            return true;
+
         if ((TargetingType & TargetingType.Player) != 0)
         {
             if (target.Entity.Type == EntityType.Player)

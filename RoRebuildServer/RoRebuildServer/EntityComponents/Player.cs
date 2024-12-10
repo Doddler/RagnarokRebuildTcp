@@ -46,6 +46,7 @@ public class Player : IEntityAutoReset
     public bool IsAdmin { get; set; }
     public bool IsInNpcInteraction { get; set; }
     public bool IsMale => GetData(PlayerStat.Gender) == 0;
+    public override string ToString() => $"Player:{Name}";
 
     [EntityIgnoreNullCheck] public NpcInteractionState NpcInteractionState = new();
     [EntityIgnoreNullCheck] public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
@@ -59,6 +60,7 @@ public class Player : IEntityAutoReset
     public bool isStorageLoaded = false;
     public EntityValueList<float> RecentAttackersList;
     private float lastAttackerListCheckUpdate;
+    public float ShoutCooldown;
 
     public int GetItemIdForEquipSlot(EquipSlot slot) => Equipment.ItemIds[(int)slot];
 
@@ -224,7 +226,7 @@ public class Player : IEntityAutoReset
                 var bagId = AddItemToInventory(item);
                 Equipment.EquipItem(bagId, EquipSlot.Weapon);
             }
-            if (DataManager.ItemIdByName.TryGetValue("Cotton Shirt", out var shirt))
+            if (DataManager.ItemIdByName.TryGetValue("Cotton_Shirt", out var shirt))
             {
                 var item = new ItemReference(shirt, 1);
                 var bagId = AddItemToInventory(item);
@@ -699,8 +701,11 @@ public class Player : IEntityAutoReset
 
     public bool TakeSpForSkill(CharacterSkill skill, int level)
     {
-        var spCost = DataManager.GetSpForSkill(skill, level);
+        if (!SkillHandler.ShouldSkillCostSp(skill, CombatEntity))
+            return true;
 
+        var spCost = DataManager.GetSpForSkill(skill, level);
+        
         var currentSp = GetStat(CharacterStat.Sp);
         if (currentSp < spCost)
             return false;
@@ -735,7 +740,7 @@ public class Player : IEntityAutoReset
 
         var hpRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery);
         if (hpRegenSkill > 0)
-            plusHpRegen = maxHp * hpRegenSkill / 500; //+2% of max HP per tick at lvl 10
+            plusHpRegen = 5 * hpRegenSkill + maxHp * hpRegenSkill / 500; //5hp + 0.2% maxHP per level
 
         if (hp < maxHp && hpAddPercent >= 0)
         {
@@ -764,11 +769,7 @@ public class Player : IEntityAutoReset
 
         var spRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery);
         if (spRegenSkill > 0)
-        {
-            plusSpRegen = maxSp * spRegenSkill / 500; //+2% of max SP per tick at lvl 10
-            if (plusSpRegen < 1)
-                plusSpRegen = 1;
-        }
+            plusSpRegen = 3 * spRegenSkill + maxSp * spRegenSkill / 500; //3sp + 0.2% maxSP per level
 
         if (sp < maxSp && spAddPercent >= 0)
         {
@@ -867,6 +868,8 @@ public class Player : IEntityAutoReset
 
     public void ChangeJob(int newJobId)
     {
+        var curJob = GetData(PlayerStat.Job);
+
         var job = DataManager.JobInfo[newJobId];
         SetData(PlayerStat.Job, newJobId);
 
@@ -913,7 +916,7 @@ public class Player : IEntityAutoReset
         var entity = World.Instance.CreateMonster(Character.Map, monDef, Area.CreateAroundPoint(Character.Position, 7), null);
         var monster = entity.Get<Monster>();
         if (lifetime < int.MaxValue)
-            monster.CombatEntity.AddStatusEffect(CharacterStatusEffect.Doom, lifetime / 1000f);
+            monster.CombatEntity.AddStatusEffect(CharacterStatusEffect.Doom, lifetime);
         monster.ChangeAiStateMachine(MonsterAiType.AiAggressiveActiveSense);
         monster.ResetAiUpdateTime(); //make it active instantly
     }
@@ -945,6 +948,7 @@ public class Player : IEntityAutoReset
     {
         if (Character.State == CharacterState.Sitting
             || Character.State == CharacterState.Dead
+            || Character.State == CharacterState.Hide
             || !ValidateTarget())
         {
             AutoAttackLock = false;
@@ -1061,7 +1065,9 @@ public class Player : IEntityAutoReset
             return;
         }
 
-        if (DistanceCache.IntDistance(Character.Position, enemy.Position) <= GetStat(CharacterStat.Range))
+        var range = int.Max(1, GetStat(CharacterStat.Range));
+
+        if (DistanceCache.IntDistance(Character.Position, enemy.Position) <= range)
         {
             ChangeTarget(enemy);
             //PerformQueuedAttack();
@@ -1142,42 +1148,6 @@ public class Player : IEntityAutoReset
         return RecentAttackersList.CountEntitiesAboveValueAndRemoveBelow(Time.ElapsedTimeFloat - 1.8f);
     }
     
-
-    //public void PerformSkill()
-    //{
-    //    Debug.Assert(Character.Map != null, $"Player {Name} cannot perform skill, it is not attached to a map.");
-
-    //    var pool = EntityListPool.Get();
-    //    Character.Map.GatherEnemiesInRange(Character, 7, pool, true);
-
-    //    if (Character.AttackCooldown > Time.ElapsedTimeFloat)
-    //        return;
-
-    //    if (pool.Count == 0)
-    //    {
-    //        EntityListPool.Return(pool);
-    //        return;
-    //    }
-
-    //    Character.StopMovingImmediately();
-    //    ClearTarget();
-
-    //    for (var i = 0; i < pool.Count; i++)
-    //    {
-    //        var e = pool[i];
-    //        if (e.IsNull() || !e.IsAlive())
-    //            continue;
-    //        var target = e.Get<CombatEntity>();
-    //        if (target == CombatEntity || target.Character.Type == CharacterType.Player)
-    //            continue;
-
-    //        CombatEntity.PerformMeleeAttack(target);
-    //        Character.AddMoveLockTime(GetTiming(TimingStat.AttackDelayTime));
-    //    }
-
-    //    Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackDelayTime);
-    //}
-
     public bool WarpPlayer(string mapName, int x, int y, int width, int height, bool failIfNotWalkable)
     {
         if (!World.Instance.TryGetWorldMapByName(mapName, out var map))
@@ -1209,7 +1179,6 @@ public class Player : IEntityAutoReset
 
         return true;
     }
-
 
     public void UpdatePosition()
     {
@@ -1263,7 +1232,7 @@ public class Player : IEntityAutoReset
         Debug.Assert(Character.Map != null);
         Debug.Assert(CombatEntity != null);
 
-        if (Character.State == CharacterState.Dead || Character.State == CharacterState.Sitting)
+        if (!Character.StateCanAttack)
         {
             Character.QueuedAction = QueuedAction.None;
             AutoAttackLock = false;

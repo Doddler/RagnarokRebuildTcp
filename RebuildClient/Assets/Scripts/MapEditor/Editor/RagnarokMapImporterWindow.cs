@@ -471,15 +471,14 @@ namespace Assets.Scripts.MapEditor.Editor
         }
 
         //[MenuItem("Ragnarok/Import Test Walk Data")]
-        static RoMapData LoadWalkData(string importPath)
+        public static RoMapData LoadWalkData(string importPath, float waterLevel)
         {
 
             var altitude = new RagnarokWalkableDataImporter();
 
             //var importPath = @"G:\Projects2\Ragnarok\Resources\data\6@tower.gat";
 
-
-            var walkData = altitude.LoadWalkData(importPath);
+            var walkData = altitude.LoadWalkData(importPath, waterLevel);
             // walkData = altitude.SplitWalkData(walkData, 4, Path.GetFileNameWithoutExtension(importPath));
             walkData.name = Path.GetFileNameWithoutExtension(importPath) + "_walk";
 
@@ -503,7 +502,7 @@ namespace Assets.Scripts.MapEditor.Editor
             return walkData;
         }
 
-        [MenuItem("Ragnarok/Import All Maps")]
+        [MenuItem("Ragnarok/Import All Maps", false, 122)]
         public static void ImportAllFiles()
         {
             var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
@@ -542,7 +541,7 @@ namespace Assets.Scripts.MapEditor.Editor
             EditorUtility.ClearProgressBar();
         }
 
-        [MenuItem("Ragnarok/Import Water")]
+        //[MenuItem("Ragnarok/Import Water", false, 123)]
         public static void ImportWater()
         {
             var waterDir = Path.Combine(Application.dataPath, "Maps/Texture/Water/").Replace("\\", "/");
@@ -595,14 +594,14 @@ namespace Assets.Scripts.MapEditor.Editor
             data.RebuildAtlas();
 
             var gatPath = Path.Combine(lastDirectory, baseName + ".gat");
-            data.WalkData = LoadWalkData(gatPath);
-
+            RoWater water = null;
 
             var resourcePath = Path.Combine(lastDirectory, baseName + ".rsw");
             if (File.Exists(resourcePath))
             {
                 var world = RagnarokResourceLoader.LoadResourceFile(resourcePath, data);
                 world.name = baseName + " world data";
+                water = world.Water;
 
                 var worldFolder = Path.Combine(relativeDir, "world");
                 if (!Directory.Exists(worldFolder))
@@ -655,6 +654,9 @@ namespace Assets.Scripts.MapEditor.Editor
 
             }
 
+            var waterLevel = -water.Level + (water.WaveHeight / 5f) - 0.01f;
+            data.WalkData = LoadWalkData(gatPath, waterLevel);
+
             AssetDatabase.SaveAssets();
 
             EditorUtility.UnloadUnusedAssetsImmediate();
@@ -673,7 +675,7 @@ namespace Assets.Scripts.MapEditor.Editor
         // }
 
 
-        [MenuItem("Ragnarok/Import Maps")]
+        [MenuItem("Ragnarok/Import Maps", false, 121)]
         static void ImportFiles()
         {
             var files = StandaloneFileBrowser.OpenFilePanel("Open File", RagnarokDirectory.GetRagnarokDataDirectory, "gnd", true);

@@ -34,9 +34,17 @@ public class SelfDestruct : SkillHandlerBase
             var aoeTarget = e.Get<CombatEntity>();
             if (!aoeTarget.IsValidTarget(source, true))
                 continue;
+
+            var attack = new AttackRequest()
+            {
+                MinAtk = minAtk,
+                MaxAtk = maxAtk,
+                Element = AttackElement.Special,
+                Flags = AttackFlags.Physical | AttackFlags.CanHarmAllies | AttackFlags.IgnoreDefense |
+                        AttackFlags.IgnoreEvasion,
+            };
             
-            var res = source.CalculateCombatResultUsingSetAttackPower(e.Get<CombatEntity>(), minAtk, maxAtk, lvl, 1, 
-                AttackFlags.Physical | AttackFlags.CanHarmAllies | AttackFlags.IgnoreDefense | AttackFlags.IgnoreEvasion, CharacterSkill.SelfDestruct, AttackElement.Special);
+            var res = source.CalculateCombatResultUsingSetAttackPower(e.Get<CombatEntity>(), attack);
             res.KnockBack = res.Damage switch
             {
                 >5000 => 7,

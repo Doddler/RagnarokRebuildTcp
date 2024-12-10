@@ -245,7 +245,7 @@ class Program
                 IsUnique = false,
                 ItemClass = ItemClass.Etc,
                 UseType = ItemUseType.NotUsable,
-                Price = entry.Price,
+                Price = entry.Price * 2, //this should somehow sync with the EtcItemValueMultiplier value in appsettings.json, the fact that it doesn't is bad
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
             };

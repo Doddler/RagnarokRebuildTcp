@@ -15,7 +15,8 @@ Resists flinching from enemy attacks, allowing you to escape without being slowe
 Lasts [Skill Level + 2] hits. Provides a bonus to magic defense while active.
 
 ::IncreasedHPRecovery
-<color=red>This skill doesn't currently work.
+Increases HP recovery by 5 HP plus 0.2% of your MaxHP per level.
+<i>Currently is combined with your regular HP recovery tick rather than a separate value.</i>
 
 ::MagnumBreak
 <color=red>This skill doesn't currently work.
@@ -40,7 +41,7 @@ Increases attack speed when using two-handed swords by 10% per skill level.
 //----------------Archer-------------------
 
 ::DoubleStrafe
-Strikes a target with two arrows dealing 2 hits of 100% attack at level 1 (200% total) increasing to 190% at level 10 (380% total).
+Nock two arrows to strike a target for two powerful hits at once.
 
 ::ChargeArrow
 <color=red>This skill doesn't currently work.
@@ -63,7 +64,7 @@ Focuses your thoughts providing bonus to AGI and DEX.
 <pos=5%>10<pos=25%>+12%<pos=55%>240s
 
 ::VultureEye
-Adds +1 range per level when attacking with a bow.
+Adds +1 range and hit per level when attacking with a bow.
 
 ::OwlEye
 Adds +1 DEX per level.
@@ -71,7 +72,8 @@ Adds +1 DEX per level.
 //----------------Mage-------------------
 
 ::IncreaseSPRecovery
-<color=red>This skill doesn't currently work.
+Increases SP recovery by 3 SP plus 0.2% of your MaxSP per level.
+<i>Currently is combined with your regular SP recovery tick rather than a separate value.</i>
 
 ::FireBolt
 Strikes a single target with a fire element attack. 
@@ -98,14 +100,18 @@ Higher levels increases the duration, number of hits, and speeds up casting.
 ::FrostDriver
 <color=red>This skill doesn't currently work.
 
+::NapalmBeat
+A fast burst of psychokinetic energy dealing ghost property <i>physical</i> damage. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes.
+
 ::SoulStrike
-<color=red>This skill doesn't currently work.
+A psychokinetic attack that launches spiritual energy at the target dealing ghost property magical damage. Deals 50% more damage against the undead.
 
 ::ThunderStorm
-The only working aoe ability in the game.
+Deals [Skill Level] hits at 100% wind element magic damage to all targets in a 5x5 area.
 
 ::SafetyWall
-<color=red>This skill doesn't currently work.
+A barrier which nullifies short range physical attacks. Vanishes after absorbing between 2-11 hits depending on skill level.
+Catalyst: <color=#777777>1 Blue Gemstone</color>
 
 //----------------Acolyte-------------------
 
@@ -116,10 +122,24 @@ Heals an ally. Deals damage when cast on an undead (use shift to target an enemy
 Increases movement speed by 25% and increases agi by +3 at level one and increasing to +12 at level 10.
 
 ::Blessing
-<color=red>This skill doesn't currently work.
+Increases STR, DEX, and INT by +1 per skill level.
+
+::DivineProtection
+Reduces damage received from demon and undead races by +1% per level to a max of +10%.
 
 ::DemonBane
 Increases damage against demon and undead races by +1% per level to a max of +10%.
+
+::Teleport
+Level 1: Teleports you to a random location on the map.
+Level 2: Returns you to your save point.
+Be sure to use the correct level as there is no prompt. You may assign different levels of the skill to your hotbar.
+
+::Pneuma
+Creates cloud that causes all physical attacks performed from 5 or more tiles away to miss. Affects both friend and foe alike.
+
+::Angelus
+Increases the soft defense of all party members and grants them the benefit of your learned level of Divine Protection for the skill's duration.
 
 //----------------Thief-------------------
 

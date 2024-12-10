@@ -24,7 +24,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 var item = InventoryItem.Deserialize(msg, type, bagId);
                 State.Inventory.UpdateItem(item);
                 UiManager.Instance.ItemObtainedPopup.SetText(item, change);
-                Debug.Log($"Added {change} of item type {item.Id} (weight changed {State.CurrentWeight - oldWeight} to {State.CurrentWeight})");
+                // Debug.Log($"Added {change} of item type {item.Id} (weight changed {State.CurrentWeight - oldWeight} to {State.CurrentWeight})");
             }
             else
             {
@@ -32,7 +32,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 var change = (int)msg.ReadInt16();
                 State.CurrentWeight = msg.ReadInt32();
                 State.Inventory.RemoveItem(bagId, change);
-                Debug.Log($"Removed {change} of item with a bag Id {bagId} (weight changed {State.CurrentWeight - oldWeight} to {State.CurrentWeight})");
+                // Debug.Log($"Removed {change} of item with a bag Id {bagId} (weight changed {State.CurrentWeight - oldWeight} to {State.CurrentWeight})");
             }
 
             UiManager.SkillHotbar.UpdateItemCounts();

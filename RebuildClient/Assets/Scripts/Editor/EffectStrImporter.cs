@@ -15,7 +15,7 @@ namespace Assets.Scripts.Editor
 {
     public static class EffectStrImporter
     {
-        [MenuItem("Ragnarok/Import and Update Skill Effect Atlas")]
+        [MenuItem("Ragnarok/Import and Update Skill Effect Atlas", false, 125)]
         public static void ImportEffectTextures()
         {
             

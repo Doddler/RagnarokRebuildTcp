@@ -10,7 +10,7 @@ namespace Assets.Editor
 {
     public static class EffectDataGenerator
     {
-        [MenuItem("Ragnarok/CodeGen/Update 3D Effect + Primitive handlers")]
+        [MenuItem("Ragnarok/CodeGen/Update 3D Effect + Primitive handlers", false, 122)]
         public static void Generate3DEffectDataClass()
         {
             var text = new List<string>();

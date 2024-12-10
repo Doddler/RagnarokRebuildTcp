@@ -209,11 +209,11 @@ public class MonsterSkillAiState(Monster monsterIn)
     public void AdminHide()
     {
         var ch = monster.Character;
-        if (ch.Hidden || ch.Map == null)
+        if (ch.AdminHidden || ch.Map == null)
             return;
 
         ch.Map.RemoveEntity(ref ch.Entity, CharacterRemovalReason.OutOfSight, false);
-        ch.Hidden = true;
+        ch.AdminHidden = true;
 
         monster.PreviousAiState = monster.CurrentAiState;
         monster.CurrentAiState = MonsterAiState.StateHidden;
@@ -225,14 +225,13 @@ public class MonsterSkillAiState(Monster monsterIn)
     public void AdminUnHide()
     {
         var ch = monster.Character;
-        if (!ch.Hidden)
+        if (!ch.AdminHidden)
             return;
-
 
         if (ch.Map == null)
             throw new Exception($"Monster {ch} attempting to execute AdminUnHide, but the npc is not currently attached to a map.");
 
-        ch.Hidden = false;
+        ch.AdminHidden = false;
         ch.Map.AddEntity(ref ch.Entity, false);
 
         monster.CurrentAiState = monster.PreviousAiState;
@@ -261,7 +260,7 @@ public class MonsterSkillAiState(Monster monsterIn)
         var ch = monster.Character;
         var pos = monster.Character.Map!.GetRandomVisiblePositionInArea(target.Position, distance / 2, distance);
 
-        if (ch.Hidden)
+        if (ch.AdminHidden)
             monster.Character.Position = pos;
         else
             monster.Character.Map.TeleportEntity(ref ch.Entity, ch, pos, CharacterRemovalReason.OutOfSight);
@@ -276,7 +275,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             return;
         if (master.Type != CharacterType.Monster)
             return;
-        if (!master.Hidden)
+        if (!master.AdminHidden)
             return;
 
         var pos = monster.Character.Map.GetRandomVisiblePositionInArea(monster.Character.Position, distance / 2, distance);

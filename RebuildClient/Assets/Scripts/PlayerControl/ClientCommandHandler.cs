@@ -8,6 +8,7 @@ using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using JetBrains.Annotations;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -66,6 +67,12 @@ namespace PlayerControl
 
             if (text.StartsWith("/sh "))
             {
+                if (!NetworkManager.Instance.PlayerState.KnownSkills.TryGetValue(CharacterSkill.BasicMastery, out var mastery) || mastery < 8)
+                {
+                    CameraFollower.Instance.AppendError("You must have basic mastery lvl 8 to shout.");
+                    return;
+                }
+                
                 var msg = text.Substring(4);
                 NetworkManager.Instance.SendSay(msg, true);
                 return;
@@ -73,6 +80,11 @@ namespace PlayerControl
             
             if (text.StartsWith("/shout "))
             {
+                if (!NetworkManager.Instance.PlayerState.KnownSkills.TryGetValue(CharacterSkill.BasicMastery, out var mastery) || mastery < 8)
+                {
+                    CameraFollower.Instance.AppendError("You must have basic mastery lvl 8 to shout.");
+                    return;
+                }
                 var msg = text.Substring(7);
                 NetworkManager.Instance.SendSay(msg, true);
                 return;

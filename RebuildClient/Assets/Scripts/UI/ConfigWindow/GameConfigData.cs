@@ -35,14 +35,14 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool AutoLockSkillWindow = false;
         public bool ShowAllSkillsInSkillWindow = false;
         //character overlay
-        public float DamageNumberSize = 0.75f;
+        public float DamageNumberSize = 0.85f;
         public bool ShowExpGainOnKill = true;
         public bool ShowMonsterHpBars = true;
         public bool AutoHideFullHPBars = false;
         public bool ScalePlayerDisplayWithZoom = true;
         public bool ShowLevelsInOverlay = true;
         //ui
-        public float MasterUIScale = 1f;
+        public float MasterUIScale = 0.75f;
         //visuals
         public bool UseSmoothPixel = true;
 

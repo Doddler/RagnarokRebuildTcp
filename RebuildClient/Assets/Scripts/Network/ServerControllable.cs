@@ -47,6 +47,8 @@ namespace Assets.Scripts.Network
 
         public int Hp;
         public int MaxHp { get; set; }
+        public int Sp;
+        public int MaxSp;
         public int WeaponClass;
 
         public GameObject PopupDialog;
@@ -54,7 +56,7 @@ namespace Assets.Scripts.Network
 
         public Dictionary<EquipPosition, GameObject> AttachedComponents = new();
 
-        public string DisplayName => CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay ? Name : $"Lv.{Level} {Name}";
+        public string DisplayName => CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay || Name.StartsWith("[NPC]") ? Name : $"Lv.{Level} {Name}";
 
         [NonSerialized] public Vector3 CounterHitDir;
 
@@ -148,6 +150,14 @@ namespace Assets.Scripts.Network
             else
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(fallbackDir));
         }
+        
+        public void SetSp(int sp, int maxSp)
+        {
+            MaxSp = maxSp;
+            Sp = sp;
+            FloatingDisplay.UpdateMaxMp(maxSp);
+            FloatingDisplay.UpdateMp(sp);
+        }
 
         public void SetHp(int hp, int maxHp)
         {
@@ -174,6 +184,7 @@ namespace Assets.Scripts.Network
             if (IsMainCharacter)
             {
                 FloatingDisplay.ForceHpBarOn();
+                FloatingDisplay.ForceMpBarOn();
             }
 
             if (CharacterType != CharacterType.NPC)
@@ -430,6 +441,10 @@ namespace Assets.Scripts.Network
             // Debug.Log($"Starting move from {startPosition} (but really we're starting from {MoveStartPos}). MoveData: \n{sb.ToString()}");
         }
 
+        public void SetHiding(bool isHidden)
+        {
+            
+        }
 
         public void StartMove(float speed, float progress, int stepCount, int curStep, List<Vector2Int> steps)
         {

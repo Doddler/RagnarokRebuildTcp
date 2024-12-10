@@ -45,8 +45,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             }
             else
             {
+                State.EquippedBagIdHashes.Remove(State.EquippedItems[(int)slot]); //if the slot is empty it's fine, remove just won't take anything out
+
                 if (isEquip)
+                {
                     State.EquippedItems[(int)slot] = bagId;
+                    State.EquippedBagIdHashes.Add(bagId);
+                }
                 else
                     State.EquippedItems[(int)slot] = 0;
             }

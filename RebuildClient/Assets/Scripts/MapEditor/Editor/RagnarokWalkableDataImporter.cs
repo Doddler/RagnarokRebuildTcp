@@ -116,7 +116,7 @@ namespace Assets.Scripts.MapEditor.Editor
             return map;
         }
 
-        public RoMapData LoadWalkData(string path)
+        public RoMapData LoadWalkData(string path, float waterHeight)
         {
             var filename = path;
             var basename = Path.GetFileNameWithoutExtension(filename);
@@ -164,7 +164,7 @@ namespace Assets.Scripts.MapEditor.Editor
                         cells[x + y * realWidth] = c2;
                         continue;
                     }
-
+                    
                     var v1 = br.ReadSingle();
                     var v2 = br.ReadSingle();
                     var v3 = br.ReadSingle();
@@ -174,6 +174,10 @@ namespace Assets.Scripts.MapEditor.Editor
                     c.Heights = new Vector4(v3, v4, v1, v2) * -1;
                     var type = br.ReadInt32();
                     var color = "";
+
+                    
+                    var avg = (v1 + v2 + v3 + v4) / 4f;
+                    var isInWater = avg > -waterHeight * 5f;
 
                     if (x + 1 == map.Width || y + 1 == map.Height)
                         type = 1;
@@ -210,6 +214,14 @@ namespace Assets.Scripts.MapEditor.Editor
                             break;
                         default:
                             throw new Exception("Unknown cell type " + type);
+                    }
+
+                    if (isInWater && ((c.Type & CellType.Walkable) > 0 || (c.Type & CellType.Snipable) > 0))
+                    {
+                        c.Type |= CellType.Water;
+                        if ((c.Type & CellType.Walkable) > 0)
+                            color = "blue";
+                        Debug.Log($"Water cell {x},{y} type {c.Type}");
                     }
 
                     c.Top = new Tile() { Enabled = true, Texture = color, UVs = VectorHelper.DefaultQuadUVs(), Color = Color.white, IsUnlit = false };

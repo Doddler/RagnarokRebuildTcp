@@ -180,7 +180,7 @@ Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,Eq
 2352,Novice_Ninja_Suit,Novice Ninja Suit,4,0,0,1,1,Armor,,,0,NoviceGroup,No,Yes,어드밴쳐슈츠,
 2353,Odin's_Blessing,Odin's Blessing,6,0,1,30000,2500,Armor,,,65,AllExceptNovice,Yes,Yes,오딘의축복,
 2354,Goibne's_Armor,Goibne's Armor,7,0,0,50000,3500,Armor,,,54,AllExceptNovice,Yes,Yes,게브네이의갑옷,
-2355,Angel's_Protection,Angel's Protection,4,20,1,10000,600,Armor,,,40,NoviceGroup,Yes,Yes,천사의가호,
+2355,Angel's_Protection,Angel's Protection,4,1000,1,10000,600,Armor,,,40,NoviceGroup,Yes,Yes,천사의가호,
 2357,Valkyrian_Armor,Valkyrian Armor,6,0,1,0,2800,Armor,,,1,Trans1stJob,Yes,No,발키리의갑옷,
 2359,Ninja_Suit_,Ninja Suit,7,3,1,20,1500,Armor,,,50,StealthGroup,Yes,Yes,닌자슈츠,
 2360,Robe_of_Cast_,Robe of Cast,5,4,1,124800,1100,Armor,,,75,Mage2ndPlusLinker,Yes,Yes,캐스팅의로브,

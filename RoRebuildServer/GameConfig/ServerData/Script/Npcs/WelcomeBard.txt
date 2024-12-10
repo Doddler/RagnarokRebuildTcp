@@ -62,20 +62,20 @@ macro BardChangeJob()
 		return;
 	}
 
-	var jobChoice = result;
+	var jobChoice = result + 1;
 	if(jobChoice == JobId)
 	{
-		Dialog(Name, "What a good choice! But that's already your job so there's not much I can help you out with.");
+		Dialog(Name, "What a good choice! I'm disapointed to have to tell you though that that's already your job.");
 		return;
 	}
 
 	//if(jobChoice == 0) Dialog(Name, "A novice! What a weird thing to want to become. But if that's your choice I can still do it. What do you say?");
-	if(jobChoice == 0) Dialog(Name, "A swordsman? Very good! Are you sure you want to become a swordsman?");
-	if(jobChoice == 1) Dialog(Name, "An archer? Very good! Are you sure you want to become an archer?");
-	if(jobChoice == 2) Dialog(Name, "A mage? Very good! Are you sure you want to become a mage?");
-	if(jobChoice == 3) Dialog(Name, "A acolyte? Very good! Are you sure you want to become a acolyte?");
-	if(jobChoice == 4) Dialog(Name, "A thief? Very good! Are you sure you want to become a thief?");
-	if(jobChoice == 5) Dialog(Name, "A merchant? Very good! Are you sure you want to become a merchant?");
+	if(jobChoice == 1) Dialog(Name, "A swordsman? Very good! Are you sure you want to become a swordsman?");
+	if(jobChoice == 2) Dialog(Name, "An archer? Very good! Are you sure you want to become an archer?");
+	if(jobChoice == 3) Dialog(Name, "A mage? Very good! Are you sure you want to become a mage?");
+	if(jobChoice == 4) Dialog(Name, "A acolyte? Very good! Are you sure you want to become a acolyte?");
+	if(jobChoice == 5) Dialog(Name, "A thief? Very good! Are you sure you want to become a thief?");
+	if(jobChoice == 6) Dialog(Name, "A merchant? Very good! Are you sure you want to become a merchant?");
 
 	Option("I'm sure", "I changed my mind");
 	if(result == 1)
@@ -85,7 +85,12 @@ macro BardChangeJob()
 	}
 
 	ReleaseFocus();
-	ChangePlayerJob(jobChoice + 1);
+	if(JobId > 0)
+	{
+		StatPointReset();
+		SkillReset();
+	}
+	ChangePlayerJob(jobChoice);
 	ShowEffectOnPlayer("JobUp");
 
 	ShowSprite("bard_eland02", right);
@@ -93,13 +98,16 @@ macro BardChangeJob()
 	{
 		GiveZeny(2000);
 		GiveItem("Novice_Potion", 60);
+		GiveItem("Fly_Wing", 15);
+		GiveItem("Butterfly_Wing", 5);
+		GiveItem("Concentration_Potion", 2);
 
-		if(jobChoice == 0) GiveItem("Sword");
-		if(jobChoice == 1) { GiveItem("Arrow", 500); GiveItem("Bow"); }
-		if(jobChoice == 2) GiveItem("Novice_Rod");
-		if(jobChoice == 3) GiveItem("Mace");
-		if(jobChoice == 4) GiveItem("Cutter");
-		if(jobChoice == 5) GiveItem("Sword");
+		if(jobChoice == 1) GiveItem("Sword");
+		if(jobChoice == 2) { GiveItem("Arrow", 500); GiveItem("Bow"); }
+		if(jobChoice == 3) GiveItem("Novice_Rod");
+		if(jobChoice == 4) GiveItem("Mace");
+		if(jobChoice == 5) GiveItem("Cutter");
+		if(jobChoice == 6) GiveItem("Axe");
 
 		SetNpcFlag(bardFlag, 2);
 		Dialog(Name, "It's done! I tossed in a little extra for you to get started. If you regret your choice and want to change jobs, just let me know.");

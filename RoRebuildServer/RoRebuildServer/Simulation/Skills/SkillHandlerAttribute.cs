@@ -16,9 +16,12 @@ public abstract class SkillHandlerBase
     protected const int DefaultMagicCastRange = 9;
 
     public virtual bool IsAreaTargeted => false;
+    public virtual bool ShouldSkillCostSp(CombatEntity source) => true;
     public virtual float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0f;
     public virtual int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 0;
     public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect);
+    public virtual void NpcProcess(Npc source, CombatEntity? target, Position position, int lvl) { }
+
 
     public float GetCastTime(CombatEntity source, CombatEntity? target, int lvl) => GetCastTime(source, target, Position.Invalid, lvl);
     public float GetCastTime(CombatEntity source, Position position, int lvl) => GetCastTime(source, null, position, lvl);

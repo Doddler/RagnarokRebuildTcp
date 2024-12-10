@@ -34,7 +34,8 @@ namespace RebuildSharedData.Enum
         CanHarmAllies = 16,
         IgnoreDefense = 32,
         IgnoreEvasion = 64,
-        NoDamageModifiers = 128,
-        NoElement = 256
+        IgnoreNullifyingGroundMagic = 128,
+        NoDamageModifiers = 256,
+        NoElement = 512
     }
 }

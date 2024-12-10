@@ -182,16 +182,17 @@ internal class DataLoader
 
         foreach (var entry in entries)
         {
-            if (!timings.ContainsKey(entry.Class))
-                throw new Exception($"WeaponAttackTiming.csv does not contain a timing definition for the job {entry.Class}.");
+            float[] timing;
+            if (timings.ContainsKey(entry.Class))
+                timing = timings[entry.Class];
+            else
+                timing = timings["NoClass"];
 
             var job = new JobInfo()
             {
                 Id = entry.Id,
                 Class = entry.Class,
-                HP = entry.HP,
-                SP = entry.SP,
-                WeaponTimings = timings[entry.Class]
+                WeaponTimings = timing
             };
             jobs.Add(job.Id, job);
         }
@@ -505,7 +506,7 @@ internal class DataLoader
                 Id = entry.Id,
                 IsUnique = false,
                 ItemClass = ItemClass.Useable,
-                Price = entry.Price,
+                Price = (int)float.Floor(entry.Price * ServerConfig.OperationConfig.EtcItemValueMultiplier),
                 Weight = entry.Weight,
             };
             items.Add(item.Id, item);

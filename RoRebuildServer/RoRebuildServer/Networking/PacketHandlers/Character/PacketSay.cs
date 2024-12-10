@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -11,7 +12,7 @@ public class PacketSay : IClientPacketHandler
     {
         var map = connection.Character?.Map;
          
-        if (connection.Character == null || connection.Player == null || map == null)
+        if (!connection.IsConnectedAndInGame)
             return;
 
         var text = msg.ReadString();
@@ -29,8 +30,17 @@ public class PacketSay : IClientPacketHandler
             ServerLogger.Log($"Chat message from [{connection.Player!.Name}]: {text}");
 #endif
 
-        if(isShout)
+        if (isShout)
+        {
+            if (connection.Player.ShoutCooldown > Time.ElapsedTimeFloat && !connection.Player.IsAdmin)
+            {
+                CommandBuilder.ErrorMessage(connection.Player, $"You must wait more time before using shout again.");
+                return;
+            }
+            ServerLogger.Log($"Shout chat message from [{connection.Player!.Name}]: {text}");
             CommandBuilder.AddAllPlayersAsRecipients();
+            connection.Player.ShoutCooldown = Time.ElapsedTimeFloat + 20f;
+        }
         else
             CommandBuilder.AddRecipients(map.Players); //send to everyone on the map
         //map.AddVisiblePlayersAsPacketRecipients(connection.Character);

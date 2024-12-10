@@ -141,44 +141,95 @@ public static class CommandBuilder
 
     private static void AddFullEntityData(OutboundMessage packet, WorldObject c, bool isSelf = false)
     {
+        var type = c.Type;
+        var isCharacterNpc = false; //npc that has taken a player appearance
+        if (c.OverrideAppearanceState != null)
+        {
+            type = CharacterType.Player;
+            isCharacterNpc = true;
+        }
+
         packet.Write(c.Id);
-        packet.Write((byte)c.Type);
+        packet.Write((byte)type);
         packet.Write((short)c.ClassId);
         packet.Write(c.Position);
         packet.Write((byte)c.FacingDirection);
         packet.Write((byte)c.State);
-        if (c.Type == CharacterType.Monster || c.Type == CharacterType.Player)
+        if (isCharacterNpc)
+        {
+            packet.Write((byte)40); //lvl
+            packet.Write(1000); //max hp
+            packet.Write(1000); //hp
+            if (c.OverrideAppearanceState!.HasCart)
+            {
+                packet.Write(true);
+                packet.Write((byte)CharacterStatusEffect.PushCart);
+                packet.Write(float.MaxValue);
+            }
+            packet.Write(false); //statusEffectData
+        }
+        else if (type == CharacterType.Monster || type == CharacterType.Player)
         {
             var ce = c.Entity.Get<CombatEntity>();
             packet.Write((byte)ce.GetStat(CharacterStat.Level));
             packet.Write(ce.GetStat(CharacterStat.MaxHp));
             packet.Write(ce.GetStat(CharacterStat.Hp));
 
-            var status = ce.GetStatusEffectData();
+            var status = ce.StatusContainer;
             if(status == null)
                 packet.Write(false);
             else
                 status.PrepareCreateEntityMessage(packet);
         }
-        if (c.Type == CharacterType.Player)
+        if (type == CharacterType.Player)
         {
-            var player = c.Entity.Get<Player>();
-            packet.Write((byte)player.HeadFacing);
-            packet.Write((byte)player.GetData(PlayerStat.Head));
-            packet.Write((byte)player.GetData(PlayerStat.HairId));
-            packet.Write((byte)player.WeaponClass);
-            packet.Write(player.IsMale);
-            packet.Write(player.Name);
-            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
-            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid));
-            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom));
-            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon));
-            packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Shield));
+            if (!isCharacterNpc)
+            {
+                var player = c.Entity.Get<Player>();
+                packet.Write((byte)player.HeadFacing);
+                packet.Write((byte)player.GetData(PlayerStat.Head));
+                packet.Write((byte)player.GetData(PlayerStat.HairId));
+                packet.Write((byte)player.WeaponClass);
+                packet.Write(player.IsMale);
+                packet.Write(player.Name);
+                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
+                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid));
+                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom));
+                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon));
+                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Shield));
+                if (isSelf)
+                {
+                    packet.Write(player.GetStat(CharacterStat.Sp));
+                    packet.Write(player.GetStat(CharacterStat.MaxSp));
+                }
+                else
+                {
+                    packet.Write(0); //they don't need the sp value for other players
+                    packet.Write(0);
+                }
 
-            packet.Write(isSelf);
+                packet.Write(isSelf);
+            }
+            else
+            {
+                var npc = c.OverrideAppearanceState!;
+                packet.Write((byte)npc.HeadFacing);
+                packet.Write((byte)npc.HeadType);
+                packet.Write((byte)npc.HairColor);
+                packet.Write((byte)npc.WeaponClass);
+                packet.Write(npc.IsMale);
+                packet.Write(c.Name);
+                packet.Write(npc.HeadTop);
+                packet.Write(npc.HeadMid);
+                packet.Write(npc.HeadBottom);
+                packet.Write(npc.Weapon);
+                packet.Write(npc.Shield);
+
+                packet.Write(false);
+            }
         }
 
-        if (c.Type == CharacterType.NPC)
+        if (type == CharacterType.NPC)
         {
             var npc = c.Entity.Get<Npc>();
             packet.Write(npc.Name);
@@ -187,7 +238,7 @@ public static class CommandBuilder
             packet.Write((byte)npc.EffectType);
         }
         
-        if (c.Hidden && !isSelf)
+        if (c.AdminHidden && !isSelf)
             ServerLogger.LogWarning($"We are sending the data of hidden character \"{c.Name}\" to the client!");
 
         if (c.State == CharacterState.Moving)
@@ -201,7 +252,7 @@ public static class CommandBuilder
         var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity;
         var packet = NetworkManager.StartPacket(type, 256);
 
-        if (c.Hidden && !isSelf)
+        if (c.AdminHidden && !isSelf)
             ServerLogger.LogWarning($"We are unexpectedly sending data for the hidden object {c} to a player!");
 
         AddFullEntityData(packet, c, isSelf);
@@ -504,6 +555,10 @@ public static class CommandBuilder
             var player = c.Entity.Get<Player>();
             packet.Write((byte)player.HeadFacing);
         }
+        else if (c.OverrideAppearanceState != null)
+            packet.Write((byte)c.OverrideAppearanceState.HeadFacing);
+        else
+            packet.Write((byte)0);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

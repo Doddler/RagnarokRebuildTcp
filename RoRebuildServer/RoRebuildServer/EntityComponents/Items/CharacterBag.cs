@@ -87,6 +87,7 @@ public class CharacterBag : IResettable
         UniqueItems.Clear();
         UniqueItemBagIds.Clear();
         UsedSlots = 0;
+        BagWeight = 0;
         idIndex = 20000;
         return true;
     }

@@ -176,6 +176,39 @@ namespace Assets.Scripts.UI.Hud
             chatEnd = Time.timeSinceLevelLoad + visibleTime;
             gameObject.SetActive(true);
         }
+
+        public void HideMpBar()
+        {
+            if (mpBar == null)
+                return;
+            
+            Manager.ReturnMpBar(mpBar.gameObject);
+            mpBar = null;
+        }
+
+        public void ForceMpBarOn()
+        {
+            if (mpBar != null)
+                return;
+
+            mpBar = Manager.AttachMpBar(gameObject);
+            gameObject.SetActive(true);
+        }
+
+        public void UpdateMaxMp(int maxMp) => this.maxMp = maxMp;
+
+        public void UpdateMp(int mp)
+        {
+            if (mpBar == null)
+                ForceMpBarOn();
+            
+            mpBar.SetProgress((float)mp / maxMp);
+            
+            if(isPlayer)
+                ((RectTransform)mpBar.transform).sizeDelta = new Vector2(100f, 10f);
+            else
+                ((RectTransform)hpBar.transform).sizeDelta = new Vector2(90f, 10f); //when would this ever happen...?
+        }
         
         public void HideHpBar()
         {

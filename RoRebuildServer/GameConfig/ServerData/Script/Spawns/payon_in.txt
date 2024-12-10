@@ -1,4 +1,4 @@
 MapConfig("payon_in02")
 {
-	CreateSpawn("THIEF_BUG", 7, %(23, 68, 5, 5), 1200000, 600000);
+	CreateSpawn("THIEF_BUG", 7, %(23, 68, 5, 5), 10m, 5m);
 }

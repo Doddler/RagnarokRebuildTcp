@@ -392,12 +392,19 @@ public class ItemEquipState
         if (data.ItemClass == ItemClass.Weapon)
         {
             if (!DataManager.WeaponInfo.TryGetValue(item.Id, out var weapon))
+            {
                 Player.WeaponClass = 0;
+                Player.SetStat(CharacterStat.Attack, 0);
+                Player.SetStat(CharacterStat.Attack2, 0);
+                Player.RefreshWeaponMastery();
+                WeaponElement = AttackElement.Neutral;
+                WeaponRange = 1;
+            }
             else
             {
                 Player.WeaponClass = weapon.WeaponClass;
-                Player.SetStat(CharacterStat.Attack, weapon.Attack * 90 / 100);
-                Player.SetStat(CharacterStat.Attack2, weapon.Attack * 110 / 100);
+                Player.SetStat(CharacterStat.Attack, weapon.WeaponLevel); //we'll use this for the attack formula
+                Player.SetStat(CharacterStat.Attack2, weapon.Attack);
                 Player.RefreshWeaponMastery();
                 WeaponElement = weapon.Element;
                 if(slot == EquipSlot.Weapon)
@@ -534,7 +541,7 @@ public class ItemEquipState
 
     public void AddStatusEffect(CharacterStatusEffect statusEffect, int duration, int val1 = 0, int val2 = 0)
     {
-        var status = StatusEffectState.NewStatusEffect(statusEffect, duration, val1, val2);
+        var status = StatusEffectState.NewStatusEffect(statusEffect, duration / 1000f, val1, val2);
         Player.CombatEntity.AddStatusEffect(status);
     }
     

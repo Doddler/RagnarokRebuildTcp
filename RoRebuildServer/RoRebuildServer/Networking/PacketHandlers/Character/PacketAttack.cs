@@ -26,7 +26,7 @@ public class PacketAttack : IClientPacketHandler
             return;
 
         var character = connection.Character;
-        if (character.State == CharacterState.Sitting)
+        if (character.State == CharacterState.Sitting || character.State == CharacterState.Hide)
             return;
         
         character.Player.AddActionDelay(CooldownActionType.Click);

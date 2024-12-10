@@ -15,7 +15,7 @@ namespace Assets.Scripts.Network
 {
     public static class PacketHandlerCodeGen
     {
-        [MenuItem("Ragnarok/CodeGen/Update Packet Handlers")]
+        [MenuItem("Ragnarok/CodeGen/Update Packet Handlers", false, 120)]
         public static void UpdatePacketHandlers()
         {
             var count = System.Enum.GetNames(typeof(PacketType)).Length;

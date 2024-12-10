@@ -17,7 +17,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Other
             if (healValue < 5)
                 healValue = 5;
 
-            source.ApplyCooldownForSupportSkillAction(0.5f); //minimum cooldown time is 0.5s
+            source.ApplyCooldownForSupportSkillAction(0.75f); //you can chain this skill at this speed even if your motion time is higher
             source.HealHp(healValue);
 
             var ch = source.Character;

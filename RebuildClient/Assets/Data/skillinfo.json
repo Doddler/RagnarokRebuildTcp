@@ -81,7 +81,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "Description": "Increases HP recovery by 5 HP plus 0.2% of your MaxHP per level.\r\n\u003Ci\u003ECurrently is combined with your regular HP recovery tick rather than a separate value.\u003C/i\u003E",
       "InterruptMode": 0
     },
     {
@@ -92,16 +92,16 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
       ],
       "AdjustableLevel": false,
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
@@ -163,7 +163,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "Description": "Increases SP recovery by 3 SP plus 0.2% of your MaxSP per level.\r\n\u003Ci\u003ECurrently is combined with your regular SP recovery tick rather than a separate value.\u003C/i\u003E",
       "InterruptMode": 0
     },
     {
@@ -220,16 +220,16 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
       ],
       "AdjustableLevel": true,
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
@@ -243,16 +243,16 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40
       ],
       "AdjustableLevel": true,
       "Description": "Creates a wall of flame at a targeted location dealing 50% fire magic damage and knocking enemies back upon contact.\r\nHigher levels increases the duration, number of hits, and speeds up casting.",
@@ -266,16 +266,16 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        25,
+        24,
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        16
       ],
       "AdjustableLevel": true,
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
@@ -324,7 +324,7 @@
         18
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "A fast firing psychokinetic attack that deals ghost property \u003Ci\u003Ephysical\u003C/i\u003E damage. Enemies directly adjascent to your target will take 50% of the damage your primary target takes.",
       "InterruptMode": 0
     },
     {
@@ -335,16 +335,16 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        18,
+        14,
+        24,
+        20,
+        30,
+        26,
+        36,
+        32,
+        42,
+        38
       ],
       "AdjustableLevel": true,
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
@@ -370,7 +370,7 @@
         74
       ],
       "AdjustableLevel": true,
-      "Description": "The only working aoe ability in the game.",
+      "Description": "Deals [Skill Level] hits at 100% wind element magic damage to all targets in a 5x5 area.",
       "InterruptMode": 0
     },
     {
@@ -381,16 +381,16 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        30,
+        30,
+        30,
+        35,
+        35,
+        35,
+        40,
+        40,
+        40,
+        40
       ],
       "AdjustableLevel": true,
       "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
@@ -398,6 +398,57 @@
     },
     {
       "SkillId": 21,
+      "Icon": "mg_stonecurse",
+      "Name": "Stone Curse",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        25,
+        24,
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        16
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 22,
+      "Icon": "mg_sight",
+      "Name": "Sight",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 23,
+      "Icon": "mg_energycoat",
+      "Name": "Energy Coat",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        30
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 24,
       "Icon": "ac_double",
       "Name": "Double Strafe",
       "Target": 1,
@@ -415,12 +466,12 @@
         12,
         12
       ],
-      "AdjustableLevel": true,
-      "Description": "Strikes a target with two arrows dealing 2 hits of 100% attack at level 1 (200% total) increasing to 190% at level 10 (380% total).",
+      "AdjustableLevel": false,
+      "Description": "Nock two arrows to strike a target for two powerful hits at once.",
       "InterruptMode": 0
     },
     {
-      "SkillId": 22,
+      "SkillId": 25,
       "Icon": "ac_chargearrow",
       "Name": "Charge Arrow",
       "Target": 1,
@@ -434,7 +485,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 23,
+      "SkillId": 26,
       "Icon": "ac_shower",
       "Name": "Arrow Shower",
       "Target": 4,
@@ -457,7 +508,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 24,
+      "SkillId": 27,
       "Icon": "ac_concentration",
       "Name": "Improve Concentration",
       "Target": 5,
@@ -480,7 +531,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 25,
+      "SkillId": 28,
       "Icon": "ac_owl",
       "Name": "Owl\u0027s Eye",
       "Target": 0,
@@ -492,7 +543,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 26,
+      "SkillId": 29,
       "Icon": "ac_vulture",
       "Name": "Vulture\u0027s Eye",
       "Target": 0,
@@ -500,11 +551,11 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Adds \u002B1 range per level when attacking with a bow.",
+      "Description": "Adds \u002B1 range and hit per level when attacking with a bow.",
       "InterruptMode": 0
     },
     {
-      "SkillId": 27,
+      "SkillId": 30,
       "Icon": "al_heal",
       "Name": "Heal",
       "Target": 2,
@@ -527,7 +578,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 28,
+      "SkillId": 31,
       "Icon": "al_incagi",
       "Name": "Increase Agility",
       "Target": 2,
@@ -550,7 +601,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 29,
+      "SkillId": 32,
       "Icon": "al_decagi",
       "Name": "Decrease Agility",
       "Target": 1,
@@ -568,7 +619,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 30,
+      "SkillId": 33,
       "Icon": "al_blessing",
       "Name": "Blessing",
       "Target": 2,
@@ -587,11 +638,11 @@
         64
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "Description": "Increases STR, DEX, and INT by \u002B1 per skill level.",
       "InterruptMode": 0
     },
     {
-      "SkillId": 31,
+      "SkillId": 34,
       "Icon": "al_demonbane",
       "Name": "Demon Bane",
       "Target": 0,
@@ -603,7 +654,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 32,
+      "SkillId": 35,
       "Icon": "al_dp",
       "Name": "Divine Protection",
       "Target": 0,
@@ -611,11 +662,11 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Reduces damage received from demon and undead races by \u002B1% per level to a max of \u002B10%.",
       "InterruptMode": 0
     },
     {
-      "SkillId": 33,
+      "SkillId": 36,
       "Icon": "al_angelus",
       "Name": "Angelus",
       "Target": 5,
@@ -634,11 +685,11 @@
         50
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Increases the soft defense of all party members and grants them the benefit of your learned level of Divine Protection for the skill\u0027s duration.",
       "InterruptMode": 0
     },
     {
-      "SkillId": 34,
+      "SkillId": 37,
       "Icon": "al_crucis",
       "Name": "Signum Crusis",
       "Target": 5,
@@ -661,7 +712,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 35,
+      "SkillId": 38,
       "Icon": "al_cure",
       "Name": "Cure",
       "Target": 2,
@@ -675,7 +726,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 36,
+      "SkillId": 39,
       "Icon": "al_holywater",
       "Name": "Aqua Benedicta",
       "Target": 5,
@@ -689,7 +740,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 37,
+      "SkillId": 40,
       "Icon": "al_pneuma",
       "Name": "Pneuma",
       "Target": 4,
@@ -699,11 +750,11 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Creates cloud that causes all physical attacks performed from 5 or more tiles away to miss. Affects both friend and foe alike.",
       "InterruptMode": 0
     },
     {
-      "SkillId": 38,
+      "SkillId": 41,
       "Icon": "al_ruwach",
       "Name": "Ruwach",
       "Target": 5,
@@ -717,22 +768,22 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 39,
+      "SkillId": 42,
       "Icon": "al_teleport",
       "Name": "Teleport",
       "Target": 5,
       "Type": 0,
       "MaxLevel": 2,
       "SpCost": [
-        10,
+        11,
         10
       ],
-      "AdjustableLevel": false,
-      "Description": null,
+      "AdjustableLevel": true,
+      "Description": "Level 1: Teleports you to a random location on the map.\r\nLevel 2: Returns you to your save point.\r\nBe sure to use the correct level as there is no prompt. You may assign different levels of the skill to your hotbar.",
       "InterruptMode": 0
     },
     {
-      "SkillId": 40,
+      "SkillId": 43,
       "Icon": "al_warp",
       "Name": "Warp Portal",
       "Target": 0,
@@ -749,7 +800,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 41,
+      "SkillId": 44,
       "Icon": "al_holylight",
       "Name": "Holy Light",
       "Target": 1,
@@ -763,7 +814,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 42,
+      "SkillId": 45,
       "Icon": "tf_double",
       "Name": "Double Attack",
       "Target": 0,
@@ -775,7 +826,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 43,
+      "SkillId": 46,
       "Icon": "tf_poison",
       "Name": "Envenom",
       "Target": 1,
@@ -798,7 +849,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 44,
+      "SkillId": 47,
       "Icon": "tf_detoxify",
       "Name": "Detoxify",
       "Target": 2,
@@ -812,7 +863,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 45,
+      "SkillId": 48,
       "Icon": "tf_backsliding",
       "Name": "Back Slide",
       "Target": 5,
@@ -826,7 +877,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 46,
+      "SkillId": 49,
       "Icon": "tf_steal",
       "Name": "Steal",
       "Target": 1,
@@ -849,7 +900,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 47,
+      "SkillId": 50,
       "Icon": "tf_sprinklesand",
       "Name": "Sand Attack",
       "Target": 1,
@@ -863,7 +914,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 48,
+      "SkillId": 51,
       "Icon": "tf_throwstone",
       "Name": "Stone Fling",
       "Target": 1,
@@ -877,7 +928,21 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 49,
+      "SkillId": 52,
+      "Icon": "tf_pickstone",
+      "Name": "Find Stone",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        2
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 53,
       "Icon": "tf_hiding",
       "Name": "Hiding",
       "Target": 5,
@@ -900,7 +965,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 50,
+      "SkillId": 54,
       "Icon": "tf_miss",
       "Name": "Improve Dodge",
       "Target": 0,
@@ -912,7 +977,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 51,
+      "SkillId": 55,
       "Icon": "mc_inccarry",
       "Name": "Enlarge Weight Limit",
       "Target": 0,
@@ -924,7 +989,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 52,
+      "SkillId": 56,
       "Icon": "mc_discount",
       "Name": "Discount",
       "Target": 0,
@@ -936,7 +1001,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 53,
+      "SkillId": 57,
       "Icon": "mc_overcharge",
       "Name": "Overcharge",
       "Target": 0,
@@ -948,7 +1013,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 54,
+      "SkillId": 58,
       "Icon": "mc_vending",
       "Name": "Vending",
       "Target": 0,
@@ -971,7 +1036,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 55,
+      "SkillId": 59,
       "Icon": "mc_identify",
       "Name": "Item Appraisal",
       "Target": 2,
@@ -983,7 +1048,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 56,
+      "SkillId": 60,
       "Icon": "mc_mammonite",
       "Name": "Mammonite",
       "Target": 1,
@@ -1006,7 +1071,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 57,
+      "SkillId": 61,
       "Icon": "mc_pushcart",
       "Name": "Push Cart",
       "Target": 0,
@@ -1018,7 +1083,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 58,
+      "SkillId": 62,
       "Icon": "mc_loud",
       "Name": "Crazy Uproar",
       "Target": 5,
@@ -1032,7 +1097,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 59,
+      "SkillId": 63,
       "Icon": "mc_cartrevolution",
       "Name": "Cart Revolution",
       "Target": 1,
@@ -1046,7 +1111,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 60,
+      "SkillId": 64,
       "Icon": "kn_twohandquicken",
       "Name": "Two-Hand Quicken",
       "Target": 5,
@@ -1069,7 +1134,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 61,
+      "SkillId": 65,
       "Icon": "bs_hammerfall",
       "Name": "Hammer Fall",
       "Target": 4,
@@ -1087,7 +1152,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 62,
+      "SkillId": 66,
       "Icon": "as_sonicblow",
       "Name": "Sonic Blow",
       "Target": 1,
@@ -1110,7 +1175,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 63,
+      "SkillId": 67,
       "Icon": "nv_basic",
       "Name": "Call Minion",
       "Target": 0,
@@ -1122,7 +1187,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 64,
+      "SkillId": 68,
       "Icon": "nv_basic",
       "Name": "Grand Thunderstorm",
       "Target": 0,
@@ -1134,7 +1199,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 65,
+      "SkillId": 69,
       "Icon": "nv_basic",
       "Name": "Fire Attack",
       "Target": 0,
@@ -1146,7 +1211,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 66,
+      "SkillId": 70,
       "Icon": "nv_basic",
       "Name": "Ice Attack",
       "Target": 0,
@@ -1158,7 +1223,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 67,
+      "SkillId": 71,
       "Icon": "nv_basic",
       "Name": "Wind Attack",
       "Target": 0,
@@ -1170,7 +1235,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 68,
+      "SkillId": 72,
       "Icon": "nv_basic",
       "Name": "Earth Attack",
       "Target": 0,
@@ -1182,7 +1247,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 69,
+      "SkillId": 73,
       "Icon": "nv_basic",
       "Name": "Dark Attack",
       "Target": 0,
@@ -1194,7 +1259,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 70,
+      "SkillId": 74,
       "Icon": "nv_basic",
       "Name": "Holy Attack",
       "Target": 0,
@@ -1206,7 +1271,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 71,
+      "SkillId": 75,
       "Icon": "nv_basic",
       "Name": "Poison Attack",
       "Target": 0,
@@ -1218,7 +1283,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 72,
+      "SkillId": 76,
       "Icon": "nv_basic",
       "Name": "Undead Attack",
       "Target": 0,
@@ -1230,7 +1295,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 73,
+      "SkillId": 77,
       "Icon": "nv_basic",
       "Name": "Immaterial Attack",
       "Target": 0,
@@ -1242,7 +1307,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 74,
+      "SkillId": 78,
       "Icon": "nv_basic",
       "Name": "Critical Slash",
       "Target": 0,
@@ -1254,7 +1319,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 75,
+      "SkillId": 79,
       "Icon": "nv_basic",
       "Name": "Poison",
       "Target": 0,
@@ -1266,7 +1331,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 76,
+      "SkillId": 80,
       "Icon": "nv_basic",
       "Name": "Sleep",
       "Target": 0,
@@ -1278,7 +1343,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 77,
+      "SkillId": 81,
       "Icon": "nv_basic",
       "Name": "Stun",
       "Target": 0,
@@ -1290,7 +1355,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 78,
+      "SkillId": 82,
       "Icon": "nv_basic",
       "Name": "Blind",
       "Target": 0,
@@ -1302,7 +1367,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 79,
+      "SkillId": 83,
       "Icon": "nv_basic",
       "Name": "Silence",
       "Target": 0,
@@ -1314,7 +1379,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 80,
+      "SkillId": 84,
       "Icon": "nv_basic",
       "Name": "Self Destruct",
       "Target": 0,
@@ -1326,7 +1391,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 81,
+      "SkillId": 85,
       "Icon": "nv_basic",
       "Name": "Power Up",
       "Target": 0,
@@ -1338,7 +1403,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 82,
+      "SkillId": 86,
       "Icon": "nv_basic",
       "Name": "Summon Monster",
       "Target": 0,
@@ -1350,7 +1415,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 83,
+      "SkillId": 87,
       "Icon": "nv_basic",
       "Name": "Suicide",
       "Target": 0,
@@ -1362,7 +1427,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 84,
+      "SkillId": 88,
       "Icon": "nv_basic",
       "Name": "Reward for Quest",
       "Target": 0,
@@ -1374,7 +1439,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 85,
+      "SkillId": 89,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,

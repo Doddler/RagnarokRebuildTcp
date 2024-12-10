@@ -21,6 +21,7 @@ namespace Assets.Scripts.UI
         private UiManager manager;
 
         private bool isOpenForDrop;
+        private bool isInitialized;
 
         private SkillHotbarEntry pressedEntry;
 
@@ -78,18 +79,25 @@ namespace Assets.Scripts.UI
 
         public void UpdateItemCounts()
         {
-            var inventory = NetworkManager.Instance.PlayerState.Inventory;
+            var state = NetworkManager.Instance.PlayerState;
+            var inventory = state.Inventory;
+            
             for (var i = 0; i < HotBarEntries.Count; i++)
             {
                 var entry = HotBarEntries[i].DragItem;
-                if(entry.Type == DragItemType.Item)
+                if (entry.Type == DragItemType.Item)
+                {
                     entry.UpdateCount(inventory.GetItemCount(entry.ItemId));
+                    if(state.AmmoId == entry.ItemId)
+                        entry.BlueCount();
+                }
             }
         }
         
         public void Initialize()
         {
             manager = UiManager.Instance;
+            isInitialized = true;
             for (var i = 0; i < 3; i++)
             {
                 var row = GameObject.Instantiate(SkillBarRowTemplate, SkillBarContainer);
@@ -118,6 +126,8 @@ namespace Assets.Scripts.UI
         {
             if (!NetworkManager.Instance.PlayerState.IsValid)
                 return;
+
+            var state = NetworkManager.Instance.PlayerState;
             
             if (entry.DragItem.Type == DragItemType.Skill)
             {
@@ -135,13 +145,15 @@ namespace Assets.Scripts.UI
             {
                 if (entry.DragItem.ItemCount <= 0)
                     return;
-                if (!NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(entry.DragItem.ItemId, out var item))
+                if (!state.Inventory.GetInventoryData().TryGetValue(entry.DragItem.ItemId, out var item))
                     return;
                 
                 
                 if(item.ItemData.UseType == ItemUseType.Use)
                     NetworkManager.Instance.SendUseItem(entry.DragItem.ItemId);
                 if (item.ItemData.ItemClass == ItemClass.Weapon || item.ItemData.ItemClass == ItemClass.Equipment)
+                    NetworkManager.Instance.SendEquipItem(entry.DragItem.ItemId);
+                if(item.ItemData.ItemClass == ItemClass.Ammo && state.AmmoId != item.Id)
                     NetworkManager.Instance.SendEquipItem(entry.DragItem.ItemId);
                     
                 if (item.ItemData.UseType == ItemUseType.NotUsable)
@@ -239,6 +251,7 @@ namespace Assets.Scripts.UI
 
         public void Update()
         {
+            if (!NetworkManager.IsLoaded) return;
             if (manager.IsDraggingItem && !isOpenForDrop)
             {
                 for (var i = 0; i < HotBarEntries.Count; i++)

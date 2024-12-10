@@ -37,7 +37,7 @@ MapConfig("prt_fild03")
 {
 	CreateSpawn("YOYO", 70);
 	CreateSpawn("SMOKIE", 50);
-	CreateSpawn("CHOCO", 3, 1800000, 900000);
+	CreateSpawn("CHOCO", 3);
 	CreateSpawn("FABRE", 10);
 	CreateSpawn("PORING", 30);
 	CreateSpawn("GREEN_PLANT", 5, %(296, 58, 15, 15), 180000, 90000);

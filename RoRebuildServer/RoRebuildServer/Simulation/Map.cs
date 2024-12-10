@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Metrics;
 using System.Numerics;
 using System.Threading;
@@ -118,8 +119,8 @@ public class Map
 
             //SendAllEntitiesToPlayer(ref entity);
 
-            if (ch.Hidden)
-                CommandBuilder.SendAdminHideStatus(ch.Player, ch.Hidden);
+            if (ch.AdminHidden)
+                CommandBuilder.SendAdminHideStatus(ch.Player, ch.AdminHidden);
         }
         else
         {
@@ -404,7 +405,7 @@ public class Map
                 if (!targetCharacter.Position.InRange(ch.Position, ServerConfig.MaxViewDistance))
                     continue;
 
-                if (targetCharacter != ch && !ch.Hidden)
+                if (targetCharacter != ch && !ch.AdminHidden)
                     CommandBuilder.AddRecipient(player);
 
                 AddPlayerVisibility(targetCharacter, ch);
@@ -459,7 +460,7 @@ public class Map
                 //if a nearby character is a player, we should track their visibility ourselves
                 if (nearbyEntity.Type == EntityType.Player)
                 {
-                    if (p.Entity == nearbyEntity || !nearbyCharacter.Hidden)
+                    if (p.Entity == nearbyEntity || !nearbyCharacter.AdminHidden)
                     {
                         AddPlayerVisibility(nearbyCharacter, ch); //We see nearbyCharacter
                         CommandBuilder.AddRecipient(nearbyEntity);
@@ -467,10 +468,10 @@ public class Map
                 }
 
                 //code for notifying this player of other existing entities
-                if (!ch.Hidden && ch != nearbyCharacter)
+                if (!ch.AdminHidden && ch != nearbyCharacter)
                 {
                     AddPlayerVisibility(ch, nearbyCharacter); //nearbyCharacter sees us
-                    if (!nearbyCharacter.Hidden)
+                    if (!nearbyCharacter.AdminHidden)
                         entities.Add(nearbyEntity); //we only want to notify of this character's existence if it is not hidden
                 }
             }
@@ -502,8 +503,8 @@ public class Map
         RegisterImportantEntity(ch);
         CommandBuilder.SendAllMapImportantEntities(p, MapImportantEntities);
 
-        if (ch.Hidden)
-            CommandBuilder.SendAdminHideStatus(ch.Player, ch.Hidden);
+        if (ch.AdminHidden)
+            CommandBuilder.SendAdminHideStatus(ch.Player, ch.AdminHidden);
     }
 
     private void SendRemoveEntityAroundCharacter(ref Entity entity, WorldObject ch, CharacterRemovalReason reason)
@@ -515,7 +516,7 @@ public class Map
             CommandBuilder.ClearRecipients();
         }
 
-        if (ch.Type != CharacterType.Player || ch.Hidden)
+        if (ch.Type != CharacterType.Player || ch.AdminHidden)
             return;
 
         //players must have themselves removed from visibility from nearby entities
@@ -580,7 +581,7 @@ public class Map
 #endif
                 if (ch.IsActive && ch.Position.InRange(playerChar.Position, ServerConfig.MaxViewDistance))
                 {
-                    if (!ch.Hidden || m == target)
+                    if (!ch.AdminHidden || m == target)
                         CommandBuilder.SendCreateEntity(ch, playerObj);
                     AddPlayerVisibility(playerChar, ch);
                 }
@@ -595,18 +596,24 @@ public class Map
         {
             CommandBuilder.AddRecipients(list);
         }
+    }
 
-        //foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, ServerConfig.MaxViewDistance))
-        //{
-        //    foreach (var p in c.Players)
-        //    {
-        //        var ch = p.Get<WorldObject>();
-        //        if (!ch.Position.InRange(character.Position, ServerConfig.MaxViewDistance))
-        //            continue;
-        //        if (ch.IsActive)
-        //            CommandBuilder.AddRecipient(p);
-        //    }
-        //}
+    //version that combines two visible player lists together
+    public void AddVisiblePlayersAsPacketRecipients(WorldObject attacker, WorldObject target)
+    {
+        using var recipientList = EntityListPool.Get();
+        if (attacker.TryGetVisiblePlayerList(out var list))
+        {
+            foreach(var e in list)
+                recipientList.Add(e);
+        }
+        if (target.TryGetVisiblePlayerList(out list))
+        {
+            foreach (var e in list)
+                recipientList.AddIfNotExists(e);
+        }
+        
+        CommandBuilder.AddRecipients(recipientList);
     }
 
     public bool FindOldestGroundItemInRange(Position center, int range, ref GroundItem itemOut)
@@ -760,7 +767,7 @@ public class Map
                 if (ch.Position != character.Position)
                     continue;
 
-                if (ch.Hidden || ch.State == CharacterState.Moving)
+                if (ch.AdminHidden || ch.State == CharacterState.Moving)
                     continue;
 
                 if (ch.Type == CharacterType.NPC && ch.Npc.IsEvent)
@@ -792,7 +799,7 @@ public class Map
                 if (ch.Position != pos)
                     continue;
 
-                if (ch.Hidden)
+                if (ch.AdminHidden)
                     continue;
 
                 if (ch.IsTargetImmune)
@@ -888,7 +895,7 @@ public class Map
                 if (!ch.IsActive)
                     continue;
 
-                if (ch.Type == CharacterType.NPC || ch.Hidden)
+                if (ch.Type == CharacterType.NPC || ch.AdminHidden)
                     continue;
 
                 if (ch.IsTargetImmune)
@@ -1078,7 +1085,33 @@ public class Map
 
             if (aoe.HasTouchedAoE(initialPos, targetPosition))
                 aoe.OnAoETouch(character);
+
+            if(aoe.TriggerOnLeaveArea && aoe.HasLeftAoE(initialPos, targetPosition))
+                aoe.OnLeaveAoE(character);
         }
+    }
+
+    public bool TryGetAreaOfEffectAtPosition(Position pos, CharacterSkill skill, [NotNullWhen(true)] out AreaOfEffect? effect)
+    {
+        //Since aoes are added to each chunk they affect, we only need to check aoes in our current chunk
+
+        var c = GetChunkForPosition(pos);
+        
+        for (var i = 0; i < c.AreaOfEffects.Count; i++)
+        {
+            var aoe = c.AreaOfEffects[i];
+            if (!aoe.IsActive)
+                continue;
+
+            if (aoe.SkillSource == skill && aoe.Area.Contains(pos))
+            {
+                effect = aoe;
+                return true;
+            }
+        }
+
+        effect = null;
+        return false;
     }
 
     public Position GetRandomVisiblePositionInArea(Position center, int minDistance, int distance, int checksPerDistance = 10)
@@ -1236,6 +1269,21 @@ public class Map
         EntityListPool.Return(chunkEntities);
     }
 
+    public bool HasAreaOfEffectTypeInArea(CharacterSkill skill, Area area)
+    {
+        var chunkEntities = EntityListPool.Get();
+        foreach (var chunk in GetChunkEnumerator(GetChunksForArea(area)))
+        {
+            foreach (var a in chunk.AreaOfEffects)
+            {
+                if (area.Overlaps(a.Area))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     public void RemoveAreaOfEffect(AreaOfEffect aoe)
     {
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(aoe.Area)))
@@ -1313,7 +1361,7 @@ public class Map
         var ch = entity.Get<WorldObject>();
 
         //if (!ch.Hidden)
-        if (ch.Type != CharacterType.NPC || !ch.Hidden)
+        if (ch.Type != CharacterType.NPC || !ch.AdminHidden)
             SendRemoveEntityAroundCharacter(ref entity, ch, reason);
         ch.ClearVisiblePlayerList();
 

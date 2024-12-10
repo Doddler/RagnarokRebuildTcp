@@ -120,7 +120,7 @@ namespace Assets.Scripts.UI.Stats
                 StatPointCostText[index].text = cost.ToString();
 
             DecreaseStatButtons[index].interactable = diff > 0;
-            IncreaseStatButtons[index].interactable = stat + diff < 99 && statPointsRequired + cost < NetworkManager.Instance.PlayerState.GetData(PlayerStat.StatPoints);
+            IncreaseStatButtons[index].interactable = stat + diff < 99 && statPointsRequired + cost <= NetworkManager.Instance.PlayerState.GetData(PlayerStat.StatPoints);
         }
 
         public void UpdateCharacterStats()
@@ -149,7 +149,7 @@ namespace Assets.Scripts.UI.Stats
 
             AttributeText[0].text = $"{state.GetStat(CharacterStat.Attack)} ~ {state.GetStat(CharacterStat.Attack2)}";
             AttributeText[1].text = $"{state.GetStat(CharacterStat.MagicAtkMin)} ~ {state.GetStat(CharacterStat.MagicAtkMax)}";
-            AttributeText[2].text = $"{totalDex + state.Level + 75 + state.GetStat(CharacterStat.AddHit)}";
+            AttributeText[2].text = $"{totalDex + state.Level + state.GetStat(CharacterStat.AddHit)}";
             AttributeText[3].text = $"{1 + totalLuk / 3}";
             AttributeText[4].text = $"{state.GetStat(CharacterStat.Def)} + {totalVit}";
             AttributeText[5].text = $"{state.GetStat(CharacterStat.MDef)} + {totalInt}";

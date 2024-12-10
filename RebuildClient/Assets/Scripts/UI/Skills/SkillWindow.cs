@@ -56,7 +56,14 @@ namespace Assets.Scripts.UI
                 }
             }
         }
-        
+
+        public override void HideWindow()
+        {
+            HighlightedEntry?.ReleaseHighlightSkillBox();
+            HighlightedEntry = null;
+            base.HideWindow();
+        }
+
         public void ShowTooltip(CharacterSkill skill, SkillWindowEntry entry)
         {
             var requiredSkills = entry.Requirements;
@@ -124,7 +131,8 @@ namespace Assets.Scripts.UI
         {
             Debug.Log($"Skill Level UP " + skillId);
             EventSystem.current.SetSelectedGameObject(null);
-            HighlightedEntry = null;
+            // HighlightedEntry?.ReleaseHighlightSkillBox();
+            // HighlightedEntry = null;
             NetworkManager.Instance.SendApplySkillPoint(skillId);
         }
 
@@ -197,6 +205,8 @@ namespace Assets.Scripts.UI
 
         public void ChangeTab(int tabRank)
         {
+            HideTooltip();
+            
             //unselect the old tab (by making it interactable)
             var index = selectedRank < 0 ? Tabs.Count - 1 : selectedRank;
             Tabs[index].interactable = true;

@@ -44,7 +44,8 @@ Name = "Magnum Break"
 Icon = "sm_magnum"
 Target = "Self"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [30,30,30,30,30,30,30,30,30,30]
+AdjustableLevel = false
 
 [Provoke]
 Icon = "sm_provoke"
@@ -63,7 +64,6 @@ Name = "Two-Hand Sword Mastery"
 Icon = "sm_twohand"
 Target = "Passive"
 MaxLevel = 10
-
 
 #----------------------------------
 # Mage
@@ -96,7 +96,7 @@ Name = "Fire Ball"
 Icon = "mg_fireball"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [25,25,25,25,25,25,25,25,25,25]
 AdjustableLevel = true
 
 [FireWall]
@@ -104,7 +104,7 @@ Name = "Fire Wall"
 Icon = "mg_firewall"
 Target = "Ground"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [40,40,40,40,40,40,40,40,40,40]
 AdjustableLevel = true
 
 [FrostDriver]
@@ -112,7 +112,7 @@ Name = "Frost Diver"
 Icon = "mg_frostdiver"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [25,24,23,22,21,20,19,18,17,16]
 AdjustableLevel = true
 
 [LightningBolt]
@@ -135,7 +135,7 @@ Name = "Soul Strike"
 Icon = "mg_soulstrike"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [18,14,24,20,30,26,36,32,42,38]
 AdjustableLevel = true
 
 [ThunderStorm]
@@ -151,8 +151,29 @@ Name = "Safety Wall"
 Icon = "mg_safetywall"
 Target = "Ground"
 MaxLevel = 10
-SpCost = [1,2,3,4,5,6,7,8,9,10]
+SpCost = [30,30,30,35,35,35,40,40,40,40]
 AdjustableLevel = true
+
+[StoneCurse]
+Name = "Stone Curse"
+Icon = "mg_stonecurse"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [25,24,23,22,21,20,19,18,17,16]
+
+[Sight]
+Name = "Sight"
+Icon = "mg_sight"
+Target = "Self"
+MaxLevel = 1
+SpCost = [10]
+
+[EnergyCoat]
+Name = "Energy Coat"
+Icon = "mg_energycoat"
+Target = "Self"
+MaxLevel = 1
+SpCost = [30]
 
 #----------------------------------
 # Archer
@@ -164,7 +185,7 @@ Icon = "ac_double"
 Target = "Enemy"
 MaxLevel = 10
 SpCost = [12,12,12,12,12,12,12,12,12,12]
-AdjustableLevel = true
+AdjustableLevel = false
 
 [ChargeArrow]
 Name = "Charge Arrow"
@@ -288,7 +309,8 @@ SpCost = [10]
 Icon = "al_teleport"
 Target = "Self"
 MaxLevel = 2
-SpCost = [10, 10]
+SpCost = [11, 10]
+AdjustableLevel = true
 
 [WarpPortal]
 Name = "Warp Portal"
@@ -349,6 +371,13 @@ SpCost = [9]
 [ThrowStone]
 Name = "Stone Fling"
 Icon = "tf_throwstone"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [2]
+
+[FindStone]
+Name = "Find Stone"
+Icon = "tf_pickstone"
 Target = "Enemy"
 MaxLevel = 1
 SpCost = [2]

@@ -21,9 +21,9 @@ public class PacketNpcClick : IClientPacketHandler
         if (character == null || connection.Player == null
             || character.State == CharacterState.Sitting
             || character.State == CharacterState.Dead
+            || character.State == CharacterState.Hide
             || character.Player.IsInNpcInteraction)
             return;
-
 
         if (connection.Player.InActionCooldown())
             return;

@@ -58,12 +58,14 @@ public class Npc : IEntityAutoReset
     public bool HasInteract;
     public bool TimerActive;
     public bool IsEvent;
+    public bool IsPathActive;
+    public NpcPathHandler? NpcPathHandler;
 
     private string? currentSignalTarget;
 
     //private SkillCastInfo? skillInfo;
 
-    public bool IsHidden() => !Entity.Get<WorldObject>().Hidden;
+    public bool IsHidden() => !Entity.Get<WorldObject>().AdminHidden;
     public Position SelfPosition => Character.Position;
 
     public int[] ValuesInt => valuesInt ??= ArrayPool<int>.Shared.Rent(NpcInteractionState.StorageCount);
@@ -77,6 +79,9 @@ public class Npc : IEntityAutoReset
         {
             UpdateTimer();
         }
+        
+        if(IsPathActive && NpcPathHandler != null)
+            NpcPathHandler.UpdatePath();
 
         if (Mobs != null && Mobs.Count > 0)
         {
@@ -116,8 +121,13 @@ public class Npc : IEntityAutoReset
         EventType = null!;
         ItemsForSale = null; //no point in pooling these, we don't place vendor npcs during runtime usually
         SaleItemHashes = null;
+        if (NpcPathHandler != null)
+        {
+            NpcPathHandler.Npc = null!;
+            NpcPathHandler = null;
+        }
 
-        if(Mobs != null)
+        if (Mobs != null)
             EntityListPool.Return(Mobs);
         Mobs = null;
 
@@ -127,7 +137,8 @@ public class Npc : IEntityAutoReset
 
     public void RemoveAreaOfEffect()
     {
-        if (AreaOfEffect != null) {
+        if (AreaOfEffect != null)
+        {
             Debug.Assert(Character.Map != null);
             Character.Map.RemoveAreaOfEffect(AreaOfEffect);
             AreaOfEffect.Reset();
@@ -157,7 +168,7 @@ public class Npc : IEntityAutoReset
 
         Behavior.OnTimer(this, lastTime, newTime);
     }
-
+    
     public void ResetTimer()
     {
         TimerStart = Time.ElapsedTime;
@@ -171,13 +182,15 @@ public class Npc : IEntityAutoReset
         ResetTimer();
     }
 
+    public void SetTimerRate(int updateRate) => TimerUpdateRate = updateRate / 1000f;
+
     public void StopTimer() => EndTimer();
 
     public void EndTimer()
     {
         TimerActive = false;
     }
-    
+
     public void CancelInteraction(Player player)
     {
         if (!player.IsInNpcInteraction)
@@ -230,6 +243,33 @@ public class Npc : IEntityAutoReset
         }
     }
 
+    public void StartPath()
+    {
+        NpcPathHandler ??= new NpcPathHandler();
+        NpcPathHandler.Npc = this;
+        NpcPathHandler.Step = 0;
+        IsPathActive = true;
+    }
+
+    public void PausePath()
+    {
+        Debug.Assert(NpcPathHandler != null);
+        IsPathActive = false;
+    }
+
+    public void ResumePath()
+    {
+        Debug.Assert(NpcPathHandler != null);
+        IsPathActive = true;
+    }
+    
+    public void EndPath()
+    {
+        IsPathActive = false;
+        if (NpcPathHandler != null)
+            NpcPathHandler.Step = 0;
+    }
+    
     public void Advance(Player player)
     {
         player.NpcInteractionState.InteractionResult = NpcInteractionResult.None;
@@ -304,6 +344,73 @@ public class Npc : IEntityAutoReset
     {
 
     }
+
+    public void SetPlayerAppearance(int level, string job, string gender, int head, int hair, string top, string mid, string bottom)
+    {
+        if (!DataManager.JobIdLookup.TryGetValue(job, out var jobId))
+        {
+            ServerLogger.LogWarning($"Npc {Name} unable to take appearance of job {job}, that classId could not be found in JobIdTable.");
+            return;
+        }
+
+        var costume = Character.OverrideAppearanceState;
+        if (costume == null)
+        {
+            costume = new PlayerLikeAppearanceState();
+            Character.OverrideAppearanceState = costume;
+        }
+
+        var topId = -1;
+        var midId = -1;
+        var bottomId = -1;
+
+
+        bool isMale = !(!string.IsNullOrWhiteSpace(gender) && gender.Length > 0 && (gender[0] == 'f' || gender[0] == 'F'));
+        Character.ClassId = jobId;
+        costume.Level = level;
+        costume.HeadType = head;
+        costume.HairColor = hair;
+        costume.HeadFacing = HeadFacing.Center;
+        costume.WeaponClass = 0;
+
+        if (!string.IsNullOrWhiteSpace(top) && !DataManager.ItemIdByName.TryGetValue(top, out topId))
+            ServerLogger.LogWarning($"Npc {Name} could not set the headgear to '{top}' as it could not be found.");
+        if (!string.IsNullOrWhiteSpace(mid) && !DataManager.ItemIdByName.TryGetValue(mid, out midId))
+            ServerLogger.LogWarning($"Npc {Name} could not set the headgear to '{mid}' as it could not be found.");
+        if (!string.IsNullOrWhiteSpace(bottom) && !DataManager.ItemIdByName.TryGetValue(bottom, out bottomId))
+            ServerLogger.LogWarning($"Npc {Name} could not set the headgear to '{bottom}' as it could not be found.");
+        costume.HeadTop = topId;
+        costume.HeadMid = midId;
+        costume.HeadBottom = bottomId;
+    }
+
+    public void AttachCart()
+    {
+        if (Character.OverrideAppearanceState == null)
+        {
+            ServerLogger.LogWarning($"Attempting to AttachCart on npc {Character.Name} but it isn't set to use a player appearance.");
+            return;
+        }
+
+        Character.OverrideAppearanceState.HasCart = true;
+    }
+
+    public void SetSittingState(bool isSitting)
+    {
+
+        if (Character.StateCanSit || Character.Map == null)
+            return;
+
+        if (isSitting)
+            Character.State = CharacterState.Sitting;
+        else
+            Character.State = CharacterState.Idle;
+        
+        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.ChangeSittingMulti(Character);
+        CommandBuilder.ClearRecipients();
+    } 
+    
 
     private void EnsureMobListCreated()
     {
@@ -396,9 +503,9 @@ public class Npc : IEntityAutoReset
             var minion = World.Instance.CreateMonster(Character.Map, monsterDef, area, null, false);
             var minionMonster = minion.Get<Monster>();
             minionMonster.ResetAiUpdateTime();
-            if(IsOwnerAlive)
+            if (IsOwnerAlive)
                 minionMonster.SetMaster(Owner); //these monsters have masters but are not minions of the parent
-            
+
             Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Toss, Character.Position);
         }
     }
@@ -427,7 +534,7 @@ public class Npc : IEntityAutoReset
         chara.Events.Clear();
         //OnMobKill();
     }
-    
+
     //finish npc shop purchase. We don't use the array sizes directly because they're borrowed and might be larger than expected
     public void SubmitPlayerPurchaseFromNpc(Player player, int[] itemIds, int[] itemCounts, int numItems)
     {
@@ -443,14 +550,14 @@ public class Npc : IEntityAutoReset
         {
             var id = itemIds[i];
             var count = itemCounts[i];
-            if(count <= 0)
+            if (count <= 0)
                 goto Error;
             if (!SaleItemHashes.Contains(id))
             {
                 ServerLogger.LogWarning($"Player {player} is attempting to buy item id {id} from {Character.Name}, but that item is not for sale.");
                 goto Error; //lol goto
             }
-            if(inventory == null || !inventory.HasItem(id))
+            if (inventory == null || !inventory.HasItem(id))
                 addItemCount++;
             var info = DataManager.GetItemInfoById(id);
             if (info == null)
@@ -478,7 +585,7 @@ public class Npc : IEntityAutoReset
             CommandBuilder.ErrorMessage(player, $"Could not complete purchase, you can't carry that much weight.");
             return;
         }
-        
+
         if (existingCount + addItemCount > CharacterBag.MaxBagSlots)
         {
             CommandBuilder.ErrorMessage(player, $"Could not complete purchase, you don't have enough free space.");
@@ -499,8 +606,8 @@ public class Npc : IEntityAutoReset
         CommandBuilder.SendUpdatePlayerData(player, true, false);
 
         return;
-        Error:
-            CommandBuilder.ErrorMessage(player, $"Could not complete purchase.");
+    Error:
+        CommandBuilder.ErrorMessage(player, $"Could not complete purchase.");
     }
 
     public void SubmitPlayerSellItemsToNpc(Player player, int[] itemIds, int[] itemCounts, int numItems)
@@ -533,7 +640,7 @@ public class Npc : IEntityAutoReset
 
             var info = DataManager.GetItemInfoById(item.Id);
             if (info.ItemClass != ItemClass.Ammo) //ammo always sells to the NPC for 0, allows NPCs to sell quivers and the like without worry of exploit.
-                zenyGained += (int)(info.Price/2) * itemCounts[i];
+                zenyGained += (int)(info.Price / 2) * itemCounts[i];
         }
 
         //all good, lets get to discarding
@@ -563,7 +670,7 @@ public class Npc : IEntityAutoReset
                 ItemsForSale.Add((id, info.Price));
                 if (!SaleItemHashes.Contains(id))
                 {
-                    
+
                     SaleItemHashes.Add(id);
                 }
                 //else
@@ -639,7 +746,7 @@ public class Npc : IEntityAutoReset
     {
         var chara = Entity.Get<WorldObject>();
 
-        if (chara.Hidden)
+        if (chara.AdminHidden)
             return; //npc already hidden
 
         if (chara.Map == null)
@@ -647,7 +754,7 @@ public class Npc : IEntityAutoReset
 
         //this puts the npc in a weird state where it still exists in the Instance, but not on the map
         chara.Map.RemoveEntity(ref Entity, CharacterRemovalReason.OutOfSight, false);
-        chara.Hidden = true;
+        chara.AdminHidden = true;
 
         if (HasTouch && AreaOfEffect != null)
             chara.Map.RemoveAreaOfEffect(AreaOfEffect);
@@ -663,13 +770,13 @@ public class Npc : IEntityAutoReset
             Name = name;
         }
 
-        if (!chara.Hidden)
+        if (!chara.AdminHidden)
             return; //npc is already visible
 
         if (chara.Map == null)
             throw new Exception($"Npc {FullName} attempting to execute ShowNpc, but the npc is not currently attached to a map.");
 
-        chara.Hidden = false;
+        chara.AdminHidden = false;
         if (!IsEvent)
             chara.Map.AddEntity(ref Entity, false);
         else
@@ -681,7 +788,7 @@ public class Npc : IEntityAutoReset
 
     public void ChangeNpcClass(string className)
     {
-        if (!Character.Hidden)
+        if (!Character.AdminHidden)
             ServerLogger.LogWarning($"Changing NPC class on a non hidden NPC! This hasn't been implemented, so you shouldn't do it.");
 
         if (!DataManager.MonsterCodeLookup.TryGetValue(className, out var monInfo))
@@ -867,7 +974,7 @@ public class Npc : IEntityAutoReset
         var chara = Entity.Get<WorldObject>();
         if (chara.Map == null)
             throw new Exception($"Npc {FullName} attempting to play effect, but the npc is not currently attached to a map.");
-        
+
         chara.Map.AddVisiblePlayersAsPacketRecipients(chara);
         CommandBuilder.SendPlaySoundAtLocationMulti(fileName, chara.Position);
         CommandBuilder.ClearRecipients();

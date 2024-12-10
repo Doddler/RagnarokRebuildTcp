@@ -107,6 +107,7 @@ public class NpcInteractionState
     public int JobId => Player?.GetData(PlayerStat.Job) ?? 0;
     public void ChangePlayerJob(int jobId) => Player?.ChangeJob(jobId);
     public void SkillReset() => Player?.SkillReset();
+    public void StatPointReset() => Player?.StatPointReset();
 
     public void FocusNpc()
     {

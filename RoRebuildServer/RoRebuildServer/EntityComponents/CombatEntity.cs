@@ -144,9 +144,9 @@ public class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] -= val;
     }
 
-    public void AddStatusEffect(CharacterStatusEffect effect, float duration, int val1 = 0, int val2 = 0)
+    public void AddStatusEffect(CharacterStatusEffect effect, int duration, int val1 = 0, int val2 = 0)
     {
-        var status = StatusEffectState.NewStatusEffect(effect, duration, val1, val2);
+        var status = StatusEffectState.NewStatusEffect(effect, duration / 1000f, val1, val2);
         AddStatusEffect(status);
     }
 
@@ -179,7 +179,6 @@ public class CombatEntity : IEntityAutoReset
         }
     }
 
-
     public void OnDeathClearStatusEffects(bool doRemoveUpdate = true)
     {
         if (statusContainer == null)
@@ -196,7 +195,7 @@ public class CombatEntity : IEntityAutoReset
         }
     }
 
-    public CharacterStatusContainer? GetStatusEffectData() => statusContainer;
+    public CharacterStatusContainer? StatusContainer => statusContainer;
     public bool HasStatusEffectOfType(CharacterStatusEffect type) => statusContainer?.HasStatusEffectOfType(type) ?? false;
 
     public bool TryGetStatusContainer([NotNullWhen(returnValue: true)] out CharacterStatusContainer? status)
@@ -428,7 +427,7 @@ public class CombatEntity : IEntityAutoReset
             return false;
         if (Character.Map == null)
             return false;
-        if (Character.Hidden)
+        if (Character.AdminHidden)
             return false;
 
         if (Character.IsTargetImmune)
@@ -559,9 +558,18 @@ public class CombatEntity : IEntityAutoReset
     {
         IsCasting = false;
 
+
         if (Character.Type == CharacterType.Player && !Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level))
         {
             CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
+            return;
+        }
+        
+        var validationResult = SkillHandler.ValidateTarget(CastingSkill, this);
+        if (validationResult != SkillValidationResult.Success)
+        {
+            if(Character.Type == CharacterType.Player)
+                CommandBuilder.SkillFailed(Player, validationResult);
             return;
         }
 
@@ -1020,22 +1028,22 @@ public class CombatEntity : IEntityAutoReset
     /// Test to see if this character is able to hit the enemy.
     /// </summary>
     /// <returns>Returns true if the attack hits</returns>
-    public bool TestHitVsEvasion(CombatEntity target, int attackerHitBonus = 0, int defenderFleeBonus = 0, int flatEvasionPenalty = 0)
+    public bool TestHitVsEvasion(CombatEntity target, int attackerHitBonus = 100, int flatEvasionPenalty = 0)
     {
         var attackerHit = GetStat(CharacterStat.Level) + GetEffectiveStat(CharacterStat.Dex) + GetStat(CharacterStat.AddHit);
-
+        
         var defenderAgi = target.GetEffectiveStat(CharacterStat.Agi);
         var defenderFlee = target.GetStat(CharacterStat.Level) + defenderAgi + target.GetStat(CharacterStat.AddFlee);
+
+        attackerHit = attackerHit * attackerHitBonus / 100;
         
-        var hitSuccessRate = attackerHit + attackerHitBonus + 75 - defenderFlee - defenderFleeBonus;
+        var hitSuccessRate = attackerHit + 75 - defenderFlee;
 
         if (hitSuccessRate < 5) hitSuccessRate = 5;
         if (hitSuccessRate > 95 && target.Character.Type == CharacterType.Player) hitSuccessRate = 95;
 
         if (flatEvasionPenalty > 0)
-        {
             hitSuccessRate = int.Clamp(hitSuccessRate + flatEvasionPenalty, 5, 100);
-        }
 
         return hitSuccessRate > GameRandom.Next(0, 100);
     }
@@ -1071,14 +1079,19 @@ public class CombatEntity : IEntityAutoReset
         return di;
     }
 
-    public DamageInfo CalculateCombatResultUsingSetAttackPower(CombatEntity target, int atk1, int atk2, float attackMultiplier, int hitCount,
-                                            AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement attackElement = AttackElement.None)
+    public DamageInfo CalculateCombatResultUsingSetAttackPower(CombatEntity target, AttackRequest req)
     {
+        var atk1 = req.MinAtk;
+        var atk2 = req.MaxAtk;
+        var flags = req.Flags;
+        var attackElement = req.Element;
+        var attackMultiplier = req.AttackMultiplier;
+        
 #if DEBUG
         if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies)))
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResultUsingSetAttackPower.");
 #endif
-
+        
         var baseDamage = GameRandom.NextInclusive(atk1, atk2);
 
         var eleMod = 100;
@@ -1150,7 +1163,7 @@ public class CombatEntity : IEntityAutoReset
         var isCrit = false;
         var srcLevel = GetStat(CharacterStat.Level);
         var targetLevel = target.GetStat(CharacterStat.Level);
-
+        
         var attackerPenalty = 0; //number of attackers above 2 (player only consideration)
         if (target.Character.Type == CharacterType.Player)
         {
@@ -1161,8 +1174,8 @@ public class CombatEntity : IEntityAutoReset
         }
         
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreEvasion))
-            evade = !TestHitVsEvasion(target, 0, 0, attackerPenalty * 10);
-
+            evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * 10);
+        
         if (flags.HasFlag(AttackFlags.CanCrit))
         {
             var critRate = 1 + GetEffectiveStat(CharacterStat.Luck) / 3 + srcLevel / 5;
@@ -1180,6 +1193,20 @@ public class CombatEntity : IEntityAutoReset
             evade = false;
             isCrit = true;
             flags |= AttackFlags.IgnoreDefense;
+        }
+
+
+        if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
+        {
+            var distance = target.Character.Position.DistanceTo(Character.Position);
+            if (distance >= 5)
+            {
+                if (target.HasStatusEffectOfType(CharacterStatusEffect.Pneuma))
+                {
+                    evade = true;
+                    isCrit = false;
+                }
+            }
         }
 
         var defCut = 1f;
@@ -1225,6 +1252,8 @@ public class CombatEntity : IEntityAutoReset
                 else
                     subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
             }
+
+            subDef = subDef * (100 + GetStat(CharacterStat.AddSoftDefPercent)) / 100;
 
             //convert def to damage reduction %
             defCut = MathHelper.DefValueLookup(def);
@@ -1276,10 +1305,10 @@ public class CombatEntity : IEntityAutoReset
         if (res == AttackResult.NormalDamage && isCrit)
             res = AttackResult.CriticalDamage;
 
-        var di = PrepareTargetedSkillResult(target, skillSource);
+        var di = PrepareTargetedSkillResult(target, req.SkillSource);
         di.Result = res;
         di.Damage = damage;
-        di.HitCount = (byte)hitCount;
+        di.HitCount = (byte)req.HitCount;
 
         if (statusContainer != null)
             statusContainer.OnAttack(ref di);
@@ -1300,17 +1329,28 @@ public class CombatEntity : IEntityAutoReset
         {
             if (!isMagic)
             {
-                var mainStat = GetEffectiveStat(Player.WeaponClass == 12 ? CharacterStat.Dex : CharacterStat.Str);
-                var secondaryStat = GetEffectiveStat(Player.WeaponClass == 12 ? CharacterStat.Str : CharacterStat.Dex);
+                var str = GetEffectiveStat(CharacterStat.Str);
+                var dex = GetEffectiveStat(CharacterStat.Dex);
+
+                var mainStat = Player.WeaponClass == 12 ? dex : str;
+                var secondaryStat = Player.WeaponClass == 12 ? str : dex;
+                var weaponLvl = atk1;
+                if(Player.WeaponClass == 12)
+                    atk1 = (int)(dex * (0.8f + 0.2f * weaponLvl)); //more or less pre-renewal
+                else
+                    atk1 = (int)(float.Min(atk2 * 0.33f, mainStat) + dex * (0.8f + 0.2f * weaponLvl)); //kinda pre-renewal but primary stat makes up 1/3 of min
+
+                atk2 = (int)(atk2 * (1 + mainStat / 200)); //more like post-renewal, primary stat adds 0.5% weapon atk
+                if(atk1 > atk2)
+                    atk1 = atk2;
 
                 var statAtk = GetStat(CharacterStat.AddAttackPower) + mainStat + (secondaryStat / 5) + (mainStat / 10) * (mainStat / 10);
-                var statWeaponBonus = mainStat / 400f; //sneaky
                 var attackPercent = 1f + (GetStat(CharacterStat.AddAttackPercent) / 100f);
                 if (Player.WeaponClass == 12 && Player.Equipment.AmmoId > 0 && Player.Equipment.AmmoType == AmmoType.Arrow) //bow with arrow
-                    statAtk += Player.Equipment.AmmoAttackPower;
+                    atk2 += Player.Equipment.AmmoAttackPower; //arrows don't affect min atk, only max
                     
-                atk1 = (int)((statAtk + atk1 * (1 + statWeaponBonus)) * attackPercent);
-                atk2 = (int)((statAtk + atk2 * (1 + statWeaponBonus)) * attackPercent);
+                atk1 = (int)((statAtk + atk1) * attackPercent);
+                atk2 = (int)((statAtk + atk2) * attackPercent);
             }
             else
             {
@@ -1349,17 +1389,23 @@ public class CombatEntity : IEntityAutoReset
     }
 
     public DamageInfo CalculateCombatResult(CombatEntity target, float attackMultiplier, int hitCount,
-                                            AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement element = AttackElement.None)
+        AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement element = AttackElement.None)
+    {
+        var req = new AttackRequest(skillSource, attackMultiplier, hitCount, flags, element);
+        return CalculateCombatResult(target, req);
+    }
+
+    public DamageInfo CalculateCombatResult(CombatEntity target, AttackRequest req)
     {
 #if DEBUG
-        if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies)))
+        if (!target.IsValidTarget(this, req.Flags.HasFlag(AttackFlags.CanHarmAllies)))
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResult.");
 #endif
 
-        var isMagic = flags.HasFlag(AttackFlags.Magical);
-        var (atk1, atk2) = CalculateAttackPowerRange(isMagic);
+        var isMagic = req.Flags.HasFlag(AttackFlags.Magical);
+        (req.MinAtk, req.MaxAtk) = CalculateAttackPowerRange(isMagic);
 
-        return CalculateCombatResultUsingSetAttackPower(target, atk1, atk2, attackMultiplier, hitCount, flags, skillSource, element);
+        return CalculateCombatResultUsingSetAttackPower(target, req);
     }
 
     public void ApplyCooldownForAttackAction(CombatEntity target)
@@ -1380,7 +1426,8 @@ public class CombatEntity : IEntityAutoReset
         Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
     }
 
-    public void ApplyCooldownForSupportSkillAction(float minCooldownTime = 0f)
+    //support skills differ in that there's a max amount of delay regardless of aspd
+    public void ApplyCooldownForSupportSkillAction(float maxCooldownTime = 1f)
     {
         if (Character.Type != CharacterType.Player)
         {
@@ -1388,32 +1435,21 @@ public class CombatEntity : IEntityAutoReset
             return;
         }
 
-        var motionTime = 0.5f;
-        var realDelayTime = 0.5f;
-
         var attackMotionTime = GetTiming(TimingStat.AttackMotionTime); //time for actual weapon strike to occur
         var delayTime = GetTiming(TimingStat.AttackDelayTime); //time before you can attack again
 
-        if (delayTime < minCooldownTime)
-            delayTime = minCooldownTime;
+        if (delayTime > maxCooldownTime)
+            delayTime = maxCooldownTime; 
 
-        if (attackMotionTime < motionTime)
-            motionTime = attackMotionTime;
-        if (delayTime < realDelayTime)
-            realDelayTime = delayTime;
-
-        if (motionTime > realDelayTime)
-            realDelayTime = motionTime;
+        if (attackMotionTime > delayTime)
+            delayTime = attackMotionTime;
 
         if (Character.AttackCooldown + Time.DeltaTimeFloat + 0.005f < Time.ElapsedTimeFloat)
-            Character.AttackCooldown = Time.ElapsedTimeFloat + realDelayTime; //they are consecutively attacking
+            Character.AttackCooldown = Time.ElapsedTimeFloat + delayTime; //they are consecutively attacking
         else
-            Character.AttackCooldown += realDelayTime;
+            Character.AttackCooldown += delayTime;
 
-        if (Character.Type == CharacterType.Monster)
-            Character.Monster.AddDelay(motionTime);
-
-        Character.AddMoveLockTime(motionTime);
+        Character.AddMoveLockTime(attackMotionTime);
     }
 
     public void ApplyCooldownForAttackAction()
@@ -1630,7 +1666,10 @@ public class CombatEntity : IEntityAutoReset
         }
 
         if (oldPosition != Character.Position)
+        {
+            statusContainer?.OnMove(oldPosition, Character.Position);
             Character.Map?.TriggerAreaOfEffectForCharacter(Character, oldPosition, Character.Position);
+        }
     }
 
     private void AttackUpdate()

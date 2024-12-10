@@ -1545,10 +1545,10 @@ namespace Assets.Scripts
                     WarpPanel.GetComponent<WarpWindow>().HideWindow();
             }
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.E))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.Q))
                 UiManager.Instance.EquipmentWindow.ToggleVisibility();
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.Q))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.E))
                 UiManager.Instance.InventoryWindow.ToggleVisibility();
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.A))

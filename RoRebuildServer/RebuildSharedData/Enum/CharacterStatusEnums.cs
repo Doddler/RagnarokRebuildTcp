@@ -12,6 +12,7 @@ public enum StatusUpdateMode : byte
     OnDealDamage = 2,
     OnUpdate = 4,
     OnChangeEquipment = 8,
+    OnMove = 16,
 }
 
 public enum StatusUpdateResult : byte

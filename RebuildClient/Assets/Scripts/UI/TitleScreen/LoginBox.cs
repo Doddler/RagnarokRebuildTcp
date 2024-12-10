@@ -51,6 +51,9 @@ namespace Assets.Scripts.UI.TitleScreen
         
         private IEnumerator StartEvent()
         {
+            #if !UNITY_EDITOR
+            ServerInputBox.text = "wss://roserver.dodsrv.com/ws";
+            #endif
             UsernameBox.text = PlayerPrefs.GetString("LoginUsername", "");
             if (!string.IsNullOrWhiteSpace(GameConfig.Data?.SavedLoginToken) && !string.IsNullOrWhiteSpace(UsernameBox.text) && UsernameBox.text != "ID")
             {

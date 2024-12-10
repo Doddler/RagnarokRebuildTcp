@@ -12,7 +12,7 @@ namespace Assets.Scripts.SkillHandlers.Editor
 {
     public static class SkillHandlerCodeGen
     {
-        [MenuItem("Ragnarok/CodeGen/Update Skill Handlers")]
+        [MenuItem("Ragnarok/CodeGen/Update Skill Handlers", false, 121)]
         public static void UpdateSkillHandlers()
         {
             var count = System.Enum.GetNames(typeof(CharacterSkill)).Length;

@@ -9,6 +9,7 @@ namespace RebuildSharedData.Enum
         Failure,
         Success,
         InvalidTarget,
+        OverlappingAreaOfEffect,
         NoLineOfSight,
         IncorrectWeapon,
         IncorrectAmmunition,

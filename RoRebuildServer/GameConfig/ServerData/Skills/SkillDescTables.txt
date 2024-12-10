@@ -1,0 +1,27 @@
+::DoubleStrafe
+60|120
+Level|Damage (ATK)
+1|100% x 2
+2|110% x 2
+3|120% x 2
+4|130% x 2
+5|140% x 2
+6|150% x 2
+7|160% x 2
+8|170% x 2
+9|180% x 2
+10|190% x 2
+
+::ImproveConcentration
+60|120|80|40
+Level|Stat Boost|Duration|SP
+1|Agi/Dex + 3%|1min|25
+2|Agi/Dex + 4%|1m 20s|30
+3|Agi/Dex + 5%|1m 40s|35
+4|Agi/Dex + 6%|2min|40
+5|Agi/Dex + 7%|2m 20s|45
+6|Agi/Dex + 8%|2m 40s|50
+7|Agi/Dex + 9%|3min|55
+8|Agi/Dex + 10%|3m 20s|60
+9|Agi/Dex + 11%|3m 40s|65
+10|Agi/Dex + 12%|4min|70

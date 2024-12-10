@@ -17,17 +17,27 @@ namespace Assets.Scripts.Utility
         private ServerControllable target;
         private Vector2Int lastPosition;
         private Vector3[] verts;
+        private Vector3[] normals;
+        private int[] tris;
+        private Vector2[] uvs;
+        private Color32[] colors;
+        private Color color;
+        private int size;
+        private float time;
 
-        public static GroundHighlighter Create(ServerControllable targetObject, string texture)
+        public float MaxTime;
+
+        public static GroundHighlighter Create(ServerControllable targetObject, string texture, Color color, int size = 1)
         {
             var go = new GameObject($"GroundHighlighter {targetObject.name}");
             var highlighter = go.AddComponent<GroundHighlighter>();
+            highlighter.size = size;
+            highlighter.color = color;
             highlighter.Init(targetObject, texture);
-
+            
             return highlighter;
         }
-        
-        
+
         public void DisableRenderer()
         {
             mr.enabled = false;
@@ -39,59 +49,110 @@ namespace Assets.Scripts.Utility
             mf = gameObject.AddComponent<MeshFilter>();
             mr = gameObject.AddComponent<MeshRenderer>();
             //walkData = CameraFollower.Instance.WalkProvider;
-            
-            mat = new Material(Shader.Find("Unlit/WalkableShader"));
-            mat.SetFloat("_Glossiness", 0f);
+
+            mat = new Material(Shader.Find("Ragnarok/AdditiveShaderPulse"));
             mat.mainTexture = Resources.Load<Texture2D>(texture);
-            mat.color = Color.white;
-            mat.name = "Cursor Mat";
+            mat.color = new Color(0f, 0f, 0f, 0f);
+            mat.name = "Highlighter Mat";
             mat.doubleSidedGI = false;
             mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
             mat.enableInstancing = false;
-            
+            mat.renderQueue = 2995;
+
+            mr.material = mat;
+
+            MaxTime = float.MaxValue;
+
             //UpdateMesh(targetObject.Position);
         }
-        
-        
+
         private void UpdateMesh(Vector2Int pos)
         {
-            transform.localPosition = new Vector3(pos.x + 0.5f, 0, pos.y + 0.5f);
+            transform.localPosition = new Vector3(pos.x + 0.5f, 0.08f, pos.y + 0.5f);
 
-            if(walkData == null)
+            if (walkData == null)
                 walkData = CameraFollower.Instance.WalkProvider;
             if (walkData == null)
                 return;
             
-            var cell = walkData.WalkData.Cell(pos);
-
+            var dist = size - 1;
+            
             if (mb == null)
             {
                 mb = new MeshBuilder();
-                mb.AddTriangles(new[] { 0, 1, 2, 1, 3, 2 });
-                mb.AddUVs(new[]
+                verts = new Vector3[4];
+                tris = new int[6];
+                uvs = new[]
                 {
                     new Vector2(0, 1),
                     new Vector2(1, 1),
                     new Vector2(0, 0),
                     new Vector2(1, 0)
-                });
-                verts = new Vector3[4];
+                };
+                normals = new[]
+                {
+                    Vector3.up,
+                    Vector3.up,
+                    Vector3.up,
+                    Vector3.up,
+                };
+                colors = new[]
+                {
+                    (Color32)color,
+                    (Color32)color,
+                    (Color32)color,
+                    (Color32)color,
+                };
             }
             else
-                mb.ClearVertex();
+                mb.Clear();
+
+            var count = 0;
+            var step = 1 / (1 + dist * 2f);
             
-            var offset = new Vector3(0f, 0.025f, 0f);
-            
-            verts[0] = new Vector3(-0.5f, cell.Heights[0] / 5f, +0.5f) + offset;
-            verts[1] = new Vector3(+0.5f, cell.Heights[1] / 5f, +0.5f) + offset;
-            verts[2] = new Vector3(-0.5f, cell.Heights[2] / 5f, -0.5f) + offset;
-            verts[3] = new Vector3(+0.5f, cell.Heights[3] / 5f, -0.5f) + offset;
-            
-            mb.AddVertices(verts);
+            for (var x = -dist; x <= dist; x++)
+            {
+                for (var y = -dist; y <= dist; y++)
+                {
+                    var cell = walkData.WalkData.Cell(pos + new Vector2Int(x, y));
+                    if ((cell.Type & CellType.Walkable) == 0)
+                        continue;
+                    
+                    tris[0] = count;
+                    tris[1] = count + 1;
+                    tris[2] = count + 2;
+                    tris[3] = count + 1;
+                    tris[4] = count + 3;
+                    tris[5] = count + 2;
+
+
+                    var posX = (x + dist) * step;
+                    var posY = (y + dist) * step;
+
+
+                    uvs[0] = new Vector2(posX, posY + step);
+                    uvs[1] = new Vector2(posX + step, posY + step);
+                    uvs[2] = new Vector2(posX, posY);
+                    uvs[3] = new Vector2(posX + step, posY);
+                    
+                    //mb.AddTriangles(tris);
+                    //mb.AddUVs(uvs);
+
+                    var offset = new Vector3(x, 0.025f, y);
+
+                    verts[0] = new Vector3(-0.5f, cell.Heights[0] / 5f, +0.5f) + offset;
+                    verts[1] = new Vector3(+0.5f, cell.Heights[1] / 5f, +0.5f) + offset;
+                    verts[2] = new Vector3(-0.5f, cell.Heights[2] / 5f, -0.5f) + offset;
+                    verts[3] = new Vector3(+0.5f, cell.Heights[3] / 5f, -0.5f) + offset;
+
+                    mb.AddQuad(verts, normals, uvs, colors);
+                    count++;
+                }
+            }
 
             mf.sharedMesh = mb.Build("highlighter");
             mr.material = mat;
-            
+
             lastPosition = pos;
         }
 
@@ -103,13 +164,21 @@ namespace Assets.Scripts.Utility
                 return;
             }
 
-            mr.enabled = CameraFollower.Instance.DebugVisualization;
+            mr.enabled = true;
+
+            if (time < 0.33f)
+                mat.color = new Color(1, 1, 1, time * 3);
+            else if (time > MaxTime - 0.33f)
+                mat.color = new Color(1, 1, 1, 1f - (time - (MaxTime - 0.33f)) * 3);
+            else
+                mat.color = Color.white;
+
+            time += Time.deltaTime;
 
             if (target.transform.localPosition.ToTilePosition() == lastPosition)
                 return;
-            
+
             UpdateMesh(target.transform.position.ToTilePosition());
-            
         }
     }
 }

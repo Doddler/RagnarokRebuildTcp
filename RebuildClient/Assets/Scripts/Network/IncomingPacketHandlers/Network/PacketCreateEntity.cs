@@ -42,6 +42,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             var lvl = -1;
             var maxHp = 0;
             var hp = 0;
+            var sp = 0;
+            var maxSp = 0;
             List<CharacterStatusEffect> statuses = null; 
 
             if (type == CharacterType.Player || type == CharacterType.Monster)
@@ -55,6 +57,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     statuses = new List<CharacterStatusEffect>();
                     statuses.Add((CharacterStatusEffect)msg.ReadByte());
                     msg.ReadFloat(); //duration, we're ignoring this for now
+                    Debug.Log($"{classId} has a status effect! {statuses[0]}");
                 }
             }
 
@@ -79,13 +82,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var head3 = msg.ReadInt32();
                 var weaponId = msg.ReadInt32();
                 var shieldId = msg.ReadInt32();
+                sp = msg.ReadInt32();
+                maxSp = msg.ReadInt32();
                 var isMain = Network.PlayerId == id;
                 if (isMain)
                 {
                     State.EntityId = id;
                     State.IsValid = true;
                 }
-
+                
                 Debug.Log("Name: " + name );
                 Debug.Log($"New player entity: {name} Headgear: {head1} {head2} {head3} WeaponClass:{weapon} WeaponId: {weaponId} Shield:{shieldId}");
 
@@ -104,6 +109,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     Level = lvl,
                     MaxHp = maxHp,
                     Hp = hp,
+                    Sp = sp,
+                    MaxSp = maxSp,
                     WeaponClass = weapon,
                     IsMainCharacter = isMain,
                     CharacterStatusEffects = statuses,
@@ -181,6 +188,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 //CameraFollower.UpdatePlayerSP(100, 100);
             }
 
+            if (maxSp > 0)
+            {
+                if(controllable.IsMainCharacter)
+                    Camera.UpdatePlayerSP(sp, maxSp);
+                controllable.SetSp(sp, maxSp);
+            }
+
             controllable.SetHp(hp);
             if (type != CharacterType.NPC)
                 controllable.IsInteractable = true;
@@ -189,6 +203,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
             if (controllable.SpriteMode == ClientSpriteType.Prefab)
                 return controllable;
+            
+            // if(statuses != null && statuses.Contains(CharacterStatusEffect.PushCart))
+            //     StatusEffectState.AddStatusToTarget(controllable, CharacterStatusEffect.PushCart);
 
             try
             {

@@ -33,3 +33,16 @@ Merchant,Sword,0,2,2,Merchant_M_검.spr,Merchant_M_검_검광.spr,Merchant_F_검
 Merchant,Axe,0,2,2,Merchant_M_도끼.spr,Merchant_M_도끼_검광.spr,Merchant_F_도끼.spr,Merchant_F_도끼_검광.spr
 Merchant,2HAxe,0,2,2,Merchant_M_양손도끼.spr,Merchant_M_양손도끼_검광.spr,Merchant_F_양손도끼.spr,Merchant_F_양손도끼_검광.spr
 Merchant,Mace,0,2,2,Merchant_M_클럽.spr,Merchant_M_클럽_검광.spr,Merchant_F_클럽.spr,Merchant_F_클럽_검광.spr
+Knight,Unarmed,0,2,3,,,,
+Wizard,Unarmed,0,2,3,,,,
+Priest,Unarmed,0,2,3,,,,
+Hunter,Unarmed,0,2,3,,,,
+Assassin,Unarmed,0,2,3,,,,
+Blacksmith,Unarmed,0,2,3,,,,
+Crusader,Unarmed,0,2,3,,,,
+Sage,Unarmed,0,2,3,,,,
+Bard,Unarmed,0,2,3,,,,
+Dancer,Unarmed,0,2,3,,,,
+Monk,Unarmed,0,2,3,,,,
+Rogue,Unarmed,0,2,3,,,,
+Alchemist,Unarmed,0,2,3,,,,

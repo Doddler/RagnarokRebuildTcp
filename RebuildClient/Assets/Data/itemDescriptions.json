@@ -234,7 +234,7 @@
     },
     {
       "Code": "Novice_Potion",
-      "Description": "\u003Ccolor=#808080\u003EA potion from the Novice Training Grounds.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ERecover\u003Ccolor=#008000\u003E 22~33\u003C/color\u003E HP\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA potion from the Novice Training Grounds. Less effective than regular red potions, but lighter.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ERecover\u003Ccolor=#008000\u003E 22~33\u003C/color\u003E HP\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Lucky_Candy",
@@ -6790,7 +6790,7 @@
     },
     {
       "Code": "Angel\u0027s_Protection",
-      "Description": "\u003Ccolor=#808080\u003ESuper Novice Guardian Angel\u0027s robe.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EBody\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E60\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003E\u003Ci\u003ECurrently unequippable by any job\u003C/i\u003E\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003ESuper Novice Guardian Angel\u0027s robe.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EBody\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E1000\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E60\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003E\u003Ci\u003ECurrently unequippable by any job\u003C/i\u003E\u003C/color\u003E"
     },
     {
       "Code": "Valkyrian_Armor",

@@ -26,6 +26,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
@@ -78,11 +79,16 @@ namespace Assets.Scripts.Network
         private bool hasAttemptedConnection;
         private string webUrl;
         private string username;
+
         private string password;
+
         // private bool isNewUser;
         private bool isTokenLogin;
         private bool isInErrorState;
         private bool requestLoginToken;
+
+        public static IResourceLocator ResourceLocator;
+        public static bool IsLoaded;
 
 
 #if DEBUG
@@ -127,8 +133,21 @@ namespace Assets.Scripts.Network
             }
 #endif
             //update addressables
+            //
+            // AsyncOperationHandle<IList<IResourceLocation>> handle
+            //     = Addressables.LoadResourceLocationsAsync(new string[] {"Assets/Sprites/Characters/BodyMale/초보자_남.spr", "Assets/Sprites/Monsters/poring.spr"}, Addressables.MergeMode.Union);
+            // yield return handle;
+#if !UNITY_EDITOR && UNITY_WEBGL
+            var info = Addressables.GetLocatorInfo("AddressablesMainContentCatalog");
+            ResourceLocator = info.Locator;
+#endif
+
+            ClientDataLoader.Instance.Initialize();
+            UiManager.Instance.Initialize();
+
 
             spritePreload = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/Monsters/poring.spr");
+
 
             while (!spritePreload.IsDone)
             {
@@ -152,6 +171,7 @@ namespace Assets.Scripts.Network
 
             CameraFollower.PlayerState = PlayerState;
             ClientPacketHandler.Init(this, PlayerState);
+            IsLoaded = true;
 
             isOnLoginScreen = true;
             TitleScreen.gameObject.SetActive(true);
@@ -160,11 +180,10 @@ namespace Assets.Scripts.Network
             CameraFollower.UpdateCameraSize();
             SceneTransitioner.Instance.FadeIn(); //show login window
             AudioManager.Instance.PlayBgm("01.mp3");
-            }
+        }
 
         private IEnumerator BeginConnection(string username, string password)
         {
-            
 #if UNITY_EDITOR
             var target = "ws://127.0.0.1:5000/ws";
             //var target = "wss://roserver.dodsrv.com/ws";
@@ -197,14 +216,14 @@ namespace Assets.Scripts.Network
             }
 #endif
         }
-        
+
         public void StartConnectWithNewAccount(string serverPath, string connectUserName, string connectPassword)
         {
             if (socket != null && socket.GetState() != WebSocketState.Closed)
                 return;
-            
+
             socket = WebSocketFactory.CreateInstance(serverPath);
-            
+
             webUrl = serverPath;
             this.username = connectUserName;
             this.password = connectPassword;
@@ -214,12 +233,12 @@ namespace Assets.Scripts.Network
             isInErrorState = false;
             isOnLoginScreen = true;
             requestLoginToken = false;
-            
+
             socket.OnOpen += OnOpenConnectionNewUser;
             socket.OnClose += OnCloseLoginScreenHandler;
             socket.OnError += OnErrorLoginScreenHandler;
             socket.OnMessage += LoginScreenMessageHandler;
-            
+
             Debug.Log($"Connecting to server at target {serverPath}...");
 
             lastPing = Time.time;
@@ -227,13 +246,14 @@ namespace Assets.Scripts.Network
             socket.Connect();
         }
 
-        public void StartConnectWithRegularLogin(string serverPath, string connectUserName, string connectPassword, bool usePasswordToken, bool askForLoginToken)
+        public void StartConnectWithRegularLogin(string serverPath, string connectUserName, string connectPassword, bool usePasswordToken,
+            bool askForLoginToken)
         {
             if (socket != null && socket.GetState() != WebSocketState.Closed)
                 return;
-            
+
             socket = WebSocketFactory.CreateInstance(serverPath);
-            
+
             webUrl = serverPath;
             this.username = connectUserName;
             this.password = connectPassword;
@@ -244,12 +264,12 @@ namespace Assets.Scripts.Network
             // isNewUser = false;
             isInErrorState = false;
             isOnLoginScreen = true;
-            
+
             socket.OnOpen += OnOpenConnectionRegularLogin;
             socket.OnClose += OnCloseLoginScreenHandler;
             socket.OnError += OnErrorLoginScreenHandler;
             socket.OnMessage += LoginScreenMessageHandler;
-            
+
             Debug.Log($"Connecting to server at target {serverPath}...");
 
             lastPing = Time.time;
@@ -260,36 +280,35 @@ namespace Assets.Scripts.Network
         private void OnCloseLoginScreenHandler(WebSocketCloseCode code)
         {
             Debug.Log($"OnCloseLoginScreenHandler called: " + code);
-            
+
             if (isInErrorState)
                 return; //we've already handled the error
             Dispatcher.RunOnMainThread(() =>
             {
-                if(isConnected || TitleScreen.TitleState != TitleScreen.TitleScreenState.LogIn)
+                if (isConnected || TitleScreen.TitleState != TitleScreen.TitleScreenState.LogIn)
                     TitleScreen.LogInError($"You have been disconnected from the server.");
                 else
                     TitleScreen.LogInError($"Unable to connect to server at url: {webUrl}");
             });
-            
+
             socket = null;
         }
-        
+
         private void OnErrorLoginScreenHandler(string message)
         {
             Debug.Log($"OnErrorLoginScreenHandler called: " + message);
-            
+
             if (isInErrorState)
                 return;
-            
+
             Dispatcher.RunOnMainThread(() =>
             {
-                TitleScreen.LogInError($"An error has occured: {message}");       
+                TitleScreen.LogInError($"An error has occured: {message}");
                 socket.Close();
                 socket = null;
             });
-            
         }
-        
+
         private void LoginScreenMessageHandler(byte[] bytes)
         {
             var msg = new ClientInboundMessage(bytes, bytes.Length);
@@ -337,7 +356,7 @@ namespace Assets.Scripts.Network
             Debug.LogError("Socket connection had an error: " + message);
             CameraFollower.SetErrorUiText("Socket connection generated an error.\n<size=-4>(Press space to try to reconnect)");
         }
-        
+
         private void NormalOperationMessageHandler(byte[] bytes)
         {
             InboundMessages.Enqueue(new ClientInboundMessage(bytes, bytes.Length));
@@ -418,7 +437,7 @@ namespace Assets.Scripts.Network
             bw.Write(isTokenLogin);
             bw.Write(requestLoginToken);
             bw.Write(username);
-            if(!isTokenLogin)
+            if (!isTokenLogin)
                 bw.Write(password);
             else
             {
@@ -430,8 +449,8 @@ namespace Assets.Scripts.Network
 
             socket.Send(ms.ToArray());
         }
-        
-        
+
+
         private void OnOpenConnectionNewUser()
         {
             Debug.Log("Socket connection opened!");
@@ -448,7 +467,6 @@ namespace Assets.Scripts.Network
             socket.Send(ms.ToArray());
         }
 
-        
 
         public ClientOutgoingMessage StartMessage()
         {
@@ -655,9 +673,9 @@ namespace Assets.Scripts.Network
             }
             else
                 controllable.Hp = hp;
-            
+
             Debug.Log($"Create Entity {name} hp:{hp} maxhp:{maxHp}");
-            
+
             controllable.SetHp(hp);
             if (type != CharacterType.NPC)
                 controllable.IsInteractable = true;
@@ -929,7 +947,7 @@ namespace Assets.Scripts.Network
             var damage = msg.ReadInt32();
             var pos = ReadPosition(msg);
             var shouldStop = msg.ReadBoolean();
-     
+
             if (!EntityList.TryGetValue(id, out var controllable))
             {
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
@@ -937,14 +955,14 @@ namespace Assets.Scripts.Network
             }
 
             var newHp = controllable.Hp - damage;
-            
+
             if (controllable.CharacterType != CharacterType.NPC && controllable.MaxHp > 0)
             {
                 if (controllable.IsMainCharacter)
                     CameraFollower.UpdatePlayerHP(newHp, controllable.MaxHp);
                 controllable.SetHp(newHp);
             }
-            
+
             controllable.Hp = newHp;
             if (controllable.Hp < 0)
                 controllable.Hp = 0;
@@ -956,8 +974,6 @@ namespace Assets.Scripts.Network
                 if (controllable.CharacterType != CharacterType.Player || !controllable.SpriteAnimator.IsAttackMotion)
                     controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
             }
-
-            
         }
 
         public void OnMessageGainExp(ClientInboundMessage msg)
@@ -1006,7 +1022,7 @@ namespace Assets.Scripts.Network
                 //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
                 return;
             }
-            
+
             CameraFollower.AttachEffectToEntity("LevelUp", controllable.gameObject, id);
             //
             // var go = GameObject.Instantiate(ClientConstants.Instance.LevelUpPrefab);
@@ -1019,7 +1035,7 @@ namespace Assets.Scripts.Network
             if (controllable.IsMainCharacter)
             {
                 if (PlayerState.JobId == 0 && oldLvl < 10 && lvl >= 10)
-                    CameraFollower.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached level 10! You are now eligible to change jobs. " 
+                    CameraFollower.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached level 10! You are now eligible to change jobs. "
                                                   + "Speak to the bard south of Prontera to get started.</i></color>");
 
                 var req = CameraFollower.Instance.ExpForLevel(lvl);
@@ -1045,8 +1061,8 @@ namespace Assets.Scripts.Network
 
             if (id == PlayerId)
                 CameraFollower.AppendChatText("You have died! Press R key to respawn, or press shift + R to resurrect in place.");
-            
-            if(CameraFollower.SelectedTarget == controllable)
+
+            if (CameraFollower.SelectedTarget == controllable)
                 CameraFollower.ClearSelected();
 
             controllable.StopImmediate(pos, false);
@@ -1169,12 +1185,12 @@ namespace Assets.Scripts.Network
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Walking)
                     controllable.StopImmediate(casterPos, false);
-                
-                if(target != null)
+
+                if (target != null)
                     controllable.LookAt(target.transform.position);
                 else
                     controllable.SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(dir));
-                    
+
                 if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
                 {
                     controllable.SpriteAnimator.State = SpriteState.Standby;
@@ -1234,13 +1250,12 @@ namespace Assets.Scripts.Network
             var color = new Color(1f, 1f, 1f, 0.5f);
             //CastTargetCircle.Create(isAlly? "magic_target" : "magic_target_bad", targetCell, color, size, castTime);
             CastTargetCircle.Create(isAlly, targetCell, size, castTime);
-            if(hasSound)
+            if (hasSound)
                 AudioManager.Instance.OneShotSoundEffect(-1, $"ef_beginspell.ogg", targetCell);
         }
 
         public void OnMessagePlaySound(ClientInboundMessage msg)
         {
-            
         }
 
         void HandleDataPacket(ClientInboundMessage msg)
@@ -1518,7 +1533,7 @@ namespace Assets.Scripts.Network
             msg.Write((byte)PacketType.AdminCreateItem);
             msg.Write(itemId);
             msg.Write(count);
-            
+
             SendMessage(msg);
         }
 
@@ -1545,7 +1560,7 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
-        
+
         public void SendUnEquipItem(int id)
         {
             var msg = StartMessage();
@@ -1615,10 +1630,10 @@ namespace Assets.Scripts.Network
         public void SendPickUpItem(int target)
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.PickUpItem);
             msg.Write(target);
-            
+
             SendMessage(msg);
         }
 
@@ -1741,30 +1756,30 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage();
             msg.Write((byte)PacketType.ApplyStatPoints);
-            
-            for(var i = 0; i < 6; i++)
+
+            for (var i = 0; i < 6; i++)
                 msg.Write(statChanges[i]);
-            
+
             SendMessage(msg);
         }
 
         public void SendDropItem(int bagId, int count)
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.DropItem);
             msg.Write(bagId);
             msg.Write((short)count);
-            
+
             SendMessage(msg);
         }
 
         public void SubmitShopPurchase(List<ShopEntry> items)
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.ShopBuySell);
-            if(items == null || items.Count == 0)
+            if (items == null || items.Count == 0)
                 msg.Write(0);
             else
             {
@@ -1775,36 +1790,36 @@ namespace Assets.Scripts.Network
                     msg.Write(items[i].Count);
                 }
             }
-            
+
             SendMessage(msg);
         }
-        
+
         public void SendEnterServerMessage(string loginName)
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.EnterServer);
             msg.Write(false);
             msg.Write(loginName);
-            
+
             SendMessage(msg);
         }
-        
-        
+
+
         public void SendEnterServerNewCharacterMessage(string chName, int slot, int head, int hair, int[] stats, bool isMale)
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.EnterServer);
             msg.Write(true);
             msg.Write(chName);
             msg.Write(head);
             msg.Write(hair);
             msg.Write((byte)slot);
-            for(var i = 0; i < 6; i++)
+            for (var i = 0; i < 6; i++)
                 msg.Write((byte)stats[i]);
             msg.Write(isMale);
-            
+
             SendMessage(msg);
         }
 
@@ -1879,7 +1894,7 @@ namespace Assets.Scripts.Network
             {
                 isConnected = false;
                 CameraFollower.SetErrorUiText("Lost connection to server!\n<size=-4>(Press space to try to reconnect)");
-                if(isOnLoginScreen)
+                if (isOnLoginScreen)
                     Debug.LogWarning($"Client state has changed to: {state} (OnLoginScreen)");
                 else
                     Debug.LogWarning($"Client state has changed to: {state} (Previous ready state: {isReady})");

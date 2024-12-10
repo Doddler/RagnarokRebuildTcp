@@ -12,7 +12,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
 
             var desiredStatus = msg.ReadBoolean();
 
-            connection.Character!.Hidden = desiredStatus;
+            connection.Character!.AdminHidden = desiredStatus;
 
             CommandBuilder.SendAdminHideStatus(connection.Player!, desiredStatus);
         }

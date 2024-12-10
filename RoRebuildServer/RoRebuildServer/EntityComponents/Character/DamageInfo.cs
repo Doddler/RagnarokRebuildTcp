@@ -44,7 +44,7 @@ public struct DamageInfo
         KnockBack = 0;
         Flags = DamageApplicationFlags.NoHitLock;
     }
-
+    
 
     public static DamageInfo SupportSkillResult(Entity src, Entity target, CharacterSkill skill)
     {

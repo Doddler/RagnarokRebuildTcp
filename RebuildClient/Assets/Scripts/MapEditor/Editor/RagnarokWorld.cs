@@ -7,7 +7,7 @@ namespace Assets.Scripts.MapEditor.Editor
     [Serializable]
     public class RoWater
     {
-        public float Level;
+        public float Level { get; set; }
         public int Type;
         public float WaveHeight;
         public float WaveSpeed;

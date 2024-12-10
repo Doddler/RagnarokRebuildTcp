@@ -73,6 +73,15 @@ namespace RoRebuildServer.Simulation.Skills
             }
         }
 
+        public static bool ShouldSkillCostSp(CharacterSkill skill, CombatEntity src)
+        {
+            var handler = handlers[(int)skill];
+            if (handler != null)
+                return handler.ShouldSkillCostSp(src);
+
+            return true;
+        }
+
         public static SkillValidationResult ValidateTarget(SkillCastInfo info, CombatEntity src)
         {
             CombatEntity? target = info.TargetEntity.GetIfAlive<CombatEntity>();

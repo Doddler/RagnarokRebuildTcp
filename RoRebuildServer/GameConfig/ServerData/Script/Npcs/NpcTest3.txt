@@ -1,0 +1,116 @@
+macro MippGreet() {
+	LookAtTarget();
+	Wait(1s);
+	Say("Hey!");
+	Wait(1.2s);
+	Emote(13); //hand
+	Wait(0.4s);
+	PathToTarget(2); //2 cells away from the target player
+	Wait(3s);
+	LookAtTarget();
+	Wait(1s);
+	Emote(2); //whistle
+	PathTo(146, 83);
+	hasPlayer = 1;
+}
+
+Npc("prontera", "[NPC] Mipp", "CLEAR_NPC", 122, 92, SE) 
+{
+	SetPlayerAppearance(1, "Merchant", "Female", 2, 5, "Kitty_Band", "Sunglasses", "");
+	AttachCart();
+	HideNpc();
+	ShowNpc(); //force any players that can see us be created to have the correct appearance
+	StartPath();
+	local hasPlayer = 0;
+OnPath:
+	SetSpeed(150);
+
+	hasPlayer = 0;
+	PathTo(134, 91);
+	PathTo(142, 91);
+	PathTo(146, 83); //walk to south of kafra
+	Wait(0.5s);
+
+	if(FindPlayerNearby(9)) //9 tiles away. Find Player Nearby checks for LoS too
+	{
+		@MippGreet();
+	} else {
+		SetSittingState(true);
+		Wait(30s); //chill
+
+		SetSittingState(false);
+		Wait(1s);
+
+		if(FindPlayerNearby(9))
+		{
+			@MippGreet();
+		}
+	}
+
+	PathTo(137, 73);
+	PathTo(127, 73);
+	PathTo(122, 83);
+	PathTo(122, 91); //walk back to start
+	Wait(1s);
+	HideNpc();
+	if(hasPlayer > 0)
+		Wait(Random(10m, 30m));
+	else
+		Wait(Random(2m, 3m));
+
+	ShowNpc();
+
+	StartPath(); //reset loop
+}
+
+/*
+Npc("prontera", "[NPC] Mipp", "CLEAR_NPC", 122, 91, SE) 
+{
+	SetPlayerAppearance(46, "Merchant", "Female", 2, 05, "Kitty_Band", "Sunglasses", "");
+	AttachCart();
+	HideNpc();
+	ShowNpc();
+	StartTimer(1000);
+OnTimer 5000:
+	SetTimerRate(100);
+	StartWalkDirect(134, 91, 150);
+OnTimer 5500:
+	if(IsMoving)
+		SetTimer(5400);
+	else
+		StartWalkDirect(142, 91, 150);
+OnTimer 6000:
+	if(IsMoving)
+		SetTimer(5900);
+	else
+		StartWalkDirect(146, 83, 150);
+OnTimer 7000:
+	if(IsMoving)
+		SetTimer(6900);
+OnTimer 8000:
+	SetSittingState(true);
+	SetTimerRate(1000);
+OnTimer 20000:
+	SetSittingState(false);
+	SetTimerRate(100);
+OnTimer 21000:
+	StartWalkDirect(137, 73, 150);
+OnTimer 22000:
+	if(IsMoving)
+		SetTimer(21900);
+	else
+		StartWalkDirect(127, 73, 150);
+OnTimer 23000:
+	if(IsMoving)
+		SetTimer(22900);
+	else
+		StartWalkDirect(122, 83, 150);
+OnTimer 24000:
+	if(IsMoving)
+		SetTimer(23900);
+	else
+		StartWalkDirect(122, 91, 150);
+OnTimer 25000:
+	ResetTimer();
+}
+*/

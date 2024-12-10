@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts;
+using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
@@ -72,11 +73,14 @@ public class UiManager : MonoBehaviour
             return _instance;
         }
     }
-    
+
     void Awake()
     {
         _instance = this;
-        
+    }
+    
+    public void Initialize()
+    {
         CharacterOverlayGroup.SetActive(true);
 
         //kinda dumb way to make sure the windows are initialized and their contents cached
@@ -329,13 +333,13 @@ public class UiManager : MonoBehaviour
 
     public void RegisterDragTarget(IItemDropTarget target)
     {
-        Debug.Log($"Registering drop target");
+        // Debug.Log($"Registering drop target");
         hoveredDropTarget = target;
     }
 
     public void UnregisterDragTarget(IItemDropTarget target)
     {
-        Debug.Log($"Removing drop target");
+        // Debug.Log($"Removing drop target");
         if (hoveredDropTarget == target)
             hoveredDropTarget = null;
     }
@@ -373,6 +377,7 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!NetworkManager.IsLoaded) return;
         if (Input.GetKeyDown(KeyCode.F11) && canvas != null)
         {
             SetEnabled(!canvas.enabled);

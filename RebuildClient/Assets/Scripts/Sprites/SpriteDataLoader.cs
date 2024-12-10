@@ -21,6 +21,8 @@ namespace Assets.Scripts.Sprites
         public string Name;
         public int Hp;
         public int MaxHp;
+        public int Sp;
+        public int MaxSp;
         public int WeaponClass;
         public int Headgear1;
         public int Headgear2;

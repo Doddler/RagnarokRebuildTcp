@@ -5,6 +5,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Pathfinding;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation;
 
@@ -18,6 +19,7 @@ public class Instance
     public string Name;
     public EntityList Entities { get; set; }
     private List<Entity> removeList = new(30);
+    private float nextUpdate;
 
     public PathFinder Pathfinder { get; set; }
 
@@ -76,8 +78,20 @@ public class Instance
     {
         DoRemovals(); //this happens a frame late, but it's done to catch removals added after update is called
 
+        var players = 0;
+
         foreach (var map in Maps)
+        {
             map.Update();
+            players += map.PlayerCount;
+        }
+
+        if (players == 0)
+        {
+            if (nextUpdate > Time.ElapsedTimeFloat)
+                return;
+            nextUpdate = Time.ElapsedTimeFloat + 2f;
+        }
 
         foreach (var entity in Entities)
         {

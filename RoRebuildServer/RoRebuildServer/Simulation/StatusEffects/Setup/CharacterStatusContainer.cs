@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.EntityComponents;
@@ -24,6 +25,7 @@ public class CharacterStatusContainer
     private int onHitEffects;
     private int onUpdateEffects;
     private int onEquipmentChangeEffects;
+    private int onMoveEffects;
 
     private float nextStatusUpdate;
     
@@ -36,6 +38,7 @@ public class CharacterStatusContainer
         onHitEffects = 0;
         onUpdateEffects = 0;
         onEquipmentChangeEffects = 0;
+        onMoveEffects = 0;
         nextStatusUpdate = 0f;
         if (pendingStatusEffects != null)
         {
@@ -205,6 +208,35 @@ public class CharacterStatusContainer
             RemoveIdList(ref remove, removeCount);
     }
 
+    public void OnMove(Position src, Position dest)
+    {
+        Debug.Assert(Owner != null);
+        if (statusEffects == null || onMoveEffects <= 0)
+            return;
+
+        Span<int> remove = stackalloc int[statusEffects.Count];
+        var removeCount = 0;
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var s = statusEffects[i];
+            if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnMove))
+            {
+                var res = StatusEffectHandler.OnMove(s.Type, Owner, ref s, src, dest);
+                if (res == StatusUpdateResult.EndStatus)
+                {
+                    remove[removeCount] = i;
+                    removeCount++;
+                }
+                else
+                    statusEffects[i] = s; //update any changed data
+            }
+        }
+
+        if (removeCount > 0)
+            RemoveIdList(ref remove, removeCount);
+    }
+
     public void UpdateStatusEffects()
     {
         Debug.Assert(Owner != null);
@@ -300,6 +332,8 @@ public class CharacterStatusContainer
             onUpdateEffects--;
         if (updateMode.HasFlag(StatusUpdateMode.OnChangeEquipment))
             onEquipmentChangeEffects--;
+        if (updateMode.HasFlag(StatusUpdateMode.OnMove))
+            onMoveEffects--;
     }
     
     private void RemoveExistingStatusEffect(ref StatusEffectState status)
@@ -326,6 +360,8 @@ public class CharacterStatusContainer
             onUpdateEffects--;
         if (updateMode.HasFlag(StatusUpdateMode.OnChangeEquipment))
             onEquipmentChangeEffects--;
+        if (updateMode.HasFlag(StatusUpdateMode.OnMove))
+            onMoveEffects--;
     }
 
     public void AddNewStatusEffect(StatusEffectState state, bool replaceExisting = true)
@@ -367,6 +403,8 @@ public class CharacterStatusContainer
             onUpdateEffects++;
         if (updateMode.HasFlag(StatusUpdateMode.OnChangeEquipment))
             onEquipmentChangeEffects++;
+        if (updateMode.HasFlag(StatusUpdateMode.OnMove))
+            onMoveEffects++;
     }
 
     public void AddPendingStatusEffect(StatusEffectState state, bool replaceExisting, float time)

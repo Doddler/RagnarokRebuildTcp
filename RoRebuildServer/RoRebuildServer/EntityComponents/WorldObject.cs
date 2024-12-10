@@ -37,13 +37,14 @@ public class WorldObject : IEntityAutoReset
     public Entity Entity;
     public string Name = null!;
     public bool IsActive;
-    public bool Hidden { get; set; }
+    public bool AdminHidden { get; set; }
     public bool IsImportant { get; set; }
     public int ClassId;
     public Direction FacingDirection { get; set; }
     public CharacterState State { get; set; }
     public CharacterType Type;
     public CharacterDisplayType DisplayType; //used for minimap icons if they're flagged as map important
+    public PlayerLikeAppearanceState? OverrideAppearanceState;
     public Position TargetPosition;
     public float MoveModifier;
     public float MoveModifierTime;
@@ -127,6 +128,12 @@ public class WorldObject : IEntityAutoReset
     public void SetSpawnImmunity(float time = 5f) => SpawnImmunity = Time.ElapsedTimeFloat + time;
     public void ResetSpawnImmunity() => SpawnImmunity = -1f;
     public bool IsTargetImmune => SpawnImmunity > Time.ElapsedTimeFloat;
+    public bool IsAtDestination => !IsMoving || TargetPosition == Position;
+
+    public bool StateCanSit => State == CharacterState.Idle || State == CharacterState.Sitting;
+
+    public bool StateCanAttack => State == CharacterState.Idle || State == CharacterState.Cloaking ||
+                                  State == CharacterState.Moving;
 
 
 #if DEBUG
@@ -197,7 +204,7 @@ public class WorldObject : IEntityAutoReset
         Entity = Entity.Null;
         LastAttacked = Entity.Null;
         IsActive = true;
-        Hidden = false;
+        AdminHidden = false;
         Map = null;
         Name = null!;
         State = CharacterState.Idle;
@@ -213,6 +220,7 @@ public class WorldObject : IEntityAutoReset
         DisplayType = CharacterDisplayType.None;
         StepCount = 0;
         IsImportant = false;
+        OverrideAppearanceState = null;
         ClearVisiblePlayerList();
 
         if (Events != null)
@@ -271,7 +279,7 @@ public class WorldObject : IEntityAutoReset
             return false;
         if (this == target)
             return true;
-        return !Hidden;
+        return !AdminHidden;
     }
 
     public void AddVisiblePlayer(Entity e)
@@ -412,11 +420,11 @@ public class WorldObject : IEntityAutoReset
     public void SitStand(bool isSitting)
     {
         Debug.Assert(Map != null);
-
+        
         if (Type != CharacterType.Player)
             return;
 
-        if (State == CharacterState.Moving || State == CharacterState.Dead)
+        if (State == CharacterState.Moving || State == CharacterState.Dead || State == CharacterState.Hide)
             return;
 
         if (isSitting)
@@ -443,6 +451,8 @@ public class WorldObject : IEntityAutoReset
 
         if (Type == CharacterType.Player)
             Player.HeadFacing = facing;
+        if (Type == CharacterType.NPC && OverrideAppearanceState != null)
+            OverrideAppearanceState.HeadFacing = facing;
         
         Map.AddVisiblePlayersAsPacketRecipients(this);
         CommandBuilder.ChangeFacingMulti(this, lookAt);
@@ -494,16 +504,17 @@ public class WorldObject : IEntityAutoReset
     {
         ResetSpawnImmunity();
 
-        if (Type != CharacterType.Player)
-            return;
+        if (Type == CharacterType.NPC && OverrideAppearanceState != null)
+            OverrideAppearanceState.HeadFacing = HeadFacing.Center;
 
-        var player = Entity.Get<Player>();
-        player.HeadFacing = HeadFacing.Center; //don't need to send this to client, they will assume it resets
+
+        if (Type == CharacterType.Player)
+            player.HeadFacing = HeadFacing.Center; //don't need to send this to client, they will assume it resets
     }
 
     public bool CanMove()
     {
-        if (State == CharacterState.Sitting || State == CharacterState.Dead)
+        if (State == CharacterState.Sitting || State == CharacterState.Dead || State == CharacterState.Hide)
             return false;
 
         if (MoveSpeed <= 0)
@@ -527,7 +538,7 @@ public class WorldObject : IEntityAutoReset
     public bool TryMove(Position target, int desiredDistanceToTarget)
     {
         Debug.Assert(Map != null);
-        Debug.Assert(desiredDistanceToTarget <= 1); //generally you will only move exactly onto the tile (0) or directly next to it (1)
+        //Debug.Assert(desiredDistanceToTarget <= 1); //generally you will only move exactly onto the tile (0) or directly next to it (1)
 
         if (!CanMove())
             return false;
@@ -548,7 +559,7 @@ public class WorldObject : IEntityAutoReset
         MoveProgress = 0;
         MoveStep = 0;
         TotalMoveSteps = len;
-        FacingDirection = (WalkPath[1] - WalkPath[0]).GetDirectionForOffset();
+        FacingDirection = (WalkPath[1] - WalkPath[0]).Normalize().GetDirectionForOffset();
         //MoveLockTime = Time.ElapsedTimeFloat;
 
         //ServerLogger.Log($"{Name} TryMove: World:{WorldPosition} NextStepDuration: {NextStepDuration}");
@@ -666,6 +677,8 @@ public class WorldObject : IEntityAutoReset
             //FacingDirection = dir;
             StepCount++;
             Map.ChangeEntityPosition3(this, lastPosition, newPosition, true);
+            if(Type == CharacterType.Player || Type == CharacterType.Monster)
+                CombatEntity.StatusContainer?.OnMove(lastCell, newCell);
             Map.TriggerAreaOfEffectForCharacter(this, lastCell, newCell);
             TimeOfLastMove = Time.ElapsedTimeFloat;
 

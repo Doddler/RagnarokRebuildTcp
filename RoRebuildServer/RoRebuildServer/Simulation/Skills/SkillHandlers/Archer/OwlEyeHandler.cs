@@ -12,11 +12,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
         public override void ApplyPassiveEffects(CombatEntity owner, int lvl)
         {
             owner.AddStat(CharacterStat.AddDex, lvl);
+            owner.AddStat(CharacterStat.AddHit, lvl);
         }
 
         public override void RemovePassiveEffects(CombatEntity owner, int lvl)
         {
             owner.SubStat(CharacterStat.AddDex, lvl);
+            owner.SubStat(CharacterStat.AddHit, lvl);
         }
 
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

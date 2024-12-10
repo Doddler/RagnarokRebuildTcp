@@ -45,6 +45,7 @@ public class ScriptBuilder
     private List<int> timerValues = new();
     private List<string> remoteCommands = new();
     private Dictionary<string, NpcInteractionResult> waitingFunctions = new();
+    private Dictionary<string, NpcPathUpdateResult> pathingFunctions = new();
     private Dictionary<string, string> additionalVariables { get; set; } = new();
     
     private List<TimerFunction> timerFunctions = new();
@@ -67,12 +68,16 @@ public class ScriptBuilder
     private string eventHandlerTarget = "";
     private NpcInteractionResult waitType = NpcInteractionResult.WaitForContinue;
 
+    private bool hasPathWait = false;
+    public NpcPathUpdateResult pathWaitType;
+
     public bool UseStateMachine;
     public bool UseStateStorage;
     public bool UseLocalStorage;
     public int StateStorageLimit = 0;
     public bool IsEvent;
     public string? defaultReturn = null;
+    private StateMachineType stateMachineType;
 
     private int indentation = 1;
     private int uniqueVal = 0;
@@ -84,6 +89,13 @@ public class ScriptBuilder
 
     private Stack<ScriptMacro> macroStack = new();
     public ScriptMacro? ActiveMacro;
+
+    private enum StateMachineType
+    {
+        None,
+        NpcInteraction,
+        NpcPath
+    }
 
     public bool IsTerminalFunction(string name) => terminalFunctions.Contains(name);
 
@@ -244,6 +256,8 @@ public class ScriptBuilder
         UseStateMachine = false;
         UseStateStorage = false;
         UseLocalStorage = false;
+        stateMachineType = StateMachineType.None;
+
         defaultReturn = null;
         blockBuilder.Clear();
         terminalFunctions.Clear();
@@ -274,6 +288,7 @@ public class ScriptBuilder
         UseStateMachine = false;
         UseStateStorage = false;
         UseLocalStorage = false;
+        stateMachineType = StateMachineType.None;
         defaultReturn = null;
         blockBuilder.Clear();
         terminalFunctions.Clear();
@@ -298,6 +313,7 @@ public class ScriptBuilder
         UseStateMachine = false;
         UseStateStorage = false;
         UseLocalStorage = false;
+        stateMachineType = StateMachineType.None;
         defaultReturn = null;
         blockBuilder.Clear();
         monsterStatesWithHandlers.Clear();
@@ -330,6 +346,7 @@ public class ScriptBuilder
     {
         functionSources.Clear();
         functionBaseClasses.Clear();
+        pathingFunctions.Clear();
         additionalVariables.Clear();
         terminalFunctions.Clear();
         stateIntVariables.Clear();
@@ -666,6 +683,7 @@ public class ScriptBuilder
         ClearVariables();
 
         methodName = section;
+        stateVariable = "state";
 
         if (IsEvent)
         {
@@ -677,6 +695,39 @@ public class ScriptBuilder
 
             foreach (var i in Enum.GetValues<CharacterSkill>())
                 additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
+        }
+
+        if (section == "OnPath")
+        {
+            stateVariable = "path";
+            StartIndentedBlockLine().AppendLine($"public override NpcPathUpdateResult {section}(Npc npc, NpcPathHandler path)");
+            OpenScope();
+            StartIndentedBlockLine().AppendLine($"switch ({stateVariable}.Step)");
+            OpenScope();
+            indentation--;
+            StartIndentedBlockLine().AppendLine($"case 0:");
+            indentation++;
+            ApplyBlockToScript();
+
+            pointerCount = 0;
+            curBlock = 0;
+            UseStateMachine = true;
+            UseStateStorage = true;
+            UseLocalStorage = true;
+            stateMachineType = StateMachineType.NpcPath;
+            StateStorageLimit = NpcInteractionState.StorageCount;
+
+            LoadFunctionSource(typeof(Npc), "npc");
+            LoadFunctionSource(typeof(NpcPathHandler), "path");
+            LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+
+            pathingFunctions.Clear();
+            pathingFunctions.Add("WaitTime", NpcPathUpdateResult.WaitForTime);
+            pathingFunctions.Add("Wait", NpcPathUpdateResult.WaitForTime);
+            pathingFunctions.Add("PathTo", NpcPathUpdateResult.WaitForMove);
+            pathingFunctions.Add("PathToTarget", NpcPathUpdateResult.WaitForMove);
+
+            return;
         }
 
         if (section == "OnClick" || section == "OnTouch")
@@ -695,6 +746,7 @@ public class ScriptBuilder
             UseStateMachine = true;
             UseStateStorage = true;
             UseLocalStorage = true;
+            stateMachineType = StateMachineType.NpcInteraction;
             StateStorageLimit = NpcInteractionState.StorageCount;
 
             LoadFunctionSource(typeof(Npc), "npc");
@@ -784,6 +836,12 @@ public class ScriptBuilder
             hasWait = true;
             waitType = res;
         }
+
+        if (UseStateMachine && pathingFunctions.TryGetValue(name, out var res2))
+        {
+            hasPathWait = true;
+            pathWaitType = res2;
+        }
     }
 
     public void FunctionCallEnd()
@@ -807,7 +865,12 @@ public class ScriptBuilder
             EndLine();
 
         if (UseStateMachine)
-            lineBuilder.Append("return NpcInteractionResult.EndInteraction;");
+        {
+            if(stateMachineType == StateMachineType.NpcInteraction)
+                lineBuilder.Append("return NpcInteractionResult.EndInteraction;");
+            else
+                lineBuilder.Append("return NpcPathUpdateResult.EndPath;");
+        }
         else
         {
             if (string.IsNullOrWhiteSpace(defaultReturn))
@@ -1028,12 +1091,23 @@ public class ScriptBuilder
 
         lineBuilder.Clear();
 
+        if (stateMachineType == StateMachineType.None)
+            return;
+
         if (hasWait)
         {
             StartIndentedBlockLine().AppendLine($"{stateVariable}.Step = {curBlock + 1};");
             StartIndentedBlockLine().AppendLine($"return NpcInteractionResult.{Enum.GetName(waitType)};");
             AdvanceBlock(true);
             hasWait = false;
+        }
+
+        if (hasPathWait)
+        {
+            StartIndentedBlockLine().AppendLine($"{stateVariable}.Step = {curBlock + 1};");
+            StartIndentedBlockLine().AppendLine($"return NpcPathUpdateResult.{Enum.GetName(pathWaitType)};");
+            AdvanceBlock(true);
+            hasPathWait = false;
         }
     }
 
@@ -1050,10 +1124,20 @@ public class ScriptBuilder
     {
         if (UseStateMachine)
         {
-            StartIndentedBlockLine().AppendLine("return NpcInteractionResult.EndInteraction;");
-            indentation--;
-            StartIndentedBlockLine().AppendLine("}").AppendLine("");
-            StartIndentedBlockLine().AppendLine("return NpcInteractionResult.EndInteraction;");
+            if (stateMachineType == StateMachineType.NpcInteraction)
+            {
+                StartIndentedBlockLine().AppendLine("return NpcInteractionResult.EndInteraction;");
+                indentation--;
+                StartIndentedBlockLine().AppendLine("}").AppendLine("");
+                StartIndentedBlockLine().AppendLine("return NpcInteractionResult.EndInteraction;");
+            }
+            else
+            {
+                StartIndentedBlockLine().AppendLine("return NpcPathUpdateResult.EndPath;");
+                indentation--;
+                StartIndentedBlockLine().AppendLine("}").AppendLine("");
+                StartIndentedBlockLine().AppendLine("return NpcPathUpdateResult.EndPath;");
+            }
         }
 
         if (!string.IsNullOrWhiteSpace(defaultReturn))

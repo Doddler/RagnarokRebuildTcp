@@ -185,7 +185,7 @@ public class BuildTool : IActiveBuildTargetChanged
         }
     }
 
-    [MenuItem("Build/Update Addressables (Current Platform)", false, 100)]
+    [MenuItem("Build/Update Addressables (Current Platform)", false, 5000)]
     public static void UpdateAddressablesBuild()
     {
         var target = EditorUserBuildSettings.activeBuildTarget;
@@ -199,7 +199,7 @@ public class BuildTool : IActiveBuildTargetChanged
     }
 
 
-    [MenuItem("Build/Update Addressables (All Platforms)", false, 100)]
+    [MenuItem("Build/Update Addressables (All Platforms)", false, 5000)]
     public static void UpdateAddressablesBuildAll()
     {
         RagnarokMapImporterWindow.UpdateAddressables();

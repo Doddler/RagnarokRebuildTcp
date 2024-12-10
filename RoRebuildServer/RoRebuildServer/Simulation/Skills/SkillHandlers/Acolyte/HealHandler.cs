@@ -43,10 +43,11 @@ public class HealHandler : SkillHandlerBase
         {
             var chLevel = source.GetStat(CharacterStat.Level);
             var statInt = source.GetEffectiveStat(CharacterStat.Int);
-            var matk = GameRandom.Next(source.GetStat(CharacterStat.MagicAtkMin),
-                source.GetStat(CharacterStat.MagicAtkMax));
+            var (min, max) = source.CalculateAttackPowerRange(true);
+            var matk = GameRandom.Next(min, max);
 
-            healValue = (chLevel + statInt) / 5 * lvl * 3 + matk;
+            var baseHeal = 4 + 8 * lvl;
+            healValue = (chLevel + statInt) / 10 * baseHeal + matk / 2; //official has /8, but no matk.
 
         }
 
@@ -60,6 +61,7 @@ public class HealHandler : SkillHandlerBase
                 var mod = DataManager.ElementChart.GetAttackModifier(AttackElement.Holy, element);
                 res.Damage = (healValue / 2) * mod / 100;
                 res.HitCount = 1;
+                res.AttackMotionTime = 0.5f;
                 res.Result = AttackResult.NormalDamage;
 
                 source.ApplyCooldownForAttackAction(target);

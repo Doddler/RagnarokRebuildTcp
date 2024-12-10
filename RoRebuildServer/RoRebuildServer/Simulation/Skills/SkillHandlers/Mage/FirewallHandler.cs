@@ -48,6 +48,8 @@ public class FirewallHandler : SkillHandlerBase
             }
         }
 
+        source.ApplyCooldownForSupportSkillAction();
+
         var ch = source.Character;
         var map = ch.Map;
 

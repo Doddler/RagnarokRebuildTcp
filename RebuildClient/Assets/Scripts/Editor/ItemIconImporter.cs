@@ -30,7 +30,7 @@ namespace Assets.Scripts.Editor
             return tex;
         }
         
-        [MenuItem("Ragnarok/Import Skill and Item Icons")]
+        [MenuItem("Ragnarok/Import Skill and Item Icons", false, 124)]
         public static void ImportItems()
         {
             var iconNames = new List<string>();

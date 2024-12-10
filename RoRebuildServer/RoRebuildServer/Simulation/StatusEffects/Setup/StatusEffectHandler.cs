@@ -4,6 +4,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Skills.SkillHandlers;
 using System.Reflection;
+using RebuildSharedData.Data;
 
 namespace RoRebuildServer.Simulation.StatusEffects.Setup
 {
@@ -55,5 +56,6 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public static StatusUpdateResult OnAttack(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnAttack(ch, ref state, ref info);
         public static StatusUpdateResult OnTakeDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnTakeDamage(ch, ref state, ref info);
         public static StatusUpdateResult OnChangeEquipment(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnChangeEquipment(ch, ref state);
+        public static StatusUpdateResult OnMove(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, Position src, Position dest) => handlers[(int)type].OnMove(ch, ref state, src, dest);
     }
 }

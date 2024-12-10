@@ -277,7 +277,7 @@ public class World
 
         ch.Id = GetNextEntityId();
         ch.IsActive = true;
-        ch.Hidden = true;
+        ch.AdminHidden = true;
         ch.ClassId = 0;
         ch.Entity = e;
         ch.Position = pos;

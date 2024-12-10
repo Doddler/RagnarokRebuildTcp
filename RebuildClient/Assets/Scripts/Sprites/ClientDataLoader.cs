@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
@@ -115,11 +116,14 @@ namespace Assets.Scripts.Sprites
 
         private void Awake()
         {
-            Initialize();
+            Instance = this;
+            //Initialize();
         }
 
-        private void Initialize()
+        public void Initialize()
         {
+            if (isInitialized && Instance != null)
+                return;
             Instance = this;
             var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(MonsterClassData.text);
             foreach (var m in entityData.Items)
@@ -141,11 +145,16 @@ namespace Assets.Scripts.Sprites
                     var mPath = h.SpriteMale.Replace("<id>", h.MaleIds[i]);
                     var fPath = h.SpriteFemale.Replace("<id>", h.FemaleIds[i]);
 
-                    var handle = Addressables.LoadResourceLocationsAsync(mPath);
-                    handle.WaitForCompletion();
-                    var handle2 = Addressables.LoadResourceLocationsAsync(fPath);
-                    handle2.WaitForCompletion();
-                    if (handle.Result.Count > 0 && handle2.Result.Count > 0)
+// #if UNITY_WEBGL
+//                     Debug.Log(mPath);
+//                     Debug.Log(fPath);
+// #else
+//                     var handle = Addressables.LoadResourceLocationsAsync(mPath);
+//                     handle.WaitForCompletion();
+//                     var handle2 = Addressables.LoadResourceLocationsAsync(fPath);
+//                     handle2.WaitForCompletion();
+// #endif
+                    if (AssetExists(mPath) && AssetExists(fPath))
                     {
                         playerHeadLookup.Add(colorHead, new PlayerHeadData()
                         {
@@ -269,11 +278,11 @@ namespace Assets.Scripts.Sprites
             var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapData.text);
             foreach (var map in mapClass.Items)
                 mapDataLookup.TryAdd(map.Code, map);
-            
+
             var itemDescriptions = JsonUtility.FromJson<Wrapper<ItemDescription>>(ItemDescData.text);
-            foreach(var desc in itemDescriptions.Items)
+            foreach (var desc in itemDescriptions.Items)
                 itemDescriptionTable.Add(desc.Code, desc.Description);
-                
+
 
             isInitialized = true;
         }
@@ -372,6 +381,34 @@ namespace Assets.Scripts.Sprites
             return $"Assets/Sprites/Headgear/{(isMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
         }
 
+        public static bool AssetExists(object key)
+        {
+            if (Application.isPlaying)
+            {
+#if !UNITY_EDITOR && UNITY_WEBGL
+                if (NetworkManager.ResourceLocator.Locate(key, null, out _))
+                    return true;
+#else
+                foreach (var l in Addressables.ResourceLocators)
+                {
+                    IList<IResourceLocation> locs;
+                    if (l.Locate(key, null, out locs))
+                        return true;
+                }
+#endif
+                return false;
+            }
+            else if (Application.isEditor && !Application.isPlaying)
+            {
+#if UNITY_EDITOR
+                // note: my keys are always asset file paths
+                return File.Exists(Path.Combine(Application.dataPath, (string)key));
+#endif
+            }
+
+            return false;
+        }
+
         public static bool DoesAddressableExist<T>(string key)
         {
             foreach (var local in Addressables.ResourceLocators)
@@ -390,7 +427,6 @@ namespace Assets.Scripts.Sprites
 
             return false;
         }
-
 
         public ServerControllable InstantiatePlayer(ref PlayerSpawnParameters param)
         {
@@ -471,7 +507,7 @@ namespace Assets.Scripts.Sprites
             LoadAndAttachEquipmentSprite(control, param.Shield, EquipPosition.Shield, 1);
 
             LoadAndAttachWeapon(control, param.Weapon);
-            
+
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.Name = param.Name;
             control.Hp = param.Hp;
@@ -501,7 +537,7 @@ namespace Assets.Scripts.Sprites
         {
             var weaponSpriteFile = "";
             var isEffect = item == int.MaxValue;
-            
+
             var attachPosition = isEffect ? EquipPosition.Accessory : EquipPosition.Weapon; //it's not an accessory but too lazy to make a new option
             if (ctrl.AttachedComponents.TryGetValue(attachPosition, out var existing))
             {
@@ -512,7 +548,7 @@ namespace Assets.Scripts.Sprites
 
             if (ctrl.WeaponClass == 0)
             {
-                if(!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue);
+                if (!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue);
                 return;
             }
 
@@ -529,7 +565,7 @@ namespace Assets.Scripts.Sprites
 
             if (!playerWeaponLookup.TryGetValue(ctrl.ClassId, out var weaponsByJob))
                 return;
-            
+
             if (!weaponsByJob.TryGetValue(ctrl.WeaponClass, out var weapon))
             {
                 Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.ClassId}");
@@ -566,7 +602,7 @@ namespace Assets.Scripts.Sprites
             ctrl.AttachedComponents[attachPosition] = weaponObj;
 
             AddressableUtility.LoadRoSpriteData(ctrl.gameObject, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
-            if(!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue); //attach effect sprite too
+            if (!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue); //attach effect sprite too
         }
 
 
@@ -588,7 +624,7 @@ namespace Assets.Scripts.Sprites
             headgearObj.transform.localPosition = new Vector3(0f, 0f, -0.05f);
 
             var headgearSprite = headgearObj.AddComponent<RoSpriteAnimator>();
-            
+
             headgearSprite.Parent = ctrl.SpriteAnimator;
             headgearSprite.SpriteOrder = priority; //weapon is 5 so we should be below that
             ctrl.SpriteAnimator.ChildrenSprites.Add(headgearSprite);
@@ -603,10 +639,9 @@ namespace Assets.Scripts.Sprites
             {
                 spriteName = $"Assets/Sprites/Headgear/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
             }
-            
+
             // var folderName = position != EquipPosition.Shield ? "Headgear" : $"Shields/{GetJobNameForId(ctrl.ClassId)}";
-            
-            
+
 
             ctrl.AttachedComponents[position] = headgearObj;
 
@@ -681,6 +716,12 @@ namespace Assets.Scripts.Sprites
             {
                 case NpcEffectType.Firewall:
                     CameraFollower.Instance.AttachEffectToEntity("FirewallEffect", obj);
+                    break;
+                case NpcEffectType.Pneuma:
+                    CameraFollower.Instance.AttachEffectToEntity("Pneuma1", obj);
+                    var go = new GameObject("PneumaArea");
+                    var highlighter = GroundHighlighter.Create(control, "pneumazone", new Color(1, 1, 1, 0.2f), 2);
+                    highlighter.MaxTime = 10f;
                     break;
             }
 

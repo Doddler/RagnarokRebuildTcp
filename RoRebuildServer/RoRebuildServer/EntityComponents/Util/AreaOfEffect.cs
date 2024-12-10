@@ -46,6 +46,7 @@ public class AreaOfEffect
     public bool IsActive = false;
     public bool CheckStayTouching = false;
     public bool TriggerOnFirstTouch = true;
+    public bool TriggerOnLeaveArea = false;
 
     public void Init(WorldObject sourceCharacter, Area area, AoeType type, TargetingInfo targetingInfo, float duration, float tickRate, int value1, int value2)
     {
@@ -65,6 +66,7 @@ public class AreaOfEffect
         CheckStayTouching = false;
         SkillSource = CharacterSkill.None;
         TriggerOnFirstTouch = type == AoeType.NpcTouch;
+        TriggerOnLeaveArea = type == AoeType.SpecialEffect;
     }
 
     public void Reset()
@@ -83,6 +85,24 @@ public class AreaOfEffect
             return false;
         
         return Area.Contains(newPos);
+    }
+
+    public bool HasLeftAoE(Position initial, Position newPos)
+    {
+        return Area.Contains(initial) && !Area.Contains(newPos);
+    }
+
+    public void OnLeaveAoE(WorldObject character)
+    {
+        if (Type == AoeType.SpecialEffect && character.Type != CharacterType.NPC)
+        {
+            if (!TargetingInfo.SourceEntity.TryGet<CombatEntity>(out var toucher))
+                return;
+            if (!SourceEntity.TryGet<Npc>(out var npc))
+                return;
+
+            npc.Behavior.OnLeaveAoE(npc, toucher, this);
+        }
     }
 
     public void OnAoETouch(WorldObject character)
@@ -114,8 +134,24 @@ public class AreaOfEffect
                 TouchingEntities.Add(character.Entity);
             }
         }
-    }
 
+        if (Type == AoeType.SpecialEffect && character.Type != CharacterType.NPC)
+        {
+            if (!TargetingInfo.SourceEntity.TryGet<CombatEntity>(out var _)) //we still check this, if the owner is gone the aoe is invalid
+                return;
+            if (!SourceEntity.TryGet<Npc>(out var npc))
+                return;
+            if (TriggerOnFirstTouch)
+                npc.Behavior.OnAoEInteraction(npc, character.CombatEntity, this);
+            if (IsActive && CheckStayTouching && Area.Contains(character.Position)) //it might have moved so we check position again
+            {
+                if (TouchingEntities == null)
+                    TouchingEntities = EntityListPool.Get();
+                TouchingEntities.Add(character.Entity);
+            }
+        }
+    }
+    
     public void TouchEntitiesRemainingInAoE()
     {
         if (TouchingEntities == null)

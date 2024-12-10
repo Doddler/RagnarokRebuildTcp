@@ -7,5 +7,6 @@
         Stopped = 1,
         Curse = 2,
         Blind = 4,
+        Hidden = 8
     }
 }

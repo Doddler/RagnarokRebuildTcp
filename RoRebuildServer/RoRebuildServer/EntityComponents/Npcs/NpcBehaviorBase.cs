@@ -24,14 +24,18 @@ public abstract class NpcBehaviorBase
 
     public virtual void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
 
+    public virtual void OnLeaveAoE(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
+
     public virtual void OnTimer(Npc npc, float lastTime, float newTime) { }
+
+    public virtual NpcPathUpdateResult OnPath(Npc npc, NpcPathHandler path) => NpcPathUpdateResult.EndPath;
 
     public virtual void OnSignal(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4) { }
 
     public virtual void OnMobKill(Npc npc) { }
 
     public virtual EventOwnerDeathResult OnOwnerDeath(Npc npc, CombatEntity owner) => EventOwnerDeathResult.NoAction;
-
+    
     public enum EventOwnerDeathResult
     {
         NoAction,

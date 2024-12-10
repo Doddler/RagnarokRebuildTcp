@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class SkillHotbarEntry : UIBehaviour, IPointerEnterHandler, IPointerExitHandler, IItemDropTarget
+    public class SkillHotbarEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IItemDropTarget
     {
         public SkillHotbar Parent;
         public UiManager UIManager;
@@ -15,6 +15,11 @@ namespace Assets.Scripts.UI
         public TextMeshProUGUI HotkeyText;
         public int Id;
         public bool CanDrag = true;
+
+        public void Awake()
+        {
+            HighlightImage.SetActive(false);
+        }
 
         public void PressKey()
         {

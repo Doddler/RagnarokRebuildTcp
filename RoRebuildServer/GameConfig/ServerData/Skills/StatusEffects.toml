@@ -1,3 +1,10 @@
+#
+#Status Effects!
+#
+#Type = "Buff" or "Debuff". Used for targeting certain effects as well as positioning on the UI.
+#CanDispel = if the buff can be lost by either dying or being targeted by dispel.
+#CanDisable = if the player themselves can remove the status effect by right clicking the buff.
+
 #----------------------------------
 # General Negative Status Effects
 #----------------------------------
@@ -60,6 +67,16 @@ Type = "Buff"
 CanDispel = true
 CanDisable = true
 
+[Angelus]
+Name = "Angelus"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
+
+[SignumCrusis]
+Name = "SignumCrusis"
+Type = "Debuff"
+
 [ImproveConcentration]
 Name = "Improve Concentration"
 Type = "Buff"
@@ -70,6 +87,26 @@ CanDisable = true
 Name = "Endure"
 Type = "Buff"
 CanDispel = true
+CanDisable = true
+
+[MagnumBreak]
+Name = "Magnum Break"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
+
+[Pneuma]
+Name = "Pneuma"
+Type = "Buff"
+
+[SafetyWall]
+Name = "Pneuma"
+Type = "Buff"
+
+[Hiding]
+Name = "Hiding"
+Type = "Buff"
+CanDispel = false
 CanDisable = true
 
 #----------------------------------
