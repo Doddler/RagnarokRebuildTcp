@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
@@ -127,8 +128,10 @@ namespace Assets.Scripts
         public Dictionary<int, GameObject> EffectCache;
 
         private bool hasSkillOnCursor;
+        private bool isCursorSkillItem;
         private CharacterSkill cursorSkill;
         private SkillTarget cursorSkillTarget;
+        private int cursorItemId;
         private int cursorSkillLvl = 5;
         private int cursorMaxSkillLvl = 10;
         private float skillScroll = 5f;
@@ -333,6 +336,7 @@ namespace Assets.Scripts
                 case SkillTarget.Ground:
                 case SkillTarget.Ally:
                     hasSkillOnCursor = true;
+                    isCursorSkillItem = false;
                     canChangeCursorLevel = ClientDataLoader.Instance.GetSkillData(skill).AdjustableLevel;
                     cursorSkill = skill;
                     cursorMaxSkillLvl = NetworkManager.Instance.PlayerState.KnownSkills.GetValueOrDefault(skill, 1);
@@ -351,6 +355,19 @@ namespace Assets.Scripts
             }
 
             return false;
+        }
+
+        public void BeginTargetingItem(int cursorItem, SkillTarget target)
+        {
+            hasSkillOnCursor = true;
+            isCursorSkillItem = true;
+            canChangeCursorLevel = false;
+            cursorSkill = CharacterSkill.NoCast;
+            cursorMaxSkillLvl = 1;
+            skillScroll = 1;
+            cursorSkillLvl = 1;
+            cursorSkillTarget = target;
+            cursorItemId = cursorItem;
         }
 
         public void SetCameraViewpoint(MapViewpoint viewpoint)
@@ -706,10 +723,12 @@ namespace Assets.Scripts
             {
                 if (closestAnim.State == SpriteState.Dead && closestAnim.Type != SpriteType.Player)
                     return null;
+                if (closestAnim.IsHidden)
+                    return null;
                 return closestAnim;
             }
 
-            var isOk = closestAnim.State != SpriteState.Dead;
+            var isOk = closestAnim.State != SpriteState.Dead && !closestAnim.IsHidden;
             var isAlly = closestAnim.Controllable.IsAlly;
 
 
@@ -717,6 +736,9 @@ namespace Assets.Scripts
             {
                 var hit = hits[i];
                 var anim = GetHitAnimator(hit);
+                
+                if (anim.IsHidden)
+                    continue;
 
                 void MakeTarget()
                 {
@@ -964,8 +986,12 @@ namespace Assets.Scripts
                     NetworkManager.Instance.SendAttack(mouseTarget.Id);
                 else
                 {
-                    NetworkManager.Instance.SendSingleTargetSkillAction(mouseTarget.Id, cursorSkill, cursorSkillLvl);
+                    if(!isCursorSkillItem)
+                        NetworkManager.Instance.SendSingleTargetSkillAction(mouseTarget.Id, cursorSkill, cursorSkillLvl);
+                    else
+                        NetworkManager.Instance.SendUseItem(cursorItemId, mouseTarget.Id);
                     hasSkillOnCursor = false;
+                    isCursorSkillItem = false;
                 }
 
                 return displayCursor;
@@ -1162,6 +1188,9 @@ namespace Assets.Scripts
                     return;
                 case "HealHigh":
                     HealEffect.Create(target, 2);
+                    return;
+                case "Hiding":
+                    HideEffect.AttachHideEffect(target);
                     return;
             }
 
@@ -1393,7 +1422,10 @@ namespace Assets.Scripts
         public void Update()
         {
             if (IsInErrorState && Input.GetKeyDown(KeyCode.Space))
+            {
+                NetworkManager.IsLoaded = false;
                 SceneManager.LoadScene(0);
+            }
 
             if (Target == null)
                 return;
@@ -1642,7 +1674,13 @@ namespace Assets.Scripts
             }
             else
             {
-                UiManager.Instance.ActionTextDisplay.SetSkillTargeting(cursorSkill, cursorSkillLvl);
+                if(!isCursorSkillItem)
+                    UiManager.Instance.ActionTextDisplay.SetSkillTargeting(cursorSkill, cursorSkillLvl);
+                else
+                {
+                    var item = PlayerState.Inventory.GetInventoryItem(cursorItemId);
+                    UiManager.Instance.ActionTextDisplay.SetItemTargeting(item.ProperName(), cursorSkillLvl);
+                }
                 CursorManager.UpdateCursor(cursor, cursorSkillLvl);
             }
 

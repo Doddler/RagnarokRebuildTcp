@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
@@ -16,6 +17,7 @@ public abstract class SkillHandlerBase
     protected const int DefaultMagicCastRange = 9;
 
     public virtual bool IsAreaTargeted => false;
+    public virtual bool UsableWhileHidden => false;
     public virtual bool ShouldSkillCostSp(CombatEntity source) => true;
     public virtual float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0f;
     public virtual int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 0;
@@ -54,6 +56,12 @@ public abstract class SkillHandlerBase
 
     public virtual SkillValidationResult StandardValidation(CombatEntity source, CombatEntity? target, Position position)
     {
+        if (source.Character.Type == CharacterType.Player)
+        {
+            if (!UsableWhileHidden && source.HasBodyState(BodyStateFlags.Hidden))
+                return SkillValidationResult.UnusableWhileHidden;
+        }
+
         if (target != null)
         {
             if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, target.Character.Position))
@@ -129,7 +137,6 @@ public class MonsterSkillHandlerAttribute : Attribute
     }
 }
 
-
 public struct SkillCastInfo
 {
     public Entity TargetEntity;
@@ -137,10 +144,11 @@ public struct SkillCastInfo
     public CharacterSkill Skill;
     public int Level;
     public float CastTime;
+    public short ItemSource;
     public sbyte Range { get; set; }
     public bool IsIndirect { get; set; }
     public bool HideName { get; set; }
 
     public bool IsValid => Level > 0 && Level <= 30;
-    public void Clear() { Level = 0; Range = -1; IsIndirect = false; HideName = false; }
+    public void Clear() { Level = 0; Range = -1; ItemSource = -1; IsIndirect = false; HideName = false; }
 }

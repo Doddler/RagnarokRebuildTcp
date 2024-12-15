@@ -131,9 +131,7 @@ public class WorldObject : IEntityAutoReset
     public bool IsAtDestination => !IsMoving || TargetPosition == Position;
 
     public bool StateCanSit => State == CharacterState.Idle || State == CharacterState.Sitting;
-
-    public bool StateCanAttack => State == CharacterState.Idle || State == CharacterState.Cloaking ||
-                                  State == CharacterState.Moving;
+    public bool StateCanAttack => State == CharacterState.Idle || State == CharacterState.Moving;
 
 
 #if DEBUG
@@ -424,7 +422,10 @@ public class WorldObject : IEntityAutoReset
         if (Type != CharacterType.Player)
             return;
 
-        if (State == CharacterState.Moving || State == CharacterState.Dead || State == CharacterState.Hide)
+        if (State == CharacterState.Moving || State == CharacterState.Dead)
+            return;
+
+        if (CombatEntity.HasBodyState(BodyStateFlags.Hidden) || Player.GetStat(CharacterStat.Disabled) > 0)
             return;
 
         if (isSitting)
@@ -514,14 +515,19 @@ public class WorldObject : IEntityAutoReset
 
     public bool CanMove()
     {
-        if (State == CharacterState.Sitting || State == CharacterState.Dead || State == CharacterState.Hide)
+        if (State == CharacterState.Sitting || State == CharacterState.Dead)
             return false;
-
+        
         if (MoveSpeed <= 0)
             return false;
 
-        if (Type != CharacterType.NPC && CombatEntity.GetStat(CharacterStat.MoveSpeedBonus) < -100)
-            return false;
+        if (Type != CharacterType.NPC)
+        {
+            if(CombatEntity.GetStat(CharacterStat.MoveSpeedBonus) < -100)
+                return false;
+            if (CombatEntity.HasBodyState(BodyStateFlags.Hidden))
+                return false;
+        }
 
         return true;
     }

@@ -108,6 +108,7 @@ OnTimer 2000:
 
 SkillHandler("TARGET_DUMMY") {
     StateAny:
+	TryCast(Hiding, 1, 100%, 0.5s, 5s);
     TryCast(Heal, 9999, 1000, 1500, 5000, EasyInterrupt)[HpPercent <= 99];
     //TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
 	//TryCast(ChargeArrow, 1, 100%, 0.8s, 5s);

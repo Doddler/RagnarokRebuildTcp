@@ -1,333 +1,345 @@
-Item("Poring_Card") { OnValidate: return false; OnEquip: }
-Item("Fabre_Card") { OnValidate: return false; OnEquip: }
-Item("Pupa_Card") { OnValidate: return false; OnEquip: }
-Item("Drops_Card") { OnValidate: return false; OnEquip: }
-Item("Santa_Poring_Card") { OnValidate: return false; OnEquip: }
-Item("Lunatic_Card") { OnValidate: return false; OnEquip: }
-Item("Peco_Peco_Egg_Card") { OnValidate: return false; OnEquip: }
-Item("Picky_Card") { OnValidate: return false; OnEquip: }
-Item("Chonchon_Card") { OnValidate: return false; OnEquip: }
-Item("Willow_Card") { OnValidate: return false; OnEquip: }
-Item("Picky_Egg_Card") { OnValidate: return false; OnEquip: }
-Item("Thief_Bug_Egg_Card") { OnValidate: return false; OnEquip: }
-Item("Ant_Egg_Card") { OnValidate: return false; OnEquip: }
-Item("Roda_Frog_Card") { OnValidate: return false; OnEquip: }
-Item("Condor_Card") { OnValidate: return false; OnEquip: }
-Item("Thief_Bug_Card") { OnValidate: return false; OnEquip: }
-Item("Savage_Babe_Card") { OnValidate: return false; OnEquip: }
-Item("Andre_Larva_Card") { OnValidate: return false; OnEquip: }
-Item("Hornet_Card") { OnValidate: return false; OnEquip: }
-Item("Familiar_Card") { OnValidate: return false; OnEquip: }
-Item("Rocker_Card") { OnValidate: return false; OnEquip: }
-Item("Spore_Card") { OnValidate: return false; OnEquip: }
-Item("Baby_Desert_Wolf_Card") { OnValidate: return false; OnEquip: }
-Item("Plankton_Card") { OnValidate: return false; OnEquip: }
-Item("Skeleton_Card") { OnValidate: return false; OnEquip: }
-Item("Female_Thief_Bug_Card") { OnValidate: return false; OnEquip: }
-Item("Kukre_Card") { OnValidate: return false; OnEquip: }
-Item("Tarou_Card") { OnValidate: return false; OnEquip: }
-Item("Wolf_Card") { OnValidate: return false; OnEquip: }
-Item("Mandragora_Card") { OnValidate: return false; OnEquip: }
-Item("Peco_Peco_Card") { OnValidate: return false; OnEquip: }
-Item("Ambernite_Card") { OnValidate: return false; OnEquip: }
-Item("Poporing_Card") { OnValidate: return false; OnEquip: }
-Item("Wormtail_Card") { OnValidate: return false; OnEquip: }
-Item("Hydra_Card") { OnValidate: return false; OnEquip: }
-Item("Muka_Card") { OnValidate: return false; OnEquip: }
-Item("Boa_Card") { OnValidate: return false; OnEquip: }
-Item("Zombie_Card") { OnValidate: return false; OnEquip: }
-Item("Stainer_Card") { OnValidate: return false; OnEquip: }
-Item("Creamy_Card") { OnValidate: return false; OnEquip: }
-Item("Coco_Card") { OnValidate: return false; OnEquip: }
-Item("Steel_Chonchon_Card") { OnValidate: return false; OnEquip: }
-Item("Andre_Card") { OnValidate: return false; OnEquip: }
-Item("Smokie_Card") { OnValidate: return false; OnEquip: }
-Item("Horn_Card") { OnValidate: return false; OnEquip: }
-Item("Martin_Card") { OnValidate: return false; OnEquip: }
-Item("Ghostring_Card") { OnValidate: return false; OnEquip: }
-Item("Poison_Spore_Card") { OnValidate: return false; OnEquip: }
-Item("Vadon_Card") { OnValidate: return false; OnEquip: }
-Item("Male_Thief_Bug_Card") { OnValidate: return false; OnEquip: }
-Item("Yoyo_Card") { OnValidate: return false; OnEquip: }
-Item("Elder_Willow_Card") { OnValidate: return false; OnEquip: }
-Item("Vitata_Card") { OnValidate: return false; OnEquip: }
-Item("Angeling_Card") { OnValidate: return false; OnEquip: }
-Item("Marina_Card") { OnValidate: return false; OnEquip: }
-Item("Dustiness_Card") { OnValidate: return false; OnEquip: }
-Item("Metaller_Card") { OnValidate: return false; OnEquip: }
-Item("Thara_Frog_Card") { OnValidate: return false; OnEquip: }
-Item("Soldier_Andre_Card") { OnValidate: return false; OnEquip: }
-Item("Goblin_Card") { OnValidate: return false; OnEquip: }
-Item("Cornutus_Card") { OnValidate: return false; OnEquip: }
-Item("Anaconda_Card") { OnValidate: return false; OnEquip: }
-Item("Caramel_Card") { OnValidate: return false; OnEquip: }
-Item("Zerom_Card") { OnValidate: return false; OnEquip: }
-Item("Kaho_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Warrior_Card") { OnValidate: return false; OnEquip: }
-Item("Megalodon_Card") { OnValidate: return false; OnEquip: }
-Item("Scorpion_Card") { OnValidate: return false; OnEquip: }
-Item("Drainliar_Card") { OnValidate: return false; OnEquip: }
-Item("Eggyra_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Zombie_Card") { OnValidate: return false; OnEquip: }
-Item("Golem_Card") { OnValidate: return false; OnEquip: }
-Item("Pirate_Skel_Card") { OnValidate: return false; OnEquip: }
-Item("Bigfoot_Card") { OnValidate: return false; OnEquip: }
-Item("Argos_Card") { OnValidate: return false; OnEquip: }
-Item("Magnolia_Card") { OnValidate: return false; OnEquip: }
-Item("Phen_Card") { OnValidate: return false; OnEquip: }
-Item("Savage_Card") { OnValidate: return false; OnEquip: }
-Item("Mantis_Card") { OnValidate: return false; OnEquip: }
-Item("Flora_Card") { OnValidate: return false; OnEquip: }
-Item("Hode_Card") { OnValidate: return false; OnEquip: }
-Item("Desert_Wolf_Card") { OnValidate: return false; OnEquip: }
-Item("Rafflesia_Card") { OnValidate: return false; OnEquip: }
-Item("Marine_Sphere_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Skeleton_Card") { OnValidate: return false; OnEquip: }
-Item("Soldier_Skeleton_Card") { OnValidate: return false; OnEquip: }
-Item("Giearth_Card") { OnValidate: return false; OnEquip: }
-Item("Frilldora_Card") { OnValidate: return false; OnEquip: }
-Item("Swordfish_Card") { OnValidate: return false; OnEquip: }
-Item("Munak_Card") { OnValidate: return false; OnEquip: }
-Item("Kobold_Card") { OnValidate: return false; OnEquip: }
-Item("Skel_Worker_Card") { OnValidate: return false; OnEquip: }
-Item("Obeaune_Card") { OnValidate: return false; OnEquip: }
-Item("Archer_Skeleton_Card") { OnValidate: return false; OnEquip: }
-Item("Marse_Card") { OnValidate: return false; OnEquip: }
-Item("Zenorc_Card") { OnValidate: return false; OnEquip: }
-Item("Matyr_Card") { OnValidate: return false; OnEquip: }
-Item("Dokebi_Card") { OnValidate: return false; OnEquip: }
-Item("Pasana_Card") { OnValidate: return false; OnEquip: }
-Item("Sohee_Card") { OnValidate: return false; OnEquip: }
-Item("Sandman_Card") { OnValidate: return false; OnEquip: }
-Item("Whisper_Card") { OnValidate: return false; OnEquip: }
-Item("Horong_Card") { OnValidate: return false; OnEquip: }
-Item("Requiem_Card") { OnValidate: return false; OnEquip: }
-Item("Marc_Card") { OnValidate: return false; OnEquip: }
-Item("Mummy_Card") { OnValidate: return false; OnEquip: }
-Item("Verit_Card") { OnValidate: return false; OnEquip: }
-Item("Myst_Card") { OnValidate: return false; OnEquip: }
-Item("Jakk_Card") { OnValidate: return false; OnEquip: }
-Item("Ghoul_Card") { OnValidate: return false; OnEquip: }
-Item("Strouf_Card") { OnValidate: return false; OnEquip: }
-Item("Marduk_Card") { OnValidate: return false; OnEquip: }
-Item("Marionette_Card") { OnValidate: return false; OnEquip: }
-Item("Argiope_Card") { OnValidate: return false; OnEquip: }
-Item("Hunter_Fly_Card") { OnValidate: return false; OnEquip: }
-Item("Isis_Card") { OnValidate: return false; OnEquip: }
-Item("Sidewinder_Card") { OnValidate: return false; OnEquip: }
-Item("Earth_Petite_Card") { OnValidate: return false; OnEquip: }
-Item("Bathory_Card") { OnValidate: return false; OnEquip: }
-Item("Sky_Petite_Card") { OnValidate: return false; OnEquip: }
-Item("Phreeoni_Card") { OnValidate: return false; OnEquip: }
-Item("Deviruchi_Card") { OnValidate: return false; OnEquip: }
-Item("Eddga_Card") { OnValidate: return false; OnEquip: }
-Item("Medusa_Card") { OnValidate: return false; OnEquip: }
-Item("Deviace_Card") { OnValidate: return false; OnEquip: }
-Item("Minorous_Card") { OnValidate: return false; OnEquip: }
-Item("Nightmare_Card") { OnValidate: return false; OnEquip: }
-Item("Golden_Thief_Bug_Card") { OnValidate: return false; OnEquip: }
-Item("Baphomet_Jr._Card") { OnValidate: return false; OnEquip: }
-Item("Moonlight_Flower_Card") { OnValidate: return false; OnEquip: }
-Item("Mistress_Card") { OnValidate: return false; OnEquip: }
-Item("Raydric_Card") { OnValidate: return false; OnEquip: }
-Item("Dracula_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Lord_Card") { OnValidate: return false; OnEquip: }
-Item("Khalitzburg_Card") { OnValidate: return false; OnEquip: }
-Item("Drake_Card") { OnValidate: return false; OnEquip: }
-Item("Anubis_Card") { OnValidate: return false; OnEquip: }
-Item("Joker_Card") { OnValidate: return false; OnEquip: }
-Item("Abyssal_Knight_Card") { OnValidate: return false; OnEquip: }
-Item("Evil_Druid_Card") { OnValidate: return false; OnEquip: }
-Item("Doppelganger_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Hero_Card") { OnValidate: return false; OnEquip: }
-Item("Osiris_Card") { OnValidate: return false; OnEquip: }
-Item("Beelzebub_Card") { OnValidate: return false; OnEquip: }
-Item("Maya_Card") { OnValidate: return false; OnEquip: }
-Item("Baphomet_Card") { OnValidate: return false; OnEquip: }
-Item("Pharaoh_Card") { OnValidate: return false; OnEquip: }
-Item("Gargoyle_Card") { OnValidate: return false; OnEquip: }
-Item("Goat_Card") { OnValidate: return false; OnEquip: }
+//cards all the cards!
+Item("Poring_Card") {  OnEquip: AddStat(AddLuk, 2); AddStat(PerfectDodge, 10); }
+Item("Fabre_Card") {  OnEquip: AddStat(AddVit, 1); AddStat(AddMaxHp, 100); }
+Item("Pupa_Card") {  OnEquip: AddStat(AddMaxHp, 700); }
+Item("Drops_Card") {  OnEquip: AddStat(AddDex, 1); AddStat(AddHit, 3); }
+Item("Santa_Poring_Card") {  OnEquip: AddStat(AddAttackElementDark, 20); }
+Item("Lunatic_Card") {  OnEquip: AddStat(AddLuk, 2); AddStat(PerfectDodge, 10); AddStat(AddCrit, 10); }
+Item("Peco_Peco_Egg_Card") {  OnEquip: AddStat(AddAttackRaceFormless, 20); }
+Item("Picky_Card") {  OnEquip: AddStat(AddStr, 1); AddStat(AddAttackPower, 10); }
+Item("Chonchon_Card") {  OnEquip: AddStat(AddAgi, 1); AddStat(AddFlee, 2); }
+Item("Willow_Card") {  OnEquip: AddStat(AddMaxSp, 80); }
+Item("Picky_Egg_Card") {  OnEquip: AddStat(AddVit, 1); AddStat(AddMaxHp, 100); }
+Item("Thief_Bug_Egg_Card") {  OnEquip: AddStat(AddMaxHp, 400); }
+Item("Ant_Egg_Card") {  OnEquip: AddStat(AddMaxHpPercent, 5); }
+Item("Roda_Frog_Card") {  OnEquip: AddStat(AddMaxHp, 400); AddStat(AddMaxSp, 50); }
+Item("Condor_Card") {  OnEquip: AddStat(AddFlee, 10); }
+Item("Thief_Bug_Card") {  OnEquip: AddStat(AddAgi, 1); }
+Item("Savage_Babe_Card") {  OnEquip: } //add stun change 5% on melee/range
+Item("Andre_Larva_Card") {  OnEquip: AddStat(AddInt, 1); AddStat(AddMaxSp, 10); }
+Item("Hornet_Card") {  OnEquip: AddStat(AddStr, 1); AddStat(AddAttackPower, 3); }
+Item("Familiar_Card") {  OnEquip: AddStat(AddAttackPower, 5);  } //add chance to blind 5% on melee/range
+Item("Rocker_Card") {  OnEquip: AddStat(AddDex, 1); AddStat(AddAttackPower, 5); }
+Item("Spore_Card") {  OnEquip: AddStat(AddVit, 2); }
+Item("Baby_Desert_Wolf_Card") {  OnEquip: AddStat(AddInt, 1); }
+Item("Plankton_Card") {  OnEquip: AddStat(AddAttackPower, 5); } //add 5% chance to sleep on melee/range
+Item("Skeleton_Card") {  OnEquip: AddStat(AddAttackPower, 10); } //add 2% chance to stun on melee/range
+Item("Female_Thief_Bug_Card") {  OnEquip: AddStat(AddAgi, 1); AddStat(AddFlee, 1); }
+Item("Kukre_Card") {  OnEquip: AddStat(AddAgi, 2); }
+Item("Tarou_Card") {  OnEquip: AddStat(AddStr, 2); }
+Item("Wolf_Card") {  OnEquip: AddStat(AddAttackPower, 15); AddStat(AddCrit, 10); }
+Item("Mandragora_Card") {  OnEquip: AddStat(AddAttackElementWind, 20); }
+Item("Peco_Peco_Card") {  OnEquip: AddStat(AddMaxHpPercent, 10); }
+Item("Ambernite_Card") {  OnEquip: AddStat(AddDef, 2); }
+Item("Poporing_Card") {  OnEquip: } //enable skill detoxify
+Item("Wormtail_Card") {  OnEquip: AddStat(AddDex, 2); } 
+Item("Hydra_Card") {  OnEquip: AddStat(AddAttackRaceDemihuman, 20); }
+Item("Muka_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, 10); }
+Item("Boa_Card") {  OnEquip: AddStat(AddAttackPower, 5); } //add 5% chance to poison on melee/range
+Item("Zombie_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, 20); }
+Item("Stainer_Card") {  OnEquip: AddStat(AddDef, 1); } //add 20% resist to silence
+Item("Creamy_Card") {  OnEquip: } //enable teleport 1
+Item("Coco_Card") {  OnEquip: AddStat(AddDef, 1); } //add 20% resist to sleep
+Item("Steel_Chonchon_Card") {  OnEquip: AddStat(AddDef, 2); AddStat(AddResistElementWind, 5); }
+Item("Andre_Card") {  OnEquip: AddStat(AddAttackPower, 20); }
+Item("Smokie_Card") {  OnEquip: } //enable skill hiding
+Item("Horn_Card") {  OnEquip: AddStat(AddResistRangedAttack, 35); }
+Item("Martin_Card") {  OnEquip: AddStat(AddDef, 1); } //add 20% resist to blind
+Item("Ghostring_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, -25); } //change armor property to ghost
+Item("Poison_Spore_Card") {  OnEquip: } //add skill Envenom
+Item("Vadon_Card") { OnEquip: AddStat(AddAttackElementFire, 20); }
+Item("Male_Thief_Bug_Card") { OnEquip: AddStat(AddAgi, 2); }
+Item("Yoyo_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(PerfectDodge, 50); }
+Item("Elder_Willow_Card") { OnEquip: AddStat(AddInt, 2); }
+Item("Vitata_Card") { OnEquip: } //enable heal 1 skill, add 25% sp consumption
+Item("Angeling_Card") { OnEquip: } //change armor property to holy
+Item("Marina_Card") { OnEquip: AddStat(AddAttackPower, 5); } //add 5% chance to freeze on melee/range
+Item("Dustiness_Card") { OnEquip: AddStat(AddResistElementWind, 30); AddStat(AddFlee, 5); }
+Item("Metaller_Card") { OnEquip: AddStat(AddAttackPower, 5); } //add 5% silence on attack
+Item("Thara_Frog_Card") { OnEquip: AddStat(AddResistRaceDemihuman, 30); }
+Item("Soldier_Andre_Card") { OnEquip: AddStat(AddResistRacePlant, 30); }
+Item("Goblin_Card") { OnEquip: AddStat(AddAttackRaceBeast, 20); }
+Item("Cornutus_Card") { OnEquip: AddStat(AddDef, 1); } //make armor unbreakable
+Item("Anaconda_Card") { OnEquip: AddStat(AddAttackElementPoison, 20); }
+Item("Caramel_Card") { OnEquip: AddStat(AddAttackRaceInsect, 20); }
+Item("Zerom_Card") { OnEquip: AddStat(AddDex, 3); }
+Item("Kaho_Card") { OnEquip: AddStat(AddAttackElementEarth, 20); }
+Item("Orc_Warrior_Card") { OnEquip: AddStat(AddResistRaceBeast, 30); }
+Item("Megalodon_Card") { OnEquip: AddStat(AddDef, 1); } //add 20% resist to freezing
+Item("Scorpion_Card") { OnEquip: AddStat(AddAttackRacePlant, 20); }
+Item("Drainliar_Card") { OnEquip:AddStat(AddAttackElementWater, 20); }
+Item("Eggyra_Card") { OnEquip: AddStat(AddSpRecoveryPercent, 15); }
+Item("Orc_Zombie_Card") { OnEquip: AddStat(AddResistElementUndead, 30); AddStat(AddFlee, 5); }
+Item("Golem_Card") { OnEquip: AddStat(AddAttackPower, 5); } //make weapon unbreakable
+Item("Pirate_Skel_Card") { OnEquip: } //enable skill discount 5
+Item("Bigfoot_Card") { OnEquip: AddStat(AddResistRaceBeast, 30); }
+Item("Argos_Card") { OnEquip: AddStat(AddDef, 1); } //add 20% resist to stone curse
+Item("Magnolia_Card") { OnEquip: AddStat(AddAttackPower, 5); } //add 5% chance to curse on melee/range
+Item("Phen_Card") { OnEquip: } //make cast uninteruptable, add 25% cast time
+Item("Savage_Card") { OnEquip: AddStat(AddVit, 3); }
+Item("Mantis_Card") { OnEquip: AddStat(AddStr, 3); }
+Item("Flora_Card") { OnEquip: AddStat(AddAttackRaceAquatic, 20); }
+Item("Hode_Card") { OnEquip: AddStat(AddResistElementEarth, 30); AddStat(AddFlee, 5); }
+Item("Desert_Wolf_Card") { OnEquip: AddStat(AddAttackSmallSize, 15); AddStat(AddAttackPower, 5); }
+Item("Rafflesia_Card") { OnEquip: AddStat(AddResistRaceAquatic, 30); }
+Item("Marine_Sphere_Card") { OnEquip: } //enable skill magnum break
+Item("Orc_Skeleton_Card") { OnEquip: AddStat(AddAttackElementHoly, 20); }
+Item("Soldier_Skeleton_Card") { OnEquip: AddStat(AddCrit, 90); }
+Item("Giearth_Card") { OnEquip: AddStat(AddResistElementEarth, 15); } //add 100% resist to confusion
+Item("Frilldora_Card") { OnEquip: } //enable skill cloaking
+Item("Swordfish_Card") { OnEquip: AddStat(AddDef, 1); } //change armor property to water
+Item("Munak_Card") { OnEquip: AddStat(AddDef, 1); AddStat(AddResistElementEarth, 5); } //add 15% resist to stonecurse
+Item("Kobold_Card") { OnEquip: AddStat(AddCrit, 40); AddStat(AddStr, 1); }
+Item("Skel_Worker_Card") { OnEquip: AddStat(AddAttackPower, 5); AddStat(AddAttackMidSize, 15); }
+Item("Obeaune_Card") { OnEquip: } //enable skill cure
+Item("Archer_Skeleton_Card") { OnEquip: AddStat(AddAttackRangedAttack, 10); }
+Item("Marse_Card") { OnEquip: AddStat(AddResistElementWater, 30); AddStat(AddFlee, 5); }
+Item("Zenorc_Card") { OnEquip: AddStat(AddAttackPower, 10); } //should add a 4% chance to poison on melee/range
+Item("Matyr_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(AddMaxHpPercent, 10); }
+Item("Dokebi_Card") { OnEquip: AddStat(AddDef, 1); } //should change armor property to wind
+Item("Pasana_Card") { OnEquip: AddStat(AddDef, 1); } //should change armor property to fire
+Item("Sohee_Card") { OnEquip: AddStat(AddMaxSpPercent, 15); AddStat(AddSpRecoveryPercent, 3); }
+Item("Sandman_Card") { OnEquip: AddStat(AddDef, 1); } //should change armor property to earth
+Item("Whisper_Card") { OnEquip: AddStat(AddFlee, 20); AddStat(AddResistElementGhost, -20); }
+Item("Horong_Card") { OnEquip: } //enable skill sight
+Item("Requiem_Card") { OnEquip: } //should add a 5% chance to confuse on attack
+Item("Marc_Card") { OnEquip: AddStat(AddResistElementWater, 5); } //should add 100% resist to freezing
+Item("Mummy_Card") { OnEquip: AddStat(AddHit, 20); }
+Item("Verit_Card") { OnEquip: AddStat(AddMaxHpPercent, 8); AddStat(AddMaxSpPercent, 8); }
+Item("Myst_Card") { OnEquip: AddStat(AddResistElementPoison, 30); AddStat(AddFlee, 5); }
+Item("Jakk_Card") { OnEquip: AddStat(AddResistElementFire, 30); AddStat(AddFlee, 5); }
+Item("Ghoul_Card") { OnEquip: AddStat(AddDef, 1); } //should add 20% resist to poison status
+Item("Strouf_Card") { OnEquip: AddStat(AddAttackRaceDemon, 20); }
+Item("Marduk_Card") { OnEquip: } //should add 100% resist to silence
+Item("Marionette_Card") { OnEquip: AddStat(AddResistElementGhost, 30); AddStat(AddFlee, 5); }
+Item("Argiope_Card") { OnEquip: AddStat(AddDef, 1); } //should change armor property to poison
+Item("Hunter_Fly_Card") { OnEquip: } //should add 3% chance to drain 15% of damage as HP
+Item("Isis_Card") { OnEquip: AddStat(AddResistElementDark, 30); AddStat(AddFlee, 5); }
+Item("Sidewinder_Card") { OnEquip: AddStat(DoubleAttackChance, 5); }
+Item("Earth_Petite_Card") { OnEquip: AddStat(AddAttackRaceDragon, 20); }
+Item("Bathory_Card") { OnEquip: } //should change armor property to shadow
+Item("Sky_Petite_Card") { OnEquip: AddStat(AddResistRaceDragon, 30); }
+Item("Phreeoni_Card") { OnEquip: AddStat(AddHit, 100); }
+Item("Deviruchi_Card") { OnEquip: AddStat(AddStr, 1); } //should add 100% resist to blind
+Item("Eddga_Card") { OnEquip: AddStat(AddMaxHpPercent, -25); } //should add permanent endure effect
+Item("Medusa_Card") { OnEquip: AddStat(AddResistRaceDemon, 15); } //should add 100% resist to stone curse
+Item("Deviace_Card") { OnEquip: AddStat(AddAttackRaceDemihuman, 7); AddStat(AddAttackRaceBeast, 7); AddStat(AddAttackRaceInsect, 7); AddStat(AddAttackRacePlant, 7); }
+Item("Minorous_Card") { OnEquip: AddStat(AddAttackLargeSize, 15); }
+Item("Nightmare_Card") { OnEquip: AddStat(AddAgi, 1); } //should add 100% resist to sleep status
+Item("Golden_Thief_Bug_Card") { OnEquip: } //should add immunity to magic at the cost of +100% SP consumption
+Item("Baphomet_Jr._Card") { OnEquip: AddStat(AddAgi, 3); AddStat(AddCrit, 10); }
+Item("Moonlight_Flower_Card") { OnEquip: AddStat(MoveSpeedBonus, 25); }
+Item("Mistress_Card") { OnEquip: } //should remove gemstone cost at the expense of +25% sp cost
+Item("Raydric_Card") { OnEquip: AddStat(AddResistElementNeutral, 20); }
+Item("Dracula_Card") { OnEquip: } //should add 10% chance to drain 5% of damage as SP
+Item("Orc_Lord_Card") { OnEquip: } //should add reflect 30% of incoming physical damage
+Item("Khalitzburg_Card") { OnEquip: AddStat(AddResistRaceDemon, 30); } //
+Item("Drake_Card") { OnEquip: } //who the fuck knows? I don't have size penalties so it'll have to change...
+Item("Anubis_Card") { OnEquip: AddStat(AddResistRaceAngel, 30); }
+Item("Joker_Card") { OnEquip: } //enable skill steal
+Item("Abyssal_Knight_Card") { OnEquip: AddStat(AddAttackSpecialBoss, 25); }
+Item("Evil_Druid_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddDef, 1); } //should make armor undead property
+Item("Doppelganger_Card") { OnEquip: AddStat(AspdBonus, 15); }
+Item("Orc_Hero_Card") { OnEquip: AddStat(AddVit, 3); } //should add 100% resist to stun
+Item("Osiris_Card") { OnEquip: } //should make it so you revive with 100% hp/sp
+Item("Beelzebub_Card") { OnValidate: return false; OnEquip: } //should reduce spell cast time by 30%
+Item("Maya_Card") {  OnEquip: } //should add 50% magic reflect
+Item("Baphomet_Card") {  OnEquip: } //should add splash damage at the cost of 10 hit
+Item("Pharaoh_Card") {  OnEquip: } //should reduce sp cost by 30%
+Item("Gargoyle_Card") {  OnEquip: } //add item drop box of thunder 1% when killing insect monsters
+Item("Goat_Card") {  OnEquip: } //def+2 mdef+5 if refine is < 6
 Item("Gajomart_Card") { OnValidate: return false; OnEquip: }
-Item("Galapago_Card") { OnValidate: return false; OnEquip: }
-Item("Crab_Card") { OnValidate: return false; OnEquip: }
+Item("Galapago_Card") { OnEquip: } //add 3% chance to get apple, banana, or carrot juice when killing insects, and boosts healing fo those items by 50%
+Item("Crab_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add 30% bonus damage against aster, adn 30% chance to get sashimi when killing fish
 Item("Dumpling_Kid_Card") { OnValidate: return false; OnEquip: }
-Item("Goblin_Leader_Card") { OnValidate: return false; OnEquip: }
-Item("Goblin_Steamrider_Card") { OnValidate: return false; OnEquip: }
-Item("Goblin_Archer_Card") { OnValidate: return false; OnEquip: }
+Item("Goblin_Leader_Card") { OnEquip: } //should add 30% damage to all goblins
+Item("Goblin_Steamrider_Card") { OnEquip:AddStat(AddCritDamage, 10); } //add 7% chance to crit vs formless
+Item("Goblin_Archer_Card") { OnEquip: OnEquip:AddStat(AddCritDamage, 10); } //add 7% chance to crit vs undead
 Item("Sky_Deleter_Card") { OnValidate: return false; OnEquip: }
-Item("Nine_Tail_Card") { OnValidate: return false; OnEquip: }
-Item("Firelock_Soldier_Card") { OnValidate: return false; OnEquip: }
-Item("Grand_Peco_Card") { OnValidate: return false; OnEquip: }
-Item("Grizzly_Card") { OnValidate: return false; OnEquip: }
-Item("Gryphon_Card") { OnValidate: return false; OnEquip: }
-Item("Gullinbursti_Card") { OnValidate: return false; OnEquip: }
+Item("Nine_Tail_Card") { OnEquip: AddStat(AddAgi, 2); } //should add 20 flee if upgraded to +9
+Item("Firelock_Soldier_Card") { OnEquip: AddStat(AddStr, 2); } //should add 10% hp/sp if upgraded to +9
+Item("Grand_Peco_Card") { OnEquip: } //should auto-cast gloria when attacked
+Item("Grizzly_Card") { OnValidate: return false; OnEquip: } //should have a chance to blind when attacked
+Item("Gryphon_Card") { OnEquip: AddStat(AddFlee, 2); AddStat(AddCrit, 7); } //should add a 1% chance for swordsman to proc bowling bash 5
+Item("Gullinbursti_Card") { OnValidate: return false; OnEquip: } //should add 10% bonus exp from fish at a cost of 20% more damage
 Item("Gig_Card") { OnValidate: return false; OnEquip: }
 Item("Nightmare_Terror_Card") { OnValidate: return false; OnEquip: }
-Item("Nereid_Card") { OnValidate: return false; OnEquip: }
-Item("Dark_Lord_Card") { OnValidate: return false; OnEquip: }
-Item("Dark_Illusion_Card") { OnValidate: return false; OnEquip: }
-Item("Dark_Frame_Card") { OnValidate: return false; OnEquip: }
-Item("Dark_Priest_Card") { OnValidate: return false; OnEquip: }
-Item("The_Paper_Card") { OnValidate: return false; OnEquip: }
-Item("Demon_Fungus_Card") { OnValidate: return false; OnEquip: }
-Item("Deviling_Card") { OnValidate: return false; OnEquip: }
-Item("Poisonous_Toad_Card") { OnValidate: return false; OnEquip: }
-Item("Dullahan_Card") { OnValidate: return false; OnEquip: }
-Item("Dryad_Card") { OnValidate: return false; OnEquip: }
-Item("Dragon_Tail_Card") { OnValidate: return false; OnEquip: }
-Item("Dragon_Fly_Card") { OnValidate: return false; OnEquip: }
-Item("Driller_Card") { OnValidate: return false; OnEquip: }
-Item("Disguise_Card") { OnValidate: return false; OnEquip: }
-Item("Diabolic_Card") { OnValidate: return false; OnEquip: }
-Item("Vagabond_Wolf_Card") { OnValidate: return false; OnEquip: }
-Item("Lava_Golem_Card") { OnValidate: return false; OnEquip: }
-Item("Rideword_Card") { OnValidate: return false; OnEquip: }
-Item("Raggler_Card") { OnValidate: return false; OnEquip: }
-Item("Raydric_Archer_Card") { OnValidate: return false; OnEquip: }
-Item("Leib_Olmai_Card") { OnValidate: return false; OnEquip: }
-Item("Wraith_Dead_Card") { OnValidate: return false; OnEquip: }
-Item("Wraith_Card") { OnValidate: return false; OnEquip: }
-Item("Loli_Ruri_Card") { OnValidate: return false; OnEquip: }
-Item("Rotar_Zairo_Card") { OnValidate: return false; OnEquip: }
-Item("Lude_Card") { OnValidate: return false; OnEquip: }
-Item("Rybio_Card") { OnValidate: return false; OnEquip: }
-Item("Leaf_Cat_Card") { OnValidate: return false; OnEquip: }
-Item("Marin_Card") { OnValidate: return false; OnEquip: }
-Item("Mastering_Card") { OnValidate: return false; OnEquip: }
-Item("Maya_Purple_Card") { OnValidate: return false; OnEquip: }
-Item("Merman_Card") { OnValidate: return false; OnEquip: }
-Item("Megalith_Card") { OnValidate: return false; OnEquip: }
-Item("Majorous_Card") { OnValidate: return false; OnEquip: }
-Item("Mao_Guai_Card") { OnValidate: return false; OnEquip: }
-Item("Mutant_Dragonoid_Card") { OnValidate: return false; OnEquip: }
-Item("Mini_Demon_Card") { OnValidate: return false; OnEquip: }
-Item("Mimic_Card") { OnValidate: return false; OnEquip: }
-Item("Myst_Case_Card") { OnValidate: return false; OnEquip: }
-Item("Mistilteinn_Card") { OnValidate: return false; OnEquip: }
-Item("Miyabi_Doll_Card") { OnValidate: return false; OnEquip: }
-Item("Violy_Card") { OnValidate: return false; OnEquip: }
-Item("Wanderer_Card") { OnValidate: return false; OnEquip: }
-Item("Vocal_Card") { OnValidate: return false; OnEquip: }
-Item("Bongun_Card") { OnValidate: return false; OnEquip: }
-Item("Brilight_Card") { OnValidate: return false; OnEquip: }
-Item("Bloody_Murderer_Card") { OnValidate: return false; OnEquip: }
-Item("Blazer_Card") { OnValidate: return false; OnEquip: }
-Item("Sasquatch_Card") { OnValidate: return false; OnEquip: }
-Item("Enchanted_Peach_Tree_Card") { OnValidate: return false; OnEquip: }
-Item("Succubus_Card") { OnValidate: return false; OnEquip: }
-Item("Sage_Worm_Card") { OnValidate: return false; OnEquip: }
-Item("Solider_Card") { OnValidate: return false; OnEquip: }
-Item("Skeleton_General_Card") { OnValidate: return false; OnEquip: }
-Item("Skel_Prisoner_Card") { OnValidate: return false; OnEquip: }
-Item("Stalactic_Golem_Card") { OnValidate: return false; OnEquip: }
-Item("Stem_Worm_Card") { OnValidate: return false; OnEquip: }
-Item("Stone_Shooter_Card") { OnValidate: return false; OnEquip: }
-Item("Sting_Card") { OnValidate: return false; OnEquip: }
-Item("Spring_Rabbit_Card") { OnValidate: return false; OnEquip: }
-Item("Sleeper_Card") { OnValidate: return false; OnEquip: }
-Item("Cloud_Tower_Manager_Card") { OnValidate: return false; OnEquip: }
-Item("Shinobi_Card") { OnValidate: return false; OnEquip: }
-Item("Mi_Gao_Card") { OnValidate: return false; OnEquip: }
-Item("Hermit_Plant_Card") { OnValidate: return false; OnEquip: }
-Item("Baby_Leopard_Card") { OnValidate: return false; OnEquip: }
-Item("Anolian_Card") { OnValidate: return false; OnEquip: }
-Item("Christmas_Cookie_Card") { OnValidate: return false; OnEquip: }
-Item("Amon_Ra_Card") { OnValidate: return false; OnEquip: }
-Item("Owl_Duke_Card") { OnValidate: return false; OnEquip: }
-Item("Owl_Baron_Card") { OnValidate: return false; OnEquip: }
-Item("Iron_Fist_Card") { OnValidate: return false; OnEquip: }
-Item("Arclouse_Card") { OnValidate: return false; OnEquip: }
-Item("Archangeling_Card") { OnValidate: return false; OnEquip: }
+Item("Nereid_Card") { OnEquip: } //should add recover 5 sp when killing animal race
+Item("Dark_Lord_Card") { OnEquip: } //should add 10% chance to autospell meteor storm 5 when taking damage
+Item("Dark_Illusion_Card") { OnEquip: } //should lower cast time by 10% at the cost of 10% max hp/sp
+Item("Dark_Frame_Card") { OnEquip: } //should add a 20% chance to stone curse monsters that hit you with physical adamage
+Item("Dark_Priest_Card") { OnEquip: } //SOmething weird
+Item("The_Paper_Card") { OnEquip: AddStat(AddCritDamage, 20); } //should cost the user 1 sp per attack
+Item("Demon_Fungus_Card") { OnEquip: } //should add 20% chance to sleep monsters dealing physical damage
+Item("Deviling_Card") { OnEquip: 
+	AddStat(AddResistElementNeutral, 50);
+	AddStat(AddResistElementEarth, -50);
+	AddStat(AddResistElementWater, -50);
+	AddStat(AddResistElementFire, -50);
+	AddStat(AddResistElementWind, -50);
+	AddStat(AddResistElementPoison, -50);
+	AddStat(AddResistElementUndead, -50);
+	AddStat(AddResistElementDark, -50);
+	AddStat(AddResistElementHoly, -50);
+	AddStat(AddResistElementGhost, -50);
+}
+Item("Poisonous_Toad_Card") { OnEquip: } //should autospell poison
+Item("Dullahan_Card") { OnEquip: AddStat(AddCritDamage, 10); } //should add 7% chance crit to dragon
+Item("Dryad_Card") {  OnEquip: AddStat(AddResistElementEarth, 10); } //should add a chance to get yellow live when killing plants
+Item("Dragon_Tail_Card") {  OnEquip: AddStat(AddAgi, 1); AddStat(AddFlee, 10); } //should increase double strafe and arrow shower damage by 5%
+Item("Dragon_Fly_Card") {  OnEquip: AddStat(AddAgi, 1); } //should combo with wolf card
+Item("Driller_Card") {  OnEquip: } //should add sp 5 sp recovery when killing dragons
+Item("Disguise_Card") {  OnEquip: } //some silence shenanigans
+Item("Diabolic_Card") {  OnEquip: } //should add sp 5 sp recovery when killing demon
+Item("Vagabond_Wolf_Card") {  OnEquip: AddStat(AddStr, 1); } //should combo with wolf card
+Item("Lava_Golem_Card") { OnEquip: } //should add 30% damage vs golem
+Item("Rideword_Card") { OnEquip: AddStat(AddInt, 1); } //should add 1 int 1 mdef for acolytes
+Item("Raggler_Card") { OnEquip: AddStat(AddStr, 1); AddStat(AddVit, 1);}
+Item("Raydric_Archer_Card") { OnEquip: } //should add chance to get box of grudge when killin demon
+Item("Leib_Olmai_Card") { OnEquip: AddStat(AddResistElementFire, 10); } //should add a chance to get red blood when killing animals
+Item("Wraith_Dead_Card") { OnEquip: } //curse on attacked
+Item("Wraith_Card") { OnEquip: } //chance to drop giggling box when killing undead
+Item("Loli_Ruri_Card") { OnValidate: return false; OnEquip: } //autospell heal when attacked
+Item("Rotar_Zairo_Card") { OnEquip: AddStat(AddCritDamage, 10); } //Add 7% crit vs fish
+Item("Lude_Card") { OnValidate: return false; OnEquip: } //endure for novices
+Item("Rybio_Card") { OnEquip: } //stun resist
+Item("Leaf_Cat_Card") { OnEquip: AddStat(AddResistElementWater, 10); } //crystal blue from fish
+Item("Marin_Card") { OnEquip: } //add chance to get jellopy and giant jellopy on kill
+Item("Mastering_Card") { OnEquip: AddStat(AddLuk, 1); } //should combo with poring card
+Item("Maya_Purple_Card") { OnEquip: } //should allwo you to see hidden
+Item("Merman_Card") { OnEquip: AddStat(AddHpRecoveryPercent, 10); AddStat(AddSpRecoveryPercent, 10); }
+Item("Megalith_Card") { OnEquip: } //mdef when upgraded < +6
+Item("Majorous_Card") { OnEquip: } //chance to stun when taking damage
+Item("Mao_Guai_Card") { OnEquip: AddStat(AddAttackElementGhost, 20); }
+Item("Mutant_Dragonoid_Card") { OnEquip: AddStat(AddAttackPower, 15); } //should add a chance to autospell fireball
+Item("Mini_Demon_Card") { OnValidate: return false; OnEquip: } //+10% exp from animal but +20% damage taken
+Item("Mimic_Card") { OnEquip: } //chance to obtain old blue box
+Item("Myst_Case_Card") { OnEquip: } //chance to obtain gift box
+Item("Mistilteinn_Card") { OnEquip: AddStat(AddResistSmallSize, 25); AddStat(AddDef, 1); }
+Item("Miyabi_Doll_Card") { OnEquip: AddStat(AddMaxSpPercent, 10); } //+5% damage with frostdiver
+Item("Violy_Card") { OnValidate: return false; OnEquip: } //autospell frost joke
+Item("Wanderer_Card") { OnEquip: } //autospell intimidate
+Item("Vocal_Card") { OnEquip: AddStat(AddMDef, 3); }
+Item("Bongun_Card") { OnEquip: } //autospell bash, bonus damage vs munak
+Item("Brilight_Card") { OnEquip: } //silence when attacked
+Item("Bloody_Murderer_Card") { OnEquip: AddStat(AddCritDamage, 10); } //+7% crit vs demihuman
+Item("Blazer_Card") { OnValidate: return false; OnEquip: } //chance to get food item
+Item("Sasquatch_Card") { OnEquip: } //freezing when attacked
+Item("Enchanted_Peach_Tree_Card") { OnValidate: return false; OnEquip: } //autospell heal
+Item("Succubus_Card") { OnEquip: AddStat(AddMaxHp, 1000); AddStat(AddVit, -3); AddStat(AddHpRecoveryPercent, -20); }
+Item("Sage_Worm_Card") { OnEquip: } //chance to get gemstone
+Item("Solider_Card") { OnEquip: AddStat(AddDef, 2); AddStat(AddMDef, 2); }
+Item("Skeleton_General_Card") { OnEquip: } //+10% exp from insect but +20% damage
+Item("Skel_Prisoner_Card") { OnEquip: } //sleep when attacked
+Item("Stalactic_Golem_Card") { OnEquip: AddStat(AddDef, 1); } //resist stun 20%
+Item("Stem_Worm_Card") { OnEquip: } //change to get box of storms
+Item("Stone_Shooter_Card") { OnEquip: AddStat(AddHit, 10); AddStat(AddAttackPower, 10); }
+Item("Sting_Card") { OnEquip: AddStat(AddDef, 2); } //should add 5 mdef if shield is +9 or higher
+Item("Spring_Rabbit_Card") { OnEquip: } //meat drop and bonus meat healing
+Item("Sleeper_Card") { OnEquip: } //sleepy box on fish kill
+Item("Cloud_Tower_Manager_Card") { OnEquip: AddStat(AddInt, 1); } //should speed up casting by 5%
+Item("Shinobi_Card") { OnEquip: AddStat(AddAgi, 1); } //autospell cloaking when attacked
+Item("Mi_Gao_Card") { OnValidate: return false; OnEquip: } //-50% damage from woe guardians...
+Item("Hermit_Plant_Card") { OnValidate: return false; OnEquip: } //herb drops from plant and herb healing
+Item("Baby_Leopard_Card") { OnEquip: AddStat(AddLuk, 3); } //should make armor indestructable (for merchant only)
+Item("Anolian_Card") { OnEquip: } //should autospell improved concentration
+Item("Christmas_Cookie_Card") { OnEquip: } //+10% exp from angel but +20% damage received
+Item("Amon_Ra_Card") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); AddStat(AddVit, 1); } //should autospell kyrie
+Item("Owl_Duke_Card") { OnEquip: } //should autospell impositio
+Item("Owl_Baron_Card") { OnEquip: } //should autospell lex aeterna
+Item("Iron_Fist_Card") { OnEquip: } //+10% exp from formless but +20% damage received
+Item("Arclouse_Card") { OnEquip: } //def+2 mdef+3 if upgraded < +6
+Item("Archangeling_Card") { OnEquip: AddStat(AddMaxHp, 300); } //should boost hp/sp recovery if your luk is 77 or higher
 Item("Apocalypse_Card") { OnValidate: return false; OnEquip: }
 Item("Antonio_Card") { OnValidate: return false; OnEquip: }
-Item("Alarm_Card") { OnValidate: return false; OnEquip: }
-Item("Am_Mut_Card") { OnValidate: return false; OnEquip: }
-Item("Assaulter_Card") { OnValidate: return false; OnEquip: }
-Item("Aster_Card") { OnValidate: return false; OnEquip: }
-Item("Ancient_Mummy_Card") { OnValidate: return false; OnEquip: }
-Item("Ancient_Worm_Card") { OnValidate: return false; OnEquip: }
-Item("Executioner_Card") { OnValidate: return false; OnEquip: }
-Item("Elder_Card") { OnValidate: return false; OnEquip: }
-Item("Alligator_Card") { OnValidate: return false; OnEquip: }
-Item("Alice_Card") { OnValidate: return false; OnEquip: }
-Item("Tyrfing_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Lady_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Archer_Card") { OnValidate: return false; OnEquip: }
-Item("Wild_Rose_Card") { OnValidate: return false; OnEquip: }
+Item("Alarm_Card") { OnEquip: AddStat(AddMaxHp, 300) AddStat(AddVit, 1); } //should autocast sight when taking damage
+Item("Am_Mut_Card") { OnEquip: } //10% exp from human but +20% damage taken
+Item("Assaulter_Card") { OnEquip: AddStat(AddCritDamage, 10); } //add 7% crit to human
+Item("Aster_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add 30% damage to shellfish
+Item("Ancient_Mummy_Card") { OnEquip: } //should autospell signum crusis
+Item("Ancient_Worm_Card") { OnValidate: return false; OnEquip: } //+10% exp from demon but +20% damage taken
+Item("Executioner_Card") { OnEquip: AddStat(AddResistLargeSize, 25); AddStat(AddDef, 1); }
+Item("Elder_Card") { OnEquip: } //+40% damage to woe monsters
+Item("Alligator_Card") { OnEquip: AddStat(AddResistRangedAttack, 5); }
+Item("Alice_Card") { OnEquip: AddStat(AddResistSpecialNormal, -40); AddStat(AddResistSpecialBoss, 40); }
+Item("Tyrfing_Card") { OnEquip: AddStat(AddResistMidSize, 25); AddStat(AddDef, 1); }
+Item("Orc_Lady_Card") { OnEquip: } //+30% damage against orcs
+Item("Orc_Archer_Card") { OnEquip: } //add panting box when killing human mobs
+Item("Wild_Rose_Card") { OnEquip: AddStat(AddAgi, 1); } //should add 5 perfect dodge for thieves
 Item("Evil_Nymph_Card") { OnValidate: return false; OnEquip: }
 Item("Wooden_Golem_Card") { OnValidate: return false; OnEquip: }
 Item("Wootan_Shooter_Card") { OnValidate: return false; OnEquip: }
 Item("Wootan_Fighter_Card") { OnValidate: return false; OnEquip: }
 Item("Cloud_Hermit_Card") { OnValidate: return false; OnEquip: }
-Item("Samurai_Specter_Card") { OnValidate: return false; OnEquip: }
-Item("Wind_Ghost_Card") { OnValidate: return false; OnEquip: }
+Item("Samurai_Specter_Card") { OnEquip: } //should add ignore def on normal, lose hp and kill hp ercovery
+Item("Wind_Ghost_Card") { OnEquip: } //autospell jupitel thunder
 Item("Jing_Guai_Card") { OnValidate: return false; OnEquip: }
-Item("Eclipse_Card") { OnValidate: return false; OnEquip: }
+Item("Eclipse_Card") { OnEquip: AddStat(AddVit, 1); } //should combo with lunatic card
 Item("Explosion_Card") { OnValidate: return false; OnEquip: }
-Item("Injustice_Card") { OnValidate: return false; OnEquip: }
-Item("Incubus_Card") { OnValidate: return false; OnEquip: }
+Item("Injustice_Card") { OnEquip: } //should autospell sonic blow
+Item("Incubus_Card") { OnEquip: AddStat(AddInt, -3); AddStat(AddSpRecoveryPercent, -20); AddStat(AddMaxSp, 150); }
 Item("Giant_Spider_Card") { OnValidate: return false; OnEquip: }
 Item("Giant_Hornet_Card") { OnValidate: return false; OnEquip: }
-Item("Zhu_Po_Long_Card") { OnValidate: return false; OnEquip: }
-Item("Shellfish_Card") { OnValidate: return false; OnEquip: }
-Item("Zombie_Master_Card") { OnValidate: return false; OnEquip: }
-Item("Zombie_Prisoner_Card") { OnValidate: return false; OnEquip: }
-Item("Lord_of_The_Dead_Card") { OnValidate: return false; OnEquip: }
-Item("Zealotus_Card") { OnValidate: return false; OnEquip: }
+Item("Zhu_Po_Long_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(AddCrit, 3); }
+Item("Shellfish_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add +30% damage to crab
+Item("Zombie_Master_Card") { OnValidate: return false; OnEquip: } //sp recovery from undead
+Item("Zombie_Prisoner_Card") { OnEquip: } //bonus exp from undead but more damage taken
+Item("Lord_of_The_Dead_Card") { OnValidate: return false; OnEquip: } // kinds of status when attacking
+Item("Zealotus_Card") { OnEquip: AddStat(AddLuk, 2); } //autospell throw arrow and musical strike
 Item("Gibbet_Card") { OnValidate: return false; OnEquip: }
 Item("Earth_Deleter_Card") { OnValidate: return false; OnEquip: }
-Item("Geographer_Card") { OnValidate: return false; OnEquip: }
+Item("Geographer_Card") { OnEquip: } //autospell blessing
 Item("Zipper_Bear_Card") { OnValidate: return false; OnEquip: }
-Item("Tengu_Card") { OnValidate: return false; OnEquip: }
-Item("Greatest_General_Card") { OnValidate: return false; OnEquip: }
-Item("Chepet_Card") { OnValidate: return false; OnEquip: }
-Item("Choco_Card") { OnValidate: return false; OnEquip: }
-Item("Karakasa_Card") { OnValidate: return false; OnEquip: }
-Item("Kappa_Card") { OnValidate: return false; OnEquip: }
-Item("Carat_Card") { OnValidate: return false; OnEquip: }
+Item("Tengu_Card") { OnEquip: } //get healing items
+Item("Greatest_General_Card") { OnEquip: } //autospell summon spirit sphere
+Item("Chepet_Card") { OnEquip: } //autospell heal on target
+Item("Choco_Card") { OnEquip: AddStat(PerfectDodge, 50); AddStat(AddFlee, 10); }
+Item("Karakasa_Card") { OnEquip: } //autospell confusion
+Item("Kappa_Card") { OnEquip: } //mdef +8 when unupgraded
+Item("Carat_Card") { OnEquip: AddStat(AddInt, 2); } //+150SP when +9
 Item("Caterpillar_Card") { OnValidate: return false; OnEquip: }
-Item("Cat_O'_Nine_Tails_Card") { OnValidate: return false; OnEquip: }
-Item("Kobold_Leader_Card") { OnValidate: return false; OnEquip: }
-Item("Kobold_Archer_Card") { OnValidate: return false; OnEquip: }
-Item("Cookie_Card") { OnValidate: return false; OnEquip: }
-Item("Quve_Card") { OnValidate: return false; OnEquip: }
+Item("Cat_O'_Nine_Tails_Card") { OnEquip: AddStat(AddMDef, 3); } //add 5% magic reflect
+Item("Kobold_Leader_Card") { OnEquip: } //+30% damage vs kobolds
+Item("Kobold_Archer_Card") { OnEquip: AddStat(AddCritDamage, 10); } //+7% crit vs plant
+Item("Cookie_Card") { OnEquip: AddStat(AddLuk, 2); } //+10% damage with holy light
+Item("Quve_Card") { OnValidate: return false; OnEquip: } //autospell inc agi for novices
 Item("Kraben_Card") { OnValidate: return false; OnEquip: }
-Item("Cramp_Card") { OnValidate: return false; OnEquip: }
-Item("Cruiser_Card") { OnValidate: return false; OnEquip: }
-Item("Creamy_Fear_Card") { OnValidate: return false; OnEquip: }
-Item("Clock_Card") { OnValidate: return false; OnEquip: }
-Item("Chimera_Card") { OnValidate: return false; OnEquip: }
-Item("Killer_Mantis_Card") { OnValidate: return false; OnEquip: }
-Item("Tao_Gunka_Card") { OnValidate: return false; OnEquip: }
-Item("Giant_Whisper_Card") { OnValidate: return false; OnEquip: }
-Item("Tamruan_Card") { OnValidate: return false; OnEquip: }
-Item("Turtle_General_Card") { OnValidate: return false; OnEquip: }
-Item("Toad_Card") { OnValidate: return false; OnEquip: }
-Item("Beetle_King_Card") { OnValidate: return false; OnEquip: }
-Item("Tri_Joint_Card") { OnValidate: return false; OnEquip: }
-Item("Parasite_Card") { OnValidate: return false; OnEquip: }
-Item("Panzer_Goblin_Card") { OnValidate: return false; OnEquip: }
-Item("Permeter_Card") { OnValidate: return false; OnEquip: }
-Item("Fur_Seal_Card") { OnValidate: return false; OnEquip: }
-Item("Punk_Card") { OnValidate: return false; OnEquip: }
-Item("Penomena_Card") { OnValidate: return false; OnEquip: }
-Item("Pest_Card") { OnValidate: return false; OnEquip: }
-Item("False_Angel_Card") { OnValidate: return false; OnEquip: }
-Item("Mobster_Card") { OnValidate: return false; OnEquip: }
-Item("Stormy_Knight_Card") { OnValidate: return false; OnEquip: }
-Item("Freezer_Card") { OnValidate: return false; OnEquip: }
-Item("Bloody_Knight_Card") { OnValidate: return false; OnEquip: }
-Item("Hylozoist_Card") { OnValidate: return false; OnEquip: }
-Item("High_Orc_Card") { OnValidate: return false; OnEquip: }
-Item("Hati_Baby_Card") { OnValidate: return false; OnEquip: }
-Item("Hati_Card") { OnValidate: return false; OnEquip: }
-Item("Harpy_Card") { OnValidate: return false; OnEquip: }
-Item("Sea_Otter_Card") { OnValidate: return false; OnEquip: }
-Item("Bloody_Butterfly_Card") { OnValidate: return false; OnEquip: }
-Item("Yao_Jun_Card") { OnValidate: return false; OnEquip: }
-Item("Phendark_Card") { OnValidate: return false; OnEquip: }
+Item("Cramp_Card") { OnEquip: } //get zeny on kikll
+Item("Cruiser_Card") { OnEquip: AddStat(AddCritDamage, 10); } //+7% crit vs animal
+Item("Creamy_Fear_Card") { OnValidate: return false; OnEquip: } //confuse when attacked
+Item("Clock_Card") { OnEquip: } //autospell autoguard
+Item("Chimera_Card") { OnEquip: } //poison on attacked
+Item("Killer_Mantis_Card") { OnEquip: } //bleeding on attacked
+Item("Tao_Gunka_Card") { OnEquip: AddStat(AddMaxHpPercent, 100); AddStat(AddMDef, -50); AddStat(AddDef, -50); }
+Item("Giant_Whisper_Card") { OnEquip: AddStat(AddFlee, 10); } //should give bonus for stats that are high
+Item("Tamruan_Card") { OnEquip: AddStat(AddDef, 2); } //more damage with shield charge/boomerang
+Item("Turtle_General_Card") { OnEquip: AddStat(AddAttackSmallSize, 20); AddStat(AddAttackMidSize, 20); AddStat(AddAttackLargeSize, 20); }
+Item("Toad_Card") { OnEquip: AddStat(PerfectDodge, 10); } //should combo with... roda frog?
+Item("Beetle_King_Card") { OnValidate: return false; OnEquip: } //sp from fish
+Item("Tri_Joint_Card") { OnEquip:  } //sp on kill from formless
+Item("Parasite_Card") { OnEquip: AddStat(AddDef, 1); AddStat(AddResistRaceFormless, 5); }
+Item("Panzer_Goblin_Card") { OnEquip: AddStat(AddCritDamage, 10); } //should add 7% crit vs demon
+Item("Permeter_Card") { OnEquip: AddStat(AddResistElementUndead, 15); AddStat(AddResistElementDark, 15); }
+Item("Fur_Seal_Card") { OnEquip: AddStat(AddHit, 10); AddStat(AddFlee, 3); } //should add bonus crit vs undead/demon fro acolyte
+Item("Punk_Card") { OnEquip: } //autospell quagmire
+Item("Penomena_Card") { OnEquip: AddStat(AddResistElementNeutral, 30); }
+Item("Pest_Card") { OnEquip: } //petrify when attacked
+Item("False_Angel_Card") { OnValidate: return false; OnEquip: } //sp from angel
+Item("Mobster_Card") { OnEquip: AddStat(AddCritDamage, 15); } //should add 4 crit to thief
+Item("Stormy_Knight_Card") { OnEquip: } //autospell SG, freeze when attacking/defending
+Item("Freezer_Card") { OnEquip: AddStat(AddMaxHp, 300); } //bonus bash damage
+Item("Bloody_Knight_Card") { OnEquip: } //autospell meteor storm
+Item("Hylozoist_Card") { OnValidate: return false; OnEquip: } //monster class change
+Item("High_Orc_Card") { OnEquip: AddStat(AddDef, 1); } //melee reflect
+Item("Hati_Baby_Card") { OnEquip: } //autospell frost diver
+Item("Hati_Card") { OnEquip: } //freeze when attacked
+Item("Harpy_Card") { OnEquip: AddStat(AddResistElementNeutral, 15); } //bonus napalm beat damage
+Item("Sea_Otter_Card") { OnEquip: } //sushi/sashimi
+Item("Bloody_Butterfly_Card") { OnValidate: return false; OnEquip: } //discount phen
+Item("Yao_Jun_Card") { OnEquip: AddStat(AddFlee, 15); AddStat(AddCrit, 1); }
+Item("Phendark_Card") { OnEquip: } //sp from human kills
 Item("Evil_Snake_Lord_Card") { OnValidate: return false; OnEquip: }
-Item("Heater_Card") { OnValidate: return false; OnEquip: }
+Item("Heater_Card") { OnEquip: AddStat(AddCrit, 30); } //should add 3 perfect dodge for swordsman
 Item("Waste_Stove_Card") { OnValidate: return false; OnEquip: }
 Item("Venomous_Card") { OnValidate: return false; OnEquip: }
 Item("Noxious_Card") { OnValidate: return false; OnEquip: }
@@ -371,7 +383,7 @@ Item("Archdam_Card") { OnValidate: return false; OnEquip: }
 Item("White_Lady_Card") { OnValidate: return false; OnEquip: }
 Item("Green_Maiden_Card") { OnValidate: return false; OnEquip: }
 Item("Vesper_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Baby_Card") { OnValidate: return false; OnEquip: }
+Item("Orc_Baby_Card") { OnEquip: }
 Item("Lady_Tanee_Card") { OnValidate: return false; OnEquip: }
 Item("Grove_Card") { OnValidate: return false; OnEquip: }
 Item("Gold_Acidus_Card") { OnValidate: return false; OnEquip: }

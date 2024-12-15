@@ -361,7 +361,7 @@ class Program
             {
                 EquipPosition.Headgear => "Headgear",
                 EquipPosition.Armor => "Body",
-                EquipPosition.Boots => "Foodgear",
+                EquipPosition.Boots => "Footgear",
                 EquipPosition.Garment => "Garment",
                 EquipPosition.Accessory => "Accessory",
                 EquipPosition.Shield => "Shield",
@@ -428,17 +428,30 @@ class Program
             itemList.Items.Add(item);
             prefixList.Items.Add(new CardPrefixData() {Id = entry.Id, Prefix = entry.Prefix, Postfix = entry.Postfix});
 
+            var type = entry.EquipableSlot switch
+            {
+                EquipPosition.Weapon => "Weapon",
+                EquipPosition.Headgear => "Headgear",
+                EquipPosition.Armor => "Armor",
+                EquipPosition.Boots => "Footgear",
+                EquipPosition.Garment => "Garment",
+                EquipPosition.Accessory => "Accessory",
+                EquipPosition.Shield => "Shield",
+                _ => "Unknown"
+            };
+
             //fill in item description data
-            //if (!itemDescLookup.TryGetValue(item.Code, out var curDesc))
-            //{
-            //    missingItemDescriptions.Add(entry.Code);
-            //    desc = $"<color=#080808><i>A card with unknown properties.</i></color>";
-            //}
-            //else
-            //    desc = curDesc;
-            desc = "<color=#808080>A card with an illustration of a monster on it.</color>";
-            desc += "<line-height=120%>\n</line-height=100%><i>This item currently has no use, but it might be valuable in the future.";
-            desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f}</color>";
+            if (!itemDescLookup.TryGetValue(item.Code, out var curDesc))
+            {
+                missingItemDescriptions.Add(entry.Code);
+                desc = $"<color=#080808><i>A card with unknown properties.</i></color>";
+            }
+            else
+                desc = curDesc;
+            //desc = "<color=#808080>A card with an illustration of a monster on it.</color>";
+            desc += "<line-height=120%>\n</line-height=100%>";
+            desc += $"Sockets In: <color=#777777>{type}</color>";
+            desc += $"\nWeight: <color=#777777>{item.Weight / 10f}</color>";
             itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
 

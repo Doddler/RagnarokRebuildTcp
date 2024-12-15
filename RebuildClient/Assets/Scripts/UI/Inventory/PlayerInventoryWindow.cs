@@ -118,6 +118,13 @@ namespace Assets.Scripts.UI.Inventory
 
                 if (item.ItemData.UseType == ItemUseType.Use)
                     itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendUseItem(bagEntry.Key);
+                else if (item.ItemData.UseType == ItemUseType.UseOnAlly || item.ItemData.UseType == ItemUseType.UseOnEnemy)
+                {
+                    if (item.ItemData.UseType == ItemUseType.UseOnAlly)
+                        itemEntry.DragItem.OnDoubleClick = () => CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Ally);
+                    else
+                        itemEntry.DragItem.OnDoubleClick = () => CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Enemy);
+                }
                 else
                 {
                     var itemClass = item.ItemData.ItemClass;
@@ -140,6 +147,10 @@ namespace Assets.Scripts.UI.Inventory
                             
                             itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendEquipItem(bagEntry.Key);
                         }
+                    }
+                    else if (itemClass == ItemClass.Card)
+                    {
+                        itemEntry.DragItem.OnDoubleClick = () => CardSocketWindow.BeginCardSocketing(item);
                     }
                     else
                         itemEntry.DragItem.OnDoubleClick = null;

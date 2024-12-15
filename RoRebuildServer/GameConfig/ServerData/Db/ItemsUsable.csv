@@ -86,7 +86,7 @@
 607,Yggdrasil_Berry,Yggdrasil Berry,300,5000,Use,HealHigh,이그드라실열매,
 608,Yggdrasil_Seed,Yggdrasil Seed,300,5000,Use,HealMid,이그드라실씨앗,
 609,Amulet,Amulet,100,100,Use,,반혼부,
-610,Yggdrasil_Leaf,Yggdrasil Leaf,100,4000,Use,,이그드라실잎,
+610,Yggdrasil_Leaf,Yggdrasil Leaf,100,4000,UseOnAlly,,이그드라실잎,
 611,Magnifier,Magnifier,50,40,Use,,돋보기,
 612,Mini_Furnace,Mini Furnace,200,150,Use,,용광로,
 613,Iron_Hammer,Iron Hammer,200,1000,Use,,강철망치,

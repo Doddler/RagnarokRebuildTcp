@@ -17,7 +17,7 @@ public class HealHandler : SkillHandlerBase
         if (target == null)
             return SkillValidationResult.InvalidTarget;
         if (source == target || source.IsValidAlly(target))
-            return SkillValidationResult.Success;
+            return StandardValidation(source, target, position);
 
         if (target.Character.Type == CharacterType.Monster)
         {

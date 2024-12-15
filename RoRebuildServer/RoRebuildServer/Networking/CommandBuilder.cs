@@ -1,19 +1,14 @@
 ﻿using System.Diagnostics;
-using System.Net.Sockets;
-using System.Numerics;
-using Microsoft.VisualBasic;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using RebuildZoneServer.Networking;
-using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
-using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
@@ -78,10 +73,10 @@ public static class CommandBuilder
     {
         Debug.Assert(c.WalkPath != null);
         Debug.Assert(c.IsMoving);
-
+        packet.Write(c.WalkPath[c.MoveStep]);
         packet.Write(c.WorldPosition);
         packet.Write(c.MoveSpeed);
-        packet.Write(c.NextStepDuration - c.MoveProgress); //how long till we reach the next cell
+        packet.Write(c.TimeToReachNextStep);
         packet.Write((byte)(c.TotalMoveSteps - c.MoveStep));
         //packet.Write((byte)c.MoveStep);
 
@@ -142,20 +137,21 @@ public static class CommandBuilder
     private static void AddFullEntityData(OutboundMessage packet, WorldObject c, bool isSelf = false)
     {
         var type = c.Type;
-        var isCharacterNpc = false; //npc that has taken a player appearance
+        //var isCharacterNpc = false; //npc that has taken a player appearance
         if (c.OverrideAppearanceState != null)
         {
-            type = CharacterType.Player;
-            isCharacterNpc = true;
+            type = CharacterType.PlayerLikeNpc;
+            //isCharacterNpc = true;
         }
-
+        
         packet.Write(c.Id);
         packet.Write((byte)type);
         packet.Write((short)c.ClassId);
         packet.Write(c.Position);
         packet.Write((byte)c.FacingDirection);
         packet.Write((byte)c.State);
-        if (isCharacterNpc)
+
+        if (type == CharacterType.PlayerLikeNpc)
         {
             packet.Write((byte)40); //lvl
             packet.Write(1000); //max hp
@@ -181,9 +177,9 @@ public static class CommandBuilder
             else
                 status.PrepareCreateEntityMessage(packet);
         }
-        if (type == CharacterType.Player)
+        if (type == CharacterType.Player || type == CharacterType.PlayerLikeNpc)
         {
-            if (!isCharacterNpc)
+            if (type != CharacterType.PlayerLikeNpc)
             {
                 var player = c.Entity.Get<Player>();
                 packet.Write((byte)player.HeadFacing);
@@ -208,7 +204,7 @@ public static class CommandBuilder
                     packet.Write(0);
                 }
 
-                packet.Write(isSelf);
+                //packet.Write(isSelf);
             }
             else
             {
@@ -224,8 +220,10 @@ public static class CommandBuilder
                 packet.Write(npc.HeadBottom);
                 packet.Write(npc.Weapon);
                 packet.Write(npc.Shield);
+                packet.Write(0); //sp
+                packet.Write(0); //maxsp
 
-                packet.Write(false);
+                //packet.Write(false);
             }
         }
 
@@ -275,6 +273,16 @@ public static class CommandBuilder
         packet.Write(bagId);
         packet.Write((byte)slot);
         packet.Write(isEquip);
+
+        NetworkManager.SendMessage(packet, player.Connection);
+    }
+
+    public static void PlayerUpdateInventoryItemState(Player player, int bagId, UniqueItem item)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.SocketEquipment, 12);
+
+        packet.Write(bagId);
+        item.Serialize(packet);
 
         NetworkManager.SendMessage(packet, player.Connection);
     }

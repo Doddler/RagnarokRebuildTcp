@@ -22,6 +22,8 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
             ch.AddStat(CharacterStat.AddDefPercent, -50);
             ch.AddStat(CharacterStat.AddMDefPercent, 25);
             ch.SetStat(CharacterStat.OverrideElement, (int)CharacterElement.Water1);
+
+            ch.AddDisabledState();
         }
 
         public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
@@ -29,6 +31,8 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
             ch.SubStat(CharacterStat.AddDefPercent, -50);
             ch.SubStat(CharacterStat.AddMDefPercent, 25);
             ch.SetStat(CharacterStat.OverrideElement, (int)CharacterElement.None);
+
+            ch.SubDisabledState();
         }
 
         public override StatusUpdateResult OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)

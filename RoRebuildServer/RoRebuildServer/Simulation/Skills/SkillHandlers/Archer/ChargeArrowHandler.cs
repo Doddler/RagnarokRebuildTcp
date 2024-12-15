@@ -27,7 +27,7 @@ public class ChargeArrowHandler : SkillHandlerBase
         if (target == null || !target.IsValidTarget(source))
             return;
 
-        var res = source.CalculateCombatResult(target, 1.5f, 1, AttackFlags.Physical, CharacterSkill.ChargeArrow);
+        var res = source.CalculateCombatResult(target, 1.5f, 1, AttackFlags.Physical | AttackFlags.Ranged, CharacterSkill.ChargeArrow);
         res.KnockBack = 6;
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);

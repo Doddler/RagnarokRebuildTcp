@@ -4,6 +4,7 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation;
 using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
@@ -51,13 +52,22 @@ public class PacketUseInventoryItem : IClientPacketHandler
             return;
         }
 
+        var targetedItem = false;
+
         if (!item.Interaction.OnValidate(character.Player, character.CombatEntity))
             return;
 
-        if (useInfo.UseType == ItemUseType.UseOnTarget)
+        if (useInfo.UseType == ItemUseType.UseOnAlly || useInfo.UseType == ItemUseType.UseOnEnemy)
         {
-            CommandBuilder.ErrorMessage(player, $"Targeted on-use items do not currently function. Sorry!");
-            return;
+            var targetId = msg.ReadInt32();
+            var targetEntity = World.Instance.GetEntityById(targetId);
+
+            if (targetEntity.TryGet<CombatEntity>(out var target))
+            {
+                //this will return false if the use fails OR if the result is the player starts casting a skill
+                if (!item.Interaction.OnUseTargeted(itemId, character.Player, character.CombatEntity, target))
+                    return;
+            }
         }
 
         if (!player.TryRemoveItemFromInventory(itemId, 1))
@@ -73,7 +83,9 @@ public class PacketUseInventoryItem : IClientPacketHandler
             CommandBuilder.ClearRecipients();
         }
 
-        item.Interaction.OnUse(character.Player, character.CombatEntity);
+        if (!targetedItem)
+            item.Interaction.OnUse(character.Player, character.CombatEntity);
+
         CommandBuilder.RemoveItemFromInventory(player, item.Id, 1);
     }
 }

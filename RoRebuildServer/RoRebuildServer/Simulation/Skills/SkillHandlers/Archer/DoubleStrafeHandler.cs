@@ -19,7 +19,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
             if (target == null || !target.IsValidTarget(source))
                 return;
 
-            var res = source.CalculateCombatResult(target, 0.9f + lvl * 0.1f, 2, AttackFlags.Physical, CharacterSkill.DoubleStrafe);
+            var res = source.CalculateCombatResult(target, 0.9f + lvl * 0.1f, 2, AttackFlags.Physical | AttackFlags.Ranged, CharacterSkill.DoubleStrafe);
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);
 

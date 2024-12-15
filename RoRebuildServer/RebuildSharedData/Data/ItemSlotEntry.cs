@@ -46,7 +46,8 @@ public unsafe struct UniqueItem : ISerializableItem
     public static int Size => 40; //Id(4) + Count(2) + Flags(2) + UniqueId(16) + Data(4 * 4)
 
     public int SlotData(int slot) => Data[slot];
-    
+    public int SetSlotData(int slot, int val) => Data[slot] = val;
+
     public void Serialize(IBinaryMessageWriter msg)
     {
         msg.Write(Id);

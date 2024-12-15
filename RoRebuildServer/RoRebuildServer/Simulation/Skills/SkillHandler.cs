@@ -85,14 +85,14 @@ namespace RoRebuildServer.Simulation.Skills
         public static SkillValidationResult ValidateTarget(SkillCastInfo info, CombatEntity src)
         {
             CombatEntity? target = info.TargetEntity.GetIfAlive<CombatEntity>();
-            
+
             var handler = handlers[(int)info.Skill];
             if (handler != null)
                 return handler.ValidateTarget(src, target, info.TargetedPosition);
 
             return SkillValidationResult.Failure;
         }
-        
+
         public static float GetSkillCastTime(CharacterSkill skill, CombatEntity src, CombatEntity? target, int level)
         {
             var handler = handlers[(int)skill];
@@ -135,6 +135,6 @@ namespace RoRebuildServer.Simulation.Skills
                     handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
             }
         }
-        
+
     }
 }

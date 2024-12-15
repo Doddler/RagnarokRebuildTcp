@@ -17,7 +17,8 @@ namespace Assets.Scripts.UI
         BuyFromNpcSummary,
         SellToNpcItemList,
         SellToNpcSummary,
-        ItemStorage
+        ItemStorage,
+        CardSocketing
     }
 
     public class ItemListWindow : WindowBase

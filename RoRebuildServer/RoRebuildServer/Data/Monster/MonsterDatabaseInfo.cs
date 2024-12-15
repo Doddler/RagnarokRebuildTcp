@@ -27,6 +27,7 @@ public class MonsterDatabaseInfo
     public float HitTime { get; set; }
     public float AttackDamageTiming { get; set; }
     public int Range { get; set; }
+    public CharacterSize Size { get; set; }
     public CharacterElement Element { get; set; }
     public CharacterRace Race { get; set; }
     public MonsterAiType AiType { get; set; }

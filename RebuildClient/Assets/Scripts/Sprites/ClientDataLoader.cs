@@ -35,19 +35,20 @@ namespace Assets.Scripts.Sprites
     {
         public static ClientDataLoader Instance;
 
-        public TextAsset MonsterClassData;
-        public TextAsset PlayerClassData;
-        public TextAsset PlayerHeadData;
-        public TextAsset PlayerWeaponData;
-        public TextAsset WeaponClassData;
-        public TextAsset SkillData;
-        public TextAsset SkillTreeData;
-        public TextAsset MapViewpointData;
-        public TextAsset UniqueAttackActionData;
-        public TextAsset ItemData;
-        public TextAsset MapData;
-        public TextAsset EquipmentSpriteData;
-        public TextAsset ItemDescData;
+        [SerializeField] private TextAsset MonsterClassData;
+        [SerializeField] private TextAsset PlayerClassData;
+        [SerializeField] private TextAsset PlayerHeadData;
+        [SerializeField] private TextAsset PlayerWeaponData;
+        [SerializeField] private TextAsset WeaponClassData;
+        [SerializeField] private TextAsset SkillData;
+        [SerializeField] private TextAsset SkillTreeData;
+        [SerializeField] private TextAsset MapViewpointData;
+        [SerializeField] private TextAsset UniqueAttackActionData;
+        [SerializeField] private TextAsset ItemData;
+        [SerializeField] private TextAsset MapData;
+        [SerializeField] private TextAsset EquipmentSpriteData;
+        [SerializeField] private TextAsset ItemDescData;
+        [SerializeField] private TextAsset CardPrefixData;
         public SpriteAtlas ItemIconAtlas;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
@@ -65,7 +66,8 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<string, ClientMapEntry> mapDataLookup = new();
         private readonly Dictionary<string, string> displaySpriteList = new();
         private readonly Dictionary<string, string> itemDescriptionTable = new();
-
+        private readonly Dictionary<int, CardPrefixData> cardPrefixPostfixTable = new();
+        
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
 
@@ -92,6 +94,7 @@ namespace Assets.Scripts.Sprites
         public bool TryGetItemByName(string name, out ItemData item) => itemNameLookup.TryGetValue(name, out item);
         public bool TryGetItemById(int id, out ItemData item) => itemIdLookup.TryGetValue(id, out item);
         public string GetItemDescription(string itemCode) => itemDescriptionTable.GetValueOrDefault(itemCode, "No description available.");
+        public CardPrefixData GetCardPrefixData(int id) => cardPrefixPostfixTable.GetValueOrDefault(id, null);
 
         public string GetHitSoundForWeapon(int weaponId)
         {
@@ -252,6 +255,11 @@ namespace Assets.Scripts.Sprites
             var trees = JsonUtility.FromJson<Wrapper<ClientSkillTree>>(SkillTreeData.text);
             foreach (var tree in trees.Items)
                 jobSkillTrees.Add(tree.ClassId, tree);
+            
+            var prePosData = JsonUtility.FromJson<Wrapper<CardPrefixData>>(CardPrefixData.text);
+            foreach (var dat in prePosData.Items)
+                cardPrefixPostfixTable.Add(dat.Id, dat);
+                
 
 
             foreach (var mapDef in MapViewpointData.text.Split("\r\n"))

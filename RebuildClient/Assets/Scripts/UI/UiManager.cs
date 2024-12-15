@@ -40,6 +40,7 @@ public class UiManager : MonoBehaviour
     public GameObject InventoryDropArea;
     public GameObject EquipmentDropArea;
     public GameObject GeneralItemListPrefab;
+    public GameObject GenericItemListV2Prefab;
 
     private IItemDropTarget inventoryDropTarget;
     private IItemDropTarget equipmentWindowDropTarget;
@@ -386,8 +387,8 @@ public class UiManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.F10) || Input.GetKeyDown(KeyCode.F12))
             SkillHotbar.ToggleVisibility();
         
-        if(Input.GetKeyDown(KeyCode.O) && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
-            ConfigManager.ToggleVisibility();
+        // if(Input.GetKeyDown(KeyCode.O) && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
+        //     ConfigManager.ToggleVisibility();
         
         if (!IsDraggingItem && !cameraFollower.InTextBox && !cameraFollower.InItemInputBox && !cameraFollower.IsInNPCInteraction)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
@@ -153,6 +154,7 @@ namespace Assets.Scripts.Network
         
         public void SetSp(int sp, int maxSp)
         {
+            EnsureFloatingDisplayCreated();
             MaxSp = maxSp;
             Sp = sp;
             FloatingDisplay.UpdateMaxMp(maxSp);
@@ -161,6 +163,9 @@ namespace Assets.Scripts.Network
 
         public void SetHp(int hp, int maxHp)
         {
+            if (SpriteAnimator != null && SpriteAnimator.IsHidden && !IsMainCharacter)
+                return;
+            
             MaxHp = maxHp;
             Hp = hp;
             FloatingDisplay.UpdateMaxHp(maxHp);
@@ -169,6 +174,9 @@ namespace Assets.Scripts.Network
 
         public void SetHp(int hp)
         {
+            if (SpriteAnimator != null && SpriteAnimator.IsHidden && !IsMainCharacter)
+                return;
+            
             var oldHp = Hp;
             Hp = hp;
 
@@ -196,6 +204,9 @@ namespace Assets.Scripts.Network
             if (CharacterType != CharacterType.Player)
                 return;
 
+            if (SpriteAnimator.IsHidden && skill == CharacterSkill.Hiding)
+                return;
+
             var sName = ClientDataLoader.Instance.GetSkillName(skill);
             FloatingDisplay.ShowChatBubbleMessage(sName + "!!", duration);
         }
@@ -217,12 +228,14 @@ namespace Assets.Scripts.Network
 
             IsCasting = true;
 
-            if (!HideCastName)
+            if (!HideCastName && (skill != CharacterSkill.Hiding || !SpriteAnimator.IsHidden)) //don't show skill name when unhiding
             {
                 if (CharacterType == CharacterType.Player)
                     FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
                 else
+                {
                     FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
+                }
             }
 
             if (SpriteAnimator != null && SpriteAnimator.SpriteData != null && ClientDataLoader.Instance.GetUniqueAction(SpriteAnimator.SpriteData.Name, skill, out var action))
@@ -291,6 +304,13 @@ namespace Assets.Scripts.Network
             if (FloatingDisplay == null)
                 return;
             FloatingDisplay.EndHoverNamePlate();
+        }
+
+        public void HideHpBar()
+        {
+            if (FloatingDisplay == null)
+                return;
+            FloatingDisplay.HideHpBar();
         }
 
         public void DialogBox(string text)

@@ -11,14 +11,14 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
     {
         public override void ApplyPassiveEffects(CombatEntity owner, int lvl)
         {
-            owner.AddStat(CharacterStat.PercentVsDemon, lvl);
-            owner.AddStat(CharacterStat.PercentVsUndead, lvl);
+            owner.AddStat(CharacterStat.AddAttackRaceDemon, lvl);
+            owner.AddStat(CharacterStat.AddAttackRaceUndead, lvl);
         }
 
         public override void RemovePassiveEffects(CombatEntity owner, int lvl)
         {
-            owner.SubStat(CharacterStat.PercentVsDemon, lvl);
-            owner.SubStat(CharacterStat.PercentVsUndead, lvl);
+            owner.SubStat(CharacterStat.AddAttackRaceDemon, lvl);
+            owner.SubStat(CharacterStat.AddAttackRaceUndead, lvl);
         }
 
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

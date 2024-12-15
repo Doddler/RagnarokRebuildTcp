@@ -27,7 +27,7 @@ public class PneumaHandler : SkillHandlerBase
         if (map.HasAreaOfEffectTypeInArea(CharacterSkill.Pneuma, effectiveArea))
             return SkillValidationResult.OverlappingAreaOfEffect;
 
-        return SkillValidationResult.Success;
+        return StandardValidation(source, target, position);
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

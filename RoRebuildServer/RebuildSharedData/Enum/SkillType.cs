@@ -36,6 +36,7 @@ namespace RebuildSharedData.Enum
         IgnoreEvasion = 64,
         IgnoreNullifyingGroundMagic = 128,
         NoDamageModifiers = 256,
-        NoElement = 512
+        NoElement = 512,
+        Ranged = 1024,
     }
 }

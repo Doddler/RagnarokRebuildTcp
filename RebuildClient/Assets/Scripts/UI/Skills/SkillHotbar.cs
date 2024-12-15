@@ -148,9 +148,19 @@ namespace Assets.Scripts.UI
                 if (!state.Inventory.GetInventoryData().TryGetValue(entry.DragItem.ItemId, out var item))
                     return;
                 
-                
-                if(item.ItemData.UseType == ItemUseType.Use)
-                    NetworkManager.Instance.SendUseItem(entry.DragItem.ItemId);
+                switch (item.ItemData.UseType)
+                {
+                    case ItemUseType.Use:
+                        NetworkManager.Instance.SendUseItem(entry.DragItem.ItemId);
+                        break;
+                    case ItemUseType.UseOnAlly:
+                        CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Ally);
+                        break;
+                    case ItemUseType.UseOnEnemy:
+                        CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Enemy);
+                        break;
+                }
+
                 if (item.ItemData.ItemClass == ItemClass.Weapon || item.ItemData.ItemClass == ItemClass.Equipment)
                     NetworkManager.Instance.SendEquipItem(entry.DragItem.ItemId);
                 if(item.ItemData.ItemClass == ItemClass.Ammo && state.AmmoId != item.Id)

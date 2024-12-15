@@ -200,6 +200,16 @@ public class MonsterSkillAiState(Monster monsterIn)
         monster.UpdateStateChangeTime();
     }
 
+    public void ChangeAiHandler(string aiType)
+    {
+        monster.ChangeAiSkillHandler(aiType);
+    }
+
+    public void SetGivesExperience(bool gives)
+    {
+        monster.GivesExperience = gives;
+    }
+
     public int TimeInAiState => (int)(monster.TimeInCurrentAiState * 1000);
     public int TimeOutOfCombat => (int)(monster.DurationOutOfCombat * 1000);
     public int TimeSinceLastDamage => (int)(monster.TimeSinceLastDamage * 1000);
@@ -571,11 +581,60 @@ public class MonsterSkillAiState(Monster monsterIn)
             var minion = World.Instance.CreateMonster(monster.Character.Map, monsterDef, area, null, false);
             var minionMonster = minion.Get<Monster>();
             minionMonster.ResetAiUpdateTime();
+            minionMonster.AddDelay(0.6f);
             minionMonster.SetMaster(monster.Entity); //these monsters have masters but are not minions of the parent
 
             minionMonster.GivesExperience = false;
 
             monster.Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Toss, monster.Character.Position);
+        }
+    }
+
+
+    public void TossSummonMonster(int count, string name, string aiType, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
+    {
+        Debug.Assert(monster.Character.Map != null, $"Npc {monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+        var monsterDef = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(monster.Character.Position + new Position(offsetX, offsetY), width, height);
+
+        for (var i = 0; i < count; i++)
+        {
+            var minion = World.Instance.CreateMonster(monster.Character.Map, monsterDef, area, null, false);
+            var minionMonster = minion.Get<Monster>();
+            minionMonster.ResetAiUpdateTime();
+            minionMonster.AddDelay(0.6f);
+            minionMonster.SetMaster(monster.Entity); //these monsters have masters but are not minions of the parent
+
+            minionMonster.GivesExperience = false;
+
+            monster.Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Toss, monster.Character.Position);
+            minionMonster.ChangeAiSkillHandler(aiType);
+        }
+    }
+
+    public void TossSummonMinion(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
+    {
+        Debug.Assert(monster.Character.Map != null, $"Npc {monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+        var monsterDef = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(monster.Character.Position + new Position(offsetX, offsetY), width, height);
+
+        for (var i = 0; i < count; i++)
+        {
+            var minion = World.Instance.CreateMonster(monster.Character.Map, monsterDef, area, null, false);
+            var minionMonster = minion.Get<Monster>();
+            minionMonster.ResetAiUpdateTime();
+            minionMonster.AddDelay(0.6f);
+            //minionMonster.SetMaster(monster.Entity); //these monsters have masters but are not minions of the parent
+
+            minionMonster.GivesExperience = false;
+
+            monster.Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Toss, monster.Character.Position);
+            monster.AddChild(ref minion, MonsterAiType.AiMinion);
+            //minionMonster.MakeChild(ref monster.Entity);
         }
     }
 

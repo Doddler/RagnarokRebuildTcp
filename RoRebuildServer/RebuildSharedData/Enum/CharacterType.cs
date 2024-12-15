@@ -5,4 +5,5 @@ public enum CharacterType : byte
     Player,
     Monster,
     NPC,
+    PlayerLikeNpc
 }

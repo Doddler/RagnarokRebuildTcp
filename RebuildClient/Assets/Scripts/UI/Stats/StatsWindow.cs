@@ -150,7 +150,7 @@ namespace Assets.Scripts.UI.Stats
             AttributeText[0].text = $"{state.GetStat(CharacterStat.Attack)} ~ {state.GetStat(CharacterStat.Attack2)}";
             AttributeText[1].text = $"{state.GetStat(CharacterStat.MagicAtkMin)} ~ {state.GetStat(CharacterStat.MagicAtkMax)}";
             AttributeText[2].text = $"{totalDex + state.Level + state.GetStat(CharacterStat.AddHit)}";
-            AttributeText[3].text = $"{1 + totalLuk / 3}";
+            AttributeText[3].text = $"{(10 + totalLuk * 3 + state.GetStat(CharacterStat.AddCrit)) / 10}";
             AttributeText[4].text = $"{state.GetStat(CharacterStat.Def)} + {totalVit}";
             AttributeText[5].text = $"{state.GetStat(CharacterStat.MDef)} + {totalInt}";
             AttributeText[6].text = $"{totalAgi + state.Level + state.GetStat(CharacterStat.AddFlee)}";

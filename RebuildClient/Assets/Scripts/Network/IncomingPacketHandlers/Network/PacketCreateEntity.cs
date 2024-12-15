@@ -46,7 +46,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             var maxSp = 0;
             List<CharacterStatusEffect> statuses = null; 
 
-            if (type == CharacterType.Player || type == CharacterType.Monster)
+            if (type == CharacterType.Player || type == CharacterType.Monster || type == CharacterType.PlayerLikeNpc)
             {
                 lvl = (int)msg.ReadByte();
                 maxHp = (int)msg.ReadInt32();
@@ -69,7 +69,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             }
 
             ServerControllable controllable;
-            if (type == CharacterType.Player)
+            if (type == CharacterType.Player || type == CharacterType.PlayerLikeNpc)
             {
                 var headFacing = (HeadFacing)msg.ReadByte();
                 var headId = msg.ReadByte();
@@ -195,9 +195,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 controllable.SetSp(sp, maxSp);
             }
 
-            controllable.SetHp(hp);
             if (type != CharacterType.NPC)
                 controllable.IsInteractable = true;
+
+            controllable.SetHp(hp);
 
             Network.EntityList.Add(id, controllable);
 

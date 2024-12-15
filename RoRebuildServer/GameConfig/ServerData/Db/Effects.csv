@@ -40,7 +40,7 @@
 38,Provoke,TRUE,TRUE,FALSE,provoke,,,0,,
 39,PuffOfSmoke,FALSE,FALSE,FALSE,,,,0,Assets/Effects/Custom/SmokePuff.prefab,
 40,Explosion,TRUE,TRUE,FALSE,sui_explosion,,ef_hit2,0,,
-41,Hiding,FALSE,FALSE,FALSE,,,,0,Assets/Effects/Custom/SmokePuff.prefab,
+41,Hiding,FALSE,FALSE,FALSE,,,,0,,
 42,SonicBlow,TRUE,TRUE,FALSE,SonicBlow,,ef_stonecurse,0,,
 43,Concentration,TRUE,TRUE,FALSE,concentration,,ac_concentration,0,,
 44,HammerFall,TRUE,TRUE,FALSE,crashearth,,black_hammerfall,0,,

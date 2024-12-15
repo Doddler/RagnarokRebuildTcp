@@ -510,6 +510,15 @@ public class ScriptBuilder
             {
                 defaultReturn = "true";
                 StartIndentedBlockLine().AppendLine($"public override bool {section}(Player player, CombatEntity combatEntity)");
+                additionalVariables.Add("target", "combatEntity");
+            }
+            else if (section == "OnUseTargeted")
+            {
+                defaultReturn = "true";
+                StartIndentedBlockLine().AppendLine($"public override bool {section}(int itemId, Player player, CombatEntity combatEntity, CombatEntity target)");
+                additionalVariables.Add("target", "target");
+                additionalVariables.Add("item", "itemId");
+                additionalVariables.Add("id", "itemId");
             }
             else
                 StartIndentedBlockLine().AppendLine($"public override void {section}(Player player, CombatEntity combatEntity)");
@@ -523,6 +532,12 @@ public class ScriptBuilder
             LoadFunctionSource(typeof(Player), "player");
             LoadFunctionSource(typeof(CombatEntity), "combatEntity");
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+            
+
+
+            foreach (var i in Enum.GetValues<CharacterSkill>())
+                additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
+
         }
 
         foreach (var i in Enum.GetValues<CharacterStat>())
@@ -892,6 +907,7 @@ public class ScriptBuilder
     public void EndReturn()
     {
         lineBuilder.Append(";");
+        EndLine();
     }
 
 

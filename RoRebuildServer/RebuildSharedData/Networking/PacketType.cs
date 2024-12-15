@@ -66,6 +66,7 @@ public enum PacketType : byte
     UpdateMinimapMarker,
     ApplyStatusEffect,
     RemoveStatusEffect,
+    SocketEquipment,
     
     AdminRequestMove,
     AdminServerAction,

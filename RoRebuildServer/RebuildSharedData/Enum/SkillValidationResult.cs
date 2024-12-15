@@ -15,6 +15,7 @@ namespace RebuildSharedData.Enum
         IncorrectAmmunition,
         InsufficientSp,
         CannotCreateMore,
-        InsufficientItemCount
+        InsufficientItemCount,
+        UnusableWhileHidden
     }
 }

@@ -63,6 +63,7 @@ public class ItemEquipState
         for (var i = 0; i < 3; i++)
             headgearMultiSlotInfo[i] = 0;
         AmmoId = -1;
+        WeaponRange = 1;
     }
 
     public int GetEquipmentIdBySlot(EquipSlot slot) => ItemIds[(int)slot];
@@ -73,6 +74,14 @@ public class ItemEquipState
             if (ItemSlots[i] == bagId)
                 return true;
         return false;
+    }
+
+    public EquipSlot GetOccupiedSlotForItem(int bagId)
+    {
+        for (var i = 0; i < 10; i++)
+            if (ItemSlots[i] == bagId)
+                return (EquipSlot)i;
+        return EquipSlot.None;
     }
 
     public void UnequipAllItems()
@@ -167,7 +176,7 @@ public class ItemEquipState
     private void UnEquipItem(EquipSlot slot)
     {
         var bagId = ItemSlots[(int)slot];
-        if (bagId == 0)
+        if (bagId <= 0)
             return;
 
         UnEquipEvent(slot);
@@ -419,9 +428,8 @@ public class ItemEquipState
                 Player.AddStat(CharacterStat.Def, armor.Defense);
                 Player.AddStat(CharacterStat.MDef, armor.MagicDefense);
 
-                //this code should apply equipment upgrades when they are implemented, but for now we assume anything refinable is +4
                 if (armor.IsRefinable)
-                    Player.AddStat(CharacterStat.EquipmentRefineDef, 4);
+                    Player.AddStat(CharacterStat.EquipmentRefineDef, item.Refine);
             }
         }
 
@@ -434,11 +442,17 @@ public class ItemEquipState
                 if (slotItem <= 0)
                     continue;
                 if (!DataManager.ItemList.TryGetValue(slotItem, out var slotData))
-                    throw new Exception($"Attempting to run RunAllOnEquip event for item {slotItem} (socketed in a {item.Id}), but it doesn't appear to exist in the item database."); ;
+                    throw new Exception($"Attempting to run RunAllOnEquip event for item {slotItem} (socketed in a {item.Id}), but it doesn't appear to exist in the item database.");
 
                 slotData.Interaction?.OnEquip(Player, Player.CombatEntity, this, default, slot);
             }
         }
+    }
+
+    public void PerformOnEquipForNewCard(ItemInfo item, EquipSlot slot)
+    {
+        activeSlot = slot;
+        item.Interaction?.OnEquip(Player, Player.CombatEntity, this, default, slot);
     }
 
     private void UnEquipEvent(EquipSlot slot)
@@ -470,9 +484,8 @@ public class ItemEquipState
                 Player.SubStat(CharacterStat.Def, armor.Defense);
                 Player.SubStat(CharacterStat.MDef, armor.MagicDefense);
 
-                //this code should apply equipment upgrades when they are implemented, but for now we assume anything refinable is +4
                 if (armor.IsRefinable)
-                    Player.SubStat(CharacterStat.EquipmentRefineDef, 4);
+                    Player.SubStat(CharacterStat.EquipmentRefineDef, item.Refine);
             }
         }
         
@@ -578,6 +591,13 @@ public class ItemEquipState
                 {
                     var equipInfo = DataManager.ArmorInfo[item.Id];
                     headgearMultiSlotInfo[i] = equipInfo.HeadPosition;
+                }
+
+                if (i == (int)EquipSlot.Weapon)
+                {
+                    var weaponInfo = DataManager.WeaponInfo[item.Id];
+                    if (weaponInfo.IsTwoHanded)
+                        isTwoHandedWeapon = true;
                 }
             }
         }

@@ -14,7 +14,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[82];
+			handlers = new ClientPacketHandlerBase[83];
 			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -74,29 +74,30 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[56] = new PacketUpdateMinimapMarker(); //UpdateMinimapMarker
 			handlers[57] = new PacketApplyStatusEffect(); //ApplyStatusEffect
 			handlers[58] = new PacketRemoveStatusEffect(); //RemoveStatusEffect
-			handlers[59] = new InvalidPacket(); //AdminRequestMove
-			handlers[60] = new InvalidPacket(); //AdminServerAction
-			handlers[61] = new InvalidPacket(); //AdminLevelUp
-			handlers[62] = new InvalidPacket(); //AdminEnterServerSpecificMap
-			handlers[63] = new InvalidPacket(); //AdminChangeAppearance
-			handlers[64] = new InvalidPacket(); //AdminSummonMonster
-			handlers[65] = new PacketAdminHideCharacter(); //AdminHideCharacter
-			handlers[66] = new InvalidPacket(); //AdminChangeSpeed
-			handlers[67] = new InvalidPacket(); //AdminFindTarget
-			handlers[68] = new InvalidPacket(); //AdminResetSkills
-			handlers[69] = new InvalidPacket(); //AdminResetStats
-			handlers[70] = new InvalidPacket(); //AdminCreateItem
-			handlers[71] = new InvalidPacket(); //NpcClick
-			handlers[72] = new InvalidPacket(); //NpcInteraction
-			handlers[73] = new InvalidPacket(); //NpcAdvance
-			handlers[74] = new InvalidPacket(); //NpcSelectOption
-			handlers[75] = new PacketDropItem(); //DropItem
-			handlers[76] = new PacketPickUpItem(); //PickUpItem
-			handlers[77] = new PacketOpenShop(); //OpenShop
-			handlers[78] = new InvalidPacket(); //ShopBuySell
-			handlers[79] = new InvalidPacket(); //ItemUpdate
-			handlers[80] = new PacketServerEvent(); //ServerEvent
-			handlers[81] = new InvalidPacket(); //DebugEntry
+			handlers[59] = new PacketSocketEquipment(); //SocketEquipment
+			handlers[60] = new InvalidPacket(); //AdminRequestMove
+			handlers[61] = new InvalidPacket(); //AdminServerAction
+			handlers[62] = new InvalidPacket(); //AdminLevelUp
+			handlers[63] = new InvalidPacket(); //AdminEnterServerSpecificMap
+			handlers[64] = new InvalidPacket(); //AdminChangeAppearance
+			handlers[65] = new InvalidPacket(); //AdminSummonMonster
+			handlers[66] = new PacketAdminHideCharacter(); //AdminHideCharacter
+			handlers[67] = new InvalidPacket(); //AdminChangeSpeed
+			handlers[68] = new InvalidPacket(); //AdminFindTarget
+			handlers[69] = new InvalidPacket(); //AdminResetSkills
+			handlers[70] = new InvalidPacket(); //AdminResetStats
+			handlers[71] = new InvalidPacket(); //AdminCreateItem
+			handlers[72] = new InvalidPacket(); //NpcClick
+			handlers[73] = new InvalidPacket(); //NpcInteraction
+			handlers[74] = new InvalidPacket(); //NpcAdvance
+			handlers[75] = new InvalidPacket(); //NpcSelectOption
+			handlers[76] = new PacketDropItem(); //DropItem
+			handlers[77] = new PacketPickUpItem(); //PickUpItem
+			handlers[78] = new PacketOpenShop(); //OpenShop
+			handlers[79] = new InvalidPacket(); //ShopBuySell
+			handlers[80] = new InvalidPacket(); //ItemUpdate
+			handlers[81] = new PacketServerEvent(); //ServerEvent
+			handlers[82] = new InvalidPacket(); //DebugEntry
 		}
 	}
 }

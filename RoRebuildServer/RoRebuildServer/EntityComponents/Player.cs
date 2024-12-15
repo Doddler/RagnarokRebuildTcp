@@ -111,6 +111,7 @@ public class Player : IEntityAutoReset
     //stats that can't apply to monsters
     [EntityIgnoreNullCheck] public readonly int[] PlayerStatData = new int[(int)(CharacterStat.CharacterStatsMax - CharacterStat.MonsterStatsMax)];
 
+
     public int GetData(PlayerStat type) => CharData[(int)type];
     public void SetData(PlayerStat type, int val) => CharData[(int)type] = val;
     public int GetStat(CharacterStat type) => CombatEntity.GetStat(type);
@@ -186,21 +187,21 @@ public class Player : IEntityAutoReset
 
         if (StorageInventory != null)
             CharacterBag.Return(StorageInventory);
-
+        
         Inventory = null;
         CartInventory = null;
         StorageInventory = null;
         Equipment = null!;
         EntityValueListPool<float>.Return(RecentAttackersList);
         RecentAttackersList = null!;
-        
+
         SavePosition.Reset();
     }
 
     public void Init()
     {
         LearnedSkills ??= new Dictionary<CharacterSkill, int>();
-        
+
         foreach (var skill in LearnedSkills)
             SkillHandler.ApplyPassiveEffects(skill.Key, CombatEntity, skill.Value);
 
@@ -209,7 +210,7 @@ public class Player : IEntityAutoReset
 
         Equipment.Player = this;
         Equipment.RunAllOnEquip();
-        
+
         SetStat(CharacterStat.Level, GetData(PlayerStat.Level));
         Character.DisplayType = CharacterDisplayType.Player;
 
@@ -375,7 +376,7 @@ public class Player : IEntityAutoReset
         var statPointsEarned = statPointsEarnedByLevel[level - 1];
         var statPointsUsed = 0;
         Span<int> newStats = stackalloc int[6];
-        
+
         for (var i = 0; i < 6; i++)
         {
             if (statChanges[i] < 0)
@@ -401,7 +402,7 @@ public class Player : IEntityAutoReset
             return;
         }
 
-        for(var i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
             SetData(PlayerStat.Str + i, newStats[i]);
 
         UpdateStats(false);
@@ -409,7 +410,7 @@ public class Player : IEntityAutoReset
 
     public void StatPointReset()
     {
-        for(var i = PlayerStat.Str; i <= PlayerStat.Luk; i++)
+        for (var i = PlayerStat.Str; i <= PlayerStat.Luk; i++)
             SetData(i, 1);
 
         UpdateStats(false);
@@ -445,13 +446,13 @@ public class Player : IEntityAutoReset
         }
 
         Character.ClassId = job;
-        
+
         SetTiming(TimingStat.HitDelayTime, 0.288f);
         if (WeaponClass == 12) //bow
-            SetStat(CharacterStat.Range, Equipment.WeaponRange + MaxLearnedLevelOfSkill(CharacterSkill.VultureEye));
+            SetStat(CharacterStat.Range, int.Max(1, Equipment.WeaponRange + MaxLearnedLevelOfSkill(CharacterSkill.VultureEye)));
         else
-            SetStat(CharacterStat.Range, Equipment.WeaponRange);
-        
+            SetStat(CharacterStat.Range, int.Max(1, Equipment.WeaponRange));
+
         SetStat(CharacterStat.Str, GetData(PlayerStat.Str));
         SetStat(CharacterStat.Agi, GetData(PlayerStat.Agi));
         SetStat(CharacterStat.Vit, GetData(PlayerStat.Vit));
@@ -494,8 +495,11 @@ public class Player : IEntityAutoReset
         SetTiming(TimingStat.AttackMotionTime, motionTime);
         SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
 
+        var hpPercent = 100 + GetStat(CharacterStat.AddMaxHpPercent);
+
         var newMaxHp = DataManager.JobMaxHpLookup[job][level] * (1 + GetEffectiveStat(CharacterStat.Vit) / 100f);
-        var updatedMaxHp = newMaxHp; // * hpBonus;// (int)(newMaxHp * multiplier) + 70;
+        newMaxHp += GetStat(CharacterStat.AddMaxHp);
+        var updatedMaxHp = newMaxHp * hpPercent / 100;
 
         SetStat(CharacterStat.MaxHp, updatedMaxHp);
         if (GetStat(CharacterStat.Hp) <= 0 && Character.State != CharacterState.Dead)
@@ -503,8 +507,11 @@ public class Player : IEntityAutoReset
         if (GetStat(CharacterStat.Hp) > updatedMaxHp)
             SetStat(CharacterStat.Hp, updatedMaxHp);
 
+
+        var spPercent = 100 + GetStat(CharacterStat.AddMaxSpPercent);
         var newMaxSp = DataManager.JobMaxSpLookup[job][level] * (1 + GetEffectiveStat(CharacterStat.Int) / 100f);
         newMaxSp += GetStat(CharacterStat.AddMaxSp);
+        newMaxSp = newMaxSp * spPercent / 100;
 
         SetStat(CharacterStat.MaxSp, newMaxSp);
         if (GetStat(CharacterStat.Sp) > newMaxSp)
@@ -549,8 +556,8 @@ public class Player : IEntityAutoReset
         for (var i = 0; i < 6; i++)
         {
             var statVal = MathHelper.Clamp(GetData(PlayerStat.Str + i), 1, 99);
-            
-            statPointsUsed += cumulativeStatPointCost[statVal-1];
+
+            statPointsUsed += cumulativeStatPointCost[statVal - 1];
         }
 
         SetData(PlayerStat.StatPoints, statPointsEarned - statPointsUsed);
@@ -637,7 +644,7 @@ public class Player : IEntityAutoReset
     {
         if (Character.Map == null)
             return;
-        
+
         var pos = Character.Map.FindRandomPositionOnMap();
 
         AddActionDelay(CooldownActionType.Teleport);
@@ -650,7 +657,7 @@ public class Player : IEntityAutoReset
     public void ReturnToSavePoint()
     {
         Debug.Assert(Character.Map != null);
-        
+
         var savePoint = SavePosition.MapName;
         var position = SavePosition.Position;
         var area = SavePosition.Area;
@@ -705,7 +712,7 @@ public class Player : IEntityAutoReset
             return true;
 
         var spCost = DataManager.GetSpForSkill(skill, level);
-        
+
         var currentSp = GetStat(CharacterStat.Sp);
         if (currentSp < spCost)
             return false;
@@ -779,11 +786,11 @@ public class Player : IEntityAutoReset
             regen += plusSpRegen;
             if (chInt > 120) regen += chInt - 120;
             regen = regen * (100 + spAddPercent) / 100;
-            
+
             if (Character.State == CharacterState.Sitting)
                 regen *= 2;
 
-            if(regen < 1)
+            if (regen < 1)
                 regen = 1;
 
             if (regen + sp > maxSp)
@@ -791,7 +798,7 @@ public class Player : IEntityAutoReset
 
             SetStat(CharacterStat.Sp, sp + regen);
             CommandBuilder.ChangeSpValue(this, sp + regen, maxSp);
-        
+
         }
     }
 
@@ -854,6 +861,19 @@ public class Player : IEntityAutoReset
         Target = target.Entity;
     }
 
+    //returns true if the cast was successful, false if it failed OR if the cast was queued
+    public bool TryCastItemSkill(int itemId, CombatEntity target, CharacterSkill skill, int lvl = 1)
+    {
+        if (Inventory == null || !Inventory.HasItem(itemId))
+            return false;
+
+        var castTime = SkillHandler.GetSkillCastTime(skill, CombatEntity, target, lvl);
+
+        CombatEntity.AttemptStartSingleTargetSkillAttack(target, skill, lvl, castTime, false, itemId);
+
+        return false; //we always return false, the skill activating will consume the item
+    }
+
     public int DefaultWeaponForJob(int newJobId) => newJobId switch
     {
         0 => 1, //novice => dagger
@@ -899,6 +919,32 @@ public class Player : IEntityAutoReset
     public bool CanUseSummonItem()
     {
         return true; //should check if the map allows this
+    }
+
+    public bool CanUseItemSkill()
+    {
+        if (!Character.StateCanAttack)
+            return false;
+        if (GetStat(CharacterStat.Disabled) > 0 || CombatEntity.HasBodyState(BodyStateFlags.Hidden))
+            return false;
+        return true;
+    }
+
+    public void ItemActivatedSkillSelfTarget(CharacterSkill skill, int level)
+    {
+        var cast = new SkillCastInfo()
+        {
+            CastTime = 0,
+            HideName = false,
+            IsIndirect = true,
+            Level = level,
+            Range = 0,
+            Skill = skill,
+            TargetEntity = Entity,
+            TargetedPosition = Position.Invalid
+        };
+        Character.StopMovingImmediately();
+        SkillHandler.ExecuteSkill(cast, CombatEntity);
     }
 
     public void UseSummonItem(string itemName, int lifetime = int.MaxValue)
@@ -948,7 +994,8 @@ public class Player : IEntityAutoReset
     {
         if (Character.State == CharacterState.Sitting
             || Character.State == CharacterState.Dead
-            || Character.State == CharacterState.Hide
+            || CombatEntity.HasBodyState(BodyStateFlags.Hidden)
+            || GetStat(CharacterStat.Disabled) > 0
             || !ValidateTarget())
         {
             AutoAttackLock = false;
@@ -996,7 +1043,7 @@ public class Player : IEntityAutoReset
             {
                 CommandBuilder.RemoveItemFromInventory(this, Equipment.AmmoId, 1);
             }
-            
+
         }
     }
     public bool PerformAttack(WorldObject targetCharacter)
@@ -1147,7 +1194,7 @@ public class Player : IEntityAutoReset
         lastAttackerListCheckUpdate = Time.ElapsedTimeFloat + 0.2f;
         return RecentAttackersList.CountEntitiesAboveValueAndRemoveBelow(Time.ElapsedTimeFloat - 1.8f);
     }
-    
+
     public bool WarpPlayer(string mapName, int x, int y, int width, int height, bool failIfNotWalkable)
     {
         if (!World.Instance.TryGetWorldMapByName(mapName, out var map))

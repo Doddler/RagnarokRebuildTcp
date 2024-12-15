@@ -291,6 +291,14 @@ public class CharacterBag : IResettable
         return true;
     }
 
+    public bool UpdateUniqueItemReference(int bagId, UniqueItem item)
+    {
+        if (!UniqueItems.ContainsKey(bagId))
+            return false;
+        UniqueItems[bagId] = item;
+        return true;
+    }
+
     public int GetByteSize()
     {
         var size = 16; //4 for version, 4 for regular item count, 4 for unique item count, 4 for sanity check

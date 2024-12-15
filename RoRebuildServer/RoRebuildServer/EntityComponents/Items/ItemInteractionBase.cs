@@ -20,7 +20,7 @@ public class ItemInteractionBase
 
     public virtual void OnUse(Player player, CombatEntity combatEntity) { }
 
-    public virtual void OnUseTargeted(Player player, CombatEntity combatEntity, CombatEntity targetEntity) { }
+    public virtual bool OnUseTargeted(int itemId, Player player, CombatEntity combatEntity, CombatEntity targetEntity) => true; //true means the item is consumed
 
     public virtual void OnEquip(Player player, CombatEntity combatEntity, ItemEquipState state, UniqueItem item, EquipSlot position) { }
 

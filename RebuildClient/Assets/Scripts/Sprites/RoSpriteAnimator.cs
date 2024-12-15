@@ -74,6 +74,9 @@ namespace Assets.Scripts.Sprites
 
         public float MoveDistance;
 
+        public bool IsHidden;
+        public bool HideShadow;
+
         private RoAction currentAction;
         private int currentActionIndex;
         private int currentAngleIndex;
@@ -724,7 +727,18 @@ namespace Assets.Scripts.Sprites
             {
                 //probably should do something
             }
+            
+            if (Shadow != null && isActive)
+            {
+                if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
+                    Shadow.SetActive(false);
+                else
+                    Shadow.SetActive(!HideShadow);
+            }
 
+            if (SpriteRenderer is RoSpriteRendererStandard sr2)
+                sr2.IsHidden = IsHidden;
+            
             //if (isDirty)
             {
                 UpdateSpriteFrame();
@@ -736,16 +750,14 @@ namespace Assets.Scripts.Sprites
                         if (!ChildrenSprites[i].IsInitialized)
                             ChildrenSprites[i].Initialize();
 
-                        if (frame.IsForeground)
+                        if (ChildrenSprites[i].SpriteRenderer is RoSpriteRendererStandard sr)
                         {
-                            // Debug.Log($"Animation frame has reverse sorting!");
-                            if(ChildrenSprites[i].SpriteRenderer is RoSpriteRendererStandard sr)
+                            if (frame.IsForeground)
                                 sr.SortingOrder = ChildrenSprites[i].SpriteOrder - 10;
-                        }
-                        else
-                        {
-                            if(ChildrenSprites[i].SpriteRenderer is RoSpriteRendererStandard sr)
+                            else
                                 sr.SortingOrder = ChildrenSprites[i].SpriteOrder;
+
+                            sr.IsHidden = IsHidden;
                         }
 
                         ChildrenSprites[i].ChangeAngle(Angle);

@@ -15,19 +15,19 @@ namespace Assets.Scripts.PlayerControl
         private readonly List<CharacterStatusEffect> activeStatusEffects = new();
 
         public bool HasStatusEffect(CharacterStatusEffect status) => activeStatusEffects.Contains(status);
-        
+
         public static void AddStatusToTarget(ServerControllable controllable, CharacterStatusEffect status)
         {
             if (controllable.StatusEffectState == null)
                 controllable.StatusEffectState = new StatusEffectState();
 
             var state = controllable.StatusEffectState;
-            
-            if(!state.activeStatusEffects.Contains(status))
+
+            if (!state.activeStatusEffects.Contains(status))
                 state.activeStatusEffects.Add(status);
-            
+
             Debug.Log($"Character {controllable.DisplayName} gained status {status}");
-            
+
             switch (status)
             {
                 case CharacterStatusEffect.PushCart:
@@ -38,6 +38,14 @@ namespace Assets.Scripts.PlayerControl
                     controllable.FollowerObject = go;
                     break;
                 }
+                case CharacterStatusEffect.Hiding:
+                    controllable.SpriteAnimator.IsHidden = true;
+                    controllable.SpriteAnimator.HideShadow = controllable.IsMainCharacter;
+                    if (controllable.CharacterType != CharacterType.Player)
+                        controllable.HideHpBar();
+                    if (CameraFollower.Instance.SelectedTarget == controllable)
+                        CameraFollower.Instance.ClearSelected();
+                    break;
                 case CharacterStatusEffect.Stun:
                     StunEffect.AttachStunEffect(controllable);
                     // controllable.SpriteAnimator.Color = new Color(1, 0.5f, 0.5f);
@@ -54,21 +62,26 @@ namespace Assets.Scripts.PlayerControl
                     break;
             }
         }
-        
+
         public static void RemoveStatusFromTarget(ServerControllable controllable, CharacterStatusEffect status)
         {
             controllable.StatusEffectState?.activeStatusEffects.Remove(status);
-            
+
             Debug.Log($"Character {controllable.DisplayName} loses status {status}");
 
             switch (status)
             {
                 case CharacterStatusEffect.PushCart:
                 {
-                    if(controllable.FollowerObject != null)
+                    if (controllable.FollowerObject != null)
                         GameObject.Destroy(controllable.FollowerObject);
                     break;
                 }
+                case CharacterStatusEffect.Hiding:
+                    controllable.SpriteAnimator.IsHidden = false;
+                    controllable.SpriteAnimator.HideShadow = false;
+                    HideEffect.AttachHideEffect(controllable.gameObject);
+                    break;
                 case CharacterStatusEffect.Stun:
                     controllable.EndEffectOfType(EffectType.Stun);
                     // controllable.SpriteAnimator.Color = new Color(1, 1, 1);

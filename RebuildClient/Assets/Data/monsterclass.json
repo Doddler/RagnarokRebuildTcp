@@ -3290,6 +3290,17 @@
       "Color": "#FFFFFFFF"
     },
     {
+      "Id": 4298,
+      "Code": "ANGRY_TARGET_DUMMY",
+      "Name": "Angry Target Dummy",
+      "SpriteName": "barricade.spr",
+      "Offset": 0,
+      "ShadowSize": -1,
+      "Size": 1,
+      "AttackTiming": 0.2,
+      "Color": "#FFFFFFFF"
+    },
+    {
       "Id": 5000,
       "Code": "PORING50",
       "Name": "Poring",

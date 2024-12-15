@@ -56,3 +56,25 @@ OnDie:
 StateSpecial:
     TryCast(SelfDestruct, 1, 1000, 4000, 0, EventOnStartCast | HideSkillName);
 }
+
+
+SkillHandler("MASTERING") { 
+StateAny:
+	TryCast(CallMinion, 1, 20%, 2s, 45s, HideSkillName)[MinionCount < 4] -> {
+		TossSummonMinion(6, "PORING", 6, 6);
+	}
+OnDie:
+	TossSummonMonster(12, "PORING", "MasteringFinalSplit", 8, 8);
+}
+
+//TossSummonMonster will default to have no exp/drops so this exists to fix that
+AltSkillHandler("MasteringFinalSplit") {
+OnInit:
+	ChangeAiClass(AiLooter);
+	SetGivesExperience(true); 
+	ChangeAiHandler("PORING");
+StateAny:
+	if(TimeAlive > 3s) {
+		ChangeAiClass(AiLooter);
+	}
+}

@@ -86,7 +86,7 @@ Item("Aloevera") { OnValidate: return false; OnUse: }
 Item("Yggdrasil_Berry") { OnUse: HealHpPercent(100); HealSpPercent(100); }
 Item("Yggdrasil_Seed") { OnUse: HealHpPercent(50); HealSpPercent(100); }
 Item("Amulet") { OnValidate: return false; OnUse: }
-Item("Yggdrasil_Leaf") { OnValidate: return false; OnUse: }
+Item("Yggdrasil_Leaf") { OnUseTargeted: return TryCastItemSkill(item, target, Resurrection, 1); }
 Item("Magnifier") { OnValidate: return false; OnUse: }
 Item("Mini_Furnace") { OnValidate: return false; OnUse: }
 Item("Iron_Hammer") { OnValidate: return false; OnUse: }
@@ -246,8 +246,8 @@ Item("Kafra_Card") { OnValidate: return false; OnUse: }
 Item("Giant_Fly_Wing") { OnValidate: return false; OnUse: }
 Item("Neuralizer") { OnValidate: return false; OnUse: }
 Item("Convex_Mirror") { OnValidate: return false; OnUse: }
-Item("Blessing_Scroll") { OnValidate: return false; OnUse: }
-Item("Increase_Agi_Scroll") { OnValidate: return false; OnUse: }
+Item("Blessing_Scroll") { OnValidate: return CanUseItemSkill(); OnUse: ItemActivatedSkillSelfTarget(Blessing, 10); }
+Item("Increase_Agi_Scroll") { OnValidate: return CanUseItemSkill(); OnUse: ItemActivatedSkillSelfTarget(IncreaseAgility, 10); }
 Item("Aspersio_Scroll") { OnValidate: return false; OnUse: }
 Item("Assumptio_Scroll") { OnValidate: return false; OnUse: }
 Item("Megaphone") { OnValidate: return false; OnUse: }

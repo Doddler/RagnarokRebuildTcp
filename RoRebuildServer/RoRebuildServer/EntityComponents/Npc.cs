@@ -398,7 +398,7 @@ public class Npc : IEntityAutoReset
     public void SetSittingState(bool isSitting)
     {
 
-        if (Character.StateCanSit || Character.Map == null)
+        if (!Character.StateCanSit || Character.Map == null)
             return;
 
         if (isSitting)

@@ -24,7 +24,7 @@ MapConfig("gef_fild02")
 	CreateSpawn("ORK_WARRIOR", 50);
 	CreateSpawn("COCO", 20);
 	CreateSpawn("SMOKIE", 20);
-	CreateSpawn("CHOCO", 1);
+	CreateSpawn("CHOCO", 1, 3m, 2m);
 	CreateSpawn("GREEN_PLANT", 8, %(227, 316, 6, 6), 360000, 180000);
 	CreateSpawn("RED_MUSHROOM", 5, %(87, 48, 6, 6), 360000, 180000);
 	CreateSpawn("BLUE_PLANT", 2, %(215, 209, 2, 1), 360000, 180000);

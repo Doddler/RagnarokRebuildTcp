@@ -598,7 +598,7 @@ internal class DataLoader
                 Code = entry.Code,
                 Id = entry.Id,
                 IsUnique = false,
-                ItemClass = ItemClass.Useable,
+                ItemClass = ItemClass.Card,
                 Price = entry.Price,
                 Weight = entry.Weight,
             };
@@ -785,7 +785,7 @@ internal class DataLoader
         {
             if (monster.Id <= 0)
                 continue;
-
+            
             obj.Add(new MonsterDatabaseInfo()
             {
                 Id = monster.Id,
@@ -802,6 +802,7 @@ internal class DataLoader
                 Dex = monster.Dex,
                 Luk = monster.Luk,
                 Range = monster.Range > 0 ? monster.Range : 1,
+                Size = monster.Size,
                 ScanDist = monster.ScanDist,
                 ChaseDist = monster.ChaseDist,
                 AtkMin = monster.AtkMin,

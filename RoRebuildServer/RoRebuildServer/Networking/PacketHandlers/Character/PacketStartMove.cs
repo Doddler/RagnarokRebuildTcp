@@ -4,6 +4,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using System.Diagnostics;
+using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -19,10 +20,13 @@ public class PacketStartMove : IClientPacketHandler
         Debug.Assert(connection.Character != null);
         Debug.Assert(connection.Character.Map != null);
 
-        if (!connection.Player.CanPerformCharacterActions())
+        var player = connection.Player;
+
+        if (!player.CanPerformCharacterActions())
             return;
 
-        var player = connection.Player;
+        if (player.CombatEntity.HasBodyState(BodyStateFlags.Hidden))
+            return;
 
         player.AddActionDelay(CooldownActionType.Click);
 

@@ -53,6 +53,7 @@ namespace Assets.Scripts.Sprites
         public float SpriteOffset;
         public int PaletteId;
         public RoSpriteData SpriteData;
+        public bool IsHidden;
 
         //public Direction Direction;
         public Direction Direction
@@ -312,6 +313,9 @@ namespace Assets.Scripts.Sprites
         {
             if (!isInitialized)
                 return false;
+
+            MeshRenderer.enabled = !IsHidden;
+            // MeshCollider.enabled = !IsHidden;
             
             if (UpdateAngleWithCamera)
             {

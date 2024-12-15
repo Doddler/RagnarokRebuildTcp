@@ -125,7 +125,7 @@ namespace Assets.Scripts.UI.Hud
             if (castBar == null)
                 castBar = Manager.AttachCastBar(gameObject);
 
-            if (controllable.SpriteAnimator != null && StandingHeight == 0)
+            if (controllable.SpriteAnimator?.SpriteData != null && StandingHeight == 0)
             {
                 StandingHeight = controllable.SpriteAnimator.SpriteData.StandingHeight;
                 if (controllable.CharacterType == CharacterType.Player)
@@ -163,7 +163,7 @@ namespace Assets.Scripts.UI.Hud
             if (chatBubble == null)
                 chatBubble = Manager.AttachChatBubble(gameObject);
 
-            if (controllable.SpriteAnimator != null && StandingHeight == 0)
+            if (controllable.SpriteAnimator?.SpriteData != null && StandingHeight == 0)
             {
                 StandingHeight = controllable.SpriteAnimator.SpriteData.StandingHeight;
                 if (controllable.CharacterType == CharacterType.Player)
@@ -207,7 +207,7 @@ namespace Assets.Scripts.UI.Hud
             if(isPlayer)
                 ((RectTransform)mpBar.transform).sizeDelta = new Vector2(100f, 10f);
             else
-                ((RectTransform)hpBar.transform).sizeDelta = new Vector2(90f, 10f); //when would this ever happen...?
+                ((RectTransform)mpBar.transform).sizeDelta = new Vector2(90f, 10f); //when would this ever happen...?
         }
         
         public void HideHpBar()

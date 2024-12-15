@@ -468,6 +468,14 @@ Target = "Self"
 MaxLevel = 10
 SpCost = [14,18,22,26,30,34,38,42,46,50]
 
+[Resurrection]
+Name = "Resurrection"
+Icon = "pr_resurrection"
+Target = "Ally"
+MaxLevel = 4
+SpCost = [60, 60, 60, 60]
+InterruptMode = "InterruptOnDamage"
+
 [HammerFall]
 Name = "Hammer Fall"
 Icon = "bs_hammerfall"

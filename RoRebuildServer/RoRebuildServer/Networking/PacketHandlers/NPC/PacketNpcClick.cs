@@ -6,6 +6,7 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
 using System.Numerics;
+using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers.NPC;
 
@@ -21,12 +22,12 @@ public class PacketNpcClick : IClientPacketHandler
         if (character == null || connection.Player == null
             || character.State == CharacterState.Sitting
             || character.State == CharacterState.Dead
-            || character.State == CharacterState.Hide
             || character.Player.IsInNpcInteraction)
             return;
 
-        if (connection.Player.InActionCooldown())
+        if (!character.Player.CanPerformCharacterActions() && !character.CombatEntity.HasBodyState(BodyStateFlags.Hidden))
             return;
+
         connection.Player.AddActionDelay(CooldownActionType.Click);
 
         var targetNpc = World.Instance.GetEntityById(id);

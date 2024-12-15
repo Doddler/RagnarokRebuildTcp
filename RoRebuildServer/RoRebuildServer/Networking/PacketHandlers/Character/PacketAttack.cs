@@ -5,6 +5,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation;
 using System.Diagnostics;
+using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -26,7 +27,7 @@ public class PacketAttack : IClientPacketHandler
             return;
 
         var character = connection.Character;
-        if (character.State == CharacterState.Sitting || character.State == CharacterState.Hide)
+        if (character.State == CharacterState.Sitting || character.CombatEntity.HasBodyState(BodyStateFlags.Hidden))
             return;
         
         character.Player.AddActionDelay(CooldownActionType.Click);

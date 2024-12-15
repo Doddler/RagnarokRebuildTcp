@@ -526,7 +526,8 @@ namespace Assets.Scripts.Network
 
         public void LoadMoveData2(ClientInboundMessage msg, ServerControllable ctrl)
         {
-            var startPos = new Vector2(msg.ReadFloat(), msg.ReadFloat());
+            var startPos = msg.ReadPosition();
+            var realPos = new Vector2(msg.ReadFloat(), msg.ReadFloat());
             var moveSpeed = msg.ReadFloat();
             var moveDistance = msg.ReadFloat();
             var totalSteps = (int)msg.ReadByte();
@@ -552,7 +553,14 @@ namespace Assets.Scripts.Network
 
             var isInMoveDelay = msg.ReadBoolean();
             if (!isInMoveDelay) //we need to remove this and handle this properly
+            {
+                var height = 0f; 
+                if(CameraFollower.WalkProvider != null)
+                    CameraFollower.WalkProvider.GetHeightForPosition(new Vector3(realPos.x, 0, realPos.y)); //happens on initial load...
+                var newRealPos = new Vector3(realPos.x, height, realPos.y);
+                ctrl.RealPosition = newRealPos;
                 ctrl.StartMove2(moveSpeed, moveDistance, totalSteps, curStep, startPos, pathData);
+            }
 
             //ctrl.SetHitDelay(lockTime);
         }
@@ -1572,6 +1580,16 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendSocketItem(int targetItem, int srcItem)
+        {
+            var msg = StartMessage();
+            
+            msg.Write((byte)PacketType.SocketEquipment);
+            msg.Write(targetItem);
+            msg.Write(srcItem);
+            
+            SendMessage(msg);
+        }
 
         public void SendEquipItem(int id)
         {
@@ -1584,13 +1602,14 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendUseItem(int id)
+        public void SendUseItem(int id, int target = -1)
         {
             //Debug.Log("Send usable item");
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.UseInventoryItem);
             msg.Write(id);
+            msg.Write(target);
 
             SendMessage(msg);
         }

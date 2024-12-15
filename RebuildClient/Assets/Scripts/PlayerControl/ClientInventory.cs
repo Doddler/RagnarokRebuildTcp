@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.ClientTypes;
@@ -28,6 +29,15 @@ namespace Assets.Scripts.PlayerControl
             ItemData = ClientDataLoader.Instance.GetItemById(item.Id);
             UniqueItem = default;
         }
+        
+        public InventoryItem(int bagId, UniqueItem item)
+        {
+            BagSlotId = bagId;
+            Type = ItemType.RegularItem;
+            Item = default;
+            ItemData = ClientDataLoader.Instance.GetItemById(item.Id);
+            UniqueItem = item;
+        }
 
         public int Count
         {
@@ -49,6 +59,26 @@ namespace Assets.Scripts.PlayerControl
                     return 0;
                 return Mathf.FloorToInt(ItemData.Price / 2f);
             }
+        }
+
+        public bool IsAvailableForSocketing(EquipPosition position)
+        {
+            if (Type != ItemType.UniqueItem)
+                return false;
+
+            if (ItemData.ItemClass != ItemClass.Equipment && ItemData.ItemClass != ItemClass.Weapon)
+                return false;
+
+            if ((ItemData.Position & position) == 0)
+                return false;
+            
+            var socketCount = ItemData.Slots;
+            
+            for(var i = 0; i < socketCount; i++)
+                if (UniqueItem.SlotData(i) == 0)
+                    return true;
+
+            return false;
         }
 
         public static InventoryItem Deserialize(ClientInboundMessage msg, ItemType type, int bagId)
@@ -78,6 +108,85 @@ namespace Assets.Scripts.PlayerControl
             return item;
         }
         
+        private static StringBuilder sb = new();
+        private static CardPrefixData[] prefixData = new CardPrefixData[4];
+
+        //there must be a non-retarded way to do this that doesn't allocate like a hog
+        public string MakeNameWithSockets()
+        {
+            Span<int> ids = stackalloc int[4];
+            Span<int> counts = stackalloc int[4];
+            var uniqueSlot = 0;
+            for (var i = 0; i < 4; i++)
+            {
+                var item = UniqueItem.SlotData(i);
+                if (item > 0)
+                {
+                    var hasMatch = false;
+                    for (var j = 0; j < 4; j++)
+                    {
+                        if (ids[j] == item)
+                        {
+                            counts[j]++;
+                            hasMatch = true;
+                            break;
+                        }
+                    }
+
+                    if (!hasMatch)
+                    {
+                        ids[uniqueSlot] = item;
+                        counts[uniqueSlot] = 1;
+                        prefixData[uniqueSlot] = ClientDataLoader.Instance.GetCardPrefixData(item);
+                        uniqueSlot++;
+                    }
+                }
+            }
+
+            if (uniqueSlot == 0)
+                return ItemData.Name;
+
+            sb.Clear();
+            //prefixes
+            for (var i = 0; i < uniqueSlot; i++)
+            {
+                if (prefixData[i] != null && !string.IsNullOrWhiteSpace(prefixData[i].Prefix))
+                {
+                    if (sb.Length > 0)
+                        sb.Append(" ");
+                    switch(counts[i])
+                    {
+                        default: sb.Append(prefixData[i].Prefix); break;
+                        case 2: sb.Append("Double ").Append(prefixData[i].Prefix); break;
+                        case 3: sb.Append("Triple ").Append(prefixData[i].Prefix); break;
+                        case 4: sb.Append("Quadruple ").Append(prefixData[i].Prefix); break;
+                    }
+                }
+            }
+
+            if (sb.Length > 0)
+                sb.Append(" ");
+            sb.Append(ItemData.Name);
+            
+            //postfixes
+            for (var i = 0; i < uniqueSlot; i++)
+            {
+                if (prefixData[i] != null && !string.IsNullOrWhiteSpace(prefixData[i].Postfix))
+                {
+                    sb.Append(" ");
+                    switch (counts[i])
+                    {
+                        default: sb.Append(prefixData[i].Postfix); break;
+                        case 2: sb.Append(prefixData[i].Postfix).Append("Double "); break;
+                        case 3: sb.Append(prefixData[i].Postfix).Append("Triple "); break;
+                        case 4: sb.Append(prefixData[i].Postfix).Append("Quadruple "); break;
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
+        
         public bool Equals(InventoryItem other)
         {
             return BagSlotId == other.BagSlotId;
@@ -92,7 +201,7 @@ namespace Assets.Scripts.PlayerControl
         {
             return BagSlotId;
         }
-
+        
         public string ProperName()
         {
             if (ItemData == null)
@@ -102,7 +211,7 @@ namespace Assets.Scripts.PlayerControl
             {
                 if (ItemData.Slots == 0)
                     return ItemData.Name;
-                return $"{ItemData.Name} [{ItemData.Slots}]";
+                return $"{MakeNameWithSockets()} [{ItemData.Slots}]";
             }
 
             return $"{ItemData.Name}";
@@ -117,7 +226,7 @@ namespace Assets.Scripts.PlayerControl
             {
                 if (ItemData.Slots == 0)
                     return ItemData.Name;
-                return $"{ItemData.Name} [{ItemData.Slots}]";
+                return $"{MakeNameWithSockets()} [{ItemData.Slots}]";
             }
 
             return $"{ItemData.Name}: {Count} ea.";
@@ -160,6 +269,18 @@ namespace Assets.Scripts.PlayerControl
             if (inventoryLookup.TryGetValue(item.BagSlotId, out var existing))
                 change -= existing.Count;
             inventoryLookup[item.BagSlotId] = item;
+        }
+
+        public void ReplaceUniqueItem(int bagId, UniqueItem item)
+        {
+            if (!inventoryLookup.TryGetValue(bagId, out var curItem))
+            {
+                Debug.LogError($"Could not ReplaceUniqueItem with bagId {bagId} (item {item.Id}), that item could not be found.");
+                return;
+            }
+
+            curItem.UniqueItem = item;
+            inventoryLookup[bagId] = curItem;
         }
         
         public void Deserialize(ClientInboundMessage msg)

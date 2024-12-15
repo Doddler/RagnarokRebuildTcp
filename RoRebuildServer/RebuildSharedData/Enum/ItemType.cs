@@ -15,7 +15,8 @@ namespace RebuildSharedData.Enum
     {
         NotUsable,
         Use,
-        UseOnTarget
+        UseOnAlly,
+        UseOnEnemy
     }
 
     public enum ItemClass : byte

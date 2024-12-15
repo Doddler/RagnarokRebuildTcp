@@ -20,6 +20,7 @@ namespace Assets.Scripts.Effects
 		HammerFall,
 		HealEffect,
 		IceArrow,
+		Hide,
 		Stun,
 		Blessing,
 		Provoke,
@@ -57,6 +58,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.HammerFall, new Assets.Scripts.Effects.EffectHandlers.HammerFallEffect());
 			effectHandlers.Add(EffectType.HealEffect, new Assets.Scripts.Effects.EffectHandlers.HealEffect());
 			effectHandlers.Add(EffectType.IceArrow, new Assets.Scripts.Effects.EffectHandlers.IceArrow());
+			effectHandlers.Add(EffectType.Hide, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.HideEffect());
 			effectHandlers.Add(EffectType.Stun, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.StunEffect());
 			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.Skills.BlessingEffect());
 			effectHandlers.Add(EffectType.Provoke, new Assets.Scripts.Effects.EffectHandlers.Skills.ProvokeEffect());

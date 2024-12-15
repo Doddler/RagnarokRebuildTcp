@@ -19,6 +19,25 @@ namespace Assets.Scripts.UI
         private CharacterSkill activeSkill;
         private int selectedSkillLevel;
 
+        
+        public void SetItemTargeting(string itemName, int level)
+        {
+            Container.SetActive(true);
+
+            TopTextArea.text = itemName;
+            BottomTextArea.text = "Select a target.";
+
+            selectedSkillLevel = level;
+            
+            
+            LayoutRebuilder.ForceRebuildLayoutImmediate(TopLayoutGroup);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(BottomLayoutGroup);
+            
+            TopTextArea.ForceMeshUpdate();
+            BottomTextArea.ForceMeshUpdate();
+            
+        }
+        
         public void SetSkillTargeting(CharacterSkill skill, int level)
         {
             Container.SetActive(true);

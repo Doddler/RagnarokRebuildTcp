@@ -29,15 +29,15 @@ public class StatusAngelus : StatusEffectBase
             if (state.Value2 > lvl)
                 state.Value2 = lvl;
 
-            ch.AddStat(CharacterStat.ReductionFromDemon, state.Value2);
-            ch.AddStat(CharacterStat.ReductionFromUndead, state.Value2);
+            ch.AddStat(CharacterStat.AddResistRaceDemon, state.Value2);
+            ch.AddStat(CharacterStat.AddResistRaceUndead, state.Value2);
         }
     }
 
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
         ch.SubStat(CharacterStat.AddSoftDefPercent, state.Value1);
-        ch.SubStat(CharacterStat.ReductionFromDemon, state.Value2);
-        ch.SubStat(CharacterStat.ReductionFromUndead, state.Value2);
+        ch.SubStat(CharacterStat.AddResistRaceDemon, state.Value2);
+        ch.SubStat(CharacterStat.AddResistRaceUndead, state.Value2);
     }
 }

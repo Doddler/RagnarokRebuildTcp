@@ -19,7 +19,7 @@ public class ProvokeHandler : SkillHandlerBase
         if (target.IsElementBaseType(CharacterElement.Undead1))
             return SkillValidationResult.Failure;
 
-        return SkillValidationResult.Success;
+        return StandardValidation(source, target, position);
     }
 
     public override int GetSkillRange(CombatEntity source, int lvl) => 9;

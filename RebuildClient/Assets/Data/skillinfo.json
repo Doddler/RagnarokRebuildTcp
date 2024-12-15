@@ -324,7 +324,7 @@
         18
       ],
       "AdjustableLevel": false,
-      "Description": "A fast firing psychokinetic attack that deals ghost property \u003Ci\u003Ephysical\u003C/i\u003E damage. Enemies directly adjascent to your target will take 50% of the damage your primary target takes.",
+      "Description": "A fast burst of psychokinetic energy dealing ghost property \u003Ci\u003Ephysical\u003C/i\u003E damage. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes.",
       "InterruptMode": 0
     },
     {
@@ -347,7 +347,7 @@
         38
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "Description": "A psychokinetic attack that launches spiritual energy at the target dealing ghost property magical damage. Deals 50% more damage against the undead.",
       "InterruptMode": 0
     },
     {
@@ -393,7 +393,7 @@
         40
       ],
       "AdjustableLevel": true,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "Description": "A barrier which nullifies short range physical attacks. Vanishes after absorbing between 2-11 hits depending on skill level.\r\nCatalyst: \u003Ccolor=#777777\u003E1 Blue Gemstone\u003C/color\u003E",
       "InterruptMode": 0
     },
     {
@@ -1135,6 +1135,23 @@
     },
     {
       "SkillId": 65,
+      "Icon": "pr_resurrection",
+      "Name": "Resurrection",
+      "Target": 2,
+      "Type": 0,
+      "MaxLevel": 4,
+      "SpCost": [
+        60,
+        60,
+        60,
+        60
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 1
+    },
+    {
+      "SkillId": 66,
       "Icon": "bs_hammerfall",
       "Name": "Hammer Fall",
       "Target": 4,
@@ -1152,7 +1169,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 66,
+      "SkillId": 67,
       "Icon": "as_sonicblow",
       "Name": "Sonic Blow",
       "Target": 1,
@@ -1175,7 +1192,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 67,
+      "SkillId": 68,
       "Icon": "nv_basic",
       "Name": "Call Minion",
       "Target": 0,
@@ -1187,7 +1204,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 68,
+      "SkillId": 69,
       "Icon": "nv_basic",
       "Name": "Grand Thunderstorm",
       "Target": 0,
@@ -1199,7 +1216,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 69,
+      "SkillId": 70,
       "Icon": "nv_basic",
       "Name": "Fire Attack",
       "Target": 0,
@@ -1211,7 +1228,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 70,
+      "SkillId": 71,
       "Icon": "nv_basic",
       "Name": "Ice Attack",
       "Target": 0,
@@ -1223,7 +1240,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 71,
+      "SkillId": 72,
       "Icon": "nv_basic",
       "Name": "Wind Attack",
       "Target": 0,
@@ -1235,7 +1252,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 72,
+      "SkillId": 73,
       "Icon": "nv_basic",
       "Name": "Earth Attack",
       "Target": 0,
@@ -1247,7 +1264,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 73,
+      "SkillId": 74,
       "Icon": "nv_basic",
       "Name": "Dark Attack",
       "Target": 0,
@@ -1259,7 +1276,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 74,
+      "SkillId": 75,
       "Icon": "nv_basic",
       "Name": "Holy Attack",
       "Target": 0,
@@ -1271,7 +1288,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 75,
+      "SkillId": 76,
       "Icon": "nv_basic",
       "Name": "Poison Attack",
       "Target": 0,
@@ -1283,7 +1300,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 76,
+      "SkillId": 77,
       "Icon": "nv_basic",
       "Name": "Undead Attack",
       "Target": 0,
@@ -1295,7 +1312,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 77,
+      "SkillId": 78,
       "Icon": "nv_basic",
       "Name": "Immaterial Attack",
       "Target": 0,
@@ -1307,7 +1324,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 78,
+      "SkillId": 79,
       "Icon": "nv_basic",
       "Name": "Critical Slash",
       "Target": 0,
@@ -1319,7 +1336,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 79,
+      "SkillId": 80,
       "Icon": "nv_basic",
       "Name": "Poison",
       "Target": 0,
@@ -1331,7 +1348,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 80,
+      "SkillId": 81,
       "Icon": "nv_basic",
       "Name": "Sleep",
       "Target": 0,
@@ -1343,7 +1360,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 81,
+      "SkillId": 82,
       "Icon": "nv_basic",
       "Name": "Stun",
       "Target": 0,
@@ -1355,7 +1372,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 82,
+      "SkillId": 83,
       "Icon": "nv_basic",
       "Name": "Blind",
       "Target": 0,
@@ -1367,7 +1384,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 83,
+      "SkillId": 84,
       "Icon": "nv_basic",
       "Name": "Silence",
       "Target": 0,
@@ -1379,7 +1396,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 84,
+      "SkillId": 85,
       "Icon": "nv_basic",
       "Name": "Self Destruct",
       "Target": 0,
@@ -1391,7 +1408,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 85,
+      "SkillId": 86,
       "Icon": "nv_basic",
       "Name": "Power Up",
       "Target": 0,
@@ -1403,7 +1420,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 86,
+      "SkillId": 87,
       "Icon": "nv_basic",
       "Name": "Summon Monster",
       "Target": 0,
@@ -1415,7 +1432,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 87,
+      "SkillId": 88,
       "Icon": "nv_basic",
       "Name": "Suicide",
       "Target": 0,
@@ -1427,7 +1444,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 88,
+      "SkillId": 89,
       "Icon": "nv_basic",
       "Name": "Reward for Quest",
       "Target": 0,
@@ -1439,7 +1456,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 89,
+      "SkillId": 90,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,
