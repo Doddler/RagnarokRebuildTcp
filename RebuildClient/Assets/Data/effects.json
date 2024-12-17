@@ -1055,6 +1055,30 @@
       "SoundFile": "mapae",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 88,
+      "Name": "RefineSuccess",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "bs_refinesuccess",
+      "Sprite": "",
+      "SoundFile": "bs_refinesuccess",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 89,
+      "Name": "RefineFailure",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "bs_refinefailed",
+      "Sprite": "",
+      "SoundFile": "bs_refinefailed",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

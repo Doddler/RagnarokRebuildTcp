@@ -1050,14 +1050,24 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
-    public static void SendNpcOpenShop(Player p, Npc npc)
+    public static void SendNpcOpenRefineDialog(Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 8);
+        packet.Write((byte)NpcInteractionType.NpcOpenRefineWindow);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void SendNpcOpenShop(Player p, Npc npc, bool canDiscount)
     {
         var packet = NetworkManager.StartPacket(PacketType.OpenShop, 128);
         var count = 0;
         if (npc.ItemsForSale != null)
             count = npc.ItemsForSale.Count;
+        var discount = canDiscount ? p.MaxLearnedLevelOfSkill(CharacterSkill.Discount) : 0;
 
         packet.Write((byte)1); //buy from NPC
+        packet.Write((byte)discount);
         packet.Write(count);
 
         for (var i = 0; i < count; i++)
@@ -1074,6 +1084,7 @@ public static class CommandBuilder
     {
         var packet = NetworkManager.StartPacket(PacketType.OpenShop, 128);
         packet.Write((byte)0); //sell to NPC
+        packet.Write(p.MaxLearnedLevelOfSkill(CharacterSkill.Overcharge));
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
@@ -1092,6 +1103,14 @@ public static class CommandBuilder
     {
         var packet = NetworkManager.StartPacket(PacketType.AdminHideCharacter, 8);
         packet.Write(isHidden);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void SendUpdateZeny(Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.UpdateZeny, 8);
+        packet.Write(p.GetZeny());
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

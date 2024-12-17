@@ -1,1 +1,56 @@
 ﻿
+//prontera blacksmiths
+Npc("prt_in", "Hollgrehenn", "4_M_03", 63, 60, N)
+{
+OnClick:
+    FocusNpc();
+	Dialog("Holgrehenn", "I'm Holgrehenn, the Armsmith.\nI can refine all kinds of weapons, armor and equipment, so let me know if you want me to refine something.");
+	Option("Refine Gear", "Cancel");
+	if(result > 0)
+		return;
+
+	OpenRefineDialog();
+}
+
+Npc("prt_in", "Dietrich", "4_M_02", 63, 69, SW) { 
+OnClick:
+	FocusNpc();
+	if(InventoryItemCount > MaxItemCount - 1) {
+		Dialog(Name, "Whoa, you sure are carrying a lot! Come back when you have a few less items on you.");
+		return;
+	}
+	Dialog(Name, "I can purify your Rough Oridecon or Rough Elunium stones. I'll need 5 Rough stones to make 1 pure one for you.");
+	Option("Make Oridecon", "Make Elunium", "Cancel");
+	switch(result) {
+		case 0: 
+			if(TakeItem("Rough_Oridecon", 5)) {
+				GiveItem("Oridecon");
+				Dialog(Name, "As promised, here's your Oridecon.\nCome back any time.");
+			} else 
+				Dialog(Name, "You're kidding me, right?\nI just told you that I need 5 Rough Oridecon to make a pure Oridecon.");
+		case 1:
+			if(TakeItem("Rough_Elunium", 5)) {
+				GiveItem("Elunium");
+				Dialog(Name, "As promised, here's your Elunium.\nCome back any time.");
+			} else 
+				Dialog(Name, "You're kidding me, right?\nI just told you that I need 5 Rough Elunium to make a pure Elunium.");
+	}	
+}
+
+Npc("prt_in", "Vurewell", "4_M_04", 56, 68, SE) { 
+	SellItem("Phracon");
+	SellItem("Emveretarcon");
+OnClick:
+	FocusNpc();
+	if(HasJobType("Merchant"))
+		Dialog(Name, "I sell 2 kinds of Metal for tempering weaponry.\nI have <color=#007777>Phracon<color=#000000> for Level 1 Weapons," +
+					" and <color=#007777>Emveretarcon<color=#000000> for Level 2 Weapons. No discounts though, sorry.");
+	else
+		Dialog(Name, "I sell 2 kinds of Metal for tempering weaponry.\nI have <color=#007777>Phracon<color=#000000> for Level 1 Weapons," +
+		            " and <color=#007777>Emveretarcon<color=#000000> for Level 2 Weapons.");
+	
+	Option("Buy ores", "Cancel");
+	if(result == 0)
+		OpenShop(false); //false makes the shop not apply discount
+}
+

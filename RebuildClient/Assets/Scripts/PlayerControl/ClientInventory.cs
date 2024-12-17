@@ -209,9 +209,12 @@ namespace Assets.Scripts.PlayerControl
             
             if (ItemData.IsUnique)
             {
+                var refine = "";
+                if (UniqueItem.Refine > 0)
+                    refine = $"+{UniqueItem.Refine} ";
                 if (ItemData.Slots == 0)
-                    return ItemData.Name;
-                return $"{MakeNameWithSockets()} [{ItemData.Slots}]";
+                    return $"{refine}{ItemData.Name}";
+                return $"{refine}{MakeNameWithSockets()}[{ItemData.Slots}]";
             }
 
             return $"{ItemData.Name}";
@@ -224,9 +227,12 @@ namespace Assets.Scripts.PlayerControl
             
             if (ItemData.IsUnique)
             {
+                var refine = "";
+                if (UniqueItem.Refine > 0)
+                    refine = $"+{UniqueItem.Refine} ";
                 if (ItemData.Slots == 0)
-                    return ItemData.Name;
-                return $"{MakeNameWithSockets()} [{ItemData.Slots}]";
+                    return $"{refine}{ItemData.Name}";
+                return $"{refine}{MakeNameWithSockets()}[{ItemData.Slots}]";
             }
 
             return $"{ItemData.Name}: {Count} ea.";

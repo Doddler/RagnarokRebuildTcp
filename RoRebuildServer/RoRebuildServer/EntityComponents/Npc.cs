@@ -79,8 +79,8 @@ public class Npc : IEntityAutoReset
         {
             UpdateTimer();
         }
-        
-        if(IsPathActive && NpcPathHandler != null)
+
+        if (IsPathActive && NpcPathHandler != null)
             NpcPathHandler.UpdatePath();
 
         if (Mobs != null && Mobs.Count > 0)
@@ -168,7 +168,7 @@ public class Npc : IEntityAutoReset
 
         Behavior.OnTimer(this, lastTime, newTime);
     }
-    
+
     public void ResetTimer()
     {
         TimerStart = Time.ElapsedTime;
@@ -262,14 +262,14 @@ public class Npc : IEntityAutoReset
         Debug.Assert(NpcPathHandler != null);
         IsPathActive = true;
     }
-    
+
     public void EndPath()
     {
         IsPathActive = false;
         if (NpcPathHandler != null)
             NpcPathHandler.Step = 0;
     }
-    
+
     public void Advance(Player player)
     {
         player.NpcInteractionState.InteractionResult = NpcInteractionResult.None;
@@ -405,12 +405,12 @@ public class Npc : IEntityAutoReset
             Character.State = CharacterState.Sitting;
         else
             Character.State = CharacterState.Idle;
-        
+
         Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.ChangeSittingMulti(Character);
         CommandBuilder.ClearRecipients();
-    } 
-    
+    }
+
 
     private void EnsureMobListCreated()
     {
@@ -536,7 +536,7 @@ public class Npc : IEntityAutoReset
     }
 
     //finish npc shop purchase. We don't use the array sizes directly because they're borrowed and might be larger than expected
-    public void SubmitPlayerPurchaseFromNpc(Player player, int[] itemIds, int[] itemCounts, int numItems)
+    public void SubmitPlayerPurchaseFromNpc(Player player, int[] itemIds, int[] itemCounts, int numItems, bool allowDiscount)
     {
         if (ItemsForSale == null || SaleItemHashes == null || SaleItemHashes.Count <= 0)
             return;
@@ -545,6 +545,11 @@ public class Npc : IEntityAutoReset
         var totalWeight = 0;
         var addItemCount = 0;
         var inventory = player.Inventory;
+
+        var dcLevel = player.MaxLearnedLevelOfSkill(CharacterSkill.Discount);
+        var discount = allowDiscount && dcLevel > 0 ? 5 + dcLevel * 2 : 0;
+        if (discount > 24)
+            discount = 24;
 
         for (var i = 0; i < numItems; i++)
         {
@@ -566,7 +571,8 @@ public class Npc : IEntityAutoReset
                 goto Error;
             }
 
-            totalCost += info.Price * count;
+            var dcValue = info.Price * discount / 100;
+            totalCost += (info.Price - dcValue) * count;
             totalWeight += info.Weight * count;
         }
 
@@ -617,6 +623,10 @@ public class Npc : IEntityAutoReset
             throw new Exception($"Player {player} is attempting to sell items when it has no inventory!");
         if (numItems > inventory.UsedSlots)
             return;
+        var ocLevel = player.MaxLearnedLevelOfSkill(CharacterSkill.Overcharge);
+        var overCharge = ocLevel > 0 ? 5 + player.MaxLearnedLevelOfSkill(CharacterSkill.Overcharge) * 2 : 0;
+        if (overCharge > 24)
+            overCharge = 24;
 
         var zenyGained = 0;
         for (var i = 0; i < numItems; i++)
@@ -638,9 +648,10 @@ public class Npc : IEntityAutoReset
                 return;
             }
 
-            var info = DataManager.GetItemInfoById(item.Id);
+            var info = DataManager.GetItemInfoById(item.Id)!;
+            var value = (info.Price / 2) * (100 + overCharge) / 100;
             if (info.ItemClass != ItemClass.Ammo) //ammo always sells to the NPC for 0, allows NPCs to sell quivers and the like without worry of exploit.
-                zenyGained += (int)(info.Price / 2) * itemCounts[i];
+                zenyGained += value * itemCounts[i];
         }
 
         //all good, lets get to discarding

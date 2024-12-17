@@ -433,7 +433,7 @@ MaxLevel = 1
 Icon = "mc_mammonite"
 Target = "Enemy"
 MaxLevel = 10
-SpCost = [6,7,8,9,10,11,12,13,14,15]
+SpCost = [5,5,5,5,5,5,5,5,5,5]
 AdjustableLevel = true
 
 [PushCart]

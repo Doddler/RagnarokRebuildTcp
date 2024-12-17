@@ -15,16 +15,18 @@ namespace Assets.Scripts.UI
         public TextMeshProUGUI ItemName;
         public TextMeshProUGUI RightText;
 
-        public int UniqueEntryId;
-        public bool CanDrag;
-        public bool CanSelect;
-        public bool IsSelected;
+        [NonSerialized] public int UniqueEntryId;
+        [NonSerialized] public bool CanDrag;
+        [NonSerialized] public bool CanSelect;
+        [NonSerialized] public bool IsSelected;
+        [NonSerialized] public bool IsActive = true;
         
         //#D5E8FF00
         public Color HoverColor = new Color(0.83f, 0.91f, 1f, 1f); 
         public Color SelectedColor = new Color(0.72f, 0.856f, 1f, 1f); 
         public Color NormalColor = new Color(0.83f, 0.91f, 1f, 0f);
 
+        public Action<int> EventOnClick;
         public Action<int> EventOnSelect;
         public Action<int> EventDoubleClick;
         
@@ -42,35 +44,38 @@ namespace Assets.Scripts.UI
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (!CanDrag)
+            if (!CanDrag || !IsActive)
                 return;
             throw new System.NotImplementedException();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if(!IsSelected)
+            if(!IsSelected && IsActive)
                 Background.color = HoverColor;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if(!IsSelected)
+            if(!IsSelected && IsActive)
                 Background.color = NormalColor;
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (!IsActive)
+                return;
+            
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
@@ -85,6 +90,10 @@ namespace Assets.Scripts.UI
                 IsSelected = true;
                 Background.color = SelectedColor;
                 EventOnSelect(UniqueEntryId);
+            }
+            else
+            {
+                EventOnClick(UniqueEntryId);
             }
 
 

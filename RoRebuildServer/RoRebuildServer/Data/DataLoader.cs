@@ -500,13 +500,17 @@ internal class DataLoader
 
         foreach (var entry in GetCsvRows<CsvItemRegular>("Db/ItemsRegular.csv"))
         {
+            var price = (int)float.Floor(entry.Price * ServerConfig.OperationConfig.EtcItemValueMultiplier);
+            if (entry.Usage != "None")
+                price = entry.Price; //don't increase the price of items that have tangible use
+
             var item = new ItemInfo()
             {
                 Code = entry.Code,
                 Id = entry.Id,
                 IsUnique = false,
                 ItemClass = ItemClass.Useable,
-                Price = (int)float.Floor(entry.Price * ServerConfig.OperationConfig.EtcItemValueMultiplier),
+                Price = price,
                 Weight = entry.Weight,
             };
             items.Add(item.Id, item);
@@ -732,6 +736,31 @@ internal class DataLoader
     //#endif
     //        return items;
     //    }
+
+    public int[] LoadRefineSuccessTable()
+    {
+        var table = new int[20 * 5]; //4 weapon levels + armor, 20 refine.
+        using var inPath = new TemporaryFile(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/RefineSuccess.csv"));
+        using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+        var entries = csv.GetRecords<dynamic>();
+        var offset = 0;
+        foreach (var entry in entries)
+        {
+            if (entry is IDictionary<string, object> obj)
+            {
+                table[offset + 0] = int.Parse((string)obj["Level1"]);
+                table[offset + 1] = int.Parse((string)obj["Level2"]);
+                table[offset + 2] = int.Parse((string)obj["Level3"]);
+                table[offset + 3] = int.Parse((string)obj["Level4"]);
+                table[offset + 4] = int.Parse((string)obj["Armor"]);
+                
+                offset += 5;
+            }
+        }
+
+        return table;
+    }
 
     public ReadOnlyDictionary<string, int> GenerateItemIdByNameLookup()
     {

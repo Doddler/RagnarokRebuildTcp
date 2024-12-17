@@ -1005,10 +1005,10 @@ Npc("prt_in", "Chivalry Captain Herman", "1_M_KNIGHTMASTER", 88, 101, S) { }
 Npc("prt_in", "Curator of Library", "1_M_LIBRARYMASTER", 178, 92, N) { }
 Npc("prt_in", "Customer", "4_M_04", 173, 13, S) { }
 Npc("prt_in", "Customer", "4_M_ORIENT02", 170, 14, N) { }
-Npc("prt_in", "Dietrich", "4_M_02", 63, 69, SW) { }
+//Npc("prt_in", "Dietrich", "4_M_02", 63, 69, SW) { }
 Npc("prt_in", "Gate Keeper", "4_M_01", 52, 140, S) { }
 Npc("prt_in", "Ginedin Rephere", "1_M_JOBTESTER", 284, 168, SW) { }
-Npc("prt_in", "Hollgrehenn", "4_M_03", 63, 60, N) { }
+//Npc("prt_in", "Hollgrehenn", "4_M_03", 63, 60, N) { }
 Npc("prt_in", "Inn Employee", "1_M_INNKEEPER", 244, 135, N) { }
 Npc("prt_in", "Inn Employee", "4_F_MAID", 61, 141, S) { }
 Npc("prt_in", "Jovovich", "4_F_02", 243, 168, S) { }
@@ -1041,7 +1041,7 @@ Npc("prt_in", "Steward", "1_M_JOBTESTER", 228, 26, SE) { }
 Npc("prt_in", "Teacher", "1_M_INNKEEPER", 38, 108, S) { }
 Npc("prt_in", "TenSue", "4W_M_01", 177, 20, W) { }
 //Npc("prt_in", "Tool Dealer", "1_M_INNKEEPER", 126, 76, N) { }
-Npc("prt_in", "Vurewell", "4_M_04", 56, 68, SE) { }
+//Npc("prt_in", "Vurewell", "4_M_04", 56, 68, SE) { }
 //Npc("prt_in", "Weapon Dealer", "1_F_01", 164, 140, S) { }
 //Npc("prt_in", "Weapon Dealer", "1_M_01", 171, 140, N) { }
 //Npc("prt_in", "Weapon Dealer", "1_M_JOBGUIDER", 172, 130, N) { }

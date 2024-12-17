@@ -41,6 +41,7 @@ public class UiManager : MonoBehaviour
     public GameObject EquipmentDropArea;
     public GameObject GeneralItemListPrefab;
     public GameObject GenericItemListV2Prefab;
+    public GameObject RefineWindowPrefab;
 
     private IItemDropTarget inventoryDropTarget;
     private IItemDropTarget equipmentWindowDropTarget;

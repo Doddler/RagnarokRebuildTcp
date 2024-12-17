@@ -123,7 +123,21 @@ public class Player : IEntityAutoReset
     public void SubStat(CharacterStat type, int val) => CombatEntity.SubStat(type, val);
     public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
     public int GetZeny() => CharData[(int)PlayerStat.Zeny];
-    public void AddZeny(int val) => CharData[(int)PlayerStat.Zeny] += val;
+
+    public void AddZeny(int val)
+    {
+        var v = CharData[(int)PlayerStat.Zeny];
+        if (int.MaxValue - val < v) //probably safe?
+            CharData[(int)PlayerStat.Zeny] = int.MaxValue;
+        else
+            CharData[(int)PlayerStat.Zeny] += val;
+    }
+
+    public void DropZeny(int val)
+    {
+        var v = CharData[(int)PlayerStat.Zeny] - val;
+        CharData[(int)PlayerStat.Zeny] = v > 0 ? v : 0;
+    }
 
     //this will get removed when we have proper job levels
     private static readonly int[] skillPointsByLevel = new[]
@@ -364,10 +378,19 @@ public class Player : IEntityAutoReset
         }
     }
 
-    public bool TryRemoveItemFromInventory(int type, int count)
+    public bool TryRemoveItemFromInventory(int type, int count, bool sendPacket = false)
     {
         Debug.Assert(count < short.MaxValue);
-        return Inventory != null && Inventory.RemoveItem(new RegularItem() { Id = type, Count = (short)count });
+
+        if (Inventory != null && Inventory.RemoveItem(new RegularItem() { Id = type, Count = (short)count }))
+        {
+            if (sendPacket)
+                CommandBuilder.RemoveItemFromInventory(this, type, count);
+
+            return true;
+        }
+
+        return false;
     }
 
     public void AddStatPoints(Span<int> statChanges)

@@ -997,7 +997,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Obtain a better deal when buying items from the NPC. Starts at -7% item cost at level 1 and scales to -24% at level 10. Also lowers the zeny cost of Mammonite. Some shops cannot be discounted.",
       "InterruptMode": 0
     },
     {
@@ -1009,7 +1009,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Obtain better sale value of items to the NPC. Starts at \u002B7% item value at level 1 and scales to \u002B24% at level 10.",
       "InterruptMode": 0
     },
     {
@@ -1055,19 +1055,19 @@
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
       ],
       "AdjustableLevel": true,
-      "Description": "Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.\r\nEach level adds \u002B50% damage and costs an additional 100 zeny to use (dealing 600% @ 1000z at level 10).",
+      "Description": "Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.\r\nEach level adds \u002B50% damage to your attack and costs an additional 60 zeny to use (dealing 600% @ 600z at level 10).",
       "InterruptMode": 0
     },
     {

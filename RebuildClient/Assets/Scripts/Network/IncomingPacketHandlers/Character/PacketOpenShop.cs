@@ -14,16 +14,18 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
         public override void ReceivePacket(ClientInboundMessage msg)
         {
             var shopType = msg.ReadByte();
+            var discountLevel = msg.ReadByte();
             if (shopType == 0)
             {
                 //sell to npc
-                
+                Debug.Log($"Open sell-to-npc shop (overcharge level {discountLevel}");
                 var shop = ShopUI.InitializeShopUI(UiManager.GeneralItemListPrefab, UiManager.PrimaryUserWindowContainer);
-                shop.BeginSellToNpc();
+                shop.BeginSellToNpc(discountLevel);
             }
             else
             {
                 //buy from npc
+                Debug.Log($"Open buy-from-npc shop (discount level {discountLevel}");
                 var count = msg.ReadInt32();
                 var items = new List<ShopEntry>(count);
                 for (var i = 0; i < count; i++)
@@ -34,8 +36,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 }
 
                 var shop = ShopUI.InitializeShopUI(UiManager.GeneralItemListPrefab, UiManager.PrimaryUserWindowContainer);
-                shop.BeginBuyFromNpc(items);
+                shop.BeginBuyFromNpc(items, discountLevel);
             }
+            
+            Camera.DialogPanel.GetComponent<DialogWindow>().HideUI();
         }
     }
 }

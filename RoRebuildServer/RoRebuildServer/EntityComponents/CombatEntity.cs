@@ -279,7 +279,7 @@ public class CombatEntity : IEntityAutoReset
                 stat += GetStat(CharacterStat.AddLuk);
                 break;
             case CharacterStat.Def:
-                var addDef = GetStat(CharacterStat.AddDef);
+                var addDef = GetStat(CharacterStat.AddDef) + GetStat(CharacterStat.EquipmentRefineDef);
                 stat = (int)((stat + addDef) * (1 + GetStat(CharacterStat.AddDefPercent) / 100f));
                 break;
             case CharacterStat.MDef:
@@ -1274,8 +1274,8 @@ public class CombatEntity : IEntityAutoReset
             var def = target.GetEffectiveStat(CharacterStat.Def);
             if (target.Character.Type == CharacterType.Player)
             {
-                def = def * 120 / 100; //+20% bonus, for balance reasons
-                def += target.GetStat(CharacterStat.EquipmentRefineDef);
+                //+20% bonus (for non-upgrade def), in place of penalty for upgrade def
+                def += target.GetStat(CharacterStat.Def) * 20 / 100; 
             }
 
             //soft def
@@ -1377,9 +1377,8 @@ public class CombatEntity : IEntityAutoReset
 
     public (int atk1, int atk2) CalculateAttackPowerRange(bool isMagic)
     {
-
-        var atk1 = !isMagic ? GetStat(CharacterStat.Attack) : GetStat(CharacterStat.MagicAtkMin);
-        var atk2 = !isMagic ? GetStat(CharacterStat.Attack2) : GetStat(CharacterStat.MagicAtkMax);
+        var atk1 = 0;
+        var atk2 = 0;
 
         if (Character.Type == CharacterType.Player)
         {
@@ -1390,23 +1389,24 @@ public class CombatEntity : IEntityAutoReset
 
                 var mainStat = Player.WeaponClass == 12 ? dex : str;
                 var secondaryStat = Player.WeaponClass == 12 ? str : dex;
-                var weaponLvl = atk1;
+                var weaponLvl = Player.Equipment.WeaponLevel;
+                var weaponAttack = Player.Equipment.WeaponAttackPower;
                 if (Player.WeaponClass == 12)
                     atk1 = (int)(dex * (0.8f + 0.2f * weaponLvl)); //more or less pre-renewal
                 else
-                    atk1 = (int)(float.Min(atk2 * 0.33f, mainStat) + dex * (0.8f + 0.2f * weaponLvl)); //kinda pre-renewal but primary stat makes up 1/3 of min
+                    atk1 = (int)(float.Min(weaponAttack * 0.33f, mainStat) + dex * (0.8f + 0.2f * weaponLvl)); //kinda pre-renewal but primary stat makes up 1/3 of min
 
-                atk2 = (int)(atk2 * (1 + mainStat / 200)); //more like post-renewal, primary stat adds 0.5% weapon atk
+                atk2 = weaponAttack * (200 + mainStat) / 200; //more like post-renewal, primary stat adds 0.5% weapon atk
                 if (atk1 > atk2)
                     atk1 = atk2;
 
                 var statAtk = GetStat(CharacterStat.AddAttackPower) + mainStat + (secondaryStat / 5) + (mainStat / 10) * (mainStat / 10);
-                var attackPercent = 1f + (GetStat(CharacterStat.AddAttackPercent) / 100f);
+                var attackPercent = 100 + GetStat(CharacterStat.AddAttackPercent);
                 if (Player.WeaponClass == 12 && Player.Equipment.AmmoId > 0 && Player.Equipment.AmmoType == AmmoType.Arrow) //bow with arrow
                     atk2 += Player.Equipment.AmmoAttackPower; //arrows don't affect min atk, only max
 
-                atk1 = (int)((statAtk + atk1) * attackPercent);
-                atk2 = (int)((statAtk + atk2) * attackPercent);
+                atk1 = (statAtk + atk1 + Player.Equipment.MinRefineAtkBonus) * attackPercent / 100;
+                atk2 = (statAtk + atk2 + Player.Equipment.MaxRefineAtkBonus) * attackPercent / 100;
             }
             else
             {
@@ -1414,14 +1414,16 @@ public class CombatEntity : IEntityAutoReset
                 var addMatk = GetStat(CharacterStat.AddMagicAttackPower);
                 var statMatkMin = addMatk + matkStat + (matkStat / 7) * (matkStat / 7);
                 var statMatkMax = addMatk + matkStat + (matkStat / 5) * (matkStat / 5);
-                var statWeaponBonus = matkStat / 400f; //sneaky
-                var magicPercent = 1f + (GetStat(CharacterStat.AddMagicAttackPercent) / 100f);
-                atk1 = (int)((statMatkMin + atk1 * (1 + statWeaponBonus)) * magicPercent);
-                atk2 = (int)((statMatkMax + atk2 * (1 + statWeaponBonus)) * magicPercent);
+                var magicPercent = 100 + GetStat(CharacterStat.AddMagicAttackPercent);
+                atk1 = (statMatkMin + Player.Equipment.MinRefineAtkBonus) * magicPercent / 100;
+                atk2 = (statMatkMax + Player.Equipment.MaxRefineAtkBonus) * magicPercent / 100;
             }
         }
         else
         {
+            atk1 = !isMagic ? GetStat(CharacterStat.Attack) : GetStat(CharacterStat.MagicAtkMin);
+            atk2 = !isMagic ? GetStat(CharacterStat.Attack2) : GetStat(CharacterStat.MagicAtkMax);
+
             if (!isMagic)
             {
                 var attackPercent = 1f + (GetStat(CharacterStat.AddAttackPercent) / 100f);
@@ -1512,7 +1514,7 @@ public class CombatEntity : IEntityAutoReset
     {
         var attackMotionTime = GetTiming(TimingStat.AttackMotionTime); //time for actual weapon strike to occur
         var delayTime = GetTiming(TimingStat.AttackDelayTime); //time before you can attack again
-
+        
         if (attackMotionTime > delayTime)
             delayTime = attackMotionTime;
 

@@ -88,7 +88,7 @@ namespace RoRebuildServer.Simulation.Skills
 
             var handler = handlers[(int)info.Skill];
             if (handler != null)
-                return handler.ValidateTarget(src, target, info.TargetedPosition);
+                return handler.ValidateTarget(src, target, info.TargetedPosition, info.Level);
 
             return SkillValidationResult.Failure;
         }

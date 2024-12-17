@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
@@ -10,6 +11,7 @@ using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.RefineItem;
 using Assets.Scripts.Utility;
 using PlayerControl;
 using RebuildSharedData.ClientTypes;
@@ -1403,6 +1405,17 @@ namespace Assets.Scripts
             if (!hasFocus)
                 isHolding = false;
         }
+        
+        private IEnumerator DelayedExecution(Action action, float time)
+        {
+            yield return new WaitForSeconds(time);
+            action();
+        }
+        
+        public void DelayedExecuteAction(Action action, float time)
+        {
+            StartCoroutine(DelayedExecution(action, time));
+        }
 
         public void FixedUpdate()
         {
@@ -1656,7 +1669,7 @@ namespace Assets.Scripts
 #endif
 
 
-            if (IsInNPCInteraction && !pointerOverUi && Input.GetMouseButtonDown(0))
+            if (IsInNPCInteraction && !pointerOverUi && Input.GetMouseButtonDown(0) && RefineItemWindow.Instance == null)
             {
                 NetworkManager.Instance.SendNpcAdvance();
                 isHolding = false;

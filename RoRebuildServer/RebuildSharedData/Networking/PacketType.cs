@@ -44,6 +44,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] Death,
     [ServerOnlyPacket] HpRecovery,
     [ServerOnlyPacket] ChangeSpValue,
+    [ServerOnlyPacket] UpdateZeny,
     Respawn,
     [ServerOnlyPacket] RequestFailed,
     [ServerOnlyPacket] Targeted,
@@ -86,6 +87,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] NpcInteraction,
     NpcAdvance,
     NpcSelectOption,
+    NpcRefineSubmit,
 
     DropItem,
     PickUpItem,
@@ -126,4 +128,5 @@ public enum NpcInteractionType
     NpcOption,
     NpcEndInteraction,
     NpcShowSprite,
+    NpcOpenRefineWindow,
 }

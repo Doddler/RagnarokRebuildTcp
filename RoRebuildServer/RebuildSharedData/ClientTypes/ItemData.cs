@@ -14,7 +14,9 @@ public class ItemData
     public int Weight;
     public int Price;
     public int Slots;
+    public int ItemRank;
     public bool IsUnique;
+    public bool IsRefinable;
     public ItemClass ItemClass;
     public ItemUseType UseType;
     public EquipPosition Position;

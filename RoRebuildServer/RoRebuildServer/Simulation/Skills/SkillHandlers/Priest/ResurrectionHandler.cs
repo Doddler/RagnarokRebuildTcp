@@ -24,7 +24,7 @@ public class ResurrectionHandler : SkillHandlerBase
         };
     }
 
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
     {
         if (target == null || source == target || target.Character.Type != CharacterType.Player || target.Character.State != CharacterState.Dead)
             return SkillValidationResult.Failure;

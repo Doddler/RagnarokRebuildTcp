@@ -45,6 +45,8 @@ namespace Assets.Scripts.UI
 
         [NonSerialized] public ItemListRole CurrentRole;
 
+        public int ItemAdjustValue;
+
         public override void HideWindow()
         {
             ShopUI.Instance.OnCancel();
@@ -136,8 +138,13 @@ namespace Assets.Scripts.UI
             {
                 if (current.ItemId == itemId)
                 {
+                    var cost = GetCost(itemId, newCount);
+                    var adjustCost = ItemAdjustValue > 0 ? GetAdjustCost(itemId, newCount) : cost;
                     current.Assign(current.Sprite, itemId, newCount);
-                    current.RightText.text = $"{GetCost(itemId, newCount):N0}z";
+                    if(cost == adjustCost)
+                        current.RightText.text = $"{GetCost(itemId, newCount):N0}z";
+                    else
+                        current.RightText.text = $"<s><color=#b0b0b0>{cost:N0}z</color></s>\n{adjustCost:N0}z";
                     return;
                 }
             }
@@ -162,6 +169,31 @@ namespace Assets.Scripts.UI
                 {
                     var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
                     return item.SalePrice * count;
+                }
+            }
+
+            return 0;
+        }
+        
+        private int GetAdjustCost(int itemId, int count)
+        {
+            switch (CurrentRole)
+            {
+                case ItemListRole.BuyFromNpcSummary:
+                case ItemListRole.BuyFromNpcItemList:
+                {
+                    var item = ClientDataLoader.Instance.GetItemById(itemId);
+                    return (item.Price - item.Price * ItemAdjustValue / 100) * count;
+                }
+                case ItemListRole.SellToNpcItemList:
+                {
+                    var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
+                    return item.SalePrice * (100 + ItemAdjustValue) / 100;
+                }
+                case ItemListRole.SellToNpcSummary:
+                {
+                    var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
+                    return item.SalePrice * (100 + ItemAdjustValue) / 100 * count;
                 }
             }
 
@@ -193,18 +225,27 @@ namespace Assets.Scripts.UI
 
             var spriteName = ClientDataLoader.Instance.GetItemById(addItem.ItemId).Sprite;
             var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(spriteName);
+
+            var adjustValue = addItem.Cost - addItem.Cost * ItemAdjustValue / 100;
             
             entry.gameObject.SetActive(true);
             if (addItem.Count <= 0)
             {
                 entry.Assign(sprite, addItem.ItemId, 0);
-                entry.RightText.text = $"{addItem.Cost:N0}z";
+                if(ItemAdjustValue > 0 && adjustValue != addItem.Cost)
+                    entry.RightText.text = $"<s><color=#b0b0b0>{addItem.Cost:N0}z</color></s>\n{adjustValue:N0}z";
+                else
+                    entry.RightText.text = $"{addItem.Cost:N0}z";
             }
             else
             {
                 var cost = addItem.Cost * addItem.Count;
+                var adjustCost = adjustValue * addItem.Count;
                 entry.Assign(sprite, addItem.ItemId, addItem.Count);
-                entry.RightText.text = $"{cost:N0}z";
+                if(ItemAdjustValue > 0 && cost != adjustCost)
+                    entry.RightText.text = $"<s><color=#b0b0b0>{cost:N0}z</color></s>\n{adjustCost:N0}z";
+                else
+                    entry.RightText.text = $"{cost:N0}z";
             }
 
             entry.OnPointerExit(null);
@@ -249,14 +290,25 @@ namespace Assets.Scripts.UI
                 listEntry = go.GetComponent<ItemListEntry>();
             }
 
+            var adjustValue = 0;
+
             if (CurrentRole == ItemListRole.SellToNpcItemList)
+            {
                 shopEntry.Cost = addItem.SalePrice;
+                adjustValue = addItem.SalePrice * (100 + ItemAdjustValue) / 100;
+            }
             else
+            {
                 shopEntry.Cost = shopEntry.Count * addItem.SalePrice;
+                adjustValue = addItem.SalePrice * (100 + ItemAdjustValue) / 100 * shopEntry.Count;
+            }
 
             listEntry.gameObject.SetActive(true);
             listEntry.Assign(sprite, addItem.ItemData, shopEntry.ItemId, shopEntry.Count);
-            listEntry.RightText.text = $"{shopEntry.Cost:N0}z";
+            if(adjustValue > 0 && adjustValue == shopEntry.Cost)
+                listEntry.RightText.text = $"{shopEntry.Cost:N0}z";
+            else
+                listEntry.RightText.text = $"<s><color=#b0b0b0>{shopEntry.Cost:N0}z</color></s>\n{adjustValue:N0}z";
             listEntry.OnPointerExit(null);
 
             listEntry.Role = CurrentRole;

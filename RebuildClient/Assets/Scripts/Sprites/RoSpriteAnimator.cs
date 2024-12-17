@@ -200,11 +200,11 @@ namespace Assets.Scripts.Sprites
 
         public void Initialize(bool makeCollider = true)
         {
+            if (this == null || gameObject == null)
+                return;
             if (isInitialized)
                 return;
             if (Parent != null && !Parent.IsInitialized)
-                return;
-            if (gameObject == null)
                 return;
             if (SpriteData == null)
                 return;

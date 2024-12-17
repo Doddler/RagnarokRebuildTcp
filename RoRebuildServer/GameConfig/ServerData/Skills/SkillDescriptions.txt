@@ -161,10 +161,16 @@ Increases your weight capacity by +200 per skill level.
 
 ::Mammonite
 Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.
-Each level adds +50% damage and costs an additional 100 zeny to use (dealing 600% @ 1000z at level 10).
+Each level adds +50% damage to your attack and costs an additional 60 zeny to use (dealing 600% @ 600z at level 10).
 
 ::PushCart
 Rent a pushcart, increasing your character's weight capacity by +2000.
 <i>The skill's current effect is temporary until cart storage and rental is implemented.</i>
 //Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.
 //The cart has a weight capacity of 8000 and can store up to 100 items.
+
+::Overcharge
+Obtain better sale value of items to the NPC. Starts at +7% item value at level 1 and scales to +24% at level 10.
+
+::Discount
+Obtain a better deal when buying items from the NPC. Starts at -7% item cost at level 1 and scales to -24% at level 10. Also lowers the zeny cost of Mammonite. Some shops cannot be discounted.

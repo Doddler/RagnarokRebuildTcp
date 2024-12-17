@@ -36,6 +36,8 @@ namespace Assets.Scripts.UI
 
         public virtual void ShowWindow()
         {
+            if (gameObject == null)
+                return;
             gameObject.SetActive(true);
             var mgr = UiManager.Instance;
             if (!mgr.WindowStack.Contains(this))
@@ -51,6 +53,8 @@ namespace Assets.Scripts.UI
 
         public virtual void HideWindow()
         {
+            if (gameObject == null)
+                return;
             gameObject.SetActive(false);
             var mgr = UiManager.Instance;
             if (mgr.WindowStack.Contains(this))
@@ -60,6 +64,19 @@ namespace Assets.Scripts.UI
             }
 
             // Debug.Log(name + " : " + gameObject.activeInHierarchy);
+        }
+
+        public void CenterWindow(int setHeight = 0)
+        {
+            //center window
+            ((RectTransform)transform).ForceUpdateRectTransforms();
+            var rect = gameObject.GetComponent<RectTransform>();
+            if(setHeight > 0)
+                rect.sizeDelta = new Vector2(rect.sizeDelta.x, setHeight);
+            var parentContainer = (RectTransform)gameObject.transform.parent;
+            var middle = parentContainer.rect.size / 2f;
+            middle = new Vector2(middle.x, -middle.y);
+            rect.anchoredPosition = middle - new Vector2(rect.sizeDelta.x / 2, -rect.sizeDelta.y / 2);
         }
 
         public virtual void OnPointerDown(PointerEventData eventData)

@@ -13,6 +13,7 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
+using Assets.Scripts.UI.RefineItem;
 using Assets.Scripts.UI.TitleScreen;
 using Assets.Scripts.Utility;
 using HybridWebSocket;
@@ -472,6 +473,14 @@ namespace Assets.Scripts.Network
         {
             //we should use a pool for these
             return new ClientOutgoingMessage();
+        }
+        
+        public ClientOutgoingMessage StartMessage(PacketType packetType)
+        {
+            //we should use a pool for these
+            var msg = new ClientOutgoingMessage();
+            msg.Write((byte)packetType);
+            return msg;
         }
 
         public void SendMessage(ClientOutgoingMessage message)
@@ -1068,7 +1077,7 @@ namespace Assets.Scripts.Network
             Debug.Log($"{controllable.Name} is dead!");
 
             if (id == PlayerId)
-                CameraFollower.AppendChatText("You have died! Press R key to respawn, or press shift + R to resurrect in place.");
+                CameraFollower.AppendChatText("You have died! Press R key to respawn at your save point.");
 
             if (CameraFollower.SelectedTarget == controllable)
                 CameraFollower.ClearSelected();
@@ -1169,6 +1178,12 @@ namespace Assets.Scripts.Network
                 case NpcInteractionType.NpcEndInteraction:
                     CameraFollower.OverrideTarget = null;
                     CameraFollower.IsInNPCInteraction = false;
+                    CameraFollower.DialogPanel.GetComponent<DialogWindow>().HideUI();
+                    if(RefineItemWindow.Instance != null)
+                        Destroy(RefineItemWindow.Instance);
+                    break;
+                case NpcInteractionType.NpcOpenRefineWindow:
+                    RefineItemWindow.OpenRefineItemWindow();
                     CameraFollower.DialogPanel.GetComponent<DialogWindow>().HideUI();
                     break;
                 default:
@@ -1682,6 +1697,17 @@ namespace Assets.Scripts.Network
             msg.Write((byte)PacketType.NpcSelectOption);
             msg.Write(result);
 
+            SendMessage(msg);
+        }
+
+        public void SendNpcRefineAttempt(int bagId, int oreId, int catalystId)
+        {
+            var msg = StartMessage(PacketType.NpcRefineSubmit);
+            
+            msg.Write(bagId);
+            msg.Write(oreId);
+            msg.Write(catalystId);
+            
             SendMessage(msg);
         }
 

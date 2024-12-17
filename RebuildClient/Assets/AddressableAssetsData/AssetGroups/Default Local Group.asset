@@ -50583,6 +50583,42 @@ MonoBehaviour:
     m_SerializedLabels:
     - Cutins
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be9c497df07343149bdb7244ba75544d
+    m_Address: Assets/Sprites/Icons/mg_energycoat.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f13c76f6132e51448813b03cfbed3d43
+    m_Address: Assets/Sprites/Icons/mg_sight.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2854691207feb6a42988184d5fb62feb
+    m_Address: Assets/Sprites/Icons/mg_stonecurse.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: abf58371c9bdd5a459e5fb309b5d4f58
+    m_Address: Assets/Sprites/Icons/tf_pickstone.spr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55f1ee97290000945a4822171b2e2fe7
+    m_Address: Assets/Effects/Prefabs/RefineFailure.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bfb9db504df4b2547b70d35073402cc3
+    m_Address: Assets/Effects/Prefabs/RefineSuccess.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

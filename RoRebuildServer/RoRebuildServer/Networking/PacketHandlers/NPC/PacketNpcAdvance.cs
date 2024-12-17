@@ -12,14 +12,19 @@ public class PacketNpcAdvance : IClientPacketHandler
     {
         var player = connection.Player;
 
-        if(player is not { IsInNpcInteraction: true } 
-           || player.NpcInteractionState.InteractionResult != NpcInteractionResult.WaitForContinue)
+        if(player == null || !player.IsInNpcInteraction)
             return;
 
+        if (player.NpcInteractionState.InteractionResult != NpcInteractionResult.WaitForContinue &&
+            player.NpcInteractionState.InteractionResult != NpcInteractionResult.WaitForRefine)
+            return;
+        
         if (player.InActionCooldown())
             return;
         player.AddActionDelay(CooldownActionType.Click);
 
         player.NpcInteractionState.ContinueInteraction();
+        if (player.NpcInteractionState.InteractionResult == NpcInteractionResult.WaitForRefine)
+            player.NpcInteractionState.OptionResult = -1;
     }
 }

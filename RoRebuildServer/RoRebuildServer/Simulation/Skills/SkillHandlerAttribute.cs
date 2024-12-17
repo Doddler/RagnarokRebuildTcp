@@ -84,7 +84,7 @@ public abstract class SkillHandlerBase
         return SkillValidationResult.Failure;
     }
 
-    public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position) =>
+    public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl) =>
         StandardValidation(source, target, position);
 
     protected void GenericCastAndInformSelfSkill(WorldObject ch, CharacterSkill skill, int level)

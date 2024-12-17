@@ -69,7 +69,8 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             player.AddSkillToCharacter(skillId, knownLevel + 1);
             player.SetData(PlayerStat.SkillPoints, points - 1);
 
-            CommandBuilder.ApplySkillPoint(player, skillId);
+            //CommandBuilder.ApplySkillPoint(player, skillId);
+            player.UpdateStats(true, true);
         }
 
         private bool CheckPrereqFromTree(PlayerSkillTree tree, CharacterSkill skill, Player player)

@@ -607,6 +607,7 @@ public class ScriptBuilder
         waitingFunctions.Add("Dialog", NpcInteractionResult.WaitForContinue);
         waitingFunctions.Add("Option", NpcInteractionResult.WaitForInput);
         waitingFunctions.Add("OpenShop", NpcInteractionResult.WaitForShop);
+        waitingFunctions.Add("OpenRefineDialog", NpcInteractionResult.WaitForRefine);
         waitingFunctions.Add("MoveTo", NpcInteractionResult.EndInteraction);
 
         LoadFunctionSource(typeof(Npc), "npc");

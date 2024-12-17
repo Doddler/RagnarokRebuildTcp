@@ -36,7 +36,7 @@ namespace Assets.Scripts.UI
             startPosition = Target.position;
             startMousePosition = Input.mousePosition;
 
-            transform.SetAsLastSibling(); //move to top
+            //transform.SetAsLastSibling(); //move to top
 
             OnDragEvent.Invoke();
         }

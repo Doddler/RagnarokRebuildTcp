@@ -17,6 +17,7 @@ public class CsvItemRegular
     public required string Name { get; set; }
     public required int Price { get; set; }
     public required int Weight { get; set; }
+    public required string Usage { get; set; }
     public required string Sprite { get; set; }
 }
 

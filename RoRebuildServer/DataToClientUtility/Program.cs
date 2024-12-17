@@ -237,6 +237,10 @@ class Program
 
         foreach (var entry in GetCsvRows<CsvItemRegular>("ItemsRegular.csv"))
         {
+            var price = entry.Price * 2; //this should somehow sync with the EtcItemValueMultiplier value in appsettings.json, the fact that it doesn't is bad
+            if (entry.Code == "Phracon" || entry.Code == "Emveretarcon")
+                price = entry.Price; //don't want this being exploitable
+
             var item = new ItemData()
             {
                 Code = entry.Code,
@@ -245,7 +249,7 @@ class Program
                 IsUnique = false,
                 ItemClass = ItemClass.Etc,
                 UseType = ItemUseType.NotUsable,
-                Price = entry.Price * 2, //this should somehow sync with the EtcItemValueMultiplier value in appsettings.json, the fact that it doesn't is bad
+                Price = price, 
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
             };
@@ -270,7 +274,9 @@ class Program
                 Code = entry.Code,
                 Name = entry.Name,
                 Id = entry.Id,
+                ItemRank = entry.Rank - 1,
                 IsUnique = true,
+                IsRefinable = entry.Refinable.ToLower() == "yes",
                 ItemClass = ItemClass.Weapon,
                 UseType = ItemUseType.NotUsable,
                 Slots = entry.Slot,
@@ -333,6 +339,8 @@ class Program
                 Name = entry.Name,
                 Id = entry.Id,
                 IsUnique = true,
+                ItemRank = 4,
+                IsRefinable = entry.Refinable.ToLower() == "yes",
                 ItemClass = ItemClass.Equipment,
                 UseType = ItemUseType.NotUsable,
                 Slots = entry.Slot,

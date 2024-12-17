@@ -249,7 +249,7 @@ public class CharacterBag : IResettable
 
     public bool RemoveItem(RegularItem item)
     {
-        if (!RegularItems.TryGetValue(item.Id, out var existing) || existing.Count <= 0)
+        if (!RegularItems.TryGetValue(item.Id, out var existing) || existing.Count < item.Count)
             return false;
 
         existing.Count -= item.Count;

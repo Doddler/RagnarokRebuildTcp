@@ -51,10 +51,17 @@ public class ItemEquipState
     public AttackElement WeaponElement;
     public AttackElement AmmoElement;
     public CharacterElement ArmorElement;
+    public int WeaponLevel;
+    public int WeaponAttackPower;
+    public int MinRefineAtkBonus;
+    public int MaxRefineAtkBonus;
     private readonly SwapList<EquipStatChange> equipmentEffects = new();
     private EquipSlot activeSlot;
     private readonly HeadgearPosition[] headgearMultiSlotInfo = new HeadgearPosition[3];
     private bool isTwoHandedWeapon;
+    private static int[] attackPerRefine = [2, 3, 5, 7];
+    private static int[] overRefineLevel = [8, 7, 6, 5];
+    private static int[] overRefineAttackBonus = [3, 5, 8, 14];
     
     public void Reset()
     {
@@ -64,6 +71,13 @@ public class ItemEquipState
             headgearMultiSlotInfo[i] = 0;
         AmmoId = -1;
         WeaponRange = 1;
+        WeaponLevel = 0;
+        WeaponAttackPower = 0;
+        MinRefineAtkBonus = 0;
+        MaxRefineAtkBonus = 0;
+        WeaponElement = AttackElement.Neutral;
+        ArmorElement = CharacterElement.Neutral1;
+        AmmoElement = AttackElement.None;
     }
 
     public int GetEquipmentIdBySlot(EquipSlot slot) => ItemIds[(int)slot];
@@ -411,9 +425,19 @@ public class ItemEquipState
             }
             else
             {
+                var refBonus = item.Refine * attackPerRefine[WeaponLevel];
+                var overRefBonus = 0;
+                var overRefine = item.Refine - overRefineLevel[WeaponLevel];
+                if(overRefine >= 0)
+                    overRefBonus = item.Refine * overRefineAttackBonus[WeaponLevel];
+
                 Player.WeaponClass = weapon.WeaponClass;
-                Player.SetStat(CharacterStat.Attack, weapon.WeaponLevel); //we'll use this for the attack formula
-                Player.SetStat(CharacterStat.Attack2, weapon.Attack);
+                WeaponLevel = weapon.WeaponLevel;
+                WeaponAttackPower = weapon.Attack;
+                MinRefineAtkBonus = refBonus;
+                MaxRefineAtkBonus = refBonus + overRefBonus;
+                Player.SetStat(CharacterStat.Attack, 0);
+                Player.SetStat(CharacterStat.Attack2, 0);
                 Player.RefreshWeaponMastery();
                 WeaponElement = weapon.Element;
                 if(slot == EquipSlot.Weapon)
@@ -471,8 +495,10 @@ public class ItemEquipState
         if (data.ItemClass == ItemClass.Weapon)
         {
             Player.WeaponClass = 0;
-            Player.SetStat(CharacterStat.Attack, 0);
-            Player.SetStat(CharacterStat.Attack2, 0);
+            WeaponLevel = 0;
+            WeaponAttackPower = 0;
+            MinRefineAtkBonus = 0;
+            MaxRefineAtkBonus = 0;
             WeaponElement = AttackElement.Neutral;
             Player.RefreshWeaponMastery();
         }

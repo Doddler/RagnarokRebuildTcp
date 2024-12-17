@@ -430,6 +430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 1401119017}
+  ExtraHeight: 0
 --- !u!1 &30994610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2854,6 +2855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 161010149}
+  ExtraHeight: 0
 --- !u!1 &107284344
 GameObject:
   m_ObjectHideFlags: 0
@@ -7497,6 +7499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 1055837176}
+  ExtraHeight: 0
 --- !u!114 &275604209 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 909850055670578570, guid: 4fcfaeb16a619854aab26c31699f5372,
@@ -9379,6 +9382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 1618593824}
+  ExtraHeight: 0
 --- !u!114 &326938052 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5326232045224966503, guid: 4b6fb41c43ba11b40ab289f6876e78bb,
@@ -11541,6 +11545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 1317557205}
+  ExtraHeight: 0
 --- !u!1 &382190641
 GameObject:
   m_ObjectHideFlags: 0
@@ -11734,7 +11739,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1181235513}
   m_HandleRect: {fileID: 1181235512}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -22093,7 +22098,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2088088636}
   m_HandleRect: {fileID: 2088088635}
   m_Direction: 2
-  m_Value: 0.9999988
+  m_Value: 1.0000012
   m_Size: 0.9401848
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -40188,6 +40193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 1992628063}
+  ExtraHeight: 0
 --- !u!1 &1140830087
 GameObject:
   m_ObjectHideFlags: 0
@@ -42026,6 +42032,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 1027778950}
+  ExtraHeight: 0
 --- !u!1 &1188774166
 GameObject:
   m_ObjectHideFlags: 0
@@ -42286,6 +42293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 596590483}
+  ExtraHeight: 0
 --- !u!1 &1204703619
 GameObject:
   m_ObjectHideFlags: 0
@@ -47709,6 +47717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 180122765}
+  ExtraHeight: 0
 --- !u!1 &1356736302
 GameObject:
   m_ObjectHideFlags: 0
@@ -55031,6 +55040,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 620102109}
+  ExtraHeight: 0
 --- !u!1 &1556098172
 GameObject:
   m_ObjectHideFlags: 0
@@ -62910,6 +62920,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 1875582507}
+  ExtraHeight: 0
 --- !u!1 &1754409648
 GameObject:
   m_ObjectHideFlags: 0
@@ -65062,6 +65073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 1505205680}
+  ExtraHeight: 0
 --- !u!1 &1812244079
 GameObject:
   m_ObjectHideFlags: 0
@@ -65917,6 +65929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 303837579}
+  ExtraHeight: 0
 --- !u!1001 &1837755709
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70635,6 +70648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MatchElements:
   - {fileID: 1565296729}
+  ExtraHeight: 0
 --- !u!114 &1957103052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73611,6 +73625,8 @@ MonoBehaviour:
   GeneralItemListPrefab: {fileID: 3267985217336328223, guid: 1925d1afdfc994d42a1ba82d4e5ef669,
     type: 3}
   GenericItemListV2Prefab: {fileID: 5211128043241287939, guid: 8951fbefcb42b3c40910fe1ac3f927f3,
+    type: 3}
+  RefineWindowPrefab: {fileID: 644915635496572351, guid: 22ca6c576301dcd4791c612f9856779e,
     type: 3}
   DragItemObject: {fileID: 9008969346663132752}
   ItemObtainedPopup: {fileID: 957219211}

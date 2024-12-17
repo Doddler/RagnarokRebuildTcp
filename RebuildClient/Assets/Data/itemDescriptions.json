@@ -350,7 +350,7 @@
     },
     {
       "Code": "Yggdrasil_Leaf",
-      "Description": "\u003Ccolor=#808080\u003EA leaf from the Yggdrasil tree, it can bring life to fallen characters.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ECast \u003Ccolor=#0000FF\u003EResurrection 1\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA leaf from the Yggdrasil tree, it can bring life to fallen characters.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ECasts: \u003Ccolor=#0000FF\u003EResurrection 1\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Magnifier",

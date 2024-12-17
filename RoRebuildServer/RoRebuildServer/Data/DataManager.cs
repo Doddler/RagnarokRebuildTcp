@@ -58,6 +58,7 @@ public static class DataManager
     private static List<MonsterDatabaseInfo> monsterStats;
     private static List<List<MonsterAiEntry>> monsterAiList;
     private static List<MapEntry> mapList;
+    private static int[] refineSuccessTable;
 
     public static List<MapEntry> Maps => mapList;
     
@@ -68,6 +69,7 @@ public static class DataManager
     public static int GetEffectForItem(int item) => UseItemInfo.TryGetValue(item, out var effect) ? effect.Effect : -1;
     public static int GetWeightForItem(int item) => ItemList.TryGetValue(item, out var itemOut) ? itemOut.Weight : 0;
     public static ItemInfo? GetItemInfoById(int id) => ItemList.TryGetValue(id, out var item) ? item : null;
+    public static int GetRefineSuccessForItem(int rank, int startingRefine) => refineSuccessTable[startingRefine * 5 + rank];
 
     public static List<MonsterAiEntry> GetAiStateMachine(MonsterAiType monsterType)
     {
@@ -145,6 +147,7 @@ public static class DataManager
         CardInfo = loader.LoadItemsCards(items);
         UseItemInfo = loader.LoadUseableItems(items); //dependent on effectId loaded earlier
         AmmoInfo = loader.LoadItemsAmmo(items);
+        refineSuccessTable = loader.LoadRefineSuccessTable();
 
         ItemList = items.AsReadOnly();
 

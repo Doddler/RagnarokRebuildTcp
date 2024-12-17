@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
+using Assets.Scripts.UI.RefineItem;
 using RebuildSharedData.Data;
 using RebuildSharedData.Networking;
 
@@ -17,6 +18,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             
             UiManager.InventoryWindow.UpdateActiveVisibleBag();
             UiManager.EquipmentWindow.RefreshEquipmentWindow();
+            if(RefineItemWindow.Instance != null)
+                RefineItemWindow.Instance.RevealAndRefresh();
         }
     }
 }

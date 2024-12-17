@@ -11,6 +11,7 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Simulation;
 using System;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Items;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -32,6 +33,7 @@ public class NpcInteractionState
     public NpcInteractionResult InteractionResult { get; set; }
     public bool IsTouchEvent { get; set; }
     public bool IsBuyingFromNpc { get; set; }
+    public bool AllowDiscount { get; set; }
 
 
     public void Reset()
@@ -105,6 +107,8 @@ public class NpcInteractionState
     public int Level => Player?.GetStat(CharacterStat.Level) ?? 0;
     public int UnusedSkillPoints => Player?.GetData(PlayerStat.SkillPoints) ?? 99;
     public int JobId => Player?.GetData(PlayerStat.Job) ?? 0;
+    public int InventoryItemCount => Player?.Inventory?.UsedSlots ?? 0;
+    public int MaxItemCount => CharacterBag.MaxBagSlots;
     public void ChangePlayerJob(int jobId) => Player?.ChangeJob(jobId);
     public void SkillReset() => Player?.SkillReset();
     public void StatPointReset() => Player?.StatPointReset();
@@ -144,8 +148,37 @@ public class NpcInteractionState
 
         var itemRef = new ItemReference(item, count);
         var bagId = Player.AddItemToInventory(itemRef);
+
+        itemRef.Count = Player.Inventory?.GetItemCount(item) ?? 0;
         
         CommandBuilder.AddItemToInventory(Player, itemRef, bagId, count);
+    }
+
+    public bool TakeItem(string itemName, int count = 1)
+    {
+        if (Player == null) return false;
+        var npc = NpcEntity.Get<Npc>();
+
+        if (!DataManager.ItemIdByName.TryGetValue(itemName, out var itemId))
+        {
+            ServerLogger.LogWarning($"NPC {NpcEntity.Get<WorldObject>()} attempted to take {count} {itemName} from player {Player}, but that item doesn't seem to be valid.");
+            return false;
+        }
+
+        var item = DataManager.GetItemInfoById(itemId);
+        if (item.IsUnique)
+        {
+            ServerLogger.LogWarning($"NPC {NpcEntity.Get<WorldObject>()} attempted to take {count} {itemName} from player {Player}, but TakeItem doesn't work with unique items yet.");
+            return false;
+        }
+
+        return Player.TryRemoveItemFromInventory(itemId, count, true);
+    }
+
+    public bool HasJobType(string jobName)
+    {
+        if (Player == null) return false;
+        return DataManager.IsJobInEquipGroup(jobName, Player.GetData(PlayerStat.Job));
     }
 
     public void ShowEffectOnPlayer(string effectName)
@@ -221,12 +254,19 @@ public class NpcInteractionState
         CommandBuilder.SendNpcOption(Player, options);
     }
 
-    public void OpenShop()
+    public void OpenRefineDialog()
+    {
+        if (Player == null) return;
+        CommandBuilder.SendNpcOpenRefineDialog(Player);
+    }
+
+    public void OpenShop(bool hasDiscount = true)
     {
         if (Player == null)
             return;
-        CommandBuilder.SendNpcOpenShop(Player, NpcEntity.Get<Npc>());
+        CommandBuilder.SendNpcOpenShop(Player, NpcEntity.Get<Npc>(), hasDiscount);
         IsBuyingFromNpc = true;
+        AllowDiscount = hasDiscount;
     }
 
     public void StartSellToNpc()
@@ -235,7 +275,6 @@ public class NpcInteractionState
             return;
         CommandBuilder.SendNpcStartTrade(Player);
         IsBuyingFromNpc = false;
-
     }
 
     public void OpenShop(string[] items)

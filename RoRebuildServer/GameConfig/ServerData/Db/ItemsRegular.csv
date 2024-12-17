@@ -1,732 +1,732 @@
-Id,Code,Name,Price,Weight,Sprite
-701,Ora_Ora,Ora Ora,55000,200,오라오라
-702,Animal_Gore,Animal Gore,450,100,가축의피
-703,Hinalle,Hinalle,500,10,히나레
-704,Aloe,Aloe,500,10,알로에
-705,Clover,Clover,10,10,클로버
-706,Four_Leaf_Clover,Four Leaf Clover,80000,10,네잎클로버
-707,Singing_Plant,Singing Plant,500,10,노래하는풀
-708,Ment,Ment,500,10,멘트
-709,Izidor,Izidor,500,10,이지도르
-710,Illusion_Flower,Illusion Flower,1000,10,환상의꽃
-711,Shoot,Shoot,16,10,새싹
-712,Flower,Flower,2,10,꽃
-713,Empty_Bottle,Empty Bottle,6,20,빈병
-714,Emperium,Emperium,2,1000,엠펠리움
-715,Yellow_Gemstone,Yellow Gemstone,600,30,옐로우젬스톤
-716,Red_Gemstone,Red Gemstone,600,30,레드젬스톤
-717,Blue_Gemstone,Blue Gemstone,600,30,블루젬스톤
-718,Garnet,Garnet,6000,100,검붉은보석
-719,Amethyst,Amethyst,6000,100,보라색보석
-720,Aquamarine,Aquamarine,6000,100,하늘색보석
-721,Emerald,Emerald,6000,100,초록색보석
-722,Pearl,Pearl,6000,100,분홍색보석
-723,Ruby,Ruby,6000,100,진홍색보석
-724,Cursed_Ruby,Cursed Ruby,600,100,진홍색보석
-725,Sardonyx,Sardonyx,6000,100,붉은색보석
-726,Sapphire,Sapphire,6000,100,파란색보석
-727,Opal,Opal,6000,100,하얀색보석
-728,Topaz,Topaz,6000,100,노란색보석
-729,Zircon,Zircon,6000,100,청록색보석
-730,1_Carat_Diamond,1 Carat Diamond,10000,100,투명한보석
-731,2_Carat_Diamond,2 Carat Diamond,25000,100,투명한보석
-732,3_Carat_Diamond,3 Carat Diamond,55000,100,투명한보석
-733,Cracked_Diamond,Cracked Diamond,10,100,투명한보석
-734,Red_Frame,Red Frame,3000,200,붉은액자
-735,Chung_Jah,Chung Jah,5000,500,푸른도자기
-736,China,China,1000,300,하얀접시
-737,Black_Ladle,Black Ladle,400,50,검은국자
-738,Pencil_Case,Pencil Case,400,100,연필꽃이
-739,Rouge,Rouge,10000,10,화장품
-740,Puppet,Puppet,3000,100,봉제인형
-741,Poring_Doll,Poring Doll,1000,100,포링인형
-742,Chonchon_Doll,Chonchon Doll,1800,100,촌촌인형
-743,Spore_Doll,Spore Doll,5500,100,스포아인형
-744,Bouquet,Bouquet,2000,50,꽃다발
-745,Wedding_Bouquet,Wedding Bouquet,12000,50,부케
-746,Glass_Bead,Glass Bead,1400,50,유리구슬
-747,Crystal_Mirror,Crystal Mirror,15000,50,수정거울
-748,Witherless_Rose,Witherless Rose,55000,10,시들지않는장미
-749,Frozen_Rose,Frozen Rose,35000,10,얼음장미
-750,Baphomet_Doll,Baphomet Doll,18000,100,바포메트인형
-751,Osiris_Doll,Osiris Doll,14000,100,오시리스인형
-752,Rocker_Doll,Rocker Doll,4000,100,메뚜기인형
-753,Yoyo_Doll,Yoyo Doll,6000,100,원숭이인형
-754,Racoon_Doll,Racoon Doll,5000,100,너구리인형
-756,Rough_Oridecon,Rough Oridecon,550,200,오리데오콘원석
-757,Rough_Elunium,Rough Elunium,650,200,에르늄원석
-901,Daenggie,Daenggie,260,10,댕기머리
-902,Tree_Root,Tree Root,12,10,나무뿌리
-903,Reptile_Tongue,Reptile Tongue,140,10,파충류혓바닥
-904,Scorpion_Tail,Scorpion Tail,124,10,전갈의꼬리
-905,Stem,Stem,46,10,식물의줄기
-906,Pointed_Scale,Pointed Scale,68,10,비늘줄기
-907,Resin,Resin,120,10,고목나무진
-908,Spawn,Spawn,140,10,개구리알
-909,Jellopy,Jellopy,6,10,젤로피
-910,Garlet,Garlet,40,10,가렛
-911,Scell,Scell,160,10,셀
-912,Zargon,Zargon,480,10,자르곤
-913,Tooth_of_Bat,Tooth of Bat,34,10,박쥐의이빨
-914,Fluff,Fluff,8,10,솜털
-915,Chrysalis,Chrysalis,8,10,번데기껍질
-916,Bird_Feather,Bird Feather,10,10,새의깃털
-917,Talon,Talon,20,10,새의발톱
-918,Sticky_Webfoot,Sticky Webfoot,20,10,끈적이는물갈퀴
-919,Animal_Skin,Animal Skin,36,10,동물가죽
-920,Wolf_Claw,Wolf Claw,58,10,늑대의발톱
-921,Mushroom_Spore,Mushroom Spore,36,10,버섯포자
-922,Orc's_Fang,Orc's Fang,220,10,오크의송곳니
-923,Evil_Horn,Evil Horn,1200,10,악마의뿔
-924,Powder_of_Butterfly,Powder of Butterfly,90,10,나비날개분
-925,Bill_of_Bird,Bill of Bird,64,10,새의부리
-926,Snake_Scale,Snake Scale,82,10,뱀의비늘
-928,Insect_Feeler,Insect Feeler,114,10,벌레더듬이
-929,Immortal_Heart,Immortal Heart,374,10,멈추지않는심장
-930,Rotten_Bandage,Rotten Bandage,350,10,썩은붕대
-931,Orcish_Voucher,Orcish Voucher,142,10,오크전사의증표
-932,Skel-Bone,Skel-Bone,232,10,스켈본
-934,Memento,Memento,600,10,사자의유품
-935,Shell,Shell,14,10,단단한껍질
-936,Scale_Shell,Scale Shell,466,10,비늘피부
-937,Venom_Canine,Venom Canine,148,10,독송곳니
-938,Sticky_Mucus,Sticky Mucus,70,10,끈적끈적한액체
-939,Bee_Sting,Bee Sting,32,10,벌의뒷침
-940,Grasshopper's_Leg,Grasshopper's Leg,36,10,메뚜기뒷다리
-941,Nose_Ring,Nose Ring,568,10,쇠고랑
-942,Yoyo_Tail,Yoyo Tail,114,10,원숭이꼬리
-943,Solid_Shell,Solid Shell,448,10,매우단단한껍질
-944,Horseshoe,Horseshoe,588,10,말발굽
-945,Raccoon_Leaf,Raccoon Leaf,106,10,너구리나뭇잎
-946,Snail's_Shell,Snail's Shell,64,10,달팽이껍질
-947,Horn,Horn,116,10,딱딱한뿔
-948,Bear's_Footskin,Bear's Footskin,174,10,곰발바닥
-949,Soft_Fluff,Soft Fluff,20,10,부드러운털
-950,Heart_of_Mermaid,Heart of Mermaid,264,10,인어의심장
-951,Fin,Fin,412,10,등지느러미
-952,Cactus_Needle,Cactus Needle,82,10,선인장침
-953,Stone_Heart,Stone Heart,184,10,돌심장
-954,Shining_Scale,Shining Scale,466,10,빛나는비늘
-955,Insect_Peeling,Insect Peeling,52,10,벌레껍질
-956,Gill,Gill,342,10,가시달린아가미
-957,Decayed_Nail,Decayed Nail,82,10,망자의손톱
-958,Horrendous_Mouth,Horrendous Mouth,390,10,망자의이빨
-959,Rotten_Scale,Rotten Scale,168,10,썩은비늘
-960,Nipper,Nipper,114,10,집게발
-961,Conch,Conch,158,10,소라
-962,Tentacle,Tentacle,70,10,촉수
-963,Sharp_Scale,Sharp Scale,250,10,날카로운비늘
-964,Crab_Shell,Crab Shell,90,10,게등껍질
-965,Clam_Shell,Clam Shell,56,10,조개껍질
-966,Clam_Flesh,Clam Flesh,158,10,조개살
-967,Turtle_Shell,Turtle Shell,680,10,거북이등껍질
-968,Heroic_Emblem,Heroic Emblem,3000,10,오크용자의증표
-969,Gold,Gold,200000,200,황금
-970,Alcohol,Alcohol,400,30,알코올
-971,Detrimindexta,Detrimindexta,400,30,디트리민
-972,Karvodailnirol,Karvodailnirol,400,30,카르보딜
-973,Counteragent,Counteragent,800,70,중화제
-974,Mixture,Mixture,800,70,혼합제
-975,Scarlet_Dyestuffs,Scarlet Dyestuffs,8000,150,빨간색염료
-976,Lemon_Dyestuffs,Lemon Dyestuffs,8000,150,노란색염료
-978,Cobaltblue_Dyestuffs,Cobaltblue Dyestuffs,8000,150,파란색염료
-979,Darkgreen_Dyestuffs,Darkgreen Dyestuffs,8000,150,초록색염료
-980,Orange_Dyestuffs,Orange Dyestuffs,8000,150,주홍색염료
-981,Violet_Dyestuffs,Violet Dyestuffs,8000,150,보라색염료
-982,White_Dyestuffs,White Dyestuffs,8000,150,하얀색염료
-983,Black_Dyestuffs,Black Dyestuffs,8000,150,검은색염료
-984,Oridecon,Oridecon,1100,200,오리데오콘
-985,Elunium,Elunium,1100,200,에르늄
-986,Anvil,Anvil,30000,500,모루
-987,Oridecon_Anvil,Oridecon Anvil,120000,700,오리데오콘모루
-988,Golden_Anvil,Golden Anvil,300000,900,황금의모루
-989,Emperium_Anvil,Emperium Anvil,600000,1000,엠펠리움모루
-990,Red_Blood,Red Blood,1000,50,레드블러드
-991,Crystal_Blue,Crystal Blue,1000,50,크리스탈블루
-992,Wind_of_Verdure,Wind of Verdure,1000,50,옐로우라이브
-993,Green_Live,Green Live,1000,50,윈드오브버듀어
-994,Flame_Heart,Flame Heart,3000,300,프레임하트
-995,Mystic_Frozen,Mystic Frozen,3000,300,미스틱프로즌
-996,Rough_Wind,Rough Wind,3000,300,러프윈드
-997,Great_Nature,Great Nature,3000,300,그레이트네이쳐
-998,Iron,Iron,100,50,철
-999,Steel,Steel,1000,100,강철
-1000,Star_Crumb,Star Crumb,4500,100,별의조각
-1001,Star_Dust,Star Dust,1500,10,별의가루
-1002,Iron_Ore,Iron Ore,50,150,철광석
-1003,Coal,Coal,500,50,석탄
-1004,Chivalry_Emblem,Chivalry Emblem,2,100,충절의증거
-1005,Hammer_of_Blacksmith,Hammer of Blacksmith,2,800,대장장이의망치
-1006,Old_Magicbook,Old Magicbook,2,30,오래된마법서
-1007,Necklace_of_Wisdom,Necklace of Wisdom,2,40,혜안
-1008,Necklace_of_Oblivion,Necklace of Oblivion,2,100,비정한마음
-1009,Hand_of_God,Hand of God,2,20,성흔
-1010,Phracon,Phracon,200,200,프라콘
-1011,Emveretarcon,Emveretarcon,1000,200,엠베르타콘
-1012,Frill,Frill,250,10,도마뱀의목덜미
-1013,Rainbow_Shell,Rainbow Shell,90,10,알록달록한껍질
-1014,Ant_Jaw,Ant Jaw,232,10,개미의턱뼈
-1015,Tongue,Tongue,528,10,길고가느다란혀
-1016,Rat_Tail,Rat Tail,52,10,쥐의꼬리
-1017,Mole_Whiskers,Mole Whiskers,106,10,두더지의수염
-1018,Mole_Claw,Mole Claw,210,10,두더지의손톱
-1019,Trunk,Trunk,60,10,나무조각
-1020,Black_Hair,Black Hair,292,10,긴머리카락
-1021,Dokebi_Horn,Dokebi Horn,292,10,도깨비의뿔
-1022,Nine_Tails,Nine Tails,650,10,여우의꼬리
-1023,Fish_Tail,Fish Tail,196,10,생선의꼬리
-1024,Squid_Ink,Squid Ink,264,10,먹물
-1025,Cobweb,Cobweb,184,10,거미줄
-1026,Acorn,Acorn,98,10,도토리
-1027,Porcupine_Quill,Porcupine Quill,158,10,고슴도치가시
-1028,Mane,Mane,196,10,맷돼지의갈기털
-1029,Tiger_Skin,Tiger Skin,548,10,호랑이의가죽
-1030,Tiger_Footskin,Tiger Footskin,1500,10,호랑이의발바닥
-1031,Mantis_Scythe,Mantis Scythe,196,10,사마귀의팔
-1032,Maneater_Blossom,Maneater Blossom,196,10,식인수의꽃
-1033,Maneater_Root,Maneater Root,208,10,식인수의뿌리
-1034,Blue_Hair,Blue Hair,342,10,코볼트의털
-1035,Dragon_Canine,Dragon Canine,484,10,드래곤의이빨
-1036,Dragon_Scale,Dragon Scale,500,10,드래곤의비늘
-1037,Dragon_Tail,Dragon Tail,1200,10,드래곤의꼬리
-1038,Little_Evil_Horn,Little Evil Horn,528,10,새끼악마의뿔
-1039,Little_Evil_Wing,Little Evil Wing,2000,10,새끼악마의날개
-1040,Elder_Pixie's_Moustache,Elder Pixie's Moustache,232,10,늙은요정의수염
-1041,Lantern,Lantern,250,10,랜턴
-1042,Bug_Leg,Bug Leg,430,10,짧은다리
-1043,Orc_Claw,Orc Claw,168,10,오크의손톱
-1044,Zenorc's_Fang,Zenorc's Fang,264,10,제노크의이빨
-1045,Cultish_Masque,Cultish Masque,412,10,신관의가면
-1046,Scorpion_Nipper,Scorpion Nipper,614,10,전갈의집게손
-1047,Dead_Medusa,Dead Medusa,548,10,메두사의머리
-1048,Horrendous_Hair,Horrendous Hair,800,10,머리카락뱀
-1049,Skirt_of_Virgin,Skirt of Virgin,1700,10,처녀의옷자락
-1050,Tendon,Tendon,220,10,뇌관
-1051,Detonator,Detonator,450,10,힘줄
-1052,Single_Cell,Single Cell,46,10,단세포
-1053,Ancient_Tooth,Ancient Tooth,548,10,고대어의이빨
-1054,Ancient_Lips,Ancient Lips,1000,10,고대어의입술
-1055,Earthworm_Peeling,Earthworm Peeling,196,10,지렁이가죽
-1056,Grit,Grit,306,10,모래조각
-1057,Moth_Dust,Moth Dust,138,10,나방의날개가루
-1058,Moth_Wings,Moth Wings,200,10,나방의날개
-1059,Fabric,Fabric,306,10,투명한천조각
-1060,Golden_Hair,Golden Hair,430,10,금빛머리카락
-1061,Witch_Starsand,Witch Starsand,484,10,마녀의별모래
-1062,Jack_o'_Pumpkin,Jack o' Pumpkin,374,10,호박머리
-1063,Fang,Fang,680,10,날카로운송곳니
-1064,Reins,Reins,802,10,말고삐
-1065,Trap,Trap,100,10,트랩
-1066,Fine-Grained_Trunk,Fine-Grained Trunk,2,10,궁수전직나무
-1067,Solid_Trunk,Solid Trunk,2,10,궁수전직나무
-1068,Barren_Trunk,Barren Trunk,2,10,궁수전직나무
-1069,Orange_Net_Mushroom,Orange Net Mushroom,2,10,도둑전직버섯
-1070,Orange_Gooey_Mushroom,Orange Gooey Mushroom,2,10,도둑전직버섯
-1071,Unknown_Test_Tube,Unknown Test Tube,0,10,마술전직시험관
-1072,Delivery_Message,Delivery Message,0,10,상인만수편지
-1073,Receipt,Receipt,0,10,상인영수증
-1081,Delivery_Box,Delivery Box,0,10,상인전직상자
-1085,Unknown_Test_Tube_,Unknown Test Tube,0,10,마술전직시험관
-1086,Unknown_Test_Tube__,Unknown Test Tube,0,10,마술전직시험관
-1087,Unknown_Test_Tube___,Unknown Test Tube,0,10,마술전직시험관
-1088,Morroc_Solution,Morroc Solution,0,10,모로크수용액
-1089,Payon_Solution,Payon Solution,0,10,페이욘수용액
-1090,Unknown_Test_Tube____,Unknown Test Tube,0,10,마술전직시험관
-1091,Delivery_Box_,Delivery Box,0,10,상인전직상자
-1092,Empty_Test_Tube,Empty Test Tube,3,10,빈시험관
-1093,Empty_Potion_Bottle,Empty Potion Bottle,10,10,빈포션병
-1094,Short_Daenggie,Short Daenggie,278,10,짧은댕기머리
-1095,Needle_of_Alarm,Needle of Alarm,546,10,시계바늘
-1096,Round_Shell,Round Shell,780,10,둥근껍질
-1097,Worn_Out_Page,Worn Out Page,948,10,낡은책장
-1098,Manacles,Manacles,658,10,수갑
-1099,Worn_Out_Prison_Uniform,Worn Out Prison Uniform,680,10,낡은죄수복
-6000,Ashes_of_Darkness,Ashes of Darkness,0,0,독가루
-6001,Essence_of_Fire,Essence of Fire,0,10,황혼의노을
-6002,Token_of_Apostle,Token of Apostle,0,10,암흑의의지
-6003,Pendant_of_Spirit,Pendant of Spirit,0,10,낡은펜던트
-6004,Cursed_Baphomet_Doll,Cursed Baphomet Doll,0,10,바포메트인형
-6010,Hoe,Hoe,0,10,낡은곡괭이
-6020,Fur,Fur,704,10,모피
-6021,Peaked_Hat,Peaked Hat,433,10,고깔모자
-6022,Hard_Skin,Hard Skin,884,10,딱딱한피부
-6023,Mystic_Horn,Mystic Horn,1000,10,마력의뿔
-6027,Crystal_of_Feardom,Crystal of Feardom,0,0,피어둠결정체
-6028,Sealed_Scroll,Sealed Scroll,0,0,빛의주문서
-6029,Morroc_Tracing_Log,Morroc Tracing Log,0,0,고대언어문서
-6030,Glittering_Paper,Glittering Paper,0,10,기름종이
-6031,Glittering_Paper_,Glittering Paper,0,10,기름종이
-6032,Horn_of_Hillslion,Horn of Hillslion,500,10,새하얀뿔
-6033,Horn_of_Tendrilion,Horn of Tendrilion,500,10,새하얀뿔
-6035,Decaying_Stem,Decaying Stem,0,0,나무뿌리
-6036,Meeting_Invitation,Meeting Invitation,0,10,한석봉소개장
-6037,Messy_File,Messy File,0,0,고대언어문서
-6038,Neat_Report,Neat Report,0,10,서류철
-6039,Piece_of_Fish,Piece of Fish,0,10,생선의꼬리
-6040,Part_of_a_Report,Part of a Report,0,10,고대언어문서
-6041,Strong_Vine,Strong Vine,30,50,질긴나무덩쿨
-6042,Ordinary_Branch,Ordinary Branch,0,10,튼튼한나무가지
-6043,Letter_from_Lugen,Letter from Lugen,0,10,안부편지
-6044,Letter_from_Otto,Letter from Otto,0,10,상인만수편지
-6045,Supply_Box,Supply Box,0,0,상인전직상자
-6046,Clothing_Voucher,Clothing Voucher,0,0,카프라이용권
-6048,Unidentified_Mineral,Unidentified Mineral,0,10,미스릴광석
-6049,Marlin,Marlin,0,10,생선모자
-7001,Mould_Powder,Mould Powder,466,10,곰팡이가루
-7002,Ogre_Tooth,Ogre Tooth,658,10,오우거의이빨
-7003,Anolian_Skin,Anolian Skin,968,10,아놀리안피부
-7004,Mud_Lump,Mud Lump,876,10,진흙덩어리
-7005,Skull,Skull,1044,10,해골바가지
-7006,Wing_of_Red_Bat,Wing of Red Bat,168,10,붉은박쥐의날개
-7007,Claw_of_Rat,Claw of Rat,748,10,큰쥐의발톱
-7008,Stiff_Horn,Stiff Horn,636,10,매우딱딱한뿔
-7009,Glitter_Shell,Glitter Shell,528,10,화려한껍질
-7010,Tail_of_Steel_Scorpion,Tail of Steel Scorpion,548,10,강철전갈의꼬리
-7011,Claw_of_Monkey,Claw of Monkey,466,10,원숭이의손톱
-7012,Tough_Scalelike_Stem,Tough Scalelike Stem,412,10,질긴비늘줄기
-7013,Coral_Reef,Coral Reef,772,10,산호초
-7014,Old_Portrait,Old Portrait,1500,100,낡은자화상
-7015,Bookclip_in_Memory,Bookclip in Memory,3000,20,추억의책갈피
-7016,Spoon_Stub,Spoon Stub,2500,20,낡은숫가락
-7017,Executioner's_Mitten,Executioner's Mitten,4500,30,집행인의장갑
-7018,Young_Twig,Young Twig,50,10,어린나뭇가지
-7019,Loki's_Whispers,Loki's Whispers,20,10,로키의속삭임
-7020,Mother's_Nightmare,Mother's Nightmare,20,10,어머니의악몽
-7021,Foolishness_of_the_Blind,Foolishness of the Blind,20,10,장님의어리석음
-7022,Old_Hilt,Old Hilt,150,30,낡은손잡이
-7023,Blade_Lost_in_Darkness,Blade Lost in Darkness,12000,40,어둠에잠긴칼날
-7024,Bloody_Edge,Bloody Edge,10000,40,피로물든칼날
-7025,Lucifer's_Lament,Lucifer's Lament,30000,50,마왕의슬픔
-7026,Key_of_Clock_Tower,Key of Clock Tower,100,30,시계탑열쇠
-7027,Key_of_Underground,Key of Underground,100,30,탑지하열쇠
-7030,Claw_of_Desert_Wolf,Claw of Desert Wolf,208,10,늑대의발톱
-7031,Old_Frying_Pan,Old Frying Pan,196,10,헌후라이펜
-7032,Piece_of_Egg_Shell,Piece of Egg Shell,168,10,달걀껍질조각
-7033,Poison_Spore,Poison Spore,114,10,버섯포자
-7034,Red_Stocking,Red Stocking,100,10,구멍난빨간양말
-7035,Matchstick,Matchstick,100,10,성냥
-7036,Fang_of_Hati,Fang of Hati,100,10,가름의이빨
-7038,Yarn,Yarn,100,10,털실
-7040,Megaphone_,Megaphone,1,10,확성기
-7041,Fine_Grit,Fine Grit,120,10,별의조각
-7042,Leather_Bag_of_Infinity,Leather Bag of Infinity,1,10,무한가죽주머니
-7043,Fine_Sand,Fine Sand,100,10,별의가루
-7044,Vigorgra,Vigorgra,1,10,안티페인멘트
-7047,Alice's_Apron,Alice's Apron,2424,10,엘리스의앞치마
-7048,Talon_of_Griffon,Talon of Griffon,5418,10,새의발톱
-7049,Stone,Stone,0,30,돌
-7053,Cyfar,Cyfar,772,10,사이파
-7054,Brigan,Brigan,746,10,브리간
-7058,Gleipnir,Gleipnir,1,500,글라이프니르
-7059,Free_Storage_Voucher,Free Storage Voucher,1,10,쿠폰
-7060,Free_Transit_Voucher,Free Transit Voucher,1,10,쿠폰
-7061,Free_Pushcart_Voucher,Free Pushcart Voucher,1,10,쿠폰
-7063,Soft_Feather,Soft Feather,280,10,부드러운깃털
-7064,Wing_of_Dragonfly,Wing of Dragonfly,520,10,잠자리의날개
-7065,Sea_Otter_Fur,Sea Otter Fur,820,10,해달의가죽
-7066,Ice_Cubic,Ice Cubic,660,10,얼음조각
-7067,Stone_Fragment,Stone Fragment,640,10,돌
-7068,Burnt_Tree,Burnt Tree,722,10,타다만장작
-7069,Destroyed_Armor,Destroyed Armor,1042,10,깨진갑옷조각
-7070,Broken_Shell,Broken Shell,900,10,깨진등껍질
-7071,Tattered_Clothes,Tattered Clothes,1280,10,너덜너덜한옷
-7072,Old_Shuriken,Old Shuriken,1780,10,녹슨수리검
-7073,Freya's_Jewel,Freya's Jewel,1,500,프레이야의보석
-7074,Thor's_Gauntlets,Thor's Gauntlets,1,500,토르의쇠장갑
-7075,Iron_Maiden,Iron Maiden,1,500,아이언메이든
-7076,Wheel_of_the_Unknown,Wheel of the Unknown,1,500,미지의톱니바퀴
-7077,Silver_Ornament,Silver Ornament,1,500,은장식
-7078,Wrath_of_Valkyrie,Wrath of Valkyrie,1,500,발키리의분노
-7079,Feather_of_Angel_Wing,Feather of Angel Wing,1,500,천사의날개깃털
-7080,Cat_Tread,Cat Tread,1,500,고양이의발소리
-7081,Woman's_Moustache,Woman's Moustache,1,500,여인의수염
-7082,Root_of_Stone,Root of Stone,1,500,돌의뿌리
-7083,Spirit_of_Fish,Spirit of Fish,1,500,물고기의영혼
-7084,Sputum_of_Bird,Sputum of Bird,1,500,새의침
-7085,Sinew_of_Bear,Sinew of Bear,1,500,곰의힘줄
-7086,Emblem_of_the_Sun_God,Emblem of the Sun God,1,500,태양신의상징
-7087,Breath_of_Spirit,Breath of Spirit,1,500,영혼의숨소리
-7088,Snow_Crystal,Snow Crystal,1,500,눈의결정
-7089,Omen_of_Tempest,Omen of Tempest,1,500,폭풍우의징조
-7090,Ripple,Ripple,1,500,조용한물결
-7091,Billow,Billow,1,500,몰아치는파도
-7092,Drifting_Air,Drifting Air,1,500,흐르는공기
-7093,Cogwheel,Cogwheel,1512,10,톱니바퀴
-7094,Fragment,Fragment,1344,10,미지의조각
-7095,Metal_Fragment,Metal Fragment,1075,10,깨진금속파편
-7096,Lava,Lava,1109,10,굳어버린용암
-7097,Burning_Heart,Burning Heart,924,10,불타는심장
-7098,Live_Coal,Live Coal,638,10,불씨
-7099,Worn_Out_Magic_Scroll,Worn Out Magic Scroll,773,10,낡은마법진
-7100,Sharp_Leaf,Sharp Leaf,806,10,날카로운잎사귀
-7101,Peco_Peco_Feather,Peco Peco Feather,454,10,페코날개깃털
-7104,False_Angel_Wing,False Angel Wing,756,10,가짜천사의날개
-7105,False_Heaven_Ring,False Heaven Ring,924,10,가짜영혼의고리
-7106,Antelope_Horn,Antelope Horn,672,10,산양의뿔
-7107,Antelope_Skin,Antelope Skin,756,10,산양의모피
-7108,Piece_of_Shield,Piece of Shield,1680,10,깨진방패조각
-7109,Shining_Spear_Blade,Shining Spear Blade,840,10,빛나는창날
-7110,Broken_Sword,Broken Sword,588,10,깨진검
-7111,Slick_Paper,Slick Paper,706,10,매끈한종이
-7112,Sharp_Paper,Sharp Paper,907,10,섬뜩한종이칼날
-7113,Broken_Pharaoh_Emblem,Broken Pharaoh Emblem,2016,10,깨진파라오상징
-7114,Masque_of_Tutankhamen,Masque of Tutankhamen,10,10,투탄카멘마스크
-7115,Harpy_Feather,Harpy Feather,1142,10,하피의깃털
-7116,Harpy_Talon,Harpy Talon,1210,10,하피의발톱
-7117,Torn_Magic_Book,Torn Magic Book,1142,10,찢어진마법서
-7118,Torn_Scroll,Torn Scroll,1361,10,찢어진스크롤
-7119,Bacillus,Bacillus,1025,10,균사체
-7120,Burning_Horseshoe,Burning Horseshoe,823,10,불타는말발굽
-7121,Honey_Pot,Honey Pot,622,10,꿀단지
-7122,Burning_Hair,Burning Hair,974,10,뜨거운털
-7123,Dragon_Skin,Dragon Skin,1025,10,드래곤의껍질
-7124,Sand_Clump,Sand Clump,706,10,모래덩어리
-7125,Scorpion_Claw,Scorpion Claw,706,10,전갈의집게발
-7126,Large_Jellopy,Large Jellopy,840,10,라지젤로피
-7127,Alcohol_Creation_Guide,Alcohol Creation Guide,100000,10,알콜제조책
-7128,Bottle_Grenade_Creation_Guide,Bottle Grenade Creation Guide,100000,10,화염병제조책
-7129,Acid_Bottle_Creation_Guide,Acid Bottle Creation Guide,100000,10,염산병제조책
-7130,Plant_Bottle_Creation_Guide,Plant Bottle Creation Guide,100000,10,식물병제조책
-7131,Marine_Sphere_Creation_Guide,Marine Sphere Creation Guide,100000,10,기뢰병제조책
-7132,Coating_Bottle_Creation_Guide,Coating Bottle Creation Guide,100000,10,코팅약제조책
-7133,Condensed_Potion_Creation_Guide,Condensed Potion Creation Guide,240000,10,슬림포션제조책
-7134,Medicine_Bowl,Medicine Bowl,8,10,약사발
-7135,Grenade_Bottle,Grenade Bottle,200,10,화염병
-7136,Acid_Bottle,Acid Bottle,200,10,염산병
-7137,Plant_Bottle,Plant Bottle,200,10,식인식물병
-7138,Marine_Sphere_Bottle,Marine Sphere Bottle,200,10,기뢰병
-7139,Coating_Bottle,Coating Bottle,200,10,코팅약
-7140,Seed_of_Life,Seed of Life,60000,10,생명의씨앗
-7141,Morning_Dew_of_Yggdrasil,Morning Dew of Yggdrasil,20000,10,이그드라실이슬
-7142,Embryo,Embryo,10,10,엠브리오
-7143,Glass_Tube,Glass Tube,5000,10,유리관
-7144,Potion_Creation_Gude,Potion Creation Gude,100000,10,일반포션제조책
-7148,Mother's_Letter,Mother's Letter,1,10,상인만수편지
-7149,Yellow_Plate,Yellow Plate,220,10,노란접시
-7150,Piece_of_Bamboo,Piece of Bamboo,310,10,대나무조각
-7151,Oil_Paper,Oil Paper,210,10,기름종이
-7152,Glossy_Hair,Glossy Hair,340,10,윤기있는머리칼
-7153,Worn_Out_Kimono,Worn Out Kimono,590,10,낡은기모노
-7154,Poisonous_Powder,Poisonous Powder,160,10,독가루
-7155,Poisonous_Toad_Skin,Poisonous Toad Skin,280,10,독두꺼비의껍질
-7156,Broken_Shuriken,Broken Shuriken,470,10,깨진슈리켄
-7157,Dark_Mask,Dark Mask,315,10,검은복면
-7158,Broken_Liquor_Jar,Broken Liquor Jar,160,10,깨진술동이
-7159,Tengu_Nose,Tengu Nose,400,10,천구의코
-7160,Feudal_Lord_Permit,Feudal Lord Permit,1,10,영주의통행증
-7161,Black_Bear_Skin,Black Bear Skin,384,10,검은곰의털가죽
-7162,Cloud_Crumb,Cloud Crumb,390,10,구름조각
-7163,Hard_Feeler,Hard Feeler,570,10,날카로운더듬이
-7164,Solid_Peach,Solid Peach,400,10,단단한복숭아
-7165,Transparent_Celestial_Robe,Transparent Celestial Robe,650,10,투명한날개옷
-7166,Soft_Silk,Soft Silk,1200,10,부드러운비단천
-7167,Strange_Steel_Piece,Strange Steel Piece,430,10,오묘한철조각
-7168,Giant_Butterfly_Wing,Giant Butterfly Wing,614,10,커다란날개
-7169,Ba_Gua,Ba Gua,2800,10,태극패
-7170,Tuxedo,Tuxedo,43000,10,턱시도
-7171,Leopard_Skin,Leopard Skin,282,10,표범의가죽
-7172,Leopard_Claw,Leopard Claw,290,10,표범의발톱
-7174,Wrapping_Lace,Wrapping Lace,0,10,끈
-7175,Wrapping_Paper,Wrapping Paper,0,10,포장지
-7177,Crumb_of_Sobbing_Starlight,Crumb of Sobbing Starlight,0,0,별의흐느낌조각
-7178,Sobbing_Starlight,Sobbing Starlight,0,0,별의흐느낌
-7181,Receipt_,Receipt,0,10,물품영수증_01
-7182,Cacao,Cacao,200,20,카카오
-7183,Letter_from_Sister,Letter from Sister,0,10,편지01
-7184,Piano_Key,Piano Key,0,10,건반
-7186,Thin_Trunk,Thin Trunk,380,10,가는줄기
-7187,Festival_Mask,Festival Mask,100,10,가면
-7188,Brown_Root,Brown Root,560,10,갈색뿌리
-7189,Wooden_Heart,Wooden Heart,680,10,나무심장
-7190,Solid_Husk,Solid Husk,140,10,단단한등껍질
-7191,Lamp,Lamp,0,10,등불
-7192,Vane,Vane,160,10,바람개비의칼날
-7193,Sprout,Sprout,230,10,발아새싹
-7194,Soft_Blade_of_Grass,Soft Blade of Grass,400,10,부드러운풀잎
-7195,Slingshot,Slingshot,210,10,새총
-7196,Shoulder_Protector,Shoulder Protector,230,10,어깨보호대
-7197,Tough_Vines,Tough Vines,500,10,질긴나무덩쿨
-7198,Huge_Leaf,Huge Leaf,610,10,커다란잎사귀
-7200,Elastic_Band,Elastic Band,380,10,탄력있는줄
-7201,Log,Log,250,10,통나무
-7202,Pincher_of_Beetle,Pincher of Beetle,290,10,투구벌레의집게
-7203,Strong_Branch,Strong Branch,190,10,튼튼한나무가지
-7204,Gunpowder,Gunpowder,320,10,화약
-7205,Piece_of_Black_Cloth,Piece of Black Cloth,526,10,검은천조각
-7206,Black_Cat_Doll,Black Cat Doll,1440,10,고양이인형
-7207,Old_Manteau,Old Manteau,1050,10,너덜거리는망토
-7208,Rusty_Kitchen_Knife,Rusty Kitchen Knife,1780,10,녹슨식칼
-7209,Helm_of_Dullahan,Helm of Dullahan,1350,10,듀라한의투구
-7210,Armor_Piece_of_Dullahan,Armor Piece of Dullahan,790,10,듀라한갑옷조각
-7211,Fragment_of_Rossata_Stone,Fragment of Rossata Stone,2600,10,로제타스톤
-7212,Hung_Doll,Hung Doll,1020,10,매달린인형
-7213,Needle_Packet,Needle Packet,832,10,바늘쌈지
-7214,Bat_Cage,Bat Cage,880,10,박쥐우리
-7215,Broken_Needle,Broken Needle,690,10,부러진바늘
-7216,Red_Muffler,Red Muffler,660,10,빨간마후라
-7217,Spool,Spool,424,10,실패
-7218,Decomposed_Rope,Decomposed Rope,390,10,썩은밧줄
-7219,Striped_Sock,Striped Sock,920,10,알록달록한양말
-7220,Ectoplasm,Ectoplasm,322,10,액토플라즘
-7221,Tangled_Chains,Tangled Chains,740,10,얽어맨사슬
-7222,Wooden_Gnarl,Wooden Gnarl,468,10,옹이
-7223,Contorted_Self-Portrait,Contorted Self-Portrait,2032,10,일그러진자화상
-7225,Pumpkin_Lantern,Pumpkin Lantern,486,10,호박초롱
-7226,Pellet,Pellet,2,10,환약
-7234,Spirit_of_Guild,Spirit of Guild,0,10,쿠폰
-7235,Spirit_of_Charge,Spirit of Charge,0,10,쿠폰
-7237,Spirit_of_Association,Spirit of Association,0,10,쿠폰
-7238,Spirit_of_Coordination,Spirit of Coordination,0,10,쿠폰
-7239,Spirit_of_Advance,Spirit of Advance,0,10,쿠폰
-7240,Spirit_of_Trust,Spirit of Trust,0,10,쿠폰
-7241,Spirit_of_Union,Spirit of Union,0,10,쿠폰
-7242,Spirit_of_Combination,Spirit of Combination,0,10,쿠폰
-7244,Spirit_of_Solidarity,Spirit of Solidarity,0,10,쿠폰
-7245,Spirit_of_Friendship,Spirit of Friendship,0,10,쿠폰
-7246,Spirit_of_Peace,Spirit of Peace,0,10,쿠폰
-7247,Spirit_of_Determination,Spirit of Determination,0,10,쿠폰
-7249,Spirit_of_Service,Spirit of Service,0,10,쿠폰
-7250,Spirit_of_Glory,Spirit of Glory,0,10,쿠폰
-7251,Spirit_of_Victory,Spirit of Victory,0,10,쿠폰
-7252,Herbal_Medicine,Herbal Medicine,0,10,한방약재
-7262,Folding_Fan_of_Cat_Ghost,Folding Fan of Cat Ghost,466,10,부채
-7263,Cat's_Eye,Cat's Eye,954,10,묘안석
-7264,Dry_Sand,Dry Sand,322,10,마른모래
-7265,Dragon_Horn,Dragon Horn,544,10,용뿔
-7266,Denture_from_Dragon_Mask,Denture from Dragon Mask,436,10,용이빨
-7267,Tiger_Panty,Tiger Panty,298,10,호피팬티
-7268,Little_Ghost_Doll,Little Ghost Doll,1210,10,소귀령
-7269,Pinafore,Pinafore,960,10,턱받침
-7270,Nursing_Bottle,Nursing Bottle,1100,10,우유병
-7274,Translated_Ancient_Language,Translated Ancient Language,0,10,고대언어해석문
-7275,Record_of_Ancient_Language,Record of Ancient Language,0,10,고대언어문서
-7276,Doodled_Message,Doodled Message,0,10,그림편지
-7277,Munak_Doll,Munak Doll,8900,10,무낙인형
-7278,Letter_to_Wife,Letter to Wife,0,10,안부편지
-7285,Holy_Threads,Holy Threads,2,10,실타래
-7286,Red_Chili,Red Chili,20,10,칠리
-7287,Holier_Threads,Holier Threads,2,10,실타래
-7288,Engagement_Ring,Engagement Ring,2,10,태국반지
-7289,Peridot,Peridot,3000,100,감람석
-7290,Phlogopite,Phlogopite,3000,100,금운모
-7291,Agate,Agate,3000,100,마노
-7292,Muscovite,Muscovite,3000,100,백운모
-7293,Rose_Quartz,Rose Quartz,3000,100,장미석영
-7294,Turquoise,Turquoise,3000,100,터키석
-7295,Citrin,Citrin,3000,100,황수정
-7296,Pyroxene,Pyroxene,3000,100,휘석
-7297,Biotite,Biotite,3000,100,흑운모
-7298,Fig_Leaf,Fig Leaf,538,10,나뭇잎옷
-7299,Straw_Basket,Straw Basket,632,10,소쿠리
-7300,Gemstone,Gemstone,1420,10,원석
-7301,Tassel,Tassel,798,10,칼장식용실
-7304,Witch's_Spell_Scroll,Witch's Spell Scroll,0,0,마녀의주문서
-7305,Symbol_of_the_Nine_Realms,Symbol of the Nine Realms,0,0,아홉세계의권위
-7306,Piece_of_Spirit,Piece of Spirit,0,0,영혼의조각
-7307,Spiritual_Whispers,Spiritual Whispers,0,0,영혼의속삭임
-7308,Witch's_Tonic,Witch's Tonic,0,0,마녀의물약
-7309,Crow_Wing,Crow Wing,0,0,까마귀의날개
-7310,Peco_Voucher,Peco Voucher,20,10,쿠폰
-7311,Airship_Ticket,Airship Ticket,20,10,기부증명서
-7312,Jubilee,Jubilee,32,10,쥬빌레
-7313,Witch's_Medal,Witch's Medal,2,0,마녀의증표
-7314,The_Sign_,The Sign,2,0,더사인
-7315,Dark_Crystal_Fragment,Dark Crystal Fragment,422,10,검은수정조각
-7316,Insect_Leg,Insect Leg,658,10,긴다리
-7317,Rusty_Screw,Rusty Screw,534,10,나사
-7318,Old_Pick,Old Pick,512,10,낡은곡괭이
-7319,Used_Iron_Plate,Used Iron Plate,1024,10,낡은철판
-7320,Dust_Pollutant,Dust Pollutant,256,10,분진
-7321,Crystal_Fragment,Crystal Fragment,552,10,수정조각
-7322,Toxic_Gas,Toxic Gas,666,10,유독가스
-7323,Battered_Kettle,Battered Kettle,256,10,찌그러진주전자
-7325,Flexible_Tube,Flexible Tube,102,10,튜브
-7326,Fluorescent_Liquid,Fluorescent Liquid,712,10,형광액체
-7327,Flashlight,Flashlight,1024,10,회중전등
-7329,Old_Bronze_Key,Old Bronze Key,0,10,시계탑열쇠
-7332,Complete_Tablet,Complete Tablet,0,0,석판
-7333,Prontera_Tablet,Prontera Tablet,0,0,석판조각
-7334,Payon_Tablet,Payon Tablet,0,0,석판조각
-7335,Morroc_Tablet,Morroc Tablet,0,0,석판조각
-7336,Geffen_Tablet,Geffen Tablet,0,0,석판조각
-7337,Eye_of_Hellion,Eye of Hellion,0,0,아이오브헬리온
-7340,Will_of_the_Darkness,Will of the Darkness,734,50,암흑의의지
-7341,Old_Pendant,Old Pendant,20,0,낡은펜던트
-7342,File_Folder,File Folder,20,0,서류철
-7343,Sealed_File_Folder,Sealed File Folder,20,0,서류철
-7344,Shinokas_Case_File,Shinokas Case File,20,0,서류철
-7345,Handcuffs,Handcuffs,724,10,인식표찰
-7346,Ymir's_Heart_Piece,Ymir's Heart Piece,20,0,이미르심장더미
-7347,Research_Chart,Research Chart,840,10,연구원기록표
-7348,Membership_Card,Membership Card,20,10,조직원의증표
-7349,Archive_Permit,Archive Permit,20,0,조직원의증표
-7350,Pass,Pass,20,10,통행증
-7351,Friend's_Diary,Friend's Diary,20,0,친구의일기장
-7352,Transparent_Plate_1,Transparent Plate 1,20,10,투명판01
-7353,Transparent_Plate_2,Transparent Plate 2,20,10,투명판02
-7354,Transparent_Plate_3,Transparent Plate 3,20,10,투명판03
-7355,Transparent_Plate_4,Transparent Plate 4,20,10,투명판04
-7356,Crest_Piece_1,Crest Piece 1,5000,10,문장1
-7357,Crest_Piece_2,Crest Piece 2,5000,10,문장2
-7358,Crest_Piece_3,Crest Piece 3,5000,10,문장3
-7359,Crest_Piece_4,Crest Piece 4,5000,10,문장4
-7416,Letter_of_Recommendation,Letter of Recommendation,0,0,한석봉소개장
-7417,Written_Request_A,Written Request A,0,0,물품영수증_01
-7418,Written_Request_B,Written Request B,0,0,물품영수증_01
-7420,Skull_,Skull,0,0,해골바가지
-7421,Red_Key,Red Key,0,0,열쇠_빨강
-7422,Yellow_Key,Yellow Key,0,0,열쇠_노랑
-7423,Blue_Key,Blue Key,0,0,열쇠_파랑
-7424,Green_Key,Green Key,0,0,열쇠_초록
-7425,Black_Key,Black Key,0,0,열쇠_검정
-7426,Red_Charm_Stone,Red Charm Stone,0,0,마력석_빨강
-7427,Yellow_Charm_Stone,Yellow Charm Stone,0,0,마력석_노랑
-7428,Blue_Charm_Stone,Blue Charm Stone,0,0,마력석_파랑
-7429,Green_Charm_Stone,Green Charm Stone,0,0,마력석_초록
-7430,Black_Charm_Stone,Black Charm Stone,0,0,마력석_검정
-7431,Pile_of_Books,Pile of Books,0,0,여러권의책
-7432,Leather_Pouch,Leather Pouch,0,0,주머니
-7433,Blank_Scroll,Blank Scroll,4000,10,낡은두루마리
-7434,Elemental_Potion_Creation_Guide,Elemental Potion Creation Guide,100000,10,기뢰병제조책
-7435,Golden_Ornament,Golden Ornament,1907,10,금색장신구
-7436,Fragment_of_Agony,Fragment of Agony,1506,10,기억의파편_녹
-7437,Fragment_of_Misery,Fragment of Misery,1506,10,기억의파편_자
-7438,Fragment_of_Hatred,Fragment of Hatred,1506,10,기억의파편_청
-7439,Fragment_of_Despair,Fragment of Despair,1506,10,기억의파편_홍
-7440,Red_Feather,Red Feather,1335,10,붉은깃털
-7441,Blue_Feather,Blue Feather,1408,10,푸른깃털
-7442,Cursed_Seal,Cursed Seal,1332,10,저주받은인
-7443,Three-Headed_Dragon's_Head,Three-Headed Dragon's Head,956,10,삼두룡의목
-7444,Treasure_Box,Treasure Box,300000,10,보물상자
-7445,Green_Bijou,Green Bijou,887,10,용의보주_녹
-7446,Blue_Bijou,Blue Bijou,887,10,용의보주_청
-7447,Red_Bijou,Red Bijou,887,10,용의보주_홍
-7448,Yellow_Bijou,Yellow Bijou,887,10,용의보주_황
-7449,Bloody_Page,Bloody Page,681,10,피묻은책장
-7450,Skeletal_Armor_Piece,Skeletal Armor Piece,2050,10,해골갑옷조각
-7451,Fire_Dragon_Scale,Fire Dragon Scale,1852,10,화룡의비늘조각
-7452,Yellow_Spice,Yellow Spice,1000,10,노란향신료
-7453,Sweet_Sauce,Sweet Sauce,700,10,단맛소스
-7454,Savory_Sauce,Savory Sauce,700,10,담백한소스
-7455,Spicy_Sauce,Spicy Sauce,700,10,매운맛소스
-7456,Red_Spice,Red Spice,1000,10,빨간향신료
-7457,Cooking_Oil,Cooking Oil,500,10,식용유
-7487,Culinary_Wine,Culinary Wine,0,0,인트요리09
-7488,Delivery_Package,Delivery Package,0,0,택배상자
-7489,Cottage_Key,Cottage Key,0,0,시계탑열쇠
-7490,Letter_to_Elly,Letter to Elly,0,0,안부편지
-7491,Steel_Box,Steel Box,0,0,철상자
-7492,Yellow_Keycard,Yellow Keycard,0,0,열쇠_노랑
-7493,Golden_Key,Golden Key,0,0,황금열쇠
-7494,Luxurious_Button,Luxurious Button,0,0,키엘단추
-7495,Blue_Keycard,Blue Keycard,0,0,열쇠_파랑
-7496,Red_Keycard,Red Keycard,0,0,열쇠_빨강
-7497,Metal_Fragment_,Metal Fragment,0,0,미지의조각
-7498,Rosimier_Mansion_Keys,Rosimier Mansion Keys,0,0,로시미에르열쇠
-7499,Family_Portrait,Family Portrait,0,0,가족의초상화
-7500,Woman's_Portrait,Woman's Portrait,0,0,엘리시아초상화
-7501,K.H.'s_Letter,K.H.'s Letter,0,0,편지01
-7502,James's_Note,James's Note,0,0,낡은책장
-7503,Man's_Portrait,Man's Portrait,0,0,남자의초상화
-7504,Power_Device,Power Device,0,0,베스퍼코어
-7505,Toy_Key,Toy Key,0,0,탑지하열쇠
-7506,Black_Keycard,Black Keycard,0,0,열쇠_검정
-7507,Solid_Iron_Piece,Solid Iron Piece,842,10,단단한철조각
-7508,Allysia's_Ring,Allysia's Ring,0,0,태국반지
-7509,Luxurious_Keycard,Luxurious Keycard,0,0,화려한키카드
-7510,Valhalla's_Flower,Valhalla's Flower,200000,10,발할라의꽃
-7511,Rune_of_Darkness,Rune of Darkness,2526,10,어둠의룬
-7512,Burnt_Part,Burnt Part,1600,10,타버린부품조각
-7513,Pocket_Watch_,Pocket Watch,3420,10,회중시계
-7514,Monster_Ticket,Monster Ticket,2,0,쿠폰
-7515,Prize_Medal,Prize Medal,2,0,신기한메달
-7516,Green_Keycard,Green Keycard,0,0,열쇠_초록
-7521,Flame_Stone,Flame Stone,150,10,열화석
-7522,Ice_Stone,Ice Stone,150,10,빙섬석
-7523,Wind_Stone,Wind Stone,150,10,풍령석
-7524,Shadow_Orb,Shadow Orb,300,20,환구
-7539,Poring_Coin,Poring Coin,0,0,포링코인
-7553,Water_Lily,Water Lily,0,0,연꽃
-7561,Glacial_Heart,Glacial Heart,606,10,얼음심장
-7562,Ice_Scale,Ice Scale,3020,10,얼음비늘
-7563,Bloody_Rune,Bloody Rune,2016,10,핏빛의룬
-7564,Rotten_Meat,Rotten Meat,102,10,썩은고기
-7565,Sticky_Poison,Sticky Poison,350,10,끈적끈적한독
-7566,Will_of_Red_Darkness,Will of Red Darkness,1530,10,암흑의의지_
-7567,Suspicious_Hat,Suspicious Hat,1290,10,수상한모자
-7568,White_Mask,White Mask,1060,10,하얀가면
-7569,Wind_Hammer,Wind Hammer,0,0,워해머
-7570,Temple_Lottery_Ticket,Temple Lottery Ticket,0,10,쿠폰-노멀
-7571,Bruspetti's_Diary,Bruspetti's Diary,0,0,소녀의일기장
-7572,Ashy_Necklace,Ashy Necklace,0,0,마법목걸이
-7573,Sparkling_Necklace,Sparkling Necklace,0,0,마법목걸이_
-7574,Freezing_Snow_Powder,Freezing Snow Powder,0,0,얼음가루
-7575,Red_Jewel,Red Jewel,20,50,붉은색보석
-7576,Blue_Jewel,Blue Jewel,20,50,파란색보석
-7621,Token_of_Siegfried,Token of Siegfried,2,10,지크프리드의증표
-7622,Hairstyle_Voucher,Hairstyle Voucher,0,10,카프라이용권
-7704,Broken_Thermometer,Broken Thermometer,2,0,타버린부품조각
-7705,Note_of_Geologist,Note of Geologist,2,0,낡은책장
-7722,Debt_Note,Debt Note,20,0,고대언어문서
-7723,Diamond_of_Ruin,Diamond of Ruin,20,0,투명한보석
-7724,Forbidden_Secret_Art,Forbidden Secret Art,20,0,마녀의주문서
-7725,Unlucky_Emerald,Unlucky Emerald,20,0,초록색보석
-7726,Token_of_King,Token of King,20,0,왕의증명
-7730,Mission_Ticket_1,Mission Ticket 1,0,10,퀴즈참가권
-7731,Mission_Ticket_2,Mission Ticket 2,0,10,퀴즈참가권
-7732,Mission_Ticket_3,Mission Ticket 3,0,10,퀴즈참가권
-7733,Mission_Ticket_4,Mission Ticket 4,0,10,퀴즈참가권
-7734,Mission_Ticket_5,Mission Ticket 5,0,10,퀴즈참가권
-7735,Mission_Ticket_6,Mission Ticket 6,0,10,퀴즈참가권
-7736,Mission_Ticket_7,Mission Ticket 7,0,10,퀴즈참가권
-7737,Mission_Ticket_8,Mission Ticket 8,0,10,퀴즈참가권
-7738,Mission_Ticket_9,Mission Ticket 9,0,10,퀴즈참가권
-7739,Mission_Ticket_10,Mission Ticket 10,0,10,퀴즈참가권
-7740,Mission_Ticket_11,Mission Ticket 11,0,10,퀴즈참가권
-7741,Mission_Ticket_12,Mission Ticket 12,0,10,퀴즈참가권
-7751,Old_White_Cloth,Old White Cloth,550,10,낡아빠진흰옷
-7752,Clattering_Skull,Clattering Skull,840,10,덜그럭거리는해골
-7753,Broken_Farming_Utensil,Broken Farming Utensil,330,10,부러진농기구
-7754,Broken_Crown,Broken Crown,3000,10,부서진왕관
-7755,Research_Note,Research Note,20,0,현자의일기
-7761,Magic_Gourd_Bottle,Magic Gourd Bottle,20,10,마법의호리병
-7762,Yaga's_Pestle,Yaga's Pestle,20,10,야가할머니절구공이
-7763,Sticky_Herb,Sticky Herb,20,10,찰싹찰싹풀
-7764,High_Strength_Adhesive,High Strength Adhesive,20,10,강력접착제
-7765,Baba_Yaga's_Secret_Medicine,Baba Yaga's Secret Medicine,20,10,바바야가의비약
-7776,Gym_Pass,Gym Pass,0,10,카프라이용권
-7795,Mammi's_Photo_Album,Mammi's Photo Album,2,10,바이블
-7796,Author's_Autograph,Author's Autograph,2,10,그림편지
-7797,Author's_Memo,Author's Memo,2,10,낡은책장
-7798,Fragment_of_Darkness,Fragment of Darkness,500,50,굳어버린용암
-7799,Crystal_of_Darkness,Crystal of Darkness,10,10,마력석_검정
-7820,Morroc_Skin,Morroc Skin,0,0,검은천조각
-7826,Continental_Guard_Paper,Continental Guard Paper,0,0,원고용지
-7828,Badge_of_Bravery,Badge of Bravery,0,0,전투휘장
-7829,Badge_of_Valor,Badge of Valor,0,0,전투휘장
-7830,Goddess_Tear,Goddess Tear,1,500,여신의눈물
-7831,Valkyrie's_Token,Valkyrie's Token,1,500,발키리의징표
-7832,Brynhild_Armor_Piece,Brynhild Armor Piece,1,500,브륀힐트갑옷조각
-7833,Hero's_Remains,Hero's Remains,1,500,영웅의유해
-7834,Andvari's_Ring,Andvari's Ring,1,500,안드바리의반지
-7835,Dusk_Glow,Dusk Glow,1,500,황혼의노을
-7836,Dawn_Essence,Dawn Essence,1,500,여명의정수
-7837,Cold_Moonlight,Cold Moonlight,1,500,차가운달빛
-7838,Hazy_Starlight,Hazy Starlight,1,500,어스름한별빛
-7839,Crystal_Key,Crystal Key,0,0,크리스탈키
-7840,Valkyrie's_Gift,Valkyrie's Gift,0,0,발할라의꽃
-7876,Gold_Key,Gold Key,0,50,시계탑열쇠
-7877,Red_Ring,Red Ring,0,100,세이프티링
-7878,Lusalka's_Hair,Lusalka's Hair,0,10,긴머리카락
-7879,Golden_Thread,Golden Thread,0,10,실타래
-7880,Baba_Yaga's_Silver_Spoon,Baba Yaga's Silver Spoon,0,10,낡은숫가락
-7881,Mystery_Magic_Book,Mystery Magic Book,0,50,여러권의책
-7882,Sharp_Branch,Sharp Branch,0,0,대나무조각
-7883,Wooden_Flute,Wooden Flute,0,0,대나무조각
-11002,Chef_King_Orleans_Vol.1,Chef King Orleans Vol.1,8000,0,양장본
-11003,Kafra_Legend_Vol.1,Kafra Legend Vol.1,8000,0,묵시록
-11012,Expedition_Report,Expedition Report,0,10,서류철
-11013,Expedition_Report_Vol1,Expedition Report Vol1,0,10,고대언어문서
-11014,Expedition_Report_Vol2,Expedition Report Vol2,0,10,고대언어문서
-11015,Expedition_Report_Vol3,Expedition Report Vol3,0,10,고대언어문서
-11016,Expedition_Report_Vol4,Expedition Report Vol4,0,10,고대언어문서
+Id,Code,Name,Price,Weight,Usage,Sprite
+701,Ora_Ora,Ora Ora,55000,200,None,오라오라
+702,Animal_Gore,Animal Gore,450,100,None,가축의피
+703,Hinalle,Hinalle,500,10,None,히나레
+704,Aloe,Aloe,500,10,None,알로에
+705,Clover,Clover,10,10,None,클로버
+706,Four_Leaf_Clover,Four Leaf Clover,80000,10,None,네잎클로버
+707,Singing_Plant,Singing Plant,500,10,None,노래하는풀
+708,Ment,Ment,500,10,None,멘트
+709,Izidor,Izidor,500,10,None,이지도르
+710,Illusion_Flower,Illusion Flower,1000,10,None,환상의꽃
+711,Shoot,Shoot,16,10,None,새싹
+712,Flower,Flower,2,10,None,꽃
+713,Empty_Bottle,Empty Bottle,6,20,None,빈병
+714,Emperium,Emperium,2,1000,None,엠펠리움
+715,Yellow_Gemstone,Yellow Gemstone,600,30,None,옐로우젬스톤
+716,Red_Gemstone,Red Gemstone,600,30,None,레드젬스톤
+717,Blue_Gemstone,Blue Gemstone,600,30,None,블루젬스톤
+718,Garnet,Garnet,6000,100,None,검붉은보석
+719,Amethyst,Amethyst,6000,100,None,보라색보석
+720,Aquamarine,Aquamarine,6000,100,None,하늘색보석
+721,Emerald,Emerald,6000,100,None,초록색보석
+722,Pearl,Pearl,6000,100,None,분홍색보석
+723,Ruby,Ruby,6000,100,None,진홍색보석
+724,Cursed_Ruby,Cursed Ruby,600,100,None,진홍색보석
+725,Sardonyx,Sardonyx,6000,100,None,붉은색보석
+726,Sapphire,Sapphire,6000,100,None,파란색보석
+727,Opal,Opal,6000,100,None,하얀색보석
+728,Topaz,Topaz,6000,100,None,노란색보석
+729,Zircon,Zircon,6000,100,None,청록색보석
+730,1_Carat_Diamond,1 Carat Diamond,10000,100,None,투명한보석
+731,2_Carat_Diamond,2 Carat Diamond,25000,100,None,투명한보석
+732,3_Carat_Diamond,3 Carat Diamond,55000,100,None,투명한보석
+733,Cracked_Diamond,Cracked Diamond,10,100,None,투명한보석
+734,Red_Frame,Red Frame,3000,200,None,붉은액자
+735,Chung_Jah,Chung Jah,5000,500,None,푸른도자기
+736,China,China,1000,300,None,하얀접시
+737,Black_Ladle,Black Ladle,400,50,None,검은국자
+738,Pencil_Case,Pencil Case,400,100,None,연필꽃이
+739,Rouge,Rouge,10000,10,None,화장품
+740,Puppet,Puppet,3000,100,None,봉제인형
+741,Poring_Doll,Poring Doll,1000,100,None,포링인형
+742,Chonchon_Doll,Chonchon Doll,1800,100,None,촌촌인형
+743,Spore_Doll,Spore Doll,5500,100,None,스포아인형
+744,Bouquet,Bouquet,2000,50,None,꽃다발
+745,Wedding_Bouquet,Wedding Bouquet,12000,50,None,부케
+746,Glass_Bead,Glass Bead,1400,50,None,유리구슬
+747,Crystal_Mirror,Crystal Mirror,15000,50,None,수정거울
+748,Witherless_Rose,Witherless Rose,55000,10,None,시들지않는장미
+749,Frozen_Rose,Frozen Rose,35000,10,None,얼음장미
+750,Baphomet_Doll,Baphomet Doll,18000,100,None,바포메트인형
+751,Osiris_Doll,Osiris Doll,14000,100,None,오시리스인형
+752,Rocker_Doll,Rocker Doll,4000,100,None,메뚜기인형
+753,Yoyo_Doll,Yoyo Doll,6000,100,None,원숭이인형
+754,Racoon_Doll,Racoon Doll,5000,100,None,너구리인형
+756,Rough_Oridecon,Rough Oridecon,550,200,None,오리데오콘원석
+757,Rough_Elunium,Rough Elunium,650,200,None,에르늄원석
+901,Daenggie,Daenggie,260,10,None,댕기머리
+902,Tree_Root,Tree Root,12,10,None,나무뿌리
+903,Reptile_Tongue,Reptile Tongue,140,10,None,파충류혓바닥
+904,Scorpion_Tail,Scorpion Tail,124,10,None,전갈의꼬리
+905,Stem,Stem,46,10,None,식물의줄기
+906,Pointed_Scale,Pointed Scale,68,10,None,비늘줄기
+907,Resin,Resin,120,10,None,고목나무진
+908,Spawn,Spawn,140,10,None,개구리알
+909,Jellopy,Jellopy,6,10,None,젤로피
+910,Garlet,Garlet,40,10,None,가렛
+911,Scell,Scell,160,10,None,셀
+912,Zargon,Zargon,480,10,None,자르곤
+913,Tooth_of_Bat,Tooth of Bat,34,10,None,박쥐의이빨
+914,Fluff,Fluff,8,10,None,솜털
+915,Chrysalis,Chrysalis,8,10,None,번데기껍질
+916,Bird_Feather,Bird Feather,10,10,None,새의깃털
+917,Talon,Talon,20,10,None,새의발톱
+918,Sticky_Webfoot,Sticky Webfoot,20,10,None,끈적이는물갈퀴
+919,Animal_Skin,Animal Skin,36,10,None,동물가죽
+920,Wolf_Claw,Wolf Claw,58,10,None,늑대의발톱
+921,Mushroom_Spore,Mushroom Spore,36,10,None,버섯포자
+922,Orc's_Fang,Orc's Fang,220,10,None,오크의송곳니
+923,Evil_Horn,Evil Horn,1200,10,None,악마의뿔
+924,Powder_of_Butterfly,Powder of Butterfly,90,10,None,나비날개분
+925,Bill_of_Bird,Bill of Bird,64,10,None,새의부리
+926,Snake_Scale,Snake Scale,82,10,None,뱀의비늘
+928,Insect_Feeler,Insect Feeler,114,10,None,벌레더듬이
+929,Immortal_Heart,Immortal Heart,374,10,None,멈추지않는심장
+930,Rotten_Bandage,Rotten Bandage,350,10,None,썩은붕대
+931,Orcish_Voucher,Orcish Voucher,142,10,None,오크전사의증표
+932,Skel-Bone,Skel-Bone,232,10,None,스켈본
+934,Memento,Memento,600,10,None,사자의유품
+935,Shell,Shell,14,10,None,단단한껍질
+936,Scale_Shell,Scale Shell,466,10,None,비늘피부
+937,Venom_Canine,Venom Canine,148,10,None,독송곳니
+938,Sticky_Mucus,Sticky Mucus,70,10,None,끈적끈적한액체
+939,Bee_Sting,Bee Sting,32,10,None,벌의뒷침
+940,Grasshopper's_Leg,Grasshopper's Leg,36,10,None,메뚜기뒷다리
+941,Nose_Ring,Nose Ring,568,10,None,쇠고랑
+942,Yoyo_Tail,Yoyo Tail,114,10,None,원숭이꼬리
+943,Solid_Shell,Solid Shell,448,10,None,매우단단한껍질
+944,Horseshoe,Horseshoe,588,10,None,말발굽
+945,Raccoon_Leaf,Raccoon Leaf,106,10,None,너구리나뭇잎
+946,Snail's_Shell,Snail's Shell,64,10,None,달팽이껍질
+947,Horn,Horn,116,10,None,딱딱한뿔
+948,Bear's_Footskin,Bear's Footskin,174,10,None,곰발바닥
+949,Soft_Fluff,Soft Fluff,20,10,None,부드러운털
+950,Heart_of_Mermaid,Heart of Mermaid,264,10,None,인어의심장
+951,Fin,Fin,412,10,None,등지느러미
+952,Cactus_Needle,Cactus Needle,82,10,None,선인장침
+953,Stone_Heart,Stone Heart,184,10,None,돌심장
+954,Shining_Scale,Shining Scale,466,10,None,빛나는비늘
+955,Insect_Peeling,Insect Peeling,52,10,None,벌레껍질
+956,Gill,Gill,342,10,None,가시달린아가미
+957,Decayed_Nail,Decayed Nail,82,10,None,망자의손톱
+958,Horrendous_Mouth,Horrendous Mouth,390,10,None,망자의이빨
+959,Rotten_Scale,Rotten Scale,168,10,None,썩은비늘
+960,Nipper,Nipper,114,10,None,집게발
+961,Conch,Conch,158,10,None,소라
+962,Tentacle,Tentacle,70,10,None,촉수
+963,Sharp_Scale,Sharp Scale,250,10,None,날카로운비늘
+964,Crab_Shell,Crab Shell,90,10,None,게등껍질
+965,Clam_Shell,Clam Shell,56,10,None,조개껍질
+966,Clam_Flesh,Clam Flesh,158,10,None,조개살
+967,Turtle_Shell,Turtle Shell,680,10,None,거북이등껍질
+968,Heroic_Emblem,Heroic Emblem,3000,10,None,오크용자의증표
+969,Gold,Gold,200000,200,None,황금
+970,Alcohol,Alcohol,400,30,None,알코올
+971,Detrimindexta,Detrimindexta,400,30,None,디트리민
+972,Karvodailnirol,Karvodailnirol,400,30,None,카르보딜
+973,Counteragent,Counteragent,800,70,None,중화제
+974,Mixture,Mixture,800,70,None,혼합제
+975,Scarlet_Dyestuffs,Scarlet Dyestuffs,8000,150,None,빨간색염료
+976,Lemon_Dyestuffs,Lemon Dyestuffs,8000,150,None,노란색염료
+978,Cobaltblue_Dyestuffs,Cobaltblue Dyestuffs,8000,150,None,파란색염료
+979,Darkgreen_Dyestuffs,Darkgreen Dyestuffs,8000,150,None,초록색염료
+980,Orange_Dyestuffs,Orange Dyestuffs,8000,150,None,주홍색염료
+981,Violet_Dyestuffs,Violet Dyestuffs,8000,150,None,보라색염료
+982,White_Dyestuffs,White Dyestuffs,8000,150,None,하얀색염료
+983,Black_Dyestuffs,Black Dyestuffs,8000,150,None,검은색염료
+984,Oridecon,Oridecon,1100,200,None,오리데오콘
+985,Elunium,Elunium,1100,200,None,에르늄
+986,Anvil,Anvil,30000,500,None,모루
+987,Oridecon_Anvil,Oridecon Anvil,120000,700,None,오리데오콘모루
+988,Golden_Anvil,Golden Anvil,300000,900,None,황금의모루
+989,Emperium_Anvil,Emperium Anvil,600000,1000,None,엠펠리움모루
+990,Red_Blood,Red Blood,1000,50,None,레드블러드
+991,Crystal_Blue,Crystal Blue,1000,50,None,크리스탈블루
+992,Wind_of_Verdure,Wind of Verdure,1000,50,None,옐로우라이브
+993,Green_Live,Green Live,1000,50,None,윈드오브버듀어
+994,Flame_Heart,Flame Heart,3000,300,None,프레임하트
+995,Mystic_Frozen,Mystic Frozen,3000,300,None,미스틱프로즌
+996,Rough_Wind,Rough Wind,3000,300,None,러프윈드
+997,Great_Nature,Great Nature,3000,300,None,그레이트네이쳐
+998,Iron,Iron,100,50,None,철
+999,Steel,Steel,1000,100,None,강철
+1000,Star_Crumb,Star Crumb,4500,100,None,별의조각
+1001,Star_Dust,Star Dust,1500,10,None,별의가루
+1002,Iron_Ore,Iron Ore,50,150,None,철광석
+1003,Coal,Coal,500,50,None,석탄
+1004,Chivalry_Emblem,Chivalry Emblem,2,100,None,충절의증거
+1005,Hammer_of_Blacksmith,Hammer of Blacksmith,2,800,None,대장장이의망치
+1006,Old_Magicbook,Old Magicbook,2,30,None,오래된마법서
+1007,Necklace_of_Wisdom,Necklace of Wisdom,2,40,None,혜안
+1008,Necklace_of_Oblivion,Necklace of Oblivion,2,100,None,비정한마음
+1009,Hand_of_God,Hand of God,2,20,None,성흔
+1010,Phracon,Phracon,200,200,Refine,프라콘
+1011,Emveretarcon,Emveretarcon,1000,200,Refine,엠베르타콘
+1012,Frill,Frill,250,10,None,도마뱀의목덜미
+1013,Rainbow_Shell,Rainbow Shell,90,10,None,알록달록한껍질
+1014,Ant_Jaw,Ant Jaw,232,10,None,개미의턱뼈
+1015,Tongue,Tongue,528,10,None,길고가느다란혀
+1016,Rat_Tail,Rat Tail,52,10,None,쥐의꼬리
+1017,Mole_Whiskers,Mole Whiskers,106,10,None,두더지의수염
+1018,Mole_Claw,Mole Claw,210,10,None,두더지의손톱
+1019,Trunk,Trunk,60,10,None,나무조각
+1020,Black_Hair,Black Hair,292,10,None,긴머리카락
+1021,Dokebi_Horn,Dokebi Horn,292,10,None,도깨비의뿔
+1022,Nine_Tails,Nine Tails,650,10,None,여우의꼬리
+1023,Fish_Tail,Fish Tail,196,10,None,생선의꼬리
+1024,Squid_Ink,Squid Ink,264,10,None,먹물
+1025,Cobweb,Cobweb,184,10,None,거미줄
+1026,Acorn,Acorn,98,10,None,도토리
+1027,Porcupine_Quill,Porcupine Quill,158,10,None,고슴도치가시
+1028,Mane,Mane,196,10,None,맷돼지의갈기털
+1029,Tiger_Skin,Tiger Skin,548,10,None,호랑이의가죽
+1030,Tiger_Footskin,Tiger Footskin,1500,10,None,호랑이의발바닥
+1031,Mantis_Scythe,Mantis Scythe,196,10,None,사마귀의팔
+1032,Maneater_Blossom,Maneater Blossom,196,10,None,식인수의꽃
+1033,Maneater_Root,Maneater Root,208,10,None,식인수의뿌리
+1034,Blue_Hair,Blue Hair,342,10,None,코볼트의털
+1035,Dragon_Canine,Dragon Canine,484,10,None,드래곤의이빨
+1036,Dragon_Scale,Dragon Scale,500,10,None,드래곤의비늘
+1037,Dragon_Tail,Dragon Tail,1200,10,None,드래곤의꼬리
+1038,Little_Evil_Horn,Little Evil Horn,528,10,None,새끼악마의뿔
+1039,Little_Evil_Wing,Little Evil Wing,2000,10,None,새끼악마의날개
+1040,Elder_Pixie's_Moustache,Elder Pixie's Moustache,232,10,None,늙은요정의수염
+1041,Lantern,Lantern,250,10,None,랜턴
+1042,Bug_Leg,Bug Leg,430,10,None,짧은다리
+1043,Orc_Claw,Orc Claw,168,10,None,오크의손톱
+1044,Zenorc's_Fang,Zenorc's Fang,264,10,None,제노크의이빨
+1045,Cultish_Masque,Cultish Masque,412,10,None,신관의가면
+1046,Scorpion_Nipper,Scorpion Nipper,614,10,None,전갈의집게손
+1047,Dead_Medusa,Dead Medusa,548,10,None,메두사의머리
+1048,Horrendous_Hair,Horrendous Hair,800,10,None,머리카락뱀
+1049,Skirt_of_Virgin,Skirt of Virgin,1700,10,None,처녀의옷자락
+1050,Tendon,Tendon,220,10,None,뇌관
+1051,Detonator,Detonator,450,10,None,힘줄
+1052,Single_Cell,Single Cell,46,10,None,단세포
+1053,Ancient_Tooth,Ancient Tooth,548,10,None,고대어의이빨
+1054,Ancient_Lips,Ancient Lips,1000,10,None,고대어의입술
+1055,Earthworm_Peeling,Earthworm Peeling,196,10,None,지렁이가죽
+1056,Grit,Grit,306,10,None,모래조각
+1057,Moth_Dust,Moth Dust,138,10,None,나방의날개가루
+1058,Moth_Wings,Moth Wings,200,10,None,나방의날개
+1059,Fabric,Fabric,306,10,None,투명한천조각
+1060,Golden_Hair,Golden Hair,430,10,None,금빛머리카락
+1061,Witch_Starsand,Witch Starsand,484,10,None,마녀의별모래
+1062,Jack_o'_Pumpkin,Jack o' Pumpkin,374,10,None,호박머리
+1063,Fang,Fang,680,10,None,날카로운송곳니
+1064,Reins,Reins,802,10,None,말고삐
+1065,Trap,Trap,100,10,None,트랩
+1066,Fine-Grained_Trunk,Fine-Grained Trunk,2,10,None,궁수전직나무
+1067,Solid_Trunk,Solid Trunk,2,10,None,궁수전직나무
+1068,Barren_Trunk,Barren Trunk,2,10,None,궁수전직나무
+1069,Orange_Net_Mushroom,Orange Net Mushroom,2,10,None,도둑전직버섯
+1070,Orange_Gooey_Mushroom,Orange Gooey Mushroom,2,10,None,도둑전직버섯
+1071,Unknown_Test_Tube,Unknown Test Tube,0,10,None,마술전직시험관
+1072,Delivery_Message,Delivery Message,0,10,None,상인만수편지
+1073,Receipt,Receipt,0,10,None,상인영수증
+1081,Delivery_Box,Delivery Box,0,10,None,상인전직상자
+1085,Unknown_Test_Tube_,Unknown Test Tube,0,10,None,마술전직시험관
+1086,Unknown_Test_Tube__,Unknown Test Tube,0,10,None,마술전직시험관
+1087,Unknown_Test_Tube___,Unknown Test Tube,0,10,None,마술전직시험관
+1088,Morroc_Solution,Morroc Solution,0,10,None,모로크수용액
+1089,Payon_Solution,Payon Solution,0,10,None,페이욘수용액
+1090,Unknown_Test_Tube____,Unknown Test Tube,0,10,None,마술전직시험관
+1091,Delivery_Box_,Delivery Box,0,10,None,상인전직상자
+1092,Empty_Test_Tube,Empty Test Tube,3,10,None,빈시험관
+1093,Empty_Potion_Bottle,Empty Potion Bottle,10,10,None,빈포션병
+1094,Short_Daenggie,Short Daenggie,278,10,None,짧은댕기머리
+1095,Needle_of_Alarm,Needle of Alarm,546,10,None,시계바늘
+1096,Round_Shell,Round Shell,780,10,None,둥근껍질
+1097,Worn_Out_Page,Worn Out Page,948,10,None,낡은책장
+1098,Manacles,Manacles,658,10,None,수갑
+1099,Worn_Out_Prison_Uniform,Worn Out Prison Uniform,680,10,None,낡은죄수복
+6000,Ashes_of_Darkness,Ashes of Darkness,0,0,None,독가루
+6001,Essence_of_Fire,Essence of Fire,0,10,None,황혼의노을
+6002,Token_of_Apostle,Token of Apostle,0,10,None,암흑의의지
+6003,Pendant_of_Spirit,Pendant of Spirit,0,10,None,낡은펜던트
+6004,Cursed_Baphomet_Doll,Cursed Baphomet Doll,0,10,None,바포메트인형
+6010,Hoe,Hoe,0,10,None,낡은곡괭이
+6020,Fur,Fur,704,10,None,모피
+6021,Peaked_Hat,Peaked Hat,433,10,None,고깔모자
+6022,Hard_Skin,Hard Skin,884,10,None,딱딱한피부
+6023,Mystic_Horn,Mystic Horn,1000,10,None,마력의뿔
+6027,Crystal_of_Feardom,Crystal of Feardom,0,0,None,피어둠결정체
+6028,Sealed_Scroll,Sealed Scroll,0,0,None,빛의주문서
+6029,Morroc_Tracing_Log,Morroc Tracing Log,0,0,None,고대언어문서
+6030,Glittering_Paper,Glittering Paper,0,10,None,기름종이
+6031,Glittering_Paper_,Glittering Paper,0,10,None,기름종이
+6032,Horn_of_Hillslion,Horn of Hillslion,500,10,None,새하얀뿔
+6033,Horn_of_Tendrilion,Horn of Tendrilion,500,10,None,새하얀뿔
+6035,Decaying_Stem,Decaying Stem,0,0,None,나무뿌리
+6036,Meeting_Invitation,Meeting Invitation,0,10,None,한석봉소개장
+6037,Messy_File,Messy File,0,0,None,고대언어문서
+6038,Neat_Report,Neat Report,0,10,None,서류철
+6039,Piece_of_Fish,Piece of Fish,0,10,None,생선의꼬리
+6040,Part_of_a_Report,Part of a Report,0,10,None,고대언어문서
+6041,Strong_Vine,Strong Vine,30,50,None,질긴나무덩쿨
+6042,Ordinary_Branch,Ordinary Branch,0,10,None,튼튼한나무가지
+6043,Letter_from_Lugen,Letter from Lugen,0,10,None,안부편지
+6044,Letter_from_Otto,Letter from Otto,0,10,None,상인만수편지
+6045,Supply_Box,Supply Box,0,0,None,상인전직상자
+6046,Clothing_Voucher,Clothing Voucher,0,0,None,카프라이용권
+6048,Unidentified_Mineral,Unidentified Mineral,0,10,None,미스릴광석
+6049,Marlin,Marlin,0,10,None,생선모자
+7001,Mould_Powder,Mould Powder,466,10,None,곰팡이가루
+7002,Ogre_Tooth,Ogre Tooth,658,10,None,오우거의이빨
+7003,Anolian_Skin,Anolian Skin,968,10,None,아놀리안피부
+7004,Mud_Lump,Mud Lump,876,10,None,진흙덩어리
+7005,Skull,Skull,1044,10,None,해골바가지
+7006,Wing_of_Red_Bat,Wing of Red Bat,168,10,None,붉은박쥐의날개
+7007,Claw_of_Rat,Claw of Rat,748,10,None,큰쥐의발톱
+7008,Stiff_Horn,Stiff Horn,636,10,None,매우딱딱한뿔
+7009,Glitter_Shell,Glitter Shell,528,10,None,화려한껍질
+7010,Tail_of_Steel_Scorpion,Tail of Steel Scorpion,548,10,None,강철전갈의꼬리
+7011,Claw_of_Monkey,Claw of Monkey,466,10,None,원숭이의손톱
+7012,Tough_Scalelike_Stem,Tough Scalelike Stem,412,10,None,질긴비늘줄기
+7013,Coral_Reef,Coral Reef,772,10,None,산호초
+7014,Old_Portrait,Old Portrait,1500,100,None,낡은자화상
+7015,Bookclip_in_Memory,Bookclip in Memory,3000,20,None,추억의책갈피
+7016,Spoon_Stub,Spoon Stub,2500,20,None,낡은숫가락
+7017,Executioner's_Mitten,Executioner's Mitten,4500,30,None,집행인의장갑
+7018,Young_Twig,Young Twig,50,10,None,어린나뭇가지
+7019,Loki's_Whispers,Loki's Whispers,20,10,None,로키의속삭임
+7020,Mother's_Nightmare,Mother's Nightmare,20,10,None,어머니의악몽
+7021,Foolishness_of_the_Blind,Foolishness of the Blind,20,10,None,장님의어리석음
+7022,Old_Hilt,Old Hilt,150,30,None,낡은손잡이
+7023,Blade_Lost_in_Darkness,Blade Lost in Darkness,12000,40,None,어둠에잠긴칼날
+7024,Bloody_Edge,Bloody Edge,10000,40,None,피로물든칼날
+7025,Lucifer's_Lament,Lucifer's Lament,30000,50,None,마왕의슬픔
+7026,Key_of_Clock_Tower,Key of Clock Tower,100,30,None,시계탑열쇠
+7027,Key_of_Underground,Key of Underground,100,30,None,탑지하열쇠
+7030,Claw_of_Desert_Wolf,Claw of Desert Wolf,208,10,None,늑대의발톱
+7031,Old_Frying_Pan,Old Frying Pan,196,10,None,헌후라이펜
+7032,Piece_of_Egg_Shell,Piece of Egg Shell,168,10,None,달걀껍질조각
+7033,Poison_Spore,Poison Spore,114,10,None,버섯포자
+7034,Red_Stocking,Red Stocking,100,10,None,구멍난빨간양말
+7035,Matchstick,Matchstick,100,10,None,성냥
+7036,Fang_of_Hati,Fang of Hati,100,10,None,가름의이빨
+7038,Yarn,Yarn,100,10,None,털실
+7040,Megaphone_,Megaphone,1,10,None,확성기
+7041,Fine_Grit,Fine Grit,120,10,None,별의조각
+7042,Leather_Bag_of_Infinity,Leather Bag of Infinity,1,10,None,무한가죽주머니
+7043,Fine_Sand,Fine Sand,100,10,None,별의가루
+7044,Vigorgra,Vigorgra,1,10,None,안티페인멘트
+7047,Alice's_Apron,Alice's Apron,2424,10,None,엘리스의앞치마
+7048,Talon_of_Griffon,Talon of Griffon,5418,10,None,새의발톱
+7049,Stone,Stone,0,30,None,돌
+7053,Cyfar,Cyfar,772,10,None,사이파
+7054,Brigan,Brigan,746,10,None,브리간
+7058,Gleipnir,Gleipnir,1,500,None,글라이프니르
+7059,Free_Storage_Voucher,Free Storage Voucher,1,10,None,쿠폰
+7060,Free_Transit_Voucher,Free Transit Voucher,1,10,None,쿠폰
+7061,Free_Pushcart_Voucher,Free Pushcart Voucher,1,10,None,쿠폰
+7063,Soft_Feather,Soft Feather,280,10,None,부드러운깃털
+7064,Wing_of_Dragonfly,Wing of Dragonfly,520,10,None,잠자리의날개
+7065,Sea_Otter_Fur,Sea Otter Fur,820,10,None,해달의가죽
+7066,Ice_Cubic,Ice Cubic,660,10,None,얼음조각
+7067,Stone_Fragment,Stone Fragment,640,10,None,돌
+7068,Burnt_Tree,Burnt Tree,722,10,None,타다만장작
+7069,Destroyed_Armor,Destroyed Armor,1042,10,None,깨진갑옷조각
+7070,Broken_Shell,Broken Shell,900,10,None,깨진등껍질
+7071,Tattered_Clothes,Tattered Clothes,1280,10,None,너덜너덜한옷
+7072,Old_Shuriken,Old Shuriken,1780,10,None,녹슨수리검
+7073,Freya's_Jewel,Freya's Jewel,1,500,None,프레이야의보석
+7074,Thor's_Gauntlets,Thor's Gauntlets,1,500,None,토르의쇠장갑
+7075,Iron_Maiden,Iron Maiden,1,500,None,아이언메이든
+7076,Wheel_of_the_Unknown,Wheel of the Unknown,1,500,None,미지의톱니바퀴
+7077,Silver_Ornament,Silver Ornament,1,500,None,은장식
+7078,Wrath_of_Valkyrie,Wrath of Valkyrie,1,500,None,발키리의분노
+7079,Feather_of_Angel_Wing,Feather of Angel Wing,1,500,None,천사의날개깃털
+7080,Cat_Tread,Cat Tread,1,500,None,고양이의발소리
+7081,Woman's_Moustache,Woman's Moustache,1,500,None,여인의수염
+7082,Root_of_Stone,Root of Stone,1,500,None,돌의뿌리
+7083,Spirit_of_Fish,Spirit of Fish,1,500,None,물고기의영혼
+7084,Sputum_of_Bird,Sputum of Bird,1,500,None,새의침
+7085,Sinew_of_Bear,Sinew of Bear,1,500,None,곰의힘줄
+7086,Emblem_of_the_Sun_God,Emblem of the Sun God,1,500,None,태양신의상징
+7087,Breath_of_Spirit,Breath of Spirit,1,500,None,영혼의숨소리
+7088,Snow_Crystal,Snow Crystal,1,500,None,눈의결정
+7089,Omen_of_Tempest,Omen of Tempest,1,500,None,폭풍우의징조
+7090,Ripple,Ripple,1,500,None,조용한물결
+7091,Billow,Billow,1,500,None,몰아치는파도
+7092,Drifting_Air,Drifting Air,1,500,None,흐르는공기
+7093,Cogwheel,Cogwheel,1512,10,None,톱니바퀴
+7094,Fragment,Fragment,1344,10,None,미지의조각
+7095,Metal_Fragment,Metal Fragment,1075,10,None,깨진금속파편
+7096,Lava,Lava,1109,10,None,굳어버린용암
+7097,Burning_Heart,Burning Heart,924,10,None,불타는심장
+7098,Live_Coal,Live Coal,638,10,None,불씨
+7099,Worn_Out_Magic_Scroll,Worn Out Magic Scroll,773,10,None,낡은마법진
+7100,Sharp_Leaf,Sharp Leaf,806,10,None,날카로운잎사귀
+7101,Peco_Peco_Feather,Peco Peco Feather,454,10,None,페코날개깃털
+7104,False_Angel_Wing,False Angel Wing,756,10,None,가짜천사의날개
+7105,False_Heaven_Ring,False Heaven Ring,924,10,None,가짜영혼의고리
+7106,Antelope_Horn,Antelope Horn,672,10,None,산양의뿔
+7107,Antelope_Skin,Antelope Skin,756,10,None,산양의모피
+7108,Piece_of_Shield,Piece of Shield,1680,10,None,깨진방패조각
+7109,Shining_Spear_Blade,Shining Spear Blade,840,10,None,빛나는창날
+7110,Broken_Sword,Broken Sword,588,10,None,깨진검
+7111,Slick_Paper,Slick Paper,706,10,None,매끈한종이
+7112,Sharp_Paper,Sharp Paper,907,10,None,섬뜩한종이칼날
+7113,Broken_Pharaoh_Emblem,Broken Pharaoh Emblem,2016,10,None,깨진파라오상징
+7114,Masque_of_Tutankhamen,Masque of Tutankhamen,10,10,None,투탄카멘마스크
+7115,Harpy_Feather,Harpy Feather,1142,10,None,하피의깃털
+7116,Harpy_Talon,Harpy Talon,1210,10,None,하피의발톱
+7117,Torn_Magic_Book,Torn Magic Book,1142,10,None,찢어진마법서
+7118,Torn_Scroll,Torn Scroll,1361,10,None,찢어진스크롤
+7119,Bacillus,Bacillus,1025,10,None,균사체
+7120,Burning_Horseshoe,Burning Horseshoe,823,10,None,불타는말발굽
+7121,Honey_Pot,Honey Pot,622,10,None,꿀단지
+7122,Burning_Hair,Burning Hair,974,10,None,뜨거운털
+7123,Dragon_Skin,Dragon Skin,1025,10,None,드래곤의껍질
+7124,Sand_Clump,Sand Clump,706,10,None,모래덩어리
+7125,Scorpion_Claw,Scorpion Claw,706,10,None,전갈의집게발
+7126,Large_Jellopy,Large Jellopy,840,10,None,라지젤로피
+7127,Alcohol_Creation_Guide,Alcohol Creation Guide,100000,10,None,알콜제조책
+7128,Bottle_Grenade_Creation_Guide,Bottle Grenade Creation Guide,100000,10,None,화염병제조책
+7129,Acid_Bottle_Creation_Guide,Acid Bottle Creation Guide,100000,10,None,염산병제조책
+7130,Plant_Bottle_Creation_Guide,Plant Bottle Creation Guide,100000,10,None,식물병제조책
+7131,Marine_Sphere_Creation_Guide,Marine Sphere Creation Guide,100000,10,None,기뢰병제조책
+7132,Coating_Bottle_Creation_Guide,Coating Bottle Creation Guide,100000,10,None,코팅약제조책
+7133,Condensed_Potion_Creation_Guide,Condensed Potion Creation Guide,240000,10,None,슬림포션제조책
+7134,Medicine_Bowl,Medicine Bowl,8,10,None,약사발
+7135,Grenade_Bottle,Grenade Bottle,200,10,None,화염병
+7136,Acid_Bottle,Acid Bottle,200,10,None,염산병
+7137,Plant_Bottle,Plant Bottle,200,10,None,식인식물병
+7138,Marine_Sphere_Bottle,Marine Sphere Bottle,200,10,None,기뢰병
+7139,Coating_Bottle,Coating Bottle,200,10,None,코팅약
+7140,Seed_of_Life,Seed of Life,60000,10,None,생명의씨앗
+7141,Morning_Dew_of_Yggdrasil,Morning Dew of Yggdrasil,20000,10,None,이그드라실이슬
+7142,Embryo,Embryo,10,10,None,엠브리오
+7143,Glass_Tube,Glass Tube,5000,10,None,유리관
+7144,Potion_Creation_Gude,Potion Creation Gude,100000,10,None,일반포션제조책
+7148,Mother's_Letter,Mother's Letter,1,10,None,상인만수편지
+7149,Yellow_Plate,Yellow Plate,220,10,None,노란접시
+7150,Piece_of_Bamboo,Piece of Bamboo,310,10,None,대나무조각
+7151,Oil_Paper,Oil Paper,210,10,None,기름종이
+7152,Glossy_Hair,Glossy Hair,340,10,None,윤기있는머리칼
+7153,Worn_Out_Kimono,Worn Out Kimono,590,10,None,낡은기모노
+7154,Poisonous_Powder,Poisonous Powder,160,10,None,독가루
+7155,Poisonous_Toad_Skin,Poisonous Toad Skin,280,10,None,독두꺼비의껍질
+7156,Broken_Shuriken,Broken Shuriken,470,10,None,깨진슈리켄
+7157,Dark_Mask,Dark Mask,315,10,None,검은복면
+7158,Broken_Liquor_Jar,Broken Liquor Jar,160,10,None,깨진술동이
+7159,Tengu_Nose,Tengu Nose,400,10,None,천구의코
+7160,Feudal_Lord_Permit,Feudal Lord Permit,1,10,None,영주의통행증
+7161,Black_Bear_Skin,Black Bear Skin,384,10,None,검은곰의털가죽
+7162,Cloud_Crumb,Cloud Crumb,390,10,None,구름조각
+7163,Hard_Feeler,Hard Feeler,570,10,None,날카로운더듬이
+7164,Solid_Peach,Solid Peach,400,10,None,단단한복숭아
+7165,Transparent_Celestial_Robe,Transparent Celestial Robe,650,10,None,투명한날개옷
+7166,Soft_Silk,Soft Silk,1200,10,None,부드러운비단천
+7167,Strange_Steel_Piece,Strange Steel Piece,430,10,None,오묘한철조각
+7168,Giant_Butterfly_Wing,Giant Butterfly Wing,614,10,None,커다란날개
+7169,Ba_Gua,Ba Gua,2800,10,None,태극패
+7170,Tuxedo,Tuxedo,43000,10,None,턱시도
+7171,Leopard_Skin,Leopard Skin,282,10,None,표범의가죽
+7172,Leopard_Claw,Leopard Claw,290,10,None,표범의발톱
+7174,Wrapping_Lace,Wrapping Lace,0,10,None,끈
+7175,Wrapping_Paper,Wrapping Paper,0,10,None,포장지
+7177,Crumb_of_Sobbing_Starlight,Crumb of Sobbing Starlight,0,0,None,별의흐느낌조각
+7178,Sobbing_Starlight,Sobbing Starlight,0,0,None,별의흐느낌
+7181,Receipt_,Receipt,0,10,None,물품영수증_01
+7182,Cacao,Cacao,200,20,None,카카오
+7183,Letter_from_Sister,Letter from Sister,0,10,None,편지01
+7184,Piano_Key,Piano Key,0,10,None,건반
+7186,Thin_Trunk,Thin Trunk,380,10,None,가는줄기
+7187,Festival_Mask,Festival Mask,100,10,None,가면
+7188,Brown_Root,Brown Root,560,10,None,갈색뿌리
+7189,Wooden_Heart,Wooden Heart,680,10,None,나무심장
+7190,Solid_Husk,Solid Husk,140,10,None,단단한등껍질
+7191,Lamp,Lamp,0,10,None,등불
+7192,Vane,Vane,160,10,None,바람개비의칼날
+7193,Sprout,Sprout,230,10,None,발아새싹
+7194,Soft_Blade_of_Grass,Soft Blade of Grass,400,10,None,부드러운풀잎
+7195,Slingshot,Slingshot,210,10,None,새총
+7196,Shoulder_Protector,Shoulder Protector,230,10,None,어깨보호대
+7197,Tough_Vines,Tough Vines,500,10,None,질긴나무덩쿨
+7198,Huge_Leaf,Huge Leaf,610,10,None,커다란잎사귀
+7200,Elastic_Band,Elastic Band,380,10,None,탄력있는줄
+7201,Log,Log,250,10,None,통나무
+7202,Pincher_of_Beetle,Pincher of Beetle,290,10,None,투구벌레의집게
+7203,Strong_Branch,Strong Branch,190,10,None,튼튼한나무가지
+7204,Gunpowder,Gunpowder,320,10,None,화약
+7205,Piece_of_Black_Cloth,Piece of Black Cloth,526,10,None,검은천조각
+7206,Black_Cat_Doll,Black Cat Doll,1440,10,None,고양이인형
+7207,Old_Manteau,Old Manteau,1050,10,None,너덜거리는망토
+7208,Rusty_Kitchen_Knife,Rusty Kitchen Knife,1780,10,None,녹슨식칼
+7209,Helm_of_Dullahan,Helm of Dullahan,1350,10,None,듀라한의투구
+7210,Armor_Piece_of_Dullahan,Armor Piece of Dullahan,790,10,None,듀라한갑옷조각
+7211,Fragment_of_Rossata_Stone,Fragment of Rossata Stone,2600,10,None,로제타스톤
+7212,Hung_Doll,Hung Doll,1020,10,None,매달린인형
+7213,Needle_Packet,Needle Packet,832,10,None,바늘쌈지
+7214,Bat_Cage,Bat Cage,880,10,None,박쥐우리
+7215,Broken_Needle,Broken Needle,690,10,None,부러진바늘
+7216,Red_Muffler,Red Muffler,660,10,None,빨간마후라
+7217,Spool,Spool,424,10,None,실패
+7218,Decomposed_Rope,Decomposed Rope,390,10,None,썩은밧줄
+7219,Striped_Sock,Striped Sock,920,10,None,알록달록한양말
+7220,Ectoplasm,Ectoplasm,322,10,None,액토플라즘
+7221,Tangled_Chains,Tangled Chains,740,10,None,얽어맨사슬
+7222,Wooden_Gnarl,Wooden Gnarl,468,10,None,옹이
+7223,Contorted_Self-Portrait,Contorted Self-Portrait,2032,10,None,일그러진자화상
+7225,Pumpkin_Lantern,Pumpkin Lantern,486,10,None,호박초롱
+7226,Pellet,Pellet,2,10,None,환약
+7234,Spirit_of_Guild,Spirit of Guild,0,10,None,쿠폰
+7235,Spirit_of_Charge,Spirit of Charge,0,10,None,쿠폰
+7237,Spirit_of_Association,Spirit of Association,0,10,None,쿠폰
+7238,Spirit_of_Coordination,Spirit of Coordination,0,10,None,쿠폰
+7239,Spirit_of_Advance,Spirit of Advance,0,10,None,쿠폰
+7240,Spirit_of_Trust,Spirit of Trust,0,10,None,쿠폰
+7241,Spirit_of_Union,Spirit of Union,0,10,None,쿠폰
+7242,Spirit_of_Combination,Spirit of Combination,0,10,None,쿠폰
+7244,Spirit_of_Solidarity,Spirit of Solidarity,0,10,None,쿠폰
+7245,Spirit_of_Friendship,Spirit of Friendship,0,10,None,쿠폰
+7246,Spirit_of_Peace,Spirit of Peace,0,10,None,쿠폰
+7247,Spirit_of_Determination,Spirit of Determination,0,10,None,쿠폰
+7249,Spirit_of_Service,Spirit of Service,0,10,None,쿠폰
+7250,Spirit_of_Glory,Spirit of Glory,0,10,None,쿠폰
+7251,Spirit_of_Victory,Spirit of Victory,0,10,None,쿠폰
+7252,Herbal_Medicine,Herbal Medicine,0,10,None,한방약재
+7262,Folding_Fan_of_Cat_Ghost,Folding Fan of Cat Ghost,466,10,None,부채
+7263,Cat's_Eye,Cat's Eye,954,10,None,묘안석
+7264,Dry_Sand,Dry Sand,322,10,None,마른모래
+7265,Dragon_Horn,Dragon Horn,544,10,None,용뿔
+7266,Denture_from_Dragon_Mask,Denture from Dragon Mask,436,10,None,용이빨
+7267,Tiger_Panty,Tiger Panty,298,10,None,호피팬티
+7268,Little_Ghost_Doll,Little Ghost Doll,1210,10,None,소귀령
+7269,Pinafore,Pinafore,960,10,None,턱받침
+7270,Nursing_Bottle,Nursing Bottle,1100,10,None,우유병
+7274,Translated_Ancient_Language,Translated Ancient Language,0,10,None,고대언어해석문
+7275,Record_of_Ancient_Language,Record of Ancient Language,0,10,None,고대언어문서
+7276,Doodled_Message,Doodled Message,0,10,None,그림편지
+7277,Munak_Doll,Munak Doll,8900,10,None,무낙인형
+7278,Letter_to_Wife,Letter to Wife,0,10,None,안부편지
+7285,Holy_Threads,Holy Threads,2,10,None,실타래
+7286,Red_Chili,Red Chili,20,10,None,칠리
+7287,Holier_Threads,Holier Threads,2,10,None,실타래
+7288,Engagement_Ring,Engagement Ring,2,10,None,태국반지
+7289,Peridot,Peridot,3000,100,None,감람석
+7290,Phlogopite,Phlogopite,3000,100,None,금운모
+7291,Agate,Agate,3000,100,None,마노
+7292,Muscovite,Muscovite,3000,100,None,백운모
+7293,Rose_Quartz,Rose Quartz,3000,100,None,장미석영
+7294,Turquoise,Turquoise,3000,100,None,터키석
+7295,Citrin,Citrin,3000,100,None,황수정
+7296,Pyroxene,Pyroxene,3000,100,None,휘석
+7297,Biotite,Biotite,3000,100,None,흑운모
+7298,Fig_Leaf,Fig Leaf,538,10,None,나뭇잎옷
+7299,Straw_Basket,Straw Basket,632,10,None,소쿠리
+7300,Gemstone,Gemstone,1420,10,None,원석
+7301,Tassel,Tassel,798,10,None,칼장식용실
+7304,Witch's_Spell_Scroll,Witch's Spell Scroll,0,0,None,마녀의주문서
+7305,Symbol_of_the_Nine_Realms,Symbol of the Nine Realms,0,0,None,아홉세계의권위
+7306,Piece_of_Spirit,Piece of Spirit,0,0,None,영혼의조각
+7307,Spiritual_Whispers,Spiritual Whispers,0,0,None,영혼의속삭임
+7308,Witch's_Tonic,Witch's Tonic,0,0,None,마녀의물약
+7309,Crow_Wing,Crow Wing,0,0,None,까마귀의날개
+7310,Peco_Voucher,Peco Voucher,20,10,None,쿠폰
+7311,Airship_Ticket,Airship Ticket,20,10,None,기부증명서
+7312,Jubilee,Jubilee,32,10,None,쥬빌레
+7313,Witch's_Medal,Witch's Medal,2,0,None,마녀의증표
+7314,The_Sign_,The Sign,2,0,None,더사인
+7315,Dark_Crystal_Fragment,Dark Crystal Fragment,422,10,None,검은수정조각
+7316,Insect_Leg,Insect Leg,658,10,None,긴다리
+7317,Rusty_Screw,Rusty Screw,534,10,None,나사
+7318,Old_Pick,Old Pick,512,10,None,낡은곡괭이
+7319,Used_Iron_Plate,Used Iron Plate,1024,10,None,낡은철판
+7320,Dust_Pollutant,Dust Pollutant,256,10,None,분진
+7321,Crystal_Fragment,Crystal Fragment,552,10,None,수정조각
+7322,Toxic_Gas,Toxic Gas,666,10,None,유독가스
+7323,Battered_Kettle,Battered Kettle,256,10,None,찌그러진주전자
+7325,Flexible_Tube,Flexible Tube,102,10,None,튜브
+7326,Fluorescent_Liquid,Fluorescent Liquid,712,10,None,형광액체
+7327,Flashlight,Flashlight,1024,10,None,회중전등
+7329,Old_Bronze_Key,Old Bronze Key,0,10,None,시계탑열쇠
+7332,Complete_Tablet,Complete Tablet,0,0,None,석판
+7333,Prontera_Tablet,Prontera Tablet,0,0,None,석판조각
+7334,Payon_Tablet,Payon Tablet,0,0,None,석판조각
+7335,Morroc_Tablet,Morroc Tablet,0,0,None,석판조각
+7336,Geffen_Tablet,Geffen Tablet,0,0,None,석판조각
+7337,Eye_of_Hellion,Eye of Hellion,0,0,None,아이오브헬리온
+7340,Will_of_the_Darkness,Will of the Darkness,734,50,None,암흑의의지
+7341,Old_Pendant,Old Pendant,20,0,None,낡은펜던트
+7342,File_Folder,File Folder,20,0,None,서류철
+7343,Sealed_File_Folder,Sealed File Folder,20,0,None,서류철
+7344,Shinokas_Case_File,Shinokas Case File,20,0,None,서류철
+7345,Handcuffs,Handcuffs,724,10,None,인식표찰
+7346,Ymir's_Heart_Piece,Ymir's Heart Piece,20,0,None,이미르심장더미
+7347,Research_Chart,Research Chart,840,10,None,연구원기록표
+7348,Membership_Card,Membership Card,20,10,None,조직원의증표
+7349,Archive_Permit,Archive Permit,20,0,None,조직원의증표
+7350,Pass,Pass,20,10,None,통행증
+7351,Friend's_Diary,Friend's Diary,20,0,None,친구의일기장
+7352,Transparent_Plate_1,Transparent Plate 1,20,10,None,투명판01
+7353,Transparent_Plate_2,Transparent Plate 2,20,10,None,투명판02
+7354,Transparent_Plate_3,Transparent Plate 3,20,10,None,투명판03
+7355,Transparent_Plate_4,Transparent Plate 4,20,10,None,투명판04
+7356,Crest_Piece_1,Crest Piece 1,5000,10,None,문장1
+7357,Crest_Piece_2,Crest Piece 2,5000,10,None,문장2
+7358,Crest_Piece_3,Crest Piece 3,5000,10,None,문장3
+7359,Crest_Piece_4,Crest Piece 4,5000,10,None,문장4
+7416,Letter_of_Recommendation,Letter of Recommendation,0,0,None,한석봉소개장
+7417,Written_Request_A,Written Request A,0,0,None,물품영수증_01
+7418,Written_Request_B,Written Request B,0,0,None,물품영수증_01
+7420,Skull_,Skull,0,0,None,해골바가지
+7421,Red_Key,Red Key,0,0,None,열쇠_빨강
+7422,Yellow_Key,Yellow Key,0,0,None,열쇠_노랑
+7423,Blue_Key,Blue Key,0,0,None,열쇠_파랑
+7424,Green_Key,Green Key,0,0,None,열쇠_초록
+7425,Black_Key,Black Key,0,0,None,열쇠_검정
+7426,Red_Charm_Stone,Red Charm Stone,0,0,None,마력석_빨강
+7427,Yellow_Charm_Stone,Yellow Charm Stone,0,0,None,마력석_노랑
+7428,Blue_Charm_Stone,Blue Charm Stone,0,0,None,마력석_파랑
+7429,Green_Charm_Stone,Green Charm Stone,0,0,None,마력석_초록
+7430,Black_Charm_Stone,Black Charm Stone,0,0,None,마력석_검정
+7431,Pile_of_Books,Pile of Books,0,0,None,여러권의책
+7432,Leather_Pouch,Leather Pouch,0,0,None,주머니
+7433,Blank_Scroll,Blank Scroll,4000,10,None,낡은두루마리
+7434,Elemental_Potion_Creation_Guide,Elemental Potion Creation Guide,100000,10,None,기뢰병제조책
+7435,Golden_Ornament,Golden Ornament,1907,10,None,금색장신구
+7436,Fragment_of_Agony,Fragment of Agony,1506,10,None,기억의파편_녹
+7437,Fragment_of_Misery,Fragment of Misery,1506,10,None,기억의파편_자
+7438,Fragment_of_Hatred,Fragment of Hatred,1506,10,None,기억의파편_청
+7439,Fragment_of_Despair,Fragment of Despair,1506,10,None,기억의파편_홍
+7440,Red_Feather,Red Feather,1335,10,None,붉은깃털
+7441,Blue_Feather,Blue Feather,1408,10,None,푸른깃털
+7442,Cursed_Seal,Cursed Seal,1332,10,None,저주받은인
+7443,Three-Headed_Dragon's_Head,Three-Headed Dragon's Head,956,10,None,삼두룡의목
+7444,Treasure_Box,Treasure Box,300000,10,None,보물상자
+7445,Green_Bijou,Green Bijou,887,10,None,용의보주_녹
+7446,Blue_Bijou,Blue Bijou,887,10,None,용의보주_청
+7447,Red_Bijou,Red Bijou,887,10,None,용의보주_홍
+7448,Yellow_Bijou,Yellow Bijou,887,10,None,용의보주_황
+7449,Bloody_Page,Bloody Page,681,10,None,피묻은책장
+7450,Skeletal_Armor_Piece,Skeletal Armor Piece,2050,10,None,해골갑옷조각
+7451,Fire_Dragon_Scale,Fire Dragon Scale,1852,10,None,화룡의비늘조각
+7452,Yellow_Spice,Yellow Spice,1000,10,None,노란향신료
+7453,Sweet_Sauce,Sweet Sauce,700,10,None,단맛소스
+7454,Savory_Sauce,Savory Sauce,700,10,None,담백한소스
+7455,Spicy_Sauce,Spicy Sauce,700,10,None,매운맛소스
+7456,Red_Spice,Red Spice,1000,10,None,빨간향신료
+7457,Cooking_Oil,Cooking Oil,500,10,None,식용유
+7487,Culinary_Wine,Culinary Wine,0,0,None,인트요리09
+7488,Delivery_Package,Delivery Package,0,0,None,택배상자
+7489,Cottage_Key,Cottage Key,0,0,None,시계탑열쇠
+7490,Letter_to_Elly,Letter to Elly,0,0,None,안부편지
+7491,Steel_Box,Steel Box,0,0,None,철상자
+7492,Yellow_Keycard,Yellow Keycard,0,0,None,열쇠_노랑
+7493,Golden_Key,Golden Key,0,0,None,황금열쇠
+7494,Luxurious_Button,Luxurious Button,0,0,None,키엘단추
+7495,Blue_Keycard,Blue Keycard,0,0,None,열쇠_파랑
+7496,Red_Keycard,Red Keycard,0,0,None,열쇠_빨강
+7497,Metal_Fragment_,Metal Fragment,0,0,None,미지의조각
+7498,Rosimier_Mansion_Keys,Rosimier Mansion Keys,0,0,None,로시미에르열쇠
+7499,Family_Portrait,Family Portrait,0,0,None,가족의초상화
+7500,Woman's_Portrait,Woman's Portrait,0,0,None,엘리시아초상화
+7501,K.H.'s_Letter,K.H.'s Letter,0,0,None,편지01
+7502,James's_Note,James's Note,0,0,None,낡은책장
+7503,Man's_Portrait,Man's Portrait,0,0,None,남자의초상화
+7504,Power_Device,Power Device,0,0,None,베스퍼코어
+7505,Toy_Key,Toy Key,0,0,None,탑지하열쇠
+7506,Black_Keycard,Black Keycard,0,0,None,열쇠_검정
+7507,Solid_Iron_Piece,Solid Iron Piece,842,10,None,단단한철조각
+7508,Allysia's_Ring,Allysia's Ring,0,0,None,태국반지
+7509,Luxurious_Keycard,Luxurious Keycard,0,0,None,화려한키카드
+7510,Valhalla's_Flower,Valhalla's Flower,200000,10,None,발할라의꽃
+7511,Rune_of_Darkness,Rune of Darkness,2526,10,None,어둠의룬
+7512,Burnt_Part,Burnt Part,1600,10,None,타버린부품조각
+7513,Pocket_Watch_,Pocket Watch,3420,10,None,회중시계
+7514,Monster_Ticket,Monster Ticket,2,0,None,쿠폰
+7515,Prize_Medal,Prize Medal,2,0,None,신기한메달
+7516,Green_Keycard,Green Keycard,0,0,None,열쇠_초록
+7521,Flame_Stone,Flame Stone,150,10,None,열화석
+7522,Ice_Stone,Ice Stone,150,10,None,빙섬석
+7523,Wind_Stone,Wind Stone,150,10,None,풍령석
+7524,Shadow_Orb,Shadow Orb,300,20,None,환구
+7539,Poring_Coin,Poring Coin,0,0,None,포링코인
+7553,Water_Lily,Water Lily,0,0,None,연꽃
+7561,Glacial_Heart,Glacial Heart,606,10,None,얼음심장
+7562,Ice_Scale,Ice Scale,3020,10,None,얼음비늘
+7563,Bloody_Rune,Bloody Rune,2016,10,None,핏빛의룬
+7564,Rotten_Meat,Rotten Meat,102,10,None,썩은고기
+7565,Sticky_Poison,Sticky Poison,350,10,None,끈적끈적한독
+7566,Will_of_Red_Darkness,Will of Red Darkness,1530,10,None,암흑의의지_
+7567,Suspicious_Hat,Suspicious Hat,1290,10,None,수상한모자
+7568,White_Mask,White Mask,1060,10,None,하얀가면
+7569,Wind_Hammer,Wind Hammer,0,0,None,워해머
+7570,Temple_Lottery_Ticket,Temple Lottery Ticket,0,10,None,쿠폰-노멀
+7571,Bruspetti's_Diary,Bruspetti's Diary,0,0,None,소녀의일기장
+7572,Ashy_Necklace,Ashy Necklace,0,0,None,마법목걸이
+7573,Sparkling_Necklace,Sparkling Necklace,0,0,None,마법목걸이_
+7574,Freezing_Snow_Powder,Freezing Snow Powder,0,0,None,얼음가루
+7575,Red_Jewel,Red Jewel,20,50,None,붉은색보석
+7576,Blue_Jewel,Blue Jewel,20,50,None,파란색보석
+7621,Token_of_Siegfried,Token of Siegfried,2,10,None,지크프리드의증표
+7622,Hairstyle_Voucher,Hairstyle Voucher,0,10,None,카프라이용권
+7704,Broken_Thermometer,Broken Thermometer,2,0,None,타버린부품조각
+7705,Note_of_Geologist,Note of Geologist,2,0,None,낡은책장
+7722,Debt_Note,Debt Note,20,0,None,고대언어문서
+7723,Diamond_of_Ruin,Diamond of Ruin,20,0,None,투명한보석
+7724,Forbidden_Secret_Art,Forbidden Secret Art,20,0,None,마녀의주문서
+7725,Unlucky_Emerald,Unlucky Emerald,20,0,None,초록색보석
+7726,Token_of_King,Token of King,20,0,None,왕의증명
+7730,Mission_Ticket_1,Mission Ticket 1,0,10,None,퀴즈참가권
+7731,Mission_Ticket_2,Mission Ticket 2,0,10,None,퀴즈참가권
+7732,Mission_Ticket_3,Mission Ticket 3,0,10,None,퀴즈참가권
+7733,Mission_Ticket_4,Mission Ticket 4,0,10,None,퀴즈참가권
+7734,Mission_Ticket_5,Mission Ticket 5,0,10,None,퀴즈참가권
+7735,Mission_Ticket_6,Mission Ticket 6,0,10,None,퀴즈참가권
+7736,Mission_Ticket_7,Mission Ticket 7,0,10,None,퀴즈참가권
+7737,Mission_Ticket_8,Mission Ticket 8,0,10,None,퀴즈참가권
+7738,Mission_Ticket_9,Mission Ticket 9,0,10,None,퀴즈참가권
+7739,Mission_Ticket_10,Mission Ticket 10,0,10,None,퀴즈참가권
+7740,Mission_Ticket_11,Mission Ticket 11,0,10,None,퀴즈참가권
+7741,Mission_Ticket_12,Mission Ticket 12,0,10,None,퀴즈참가권
+7751,Old_White_Cloth,Old White Cloth,550,10,None,낡아빠진흰옷
+7752,Clattering_Skull,Clattering Skull,840,10,None,덜그럭거리는해골
+7753,Broken_Farming_Utensil,Broken Farming Utensil,330,10,None,부러진농기구
+7754,Broken_Crown,Broken Crown,3000,10,None,부서진왕관
+7755,Research_Note,Research Note,20,0,None,현자의일기
+7761,Magic_Gourd_Bottle,Magic Gourd Bottle,20,10,None,마법의호리병
+7762,Yaga's_Pestle,Yaga's Pestle,20,10,None,야가할머니절구공이
+7763,Sticky_Herb,Sticky Herb,20,10,None,찰싹찰싹풀
+7764,High_Strength_Adhesive,High Strength Adhesive,20,10,None,강력접착제
+7765,Baba_Yaga's_Secret_Medicine,Baba Yaga's Secret Medicine,20,10,None,바바야가의비약
+7776,Gym_Pass,Gym Pass,0,10,None,카프라이용권
+7795,Mammi's_Photo_Album,Mammi's Photo Album,2,10,None,바이블
+7796,Author's_Autograph,Author's Autograph,2,10,None,그림편지
+7797,Author's_Memo,Author's Memo,2,10,None,낡은책장
+7798,Fragment_of_Darkness,Fragment of Darkness,500,50,None,굳어버린용암
+7799,Crystal_of_Darkness,Crystal of Darkness,10,10,None,마력석_검정
+7820,Morroc_Skin,Morroc Skin,0,0,None,검은천조각
+7826,Continental_Guard_Paper,Continental Guard Paper,0,0,None,원고용지
+7828,Badge_of_Bravery,Badge of Bravery,0,0,None,전투휘장
+7829,Badge_of_Valor,Badge of Valor,0,0,None,전투휘장
+7830,Goddess_Tear,Goddess Tear,1,500,None,여신의눈물
+7831,Valkyrie's_Token,Valkyrie's Token,1,500,None,발키리의징표
+7832,Brynhild_Armor_Piece,Brynhild Armor Piece,1,500,None,브륀힐트갑옷조각
+7833,Hero's_Remains,Hero's Remains,1,500,None,영웅의유해
+7834,Andvari's_Ring,Andvari's Ring,1,500,None,안드바리의반지
+7835,Dusk_Glow,Dusk Glow,1,500,None,황혼의노을
+7836,Dawn_Essence,Dawn Essence,1,500,None,여명의정수
+7837,Cold_Moonlight,Cold Moonlight,1,500,None,차가운달빛
+7838,Hazy_Starlight,Hazy Starlight,1,500,None,어스름한별빛
+7839,Crystal_Key,Crystal Key,0,0,None,크리스탈키
+7840,Valkyrie's_Gift,Valkyrie's Gift,0,0,None,발할라의꽃
+7876,Gold_Key,Gold Key,0,50,None,시계탑열쇠
+7877,Red_Ring,Red Ring,0,100,None,세이프티링
+7878,Lusalka's_Hair,Lusalka's Hair,0,10,None,긴머리카락
+7879,Golden_Thread,Golden Thread,0,10,None,실타래
+7880,Baba_Yaga's_Silver_Spoon,Baba Yaga's Silver Spoon,0,10,None,낡은숫가락
+7881,Mystery_Magic_Book,Mystery Magic Book,0,50,None,여러권의책
+7882,Sharp_Branch,Sharp Branch,0,0,None,대나무조각
+7883,Wooden_Flute,Wooden Flute,0,0,None,대나무조각
+11002,Chef_King_Orleans_Vol.1,Chef King Orleans Vol.1,8000,0,None,양장본
+11003,Kafra_Legend_Vol.1,Kafra Legend Vol.1,8000,0,None,묵시록
+11012,Expedition_Report,Expedition Report,0,10,None,서류철
+11013,Expedition_Report_Vol1,Expedition Report Vol1,0,10,None,고대언어문서
+11014,Expedition_Report_Vol2,Expedition Report Vol2,0,10,None,고대언어문서
+11015,Expedition_Report_Vol3,Expedition Report Vol3,0,10,None,고대언어문서
+11016,Expedition_Report_Vol4,Expedition Report Vol4,0,10,None,고대언어문서

@@ -56,7 +56,7 @@ public class PacketShopBuySell : IClientPacketHandler
         var npc = player.NpcInteractionState.NpcEntity.Get<Npc>();
 
         if (isBuying)
-            npc.SubmitPlayerPurchaseFromNpc(player, itemIds, itemCounts, count);
+            npc.SubmitPlayerPurchaseFromNpc(player, itemIds, itemCounts, count, player.NpcInteractionState.AllowDiscount);
         else
             npc.SubmitPlayerSellItemsToNpc(player, itemIds, itemCounts, count);
 

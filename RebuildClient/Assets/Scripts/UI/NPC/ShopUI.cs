@@ -38,6 +38,7 @@ namespace Assets.Scripts.UI
         private List<ShopEntry> RightSideItems = new();
 
         private bool isBuyingFromNpc;
+        private int itemAdjustValue;
 
 
         public void OnFinish()
@@ -310,7 +311,16 @@ namespace Assets.Scripts.UI
             foreach (var i in RightSideItems)
             {
                 var item = ClientDataLoader.Instance.GetItemById(i.ItemId);
-                cost += i.Cost * i.Count;
+                if (isBuyingFromNpc)
+                {
+                    var itemCost = i.Cost - (i.Cost * itemAdjustValue / 100); 
+                    cost += itemCost * i.Count;
+                }
+                else
+                {
+                    cost += i.Cost * (100 + itemAdjustValue) / 100 * i.Count;
+                }
+
                 weight += i.Count * item.Weight;
             }
 
@@ -367,14 +377,20 @@ namespace Assets.Scripts.UI
             rectRight.anchoredPosition = middle - new Vector2(0, sizeLeft.y / 2 - rectRight.sizeDelta.y);
         }
 
-        public void BeginBuyFromNpc(List<ShopEntry> items)
+        public void BeginBuyFromNpc(List<ShopEntry> items, int discountLevel)
         {
             isBuyingFromNpc = true;
             LeftSideItems.Clear();
+            
+            itemAdjustValue = discountLevel > 0 ? 5 + discountLevel * 2 : 0;
+            if (itemAdjustValue > 24)
+                itemAdjustValue = 24;
 
+            LeftWindow.ItemAdjustValue = itemAdjustValue;
+            RightWindow.ItemAdjustValue = itemAdjustValue;
             LeftWindow.Prepare(ItemListRole.BuyFromNpcItemList);
             RightWindow.Prepare(ItemListRole.BuyFromNpcSummary);
-
+            
             RightWindow.OnPressOk = OnFinish;
             RightWindow.OnPressCancel = OnCancel;
 
@@ -389,13 +405,17 @@ namespace Assets.Scripts.UI
             LeftWindow.MoveToTop();
         }
 
-        public void BeginSellToNpc()
+        public void BeginSellToNpc(int overchargeLevel)
         {
             var rectLeft = LeftWindow.GetComponent<RectTransform>();
             var rectRight = RightWindow.GetComponent<RectTransform>();
 
             rectLeft.anchoredPosition = new Vector2(-99999,-99999);
             rectRight.anchoredPosition = new Vector2(-99999,-99999);
+
+            itemAdjustValue = overchargeLevel > 0 ? 5 + overchargeLevel * 2 : 0;
+            if (itemAdjustValue > 24)
+                itemAdjustValue = 24;
 
             StartCoroutine(BeginSellToNpcCoroutine());
         }
@@ -405,10 +425,13 @@ namespace Assets.Scripts.UI
         {
             LeftWindow.Prepare(ItemListRole.SellToNpcItemList);
             RightWindow.Prepare(ItemListRole.SellToNpcSummary);
+
+            LeftWindow.ItemAdjustValue = itemAdjustValue;
+            RightWindow.ItemAdjustValue = itemAdjustValue;
             
             RightWindow.OnPressOk = OnFinish;
             RightWindow.OnPressCancel = OnCancel;
-
+            
             var state = NetworkManager.Instance.PlayerState;
             var inventory = state.Inventory;
             var count = 0;
