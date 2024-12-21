@@ -78,9 +78,11 @@ RecoveryItem("Sour_Cream_Pancake", 325, 405, 40, 60);
 RecoveryItem("Mushroom_Pancake", 325, 405, 40, 60);
 Item("Fly_Wing") { OnValidate: return CanTeleport(); OnUse: RandomTeleport(); }
 Item("Butterfly_Wing") { OnValidate: return true; OnUse: ReturnToSavePoint(); }
-Item("Old_Blue_Box") { OnValidate: return false; OnUse: }
-Item("Dead_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("DeadBranch", 2h); }
-Item("Bloody_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("BloodyBranch", 24h); }
+Item("Old_Blue_Box") { OnUse: UseItemCreationItem(0); }
+Item("Old_Purple_Box") { OnUse: UseItemCreationItem(1); }
+Item("Old_Card_Album") { OnUse: UseItemCreationItem(2); }
+Item("Dead_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("DeadBranch", 1h); }
+Item("Bloody_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("BloodyBranch", 12h); }
 Item("Anodyne") { OnValidate: return false; OnUse: }
 Item("Aloevera") { OnValidate: return false; OnUse: }
 Item("Yggdrasil_Berry") { OnUse: HealHpPercent(100); HealSpPercent(100); }
@@ -92,8 +94,6 @@ Item("Mini_Furnace") { OnValidate: return false; OnUse: }
 Item("Iron_Hammer") { OnValidate: return false; OnUse: }
 Item("Golden_Hammer") { OnValidate: return false; OnUse: }
 Item("Oridecon_Hammer") { OnValidate: return false; OnUse: }
-Item("Old_Card_Album") { OnValidate: return false; OnUse: }
-Item("Old_Purple_Box") { OnValidate: return false; OnUse: }
 Item("Worn_Out_Scroll") { OnValidate: return false; OnUse: }
 Item("Unripe_Apple") { OnValidate: return false; OnUse: }
 Item("Orange_Juice") { OnValidate: return false; OnUse: }
@@ -124,6 +124,10 @@ Item("Gift_Box") { OnValidate: return false; OnUse: }
 Item("Concentration_Potion") { OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 10); }
 Item("Awakening_Potion") { OnValidate: return CharacterLevel >= 40 && JobId != 4; OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 15); }
 Item("Berserk_Potion") { OnValidate: return CharacterLevel > 80 && (JobId == 1 || JobId == 3 || JobId == 6); OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 20); }
+Item("Elemental_Converter_Fire") { OnUse: AddStatusEffect(StatusElementalConverter, 10m, 3);}
+Item("Elemental_Converter_Water") { OnUse: AddStatusEffect(StatusElementalConverter, 10m, 2);}
+Item("Elemental_Converter_Wind") { OnUse: AddStatusEffect(StatusElementalConverter, 10m, 4);}
+Item("Elemental_Converter_Earth") { OnUse: AddStatusEffect(StatusElementalConverter, 10m, 1);}
 Item("Union_of_Tribe") { OnValidate: return false; OnUse: }
 Item("Her_Heart") { OnValidate: return false; OnUse: }
 Item("Forbidden_Red_Candle") { OnValidate: return false; OnUse: }
@@ -138,18 +142,18 @@ Item("Red_Envelope") { OnValidate: return false; OnUse: }
 Item("Poison_Bottle") { OnValidate: return false; OnUse: }
 Item("Pilule") { OnValidate: return false; OnUse: }
 Item("Sweet_Memory_of_Marriage") { OnValidate: return false; OnUse: }
-Item("Quiver") { OnValidate: return false; OnUse: }
-Item("Iron_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Steel_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Oridecon_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Fire_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Silver_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Wind_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Stone_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Crystal_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Shadow_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Immaterial_Arrow_Quiver") { OnValidate: return false; OnUse: }
-Item("Rusty_Arrow_Quiver") { OnValidate: return false; OnUse: }
+Item("Quiver") { OnValidate: return CanOpenItemPackage("Arrow", 500); OnUse: OpenItemPackage("Arrow", 500); }
+Item("Iron_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Iron_Arrow", 500); OnUse: OpenItemPackage("Iron_Arrow", 500); }
+Item("Steel_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Steel_Arrow", 500); OnUse: OpenItemPackage("Steel_Arrow", 500); }
+Item("Oridecon_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Oridecon_Arrow", 500); OnUse: OpenItemPackage("Oridecon_Arrow", 500); }
+Item("Fire_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Fire_Arrow", 500); OnUse: OpenItemPackage("Fire_Arrow", 500); }
+Item("Silver_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Silver_Arrow", 500); OnUse: OpenItemPackage("Silver_Arrow", 500); }
+Item("Wind_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Wind_Arrow", 500); OnUse: OpenItemPackage("Wind_Arrow", 500); }
+Item("Stone_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Stone_Arrow", 500); OnUse: OpenItemPackage("Stone_Arrow", 500); }
+Item("Crystal_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Crystal_Arrow", 500); OnUse: OpenItemPackage("Crystal_Arrow", 500); }
+Item("Shadow_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Shadow_Arrow", 500); OnUse: OpenItemPackage("Shadow_Arrow", 500); }
+Item("Immaterial_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Immaterial_Arrow", 500); OnUse: OpenItemPackage("Immaterial_Arrow", 500); }
+Item("Rusty_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Rusty_Arrow", 500); OnUse: OpenItemPackage("Rusty_Arrow", 500); }
 Item("Speed_Potion") { OnValidate: return false; OnUse: }
 Item("Slow_Potion") { OnValidate: return false; OnUse: }
 Item("Firecracker") { OnValidate: return false; OnUse: }

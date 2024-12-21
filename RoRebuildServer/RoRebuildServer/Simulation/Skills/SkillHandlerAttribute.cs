@@ -54,7 +54,8 @@ public abstract class SkillHandlerBase
         return StandardValidation(source, target, position);
     }
 
-    public virtual SkillValidationResult StandardValidation(CombatEntity source, CombatEntity? target, Position position)
+
+    public virtual SkillValidationResult StandardValidationForAllyTargetedAttack(CombatEntity source, CombatEntity? target, Position position)
     {
         if (source.Character.Type == CharacterType.Player)
         {
@@ -67,13 +68,43 @@ public abstract class SkillHandlerBase
             if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, target.Character.Position))
                 return SkillValidationResult.NoLineOfSight;
 
-            if (target.IsValidTarget(source) || source == target)
+            if (target.IsValidAlly(source) || source == target)
                 return SkillValidationResult.Success;
 
             return SkillValidationResult.InvalidTarget;
         }
 
-        if (IsAreaTargeted)
+        if (position.IsValid())
+        {
+            if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, position))
+                return SkillValidationResult.NoLineOfSight;
+
+            return SkillValidationResult.Success;
+        }
+
+        return SkillValidationResult.Failure;
+    }
+
+    public virtual SkillValidationResult StandardValidation(CombatEntity source, CombatEntity? target, Position position)
+    {
+        if (source.Character.Type == CharacterType.Player)
+        {
+            if (!UsableWhileHidden && source.HasBodyState(BodyStateFlags.Hidden))
+                return SkillValidationResult.UnusableWhileHidden;
+        }
+
+        if (target != null)
+        {
+            if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, target.Character.Position))
+                return SkillValidationResult.NoLineOfSight;
+            
+            if (target.IsValidTarget(source) || target.IsValidAlly(source) || source == target)
+                return SkillValidationResult.Success;
+
+            return SkillValidationResult.InvalidTarget;
+        }
+
+        if (position.IsValid())
         {
             if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, position))
                 return SkillValidationResult.NoLineOfSight;

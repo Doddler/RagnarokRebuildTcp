@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -45,8 +46,8 @@ public class Npc : IEntityAutoReset
     public int[]? ParamsInt;
     public string? ParamString;
 
-    public List<(int, int)>? ItemsForSale;
-    public HashSet<int>? SaleItemHashes;
+    public List<(int id, int price)>? ItemsForSale;
+    public Dictionary<int, int>? SaleItemIndexes;
 
     public NpcBehaviorBase Behavior = null!;
 
@@ -120,7 +121,7 @@ public class Npc : IEntityAutoReset
         Name = "";
         EventType = null!;
         ItemsForSale = null; //no point in pooling these, we don't place vendor npcs during runtime usually
-        SaleItemHashes = null;
+        SaleItemIndexes = null;
         if (NpcPathHandler != null)
         {
             NpcPathHandler.Npc = null!;
@@ -538,7 +539,7 @@ public class Npc : IEntityAutoReset
     //finish npc shop purchase. We don't use the array sizes directly because they're borrowed and might be larger than expected
     public void SubmitPlayerPurchaseFromNpc(Player player, int[] itemIds, int[] itemCounts, int numItems, bool allowDiscount)
     {
-        if (ItemsForSale == null || SaleItemHashes == null || SaleItemHashes.Count <= 0)
+        if (ItemsForSale == null || SaleItemIndexes == null || SaleItemIndexes.Count <= 0)
             return;
 
         var totalCost = 0;
@@ -557,7 +558,7 @@ public class Npc : IEntityAutoReset
             var count = itemCounts[i];
             if (count <= 0)
                 goto Error;
-            if (!SaleItemHashes.Contains(id))
+            if (!SaleItemIndexes.TryGetValue(id, out var saleItemId))
             {
                 ServerLogger.LogWarning($"Player {player} is attempting to buy item id {id} from {Character.Name}, but that item is not for sale.");
                 goto Error; //lol goto
@@ -571,8 +572,10 @@ public class Npc : IEntityAutoReset
                 goto Error;
             }
 
-            var dcValue = info.Price * discount / 100;
-            totalCost += (info.Price - dcValue) * count;
+            var saleEntry = ItemsForSale[saleItemId];
+            
+            var dcValue = saleEntry.Item2 * discount / 100;
+            totalCost += (saleEntry.Item2 - dcValue) * count;
             totalWeight += info.Weight * count;
         }
 
@@ -673,19 +676,13 @@ public class Npc : IEntityAutoReset
     public void SellItem(string itemName)
     {
         ItemsForSale ??= new List<(int, int)>();
-        SaleItemHashes ??= new HashSet<int>();
+        SaleItemIndexes ??= new Dictionary<int, int>();
         if (DataManager.ItemIdByName.TryGetValue(itemName, out var id))
         {
             if (DataManager.ItemList.TryGetValue(id, out var info))
             {
+                SaleItemIndexes.TryAdd(id, ItemsForSale.Count);
                 ItemsForSale.Add((id, info.Price));
-                if (!SaleItemHashes.Contains(id))
-                {
-
-                    SaleItemHashes.Add(id);
-                }
-                //else
-                //    ServerLogger.LogWarning($"Npc {FullName} unable to sell item {itemName} more than once!");
             }
             else
                 ServerLogger.LogWarning($"Npc {FullName} unable to sell item {itemName} it's item details could not be found in the item list.");
@@ -697,6 +694,7 @@ public class Npc : IEntityAutoReset
     public void SellItem(string itemName, int price)
     {
         ItemsForSale ??= new List<(int, int)>();
+        SaleItemIndexes ??= new Dictionary<int, int>();
         if (DataManager.ItemIdByName.TryGetValue(itemName, out var id))
         {
             if (DataManager.ItemList.TryGetValue(id, out var info))
@@ -708,6 +706,7 @@ public class Npc : IEntityAutoReset
                     throw new Exception($"Npc {Character.Name} is selling {info.Code} for {price:N0}z when it could be sold back for {sellValue:N0}z, for a profit of {profit:N0}z!");
                 }
 
+                SaleItemIndexes.TryAdd(id, ItemsForSale.Count);
                 ItemsForSale.Add((id, price));
             }
             else

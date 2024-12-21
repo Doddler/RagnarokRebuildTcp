@@ -6,6 +6,7 @@ public class ServerDebugConfig
 {
     public bool UseDebugMode { get; set; }
     public bool EnableWarpCommandForEveryone { get; set; }
+    public bool EnableRandomMoveForEveryone { get; set; }
     public bool EnableEnterSpecificMap { get; set; }
     public int MaxSpawnTime { get; set; }
     public int MinSpawnTime { get; set; }

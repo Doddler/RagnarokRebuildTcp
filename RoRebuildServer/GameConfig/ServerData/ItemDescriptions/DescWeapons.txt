@@ -47,6 +47,7 @@
 
 ::Haedonggum //id 1123 - Sword
 <color=#808080>A ancient sword said to have the mysterious power to control minds.</color>
+INT +3
 
 ::Orcish_Sword //id 1124 - Sword
 <color=#808080>A sword crafted by orcish smiths that is symbolic to orc tribes.</color>
@@ -83,6 +84,7 @@
 
 ::Cutlus //id 1135 - Sword
 <color=#808080>A sword popularized by sea adventurers.</color>
+STR +2
 
 ::Solar_Sword //id 1136 - Sword
 <color=#808080>A sword adorned with an engraving of the sun, symbolizing battle spirit and vigor.</color>
@@ -268,6 +270,7 @@ CRIT +20
 
 ::Fortune_Sword //id 1223 - Dagger
 <color=#808080>A knife with a gold handle that brings great fortune to whoever holds it.</color>
+LUK +5, Perfect Dodge +20
 
 ::Swordbreaker //id 1224 - Dagger
 <color=#808080>A powerful dagger built to catch and destroy weapons.</color>
@@ -727,6 +730,7 @@ Recover 1 SP/melee attack vs. Undead
 
 ::Mjolnir //id 1530 - Mace
 <color=#808080>A facsimile of the mighty hammer wielded by Thor, god of thunder.</color>
+Str +15, DEX +40
 
 ::Wrench //id 1531 - Mace
 <color=#808080>A heavy tool with many practical applications.</color>

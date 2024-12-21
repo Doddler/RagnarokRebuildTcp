@@ -1151,6 +1151,16 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    //alternate version to send to clean up an item that should not be visible to the player.
+    public static void RemoveDropItemForSinglePlayerByGroundId(int itemId, Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.PickUpItem, 32);
+        packet.Write(-1);
+        packet.Write(itemId);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void AddItemToInventory(Player p, ItemReference item, int bagId, int change)
     {
         var packet = NetworkManager.StartPacket(PacketType.AddOrRemoveInventoryItem, 48);

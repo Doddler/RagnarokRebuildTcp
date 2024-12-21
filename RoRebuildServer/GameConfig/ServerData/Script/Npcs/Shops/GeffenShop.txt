@@ -13,6 +13,7 @@ Trader("geffen_in", "Tool Dealer", "1_F_03", 77, 167, N) {
 	SellItem("Fly_Wing");
 	SellItem("Butterfly_Wing");
 	SellItem("Grampa_Beard");
+	SellItem("Yggdrasil_Leaf");
 }
 
 Trader("geffen_in", "Magical Item Seller", "1_M_WIZARD", 77, 173, N) {

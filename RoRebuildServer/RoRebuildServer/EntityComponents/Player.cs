@@ -142,18 +142,18 @@ public class Player : IEntityAutoReset
     //this will get removed when we have proper job levels
     private static readonly int[] skillPointsByLevel = new[]
     {
-        0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-        21, 22, 23, 24, 25, 26, 27, 28, 29, 29, 30, 31, 31, 32, 32, 33, 33, 34, 34,35,
-        35, 36, 36, 37, 37, 38, 38, 39, 39, 40, 40, 41, 41, 42, 42, 43, 43, 44, 44, 45,
-        45, 46, 46, 47, 47, 48, 48, 49, 49, 50, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55,
-        55, 56, 56, 57, 57, 58, 58, 59, 59, 60, 60, 61, 61, 62, 62, 63, 63, 64, 64, 64
+         0,  1,  2,  3,  4,  5,  6,  7,  8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 35, 37, 38, 39, 39,
+        40, 40, 41, 41, 42, 42, 43, 43, 44, 44, 45, 45, 46, 46, 47, 47, 48, 48, 49, 49,
+        50, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55, 55, 56, 56, 57, 57, 58, 58, 59, 59,
+        60, 60, 61, 61, 62, 62, 63, 63, 64, 64, 65, 65, 66, 66, 67, 67, 68, 68, 69, 69,
     };
 
     //how much it costs (cumulatively) to have a stat at a specific level. Should be in its own file...
     private static readonly int[] cumulativeStatPointCost = new[]
     {
-        2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50,
-        54, 58, 62, 66, 70, 74, 78, 82, 86, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140,
+          2,   4,   6,   8,  10,  12,  14,  16,  18,  20,  23,  26,  29,  32,  35,  38,  41,  44,  47,  50,
+         54,  58,  62,  66,  70,  74,  78,  82,  86,  90,  95, 100, 105, 110, 115, 120, 125, 130, 135, 140,
         146, 152, 158, 164, 170, 176, 182, 188, 194, 200, 207, 214, 221, 228, 235, 242, 249, 256, 263, 270,
         278, 286, 294, 302, 310, 318, 326, 334, 342, 350, 359, 368, 377, 386, 395, 404, 413, 422, 431, 440,
         450, 460, 470, 480, 490, 500, 510, 520, 530, 540, 551, 562, 573, 584, 595, 606, 617, 628, 639,
@@ -162,10 +162,10 @@ public class Player : IEntityAutoReset
     //how many stat points you have for your base level. Should be in its own file too...
     private static readonly int[] statPointsEarnedByLevel = new[]
     {
-        66, 69, 72, 75, 78, 82, 86, 90, 94, 98, 103, 108, 113, 118, 123, 129, 135, 141, 147, 153,
-        160, 167, 174, 181, 188, 196, 204, 212, 220, 228, 237, 246, 255, 264, 273, 283, 293, 303, 313, 323,
-        334, 345, 356, 367, 378, 390, 402, 414, 426, 438, 451, 464, 477, 490, 503, 517, 531, 545, 559, 573,
-        588, 603, 618, 633, 648, 664, 680, 696, 712, 728, 745, 762, 779, 796, 813, 831, 849, 867, 885, 903,
+         66,  69,  72,  75,  78,   82,   86,   90,   94,   98,  103,  108,  113,  118,  123,  129,  135,  141,  147,  153,
+        160, 167, 174, 181, 188,  196,  204,  212,  220,  228,  237,  246,  255,  264,  273,  283,  293,  303,  313,  323,
+        334, 345, 356, 367, 378,  390,  402,  414,  426,  438,  451,  464,  477,  490,  503,  517,  531,  545,  559,  573,
+        588, 603, 618, 633, 648,  664,  680,  696,  712,  728,  745,  762,  779,  796,  813,  831,  849,  867,  885,  903,
         922, 941, 960, 979, 998, 1018, 1038, 1058, 1078, 1098, 1119, 1140, 1161, 1182, 1203, 1225, 1247, 1269, 1291,
     };
 
@@ -201,7 +201,7 @@ public class Player : IEntityAutoReset
 
         if (StorageInventory != null)
             CharacterBag.Return(StorageInventory);
-        
+
         Inventory = null;
         CartInventory = null;
         StorageInventory = null;
@@ -232,9 +232,13 @@ public class Player : IEntityAutoReset
         RecentAttackersList = EntityValueListPool<float>.Get();
 
         //if this is their first time logging in, they get a free Knife
-        var isNewCharacter = GetData(PlayerStat.Status) == 0;
+        var isNewCharacter = GetData(PlayerStat.Status) == 0 || Inventory == null;
+        if (GetData(PlayerStat.Level) <= 10 && GetData(PlayerStat.Job) == 0 
+            && Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon) <= 0 && Equipment.GetEquipmentIdBySlot(EquipSlot.Body) <= 0)
+            isNewCharacter = true;
         if (isNewCharacter)
         {
+            var hasEmptyInventory = Inventory != null && Inventory.BagWeight <= 0;
             if (DataManager.ItemIdByName.TryGetValue("Knife", out var knife))
             {
                 var item = new ItemReference(knife, 1);
@@ -248,7 +252,7 @@ public class Player : IEntityAutoReset
                 Equipment.EquipItem(bagId, EquipSlot.Body);
             }
 
-            if (DataManager.ItemIdByName.TryGetValue("Apple", out var apple))
+            if (hasEmptyInventory && DataManager.ItemIdByName.TryGetValue("Apple", out var apple))
             {
                 var item = new ItemReference(apple, 15);
                 AddItemToInventory(item);
@@ -541,7 +545,7 @@ public class Player : IEntityAutoReset
             SetStat(CharacterStat.Sp, newMaxSp);
 
         var weightBonus = (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.PushCart) ? 20000 : 0) + MaxLearnedLevelOfSkill(CharacterSkill.EnlargeWeightLimit) * 2000;
-        SetStat(CharacterStat.WeightCapacity, 24000 + GetEffectiveStat(CharacterStat.Str) * 300 + weightBonus);
+        SetStat(CharacterStat.WeightCapacity, 28000 + GetEffectiveStat(CharacterStat.Str) * 300 + weightBonus);
 
         var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
         if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Curse))
@@ -661,22 +665,6 @@ public class Player : IEntityAutoReset
         NpcInteractionState.CancelInteraction();
     }
 
-    public bool CanTeleport() => Character.Map?.CanTeleport ?? false;
-
-    public void RandomTeleport()
-    {
-        if (Character.Map == null)
-            return;
-
-        var pos = Character.Map.FindRandomPositionOnMap();
-
-        AddActionDelay(CooldownActionType.Teleport);
-        Character.ResetState();
-        Character.SetSpawnImmunity();
-        Character.Map?.TeleportEntity(ref Entity, Character, pos);
-        CommandBuilder.SendExpGain(this, 0); //update their exp
-    }
-
     public void ReturnToSavePoint()
     {
         Debug.Assert(Character.Map != null);
@@ -746,6 +734,20 @@ public class Player : IEntityAutoReset
         return true;
     }
 
+    public bool TryTakeSpValue(int value)
+    {
+        var spCost = value;
+
+        var currentSp = GetStat(CharacterStat.Sp);
+        if (currentSp < spCost)
+            return false;
+        currentSp -= spCost;
+        SetStat(CharacterStat.Sp, currentSp);
+        CommandBuilder.ChangeSpValue(this, currentSp, GetStat(CharacterStat.MaxSp));
+
+        return true;
+    }
+
     public void AddSkillToCharacter(CharacterSkill skill, int level)
     {
         if (LearnedSkills.TryGetValue(skill, out var curLevel))
@@ -765,7 +767,7 @@ public class Player : IEntityAutoReset
 
         var hp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
-        var hpAddPercent = GetStat(CharacterStat.AddHpRecoveryPercent);
+        var hpAddPercent = 100 + GetStat(CharacterStat.AddHpRecoveryPercent);
         var plusHpRegen = 0;
 
         var hpRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery);
@@ -777,7 +779,7 @@ public class Player : IEntityAutoReset
             var vit = GetEffectiveStat(CharacterStat.Vit);
             var regen = (maxHp / 50 + vit / 5) * (200 + vit) / 200;
             regen += plusHpRegen;
-            regen = regen * (100 + hpAddPercent) / 100;
+            regen = regen * hpAddPercent / 100;
             //var regen = 1 + (maxHp / 50) * vit / 100; //original formula
             if (Character.State == CharacterState.Moving)
                 regen /= 2;
@@ -794,7 +796,7 @@ public class Player : IEntityAutoReset
 
         var sp = GetStat(CharacterStat.Sp);
         var maxSp = GetStat(CharacterStat.MaxSp);
-        var spAddPercent = GetStat(CharacterStat.AddSpRecoveryPercent);
+        var spAddPercent = 100 + GetStat(CharacterStat.AddSpRecoveryPercent);
         var plusSpRegen = 0;
 
         var spRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery);
@@ -808,7 +810,7 @@ public class Player : IEntityAutoReset
             //var regen = maxSp / 100 + chInt / 5; //original formula
             regen += plusSpRegen;
             if (chInt > 120) regen += chInt - 120;
-            regen = regen * (100 + spAddPercent) / 100;
+            regen = regen * spAddPercent / 100;
 
             if (Character.State == CharacterState.Sitting)
                 regen *= 2;
@@ -968,6 +970,49 @@ public class Player : IEntityAutoReset
         };
         Character.StopMovingImmediately();
         SkillHandler.ExecuteSkill(cast, CombatEntity);
+    }
+
+    public void UseItemCreationItem(int type)
+    {
+        //0 is obb, 1 is ovb, 2 is oca
+        //this is obviously broken but mostly just for fun until it gets a proper implementation
+        switch (type)
+        {
+            case 0:
+                {
+                    //create 1 of any item in the game
+                    var item = DataManager.ItemList.ElementAt(GameRandom.Next(0, DataManager.ItemList.Count));
+                    CreateItemInInventory(new ItemReference(item.Key, 1));
+                    return;
+                }
+            case 1:
+                {
+                    //create 1 of any weapon or armor
+                    var totalCount = DataManager.WeaponInfo.Count + DataManager.ArmorInfo.Count;
+                    var sel = GameRandom.Next(0, totalCount);
+                    if (sel < DataManager.WeaponInfo.Count)
+                    {
+                        sel = GameRandom.Next(0, DataManager.WeaponInfo.Count);
+                        var item = DataManager.WeaponInfo.ElementAt(sel);
+                        CreateItemInInventory(new ItemReference(item.Key, 1));
+                    }
+                    else
+                    {
+                        sel = GameRandom.Next(0, DataManager.ArmorInfo.Count);
+                        var item = DataManager.ArmorInfo.ElementAt(sel);
+                        CreateItemInInventory(new ItemReference(item.Key, 1));
+                    }
+
+                    return;
+                }
+            case 2:
+                {
+                    //create 1 of any card
+                    var item = DataManager.CardInfo.ElementAt(GameRandom.Next(0, DataManager.CardInfo.Count));
+                    CreateItemInInventory(new ItemReference(item.Key, 1));
+                    return;
+                }
+        }
     }
 
     public void UseSummonItem(string itemName, int lifetime = int.MaxValue)
@@ -1174,6 +1219,25 @@ public class Player : IEntityAutoReset
         Character.AttackCooldown = Time.ElapsedTimeFloat + 0.3f; //no attacking for 0.3s after picking up an item
         CreateItemInInventory(item);
         return true;
+    }
+
+    public bool CanOpenItemPackage(string packagedItem, int count)
+    {
+        if (!DataManager.ItemIdByName.TryGetValue(packagedItem, out var itemId))
+            return false;
+        var item = new ItemReference(itemId, count);
+        return CanPickUpItem(item);
+    }
+
+    public void OpenItemPackage(string packagedItem, int count)
+    {
+        if (!DataManager.ItemIdByName.TryGetValue(packagedItem, out var itemId))
+        {
+            ServerLogger.LogWarning($"Player {Name} attempted to OpenItemPackage to get a {packagedItem}");
+            return;
+        }
+
+        CreateItemInInventory(new ItemReference(itemId, count));
     }
 
     public bool CreateItemInInventory(ItemReference item)

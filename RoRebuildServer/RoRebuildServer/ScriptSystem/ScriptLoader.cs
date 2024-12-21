@@ -40,7 +40,7 @@ public static class ScriptLoader
         else
             return CompileScripts();
     }
-
+    
     private static void StartOutOfProcessCompiler()
     {
         ServerLogger.Log("Starting out of process script compiler.");
@@ -101,8 +101,8 @@ public static class ScriptLoader
             ServerLogger.LogError(e.Message);
         }
     }
-
-    private static Assembly LoadExisting()
+    
+    public static Assembly LoadExisting()
     {
         var dll = Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll");
 
@@ -148,4 +148,4 @@ public static class ScriptLoader
             throw;
         }
     }
-}
+ }

@@ -200,6 +200,26 @@ public class CombatEntity : IEntityAutoReset
         }
     }
 
+    public bool CanTeleport() => Character.Map?.CanTeleport ?? false;
+
+    public void RandomTeleport()
+    {
+        if (Character.Map == null)
+            return;
+
+        var pos = Character.Map.FindRandomPositionOnMap();
+
+        if(Character.Type == CharacterType.Player)
+            Player.AddActionDelay(CooldownActionType.Teleport);
+        if(Character.Type == CharacterType.Monster)
+            Character.Monster.AddDelay(1f);
+        Character.ResetState();
+        Character.SetSpawnImmunity();
+        Character.Map?.TeleportEntity(ref Entity, Character, pos);
+        if(Character.Type == CharacterType.Player)
+            CommandBuilder.SendExpGain(Player, 0); //update their exp
+    }
+
     public CharacterStatusContainer? StatusContainer => statusContainer;
     public bool HasStatusEffectOfType(CharacterStatusEffect type) => statusContainer?.HasStatusEffectOfType(type) ?? false;
 
@@ -751,8 +771,11 @@ public class CombatEntity : IEntityAutoReset
             return false;
         }
 
-        if (level <= 0)
-            level = 10; //you really need to verify they have the skill or not
+        if (Character.Type == CharacterType.Player)
+        {
+            if (level <= 0)
+                level = Player.MaxLearnedLevelOfSkill(skill);
+        }
 
         var skillInfo = new SkillCastInfo()
         {
@@ -971,10 +994,12 @@ public class CombatEntity : IEntityAutoReset
         var res = SkillHandler.ValidateTarget(CastingSkill, this);
         if (res != SkillValidationResult.Success)
         {
+            if(Character.Type == CharacterType.Player)
+                CommandBuilder.SkillFailed(Player, res);
 #if DEBUG
             ServerLogger.Log($"Character {Character} failed a queued skill attack with the validation result: {res}");
-            return;
 #endif
+            return;
         }
 
         if (Character.Type == CharacterType.Player && CastingSkill.ItemSource <= 0 && !Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level))
@@ -1152,6 +1177,10 @@ public class CombatEntity : IEntityAutoReset
                         if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
                             attackElement = arrowElement;
                     }
+
+                    var overrideElement = (AttackElement)GetStat(CharacterStat.EndowAttackElement);
+                    if (overrideElement > 0)
+                        attackElement = overrideElement;
                 }
             }
 
@@ -1309,7 +1338,7 @@ public class CombatEntity : IEntityAutoReset
                     subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
             }
 
-            subDef = subDef * (100 + GetStat(CharacterStat.AddSoftDefPercent)) / 100;
+            subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
 
             //convert def to damage reduction %
             defCut = MathHelper.DefValueLookup(def);

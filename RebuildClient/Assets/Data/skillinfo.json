@@ -845,7 +845,7 @@
         12
       ],
       "AdjustableLevel": false,
-      "Description": "Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target\u0027s VIT.\r\nHigher skill levels increase success rate of poison as well as duration.\r\nPoison Effect: Deals 1/2 the received damage every 3 seconds.",
+      "Description": "Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target\u0027s VIT.\r\nHigher skill levels increase success rate of poison as well as duration.\r\nPoison Effect: Deals 1/2 the received damage every 2 seconds.",
       "InterruptMode": 0
     },
     {
@@ -870,7 +870,7 @@
       "Type": 0,
       "MaxLevel": 1,
       "SpCost": [
-        7
+        5
       ],
       "AdjustableLevel": false,
       "Description": null,
@@ -961,7 +961,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Hide from view making yourself untargetable while slowly consuming SP. Insect, demon, and certain powerful monsters can see through the skill.\r\nYou cannot attack while hidden and SP recovery rate is reduced by half. Higher skill levels increase the max duration and slows the sp consumption.",
       "InterruptMode": 0
     },
     {
@@ -1067,7 +1067,7 @@
         5
       ],
       "AdjustableLevel": true,
-      "Description": "Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.\r\nEach level adds \u002B50% damage to your attack and costs an additional 60 zeny to use (dealing 600% @ 600z at level 10).",
+      "Description": "Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.\r\nEach level adds \u002B50% damage to your attack and costs an additional 50 zeny to use (dealing 600% @ 500z at level 10).\r\nZeny used is affected by your level of Discount.",
       "InterruptMode": 0
     },
     {
@@ -1102,12 +1102,21 @@
       "Name": "Cart Revolution",
       "Target": 1,
       "Type": 0,
-      "MaxLevel": 1,
+      "MaxLevel": 10,
       "SpCost": [
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
         12
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Strikes a target and a 3x3 area around them with your cart dealing 150% attack with \u002B10% (scaling to \u002B20% at lvl 10) added for every 1000 weight currently in your inventory.\r\nKnocks the enemy away from you 2 tiles.\r\n\u003Ci\u003EIt only goes to level 10 because merchant needs something to spend points on.\u003C/i\u003E",
       "InterruptMode": 0
     },
     {
@@ -1188,7 +1197,7 @@
         34
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Deals 8 hits to a single target at 50% attack at level 1 rising to 100% attack at level 10.",
       "InterruptMode": 0
     },
     {

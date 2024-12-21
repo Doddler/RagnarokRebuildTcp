@@ -318,6 +318,7 @@ Returns you to your save location
 
 ::Old_Blue_Box //603
 <color=#808080>An old blue box with unknown contents.</color>
+Contains a random item out of all the items in the game. Even the broken ones. Most of them aren't very useful though.
 
 ::Dead_Branch //604
 <color=#808080>A twig which contains the mysterious power of eternity, capable of summoning a living creature.</color>
@@ -361,9 +362,11 @@ Casts: <color=#0000FF>Resurrection 1</color>
 
 ::Old_Card_Album //616
 <color=#808080>An antique album which contains an unknown card.</color>
+Contains one of any card in the game. Even the broken ones. A lot of them don't work though.
 
 ::Old_Purple_Box //617
 <color=#808080>An old purple box with unknown contents.</color>
+Contains one of any equipment or weapon in the game. Even the broken ones. Most of them aren't very useful though.
 
 ::Worn_Out_Scroll //618
 <color=#808080>A rolled up piece of parchment, now brittle with age, on which faded text can scarcely be read.</color>
@@ -777,6 +780,18 @@ Recover 9% SP
 
 ::Wrapped_Mask //12107
 <color=#808080>A mask that has been carefully wrapped.</color>
+
+::Elemental_Converter_Fire //12114
+Enchant weapon with Fire for 10 minutes
+
+::Elemental_Converter_Water //12115
+Enchant weapon with Water for 10 minutes
+
+::Elemental_Converter_Earth //12116
+Enchant weapon with Earth for 10 minutes
+
+::Elemental_Converter_Wind //12117
+Enchant weapon with Wind for 10 minutes
 
 ::Santa's_Bag //12132
 <color=#808080>A small, red bag that magically changes your clothes.</color>

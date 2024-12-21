@@ -352,7 +352,7 @@ Name = "Back Slide"
 Icon = "tf_backsliding"
 Target = "Self"
 MaxLevel = 1
-SpCost = [7]
+SpCost = [5]
 
 [Steal]
 Name = "Steal"
@@ -453,8 +453,8 @@ SpCost = [8]
 Name = "Cart Revolution"
 Icon = "mc_cartrevolution"
 Target = "Enemy"
-MaxLevel = 1
-SpCost = [12]
+MaxLevel = 10
+SpCost = [12,12,12,12,12,12,12,12,12,12]
 
 
 #----------------------------------

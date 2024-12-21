@@ -1,0 +1,44 @@
+
+Trader("prontera", "Festive Trader", "4_F_06", 167, 124, SW) {
+	SellItem("Santa_Hat", 200);
+	SellItem("Clown_Nose", 3000);
+	SellItem("Mr._Smile", 8000);
+	SellItem("Antlers", 12000);
+	SellItem("Sakkat", 15000);
+	SellItem("Sunglasses", 20000);
+	SellItem("Opera_Masque", 40000);
+	SellItem("Binoculars", 100000);
+	SellItem("Mage_Hat", 120000);
+	SellItem("Bunny_Band", 180000);
+	SellItem("Drooping_Cat", 250000);
+}
+
+Trader("prontera", "Scroll Trader", "2_M_SAGE_OLD", 171, 124, SW) {
+	SellItem("Blessing_Scroll", 6000);
+	SellItem("Increase_Agi_Scroll", 6000);
+	SellItem("Elemental_Converter_Fire", 6000);
+	SellItem("Elemental_Converter_Water", 6000);
+	SellItem("Elemental_Converter_Wind", 6000);
+	SellItem("Elemental_Converter_Earth", 6000);
+}
+
+Trader("prontera", "Arrow Trader", "4_M_01", 175, 124, SW) {
+	SellItem("Quiver", 800);
+	SellItem("Silver_Arrow_Quiver", 2000);
+	SellItem("Fire_Arrow_Quiver", 2000);
+	SellItem("Wind_Arrow_Quiver", 4000);
+	SellItem("Stone_Arrow_Quiver", 4000);
+	SellItem("Crystal_Arrow_Quiver", 4000);
+	SellItem("Shadow_Arrow_Quiver", 4000);
+	SellItem("Immaterial_Arrow_Quiver", 4000);
+}
+
+Trader("prontera", "Super Shady Trader", "4_M_DSTMAN", 185, 124, SW) {
+	SellItem("Hat_of_the_Sun_God", 800000);
+	SellItem("Lord_Kaho's_Horns", 2000000);
+	SellItem("Megingjard", 5000000);
+	SellItem("Mjolnir", 5000000);
+	SellItem("Brisingamen", 5000000);
+	SellItem("Ahura_Mazdah", 12000000);
+	SellItem("Angra_Manyu", 20000000);
+}

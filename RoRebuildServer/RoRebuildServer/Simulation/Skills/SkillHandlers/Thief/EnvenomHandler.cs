@@ -22,7 +22,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
             if (source.Character.Type == CharacterType.Player)
                 flags |= AttackFlags.CanCrit;
 
-            var res = source.CalculateCombatResult(target, 0.5f + lvl * 0.1f, 1, flags, CharacterSkill.Envenom, AttackElement.Poison);
+            var res = source.CalculateCombatResult(target, 1f + lvl * 0.05f, 1, flags, CharacterSkill.Envenom, AttackElement.Poison);
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);
 

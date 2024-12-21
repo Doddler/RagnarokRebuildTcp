@@ -27,12 +27,14 @@ Trader("payon_in01", "Tool Dealer", "4_M_ORIENT01", 5, 49, NE) {
 	SellItem("Fly_Wing");
 	SellItem("Butterfly_Wing");
     SellItem("Authoritative_Badge");
+	SellItem("Yggdrasil_Leaf");
 	//SellItem("Trap");
 }
 
 Trader("payon_in01", "Weapon Dealer", "1_F_ORIENT_03", 15, 119, N) {
 	SellItem("Arrow");
 	SellItem("Silver_Arrow");
+	SellItem("Fire_Arrow");
 	SellItem("Sword");
 	SellItem("Falchion");
 	SellItem("Blade");
@@ -79,6 +81,7 @@ Trader("payon_in01", "Weapon Dealer", "4_F_KID2", 5, 129, E) {
 Trader("payon_in02", "Tool Dealer", "1_F_ORIENT_01", 87, 34, N) {
 	SellItem("Arrow");
 	SellItem("Silver_Arrow");
+	SellItem("Fire_Arrow");
 	//SellItem("Magnifier");
 	SellItem("Red_Potion");
 	SellItem("Orange_Potion");

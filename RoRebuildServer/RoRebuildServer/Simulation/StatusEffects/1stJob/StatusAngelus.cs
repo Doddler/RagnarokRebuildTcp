@@ -13,7 +13,8 @@ public class StatusAngelus : StatusEffectBase
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)
     {
         var lvl = state.Value1;
-        ch.AddStat(CharacterStat.AddSoftDefPercent, 5 * lvl);
+        state.Value1 *= 5;
+        ch.AddStat(CharacterStat.AddSoftDefPercent, state.Value1);
 
         if (ch.Character.Type == CharacterType.Player)
         {

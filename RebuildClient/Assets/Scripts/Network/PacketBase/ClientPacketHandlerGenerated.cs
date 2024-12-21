@@ -44,7 +44,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[26] = new InvalidPacket(); //CreateCastCircle
 			handlers[27] = new PacketOnSkill(); //Skill
 			handlers[28] = new PacketSkillIndirect(); //SkillIndirect
-			handlers[29] = new InvalidPacket(); //SkillError
+			handlers[29] = new PacketSkillFailure(); //SkillError
 			handlers[30] = new PacketErrorMessage(); //ErrorMessage
 			handlers[31] = new PacketChangeTarget(); //ChangeTarget
 			handlers[32] = new InvalidPacket(); //GainExp

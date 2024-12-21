@@ -125,7 +125,7 @@ public partial class Monster : IEntityAutoReset
     public Entity GetMaster() => Master;
     public Entity SetMaster(Entity master) => Master = master;
 
-    public static float MaxSpawnTimeInSeconds = 180;
+    //public static float MaxSpawnTimeInSeconds = 180;
 
     public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
     public int GetStat(CharacterStat type) => CombatEntity.GetStat(type);
@@ -558,8 +558,8 @@ public partial class Monster : IEntityAutoReset
         deadTimeout = GameRandom.NextFloat(SpawnRule.MinSpawnTime / 1000f, SpawnRule.MaxSpawnTime / 1000f);
         if (deadTimeout < 0.4f)
             deadTimeout = 0.4f; //minimum respawn time
-        if (deadTimeout > MaxSpawnTimeInSeconds)
-            deadTimeout = MaxSpawnTimeInSeconds;
+        //if (deadTimeout > MaxSpawnTimeInSeconds)
+        //    deadTimeout = MaxSpawnTimeInSeconds;
         nextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
         deadTimeout += Time.ElapsedTimeFloat;
 
@@ -704,6 +704,12 @@ public partial class Monster : IEntityAutoReset
             CurrentAiState = MonsterAiState.StateDead;
         }
 #endif
+
+        if (Character.State == CharacterState.Dead && CurrentAiState != MonsterAiState.StateDead)
+        {
+            ServerLogger.LogWarning($"Monster {Character} is attempting an AiStateMachineUpdate while in character state Dead, but their AI state is not StateDead (currently {CurrentAiState}.)");
+            CurrentAiState = MonsterAiState.StateDead;
+        }
 
         //if (CurrentAiState == MonsterAiState.StateChase)
         //    CurrentAiState = CurrentAiState;

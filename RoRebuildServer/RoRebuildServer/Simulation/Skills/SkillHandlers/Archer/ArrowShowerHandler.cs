@@ -20,7 +20,7 @@ public class ArrowShowerHandler : SkillHandlerBase
         if (lvl < 0 || lvl > 10)
             lvl = 10;
 
-        return 1.5f - lvl;
+        return 1.5f - lvl * 0.1f;
     }
 
     //new arrow shower is 5x5
@@ -39,13 +39,12 @@ public class ArrowShowerHandler : SkillHandlerBase
 
         var maxRatio = 1.5f + lvl * 0.1f;
         var midRatio = 1f + lvl * 0.1f;
-        var minRatio = 1f + lvl * 0.1f;
+        var minRatio = 0.8f + lvl * 0.1f;
 
         var attack = new AttackRequest(CharacterSkill.ArrowShower, 1, 1, AttackFlags.Physical | AttackFlags.Ranged, AttackElement.Neutral);
 
         foreach (var e in targetList)
         {
-
             if (e.TryGet<WorldObject>(out var blastTarget))
             {
                 var dist = position.SquareDistance(blastTarget.Position);

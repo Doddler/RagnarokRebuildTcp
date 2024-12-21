@@ -1794,6 +1794,7 @@ namespace Assets.Scripts
                 }
             }
 
+            #if UNITY_EDITOR
             if (!inInputUI && Input.GetKeyDown(KeyCode.Z))
             {
                 if (Mathf.Approximately(Time.timeScale, 1f))
@@ -1801,6 +1802,7 @@ namespace Assets.Scripts
                 else
                     Time.timeScale = 1f;
             }
+            #endif
 
             if (CinemachineMode)
                 CinemachineFollow();

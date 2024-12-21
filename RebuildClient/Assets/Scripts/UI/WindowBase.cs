@@ -63,6 +63,11 @@ namespace Assets.Scripts.UI
                 mgr.ForceHideTooltip();
             }
 
+            if (mgr.IsDraggingItem)
+            {
+                mgr.EndItemDrag(false);
+            }
+
             // Debug.Log(name + " : " + gameObject.activeInHierarchy);
         }
 

@@ -49,7 +49,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[33].ExecuteWithoutSource = true;
 			handlers[34] = new DefaultSkillHandler();
 			handlers[35] = new DefaultSkillHandler();
-			handlers[36] = new DefaultSkillHandler();
+			handlers[36] = new AngelusHandler();
 			handlers[37] = new DefaultSkillHandler();
 			handlers[38] = new DefaultSkillHandler();
 			handlers[39] = new DefaultSkillHandler();
@@ -62,7 +62,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[45] = new DefaultSkillHandler();
 			handlers[46] = new EnvenomHandler();
 			handlers[47] = new DefaultSkillHandler();
-			handlers[48] = new DefaultSkillHandler();
+			handlers[48] = new BackslideHandler();
 			handlers[49] = new DefaultSkillHandler();
 			handlers[50] = new DefaultSkillHandler();
 			handlers[51] = new DefaultSkillHandler();
@@ -76,8 +76,8 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[59] = new DefaultSkillHandler();
 			handlers[60] = new MammoniteHandler();
 			handlers[61] = new DefaultSkillHandler();
-			handlers[62] = new DefaultSkillHandler();
-			handlers[63] = new DefaultSkillHandler();
+			handlers[62] = new CrazyUproarHandler();
+			handlers[63] = new CartRevolutionHandler();
 			handlers[64] = new TwoHandQuickenHandler();
 			handlers[65] = new ResurrectionHandler();
 			handlers[66] = new HammerFallHandler();

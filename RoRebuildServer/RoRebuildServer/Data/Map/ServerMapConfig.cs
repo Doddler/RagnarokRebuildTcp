@@ -18,7 +18,25 @@ public enum SpawnCreateFlags
     LockedArea = GuaranteeInZone | StrictArea | LockToSpawnZone
 }
 
-public class ServerMapConfig
+//while this seems pointless to have an interface for this, it exists so we can query map spawn data in an external app without an associated map
+public interface IServerMapConfig
+{
+    List<MapSpawnRule> SpawnRules { get; set; }
+    void AttachKillEvent(string spawnId, string name, int incAmnt);
+
+    void CreateSpawnEvent(string ev, int interval, string mobname, int spawnPer, int maxSpawn,
+        int respawnTime);
+
+    void ApplySpawnsToMap();
+    MapSpawnRule CreateSpawn(string mobName, int count, Area area, int respawn, int variance, SpawnCreateFlags flags = SpawnCreateFlags.None);
+    MapSpawnRule? CreateSpawn(string mobName, int count, int respawn, int variance, SpawnCreateFlags flags = SpawnCreateFlags.None);
+    MapSpawnRule? CreateSpawn(string mobName, int count, Area area, int respawn, SpawnCreateFlags flags = SpawnCreateFlags.None);
+    MapSpawnRule? CreateSpawn(string mobName, int count, Area area, SpawnCreateFlags flags = SpawnCreateFlags.None);
+    MapSpawnRule? CreateSpawn(string mobName, int count, int respawn, SpawnCreateFlags flags = SpawnCreateFlags.None);
+    MapSpawnRule? CreateSpawn(string mobName, int count, SpawnCreateFlags flags = SpawnCreateFlags.None);
+}
+
+public class ServerMapConfig : IServerMapConfig
 {
     public Simulation.Map Map;
     public List<MapSpawnRule> SpawnRules { get; set; }
@@ -83,9 +101,19 @@ public class ServerMapConfig
             return null!;
         }
 
-        if (respawn < ServerConfig.DebugConfig.MinSpawnTime)
-            respawn = ServerConfig.DebugConfig.MinSpawnTime;
+        var minTime = ServerConfig.DebugConfig.MinSpawnTime;
+        var maxTime = ServerConfig.DebugConfig.MaxSpawnTime;
 
+        if ( minTime > 0 && respawn < minTime)
+            respawn = minTime;
+        
+        var respawnMax = respawn + variance;
+
+        if (maxTime > 0 && respawn > maxTime)
+            respawn = maxTime;
+        if (maxTime > 0 && respawnMax > maxTime)
+            respawnMax = maxTime;
+        
         area = area.ClipArea(Map.MapBounds);
 
         var displayType = CharacterDisplayType.Monster;
@@ -94,7 +122,7 @@ public class ServerMapConfig
         if (flags.HasFlag(SpawnCreateFlags.MVP))
             displayType = CharacterDisplayType.Mvp;
 
-        var spawn = new MapSpawnRule(SpawnRules.Count, mobStats, area, count, respawn, respawn + variance, displayType);
+        var spawn = new MapSpawnRule(SpawnRules.Count, mobStats, area, count, respawn, respawnMax, displayType);
         if (!area.IsZero)
         {
             spawn.UseStrictZone = flags.HasFlag(SpawnCreateFlags.StrictArea);

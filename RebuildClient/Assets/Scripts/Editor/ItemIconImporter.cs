@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Assets.Editor;
 using Assets.Scripts.MapEditor.Editor;
 using Assets.Scripts.Sprites;
@@ -46,15 +47,23 @@ namespace Assets.Scripts.Editor
             
             var itemDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/items.json");
             var items = JsonUtility.FromJson<Wrapper<ItemData>>(itemDataFile.text);
-            
-            foreach(var item in items.Items)
+            var sharedItemSprites = new StringBuilder();
+
+            foreach (var item in items.Items)
+            {
                 if (!string.IsNullOrWhiteSpace(item.Sprite) && !iconNames.Contains(item.Code))
                 {
                     if (iconNames.Contains(item.Sprite))
+                    {
+                        sharedItemSprites.AppendLine($"{item.Code}\t{convertName[item.Sprite]}");
                         continue;
+                    }
+
                     iconNames.Add(item.Sprite);
                     convertName.Add(item.Sprite, item.Code);
                 }
+            }
+            File.WriteAllText("Assets/Data/SharedItemIcons.txt", sharedItemSprites.ToString());
 
             var atlasPath = "Assets/Textures/ItemAtlas.spriteatlasv2";
             if (!File.Exists(atlasPath))

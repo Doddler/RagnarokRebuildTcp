@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntitySystem
@@ -80,8 +81,11 @@ namespace RoRebuildServer.EntitySystem
         public void AddOrIncreaseValue(ref Entity entity, T value)
         {
             if (!entity.IsAlive())
-                throw new Exception("Can't add entity to EntityValueList as it's not active.");
-            
+            {
+                ServerLogger.LogError($"Attempting to add entity to EntityValueLIst while not active!\n{Environment.StackTrace}");
+                return;
+            }
+
             ResizeIfNeeded();
 
             for (var i = 0; i < count; i++)
@@ -101,7 +105,10 @@ namespace RoRebuildServer.EntitySystem
         public void AddOrSetValue(ref Entity entity, T value)
         {
             if (!entity.IsAlive())
-                throw new Exception("Can't add entity to EntityValueList as it's not active.");
+            {
+                ServerLogger.LogError($"Attempting to add entity to EntityValueLIst while not active!\n{Environment.StackTrace}");
+                return;
+            }
 
             ResizeIfNeeded();
 
@@ -123,7 +130,10 @@ namespace RoRebuildServer.EntitySystem
         public void Add(ref Entity entity, T value)
         {
             if (!entity.IsAlive())
-                throw new Exception("Can't add entity to EntityValueList as it's not active.");
+            {
+                ServerLogger.LogError($"Attempting to add entity to EntityValueLIst while not active!\n{Environment.StackTrace}");
+                return;
+            }
 
 #if DEBUG
             if (Contains(ref entity))
@@ -141,7 +151,10 @@ namespace RoRebuildServer.EntitySystem
         public void Add(Entity entity, T value)
         {
             if (!entity.IsAlive())
-                throw new Exception("Can't add entity to EntityValueList as it's not active.");
+            {
+                ServerLogger.LogError($"Attempting to add entity to EntityValueLIst while not active!\n{Environment.StackTrace}");
+                return;
+            }
 
 #if DEBUG
             if (Contains(ref entity))

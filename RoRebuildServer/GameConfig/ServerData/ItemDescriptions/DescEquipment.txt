@@ -138,6 +138,7 @@ All Stats + 50
 
 ::Bunny_Band //id 2214 - Headgear Top
 <color=#808080>A hairband fashioned with rabbit ears, a symbol of good luck.</color>
+LUK +2
 
 ::Flower_Band //id 2215 - Headgear Top
 <color=#808080>A fragrant hairband crafted from only the daintiest of flowers.</color>
@@ -324,6 +325,7 @@ All Stats + 50
 
 ::Sakkat //id 2280 - Headgear Top
 <color=#808080>A rustic hat knit from rough reeds and bamboo that shields against the rain and sun.</color>
+AGI +1
 
 ::Opera_Masque //id 2281 - Headgear MidBottom
 <color=#808080>A mysterious mask worn by opera phantoms.</color>
@@ -372,6 +374,7 @@ All Stats + 50
 
 ::Binoculars //id 2296 - Headgear Mid
 <color=#808080>An optical tool that enables one to observe objects from a great distance.</color>
+DEX +1
 
 ::Goblin_Mask //id 2297 - Headgear MidBottom
 <color=#808080>A mask worn by Goblins to scare and intimidate unsuspecting enemies.</color>
@@ -924,9 +927,11 @@ HP +5%
 
 ::Megingjard //id 2629 - Accessory 
 <color=#808080>A reproduction of the girdle of might worn by Thor.</color>
+STR + 40
 
 ::Brisingamen //id 2630 - Accessory 
 <color=#808080>A reproduction of the necklace of beauty worn by Freya.</color>
+Str +6, Agi +6, Int +6, Vit +6, Luk +10
 
 ::Wedding_Ring //id 2634 - Accessory 
 <color=#808080>A wedding ring for a groom which symbolizes ever-lasting love.</color>
@@ -1154,6 +1159,7 @@ STR, VIT, INT, DEX, AGI, LUK +1
 
 ::Lord_Kaho's_Horns //id 5013 - Headgear Top
 <color=#808080>A special headgear created specifically for Lord Kaho.</color>
+Str +5, Int +5, Vit +10, Agi +10, Luk +20
 
 ::Fin_Helm //id 5014 - Headgear Mid
 <color=#808080>A pair of helment accessories that look just like fins.</color>
@@ -1178,6 +1184,7 @@ STR, VIT, INT, DEX, AGI, LUK +1
 
 ::Hat_of_the_Sun_God //id 5022 - Headgear TopMid
 <color=#808080>A hat worn by the god of the sun.</color>
+STR +3, INT +2
 
 ::Parcel_Hat //id 5023 - Headgear Top
 <color=#808080>A large piece of cloth wrapped around goods carried on the head.</color>
@@ -1193,6 +1200,7 @@ STR, VIT, INT, DEX, AGI, LUK +1
 
 ::Mage_Hat //id 5027 - Headgear Top
 <color=#808080>A stylish formal hat worn by talented magicians.</color>
+INT +2, MaxSP +150
 
 ::Candle //id 5028 - Headgear Top
 <color=#808080>A large, slightly used candlestick that can be worn.</color>
@@ -1280,6 +1288,7 @@ STR, VIT, INT, DEX, AGI, LUK +1
 
 ::Party_Hat //id 5060 - Headgear Top
 <color=#808080>A festive hat for celebrations and parties.</color>
+LUK +1
 
 ::Flower_Hairpin //id 5061 - Headgear Top
 <color=#808080>A hairpin with a red flower attached.</color>
@@ -1463,6 +1472,7 @@ STR, VIT, INT, DEX, AGI, LUK +1
 
 ::Marionette_Doll //id 5141 - Headgear Top
 <color=#808080>A Marionette doll that gives you chills when you wear it.</color>
+STR +1
 
 ::Baseball_Cap //id 5147 - Headgear Top
 <color=#808080>A cap worn to block the sun from your eyes.</color>
@@ -1496,6 +1506,7 @@ STR, VIT, INT, DEX, AGI, LUK +1
 
 ::Sphinx_Hat_ //id 5166 - Headgear TopBottom
 <color=#808080>A traditional headpiece that symbolizes the traditional gods.</color>
+STR +2
 
 ::Munak_Hat_ //id 5167 - Headgear All
 <color=#808080>A replica of Munak's turban, complete with an amulet.</color>
@@ -1556,12 +1567,15 @@ STR, VIT, INT, DEX, AGI, LUK +1
 
 ::Deviruchi_Hat_ //id 5227 - Headgear Top
 <color=#808080>A cute headgear made in the form of a Deviruchi.</color>
+STR +1, INT +1
 
 ::Deviruchi_Hat__ //id 5228 - Headgear Top
 <color=#808080>A cute headgear made in the form of a Deviruchi.</color>
+STR +1, INT +1
 
 ::Deviruchi_Hat___ //id 5229 - Headgear Top
 <color=#808080>A cute headgear made in the form of a Deviruchi.</color>
+STR +1, INT +1
 
 ::Drooping_Cat_ //id 5230 - Headgear Top
 <color=#808080>A cute kitty doll that is just adorable.</color>

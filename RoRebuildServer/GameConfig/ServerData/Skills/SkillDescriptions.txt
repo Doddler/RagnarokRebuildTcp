@@ -152,7 +152,14 @@ Increases the chance to evade an enemy attack. Evasion doesn't fall off with mor
 ::Envenom
 Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target's VIT.
 Higher skill levels increase success rate of poison as well as duration.
-Poison Effect: Deals 1/2 the received damage every 3 seconds.
+Poison Effect: Deals 1/2 the received damage every 2 seconds.
+
+::SonicBlow
+Deals 8 hits to a single target at 50% attack at level 1 rising to 100% attack at level 10.
+
+::Hiding
+Hide from view making yourself untargetable while slowly consuming SP. Insect, demon, and certain powerful monsters can see through the skill.
+You cannot attack while hidden and SP recovery rate is reduced by half. Higher skill levels increase the max duration and slows the sp consumption.
 
 //----------------Merchant-------------------
 
@@ -161,7 +168,8 @@ Increases your weight capacity by +200 per skill level.
 
 ::Mammonite
 Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.
-Each level adds +50% damage to your attack and costs an additional 60 zeny to use (dealing 600% @ 600z at level 10).
+Each level adds +50% damage to your attack and costs an additional 50 zeny to use (dealing 600% @ 500z at level 10).
+Zeny used is affected by your level of Discount.
 
 ::PushCart
 Rent a pushcart, increasing your character's weight capacity by +2000.
@@ -174,3 +182,8 @@ Obtain better sale value of items to the NPC. Starts at +7% item value at level 
 
 ::Discount
 Obtain a better deal when buying items from the NPC. Starts at -7% item cost at level 1 and scales to -24% at level 10. Also lowers the zeny cost of Mammonite. Some shops cannot be discounted.
+
+::CartRevolution
+Strikes a target and a 3x3 area around them with your cart dealing 150% attack with +10% (scaling to +20% at lvl 10) added for every 1000 weight currently in your inventory.
+Knocks the enemy away from you 2 tiles.
+<i>It only goes to level 10 because merchant needs something to spend points on.</i>

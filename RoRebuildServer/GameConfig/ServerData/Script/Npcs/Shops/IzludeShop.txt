@@ -67,6 +67,7 @@ Trader("izlude_in", "Tool Dealer", "1_M_01", 115, 61, N) {
 	SellItem("Butterfly_Wing");
 	SellItem("Trap");
 	SellItem("Arrow");
+	SellItem("Yggdrasil_Leaf");
 }
 
 Trader("izlude", "Pet Groomer", "4_F_TELEPORTER", 164, 138, S) {

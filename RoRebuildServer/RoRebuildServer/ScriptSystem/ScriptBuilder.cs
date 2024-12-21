@@ -272,7 +272,7 @@ public class ScriptBuilder
         indentation++;
 
         StartIndentedBlockLine().AppendLine($"[ServerMapConfigAttribute(\"{name}\")]");
-        StartIndentedBlockLine().AppendLine($"public static void Map_{methodName}(ServerMapConfig map)");
+        StartIndentedBlockLine().AppendLine($"public static void Map_{methodName}(IServerMapConfig map)");
         StartIndentedBlockLine().AppendLine("{");
 
         LoadFunctionSource(typeof(ServerMapConfig), "map");

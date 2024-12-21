@@ -10,7 +10,7 @@ MapConfig("2009rwc_03")
 
 MapConfig("pvp_n_1-5")
 {
-	CreateSpawn("BLUE_PLANT", 100, %(115, 113, 3, 3));
+	CreateSpawn("BLUE_PLANT", 100, %(115, 113, 3, 3), 15s, 15s);
 	//CreateSpawn("PORING", 100);
 }
 

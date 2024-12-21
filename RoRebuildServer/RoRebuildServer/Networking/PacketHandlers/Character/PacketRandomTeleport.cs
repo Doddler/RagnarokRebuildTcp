@@ -5,6 +5,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using System.Diagnostics;
+using RoRebuildServer.Data;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -19,6 +20,9 @@ public class PacketRandomTeleport : IClientPacketHandler
         Debug.Assert(connection.Player != null);
         Debug.Assert(connection.Character != null);
         Debug.Assert(connection.Character.Map != null);
+
+        if (!ServerConfig.DebugConfig.EnableRandomMoveForEveryone && !connection.Player.IsAdmin)
+            return;
 
         if (!connection.Player.CanPerformCharacterActions())
             return;

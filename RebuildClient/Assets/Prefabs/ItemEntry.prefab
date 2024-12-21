@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 382deac4a5934c8a8f6c37da4532512f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Background: {fileID: 7873357567368602672}
   Image: {fileID: 5071333785977093980}
   ItemName: {fileID: 7776067239053130198}
   Sprite: {fileID: 0}
@@ -601,7 +602,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 2, z: 0, w: 0}
+  m_margin: {x: 0, y: 3, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

@@ -507,6 +507,7 @@ internal class DataLoader
             var item = new ItemInfo()
             {
                 Code = entry.Code,
+                Name = entry.Name,
                 Id = entry.Id,
                 IsUnique = false,
                 ItemClass = ItemClass.Useable,
@@ -527,6 +528,7 @@ internal class DataLoader
             var item = new ItemInfo()
             {
                 Code = entry.Code,
+                Name = entry.Name,
                 Id = entry.Id,
                 IsUnique = true,
                 ItemClass = ItemClass.Equipment,
@@ -562,6 +564,7 @@ internal class DataLoader
             var item = new ItemInfo()
             {
                 Code = entry.Code,
+                Name = entry.Name,
                 Id = entry.Id,
                 IsUnique = true,
                 ItemClass = ItemClass.Weapon,
@@ -600,6 +603,7 @@ internal class DataLoader
             var item = new ItemInfo()
             {
                 Code = entry.Code,
+                Name = entry.Name,
                 Id = entry.Id,
                 IsUnique = false,
                 ItemClass = ItemClass.Card,
@@ -624,6 +628,7 @@ internal class DataLoader
             var item = new ItemInfo()
             {
                 Code = entry.Code,
+                Name = entry.Name,
                 Id = entry.Id,
                 IsUnique = false,
                 ItemClass = ItemClass.Ammo,
@@ -647,6 +652,7 @@ internal class DataLoader
             var item = new ItemInfo()
             {
                 Code = entry.Code,
+                Name = entry.Name,
                 Id = entry.Id,
                 IsUnique = false,
                 ItemClass = ItemClass.Useable,
@@ -904,9 +910,9 @@ internal class DataLoader
         }
     }
 
-    public ReadOnlyDictionary<string, Action<ServerMapConfig>> LoadMapConfigs(Assembly assembly)
+    public ReadOnlyDictionary<string, Action<IServerMapConfig>> LoadMapConfigs(Assembly assembly)
     {
-        var configs = new Dictionary<string, Action<ServerMapConfig>>();
+        var configs = new Dictionary<string, Action<IServerMapConfig>>();
 
         var attr = typeof(ServerMapConfigAttribute);
         var types = assembly.GetTypes().SelectMany(t => t.GetMethods())
@@ -914,7 +920,7 @@ internal class DataLoader
 
         foreach (var type in types)
         {
-            var action = (Action<ServerMapConfig>)type.CreateDelegate(typeof(Action<ServerMapConfig>));
+            var action = (Action<IServerMapConfig>)type.CreateDelegate(typeof(Action<IServerMapConfig>));
             var at = type.GetCustomAttribute<ServerMapConfigAttribute>();
 
             if (at != null) configs.Add(at.MapName, action);

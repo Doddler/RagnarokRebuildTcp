@@ -9,6 +9,7 @@ public class ItemInfo
 {
     public int Id;
     public string Code = null!;
+    public string Name = null!;
     public int Weight;
     public int Price;
     public bool IsUnique;

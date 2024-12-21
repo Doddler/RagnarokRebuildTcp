@@ -20,6 +20,8 @@ namespace Assets.Scripts.UI
         {
             var item = ClientDataLoader.Instance.GetItemById(itemId);
             ItemName.text = item.Name;
+            if(item.Slots > 0)
+                ItemName.text = $"{item.Name}[{item.Slots}]";
             base.Assign(DragItemType.ShopItem, sprite, itemId, count);
             if(count > 0)
                 UpdateCount(count);
@@ -30,6 +32,8 @@ namespace Assets.Scripts.UI
         public void Assign(Sprite sprite, ItemData item, int bagId, int count)
         {
             ItemName.text = item.Name;
+            if(item.Slots > 0)
+                ItemName.text = $"{item.Name}[{item.Slots}]";
             base.Assign(DragItemType.ShopItem, sprite, bagId, count);
             if(count > 0)
                 UpdateCount(count);

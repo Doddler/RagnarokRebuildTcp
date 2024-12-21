@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.Simulation.Util;
+﻿using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntitySystem;
 
@@ -70,8 +71,11 @@ public class EntityList : IDisposable
     public void AddIfNotExists(ref Entity entity)
     {
         if (!entity.IsAlive())
-            throw new Exception("Can't add entity to EntityList as it's not active.");
-
+        {
+            ServerLogger.LogError($"Attempting to add entity to EntityList while the entity is not active!\n{Environment.StackTrace}");
+            return;
+        }
+        
         if (Contains(ref entity))
             return;
 
@@ -84,7 +88,10 @@ public class EntityList : IDisposable
     public void AddIfNotExists(Entity entity)
     {
         if (!entity.IsAlive())
-            throw new Exception("Can't add entity to EntityList as it's not active.");
+        {
+            ServerLogger.LogError($"Attempting to add entity to EntityList while the entity is not active!\n{Environment.StackTrace}");
+            return;
+        }
 
         if (Contains(ref entity))
             return;
@@ -102,9 +109,11 @@ public class EntityList : IDisposable
         if (!IsActive)
             throw new Exception($"Attempting to use an entity list that wasn't borrowed from the EntityListPool, or has already been returned!");
 #endif
-
         if (!entity.IsAlive())
-            throw new Exception("Can't add entity to EntityList as it's not active.");
+        {
+            ServerLogger.LogError($"Attempting to add entity to EntityList while the entity is not active!\n{Environment.StackTrace}");
+            return;
+        }
 
         ResizeIfNeeded();
 
@@ -119,9 +128,11 @@ public class EntityList : IDisposable
         if (!IsActive)
             throw new Exception($"Attempting to use an entity list that wasn't borrowed from the EntityListPool, or has already been returned!");
 #endif
-
         if (!entity.IsAlive())
-            throw new Exception("Can't add entity to EntityList as it's not active.");
+        {
+            ServerLogger.LogError($"Attempting to add entity to EntityList while the entity is not active!\n{Environment.StackTrace}");
+            return;
+        }
 
         ResizeIfNeeded();
 

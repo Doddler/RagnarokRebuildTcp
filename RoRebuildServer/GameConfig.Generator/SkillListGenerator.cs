@@ -12,37 +12,64 @@ namespace GameConfig.Generator
     /// <summary>
     /// Generates the CharacterSkill enum type directly from Skills.toml.
     /// </summary>
-    [Generator]
-    internal class SkillListGenerator : ISourceGenerator
+    [Generator(LanguageNames.CSharp)]
+    internal class SkillListGenerator : IIncrementalGenerator
     {
-        public void Initialize(GeneratorInitializationContext context) { }
-
-        public void Execute(GeneratorExecutionContext context)
+        public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            //if (!Debugger.IsAttached) Debugger.Launch();
             Debug.WriteLine("Execute code generator");
-            var myFiles = context.AdditionalFiles.Where(at => at.Path.EndsWith("Skills.toml"));
-            foreach (var file in myFiles)
-            {
-                var text = file.GetText().ToString();
-                var table = Toml.ToModel(text);
-
-                var srcOut = new StringBuilder();
-                srcOut.AppendLine("namespace RebuildSharedData.Enum;");
-                srcOut.AppendLine("public enum CharacterSkill : byte");
-                srcOut.AppendLine("{");
-                srcOut.AppendLine("\tNone,");
-                foreach (var obj in table)
+            var myFiles = context.AdditionalTextsProvider.Where(at => at.Path.EndsWith("Skills.toml"))
+                .Select((text, cancellationToken) =>
                 {
-                    srcOut.AppendLine($"\t{obj.Key},");
-                }
+                    var t = text.GetText(cancellationToken);
+                    var table = Toml.ToModel(t.ToString());
 
-                srcOut.AppendLine("}");
+                    var srcOut = new StringBuilder();
+                    srcOut.AppendLine("namespace RebuildSharedData.Enum;");
+                    srcOut.AppendLine("public enum CharacterSkill : byte");
+                    srcOut.AppendLine("{");
+                    srcOut.AppendLine("\tNone,");
+                    foreach (var obj in table)
+                    {
+                        srcOut.AppendLine($"\t{obj.Key},");
+                    }
 
-                //context.AddSource($"ClientSkill.g.cs", srcOut.ToString());
-                context.AddSource($"ClientSkill.g.cs", SourceText.From(srcOut.ToString(), Encoding.UTF8));
-            }
+                    srcOut.AppendLine("}");
+                    return srcOut.ToString();
+                });
+
+            context.RegisterSourceOutput(myFiles, (productionContext, text) =>
+            {
+                productionContext.AddSource($"ClientSkill.g.cs", SourceText.From(text, Encoding.UTF8));
+            });
         }
+
+        //public void Execute(GeneratorExecutionContext context)
+        //{
+        //    //if (!Debugger.IsAttached) Debugger.Launch();
+        //    Debug.WriteLine("Execute code generator");
+        //    var myFiles = context.AdditionalFiles.Where(at => at.Path.EndsWith("Skills.toml"));
+        //    foreach (var file in myFiles)
+        //    {
+        //        var text = file.GetText().ToString();
+        //        var table = Toml.ToModel(text);
+
+        //        var srcOut = new StringBuilder();
+        //        srcOut.AppendLine("namespace RebuildSharedData.Enum;");
+        //        srcOut.AppendLine("public enum CharacterSkill : byte");
+        //        srcOut.AppendLine("{");
+        //        srcOut.AppendLine("\tNone,");
+        //        foreach (var obj in table)
+        //        {
+        //            srcOut.AppendLine($"\t{obj.Key},");
+        //        }
+
+        //        srcOut.AppendLine("}");
+
+        //        //context.AddSource($"ClientSkill.g.cs", srcOut.ToString());
+        //        context.AddSource($"ClientSkill.g.cs", SourceText.From(srcOut.ToString(), Encoding.UTF8));
+        //    }
+        //}
     }
 }
 

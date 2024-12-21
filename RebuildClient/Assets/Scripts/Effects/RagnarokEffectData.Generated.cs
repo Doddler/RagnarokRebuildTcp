@@ -23,6 +23,7 @@ namespace Assets.Scripts.Effects
 		Hide,
 		Stun,
 		Blessing,
+		CartRevolution,
 		Provoke,
 		ArcherArrow,
 		BlueWaterfallEffect,
@@ -61,6 +62,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Hide, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.HideEffect());
 			effectHandlers.Add(EffectType.Stun, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.StunEffect());
 			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.Skills.BlessingEffect());
+			effectHandlers.Add(EffectType.CartRevolution, new Assets.Scripts.Effects.EffectHandlers.Skills.CartRevolutionEffect());
 			effectHandlers.Add(EffectType.Provoke, new Assets.Scripts.Effects.EffectHandlers.Skills.ProvokeEffect());
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.General.ArcherArrow());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());

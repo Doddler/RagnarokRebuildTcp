@@ -1348,8 +1348,9 @@ namespace Assets.Scripts.Network
                     SpriteAnimator.State = SpriteState.Idle;
                     SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
                 }
-
                 
+                //RealPosition may not have the correct height so we force it to update
+                RealPosition = new Vector3(RealPosition.x, walkProvider.GetHeightForPosition(RealPosition), RealPosition.z);
                 transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
             }
         }

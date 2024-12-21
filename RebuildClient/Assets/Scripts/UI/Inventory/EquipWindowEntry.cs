@@ -12,6 +12,7 @@ namespace Assets.Scripts.UI.Inventory
 {
     public class EquipWindowEntry : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler
     {
+        public GameObject Background;
         public Image Image;
         public TextMeshProUGUI ItemName;
         public Sprite Sprite;
@@ -30,6 +31,7 @@ namespace Assets.Scripts.UI.Inventory
             Image.rectTransform.sizeDelta = Sprite.rect.size * 2;
             ItemName.text = item.ProperName();
             
+            Background.gameObject.SetActive(false);
             Image.gameObject.SetActive(true);
             ItemName.gameObject.SetActive(true);
             isActive = true;
@@ -37,6 +39,7 @@ namespace Assets.Scripts.UI.Inventory
 
         public void ClearSlot()
         {
+            Background.gameObject.SetActive(true);
             Image.gameObject.SetActive(false);
             InventoryItem = new InventoryItem();
             ItemId = 0;

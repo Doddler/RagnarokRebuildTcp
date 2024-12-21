@@ -109,6 +109,10 @@ Type = "Buff"
 CanDispel = false
 CanDisable = true
 
+[CrazyUproar]
+Name = "Crazy Uproar"
+Type = "Buff"
+
 #----------------------------------
 # Item Buffs
 #----------------------------------
@@ -124,6 +128,13 @@ Name = "Attack Speed UP"
 Type = "Buff"
 CanDispel = true
 CanDisable = true
+
+[ElementalConverter]
+Name = "Elemental Converter"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
+
 
 #----------------------------------
 # Monster Status Effects

@@ -44,7 +44,7 @@ public class MammoniteHandler : SkillHandlerBase
 
     private int GetMammoniteCost(Player player, int level)
     {
-        var cost = 60 * level;
+        var cost = 50 * level;
         var discountLvl = player.MaxLearnedLevelOfSkill(CharacterSkill.Discount);
         var discount = discountLvl > 0 ? 5 + discountLvl * 2 : 0;
         cost -= cost * discount / 100;

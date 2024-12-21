@@ -322,7 +322,7 @@
     },
     {
       "Code": "Old_Blue_Box",
-      "Description": "\u003Ccolor=#808080\u003EAn old blue box with unknown contents.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn old blue box with unknown contents.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EContains a random item out of all the items in the game. Even the broken ones. Most of them aren\u0027t very useful though.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
     },
     {
       "Code": "Dead_Branch",
@@ -374,11 +374,11 @@
     },
     {
       "Code": "Old_Card_Album",
-      "Description": "\u003Ccolor=#808080\u003EAn antique album which contains an unknown card.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E5\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn antique album which contains an unknown card.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EContains one of any card in the game. Even the broken ones. A lot of them don\u0027t work though.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E5\u003C/color\u003E"
     },
     {
       "Code": "Old_Purple_Box",
-      "Description": "\u003Ccolor=#808080\u003EAn old purple box with unknown contents.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn old purple box with unknown contents.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EContains one of any equipment or weapon in the game. Even the broken ones. Most of them aren\u0027t very useful though.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
     },
     {
       "Code": "Worn_Out_Scroll",
@@ -923,6 +923,22 @@
     {
       "Code": "Wrapped_Mask",
       "Description": "\u003Ccolor=#808080\u003EA mask that has been carefully wrapped.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
+    },
+    {
+      "Code": "Elemental_Converter_Fire",
+      "Description": "Enchant weapon with Fire for 10 minutes\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+    },
+    {
+      "Code": "Elemental_Converter_Water",
+      "Description": "Enchant weapon with Water for 10 minutes\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+    },
+    {
+      "Code": "Elemental_Converter_Earth",
+      "Description": "Enchant weapon with Earth for 10 minutes\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+    },
+    {
+      "Code": "Elemental_Converter_Wind",
+      "Description": "Enchant weapon with Wind for 10 minutes\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Santa\u0027s_Bag",
@@ -4118,7 +4134,7 @@
     },
     {
       "Code": "Haedonggum",
-      "Description": "\u003Ccolor=#808080\u003EA ancient sword said to have the mysterious power to control minds.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E120\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E27\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA ancient sword said to have the mysterious power to control minds.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B3\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E120\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E27\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Orcish_Sword",
@@ -4166,7 +4182,7 @@
     },
     {
       "Code": "Cutlus",
-      "Description": "\u003Ccolor=#808080\u003EA sword popularized by sea adventurers.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E150\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA sword popularized by sea adventurers.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E150\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Solar_Sword",
@@ -4410,7 +4426,7 @@
     },
     {
       "Code": "Fortune_Sword",
-      "Description": "\u003Ccolor=#808080\u003EA knife with a gold handle that brings great fortune to whoever holds it.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EDagger\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E24\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Mage, Archer, Merchant, Thief, Soul Linker, Ninja\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA knife with a gold handle that brings great fortune to whoever holds it.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ELUK \u002B5, Perfect Dodge \u002B20\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EDagger\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E24\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Mage, Archer, Merchant, Thief, Soul Linker, Ninja\u003C/color\u003E"
     },
     {
       "Code": "Swordbreaker",
@@ -5018,7 +5034,7 @@
     },
     {
       "Code": "Mjolnir",
-      "Description": "\u003Ccolor=#808080\u003EA facsimile of the mighty hammer wielded by Thor, god of thunder.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EMace\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable, Unrefinable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E250\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EWind\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E600\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E95\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA facsimile of the mighty hammer wielded by Thor, god of thunder.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EStr \u002B15, DEX \u002B40\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EMace\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable, Unrefinable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E250\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EWind\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E600\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E95\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant\u003C/color\u003E"
     },
     {
       "Code": "Wrench",
@@ -6246,7 +6262,7 @@
     },
     {
       "Code": "Bunny_Band",
-      "Description": "\u003Ccolor=#808080\u003EA hairband fashioned with rabbit ears, a symbol of good luck.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA hairband fashioned with rabbit ears, a symbol of good luck.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ELUK \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Flower_Band",
@@ -6494,7 +6510,7 @@
     },
     {
       "Code": "Sakkat",
-      "Description": "\u003Ccolor=#808080\u003EA rustic hat knit from rough reeds and bamboo that shields against the rain and sun.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E30\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA rustic hat knit from rough reeds and bamboo that shields against the rain and sun.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EAGI \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E30\u003C/color\u003E"
     },
     {
       "Code": "Opera_Masque",
@@ -6558,7 +6574,7 @@
     },
     {
       "Code": "Binoculars",
-      "Description": "\u003Ccolor=#808080\u003EAn optical tool that enables one to observe objects from a great distance.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EArcher\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn optical tool that enables one to observe objects from a great distance.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EDEX \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EArcher\u003C/color\u003E"
     },
     {
       "Code": "Goblin_Mask",
@@ -7294,11 +7310,11 @@
     },
     {
       "Code": "Megingjard",
-      "Description": "\u003Ccolor=#808080\u003EA reproduction of the girdle of might worn by Thor.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E7\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E800\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E94\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA reproduction of the girdle of might worn by Thor.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B 40\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E7\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E800\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E94\u003C/color\u003E"
     },
     {
       "Code": "Brisingamen",
-      "Description": "\u003Ccolor=#808080\u003EA reproduction of the necklace of beauty worn by Freya.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E150\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E94\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA reproduction of the necklace of beauty worn by Freya.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EStr \u002B6, Agi \u002B6, Int \u002B6, Vit \u002B6, Luk \u002B10\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E150\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E94\u003C/color\u003E"
     },
     {
       "Code": "Wedding_Ring",
@@ -7602,7 +7618,7 @@
     },
     {
       "Code": "Lord_Kaho\u0027s_Horns",
-      "Description": "\u003Ccolor=#808080\u003EA special headgear created specifically for Lord Kaho.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA special headgear created specifically for Lord Kaho.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EStr \u002B5, Int \u002B5, Vit \u002B10, Agi \u002B10, Luk \u002B20\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Fin_Helm",
@@ -7634,7 +7650,7 @@
     },
     {
       "Code": "Hat_of_the_Sun_God",
-      "Description": "\u003Ccolor=#808080\u003EA hat worn by the god of the sun.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top \u002B Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E240\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESecond Jobs\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA hat worn by the god of the sun.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B3, INT \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top \u002B Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E240\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESecond Jobs\u003C/color\u003E"
     },
     {
       "Code": "Parcel_Hat",
@@ -7654,7 +7670,7 @@
     },
     {
       "Code": "Mage_Hat",
-      "Description": "\u003Ccolor=#808080\u003EA stylish formal hat worn by talented magicians.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E30\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA stylish formal hat worn by talented magicians.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B2, MaxSP \u002B150\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E30\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
     },
     {
       "Code": "Candle",
@@ -7770,7 +7786,7 @@
     },
     {
       "Code": "Party_Hat",
-      "Description": "\u003Ccolor=#808080\u003EA festive hat for celebrations and parties.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E30\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA festive hat for celebrations and parties.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ELUK \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E30\u003C/color\u003E"
     },
     {
       "Code": "Flower_Hairpin",
@@ -8014,7 +8030,7 @@
     },
     {
       "Code": "Marionette_Doll",
-      "Description": "\u003Ccolor=#808080\u003EA Marionette doll that gives you chills when you wear it.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E30\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA Marionette doll that gives you chills when you wear it.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E30\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Baseball_Cap",
@@ -8058,7 +8074,7 @@
     },
     {
       "Code": "Sphinx_Hat_",
-      "Description": "\u003Ccolor=#808080\u003EA traditional headpiece that symbolizes the traditional gods.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top \u002B Lower)\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnrefinable\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E300\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E65\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA traditional headpiece that symbolizes the traditional gods.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top \u002B Lower)\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnrefinable\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E300\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E65\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
     },
     {
       "Code": "Munak_Hat_",
@@ -8138,15 +8154,15 @@
     },
     {
       "Code": "Deviruchi_Hat_",
-      "Description": "\u003Ccolor=#808080\u003EA cute headgear made in the form of a Deviruchi.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E64\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA cute headgear made in the form of a Deviruchi.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B1, INT \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E64\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Deviruchi_Hat__",
-      "Description": "\u003Ccolor=#808080\u003EA cute headgear made in the form of a Deviruchi.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E64\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA cute headgear made in the form of a Deviruchi.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B1, INT \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E64\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Deviruchi_Hat___",
-      "Description": "\u003Ccolor=#808080\u003EA cute headgear made in the form of a Deviruchi.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E64\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA cute headgear made in the form of a Deviruchi.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B1, INT \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E64\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Drooping_Cat_",

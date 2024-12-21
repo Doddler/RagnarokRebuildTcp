@@ -28,7 +28,7 @@ public static class DataManager
     public static Dictionary<string, MonsterSkillAiBase> MonsterSkillAiHandlers;
     public static List<string> MvpMonsterCodes;
     public static List<InstanceEntry> InstanceList;
-    public static ReadOnlyDictionary<string, Action<ServerMapConfig>> MapConfigs;
+    public static ReadOnlyDictionary<string, Action<IServerMapConfig>> MapConfigs;
 
     public static Assembly ScriptAssembly;
     public static NpcBehaviorManager NpcManager;
@@ -124,7 +124,7 @@ public static class DataManager
             handler.IsUnassignedAiType = true;
     }
 
-    public static void ReloadScripts()
+    public static void ReloadScripts(bool loadExistingAssembly = false)
     {
         var loader = new DataLoader();
 
@@ -157,8 +157,11 @@ public static class DataManager
         MvpMonsterCodes = loader.LoadMvpList();
         
         //load our compiled script assemblies
-        ScriptAssembly = ScriptLoader.LoadAssembly();
-        NpcManager = new NpcBehaviorManager();
+        if(!loadExistingAssembly)
+            ScriptAssembly = ScriptLoader.LoadAssembly();
+        else
+            ScriptAssembly = ScriptLoader.LoadExisting();
+            NpcManager = new NpcBehaviorManager();
         
         var monsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
         var monsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
@@ -189,14 +192,14 @@ public static class DataManager
         ItemMonsterSummonList = loader.LoadMonsterSummonItemList();
     }
 
-    public static void Initialize()
+    public static void Initialize(bool loadExisting = false)
     {
         var loader = new DataLoader();
 
         mapList = loader.LoadMaps();
         InstanceList = loader.LoadInstances();
 
-        ReloadScripts();
+        ReloadScripts(loadExisting);
 
         //special handling for if we start the map in single map only mode, removes all other maps from the server instance list
         var debug = ServerConfig.DebugConfig;

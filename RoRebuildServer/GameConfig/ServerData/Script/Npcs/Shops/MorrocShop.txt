@@ -29,6 +29,7 @@ Trader("morocc", "Tool Dealer", "4W_M_03", 151, 243, E) {
 	SellItem("Butterfly_Wing");
 	SellItem("Trap");
 	SellItem("Purple_Glasses");
+	SellItem("Yggdrasil_Leaf");
 }
 
 Trader("morocc", "Item Collector", "4_M_03", 170, 101, W) {

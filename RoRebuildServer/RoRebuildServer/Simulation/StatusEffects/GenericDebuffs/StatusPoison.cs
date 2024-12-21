@@ -17,7 +17,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         //val1 = attacker id (so they get credited for the damage)
         //val2 = attack power snapshot
         //val3 = vit penalty
-        //val4 = counter so we execute only ever 3s
+        //val4 = counter so we execute only ever 2s on monsters and 3s vs players
         
         public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnUpdate;
         public override StatusUpdateResult OnUpdateTick(CombatEntity ch, ref StatusEffectState state)
@@ -25,7 +25,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
             state.Value4--;
             if (state.Value4 > 0)
                 return StatusUpdateResult.Continue; //only do this every 3 seconds
-            state.Value4 = 3;
+            state.Value4 = (byte)(ch.Character.Type == CharacterType.Player ? 3 : 2);
 
             //basically monsters will stop taking poison damage below 20% if they are not also taking active damage from another source.
             //poison ticks are 3s apart, so a check to see if it has been damaged in the last 2 seconds should mean we can't count our own damage.
@@ -75,10 +75,10 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
             var negativeVit = ch.GetStat(CharacterStat.Vit) / 4;
-            var defPenalty = ch.GetSpecialType() == CharacterSpecialType.Boss ? -10 : -25;
+            var defPenalty = ch.GetSpecialType() == CharacterSpecialType.Boss ? -10 : -25; //bosses only lose 10% def, normal monsters 25%
 
             state.Value3 = (short)-negativeVit;
-            state.Value4 = 3;
+            state.Value4 = (byte)(ch.Character.Type == CharacterType.Player ? 3 : 2); //3s tick time on players, 2s on monsters
             ch.AddStat(CharacterStat.AddVit, state.Value3);
             ch.AddStat(CharacterStat.AddDefPercent, defPenalty);
             ch.AddStat(CharacterStat.AddSpRecoveryPercent, -999);

@@ -313,7 +313,7 @@ public class UiManager : MonoBehaviour
         }
     }
     
-    public bool EndItemDrag()
+    public bool EndItemDrag(bool allowDrop = true)
     {
         Debug.Log("Ending item drag");
         IsDraggingItem = false;
@@ -325,7 +325,8 @@ public class UiManager : MonoBehaviour
         EquipmentDropArea.SetActive(false);
         if (hoveredDropTarget != null)
         {
-            hoveredDropTarget.DropItem();
+            if(allowDrop)
+                hoveredDropTarget.DropItem();
             hoveredDropTarget = null;
             return true;
         }

@@ -61,9 +61,10 @@ namespace Assets.Scripts.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.button == PointerEventData.InputButton.Right && (Type == DragItemType.Item || Type == DragItemType.Equipment))
+            if (OnRightClick != null && eventData.button == PointerEventData.InputButton.Right && (Type == DragItemType.Item || Type == DragItemType.Equipment))
                 OnRightClick();
-            if (Type != DragItemType.None && eventData.button == PointerEventData.InputButton.Left && eventData.clickCount >= 2 && OnDoubleClick != null)
+            if (OnDoubleClick != null && Type != DragItemType.None && eventData.button == PointerEventData.InputButton.Left 
+                && eventData.clickCount >= 2 && OnDoubleClick != null)
             {
                 OnDoubleClick();
                 UiManager.Instance.HideTooltip(gameObject);

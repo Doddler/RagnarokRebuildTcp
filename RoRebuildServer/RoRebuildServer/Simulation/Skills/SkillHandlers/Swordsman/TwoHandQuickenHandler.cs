@@ -11,6 +11,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
     [SkillHandler(CharacterSkill.TwoHandQuicken, SkillClass.Unique, SkillTarget.Self)]
     public class TwoHandQuickenHandler : SkillHandlerBase
     {
+        public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+        {
+            if (source.Character.Type == CharacterType.Player && source.Player.WeaponClass != 3)
+                return SkillValidationResult.IncorrectWeapon;
+            return base.ValidateTarget(source, target, position, lvl);
+        }
+
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
             source.ApplyCooldownForSupportSkillAction();

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dahomey.Json" Version="1.12.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageReference Include="Tomlyn" Version="0.17.0" />
   </ItemGroup>
 

@@ -88,6 +88,7 @@ Trader("prt_in", "Tool Dealer", "1_M_INNKEEPER", 126, 76, N) {
 	SellItem("Butterfly_Wing");
 	//SellItem("Trap");
 	SellItem("Monocle");
+	SellItem("Yggdrasil_Leaf");
 }
 
 Trader("prt_in", "Wedding Shop Dealer", "1_F_LIBRARYGIRL", 211, 169, N) {

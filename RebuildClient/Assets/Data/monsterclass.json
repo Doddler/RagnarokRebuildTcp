@@ -4281,6 +4281,17 @@
     },
     {
       "Id": 1073,
+      "Code": "4_F_06",
+      "Name": "Festive Girl",
+      "SpriteName": "4_f_06.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
+    },
+    {
+      "Id": 1074,
       "Code": "4_F_07",
       "Name": "4F07",
       "SpriteName": "4_f_07.spr",
@@ -4291,7 +4302,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1074,
+      "Id": 1075,
       "Code": "4_F_AGENTKAFRA",
       "Name": "4FAgentkafra",
       "SpriteName": "4_f_agentkafra.spr",
@@ -4302,7 +4313,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1075,
+      "Id": 1076,
       "Code": "4_F_ALCHE",
       "Name": "4FAlche",
       "SpriteName": "4_f_alche.spr",
@@ -4313,7 +4324,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1076,
+      "Id": 1077,
       "Code": "4_F_CHNDRESS1",
       "Name": "4FChndress1",
       "SpriteName": "4_f_chndress1.spr",
@@ -4324,7 +4335,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1077,
+      "Id": 1078,
       "Code": "4_F_CRU",
       "Name": "4FCru",
       "SpriteName": "4_f_cru.spr",
@@ -4335,7 +4346,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1078,
+      "Id": 1079,
       "Code": "4_F_GODEMOM",
       "Name": "4FGodemom",
       "SpriteName": "4_f_godemom.spr",
@@ -4346,7 +4357,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1079,
+      "Id": 1080,
       "Code": "4_F_GON",
       "Name": "4FGon",
       "SpriteName": "4_f_gon.spr",
@@ -4357,7 +4368,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1080,
+      "Id": 1081,
       "Code": "4_F_JOB_ASSASSIN",
       "Name": "4FJobAssassin",
       "SpriteName": "4_f_job_assassin.spr",
@@ -4368,7 +4379,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1081,
+      "Id": 1082,
       "Code": "4_F_JOB_BLACKSMITH",
       "Name": "4FJobBlacksmith",
       "SpriteName": "4_f_job_blacksmith.spr",
@@ -4379,7 +4390,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1082,
+      "Id": 1083,
       "Code": "4_F_JOB_HUNTER",
       "Name": "4FJobHunter",
       "SpriteName": "4_f_job_hunter.spr",
@@ -4390,7 +4401,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1083,
+      "Id": 1084,
       "Code": "4_F_JOB_KNIGHT",
       "Name": "4FJobKnight",
       "SpriteName": "4_f_job_knight.spr",
@@ -4401,7 +4412,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1084,
+      "Id": 1085,
       "Code": "4_F_JPN",
       "Name": "4FJpn",
       "SpriteName": "4_f_jpn.spr",
@@ -4412,7 +4423,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1085,
+      "Id": 1086,
       "Code": "4_F_JPN2",
       "Name": "4FJpn2",
       "SpriteName": "4_f_jpn2.spr",
@@ -4423,7 +4434,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1086,
+      "Id": 1087,
       "Code": "4_F_JPNCHIBI",
       "Name": "4FJpnchibi",
       "SpriteName": "4_f_jpnchibi.spr",
@@ -4434,7 +4445,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1087,
+      "Id": 1088,
       "Code": "4_F_JPNMU",
       "Name": "4FJpnmu",
       "SpriteName": "4_f_jpnmu.spr",
@@ -4445,7 +4456,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1088,
+      "Id": 1089,
       "Code": "4_F_JPNOBA",
       "Name": "4FJpnoba",
       "SpriteName": "4_f_jpnoba.spr",
@@ -4456,7 +4467,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1089,
+      "Id": 1090,
       "Code": "4_F_JPNOBA2",
       "Name": "4FJpnoba2",
       "SpriteName": "4_f_jpnoba2.spr",
@@ -4467,7 +4478,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1090,
+      "Id": 1091,
       "Code": "4_F_KAFRA1",
       "Name": "4FKafra1",
       "SpriteName": "4_f_kafra1.spr",
@@ -4478,7 +4489,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1091,
+      "Id": 1092,
       "Code": "4_F_KAFRA2",
       "Name": "4FKafra2",
       "SpriteName": "4_f_kafra2.spr",
@@ -4489,7 +4500,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1092,
+      "Id": 1093,
       "Code": "4_F_KAFRA3",
       "Name": "4FKafra3",
       "SpriteName": "4_f_kafra3.spr",
@@ -4500,7 +4511,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1093,
+      "Id": 1094,
       "Code": "4_F_KAFRA4",
       "Name": "4FKafra4",
       "SpriteName": "4_f_kafra4.spr",
@@ -4511,7 +4522,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1094,
+      "Id": 1095,
       "Code": "4_F_KAFRA5",
       "Name": "4FKafra5",
       "SpriteName": "4_f_kafra5.spr",
@@ -4522,7 +4533,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1095,
+      "Id": 1096,
       "Code": "4_F_KAFRA6",
       "Name": "4FKafra6",
       "SpriteName": "4_f_kafra6.spr",
@@ -4533,7 +4544,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1096,
+      "Id": 1097,
       "Code": "4_F_KAFRA7",
       "Name": "4FKafra7",
       "SpriteName": "4_f_kafra7.spr",
@@ -4544,7 +4555,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1097,
+      "Id": 1098,
       "Code": "4_F_KAFRA9",
       "Name": "4FKafra9",
       "SpriteName": "4_f_kafra9.spr",
@@ -4555,7 +4566,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1098,
+      "Id": 1099,
       "Code": "4_F_KID2",
       "Name": "4FKid2",
       "SpriteName": "4_f_kid2.spr",
@@ -4566,7 +4577,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1099,
+      "Id": 1100,
       "Code": "4_F_MAID",
       "Name": "4FMaid",
       "SpriteName": "4_f_maid.spr",
@@ -4577,7 +4588,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1100,
+      "Id": 1101,
       "Code": "4_F_MONK",
       "Name": "4FMonk",
       "SpriteName": "4_f_monk.spr",
@@ -4588,7 +4599,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1101,
+      "Id": 1102,
       "Code": "4_F_NFLOSTGIRL",
       "Name": "4FNflostgirl",
       "SpriteName": "4_f_nflostgirl.spr",
@@ -4599,7 +4610,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1102,
+      "Id": 1103,
       "Code": "4_F_NOVICE",
       "Name": "4FNovice",
       "SpriteName": "4_f_novice.spr",
@@ -4610,7 +4621,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1103,
+      "Id": 1104,
       "Code": "4_F_RACING",
       "Name": "4FRacing",
       "SpriteName": "4_f_racing.spr",
@@ -4621,7 +4632,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1104,
+      "Id": 1105,
       "Code": "4_F_SISTER",
       "Name": "4FSister",
       "SpriteName": "4_f_sister.spr",
@@ -4632,7 +4643,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1105,
+      "Id": 1106,
       "Code": "4_F_TELEPORTER",
       "Name": "4FTeleporter",
       "SpriteName": "4_f_teleporter.spr",
@@ -4643,7 +4654,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1106,
+      "Id": 1107,
       "Code": "4_F_VALKYRIE",
       "Name": "4FValkyrie",
       "SpriteName": "4_f_valkyrie.spr",
@@ -4654,7 +4665,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1107,
+      "Id": 1108,
       "Code": "4_F_YUNYANG",
       "Name": "4FYunyang",
       "SpriteName": "4_f_yunyang.spr",
@@ -4665,7 +4676,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1108,
+      "Id": 1109,
       "Code": "4_KID01",
       "Name": "4Kid01",
       "SpriteName": "4_kid01.spr",
@@ -4676,7 +4687,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1109,
+      "Id": 1110,
       "Code": "4_M_01",
       "Name": "4M01",
       "SpriteName": "4_m_01.spr",
@@ -4687,7 +4698,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1110,
+      "Id": 1111,
       "Code": "4_M_02",
       "Name": "4M02",
       "SpriteName": "4_m_02.spr",
@@ -4698,7 +4709,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1111,
+      "Id": 1112,
       "Code": "4_M_03",
       "Name": "4M03",
       "SpriteName": "4_m_03.spr",
@@ -4709,7 +4720,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1112,
+      "Id": 1113,
       "Code": "4_M_04",
       "Name": "4M04",
       "SpriteName": "4_m_04.spr",
@@ -4720,7 +4731,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1113,
+      "Id": 1114,
       "Code": "4_M_05",
       "Name": "4M05",
       "SpriteName": "4_m_05.spr",
@@ -4731,7 +4742,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1114,
+      "Id": 1115,
       "Code": "4_M_06",
       "Name": "4M06",
       "SpriteName": "4_m_06.spr",
@@ -4742,7 +4753,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1115,
+      "Id": 1116,
       "Code": "4_M_ALCHE_A",
       "Name": "4MAlcheA",
       "SpriteName": "4_m_alche_a.spr",
@@ -4753,7 +4764,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1116,
+      "Id": 1117,
       "Code": "4_M_ALCHE_B",
       "Name": "4MAlcheB",
       "SpriteName": "4_m_alche_b.spr",
@@ -4764,7 +4775,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1117,
+      "Id": 1118,
       "Code": "4_M_ALCHE_C",
       "Name": "4MAlcheC",
       "SpriteName": "4_m_alche_c.spr",
@@ -4775,7 +4786,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1118,
+      "Id": 1119,
       "Code": "4_M_ALCHE_D",
       "Name": "4MAlcheD",
       "SpriteName": "4_m_alche_d.spr",
@@ -4786,7 +4797,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1119,
+      "Id": 1120,
       "Code": "4_M_BARBER",
       "Name": "4MBarber",
       "SpriteName": "4_m_barber.spr",
@@ -4797,7 +4808,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1120,
+      "Id": 1121,
       "Code": "4_M_BIBI",
       "Name": "4MBibi",
       "SpriteName": "4_m_bibi.spr",
@@ -4808,7 +4819,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1121,
+      "Id": 1122,
       "Code": "4_M_CHNMONK",
       "Name": "4MChnmonk",
       "SpriteName": "4_m_chnmonk.spr",
@@ -4819,7 +4830,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1122,
+      "Id": 1123,
       "Code": "4_M_CRU_OLD",
       "Name": "4MCruOld",
       "SpriteName": "4_m_cru_old.spr",
@@ -4830,7 +4841,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1123,
+      "Id": 1124,
       "Code": "4_M_CRU",
       "Name": "4MCru",
       "SpriteName": "4_m_cru.spr",
@@ -4841,7 +4852,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1124,
+      "Id": 1125,
       "Code": "4_M_DWARF",
       "Name": "4MDwarf",
       "SpriteName": "4_m_dwarf.spr",
@@ -4852,7 +4863,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1125,
+      "Id": 1126,
       "Code": "4_M_GEF_SOLDIER",
       "Name": "4MGefSoldier",
       "SpriteName": "4_m_gef_soldier.spr",
@@ -4863,7 +4874,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1126,
+      "Id": 1127,
       "Code": "4_M_JOB_ASSASSIN",
       "Name": "4MJobAssassin",
       "SpriteName": "4_m_job_assassin.spr",
@@ -4874,7 +4885,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1127,
+      "Id": 1128,
       "Code": "4_M_JOB_BLACKSMITH",
       "Name": "4MJobBlacksmith",
       "SpriteName": "4_m_job_blacksmith.spr",
@@ -4885,7 +4896,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1128,
+      "Id": 1129,
       "Code": "4_M_JOB_HUNTER",
       "Name": "4MJobHunter",
       "SpriteName": "4_m_job_hunter.spr",
@@ -4896,7 +4907,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1129,
+      "Id": 1130,
       "Code": "4_M_JOB_KNIGHT1",
       "Name": "4MJobKnight1",
       "SpriteName": "4_m_job_knight1.spr",
@@ -4907,7 +4918,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1130,
+      "Id": 1131,
       "Code": "4_M_JOB_KNIGHT2",
       "Name": "4MJobKnight2",
       "SpriteName": "4_m_job_knight2.spr",
@@ -4918,7 +4929,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1131,
+      "Id": 1132,
       "Code": "4_M_JOB_WIZARD",
       "Name": "4MJobWizard",
       "SpriteName": "4_m_job_wizard.spr",
@@ -4929,7 +4940,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1132,
+      "Id": 1133,
       "Code": "4_M_JPN",
       "Name": "4MJpn",
       "SpriteName": "4_m_jpn.spr",
@@ -4940,7 +4951,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1133,
+      "Id": 1134,
       "Code": "4_M_JPN2",
       "Name": "4MJpn2",
       "SpriteName": "4_m_jpn2.spr",
@@ -4951,7 +4962,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1134,
+      "Id": 1135,
       "Code": "4_M_JPNCHIBI",
       "Name": "4MJpnchibi",
       "SpriteName": "4_m_jpnchibi.spr",
@@ -4962,7 +4973,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1135,
+      "Id": 1136,
       "Code": "4_M_JPNOJI",
       "Name": "4MJpnoji",
       "SpriteName": "4_m_jpnoji.spr",
@@ -4973,7 +4984,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1136,
+      "Id": 1137,
       "Code": "4_M_JPNOJI2",
       "Name": "4MJpnoji2",
       "SpriteName": "4_m_jpnoji2.spr",
@@ -4984,7 +4995,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1137,
+      "Id": 1138,
       "Code": "4_M_KID1",
       "Name": "4MKid1",
       "SpriteName": "4_m_kid1.spr",
@@ -4995,7 +5006,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1138,
+      "Id": 1139,
       "Code": "4_M_KID2",
       "Name": "4MKid2",
       "SpriteName": "4_m_kid2.spr",
@@ -5006,7 +5017,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1139,
+      "Id": 1140,
       "Code": "4_M_LGTGRAND",
       "Name": "4MLgtgrand",
       "SpriteName": "4_m_lgtgrand.spr",
@@ -5017,7 +5028,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1140,
+      "Id": 1141,
       "Code": "4_M_MANAGER",
       "Name": "4MManager",
       "SpriteName": "4_m_manager.spr",
@@ -5028,7 +5039,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1141,
+      "Id": 1142,
       "Code": "4_M_MINISTER",
       "Name": "4MMinister",
       "SpriteName": "4_m_minister.spr",
@@ -5039,7 +5050,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1142,
+      "Id": 1143,
       "Code": "4_M_MOC_SOLDIER",
       "Name": "4MMocSoldier",
       "SpriteName": "4_m_moc_soldier.spr",
@@ -5050,7 +5061,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1143,
+      "Id": 1144,
       "Code": "4_M_MONK",
       "Name": "4MMonk",
       "SpriteName": "4_m_monk.spr",
@@ -5061,7 +5072,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1144,
+      "Id": 1145,
       "Code": "4_M_NFLOSTMAN",
       "Name": "4MNflostman",
       "SpriteName": "4_m_nflostman.spr",
@@ -5072,7 +5083,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1145,
+      "Id": 1146,
       "Code": "4_M_NFMAN",
       "Name": "4MNfman",
       "SpriteName": "4_m_nfman.spr",
@@ -5083,7 +5094,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1146,
+      "Id": 1147,
       "Code": "4_M_OILMAN",
       "Name": "4MOilman",
       "SpriteName": "4_m_oilman.spr",
@@ -5094,7 +5105,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1147,
+      "Id": 1148,
       "Code": "4_M_ORIENT01",
       "Name": "4MOrient01",
       "SpriteName": "4_m_orient01.spr",
@@ -5105,7 +5116,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1148,
+      "Id": 1149,
       "Code": "4_M_ORIENT02",
       "Name": "4MOrient02",
       "SpriteName": "4_m_orient02.spr",
@@ -5116,7 +5127,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1149,
+      "Id": 1150,
       "Code": "4_M_PAY_SOLDIER",
       "Name": "4MPaySoldier",
       "SpriteName": "4_m_pay_soldier.spr",
@@ -5127,7 +5138,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1150,
+      "Id": 1151,
       "Code": "4_M_PIERROT",
       "Name": "4MPierrot",
       "SpriteName": "4_m_pierrot.spr",
@@ -5138,7 +5149,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1151,
+      "Id": 1152,
       "Code": "4_M_REIDIN_KURS",
       "Name": "4MReidinKurs",
       "SpriteName": "4_m_reidin_kurs.spr",
@@ -5149,7 +5160,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1152,
+      "Id": 1153,
       "Code": "4_M_REPAIR",
       "Name": "4MRepair",
       "SpriteName": "4_m_repair.spr",
@@ -5160,7 +5171,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1153,
+      "Id": 1154,
       "Code": "4_M_ROGUE",
       "Name": "4MRogue",
       "SpriteName": "4_m_rogue.spr",
@@ -5171,7 +5182,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1154,
+      "Id": 1155,
       "Code": "4_M_SAGE_A",
       "Name": "4MSageA",
       "SpriteName": "4_m_sage_a.spr",
@@ -5182,7 +5193,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1155,
+      "Id": 1156,
       "Code": "4_M_SAGE_C",
       "Name": "4MSageC",
       "SpriteName": "4_m_sage_c.spr",
@@ -5193,7 +5204,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1156,
+      "Id": 1157,
       "Code": "4_M_SANTA",
       "Name": "4MSanta",
       "SpriteName": "4_m_santa.spr",
@@ -5204,7 +5215,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1157,
+      "Id": 1158,
       "Code": "4_M_SEAMAN",
       "Name": "4MSeaman",
       "SpriteName": "4_m_seaman.spr",
@@ -5215,7 +5226,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1158,
+      "Id": 1159,
       "Code": "4_M_SNOWMAN",
       "Name": "4MSnowman",
       "SpriteName": "4_m_snowman.spr",
@@ -5226,7 +5237,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1159,
+      "Id": 1160,
       "Code": "4_M_TELEPORTER",
       "Name": "4MTeleporter",
       "SpriteName": "4_m_teleporter.spr",
@@ -5237,7 +5248,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1160,
+      "Id": 1161,
       "Code": "4_M_THAIONGBAK",
       "Name": "4MThaiongbak",
       "SpriteName": "4_m_thaiongbak.spr",
@@ -5248,7 +5259,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1161,
+      "Id": 1162,
       "Code": "4_M_TWMIDMAN",
       "Name": "4MTwmidman",
       "SpriteName": "4_m_twmidman.spr",
@@ -5259,7 +5270,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1162,
+      "Id": 1163,
       "Code": "4_M_YOYOROGUE",
       "Name": "4MYoyorogue",
       "SpriteName": "4_m_yoyorogue.spr",
@@ -5270,7 +5281,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1163,
+      "Id": 1164,
       "Code": "4_M_YURI",
       "Name": "4MYuri",
       "SpriteName": "4_m_yuri.spr",
@@ -5281,7 +5292,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1164,
+      "Id": 1165,
       "Code": "4_M_ZONDAMAN",
       "Name": "4MZondaman",
       "SpriteName": "4_m_zondaman.spr",
@@ -5292,7 +5303,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1165,
+      "Id": 1166,
       "Code": "4_M_ZONDAOYAJI",
       "Name": "4MZondaoyaji",
       "SpriteName": "4_m_zondaoyaji.spr",
@@ -5303,7 +5314,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1166,
+      "Id": 1167,
       "Code": "4_NFWISP",
       "Name": "4Nfwisp",
       "SpriteName": "4_nfwisp.spr",
@@ -5314,7 +5325,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1167,
+      "Id": 1168,
       "Code": "4W_F_01",
       "Name": "4WF01",
       "SpriteName": "4w_f_01.spr",
@@ -5325,7 +5336,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1168,
+      "Id": 1169,
       "Code": "4W_KID",
       "Name": "4WKid",
       "SpriteName": "4w_kid.spr",
@@ -5336,7 +5347,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1169,
+      "Id": 1170,
       "Code": "4W_M_01",
       "Name": "4WM01",
       "SpriteName": "4w_m_01.spr",
@@ -5347,7 +5358,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1170,
+      "Id": 1171,
       "Code": "4W_M_02",
       "Name": "4WM02",
       "SpriteName": "4w_m_02.spr",
@@ -5358,7 +5369,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1171,
+      "Id": 1172,
       "Code": "4W_M_03",
       "Name": "4WM03",
       "SpriteName": "4w_m_03.spr",
@@ -5369,7 +5380,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1172,
+      "Id": 1173,
       "Code": "4W_SAILOR",
       "Name": "4WSailor",
       "SpriteName": "4w_sailor.spr",
@@ -5380,7 +5391,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1173,
+      "Id": 1174,
       "Code": "8_DOPPEL",
       "Name": "8Doppel",
       "SpriteName": "8_doppel.spr",
@@ -5391,7 +5402,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1174,
+      "Id": 1175,
       "Code": "8_F_GIRL",
       "Name": "8FGirl",
       "SpriteName": "8_f_girl.spr",
@@ -5402,7 +5413,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1175,
+      "Id": 1176,
       "Code": "8_F_GRANDMOTHER",
       "Name": "8FGrandmother",
       "SpriteName": "8_f_grandmother.spr",
@@ -5413,7 +5424,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1176,
+      "Id": 1177,
       "Code": "8_F",
       "Name": "8F",
       "SpriteName": "8_f.spr",
@@ -5424,7 +5435,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1177,
+      "Id": 1178,
       "Code": "8_M_JPNMASTER",
       "Name": "8MJpnmaster",
       "SpriteName": "8_m_jpnmaster.spr",
@@ -5435,7 +5446,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1178,
+      "Id": 1179,
       "Code": "8_M_JPNSOLDIER",
       "Name": "8MJpnsoldier",
       "SpriteName": "8_m_jpnsoldier.spr",
@@ -5446,7 +5457,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1179,
+      "Id": 1180,
       "Code": "8_M_TWSOLDIER",
       "Name": "8MTwsoldier",
       "SpriteName": "8_m_twsoldier.spr",
@@ -5457,7 +5468,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1180,
+      "Id": 1181,
       "Code": "8W_SOLDIER",
       "Name": "8WSoldier",
       "SpriteName": "8w_soldier.spr",
@@ -5468,7 +5479,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1181,
+      "Id": 1182,
       "Code": "2_POSTBOX",
       "Name": "2Postbox",
       "SpriteName": "2_postbox.spr",
@@ -5479,7 +5490,7 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1182,
+      "Id": 1183,
       "Code": "2_M_DYEINGER",
       "Name": "2MDyeinger",
       "SpriteName": "2_m_dyeinger.spr",
@@ -5490,10 +5501,21 @@
       "Color": "FFFFFFFF"
     },
     {
-      "Id": 1183,
+      "Id": 1184,
       "Code": "CLEAR_NPC",
       "Name": "ClearNpc",
       "SpriteName": "clear_npc.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
+    },
+    {
+      "Id": 1185,
+      "Code": "4_M_DSTMAN",
+      "Name": "4_M_DSTMAN",
+      "SpriteName": "4_m_dstman.spr",
       "Offset": 0,
       "ShadowSize": 0.5,
       "Size": 1,

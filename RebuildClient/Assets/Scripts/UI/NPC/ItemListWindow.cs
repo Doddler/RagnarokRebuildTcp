@@ -247,7 +247,7 @@ namespace Assets.Scripts.UI
                 else
                     entry.RightText.text = $"{cost:N0}z";
             }
-
+            
             entry.OnPointerExit(null);
             entry.Role = CurrentRole;
             if (!hasExisting)
@@ -305,6 +305,7 @@ namespace Assets.Scripts.UI
 
             listEntry.gameObject.SetActive(true);
             listEntry.Assign(sprite, addItem.ItemData, shopEntry.ItemId, shopEntry.Count);
+            listEntry.ItemName.text = addItem.ProperName();
             if(adjustValue > 0 && adjustValue == shopEntry.Cost)
                 listEntry.RightText.text = $"{shopEntry.Cost:N0}z";
             else

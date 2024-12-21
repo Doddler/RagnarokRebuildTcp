@@ -9,36 +9,36 @@ using Tomlyn;
 
 namespace GameConfig.Generator
 {
-    [Generator]
-    internal class StatusEffectGenerator : ISourceGenerator
+    [Generator(LanguageNames.CSharp)]
+    internal class StatusEffectGenerator : IIncrementalGenerator
     {
-        public void Initialize(GeneratorInitializationContext context) { }
-
-        public void Execute(GeneratorExecutionContext context)
+        public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            //if (!Debugger.IsAttached) Debugger.Launch();
             Debug.WriteLine("Execute code generator");
-            var myFiles = context.AdditionalFiles.Where(at => at.Path.EndsWith("StatusEffects.toml"));
-            foreach (var file in myFiles)
-            {
-                var text = file.GetText().ToString();
-                var table = Toml.ToModel(text);
-
-                var srcOut = new StringBuilder();
-                srcOut.AppendLine("namespace RebuildSharedData.Enum;");
-                srcOut.AppendLine("public enum CharacterStatusEffect : byte");
-                srcOut.AppendLine("{");
-                srcOut.AppendLine("\tNone,");
-                foreach (var obj in table)
+            var myFiles = context.AdditionalTextsProvider.Where(at => at.Path.EndsWith("StatusEffects.toml"))
+                .Select((text, cancellationToken) =>
                 {
-                    srcOut.AppendLine($"\t{obj.Key},");
-                }
+                    var t = text.GetText(cancellationToken);
+                    var table = Toml.ToModel(t.ToString());
 
-                srcOut.AppendLine("}");
+                    var srcOut = new StringBuilder();
+                    srcOut.AppendLine("namespace RebuildSharedData.Enum;");
+                    srcOut.AppendLine("public enum CharacterStatusEffect : byte");
+                    srcOut.AppendLine("{");
+                    srcOut.AppendLine("\tNone,");
+                    foreach (var obj in table)
+                    {
+                        srcOut.AppendLine($"\t{obj.Key},");
+                    }
 
-                //context.AddSource($"ClientSkill.g.cs", srcOut.ToString());
-                context.AddSource($"CharacterStatusEffect.g.cs", SourceText.From(srcOut.ToString(), Encoding.UTF8));
-            }
+                    srcOut.AppendLine("}");
+                    return srcOut.ToString();
+                });
+
+            context.RegisterSourceOutput(myFiles, (productionContext, text) =>
+            {
+                productionContext.AddSource($"CharacterStatusEffect.g.cs", SourceText.From(text, Encoding.UTF8));
+            });
         }
     }
 }
