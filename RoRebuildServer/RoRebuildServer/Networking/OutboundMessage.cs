@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Buffers;
+using System.Diagnostics;
 using System.Text;
+using K4os.Compression.LZ4;
 using Lidgren.Network;
 using Microsoft.Extensions.ObjectPool;
 using RebuildSharedData.Networking;
@@ -137,6 +139,25 @@ public class OutboundMessage : IBinaryMessageWriter
         EnsureBufferSize(length * 8);
         NetBitWriter.WriteBytes(b, 0, length, Message, position);
         position += length * 8;
+    }
+
+    public void Write(Memory<byte> b, int length)
+    {
+        EnsureBufferSize(length * 8);
+        NetBitWriter.WriteBytes(b, 0, length, Message, position);
+        position += length * 8;
+    }
+
+    public void WriteCompressedByteArray(byte[] b) => WriteCompressedByteArray(b, b.Length);
+
+    public void WriteCompressedByteArray(byte[] b, int length)
+    {
+        Debug.Assert(length < ushort.MaxValue);
+        var comp = ArrayPool<byte>.Shared.Rent(LZ4Codec.MaximumOutputSize(length));
+        var newLen = LZ4Codec.Encode(b, comp);
+        Write((ushort)newLen); //I assume we won't send more than 65535 bytes to the player at once but... who knows?
+        Write(comp, newLen);
+        ArrayPool<byte>.Shared.Return(comp);
     }
 
     public void Write(string s)

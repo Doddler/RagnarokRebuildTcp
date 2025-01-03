@@ -11,9 +11,11 @@ public class ItemInfo
     public string Code = null!;
     public string Name = null!;
     public int Weight;
-    public int Price;
+    public int Price { get; set; }
+    public int SellToStoreValue { get; set; }
     public bool IsUnique;
     public ItemClass ItemClass;
+    public string SubCategory = null!;
     public ItemInteractionBase? Interaction = null!;
 }
 

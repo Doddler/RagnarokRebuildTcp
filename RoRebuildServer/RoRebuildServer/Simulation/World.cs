@@ -312,13 +312,15 @@ public class World
         var area = Area.CreateAroundPoint(config.Position, config.Area);
         
         connection.LoadCharacterRequest = request;
+        var isRespawn = true;
 
-        if (request.Map != null)
+        if (request.Map != null && worldMapInstanceLookup.ContainsKey(request.Map))
         {
             map = request.Map;
             area = Area.CreateAroundPoint(request.Position, 0);
+            isRespawn = false;
         }
-
+        
         if (debug.DebugMapOnly && !string.IsNullOrWhiteSpace(debug.DebugMapName))
         {
             map = debug.DebugMapName;
@@ -339,7 +341,7 @@ public class World
             }
         }
 
-        var playerEntity = NetworkManager.World.CreatePlayer(connection, map, area);
+        var playerEntity = NetworkManager.World.CreatePlayer(connection, map, area, isRespawn);
         
         connection.Entity = playerEntity;
         connection.LastKeepAlive = Time.ElapsedTime;
@@ -353,7 +355,7 @@ public class World
         ServerLogger.Debug($"Player assigned entity {playerEntity}, creating entity at location {connection.Character.Position}.");
     }
     
-    public Entity CreatePlayer(NetworkConnection connection, string mapName, Area spawnArea)
+    public Entity CreatePlayer(NetworkConnection connection, string mapName, Area spawnArea, bool isRespawn)
     {
         var e = EntityManager.New(EntityType.Player);
         var ch = e.Get<WorldObject>();
@@ -424,7 +426,6 @@ public class World
             player.NpcFlags = connection.LoadCharacterRequest.NpcFlags;
             player.Inventory = connection.LoadCharacterRequest.Inventory;
             player.CartInventory = connection.LoadCharacterRequest.Cart;
-            player.StorageInventory = connection.LoadCharacterRequest.Storage;
             if(connection.LoadCharacterRequest.EquipState != null)
                 player.Equipment = connection.LoadCharacterRequest.EquipState;
             player.CharacterSlot = connection.LoadCharacterRequest.CharacterSlot;
@@ -439,13 +440,21 @@ public class World
                     ServerLogger.LogWarning($"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
             }
 
+            //respawn flag forces the player to be alive after logging in if they've been moved from their logout position.
+            if (isRespawn && player.GetData(PlayerStat.Hp) == 0)
+            {
+                player.SetData(PlayerStat.Hp, 1);
+                player.Character.State = CharacterState.Idle;
+            }   
+
             player.ApplyDataToCharacter();
         }
 
-        player.Init();
+        if (ce.GetStat(CharacterStat.Hp) <= 0)
+            player.Character.State = CharacterState.Dead;
+            //ce.FullRecovery(true, true);
 
-        if(ce.GetStat(CharacterStat.Hp) <= 0)
-            ce.FullRecovery(true, true);
+        player.Init();
 
         ch.Name = player.Name;
         connection.LoadCharacterRequest = null;

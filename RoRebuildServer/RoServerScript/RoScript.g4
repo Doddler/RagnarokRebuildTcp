@@ -65,7 +65,7 @@ assignment : IDENTIFIER specialassignment_operator expression					#SpecialAssign
 
 comparison_operator: GT | GE | LT | LE | EQ | NE;
 
-specialassignment_operator: PE | ME;
+specialassignment_operator: PE | ME | DE | TE;
 
 entity : DECIMAL	#NumericConst
 	   | STRING		#StringEntity
@@ -127,6 +127,8 @@ NE : '!=' ;
 
 PE : '+=' ;
 ME : '-=' ;
+TE : '*=' ;
+DE : '/=' ;
 
 EQUALS : '=' ;
 

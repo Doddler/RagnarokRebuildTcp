@@ -1,7 +1,10 @@
 ﻿using System.Buffers;
 using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
+using RebuildSharedData.Enum.EntityStats;
+using RebuildSharedData.Util;
 using RoRebuildServer.Database.Domain;
+using RoRebuildServer.Database.Utility;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
@@ -15,6 +18,7 @@ namespace RoRebuildServer.Database.Requests
         private int slot;
         private string name;
         private byte[]? charData;
+        private byte[] summaryData;
 
         public CreateCharacterRequest(NetworkConnection connection, int accountId, int slot, string name, int[] data)
         {
@@ -23,9 +27,18 @@ namespace RoRebuildServer.Database.Requests
             this.slot = slot;
             this.name = name;
 
-            charData = ArrayPool<byte>.Shared.Rent(data.Length * sizeof(int));
-
+            var dataSize = data.Length * sizeof(int);
+            charData = ArrayPool<byte>.Shared.Rent(dataSize);
+            Array.Clear(charData);
             Buffer.BlockCopy(data, 0, charData, 0, data.Length * sizeof(int));
+
+            //build character summary for our new character
+            var summaryBuffer = ArrayPool<int>.Shared.Rent((int)PlayerSummaryData.SummaryDataMax);
+            Array.Clear(summaryBuffer);
+            summaryData = new byte[(int)PlayerSummaryData.SummaryDataMax * 4];
+            PlayerDataDbHelper.PackNewCharacterSummaryData(summaryBuffer, data[(int)PlayerStat.Gender], data[(int)PlayerStat.Head], data[(int)PlayerStat.HairId]);
+            Buffer.BlockCopy(summaryBuffer, 0, summaryData, 0, summaryData.Length);
+            ArrayPool<int>.Shared.Return(summaryBuffer);
         }
 
         public async Task ExecuteAsync(RoContext dbContext)
@@ -55,13 +68,15 @@ namespace RoRebuildServer.Database.Requests
                 AccountId = accountId,
                 CharacterSlot = slot,
                 Data = charData,
+                CharacterSummary = summaryData,
                 SavePoint = new DbSavePoint()
                 {
                     MapName = savePoint.MapName,
                     X = savePoint.Position.X,
                     Y = savePoint.Position.Y,
                     Area = savePoint.Area,
-                }
+                },
+                VersionFormat = 1
             };
 
             try

@@ -490,12 +490,10 @@ namespace Assets.Scripts.Sprites
                 bodySprite.State = SpriteState.Sit;
             if (param.State == CharacterState.Moving)
                 bodySprite.State = SpriteState.Walking;
+            
             if (param.State == CharacterState.Dead)
-            {
-                bodySprite.State = SpriteState.Dead;
-                bodySprite.ChangeMotion(SpriteMotion.Dead, true);
-            }
-
+                control.PlayerDie(Vector2Int.zero);
+            
             headSprite.Parent = bodySprite;
             headSprite.SpriteOrder = 1;
 

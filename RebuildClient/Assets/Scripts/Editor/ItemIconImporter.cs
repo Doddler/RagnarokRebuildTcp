@@ -48,6 +48,7 @@ namespace Assets.Scripts.Editor
             var itemDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/items.json");
             var items = JsonUtility.FromJson<Wrapper<ItemData>>(itemDataFile.text);
             var sharedItemSprites = new StringBuilder();
+            var equipIcons = new List<string>();
 
             foreach (var item in items.Items)
             {
@@ -61,6 +62,8 @@ namespace Assets.Scripts.Editor
 
                     iconNames.Add(item.Sprite);
                     convertName.Add(item.Sprite, item.Code);
+                    if(item.IsUnique)
+                        equipIcons.Add(item.Sprite);
                 }
             }
             File.WriteAllText("Assets/Data/SharedItemIcons.txt", sharedItemSprites.ToString());
@@ -119,47 +122,39 @@ namespace Assets.Scripts.Editor
 
                 if (!File.Exists(destPath))
                 {
-                    var sprPath = Path.Combine(srcPath, fName + ".spr");
-                    var actPath = Path.Combine(srcPath, fName + ".act");
-                    if (!File.Exists(sprPath) || !File.Exists(actPath))
+                    var iconPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/유저인터페이스/item", fName + ".bmp");
+                    if (!File.Exists(iconPath))
                     {
-                        Debug.LogWarning($"Could not find spr file with name {sprPath}");
+                        Debug.LogWarning($"Could not find spr file with name {iconPath}");
                         continue;
                     }
-                    
-                    var newSprPath = $"Assets/Sprites/Icons/{fName}.spr";
-                    var newActPath = $"Assets/Sprites/Icons/{fName}.act";
-                    
-                    if(!File.Exists(newSprPath))
-                        File.Copy(sprPath, newSprPath);
-                    if(!File.Exists(newActPath))
-                        File.Copy(actPath, newActPath);
-                    
-                    AssetDatabase.ImportAsset(newSprPath, ImportAssetOptions.ForceUpdate);
-                    AssetDatabase.Refresh();
-                    
-                    var spriteData = AssetDatabase.LoadAssetAtPath<RoSpriteData>(importedAssetName);
-                    var curIcon = spriteData.Sprites[0];
-                    var offset = spriteData.Actions[0].Frames[0].Layers[0].Position;
-                    
-                    //this is stupid, but if we load the texture asset normally it might not be readable
-                    var iconAtlas = new Texture2D(2, 2);
-                    iconAtlas.LoadImage(File.ReadAllBytes($"Assets/Sprites/Imported/Icons/Atlas/{spriteData.Atlas.name}.png"));
 
-                    var bounds = curIcon.rect;
-                    bounds = new Rect(offset.x, offset.y, curIcon.rect.width, curIcon.rect.height);
-                    
-                    var newTex = new Texture2D((int)bounds.width, (int)bounds.height, TextureFormat.ARGB32, false);
+                    var tex = TextureImportHelper.LoadTexture(iconPath);
+                    var offset = new Vector2(tex.width / 2f, tex.height / 2f);
+                    var pivot = new Vector2(0.5f, 0.5f);
+                    var lowerBounds = 0;
+                    if (equipIcons.Contains(icon))
+                    {
+                        for (var y = 0; y < tex.height / 2f; y++)
+                        {
+                            for (var x = 0; x < tex.width; x++)
+                            {
+                                if (tex.GetPixel(x, y).a > 0)
+                                {
+                                    lowerBounds = y;
+                                    break;
+                                }
+                            }
 
-                    Graphics.CopyTexture(iconAtlas, 0, 0, (int)curIcon.textureRect.xMin, (int)curIcon.textureRect.yMin, 
-                        (int)curIcon.rect.width, (int)curIcon.rect.height, newTex, 0, 0, 0, 0);
-                    //newTex.SetPixels(24, 24, texture.width, texture.height, texture.ReadPixels(new Rect(0, 0, texture.width, texture.height), 0, 0, false));
-                
-                    //
-                    // var bytes = texture.EncodeToPNG();
-                    // File.WriteAllBytes(destPath, bytes);
-                    //
-                    TextureImportHelper.SaveAndUpdateTexture(newTex, destPath, ti =>
+                            if (lowerBounds > 0)
+                                break;
+                        }
+                        
+                        offset = new Vector2(tex.width / 2f, lowerBounds + 5f);
+                        pivot = offset / new Vector2(tex.width, tex.height);
+                    }
+
+                    TextureImportHelper.SaveAndUpdateTexture(tex, destPath, ti =>
                     {
                         ti.textureType = TextureImporterType.Sprite;
                         ti.spriteImportMode = SpriteImportMode.Single;
@@ -169,14 +164,68 @@ namespace Assets.Scripts.Editor
                         var settings = new TextureImporterSettings();
                         ti.ReadTextureSettings(settings);
                         settings.spriteAlignment = (int)SpriteAlignment.Custom;
-                        settings.spritePivot = new Vector2(0.5f + (offset.x/curIcon.rect.width/2f), 0.5f + (offset.y/curIcon.rect.height/2f));
+                        settings.spritePivot = pivot;
                         ti.SetTextureSettings(settings);
                     });
 
-                    AssetDatabase.ImportAsset(destPath, ImportAssetOptions.ForceUpdate);
-                    AssetDatabase.Refresh();
-
-                    GameObject.DestroyImmediate(iconAtlas);
+                    // var sprPath = Path.Combine(srcPath, fName + ".spr");
+                    // var actPath = Path.Combine(srcPath, fName + ".act");
+                    // if (!File.Exists(sprPath) || !File.Exists(actPath))
+                    // {
+                    //     Debug.LogWarning($"Could not find spr file with name {sprPath}");
+                    //     continue;
+                    // }
+                    //
+                    // var newSprPath = $"Assets/Sprites/Icons/{fName}.spr";
+                    // var newActPath = $"Assets/Sprites/Icons/{fName}.act";
+                    //
+                    // if(!File.Exists(newSprPath))
+                    //     File.Copy(sprPath, newSprPath);
+                    // if(!File.Exists(newActPath))
+                    //     File.Copy(actPath, newActPath);
+                    //
+                    // AssetDatabase.ImportAsset(newSprPath, ImportAssetOptions.ForceUpdate);
+                    // AssetDatabase.Refresh();
+                    //
+                    // var spriteData = AssetDatabase.LoadAssetAtPath<RoSpriteData>(importedAssetName);
+                    // var curIcon = spriteData.Sprites[0];
+                    // var offset = spriteData.Actions[0].Frames[0].Layers[0].Position;
+                    //
+                    // //this is stupid, but if we load the texture asset normally it might not be readable
+                    // var iconAtlas = new Texture2D(2, 2);
+                    // iconAtlas.LoadImage(File.ReadAllBytes($"Assets/Sprites/Imported/Icons/Atlas/{spriteData.Atlas.name}.png"));
+                    //
+                    // var bounds = curIcon.rect;
+                    // bounds = new Rect(offset.x, offset.y, curIcon.rect.width, curIcon.rect.height);
+                    //
+                    // var newTex = new Texture2D((int)bounds.width, (int)bounds.height, TextureFormat.ARGB32, false);
+                    //
+                    // Graphics.CopyTexture(iconAtlas, 0, 0, (int)curIcon.textureRect.xMin, (int)curIcon.textureRect.yMin, 
+                    //     (int)curIcon.rect.width, (int)curIcon.rect.height, newTex, 0, 0, 0, 0);
+                    // //newTex.SetPixels(24, 24, texture.width, texture.height, texture.ReadPixels(new Rect(0, 0, texture.width, texture.height), 0, 0, false));
+                    //
+                    // //
+                    // // var bytes = texture.EncodeToPNG();
+                    // // File.WriteAllBytes(destPath, bytes);
+                    // //
+                    // TextureImportHelper.SaveAndUpdateTexture(newTex, destPath, ti =>
+                    // {
+                    //     ti.textureType = TextureImporterType.Sprite;
+                    //     ti.spriteImportMode = SpriteImportMode.Single;
+                    //     ti.textureCompression = TextureImporterCompression.Uncompressed;
+                    //     ti.spritePivot = offset;
+                    //     
+                    //     var settings = new TextureImporterSettings();
+                    //     ti.ReadTextureSettings(settings);
+                    //     settings.spriteAlignment = (int)SpriteAlignment.Custom;
+                    //     settings.spritePivot = new Vector2(0.5f + (offset.x/curIcon.rect.width/2f), 0.5f + (offset.y/curIcon.rect.height/2f));
+                    //     ti.SetTextureSettings(settings);
+                    // });
+                    //
+                    // AssetDatabase.ImportAsset(destPath, ImportAssetOptions.ForceUpdate);
+                    // AssetDatabase.Refresh();
+                    //
+                    // GameObject.DestroyImmediate(iconAtlas);
                 }
 
                 var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(destPath);

@@ -35,13 +35,15 @@ class Program
 
     static void Main(string[] args)
     {
+        AppSettings.LoadConfigFromServerPath();
+        DataManager.Initialize();
+
         WriteMonsterData();
         //WriteServerConfig();
         WriteMapList();
         WriteEffectsList();
         WriteJobDataStuff();
         WriteItemsList();
-        
     }
 
     private static void WriteEffectsList()
@@ -209,6 +211,7 @@ class Program
 
         foreach (var entry in GetCsvRows<CsvItemUseable>("ItemsUsable.csv"))
         {
+            var itemData = DataManager.ItemList[entry.Id];
             var item = new ItemData()
             {
                 Code = entry.Code,
@@ -217,7 +220,8 @@ class Program
                 IsUnique = false,
                 ItemClass = ItemClass.Useable,
                 UseType = entry.UseMode,
-                Price = entry.Price,
+                Price = itemData.Price,
+                SellPrice = itemData.SellToStoreValue,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
             };
@@ -237,10 +241,7 @@ class Program
 
         foreach (var entry in GetCsvRows<CsvItemRegular>("ItemsRegular.csv"))
         {
-            var price = entry.Price * 2; //this should somehow sync with the EtcItemValueMultiplier value in appsettings.json, the fact that it doesn't is bad
-            if (entry.Code == "Phracon" || entry.Code == "Emveretarcon")
-                price = entry.Price; //don't want this being exploitable
-
+            var itemData = DataManager.ItemList[entry.Id];
             var item = new ItemData()
             {
                 Code = entry.Code,
@@ -249,7 +250,8 @@ class Program
                 IsUnique = false,
                 ItemClass = ItemClass.Etc,
                 UseType = ItemUseType.NotUsable,
-                Price = price, 
+                Price = itemData.Price, 
+                SellPrice = itemData.SellToStoreValue,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
             };
@@ -269,6 +271,7 @@ class Program
 
         foreach (var entry in GetCsvRows<CsvItemWeapon>("ItemsWeapons.csv"))
         {
+            var itemData = DataManager.ItemList[entry.Id];
             var item = new ItemData()
             {
                 Code = entry.Code,
@@ -280,7 +283,8 @@ class Program
                 ItemClass = ItemClass.Weapon,
                 UseType = ItemUseType.NotUsable,
                 Slots = entry.Slot,
-                Price = entry.Price,
+                Price = itemData.Price,
+                SellPrice = itemData.SellToStoreValue,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
                 Position = entry.Position == WeaponPosition.MainHand ? EquipPosition.MainHand : EquipPosition.BothHands
@@ -332,7 +336,8 @@ class Program
         foreach (var entry in GetCsvRows<CsvItemEquipment>("ItemsEquipment.csv"))
         {
             var pos = (entry.Type & ~EquipPosition.Headgear) | (EquipPosition) entry.Position;
-            
+            var itemData = DataManager.ItemList[entry.Id];
+
             var item = new ItemData()
             {
                 Code = entry.Code,
@@ -344,7 +349,8 @@ class Program
                 ItemClass = ItemClass.Equipment,
                 UseType = ItemUseType.NotUsable,
                 Slots = entry.Slot,
-                Price = entry.Price,
+                Price = itemData.Price,
+                SellPrice = itemData.SellToStoreValue,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
                 Position = pos
@@ -420,6 +426,7 @@ class Program
 
         foreach (var entry in GetCsvRows<CsvItemCard>("ItemsCards.csv"))
         {
+            var itemData = DataManager.ItemList[entry.Id];
             var item = new ItemData()
             {
                 Code = entry.Code,
@@ -428,7 +435,8 @@ class Program
                 IsUnique = false,
                 ItemClass = ItemClass.Card,
                 UseType = ItemUseType.NotUsable,
-                Price = entry.Price,
+                Price = itemData.Price,
+                SellPrice = itemData.SellToStoreValue,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
                 Position = entry.EquipableSlot
@@ -465,6 +473,7 @@ class Program
 
         foreach (var entry in GetCsvRows<CsvItemAmmo>("ItemsAmmo.csv"))
         {
+            var itemData = DataManager.ItemList[entry.Id];
             var item = new ItemData()
             {
                 Code = entry.Code,
@@ -473,7 +482,8 @@ class Program
                 IsUnique = false,
                 ItemClass = ItemClass.Ammo,
                 UseType = ItemUseType.NotUsable,
-                Price = entry.Price,
+                Price = itemData.Price,
+                SellPrice = itemData.SellToStoreValue,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
             };

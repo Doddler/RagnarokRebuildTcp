@@ -53,8 +53,8 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 752,Rocker_Doll,Rocker Doll,4000,100,None,메뚜기인형
 753,Yoyo_Doll,Yoyo Doll,6000,100,None,원숭이인형
 754,Racoon_Doll,Racoon Doll,5000,100,None,너구리인형
-756,Rough_Oridecon,Rough Oridecon,550,200,None,오리데오콘원석
-757,Rough_Elunium,Rough Elunium,650,200,None,에르늄원석
+756,Rough_Oridecon,Rough Oridecon,550,200,Refine,오리데오콘원석
+757,Rough_Elunium,Rough Elunium,650,200,Refine,에르늄원석
 901,Daenggie,Daenggie,260,10,None,댕기머리
 902,Tree_Root,Tree Root,12,10,None,나무뿌리
 903,Reptile_Tongue,Reptile Tongue,140,10,None,파충류혓바닥
@@ -135,8 +135,8 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 981,Violet_Dyestuffs,Violet Dyestuffs,8000,150,None,보라색염료
 982,White_Dyestuffs,White Dyestuffs,8000,150,None,하얀색염료
 983,Black_Dyestuffs,Black Dyestuffs,8000,150,None,검은색염료
-984,Oridecon,Oridecon,1100,200,None,오리데오콘
-985,Elunium,Elunium,1100,200,None,에르늄
+984,Oridecon,Oridecon,1100,200,Refine,오리데오콘
+985,Elunium,Elunium,1100,200,Refine,에르늄
 986,Anvil,Anvil,30000,500,None,모루
 987,Oridecon_Anvil,Oridecon Anvil,120000,700,None,오리데오콘모루
 988,Golden_Anvil,Golden Anvil,300000,900,None,황금의모루

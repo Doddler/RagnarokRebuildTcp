@@ -80,6 +80,7 @@ namespace Assets.Scripts.Network
         private bool isDirectMove;
         public float PosLockTime;
         public float AttackAnimationSpeed = 1f;
+        public bool IsCharacterAlive = true;
 
         private UniqueAttackAction uniqueAttackAction;
         private float uniqueAttackStart;
@@ -872,16 +873,19 @@ namespace Assets.Scripts.Network
             }
             // Debug.Log($"{name}:Performing attack motion.");
 
-            SpriteAnimator.State = SpriteState.Idle;
-
-            SpriteAnimator.AnimSpeed = 1f;
+            if (!IsCharacterAlive || SpriteAnimator.State == SpriteState.Dead)
+                return;
 
             if (SpriteAnimator.Type == SpriteType.Player)
             {
+                SpriteAnimator.AnimSpeed = 1f;
                 SpriteAnimator.ChangeMotion(SpriteMotion.Casting, true);
             }
             else
                 SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+            
+            
+            SpriteAnimator.State = SpriteState.Idle;
 
             // Debug.Log($"PerformBasicAttackMotion {name} speed {AttackAnimationSpeed}");
             //SpriteAnimator.AnimSpeed = AttackAnimationSpeed;
@@ -896,6 +900,9 @@ namespace Assets.Scripts.Network
                 return;
             }
             // Debug.Log($"{name}:Performing attack motion.");
+            
+            if (!IsCharacterAlive || SpriteAnimator.State == SpriteState.Dead)
+                return;
 
             if (SpriteAnimator.Type == SpriteType.Player)
             {
@@ -1025,6 +1032,26 @@ namespace Assets.Scripts.Network
             StopCasting();
 
             StartCoroutine(MonsterDeathCoroutine());
+        }
+
+        public void PlayerDie(Vector2Int position)
+        {
+            if (IsMainCharacter)
+                CameraFollower.Instance.AppendChatText("You have died! Press R key to respawn at your save point.");
+
+            if (CameraFollower.Instance.SelectedTarget == this)
+                CameraFollower.Instance.ClearSelected();
+
+            if(position.x > 0 && position.y > 0)
+                StopImmediate(position, true);
+            IsCharacterAlive = false;
+            SpriteAnimator.State = SpriteState.Dead;
+            SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
+
+            if (IsMainCharacter)
+            {
+                CameraFollower.Instance.AttachEffectToEntity("Death", gameObject, Id);
+            }
         }
 
         public void UpdateHp(int hp)
@@ -1296,6 +1323,9 @@ namespace Assets.Scripts.Network
                 Debug.Log($"{name} hitDelay {hitDelay}");
                 return;
             }
+            
+            if(!IsCharacterAlive && SpriteAnimator.CurrentMotion != SpriteMotion.Dead)
+                SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
 
             if (IsCasting && uniqueAttackAction != null && Time.timeSinceLevelLoad > uniqueAttackStart)
             {

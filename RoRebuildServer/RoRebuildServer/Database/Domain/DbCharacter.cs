@@ -23,7 +23,12 @@ public class DbCharacter
     public byte[]? Data { get; set; }
     public byte[]? SkillData { get; set; }
     public byte[]? NpcFlags { get; set; }
+    public int NpcFlagsLength { get; set; }
     public byte[]? ItemData { get; set; }
+    public StorageInventory? KafraStorage { get; set; }
+    public int ItemDataLength { get; set; }
     public RoUserAccount Account { get; set; } = null!;
     public int AccountId { get; set; }
+    public int VersionFormat { get; set; }
+    public static int CurrentVersion = 1;
 }

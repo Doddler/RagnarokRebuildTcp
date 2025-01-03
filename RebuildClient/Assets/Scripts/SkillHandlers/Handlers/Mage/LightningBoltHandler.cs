@@ -29,7 +29,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
 
         public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ref AttackResultData attack)
         {
-            src?.PerformBasicAttackMotion();
+            src?.PerformSkillMotion();
             var target = attack.Target;
             if(target != null)
                 CameraFollower.Instance.AttachEffectToEntity("LightningBolt", target.gameObject, src.Id);

@@ -1144,7 +1144,7 @@
     },
     {
       "SkillId": 65,
-      "Icon": "pr_resurrection",
+      "Icon": "all_resurrection",
       "Name": "Resurrection",
       "Target": 2,
       "Type": 0,

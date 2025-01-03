@@ -191,8 +191,8 @@ public static class RoDatabase
                 msg.Write(0);
             else
             {
-                msg.Write((int)PlayerSummaryData.SummaryDataMax * 4);
-                msg.Write(character.SummaryData, (int)PlayerSummaryData.SummaryDataMax * 4); //set length because the buffer we have might exceed what we want to send to the client
+                msg.Write((int)PlayerSummaryData.SummaryDataMax * sizeof(int));
+                msg.Write(character.SummaryData, (int)PlayerSummaryData.SummaryDataMax * sizeof(int)); //set length because the buffer we have might exceed what we want to send to the client
             }
         }
     }

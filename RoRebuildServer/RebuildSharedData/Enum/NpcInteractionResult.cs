@@ -8,5 +8,7 @@ public enum NpcInteractionResult : byte
     WaitForTime,
     WaitForShop,
     WaitForRefine,
+    WaitForStorageAccess,
+    WaitForStorage,
     EndInteraction
 }

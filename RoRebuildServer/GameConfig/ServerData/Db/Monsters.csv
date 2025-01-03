@@ -53,7 +53,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4050,ANGELING,Angeling,35,19125,40,104,49,56,29,34,229,310,1,15,19,5421,3959,10,12,Medium,Angel,Holy4,1072,672,672,200,Boss,AiStandardBoss,312,angeling.spr,0,0.5,1,#FFFFFFFF
 4051,DEVILING,Deviling,46,27192,59,64,48,63,34,30,376,509,1,20,20,10463,6616,10,12,Medium,Demon,Dark4,1072,384,1056,200,Boss,AiStandardBoss,672,deviling.spr,0,0.5,1,#FFFFFFFF
 4052,DRAGON_TAIL,Dragon Tail,61,7387,42,41,44,77,51,21,557,680,1,23,17,7529,6144,10,12,Medium,Insect,Wind2,862,312,534,175,Normal,AiStandardBoss,360,dragon_tail.spr,0,0.5,1,#FFFFFFFF
-4053,POISON_SPORE,Poison Spore,23,1175,13,19,17,25,11,12,72,89,1,6,6,331,231,10,12,Medium,Plant,Poison1,1672,288,672,200,Normal,AiAggressive,528,poison_spore.spr,0,0.5,1,#FFFFFFFF
+4053,POISON_SPORE,Poison Spore,23,1175,13,19,17,25,11,12,76,93,1,6,6,313,219,10,12,Medium,Plant,Poison1,1672,288,672,200,Normal,AiAggressive,528,poison_spore.spr,0,0.5,1,#FFFFFFFF
 4054,WORM_TAIL,Worm Tail,14,542,8,11,13,17,6,6,30,37,2,6,5,76,50,10,12,Medium,Plant,Earth1,1048,192,48,200,Normal,AiPassiveSense,288,worm_tail.spr,0,0.5,1,#FFFFFFFF
 4055,ELDER_WILLOW,Elder Willow,20,963,11,22,8,20,9,10,52,63,1,6,8,270,191,10,12,Medium,Plant,Fire2,1372,432,672,200,Normal,AiAggressiveSense,288,elder_wilow.spr,0,0.5,1,#FFFFFFFF
 4056,EGGYRA,Eggyra,26,746,11,34,10,36,18,7,94,115,1,4,12,517,382,10,12,Medium,Formless,Ghost2,1816,288,816,200,Normal,AiPassiveSense,480,eggyra.spr,0,0.5,1,#FFFFFFFF
@@ -66,7 +66,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4063,EDDGA,Eddga,65,126890,79,80,75,87,51,47,766,1037,1,29,29,97534,67223,10,12,Large,Beast,Fire1,872,432,1344,300,Boss,AiStandardBoss,408,eddga.spr,0,0.5,1,#FFFFFFFF
 4064,THIEF_BUG_,Female Thief Bug,14,363,9,10,10,21,11,5,35,42,1,5,4,73,60,10,12,Medium,Insect,Dark1,988,768,288,200,Normal,AiLooterAssist,480,thief_bug_female.spr,0,0.5,1,#FFFFFFFF
 4065,THIEF_BUG__,Male Thief Bug,23,1167,16,15,17,33,18,8,81,100,1,8,6,386,324,10,12,Medium,Insect,Dark1,988,768,288,300,Normal,AiAggressiveAssist,504,thief_bug_male.spr,0,0.5,1,#FFFFFFFF
-4066,GOLDEN_BUG,Golden Thief Bug,44,71702,43,46,65,78,46,23,381,516,1,42,17,38765,28981,10,12,Large,Insect,Fire2,768,480,768,100,Boss,AiLooterAssist,720,golden_bug.spr,0,0.5,1,#FFFFFFFF
+4066,GOLDEN_BUG,Golden Thief Bug,42,65483,40,43,62,74,43,21,345,466,1,42,17,35344,26424,10,12,Large,Insect,Fire2,768,480,768,100,Boss,AiLooterAssist,720,golden_bug.spr,0,0.5,1,#FFFFFFFF
 4067,VAGABOND_WOLF,Vagabond Wolf,38,15381,43,42,44,50,28,25,233,284,1,17,15,4906,3264,10,12,Medium,Beast,Earth1,1048,432,648,150,Boss,AiStandardBoss,216,vagabond_wolf.spr,0,0.5,1,#FFFFFFFF
 4068,SCORPION,Scorpion,24,939,16,17,16,32,19,8,77,94,1,9,7,381,320,4,12,Small,Insect,Fire1,1564,576,864,200,Normal,AiAggressiveSense,384,scorpion.spr,0,0.5,1,#FFFFFFFF
 4069,METALLER,Metaller,22,798,14,15,14,29,17,7,67,82,1,8,6,316,240,10,12,Medium,Insect,Fire1,1708,540,1008,200,Normal,AiLooterAssist,432,metaller.spr,0,0.5,1,#FFFFFFFF
@@ -301,14 +301,14 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4298,ANGRY_TARGET_DUMMY,Angry Target Dummy,99,100000,41,20,20,200,1,1,500,500,3,20,20,0,0,10,12,Large,Demon,Earth4,1000,1,200,-1,Boss,AiAggressiveImmobile,200,barricade.spr,0,-1,1,#FFFFFFFF
 5000,PORING50,Poring,50,4739,22,34,37,35,19,20,273,302,1,10,10,2773,2010,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiLooter,288,poring.spr,0,0.5,1.1,#FFFFFFFF
 6000,MOONLIGHT_CLONE,Moonlight Flower,65,16793,87,98,60,88,49,58,591,800,1,15,30,0,0,10,12,Medium,Demon,Fire3,1276,288,576,150,Boss,AiStandardBoss,180,moonlight.spr,0,0.5,1,#FFFFFFAA
-6001,GTB_EGG,Thief Bug Egg,15,845,5,16,20,6,6,1,3,4,0,26,21,0,0,1,1,Small,Insect,Dark3,701,1,1,-1,Normal,AiPlant,288,thief_bug_egg.spr,0,-1,1.2,#FFFFFFFF
-6002,GTB_SUMMON,Angry Thief Bug,25,1392,18,17,19,37,21,9,95,116,1,10,7,0,0,12,12,Medium,Insect,Dark3,500,288,288,120,Normal,AiStandardBoss,504,thief_bug_female.spr,0,0.5,0.7,#FF6F6FFF
+6001,GTB_EGG,Thief Bug Egg,13,661,4,14,13,6,5,1,2,3,0,22,18,0,0,1,1,Small,Insect,Dark3,701,1,1,-1,Normal,AiPlant,288,thief_bug_egg.spr,0,-1,1.2,#FFFFFFFF
+6002,GTB_SUMMON,Angry Thief Bug,24,1160,18,16,19,36,20,8,93,114,1,10,7,0,0,12,12,Medium,Insect,Dark3,500,288,288,120,Normal,AiStandardBoss,504,thief_bug_female.spr,0,0.5,0.7,#FF6F6FFF
 6003,WERE_WOLF,Werewolf,48,9797,56,56,56,64,37,33,370,501,1,79,77,10419,7345,10,12,Medium,Beast,Dark3,902,432,648,150,Boss,AiStandardBoss,216,were_wolf.spr,0,0.5,1,#FFFFFFFF
 6004,RAPTICE,Raptice,38,3076,30,32,31,40,23,18,160,195,3,13,12,1198,856,10,12,Medium,Beast,Water1,1540,576,720,300,Normal,AiAggressiveSense,324,raptice.spr,0,0.5,1,#FFFFFFFF
 6005,STITCH,Stitch,34,2553,36,19,34,33,20,13,142,173,1,10,8,1012,677,10,12,Small,Beast,Earth1,1000,1000,500,140,Normal,AiAggressiveSense,620,tarou.spr,0,0.5,1,#F9EFBAFF
-6006,SOLDIER_ANDRE,Soldier Andre,31,1649,20,19,22,37,23,10,117,144,1,13,8,885,679,10,12,Small,Insect,Earth3,916,576,648,250,Normal,AiAggressiveSense,180,soldier_andre.spr,0,0.5,1,#FFFFFFFF
-6007,SOLDIER_DENIRO,Soldier Deniro,33,1859,22,21,24,39,25,10,172,211,1,14,9,995,749,10,12,Small,Insect,Earth3,1200,576,648,160,Normal,AiAggressiveSense,144,soldier_deniro.spr,0,0.5,1,#FFFFFFFF
-6008,SOLDIER_PIERE,Soldier Piere,36,2199,23,22,26,42,26,11,155,190,1,15,9,1202,820,10,12,Small,Insect,Earth3,800,576,648,200,Normal,AiAggressiveSense,144,soldier_piere.spr,0,0.5,1,#FFFFFFFF
+6006,SOLDIER_ANDRE,Soldier Andre,31,2143,20,19,29,37,23,8,117,144,1,17,8,976,714,10,12,Small,Insect,Earth3,916,576,648,250,Normal,AiAggressiveSense,180,soldier_andre.spr,0,0.5,1,#FFFFFFFF
+6007,SOLDIER_DENIRO,Soldier Deniro,33,1859,22,21,24,50,21,10,172,211,1,14,9,1055,794,10,12,Small,Insect,Earth3,1200,576,648,160,Normal,AiAggressiveSense,144,soldier_deniro.spr,0,0.5,1,#FFFFFFFF
+6008,SOLDIER_PIERE,Soldier Piere,36,2089,23,29,26,38,35,12,155,190,1,15,12,1258,889,10,12,Small,Insect,Earth3,800,576,648,200,Normal,AiAggressiveSense,144,soldier_piere.spr,0,0.5,1,#FFFFFFFF
 6009,ANDRE_LARVA,Andre Larva,18,574,12,12,12,25,14,6,74,91,1,7,5,289,230,10,12,Small,Insect,Earth1,600,384,288,160,Normal,AiLooterAssist,180,andre_larva.spr,0,0.25,1,#FFFFFFFF
 6010,DENIRO_LARVA,Deniro Larva,20,695,13,14,14,27,16,7,87,106,1,7,5,432,340,10,12,Small,Insect,Earth1,600,576,288,80,Normal,AiLooterAssist,144,deniro_larva.spr,0,0.25,1,#FFFFFFFF
 6011,PIERE_LARVA,Piere Larva,22,829,14,14,15,29,17,7,99,122,1,8,6,547,431,10,12,Small,Insect,Earth1,600,576,288,140,Normal,AiLooterAssist,144,piere_larva.spr,0,0.25,1,#FFFFFFFF

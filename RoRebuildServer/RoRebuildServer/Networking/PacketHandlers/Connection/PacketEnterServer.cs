@@ -40,7 +40,21 @@ public class PacketEnterServer : IClientPacketHandler
             return;
         }
 
+        if (string.IsNullOrWhiteSpace(chName) || chName.Length < 2)
+        {
+            CommandBuilder.ErrorMessage(connection, $"The character name is invalid. It must be at least 2 characters long.");
+            return;
+        }
+
+        var t = chName.Trim();
+        if (t != chName)
+        {
+            CommandBuilder.ErrorMessage(connection, $"The character name is invalid. Names cannot contain leading or trailing whitespace.");
+        }
+        
         var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
+        for(var i = 0; i < charData.Length; i++)
+            charData[i] = 0;
 
         var head = msg.ReadInt32();
         var hair = msg.ReadInt32();

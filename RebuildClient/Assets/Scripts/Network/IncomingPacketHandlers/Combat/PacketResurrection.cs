@@ -20,6 +20,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
             Camera.AttachEffectToEntity("Resurrect", controllable.gameObject, id);
 
+            controllable.IsCharacterAlive = true;
             controllable.SpriteAnimator.State = SpriteState.Idle;
             controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Idle, true);
             controllable.SetHp(hp);

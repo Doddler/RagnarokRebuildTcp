@@ -48,6 +48,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
         private void ProcessSelfTargetedSkill(NetworkConnection connection, InboundMessage msg)
         {
             Debug.Assert(connection.Player != null, "connection.Player != null");
+            Debug.Assert(connection.Character != null);
 
             var skill = (CharacterSkill)msg.ReadInt16();
             var lvl = msg.ReadByte();
@@ -62,6 +63,13 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             if (target == SkillTarget.Passive)
             {
                 ServerLogger.LogWarning($"Player {connection.Character.Name} is incorrectly trying to target self with the skill {skill}.");
+                return;
+            }
+
+            var validation = SkillHandler.ValidateTarget(skill, connection.Character.CombatEntity, null, Position.Invalid, lvl);
+            if (validation != SkillValidationResult.Success)
+            {
+                CommandBuilder.SkillFailed(connection.Player, validation);
                 return;
             }
 
@@ -84,13 +92,20 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.NoLineOfSight);
                 return;
             }
-
+            
             var skill = (CharacterSkill)msg.ReadByte();
             var lvl = (int)msg.ReadByte();
 
             if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
             {
                 CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.Failure);
+                return;
+            }
+
+            var validation = SkillHandler.ValidateTarget(skill, caster.CombatEntity, null, groundTarget, lvl);
+            if (validation != SkillValidationResult.Success)
+            {
+                CommandBuilder.SkillFailed(connection.Player, validation);
                 return;
             }
 
@@ -138,6 +153,13 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             if (!isValidTarget)
             {
                 ServerLogger.LogWarning($"Player '{connection.Character.Name}' is incorrectly trying to target '{target.Character.Name}' with the skill {skill}.");
+                return;
+            }
+
+            var validation = SkillHandler.ValidateTarget(skill, caster.CombatEntity, target, Position.Invalid, lvl);
+            if (validation != SkillValidationResult.Success)
+            {
+                CommandBuilder.SkillFailed(connection.Player, validation);
                 return;
             }
 

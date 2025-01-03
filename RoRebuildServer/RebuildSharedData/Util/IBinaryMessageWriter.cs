@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using K4os.Compression.LZ4;
 
 namespace RebuildSharedData.Util;
 
@@ -18,6 +19,8 @@ public interface IBinaryMessageWriter
     void Write(float f);
     void Write(bool b);
     void Write(byte[] b);
+    void WriteCompressedByteArray(byte[] b);
+    void WriteCompressedByteArray(byte[] b, int length);
     void Write(string s);
 }
 
@@ -28,6 +31,8 @@ public interface IBinaryMessageReader
     byte ReadByte();
     byte[] ReadBytes(int len);
     void ReadBytes(byte[] buffer, int len);
+    void ReadCompressedByteArray(byte[] buffer);
+    void ReadCompressedByteArray(byte[] buffer, int len);
     int ReadInt32();
     short ReadInt16();
     ushort ReadUInt16();
@@ -49,6 +54,18 @@ public class BinaryMessageWriter(Stream output) : BinaryWriter(output), IBinaryM
     {
         Write((byte)type);
     }
+
+    public void WriteCompressedByteArray(byte[] b)
+    {
+        LZ4Codec.MaximumOutputSize(1);
+        throw new NotImplementedException();
+        
+    }
+
+    public void WriteCompressedByteArray(byte[] b, int length)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class BinaryMessageReader(Stream input) : BinaryReader(input), IBinaryMessageReader
@@ -63,6 +80,16 @@ public class BinaryMessageReader(Stream input) : BinaryReader(input), IBinaryMes
     {
         var b = base.ReadBytes(len);
         Array.Copy(b, buffer, len);
+    }
+
+    public void ReadCompressedByteArray(byte[] buffer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ReadCompressedByteArray(byte[] buffer, int len)
+    {
+        throw new NotImplementedException();
     }
 
     public float ReadFloat() => base.ReadSingle();

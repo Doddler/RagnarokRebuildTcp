@@ -7,6 +7,7 @@ using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
+using RoRebuildServer.Data.ServerConfigScript;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Monsters;
@@ -161,7 +162,9 @@ public static class DataManager
             ScriptAssembly = ScriptLoader.LoadAssembly();
         else
             ScriptAssembly = ScriptLoader.LoadExisting();
-            NpcManager = new NpcBehaviorManager();
+        
+        NpcManager = new NpcBehaviorManager();
+        var scriptConfig = new ServerConfigScriptManager(ScriptAssembly);
         
         var monsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
         var monsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
@@ -188,8 +191,10 @@ public static class DataManager
         //things that require other things loaded first
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
         SkillTree = loader.LoadSkillTree();
-        MonsterDropData = loader.LoadMonsterDropChanceData();
+        MonsterDropData = loader.LoadMonsterDropChanceData(scriptConfig);
         ItemMonsterSummonList = loader.LoadMonsterSummonItemList();
+
+        scriptConfig.UpdateItemValue(ItemList);
     }
 
     public static void Initialize(bool loadExisting = false)

@@ -210,6 +210,9 @@ public class CharacterBag : IResettable
 
     public bool RemoveItemByBagIdAndGetRemovedItem(int id, int removeCount, out ItemReference itemOut)
     {
+        if (removeCount < 0)
+            throw new Exception($"Player attempting to remove negative items from their bag.");
+
         if (RegularItems.TryGetValue(id, out var regular))
         {
             var startCount = (int)regular.Count;
@@ -385,8 +388,8 @@ public static class CharacterBagExtensions
     public static int TryGetSize(this CharacterBag? bag)
     {
         if (bag == null)
-            return 0;
-        return bag.GetByteSize();
+            return 1;
+        return bag.GetByteSize() + 1; //The +1 is the flag for if the bag exists
     }
 
     public static void TryWrite(this CharacterBag? bag, IBinaryMessageWriter bw, bool writeBagIndexes)

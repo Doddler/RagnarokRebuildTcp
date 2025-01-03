@@ -30,50 +30,30 @@ public class PacketRespawn : IClientPacketHandler
         if (player.InActionCooldown())
             return;
 
+        if (ch.State != CharacterState.Dead)
+            return;
+
         if (!player.IsAdmin)
             inPlace = false;
         
-        var isDead = ch.State == CharacterState.Dead;
-        
         ch.ResetState(true);
         ch.SetSpawnImmunity();
-
         ce.ClearDamageQueue();
 
-        if (isDead)
+        if (inPlace)
         {
             var recoverHp = ce.GetStat(CharacterStat.MaxHp);
             ce.SetStat(CharacterStat.Hp, recoverHp);
         }
         else
-            inPlace = false;
-
-        var savePoint = player.SavePosition.MapName;
-        var position = player.SavePosition.Position;
-        if (!World.Instance.TryGetWorldMapByName(savePoint, out var targetMap))
         {
-            World.Instance.TryGetWorldMapByName("prt_fild08", out targetMap);
-            position = new Position(170, 367);
+            if (ce.GetStat(CharacterStat.Hp) <= 0)
+                ce.SetStat(CharacterStat.Hp, 1);
+            player.ResetRegenTickTime();
         }
 
         if (!inPlace)
-        {
             player.ReturnToSavePoint();
-            //player.AddActionDelay(CooldownActionType.Teleport);
-
-            //if (ch.Map.Name == savePoint)
-            //{
-            //    if (!ch.Map.MapBounds.Contains(position) || !ch.Map.WalkData.IsCellWalkable(position))
-            //        position = ch.Map.FindRandomPositionOnMap();
-            //    ch.Map.TeleportEntity(ref connection.Entity, ch, position, CharacterRemovalReason.OutOfSight);
-            //}
-            //else
-            //{
-            //    if (!targetMap.MapBounds.Contains(position) || !targetMap.WalkData.IsCellWalkable(position))
-            //        position = targetMap.FindRandomPositionOnMap();
-            //    ch.Map.World.MovePlayerMap(ref connection.Entity, ch, targetMap, position);
-            //}
-        }
         else
         {
             player.AddActionDelay(CooldownActionType.Click);

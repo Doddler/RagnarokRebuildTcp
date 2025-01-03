@@ -652,7 +652,7 @@ public class Npc : IEntityAutoReset
             }
 
             var info = DataManager.GetItemInfoById(item.Id)!;
-            var value = (info.Price / 2) * (100 + overCharge) / 100;
+            var value = info.SellToStoreValue * (100 + overCharge) / 100;
             if (info.ItemClass != ItemClass.Ammo) //ammo always sells to the NPC for 0, allows NPCs to sell quivers and the like without worry of exploit.
                 zenyGained += value * itemCounts[i];
         }
@@ -699,7 +699,7 @@ public class Npc : IEntityAutoReset
         {
             if (DataManager.ItemList.TryGetValue(id, out var info))
             {
-                var sellValue = float.Ceiling(info.Price / 2f);
+                var sellValue = info.SellToStoreValue;
                 var profit = sellValue - price * 0.5f;
                 if (profit > 0)
                 {

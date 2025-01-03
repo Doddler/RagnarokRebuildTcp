@@ -344,6 +344,8 @@ Recover 50% HP and SP
 ::Yggdrasil_Leaf //610
 <color=#808080>A leaf from the Yggdrasil tree, it can bring life to fallen characters.</color>
 Casts: <color=#0000FF>Resurrection 1</color>
+Cast Time: <color=#777777>6 Seconds</color>
+Channelled: <color=#777777>Being hit while casting will interrupt the skill, but not consume the item.</color>
 
 ::Magnifier //611
 <color=#808080>A magnifying glass used for scrutinizing objects. Rumor has it that adventurers once needed to use these to identify items.</color>

@@ -1,4 +1,6 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
+using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
 using RebuildSharedData.Data;
@@ -6,6 +8,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Util;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Database.Domain;
+using RoRebuildServer.Database.Utility;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
@@ -27,6 +30,7 @@ public class SaveCharacterRequest : IDbRequest
     private byte[]? itemData;
     private byte[]? summaryData;
     private int slot;
+    private int itemDataSize;
 
     public SaveCharacterRequest(string newCharacterName, int accountId)
     {
@@ -41,6 +45,7 @@ public class SaveCharacterRequest : IDbRequest
         npcData = null;
         itemData = null;
         summaryData = null;
+        itemDataSize = 0;
     }
 
     public SaveCharacterRequest(Player player)
@@ -66,29 +71,14 @@ public class SaveCharacterRequest : IDbRequest
         skillData = DbHelper.BorrowArrayAndWriteDictionary(player.LearnedSkills);
         npcData = DbHelper.BorrowArrayAndWriteDictionary(player.NpcFlags);
         summaryData = ArrayPool<byte>.Shared.Rent((int)PlayerSummaryData.SummaryDataMax * sizeof(int));
+        Array.Clear(summaryData);
 
         var summary = ArrayPool<int>.Shared.Rent((int)PlayerSummaryData.SummaryDataMax);
-        player.PackPlayerSummaryData(summary);
+        PlayerDataDbHelper.PackPlayerSummaryData(summary, player);
         Buffer.BlockCopy(summary, 0, summaryData, 0, (int)PlayerSummaryData.SummaryDataMax * sizeof(int));
         ArrayPool<int>.Shared.Return(summary);
 
-        var inventorySize = player.Inventory.TryGetSize() + player.CartInventory.TryGetSize() + player.StorageInventory.TryGetSize();
-        if (inventorySize > 0)
-        {
-            inventorySize += 16 * 10 + 4; //max size of equipped items. Obviously you can't have equipped items if you have no inventory.
-            //add 3 bytes since each bag will also write if it exists or not
-            var buffer = ArrayPool<byte>.Shared.Rent(inventorySize + 3); 
-            using var ms = new MemoryStream(buffer);
-            using var bw = new BinaryMessageWriter(ms);
-            player.Inventory.TryWrite(bw, false);
-            player.CartInventory.TryWrite(bw, false);
-            player.StorageInventory.TryWrite(bw, false);
-            player.Equipment.Serialize(bw);
-
-            itemData = buffer;
-        }
-        else
-            itemData = null;
+        itemData = PlayerDataDbHelper.CompressAndStorePlayerInventoryData(player, out itemDataSize);
     }
 
     public async Task ExecuteAsync(RoContext dbContext)
@@ -113,19 +103,20 @@ public class SaveCharacterRequest : IDbRequest
             SkillData = skillData,
             NpcFlags = npcData,
             CharacterSummary = summaryData,
-            ItemData = itemData
+            ItemData = itemData,
+            ItemDataLength = itemDataSize,
+            VersionFormat = 1
         };
-
+        
         dbContext.Update(ch);
         await dbContext.SaveChangesAsync();
 
         if (skillData != null) ArrayPool<byte>.Shared.Return(skillData);
         if (npcData != null) ArrayPool<byte>.Shared.Return(npcData);
-        if (itemData != null) ArrayPool<byte>.Shared.Return(itemData);
         if (summaryData != null) ArrayPool<byte>.Shared.Return(summaryData);
 
         skillData = null;
-        data = null;
+        data = null; //we didn't borrow the itemData array so we don't return it
 
         Id = ch.Id;
     }

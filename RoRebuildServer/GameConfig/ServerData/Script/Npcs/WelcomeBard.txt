@@ -269,7 +269,7 @@ macro BardWarps31to40()
 
 macro BardWarp41AndAbove()
 {
-	Dialog(Name, "Ah sorry, I wasn't able to get a full list of warps set up for anything level 41 and above. There's some spots worth checking out though you can warp to yourself like clocktower, Glast Heim church and catacombs (for anolians), orc village (geffen 14), bathories, etc.");
+	Dialog(Name, "Ah sorry, I wasn't able to get a full list of warps set up for anything level 61 and above. There's some spots worth checking out though you can warp to yourself like clocktower, Glast Heim church and catacombs (for anolians), orc village (geffen 14), bathories, etc.");
 	return;
 }
 

@@ -17,157 +17,168 @@
                 <div id="topic">
                     <H3>Ragnarok Rebuild Monsters</H3>
                     !!!!--MonsterArea--!!!!
+
+
                     <!--<table cellpadding=4 style="width: 98%">
                         <tr>
-                            <td style="vertical-align:top; width:30%;">
-                                <H2 class="subheader">Ancient Mummy</H2>
+                            <td style="vertical-align:top; width:20%;">
+                                <H2 class="subheader">{name}</H2>
                                 <br>
                                 <center>
-                                    <img src="images/monsters/1297.png" />
+                                    <img src="images/rebuildmonsters/{sprite}.png" />
                                 </center>
                             </td>
-                            <td style="vertical-align:top; width:30%;">
+
+                            <td style="vertical-align:top; width:22%;">
                                 <H2 class="subheader">Stats</H2>
                                 <table>
                                     <tr>
                                         <td>
                                             <b>Level:</b>
                                         </td>
-                                        <td>64</td>
-
+                                        <td>{m.Level}</td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <b>HP:</b>
                                         </td>
-                                        <td class='beforen'>40599</td>
+                                        <td class='beforen'>{m.HP:N0}</td>
+                                    </tr>{special}
+                                    <tr>
+                                        <td>
+                                            <b>Size:</b>
+                                        </td>
+                                        <td class='beforen'>{m.Size}</td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <b>Element:</b>
                                         </td>
-                                        <td class='beforen'>Undead 2</td>
+                                        <td class='beforen'>{m.Element}</td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <b>Race:</b>
                                         </td>
-                                        <td class='beforen'>Undead</td>
+                                        <td class='beforen'>{m.Race}</td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <b>Base Exp:</b>
                                         </td>
-                                        <td class='beforen'>8040</td>
+                                        <td class='beforen'>{m.Exp:N0}</td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <b>Job Exp:</b>
                                         </td>
-                                        <td class='beforen'>3499</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <b>Defence:</b>
-                                        </td>
-                                        <td class='beforen'>27</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <b>Magic Defence:</b>
-                                        </td>
-                                        <td class='beforen'>27</td>
+                                        <td class='beforen'>N/A</td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <b>Attack Power:</b>
                                         </td>
-                                        <td class='beforen'>836 ~ 1129</td>
+                                        <td class='beforen'>{m.AtkMin:N0} ~ {m.AtkMax:N0}</td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Str:</b>
+                                            <b>Magic Attack:</b>
                                         </td>
-                                        <td class='beforen'>28</td>
+                                        <td class='beforen'>{magicMin:N0} ~ {magicMax:N0}</td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Agi:</b>
+                                            <b>Defence:</b>
                                         </td>
-                                        <td class='beforen'>19</td>
+                                        <td class='beforen'>{m.Def}</td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Magic Defence:</b>
+                                        </td>
+                                        <td class='beforen'>{m.MDef}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>95% Flee:</b>
+                                        </td>
+                                        <td class='beforen'>{m.Dex + m.Level + 75}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>100% Hit:</b>
+                                        </td>
+                                        <td class='beforen'>{m.Agi + m.Level + 20}</td>
+                                    </tr>
+
                                     <tr>
                                         <td>
                                             <b>Vit:</b>
                                         </td>
-                                        <td class='beforen'>32</td>
+                                        <td class='beforen'>{m.Vit}</td>
                                     </tr>
+
                                     <tr>
                                         <td>
                                             <b>Int:</b>
                                         </td>
-                                        <td class='beforen'>5</td>
+                                        <td class='beforen'>{m.Int}</td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Dex:</b>
+                                            <b>Luck:</b>
                                         </td>
-                                        <td class='beforen'>83</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <b>Luk:</b>
-                                        </td>
-                                        <td class='beforen'>35</td>
+                                        <td class='beforen'>{m.Luk}</td>
                                     </tr>
                                 </table>
                             </td>
-                            <td style="vertical-align:top; width:40%;">
+                            <td style="vertical-align:top; width:25%;">
                                 <H2 class="subheader">Drops</H2>
                                 <table>
-                                    <tr>
-                                        <td>
-                                            <img src='images/items/normal/930.png' />
-                                        </td>
-                                        <td>Rotten Bandage (44.13%)</td>
-                                    <tr>
-                                        <td>
-                                            <img src='images/items/normal/934.png' />
-                                        </td>
-                                        <td>Memento (18.00%)</td>
-                                    <tr>
-                                        <td>
-                                            <img src='images/items/normal/2624.png' />
-                                        </td>
-                                        <td>Glove [1] (0.01%)</td>
-                                    <tr>
-                                        <td>
-                                            <img src='images/items/normal/2611.png' />
-                                        </td>
-                                        <td>Silver Ring (1.50%)</td>
-                                    <tr>
-                                        <td class='before'>
-                                            <img src='images/items/normal/503.png' />
-                                        </td>
-                                        <td class='before'>Yellow Potion (3.50%)</td>
-                                    <tr>
-                                        <td>
-                                            <img src='images/items/normal/756.png' />
-                                        </td>
-                                        <td>Rough Oridecon (1.50%)</td>
-                                    <tr>
-                                        <td>
-                                            <img src='images/items/normal/757.png' />
-                                        </td>
-                                        <td>Rough Elunium (1.00%)</td>
-                                    <tr>
-                                        <td>
-                                            <img src='images/items/normal/card.png' />
-                                        </td>
-                                        <td>Ancient Mummy Card (0.01%)</td>
-                                </table>
-                            </td>
-                        </tr>
+                                <tr>
+                                            <td>
+                                                <img src='images/items/normal/930.png' />
+                                            </td>
+                                            <td>Rotten Bandage (44.13%)</td>
+                                        <tr>
+                                            <td>
+                                                <img src='images/items/normal/934.png' />
+                                            </td>
+                                            <td>Memento (18.00%)</td>
+                                        <tr>
+                                            <td>
+                                                <img src='images/items/normal/2624.png' />
+                                            </td>
+                                            <td>Glove [1] (0.01%)</td>
+                                        <tr>
+                                            <td>
+                                                <img src='images/items/normal/2611.png' />
+                                            </td>
+                                            <td>Silver Ring (1.50%)</td>
+                                        <tr>
+                                            <td class='before'>
+                                                <img src='images/items/normal/503.png' />
+                                            </td>
+                                            <td class='before'>Yellow Potion (3.50%)</td>
+                                        <tr>
+                                            <td>
+                                                <img src='images/items/normal/756.png' />
+                                            </td>
+                                            <td>Rough Oridecon (1.50%)</td>
+                                        <tr>
+                                            <td>
+                                                <img src='images/items/normal/757.png' />
+                                            </td>
+                                            <td>Rough Elunium (1.00%)</td>
+                                        <tr>
+                                            <td>
+                                                <img src='images/items/normal/card.png' />
+                                            </td>
+                                            <td>Ancient Mummy Card (0.01%)</td>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
                     </table>-->
                 </div>
 

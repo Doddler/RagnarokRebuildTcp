@@ -18,6 +18,7 @@ using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
+using RoRebuildServer.Data.ServerConfigScript;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
@@ -268,40 +269,35 @@ internal class DataLoader
         return treeOut.AsReadOnly();
     }
 
-    private new Dictionary<(int, int), (int, int)> LoadRemapDrops()
+    //private new Dictionary<(int, int), (int, int)> LoadRemapDrops()
+    //{
+    //    var remap = new Dictionary<(int, int), (int, int)>();
+    //    var remapFile = new Dictionary<string, MonsterDropData>();
+    //    var remapPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/DropRateRemapping.csv");
+
+    //    using var tr = new StreamReader(remapPath, Encoding.UTF8) as TextReader;
+    //    using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+
+    //    var entries = csv.GetRecords<dynamic>();
+    //    foreach (var entry in entries)
+    //    {
+    //        if (entry is IDictionary<string, object> obj)
+    //        {
+    //            var origMin = int.Parse((string)obj["OriginalMin"]);
+    //            var origMax = int.Parse((string)obj["OriginalMax"]);
+    //            var afterMin = int.Parse((string)obj["AfterMin"]);
+    //            var afterMax = int.Parse((string)obj["AfterMax"]);
+    //            remap.Add((origMin, origMax), (afterMin, afterMax));
+    //        }
+    //    }
+
+    //    return remap;
+    //}
+
+    public ReadOnlyDictionary<string, MonsterDropData> LoadMonsterDropChanceData(ServerConfigScriptManager config)
     {
-        var remap = new Dictionary<(int, int), (int, int)>();
-        var remapFile = new Dictionary<string, MonsterDropData>();
-        var remapPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/DropRateRemapping.csv");
-
-        using var tr = new StreamReader(remapPath, Encoding.UTF8) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-
-        var entries = csv.GetRecords<dynamic>();
-        foreach (var entry in entries)
-        {
-            if (entry is IDictionary<string, object> obj)
-            {
-                var origMin = int.Parse((string)obj["OriginalMin"]);
-                var origMax = int.Parse((string)obj["OriginalMax"]);
-                var afterMin = int.Parse((string)obj["AfterMin"]);
-                var afterMax = int.Parse((string)obj["AfterMax"]);
-                remap.Add((origMin, origMax), (afterMin, afterMax));
-            }
-        }
-
-        return remap;
-    }
-
-    public ReadOnlyDictionary<string, MonsterDropData> LoadMonsterDropChanceData()
-    {
-        var remap = new Dictionary<(int, int), (int, int)>();
-
         var remapDrops = ServerConfig.OperationConfig.RemapDropRates;
-
-        if (remapDrops)
-            remap = LoadRemapDrops();
-
+        
         var drops = new Dictionary<string, MonsterDropData>();
         using var inPath = new TemporaryFile(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/DropData.csv"));
         using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
@@ -352,14 +348,9 @@ internal class DataLoader
 
                         if (remapDrops)
                         {
-                            foreach (var range in remap)
-                            {
-                                if (chance >= range.Key.Item1 && chance < range.Key.Item2)
-                                {
-                                    chance = (int)((float)chance).Remap(range.Key.Item1, range.Key.Item2, range.Value.Item1, range.Value.Item2);
-                                    break;
-                                }
-                            }
+                            var itemInfo = DataManager.GetItemInfoById(item);
+                            if(itemInfo != null)
+                                chance = config.UpdateDropData(itemInfo.ItemClass, itemInfo.Code, itemInfo.SubCategory, chance);
                         }
 
                         if (item > 0) //for debug reasons mostly
@@ -500,18 +491,16 @@ internal class DataLoader
 
         foreach (var entry in GetCsvRows<CsvItemRegular>("Db/ItemsRegular.csv"))
         {
-            var price = (int)float.Floor(entry.Price * ServerConfig.OperationConfig.EtcItemValueMultiplier);
-            if (entry.Usage != "None")
-                price = entry.Price; //don't increase the price of items that have tangible use
-
             var item = new ItemInfo()
             {
                 Code = entry.Code,
                 Name = entry.Name,
                 Id = entry.Id,
                 IsUnique = false,
-                ItemClass = ItemClass.Useable,
-                Price = price,
+                ItemClass = ItemClass.Etc,
+                Price = entry.Price,
+                SubCategory = entry.Usage,
+                SellToStoreValue = entry.Price / 2,
                 Weight = entry.Weight,
             };
             items.Add(item.Id, item);
@@ -533,6 +522,8 @@ internal class DataLoader
                 IsUnique = true,
                 ItemClass = ItemClass.Equipment,
                 Price = entry.Price,
+                SubCategory = "Equipment",
+                SellToStoreValue = entry.Price / 2,
                 Weight = entry.Weight,
             };
             itemList.Add(item.Id, item);
@@ -569,6 +560,8 @@ internal class DataLoader
                 IsUnique = true,
                 ItemClass = ItemClass.Weapon,
                 Price = entry.Price,
+                SubCategory = "Weapon",
+                SellToStoreValue = entry.Price / 2,
                 Weight = entry.Weight,
             };
             itemList.Add(item.Id, item);
@@ -608,6 +601,8 @@ internal class DataLoader
                 IsUnique = false,
                 ItemClass = ItemClass.Card,
                 Price = entry.Price,
+                SubCategory = "Card",
+                SellToStoreValue = entry.Price / 2,
                 Weight = entry.Weight,
             };
             itemList.Add(item.Id, item);
@@ -633,6 +628,8 @@ internal class DataLoader
                 IsUnique = false,
                 ItemClass = ItemClass.Ammo,
                 Price = entry.Price,
+                SubCategory = "Ammo",
+                SellToStoreValue = entry.Price / 2,
                 Weight = entry.Weight,
             };
             itemList.Add(item.Id, item);
@@ -657,6 +654,8 @@ internal class DataLoader
                 IsUnique = false,
                 ItemClass = ItemClass.Useable,
                 Price = entry.Price,
+                SubCategory = "Useable",
+                SellToStoreValue = entry.Price / 2,
                 Weight = entry.Weight,
             };
             itemList.Add(item.Id, item);

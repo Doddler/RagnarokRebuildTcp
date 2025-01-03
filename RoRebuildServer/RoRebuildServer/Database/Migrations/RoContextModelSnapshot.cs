@@ -137,6 +137,9 @@ namespace RoRebuildServer.Migrations
                     b.Property<byte[]>("ItemData")
                         .HasColumnType("BLOB");
 
+                    b.Property<int>("ItemDataLength")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Map")
                         .HasMaxLength(32)
                         .HasColumnType("TEXT");
@@ -149,8 +152,14 @@ namespace RoRebuildServer.Migrations
                     b.Property<byte[]>("NpcFlags")
                         .HasColumnType("BLOB");
 
+                    b.Property<int>("NpcFlagsLength")
+                        .HasColumnType("INTEGER");
+
                     b.Property<byte[]>("SkillData")
                         .HasColumnType("BLOB");
+
+                    b.Property<int>("VersionFormat")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("X")
                         .HasColumnType("INTEGER");
@@ -234,6 +243,30 @@ namespace RoRebuildServer.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("DbUserAccount", (string)null);
+                });
+
+            modelBuilder.Entity("RoRebuildServer.Database.Domain.StorageInventory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("StorageData")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<int>("UncompressedSize")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterId")
+                        .IsUnique();
+
+                    b.ToTable("StorageInventory");
                 });
 
             modelBuilder.Entity("RoRebuildServer.Database.Domain.UserRole", b =>
@@ -350,6 +383,22 @@ namespace RoRebuildServer.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("SavePoint");
+                });
+
+            modelBuilder.Entity("RoRebuildServer.Database.Domain.StorageInventory", b =>
+                {
+                    b.HasOne("RoRebuildServer.Database.Domain.DbCharacter", "Character")
+                        .WithOne("KafraStorage")
+                        .HasForeignKey("RoRebuildServer.Database.Domain.StorageInventory", "CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("RoRebuildServer.Database.Domain.DbCharacter", b =>
+                {
+                    b.Navigation("KafraStorage");
                 });
 
             modelBuilder.Entity("RoRebuildServer.Database.Domain.RoUserAccount", b =>

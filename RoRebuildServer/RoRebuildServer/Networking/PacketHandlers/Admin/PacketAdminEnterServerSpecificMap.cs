@@ -38,7 +38,7 @@ public class PacketAdminEnterServerSpecificMap : IClientPacketHandler
             area = Area.CreateAroundPoint(target, 0);
         }
 
-        var playerEntity = World.Instance.CreatePlayer(connection, mapName, area);
+        var playerEntity = World.Instance.CreatePlayer(connection, mapName, area, true);
         connection.Entity = playerEntity;
         connection.LastKeepAlive = Time.ElapsedTime;
         connection.Character = playerEntity.Get<WorldObject>();

@@ -27,7 +27,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             var id = msg.ReadInt32();
             var count = (int)msg.ReadInt16();
 
-            if (player.Inventory == null) return;
+            if (player.Inventory == null || count < 0) return;
 
             if (player.Equipment.IsItemEquipped(id))
                 return;

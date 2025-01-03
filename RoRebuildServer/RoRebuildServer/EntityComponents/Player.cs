@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Threading;
 using Antlr4.Runtime.Tree.Xpath;
+using CsvHelper;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -39,6 +40,7 @@ public class Player : IEntityAutoReset
     public NetworkConnection Connection = null!;
 
     public Guid Id { get; set; }
+    public int StorageId { get; set; }
     public int CharacterSlot { get; set; }
     public string Name { get; set; } = "Uninitialized Player";
     public HeadFacing HeadFacing;
@@ -83,6 +85,7 @@ public class Player : IEntityAutoReset
         set;
     }
     private float regenTickTime { get; set; }
+    public void ResetRegenTickTime() => regenTickTime = Time.ElapsedTimeFloat + 3f; //a bit shorter than normal time because we're so nice
     public int WeaponClass;
 
 #if DEBUG
@@ -189,6 +192,7 @@ public class Player : IEntityAutoReset
         Array.Clear(PlayerStatData);
         WeaponClass = 0;
         LastEmoteTime = 0;
+        StorageId = -1;
         LearnedSkills = null!;
         NpcFlags = null!;
         isStorageLoaded = false;
@@ -223,6 +227,7 @@ public class Player : IEntityAutoReset
             Equipment = new ItemEquipState();
 
         Equipment.Player = this;
+        StorageId = -1;
         Equipment.RunAllOnEquip();
 
         SetStat(CharacterStat.Level, GetData(PlayerStat.Level));
@@ -941,9 +946,9 @@ public class Player : IEntityAutoReset
             ServerLogger.LogError($"Npc script attempted to set spawn position to \"{spawnName}\", but that spawn point was not defined.");
     }
 
-    public bool CanUseSummonItem()
+    public bool CanUseSummonItem(int count = 1)
     {
-        return true; //should check if the map allows this
+        return Inventory == null || Inventory.UsedSlots + count < CharacterBag.MaxBagSlots;
     }
 
     public bool CanUseItemSkill()
@@ -1381,6 +1386,23 @@ public class Player : IEntityAutoReset
                 regenTickTime = Time.ElapsedTimeFloat + 3f;
             else
                 regenTickTime = Time.ElapsedTimeFloat + 6f;
+        }
+
+        if (IsInNpcInteraction)
+        {
+            if (NpcInteractionState.InteractionResult == NpcInteractionResult.WaitForStorageAccess)
+            {
+                if(Connection.LoadStorageRequest == null)
+                {
+                    ServerLogger.LogWarning($"Player is waiting for storage to load, but no request sent!");
+                    EndNpcInteractions();
+                }
+                else
+                {
+                    if(Connection.LoadStorageRequest.IsComplete)
+                        NpcInteractionState.FinishLoadingStorage(Connection.LoadStorageRequest);
+                }
+            }
         }
 
         if (Character.QueuedAction == QueuedAction.Cast)

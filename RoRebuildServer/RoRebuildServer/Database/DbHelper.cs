@@ -14,6 +14,7 @@ namespace RoRebuildServer.Database
                 size = 8 * dict.Count + 1;
             
             var buffer = ArrayPool<byte>.Shared.Rent(size);
+            Array.Clear(buffer);
 
             using var ms = new MemoryStream(buffer);
             using var bw = new BinaryWriter(ms);
@@ -39,6 +40,7 @@ namespace RoRebuildServer.Database
             if (dict != null)
                 size = 24 * dict.Count;
             var buffer = ArrayPool<byte>.Shared.Rent(size);
+            Array.Clear(buffer);
 
             using var ms = new MemoryStream(buffer);
             using var bw = new BinaryWriter(ms);

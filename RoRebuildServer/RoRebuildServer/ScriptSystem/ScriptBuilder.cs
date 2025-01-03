@@ -5,6 +5,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.Data.ServerConfigScript;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
@@ -283,6 +284,28 @@ public class ScriptBuilder
         indentation++;
     }
 
+
+    public void StartServerConfigHandler(string name)
+    {
+        UseStateMachine = false;
+        UseStateStorage = false;
+        UseLocalStorage = false;
+        stateMachineType = StateMachineType.None;
+        defaultReturn = null;
+        blockBuilder.Clear();
+        terminalFunctions.Clear();
+
+        StartIndentedScriptLine().AppendLine($"public class RoRebuildServerConfig_{name} : ServerConfigScriptHandlerBase");
+        StartIndentedScriptLine().AppendLine("{");
+        indentation++;
+
+        StartIndentedBlockLine().AppendLine($"public override void Init()");
+        StartIndentedBlockLine().AppendLine("{");
+        indentation++;
+
+        methodName = "Init";
+    }
+
     public void StartItem(string name)
     {
         UseStateMachine = false;
@@ -553,6 +576,62 @@ public class ScriptBuilder
             if (!additionalVariables.ContainsKey(str))
                 additionalVariables.Add(str, $"CharacterStatusEffect.{i}");
         }
+    }
+
+
+    public void StartServerConfigSection(string section)
+    {
+        if (methodName == section)
+            return;
+
+        OutputReturn(defaultReturn);
+        CloseScope();
+
+        functionSources.Clear();
+        functionBaseClasses.Clear();
+        additionalVariables.Clear();
+        terminalFunctions.Clear();
+        defaultReturn = null;
+
+        methodName = section;
+
+        if (section == "OnLoadDropData" || section == "OnSetItemPurchasePrice" || section == "OnSetItemSaleValue")
+        {
+
+            if(section == "OnLoadDropData")
+                StartIndentedBlockLine().AppendLine($"public override int {section}(ItemClass type, string code, string subType, int rate)");
+            else
+                StartIndentedBlockLine().AppendLine($"public override int {section}(ItemClass type, string code, string subType, int price)");
+            OpenScope();
+
+            stateVariable = "this";
+            UseStateMachine = false;
+            UseStateStorage = false;
+            UseLocalStorage = false;
+            StateStorageLimit = 0;
+            
+            additionalVariables.Add("type", "type");
+            additionalVariables.Add("code", "code");
+            additionalVariables.Add("subType", "subType");
+            if (section == "OnLoadDropData")
+            {
+                additionalVariables.Add("rate", "rate");
+                defaultReturn = "rate";
+            }
+            else
+            {
+                additionalVariables.Add("price", "price");
+                defaultReturn = "price";
+            }
+
+            LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+
+            foreach (var i in Enum.GetValues<ItemClass>())
+                additionalVariables.Add(i.ToString(), $"ItemClass.{i}");
+        }
+        else
+            throw new Exception($"Invalid ServerConfig section type {section}!");
+
     }
 
 

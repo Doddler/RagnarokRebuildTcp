@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
@@ -93,6 +94,15 @@ namespace RoRebuildServer.Simulation.Skills
             return SkillValidationResult.Failure;
         }
 
+        public static SkillValidationResult ValidateTarget(CharacterSkill skill, CombatEntity src, CombatEntity? target, Position pos, int lvl)
+        {
+            var handler = handlers[(int)skill];
+            if (handler != null)
+                return handler.ValidateTarget(src, target, pos, lvl);
+
+            return SkillValidationResult.Failure;
+        }
+
         public static float GetSkillCastTime(CharacterSkill skill, CombatEntity src, CombatEntity? target, int level)
         {
             var handler = handlers[(int)skill];
@@ -127,6 +137,9 @@ namespace RoRebuildServer.Simulation.Skills
 
         public static void ExecuteSkill(SkillCastInfo info, CombatEntity src)
         {
+            if (!src.Character.IsActive || src.Character.Map == null)
+                return;
+
             CombatEntity? target = info.TargetEntity.GetIfAlive<CombatEntity>();
             var handler = handlers[(int)info.Skill];
             if (handler != null)

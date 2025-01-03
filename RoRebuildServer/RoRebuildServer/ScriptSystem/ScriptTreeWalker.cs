@@ -32,7 +32,8 @@ internal class ScriptTreeWalker
             "System.Linq",
             "RoRebuildServer.Data.Map", 
             "RebuildSharedData.Data", 
-            "RoRebuildServer.Data", 
+            "RoRebuildServer.Data",
+            "RoRebuildServer.Data.ServerConfigScript",
             "RoRebuildServer.EntityComponents", 
             "RoRebuildServer.ScriptSystem",
             "RebuildSharedData.Enum",
@@ -118,6 +119,9 @@ internal class ScriptTreeWalker
             case "AltSkillHandler":
                 EnterSkillHandlerStatement(context, true);
                 break;
+            case "ServerConfig":
+                EnterServerConfigStatement(context);
+                break;
             default:
                 throw new Exception("Unexpected top level statement: " + id);
         }
@@ -181,6 +185,7 @@ internal class ScriptTreeWalker
         builder.StartItemSection(context.IDENTIFIER().GetText());
     }
 
+
     private void EnterMapConfigStatement(FunctionDefinitionContext functionContext)
     {
         //only expect one param, the map name
@@ -188,13 +193,43 @@ internal class ScriptTreeWalker
         if (param.expression().Length != 1)
             throw new Exception($"Incorrect number of parameters on MapConfig expression on line {param.start.Line}");
 
+        var itemName = param.expression()[0].GetText();
+        if (itemName.StartsWith("\""))
+            itemName = itemName.Substring(1, itemName.Length - 2);
+
+        var className = itemName.Replace(" ", "_").Replace(".", "").Replace("'", "").Replace("-", "_");
+
+        sectionHandler = WarningForInvalidSectionHandler;
+
+        builder.StartMap(className);
+
+        var statements = functionContext.block1;
+        VisitStatementBlock(statements);
+
+
+        builder.EndMethod();
+        builder.EndClass();
+    }
+
+    public void ConfigSectionHandler(StartSectionContext context)
+    {
+        builder.StartServerConfigSection(context.IDENTIFIER().GetText());
+    }
+
+    private void EnterServerConfigStatement(FunctionDefinitionContext functionContext)
+    {
+        //only expect one param, the map name
+        var param = functionContext.functionparam();
+        if (param.expression().Length != 1)
+            throw new Exception($"Incorrect number of parameters on ServerConfig expression on line {param.start.Line}");
+
         var str = param.expression()[0].GetText();
         if (str.StartsWith("\""))
             str = str.Substring(1, str.Length - 2);
 
-        builder.StartMap(str.Replace(" ", "_"));
+        builder.StartServerConfigHandler(str.Replace(" ", "_"));
 
-        sectionHandler = WarningForInvalidSectionHandler;
+        sectionHandler = ConfigSectionHandler;
 
         //do stuff
         var statements = functionContext.block1;
@@ -205,7 +240,7 @@ internal class ScriptTreeWalker
         builder.EndMethod();
         builder.EndClass();
     }
-
+    
     private void EnterSkillHandlerStatement(FunctionDefinitionContext functionContext, bool isAltType)
     {
         //only expect one param, the item name
@@ -1000,6 +1035,19 @@ internal class ScriptTreeWalker
                 builder.OutputVariable(context.IDENTIFIER().GetText());
                 builder.OutputRaw(" = ");
                 VisitExpression(context.expression());
+                break;
+            case SpecialAssignmentContext context:
+                var left = context.IDENTIFIER().GetText();
+                if(context.specialassignment_operator().DE() != null)
+                    builder.OutputRaw($"{left} = {left} / (");
+                if (context.specialassignment_operator().TE() != null)
+                    builder.OutputRaw($"{left} = {left} * (");
+                if (context.specialassignment_operator().PE() != null)
+                    builder.OutputRaw($"{left} = {left} + (");
+                if (context.specialassignment_operator().ME() != null)
+                    builder.OutputRaw($"{left} = {left} - (");
+                VisitExpression(context.expression());
+                builder.OutputRaw(")");
                 break;
             default:
                 ErrorResult(assignmentContext);

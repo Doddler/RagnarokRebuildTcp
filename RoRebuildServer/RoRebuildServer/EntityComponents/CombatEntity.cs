@@ -1536,7 +1536,7 @@ public class CombatEntity : IEntityAutoReset
         else
             Character.AttackCooldown += delayTime;
 
-        Character.AddMoveLockTime(attackMotionTime);
+        Character.AddMoveLockTime(attackMotionTime * 0.5f); //the actual animation is 6 frames instead of 9 for skill casting
     }
 
     public void ApplyCooldownForAttackAction()
@@ -1628,7 +1628,7 @@ public class CombatEntity : IEntityAutoReset
     private void ApplyQueuedCombatResult(ref DamageInfo di)
     {
 
-        if (Character.State == CharacterState.Dead || !Entity.IsAlive() || Character.IsTargetImmune || Character.Map == null)
+        if (Character.State == CharacterState.Dead || !Entity.IsAlive() || !di.Source.IsAlive() ||  Character.IsTargetImmune || Character.Map == null)
             return;
 
         //if (di.Source.IsAlive() && di.Source.TryGet<WorldObject>(out var enemy))

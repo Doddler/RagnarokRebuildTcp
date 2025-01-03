@@ -75,12 +75,12 @@ StateAttacking:
 
 SkillHandler("MINOROUS") {
 StateAttacking:
-	TryCast(HammerFall, 10, 5%, 1.5s, 5s);
+	TryCast(HammerFall, 3, 5%, 1.5s, 5s);
 }
 
 SkillHandler("MAJORUROS") {
 StateAttacking:
-	TryCast(HammerFall, 10, 5%, 1.5s, 5s);
+	TryCast(HammerFall, 5, 5%, 1.5s, 5s);
 }
 
 SkillHandler("PECOPECO") {

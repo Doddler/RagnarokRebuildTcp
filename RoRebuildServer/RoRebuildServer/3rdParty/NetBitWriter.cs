@@ -182,6 +182,45 @@ public static class NetBitWriter
         return;
     }
 
+
+    /// <summary>
+    /// Write several whole bytes
+    /// </summary>
+    public static void WriteBytes(Memory<byte> source, int sourceByteOffset, int numberOfBytes, byte[] destination, int destBitOffset)
+    {
+        int dstBytePtr = destBitOffset >> 3;
+        int firstPartLen = (destBitOffset % 8);
+
+        var srcSpan = source.Span.Slice(sourceByteOffset, numberOfBytes);
+
+        if (firstPartLen == 0)
+        {
+            var dest = destination.AsSpan(dstBytePtr, numberOfBytes);
+
+            srcSpan.CopyTo(dest);
+            return;
+        }
+
+        int lastPartLen = 8 - firstPartLen;
+
+        for (int i = 0; i < numberOfBytes; i++)
+        {
+            byte src = srcSpan[i];
+
+            // write last part of this byte
+            destination[dstBytePtr] &= (byte)(255 >> lastPartLen); // clear before writing
+            destination[dstBytePtr] |= (byte)(src << firstPartLen); // write first half
+
+            dstBytePtr++;
+
+            // write first part of next byte
+            destination[dstBytePtr] &= (byte)(255 << firstPartLen); // clear before writing
+            destination[dstBytePtr] |= (byte)(src >> lastPartLen); // write second half
+        }
+
+        return;
+    }
+
     /// <summary>
     /// Reads an unsigned 16 bit integer
     /// </summary>

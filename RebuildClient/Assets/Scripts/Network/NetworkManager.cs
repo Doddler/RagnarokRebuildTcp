@@ -844,7 +844,7 @@ namespace Assets.Scripts.Network
             controllable.StopWalking();
         }
 
-        public void AttackMotion(ServerControllable src, Vector2Int pos, Direction dir, float motionSpeed, [CanBeNull] ServerControllable target)
+        public void PrepareAttackMotionSettings(ServerControllable src, Vector2Int pos, Direction dir, float motionSpeed, [CanBeNull] ServerControllable target)
         {
             var hasTarget = target != null;
 
@@ -1076,20 +1076,7 @@ namespace Assets.Scripts.Network
 
             Debug.Log($"{controllable.Name} is dead!");
 
-            if (id == PlayerId)
-                CameraFollower.AppendChatText("You have died! Press R key to respawn at your save point.");
-
-            if (CameraFollower.SelectedTarget == controllable)
-                CameraFollower.ClearSelected();
-
-            controllable.StopImmediate(pos, false);
-            controllable.SpriteAnimator.State = SpriteState.Dead;
-            controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
-
-            if (id == PlayerId)
-            {
-                CameraFollower.AttachEffectToEntity("Death", controllable.gameObject, id);
-            }
+            controllable.PlayerDie(pos);
         }
 
         public void OnMessageHpRecovery(ClientInboundMessage msg)

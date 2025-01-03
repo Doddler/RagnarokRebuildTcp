@@ -6,6 +6,7 @@ using RebuildSharedData.Util;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 
+
 namespace Assets.Scripts.Network
 {
     public class ClientInboundMessage : IBinaryMessageReader
@@ -79,6 +80,16 @@ namespace Assets.Scripts.Network
             VerifyBufferSize(len * 8);
             NetBitWriter.ReadBytes(Message, len, position, buffer, 0);
             position += len * 8;
+        }
+
+        public void ReadCompressedByteArray(byte[] buffer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReadCompressedByteArray(byte[] buffer, int len)
+        {
+            throw new NotImplementedException();
         }
 
 

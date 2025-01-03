@@ -1,0 +1,31 @@
+
+ServerConfig("ItemAdjustments") {
+OnLoadDropData:
+	//if you want to use drop rates as provided in the db, remove this block or replace with return rate;
+	
+	if(type == Etc && subType == "Refine")
+	 	rate *= 2; //refine item drop chance is doubled flat out
+
+	//remap drop rates, increasing the rates of low rate drops considerably more than high value items
+	if (rate <= 20)			rate = Remap(rate,    1,    20,   50,  200);  //[ 0.01%- 0.2%] -> [ 0.5% - 2.0%] = 50x ~ 8x
+	else if (rate <= 80)	rate = Remap(rate,   20,    80,  200,  400);  //[ 0.2% - 0.8%] -> [ 2.0% - 4.0%] = 8x ~ 4x
+	else if (rate <= 300)	rate = Remap(rate,   80,   300,  400,  900);  //[ 0.8% - 3.0%] -> [ 4.0% - 9.0%] = 4x ~ 3x
+	else if (rate <= 1200)	rate = Remap(rate,  300,  1200,  900,  2400); //[ 3.0% -12.0%] -> [ 9.0% -24.0%] = 3x ~ 2x
+	else if (rate <= 10000)	rate = Remap(rate, 1200, 10000, 2400, 10000); //[12.0%-100.0%] -> [24.0%-100.0%] = 2x ~ 1x
+	else rate = 10000;
+	
+OnSetItemPurchasePrice:
+	//all etc type items (other than those used for refining) have 2x value
+	if(type == Etc && subType != "Refine")
+		price *= 2;
+
+OnSetItemSaleValue:
+	//the price variable here is the already modified price set via OnSetItemPurchasePrice.
+	price /= 2;//sell to npc price is 1/2 the amount you buy it.
+	
+	//make ammo sell to npc for 0. Not worth the possible exploit with buying/opening arrow quivers and selling the contents.
+	if(type == Ammo)
+		return 0; 
+}
+
+

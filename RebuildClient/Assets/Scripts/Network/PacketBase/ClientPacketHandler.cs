@@ -10,7 +10,7 @@ namespace Assets.Scripts.Network.PacketBase
     {
         private static readonly ClientPacketHandlerBase[] handlers;
 
-        public static bool HasValidHandler(PacketType type) => handlers[(int)type].GetType() != typeof(InvalidPacket);
+        public static bool HasValidHandler(PacketType type) => (int)type <= handlers.Length && handlers[(int)type].GetType() != typeof(InvalidPacket);
 
         public static void Execute(PacketType type, ClientInboundMessage msg) => handlers[(int)type].ReceivePacket(msg);
         

@@ -19,4 +19,10 @@
     <ProjectReference Include="..\RoRebuildServer\RoRebuildServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="DataToClientUtilitySettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

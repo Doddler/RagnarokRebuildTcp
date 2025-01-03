@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -73,7 +74,7 @@ namespace RoWikiGenerator
                     continue;
                 if (!DataManager.InstanceList.Any(i => i.Maps.Contains(map.Code)))
                     continue;
-                
+
                 loader(spawns);
                 foreach (var spawn in spawns.SpawnRules)
                 {
@@ -118,15 +119,12 @@ namespace RoWikiGenerator
                     _ => m.Name
                 };
                 var special = "";
-                if (!string.IsNullOrWhiteSpace(mvp))
-                {
-                    special = $"<tr><td><b>Type:</b></td><td>{mvp}</td></tr><tr>";
-                }
+
                 var sprite = m.Code.ToLower();
                 var magicMin = m.Int + m.Int / 7 * m.Int / 7;
                 var magicMax = m.Int + m.Int / 5 * m.Int / 5;
                 txtOut.Append($""" 
-                                                    
+                        
                             <table cellpadding=4 style="width: 98%">
                             <tr>
                                 <td style="vertical-align:top; width:20%;">
@@ -136,107 +134,35 @@ namespace RoWikiGenerator
                                         <img src="images/rebuildmonsters/{sprite}.png" />
                                     </center>
                                 </td>
-                                                           
-                               <td style="vertical-align:top; width:22%;">
-                                   <H2 class="subheader">Stats</H2>
-                                   <table>
-                                       <tr>
-                                           <td>
-                                               <b>Level:</b>
-                                           </td>
-                                           <td>{m.Level}</td>
-                                       </tr>
-                                       <tr>
-                                           <td>
-                                               <b>HP:</b>
-                                           </td>
-                                           <td class='beforen'>{m.HP:N0}</td>
-                                       </tr>{special}
-                                       <tr>
-                                           <td>
-                                               <b>Element:</b>
-                                           </td>
-                                           <td class='beforen'>{m.Element}</td>
-                                       </tr>
-                                       <tr>
-                                           <td>
-                                               <b>Race:</b>
-                                           </td>
-                                           <td class='beforen'>{m.Race}</td>
-                                       </tr>
-                                           <td>
-                                               <b>Base Exp:</b>
-                                           </td>
-                                           <td class='beforen'>{m.Exp:N0}</td>
-                                       </tr>
-                                       <tr>
-                                           <td>
-                                               <b>Job Exp:</b>
-                                           </td>
-                                           <td class='beforen'>N/A</td>
-                                       </tr>
-                                        <tr>
-                                            <td>
-                                                <b>Attack Power:</b>
-                                            </td>
-                                            <td class='beforen'>{m.AtkMin:N0} ~ {m.AtkMax:N0}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <b>Magic Attack:</b>
-                                            </td>
-                                            <td class='beforen'>{magicMin:N0} ~ {magicMax:N0}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <b>Defence:</b>
-                                            </td>
-                                            <td class='beforen'>{m.Def}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <b>Magic Defence:</b>
-                                            </td>
-                                            <td class='beforen'>{m.MDef}</td>
-                                        </tr>
-                                       <tr>
-                                           <td>
-                                               <b>95% Flee:</b>
-                                           </td>
-                                           <td class='beforen'>{m.Dex + m.Level + 75}</td>
-                                       </tr>
-                                       <tr>
-                                           <td>
-                                               <b>100% Hit:</b>
-                                           </td>
-                                           <td class='beforen'>{m.Agi + m.Level + 20}</td>
-                                       </tr>
-                                       
-                                        <tr>
-                                            <td>
-                                                <b>Vit:</b>
-                                            </td>
-                                            <td class='beforen'>{m.Vit}</td>
-                                        </tr>
-                                        
-                                        <tr>
-                                            <td>
-                                                <b>Int:</b>
-                                            </td>
-                                            <td class='beforen'>{m.Int}</td>
-                                        </tr>
-                                       <tr>
-                                           <td>
-                                               <b>Luck:</b>
-                                           </td>
-                                           <td class='beforen'>{m.Luk}</td>
-                                       </tr>
-                                   </table>
-                               </td>
-                               <td style="vertical-align:top; width:25%;">
-                                   <H2 class="subheader">Drops</H2>
-                                   <table>
+                            
+                                <td style="vertical-align:top; width:22%;">
+                                    <H2 class="subheader">Stats</H2>
+                                    <table>
                             """);
+                txtOut.AppendLine($"<tr><td><b>Level:</b></td><td>{m.Level}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>HP:</b></td><td>{m.HP:N0}</td></tr>");
+                if (!string.IsNullOrWhiteSpace(mvp))
+                    txtOut.AppendLine($"<tr><td><b>Type:</b></td><td>{mvp}</td></tr><tr>");
+                txtOut.AppendLine($"<tr><td><b>Size:</b></td><td>{m.Size}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Element:</b></td><td>{m.Element}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Race:</b></td><td>{m.Race}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Base Exp:</b></td><td>{m.Exp:N0}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Job Exp:</b></td><td>N/A</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Attack Power:</b></td><td>{m.AtkMin:N0} ~ {m.AtkMax:N0}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Magic Attack:</b></td><td>{magicMin:N0} ~ {magicMax:N0}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Defence:</b></td><td>{m.Def}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Magic Defence:</b></td><td>{m.MDef}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>95% Flee:</b></td><td>{m.Dex + m.Level + 75}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>100% Hit:</b></td><td>{m.Agi + m.Level + 20}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Vit:</b></td><td>{m.Vit}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Int:</b></td><td>{m.Int}</td></tr>");
+                txtOut.AppendLine($"<tr><td><b>Luck:</b></td><td>{m.Luk}</td></tr>");
+                txtOut.AppendLine($"""
+                                   </tr></table></td>
+                                   <td style="vertical-align:top; width:25%;">
+                                       <H2 class="subheader">Drops</H2>
+                                       <table>
+                                   """);
 
                 if (DataManager.MonsterDropData.TryGetValue(m.Code, out var drops))
                 {
@@ -319,7 +245,7 @@ namespace RoWikiGenerator
                         txtOut.AppendLine($"<tr><td width=60%>{mapSpecial}{mapName} ({mapCode})</td><td width=15%>{mapSpawn.Count}</td><td width=25%>{time}</td>");
                     }
                 }
-                
+
                 txtOut.AppendLine("</table></td></tr></table>");
 
             }

@@ -583,7 +583,12 @@ public class ItemEquipState
         var status = StatusEffectState.NewStatusEffect(statusEffect, duration / 1000f, val1, val2);
         Player.CombatEntity.AddStatusEffect(status);
     }
-    
+
+    public int GetExpectedSerializedSize()
+    {
+        return ItemSlots.Length * 16 + 4; //guids for each inventory slot + 4 for equipped ammo type
+    }
+
     public void Serialize(IBinaryMessageWriter bw)
     {
         if (Player.Inventory == null)

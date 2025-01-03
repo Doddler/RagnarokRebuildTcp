@@ -28,6 +28,7 @@ public class NetworkConnection
     public CancellationToken Cancellation { get; set; }
     public CancellationTokenSource CancellationSource { get; set; }
     public LoadCharacterRequest? LoadCharacterRequest { get; set; }
+    public StorageLoadRequest? LoadStorageRequest { get; set; }
 
     //when this connection has its entity removed from the world it is no longer alive. Used to prevent queueing removal while the entity is awaiting recycling.
     //this happens because the server may remove the player AND the connection might also queue the removal of the player at the same time.

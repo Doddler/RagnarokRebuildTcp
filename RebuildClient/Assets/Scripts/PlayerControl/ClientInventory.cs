@@ -51,15 +51,7 @@ namespace Assets.Scripts.PlayerControl
             }
         }
 
-        public int SalePrice 
-        {
-            get
-            {
-                if (ItemData.ItemClass == ItemClass.Ammo)
-                    return 0;
-                return Mathf.FloorToInt(ItemData.Price / 2f);
-            }
-        }
+        public int SalePrice => ItemData.SellPrice;
 
         public bool IsAvailableForSocketing(EquipPosition position)
         {

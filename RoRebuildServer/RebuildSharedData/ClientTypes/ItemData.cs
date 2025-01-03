@@ -13,6 +13,7 @@ public class ItemData
     public string Name;
     public int Weight;
     public int Price;
+    public int SellPrice;
     public int Slots;
     public int ItemRank;
     public bool IsUnique;

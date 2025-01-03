@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Xml.Linq;
+using K4os.Compression.LZ4;
 using Microsoft.EntityFrameworkCore;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RebuildSharedData.Util;
+using RoRebuildServer.Database.Utility;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.Logging;
@@ -26,11 +28,12 @@ public class LoadCharacterRequest : IDbRequest
     public Dictionary<string, int>? NpcFlags;
     public CharacterBag? Inventory;
     public CharacterBag? Cart;
-    public CharacterBag? Storage;
     public ItemEquipState? EquipState;
 
     public byte[]? Data;
     public bool HasCharacter;
+    public bool HasStorage;
+    public int StorageId;
 
     public LoadCharacterRequest(int accountId, string character)
     {
@@ -83,21 +86,17 @@ public class LoadCharacterRequest : IDbRequest
 
             NpcFlags = DbHelper.ReadDictionary(ch.NpcFlags);
 
-            if (ch.ItemData != null && ch.ItemData.Length >= 3)
+            if (ch.ItemData != null)
             {
-                using var ms = new MemoryStream(ch.ItemData);
-                using var br = new BinaryMessageReader(ms);
-                Inventory = CharacterBag.TryRead(br);
-                Cart = CharacterBag.TryRead(br);
-                Storage = CharacterBag.TryRead(br);
-
-                if (Inventory != null)
+                if(ch.VersionFormat == 0)
+                    PlayerDataDbHelper.LoadVersion0PlayerInventoryData(this, ch);
+                else
                 {
-                    EquipState = new ItemEquipState();
-                    EquipState.DeSerialize(br, Inventory);
+                    if(ch.ItemDataLength > 0)
+                        PlayerDataDbHelper.DecompressPlayerInventoryData(this, ch.ItemData, ch.ItemDataLength);
                 }
             }
-            
+
             HasCharacter = true;
 
             World.Instance.FinalizeEnterServer(this, connection);

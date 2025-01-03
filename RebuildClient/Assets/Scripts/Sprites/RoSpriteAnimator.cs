@@ -26,6 +26,20 @@ namespace Assets.Scripts.Sprites
         public float Angle;
         public SpriteType Type;
         public SpriteState State;
+
+        // private SpriteState _state;
+        //
+        // public SpriteState State
+        // {
+        //     get => _state;
+        //     set
+        //     {
+        //         if(value != _state)
+        //             Debug.Log($"Change animator state from {_state} to {value}");
+        //         _state = value;
+        //     }
+        // }
+
         public float AnimSpeed = 1;
 
         public Color BaseColor = UnityEngine.Color.white;
@@ -487,6 +501,7 @@ namespace Assets.Scripts.Sprites
             if (currentFrame > maxFrame)
             {
                 var nextMotion = RoAnimationHelper.GetMotionForState(State);
+                // Debug.Log($"CurrentState: {State} CurrentMotion: {CurrentMotion} NextMotion: {nextMotion}");
                 if (nextMotion != CurrentMotion)
                 {
                     if (queuedMotionTransition.isActive && queuedMotionTransition.CurrentMotion == CurrentMotion && queuedMotionTransition.TargetMotion == nextMotion)

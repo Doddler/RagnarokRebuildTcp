@@ -1089,6 +1089,14 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void SendNpcStorage(Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.OpenStorage, 2048);
+        p.StorageInventory.TryWrite(packet, true);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
     public static void SendNpcShowSprite(Player p, string spriteName, int pos)
     {
         var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 8);

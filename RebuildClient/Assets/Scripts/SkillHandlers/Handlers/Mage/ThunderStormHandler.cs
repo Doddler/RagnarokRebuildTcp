@@ -27,7 +27,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void ExecuteSkillGroundTargeted(ServerControllable src, Vector2Int target, int lvl)
         {
             //DefaultSkillCastEffect.Create(src);
-            src.PerformBasicAttackMotion();
+            src.PerformSkillMotion();
         }
     }
 }

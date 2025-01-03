@@ -11,8 +11,10 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Simulation;
 using System;
+using System.Diagnostics;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum.EntityStats;
+using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents.Items;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -95,6 +97,42 @@ public class NpcInteractionState
 
         var npc = NpcEntity.Get<Npc>();
         npc.OptionAdvance(Player, result);
+    }
+
+    public void FinishLoadingStorage(StorageLoadRequest storage)
+    {
+        Debug.Assert(Player != null);
+
+        if(storage.StorageBag == null)
+            ContinueInteraction();
+        else
+        {
+            Player.StorageInventory = storage.StorageBag;
+        }
+    }
+
+    public void OpenStorage()
+    {
+        if (Player == null)
+            return;
+
+        if (Player.StorageInventory != null)
+        {
+            FinishOpeningStorage();
+            return;
+        }
+
+        var loadReq = new StorageLoadRequest(Player.Id);
+        
+
+    }
+
+    private void FinishOpeningStorage()
+    {
+        Debug.Assert(Player != null);
+
+        CommandBuilder.SendNpcStorage(Player);
+        InteractionResult = NpcInteractionResult.WaitForStorage;
     }
 
     public void SetFlag(string name, int value)
@@ -314,11 +352,6 @@ public class NpcInteractionState
 
         //Console.WriteLine($"Dialog {name}: {text}");
         CommandBuilder.SendNpcDialog(Player, name, text);
-    }
-
-    public void OpenStorage()
-    {
-        Console.WriteLine("OpenStorage");
     }
 
     public int GetItemCount(string str)

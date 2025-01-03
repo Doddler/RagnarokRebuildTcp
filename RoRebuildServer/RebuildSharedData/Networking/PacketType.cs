@@ -92,6 +92,8 @@ public enum PacketType : byte
     DropItem,
     PickUpItem,
     [ServerOnlyPacket] OpenShop,
+    [ServerOnlyPacket] OpenStorage,
+    StorageInteraction,
     ShopBuySell,
     [ServerOnlyPacket] ItemUpdate,
     [ServerOnlyPacket] ServerEvent,

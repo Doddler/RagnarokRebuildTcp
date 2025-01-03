@@ -1549,7 +1549,7 @@ namespace Assets.Scripts
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.R))
             {
-                if (controllable.SpriteAnimator.State == SpriteState.Dead)
+                if (controllable.SpriteAnimator.State == SpriteState.Dead || !controllable.IsCharacterAlive || NetworkManager.Instance.PlayerState.Hp == 0)
                     NetworkManager.Instance.SendRespawn(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             }
 

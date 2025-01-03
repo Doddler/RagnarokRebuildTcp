@@ -79,7 +79,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     controllable.SpriteAnimator.State = SpriteState.Standby;
                     controllable.LookAtOrDefault(controllable2, dir);
 
-                    Network.AttackMotion(controllable, pos, dir, motionTime, controllable2);
+                    Network.PrepareAttackMotionSettings(controllable, pos, dir, motionTime, controllable2);
 
                     //controllable.SetAttackAnimationSpeed(motionTime);
                     controllable.PerformBasicAttackMotion();

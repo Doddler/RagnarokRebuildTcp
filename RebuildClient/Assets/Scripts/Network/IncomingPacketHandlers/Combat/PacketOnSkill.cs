@@ -56,9 +56,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 DamageTiming = motionTime
             };
 
-            ClientSkillHandler.ExecuteSkill(controllable, ref attack);
             controllable.LookAt(target.ToWorldPosition());
-            Network.AttackMotion(controllable, pos, dir, motionTime, null);
+            Network.PrepareAttackMotionSettings(controllable, pos, dir, motionTime, null);
+            ClientSkillHandler.ExecuteSkill(controllable, ref attack);
         }
         
         
@@ -85,7 +85,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             
             controllable.ShowSkillCastMessage(skill, 3);
 
-            Network.AttackMotion(controllable, pos, dir, motionTime, null);
+            Network.PrepareAttackMotionSettings(controllable, pos, dir, motionTime, null);
             ClientSkillHandler.ExecuteSkill(controllable, ref attack);
         }
 
@@ -135,7 +135,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             if (result == AttackResult.Heal || result == AttackResult.Invisible)
                 motionTime = 0;
             else
-                Network.AttackMotion(controllable, pos, dir, motionTime, controllable2);
+                Network.PrepareAttackMotionSettings(controllable, pos, dir, motionTime, controllable2);
 
             controllable.ShowSkillCastMessage(skill, 3);
 

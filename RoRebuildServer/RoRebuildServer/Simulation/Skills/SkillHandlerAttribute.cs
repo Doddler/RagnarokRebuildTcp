@@ -137,6 +137,11 @@ public abstract class SkillHandlerBase
         else
             source.ApplyCooldownForAttackAction();
     }
+
+    protected void ApplySkillCooldown()
+    {
+
+    }
 }
 
 public class SkillHandlerAttribute : Attribute
