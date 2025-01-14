@@ -11,10 +11,12 @@ namespace Assets.Scripts.UI
     public class ItemListEntryV2 : DragItemBase, IDragHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler
     {
         public GenericItemListV2 Parent;
+        public GameObject ImageDisplayGroup;
         public Image Background;
         public TextMeshProUGUI ItemName;
         public TextMeshProUGUI RightText;
-
+        
+        [NonSerialized] public ItemDragOrigin DragOrigin;
         [NonSerialized] public int UniqueEntryId;
         [NonSerialized] public bool CanDrag;
         [NonSerialized] public bool CanSelect;
@@ -29,6 +31,7 @@ namespace Assets.Scripts.UI
         public Action<int> EventOnClick;
         public Action<int> EventOnSelect;
         public Action<int> EventDoubleClick;
+        public Action<int> EventOnRightClick;
         
 
         public void Awake()
@@ -46,7 +49,7 @@ namespace Assets.Scripts.UI
         {
             if (!CanDrag || !IsActive)
                 return;
-            throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -60,21 +63,34 @@ namespace Assets.Scripts.UI
             if(!IsSelected && IsActive)
                 Background.color = NormalColor;
         }
-
+        
         public void OnBeginDrag(PointerEventData eventData)
         {
-            // throw new System.NotImplementedException();
+            if (!CanDrag || !IsActive)
+                return;
+            
+            UiManager.Instance.StartItemDrag(this);
+            UiManager.Instance.DragItemObject.Origin = DragOrigin;
+            UiManager.Instance.DragItemObject.OriginId = UniqueEntryId;
+            Image.enabled = false;
+            CountText.enabled = false;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            // throw new System.NotImplementedException();
+            UiManager.Instance.EndItemDrag();
+
+            Image.enabled = true;
+            CountText.enabled = true;
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             if (!IsActive)
                 return;
+            
+            if (EventOnRightClick != null && eventData.button == PointerEventData.InputButton.Right && (Type == DragItemType.Item || Type == DragItemType.Equipment))
+                EventOnRightClick(UniqueEntryId);
             
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
@@ -89,11 +105,11 @@ namespace Assets.Scripts.UI
             {
                 IsSelected = true;
                 Background.color = SelectedColor;
-                EventOnSelect(UniqueEntryId);
+                EventOnSelect?.Invoke(UniqueEntryId);
             }
             else
             {
-                EventOnClick(UniqueEntryId);
+                EventOnClick?.Invoke(UniqueEntryId);
             }
 
 

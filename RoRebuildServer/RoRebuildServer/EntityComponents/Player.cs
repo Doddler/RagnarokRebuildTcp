@@ -238,12 +238,12 @@ public class Player : IEntityAutoReset
 
         //if this is their first time logging in, they get a free Knife
         var isNewCharacter = GetData(PlayerStat.Status) == 0 || Inventory == null;
-        if (GetData(PlayerStat.Level) <= 10 && GetData(PlayerStat.Job) == 0 
+        if (GetData(PlayerStat.Level) <= 1 && GetData(PlayerStat.Job) == 0 
             && Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon) <= 0 && Equipment.GetEquipmentIdBySlot(EquipSlot.Body) <= 0)
             isNewCharacter = true;
         if (isNewCharacter)
         {
-            var hasEmptyInventory = Inventory != null && Inventory.BagWeight <= 0;
+            var hasEmptyInventory = Inventory == null || Inventory.BagWeight <= 0;
             if (DataManager.ItemIdByName.TryGetValue("Knife", out var knife))
             {
                 var item = new ItemReference(knife, 1);
@@ -264,6 +264,7 @@ public class Player : IEntityAutoReset
             }
             SetData(PlayerStat.Status, 1);
             UpdateStats(false, false); //update without sending update because we want to trigger inventory update too
+            CombatEntity.FullRecovery(true, true);
             CommandBuilder.SendUpdatePlayerData(this, true, false);
         }
         else
@@ -271,6 +272,15 @@ public class Player : IEntityAutoReset
 
 
         //IsAdmin = true; //for now
+    }
+
+    public void WriteCharacterStorageToDatabase()
+    {
+        if (StorageInventory == null)
+            return;
+
+        var req = new StorageSaveRequest(this);
+        RoDatabase.EnqueueDbRequest(req);
     }
 
     public void WriteCharacterToDatabase()
@@ -356,6 +366,9 @@ public class Player : IEntityAutoReset
                 case CharacterStat.MDef:
                     packet.Write(CombatEntity.GetEffectiveStat(CharacterStat.MDef));
                     break;
+                case CharacterStat.PerfectDodge:
+                    packet.Write(CombatEntity.GetEffectiveStat(CharacterStat.PerfectDodge));
+                    break;
                 default:
                     packet.Write(GetStat(statType));
                     break;
@@ -380,7 +393,7 @@ public class Player : IEntityAutoReset
         {
             Inventory.TryWrite(packet, true);
             CartInventory.TryWrite(packet, true);
-            StorageInventory.TryWrite(packet, true);
+            //StorageInventory.TryWrite(packet, true);
             for (var i = 0; i < 10; i++)
                 packet.Write(Equipment.ItemSlots[i]);
             packet.Write(Equipment.AmmoId);
@@ -1394,13 +1407,21 @@ public class Player : IEntityAutoReset
             {
                 if(Connection.LoadStorageRequest == null)
                 {
-                    ServerLogger.LogWarning($"Player is waiting for storage to load, but no request sent!");
-                    EndNpcInteractions();
+                    if (StorageInventory != null)
+                        NpcInteractionState.FinishOpeningStorage();
+                    else
+                    {
+                        ServerLogger.LogWarning($"Player is waiting for storage to load, but no request sent!");
+                        EndNpcInteractions();
+                    }
                 }
                 else
                 {
-                    if(Connection.LoadStorageRequest.IsComplete)
+                    if (Connection.LoadStorageRequest.IsComplete)
+                    {
                         NpcInteractionState.FinishLoadingStorage(Connection.LoadStorageRequest);
+                        Connection.LoadStorageRequest = null;
+                    }
                 }
             }
         }

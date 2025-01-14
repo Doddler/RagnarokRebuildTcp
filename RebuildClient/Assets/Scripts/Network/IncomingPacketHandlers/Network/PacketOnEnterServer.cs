@@ -1,5 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -25,6 +27,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             
             UiManager.OnLogIn();
 
+            if(ClientDataLoader.Instance.LatestPatchNotes != GameConfig.Data.LastViewedPatchNotes)
+                UiManager.Instance.HelpWindow.ShowWindow();
+            else
+                UiManager.Instance.HelpWindow.HideWindow();
+            GameConfig.Data.LastViewedPatchNotes = ClientDataLoader.Instance.LatestPatchNotes;
+            
             SceneTransitioner.Instance.LoadScene(Network.CurrentMap, Network.OnMapLoad);
 
         }

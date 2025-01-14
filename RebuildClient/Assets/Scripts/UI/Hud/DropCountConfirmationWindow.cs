@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace Assets.Scripts.UI.Hud
 {
+    public enum DropConfirmationType
+    {
+        DropOnGround,
+        ShopTransfer,
+        InventoryToStorage,
+        StorageToInventory
+    }
+    
     public class DropCountConfirmationWindow : MonoBehaviour
     {
         public TextMeshProUGUI ItemDropTitle;
@@ -12,6 +20,7 @@ namespace Assets.Scripts.UI.Hud
         private Transform container;
         private InventoryItem bagItem;
         private ShopDragData shopData;
+        private DropConfirmationType dropType;
         private bool isShopDrop;
 
         public void Awake()
@@ -42,31 +51,44 @@ namespace Assets.Scripts.UI.Hud
             ItemCountInput.text = $"{count}";
             ItemCountInput.ActivateInputField();
             CameraFollower.Instance.InItemInputBox = true;
-            isShopDrop = true;
+            dropType = DropConfirmationType.ShopTransfer;
         }
         
-        public void BeginItemDrop(InventoryItem item)
+        public void BeginItemDrop(InventoryItem item, DropConfirmationType dropType)
         {
             gameObject.SetActive(true);
             transform.SetAsLastSibling();
             bagItem = item;
-            ItemDropTitle.text = $"Drop {item.ItemData.Name}";
+            ItemDropTitle.text = dropType switch
+            {
+                DropConfirmationType.DropOnGround => $"Drop {item.ItemData.Name}",
+                _ => $"Transfer {item.ItemData.Name}"
+            };
             ItemCountInput.text = item.Count.ToString();
             ItemCountInput.ActivateInputField();
             CameraFollower.Instance.InItemInputBox = true;
-            isShopDrop = false;
+            this.dropType = dropType;
         }
         
         public void SubmitDrop()
         {
             if (int.TryParse(ItemCountInput.text, out var count))
             {
-                if (isShopDrop)
-                    ShopUI.Instance.FinalizeDropWithCount(shopData, count);
-                else
+                switch (dropType)
                 {
-                    if(count <= bagItem.Count)
+                    case DropConfirmationType.ShopTransfer:
+                        ShopUI.Instance.FinalizeDropWithCount(shopData, count);
+                        break;
+                    case DropConfirmationType.DropOnGround:
                         NetworkManager.Instance.SendDropItem(bagItem.Id, count);
+                        break;
+                    case DropConfirmationType.InventoryToStorage:
+                        NetworkManager.Instance.SendMoveStorageItem(bagItem.Id, count, true);
+                        break;
+                    case DropConfirmationType.StorageToInventory:
+                        NetworkManager.Instance.SendMoveStorageItem(bagItem.Id, count, false);
+                        break;
+                    
                 }
             }
             HideInputWindow();

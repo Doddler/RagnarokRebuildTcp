@@ -71,3 +71,6 @@ Other/Backup/
 Other/RoWikiGenerator/bin/
 Other/RoWikiGenerator/obj/
 Other/RoWikiGenerator/images/
+Other/RoDatabasePokingTool/
+RebuildClient/Packages/
+*.db

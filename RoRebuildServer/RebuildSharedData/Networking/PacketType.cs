@@ -81,8 +81,7 @@ public enum PacketType : byte
     AdminResetSkills,
     AdminResetStats,
     AdminCreateItem,
-
-
+    
     NpcClick,
     [ServerOnlyPacket] NpcInteraction,
     NpcAdvance,
@@ -97,7 +96,9 @@ public enum PacketType : byte
     ShopBuySell,
     [ServerOnlyPacket] ItemUpdate,
     [ServerOnlyPacket] ServerEvent,
-    DebugEntry
+    DebugEntry,
+
+    AdminCharacterAction,
 }
 
 public enum MessageType : byte

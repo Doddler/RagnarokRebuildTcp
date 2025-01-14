@@ -83,13 +83,13 @@ public class ScriptBuilder
     private int indentation = 1;
     private int uniqueVal = 0;
 
-    private HashSet<string> UniqueNames;
     private HashSet<string> terminalFunctions = new();
 
     public Stack<int> breakPointerStack = new();
 
     private Stack<ScriptMacro> macroStack = new();
     public ScriptMacro? ActiveMacro;
+    public string ActiveScript;
 
     private enum StateMachineType
     {
@@ -100,10 +100,9 @@ public class ScriptBuilder
 
     public bool IsTerminalFunction(string name) => terminalFunctions.Contains(name);
 
-    public ScriptBuilder(string className, HashSet<string> uniqueNames, params string[] namespaceList)
+    public ScriptBuilder(string className, params string[] namespaceList)
     {
         this.className = className;
-        UniqueNames = uniqueNames;
 
         foreach (var n in namespaceList)
             scriptBuilder.AppendLine($"using {n};");
@@ -686,6 +685,7 @@ public class ScriptBuilder
         waitingFunctions.Add("Dialog", NpcInteractionResult.WaitForContinue);
         waitingFunctions.Add("Option", NpcInteractionResult.WaitForInput);
         waitingFunctions.Add("OpenShop", NpcInteractionResult.WaitForShop);
+        waitingFunctions.Add("OpenStorage", NpcInteractionResult.WaitForStorageAccess);
         waitingFunctions.Add("OpenRefineDialog", NpcInteractionResult.WaitForRefine);
         waitingFunctions.Add("MoveTo", NpcInteractionResult.EndInteraction);
 
@@ -923,7 +923,12 @@ public class ScriptBuilder
             if (functionBaseClasses.TryGetValue(name, out var src))
                 lineBuilder.Append($"{src}.{name}(");
             else
-                throw new Exception($"Error in {className} line {lineNumber}: Function name {name} could not be found.");
+            {
+                var file = ActiveScript;
+                if (ActiveMacro != null)
+                    file = ActiveMacro.CurrentScript;
+                throw new Exception($"Error in {file} line {lineNumber}: Function name {name} could not be found.");
+            }
         }
 
         if (UseStateMachine && waitingFunctions.TryGetValue(name, out var res))
@@ -1076,7 +1081,10 @@ public class ScriptBuilder
         if (additionalVariables.ContainsKey(id))
             return additionalVariables[id];
 
-        throw new Exception($"Error in {className} line {lineNumber} : Unable to parse parse unidentified constant '{id}'");
+        var file = ActiveScript;
+        if (ActiveMacro != null)
+            file = ActiveMacro.CurrentScript;
+        throw new Exception($"Error in {file} line {lineNumber} : Unable to parse parse unidentified constant '{id}'");
 
         //return id;
     }
@@ -1182,7 +1190,7 @@ public class ScriptBuilder
         StartIndentedBlockLine();
         blockBuilder.Append(lineBuilder);
         if (inputLineNumber > 0)
-            blockBuilder.Append($"; //line {inputLineNumber}");
+            blockBuilder.Append($"; //{ActiveScript} line {inputLineNumber}");
         blockBuilder.Append(Environment.NewLine);
 
         lineBuilder.Clear();

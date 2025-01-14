@@ -17,6 +17,8 @@ namespace RebuildSharedData.Enum
         CannotCreateMore,
         InsufficientItemCount,
         InsufficientZeny,
-        UnusableWhileHidden
+        UnusableWhileHidden,
+        CannotTargetBossMonster,
+        ItemAlreadyStolen
     }
 }

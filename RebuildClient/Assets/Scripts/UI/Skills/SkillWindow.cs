@@ -113,8 +113,8 @@ namespace Assets.Scripts.UI
             TooltipBox.gameObject.SetActive(true);
             TooltipText.ForceMeshUpdate();
             
-            Vector2 preferredDimensions = TooltipText.GetPreferredValues(280, 0); //300 minus 20 for margins
-            TooltipBox.sizeDelta = new Vector2(300, preferredDimensions.y);
+            Vector2 preferredDimensions = TooltipText.GetPreferredValues(tooltipWidth - 20, 0); //300 minus 20 for margins
+            TooltipBox.sizeDelta = new Vector2(tooltipWidth, preferredDimensions.y);
             //
             // LayoutRebuilder.ForceRebuildLayoutImmediate(TooltipBox);
             //

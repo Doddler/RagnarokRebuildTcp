@@ -189,9 +189,14 @@ public class MonsterSkillAiState(Monster monsterIn)
         monster.CombatEntity.SetSkillCooldown(skill, cooldown / 1000f);
     }
 
-    public void ChangeAiClass(MonsterAiType type)
+    public void ChangeAiClass(MonsterAiType type, bool resetState = true)
     {
         monster.ChangeAiStateMachine(type);
+        if (resetState)
+        {
+            ChangeAiState(MonsterAiState.StateIdle);
+            monster.ResetIdleWaitTime();
+        }
     }
 
     public void ChangeAiState(MonsterAiState state)

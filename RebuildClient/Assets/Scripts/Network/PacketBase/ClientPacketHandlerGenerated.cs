@@ -96,8 +96,8 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[78] = new PacketDropItem(); //DropItem
 			handlers[79] = new PacketPickUpItem(); //PickUpItem
 			handlers[80] = new PacketOpenShop(); //OpenShop
-			handlers[81] = new InvalidPacket(); //OpenStorage
-			handlers[82] = new InvalidPacket(); //StorageInteraction
+			handlers[81] = new PacketOpenStorage(); //OpenStorage
+			handlers[82] = new PacketStorageInteraction(); //StorageInteraction
 			handlers[83] = new InvalidPacket(); //ShopBuySell
 			handlers[84] = new InvalidPacket(); //ItemUpdate
 			handlers[85] = new PacketServerEvent(); //ServerEvent

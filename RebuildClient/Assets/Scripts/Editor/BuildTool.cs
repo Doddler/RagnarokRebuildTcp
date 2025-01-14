@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.IO.Compression;
 using Assets.Scripts.MapEditor.Editor;
@@ -65,22 +66,43 @@ public class BuildTool : IActiveBuildTargetChanged
     [MenuItem("Build/Test the zip thing", false, 2000)]
     private static void ZipPcBuildIntoWebGL()
     {
-
         if (Directory.Exists("Build/RagnarokRebuild"))
             Directory.Delete("Build/RagnarokRebuild", true);
-
+        
         //the double folder name is dumb but we want the zip file to have a folder in it so it's gotta be done
         Directory.CreateDirectory("Build/RagnarokRebuild/RagnarokRebuild");
         foreach (var path in Directory.GetFiles("Build/PC"))
             File.Copy(path, Path.Combine("Build/RagnarokRebuild/RagnarokRebuild", Path.GetFileName(path)));
-
+        
         CopyFilesRecursively("Build/PC/RebuildClient_Data", "Build/RagnarokRebuild/RagnarokRebuild/RebuildClient_Data");
-
-
-
+        
         if (File.Exists("Build/WebGL/RagnarokRebuild.zip"))
             File.Delete("Build/WebGL/RagnarokRebuild.zip");
         ZipFile.CreateFromDirectory("Build/RagnarokRebuild", "Build/WebGL/RagnarokRebuild.zip");
+        //
+        // //the idea is that we only need to replace addressable files that have changed since the last full build
+        // var addressableSrcPath = "Library/com.unity.addressables/aa/Windows";
+        // var addressableDestPath = "Build/RagnarokRebuild/RagnarokRebuild/RebuildClient_Data/StreamingAssets/aa/";
+        // var lastFullBuild = new DateTime(2025, 1, 1); //fix this
+        //
+        // foreach (var path in Directory.GetFiles(addressableSrcPath, "*.*", SearchOption.AllDirectories))
+        // {
+        //     var lastWrite = File.GetLastWriteTime(path);
+        //     if (lastWrite < lastFullBuild)
+        //         continue;
+        //
+        //     var rel = Path.GetRelativePath(addressableSrcPath, path);
+        //     var target = Path.Combine(addressableDestPath, rel);
+        //
+        //     if (!File.Exists(target))
+        //         continue;
+        //     
+        //     File.Delete(target);
+        // }
+        //
+        // if (File.Exists("Build/WebGL/RagnarokRebuildPatch.zip"))
+        //     File.Delete("Build/WebGL/RagnarokRebuildPatch.zip");
+        // ZipFile.CreateFromDirectory("Build/RagnarokRebuild", "Build/WebGL/RagnarokRebuildPatch.zip");
     }
 
     private static void BuildForPlatform(BuildTargetGroup group, BuildTarget platform, string location, bool updateAddressables, bool swapToPlatform)

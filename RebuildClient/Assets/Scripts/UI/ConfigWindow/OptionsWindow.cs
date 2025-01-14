@@ -70,11 +70,10 @@ namespace Assets.Scripts.UI.ConfigWindow
             }
         }
 
-        private void OnDestroy()
+        private new void OnDestroy()
         {
-#if UNITY_EDITOR
+            base.OnDestroy();
             OnApplicationQuit(); //yeah...
-#endif
         }
 
         private void OnApplicationQuit()

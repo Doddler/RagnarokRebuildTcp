@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -87,6 +88,11 @@ namespace Assets.Scripts.UI
         public virtual void OnPointerDown(PointerEventData eventData)
         {
             MoveToTop();
+        }
+
+        public void OnDestroy()
+        {
+            UiManager.Instance.WindowStack.Remove(this);
         }
     }
 }

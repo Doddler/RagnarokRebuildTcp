@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Network;
+using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Hud;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -19,7 +21,7 @@ namespace Assets.Scripts.UI.Inventory
         {
             HighlightZone.color = new Color32(0, 0, 0, 0);
         }
-        
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (UiManager.Instance.IsDraggingItem)
@@ -36,7 +38,6 @@ namespace Assets.Scripts.UI.Inventory
                 UiManager.Instance.UnregisterDragTarget(this);
                 HighlightZone.color = new Color32(0, 0, 0, 0);
             }
-
         }
 
         public void DropItem()
@@ -52,6 +53,9 @@ namespace Assets.Scripts.UI.Inventory
                     break;
                 case ItemDragOrigin.EquipmentWindow:
                     NetworkManager.Instance.SendUnEquipItem(obj.OriginId);
+                    break;
+                case ItemDragOrigin.StorageWindow:
+                    StorageUI.Instance?.OnMoveItemToInventory(obj.OriginId);
                     break;
             }
         }

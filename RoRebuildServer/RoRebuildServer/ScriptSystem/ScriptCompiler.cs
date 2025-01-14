@@ -25,10 +25,10 @@ public class QueryLanguageErrorListener : BaseErrorListener
     }
 }
 
+
 internal class ScriptCompiler
 {
     private Dictionary<string, string> scriptFiles = new();
-    private HashSet<string> uniqueNames = new();
 
     /// <summary>
     /// Compiles a script on a given path and stores the output.
@@ -75,8 +75,8 @@ internal class ScriptCompiler
 
         try
         {
-            var walker = new ScriptTreeWalker();
-            str = walker.BuildClass(name, parser, uniqueNames);
+            var walker = new ScriptTreeWalker(name, inputPath);
+            str = walker.BuildClass(name, parser);
         }
         catch (Exception)
         {
@@ -189,7 +189,6 @@ internal class ScriptCompiler
 
         scriptFiles.Clear(); //no need to keep the scripts in memory anymore.
         scriptFiles = null!;
-        uniqueNames = null!; 
 
         return Assembly.Load(bytes);
     }

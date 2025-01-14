@@ -158,7 +158,7 @@ namespace RoWikiGenerator
                 txtOut.AppendLine($"<tr><td><b>Int:</b></td><td>{m.Int}</td></tr>");
                 txtOut.AppendLine($"<tr><td><b>Luck:</b></td><td>{m.Luk}</td></tr>");
                 txtOut.AppendLine($"""
-                                   </tr></table></td>
+                                   </table></td>
                                    <td style="vertical-align:top; width:25%;">
                                        <H2 class="subheader">Drops</H2>
                                        <table>

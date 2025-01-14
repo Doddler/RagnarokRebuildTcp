@@ -66,7 +66,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 return;
             }
 
-            var validation = SkillHandler.ValidateTarget(skill, connection.Character.CombatEntity, null, Position.Invalid, lvl);
+            var validation = SkillHandler.ValidateTarget(skill, connection.Character.CombatEntity, connection.Character.CombatEntity, Position.Invalid, lvl);
             if (validation != SkillValidationResult.Success)
             {
                 CommandBuilder.SkillFailed(connection.Player, validation);

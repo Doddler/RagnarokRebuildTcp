@@ -9,11 +9,13 @@ public class ScriptMacro
 {
     private RoScriptParser.ExpressionContext[] Values;
     private Dictionary<string, int> VariableIds;
+    public string CurrentScript;
 
     public RoScriptParser.StatementblockContext Context;
 
-    public ScriptMacro(int paramCount, RoScriptParser.StatementblockContext context)
+    public ScriptMacro(string scriptName, int paramCount, RoScriptParser.StatementblockContext context)
     {
+        CurrentScript = scriptName;
         Context = context;
         Values = new RoScriptParser.ExpressionContext[paramCount];
         VariableIds = new Dictionary<string, int>(paramCount);

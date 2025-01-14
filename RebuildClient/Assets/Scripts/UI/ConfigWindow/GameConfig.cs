@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using UnityEngine;
 using UnityEngine.Windows;
 using File = System.IO.File;
@@ -53,7 +55,9 @@ namespace Assets.Scripts.UI.ConfigWindow
         public static void SaveConfig()
         {
             UiManager.Instance.SyncFloatingBoxPositionsWithSaveData();
-            Data.HotBarSaveData = UiManager.Instance.SkillHotbar.SaveHotBarData(Data.HotBarSaveData);
+            var charName = PlayerState.Instance?.PlayerName;
+            if(!string.IsNullOrWhiteSpace(charName))
+                UiManager.Instance.SkillHotbar.SaveHotBarData(Data.GetHotBarDataForCharacter(charName));
             
             Debug.Log($"Saving game configuration to {configPath}");
             if (!isInitialized)
@@ -61,6 +65,7 @@ namespace Assets.Scripts.UI.ConfigWindow
                 Debug.LogError($"Cannot save game config as it is not yet initialized.");
                 return;
             }
+            
             var text = JsonUtility.ToJson(Data);
             File.WriteAllText(configPath, text);
         }

@@ -34,6 +34,27 @@ namespace RoRebuildServer.Data;
 
 internal class DataLoader
 {
+    public int LoadVersionInfo()
+    {
+        var lines = File.ReadAllLines(Path.Combine(ServerConfig.DataConfig.DataPath, @"Config/ServerClientConfig.txt"));
+        for (var i = 0; i < lines.Length; i++)
+        {
+            if (lines[i].StartsWith("::ServerVersion") && i + 1 < lines.Length)
+            {
+                if (!int.TryParse(lines[i + 1], out var version))
+                {
+                    ServerLogger.LogWarning($"Could not read version info from ServerClientConfig.txt");
+                    return 0;
+                }
+
+                return version;
+            }
+        }
+
+        ServerLogger.LogWarning($"Did not find ::ServerVersion section in ServerClientConfig.txt");
+        return 0;
+    }
+
     public List<MapEntry> LoadMaps()
     {
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Maps.csv")) as TextReader;

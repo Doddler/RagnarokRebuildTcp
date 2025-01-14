@@ -467,7 +467,7 @@
         12
       ],
       "AdjustableLevel": false,
-      "Description": "Nock two arrows to strike a target for two powerful hits at once.",
+      "Description": "Nock two arrows to strike a target for two powerful hits at once.\r\nDeals 2 hits at [90 \u002B SkillLevel * 10]% ATK",
       "InterruptMode": 0
     },
     {
@@ -504,7 +504,7 @@
         15
       ],
       "AdjustableLevel": false,
-      "Description": "\u003Ccolor=red\u003EThis skill doesn\u0027t currently work.",
+      "Description": "Fires a bundle of arrows, striking targets in a 5x5 area and knocking them back.\r\nCast time: [1.5 - SkillLevel/10]s\r\nDamage (center tile): [150 \u002B SkillLevel * 10]%\r\nDamage (1 tile away): [100 \u002B SkillLevel * 10]%\r\nDamage (2 tiles away): [80 \u002B SkillLevel * 10]%",
       "InterruptMode": 0
     },
     {
@@ -961,7 +961,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": "Hide from view making yourself untargetable while slowly consuming SP. Insect, demon, and certain powerful monsters can see through the skill.\r\nYou cannot attack while hidden and SP recovery rate is reduced by half. Higher skill levels increase the max duration and slows the sp consumption.",
+      "Description": "Hide below ground to avoid detection. Insect, demon, and boss monsters can see through the skill.\r\nSP recovery rate halved while hiding.\r\nLasts [30\u002BSkillLevel*15] seconds.\r\nConsumes 1 sp every [1\u002BSkillLevel] seconds.",
       "InterruptMode": 0
     },
     {

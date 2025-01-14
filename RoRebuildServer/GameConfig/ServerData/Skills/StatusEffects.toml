@@ -146,3 +146,14 @@ Name = "Doom"
 Type = "Debuff"
 CanDispel = false
 CanDisable = true
+
+#----------------------------------
+# Utility Effects
+#----------------------------------
+
+#monsters get this status after a thief steals an item to block further attempts
+[StolenFrom]
+Name = "Stolen From"
+Type = "Debuff"
+CanDisable = false
+CanDispel = false

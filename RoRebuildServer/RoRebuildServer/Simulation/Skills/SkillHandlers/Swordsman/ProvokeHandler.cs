@@ -47,6 +47,8 @@ public class ProvokeHandler : SkillHandlerBase
         {
             var mon = target.Character.Monster;
             mon.NotifyOfAttack(ref di);
+            if (mon.CombatEntity.CanAttackTarget(ch))
+                mon.Target = ch.Entity;
         }
 
         if (target.Character.Type == CharacterType.Player)

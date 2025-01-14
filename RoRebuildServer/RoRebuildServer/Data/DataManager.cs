@@ -65,6 +65,7 @@ public static class DataManager
     
     public static ExpChart ExpChart;
     public static ElementChart ElementChart;
+    public static int ServerVersionNumber;
     
     public static bool IsJobInEquipGroup(string equipGroup, int job) => EquipGroupInfo.TryGetValue(equipGroup, out var set) && set.Contains(job);
     public static int GetEffectForItem(int item) => UseItemInfo.TryGetValue(item, out var effect) ? effect.Effect : -1;
@@ -129,6 +130,7 @@ public static class DataManager
     {
         var loader = new DataLoader();
 
+        ServerVersionNumber = loader.LoadVersionInfo();
         monsterStats = loader.LoadMonsterStats();
         monsterAiList = loader.LoadAiStateMachines();
         ExpChart = loader.LoadExpChart();

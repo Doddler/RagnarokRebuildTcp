@@ -9,6 +9,7 @@ toplevelstatement : MACRO IDENTIFIER LPAREN functionparam? RPAREN statementblock
 				  | functionDefinition																	# TopLevelFunctionDefinition
 				  | macrocall SEMI?																		# TopLevelMacroCall
 				  | IDENTIFIER LPAREN functionparam? RPAREN SEMI										# StandaloneFunction
+				  | INCLUDE file=STRING																	# IncludeFileContext
 				  ;
 
 statement : IF LPAREN expression RPAREN block1=statementblock (ELSE block2=statementblock)?				# IfStatement

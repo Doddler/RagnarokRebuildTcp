@@ -158,7 +158,7 @@ Item("Excalibur") { OnEquip:  AddStat(AddInt, 5); AddStat(AddLuk, 10); }
 Item("Mistilteinn") { OnEquip:  AddStat(AddDex, 3); }
 Item("Byeol-ungeom") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); }
 Item("Holy_Avenger") { OnEquip:  AddStat(AddVit, 2); }
-Item("Fortune_Sword") { OnEquip:  AddStat(AddLuk, 5); AddStat(PerfectDodge, 20); }
+Item("Fortune_Sword") { OnEquip:  AddStat(AddLuk, 5); AddStat(PerfectDodge, 200); }
 Item("Bazerald") { OnEquip:  AddStat(AddInt, 5); }
 Item("War_Axe") { OnEquip:  AddStat(AddDex, 2); AddStat(AddLuk, 2); }
 Item("Pole_Axe") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 2); AddStat(AddDex, 1); }

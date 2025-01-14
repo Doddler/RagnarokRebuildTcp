@@ -166,7 +166,7 @@ public static class PlayerDataDbHelper
         using var bw = new BinaryMessageWriter(ms);
         
         bw.Write((byte)0); //version
-        p.StorageInventory.Serialize(bw, false);
+        p.StorageInventory.TryWrite(bw, false);
         
         var srcData = buffer.AsSpan(0, (int)ms.Position);
         var cmpData = ArrayPool<byte>.Shared.Rent(LZ4Codec.MaximumOutputSize(srcData.Length));

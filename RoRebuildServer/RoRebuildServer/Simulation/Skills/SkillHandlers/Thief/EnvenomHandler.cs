@@ -42,15 +42,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
             if (!source.CheckLuckModifiedRandomChanceVsTarget(target, (int)(chance * resist), 1000))
                 return; //failed to poison
 
-            var duration = lvl switch
-            {
-                < 3 => 12f, //4 ticks
-                < 6 => 15f, //5 ticks
-                < 9 => 18f, //6 ticks
-                _ => 21f //7 ticks
-            };
-
-            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Poison, duration + 2, source.Character.Id, res.Damage / 2);
+            //we use an odd number here as ticks occur every 2s, the extra 1s ensures it never misses the last tick
+            //I guess this should also be reduced by vitality... or maybe not.
+            var duration = 5 + lvl * 2;
+            if (duration < 11)
+                duration = 11;
+            
+            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Poison, duration, source.Character.Id, res.Damage / 2);
             target.AddStatusEffect(status, true, res.AttackMotionTime);
         }
     }

@@ -1,0 +1,20 @@
+{
+  "Items": [
+    {
+      "Date": "2025-01-12",
+      "Desc": "- Hotbars are now unique to each character. Existing hotbars before this update are unfortunately lost.\r\n- PC client build now downloads files as needed from the server. This is prone to breaking, but automating patches has turned out harder than expected.\r\n- Some monsters will now give up chasing if you kite them too long."
+    },
+    {
+      "Date": "2025-01-11",
+      "Desc": "- Patch notes are now automated! Last 5 patch notes will display in-game after an update.\r\n- Build process now creates a PC client patch. If sprites or maps don\u0027t change this can be used to update the client without re-downloading the whole thing.\r\n- On hit poison effect of the Boa card now works, on hit stun effect of the Savage Babe card now works.\r\n- Client now shows your lucky dodge stat.\r\n- Looters now can see items a little further (12 tiles) to match official behavior.\r\n- Fixed an issue that caused self targeted skills (Improve Concentration, Two-Hand Quicken, etc) to fail."
+    },
+    {
+      "Date": "2025-01-10",
+      "Desc": "- Double click can be used to move items into/out of storage. Hold shift to attempt to move the entire stack of items without a prompt.\r\n- Client will now remember where the storage window was last time you opened it.\r\n- Cards that have effects based on refine level now work. This includes Orc Baby, Carat, Kappa, Megalith, Sting, Arclouse, Goat, Firelock Soldier, Gibbet, and Appocalypse cards.\r\n- New characters should now log in with full hp/sp. You should also get 15 apples, because apples are good.\r\n- Client builds now store the server version that it can connect to. If you have an out of date client you\u0027ll be notified when logging in and asked to update rather than stuff just breaking everywhere.\r\n- Casting provoke on an enemy that is within melee range will always cause the monster to change targets to attack you.\r\n- Provoked monsters will no longer change targets when attacked as long as it\u0027s target remains close enough to attack.\r\n- Number of damage ticks from envenom adjusted, scaling from 4 ticks of damage over 8s at level 1, to 11 ticks over 22s at level 10.\r\n- Perfect Dodge now works, though it currently appears as a Miss instead of Lucky. The effect is greater if you have more luck than your opponent."
+    },
+    {
+      "Date": "2025-01-09",
+      "Desc": "- Storage has been added.\r\n- Inventory storage in the database has been changed. This shouldn\u0027t result in anything noticeable but there could be unintended issues.\r\n- Item icons have all been updated.\r\n- Better handling of death state, the client should no longer ever get you stuck in a state where you cannot respawn.\r\n- If you log out while dead, you\u0027ll remain dead when you log in.\r\n- Drop rate of elunium and oridecon has been increased a bunch (roughly 1.5x~2x). See the updated monster guide link on the webpage for more info.\r\n- Some monster stats tweaked a little, particularly Ant Hell 2F mobs.\r\n- GTB\u0027s summons nerfed a little."
+    }
+  ]
+}

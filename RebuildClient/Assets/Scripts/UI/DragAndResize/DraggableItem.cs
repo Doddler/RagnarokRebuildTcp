@@ -16,7 +16,8 @@ namespace Assets.Scripts.UI
         Skill,
         Item,
         Equipment,
-        ShopItem
+        ShopItem,
+        StorageItem
     }
 
     public class DraggableItem : DragItemBase, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler

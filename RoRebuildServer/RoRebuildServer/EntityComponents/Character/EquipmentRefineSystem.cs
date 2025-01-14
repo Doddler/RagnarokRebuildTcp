@@ -2,6 +2,8 @@
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Items;
+using RoRebuildServer.Networking;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.EntityComponents.Character;
 
@@ -64,5 +66,54 @@ public static class EquipmentRefineSystem
 
         item.UniqueItem.Refine += 1;
         return RefineSuccessResult.Success;
+    }
+
+    public static bool AdminItemUpgrade(Player player, int bagId, int upgradeLevel)
+    {
+        if (player.Inventory == null || !player.Inventory.GetItem(bagId, out var targetItem) ||
+            targetItem.Type != ItemType.UniqueItem)
+            return false;
+
+        var data = DataManager.GetItemInfoById(targetItem.Id);
+        if (data.ItemClass == ItemClass.Weapon)
+        {
+            var weapon = DataManager.WeaponInfo[targetItem.Id];
+            if (!weapon.IsRefinable)
+            {
+                CommandBuilder.ErrorMessage(player, "Item is unrefineable.");
+                return false;
+            }
+        }
+        else
+        {
+            var armor = DataManager.ArmorInfo[targetItem.Id];
+            if (!armor.IsRefinable)
+            {
+                CommandBuilder.ErrorMessage(player, "Item is unrefineable.");
+                return false;
+            }
+        }
+
+        var isEquipped = player.Equipment.IsItemEquipped(bagId);
+        if (isEquipped)
+            player.Equipment.UnEquipItem(bagId);
+
+        var recipients = player.Character.GetVisiblePlayerList();
+
+        CommandBuilder.AddRecipients(recipients);
+        CommandBuilder.SendEffectOnCharacterMulti(player.Character, DataManager.EffectIdForName["RefineSuccess"]);
+        CommandBuilder.ClearRecipients();
+
+        targetItem.UniqueItem.Refine = byte.Clamp((byte)upgradeLevel, 0, 10);
+
+        player.Inventory.UpdateUniqueItemReference(bagId, targetItem.UniqueItem);
+        CommandBuilder.PlayerUpdateInventoryItemState(player, bagId, targetItem.UniqueItem);
+        if (isEquipped)
+        {
+            player.Equipment.EquipItem(bagId);
+            player.UpdateStats(false);
+        }
+
+        return true;
     }
 }

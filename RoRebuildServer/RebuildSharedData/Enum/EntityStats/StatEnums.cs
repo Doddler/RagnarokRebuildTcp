@@ -161,6 +161,36 @@ public enum CharacterStat
     AddResistMidSize,
     AddResistLargeSize,
 
+    OnAttackStun,
+    OnAttackPoison,
+    OnAttackBlind,
+    OnAttackSleep,
+    OnAttackFreeze,
+    OnAttackCurse,
+    OnAttackStone,
+
+    WhenAttackedStun,
+    WhenAttackedPoison,
+    WhenAttackedBlind,
+    WhenAttackedSleep,
+    WhenAttackedFreeze,
+    WhenAttackedCurse,
+    WhenAttackedStone,
+
+    ResistStun,
+    ResistPoison,
+    ResistBlind,
+    ResistSleep,
+    ResistFreeze,
+    ResistCurse,
+    ResistStone,
+
+    HpDrainChance,
+    HpDrainAmount,
+    SpDrainChance,
+    SpDrainAmount,
+
+    NoEffect,
     CharacterStatsMax,
 }
 
@@ -211,6 +241,7 @@ public static class PlayerClientStatusDef
         CharacterStat.AddFlee,
         CharacterStat.AddHit,
         CharacterStat.AddCrit,
+        CharacterStat.PerfectDodge,
         CharacterStat.WeightCapacity,
     };
 }

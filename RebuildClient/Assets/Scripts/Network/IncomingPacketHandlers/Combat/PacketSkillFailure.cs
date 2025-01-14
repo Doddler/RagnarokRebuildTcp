@@ -29,6 +29,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 case SkillValidationResult.InsufficientItemCount:
                     Camera.AppendChatText("<color=#FF7777>Skill failed: Missing a required item.</color>");
                     break;
+                case SkillValidationResult.CannotTargetBossMonster:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed: The monster is immune to this skill effect.</color>");
+                    break;
+                case SkillValidationResult.ItemAlreadyStolen:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed: An item has already been stolen from this target.</color>");
+                    break;
                 default:
                     Debug.Log($"Skill failure (not shown to user): {result}");
                     break;

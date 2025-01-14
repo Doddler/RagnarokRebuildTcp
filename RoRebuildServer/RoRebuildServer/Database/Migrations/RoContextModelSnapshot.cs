@@ -134,6 +134,9 @@ namespace RoRebuildServer.Migrations
                     b.Property<byte[]>("Data")
                         .HasColumnType("BLOB");
 
+                    b.Property<int>("DataLength")
+                        .HasColumnType("INTEGER");
+
                     b.Property<byte[]>("ItemData")
                         .HasColumnType("BLOB");
 
@@ -157,6 +160,9 @@ namespace RoRebuildServer.Migrations
 
                     b.Property<byte[]>("SkillData")
                         .HasColumnType("BLOB");
+
+                    b.Property<int>("SkillDataLength")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("VersionFormat")
                         .HasColumnType("INTEGER");
@@ -251,8 +257,8 @@ namespace RoRebuildServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("CharacterId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("AccountId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("StorageData")
                         .IsRequired()
@@ -263,7 +269,7 @@ namespace RoRebuildServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CharacterId")
+                    b.HasIndex("AccountId")
                         .IsUnique();
 
                     b.ToTable("StorageInventory");
@@ -387,22 +393,20 @@ namespace RoRebuildServer.Migrations
 
             modelBuilder.Entity("RoRebuildServer.Database.Domain.StorageInventory", b =>
                 {
-                    b.HasOne("RoRebuildServer.Database.Domain.DbCharacter", "Character")
-                        .WithOne("KafraStorage")
-                        .HasForeignKey("RoRebuildServer.Database.Domain.StorageInventory", "CharacterId")
+                    b.HasOne("RoRebuildServer.Database.Domain.RoUserAccount", "Account")
+                        .WithOne("CharacterStorage")
+                        .HasForeignKey("RoRebuildServer.Database.Domain.StorageInventory", "AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Character");
-                });
-
-            modelBuilder.Entity("RoRebuildServer.Database.Domain.DbCharacter", b =>
-                {
-                    b.Navigation("KafraStorage");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("RoRebuildServer.Database.Domain.RoUserAccount", b =>
                 {
+                    b.Navigation("CharacterStorage")
+                        .IsRequired();
+
                     b.Navigation("Characters");
                 });
 #pragma warning restore 612, 618

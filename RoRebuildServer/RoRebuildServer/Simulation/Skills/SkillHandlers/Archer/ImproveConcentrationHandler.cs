@@ -17,8 +17,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
 
             source.ApplyCooldownForSupportSkillAction();
 
-            var dex = (int)(source.GetStat(CharacterStat.Dex) * (0.02f + 0.01f * lvl) + 1);
-            var agi = (int)(source.GetStat(CharacterStat.Agi) * (0.02f + 0.01f * lvl) + 1);
+            var dex = (int)float.Ceiling(source.GetStat(CharacterStat.Dex) * (0.02f + 0.01f * lvl));
+            var agi = (int)float.Ceiling(source.GetStat(CharacterStat.Agi) * (0.02f + 0.01f * lvl));
             
             var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.ImproveConcentration, 40f + 20 * lvl, agi, dex);
             source.AddStatusEffect(status);

@@ -6,6 +6,7 @@ using Assets.Scripts;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.Utility;
 using JetBrains.Annotations;
 using RebuildSharedData.Enum;
@@ -183,6 +184,7 @@ namespace PlayerControl
 
                 if (s[0] == "/logout")
                 {
+                    GameConfig.SaveConfig();
                     NetworkManager.Instance.Disconnect();
                     SceneManager.LoadScene(0);
                 }
@@ -215,11 +217,68 @@ namespace PlayerControl
                         NetworkManager.Instance.SendAdminCreateItem(item.Id, count);
                 }
 
+                if (s[0] == "/refine")
+                {
+                    if (s.Length < 2)
+                    {
+                        cameraFollower.AppendError("Invalid command format.");
+                        return;
+                    }
+
+                    var itemPosition = s[1].ToLower() switch
+                    {
+                        "head" => EquipSlot.HeadTop,
+                        "head1" => EquipSlot.HeadTop,
+                        "head2" => EquipSlot.HeadMid,
+                        "head3" => EquipSlot.HeadBottom,
+                        "armor" => EquipSlot.Body,
+                        "body" => EquipSlot.Body,
+                        "weapon" => EquipSlot.Weapon,
+                        "shield" => EquipSlot.Shield,
+                        "garment" => EquipSlot.Garment,
+                        "footgear" => EquipSlot.Footgear,
+                        "boot" => EquipSlot.Footgear,
+                        "boots" => EquipSlot.Footgear,
+                        _ => EquipSlot.None
+                    };
+
+                    if (itemPosition == EquipSlot.None)
+                    {
+                        cameraFollower.AppendError("Invalid item position.");
+                        return;
+                    }
+
+                    var itemId = NetworkManager.Instance.PlayerState.EquippedItems[(int)itemPosition];
+                    if (itemId <= 0)
+                    {
+                        cameraFollower.AppendError($"Item not equipped in slot {itemPosition}.");
+                        return;
+                    }
+
+                    var refine = 0;
+                    if (s.Length >= 3)
+                    {
+                        if (!int.TryParse(s[2], out refine))
+                        {
+                            cameraFollower.AppendError($"Invalid refine value {s[2]}.");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
+                        refine = item.UniqueItem.Refine + 1;
+                    }
+                    
+                    NetworkManager.Instance.SendAdminRefineAttempt(itemId, refine);
+                }
+
                 if (s[0] == "/summon" || s[0] == "/boss" || s[0] == "/monster")
                 {
                     if (s.Length < 2)
                     {
                         cameraFollower.AppendError("Invalid summon monster request.");
+                        return;
                     }
                     
                     //var failed = false;

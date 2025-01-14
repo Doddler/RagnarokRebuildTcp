@@ -1,16 +1,19 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
+    [Flags]
     public enum ItemDragOrigin
     {
         None,
-        HotBar,
-        ItemWindow,
-        EquipmentWindow,
-        ShopWindow
+        HotBar = 1,
+        ItemWindow = 2,
+        EquipmentWindow = 4,
+        ShopWindow = 8,
+        StorageWindow = 16
     }
     
     public class ItemDragObject : DragItemBase

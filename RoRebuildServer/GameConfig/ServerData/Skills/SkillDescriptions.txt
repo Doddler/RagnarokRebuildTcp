@@ -42,12 +42,17 @@ Increases attack speed when using two-handed swords by 10% per skill level.
 
 ::DoubleStrafe
 Nock two arrows to strike a target for two powerful hits at once.
+Deals 2 hits at [90 + SkillLevel * 10]% ATK
 
 ::ChargeArrow
 <color=red>This skill doesn't currently work.
 
 ::ArrowShower
-<color=red>This skill doesn't currently work.
+Fires a bundle of arrows, striking targets in a 5x5 area and knocking them back.
+Cast time: [1.5 - SkillLevel/10]s
+Damage (center tile): [150 + SkillLevel * 10]%
+Damage (1 tile away): [100 + SkillLevel * 10]%
+Damage (2 tiles away): [80 + SkillLevel * 10]%
 
 ::ImproveConcentration
 Focuses your thoughts providing bonus to AGI and DEX.
@@ -158,8 +163,10 @@ Poison Effect: Deals 1/2 the received damage every 2 seconds.
 Deals 8 hits to a single target at 50% attack at level 1 rising to 100% attack at level 10.
 
 ::Hiding
-Hide from view making yourself untargetable while slowly consuming SP. Insect, demon, and certain powerful monsters can see through the skill.
-You cannot attack while hidden and SP recovery rate is reduced by half. Higher skill levels increase the max duration and slows the sp consumption.
+Hide below ground to avoid detection. Insect, demon, and boss monsters can see through the skill.
+SP recovery rate halved while hiding.
+Lasts [30+SkillLevel*15] seconds.
+Consumes 1 sp every [1+SkillLevel] seconds.
 
 //----------------Merchant-------------------
 

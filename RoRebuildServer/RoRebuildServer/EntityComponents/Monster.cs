@@ -132,6 +132,7 @@ public partial class Monster : IEntityAutoReset
     public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
 
     public void CallDeathEvent() => skillAiHandler?.OnDie(skillState);
+    public void ResetIdleWaitTime() => nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f);
 
     public void ChangeAiSkillHandler(string newHandler)
     {

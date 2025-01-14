@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Network;
+using Assets.Scripts.UI.Hud;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -32,6 +33,12 @@ namespace Assets.Scripts.UI
                         CameraFollower.Instance.AppendNotice($"Cannot drop items while equipment window is open.");
                         return;
                     }
+                    
+                    if (StorageUI.Instance != null)
+                    {
+                        CameraFollower.Instance.AppendNotice($"Cannot drop items while storage window is open.");
+                        return;
+                    }
 
                     Debug.Log($"Dropped item from inventory onto ground area.");
                     
@@ -41,7 +48,7 @@ namespace Assets.Scripts.UI
                     {
                         if(NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(obj.ItemId, out var item))
                         {
-                            UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item);
+                            UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item, DropConfirmationType.DropOnGround);
                         }
                     }
                         

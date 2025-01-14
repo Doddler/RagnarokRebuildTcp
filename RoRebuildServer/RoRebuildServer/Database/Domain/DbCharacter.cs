@@ -21,11 +21,12 @@ public class DbCharacter
     public DbSavePoint? SavePoint { get; set; }
     public byte[]? CharacterSummary { get; set; }
     public byte[]? Data { get; set; }
+    public int DataLength { get; set; }
     public byte[]? SkillData { get; set; }
+    public int SkillDataLength { get; set; }
     public byte[]? NpcFlags { get; set; }
     public int NpcFlagsLength { get; set; }
     public byte[]? ItemData { get; set; }
-    public StorageInventory? KafraStorage { get; set; }
     public int ItemDataLength { get; set; }
     public RoUserAccount Account { get; set; } = null!;
     public int AccountId { get; set; }

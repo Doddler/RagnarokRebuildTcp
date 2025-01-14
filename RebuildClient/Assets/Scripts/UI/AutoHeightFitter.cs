@@ -12,7 +12,6 @@ namespace Assets.Scripts.UI
         public float ExtraHeight;
         private Vector2 lastSize;
 
-
         public void UpdateRectSize() => OnRectTransformDimensionsChange();
 
         protected override void OnRectTransformDimensionsChange()

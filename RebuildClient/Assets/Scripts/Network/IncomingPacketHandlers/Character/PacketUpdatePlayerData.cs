@@ -61,7 +61,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             {
                 State.Inventory.Deserialize(msg);
                 State.Cart.Deserialize(msg);
-                State.Storage.Deserialize(msg);
                 State.EquippedBagIdHashes.Clear();
                 for (var i = 0; i < 10; i++)
                 {

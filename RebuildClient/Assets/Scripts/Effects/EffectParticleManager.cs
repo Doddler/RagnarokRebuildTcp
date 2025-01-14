@@ -28,6 +28,7 @@ namespace Assets.Scripts.Effects
         public Vector3 Velocity;
         public Color32 Color;
         public float Gravity;
+        public float GravityAccel;
         public float UniqueValue;
         public ParticleDisplayMode Mode;
         public byte ParticleId; //sprite id
@@ -117,6 +118,7 @@ namespace Assets.Scripts.Effects
                 Velocity = velocity,
                 Color = color,
                 Gravity = gravity,
+                GravityAccel = 0,
                 Acceleration = acceleration,
                 ParticleId = (byte)spriteId,
                 UniqueValue = Random.Range(0f, 10000f),
@@ -239,6 +241,7 @@ namespace Assets.Scripts.Effects
 
                 p.Position += p.Velocity * Time.deltaTime;
                 p.Velocity += p.Velocity.normalized * (p.Acceleration * Time.deltaTime);
+                p.Gravity += p.Gravity * (p.GravityAccel * Time.deltaTime);
                 
                 var c = p.Color;
                 var t = Time.time - p.StartTime;

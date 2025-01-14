@@ -14,6 +14,7 @@ namespace Assets.Scripts.UI
         public Transform SkillBarContainer;
         public GameObject SkillBarRowTemplate;
         public GameObject EntryPrefab;
+        public string HotBarCharacterName;
         [FormerlySerializedAs("DragHandle")] public ResizeHandle ResizeHandle;
 
         private List<GameObject> HotBarRows = new();
@@ -119,7 +120,7 @@ namespace Assets.Scripts.UI
             Destroy(SkillBarRowTemplate);
             
             GameConfig.InitializeIfNecessary();
-            LoadHotBarData(GameConfig.Data.HotBarSaveData);
+            // LoadHotBarData(GameConfig.Data.HotBarSaveData);
         }
 
         public void ActivateHotBarEntry(SkillHotbarEntry entry)
@@ -215,8 +216,13 @@ namespace Assets.Scripts.UI
             return data;
         }
 
-        public void LoadHotBarData(HotBarSaveData[] data)
+        public void LoadHotBarData(string playerName)
         {
+            if (HotBarCharacterName == playerName)
+                return;
+
+            var data = GameConfig.Data.GetHotBarDataForCharacter(playerName);
+            
             if (data == null)
                 return;
 
@@ -255,8 +261,8 @@ namespace Assets.Scripts.UI
                         HotBarEntries[i].DragItem.Assign(data[i].Type, sprite, data[i].ItemId, 0);
                     }
                 }
-                
             }
+            UpdateItemCounts();
         }
 
         public void Update()

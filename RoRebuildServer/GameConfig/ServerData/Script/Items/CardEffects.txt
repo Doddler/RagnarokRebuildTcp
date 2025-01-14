@@ -15,7 +15,7 @@ Item("Ant_Egg_Card") {  OnEquip: AddStat(AddMaxHpPercent, 5); }
 Item("Roda_Frog_Card") {  OnEquip: AddStat(AddMaxHp, 400); AddStat(AddMaxSp, 50); }
 Item("Condor_Card") {  OnEquip: AddStat(AddFlee, 10); }
 Item("Thief_Bug_Card") {  OnEquip: AddStat(AddAgi, 1); }
-Item("Savage_Babe_Card") {  OnEquip: } //add stun change 5% on melee/range
+Item("Savage_Babe_Card") {  OnEquip: AddStat(OnAttackStun, 50); } //add stun change 5% on melee/range
 Item("Andre_Larva_Card") {  OnEquip: AddStat(AddInt, 1); AddStat(AddMaxSp, 10); }
 Item("Hornet_Card") {  OnEquip: AddStat(AddStr, 1); AddStat(AddAttackPower, 3); }
 Item("Familiar_Card") {  OnEquip: AddStat(AddAttackPower, 5);  } //add chance to blind 5% on melee/range
@@ -35,7 +35,7 @@ Item("Poporing_Card") {  OnEquip: } //enable skill detoxify
 Item("Wormtail_Card") {  OnEquip: AddStat(AddDex, 2); } 
 Item("Hydra_Card") {  OnEquip: AddStat(AddAttackRaceDemihuman, 20); }
 Item("Muka_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, 10); }
-Item("Boa_Card") {  OnEquip: AddStat(AddAttackPower, 5); } //add 5% chance to poison on melee/range
+Item("Boa_Card") {  OnEquip: AddStat(AddAttackPower, 5); AddStat(OnAttackPoison, 50); } //add 5% chance to poison on melee/range
 Item("Zombie_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, 20); }
 Item("Stainer_Card") {  OnEquip: AddStat(AddDef, 1); } //add 20% resist to silence
 Item("Creamy_Card") {  OnEquip: } //enable teleport 1
@@ -147,7 +147,7 @@ Item("Maya_Card") {  OnEquip: } //should add 50% magic reflect
 Item("Baphomet_Card") {  OnEquip: } //should add splash damage at the cost of 10 hit
 Item("Pharaoh_Card") {  OnEquip: } //should reduce sp cost by 30%
 Item("Gargoyle_Card") {  OnEquip: } //add item drop box of thunder 1% when killing insect monsters
-Item("Goat_Card") {  OnEquip: } //def+2 mdef+5 if refine is < 6
+Item("Goat_Card") {  OnEquip: if(Refine < 6) {AddStat(AddDef, 2); AddStat(AddMDef, 5);} }
 Item("Gajomart_Card") { OnValidate: return false; OnEquip: }
 Item("Galapago_Card") { OnEquip: } //add 3% chance to get apple, banana, or carrot juice when killing insects, and boosts healing fo those items by 50%
 Item("Crab_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add 30% bonus damage against aster, adn 30% chance to get sashimi when killing fish
@@ -156,8 +156,8 @@ Item("Goblin_Leader_Card") { OnEquip: } //should add 30% damage to all goblins
 Item("Goblin_Steamrider_Card") { OnEquip:AddStat(AddCritDamage, 10); } //add 7% chance to crit vs formless
 Item("Goblin_Archer_Card") { OnEquip: OnEquip:AddStat(AddCritDamage, 10); } //add 7% chance to crit vs undead
 Item("Sky_Deleter_Card") { OnValidate: return false; OnEquip: }
-Item("Nine_Tail_Card") { OnEquip: AddStat(AddAgi, 2); } //should add 20 flee if upgraded to +9
-Item("Firelock_Soldier_Card") { OnEquip: AddStat(AddStr, 2); } //should add 10% hp/sp if upgraded to +9
+Item("Nine_Tail_Card") { OnEquip: AddStat(AddAgi, 2); if(Refine > 8) {AddStat(AddFlee, 20);} } //should add 20 flee if upgraded to +9
+Item("Firelock_Soldier_Card") { OnEquip: AddStat(AddStr, 2); if(Refine > 8) {AddStat(AddMaxHpPercent, 10); AddStat(AddMaxSpPercent, 10);} }
 Item("Grand_Peco_Card") { OnEquip: } //should auto-cast gloria when attacked
 Item("Grizzly_Card") { OnValidate: return false; OnEquip: } //should have a chance to blind when attacked
 Item("Gryphon_Card") { OnEquip: AddStat(AddFlee, 2); AddStat(AddCrit, 7); } //should add a 1% chance for swordsman to proc bowling bash 5
@@ -208,7 +208,7 @@ Item("Marin_Card") { OnEquip: } //add chance to get jellopy and giant jellopy on
 Item("Mastering_Card") { OnEquip: AddStat(AddLuk, 1); } //should combo with poring card
 Item("Maya_Purple_Card") { OnEquip: } //should allwo you to see hidden
 Item("Merman_Card") { OnEquip: AddStat(AddHpRecoveryPercent, 10); AddStat(AddSpRecoveryPercent, 10); }
-Item("Megalith_Card") { OnEquip: } //mdef when upgraded < +6
+Item("Megalith_Card") { OnEquip: if(Refine < 6) {AddStat(AddMDef, 7);} } //mdef when upgraded < +6
 Item("Majorous_Card") { OnEquip: } //chance to stun when taking damage
 Item("Mao_Guai_Card") { OnEquip: AddStat(AddAttackElementGhost, 20); }
 Item("Mutant_Dragonoid_Card") { OnEquip: AddStat(AddAttackPower, 15); } //should add a chance to autospell fireball
@@ -234,7 +234,7 @@ Item("Skel_Prisoner_Card") { OnEquip: } //sleep when attacked
 Item("Stalactic_Golem_Card") { OnEquip: AddStat(AddDef, 1); } //resist stun 20%
 Item("Stem_Worm_Card") { OnEquip: } //change to get box of storms
 Item("Stone_Shooter_Card") { OnEquip: AddStat(AddHit, 10); AddStat(AddAttackPower, 10); }
-Item("Sting_Card") { OnEquip: AddStat(AddDef, 2); } //should add 5 mdef if shield is +9 or higher
+Item("Sting_Card") { OnEquip: AddStat(AddDef, 2); if(Refine > 8) {AddStat(AddMDef, 5);} }
 Item("Spring_Rabbit_Card") { OnEquip: } //meat drop and bonus meat healing
 Item("Sleeper_Card") { OnEquip: } //sleepy box on fish kill
 Item("Cloud_Tower_Manager_Card") { OnEquip: AddStat(AddInt, 1); } //should speed up casting by 5%
@@ -248,9 +248,9 @@ Item("Amon_Ra_Card") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(
 Item("Owl_Duke_Card") { OnEquip: } //should autospell impositio
 Item("Owl_Baron_Card") { OnEquip: } //should autospell lex aeterna
 Item("Iron_Fist_Card") { OnEquip: } //+10% exp from formless but +20% damage received
-Item("Arclouse_Card") { OnEquip: } //def+2 mdef+3 if upgraded < +6
+Item("Arclouse_Card") { OnEquip: if(Refine < 6) {AddStat(AddDef, 2); AddStat(AddMDef, 3);} }
 Item("Archangeling_Card") { OnEquip: AddStat(AddMaxHp, 300); } //should boost hp/sp recovery if your luk is 77 or higher
-Item("Apocalypse_Card") { OnValidate: return false; OnEquip: }
+Item("Apocalypse_Card") { OnEquip: AddStat(AddVit, 2); if(Refine > 8) {AddStat(AddMaxHp, 800);} }
 Item("Antonio_Card") { OnValidate: return false; OnEquip: }
 Item("Alarm_Card") { OnEquip: AddStat(AddMaxHp, 300) AddStat(AddVit, 1); } //should autocast sight when taking damage
 Item("Am_Mut_Card") { OnEquip: } //10% exp from human but +20% damage taken
@@ -286,7 +286,7 @@ Item("Zombie_Master_Card") { OnValidate: return false; OnEquip: } //sp recovery 
 Item("Zombie_Prisoner_Card") { OnEquip: } //bonus exp from undead but more damage taken
 Item("Lord_of_The_Dead_Card") { OnValidate: return false; OnEquip: } // kinds of status when attacking
 Item("Zealotus_Card") { OnEquip: AddStat(AddLuk, 2); } //autospell throw arrow and musical strike
-Item("Gibbet_Card") { OnValidate: return false; OnEquip: }
+Item("Gibbet_Card") { OnEquip: if(Refine < 6) {AddStat(AddMDef, 5);} }
 Item("Earth_Deleter_Card") { OnValidate: return false; OnEquip: }
 Item("Geographer_Card") { OnEquip: } //autospell blessing
 Item("Zipper_Bear_Card") { OnValidate: return false; OnEquip: }
@@ -295,8 +295,8 @@ Item("Greatest_General_Card") { OnEquip: } //autospell summon spirit sphere
 Item("Chepet_Card") { OnEquip: } //autospell heal on target
 Item("Choco_Card") { OnEquip: AddStat(PerfectDodge, 50); AddStat(AddFlee, 10); }
 Item("Karakasa_Card") { OnEquip: } //autospell confusion
-Item("Kappa_Card") { OnEquip: } //mdef +8 when unupgraded
-Item("Carat_Card") { OnEquip: AddStat(AddInt, 2); } //+150SP when +9
+Item("Kappa_Card") { OnEquip: if(Refine < 6) {AddStat(AddMDef, 8);} }
+Item("Carat_Card") { OnEquip: AddStat(AddInt, 2); if(Refine > 8) {AddStat(AddMaxSp, 150);}  }
 Item("Caterpillar_Card") { OnValidate: return false; OnEquip: }
 Item("Cat_O'_Nine_Tails_Card") { OnEquip: AddStat(AddMDef, 3); } //add 5% magic reflect
 Item("Kobold_Leader_Card") { OnEquip: } //+30% damage vs kobolds
@@ -383,7 +383,7 @@ Item("Archdam_Card") { OnValidate: return false; OnEquip: }
 Item("White_Lady_Card") { OnValidate: return false; OnEquip: }
 Item("Green_Maiden_Card") { OnValidate: return false; OnEquip: }
 Item("Vesper_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Baby_Card") { OnEquip: }
+Item("Orc_Baby_Card") { OnEquip: AddStat(AddFlee, 10); if(Refine > 8) {AddStat(AddFlee, 5); AddStat(AddResistElementNeutral, 5);} }
 Item("Lady_Tanee_Card") { OnValidate: return false; OnEquip: }
 Item("Grove_Card") { OnValidate: return false; OnEquip: }
 Item("Gold_Acidus_Card") { OnValidate: return false; OnEquip: }

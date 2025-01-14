@@ -89,3 +89,4 @@
 87,SpeedBadge,TRUE,TRUE,FALSE,mapae,,mapae,0,,
 88,RefineSuccess,TRUE,TRUE,FALSE,bs_refinesuccess,,bs_refinesuccess,0,,
 89,RefineFailure,TRUE,TRUE,FALSE,bs_refinefailed,,bs_refinefailed,0,,
+90,Steal,FALSE,FALSE,TRUE,,,,0,,

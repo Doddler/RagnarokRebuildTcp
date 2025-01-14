@@ -16,7 +16,9 @@ macro Kafra(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %saveLo
 			Dialog(name, "Your Respawn Point has been saved " + %saveDesc + ". Thank you for using the Kafra Service.");
 			return;
 		case 1:
-			Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
+			ReleaseFocus();
+			OpenStorage();
+			//Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
 			return;
 		case 2:
 			Dialog(name, "Please choose your destination.");

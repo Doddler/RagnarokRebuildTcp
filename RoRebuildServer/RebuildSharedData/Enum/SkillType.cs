@@ -38,5 +38,8 @@ namespace RebuildSharedData.Enum
         NoDamageModifiers = 256,
         NoElement = 512,
         Ranged = 1024,
+        NoTriggerOnAttackEffects = 2048,
+        NoTriggerWhenAttackedEffects = 4096,
+        PhysicalStatusTest = Physical | IgnoreEvasion | IgnoreNullifyingGroundMagic | NoTriggerOnAttackEffects | NoTriggerWhenAttackedEffects | NoElement
     }
 }

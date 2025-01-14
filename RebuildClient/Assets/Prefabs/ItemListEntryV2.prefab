@@ -204,7 +204,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 18
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -420,13 +420,10 @@ MonoBehaviour:
   ItemId: 0
   ItemCount: 0
   Parent: {fileID: 0}
+  ImageDisplayGroup: {fileID: 500681879415143952}
   Background: {fileID: 3419596540226340480}
   ItemName: {fileID: 1713616854627956626}
   RightText: {fileID: 9178864723865649841}
-  UniqueEntryId: 0
-  CanDrag: 0
-  CanSelect: 0
-  IsSelected: 0
   HoverColor: {r: 0.83, g: 0.91, b: 1, a: 1}
   SelectedColor: {r: 0.72, g: 0.856, b: 1, a: 1}
   NormalColor: {r: 0.83, g: 0.91, b: 1, a: 0}
@@ -748,7 +745,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 18
   m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 1

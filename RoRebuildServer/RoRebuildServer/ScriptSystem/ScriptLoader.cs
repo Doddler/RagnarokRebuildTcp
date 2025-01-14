@@ -128,8 +128,11 @@ public static class ScriptLoader
             var hasNewScripts = false;
 
             var path = Path.Combine(ServerConfig.DataConfig.DataPath, "Script/");
+
             foreach (var file in Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories))
             {
+                if (Path.GetFileNameWithoutExtension(file).StartsWith("_"))
+                    continue;
                 ServerLogger.LogVerbose("Compiling script " + Path.GetRelativePath(path, file));
                 hasNewScripts |= compiler.Compile(file);
             }

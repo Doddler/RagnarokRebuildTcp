@@ -1217,7 +1217,7 @@ GameObject:
   - component: {fileID: 3786851682253518500}
   - component: {fileID: 8803243180945910170}
   - component: {fileID: 6318726391045965544}
-  - component: {fileID: 1341057437410491026}
+  - component: {fileID: 904492761408667327}
   m_Layer: 5
   m_Name: InventoryDropZone
   m_TagString: Untagged
@@ -1282,7 +1282,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1341057437410491026
+--- !u!114 &904492761408667327
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1291,12 +1291,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3290378503941304049}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cfcb1abd41748089bfa3ab4f659888c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f47ebede3c4404c864094714741267f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   HighlightZone: {fileID: 6318726391045965544}
-  IsBuyingFromNPC: 0
-  Parent: {fileID: 0}
 --- !u!1 &3312798010281939208
 GameObject:
   m_ObjectHideFlags: 0
@@ -2031,7 +2029,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a127b78cb07406cb1f4a9efca41bde3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DropZone: {fileID: 1341057437410491026}
+  DropZone: {fileID: 904492761408667327}
   ItemListEntryPrefab: {fileID: 2745545851498939006, guid: d57584249a9a55242aa5100ca951befb,
     type: 3}
   ItemListParentBox: {fileID: 7732091657352750551}
@@ -2991,6 +2989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatchElements: []
+  ExtraHeight: 0
 --- !u!1 &9029794442813062053
 GameObject:
   m_ObjectHideFlags: 0

@@ -560,6 +560,18 @@ public class ItemEquipState
             OnEquipEvent((EquipSlot)i);
     }
 
+    public int Refine {
+        get
+        {
+            if (ItemIds[(int)activeSlot] <= 0 || Player.Inventory == null)
+                return 0;
+            if (!Player.Inventory.UniqueItems.TryGetValue(ItemSlots[(int)activeSlot], out var item))
+                return 0;
+
+            return (int)item.Refine;
+        }
+    }
+
     public void AddStat(CharacterStat stat, int change)
     {
 #if DEBUG

@@ -17,6 +17,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents.Items;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using RoRebuildServer.Database;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
 
@@ -103,12 +104,14 @@ public class NpcInteractionState
     {
         Debug.Assert(Player != null);
 
-        if(storage.StorageBag == null)
-            ContinueInteraction();
+        if (storage.StorageBag == null)
+            Player.StorageInventory = CharacterBag.Borrow();
         else
-        {
             Player.StorageInventory = storage.StorageBag;
-        }
+
+        Player.StorageId = storage.StorageId;
+
+        FinishOpeningStorage();
     }
 
     public void OpenStorage()
@@ -116,18 +119,20 @@ public class NpcInteractionState
         if (Player == null)
             return;
 
+        if (Player.Connection.LoadStorageRequest != null && !Player.Connection.LoadStorageRequest.IsComplete)
+            return;
+
         if (Player.StorageInventory != null)
         {
-            FinishOpeningStorage();
+            Player.Connection.LoadStorageRequest = null;
             return;
         }
-
-        var loadReq = new StorageLoadRequest(Player.Id);
-        
+        Player.Connection.LoadStorageRequest = new StorageLoadRequest(Player.Connection.AccountId);
+        RoDatabase.EnqueueDbRequest(Player.Connection.LoadStorageRequest);
 
     }
 
-    private void FinishOpeningStorage()
+    public void FinishOpeningStorage()
     {
         Debug.Assert(Player != null);
 

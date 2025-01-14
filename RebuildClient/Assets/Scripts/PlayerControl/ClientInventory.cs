@@ -238,6 +238,8 @@ namespace Assets.Scripts.PlayerControl
         public SortedDictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
         public InventoryItem GetInventoryItem(int bagId) => inventoryLookup[bagId];
 
+        public int TotalItems => inventoryLookup.Count;
+        
         public int GetItemCount(int itemId)
         {
             if(inventoryLookup.TryGetValue(itemId, out var item))

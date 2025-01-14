@@ -63,7 +63,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[46] = new EnvenomHandler();
 			handlers[47] = new DefaultSkillHandler();
 			handlers[48] = new BackslideHandler();
-			handlers[49] = new DefaultSkillHandler();
+			handlers[49] = new StealHandler();
 			handlers[50] = new DefaultSkillHandler();
 			handlers[51] = new DefaultSkillHandler();
 			handlers[52] = new DefaultSkillHandler();

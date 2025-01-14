@@ -718,6 +718,7 @@ public class NetworkManager
         using (var ms = new MemoryStream(buffer))
         using (var br = new BinaryReader(ms))
         {
+            var version = br.ReadInt16();
             isNewCharacter = br.ReadBoolean();
             isTokenConnection = br.ReadBoolean();
             requestToken = br.ReadBoolean();
@@ -727,6 +728,14 @@ public class NetworkManager
             {
                 var len = br.ReadInt32();
                 token = br.ReadBytes(len);
+            }
+
+            if (version != DataManager.ServerVersionNumber)
+            {
+                ServerLogger.Log($"User {userName} tried connecting with a version {version} client, but it doesn't match the server version {DataManager.ServerVersionNumber}.");
+                await ReturnServerErrorAndDisconnect(socket, $"Failed to log into the server, your client v{version} does not match the server v{DataManager.ServerVersionNumber}. " +
+                                                             "You will need to update your client before logging in.");
+                return;
             }
         }
 

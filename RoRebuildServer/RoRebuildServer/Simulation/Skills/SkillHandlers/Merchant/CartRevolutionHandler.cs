@@ -39,7 +39,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
             else
                 weight = (source.GetStat(CharacterStat.Level) + source.GetEffectiveStat(CharacterStat.Str)) * 50;
 
-            var skillMod = 1.5f + 0.1f * (float.Floor(weight / 1000f) * (1 + lvl / 10f));
+            var skillMod = 0.5f + 0.1f * lvl + weight / 6000f; //this will need to change when carts are implemented
 
             var attack = new AttackRequest(CharacterSkill.CartRevolution, skillMod, 1, AttackFlags.Physical, AttackElement.None);
 

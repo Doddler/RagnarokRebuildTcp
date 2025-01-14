@@ -11,6 +11,7 @@ using Assets.Scripts.UI.Hud;
 using Assets.Scripts.UI.Inventory;
 using Assets.Scripts.UI.Stats;
 using RebuildSharedData.Enum;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -42,6 +43,7 @@ public class UiManager : MonoBehaviour
     public GameObject GeneralItemListPrefab;
     public GameObject GenericItemListV2Prefab;
     public GameObject RefineWindowPrefab;
+    public GameObject StorageWindowPrefab;
 
     private IItemDropTarget inventoryDropTarget;
     private IItemDropTarget equipmentWindowDropTarget;
@@ -52,6 +54,7 @@ public class UiManager : MonoBehaviour
     public List<Draggable> FloatingDialogBoxes;
     public List<IClosableWindow> WindowStack = new();
 
+    public TextMeshProUGUI HelpWindowText;
     public string SpecialUiMode = "";
 
     private static UiManager _instance;
@@ -107,6 +110,7 @@ public class UiManager : MonoBehaviour
         LoadWindowPositionData();
         
         HelpWindow.HideWindow();
+        HelpWindowText.text = ClientDataLoader.Instance.PatchNotes + HelpWindowText.text;
         
         InventoryWindow.ShowWindow();
         //InventoryWindow.HideWindow();
@@ -310,7 +314,11 @@ public class UiManager : MonoBehaviour
             var itemData = ClientDataLoader.Instance.GetItemById(dragItem.ItemId);
             if(itemData.IsUnique || itemData.ItemClass == ItemClass.Ammo)
                 EquipmentDropArea.SetActive(true);
+            if(StorageUI.Instance != null)
+                StorageUI.Instance.UpdateDropArea(true);
         }
+        if(dragItem.Type == DragItemType.StorageItem)
+            InventoryDropArea.SetActive(true);
     }
     
     public bool EndItemDrag(bool allowDrop = true)
@@ -323,6 +331,9 @@ public class UiManager : MonoBehaviour
         equipmentWindowDropTarget.DisableDropArea();
         InventoryDropArea.SetActive(false);
         EquipmentDropArea.SetActive(false);
+        if(StorageUI.Instance != null)
+            StorageUI.Instance.UpdateDropArea(false);
+
         if (hoveredDropTarget != null)
         {
             if(allowDrop)
@@ -397,7 +408,7 @@ public class UiManager : MonoBehaviour
             SkillHotbar.UpdateHotkeyPresses();
         }
         
-        if(IsDraggingItem || cameraFollower.InTextBox || cameraFollower.IsInNPCInteraction)
+        if(IsDraggingItem || cameraFollower.InTextBox)
             TooltipOverlay.gameObject.SetActive(false);
         
         UpdateOverlayPosition();

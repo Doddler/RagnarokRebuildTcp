@@ -38,12 +38,14 @@ class Program
         AppSettings.LoadConfigFromServerPath();
         DataManager.Initialize();
 
+        WriteVersionInfo();
         WriteMonsterData();
         //WriteServerConfig();
         WriteMapList();
         WriteEffectsList();
         WriteJobDataStuff();
         WriteItemsList();
+        WritePatchNotes();
     }
 
     private static void WriteEffectsList()
@@ -98,6 +100,45 @@ class Program
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
         
         return csv.GetRecords<T>().ToList();
+    }
+
+    private static void WritePatchNotes()
+    {
+
+        var patchNotes = new List<PatchNotes>();
+
+        var lines = File.ReadAllLines(Path.Combine(path, "../Config/PatchNotes.txt"));
+        var sb = new StringBuilder();
+        var curItem = "";
+        var lineNum = 0;
+        foreach (var line in lines)
+        {
+            if (line.StartsWith("//"))
+                continue;
+            if (line.StartsWith("::"))
+            {
+                var l = line;
+                if (line.Contains("//"))
+                    l = line.Split("//")[0].Trim();
+                var newItem = l.Substring(2);
+                if (curItem != "" && sb.Length > 0)
+                    patchNotes.Add(new PatchNotes { Date = curItem, Desc = sb.ToString().Trim()});
+                curItem = newItem;
+                sb.Clear();
+                lineNum = 0;
+                continue;
+            }
+            
+            sb.AppendLine(line);
+
+            lineNum++;
+        }
+
+        if (!string.IsNullOrWhiteSpace(curItem) && sb.Length > 0)
+            patchNotes.Add(new PatchNotes { Date = curItem, Desc = sb.ToString().Trim() });
+
+        SaveToClient("PatchNotes.txt", patchNotes);
+
     }
     
     private static void BuildJobMatrix()
@@ -740,6 +781,11 @@ class Program
 
         //File.WriteAllText(monsterDir, json);
 
+    }
+
+    public static void WriteVersionInfo()
+    {
+        File.WriteAllText(Path.Combine(outPath, "ServerVersion.txt"), DataManager.ServerVersionNumber.ToString());
     }
 
     private static List<TDst> ConvertToClient<TSrc, TDst>(string csvName, string jsonName, Func<List<TSrc>, List<TDst>> convert)

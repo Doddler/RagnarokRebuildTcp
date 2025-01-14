@@ -45,16 +45,16 @@ namespace Assets.Scripts.UI.Stats
         {
             if (statPointsRequired == 0)
                 return;
-            
+
             NetworkManager.Instance.SendApplyStatPoints(adjustValue);
         }
 
-        public void AddStat(int stat) => ChangeStatValue(stat,  1);
+        public void AddStat(int stat) => ChangeStatValue(stat, 1);
         public void SubStat(int stat) => ChangeStatValue(stat, -1);
-        
+
         private void ChangeStatValue(int stat, int change)
         {
-            var count = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? 10 : 1; 
+            var count = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? 10 : 1;
             var state = NetworkManager.Instance.PlayerState;
             var curStatPoints = state.GetData(PlayerStat.StatPoints);
             var existing = NetworkManager.Instance.PlayerState.GetData(PlayerStat.Str + stat);
@@ -78,7 +78,6 @@ namespace Assets.Scripts.UI.Stats
 
                 if (totalChange < 0 || totalChange > curStatPoints)
                 {
-
                     adjustValue[stat] -= change;
                     break;
                 }
@@ -87,7 +86,7 @@ namespace Assets.Scripts.UI.Stats
             }
 
             UpdateCharacterStats();
-            
+
             // UpdateStat(stat, existing, NetworkManager.Instance.PlayerState.GetStat(CharacterStat.AddStr + stat), adjustValue[stat]);
             //
             // var changeSum = 0;
@@ -120,7 +119,8 @@ namespace Assets.Scripts.UI.Stats
                 StatPointCostText[index].text = cost.ToString();
 
             DecreaseStatButtons[index].interactable = diff > 0;
-            IncreaseStatButtons[index].interactable = stat + diff < 99 && statPointsRequired + cost <= NetworkManager.Instance.PlayerState.GetData(PlayerStat.StatPoints);
+            IncreaseStatButtons[index].interactable =
+                stat + diff < 99 && statPointsRequired + cost <= NetworkManager.Instance.PlayerState.GetData(PlayerStat.StatPoints);
         }
 
         public void UpdateCharacterStats()
@@ -139,7 +139,7 @@ namespace Assets.Scripts.UI.Stats
             var totalInt = state.GetData(PlayerStat.Int) + state.GetStat(CharacterStat.AddInt);
             var totalDex = state.GetData(PlayerStat.Dex) + state.GetStat(CharacterStat.AddDex);
             var totalLuk = state.GetData(PlayerStat.Luk) + state.GetStat(CharacterStat.AddLuk);
-            
+
             var changeSum = 0;
             for (var i = 0; i < 6; i++)
                 changeSum += adjustValue[i] != 0 ? 1 : 0;
@@ -153,14 +153,12 @@ namespace Assets.Scripts.UI.Stats
             AttributeText[3].text = $"{(10 + totalLuk * 3 + state.GetStat(CharacterStat.AddCrit)) / 10}";
             AttributeText[4].text = $"{state.GetStat(CharacterStat.Def)} + {totalVit}";
             AttributeText[5].text = $"{state.GetStat(CharacterStat.MDef)} + {totalInt}";
-            AttributeText[6].text = $"{totalAgi + state.Level + state.GetStat(CharacterStat.AddFlee)}";
+            AttributeText[6].text = $"{totalAgi + state.Level + state.GetStat(CharacterStat.AddFlee)} + {state.GetStat(CharacterStat.PerfectDodge) / 10}";
             AttributeText[7].text = $"{(1 / state.AttackSpeed):F2}/sec";
-            if(statPointsRequired == 0)
+            if (statPointsRequired == 0)
                 AttributeText[8].text = $"{state.GetData(PlayerStat.StatPoints)}";
             else
-                AttributeText[8].text = $"<color=blue>{state.GetData(PlayerStat.StatPoints)-statPointsRequired}";
-            
-
+                AttributeText[8].text = $"<color=blue>{state.GetData(PlayerStat.StatPoints) - statPointsRequired}";
         }
     }
 }

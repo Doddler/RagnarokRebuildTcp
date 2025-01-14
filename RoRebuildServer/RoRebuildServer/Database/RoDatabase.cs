@@ -15,6 +15,7 @@ using RoRebuildServer.Database.Domain;
 using RoRebuildServer.Database.QueryData;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using Serilog;
 
 namespace RoRebuildServer.Database;
 
@@ -47,6 +48,7 @@ public static class RoDatabase
         services.AddDbContext<RoContext>(options =>
         {
             options.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            options.LogTo(Log.Logger.Information, LogLevel.Information, null);
         });
 
 

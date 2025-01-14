@@ -37,6 +37,7 @@ public class SkillPoison : SkillHandlerBase
         if (!source.CheckLuckModifiedRandomChanceVsTarget(target, (int)(chance * resist), 1000))
             return; //failed to poison
 
+        //unlike regular poison status, envenom always lasts it's entire duration. Extra value!
         var duration = lvl switch
         {
             < 3 => 12f, //4 ticks

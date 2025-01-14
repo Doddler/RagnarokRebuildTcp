@@ -1079,6 +1079,18 @@
       "SoundFile": "bs_refinefailed",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 90,
+      "Name": "Steal",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

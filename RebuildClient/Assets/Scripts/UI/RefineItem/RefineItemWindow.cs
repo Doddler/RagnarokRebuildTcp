@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
@@ -32,6 +33,12 @@ namespace Assets.Scripts.UI.RefineItem
         private PlayerState state;
 
         public static RefineItemWindow Instance;
+
+        public new void OnDestroy()
+        {
+            Instance = null;
+            base.OnDestroy();
+        }
 
         public void CancelRefine()
         {

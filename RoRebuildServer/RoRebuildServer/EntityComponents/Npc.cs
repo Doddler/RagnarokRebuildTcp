@@ -197,6 +197,9 @@ public class Npc : IEntityAutoReset
         if (!player.IsInNpcInteraction)
             return;
 
+        if (player.NpcInteractionState.InteractionResult == NpcInteractionResult.WaitForStorage)
+            player.WriteCharacterStorageToDatabase();
+
         Behavior.OnCancel(this, player, player.NpcInteractionState);
 
         player.IsInNpcInteraction = false;

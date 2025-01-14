@@ -434,6 +434,7 @@ namespace Assets.Scripts.Network
             using var ms = new MemoryStream();
             using var bw = new BinaryWriter(ms);
 
+            bw.Write((short)ClientDataLoader.Instance.ServerVersion);
             bw.Write(false);
             bw.Write(isTokenLogin);
             bw.Write(requestLoginToken);
@@ -574,171 +575,6 @@ namespace Assets.Scripts.Network
             //ctrl.SetHitDelay(lockTime);
         }
 
-        private ServerControllable SpawnEntity(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var type = (CharacterType)msg.ReadByte();
-            var classId = msg.ReadInt16();
-            var pos = ReadPosition(msg);
-            var facing = (Direction)msg.ReadByte();
-            var state = (CharacterState)msg.ReadByte();
-
-            var lvl = -1;
-            var maxHp = 0;
-            var hp = 0;
-
-            if (type == CharacterType.Player || type == CharacterType.Monster)
-            {
-                lvl = (int)msg.ReadByte();
-                maxHp = (int)msg.ReadInt32();
-                hp = (int)msg.ReadInt32();
-            }
-
-            if (EntityList.TryGetValue(id, out var oldEntity))
-            {
-                //if for some reason we try to spawn an entity that already exists, we kill the old one.
-                oldEntity.FadeOutAndVanish(0.1f);
-                EntityList.Remove(id);
-            }
-
-            ServerControllable controllable;
-            if (type == CharacterType.Player)
-            {
-                var headFacing = (HeadFacing)msg.ReadByte();
-                var headId = msg.ReadByte();
-                var weapon = msg.ReadByte();
-                var isMale = msg.ReadBoolean();
-                var name = msg.ReadString();
-                var isMain = PlayerId == id;
-                if (isMain)
-                    PlayerState.EntityId = id;
-
-                Debug.Log("Name: " + name);
-
-                var playerData = new PlayerSpawnParameters()
-                {
-                    ServerId = id,
-                    ClassId = classId,
-                    Facing = facing,
-                    Position = pos,
-                    State = state,
-                    HeadFacing = headFacing,
-                    HeadId = headId,
-                    IsMale = isMale,
-                    Name = name,
-                    Level = lvl,
-                    MaxHp = maxHp,
-                    Hp = hp,
-                    WeaponClass = weapon,
-                    IsMainCharacter = isMain,
-                };
-
-                controllable = ClientDataLoader.Instance.InstantiatePlayer(ref playerData);
-
-
-                if (id == PlayerId)
-                {
-                    PlayerState.Level = lvl;
-
-                    var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
-                    CameraFollower.UpdatePlayerExp(PlayerState.Exp, max);
-                    controllable.IsHidden = PlayerState.IsAdminHidden;
-                    PlayerState.JobId = classId;
-                    UiManager.Instance.SkillManager.UpdateAvailableSkills();
-                }
-            }
-            else
-            {
-                var interactable = false;
-                var name = string.Empty;
-
-                // if (type == CharacterType.Monster)
-                // {
-                //     lvl = (int)msg.ReadByte();
-                //     maxHp = (int)msg.ReadUInt16();
-                //     hp = (int)msg.ReadUInt16();
-                // }
-
-                if (type == CharacterType.NPC)
-                {
-                    name = msg.ReadString();
-                    interactable = msg.ReadBoolean();
-                    //Debug.Log(name);
-                }
-
-                var monData = new MonsterSpawnParameters()
-                {
-                    ServerId = id,
-                    ClassId = classId,
-                    Name = name,
-                    Facing = facing,
-                    Position = pos,
-                    State = state,
-                    Level = lvl,
-                    MaxHp = maxHp,
-                    Hp = hp,
-                    Interactable = interactable
-                };
-                controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);
-            }
-
-            controllable.EnsureFloatingDisplayCreated().SetUp(controllable, name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
-            if (controllable.IsMainCharacter)
-            {
-                CameraFollower.UpdatePlayerHP(hp, maxHp);
-                //CameraFollower.UpdatePlayerSP(100, 100);
-            }
-            else
-                controllable.Hp = hp;
-
-            Debug.Log($"Create Entity {name} hp:{hp} maxhp:{maxHp}");
-
-            controllable.SetHp(hp);
-            if (type != CharacterType.NPC)
-                controllable.IsInteractable = true;
-
-            EntityList.Add(id, controllable);
-
-            if (controllable.SpriteMode == ClientSpriteType.Prefab)
-                return controllable;
-
-            if (state == CharacterState.Moving)
-                LoadMoveData2(msg, controllable);
-            if (state == CharacterState.Sitting)
-            {
-                controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Sit);
-                controllable.SpriteAnimator.State = SpriteState.Sit;
-            }
-
-            if (PlayerId == controllable.Id)
-            {
-                CameraFollower.Target = controllable.gameObject;
-                //Debug.Log($"Player entity sent, we're at position {pos}");
-
-                if (!CameraFollower.Instance.CinemachineMode)
-                    SceneTransitioner.Instance.FadeIn();
-                CameraFollower.Instance.SnapLookAt();
-            }
-
-// #if UNITY_EDITOR
-//             switch (type)
-//             {
-//                 case CharacterType.Player:
-//                     GroundHighlighter.Create(controllable, "blue");
-//                     break;
-//                 case CharacterType.Monster:
-//                     GroundHighlighter.Create(controllable, "red");
-//                     break;
-//                 case CharacterType.NPC:
-//                     GroundHighlighter.Create(controllable, "orange");
-//                     break;
-//             }
-// #endif
-
-            return controllable;
-        }
-
-
         private void OnMessageChangeSitStand(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -779,11 +615,6 @@ namespace Assets.Scripts.Network
             controllable.LookAt(lookAt.ToWorldPosition());
             if (controllable.SpriteAnimator.Type == SpriteType.Player)
                 controllable.SpriteAnimator.SetHeadFacing((HeadFacing)msg.ReadByte());
-        }
-
-        private void OnMessageCreateEntity(ClientInboundMessage msg)
-        {
-            SpawnEntity(msg);
         }
 
         private void OnMessageMove(ClientInboundMessage msg)
@@ -1168,6 +999,8 @@ namespace Assets.Scripts.Network
                     CameraFollower.DialogPanel.GetComponent<DialogWindow>().HideUI();
                     if(RefineItemWindow.Instance != null)
                         Destroy(RefineItemWindow.Instance);
+                    if(StorageUI.Instance != null)
+                        Destroy(StorageUI.Instance);
                     break;
                 case NpcInteractionType.NpcOpenRefineWindow:
                     RefineItemWindow.OpenRefineItemWindow();
@@ -1698,6 +1531,17 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendAdminRefineAttempt(int bagId, int target)
+        {
+            var msg = StartMessage(PacketType.AdminCharacterAction);
+            
+            msg.Write((int)AdminCharacterAction.RefineItem);
+            msg.Write(bagId);
+            msg.Write(target);
+            
+            SendMessage(msg);
+        }
+
         public void SendAdminHideCharacter(bool desireHidden)
         {
             var msg = StartMessage();
@@ -1803,6 +1647,26 @@ namespace Assets.Scripts.Network
             msg.Write(bagId);
             msg.Write((short)count);
 
+            SendMessage(msg);
+        }
+
+        public void SendEndStorage()
+        {
+            var msg = StartMessage(PacketType.StorageInteraction);
+            
+            msg.Write((byte)0);
+            
+            SendMessage(msg);
+        }
+
+        public void SendMoveStorageItem(int bagId, int count, bool isMoveToStorage)
+        {
+            var msg = StartMessage(PacketType.StorageInteraction);
+            
+            msg.Write((byte)(isMoveToStorage ? 1 : 2));
+            msg.Write(bagId);
+            msg.Write(count);
+            
             SendMessage(msg);
         }
 

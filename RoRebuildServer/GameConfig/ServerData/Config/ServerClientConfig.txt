@@ -1,0 +1,5 @@
+//The client will provide it's ServerVersion when connecting, if it does not match the server will disconnect them.
+//Incrementing this will require users to update their client, so only change this if you make
+//changes that would cause errors to occur on older clients or if packet definitions has changed.
+::ServerVersion
+2

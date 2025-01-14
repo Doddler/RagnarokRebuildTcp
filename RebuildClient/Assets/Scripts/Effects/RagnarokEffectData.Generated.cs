@@ -25,6 +25,7 @@ namespace Assets.Scripts.Effects
 		Blessing,
 		CartRevolution,
 		Provoke,
+		StealEffect,
 		ArcherArrow,
 		BlueWaterfallEffect,
 	}
@@ -64,6 +65,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.Skills.BlessingEffect());
 			effectHandlers.Add(EffectType.CartRevolution, new Assets.Scripts.Effects.EffectHandlers.Skills.CartRevolutionEffect());
 			effectHandlers.Add(EffectType.Provoke, new Assets.Scripts.Effects.EffectHandlers.Skills.ProvokeEffect());
+			effectHandlers.Add(EffectType.StealEffect, new Assets.Scripts.Effects.EffectHandlers.Skills.StealEffect());
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.General.ArcherArrow());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());
 			primitiveHandlers.Add(PrimitiveType.Casting3D, new Assets.Scripts.Effects.PrimitiveHandlers.CastingCylinderPrimitive());

@@ -53,7 +53,6 @@ AGI +1
 
 ::Savage_Babe_Card //id 4017 - slotted on Weapon
 +5% chance of <color=#800000>Stun</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Andre_Larva_Card //id 4018 - slotted on Weapon
 INT + 1, MaxSP +10
@@ -122,7 +121,6 @@ HP Regeneration +10%
 ::Boa_Card //id 4037 - slotted on Weapon
 ATK +5
 +5% chance of <color=#800000>Poison</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Zombie_Card //id 4038 - slotted on Boots
 HP Regeneration +20%
@@ -559,7 +557,6 @@ SP Consumption -30%
 
 ::Goat_Card //id 4150 - slotted on Armor
 if Refine < 6: DEF +2, MDEF +5
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Gajomart_Card //id 4151 - slotted on Boots
 +10% EXP from Plant
@@ -604,12 +601,10 @@ recover 100 HP/melee kill
 ::Nine_Tail_Card //id 4159 - slotted on Garment
 AGI +2
 if Refine > 8: FLEE +20
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Firelock_Soldier_Card //id 4160 - slotted on Boots
 STR +2
 if Refine > 8: HP +10%, SP +10%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Grand_Peco_Card //id 4161 - slotted on Headgear
 +5% Autospell <color=#0000FF>Gloria 1</color> on receive physical damage
@@ -791,7 +786,6 @@ SP Regeneration +10%
 
 ::Megalith_Card //id 4200 - slotted on Boots
 if Refine < 6: MDEF +7
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Majorous_Card //id 4201 - slotted on Armor
 +6% chance of <color=#800000>Stun</color> on receive physical damage
@@ -915,7 +909,6 @@ ATK +10, HIT +10
 ::Sting_Card //id 4226 - slotted on Shield
 DEF +2
 if Refine > 8: MDEF +5
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Spring_Rabbit_Card //id 4227 - slotted on Accessory
 +2% chance to find <color=#008080>Meat</color>, <color=#008080>Monster's Feed</color> on Brute kill
@@ -984,7 +977,6 @@ if bINT = 99:
 
 ::Arclouse_Card //id 4240 - slotted on Shield
 if Refine < 6: DEF +2, MDEF +3
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Archangeling_Card //id 4241 - slotted on Headgear
 HP +300
@@ -996,7 +988,6 @@ if bLUK > 76:
 ::Apocalypse_Card //id 4242 - slotted on Armor
 VIT +2
 if Refine > 8: HP +800
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Antonio_Card //id 4243 - slotted on Armor
 +50% Autospell <color=#0000FF>Teleport 1</color> on receive physical damage
@@ -1158,7 +1149,6 @@ LUK +2
 
 ::Gibbet_Card //id 4278 - slotted on Headgear
 if Refine < 6: MDEF +5
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Earth_Deleter_Card //id 4279 - slotted on Armor
 SP Regeneration -100%
@@ -1212,12 +1202,10 @@ if bSTR > 76:
 
 ::Kappa_Card //id 4287 - slotted on Garment
 if Refine < 6: MDEF +8
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Carat_Card //id 4288 - slotted on Headgear
 INT +2
 if Refine > 8: SP +150
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Caterpillar_Card //id 4289 - slotted on Weapon
 Recover 5 SP/melee kill vs. Plant

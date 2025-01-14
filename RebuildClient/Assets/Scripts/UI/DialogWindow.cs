@@ -41,8 +41,9 @@ namespace Assets.Scripts.UI
             NameBox.text = "";
             TextBox.text = "";
         }
-        public void OnPointerDown(PointerEventData eventData)
+        public new void OnPointerDown(PointerEventData eventData)
         {
+            base.OnPointerDown(eventData);
             NetworkManager.Instance.SendNpcAdvance();
         }
     }

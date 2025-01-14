@@ -7,8 +7,11 @@ namespace Assets.Scripts.PlayerControl
 {
     public class PlayerState
     {
+        public static PlayerState Instance;
+        
         public bool IsValid { get; set; } = false;
         public int EntityId { get; set; }
+        public string PlayerName;
         public int Level;
         public int Exp;
         public int Hp;
@@ -38,5 +41,10 @@ namespace Assets.Scripts.PlayerControl
 
         public int GetData(PlayerStat stat) => CharacterData[(int)stat];
         public int GetStat(CharacterStat stat) => CharacterStats[(int)stat];
+
+        public PlayerState()
+        {
+            Instance = this;
+        }
     }
 }

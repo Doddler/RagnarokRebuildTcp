@@ -88,6 +88,8 @@ public class PacketEnterServer : IClientPacketHandler
         charData[(int)PlayerStat.Head] = head;
         charData[(int)PlayerStat.HairId] = hair;
         charData[(int)PlayerStat.Gender] = isMale ? 0 : 1;
+        charData[(int)PlayerStat.Hp] = DataManager.JobMaxHpLookup[0][1];
+        charData[(int)PlayerStat.Mp] = DataManager.JobMaxSpLookup[0][1];
 
         var newReq = new CreateCharacterRequest(connection, accountId, slot, chName, charData);
         RoDatabase.EnqueueDbRequest(newReq);

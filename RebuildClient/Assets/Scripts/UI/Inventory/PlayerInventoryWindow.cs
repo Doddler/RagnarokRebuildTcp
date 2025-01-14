@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using TMPro;
@@ -67,6 +68,53 @@ namespace Assets.Scripts.UI.Inventory
 
             UpdateActiveVisibleBag();
         }
+
+        private void OnDoubleClick(InventoryEntry itemEntry, InventoryItem item)
+        {
+            var state = NetworkManager.Instance.PlayerState;
+
+            if (StorageUI.Instance != null)
+            {
+                StorageUI.Instance.OnMoveInventoryItemToStorage(item.BagSlotId);
+                return;
+            }
+
+            switch (item.ItemData.UseType)
+            {
+                case ItemUseType.Use:
+                    NetworkManager.Instance.SendUseItem(item.BagSlotId);
+                    break;
+                case ItemUseType.UseOnAlly:
+                    CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Ally);
+                    break;
+                case ItemUseType.UseOnEnemy:
+                    CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Enemy);
+                    break;
+                default:
+                {
+                    var itemClass = item.ItemData.ItemClass;
+                    if (itemClass == ItemClass.Weapon || itemClass == ItemClass.Equipment || itemClass == ItemClass.Ammo)
+                    {
+                        if (!state.EquippedItems.Contains(item.BagSlotId))
+                        {
+                            if (itemClass == ItemClass.Ammo)
+                            {
+                                if (state.AmmoId == item.Id)
+                                    itemEntry.DragItem.BlueCount();
+                            }
+                            else
+                                itemEntry.DragItem.HideCount();
+
+                            NetworkManager.Instance.SendEquipItem(item.BagSlotId);
+                        }
+                    }
+                    else if (itemClass == ItemClass.Card)
+                        CardSocketWindow.BeginCardSocketing(item);
+
+                    break;
+                }
+            }
+        }
         
         public void UpdateActiveVisibleBag()
         {
@@ -115,46 +163,13 @@ namespace Assets.Scripts.UI.Inventory
                 itemEntry.gameObject.SetActive(true);
                 itemEntry.DragItem.gameObject.SetActive(true);
                 itemEntry.DragItem.OnRightClick = () => UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(item);
-
-                if (item.ItemData.UseType == ItemUseType.Use)
-                    itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendUseItem(bagEntry.Key);
-                else if (item.ItemData.UseType == ItemUseType.UseOnAlly || item.ItemData.UseType == ItemUseType.UseOnEnemy)
+                if (state.EquippedItems.Contains(item.BagSlotId))
                 {
-                    if (item.ItemData.UseType == ItemUseType.UseOnAlly)
-                        itemEntry.DragItem.OnDoubleClick = () => CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Ally);
-                    else
-                        itemEntry.DragItem.OnDoubleClick = () => CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Enemy);
+                    itemEntry.DragItem.SetEquipped();
+                    itemEntry.DragItem.OnDoubleClick = null;
                 }
                 else
-                {
-                    var itemClass = item.ItemData.ItemClass;
-                    if (itemClass == ItemClass.Weapon || itemClass == ItemClass.Equipment || itemClass == ItemClass.Ammo)
-                    {
-                        if (state.EquippedItems.Contains(item.BagSlotId))
-                        {
-                            itemEntry.DragItem.SetEquipped();
-                            itemEntry.DragItem.OnDoubleClick = null;
-                        }
-                        else
-                        {
-                            if (itemClass == ItemClass.Ammo)
-                            {
-                                if(state.AmmoId == item.Id)
-                                    itemEntry.DragItem.BlueCount();
-                            }
-                            else
-                                itemEntry.DragItem.HideCount();
-                            
-                            itemEntry.DragItem.OnDoubleClick = () => NetworkManager.Instance.SendEquipItem(bagEntry.Key);
-                        }
-                    }
-                    else if (itemClass == ItemClass.Card)
-                    {
-                        itemEntry.DragItem.OnDoubleClick = () => CardSocketWindow.BeginCardSocketing(item);
-                    }
-                    else
-                        itemEntry.DragItem.OnDoubleClick = null;
-                }
+                    itemEntry.DragItem.OnDoubleClick = () => OnDoubleClick(itemEntry, item);
 
                 activeEntryCount++;
             }

@@ -279,6 +279,9 @@ public partial class Monster
         if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.IsValidTarget(CombatEntity))
             return false;
 
+        if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Provoke))
+            return false;
+
         var target = ce.Character;
 
         if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range)
@@ -403,7 +406,7 @@ public partial class Monster
             return false;
 
         GroundItem item = default;
-        if (!Character.Map.FindRandomGroundItemInRange(Character.Position, 9, ref item))
+        if (!Character.Map.FindRandomGroundItemInRange(Character.Position, 12, ref item))
             return false;
 
         Character.TargetPosition = item.Position;

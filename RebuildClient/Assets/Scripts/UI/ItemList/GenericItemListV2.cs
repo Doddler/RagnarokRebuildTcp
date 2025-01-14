@@ -24,7 +24,7 @@ namespace Assets.Scripts.UI
     
     public class GenericItemListV2 : WindowBase
     {
-        public ItemListInteractionDropZone DropZone;
+        public ItemListDropZoneV2 DropZone;
         public GameObject ItemListEntryPrefab;
         public Transform ItemListParentBox;
         public ScrollRect ScrollRect;
@@ -57,15 +57,42 @@ namespace Assets.Scripts.UI
         
         public Action OnPressOk;
         public Action OnPressCancel;
+
+        private bool isActive;
         
         public void OnSubmit()
         {
+            if (!isActive)
+                return;
+            isActive = false;
             OnPressOk();
         }
 
         public void OnCancel()
         {
+            if (!isActive)
+                return;
+            isActive = false;
             OnPressCancel();
+        }
+
+        public override void HideWindow()
+        {
+            OnCancel();
+            base.HideWindow();
+        }
+
+        public void CloseWindow()
+        {
+            base.HideWindow();
+        }
+
+        public void ReturnItemListEntry(ItemListEntryV2 entry)
+        {
+            if (UnusedEntries == null)
+                UnusedEntries = new Stack<ItemListEntryV2>();
+            UnusedEntries.Push(entry);
+            entry.gameObject.SetActive(false);
         }
 
         public ItemListEntryV2 GetNewEntry()
@@ -75,9 +102,14 @@ namespace Assets.Scripts.UI
                 var obj = Instantiate(ItemListEntryPrefab, ItemListParentBox);
                 entry = obj.GetComponent<ItemListEntryV2>();
             }
+            
+            entry.transform.SetAsLastSibling();
+            entry.gameObject.SetActive(true);
 
             return entry;
         }
+
+        public void SetActive() => isActive = true;
 
         public void Init()
         {
@@ -85,6 +117,7 @@ namespace Assets.Scripts.UI
             CancelButton.gameObject.SetActive(HasSubmitButtons);
             ToggleBox.gameObject.SetActive(HasToggleButton);
             ToggleText.gameObject.SetActive(HasToggleButton);
+            isActive = true;
         }
         
         

@@ -20,7 +20,7 @@ public class StatusMagnumBreak : StatusEffectBase
             if (!info.Target.TryGet<CombatEntity>(out var target))
                 return StatusUpdateResult.Continue;
 
-            var bonus = info.Damage * 20 / 100; //20%
+            var bonus = info.Damage * (10 + state.Value1) / 100; //11% - 20%
             var eleMod = DataManager.ElementChart.GetAttackModifier(AttackElement.Fire, target.GetElement());
             var damage = bonus * eleMod / 100;
             if (damage > 0)

@@ -1097,6 +1097,20 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void SendNpcStorageMoveEvent(Player p, ItemReference item, int bagId, int movedCount, bool moveToStorage)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.StorageInteraction, 48);
+        packet.Write((byte)item.Type);
+        packet.Write(bagId);
+        packet.Write((short)movedCount);
+        item.Serialize(packet);
+        packet.Write(p.Inventory?.BagWeight ?? 0);
+        packet.Write(p.StorageInventory?.UsedSlots ?? 0);
+        packet.Write(moveToStorage);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+    
     public static void SendNpcShowSprite(Player p, string spriteName, int pos)
     {
         var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 8);

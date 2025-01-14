@@ -10,6 +10,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoServerScript;
 using static RoServerScript.RoScriptParser;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace RoRebuildServer.ScriptSystem;
 
@@ -17,37 +18,46 @@ internal class ScriptTreeWalker
 {
     private ScriptBuilder builder = null!;
     private string name = null!;
+    private string path = "";
     private Action<StartSectionContext>? sectionHandler;
     private Dictionary<string, ScriptMacro> macroMap = new();
     private Dictionary<string, StatementblockContext> eventHandlers = new();
+    private Dictionary<string, ScriptMacro> eventMacros = new();
     private HashSet<string> activeMacros = new();
+    private ScriptMacro? ActiveEventMacro;
+    private Stack<string> scriptNameStack = new();
 
-    public string BuildClass(string inputName, RoScriptParser parser, HashSet<string> uniqueNames)
+    public ScriptTreeWalker(string inputName, string inputPath)
     {
-        name = inputName;
-
+        path = inputPath;
         //this is silly and I really should do something better
-        builder = new ScriptBuilder(inputName.Replace(" ", "_"), uniqueNames, 
-            "System", 
+        builder = new ScriptBuilder(inputName.Replace(" ", "_"),
+            "System",
             "System.Linq",
-            "RoRebuildServer.Data.Map", 
-            "RebuildSharedData.Data", 
+            "RoRebuildServer.Data.Map",
+            "RebuildSharedData.Data",
             "RoRebuildServer.Data",
             "RoRebuildServer.Data.ServerConfigScript",
-            "RoRebuildServer.EntityComponents", 
+            "RoRebuildServer.EntityComponents",
             "RoRebuildServer.ScriptSystem",
             "RebuildSharedData.Enum",
             "RebuildSharedData.Enum.EntityStats",
-            "RoRebuildServer.EntityComponents.Npcs", 
-            "RoRebuildServer.Simulation.Util", 
+            "RoRebuildServer.EntityComponents.Npcs",
+            "RoRebuildServer.Simulation.Util",
             "RoRebuildServer.EntityComponents.Items",
-            "RoRebuildServer.EntityComponents.Monsters", 
-            "RoRebuildServer.Data.Monster", 
+            "RoRebuildServer.EntityComponents.Monsters",
+            "RoRebuildServer.Data.Monster",
             "RoRebuildServer.EntityComponents.Character",
             "RoRebuildServer.Simulation.StatusEffects",
             "RoRebuildServer.Simulation.StatusEffects._1stJob",
             "RoRebuildServer.Simulation.StatusEffects.ItemEffects",
             "RoRebuildServer.Simulation.StatusEffects.GenericDebuffs");
+    }
+
+    public string BuildClass(string inputName, RoScriptParser parser)
+    {
+        name = inputName;
+        builder.ActiveScript = name;
 
         var ruleSet = parser.rule_set();
 
@@ -93,6 +103,49 @@ internal class ScriptTreeWalker
 
         if (topLevelContext is TopLevelMacroCallContext macroCallContext)
             VisitMacroContext(macroCallContext.macrocall());
+
+        if (topLevelContext is IncludeFileContextContext includeContext)
+            VisitIncludeFile(includeContext);
+    }
+
+    private void VisitIncludeFile(IncludeFileContextContext includeContext)
+    {
+        var fileName = includeContext.file.Text.Unescape();
+        var dir = Path.GetDirectoryName(path);
+        if (dir == null)
+            dir = "";
+
+        var includeFile = Path.Combine(dir, fileName);
+
+        using var fs = new StreamReader(includeFile);
+        var input = new AntlrInputStream(fs);
+
+        var lexer = new RoScriptLexer(input);
+        var tokenStream = new CommonTokenStream(lexer);
+        var parser = new RoScriptParser(tokenStream);
+
+        parser.AddErrorListener(new QueryLanguageErrorListener());
+
+        var str = String.Empty;
+        
+        try
+        {
+            scriptNameStack.Push(name);
+            name = fileName;
+            builder.ActiveScript = name;
+            var ruleSet = parser.rule_set();
+
+            foreach (var statement in ruleSet.toplevelstatement())
+                VisitTopLevelStatement(statement);
+
+            name = scriptNameStack.Pop();
+            builder.ActiveScript = name;
+        }
+        catch (Exception)
+        {
+            ServerLogger.LogError($"Failed to compile script {includeFile}!");
+            throw;
+        }
     }
 
     private void VisitFunctionDefinitionContext(FunctionDefinitionContext context)
@@ -129,13 +182,13 @@ internal class ScriptTreeWalker
 
     private void EnterMacroStatement(MacroDefinitionContext macroContext)
     {
-        var name = macroContext.IDENTIFIER().GetText();
+        var macroName = macroContext.IDENTIFIER().GetText();
         var mp = macroContext.functionparam();
 
         if (mp != null)
         {
             var vardef = mp.expression();
-            var macro = new ScriptMacro(vardef.Length, macroContext.statementblock());
+            var macro = new ScriptMacro($"{name}:{macroName}", vardef.Length, macroContext.statementblock());
 
 
             for (var i = 0; i < vardef.Length; i++)
@@ -143,13 +196,13 @@ internal class ScriptTreeWalker
                 var v = vardef[i];
                 macro.DefineVariable(i, v.GetText());
             }
-            macroMap.Add(name, macro);
+            macroMap.Add(macroName, macro);
         }
         else
 
         {
-            var macro = new ScriptMacro(0, macroContext.statementblock());
-            macroMap.Add(name, macro);
+            var macro = new ScriptMacro(name, 0, macroContext.statementblock());
+            macroMap.Add(macroName, macro);
         }
     }
 
@@ -249,6 +302,7 @@ internal class ScriptTreeWalker
             throw new Exception($"Incorrect number of parameters on SkillHandler expression on line {param.start.Line}");
 
         eventHandlers.Clear();
+        eventMacros.Clear();
 
         var str = param.expression()[0].GetText();
         if (str.StartsWith("\""))
@@ -266,10 +320,13 @@ internal class ScriptTreeWalker
 
         foreach (var e in eventHandlers)
         {
+            ActiveEventMacro = eventMacros.TryGetValue(e.Key, out var macro) ? macro : null;
             builder.StartSkillEventMethod(e.Key);
             VisitStatementBlock(e.Value);
             builder.EndMethod();
         }
+
+        ActiveEventMacro = null;
 
         builder.CreateFinalSkillHandler();
         builder.EndClass();
@@ -960,6 +1017,8 @@ internal class ScriptTreeWalker
                 if (hasEventBlock)
                 {
                     var eventName = builder.OutputEventCall();
+                    if(builder.ActiveMacro != null)
+                        eventMacros.Add(eventName, builder.ActiveMacro);
                     eventHandlers.Add(eventName, functionContext.eventblock!);
                 }
 
@@ -1068,6 +1127,8 @@ internal class ScriptTreeWalker
             case VariableContext context:
                 if (builder.ActiveMacro != null && builder.ActiveMacro.HasVariable(context.GetText()))
                     VisitExpression(builder.ActiveMacro.GetVariable(context.GetText()));
+                else if (ActiveEventMacro != null && ActiveEventMacro.HasVariable(context.GetText()))
+                    VisitExpression(ActiveEventMacro.GetVariable(context.GetText()));
                 else
                     builder.OutputVariable(context.GetText());
                 break;
@@ -1080,11 +1141,13 @@ internal class ScriptTreeWalker
     private string ExpressionContextString(ExpressionContext expression)
     {
         var val = expression.GetText();
-        if (builder.ActiveMacro == null)
-            return val;
 
-        if (builder.ActiveMacro.TryGetVariable(val, out var expr))
+        if (builder.ActiveMacro != null && builder.ActiveMacro.TryGetVariable(val, out var expr))
             return expr.GetText();
+
+
+        if (ActiveEventMacro != null && ActiveEventMacro.TryGetVariable(val, out var expr2))
+            return expr2.GetText();
 
         return val;
     }
@@ -1145,16 +1208,21 @@ internal class ScriptTreeWalker
     private void ErrorResult(ParserRuleContext context, string? message = null)
     {
         var text = context.GetText();
+        var script = name;
+        if (builder.ActiveMacro != null)
+            script = builder.ActiveMacro.CurrentScript;
+        if(ActiveEventMacro != null)
+            script = ActiveEventMacro.CurrentScript;
 
         if (string.IsNullOrWhiteSpace(message))
         {
             if (string.IsNullOrWhiteSpace(text))
-                throw new InvalidOperationException($"{name} line {context.start.Line}: Unable to parse statement.");
+                throw new InvalidOperationException($"{script} line {context.start.Line}: Unable to parse statement.");
             else
-                throw new InvalidOperationException($"{name} line {context.start.Line}: Unable to parse statement: {text}");
+                throw new InvalidOperationException($"{script} line {context.start.Line}: Unable to parse statement: {text}");
         }
         else
-            throw new InvalidOperationException($"{name} line {context.start.Line}: {message}");
+            throw new InvalidOperationException($"{script} line {context.start.Line}: {message}");
 
 
 

@@ -1,0 +1,19 @@
+
+
+macro GiveUpChase(%rate, %targetState, %emote) {
+	TryCast(NoCast, 3, %rate, 0, 5s)[TimeSinceLastDamage > 6s] -> {
+        ChangeAiClass(%targetState);
+		if(%emote > 0)
+        	SendEmote(%emote);
+    }
+}
+
+macro ResumeAiState(%rate, %targetState, %emote) {
+	TryCast(NoCast, 3, %rate, 0, 5s) -> {
+        ChangeAiClass(%targetState, false); //false means don't reset current state
+		if(%emote > 0)
+        	SendEmote(%emote); //question mark
+    }
+}
+
+

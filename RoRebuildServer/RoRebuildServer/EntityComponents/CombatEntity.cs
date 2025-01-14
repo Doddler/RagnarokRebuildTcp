@@ -23,6 +23,7 @@ using System.Threading;
 using RebuildSharedData.ClientTypes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -304,6 +305,9 @@ public class CombatEntity : IEntityAutoReset
                 break;
             case CharacterStat.MDef:
                 stat = (int)((stat + GetStat(CharacterStat.AddMDef)) * (1 + GetStat(CharacterStat.AddMDef) / 100f));
+                break;
+            case CharacterStat.PerfectDodge:
+                stat += 10 + GetStat(CharacterStat.Luck) * 5;
                 break;
         }
 
@@ -1071,6 +1075,8 @@ public class CombatEntity : IEntityAutoReset
     /// <returns></returns>
     public bool CheckLuckModifiedRandomChanceVsTarget(CombatEntity target, int chance, int outOf)
     {
+        if (chance == 0)
+            return false;
 
         var luckMod = 100;
         var successRate = chance / (float)outOf;
@@ -1086,6 +1092,74 @@ public class CombatEntity : IEntityAutoReset
             return false;
 
         return GameRandom.NextInclusive(0, outOf * 10) < realChance;
+    }
+    
+    public void TriggerOnAttackEffects(CombatEntity target, AttackRequest req, ref DamageInfo res)
+    {
+        if (!req.Flags.HasFlag(AttackFlags.Physical))
+            return;
+
+        if (Character.Type == CharacterType.Player && !req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
+        {
+            var stunChance = GetStat(CharacterStat.OnAttackStun);
+            if (stunChance > 0)
+                TryStunTarget(target, stunChance);
+            var poisonChance = GetStat(CharacterStat.OnAttackPoison);
+            if (poisonChance > 0)
+                TryPoisonOnTarget(target, poisonChance);
+        }
+    }
+
+    public bool TryStunTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
+    {
+        if (target.HasStatusEffectOfType(CharacterStatusEffect.Stun) || target.GetStat(CharacterStat.Disabled) > 0)
+            return false;
+
+        var vit = target.GetEffectiveStat(CharacterStat.Vit) * 3 / 2; //+50% to make it less weird
+
+        if (target.GetSpecialType() == CharacterSpecialType.Boss)
+            vit *= 2;
+
+        var resist = MathF.Pow(0.99f, vit);
+
+        if (!CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
+            return false;
+
+        var timeResist = MathHelper.PowScaleDown(vit / 2);
+        var len = 5f * timeResist;
+
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Stun, len);
+        target.AddStatusEffect(status, false, delayApply);
+        return true;
+    }
+
+
+    public bool TryPoisonOnTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
+    {
+        if (target.HasStatusEffectOfType(CharacterStatusEffect.Poison))
+            return false;
+
+        var vit = target.GetEffectiveStat(CharacterStat.Vit) * 3 / 2; //+50% to make it less weird
+
+        if (target.GetSpecialType() == CharacterSpecialType.Boss)
+            vit *= 2;
+
+        var resist = MathHelper.PowScaleDown(vit/4);
+
+        if (!CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
+            return false;
+
+        var req = new AttackRequest(0.5f, 1, AttackFlags.PhysicalStatusTest, AttackElement.Neutral); //element doesn't matter
+
+        var poisonDamage = CalculateCombatResult(target, req);
+
+        var timeResist = MathHelper.PowScaleDown(vit / 4);
+        var len = 24f * timeResist;
+
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Poison, len, Character.Id, poisonDamage.Damage);
+        target.AddStatusEffect(status, true, delayApply);
+
+        return true;
     }
 
     /// <summary>
@@ -1257,7 +1331,7 @@ public class CombatEntity : IEntityAutoReset
 
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreEvasion))
             evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * 10);
-
+        
         if (flags.HasFlag(AttackFlags.CanCrit))
         {
             //crit rate: 1%, + 0.3% per luk, + 0.1% per level
@@ -1279,6 +1353,14 @@ public class CombatEntity : IEntityAutoReset
             isCrit = true;
             attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamage) / 100f;
             flags |= AttackFlags.IgnoreDefense;
+        }
+
+        if (target.Character.Type == CharacterType.Player && flags.HasFlag(AttackFlags.Physical) &&
+            req.SkillSource == CharacterSkill.None)
+        {
+            var lucky = target.Player.GetEffectiveStat(CharacterStat.PerfectDodge);
+            if (CheckLuckModifiedRandomChanceVsTarget(target, lucky, 1000))
+                evade = true; //should have a special result for lucky dodge
         }
 
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
@@ -1356,7 +1438,6 @@ public class CombatEntity : IEntityAutoReset
                 subDef = 999999;
         }
 
-
         var damage = (int)(baseDamage * attackMultiplier * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f) * defCut - subDef);
         if (damage < 1)
             damage = 1;
@@ -1397,6 +1478,9 @@ public class CombatEntity : IEntityAutoReset
 
         if (statusContainer != null)
             statusContainer.OnAttack(ref di);
+
+        if(di.Damage > 0 && (di.Result == AttackResult.NormalDamage || di.Result == AttackResult.CriticalDamage))
+            TriggerOnAttackEffects(target, req, ref di);
 
         //if (target.TryGetStatusContainer(out var targetStatus))
         //    targetStatus.OnTakeDamage(ref di);

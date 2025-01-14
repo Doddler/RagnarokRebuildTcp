@@ -29,7 +29,9 @@ public class RoContext : IdentityDbContext<RoUserAccount, UserRole, int>
         
         builder.Entity<RoUserAccount>().HasMany<DbCharacter>(c => c.Characters).WithOne(o => o.Account).HasForeignKey("AccountId");
         builder.Entity<DbCharacter>().HasIndex(c => c.Name).IsUnique();
-        builder.Entity<StorageInventory>().HasOne<DbCharacter>(c => c.Character);
+        builder.Entity<RoUserAccount>().HasOne(u => u.CharacterStorage)
+                                       .WithOne(u => u.Account)
+                                       .HasForeignKey<StorageInventory>(s => s.AccountId);
     }
 
 

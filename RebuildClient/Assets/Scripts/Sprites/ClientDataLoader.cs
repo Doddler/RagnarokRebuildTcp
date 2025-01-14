@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
@@ -49,7 +50,11 @@ namespace Assets.Scripts.Sprites
         [SerializeField] private TextAsset EquipmentSpriteData;
         [SerializeField] private TextAsset ItemDescData;
         [SerializeField] private TextAsset CardPrefixData;
+        [SerializeField] private TextAsset ServerVersionData;
+        [SerializeField] private TextAsset PatchNoteData;
         public SpriteAtlas ItemIconAtlas;
+
+        public int ServerVersion;
 
         private readonly Dictionary<int, MonsterClassData> monsterClassLookup = new();
         private readonly Dictionary<int, PlayerHeadData> playerHeadLookup = new();
@@ -96,6 +101,10 @@ namespace Assets.Scripts.Sprites
         public string GetItemDescription(string itemCode) => itemDescriptionTable.GetValueOrDefault(itemCode, "No description available.");
         public CardPrefixData GetCardPrefixData(int id) => cardPrefixPostfixTable.GetValueOrDefault(id, null);
 
+        public static int UniqueItemStartId = 20000;
+        public string LatestPatchNotes = "";
+        public string PatchNotes;
+
         public string GetHitSoundForWeapon(int weaponId)
         {
             if (!weaponClassData.TryGetValue(weaponId, out var weapon))
@@ -128,6 +137,9 @@ namespace Assets.Scripts.Sprites
             if (isInitialized && Instance != null)
                 return;
             Instance = this;
+
+            ServerVersion = int.Parse(ServerVersionData.text);
+            
             var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(MonsterClassData.text);
             foreach (var m in entityData.Items)
             {
@@ -259,8 +271,6 @@ namespace Assets.Scripts.Sprites
             var prePosData = JsonUtility.FromJson<Wrapper<CardPrefixData>>(CardPrefixData.text);
             foreach (var dat in prePosData.Items)
                 cardPrefixPostfixTable.Add(dat.Id, dat);
-                
-
 
             foreach (var mapDef in MapViewpointData.text.Split("\r\n"))
             {
@@ -282,7 +292,6 @@ namespace Assets.Scripts.Sprites
                 });
             }
 
-
             var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapData.text);
             foreach (var map in mapClass.Items)
                 mapDataLookup.TryAdd(map.Code, map);
@@ -291,6 +300,19 @@ namespace Assets.Scripts.Sprites
             foreach (var desc in itemDescriptions.Items)
                 itemDescriptionTable.Add(desc.Code, desc.Description);
 
+            var notes = JsonUtility.FromJson<Wrapper<PatchNotes>>(PatchNoteData.text);
+            
+            var sb = new StringBuilder();
+            sb.AppendLine("<b>Changes</b>");
+            if (notes.Items.Length > 0)
+                LatestPatchNotes = notes.Items[0].Date;
+            for (var i = 0; i < notes.Items.Length && i < 5; i++)
+            {
+                sb.AppendLine(notes.Items[i].Date);
+                sb.AppendLine(notes.Items[i].Desc);
+                sb.Append("\n");
+            }
+            PatchNotes = sb.ToString();
 
             isInitialized = true;
         }

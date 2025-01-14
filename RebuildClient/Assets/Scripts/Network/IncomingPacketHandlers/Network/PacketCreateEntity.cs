@@ -88,7 +88,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 if (isMain)
                 {
                     State.EntityId = id;
+                    State.PlayerName = name;
                     State.IsValid = true;
+                    UiManager.Instance.SkillHotbar.LoadHotBarData(name);
                 }
                 
                 Debug.Log("Name: " + name );

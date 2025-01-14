@@ -31,7 +31,7 @@ public class HidingHandler : SkillHandlerBase
             return;
         }
         
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Hiding, 30f + 30f * lvl, lvl);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Hiding, 30f + 15f * lvl, lvl);
         source.AddStatusEffect(status);
     }
 }

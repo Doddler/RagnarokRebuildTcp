@@ -166,7 +166,7 @@ namespace Assets.Scripts.Editor
                         settings.spriteAlignment = (int)SpriteAlignment.Custom;
                         settings.spritePivot = pivot;
                         ti.SetTextureSettings(settings);
-                    });
+                    }, false);
 
                     // var sprPath = Path.Combine(srcPath, fName + ".spr");
                     // var actPath = Path.Combine(srcPath, fName + ".act");
