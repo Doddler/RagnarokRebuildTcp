@@ -1,8 +1,24 @@
-::2025-01-12
+::????
+- Added config option to change how exp values are shown in the player summary box in the top left.
+- Elemental armors and cards that change your element should now reduce (or increase) received elemental damage.
+- Fixed the pneuma ground area not being visible due to it's shader not being included in builds.
+- Skills that knockback no longer stop interupt boss skill casting.
+
+::2025-01-16
+- Job levels added. First jobs currently max at job level 70 as a temporary measure until 2nd jobs are added.
+- Existing characters will be assigned a job level depending on their base level. If you've used more skill points than your job level would allow you won't gain skill points until you break even.
+- Character info box in the top left updated, let me know what you think of the new layout.
 - Hotbars are now unique to each character. Existing hotbars before this update are unfortunately lost.
+- The character select window will remember your last selected character.
+- Refine rates buffed a little bit, success rate increased by +10% for all upgrades on level 3 and 4 weapons and all armors. Hopefully makes up for the rareity of upgrade materials.
+- PC client build now downloads files as needed from the server which makes the download much smaller (~50mb).
+- Skill failed messages will now show in the chat log for certain types of skill failure.
 - Implemented steal skill and visual effect.
+- Fixed torches on maps not showing up correctly.
+- The self destruct skill cast by marine spheres now hurt you again (and anyone nearby).
 - Some monsters will now give up chasing if you kite them too long.
-- PC client build now downloads files as needed from the server. This is prone to breaking, but automating patches has turned out harder than expected.
+- MVP boss monsters deal a little less damage and heal a little less often. They also have a little less defense.
+- NPC dialog and option boxes now display over top of other currently open UI rather than under it.
 
 ::2025-01-11
 - Patch notes are now automated! Last 5 patch notes will display in-game after an update.

@@ -16,8 +16,8 @@ public struct AttackRequest
 
     public AttackRequest()
     {
-        AttackMultiplier = 0;
-        HitCount = 0;
+        AttackMultiplier = 1;
+        HitCount = 1;
         AccuracyRatio = 100;
         Flags = AttackFlags.Neutral;
         SkillSource = CharacterSkill.None;

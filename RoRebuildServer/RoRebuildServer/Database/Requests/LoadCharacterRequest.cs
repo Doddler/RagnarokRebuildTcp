@@ -34,6 +34,7 @@ public class LoadCharacterRequest : IDbRequest
     public bool HasCharacter;
     public bool HasStorage;
     public int StorageId;
+    public int SaveVersion;
 
     public LoadCharacterRequest(int accountId, string character)
     {
@@ -67,6 +68,7 @@ public class LoadCharacterRequest : IDbRequest
             Position = new Position(ch.X, ch.Y);
             Data = ch.Data;
             CharacterSlot = ch.CharacterSlot;
+            SaveVersion = ch.VersionFormat;
             if (ch.SavePoint != null)
             {
                 Debug.Assert(!string.IsNullOrWhiteSpace(ch.SavePoint.MapName), "Map name should never be empty");

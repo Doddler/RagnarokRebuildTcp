@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts.Network;
+using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using TMPro;
 using UnityEngine;
@@ -31,6 +32,7 @@ namespace Assets.Scripts.UI.TitleScreen
         public CharacterSelectWindow CharacterSelectWindow;
         public CharacterCreatorWindow CharacterCreatorWindow;
 
+        public TextMeshProUGUI ProjectTitleText;
         public TextMeshProUGUI NoticeBoxText;
         public GameObject NoticeBox;
 
@@ -141,6 +143,12 @@ namespace Assets.Scripts.UI.TitleScreen
             CharacterSelectWindow.gameObject.SetActive(false);
 
             AddressableUtility.Load<AudioClip>(gameObject, "Assets/Sounds/Effects/버튼소리.ogg", a => ButtonSound = a);
+        }
+
+        void Start()
+        {
+            //do this in start instead of awake to make sure DataLoader has loaded everything
+            ProjectTitleText.text = $"Ragnarok Online Rebuild Project (Protocol v{ClientDataLoader.Instance.ServerVersion})";
         }
 
         // Update is called once per frame

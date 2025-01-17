@@ -229,7 +229,11 @@ public class Map
         if (cOld != cNew)
         {
             if (!cOld.RemoveEntity(ref movingEntity, movingCharacter.Type))
-                throw new Exception($"For some reason the entity doesn't exist in the old chunk when moving chunks.");
+                throw new Exception($"For some reason the entity doesn't exist in the old chunk when moving chunks.\n" 
+                                    + $"Function call: ChangeEntityPosition3({movingCharacter}, {oldWorldPosition}, {newWorldPosition}, {isWalkUpdate})\n"
+                                    + $"Entity: {movingCharacter.Entity} isActive: {movingCharacter.IsActive} OldChunk: {cOld} NewChunk: {cNew}\n"
+                                    + $"FloatPosition: {movingCharacter.WorldPosition} Position:{movingCharacter.Position} Move:{oldPosition}->{newPosition}");
+
             cNew.AddEntity(ref movingCharacter.Entity, movingCharacter.Type);
         }
 

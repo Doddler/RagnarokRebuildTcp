@@ -454,6 +454,9 @@ public class ItemEquipState
 
                 if (armor.IsRefinable)
                     Player.AddStat(CharacterStat.EquipmentRefineDef, item.Refine);
+
+                if(armor.EquipPosition == EquipPosition.Body)
+                    ArmorElement = armor.Element;
             }
         }
 
@@ -512,6 +515,9 @@ public class ItemEquipState
 
                 if (armor.IsRefinable)
                     Player.SubStat(CharacterStat.EquipmentRefineDef, item.Refine);
+
+                if (armor.EquipPosition == EquipPosition.Body)
+                    ArmorElement = CharacterElement.Neutral1;
             }
         }
         
@@ -594,6 +600,16 @@ public class ItemEquipState
     {
         var status = StatusEffectState.NewStatusEffect(statusEffect, duration / 1000f, val1, val2);
         Player.CombatEntity.AddStatusEffect(status);
+    }
+
+    public void SetArmorElement(CharacterElement element)
+    {
+        if (activeSlot != EquipSlot.Body)
+            ServerLogger.LogWarning(
+                $"Warning! Attempting to call SetArmorElement on a card or property in the {activeSlot} slot. CallStack:\n" +
+                Environment.StackTrace);
+        else
+            ArmorElement = element;
     }
 
     public int GetExpectedSerializedSize()

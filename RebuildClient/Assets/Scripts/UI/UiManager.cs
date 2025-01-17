@@ -369,6 +369,8 @@ public class UiManager : MonoBehaviour
         //now that we have more than 2 windows this'll become an issue.
 
         var close = WindowStack[^1];
+        if (!close.CanCloseWindow())
+            return false;
         close.HideWindow();
         return true;
     }

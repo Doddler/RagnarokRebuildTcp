@@ -161,7 +161,6 @@ DEF +1
 ::Ghostring_Card //id 4047 - slotted on Armor
 HP Regeneration -25%
 Ghost Property Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Poison_Spore_Card //id 4048 - slotted on Accessory
 Enable <color=#0000FF>Envenom 3</color>
@@ -187,7 +186,6 @@ Enable <color=#0000FF>Heal 1</color>
 
 ::Angeling_Card //id 4054 - slotted on Armor
 Holy Property Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Marina_Card //id 4055 - slotted on Weapon
 ATK +5
@@ -319,7 +317,6 @@ Enable <color=#0000FF>Cloak 1</color>
 ::Swordfish_Card //id 4089 - slotted on Armor
 DEF +1
 Water Property Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Munak_Card //id 4090 - slotted on Shield
 DEF +1
@@ -356,12 +353,10 @@ HP +10%, Agi +1
 ::Dokebi_Card //id 4098 - slotted on Armor
 DEF +1
 Wind Property Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Pasana_Card //id 4099 - slotted on Armor
 DEF +1
 Fire Property Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Sohee_Card //id 4100 - slotted on Boots
 SP +15%, SP Regeneration +3%
@@ -369,7 +364,6 @@ SP +15%, SP Regeneration +3%
 ::Sandman_Card //id 4101 - slotted on Armor
 DEF +1
 Earth Property Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Whisper_Card //id 4102 - slotted on Garment
 FLEE +20
@@ -421,7 +415,6 @@ FLEE +5
 ::Argiope_Card //id 4114 - slotted on Armor
 DEF +1
 Poison Property Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Hunter_Fly_Card //id 4115 - slotted on Weapon
 +3% chance to recover 15% physical damage as HP
@@ -439,7 +432,6 @@ Adds a 5% chance to double attack while performing regular attacks. Stacks with 
 
 ::Bathory_Card //id 4119 - slotted on Armor
 Shadow Property Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Sky_Petite_Card //id 4120 - slotted on Shield
 -30% damage from Dragon
@@ -519,8 +511,7 @@ Enable <color=#0000FF>Steal 1</color>
 
 ::Evil_Druid_Card //id 4141 - slotted on Armor
 INT +1, DEF +1
-Decay Property Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Undead Property Armor
 
 ::Doppelganger_Card //id 4142 - slotted on Weapon
 ASPD +15%

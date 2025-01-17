@@ -32,6 +32,7 @@ public partial class Monster
             case MonsterInputCheck.InChangeNormal: return InChangeNormal();
             case MonsterInputCheck.InEnemyOutOfSight: return InEnemyOutOfSight();
             case MonsterInputCheck.InEnemyOutOfAttackRange: return InEnemyOutOfAttackRange();
+            case MonsterInputCheck.InNearTargetTile: return InNearTargetTile();
             case MonsterInputCheck.InReachedTarget: return InReachedTarget();
             case MonsterInputCheck.InReachedRandomMoveTarget: return InReachedRandomMoveTarget();
             case MonsterInputCheck.InTargetSearch: return InTargetSearch();
@@ -60,6 +61,23 @@ public partial class Monster
     private bool InWaitEnd()
     {
         if (nextMoveUpdate <= Time.ElapsedTimeFloat || MonsterBase.MoveSpeed < 0)
+            return true;
+
+        return false;
+    }
+
+
+    /// <summary>Same as InReachedTarget but is true if it is within 1 tile of its destination (unless the move is only 1 tile long)</summary>
+    private bool InNearTargetTile()
+    {
+        if (Character.State != CharacterState.Moving || Character.Position == Character.TargetPosition)
+            return true;
+
+        //if it's a 1 tile long path we never want to bail early (starting step counts as 1)
+        if (Character.TotalMoveSteps <= 2) 
+            return false;
+
+        if (Character.StepsRemaining == 1)
             return true;
 
         return false;

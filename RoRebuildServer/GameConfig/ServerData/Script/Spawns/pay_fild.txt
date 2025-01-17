@@ -122,10 +122,11 @@ MapConfig("pay_fild10")
 {
 	CreateSpawn("GREATEST_GENERAL", 65);
 	CreateSpawn("HORONG", 40);
+	CreateSpawn("DOKEBI", 60);
 	CreateSpawn("POISON_SPORE", 20);
-	CreateSpawn("POPORING", 30);
+	CreateSpawn("POPORING", 10);
 	CreateSpawn("EDDGA", 1, 2h, 10m, MVP);
-	CreateSpawn("NINE_TAIL", 3);
+	CreateSpawn("NINE_TAIL", 2);
 	CreateSpawn("NINE_TAIL", 1, 1800000, 900000);
 	CreateSpawn("NINE_TAIL", 1, 900000, 450000);
 	CreateSpawn("GREEN_PLANT", 5, %(213, 157, 10, 10), 360000, 180000);

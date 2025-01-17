@@ -76,7 +76,7 @@ namespace RoRebuildServer.Database.Requests
                     Y = savePoint.Position.Y,
                     Area = savePoint.Area,
                 },
-                VersionFormat = 1
+                VersionFormat = 2
             };
 
             try

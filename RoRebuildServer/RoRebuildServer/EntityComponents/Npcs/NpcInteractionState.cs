@@ -148,6 +148,7 @@ public class NpcInteractionState
     }
     public int GetFlag(string name) => Player?.GetNpcFlag(name) ?? 0;
     public int Level => Player?.GetStat(CharacterStat.Level) ?? 0;
+    public int JobLevel => Player?.GetData(PlayerStat.JobLevel) ?? 0;
     public int UnusedSkillPoints => Player?.GetData(PlayerStat.SkillPoints) ?? 99;
     public int JobId => Player?.GetData(PlayerStat.Job) ?? 0;
     public int InventoryItemCount => Player?.Inventory?.UsedSlots ?? 0;

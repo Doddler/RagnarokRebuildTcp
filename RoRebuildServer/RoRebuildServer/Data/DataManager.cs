@@ -207,6 +207,7 @@ public static class DataManager
         InstanceList = loader.LoadInstances();
 
         ReloadScripts(loadExisting);
+        ServerLogger.Log($"Server will identify as using protocol v{ServerVersionNumber}.");
 
         //special handling for if we start the map in single map only mode, removes all other maps from the server instance list
         var debug = ServerConfig.DebugConfig;

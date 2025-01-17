@@ -155,14 +155,18 @@ public partial class Monster : IEntityAutoReset
     {
         timeSinceLastDamage = Time.ElapsedTimeFloat;
         LastDamageSourceType = di.AttackSkill;
-        if (di.Source.TryGet<WorldObject>(out var src))
+        var hasSrc = di.Source.IsAlive();
+        if (hasSrc && di.Source.TryGet<WorldObject>(out var src))
             LastAttackRange = Character.Position.DistanceTo(src.Position);
         else
             LastAttackRange = 0;
         ResetAiUpdateTime();
         Character.StopMovingImmediately();
         WasAttacked = true;
-        
+
+        if (!hasSrc)
+            return;
+
         TotalDamageReceived ??= EntityValueListPool<int>.Get();
         TotalDamageReceived.AddOrIncreaseValue(ref di.Source, di.Damage);
     }

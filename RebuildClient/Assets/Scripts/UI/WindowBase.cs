@@ -7,6 +7,8 @@ namespace Assets.Scripts.UI
 {
     public class WindowBase : MonoBehaviour, IClosableWindow, IPointerDownHandler
     {
+        public bool CanCloseWithEscape = true;
+        
         public virtual void MoveToTop()
         {
             // Debug.Log($"MoveToTop {name}");
@@ -71,6 +73,8 @@ namespace Assets.Scripts.UI
 
             // Debug.Log(name + " : " + gameObject.activeInHierarchy);
         }
+
+        public bool CanCloseWindow() => CanCloseWithEscape;
 
         public void CenterWindow(int setHeight = 0)
         {

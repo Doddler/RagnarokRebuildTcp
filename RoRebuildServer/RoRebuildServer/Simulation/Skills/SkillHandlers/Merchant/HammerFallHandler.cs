@@ -26,7 +26,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
             using var targetList = EntityListPool.Get();
             var map = source.Character.Map!;
             var aoeSize = lvl <= 5 ? 2 : 9;
-            var rate = 20 + lvl * 10;
+            var rate = int.Clamp(20 + lvl * 10, 10, 100); //kinda nerfs boss hammer fall...
             
             map.GatherEnemiesInArea(source.Character, position, aoeSize, targetList, !isIndirect, true);
 

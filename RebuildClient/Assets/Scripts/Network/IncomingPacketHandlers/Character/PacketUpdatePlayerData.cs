@@ -77,9 +77,16 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                     Debug.Log($"Equipped items: " + string.Join(", ", State.EquippedItems));
             }
 
+            var jobMax = ClientDataLoader.Instance.GetJobExpRequired(State.JobId, State.GetData(PlayerStat.JobLevel));
+            
+
+            
             CameraFollower.Instance.UpdatePlayerHP(hp, maxHp);
             CameraFollower.Instance.UpdatePlayerSP(sp, maxSp);
-            CameraFollower.Instance.CharacterZeny.text = $"Zeny: {State.Zeny:N0}";
+            CameraFollower.Instance.CharacterDetailBox.JobLvlDisplay.text = $"Job Lv. {State.GetData(PlayerStat.JobLevel)}";
+            CameraFollower.Instance.UpdatePlayerJobExp(State.GetData(PlayerStat.JobExp), jobMax);
+            CameraFollower.Instance.CharacterDetailBox.UpdateWeightAndZeny();
+            
             UiManager.Instance.SkillHotbar.UpdateItemCounts();
             UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
             if(hasStatChange)

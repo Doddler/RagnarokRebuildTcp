@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 using Lidgren.Network;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using TMPro;
 using UnityEngine;
@@ -828,18 +829,23 @@ namespace Assets.Scripts.Network
         {
             var total = msg.ReadInt32();
             var exp = msg.ReadInt32();
+            var jobTotal = msg.ReadInt32();
+            var job = msg.ReadInt32();
 
             //Debug.Log("Gain Exp:" + exp + " " + total);
 
             PlayerState.Exp = total;
-            CameraFollower.UpdatePlayerExp(PlayerState.Exp, CameraFollower.Instance.ExpForLevel(PlayerState.Level));
-
-            if (exp == 0)
-                return;
 
             if (!EntityList.TryGetValue(PlayerId, out var controllable))
                 return;
-
+            
+            var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
+            var jobMax = ClientDataLoader.Instance.GetJobExpRequired(PlayerState.JobId, PlayerState.GetData(PlayerStat.JobLevel));
+            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, max);
+            CameraFollower.Instance.UpdatePlayerJobExp(jobTotal, jobMax);
+            
+            if (exp == 0)
+                return;
 
             //var go = GameObject.Instantiate(HealPrefab, controllable.transform.localPosition, Quaternion.identity);
             var di = RagnarokEffectPool.GetDamageIndicator();
@@ -853,10 +859,6 @@ namespace Assets.Scripts.Network
                 di.DoDamage(TextIndicatorType.Experience, $"+{exp} Exp", controllable.gameObject.transform.localPosition,
                     height, Direction.None, "yellow", false);
             }
-
-            PlayerState.Exp += exp;
-            var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
-            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, max);
         }
 
         public void OnMessageLevelUp(ClientInboundMessage msg)
@@ -882,15 +884,16 @@ namespace Assets.Scripts.Network
             controllable.Level = lvl;
             if (controllable.IsMainCharacter)
             {
-                if (PlayerState.JobId == 0 && oldLvl < 10 && lvl >= 10)
-                    CameraFollower.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached level 10! You are now eligible to change jobs. "
-                                                  + "Speak to the bard south of Prontera to get started.</i></color>");
+                // if (PlayerState.JobId == 0 && oldLvl < 10 && lvl >= 10)
+                //     CameraFollower.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached level 10! You are now eligible to change jobs. "
+                //                                   + "Speak to the bard south of Prontera to get started.</i></color>");
 
                 var req = CameraFollower.Instance.ExpForLevel(lvl);
                 PlayerState.Exp = curExp;
                 PlayerState.Level = lvl;
                 CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, req);
-                CameraFollower.Instance.CharacterName.text = $"Lv. {controllable.Level} {controllable.Name}";
+                //CameraFollower.Instance.CharacterDetailBox.CharacterName.text = $"Lv. {controllable.Level} {controllable.Name}";
+                CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {controllable.Level}";
             }
         }
 
@@ -944,7 +947,7 @@ namespace Assets.Scripts.Network
             controllable.Name = text;
 
             if (controllable.IsMainCharacter)
-                CameraFollower.Instance.CharacterName.text = $"Lv. {controllable.Level} {controllable.Name}";
+                CameraFollower.Instance.CharacterDetailBox.CharacterName.text = controllable.Name;
         }
 
 
@@ -1394,12 +1397,13 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendAdminLevelUpRequest(int level)
+        public void SendAdminLevelUpRequest(int level, bool isJobLevel)
         {
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.AdminLevelUp);
             msg.Write((sbyte)level);
+            msg.Write(isJobLevel);
 
             SendMessage(msg);
         }

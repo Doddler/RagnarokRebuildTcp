@@ -53,6 +53,14 @@ namespace Assets.Scripts.Network
             NetBitWriter.WriteByte(b, 8, Message, position);
             position += 8;
         }
+        
+        public void Write(sbyte b)
+        {
+            EnsureBufferSize(8);
+            NetBitWriter.WriteByte((byte)b, 8, Message, position);
+            position += 8;
+        }
+
 
         public void Write(int i)
         {

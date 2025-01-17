@@ -603,6 +603,18 @@ class Program
         File.WriteAllLines(Path.Combine(outPath, "levelchart.txt"), lines);
     }
 
+    private static void WriteJobExpChart()
+    {
+        var txtOut = new StringBuilder();
+        for (var i = 0; i < 70; i++)
+        {
+            var j0 = DataManager.ExpChart.RequiredJobExp(0, i);
+            var j1 = DataManager.ExpChart.RequiredJobExp(1, i);
+            txtOut.AppendLine($"{j0},{j1}");
+        }
+        File.WriteAllText(Path.Combine(outPath, "jobexpchart.txt"), txtOut.ToString());
+    }
+
     private static List<string> GetActiveInstanceMaps()
     {
         using var tr = new StreamReader(Path.Combine(path, "Instances.csv")) as TextReader;
@@ -765,6 +777,7 @@ class Program
         LoadMonsterData(mData);
         LoadNpcData(mData);
         WriteExpChart();
+        WriteJobExpChart();
 
         SaveToClient("monsterclass.json", mData);
 

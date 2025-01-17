@@ -25,6 +25,9 @@ public class HealHandler : SkillHandlerBase
                 return SkillValidationResult.Success;
         }
 
+        if (target.Character.Type == CharacterType.Player && target.IsElementBaseType(CharacterElement.Undead1))
+            return SkillValidationResult.Failure;
+
         return SkillValidationResult.InvalidTarget;
     }
 

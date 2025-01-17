@@ -35,6 +35,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 case SkillValidationResult.ItemAlreadyStolen:
                     Camera.AppendChatText("<color=#FF7777>Skill failed: An item has already been stolen from this target.</color>");
                     break;
+                case SkillValidationResult.Failure:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed.</color>");
+                    break;
                 default:
                     Debug.Log($"Skill failure (not shown to user): {result}");
                     break;

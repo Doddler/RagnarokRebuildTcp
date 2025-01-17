@@ -34,6 +34,7 @@ public enum PlayerStat
     SkillPoints,
     StatPoints,
     Zeny,
+    JobLevel,
     PlayerStatsMax
 }
 
@@ -209,6 +210,7 @@ public static class PlayerClientStatusDef
     public static PlayerStat[] PlayerUpdateData = new[]
     {
         PlayerStat.Level,
+        PlayerStat.JobLevel,
         PlayerStat.Zeny,
         PlayerStat.Str,
         PlayerStat.Agi,
@@ -217,7 +219,8 @@ public static class PlayerClientStatusDef
         PlayerStat.Dex,
         PlayerStat.Luk,
         PlayerStat.SkillPoints,
-        PlayerStat.StatPoints
+        PlayerStat.StatPoints,
+        PlayerStat.JobExperience
     };
 
     public static CharacterStat[] PlayerUpdateStats = new[]

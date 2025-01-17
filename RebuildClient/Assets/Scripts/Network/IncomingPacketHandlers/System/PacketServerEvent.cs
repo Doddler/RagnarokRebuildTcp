@@ -18,13 +18,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
                     Camera.AppendChatText($"<color=#00fbfb>The trade completed successfully.</color>");
                     break;
                 case ServerEvent.GetZeny:
-                    if(val > 0)
+                    if (val > 0)
                         Camera.AppendChatText($"<color=#00fbfb>Obtained {val} zeny.</color>");
-                    if(val < 0)
+                    if (val < 0)
                         Camera.AppendChatText($"<color=#00fbfb>Lost {-val} zeny.</color>");
                     break;
                 case ServerEvent.NoAmmoEquipped:
-                    if(Camera.TargetControllable.WeaponClass == 12)
+                    if (Camera.TargetControllable.WeaponClass == 12)
                         Camera.AppendChatText($"<color=#ed0000>You don't have any arrows equipped.</color>");
                     else
                         Camera.AppendChatText($"<color=#ed0000>You don't have any ammunition equipped.</color>");
@@ -35,7 +35,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
                 case ServerEvent.OutOfAmmo:
                     Camera.AppendChatText($"<color=#ed0000>You don't have enough ammunition left to fire.</color>");
                     break;
-                    
+                case ServerEvent.EligibleForJobChange:
+                    Camera.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached job 10! You are now eligible to change jobs. "
+                                          + "Speak to the bard south of Prontera to get started.</i></color>");
+                    break;
             }
         }
     }

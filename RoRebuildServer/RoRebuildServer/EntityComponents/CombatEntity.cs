@@ -539,12 +539,15 @@ public class CombatEntity : IEntityAutoReset
 
         var mon = Character.Entity.Get<Monster>();
         var exp = mon.MonsterBase.Exp;
+        var job = mon.MonsterBase.JobExp;
 
         if (Character.Map == null)
             return;
+        if (exp == 0 && job == 0)
+            return;
 
         Character.Map.GatherPlayersInRange(Character.Position, 12, list, false);
-        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+        //Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
 
         foreach (var e in list)
         {
@@ -555,45 +558,50 @@ public class CombatEntity : IEntityAutoReset
             if (player.Character.State == CharacterState.Dead)
                 continue;
 
-            var level = player.GetData(PlayerStat.Level);
+            if (exp > 0)
+                player.GainBaseExp(exp);
+            if (job > 0)
+                player.GainJobExp(job);
 
-            if (level >= 99)
-                continue;
+            //var level = player.GetData(PlayerStat.Level);
 
-            var curExp = player.GetData(PlayerStat.Experience);
-            var requiredExp = DataManager.ExpChart.ExpRequired[level];
+            //if (level >= 99)
+            //    continue;
 
-            if (exp > requiredExp)
-                exp = requiredExp; //cap to 1 level per kill
+            //var curExp = player.GetData(PlayerStat.Experience);
+            //var requiredExp = DataManager.ExpChart.ExpRequired[level];
 
-            CommandBuilder.SendExpGain(player, exp);
+            //if (exp > requiredExp)
+            //    exp = requiredExp; //cap to 1 level per kill
 
-            curExp += exp;
+            CommandBuilder.SendExpGain(player, exp, job);
 
-            if (curExp < requiredExp)
-            {
-                player.SetData(PlayerStat.Experience, curExp);
-                continue;
-            }
+            //curExp += exp;
 
-            while (curExp >= requiredExp && level < 99)
-            {
-                curExp -= requiredExp;
+            //if (curExp < requiredExp)
+            //{
+            //    player.SetData(PlayerStat.Experience, curExp);
+            //    continue;
+            //}
 
-                player.LevelUp();
-                level++;
+            //while (curExp >= requiredExp && level < 99)
+            //{
+            //    curExp -= requiredExp;
 
-                if (level < 99)
-                    requiredExp = DataManager.ExpChart.ExpRequired[level];
-            }
+            //    player.LevelUp();
+            //    level++;
 
-            player.SetData(PlayerStat.Experience, curExp);
+            //    if (level < 99)
+            //        requiredExp = DataManager.ExpChart.ExpRequired[level];
+            //}
 
-            CommandBuilder.LevelUp(player.Character, level, curExp);
-            CommandBuilder.SendHealMulti(player.Character, 0, HealType.None);
-            CommandBuilder.ChangeSpValue(player, player.GetStat(CharacterStat.Sp), player.GetStat(CharacterStat.MaxSp));
+            //player.SetData(PlayerStat.Experience, curExp);
+
+            //CommandBuilder.LevelUp(player.Character, level, curExp);
+            //CommandBuilder.SendHealMulti(player.Character, 0, HealType.None);
+            //CommandBuilder.ChangeSpValue(player, player.GetStat(CharacterStat.Sp), player.GetStat(CharacterStat.MaxSp));
         }
-        CommandBuilder.ClearRecipients();
+        //CommandBuilder.ClearRecipients();
         EntityListPool.Return(list);
     }
     private void FinishCasting()
@@ -1038,6 +1046,8 @@ public class CombatEntity : IEntityAutoReset
         var element = CharacterElement.Neutral1;
         if (Character.Type == CharacterType.Monster)
             element = Character.Monster.MonsterBase.Element;
+        if (Character.Type == CharacterType.Player)
+            element = Player.Equipment.ArmorElement;
 
         var overrideElement = (CharacterElement)GetStat(CharacterStat.OverrideElement);
         if (overrideElement != 0 && overrideElement != CharacterElement.None)
@@ -1233,11 +1243,13 @@ public class CombatEntity : IEntityAutoReset
 #endif
 
         var baseDamage = GameRandom.NextInclusive(atk1, atk2);
-
+        
         var eleMod = 100;
         if (!flags.HasFlag(AttackFlags.NoElement))
         {
             var defenderElement = target.GetElement();
+            if (target.Character.Type == CharacterType.Player && defenderElement == CharacterElement.Ghost1 && req.SkillSource == CharacterSkill.None)
+                defenderElement = CharacterElement.Neutral1;
 
             if (attackElement == AttackElement.None)
             {
@@ -1712,7 +1724,10 @@ public class CombatEntity : IEntityAutoReset
     private void ApplyQueuedCombatResult(ref DamageInfo di)
     {
 
-        if (Character.State == CharacterState.Dead || !Entity.IsAlive() || !di.Source.IsAlive() ||  Character.IsTargetImmune || Character.Map == null)
+        if (Character.State == CharacterState.Dead || !Entity.IsAlive() || Character.IsTargetImmune || Character.Map == null)
+            return;
+
+        if (di.Source.Type == EntityType.Player && !di.Source.IsAlive())
             return;
 
         //if (di.Source.IsAlive() && di.Source.TryGet<WorldObject>(out var enemy))
@@ -1754,7 +1769,8 @@ public class CombatEntity : IEntityAutoReset
         {
             knockback = 0;
             delayTime = 0.03f;
-            sendMove = true;
+            if(Character.IsMoving)
+                sendMove = true;
         }
 
         Character.AddMoveLockTime(delayTime);
@@ -1780,7 +1796,7 @@ public class CombatEntity : IEntityAutoReset
         if (IsCasting)
         {
             if ((CastInterruptionMode == CastInterruptionMode.InterruptOnDamage && di.Damage > 0)
-               || (CastInterruptionMode != CastInterruptionMode.NeverInterrupt && di.KnockBack > 0)
+               || (CastInterruptionMode != CastInterruptionMode.NeverInterrupt && knockback > 0)
                || (CastInterruptionMode == CastInterruptionMode.InterruptOnSkill && di.AttackSkill != CharacterSkill.None))
             {
                 //character casts aren't interrupted by attacks if they are close to executing

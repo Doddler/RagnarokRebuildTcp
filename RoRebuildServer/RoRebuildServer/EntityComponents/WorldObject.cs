@@ -122,7 +122,7 @@ public class WorldObject : IEntityAutoReset
 
     private const float DiagonalSpeedPenalty = 0.7f;
     
-    public int StepsRemaining => TotalMoveSteps - MoveStep;
+    public int StepsRemaining => TotalMoveSteps - (MoveStep + 1);
     public bool IsMoving => State == CharacterState.Moving;
     public bool HasMoveInProgress => WalkPath != null && WalkPath.Length > 0;
     public void SetSpawnImmunity(float time = 5f) => SpawnImmunity = Time.ElapsedTimeFloat + time;

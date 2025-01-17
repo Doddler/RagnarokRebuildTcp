@@ -102,7 +102,7 @@ Deals increased damage against water element and less to wind and earth.
 Creates a wall of flame at a targeted location dealing 50% fire magic damage and knocking enemies back upon contact.
 Higher levels increases the duration, number of hits, and speeds up casting.
 
-::FrostDriver
+::FrostDiver
 <color=red>This skill doesn't currently work.
 
 ::NapalmBeat

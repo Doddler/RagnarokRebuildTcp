@@ -105,7 +105,7 @@ public class SaveCharacterRequest : IDbRequest
             CharacterSummary = summaryData,
             ItemData = itemData,
             ItemDataLength = itemDataSize,
-            VersionFormat = 1
+            VersionFormat = 2
         };
         
         dbContext.Update(ch);

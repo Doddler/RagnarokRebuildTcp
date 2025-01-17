@@ -10,7 +10,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
         {
             var z = msg.ReadInt32();
             
-            CameraFollower.Instance.CharacterZeny.text = $"Zeny: {z:N0}";
+            CameraFollower.Instance.CharacterDetailBox.CharacterZeny.text = $"Zeny: {z:N0}";
         }
     }
 }

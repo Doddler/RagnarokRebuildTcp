@@ -102,13 +102,33 @@ internal class DataLoader
 
         var entries = csv.GetRecords<CsvExpChart>().ToList();
 
-        var chart = new ExpChart { ExpRequired = new int[100] };
+        var chart = new ExpChart { ExpRequired = new int[100], JobExpRequired = new int[2*70] };
 
         chart.ExpRequired[0] = 0; //should always be true but why not!
+        chart.JobExpRequired[0] = -1;
+        chart.JobExpRequired[70] = -1;
 
         foreach (var e in entries)
         {
             chart.ExpRequired[e.Level] = e.Experience;
+        }
+
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { BadDataFound = context =>
+        {
+            Console.WriteLine(context.Field);
+        }};
+
+        using var tr2 = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/ExpJobChart.csv")) as TextReader;
+        using var csv2 = new CsvReader(tr2, config);
+        
+        var entries2 = csv2.GetRecords<CsvJobExpChart>();
+
+        foreach (var e in entries2)
+        {
+            if (e.JobLvl > 69)
+                continue;
+            chart.JobExpRequired[e.JobLvl] = e.Novice;
+            chart.JobExpRequired[70 + e.JobLvl] = e.FirstJob;
         }
 
         return chart;
@@ -238,7 +258,11 @@ internal class DataLoader
 
         foreach (var line in File.ReadAllLines(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/MvpList.csv"), Encoding.UTF8).Skip(1))
         {
-            mvps.Add(line);
+            if (string.IsNullOrWhiteSpace(line))
+                continue;
+            var s = line.Split(',');
+            mvps.Add(s[0]);
+            var itemCount = (s.Length - 1) / 2;
         }
 
         return mvps;
@@ -848,6 +872,7 @@ internal class DataLoader
                 Level = monster.Level,
                 HP = monster.HP,
                 Exp = monster.Exp,
+                JobExp = monster.JExp,
                 Def = monster.Def,
                 MDef = monster.MDef,
                 Str = monster.Str,

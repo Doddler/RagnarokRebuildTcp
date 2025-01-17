@@ -107,7 +107,7 @@ MaxLevel = 10
 SpCost = [40,40,40,40,40,40,40,40,40,40]
 AdjustableLevel = true
 
-[FrostDriver]
+[FrostDiver]
 Name = "Frost Diver"
 Icon = "mg_frostdiver"
 Target = "Enemy"

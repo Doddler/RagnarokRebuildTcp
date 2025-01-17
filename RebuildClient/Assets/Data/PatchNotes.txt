@@ -1,8 +1,8 @@
 {
   "Items": [
     {
-      "Date": "2025-01-12",
-      "Desc": "- Hotbars are now unique to each character. Existing hotbars before this update are unfortunately lost.\r\n- PC client build now downloads files as needed from the server. This is prone to breaking, but automating patches has turned out harder than expected.\r\n- Some monsters will now give up chasing if you kite them too long."
+      "Date": "2025-01-14",
+      "Desc": "- Job levels added. First jobs currently max at job level 70 as a temporary measure until 2nd jobs are added.\r\n- Existing characters will be assigned a job level depending on their base level. If you\u0027ve used more skill points than your job level would allow you won\u0027t gain skill points until you break even.\r\n- Character info box in the top left updated, let me know what you think of the new layout.\r\n- Hotbars are now unique to each character. Existing hotbars before this update are unfortunately lost.\r\n- The character select window will remember your last selected character.\r\n- Refine rates buffed a little bit, success rate increased by \u002B10% for all upgrades on level 3 and 4 weapons and all armors. Hopefully makes up for the rareity of upgrade materials.\r\n- PC client build now downloads files as needed from the server which makes the download much smaller (~50mb).\r\n- Skill failed messages will now show in the chat log for certain types of skill failure.\r\n- Implemented steal skill and visual effect.\r\n- Fixed torches on maps not showing up correctly.\r\n- The self destruct skill cast by marine spheres now hurt you again (and anyone nearby).\r\n- Some monsters will now give up chasing if you kite them too long.\r\n- MVP boss monsters deal a little less damage and heal a little less often. They also have a little less defense.\r\n- NPC dialog and option boxes now display over top of other currently open UI rather than under it."
     },
     {
       "Date": "2025-01-11",

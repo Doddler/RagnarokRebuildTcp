@@ -434,8 +434,8 @@ public class World
 
             if (data != null)
             {
-                if(data.Length >= player.CharData.Length * 4)
-                    Buffer.BlockCopy(data, 0, player.CharData, 0, player.CharData.Length * 4);
+                if(data.Length <= player.CharData.Length * 4) //we can add fields, but if we take them away it's all bad
+                    Buffer.BlockCopy(data, 0, player.CharData, 0, data.Length);
                 else
                     ServerLogger.LogWarning($"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
             }
@@ -445,8 +445,28 @@ public class World
             {
                 player.SetData(PlayerStat.Hp, 1);
                 player.Character.State = CharacterState.Idle;
-            }   
+            }
 
+            //convert character that has no job level to one that does, using a questionable formula.
+            if (connection.LoadCharacterRequest.SaveVersion < 2)
+            {
+                var job = player.GetData(PlayerStat.Job);
+                var playerLevel = player.GetData(PlayerStat.Level);
+                var jobLvl = 1;
+                if (job == 0)
+                    jobLvl = int.Clamp(player.GetData(PlayerStat.Level), 1, 10);
+                else
+                    jobLvl = player.GetData(PlayerStat.Level) switch
+                    {
+                        < 11 => 1,
+                        < 50 => playerLevel - 10,
+                        < 70 => 40 + (playerLevel - 50) / 2,
+                        _ => 50
+                    };
+                player.SetData(PlayerStat.JobLevel, jobLvl);
+                player.SetData(PlayerStat.JobExp, 0);
+            }
+            
             player.ApplyDataToCharacter();
         }
 

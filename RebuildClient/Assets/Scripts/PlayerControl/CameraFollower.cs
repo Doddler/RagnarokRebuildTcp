@@ -11,6 +11,7 @@ using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Hud;
 using Assets.Scripts.UI.RefineItem;
 using Assets.Scripts.Utility;
 using PlayerControl;
@@ -72,23 +73,25 @@ namespace Assets.Scripts
 
         //public TextMeshProUGUI TargetUi;
         //public TextMeshProUGUI PlayerTargetUi;
-        public TextMeshProUGUI HpDisplay;
-        public Slider HpSlider;
-        public TextMeshProUGUI SpDisplay;
-        public Slider SpSlider;
-        public TextMeshProUGUI ExpDisplay;
-        public Slider ExpSlider;
+        // public TextMeshProUGUI HpDisplay;
+        // public Slider HpSlider;
+        // public TextMeshProUGUI SpDisplay;
+        // public Slider SpSlider;
+        // public TextMeshProUGUI ExpDisplay;
+        // public Slider ExpSlider;
         public TMP_InputField TextBoxInputField;
         public CanvasScaler CanvasScaler;
         public TextMeshProUGUI ErrorNoticeUi;
-        public TextMeshProUGUI DebugDisplay;
+        // public TextMeshProUGUI DebugDisplay;
 
         public ScrollRect TextBoxScrollRect;
         public TextMeshProUGUI TextBoxText;
 
-        public TextMeshProUGUI CharacterName;
-        public TextMeshProUGUI CharacterJob;
-        public TextMeshProUGUI CharacterZeny;
+        public CharacterDetailBox CharacterDetailBox;
+
+        // public TextMeshProUGUI CharacterName;
+        // public TextMeshProUGUI CharacterJob;
+        // public TextMeshProUGUI CharacterZeny;
 
         public Camera WaterCamera;
         public RenderTexture WaterTexture;
@@ -431,9 +434,9 @@ namespace Assets.Scripts
                 hp = 0;
 
             var percent = hp / (float)maxHp;
-            HpDisplay.gameObject.SetActive(true);
-            HpDisplay.text = $"HP: {hp} / {maxHp} ({percent * 100f:F1}%)";
-            HpSlider.value = (float)hp / (float)maxHp;
+            CharacterDetailBox.HpDisplay.gameObject.SetActive(true);
+            CharacterDetailBox.HpDisplay.text = $"HP: {hp} / {maxHp} ({percent * 100f:F1}%)";
+            CharacterDetailBox.HpSlider.value = (float)hp / (float)maxHp;
 
             PlayerState.Hp = hp;
             PlayerState.MaxHp = maxHp;
@@ -445,9 +448,9 @@ namespace Assets.Scripts
                 sp = 0;
 
             var percent = sp / (float)maxSp;
-            SpDisplay.gameObject.SetActive(true);
-            SpDisplay.text = $"SP: {sp} / {maxSp} ({percent * 100f:F1}%)";
-            SpSlider.value = (float)sp / (float)maxSp;
+            CharacterDetailBox.SpDisplay.gameObject.SetActive(true);
+            CharacterDetailBox.SpDisplay.text = $"SP: {sp} / {maxSp} ({percent * 100f:F1}%)";
+            CharacterDetailBox.SpSlider.value = (float)sp / (float)maxSp;
 
             PlayerState.Sp = sp;
             PlayerState.MaxSp = maxSp;
@@ -458,16 +461,65 @@ namespace Assets.Scripts
         {
             if (maxExp <= 0)
             {
-                ExpDisplay.text = "";
-                ExpSlider.gameObject.SetActive(false);
+                CharacterDetailBox.ExpDisplay.text = "";
+                CharacterDetailBox.ExpSlider.gameObject.SetActive(false);
                 return;
             }
 
             var percent = exp / (float)maxExp;
 
-            ExpSlider.gameObject.SetActive(true);
-            ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
-            ExpSlider.value = percent;
+            CharacterDetailBox.ExpSlider.gameObject.SetActive(true);
+            
+            var showValue = GameConfig.Data.ShowBaseExpValue;
+            var showPercent = GameConfig.Data.ShowBaseExpPercent;
+            
+            if (showValue)
+            {
+                if(showPercent)
+                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
+                else
+                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp}";
+            } 
+            else if (showPercent)
+                CharacterDetailBox.ExpDisplay.text = $"{percent * 100f:F1}%";
+            else
+                CharacterDetailBox.ExpDisplay.text = $"";
+            
+            CharacterDetailBox.ExpSlider.value = percent;
+            //
+            // CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
+            // CharacterDetailBox.ExpSlider.value = percent;
+        }
+        
+        public void UpdatePlayerJobExp(int exp, int maxExp)
+        {
+            if (maxExp <= 0)
+            {
+                CharacterDetailBox.JobExpDisplay.text = "";
+                CharacterDetailBox.JobExpSlider.gameObject.SetActive(false);
+                return;
+            }
+
+            var percent = exp / (float)maxExp;
+
+            CharacterDetailBox.JobExpSlider.gameObject.SetActive(true);
+            
+            var showValue = GameConfig.Data.ShowJobExpValue;
+            var showPercent = GameConfig.Data.ShowJobExpPercent;
+
+            if (showValue)
+            {
+                if(showPercent)
+                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
+                else
+                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp}";
+            } 
+            else if (showPercent)
+                CharacterDetailBox.JobExpDisplay.text = $"{percent * 100f:F1}%";
+            else
+                CharacterDetailBox.JobExpDisplay.text = $"";
+            
+            CharacterDetailBox.JobExpSlider.value = percent;
         }
 
 
@@ -1059,7 +1111,7 @@ namespace Assets.Scripts
             if (!isOverUi && canClickGround)
             {
 #if DEBUG
-                DebugDisplay.text = groundPosition.ToString();
+                CharacterDetailBox.DebugInfo.text = groundPosition.ToString();
 #endif
                 WalkProvider.UpdateCursorPosition(Target.transform.position, intersectLocation, hasValidPath);
             }

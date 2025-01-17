@@ -209,8 +209,8 @@ namespace Assets.Scripts.Editor
                     var obj = new GameObject(e.Name);
                     var effect = obj.AddComponent<SpriteEffect>();
 
-                    var spritePath = "Assets/Sprites/Effects/";
-                    var sprite = AssetDatabase.LoadAssetAtPath<RoSpriteData>(spritePath + e.Sprite + ".spr");
+                    var spritePath = "Assets/Sprites/Imported/Effects/";
+                    var sprite = AssetDatabase.LoadAssetAtPath<RoSpriteData>(spritePath + e.Sprite + ".asset");
 
                     effect.SpriteData = sprite;
                     effect.IsLoop = true;

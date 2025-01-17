@@ -13,5 +13,6 @@ namespace RebuildSharedData.Enum
         OutOfAmmo,
         GetZeny,
         GetMVP,
+        EligibleForJobChange
     }
 }

@@ -523,6 +523,10 @@ public class ScriptBuilder
             LoadFunctionSource(typeof(Player), "player");
             //LoadFunctionSource(typeof(CombatEntity), "combatEntity"); //we don't want them using the addstat/substat directly, ti should come from ItemEquipState
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+
+
+            foreach (var i in Enum.GetValues<CharacterElement>())
+                additionalVariables.Add(i.ToString(), $"CharacterElement.{i}");
         }
         else
         {

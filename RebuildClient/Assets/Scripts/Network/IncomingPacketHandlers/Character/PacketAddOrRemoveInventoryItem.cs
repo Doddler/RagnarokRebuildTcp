@@ -38,6 +38,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             UiManager.SkillHotbar.UpdateItemCounts();
             UiManager.InventoryWindow.UpdateActiveVisibleBag();
             UiManager.RefreshTooltip();
+            CameraFollower.Instance.CharacterDetailBox.UpdateWeightAndZeny();
         }
     }
 }

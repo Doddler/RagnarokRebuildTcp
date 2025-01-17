@@ -157,9 +157,17 @@ namespace PlayerControl
                 if (s[0] == "/level")
                 {
                     if (s.Length == 1 || !int.TryParse(s[1], out var level))
-                        NetworkManager.Instance.SendAdminLevelUpRequest(0);
+                        NetworkManager.Instance.SendAdminLevelUpRequest(0, false);
                     else
-                        NetworkManager.Instance.SendAdminLevelUpRequest(level);
+                        NetworkManager.Instance.SendAdminLevelUpRequest(level, false);
+                }
+                
+                if (s[0] == "/joblevel")
+                {
+                    if (s.Length == 1 || !int.TryParse(s[1], out var level))
+                        NetworkManager.Instance.SendAdminLevelUpRequest(0, true);
+                    else
+                        NetworkManager.Instance.SendAdminLevelUpRequest(level, true);
                 }
 
                 if (s[0] == "/skillreset")

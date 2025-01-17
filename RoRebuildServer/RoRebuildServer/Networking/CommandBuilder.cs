@@ -100,39 +100,39 @@ public static class CommandBuilder
         }
     }
 
-    private static void WriteMoveData(WorldObject c, OutboundMessage packet)
-    {
-        if (c.WalkPath == null)
-        {
-            ServerLogger.LogWarning("Attempting to send empty movepath to player");
-            return;
-        }
+    //private static void WriteMoveData(WorldObject c, OutboundMessage packet)
+    //{
+    //    if (c.WalkPath == null)
+    //    {
+    //        ServerLogger.LogWarning("Attempting to send empty movepath to player");
+    //        return;
+    //    }
 
-        packet.Write(c.MoveSpeed);
-        packet.Write(c.MoveProgress);
-        packet.Write((byte)c.TotalMoveSteps);
-        packet.Write((byte)c.MoveStep);
-        if (c.TotalMoveSteps > 0)
-        {
-            packet.Write(c.WalkPath[0]);
+    //    packet.Write(c.MoveSpeed);
+    //    packet.Write(c.MoveProgress);
+    //    packet.Write((byte)c.TotalMoveSteps);
+    //    packet.Write((byte)c.MoveStep);
+    //    if (c.TotalMoveSteps > 0)
+    //    {
+    //        packet.Write(c.WalkPath[0]);
 
-            var i = 1;
+    //        var i = 1;
 
-            //pack directions into 2 steps per byte
-            while (i < c.TotalMoveSteps)
-            {
-                var b = (byte)((byte)(c.WalkPath[i] - c.WalkPath[i - 1]).GetDirectionForOffset() << 4);
-                i++;
-                if (i < c.TotalMoveSteps)
-                    b |= (byte)(c.WalkPath[i] - c.WalkPath[i - 1]).GetDirectionForOffset();
-                i++;
-                packet.Write(b);
-            }
+    //        //pack directions into 2 steps per byte
+    //        while (i < c.TotalMoveSteps)
+    //        {
+    //            var b = (byte)((byte)(c.WalkPath[i] - c.WalkPath[i - 1]).GetDirectionForOffset() << 4);
+    //            i++;
+    //            if (i < c.TotalMoveSteps)
+    //                b |= (byte)(c.WalkPath[i] - c.WalkPath[i - 1]).GetDirectionForOffset();
+    //            i++;
+    //            packet.Write(b);
+    //        }
 
-            var lockTime = c.MoveLockTime - Time.ElapsedTimeFloat;
-            packet.Write(lockTime > 0 ? lockTime : 0f);
-        }
-    }
+    //        var lockTime = c.MoveLockTime - Time.ElapsedTimeFloat;
+    //        packet.Write(lockTime > 0 ? lockTime : 0f);
+    //    }
+    //}
 
     private static void AddFullEntityData(OutboundMessage packet, WorldObject c, bool isSelf = false)
     {
@@ -974,11 +974,13 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
-    public static void SendExpGain(Player p, int exp)
+    public static void SendExpGain(Player p, int exp, int job = 0)
     {
         var packet = NetworkManager.StartPacket(PacketType.GainExp, 8);
         packet.Write(p.GetData(PlayerStat.Experience));
         packet.Write(exp);
+        packet.Write(p.GetData(PlayerStat.JobExperience));
+        packet.Write(job);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

@@ -45,6 +45,11 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ShowLevelsInOverlay = true;
         //ui
         public float MasterUIScale = 0.75f;
+
+        public bool ShowBaseExpValue = true;
+        public bool ShowBaseExpPercent = true;
+        public bool ShowJobExpValue = true;
+        public bool ShowJobExpPercent = true;
         //visuals
         public bool UseSmoothPixel = true;
         
@@ -53,6 +58,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public int LastStorageTab = 0;
         public int LastPlayedVersion = 0;
         public string LastViewedPatchNotes = "";
+        public int LastUsedCharacterSlot = 0;
 
         //this is stupid but unity won't serialize dictionaries so we gotta do it ourselves
         public List<string> CharacterNames = new();

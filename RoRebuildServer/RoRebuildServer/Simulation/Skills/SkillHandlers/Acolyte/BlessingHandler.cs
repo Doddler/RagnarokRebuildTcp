@@ -1,5 +1,6 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
@@ -11,6 +12,17 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
     [SkillHandler(CharacterSkill.Blessing, SkillClass.Magic, SkillTarget.Ally)]
     public class BlessingHandler : SkillHandlerBase
     {
+        public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+        {
+            if (target == null)
+                return SkillValidationResult.InvalidTarget;
+
+            if (target.Character.Type == CharacterType.Player && target.IsElementBaseType(CharacterElement.Undead1))
+                return SkillValidationResult.Failure;
+
+            return base.ValidateTarget(source, target, position, lvl);
+        }
+
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
             if (target == null)

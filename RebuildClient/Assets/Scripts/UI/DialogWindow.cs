@@ -22,6 +22,8 @@ namespace Assets.Scripts.UI
             TextBox.text = text;
             
             gameObject.SetActive(true);
+            MoveToTop();
+            CanCloseWithEscape = false;
         }
 
         public void ShowImage(string sprite)

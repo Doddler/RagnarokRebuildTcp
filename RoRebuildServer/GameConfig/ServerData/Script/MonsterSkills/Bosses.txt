@@ -106,7 +106,10 @@ StateAttacking:
 SkillHandler("BAPHOMET") {
 StateAny: 
     TryCast(CallMinion, 1, 100%, 0s, 30s)[MinionCount < 3] -> CallDefaultMinions();
-	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
+StateIdle:
+	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
+StateChase:
+    TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
 }
 
 //------------------------------------
@@ -124,9 +127,9 @@ StateAny:
 	};
 	TryCast(Heal, 9, 100%, 0s, 5s)[FindAllyBelowHpPercent(60)];
 StateChase:
-	TryCast(Heal, 4000, 20%, 0s, 10s)[HpPercent < 30];
+	TryCast(Heal, 5000, 20%, 0s, 15s)[HpPercent < 30];
 StateAttacking:
-	TryCast(Heal, 4000, 20%, 0s, 10s)[HpPercent < 30];
+	TryCast(Heal, 5000, 20%, 0s, 15s)[HpPercent < 30];
 }
 
 //------------------------------------
@@ -136,7 +139,10 @@ StateAttacking:
 SkillHandler("PHREEONI") {
 StateAny: 
     TryCast(CallMinion, 1, 20%, 0.7s, 30s)[MinionCount < 3] -> CallDefaultMinions();
-	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
+StateIdle:
+    TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
+StateChase:
+    TryCast(Heal, 9999, 100%, 0s, 15s)[HpPercent < 50];
 }
 
 //------------------------------------
@@ -146,7 +152,7 @@ StateAny:
 SkillHandler("MISTRESS") {
 StateAny: 
     TryCast(CallMinion, 1, 20%, 1.4s, 30s)[MinionCount < 3] -> CallDefaultMinions();
-	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
+	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
 }
 
 
@@ -224,9 +230,12 @@ StateIdle:
 //------------------------------------
 
 SkillHandler("ORC_LORD") {
+StateIdle:
+	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
+StateChase:
+    TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
 StateAny: 
 	TryCast(CallMinion, 1, 50%, 0.7s, 30s)[MinionCount < 3] -> CallDefaultMinions();
-    TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
 }
 
 //------------------------------------
@@ -274,7 +283,7 @@ StateAttacking:
 		TryCast(GrandThunderstorm, 10, 50%, 2.5s, 8s, NeverInterrupt | EventOnStartCast) -> CreateEvent("GrandThunderstorm");
 StateIdle:
 	TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
-	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
+	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
 }
 
 //------------------------------------
@@ -285,7 +294,7 @@ SkillHandler("DOPPELGANGER") {
 StateAny: 
     TryCast(CallMinion, 1, 100%, 0.3s, 30s)[MinionCount < 3 && HpPercent < 30] -> SummonMinions(1, "NIGHTMARE");
     TryCast(CallMinion, 1, 100%, 0.7s, 30s)[MinionCount < 3] -> SummonMinions(1, "NIGHTMARE");
-	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
+	TryCast(Heal, 9999, 100%, 0s, 15s)[HpPercent < 30];
 	TryCast(Heal, 9999, 100%, 0s, 10s)[FindAllyBelowHpPercent(60)];
 StateAttacking:
 	TryCast(TwoHandQuicken, 10, 100%, 0, 1m)[HpPercent <= 40];

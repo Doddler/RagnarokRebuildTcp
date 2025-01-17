@@ -48,6 +48,7 @@ public enum MonsterInputCheck : byte
     InAttacked,
     InAttackedNoSwap,
     InMeleeAttacked,
+    InNearTargetTile,
     InReachedTarget,
     InReachedRandomMoveTarget,
     InAttackRange,

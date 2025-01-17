@@ -36,15 +36,15 @@ Dialog(Name, "It's a bit rough out there, harder than the last test, but you sho
 macro BardChangeJob()
 {
 	ShowSprite("bard_eland01", right);
-	if(Level < 10)
+	if(JobId == 0 && JobLevel < 10)
 	{
-		Dialog(Name, "Looking to change jobs are you? I can help you out with that, but first you'll need to get to level 10.");
+		Dialog(Name, "Looking to change jobs are you? I can help you out with that, but first you'll need to get to job level 10.");
 		return;
 	}
 
 	if(JobId == 0 && UnusedSkillPoints > 0)
 	{
-		Dialog(Name, "Looking to change jobs are you? You're level 10 alright, but you'll need to spend your unused skill points before I can help.");
+		Dialog(Name, "Looking to change jobs are you? You're job level 10 alright, but you'll need to spend your unused skill points before I can help.");
 		Dialog(Name, "I'm not actually sure what that basic mastery skill does but you still need to spend the points first.");
 		return;
 	} else {

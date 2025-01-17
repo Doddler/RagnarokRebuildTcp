@@ -2,6 +2,7 @@
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.Util;
 using TMPro;
 using UnityEngine;
@@ -53,6 +54,8 @@ namespace Assets.Scripts.UI.TitleScreen
             var summary = summaries[selectedSlot];
             if (summary != null)
             {
+                GameConfig.Data.LastUsedCharacterSlot = selectedSlot;
+                GameConfig.SaveConfig();
                 NetworkManager.Instance.SendEnterServerMessage(summary.Name);
                 Parent.TitleState = TitleScreen.TitleScreenState.Waiting;
                 gameObject.SetActive(false);
@@ -90,7 +93,12 @@ namespace Assets.Scripts.UI.TitleScreen
             // CharacterSlots[1].SetAsUnavailable();
             // CharacterSlots[2].SetAsUnavailable();
             //
-            SetCharacterInfo(0);
+
+            var lastSlot = GameConfig.Data.LastUsedCharacterSlot;
+            if (characters.Count <= lastSlot || characters[lastSlot] == null)
+                lastSlot = 0;
+                
+            SetCharacterInfo(lastSlot);
         }
 
         private void UpdateSlotSelection(int slot)
@@ -98,6 +106,8 @@ namespace Assets.Scripts.UI.TitleScreen
             CharacterSlots[0].Button.interactable = slot != 0;
             CharacterSlots[1].Button.interactable = slot != 1;
             CharacterSlots[2].Button.interactable = slot != 2;
+
+            GameConfig.Data.LastUsedCharacterSlot = slot;
         }
 
         public void SetCharacterInfo(int slot)

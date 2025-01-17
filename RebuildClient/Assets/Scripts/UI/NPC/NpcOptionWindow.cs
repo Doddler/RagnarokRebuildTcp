@@ -34,6 +34,7 @@ namespace Assets.Scripts.UI
 
             TemplateButton.SetActive(false);
             gameObject.SetActive(true);
+            transform.SetAsLastSibling();
         }
 
         private void DeleteActiveButtons()

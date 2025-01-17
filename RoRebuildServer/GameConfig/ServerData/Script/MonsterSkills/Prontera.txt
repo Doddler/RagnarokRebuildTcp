@@ -30,7 +30,7 @@ StateAny:
 
 SkillHandler("ANT_EGG") {
 StateIdle:
-	TryCast(NoCast, 3, 100%, 0, 5s) -> SendEmote(19); //sweating
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(19); //sweating
 }
 
 SkillHandler("STROUF") {

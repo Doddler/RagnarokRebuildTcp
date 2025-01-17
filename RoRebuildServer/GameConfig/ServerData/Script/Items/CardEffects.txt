@@ -45,14 +45,14 @@ Item("Andre_Card") {  OnEquip: AddStat(AddAttackPower, 20); }
 Item("Smokie_Card") {  OnEquip: } //enable skill hiding
 Item("Horn_Card") {  OnEquip: AddStat(AddResistRangedAttack, 35); }
 Item("Martin_Card") {  OnEquip: AddStat(AddDef, 1); } //add 20% resist to blind
-Item("Ghostring_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, -25); } //change armor property to ghost
+Item("Ghostring_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, -25); SetArmorElement(Ghost1); }
 Item("Poison_Spore_Card") {  OnEquip: } //add skill Envenom
 Item("Vadon_Card") { OnEquip: AddStat(AddAttackElementFire, 20); }
 Item("Male_Thief_Bug_Card") { OnEquip: AddStat(AddAgi, 2); }
 Item("Yoyo_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(PerfectDodge, 50); }
 Item("Elder_Willow_Card") { OnEquip: AddStat(AddInt, 2); }
 Item("Vitata_Card") { OnEquip: } //enable heal 1 skill, add 25% sp consumption
-Item("Angeling_Card") { OnEquip: } //change armor property to holy
+Item("Angeling_Card") { OnEquip: SetArmorElement(Holy1); }
 Item("Marina_Card") { OnEquip: AddStat(AddAttackPower, 5); } //add 5% chance to freeze on melee/range
 Item("Dustiness_Card") { OnEquip: AddStat(AddResistElementWind, 30); AddStat(AddFlee, 5); }
 Item("Metaller_Card") { OnEquip: AddStat(AddAttackPower, 5); } //add 5% silence on attack
@@ -87,7 +87,7 @@ Item("Orc_Skeleton_Card") { OnEquip: AddStat(AddAttackElementHoly, 20); }
 Item("Soldier_Skeleton_Card") { OnEquip: AddStat(AddCrit, 90); }
 Item("Giearth_Card") { OnEquip: AddStat(AddResistElementEarth, 15); } //add 100% resist to confusion
 Item("Frilldora_Card") { OnEquip: } //enable skill cloaking
-Item("Swordfish_Card") { OnEquip: AddStat(AddDef, 1); } //change armor property to water
+Item("Swordfish_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Water1); }
 Item("Munak_Card") { OnEquip: AddStat(AddDef, 1); AddStat(AddResistElementEarth, 5); } //add 15% resist to stonecurse
 Item("Kobold_Card") { OnEquip: AddStat(AddCrit, 40); AddStat(AddStr, 1); }
 Item("Skel_Worker_Card") { OnEquip: AddStat(AddAttackPower, 5); AddStat(AddAttackMidSize, 15); }
@@ -96,10 +96,10 @@ Item("Archer_Skeleton_Card") { OnEquip: AddStat(AddAttackRangedAttack, 10); }
 Item("Marse_Card") { OnEquip: AddStat(AddResistElementWater, 30); AddStat(AddFlee, 5); }
 Item("Zenorc_Card") { OnEquip: AddStat(AddAttackPower, 10); } //should add a 4% chance to poison on melee/range
 Item("Matyr_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(AddMaxHpPercent, 10); }
-Item("Dokebi_Card") { OnEquip: AddStat(AddDef, 1); } //should change armor property to wind
-Item("Pasana_Card") { OnEquip: AddStat(AddDef, 1); } //should change armor property to fire
+Item("Dokebi_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Wind1); }
+Item("Pasana_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Fire1); }
 Item("Sohee_Card") { OnEquip: AddStat(AddMaxSpPercent, 15); AddStat(AddSpRecoveryPercent, 3); }
-Item("Sandman_Card") { OnEquip: AddStat(AddDef, 1); } //should change armor property to earth
+Item("Sandman_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Earth1); }
 Item("Whisper_Card") { OnEquip: AddStat(AddFlee, 20); AddStat(AddResistElementGhost, -20); }
 Item("Horong_Card") { OnEquip: } //enable skill sight
 Item("Requiem_Card") { OnEquip: } //should add a 5% chance to confuse on attack
@@ -112,12 +112,12 @@ Item("Ghoul_Card") { OnEquip: AddStat(AddDef, 1); } //should add 20% resist to p
 Item("Strouf_Card") { OnEquip: AddStat(AddAttackRaceDemon, 20); }
 Item("Marduk_Card") { OnEquip: } //should add 100% resist to silence
 Item("Marionette_Card") { OnEquip: AddStat(AddResistElementGhost, 30); AddStat(AddFlee, 5); }
-Item("Argiope_Card") { OnEquip: AddStat(AddDef, 1); } //should change armor property to poison
+Item("Argiope_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Poison1); }
 Item("Hunter_Fly_Card") { OnEquip: } //should add 3% chance to drain 15% of damage as HP
 Item("Isis_Card") { OnEquip: AddStat(AddResistElementDark, 30); AddStat(AddFlee, 5); }
 Item("Sidewinder_Card") { OnEquip: AddStat(DoubleAttackChance, 5); }
 Item("Earth_Petite_Card") { OnEquip: AddStat(AddAttackRaceDragon, 20); }
-Item("Bathory_Card") { OnEquip: } //should change armor property to shadow
+Item("Bathory_Card") { OnEquip: SetArmorElement(Dark1); }
 Item("Sky_Petite_Card") { OnEquip: AddStat(AddResistRaceDragon, 30); }
 Item("Phreeoni_Card") { OnEquip: AddStat(AddHit, 100); }
 Item("Deviruchi_Card") { OnEquip: AddStat(AddStr, 1); } //should add 100% resist to blind
@@ -138,7 +138,7 @@ Item("Drake_Card") { OnEquip: } //who the fuck knows? I don't have size penaltie
 Item("Anubis_Card") { OnEquip: AddStat(AddResistRaceAngel, 30); }
 Item("Joker_Card") { OnEquip: } //enable skill steal
 Item("Abyssal_Knight_Card") { OnEquip: AddStat(AddAttackSpecialBoss, 25); }
-Item("Evil_Druid_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddDef, 1); } //should make armor undead property
+Item("Evil_Druid_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddDef, 1); SetArmorElement(Undead1); }
 Item("Doppelganger_Card") { OnEquip: AddStat(AspdBonus, 15); }
 Item("Orc_Hero_Card") { OnEquip: AddStat(AddVit, 3); } //should add 100% resist to stun
 Item("Osiris_Card") { OnEquip: } //should make it so you revive with 100% hp/sp

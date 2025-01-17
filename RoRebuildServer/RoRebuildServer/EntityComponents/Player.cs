@@ -109,6 +109,7 @@ public class Player : IEntityAutoReset
 
     //helper functions for item effect handlers
     public int CharacterLevel => GetData(PlayerStat.Level);
+    public int JobLevel => GetData(PlayerStat.JobLevel);
     public int JobId => GetData(PlayerStat.Job);
 
     //stats that can't apply to monsters
@@ -142,15 +143,15 @@ public class Player : IEntityAutoReset
         CharData[(int)PlayerStat.Zeny] = v > 0 ? v : 0;
     }
 
-    //this will get removed when we have proper job levels
-    private static readonly int[] skillPointsByLevel = new[]
-    {
-         0,  1,  2,  3,  4,  5,  6,  7,  8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 35, 37, 38, 39, 39,
-        40, 40, 41, 41, 42, 42, 43, 43, 44, 44, 45, 45, 46, 46, 47, 47, 48, 48, 49, 49,
-        50, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55, 55, 56, 56, 57, 57, 58, 58, 59, 59,
-        60, 60, 61, 61, 62, 62, 63, 63, 64, 64, 65, 65, 66, 66, 67, 67, 68, 68, 69, 69,
-    };
+    ////this will get removed when we have proper job levels
+    //private static readonly int[] skillPointsByLevel = new[]
+    //{
+    //     0,  1,  2,  3,  4,  5,  6,  7,  8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    //    21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 35, 37, 38, 39, 39,
+    //    40, 40, 41, 41, 42, 42, 43, 43, 44, 44, 45, 45, 46, 46, 47, 47, 48, 48, 49, 49,
+    //    50, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55, 55, 56, 56, 57, 57, 58, 58, 59, 59,
+    //    60, 60, 61, 61, 62, 62, 63, 63, 64, 64, 65, 65, 66, 66, 67, 67, 68, 68, 69, 69,
+    //};
 
     //how much it costs (cumulatively) to have a stat at a specific level. Should be in its own file...
     private static readonly int[] cumulativeStatPointCost = new[]
@@ -235,6 +236,11 @@ public class Player : IEntityAutoReset
 
         IsAdmin = ServerConfig.DebugConfig.UseDebugMode;
         RecentAttackersList = EntityValueListPool<float>.Get();
+
+        if(CharacterLevel == 0)
+            SetData(PlayerStat.Level, 1); //why
+        if(JobLevel == 0)
+            SetData(PlayerStat.JobLevel, 1);
 
         //if this is their first time logging in, they get a free Knife
         var isNewCharacter = GetData(PlayerStat.Status) == 0 || Inventory == null;
@@ -415,6 +421,100 @@ public class Player : IEntityAutoReset
         return false;
     }
 
+    public int GainBaseExp(int exp)
+    {
+        var level = GetData(PlayerStat.Level);
+        if (CharacterLevel >= 99)
+            return 0;
+        
+        var curExp = GetData(PlayerStat.Experience);
+        var requiredExp = DataManager.ExpChart.ExpRequired[level];
+
+        if (exp > requiredExp)
+            exp = requiredExp; //cap to 1 level per kill
+
+        curExp += exp;
+
+        if (curExp < requiredExp)
+        {
+            SetData(PlayerStat.Experience, curExp);
+            return exp;
+        }
+
+        while (curExp >= requiredExp && level < 99)
+        {
+            curExp -= requiredExp;
+
+            LevelUp();
+            level++;
+
+            if (level < 99)
+                requiredExp = DataManager.ExpChart.ExpRequired[level];
+        }
+
+        SetData(PlayerStat.Experience, curExp);
+
+        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.LevelUp(Character, level, curExp);
+        CommandBuilder.SendHealMulti(Character, 0, HealType.None);
+        CommandBuilder.ChangeSpValue(this, GetStat(CharacterStat.Sp), GetStat(CharacterStat.MaxSp));
+        CommandBuilder.ClearRecipients();
+
+        return exp;
+    }
+
+    public int GainJobExp(int exp)
+    {
+        var level = GetData(PlayerStat.JobLevel);
+        var job = GetData(PlayerStat.Job);
+        var levelCap = job == 0 ? 10 : 70;
+        if (level >= levelCap)
+            return 0;
+
+        var curExp = GetData(PlayerStat.JobExperience);
+        var requiredExp = DataManager.ExpChart.RequiredJobExp(job, level);
+        if (requiredExp < 0)
+            return 0;
+
+        if (exp > requiredExp)
+            exp = requiredExp; //cap to 1 level per kill
+
+        curExp += exp;
+
+        if (curExp < requiredExp)
+        {
+            SetData(PlayerStat.JobExperience, curExp);
+            return exp;
+        }
+
+        var origLevel = level;
+
+        while (curExp >= requiredExp && level < levelCap)
+        {
+            curExp -= requiredExp;
+
+            level++;
+
+            if (level < levelCap)
+                requiredExp = DataManager.ExpChart.RequiredJobExp(job, level);
+        }
+
+        SetData(PlayerStat.JobLevel, level);
+        SetData(PlayerStat.JobExperience, curExp);
+
+        if(job == 0 && level == 10 && origLevel < level)
+            CommandBuilder.SendServerEvent(this, ServerEvent.EligibleForJobChange, job);
+
+        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.SendEffectOnCharacterMulti(Character, DataManager.EffectIdForName["JobUp"]);
+        CommandBuilder.ClearRecipients();
+
+        UpdateStats(false);
+
+        return exp;
+    }
+
+
     public void AddStatPoints(Span<int> statChanges)
     {
         var level = GetData(PlayerStat.Level);
@@ -578,7 +678,8 @@ public class Player : IEntityAutoReset
         Character.MoveSpeed = moveSpeed;
 
         //update skill points! Ideally, this only should happen when you change your skills, but, well...
-        var skillPointEarned = skillPointsByLevel[level - 1];
+        var jobLevel = GetData(PlayerStat.JobLevel);
+        var skillPointEarned = job == 0 ? jobLevel - 1 : jobLevel + 9 - 1;
 
         if (job == 0 && skillPointEarned > 9)
             skillPointEarned = 9;
@@ -931,18 +1032,12 @@ public class Player : IEntityAutoReset
 
     public void ChangeJob(int newJobId)
     {
-        var curJob = GetData(PlayerStat.Job);
-
-        var job = DataManager.JobInfo[newJobId];
         SetData(PlayerStat.Job, newJobId);
+        SetData(PlayerStat.JobLevel, 1);
+        SetData(PlayerStat.JobExp, 0);
 
         if (Character.ClassId < 100) //we don't want to override special character classes like GameMaster
             Character.ClassId = newJobId;
-
-        //until equipment is real pick weapon based on job
-        //var weapon = DefaultWeaponForJob(newJobId);
-
-        //WeaponClass = weapon;
 
         Equipment.UnequipAllItems();
         UpdateStats();

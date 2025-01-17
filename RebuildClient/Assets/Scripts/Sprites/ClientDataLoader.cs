@@ -52,6 +52,7 @@ namespace Assets.Scripts.Sprites
         [SerializeField] private TextAsset CardPrefixData;
         [SerializeField] private TextAsset ServerVersionData;
         [SerializeField] private TextAsset PatchNoteData;
+        [SerializeField] private TextAsset JobExpData;
         public SpriteAtlas ItemIconAtlas;
 
         public int ServerVersion;
@@ -72,6 +73,7 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<string, string> displaySpriteList = new();
         private readonly Dictionary<string, string> itemDescriptionTable = new();
         private readonly Dictionary<int, CardPrefixData> cardPrefixPostfixTable = new();
+        private readonly int[] jobExpData = new int[70 * 2];
         
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
@@ -100,6 +102,7 @@ namespace Assets.Scripts.Sprites
         public bool TryGetItemById(int id, out ItemData item) => itemIdLookup.TryGetValue(id, out item);
         public string GetItemDescription(string itemCode) => itemDescriptionTable.GetValueOrDefault(itemCode, "No description available.");
         public CardPrefixData GetCardPrefixData(int id) => cardPrefixPostfixTable.GetValueOrDefault(id, null);
+        public int GetJobExpRequired(int job, int level) => level < 0 || level >= 70 ? -1 : jobExpData[(job == 0 ? 0 : 1) * 70 + level];
 
         public static int UniqueItemStartId = 20000;
         public string LatestPatchNotes = "";
@@ -139,6 +142,19 @@ namespace Assets.Scripts.Sprites
             Instance = this;
 
             ServerVersion = int.Parse(ServerVersionData.text);
+
+            using var jobStr = new StringReader(JobExpData.text);
+            var jobLvl = 0;
+            while (true)
+            {
+                var line = jobStr.ReadLine();
+                if (line == null)
+                    break;
+                var s = line.Split(",");
+                jobExpData[jobLvl] = int.Parse(s[0]);
+                jobExpData[70 + jobLvl] = int.Parse(s[1]);
+                jobLvl++;
+            }
             
             var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(MonsterClassData.text);
             foreach (var m in entityData.Items)
@@ -548,8 +564,9 @@ namespace Assets.Scripts.Sprites
 
             if (control.IsMainCharacter)
             {
-                CameraFollower.Instance.CharacterJob.text = pData.Name;
-                CameraFollower.Instance.CharacterName.text = $"Lv. {control.Level} {control.Name}";
+                CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = pData.Name;
+                CameraFollower.Instance.CharacterDetailBox.CharacterName.text = $"{control.Name}";
+                CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
             }
 
             control.Init();
@@ -747,7 +764,7 @@ namespace Assets.Scripts.Sprites
                     break;
                 case NpcEffectType.Pneuma:
                     CameraFollower.Instance.AttachEffectToEntity("Pneuma1", obj);
-                    var go = new GameObject("PneumaArea");
+                    // var go = new GameObject("PneumaArea");
                     var highlighter = GroundHighlighter.Create(control, "pneumazone", new Color(1, 1, 1, 0.2f), 2);
                     highlighter.MaxTime = 10f;
                     break;

@@ -733,8 +733,8 @@ public class NetworkManager
             if (version != DataManager.ServerVersionNumber)
             {
                 ServerLogger.Log($"User {userName} tried connecting with a version {version} client, but it doesn't match the server version {DataManager.ServerVersionNumber}.");
-                await ReturnServerErrorAndDisconnect(socket, $"Failed to log into the server, your client v{version} does not match the server v{DataManager.ServerVersionNumber}. " +
-                                                             "You will need to update your client before logging in.");
+                await ReturnServerErrorAndDisconnect(socket, $"Failed to log into the server, your client protocol v{version} does not match the server v{DataManager.ServerVersionNumber}. " +
+                                                             "You will need to update your client before logging in. If you are using the web build, you may need to force refresh or clear the site cache.");
                 return;
             }
         }

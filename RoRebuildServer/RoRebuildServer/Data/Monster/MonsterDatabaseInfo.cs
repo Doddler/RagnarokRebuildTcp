@@ -12,6 +12,7 @@ public class MonsterDatabaseInfo
     public int ChaseDist { get; set; }
     public int HP { get; set; }
     public int Exp { get; set; }
+    public int JobExp { get; set; }
     public int AtkMin { get; set; }
     public int AtkMax { get; set; }
     public int Str { get; set; }

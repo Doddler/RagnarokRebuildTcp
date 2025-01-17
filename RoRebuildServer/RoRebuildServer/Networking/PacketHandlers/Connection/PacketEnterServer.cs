@@ -85,6 +85,7 @@ public class PacketEnterServer : IClientPacketHandler
         }
 
         charData[(int)PlayerStat.Level] = 1;
+        charData[(int)PlayerStat.JobLevel] = 1;
         charData[(int)PlayerStat.Head] = head;
         charData[(int)PlayerStat.HairId] = hair;
         charData[(int)PlayerStat.Gender] = isMale ? 0 : 1;
