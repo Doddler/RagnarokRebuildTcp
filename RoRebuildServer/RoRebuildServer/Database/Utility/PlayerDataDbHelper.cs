@@ -10,10 +10,13 @@ using K4os.Compression.LZ4.Encoders;
 using RebuildSharedData.ClientTypes;
 using RoRebuildServer.Database.Requests;
 using System;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Database.Domain;
+using RoRebuildServer.Simulation.StatusEffects.Setup;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.Database.Utility;
 
@@ -24,6 +27,8 @@ namespace RoRebuildServer.Database.Utility;
 
 public static class PlayerDataDbHelper
 {
+    public const int CurrentPlayerSaveVersion = 3;
+    
     public static void PackPlayerSummaryData(int[] buffer, Player p)
     {
         buffer[(int)PlayerSummaryData.Level] = p.GetData(PlayerStat.Level);
@@ -65,14 +70,23 @@ public static class PlayerDataDbHelper
         var srcData = array.AsSpan(0, size);
         
         var compressedSize = LZ4Codec.Encode(srcData, cmpBuffer);
-        var bytesOut = new byte[compressedSize];
+        var bytesOut = new byte[compressedSize]; //can't avoid allocation here sadly ;_;
         Buffer.BlockCopy(cmpBuffer, 0, bytesOut, 0, compressedSize);
         
         ArrayPool<byte>.Shared.Return(cmpBuffer);
         
         return bytesOut;
     }
-    
+
+
+    public static byte[] DecompressData(byte[] array, int uncompressedSize)
+    {
+        var buffer = ArrayPool<byte>.Shared.Rent(uncompressedSize);
+        LZ4Codec.Decode(array, buffer);
+
+        return buffer;
+    }
+
     public static byte[]? CompressAndStorePlayerInventoryData(Player p, out int uncompressedSize)
     {
         var inventorySize = p.Inventory.TryGetSize() + p.CartInventory.TryGetSize();
@@ -193,5 +207,114 @@ public static class PlayerDataDbHelper
         ArrayPool<byte>.Shared.Return(buffer);
 
         return bagData;
+    }
+
+    public static byte[] StorePlayerDataForDatabaseUse(Player player, out int decompressedSize)
+    {
+        var charData = player.CharData;
+
+        var dataLen = 32;
+        dataLen += charData.Length * sizeof(int);
+        dataLen += player.NpcFlags == null ? 4 : player.NpcFlags.Count * 8;
+        dataLen += player.LearnedSkills.Count * 8;
+        dataLen += player.CombatEntity.StatusContainer == null ? 8 : player.CombatEntity.StatusContainer.TotalStatusEffectCount * 16;
+
+        var chData = ArrayPool<byte>.Shared.Rent(dataLen);
+        var ms = new MemoryStream(chData);
+        var bw = new BinaryMessageWriter(ms);
+
+        bw.Write((short)charData.Length);
+        var dataSize = charData.Length * sizeof(int);
+        Buffer.BlockCopy(charData, 0, chData, (int)ms.Position, dataSize);
+        bw.Seek(dataSize, SeekOrigin.Current); //skip ahead
+
+        DbHelper.WriteDictionary(bw, player.LearnedSkills);
+        DbHelper.WriteDictionary(bw, player.NpcFlags);
+
+        //status effects
+        var effectPos = (int)ms.Position;
+        bw.Write((byte)0); //size, we'll update this later
+        var len = player.CombatEntity.StatusContainer?.Serialize(bw) ?? 0;
+        decompressedSize = (int)ms.Position;
+
+        if (len > 0)
+        {
+            bw.Seek(effectPos, SeekOrigin.Begin);
+            bw.Write((byte)len); //jump back to where the size is written and update it
+            bw.Seek(decompressedSize, SeekOrigin.Begin);
+        }
+
+        for (var i = 0; i < 3; i++)
+            player.MemoLocations[i].Serialize(bw);
+
+        decompressedSize = (int)ms.Position;
+        
+        //compress player data
+        var data = PlayerDataDbHelper.CompressData(chData, decompressedSize);
+        ArrayPool<byte>.Shared.Return(chData);
+        
+        return data;
+    }
+
+    public static byte[] StoreNewPlayerDataForDatabase(int[] charData, out int decompressedSize)
+    {
+        var realCharDataLen = (int)PlayerStat.PlayerStatsMax;
+        
+        var dataLen = 32;
+        dataLen += realCharDataLen * sizeof(int);
+
+        var chData = ArrayPool<byte>.Shared.Rent(dataLen);
+        var ms = new MemoryStream(chData);
+        var bw = new BinaryMessageWriter(ms);
+        
+        bw.Write((short)realCharDataLen);
+        var dataSize = realCharDataLen * sizeof(int);
+        Buffer.BlockCopy(charData, 0, chData, (int)ms.Position, dataSize);
+        bw.Seek(dataSize, SeekOrigin.Current); //skip ahead
+
+        DbHelper.WriteDictionary<CharacterSkill>(bw, null);
+        DbHelper.WriteDictionary(bw, null);
+        bw.Write((byte)0); //status effects
+        bw.Write((byte)0); //warp 1
+        bw.Write((byte)0); //warp 2
+        bw.Write((byte)0); //warp 3
+
+        decompressedSize = (int)ms.Position;
+
+        //compress player data
+        var data = PlayerDataDbHelper.CompressData(chData, decompressedSize);
+        ArrayPool<byte>.Shared.Return(chData);
+
+        return data;
+    }
+    
+    public static void RestorePlayerDataFromDatabaseV3(byte[] bytes, int decompressedSize, Player player, int saveVersion)
+    {
+        var data = DecompressData(bytes, decompressedSize);
+
+        var ms = new MemoryStream(data);
+        var br = new BinaryMessageReader(ms);
+
+        var dataLen = (int)br.ReadInt16() * 4;
+        if (dataLen <= player.CharData.Length * 4) //we can add fields, but if we take them away it's all bad
+            Buffer.BlockCopy(data, (int)ms.Position, player.CharData, 0, dataLen);
+        else
+            ServerLogger.LogWarning($"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
+        
+        ms.Seek(dataLen, SeekOrigin.Current);
+
+        player.LearnedSkills = DbHelper.ReadDictionary<CharacterSkill>(br) ?? new Dictionary<CharacterSkill, int>();
+        player.NpcFlags = DbHelper.ReadDictionary(br);
+        if(CurrentPlayerSaveVersion == 3) //if we're upgrading to a new save version, we won't restore status effects (as their IDs might have changed)
+            player.CombatEntity.TryDeserializeStatusContainer(br);
+
+        if (ms.Position < ms.Length)
+        {
+            for (var i = 0; i < 3; i++)
+                player.MemoLocations[i] = MapMemoLocation.DeSerialize(br);
+
+        }
+
+        ArrayPool<byte>.Shared.Return(data);
     }
 }

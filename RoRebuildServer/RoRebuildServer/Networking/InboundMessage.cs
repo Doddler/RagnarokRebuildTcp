@@ -3,15 +3,16 @@ using System.Diagnostics;
 using System.Text;
 using Lidgren.Network;
 using RebuildSharedData.Data;
+using RebuildSharedData.Util;
 using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking;
 
-public class InboundMessage
+public class InboundMessage : IBinaryMessageReader
 {
     public NetworkConnection Client;
     public byte[] Message;
-    public int Length;
+    public int Length { get; set; }
 
     private int position;
 
@@ -29,7 +30,7 @@ public class InboundMessage
         Length = length;
         position = 0;
     }
-
+    
     public void Clear()
     {
         Client = null!;
@@ -77,12 +78,27 @@ public class InboundMessage
         return ret;
     }
 
+    public byte[] ReadBytes(int len)
+    {
+        throw new NotImplementedException();
+    }
+
 
     public void ReadBytes(byte[] buffer, int len)
     {
         VerifyBufferSize(len * 8);
         NetBitWriter.ReadBytes(Message, len, position, buffer, 0);
         position += len * 8;
+    }
+
+    public void ReadCompressedByteArray(byte[] buffer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ReadCompressedByteArray(byte[] buffer, int len)
+    {
+        throw new NotImplementedException();
     }
 
 
@@ -102,12 +118,22 @@ public class InboundMessage
         return ret;
     }
 
+    public ushort ReadUInt16()
+    {
+        throw new NotImplementedException();
+    }
+
     public bool ReadBoolean()
     {
         VerifyBufferSize(1);
         var ret = (short)NetBitWriter.ReadByte(Message, 1, position);
         position += 1;
         return (ret > 0 ? true : false);
+    }
+
+    public float ReadFloat()
+    {
+        throw new NotImplementedException();
     }
 
     public Position ReadPosition()

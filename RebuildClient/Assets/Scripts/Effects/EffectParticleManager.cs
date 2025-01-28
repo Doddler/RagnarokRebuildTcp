@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using Utility;
@@ -199,6 +198,8 @@ namespace Assets.Scripts.Effects
                 var sprite = Sprites[p.ParticleId];
 
                 var spriteUVs = sprite.uv;
+
+                // var spriteUVs = SpriteUtility.GetSpriteUVs(sprite, true);
                 // var rect = sprite.textureRect;
 
                 uvs[0] = spriteUVs[0];

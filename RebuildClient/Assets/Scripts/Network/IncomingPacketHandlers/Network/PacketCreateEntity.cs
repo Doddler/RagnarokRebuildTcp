@@ -5,6 +5,7 @@ using Assets.Scripts.Misc;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Hud;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -54,10 +55,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
                 while(msg.ReadBoolean()) //has status effects
                 {
-                    statuses = new List<CharacterStatusEffect>();
-                    statuses.Add((CharacterStatusEffect)msg.ReadByte());
-                    msg.ReadFloat(); //duration, we're ignoring this for now
+                    statuses ??= new List<CharacterStatusEffect>();
+                    var status = (CharacterStatusEffect)msg.ReadByte();
+                    var duration = msg.ReadFloat();
+                    statuses.Add(status);
+                    
                     Debug.Log($"{classId} has a status effect! {statuses[0]}");
+
+                    if (id == Network.PlayerId)
+                        StatusEffectPanel.Instance.AddStatusEffect(status, duration);
                 }
             }
 

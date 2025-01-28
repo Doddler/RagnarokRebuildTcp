@@ -178,13 +178,16 @@ public enum CharacterStat
     WhenAttackedCurse,
     WhenAttackedStone,
 
-    ResistStun,
-    ResistPoison,
-    ResistBlind,
-    ResistSleep,
-    ResistFreeze,
-    ResistCurse,
-    ResistStone,
+    ResistStunStatus,
+    ResistPoisonStatus,
+    ResistBlindStatus,
+    ResistSleepStatus,
+    ResistFreezeStatus,
+    ResistCurseStatus,
+    ResistStoneStatus,
+
+    DecreasePoisonStatusDamage,
+    DecreaseStunDuration,
 
     HpDrainChance,
     HpDrainAmount,

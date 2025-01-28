@@ -53,6 +53,7 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public NpcInteractionState NpcInteractionState = new();
     [EntityIgnoreNullCheck] public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
+    [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[3];
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
     public Dictionary<string, int>? NpcFlags = null!;
     public ItemEquipState Equipment = null!;
@@ -63,7 +64,8 @@ public class Player : IEntityAutoReset
     public EntityValueList<float> RecentAttackersList;
     private float lastAttackerListCheckUpdate;
     public float ShoutCooldown;
-
+    private Memory<int>? jobStatBonuses;
+    
     public int GetItemIdForEquipSlot(EquipSlot slot) => Equipment.ItemIds[(int)slot];
 
     public bool DoesCharacterKnowSkill(CharacterSkill skill, int level) => LearnedSkills.TryGetValue(skill, out var learned) && learned >= level;
@@ -197,6 +199,7 @@ public class Player : IEntityAutoReset
         LearnedSkills = null!;
         NpcFlags = null!;
         isStorageLoaded = false;
+        jobStatBonuses = null;
 
         if (Inventory != null)
             CharacterBag.Return(Inventory);
@@ -206,6 +209,9 @@ public class Player : IEntityAutoReset
 
         if (StorageInventory != null)
             CharacterBag.Return(StorageInventory);
+
+        for (var i = 0; i < MemoLocations.Length; i++)
+            MemoLocations[i].MapName = null;
 
         Inventory = null;
         CartInventory = null;
@@ -241,6 +247,15 @@ public class Player : IEntityAutoReset
             SetData(PlayerStat.Level, 1); //why
         if(JobLevel == 0)
             SetData(PlayerStat.JobLevel, 1);
+        var hasStatFix = false;
+        for(var i = 0; i < 6; i++)
+            if (GetData(PlayerStat.Str + i) <= 0)
+            {
+                SetData(PlayerStat.Str + i, 1); //should never happen, but lookups will break if they have 0 in any stat so fix it
+                hasStatFix = true;
+            }
+        if(hasStatFix)
+            ServerLogger.LogError($"Player {this} initialized with one or more stats set to 0, something must have gone wrong loading their data.");
 
         //if this is their first time logging in, they get a free Knife
         var isNewCharacter = GetData(PlayerStat.Status) == 0 || Inventory == null;
@@ -276,6 +291,13 @@ public class Player : IEntityAutoReset
         else
             UpdateStats();
 
+        //send memo'd map locations
+        var hasMemo = false;
+        for(var i = 0; i < 3; i++)
+            if (!string.IsNullOrWhiteSpace(MemoLocations[i].MapName))
+                hasMemo = true;
+        if(hasMemo)
+            CommandBuilder.SendMapMemoLocations(this);
 
         //IsAdmin = true; //for now
     }
@@ -605,6 +627,8 @@ public class Player : IEntityAutoReset
         SetStat(CharacterStat.Dex, GetData(PlayerStat.Dex));
         SetStat(CharacterStat.Luk, GetData(PlayerStat.Luk));
 
+        RefreshJobBonus();
+        
         var jobAspd = jobInfo.WeaponTimings[WeaponClass];
         var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100);
 
@@ -1030,11 +1054,37 @@ public class Player : IEntityAutoReset
         _ => 1, //anything else => dagger
     };
 
+    public void RefreshJobBonus()
+    {
+        var bonusData = DataManager.GetJobBonusesForLevel(GetData(PlayerStat.Job), GetData(PlayerStat.JobLevel));
+        
+        if (jobStatBonuses != null)
+        {
+            if (bonusData.Equals(jobStatBonuses.Value))
+                return;
+
+            var existing = jobStatBonuses.Value.Span;
+            for(var i = 0; i < 6; i++)
+                SubStat(CharacterStat.AddStr + i, existing[i]);
+        }
+        
+        var newBonuses = bonusData.Span;
+
+        for(var i = 0; i < 6; i++)
+            AddStat(CharacterStat.AddStr + i, newBonuses[i]);
+
+        jobStatBonuses = bonusData;
+    }
+    
     public void ChangeJob(int newJobId)
     {
+        var curJob = GetData(PlayerStat.Job);
         SetData(PlayerStat.Job, newJobId);
-        SetData(PlayerStat.JobLevel, 1);
-        SetData(PlayerStat.JobExp, 0);
+        if (curJob == 0)
+        {
+            SetData(PlayerStat.JobLevel, 1); //only reset job if they're changing from novice. Will need to change later.
+            SetData(PlayerStat.JobExp, 0);
+        }
 
         if (Character.ClassId < 100) //we don't want to override special character classes like GameMaster
             Character.ClassId = newJobId;

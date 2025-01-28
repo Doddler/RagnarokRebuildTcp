@@ -32,16 +32,16 @@ StateAttacking:
 
 SkillHandler("MARDUK") {
 StateAttacking:
-	TryCast(FireBolt, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(9);
+	TryCast(FireBolt, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
 StateChase:
-	TryCast(FireBolt, 3, 10%, 1.5s, 5s, NoInterrupt) -> SendEmote(9);
+	TryCast(FireBolt, 3, 10%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
 	TryCast(FireWall, 5, 10%, 0.5s, 5s, NoInterrupt);
 }
 
 
 SkillHandler("SCORPION") {
 StateChase:
-	TryCast(NoCast, 1, 100%, 0, 15s)[(PreviousAiState == StateIdle || PreviousAiState == StateRandomMove) && TimeInAiState < 1s && TimeSinceLastDamage > 5s] -> SendEmote(0);
+	TryCast(NoCast, 1, 100%, 0, 15s)[(PreviousAiState == StateIdle || PreviousAiState == StateRandomMove) && TimeInAiState < 1s && TimeSinceLastDamage > 5s] -> SendEmote(0); //!
 StateAttacking:
 	TryCast(Envenom, 1, 100%, 0, 12s);
 }
@@ -64,13 +64,13 @@ StateAttacking:
 
 SkillHandler("TIRFING") {
 StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(18);
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(18); //lol
 }
 
 
 SkillHandler("MATYR") {
 StateAttacking:
-	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6);
+	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6); //angry
 }
 
 SkillHandler("MINOROUS") {
@@ -85,9 +85,9 @@ StateAttacking:
 
 SkillHandler("PECOPECO") {
 StateChase:
-	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(6);
+	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(6); //angry
 StateAttacking:
-	TryCast(SonicBlow, 2, 5%, 0.8s, 5s) -> SendEmote(6);
+	TryCast(SonicBlow, 2, 5%, 0.8s, 5s) -> SendEmote(6); //angry
 }
 
 
@@ -104,6 +104,13 @@ event TestCastEvent {
 OnTimer 2000:
 	AreaSkillIndirect(SelfPosition, ThunderStorm, 10);
 	EndEvent();
+}
+
+SkillHandler("ANGRY_TARGET_DUMMY") {
+	StateAny:
+	TryCast(JupitelThunder, 28, 100%, 0.5s, 2s);
+	//TryCast(PoisonAttack, 1, 100%, 0.5s, 2s);
+	//TryCast(DarkAttack, 1, 100%, 0.5s, 2s);
 }
 
 SkillHandler("TARGET_DUMMY") {
@@ -123,15 +130,15 @@ SkillHandler("CHEPET") {
 StateAny:
     TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
 StateAttacking:
-	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(17);
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(17); //sorry
 }
 
 SkillHandler("PERMETER") {
 StateAny:
-    TryCast(Heal, 9, 100%, 0.5s, 5s, HideSkillName)[FindAllyBelowHpPercent(60)] -> SendEmote(5);
+    TryCast(Heal, 9, 100%, 0.5s, 5s, HideSkillName)[FindAllyBelowHpPercent(60)] -> SendEmote(5); //lightbulb
 }
 
 SkillHandler("BATHORY") {
 StateChase:
-	TryCast(NoCast, 3, 100%, 0, 5s) -> SendEmote(30);
+	TryCast(NoCast, 3, 100%, 0, 5s) -> SendEmote(30); //kiss
 }

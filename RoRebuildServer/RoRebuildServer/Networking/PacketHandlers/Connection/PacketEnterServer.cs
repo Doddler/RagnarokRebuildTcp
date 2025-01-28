@@ -94,6 +94,8 @@ public class PacketEnterServer : IClientPacketHandler
 
         var newReq = new CreateCharacterRequest(connection, accountId, slot, chName, charData);
         RoDatabase.EnqueueDbRequest(newReq);
+
+        ArrayPool<int>.Shared.Return(charData);
     }
 
     ////var name = "Player " + GameRandom.NextInclusive(0, 999);

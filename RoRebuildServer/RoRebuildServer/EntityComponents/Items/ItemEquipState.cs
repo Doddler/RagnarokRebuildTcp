@@ -614,7 +614,7 @@ public class ItemEquipState
 
     public int GetExpectedSerializedSize()
     {
-        return ItemSlots.Length * 16 + 4; //guids for each inventory slot + 4 for equipped ammo type
+        return ItemSlots.Length * 17 + 4; //guids for each inventory slot + 4 for equipped ammo type
     }
 
     public void Serialize(IBinaryMessageWriter bw)

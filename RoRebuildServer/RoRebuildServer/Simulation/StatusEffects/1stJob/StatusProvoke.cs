@@ -30,18 +30,24 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
             return StatusUpdateResult.Continue;
         }
 
-        public override void OnApply(CombatEntity ch, ref StatusEffectState state)
+        private (int, int, int) GetProvokeProperties(CombatEntity ch, int lvl)
         {
-            var defMod = -(5 + state.Value1 * 5);
-            var atkMod = 2 + state.Value1 * 3;
-            var matkMod = state.Value1 * 2;
+            var defMod = -(5 + lvl * 5);
+            var atkMod = 2 + lvl * 3;
+            var matkMod = lvl * 2;
             if (ch.GetSpecialType() == CharacterSpecialType.Boss)
             {
                 defMod /= 2;
                 atkMod /= 2;
                 matkMod /= 2;
             }
-                
+            return (defMod, atkMod, matkMod);
+        }
+
+        public override void OnApply(CombatEntity ch, ref StatusEffectState state)
+        {
+            var (defMod, atkMod, matkMod) = GetProvokeProperties(ch, state.Value1);
+
             ch.AddStat(CharacterStat.AddDefPercent, defMod);
             ch.AddStat(CharacterStat.AddAttackPercent, atkMod);
             ch.AddStat(CharacterStat.AddMagicAttackPercent, matkMod);
@@ -49,15 +55,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
 
         public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
         {
-            var defMod = -(5 + state.Value1 * 5);
-            var atkMod = 2 + state.Value1 * 3;
-            var matkMod = state.Value1 * 2;
-            if (ch.GetSpecialType() == CharacterSpecialType.Boss)
-            {
-                defMod /= 2;
-                atkMod /= 2;
-                matkMod /= 2;
-            }
+            var (defMod, atkMod, matkMod) = GetProvokeProperties(ch, state.Value1);
 
             ch.SubStat(CharacterStat.AddDefPercent, defMod);
             ch.SubStat(CharacterStat.AddAttackPercent, atkMod);

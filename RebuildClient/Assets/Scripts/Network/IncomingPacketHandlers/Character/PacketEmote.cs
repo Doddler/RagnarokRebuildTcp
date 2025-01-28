@@ -14,8 +14,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             if (!Network.EntityList.TryGetValue(id, out var controllable))
                 return;
-
-            ClientDataLoader.Instance.AttachEmote(controllable.gameObject, emote);
+            
+            ClientDataLoader.Instance.AttachEmote(controllable, emote);
         }
     }
 }

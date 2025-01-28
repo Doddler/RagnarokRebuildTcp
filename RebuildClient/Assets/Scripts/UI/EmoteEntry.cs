@@ -11,11 +11,11 @@ public class EmoteEntry : MonoBehaviour, IPointerClickHandler
 
     private int emoteId;
 
-    public void SetEmote(int id, int frame, Vector2 pos, float scale, string text)
+    public void SetEmote(int id, int sprite, int frame, Vector2 pos, float scale, string text)
     {
         emoteId = id;
 
-        SpriteRenderer.ActionId = id;
+        SpriteRenderer.ActionId = sprite;
         SpriteRenderer.CurrentFrame = frame;
         SpriteRenderer.OffsetPosition = pos;
         Text.text = text;

@@ -19,6 +19,7 @@
 17,Monk,Assets/Sprites/Characters/BodyMale/몽크_남.spr,Assets/Sprites/Characters/BodyFemale/몽크_여.spr
 18,Rogue,Assets/Sprites/Characters/BodyMale/로그_남.spr,Assets/Sprites/Characters/BodyFemale/로그_여.spr
 19,Alchemist,Assets/Sprites/Characters/BodyMale/연금술사_남.spr,Assets/Sprites/Characters/BodyFemale/연금술사_여.spr
+20,SuperNovice,Assets/Sprites/Characters/BodyMale/초보자_남.spr,Assets/Sprites/Characters/BodyFemale/초보자_여.spr
 499,GameMaster,Assets/Sprites/Characters/BodyMale/운영자_남.spr,Assets/Sprites/Characters/BodyFemale/운영자_여.spr
 507,PecoCrusader,Assets/Sprites/Characters/BodyMale/신페코크루세이더_남.spr,Assets/Sprites/Characters/BodyFemale/신페코크루세이더_여.spr
 513,PecoKnight,Assets/Sprites/Characters/BodyMale/페코페코_기사_남_남.spr,Assets/Sprites/Characters/BodyFemale/페코페코_기사_남_여.spr

@@ -17,6 +17,7 @@ using Assets.Scripts.UI.Hud;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Assertions;
@@ -229,7 +230,7 @@ namespace Assets.Scripts.Network
 
             IsCasting = true;
 
-            if (!HideCastName && (skill != CharacterSkill.Hiding || !SpriteAnimator.IsHidden)) //don't show skill name when unhiding
+            if (!HideCastName && skill != CharacterSkill.NoCast && (skill != CharacterSkill.Hiding || !SpriteAnimator.IsHidden)) //don't show skill name when unhiding
             {
                 if (CharacterType == CharacterType.Player)
                     FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
@@ -1208,6 +1209,48 @@ namespace Assets.Scripts.Network
             }
         }
 
+        private void OnMessageElementalHit(EntityMessage msg)
+        {
+            Vector3 hitPosition;
+            AudioManager.Instance.OneShotSoundEffect(Id, $"ef_hit2.ogg", transform.position);
+            switch ((AttackElement)msg.Value1)
+            {
+                case AttackElement.Fire:
+                    CameraFollower.Instance.AttachEffectToEntity("firehit1", gameObject, Id);
+                    break;
+                case AttackElement.Wind:
+                    CameraFollower.Instance.AttachEffectToEntity("WindHit", gameObject, Id);
+                    break;
+                case AttackElement.Water:
+                    hitPosition = transform.position + new Vector3(0, 2, 0);
+                    HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(255, 255, 255, 128), 1);
+                    break;
+                case AttackElement.Earth:
+                    hitPosition = transform.position + new Vector3(0, 2, 0);
+                    HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(255, 255, 50, 128), 3);
+                    break;
+                case AttackElement.Holy:
+                    CameraFollower.Instance.AttachEffectToEntity("HolyHit", gameObject, Id);
+                    break;
+                case AttackElement.Undead:
+                    hitPosition = transform.position + new Vector3(0, 2, 0);
+                    HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(255, 255, 255, 128), 8);
+                    break;
+                case AttackElement.Poison:
+                    hitPosition = transform.position + new Vector3(0, 2, 0);
+                    HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(255, 255, 255, 128), 2);
+                    break;
+                case AttackElement.Dark:
+                    hitPosition = transform.position + new Vector3(0, 2, 0);
+                    HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(0, 0, 0, 128), 0);
+                    break;
+                default:
+                    hitPosition = transform.position + new Vector3(0, 2, 0);
+                    HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition);
+                    return;
+            }
+        }
+
         public void OnMessageDamageEvent(EntityMessage msg)
         {
             var dmg = msg.Value1;
@@ -1257,6 +1300,9 @@ namespace Assets.Scripts.Network
             {
                 case EntityMessageType.HitEffect:
                     OnMessageHitEffect(msg);
+                    break;
+                case EntityMessageType.ElementalEffect:
+                    OnMessageElementalHit(msg);
                     break;
                 case EntityMessageType.ShowDamage:
                     OnMessageDamageEvent(msg);

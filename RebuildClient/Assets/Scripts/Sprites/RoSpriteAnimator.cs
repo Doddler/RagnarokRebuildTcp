@@ -42,8 +42,8 @@ namespace Assets.Scripts.Sprites
 
         public float AnimSpeed = 1;
 
-        public Color BaseColor = UnityEngine.Color.white;
-        public Color Color;
+        public Color BaseColor = Color.white;
+        public Color Color = Color.white;
         public float Alpha { get; set; }
         public int SpriteOrder;
 
@@ -262,7 +262,7 @@ namespace Assets.Scripts.Sprites
 
             spriteName = SpriteData.Name;
             IgnoreAnchor = SpriteData.IgnoreAnchor;
-            Color = Color.white;
+            //Color = Color.white;
             Alpha = 1;
 
             if (Parent == null)
@@ -631,7 +631,7 @@ namespace Assets.Scripts.Sprites
             var ray = new Ray(srcPos, destDir);
 
             //Debug.DrawLine(srcPos, destDir, Color.yellow, 10f, false);
-            //Debug.DrawRay(srcPos, destDir, Color.yellow, 100f, false);
+            //Debug.DrawRay(srcPos, destDir, Color.yellow, 50f, false);
 
             if (RaycastForShadow && Physics.Raycast(ray, out var hit, 50f, mask))
             {

@@ -11,33 +11,47 @@
 
 [Curse]
 Type = "Debuff"
+Icon = "hl_curse"
 
 [Stun]
 Type = "Debuff"
+Icon = "bd_stun"
+
+[Sleep]
+Type = "Debuff"
+Icon = "bd_sleep"
 
 [Frozen]
 Type = "Debuff"
+Icon = "bd_freezing"
 
 [Blind]
 Type = "Debuff"
+Icon = "hl_blind"
 
 [Silence]
 Type = "Debuff"
+Icon = "hl_silence"
 
 [Confusion]
 Type = "Debuff"
+Icon = "hl_confusion"
 
 [Poison]
 Type = "Debuff"
+Icon = "hl_poison"
 
 [Petrifying]
 Type = "Debuff"
+Icon = "bd_stonecurse"
 
 [Stone]
 Type = "Debuff"
+Icon = "bd_stonecurse"
 
 [Provoke]
 Type = "Debuff"
+Icon = "프로보크"
 
 #----------------------------------
 # Player Buffs
@@ -52,46 +66,54 @@ CanDisable = false
 [TwoHandQuicken]
 Name = "Two-Hand Quicken"
 Type = "Buff"
+Icon = "투핸드퀴큰"
 CanDispel = true
 CanDisable = true
 
 [Blessing]
 Name = "Blessing"
 Type = "Buff"
+Icon = "블레싱"
 CanDispel = true
 CanDisable = true
 
 [IncreaseAgi]
 Name = "Increase Agi"
 Type = "Buff"
+Icon = "민첩성증가"
 CanDispel = true
 CanDisable = true
 
 [Angelus]
 Name = "Angelus"
 Type = "Buff"
+Icon = "안젤루스"
 CanDispel = true
 CanDisable = true
 
 [SignumCrusis]
 Name = "SignumCrusis"
 Type = "Debuff"
+Icon = "시그넘크루시스"
 
 [ImproveConcentration]
 Name = "Improve Concentration"
 Type = "Buff"
+Icon = "집중력향상"
 CanDispel = true
 CanDisable = true
 
 [Endure]
 Name = "Endure"
 Type = "Buff"
+Icon = "인듀어"
 CanDispel = true
 CanDisable = true
 
 [MagnumBreak]
 Name = "Magnum Break"
 Type = "Buff"
+Icon = "프레임런쳐"
 CanDispel = true
 CanDisable = true
 
@@ -106,12 +128,28 @@ Type = "Buff"
 [Hiding]
 Name = "Hiding"
 Type = "Buff"
+Icon = "하이딩"
 CanDispel = false
 CanDisable = true
 
 [CrazyUproar]
 Name = "Crazy Uproar"
 Type = "Buff"
+Icon = "고성지르기"
+CanDispel = true
+CanDisable = true
+
+[Cloaking]
+Type = "Buff"
+Icon = "클로킹"
+CanDispel = false
+CanDisable = true
+
+[EnergyCoat]
+Type = "Buff"
+Icon = "에너지코트"
+CanDispel = true
+CanDisable = true
 
 #----------------------------------
 # Item Buffs
@@ -126,12 +164,41 @@ CanDisable = true
 [IncreasedAttackSpeed]
 Name = "Attack Speed UP"
 Type = "Buff"
+Icon = "공속물약"
 CanDispel = true
 CanDisable = true
 
 [ElementalConverter]
 Name = "Elemental Converter"
 Type = "Buff"
+CanDispel = true
+CanDisable = true
+
+[ElementalConverterFire]
+Name = "Elemental Converter (Fire)"
+Type = "Buff"
+Icon = "weapon_property_fire"
+CanDispel = true
+CanDisable = true
+
+[ElementalConverterWater]
+Name = "Elemental Converter (Water)"
+Type = "Buff"
+Icon = "weapon_property_water"
+CanDispel = true
+CanDisable = true
+
+[ElementalConverterWind]
+Name = "Elemental Converter (Wind)"
+Type = "Buff"
+Icon = "weapon_property_wind"
+CanDispel = true
+CanDisable = true
+
+[ElementalConverterEarth]
+Name = "Elemental Converter (Earth)"
+Type = "Buff"
+Icon = "weapon_property_ground"
 CanDispel = true
 CanDisable = true
 

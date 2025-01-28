@@ -52,7 +52,7 @@ namespace Assets.Scripts.Sprites
 
             var dist = (RemainingTime / Duration);
             
-            Color = new Color(Color.r, Color.g, Color.b, Mathf.Lerp(0, 0.5f, RemainingTime / Duration));
+            Color = new Color(Color.r, Color.g, Color.b, Mathf.Lerp(0, 0.4f, RemainingTime / Duration));
         }
     }
 }

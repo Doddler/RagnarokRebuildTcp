@@ -108,7 +108,7 @@ Item("Mummy_Card") { OnEquip: AddStat(AddHit, 20); }
 Item("Verit_Card") { OnEquip: AddStat(AddMaxHpPercent, 8); AddStat(AddMaxSpPercent, 8); }
 Item("Myst_Card") { OnEquip: AddStat(AddResistElementPoison, 30); AddStat(AddFlee, 5); }
 Item("Jakk_Card") { OnEquip: AddStat(AddResistElementFire, 30); AddStat(AddFlee, 5); }
-Item("Ghoul_Card") { OnEquip: AddStat(AddDef, 1); } //should add 20% resist to poison status
+Item("Ghoul_Card") { OnEquip: AddStat(AddDef, 1); AddStat(ResistPoisonStatus, 30); AddStat(DecreasePoisonStatusDamage, 50); }
 Item("Strouf_Card") { OnEquip: AddStat(AddAttackRaceDemon, 20); }
 Item("Marduk_Card") { OnEquip: } //should add 100% resist to silence
 Item("Marionette_Card") { OnEquip: AddStat(AddResistElementGhost, 30); AddStat(AddFlee, 5); }
@@ -172,7 +172,7 @@ Item("Dark_Priest_Card") { OnEquip: } //SOmething weird
 Item("The_Paper_Card") { OnEquip: AddStat(AddCritDamage, 20); } //should cost the user 1 sp per attack
 Item("Demon_Fungus_Card") { OnEquip: } //should add 20% chance to sleep monsters dealing physical damage
 Item("Deviling_Card") { OnEquip: 
-	AddStat(AddResistElementNeutral, 50);
+	AddStat(AddResistElementNeutral, 40);
 	AddStat(AddResistElementEarth, -50);
 	AddStat(AddResistElementWater, -50);
 	AddStat(AddResistElementFire, -50);

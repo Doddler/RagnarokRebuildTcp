@@ -2,6 +2,7 @@
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Hud;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 //Debug.Log($"Removing status {status} from {controllable.Name}");
 
                 StatusEffectState.RemoveStatusFromTarget(controllable, status);
+                StatusEffectPanel.Instance.RemoveStatusEffect(status);
             }
         }
     }

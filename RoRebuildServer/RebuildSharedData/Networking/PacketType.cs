@@ -98,6 +98,8 @@ public enum PacketType : byte
     [ServerOnlyPacket] ServerEvent,
     DebugEntry,
 
+    MemoMapLocation,
+
     AdminCharacterAction,
 }
 

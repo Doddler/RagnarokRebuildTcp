@@ -53,6 +53,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 {
                     player.Character.QueuedAction = QueuedAction.PickUpItem;
                     player.Character.ItemTarget = id;
+                    player.ClearTarget();
                 }
             }
         }

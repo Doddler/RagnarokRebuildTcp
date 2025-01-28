@@ -846,24 +846,30 @@ HP +5%
 
 ::Ring //id 2601 - Accessory 
 <color=#808080>An enchanted ring that enhances strength.</color>
+STR +2
 
 ::Earring //id 2602 - Accessory 
 <color=#808080>An enchanted earring that enhances intelligence.</color>
+INT +2
 
 ::Necklace //id 2603 - Accessory 
 <color=#808080>An enchanted necklace that enhances vitality.</color>
+VIT +2
 
 ::Glove //id 2604 - Accessory 
 <color=#808080>An enchanted glove that enhances dexterity.</color>
+DEX +2
 
 ::Brooch //id 2605 - Accessory 
 <color=#808080>An enchanted brooch that enhances agility.</color>
+AGI +2
 
 ::Clip //id 2607 - Accessory 
 <color=#808080>A versatile clip that can attach to pretty much anything.</color>
 
 ::Rosary //id 2608 - Accessory 
 <color=#808080>A string of beads used to count the number of repetitions that prayers are recited.</color>
+LUK +2
 
 ::Skull_Ring //id 2609 - Accessory 
 <color=#808080>A ring engraved with <color=#990000>forever or until death<color=#808080>, be careful using this as a gift!</color>
@@ -891,33 +897,42 @@ HP +5%
 
 ::Celebrant's_Mitten //id 2617 - Accessory 
 <color=#808080>A blessed glove that increases intelligence.</color>
+INT +1
 
 ::Matyr's_Leash //id 2618 - Accessory 
 <color=#808080>A Matyr's leash.</color>
+AGI +1
 
 ::Bow_Thimble //id 2619 - Accessory 
 <color=#808080>A thimble for archers that enhances power.</color>
++3% Ranged Physical Damage
 
 ::Rogue's_Treasure //id 2620 - Accessory 
 <color=#808080>An exclusive ring for thieves and ninjas.</color>
 
 ::Ring_ //id 2621 - Accessory 
 <color=#808080>An ancient ring.</color>
+STR +1
 
 ::Earring_ //id 2622 - Accessory 
 <color=#808080>An ancient earring.</color>
+INT +1
 
 ::Necklace_ //id 2623 - Accessory 
 <color=#808080>An ancient necklace.</color>
+VIT +1
 
 ::Glove_ //id 2624 - Accessory 
 <color=#808080>An ancient glove.</color>
+DEX +1
 
 ::Brooch_ //id 2625 - Accessory 
 <color=#808080>An ancient brooch.</color>
+AGI +1
 
 ::Rosary_ //id 2626 - Accessory 
 <color=#808080>An ancient rosary.</color>
+LUK +1
 
 ::Belt //id 2627 - Accessory 
 <color=#808080>A simple, practical belt that has little fashion value.</color>

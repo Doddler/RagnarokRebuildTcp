@@ -33,20 +33,7 @@ public class SkillPoison : SkillHandlerBase
             return;
 
         var chance = lvl * 100; //10% at lvl 1, 100% at lvl 10
-        var resist = MathHelper.PowScaleDown(target.GetEffectiveStat(CharacterStat.Vit)); //1% resist per vit, stacking
-        if (!source.CheckLuckModifiedRandomChanceVsTarget(target, (int)(chance * resist), 1000))
-            return; //failed to poison
-
-        //unlike regular poison status, envenom always lasts it's entire duration. Extra value!
-        var duration = lvl switch
-        {
-            < 3 => 12f, //4 ticks
-            < 6 => 15f, //5 ticks
-            < 9 => 18f, //6 ticks
-            _ => 21f //7 ticks
-        };
-
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Poison, duration + 2, source.Character.Id, res.Damage / 2);
-        target.AddStatusEffect(status, true, res.AttackMotionTime);
+        var duration = 12.5f + lvl * 2; //highest level used by a monster is 5
+        source.TryPoisonOnTarget(target, chance, true, res.Damage / 2, duration, res.AttackMotionTime);
     }
 }

@@ -23,6 +23,7 @@ using System.Threading;
 using RebuildSharedData.ClientTypes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using RebuildSharedData.Util;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.EntityComponents;
@@ -201,6 +202,18 @@ public class CombatEntity : IEntityAutoReset
         }
     }
 
+    public void TryDeserializeStatusContainer(IBinaryMessageReader br)
+    {
+        var count = (int)br.ReadByte();
+        if (count == 0)
+            return;
+
+        statusContainer = StatusEffectPoolManager.BorrowStatusContainer();
+        statusContainer.Owner = this;
+
+        statusContainer.Deserialize(br, count);
+    }
+
     public bool CanTeleport() => Character.Map?.CanTeleport ?? false;
 
     public void RandomTeleport()
@@ -232,7 +245,7 @@ public class CombatEntity : IEntityAutoReset
         status = statusContainer;
         return true;
     }
-
+    
 
     public void AddDisabledState()
     {
@@ -1128,9 +1141,12 @@ public class CombatEntity : IEntityAutoReset
         var vit = target.GetEffectiveStat(CharacterStat.Vit) * 3 / 2; //+50% to make it less weird
 
         if (target.GetSpecialType() == CharacterSpecialType.Boss)
-            vit *= 2;
+            vit = vit * 5 / 2; //2.5x
 
         var resist = MathF.Pow(0.99f, vit);
+        var resistChance = 100 - target.GetStat(CharacterStat.ResistStunStatus);
+        if (resistChance != 100)
+            resist = resist * resistChance / 100;
 
         if (!CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
             return false;
@@ -1138,35 +1154,59 @@ public class CombatEntity : IEntityAutoReset
         var timeResist = MathHelper.PowScaleDown(vit / 2);
         var len = 5f * timeResist;
 
+        var durationResist = 100 - target.GetStat(CharacterStat.DecreaseStunDuration);
+        if (durationResist != 100)
+            len = len * durationResist / 100;
+
+        if (len <= 0)
+            return false;
+
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Stun, len);
         target.AddStatusEffect(status, false, delayApply);
         return true;
     }
 
-
-    public bool TryPoisonOnTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
+    public bool TryPoisonOnTarget(CombatEntity target, int chanceIn1000, bool scaleDuration = true, int baseDamage = 0, float baseDuration = 24f, float delayApply = 0.3f)
     {
         if (target.HasStatusEffectOfType(CharacterStatusEffect.Poison))
             return false;
 
-        var vit = target.GetEffectiveStat(CharacterStat.Vit) * 3 / 2; //+50% to make it less weird
+        var vit = target.GetEffectiveStat(CharacterStat.Vit);
+
+        if (target.Character.Type == CharacterType.Player)
+            vit = vit * 3 / 2; //1.5x for players
 
         if (target.GetSpecialType() == CharacterSpecialType.Boss)
-            vit *= 2;
+            vit = vit * 5 / 2; //2.5x for boss
 
-        var resist = MathHelper.PowScaleDown(vit/4);
+        var resist = MathHelper.PowScaleDown(vit);
+        var resistChance = 100 - target.GetStat(CharacterStat.ResistPoisonStatus);
+        if (resistChance != 100)
+            resist = resist * resistChance / 100;
 
         if (!CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
             return false;
 
-        var req = new AttackRequest(0.5f, 1, AttackFlags.PhysicalStatusTest, AttackElement.Neutral); //element doesn't matter
+        if (baseDamage == 0)
+        {
+            var req = new AttackRequest(0.5f, 1, AttackFlags.PhysicalStatusTest,
+                AttackElement.Neutral); //element doesn't matter
 
-        var poisonDamage = CalculateCombatResult(target, req);
+            var poisonDamage = CalculateCombatResult(target, req);
+            baseDamage = poisonDamage.Damage;
+        }
 
-        var timeResist = MathHelper.PowScaleDown(vit / 4);
-        var len = 24f * timeResist;
+        var damageResist = 100 - target.GetStat(CharacterStat.DecreasePoisonStatusDamage);
+        if(damageResist != 100)
+            baseDamage = baseDamage * damageResist / 100;
 
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Poison, len, Character.Id, poisonDamage.Damage);
+        var len = baseDuration;
+        if(scaleDuration)
+            len *= MathHelper.PowScaleDown(vit / 2);
+
+        len = 15;
+        
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Poison, len + 1.5f, Character.Id, baseDamage);
         target.AddStatusEffect(status, true, delayApply);
 
         return true;
@@ -1248,11 +1288,13 @@ public class CombatEntity : IEntityAutoReset
         if (!flags.HasFlag(AttackFlags.NoElement))
         {
             var defenderElement = target.GetElement();
-            if (target.Character.Type == CharacterType.Player && defenderElement == CharacterElement.Ghost1 && req.SkillSource == CharacterSkill.None)
-                defenderElement = CharacterElement.Neutral1;
 
             if (attackElement == AttackElement.None)
             {
+                //ghost armor has no effect on monster attacks if they are launched with AttackElement None
+                if (defenderElement == CharacterElement.Ghost1 && attackerType == CharacterType.Monster && target.Character.Type == CharacterType.Player)
+                    defenderElement = CharacterElement.Neutral1;
+
                 attackElement = AttackElement.Neutral;
                 if (Character.Type == CharacterType.Player)
                 {
@@ -1274,10 +1316,6 @@ public class CombatEntity : IEntityAutoReset
                 eleMod -= target.GetStat(CharacterStat.AddResistElementNeutral + (int)attackElement);
             if (attackerType == CharacterType.Player)
                 eleMod += GetStat(CharacterStat.AddAttackElementNeutral + (int)defenderElement);
-
-            //ghost armor has no effect on monster auto attacks
-            if (defenderElement == CharacterElement.Ghost1 && req.SkillSource == CharacterSkill.None && defenderType == CharacterType.Player && attackerType == CharacterType.Monster)
-                defenderElement = CharacterElement.Neutral1;
 
             if (defenderElement != CharacterElement.None)
                 eleMod = eleMod * DataManager.ElementChart.GetAttackModifier(attackElement, defenderElement) / 100;
@@ -1450,7 +1488,7 @@ public class CombatEntity : IEntityAutoReset
                 subDef = 999999;
         }
 
-        var damage = (int)(baseDamage * attackMultiplier * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f) * defCut - subDef);
+        var damage = (int)((baseDamage * attackMultiplier * defCut - subDef) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f));
         if (damage < 1)
             damage = 1;
 
@@ -1711,6 +1749,8 @@ public class CombatEntity : IEntityAutoReset
     {
         if (!IsCasting)
             return;
+        if (CastInterruptionMode == CastInterruptionMode.NeverInterrupt)
+            return;
         IsCasting = false;
         if (!Character.HasVisiblePlayers())
             return;
@@ -1761,6 +1801,9 @@ public class CombatEntity : IEntityAutoReset
             delayTime = 0.15f;
         if (!hasHitStop)
             delayTime = 0f;
+        if (di.Flags.HasFlag(DamageApplicationFlags.ReducedHitLock))
+            delayTime = 0.1f;
+
         var oldPosition = Character.Position;
 
         var sendMove = di.Flags.HasFlag(DamageApplicationFlags.UpdatePosition);

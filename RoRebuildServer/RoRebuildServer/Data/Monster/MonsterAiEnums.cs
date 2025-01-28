@@ -38,6 +38,9 @@ public enum MonsterAiState : byte
     StateAdjust,
     StateDead,
     StateFlee,
+    StateFollow,
+    StateFollowSearch,
+    StateAngry,
     StateHidden,
     StateSpecial,
 }

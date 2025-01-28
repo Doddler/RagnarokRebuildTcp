@@ -29,7 +29,7 @@ Id,Code,Name,Price,Weight,EquipableSlot,Prefix,Postfix,Sprite
 4028,Tarou_Card,Tarou Card,20,10,Accessory,Double-forced,,이름없는카드
 4029,Wolf_Card,Wolf Card,20,10,Weapon,Wolverine,,이름없는카드
 4030,Mandragora_Card,Mandragora Card,20,10,Weapon,Windy,,이름없는카드
-4031,Peco_Peco_Card,Peco Peco Card,20,10,Armor,,of Mars,이름없는카드
+4031,Peco_Peco_Card,Peco Peco Card,20,10,Armor,,of Ares,이름없는카드
 4032,Ambernite_Card,Ambernite Card,20,10,Shield,,of Athena,이름없는카드
 4033,Poporing_Card,Poporing Card,20,10,Accessory,Detoxication,,이름없는카드
 4034,Wormtail_Card,Wormtail Card,20,10,Accessory,Clever,,이름없는카드
@@ -266,7 +266,7 @@ Id,Code,Name,Price,Weight,EquipableSlot,Prefix,Postfix,Sprite
 4266,Eclipse_Card,Eclipse Card,20,10,Garment,Magic Resistant,,이름없는카드
 4267,Explosion_Card,Explosion Card,20,10,Boots,Dragon Slayer's,,이름없는카드
 4268,Injustice_Card,Injustice Card,20,10,Weapon,Extending,,이름없는카드
-4269,Incubus_Card,Incubus Card,20,10,Headgear,Fatasm,,이름없는카드
+4269,Incubus_Card,Incubus Card,20,10,Headgear,Phantasm,,이름없는카드
 4270,Giant_Spider_Card,Giant Spider Card,20,10,Armor,,of Venom,이름없는카드
 4271,Giant_Hornet_Card,Giant Hornet Card,20,10,Headgear,Yellow Stone,,이름없는카드
 4272,Zhu_Po_Long_Card,Zhu Po Long Card,20,10,Accessory,Swift,,이름없는카드
@@ -310,7 +310,7 @@ Id,Code,Name,Price,Weight,EquipableSlot,Prefix,Postfix,Sprite
 4310,Panzer_Goblin_Card,Panzer Goblin Card,20,10,Weapon,Fatally Evil,,이름없는카드
 4311,Permeter_Card,Permeter Card,20,10,Headgear,Anti-Evil,,이름없는카드
 4312,Fur_Seal_Card,Fur Seal Card,20,10,Weapon,,of the Soul,이름없는카드
-4313,Punk_Card,Punk Card,20,10,Garment,Bogie,,이름없는카드
+4313,Punk_Card,Punk Card,20,10,Garment,Boggy,,이름없는카드
 4314,Penomena_Card,Penomena Card,20,10,Shield,Fire-Proof,,이름없는카드
 4315,Pest_Card,Pest Card,20,10,Armor,,of Stone Curse,이름없는카드
 4316,False_Angel_Card,False Angel Card,20,10,Weapon,,of Angel Soul Eater,이름없는카드
@@ -373,7 +373,7 @@ Id,Code,Name,Price,Weight,EquipableSlot,Prefix,Postfix,Sprite
 4373,Green_Maiden_Card,Green Maiden Card,20,10,Garment,Cursed,,이름없는카드
 4374,Vesper_Card,Vesper Card,20,10,Headgear,,of Vision,이름없는카드
 4375,Orc_Baby_Card,Orc Baby Card,20,10,Garment,Extra High Level,,이름없는카드
-4376,Lady_Tanee_Card,Lady Tanee Card,20,10,Boots,Manful,,이름없는카드
+4376,Lady_Tanee_Card,Lady Tanee Card,20,10,Boots,Manaful,,이름없는카드
 4377,Grove_Card,Grove Card,20,10,Accessory,Sweetie,,이름없는카드
 4378,Gold_Acidus_Card,Gold Acidus Card,20,10,Boots,Low Level,,이름없는카드
 4379,Blue_Acidus_Card,Blue Acidus Card,20,10,Headgear,Low Level,,이름없는카드

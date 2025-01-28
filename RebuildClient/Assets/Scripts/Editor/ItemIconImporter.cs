@@ -67,7 +67,7 @@ namespace Assets.Scripts.Editor
                 }
             }
             File.WriteAllText("Assets/Data/SharedItemIcons.txt", sharedItemSprites.ToString());
-
+            
             var atlasPath = "Assets/Textures/ItemAtlas.spriteatlasv2";
             if (!File.Exists(atlasPath))
                 TextureImportHelper.CreateAtlas("ItemAtlas.spriteatlasv2", "Assets/Textures/");
@@ -80,6 +80,7 @@ namespace Assets.Scripts.Editor
             var sprites = new List<Sprite>();
 
             var srcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "sprite/아이템");
+            var statusPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/effect");
             var collectionSrcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/유저인터페이스/collection");
             Debug.Log(srcPath);
 
@@ -239,6 +240,39 @@ namespace Assets.Scripts.Editor
                 if(!sprites.Contains(sprite))
                     sprites.Add(sprite);
             }
+            
+            var statusDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/statusinfo.json");
+            var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(statusDataFile.text);
+            foreach (var status in statusData.Items)
+                if (!string.IsNullOrWhiteSpace(status.Icon) && !iconNames.Contains(status.Icon))
+                {
+                    var targetName = status.StatusEffect.ToString();
+                    var destPath = $@"Assets/Sprites/Imported/Icons/Sprites/status_{targetName}.png";
+                    var statusSrc = Path.Combine(statusPath, $"{status.Icon}.tga");
+                    
+                    if (!File.Exists(destPath) && File.Exists(statusSrc))
+                    {
+                        var tex = TextureImportHelper.LoadTexture(statusSrc);
+                        TextureImportHelper.SaveAndUpdateTexture(tex, destPath, ti =>
+                        {
+                            ti.textureType = TextureImporterType.Sprite;
+                            ti.spriteImportMode = SpriteImportMode.Single;
+                            ti.textureCompression = TextureImporterCompression.Uncompressed;
+                        }, false);
+                 
+                    }
+                    
+                    var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(destPath);
+                    if (sprite == null)
+                    {
+                        Debug.LogWarning($"Could not find status effect icon: {statusSrc}");
+                        continue;
+                    }
+
+                    if(!sprites.Contains(sprite))
+                        sprites.Add(sprite);
+                }
+            
 
             Debug.Log($"Imported {i} item/skill icon sprites!");
 

@@ -29,6 +29,7 @@ namespace Utility
 
                 return instance;
             }
+            protected set => Instance = value;
         }
     }
 }

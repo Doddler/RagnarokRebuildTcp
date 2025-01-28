@@ -13,6 +13,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Database.Requests;
 
@@ -25,12 +26,13 @@ public class SaveCharacterRequest : IDbRequest
     private readonly Position pos;
     private readonly SavePosition savePoint;
     private byte[]? data;
-    private byte[]? skillData;
-    private byte[]? npcData;
+    //private byte[]? skillData;
+    //private byte[]? npcData;
     private byte[]? itemData;
     private byte[]? summaryData;
     private int slot;
     private int itemDataSize;
+    private int dataLength;
 
     public SaveCharacterRequest(string newCharacterName, int accountId)
     {
@@ -40,12 +42,13 @@ public class SaveCharacterRequest : IDbRequest
         map = null;
         pos = Position.Invalid;
         savePoint = new SavePosition();
-        skillData = null;
+        //skillData = null;
         data = null;
-        npcData = null;
+        //npcData = null;
         itemData = null;
         summaryData = null;
         itemDataSize = 0;
+        dataLength = 0;
     }
 
     public SaveCharacterRequest(Player player)
@@ -60,17 +63,11 @@ public class SaveCharacterRequest : IDbRequest
         savePoint = player.SavePosition;
         slot = player.CharacterSlot;
 
-        var charData = player.CharData;
+        //store player data (data, npc flags, learned skills, status effects)
+        data = PlayerDataDbHelper.StorePlayerDataForDatabaseUse(player, out dataLength);
 
-        //we should reuse this, char data array never changes size
-        if (data == null || data.Length != charData.Length * sizeof(int))
-            data = new byte[charData.Length * sizeof(int)];
-
-        Buffer.BlockCopy(charData, 0, data, 0, charData.Length * sizeof(int));
-
-        skillData = DbHelper.BorrowArrayAndWriteDictionary(player.LearnedSkills);
-        npcData = DbHelper.BorrowArrayAndWriteDictionary(player.NpcFlags);
-        summaryData = ArrayPool<byte>.Shared.Rent((int)PlayerSummaryData.SummaryDataMax * sizeof(int));
+        //create character summary
+        summaryData = ByteArrayPools.ArrayPoolPlayerSummary.Get();
         Array.Clear(summaryData);
 
         var summary = ArrayPool<int>.Shared.Rent((int)PlayerSummaryData.SummaryDataMax);
@@ -78,6 +75,7 @@ public class SaveCharacterRequest : IDbRequest
         Buffer.BlockCopy(summary, 0, summaryData, 0, (int)PlayerSummaryData.SummaryDataMax * sizeof(int));
         ArrayPool<int>.Shared.Return(summary);
 
+        //inventory data
         itemData = PlayerDataDbHelper.CompressAndStorePlayerInventoryData(player, out itemDataSize);
     }
 
@@ -92,6 +90,7 @@ public class SaveCharacterRequest : IDbRequest
             X = pos.X,
             Y = pos.Y,
             Data = data,
+            DataLength = dataLength,
             CharacterSlot = slot,
             SavePoint = new DbSavePoint()
             {
@@ -100,22 +99,21 @@ public class SaveCharacterRequest : IDbRequest
                 Y = savePoint.Position.Y,
                 Area = savePoint.Area,
             },
-            SkillData = skillData,
-            NpcFlags = npcData,
             CharacterSummary = summaryData,
             ItemData = itemData,
             ItemDataLength = itemDataSize,
-            VersionFormat = 2
+            SkillData = null,
+            NpcFlags = null,
+            SkillDataLength = 0,
+            NpcFlagsLength = 0,
+            VersionFormat = PlayerDataDbHelper.CurrentPlayerSaveVersion
         };
         
         dbContext.Update(ch);
         await dbContext.SaveChangesAsync();
 
-        if (skillData != null) ArrayPool<byte>.Shared.Return(skillData);
-        if (npcData != null) ArrayPool<byte>.Shared.Return(npcData);
-        if (summaryData != null) ArrayPool<byte>.Shared.Return(summaryData);
+        if (summaryData != null) ByteArrayPools.ArrayPoolPlayerSummary.Return(summaryData);
 
-        skillData = null;
         data = null; //we didn't borrow the itemData array so we don't return it
 
         Id = ch.Id;

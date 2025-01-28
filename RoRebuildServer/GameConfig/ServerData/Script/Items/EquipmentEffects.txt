@@ -56,6 +56,7 @@ Item("Brooch") { OnEquip:  AddStat(AddAgi, 2); }
 Item("Rosary") { OnEquip:  AddStat(AddLuk, 2); }
 Item("Celebrant's_Mitten") { OnEquip:  AddStat(AddInt, 1); }
 Item("Matyr's_Leash") { OnEquip:  AddStat(AddAgi, 1); }
+Item("Bow_Thimble") { OnEquip:  AddStat(AddAttackRangedAttack, 3); }
 Item("Ring_") { OnEquip:  AddStat(AddStr, 1); }
 Item("Earring_") { OnEquip:  AddStat(AddInt, 1); }
 Item("Necklace_") { OnEquip:  AddStat(AddVit, 1); }

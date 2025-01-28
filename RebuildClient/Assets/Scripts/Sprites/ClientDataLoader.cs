@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Utility;
@@ -53,6 +54,8 @@ namespace Assets.Scripts.Sprites
         [SerializeField] private TextAsset ServerVersionData;
         [SerializeField] private TextAsset PatchNoteData;
         [SerializeField] private TextAsset JobExpData;
+        [SerializeField] private TextAsset EmoteData;
+        [SerializeField] private TextAsset StatusEffectData;
         public SpriteAtlas ItemIconAtlas;
 
         public int ServerVersion;
@@ -73,6 +76,8 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<string, string> displaySpriteList = new();
         private readonly Dictionary<string, string> itemDescriptionTable = new();
         private readonly Dictionary<int, CardPrefixData> cardPrefixPostfixTable = new();
+        private readonly Dictionary<int, EmoteData> emoteDataTable = new();
+        private readonly Dictionary<int, StatusEffectData> statusEffectData = new();
         private readonly int[] jobExpData = new int[70 * 2];
         
         private readonly List<string> validMonsterClasses = new();
@@ -93,6 +98,7 @@ namespace Assets.Scripts.Sprites
         public SkillTarget GetSkillTarget(CharacterSkill skill) => skillData.TryGetValue(skill, out var target) ? target.Target : SkillTarget.Any;
         public Dictionary<CharacterSkill, SkillData> GetAllSkills() => skillData;
         public ClientSkillTree GetSkillTree(int jobId) => jobSkillTrees.GetValueOrDefault(jobId);
+        public Dictionary<int, EmoteData> GetEmoteTable => emoteDataTable;
 
         public MapViewpoint GetMapViewpoint(string mapName) => mapViewpoints.GetValueOrDefault(mapName);
         public MonsterClassData GetMonsterData(int classId) => monsterClassLookup.GetValueOrDefault(classId);
@@ -102,6 +108,7 @@ namespace Assets.Scripts.Sprites
         public bool TryGetItemById(int id, out ItemData item) => itemIdLookup.TryGetValue(id, out item);
         public string GetItemDescription(string itemCode) => itemDescriptionTable.GetValueOrDefault(itemCode, "No description available.");
         public CardPrefixData GetCardPrefixData(int id) => cardPrefixPostfixTable.GetValueOrDefault(id, null);
+        public StatusEffectData GetStatusEffect(int id) => statusEffectData.GetValueOrDefault(id, null);
         public int GetJobExpRequired(int job, int level) => level < 0 || level >= 70 ? -1 : jobExpData[(job == 0 ? 0 : 1) * 70 + level];
 
         public static int UniqueItemStartId = 20000;
@@ -222,8 +229,12 @@ namespace Assets.Scripts.Sprites
             var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
             foreach (var weapon in weaponClass.Items)
                 weaponClassData.TryAdd(weapon.Id, weapon);
-
-
+            
+            var emoteData = JsonUtility.FromJson<Wrapper<EmoteData>>(EmoteData.text);
+            foreach (var emote in emoteData.Items)
+                if(!emoteDataTable.TryAdd(emote.Id, emote))
+                    Debug.LogWarning($"Failed to add emote {emote.Id} to emote table");
+            
             var items = JsonUtility.FromJson<Wrapper<ItemData>>(ItemData.text);
 
             var itemIcons = new Dictionary<string, string>();
@@ -311,6 +322,10 @@ namespace Assets.Scripts.Sprites
             var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapData.text);
             foreach (var map in mapClass.Items)
                 mapDataLookup.TryAdd(map.Code, map);
+            
+            var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(StatusEffectData.text);
+            foreach (var status in statusData.Items)
+                statusEffectData.Add((int)status.StatusEffect, status);
 
             var itemDescriptions = JsonUtility.FromJson<Wrapper<ItemDescription>>(ItemDescData.text);
             foreach (var desc in itemDescriptions.Items)
@@ -319,12 +334,12 @@ namespace Assets.Scripts.Sprites
             var notes = JsonUtility.FromJson<Wrapper<PatchNotes>>(PatchNoteData.text);
             
             var sb = new StringBuilder();
-            sb.AppendLine("<b>Changes</b>");
+            //sb.AppendLine("<b>Changes</b>");
             if (notes.Items.Length > 0)
                 LatestPatchNotes = notes.Items[0].Date;
             for (var i = 0; i < notes.Items.Length && i < 5; i++)
             {
-                sb.AppendLine(notes.Items[i].Date);
+                sb.AppendLine($"<b><u><size=+2>{notes.Items[i].Date}</size></u></b>");
                 sb.AppendLine(notes.Items[i].Desc);
                 sb.Append("\n");
             }
@@ -696,11 +711,16 @@ namespace Assets.Scripts.Sprites
                 AddressableUtility.LoadRoSpriteData(ctrl.gameObject, spriteName, headgearSprite.OnSpriteDataLoad);
         }
 
-        public void AttachEmote(GameObject target, int emoteId)
+        public void AttachEmote(ServerControllable target, int emoteId)
         {
-            if (emoteId >= 34)
-                emoteId--; //34 is the chat prohibited marker, but it isn't actually an emote within emotes.spr
+            // if (emoteId >= 34)
+            //     emoteId--; //34 is the chat prohibited marker, but it isn't actually an emote within emotes.spr
 
+            if (emoteId >= 200)
+                emoteId -= 143; //these are dice, which sprites starts at 57. They use an out of range value so you can't send packet to get a specific roll.
+            else if (emoteDataTable.TryGetValue(emoteId, out var id))
+                emoteId = id.Sprite;
+                
             var go = new GameObject("Emote");
             //go.layer = LayerMask.NameToLayer("Characters");
             var billboard = go.AddComponent<BillboardObject>();
@@ -708,25 +728,34 @@ namespace Assets.Scripts.Sprites
 
             var emote = go.AddComponent<EmoteController>();
             emote.AnimationId = emoteId;
-            emote.Target = target;
+            emote.Target = target.gameObject;
+
+            var height = 50f;
+            if (target.SpriteAnimator != null)
+                height = target.SpriteAnimator.SpriteData.StandingHeight;
+            if (target.CharacterType == CharacterType.Player)
+                height += 12;
+            if (height > 100)
+                height = 120;
 
             var child = new GameObject("Sprite");
             //child.layer = LayerMask.NameToLayer("Characters");
             child.transform.SetParent(go.transform, false);
-            child.transform.localPosition = Vector3.zero + new Vector3(0, 0, -0.01f);
+            child.transform.localPosition = Vector3.zero + new Vector3(0, height/30f, -0.01f);
             child.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             var sr = child.AddComponent<RoSpriteRendererStandard>();
             sr.SecondPassForWater = false;
             sr.UpdateAngleWithCamera = false;
-
+            
             var sprite = child.AddComponent<RoSpriteAnimator>();
             emote.RoSpriteAnimator = sprite;
             sprite.Type = SpriteType.Npc;
             sprite.State = SpriteState.Dead;
             //sprite.LockAngle = true;
             sprite.SpriteRenderer = sr;
-
+            sprite.SpriteOrder = 50; 
+            
             AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/Misc/emotion.spr", emote.OnFinishLoad);
         }
 

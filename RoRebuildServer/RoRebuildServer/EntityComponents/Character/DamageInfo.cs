@@ -10,7 +10,9 @@ public enum DamageApplicationFlags : byte
 {
     None = 0,
     NoHitLock = 1,
-    UpdatePosition = 2,
+    ReducedHitLock = 2,
+    UpdatePosition = 4,
+    SkipOnHitTriggers = 8
 }
 
 public struct DamageInfo

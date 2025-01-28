@@ -32,8 +32,7 @@ public class LoadCharacterRequest : IDbRequest
 
     public byte[]? Data;
     public bool HasCharacter;
-    public bool HasStorage;
-    public int StorageId;
+    public int DataLength;
     public int SaveVersion;
 
     public LoadCharacterRequest(int accountId, string character)
@@ -67,6 +66,7 @@ public class LoadCharacterRequest : IDbRequest
                 Map = ch.Map;
             Position = new Position(ch.X, ch.Y);
             Data = ch.Data;
+            DataLength = ch.DataLength;
             CharacterSlot = ch.CharacterSlot;
             SaveVersion = ch.VersionFormat;
             if (ch.SavePoint != null)
@@ -83,21 +83,25 @@ public class LoadCharacterRequest : IDbRequest
             else
                 SavePosition = new SavePosition();
 
-            var skills = DbHelper.ReadDictionary<CharacterSkill>(ch.SkillData);
-            SkillsLearned = skills ?? new Dictionary<CharacterSkill, int>();
+            if (SaveVersion < 3)
+            {
+                var skills = DbHelper.ReadDictionary<CharacterSkill>(ch.SkillData);
+                SkillsLearned = skills ?? new Dictionary<CharacterSkill, int>();
 
-            NpcFlags = DbHelper.ReadDictionary(ch.NpcFlags);
+                NpcFlags = DbHelper.ReadDictionary(ch.NpcFlags);
+            }
 
             if (ch.ItemData != null)
             {
-                if(ch.VersionFormat == 0)
+                if (ch.VersionFormat == 0)
                     PlayerDataDbHelper.LoadVersion0PlayerInventoryData(this, ch);
                 else
                 {
-                    if(ch.ItemDataLength > 0)
+                    if (ch.ItemDataLength > 0)
                         PlayerDataDbHelper.DecompressPlayerInventoryData(this, ch.ItemData, ch.ItemDataLength);
                 }
             }
+
 
             HasCharacter = true;
 

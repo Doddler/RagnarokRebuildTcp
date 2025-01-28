@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Effects;
+using UnityEngine;
 
 namespace Assets.Scripts.Sprites
 {
@@ -8,10 +9,18 @@ namespace Assets.Scripts.Sprites
         public int AnimationId;
         public RoSpriteAnimator RoSpriteAnimator;
 
+        private static Material mat;
+
         //private bool isStarted;
 
         public void OnFinishLoad(RoSpriteData data)
         {
+            if (mat == null)
+            {
+                mat = new Material(ShaderCache.Instance.AlphaBlendNoZTestShader);
+                mat.renderQueue = 3015;
+            }
+            
             RoSpriteAnimator.CurrentMotion = SpriteMotion.Dead;
             RoSpriteAnimator.OnSpriteDataLoadNoCollider(data);
             RoSpriteAnimator.ChangeActionExact(AnimationId);
@@ -22,6 +31,7 @@ namespace Assets.Scripts.Sprites
                 if (gameObject != null) Destroy(gameObject);
             };
             
+            ((RoSpriteRendererStandard)RoSpriteAnimator.SpriteRenderer).SetOverrideMaterial(mat);
 
             //isStarted = true;
         }
@@ -31,7 +41,7 @@ namespace Assets.Scripts.Sprites
             if (Target == null)
                 Destroy(gameObject);
             else
-                transform.position = Target.transform.position + new Vector3(0, 3f, 0f);
+                transform.position = Target.transform.position;
         }
     }
 }

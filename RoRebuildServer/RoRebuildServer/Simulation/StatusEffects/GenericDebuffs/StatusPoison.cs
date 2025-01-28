@@ -27,9 +27,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 return StatusUpdateResult.Continue; //only do this every 3 seconds
             state.Value4 = (byte)(ch.Character.Type == CharacterType.Player ? 3 : 2);
 
-            //basically monsters will stop taking poison damage below 20% if they are not also taking active damage from another source.
-            //poison ticks are 3s apart, so a check to see if it has been damaged in the last 2 seconds should mean we can't count our own damage.
-            if (ch.Character.Type == CharacterType.Monster && ch.HpPercent < 20 && ch.Character.Monster.TimeSinceLastDamage > 2f)
+            if (ch.Character.Type == CharacterType.Monster && ch.HpPercent < 20 && ch.Character.Monster.TimeSinceLastDamage > 3f)
                 return StatusUpdateResult.Continue;
 
             var attackerEntity = World.Instance.GetEntityById(state.Value1);
@@ -60,7 +58,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 Time = 0,
                 AttackMotionTime = 0,
                 AttackPosition = ch.Character.Position,
-                Flags = DamageApplicationFlags.NoHitLock
+                Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.SkipOnHitTriggers
             };
             
             ch.ExecuteCombatResult(di, false, false);

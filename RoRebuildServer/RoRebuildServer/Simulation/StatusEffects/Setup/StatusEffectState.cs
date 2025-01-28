@@ -1,4 +1,5 @@
 ﻿using RebuildSharedData.Enum;
+using RebuildSharedData.Util;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.StatusEffects.Setup
@@ -25,7 +26,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
             };
             return statusEffect;
         }
-
+        
         public bool Equals(StatusEffectState other)
         {
             return Type.Equals(other.Type);
@@ -39,6 +40,31 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public override int GetHashCode()
         {
             return HashCode.Combine(Type);
+        }
+
+        public static StatusEffectState Deserialize(IBinaryMessageReader br)
+        {
+            var type = (CharacterStatusEffect)br.ReadByte();
+            var time = br.ReadFloat();
+            var val1 = br.ReadInt32();
+            var val2 = br.ReadInt32();
+            var val3 = br.ReadInt16();
+            var val4 = br.ReadByte();
+
+            return NewStatusEffect(type, time, val1, val2, val3, val4);
+        }
+
+        public void Serialize(IBinaryMessageWriter bw)
+        {
+            bw.Write((byte)Type);
+            if(Expiration < float.MaxValue)
+                bw.Write(Expiration - Time.ElapsedTimeFloat);
+            else
+                bw.Write(0);
+            bw.Write(Value1);
+            bw.Write(Value2);
+            bw.Write(Value3);
+            bw.Write(Value4);
         }
     }
 }

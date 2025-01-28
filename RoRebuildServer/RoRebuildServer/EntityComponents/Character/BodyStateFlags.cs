@@ -6,7 +6,7 @@
         None = 0,
         Stopped = 1,
         Curse = 2,
-        Blind = 4,
+        Frozen = 4,
         Hidden = 8
     }
 }

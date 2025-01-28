@@ -10,11 +10,12 @@ public class StatusAngelus : StatusEffectBase
 {
     //value1 = skill level
     //value2 = level of divine protection learned by the caster
+    //value3 = soft def added percent
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)
     {
         var lvl = state.Value1;
-        state.Value1 *= 5;
-        ch.AddStat(CharacterStat.AddSoftDefPercent, state.Value1);
+        state.Value3 = (short)(lvl * 5);
+        ch.AddStat(CharacterStat.AddSoftDefPercent, state.Value3);
 
         if (ch.Character.Type == CharacterType.Player)
         {
@@ -34,10 +35,10 @@ public class StatusAngelus : StatusEffectBase
             ch.AddStat(CharacterStat.AddResistRaceUndead, state.Value2);
         }
     }
-
+    
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
-        ch.SubStat(CharacterStat.AddSoftDefPercent, state.Value1);
+        ch.SubStat(CharacterStat.AddSoftDefPercent, state.Value3);
         ch.SubStat(CharacterStat.AddResistRaceDemon, state.Value2);
         ch.SubStat(CharacterStat.AddResistRaceUndead, state.Value2);
     }

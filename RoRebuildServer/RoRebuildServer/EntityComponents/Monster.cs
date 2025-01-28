@@ -60,6 +60,7 @@ public partial class Monster : IEntityAutoReset
     //private float timeEnteredCombat;
     private float timeLastCombat;
     private float timeSinceLastDamage;
+    private float timeOfStartChase;
     private float createTime;
 
     public void UpdateStateChangeTime() => timeofLastStateChange = Time.ElapsedTimeFloat;
@@ -67,7 +68,12 @@ public partial class Monster : IEntityAutoReset
     //private float durationInCombat => Target.IsAlive() ? Time.ElapsedTimeFloat - timeEnteredCombat : -1f;
     public float DurationOutOfCombat => !Target.IsAlive() ? Time.ElapsedTimeFloat - timeLastCombat : -1;
     public float TimeSinceLastDamage => Time.ElapsedTimeFloat - timeSinceLastDamage;
+    public float TimeSinceStartChase => Time.ElapsedTimeFloat - timeOfStartChase;
+
     public float TimeAlive => Time.ElapsedTimeFloat - createTime;
+
+    public int ChaseSight = 12;
+    public int AttackSight = 9;
 
     //private float randomMoveCooldown;
 
@@ -153,16 +159,20 @@ public partial class Monster : IEntityAutoReset
 
     public void NotifyOfAttack(ref DamageInfo di)
     {
-        timeSinceLastDamage = Time.ElapsedTimeFloat;
-        LastDamageSourceType = di.AttackSkill;
         var hasSrc = di.Source.IsAlive();
-        if (hasSrc && di.Source.TryGet<WorldObject>(out var src))
-            LastAttackRange = Character.Position.DistanceTo(src.Position);
-        else
-            LastAttackRange = 0;
-        ResetAiUpdateTime();
-        Character.StopMovingImmediately();
-        WasAttacked = true;
+
+        if (!di.Flags.HasFlag(DamageApplicationFlags.SkipOnHitTriggers))
+        {
+            timeSinceLastDamage = Time.ElapsedTimeFloat;
+            LastDamageSourceType = di.AttackSkill;
+            if (hasSrc && di.Source.TryGet<WorldObject>(out var src))
+                LastAttackRange = Character.Position.DistanceTo(src.Position);
+            else
+                LastAttackRange = 0;
+            ResetAiUpdateTime();
+            Character.StopMovingImmediately();
+            WasAttacked = true;
+        }
 
         if (!hasSrc)
             return;
@@ -202,6 +212,8 @@ public partial class Monster : IEntityAutoReset
         canResetAttackedState = false;
         timeSinceLastDamage = 0;
         LastAttackRange = 0;
+        AttackSight = 9;
+        ChaseSight = 12;
         if(monsterInventory != null)
             ArrayPool<ItemReference>.Shared.Return(monsterInventory, true);
         monsterInventory = null;
@@ -228,6 +240,8 @@ public partial class Monster : IEntityAutoReset
         aiTickRate = 0.05f;
         LastDamageSourceType = CharacterSkill.None;
         GivesExperience = true;
+        ChaseSight = monData.ChaseDist;
+        AttackSight = monData.ScanDist;
 
         if (SpawnRule != null)
         {
@@ -247,6 +261,7 @@ public partial class Monster : IEntityAutoReset
         timeofLastStateChange = Time.ElapsedTimeFloat;
         timeLastCombat = Time.ElapsedTimeFloat;
         createTime = Time.ElapsedTimeFloat;
+        timeOfStartChase = float.MaxValue;
         //timeEnteredCombat = float.NegativeInfinity;
 
         if (DataManager.MonsterSkillAiHandlers.TryGetValue(monData.Code, out var handler))
@@ -505,18 +520,18 @@ public partial class Monster : IEntityAutoReset
         if (CurrentAiState == MonsterAiState.StateDead)
             return;
 
-        if(giveExperience)
+        if (giveExperience && GivesExperience)
+        {
             DoMonsterDrops();
+            CombatEntity.DistributeExperience();
+        }
 
         CombatEntity.OnDeathClearStatusEffects();
         Character.OnDeathCleanupEvents();
 
         CurrentAiState = MonsterAiState.StateDead;
         Character.State = CharacterState.Dead;
-
-        if (giveExperience && GivesExperience)
-            CombatEntity.DistributeExperience();
-
+        
         Character.IsActive = false;
         Character.QueuedAction = QueuedAction.None;
         CombatEntity.IsCasting = false;

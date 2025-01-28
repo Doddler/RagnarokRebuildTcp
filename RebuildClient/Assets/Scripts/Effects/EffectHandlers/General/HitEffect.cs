@@ -15,7 +15,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         private static readonly Dictionary<string, Material> Materials = new();
         private static Sprite[] lensSprite;
 
-        private static void LaunchHitParticles(Vector3 src, Vector3 target)
+        private static void LaunchHitParticles(Vector3 src, Vector3 target, Color32 color, int particleId = 0)
         {
             var dir = (src - target).normalized;
             for (var i = 0; i < 4; i++)
@@ -30,17 +30,18 @@ namespace Assets.Scripts.Effects.EffectHandlers
                     gravity = Random.Range(10f, 40f);
                     pVelocity = -pVelocity;
                 }
-
                 var duration = 0.2f + Random.Range(0, 0.3f);
                 EffectParticleManager.Instance.AddTrailParticle(Random.Range(6f, 16f) / 10f, target, pVelocity,
-                    duration, new Color32(255, 255, 255, 80), -pVelocity.magnitude / (1 / duration) / 2f, gravity);
+                    duration, color, -pVelocity.magnitude / (1 / duration) / 2f, gravity, particleId);
             }
         }
 
-        public static Ragnarok3dEffect Hit1(Vector3 src, Vector3 target)
+        public static Ragnarok3dEffect Hit1(Vector3 src, Vector3 target) => Hit1(src, target, new Color32(255, 255, 255, 80), 0);
+
+        public static Ragnarok3dEffect Hit1(Vector3 src, Vector3 target, Color32 color, int particleId)
         {
             //generate hit particles
-            LaunchHitParticles(src, target);
+            LaunchHitParticles(src, target, color, particleId);
             var dir = (src - target).normalized;
 
             //generate ring effect
@@ -97,7 +98,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             }
 
             AudioManager.Instance.OneShotSoundEffect(target.Id, $"ef_hit2.ogg", target.transform.position);
-            LaunchHitParticles(src.transform.position, target.transform.position + new Vector3(0, 1, 0));
+            LaunchHitParticles(src.transform.position, target.transform.position + new Vector3(0, 1, 0), new Color32(255, 255, 255, 80));
 
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
             effect.SetDurationByFrames(30);

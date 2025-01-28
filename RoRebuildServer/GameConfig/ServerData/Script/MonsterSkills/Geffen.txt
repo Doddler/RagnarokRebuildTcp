@@ -14,7 +14,7 @@ StateIdle:
 StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
 StateAttacking:
-    TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(6); //lightbulb
+    TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(6); //angry
     TryCast(PoisonAttack, 1, 20%, 0s, 5s);
 }
 
@@ -24,18 +24,18 @@ SkillHandler("FUNGUS") {
 StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
 StateAttacking:
-    TryCast(Poison, 3, 10%, 0.8s, 5s, NoInterrupt) -> SendEmote(6); //lightbulb
+    TryCast(Poison, 3, 10%, 0.8s, 5s, NoInterrupt) -> SendEmote(6); //angry
     TryCast(PoisonAttack, 3, 5%, 0s, 5s);
 }
 
 SkillHandler("DEATHSPORE") {
 StateIdle:
-    @ResumeAiState(5%, AiAggressive, 36); //angry
+    @ResumeAiState(5%, AiAggressive, 36); //angry2
 StateChase:
-    TryCast(NoCast, 3, 10%, 0, 5s) -> SendEmote(36); //angry
+    TryCast(NoCast, 3, 10%, 0, 5s) -> SendEmote(36); //angry2
     @GiveUpChase(2%, AiPassive, 4); //sweat drop
 StateAttacking:
-    TryCast(Poison, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //lightbulb
+    TryCast(Poison, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
     TryCast(PoisonAttack, 2, 5%, 0s, 5s);
 }
 
@@ -47,4 +47,21 @@ StateAttacking:
 SkillHandler("ORC_ARCHER") {
 StateIdle:
     TryCast(DoubleStrafe, 5, 5%, 1, 5s, NoInterrupt);
+}
+
+SkillHandler("ZENORC") {
+StateMovingToItem:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(29); //heh
+StateAttacking:
+    TryCast(DarkAttack, 3, 5%, 0.5s, 5s, NoInterrupt);
+    TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt);
+}
+
+SkillHandler("JAKK") {
+StateIdle:
+    @ResumeAiState(5%, AiStandardBoss, 2);
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
 }

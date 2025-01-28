@@ -220,6 +220,14 @@ public class MonsterSkillAiState(Monster monsterIn)
     public int TimeSinceLastDamage => (int)(monster.TimeSinceLastDamage * 1000);
     public bool WasRangedAttacked => monster.WasAttacked && monster.LastAttackRange > 4;
     public MonsterAiState PreviousAiState => monster.PreviousAiState;
+    public int TimeSinceStartChase
+    {
+        get
+        {
+            var time = monster.TimeSinceStartChase;
+            return (int)(time < 0 ? 0 : time * 1000);
+        }
+    }
 
     public void AdminHide()
     {
@@ -412,7 +420,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             if (target != null && !flags.HasFlag(MonsterSkillAiFlags.RandomTarget))
             {
                 if (!ce.CanAttackTarget(target, range)) return SkillFail();
-                if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f))
+                if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f, hideSkillName))
                     return SkillFail();
 
                 ce.SetSkillCooldown(skill, delay / 1000f);

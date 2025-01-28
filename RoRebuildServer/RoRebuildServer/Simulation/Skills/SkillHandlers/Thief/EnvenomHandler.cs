@@ -38,18 +38,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
                 return;
 
             var chance = 500 + lvl * 50; //50%-100%
-            var resist = MathHelper.PowScaleDown(target.GetEffectiveStat(CharacterStat.Vit)); //1% resist per vit, stacking
-            if (!source.CheckLuckModifiedRandomChanceVsTarget(target, (int)(chance * resist), 1000))
-                return; //failed to poison
 
-            //we use an odd number here as ticks occur every 2s, the extra 1s ensures it never misses the last tick
-            //I guess this should also be reduced by vitality... or maybe not.
-            var duration = 5 + lvl * 2;
-            if (duration < 11)
-                duration = 11;
-            
-            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Poison, duration, source.Character.Id, res.Damage / 2);
-            target.AddStatusEffect(status, true, res.AttackMotionTime);
+            var duration = 4 + lvl * 2;
+            if (duration < 10)
+                duration = 10;
+
+            //envenom unlike normal poison doesn't have it's duration reduced
+            source.TryPoisonOnTarget(target, chance, false, res.Damage / 2, duration, res.AttackMotionTime);
         }
     }
 }

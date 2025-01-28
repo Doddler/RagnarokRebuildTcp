@@ -123,7 +123,7 @@ namespace Assets.Scripts.Sprites
         public Mesh GetMeshForFrame()
         {
             //just a simple hash
-            var id = ((ActionId * 10 + (int)Direction) << 16) + CurrentFrame;
+            var id = ((ActionId + (int)Direction) << 16) + CurrentFrame;
             
             //if (meshCache == null || SpriteData.Name != lastSprite)
                 meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);

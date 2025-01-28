@@ -1,0 +1,5 @@
+SkillHandler("GRYPHON") {
+StateAttacking:
+	TryCast(CriticalAttack, 1, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(WindAttack, 1, 100%, 0s, 0s);
+}

@@ -93,6 +93,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 UiManager.Instance.StatusWindow.ResetStatChanges();
             else
                 UiManager.Instance.StatusWindow.UpdateCharacterStats();
+            UiManager.Instance.SkillManager.RefreshSkillAvailability();
             
 #if UNITY_EDITOR
             if (!hasInventory)

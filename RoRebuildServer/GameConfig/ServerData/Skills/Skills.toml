@@ -491,16 +491,22 @@ MaxLevel = 10
 SpCost = [16,18,20,22,24,26,28,30,32,34]
 
 #----------------------------------
-# Monster skills
+# 2nd job skills
 #----------------------------------
 
-[CallMinion]
-Name = "Call Minion"
-InterruptMode = "NoInterrupt"
+[EarthSpike]
+Name = "Earth Spike"
+[HeavensDrive]
+Name = "Heavens Drive"
+[JupitelThunder]
+Name = "Jupitel Thunder"
+[WaterBall]
+Name = "Water Ball"
+[Cloaking]
 
-[GrandThunderstorm]
-Name = "Grand Thunderstorm"
-InterruptMode = "NoInterrupt"
+#----------------------------------
+# Monster skills
+#----------------------------------
 
 [FireAttack]
 Name = "Fire Attack"
@@ -522,6 +528,8 @@ Name = "Undead Attack"
 Name = "Immaterial Attack"
 [CriticalAttack]
 Name = "Critical Slash"
+[Curse]
+Name = "Curse"
 [Poison]
 Name = "Poison"
 [Sleep]
@@ -532,6 +540,28 @@ Name = "Stun"
 Name = "Blind"
 [Silence]
 Name = "Silence"
+[Petrify]
+Name = "Petrify"
+
+
+[FireBreath]
+Name = "Fire Breath"
+[IceBreath]
+Name = "Ice Breath"
+[WindBreath]
+Name = "Wind Breath"
+[EarthBreath]
+Name = "Earth Breath"
+[DarkBreath]
+Name = "Dark Breath"
+[HolyBreath]
+Name = "Holy Breath"
+[PoisonBreath]
+Name = "Poison Breath"
+[UndeadBreath]
+Name = "Undead Breath"
+[GhostBreath]
+Name = "Immaterial Breath"
 
 [SelfDestruct]
 Name = "Self Destruct"
@@ -541,11 +571,53 @@ InterruptMode = "NoInterrupt"
 Name = "Power Up"
 InterruptMode = "NoInterrupt"
 
+[CallMinion]
+Name = "Call Minion"
+InterruptMode = "NoInterrupt"
+
 [SummonMonster]
 Name = "Summon Monster"
 InterruptMode = "NoInterrupt"
 
+[Metamorphosis]
+InterruptMode = "NoInterrupt"
+
+
+[BloodDrain]
+Name = "Blood Drain"
+[EnergyDrain]
+Name = "Energy Drain"
+[GuidedAttack]
+Name = "Guided Attack"
+[SplashAttack]
+Name = "Splash Attack"
+[ComboAttack]
+Name = "Combo Attack"
+[PiercingAttack]
+Name = "Piercing Attack"
+[DarkStrike]
+Name = "Dark Strike"
+[BreakArmor]
+Name = "Break Armor"
+[BreakWeapon]
+Name = "Break Weapon"
+[BreakHelm]
+Name = "Break Helm"
+[DarkBlessing]
+Name = "Dark Blessing"
+
+[Smoking]
 [Suicide]
+[Stop]
+[Hallucination]
+
+#custom
+[PharaohCurse]
+Name = "Pharaoh's Curse"
+
+[GrandThunderstorm]
+Name = "Grand Thunderstorm"
+InterruptMode = "NoInterrupt"
 
 #used to show in skill prereqs
 [QuestSkill]

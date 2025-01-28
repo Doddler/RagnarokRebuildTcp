@@ -46,7 +46,7 @@ public static class DataManager
     public static ReadOnlyDictionary<int, int[]> JobMaxSpLookup;
     public static ReadOnlyDictionary<string, SavePosition> SavePoints;
     public static ReadOnlyDictionary<int, int> JobExtendsList;
-
+    
     public static ReadOnlyDictionary<string, int> WeaponClasses;
     public static ReadOnlyDictionary<string, HashSet<int>> EquipGroupInfo;
     public static ReadOnlyDictionary<int, WeaponInfo> WeaponInfo;
@@ -55,11 +55,13 @@ public static class DataManager
     public static ReadOnlyDictionary<int, AmmoInfo> AmmoInfo;
     public static ReadOnlyDictionary<int, UseItemInfo> UseItemInfo;
     public static ReadOnlyDictionary<string, List<string>> ItemMonsterSummonList;
+    public static HashSet<int> ValidEmotes;
 
     private static List<MonsterDatabaseInfo> monsterStats;
     private static List<List<MonsterAiEntry>> monsterAiList;
     private static List<MapEntry> mapList;
     private static int[] refineSuccessTable;
+    public static int[] JobBonusTable;
 
     public static List<MapEntry> Maps => mapList;
     
@@ -72,6 +74,7 @@ public static class DataManager
     public static int GetWeightForItem(int item) => ItemList.TryGetValue(item, out var itemOut) ? itemOut.Weight : 0;
     public static ItemInfo? GetItemInfoById(int id) => ItemList.TryGetValue(id, out var item) ? item : null;
     public static int GetRefineSuccessForItem(int rank, int startingRefine) => refineSuccessTable[startingRefine * 5 + rank];
+    public static Memory<int> GetJobBonusesForLevel(int job, int level) => JobBonusTable.AsMemory(job * 70 * 6 + (level - 1) * 6, 6);
 
     public static List<MonsterAiEntry> GetAiStateMachine(MonsterAiType monsterType)
     {
@@ -195,6 +198,9 @@ public static class DataManager
         SkillTree = loader.LoadSkillTree();
         MonsterDropData = loader.LoadMonsterDropChanceData(scriptConfig);
         ItemMonsterSummonList = loader.LoadMonsterSummonItemList();
+        JobBonusTable = loader.LoadJobBonusTable();
+
+        ValidEmotes = loader.LoadEmotes();
 
         scriptConfig.UpdateItemValue(ItemList);
     }

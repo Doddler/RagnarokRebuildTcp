@@ -8,6 +8,7 @@
         AttackMotion,
         TakeHit,
         HitEffect,
+        ElementalEffect,
         Miss,
         FaceDirection
     }

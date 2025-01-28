@@ -246,7 +246,7 @@ SP Regeneration +15%
 
 ::Orc_Zombie_Card //id 4071 - slotted on Garment
 FLEE +5
--30% damage from Decay
+-30% damage from Undead Property attacks
 
 ::Golem_Card //id 4072 - slotted on Weapon
 ATK +5
@@ -398,8 +398,8 @@ FLEE +5
 
 ::Ghoul_Card //id 4110 - slotted on Headgear
 DEF +1
-+20% <color=#800000>Poison</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++30% resist <color=#800000>Poison</color> status
+-50% damage from <color=#800000>Poison</color> status
 
 ::Strouf_Card //id 4111 - slotted on Weapon
 +20% physical damage vs. Demon
@@ -657,7 +657,7 @@ Lose 1 SP/physical attack
 +6% chance of <color=#800000>Sleep</color> on receive physical damage
 
 ::Deviling_Card //id 4174 - slotted on Garment
--50% damage from Neutral attacks
+-40% damage from Neutral attacks
 +50% damage from non-Neutral attacks
 
 ::Poisonous_Toad_Card //id 4175 - slotted on Accessory

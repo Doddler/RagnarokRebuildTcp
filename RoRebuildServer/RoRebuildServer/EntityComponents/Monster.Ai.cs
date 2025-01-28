@@ -149,18 +149,16 @@ public partial class Monster
         if (!targetCharacter.CombatEntity.IsValidTarget(CombatEntity))
             return true;
 
-        if (targetCharacter.Position == Character.Position)
+        if (Character.AttackCooldown > Time.ElapsedTimeFloat)
             return false;
 
-        var outOfAttackRange = InEnemyOutOfAttackRange();
-
-        if (CombatEntity.BodyState.HasFlag(BodyStateFlags.Blind) && outOfAttackRange)
+        if (targetCharacter.Position == Character.Position)
+            return false;
+        
+        if (targetCharacter.Position.SquareDistance(Character.Position) >= MonsterBase.ScanDist + 1)
             return true;
 
-        if (targetCharacter.Position.SquareDistance(Character.Position) > MonsterBase.ChaseDist + 2)
-            return true;
-
-        if (Character.MoveSpeed < 0 && outOfAttackRange)
+        if (Character.MoveSpeed < 0 && InEnemyOutOfAttackRange())
             return true;
 
         if (Character.Map != null && !Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
@@ -351,11 +349,8 @@ public partial class Monster
     {
         if (Character.Map == null || Character.Map.PlayerCount == 0)
             return false;
-
-        if (CombatEntity.BodyState.HasFlag(BodyStateFlags.Blind))
-            return false;
-
-        if (!FindRandomTargetInRange(MonsterBase.ScanDist, out var newTarget))
+        
+        if (!FindRandomTargetInRange(AttackSight, out var newTarget))
             return false;
 
         SwapTarget(newTarget);
@@ -558,6 +553,8 @@ public partial class Monster
         if (MonsterBase.MoveSpeed < 0)
             return false;
 
+        timeOfStartChase = float.MaxValue;
+
         if (LockMovementToSpawn && SpawnRule != null)
         {
             if (FindRandomMoveTargetInArea(SpawnRule.SpawnArea, Character.Position, 9, 10))
@@ -630,6 +627,8 @@ public partial class Monster
             return false;
 
         timeLastCombat = Time.ElapsedTimeFloat;
+        if (timeOfStartChase > Time.ElapsedTimeFloat)
+            timeOfStartChase = Time.ElapsedTimeFloat;
 
         //var distance = Character.Position.DistanceTo(targetChar.Position);
         if (CombatEntity.CanAttackTarget(targetChar))
@@ -663,22 +662,26 @@ public partial class Monster
         if (!targetChar.IsActive)
             return false;
 
-        var distance = Character.Position.DistanceTo(targetChar.Position);
-        if (distance <= MonsterBase.Range)
-        {
-            Target = Character.LastAttacked;
-            return true;
-        }
+        Target = Character.LastAttacked;
 
-        if (Character.TryMove(targetChar.Position, 1))
-        {
+        return true;
 
-            nextMoveUpdate = 0;
-            Target = Character.LastAttacked;
-            return true;
-        }
+        //var distance = Character.Position.DistanceTo(targetChar.Position);
+        //if (distance <= MonsterBase.Range)
+        //{
+        //    Target = Character.LastAttacked;
+        //    return true;
+        //}
 
-        return false;
+        //if (Character.TryMove(targetChar.Position, 1))
+        //{
+
+        //    nextMoveUpdate = 0;
+        //    Target = Character.LastAttacked;
+        //    return true;
+        //}
+
+        //return false;
     }
 
     /// <summary>
@@ -701,6 +704,7 @@ public partial class Monster
         CombatEntity.PerformMeleeAttack(targetEntity);
         Character.QueuedAction = QueuedAction.None;
         timeLastCombat = Time.ElapsedTimeFloat;
+        timeOfStartChase = float.MaxValue;
 
         //we should have our cooldown set by PerformMeleeAttack actually
         //nextAiUpdate += MonsterBase.AttackTime;

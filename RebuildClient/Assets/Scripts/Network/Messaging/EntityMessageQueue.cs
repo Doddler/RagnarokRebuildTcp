@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using UnityEngine;
 
 namespace Assets.Scripts.Network.Messaging
@@ -89,6 +90,17 @@ namespace Assets.Scripts.Network.Messaging
             msg.Type = EntityMessageType.HitEffect;
             msg.Entity = src; //the hit will come from this entity's position
             msg.Value1 = hitType;
+
+            EnqueueMessage(msg);
+        }
+
+        public void SendElementalHitEffect(ServerControllable src, float time, AttackElement hitType)
+        {
+            var msg = EntityMessagePool.Borrow();
+            msg.ActivationTime = Time.timeSinceLevelLoad + time;
+            msg.Type = EntityMessageType.ElementalEffect;
+            msg.Entity = src; //the hit will come from this entity's position
+            msg.Value1 = (int)hitType;
 
             EnqueueMessage(msg);
         }

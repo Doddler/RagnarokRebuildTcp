@@ -37,20 +37,20 @@ StateRandomMove:
 
 SkillHandler("INJUSTICE") {
 StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(2);
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(2); //whistle
 }
 
 SkillHandler("RYBIO") {
 StateChase:
-	TryCast(Provoke, 10, 5%, 0.6s, 5s, NoInterrupt) -> SendEmote(4);
+	TryCast(Provoke, 10, 5%, 0.6s, 5s, NoInterrupt) -> SendEmote(4); //sweat drop
 StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(4);
-	TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(4);
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(4); //sweat drop
+	TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(4); //sweat drop
 }
 
 SkillHandler("ZHERLTHSH") {
 StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(3);
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(3); //heart
 }
 
 SkillHandler("RAYDRIC_ARCHER") {
@@ -61,10 +61,15 @@ StateAttacking:
 
 SkillHandler("WANDER_MAN") {
 StateIdle:
-    TryCast(NoCast, 1, 5%, 0, 5s) -> SendEmote(9); //dollar sign
+    TryCast(NoCast, 1, 5%, 0, 5s) -> SendEmote(9); //...
+StateAttacking:
+    TryCast(CriticalAttack, 2, 2%, 0.2s, 5s, NoInterrupt | HideSkillName);
+    TryCast(UndeadAttack, 3, 5%, 0, 5s, NoInterrupt | HideSkillName);
 }
 
 SkillHandler("KNIGHT_OF_ABYSS") {
+StateChase:
+	TryCast(ChargeArrow, 1, 8%, 0.8s, 5s, NoInterrupt | HideSkillName);
 StateAttacking:
-	TryCast(ChargeArrow, 1, 5%, 0.8s, 5s, NoInterrupt | HideSkillName);
+	TryCast(DarkAttack, 5, 5%, 0.5s, 5s, NoInterrupt | HideSkillName) -> SendEmote(9); //...
 }

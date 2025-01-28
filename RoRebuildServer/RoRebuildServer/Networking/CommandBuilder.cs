@@ -1208,6 +1208,16 @@ public static class CommandBuilder
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
+
+    public static void SendMapMemoLocations(Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.MemoMapLocation, 32);
+
+        for(var i = 0; i < 3; i++)
+            p.MemoLocations[i].Serialize(packet);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
     
     public static void SkillFailed(Player p, SkillValidationResult res)
     {

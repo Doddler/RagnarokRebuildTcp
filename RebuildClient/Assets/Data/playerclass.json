@@ -121,6 +121,12 @@
       "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uC5F0\uAE08\uC220\uC0AC_\uC5EC.spr"
     },
     {
+      "Id": 20,
+      "Name": "SuperNovice",
+      "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uCD08\uBCF4\uC790_\uB0A8.spr",
+      "SpriteFemale": "Assets/Sprites/Characters/BodyFemale/\uCD08\uBCF4\uC790_\uC5EC.spr"
+    },
+    {
       "Id": 499,
       "Name": "GameMaster",
       "SpriteMale": "Assets/Sprites/Characters/BodyMale/\uC6B4\uC601\uC790_\uB0A8.spr",

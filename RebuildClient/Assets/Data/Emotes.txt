@@ -30,3 +30,4 @@ id frame x	 y size commands
 33	13	8	-3	1	ok,nod
 38	3	8	-3	1	lick
 51	17	8	-3	1	fsh,flash
+57	21	8	-3	1	dice,roll

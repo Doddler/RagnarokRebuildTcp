@@ -7202,23 +7202,23 @@
     },
     {
       "Code": "Ring",
-      "Description": "\u003Ccolor=#808080\u003EAn enchanted ring that enhances strength.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn enchanted ring that enhances strength.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Earring",
-      "Description": "\u003Ccolor=#808080\u003EAn enchanted earring that enhances intelligence.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn enchanted earring that enhances intelligence.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Necklace",
-      "Description": "\u003Ccolor=#808080\u003EAn enchanted necklace that enhances vitality.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn enchanted necklace that enhances vitality.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EVIT \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Glove",
-      "Description": "\u003Ccolor=#808080\u003EAn enchanted glove that enhances dexterity.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn enchanted glove that enhances dexterity.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EDEX \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Brooch",
-      "Description": "\u003Ccolor=#808080\u003EAn enchanted brooch that enhances agility.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn enchanted brooch that enhances agility.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EAGI \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Clip",
@@ -7226,7 +7226,7 @@
     },
     {
       "Code": "Rosary",
-      "Description": "\u003Ccolor=#808080\u003EA string of beads used to count the number of repetitions that prayers are recited.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA string of beads used to count the number of repetitions that prayers are recited.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ELUK \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E20\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Skull_Ring",
@@ -7262,15 +7262,15 @@
     },
     {
       "Code": "Celebrant\u0027s_Mitten",
-      "Description": "\u003Ccolor=#808080\u003EA blessed glove that increases intelligence.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E35\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA blessed glove that increases intelligence.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E35\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Matyr\u0027s_Leash",
-      "Description": "\u003Ccolor=#808080\u003EA Matyr\u0027s leash.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E35\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA Matyr\u0027s leash.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EAGI \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E35\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Bow_Thimble",
-      "Description": "\u003Ccolor=#808080\u003EA thimble for archers that enhances power.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E65\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EArcher\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA thimble for archers that enhances power.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B3% Ranged Physical Damage\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E65\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EArcher\u003C/color\u003E"
     },
     {
       "Code": "Rogue\u0027s_Treasure",
@@ -7278,27 +7278,27 @@
     },
     {
       "Code": "Ring_",
-      "Description": "\u003Ccolor=#808080\u003EAn ancient ring.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn ancient ring.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Earring_",
-      "Description": "\u003Ccolor=#808080\u003EAn ancient earring.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn ancient earring.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Necklace_",
-      "Description": "\u003Ccolor=#808080\u003EAn ancient necklace.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn ancient necklace.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EVIT \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Glove_",
-      "Description": "\u003Ccolor=#808080\u003EAn ancient glove.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn ancient glove.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EDEX \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Brooch_",
-      "Description": "\u003Ccolor=#808080\u003EAn ancient brooch.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn ancient brooch.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EAGI \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Rosary_",
-      "Description": "\u003Ccolor=#808080\u003EAn ancient rosary.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn ancient rosary.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ELUK \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Belt",
@@ -8486,7 +8486,7 @@
     },
     {
       "Code": "Ghostring_Card",
-      "Description": "HP Regeneration -25%\nGhost Property Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "HP Regeneration -25%\nGhost Property Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Poison_Spore_Card",
@@ -8514,7 +8514,7 @@
     },
     {
       "Code": "Angeling_Card",
-      "Description": "Holy Property Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Holy Property Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Marina_Card",
@@ -8582,7 +8582,7 @@
     },
     {
       "Code": "Orc_Zombie_Card",
-      "Description": "FLEE \u002B5\n-30% damage from Decay\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "FLEE \u002B5\n-30% damage from Undead Property attacks\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Golem_Card",
@@ -8654,7 +8654,7 @@
     },
     {
       "Code": "Swordfish_Card",
-      "Description": "DEF \u002B1\nWater Property Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "DEF \u002B1\nWater Property Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Munak_Card",
@@ -8690,11 +8690,11 @@
     },
     {
       "Code": "Dokebi_Card",
-      "Description": "DEF \u002B1\nWind Property Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "DEF \u002B1\nWind Property Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Pasana_Card",
-      "Description": "DEF \u002B1\nFire Property Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "DEF \u002B1\nFire Property Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Sohee_Card",
@@ -8702,7 +8702,7 @@
     },
     {
       "Code": "Sandman_Card",
-      "Description": "DEF \u002B1\nEarth Property Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "DEF \u002B1\nEarth Property Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Whisper_Card",
@@ -8738,7 +8738,7 @@
     },
     {
       "Code": "Ghoul_Card",
-      "Description": "DEF \u002B1\n\u002B20% \u003Ccolor=#800000\u003EPoison\u003C/color\u003E resist\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "DEF \u002B1\n\u002B30% resist \u003Ccolor=#800000\u003EPoison\u003C/color\u003E status\n-50% damage from \u003Ccolor=#800000\u003EPoison\u003C/color\u003E status\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Strouf_Card",
@@ -8754,7 +8754,7 @@
     },
     {
       "Code": "Argiope_Card",
-      "Description": "DEF \u002B1\nPoison Property Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "DEF \u002B1\nPoison Property Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Hunter_Fly_Card",
@@ -8774,7 +8774,7 @@
     },
     {
       "Code": "Bathory_Card",
-      "Description": "Shadow Property Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Shadow Property Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Sky_Petite_Card",
@@ -8858,7 +8858,7 @@
     },
     {
       "Code": "Evil_Druid_Card",
-      "Description": "INT \u002B1, DEF \u002B1\nDecay Property Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "INT \u002B1, DEF \u002B1\nUndead Property Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Doppelganger_Card",
@@ -8990,7 +8990,7 @@
     },
     {
       "Code": "Deviling_Card",
-      "Description": "-50% damage from Neutral attacks\n\u002B50% damage from non-Neutral attacks\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "-40% damage from Neutral attacks\n\u002B50% damage from non-Neutral attacks\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Poisonous_Toad_Card",

@@ -102,10 +102,12 @@ namespace Assets.Scripts.Sprites
             renderer.SpriteData = sprite.SpriteData;
             renderer.SpriteOffset = sprite.SpriteOffset;
             renderer.MeshRenderer.sortingOrder = sprite.MeshRenderer.sortingOrder;
-            renderer.transform.localRotation = sprite.gameObject.transform.localRotation;
-            renderer.transform.localPosition = sprite.gameObject.transform.localPosition;
+
             
             trail.AddTrailSprite(renderer, order);
+            
+            renderer.transform.localRotation = sprite.gameObject.transform.localRotation;
+            renderer.transform.localPosition = sprite.gameObject.transform.localPosition;
         }
 
         private void SpawnTrail(int id)

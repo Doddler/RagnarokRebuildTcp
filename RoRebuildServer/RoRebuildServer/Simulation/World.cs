@@ -17,6 +17,7 @@ using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Database;
 using RoRebuildServer.Database.Domain;
 using RoRebuildServer.Database.Requests;
+using RoRebuildServer.Database.Utility;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Npcs;
@@ -25,6 +26,7 @@ using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.Simulation;
@@ -416,29 +418,42 @@ public class World
         player.Entity = e;
         player.CombatEntity = ce;
         player.Character = ch;
-        
-        if (connection.LoadCharacterRequest != null && connection.LoadCharacterRequest.HasCharacter)
+
+        var req = connection.LoadCharacterRequest;
+        if (req != null && req.HasCharacter)
         {
-            player.Name = connection.LoadCharacterRequest.Name;
-            player.Id = connection.LoadCharacterRequest.Id;
-            player.SavePosition = connection.LoadCharacterRequest.SavePosition;
-            player.LearnedSkills = connection.LoadCharacterRequest.SkillsLearned ?? new Dictionary<CharacterSkill, int>();
-            player.NpcFlags = connection.LoadCharacterRequest.NpcFlags;
-            player.Inventory = connection.LoadCharacterRequest.Inventory;
-            player.CartInventory = connection.LoadCharacterRequest.Cart;
-            if(connection.LoadCharacterRequest.EquipState != null)
-                player.Equipment = connection.LoadCharacterRequest.EquipState;
-            player.CharacterSlot = connection.LoadCharacterRequest.CharacterSlot;
+            player.Name = req.Name;
+            player.Id = req.Id;
+            player.SavePosition = req.SavePosition;
+            player.Inventory = req.Inventory;
+            player.CartInventory = req.Cart;
+            if(req.EquipState != null)
+                player.Equipment = req.EquipState;
+            player.CharacterSlot = req.CharacterSlot;
 
-            var data = connection.LoadCharacterRequest.Data;
-
-            if (data != null)
+            if (req.SaveVersion < 3)
             {
-                if(data.Length <= player.CharData.Length * 4) //we can add fields, but if we take them away it's all bad
-                    Buffer.BlockCopy(data, 0, player.CharData, 0, data.Length);
-                else
-                    ServerLogger.LogWarning($"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
+                var data = req.Data;
+                player.NpcFlags = req.NpcFlags;
+                player.LearnedSkills = req.SkillsLearned ?? new Dictionary<CharacterSkill, int>();
+
+                if (data != null)
+                {
+                    if (data.Length <=
+                        player.CharData.Length * 4) //we can add fields, but if we take them away it's all bad
+                        Buffer.BlockCopy(data, 0, player.CharData, 0, data.Length);
+                    else
+                        ServerLogger.LogWarning(
+                            $"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
+                }
             }
+            else
+            {
+                if (req.Data != null)
+                    PlayerDataDbHelper.RestorePlayerDataFromDatabaseV3(req.Data, req.DataLength, player, req.SaveVersion);
+            }
+
+            req.Data = null; //no need to hold onto this memory
 
             //respawn flag forces the player to be alive after logging in if they've been moved from their logout position.
             if (isRespawn && player.GetData(PlayerStat.Hp) == 0)
@@ -448,7 +463,7 @@ public class World
             }
 
             //convert character that has no job level to one that does, using a questionable formula.
-            if (connection.LoadCharacterRequest.SaveVersion < 2)
+            if (req.SaveVersion < 2)
             {
                 var job = player.GetData(PlayerStat.Job);
                 var playerLevel = player.GetData(PlayerStat.Level);

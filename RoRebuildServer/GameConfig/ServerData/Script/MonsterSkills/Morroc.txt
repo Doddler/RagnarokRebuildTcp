@@ -1,0 +1,26 @@
+
+#include "_macro.txt"
+
+SkillHandler("ZEROM") {
+StateIdle:
+	//this should be AiAngry, but AiAngry isn't implemented yet, so...
+    @ResumeAiState(5%, AiAggressive, 6); //question mark
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateFollow:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+StateAngry:
+    TryCast(FireAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //Angry
+StateAttacking:
+    TryCast(FireAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //Angry
+}
+
+SkillHandler("ISIS") {
+StateIdle:
+    @ResumeAiState(20%, AiAggressiveSense, 6); //Angry
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+	TryCast(CriticalAttack, 1, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
+	TryCast(DarkAttack, 1, 20%, 0s, 5s);
+}

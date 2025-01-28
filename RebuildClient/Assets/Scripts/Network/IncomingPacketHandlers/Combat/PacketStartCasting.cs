@@ -19,7 +19,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
             var castTime = msg.ReadFloat();
             var hideName = msg.ReadBoolean();
-
+            
             Network.EntityList.TryGetValue(targetId, out var target);
 
             if (Network.EntityList.TryGetValue(srcId, out var controllable))
@@ -35,8 +35,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Casting);
                     controllable.SpriteAnimator.PauseAnimation();
                 }
+                
+                #if UNITY_EDITOR
+                Debug.Log($"Character {controllable.Name} starts casting {skill} lv{lvl}, cast time {castTime}, hideName:{hideName}");
+                #endif
 
                 controllable.HideCastName = hideName;
+                if (hideName)
+                    skill = CharacterSkill.NoCast;
                 ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
                 controllable.StartCastBar(skill, castTime);
             }

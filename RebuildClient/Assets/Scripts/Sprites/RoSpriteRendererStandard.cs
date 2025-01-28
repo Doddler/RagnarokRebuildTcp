@@ -314,6 +314,7 @@ namespace Assets.Scripts.Sprites
             if (!isInitialized)
                 return false;
 
+
             MeshRenderer.enabled = !IsHidden;
             // MeshCollider.enabled = !IsHidden;
             

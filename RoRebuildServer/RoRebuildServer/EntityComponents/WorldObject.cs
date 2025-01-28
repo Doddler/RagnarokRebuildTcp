@@ -579,7 +579,6 @@ public class WorldObject : IEntityAutoReset
         QueuedAction = QueuedAction.None;
 
         State = CharacterState.Moving;
-        
 
         if(!InMoveLock)
             Map.StartMove(ref Entity, this);

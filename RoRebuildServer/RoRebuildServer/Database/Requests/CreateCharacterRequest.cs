@@ -17,8 +17,9 @@ namespace RoRebuildServer.Database.Requests
         private int accountId;
         private int slot;
         private string name;
-        private byte[]? charData;
+        private byte[] charData;
         private byte[] summaryData;
+        private int charDataLength;
 
         public CreateCharacterRequest(NetworkConnection connection, int accountId, int slot, string name, int[] data)
         {
@@ -27,10 +28,7 @@ namespace RoRebuildServer.Database.Requests
             this.slot = slot;
             this.name = name;
 
-            var dataSize = data.Length * sizeof(int);
-            charData = ArrayPool<byte>.Shared.Rent(dataSize);
-            Array.Clear(charData);
-            Buffer.BlockCopy(data, 0, charData, 0, data.Length * sizeof(int));
+            charData = PlayerDataDbHelper.StoreNewPlayerDataForDatabase(data, out charDataLength);
 
             //build character summary for our new character
             var summaryBuffer = ArrayPool<int>.Shared.Rent((int)PlayerSummaryData.SummaryDataMax);
@@ -68,6 +66,7 @@ namespace RoRebuildServer.Database.Requests
                 AccountId = accountId,
                 CharacterSlot = slot,
                 Data = charData,
+                DataLength = charDataLength,
                 CharacterSummary = summaryData,
                 SavePoint = new DbSavePoint()
                 {
@@ -76,7 +75,7 @@ namespace RoRebuildServer.Database.Requests
                     Y = savePoint.Position.Y,
                     Area = savePoint.Area,
                 },
-                VersionFormat = 2
+                VersionFormat = 3
             };
 
             try
@@ -100,8 +99,8 @@ namespace RoRebuildServer.Database.Requests
 
         private void CleanUp()
         {
-            if(charData != null) ArrayPool<byte>.Shared.Return(charData);
-            charData = null;
+            //if(charData != null) ArrayPool<byte>.Shared.Return(charData);
+            //charData = null;
         }
     }
 }

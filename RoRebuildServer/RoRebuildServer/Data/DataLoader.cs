@@ -735,57 +735,56 @@ internal class DataLoader
         return returnList.AsReadOnly();
     }
 
-    //    public Dictionary<int, ItemInfo> LoadItemList()
-    //    {
-    //        var items = new Dictionary<int, ItemInfo>();
+    public int[] LoadJobBonusTable()
+    {
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobStatBonuses.csv")) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
-    //        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Items.csv");
+        
+        var entries = csv.GetRecords<dynamic>().ToList();
 
-    //#if DEBUG
-    //        //if the file is open in excel, we can't read it... so while in debug build we'll make a copy
-    //        var tempPath = Path.Combine(Path.GetTempPath(), @"Items.csv");
-    //        File.Copy(inPath, tempPath, true);
-    //        inPath = tempPath;
-    //#endif
+        Span<int> tempTable = stackalloc int[6];
 
-    //        using (var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader)
-    //        using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
-    //        {
-    //            var entries = csv.GetRecords<CsvItem>().ToList();
+        int maxJobs = entries.Count;
 
-    //            foreach (var entry in entries)
-    //            {
-    //                var itemClass = entry.ItemClass;
-    //                var item = new ItemInfo()
-    //                {
-    //                    Code = entry.Code,
-    //                    Id = entry.Id,
-    //                    IsUnique = itemClass == ItemClass.Equipment || itemClass == ItemClass.Weapon,
-    //                    IsUseable = itemClass == ItemClass.Useable,
-    //                    ItemClass = itemClass,
-    //                    Price = entry.Price,
-    //                    Weight = entry.Weight,
-    //                    Effect = -1,
-    //                };
+        var fullBonusTable = new int[maxJobs * 70 * 6]; //70 levels for maxJobs jobs with 6 stats each level
 
-    //                if (!string.IsNullOrWhiteSpace(entry.Effect))
-    //                {
-    //                    if (DataManager.EffectIdForName.TryGetValue(entry.Effect, out var effectId))
-    //                        item.Effect = effectId;
-    //                    else
-    //                        ServerLogger.LogWarning($"Could not find effect '{entry.Effect}' with name '{item.Code}'.");
-    //                }
+        foreach (var entry in entries)
+        {
+            tempTable.Clear();
+            if (entry is IDictionary<string, object> obj)
+            {
+                var jobName = (string)obj["Job"];
+                if (!DataManager.JobIdLookup.TryGetValue(jobName, out var jobId))
+                {
+                    ServerLogger.LogWarning($"Job {jobName} specified in JobStatBonuses.csv could not be found.");
+                    continue;
+                }
+                
+                for (var i = 1; i < 71; i++)
+                {
+                    var stat = (string)obj[i.ToString()];
+                    switch (stat)
+                    {
+                        case "str": tempTable[0] += 1; break;
+                        case "agi": tempTable[1] += 1; break;
+                        case "vit": tempTable[2] += 1; break;
+                        case "int": tempTable[3] += 1; break;
+                        case "dex": tempTable[4] += 1; break;
+                        case "luk": tempTable[5] += 1; break;
+                        case "0": break;
+                        default: throw new Exception($"Unexpected stat value {stat} when loading job {jobName} on JobStatBonuses.csv!");
+                    }
 
-    //                items.Add(item.Id, item);
-    //            }
+                    var index = (jobId * 70 * 6) + (i - 1) * 6;
+                    var target = new Span<int>(fullBonusTable, index, 6);
+                    tempTable.CopyTo(target);
+                }
+            }
+        }
 
-
-    //        }
-    //#if DEBUG
-    //        File.Delete(tempPath);
-    //#endif
-    //        return items;
-    //    }
+        return fullBonusTable;
+    }
 
     public int[] LoadRefineSuccessTable()
     {
@@ -1046,19 +1045,30 @@ internal class DataLoader
         }
     }
 
-    public Dictionary<int, EmoteInfo> LoadEmotes()
+    public HashSet<int> LoadEmotes()
     {
-        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Emotes.csv")) as TextReader;
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Emotes.csv"), Encoding.UTF8) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
-        var data = new Dictionary<int, EmoteInfo>();
+        var data = new HashSet<int>();
         var emotes = csv.GetRecords<CsvEmote>().ToList();
 
         foreach (var emote in emotes)
         {
-
+            data.Add(emote.Id);
         }
 
         return data;
+    }
+
+    public ReadOnlyDictionary<int, int> CreateFlippedLookupTable(ReadOnlyDictionary<int, int> orig)
+    {
+        var dictOut = new Dictionary<int, int>();
+        foreach (var (key, val) in orig)
+        {
+            dictOut.Add(val, key);
+        }
+
+        return dictOut.AsReadOnly();
     }
 }

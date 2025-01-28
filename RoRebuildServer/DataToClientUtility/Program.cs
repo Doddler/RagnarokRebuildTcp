@@ -46,6 +46,7 @@ class Program
         WriteJobDataStuff();
         WriteItemsList();
         WritePatchNotes();
+        WriteEmoteData();
     }
 
     private static void WriteEffectsList()
@@ -646,6 +647,25 @@ class Program
         return mapCodes;
     }
 
+
+    private static void WriteEmoteData()
+    {
+        ConvertToClient<CsvEmote, EmoteData>("Emotes.csv", "emotes.json", convert =>
+            {
+                return convert.Select(e => new EmoteData()
+                {
+                    Id = e.Id,
+                    Sprite = e.Sprite,
+                    Frame = e.Frame,
+                    Size = e.Size,
+                    X = e.X,
+                    Y = e.Y,
+                    Commands = e.Commands ?? ""
+                }).ToList();
+            }
+        );
+    }
+
     private static void WriteMapList()
     {
         var inUseMaps = GetActiveInstanceMaps();
@@ -904,8 +924,20 @@ class Program
         if (curSkill != CharacterSkill.None && sb.Length > 0)
             skillDesc.Add(curSkill, sb.ToString().Trim());
 
-        //skill data
+        //status data
         var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
+        var statusData = Toml.ToModel<Dictionary<string, StatusEffectData>>(File.ReadAllText(Path.Combine(path, "../Skills/StatusEffects.toml"), Encoding.UTF8), null, options);
+        var statusOut = new List<StatusEffectData>();
+        foreach (var (id, status) in statusData)
+        {
+            status.StatusEffect = Enum.Parse<CharacterStatusEffect>(id);
+            statusOut.Add(status);
+        }
+
+        SaveToClient("statusinfo.json", statusOut);
+
+
+        //skill data
         var skillData = Toml.ToModel<Dictionary<string, SkillData>>(File.ReadAllText(Path.Combine(path, "../Skills/Skills.toml"), Encoding.UTF8), null, options);
         var skillOut = new List<SkillData>();
         foreach (var (id, skill) in skillData)

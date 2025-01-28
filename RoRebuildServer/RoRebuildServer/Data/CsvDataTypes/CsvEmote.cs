@@ -1,18 +1,13 @@
 ﻿namespace RoRebuildServer.Data.CsvDataTypes;
 
-#nullable disable
-
 public class CsvEmote
 {
-    //id,frame,x,y,size,commands,alt,sequence,chance
-    public int Id { get; set; }
-    public int Frame { get; set; }
-    public int X { get; set; }
-    public int Y { get; set; }
-    public int Size { get; set; }
-    public string Commands { get; set; }
-    public string Alt { get; set; }
-    public string Sequence { get; set; }
-    public string Chance { get; set; }
-
+    //id,sprite,frame,x,y,size,commands
+    public required int Id { get; set; }
+    public required int Sprite { get; set; }
+    public required int Frame { get; set; }
+    public required int X { get; set; }
+    public required int Y { get; set; }
+    public required float Size { get; set; }
+    public required string? Commands { get; set; }
 }

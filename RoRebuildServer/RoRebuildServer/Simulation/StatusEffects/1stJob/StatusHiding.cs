@@ -7,7 +7,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
 
-[StatusEffectHandler(CharacterStatusEffect.Hiding, StatusClientVisibility.Everyone)]
+[StatusEffectHandler(CharacterStatusEffect.Hiding, StatusClientVisibility.Everyone, StatusEffectFlags.NoSave)]
 public class StatusHiding : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnTakeDamage | StatusUpdateMode.OnUpdate;

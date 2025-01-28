@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[91];
+			handlers = new SkillHandlerBase[123];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new FirstAidHandler();
@@ -83,30 +83,62 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[66] = new HammerFallHandler();
 			handlers[67] = new SonicBlowHandler();
 			handlers[68] = new DefaultSkillHandler();
-			handlers[69] = new GrandThunderstormHandler();
+			handlers[69] = new DefaultSkillHandler();
 			handlers[70] = new DefaultSkillHandler();
 			handlers[71] = new DefaultSkillHandler();
 			handlers[72] = new DefaultSkillHandler();
-			handlers[73] = new DefaultSkillHandler();
+			handlers[73] = new FireAttackHandler();
 			handlers[74] = new DefaultSkillHandler();
-			handlers[75] = new DefaultSkillHandler();
-			handlers[76] = new PoisonAttackHandler();
-			handlers[77] = new DefaultSkillHandler();
+			handlers[75] = new WindAttackHandler();
+			handlers[76] = new DefaultSkillHandler();
+			handlers[77] = new DarkAttackHandler();
 			handlers[78] = new DefaultSkillHandler();
-			handlers[79] = new CriticalSlashHandler();
-			handlers[79].ExecuteWithoutSource = true;
-			handlers[80] = new PoisonHandler();
+			handlers[79] = new PoisonAttackHandler();
+			handlers[80] = new UndeadAttackHandler();
 			handlers[81] = new DefaultSkillHandler();
-			handlers[82] = new DefaultSkillHandler();
+			handlers[82] = new CriticalSlashHandler();
+			handlers[82].ExecuteWithoutSource = true;
 			handlers[83] = new DefaultSkillHandler();
-			handlers[84] = new DefaultSkillHandler();
-			handlers[85] = new SelfDestructHandler();
-			handlers[85].ExecuteWithoutSource = true;
+			handlers[84] = new PoisonHandler();
+			handlers[85] = new DefaultSkillHandler();
 			handlers[86] = new DefaultSkillHandler();
 			handlers[87] = new DefaultSkillHandler();
 			handlers[88] = new DefaultSkillHandler();
 			handlers[89] = new DefaultSkillHandler();
 			handlers[90] = new DefaultSkillHandler();
+			handlers[91] = new DefaultSkillHandler();
+			handlers[92] = new DefaultSkillHandler();
+			handlers[93] = new DefaultSkillHandler();
+			handlers[94] = new DefaultSkillHandler();
+			handlers[95] = new DefaultSkillHandler();
+			handlers[96] = new DefaultSkillHandler();
+			handlers[97] = new DefaultSkillHandler();
+			handlers[98] = new DefaultSkillHandler();
+			handlers[99] = new SelfDestructHandler();
+			handlers[99].ExecuteWithoutSource = true;
+			handlers[100] = new DefaultSkillHandler();
+			handlers[101] = new DefaultSkillHandler();
+			handlers[102] = new DefaultSkillHandler();
+			handlers[103] = new DefaultSkillHandler();
+			handlers[104] = new DefaultSkillHandler();
+			handlers[105] = new DefaultSkillHandler();
+			handlers[106] = new DefaultSkillHandler();
+			handlers[107] = new DefaultSkillHandler();
+			handlers[108] = new DefaultSkillHandler();
+			handlers[109] = new DefaultSkillHandler();
+			handlers[110] = new DefaultSkillHandler();
+			handlers[111] = new DefaultSkillHandler();
+			handlers[112] = new DefaultSkillHandler();
+			handlers[113] = new DefaultSkillHandler();
+			handlers[114] = new DefaultSkillHandler();
+			handlers[115] = new DefaultSkillHandler();
+			handlers[116] = new DefaultSkillHandler();
+			handlers[117] = new DefaultSkillHandler();
+			handlers[118] = new DefaultSkillHandler();
+			handlers[119] = new DefaultSkillHandler();
+			handlers[120] = new GrandThunderstormHandler();
+			handlers[121] = new DefaultSkillHandler();
+			handlers[122] = new DefaultSkillHandler();
 		}
 	}
 }

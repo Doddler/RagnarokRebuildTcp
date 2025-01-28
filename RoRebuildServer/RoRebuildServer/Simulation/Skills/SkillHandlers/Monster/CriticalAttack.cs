@@ -1,5 +1,6 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Networking;
@@ -16,7 +17,7 @@ public class CriticalAttack : SkillHandlerBase
             return;
 
         //surely there's a better way to do it than this?
-        var res = source.CalculateCombatResult(target, 0.7f + lvl * 0.3f, 1, AttackFlags.Physical | AttackFlags.GuaranteeCrit, CharacterSkill.CriticalAttack);
+        var res = source.CalculateCombatResult(target, 0.7f + lvl * 0.3f, 1, AttackFlags.Physical | AttackFlags.GuaranteeCrit, CharacterSkill.CriticalAttack, AttackElement.Neutral);
         
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
