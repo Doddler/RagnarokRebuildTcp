@@ -527,6 +527,11 @@ public class ScriptBuilder
 
             foreach (var i in Enum.GetValues<CharacterElement>())
                 additionalVariables.Add(i.ToString(), $"CharacterElement.{i}");
+
+            additionalVariables.Add("position", "position");
+
+            foreach (var i in Enum.GetNames<EquipPosition>())
+                additionalVariables.Add(i.ToString(), $"EquipPosition.{i}");
         }
         else
         {
@@ -566,7 +571,7 @@ public class ScriptBuilder
 
         }
 
-        foreach (var i in Enum.GetValues<CharacterStat>())
+        foreach (var i in Enum.GetNames<CharacterStat>())
         {
             var str = i.ToString();
             if (!additionalVariables.ContainsKey(str))

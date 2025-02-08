@@ -88,6 +88,24 @@ namespace Assets.Scripts.UI
             middle = new Vector2(middle.x, -middle.y);
             rect.anchoredPosition = middle - new Vector2(rect.sizeDelta.x / 2, -rect.sizeDelta.y / 2);
         }
+        
+        public void CenterWindow(Vector2 center)
+        {
+            //center window
+            ((RectTransform)transform).ForceUpdateRectTransforms();
+            var rect = gameObject.GetComponent<RectTransform>();
+            var parentContainer = (RectTransform)gameObject.transform.parent;
+            var middle = parentContainer.rect.size * center;
+            middle = new Vector2(middle.x, -middle.y);
+            rect.anchoredPosition = middle - new Vector2(rect.sizeDelta.x / 2, -rect.sizeDelta.y / 2);
+        }
+
+
+        protected void AttachToMainUI()
+        {
+            transform.SetParent(UiManager.Instance.PrimaryUserWindowContainer);
+            transform.localScale = Vector3.one;
+        }
 
         public virtual void OnPointerDown(PointerEventData eventData)
         {

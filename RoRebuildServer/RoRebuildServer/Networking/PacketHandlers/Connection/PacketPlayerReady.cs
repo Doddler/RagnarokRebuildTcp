@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Networking;
+﻿using RebuildSharedData.Enum;
+using RebuildSharedData.Networking;
 using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Connection;
@@ -14,7 +15,7 @@ public class PacketPlayerReady : IClientPacketHandler
         if (connection.Character.IsActive)
             throw new Exception($"Woah! A player {connection.Character.Name} is trying to send a PlayerReady packet while they're already ready!");
 
-        connection.Character.Map.ActivatePlayerAndNotifyNearby(connection.Player);
+        connection.Character.Map.ActivatePlayerAndNotifyNearby(connection.Player, CreateEntityEventType.EnterServer);
 
         //connection.Character.IsActive = true;
         //connection.Character.Map.SendAllEntitiesToPlayer(ref connection.Entity);

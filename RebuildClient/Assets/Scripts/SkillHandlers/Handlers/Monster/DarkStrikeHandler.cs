@@ -1,0 +1,34 @@
+﻿using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers.Skills;
+using Assets.Scripts.Network;
+using JetBrains.Annotations;
+using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
+
+namespace Assets.Scripts.SkillHandlers.Handlers
+{
+    [SkillHandler(CharacterSkill.DarkStrike)]
+    public class DarkStrikeHandler : SkillHandlerBase
+    {
+        public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            attack.Target?.Messages.SendHitEffect(attack.Src, attack.MotionTime, 2, 1); //only once
+            attack.Target?.Messages.SendHitEffect(attack.Src, attack.MotionTime, 1, attack.HitCount);
+        }
+        
+        public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
+        {
+            HoldStandbyMotionForCast(src, castTime);
+            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Dark));
+            target?.AttachEffect(CastLockOnEffect.Create(castTime, target.gameObject));
+        }
+
+        public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ref AttackResultData attack)
+        {
+            src?.PerformSkillMotion();
+            src?.LookAtOrDefault(attack.Target);
+            if (src != null && attack.Target != null)
+                SoulStrikeEffect.LaunchEffect(src, attack.Target.gameObject, attack.HitCount, true);
+        }
+    }
+}

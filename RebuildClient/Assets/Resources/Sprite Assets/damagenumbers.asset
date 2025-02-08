@@ -16,6 +16,28 @@ MonoBehaviour:
   material: {fileID: 8805047394938398580}
   materialHashCode: 0
   m_Version: 1.1.0
+  m_FaceInfo:
+    m_FaceIndex: 0
+    m_FamilyName: 
+    m_StyleName: 
+    m_PointSize: 0
+    m_Scale: 0
+    m_UnitsPerEM: 0
+    m_LineHeight: 0
+    m_AscentLine: 0
+    m_CapLine: 0
+    m_MeanLine: 0
+    m_Baseline: 0
+    m_DescentLine: 0
+    m_SuperscriptOffset: 0
+    m_SuperscriptSize: 0
+    m_SubscriptOffset: 0
+    m_SubscriptSize: 0
+    m_UnderlineOffset: 0
+    m_UnderlineThickness: 0
+    m_StrikethroughOffset: 0
+    m_StrikethroughThickness: 0
+    m_TabWidth: 0
   spriteSheet: {fileID: 2800000, guid: 744fd7e8bcf18014ba539c5a2e6716ce, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
@@ -93,6 +115,7 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: 1654233829656427366, guid: 744fd7e8bcf18014ba539c5a2e6716ce,
       type: 3}
   - m_Index: 0
@@ -109,6 +132,7 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: 4572676623688275, guid: 744fd7e8bcf18014ba539c5a2e6716ce, type: 3}
   - m_Index: 1
     m_Metrics:
@@ -124,6 +148,7 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: 6736722787055186341, guid: 744fd7e8bcf18014ba539c5a2e6716ce,
       type: 3}
   - m_Index: 2
@@ -140,6 +165,7 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: -4702141889024026877, guid: 744fd7e8bcf18014ba539c5a2e6716ce,
       type: 3}
   - m_Index: 3
@@ -156,6 +182,7 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: 9058678847609727325, guid: 744fd7e8bcf18014ba539c5a2e6716ce,
       type: 3}
   - m_Index: 4
@@ -172,6 +199,7 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: -4648894086907670514, guid: 744fd7e8bcf18014ba539c5a2e6716ce,
       type: 3}
   - m_Index: 5
@@ -188,6 +216,7 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: -1755730070397846476, guid: 744fd7e8bcf18014ba539c5a2e6716ce,
       type: 3}
   - m_Index: 6
@@ -204,6 +233,7 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: 420014342534857835, guid: 744fd7e8bcf18014ba539c5a2e6716ce, type: 3}
   - m_Index: 7
     m_Metrics:
@@ -219,6 +249,7 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: 4297534873443905768, guid: 744fd7e8bcf18014ba539c5a2e6716ce,
       type: 3}
   - m_Index: 9
@@ -235,25 +266,30 @@ MonoBehaviour:
       m_Height: 11
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
     sprite: {fileID: 490861242137546453, guid: 744fd7e8bcf18014ba539c5a2e6716ce, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []
 --- !u!21 &8805047394938398580
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TextMeshPro/Sprite
   m_Shader: {fileID: 4800000, guid: 59a392ed9e00b65408c200f9c70e7644, type: 3}
-  m_ShaderKeywords: 
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3011
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -277,6 +313,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Ambient: 0.5
     - _Bevel: 0.5
@@ -341,3 +378,4 @@ Material:
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_BuildTextureStacks: []

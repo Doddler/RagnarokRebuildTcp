@@ -20,6 +20,8 @@ namespace Assets.Scripts.UI.Hud
         public Sprite BossIcon;
         public Sprite MvpIcon;
         public Sprite PortalIcon;
+        public Sprite WarpNpcIcon;
+        public Sprite KafraIcon;
         public Slider ZoomSlider;
     
         private GameObject playerMapIconObject;
@@ -115,6 +117,8 @@ namespace Assets.Scripts.UI.Hud
                     case CharacterDisplayType.Boss: img.sprite = BossIcon; break;
                     case CharacterDisplayType.Mvp: img.sprite = MvpIcon; break;
                     case CharacterDisplayType.Portal: img.sprite = PortalIcon; break;
+                    case CharacterDisplayType.WarpNpc: img.sprite = WarpNpcIcon; break;
+                    case CharacterDisplayType.Kafra: img.sprite = KafraIcon; break;
                     default: 
                         Debug.Log($"Unknown character display type for minimap icon: {type}");
                         img.sprite = OtherPlayerIcon;

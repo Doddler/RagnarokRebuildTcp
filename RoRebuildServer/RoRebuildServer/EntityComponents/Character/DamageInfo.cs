@@ -12,7 +12,9 @@ public enum DamageApplicationFlags : byte
     NoHitLock = 1,
     ReducedHitLock = 2,
     UpdatePosition = 4,
-    SkipOnHitTriggers = 8
+    SkipOnHitTriggers = 8,
+    PhysicalDamage = 16,
+    MagicalDamage = 32
 }
 
 public struct DamageInfo

@@ -43,7 +43,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
                 if (enemy.IsCasting && enemy.CastInterruptionMode == CastInterruptionMode.NeverInterrupt)
                         continue;
 
-                source.TryStunTarget(enemy, rate);
+                source.TryStunTarget(enemy, rate * 10);
 
                 //var vit = enemy.GetEffectiveStat(CharacterStat.Vit) * 3 / 2; //+50% to make it less weird
                 ////if (vit > 75 && enemy.Character.Type == CharacterType.Player)

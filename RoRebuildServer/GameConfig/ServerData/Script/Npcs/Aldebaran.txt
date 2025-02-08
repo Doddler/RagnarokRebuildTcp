@@ -1,0 +1,11 @@
+Npc("aldebaran", "Christmas Link", "4_M_SANTA", 223, 222, S) { 
+	RegisterAsWarpNpc();
+OnClick:
+    FocusNpc();
+    Dialog("Jolly Old Man", "Ho ho ho! Need a lift to Lutie, the Christmas Town?");
+    Option("Heck yeah.", "I'm too grumpy for Christmas." );
+    switch(Result)
+    {
+        case 0: MoveTo("xmas_fild01", 83, 72);
+    }
+}

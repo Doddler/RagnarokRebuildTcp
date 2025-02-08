@@ -10,5 +10,6 @@ public class StorageInventory
     public byte[] StorageData { get; set; }
     public int UncompressedSize { get; set; }
     public int AccountId { get; set; }
+    public int StorageZeny { get; set; }
     public RoUserAccount Account { get; set; }
 }

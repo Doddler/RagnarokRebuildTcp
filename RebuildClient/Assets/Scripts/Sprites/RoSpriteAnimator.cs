@@ -10,8 +10,12 @@ using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Sprites
 {
-    public record QueuedMotionTransition(bool isActive, float TransitionTime = 0, SpriteMotion CurrentMotion = SpriteMotion.Idle, SpriteMotion TargetMotion = SpriteMotion.Idle);
-    
+    public record QueuedMotionTransition(
+        bool isActive,
+        float TransitionTime = 0,
+        SpriteMotion CurrentMotion = SpriteMotion.Idle,
+        SpriteMotion TargetMotion = SpriteMotion.Idle);
+
     public class RoSpriteAnimator : MonoBehaviour
     {
         public RoSpriteData SpriteData;
@@ -84,6 +88,18 @@ namespace Assets.Scripts.Sprites
         public bool RaycastForShadow = true;
 
         public SpriteMotion CurrentMotion;
+        // private SpriteMotion _currentMotion;
+        //
+        // public SpriteMotion CurrentMotion
+        // {
+        //     get { return _currentMotion; }
+        //     set
+        //     {
+        //         Debug.Log($"Changing current motion from {_currentMotion} to {value}");
+        //         _currentMotion = value;
+        //     }
+        // }
+
         public int PreferredAttackMotion;
 
         public float MoveDistance;
@@ -101,6 +117,17 @@ namespace Assets.Scripts.Sprites
         private int lastFrame = 0;
         private int lastWalkFrame = 0;
         private int maxFrame { get; set; } = 0;
+
+        // private bool _isPaused;
+        // private bool isPaused
+        // {
+        //     get => _isPaused;
+        //     set
+        //     {
+        //         Debug.Log($"IsPaused changed from {isPaused} to {value}");
+        //         _isPaused = value;
+        //     }
+        // }
         private bool isPaused;
         private bool isDirty;
         private bool isActive;
@@ -438,7 +465,7 @@ namespace Assets.Scripts.Sprites
         public void ChangeMotion(SpriteMotion nextMotion, bool forceUpdate = false)
         {
             // if(SpriteData?.Name == "초보자_남")
-            // Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion}");
+            // Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion} (isPaused: {isPaused}) (current frame frame {currentFrame})");
 
             if (CurrentMotion == SpriteMotion.Dead && !forceUpdate)
                 Debug.LogWarning("Changing from dead to something else!");
@@ -504,7 +531,8 @@ namespace Assets.Scripts.Sprites
                 // Debug.Log($"CurrentState: {State} CurrentMotion: {CurrentMotion} NextMotion: {nextMotion}");
                 if (nextMotion != CurrentMotion)
                 {
-                    if (queuedMotionTransition.isActive && queuedMotionTransition.CurrentMotion == CurrentMotion && queuedMotionTransition.TargetMotion == nextMotion)
+                    if (queuedMotionTransition.isActive && queuedMotionTransition.CurrentMotion == CurrentMotion &&
+                        queuedMotionTransition.TargetMotion == nextMotion)
                         return;
                     if (nextMotion == SpriteMotion.Idle || nextMotion == SpriteMotion.Standby || nextMotion == SpriteMotion.Dead)
                     {
@@ -710,7 +738,7 @@ namespace Assets.Scripts.Sprites
             if (currentAction == null)
                 ChangeAction(0);
 
-            pauseTime--;
+            pauseTime -= Time.deltaTime;
             if (pauseTime < 0)
                 isPaused = false;
 
@@ -737,12 +765,15 @@ namespace Assets.Scripts.Sprites
 
             if (currentFrameTime < 0 || currentFrame > maxFrame)
                 AdvanceFrame();
+            //
+            // if (Controllable != null && Controllable.CharacterType == CharacterType.Player)
+            //     Debug.Log($"{_currentMotion} isPaused:{isPaused}");
 
             if (isDirty)
             {
                 //probably should do something
             }
-            
+
             if (Shadow != null && isActive)
             {
                 if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
@@ -753,7 +784,7 @@ namespace Assets.Scripts.Sprites
 
             if (SpriteRenderer is RoSpriteRendererStandard sr2)
                 sr2.IsHidden = IsHidden;
-            
+
             //if (isDirty)
             {
                 UpdateSpriteFrame();

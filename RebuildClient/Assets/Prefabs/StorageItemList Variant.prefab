@@ -2594,6 +2594,11 @@ PrefabInstance:
       objectReference: {fileID: 6069261360431501571}
     - target: {fileID: 6114005700872824660, guid: 8951fbefcb42b3c40910fe1ac3f927f3,
         type: 3}
+      propertyPath: MinSize.x
+      value: 450
+      objectReference: {fileID: 0}
+    - target: {fileID: 6114005700872824660, guid: 8951fbefcb42b3c40910fe1ac3f927f3,
+        type: 3}
       propertyPath: MinSize.y
       value: 500
       objectReference: {fileID: 0}

@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network.Messaging;
@@ -133,6 +134,11 @@ namespace Assets.Scripts.Network
             return FloatingDisplay;
         }
 
+        public void LookInDirection(Direction direction)
+        {
+            SpriteAnimator.Angle = RoAnimationHelper.FacingDirectionToRotation(direction);
+        }
+
         public void LookAt(Vector3 lookAt)
         {
             var pos1 = new Vector2(transform.position.x, transform.position.z);
@@ -152,6 +158,12 @@ namespace Assets.Scripts.Network
                 LookAt(target.transform.position);
             else
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(fallbackDir));
+        }
+        
+        public void LookAtOrDefault(ServerControllable target)
+        {
+            if (target != null && target != this)
+                LookAt(target.transform.position);
         }
         
         public void SetSp(int sp, int maxSp)
@@ -261,6 +273,21 @@ namespace Assets.Scripts.Network
             uniqueAttackAction = null;
             FloatingDisplay?.CancelCasting();
             EndEffectOfType(EffectType.CastEffect);
+            EndEffectOfType(EffectType.CastHolyEffect);
+            if (SpriteAnimator.CurrentMotion == SpriteMotion.Casting)
+            {
+                if (CharacterType == CharacterType.Player || CharacterType == CharacterType.PlayerLikeNpc)
+                {
+                    SpriteAnimator.State = SpriteState.Standby;
+                    SpriteAnimator.ChangeMotion(SpriteMotion.Standby, true);   
+                }
+                else
+                {
+                    SpriteAnimator.State = SpriteState.Idle;
+                    SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
+                }
+                
+            }
         }
 
         public void StopCastingAnimation()
@@ -644,8 +671,17 @@ namespace Assets.Scripts.Network
             //transform.localPosition = RealPosition + PositionOffset;
         }
 
+        public void AbortActiveWalk()
+        {
+            isMoving = false;
+            movePath?.Clear();
+        }
+
         public void StopWalking()
         {
+            if (!isMoving)
+                return;
+            
             if (movePath.Count > 2)
                 movePath.RemoveRange(2, movePath.Count - 2);
 
@@ -752,8 +788,10 @@ namespace Assets.Scripts.Network
 
         public void AttachEffect(Ragnarok3dEffect effect)
         {
-            if (EffectList == null)
-                EffectList = new List<Ragnarok3dEffect>();
+            if (effect == null)
+                return;
+            
+            EffectList ??= new List<Ragnarok3dEffect>();
 
 #if UNITY_EDITOR
             if (EffectList.Contains(effect))
@@ -1222,8 +1260,9 @@ namespace Assets.Scripts.Network
                     CameraFollower.Instance.AttachEffectToEntity("WindHit", gameObject, Id);
                     break;
                 case AttackElement.Water:
-                    hitPosition = transform.position + new Vector3(0, 2, 0);
-                    HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(255, 255, 255, 128), 1);
+                    //hitPosition = transform.position + new Vector3(0, 2, 0);
+                    ColdHitEffect.ColdHit(gameObject);
+                    //HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(255, 255, 255, 128), 1);
                     break;
                 case AttackElement.Earth:
                     hitPosition = transform.position + new Vector3(0, 2, 0);

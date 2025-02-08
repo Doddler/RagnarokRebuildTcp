@@ -97,10 +97,12 @@ public enum PacketType : byte
     [ServerOnlyPacket] ItemUpdate,
     [ServerOnlyPacket] ServerEvent,
     DebugEntry,
-
+    
     MemoMapLocation,
+    DeleteCharacter,
 
     AdminCharacterAction,
+    ChangePlayerSpecialActionState
 }
 
 public enum MessageType : byte

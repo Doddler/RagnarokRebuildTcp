@@ -30,52 +30,16 @@ StateAttacking:
 }
 
 
-SkillHandler("MARDUK") {
-StateAttacking:
-	TryCast(FireBolt, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
-StateChase:
-	TryCast(FireBolt, 3, 10%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
-	TryCast(FireWall, 5, 10%, 0.5s, 5s, NoInterrupt);
-}
-
-
-SkillHandler("SCORPION") {
-StateChase:
-	TryCast(NoCast, 1, 100%, 0, 15s)[(PreviousAiState == StateIdle || PreviousAiState == StateRandomMove) && TimeInAiState < 1s && TimeSinceLastDamage > 5s] -> SendEmote(0); //!
-StateAttacking:
-	TryCast(Envenom, 1, 100%, 0, 12s);
-}
-
-SkillHandler("IRON_FIST") {
-StateAttacking:
-	TryCast(Envenom, 5, 100%, 0, 8s);
-}
 
 SkillHandler("ASSULTER") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt);
 }
 
-SkillHandler("ANUBIS") {
-StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s);
-}
-
 
 SkillHandler("TIRFING") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(18); //lol
-}
-
-
-SkillHandler("MATYR") {
-StateAttacking:
-	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6); //angry
-}
-
-SkillHandler("MINOROUS") {
-StateAttacking:
-	TryCast(HammerFall, 3, 5%, 1.5s, 5s);
 }
 
 SkillHandler("MAJORUROS") {
@@ -108,7 +72,8 @@ OnTimer 2000:
 
 SkillHandler("ANGRY_TARGET_DUMMY") {
 	StateAny:
-	TryCast(JupitelThunder, 28, 100%, 0.5s, 2s);
+	//TryCast(JupitelThunder, 28, 100%, 0.5s, 2s);
+	TryCast(Poison, 10, 100%, 0.5s, 5s);
 	//TryCast(PoisonAttack, 1, 100%, 0.5s, 2s);
 	//TryCast(DarkAttack, 1, 100%, 0.5s, 2s);
 }

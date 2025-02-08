@@ -5,6 +5,7 @@
 
 Npc("alberta", "Sailor", "4_M_SEAMAN", 247, 122, S)
 {
+    RegisterAsWarpNpc();
     localstr name = "Gotanblue";
 OnClick:
     FocusNpc();
@@ -29,6 +30,7 @@ OnClick:
 
 Npc("tur_dun01", "Sailor", "4_M_SEAMAN", 165, 29, S)
 {
+    RegisterAsWarpNpc();
     localstr name = "Gotanblue";
 OnClick:
     FocusNpc();
@@ -48,6 +50,7 @@ OnClick:
 
 Npc("alberta", "Overseas Captain", "4_M_SEAMAN", 245, 93, SW) 
 {
+    RegisterAsWarpNpc();
     localstr name = "Sea Captain";
 OnClick:
     FocusNpc();

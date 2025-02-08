@@ -27,6 +27,13 @@ public class IceAttackHandler : ElementalAttackHandler
     public override CharacterSkill GetSkill() => CharacterSkill.IceAttack;
 }
 
+[SkillHandler(CharacterSkill.WaterAttack, SkillClass.Physical)]
+public class WaterAttackHandler : ElementalAttackHandler
+{
+    public override AttackElement GetElement() => AttackElement.Water;
+    public override CharacterSkill GetSkill() => CharacterSkill.WaterAttack;
+}
+
 [SkillHandler(CharacterSkill.EarthAttack, SkillClass.Physical)]
 public class EarthAttackHandler : ElementalAttackHandler
 {

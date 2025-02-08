@@ -78,6 +78,14 @@ public class AreaOfEffect
         TouchingEntities = null;
     }
 
+    public void TriggerNpcEvent(CombatEntity interactingEntity, Object? eventData = null)
+    {
+        if (!SourceEntity.TryGet<Npc>(out var npc))
+            return;
+
+        npc.Behavior.OnAoEEvent(npc, interactingEntity, this, eventData);
+    }
+
     //HasTouchedAoE checks if we are entering an aoe we were not previously in. If we are already in the aoe nothing happens.
     public bool HasTouchedAoE(Position initial, Position newPos)
     {
@@ -131,7 +139,7 @@ public class AreaOfEffect
             {
                 if (TouchingEntities == null)
                     TouchingEntities = EntityListPool.Get();
-                TouchingEntities.Add(character.Entity);
+                TouchingEntities.AddIfNotExists(character.Entity);
             }
         }
 
@@ -141,13 +149,15 @@ public class AreaOfEffect
                 return;
             if (!SourceEntity.TryGet<Npc>(out var npc))
                 return;
+            if (!TargetingInfo.IsValidTarget(character.CombatEntity))
+                return;
             if (TriggerOnFirstTouch)
                 npc.Behavior.OnAoEInteraction(npc, character.CombatEntity, this);
             if (IsActive && CheckStayTouching && Area.Contains(character.Position)) //it might have moved so we check position again
             {
                 if (TouchingEntities == null)
                     TouchingEntities = EntityListPool.Get();
-                TouchingEntities.Add(character.Entity);
+                TouchingEntities.AddIfNotExists(character.Entity);
             }
         }
     }

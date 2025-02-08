@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
@@ -1215,12 +1216,25 @@ namespace Assets.Scripts
 
         public void AttachEffectToEntity(string effect, GameObject target, int ownerId = -1)
         {
+            switch (effect.ToLower())
+            {
+                case "exit":
+                    ExitEffect.LaunchExitAtLocation(target.transform.position);
+                    return;
+                case "teleport":
+                    TeleportEffect.LaunchTeleportAtLocation(target.transform.position + new Vector3(0f, 0f, 4f));
+                    return;
+                case "entry":
+                    EntryEffect.LaunchEntryAtLocation(target.transform.position + new Vector3(0f, 0f, 4f));
+                    return;
+            }
+            
             if (!EffectIdLookup.TryGetValue(effect, out var id))
             {
                 AppendError($"Could not find effect with name {effect}.");
                 return;
             }
-
+            
             AttachEffectToEntity(id, target);
         }
 

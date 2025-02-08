@@ -578,6 +578,35 @@ public class ItemEquipState
         }
     }
 
+    public bool IsInPosition(EquipPosition pos)
+    {
+        switch (activeSlot)
+        {
+            case EquipSlot.HeadTop:
+                return (pos & EquipPosition.HeadUpper) > 0;
+            case EquipSlot.HeadMid:
+                return (pos & EquipPosition.HeadMid) > 0;
+            case EquipSlot.HeadBottom:
+                return (pos & EquipPosition.HeadLower) > 0;
+            case EquipSlot.Body:
+                return (pos & EquipPosition.Body) > 0;
+            case EquipSlot.Weapon:
+                return (pos & EquipPosition.Weapon) > 0;
+            case EquipSlot.Shield:
+                return (pos & EquipPosition.Shield) > 0;
+            case EquipSlot.Garment:
+                return (pos & EquipPosition.Garment) > 0;
+            case EquipSlot.Footgear:
+                return (pos & EquipPosition.Footgear) > 0;
+            case EquipSlot.Accessory1:
+            case EquipSlot.Accessory2:
+                return (pos & EquipPosition.Accessory) > 0;
+
+        }
+
+        return false;
+    }
+
     public void AddStat(CharacterStat stat, int change)
     {
 #if DEBUG

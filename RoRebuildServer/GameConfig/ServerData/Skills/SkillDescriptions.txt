@@ -1,6 +1,14 @@
 //----------------Novice-------------------
 ::BasicMastery
-This skill is totally worthless but you need to get it to rank 8 before you can job change.
+Basic adventuring techniques that unlock various features based on your skill level. You will need to master this skill and reach job level 10 before you can change jobs.
+Level 1: Use emotes
+Level 2: Use sit (/sit or insert)
+Level 3: Enables trading (not implemented)
+Level 4: Join a party (not implemented)
+Level 5: Use Kafra item storage
+Level 6: Create a party (not implemented)
+Level 7: Use shout chat
+Level 8: Use Kafra zeny storage (not implemented)
 
 ::FirstAid
 Heal's yourself by either 5 HP or 1% of your max HP, whichever is higher.
@@ -8,7 +16,8 @@ Heal's yourself by either 5 HP or 1% of your max HP, whichever is higher.
 //----------------Swordsman-------------------
 
 ::Bash
-Hit the enemy really hard.
+Strikes a target for [100 + SkillLevel * 30]% ATK with an accuracy boost of [SkillLevel * 5]%.
+SP cost increases from 8 to 15 at level 6 and above.
 
 ::Endure
 Resists flinching from enemy attacks, allowing you to escape without being slowed down by damage.
@@ -19,24 +28,24 @@ Increases HP recovery by 5 HP plus 0.2% of your MaxHP per level.
 <i>Currently is combined with your regular HP recovery tick rather than a separate value.</i>
 
 ::MagnumBreak
-<color=red>This skill doesn't currently work.
+Inflicts [100 + SkillLevel * 20]% fire damage to nearby enemies and knocking them back 2 tiles.
+For 20 seconds after using the skill all physical attacks will all deal an additional [10 + SkillLevel]% fire damage.
 
 ::Provoke
 Enrages an enemy by taunting them, causing them drop their guard. 
-While under the effect of provoke a target has reduced defense but deals more damage. The enemy has a low chance of dealing extra damage against you specifically.
+Reduces enemy defense by [5 + SkillLevel * 5]%.
+Increases enemy attack power by [2 + SkillLevel *3]%.
 The effectivness of this skill is halved on boss type monsters.
-Level 1: -10% DEF, +5% ATK
-...
-Level 10: -55% DEF, +32% ATK
+While provoked the enemy has a low chance of dealing extra damage against you specifically.
 
 ::SwordMastery
 Increases damage when using a one-handed sword by 1% per level to a max of +10%.
 
 ::TwoHandSwordMastery
-This skill would increase damage when using a two-handed sword if you could actually equip one, but you can't.
+Increases damage when using two-handed swords by 1% per level to a max of +10%.
 
 ::TwoHandQuicken
-Increases attack speed when using two-handed swords by 10% per skill level.
+Increases attack speed when using two-handed swords by [SkillLevel * 10]%.
 
 //----------------Archer-------------------
 
@@ -45,7 +54,7 @@ Nock two arrows to strike a target for two powerful hits at once.
 Deals 2 hits at [90 + SkillLevel * 10]% ATK
 
 ::ChargeArrow
-<color=red>This skill doesn't currently work.
+Fires a powerful shot dealing 150% ATK and knocking the target away 6 tiles.
 
 ::ArrowShower
 Fires a bundle of arrows, striking targets in a 5x5 area and knocking them back.
@@ -81,41 +90,50 @@ Increases SP recovery by 3 SP plus 0.2% of your MaxSP per level.
 <i>Currently is combined with your regular SP recovery tick rather than a separate value.</i>
 
 ::FireBolt
-Strikes a single target with a fire element attack. 
-Higher skill level increases cast time but deals more hits. 
-Deals increased damage against earth and undead element and less to fire and water.
+Deals [SkillLevel] hits at 100% fire element magic damage to a single target.
+Casting is only interrupted by high damage and skill attacks.
+Cast Time: [0.6 + SkillLevel * 0.4]s
 
 ::ColdBolt
-Strikes a single target with a water element attack. 
-Higher skill level increases cast time but deals more hits. 
-Deals increased damage against fire element and less to water and wind.
+Deals [SkillLevel] hits at 100% water element magic damage to a single target.
+Casting is only interrupted by high damage and skill attacks.
+Cast Time: [0.6 + SkillLevel * 0.4]s
 
 ::LightningBolt
-Strikes a single target with an earth element attack. 
-Higher skill level increases cast time but deals more hits. 
-Deals increased damage against water element and less to wind and earth.
+Deals [SkillLevel] hits at 100% wind element magic damage to a single target.
+Casting is only interrupted by high damage and skill attacks.
+Cast Time: [0.6 + SkillLevel * 0.4]s
 
 ::FireBall
-<color=red>This skill doesn't currently work.
+Deals [140 + SkillLevel * 20]% magical fire damage to all enemies in a 5x5 area.
+Enemies at the edge of the area of effect will take reduced damage.
+Cast time: 1.5s for all skill levels
 
 ::FireWall
 Creates a wall of flame at a targeted location dealing 50% fire magic damage and knocking enemies back upon contact.
-Higher levels increases the duration, number of hits, and speeds up casting.
+Undead and boss monsters can pass through unimpeded but will take rapid damage while doing so.
+Only 3 firewalls may be active at a time.
+Wall Durability: [2 + SkillLevel] hits
+Duration: [5 + SkillLevel] seconds
+Cast Time: [2.15 - SkillLevel * 0.15]s
 
 ::FrostDiver
 <color=red>This skill doesn't currently work.
 
 ::NapalmBeat
-A fast burst of psychokinetic energy dealing ghost property <i>physical</i> damage. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes.
+A ghost property psychokinetic attack dealing physical damage at [100 + SkillLevel * 15]% MATK. Striking a petrified or frozen target will deal triple damage. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes.
+Cast Time: [1.2 - SkillLevel *0.1]s
 
 ::SoulStrike
-A psychokinetic attack that launches spiritual energy at the target dealing ghost property magical damage. Deals 50% more damage against the undead.
+A ghost property psychokinetic attack that hits [SkillLevel / 2] times at 120% MATK. Deals 50% more damage against the undead.
+Cast Time: 0.5s
 
 ::ThunderStorm
-Deals [Skill Level] hits at 100% wind element magic damage to all targets in a 5x5 area.
+Deals [SkillLevel] hits at 100% wind element magic damage to all enemies in a 5x5 area.
+Cast Time: [1.5 + SkillLevel * 0.5]s
 
 ::SafetyWall
-A barrier which nullifies short range physical attacks. Vanishes after absorbing between 2-11 hits depending on skill level.
+A barrier which nullifies short range physical attacks, blocking up to [1 + SkillLevel] hits.
 Catalyst: <color=#777777>1 Blue Gemstone</color>
 
 //----------------Acolyte-------------------
@@ -144,20 +162,27 @@ Be sure to use the correct level as there is no prompt. You may assign different
 Creates cloud that causes all physical attacks performed from 5 or more tiles away to miss. Affects both friend and foe alike.
 
 ::Angelus
-Increases the soft defense of all party members and grants them the benefit of your learned level of Divine Protection for the skill's duration.
+Buffs all nearby party members increasing soft defense by [SkillLevel * 5]% and reducing damage taken from demon and undead monsters by[SkillLevel]% (to a maximum equal to your learned level of Divine Protection). Allies that already know Divine Protection are unaffected.
+
+::WarpPortal
+Summon a Warp Portal that teleports players to a predetermined location.
+You may remember up to [SkillLevel] destinations by using /memo to register your current location.
+Only town and outdoor locations can be registered. Some locations far away from town may be too unstable to be valid destinations.
+The portal will automatically close after [5 + SkillLevel * 5] seconds or when 8 players have entered.
 
 //----------------Thief-------------------
 
 ::DoubleAttack
-Adds a chance to double attack when performing regular melee attacks.
+Adds a [SkillLevel * 5]% chance to double attack when performing regular melee attacks.
 
 ::ImproveDodge
-Increases the chance to evade an enemy attack. Evasion doesn't fall off with more enemies so it's probably really good?
+Increases flee by [SkillLevel * 3].
 
 ::Envenom
 Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target's VIT.
-Higher skill levels increase success rate of poison as well as duration.
-Poison Effect: Deals 1/2 the received damage every 2 seconds.
+Poison Effect: Target takes half the damage dealt by envenom every 2 seconds, and has their defense reduced by 25% (10% on bosses.)
+Success rate: [50 + SkillLevel * 5]% chance.
+Duration: [4 + SkillLevel * 2] seconds (with a minimum of 10s).
 
 ::SonicBlow
 Deals 8 hits to a single target at 50% attack at level 1 rising to 100% attack at level 10.
@@ -174,8 +199,7 @@ Consumes 1 sp every [1+SkillLevel] seconds.
 Increases your weight capacity by +200 per skill level.
 
 ::Mammonite
-Uses the power of greed to strike a target with a strong blow, inflicting high physical damage.
-Each level adds +50% damage to your attack and costs an additional 50 zeny to use (dealing 600% @ 500z at level 10).
+Use the power of greed to spend [SkillLevel * 50] zeny to deal [100 + SkillLevel * 50] damage to a single target.
 Zeny used is affected by your level of Discount.
 
 ::PushCart
@@ -185,12 +209,13 @@ Rent a pushcart, increasing your character's weight capacity by +2000.
 //The cart has a weight capacity of 8000 and can store up to 100 items.
 
 ::Overcharge
-Obtain better sale value of items to the NPC. Starts at +7% item value at level 1 and scales to +24% at level 10.
+Obtain better sale value of items to the NPC, increasing the sale value of goods by [4 + SkillLevel * 2]%.
 
 ::Discount
-Obtain a better deal when buying items from the NPC. Starts at -7% item cost at level 1 and scales to -24% at level 10. Also lowers the zeny cost of Mammonite. Some shops cannot be discounted.
+Obtain a better deal when buying items from the NPC, reducing the cost of goods by [4 + SkillLevel * 2]%.
+Some shops cannot be discounted. Decreases the zeny cost of Mammonite.
 
 ::CartRevolution
-Strikes a target and a 3x3 area around them with your cart dealing 150% attack with +10% (scaling to +20% at lvl 10) added for every 1000 weight currently in your inventory.
+Strikes a target and a 3x3 area around them with your cart dealing [50 + SkillLevel * 10]% attack plus an additional 10% for every 600 weight currently in your inventory.
 Knocks the enemy away from you 2 tiles.
 <i>It only goes to level 10 because merchant needs something to spend points on.</i>

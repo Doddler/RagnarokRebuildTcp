@@ -10,6 +10,11 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.DoubleStrafe)]
     public class DoubleStrafeHandler : SkillHandlerBase
     {
+        public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            attack.Target.Messages.SendHitEffect(attack.Src, attack.MotionTime, 1, 2);
+        }
+
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             DefaultSkillCastEffect.Create(src);
@@ -25,11 +30,6 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             ArcherArrow.CreateArrow(src, attack.Target.gameObject, attack.MotionTime, -0.1f + Random.Range(-0.1f, 0f));
             ArcherArrow.CreateArrow(src, attack.Target.gameObject, attack.MotionTime+Random.Range(-0.06f, 0.06f), 0.1f + Random.Range(0, 0.1f));
             //attack.Target.Messages.SendHitEffect(src, attack.MotionTime + arrow.Duration);
-            if (attack.Result != AttackResult.Miss && attack.Result != AttackResult.Invisible)
-            {
-                attack.Target.Messages.SendHitEffect(src, attack.MotionTime);
-                attack.Target.Messages.SendHitEffect(src, attack.MotionTime + 0.2f);
-            }
         }
     }
 }

@@ -3,23 +3,23 @@ using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
 using JetBrains.Annotations;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
 {
     [SkillHandler(CharacterSkill.LightningBolt, true)]
     public class LightningBoltHandler : SkillHandlerBase
     {
+        public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            target.Messages.SendElementalHitEffect(attack.Src, attack.MotionTime, AttackElement.Wind, attack.HitCount);
+        }
+
         public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
         {
-            if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
-            {
-                src.SpriteAnimator.State = SpriteState.Standby;
-                src.SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
-            }
-            src.AttachEffect(CastEffect.Create(castTime, "magic_green", src.gameObject, true));
-            
-            if(target != null)
-                target.AttachEffect(CastLockOnEffect.Create(castTime, target.gameObject));
+            HoldStandbyMotionForCast(src, castTime);
+            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Wind));
+            target?.AttachEffect(CastLockOnEffect.Create(castTime, target.gameObject));
         }
 
         public override void InterruptSkillCasting(ServerControllable src)

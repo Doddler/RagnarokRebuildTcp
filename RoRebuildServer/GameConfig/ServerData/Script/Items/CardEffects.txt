@@ -134,7 +134,26 @@ Item("Raydric_Card") { OnEquip: AddStat(AddResistElementNeutral, 20); }
 Item("Dracula_Card") { OnEquip: } //should add 10% chance to drain 5% of damage as SP
 Item("Orc_Lord_Card") { OnEquip: } //should add reflect 30% of incoming physical damage
 Item("Khalitzburg_Card") { OnEquip: AddStat(AddResistRaceDemon, 30); } //
-Item("Drake_Card") { OnEquip: } //who the fuck knows? I don't have size penalties so it'll have to change...
+
+//custom... drake card normally removes size penalty on weapon, but since I don't have size penalty, I had to get creative
+//takes 12% of each of 5 main stats and puts half those points into the 6th, based on what slot the card is in (it can go in any).
+Item("Drake_Card") {
+OnEquip: 
+	var str = GetStat(Str) * 12 / 100;
+	var agi = GetStat(Agi) * 12 / 100;
+	var mnd = GetStat(Int) * 12 / 100; //int is a reserved keyword in c#
+	var dex = GetStat(Dex) * 12 / 100;
+	var luk = GetStat(Luk) * 12 / 100;
+	var vit = GetStat(Vit) * 12 / 100;
+	
+	if(IsInPosition(Headgear) == false) 	AddStat(AddInt, mnd * -1); else AddStat(AddInt, (str + agi + dex + luk + vit) / 2);
+	if(IsInPosition(Body) == false) 		AddStat(AddVit, vit * -1); else AddStat(AddVit, (str + agi + dex + luk + mnd) / 2);
+	if(IsInPosition(AnyHand) == false)	 	AddStat(AddStr, str * -1); else AddStat(AddStr, (mnd + agi + dex + luk + vit) / 2);
+	if(IsInPosition(Garment) == false) 		AddStat(AddAgi, agi * -1); else AddStat(AddAgi, (str + mnd + dex + luk + vit) / 2);
+	if(IsInPosition(Footgear) == false) 	AddStat(AddDex, dex * -1); else AddStat(AddDex, (str + agi + mnd + luk + vit) / 2);
+	if(IsInPosition(Accessory) == false) 	AddStat(AddLuk, luk * -1); else AddStat(AddLuk, (str + agi + dex + mnd + vit) / 2);
+}
+
 Item("Anubis_Card") { OnEquip: AddStat(AddResistRaceAngel, 30); }
 Item("Joker_Card") { OnEquip: } //enable skill steal
 Item("Abyssal_Knight_Card") { OnEquip: AddStat(AddAttackSpecialBoss, 25); }
@@ -160,7 +179,7 @@ Item("Nine_Tail_Card") { OnEquip: AddStat(AddAgi, 2); if(Refine > 8) {AddStat(Ad
 Item("Firelock_Soldier_Card") { OnEquip: AddStat(AddStr, 2); if(Refine > 8) {AddStat(AddMaxHpPercent, 10); AddStat(AddMaxSpPercent, 10);} }
 Item("Grand_Peco_Card") { OnEquip: } //should auto-cast gloria when attacked
 Item("Grizzly_Card") { OnValidate: return false; OnEquip: } //should have a chance to blind when attacked
-Item("Gryphon_Card") { OnEquip: AddStat(AddFlee, 2); AddStat(AddCrit, 7); } //should add a 1% chance for swordsman to proc bowling bash 5
+Item("Gryphon_Card") { OnEquip: AddStat(AddFlee, 2); AddStat(AddCrit, 70); } //should add a 1% chance for swordsman to proc bowling bash 5
 Item("Gullinbursti_Card") { OnValidate: return false; OnEquip: } //should add 10% bonus exp from fish at a cost of 20% more damage
 Item("Gig_Card") { OnValidate: return false; OnEquip: }
 Item("Nightmare_Terror_Card") { OnValidate: return false; OnEquip: }
@@ -231,7 +250,7 @@ Item("Sage_Worm_Card") { OnEquip: } //chance to get gemstone
 Item("Solider_Card") { OnEquip: AddStat(AddDef, 2); AddStat(AddMDef, 2); }
 Item("Skeleton_General_Card") { OnEquip: } //+10% exp from insect but +20% damage
 Item("Skel_Prisoner_Card") { OnEquip: } //sleep when attacked
-Item("Stalactic_Golem_Card") { OnEquip: AddStat(AddDef, 1); } //resist stun 20%
+Item("Stalactic_Golem_Card") { OnEquip: AddStat(AddDef, 1); AddStat(ResistStunStatus, 30); AddStat(DecreaseStunDuration, 30); }
 Item("Stem_Worm_Card") { OnEquip: } //change to get box of storms
 Item("Stone_Shooter_Card") { OnEquip: AddStat(AddHit, 10); AddStat(AddAttackPower, 10); }
 Item("Sting_Card") { OnEquip: AddStat(AddDef, 2); if(Refine > 8) {AddStat(AddMDef, 5);} }
@@ -280,7 +299,7 @@ Item("Injustice_Card") { OnEquip: } //should autospell sonic blow
 Item("Incubus_Card") { OnEquip: AddStat(AddInt, -3); AddStat(AddSpRecoveryPercent, -20); AddStat(AddMaxSp, 150); }
 Item("Giant_Spider_Card") { OnValidate: return false; OnEquip: }
 Item("Giant_Hornet_Card") { OnValidate: return false; OnEquip: }
-Item("Zhu_Po_Long_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(AddCrit, 3); }
+Item("Zhu_Po_Long_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(AddCrit, 30); }
 Item("Shellfish_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add +30% damage to crab
 Item("Zombie_Master_Card") { OnValidate: return false; OnEquip: } //sp recovery from undead
 Item("Zombie_Prisoner_Card") { OnEquip: } //bonus exp from undead but more damage taken
@@ -336,7 +355,7 @@ Item("Hati_Card") { OnEquip: } //freeze when attacked
 Item("Harpy_Card") { OnEquip: AddStat(AddResistElementNeutral, 15); } //bonus napalm beat damage
 Item("Sea_Otter_Card") { OnEquip: } //sushi/sashimi
 Item("Bloody_Butterfly_Card") { OnValidate: return false; OnEquip: } //discount phen
-Item("Yao_Jun_Card") { OnEquip: AddStat(AddFlee, 15); AddStat(AddCrit, 1); }
+Item("Yao_Jun_Card") { OnEquip: AddStat(AddFlee, 15); AddStat(AddCrit, 10); }
 Item("Phendark_Card") { OnEquip: } //sp from human kills
 Item("Evil_Snake_Lord_Card") { OnValidate: return false; OnEquip: }
 Item("Heater_Card") { OnEquip: AddStat(AddCrit, 30); } //should add 3 perfect dodge for swordsman

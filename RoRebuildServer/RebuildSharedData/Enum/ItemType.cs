@@ -73,7 +73,9 @@ namespace RebuildSharedData.Enum
         Armor = Body,
         Boots = Footgear,
         BothHands = MainHand | OffHand,
-        Headgear = HeadUpper | HeadMid | HeadLower
+        AnyHand = MainHand | OffHand,
+        Headgear = HeadUpper | HeadMid | HeadLower,
+        Any = HeadUpper | HeadMid | HeadLower | Body | MainHand | OffHand | Garment | Footgear | Accessory
     }
 
     

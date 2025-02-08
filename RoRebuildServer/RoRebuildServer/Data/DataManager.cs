@@ -59,6 +59,7 @@ public static class DataManager
 
     private static List<MonsterDatabaseInfo> monsterStats;
     private static List<List<MonsterAiEntry>> monsterAiList;
+    private static ReadOnlyDictionary<string, MapEntry> mapLookup;
     private static List<MapEntry> mapList;
     private static int[] refineSuccessTable;
     public static int[] JobBonusTable;
@@ -68,7 +69,8 @@ public static class DataManager
     public static ExpChart ExpChart;
     public static ElementChart ElementChart;
     public static int ServerVersionNumber;
-    
+
+    public static bool CanMemoMapForWarpPortalUse(string mapName) => mapLookup.TryGetValue(mapName, out var map) && map.CanMemo;
     public static bool IsJobInEquipGroup(string equipGroup, int job) => EquipGroupInfo.TryGetValue(equipGroup, out var set) && set.Contains(job);
     public static int GetEffectForItem(int item) => UseItemInfo.TryGetValue(item, out var effect) ? effect.Effect : -1;
     public static int GetWeightForItem(int item) => ItemList.TryGetValue(item, out var itemOut) ? itemOut.Weight : 0;
@@ -209,7 +211,8 @@ public static class DataManager
     {
         var loader = new DataLoader();
 
-        mapList = loader.LoadMaps();
+        mapLookup = loader.LoadMaps();
+        mapList = mapLookup.Values.ToList();
         InstanceList = loader.LoadInstances();
 
         ReloadScripts(loadExisting);

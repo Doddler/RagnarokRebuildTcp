@@ -1,4 +1,5 @@
 // Prontera fields, culverts, ant hell and byalan dungeon
+#include "_macro.txt"
 
 SkillHandler("PORING") {
 StateIdle:
@@ -22,6 +23,16 @@ StateChase:
     TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(19); //question mark
 }
 
+SkillHandler("THIEF_BUG") {
+StateMovingToItem:
+	TryCast(IncreaseAgility, 1, 10%, 0, 10s);
+}
+
+SkillHandler("THIEF_BUG_") {
+StateMovingToItem:
+	TryCast(IncreaseAgility, 1, 10%, 0, 10s);
+}
+
 SkillHandler("VITATA") {
 StateAny:
     TryCast(Heal, 5, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(5);
@@ -34,12 +45,13 @@ StateIdle:
 }
 
 SkillHandler("STROUF") {
-StateAttacking:
-	TryCast(LightningBolt, 3, 5%, 0, 5s);
-StateChase:
-	TryCast(LightningBolt, 3, 5%, 0, 5s);
 StateIdle:
 	TryCast(NoCast, 3, 200, 0, 5000) -> SendEmote(32);
+StateChase:
+	TryCast(LightningBolt, 3, 5%, 0, 5s);
+StateAttacking:
+	TryCast(LightningBolt, 3, 5%, 0, 5s);
+	TryCast(WaterAttack, 1, 20%, 0, 5s);
 }
 
 SkillHandler("MARINE_SPHERE") {
@@ -55,6 +67,65 @@ OnDie:
 	SetHpNoNotify(1200); //will self destruct for 600 damage roughly
 StateSpecial:
     TryCast(SelfDestruct, 1, 1000, 4000, 0, EventOnStartCast | HideSkillName);
+}
+
+SkillHandler("GOBLIN_1") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 2); //whistle
+StateChase:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(18); //laugh
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(WindAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
+}
+
+SkillHandler("GOBLIN_2") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 2); //whistle
+StateChase:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(29); //heh
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(FireAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
+}
+
+SkillHandler("GOBLIN_3") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 2); //whistle
+StateChase:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(9); //...
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(PoisonAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
+}
+
+SkillHandler("GOBLIN_4") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 2); //whistle
+StateChase:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(20); //doubt
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(EarthAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
+}
+
+SkillHandler("GOBLIN_5") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 2); //whistle
+StateChase:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(28); //sob
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(WaterAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
+}
+
+
+SkillHandler("GOBLIN_ARCHER") {
+StateChase:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(16); //worried
+StateAttacking:
+    TryCast(Poison, 1, 5%, 0.8s, 5s, NoInterrupt);
+    TryCast(PoisonAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
 }
 
 

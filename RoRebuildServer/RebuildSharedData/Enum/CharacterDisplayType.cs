@@ -12,6 +12,8 @@ namespace RebuildSharedData.Enum
         Boss,
         Mvp,
         Portal,
+        WarpNpc,
+        Kafra,
         TalkNpc
     }
 }

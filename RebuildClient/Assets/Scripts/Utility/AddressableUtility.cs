@@ -13,7 +13,7 @@ namespace Assets.Scripts.Utility
         {
 	        if (string.IsNullOrWhiteSpace(spritePath))
 	        {
-		        Debug.LogError($"Attempting to load RoSpriteData but the spritePath was empty!");
+		        //Debug.LogError($"Attempting to load RoSpriteData but the spritePath was empty!");
 		        return;
 	        }
 

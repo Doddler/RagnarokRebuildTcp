@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
@@ -12,20 +13,19 @@ namespace Assets.Scripts.Effects.EffectHandlers
     [RoEffect("IceArrow")]
     public class IceArrow : IEffectHandler
     {
-        private static SpriteAtlas iceArrowAtlas;
-        private static Material coldboltMaterial;
+        public static SpriteAtlas IceArrowAtlas;
+        public static Material ColdboltMaterial;
         private static Material coldboltRingMaterial;
         private static Func<RagnarokPrimitive, bool> groundHitTrigger;
-        
-        private static string[] SpriteNames = { "icearrow" };
 
+        public static string[] SpriteNames = { "icearrow" };
 
-        public static Ragnarok3dEffect Create(ServerControllable source, ServerControllable target, int count)
+        public static void InitIceArrowResources()
         {
-            if (coldboltMaterial == null)
+            if (ColdboltMaterial == null)
             {
-                coldboltMaterial = new Material(ShaderCache.Instance.AlphaBlendParticleShader);
-                coldboltMaterial.renderQueue = 3001;
+                ColdboltMaterial = new Material(ShaderCache.Instance.AlphaBlendParticleShader);
+                ColdboltMaterial.renderQueue = 3001;
             }
 
             if (coldboltRingMaterial == null)
@@ -36,9 +36,15 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 coldboltRingMaterial.mainTexture = tex;
             }
 
-            if (iceArrowAtlas == null)
-                iceArrowAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
+            if (IceArrowAtlas == null)
+                IceArrowAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
+        }
+        
 
+        public static Ragnarok3dEffect Create(ServerControllable source, ServerControllable target, int count)
+        {
+            InitIceArrowResources();
+            
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.IceArrow);
             effect.SourceEntity = source;
             effect.SetDurationByFrames(12 + count * 10 + 60);
@@ -54,9 +60,9 @@ namespace Assets.Scripts.Effects.EffectHandlers
         
         public void SceneChangeResourceCleanup()
         {
-            Resources.UnloadAsset(iceArrowAtlas);
-            iceArrowAtlas = null;
-            GameObject.Destroy(coldboltMaterial);
+            Resources.UnloadAsset(IceArrowAtlas);
+            IceArrowAtlas = null;
+            GameObject.Destroy(ColdboltMaterial);
             GameObject.Destroy(coldboltRingMaterial);
         }
 
@@ -73,10 +79,10 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             if (step >= 12 && (step - 12) % 10 == 0 && step < effect.DurationFrames && (step - 12) / 10 < effect.ObjCount)
             {
-                var prim = effect.LaunchPrimitive(PrimitiveType.DirectionalBillboard, coldboltMaterial, 1.2f);
+                var prim = effect.LaunchPrimitive(PrimitiveType.DirectionalBillboard, ColdboltMaterial, 1.2f);
                 var data = prim.GetPrimitiveData<EffectSpriteData>();
 
-                data.Atlas = iceArrowAtlas;
+                data.Atlas = IceArrowAtlas;
                 data.FrameRate = 12;
                 data.Style = BillboardStyle.AxisAligned;
                 data.Width = 11.5f / 5f;

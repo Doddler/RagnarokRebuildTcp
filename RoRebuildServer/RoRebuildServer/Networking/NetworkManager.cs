@@ -289,7 +289,7 @@ public class NetworkManager
 
                 //connection.ClientConnection.Disconnect("Thanks for playing!");
 
-                World.FullyRemoveEntity(ref connection.Entity);
+                World.FullyRemoveEntity(ref connection.Entity, CharacterRemovalReason.Disconnect);
                 connection.IsAlive = false;
             }
 

@@ -134,7 +134,7 @@ Id,Code,Name,Price,Weight,EquipableSlot,Prefix,Postfix,Sprite
 4134,Dracula_Card,Dracula Card,20,10,Weapon,Spiritual,,이름없는카드
 4135,Orc_Lord_Card,Orc Lord Card,20,10,Armor,Mirror,,이름없는카드
 4136,Khalitzburg_Card,Khalitzburg Card,20,10,Shield,,from Hell,이름없는카드
-4137,Drake_Card,Drake Card,20,10,Weapon,,of Infinity,이름없는카드
+4137,Drake_Card,Drake Card,20,10,Any,,of Infinity,이름없는카드
 4138,Anubis_Card,Anubis Card,20,10,Shield,Satanic,,이름없는카드
 4139,Joker_Card,Joker Card,20,10,Accessory,,of Moonlight,이름없는카드
 4140,Abyssal_Knight_Card,Abyssal Knight Card,20,10,Weapon,Liberation,,이름없는카드

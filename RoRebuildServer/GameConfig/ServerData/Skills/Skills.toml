@@ -315,8 +315,10 @@ AdjustableLevel = true
 [WarpPortal]
 Name = "Warp Portal"
 Icon = "al_warp"
+Target = "Ground"
 MaxLevel = 4
 SpCost = [35,32,29,26]
+AdjustableLevel = false
 
 [HolyLight]
 Name = "Holy Light"
@@ -512,6 +514,8 @@ Name = "Water Ball"
 Name = "Fire Attack"
 [IceAttack]
 Name = "Ice Attack"
+[WaterAttack] 
+Name = "Water Attack" #same as ice attack technically, used when the theme calls for it
 [WindAttack]
 Name = "Wind Attack"
 [EarthAttack]
@@ -622,6 +626,9 @@ InterruptMode = "NoInterrupt"
 #used to show in skill prereqs
 [QuestSkill]
 Name = "Reward for Quest"
+
+[NpcAgiUp]
+Name = "Agility Up"
 
 [NoCast]
 #use when you want the enemy to trigger something without the player knowing

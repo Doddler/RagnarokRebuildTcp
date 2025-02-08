@@ -264,6 +264,9 @@ namespace RoRebuildServer.Migrations
                         .IsRequired()
                         .HasColumnType("BLOB");
 
+                    b.Property<int>("StorageZeny")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("UncompressedSize")
                         .HasColumnType("INTEGER");
 

@@ -50643,6 +50643,66 @@ MonoBehaviour:
     m_SerializedLabels:
     - Collections
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b4a82dec28f55a4ba649d523528216d
+    m_Address: Assets/Maps/minimap/xmas.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0453532f364b51488e3eea6f69e0445
+    m_Address: Assets/Maps/minimap/xmas_dun01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c3d92410fdcf8b499de2033c2d5d6b1
+    m_Address: Assets/Maps/minimap/xmas_dun01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af2ed06a869f673449aea20ea1db5086
+    m_Address: Assets/Maps/minimap/xmas_dun02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 906c18c556353ab4db117890cacea094
+    m_Address: Assets/Maps/minimap/xmas_dun02_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d6be90422f06d24a9305ca340fa00dd
+    m_Address: Assets/Maps/minimap/xmas_fild01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5deda466856eb0843b2feeb98bcaca4f
+    m_Address: Assets/Maps/minimap/xmas_fild01_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c4352621df732b4e838511b8673ab3d
+    m_Address: Assets/Maps/minimap/xmas_in.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32d3709c1ce84a44a8d8db6f500f1717
+    m_Address: Assets/Maps/minimap/xmas_in_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c60d720ee1bd1af42ae2d6ad4b747cb8
+    m_Address: Assets/Maps/minimap/xmas_walkmask.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

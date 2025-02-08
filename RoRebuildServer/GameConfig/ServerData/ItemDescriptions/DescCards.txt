@@ -496,8 +496,14 @@ Reduce Skill Gemstone Requirement by 1 of Each Gemstone
 -30% damage from Demon
 
 ::Drake_Card //id 4137 - slotted on Weapon
-Ignore Weapon Size Penalty
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Reduces 5 of your 6 base stats by 12%, putting half the points removed into the remaining stat. 
+Target stat is determined by where this card is socketed:
+Headgear: Int
+Body: Vit
+Weapon/Shield: Str
+Garment: Agi
+Boots: Dex
+Accessory: Luk
 
 ::Anubis_Card //id 4138 - slotted on Shield
 -30% damage from Angel
@@ -887,8 +893,8 @@ DEF +2, MDEF +2
 
 ::Stalactic_Golem_Card //id 4223 - slotted on Headgear
 DEF +1
-+20% <color=#800000>Stun</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++30% <color=#800000>Stun</color> resist
+-30% <color=#800000>Stun</color> duration
 
 ::Stem_Worm_Card //id 4224 - slotted on Accessory
 +1% chance to find <color=#008080>Box of Storms</color> on Brute kill

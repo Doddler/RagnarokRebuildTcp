@@ -3,12 +3,19 @@ using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
 using JetBrains.Annotations;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
 {
     [SkillHandler(CharacterSkill.FireBolt, true)]
     public class FireBoltHandler : SkillHandlerBase
     {
+        public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            //effect is handled inside firearrow effect
+            //target.Messages.SendElementalHitEffect(attack.Src, attack.MotionTime, AttackElement.Fire, attack.HitCount);
+        }
+       
         public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
         {
             if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
@@ -16,7 +23,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
                 src.SpriteAnimator.State = SpriteState.Standby;
                 src.SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
             }
-            src.AttachEffect(CastEffect.Create(castTime, "ring_red", src.gameObject));
+            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Fire));
             
             if(target != null)
                 target.AttachEffect(CastLockOnEffect.Create(castTime, target.gameObject));

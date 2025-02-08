@@ -267,7 +267,7 @@ namespace Assets.Scripts.UI
 
         public void Update()
         {
-            if (!NetworkManager.IsLoaded) return;
+            if (!NetworkManager.IsLoaded || manager == null) return;
             if (manager.IsDraggingItem && !isOpenForDrop)
             {
                 for (var i = 0; i < HotBarEntries.Count; i++)

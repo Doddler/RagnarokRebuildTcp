@@ -873,7 +873,7 @@
       "StrFile": "safetywall",
       "Sprite": "",
       "SoundFile": "",
-      "Offset": 0,
+      "Offset": -0.4,
       "PrefabName": ""
     },
     {
@@ -1083,6 +1083,54 @@
     {
       "Id": 90,
       "Name": "Steal",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 91,
+      "Name": "WarpPortalOpening",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 92,
+      "Name": "WarpPortal",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 93,
+      "Name": "ExitGame",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 94,
+      "Name": "Teleportation",
       "ImportEffect": false,
       "Billboard": false,
       "IsLooping": false,

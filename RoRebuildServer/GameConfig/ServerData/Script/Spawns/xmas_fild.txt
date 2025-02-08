@@ -3,5 +3,5 @@ MapConfig("xmas_fild01")
 	CreateSpawn("MARIN", 35);
 	CreateSpawn("SASQUATCH", 20);
 	CreateSpawn("GARM_BABY", 1, 1800000);
-	CreateSpawn("GARM", 1, 7200000, 3600000);
+	CreateSpawn("GARM", 1, 7200000, 3600000, MVP);
 }

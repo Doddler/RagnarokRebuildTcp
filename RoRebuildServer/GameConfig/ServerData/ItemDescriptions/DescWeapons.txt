@@ -161,9 +161,12 @@ STR +2
 
 ::Muramasa //id 1164 - 2HSword
 <color=#808080>An oriental sword named after the legendary swordsmith, Muramasa.</color>
+CRIT +30, ASPD +12%
 
 ::Masamune //id 1165 - 2HSword
 <color=#808080>An oriental sword named after the legendary swordsmith, Masamune.</color>
+ASPD +20%, FLEE +30%
+STR -5, DEF -66%
 
 ::Dragon_Slayer //id 1166 - 2HSword
 <color=#808080>A giant sword, made from a dragon's tooth, that can easily cut through dragon scales.</color>

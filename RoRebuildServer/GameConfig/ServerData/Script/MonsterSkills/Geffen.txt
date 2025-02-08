@@ -39,6 +39,44 @@ StateAttacking:
     TryCast(PoisonAttack, 2, 5%, 0s, 5s);
 }
 
+SkillHandler("KOBOLD_1") {
+StateIdle:
+    TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(22); //??
+    @ResumeAiState(5%, AiAggressive, 9); //...
+StateChase:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(WindAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
+SkillHandler("KOBOLD_2") {
+StateIdle:
+    TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(22); //??
+    @ResumeAiState(5%, AiAggressive, 9); //...
+StateChase:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(PoisonAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
+SkillHandler("KOBOLD_3") {
+StateIdle:
+    TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(22); //??
+    @ResumeAiState(5%, AiAggressive, 9); //...
+StateChase:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
+SkillHandler("KOBOLD_ARCHER") {
+StateIdle:
+    TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(20); //doubt
+StateAttacking:
+    TryCast(FireAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+    TryCast(DoubleStrafe, 2, 5%, 1s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
 SkillHandler("WILD_ROSE") {
 StateAttacking:
 	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6);
@@ -64,4 +102,16 @@ StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
 StateAttacking:
     TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
+SkillHandler("MARIONETTE") {
+StateAttacking:
+	TryCast(GhostAttack, 5, 5%, 0, 5s, NoInterrupt) -> SendEmote(6); //angry
+StateChase:
+	TryCast(FireWall, 5, 10%, 0.5s, 5s, NoInterrupt) -> SendEmote(2); //whistle
+}
+
+SkillHandler("NIGHTMARE") {
+StateAttacking:
+	TryCast(GhostAttack, 5, 5%, 0, 5s);
 }

@@ -314,6 +314,21 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
+    public static void StopCastMultiAutoVis(WorldObject caster)
+    {
+        caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
+
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.StopCast, 8);
+
+        packet.Write(caster.Id);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+        ClearRecipients();
+    }
+
     public static void StopCastMulti(WorldObject caster)
     {
         if (!HasRecipients())
@@ -526,10 +541,16 @@ public static class CommandBuilder
 
         var packet = NetworkManager.StartPacket(PacketType.TakeDamage, 48);
 
+        //var src = 0;
+        //if (di.Source.TryGet<WorldObject>(out var damageSrc))
+        //    src = damageSrc.Id;
+
         packet.Write(target.Id);
         packet.Write(di.Damage);
         packet.Write(di.HitCount);
         packet.Write(di.Time);
+        //packet.Write(src);
+        //packet.Write((byte)di.AttackSkill);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -747,20 +768,20 @@ public static class CommandBuilder
         SendUpdatePlayerData(p, true, true);
     }
 
-    public static void SendCreateEntityMulti(WorldObject c)
+    public static void SendCreateEntityMulti(WorldObject c, CreateEntityEventType entryType = CreateEntityEventType.Normal)
     {
         if (!HasRecipients())
             return;
 
         var packet = BuildCreateEntity(c);
-        packet.Write((byte)CreateEntityEventType.Normal);
+        packet.Write((byte)entryType);
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SendCreateEntity(WorldObject c, Player player)
+    public static void SendCreateEntity(WorldObject c, Player player, CreateEntityEventType entryType = CreateEntityEventType.Normal)
     {
         var packet = BuildCreateEntity(c);
-        packet.Write((byte)CreateEntityEventType.Normal);
+        packet.Write((byte)entryType);
         NetworkManager.SendMessage(packet, player.Connection);
     }
 
@@ -1211,9 +1232,9 @@ public static class CommandBuilder
 
     public static void SendMapMemoLocations(Player p)
     {
-        var packet = NetworkManager.StartPacket(PacketType.MemoMapLocation, 32);
+        var packet = NetworkManager.StartPacket(PacketType.MemoMapLocation, 96);
 
-        for(var i = 0; i < 3; i++)
+        for(var i = 0; i < 4; i++)
             p.MemoLocations[i].Serialize(packet);
 
         NetworkManager.SendMessage(packet, p.Connection);
@@ -1251,6 +1272,14 @@ public static class CommandBuilder
         packet.Write((byte)skill);
         packet.Write((byte)p.LearnedSkills[skill]);
         packet.Write(p.GetData(PlayerStat.SkillPoints));
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void ChangePlayerSpecialActionState(Player p, SpecialPlayerActionState state)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.ChangePlayerSpecialActionState, 16);
+        packet.Write((byte)state);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

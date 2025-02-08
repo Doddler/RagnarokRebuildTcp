@@ -1070,7 +1070,10 @@ namespace Assets.Scripts.Network
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Walking)
                     controllable.StopImmediate(casterPos, false);
-                controllable.LookAt(target.ToWorldPosition());
+                if(target == controllable.CellPosition)
+                    controllable.LookInDirection(dir);
+                else
+                    controllable.LookAt(target.ToWorldPosition());
                 if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
                 {
                     controllable.SpriteAnimator.State = SpriteState.Standby;
@@ -1640,6 +1643,14 @@ namespace Assets.Scripts.Network
             for (var i = 0; i < 6; i++)
                 msg.Write(statChanges[i]);
 
+            SendMessage(msg);
+        }
+
+        public void MemoMap(int slot)
+        {
+            var msg = StartMessage(PacketType.MemoMapLocation);
+            msg.Write((byte)slot);
+            
             SendMessage(msg);
         }
 

@@ -275,6 +275,16 @@ public class NpcInteractionState
         Player.UpdateStats();
     }
 
+    public int GetLearnedLevelOfSkill(string skillName)
+    {
+        if (Player == null) return 0;
+
+        if(!Enum.TryParse(skillName, true, out CharacterSkill skill))
+            return 0;
+
+        return Player.MaxLearnedLevelOfSkill(skill);
+    }
+
 
     public void ShowSprite(string spriteName, int pos)
     {

@@ -70,6 +70,12 @@ namespace Assets.Scripts.Effects
 
         public static void ReturnPrimitive(RagnarokPrimitive primitive)
         {
+            if (primitive == null)
+            {
+                Debug.LogWarning($"Attempting to return an empty or uninitialized primitive!");
+                return;
+            }
+            
             primitive.Reset();
             primitive.gameObject.transform.SetParent(Instance.transform);
             primitive.gameObject.SetActive(false);

@@ -83,26 +83,32 @@ namespace Assets.Scripts.Network.Messaging
             EnqueueMessage(msg);
         }
         
-        public void SendHitEffect(ServerControllable src, float time, int hitType = 1)
+        public void SendHitEffect(ServerControllable src, float time, int hitType, int hitCount = 1)
         {
-            var msg = EntityMessagePool.Borrow();
-            msg.ActivationTime = Time.timeSinceLevelLoad + time;
-            msg.Type = EntityMessageType.HitEffect;
-            msg.Entity = src; //the hit will come from this entity's position
-            msg.Value1 = hitType;
+            for (var i = 0; i < hitCount; i++)
+            {
+                var msg = EntityMessagePool.Borrow();
+                msg.ActivationTime = Time.timeSinceLevelLoad + time + 0.2f * i;
+                msg.Type = EntityMessageType.HitEffect;
+                msg.Entity = src; //the hit will come from this entity's position
+                msg.Value1 = hitType;
 
-            EnqueueMessage(msg);
+                EnqueueMessage(msg);
+            }
         }
 
-        public void SendElementalHitEffect(ServerControllable src, float time, AttackElement hitType)
+        public void SendElementalHitEffect(ServerControllable src, float time, AttackElement hitType, int hitCount = 1)
         {
-            var msg = EntityMessagePool.Borrow();
-            msg.ActivationTime = Time.timeSinceLevelLoad + time;
-            msg.Type = EntityMessageType.ElementalEffect;
-            msg.Entity = src; //the hit will come from this entity's position
-            msg.Value1 = (int)hitType;
+            for (var i = 0; i < hitCount; i++)
+            {
+                var msg = EntityMessagePool.Borrow();
+                msg.ActivationTime = Time.timeSinceLevelLoad + time + 0.2f * i;
+                msg.Type = EntityMessageType.ElementalEffect;
+                msg.Entity = src; //the hit will come from this entity's position
+                msg.Value1 = (int)hitType;
 
-            EnqueueMessage(msg);
+                EnqueueMessage(msg);
+            }
         }
         
         public void SendMissEffect(float time)

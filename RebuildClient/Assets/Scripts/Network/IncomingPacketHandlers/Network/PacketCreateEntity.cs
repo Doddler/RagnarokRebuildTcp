@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
@@ -28,6 +29,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var startPos = (startCell.ToWorldPosition() - control.transform.position);
                 var dist = Vector3.Distance(startPos, Vector3.zero);
                 arc.Init(control.transform, startPos, Vector3.zero, dist/2f, dist/10f);
+            }
+
+            if (eventType == CreateEntityEventType.EnterServer || eventType == CreateEntityEventType.Warp)
+            {
+                if (control.IsMainCharacter || control.CharacterType != CharacterType.Player || control.IsHidden)
+                    return;
+                EntryEffect.LaunchEntryAtLocation(control.transform.position);
             }
         }
         

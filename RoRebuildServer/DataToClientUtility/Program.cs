@@ -495,6 +495,7 @@ class Program
                 EquipPosition.Garment => "Garment",
                 EquipPosition.Accessory => "Accessory",
                 EquipPosition.Shield => "Shield",
+                EquipPosition.Any => "Any",
                 _ => "Unknown"
             };
 
@@ -682,6 +683,7 @@ class Program
                     Code = e.Code,
                     Name = e.Name,
                     MapMode = (int)Enum.Parse<MapType>(e.MapMode),
+                    CanMemo = e.CanMemo,
                     Music = e.Music
                 }).ToList();
             }

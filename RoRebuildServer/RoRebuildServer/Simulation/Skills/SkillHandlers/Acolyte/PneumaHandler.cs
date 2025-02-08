@@ -24,7 +24,7 @@ public class PneumaHandler : SkillHandlerBase
         Debug.Assert(map != null);
 
         var effectiveArea = Area.CreateAroundPoint(position, 1);
-        if (map.HasAreaOfEffectTypeInArea(CharacterSkill.Pneuma, effectiveArea))
+        if (map.HasAreaOfEffectTypeInArea(effectiveArea, CharacterSkill.Pneuma))
             return SkillValidationResult.OverlappingAreaOfEffect;
 
         return StandardValidation(source, target, position);
@@ -73,7 +73,7 @@ public class PneumaObjectEvent : NpcBehaviorBase
         var aoe = World.Instance.GetNewAreaOfEffect();
         aoe.Init(npc.Character, Area.CreateAroundPoint(npc.Character.Position, 1), AoeType.SpecialEffect, targeting, 10f, 0.25f, 0, 0);
         aoe.TriggerOnFirstTouch = true;
-        aoe.CheckStayTouching = false;
+        aoe.CheckStayTouching = true; //if they die or something in the aoe and lose their status we want to give it back promptly
         aoe.SkillSource = CharacterSkill.Pneuma;
 
         npc.AreaOfEffect = aoe;
@@ -89,6 +89,9 @@ public class PneumaObjectEvent : NpcBehaviorBase
 
     public override void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe)
     {
+        if (target.HasStatusEffectOfType(CharacterStatusEffect.Pneuma))
+            return;
+
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Pneuma, aoe.Expiration - Time.ElapsedTimeFloat);
         target.AddStatusEffect(status);
     }

@@ -26,6 +26,7 @@ namespace Assets.Scripts.Effects
         public BillboardObject BillboardGroup;
         public Object EffectData;
         public SortingGroup SortingGroup;
+        public Material Material;
         private BillboardObject billboard;
         
         public bool DestroyOnTargetLost = false;
@@ -41,6 +42,8 @@ namespace Assets.Scripts.Effects
         public readonly List<GameObject> AttachedObjects = new();
         
         public bool IsInitialized = false;
+        public int[] Flags = new int[4];
+        public float DataValue;
 
         public int SourceEntityId => SourceEntity != null ? SourceEntity.Id : -1; 
 
@@ -108,12 +111,17 @@ namespace Assets.Scripts.Effects
             EffectOwner = null;
             EffectData = null;
             AimTarget = null;
+            Material = null;
             Duration = 0;
             CurrentPos = 0;
             Step = -1;
             LastStep = -1;
             PositionOffset = Vector3.zero;
             EffectType = 0;
+            DataValue = 0;
+
+            for (var i = 0; i < 4; i++)
+                Flags[i] = 0;
 
             if (SortingGroup != null)
             {

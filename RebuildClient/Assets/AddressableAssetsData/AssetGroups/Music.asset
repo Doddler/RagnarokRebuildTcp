@@ -371,6 +371,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - Music
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 253ff546bc02f854db52549d9af2cecc
+    m_Address: Assets/Music/55.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d980003860ce14540ac20ba1dc8526d7
+    m_Address: Assets/Music/58.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a91ce6b8e8c4fb4782a933c535f4912
+    m_Address: Assets/Music/59.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

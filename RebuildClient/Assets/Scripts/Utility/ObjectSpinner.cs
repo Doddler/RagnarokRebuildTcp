@@ -10,12 +10,13 @@ public class ObjectSpinner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var bounce = LeanTween.moveLocalX(target, Distance, Speed).setEaseInOutSine().setLoopPingPong();
+        if(Distance > 0)
+            LeanTween.moveLocalX(target, Distance, Speed).setEaseInOutSine().setLoopPingPong();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.localRotation = Quaternion.Euler(0f, transform.localRotation.eulerAngles.y + Rotation * Time.deltaTime, 0f);
+        transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y + Rotation * Time.deltaTime, transform.localRotation.eulerAngles.z);
     }
 }

@@ -8,7 +8,7 @@ MapConfig("xmas_dun01")
 	CreateSpawn("MARIN", 20);
 	CreateSpawn("COOKIE_XMAS", 40);
 	CreateSpawn("MYSTCASE", 5);
-	CreateSpawn("CHEPET", 1, 1200000, 900000);
+	CreateSpawn("CHEPET", 1, 1200000, 900000, Boss);
 	CreateSpawn("COOKIE", 40);
 }
 

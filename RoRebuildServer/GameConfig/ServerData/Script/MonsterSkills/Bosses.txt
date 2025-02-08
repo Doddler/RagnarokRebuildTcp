@@ -110,6 +110,7 @@ StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
 StateChase:
     TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
+	TryCast(DarkStrike, 10, 20%, 0, 5s);
 }
 
 //------------------------------------
@@ -172,8 +173,10 @@ StateAny:
     TryCast(CallMinion, 1, 20%, 1.4s, 30s)[MinionCount < 3] -> CallDefaultMinions();
 StateChase:
 	TryCast(ChargeArrow, 1, 20%, 0, 0);
+	TryCast(DarkStrike, 10, 20%, 0, 5s)
 StateAttacking:
 	TryCast(ChargeArrow, 1, 20%, 0, 0);
+	TryCast(DarkStrike, 10, 20%, 0, 5s)
 }
 
 
@@ -301,11 +304,11 @@ SkillHandler("DOPPELGANGER") {
 StateAny: 
     TryCast(CallMinion, 1, 100%, 0.3s, 30s)[MinionCount < 3 && HpPercent < 30] -> SummonMinions(1, "NIGHTMARE");
     TryCast(CallMinion, 1, 100%, 0.7s, 30s)[MinionCount < 3] -> SummonMinions(1, "NIGHTMARE");
-	TryCast(Heal, 9999, 100%, 0s, 15s)[HpPercent < 30];
 	TryCast(Heal, 9999, 100%, 0s, 10s)[FindAllyBelowHpPercent(60)];
+	TryCast(Heal, 9999, 100%, 0s, 15s)[HpPercent < 30];
 StateAttacking:
 	TryCast(TwoHandQuicken, 10, 100%, 0, 1m)[HpPercent <= 40];
-	TryCast(HammerFall, 10, 20%, 0, 5s);
+	TryCast(HammerFall, 10, 20%, 0, 10s);
 	TryCast(CriticalAttack, 1, 20%, 0, 5s);
 }
 

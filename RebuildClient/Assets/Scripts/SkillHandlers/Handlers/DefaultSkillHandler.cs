@@ -1,10 +1,16 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
+using UnityEngine;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
 {
     public class DefaultSkillHandler : SkillHandlerBase
     {
+        public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            attack.Target?.Messages.SendHitEffect(attack.Src, attack.MotionTime, 1, attack.HitCount);
+        }
+
         public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
         {
             if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
@@ -20,9 +26,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             DefaultSkillCastEffect.Create(src);
+            src.SpriteAnimator.State = SpriteState.Idle;
             src.PerformBasicAttackMotion();
-            if(attack.Damage > 0)
-                attack.Target?.Messages.SendHitEffect(src, attack.MotionTime);
         }
     }
 }

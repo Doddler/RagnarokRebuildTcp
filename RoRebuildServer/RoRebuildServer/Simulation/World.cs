@@ -736,6 +736,7 @@ public class World
         removeList.Clear();
     }
 
+    public bool IsValidMap(string mapName) => worldMapInstanceLookup.ContainsKey(mapName);
 
     public bool TryGetWorldMapByName(string mapName, [NotNullWhen(true)] out Map? map)
     {
@@ -778,7 +779,10 @@ public class World
             player.Connection.LastKeepAlive = Time.ElapsedTime; //reset tick time so they get 2 mins to load the map
 
             if (move.MoveRequestType == MoveRequestType.InitialSpawn)
+            {
                 CommandBuilder.InformEnterServer(character, player);
+                CommandBuilder.SendMapMemoLocations(player);
+            }
 
             if (move.MoveRequestType == MoveRequestType.MapMove)
             {

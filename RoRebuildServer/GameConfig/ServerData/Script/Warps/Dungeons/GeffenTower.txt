@@ -3,5 +3,5 @@ Warp("gef_dun00", "geffendunwarp002", 107, 169, 2, 1, "gef_dun01", 115, 236);
 Warp("gef_dun01", "geffendunwarp003", 115, 240, 2, 2, "gef_dun00", 107, 165);
 Warp("gef_dun01", "geffendunwarp004", 197, 38, 2, 1, "gef_dun02", 106, 132);
 Warp("gef_dun02", "geffendunwarp005", 106, 134, 2, 1, "gef_dun01", 197, 40);
-Warp("gef_dun02", "geffendunwarp006", 215, 68, 2, 1, "gef_dun03", 196, 199);
-Warp("gef_dun03", "geffendunwarp007", 203, 204, 4, 4, "gef_dun02", 215, 64);
+//Warp("gef_dun02", "geffendunwarp006", 215, 68, 2, 1, "gef_dun03", 196, 199);
+//Warp("gef_dun03", "geffendunwarp007", 203, 204, 4, 4, "gef_dun02", 215, 64);

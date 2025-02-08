@@ -73,7 +73,10 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
             var negativeVit = ch.GetStat(CharacterStat.Vit) / 4;
-            var defPenalty = ch.GetSpecialType() == CharacterSpecialType.Boss ? -10 : -25; //bosses only lose 10% def, normal monsters 25%
+            var defPenalty = -25;
+            //bosses and players only lose 10% def, normal monsters 25%
+            if (ch.Character.Type == CharacterType.Player || ch.GetSpecialType() == CharacterSpecialType.Boss)
+                defPenalty = -10;
 
             state.Value3 = (short)-negativeVit;
             state.Value4 = (byte)(ch.Character.Type == CharacterType.Player ? 3 : 2); //3s tick time on players, 2s on monsters

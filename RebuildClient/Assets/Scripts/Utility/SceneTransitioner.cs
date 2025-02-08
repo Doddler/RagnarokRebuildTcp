@@ -159,6 +159,7 @@ namespace Assets.Scripts.Utility
 				SceneManager.UnloadSceneAsync(unloadScene);
 			
 			RagnarokEffectData.SceneChangeCleanup();
+			EffectSharedMaterialManager.CleanUpMaterialsOnSceneChange();
 
 			MonsterHoverText.text = "";
 			LightmapSettings.lightProbes = null;

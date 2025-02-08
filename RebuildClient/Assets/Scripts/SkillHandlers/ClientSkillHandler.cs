@@ -35,7 +35,5 @@ namespace Assets.Scripts.SkillHandlers
             else
                 handler.ExecuteSkillTargeted(src, ref attack);
         }
-
-
     }
 }

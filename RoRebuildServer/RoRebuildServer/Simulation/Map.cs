@@ -115,7 +115,7 @@ public class Map
             var movingPlayer = entity.Get<Player>();
             CommandBuilder.SendRemoveAllEntities(movingPlayer);
             ch.IsActive = false; //we should set this after removing all entities from any given player
-            ActivatePlayerAndNotifyNearby(movingPlayer);
+            ActivatePlayerAndNotifyNearby(movingPlayer, CreateEntityEventType.Warp);
 
             //SendAllEntitiesToPlayer(ref entity);
 
@@ -439,7 +439,7 @@ public class Map
         }
     }
 
-    public void ActivatePlayerAndNotifyNearby(Player p)
+    public void ActivatePlayerAndNotifyNearby(Player p, CreateEntityEventType entryType = CreateEntityEventType.Normal)
     {
         var ch = p.Character;
         var entities = EntityListPool.Get();
@@ -492,15 +492,13 @@ public class Map
         //first notify all nearby players of this player's activation
         if (CommandBuilder.HasRecipients())
         {
-            CommandBuilder.SendCreateEntityMulti(ch);
+            CommandBuilder.SendCreateEntityMulti(ch, entryType);
             CommandBuilder.ClearRecipients();
         }
 
         //now add all the nearby entities to the player in question
         foreach (var e in entities)
             CommandBuilder.SendCreateEntity(e.Get<WorldObject>(), p);
-
-
 
         EntityListPool.Return(entities);
 
@@ -1094,7 +1092,7 @@ public class Map
                 aoe.OnLeaveAoE(character);
         }
     }
-
+    
     public bool TryGetAreaOfEffectAtPosition(Position pos, CharacterSkill skill, [NotNullWhen(true)] out AreaOfEffect? effect)
     {
         //Since aoes are added to each chunk they affect, we only need to check aoes in our current chunk
@@ -1273,14 +1271,14 @@ public class Map
         EntityListPool.Return(chunkEntities);
     }
 
-    public bool HasAreaOfEffectTypeInArea(CharacterSkill skill, Area area)
+    public bool HasAreaOfEffectTypeInArea(Area area, params CharacterSkill[] skills)
     {
-        var chunkEntities = EntityListPool.Get();
+        //var chunkEntities = EntityListPool.Get();
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(area)))
         {
             foreach (var a in chunk.AreaOfEffects)
             {
-                if (area.Overlaps(a.Area))
+                if (area.Overlaps(a.Area) && skills.Any(s => s == a.SkillSource))
                     return true;
             }
         }

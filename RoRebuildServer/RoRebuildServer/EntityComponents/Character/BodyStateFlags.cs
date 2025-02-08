@@ -7,6 +7,7 @@
         Stopped = 1,
         Curse = 2,
         Frozen = 4,
-        Hidden = 8
+        Petrified = 8,
+        Hidden = 16
     }
 }

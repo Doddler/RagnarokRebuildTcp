@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -108,7 +109,7 @@ public class Npc : IEntityAutoReset
         if (valuesInt != null)
             ArrayPool<int>.Shared.Return(valuesInt);
         if (valuesString != null)
-            ArrayPool<string>.Shared.Return(valuesString);
+            ArrayPool<string>.Shared.Return(valuesString, true);
 
         valuesInt = null!;
         valuesString = null!;
@@ -347,6 +348,20 @@ public class Npc : IEntityAutoReset
     public void RevealAvatar(string name)
     {
 
+    }
+
+    public void RegisterAsWarpNpc()
+    {
+        Character.IsImportant = true;
+        Character.DisplayType = CharacterDisplayType.WarpNpc;
+        Character.Map?.RegisterImportantEntity(Character);
+    }
+
+    public void RegisterAsKafra()
+    {
+        Character.IsImportant = true;
+        Character.DisplayType = CharacterDisplayType.Kafra;
+        Character.Map?.RegisterImportantEntity(Character);
     }
 
     public void SetPlayerAppearance(int level, string job, string gender, int head, int hair, string top, string mid, string bottom)
@@ -813,13 +828,27 @@ public class Npc : IEntityAutoReset
         Character.ClassId = monInfo.Id;
     }
 
-    public void RevealAsEffect(NpcEffectType type, string name)
+    public void RevealAsEffect(NpcEffectType type, string? name = null)
     {
         ChangeNpcClass("EFFECT");
         DisplayType = NpcDisplayType.Effect;
         EffectType = type;
 
         ShowNpc(name);
+    }
+
+    public void ChangeEffectType(NpcEffectType type)
+    {
+        DisplayType = NpcDisplayType.Effect;
+        EffectType = type;
+
+        if (Character.Map == null)
+            return;
+
+        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.SendRemoveEntityMulti(Character, CharacterRemovalReason.OutOfSight);
+        CommandBuilder.SendCreateEntityMulti(Character);
+        CommandBuilder.ClearRecipients();
     }
 
     public void SignalMyEvents(string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)

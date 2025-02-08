@@ -24,8 +24,6 @@ namespace Assets.Scripts.Effects.EffectHandlers
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.CastTargetCircle);
 
-            
-
             if (baseMaterial == null)
             {
                 baseMaterial = new Material(ShaderCache.Instance.ProjectorAdditiveShader);
@@ -49,7 +47,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
             effect.SetDurationByTime(duration);
             effect.UpdateOnlyOnFrameChange = false;
             effect.DestroyOnTargetLost = false;
-
+            effect.DataValue = Mathf.Clamp(455 - size * 95, 170, 455);
+            
             var prim = effect.LaunchPrimitive(PrimitiveType.ProjectorPrimitive, mat);
             prim.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
             prim.transform.localScale = new Vector3(size, size, size);
@@ -64,7 +63,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             for (var i = 0; i < primitives.Count; i++)
             {
                 var rot = primitives[i].gameObject.transform.localRotation.eulerAngles;
-                primitives[i].gameObject.transform.localRotation = Quaternion.Euler(rot.x, rot.y + 170f * Time.deltaTime, rot.z);
+                primitives[i].gameObject.transform.localRotation = Quaternion.Euler(rot.x, rot.y + effect.DataValue * Time.deltaTime, rot.z);
             }
             
             return step < effect.DurationFrames;

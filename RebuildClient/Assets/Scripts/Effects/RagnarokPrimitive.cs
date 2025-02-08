@@ -29,7 +29,9 @@ namespace Assets.Scripts.Effects
         public Func<RagnarokPrimitive, bool> EventTrigger;
 
         public EffectPart[] Parts;
+        public EffectSegment[] Segments;
         public int PartsCount;
+        public int SegmentCount;
         public int[] Flags = new int[4];
 
         public float DelayTime;
@@ -96,6 +98,8 @@ namespace Assets.Scripts.Effects
 
             if(Parts != null)
                 EffectPool.ReturnParts(Parts);
+            if(Segments != null)
+                EffectPool.ReturnSegments(Segments);
             if(mesh != null)
                 EffectPool.ReturnMesh(mesh);
             if(mb != null)
@@ -104,8 +108,11 @@ namespace Assets.Scripts.Effects
                 Destroy(disposableComponent);
             disposableComponent = null;
             Parts = null;
+            Segments = null;
             mesh = null;
             mb = null;
+            PartsCount = 0;
+            SegmentCount = 0;
             if (billboard != null)
                 billboard.Style = BillboardStyle.None;
             Velocity = Vector3.zero;
@@ -136,6 +143,12 @@ namespace Assets.Scripts.Effects
             PartsCount = count;
         }
 
+        public void CreateSegments(int count)
+        {
+            Segments = EffectPool.BorrowSegments(count);
+            SegmentCount = count;
+        }
+
         public void SetDisposableComponent(UnityEngine.Object component)
         {
             disposableComponent = component;
@@ -146,7 +159,7 @@ namespace Assets.Scripts.Effects
             Effect = effect;
             PrimitiveType = type;
             Duration = duration;
-            FrameDuration = Mathf.FloorToInt(duration / 60f);
+            FrameDuration = Mathf.FloorToInt(duration * 60f);
             PartsCount = 0;
 
             if (PrimitiveHandler != null)
@@ -224,6 +237,97 @@ namespace Assets.Scripts.Effects
             verts[2] = new Vector3(-width, 0,-height);
             verts[3] = new Vector3(width, 0,-height);
             
+            uvs[0] = new Vector2(0, 1);
+            uvs[1] = new Vector2(1, 1);
+            uvs[2] = new Vector2(0, 0);
+            uvs[3] = new Vector2(1, 0);
+            
+            //completely unused really
+            normals[0] = Vector3.up;
+            normals[1] = Vector3.up;
+            normals[2] = Vector3.up;
+            normals[3] = Vector3.up;
+            
+            mb.AddQuad(verts, normals, uvs, colors);
+        }
+        
+        public void AddTexturedBillboardQuad(Vector3 offset, float width, float height, Color32 c)
+        {
+            var worldPos = transform.position + offset;
+            
+            var lookAt = worldPos - CameraFollower.Instance.transform.position;
+            var rotation = Quaternion.LookRotation(lookAt, Vector3.up);
+            
+            colors[0] = c;
+            colors[1] = c;
+            colors[2] = c;
+            colors[3] = c;
+            
+            verts[0] = rotation * new Vector3(-width,0, height) + offset;
+            verts[1] = rotation * new Vector3(width, 0,height) + offset;
+            verts[2] = rotation * new Vector3(-width, 0,-height) + offset;
+            verts[3] = rotation * new Vector3(width, 0,-height) + offset;
+            
+            uvs[0] = new Vector2(0, 1);
+            uvs[1] = new Vector2(1, 1);
+            uvs[2] = new Vector2(0, 0);
+            uvs[3] = new Vector2(1, 0);
+            
+            //completely unused really
+            normals[0] = Vector3.up;
+            normals[1] = Vector3.up;
+            normals[2] = Vector3.up;
+            normals[3] = Vector3.up;
+            
+            mb.AddQuad(verts, normals, uvs, colors);
+        }
+        
+        
+        public void AddTexturedBillboardSprite(Sprite sprite, Vector3 offset, float width, float height, Color32 c)
+        {
+            var worldPos = transform.position + offset;
+            
+            var rotation = CameraFollower.Instance.transform.rotation * Quaternion.Inverse(transform.rotation);
+            
+            colors[0] = c;
+            colors[1] = c;
+            colors[2] = c;
+            colors[3] = c;
+            
+            verts[0] = rotation * new Vector3(-width, height) + offset;
+            verts[1] = rotation * new Vector3(width, height) + offset;
+            verts[2] = rotation * new Vector3(-width,-height) + offset;
+            verts[3] = rotation * new Vector3(width, -height) + offset;
+            
+            var spriteUVs = sprite.uv;
+            
+            uvs[0] = spriteUVs[0];
+            uvs[1] = spriteUVs[1];
+            uvs[2] = spriteUVs[2];
+            uvs[3] = spriteUVs[3];
+            
+            //completely unused really
+            normals[0] = Vector3.up;
+            normals[1] = Vector3.up;
+            normals[2] = Vector3.up;
+            normals[3] = Vector3.up;
+            
+            mb.AddQuad(verts, normals, uvs, colors);
+        }
+        
+        
+        public void AddTextured2DQuad(Vector3 offset, float width, float height, Color32 c)
+        {
+            colors[0] = c;
+            colors[1] = c;
+            colors[2] = c;
+            colors[3] = c;
+            
+            verts[0] = new Vector3(-width, height) + offset;
+            verts[1] = new Vector3(width, height) + offset;
+            verts[2] = new Vector3(-width, -height) + offset;
+            verts[3] = new Vector3(width, -height) + offset;
+
             uvs[0] = new Vector2(0, 1);
             uvs[1] = new Vector2(1, 1);
             uvs[2] = new Vector2(0, 0);
@@ -403,8 +507,10 @@ namespace Assets.Scripts.Effects
             if (RenderHandler != null)
             {
                 RenderHandler(this, mb);
-                if (mb.HasData)
+                if (mb.HasMesh())
                     mf.sharedMesh = mb.ApplyToMesh(mesh);
+                else
+                    mr.enabled = false;
             }
         }
         

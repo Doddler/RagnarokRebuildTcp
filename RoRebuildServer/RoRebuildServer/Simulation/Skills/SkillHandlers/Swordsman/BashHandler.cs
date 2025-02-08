@@ -19,16 +19,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
             if (target == null || !target.IsValidTarget(source))
                 return;
 
-            //surely there's a better way to do it than this?
-            source.AddStat(CharacterStat.AddHit, 20);
-            var res = source.CalculateCombatResult(target, 1f + lvl * 0.3f, 1, AttackFlags.Physical, CharacterSkill.Bash);
-            source.SubStat(CharacterStat.AddHit, 20);
+            var req = new AttackRequest(CharacterSkill.Bash, 1f + lvl * 0.3f, lvl, AttackFlags.Physical, AttackElement.None);
+            req.AccuracyRatio = 100 + lvl * 5;
+            var res = source.CalculateCombatResult(target, req);
 
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);
             
-            var ch = source.Character;
-
             CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Bash, lvl, res);
         }
     }

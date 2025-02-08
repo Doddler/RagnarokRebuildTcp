@@ -3,6 +3,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
@@ -15,16 +16,23 @@ public class StatusMagnumBreak : StatusEffectBase
 
     public override StatusUpdateResult OnAttack(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
     {
-        if (info.IsDamageResult)
+        if (info.IsDamageResult && info.Flags.HasFlag(DamageApplicationFlags.PhysicalDamage))
         {
             if (!info.Target.TryGet<CombatEntity>(out var target))
                 return StatusUpdateResult.Continue;
 
-            var bonus = info.Damage * (10 + state.Value1) / 100; //11% - 20%
-            var eleMod = DataManager.ElementChart.GetAttackModifier(AttackElement.Fire, target.GetElement());
-            var damage = bonus * eleMod / 100;
-            if (damage > 0)
-                info.Damage += damage;
+            var attack = new AttackRequest(CharacterSkill.MagnumBreak, 1f, 1, 
+                AttackFlags.Physical | AttackFlags.IgnoreEvasion | AttackFlags.NoTriggers, AttackElement.Fire);
+
+            if (info.Result == AttackResult.CriticalDamage)
+                attack.Flags |= AttackFlags.GuaranteeCrit;
+            else
+                attack.Flags |= AttackFlags.IgnoreSubDefense;
+
+            var res = ch.CalculateCombatResult(target, attack);
+
+            if (res.Damage > 0)
+                info.Damage += res.Damage * (10 + state.Value1) / 100;
         }
 
         return StatusUpdateResult.Continue;

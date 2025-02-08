@@ -38,6 +38,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 case SkillValidationResult.Failure:
                     Camera.AppendChatText("<color=#FF7777>Skill failed.</color>");
                     break;
+                case SkillValidationResult.MemoLocationInvalid:
+                    Camera.AppendChatText("<color=#FF7777>This location is unavailable for use as a warp portal destination.</color>");
+                    break;
+                case SkillValidationResult.MemoLocationUnwalkable:
+                    Camera.AppendChatText("<color=#FF7777>Cannot memo current location while standing on un-walkable ground.</color>");
+                    break;
                 default:
                     Debug.Log($"Skill failure (not shown to user): {result}");
                     break;

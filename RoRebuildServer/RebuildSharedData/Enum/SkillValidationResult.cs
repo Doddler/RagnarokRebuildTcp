@@ -19,6 +19,9 @@ namespace RebuildSharedData.Enum
         InsufficientZeny,
         UnusableWhileHidden,
         CannotTargetBossMonster,
-        ItemAlreadyStolen
+        ItemAlreadyStolen,
+        MemoLocationInvalid,
+        MemoLocationUnwalkable,
+        TooFarAway,
     }
 }

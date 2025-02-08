@@ -6,6 +6,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
 using System.Diagnostics;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
@@ -15,16 +16,7 @@ public class NapalmBeatHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
     {
-        return lvl switch
-        {
-            <= 3 => 1f,
-            <= 5 => 0.9f,
-            <= 7 => 0.8f,
-            <= 8 => 0.7f,
-            <= 9 => 0.6f,
-            10 => 0.5f,
-            _ => 1f
-        };
+        return 1.2f - lvl * 0.1f;
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
@@ -40,9 +32,17 @@ public class NapalmBeatHandler : SkillHandlerBase
         //gather all players who can see either the caster or target as recipients of the following packets
         map.AddVisiblePlayersAsPacketRecipients(source.Character, target.Character);
 
+        var flags = AttackFlags.Physical | AttackFlags.IgnoreEvasion;
+        var mult = 1f + 0.15f * lvl;
+        if ((target.BodyState & (BodyStateFlags.Frozen | BodyStateFlags.Petrified)) > 0)
+        {
+            mult *= 3;
+            flags |= AttackFlags.IgnoreDefense;
+        }
+
         //first, hit the target with Napalm Beat fair and square
         using var targetList = EntityListPool.Get();
-        var req = new AttackRequest(CharacterSkill.NapalmBeat, 1f + 0.1f * lvl, 1, AttackFlags.Physical | AttackFlags.IgnoreEvasion, AttackElement.Ghost);
+        var req = new AttackRequest(CharacterSkill.NapalmBeat, 1f + 0.15f * lvl, 1, AttackFlags.Physical | AttackFlags.IgnoreEvasion, AttackElement.Ghost);
         (req.MinAtk, req.MaxAtk) = source.CalculateAttackPowerRange(true);
         var res = source.CalculateCombatResultUsingSetAttackPower(target, req);
         source.ApplyCooldownForAttackAction(target);
@@ -51,7 +51,7 @@ public class NapalmBeatHandler : SkillHandlerBase
         CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.NapalmBeat, lvl, res); //send cast packet
 
         //now gather all players getting hit
-        map.GatherEnemiesInArea(source.Character, source.Character.Position, 1, targetList, !isIndirect, true);
+        map.GatherEnemiesInArea(source.Character, target.Character.Position, 1, targetList, !isIndirect, true);
 
         //deal damage to all enemies 2/3 the damage dealt to the primary target
         res.Damage = res.Damage * 2 / 3;

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Objects;
+using RebuildSharedData.Enum.EntityStats;
 using UnityEngine;
 
 namespace Assets.Scripts.Effects.EffectHandlers
@@ -9,21 +11,55 @@ namespace Assets.Scripts.Effects.EffectHandlers
     {
         private static readonly Dictionary<string, Material> CastMaterials = new();
         
-        public static Ragnarok3dEffect Create(float duration, string texture, GameObject followTarget, bool useInvAlphaShader = false)
+        public static Ragnarok3dEffect Create(float duration, GameObject followTarget, AttackElement element)
         {
+            var useInvAlpha = false;
+            var color = Color.white;
+            var tex = "";
+
+            switch (element)
+            {
+                case AttackElement.Fire:
+                    tex = "ring_red";
+                    break;
+                case AttackElement.Water:
+                    tex = "ring_blue";
+                    color = new Color(170 / 255f, 170 / 255f, 255 / 255f);
+                    useInvAlpha = true;
+                    break;
+                case AttackElement.Wind:
+                    tex = "ring_yellow";
+                    //useInvAlpha = true;
+                    break;
+                case AttackElement.Earth:
+                    tex = "magic_green";
+                    useInvAlpha = true;
+                    break;
+                case AttackElement.Dark:
+                case AttackElement.Holy:
+                case AttackElement.Ghost:
+                    return CastHolyEffect.BeginCasting6(duration, followTarget, element);
+                default:
+                    return CastHolyEffect.BeginCasting6(duration, followTarget, element);
+            }
+
+            if (duration < 1.16f)
+                duration = 1.16f;
+            
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.CastEffect);
             effect.Duration = duration;
             effect.FollowTarget = followTarget;
             
-            if (!CastMaterials.TryGetValue(texture, out var mat))
+            if (!CastMaterials.TryGetValue(tex, out var mat))
             {
-                if(!useInvAlphaShader)
+                if(!useInvAlpha)
                     mat = new Material(ShaderCache.Instance.AdditiveShader);
                 else
                     mat = new Material(ShaderCache.Instance.InvAlphaShader);
-                mat.mainTexture = Resources.Load<Texture2D>(texture);
+                mat.mainTexture = Resources.Load<Texture2D>(tex);
                 mat.renderQueue = 3001;
-                CastMaterials.Add(texture, mat);
+                mat.color = color;
+                CastMaterials.Add(tex, mat);
             }
 
             effect.transform.localScale = new Vector3(2f, 2f, 2f);

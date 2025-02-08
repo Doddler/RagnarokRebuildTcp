@@ -44,7 +44,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             var circlePrim = effect.LaunchPrimitive(PrimitiveType.Circle2D, CircleMaterial, 0.667f);
             var cData = circlePrim.GetPrimitiveData<CircleData>();
 
-            var scale = 0.03f;
+            var scale = 0.025f;
 
             circlePrim.transform.localScale = new Vector3(scale, scale, scale);
             circlePrim.transform.localPosition += new Vector3(0f, 2f, -0f);

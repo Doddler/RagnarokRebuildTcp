@@ -33,7 +33,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             }
         }
         
-        
         private void OnMessageAreaTargetedSkill(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -56,7 +55,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 DamageTiming = motionTime
             };
 
-            controllable.LookAt(target.ToWorldPosition());
+            if(target == controllable.CellPosition)
+                controllable.LookInDirection(dir);
+            else
+                controllable.LookAt(target.ToWorldPosition());
             Network.PrepareAttackMotionSettings(controllable, pos, dir, motionTime, null);
             ClientSkillHandler.ExecuteSkill(controllable, ref attack);
         }
@@ -115,7 +117,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 HitCount = hits,
                 MotionTime = motionTime,
                 DamageTiming = motionTime,
-                Target = controllable2
+                Target = controllable2,
+                Src = controllable
             };
 
             if (!hasSource)
@@ -123,9 +126,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 //if the skill handler is not flagged to execute without a source this will do nothing.
                 //we still want to execute when a special effect plays on a target though.
                 ClientSkillHandler.ExecuteSkill(null, ref attack);
-                
-                if(dmg != 0)
+
+                if (hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible && controllable2 != null)
+                {
                     controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits, result == AttackResult.CriticalDamage);
+                    if(dmg > 0)
+                        ClientSkillHandler.OnHitEffect(controllable2, ref attack);
+                }
+
                 return;
             }
             
@@ -151,9 +159,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
                 if (result == AttackResult.Heal && dmg != 0)
                     hits = 1;
-                
-                if(hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
+
+                if (hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
+                {
                     controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits, result == AttackResult.CriticalDamage);
+                    if(dmg > 0)
+                        ClientSkillHandler.OnHitEffect(controllable2, ref attack);
+                }
             }
         }
 

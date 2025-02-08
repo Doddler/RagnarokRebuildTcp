@@ -105,10 +105,9 @@ namespace Assets.Scripts.Effects.EffectHandlers
             effect.FollowTarget = target.gameObject;
             effect.DestroyOnTargetLost = false;
             effect.SetBillboardMode(BillboardStyle.Normal);
-            effect.transform.position = target.transform.position + new Vector3(0, 1f, 0);
-            effect.transform.localScale = Vector3.one / 4f;
+            effect.PositionOffset = new Vector3(0, 2f, 0f);
+            effect.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
             effect.SetSortingGroup("FrontEffect", 10); //appear in front of damage indicators
-
 
             for (var i = 0; i < 8; i++)
             {
@@ -116,14 +115,14 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 var duration = Random.Range(0.16f, 0.5f);
                 var prim = effect.LaunchPrimitive(PrimitiveType.Texture2D, mat1, duration);
 
-                var width = Random.Range(4f, 8f) / 5f;
-                var height = Random.Range(1f, 4f) / 5f;
-                var speed = Random.Range(1f, 10f);
+                var width = Random.Range(5f, 20f);
+                var height = Random.Range(20, 40f);
+                var speed = Random.Range(0.5f, 5f);
                 var accel = -(speed / duration) / 2f;
                 var widthSpeed = -(width / duration);
-                var heightSpeed = 1.5f / 2.5f * 60f;
-                var heightAccel = 0.25f / 5f * 60f;
-                var startDistance = Random.Range(0f, 0.5f);
+                var heightSpeed = 1.5f * 60f;
+                var heightAccel = 0.25f * 60f;
+                var startDistance = Random.Range(0f, 5f);
 
                 var x = Mathf.Sin(angle * Mathf.Deg2Rad);
                 var y = Mathf.Cos(angle * Mathf.Deg2Rad);
@@ -134,11 +133,12 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 data.Size = new Vector2(width, height);
                 data.ScalingSpeed = new Vector2(widthSpeed, heightSpeed);
                 data.ScalingAccel = new Vector2(0, heightAccel);
-                data.Alpha = 1f;
-                data.AlphaSpeed = 4.8f;
-                data.Speed = position.normalized * speed;
+                data.Alpha = 0f;
+                data.AlphaSpeed = 32 * 60;
+                data.Speed = position.normalized * (speed * 60);
                 data.Acceleration = position.normalized * accel;
                 data.Sprite = lensSprite[Random.Range(0, 2)];
+                data.PivotFromBottom = true;
 
                 prim.transform.localPosition = new Vector3(position.x, position.y, 0f);
                 prim.transform.localRotation = Quaternion.Euler(0, 0, -angle);

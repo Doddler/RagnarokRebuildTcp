@@ -218,6 +218,7 @@ public static class PlayerDataDbHelper
         dataLen += player.NpcFlags == null ? 4 : player.NpcFlags.Count * 8;
         dataLen += player.LearnedSkills.Count * 8;
         dataLen += player.CombatEntity.StatusContainer == null ? 8 : player.CombatEntity.StatusContainer.TotalStatusEffectCount * 16;
+        dataLen += 32 * 4; //space for map memos
 
         var chData = ArrayPool<byte>.Shared.Rent(dataLen);
         var ms = new MemoryStream(chData);
@@ -244,7 +245,7 @@ public static class PlayerDataDbHelper
             bw.Seek(decompressedSize, SeekOrigin.Begin);
         }
 
-        for (var i = 0; i < 3; i++)
+        for (var i = 0; i < 4; i++)
             player.MemoLocations[i].Serialize(bw);
 
         decompressedSize = (int)ms.Position;
@@ -275,9 +276,7 @@ public static class PlayerDataDbHelper
         DbHelper.WriteDictionary<CharacterSkill>(bw, null);
         DbHelper.WriteDictionary(bw, null);
         bw.Write((byte)0); //status effects
-        bw.Write((byte)0); //warp 1
-        bw.Write((byte)0); //warp 2
-        bw.Write((byte)0); //warp 3
+        bw.Write(0); //4 bytes for 4 empty warp destinations
 
         decompressedSize = (int)ms.Position;
 
@@ -308,11 +307,11 @@ public static class PlayerDataDbHelper
         if(CurrentPlayerSaveVersion == 3) //if we're upgrading to a new save version, we won't restore status effects (as their IDs might have changed)
             player.CombatEntity.TryDeserializeStatusContainer(br);
 
-        if (ms.Position < ms.Length)
+        for (var i = 0; i < 4; i++)
         {
-            for (var i = 0; i < 3; i++)
-                player.MemoLocations[i] = MapMemoLocation.DeSerialize(br);
-
+            if (ms.Position >= decompressedSize)
+                break; //backwards compatibility with characters saved with none or too few warp slots
+            player.MemoLocations[i] = MapMemoLocation.DeSerialize(br);
         }
 
         ArrayPool<byte>.Shared.Return(data);

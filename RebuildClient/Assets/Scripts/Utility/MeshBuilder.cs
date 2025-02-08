@@ -255,6 +255,9 @@ namespace Assets.Scripts.Utility
 
         public Mesh ApplyToMesh(Mesh mesh, bool buildSecondaryUVs = false)
         {
+            if(mesh.vertices.Length != vertices.Count)
+                mesh.Clear();
+            
             mesh.SetVertices(vertices);
             mesh.SetNormals(normals);
             mesh.SetTriangles(triangles, 0);
@@ -268,6 +271,7 @@ namespace Assets.Scripts.Utility
                 mesh.SetColors(color32s);
 
             mesh.RecalculateBounds();
+            
             //mesh.RecalculateTangents();
             //mesh.Optimize();
             //mesh.OptimizeIndexBuffers();

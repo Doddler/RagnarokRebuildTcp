@@ -32,6 +32,12 @@ public class PacketSay : IClientPacketHandler
 
         if (isShout)
         {
+            if (connection.Player!.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 7)
+            {
+                CommandBuilder.ErrorMessage(connection.Player, $"You need level 7 of basic mastery to use shout chat.");
+                return;
+            }
+
             if (connection.Player.ShoutCooldown > Time.ElapsedTimeFloat && !connection.Player.IsAdmin)
             {
                 CommandBuilder.ErrorMessage(connection.Player, $"You must wait more time before using shout again.");

@@ -44,6 +44,7 @@ public class UiManager : MonoBehaviour
     public GameObject GenericItemListV2Prefab;
     public GameObject RefineWindowPrefab;
     public GameObject StorageWindowPrefab;
+    public GameObject WarpMemoWindowPrefab;
 
     private IItemDropTarget inventoryDropTarget;
     private IItemDropTarget equipmentWindowDropTarget;
@@ -393,7 +394,7 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!NetworkManager.IsLoaded) return;
+        if (!NetworkManager.IsLoaded || cameraFollower == null) return;
         if (Input.GetKeyDown(KeyCode.F11) && canvas != null)
         {
             SetEnabled(!canvas.enabled);

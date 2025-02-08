@@ -14,6 +14,7 @@ macro ShipCase(%map, %x, %y, %zeny)
 
 Npc("izlude", "Sailor", "4W_SAILOR", 201, 181, W) 
 {
+    RegisterAsWarpNpc();
 OnClick:
     FocusNpc();
     Dialog(Name, "Everybody! Attention, attention! Step on up and ride the winds on the fastest ship in Rune-Midgard!");
@@ -27,6 +28,7 @@ OnClick:
 
 Npc("izlu2dun", "Sailor", "4W_SAILOR", 108, 27, N) 
 {
+    RegisterAsWarpNpc();
 OnClick:
     FocusNpc();
     Dialog(Name, "Wanna head back?");

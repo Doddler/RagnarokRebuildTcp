@@ -15,6 +15,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
 
             // var mid = (EffectPart.SegmentCount - 1) / 2;
             // var m2 = 90 / mid;
+            var isActive = false;
             
             for (var ec = 0; ec < primitive.Parts.Length; ec++)
             {
@@ -25,18 +26,35 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
 
                 if (p.Active)
                 {
-                    // if (ec < 2)
-                    //     p.Angle += (ec + 4) * 60 * Time.deltaTime;
-                    // else
-                    //     p.Angle += (ec + 2) * 60 * Time.deltaTime;
+                    isActive = true;
+                    if (p.Flags[0] == 1) //warp portal
+                    {
+                        p.Angle += (ec + 4) * 60 * Time.deltaTime;
+                        // if (ec < 2)
+                        //     p.Angle += (ec + 4) * 60 * Time.deltaTime;
+                        // else
+                        //     p.Angle += (ec + 2) * 60 * Time.deltaTime;
 
-                    // if (p.Angle > 360)
-                    //     p.Angle -= 360;
+                        if (p.Angle > 360)
+                            p.Angle -= 360;
+                    }
+
+                    if (p.Flags[0] == 2) //map entry
+                    {
+                        if(ec < 2)
+                            p.Angle += (ec + 4) * 60 * Time.deltaTime;
+                        else
+                            p.Angle += (ec + 4) * 60 * Time.deltaTime;
+                    }
 
                     if (step < 16)
                         p.Alpha += p.AlphaRate * 60 * Time.deltaTime;
                     if (step >= p.AlphaTime)
+                    {
                         p.Alpha -= 2 * 60 * Time.deltaTime;
+                        if (p.Alpha <= 0)
+                            p.Active = false;
+                    }
                 }
                 
                 for (var i = 0; i < EffectPart.SegmentCount; i++)
@@ -46,22 +64,45 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                         //var sinLimit = 90 + ((i - mid) * m2);
                         var sinLimit = ec switch
                         {
-                            0 => 4 * primitive.CurrentPos,
-                            1 => 3 * primitive.CurrentPos,
-                            _ => 2 * primitive.CurrentPos
+                            0 => 4 * primitive.CurrentPos * 60,
+                            1 => 3 * primitive.CurrentPos * 60,
+                            _ => 2 * primitive.CurrentPos * 60
                         };
+                        sinLimit += i * 34;
+                        sinLimit %= 360;
 
-                        var height = p.MaxHeight * 0.75f + p.MaxHeight * 0.25f * Mathf.Sin(sinLimit * Mathf.Deg2Rad); 
-                        
+                        var height = p.MaxHeight * 0.75f + p.MaxHeight * 0.25f * Mathf.Sin(sinLimit * Mathf.Deg2Rad);
+
                         if (primitive.Step <= 90)
                             p.Heights[i] = height * Mathf.Sin(primitive.CurrentPos * 60 * Mathf.Deg2Rad);
+                        else
+                            p.Heights[i] = height;
 
                         if (p.Heights[i] < 0)
                             p.Heights[i] = 0;
                     }
+
+                    if (p.Flags[i] == 1 || p.Flags[i] == 3) //warp portal and, apparently, 'big portal'
+                    {
+                        var height = p.MaxHeight;
+                        if (step < 90)
+                            height *= Mathf.Sin(step * Mathf.Deg2Rad);
+                        p.Heights[i] = height;
+                    }
+
+                    if (p.Flags[i] == 2) //entry
+                    {
+                        var height = p.MaxHeight;
+                        if (step < 45)
+                            height *= Mathf.Sin(step * 4 * Mathf.Deg2Rad);
+                        else
+                            height = 0;
+                        p.Heights[i] = height;
+                    }
                 }
             }
 
+            primitive.IsActive = isActive;
             primitive.IsDirty = true;
         }
     }

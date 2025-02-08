@@ -39,7 +39,7 @@ namespace Assets.Scripts.PlayerControl
         public ClientInventory Storage = new();
         public int[] EquippedItems = new int[10];
         public HashSet<int> EquippedBagIdHashes = new();
-        public MapMemoLocation[] MemoLocations = new MapMemoLocation[3];
+        public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
 
         public int GetData(PlayerStat stat) => CharacterData[(int)stat];
         public int GetStat(CharacterStat stat) => CharacterStats[(int)stat];

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Network.HandlerBase;
+﻿using Assets.Scripts.Effects.EffectHandlers.General;
+using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -34,16 +35,33 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             if (Camera.SelectedTarget == controllable)
                 Camera.ClearSelected();
 
-            if (reason == CharacterRemovalReason.Dead)
+            switch (reason)
             {
-                if (controllable.SpriteAnimator.Type != SpriteType.Player)
+                case CharacterRemovalReason.Dead when controllable.SpriteAnimator.Type != SpriteType.Player:
                     controllable.MonsterDie();
-                else
+                    break;
+                case CharacterRemovalReason.Dead:
                     controllable.FadeOutAndVanish(0.1f);
-            }
-            else
-            {
-                controllable.FadeOutAndVanish(0.1f);
+                    break;
+                case CharacterRemovalReason.Disconnect:
+                    ExitEffect.LaunchExitAtLocation(controllable.transform.localPosition);
+                    controllable.AbortActiveWalk();
+                    controllable.FadeOutAndVanish(0.3f);
+                    break;
+                case CharacterRemovalReason.Teleport:
+                    controllable.AbortActiveWalk();
+                    if(controllable.IsMainCharacter)
+                        controllable.FadeOutAndVanish(0.1f);
+                    else
+                    {
+                        TeleportEffect.LaunchTeleportAtLocation(controllable.transform.localPosition);
+                        controllable.FadeOutAndVanish(0.3f);
+                    }
+
+                    break;
+                default:
+                    controllable.FadeOutAndVanish(0.1f);
+                    break;
             }
         }
     }

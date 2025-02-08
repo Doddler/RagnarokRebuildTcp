@@ -155,7 +155,7 @@ namespace Assets.Scripts.UI.Hud
                 chatBubble = null;
             }
             
-            controllable.StopCastingAnimation();
+            //controllable.StopCastingAnimation();
         }
 
         public void ShowChatBubbleMessage(string message, float visibleTime = 5f)

@@ -6,7 +6,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
 
-[StatusEffectHandler(CharacterStatusEffect.Pneuma, StatusClientVisibility.Owner, StatusEffectFlags.NoSave)]
+[StatusEffectHandler(CharacterStatusEffect.Pneuma, StatusClientVisibility.None, StatusEffectFlags.NoSave)]
 public class StatusPneuma : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnMove;

@@ -74,9 +74,8 @@ public class FirewallBaseEvent : NpcBehaviorBase
 {
     public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)
     {
-        npc.ParamsInt = new int[4];
-        npc.ParamsInt[0] = param1; //level
-        npc.ParamsInt[1] = 5 + param1; //duration
+        npc.ValuesInt[0] = param1; //level
+        npc.ValuesInt[1] = 5 + param1; //duration
         npc.StartTimer(200);
 
         if (!npc.Owner.TryGet<WorldObject>(out var owner))
@@ -122,7 +121,7 @@ public class FirewallBaseEvent : NpcBehaviorBase
 
     public override void OnTimer(Npc npc, float lastTime, float newTime)
     {
-        Debug.Assert(npc.ParamsInt != null && npc.ParamsInt.Length >= 4);
+        Debug.Assert(npc.ValuesInt != null && npc.ValuesInt.Length >= 4);
 
         npc.Character.Events?.ClearInactive();
 
@@ -132,7 +131,7 @@ public class FirewallBaseEvent : NpcBehaviorBase
             return;
         }
 
-        if(newTime > npc.ParamsInt[1])
+        if(newTime > npc.ValuesInt[1])
             npc.EndAllEvents();
     }
 
@@ -152,8 +151,7 @@ public class FirewallObjectEvent : NpcBehaviorBase
 {
     public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)
     {
-        npc.ParamsInt = new int[4];
-        npc.ParamsInt[0] = param1; //hitCount
+        npc.ValuesInt[0] = param1; //hitCount
 
         npc.RevealAsEffect(NpcEffectType.Firewall, "Firewall");
 
@@ -184,8 +182,6 @@ public class FirewallObjectEvent : NpcBehaviorBase
 
     public override void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe)
     {
-        Debug.Assert(npc.ParamsInt != null && npc.ParamsInt.Length >= 4);
-
         if (!aoe.TargetingInfo.SourceEntity.TryGet<CombatEntity>(out var src))
             return;
 
@@ -212,8 +208,8 @@ public class FirewallObjectEvent : NpcBehaviorBase
 
             CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, target.Character, res);
 
-            npc.ParamsInt[0]--;
-            if (npc.ParamsInt[0] <= 0)
+            npc.ValuesInt[0]--;
+            if (npc.ValuesInt[0] <= 0)
                 npc.EndEvent();
 
             target.SetSkillDamageCooldown(CharacterSkill.FireWall, 0.01f); //make it so they can't get hit by firewall again this frame
@@ -221,7 +217,7 @@ public class FirewallObjectEvent : NpcBehaviorBase
         }
 
         DoAttack();
-        if(target.GetSpecialType() == CharacterSpecialType.Boss && npc.ParamsInt[0] > 0)
+        if(target.GetSpecialType() == CharacterSpecialType.Boss && npc.ValuesInt[0] > 0)
             DoAttack(0.025f); //eat tiles faster on boss monsters 2 per update tick, artificially delaying the damage by half the update rate (it becomes 40 hits per second)
     }
 }

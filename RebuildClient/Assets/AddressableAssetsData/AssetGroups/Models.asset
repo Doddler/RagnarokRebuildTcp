@@ -34786,6 +34786,3072 @@ MonoBehaviour:
     m_SerializedLabels:
     - Hinamatsuri
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89d8ec31e066dd646a9cbc05c15daf94
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_3\uB2E8\uC0C1\uC790_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6779433309bacd449aab1b80c304d722
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAC00\uB85C\uB4F1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29eb42275a65f5e47b76d124e0806aff
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uACF0\uBCBD_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afde9515672919d4db38d6a1e16a184c
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD50\uD68C_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7036e9843e1838645892a243cc3a3bb4
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uB984\uB2E4\uB9AC_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0552515b29f288042a2207817034edba
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC2_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 967b81ceb1e6bf747a476de26f2fbf73
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC3_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 08fbb45c3fa705f48be056c90112ebef
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70c29d5cfa115a84dab16f53453399f3
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uACC4\uD3EC\uB9C1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 872b1b35c4355e0479d0c5a70914cf36
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uC5B4_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d425d4756baedc4ea940fd3d9c90855
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uCC28_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 04572aec1ff3a0a47bf0fba70a4b7809
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB341_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f43edd247c56464a8f0bf0be972c504
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB342_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9a605a771851a84d9aa55dd75b7ee1b
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB343_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0bad2660fd3b48f478a0bf2f43c870ed
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB34\uB2E4\uB9AC1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: efc47a90af99afd42b7e72d8c65ad644
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB34\uB2E4\uB9AC2_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a70ab196fcfaec644b61d3ec0564cd8f
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A41_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a13a3fbfd7087948ae7eddf90a2d50a
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A42_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51010a34a13a24946aa53aafb261f975
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A43_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74a4ec8677fe2fd48b3b7fa137860ee9
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uD2B8\uB9AC_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7c016f672133414f8eec7825a10e773
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uAF43\uD654\uBD84_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6da6e0767ae06a1458994f1a7bdb363f
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6abbda45d4a5e846b25a47aeacdc977
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC2_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7521d8c6c9d722a4bb497d1dc486b757
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC3_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63fb6060926e15e45ab98e21bf32992a
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uBCF4\uB530\uB9AC_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba4a0b38bf586d34b8376e8861225fce
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84f61f813a39ea34e95a68e82c614889
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C2_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a6a49720b237a8469be0c64d3b1a5e0
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C3_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da37f64e4d3182f4a81c7a6878cdae0e
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C4_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a36b3ab9ce6cb54409f26329005e6731
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c090bd62eefb2f4091fa651be51a633
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED2_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a37c4cd374bd1074c9fef9124d183354
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED3_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8130ffed34bf2fe44a5b53f10c4f2e18
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED4_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c16b240306b2944cbaa94d86d559574
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF541_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68af65235d6c1734784a58fc38003f5c
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF542_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44be8da7c691958479fc5d11f49fe5d1
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF543_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae0107b4be3d5974a8e78abee09914d4
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF544_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c942aaa6c248464c973324e663e68ff
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF545_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea60109f4dd73fe4aa9959d5a5ae70a4
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF546_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64a050c5a57d795408310b2bc8c605f4
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF547_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc8fbddb0ab50ff4796ce39cb1b49b6d
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF548_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8b07155735a343459630a2098e1b31c
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB531\uB531\uC774_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44fe1e8a84a89004684540d187daaa2a
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB808\uC77C1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2888dae73e569864999d0d89bc9aa290
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB808\uC77C2_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0894319649840b542a942ed1417afb3e
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9AC\uC2A41_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3505e41bcf5d8f849a2134f032fdf85c
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9AC\uC2A42_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d02d789b39fdf44b8eb6ec870c68dcf
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9C9\uB300\uC0AC\uD0D5_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f09894babdbe82e48b6907ac4f5c515e
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBAA9\uB9C8_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de0d0860170f0b14e98575ef84e1bdff
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33b9ecd2c7d296d4582b577523a3f8aa
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBBFC\uAC00_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a26c2411b905bd44c97bdaa5fe068557
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBBFC\uAC00\uBB38_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fade2986f25d5ae49bf52bacb1e9cd6b
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A44_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee82a54c68d04bd40bc36ab1e3d0dad1
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A45_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 236a05fd55b6a314faff0ea731531c96
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A46_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9baaff46ed436824da8f2115f16bee6b
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA4\uCE58_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aaf187da25dce5c4693563e8d1fb1ab5
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA8\uD2B801_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4038d6cc765560a49acfeef52fc11446
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA8\uD2B802_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a31905f8c0d9b5a4dbf7b154a47b5a92
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c439c8a6c16ab5147b84e31aedfce1c9
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD\uAE30\uB465_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b05aec52562b4bb40937e4c564332f09
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD\uB09C\uB85C_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 751a6d33d25aa2f41ae09d3dc31face1
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCC4_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0dc95005c08ea24fa283f0236d446c9
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE14\uB7ED\uC131_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7adeeb6bec910145a7a595e2412c039
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE59\uBE59\uD06C\uB808\uC7781_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 213485a1488e50c4180ae541f71711e3
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE59\uBE59\uD06C\uB808\uC7782_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 511a01341f308b34c8ca76f0e747696e
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBFC5\uBFC5\uC774_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3031f8989750bd943a656e5fcd4e6fdc
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC090\uC5D0\uB85C_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec78a6178be646f4ba48ea46db97c13c
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uAC04\uD310_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d75679a534db6841a12b969b46e5199
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uB808\uACE0_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b38c4186e2095d44a13938d6922c961
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC124\uB9E4_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11278300260306744acc535d96228a81
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC637_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fe6f955adb34314c92442b86aba24ea
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC8FC\uBA38\uB2C8_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4b0962873673034f8459dede80260a0
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb669d32f578d7d44b30d1ef9664c53a
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72c6ff15ef7f78c4c97f196c3aaf9615
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uD3EC\uB9C12_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c59b5d41111ce24bb48753314a578bf
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0C1\uC7901_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 289b91455bd46ba4ca63b2697f2f3bb1
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0C1\uC7902_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ee776f768144bc41b61869a26e47f27
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uAC00\uAC8C_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5160f81f1eea774ca82c2d0e37e73a2
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCD08_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 26556e693aee7d34fa4bb2fd1a585763
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 749f76c39bea49c47a454f47d768e086
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD30C1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3faf42e33570224fbcec855c6ec27d6
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD30C2_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0315467affe6dec4497d64030e5e9d9f
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD615\uD2B8\uB9AC_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: baed0a48d4afcb44ebbafcc8a38ab93f
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2A4\uC704\uCE58_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7d30b7a9d393e642b8a8458643eec94
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2DD\uD0C1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4ce64a55bb6a1249aeb7c481cdddcf0
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2E0\uD638\uB4F1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11ad7b74371433a48af5ea47eb888a8d
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC370\uB9E41_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 898349a53426fae45b91afa72d132c53
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC370\uB9E4\uB9C9\uB300_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba6deab6ddd087c498d4ac2c6780e590
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D02_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b57dfa8ac851fae4b9552590f958170f
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D03_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7e5f51e27562364997033c007fef5f2
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D0_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e35b86745e996440870ed70a4328fe8
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC5F4\uB9B0\uC0C1\uC790_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12027cd9a8ad7674fa519519228879bb
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC624\uB9AC_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab958d0cbb9d5ae44a10c4d6a522b066
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC678\uBD80\uC758\uC790_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8ff5652ac35e644ab4364c0a01c12d5
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC6B8\uD0C0\uB9AC_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc2269ca61e363c43af308e5473b44d3
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC774\uC815\uD45C_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eef43decfbe37774883ad4aeaac94046
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC785\uAD6C_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dda9bf961a8033049883a9c244a49704
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uB09C\uAC10\uB85C\uBD07_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a3ba567ff127924982eb8001fe72513
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uC2DD\uC6B8\uD0C0\uB9AC_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9df605123e1148c4ab906eaff6144376
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC8FC\uC0AC\uC704_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1a14cff96b87c84cb43030be96d64e7
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCD081_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ac61a7d55c31f5419b01e6dfc95c549
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCD08_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0211c53155701b8408f16f4dd3c5f335
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCE68\uB300_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d082ed6d61805de4fbc1af1a2089e529
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCE74\uB4DC\uC131_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 596d9837b7aaca04d9907790b970978a
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCF00\uC775\uC810_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0d5ca3fe74fde24a8c86720f0bd8380
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD06C\uB808\uC7781_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5cf552e70698dcc43a553f72c31178bf
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD06C\uB808\uC778_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd2a82fabf0846343a749765bdcfaaf9
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD2B8\uB9AC\uC904_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d487b637d458cf4b9f94ea78451e202
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD30C\uB77C\uC194_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5c7e01529813a24598734b6db2107b9
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD4801_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22d2071d3d6b7fe42b8ced006e1907ea
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD480_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d637793fc9ebe6469428ba5bf085c49
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD604\uC218\uB9C9_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5575d1394f5a25468e21bfc2cbb02e7
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD638\uBC15\uBA38\uB9AC_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6746516b49957594f8a0f724773c3199
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD654\uBD84_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdb4ce6769228b7468313c227dc4e1d1
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD65C\uC8FC\uB85C1_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0bfd83cb0421cfa4598bdfdb893d2d47
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD65C\uC8FC\uB85C_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d16affc61c908cb4e89e2385194b4f2a
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD754\uB4E4\uC758\uC7901_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46e987f54bcbc534b8fbff0df55ee2ad
+    m_Address: "Assets/Models/atlas/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD754\uB4E4\uC758\uC790_atlas.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20a435ae6be4bf04d822a124a1501ead
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_3\uB2E8\uC0C1\uC790.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 533b8fcc97ac72b4888b52629487afc9
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAC00\uB85C\uB4F1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d61251b15d8fd94a853aee475c88565
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uACF0\uBCBD.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc00329299d81f64091a8baac392182b
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD50\uD68C.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88c36ccc782747d4a9aeaed5ed0b8f7a
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uB984\uB2E4\uB9AC.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af102769a518e244d9351df278604e08
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94ae111cd3a5b7e4899ea90f180f4332
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC2.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03ff3e71402e10047ba05d50a0bd45ac
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC3.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac636ea0583ce134cbb223aa1875cf6e
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uACC4\uD3EC\uB9C1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68d876d54c280fe43b083d14985d6bdc
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uC5B4.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 174ae882a1a07c1419aac5cc6ee6348c
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uCC28.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7944bb90563d80e4abfb8d7d77c6928d
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB341.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74f65681df921fa438740ec47243e8fc
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB342.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b35655e28977bd48a6a435644cfafc5
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB343.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e7887c31a4508544a33706d286d9659
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB34\uB2E4\uB9AC1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78933334dd14e4a47b6dfea642688ce6
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB34\uB2E4\uB9AC2.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7413531df5d344d42b8fbd6007234669
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A41.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64d659db0377ebc488ac63e931662ef9
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A42.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a517185835e52547ae42af4d6cc5d19
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A43.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a188dab8bffa2344e90f70bb53dfc494
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uD2B8\uB9AC.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6022c1ab704869f48b969a0ff082ed30
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uAF43\uD654\uBD84.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 004fa31c45c0a5a469fb2b653021235b
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d36d07586fb370a4e81f152ba2e0ce8c
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC2.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d651131fdf678c4bb57cd5e4454fec7
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC3.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6eea9abdfa1d73c41b6a4e0532db17b2
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uBCF4\uB530\uB9AC.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c34e9dc3c2d09a649b8673c4757cca6f
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22cc43c2015b51c45aa3d24b660ac7a2
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C2.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53704fa7ea03c724c84ce2eff041337c
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C3.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cdb9d5ca5af050d43a0c149754e2231c
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C4.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0af1a73b842d3294182eb4f052ec6be3
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: abcf0631c46130f4bbbdffcd3a3d8460
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED2.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 639013403bf74024eb48f9b20c17cdf7
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED3.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 720ef6602048d3b4197a39f99f2ba0fa
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED4.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 207c366eabb6252448bbb459e9e25b3c
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF541.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e21d8d06b80e5f9498e0b86d0003cf07
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF542.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2818b2f4d6b14c2488084db862e738bd
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF543.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 54e93d7b4bf4507489829a50b2a04458
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF544.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca881187d7cd1754fb89be572ee5d1f8
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF545.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9eb8d334d0d902849bbe59b07a0ffb5f
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF546.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 307a543a3dc3b3847aeaf36bae4dcdcf
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF547.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84b23fb304145af4582ac824108abe6c
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF548.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 803fb7ab72f7b0b4b961ae7d52818f04
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB531\uB531\uC774.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55df604ac6c7b3f4188e27df3cb5174d
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB808\uC77C1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c2a9f8800bd93904aa9dbf1d633e8ebb
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB808\uC77C2.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6445d6b81225284ab8fc18636f720f7
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9AC\uC2A41.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27e4ae35e107e56499af2ee97195cfe1
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9AC\uC2A42.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91867deb211de6040ad94798d54d0e88
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9C9\uB300\uC0AC\uD0D5.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edd42e511394077498b74e1a2bd08457
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBAA9\uB9C8.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 430475babec558c41901798f35b68c61
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07c7cfbe4c53d2c4996905ccc2c3c5e2
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBBFC\uAC00.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8457aa0bdcc34204e824607dcfea7374
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBBFC\uAC00\uBB38.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bbd5358118f9bd541a9e0f2d03ce910a
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A44.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45b04f66111ccfc41b58e684066feb31
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A45.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70856feb0a3cdcb4db4a3f6137ce2c92
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A46.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1591b9438297d794ba75d3dbd302c503
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA4\uCE58.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 589407468d6d8144ab7e1dda8d5b7c09
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA8\uD2B801.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9adab7cc966e104488bf60f44be2c96b
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA8\uD2B802.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9de6b6d1fb68c074d8244e89b7d34788
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2c9461c7d6b7434c93133d211edc886
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD\uAE30\uB465.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46bb8ffca87d6f141bfd017a9238fa4c
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD\uB09C\uB85C.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4553bb20287e2bb48b6687a311bbdb20
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCC4.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c9c598adcff1224e825a8635a37a753
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE14\uB7ED\uC131.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccb35d3e4f464c546be8f42abf9f3710
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE59\uBE59\uD06C\uB808\uC7781.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9f0b40febb06ed499f3f08584ed0539
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE59\uBE59\uD06C\uB808\uC7782.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e596d3c97cdd66947a39c3ce943b1b2e
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBFC5\uBFC5\uC774.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da4803f842297e64582463fe3dbf58a8
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC090\uC5D0\uB85C.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edf8461bec0cabc4887fd380c0922287
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uAC04\uD310.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f40755801e9c4243bc6084e648daf54
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uB808\uACE0.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ec3e2377b46b0c4b976d7ef44f23b67
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC124\uB9E4.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 578dcf6d9ef64ee4ca86ed344e92d613
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC637.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d9e3ef0e774a27049b5c947f7fc1e063
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC8FC\uBA38\uB2C8.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7e077052dc964344b427aa098e95cf6
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d9191cfb5f28154d93c3c949fdc99f5
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 42caf1fbad6e3864582538604694846a
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uD3EC\uB9C12.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6486606ea0a11f4a99ef06532db5144
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0C1\uC7901.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d60a805a0b785c49b8df8cdcd622227
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0C1\uC7902.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6ffe133cbc4c0341aff45530cf1cc94
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uAC00\uAC8C.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de9d06b918df87240954fb40ae12ddce
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCD08.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce03ca44ee4f5614db73a9d247c1639b
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 125ce7b9e2cd1904baa5be7dc5db7bec
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD30C1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1d2cc496fb9e7448869b1bdeba7294b
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD30C2.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 831111944a3324b4cb5187363626d005
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD615\uD2B8\uB9AC.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 125bb2c7f72c18c46888b8ad03534d23
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2A4\uC704\uCE58.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb8edd14a44311840a326366c17b5a2e
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2DD\uD0C1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e885c8a7b5dacc40a19817cacb1fd22
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2E0\uD638\uB4F1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb2179172ae2b8f42ab0a14df65884a5
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC370\uB9E41.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdca8c12d3e091a469070cf2a523baa4
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC370\uB9E4\uB9C9\uB300.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33bd9a56af267d34fa26b9a678332d7a
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D0.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d50dbd9655f4ec4eb6e524ecf6cce28
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D02.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 734bc5ecf1cbb5a42812de4be5c21825
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D03.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 775f63a65c9de5b419b7fbfc992cfdae
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC5F4\uB9B0\uC0C1\uC790.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ff0000eb6fa9204a9331cbd776894d0
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC624\uB9AC.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56a8de32c23f06a4785a03bac49cc94e
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC678\uBD80\uC758\uC790.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d91127fa6bb5af469a97ee5586f6342
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC6B8\uD0C0\uB9AC.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66ce4e8b63fb1ff4096d95d1831570a0
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC774\uC815\uD45C.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83db1a3de59996848868da36f4225efe
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC785\uAD6C.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef0be130e2fad804a97025cf11d2dfcc
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uB09C\uAC10\uB85C\uBD07.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 701de66ba175b164cbc0604a10021699
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uC2DD\uC6B8\uD0C0\uB9AC.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93a84ebbbd6b1d94d9e5ae7dfa941e2c
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC8FC\uC0AC\uC704.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20d30bd38aa5a1841acdc4818f10a491
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCD08.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62f63100a7f6b2c4baaa8008689b8df9
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCD081.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22abeab93df15544a8657ede18e12e1a
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCE68\uB300.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8036a40c93fac2f43816f8255ba2f8f4
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCE74\uB4DC\uC131.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 877e87e553d36d84dade0959d398a06a
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCF00\uC775\uC810.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 402f7bc1ff6f9e844aef7bf1308e11f8
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD06C\uB808\uC778.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da0f7fdcfda6afa4c85728b480a3db8a
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD06C\uB808\uC7781.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a625c424333fe24ba14c120c01f2698
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD2B8\uB9AC\uC904.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c42e12e5e2768d4fbf8ff4202ee808a
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD30C\uB77C\uC194.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4dae6104645946a47864e27fab72c73b
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD480.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e6cf3a740de8ed42ba54db85d4e0d50
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD4801.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6bf994e80e7ec704badf6eb0d5670c4f
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD604\uC218\uB9C9.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 289485cdc4863274e84f4cd3ec6a407f
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD638\uBC15\uBA38\uB9AC.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 660ad62c447dfa2408306bc695768712
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD654\uBD84.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07a0a38c895b03b4aae49f431cc2991a
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD65C\uC8FC\uB85C.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d539cfbcec549a4468c5d473b0ec18aa
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD65C\uC8FC\uB85C1.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a264d295dd931a04da5326e846bd236c
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD754\uB4E4\uC758\uC790.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe364af4615902141814a013d6d3b6ac
+    m_Address: "Assets/Models/materials/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD754\uB4E4\uC758\uC7901.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 299009ced4f4daf40b6f18cdf46b8c0b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_3\uB2E8\uC0C1\uC790/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0fac8a9b95a1ef64f82d35801ede07f2
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAC00\uB85C\uB4F1/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 02b676c0133106346a16725e31980529
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uACF0\uBCBD/Sphere01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eaacb6321f8e57343946b0465a356999
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD50\uD68C/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 04f26dba041737d4d9e6e1469b416d18
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD50\uD68C/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb532cc277a0f164c940330ba8f9f8ab
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uB984\uB2E4\uB9AC/Object03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e704fff4956bcb04f8e7a7c4db42b53d
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58bd406c83da67747878c805af7bd5ed
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC2/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbf7156b5ae980c49af7629b93666acf
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC3/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a00695b65f258c4884aba82ce276213
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uACC4\uD3EC\uB9C1/Mesh01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc0f3f32247f34541b8651bd612b6405
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uC5B4/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91d8c299f6b486e439246a3e75d30716
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uC5B4/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d77fb777a1d3025469397f923d1f42ea
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uCC28/ee.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a1a41fcfa213a34e84840919ca7b7af
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uCC28/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 465bb7f6caa35b946963ac4f33bb76e1
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB341/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fef598db34307de48bf57ea51e87803b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB342/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c985484fa8cdcd04694d7fcbe102cb3b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB343/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 558eb1f56524b2f4cb66f9aaaf2e1a37
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB34\uB2E4\uB9AC1/Mesh02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b8874c56ba91ef45b47c59266556216
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB34\uB2E4\uB9AC2/Mesh01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0173324dc6a79d47bc7d9a96a89fd1a
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A41/Box04.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f792ec11bf6af904d83732a8dd125434
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A42/Object03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1aff70518858cec4ab89018f31ff1349
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A43/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b4867c06713deb4380c4e2fa3b60844
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uD2B8\uB9AC/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8515d9a8c7fb34e47aa4eafe8a128c68
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uAF43\uD654\uBD84/Mesh02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65e4a1b442b45744e8b71d3f223d5149
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC1/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36118452582f08f4f8e89f2db35afad5
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC2/Object03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a281b6713f5680b46a43e6c99f8ea635
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC3/Object15.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2fcaba06711ff2b40b4f72ee66fb5294
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uBCF4\uB530\uB9AC/Cylinder02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2dce47601b9eb6040b9471fe0dc7a5eb
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C1/GeoSphere2.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5b6cb3e33b894344873695df0f24a40
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C2/GeoSphere2.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f9a63ca05796b64e80d68e91726e231
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C3/GeoSphere2.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d06befaf91e66fc44aeee0fc9e21c6fe
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C4/Cylinder03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f2b7b8f06fa69c499c6570d958cb44d
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED1/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cdafe39caa89f7479f5abcd1ec21d0e
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED2/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4cd97384dac9bf4286d360bc6f39346
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED3/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47dbf67f0d6b6c546aea57a25d52788f
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED4/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe7c9631d95f3a1489ad8698c24521fc
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF541/Mesh01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 242105e019d64b24db76bc006d55f01e
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF542/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7c7592cb8ba2ed4aa50a5dfa7813988
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF543/Plane01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6632a7def458dcb4f876f9187700d2d3
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF544/Plane01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9edeb3dce78d7344288298028a727a1e
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF545/Plane02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d5569a9f0e7cb247abf0cb955fa61bf
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF546/Plane01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a01a140af7a5d04782eef6e53585d6c
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF547/Plane01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 824f80851da4d454bb3944affba23ab5
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF548/Mesh03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d50745b0d76390e41b2b72cca25eadc7
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB531\uB531\uC774/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a0d6186a5d54f14b9d4357bf9d5fdd1
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB531\uB531\uC774/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 017d2f98e2fb8dd4c90dfc4c2ea7dfe6
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB531\uB531\uC774/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7c0d205bf7f82443905cfafb18f4e84
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB531\uB531\uC774/Plane01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4e08a1573f2ea74b925e07b460a576d
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB808\uC77C1/Box33.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e12918d9f2f2404b82ac3f9e6ea8306
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB808\uC77C2/Box71.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c7aa52e3b7336546bfd4712acfaa8c9
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9AC\uC2A41/Torus01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db5a650a99d835745a83cbe64b80718b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9AC\uC2A42/Object15.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 919b6affb4d87824abc721ac67fd587d
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9C9\uB300\uC0AC\uD0D5/default01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ed84e0dddca707045bda1ff9aab5e8bc
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBAA9\uB9C8/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ddd04ea76496ca449bae1e085096f789
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBAA9\uB9C8/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5272adf55512a54a9228ffef868c4f4
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c1061571c818a242ad218f9e9fbe447
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810/Box02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da53ea7e7cc591748bef7e4e465adff1
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810/Box03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6432f5a4e7cfd6e4f8ba6ae6b8360935
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2edbd1f9ffcb104a8edeea65207ce33
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810/Object03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: deec0a3854ad9d446ad61636cb42695b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810/Object04.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76f449ae0f009014490a1bb22ef1b901
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810/Object08.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0cdd9bcd0c5316478cddb6bce45bafc
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBBFC\uAC00/Mesh01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37dd786afec38aa499841f9b03abcb04
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBBFC\uAC00\uBB38/Plane01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3bd136f59cf1a1d4786c39a316cf4da9
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A44/Box03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ba2e08edc0b6c64fb99f3e97dab9ee2
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A45/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5049d5d6e83c77043b6669a8782b8450
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A46/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 983129da1fa94aa47926c8928d0ceb08
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA4\uCE58/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd34a74c943113c489268e5bcdb13b0b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA8\uD2B801/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb241157ddafa3340847f15f21823b1d
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA8\uD2B802/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66720ee06aebba94eb9d288a7ee1e158
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD/Mesh11.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c910f07f7db5c6c47b638d6c08bc1107
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD\uAE30\uB465/Mesh10.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bba99adbe3550c74c831d1ee63cbdcf2
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD\uB09C\uB85C/Plane01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 184daa00aa4bca94bbb1c93193d74491
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCC4/default.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e20a38a0c4fd354fb6ed78bf0d0c1f4
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE14\uB7ED\uC131/Mesh02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b1b88293caba19b45b6dca5724b792ac
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE59\uBE59\uD06C\uB808\uC7781/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3357c1bdf00e1e447a5ae06d72f61213
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE59\uBE59\uD06C\uB808\uC7782/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a4e10b9819f2464ea99528316bed670
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBFC5\uBFC5\uC774/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e889b3421839ba24f9f6159e47dc6f32
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC090\uC5D0\uB85C/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5838641f4cf84a042a1f76f22ebce0e2
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC090\uC5D0\uB85C/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 471b005cf5ece3543983b226eea3b309
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC090\uC5D0\uB85C/Object03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2af1ac5eebd41540967257e4323e13b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC090\uC5D0\uB85C/Object04.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7daf3719a5dcc0d46954b285a2defc03
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uAC04\uD310/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b53e8f1a9c22d184caa1c50a1c65fcf2
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uAC04\uD310/Object04.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 384b79e9e9ae8dc4891901e0b6511e74
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uB808\uACE0/Box03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c31a08444667fa4e89434b2b2e4f655
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC124\uB9E4/Cylinder02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d72fc80f063b7354182c2f79c8d1652e
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC124\uB9E4/Mesh02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a954247e83b04541920114d1cb77f69
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC637/Box03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd640bbc3d88f0340b916e6b5add9b43
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC637/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d71386d9dc2bfc429b70eedb954c05e
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC8FC\uBA38\uB2C8/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d48d5f82bd4a357448e71c19bed661ef
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D1/Box02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11118da23acd1674a93586a4e60d3081
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12/Mesh01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28cbcc9b605272040978f80b67e1c97c
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12/Mesh02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3441d40fb85ffb44acd30a50da588a8
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7bce6a8c9973fd41a0296159f671754
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12/Object03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 557030ef6573308418e1521d8ace6f31
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12/Object10.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 608b14392a9966d4d8de0251648e9418
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12/Object11.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: abc9789ac57ac2143a3a8b60f4e877e6
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12/Object12.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd2c6adaf4f029e4aadfc85626d3159f
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uD3EC\uB9C12/Sphere01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0913d1ca9d274eb4193010da87c3b874
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0C1\uC7901/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac9542c6f9c42d645be63151044c05b4
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0C1\uC7902/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7aa7d46082528cb489a5eed0389d5870
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uAC00\uAC8C/Sphere05.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee55a321cd0758e4e837cce4f36c75d6
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCD08/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9be560e3b42757541bfc5fd0150d4b6b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a39d2732153dc364ea014c0675c8cd84
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52a4f1e3e36639549a4f3bbc8fc5dbe5
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41d42e3c05c41444ab635ead6a9f8efc
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130/Object03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 927a445a52da1e542aa1e8627844ad97
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130/Object04.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e189957aadb0f824d871708e43c0e0df
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130/Object05.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0145f28bef3f604aa85f77534dad929
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130/Object06.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca57ef9de1a0eea4db6d609bee5823fc
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD30C1/Mesh05.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9138e388b7d1b3a4c9270d203a8a8a55
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD30C2/Mesh05.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f4d70754f1a3f94ba5a6dc52d928b84
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD615\uD2B8\uB9AC/Cylinder04.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fc4a2c0ca5a33340a5510ad0fdf6971
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2A4\uC704\uCE58/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a352ee75cd41b1143b7a961b16a3698a
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2A4\uC704\uCE58/Mesh01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31cc6bc3f3426954bbc4510d178ca038
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2A4\uC704\uCE58/Mesh02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ccb801abee621147929c37626fa478b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2A4\uC704\uCE58/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 727a7d636df929a4da462325f0b1968d
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2A4\uC704\uCE58/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2933e817053d5bf4597902116e6f1e6f
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2DD\uD0C1/Mesh04.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d28623f4a3f39c4d990010123b2234e
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2E0\uD638\uB4F1/Mesh01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e148f6359d6c4b4c866c8b9be9650b4
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2E0\uD638\uB4F1/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 706f66a212294f54283ec44d2cd9560b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC370\uB9E41/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9394e9172184ddd428e6f751c75cbcc3
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC370\uB9E4\uB9C9\uB300/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c591fcdf96022343a5141e1782c0d26
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D0/Box06.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ddc003165fd42344f8a1a31c549f5b83
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D02/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d32efdf74f01ea4488a4926eae9ec27b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D03/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 536edf45498d99443bc02d24344e0c42
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC5F4\uB9B0\uC0C1\uC790/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e680b94dc74282842ac612eb70155ada
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC624\uB9AC/Sphere01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5775725d44e99c247840cf099a1f2c6e
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC678\uBD80\uC758\uC790/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fb26e71cc7201c4b933ab17fa85206c
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC6B8\uD0C0\uB9AC/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25915a7446eeb8f4baa62096efcfe4ae
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC774\uC815\uD45C/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e9d7f4b32bf3124790924623e555bd1
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC785\uAD6C/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f60be885572d244d85cf61a2b75e24a
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC785\uAD6C/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: abef17caee503f94cab289e0afcafa70
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uB09C\uAC10\uB85C\uBD07/Box02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2698ef6ac25e81246bad1f83c607a4b2
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uB09C\uAC10\uB85C\uBD07/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdbfd508651726e468fbc096cc3c985c
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uB09C\uAC10\uB85C\uBD07/Object02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7656b188d6536db40b02ca8e700040a0
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uB09C\uAC10\uB85C\uBD07/Object03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ef18ee3ab644664f918d1f7846d102c
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uB09C\uAC10\uB85C\uBD07/Object04.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f406310cb9567a4591ab4e542a40539
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uB09C\uAC10\uB85C\uBD07/Object05.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45047da191366764ea61559994536345
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uC2DD\uC6B8\uD0C0\uB9AC/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29126f8247c77e149a77d6c3b9c0886b
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC8FC\uC0AC\uC704/Box02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 496567ec725aa104bba22d3cb01dfbea
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCD08/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9288b150b0146f44b4fa4ce4e3816ca
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCD081/Cylinder02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1bbd5a7478570542bd91c63354f2344
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCE68\uB300/Mesh03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 828a0436793e1744ebce2469a5c4b7e2
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCE74\uB4DC\uC131/QuadPatch01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14a6a0fa29ab728459b428a848866d7e
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCF00\uC775\uC810/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca3d9d46e024e884c9bad3842e8d27d9
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD06C\uB808\uC778/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f413bfb3b360c04c88827b3c67f7415
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD06C\uB808\uC7781/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c33e202f7452db49afab7728b969529
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD2B8\uB9AC\uC904/Object04.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de77057592da44e47931408922941f06
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD30C\uB77C\uC194/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 399b2e4d91d906341b50d0b7c254bcfb
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD480/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43522dcca84799145b6b8f03b22a1d3c
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD4801/Box01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1801369b523df9418a877ae21ba97ba
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD604\uC218\uB9C9/Cylinder01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4abcb4142499ee1498e46c30cf477528
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD638\uBC15\uBA38\uB9AC/Object01.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2967b70e14ae9634c80a52f2c0a25998
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD654\uBD84/Mesh06.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7c25790c745328489c96287736a7134
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD65C\uC8FC\uB85C/Box02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cbd6b4405190ed4690e11974463a890
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD65C\uC8FC\uB85C/Box03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9ee1193001348e4fb224b619b543c2c
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD65C\uC8FC\uB85C1/Box02.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d6c163010283094ca4bd7dc02e8a49d
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD754\uB4E4\uC758\uC790/Box03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ce1f85b9380400458ca1ee8e82bd5b0
+    m_Address: "Assets/Models/mesh/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD754\uB4E4\uC758\uC7901/Box03.asset"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52d8bcd5e3002c047a153034e071f6ca
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_3\uB2E8\uC0C1\uC790.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14fca86eabd2c97409d5fd61570c584c
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAC00\uB85C\uB4F1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8140ad73251142242baf92f95fffc17c
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uACF0\uBCBD.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35513e7aeaae9f643ab85d161b955977
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD50\uD68C.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c1bb46eeaa96e34c8c087bed42bdec7
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uB984\uB2E4\uB9AC.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 969579b3234c20f4093e9eb75ab29be2
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea63f414eb0b0024c924f643ca374bcd
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC2.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5adacfe002622c8428c78a4f5230e110
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAD6C\uC2AC3.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb020393b339c734088cc7e8485f312c
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uACC4\uD3EC\uB9C1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0ea1d36f47868445a0019583c96c822
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uC5B4.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d5c1cdbafe30b74ab491b8479342533
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uAE30\uCC28.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c498cafd10d1c434cb3f40ecb24f5f57
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB341.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 789e434f50947884e8d3b16ed946d92f
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB342.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8bcbe4aa67117b24195e06809842b14e
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB343.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c65d714d355689643a21f9bb9a59bcc3
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB34\uB2E4\uB9AC1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc03e483e5530484bb6495d0ccb7ec2c
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB098\uBB34\uB2E4\uB9AC2.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c75f66d1c51bc848a7174c449621aa5
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A41.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d30b73bdfc0f614588655116c567f1b
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A42.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27ff4be3efe74f3418aeea120993e70e
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uBC15\uC2A43.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b350655668ade824db4b58256bf74732
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB0B4\uBD80\uD2B8\uB9AC.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc29003ed9baa5b4fa21256e92ae53b6
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uAF43\uD654\uBD84.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8179025ab5989e049a9a768e5292f67a
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a31a424302418164ea1b9afe4359e776
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC2.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b18c7e5e5d183b0468c64a3ee2630250
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uB36E\uD78C\uD2B8\uB9AC3.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14cbea9b01d0d5440bcee7a07ab9609e
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uBCF4\uB530\uB9AC.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff397bca77f2c9b4380fb400b3ad6ca7
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6aa12c3fb5b7f61459fc6f9f8603f1fa
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C2.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10cd2191d917f5d46b2ac568db60c7b3
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C3.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 969cf48f822641f4484c20b008d4b5f3
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB208\uC0AC\uB78C4.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e33a8d7acfd8fee4382a3cd379d1da3d
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f2b0f217d77ff045aee5256277a3abc
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED2.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 475a488ad6e29cf419d3b0c3ebf647d4
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED3.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f156f366dd2be664d9bc9f5411a0ebc9
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB358\uC83C\uBE14\uB7ED4.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60db7bf01299a4d48b4188bc00ee33ab
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF541.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 719882e3dbd7f3a4fbc91264e5c4a987
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF542.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 445bfd7bb12867749a4fdf1dbee94bf4
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF543.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afde41793611d7342bb3ea662a19f457
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF544.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45904cbd03a1de04bbe5c512088887fa
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF545.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f701b736bef58cc4e90bf66656613117
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF546.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2de74738ea8b5aa4ba93a6f7b05c84b6
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF547.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7596c0e7b0bc48047aa77f2460c784f1
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB370\uCF548.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 13490ad211006984a90e8df7972bc8fe
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB531\uB531\uC774.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41176198dbed6f84383852ca83d7f6c4
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB808\uC77C1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6fafe2ffa569e4e45a31edac3f54077d
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB808\uC77C2.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f45571c5c950acb4bb3e640b00052e6d
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9AC\uC2A41.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 648905e0f989d664a8bd00ad96d99f0f
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9AC\uC2A42.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f401a63b42c883c4d926829bf01101c4
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uB9C9\uB300\uC0AC\uD0D5.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66e96f6819c53374680014759fd8aa5a
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBAA9\uB9C8.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae49c26155188f8448dd2fbe7f1ffe35
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBB34\uAE30\uC810.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10c7ae3bf30eb204baa5d297c19777e1
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBBFC\uAC00.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6f27ccd772c19342a3f141b42c9f6c7
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBBFC\uAC00\uBB38.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f51e801f2910db049ac76127fa7db031
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A44.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce32e8063b4c2b7428aca9c6851b1379
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A45.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36c9c6ea272bacd48b01bb67a7f90cfc
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBC15\uC2A46.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29bd1f22d3e42564bb209ef5dfbd588e
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA4\uCE58.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 793692cfbef18674a9888c9f42b3774e
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA8\uD2B801.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 448d8c4fc662410419ff2763d556fa10
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCA8\uD2B802.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 070e666d86b4a9f438b7c862dbe3bef1
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b59a369c7ea5de749ae6fae8661136b1
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD\uAE30\uB465.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afd43bc155a6c2c47bce56b9ce3414b8
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCBD\uB09C\uB85C.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c03951abac2f4944b5aa7d513feded5
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBCC4.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f08c8c21d4dd439479cdabd8b361f69a
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE14\uB7ED\uC131.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5df4828d13c5aed4d855a4b49bc2a671
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE59\uBE59\uD06C\uB808\uC7781.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bfbccdc3544f6374fafdb5e0793d5b2d
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBE59\uBE59\uD06C\uB808\uC7782.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e1b80a7341166d43851fcd3491e641c
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uBFC5\uBFC5\uC774.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a0d81c35c17da241a5ff3fb752e8ddf
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC090\uC5D0\uB85C.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ceca6f00190e3a64892e0d3c44619ada
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uAC04\uD310.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff7cd6e6153dea54da58f69e678ac4a3
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uB808\uACE0.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41a85824860204448b00925f998910ca
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC124\uB9E4.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f81720297b044b343955a8dff9f7a73d
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC637.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d663525a53b813442b498c6ee94a77ca
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC8FC\uBA38\uB2C8.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12a1b6f6957320b469023292c2e39424
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a53213cf33420e48a64bc7388b7dcc4
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uC9D12.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f22ef918a3dfe04f8e084716f52ca4b
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0B0\uD0C0\uD3EC\uB9C12.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3c006432f982454a8f65b463d070fdc
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0C1\uC7901.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 098f23a7d015ad84193fc03895933d95
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC0C1\uC7902.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b8c0f19c816989448a3a3a7f8ae7546
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uAC00\uAC8C.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 269f026743dde2243bc0f55c44639bef
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCD08.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ac2a64fc60a03048b8153c2f1f210b5
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC120\uBB3C\uCE74\uC6B4\uD130.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d1a7e90275ad244ca6b54e6b6e404a0
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD30C1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9882c1bea08038941917fe36a6dc8c63
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD30C2.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51092e792badfb741a8acfa210c188a9
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC18C\uD615\uD2B8\uB9AC.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29168e59dfdccc94e86ec2c9e26871bb
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2A4\uC704\uCE58.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbba8d79ccf7c94428131608a96da55c
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2DD\uD0C1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e03384ebd378ae4b8abe1fe9537e555
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC2E0\uD638\uB4F1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6cec2e8175ac3324f9e221e8afcfc992
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC370\uB9E41.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2305821ff5f7304bb12aa2d4f86479c
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC370\uB9E4\uB9C9\uB300.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 352f0c60984b2a84bb904ad00bb1ba08
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D0.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8023b07344b64da41b1834df1dbb8b5b
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D02.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7a194cb499828f4aaeeccfef7875ab8
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC591\uB9D03.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49a2f5b94922a974897d0b59e05ab638
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC5F4\uB9B0\uC0C1\uC790.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dad2a3743407e494da5470336e1ff39e
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC624\uB9AC.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad10629b17f0e9042a5a89d96e847997
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC678\uBD80\uC758\uC790.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3339958e01f4f1742b32b339efa6cac0
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC6B8\uD0C0\uB9AC.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b29f561a90227c642a9f6994aab7fa89
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC774\uC815\uD45C.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e8df99f7c3810dc4cb5a8e1ed9089dc7
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC785\uAD6C.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4fc3fbaffa58434ba13e832154513b1
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uB09C\uAC10\uB85C\uBD07.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c98f8ab108b13b49b0469ab209d3cb5
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC7A5\uC2DD\uC6B8\uD0C0\uB9AC.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f3a2aa2cb17c59439ae92ed259bc235
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uC8FC\uC0AC\uC704.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90904c0fda21cd14eb27cdfd75a5bf47
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCD08.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb447ca0acdd7b9479d1925e08a60521
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCD081.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39e3a4454a4c6f74eba54265db3031ee
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCE68\uB300.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19725b724d544614c95ea69df440c19a
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCE74\uB4DC\uC131.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67cf99faee6c77a4fb6e377d410c0c24
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uCF00\uC775\uC810.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d146da943e7b694eb2fc1ede6aebfe7
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD06C\uB808\uC778.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ea8dc02c0473b94da052e237f02c546
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD06C\uB808\uC7781.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e11bb65060fb13d4fb538ac9e33944de
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD2B8\uB9AC\uC904.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cb9c0488e148bd44a99096aaf80c7bb
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD30C\uB77C\uC194.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5990639af6a37034ab8f3dcc9e16247e
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD480.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da0a048e3f877834dbcdbb1431e48920
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD4801.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45912e3a6c22df344bb706b69c6954d0
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD604\uC218\uB9C9.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3759a775d0669c42b099a743610f936
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD638\uBC15\uBA38\uB9AC.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 635b6388ecf367542b795df8aa9cb5a9
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD654\uBD84.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 474e7d4e47622794493b5bbbba6f2bb7
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD65C\uC8FC\uB85C.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98598247d2983fc44b31a5af13cd9c9f
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD65C\uC8FC\uB85C1.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f025435b964483409f43aaa6bac8b05
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD754\uB4E4\uC758\uC790.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ece7cb5ce2728f843a9e714d2034ddee
+    m_Address: "Assets/Models/prefabs/\uD06C\uB9AC\uC2A4\uB9C8\uC2A4\uB9C8\uC744/xmas_\uD754\uB4E4\uC758\uC7901.prefab"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ChristmasVillage
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

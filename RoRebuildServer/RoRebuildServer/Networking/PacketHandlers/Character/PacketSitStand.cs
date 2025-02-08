@@ -28,6 +28,13 @@ public class PacketSitStand : IClientPacketHandler
         connection.Player.AddActionDelay(CooldownActionType.SitStand);
 
         var isSitting = msg.ReadBoolean();
+
+        if (isSitting && (connection.Player.JobId == 0 && connection.Player.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 2))
+        {
+            CommandBuilder.ErrorMessage(connection.Player, $"You need level 2 of basic mastery to sit.");
+            return;
+        }
+
         connection.Character.SitStand(isSitting);
 	}
 }

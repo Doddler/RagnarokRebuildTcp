@@ -53,7 +53,7 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public NpcInteractionState NpcInteractionState = new();
     [EntityIgnoreNullCheck] public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
-    [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[3];
+    [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
     public Dictionary<string, int>? NpcFlags = null!;
     public ItemEquipState Equipment = null!;
@@ -65,6 +65,9 @@ public class Player : IEntityAutoReset
     private float lastAttackerListCheckUpdate;
     public float ShoutCooldown;
     private Memory<int>? jobStatBonuses;
+
+    public SpecialPlayerActionState SpecialState;
+    public Position SpecialStateTarget;
     
     public int GetItemIdForEquipSlot(EquipSlot slot) => Equipment.ItemIds[(int)slot];
 
@@ -200,6 +203,8 @@ public class Player : IEntityAutoReset
         NpcFlags = null!;
         isStorageLoaded = false;
         jobStatBonuses = null;
+        SpecialState = SpecialPlayerActionState.None;
+        SpecialStateTarget = Position.Invalid;
 
         if (Inventory != null)
             CharacterBag.Return(Inventory);
@@ -290,18 +295,10 @@ public class Player : IEntityAutoReset
         }
         else
             UpdateStats();
-
-        //send memo'd map locations
-        var hasMemo = false;
-        for(var i = 0; i < 3; i++)
-            if (!string.IsNullOrWhiteSpace(MemoLocations[i].MapName))
-                hasMemo = true;
-        if(hasMemo)
-            CommandBuilder.SendMapMemoLocations(this);
-
+        
         //IsAdmin = true; //for now
     }
-
+    
     public void WriteCharacterStorageToDatabase()
     {
         if (StorageInventory == null)
@@ -788,6 +785,16 @@ public class Player : IEntityAutoReset
         CombatEntity.FullRecovery(true, true);
     }
 
+    //sometimes we want to change the player's state when they start casting something
+    public void NotifyOfSkillCastAttempt(CharacterSkill skill)
+    {
+        if (SpecialState == SpecialPlayerActionState.WaitingOnPortalDestination && skill != CharacterSkill.WarpPortal)
+        {
+            SpecialState = SpecialPlayerActionState.None;
+            CommandBuilder.ChangePlayerSpecialActionState(this, SpecialPlayerActionState.None);
+        }
+    }
+
     public void SaveCharacterToData()
     {
         SetData(PlayerStat.Hp, GetStat(CharacterStat.Hp));
@@ -811,6 +818,7 @@ public class Player : IEntityAutoReset
     public void ReturnToSavePoint()
     {
         Debug.Assert(Character.Map != null);
+        SpecialState = SpecialPlayerActionState.None;
 
         var savePoint = SavePosition.MapName;
         var position = SavePosition.Position;
@@ -989,6 +997,7 @@ public class Player : IEntityAutoReset
         CombatEntity.QueuedCastingSkill.Clear();
         CombatEntity.OnDeathClearStatusEffects();
         UpdateStats();
+        SpecialState = SpecialPlayerActionState.None;
 
         Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.SendPlayerDeath(Character);
@@ -1455,6 +1464,7 @@ public class Player : IEntityAutoReset
         Character.SetSpawnImmunity();
 
         CombatEntity.ClearDamageQueue();
+        SpecialState = SpecialPlayerActionState.None;
 
         var p = new Position(x, y);
 
@@ -1501,8 +1511,7 @@ public class Player : IEntityAutoReset
     public void AddActionDelay(float time) => CurrentCooldown += time;
 
     private bool InCombatReadyState => (Character.State == CharacterState.Idle || Character.State == CharacterState.Moving)
-        && !CombatEntity.IsCasting &&
-                                       Character.AttackCooldown < Time.ElapsedTimeFloat;
+        && !CombatEntity.IsCasting && Character.AttackCooldown < Time.ElapsedTimeFloat;
 
     private bool InMoveReadyState => Character.State == CharacterState.Idle && !CombatEntity.IsCasting;
 

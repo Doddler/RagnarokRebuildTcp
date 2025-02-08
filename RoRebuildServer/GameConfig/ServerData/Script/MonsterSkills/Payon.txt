@@ -14,9 +14,29 @@ StateChase:
 	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(29);
 }
 
+SkillHandler("GHOSTRING") {
+StateAny:
+	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+StateChase:
+	TryCast(SoulStrike, 9, 20%, 0.5s, 5s);
+StateAttacking:
+	TryCast(GhostAttack, 5, 5%, 0, 5s) -> SendEmote(28);
+}
+
+SkillHandler("DEVILING") {
+StateAny:
+	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> { CallDefaultMinions();  SendEmote(6) }
+StateChase:
+	TryCast(DarkStrike, 5, 30%, 0, 0) -> SendEmote(32);
+	TryCast(DarkAttack, 2, 20%, 0, 5s) -> SendEmote(6);
+StateAttacking:
+	TryCast(DarkStrike, 5, 30%, 0, 0) -> SendEmote(32);
+	TryCast(DarkAttack, 2, 20%, 0, 5s) -> SendEmote(6);
+}
+
 SkillHandler("ANGELING") {
 StateAny:
-	TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionCount < 3] -> { CallDefaultMinions();  SendEmote(18) }
+	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> { CallDefaultMinions();  SendEmote(18) }
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(18);
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[HpPercent < 30] -> SendEmote(18);
 StateIdle:
@@ -59,13 +79,14 @@ StateChase:
 }
 
 SkillHandler("SOHEE") {
-	StateAttacking:
-		TryCast(Suicide, 1, 5%, 0, 5s)[HpPercent < 80];
+StateAttacking:
+	TryCast(Suicide, 1, 5%, 0, 5s)[HpPercent < 80];
+	TryCast(WaterAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //angry
 }
 
 SkillHandler("AM_MUT") {
-	StateAttacking:
-		TryCast(Mammonite, 9, 5%, 0.8s, 5s) -> SendEmote(8);
+StateAttacking:
+	TryCast(Mammonite, 9, 5%, 0.8s, 5s) -> SendEmote(8); //$
 }
 
 SkillHandler("ARCHER_SKELETON") {

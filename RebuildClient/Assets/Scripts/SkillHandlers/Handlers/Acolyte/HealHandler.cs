@@ -9,6 +9,11 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.Heal, true)]
     public class HealHandler : SkillHandlerBase
     {
+        public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            attack.Target?.Messages.SendHitEffect(attack.Src, attack.MotionTime, 2);
+        }
+
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             src?.PerformSkillMotion();
@@ -17,11 +22,6 @@ namespace Assets.Scripts.SkillHandlers.Handlers
                 return;
             
             Debug.Log("Heal: " + attack.Damage);
-            
-            if (attack.Damage > 0)
-            {
-                attack.Target?.Messages.SendHitEffect(src, attack.MotionTime, 2);
-            }
             
             switch (-attack.Damage)
             {

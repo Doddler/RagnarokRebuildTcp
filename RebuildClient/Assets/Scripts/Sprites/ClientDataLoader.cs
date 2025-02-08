@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Utility;
@@ -101,6 +102,7 @@ namespace Assets.Scripts.Sprites
         public Dictionary<int, EmoteData> GetEmoteTable => emoteDataTable;
 
         public MapViewpoint GetMapViewpoint(string mapName) => mapViewpoints.GetValueOrDefault(mapName);
+        public ClientMapEntry GetMapInfo(string mapName) => mapDataLookup.GetValueOrDefault(mapName);
         public MonsterClassData GetMonsterData(int classId) => monsterClassLookup.GetValueOrDefault(classId);
         public ItemData GetItemById(int id) => itemIdLookup.TryGetValue(id, out var item) ? item : itemIdLookup[-1];
         public ItemData GetItemByName(string name) => itemNameLookup[name];
@@ -767,7 +769,7 @@ namespace Assets.Scripts.Sprites
                 return null;
             }
 
-            // Debug.Log($"Instantiating effect {type}");
+            Debug.Log($"Instantiating entity effect {type}");
 
             var obj = new GameObject(type.ToString());
             obj.layer = LayerMask.NameToLayer("Characters");
@@ -796,6 +798,15 @@ namespace Assets.Scripts.Sprites
                     // var go = new GameObject("PneumaArea");
                     var highlighter = GroundHighlighter.Create(control, "pneumazone", new Color(1, 1, 1, 0.2f), 2);
                     highlighter.MaxTime = 10f;
+                    break;
+                case NpcEffectType.WarpPortalOpening:
+                    WarpPortalOpeningEffect.StartWarpPortalOpen(obj);
+                    break;
+                case NpcEffectType.WarpPortal:
+                    WarpPortalEffect.StartWarpPortal(obj);
+                    break;
+                case NpcEffectType.SafetyWall:
+                    SafetyWallEffect.LaunchSafetyWall(obj);
                     break;
             }
 

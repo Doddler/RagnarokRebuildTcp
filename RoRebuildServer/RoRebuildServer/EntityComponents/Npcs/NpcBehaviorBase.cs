@@ -23,6 +23,7 @@ public abstract class NpcBehaviorBase
     public virtual void OnCancel(Npc npc, Player player, NpcInteractionState state) { }
 
     public virtual void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
+    public virtual void OnAoEEvent(Npc npc, CombatEntity target, AreaOfEffect aoe, Object? eventData) { }
 
     public virtual void OnLeaveAoE(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
 

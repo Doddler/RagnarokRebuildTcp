@@ -21,6 +21,8 @@ public abstract class SkillHandlerBase
     public virtual bool ShouldSkillCostSp(CombatEntity source) => true;
     public virtual float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0f;
     public virtual int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 0;
+
+    public virtual bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect) => true;
     public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect);
     public virtual void NpcProcess(Npc source, CombatEntity? target, Position position, int lvl) { }
 

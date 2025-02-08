@@ -40,7 +40,7 @@ public class MagnumBreakHandler : SkillHandlerBase
                 CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
         }
 
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.MagnumBreak, 15);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.MagnumBreak, 20, lvl);
         source.AddStatusEffect(status);
 
         source.ApplyCooldownForAttackAction(position);

@@ -135,18 +135,25 @@ namespace RoRebuildServer.Simulation.Skills
             return src.GetStat(CharacterStat.Range);
         }
 
-        public static void ExecuteSkill(SkillCastInfo info, CombatEntity src)
+        public static bool ExecuteSkill(SkillCastInfo info, CombatEntity src)
         {
             if (!src.Character.IsActive || src.Character.Map == null)
-                return;
+                return false;
 
             CombatEntity? target = info.TargetEntity.GetIfAlive<CombatEntity>();
             var handler = handlers[(int)info.Skill];
             if (handler != null)
             {
                 if (skillAttributes[(int)info.Skill].SkillTarget != SkillTarget.Passive)
+                {
+                    if (!handler.PreProcessValidation(src, target, info.TargetedPosition, info.Level, info.IsIndirect))
+                        return false;
                     handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
+                    return true;
+                }
             }
+
+            return false;
         }
 
     }

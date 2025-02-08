@@ -3,6 +3,7 @@ macro Kafra(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %saveLo
 {
 	Npc(%map, %npcName, %sprite, %x, %y, %facing) 
 	{
+		RegisterAsKafra();
 		localstr name = %chatName;
 	OnClick:
 		FocusNpc();
@@ -16,6 +17,11 @@ macro Kafra(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %saveLo
 			Dialog(name, "Your Respawn Point has been saved " + %saveDesc + ". Thank you for using the Kafra Service.");
 			return;
 		case 1:
+			if(GetLearnedLevelOfSkill("BasicMastery") < 5)
+			{
+				Dialog(name, "Sorry, only adventurers with level 5 or higher in Basic Mastery are allowed to access Kafra storage. Please come back when you have a few more levels.");
+				return;
+			}
 			ReleaseFocus();
 			OpenStorage();
 			//Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
@@ -31,6 +37,7 @@ macro KafraNoSave(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %
 {
 	Npc(%map, %npcName, %sprite, %x, %y, %facing) 
 	{
+		RegisterAsKafra();
 		localstr name = %chatName;
 	OnClick:
 		FocusNpc();
@@ -40,7 +47,13 @@ macro KafraNoSave(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %
 		switch(Result) 	
 		{
 		case 0:
-			Dialog(name, "Sorry, currently our storage service is unavailable. Please try back some other time.");
+			if(GetLearnedLevelOfSkill("BasicMastery") < 5)
+			{
+				Dialog(name, "Sorry, only adventurers with level 5 or higher in Basic Mastery are allowed to access Kafra storage. Please come back when you have a few more levels.");
+				return;
+			}
+			ReleaseFocus();
+			OpenStorage();
 			return;
 		case 1:
 			Dialog(name, "Please choose your destination.");
@@ -182,8 +195,8 @@ macro TeleportCase(%map, %x, %y, %zeny)
 {
 	if(GetZeny() < %zeny)
 	{
-		Dialog(name, "Sorry, you currently don't have enough zeny to use this teleport.");
-		return;
+		//Dialog(name, "Sorry, you currently don't have enough zeny to use this teleport.");
+		//return;
 	}
 	//DropZeny(%zeny);
 	MoveTo(%map, %x, %y);
@@ -198,7 +211,7 @@ macro TeleportCase(%map, %x, %y, %zeny)
 @Kafra("prontera", 29, 207, E, "Kafra Staff", "Kafra Glaris - Kafra Employee", "4_F_KAFRA5", "kafra_05", "Prontera West", "in the city of Prontera", KafraTeleportListProntera);
 @Kafra("prontera", 152, 326, SE, "Kafra Staff", "Kafra W - Kafra Employee", "4_F_KAFRA6", "kafra_06", "Prontera North", "in the city of Prontera", KafraTeleportListProntera);
 
-@Kafra("prt_fild08", 164, 384, N, "Kafra Staff", "Kafra Sorin - Kafra Employee", "4_F_KAFRA3", "kafra_03", "Prontera South", "in the city of Prontera", KafraTeleportListProntera);
+//@Kafra("prt_fild08", 164, 384, N, "Kafra Staff", "Kafra Sorin - Kafra Employee", "4_F_KAFRA3", "kafra_03", "Prontera South", "in the city of Prontera", KafraTeleportListProntera);
 
 @Kafra("pay_fild03", 405, 59, N, "Kafra Staff", "Kafra Employee", "4_F_KAFRA2", "kafra_02", "Alberta North", "in the city of Alberta", KafraTeleportListAlberta);
 @Kafra("alberta", 28, 229, N, "Kafra Staff", "Kafra Employee", "4_F_KAFRA2", "kafra_02", "Alberta North", "in the city of Alberta", KafraTeleportListAlberta);

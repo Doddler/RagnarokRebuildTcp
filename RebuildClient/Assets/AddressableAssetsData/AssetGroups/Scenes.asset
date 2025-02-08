@@ -1289,6 +1289,36 @@ MonoBehaviour:
     m_SerializedLabels:
     - Maps
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98c1b51c27c61814ca4f7ffa21bc2adb
+    m_Address: Assets/Scenes/Maps/xmas.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ecac916d184025440aefcd5774917a2c
+    m_Address: Assets/Scenes/Maps/xmas_dun01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f4895acd0d72db40864d0cce5b2dc6a
+    m_Address: Assets/Scenes/Maps/xmas_dun02.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f99c7c418911fe84ca7bab895bbb28bf
+    m_Address: Assets/Scenes/Maps/xmas_fild01.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 744979dae6635314b86926a7b6783aeb
+    m_Address: Assets/Scenes/Maps/xmas_in.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Maps
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

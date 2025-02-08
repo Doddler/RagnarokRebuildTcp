@@ -15,6 +15,51 @@ StateAttacking:
     TryCast(FireAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //Angry
 }
 
+SkillHandler("MATYR") {
+StateAttacking:
+	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6); //angry
+}
+
+SkillHandler("MARDUK") {
+StateAttacking:
+	TryCast(FireBolt, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
+StateChase:
+	TryCast(FireBolt, 3, 10%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
+	TryCast(FireWall, 5, 10%, 0.5s, 5s, NoInterrupt);
+}
+
+SkillHandler("PASANA") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 9); //...
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+	TryCast(CriticalAttack, 5, 5%, 0.5s, 5s) -> SendEmote(29); //heh
+    TryCast(Bash, 5, 5%, 0, 5s);
+}
+
+SkillHandler("SCORPION") {
+StateChase:
+	TryCast(NoCast, 1, 100%, 0, 15s)[(PreviousAiState == StateIdle || PreviousAiState == StateRandomMove) && TimeInAiState < 1s && TimeSinceLastDamage > 5s] -> SendEmote(0); //!
+StateAttacking:
+	TryCast(Envenom, 1, 100%, 0, 12s);
+}
+
+SkillHandler("IRON_FIST") {
+StateAttacking:
+	TryCast(Envenom, 5, 100%, 0, 8s);
+}
+
+SkillHandler("ANUBIS") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s);
+}
+
+SkillHandler("MINOROUS") {
+StateAttacking:
+	TryCast(HammerFall, 3, 5%, 1.5s, 5s);
+}
+
 SkillHandler("ISIS") {
 StateIdle:
     @ResumeAiState(20%, AiAggressiveSense, 6); //Angry

@@ -113,7 +113,6 @@ Npc("aldebaran", "Bulletin Board", "2_BULLETIN_BOARD", 136, 133, N) { }
 Npc("aldebaran", "Bulletin Board", "2_BULLETIN_BOARD", 146, 106, N) { }
 Npc("aldebaran", "Canal Guy", "4W_M_01", 46, 129, S) { }
 //Npc("aldebaran", "Chef Assistant", "4W_M_01", 165, 107, W) { }
-Npc("aldebaran", "Christmas Link", "4_M_SANTA", 168, 168, S) { }
 Npc("aldebaran", "Citizen", "4W_M_01", 212, 122, S) { }
 Npc("aldebaran", "Forest Guy", "4W_M_02", 67, 154, S) { }
 Npc("aldebaran", "Forger Munster", "1_M_02", 113, 70, S) { }
@@ -953,7 +952,7 @@ Npc("prt_castle", "Suffering Man", "4_M_JOB_KNIGHT1", 164, 32, NW) { }
 Npc("prt_church", " Sacrificing Nun", "1_F_PRIEST", 27, 24, NW) { }
 Npc("prt_church", "Catholic Knight", "4_F_CRU", 95, 127, SE) { }
 Npc("prt_church", "Cleric", "1_M_PASTOR", 184, 41, S) { }
-Npc("prt_church", "Divorce Staff", "1_F_LIBRARYGIRL", 20, 179, S) { }
+//Npc("prt_church", "Divorce Staff", "1_F_LIBRARYGIRL", 20, 179, S) { }
 Npc("prt_church", "Father", "1_F_PRIEST", 173, 23, S) { }
 Npc("prt_church", "Garnet", "1_F_02", 103, 76, N) { }
 Npc("prt_church", "Henson", "2_M_PHARMACIST", 103, 71, N) { }
@@ -963,10 +962,10 @@ Npc("prt_church", "Marry Happy", "1_F_LIBRARYGIRL", 94, 100, S) { }
 Npc("prt_church", "Praying Man", "4_M_NFMAN", 113, 103, NW) { }
 Npc("prt_church", "Priest Praupin", "4_M_MINISTER", 179, 15, NW) { }
 Npc("prt_church", "Priest Praupin", "4_M_MINISTER", 179, 15, S) { }
-Npc("prt_church", "Remarry Staff", "1_F_LIBRARYGIRL", 22, 179, S) { }
+//Npc("prt_church", "Remarry Staff", "1_F_LIBRARYGIRL", 22, 179, S) { }
 Npc("prt_church", "Sister Rhinus", "1_F_PRIEST", 111, 112, NW) { }
-Npc("prt_church", "The king of Midgard", "1_M_PRON_KING", 28, 178, S) { }
-Npc("prt_church", "The king of Midgard", "1_M_PRON_KING", 99, 125, S) { }
+//Npc("prt_church", "The king of Midgard", "1_M_PRON_KING", 28, 178, S) { }
+//Npc("prt_church", "The king of Midgard", "1_M_PRON_KING", 99, 125, S) { }
 Npc("prt_fild00", "Ascetic", "4W_M_02", 208, 218, E) { }
 Npc("prt_fild01", "Roskva", "4_F_KID2", 196, 47, SW) { }
 Npc("prt_fild03", "Ascetic", "4_M_ORIENT02", 365, 255, W) { }

@@ -11,6 +11,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
         {
             var type = (ServerEvent)msg.ReadByte();
             var val = msg.ReadInt32();
+            // var text = msg.ReadString();
 
             switch (type)
             {
@@ -38,6 +39,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
                 case ServerEvent.EligibleForJobChange:
                     Camera.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached job 10! You are now eligible to change jobs. "
                                           + "Speak to the bard south of Prontera to get started.</i></color>");
+                    break;
+                case ServerEvent.MemoLocationSaved:
+                    if(State.KnownSkills.TryGetValue(CharacterSkill.WarpPortal, out var level) && level > 1)
+                        Camera.AppendChatText($"<color=#00fbfb>Current location has been recorded in slot {val + 1} as a warp portal destination.</color>");
+                    else
+                        Camera.AppendChatText($"<color=#00fbfb>Current location has been recorded as your warp portal destination.</color>");
                     break;
             }
         }

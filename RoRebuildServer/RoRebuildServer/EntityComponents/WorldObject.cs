@@ -266,7 +266,7 @@ public class WorldObject : IEntityAutoReset
     {
         MoveProgress = 0;
         QueuedAction = QueuedAction.None;
-
+        
         if (State != CharacterState.Dead || resetIfDead)
             State = CharacterState.Idle;
     }

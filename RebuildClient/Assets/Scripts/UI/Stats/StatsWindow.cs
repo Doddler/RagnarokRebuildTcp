@@ -110,8 +110,12 @@ namespace Assets.Scripts.UI.Stats
                 BaseStatText[index].text = $"<color=red>{stat + diff}</color>";
             if (diff > 0)
                 BaseStatText[index].text = $"<color=blue>{stat + diff}</color>";
-
-            AddStatText[index].text = bonus > 0 ? $"+{bonus}" : "";
+            AddStatText[index].text = bonus switch
+            {
+                > 0 => $"+{bonus}",
+                < 0 => $"{bonus}",
+                _ => ""
+            };
             var cost = 2 + (stat + diff) / 10;
             if (stat >= 99)
                 StatPointCostText[index].text = "-";

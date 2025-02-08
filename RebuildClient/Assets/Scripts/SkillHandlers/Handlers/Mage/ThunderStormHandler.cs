@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using UnityEngine;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
@@ -8,25 +9,20 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.ThunderStorm)]
     public class ThunderStormHandler : SkillHandlerBase
     {
+        public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            target.Messages.SendElementalHitEffect(attack.Src, attack.MotionTime, AttackElement.Wind, attack.HitCount);
+        }
+        
         public override void StartSkillCasting(ServerControllable src, Vector2Int target, int lvl, float castTime)
         {
-            if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
-            {
-                src.SpriteAnimator.State = SpriteState.Standby;
-                src.SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
-                src.SpriteAnimator.PauseAnimation(castTime);
-            }
-
-            src.AttachEffect(CastEffect.Create(castTime, "ring_yellow", src.gameObject));
-            
-            var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
-            if(target != Vector2Int.zero)
-                CastTargetCircle.Create(src.IsAlly, targetCell, 3, castTime);
+            HoldStandbyMotionForCast(src, castTime);
+            CreateGroundTargetCircle(src, target, 3, castTime);
+            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Wind));
         }
 
         public override void ExecuteSkillGroundTargeted(ServerControllable src, Vector2Int target, int lvl)
         {
-            //DefaultSkillCastEffect.Create(src);
             src.PerformSkillMotion();
         }
     }

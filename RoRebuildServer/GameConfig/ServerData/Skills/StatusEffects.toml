@@ -113,7 +113,7 @@ CanDisable = true
 [MagnumBreak]
 Name = "Magnum Break"
 Type = "Buff"
-Icon = "프레임런쳐"
+Icon = "icon02"
 CanDispel = true
 CanDisable = true
 

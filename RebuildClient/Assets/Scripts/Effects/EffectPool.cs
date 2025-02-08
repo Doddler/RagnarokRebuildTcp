@@ -8,6 +8,7 @@ namespace Assets.Scripts.Effects
     {
         private static Stack<Mesh> meshes = new Stack<Mesh>(20);
         private static Stack<EffectPart> partPool = new Stack<EffectPart>(80);
+        private static Stack<EffectSegment> segmentPool = new Stack<EffectSegment>(140);
         private static Stack<MeshBuilder> builderPool = new Stack<MeshBuilder>(20);
 
         public static Mesh BorrowMesh()
@@ -64,6 +65,36 @@ namespace Assets.Scripts.Effects
             for (var i = 0; i < parts.Length; i++)
             {
                 ReturnPart(parts[i]);
+                parts[i] = null;
+            }
+        }
+        
+        public static EffectSegment BorrowSegment()
+        {
+            if (segmentPool.Count > 0)
+                return segmentPool.Pop();
+            return new EffectSegment();
+        }
+
+        public static void ReturnSegment(EffectSegment part)
+        {
+            part.Clear();
+            segmentPool.Push(part);
+        }
+
+        public static EffectSegment[] BorrowSegments(int count)
+        {
+            var p = new EffectSegment[count];
+            for (var i = 0; i < count; i++)
+                p[i] = BorrowSegment();
+            return p;
+        }
+
+        public static void ReturnSegments(EffectSegment[] parts)
+        {
+            for (var i = 0; i < parts.Length; i++)
+            {
+                ReturnSegment(parts[i]);
                 parts[i] = null;
             }
         }

@@ -2,6 +2,7 @@
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using UnityEngine;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
@@ -18,7 +19,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
                 src.SpriteAnimator.PauseAnimation(castTime);
             }
 
-            src.AttachEffect(CastEffect.Create(castTime, "ring_red", src.gameObject));
+            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Fire));
             
             var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
             if(target != Vector2Int.zero)

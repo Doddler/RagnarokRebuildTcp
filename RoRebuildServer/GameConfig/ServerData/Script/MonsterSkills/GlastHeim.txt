@@ -11,6 +11,11 @@ StateAttacking:
 	TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
 }
 
+SkillHandler("MIMIC") {
+StateAttacking:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(29); //heh
+}
+
 macro JokerStateSwap() {
 	TryCast(NoCast, 10, 1%, 0.8s, 60s) -> {
 		var i = Random(0, 4);
@@ -38,6 +43,7 @@ StateRandomMove:
 SkillHandler("INJUSTICE") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(2); //whistle
+	TryCast(DarkAttack, 1, 20%, 0, 5s);
 }
 
 SkillHandler("RYBIO") {

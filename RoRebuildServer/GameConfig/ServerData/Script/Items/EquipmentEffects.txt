@@ -157,6 +157,8 @@ Item("Haedonggum_") { OnEquip:  AddStat(AddInt, 3); }
 Item("Cutlus") { OnEquip:  AddStat(AddStr, 2); }
 Item("Excalibur") { OnEquip:  AddStat(AddInt, 5); AddStat(AddLuk, 10); }
 Item("Mistilteinn") { OnEquip:  AddStat(AddDex, 3); }
+Item("Muramasa") { OnEquip:  AddStat(AddCrit, 300); AddStat(AspdBonus, 12); }
+Item("Masamune") { OnEquip:  AddStat(AddFlee, 30); AddStat(AspdBonus, 20); AddStat(AddStr, -5); AddStat(AddDefPercent, -66); }
 Item("Byeol-ungeom") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); }
 Item("Holy_Avenger") { OnEquip:  AddStat(AddVit, 2); }
 Item("Fortune_Sword") { OnEquip:  AddStat(AddLuk, 5); AddStat(PerfectDodge, 200); }

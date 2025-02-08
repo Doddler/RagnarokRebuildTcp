@@ -621,7 +621,8 @@ public class CombatEntity : IEntityAutoReset
     {
         IsCasting = false;
 
-        if (Character.Type == CharacterType.Player && CastingSkill.ItemSource <= 0 && !Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level))
+        var hasSpCost = Character.Type == CharacterType.Player && CastingSkill.ItemSource <= 0;
+        if (hasSpCost && !Player.HasSpForSkill(CastingSkill.Skill, CastingSkill.Level))
         {
             CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
             return;
@@ -646,9 +647,15 @@ public class CombatEntity : IEntityAutoReset
             }
         }
 
-        SkillHandler.ExecuteSkill(CastingSkill, this);
-        if (Character.Type == CharacterType.Monster)
-            Character.Monster.RunCastSuccessEvent();
+        if (SkillHandler.ExecuteSkill(CastingSkill, this))
+        {
+            if (hasSpCost)
+                Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level);
+            if (Character.Type == CharacterType.Monster)
+                Character.Monster.RunCastSuccessEvent();
+        }
+        else
+            CommandBuilder.StopCastMultiAutoVis(Character);
     }
 
     public void ResumeQueuedSkillAction()
@@ -713,7 +720,7 @@ public class CombatEntity : IEntityAutoReset
         if (Character.State == CharacterState.Moving) //if we are already moving, queue the skill action
         {
             if (Character.Type == CharacterType.Player)
-                Character.Player.ClearTarget(); //if we are currently moving we should dequeue attacking so we don't chase after casting
+                Player.ClearTarget(); //if we are currently moving we should dequeue attacking so we don't chase after casting
 
             Character.StopMovingImmediately();
             //QueueCast(skillInfo);
@@ -723,7 +730,7 @@ public class CombatEntity : IEntityAutoReset
 
         if (Character.Type == CharacterType.Player && Character.Position.DistanceTo(target) > skillInfo.Range) //if we are out of range, try to move closer
         {
-            Character.Player.ClearTarget();
+            Player.ClearTarget();
             if (Character.InMoveLock && Character.MoveLockTime > Time.ElapsedTimeFloat) //we need to queue a cast so we both move and cast once the lock ends
             {
                 QueueCast(skillInfo);
@@ -747,6 +754,8 @@ public class CombatEntity : IEntityAutoReset
 
         if (Character.Type == CharacterType.Player)
         {
+            Player.NotifyOfSkillCastAttempt(skill);
+
             if (!Player.HasSpForSkill(skill, level))
             {
                 CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
@@ -761,7 +770,7 @@ public class CombatEntity : IEntityAutoReset
         }
 
         CastingSkill = skillInfo;
-        if (target.IsValid())
+        if (target.IsValid() && target != Character.Position)
             Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
 
         if (castTime < 0f)
@@ -840,6 +849,8 @@ public class CombatEntity : IEntityAutoReset
 
         if (Character.Type == CharacterType.Player)
         {
+            Player.NotifyOfSkillCastAttempt(skill);
+
             if (!Player.HasSpForSkill(skill, level))
             {
                 CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
@@ -948,6 +959,8 @@ public class CombatEntity : IEntityAutoReset
 
         if (Character.Type == CharacterType.Player)
         {
+            Player.NotifyOfSkillCastAttempt(skill);
+
             if (itemSrc <= 0 && !Player.HasSpForSkill(skill, level))
             {
                 CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
@@ -976,7 +989,7 @@ public class CombatEntity : IEntityAutoReset
             }
 
             //don't turn character if you target yourself!
-            if (Character != target.Character)
+            if (Character.Position != target.Character.Position)
                 Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
 
             if (castTime < 0f)
@@ -1027,22 +1040,30 @@ public class CombatEntity : IEntityAutoReset
             return;
         }
 
-        if (Character.Type == CharacterType.Player && CastingSkill.ItemSource <= 0 && !Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level))
+        var hasSpCost = Character.Type == CharacterType.Player && CastingSkill.ItemSource <= 0;
+
+        if (hasSpCost && !Player.HasSpForSkill(CastingSkill.Skill, CastingSkill.Level))
         {
             CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
             return;
         }
 
+        var hasExecuted = false;
         if (CastingSkill.ItemSource > 0 && Character.Type == CharacterType.Player)
         {
             if (Player.TryRemoveItemFromInventory(CastingSkill.ItemSource, 1))
             {
                 CommandBuilder.RemoveItemFromInventory(Player, CastingSkill.ItemSource, 1);
-                SkillHandler.ExecuteSkill(CastingSkill, this);
+                hasExecuted = SkillHandler.ExecuteSkill(CastingSkill, this);
             }
         }
         else
-            SkillHandler.ExecuteSkill(CastingSkill, this);
+            hasExecuted = SkillHandler.ExecuteSkill(CastingSkill, this);
+
+        if (hasSpCost && hasExecuted)
+            Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level);
+        else
+            CommandBuilder.StopCastMultiAutoVis(Character);
 
         CastingSkill.Clear();
         QueuedCastingSkill.Clear();
@@ -1413,7 +1434,7 @@ public class CombatEntity : IEntityAutoReset
                 evade = true; //should have a special result for lucky dodge
         }
 
-        if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
+        if (!evade && flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
         {
             var distance = target.Character.Position.DistanceTo(Character.Position);
             if (distance >= 5)
@@ -1422,6 +1443,19 @@ public class CombatEntity : IEntityAutoReset
                 {
                     evade = true;
                     isCrit = false;
+                }
+            }
+            else
+            {
+                if (target.HasStatusEffectOfType(CharacterStatusEffect.SafetyWall))
+                {
+                    if (Character.Map!.TryGetAreaOfEffectAtPosition(target.Character.Position, CharacterSkill.SafetyWall, out var effect) && effect.Value1 > 0)
+                    {
+                        evade = true;
+                        isCrit = false;
+                        effect.TriggerNpcEvent(target);
+                    }
+
                 }
             }
         }
@@ -1440,40 +1474,44 @@ public class CombatEntity : IEntityAutoReset
             }
 
             //soft def
-            if (target.Character.Type == CharacterType.Player)
+            if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
             {
-                //this formula is weird, but it is official
-                //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
-                //you also gain a random bonus that kicks in at 46 def and increases at higher values
-                var vit30Percent = 3 * vit / 10;
-                var vitRng = vit * vit / 150 - vit30Percent;
-                if (vitRng < 1) vitRng = 1;
-                subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
-
-                //attacker penalty (players only)
-                if (attackerPenalty > 0)
+                if (target.Character.Type == CharacterType.Player)
                 {
-                    def -= 5 * def * attackerPenalty / 100;
-                    subDef -= 5 * subDef * attackerPenalty / 100;
+                    //this formula is weird, but it is official
+                    //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
+                    //you also gain a random bonus that kicks in at 46 def and increases at higher values
+                    var vit30Percent = 3 * vit / 10;
+                    var vitRng = vit * vit / 150 - vit30Percent;
+                    if (vitRng < 1) vitRng = 1;
+                    subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
+
+                    //attacker penalty (players only)
+                    if (attackerPenalty > 0)
+                    {
+                        def -= 5 * def * attackerPenalty / 100;
+                        subDef -= 5 * subDef * attackerPenalty / 100;
+                    }
+
+                    if (def < 0) def = 0;
+                    if (subDef < 0) subDef = 0;
                 }
-
-                if (def < 0) def = 0;
-                if (subDef < 0) subDef = 0;
-            }
-            else
-            {
-                //monsters vit defense is also weird
-                var vitRng = (vit / 20) * (vit / 20);
-                if (vitRng <= 0)
-                    subDef = vit;
                 else
-                    subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
+                {
+                    //monsters vit defense is also weird
+                    var vitRng = (vit / 20) * (vit / 20);
+                    if (vitRng <= 0)
+                        subDef = vit;
+                    else
+                        subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
+                }
+            
+
+                subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
+
+                //convert def to damage reduction %
+                defCut = MathHelper.DefValueLookup(def);
             }
-
-            subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
-
-            //convert def to damage reduction %
-            defCut = MathHelper.DefValueLookup(def);
 
             if (def >= 200)
                 subDef = 999999;
@@ -1483,9 +1521,12 @@ public class CombatEntity : IEntityAutoReset
         {
             var mDef = target.GetEffectiveStat(CharacterStat.MDef);
             defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
-            subDef = target.GetEffectiveStat(CharacterStat.Int) + vit / 2;
+            if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
+                subDef = target.GetEffectiveStat(CharacterStat.Int) + vit / 2;
+
             if (mDef >= 200)
                 subDef = 999999;
+
         }
 
         var damage = (int)((baseDamage * attackMultiplier * defCut - subDef) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f));
@@ -1526,7 +1567,12 @@ public class CombatEntity : IEntityAutoReset
         di.Damage = damage;
         di.HitCount = (byte)req.HitCount;
 
-        if (statusContainer != null)
+        if (damage > 0 && flags.HasFlag(AttackFlags.Physical))
+            di.Flags |= DamageApplicationFlags.PhysicalDamage;
+        if (damage > 0 && flags.HasFlag(AttackFlags.Magical))
+            di.Flags |= DamageApplicationFlags.MagicalDamage;
+
+        if (statusContainer != null && !flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
             statusContainer.OnAttack(ref di);
 
         if(di.Damage > 0 && (di.Result == AttackResult.NormalDamage || di.Result == AttackResult.CriticalDamage))
@@ -1637,14 +1683,16 @@ public class CombatEntity : IEntityAutoReset
 #endif
         ApplyCooldownForAttackAction();
 
-        Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
+        if(Character.Position != target.Character.Position)
+            Character.FacingDirection = DistanceCache.Direction(Character.Position, target.Character.Position);
     }
 
     public void ApplyCooldownForAttackAction(Position target)
     {
         ApplyCooldownForAttackAction();
 
-        Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
+        if (Character.Position != target)
+            Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
     }
 
     //support skills differ in that there's a max amount of delay regardless of aspd
