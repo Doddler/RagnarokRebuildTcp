@@ -73,7 +73,7 @@ OnTimer 2000:
 SkillHandler("ANGRY_TARGET_DUMMY") {
 	StateAny:
 	//TryCast(JupitelThunder, 28, 100%, 0.5s, 2s);
-	TryCast(Poison, 10, 100%, 0.5s, 5s);
+	TryCast(HolyAttack, 10, 100%, 0.5s, 5s);
 	//TryCast(PoisonAttack, 1, 100%, 0.5s, 2s);
 	//TryCast(DarkAttack, 1, 100%, 0.5s, 2s);
 }

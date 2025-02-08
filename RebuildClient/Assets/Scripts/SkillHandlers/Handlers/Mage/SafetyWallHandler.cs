@@ -16,5 +16,12 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Ghost));
             base.StartSkillCasting(src, target, lvl, castTime);
         }
+
+        public override void ExecuteSkillGroundTargeted(ServerControllable src, ref AttackResultData attack)
+        {
+            if(attack.TargetAoE == attack.AttackerPos)
+                src.SnapToTile(attack.AttackerPos, 0.1f, 0.1f); //if they cast it on themselves they should be fully in the wall
+            base.ExecuteSkillGroundTargeted(src, ref attack);
+        }
     }
 }

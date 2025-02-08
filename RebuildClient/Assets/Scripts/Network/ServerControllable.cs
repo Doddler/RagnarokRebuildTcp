@@ -751,7 +751,7 @@ namespace Assets.Scripts.Network
             }
         }
 
-        public void SnapToTile(Vector2Int position, float snapSpeed = 0.07f, float leeway = 0.75f)
+        public void SnapToTile(Vector2Int position, float snapSpeed = 0.07f, float leeway = 0.6f)
         {
             var targetPos = new Vector3(position.x + 0.5f, walkProvider.GetHeightForPosition(RealPosition), position.y + 0.5f);
 
@@ -761,10 +761,11 @@ namespace Assets.Scripts.Network
             //     Debug.Log(
             //         $"SnapToTile {Name} has distance {(transform.localPosition - targetPos).magnitude} and speed of {snapSpeed}f. {leeway}f required to execute snap.");
 
+            if ((RealPosition - targetPos).magnitude > leeway)
+                LeanTween.move(gameObject, RealPosition + PositionOffset, snapSpeed);
+            
             RealPosition = targetPos;
-
-            if ((RealPosition - targetPos).magnitude > 0.75f)
-                LeanTween.move(gameObject, RealPosition + PositionOffset, 0.07f);
+            CellPosition = RealPosition.ToTilePosition();
         }
 
         public void StopImmediate(Vector2Int position, bool snapToTile = true)

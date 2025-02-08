@@ -10,6 +10,7 @@ namespace Assets.Scripts.SkillHandlers
         public ServerControllable Src;
         public ServerControllable Target;
         public Vector2Int TargetAoE;
+        public Vector2Int AttackerPos;
         public float MotionTime;
         public float DamageTiming;
         public int Damage;

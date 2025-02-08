@@ -51,6 +51,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 Skill = skill,
                 SkillLevel = (byte)skillLvl,
                 TargetAoE = target,
+                AttackerPos = pos,
                 MotionTime = motionTime,
                 DamageTiming = motionTime
             };
@@ -59,6 +60,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 controllable.LookInDirection(dir);
             else
                 controllable.LookAt(target.ToWorldPosition());
+            // controllable.SnapToTile(pos, 0.03f, 1f);
             Network.PrepareAttackMotionSettings(controllable, pos, dir, motionTime, null);
             ClientSkillHandler.ExecuteSkill(controllable, ref attack);
         }
@@ -146,6 +148,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 Network.PrepareAttackMotionSettings(controllable, pos, dir, motionTime, controllable2);
 
             controllable.ShowSkillCastMessage(skill, 3);
+            // controllable.SnapToTile(pos, 0.03f, 1f);
 
             if (result == AttackResult.Miss)
             {

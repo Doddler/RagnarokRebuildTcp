@@ -9,7 +9,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     {
         public override int GetSkillAoESize(ServerControllable src, int lvl) => 2;
 
-        public override void ExecuteSkillGroundTargeted(ServerControllable src, Vector2Int target, int lvl)
+        public override void ExecuteSkillGroundTargeted(ServerControllable src, ref AttackResultData attack)
         {
             src.PerformSkillMotion();
             if(src.CharacterType == CharacterType.Player)

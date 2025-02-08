@@ -46,6 +46,7 @@ StateChase:
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[HpPercent < 30] -> SendEmote(18);
 StateAttacking:
 	TryCast(HolyAttack, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(18);
+	TryCast(SafetyWall, 5, 10%, 1s, 8s, NoInterrupt) -> SendEmote(18);
 }
 
 SkillHandler("CAT_O_NINE_TAIL") {

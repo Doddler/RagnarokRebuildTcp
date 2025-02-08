@@ -31,7 +31,7 @@ namespace Assets.Scripts.SkillHandlers
             var targetType = ClientDataLoader.Instance.GetSkillTarget(skillId);
 
             if(targetType == SkillTarget.Ground)
-                handler.ExecuteSkillGroundTargeted(src, attack.TargetAoE, attack.SkillLevel); //need to fix this whole thing to have the target position
+                handler.ExecuteSkillGroundTargeted(src, ref attack); //need to fix this whole thing to have the target position
             else
                 handler.ExecuteSkillTargeted(src, ref attack);
         }

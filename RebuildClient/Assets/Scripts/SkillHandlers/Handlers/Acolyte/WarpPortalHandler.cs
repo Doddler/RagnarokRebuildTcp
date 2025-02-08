@@ -28,7 +28,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.EndEffectOfType(EffectType.CastHolyEffect);
         }
 
-        public override void ExecuteSkillGroundTargeted(ServerControllable src, Vector2Int target, int lvl)
+        public override void ExecuteSkillGroundTargeted(ServerControllable src, ref AttackResultData attack)
         {
             src.SpriteAnimator.State = SpriteState.Idle;
             src.PerformSkillMotion();

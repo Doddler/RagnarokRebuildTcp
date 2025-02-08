@@ -38,6 +38,7 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/불화살6.tga", "FireBolt6"));
             sprites.Add(ImportEffectTexture("texture/effect/불화살7.tga", "FireBolt7"));
             sprites.Add(ImportEffectTexture("texture/effect/불화살8.tga", "FireBolt8"));
+            sprites.Add(ImportEffectTexture("texture/effect/대폭발.tga", "BigBang"));
             sprites.Add(ImportEffectTexture("texture/effect/coin_a.bmp", "coin_a"));
             sprites.Add(ImportEffectTexture("texture/effect/coin_b.bmp", "coin_b"));
             sprites.Add(ImportEffectTexture("texture/effect/coin_c.bmp", "coin_c"));

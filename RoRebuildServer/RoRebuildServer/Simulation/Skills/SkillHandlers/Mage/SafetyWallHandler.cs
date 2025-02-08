@@ -12,6 +12,7 @@ using System.Diagnostics;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 
+[MonsterSkillHandler(CharacterSkill.SafetyWall, SkillClass.Magic, SkillTarget.Ally)]
 [SkillHandler(CharacterSkill.SafetyWall, SkillClass.Magic, SkillTarget.Ground)]
 public class SafetyWallHandler : SkillHandlerBase
 {
@@ -22,6 +23,9 @@ public class SafetyWallHandler : SkillHandlerBase
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
+
+        if (!position.IsValid() && source.Character.Type == CharacterType.Monster) //monsters will either target pneuma directly on themselves or an ally
+            position = target != null ? target.Character.Position : source.Character.Position;
 
         var effectiveArea = Area.CreateAroundPoint(position, 0);
         if (map.HasAreaOfEffectTypeInArea(effectiveArea, CharacterSkill.Pneuma, CharacterSkill.SafetyWall))
@@ -39,7 +43,7 @@ public class SafetyWallHandler : SkillHandlerBase
         var map = source.Character.Map;
         Debug.Assert(map != null);
 
-        if (!position.IsValid()) //monsters will either target pneuma directly on themselves or an ally
+        if (!position.IsValid() && source.Character.Type == CharacterType.Monster) //monsters will either target pneuma directly on themselves or an ally
             position = target != null ? target.Character.Position : source.Character.Position;
 
         var ch = source.Character;

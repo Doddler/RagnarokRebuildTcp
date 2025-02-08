@@ -34,7 +34,7 @@ namespace Assets.Scripts.SkillHandlers
             src.PerformBasicAttackMotion();
         }
 
-        public virtual void ExecuteSkillGroundTargeted([CanBeNull] ServerControllable src, Vector2Int target, int lvl)
+        public virtual void ExecuteSkillGroundTargeted([CanBeNull] ServerControllable src, ref AttackResultData attack)
         {
             src.PerformSkillMotion();
         }

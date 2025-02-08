@@ -14,7 +14,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Wind));
         }
 
-        public override void ExecuteSkillGroundTargeted(ServerControllable src, Vector2Int target, int lvl)
+        public override void ExecuteSkillGroundTargeted(ServerControllable src, ref AttackResultData attack)
         {
             //DefaultSkillCastEffect.Create(src);
             src.PerformBasicAttackMotion();

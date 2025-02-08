@@ -1,0 +1,535 @@
+{
+  "Items": [
+    {
+      "Id": 0,
+      "Sprite": 0,
+      "Frame": 23,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "!"
+    },
+    {
+      "Id": 1,
+      "Sprite": 1,
+      "Frame": 23,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "?"
+    },
+    {
+      "Id": 2,
+      "Sprite": 2,
+      "Frame": 10,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "whistle/ho"
+    },
+    {
+      "Id": 3,
+      "Sprite": 3,
+      "Frame": 10,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "heart/lv"
+    },
+    {
+      "Id": 4,
+      "Sprite": 5,
+      "Frame": 13,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "sweat/swt"
+    },
+    {
+      "Id": 5,
+      "Sprite": 6,
+      "Frame": 15,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "idea/ic"
+    },
+    {
+      "Id": 6,
+      "Sprite": 7,
+      "Frame": 10,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "angry/an"
+    },
+    {
+      "Id": 7,
+      "Sprite": 8,
+      "Frame": 10,
+      "X": 0,
+      "Y": 0,
+      "Size": 1,
+      "Commands": "grumpy/ag"
+    },
+    {
+      "Id": 8,
+      "Sprite": 9,
+      "Frame": 10,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "$/money"
+    },
+    {
+      "Id": 9,
+      "Sprite": 10,
+      "Frame": 13,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "..."
+    },
+    {
+      "Id": 10,
+      "Sprite": 12,
+      "Frame": 10,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "scissors/gawi"
+    },
+    {
+      "Id": 11,
+      "Sprite": 11,
+      "Frame": 10,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "rock/bawi"
+    },
+    {
+      "Id": 12,
+      "Sprite": 13,
+      "Frame": 10,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "paper/bo"
+    },
+    {
+      "Id": 14,
+      "Sprite": 4,
+      "Frame": 20,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "heart2/lv2"
+    },
+    {
+      "Id": 15,
+      "Sprite": 15,
+      "Frame": 17,
+      "X": 10,
+      "Y": -8,
+      "Size": 0.8,
+      "Commands": "thanks/thx"
+    },
+    {
+      "Id": 16,
+      "Sprite": 16,
+      "Frame": 9,
+      "X": 10,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "worried/wah"
+    },
+    {
+      "Id": 17,
+      "Sprite": 17,
+      "Frame": 11,
+      "X": 10,
+      "Y": -7,
+      "Size": 0.8,
+      "Commands": "sorry/sry"
+    },
+    {
+      "Id": 18,
+      "Sprite": 18,
+      "Frame": 20,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "laugh/lol"
+    },
+    {
+      "Id": 19,
+      "Sprite": 19,
+      "Frame": 4,
+      "X": -25,
+      "Y": 5,
+      "Size": 0.8,
+      "Commands": "sweat/swt"
+    },
+    {
+      "Id": 20,
+      "Sprite": 20,
+      "Frame": 10,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "doubt/hmm"
+    },
+    {
+      "Id": 21,
+      "Sprite": 21,
+      "Frame": 17,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "nice/no1"
+    },
+    {
+      "Id": 22,
+      "Sprite": 22,
+      "Frame": 12,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "??"
+    },
+    {
+      "Id": 23,
+      "Sprite": 23,
+      "Frame": 21,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "shock/omg"
+    },
+    {
+      "Id": 24,
+      "Sprite": 24,
+      "Frame": 9,
+      "X": 0,
+      "Y": 4,
+      "Size": 1,
+      "Commands": "right/o"
+    },
+    {
+      "Id": 25,
+      "Sprite": 25,
+      "Frame": 9,
+      "X": 0,
+      "Y": 4,
+      "Size": 1,
+      "Commands": "wrong/x"
+    },
+    {
+      "Id": 26,
+      "Sprite": 26,
+      "Frame": 0,
+      "X": 0,
+      "Y": 4,
+      "Size": 1,
+      "Commands": "help/hlp"
+    },
+    {
+      "Id": 27,
+      "Sprite": 27,
+      "Frame": 0,
+      "X": 0,
+      "Y": 1,
+      "Size": 1,
+      "Commands": "go"
+    },
+    {
+      "Id": 28,
+      "Sprite": 28,
+      "Frame": 11,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "cry/sob"
+    },
+    {
+      "Id": 29,
+      "Sprite": 29,
+      "Frame": 12,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "gg/heh"
+    },
+    {
+      "Id": 30,
+      "Sprite": 30,
+      "Frame": 6,
+      "X": -12,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "kiss/kis"
+    },
+    {
+      "Id": 31,
+      "Sprite": 31,
+      "Frame": 5,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "kiss2/kis2"
+    },
+    {
+      "Id": 32,
+      "Sprite": 32,
+      "Frame": 8,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "pif"
+    },
+    {
+      "Id": 33,
+      "Sprite": 33,
+      "Frame": 13,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "ok/nod"
+    },
+    {
+      "Id": 36,
+      "Sprite": 35,
+      "Frame": 5,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "angry2/bzz"
+    },
+    {
+      "Id": 37,
+      "Sprite": 36,
+      "Frame": 4,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "hungry/rice"
+    },
+    {
+      "Id": 38,
+      "Sprite": 37,
+      "Frame": 3,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "cool/awsm"
+    },
+    {
+      "Id": 39,
+      "Sprite": 38,
+      "Frame": 3,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "lick"
+    },
+    {
+      "Id": 40,
+      "Sprite": 39,
+      "Frame": 9,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "shy"
+    },
+    {
+      "Id": 41,
+      "Sprite": 40,
+      "Frame": 9,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "pat"
+    },
+    {
+      "Id": 42,
+      "Sprite": 41,
+      "Frame": 3,
+      "X": 0,
+      "Y": -18,
+      "Size": 1,
+      "Commands": "sp"
+    },
+    {
+      "Id": 47,
+      "Sprite": 46,
+      "Frame": 3,
+      "X": 0,
+      "Y": -18,
+      "Size": 1,
+      "Commands": "hp"
+    },
+    {
+      "Id": 43,
+      "Sprite": 42,
+      "Frame": 9,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "sexy/slur"
+    },
+    {
+      "Id": 44,
+      "Sprite": 43,
+      "Frame": 23,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "comeon/com"
+    },
+    {
+      "Id": 45,
+      "Sprite": 44,
+      "Frame": 22,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "sleepy/yawn"
+    },
+    {
+      "Id": 46,
+      "Sprite": 45,
+      "Frame": 2,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "grats"
+    },
+    {
+      "Id": 52,
+      "Sprite": 51,
+      "Frame": 6,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "flash/fsh"
+    },
+    {
+      "Id": 53,
+      "Sprite": 52,
+      "Frame": 6,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "confused/spin"
+    },
+    {
+      "Id": 54,
+      "Sprite": 53,
+      "Frame": 8,
+      "X": 13,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "sigh/ohno"
+    },
+    {
+      "Id": 55,
+      "Sprite": 54,
+      "Frame": 19,
+      "X": -10,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "dum"
+    },
+    {
+      "Id": 56,
+      "Sprite": 55,
+      "Frame": 15,
+      "X": -3,
+      "Y": -18,
+      "Size": 0.8,
+      "Commands": "crowd/crwd"
+    },
+    {
+      "Id": 57,
+      "Sprite": 56,
+      "Frame": 12,
+      "X": 8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "otl/desp"
+    },
+    {
+      "Id": 58,
+      "Sprite": 57,
+      "Frame": 20,
+      "X": -8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "dice/roll"
+    },
+    {
+      "Id": 74,
+      "Sprite": 73,
+      "Frame": 8,
+      "X": -8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "hum2"
+    },
+    {
+      "Id": 75,
+      "Sprite": 74,
+      "Frame": 9,
+      "X": -8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "abs"
+    },
+    {
+      "Id": 76,
+      "Sprite": 75,
+      "Frame": 4,
+      "X": -8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "oops"
+    },
+    {
+      "Id": 77,
+      "Sprite": 76,
+      "Frame": 4,
+      "X": -8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "spit"
+    },
+    {
+      "Id": 78,
+      "Sprite": 77,
+      "Frame": 16,
+      "X": -8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "ene"
+    },
+    {
+      "Id": 79,
+      "Sprite": 78,
+      "Frame": 4,
+      "X": -8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "panic"
+    },
+    {
+      "Id": 80,
+      "Sprite": 79,
+      "Frame": 7,
+      "X": -8,
+      "Y": -3,
+      "Size": 1,
+      "Commands": "whisper/whisp"
+    }
+  ]
+}

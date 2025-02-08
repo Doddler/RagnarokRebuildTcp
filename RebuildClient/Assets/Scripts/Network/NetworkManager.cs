@@ -569,8 +569,8 @@ namespace Assets.Scripts.Network
                 if(CameraFollower.WalkProvider != null)
                     CameraFollower.WalkProvider.GetHeightForPosition(new Vector3(realPos.x, 0, realPos.y)); //happens on initial load...
                 var newRealPos = new Vector3(realPos.x, height, realPos.y);
-                ctrl.RealPosition = newRealPos;
                 ctrl.StartMove2(moveSpeed, moveDistance, totalSteps, curStep, startPos, pathData);
+                ctrl.RealPosition = newRealPos;
             }
 
             //ctrl.SetHitDelay(lockTime);

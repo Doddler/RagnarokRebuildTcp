@@ -733,7 +733,7 @@ namespace Assets.Scripts.Sprites
             emote.Target = target.gameObject;
 
             var height = 50f;
-            if (target.SpriteAnimator != null)
+            if (target.SpriteAnimator?.SpriteData != null)
                 height = target.SpriteAnimator.SpriteData.StandingHeight;
             if (target.CharacterType == CharacterType.Player)
                 height += 12;

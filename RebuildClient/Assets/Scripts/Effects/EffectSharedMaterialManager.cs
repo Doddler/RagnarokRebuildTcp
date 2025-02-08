@@ -13,7 +13,7 @@ namespace Assets.Scripts.Effects
     // 7 : 100/255/100
     // 8 : 255/255/170
     // 9 : 140/210/140
-    // 10 : 255/39/182
+    // 10 : 255/89/182
     // 11 : 170/170/255
     // 12 : 50/50/50 OneMinusInverseAlpha
     // 13 : 255/50/255 OneMinusInverseAlpha
@@ -82,7 +82,7 @@ namespace Assets.Scripts.Effects
                         materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
                         {
                             mainTexture = textureList[(int)EffectTextureType.AlphaDown],
-                            color = new Color(255 / 255f, 39 / 255f, 182 / 255f),
+                            color = new Color(255 / 255f, 89 / 255f, 182 / 255f),
                             renderQueue = 3001
                         };
                         break;

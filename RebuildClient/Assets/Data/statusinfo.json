@@ -1,0 +1,319 @@
+{
+  "Items": [
+    {
+      "StatusEffect": 1,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "hl_curse",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 2,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "bd_stun",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 3,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "bd_sleep",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 4,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "bd_freezing",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 5,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "hl_blind",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 6,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "hl_silence",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 7,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "hl_confusion",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 8,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "hl_poison",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 9,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "bd_stonecurse",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 10,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "bd_stonecurse",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 11,
+      "Name": null,
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "\uD504\uB85C\uBCF4\uD06C",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 12,
+      "Name": "Push Cart",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 13,
+      "Name": "Two-Hand Quicken",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uD22C\uD578\uB4DC\uD034\uD070",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 14,
+      "Name": "Blessing",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uBE14\uB808\uC2F1",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 15,
+      "Name": "Increase Agi",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uBBFC\uCCA9\uC131\uC99D\uAC00",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 16,
+      "Name": "Angelus",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uC548\uC824\uB8E8\uC2A4",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 17,
+      "Name": "SignumCrusis",
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "\uC2DC\uADF8\uB118\uD06C\uB8E8\uC2DC\uC2A4",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 18,
+      "Name": "Improve Concentration",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uC9D1\uC911\uB825\uD5A5\uC0C1",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 19,
+      "Name": "Endure",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uC778\uB4C0\uC5B4",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 20,
+      "Name": "Magnum Break",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "icon02",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 21,
+      "Name": "Pneuma",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 22,
+      "Name": "Pneuma",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 23,
+      "Name": "Hiding",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uD558\uC774\uB529",
+      "CanDispel": false,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 24,
+      "Name": "Crazy Uproar",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uACE0\uC131\uC9C0\uB974\uAE30",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 25,
+      "Name": null,
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uD074\uB85C\uD0B9",
+      "CanDispel": false,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 26,
+      "Name": null,
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uC5D0\uB108\uC9C0\uCF54\uD2B8",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 27,
+      "Name": "Movement Speed UP",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 28,
+      "Name": "Attack Speed UP",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uACF5\uC18D\uBB3C\uC57D",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 29,
+      "Name": "Elemental Converter",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 30,
+      "Name": "Elemental Converter (Fire)",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "weapon_property_fire",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 31,
+      "Name": "Elemental Converter (Water)",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "weapon_property_water",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 32,
+      "Name": "Elemental Converter (Wind)",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "weapon_property_wind",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 33,
+      "Name": "Elemental Converter (Earth)",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "weapon_property_ground",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 34,
+      "Name": "Doom",
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 35,
+      "Name": "Stolen From",
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    }
+  ]
+}

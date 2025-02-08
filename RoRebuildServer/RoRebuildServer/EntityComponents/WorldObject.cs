@@ -587,7 +587,12 @@ public class WorldObject : IEntityAutoReset
 
         return true;
     }
-    
+
+    public void RecenterOnTile()
+    {
+
+    }
+
     //this shortens the move path of any moving character so they only finish the next tile movement and stop
     public void ShortenMovePath()
     {
