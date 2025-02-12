@@ -961,7 +961,7 @@ public class Map
                 if (checkImmunity && potentialTarget.IsTargetImmune)
                     continue;
 
-                if (!potentialTarget.CombatEntity.IsValidTarget(character.CombatEntity))
+                if (!potentialTarget.CombatEntity.IsValidTarget(character.CombatEntity, false, true))
                     continue;
 
                 if (position.InRange(potentialTarget.Position, distance))
@@ -1273,6 +1273,10 @@ public class Map
 
     public bool HasAreaOfEffectTypeInArea(Area area, params CharacterSkill[] skills)
     {
+        area = area.ClipArea(MapBounds);
+        if (area.IsZero)
+            return false;
+        
         //var chunkEntities = EntityListPool.Get();
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(area)))
         {

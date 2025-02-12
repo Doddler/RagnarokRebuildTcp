@@ -188,6 +188,7 @@ public enum CharacterStat
 
     DecreasePoisonStatusDamage,
     DecreaseStunDuration,
+    DecreaseFreezeDuration,
 
     HpDrainChance,
     HpDrainAmount,

@@ -502,6 +502,8 @@ Name = "Earth Spike"
 Name = "Heavens Drive"
 [JupitelThunder]
 Name = "Jupitel Thunder"
+[LordOfVermilion]
+Name = "Lord of Vermilion"
 [WaterBall]
 Name = "Water Ball"
 [Cloaking]
@@ -575,6 +577,10 @@ InterruptMode = "NoInterrupt"
 Name = "Power Up"
 InterruptMode = "NoInterrupt"
 
+[SpeedUp]
+Name = "Speed Up"
+InterruptMode = "NoInterrupt"
+
 [CallMinion]
 Name = "Call Minion"
 InterruptMode = "NoInterrupt"
@@ -614,6 +620,9 @@ Name = "Dark Blessing"
 [Suicide]
 [Stop]
 [Hallucination]
+
+[DarkThunder]
+Name = "Dark Thunder"
 
 #custom
 [PharaohCurse]

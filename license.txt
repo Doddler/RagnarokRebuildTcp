@@ -1,0 +1,5 @@
+You can do what you want, edit the code, make your own releases, fork it and make your own thing, whatever as long as anything based on this code is not used for commercial purposes. 'Commercial purposes' here includes using any part of this software to run a server/service that solicits donations, payments, or offers any way to pay for in-game rewards. If you need a better or more clear license you can contact me.
+
+3rd party assets included in the project (such as lidgren, unity-websocket-webgl, etc) may be subject to their own licenses. While I have done my best to keep copywritten assets out of the project, it goes without saying that this license would not cover any such files, nor would it cover any intellectual property (names, logos, etc) related to Ragnarok Online and Gravity Entertainment. 
+
+If you do anything cool with the project I'd be happy if you could let me know (but you don't have to). I'd also be happy if you could credit the RagnarokRebuild project for anything based on this project.

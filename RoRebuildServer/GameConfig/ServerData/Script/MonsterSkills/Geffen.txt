@@ -115,3 +115,27 @@ SkillHandler("NIGHTMARE") {
 StateAttacking:
 	TryCast(GhostAttack, 5, 5%, 0, 5s);
 }
+
+SkillHandler("PETIT") {
+StateRandomMove:
+    TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 7); //gg
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+    TryCast(GhostAttack, 5, 5%, 0, 5s, NoInterrupt);
+StateAttacking:
+    TryCast(EarthAttack, 3, 5%, 0s, 5s) -> SendEmote(6);
+}
+
+SkillHandler("PETIT_") {
+StateRandomMove:
+    TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 7); //gg
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+    TryCast(GhostAttack, 5, 5%, 0, 5s, NoInterrupt);
+StateAttacking:
+    TryCast(WindAttack, 3, 5%, 0s, 5s) -> SendEmote(6);
+}

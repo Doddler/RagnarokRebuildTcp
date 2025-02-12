@@ -13,7 +13,6 @@ using UnityEngine.U2D;
 
 namespace Assets.Scripts.Editor
 {
-    
     public static class ItemIconImporter
     {
         private static Texture2D BlowUpTexture(Texture2D src)
@@ -24,13 +23,13 @@ namespace Assets.Scripts.Editor
                 for (var y = 0; y < src.height; y++)
                 {
                     var c = src.GetPixel(x, y);
-                    tex.SetPixels(x*2, y*2, 2, 2, new []{c, c, c, c});
+                    tex.SetPixels(x * 2, y * 2, 2, 2, new[] { c, c, c, c });
                 }
             }
 
             return tex;
         }
-        
+
         [MenuItem("Ragnarok/Import Skill and Item Icons", false, 124)]
         public static void ImportItems()
         {
@@ -44,7 +43,7 @@ namespace Assets.Scripts.Editor
                     iconNames.Add(skill.Icon);
                     convertName.Add(skill.Icon, "skill_" + skill.Icon);
                 }
-            
+
             var itemDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/items.json");
             var items = JsonUtility.FromJson<Wrapper<ItemData>>(itemDataFile.text);
             var sharedItemSprites = new StringBuilder();
@@ -62,20 +61,21 @@ namespace Assets.Scripts.Editor
 
                     iconNames.Add(item.Sprite);
                     convertName.Add(item.Sprite, item.Code);
-                    if(item.IsUnique)
+                    if (item.IsUnique)
                         equipIcons.Add(item.Sprite);
                 }
             }
+
             File.WriteAllText("Assets/Data/SharedItemIcons.txt", sharedItemSprites.ToString());
-            
+
             var atlasPath = "Assets/Textures/ItemAtlas.spriteatlasv2";
             if (!File.Exists(atlasPath))
                 TextureImportHelper.CreateAtlas("ItemAtlas.spriteatlasv2", "Assets/Textures/");
-            
+
             var atlas = SpriteAtlasAsset.Load(atlasPath);
             var atlasObj = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(atlasPath);
-            
-            
+
+
             atlas.Remove(atlasObj.GetPackables());
             var sprites = new List<Sprite>();
 
@@ -91,7 +91,7 @@ namespace Assets.Scripts.Editor
 
                 var fName = icon;
                 var newName = convertName[icon];
-                if(newName == "Amulet")
+                if (newName == "Amulet")
                     Debug.Log(icon);
                 var destPath = $@"Assets/Sprites/Imported/Icons/Sprites/{newName}.png";
                 var collectionDestPath = $"Assets/Sprites/Imported/Collections/{newName}.png";
@@ -100,8 +100,8 @@ namespace Assets.Scripts.Editor
 
                 if (!Directory.Exists("Assets/Sprites/Icons/"))
                     Directory.CreateDirectory("Assets/Sprites/Icons/");
-                
-                
+
+
                 if (!Directory.Exists("Assets/Sprites/Imported/Collections/"))
                     Directory.CreateDirectory("Assets/Sprites/Imported/Collections/");
 
@@ -150,7 +150,7 @@ namespace Assets.Scripts.Editor
                             if (lowerBounds > 0)
                                 break;
                         }
-                        
+
                         offset = new Vector2(tex.width / 2f, lowerBounds + 5f);
                         pivot = offset / new Vector2(tex.width, tex.height);
                     }
@@ -161,7 +161,7 @@ namespace Assets.Scripts.Editor
                         ti.spriteImportMode = SpriteImportMode.Single;
                         ti.textureCompression = TextureImporterCompression.Uncompressed;
                         ti.spritePivot = offset;
-                        
+
                         var settings = new TextureImporterSettings();
                         ti.ReadTextureSettings(settings);
                         settings.spriteAlignment = (int)SpriteAlignment.Custom;
@@ -233,14 +233,14 @@ namespace Assets.Scripts.Editor
 
                 // Debug.Log(sprite);
                 // var texOut = TextureImportHelper.SaveAndUpdateTexture(texture, );
-            
-                if(sprite == null)
+
+                if (sprite == null)
                     Debug.LogWarning($"Unexpectedly we do not have a sprite! Expected to load {destPath}");
-                
-                if(!sprites.Contains(sprite))
+
+                if (!sprites.Contains(sprite))
                     sprites.Add(sprite);
             }
-            
+
             var statusDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/statusinfo.json");
             var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(statusDataFile.text);
             foreach (var status in statusData.Items)
@@ -249,7 +249,8 @@ namespace Assets.Scripts.Editor
                     var targetName = status.StatusEffect.ToString();
                     var destPath = $@"Assets/Sprites/Imported/Icons/Sprites/status_{targetName}.png";
                     var statusSrc = Path.Combine(statusPath, $"{status.Icon}.tga");
-                    
+                    var psdPath = $@"Assets/Textures/CustomIcons/{status.Icon}.psd";
+
                     if (!File.Exists(destPath) && File.Exists(statusSrc))
                     {
                         var tex = TextureImportHelper.LoadTexture(statusSrc);
@@ -259,7 +260,16 @@ namespace Assets.Scripts.Editor
                             ti.spriteImportMode = SpriteImportMode.Single;
                             ti.textureCompression = TextureImporterCompression.Uncompressed;
                         }, false);
-                 
+                    }
+                    else if (!File.Exists(destPath) && File.Exists(psdPath))
+                    {
+                        var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(psdPath);
+                        TextureImportHelper.SaveAndUpdateTexture(tex, destPath, ti =>
+                        {
+                            ti.textureType = TextureImporterType.Sprite;
+                            ti.spriteImportMode = SpriteImportMode.Single;
+                            ti.textureCompression = TextureImporterCompression.Uncompressed;
+                        }, false);
                     }
                     
                     var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(destPath);
@@ -269,19 +279,19 @@ namespace Assets.Scripts.Editor
                         continue;
                     }
 
-                    if(!sprites.Contains(sprite))
+                    if (!sprites.Contains(sprite))
                         sprites.Add(sprite);
                 }
-            
+
 
             Debug.Log($"Imported {i} item/skill icon sprites!");
 
             atlas.Add(sprites.ToArray());
-            
+
 
             EditorUtility.SetDirty(atlasObj);
             SpriteAtlasAsset.Save(atlas, atlasPath);
-            
+
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
@@ -297,10 +307,11 @@ namespace Assets.Scripts.Editor
             EditorUtility.SetDirty(atlas);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            
-            SpriteAtlasUtility.PackAtlases(new[] {atlasObj}, BuildTarget.StandaloneWindows64);
-            
-        }
 
+            SpriteAtlasUtility.PackAtlases(new[]
+            {
+                atlasObj
+            }, BuildTarget.StandaloneWindows64);
+        }
     }
 }

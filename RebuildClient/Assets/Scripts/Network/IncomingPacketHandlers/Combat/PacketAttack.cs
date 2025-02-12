@@ -96,7 +96,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             {
                 if (result.Skill != CharacterSkill.NoCast)
                 {
-                    if (result.Skill != CharacterSkill.None)
+                    if (result.Skill != CharacterSkill.None && result.Damage > 0)
                         ClientSkillHandler.OnHitEffect(controllable2, ref result);
                     else
                     {

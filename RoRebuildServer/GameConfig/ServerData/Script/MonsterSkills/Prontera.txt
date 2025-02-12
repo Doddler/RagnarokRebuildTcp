@@ -25,12 +25,12 @@ StateChase:
 
 SkillHandler("THIEF_BUG") {
 StateMovingToItem:
-	TryCast(IncreaseAgility, 1, 10%, 0, 10s);
+	TryCast(SpeedUp, 1, 10%, 0, 10s);
 }
 
 SkillHandler("THIEF_BUG_") {
 StateMovingToItem:
-	TryCast(IncreaseAgility, 1, 10%, 0, 10s);
+	TryCast(SpeedUp, 1, 10%, 0, 10s);
 }
 
 SkillHandler("VITATA") {
@@ -119,7 +119,6 @@ StateAttacking:
     TryCast(WaterAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
 }
 
-
 SkillHandler("GOBLIN_ARCHER") {
 StateChase:
 	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(16); //worried
@@ -128,10 +127,11 @@ StateAttacking:
     TryCast(PoisonAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
 }
 
-
 SkillHandler("MASTERING") { 
+OnInit:
+	ResummonMinionCount = 3; //resummon if we have 3 or less
 StateAny:
-	TryCast(CallMinion, 1, 20%, 2s, 45s, HideSkillName)[MinionCount < 4] -> {
+	TryCast(CallMinion, 1, 20%, 2s, 0s, HideSkillName)[MinionsDeadFor(15s)] -> {
 		TossSummonMinion(6, "PORING", 6, 6);
 	}
 OnDie:

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network;
@@ -16,6 +17,30 @@ namespace Assets.Scripts.PlayerControl
 
         public bool HasStatusEffect(CharacterStatusEffect status) => activeStatusEffects.Contains(status);
 
+        private static void UpdateColorForStatus(ServerControllable src)
+        {
+            var color = Color.white;
+            
+            foreach (var s in src.StatusEffectState.activeStatusEffects)
+            {
+                switch (s)
+                {
+                    case CharacterStatusEffect.TwoHandQuicken:
+                        color = new Color(1, 1, 0.7f);
+                        break;
+                    case CharacterStatusEffect.Poison:
+                        color = new Color(1f, 0.7f, 1f);
+                        break;
+                    case CharacterStatusEffect.Frozen:
+                        color = new Color(0.3f, 0.7f, 1f);
+                        break;
+                }
+            }
+            
+            src.SpriteAnimator.Color = color;
+        }
+        
+
         public static void AddStatusToTarget(ServerControllable controllable, CharacterStatusEffect status)
         {
             if (controllable.StatusEffectState == null)
@@ -26,8 +51,10 @@ namespace Assets.Scripts.PlayerControl
             if (!state.activeStatusEffects.Contains(status))
                 state.activeStatusEffects.Add(status);
 
+            UpdateColorForStatus(controllable);
+            
             Debug.Log($"Character {controllable.DisplayName} gained status {status}");
-
+            
             switch (status)
             {
                 case CharacterStatusEffect.PushCart:
@@ -53,12 +80,21 @@ namespace Assets.Scripts.PlayerControl
                     //     controllable.SpriteAnimator.AnimSpeed = 2f;
                     break;
                 case CharacterStatusEffect.TwoHandQuicken:
-                    controllable.SpriteAnimator.Color = new Color(1, 1, 0.7f);
+                    // controllable.SpriteAnimator.Color = new Color(1, 1, 0.7f);
                     RoSpriteTrailManager.Instance.AttachTrailToEntity(controllable);
                     break;
                 case CharacterStatusEffect.Poison:
-                    controllable.SpriteAnimator.Color = new Color(1f, 0.7f, 1f);
+                    // controllable.SpriteAnimator.Color = new Color(1f, 0.7f, 1f);
                     AudioManager.Instance.AttachSoundToEntity(controllable.Id, "ef_poisonattack.ogg", controllable.gameObject);
+                    break;
+                case CharacterStatusEffect.Frozen:
+                    // controllable.SpriteAnimator.Color = new Color(0.3f, 0.7f, 1f);
+                    controllable.AbortActiveWalk();
+                    controllable.SpriteAnimator?.PauseAnimation();
+                    break;
+                case CharacterStatusEffect.PowerUp:
+                    var powerUp = ExplosiveAuraEffect.AttachExplosiveAura(controllable.gameObject, 2, new Color(1f, 20/255f, 20/255f));
+                    controllable.AttachEffect(powerUp);
                     break;
             }
         }
@@ -66,6 +102,8 @@ namespace Assets.Scripts.PlayerControl
         public static void RemoveStatusFromTarget(ServerControllable controllable, CharacterStatusEffect status)
         {
             controllable.StatusEffectState?.activeStatusEffects.Remove(status);
+            
+            UpdateColorForStatus(controllable);
 
             Debug.Log($"Character {controllable.DisplayName} loses status {status}");
 
@@ -84,16 +122,15 @@ namespace Assets.Scripts.PlayerControl
                     break;
                 case CharacterStatusEffect.Stun:
                     controllable.EndEffectOfType(EffectType.Stun);
-                    // controllable.SpriteAnimator.Color = new Color(1, 1, 1);
-                    // if(controllable.SpriteAnimator.CurrentMotion == SpriteMotion.Idle)
-                    //     controllable.SpriteAnimator.AnimSpeed = 1;
                     break;
                 case CharacterStatusEffect.TwoHandQuicken:
-                    controllable.SpriteAnimator.Color = new Color(1, 1, 1f);
                     RoSpriteTrailManager.Instance.RemoveTrailFromEntity(controllable);
                     break;
-                case CharacterStatusEffect.Poison:
-                    controllable.SpriteAnimator.Color = new Color(1, 1, 1f);
+                case CharacterStatusEffect.Frozen:
+                    controllable.SpriteAnimator.Unpause();
+                    break;
+                case CharacterStatusEffect.PowerUp:
+                    controllable.EndEffectOfType(EffectType.ExplosiveAura);
                     break;
             }
         }

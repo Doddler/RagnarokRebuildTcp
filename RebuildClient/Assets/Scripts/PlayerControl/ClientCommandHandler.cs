@@ -243,6 +243,7 @@ namespace PlayerControl
                         "footgear" => EquipSlot.Footgear,
                         "boot" => EquipSlot.Footgear,
                         "boots" => EquipSlot.Footgear,
+                        "shoes" => EquipSlot.Footgear,
                         _ => EquipSlot.None
                     };
 

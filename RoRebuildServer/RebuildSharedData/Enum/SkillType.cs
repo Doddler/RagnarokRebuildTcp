@@ -24,7 +24,7 @@ namespace RebuildSharedData.Enum
     }
 
     [Flags]
-    public enum AttackFlags : short
+    public enum AttackFlags : ushort
     {
         Neutral = 0,
         Physical = 1 << 1,
@@ -41,6 +41,7 @@ namespace RebuildSharedData.Enum
         Ranged = 1 << 12,
         NoTriggerOnAttackEffects = 1 << 13,
         NoTriggerWhenAttackedEffects = 1 << 14,
+        CanAttackHidden = 1 << 15,
         NoTriggers = NoTriggerOnAttackEffects | NoTriggerWhenAttackedEffects,
         PhysicalStatusTest = Physical | IgnoreEvasion | IgnoreNullifyingGroundMagic | NoTriggerOnAttackEffects | NoTriggerWhenAttackedEffects | NoElement
     }

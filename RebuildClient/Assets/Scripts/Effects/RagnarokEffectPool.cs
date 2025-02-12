@@ -37,6 +37,9 @@ namespace Assets.Scripts.Effects
 
         public static void Return3dEffect(Ragnarok3dEffect effect)
         {
+            if (Instance == null)
+                return;
+            
             if (!effect.IsInitialized)
                 Debug.LogWarning($"Returning effect object to the pool but it was either already returned or never initialized.");
             

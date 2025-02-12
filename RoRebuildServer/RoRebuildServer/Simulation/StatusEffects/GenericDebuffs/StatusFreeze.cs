@@ -23,6 +23,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
             ch.AddStat(CharacterStat.AddMDefPercent, 25);
             ch.SetStat(CharacterStat.OverrideElement, (int)CharacterElement.Water1);
 
+            ch.Character.StopMovingImmediately();
             ch.AddDisabledState();
         }
 
@@ -37,7 +38,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
 
         public override StatusUpdateResult OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
         {
-            if (info.Result != AttackResult.Miss)
+            if (info.IsDamageResult && info.Damage > 0)
                 return StatusUpdateResult.EndStatus;
             return StatusUpdateResult.Continue;
         }

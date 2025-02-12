@@ -64,9 +64,10 @@ public class CombatEntity : IEntityAutoReset
 
     public bool IsSkillOnCooldown(CharacterSkill skill) => skillCooldowns.TryGetValue(skill, out var t) && t > Time.ElapsedTimeFloat;
     public void SetSkillCooldown(CharacterSkill skill, float val) => skillCooldowns[skill] = Time.ElapsedTimeFloat + val;
+    public void ResetSkillCooldown(CharacterSkill skill) => skillCooldowns.Remove(skill);
     public void ResetSkillCooldowns() => skillCooldowns.Clear();
 
-    public bool IsInSkillDamageCooldown(CharacterSkill skill) => damageCooldowns.TryGetValue(skill, out var t) && t >= Time.ElapsedTimeFloat;
+    public bool IsInSkillDamageCooldown(CharacterSkill skill) => damageCooldowns.TryGetValue(skill, out var t) && t > Time.ElapsedTimeFloat;
 
     public void SetSkillDamageCooldown(CharacterSkill skill, float cooldown) => damageCooldowns[skill] = Time.ElapsedTimeFloat + cooldown;
     public void ResetSkillDamageCooldowns() => damageCooldowns.Clear();
@@ -1233,6 +1234,40 @@ public class CombatEntity : IEntityAutoReset
         return true;
     }
 
+    public bool TryFreezeTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
+    {
+        if (target.HasStatusEffectOfType(CharacterStatusEffect.Frozen) || target.GetStat(CharacterStat.Disabled) > 0)
+            return false;
+
+        var mdef = target.GetEffectiveStat(CharacterStat.MDef) * 3 / 2;
+        var luk = target.GetEffectiveStat(CharacterStat.Luk);
+
+        if (target.GetSpecialType() == CharacterSpecialType.Boss || target.IsElementBaseType(CharacterElement.Undead1))
+            return false;
+
+        var resist = MathF.Pow(0.99f, mdef);
+        var resistChance = 100 - target.GetStat(CharacterStat.ResistFreezeStatus);
+        if (resistChance != 100)
+            resist = resist * resistChance / 100;
+
+        if (!CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
+            return false;
+
+        var timeResist = MathHelper.PowScaleDown(mdef + GameRandom.Next(0, luk));
+        var len = 12f * timeResist;
+
+        var durationResist = 100 - target.GetStat(CharacterStat.DecreaseFreezeDuration);
+        if (durationResist != 100)
+            len = len * durationResist / 100;
+
+        if (len <= 0)
+            return false;
+
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Frozen, len);
+        target.AddStatusEffect(status, false, delayApply);
+        return true;
+    }
+
     /// <summary>
     /// Test to see if this character is able to hit the enemy.
     /// </summary>
@@ -1255,6 +1290,22 @@ public class CombatEntity : IEntityAutoReset
             hitSuccessRate = int.Clamp(hitSuccessRate + flatEvasionPenalty, 5, 100);
 
         return hitSuccessRate > GameRandom.Next(0, 100);
+    }
+
+    public bool TestHitVsEvasionWithAttackerPenalty(CombatEntity target) => TestHitVsEvasion(target, 100, target.GetAttackerPenalty());
+
+    public int GetAttackerPenalty()
+    {
+        var attackerPenalty = 0; //number of attackers above 2 (player only consideration)
+        if (Character.Type == CharacterType.Player)
+        {
+            Player.RegisterRecentAttacker(ref Entity);
+
+            var attackerCount = Player.GetCurrentAttackerCount();
+            attackerPenalty = attackerCount > 2 ? attackerCount - 2 : 0;
+        }
+
+        return attackerPenalty;
     }
 
     public DamageInfo PrepareTargetedSkillResult(CombatEntity target, CharacterSkill skillSource = CharacterSkill.None)
@@ -1299,7 +1350,7 @@ public class CombatEntity : IEntityAutoReset
         var defenderType = target.Character.Type;
 
 #if DEBUG
-        if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies)))
+        if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies), true))
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResultUsingSetAttackPower.");
 #endif
 
@@ -1391,17 +1442,15 @@ public class CombatEntity : IEntityAutoReset
         var srcLevel = GetStat(CharacterStat.Level);
         var targetLevel = target.GetStat(CharacterStat.Level);
 
-        var attackerPenalty = 0; //number of attackers above 2 (player only consideration)
-        if (target.Character.Type == CharacterType.Player)
-        {
-            target.Player.RegisterRecentAttacker(ref Entity);
-
-            var attackerCount = target.Player.GetCurrentAttackerCount();
-            attackerPenalty = attackerCount > 2 ? attackerCount - 2 : 0;
-        }
+        var attackerPenalty = target.GetAttackerPenalty();
 
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreEvasion))
             evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * 10);
+
+        if (target.HasBodyState(BodyStateFlags.Hidden) && !flags.HasFlag(AttackFlags.IgnoreEvasion) 
+                                                            && !flags.HasFlag(AttackFlags.CanAttackHidden) 
+                                                            && attackElement != AttackElement.Earth)
+            evade = true;
         
         if (flags.HasFlag(AttackFlags.CanCrit))
         {
@@ -1508,10 +1557,10 @@ public class CombatEntity : IEntityAutoReset
             
 
                 subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
-
-                //convert def to damage reduction %
-                defCut = MathHelper.DefValueLookup(def);
             }
+
+            //convert def to damage reduction %
+            defCut = MathHelper.DefValueLookup(def);
 
             if (def >= 200)
                 subDef = 999999;
@@ -1665,7 +1714,7 @@ public class CombatEntity : IEntityAutoReset
     public DamageInfo CalculateCombatResult(CombatEntity target, AttackRequest req)
     {
 #if DEBUG
-        if (!target.IsValidTarget(this, req.Flags.HasFlag(AttackFlags.CanHarmAllies)))
+        if (!target.IsValidTarget(this, req.Flags.HasFlag(AttackFlags.CanHarmAllies), true))
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResult.");
 #endif
 
@@ -1990,10 +2039,10 @@ public class CombatEntity : IEntityAutoReset
         if (IsCasting && CastingTime < time)
             FinishCasting();
 
-        if (statusContainer != null)
-            statusContainer.UpdateStatusEffects();
-
         if (DamageQueue.Count > 0)
             AttackUpdate();
+
+        if (statusContainer != null)
+            statusContainer.UpdateStatusEffects();
     }
 }

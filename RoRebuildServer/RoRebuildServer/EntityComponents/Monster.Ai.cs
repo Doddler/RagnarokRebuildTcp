@@ -154,11 +154,11 @@ public partial class Monster
 
         if (targetCharacter.Position == Character.Position)
             return false;
-        
+
         if (targetCharacter.Position.SquareDistance(Character.Position) >= MonsterBase.ScanDist + 1)
             return true;
 
-        if (Character.MoveSpeed < 0 && InEnemyOutOfAttackRange())
+        if ((Character.MoveSpeed < 0 || CombatEntity.HasBodyState(BodyStateFlags.Hidden)) && InEnemyOutOfAttackRange())
             return true;
 
         if (Character.Map != null && !Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
@@ -646,6 +646,9 @@ public partial class Monster
             //hasTarget = true;
             return true;
         }
+
+        if(WasAttacked)
+            WasRudeAttacked = true;
 
         return false;
     }

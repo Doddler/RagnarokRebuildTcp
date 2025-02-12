@@ -6,7 +6,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects.ItemEffects;
 
-[StatusEffectHandler(CharacterStatusEffect.IncreasedMoveSpeed, StatusClientVisibility.Owner)]
+[StatusEffectHandler(CharacterStatusEffect.IncreasedMoveSpeed, StatusClientVisibility.Owner, StatusEffectFlags.None, "SpeedBonus")]
 public class StatusMoveSpeedIncrease : StatusEffectBase
 {
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)

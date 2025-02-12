@@ -11,6 +11,15 @@ StateAttacking:
 	TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
 }
 
+SkillHandler("SAGEWORM") {
+StateChase:
+	TryCast(ColdBolt, 3, 10%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+	TryCast(FireBolt, 3, 10%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+	TryCast(LightningBolt, 3, 10%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(SafetyWall, 5, 10%, 1s, 5s) -> SendEmote(20); //hmm
+}
+
 SkillHandler("MIMIC") {
 StateAttacking:
 	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(29); //heh

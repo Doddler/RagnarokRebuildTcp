@@ -31,8 +31,8 @@ public class StatusHiding : StatusEffectBase
 
     public override StatusUpdateResult OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
     {
-        if (ch.GetSpecialType() == CharacterSpecialType.Boss && info.AttackSkill != CharacterSkill.Ruwach)
-            return StatusUpdateResult.Continue;
+        //if (ch.GetSpecialType() == CharacterSpecialType.Boss && info.AttackSkill != CharacterSkill.Ruwach)
+        //    return StatusUpdateResult.Continue;
 
         if (info.Damage > 0)
             return StatusUpdateResult.EndStatus;

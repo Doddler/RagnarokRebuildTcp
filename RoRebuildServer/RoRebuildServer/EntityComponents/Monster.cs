@@ -113,6 +113,8 @@ public partial class Monster : IEntityAutoReset
     public CharacterSkill LastDamageSourceType;
     public int LastAttackRange;
     public bool WasAttacked;
+    public bool WasRudeAttacked;
+    public bool LastAttackPhysical;
     public bool WasMagicLocked;
     private bool canResetAttackedState;
 
@@ -172,6 +174,7 @@ public partial class Monster : IEntityAutoReset
             ResetAiUpdateTime();
             Character.StopMovingImmediately();
             WasAttacked = true;
+            LastAttackPhysical = di.Flags.HasFlag(DamageApplicationFlags.PhysicalDamage);
         }
 
         if (!hasSrc)
@@ -204,11 +207,13 @@ public partial class Monster : IEntityAutoReset
         MonsterBase = null!;
         SpawnMap = null!;
         Children = null;
-        skillState = null!; //really should pool these?
+        skillState.Reset();
         skillAiHandler = null;
         CastSuccessEvent = null;
         WasAttacked = false;
+        WasRudeAttacked = false;
         WasMagicLocked = false;
+        LastAttackPhysical = false;
         canResetAttackedState = false;
         timeSinceLastDamage = 0;
         LastAttackRange = 0;
@@ -256,7 +261,8 @@ public partial class Monster : IEntityAutoReset
         character.Name = $"{monData.Name} {e}";
 
         CurrentAiState = MonsterAiState.StateIdle;
-        skillState = new MonsterSkillAiState(this);
+        if(skillState == null!)
+            skillState = new MonsterSkillAiState(this);
 
         timeofLastStateChange = Time.ElapsedTimeFloat;
         timeLastCombat = Time.ElapsedTimeFloat;
@@ -537,6 +543,7 @@ public partial class Monster : IEntityAutoReset
         CombatEntity.IsCasting = false;
         WasAttacked = false;
         WasMagicLocked = false;
+        WasRudeAttacked = false;
         canResetAttackedState = false;
         timeSinceLastDamage = 0;
         LastAttackRange = 0;
@@ -675,15 +682,25 @@ public partial class Monster : IEntityAutoReset
     private void ResetFlagsAfterSkillHandler()
     {
         WasAttacked = false;
+        WasRudeAttacked = false;
         WasMagicLocked = false;
         Character.LastAttacked = Entity.Null;
+    }
+
+    public void ResetSummonMonsterDeathTime()
+    {
+        skillState.MinionDeathTime = -1;
     }
 
     public bool AiSkillScanUpdate()
     {
         skillState.SkillCastSuccess = false;
         if (CurrentAiState != MonsterAiState.StateAttacking)
+        {
             nextAiSkillUpdate = Time.ElapsedTimeFloat + 0.85f + GameRandom.NextFloat(0f, 0.3f); //we'd like to desync mob skill updates if possible
+            if(!Character.HasVisiblePlayers())
+                nextAiSkillUpdate += 2f;
+        }
 
         skillAiHandler?.RunAiSkillUpdate(CurrentAiState, skillState);
         LastDamageSourceType = CharacterSkill.None; //clear this flag after doing a skill update
@@ -783,7 +800,6 @@ public partial class Monster : IEntityAutoReset
             timeofLastStateChange = Time.ElapsedTimeFloat;
         }
 
-
         if (canResetAttackedState)
             ResetFlagsAfterSkillHandler();
 
@@ -817,7 +833,7 @@ public partial class Monster : IEntityAutoReset
         if (Character.Map?.PlayerCount == 0)
             return;
 
-        if (nextAiUpdate > Time.ElapsedTimeFloat)
+        if (nextAiUpdate > Time.ElapsedTimeFloat || Character.InAttackCooldown)
             return;
 
         if (GetStat(CharacterStat.Disabled) > 0 || CombatEntity.IsCasting)

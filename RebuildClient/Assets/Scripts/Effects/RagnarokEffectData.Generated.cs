@@ -24,6 +24,9 @@ namespace Assets.Scripts.Effects
 		Stun,
 		Blessing,
 		CartRevolution,
+		FrostDiverHit,
+		FrostDiverTrail,
+		LordOfVermilion,
 		Provoke,
 		SafetyWall,
 		SoulStrike,
@@ -35,6 +38,7 @@ namespace Assets.Scripts.Effects
 		ColdHit,
 		Entry,
 		Exit,
+		ExplosiveAura,
 		Teleport,
 		BlueWaterfallEffect,
 	}
@@ -47,6 +51,7 @@ namespace Assets.Scripts.Effects
 		Circle,
 		Cylinder3D,
 		DirectionalBillboard,
+		ExplosiveAura,
 		Flash2D,
 		ForestLight,
 		Heal,
@@ -78,6 +83,9 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Stun, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.StunEffect());
 			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.Skills.BlessingEffect());
 			effectHandlers.Add(EffectType.CartRevolution, new Assets.Scripts.Effects.EffectHandlers.Skills.CartRevolutionEffect());
+			effectHandlers.Add(EffectType.FrostDiverHit, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverHitEffect());
+			effectHandlers.Add(EffectType.FrostDiverTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverTrailEffect());
+			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
 			effectHandlers.Add(EffectType.Provoke, new Assets.Scripts.Effects.EffectHandlers.Skills.ProvokeEffect());
 			effectHandlers.Add(EffectType.SafetyWall, new Assets.Scripts.Effects.EffectHandlers.Skills.SafetyWallEffect());
 			effectHandlers.Add(EffectType.SoulStrike, new Assets.Scripts.Effects.EffectHandlers.Skills.SoulStrikeEffect());
@@ -89,6 +97,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.ColdHit, new Assets.Scripts.Effects.EffectHandlers.General.ColdHitEffect());
 			effectHandlers.Add(EffectType.Entry, new Assets.Scripts.Effects.EffectHandlers.General.EntryEffect());
 			effectHandlers.Add(EffectType.Exit, new Assets.Scripts.Effects.EffectHandlers.General.ExitEffect());
+			effectHandlers.Add(EffectType.ExplosiveAura, new Assets.Scripts.Effects.EffectHandlers.General.ExplosiveAuraEffect());
 			effectHandlers.Add(EffectType.Teleport, new Assets.Scripts.Effects.EffectHandlers.General.TeleportEffect());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());
 			primitiveHandlers.Add(PrimitiveType.Aura, new Assets.Scripts.Effects.PrimitiveHandlers.AuraPrimitive());
@@ -101,6 +110,8 @@ namespace Assets.Scripts.Effects
 			primitiveDataFactory.Add(PrimitiveType.Cylinder3D, () => new Assets.Scripts.Effects.PrimitiveData.CylinderData());
 			primitiveHandlers.Add(PrimitiveType.DirectionalBillboard, new Assets.Scripts.Effects.PrimitiveHandlers.DirectionalBillboardPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.DirectionalBillboard, () => new Assets.Scripts.Effects.PrimitiveData.EffectSpriteData());
+			primitiveHandlers.Add(PrimitiveType.ExplosiveAura, new Assets.Scripts.Effects.PrimitiveHandlers.ExplosiveAuraPrimitive());
+			primitiveDataFactory.Add(PrimitiveType.ExplosiveAura, () => new Assets.Scripts.Effects.PrimitiveData.SimpleSpriteData());
 			primitiveHandlers.Add(PrimitiveType.Flash2D, new Assets.Scripts.Effects.PrimitiveHandlers.Flash2DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Flash2D, () => new Assets.Scripts.Effects.PrimitiveData.FlashData());
 			primitiveHandlers.Add(PrimitiveType.ForestLight, new Assets.Scripts.Effects.PrimitiveHandlers.ForestLightPrimitive());

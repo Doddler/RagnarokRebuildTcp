@@ -196,9 +196,11 @@ LUK +2
 
 ::Tiara //id 2234 - Headgear Top
 <color=#808080>A jeweled coronet that grants the wisdom of an ancient queen.</color>
+INT +2
 
 ::Crown //id 2235 - Headgear Top
 <color=#808080>A jeweled crown that grants the wisdom of an ancient king.</color>
+INT +2
 
 ::Santa_Hat //id 2236 - Headgear Top
 <color=#808080>A red, pompom topped cap associated with the Santa Claus legend.</color>
@@ -1515,9 +1517,11 @@ STR +1
 
 ::Tiara_ //id 5164 - Headgear Top
 <color=#808080>A jeweled coronet that grants the wisdom of an ancient queen.</color>
+INT +2
 
 ::Crown_ //id 5165 - Headgear Top
 <color=#808080>A jeweled crown that grants the wisdom of an ancient king.</color>
+INT +2
 
 ::Sphinx_Hat_ //id 5166 - Headgear TopBottom
 <color=#808080>A traditional headpiece that symbolizes the traditional gods.</color>

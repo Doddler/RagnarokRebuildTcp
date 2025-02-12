@@ -1495,7 +1495,7 @@ namespace Assets.Scripts
                 shakeStepProgress += 1f;
             
             shakePos = shakeTarget;
-            shakeTarget = Random.insideUnitSphere * Mathf.Clamp(ShakeTime, 0, 0.5f);
+            shakeTarget = Random.insideUnitSphere * Mathf.Clamp(ShakeTime, 0, 0.3f);
         }
 
         public void Update()

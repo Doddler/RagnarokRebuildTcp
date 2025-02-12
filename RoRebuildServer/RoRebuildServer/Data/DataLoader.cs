@@ -65,7 +65,7 @@ internal class DataLoader
 
         ServerLogger.Log($"Loading maps: {maps.Count}");
 
-        foreach(var map in maps)
+        foreach (var map in maps)
             mapsLookup.Add(map.Code, map);
 
         return mapsLookup.AsReadOnly();
@@ -106,7 +106,7 @@ internal class DataLoader
 
         var entries = csv.GetRecords<CsvExpChart>().ToList();
 
-        var chart = new ExpChart { ExpRequired = new int[100], JobExpRequired = new int[2*70] };
+        var chart = new ExpChart { ExpRequired = new int[100], JobExpRequired = new int[2 * 70] };
 
         chart.ExpRequired[0] = 0; //should always be true but why not!
         chart.JobExpRequired[0] = -1;
@@ -117,14 +117,17 @@ internal class DataLoader
             chart.ExpRequired[e.Level] = e.Experience;
         }
 
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { BadDataFound = context =>
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            BadDataFound = context =>
         {
             Console.WriteLine(context.Field);
-        }};
+        }
+        };
 
         using var tr2 = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/ExpJobChart.csv")) as TextReader;
         using var csv2 = new CsvReader(tr2, config);
-        
+
         var entries2 = csv2.GetRecords<CsvJobExpChart>();
 
         foreach (var e in entries2)
@@ -346,7 +349,7 @@ internal class DataLoader
     public ReadOnlyDictionary<string, MonsterDropData> LoadMonsterDropChanceData(ServerConfigScriptManager config)
     {
         var remapDrops = ServerConfig.OperationConfig.RemapDropRates;
-        
+
         var drops = new Dictionary<string, MonsterDropData>();
         using var inPath = new TemporaryFile(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/DropData.csv"));
         using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
@@ -398,7 +401,7 @@ internal class DataLoader
                         if (remapDrops)
                         {
                             var itemInfo = DataManager.GetItemInfoById(item);
-                            if(itemInfo != null)
+                            if (itemInfo != null)
                                 chance = config.UpdateDropData(itemInfo.ItemClass, itemInfo.Code, itemInfo.SubCategory, chance);
                         }
 
@@ -489,7 +492,7 @@ internal class DataLoader
         var csv = GetCsvRows<CsvWeaponClass>("Db/WeaponClass.csv");
         foreach (var entry in csv)
             weaponClasses.Add(entry.WeaponClass, entry.Id);
-        
+
         return weaponClasses.AsReadOnly();
     }
 
@@ -683,7 +686,7 @@ internal class DataLoader
             };
             itemList.Add(item.Id, item);
 
-            var ammoInfo = new AmmoInfo() { Type = entry.Type, Attack = entry.Attack, MinLvl = entry.MinLvl, Element = entry.Property};
+            var ammoInfo = new AmmoInfo() { Type = entry.Type, Attack = entry.Attack, MinLvl = entry.MinLvl, Element = entry.Property };
             returnList.Add(entry.Id, ammoInfo);
         }
 
@@ -729,10 +732,10 @@ internal class DataLoader
                 continue;
             }
 
-            if(!returnList.ContainsKey(entry.Type))
+            if (!returnList.ContainsKey(entry.Type))
                 returnList.Add(entry.Type, new List<string>());
 
-            for(var i = 0; i < entry.Chance; i++)
+            for (var i = 0; i < entry.Chance; i++)
                 returnList[entry.Type].Add(entry.Monster);
         }
 
@@ -744,7 +747,7 @@ internal class DataLoader
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobStatBonuses.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
-        
+
         var entries = csv.GetRecords<dynamic>().ToList();
 
         Span<int> tempTable = stackalloc int[6];
@@ -764,7 +767,7 @@ internal class DataLoader
                     ServerLogger.LogWarning($"Job {jobName} specified in JobStatBonuses.csv could not be found.");
                     continue;
                 }
-                
+
                 for (var i = 1; i < 71; i++)
                 {
                     var stat = (string)obj[i.ToString()];
@@ -807,7 +810,7 @@ internal class DataLoader
                 table[offset + 2] = int.Parse((string)obj["Level3"]);
                 table[offset + 3] = int.Parse((string)obj["Level4"]);
                 table[offset + 4] = int.Parse((string)obj["Armor"]);
-                
+
                 offset += 5;
             }
         }
@@ -867,7 +870,7 @@ internal class DataLoader
         {
             if (monster.Id <= 0)
                 continue;
-            
+
             obj.Add(new MonsterDatabaseInfo()
             {
                 Id = monster.Id,
@@ -1045,7 +1048,7 @@ internal class DataLoader
                 throw new Exception($"Error loading SpawnMinionTable.csv, could not find minion named {entry.Minion}.");
 
             targetMonster.Minions ??= new List<MonsterSpawnMinions>();
-            targetMonster.Minions.Add(new MonsterSpawnMinions() { Count = entry.Count, Monster = minion });
+            targetMonster.Minions.Add(new MonsterSpawnMinions() { Count = entry.Count, Monster = minion, InitialGivesExp = entry.InitialGivesExp });
         }
     }
 

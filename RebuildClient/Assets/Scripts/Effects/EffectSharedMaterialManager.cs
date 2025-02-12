@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.U2D;
 
 namespace Assets.Scripts.Effects
 {
@@ -22,6 +23,7 @@ namespace Assets.Scripts.Effects
     
     public enum EffectMaterialType
     {
+        SkillSpriteAlphaBlended,
         TeleportPillar,
         SafetyWall,
         EffectMaterialMax
@@ -42,6 +44,16 @@ namespace Assets.Scripts.Effects
         private static Texture2D[] textureList;
         private static bool[] persistTextures;
 
+        private static SpriteAtlas skillAtlas;
+
+        public static SpriteAtlas GetSkillSpriteAtlas()
+        {
+            if (skillAtlas == null)
+                skillAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
+
+            return skillAtlas;
+        }
+
         public static Material GetMaterial(EffectMaterialType mat)
         {
             if (materialList == null)
@@ -57,34 +69,53 @@ namespace Assets.Scripts.Effects
 
                 switch (mat)
                 {
+                    case EffectMaterialType.SkillSpriteAlphaBlended:
+                        if (materialList[(int)mat] == null)
+                        {
+                            var atlas = GetSkillSpriteAtlas();
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AlphaBlendParticleShader)
+                            {
+                                color = Color.white,
+                                mainTexture = atlas.GetSprite("FireBolt1").texture, //this will work unless the atlas gets split across multiple textures
+                                renderQueue = 3001
+                            };
+                            persistMaterials[(int)mat] = true;
+                        }
+                        break;
+                    
                     case EffectMaterialType.TeleportPillar:
                         if (textureList[(int)EffectTextureType.MagicViolet] == null)
                         {
                             textureList[(int)EffectTextureType.MagicViolet] = Resources.Load<Texture2D>("magic_violet");
                             persistTextures[(int)EffectTextureType.MagicViolet] = true;
                         }
-                        
-                        materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
+                        if (materialList[(int)mat] == null)
                         {
-                            mainTexture = Resources.Load<Texture2D>("magic_violet"),
-                            color = new Color(100 / 255f, 100 / 255f, 255 / 255f),
-                            renderQueue = 3001
-                        };
-                        persistMaterials[(int)mat] = true;
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
+                            {
+                                mainTexture = Resources.Load<Texture2D>("magic_violet"),
+                                color = new Color(100 / 255f, 100 / 255f, 255 / 255f),
+                                renderQueue = 3001
+                            };
+                            persistMaterials[(int)mat] = true;
+                        }
                         break;
+                    
                     case EffectMaterialType.SafetyWall:
                         if (textureList[(int)EffectTextureType.AlphaDown] == null)
                         {
                             textureList[(int)EffectTextureType.AlphaDown] = Resources.Load<Texture2D>("alpha_down");
                             persistTextures[(int)EffectTextureType.AlphaDown] = true;
                         }
-
-                        materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
+                        if (materialList[(int)mat] == null)
                         {
-                            mainTexture = textureList[(int)EffectTextureType.AlphaDown],
-                            color = new Color(255 / 255f, 89 / 255f, 182 / 255f),
-                            renderQueue = 3001
-                        };
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
+                            {
+                                mainTexture = textureList[(int)EffectTextureType.AlphaDown],
+                                color = new Color(255 / 255f, 89 / 255f, 182 / 255f),
+                                renderQueue = 3001
+                            };
+                        }
                         break;
                 }
             }

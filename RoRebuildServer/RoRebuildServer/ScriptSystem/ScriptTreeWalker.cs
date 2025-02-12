@@ -845,6 +845,11 @@ internal class ScriptTreeWalker
                 VisitExpression(parensContext.expression());
                 builder.OutputRaw(")");
                 break;
+            case NotOperationContext notContext:
+                builder.OutputRaw("!(");
+                VisitExpression(notContext.expression());
+                builder.OutputRaw(")");
+                break;
             case AssignmentExpressionContext assignmentContext:
                 VisitAssignment(assignmentContext.assignment());
                 break;

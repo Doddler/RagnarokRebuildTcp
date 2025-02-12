@@ -74,3 +74,39 @@ Other/RoWikiGenerator/images/
 Other/RoDatabasePokingTool/
 RebuildClient/Packages/
 *.db
+deploycommands.txt
+Monsters.csv
+MonstersUpdate.csv
+ServerData.code-workspace
+Other/andre_pal.pal
+Other/deniro.pal
+Other/Headgear.xlsx
+Other/icon.png
+Other/icon.psd
+Other/icon2.png
+Other/icon3.png
+Other/piere.pal
+Other/RoStatProcessingOld.xlsx
+Other/RoStatProcessingOrig.xlsx
+Other - Copy/~$RoStatProcessing.xlsx
+Other - Copy/~$RoStatProcessingUpdate.xlsx
+Other - Copy/RoStatProcessing.xlsx
+Other - Copy/RoStatProcessingOrig.xlsx
+Other - Copy/RoStatProcessingUpdate.xlsx
+Other/Map/combinedmap.psd
+Other/Map/morroc.psd
+Other/Map/payon.psd
+Other/Map/prontera.psd
+Other/Map/ranges.psd
+RebuildClient/App.config
+RebuildClient/gude-2023-08-28.log
+RebuildClient/packages.config
+RebuildClient/Assets/Test.meta
+RebuildClient/Assets/Materials/pay_dun00.mat
+RebuildClient/Assets/Materials/pay_dun00.mat.meta
+RebuildClient/Assets/Materials/snow.mat
+RebuildClient/Assets/Materials/snow.mat.meta
+RebuildClient/Assets/Textures/cursor/dialog.gif
+RebuildClient/Assets/Textures/cursor/dialog.gif.meta
+RebuildClient/Assets/Textures/cursor/target.gif
+RebuildClient/Assets/Textures/cursor/target.gif.meta

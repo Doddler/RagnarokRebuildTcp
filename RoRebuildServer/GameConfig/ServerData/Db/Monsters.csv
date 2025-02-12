@@ -298,7 +298,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4295,MIYABI_NINGYO,Miyabi Doll,33,2318,27,27,27,36,20,16,126,155,1,12,12,1013,737,10,12,Medium,Demon,Dark1,1938,768,2112,250,Normal,AiPassiveSense,672,miyabi_ningyo.spr,0,0.5,1,#FFFFFFFF,
 4296,THE_PAPER,The Paper,56,6564,45,45,45,56,33,27,380,465,1,19,18,4657,3308,10,12,Medium,Formless,Neutral3,1160,336,960,170,Normal,AiAggressive,540,the_paper.spr,0,0.5,1,#FFFFFFFF,
 4297,POISON_TOAD,Poison Toad,46,4376,37,37,37,47,27,21,246,301,3,16,15,2264,1506,10,12,Medium,Beast,Poison2,1148,864,1728,160,Normal,AiPassive,624,poison_toad.spr,0,0.5,1,#FFFFFFFF,
-4298,ANGRY_TARGET_DUMMY,Angry Target Dummy,99,100000,41,20,20,200,1,1,500,500,3,20,20,0,0,10,12,Large,Demon,Earth4,1000,1,200,-1,Boss,AiAggressiveImmobile,200,barricade.spr,0,-1,1,#FFFFFFFF,
+4298,ANGRY_TARGET_DUMMY,Angry Target Dummy,99,100000,41,20,20,200,1,1,500,500,3,20,20,0,0,10,12,Large,Demon,Earth1,1000,1,200,-1,Boss,AiAggressiveImmobile,200,barricade.spr,0,-1,1,#FFFFFFFF,
 5000,PORING50,Poring,50,4739,22,34,37,35,19,20,273,302,1,10,10,2773,2010,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiLooter,288,poring.spr,0,0.5,1.1,#FFFFFFFF,
 6000,MOONLIGHT_CLONE,Moonlight Flower,65,16793,87,98,51,88,49,58,552,747,1,14,27,0,0,10,12,Medium,Demon,Fire3,1276,288,576,150,Boss,AiStandardBoss,180,moonlight.spr,0,0.5,1,#FFFFFFAA,
 6001,GTB_EGG,Thief Bug Egg,13,661,4,14,13,6,5,1,2,3,0,22,18,0,0,1,1,Small,Insect,Dark3,701,1,1,-1,Normal,AiPlant,288,thief_bug_egg.spr,0,-1,1.2,#FFFFFFFF,

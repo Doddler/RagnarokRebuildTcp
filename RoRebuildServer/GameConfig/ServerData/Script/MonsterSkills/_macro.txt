@@ -1,7 +1,7 @@
 
 
 macro GiveUpChase(%rate, %targetState, %emote) {
-	TryCast(NoCast, 3, %rate, 0, 5s)[TimeSinceStartChase > 4s] -> {
+	TryCast(NoCast, 3, %rate, 0, 5s)[TimeSinceStartChase > 4s && !IsMinion] -> {
         ChangeAiClass(%targetState);
 		if(%emote > 0)
         	SendEmote(%emote);
@@ -9,11 +9,31 @@ macro GiveUpChase(%rate, %targetState, %emote) {
 }
 
 macro ResumeAiState(%rate, %targetState, %emote) {
-	TryCast(NoCast, 3, %rate, 0, 5s) -> {
+	TryCast(NoCast, 3, %rate, 0, 5s)[!IsMinion] -> {
         ChangeAiClass(%targetState, false); //false means don't reset current state
 		if(%emote > 0)
         	SendEmote(%emote); //question mark
     }
 }
-
-
+/*
+macro SummonMinionsAfterDelay(%mobCount, %castTime, %delay) {
+	if(MinionCount < %mobCount)
+	{
+		if(GetStateFlag(3) <= 0)
+		{
+			SetStateFlag(3, 1);
+			SetEventCooldown("MinionDelay", %delay);
+		}
+		else
+		{
+			if(IsNamedEventOffCooldown("MinionDelay"))
+			{
+				TryCast(CallMinion, 1, %rate, %castTime, NoInterrupt) -> {
+					CallDefaultMinions();
+					SetStateFlag(3, 0);
+				}
+			}
+		}
+	}
+}
+*/

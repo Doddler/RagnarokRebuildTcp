@@ -67,6 +67,7 @@ namespace Assets.Scripts.Network
         [NonSerialized] public GameObject EntityObject;
         [NonSerialized]public GameObject ComboIndicator;
         [NonSerialized]public GameObject FollowerObject;
+        [NonSerialized]public GameObject BodyStateEffect;
         [NonSerialized] public StatusEffectState StatusEffectState;
 
         [NonSerialized] public CharacterFloatingDisplay FloatingDisplay;
@@ -1251,7 +1252,16 @@ namespace Assets.Scripts.Network
         private void OnMessageElementalHit(EntityMessage msg)
         {
             Vector3 hitPosition;
-            AudioManager.Instance.OneShotSoundEffect(Id, $"ef_hit2.ogg", transform.position);
+            
+            var weaponClass = 0;
+            if (msg.Entity != null)
+                weaponClass = msg.Entity.WeaponClass;
+            if (weaponClass >= 0)
+            {
+                var hitSound = ClientDataLoader.Instance.GetHitSoundForWeapon(weaponClass);
+                AudioManager.Instance.OneShotSoundEffect(Id, hitSound, transform.position, 1f);
+            }
+
             switch ((AttackElement)msg.Value1)
             {
                 case AttackElement.Fire:
@@ -1469,6 +1479,9 @@ namespace Assets.Scripts.Network
                 RealPosition = new Vector3(RealPosition.x, walkProvider.GetHeightForPosition(RealPosition), RealPosition.z);
                 transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
             }
+            
+            if(StatusEffectState != null && StatusEffectState.HasStatusEffect(CharacterStatusEffect.Frozen))
+                SpriteAnimator.PauseAnimation();
         }
 
         private void OnDestroy()

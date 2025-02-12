@@ -3,12 +3,12 @@
 SkillHandler("ELDER") {
 StateAttacking:
 	TryCast(FireBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(11); //rock
-	TryCast(ColdBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(12); //paper
-	TryCast(LightningBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(13); //scissors
+	TryCast(FrostDiver, 9, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(12); //paper
+	TryCast(LightningBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(10); //scissors
 StateChase:
 	TryCast(FireBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(11); //rock
-	TryCast(ColdBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(12); //paper
-	TryCast(LightningBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(13); //scissors
+	TryCast(FrostDiver, 9, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(12); //paper
+	TryCast(LightningBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(10); //scissors
 }
 
 SkillHandler("OWL_DUKE") {

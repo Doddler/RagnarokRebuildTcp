@@ -6,7 +6,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob
 {
-    [StatusEffectHandler(CharacterStatusEffect.IncreaseAgi, StatusClientVisibility.Everyone)]
+    [StatusEffectHandler(CharacterStatusEffect.IncreaseAgi, StatusClientVisibility.Everyone, StatusEffectFlags.None, "SpeedBonus")]
     public class StatusIncreaseAgi : StatusEffectBase
     {
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)

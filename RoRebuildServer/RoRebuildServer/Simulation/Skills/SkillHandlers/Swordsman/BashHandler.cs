@@ -19,7 +19,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
             if (target == null || !target.IsValidTarget(source))
                 return;
 
-            var req = new AttackRequest(CharacterSkill.Bash, 1f + lvl * 0.3f, lvl, AttackFlags.Physical, AttackElement.None);
+            var req = new AttackRequest(CharacterSkill.Bash, 1f + lvl * 0.3f, 1, AttackFlags.Physical, AttackElement.None);
             req.AccuracyRatio = 100 + lvl * 5;
             var res = source.CalculateCombatResult(target, req);
 

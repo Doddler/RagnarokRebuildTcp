@@ -345,7 +345,7 @@ public class ScriptBuilder
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
 
-        StartIndentedBlockLine().AppendLine($"public void Init()");
+        StartIndentedBlockLine().AppendLine($"public void Init(MonsterSkillAiState state)");
         StartIndentedBlockLine().AppendLine("{");
         indentation++;
 
@@ -655,9 +655,12 @@ public class ScriptBuilder
         timerValues.Clear();
         remoteCommands.Clear();
         terminalFunctions.Clear();
+        functionSources.Clear();
+        ClearVariables();
         hasTouch = false;
         hasInteract = false;
         defaultReturn = null;
+        
 
         name += "_" + Guid.NewGuid().ToString().Replace("-", "_");
 
@@ -715,6 +718,7 @@ public class ScriptBuilder
         timerValues.Clear();
         remoteCommands.Clear();
         terminalFunctions.Clear();
+        ClearVariables();
         hasTouch = false;
         hasInteract = false;
         defaultReturn = null;
@@ -742,6 +746,7 @@ public class ScriptBuilder
         waitingFunctions.Add("OpenShop", NpcInteractionResult.WaitForShop);
         waitingFunctions.Add("MoveTo", NpcInteractionResult.EndInteraction);
 
+        additionalVariables.Clear();
         LoadFunctionSource(typeof(Npc), "npc");
         LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
         additionalVariables.Add("Param1", "npc.ParamsInt[0]");

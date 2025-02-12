@@ -137,6 +137,15 @@
     },
     {
       "StatusEffect": 16,
+      "Name": "Decrease Agility",
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "\uBBFC\uCCA9\uC131\uAC10\uC18C",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 17,
       "Name": "Angelus",
       "Description": null,
       "Type": "Buff",
@@ -145,7 +154,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 17,
+      "StatusEffect": 18,
       "Name": "SignumCrusis",
       "Description": null,
       "Type": "Debuff",
@@ -154,7 +163,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 18,
+      "StatusEffect": 19,
       "Name": "Improve Concentration",
       "Description": null,
       "Type": "Buff",
@@ -163,7 +172,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 19,
+      "StatusEffect": 20,
       "Name": "Endure",
       "Description": null,
       "Type": "Buff",
@@ -172,22 +181,13 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 20,
+      "StatusEffect": 21,
       "Name": "Magnum Break",
       "Description": null,
       "Type": "Buff",
       "Icon": "icon02",
       "CanDispel": true,
       "CanDisable": true
-    },
-    {
-      "StatusEffect": 21,
-      "Name": "Pneuma",
-      "Description": null,
-      "Type": "Buff",
-      "Icon": null,
-      "CanDispel": false,
-      "CanDisable": false
     },
     {
       "StatusEffect": 22,
@@ -200,6 +200,15 @@
     },
     {
       "StatusEffect": 23,
+      "Name": "Pneuma",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 24,
       "Name": "Hiding",
       "Description": null,
       "Type": "Buff",
@@ -208,7 +217,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 24,
+      "StatusEffect": 25,
       "Name": "Crazy Uproar",
       "Description": null,
       "Type": "Buff",
@@ -217,7 +226,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 25,
+      "StatusEffect": 26,
       "Name": null,
       "Description": null,
       "Type": "Buff",
@@ -226,7 +235,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 26,
+      "StatusEffect": 27,
       "Name": null,
       "Description": null,
       "Type": "Buff",
@@ -235,7 +244,25 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 27,
+      "StatusEffect": 28,
+      "Name": null,
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 29,
+      "Name": null,
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 30,
       "Name": "Movement Speed UP",
       "Description": null,
       "Type": "Buff",
@@ -244,7 +271,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 28,
+      "StatusEffect": 31,
       "Name": "Attack Speed UP",
       "Description": null,
       "Type": "Buff",
@@ -253,7 +280,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 29,
+      "StatusEffect": 32,
       "Name": "Elemental Converter",
       "Description": null,
       "Type": "Buff",
@@ -262,7 +289,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 30,
+      "StatusEffect": 33,
       "Name": "Elemental Converter (Fire)",
       "Description": null,
       "Type": "Buff",
@@ -271,7 +298,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 31,
+      "StatusEffect": 34,
       "Name": "Elemental Converter (Water)",
       "Description": null,
       "Type": "Buff",
@@ -280,7 +307,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 32,
+      "StatusEffect": 35,
       "Name": "Elemental Converter (Wind)",
       "Description": null,
       "Type": "Buff",
@@ -289,7 +316,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 33,
+      "StatusEffect": 36,
       "Name": "Elemental Converter (Earth)",
       "Description": null,
       "Type": "Buff",
@@ -298,7 +325,34 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 34,
+      "StatusEffect": 37,
+      "Name": "Dark Blessing",
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": "pharaoh_curse",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 38,
+      "Name": "Power Up",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "icon02",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 39,
+      "Name": "Speed Up",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uBBFC\uCCA9\uC131\uC99D\uAC00",
+      "CanDispel": true,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 40,
       "Name": "Doom",
       "Description": null,
       "Type": "Debuff",
@@ -307,7 +361,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 35,
+      "StatusEffect": 41,
       "Name": "Stolen From",
       "Description": null,
       "Type": "Debuff",

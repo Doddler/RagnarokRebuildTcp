@@ -16,23 +16,28 @@ macro GoldenBugEggToss(%chance, %min, %max, %delay, %castEvent) {
 }
 
 SkillHandler("GOLDEN_BUG") {
+OnInit:
+	ResummonMinionCount = 8; //resummon if we have 4 or less
 StateAny: 
-    TryCast(CallMinion, 1, 100%, 0.7s, 15s)[MinionCount < 5] -> CallDefaultMinions();
+    TryCast(CallMinion, 1, 100%, 0.7s, 15s)[MinionsDeadFor(8s) && !IsHiding] -> CallDefaultMinions();
+	TryCast(Hiding, 3, 100%, 0, 30s)[IsHiding];
 StateAttacking:
 	var count = 0; //have to define variables at the start or there'll be scope issues
-	if(HpPercent < 50 && IsNamedEventOffCooldown("LowHpToss")) {
-		@GoldenBugEggToss(100%, 4, 8, 15s, GtbPutLowHpTossOnCooldown);
+	if(HpPercent < 40 && IsNamedEventOffCooldown("LowHpToss")) {
+		TryCast(Hiding, 3, 100%, 0, 15s)[!IsHiding] -> ResetSkillCooldown(SummonMonster);
+		@GoldenBugEggToss(100%, 5, 8, 15s, GtbPutLowHpTossOnCooldown);
 	}
 	if(HpPercent < 90) {
 		@GoldenBugEggToss(30%, 1, (100-HpPercent)/10, 15s, GtbEmptyEvent);
 	}
 
 	TryCast(Mammonite, 5, 20%, 0, 5s) -> SendEmote(8); //dollar sign
-    TryCast(CallMinion, 1, 10%, 0.7s, 15s)[MinionCount < 15] -> CallDefaultMinions();
+    TryCast(CallMinion, 1, 10%, 0.7s, 15s)[MinionsDeadFor(8s)] -> CallDefaultMinions();
 StateChase:
 	TryCast(Heal, 4999, 10%, 0s, 15s)[HpPercent < 30];
 StateIdle:
-	TryCast(Heal, 9999, 10%, 0s, 10s)[HpPercent < 70];
+	TryCast(Heal, 9999, 100%, 0s, 5s)[IsHiding];
+	TryCast(Heal, 9999, 10%, 0s, 15s)[HpPercent < 70];
 }
 
 event GtbSummonArray {
@@ -81,10 +86,18 @@ SkillHandler("GTB_SUMMON") {
 //------------------------------------
 
 SkillHandler("OSIRIS") {
+OnInit:
+	ResummonMinionCount = 2; //resummon if we have 3 or less
+	SkipNextMinionDeadTimer(); //he will summon instantly after you kill his first isis mob, then delay after that
+StateIdle: 
 StateAny: 
-    TryCast(CallMinion, 1, 10%, 0.7s, 45s)[MinionCount < 3] -> SummonMinions(5, "ANCIENT_MUMMY");
+    TryCast(CallMinion, 1, 50%, 0.7s, 45s)[MinionsDeadFor(20s)] -> SummonMinions(5, "ANCIENT_MUMMY");
+StateChase:
+	TryCast(DarkThunder, 10, 20%, 0, 5s);
 StateAttacking:
 	TryCast(Bash, 10, 20%, 0, 5s);
+	TryCast(PowerUp, 5, 100%, 0.7s, 2m)[HpPercent < 30] -> SendEmote(6);
+	TryCast(SpeedUp, 5, 100%, 0s, 45s, HideSkillName)[HpPercent < 30] -> SendEmote(6);
 }
 
 //------------------------------------
@@ -104,13 +117,37 @@ StateAttacking:
 //------------------------------------
 
 SkillHandler("BAPHOMET") {
+OnInit:
+	ResummonMinionCount = 3; //resummon if we have 3 or less
 StateAny: 
-    TryCast(CallMinion, 1, 100%, 0s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+    TryCast(CallMinion, 1, 100%, 0s, 30s)[MinionsDeadFor(15s)] -> CallDefaultMinions();
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
 StateChase:
     TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
 	TryCast(DarkStrike, 10, 20%, 0, 5s);
+	TryCast(LordOfVermilion, 10, 50%, 0.5s, 5s);
+StateAttacking:
+	TryCast(PowerUp, 5, 100%, 0.7s, 30s)[HpPercent < 30];
+	TryCast(LordOfVermilion, 10, 10%, 0.5s, 5s);
+}
+
+
+//------------------------------------
+// Osiris
+//------------------------------------
+
+SkillHandler("DARK_LORD") {
+OnInit:
+	ResummonMinionCount = 3; //resummon if we have 3 or less
+StateIdle: 
+	TryCast(CallMinion, 1, 25%, 0.3s, 20s, NoInterrupt)[MinionCount < 5] -> SummonMinions(2, "DARK_ILLUSION");
+StateChase: 
+    TryCast(CallMinion, 1, 100%, 0.3s, 20s, NoInterrupt)[MinionsDeadFor(40s)] -> SummonMinions(1, "DARK_ILLUSION");
+	TryCast(FireWall, 10, 20%, 0.5s, 5s, NoInterrupt);
+StateAttacking:
+	TryCast(CallMinion, 1, 100%, 0.3s, 20s, NoInterrupt)[MinionsDeadFor(40s)] -> SummonMinions(1, "DARK_ILLUSION");
+	TryCast(Bash, 10, 20%, 0, 5s);
 }
 
 //------------------------------------
@@ -118,10 +155,11 @@ StateChase:
 //------------------------------------
 
 SkillHandler("MAYA") {
+	ResummonMinionCount = 2; //resummon if we have 3 or less
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
 StateAny: 
-    TryCast(CallMinion, 1, 20%, 0.7s, 45s)[MinionCount < 3] -> {
+    TryCast(CallMinion, 1, 20%, 0.7s, 30s)[MinionsDeadFor(15s)] -> {
 		SummonMinions(1, "SOLDIER_ANDRE");
 		SummonMinions(1, "SOLDIER_PIERE");
 		SummonMinions(1, "SOLDIER_DENIRO");
@@ -130,6 +168,7 @@ StateAny:
 StateChase:
 	TryCast(Heal, 5000, 20%, 0s, 15s)[HpPercent < 30];
 StateAttacking:
+	TryCast(PowerUp, 3, 100%, 0.7s, 25s)[HpPercent < 30];
 	TryCast(Heal, 5000, 20%, 0s, 15s)[HpPercent < 30];
 }
 
@@ -143,6 +182,7 @@ StateAny:
 StateIdle:
     TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
 StateChase:
+	TryCast(PowerUp, 3, 100%, 0.7s, 30s)[HpPercent < 30];
     TryCast(Heal, 9999, 100%, 0s, 15s)[HpPercent < 50];
 }
 
@@ -159,8 +199,10 @@ StateChase:
 	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
 	TryCast(JupitelThunder, 28, 20%, 0, 5s);
 StateAttacking:
+	TryCast(SpeedUp, 5, 100%, 0s, 40s, HideSkillName)[HpPercent < 30] -> SendEmote(6);
 	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
 	TryCast(JupitelThunder, 28, 20%, 0, 5s);
+	TryCast(Pneuma, 1, 20%, 0, 5s)[WasRangedAttacked];
 }
 
 
@@ -169,14 +211,25 @@ StateAttacking:
 //------------------------------------
 
 SkillHandler("PHARAOH") {
-StateAny: 
-    TryCast(CallMinion, 1, 20%, 1.4s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+OnInit:
+	ResummonMinionCount = 3; //resummon if we have 3 or less
+StateIdle:
+	TryCast(Heal, 19999, 100%, 0s, 0)[TimerFinished(0)] -> ResetTimer(0); //if you teleport away from dark blessing, he heals instead
+    TryCast(CallMinion, 1, 20%, 1.4s, 25s)[MinionCount < 3] -> CallDefaultMinions(); //ignore minimum time when idle
 StateChase:
+	TryCast(NoCast, 3, 100%, 0s, 10s, HideSkillName)[TimerFinished(0)] -> SetAttackCooldown(1s); //make him not attack when dark blessing activates
+	TryCast(DarkAttack, 3, 100%, 1s, 0, HideSkillName)[TimerFinished(0)] -> ResetTimer(0);
+	TryCast(CallMinion, 1, 20%, 1.4s, 25s)[MinionsDeadFor(15s) && TimerInactive(0)] -> CallDefaultMinions();
 	TryCast(ChargeArrow, 1, 20%, 0, 0);
-	TryCast(DarkStrike, 10, 20%, 0, 5s)
+	TryCast(DarkStrike, 10, 20%, 0, 5s);
 StateAttacking:
+	TryCast(PowerUp, 5, 100%, 0.3s, 30s)[HpPercent < 30];
+	TryCast(NoCast, 3, 100%, 0s, 10s, HideSkillName)[TimerFinished(0)] -> SetAttackCooldown(1s); //make him not attack when dark blessing activates
+	TryCast(DarkAttack, 3, 100%, 1s, 0, HideSkillName)[TimerFinished(0)] -> ResetTimer(0);
+	TryCast(CallMinion, 1, 20%, 1.4s, 25s)[MinionsDeadFor(15s) && TimerInactive(0)] -> CallDefaultMinions();
 	TryCast(ChargeArrow, 1, 20%, 0, 0);
-	TryCast(DarkStrike, 10, 20%, 0, 5s)
+	TryCast(DarkStrike, 10, 20%, 0, 5s);
+	TryCast(DarkBlessing, 5, 15%, 0.8s, 25s, NoInterrupt)[HpPercent < 90] -> SetTimer(0, 4.5s); //a little early
 }
 
 
@@ -232,6 +285,7 @@ StateAny:
 StateAttacking:
 	//TryCast(Bash, 10, 20%, 0, 5s);
 StateIdle:
+	TryCast(PowerUp, 3, 100%, 0.7s, 30s)[HpPercent < 30];
 	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
 }
 
@@ -246,6 +300,7 @@ StateChase:
     TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
 StateAny: 
 	TryCast(CallMinion, 1, 50%, 0.7s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+	TryCast(PowerUp, 5, 100%, 0.3s, 30s)[HpPercent < 30];
 }
 
 //------------------------------------
@@ -353,11 +408,12 @@ macro MoonlightCombatActions() {
 	}
 	
 	if(HpPercent < 30 && IsNamedEventOffCooldown("Final Phase")) {
-		TryCast(NoCast, 1, 100%, 0, 5s) -> SendEmote(7); //grumpy
+		TryCast(PowerUp, 3, 100%, 0.4s, 30s)[HpPercent < 30] -> SendEmote(7); //grumpy;
 
 		ResetAllCooldowns();
 		SetEventCooldown("Split", -1); //we don't want this happening again. We know it already happened cause it's higher priority
 		SetEventCooldown("Final Phase", -1);
+		PutSkillOnCooldown(PowerUp, 30s); //she just used this, no need to have her use it agian
 		TryCast(CallMinion,1, 100%, 0.4s, 30s) -> CallDefaultMinions();
 	}
 
@@ -368,7 +424,7 @@ macro MoonlightCombatActions() {
 		SetEventCooldown("Magic Combo", 20000);
 	}
 
-	TryCast(CallMinion, 1, 1000, 2000, 60000)[MinionCount < 3] -> CallDefaultMinions();
+	TryCast(CallMinion, 1, 1s, 2s, 30s)[MinionsDeadFor(15s)] -> CallDefaultMinions();
 }
 
 //caster clone AI
@@ -397,8 +453,9 @@ AltSkillHandler("MOONLIGHT_C2") {
 AltSkillHandler("MOONLIGHT_C3") {
 	OnInit:
 		FlagAsMvp();
+		ResummonMinionCount = 2;
 	StateAny:
-		TryCast(CallMinion, 1, 100%, 2s, 30s, NoInterrupt)[MinionCount < 3] -> SummonMinions(5, "NINE_TAIL");
+		TryCast(CallMinion, 1, 100%, 2s, 30s, NoInterrupt)[MinionsDeadFor(15s)] -> SummonMinions(5, "NINE_TAIL");
 		TryCast(Heal, 4999, 100%, 0.7s, 5s)[FindAllyBelowHpPercent(60)];
 	OnDie:
 		CallHiddenParentToNearbyPosition();
@@ -406,37 +463,41 @@ AltSkillHandler("MOONLIGHT_C3") {
 
 //The real Moonlight Flower
 SkillHandler("MOONLIGHT") {
-	StateIdle:
-	TryCast(CallMinion, 1, 100%, 2s, 1m)[MinionCount < 3] -> CallDefaultMinions();
+OnInit:
+	ResummonMinionCount = 2;
+StateIdle:
+	TryCast(CallMinion, 1, 100%, 2s, 1m)[MinionsDeadFor(15s)] -> CallDefaultMinions();
 	TryCast(Heal, 99999, 100%, 6s, 10s, EasyInterrupt)[HpPercent <= 99 && TimeOutOfCombat > 60s] -> ResetAllCooldowns();
 	TryCast(Heal, 9999, 100%, 3s, 10s)[HpPercent < 70];
+
+StateChase:
+	@MoonlightCombatActions();
+	TryCast(ColdBolt, 5, 20%, 0, 5s);
+	TryCast(FireBolt, 5, 20%, 0, 5s);
+	TryCast(LightningBolt, 5, 20%, 0, 5s);
+
+StateAttacking:
+	@MoonlightCombatActions();
+	TryCast(PowerUp, 3, 100%, 0.7s, 30s)[HpPercent < 30] -> SendEmote(7); //grumpy;
+	TryCast(Mammonite, 10, 20%, 0, 5s) -> SendEmote(8); //dollar sign
+	TryCast(HammerFall, 10, 20%, 0, 15s)[HpPercent < 90] -> SendEmote(0); //!
 	
-	StateChase:
-		@MoonlightCombatActions();
-		TryCast(ColdBolt, 5, 20%, 0, 5s);
-		TryCast(FireBolt, 5, 20%, 0, 5s);
-		TryCast(LightningBolt, 5, 20%, 0, 5s);
 
-	StateAttacking:
-		@MoonlightCombatActions();
-		TryCast(Mammonite, 10, 20%, 0, 5s) -> SendEmote(8); //dollar sign
-		TryCast(HammerFall, 10, 20%, 0, 15s)[HpPercent < 90] -> SendEmote(0); //!
+StateHidden:
+	//TryCast(None, 1, 1000, 0, 5000)[MinionCount > 0] -> TeleportNearRandomMinion();
+	if(TimeInAiState > 5s && MinionCount == 0)
+	{
+		AdminUnHide();
+		ChangeAiState(StateSearch);
+	}
 
-	StateHidden:
-		//TryCast(None, 1, 1000, 0, 5000)[MinionCount > 0] -> TeleportNearRandomMinion();
-		if(TimeInAiState > 5s && MinionCount == 0)
-		{
-			AdminUnHide();
-			ChangeAiState(StateSearch);
-		}
-
-	OnDie:
-		//if moonlight dies without splitting, instantly split and recover 10k hp
-		if(IsNamedEventOffCooldown("Split"))
-		{
-			CancelCast();
-			@MoonlightSplit();
-			SetHpNoNotify(10000);
-		}
+OnDie:
+	//if moonlight dies without splitting, instantly split and recover 10k hp
+	if(IsNamedEventOffCooldown("Split"))
+	{
+		CancelCast();
+		@MoonlightSplit();
+		SetHpNoNotify(10000);
+	}
 }
 

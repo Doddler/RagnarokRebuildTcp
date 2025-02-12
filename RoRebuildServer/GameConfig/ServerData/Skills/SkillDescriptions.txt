@@ -125,7 +125,7 @@ A ghost property psychokinetic attack dealing physical damage at [100 + SkillLev
 Cast Time: [1.2 - SkillLevel *0.1]s
 
 ::SoulStrike
-A ghost property psychokinetic attack that hits [SkillLevel / 2] times at 120% MATK. Deals 50% more damage against the undead.
+A ghost property psychokinetic attack that hits [SkillLevel / 2] times at 120% MATK. Deals [5 * SkillLevel]% additional damage against the undead.
 Cast Time: 0.5s
 
 ::ThunderStorm

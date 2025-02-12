@@ -18,16 +18,23 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 [SkillHandler(CharacterSkill.Pneuma, SkillClass.Magic, SkillTarget.Ground)]
 public class PneumaHandler : SkillHandlerBase
 {
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
 
-        var effectiveArea = Area.CreateAroundPoint(position, 1);
-        if (map.HasAreaOfEffectTypeInArea(effectiveArea, CharacterSkill.Pneuma))
-            return SkillValidationResult.OverlappingAreaOfEffect;
+        if (!position.IsValid() && source.Character.Type == CharacterType.Monster) //monsters will either target pneuma directly on themselves or an ally
+            position = target != null ? target.Character.Position : source.Character.Position;
 
-        return StandardValidation(source, target, position);
+        var effectiveArea = Area.CreateAroundPoint(position, 1);
+        if (map.HasAreaOfEffectTypeInArea(effectiveArea, CharacterSkill.Pneuma, CharacterSkill.SafetyWall))
+        {
+            if (source.Character.Type == CharacterType.Player)
+                CommandBuilder.SkillFailed(source.Player, SkillValidationResult.OverlappingAreaOfEffect);
+            return false;
+        }
+
+        return true;
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

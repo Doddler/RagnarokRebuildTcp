@@ -14,6 +14,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Channels;
 using System.Xml.Linq;
+using Antlr4.Runtime.Tree;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Simulation.Pathfinding;
@@ -23,7 +24,7 @@ namespace RoRebuildServer.EntityComponents.Monsters;
 
 public class MonsterSkillAiState(Monster monsterIn)
 {
-    private readonly Monster monster = monsterIn;
+    private readonly Monster monster = monsterIn; //never need to clear this as MonsterSkillAiState will always be 1:1 with a Monster class
     public Action<MonsterSkillAiState>? CastSuccessEvent = null;
     public bool SkillCastSuccess;
     public bool ExecuteEventAtStartOfCast;
@@ -33,6 +34,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     public int HpValue => monster.CombatEntity.GetStat(CharacterStat.Hp);
     public int MinionCount => monster.ChildCount;
     public bool InventoryFull => monster.IsInventoryFull;
+    public bool IsMinion => monster.HasMaster;
     private WorldObject? targetForSkill = null;
     //private bool failNextSkill = false;
 
@@ -43,7 +45,7 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     private Dictionary<string, float>? specialCooldowns;
     private int[]? stateFlags;
-    
+    private float[]? timingFlags;
 
     public CharacterSkill LastDamageSourceType => monster.LastDamageSourceType;
     public bool CanSeePlayers => monster.Character.HasVisiblePlayers();
@@ -51,8 +53,27 @@ public class MonsterSkillAiState(Monster monsterIn)
     public int DistanceToSelectedTarget => targetForSkill == null ? -1 : monster.Character.Position.Distance(TargetPosition);
     public Position TargetPosition => targetForSkill?.Position ?? Position.Invalid;
     public int TimeAlive => (int)(monster.TimeAlive * 1000);
+    public int ResummonMinionCount { get; set; } = -1;
+    public float MinionDeathTime = -1;
 
     public bool IsMasterAlive => monster.HasMaster && monster.GetMaster().TryGet<WorldObject>(out var chara) && chara.IsActive &&  chara.State != CharacterState.Dead;
+
+    public void Reset()
+    {
+        //reset the skill state
+        specialCooldowns?.Clear();
+        if(stateFlags != null)
+            Array.Clear(stateFlags);
+        ResummonMinionCount = -1;
+        MinionDeathTime = -1;
+        if(Events != null)
+            EntityListPool.Return(Events);
+        Events = null;
+        CastSuccessEvent = null;
+        SkillCastSuccess = false;
+        ExecuteEventAtStartOfCast = false;
+        FinishedProcessing = false;
+    }
 
     public void SetStateFlag(int id, int value)
     {
@@ -66,6 +87,34 @@ public class MonsterSkillAiState(Monster monsterIn)
         if (stateFlags == null)
             return 0;
         return stateFlags[id];
+    }
+
+    public void SetTimer(int id, int value)
+    {
+        if (timingFlags == null)
+            timingFlags = new float[4];
+        timingFlags[id] = Time.ElapsedTimeFloat + value / 1000f;
+    }
+
+    public bool TimerFinished(int id)
+    {
+        if (timingFlags == null || timingFlags[id] <= 0)
+            return false;
+        return timingFlags[id] < Time.ElapsedTimeFloat;
+    }
+
+    public bool TimerInactive(int id) => timingFlags == null || timingFlags[id] <= 0;
+
+    public void ResetTimer(int id)
+    {
+        if (timingFlags == null)
+            return;
+        timingFlags[id] = 0;
+    }
+
+    public void SetAttackCooldown(int time)
+    {
+        monster.Character.AttackCooldown = Time.ElapsedTimeFloat + time / 1000f;
     }
 
     public bool IsDisabled() => monster.GetStat(CharacterStat.Disabled) > 0;
@@ -84,7 +133,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     {
         monster.Die(false, false, CharacterRemovalReason.Teleport);
     }
-
+    
     public void FlagAsMvp()
     {
         monster.Character.IsImportant = true;
@@ -114,6 +163,30 @@ public class MonsterSkillAiState(Monster monsterIn)
         map?.AddVisiblePlayersAsPacketRecipients(monster.Character);
         CommandBuilder.ChangeCombatTargetableState(monster.Character, false);
         CommandBuilder.ClearRecipients();
+    }
+
+    public bool MinionsDeadFor(int time)
+    {
+#if DEBUG
+        if (ResummonMinionCount < 0)
+            throw new Exception($"Monster {monster.Character.Name} checking MinionsDeadFor(time) but it has no MinionCount set. Remember to set it in the OnInit section!");
+#endif
+        if (MinionCount > ResummonMinionCount)
+        {
+            if(MinionDeathTime > 2) //exception that lets us skip setting a death time via SkipNextMinionDeadTimer
+                MinionDeathTime = -1;
+            return false;
+        }
+        
+        if (MinionDeathTime < 0)
+            MinionDeathTime = Time.ElapsedTimeFloat;
+        
+        return Time.ElapsedTimeFloat > MinionDeathTime + (time / 1000f);
+    }
+
+    public void SkipNextMinionDeadTimer()
+    {
+        MinionDeathTime = 1;
     }
 
     public void HealMyMaster(int val) => HealMyMaster(val, val);
@@ -158,7 +231,7 @@ public class MonsterSkillAiState(Monster monsterIn)
         FinishedProcessing = true;
         return true;
     }
-
+    
     public bool IsNamedEventOffCooldown(string name)
     {
         if (specialCooldowns == null || !specialCooldowns.TryGetValue(name, out var cooldown))
@@ -182,11 +255,20 @@ public class MonsterSkillAiState(Monster monsterIn)
     {
         specialCooldowns?.Clear();
         monster.CombatEntity.ResetSkillCooldowns();
+        if(stateFlags != null)
+            Array.Clear(stateFlags);
+        if(timingFlags != null)
+            Array.Clear(timingFlags);
     }
 
     public void PutSkillOnCooldown(CharacterSkill skill, int cooldown)
     {
         monster.CombatEntity.SetSkillCooldown(skill, cooldown / 1000f);
+    }
+
+    public void ResetSkillCooldown(CharacterSkill skill)
+    {
+        monster.CombatEntity.ResetSkillCooldown(skill);
     }
 
     public void ChangeAiClass(MonsterAiType type, bool resetState = true)
@@ -218,7 +300,9 @@ public class MonsterSkillAiState(Monster monsterIn)
     public int TimeInAiState => (int)(monster.TimeInCurrentAiState * 1000);
     public int TimeOutOfCombat => (int)(monster.DurationOutOfCombat * 1000);
     public int TimeSinceLastDamage => (int)(monster.TimeSinceLastDamage * 1000);
-    public bool WasRangedAttacked => monster.WasAttacked && monster.LastAttackRange > 4;
+    public bool WasRangedAttacked => monster.WasAttacked && monster.LastAttackPhysical && monster.LastAttackRange > 4;
+    public bool IsHiding => monster.CombatEntity.HasBodyState(BodyStateFlags.Hidden);
+
     public MonsterAiState PreviousAiState => monster.PreviousAiState;
     public int TimeSinceStartChase
     {
@@ -330,13 +414,14 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     public bool Cast(CharacterSkill skill, int level, int castTime, int delay = 0, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
     {
+        Debug.Assert(monster.Character.Map != null);
+
         var ce = monster.CombatEntity;
         var attr = SkillHandler.GetMonsterSkillAttributes(skill);
         var skillTarget = attr.SkillTarget;
         var range = SkillHandler.GetSkillRange(ce, skill, level);
         if (flags.HasFlag(MonsterSkillAiFlags.UnlimitedRange))
             range = 21;
-
 
         var hideSkillName = flags.HasFlag(MonsterSkillAiFlags.HideSkillName);
         var ignoreTargetRequirement = flags.HasFlag(MonsterSkillAiFlags.NoTarget);
@@ -419,7 +504,8 @@ public class MonsterSkillAiState(Monster monsterIn)
             //if we're in a state where we have a target, we only need to check if we can use this skill on that enemy
             if (target != null && !flags.HasFlag(MonsterSkillAiFlags.RandomTarget))
             {
-                if (!ce.CanAttackTarget(target, range)) return SkillFail();
+                if (!ce.CanAttackTarget(target, range)) 
+                    return SkillFail();
                 if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f, hideSkillName))
                     return SkillFail();
 
@@ -476,7 +562,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     {
         if (!CheckCast(skill, chance))
             return SkillFail();
-
+        
         if (skill == CharacterSkill.NoCast)
             flags |= MonsterSkillAiFlags.HideSkillName;
 

@@ -50,6 +50,7 @@ expression : IDENTIFIER type=(INC|DEC)											#ExpressionUnary
 		   | left=expression comparison_operator right=expression				#Comparison
 		   | left=expression type=(BAND|BOR) right=expression					#BitwiseAnd
 		   | left=expression type=(AND|OR) right=expression						#LogicalAnd
+		   | NOT expression														#NotOperation
 		   | LPAREN expression RPAREN											#ArithmeticParens
 		   | function															#FunctionCallExpression
 		   | functionDefinition													#ExpressionFunctionDefinition
@@ -86,6 +87,7 @@ MACRO : 'macro';
 EVENT : 'event';
 INCLUDE : '#include';
 PER : '%';
+NOT : '!';
 SWITCH : 'switch';
 CASE : 'case';
 RETURN : 'return';

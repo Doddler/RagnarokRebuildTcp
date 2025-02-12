@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Networking;
@@ -28,6 +29,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Environment
                     break;
                 case "HammerFall":
                     HammerFallEffect.CreateHammerFall(spawn);
+                    break;
+                case "LoV":
+                    LordOfVermilionEffect.LaunchEffect(spawn);
                     break;
                 default:
                     Camera.CreateEffect(effect, spawn, facing);

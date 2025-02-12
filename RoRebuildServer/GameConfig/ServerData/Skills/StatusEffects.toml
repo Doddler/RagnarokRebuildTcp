@@ -84,6 +84,13 @@ Icon = "민첩성증가"
 CanDispel = true
 CanDisable = true
 
+[DecreaseAgi]
+Name = "Decrease Agility"
+Type = "Debuff"
+Icon = "민첩성감소"
+CanDispel = true
+CanDisable = true
+
 [Angelus]
 Name = "Angelus"
 Type = "Buff"
@@ -151,6 +158,16 @@ Icon = "에너지코트"
 CanDispel = true
 CanDisable = true
 
+[Sight]
+Type = "Buff"
+CanDispel = false
+CanDisable = false
+
+[Ruwach]
+Type = "Buff"
+CanDispel = false
+CanDisable = false
+
 #----------------------------------
 # Item Buffs
 #----------------------------------
@@ -206,6 +223,27 @@ CanDisable = true
 #----------------------------------
 # Monster Status Effects
 #----------------------------------
+
+[DarkBlessing]
+Name = "Dark Blessing"
+Type = "Debuff"
+Icon = "pharaoh_curse"
+CanDispel = false
+CanDisable = false
+
+[PowerUp]
+Name = "Power Up"
+Type = "Buff"
+Icon = "icon02"
+CanDispel = false
+CanDisable = false
+
+[SpeedUp]
+Name = "Speed Up"
+Type = "Buff"
+Icon = "민첩성증가"
+CanDispel = true
+CanDisable = false
 
 #Doom is used to kill monsters after a set period of time
 [Doom]

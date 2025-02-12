@@ -609,9 +609,12 @@ public class World
             for (var i = 0; i < monsterDef.Minions.Count; i++)
             {
                 var minionDef = monsterDef.Minions[i];
+                var givesExp = minionDef.InitialGivesExp;
                 for (var j = 0; j < minionDef.Count; j++)
                 {
                     var minion = CreateMonster(map, minionDef.Monster, Area.CreateAroundPoint(p, 2), null);
+                    if (!givesExp)
+                        minion.Get<Monster>().GivesExperience = false;
                     m.AddChild(ref minion, MonsterAiType.AiMinion);
                 }
             }
@@ -703,9 +706,12 @@ public class World
             for (var i = 0; i < monsterDef.Minions.Count; i++)
             {
                 var minionDef = monsterDef.Minions[i];
+                var givesExp = minionDef.InitialGivesExp;
                 for (var j = 0; j < minionDef.Count; j++)
                 {
                     var minion = CreateMonster(map, minionDef.Monster, Area.CreateAroundPoint(p, 2), null);
+                    if (!givesExp)
+                        minion.Get<Monster>().GivesExperience = false;
                     monster.AddChild(ref minion, MonsterAiType.AiMinion);
                 }
             }
