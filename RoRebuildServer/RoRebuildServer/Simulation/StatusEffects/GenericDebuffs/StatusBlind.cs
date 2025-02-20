@@ -19,12 +19,20 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
 
             ch.SubStat(CharacterStat.AddFlee, state.Value1);
             ch.SubStat(CharacterStat.AddHit, state.Value2);
-
+            
             if (ch.Character.Type == CharacterType.Monster && ch.GetSpecialType() != CharacterSpecialType.Boss)
             {
                 var m = ch.Character.Monster;
                 m.ChaseSight = 1;
                 m.AttackSight = 1;
+                ch.SetBodyState(BodyStateFlags.Blind); //bosses don't get the blind body state, their skill ranges aren't negatively affected
+            }
+
+            if (ch.Character.Type == CharacterType.Player)
+            {
+                if(ch.GetStat(CharacterStat.Range) > 5) //the enemy will be out of attack range
+                    ch.Player.ClearTarget();
+                ch.SetBodyState(BodyStateFlags.Blind);
             }
         }
 
@@ -32,7 +40,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         {
             ch.AddStat(CharacterStat.AddFlee, state.Value1);
             ch.AddStat(CharacterStat.AddHit, state.Value2);
-
+            ch.RemoveBodyState(BodyStateFlags.Blind);
 
             if (ch.Character.Type == CharacterType.Monster)
             {

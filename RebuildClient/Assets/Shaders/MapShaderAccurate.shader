@@ -40,6 +40,7 @@ Shader "Custom/MapShaderAccurate"
 				#pragma multi_compile _ LIGHTMAP_ON
 				#pragma multi_compile _ SHADOWS_SCREEN
 				#pragma multi_compile _ VERTEXLIGHT_ON
+				#pragma multi_compile _ BLINDEFFECT_ON
 
 				
 				#include "UnityCG.cginc"
@@ -64,7 +65,12 @@ Shader "Custom/MapShaderAccurate"
 				{
 					float2 uv : TEXCOORD0;
 					float2 uv2 : TEXCOORD1;
-					float4 color    : COLOR;
+#if BLINDEFFECT_ON
+					fixed4 color : COLOR0;
+					fixed4 color2 : COLOR1;
+#else
+					fixed4 color : COLOR;
+#endif
 					float4 pos : SV_POSITION;
 					float3 normal : TEXCOORD2;
 					float3 lightDir : TEXCOORD3;
@@ -96,7 +102,10 @@ Shader "Custom/MapShaderAccurate"
 				float _RoLightmapAOStrength;
 				float _Opacity;
 
-
+#ifdef BLINDEFFECT_ON
+				float4 _RoBlindFocus;
+				float _RoBlindDistance;
+#endif
 
 				v2f vert(appdata v)
 				{
@@ -110,8 +119,13 @@ Shader "Custom/MapShaderAccurate"
 					//o.worldpos = mul(unity_ObjectToWorld, v.vertex);
 
 					//o.color = _LightColor0;
-
-
+					
+					#if BLINDEFFECT_ON
+						float3 pos = mul(unity_ObjectToWorld, v.vertex);
+						float d = distance(pos, _RoBlindFocus);
+						d = saturate(1.5 - (d / _RoBlindDistance) * 1.5) + clamp((_RoBlindDistance-50)/120, -0.2, 0);
+						o.color2.rgb = clamp(1 * d, -1, 1);
+					#endif
 					
 					UNITY_TRANSFER_FOG(o,o.pos);
 					TRANSFER_VERTEX_TO_FRAGMENT(o);
@@ -154,6 +168,10 @@ Shader "Custom/MapShaderAccurate"
 					finalColor += lm * saturate(i.color.a);
 					
 					UNITY_APPLY_FOG(i.fogCoord, finalColor);
+            	#ifdef BLINDEFFECT_ON
+					finalColor.rgb *= i.color2.rgb;// * (0.5 + i.color.rgb/2);
+					finalColor = saturate(finalColor);
+				#endif
 					finalColor.a = 1; //reject transparancy, we're opaque and using cuttoff elsewhere. Fixes minimap generation having holes.
 					return finalColor;
 				}
@@ -187,7 +205,7 @@ Shader "Custom/MapShaderAccurate"
 	            #pragma multi_compile_fog
 	            // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
 	            //#pragma multi_compile _ LOD_FADE_CROSSFADE
-	            #define _ALPHABLEND_ON
+	            //#define _ALPHABLEND_ON
 
 	            #pragma vertex vertAdd
 	            #pragma fragment fragAdd

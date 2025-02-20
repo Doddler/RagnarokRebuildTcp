@@ -1,4 +1,19 @@
 ﻿
+SkillHandler("FARMILIAR") {
+StateAngry:
+	TryCast(Blind, 1, 5%, 0, 5s, HideSkillName);
+	TryCast(DarkAttack, 1, 5%, 0, 5s, HideSkillName);
+StateAttacking:
+	TryCast(Blind, 1, 5%, 0, 5s, HideSkillName);
+	TryCast(DarkAttack, 1, 5%, 0, 5s, HideSkillName);
+}
+
+SkillHandler("DRAINLIAR") {
+StateAttacking:
+	TryCast(Blind, 3, 5%, 0, 5s);
+	TryCast(BloodDrain, 1, 5%, 0, 5s);
+	TryCast(DarkAttack, 1, 20%, 0, 5s);
+}
 
 SkillHandler("WOLF") {
 StateChase:
@@ -17,6 +32,7 @@ StateChase:
 SkillHandler("GHOSTRING") {
 StateAny:
 	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateChase:
 	TryCast(SoulStrike, 9, 20%, 0.5s, 5s);
 StateAttacking:
@@ -26,6 +42,7 @@ StateAttacking:
 SkillHandler("DEVILING") {
 StateAny:
 	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> { CallDefaultMinions();  SendEmote(6) }
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateChase:
 	TryCast(DarkStrike, 5, 30%, 0, 0) -> SendEmote(32);
 	TryCast(DarkAttack, 2, 20%, 0, 5s) -> SendEmote(6);
@@ -39,6 +56,7 @@ StateAny:
 	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> { CallDefaultMinions();  SendEmote(18) }
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(18);
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[HpPercent < 30] -> SendEmote(18);
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle:
 	TryCast(NoCast, 3, 200, 0, 5000) -> SendEmote(22);
 StateChase:

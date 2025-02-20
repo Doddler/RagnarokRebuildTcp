@@ -84,7 +84,7 @@ public partial class Monster : IEntityAutoReset
 
     public Entity Target;
     private Entity Master;
-    private EntityList? Children;
+    public EntityList? Children;
 
     public int ChildCount => Children?.Count ?? 0;
 
@@ -103,7 +103,8 @@ public partial class Monster : IEntityAutoReset
     private ItemReference[]? monsterInventory;
     private int inventoryCount;
     private int inventoryIndex;
-    public bool IsInventoryFull => inventoryCount >= 10;
+    public bool IsInventoryFull => inventoryCount >= InventorySize;
+    private const int InventorySize = 15;
     
     public bool LockMovementToSpawn;
     public bool GivesExperience;
@@ -327,12 +328,12 @@ public partial class Monster : IEntityAutoReset
     public void AddItemToInventory(ItemReference item)
     {
         if (monsterInventory == null)
-            monsterInventory = ArrayPool<ItemReference>.Shared.Rent(10);
+            monsterInventory = ArrayPool<ItemReference>.Shared.Rent(InventorySize);
         monsterInventory[inventoryIndex] = item;
         inventoryIndex++;
         if(inventoryIndex > inventoryCount)
             inventoryCount = inventoryIndex;
-        if (inventoryIndex >= 10)
+        if (inventoryIndex >= InventorySize)
             inventoryIndex = 0;
     }
 
@@ -373,8 +374,7 @@ public partial class Monster : IEntityAutoReset
 
     public void UpdateStats()
     {
-        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100);
-
+        var aspdBonus = 100f / (float.Clamp(GetStat(CharacterStat.AspdBonus), -99, 5000) + 100);
         
         var recharge = MonsterBase.RechargeTime * aspdBonus;
         var motionTime = MonsterBase.AttackLockTime;
@@ -391,12 +391,16 @@ public partial class Monster : IEntityAutoReset
         SetTiming(TimingStat.AttackMotionTime, motionTime);
         SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
 
-        var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
-        if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Curse))
-            moveBonus = 0.1f;
+        var oldMoveSpeed = Character.MoveSpeed;
+        var moveBonus = 100f / (100f + float.Clamp(GetStat(CharacterStat.MoveSpeedBonus), -99, 5000));
+        if (CombatEntity.HasBodyState(BodyStateFlags.Curse))
+            moveBonus = 1 / 0.1f;
         var moveSpeed = MonsterBase.MoveSpeed * moveBonus;
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
+
+        if (Character.IsMoving && Math.Abs(oldMoveSpeed - Character.MoveSpeed) > 0.03)
+            Character.TryMove(Character.TargetPosition, 0);
     }
 
     private bool ValidateTarget()

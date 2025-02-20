@@ -85,6 +85,8 @@ namespace Assets.Scripts.Effects
             IsInit = false;
             HasFiredEvent = false;
             Effect = null;
+            if(PrimitiveData != null && PrimitiveData is IResettable)
+                EffectPool.ReturnData(PrimitiveData, PrimitiveType);
             PrimitiveData = null;
             UpdateHandler = null;
             RenderHandler = null;
@@ -187,8 +189,9 @@ namespace Assets.Scripts.Effects
             mr.material = Material;
             mr.enabled = true;
             mf.sharedMesh = mesh;
-            
-            PrimitiveData = RagnarokEffectData.NewPrimitiveData(PrimitiveType);
+
+
+            PrimitiveData = EffectPool.BorrowData(PrimitiveType); //RagnarokEffectData.NewPrimitiveData(PrimitiveType);
 
             IsActive = true;
             IsDirty = true;
@@ -479,6 +482,9 @@ namespace Assets.Scripts.Effects
 
             if (UpdateHandler != null)
                 UpdateHandler(this);
+            
+            if (!IsActive)
+                mr.enabled = false;
             
             transform.position += Velocity * Time.deltaTime;
 

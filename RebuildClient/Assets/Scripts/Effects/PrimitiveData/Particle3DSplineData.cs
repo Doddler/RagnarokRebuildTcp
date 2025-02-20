@@ -10,5 +10,6 @@ namespace Assets.Scripts.Effects.PrimitiveData
         public Vector2 Acceleration;
         public Quaternion Rotation;
         public float Size;
+        public Color32 Color = new Color32(255,  255, 255, 255);
     }
 }

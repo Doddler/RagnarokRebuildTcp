@@ -33,6 +33,13 @@ namespace Assets.Scripts.Utility
         public void AddNormal(Vector3 n) => normals.Add(n);
         public void AddUV(Vector2 v) => uvs.Add(v);
         public void AddTriangle(int i) => triangles.Add(i);
+        public void AddTriangle(int v0, int v1, int v2)
+        {
+            triangles.Add(v0);
+            triangles.Add(v1);
+            triangles.Add(v2);
+        }
+
         public void ClearVertex() => vertices.Clear();
 
         public bool HasMesh() => triangles.Count > 0;
@@ -232,8 +239,9 @@ namespace Assets.Scripts.Utility
                     Console.WriteLine("AAAAA");
 
                 mesh.SetVertices(vertices.GetRange(start, count));
-                mesh.SetNormals(normals.GetRange(start, count));
                 mesh.SetTriangles(triangles.GetRange(0, triCount), 0);
+                if(normals.Count > 0)
+                    mesh.SetNormals(normals.GetRange(start, count));
                 if (!useUv3)
                     mesh.SetUVs(0, uvs.GetRange(start, count));
                 else

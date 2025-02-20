@@ -39,6 +39,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
 
             data.Texture = arrowTexture;
             data.FrameRate = 12;
+            data.Alpha = 255;
             data.Style = BillboardStyle.AxisAligned;
             data.Width = arrowTexture.width / 65f;
             data.Height = arrowTexture.height / 65f;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
@@ -20,19 +21,31 @@ namespace Assets.Scripts.PlayerControl
         private static void UpdateColorForStatus(ServerControllable src)
         {
             var color = Color.white;
+            var priority = -1;
             
             foreach (var s in src.StatusEffectState.activeStatusEffects)
             {
                 switch (s)
                 {
                     case CharacterStatusEffect.TwoHandQuicken:
-                        color = new Color(1, 1, 0.7f);
+                        if(priority < 0)
+                            color = new Color(1, 1, 0.7f);
+                        priority = 0;
                         break;
                     case CharacterStatusEffect.Poison:
-                        color = new Color(1f, 0.7f, 1f);
+                        if(priority < 1)
+                            color = new Color(1f, 0.7f, 1f);
+                        priority = 1;
+                        break;
+                    case CharacterStatusEffect.Curse:
+                        if(priority < 2)
+                            color = new Color(0.5f, 0f, 0f);
+                        priority = 2;
                         break;
                     case CharacterStatusEffect.Frozen:
-                        color = new Color(0.3f, 0.7f, 1f);
+                        if(priority < 3)
+                            color = new Color(0f, 0.5f, 1f);
+                        priority = 3;
                         break;
                 }
             }
@@ -41,7 +54,7 @@ namespace Assets.Scripts.PlayerControl
         }
         
 
-        public static void AddStatusToTarget(ServerControllable controllable, CharacterStatusEffect status)
+        public static void AddStatusToTarget(ServerControllable controllable, CharacterStatusEffect status, bool isNewEntity)
         {
             if (controllable.StatusEffectState == null)
                 controllable.StatusEffectState = new StatusEffectState();
@@ -79,6 +92,9 @@ namespace Assets.Scripts.PlayerControl
                     // if(controllable.SpriteAnimator.CurrentMotion is SpriteMotion.Idle or SpriteMotion.Standby)
                     //     controllable.SpriteAnimator.AnimSpeed = 2f;
                     break;
+                case CharacterStatusEffect.Sleep:
+                    SleepEffect.AttachSleepEffect(controllable);
+                    break;
                 case CharacterStatusEffect.TwoHandQuicken:
                     // controllable.SpriteAnimator.Color = new Color(1, 1, 0.7f);
                     RoSpriteTrailManager.Instance.AttachTrailToEntity(controllable);
@@ -91,11 +107,38 @@ namespace Assets.Scripts.PlayerControl
                     // controllable.SpriteAnimator.Color = new Color(0.3f, 0.7f, 1f);
                     controllable.AbortActiveWalk();
                     controllable.SpriteAnimator?.PauseAnimation();
+                    FreezeEffect.AttachFreezeEffect(controllable);
+                    if(!isNewEntity)
+                        AudioManager.Instance.OneShotSoundEffect(controllable.Id, "_stonecurse.ogg", controllable.transform.position, 0.8f);
+                    break;
+                case CharacterStatusEffect.Curse:
+                    AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_curse.ogg", controllable.gameObject);
+                    CurseEffect.AttachCurseEffect(controllable);
                     break;
                 case CharacterStatusEffect.PowerUp:
                     var powerUp = ExplosiveAuraEffect.AttachExplosiveAura(controllable.gameObject, 2, new Color(1f, 20/255f, 20/255f));
                     controllable.AttachEffect(powerUp);
                     break;
+                case CharacterStatusEffect.Blind:
+                    if (controllable.IsMainCharacter)
+                    {
+                        Shader.EnableKeyword("BLINDEFFECT_ON");
+                        if (CameraFollower.Instance.BlindStrength > 100)
+                        {
+                            CameraFollower.Instance.BlindStrength = 200f;
+                            AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_blind.ogg", CameraFollower.Instance.ListenerProbe, 1.2f);
+                        }
+
+                        CameraFollower.Instance.IsBlindActive = true;
+                    }
+                    else
+                    {
+                        if(!isNewEntity)
+                            AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_blind.ogg", CameraFollower.Instance.ListenerProbe, 0.8f); //quieter
+                    }
+
+                    break;
+                    
             }
         }
 
@@ -123,14 +166,30 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Stun:
                     controllable.EndEffectOfType(EffectType.Stun);
                     break;
+                case CharacterStatusEffect.Sleep:
+                    controllable.EndEffectOfType(EffectType.Sleep);
+                    break;
+                case CharacterStatusEffect.Curse:
+                    controllable.EndEffectOfType(EffectType.Curse);
+                    break;
+                case CharacterStatusEffect.Stone:
+                    AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_stone_explosion.ogg", CameraFollower.Instance.ListenerProbe, 0.8f);
+                    break;
                 case CharacterStatusEffect.TwoHandQuicken:
                     RoSpriteTrailManager.Instance.RemoveTrailFromEntity(controllable);
                     break;
                 case CharacterStatusEffect.Frozen:
                     controllable.SpriteAnimator.Unpause();
+                    var freeze = controllable.GetExistingEffectOfType(EffectType.Freeze);
+                    if(freeze != null)
+                        freeze.EffectHandler.OnEvent(freeze, null);
                     break;
                 case CharacterStatusEffect.PowerUp:
                     controllable.EndEffectOfType(EffectType.ExplosiveAura);
+                    break;
+                case CharacterStatusEffect.Blind:
+                    if(controllable.IsMainCharacter)
+                        CameraFollower.Instance.IsBlindActive = false;
                     break;
             }
         }

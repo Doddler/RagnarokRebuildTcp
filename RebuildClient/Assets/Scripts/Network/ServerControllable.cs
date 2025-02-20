@@ -29,6 +29,8 @@ namespace Assets.Scripts.Network
 {
     public class ServerControllable : MonoBehaviour, IEffectOwner
     {
+        private static readonly int RoBlindFocus = Shader.PropertyToID("_RoBlindFocus");
+        private static readonly int RoBlindDistance = Shader.PropertyToID("_RoBlindDistance");
         private RoWalkDataProvider walkProvider;
 
         public CharacterType CharacterType;
@@ -806,6 +808,20 @@ namespace Assets.Scripts.Network
             EffectList.Add(effect);
             effect.EffectOwner = this;
         }
+        
+        public Ragnarok3dEffect GetExistingEffectOfType(EffectType type)
+        {
+            if (EffectList == null || EffectList.Count == 0)
+                return null;
+
+            foreach (var effect in EffectList)
+            {
+                if (effect.EffectType == type)
+                    return effect;
+            }
+
+            return null;
+        }
 
         public void EndEffectOfType(EffectType type)
         {
@@ -1136,12 +1152,12 @@ namespace Assets.Scripts.Network
         //	    GameObject.Destroy(gameObject);
         //}
 
-        public void AttachFloatingTextIndicator(string text)
+        public void AttachFloatingTextIndicator(string text, TextIndicatorType type = TextIndicatorType.Miss, float height = 1f)
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
-            var height = 1f;
+            //var height = 1f;
             var color = "white";
-            di.DoDamage(TextIndicatorType.Miss, text, new Vector3(0f, 0.6f, 0f), height,
+            di.DoDamage(type, text, new Vector3(0f, 0.6f, 0f), height,
                 SpriteAnimator.Direction, color, false);
             di.AttachDamageIndicator(this);
         }
@@ -1395,6 +1411,8 @@ namespace Assets.Scripts.Network
                     return;
 
                 MinimapController.Instance.SetPlayerPosition(CellPosition, Directions.GetAngleForDirection(SpriteAnimator.Direction) + 180f);
+                
+                Shader.SetGlobalVector(RoBlindFocus, transform.position);
             }
 
             if (SpriteAnimator.SpriteData == null)

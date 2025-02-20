@@ -2,6 +2,7 @@
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
+using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Simulation.Skills.SkillHandlers;
@@ -129,10 +130,16 @@ namespace RoRebuildServer.Simulation.Skills
             if (handler != null)
             {
                 var range = handler.GetSkillRange(src, level);
-                return range < 0 ? src.GetStat(CharacterStat.Range) : range;
+                if(range < 0)
+                    return src.GetEffectiveStat(CharacterStat.Range);
+
+                if (src.HasBodyState(BodyStateFlags.Blind))
+                    return int.Min(range, ServerConfig.MaxAttackRangeWhileBlind);
+                
+                return range;
             }
 
-            return src.GetStat(CharacterStat.Range);
+            return src.GetEffectiveStat(CharacterStat.Range);
         }
 
         public static bool ExecuteSkill(SkillCastInfo info, CombatEntity src)

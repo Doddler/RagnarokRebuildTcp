@@ -7,6 +7,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 namespace Assets.Scripts.Sprites
 {
@@ -55,6 +56,7 @@ namespace Assets.Scripts.Sprites
         private static bool canUpdateRenderer = false;
 
         public List<RoSpriteAnimator> ChildrenSprites = new List<RoSpriteAnimator>();
+        public RoSpriteAnimator EffectChild;
 
         public RoSpriteAnimator Parent;
         public GameObject Shadow;
@@ -65,6 +67,7 @@ namespace Assets.Scripts.Sprites
         public bool IgnoreAnchor = false;
         public bool IsHead = false;
         public HeadFacing HeadFacing;
+        public bool IsEffectSprite;
 
         public bool SetAsDirty;
 
@@ -592,6 +595,14 @@ namespace Assets.Scripts.Sprites
             if (!isInitialized)
                 return;
 
+            if (currentActionIndex > SpriteData.Actions.Length - 1)
+                currentActionIndex %= SpriteData.Actions.Length;
+            
+#if DEBUG
+            if(SpriteData.Actions.Length < currentActionIndex + currentAngleIndex)
+                Debug.LogError($"Sprite {gameObject.name} could not change to sprite ActionIndex:{currentActionIndex} Angle:{currentAngleIndex}");
+            else //cursed as all fuck
+#endif
             currentAction = SpriteData.Actions[currentActionIndex + currentAngleIndex];
             currentFrame = newCurrentFrame;
 
@@ -808,6 +819,11 @@ namespace Assets.Scripts.Sprites
 
                         ChildrenSprites[i].ChangeAngle(Angle);
                         ChildrenSprites[i].ChildSetFrameData(currentActionIndex, currentAngleIndex, currentFrame);
+                    }
+
+                    if (EffectChild != null)
+                    {
+                        EffectChild.ChangeAngle(Angle);
                     }
 
                     isDirty = false;

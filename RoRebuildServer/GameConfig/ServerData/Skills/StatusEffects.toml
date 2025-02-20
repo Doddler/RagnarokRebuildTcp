@@ -245,6 +245,12 @@ Icon = "민첩성증가"
 CanDispel = true
 CanDisable = false
 
+[Vampyrism]
+Type = "Buff"
+Icon = "icon02"
+CanDispel = true
+CanDisable = false
+
 #Doom is used to kill monsters after a set period of time
 [Doom]
 Name = "Doom"

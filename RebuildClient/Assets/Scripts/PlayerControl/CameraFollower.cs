@@ -68,6 +68,7 @@ namespace Assets.Scripts
         public TextAsset LevelChart;
 
         private static CameraFollower _instance;
+        private static readonly int RoBlindDistance = Shader.PropertyToID("_RoBlindDistance");
         public RoWalkDataProvider WalkProvider;
 
         public Canvas UiCanvas;
@@ -163,6 +164,10 @@ namespace Assets.Scripts
 
         public float FogNearRatio = 0.3f;
         public float FogFarRatio = 4f;
+
+        public bool IsBlindActive;
+        public float BlindStrength = 60;
+        private const float BlindTargetDistance = 10f;
 
 #if DEBUG
         private const float MaxClickDistance = 500;
@@ -1857,6 +1862,25 @@ namespace Assets.Scripts
                         var r = c.gameObject.GetComponent<MeshRenderer>();
                         r.enabled = !r.enabled;
                     }
+                }
+            }
+
+            if (IsBlindActive)
+            {
+                BlindStrength = Mathf.Lerp(BlindStrength, BlindTargetDistance, Time.deltaTime * 3f);
+                Shader.SetGlobalFloat(RoBlindDistance, BlindStrength);
+            }
+            else
+            {
+                if (TargetControllable != null)
+                {
+                    if (BlindStrength < 200f)
+                    {
+                        BlindStrength += 200f * Time.deltaTime;
+                        Shader.SetGlobalFloat(RoBlindDistance, BlindStrength);
+                    }
+                    else
+                        Shader.DisableKeyword("BLINDEFFECT_ON");
                 }
             }
 

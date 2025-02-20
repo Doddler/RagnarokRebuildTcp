@@ -301,6 +301,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     public int TimeOutOfCombat => (int)(monster.DurationOutOfCombat * 1000);
     public int TimeSinceLastDamage => (int)(monster.TimeSinceLastDamage * 1000);
     public bool WasRangedAttacked => monster.WasAttacked && monster.LastAttackPhysical && monster.LastAttackRange > 4;
+    public bool WasRangedOrMagicAttacked => monster.WasAttacked && monster.LastAttackRange > 4;
     public bool IsHiding => monster.CombatEntity.HasBodyState(BodyStateFlags.Hidden);
 
     public MonsterAiState PreviousAiState => monster.PreviousAiState;
@@ -466,7 +467,7 @@ public class MonsterSkillAiState(Monster monsterIn)
 
             if (!ce.AttemptStartGroundTargetedSkill(pos, skill, level, castTime / 1000f, hideSkillName))
                 return SkillFail();
-            ce.SetSkillCooldown(skill, delay / 1000f);
+            ce.SetSkillCooldown(skill, delay + castTime);
             return SkillSuccess();
         }
 
@@ -478,7 +479,7 @@ public class MonsterSkillAiState(Monster monsterIn)
                 if (!ce.AttemptStartSingleTargetSkillAttack(targetForSkill.CombatEntity, skill, level, castTime / 1000f, hideSkillName))
                     return SkillFail();
 
-                ce.SetSkillCooldown(skill, delay / 1000f);
+                ce.SetSkillCooldown(skill, delay + castTime);
                 return SkillSuccess();
             }
             else
@@ -489,7 +490,7 @@ public class MonsterSkillAiState(Monster monsterIn)
         {
             if (!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f, hideSkillName))
                 return SkillFail();
-            ce.SetSkillCooldown(skill, delay / 1000f);
+            ce.SetSkillCooldown(skill, delay + castTime);
             return SkillSuccess();
         }
 
@@ -509,7 +510,7 @@ public class MonsterSkillAiState(Monster monsterIn)
                 if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f, hideSkillName))
                     return SkillFail();
 
-                ce.SetSkillCooldown(skill, delay / 1000f);
+                ce.SetSkillCooldown(skill, delay + castTime);
                 return SkillSuccess();
             }
 
@@ -532,7 +533,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f))
                 return SkillFail();
 
-            ce.SetSkillCooldown(skill, delay / 1000f);
+            ce.SetSkillCooldown(skill, delay + castTime);
             return SkillSuccess();
         }
 
@@ -552,7 +553,7 @@ public class MonsterSkillAiState(Monster monsterIn)
         if (result)
         {
             monster.LastDamageSourceType = CharacterSkill.None;
-            SetEventCooldown(cooldownName, delay);
+            SetEventCooldown(cooldownName, delay + castTime);
         }
 
         return result;

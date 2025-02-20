@@ -14,10 +14,13 @@ Shader "Custom/ObjectShader"
     }
     SubShader
     {
-            Tags {"Queue" = "AlphaTest" "RenderType" = "TransparentCutout" "BW" = "TrueProbes" "LightMode" = "ForwardBase"}
+        Tags
+        {
+            "Queue" = "AlphaTest" "RenderType" = "TransparentCutout" "BW" = "TrueProbes" "LightMode" = "ForwardBase"
+        }
 
         LOD 200
-                //Lighting Off
+        //Lighting Off
 
         //     Pass
         //    {
@@ -71,7 +74,7 @@ Shader "Custom/ObjectShader"
         Pass
         {
             Cull [_CullMode]
-            
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -81,9 +84,7 @@ Shader "Custom/ObjectShader"
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma target 2.0
             #pragma multi_compile_fog
-
-
-
+            #pragma multi_compile _ BLINDEFFECT_ON
 
             #include "UnityCG.cginc"
             #include "AutoLight.cginc"
@@ -91,26 +92,23 @@ Shader "Custom/ObjectShader"
             struct appdata
             {
                 float4 vertex : POSITION;
-                float4 color    : COLOR;
+                float4 color : COLOR;
                 float2 uv : TEXCOORD0;
                 float2 uv2 : TEXCOORD1;
                 float3 normal : NORMAL;
-
-
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
                 float2 uv2 : TEXCOORD1;
-                float4 color    : COLOR;
+				fixed4 color : COLOR;
                 float4 pos : SV_POSITION;
                 float3 normal : TEXCOORD2;
                 float3 lightDir : TEXCOORD3;
 
                 UNITY_FOG_COORDS(4)
                 LIGHTING_COORDS(5, 6)
-
             };
 
             sampler2D _MainTex;
@@ -119,12 +117,11 @@ Shader "Custom/ObjectShader"
             fixed _Cutoff;
             fixed _AmbientIntensity;
             fixed _LightmapIntensity;
-            
 
-#ifdef DIRLIGHTMAP_COMBINED
+
+            #ifdef DIRLIGHTMAP_COMBINED
             SamplerState samplerunity_LightmapInd;
-#endif
-
+            #endif
 
 
             //unity defined variables
@@ -135,6 +132,12 @@ Shader "Custom/ObjectShader"
             float4 _RoDiffuseColor;
             float _RoLightmapAOStrength;
             float _Opacity;
+
+
+            #ifdef BLINDEFFECT_ON
+				float4 _RoBlindFocus;
+				float _RoBlindDistance;
+            #endif
 
 
             float4 Screen(float4 a, float4 b)
@@ -153,6 +156,15 @@ Shader "Custom/ObjectShader"
                 o.uv2 = v.uv2.xy * unity_LightmapST.xy + unity_LightmapST.zw;
                 //o.worldpos = mul(unity_ObjectToWorld, v.vertex);
 
+#if BLINDEFFECT_ON
+				float3 pos = mul(unity_ObjectToWorld, v.vertex);
+				float d = distance(pos, _RoBlindFocus);
+				//d = 1.2 - d / _RoBlindDistance;
+                d = 1.5 - (d / _RoBlindDistance) * 1.5 + clamp((_RoBlindDistance-50)/120, -0.2, 0);
+				o.color.rgb = 1 * clamp(1 * d, -1, 1);
+#else
+                o.color = float4(1,1,1,1);
+#endif
 
                 UNITY_TRANSFER_FOG(o, o.pos);
                 TRANSFER_VERTEX_TO_FRAGMENT(o);
@@ -162,28 +174,28 @@ Shader "Custom/ObjectShader"
             fixed4 frag(v2f i) : SV_Target
             {
                 float4 diffuse = tex2D(_MainTex, i.uv);
-                
+
 
                 clip(diffuse.a - _Cutoff);
-                
-#if LIGHTMAP_ON
+
+                #if LIGHTMAP_ON
                 float4 lm = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv2)), 1) * _LightmapIntensity;
                 lm = clamp(lm, 0, 0.5);
-#else
-                float4 lm = float4(ShadeSH9(float4(i.normal, 1)),1);
+                #else
+                float4 lm = float4(ShadeSH9(float4(i.normal, 1)), 1);
                 lm = clamp(lm, 0, 0.5);
-                
-#endif
+
+                #endif
                 float4 ambienttex = float4(1, 1, 1, 1);
 
-#ifdef DIRLIGHTMAP_COMBINED
+                #ifdef DIRLIGHTMAP_COMBINED
                 ///float4 lm2 = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D_SAMPLER(unity_LightmapInd, unity_Lightmap, i.uv2)), 1);
 
                 fixed4 bakedDirTex = UNITY_SAMPLE_TEX2D_SAMPLER(unity_LightmapInd, unity_LightmapInd, i.uv2);
                 //return float4(bakedDirTex.r, 1, 1, 1);
                 ambienttex = bakedDirTex.rrrr;
 
-#endif
+                #endif
                 //lm = clamp(lm, 0, 0.4);
 
                 //lm = floor(lm * 32) / 32;
@@ -206,17 +218,16 @@ Shader "Custom/ObjectShader"
                 lm *= (0.5 + saturate(NdotL * 2) * 0.5);
 
 
-
                 fixed ambientStrength = _RoLightmapAOStrength * _AmbientIntensity;
 
                 ambienttex = ambienttex * ambientStrength + (1 - ambientStrength);
-                
-                
+
+
                 //diffuse = diffuse * (_RoAmbientColor+lm * 2 * _RoOpacity);
-                
+
 
                 //diffuse = diffuse * lerp(0.5, 1, saturate(diffuseTerm));
-                
+
 
                 float4 finalColor = diffuse; // *(ambient + diffuseTerm);
 
@@ -228,53 +239,61 @@ Shader "Custom/ObjectShader"
                 // finalColor *= env;
                 // finalColor += lm * 0.5 * _LightmapIntensity;
                 // return finalColor;
-                
-                finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse * env + lm * 2 * (diffuse) * _LightmapIntensity * 0.8;
+
+                finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse *
+                    env + lm * 2 * (diffuse) * _LightmapIntensity * 0.8;
+                //finalColor *= i.color;
                 finalColor *= ambienttex;
                 finalColor *= 1 + (ambientStrength / 10);
-
+                
                 UNITY_APPLY_FOG(i.fogCoord, finalColor);
 
+                finalColor.rgb *= i.color.rgb;// * (0.5 + i.color.rgb/2);
+                finalColor = saturate(finalColor);
+
                 return finalColor;
-
             }
-
             ENDCG
         }
 
-		Pass
-	        {
-	            Tags { "LightMode" = "ForwardAdd" }
-	            Blend SrcAlpha One
-	            Fog { Color (0,0,0,0) } // in additive pass fog should be black
-	            ZWrite Off
-	            ZTest LEqual
+        Pass
+        {
+            Tags
+            {
+                "LightMode" = "ForwardAdd"
+            }
+            Blend SrcAlpha One
+            Fog
+            {
+                Color (0,0,0,0)
+            } // in additive pass fog should be black
+            ZWrite Off
+            ZTest LEqual
 
-	            CGPROGRAM
-	            #pragma target 3.0
+            CGPROGRAM
+            #pragma target 3.0
 
-	            // -------------------------------------
+            // -------------------------------------
 
 
-	            #pragma shader_feature_local _NORMALMAP
-	            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-	            #pragma shader_feature_local _METALLICGLOSSMAP
-	            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-	            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
-	            #pragma shader_feature_local _DETAIL_MULX2
-	            #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local _DETAIL_MULX2
+            #pragma shader_feature_local _PARALLAXMAP
 
-	            #pragma multi_compile_fwdadd_fullshadows
-	            #pragma multi_compile_fog
-	            // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
-	            //#pragma multi_compile _ LOD_FADE_CROSSFADE
+            #pragma multi_compile_fwdadd_fullshadows
+            #pragma multi_compile_fog
+            // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
+            //#pragma multi_compile _ LOD_FADE_CROSSFADE
 
-	            #pragma vertex vertAdd
-	            #pragma fragment fragAdd
-	            #include "UnityStandardCoreForward.cginc"
-
-	            ENDCG
-	        }
+            #pragma vertex vertAdd
+            #pragma fragment fragAdd
+            #include "UnityStandardCoreForward.cginc"
+            ENDCG
+        }
 
         //Tags { "RenderType" = "AlphaTest" }
         //LOD 200

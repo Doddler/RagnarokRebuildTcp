@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!200 &20000000
+ShaderVariantCollection:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: IncludedShaderCollection
+  m_Shaders:
+  - first: {fileID: 4800000, guid: c3e2b57f3d9f16d4dac9816f7fec7093, type: 3}
+    second:
+      variants:
+      - keywords: BLINDEFFECT_ON COLOR_DRAIN DIRECTIONAL DIRLIGHTMAP_COMBINED FOG_LINEAR
+          LIGHTMAP_ON LIGHTPROBE_SH SMOOTHPIXEL WATER_OFF
+        passType: 1
+      - keywords: BLINDEFFECT_ON COLOR_DRAIN DIRECTIONAL FOG_LINEAR LIGHTMAP_ON SMOOTHPIXEL
+          WATER_OFF
+        passType: 1
+      - keywords: DIRECTIONAL FOG_LINEAR
+        passType: 1
+      - keywords: DIRECTIONAL FOG_LINEAR LIGHTMAP_ON WATER_OFF
+        passType: 1

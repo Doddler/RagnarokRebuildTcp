@@ -23,7 +23,7 @@ public class SkillPoison : SkillHandlerBase
 
         var ch = source.Character;
 
-        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.PoisonAttack, lvl, res);
+        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Poison, lvl, res);
 
         if (!res.IsDamageResult)
             return;

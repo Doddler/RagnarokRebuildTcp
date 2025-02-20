@@ -6,8 +6,10 @@
 ::???
 - Visual effect for teleporting, players logging in and moving maps, and logging out.
 - New player skills: Warp Portal, safety wall, soul strike, frost diver.
-- New monster skills: Dark strike, power up, speed up, dark blessing, combo attack, lord of vermilion.
-- Some bosses will now have a minimum delay after their minions die before they can be resummoned.
+- New monster skills: Dark strike, power up, speed up, blood drain, dark blessing, combo attack, lord of vermilion.
+- New status effects: Sleep, blind, freeze. Cards that apply these status effects when attacking or being attacked now work.
+- Blind status is adjusted: Reduces flee/hit by 1/4 of your agi/dex and caps attack/skill range to 5. Blind monsters they can't see players unless you hit them or stand next to them. Bosses can be blinded but it only reduces their hit/flee.
+- Some bosses now have a minimum delay after their minions die before they can be resummoned.
 - Adjustment made to all magic casting auras. Ghost and holy cast auras both added.
 - Some on hit effects (such as water and wind elements) now work correct.
 - Kafra staff and warp NPCs now have a minimap icon.

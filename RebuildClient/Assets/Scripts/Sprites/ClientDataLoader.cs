@@ -590,7 +590,7 @@ namespace Assets.Scripts.Sprites
 
             if (param.CharacterStatusEffects != null)
                 foreach (var s in param.CharacterStatusEffects)
-                    StatusEffectState.AddStatusToTarget(control, s);
+                    StatusEffectState.AddStatusToTarget(control, s, true);
 
             return control;
         }
@@ -918,7 +918,7 @@ namespace Assets.Scripts.Sprites
 
             if (param.CharacterStatusEffects != null)
                 foreach (var s in param.CharacterStatusEffects)
-                    StatusEffectState.AddStatusToTarget(control, s);
+                    StatusEffectState.AddStatusToTarget(control, s, true);
 
             return control;
         }

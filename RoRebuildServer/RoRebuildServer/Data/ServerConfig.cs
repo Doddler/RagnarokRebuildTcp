@@ -7,6 +7,7 @@ public static class ServerConfig
     public const int MaxViewDistance = 21;
     public const int MaxAoESize = 9;
     public const int InitialConnectionCapacity = 40;
+    public const int MaxAttackRangeWhileBlind = 5;
 
     private static ServerDebugConfig? serverDebugConfig;
     private static ServerDataConfig? serverDataConfig;

@@ -29,8 +29,6 @@ StateAttacking:
 	TryCast(TwoHandQuicken, 1, 1000, 0, 99h)[HpPercent < 99];
 }
 
-
-
 SkillHandler("ASSULTER") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt);
@@ -43,18 +41,12 @@ StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(18); //lol
 }
 
-SkillHandler("MAJORUROS") {
-StateAttacking:
-	TryCast(HammerFall, 5, 5%, 1.5s, 5s);
-}
-
 SkillHandler("PECOPECO") {
 StateChase:
 	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(6); //angry
 StateAttacking:
 	TryCast(SonicBlow, 2, 5%, 0.8s, 5s) -> SendEmote(6); //angry
 }
-
 
 SkillHandler("GEOGRAPHER") {
 StateAny:
@@ -74,10 +66,13 @@ OnTimer 2000:
 SkillHandler("ANGRY_TARGET_DUMMY") {
 	StateAny:
 	//TryCast(JupitelThunder, 28, 100%, 0.5s, 2s);
-	//TryCast(HolyAttack, 5, 100%, 0.5s, 15s);
-	TryCast(LordOfVermilion, 10, 100%, 0.7s, 15s)[IsHiding];
-	TryCast(Hiding, 3, 100%, 0, 10s)[!IsHiding];
-	TryCast(Hiding, 3, 100%, 0, 20s)[IsHiding];
+	TryCast(Curse, 10, 100%, 1s, 8s);
+	//TryCast(Stun, 5, 100%, 1s, 8s);
+	//TryCast(Sleep, 5, 100%, 1s, 8s);
+	TryCast(Blind, 5, 100%, 1s, 8s);
+	//TryCast(LordOfVermilion, 10, 100%, 0.7s, 15s)[IsHiding];
+	//TryCast(Hiding, 3, 100%, 0, 10s)[!IsHiding];
+	//TryCast(Hiding, 3, 100%, 0, 20s)[IsHiding];
 	TryCast(Pneuma, 1, 100%, 0, 5s)[WasRangedAttacked];
 	TryCast(PowerUp, 5, 100%, 0.7s, 30s)[HpPercent < 50];
 	//TryCast(PoisonAttack, 1, 100%, 0.5s, 2s);
@@ -115,6 +110,7 @@ StateChase:
 }
 
 SkillHandler("CRAMP") {
+StateAttacking:
     TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
     TryCast(PoisonAttack, 1, 5%, 0s, 5s);
 }

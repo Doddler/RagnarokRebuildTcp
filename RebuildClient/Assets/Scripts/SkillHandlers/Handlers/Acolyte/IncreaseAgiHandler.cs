@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Network;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Objects;
@@ -19,9 +20,13 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             src?.PerformSkillMotion();
-            attack.Target?.AttachFloatingTextIndicator("<font-weight=300><cspace=-0.5>AGI UP!");
-            if(attack.Target != null)
+
+            if (attack.Target != null)
+            {
+                attack.Target.AttachFloatingTextIndicator("<font-weight=300><cspace=-0.5>AGI UP!", TextIndicatorType.Effect, -0.6f);
                 AudioManager.Instance.AttachSoundToEntity(src.Id, "ef_incagility.ogg", attack.Target.gameObject);
+                AgiUpEffect.LaunchAgiUp(src);
+            }
         }
     }
 }

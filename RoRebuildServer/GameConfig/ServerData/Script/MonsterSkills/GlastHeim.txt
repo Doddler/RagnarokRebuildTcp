@@ -1,4 +1,5 @@
 //Glast Heim!
+#include "_macro.txt"
 
 SkillHandler("ALICE") {
 StateAny:
@@ -9,6 +10,16 @@ StateAny:
 SkillHandler("GHOUL") {
 StateAttacking:
 	TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
+}
+
+SkillHandler("MAJORUROS") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 6); //angry
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+	TryCast(HammerFall, 5, 5%, 1.5s, 5s);
+	TryCast(FireAttack, 3, 5%, 0.5s, 5s);
 }
 
 SkillHandler("SAGEWORM") {

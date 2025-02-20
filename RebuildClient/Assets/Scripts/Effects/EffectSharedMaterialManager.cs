@@ -26,6 +26,9 @@ namespace Assets.Scripts.Effects
         SkillSpriteAlphaBlended,
         TeleportPillar,
         SafetyWall,
+        ParticleAlphaBlend,
+        ParticleAdditive,
+        IceMaterial,
         EffectMaterialMax
     }
     
@@ -45,6 +48,7 @@ namespace Assets.Scripts.Effects
         private static bool[] persistTextures;
 
         private static SpriteAtlas skillAtlas;
+        private static SpriteAtlas particleAtlas;
 
         public static SpriteAtlas GetSkillSpriteAtlas()
         {
@@ -52,6 +56,15 @@ namespace Assets.Scripts.Effects
                 skillAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
 
             return skillAtlas;
+        }
+        
+        
+        public static SpriteAtlas GetParticleSpriteAtlas()
+        {
+            if (particleAtlas == null)
+                particleAtlas = Resources.Load<SpriteAtlas>("Particles");
+
+            return particleAtlas;
         }
 
         public static Material GetMaterial(EffectMaterialType mat)
@@ -69,6 +82,32 @@ namespace Assets.Scripts.Effects
 
                 switch (mat)
                 {
+                    case EffectMaterialType.ParticleAlphaBlend:
+                        if (materialList[(int)mat] == null)
+                        {
+                            var atlas = GetParticleSpriteAtlas();
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AlphaBlendParticleShader)
+                            {
+                                color = Color.white,
+                                mainTexture = atlas.GetSprite("particle1").texture, //this will work unless the atlas gets split across multiple textures
+                                renderQueue = 3001
+                            };
+                            persistMaterials[(int)mat] = true;
+                        }
+                        break;
+                    case EffectMaterialType.ParticleAdditive:
+                        if (materialList[(int)mat] == null)
+                        {
+                            var atlas = GetParticleSpriteAtlas();
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
+                            {
+                                color = Color.white,
+                                mainTexture = atlas.GetSprite("particle1").texture, //this will work unless the atlas gets split across multiple textures
+                                renderQueue = 3001
+                            };
+                            persistMaterials[(int)mat] = true;
+                        }
+                        break;
                     case EffectMaterialType.SkillSpriteAlphaBlended:
                         if (materialList[(int)mat] == null)
                         {
@@ -82,7 +121,19 @@ namespace Assets.Scripts.Effects
                             persistMaterials[(int)mat] = true;
                         }
                         break;
-                    
+                    case EffectMaterialType.IceMaterial:
+                        if (materialList[(int)mat] == null)
+                        {
+                            var atlas = GetParticleSpriteAtlas();
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AlphaBlendParticleShader)
+                            {
+                                color = Color.white,
+                                mainTexture = Resources.Load<Texture2D>("ice"),
+                                renderQueue = 3001
+                            };
+                            persistMaterials[(int)mat] = false;
+                        }
+                        break;
                     case EffectMaterialType.TeleportPillar:
                         if (textureList[(int)EffectTextureType.MagicViolet] == null)
                         {
@@ -93,7 +144,7 @@ namespace Assets.Scripts.Effects
                         {
                             materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
                             {
-                                mainTexture = Resources.Load<Texture2D>("magic_violet"),
+                                mainTexture = textureList[(int)EffectTextureType.MagicViolet],
                                 color = new Color(100 / 255f, 100 / 255f, 255 / 255f),
                                 renderQueue = 3001
                             };

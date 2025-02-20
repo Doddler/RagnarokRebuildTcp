@@ -42,7 +42,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var dir = (Direction)msg.ReadByte();
             var pos = msg.ReadPosition();
             var motionTime = msg.ReadFloat();
-
+            
             if (!Network.EntityList.TryGetValue(id, out var controllable))
                 return;
 
@@ -109,6 +109,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var result = (AttackResult)msg.ReadByte();
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
+            var damageTiming = msg.ReadFloat();
 
             var attack = new AttackResultData()
             {
@@ -118,7 +119,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 Damage = dmg,
                 HitCount = hits,
                 MotionTime = motionTime,
-                DamageTiming = motionTime,
+                DamageTiming = damageTiming,
                 Target = controllable2,
                 Src = controllable
             };
@@ -165,7 +166,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
                 if (hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
                 {
-                    controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits, result == AttackResult.CriticalDamage);
+                    controllable2.Messages.SendDamageEvent(controllable, damageTiming, dmg, hits, result == AttackResult.CriticalDamage);
                     if(dmg > 0)
                         ClientSkillHandler.OnHitEffect(controllable2, ref attack);
                 }

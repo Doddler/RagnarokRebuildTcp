@@ -11,7 +11,9 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
         {
             //HoldStandbyMotionForCast(src, castTime);
-            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Ghost));
+            var cast = CastEffect.Create(castTime, src.gameObject, AttackElement.Ghost);
+            cast.transform.localScale *= 1.5f;
+            src.AttachEffect(cast);
         }
         
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)

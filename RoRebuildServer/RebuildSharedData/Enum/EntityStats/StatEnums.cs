@@ -169,6 +169,7 @@ public enum CharacterStat
     OnAttackFreeze,
     OnAttackCurse,
     OnAttackStone,
+    OnAttackSilence,
 
     WhenAttackedStun,
     WhenAttackedPoison,
@@ -177,6 +178,7 @@ public enum CharacterStat
     WhenAttackedFreeze,
     WhenAttackedCurse,
     WhenAttackedStone,
+    WhenAttackedSilence,
 
     ResistStunStatus,
     ResistPoisonStatus,
@@ -185,6 +187,7 @@ public enum CharacterStat
     ResistFreezeStatus,
     ResistCurseStatus,
     ResistStoneStatus,
+    ResistSilenceStatus,
 
     DecreasePoisonStatusDamage,
     DecreaseStunDuration,
@@ -194,7 +197,7 @@ public enum CharacterStat
     HpDrainAmount,
     SpDrainChance,
     SpDrainAmount,
-
+    
     NoEffect,
     CharacterStatsMax,
 }

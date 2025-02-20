@@ -17,5 +17,11 @@ namespace Assets.Scripts.Effects.PrimitiveData
         
         public float Width;
         public float Height;
+
+        public float Alpha = 255;
+        public float MaxAlpha = 255;
+        public float AlphaSpeed = 0;
+        public float FadeOutLength = 0;
+        public Color Color = UnityEngine.Color.white;
     }
 }

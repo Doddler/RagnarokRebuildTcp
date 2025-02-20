@@ -109,6 +109,7 @@ namespace Assets.Scripts.Utility
 				tween.setOnComplete(StartTransitionScene);
 			else
 				tween.setOnComplete(() => { 
+					Shader.DisableKeyword("BLINDEFFECT_ON");
 					SceneManager.UnloadSceneAsync(unloadScene);
 					finishCallback();
 				});

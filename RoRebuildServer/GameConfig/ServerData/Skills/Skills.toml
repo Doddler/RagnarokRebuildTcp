@@ -549,7 +549,6 @@ Name = "Silence"
 [Petrify]
 Name = "Petrify"
 
-
 [FireBreath]
 Name = "Fire Breath"
 [IceBreath]
@@ -583,6 +582,10 @@ InterruptMode = "NoInterrupt"
 
 [CallMinion]
 Name = "Call Minion"
+InterruptMode = "NoInterrupt"
+
+[RecallMinion]
+Name = "Recall"
 InterruptMode = "NoInterrupt"
 
 [SummonMonster]
@@ -636,8 +639,7 @@ InterruptMode = "NoInterrupt"
 [QuestSkill]
 Name = "Reward for Quest"
 
-[NpcAgiUp]
-Name = "Agility Up"
+[Vampyrism]
 
 [NoCast]
 #use when you want the enemy to trigger something without the player knowing

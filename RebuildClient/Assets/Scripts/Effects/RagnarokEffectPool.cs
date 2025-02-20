@@ -37,7 +37,7 @@ namespace Assets.Scripts.Effects
 
         public static void Return3dEffect(Ragnarok3dEffect effect)
         {
-            if (Instance == null)
+            if (Instance == null || effect == null || effect.gameObject == null)
                 return;
             
             if (!effect.IsInitialized)

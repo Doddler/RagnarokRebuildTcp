@@ -16,7 +16,8 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             effect.transform.position = target.transform.position;
             effect.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
             
-            AudioManager.Instance.OneShotSoundEffect(-1, "mon_폭기.ogg", effect.transform.position, 0.8f);
+            AudioManager.Instance.OneShotSoundEffect(-1, "mon_폭기.ogg", effect.transform.position, 1.2f);
+            AudioManager.Instance.OneShotSoundEffect(-1, "mon_폭기.ogg", effect.transform.position, 1.2f);
 
             var mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.SkillSpriteAlphaBlended);
             var prim = effect.LaunchPrimitive(PrimitiveType.ExplosiveAura, mat, 300f);

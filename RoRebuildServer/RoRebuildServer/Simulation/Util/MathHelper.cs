@@ -22,7 +22,7 @@ namespace RoRebuildServer.Simulation.Util
                 DefTable[i] = MathF.Pow(0.99f, i * MathF.Pow(1.01f, i));
             }
         }
-        
+
         public static float PowScaleDown(int value)
         {
             if(value < ResistTable.Length)

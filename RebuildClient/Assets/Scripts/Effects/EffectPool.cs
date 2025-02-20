@@ -6,10 +6,11 @@ namespace Assets.Scripts.Effects
 {
     public static class EffectPool
     {
-        private static Stack<Mesh> meshes = new Stack<Mesh>(20);
-        private static Stack<EffectPart> partPool = new Stack<EffectPart>(80);
-        private static Stack<EffectSegment> segmentPool = new Stack<EffectSegment>(140);
-        private static Stack<MeshBuilder> builderPool = new Stack<MeshBuilder>(20);
+        private static Stack<Mesh> meshes = new(20);
+        private static Stack<EffectPart> partPool = new(80);
+        private static Stack<EffectSegment> segmentPool = new(140);
+        private static Stack<MeshBuilder> builderPool = new(20);
+        private static Dictionary<PrimitiveType, Stack<object>> dataPool = new();
 
         public static Mesh BorrowMesh()
         {
@@ -31,6 +32,31 @@ namespace Assets.Scripts.Effects
                 return builderPool.Pop();
 
             return new MeshBuilder();
+        }
+
+        public static object BorrowData(PrimitiveType type)
+        {
+            if (dataPool.TryGetValue(type, out var stack) && stack.Count > 0)
+                return stack.Pop();
+
+            return RagnarokEffectData.NewPrimitiveData(type);
+        }
+
+        public static void ReturnData(object obj, PrimitiveType type)
+        {
+            if (obj is IResettable resettable)
+                resettable.Reset();
+            else
+                return;
+            
+            if(dataPool.TryGetValue(type, out var stack))
+                stack.Push(obj);
+            else
+            {
+                stack = new Stack<object>();
+                stack.Push(obj);
+                dataPool.Add(type, stack);
+            }
         }
 
         public static void ReturnMeshBuilder(MeshBuilder builder)

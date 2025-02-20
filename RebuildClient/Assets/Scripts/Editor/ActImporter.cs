@@ -199,7 +199,35 @@ public class ActImporter : ScriptedImporter
 
         asset.Size = Mathf.CeilToInt(maxExtent);
         asset.AverageWidth = totalWidth / widthCount;
-        asset.StandingHeight = asset.Sprites[0].textureRect.height;
+        
+        //ok so this is a giant shitshow. We want to know where to display emotes, cast bars, and npcs above this character
+        //to do so, we save the highest y value of the first frame of the first action.
+        //a lot of monsters use a high overhead attack which we don't want to count, so using the idle pose is probably safer
+        asset.StandingHeight = 20;
+        try
+        {
+            var maxHeight = 0f;
+            var firstFrame = asset.Actions[0].Frames[0];
+            for (var i = 0; i < firstFrame.Layers.Length; i++)
+            {
+                var l = firstFrame.Layers[i];
+                if (l.Index < 0)
+                    continue;
+                var curSpr = asset.Sprites[l.Index];
+                var height = curSpr.rect.height / 2 - l.Position.y; //y is negative
+                if (height > maxHeight)
+                    maxHeight = height;
+            }
+
+            if (maxHeight > asset.StandingHeight)
+                asset.StandingHeight = maxHeight;
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"Couldn't process standing height for sprite {asset.Name}");
+        }
+        
+        
     }
 }
 

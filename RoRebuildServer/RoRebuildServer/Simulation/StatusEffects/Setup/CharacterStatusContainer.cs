@@ -103,6 +103,8 @@ public class CharacterStatusContainer
             for (var i = removeCount - 1; i >= 0; i--)
                 RemoveExistingStatusEffect(remove[i]);
         }
+
+        Owner.UpdateStats();
     }
 
     public void OnUpdate()

@@ -451,7 +451,6 @@ namespace Assets.Editor
             //AssetDatabase.CreateAsset(supertexture, Path.Combine(basePath, $"{supertexture.name}.texture"));
             //supertexture = AssetDatabase.LoadAssetAtPath(Path.Combine(subdir, $"{supertexture.name}.anim"), typeof(Texture2D)) as Texture2D;
 
-
             for (var i = 0; i < rects.Length; i++)
             {
                 var texrect = new Rect(rects[i].x * supertexture.width, rects[i].y * supertexture.height, rects[i].width * supertexture.width,
@@ -466,7 +465,7 @@ namespace Assets.Editor
                 Sprites.Add(sprite);
             }
 
-            if (atlasPath.Contains("Shields"))
+            if (atlasPath.Contains("Shields") || atlasPath.Contains("status-curse"))
             {
                 dataObject.ReverseSortingWhenFacingNorth = true;
                 dataObject.IgnoreAnchor = true;

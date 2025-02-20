@@ -52,7 +52,7 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/super3.bmp", "super3"));
             sprites.Add(ImportEffectTexture("texture/effect/super4.bmp", "super4"));
             sprites.Add(ImportEffectTexture("texture/effect/super5.bmp", "super5"));
-            sprites.Add(ImportEffectTexture("texture/effect/ac_center2.bmp", "ac_center2"));
+            sprites.Add(ImportEffectTexture("texture/effect/ac_center2.tga", "ac_center2"));
             
 
             atlas.Add(sprites.ToArray());

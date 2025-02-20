@@ -11,14 +11,15 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
     {
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
-            //move speed is handled as a special case in update stats for players and monsters
-            state.Value1 = ch.GetStat(CharacterStat.Luck);
-            ch.SubStat(CharacterStat.AddLuk, state.Value1);
+            //ignore luk as that's inside GetEffective for luck
+            ch.SetBodyState(BodyStateFlags.Curse);
+            ch.AddStat(CharacterStat.AddAttackPercent, -25);
         }
 
         public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
         {
-            ch.AddStat(CharacterStat.AddLuk, state.Value1);
+            ch.RemoveBodyState(BodyStateFlags.Curse);
+            ch.SubStat(CharacterStat.AddAttackPercent, -25);
         }
     }
 }

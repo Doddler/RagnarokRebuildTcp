@@ -148,6 +148,8 @@ namespace Assets.Scripts.Sprites
             CloneSpriteForTrail(renderer, trail, 0);
             for (var i = 0; i < animator.ChildrenSprites.Count; i++)
             {
+                if (animator.ChildrenSprites[i].IsEffectSprite)
+                    continue;
                 CloneSpriteForTrail((RoSpriteRendererStandard)animator.ChildrenSprites[i].SpriteRenderer, trail, animator.ChildrenSprites[i].SpriteOrder);
             }
         }

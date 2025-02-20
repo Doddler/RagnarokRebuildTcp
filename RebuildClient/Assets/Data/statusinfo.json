@@ -353,6 +353,15 @@
     },
     {
       "StatusEffect": 40,
+      "Name": null,
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "icon02",
+      "CanDispel": true,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 41,
       "Name": "Doom",
       "Description": null,
       "Type": "Debuff",
@@ -361,7 +370,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 41,
+      "StatusEffect": 42,
       "Name": "Stolen From",
       "Description": null,
       "Type": "Debuff",

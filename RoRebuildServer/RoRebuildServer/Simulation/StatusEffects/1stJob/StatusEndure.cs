@@ -17,7 +17,7 @@ public class StatusEndure : StatusEffectBase
             return StatusUpdateResult.Continue;
         info.Flags |= DamageApplicationFlags.NoHitLock;
         state.Value1--;
-        if (state.Value1 <= 0)
+        if (state.Value1 <= 0 && ch.Character.Type != CharacterType.Monster)
             return StatusUpdateResult.EndStatus;
         return StatusUpdateResult.Continue;
     }

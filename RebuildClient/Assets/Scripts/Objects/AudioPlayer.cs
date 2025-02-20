@@ -89,6 +89,8 @@ namespace Assets.Scripts.Objects
             followTarget = attachTarget;
             
             audioSource.volume = volume;
+            audioSource.clip = null;
+            audioSource.Stop();
 
             var path = "Assets/Sounds/Effects/" + filename;
             if (!inEffectFolder)
@@ -119,6 +121,8 @@ namespace Assets.Scripts.Objects
             gameObject.transform.localPosition = position;
             
             audioSource.volume = volume;
+            audioSource.clip = null;
+            audioSource.Stop();
 
             var path = "Assets/Sounds/Effects/" + filename;
             // Debug.Log(path);
@@ -181,6 +185,7 @@ namespace Assets.Scripts.Objects
             if (!isLoading && Time.fixedTime > endTime)
             {
                 audioSource.Stop();
+                audioSource.clip = null;
                 isInUse = false;
                 followTarget = null;
                 hasFollowTarget = false;

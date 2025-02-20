@@ -124,6 +124,14 @@ namespace Assets.Scripts
         public static Vector2Int ToTilePosition(this Vector3 v) => new(Mathf.FloorToInt(v.x), Mathf.FloorToInt(v.z));
         public static Vector2Int ToTilePosition(this Vector2 v) => new(Mathf.FloorToInt(v.x), Mathf.FloorToInt(v.y));
         public static Vector2Int ToTilePosition(this Vector2Int v) => new(v.x, v.y);
+        
+        public static Vector3 SnapToWorldHeight(this Vector3 v)
+        {
+            var walkProvider = RoWalkDataProvider.Instance;
+            if (walkProvider != null)
+                v.y = walkProvider.GetHeightForPosition(v);
+            return v;
+        }
 
         public static Vector3 ToWorldPosition(this Vector2 v)
         {

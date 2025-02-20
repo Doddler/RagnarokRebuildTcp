@@ -681,7 +681,7 @@
       "StrFile": "homing",
       "Sprite": "",
       "SoundFile": "",
-      "Offset": 0,
+      "Offset": -0.55,
       "PrefabName": ""
     },
     {
@@ -693,7 +693,7 @@
       "StrFile": "poison",
       "Sprite": "",
       "SoundFile": "",
-      "Offset": 0,
+      "Offset": -0.55,
       "PrefabName": ""
     },
     {
@@ -705,7 +705,7 @@
       "StrFile": "silence",
       "Sprite": "",
       "SoundFile": "",
-      "Offset": 0,
+      "Offset": -0.55,
       "PrefabName": ""
     },
     {
@@ -717,7 +717,7 @@
       "StrFile": "sleep",
       "Sprite": "",
       "SoundFile": "",
-      "Offset": 0,
+      "Offset": -0.55,
       "PrefabName": ""
     },
     {
@@ -729,7 +729,7 @@
       "StrFile": "stun",
       "Sprite": "",
       "SoundFile": "",
-      "Offset": 0,
+      "Offset": -0.55,
       "PrefabName": ""
     },
     {
@@ -741,7 +741,7 @@
       "StrFile": "petrify",
       "Sprite": "",
       "SoundFile": "",
-      "Offset": 0,
+      "Offset": -0.55,
       "PrefabName": ""
     },
     {

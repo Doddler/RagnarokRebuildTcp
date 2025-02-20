@@ -56,8 +56,13 @@ StateAttacking:
 }
 
 SkillHandler("MINOROUS") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 6); //angry
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
 StateAttacking:
 	TryCast(HammerFall, 3, 5%, 1.5s, 5s);
+	TryCast(FireAttack, 3, 5%, 0.5s, 5s);
 }
 
 SkillHandler("ISIS") {

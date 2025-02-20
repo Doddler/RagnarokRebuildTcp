@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
+using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -15,7 +16,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
 
         private static AsyncOperationHandle<RoSpriteData> spriteLoadTask;
 
-        public static void AttachStunEffect(ServerControllable stunnedTarget)
+        public static Ragnarok3dEffect AttachStunEffect(ServerControllable stunnedTarget)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.Stun);
             effect.Duration = 10f; //we'll manually end this early probably
@@ -29,6 +30,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
             }
             
             stunnedTarget.AttachEffect(effect);
+            return effect;
         }
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
@@ -48,7 +50,16 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
 
             if (step == 0)
             {
-                var sprite = effect.LaunchSpriteEffect(StunEffectSprite, 10f, 1.5f);
+                var target = effect.FollowTarget.GetComponent<ServerControllable>();
+                if (target == null)
+                    return false;
+                var height = 1.5f;
+                if (target.SpriteAnimator?.SpriteData != null)
+                    height = target.SpriteAnimator.SpriteData.StandingHeight / 50f;
+                if (target.CharacterType == CharacterType.Player || target.CharacterType == CharacterType.PlayerLikeNpc)
+                    height += 0.1f; //head height
+                
+                var sprite = effect.LaunchSpriteEffect(StunEffectSprite, 10f, height + height / 6f);
                 sprite.SpriteAnimator.BaseColor = new Color(1f, 1f, 1f, 1f);
                 sprite.SpriteAnimator.AnimSpeed = 1f;
                 sprite.SpriteAnimator.ChangeActionExact(0);

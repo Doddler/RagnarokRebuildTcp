@@ -933,6 +933,11 @@ namespace Assets.Scripts.Network
             if (controllable.IsMainCharacter)
                 CameraFollower.UpdatePlayerHP(hp, maxHp);
             controllable.SetHp(controllable.Hp, controllable.MaxHp);
+            if (type == HealType.HealSkill)
+            {
+                HealEffect.CreateAutoLevel(controllable.gameObject, amnt);
+                AttachHealIndicator(amnt, controllable);
+            }
         }
 
         public void OnMessageChangeName(ClientInboundMessage msg)
@@ -1829,6 +1834,7 @@ namespace Assets.Scripts.Network
 
         public void OnApplicationQuit()
         {
+            Shader.DisableKeyword("BLINDEFFECT_ON");
             Disconnect();
         }
     }

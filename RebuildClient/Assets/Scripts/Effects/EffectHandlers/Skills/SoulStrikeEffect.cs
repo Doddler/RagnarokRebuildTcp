@@ -39,8 +39,8 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
             return darkMaterial;
         }
 
-        private static readonly int[] StepSizes = {0, 140, 80, 60, 45};
-        private static readonly int[] StepStart = {0, -70, -80, -90, -90};
+        public static readonly int[] StepSizes = {0, 140, 80, 60, 45};
+        public static readonly int[] StepStart = {0, -70, -80, -90, -90};
 
         public static Ragnarok3dEffect LaunchEffect(ServerControllable caster, GameObject target, int projectileCount, bool isDark)
         {

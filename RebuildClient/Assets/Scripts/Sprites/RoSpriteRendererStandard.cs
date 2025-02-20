@@ -31,6 +31,7 @@ namespace Assets.Scripts.Sprites
 
         public Material OverrideMaterial;
         public float VerticalOffset;
+        public float ZOffset;
 
         private static Material belowWaterMat;
         private static Material aboveWaterMat;
@@ -225,9 +226,18 @@ namespace Assets.Scripts.Sprites
                 CurrentAngleIndex = (int)Direction;
 
             if (SpriteData.ReverseSortingWhenFacingNorth && CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5)
-                SortingGroup.sortingOrder = SortingOrder - 10; //this puts the shield behind the other sprite parts
+            {
+                SortingGroup.sortingOrder =
+                    SortingOrder < 0 ? -SortingOrder : SortingOrder - 10; //SortingOrder - 10; //this puts the shield behind the other sprite parts
+                if (ZOffset != 0)
+                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -ZOffset);
+            }
             else
+            {
                 SortingGroup.sortingOrder = SortingOrder; //we update this each frame because the parent might have changed our order based on the animation.
+                if (ZOffset != 0)
+                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, ZOffset);
+            }
 
             var mesh = GetMeshForFrame();
             var cMesh = GetColliderForFrame();

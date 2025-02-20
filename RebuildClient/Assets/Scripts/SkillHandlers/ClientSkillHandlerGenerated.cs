@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[127];
+			handlers = new SkillHandlerBase[129];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new FirstAidHandler();
@@ -102,8 +102,9 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[84].ExecuteWithoutSource = true;
 			handlers[85] = new DefaultSkillHandler();
 			handlers[86] = new PoisonHandler();
-			handlers[87] = new DefaultSkillHandler();
-			handlers[88] = new DefaultSkillHandler();
+			handlers[87] = new SleepAttackHandler();
+			handlers[88] = new StunAttackHandler();
+			handlers[88].ExecuteWithoutSource = true;
 			handlers[89] = new DefaultSkillHandler();
 			handlers[90] = new DefaultSkillHandler();
 			handlers[91] = new DefaultSkillHandler();
@@ -120,17 +121,17 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[101].ExecuteWithoutSource = true;
 			handlers[102] = new PowerUpHandler();
 			handlers[103] = new SpeedUpHandler();
-			handlers[104] = new DefaultSkillHandler();
+			handlers[104] = new CallMinionHandler();
 			handlers[105] = new DefaultSkillHandler();
 			handlers[106] = new DefaultSkillHandler();
 			handlers[107] = new DefaultSkillHandler();
-			handlers[108] = new DefaultSkillHandler();
-			handlers[109] = new DefaultSkillHandler();
+			handlers[108] = new BloodDrainHandler();
+			handlers[109] = new EnergyDrainHandler();
 			handlers[110] = new DefaultSkillHandler();
-			handlers[111] = new ComboAttackHandler();
-			handlers[112] = new DefaultSkillHandler();
-			handlers[113] = new DarkStrikeHandler();
-			handlers[114] = new DefaultSkillHandler();
+			handlers[111] = new DefaultSkillHandler();
+			handlers[112] = new ComboAttackHandler();
+			handlers[113] = new DefaultSkillHandler();
+			handlers[114] = new DarkStrikeHandler();
 			handlers[115] = new DefaultSkillHandler();
 			handlers[116] = new DefaultSkillHandler();
 			handlers[117] = new DefaultSkillHandler();
@@ -139,10 +140,12 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[120] = new DefaultSkillHandler();
 			handlers[121] = new DefaultSkillHandler();
 			handlers[122] = new DefaultSkillHandler();
-			handlers[123] = new GrandThunderstormHandler();
+			handlers[123] = new DefaultSkillHandler();
 			handlers[124] = new DefaultSkillHandler();
-			handlers[125] = new DefaultSkillHandler();
+			handlers[125] = new GrandThunderstormHandler();
 			handlers[126] = new DefaultSkillHandler();
+			handlers[127] = new DefaultSkillHandler();
+			handlers[128] = new DefaultSkillHandler();
 		}
 	}
 }

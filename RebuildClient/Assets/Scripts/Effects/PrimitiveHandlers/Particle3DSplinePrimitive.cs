@@ -54,6 +54,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             mb.Clear();
             
             var data = primitive.GetPrimitiveData<Particle3DSplineData>();
+            var c = data.Color;
             
             for (var i = 0; i < primitive.SegmentCount; i++)
             {
@@ -64,7 +65,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 var a = (int)Mathf.Clamp(seg.Alpha, 0, 255);
                 var pos = data.Rotation * seg.Position;
                 
-                primitive.AddTexturedBillboardSprite(data.Sprite, pos, seg.Size, seg.Size, new Color32(255, 255, 255, (byte)a));
+                primitive.AddTexturedBillboardSprite(data.Sprite, pos, seg.Size, seg.Size, new Color32(c.r, c.g, c.b, (byte)a));
             }
         }
     }

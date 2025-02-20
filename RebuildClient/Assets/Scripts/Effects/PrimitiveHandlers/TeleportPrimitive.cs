@@ -29,7 +29,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
 
                 p.Angle += (5 - ec) * 60 * Time.deltaTime;
                 
-                Debug.Log($"{ec} angle {p.Angle}");
+                // Debug.Log($"{ec} angle {p.Angle}");
                 
                 if (p.Step < 0)
                     continue;

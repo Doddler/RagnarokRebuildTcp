@@ -394,6 +394,12 @@ public class Player : IEntityAutoReset
                 case CharacterStat.PerfectDodge:
                     packet.Write(CombatEntity.GetEffectiveStat(CharacterStat.PerfectDodge));
                     break;
+                case CharacterStat.AddLuk:
+                    if(CombatEntity.HasBodyState(BodyStateFlags.Curse))
+                        packet.Write(-CombatEntity.GetStat(CharacterStat.Luk));
+                    else
+                        packet.Write(CombatEntity.GetEffectiveStat(CharacterStat.Luk));
+                    break;
                 default:
                     packet.Write(GetStat(statType));
                     break;
@@ -627,7 +633,7 @@ public class Player : IEntityAutoReset
         RefreshJobBonus();
         
         var jobAspd = jobInfo.WeaponTimings[WeaponClass];
-        var aspdBonus = 100f / (GetStat(CharacterStat.AspdBonus) + 100);
+        var aspdBonus = 100f / (100f + float.Clamp(GetStat(CharacterStat.AspdBonus), -99, 1000));
 
         var agi = GetEffectiveStat(CharacterStat.Agi);
         var dex = GetEffectiveStat(CharacterStat.Dex);
@@ -686,14 +692,19 @@ public class Player : IEntityAutoReset
         var weightBonus = (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.PushCart) ? 20000 : 0) + MaxLearnedLevelOfSkill(CharacterSkill.EnlargeWeightLimit) * 2000;
         SetStat(CharacterStat.WeightCapacity, 28000 + GetEffectiveStat(CharacterStat.Str) * 300 + weightBonus);
 
-        var moveBonus = 100f / (100f + GetStat(CharacterStat.MoveSpeedBonus));
-        if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Curse))
+        var moveBonus = 1f;
+        if (CombatEntity.HasBodyState(BodyStateFlags.Curse))
             moveBonus = 1 / 0.1f;
-
-        if (moveBonus < 0.8f)
-            moveBonus = 0.8f;
+        else
+        {
+            moveBonus = 100f / (100f + float.Clamp(GetStat(CharacterStat.MoveSpeedBonus), -99, 500));
+            if (moveBonus < 0.8f)
+                moveBonus = 0.8f;
+        }
 
         //var moveSpeed = 0.15f - (0.001f * level / 5f);
+        var oldMoveSpeed = Character.MoveSpeed;
+
         var moveSpeed = 0.15f * moveBonus;
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
@@ -730,7 +741,11 @@ public class Player : IEntityAutoReset
         SetData(PlayerStat.StatPoints, statPointsEarned - statPointsUsed);
 
         if (Connection.IsConnectedAndInGame && sendUpdate)
+        {
             CommandBuilder.SendUpdatePlayerData(this, false, updateSkillData);
+            if (Character.IsMoving && Math.Abs(oldMoveSpeed - Character.MoveSpeed) > 0.03)
+                Character.TryMove(Character.TargetPosition, 0);
+        }
     }
 
     public void RefreshWeaponMastery()

@@ -10,6 +10,7 @@ using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Items;
+using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 
@@ -329,6 +330,17 @@ public static class CommandBuilder
         ClearRecipients();
     }
 
+    public static void UpdateExistingCastMultiAutoVis(WorldObject caster, float adjustedEndTime)
+    {
+        caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
+        EnsureRecipient(caster.Entity);
+        var packet = NetworkManager.StartPacket(PacketType.UpdateExistingCast, 32);
+        packet.Write(caster.Id);
+        packet.Write(adjustedEndTime);
+
+        ClearRecipients();
+    }
+
     public static void StopCastMulti(WorldObject caster)
     {
         if (!HasRecipients())
@@ -422,7 +434,8 @@ public static class CommandBuilder
         packet.Write((byte)di.Result);
         packet.Write((byte)di.HitCount);
         packet.Write(di.AttackMotionTime);
-        
+        packet.Write(di.Time - Time.ElapsedTimeFloat);
+
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 

@@ -58,8 +58,7 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
 			//from our globals
 			float4 _RoAmbientColor;
 			float4 _RoDiffuseColor;
-
-
+            
             fixed _Offset;
 			fixed4 _Color;
  
@@ -158,7 +157,7 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
             // make fog work
             #pragma multi_compile_fog
 			#pragma multi_compile _ LIGHTPROBE_SH
-
+            #pragma multi_compile _ BLINDEFFECT_ON
  
             #include "UnityCG.cginc"
  
@@ -172,7 +171,12 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                fixed4 color    : COLOR;
+#if BLINDEFFECT_ON
+				fixed4 color : COLOR0;
+				fixed4 color2 : COLOR1;
+#else
+				fixed4 color : COLOR;
+#endif
                 float2 uv : TEXCOORD0;
 				float4 screenPos : TEXCOORD1;
 				half4  worldPos : TEXCOORD2;
@@ -192,6 +196,12 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
 			//from our globals
 			float4 _RoAmbientColor;
 			float4 _RoDiffuseColor;
+
+            
+			#ifdef BLINDEFFECT_ON
+				float4 _RoBlindFocus;
+				float _RoBlindDistance;
+			#endif
 
 
             fixed _Width;
@@ -328,6 +338,10 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
 						col.rgb *= lerp(float3(1, 1, 1), waterTex.rgb, saturate(((height - 0) - simHeight) * 10));
 					//c.rgb *= waterTex.rgb;
 	
+				#endif
+
+            	#ifdef BLINDEFFECT_ON
+				col.rgb *= i.color2; // * (0.5 + i.color2/2);
 				#endif
  
                 return col;

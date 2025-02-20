@@ -156,7 +156,9 @@ Shader"Ragnarok/CharacterSpriteShader"
 			//#pragma multi_compile _ PIXELSNAP_ON
 			//#pragma multi_compile _ PALETTE_ON
 			#pragma multi_compile _ SMOOTHPIXEL
-			//#pragma multi_compile _ WATER_OFF
+			#pragma multi_compile _ BLINDEFFECT_ON
+			#pragma shader_feature _ WATER_OFF
+			#pragma shader_feature _ COLOR_DRAIN
 
 			//#define SMOOTHPIXEL
 		
@@ -177,9 +179,13 @@ Shader"Ragnarok/CharacterSpriteShader"
 			struct v2f
 			{
 				float4 vertex   : SV_POSITION;
+				#if BLINDEFFECT_ON
+				fixed4 color : COLOR0;
+				fixed4 color2 : COLOR1;
+				#else
 				fixed4 color : COLOR;
+				#endif
 				float2 texcoord  : TEXCOORD0;
-				
 				float4 screenPos : TEXCOORD1;
 				half4  worldPos : TEXCOORD2;
 				UNITY_FOG_COORDS(3)
@@ -212,6 +218,11 @@ Shader"Ragnarok/CharacterSpriteShader"
 			float4 _RoDiffuseColor;
 
 			float4 unity_Lightmap_ST;
+
+			#ifdef BLINDEFFECT_ON
+				float4 _RoBlindFocus;
+				float _RoBlindDistance;
+			#endif
 
 			float4 Rotate(float4 vert)
 			{
@@ -347,6 +358,13 @@ Shader"Ragnarok/CharacterSpriteShader"
 					o.screenPos = ComputeScreenPos(o.vertex);
 					o.worldPos = float4(pos.x, worldPos.y, 0, 0);
 				#endif
+
+				#if BLINDEFFECT_ON
+					float d = distance(worldPos, _RoBlindFocus);
+					//d = 1.2 - d / _RoBlindDistance;
+					d = 1.5 - (d / _RoBlindDistance) * 1.5 + clamp((_RoBlindDistance-50)/120, -0.2, 0);
+					o.color2.rgb = clamp(1 * d, -1, 1);
+				#endif
 								
 				return o;
 			}
@@ -427,6 +445,10 @@ Shader"Ragnarok/CharacterSpriteShader"
 
 				UNITY_APPLY_FOG(i.fogCoord, c);
 				c.rgb *= c.a;
+
+				#ifdef BLINDEFFECT_ON
+				c.rgb = saturate(c.rgb * i.color2);
+				#endif
 
 				return c;
 			}

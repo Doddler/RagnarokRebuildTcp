@@ -23,7 +23,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             return CircleMaterial;
         }
         
-        public static Ragnarok3dEffect Create(ServerControllable source)
+        public static Ragnarok3dEffect Create(ServerControllable source, bool showCirclePrimitive = true)
         {
             GetCircleMaterial();
             
@@ -35,28 +35,29 @@ namespace Assets.Scripts.Effects.EffectHandlers
             }
             
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.DefaultSkillCastEffect);
+            var scale = 0.025f;
             
             effect.SourceEntity = source;
             effect.SetDurationByFrames(40);
             effect.FollowTarget = source.gameObject;
             effect.UpdateOnlyOnFrameChange = true;
-            
-            var circlePrim = effect.LaunchPrimitive(PrimitiveType.Circle2D, CircleMaterial, 0.667f);
-            var cData = circlePrim.GetPrimitiveData<CircleData>();
+            if (showCirclePrimitive)
+            {
+                var circlePrim = effect.LaunchPrimitive(PrimitiveType.Circle2D, CircleMaterial, 0.667f);
+                var cData = circlePrim.GetPrimitiveData<CircleData>();
 
-            var scale = 0.025f;
+                circlePrim.transform.localScale = new Vector3(scale, scale, scale);
+                circlePrim.transform.localPosition += new Vector3(0f, 2f, -0f);
+                circlePrim.SetBillboardMode(BillboardStyle.Normal);
+                cData.Alpha = 0f;
+                cData.MaxAlpha = 130;
+                cData.AlphaSpeed = cData.MaxAlpha / 0.166f;
+                cData.FadeOutLength = 0.166f;
+                cData.Radius = 100f;
+                cData.FillCircle = true;
+                cData.Color = Color.white;
+            }
 
-            circlePrim.transform.localScale = new Vector3(scale, scale, scale);
-            circlePrim.transform.localPosition += new Vector3(0f, 2f, -0f);
-            circlePrim.SetBillboardMode(BillboardStyle.Normal);
-            cData.Alpha = 0f;
-            cData.MaxAlpha = 130;
-            cData.AlphaSpeed = cData.MaxAlpha / 0.166f;
-            cData.FadeOutLength = 0.166f;
-            cData.Radius = 100f;
-            cData.FillCircle = true;
-            cData.Color = Color.white;
-            
             for (var i = 0; i < 20; i++)
             {
                 var flashPrim = effect.LaunchPrimitive(PrimitiveType.Flash2D, FlashMaterial, 0.667f);

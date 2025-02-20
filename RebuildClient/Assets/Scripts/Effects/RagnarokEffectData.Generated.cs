@@ -20,9 +20,14 @@ namespace Assets.Scripts.Effects
 		HammerFall,
 		HealEffect,
 		IceArrow,
+		Curse,
+		Freeze,
 		Hide,
+		Sleep,
 		Stun,
+		AgiUp,
 		Blessing,
+		BloodDrain,
 		CartRevolution,
 		FrostDiverHit,
 		FrostDiverTrail,
@@ -57,6 +62,7 @@ namespace Assets.Scripts.Effects
 		Heal,
 		Particle3DSpline,
 		ProjectorPrimitive,
+		Spike3D,
 		Teleport,
 		Texture2D,
 		Texture3D,
@@ -79,9 +85,14 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.HammerFall, new Assets.Scripts.Effects.EffectHandlers.HammerFallEffect());
 			effectHandlers.Add(EffectType.HealEffect, new Assets.Scripts.Effects.EffectHandlers.HealEffect());
 			effectHandlers.Add(EffectType.IceArrow, new Assets.Scripts.Effects.EffectHandlers.IceArrow());
+			effectHandlers.Add(EffectType.Curse, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.CurseEffect());
+			effectHandlers.Add(EffectType.Freeze, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.FreezeEffect());
 			effectHandlers.Add(EffectType.Hide, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.HideEffect());
+			effectHandlers.Add(EffectType.Sleep, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.SleepEffect());
 			effectHandlers.Add(EffectType.Stun, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.StunEffect());
+			effectHandlers.Add(EffectType.AgiUp, new Assets.Scripts.Effects.EffectHandlers.Skills.AgiUpEffect());
 			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.Skills.BlessingEffect());
+			effectHandlers.Add(EffectType.BloodDrain, new Assets.Scripts.Effects.EffectHandlers.Skills.BloodDrainEffect());
 			effectHandlers.Add(EffectType.CartRevolution, new Assets.Scripts.Effects.EffectHandlers.Skills.CartRevolutionEffect());
 			effectHandlers.Add(EffectType.FrostDiverHit, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverHitEffect());
 			effectHandlers.Add(EffectType.FrostDiverTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverTrailEffect());
@@ -119,6 +130,8 @@ namespace Assets.Scripts.Effects
 			primitiveHandlers.Add(PrimitiveType.Particle3DSpline, new Assets.Scripts.Effects.PrimitiveHandlers.Particle3DSplinePrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Particle3DSpline, () => new Assets.Scripts.Effects.PrimitiveData.Particle3DSplineData());
 			primitiveHandlers.Add(PrimitiveType.ProjectorPrimitive, new Assets.Scripts.Effects.PrimitiveHandlers.ProjectorPrimitive());
+			primitiveHandlers.Add(PrimitiveType.Spike3D, new Assets.Scripts.Effects.PrimitiveHandlers.Spike3DPrimitive());
+			primitiveDataFactory.Add(PrimitiveType.Spike3D, () => new Assets.Scripts.Effects.PrimitiveData.Spike3DData());
 			primitiveHandlers.Add(PrimitiveType.Teleport, new Assets.Scripts.Effects.PrimitiveHandlers.TeleportPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Texture2D, new Assets.Scripts.Effects.PrimitiveHandlers.Texture2DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Texture2D, () => new Assets.Scripts.Effects.PrimitiveData.Texture2DData());

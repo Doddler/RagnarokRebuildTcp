@@ -3,6 +3,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
 {
@@ -24,15 +25,15 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
                 res.Damage = res.Damage * (100 + 5 * lvl) / 100; //5% bonus against undead per level
 
             var dist = source.Character.WorldPosition.DistanceTo(target.Character.WorldPosition);
-            var distTime = dist * 0.05f;
-            res.AttackMotionTime += dist * 0.05f;
-            res.Time += distTime;
-
-            source.ApplyCooldownForAttackAction(target);
+            var distTime = dist * 0.04f;
+            res.Time = Time.ElapsedTimeFloat + 0.38f + distTime;
+            res.AttackMotionTime = 0.38f;
+            
+            source.ApplyCooldownForSupportSkillAction();
             source.ExecuteCombatResult(res, false);
 
             if(res.Damage > 0)
-                source.TryFreezeTarget(target, 350 + lvl * 30, res.AttackMotionTime);
+                source.TryFreezeTarget(target, 350 + lvl * 30, res.AttackMotionTime + distTime + 0.08f);
 
             CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.FrostDiver, lvl, res);
         }

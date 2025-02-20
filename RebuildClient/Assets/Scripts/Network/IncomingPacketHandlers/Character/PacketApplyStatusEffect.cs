@@ -22,7 +22,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (Network.EntityList.TryGetValue(id, out var controllable))
             {
                 // Debug.Log($"Applying status {status} to {controllable.Name}");
-                StatusEffectState.AddStatusToTarget(controllable, status);
+                StatusEffectState.AddStatusToTarget(controllable, status, false);
                 if (id == Network.PlayerId)
                     StatusEffectPanel.Instance.AddStatusEffect(status, duration);
             }

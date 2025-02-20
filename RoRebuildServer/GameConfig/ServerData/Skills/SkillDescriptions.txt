@@ -118,7 +118,8 @@ Duration: [5 + SkillLevel] seconds
 Cast Time: [2.15 - SkillLevel * 0.15]s
 
 ::FrostDiver
-<color=red>This skill doesn't currently work.
+Deals [100 + SkillLevel * 10]% water element damage with a [35 + SkillLevel * 3]% chance to freeze.
+Freeze Effect: Target becomes immobilized and water element, and receive DEF-50% and MDEF+25%. The effect ends upon taking damage.
 
 ::NapalmBeat
 A ghost property psychokinetic attack dealing physical damage at [100 + SkillLevel * 15]% MATK. Striking a petrified or frozen target will deal triple damage. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes.
@@ -140,6 +141,7 @@ Catalyst: <color=#777777>1 Blue Gemstone</color>
 
 ::Heal
 Heals an ally. Deals damage when cast on an undead (use shift to target an enemy).
+Heal Formula: [4 + 8 * SkillLevel], scaling +100% for every 10 base level + int, plus 1/2 magic attack power.
 
 ::IncreaseAgility
 Increases movement speed by 25% and increases agi by +3 at level one and increasing to +12 at level 10.
@@ -185,7 +187,7 @@ Success rate: [50 + SkillLevel * 5]% chance.
 Duration: [4 + SkillLevel * 2] seconds (with a minimum of 10s).
 
 ::SonicBlow
-Deals 8 hits to a single target at 50% attack at level 1 rising to 100% attack at level 10.
+Deals 8 hits at [50 + SkillLevel * 5]% to a single target with a 50% boost to hit.
 
 ::Hiding
 Hide below ground to avoid detection. Insect, demon, and boss monsters can see through the skill.

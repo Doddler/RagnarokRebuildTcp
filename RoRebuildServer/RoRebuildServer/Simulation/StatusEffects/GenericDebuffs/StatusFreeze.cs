@@ -3,6 +3,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
 {
@@ -13,16 +14,12 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
-            var defDown = ch.GetEffectiveStat(CharacterStat.Def) / 2;
-            var mdefUp = ch.GetEffectiveStat(CharacterStat.MDef) / 4;
-
-            state.Value1 = defDown;
-            state.Value2 = mdefUp;
-
             ch.AddStat(CharacterStat.AddDefPercent, -50);
             ch.AddStat(CharacterStat.AddMDefPercent, 25);
+            ch.AddStat(CharacterStat.AddFlee, -999);
             ch.SetStat(CharacterStat.OverrideElement, (int)CharacterElement.Water1);
 
+            ch.SetBodyState(BodyStateFlags.Frozen);
             ch.Character.StopMovingImmediately();
             ch.AddDisabledState();
         }
@@ -31,8 +28,10 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         {
             ch.SubStat(CharacterStat.AddDefPercent, -50);
             ch.SubStat(CharacterStat.AddMDefPercent, 25);
+            ch.SubStat(CharacterStat.AddFlee, -999);
             ch.SetStat(CharacterStat.OverrideElement, (int)CharacterElement.None);
 
+            ch.RemoveBodyState(BodyStateFlags.Frozen);
             ch.SubDisabledState();
         }
 

@@ -21,6 +21,7 @@ OnInit:
 StateAny: 
     TryCast(CallMinion, 1, 100%, 0.7s, 15s)[MinionsDeadFor(8s) && !IsHiding] -> CallDefaultMinions();
 	TryCast(Hiding, 3, 100%, 0, 30s)[IsHiding];
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateAttacking:
 	var count = 0; //have to define variables at the start or there'll be scope issues
 	if(HpPercent < 40 && IsNamedEventOffCooldown("LowHpToss")) {
@@ -56,7 +57,7 @@ OnTimer 200:
 }
 
 SkillHandler("GTB_EGG") {
-	StateAny:
+StateAny:
 	if(TimeAlive > 5s) {
 		TryCast(NoCast, 1, 100%, 0, 0s)[IsMasterAlive == false] -> Die();
 		TryCast(None, 1, 15%, 6s, 0s, NeverInterrupt) -> {
@@ -68,17 +69,17 @@ SkillHandler("GTB_EGG") {
 }
 
 SkillHandler("GTB_SUMMON") {
-	StateAny:
-		TryCast(NoCast, 1, 100%, 0, 0s)[IsMasterAlive == false] -> Die();
-	StateIdle:
-		if(TimeAlive > 5s)
-		{
-			TryCast(None, 1, 10%, 0.3s, 0s, EasyInterrupt) -> {
-				HealMyMaster(HpValue*2); //heal master remaining HP
-				Leave(); //and then vanish
-				return;
-			}
+StateAny:
+	TryCast(NoCast, 1, 100%, 0, 0s)[IsMasterAlive == false] -> Die();
+StateIdle:
+	if(TimeAlive > 5s)
+	{
+		TryCast(None, 1, 10%, 0.3s, 0s, EasyInterrupt) -> {
+			HealMyMaster(HpValue*2); //heal master remaining HP
+			Leave(); //and then vanish
+			return;
 		}
+	}
 }
 
 //------------------------------------
@@ -92,6 +93,7 @@ OnInit:
 StateIdle: 
 StateAny: 
     TryCast(CallMinion, 1, 50%, 0.7s, 45s)[MinionsDeadFor(20s)] -> SummonMinions(5, "ANCIENT_MUMMY");
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateChase:
 	TryCast(DarkThunder, 10, 20%, 0, 5s);
 StateAttacking:
@@ -105,8 +107,11 @@ StateAttacking:
 //------------------------------------
 
 SkillHandler("TURTLE_GENERAL") {
+OnInit:
+	ResummonMinionCount = 3; //resummon if we have 3 or less
 StateAny: 
-    TryCast(CallMinion, 1, 10%, 0.7s, 45s)[MinionCount <= 3] -> CallDefaultMinions();
+    TryCast(CallMinion, 1, 10%, 0.7s, 45s)[MinionsDeadFor(20s)] -> CallDefaultMinions();
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateAttacking:
 	TryCast(SonicBlow, 10, 20%, 0, 5s) -> SendEmote(18); //laugh
 }
@@ -121,6 +126,7 @@ OnInit:
 	ResummonMinionCount = 3; //resummon if we have 3 or less
 StateAny: 
     TryCast(CallMinion, 1, 100%, 0s, 30s)[MinionsDeadFor(15s)] -> CallDefaultMinions();
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
 StateChase:
@@ -140,6 +146,8 @@ StateAttacking:
 SkillHandler("DARK_LORD") {
 OnInit:
 	ResummonMinionCount = 3; //resummon if we have 3 or less
+StateAny:
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle: 
 	TryCast(CallMinion, 1, 25%, 0.3s, 20s, NoInterrupt)[MinionCount < 5] -> SummonMinions(2, "DARK_ILLUSION");
 StateChase: 
@@ -155,9 +163,11 @@ StateAttacking:
 //------------------------------------
 
 SkillHandler("MAYA") {
+OnInit:
 	ResummonMinionCount = 2; //resummon if we have 3 or less
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateAny: 
     TryCast(CallMinion, 1, 20%, 0.7s, 30s)[MinionsDeadFor(15s)] -> {
 		SummonMinions(1, "SOLDIER_ANDRE");
@@ -179,6 +189,7 @@ StateAttacking:
 SkillHandler("PHREEONI") {
 StateAny: 
     TryCast(CallMinion, 1, 20%, 0.7s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle:
     TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
 StateChase:
@@ -191,11 +202,15 @@ StateChase:
 //------------------------------------
 
 SkillHandler("MISTRESS") {
+OnInit:
+	ResummonMinionCount = 2; //resummon if we have 2 or less
 StateAny: 
-    TryCast(CallMinion, 1, 20%, 1.4s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+    TryCast(CallMinion, 1, 20%, 1.4s, 45s)[MinionsDeadFor(25s)] -> CallDefaultMinions();
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
 StateChase:
+	TryCast(SpeedUp, 5, 100%, 0s, 40s, HideSkillName)[HpPercent < 30] -> SendEmote(6);
 	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
 	TryCast(JupitelThunder, 28, 20%, 0, 5s);
 StateAttacking:
@@ -213,6 +228,8 @@ StateAttacking:
 SkillHandler("PHARAOH") {
 OnInit:
 	ResummonMinionCount = 3; //resummon if we have 3 or less
+StateAny:
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle:
 	TryCast(Heal, 19999, 100%, 0s, 0)[TimerFinished(0)] -> ResetTimer(0); //if you teleport away from dark blessing, he heals instead
     TryCast(CallMinion, 1, 20%, 1.4s, 25s)[MinionCount < 3] -> CallDefaultMinions(); //ignore minimum time when idle
@@ -257,6 +274,7 @@ SkillHandler("AMON_RA") {
 StateAny:
 	TryCast(ThunderStorm, 7, 20%, 0.5s, 3s); //Normal 9 cell range
 	TryCast(ThunderStorm, 7, 20%, 0.7s, 5s, NoInterrupt | UnlimitedRange); //not actually unlimited, but anywhere he can see
+	TryCast(DarkBlessing, 5, 20%, 0.8s, 20s, NoInterrupt | UnlimitedRange);
 StateIdle:
     if(CheckCast(ThunderStorm, 10%)) {
         if(FindRandomPlayerOnMap()) {
@@ -270,8 +288,7 @@ StateIdle:
             Cast(ThunderStorm, 1, castTime, 8s, NoInterrupt | NoTarget); //he's not really casting thunderstorm, we just want everyone to think he is
         }
     }
-
-	TryCast(CallMinion, 1, 100%, 0.3s, 5s, HideSkillName)[WasRangedAttacked] -> { @AmonRaMinionSpawn() }
+	TryCast(CallMinion, 1, 100%, 0.3s, 5s, HideSkillName)[WasRangedOrMagicAttacked] -> { @AmonRaMinionSpawn() }
 }
 
 //------------------------------------
@@ -279,14 +296,18 @@ StateIdle:
 //------------------------------------
 
 SkillHandler("EDDGA") {
+OnInit:
+	ResummonMinionCount = 2; //resummon if we have 3 or less
 StateAny: 
-    TryCast(CallMinion, 1, 25%, 0.7s, 30s)[MinionCount < 3] -> SummonMinions(5, "LEIB_OLMAI");
-	
-StateAttacking:
-	//TryCast(Bash, 10, 20%, 0, 5s);
+    TryCast(CallMinion, 1, 25%, 0.7s, 40s)[MinionsDeadFor(20s)] -> SummonMinions(4, "LEIB_OLMAI");
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
+StateChase:
+	TryCast(FireBall, 10, 40%, 0, 0);
+	TryCast(Endure, 10, 50%, 0, 10s)[WasRangedOrMagicAttacked];
 StateIdle:
+	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
+StateAttacking:
 	TryCast(PowerUp, 3, 100%, 0.7s, 30s)[HpPercent < 30];
-	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
 }
 
 //------------------------------------
@@ -301,6 +322,7 @@ StateChase:
 StateAny: 
 	TryCast(CallMinion, 1, 50%, 0.7s, 30s)[MinionCount < 3] -> CallDefaultMinions();
 	TryCast(PowerUp, 5, 100%, 0.3s, 30s)[HpPercent < 30];
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 }
 
 //------------------------------------
@@ -335,19 +357,21 @@ OnTimer 4200: EndEvent();
 }
 
 SkillHandler("ORK_HERO") {
+OnInit:
+	ResummonMinionCount = 2; //resummon if we have 3 or less
+StateAny:
+	TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionsDeadFor(20s)] -> CallDefaultMinions();
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateChase:
-    TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
 	TryCast(ThunderStorm, 10, 20%, 1.1s, 5s, NoInterrupt);
 	TryCast(GrandThunderstorm, 10, 20%, 2.5s, 8s, NeverInterrupt | EventOnStartCast)[HpPercent < 30] -> CreateEvent("GrandThunderstorm");
 StateAttacking:
-    TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
-	TryCast(TwoHandQuicken, 10, 100%, 0, 10h)[HpPercent < 30];
+    TryCast(TwoHandQuicken, 10, 100%, 0, 10h)[HpPercent < 30];
 	if(HpPercent > 30)
 		TryCast(ThunderStorm, 10, 20%, 2s, 5s);
 	else
 		TryCast(GrandThunderstorm, 10, 50%, 2.5s, 8s, NeverInterrupt | EventOnStartCast) -> CreateEvent("GrandThunderstorm");
 StateIdle:
-	TryCast(CallMinion, 1, 10%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
 }
 
@@ -356,15 +380,48 @@ StateIdle:
 //------------------------------------
 
 SkillHandler("DOPPELGANGER") {
+OnInit:
+	ResummonMinionCount = 2; //resummon if we have 3 or less
 StateAny: 
-    TryCast(CallMinion, 1, 100%, 0.3s, 30s)[MinionCount < 3 && HpPercent < 30] -> SummonMinions(1, "NIGHTMARE");
-    TryCast(CallMinion, 1, 100%, 0.7s, 30s)[MinionCount < 3] -> SummonMinions(1, "NIGHTMARE");
+    TryCast(CallMinion, 1, 100%, 0.3s, 30s)[MinionsDeadFor(15s) && HpPercent < 30] -> SummonMinions(1, "NIGHTMARE"); //even his casts are fast in 2hq
+    TryCast(CallMinion, 1, 100%, 0.7s, 30s)[MinionsDeadFor(15s)] -> SummonMinions(1, "NIGHTMARE");
 	TryCast(Heal, 9999, 100%, 0s, 10s)[FindAllyBelowHpPercent(60)];
 	TryCast(Heal, 9999, 100%, 0s, 15s)[HpPercent < 30];
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateAttacking:
 	TryCast(TwoHandQuicken, 10, 100%, 0, 1m)[HpPercent <= 40];
 	TryCast(HammerFall, 10, 20%, 0, 10s);
 	TryCast(CriticalAttack, 1, 20%, 0, 5s);
+}
+
+//------------------------------------
+// Dracula
+//------------------------------------
+
+SkillHandler("DRACULA") {
+StateAny: 
+    TryCast(CallMinion, 1, 25%, 0.7s, 30s)[MinionCount < 6] -> CallDefaultMinions(); //his mob is familiars, don't really care to use MinionsDeadFor(time)
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
+StateChase:
+	TryCast(Vampyrism, 1, 100%, 1.3s, 180s)[HpPercent < 30];
+StateAttacking:
+	TryCast(Vampyrism, 1, 100%, 1.3s, 180s)[HpPercent < 30];
+	TryCast(SpeedUp, 5, 100%, 0.7s, 30s)[HpPercent < 30] -> SendEmote(6);
+	TryCast(DarkAttack, 5, 100%, 0s, 20s)[HpPercent < 80];
+}
+
+//------------------------------------
+// Drake
+//------------------------------------
+
+SkillHandler("DRAKE") {
+	ResummonMinionCount = 3; //resummon if we have 3 or less
+StateAny: 
+    TryCast(CallMinion, 1, 100%, 0s, 45s)[MinionsDeadFor(15s)] -> CallDefaultMinions();
+StateAttacking:
+	//TryCast(Bash, 10, 20%, 0, 5s);
+StateIdle:
+	TryCast(SpeedUp, 5, 100%, 0.7s, 30s)[HpPercent < 30] -> SendEmote(6);
 }
 
 //------------------------------------
@@ -409,12 +466,11 @@ macro MoonlightCombatActions() {
 	
 	if(HpPercent < 30 && IsNamedEventOffCooldown("Final Phase")) {
 		TryCast(PowerUp, 3, 100%, 0.4s, 30s)[HpPercent < 30] -> SendEmote(7); //grumpy;
-
 		ResetAllCooldowns();
 		SetEventCooldown("Split", -1); //we don't want this happening again. We know it already happened cause it's higher priority
 		SetEventCooldown("Final Phase", -1);
 		PutSkillOnCooldown(PowerUp, 30s); //she just used this, no need to have her use it agian
-		TryCast(CallMinion,1, 100%, 0.4s, 30s) -> CallDefaultMinions();
+		TryCast(CallMinion,1, 100%, 0.4s, 30s) -> CallDefaultMinions(); //no condition
 	}
 
 	if(HpPercent < 80 && IsNamedEventOffCooldown("Magic Combo")) {
@@ -466,22 +522,24 @@ SkillHandler("MOONLIGHT") {
 OnInit:
 	ResummonMinionCount = 2;
 StateIdle:
-	TryCast(CallMinion, 1, 100%, 2s, 1m)[MinionsDeadFor(15s)] -> CallDefaultMinions();
+	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();
 	TryCast(Heal, 99999, 100%, 6s, 10s, EasyInterrupt)[HpPercent <= 99 && TimeOutOfCombat > 60s] -> ResetAllCooldowns();
 	TryCast(Heal, 9999, 100%, 3s, 10s)[HpPercent < 70];
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 
 StateChase:
 	@MoonlightCombatActions();
 	TryCast(ColdBolt, 5, 20%, 0, 5s);
 	TryCast(FireBolt, 5, 20%, 0, 5s);
 	TryCast(LightningBolt, 5, 20%, 0, 5s);
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 
 StateAttacking:
 	@MoonlightCombatActions();
 	TryCast(PowerUp, 3, 100%, 0.7s, 30s)[HpPercent < 30] -> SendEmote(7); //grumpy;
 	TryCast(Mammonite, 10, 20%, 0, 5s) -> SendEmote(8); //dollar sign
 	TryCast(HammerFall, 10, 20%, 0, 15s)[HpPercent < 90] -> SendEmote(0); //!
-	
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 
 StateHidden:
 	//TryCast(None, 1, 1000, 0, 5000)[MinionCount > 0] -> TeleportNearRandomMinion();

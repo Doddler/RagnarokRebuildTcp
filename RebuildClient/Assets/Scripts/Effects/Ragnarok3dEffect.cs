@@ -40,7 +40,8 @@ namespace Assets.Scripts.Effects
         public readonly List<RagnarokPrimitive> Primitives = new();
         public readonly List<SpriteEffect> SpriteEffects = new();
         public readonly List<GameObject> AttachedObjects = new();
-        
+
+        public bool EndWithoutWaitingForPrimitives = true;
         public bool IsInitialized = false;
         public int[] Flags = new int[4];
         public float DataValue;
@@ -105,6 +106,7 @@ namespace Assets.Scripts.Effects
             IsInitialized = false;
             FollowTarget = null;
             DestroyOnTargetLost = false;
+            EndWithoutWaitingForPrimitives = true;
             ActiveDelay = 0;
             PauseTime = 0;
             EffectHandler = null;
@@ -294,7 +296,7 @@ namespace Assets.Scripts.Effects
                     p.RenderPrimitive();
             }
 
-            if (!anyActive)
+            if (!anyActive || (!active && EndWithoutWaitingForPrimitives))
                 EndEffectWithNotifyOwner();
         }
     }

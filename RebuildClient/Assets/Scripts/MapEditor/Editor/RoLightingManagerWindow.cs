@@ -654,7 +654,7 @@ namespace Assets.Scripts.MapEditor.Editor
                     //var tmp = new TextureImporterSettings();
                     //tImporter.ReadTextureSettings(tmp);
 
-                    tImporter.crunchedCompression = true;
+                    tImporter.textureCompression = TextureImporterCompression.CompressedHQ;
                     tImporter.textureType = TextureImporterType.Sprite;
                     tImporter.alphaSource = TextureImporterAlphaSource.FromInput;
                     //tmp.spriteMeshType = SpriteMeshType.FullRect;
@@ -673,7 +673,8 @@ namespace Assets.Scripts.MapEditor.Editor
                     //var tmp = new TextureImporterSettings();
                     //tImporter.ReadTextureSettings(tmp);
 
-                    tImporter.crunchedCompression = true;
+                    tImporter.crunchedCompression = false;
+                    tImporter.textureCompression = TextureImporterCompression.CompressedHQ;
                     tImporter.textureType = TextureImporterType.Sprite;
                     tImporter.alphaSource = TextureImporterAlphaSource.FromInput;
                     tImporter.spriteImportMode = SpriteImportMode.Single;

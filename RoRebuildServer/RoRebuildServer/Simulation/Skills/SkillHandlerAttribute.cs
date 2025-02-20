@@ -175,18 +175,20 @@ public class MonsterSkillHandlerAttribute : Attribute
     }
 }
 
-public struct SkillCastInfo
+public struct SkillCastInfo()
 {
     public Entity TargetEntity;
     public Position TargetedPosition;
-    public CharacterSkill Skill;
     public int Level;
     public float CastTime;
-    public short ItemSource;
-    public sbyte Range { get; set; }
+    //public float AfterCastDelay;
+    //public float CooldownTime;
+    public short ItemSource = -1;
+    public CharacterSkill Skill;
+    public sbyte Range { get; set; } = -1;
     public bool IsIndirect { get; set; }
     public bool HideName { get; set; }
 
     public bool IsValid => Level > 0 && Level <= 30;
-    public void Clear() { Level = 0; Range = -1; ItemSource = -1; IsIndirect = false; HideName = false; }
+    public void Clear() => this = default; //{ Level = 0; Range = -1; ItemSource = -1; IsIndirect = false; HideName = false; }
 }

@@ -53,8 +53,8 @@ namespace Assets.Scripts
 	        TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(outputPath);
             importer.textureType = TextureImporterType.Default;
 	        importer.npotScale = TextureImporterNPOTScale.None;
-	        importer.textureCompression = TextureImporterCompression.Compressed;
-	        importer.crunchedCompression = true;
+	        importer.textureCompression = TextureImporterCompression.CompressedHQ;
+	        importer.crunchedCompression = false;
 	        importer.compressionQuality = 50;
             importer.wrapMode = TextureWrapMode.Clamp;
 	        importer.isReadable = false;

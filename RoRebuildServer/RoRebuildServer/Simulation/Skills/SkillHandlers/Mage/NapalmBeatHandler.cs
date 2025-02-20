@@ -37,12 +37,12 @@ public class NapalmBeatHandler : SkillHandlerBase
         if ((target.BodyState & (BodyStateFlags.Frozen | BodyStateFlags.Petrified)) > 0)
         {
             mult *= 3;
-            flags |= AttackFlags.IgnoreDefense;
+            //flags |= AttackFlags.IgnoreDefense;
         }
 
         //first, hit the target with Napalm Beat fair and square
         using var targetList = EntityListPool.Get();
-        var req = new AttackRequest(CharacterSkill.NapalmBeat, 1f + 0.15f * lvl, 1, AttackFlags.Physical | AttackFlags.IgnoreEvasion, AttackElement.Ghost);
+        var req = new AttackRequest(CharacterSkill.NapalmBeat, mult, 1, flags, AttackElement.Ghost);
         (req.MinAtk, req.MaxAtk) = source.CalculateAttackPowerRange(true);
         var res = source.CalculateCombatResultUsingSetAttackPower(target, req);
         source.ApplyCooldownForAttackAction(target);

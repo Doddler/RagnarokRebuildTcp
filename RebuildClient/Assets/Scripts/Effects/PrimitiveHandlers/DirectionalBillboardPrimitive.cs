@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Effects.PrimitiveData;
+﻿using System.Data;
+using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using static Assets.Scripts.Effects.RagnarokEffectData;
@@ -19,24 +20,35 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
 
         public static void UpdateBillboardSprite(RagnarokPrimitive primitive)
         {
+            var data = primitive.GetPrimitiveData<EffectSpriteData>();
+            
+            var fadeStartTime = primitive.Duration - data.FadeOutLength;
+            if (primitive.CurrentPos > fadeStartTime)
+                data.Alpha = Mathf.Clamp(data.Alpha - data.MaxAlpha / data.FadeOutLength * Time.deltaTime, 0, 255);
+            else
+                data.Alpha = Mathf.Clamp(data.Alpha + data.AlphaSpeed * 60 * Time.deltaTime, 0, data.MaxAlpha);
+            
             primitive.IsDirty = true;
         }
 
         public static void RenderBillboardSprite(RagnarokPrimitive primitive, MeshBuilder mb)
         {
             var data = primitive.GetPrimitiveData<EffectSpriteData>();
+            var c = new Color(data.Color.r, data.Color.g, data.Color.b, data.Alpha / 255f);
             if (data.Atlas)
             {
-                var id = Mathf.FloorToInt(primitive.CurrentPos / (1f / data.FrameRate)) % data.SpriteList.Length;
+                var id = 0;
+                if(data.SpriteList.Length > 1)
+                    id = Mathf.FloorToInt(primitive.CurrentPos / (1f / data.FrameRate)) % data.SpriteList.Length;
                 var sprite = data.Atlas.GetSprite(data.SpriteList[id]);
 
                 primitive.Material.mainTexture = sprite.texture;
-                primitive.AddTexturedSpriteQuad(sprite, Vector3.zero, data.Width, data.Height, Color.white);
+                primitive.AddTexturedSpriteQuad(sprite, Vector3.zero, data.Width, data.Height, c);
             }
             else
             {
                 primitive.Material.mainTexture = data.Texture;
-                primitive.AddTexturedRectangleQuad(Vector3.zero, data.Width, data.Height, Color.white);
+                primitive.AddTexturedRectangleQuad(Vector3.zero, data.Width, data.Height, c);
             }
             
             var dir = (primitive.Velocity).normalized;

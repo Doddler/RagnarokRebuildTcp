@@ -35765,6 +35765,8 @@ MonoBehaviour:
   DebugIgnoreAttackMotion: 0
   FogNearRatio: 0.3
   FogFarRatio: 4
+  IsBlindActive: 0
+  BlindStrength: 60
   Target: {fileID: 0}
   OverrideTarget: {fileID: 0}
   Camera: {fileID: 963194227}
@@ -68491,6 +68493,7 @@ MonoBehaviour:
   ExpPath: {fileID: 11400000, guid: 2849831afb0ee0b468d1212452d8d74a, type: 2}
   MissPath: {fileID: 11400000, guid: 1f45bf06a8c394945ab75506b7228c5d, type: 2}
   CriticalPath: {fileID: 11400000, guid: 7db6349ac946bc3408e5027710574d97, type: 2}
+  EffectPath: {fileID: 11400000, guid: 390a11596ba3adf43a7e2f054e935385, type: 2}
 --- !u!4 &1814519204
 Transform:
   m_ObjectHideFlags: 0

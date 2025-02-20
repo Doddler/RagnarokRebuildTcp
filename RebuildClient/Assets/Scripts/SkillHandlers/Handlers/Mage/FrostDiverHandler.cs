@@ -9,6 +9,11 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.FrostDiver)]
     public class FrostDiverHandler : SkillHandlerBase
     {
+        public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            target.Messages.SendElementalHitEffect(attack.Src, attack.DamageTiming, AttackElement.Water, attack.HitCount);
+        }
+        
         public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
         {
             HoldStandbyMotionForCast(src, castTime);
@@ -19,7 +24,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             src.PerformSkillMotion();
-            FrostDiverTrailEffect.LaunchFrostDiverTrail(src, attack.Target, attack.MotionTime);
+            if(src != null && attack.Target != null)
+                FrostDiverTrailEffect.LaunchFrostDiverTrail(src, attack.Target, attack.MotionTime);
         }
     }
 }

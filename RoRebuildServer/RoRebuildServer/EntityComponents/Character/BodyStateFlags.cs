@@ -8,6 +8,10 @@
         Curse = 2,
         Frozen = 4,
         Petrified = 8,
-        Hidden = 16
+        Hidden = 16,
+        Blind = 32,
+        Sleep = 64,
+        Pacification = 128,
+        DisablingState = Frozen | Petrified | Blind | Sleep,
     }
 }

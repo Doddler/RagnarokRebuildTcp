@@ -30,6 +30,19 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             return (mat, prefab);
         }
+
+        public static Ragnarok3dEffect CreateAutoLevel(GameObject followTarget, int healAmount)
+        {
+            switch (healAmount)
+            {
+                case < 200:
+                    return HealEffect.Create(followTarget, 0);
+                case < 2000:
+                    return HealEffect.Create(followTarget, 1);
+                default:
+                    return HealEffect.Create(followTarget, 2);
+            }
+        }
         
         public static Ragnarok3dEffect Create(GameObject followTarget, int healStrength = 1)
         {

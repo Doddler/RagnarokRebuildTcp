@@ -87,6 +87,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 data.Style = BillboardStyle.AxisAligned;
                 data.Width = 11.5f / 5f;
                 data.Height = 3.8f / 5f;
+                data.Alpha = 255;
                 data.SpriteList = SpriteNames;
                 data.BaseRotation = new Vector3(0, 0, -90);
 
