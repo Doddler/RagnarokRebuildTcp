@@ -1,0 +1,131 @@
+::Curse
+A curse is making you weaker and greatly lowering your move speed and luck.
+
+::Stun
+You are stunned and unable to perform actions.
+
+::Sleep
+You are fast asleep, unable to perform actions or evade. Taking damage will wake you but has a high chance to deal critical damage.
+
+::Frozen
+Encased in ice, you are unable to perform actions and vunerable to wind. Lowers DEF and increases MDEF. Breaks upon taking damage.
+
+::Blind
+You are partially blinded, reducing your HIT, FLEE, and lowering the maximum range you can attack and use skills.
+
+::Silence
+You are unable to speak, preventing you from performing skills or cast spells.
+
+::Confusion
+You are confused, making it difficult to walk in a straight line.
+
+::Poison
+Poison is causing you to take damage over time. Poison can reduce your HP to 1 but it cannot deal fatal damage.
+
+::Petrifying
+Your skin is rapidly being encased in stone, leaving you are unable to attack or use skills.
+
+::Stone
+Encased in stone, you are unable to perform actions and vulnerable to fire. Lowers DEF and increases MDEF. The next hit you take will deal extra damage but end this effect.
+
+::Provoke
+You are enraged, making you stronger but greatly lowering your defense.
+
+::ProvokeNoAtk
+You are enraged, greatly lowering your defense.
+
+::Hallucination
+Hallucinations are distorting your vision and making it hard to gauge how much damage you are taking.
+
+::PushCart
+Provides additional storage for items.
+
+::TwoHandQuicken
+Attack speed with two-hand weapons increased. Ends early if you unequip your two-handed weapon.
+
+::Blessing
+Your STR, INT, and DEX are increased.
+
+::IncreaseAgi
+Your move speed and AGI are increased.
+
+::DecreaseAgi
+Your move speed and AGI are reduced.
+
+::Angelus
+Your soft DEF stat is increased and you receive the benefit of the caster's divine protection, reducing damage from demon and undead monsters.
+
+::SignumCrusis
+Holy light has weakened your defenses.
+
+::ImproveConcentration
+Your AGI and DEX are increased.
+
+::Endure
+You are able to receive damage without flinching and have increased MDEF.
+
+::MagnumBreak
+Your strikes will deal extra fire property damage.
+
+::Pneuma
+You are protected from ranged physical attacks.
+
+::SafetyWall
+You are protected from short ranged physical attacks.
+
+::Hiding
+You are hiding beneith the ground, unable to be targeted except by demon, insect and boss monsters.
+
+::CrazyUproar
+Your STR is increased.
+
+::Cloaking
+You are hidden from view, unable to be targeted except by demon, insect and boss monsters. Moving away from a wall will cancel the effect.
+
+::EnergyCoat
+Damage taken is reduced at the cost of SP. The higher your SP pool the greater the damage reduction and SP cost.
+
+::Sight
+Hidden enemies nearby will be revealed.
+
+::Ruwach
+Hidden enemies nearby will take damage and be revealed.
+
+::IncreasedMoveSpeed
+Your move speed is increased.
+
+::IncreasedAttackSpeed
+Your attack speed is increased.
+
+::ElementalConverter
+
+::ElementalConverterFire
+Your physical attacks deal fire property damage.
+
+::ElementalConverterWater
+Your physical attacks deal water property damage.
+
+::ElementalConverterWind
+Your physical attacks deal wind property damage.
+
+::ElementalConverterEarth
+Your physical attacks deal earth property damage.
+
+::DarkBlessing
+When this effect expires you will be reduced to 1 HP.
+
+::PowerUp
+Attack power greatly increased.
+
+::SpeedUp
+Move speed and evasion greatly increased.
+
+::Vampyrism
+All your attacks heal you.
+
+::Doom
+You are doomed to die in the near future.
+
+::StolenFrom
+You've had something recently taken and cannot be stolen from again.
+

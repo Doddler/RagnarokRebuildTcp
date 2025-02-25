@@ -25,7 +25,7 @@ public partial class CombatEntity
                 TryPoisonOnTarget(target, poisonChance);
             var blindChance = GetStat(CharacterStat.OnAttackBlind);
             if (blindChance > 0)
-                TryBlindTarget(target, blindChance, res.AttackMotionTime + 0.5f); //delayed a little so you can actually hear the blind sound
+                TryBlindTarget(target, blindChance + 2000, res.AttackMotionTime + 0.5f); //delayed a little so you can actually hear the blind sound
             var freezeChance = GetStat(CharacterStat.OnAttackFreeze);
             if (freezeChance > 0)
                 TryFreezeTarget(target, freezeChance, res.AttackMotionTime + 0.1f); //don't want our damage application to cancel the status
@@ -178,7 +178,7 @@ public partial class CombatEntity
 
     public bool TryBlindTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
     {
-        if (target.HasBodyState(BodyStateFlags.DisablingState) || target.HasStatusEffectOfType(CharacterStatusEffect.Blind))
+        if (target.HasStatusEffectOfType(CharacterStatusEffect.Blind))
             return false;
 
         var luk = target.GetEffectiveStat(CharacterStat.Luk);
@@ -224,7 +224,7 @@ public partial class CombatEntity
 
     public bool TryCurseTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
     {
-        if (target.HasBodyState(BodyStateFlags.DisablingState) || target.HasStatusEffectOfType(CharacterStatusEffect.Curse) || target.GetSpecialType() == CharacterSpecialType.Boss)
+        if (target.HasStatusEffectOfType(CharacterStatusEffect.Curse) || target.GetSpecialType() == CharacterSpecialType.Boss)
             return false;
 
         var luk = target.GetEffectiveStat(CharacterStat.Luk);

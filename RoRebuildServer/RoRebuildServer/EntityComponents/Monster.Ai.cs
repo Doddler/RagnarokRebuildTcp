@@ -155,7 +155,7 @@ public partial class Monster
         if (targetCharacter.Position == Character.Position)
             return false;
 
-        if (targetCharacter.Position.SquareDistance(Character.Position) >= MonsterBase.ScanDist + 1)
+        if (targetCharacter.Position.SquareDistance(Character.Position) >= ChaseSight + 1)
             return true;
 
         if ((Character.MoveSpeed < 0 || CombatEntity.HasBodyState(BodyStateFlags.Hidden)) && InEnemyOutOfAttackRange())

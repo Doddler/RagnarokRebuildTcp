@@ -1,6 +1,9 @@
-﻿using Assets.Scripts.PlayerControl;
+﻿using System.Collections.Generic;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
+using RebuildSharedData.ClientTypes;
+using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +18,46 @@ namespace Assets.Scripts.UI.Inventory
         public TextMeshProUGUI ItemDescription;
         public RectTransform WindowRect;
 
+        public GameObject CardSocketPanel;
+
+        public Button ShowIllustrationButton;
+
+        public Sprite CardSlotOpen;
+        public Sprite CardSlotClosed;
+
+        public List<DraggableItem> CardSocketEntries;
+
         private InventoryItem inventoryItem;
+        private bool isInit;
+
+        private void Init()
+        {
+            if (isInit)
+                return;
+
+            CardSocketEntries[0].OnRightClick = () => RightClickCardSlot(0);
+            CardSocketEntries[1].OnRightClick = () => RightClickCardSlot(1);
+            CardSocketEntries[2].OnRightClick = () => RightClickCardSlot(2);
+            CardSocketEntries[3].OnRightClick = () => RightClickCardSlot(3);
+
+            isInit = true;
+        }
+
+        public void ClickCardIllustrationButton()
+        {
+            var win = UiManager.Instance.CardIllustrationWindow;
+            if (win == null)
+            {
+                var go = Resources.Load<GameObject>("Card Illustration");
+                var go2 = Instantiate(go, UiManager.Instance.PrimaryUserWindowContainer);
+                win = go2.GetComponent<CardIllustrationWindow>();
+                win.CenterWindow();
+                win.HideWindow();
+                UiManager.Instance.CardIllustrationWindow = win;
+            }
+            
+            win.DisplayCard(inventoryItem.ItemData);
+        }
 
         private void DisplayDescription(Sprite collection)
         {
@@ -36,18 +78,55 @@ namespace Assets.Scripts.UI.Inventory
             ItemDescription.ForceMeshUpdate();
             Vector2 preferredDimensions = ItemDescription.GetPreferredValues(415, 0); //300 minus 20 for margins
             WindowRect.sizeDelta = new Vector2(626, Mathf.Max(246, preferredDimensions.y+70));
+        }
 
-
+        public void RightClickCardSlot(int slot)
+        {
+            var id = CardSocketEntries[slot].ItemId;
+            if(id > 0)
+                UiManager.Instance.SubDescriptionWindow.ShowItemDescription(id);
         }
 
         public void ShowItemDescription(InventoryItem item)
         {
+            Init();
+            
             inventoryItem = item;
             var collectionPath = $"Assets/Sprites/Imported/Collections/{item.ItemData.Sprite}.png";
             if (!ClientDataLoader.DoesAddressableExist<Sprite>(collectionPath))
                 DisplayDescription(DefaultItemPortrait);
             else
                 AddressableUtility.LoadSprite(gameObject, collectionPath, DisplayDescription);
+            
+            ShowIllustrationButton.gameObject.SetActive(item.ItemData.ItemClass == ItemClass.Card);
+
+            if (!item.ItemData.IsUnique || item.ItemData.Slots <= 0 || CardSocketEntries == null || CardSocketEntries.Count == 0)
+            {
+                CardSocketPanel.SetActive(false);
+                return;
+            }
+
+            CardSocketPanel.SetActive(true);
+
+            for (var i = 0; i < CardSocketEntries.Count; i++)
+            {
+                var slot = item.UniqueItem.SlotData(i);
+                if (slot > 1)
+                {
+                    if (!ClientDataLoader.Instance.TryGetItemById(slot, out var socketed))
+                        socketed = item.ItemData; //lol
+                    var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(socketed.Sprite);
+                    CardSocketEntries[i].Assign(DragItemType.SocketedItem, sprite, socketed.Id, 1);
+
+                }
+                else
+                {
+                    if(i < item.ItemData.Slots)
+                        CardSocketEntries[i].Assign(DragItemType.SocketedItem, CardSlotOpen, -1, 0);
+                    else
+                        CardSocketEntries[i].Assign(DragItemType.SocketedItem, CardSlotClosed, -1, 0);
+                }
+            }
 
         }
         

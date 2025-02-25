@@ -66,10 +66,14 @@ OnTimer 2000:
 SkillHandler("ANGRY_TARGET_DUMMY") {
 	StateAny:
 	//TryCast(JupitelThunder, 28, 100%, 0.5s, 2s);
-	TryCast(Curse, 10, 100%, 1s, 8s);
-	//TryCast(Stun, 5, 100%, 1s, 8s);
-	//TryCast(Sleep, 5, 100%, 1s, 8s);
-	TryCast(Blind, 5, 100%, 1s, 8s);
+	//TryCast(ComboAttack, 5, 100%, 1s, 8s);
+	TryCast(Sleep, 20, 100%, 2s, 20s);
+	TryCast(Hallucination, 20, 100%, 2s, 20s);
+	TryCast(Curse, 20, 100%, 2s, 20s);
+	TryCast(Stun, 20, 100%, 2s, 20s);
+	TryCast(Blind, 20, 100%, 2s, 20s);
+	TryCast(FrostDiver, 10, 100%, 2s, 20s);
+	
 	//TryCast(LordOfVermilion, 10, 100%, 0.7s, 15s)[IsHiding];
 	//TryCast(Hiding, 3, 100%, 0, 10s)[!IsHiding];
 	//TryCast(Hiding, 3, 100%, 0, 20s)[IsHiding];

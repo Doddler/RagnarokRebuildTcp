@@ -138,6 +138,9 @@ namespace Assets.Scripts.PlayerControl
                     }
 
                     break;
+                case CharacterStatusEffect.Hallucination:
+                    CameraFollower.Instance.GetComponent<ScreenEffectHandler>().StartHallucination();
+                    break;
                     
             }
         }
@@ -190,6 +193,9 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Blind:
                     if(controllable.IsMainCharacter)
                         CameraFollower.Instance.IsBlindActive = false;
+                    break;
+                case CharacterStatusEffect.Hallucination:
+                    CameraFollower.Instance.GetComponent<ScreenEffectHandler>().EndHallucination();
                     break;
             }
         }

@@ -53,7 +53,10 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/super4.bmp", "super4"));
             sprites.Add(ImportEffectTexture("texture/effect/super5.bmp", "super5"));
             sprites.Add(ImportEffectTexture("texture/effect/ac_center2.tga", "ac_center2"));
-            
+
+
+            // ImportEffectTexture("texture/유저인터페이스/disable_card_slot.bmp", "disable_card_slot");
+            // ImportEffectTexture("texture/유저인터페이스/empty_card_slot.bmp", "empty_card_slot");
 
             atlas.Add(sprites.ToArray());
 

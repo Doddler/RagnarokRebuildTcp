@@ -12,6 +12,8 @@
         Blind = 32,
         Sleep = 64,
         Pacification = 128,
-        DisablingState = Frozen | Petrified | Blind | Sleep,
+        Hallucination = 256,
+        Stunned = 512,
+        DisablingState = Stunned | Frozen | Petrified | Sleep,
     }
 }

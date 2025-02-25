@@ -6,6 +6,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
 using RebuildSharedData.Data;
+using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
@@ -429,7 +430,7 @@ public partial class CombatEntity
         var knockback = di.KnockBack;
         var hasHitStop = !di.Flags.HasFlag(DamageApplicationFlags.NoHitLock);
 
-        if (Character.Type == CharacterType.Monster && delayTime > 0.15f)
+        if (Character.Type == CharacterType.Monster && delayTime > 0.15f && Character.Monster.CurrentAiState != MonsterAiState.StateIdle)
             delayTime = 0.15f;
         if (!hasHitStop)
             delayTime = 0f;
@@ -475,7 +476,7 @@ public partial class CombatEntity
                 || (CastInterruptionMode == CastInterruptionMode.InterruptOnSkill && di.AttackSkill != CharacterSkill.None))
             {
                 //character casts aren't interrupted by attacks if they are close to executing
-                if (Character.Type != CharacterType.Player || CastTimeRemaining > 0.3f)
+                if (Character.Type != CharacterType.Player || CastTimeRemaining > 0.2f)
                 {
                     IsCasting = false;
                     CommandBuilder.StopCastMulti(Character);

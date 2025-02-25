@@ -1481,6 +1481,7 @@ public class Player : IEntityAutoReset
         CombatEntity.ClearDamageQueue();
         SpecialState = SpecialPlayerActionState.None;
 
+        var oldPos = Character.Position;
         var p = new Position(x, y);
 
         if (Character.Map != null && (width > 1 || height > 1))
@@ -1497,7 +1498,13 @@ public class Player : IEntityAutoReset
         if (Character.Map?.Name == mapName)
             Character.Map.TeleportEntity(ref Entity, Character, p, CharacterRemovalReason.OutOfSight);
         else
+        {
+            oldPos = Position.Invalid;
             World.Instance?.MovePlayerMap(ref Entity, Character, map, p);
+        }
+
+        if (CombatEntity.StatusContainer != null)
+            CombatEntity.StatusContainer.OnMove(oldPos, p);
 
         return true;
     }

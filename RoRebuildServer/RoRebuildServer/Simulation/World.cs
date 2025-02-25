@@ -298,6 +298,8 @@ public class World
         npc.IsEvent = true;
         npc.Owner = owner;
 
+        entityList.Add(ch.Id, e);
+
         map.AddEntity(ref e);
 
         npc.Behavior.InitEvent(npc, param1, param2, param3, param4, paramString);

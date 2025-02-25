@@ -120,7 +120,8 @@ public enum AdminAction : byte
 {
     ForceGC,
     ReloadScripts,
-    KillMobs
+    KillMobs,
+    EnableMonsterDebugLogging,
 }
 public enum ClientTextCommand : byte
 {

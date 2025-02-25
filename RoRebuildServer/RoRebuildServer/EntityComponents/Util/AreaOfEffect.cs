@@ -167,8 +167,8 @@ public class AreaOfEffect
         if (TouchingEntities == null)
             return;
 
-        if (!SourceEntity.TryGet<Npc>(out var npc))
-            return;
+        var hasNpc = SourceEntity.TryGet<Npc>(out var npc);
+
         
         TouchingEntities.ClearInactive();
 
@@ -186,7 +186,8 @@ public class AreaOfEffect
                 continue;
             }
             
-            npc.Behavior.OnAoEInteraction(npc, ch.CombatEntity, this);
+            if(hasNpc)
+                npc.Behavior.OnAoEInteraction(npc, ch.CombatEntity, this);
             if (!IsActive)
                 return; //if the aoe ends during our interaction event we should be ready
         }
@@ -197,7 +198,38 @@ public class AreaOfEffect
             TouchingEntities = null;
         }
     }
-    
+
+    public void UpdateEntitiesAfterMovingAoE()
+    {
+        if (TouchingEntities == null)
+            return;
+
+        TouchingEntities.ClearInactive();
+
+        for (var i = 0; i < TouchingEntities.Count; i++)
+        {
+            var e = TouchingEntities[i];
+            if (!e.IsAlive() || !e.TryGet<WorldObject>(out var ch))
+                continue;
+            if (ch.Type == CharacterType.NPC)
+                continue;
+            if (!Area.Contains(ch.Position) || CurrentMap != ch.Map)
+            {
+                if(TriggerOnLeaveArea)
+                    OnLeaveAoE(ch);
+
+                TouchingEntities.SwapFromBack(i);
+                i--;
+            }
+        }
+
+        if (TouchingEntities.Count == 0)
+        {
+            EntityListPool.Return(TouchingEntities);
+            TouchingEntities = null;
+        }
+    }
+
     public void Update()
     {
         if (Expiration < 0 || NextTick < 0)

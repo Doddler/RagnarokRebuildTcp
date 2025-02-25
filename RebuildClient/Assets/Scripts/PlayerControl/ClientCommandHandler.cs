@@ -370,6 +370,11 @@ namespace PlayerControl
                     NetworkManager.Instance.SendAdminHideCharacter(true);
                 }
 
+                if (s[0] == "/ailog" || s[0] == "/ailogging")
+                {
+                    NetworkManager.Instance.SendAiLogging();
+                }
+
                 if (s[0] == "/kill")
                 {
                     NetworkManager.Instance.SendAdminKillMobAction(false);

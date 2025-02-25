@@ -12,12 +12,14 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
             ch.AddDisabledState();
+            ch.SetBodyState(BodyStateFlags.Stunned);
             ch.SubStat(CharacterStat.AddFlee, 999);
         }
 
         public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
         {
             ch.SubDisabledState();
+            ch.RemoveBodyState(BodyStateFlags.Stunned);
             ch.AddStat(CharacterStat.AddFlee, 999);
         }
     }

@@ -22,7 +22,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 //Debug.Log($"Removing status {status} from {controllable.Name}");
 
                 StatusEffectState.RemoveStatusFromTarget(controllable, status);
-                StatusEffectPanel.Instance.RemoveStatusEffect(status);
+                if(controllable.IsMainCharacter)
+                    StatusEffectPanel.Instance.RemoveStatusEffect(status);
+            }
+            else
+            {
+                Debug.Log($"Status effect {status} is removed while player not active on map.");
+                if (NetworkManager.Instance.PlayerId == id)
+                    StatusEffectPanel.Instance.RemoveStatusEffect(status);
+                    
             }
         }
     }

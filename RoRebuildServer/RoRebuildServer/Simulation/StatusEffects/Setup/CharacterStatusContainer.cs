@@ -165,7 +165,6 @@ public class CharacterStatusContainer
             RemoveIdList(ref remove, removeCount);
     }
 
-
     public void OnTakeDamage(ref DamageInfo di)
     {
         Debug.Assert(Owner != null);
@@ -420,14 +419,15 @@ public class CharacterStatusContainer
             return;
         }
 
-        if(!isRestore)
+        if (!isRestore)
             StatusEffectHandler.OnApply(state.Type, Owner, ref state);
         else
             StatusEffectHandler.OnRestore(state.Type, Owner, ref state);
-        
+
         statusEffects ??= new SwapList<StatusEffectState>(5);
         statusEffects.Add(ref state);
         nextExpirationCheck = 0f; //this will force it to determine when the next expiration check happens
+
 
         if (Character.Map != null && StatusEffectHandler.GetStatusVisibility(state.Type) != StatusClientVisibility.None)
         {

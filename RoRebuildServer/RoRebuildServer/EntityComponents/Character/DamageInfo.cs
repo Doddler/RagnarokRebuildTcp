@@ -32,6 +32,25 @@ public struct DamageInfo
     public DamageApplicationFlags Flags;
     public bool IsIndirect;
 
+    public int DisplayDamage
+    {
+        get
+        {
+            if (Target.TryGet<CombatEntity>(out var target) && target.HasBodyState(BodyStateFlags.Hallucination))
+            {
+                var adjust = GameRandom.NextInclusive(1, 10) * GameRandom.NextInclusive(1, 10);
+                if (adjust == 1)
+                    return GameRandom.Next(1, 32000);
+                var d = Damage > 0 ? Damage : GameRandom.Next(1, 100);
+                var min = int.Clamp(d / adjust, 1, d);
+                var max = int.Clamp(d * adjust, d, 32000);
+                return GameRandom.Next(min, max);
+            }
+
+            return Damage;
+        }
+    }
+
     public bool IsDamageResult => Result == AttackResult.NormalDamage || Result == AttackResult.CriticalDamage;
 
     public CharacterSkill AttackSkill

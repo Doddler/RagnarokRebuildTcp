@@ -926,6 +926,32 @@ class Program
         if (curSkill != CharacterSkill.None && sb.Length > 0)
             skillDesc.Add(curSkill, sb.ToString().Trim());
 
+        //status descriptions
+
+        lines = File.ReadAllLines(Path.Combine(path, "../Skills/StatusEffectDescriptions.txt"));
+        sb.Clear();
+        var curStatus = CharacterStatusEffect.None;
+        var statusDesc = new Dictionary<CharacterStatusEffect, string>();
+        foreach (var line in lines)
+        {
+            if (line.StartsWith("//"))
+                continue;
+            if (line.StartsWith("::"))
+            {
+                if (!Enum.TryParse<CharacterStatusEffect>(line.Substring(2), true, out var type))
+                    throw new Exception($"Could not parse status {line} in StatusEffectDescriptions.txt");
+                if (curSkill != CharacterSkill.None && sb.Length > 0)
+                    statusDesc.Add(curStatus, sb.ToString().Trim());
+                curStatus = type;
+                sb.Clear();
+                continue;
+            }
+
+            sb.AppendLine(line);
+        }
+        if (curStatus != CharacterStatusEffect.None && sb.Length > 0)
+            statusDesc.Add(curStatus, sb.ToString().Trim());
+
         //status data
         var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
         var statusData = Toml.ToModel<Dictionary<string, StatusEffectData>>(File.ReadAllText(Path.Combine(path, "../Skills/StatusEffects.toml"), Encoding.UTF8), null, options);
@@ -934,6 +960,8 @@ class Program
         {
             status.StatusEffect = Enum.Parse<CharacterStatusEffect>(id);
             statusOut.Add(status);
+            if (statusDesc.TryGetValue(status.StatusEffect, out var desc))
+                status.Description = desc;
         }
 
         SaveToClient("statusinfo.json", statusOut);

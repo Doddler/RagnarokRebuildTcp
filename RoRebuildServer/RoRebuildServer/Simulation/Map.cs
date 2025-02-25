@@ -1298,6 +1298,16 @@ public class Map
         }
     }
 
+    public void MoveAreaOfEffect(AreaOfEffect aoe, Area newArea)
+    {
+        //this is so bad
+        var oldArea = aoe.Area;
+        RemoveAreaOfEffect(aoe);
+        aoe.Area = newArea;
+        aoe.UpdateEntitiesAfterMovingAoE();
+        CreateAreaOfEffect(aoe);
+    }
+
     public void DropGroundItem(ref GroundItem item)
     {
         var chunk = GetChunkForPosition(item.Position);

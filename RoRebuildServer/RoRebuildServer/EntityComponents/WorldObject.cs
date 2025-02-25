@@ -801,8 +801,7 @@ public class WorldObject : IEntityAutoReset
 
         if (State == CharacterState.Moving)
             PerformMoveUpdate2();
-
-
+        
         if (Entity.Type == EntityType.Player)
         {
             player.Update();

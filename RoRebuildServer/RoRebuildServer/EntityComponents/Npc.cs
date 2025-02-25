@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
@@ -135,6 +136,18 @@ public class Npc : IEntityAutoReset
 
         DisplayType = NpcDisplayType.Sprite;
         EffectType = NpcEffectType.None;
+    }
+
+    public bool TryGetAreaOfEffect([NotNullWhen(returnValue: true)] out AreaOfEffect aoe)
+    {
+        if (AreaOfEffect == null)
+        {
+            aoe = null;
+            return false;
+        }
+
+        aoe = AreaOfEffect;
+        return true;
     }
 
     public void RemoveAreaOfEffect()

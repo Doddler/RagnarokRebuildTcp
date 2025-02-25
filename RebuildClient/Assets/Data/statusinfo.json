@@ -3,7 +3,7 @@
     {
       "StatusEffect": 1,
       "Name": null,
-      "Description": null,
+      "Description": "A curse is making you weaker and greatly lowering your move speed and luck.",
       "Type": "Debuff",
       "Icon": "hl_curse",
       "CanDispel": false,
@@ -12,7 +12,7 @@
     {
       "StatusEffect": 2,
       "Name": null,
-      "Description": null,
+      "Description": "You are stunned and unable to perform actions.",
       "Type": "Debuff",
       "Icon": "bd_stun",
       "CanDispel": false,
@@ -21,7 +21,7 @@
     {
       "StatusEffect": 3,
       "Name": null,
-      "Description": null,
+      "Description": "You are fast asleep, unable to perform actions or evade. Taking damage will wake you but has a high chance to deal critical damage.",
       "Type": "Debuff",
       "Icon": "bd_sleep",
       "CanDispel": false,
@@ -30,7 +30,7 @@
     {
       "StatusEffect": 4,
       "Name": null,
-      "Description": null,
+      "Description": "Encased in ice, you are unable to perform actions and vunerable to wind. Lowers DEF and increases MDEF. Breaks upon taking damage.",
       "Type": "Debuff",
       "Icon": "bd_freezing",
       "CanDispel": false,
@@ -39,7 +39,7 @@
     {
       "StatusEffect": 5,
       "Name": null,
-      "Description": null,
+      "Description": "You are partially blinded, reducing your HIT, FLEE, and lowering the maximum range you can attack and use skills.",
       "Type": "Debuff",
       "Icon": "hl_blind",
       "CanDispel": false,
@@ -48,7 +48,7 @@
     {
       "StatusEffect": 6,
       "Name": null,
-      "Description": null,
+      "Description": "You are unable to speak, preventing you from performing skills or cast spells.",
       "Type": "Debuff",
       "Icon": "hl_silence",
       "CanDispel": false,
@@ -57,7 +57,7 @@
     {
       "StatusEffect": 7,
       "Name": null,
-      "Description": null,
+      "Description": "You are confused, making it difficult to walk in a straight line.",
       "Type": "Debuff",
       "Icon": "hl_confusion",
       "CanDispel": false,
@@ -66,7 +66,7 @@
     {
       "StatusEffect": 8,
       "Name": null,
-      "Description": null,
+      "Description": "Poison is causing you to take damage over time. Poison can reduce your HP to 1 but it cannot deal fatal damage.",
       "Type": "Debuff",
       "Icon": "hl_poison",
       "CanDispel": false,
@@ -75,7 +75,7 @@
     {
       "StatusEffect": 9,
       "Name": null,
-      "Description": null,
+      "Description": "Your skin is rapidly being encased in stone, leaving you are unable to attack or use skills.",
       "Type": "Debuff",
       "Icon": "bd_stonecurse",
       "CanDispel": false,
@@ -84,7 +84,7 @@
     {
       "StatusEffect": 10,
       "Name": null,
-      "Description": null,
+      "Description": "Encased in stone, you are unable to perform actions and vulnerable to fire. Lowers DEF and increases MDEF. The next hit you take will deal extra damage but end this effect.",
       "Type": "Debuff",
       "Icon": "bd_stonecurse",
       "CanDispel": false,
@@ -93,7 +93,7 @@
     {
       "StatusEffect": 11,
       "Name": null,
-      "Description": null,
+      "Description": "You are enraged, making you stronger but greatly lowering your defense.",
       "Type": "Debuff",
       "Icon": "\uD504\uB85C\uBCF4\uD06C",
       "CanDispel": false,
@@ -101,188 +101,188 @@
     },
     {
       "StatusEffect": 12,
+      "Name": null,
+      "Description": "You are enraged, greatly lowering your defense.",
+      "Type": "Debuff",
+      "Icon": "\uD504\uB85C\uBCF4\uD06C",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 13,
+      "Name": null,
+      "Description": "Hallucinations are distorting your vision and making it hard to gauge how much damage you are taking.",
+      "Type": "Debuff",
+      "Icon": "\uD658\uAC01",
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 14,
       "Name": "Push Cart",
-      "Description": null,
+      "Description": "Provides additional storage for items.",
       "Type": "Buff",
       "Icon": null,
       "CanDispel": false,
       "CanDisable": false
     },
     {
-      "StatusEffect": 13,
+      "StatusEffect": 15,
       "Name": "Two-Hand Quicken",
-      "Description": null,
+      "Description": "Attack speed with two-hand weapons increased. Ends early if you unequip your two-handed weapon.",
       "Type": "Buff",
       "Icon": "\uD22C\uD578\uB4DC\uD034\uD070",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 14,
+      "StatusEffect": 16,
       "Name": "Blessing",
-      "Description": null,
+      "Description": "Your STR, INT, and DEX are increased.",
       "Type": "Buff",
       "Icon": "\uBE14\uB808\uC2F1",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 15,
+      "StatusEffect": 17,
       "Name": "Increase Agi",
-      "Description": null,
+      "Description": "Your move speed and AGI are increased.",
       "Type": "Buff",
       "Icon": "\uBBFC\uCCA9\uC131\uC99D\uAC00",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 16,
+      "StatusEffect": 18,
       "Name": "Decrease Agility",
-      "Description": null,
+      "Description": "Your move speed and AGI are reduced.",
       "Type": "Debuff",
       "Icon": "\uBBFC\uCCA9\uC131\uAC10\uC18C",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 17,
+      "StatusEffect": 19,
       "Name": "Angelus",
-      "Description": null,
+      "Description": "Your soft DEF stat is increased. Players without Divine Protection will take reduced damage from demon and undead monsters based on the caster\u0027s skill level.",
       "Type": "Buff",
       "Icon": "\uC548\uC824\uB8E8\uC2A4",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 18,
+      "StatusEffect": 20,
       "Name": "SignumCrusis",
-      "Description": null,
+      "Description": "Holy light has weakened your defenses.",
       "Type": "Debuff",
       "Icon": "\uC2DC\uADF8\uB118\uD06C\uB8E8\uC2DC\uC2A4",
       "CanDispel": false,
       "CanDisable": false
     },
     {
-      "StatusEffect": 19,
+      "StatusEffect": 21,
       "Name": "Improve Concentration",
-      "Description": null,
+      "Description": "Your AGI and DEX are increased.",
       "Type": "Buff",
       "Icon": "\uC9D1\uC911\uB825\uD5A5\uC0C1",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 20,
+      "StatusEffect": 22,
       "Name": "Endure",
-      "Description": null,
+      "Description": "You are able to receive damage without flinching and have increased MDEF.",
       "Type": "Buff",
       "Icon": "\uC778\uB4C0\uC5B4",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 21,
+      "StatusEffect": 23,
       "Name": "Magnum Break",
-      "Description": null,
+      "Description": "Your strikes will deal extra fire property damage.",
       "Type": "Buff",
       "Icon": "icon02",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 22,
-      "Name": "Pneuma",
-      "Description": null,
-      "Type": "Buff",
-      "Icon": null,
-      "CanDispel": false,
-      "CanDisable": false
-    },
-    {
-      "StatusEffect": 23,
-      "Name": "Pneuma",
-      "Description": null,
-      "Type": "Buff",
-      "Icon": null,
-      "CanDispel": false,
-      "CanDisable": false
-    },
-    {
       "StatusEffect": 24,
+      "Name": "Pneuma",
+      "Description": "You are protected from ranged physical attacks.",
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 25,
+      "Name": "Pneuma",
+      "Description": "You are protected from short ranged physical attacks.",
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 26,
       "Name": "Hiding",
-      "Description": null,
+      "Description": "You are hiding beneith the ground, unable to be targeted except by demon, insect and boss monsters.",
       "Type": "Buff",
       "Icon": "\uD558\uC774\uB529",
       "CanDispel": false,
       "CanDisable": true
     },
     {
-      "StatusEffect": 25,
+      "StatusEffect": 27,
       "Name": "Crazy Uproar",
-      "Description": null,
+      "Description": "Your STR is increased.",
       "Type": "Buff",
       "Icon": "\uACE0\uC131\uC9C0\uB974\uAE30",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 26,
+      "StatusEffect": 28,
       "Name": null,
-      "Description": null,
+      "Description": "You are hidden from view, unable to be targeted except by demon, insect and boss monsters. Moving away from a wall will cancel the effect.",
       "Type": "Buff",
       "Icon": "\uD074\uB85C\uD0B9",
       "CanDispel": false,
       "CanDisable": true
     },
     {
-      "StatusEffect": 27,
+      "StatusEffect": 29,
       "Name": null,
-      "Description": null,
+      "Description": "Damage taken is reduced at the cost of SP. The higher your SP pool the greater the damage reduction and SP cost.",
       "Type": "Buff",
       "Icon": "\uC5D0\uB108\uC9C0\uCF54\uD2B8",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 28,
-      "Name": null,
-      "Description": null,
-      "Type": "Buff",
-      "Icon": null,
-      "CanDispel": false,
-      "CanDisable": false
-    },
-    {
-      "StatusEffect": 29,
-      "Name": null,
-      "Description": null,
-      "Type": "Buff",
-      "Icon": null,
-      "CanDispel": false,
-      "CanDisable": false
-    },
-    {
       "StatusEffect": 30,
-      "Name": "Movement Speed UP",
-      "Description": null,
+      "Name": null,
+      "Description": "Hidden enemies nearby will be revealed.",
       "Type": "Buff",
       "Icon": null,
-      "CanDispel": true,
-      "CanDisable": true
+      "CanDispel": false,
+      "CanDisable": false
     },
     {
       "StatusEffect": 31,
-      "Name": "Attack Speed UP",
-      "Description": null,
+      "Name": null,
+      "Description": "Hidden enemies nearby will take damage and be revealed.",
       "Type": "Buff",
-      "Icon": "\uACF5\uC18D\uBB3C\uC57D",
-      "CanDispel": true,
-      "CanDisable": true
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
     },
     {
       "StatusEffect": 32,
-      "Name": "Elemental Converter",
-      "Description": null,
+      "Name": "Movement Speed UP",
+      "Description": "Your move speed is increased.",
       "Type": "Buff",
       "Icon": null,
       "CanDispel": true,
@@ -290,89 +290,107 @@
     },
     {
       "StatusEffect": 33,
+      "Name": "Attack Speed UP",
+      "Description": "Your attack speed is increased.",
+      "Type": "Buff",
+      "Icon": "\uACF5\uC18D\uBB3C\uC57D",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 34,
+      "Name": "Elemental Converter",
+      "Description": "",
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 35,
       "Name": "Elemental Converter (Fire)",
-      "Description": null,
+      "Description": "Your physical attacks deal fire property damage.",
       "Type": "Buff",
       "Icon": "weapon_property_fire",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 34,
+      "StatusEffect": 36,
       "Name": "Elemental Converter (Water)",
-      "Description": null,
+      "Description": "Your physical attacks deal water property damage.",
       "Type": "Buff",
       "Icon": "weapon_property_water",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 35,
+      "StatusEffect": 37,
       "Name": "Elemental Converter (Wind)",
-      "Description": null,
+      "Description": "Your physical attacks deal wind property damage.",
       "Type": "Buff",
       "Icon": "weapon_property_wind",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 36,
+      "StatusEffect": 38,
       "Name": "Elemental Converter (Earth)",
-      "Description": null,
+      "Description": "Your physical attacks deal earth property damage.",
       "Type": "Buff",
       "Icon": "weapon_property_ground",
       "CanDispel": true,
       "CanDisable": true
     },
     {
-      "StatusEffect": 37,
+      "StatusEffect": 39,
       "Name": "Dark Blessing",
-      "Description": null,
+      "Description": "When this effect expires you will be reduced to 1 HP.",
       "Type": "Debuff",
       "Icon": "pharaoh_curse",
       "CanDispel": false,
       "CanDisable": false
     },
     {
-      "StatusEffect": 38,
+      "StatusEffect": 40,
       "Name": "Power Up",
-      "Description": null,
+      "Description": "Attack power greatly increased.",
       "Type": "Buff",
       "Icon": "icon02",
       "CanDispel": false,
       "CanDisable": false
     },
     {
-      "StatusEffect": 39,
+      "StatusEffect": 41,
       "Name": "Speed Up",
-      "Description": null,
+      "Description": "Move speed and evasion greatly increased.",
       "Type": "Buff",
       "Icon": "\uBBFC\uCCA9\uC131\uC99D\uAC00",
       "CanDispel": true,
       "CanDisable": false
     },
     {
-      "StatusEffect": 40,
+      "StatusEffect": 42,
       "Name": null,
-      "Description": null,
+      "Description": "All your attacks heal you.",
       "Type": "Buff",
       "Icon": "icon02",
       "CanDispel": true,
       "CanDisable": false
     },
     {
-      "StatusEffect": 41,
+      "StatusEffect": 43,
       "Name": "Doom",
-      "Description": null,
+      "Description": "You are doomed to die in the near future.",
       "Type": "Debuff",
       "Icon": null,
       "CanDispel": false,
       "CanDisable": true
     },
     {
-      "StatusEffect": 42,
+      "StatusEffect": 44,
       "Name": "Stolen From",
-      "Description": null,
+      "Description": "You\u0027ve had something recently taken and cannot be stolen from again.",
       "Type": "Debuff",
       "Icon": null,
       "CanDispel": false,

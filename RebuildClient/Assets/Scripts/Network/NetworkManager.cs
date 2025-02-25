@@ -1492,6 +1492,17 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
+        
+        public void SendAiLogging()
+        {
+            var msg = StartMessage();
+
+            msg.Write((byte)PacketType.AdminServerAction);
+            msg.Write((byte)AdminAction.EnableMonsterDebugLogging);
+
+            SendMessage(msg);
+        }
+
 
         public void SendPickUpItem(int target)
         {

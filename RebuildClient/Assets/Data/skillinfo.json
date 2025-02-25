@@ -1923,6 +1923,30 @@
     {
       "SkillId": 128,
       "Icon": "nv_basic",
+      "Name": "HP Breaker",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 129,
+      "Icon": "nv_basic",
+      "Name": "Mental Breaker",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 130,
+      "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,
       "Type": 0,

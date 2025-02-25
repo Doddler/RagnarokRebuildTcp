@@ -641,6 +641,11 @@ Name = "Reward for Quest"
 
 [Vampyrism]
 
+[PhysBreaker] #originally Dark Breath (not to be confused with Darkness Breath, the aoe)
+Name = "HP Breaker" #need to try to communicate it drops your maxHP...
+[MentalBreaker]
+Name = "Mental Breaker"
+
 [NoCast]
 #use when you want the enemy to trigger something without the player knowing
 #use None instead if you want the skill flash to still show

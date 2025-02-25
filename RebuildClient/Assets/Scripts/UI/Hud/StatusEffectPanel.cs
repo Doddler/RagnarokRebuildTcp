@@ -48,6 +48,7 @@ namespace Assets.Scripts.UI.Hud
             go.SetActive(true);
             go.transform.localScale = Vector3.one;
             var newEffect = go.GetComponent<StatusEffectEntry>();
+            newEffect.StatusEffect = status;
             newEffect.Expiration = expiration;
             newEffect.UpdateTime();
             newEffect.StatusIcon.sprite = icon;

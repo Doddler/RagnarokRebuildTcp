@@ -430,7 +430,7 @@ public static class CommandBuilder
         packet.Write((byte)lvl);
         packet.Write((byte)caster.FacingDirection);
         packet.Write(caster.Position);
-        packet.Write(di.Damage);
+        packet.Write(di.DisplayDamage);
         packet.Write((byte)di.Result);
         packet.Write((byte)di.HitCount);
         packet.Write(di.AttackMotionTime);
@@ -456,7 +456,7 @@ public static class CommandBuilder
         packet.Write(caster.Id);
         packet.Write(target.Id);
         packet.Write(caster.Position);
-        packet.Write(di.Damage);
+        packet.Write(di.DisplayDamage);
         packet.Write((byte)di.AttackSkill);
         packet.Write((byte)di.HitCount);
         packet.Write((byte)di.Result);
@@ -539,7 +539,7 @@ public static class CommandBuilder
         packet.Write((byte)di.HitCount);
         packet.Write((byte)di.Result);
         packet.Write(pos);
-        packet.Write(di.Damage);
+        packet.Write(di.DisplayDamage);
         packet.Write(di.AttackMotionTime);
         packet.Write(showAttackMotion);
 

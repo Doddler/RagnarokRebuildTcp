@@ -23,7 +23,7 @@ public class ComboAttackHandler : SkillHandlerBase
         var total = 0.8f + lvl * 0.6f;
         var perHit = total / (lvl + 1);
 
-        var req = new AttackRequest(CharacterSkill.ComboAttack, 1.2f, lvl + 1, AttackFlags.Physical, AttackElement.None);
+        var req = new AttackRequest(CharacterSkill.ComboAttack, perHit, lvl + 1, AttackFlags.Physical, AttackElement.None);
         req.AccuracyRatio = 120;
         var res = source.CalculateCombatResult(target, req);
         

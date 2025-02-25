@@ -186,7 +186,7 @@ public partial class CombatEntity : IEntityAutoReset
 
     public void RemoveStatusOfTypeIfExists(CharacterStatusEffect type)
     {
-        if (statusContainer == null)
+        if (statusContainer == null || statusContainer.TotalStatusEffectCount == 0) //that last one fixes an unfortunate issue where attempting to remove an existing status while adding a status breaks things
             return;
         statusContainer.RemoveStatusEffectOfType(type);
         if (!statusContainer.HasStatusEffects())
@@ -333,8 +333,8 @@ public partial class CombatEntity : IEntityAutoReset
                 stat += 10 + GetStat(CharacterStat.Luck) * 5;
                 break;
             case CharacterStat.Range:
-                if (HasBodyState(BodyStateFlags.Blind))
-                    stat = int.Max(stat, ServerConfig.MaxAttackRangeWhileBlind);
+                if (HasBodyState(BodyStateFlags.Blind) && stat > ServerConfig.MaxAttackRangeWhileBlind)
+                    stat = ServerConfig.MaxAttackRangeWhileBlind;
                 break;
             case CharacterStat.MoveSpeedBonus:
                 if (stat < -99)

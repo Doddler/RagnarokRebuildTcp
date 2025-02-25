@@ -37,6 +37,8 @@ public class UiManager : MonoBehaviour
     public StatsWindow StatusWindow;
     public DropCountConfirmationWindow DropCountConfirmationWindow;
     public ItemDescriptionWindow ItemDescriptionWindow;
+    public ItemDescriptionWindow SubDescriptionWindow;
+    public CardIllustrationWindow CardIllustrationWindow;
 
     public GameObject InventoryDropArea;
     public GameObject EquipmentDropArea;
@@ -116,6 +118,7 @@ public class UiManager : MonoBehaviour
         InventoryWindow.ShowWindow();
         //InventoryWindow.HideWindow();
         ItemDescriptionWindow.HideWindow();
+        SubDescriptionWindow.HideWindow();
         
         ActionTextDisplay.EndActionTextDisplay();
         
@@ -131,6 +134,8 @@ public class UiManager : MonoBehaviour
 
     public void ShowTooltip(GameObject src, string text)
     {
+        if (string.IsNullOrWhiteSpace(text))
+            return;
         var pos = Input.mousePosition;
         hoveredObject = src.gameObject;
         TooltipOverlay.gameObject.SetActive(true);

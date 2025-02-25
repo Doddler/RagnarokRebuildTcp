@@ -38,12 +38,18 @@ namespace Assets.Scripts.UI
 
         public void SetEquipped()
         {
+            if (CountText == null)
+                return;
+                
             CountText.gameObject.SetActive(true);
             CountText.text = "E";
         }
 
         public void BlueCount()
         {
+            if (CountText == null)
+                return;
+            
             CountText.text = $"<color=#0000ed>{CountText.text}</color>";
         }
         

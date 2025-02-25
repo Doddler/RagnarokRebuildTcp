@@ -127,8 +127,15 @@ public partial class Monster : IEntityAutoReset
     //private float allyScanTimeout;
     private bool inAdjustMove;
 #if DEBUG
-    private bool dbgFlag;
+    public bool DebugLogging;
+
+
+    public void DebugLog(string msg)
+    {
+        ServerLogger.Debug($"{MonsterBase.Name}:{Character.Id} State: {CurrentAiState} Pos:{Character.Position} Target:{Character.TargetPosition} Move:{Character.IsMoving} AMotion: {Character.AttackCooldown - Time.ElapsedTimeFloat} | {msg}");
+    }
 #endif
+
 
     public bool HasMaster => Master.IsAlive();
     public Entity GetMaster() => Master;
@@ -163,6 +170,11 @@ public partial class Monster : IEntityAutoReset
     public void NotifyOfAttack(ref DamageInfo di)
     {
         var hasSrc = di.Source.IsAlive();
+
+#if DEBUG
+        if (DebugLogging)
+            DebugLog($"Monster received {di.HitCount}x{di.Damage} damage from {di.Source} skill {di.AttackSkill}");
+#endif
 
         if (!di.Flags.HasFlag(DamageApplicationFlags.SkipOnHitTriggers))
         {
@@ -606,10 +618,14 @@ public partial class Monster : IEntityAutoReset
     public void AddDelay(float delay)
     {
         //usually to stop a monster from acting after taking fatal damage, but before the damage is applied
-        //Character.DebugMessage($"{Character.Name} set AI update time to {nextAiUpdate}");
         nextAiUpdate += delay;
         if (nextAiUpdate < Time.ElapsedTimeFloat)
             nextAiUpdate = Time.ElapsedTimeFloat + delay;
+
+#if DEBUG
+        if (DebugLogging)
+            DebugLog($"Next AI update in {nextAiUpdate - Time.ElapsedTimeFloat}");
+#endif
     }
 
     private bool CanAssistAlly(int distance, out Entity newTarget)
@@ -710,14 +726,19 @@ public partial class Monster : IEntityAutoReset
         LastDamageSourceType = CharacterSkill.None; //clear this flag after doing a skill update
 
         canResetAttackedState = true;
-        
+
+#if DEBUG
+        if (DebugLogging)
+            DebugLog($"AI Skill Scan Update success: {skillState.SkillCastSuccess}");
+#endif
+
         if (!skillState.SkillCastSuccess)
         {
             if (CurrentAiState == MonsterAiState.StateIdle)
                 Target = Entity.Null;
             return false;
         }
-
+        
         if (skillState.CastSuccessEvent != null)
         {
             if (skillState.ExecuteEventAtStartOfCast || (Character.QueuedAction == QueuedAction.None && !CombatEntity.IsCasting))
@@ -779,6 +800,10 @@ public partial class Monster : IEntityAutoReset
 
             if (entry.InputState != CurrentAiState)
                 continue;
+#if DEBUG
+            if(ServerConfig.DebugConfig.DebugMapOnly || DebugLogging)
+                DebugLog($"Input test {entry.InputCheck}");
+#endif
 
             if (!InputStateCheck(entry.InputCheck))
             {
@@ -795,8 +820,8 @@ public partial class Monster : IEntityAutoReset
             }
 
 #if DEBUG
-            if (ServerConfig.DebugConfig.DebugMapOnly)
-                ServerLogger.Debug($"{Entity}: AI state change from {CurrentAiState}: {entry.InputCheck} -> {entry.OutputCheck} = {entry.OutputState}");
+            if (ServerConfig.DebugConfig.DebugMapOnly || DebugLogging)
+                DebugLog($"Transition {entry.InputCheck} -> {entry.OutputCheck} = {entry.OutputState}");
 #endif
 
             PreviousAiState = CurrentAiState;
@@ -837,7 +862,7 @@ public partial class Monster : IEntityAutoReset
         if (Character.Map?.PlayerCount == 0)
             return;
 
-        if (nextAiUpdate > Time.ElapsedTimeFloat || Character.InAttackCooldown)
+        if (nextAiUpdate > Time.ElapsedTimeFloat)
             return;
 
         if (GetStat(CharacterStat.Disabled) > 0 || CombatEntity.IsCasting)
@@ -863,8 +888,5 @@ public partial class Monster : IEntityAutoReset
 
             return;
         }
-
-        //if(GameRandom.Next(4000) == 42)
-        //	Die();
     }
 }

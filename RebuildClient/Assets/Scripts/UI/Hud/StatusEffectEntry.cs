@@ -1,12 +1,14 @@
 ﻿using System;
+using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Hud
 {
-    public class StatusEffectEntry : MonoBehaviour
+    public class StatusEffectEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public Image StatusIcon;
         public TextMeshProUGUI RemainingTime;
@@ -39,6 +41,30 @@ namespace Assets.Scripts.UI.Hud
                 RemainingTime.text = $"{seconds / 60}m";
             else
                 RemainingTime.text = $"{seconds / 3600}h";
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (UiManager.Instance.IsDraggingItem)
+                return;
+
+            var data = ClientDataLoader.Instance.GetStatusEffect((int)StatusEffect);
+            
+            if (data != null)
+            {
+                UiManager.Instance.ShowTooltip(gameObject, data.Description);
+                return;
+            }
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            UiManager.Instance.HideTooltip(gameObject);
+        }
+
+        public void OnDestroy()
+        {
+            UiManager.Instance.HideTooltip(gameObject); //will do nothing if this isn't the actively hovered object
         }
     }
 }

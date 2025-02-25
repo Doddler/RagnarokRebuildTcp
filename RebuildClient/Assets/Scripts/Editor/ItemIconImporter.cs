@@ -48,9 +48,11 @@ namespace Assets.Scripts.Editor
             var items = JsonUtility.FromJson<Wrapper<ItemData>>(itemDataFile.text);
             var sharedItemSprites = new StringBuilder();
             var equipIcons = new List<string>();
+            var itemIdToCode = new Dictionary<int, string>();
 
             foreach (var item in items.Items)
             {
+                itemIdToCode.Add(item.Id, item.Code);
                 if (!string.IsNullOrWhiteSpace(item.Sprite) && !iconNames.Contains(item.Code))
                 {
                     if (iconNames.Contains(item.Sprite))
@@ -65,6 +67,8 @@ namespace Assets.Scripts.Editor
                         equipIcons.Add(item.Sprite);
                 }
             }
+            
+            //do the things
 
             File.WriteAllText("Assets/Data/SharedItemIcons.txt", sharedItemSprites.ToString());
 
@@ -82,6 +86,7 @@ namespace Assets.Scripts.Editor
             var srcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "sprite/아이템");
             var statusPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/effect");
             var collectionSrcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/유저인터페이스/collection");
+            var cardIllustSrcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/유저인터페이스/cardbmp");
             Debug.Log(srcPath);
 
             var i = 0;
@@ -312,6 +317,59 @@ namespace Assets.Scripts.Editor
             {
                 atlasObj
             }, BuildTarget.StandaloneWindows64);
+            
+            
+            
+            //card illustrations
+            var cardIllustData = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/cardillustrations.txt");
+            var cardIllustLines = cardIllustData.text.Split('\n');
+
+            foreach (var line in cardIllustLines)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+                var s = line.Split('#');
+                if (s.Length < 2 || !int.TryParse(s[0], out var id))
+                    continue;
+
+                if (!itemIdToCode.TryGetValue(id, out var itemCode))
+                    continue;
+                
+                var collectionDestPath = $"Assets/Sprites/Imported/Collections/cardart_{itemCode}.png";
+                
+                if (!File.Exists(collectionDestPath))
+                {
+                    var collectionSrc = Path.Combine(cardIllustSrcPath, $"{s[1]}.bmp");
+                    if (File.Exists(collectionSrc))
+                    {
+                        var tex = TextureImportHelper.LoadTexture(collectionSrc);
+                        TextureImportHelper.SaveAndUpdateTexture(tex, collectionDestPath, ti =>
+                        {
+                            ti.textureType = TextureImporterType.Sprite;
+                            ti.spriteImportMode = SpriteImportMode.Single;
+                            ti.textureCompression = TextureImporterCompression.CompressedHQ;
+                            ti.crunchedCompression = true;
+                        });
+                    }
+                }
+            }
+
+            var defaultCardIllustration = $"Assets/Sprites/Imported/Collections/cardart_default.png";
+            if (!File.Exists(defaultCardIllustration))
+            {
+                var defaultCardIllustPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/유저인터페이스/cardbmp/sorry.bmp");
+                if (File.Exists(defaultCardIllustPath))
+                {
+                    var tex = TextureImportHelper.LoadTexture(defaultCardIllustPath);
+                    TextureImportHelper.SaveAndUpdateTexture(tex, defaultCardIllustration, ti =>
+                    {
+                        ti.textureType = TextureImporterType.Sprite;
+                        ti.spriteImportMode = SpriteImportMode.Single;
+                        ti.textureCompression = TextureImporterCompression.CompressedHQ;
+                        ti.crunchedCompression = true;
+                    });
+                }
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
+using System;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
@@ -30,7 +31,7 @@ public class PacketAdminServerAction : IClientPacketHandler
             if (!connection.IsConnectedAndInGame || chara == null || chara.Map == null)
                 return;
 
-            var el = EntityListPool.Get();
+            using var el = EntityListPool.Get();
 
             var isMapWide = msg.ReadBoolean();
 
@@ -47,7 +48,29 @@ public class PacketAdminServerAction : IClientPacketHandler
                 if(!mon.Monster.HasMaster)
                     mon.Monster.Die(false);
             }
-
         }
+#if DEBUG
+        if (type == AdminAction.EnableMonsterDebugLogging)
+        {
+            var chara = connection.Character;
+            if (!connection.IsConnectedAndInGame || chara == null || chara.Map == null)
+                return;
+
+            using var el = EntityListPool.Get();
+
+            chara.Map.GatherMonstersInArea(chara.Position, ServerConfig.MaxViewDistance, el);
+
+            foreach (var m in el)
+            {
+                if (m.Type != EntityType.Monster)
+                    continue;
+
+                if (!m.TryGet<Monster>(out var mon))
+                    continue;
+
+                mon.DebugLogging = true;
+            }
+        }
+#endif
     }
 }

@@ -53,6 +53,14 @@ Icon = "bd_stonecurse"
 Type = "Debuff"
 Icon = "프로보크"
 
+[ProvokeNoAtk]
+Type = "Debuff"
+Icon = "프로보크"
+
+[Hallucination]
+Type = "Debuff"
+Icon = "환각"
+
 #----------------------------------
 # Player Buffs
 #----------------------------------

@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -25,6 +27,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 //Debug.Log("We're removing the player object! Hopefully the server knows what it's doing. We're just going to pretend we didn't see it.");
                 //return;
 
+                GameConfig.SaveConfig();
                 Debug.LogWarning("Whoa! Trying to delete player object. Is that right...?");
                 Camera.Target = null;
                 Network.ClearGroundItemList();

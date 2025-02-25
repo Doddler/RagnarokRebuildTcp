@@ -40,6 +40,25 @@ namespace Assets.Scripts.Utility
 					onComplete(handle.Result);
 			};
 		}
+		
+		public static void LoadSprite(GameObject owner, string spritePath, Action<Sprite> onComplete, Action onError)
+		{
+			if (string.IsNullOrWhiteSpace(spritePath))
+				throw new Exception($"Attempting to load Sprite but the spritePath was empty!");
+
+			Addressables.LoadAssetAsync<Sprite>(spritePath).Completed += handle =>
+			{
+				if (handle.Status != AsyncOperationStatus.Succeeded)
+				{
+					Debug.LogError("Could not load sprite name " + spritePath);
+					onError();
+				}
+
+				if (owner != null)
+					onComplete(handle.Result);
+			};
+		}
+
 
 		public static AsyncOperationHandle<T> Load<T>(GameObject owner, string fileName, Action<T> onComplete)
 		{

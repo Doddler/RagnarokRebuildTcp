@@ -103,6 +103,16 @@ StateAttacking:
 	TryCast(WaterAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //angry
 }
 
+SkillHandler("HORONG") {
+StateChase:
+	TryCast(Sight, 1, 20%, 0, 5s);
+	TryCast(Hallucination, 1, 5%, 0, 5s) -> SendEmote(9); //...
+StateAttacking:
+	TryCast(ComboAttack, 2, 5%, 0.7s, 5s, HideSkillName);
+	TryCast(FireAttack, 1, 5%, 0, 5s);
+}
+
+
 SkillHandler("AM_MUT") {
 StateAttacking:
 	TryCast(Mammonite, 9, 5%, 0.8s, 5s) -> SendEmote(8); //$

@@ -17,7 +17,8 @@ namespace Assets.Scripts.UI
         Item,
         Equipment,
         ShopItem,
-        StorageItem
+        StorageItem,
+        SocketedItem
     }
 
     public class DraggableItem : DragItemBase, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -40,11 +41,15 @@ namespace Assets.Scripts.UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            if (Type == DragItemType.SocketedItem)
+                return;
+            
             manager.StartItemDrag(this);
             manager.DragItemObject.Origin = Origin;
             manager.DragItemObject.OriginId = OriginId;
             Image.enabled = false;
-            CountText.enabled = false;
+            if(CountText != null)
+                CountText.enabled = false;
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -52,7 +57,8 @@ namespace Assets.Scripts.UI
             manager.EndItemDrag();
 
             Image.enabled = true;
-            CountText.enabled = true;
+            if(CountText != null)
+                CountText.enabled = true;
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -62,7 +68,8 @@ namespace Assets.Scripts.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (OnRightClick != null && eventData.button == PointerEventData.InputButton.Right && (Type == DragItemType.Item || Type == DragItemType.Equipment))
+            if (OnRightClick != null && eventData.button == PointerEventData.InputButton.Right 
+                                     && (Type == DragItemType.Item || Type == DragItemType.Equipment || Type == DragItemType.SocketedItem))
                 OnRightClick();
             if (OnDoubleClick != null && Type != DragItemType.None && eventData.button == PointerEventData.InputButton.Left 
                 && eventData.clickCount >= 2 && OnDoubleClick != null)
@@ -112,6 +119,14 @@ namespace Assets.Scripts.UI
                     // {
                     //     text = $"{dat.ItemData.Name}: {ItemCount} ea.";
                     // }
+                }
+
+                if (Type == DragItemType.SocketedItem)
+                {
+                    if (ItemId < 0)
+                        return;
+                    if (ClientDataLoader.Instance.TryGetItemById(ItemId, out var dat))
+                        text = dat.Name;
                 }
 
                 UiManager.Instance.ShowTooltip(gameObject, text);

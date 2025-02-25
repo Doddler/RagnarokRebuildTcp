@@ -50703,6 +50703,2640 @@ MonoBehaviour:
     m_SerializedLabels:
     - Minimap
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d767f8dbd3caa984d8da5fc2473387f9
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Abyssal_Knight_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0e3835c63d90564c8694b2d925500df
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Agav_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91b214cb8e67ea047af394488d80130e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Alarm_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9bb143adb1dd1254581ef033d7aa7c73
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Alice_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f464671fbfe205e4b86f2136dfa16fea
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Alicel_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bd2cee331e395145848b2b28be68bba
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Aliot_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39329db3ced89c84bb64b386401fb5dc
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Aliza_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac8d145d2dd66414d9324febcc72e80c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Alligator_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91b6ff37d6b55484fbd444519a4a0844
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Am_Mut_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f0ccb74b9dc0c244b6ba8968952f873
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ambernite_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df691e3242c43104a9b542b241bede14
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Amon_Ra_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aac08dc47a0cc9d40a48041fe13bf49e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Anaconda_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b8300639ff7fc041909b0c47adc5c4d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ancient_Mimic_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d44dd622a5c52446863f403625bd1dd
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ancient_Mummy_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf1af849b03101d4ea9acfa201ca874c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ancient_Worm_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66cbb647bf9587f4ebf7ec08d3a52043
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Andre_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8d8b51f621fa6e4490d55285316aa7f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Angeling_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 00ca83b713840b549a7b35c5b631d05d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Anolian_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c119b1d064ad6ff4991c03f1a3d8ef33
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Anopheles_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 246251028c326f240ac274ca74430632
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ant_Egg_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8377ae38098a2cd4aaefc8b3d80010b4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Antonio_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c3f85fe4f6a7e74f97e1b65f1915b07
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Anubis_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be330336c3a241f419e1bf3c47deacde
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Apocalypse_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 199ec5681ccf8fc4899c215aa10bb96c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Archangeling_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4829d800948aebb4fb15dc271fd7ffd7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Archdam_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55c3cda794fa9b04d84f95ffeca9f572
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Archer_Skeleton_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a56488e4a5a2264592151b1f5f797f0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Arclouse_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 863e7c2b999d5ae45a0ae0f839bcd25b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Argiope_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad6a8a52ed2d731418bc3deb21e494a7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Argos_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43ba88cdd63cbb043a835c0179c83129
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Armeyer_Dinze_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b2d6a49fbd8e6a4bb843d4e6afae974
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Assassin_Cross_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c388d8f1f15e844098070fd1a3a2bf2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Assaulter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2abbc29ccd7d82644b8b530ab6e68440
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Aster_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 449cb71e59f582e42a1ace7befd8b10e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Atroce_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a6c5fe213446a347a6c68f1b40134e4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Baby_Desert_Wolf_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0d520d5f2f81a44f921382b8c17246f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Baby_Leopard_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e9670d937442444cafa3dabc3a37668
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Banshee_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afa89dbf342eed34f80054b7fbff98e1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Baphomet_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 474abd482b5182e43ac35743530b173d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Baphomet_Jr._Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 605666869f3445c4ab13a8cab553e620
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Baroness_of_Retribution_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4193837bf6000e409d91f49a87a4a11
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Bathory_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e6d287fee79674429439ec59751010e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Beelzebub_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5fc7e0c3f4368a54980d3e7fe66c040f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Beetle_King_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 761d89ba0a5ac024f88b24afbc1cba7e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Beholder_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12e1722dbc462cf409d5d307807762f4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Bigfoot_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2692a7df8168a824f9ebd3741a63b203
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Blazer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb8af636f67bf194a99a1fa0f50afb87
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Bloody_Butterfly_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 043d6f5b94791d24e9b2cdeaa915396b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Bloody_Knight_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6475de952c4161a48baa86232c428c67
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Bloody_Murderer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 298c95364067e194fbfaf627d3682316
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Blue_Acidus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c616097a65272334c9e30aaef27370c0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Boa_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0577a47332e75f4dbb6bd4193ac0eb3
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Bongun_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67aa0699059432941bf72269fe182793
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Bow_Guardian_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1089ba911de00a0478b43a5be96c732e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Breeze_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 00c9ffedbcb5e7e41b949a797c6a8e5b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Brilight_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b14ce0b5e2612c45b7c76669d0f2a8c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Byorgue_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61fd1ae951aab574ba9fd0c995918d77
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Caramel_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 02678aaa1dce0b64da878b63ee29fac4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Carat_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3041d2209c3904d4da6aeb5bbee1e5f2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Cat_O'_Nine_Tails_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44a04e43b004f7c498648e29614a8b6f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Caterpillar_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5877b7049bf88354dae1ba3d7b8a59d7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Cecil_Damon_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c7d9ab0650462c41ae5cc81a855a020
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Chepet_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d13b4389148ace4ebc0950cdcbe9286
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Chimera_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a14adf963316574aa2d1994842fa41e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Choco_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9815d1d48c62a104aa68b9e72eb9b2f4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Chonchon_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d43965eccb9177c43880d1810d10739a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Christmas_Cookie_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb133d0bc984a0346af2b8f32f112ddb
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Clock_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69603dd27a21ccb45b9bfdc168ad7a8c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Cloud_Hermit_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bfd636ec5b5c8b941949e0ecdea01767
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Cloud_Tower_Manager_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e997d543fa8284b4e9266530a8c8dcf7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Coco_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca34b3898e43def47b055b77940a4ba7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Condor_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d63e1fc46cb35d24d9d9e293ac5f66cd
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Cookie_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48db7c09f7782984db74443d0064720d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Cornutus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c32b388ea1211cf4491379047a81fd2b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Crab_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9a2f29c22bdb5441a24406285f993b1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Cramp_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f03fb23a0ad88e4ca4c79a8420b9df7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Creamy_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8bba5078ebad8a449b4d54a9621e0032
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Creamy_Fear_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b55e02d31b87394bafe88ec9bee4931
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Cruiser_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d5c1d864fccf2d4aa41862cc540a53e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dame_of_Sentinel_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61039872ef930d3418827f1d7522942e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dark_Frame_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f04f90dd7a3fd7242a752f9ec1aeefb0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dark_Illusion_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 961485b46c57c0347a0194893933e332
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dark_Lord_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 970de2d01344af94e883a69497bc6f4b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dark_Priest_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f64dcf42f72cf0746ab183d63328488c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Death_Word_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a14053b561757944ada464695a8dc77
+    m_Address: Assets/Sprites/Imported/Collections/cardart_default.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16e2a035739501149bbde4a56803fc92
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Demon_Fungus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e790e55614178f41a587b6a1f6f2b45
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Desert_Wolf_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61c46f297c682bb4080e757f5d9147c7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Detale_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9c4826edbd531641801620f3466baa4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Deviace_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be75da8d96601e648a6d0d18f3760e90
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Deviling_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f821d74c5cc4b5458c4ff5ae348285c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Deviruchi_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1db8b119efcb314384ea509ff720f62
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Diabolic_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cce0d6509098ffa4782e539c65aef995
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dimik_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2c20c4ea9d8b7d429af993143f7ec14
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Disguise_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20a3116bbc8e4a5458f095e5fcbce940
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dokebi_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f5aedcaea1dfee43a65145c7c1e00d0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Doppelganger_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e54098ada520d0647b7bbbc9d122fafc
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dracula_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a99cb1ae9970e84bab6887387a84592
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dragon_Egg_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 870f8fc907dc61c49a31218b69cc0dd2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dragon_Fly_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 95e4b6e5d5931b94bbe67e2148c212ae
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dragon_Tail_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0f7cbd0acd1bd04f9ad102a94e85651
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Drainliar_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 159446cfeba9f2d4da3892fb1a02d6eb
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Drake_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe04554e5b74ed24e89e1b4c5457b4df
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Driller_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 136b741a6d32fc143b12fd8018a9ee24
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Drops_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ce79aba7f4083b49a9586b96c504e7b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Drosera_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccf7a59f7d9a1b94997319236b0c29c8
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dryad_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47ff2b0d2b5a5f34f961ea658feaeb98
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dullahan_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a59be903181fbba4199c69cfecc5d85f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dumpling_Kid_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 187387d309fc25d419c0554da4a23f2f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Dustiness_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc575ef6784da4249b874b36c3963856
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Earth_Deleter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 071126c597868f3469ad6fbb9e6eceeb
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Earth_Petite_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c751506b613ad974baddb6fb6025704a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Echio_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba825348b3e5a564788c874a9a2f109f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Eclipse_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66a56489e726331478cc4f2597536b9f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Eddga_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e060de7c8fe1d8c4c97b36bcb53b3ef2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Eggyra_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: def9b720f8af3b04ca8c7b28195469f6
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Egnigem_Cenia_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3487c449e350a446aa4685f0ae66226
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Elder_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d379c96664cfe945a5ac222f109d3b2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Elder_Willow_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f84c5142a429a05479a9033da633e881
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Enchanted_Peach_Tree_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8928b5c1721e4754a91bc420667d1b90
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Eremes_Guile_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4082aacb2bc99d74b92a6a4c0b29758c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Errende_Ebecee_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07d592542484a5f429dcb87bd2a64d1b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Evil_Druid_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ffa897b220e5ff4ab9fb2af921ea7ed
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Evil_Nymph_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1503c8885b46a244d981a3af03afe165
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Evil_Snake_Lord_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f08b1438ed38d614e85084d65da9eb18
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Executioner_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae8d6f8b08b28f245872b2a37f9f918a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Explosion_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4703c8cc8a6af243812054ec716241d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Fabre_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc14db0246c03504ca34a1b26d398aee
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Fallen_Bishop_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d609714812980ce4b84387dbf816b378
+    m_Address: Assets/Sprites/Imported/Collections/cardart_False_Angel_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8df684197b70e2b43b63a1bebd577daa
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Familiar_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29562cd99d0053d4d8b4a093164ed12a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Female_Thief_Bug_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2cd734cb1eaf4947b81589d65486419
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Firelock_Soldier_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 888925fc6bebad94b8e15f372901a1d0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Flame_Skull_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6aba2b55e5fff2d4aafff7728a3fd4cd
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Flora_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c19f5f71b2e676a4db8fc4e2f8332652
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Freezer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4c6fd107a15609419bc184bf1affbc1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Frilldora_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a567b93c2fe70941bfe5c8e25f43775
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Frus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b5fa406368a3a448a480f53c5de5f51
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Fur_Seal_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aff6c19a9e7f8d24c96ef1ef5eaeb744
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gajomart_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b6282a085634494fbafe349863e2b7d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Galapago_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f2544bffa91f0d44b42718cdc40367e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Galion_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6dc41c0b272d0134881cdf481d686669
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gargoyle_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab12724cc8d57bf4095a4ce6ef4b416d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gazeti_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 632a8fa3aacde124da7ffae584513481
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gemini-S58_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52484e04275e49b4fb1fa2675bc3ecab
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Geographer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d09ed2fcb5c18b4aa02d0b37eedd80f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ghostring_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76b5411b5394366409c805f26a81e789
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ghoul_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 26030f9072e3b464f9499d35c06d425a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Giant_Hornet_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d461fdc1258f97459492ea99f4fe99b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Giant_Spider_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55bb29652b1e31a4280a806e433341d4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Giant_Whisper_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89b8d6f9b94dcfb429e54a634e43d5a3
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gibbet_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 346e4f900984bdb4091d889a14fca64e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Giearth_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9093f2870c56d048b6cb51a14584667
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gig_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23c62ab72228d704c8271d7087a78fd7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gloom_Under_Night_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e49cb5f3846d90a4f8006fcdd9a65726
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Goat_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61f155232267f3c4da8034ebb219cb3a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Goblin_Archer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ef15bcf4bc5d564583b603b96e1a040
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Goblin_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bee52b5cfeb14624b9de693632774650
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Goblin_Leader_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7560071aaa347e84fbc1973b402c8c19
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Goblin_Steamrider_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2b43f865bc3bf941be3ab44ad308c7f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gold_Acidus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aed4f1e849ec37a48a0032872f69aa53
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Golden_Thief_Bug_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e3cf3691e601d846b8f763017c84980
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Golem_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c379933ed3c8f744c9804b3cdb7fa3bf
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Grand_Peco_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b6b93b5e9a73fc469a6e50d4d3c4b43
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Greatest_General_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d1019c800d07a840999f3e8b130a030
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Green_Ferus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 028374a5d85619c46a209b7484bb9a06
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Green_Maiden_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25ab9ac730404d248ad038594aac80a0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gremlin_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c673bc6e3aa7f554999443217685dc01
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Grizzly_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7977171391e52de4ba143a66af76e4d8
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Grove_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1626d8911cb68804197c732bd648e269
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gryphon_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 893ad95da16792944970acfff322fe7d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Gullinbursti_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de2cd04a63554f64a9c14bbd5ac74bcf
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Harpy_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af2aae9c20dc70f4a86fa1883d3dff1f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hati_Baby_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b619e4272ac3ffe4180ad0ca2f557921
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hati_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e2da0d16b1073d4b935b319c8fc4417
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Heater_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60b7842fcdaf2b54aac9c4c392f8399b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hell_Poodle_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11fea2e6e9ca6d94f80146a497f3f7ca
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hermit_Plant_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27f7f328ef66e9c45806dce5bf38207a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_High_Orc_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2dc43e3f8b97db248833c1fa74de5472
+    m_Address: Assets/Sprites/Imported/Collections/cardart_High_Priest_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c3b97a5383403a40a56c4b27167e64d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_High_Wizard_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e98b45466960004da8f872ebe8b9f19
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hill_Wind_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 034161f98a073504aa7812659c44f41f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hode_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f42fdd9dc7e2a5640a0ca73d191712a0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hodremlin_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2f18246d58d7a14a8f3b22b69d1328a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Holden_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7e254c329bc78342bbf368f1f44258f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Horn_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b029f79a99959f438a5997e83ec24c1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hornet_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5182800a85144a4f897a64315e3d622
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Horong_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acf3b705612c88842be530059123cba6
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Howard_Alt-Eisen_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d65c456345a07e46b6116bf4196fd7b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hunter_Fly_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38496869127dbf348b9374c1a9dbd138
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hydra_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 051048e7f01471e458f1fe94340ebbb1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hydrolancer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4441f479f7c08f6498f94d49fa772870
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Hylozoist_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f44ba4d6274764c4cb9149492aff91d0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ice_Titan_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b496ed9a3dd49e144808e5692fac4d0b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ifrit_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0adacf9f79745024c968a1fbe0de54ea
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Imp_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aeeede3c03a99be40bb1dad792787173
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Incubus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4e43b1cd36f8124bb1480a07c6199bc
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Injustice_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77435bceb7da2d141b8b1a57c2ba9ece
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Iron_Fist_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79c922831272b824ba7e7b9b922af3bb
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Isilla_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 070e915ea9507f44d90ad47227512a61
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Isis_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48f3862e8041afa4cad3e162196f6681
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Jakk_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1de857d6f8645df41adc031b28bb20af
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Jing_Guai_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e8de2bdfd80dada45ab63479bd74c28d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Joker_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1886412df39bbb2488fc398aaf43cf0d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kaho_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98cc2d37c0c48654cbbba08a90ecdb5c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kappa_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46ef7226da8ffd84d86f2c3f583afaf9
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Karakasa_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a1f5aa6ecec33e49a9f3cb0eae2c260
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kasa_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5f523aa96acffb4db2ada69d72d0068
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kathryne_Keyron_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d68d898d6193324cbfa842fff3cc59d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kavach_Icarus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8850d429796898341b9cffdf2ab84384
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Khalitzburg_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50af591a53ac38143be7957e7bbb1ce1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kiel_D-01_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89c794099083a40429cee13ccaf8de7e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Killer_Mantis_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a2a419087dc04f47824096299a41b71
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Knocker_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 905ed5727f2fee84f857e0b297b87e17
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kobold_Archer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d79e02b3ecce974689a3fdb630172ea
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kobold_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0270d2e3a6fbe3a46b9033803f913835
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kobold_Leader_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3da2804ee4919504897588818dcb0349
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kraben_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db8087dfd1c46cb4dbb723052da2d5c1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ktullanux_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c1e7f36ecf618a4da0a433b372e22af
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Kukre_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5cd472426d0996c49a7e2c77979d0f42
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Lady_Solace_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0690c4f9df5a344289749b3301936e0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Lady_Tanee_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d03f9c2a326837d499a83ad9af173b26
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Laurell_Weinder_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3bcc6d1f47c5848418ee8c63468222aa
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Lava_Golem_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a95d199fe62bd554c97249172cdfb553
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Leaf_Cat_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0debfb7b83fb7c4fb704b0b60b5e94e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Leib_Olmai_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 571b484a9a5657444b26f9ea89494c3b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Loli_Ruri_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33241b8b02fd1a145b424d1c94bb7d8d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Lord_Knight_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa6d153f15ea13e468d1fdc63a95cb81
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Lord_of_The_Dead_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 235a1f0d2bae47d418ce7e1e39b4f806
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Lude_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97e92e6f4fa6deb458c5991fe4b865a3
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Lunatic_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd7ff62d4827c2b42b7a6a53234350b9
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Magmaring_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fcefb6ebca66954cb4786657e3d7377
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Magnolia_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 696bf24eca0fde841910649d5f904993
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Majorous_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa312e8fc6019cd429d1a46b98a7238a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Male_Thief_Bug_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7745a3ada7075f24f812388a29744f40
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mandragora_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ed4979d21bbecb43a6192496b73c7ff
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mantis_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 73d03b0f047a5fe489358bf9c46f7fc2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mao_Guai_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad4318376768fcb44bc09813e6f36a4b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Marc_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8ca720c9b566904f841d78e34ceef9d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Marduk_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee47b81493b7e8e4dadf77b61c4ba887
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Margaretha_Sorin_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25303ee4505e5314a8787ebc944f41fa
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Marin_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8aad13e30ddba9f4e97bf0552fd05702
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Marina_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 513a23f44bd28594b9a7b86682f8f27a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Marine_Sphere_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dae9595d22363d3448e999400e13c756
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Marionette_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5ebc046ff9eb374b918cf82094a7f18
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Marse_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 121dc2e329e3fa14d9066222e14f6e40
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Martin_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25656560304ebf544a16b3aa181c9332
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mastering_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97718e2d87c8e9943b6c0e6b9f865c88
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mastersmith_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92d21e2785c17b747b3c5edb3b4d08d1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Matyr_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4cf7ad60c5b7a884592f2416814e04f4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Maya_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6de8b3e6b33f54945b6f63b845925f63
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Maya_Purple_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee72ba9f837dd2f42b89221666f5b5b2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Medusa_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ed94acf372d58a4d92dd71d06bac2ed
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Megalith_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ef69a6c119fcfa4face4353e276621f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Megalodon_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b14a24af77c99134f99bf6eaf757f0e1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Merman_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e61dc87f01ee8db46abf5614af885ae5
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Metaling_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ef5f3c3d5307d84ba6748cde6d3964e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Metaller_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9df062b584af4eb42be57794496cddeb
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mi_Gao_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd9a1d4674b35ba4484a185cff5418fe
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mimic_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dda1525d681a88f448e55d1039da23c7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mineral_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc74ea90381ada141b1da2d4a68e1e6d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mini_Demon_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6083377911baa6740ac476e9d1c3da24
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Minorous_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9254742ad6d07be49880baa99bf736fe
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mistilteinn_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 453cdfb65d32c5c4dae8a83b3739d327
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mistress_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 865d8ece71509ba469e1a8159335f8f1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mistress_of_Shelter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60105df709d89ed48b87a77b06cb75fd
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Miyabi_Doll_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c4d3f2b600f8bb4f8b068edd29f498b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mobster_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c06af75e92ec004eac547fd84af0fc0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Moonlight_Flower_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de4169ca262e8404bb6feb244fdbd46e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Muka_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3f852f3a9b584f4bb611c67db06b6d0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mummy_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50ae10ce44bb5174b8e5c58986e121a3
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Munak_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48e94bdef4f158b47bcc5a2b105c8d57
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Muscipular_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 274d220d4e5b8d74c8b696781e25440a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Mutant_Dragonoid_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90e775d9264c9fa4e8843c791db3b494
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Myst_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 13f1f7f016fe6c84faba8fc1c3faccf1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Myst_Case_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5bb34002f9bf3144793e892ad23f63d4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Necromancer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46b58d8f64d78524b929ceb97a43dfb6
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Nereid_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b8859dab6860274d9764eabae026eac
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Nightmare_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 711c13a588856374c8be6aabf8fb8c6f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Nightmare_Terror_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8bd63c1eb682b78489aa8d02c446ee03
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Nine_Tail_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca2709fe23a5f6949985be1dd3ffcca7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Noxious_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b15caf141144a5043873c02d3d3eb4fb
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Obeaune_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a636164567d915a4a9afcf1cfda8b145
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Obsidian_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: adb4cdcb20dc63f4d9f30f33d1d7dad8
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Orc_Archer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e73205ff33e78d6468f182bd724fafd8
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Orc_Baby_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c937184a97d617340a1c1c1f4539121e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Orc_Hero_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de9b2234b65b7f44d9dbcc0bf47961d0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Orc_Lady_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49322ce0b1987d346aa55cd2ef8f59c7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Orc_Lord_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a50b0b2e99e00454388425baeeab9a5c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Orc_Skeleton_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d73e2c7e0734aa9449a262b743d73f41
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Orc_Warrior_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b041d5851f905ea47921c4b6ea634b9d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Orc_Zombie_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6bab72ec44f7bd4888d2de3b705ddac
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Osiris_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 312211741e8c230498b9f07ca8b1bef9
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Owl_Baron_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce932af7dcb27f84993ef32cf84b0f60
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Owl_Duke_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acfd4f6dcc58db94ab0d990dcce414b7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Panzer_Goblin_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9999214bb429a54d98951f91e9b544c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Parasite_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9f870933fe104d4ba6a22d2861ad121
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Pasana_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 764bd2de8e080a547bee970f60429b15
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Peco_Peco_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb294675bb9b64b409de270e8df514b0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Peco_Peco_Egg_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7ad7f38d88e3304c9440846184799d4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Penomena_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0f27bd14ec6e1a40afcfd9df9eabc9d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Permeter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d791a89a3f042542b3dbdf5d7064317
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Pest_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1d61e46a63640447a8d4d31a11e9516
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Pharaoh_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 649692243bf8f0d4b807ce1532cf02d7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Phen_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60401059302e65e4fa3b48c522eb9beb
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Phendark_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6896d0f3da0211947a618edff6308bb5
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Phreeoni_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21525babb43013e49a3e8e8ab96d6e89
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Picky_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4084bdab577f1184b937a7760a87afa8
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Picky_Egg_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4af5834a2f509044c9b6b478665e8b14
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Pirate_Skel_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3790303b23c46b849a211e5b2bf81a2f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Pitman_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9330b37388ade724a9b7f7c2522b9ca9
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Plankton_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 651de132501ed9e4bbe0697ece8fc6fe
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Plasma_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4aec039d1412724b939bb16dd4dd339
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Poison_Spore_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f49a3cf7b34377a478c6ddff22179263
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Poisonous_Toad_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a20abcc0957bc1441896ca7b11976698
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Poporing_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 177413d2240b56d4c907f1b941c934de
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Porcellio_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e854e84a0978cc488441ea15a870840
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Poring_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d5c339524410d14f85055c49f1e9b8e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Punk_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22796b2d9e787ba4ca46ae307b8c8be2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Pupa_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2e742a60bdfc104fb212a8597070487
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Quve_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6010321fa7737a4eb8170eab5feea17
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Rafflesia_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c26a4b275a6c4a746adafe58b514dafa
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ragged_Zombie_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4edcae9108a2cc643aa5931d5d82a0cb
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Raggler_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07d92ba17ad52b54aab032f60e29a5ff
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Raydric_Archer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 133623e9612977347b9ad77fc6ebbd9b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Raydric_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ea4555b208c61c4299928b85677edb2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Red_Ferus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6366b839cd0d3dd4d8cfa79bec2ef0ba
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Red_Novus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46e05162a3198f84cad3f6c1718cb580
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Remover_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27740badba42ca245851aabfe2a9f945
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Requiem_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99521b5891df6f14e8989ebcec4c6489
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Rideword_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e63c68fe5b08ff9438aa49aabbd2afe1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Rocker_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 601fc366d57f3dc45a504f8a101542ce
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Roda_Frog_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06c0cccd4e085e140b6e201d79de4762
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Rotar_Zairo_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39f4351c05abe924f9ed76bd1bdc523a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Roween_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3504a3718bb5484a810d35e6fa27d96
+    m_Address: Assets/Sprites/Imported/Collections/cardart_RSX-0806_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25f11baf05371cf499a2f21c0019c3d0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Rybio_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7531c73aa906a5b42a262e500c5f4aab
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sage_Worm_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5afb8917ed08234ba9001bdc29322a3
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Salamander_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86eb6ba70f622274b8d8c99f6984e5a1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Samurai_Specter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3057ef7614472834d8f1a8b6ccddafd4
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sandman_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2cd5075ffd9e30f47ba76df042eee3a0
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Santa_Poring_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2ed4523280fe6e4b88f8e9fa47b2bbf
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sasquatch_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ec53747369941948962d9ee17544521
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Savage_Babe_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4ce364350af9fa4d85a989f44cb5e9e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Savage_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1db2896158daf643acdef01e9926eca
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Scorpion_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 00d0279354fc24c4dacea90242e41474
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sea_Otter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94238befbad46914ab69a56d94cc7cf1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Seeker_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81db09b623cf40a4984b527f97a0dec5
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Seyren_Windsor_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b999d10aa4565674ba4b614e7a697be6
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Shellfish_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3252cfe3f8815c440b00507cb4bf9ecd
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Shinobi_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7256637fc40d324995f8cfafe8eefd3
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sidewinder_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6261984f280c594bb0880bbf45ea30f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Siroma_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06ca9d8b3f308464291c9db951f77747
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Skeggiold_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bef02c9f5a131cc439cb95bfd9e0e540
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Skel_Prisoner_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f4782f061627cc49aae289526267caa
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Skel_Worker_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb04d4918eeed7f48b354cb94320c2c3
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Skeleton_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 189e36234726ac54faf225b01d37e396
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Skeleton_General_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d37a6f0323968e3408df1e9d757a06ca
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Skogul_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 498b069025d05eb48bd13fb549791851
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sky_Deleter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84c8a1b9b4f13ab429338d0179ad39c7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sky_Petite_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ea35fa0c2d4c1c468e01eb59dbbda6a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sleeper_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71e17247675a4a84d95aa1542706cddc
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Smokie_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 442d1b41056e43a4387bb9e691802c0f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sniper_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 381fa13a005559540a2e246e09087476
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Snowier_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7baba1d64bed42840b4449637a5e6692
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sohee_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66db23f993d631c42933d856f506ed05
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Soldier_Skeleton_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1f62cd233b399d4c943004493f06149
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Solider_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: efd16ac68ebe0ad4385bc6a52dca1e6b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Spore_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ea8e62495ecc1d4aa557095f4cf3ff7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Spring_Rabbit_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a37501fc5d7c81b41b6e149a31f4153a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Stainer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a137d89aea97bd4db9ae2f8c9322460
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Stalactic_Golem_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9be02acfd68905540a1baa8cd0f96cee
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Stapo_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6eb05a9cba7c9be4ba809a943ee2404c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Steel_Chonchon_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d864e02dbdc5162499fbb445c5d4b5e3
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Stem_Worm_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e591a20363356b4ba0089f0fa44d901
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sting_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e9ba53417e9574408e348ea283c33cd
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Stone_Shooter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 759dbee64b5fa9243976f1821160ec0a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Stormy_Knight_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de403e04ec9c7ed43a824c5ed463aa1f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Strouf_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd820cfb65470af40a679aae216dd90c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Succubus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b834a207e1adcb94cb7c7a08f6bd33e9
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Sword_Guardian_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b377db6c8d12d264f98a7ae9fcd4fd71
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Swordfish_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0bb67cb5550b99f4084dde003a131797
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Swordman_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bd3c2fba83685840be1a95c44d81167
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Tamruan_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2a57f14d8f15c241a0a8956b7d6584b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Tao_Gunka_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3b34bf75b04e904db31d2c51fc558ec
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Tarou_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d3ab2a4bc6b92b4a965eb4a79f45dec
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Teddy_Bear_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dcbd06d7f2e232746ba5f35500a2539c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Tengu_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dbacf8bcd0ee55e4cb2cd5fdb30d6027
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Thanatos_Despero_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9417021e2cef32a4b8e58f4b1edc4f89
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Thanatos_Dolor_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f28fd6b2e27efe3419614c4ac1d05eb5
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Thanatos_Maero_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2f8603cd9af9214aae7d0581f93d18f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Thanatos_Odium_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 661ea96f4996df442a9b51f31e5cbe87
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Thanatos_Phantom_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4f36f756f4cc8149a50ed6ae640b0c1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Thara_Frog_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f7871e2a56ceca4fb9012e86e2cee37
+    m_Address: Assets/Sprites/Imported/Collections/cardart_The_Paper_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49ed3df02add3a04da235e2e6a8182f5
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Thief_Bug_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 011c42a10a6d1cf41a7cf64708385406
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Thief_Bug_Egg_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44dd2fb1369b2174a8535b686f661c4d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Toad_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8876d309e2097f54697526ad73f15d77
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Tri_Joint_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f1d2078423667d4eabd995fbbc6506a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Turtle_General_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 914fc35f6a3ff1e48a94b75d91d82f87
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Tyrfing_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6f4f151779a8494497760d0f80aa509
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Ungoliant_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05366ceffb53b6c4d9f76c131e6ffae8
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Vadon_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2657057fe9f86814eb63ca584ed21329
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Vagabond_Wolf_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f441ac2db0657a443ad39e5b5a246688
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Valkyrie_Randgris_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 349200c8b783b2d4fa1fe4b1b39a689f
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Vanberk_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84fe89be0c6aee04c9d97b58df4ad75c
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Venatu_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4811d4169b8199c40888073887209367
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Venomous_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c0adac4e096ab94b825aed5c21e5e58
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Verit_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3812b0dce3ea7654b80cb154ddd533b1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Vesper_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8de4d88f837a71449abc1eb23798ca80
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Violy_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6845cd4d43d85d4787ab305cd7d8776
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Vitata_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48ae284c5cf7dfb428ba84010869a260
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Vocal_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c3a4a3c3c53c2b46806e23f3ae1c3ca
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wanderer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ae27c07937fa264682fc25542ef745e
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Waste_Stove_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86975f46b1b14a34c8acba0b2d7e7042
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Whisper_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 055d2e28bf9f26f4fbbf7a2dd28238bc
+    m_Address: Assets/Sprites/Imported/Collections/cardart_White_Lady_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8262d2e4064827e47b4acd06ac3f795d
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wickebine_Tres_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4cc6850a1230484a955832db235228b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wild_Rose_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cf3bea7466fbde4ba28638592a0e673
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Willow_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edd03ff6d83f30e46a0c5a773fd1b9b1
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wind_Ghost_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 059287ce34990e244945ecc8930ae6a9
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wolf_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 127d9dcf61bf6c646aa72b8fcd174bda
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wooden_Golem_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 737b39123ea785d4da12b676979255f9
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wootan_Fighter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 497015c82520e9f4f9942f0067ff9623
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wootan_Shooter_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c30f456e5a754c046991dc7f057a5d06
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wormtail_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f888fa1fbac801744bd03c6769305200
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wraith_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cd82cfcbdcadcb41bd328676833591b
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Wraith_Dead_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d6395e58c6e6da44a7cbda53022a039
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Yao_Jun_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03e680f8a59e505448df1ccafe393004
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Yellow_Novus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ae5fc9e16c881446b981c99f3fa35d2
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Yoyo_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb05510e4df57b2439703f786bcc65d9
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Zealotus_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89b54ec0dfa16254682eb9b0d05b6e64
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Zenorc_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36fe278f13e9b3747a956f314d014c66
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Zerom_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 674592c1cc230a74d8c027297dfd94ba
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Zhu_Po_Long_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6afebca633fd80745ad5fae2d6505817
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Zipper_Bear_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b962c6c8f7468884a9648ecbfe87ceb7
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Zombie_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69e6b2c8e5026944c82e3dabf0690440
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Zombie_Master_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5f56d58960d6f847ad1300f97f5af3a
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Zombie_Prisoner_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 983753ce222913e4384f9f4f28d3fa24
+    m_Address: Assets/Sprites/Imported/Collections/cardart_Zombie_Slaughterer_Card.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81b30608ceb7db7499a58465bab53915, type: 2}
   m_SchemaSet:

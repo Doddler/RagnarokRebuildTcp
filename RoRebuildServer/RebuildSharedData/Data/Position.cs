@@ -13,6 +13,9 @@ public struct Position : IEquatable<Position>
 
     public static Position Zero => new Position(0, 0);
     public static Position Invalid => new Position(-999, -999);
+
+    public int PackIntoInt => X + (Y << 12);
+    public static Position UnpackIntPosition(int pos) => new Position(pos & 0xFFF, pos >> 12);
     
     public Position(int x, int y)
     {
