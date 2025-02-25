@@ -61669,9 +61669,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<color=#FFA300>Blessing</color>
-
-    Increases AGI, DEX, and LUK'
+  m_text: Tooltip!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f526b3b4777a17244865df0c27c65fbf, type: 2}
   m_sharedMaterial: {fileID: 6918503600881707298, guid: f526b3b4777a17244865df0c27c65fbf,

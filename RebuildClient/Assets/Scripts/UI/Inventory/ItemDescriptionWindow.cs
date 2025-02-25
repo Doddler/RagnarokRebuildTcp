@@ -55,87 +55,82 @@ namespace Assets.Scripts.UI.Inventory
                 win.HideWindow();
                 UiManager.Instance.CardIllustrationWindow = win;
             }
-            
+
             win.DisplayCard(inventoryItem.ItemData);
         }
 
         private void DisplayDescription(Sprite collection)
         {
-            if (!ClientDataLoader.Instance.TryGetItemById(inventoryItem.ItemData.Id, out var item))
-            {
-                Debug.LogWarning($"ItemDescriptionWindow could not find an item description for {inventoryItem.ProperName()}");
-                HideWindow();
-                return;
-            }
+            var item = inventoryItem.ItemData;
 
             ItemName.text = inventoryItem.ProperName();
             ItemDescription.text = ClientDataLoader.Instance.GetItemDescription(item.Code);
             PortraitContainer.sprite = collection;
-            
+
             ShowWindow();
             MoveToTop();
-            
+
+
+            ShowIllustrationButton.gameObject.SetActive(item.ItemClass == ItemClass.Card);
+
+            if (!item.IsUnique || item.Slots <= 0 || CardSocketEntries == null || CardSocketEntries.Count == 0)
+            {
+                CardSocketPanel.SetActive(false);
+            }
+            else
+            {
+                CardSocketPanel.SetActive(true);
+
+                for (var i = 0; i < CardSocketEntries.Count; i++)
+                {
+                    var slot = inventoryItem.UniqueItem.SlotData(i);
+                    if (slot > 1)
+                    {
+                        if (!ClientDataLoader.Instance.TryGetItemById(slot, out var socketed))
+                            socketed = item; //lol
+                        var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(socketed.Sprite);
+                        CardSocketEntries[i].Assign(DragItemType.SocketedItem, sprite, socketed.Id, 1);
+                    }
+                    else
+                    {
+                        if (i < item.Slots)
+                            CardSocketEntries[i].Assign(DragItemType.SocketedItem, CardSlotOpen, -1, 0);
+                        else
+                            CardSocketEntries[i].Assign(DragItemType.SocketedItem, CardSlotClosed, -1, 0);
+                    }
+                }
+            }
+
             ItemDescription.ForceMeshUpdate();
             Vector2 preferredDimensions = ItemDescription.GetPreferredValues(415, 0); //300 minus 20 for margins
-            WindowRect.sizeDelta = new Vector2(626, Mathf.Max(246, preferredDimensions.y+70));
+            WindowRect.sizeDelta = new Vector2(626, Mathf.Max(246, preferredDimensions.y + 70));
         }
 
         public void RightClickCardSlot(int slot)
         {
             var id = CardSocketEntries[slot].ItemId;
-            if(id > 0)
+            if (id > 0)
                 UiManager.Instance.SubDescriptionWindow.ShowItemDescription(id);
         }
 
         public void ShowItemDescription(InventoryItem item)
         {
             Init();
-            
+
             inventoryItem = item;
             var collectionPath = $"Assets/Sprites/Imported/Collections/{item.ItemData.Sprite}.png";
+            ShowIllustrationButton.gameObject.SetActive(false); //depending on how long it takes to load you could hit view illustration on an invalid item
             if (!ClientDataLoader.DoesAddressableExist<Sprite>(collectionPath))
                 DisplayDescription(DefaultItemPortrait);
             else
                 AddressableUtility.LoadSprite(gameObject, collectionPath, DisplayDescription);
-            
-            ShowIllustrationButton.gameObject.SetActive(item.ItemData.ItemClass == ItemClass.Card);
-
-            if (!item.ItemData.IsUnique || item.ItemData.Slots <= 0 || CardSocketEntries == null || CardSocketEntries.Count == 0)
-            {
-                CardSocketPanel.SetActive(false);
-                return;
-            }
-
-            CardSocketPanel.SetActive(true);
-
-            for (var i = 0; i < CardSocketEntries.Count; i++)
-            {
-                var slot = item.UniqueItem.SlotData(i);
-                if (slot > 1)
-                {
-                    if (!ClientDataLoader.Instance.TryGetItemById(slot, out var socketed))
-                        socketed = item.ItemData; //lol
-                    var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(socketed.Sprite);
-                    CardSocketEntries[i].Assign(DragItemType.SocketedItem, sprite, socketed.Id, 1);
-
-                }
-                else
-                {
-                    if(i < item.ItemData.Slots)
-                        CardSocketEntries[i].Assign(DragItemType.SocketedItem, CardSlotOpen, -1, 0);
-                    else
-                        CardSocketEntries[i].Assign(DragItemType.SocketedItem, CardSlotClosed, -1, 0);
-                }
-            }
-
         }
-        
+
         public void ShowItemDescription(int itemId)
         {
             //we aren't related to an inventory item, so we'll have to fake it.
             var data = ClientDataLoader.Instance.GetItemById(itemId);
-            ShowItemDescription(new InventoryItem() { BagSlotId = -1, ItemData = data});
+            ShowItemDescription(new InventoryItem() { BagSlotId = -1, ItemData = data });
         }
-
     }
 }

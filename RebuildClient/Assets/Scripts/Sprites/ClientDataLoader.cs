@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
@@ -807,6 +808,9 @@ namespace Assets.Scripts.Sprites
                     break;
                 case NpcEffectType.SafetyWall:
                     SafetyWallEffect.LaunchSafetyWall(obj);
+                    break;
+                case NpcEffectType.MapWarp:
+                    MapWarpEffect.StartWarp(obj);
                     break;
             }
 

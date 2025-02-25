@@ -86,7 +86,7 @@ CanDispel = true
 CanDisable = true
 
 [IncreaseAgi]
-Name = "Increase Agi"
+Name = "Increase Agility"
 Type = "Buff"
 Icon = "민첩성증가"
 CanDispel = true
@@ -181,13 +181,13 @@ CanDisable = false
 #----------------------------------
 
 [IncreasedMoveSpeed]
-Name = "Movement Speed UP"
+Name = "Movement Speed Up"
 Type = "Buff"
 CanDispel = true
 CanDisable = true
 
 [IncreasedAttackSpeed]
-Name = "Attack Speed UP"
+Name = "Attack Speed Up"
 Type = "Buff"
 Icon = "공속물약"
 CanDispel = true

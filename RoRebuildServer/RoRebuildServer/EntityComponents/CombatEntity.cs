@@ -1200,14 +1200,14 @@ public partial class CombatEntity : IEntityAutoReset
         return hitSuccessRate > GameRandom.Next(0, 100);
     }
 
-    public bool TestHitVsEvasionWithAttackerPenalty(CombatEntity target) => TestHitVsEvasion(target, 100, target.GetAttackerPenalty());
+    public bool TestHitVsEvasionWithAttackerPenalty(CombatEntity target) => TestHitVsEvasion(target, 100, target.GetAttackerPenalty(Entity));
 
-    public int GetAttackerPenalty()
+    public int GetAttackerPenalty(Entity attacker)
     {
         var attackerPenalty = 0; //number of attackers above 2 (player only consideration)
         if (Character.Type == CharacterType.Player)
         {
-            Player.RegisterRecentAttacker(ref Entity);
+            Player.RegisterRecentAttacker(ref attacker);
 
             var attackerCount = Player.GetCurrentAttackerCount();
             attackerPenalty = attackerCount > 2 ? attackerCount - 2 : 0;

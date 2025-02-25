@@ -371,7 +371,7 @@ public class CharacterStatusContainer
             onMoveEffects--;
     }
     
-    private void RemoveExistingStatusEffect(ref StatusEffectState status)
+    private void RemoveExistingStatusEffect(ref StatusEffectState status, bool isRefresh = false)
     {
         Debug.Assert(Owner != null);
 
@@ -381,7 +381,7 @@ public class CharacterStatusContainer
             if (Character.Map != null)
             {
                 Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
-                CommandBuilder.SendRemoveStatusEffect(Character, ref status);
+                CommandBuilder.SendRemoveStatusEffect(Character, ref status, isRefresh);
                 CommandBuilder.ClearRecipients();
             }
         }
@@ -410,7 +410,7 @@ public class CharacterStatusContainer
         {
             if (!replaceExisting)
                 return; // do nothing
-            RemoveExistingStatusEffect(ref oldEffect);
+            RemoveExistingStatusEffect(ref oldEffect, true);
         }
 
         if (statusEffects?.Count > 30)

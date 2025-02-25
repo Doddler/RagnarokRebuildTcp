@@ -74,7 +74,10 @@ namespace Assets.Scripts.Effects
         public void SetDurationByTime(float time)
         {
             Duration = time;
-            DurationFrames = Mathf.FloorToInt(time * 60f);
+            if (time >= float.MaxValue) //direct equals gives a warning
+                DurationFrames = int.MaxValue;
+            else
+                DurationFrames = Mathf.FloorToInt(time * 60f);
         }
         
         public void SetDurationByFrames(int frame)

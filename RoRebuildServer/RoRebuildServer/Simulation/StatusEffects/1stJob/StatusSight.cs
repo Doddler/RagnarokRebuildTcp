@@ -62,7 +62,7 @@ public class SightObjectEvent : NpcBehaviorBase
 {
     public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)
     {
-        npc.RevealAsEffect(NpcEffectType.Sight, "Sight");
+        //npc.RevealAsEffect(NpcEffectType.Sight, "Sight");
 
         if (!npc.Owner.TryGet<WorldObject>(out var owner))
         {

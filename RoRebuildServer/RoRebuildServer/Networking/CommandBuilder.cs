@@ -960,7 +960,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SendRemoveStatusEffect(WorldObject p, ref StatusEffectState state)
+    public static void SendRemoveStatusEffect(WorldObject p, ref StatusEffectState state, bool isRefresh = false)
     {
         if (!HasRecipients())
             return;
@@ -968,6 +968,7 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.RemoveStatusEffect, 16);
         packet.Write(p.Id);
         packet.Write((byte)state.Type);
+        packet.Write(isRefresh);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

@@ -3,7 +3,7 @@
     {
       "StatusEffect": 1,
       "Name": null,
-      "Description": "A curse is making you weaker and greatly lowering your move speed and luck.",
+      "Description": "\u003Ccolor=#FF3300\u003ECurse\u003C/color\u003E\nA curse is making you weaker and greatly lowering your move speed and luck.",
       "Type": "Debuff",
       "Icon": "hl_curse",
       "CanDispel": false,
@@ -12,7 +12,7 @@
     {
       "StatusEffect": 2,
       "Name": null,
-      "Description": "You are stunned and unable to perform actions.",
+      "Description": "\u003Ccolor=#FF3300\u003EStun\u003C/color\u003E\nYou are stunned and unable to perform actions.",
       "Type": "Debuff",
       "Icon": "bd_stun",
       "CanDispel": false,
@@ -21,7 +21,7 @@
     {
       "StatusEffect": 3,
       "Name": null,
-      "Description": "You are fast asleep, unable to perform actions or evade. Taking damage will wake you but has a high chance to deal critical damage.",
+      "Description": "\u003Ccolor=#FF3300\u003ESleep\u003C/color\u003E\nYou are fast asleep, unable to perform actions or evade. Taking damage will wake you but has a high chance to deal critical damage.",
       "Type": "Debuff",
       "Icon": "bd_sleep",
       "CanDispel": false,
@@ -30,7 +30,7 @@
     {
       "StatusEffect": 4,
       "Name": null,
-      "Description": "Encased in ice, you are unable to perform actions and vunerable to wind. Lowers DEF and increases MDEF. Breaks upon taking damage.",
+      "Description": "\u003Ccolor=#FF3300\u003EFrozen\u003C/color\u003E\nEncased in ice, you are unable to perform actions and vunerable to wind. Lowers DEF and increases MDEF. Breaks upon taking damage.",
       "Type": "Debuff",
       "Icon": "bd_freezing",
       "CanDispel": false,
@@ -39,7 +39,7 @@
     {
       "StatusEffect": 5,
       "Name": null,
-      "Description": "You are partially blinded, reducing your HIT, FLEE, and lowering the maximum range you can attack and use skills.",
+      "Description": "\u003Ccolor=#FF3300\u003EBlind\u003C/color\u003E\nYou are partially blinded, reducing your HIT, FLEE, and lowering the maximum range you can attack and use skills.",
       "Type": "Debuff",
       "Icon": "hl_blind",
       "CanDispel": false,
@@ -48,7 +48,7 @@
     {
       "StatusEffect": 6,
       "Name": null,
-      "Description": "You are unable to speak, preventing you from performing skills or cast spells.",
+      "Description": "\u003Ccolor=#FF3300\u003ESilence\u003C/color\u003E\nYou are unable to speak, preventing you from performing skills or cast spells.",
       "Type": "Debuff",
       "Icon": "hl_silence",
       "CanDispel": false,
@@ -57,7 +57,7 @@
     {
       "StatusEffect": 7,
       "Name": null,
-      "Description": "You are confused, making it difficult to walk in a straight line.",
+      "Description": "\u003Ccolor=#FF3300\u003EConfusion\u003C/color\u003E\nYou are confused, making it difficult to walk in a straight line.",
       "Type": "Debuff",
       "Icon": "hl_confusion",
       "CanDispel": false,
@@ -66,7 +66,7 @@
     {
       "StatusEffect": 8,
       "Name": null,
-      "Description": "Poison is causing you to take damage over time. Poison can reduce your HP to 1 but it cannot deal fatal damage.",
+      "Description": "\u003Ccolor=#FF3300\u003EPoison\u003C/color\u003E\nPoison is causing you to take damage over time. Poison can reduce your HP to 1 but it cannot deal fatal damage.",
       "Type": "Debuff",
       "Icon": "hl_poison",
       "CanDispel": false,
@@ -75,7 +75,7 @@
     {
       "StatusEffect": 9,
       "Name": null,
-      "Description": "Your skin is rapidly being encased in stone, leaving you are unable to attack or use skills.",
+      "Description": "\u003Ccolor=#FF3300\u003EPetrifying\u003C/color\u003E\nYour skin is rapidly being encased in stone, leaving you are unable to attack or use skills.",
       "Type": "Debuff",
       "Icon": "bd_stonecurse",
       "CanDispel": false,
@@ -84,7 +84,7 @@
     {
       "StatusEffect": 10,
       "Name": null,
-      "Description": "Encased in stone, you are unable to perform actions and vulnerable to fire. Lowers DEF and increases MDEF. The next hit you take will deal extra damage but end this effect.",
+      "Description": "\u003Ccolor=#FF3300\u003EStone\u003C/color\u003E\nEncased in stone, you are unable to perform actions and vulnerable to fire. Lowers DEF and increases MDEF. The next hit you take will deal extra damage but end this effect.",
       "Type": "Debuff",
       "Icon": "bd_stonecurse",
       "CanDispel": false,
@@ -93,7 +93,7 @@
     {
       "StatusEffect": 11,
       "Name": null,
-      "Description": "You are enraged, making you stronger but greatly lowering your defense.",
+      "Description": "\u003Ccolor=#FF3300\u003EProvoke\u003C/color\u003E\nYou are enraged, making you stronger but greatly lowering your defense.",
       "Type": "Debuff",
       "Icon": "\uD504\uB85C\uBCF4\uD06C",
       "CanDispel": false,
@@ -102,7 +102,7 @@
     {
       "StatusEffect": 12,
       "Name": null,
-      "Description": "You are enraged, greatly lowering your defense.",
+      "Description": "\u003Ccolor=#FF3300\u003EProvokeNoAtk\u003C/color\u003E\nYou are enraged, greatly lowering your defense.",
       "Type": "Debuff",
       "Icon": "\uD504\uB85C\uBCF4\uD06C",
       "CanDispel": false,
@@ -111,7 +111,7 @@
     {
       "StatusEffect": 13,
       "Name": null,
-      "Description": "Hallucinations are distorting your vision and making it hard to gauge how much damage you are taking.",
+      "Description": "\u003Ccolor=#FF3300\u003EHallucination\u003C/color\u003E\nHallucinations are distorting your vision and making it hard to gauge how much damage you are taking.",
       "Type": "Debuff",
       "Icon": "\uD658\uAC01",
       "CanDispel": false,
@@ -120,7 +120,7 @@
     {
       "StatusEffect": 14,
       "Name": "Push Cart",
-      "Description": "Provides additional storage for items.",
+      "Description": "\u003Ccolor=#FFA300\u003EPush Cart\u003C/color\u003E\nProvides additional storage for items.",
       "Type": "Buff",
       "Icon": null,
       "CanDispel": false,
@@ -129,7 +129,7 @@
     {
       "StatusEffect": 15,
       "Name": "Two-Hand Quicken",
-      "Description": "Attack speed with two-hand weapons increased. Ends early if you unequip your two-handed weapon.",
+      "Description": "\u003Ccolor=#FFA300\u003ETwo-Hand Quicken\u003C/color\u003E\nAttack speed with two-hand weapons increased. Ends early if you unequip your two-handed weapon.",
       "Type": "Buff",
       "Icon": "\uD22C\uD578\uB4DC\uD034\uD070",
       "CanDispel": true,
@@ -138,7 +138,7 @@
     {
       "StatusEffect": 16,
       "Name": "Blessing",
-      "Description": "Your STR, INT, and DEX are increased.",
+      "Description": "\u003Ccolor=#FFA300\u003EBlessing\u003C/color\u003E\nYour STR, INT, and DEX are increased.",
       "Type": "Buff",
       "Icon": "\uBE14\uB808\uC2F1",
       "CanDispel": true,
@@ -146,8 +146,8 @@
     },
     {
       "StatusEffect": 17,
-      "Name": "Increase Agi",
-      "Description": "Your move speed and AGI are increased.",
+      "Name": "Increase Agility",
+      "Description": "\u003Ccolor=#FFA300\u003EIncrease Agility\u003C/color\u003E\nYour move speed and AGI are increased.",
       "Type": "Buff",
       "Icon": "\uBBFC\uCCA9\uC131\uC99D\uAC00",
       "CanDispel": true,
@@ -156,7 +156,7 @@
     {
       "StatusEffect": 18,
       "Name": "Decrease Agility",
-      "Description": "Your move speed and AGI are reduced.",
+      "Description": "\u003Ccolor=#FF3300\u003EDecrease Agility\u003C/color\u003E\nYour move speed and AGI are reduced.",
       "Type": "Debuff",
       "Icon": "\uBBFC\uCCA9\uC131\uAC10\uC18C",
       "CanDispel": true,
@@ -165,7 +165,7 @@
     {
       "StatusEffect": 19,
       "Name": "Angelus",
-      "Description": "Your soft DEF stat is increased. Players without Divine Protection will take reduced damage from demon and undead monsters based on the caster\u0027s skill level.",
+      "Description": "\u003Ccolor=#FFA300\u003EAngelus\u003C/color\u003E\nYour soft DEF stat is increased and you receive the benefit of the caster\u0027s divine protection, reducing damage from demon and undead monsters.",
       "Type": "Buff",
       "Icon": "\uC548\uC824\uB8E8\uC2A4",
       "CanDispel": true,
@@ -174,7 +174,7 @@
     {
       "StatusEffect": 20,
       "Name": "SignumCrusis",
-      "Description": "Holy light has weakened your defenses.",
+      "Description": "\u003Ccolor=#FF3300\u003ESignumCrusis\u003C/color\u003E\nHoly light has weakened your defenses.",
       "Type": "Debuff",
       "Icon": "\uC2DC\uADF8\uB118\uD06C\uB8E8\uC2DC\uC2A4",
       "CanDispel": false,
@@ -183,7 +183,7 @@
     {
       "StatusEffect": 21,
       "Name": "Improve Concentration",
-      "Description": "Your AGI and DEX are increased.",
+      "Description": "\u003Ccolor=#FFA300\u003EImprove Concentration\u003C/color\u003E\nYour AGI and DEX are increased.",
       "Type": "Buff",
       "Icon": "\uC9D1\uC911\uB825\uD5A5\uC0C1",
       "CanDispel": true,
@@ -192,7 +192,7 @@
     {
       "StatusEffect": 22,
       "Name": "Endure",
-      "Description": "You are able to receive damage without flinching and have increased MDEF.",
+      "Description": "\u003Ccolor=#FFA300\u003EEndure\u003C/color\u003E\nYou are able to receive damage without flinching and have increased MDEF.",
       "Type": "Buff",
       "Icon": "\uC778\uB4C0\uC5B4",
       "CanDispel": true,
@@ -201,7 +201,7 @@
     {
       "StatusEffect": 23,
       "Name": "Magnum Break",
-      "Description": "Your strikes will deal extra fire property damage.",
+      "Description": "\u003Ccolor=#FFA300\u003EMagnum Break\u003C/color\u003E\nYour strikes will deal extra fire property damage.",
       "Type": "Buff",
       "Icon": "icon02",
       "CanDispel": true,
@@ -210,7 +210,7 @@
     {
       "StatusEffect": 24,
       "Name": "Pneuma",
-      "Description": "You are protected from ranged physical attacks.",
+      "Description": "\u003Ccolor=#FFA300\u003EPneuma\u003C/color\u003E\nYou are protected from ranged physical attacks.",
       "Type": "Buff",
       "Icon": null,
       "CanDispel": false,
@@ -219,7 +219,7 @@
     {
       "StatusEffect": 25,
       "Name": "Pneuma",
-      "Description": "You are protected from short ranged physical attacks.",
+      "Description": "\u003Ccolor=#FFA300\u003EPneuma\u003C/color\u003E\nYou are protected from short ranged physical attacks.",
       "Type": "Buff",
       "Icon": null,
       "CanDispel": false,
@@ -228,7 +228,7 @@
     {
       "StatusEffect": 26,
       "Name": "Hiding",
-      "Description": "You are hiding beneith the ground, unable to be targeted except by demon, insect and boss monsters.",
+      "Description": "\u003Ccolor=#FFA300\u003EHiding\u003C/color\u003E\nYou are hiding beneith the ground, unable to be targeted except by demon, insect and boss monsters.",
       "Type": "Buff",
       "Icon": "\uD558\uC774\uB529",
       "CanDispel": false,
@@ -237,7 +237,7 @@
     {
       "StatusEffect": 27,
       "Name": "Crazy Uproar",
-      "Description": "Your STR is increased.",
+      "Description": "\u003Ccolor=#FFA300\u003ECrazy Uproar\u003C/color\u003E\nYour STR is increased.",
       "Type": "Buff",
       "Icon": "\uACE0\uC131\uC9C0\uB974\uAE30",
       "CanDispel": true,
@@ -246,7 +246,7 @@
     {
       "StatusEffect": 28,
       "Name": null,
-      "Description": "You are hidden from view, unable to be targeted except by demon, insect and boss monsters. Moving away from a wall will cancel the effect.",
+      "Description": "\u003Ccolor=#FFA300\u003ECloaking\u003C/color\u003E\nYou are hidden from view, unable to be targeted except by demon, insect and boss monsters. Moving away from a wall will cancel the effect.",
       "Type": "Buff",
       "Icon": "\uD074\uB85C\uD0B9",
       "CanDispel": false,
@@ -255,7 +255,7 @@
     {
       "StatusEffect": 29,
       "Name": null,
-      "Description": "Damage taken is reduced at the cost of SP. The higher your SP pool the greater the damage reduction and SP cost.",
+      "Description": "\u003Ccolor=#FFA300\u003EEnergyCoat\u003C/color\u003E\nDamage taken is reduced at the cost of SP. The higher your SP pool the greater the damage reduction and SP cost.",
       "Type": "Buff",
       "Icon": "\uC5D0\uB108\uC9C0\uCF54\uD2B8",
       "CanDispel": true,
@@ -264,7 +264,7 @@
     {
       "StatusEffect": 30,
       "Name": null,
-      "Description": "Hidden enemies nearby will be revealed.",
+      "Description": "\u003Ccolor=#FFA300\u003ESight\u003C/color\u003E\nHidden enemies nearby will be revealed.",
       "Type": "Buff",
       "Icon": null,
       "CanDispel": false,
@@ -273,7 +273,7 @@
     {
       "StatusEffect": 31,
       "Name": null,
-      "Description": "Hidden enemies nearby will take damage and be revealed.",
+      "Description": "\u003Ccolor=#FFA300\u003ERuwach\u003C/color\u003E\nHidden enemies nearby will take damage and be revealed.",
       "Type": "Buff",
       "Icon": null,
       "CanDispel": false,
@@ -281,8 +281,8 @@
     },
     {
       "StatusEffect": 32,
-      "Name": "Movement Speed UP",
-      "Description": "Your move speed is increased.",
+      "Name": "Movement Speed Up",
+      "Description": "\u003Ccolor=#FFA300\u003EMovement Speed Up\u003C/color\u003E\nYour move speed is increased.",
       "Type": "Buff",
       "Icon": null,
       "CanDispel": true,
@@ -290,8 +290,8 @@
     },
     {
       "StatusEffect": 33,
-      "Name": "Attack Speed UP",
-      "Description": "Your attack speed is increased.",
+      "Name": "Attack Speed Up",
+      "Description": "\u003Ccolor=#FFA300\u003EAttack Speed Up\u003C/color\u003E\nYour attack speed is increased.",
       "Type": "Buff",
       "Icon": "\uACF5\uC18D\uBB3C\uC57D",
       "CanDispel": true,
@@ -300,7 +300,7 @@
     {
       "StatusEffect": 34,
       "Name": "Elemental Converter",
-      "Description": "",
+      "Description": "\u003Ccolor=#FFA300\u003EElemental Converter\u003C/color\u003E\n",
       "Type": "Buff",
       "Icon": null,
       "CanDispel": true,
@@ -309,7 +309,7 @@
     {
       "StatusEffect": 35,
       "Name": "Elemental Converter (Fire)",
-      "Description": "Your physical attacks deal fire property damage.",
+      "Description": "\u003Ccolor=#FFA300\u003EElemental Converter (Fire)\u003C/color\u003E\nYour physical attacks deal fire property damage.",
       "Type": "Buff",
       "Icon": "weapon_property_fire",
       "CanDispel": true,
@@ -318,7 +318,7 @@
     {
       "StatusEffect": 36,
       "Name": "Elemental Converter (Water)",
-      "Description": "Your physical attacks deal water property damage.",
+      "Description": "\u003Ccolor=#FFA300\u003EElemental Converter (Water)\u003C/color\u003E\nYour physical attacks deal water property damage.",
       "Type": "Buff",
       "Icon": "weapon_property_water",
       "CanDispel": true,
@@ -327,7 +327,7 @@
     {
       "StatusEffect": 37,
       "Name": "Elemental Converter (Wind)",
-      "Description": "Your physical attacks deal wind property damage.",
+      "Description": "\u003Ccolor=#FFA300\u003EElemental Converter (Wind)\u003C/color\u003E\nYour physical attacks deal wind property damage.",
       "Type": "Buff",
       "Icon": "weapon_property_wind",
       "CanDispel": true,
@@ -336,7 +336,7 @@
     {
       "StatusEffect": 38,
       "Name": "Elemental Converter (Earth)",
-      "Description": "Your physical attacks deal earth property damage.",
+      "Description": "\u003Ccolor=#FFA300\u003EElemental Converter (Earth)\u003C/color\u003E\nYour physical attacks deal earth property damage.",
       "Type": "Buff",
       "Icon": "weapon_property_ground",
       "CanDispel": true,
@@ -345,7 +345,7 @@
     {
       "StatusEffect": 39,
       "Name": "Dark Blessing",
-      "Description": "When this effect expires you will be reduced to 1 HP.",
+      "Description": "\u003Ccolor=#FF3300\u003EDark Blessing\u003C/color\u003E\nWhen this effect expires you will be reduced to 1 HP.",
       "Type": "Debuff",
       "Icon": "pharaoh_curse",
       "CanDispel": false,
@@ -354,7 +354,7 @@
     {
       "StatusEffect": 40,
       "Name": "Power Up",
-      "Description": "Attack power greatly increased.",
+      "Description": "\u003Ccolor=#FFA300\u003EPower Up\u003C/color\u003E\nAttack power greatly increased.",
       "Type": "Buff",
       "Icon": "icon02",
       "CanDispel": false,
@@ -363,7 +363,7 @@
     {
       "StatusEffect": 41,
       "Name": "Speed Up",
-      "Description": "Move speed and evasion greatly increased.",
+      "Description": "\u003Ccolor=#FFA300\u003ESpeed Up\u003C/color\u003E\nMove speed and evasion greatly increased.",
       "Type": "Buff",
       "Icon": "\uBBFC\uCCA9\uC131\uC99D\uAC00",
       "CanDispel": true,
@@ -372,7 +372,7 @@
     {
       "StatusEffect": 42,
       "Name": null,
-      "Description": "All your attacks heal you.",
+      "Description": "\u003Ccolor=#FFA300\u003EVampyrism\u003C/color\u003E\nAll your attacks heal you.",
       "Type": "Buff",
       "Icon": "icon02",
       "CanDispel": true,
@@ -381,7 +381,7 @@
     {
       "StatusEffect": 43,
       "Name": "Doom",
-      "Description": "You are doomed to die in the near future.",
+      "Description": "\u003Ccolor=#FF3300\u003EDoom\u003C/color\u003E\nYou are doomed to die in the near future.",
       "Type": "Debuff",
       "Icon": null,
       "CanDispel": false,
@@ -390,7 +390,7 @@
     {
       "StatusEffect": 44,
       "Name": "Stolen From",
-      "Description": "You\u0027ve had something recently taken and cannot be stolen from again.",
+      "Description": "\u003Ccolor=#FF3300\u003EStolen From\u003C/color\u003E\nYou\u0027ve had something recently taken and cannot be stolen from again.",
       "Type": "Debuff",
       "Icon": null,
       "CanDispel": false,

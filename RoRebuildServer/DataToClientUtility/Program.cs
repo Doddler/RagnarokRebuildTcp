@@ -959,9 +959,17 @@ class Program
         foreach (var (id, status) in statusData)
         {
             status.StatusEffect = Enum.Parse<CharacterStatusEffect>(id);
-            statusOut.Add(status);
             if (statusDesc.TryGetValue(status.StatusEffect, out var desc))
-                status.Description = desc;
+            {
+                var baseName = status.Name;
+                if (string.IsNullOrWhiteSpace(baseName))
+                    baseName = status.StatusEffect.ToString();
+                var name = status.Type == "Debuff"
+                    ? $"<color=#FF3300>{baseName}</color>\n"
+                    : $"<color=#FFA300>{baseName}</color>\n";
+                status.Description = name + desc;
+            }
+            statusOut.Add(status);
         }
 
         SaveToClient("statusinfo.json", statusOut);

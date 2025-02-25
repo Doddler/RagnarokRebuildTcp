@@ -14,7 +14,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         public static Ragnarok3dEffect StartWarp(GameObject parent)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.MapWarpEffect);
-            effect.Duration = -1;
+            effect.SetDurationByTime(float.MaxValue);
             effect.FollowTarget = parent;
             effect.DestroyOnTargetLost = true;
             effect.PositionOffset = new Vector3(0, 0.05f, 0f);

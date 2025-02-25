@@ -190,7 +190,7 @@ public partial class CombatEntity
         var srcLevel = GetStat(CharacterStat.Level);
         var targetLevel = target.GetStat(CharacterStat.Level);
 
-        var attackerPenalty = target.GetAttackerPenalty();
+        var attackerPenalty = target.GetAttackerPenalty(Entity);
 
         if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreEvasion))
             evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * 10);

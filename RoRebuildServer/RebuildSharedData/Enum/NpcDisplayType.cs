@@ -18,6 +18,7 @@ public enum NpcEffectType : byte
     SafetyWall,
     WarpPortalOpening,
     WarpPortal,
-    Sight,
-    Ruwach
+    MapWarp,
+    //Sight,
+    //Ruwach
 }
