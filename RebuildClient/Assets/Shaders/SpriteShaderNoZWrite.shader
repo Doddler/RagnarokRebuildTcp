@@ -165,7 +165,7 @@ Shader"Ragnarok/CharacterSpriteShaderNoZWrite"
 				o.texcoord = v.texcoord;
 				#endif
 				//end of smooth pixel
-				
+				/*
 				#ifndef WATER_OFF
 
 					//this mess fully removes the rotation from the matrix	
@@ -184,7 +184,8 @@ Shader"Ragnarok/CharacterSpriteShaderNoZWrite"
 					o.screenPos = ComputeScreenPos(o.vertex);
 					o.worldPos = float4(pos.x, worldPos.y, 0, 0);
 				#endif
-								
+				*/
+				o.color = v.color;
 				return o;
 			}
 
@@ -213,14 +214,19 @@ Shader"Ragnarok/CharacterSpriteShaderNoZWrite"
 
 				fixed4 c = diff * i.color * float4(env.rgb,1);
 
-				if(c.a < 0.001)
-					discard;
+				//if(c.a < 0.001)
+				//	discard;
 		
 				UNITY_APPLY_FOG(i.fogCoord, c);
 			
 				c *= i.color;
 				c.rgb *= c.a;
-	
+
+				//
+				//
+				// c = float4(i.color.r+0, i.color.g+0, i.color.b+0, 1);
+				
+	/*
 				#ifndef WATER_OFF
 					float2 uv = (i.screenPos.xy / i.screenPos.w);
 					float4 water = tex2D(_WaterDepth, uv);
@@ -246,7 +252,7 @@ Shader"Ragnarok/CharacterSpriteShaderNoZWrite"
 					//c.rgb *= waterTex.rgb;
 	
 				#endif
-	
+	*/
 				return c;
 			}
 		ENDCG

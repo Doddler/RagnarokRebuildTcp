@@ -94,3 +94,4 @@
 92,WarpPortal,FALSE,FALSE,TRUE,,,,0,,
 93,ExitGame,FALSE,FALSE,TRUE,,,,0,,
 94,Teleportation,FALSE,FALSE,TRUE,,,,0,,
+95,StoneCurse,TRUE,TRUE,FALSE,stonecurse,,,0,,

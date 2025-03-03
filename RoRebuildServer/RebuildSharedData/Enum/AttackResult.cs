@@ -11,6 +11,7 @@ namespace RebuildSharedData.Enum
         Heal,
         Miss,
         Block,
+        Success,
         Invisible
     }
 }

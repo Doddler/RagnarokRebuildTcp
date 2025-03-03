@@ -156,6 +156,7 @@ namespace RoRebuildServer.Simulation.Skills
                     if (!handler.PreProcessValidation(src, target, info.TargetedPosition, info.Level, info.IsIndirect))
                         return false;
                     handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
+                    src.UpdateHidingStateAfterAttack();
                     return true;
                 }
             }

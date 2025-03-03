@@ -169,7 +169,7 @@ public class Map
             if (canBeSeen && !shouldBeSeen)
             {
                 otherCharacter.RemoveVisiblePlayer(movingCharacter.Entity);
-                if(otherCharacter.IsAbleToBeSeenBy(movingCharacter))
+                if(otherCharacter.IsAbleToBeSeenBy(movingCharacter) && !otherCharacter.AdminHidden) //if we've walked off screen of an admin, don't send remove
                     CommandBuilder.SendRemoveEntity(otherCharacter, movingCharacter.Player, CharacterRemovalReason.OutOfSight);
                 hasChange = true;
             }
@@ -177,7 +177,7 @@ public class Map
             if (!canBeSeen && shouldBeSeen)
             {
                 otherCharacter.AddVisiblePlayer(movingCharacter.Entity);
-                if (otherCharacter.IsAbleToBeSeenBy(movingCharacter))
+                if (otherCharacter.IsAbleToBeSeenBy(movingCharacter) && !otherCharacter.AdminHidden) //if we've walked on screen of an admin, don't send create
                     CommandBuilder.SendCreateEntity(otherCharacter, movingCharacter.Player);
                 hasChange = true;
             }
@@ -192,7 +192,7 @@ public class Map
             if (canSee && !shouldSee)
             {
                 movingCharacter.RemoveVisiblePlayer(otherCharacter.Entity);
-                if (movingCharacter.IsAbleToBeSeenBy(otherCharacter))
+                if (movingCharacter.IsAbleToBeSeenBy(otherCharacter) && !movingCharacter.AdminHidden)
                     removeList.Add(otherCharacter.Entity);
                 hasChange = true;
             }
@@ -200,7 +200,7 @@ public class Map
             if (!canSee && shouldSee)
             {
                 movingCharacter.AddVisiblePlayer(otherCharacter.Entity);
-                if (movingCharacter.IsAbleToBeSeenBy(otherCharacter))
+                if (movingCharacter.IsAbleToBeSeenBy(otherCharacter) && !movingCharacter.AdminHidden)
                     addList.Add(otherCharacter.Entity);
                 hasChange = true;
             }
@@ -285,7 +285,7 @@ public class Map
                     //the player is in range and was in range before we moved, so if it's not a walk update we need to send a move event
                     if(movingCharacter.Type == CharacterType.Player)
                         CommandBuilder.AddRecipient(movingCharacter.Entity);
-                    if(otherCharacter.Type == CharacterType.Player && movingCharacter.IsAbleToBeSeenBy(otherCharacter))
+                    if(otherCharacter.Type == CharacterType.Player && movingCharacter.IsAbleToBeSeenBy(otherCharacter) && !movingCharacter.AdminHidden)
                         CommandBuilder.AddRecipient(otherCharacter.Entity);
                 }
             }
@@ -464,7 +464,7 @@ public class Map
                 //if a nearby character is a player, we should track their visibility ourselves
                 if (nearbyEntity.Type == EntityType.Player)
                 {
-                    if (p.Entity == nearbyEntity || !nearbyCharacter.AdminHidden)
+                    if (p.Entity == nearbyEntity) // || !nearbyCharacter.AdminHidden)
                     {
                         AddPlayerVisibility(nearbyCharacter, ch); //We see nearbyCharacter
                         CommandBuilder.AddRecipient(nearbyEntity);
@@ -472,10 +472,10 @@ public class Map
                 }
 
                 //code for notifying this player of other existing entities
-                if (!ch.AdminHidden && ch != nearbyCharacter)
+                if (ch != nearbyCharacter)
                 {
                     AddPlayerVisibility(ch, nearbyCharacter); //nearbyCharacter sees us
-                    if (!nearbyCharacter.AdminHidden)
+                    if (!ch.AdminHidden)
                         entities.Add(nearbyEntity); //we only want to notify of this character's existence if it is not hidden
                 }
             }
@@ -543,6 +543,14 @@ public class Map
     {
         if (!entity.IsAlive())
             return;
+
+        if (ch.AdminHidden)
+        {
+            CommandBuilder.AddRecipient(entity);
+            CommandBuilder.SendStartMoveEntityMulti(ch);
+            CommandBuilder.ClearRecipients();
+            return;
+        }
 
         if (ch.TryGetVisiblePlayerList(out var list))
         {

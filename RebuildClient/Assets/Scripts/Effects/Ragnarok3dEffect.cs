@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
@@ -85,6 +86,12 @@ namespace Assets.Scripts.Effects
             Duration = (frame + 1) * (1f / 60f);
             DurationFrames = frame;
         }
+        
+        public void SetRemainingDurationByFrames(int frame)
+        {
+            Duration = CurrentPos + (frame + 1) * (1f / 60f);
+            DurationFrames = Step + frame;
+        }
 
         public void SetSortingGroup(string layerName, int position)
         {
@@ -140,7 +147,8 @@ namespace Assets.Scripts.Effects
             for (var i = 0; i < Primitives.Count; i++)
             {
                 var p = Primitives[i];
-                RagnarokEffectPool.ReturnPrimitive(p);
+                if(p != null)
+                    RagnarokEffectPool.ReturnPrimitive(p);
                 Primitives[i] = null;
             }
 
@@ -216,6 +224,11 @@ namespace Assets.Scripts.Effects
 
             primitive.Prepare(this, type, mat, duration);
             
+            #if DEBUG
+            if (Primitives.Contains(primitive))
+                throw new Exception($"Somehow we're launching a primitive that's already in use!");
+            #endif
+            
             Primitives.Add(primitive);
             
             return primitive;
@@ -288,8 +301,16 @@ namespace Assets.Scripts.Effects
             {
                 var p = Primitives[i];
 
-                if (!p.IsActive)
+                if (p == null)
                     continue;
+
+                if (!p.IsActive)
+                {
+                    RagnarokEffectPool.ReturnPrimitive(p);
+                    Primitives.RemoveAt(i);
+                    i--;
+                    continue;
+                }
 
                 var pActive = p.UpdatePrimitive();
                 if (pActive)

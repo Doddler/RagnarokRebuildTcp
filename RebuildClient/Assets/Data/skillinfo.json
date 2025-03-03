@@ -324,7 +324,7 @@
         18
       ],
       "AdjustableLevel": false,
-      "Description": "A ghost property psychokinetic attack dealing physical damage at [100 \u002B SkillLevel * 15]% MATK. Striking a petrified or frozen target will deal triple damage. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes.\r\nCast Time: [1.2 - SkillLevel *0.1]s",
+      "Description": "A ghost property psychokinetic attack dealing physical damage at [100 \u002B SkillLevel * 15]% MATK. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes. Striking a petrified or frozen target will deal double damage and increase the blast radius to 7x7.\r\nCast Time: [1.2 - SkillLevel *0.1]s",
       "InterruptMode": 0
     },
     {
@@ -416,7 +416,7 @@
         16
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Curse a target to become stone, a 5 second long process that ends with the target being petrified. Chance of success is [35 \u002B SkillLevel * 3]%. In the event of failure there is no cooldown, and at level 3\u002B failure will not consume a catalyst.\r\nPetrifying Effect: Target is greatly slowed and unable to attack or use skills.\r\nPetrification Effect: Target becomes immobilized and earth element, and receive DEF-50% and MDEF\u002B25%. The next attack will free the target and deal \u002B50% damage.\r\nCatalyst: \u003Ccolor=#777777\u003E1 Red Gemstone\u003C/color\u003E",
       "InterruptMode": 0
     },
     {

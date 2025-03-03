@@ -31,8 +31,18 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
                 return;
             }
 
-            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Blessing, 40f + 20 * lvl, lvl);
-            target.AddStatusEffect(status);
+            var hasRemoval = false;
+            if (target.StatusContainer != null)
+            {
+                hasRemoval = target.StatusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Curse);
+                hasRemoval |= target.StatusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Stone);
+            }
+
+            if (!hasRemoval)
+            {
+                var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Blessing, 40f + 20 * lvl, lvl);
+                target.AddStatusEffect(status);
+            }
 
             var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.Blessing);
             GenericCastAndInformSupportSkill(source, target, CharacterSkill.Blessing, lvl, ref res);

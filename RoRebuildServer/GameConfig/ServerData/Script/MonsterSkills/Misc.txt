@@ -67,19 +67,21 @@ SkillHandler("ANGRY_TARGET_DUMMY") {
 	StateAny:
 	//TryCast(JupitelThunder, 28, 100%, 0.5s, 2s);
 	//TryCast(ComboAttack, 5, 100%, 1s, 8s);
-	TryCast(Sleep, 20, 100%, 2s, 20s);
+	//TryCast(Sleep, 20, 100%, 2s, 20s);
 	TryCast(Hallucination, 20, 100%, 2s, 20s);
 	TryCast(Curse, 20, 100%, 2s, 20s);
-	TryCast(Stun, 20, 100%, 2s, 20s);
+	//TryCast(Stun, 20, 100%, 2s, 20s);
 	TryCast(Blind, 20, 100%, 2s, 20s);
-	TryCast(FrostDiver, 10, 100%, 2s, 20s);
+	TryCast(Silence, 20, 100%, 2s, 20s);
+	//TryCast(FrostDiver, 10, 100%, 2s, 20s);
+	//TryCast(StoneCurse, 300, 100%, 2s, 20s);
 	
 	//TryCast(LordOfVermilion, 10, 100%, 0.7s, 15s)[IsHiding];
 	//TryCast(Hiding, 3, 100%, 0, 10s)[!IsHiding];
 	//TryCast(Hiding, 3, 100%, 0, 20s)[IsHiding];
 	TryCast(Pneuma, 1, 100%, 0, 5s)[WasRangedAttacked];
 	TryCast(PowerUp, 5, 100%, 0.7s, 30s)[HpPercent < 50];
-	//TryCast(PoisonAttack, 1, 100%, 0.5s, 2s);
+	TryCast(PoisonAttack, 1, 100%, 0.5s, 2s);
 	//TryCast(DarkAttack, 1, 100%, 0.5s, 2s);
 }
 

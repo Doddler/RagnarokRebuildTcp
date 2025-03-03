@@ -35,8 +35,8 @@ public class AreaOfEffect
     public AoeType Type = AoeType.Inactive;
     public CharacterSkill SkillSource;
 
-    public float NextTick = float.MaxValue;
-    public float Expiration = float.MaxValue;
+    public double NextTick = float.MaxValue;
+    public double Expiration = float.MaxValue;
 
     public float TickRate = 99999;
 
@@ -60,8 +60,8 @@ public class AreaOfEffect
         Value1 = value1;
         Value2 = value2;
         TargetingInfo = targetingInfo;
-        Expiration = Time.ElapsedTimeFloat + duration;
-        NextTick = Time.ElapsedTimeFloat + tickRate;
+        Expiration = Time.ElapsedTime + duration;
+        NextTick = Time.ElapsedTime + tickRate;
         IsActive = true;
         CheckStayTouching = false;
         SkillSource = CharacterSkill.None;
@@ -235,7 +235,7 @@ public class AreaOfEffect
         if (Expiration < 0 || NextTick < 0)
             return;
 
-        if (Time.ElapsedTimeFloat < NextTick)
+        if (Time.ElapsedTime < NextTick)
             return;
         
         NextTick += TickRate;

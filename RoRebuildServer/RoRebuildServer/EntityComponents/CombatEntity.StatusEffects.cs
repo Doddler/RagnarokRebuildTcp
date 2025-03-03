@@ -5,6 +5,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
+using RoRebuildServer.EntityComponents.Items;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -199,7 +200,6 @@ public partial class CombatEntity
         return true;
     }
 
-
     public bool TrySleepTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
     {
         if (target.HasBodyState(BodyStateFlags.DisablingState) || target.GetSpecialType() == CharacterSpecialType.Boss)
@@ -218,6 +218,34 @@ public partial class CombatEntity
         var len = 30f * timeResist;
 
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Sleep, len);
+        target.AddStatusEffect(status, false, delayApply);
+        return true;
+    }
+
+    public bool TrySilenceTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
+    {
+        if (target.HasStatusEffectOfType(CharacterStatusEffect.Silence) || target.GetSpecialType() == CharacterSpecialType.Boss)
+            return false;
+
+        var luk = target.GetEffectiveStat(CharacterStat.Luk);
+        var vit = target.GetEffectiveStat(CharacterStat.Vit);
+
+        var resist = MathHelper.PowScaleDown(luk);
+        var resistChance = 100 - target.GetStat(CharacterStat.ResistSilenceStatus);
+        if (resistChance != 100)
+            resist = resist * resistChance / 100;
+
+        if (!CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
+            return false;
+
+        var timeResist = MathHelper.PowScaleDown(vit + GameRandom.Next(0, luk));
+        if (resistChance != 100)
+            timeResist = resist * resistChance / 100;
+        var len = 30f * timeResist;
+
+        target.CancelCast();
+
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Silence, len);
         target.AddStatusEffect(status, false, delayApply);
         return true;
     }
@@ -246,5 +274,63 @@ public partial class CombatEntity
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Curse, len);
         target.AddStatusEffect(status, false, delayApply);
         return true;
+    }
+
+    public bool TryPetrifyTarget(CombatEntity target, int chanceIn1000, float petrifyTime)
+    {
+        if (target.HasBodyState(BodyStateFlags.DisablingState) || target.HasStatusEffectOfType(CharacterStatusEffect.Petrifying) || target.GetSpecialType() == CharacterSpecialType.Boss)
+            return false;
+
+        var mdef = target.GetEffectiveStat(CharacterStat.MDef);
+        var luk = target.GetEffectiveStat(CharacterStat.Luk);
+
+        var resist = MathHelper.PowScaleDown(mdef);
+        var resistChance = 100 - target.GetStat(CharacterStat.ResistStoneStatus);
+        if (resistChance != 100)
+            resist = resist * resistChance / 100;
+
+        if (!CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
+            return false;
+
+        var timeResist = MathHelper.PowScaleDown(mdef + GameRandom.Next(0, luk));
+        var len = 20f * timeResist;
+
+        var durationResist = 100 - target.GetStat(CharacterStat.ResistStoneStatus);
+        if (durationResist != 100)
+            len = len * durationResist / 100;
+
+        if (len <= 0)
+            return false;
+
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Petrifying, petrifyTime + 0.1f);
+        target.AddStatusEffect(status, false, 0);
+
+        var status2 = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Stone, len + petrifyTime);
+        target.AddStatusEffect(status2, true, petrifyTime);
+        return true;
+    }
+
+    public void CleanseStatusEffect(StatusCleanseTarget target)
+    {
+        if (statusContainer == null)
+            return; //we have no status effects
+
+        if ((target & StatusCleanseTarget.Poison) > 0)
+            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Poison);
+
+        if ((target & StatusCleanseTarget.Silence) > 0 && HasBodyState(BodyStateFlags.Silence))
+            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Silence);
+        
+        if ((target & StatusCleanseTarget.Blind) > 0 && HasBodyState(BodyStateFlags.Blind))
+            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Blind);
+
+        if ((target & StatusCleanseTarget.Confusion) > 0 && HasBodyState(BodyStateFlags.Confusion))
+            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Confusion);
+
+        if ((target & StatusCleanseTarget.Hallucination) > 0 && HasBodyState(BodyStateFlags.Hallucination))
+            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Hallucination);
+
+        if ((target & StatusCleanseTarget.Curse) > 0 && HasBodyState(BodyStateFlags.Curse))
+            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Curse);
     }
 }

@@ -48,6 +48,7 @@ internal class ScriptTreeWalker
             "RoRebuildServer.EntityComponents.Monsters",
             "RoRebuildServer.Data.Monster",
             "RoRebuildServer.EntityComponents.Character",
+            "RoRebuildServer.EntityComponents.Util",
             "RoRebuildServer.Simulation.StatusEffects",
             "RoRebuildServer.Simulation.StatusEffects._1stJob",
             "RoRebuildServer.Simulation.StatusEffects.ItemEffects",

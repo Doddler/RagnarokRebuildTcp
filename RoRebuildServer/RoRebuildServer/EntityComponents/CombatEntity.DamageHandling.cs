@@ -378,6 +378,9 @@ public partial class CombatEntity
             if (statusContainer != null)
                 statusContainer.OnAttack(ref di);
 
+            if(target.statusContainer != null)
+                target.statusContainer.OnCalculateDamageTaken(ref req, ref di);
+
             if (di.Damage > 0 && (di.Result == AttackResult.NormalDamage || di.Result == AttackResult.CriticalDamage))
             {
                 TriggerOnAttackEffects(target, req, ref di);

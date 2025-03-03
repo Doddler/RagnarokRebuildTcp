@@ -8,7 +8,7 @@ Server and client for a Ragnarok Online-like game. Some assembly required.
 
 ## Requirements
 
-- Unity 2022.3.6f1 or higher
+- Unity 2022.3.59f1 or higher
 - .NET 8
 - Lack of sanity
 

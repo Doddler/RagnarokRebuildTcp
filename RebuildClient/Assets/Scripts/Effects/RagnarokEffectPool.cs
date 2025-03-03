@@ -79,6 +79,11 @@ namespace Assets.Scripts.Effects
                 return;
             }
             
+            #if DEBUG
+            if (primitiveList.Contains(primitive))
+                throw new Exception($"Attempting to return primitive that is already in the pool!");
+            #endif
+            
             primitive.Reset();
             primitive.gameObject.transform.SetParent(Instance.transform);
             primitive.gameObject.SetActive(false);

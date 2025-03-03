@@ -59,6 +59,8 @@ public class World
     private bool reloadScriptsFlag = false;
 
     private readonly object aoeLock = new();
+    private bool needTimerRollback;
+    public void RequestTimerRollback() => needTimerRollback = true;
 
     public World()
     {
@@ -819,8 +821,7 @@ public class World
         character.IsActive = false;
         moveRequests.Writer.TryWrite(new MapMoveRequest(entity, MoveRequestType.MapMove, character.Map, map, newPosition));
     }
-
-
+    
     public Entity GetEntityById(int id)
     {
         if (entityList.TryGetValue(id, out var entity))

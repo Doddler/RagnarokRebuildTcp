@@ -1139,6 +1139,30 @@
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 95,
+      "Name": "StoneCurse",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "stonecurse",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 96,
+      "Name": "Silence",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "silence",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

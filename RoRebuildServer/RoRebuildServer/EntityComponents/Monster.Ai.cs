@@ -697,8 +697,11 @@ public partial class Monster
         if (CombatEntity.IsCasting || Character.QueuedAction == QueuedAction.Cast || Character.State == CharacterState.Dead)
             return false;
 
+        if ((CombatEntity.BodyState & BodyStateFlags.NoAutoAttack) > 0)
+            return false;
+
         var targetEntity = targetCharacter.Entity.Get<CombatEntity>();
-        if (!targetEntity.IsValidTarget(CombatEntity))
+        if (!targetEntity.IsValidTarget(CombatEntity) || targetEntity.IsHiddenTo(CombatEntity))
             return false;
 
         if (AiSkillScanUpdate())

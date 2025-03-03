@@ -23,10 +23,10 @@ You are confused, making it difficult to walk in a straight line.
 Poison is causing you to take damage over time. Poison can reduce your HP to 1 but it cannot deal fatal damage.
 
 ::Petrifying
-Your skin is rapidly being encased in stone, leaving you are unable to attack or use skills.
+Your skin is rapidly being encased in stone, lowering your agi, dex, move speed and attack speed.
 
 ::Stone
-Encased in stone, you are unable to perform actions and vulnerable to fire. Lowers DEF and increases MDEF. The next hit you take will deal extra damage but end this effect.
+Encased in stone, you are unable to perform actions and are vulnerable to fire. Lowers DEF and increases MDEF. The next hit you take will deal extra damage but end this effect.
 
 ::Provoke
 You are enraged, making you stronger but greatly lowering your defense.
@@ -129,3 +129,5 @@ You are doomed to die in the near future.
 ::StolenFrom
 You've had something recently taken and cannot be stolen from again.
 
+::AdminHide
+You cannot be seen and you cannot be targeted.

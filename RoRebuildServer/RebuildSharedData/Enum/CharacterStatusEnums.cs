@@ -8,11 +8,12 @@ namespace RebuildSharedData.Enum;
 public enum StatusUpdateMode : byte
 {
     Default = 0,
-    OnTakeDamage = 1,
-    OnDealDamage = 2,
-    OnUpdate = 4,
-    OnChangeEquipment = 8,
-    OnMove = 16,
+    OnCalculateDamageTaken = 1,
+    OnTakeDamage = 2,
+    OnDealDamage = 4,
+    OnUpdate = 8,
+    OnChangeEquipment = 16,
+    OnMove = 32,
 }
 
 public enum StatusUpdateResult : byte

@@ -104,7 +104,7 @@ public class SafetyWallObjectEvent : NpcBehaviorBase
         if (target.HasStatusEffectOfType(CharacterStatusEffect.SafetyWall))
             return;
 
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.SafetyWall, aoe.Expiration - Time.ElapsedTimeFloat);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.SafetyWall, (float)(aoe.Expiration - Time.ElapsedTime));
         target.AddStatusEffect(status);
     }
 

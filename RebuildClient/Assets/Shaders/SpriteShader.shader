@@ -10,6 +10,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 		[PerRendererData] _EnvColor("Environment", Color) = (1,1,1,1)
 		[PerRendererData] _Offset("Offset", Float) = 0
 		[PerRendererData] _Width("Width", Float) = 0
+		_ColorDrain("Color Drain", Range(0,1)) = 0
 		_Rotation("Rotation", Range(0,360)) = 0
 	}
 
@@ -198,6 +199,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 			fixed _Offset;
 			fixed _Rotation;
 			fixed _Width;
+			fixed _ColorDrain;
 
 
 			sampler2D _MainTex;
@@ -410,7 +412,10 @@ Shader"Ragnarok/CharacterSpriteShader"
 
 				//The UNITY_APPLY_FOG can't be called twice so we'll store it to re-use later
 				float4 fogColor = float4(1,1,1,1);
+
 				
+				float avg = (diff.r + diff.g + diff.b) / 3;
+				diff.rgb = lerp(diff.rgb, float3(avg, avg, avg), _ColorDrain);
 
 				fixed4 c = diff * min(1.35, fogColor * i.color * float4(env.rgb,1)); // + float4(i.light.rgb,0);
 				c = saturate(c);
@@ -445,6 +450,8 @@ Shader"Ragnarok/CharacterSpriteShader"
 
 				UNITY_APPLY_FOG(i.fogCoord, c);
 				c.rgb *= c.a;
+
+
 
 				#ifdef BLINDEFFECT_ON
 				c.rgb = saturate(c.rgb * i.color2);

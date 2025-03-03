@@ -50,6 +50,7 @@ namespace Assets.Scripts.Sprites
         public int ActionId;
         public int CurrentFrame;
         public Color Color;
+        public float ColorDrain;
         public float Angle;
         public float SpriteOffset;
         public int PaletteId;
@@ -72,6 +73,7 @@ namespace Assets.Scripts.Sprites
         }
 
         public void SetColor(Color color) => Color = color;
+        public void SetColorDrain(float drainStrength) => ColorDrain = drainStrength;
         public void SetDirection(Direction direction) => Direction = direction;
         public void SetAngle(float angle) => Angle = angle;
         
@@ -283,6 +285,8 @@ namespace Assets.Scripts.Sprites
                 propertyBlock.SetFloat("_Offset", Mathf.Max(SpriteData.Size / 125f, 1f));
             else
                 propertyBlock.SetFloat("_Offset", SpriteOffset);
+            
+            propertyBlock.SetFloat("_ColorDrain", ColorDrain);
 
             MeshRenderer.SetPropertyBlock(propertyBlock);
         }

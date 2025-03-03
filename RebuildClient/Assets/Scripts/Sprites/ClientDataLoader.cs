@@ -59,6 +59,7 @@ namespace Assets.Scripts.Sprites
         [SerializeField] private TextAsset EmoteData;
         [SerializeField] private TextAsset StatusEffectData;
         public SpriteAtlas ItemIconAtlas;
+        public Sprite ShadowSprite;
 
         public int ServerVersion;
 
@@ -578,7 +579,8 @@ namespace Assets.Scripts.Sprites
 
             AddressableUtility.LoadRoSpriteData(go, bodySpriteName, bodySprite.OnSpriteDataLoad);
             AddressableUtility.LoadRoSpriteData(go, headSpriteName, headSprite.OnSpriteDataLoad);
-            AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
+            control.AttachShadow(ShadowSprite);
+            //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
 
             if (control.IsMainCharacter)
             {
@@ -916,7 +918,8 @@ namespace Assets.Scripts.Sprites
 
             AddressableUtility.LoadRoSpriteData(go, basePath + mData.SpriteName, control.SpriteAnimator.OnSpriteDataLoad);
             if (mData.ShadowSize > 0)
-                AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
+                control.AttachShadow(ShadowSprite);
+                //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
 
             control.Init();
 

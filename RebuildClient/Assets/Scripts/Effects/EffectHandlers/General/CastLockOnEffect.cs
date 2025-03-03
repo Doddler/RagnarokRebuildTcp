@@ -10,6 +10,9 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
         public static Ragnarok3dEffect Create(float duration, GameObject followTarget)
         {
+            if (duration < 0.15f)
+                return null;
+            
             if (lockOnMaterial == null)
             {
                 lockOnMaterial = new Material(ShaderCache.Instance.AlphaBlendParticleShader);
@@ -26,7 +29,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             var angle = 0f;
             for (var i = 0; i < 2; i++)
             {
-                var prim = effect.LaunchPrimitive(PrimitiveType.Texture3D, lockOnMaterial);
+                var prim = effect.LaunchPrimitive(PrimitiveType.Texture3D, lockOnMaterial, duration);
                 var data = prim.GetPrimitiveData<Texture3DData>();
                 prim.transform.localRotation = Quaternion.Euler(0f, angle, 0f);
                 prim.transform.localPosition = new Vector3(0f, 0.3f, 0f);

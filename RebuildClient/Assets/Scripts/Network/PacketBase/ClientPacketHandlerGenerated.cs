@@ -40,7 +40,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[22] = new InvalidPacket(); //HitTarget
 			handlers[23] = new PacketStartCasting(); //StartCast
 			handlers[24] = new InvalidPacket(); //StartAreaCast
-			handlers[25] = new InvalidPacket(); //UpdateExistingCast
+			handlers[25] = new PacketUpdateExistingCast(); //UpdateExistingCast
 			handlers[26] = new PacketStopCasting(); //StopCast
 			handlers[27] = new InvalidPacket(); //CreateCastCircle
 			handlers[28] = new PacketOnSkill(); //Skill

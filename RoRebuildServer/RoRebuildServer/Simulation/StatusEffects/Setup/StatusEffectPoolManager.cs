@@ -6,7 +6,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup;
 
 public struct PendingStatusEffect : IEquatable<PendingStatusEffect>
 {
-    public float EffectiveTime;
+    public double EffectiveTime;
     public bool OverwriteExisting;
     public StatusEffectState Effect;
 

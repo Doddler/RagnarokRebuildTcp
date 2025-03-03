@@ -138,6 +138,17 @@ public class Npc : IEntityAutoReset
         EffectType = NpcEffectType.None;
     }
 
+    public void RollBackTimers(float time)
+    {
+        LastTimerUpdate -= time;
+        TimerStart -= time;
+        if (AreaOfEffect != null)
+        {
+            AreaOfEffect.Expiration -= time;
+            AreaOfEffect.NextTick -= time;
+        }
+    }
+
     public bool TryGetAreaOfEffect([NotNullWhen(returnValue: true)] out AreaOfEffect aoe)
     {
         if (AreaOfEffect == null)

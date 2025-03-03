@@ -30,6 +30,23 @@ public class MapWalkData
     public bool DoesCellBlockLos(int x, int y) => (cellData[x + y * Width] & (byte)CellType.SeeThrough) == 0;
     public bool DoesCellBlockLos(Position p) => (cellData[p.X + p.Y * Width] & (byte)CellType.SeeThrough) == 0;
 
+    public bool IsCellAdjacentToWall(Position p)
+    {
+        if (p.X <= 1 || p.X >= Width - 1 || p.Y <= 1 || p.Y >= Height - 1)
+            return true; //it's next to the edge of the map, which is good enough for a wall. Plus we don't out of bounds our lookups.
+
+        for (var x = -1; x <= 1; x++)
+        {
+            for (var y = -1; y <= 1; y++)
+            {
+                if (!IsCellWalkable(p.X + x, p.Y + y))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     public Position FindWalkdableCellOnMap(int tries)
     {
         var pos = Position.Invalid;

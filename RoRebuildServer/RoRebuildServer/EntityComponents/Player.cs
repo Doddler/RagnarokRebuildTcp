@@ -89,8 +89,8 @@ public class Player : IEntityAutoReset
         get;
         set;
     }
-    private float regenTickTime { get; set; }
-    public void ResetRegenTickTime() => regenTickTime = Time.ElapsedTimeFloat + 3f; //a bit shorter than normal time because we're so nice
+    private GameTimer regenTickTime { get; set; }
+    public void ResetRegenTickTime() => regenTickTime.Set(3f); // regenTickTime = Time.ElapsedTimeFloat + 3f; //a bit shorter than normal time because we're so nice
     public int WeaponClass;
 
 #if DEBUG
@@ -148,16 +148,6 @@ public class Player : IEntityAutoReset
         CharData[(int)PlayerStat.Zeny] = v > 0 ? v : 0;
     }
 
-    ////this will get removed when we have proper job levels
-    //private static readonly int[] skillPointsByLevel = new[]
-    //{
-    //     0,  1,  2,  3,  4,  5,  6,  7,  8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-    //    21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 35, 37, 38, 39, 39,
-    //    40, 40, 41, 41, 42, 42, 43, 43, 44, 44, 45, 45, 46, 46, 47, 47, 48, 48, 49, 49,
-    //    50, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55, 55, 56, 56, 57, 57, 58, 58, 59, 59,
-    //    60, 60, 61, 61, 62, 62, 63, 63, 64, 64, 65, 65, 66, 66, 67, 67, 68, 68, 69, 69,
-    //};
-
     //how much it costs (cumulatively) to have a stat at a specific level. Should be in its own file...
     private static readonly int[] cumulativeStatPointCost = new[]
     {
@@ -191,7 +181,7 @@ public class Player : IEntityAutoReset
         Id = Guid.Empty;
         Name = "Uninitialized Player";
         //Data = new PlayerData(); //fix this...
-        regenTickTime = 0f;
+        regenTickTime.Reset();
         NpcInteractionState.Reset();
         IsAdmin = false;
         Array.Clear(CharData);
@@ -227,6 +217,17 @@ public class Player : IEntityAutoReset
 
         SavePosition.Reset();
     }
+
+    //public void RollBackTimers(float time)
+    //{
+    //    regenTickTime -= time;
+    //    lastAttackerListCheckUpdate -= time;
+    //    ShoutCooldown -= time;
+    //    SkillCooldownTime -= time;
+    //    CurrentCooldown -= time;
+    //    LastEmoteTime -= time;
+    //    RecentAttackersList.Clear(); //this is cheap but no one will probably notice
+    //}
 
     public void Init()
     {
@@ -808,6 +809,8 @@ public class Player : IEntityAutoReset
             SpecialState = SpecialPlayerActionState.None;
             CommandBuilder.ChangePlayerSpecialActionState(this, SpecialPlayerActionState.None);
         }
+
+        CombatEntity.UpdateHidingStateAfterAttack();
     }
 
     public void SaveCharacterToData()
@@ -858,7 +861,7 @@ public class Player : IEntityAutoReset
     // Standing up doubles your remaining regen tick time, sitting down halves it.
     public void UpdateSit(bool isSitting)
     {
-        var remainingTime = regenTickTime - Time.ElapsedTimeFloat;
+        var remainingTime = regenTickTime.Remaining;
         if (remainingTime < 0)
             return;
 
@@ -866,10 +869,10 @@ public class Player : IEntityAutoReset
         {
             if (remainingTime > 4)
                 remainingTime = 4;
-            regenTickTime = Time.ElapsedTimeFloat + remainingTime * 2f;
+            regenTickTime.Set(remainingTime * 2f); // = Time.ElapsedTimeFloat + remainingTime * 2f;
         }
         else
-            regenTickTime = Time.ElapsedTimeFloat + remainingTime / 2f;
+            regenTickTime.Set(remainingTime / 2f); //regenTickTime = Time.ElapsedTimeFloat + remainingTime / 2f;
     }
 
     public bool HasSpForSkill(CharacterSkill skill, int level)
@@ -1249,7 +1252,8 @@ public class Player : IEntityAutoReset
     {
         if (Character.State == CharacterState.Sitting
             || Character.State == CharacterState.Dead
-            || CombatEntity.HasBodyState(BodyStateFlags.Hidden)
+            || (CombatEntity.BodyState & BodyStateFlags.NoAutoAttack) > 0
+            || CombatEntity.HasBodyState(BodyStateFlags.Pacification)
             || GetStat(CharacterStat.Disabled) > 0
             || !ValidateTarget())
         {
@@ -1311,7 +1315,8 @@ public class Player : IEntityAutoReset
         }
 
         var targetEntity = targetCharacter.Entity.Get<CombatEntity>();
-        if (!targetEntity.IsValidTarget(CombatEntity) || !Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
+        if (!targetEntity.IsValidTarget(CombatEntity) || targetEntity.IsHiddenTo(CombatEntity)
+                                                      || !Character.Map.WalkData.HasLineOfSight(Character.Position, targetCharacter.Position))
         {
             ClearTarget();
             return false;
@@ -1334,7 +1339,7 @@ public class Player : IEntityAutoReset
 
         //Character.StopMovingImmediately();
 
-        if (Character.AttackCooldown > Time.ElapsedTimeFloat)
+        if (Character.AttackCooldown > Time.ElapsedTime)
         {
             if (Target != targetCharacter.Entity)
                 ChangeTarget(targetCharacter);
@@ -1346,7 +1351,7 @@ public class Player : IEntityAutoReset
         CombatEntity.PerformMeleeAttack(targetEntity);
         Character.AddMoveLockTime(GetTiming(TimingStat.AttackMotionTime), true);
 
-        Character.AttackCooldown = Time.ElapsedTimeFloat + GetTiming(TimingStat.AttackDelayTime);
+        Character.AttackCooldown = Time.ElapsedTime + GetTiming(TimingStat.AttackDelayTime);
         return true;
     }
 
@@ -1551,6 +1556,72 @@ public class Player : IEntityAutoReset
         return true;
     }
 
+    public void UpdateWithQueuedCast()
+    {
+        var cast = CombatEntity.QueuedCastingSkill;
+        if (cast.TargetedPosition != Position.Invalid)
+        {
+            //targeted at the ground
+            var isValid = true;
+            var canAttack = cast.TargetedPosition.InRange(Character.Position, cast.Range);
+            if (canAttack && !Character.Map.WalkData.HasLineOfSight(Character.Position, cast.TargetedPosition))
+                canAttack = false;
+
+            if (Character.State == CharacterState.Moving && canAttack)
+                Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
+            if (Character.State == CharacterState.Idle && !canAttack && !Character.InAttackCooldown)
+            {
+                var target = CombatEntity.CastingSkill.TargetEntity;
+                isValid = Character.TryMove(cast.TargetedPosition, 1);
+                if (isValid)
+                    Character.QueuedAction = QueuedAction.Cast; //trymove will reset this...
+            }
+
+            if (InCombatReadyState && isValid && canAttack)
+            {
+                if (CombatEntity.QueuedCastingSkill.IsValid)
+                    CombatEntity.ResumeQueuedSkillAction();
+                else
+                    Character.QueuedAction = QueuedAction.None;
+            }
+
+            if (!isValid)
+                Character.QueuedAction = QueuedAction.None;
+        }
+        else
+        {
+            //targeted at an enemy
+            if (CombatEntity.QueuedCastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
+            {
+                var isValid = true;
+                var canAttack = CombatEntity.CanAttackTarget(targetCharacter, CombatEntity.QueuedCastingSkill.Range);
+                if (Character.State == CharacterState.Moving && canAttack)
+                    Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
+                if (Character.State == CharacterState.Idle && !canAttack)
+                {
+                    var target = CombatEntity.CastingSkill.TargetEntity;
+                    isValid = Character.TryMove(targetCharacter.Position, 1);
+                }
+
+                if (InCombatReadyState && isValid)
+                {
+                    if (CombatEntity.QueuedCastingSkill.IsValid)
+                        CombatEntity.ResumeQueuedSkillAction();
+                    else
+                        Character.QueuedAction = QueuedAction.None;
+                }
+
+                if (!isValid)
+                    Character.QueuedAction = QueuedAction.None;
+            }
+            else
+            {
+                Character.QueuedAction = QueuedAction.None;
+                Target = Entity.Null;
+            }
+        }
+    }
+
     public void Update()
     {
         CurrentCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
@@ -1568,13 +1639,13 @@ public class Player : IEntityAutoReset
                 return;
         }
 
-        if (regenTickTime < Time.ElapsedTimeFloat)
+        if (regenTickTime.Elapsed())
         {
             RegenTick();
             if (Character.State == CharacterState.Sitting)
-                regenTickTime = Time.ElapsedTimeFloat + 3f;
+                regenTickTime.Set(3f); // = Time.ElapsedTimeFloat + 3f;
             else
-                regenTickTime = Time.ElapsedTimeFloat + 6f;
+                regenTickTime.Set(6f); // = Time.ElapsedTimeFloat + 6f;
         }
 
         if (IsInNpcInteraction)
@@ -1602,71 +1673,14 @@ public class Player : IEntityAutoReset
             }
         }
 
+
+
         if (Character.QueuedAction == QueuedAction.Cast)
         {
-            var cast = CombatEntity.QueuedCastingSkill;
-            if (cast.TargetedPosition != Position.Invalid)
-            {
-                //targeted at the ground
-                var isValid = true;
-                var canAttack = cast.TargetedPosition.InRange(Character.Position, cast.Range);
-                if (canAttack && !Character.Map.WalkData.HasLineOfSight(Character.Position, cast.TargetedPosition))
-                    canAttack = false;
-
-                if (Character.State == CharacterState.Moving && canAttack)
-                    Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
-                if (Character.State == CharacterState.Idle && !canAttack && !Character.InAttackCooldown)
-                {
-                    var target = CombatEntity.CastingSkill.TargetEntity;
-                    isValid = Character.TryMove(cast.TargetedPosition, 1);
-                    if (isValid)
-                        Character.QueuedAction = QueuedAction.Cast; //trymove will reset this...
-                }
-
-                if (InCombatReadyState && isValid && canAttack)
-                {
-                    if (CombatEntity.QueuedCastingSkill.IsValid)
-                        CombatEntity.ResumeQueuedSkillAction();
-                    else
-                        Character.QueuedAction = QueuedAction.None;
-                }
-
-                if (!isValid)
-                    Character.QueuedAction = QueuedAction.None;
-            }
+            if (CombatEntity.HasBodyState(BodyStateFlags.Silence))
+                Character.QueuedAction = QueuedAction.None;
             else
-            {
-                //targeted at an enemy
-                if (CombatEntity.QueuedCastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
-                {
-                    var isValid = true;
-                    var canAttack = CombatEntity.CanAttackTarget(targetCharacter, CombatEntity.QueuedCastingSkill.Range);
-                    if (Character.State == CharacterState.Moving && canAttack)
-                        Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
-                    if (Character.State == CharacterState.Idle && !canAttack)
-                    {
-                        var target = CombatEntity.CastingSkill.TargetEntity;
-                        isValid = Character.TryMove(targetCharacter.Position, 1);
-                    }
-
-                    if (InCombatReadyState && isValid)
-                    {
-                        if (CombatEntity.QueuedCastingSkill.IsValid)
-                            CombatEntity.ResumeQueuedSkillAction();
-                        else
-                            Character.QueuedAction = QueuedAction.None;
-                    }
-
-                    if (!isValid)
-                        Character.QueuedAction = QueuedAction.None;
-                }
-                else
-                {
-                    Character.QueuedAction = QueuedAction.None;
-                    Target = Entity.Null;
-                }
-            }
-
+                UpdateWithQueuedCast();
         }
 
         if (Character.QueuedAction == QueuedAction.Move && InMoveReadyState)

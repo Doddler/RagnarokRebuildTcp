@@ -10,6 +10,12 @@ public static class Time
     public static float DeltaTimeFloat;
     public static ulong UpdateCount;
 
+    public static byte RollingTimerGen;
+    public static float RollingTimerTime;
+    public static float RolloverTime;
+
+    public static float RollingTimerMax = 86400;
+
     private static readonly Stopwatch StopWatch = new Stopwatch();
     private static readonly double[] PreviousFrameTimes = new double[SampleCount];
     
@@ -32,6 +38,7 @@ public static class Time
         DeltaTimeFloat = (float)DeltaTime;
         ElapsedTime = newTime;
         ElapsedTimeFloat = (float)newTime;
+        RollingTimerTime += DeltaTimeFloat;
 
         PreviousFrameTimes[frameIndex] = DeltaTime;
         frameIndex++;
@@ -45,6 +52,16 @@ public static class Time
 
         UpdateCount++;
         
+    }
+
+    public static void AdvanceRollingTimerGeneration()
+    {
+        var gen = RollingTimerGen + 1;
+        if (gen > 250)
+            gen = 0;
+        RolloverTime = RollingTimerTime;
+        RollingTimerTime = 0f;
+        RollingTimerGen = (byte)gen;
     }
 
     public static double GetExactTime()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers.General;
+using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network;
@@ -15,6 +16,8 @@ namespace Assets.Scripts.PlayerControl
     public class StatusEffectState
     {
         private readonly List<CharacterStatusEffect> activeStatusEffects = new();
+
+        public static Color StoneColor = new Color(0.8f, 0.8f, 0.8f);
 
         public bool HasStatusEffect(CharacterStatusEffect status) => activeStatusEffects.Contains(status);
 
@@ -47,6 +50,11 @@ namespace Assets.Scripts.PlayerControl
                             color = new Color(0f, 0.5f, 1f);
                         priority = 3;
                         break;
+                    case CharacterStatusEffect.Stone:
+                        if (priority < 4)
+                            color = StoneColor;
+                        priority = 4;
+                        break;
                 }
             }
             
@@ -54,7 +62,7 @@ namespace Assets.Scripts.PlayerControl
         }
         
 
-        public static void AddStatusToTarget(ServerControllable controllable, CharacterStatusEffect status, bool isNewEntity)
+        public static void AddStatusToTarget(ServerControllable controllable, CharacterStatusEffect status, bool isNewEntity, float duration = 0)
         {
             if (controllable.StatusEffectState == null)
                 controllable.StatusEffectState = new StatusEffectState();
@@ -81,6 +89,8 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Hiding:
                     controllable.SpriteAnimator.IsHidden = true;
                     controllable.SpriteAnimator.HideShadow = controllable.IsMainCharacter;
+                    if(controllable.FollowerObject != null)
+                        controllable.FollowerObject.SetActive(false); //hide cart, bird, whatever is following the player
                     if (controllable.CharacterType != CharacterType.Player)
                         controllable.HideHpBar();
                     if (CameraFollower.Instance.SelectedTarget == controllable)
@@ -88,23 +98,26 @@ namespace Assets.Scripts.PlayerControl
                     break;
                 case CharacterStatusEffect.Stun:
                     StunEffect.AttachStunEffect(controllable);
-                    // controllable.SpriteAnimator.Color = new Color(1, 0.5f, 0.5f);
-                    // if(controllable.SpriteAnimator.CurrentMotion is SpriteMotion.Idle or SpriteMotion.Standby)
-                    //     controllable.SpriteAnimator.AnimSpeed = 2f;
                     break;
                 case CharacterStatusEffect.Sleep:
                     SleepEffect.AttachSleepEffect(controllable);
                     break;
                 case CharacterStatusEffect.TwoHandQuicken:
-                    // controllable.SpriteAnimator.Color = new Color(1, 1, 0.7f);
+                    //color now set via UpdateColorForStatus
                     RoSpriteTrailManager.Instance.AttachTrailToEntity(controllable);
                     break;
                 case CharacterStatusEffect.Poison:
-                    // controllable.SpriteAnimator.Color = new Color(1f, 0.7f, 1f);
-                    AudioManager.Instance.AttachSoundToEntity(controllable.Id, "ef_poisonattack.ogg", controllable.gameObject);
+                    //color now set via UpdateColorForStatus
+                    if(!isNewEntity)
+                        AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_poison.ogg", controllable.gameObject);
+                    break;
+                case CharacterStatusEffect.Silence:
+                    controllable.AttachEffect(SilenceEffect.LaunchSilenceEffect(controllable, 999));
+                    if(!isNewEntity)
+                        AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_silence.ogg", controllable.gameObject);
                     break;
                 case CharacterStatusEffect.Frozen:
-                    // controllable.SpriteAnimator.Color = new Color(0.3f, 0.7f, 1f);
+                    //color now set via UpdateColorForStatus
                     controllable.AbortActiveWalk();
                     controllable.SpriteAnimator?.PauseAnimation();
                     FreezeEffect.AttachFreezeEffect(controllable);
@@ -123,6 +136,7 @@ namespace Assets.Scripts.PlayerControl
                     if (controllable.IsMainCharacter)
                     {
                         Shader.EnableKeyword("BLINDEFFECT_ON");
+                        //we can tell if blind was previously active if BlindStrength is low enough, we use this to stop the sound from playing when you teleport
                         if (CameraFollower.Instance.BlindStrength > 100)
                         {
                             CameraFollower.Instance.BlindStrength = 200f;
@@ -141,7 +155,25 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Hallucination:
                     CameraFollower.Instance.GetComponent<ScreenEffectHandler>().StartHallucination();
                     break;
+                case CharacterStatusEffect.Sight:
+                    if(!isNewEntity)
+                        AudioManager.Instance.OneShotSoundEffect(controllable.Id, $"ef_sight.ogg", controllable.transform.position);
+                    controllable.AttachEffect(SightEffect.LaunchSight(controllable));
+                    break;
+                case CharacterStatusEffect.Ruwach:
+                    if(!isNewEntity)
+                        AudioManager.Instance.OneShotSoundEffect(controllable.Id, $"ef_sight.ogg", controllable.transform.position);
+                    controllable.AttachEffect(RuwachEffect.LaunchRuwach(controllable));
+                    break;
+                case CharacterStatusEffect.Petrifying:
+                    controllable.AttachEffect(PetrifyingEffect.LaunchPetrifyingEffect(controllable, duration));
+                    break;
+                case CharacterStatusEffect.Stone:
+                    controllable.AbortActiveWalk();
+                    controllable.SpriteAnimator?.PauseAnimation();
+                    controllable.AttachEffect(PetrifyingEffect.LaunchPetrifyingEffect(controllable, 0));
                     
+                    break;
             }
         }
 
@@ -164,7 +196,9 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Hiding:
                     controllable.SpriteAnimator.IsHidden = false;
                     controllable.SpriteAnimator.HideShadow = false;
-                    HideEffect.AttachHideEffect(controllable.gameObject);
+                    if(controllable.FollowerObject != null)
+                        controllable.FollowerObject.SetActive(true); //unhide cart/bird
+                    HideEffect.AttachHideEffect(controllable.gameObject); //smoke plays when unhiding too
                     break;
                 case CharacterStatusEffect.Stun:
                     controllable.EndEffectOfType(EffectType.Stun);
@@ -175,8 +209,12 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Curse:
                     controllable.EndEffectOfType(EffectType.Curse);
                     break;
+                case CharacterStatusEffect.Silence:
+                    controllable.EndEffectOfType(EffectType.Silence);
+                    break;
                 case CharacterStatusEffect.Stone:
                     AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_stone_explosion.ogg", CameraFollower.Instance.ListenerProbe, 0.8f);
+                    controllable.EndEffectOfType(EffectType.Petrifying);
                     break;
                 case CharacterStatusEffect.TwoHandQuicken:
                     RoSpriteTrailManager.Instance.RemoveTrailFromEntity(controllable);
@@ -196,6 +234,19 @@ namespace Assets.Scripts.PlayerControl
                     break;
                 case CharacterStatusEffect.Hallucination:
                     CameraFollower.Instance.GetComponent<ScreenEffectHandler>().EndHallucination();
+                    break;
+                case CharacterStatusEffect.Sight:
+                    var effect = controllable.DetachExistingEffectOfType(EffectType.Sight);
+                    effect.SetRemainingDurationByFrames(20);
+                    effect.Flags[0] = 1;
+                    break;
+                case CharacterStatusEffect.Ruwach:
+                    var rEffect = controllable.DetachExistingEffectOfType(EffectType.Ruwach);
+                    rEffect.SetRemainingDurationByFrames(20);
+                    rEffect.Flags[0] = 1;
+                    break;
+                case CharacterStatusEffect.Petrifying:
+                    controllable.EndEffectOfType(EffectType.Petrifying);
                     break;
             }
         }

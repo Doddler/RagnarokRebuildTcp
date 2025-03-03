@@ -49094,6 +49094,7 @@ MonoBehaviour:
   EmoteData: {fileID: 4900000, guid: 2dc31d140e9869c4cadf2f914917ccfb, type: 3}
   StatusEffectData: {fileID: 4900000, guid: 42aaaef30b112884f81d94aec10f8114, type: 3}
   ItemIconAtlas: {fileID: 100100200, guid: 81256b27eb27dbc439d2b23d1a2a584d, type: 3}
+  ShadowSprite: {fileID: 21300000, guid: 7a3993df44573374894f81ef56d0b79e, type: 3}
   ServerVersion: 0
   LatestPatchNotes: 
   PatchNotes: 
@@ -62526,6 +62527,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteShader: {fileID: 4800000, guid: c3e2b57f3d9f16d4dac9816f7fec7093, type: 3}
   SpriteShaderNoZWrite: {fileID: 4800000, guid: 65154ebb0faaa3b4b98db4491b0e9dba,
+    type: 3}
+  SpriteShaderNoZWriteAlt: {fileID: 4800000, guid: 1e3cb25b8b4a9284f827f9bac2f366ae,
     type: 3}
   SpritePerspectiveShader: {fileID: 4800000, guid: e8688e51baef33644b1ad7ca0bd2498c,
     type: 3}

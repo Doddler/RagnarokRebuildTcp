@@ -6,7 +6,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
 {
     public struct StatusEffectState : IEquatable<StatusEffectState>
     {
-        public float Expiration;
+        public double Expiration;
         public int Value1;
         public int Value2;
         public short Value3;
@@ -18,7 +18,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
             var statusEffect = new StatusEffectState()
             {
                 Type = type,
-                Expiration = expiration >= 0 ? expiration + Time.ElapsedTimeFloat : float.MaxValue,
+                Expiration = expiration >= 0 ? expiration + Time.ElapsedTime : float.MaxValue,
                 Value1 = val1,
                 Value2 = val2,
                 Value3 = val3,
@@ -58,7 +58,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         {
             bw.Write((byte)Type);
             if(Expiration < float.MaxValue)
-                bw.Write(Expiration - Time.ElapsedTimeFloat);
+                bw.Write((float)(Expiration - Time.ElapsedTime));
             else
                 bw.Write(0);
             bw.Write(Value1);

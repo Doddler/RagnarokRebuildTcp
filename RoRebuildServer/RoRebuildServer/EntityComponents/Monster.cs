@@ -30,7 +30,7 @@ public partial class Monster : IEntityAutoReset
     private float aiTickRate;
     //private float aiCooldown;
 
-    private float nextAiUpdate;
+    private double nextAiUpdate;
     //private float NextAiUpdate
     //{
     //    get => nextAiUpdate;
@@ -48,14 +48,14 @@ public partial class Monster : IEntityAutoReset
     public void ResetAiUpdateTime() => nextAiUpdate = 0;
     public void ResetAiSkillUpdateTime() => nextAiSkillUpdate = 0;
 
-    public void AdjustAiUpdateIfShorter(float time)
+    public void AdjustAiUpdateIfShorter(double time)
     {
         if (time < nextAiUpdate)
             nextAiUpdate = time;
     }
 
     private float nextMoveUpdate;
-    private float nextAiSkillUpdate;
+    private double nextAiSkillUpdate;
     private float timeofLastStateChange;
     //private float timeEnteredCombat;
     private float timeLastCombat;
@@ -215,7 +215,7 @@ public partial class Monster : IEntityAutoReset
         CombatEntity = null!;
         //searchTarget = null!;
         aiTickRate = 0.1f;
-        nextAiUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(0, aiTickRate);
+        nextAiUpdate = Time.ElapsedTime + GameRandom.NextFloat(0, aiTickRate);
         SpawnRule = null;
         MonsterBase = null!;
         SpawnMap = null!;
@@ -253,7 +253,7 @@ public partial class Monster : IEntityAutoReset
         aiType = type;
         SpawnMap = mapName;
         aiEntries = DataManager.GetAiStateMachine(aiType);
-        nextAiUpdate = Time.ElapsedTimeFloat + 1f;
+        nextAiUpdate = Time.ElapsedTime + 1f;
         nextAiSkillUpdate = Time.ElapsedTimeFloat + 1f;
         aiTickRate = 0.05f;
         LastDamageSourceType = CharacterSkill.None;
@@ -603,7 +603,7 @@ public partial class Monster : IEntityAutoReset
             deadTimeout = 0.4f; //minimum respawn time
         //if (deadTimeout > MaxSpawnTimeInSeconds)
         //    deadTimeout = MaxSpawnTimeInSeconds;
-        nextAiUpdate = Time.ElapsedTimeFloat + deadTimeout + 0.1f;
+        nextAiUpdate = Time.ElapsedTime + deadTimeout + 0.1f;
         deadTimeout += Time.ElapsedTimeFloat;
 
         CombatEntity.ClearDamageQueue();
@@ -619,12 +619,12 @@ public partial class Monster : IEntityAutoReset
     {
         //usually to stop a monster from acting after taking fatal damage, but before the damage is applied
         nextAiUpdate += delay;
-        if (nextAiUpdate < Time.ElapsedTimeFloat)
-            nextAiUpdate = Time.ElapsedTimeFloat + delay;
+        if (nextAiUpdate < Time.ElapsedTime)
+            nextAiUpdate = Time.ElapsedTime + delay;
 
 #if DEBUG
         if (DebugLogging)
-            DebugLog($"Next AI update in {nextAiUpdate - Time.ElapsedTimeFloat}");
+            DebugLog($"Next AI update in {nextAiUpdate - Time.ElapsedTime}");
 #endif
     }
 
@@ -717,7 +717,7 @@ public partial class Monster : IEntityAutoReset
         skillState.SkillCastSuccess = false;
         if (CurrentAiState != MonsterAiState.StateAttacking)
         {
-            nextAiSkillUpdate = Time.ElapsedTimeFloat + 0.85f + GameRandom.NextFloat(0f, 0.3f); //we'd like to desync mob skill updates if possible
+            nextAiSkillUpdate = Time.ElapsedTimeFloat + 0.9f + GameRandom.NextFloat(0f, 0.2f); //we'd like to desync mob skill updates if possible
             if(!Character.HasVisiblePlayers())
                 nextAiSkillUpdate += 2f;
         }
@@ -783,6 +783,7 @@ public partial class Monster : IEntityAutoReset
             && Character.State != CharacterState.Dead
             && !CombatEntity.IsCasting
             && !Character.InAttackCooldown
+            && (CombatEntity.BodyState & BodyStateFlags.NoSkillAttack) == 0
             && CurrentAiState != MonsterAiState.StateAttacking //we handle this check on every attack in OnPerformAttack in Monster.Ai.cs
             && Character.QueuedAction != QueuedAction.Cast)
         {
@@ -837,14 +838,14 @@ public partial class Monster : IEntityAutoReset
         
         if (Character.Map != null && Character.Map.PlayerCount == 0)
         {
-            nextAiUpdate = Time.ElapsedTimeFloat + 2f + GameRandom.NextFloat(0f, 1f);
+            nextAiUpdate = Time.ElapsedTime + 2f + GameRandom.NextFloat(0f, 1f);
         }
         else
         {
-            if (nextAiUpdate < Time.ElapsedTimeFloat)
+            if (nextAiUpdate < Time.ElapsedTime)
             {
-                if (nextAiUpdate + Time.DeltaTimeFloat < Time.ElapsedTimeFloat)
-                    nextAiUpdate = Time.ElapsedTimeFloat + aiTickRate;
+                if (nextAiUpdate + Time.DeltaTimeFloat < Time.ElapsedTime)
+                    nextAiUpdate = Time.ElapsedTime + aiTickRate;
                 else
                     nextAiUpdate += aiTickRate;
 
@@ -855,14 +856,14 @@ public partial class Monster : IEntityAutoReset
     }
 
     private bool InCombatReadyState => Character.State == CharacterState.Idle && !CombatEntity.IsCasting &&
-                                       Character.AttackCooldown < Time.ElapsedTimeFloat;
+                                       Character.AttackCooldown < Time.ElapsedTime;
 
     public void Update()
     {
         if (Character.Map?.PlayerCount == 0)
             return;
 
-        if (nextAiUpdate > Time.ElapsedTimeFloat)
+        if (nextAiUpdate > Time.ElapsedTime)
             return;
 
         if (GetStat(CharacterStat.Disabled) > 0 || CombatEntity.IsCasting)

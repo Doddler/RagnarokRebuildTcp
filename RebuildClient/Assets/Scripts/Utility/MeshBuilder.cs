@@ -88,6 +88,28 @@ namespace Assets.Scripts.Utility
             triangles.Add(tri + 3);
             triangles.Add(tri + 2);
         }
+        
+        
+        public void AddQuad(Vector3[] vertArray, Vector3[] normalArray, Vector2[] uvArray, Color[] colorArray)
+        {
+            var tri = vertices.Count;
+
+#if DEBUG
+            if (vertArray.Length != 4 || normalArray.Length != 4 || uvArray.Length != 4)
+                throw new Exception("AddQuad was passed incorrect parameters! Oh no!");
+#endif
+
+            AddVertices(vertArray);
+            AddNormals(normalArray);
+            AddUVs(uvArray);
+            AddColors(colorArray);
+            triangles.Add(tri);
+            triangles.Add(tri + 1);
+            triangles.Add(tri + 2);
+            triangles.Add(tri + 1);
+            triangles.Add(tri + 3);
+            triangles.Add(tri + 2);
+        }
 
         public void AddPerspectiveQuad(Vector3[] vertArray, Vector3[] normalArray, Vector3[] uvArray, Color32[] colorArray)
         {
@@ -265,7 +287,10 @@ namespace Assets.Scripts.Utility
         {
             if(mesh.vertices.Length != vertices.Count)
                 mesh.Clear();
+
             
+            // Debug.Log(vertices.Count);
+                
             mesh.SetVertices(vertices);
             mesh.SetNormals(normals);
             mesh.SetTriangles(triangles, 0);
@@ -273,10 +298,25 @@ namespace Assets.Scripts.Utility
                 mesh.SetUVs(0, uvs);
             else
                 mesh.SetUVs(0, uv3s);
+
+
             if (colors.Count > 0)
+            {
+                color32s.Clear();
+                for(var i = 0; i < colors.Count; i++)
+                    color32s.Add(colors[i]);
                 mesh.SetColors(colors);
+            }
+
             if (color32s.Count > 0)
+            {
+                // colors.Clear();
+                // for(var i = 0; i < color32s.Count; i++)
+                //     colors.Add(color32s[i]);
                 mesh.SetColors(color32s);
+            }
+
+            
 
             mesh.RecalculateBounds();
             

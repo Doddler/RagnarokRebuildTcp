@@ -122,7 +122,7 @@ Deals [100 + SkillLevel * 10]% water element damage with a [35 + SkillLevel * 3]
 Freeze Effect: Target becomes immobilized and water element, and receive DEF-50% and MDEF+25%. The effect ends upon taking damage.
 
 ::NapalmBeat
-A ghost property psychokinetic attack dealing physical damage at [100 + SkillLevel * 15]% MATK. Striking a petrified or frozen target will deal triple damage. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes.
+A ghost property psychokinetic attack dealing physical damage at [100 + SkillLevel * 15]% MATK. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes. Striking a petrified or frozen target will deal double damage and increase the blast radius to 7x7.
 Cast Time: [1.2 - SkillLevel *0.1]s
 
 ::SoulStrike
@@ -136,6 +136,15 @@ Cast Time: [1.5 + SkillLevel * 0.5]s
 ::SafetyWall
 A barrier which nullifies short range physical attacks, blocking up to [1 + SkillLevel] hits.
 Catalyst: <color=#777777>1 Blue Gemstone</color>
+
+::StoneCurse
+Curse a target to become stone, a 5 second long process that ends with the target being petrified. Chance of success is [35 + SkillLevel * 3]%. In the event of failure there is no cooldown, and at level 3+ failure will not consume a catalyst.
+Petrifying Effect: Target is greatly slowed and unable to attack or use skills.
+Petrification Effect: Target becomes immobilized and earth element, and receive DEF-50% and MDEF+25%. The next attack will free the target and deal +50% damage.
+Catalyst: <color=#777777>1 Red Gemstone</color>
+
+::Sight
+Conjure a magic flame that reveals hidden monsters and players in a 7x7 area around you. Lasts for 10 seconds.
 
 //----------------Acolyte-------------------
 

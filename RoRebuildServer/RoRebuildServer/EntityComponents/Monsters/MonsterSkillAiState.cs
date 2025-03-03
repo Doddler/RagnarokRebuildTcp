@@ -114,7 +114,7 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     public void SetAttackCooldown(int time)
     {
-        monster.Character.AttackCooldown = Time.ElapsedTimeFloat + time / 1000f;
+        monster.Character.AttackCooldown = Time.ElapsedTime + time / 1000d;
     }
 
     public bool IsDisabled() => monster.GetStat(CharacterStat.Disabled) > 0;

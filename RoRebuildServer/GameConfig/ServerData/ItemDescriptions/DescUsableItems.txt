@@ -22,6 +22,7 @@ Recover<color=#008000> 40~60</color> SP
 
 ::Green_Potion //506
 <color=#808080>A potion made from ground Green Herbs.</color>
+Cures: <color=#800000>Poison</color>, <color=#800000>Blind</color>, <color=#800000>Silence</color>
 
 ::Red_Herb //507
 <color=#808080>Red herbs found in the wild, often from slain monsters, that have a mild healing effect.</color>
@@ -40,7 +41,8 @@ Recover<color=#008000> 75~115</color> HP
 Recover<color=#008000> 15~30</color> SP
 
 ::Green_Herb //511
-<color=#808080>Green herbs which counteract the effects of poison.</color>
+<color=#808080>A bitter green herb which can counteract the effect of some poisons.<color>
+Cures: <color=#800000>Poison</color>
 
 ::Apple //512
 <color=#808080>A round, edible fruit that, when eaten once a day, keeps the doctor away.</color>
@@ -88,9 +90,11 @@ Recover<color=#008000> 400~600</color> HP
 
 ::Holy_Water //523
 <color=#808080>A bottle of blessed water used in sacred ceremonies.</color>
+Cures: <color=#800000>Curse</color>
 
 ::Panacea //525
 <color=#808080>A mystic remedy for all illnesses.</color>
+Cures: <color=#800000>Poison</color>, <color=#800000>Blind</color>, <color=#800000>Silence</color>, <color=#800000>Curse</color>, <color=#800000>Confusion</color>, <color=#800000>Hallucination</color>
 
 ::Royal_Jelly //526
 <color=#808080>A highly nutritious jelly secreted from honeybees fed to larvae and future queens.</color>

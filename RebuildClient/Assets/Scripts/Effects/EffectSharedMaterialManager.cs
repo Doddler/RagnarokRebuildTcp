@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Sprites;
+using UnityEngine;
 using UnityEngine.U2D;
 
 namespace Assets.Scripts.Effects
@@ -29,6 +30,8 @@ namespace Assets.Scripts.Effects
         ParticleAlphaBlend,
         ParticleAdditive,
         IceMaterial,
+        SightEffect,
+        ShadowMaterial,
         EffectMaterialMax
     }
     
@@ -166,6 +169,30 @@ namespace Assets.Scripts.Effects
                                 color = new Color(255 / 255f, 89 / 255f, 182 / 255f),
                                 renderQueue = 3001
                             };
+                        }
+                        break;
+                    case EffectMaterialType.SightEffect:
+                        if (materialList[(int)mat] == null)
+                        {
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AlphaBlendParticleShader)
+                            {
+                                color = Color.white,
+                                renderQueue = 3001
+                            };
+                            persistMaterials[(int)mat] = false;
+                        }
+                        break;
+                    case EffectMaterialType.ShadowMaterial:
+                        if (materialList[(int)mat] == null)
+                        {
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.SpriteShaderNoZWriteAlt)
+                            {
+                                color = Color.white,
+                                renderQueue = 2999,
+                                mainTexture = ClientDataLoader.Instance.ShadowSprite.texture
+                            };
+                            materialList[(int)mat].SetFloat("_Offset", 0.4f);
+                            persistMaterials[(int)mat] = false;
                         }
                         break;
                 }

@@ -34,10 +34,11 @@ public class NapalmBeatHandler : SkillHandlerBase
 
         var flags = AttackFlags.Physical | AttackFlags.IgnoreEvasion;
         var mult = 1f + 0.15f * lvl;
+        var range = 1;
         if ((target.BodyState & (BodyStateFlags.Frozen | BodyStateFlags.Petrified)) > 0)
         {
-            mult *= 3;
-            //flags |= AttackFlags.IgnoreDefense;
+            mult *= 2;
+            range = 3;
         }
 
         //first, hit the target with Napalm Beat fair and square
@@ -51,7 +52,7 @@ public class NapalmBeatHandler : SkillHandlerBase
         CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.NapalmBeat, lvl, res); //send cast packet
 
         //now gather all players getting hit
-        map.GatherEnemiesInArea(source.Character, target.Character.Position, 1, targetList, !isIndirect, true);
+        map.GatherEnemiesInArea(source.Character, target.Character.Position, range, targetList, !isIndirect, true);
 
         //deal damage to all enemies 2/3 the damage dealt to the primary target
         res.Damage = res.Damage * 2 / 3;
@@ -62,12 +63,15 @@ public class NapalmBeatHandler : SkillHandlerBase
                 if (e == target.Entity)
                     continue; //we've already hit them
 
-                if (!e.TryGet<WorldObject>(out var blastTarget))
+                if (!e.TryGet<CombatEntity>(out var blastTarget))
+                    continue;
+
+                if (!blastTarget.IsValidTarget(source))
                     continue;
 
                 res.Target = e;
-                blastTarget.CombatEntity.ExecuteCombatResult(res, false);  //apply damage to target
-                CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
+                blastTarget.ExecuteCombatResult(res, false);  //apply damage to target
+                CommandBuilder.AttackMulti(source.Character, blastTarget.Character, res, false);
             }
         }
 

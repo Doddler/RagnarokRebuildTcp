@@ -50,6 +50,10 @@ namespace Assets.Scripts.Effects
         public bool IsDirty = false;
         public bool IsInit = false;
         public bool HasFiredEvent = false;
+
+        #if DEBUG
+        public string DebugString;
+        #endif
         
         //these are temporary to be fed into the meshbuilder
         private Vector3[] verts = new Vector3[4];
@@ -121,6 +125,9 @@ namespace Assets.Scripts.Effects
             EventTrigger = null;
             for (var i = 0; i < 4; i++)
                 Flags[i] = 0;
+            #if DEBUG
+            DebugString = "";
+            #endif
         }
 
         public void SetBillboardMode(BillboardStyle style)
@@ -514,7 +521,11 @@ namespace Assets.Scripts.Effects
             {
                 RenderHandler(this, mb);
                 if (mb.HasMesh())
-                    mf.sharedMesh = mb.ApplyToMesh(mesh);
+                {
+                    var m = mb.ApplyToMesh(mesh);
+                    // Debug.Log(m.colors32[0]);
+                    mf.sharedMesh = m;
+                }
                 else
                     mr.enabled = false;
             }

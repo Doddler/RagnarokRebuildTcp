@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Effects.PrimitiveData;
+using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using UnityEngine;
 
@@ -28,20 +29,56 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
 
                 if (data.CurCycleDelay <= 0)
                 {
-                    if (EffectHelpers.TryChangeAndCycleColor(data.Color, data.ColorChange, out data.Color))
+                    var c = (Color)data.Color;
+                    if (EffectHelpers.TryChangeAndCycleColor(data.Color, data.ColorChange, out c))
+                    {
                         data.CurCycleDelay = data.RGBCycleDelay;
+                        data.Color = c;
+                    }
                 }
             }
-            
-            primitive.IsDirty = primitive.Step == 0 || data.ScalingSpeed != Vector2.zero || data.Flags != RoPrimitiveHandlerFlags.None;
-            // Debug.Log($"{primitive.Step} {primitive.IsDirty}");
+            else
+            {
+                if (primitive.CurrentPos < primitive.Duration - data.FadeOutTime)
+                    data.Alpha += data.AlphaSpeed * Time.deltaTime;
+                else
+                {
+                    var remaining = primitive.Duration - primitive.CurrentPos;
+                    if (remaining < 0)
+                        data.Alpha = 0;
+                    else
+                        data.Alpha -= data.Alpha * Time.deltaTime / remaining;
+                }
+
+                data.Color = new Color32(data.Color.r, data.Color.g, data.Color.b, (byte)Mathf.Clamp(data.Alpha, 0, 255));
+            }
+
+            primitive.IsDirty = true; // primitive.Step == 0 || data.ScalingSpeed != Vector2.zero || data.Flags != RoPrimitiveHandlerFlags.None;
+            primitive.IsActive = primitive.CurrentPos < primitive.Duration;
         }
         
         private void RenderTexture3D(RagnarokPrimitive primitive, MeshBuilder mb)
         {
+            mb.Clear();
+            
             var data = primitive.GetPrimitiveData<Texture3DData>();
             
-            primitive.AddTexturedRectangleQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
+            //data.Color = Color.blue;
+            //
+            // #if DEBUG
+            // primitive.DebugString = data.ToString();
+            // #endif
+
+            if (data.IsStandingQuad)
+            {
+                if(data.Sprite == null)
+                    primitive.AddTextured2DQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
+                else
+                    primitive.AddTexturedSpriteQuad(data.Sprite, Vector3.zero, data.Size.x, data.Size.y, data.Color);
+                
+            }
+            else
+                primitive.AddTexturedRectangleQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
         }
     }
 }

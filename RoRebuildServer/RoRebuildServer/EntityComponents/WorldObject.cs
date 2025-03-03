@@ -46,8 +46,8 @@ public class WorldObject : IEntityAutoReset
     public CharacterDisplayType DisplayType; //used for minimap icons if they're flagged as map important
     public PlayerLikeAppearanceState? OverrideAppearanceState;
     public Position TargetPosition;
-    public float MoveModifier;
-    public float MoveModifierTime;
+    //public float MoveModifier;
+    //public float MoveModifierTime;
     public int StepCount;
     public int ItemTarget;
 
@@ -87,24 +87,25 @@ public class WorldObject : IEntityAutoReset
     }
 
     public float SpawnImmunity { get; set; } //you aren't seen as a valid target while this is active
-    public float AttackCooldown { get; set; } //delay until you can attack again
+    public double AttackCooldown { get; set; } //delay until you can attack again
+    public double MoveLockTime { get; set; } //you cannot move while until this time is reached
     public float MoveSpeed { get; set; } //time it takes to traverse one tile
     public float MoveProgress { get; set; } //the amount of time that remains before you step to the next tile
     public float NextStepDuration { get; set; }
-    public float MoveLockTime { get; set; } //you cannot move while until this time is reached
+    
 
     public bool InMoveLock { get; set; }
 
-    public bool UpdateAndCheckMoveLock() => InMoveLock = MoveLockTime > Time.ElapsedTimeFloat;
+    public bool UpdateAndCheckMoveLock() => InMoveLock = MoveLockTime > Time.ElapsedTime;
 
-    public bool InAttackCooldown => AttackCooldown > Time.ElapsedTimeFloat;
+    public bool InAttackCooldown => AttackCooldown > Time.ElapsedTime;
 
     public int MoveStep { get; set; }
     public int TotalMoveSteps { get; set; }
 
     public float TimeToReachNextStep => NextStepDuration - MoveProgress;
-    public float TimeOfLastMove;
-    public float TimeSinceStoppedMoving => Time.ElapsedTimeFloat - TimeOfLastMove;
+    public double TimeOfLastMove;
+    public float TimeSinceStoppedMoving => (float)(Time.ElapsedTime - TimeOfLastMove);
 
     public QueuedAction QueuedAction { get; set; }
 
@@ -219,6 +220,8 @@ public class WorldObject : IEntityAutoReset
         StepCount = 0;
         IsImportant = false;
         OverrideAppearanceState = null;
+        AttackCooldown = 0f;
+        SpawnImmunity = 0f;
         ClearVisiblePlayerList();
 
         if (Events != null)
@@ -227,6 +230,14 @@ public class WorldObject : IEntityAutoReset
             EntityListPool.Return(Events);
             Events = null;
         }
+    }
+
+    public void RollBackTimers(float time)
+    {
+        AttackCooldown -= time;
+        SpawnImmunity -= time;
+        MoveLockTime -= time;
+        TimeOfLastMove -= time;
     }
 
     public void Init(ref Entity entity)
@@ -277,7 +288,7 @@ public class WorldObject : IEntityAutoReset
             return false;
         if (this == target)
             return true;
-        return !AdminHidden;
+        return true; // !AdminHidden;
     }
 
     public void AddVisiblePlayer(Entity e)

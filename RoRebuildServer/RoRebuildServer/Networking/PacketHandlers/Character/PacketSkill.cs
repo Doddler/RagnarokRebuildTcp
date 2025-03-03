@@ -4,6 +4,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Skills;
@@ -23,7 +24,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             Debug.Assert(connection.Character != null);
             Debug.Assert(connection.Character.Map != null);
 
-            if (!connection.Player.CanPerformCharacterActions())
+            if (!connection.Player.CanPerformCharacterActions() || (connection.Character.CombatEntity.BodyState & BodyStateFlags.NoSkillAttack) > 0)
                 return;
             
             var type = (SkillTarget)msg.ReadByte();

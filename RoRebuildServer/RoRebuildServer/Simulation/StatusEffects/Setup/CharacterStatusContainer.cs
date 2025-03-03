@@ -7,6 +7,7 @@ using RebuildSharedData.Util;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
@@ -28,9 +29,10 @@ public class CharacterStatusContainer
     private int onUpdateEffects;
     private int onEquipmentChangeEffects;
     private int onMoveEffects;
+    private int onCalculateDamageTakenEffects;
 
-    private float nextStatusUpdate;
-    private float nextExpirationCheck;
+    private double nextStatusUpdate;
+    private double nextExpirationCheck;
 
     public int TotalStatusEffectCount => statusEffects?.Count ?? 0;
     
@@ -44,12 +46,38 @@ public class CharacterStatusContainer
         onUpdateEffects = 0;
         onEquipmentChangeEffects = 0;
         onMoveEffects = 0;
+        onCalculateDamageTakenEffects = 0;
         nextStatusUpdate = 0f;
         nextExpirationCheck = 0f;
         if (pendingStatusEffects != null)
         {
             StatusEffectPoolManager.ReturnPendingContainer(pendingStatusEffects);
             pendingStatusEffects = null;
+        }
+    }
+
+    public void RollBackTimers(float time)
+    {
+        if (statusEffects != null)
+        {
+            for (var i = 0; i < statusEffects.Count; i++)
+            {
+                var s = statusEffects[i];
+                s.Expiration -= time;
+                statusEffects[i] = s;
+            }
+        }
+        if (pendingStatusEffects != null)
+        {
+            for (var i = 0; i < pendingStatusEffects.Count; i++)
+            {
+                var p = pendingStatusEffects[i];
+                var s = p.Effect;
+                s.Expiration -= time;
+                p.EffectiveTime -= time;
+                p.Effect = s;
+                pendingStatusEffects[i] = p;
+            }
         }
     }
 
@@ -194,6 +222,35 @@ public class CharacterStatusContainer
             RemoveIdList(ref remove, removeCount);
     }
 
+    public void OnCalculateDamageTaken(ref AttackRequest req, ref DamageInfo di)
+    {
+        Debug.Assert(Owner != null);
+        if (statusEffects == null || onCalculateDamageTakenEffects <= 0)
+            return;
+
+        Span<int> remove = stackalloc int[statusEffects.Count];
+        var removeCount = 0;
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var s = statusEffects[i];
+            if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnCalculateDamageTaken))
+            {
+                var res = StatusEffectHandler.OnCalculateDamageTaken(s.Type, Owner, ref s, ref req, ref di);
+                if (res == StatusUpdateResult.EndStatus)
+                {
+                    remove[removeCount] = i;
+                    removeCount++;
+                }
+                else
+                    statusEffects[i] = s;
+            }
+        }
+
+        if (removeCount > 0)
+            RemoveIdList(ref remove, removeCount);
+    }
+
     public void OnChangeEquipment()
     {
         Debug.Assert(Owner != null);
@@ -255,11 +312,11 @@ public class CharacterStatusContainer
     private bool CheckExpiredStatusEffects()
     {
         var hasUpdate = false;
-        var nextExpiration = float.MaxValue;
+        var nextExpiration = (double)float.MaxValue;
         for (var i = 0; i < statusEffects!.Count; i++)
         {
             var status = statusEffects[i];
-            if (status.Expiration < Time.ElapsedTimeFloat)
+            if (status.Expiration < Time.ElapsedTime)
             {
                 hasUpdate = true;
                 RemoveExistingStatusEffect(ref status);
@@ -269,8 +326,8 @@ public class CharacterStatusContainer
                 nextExpiration = status.Expiration;
         }
 
-        if (Time.ElapsedTimeFloat + 5f < nextExpiration)
-            nextExpirationCheck = Time.ElapsedTimeFloat + 5f; //for safety's sake
+        if (Time.ElapsedTime + 5f < nextExpiration)
+            nextExpirationCheck = Time.ElapsedTime + 5f; //for safety's sake
         else
             nextExpirationCheck = nextExpiration;
 
@@ -282,7 +339,7 @@ public class CharacterStatusContainer
         Debug.Assert(Owner != null);
 
         var hasUpdate = false;
-        var time = Time.ElapsedTimeFloat;
+        var time = Time.ElapsedTime;
         var performUpdateTick = false;
 
         if (statusEffects != null)
@@ -303,7 +360,7 @@ public class CharacterStatusContainer
         {
             for (var i = 0; i < pendingStatusEffects.Count; i++)
             {
-                if (pendingStatusEffects[i].EffectiveTime < Time.ElapsedTimeFloat)
+                if (pendingStatusEffects[i].EffectiveTime < Time.ElapsedTime)
                 {
                     AddNewStatusEffect(pendingStatusEffects[i].Effect, pendingStatusEffects[i].OverwriteExisting);
                     pendingStatusEffects.Remove(i);
@@ -325,21 +382,46 @@ public class CharacterStatusContainer
             OnUpdate();
     }
 
-    public void RemoveStatusEffectOfType(CharacterStatusEffect type)
+    public bool RemoveStatusEffectOfType(CharacterStatusEffect type)
     {
         Debug.Assert(Owner != null);
         if (statusEffects == null)
-            return;
+            return false;
 
+        var hasRemoved = false;
         for (var i = 0; i < statusEffects.Count; i++)
         {
             var status = statusEffects[i];
             if (status.Type == type)
             {
                 RemoveExistingStatusEffect(ref status);
+                hasRemoved = true;
                 i--;
             }
         }
+
+        return hasRemoved;
+    }
+
+    public bool RemovePendingStatusEffectOfType(CharacterStatusEffect type)
+    {
+        Debug.Assert(Owner != null);
+        if (pendingStatusEffects == null)
+            return false;
+
+        var hasRemoved = false;
+        for (var i = 0; i < pendingStatusEffects.Count; i++)
+        {
+            var status = pendingStatusEffects[i];
+            if (status.Effect.Type == type)
+            {
+                pendingStatusEffects.SwapFromBack(i);
+                hasRemoved = true;
+                i--;
+            }
+        }
+
+        return hasRemoved;
     }
 
     private void RemoveExistingStatusEffect(int id)
@@ -369,6 +451,8 @@ public class CharacterStatusContainer
             onEquipmentChangeEffects--;
         if (updateMode.HasFlag(StatusUpdateMode.OnMove))
             onMoveEffects--;
+        if(updateMode.HasFlag(StatusUpdateMode.OnCalculateDamageTaken))
+            onCalculateDamageTakenEffects--;
     }
     
     private void RemoveExistingStatusEffect(ref StatusEffectState status, bool isRefresh = false)
@@ -400,6 +484,8 @@ public class CharacterStatusContainer
             onEquipmentChangeEffects--;
         if (updateMode.HasFlag(StatusUpdateMode.OnMove))
             onMoveEffects--;
+        if (updateMode.HasFlag(StatusUpdateMode.OnCalculateDamageTaken))
+            onCalculateDamageTakenEffects--;
     }
 
     public void AddNewStatusEffect(StatusEffectState state, bool replaceExisting = true, bool isRestore = false)
@@ -410,7 +496,7 @@ public class CharacterStatusContainer
         {
             if (!replaceExisting)
                 return; // do nothing
-            RemoveExistingStatusEffect(ref oldEffect, true);
+            RemoveExistingStatusEffect(ref oldEffect, oldEffect.Type == state.Type);
         }
 
         if (statusEffects?.Count > 30)
@@ -449,6 +535,8 @@ public class CharacterStatusContainer
             onEquipmentChangeEffects++;
         if (updateMode.HasFlag(StatusUpdateMode.OnMove))
             onMoveEffects++;
+        if (updateMode.HasFlag(StatusUpdateMode.OnCalculateDamageTaken))
+            onCalculateDamageTakenEffects++;
     }
 
     public void AddPendingStatusEffect(StatusEffectState state, bool replaceExisting, float time)
@@ -461,7 +549,7 @@ public class CharacterStatusContainer
         var pending = new PendingStatusEffect()
         {
             Effect = state,
-            EffectiveTime = Time.ElapsedTimeFloat + time,
+            EffectiveTime = Time.ElapsedTime + time,
             OverwriteExisting = replaceExisting
         };
 
@@ -535,7 +623,7 @@ public class CharacterStatusContainer
             {
                 msg.Write(true);
                 msg.Write((byte)statusEffects[i].Type);
-                msg.Write(statusEffects[i].Expiration - Time.ElapsedTimeFloat);
+                msg.Write((float)(statusEffects[i].Expiration - Time.ElapsedTime));
             }
         }
 
@@ -564,7 +652,7 @@ public class CharacterStatusContainer
         for (var i = 0; i < count; i++)
         {
             var status = StatusEffectState.Deserialize(br);
-            if(status.Type != CharacterStatusEffect.None && status.Expiration > Time.ElapsedTimeFloat)
+            if(status.Type != CharacterStatusEffect.None && status.Expiration > Time.ElapsedTime)
                 AddNewStatusEffect(status, true, true);
         }
     }

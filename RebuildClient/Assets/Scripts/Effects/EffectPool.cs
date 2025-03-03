@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Utility;
 using UnityEngine;
 
@@ -12,17 +13,27 @@ namespace Assets.Scripts.Effects
         private static Stack<MeshBuilder> builderPool = new(20);
         private static Dictionary<PrimitiveType, Stack<object>> dataPool = new();
 
+        private static int meshCount = 0;
+        
         public static Mesh BorrowMesh()
         {
             if (meshes.Count > 0)
                 return meshes.Pop();
 
-            return new Mesh();
+            var m = new Mesh();
+            #if DEBUG
+            m.name = $"Mesh {meshCount++}";
+            #endif
+            return m;
         }
 
         public static void ReturnMesh(Mesh mesh)
         {
             mesh.Clear(false);
+#if DEBUG
+            if (meshes.Contains(mesh))
+                throw new Exception($"Attempting to return mesh a second time!");
+#endif
             meshes.Push(mesh);
         }
 
@@ -62,6 +73,10 @@ namespace Assets.Scripts.Effects
         public static void ReturnMeshBuilder(MeshBuilder builder)
         {
             builder.Clear();
+            #if DEBUG
+            if (builderPool.Contains(builder))
+                throw new Exception($"Attempting to return MeshBuilder a second time!");
+            #endif
             builderPool.Push(builder);
         }
 

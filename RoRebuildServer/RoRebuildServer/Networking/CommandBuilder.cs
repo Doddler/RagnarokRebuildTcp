@@ -338,6 +338,8 @@ public static class CommandBuilder
         packet.Write(caster.Id);
         packet.Write(adjustedEndTime);
 
+        NetworkManager.SendMessageMulti(packet, recipients);
+
         ClearRecipients();
     }
 
@@ -955,7 +957,7 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.ApplyStatusEffect, 16);
         packet.Write(p.Id);
         packet.Write((byte)state.Type);
-        packet.Write(state.Expiration - Time.ElapsedTimeFloat);
+        packet.Write((float)(state.Expiration - Time.ElapsedTime));
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

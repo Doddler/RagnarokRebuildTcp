@@ -32,8 +32,8 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[18] = new SoulStrikeHandler();
 			handlers[19] = new ThunderStormHandler();
 			handlers[20] = new SafetyWallHandler();
-			handlers[21] = new DefaultSkillHandler();
-			handlers[22] = new DefaultSkillHandler();
+			handlers[21] = new StoneCurseHandler();
+			handlers[22] = new SightHandler();
 			handlers[23] = new DefaultSkillHandler();
 			handlers[24] = new DoubleStrafeHandler();
 			handlers[25] = new DefaultSkillHandler();
@@ -55,7 +55,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[39] = new DefaultSkillHandler();
 			handlers[40] = new PneumaHandler();
 			handlers[40].ExecuteWithoutSource = true;
-			handlers[41] = new DefaultSkillHandler();
+			handlers[41] = new RuwachHandler();
 			handlers[42] = new DefaultSkillHandler();
 			handlers[43] = new WarpPortalHandler();
 			handlers[44] = new DefaultSkillHandler();
@@ -106,7 +106,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[88] = new StunAttackHandler();
 			handlers[88].ExecuteWithoutSource = true;
 			handlers[89] = new DefaultSkillHandler();
-			handlers[90] = new DefaultSkillHandler();
+			handlers[90] = new SilenceAttackHandler();
 			handlers[91] = new DefaultSkillHandler();
 			handlers[92] = new DefaultSkillHandler();
 			handlers[93] = new DefaultSkillHandler();

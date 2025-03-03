@@ -26,6 +26,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using RebuildSharedData.Util;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -58,7 +59,6 @@ public partial class CombatEntity : IEntityAutoReset
     [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> damageCooldowns = new();
     [EntityIgnoreNullCheck] public List<DamageInfo> DamageQueue { get; set; } = null!;
     private CharacterStatusContainer? statusContainer;
-
 
     public float GetTiming(TimingStat type) => timingData[(int)type];
     public void SetTiming(TimingStat type, float val) => timingData[(int)type] = val;
@@ -109,6 +109,26 @@ public partial class CombatEntity : IEntityAutoReset
 
         for (var i = 0; i < statData.Length; i++)
             statData[i] = 0;
+    }
+
+    //if the server timer resets, we need to make sure our timers match the reset time
+    //this is a bad way to do it but...
+    public void RollBackTimers(float time)
+    {
+        CastingTime -= time;
+        foreach (var (s, t) in skillCooldowns)
+            skillCooldowns[s] = t - time;
+        foreach (var (s, t) in damageCooldowns)
+            damageCooldowns[s] = t - time;
+        for (var i = 0; i < DamageQueue.Count; i++)
+        {
+            var d = DamageQueue[i];
+            d.Time -= time;
+            DamageQueue[i] = d;
+        }
+        if(statusContainer != null)
+            statusContainer.RollBackTimers(time);
+
     }
 
     public int GetStat(CharacterStat type)
@@ -478,13 +498,26 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (source.Entity.Type != Character.Entity.Type)
             return false;
-        if (!canTargetHidden && HasBodyState(BodyStateFlags.Hidden))
+        if (!canTargetHidden && IsHiddenTo(source))
             return false;
 
         if (Character.ClassId >= 1000 && Character.ClassId < 4000)
             return false; //hack
 
         return true;
+    }
+
+    public bool IsHiddenTo(CombatEntity? source)
+    {
+        if (source != null)
+        {
+            var race = source.GetRace();
+            if (source.GetSpecialType() != CharacterSpecialType.Boss && race != CharacterRace.Demon &&
+                race != CharacterRace.Insect)
+                return false;
+        }
+
+        return (BodyState & BodyStateFlags.AnyHiddenState) > 0;
     }
 
     public bool IsValidTarget(CombatEntity? source, bool canHarmAllies = false, bool canTargetHidden = false)
@@ -715,11 +748,30 @@ public partial class CombatEntity : IEntityAutoReset
         Character.QueuedAction = QueuedAction.Cast;
     }
 
+    public void UpdateHidingStateAfterAttack()
+    {
+        switch (Character.Type)
+        {
+            case CharacterType.Monster:
+                if ((BodyState & BodyStateFlags.Cloaking) > 0 && GetSpecialType() == CharacterSpecialType.Boss)
+                    RemoveStatusOfTypeIfExists(CharacterStatusEffect.Cloaking);
+                return;
+            case CharacterType.Player:
+                if ((BodyState & BodyStateFlags.AnyHiddenState) > 0)
+                {
+                    RemoveStatusOfTypeIfExists(CharacterStatusEffect.Hiding);
+                    RemoveStatusOfTypeIfExists(CharacterStatusEffect.Cloaking);
+                }
+
+                return;
+        }
+    }
+
     public void ModifyExistingCastTime(float modifier)
     {
         if (!IsCasting)
             return;
-        var adjustedTime = CastTimeRemaining * (1 - modifier);
+        var adjustedTime = CastTimeRemaining * (modifier - 1);
         CastingTime += adjustedTime;
 
         CommandBuilder.UpdateExistingCastMultiAutoVis(Character, adjustedTime);
@@ -808,7 +860,7 @@ public partial class CombatEntity : IEntityAutoReset
         CastingSkill = skillInfo;
         if (target.IsValid() && target != Character.Position)
             Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
-
+        
         if (castTime < 0f)
             castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, null, skillInfo.Level);
         if (castTime <= 0)
@@ -901,7 +953,7 @@ public partial class CombatEntity : IEntityAutoReset
         }
 
         CastingSkill = skillInfo;
-
+        
         if (castTime < 0f)
             castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, null, skillInfo.Level);
         if (castTime <= 0)
@@ -1306,8 +1358,8 @@ public partial class CombatEntity : IEntityAutoReset
         //if (attackMotionTime > delayTime)
         //    delayTime = attackMotionTime;
 
-        if (Character.AttackCooldown + Time.DeltaTimeFloat + 0.005f < Time.ElapsedTimeFloat)
-            Character.AttackCooldown = Time.ElapsedTimeFloat + delayTime; //they are consecutively attacking
+        if (Character.AttackCooldown + Time.DeltaTime + 0.005d < Time.ElapsedTime)
+            Character.AttackCooldown = Time.ElapsedTime + delayTime; //they are consecutively attacking
         else
             Character.AttackCooldown += delayTime;
 
@@ -1322,8 +1374,8 @@ public partial class CombatEntity : IEntityAutoReset
         if (attackMotionTime > delayTime)
             delayTime = attackMotionTime;
 
-        if (Character.AttackCooldown + Time.DeltaTimeFloat + 0.005f < Time.ElapsedTimeFloat)
-            Character.AttackCooldown = Time.ElapsedTimeFloat + delayTime; //they are consecutively attacking
+        if (Character.AttackCooldown + Time.DeltaTime + 0.005d < Time.ElapsedTime)
+            Character.AttackCooldown = Time.ElapsedTime + delayTime; //they are consecutively attacking
         else
             Character.AttackCooldown += delayTime;
 
@@ -1382,6 +1434,8 @@ public partial class CombatEntity : IEntityAutoReset
             if (doubleChance > 0 && GameRandom.Next(0, 100) <= doubleChance)
                 di.HitCount = 2;
         }
+
+        UpdateHidingStateAfterAttack();
 
         ExecuteCombatResult(di);
     }

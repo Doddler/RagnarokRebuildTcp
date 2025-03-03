@@ -23,6 +23,9 @@ namespace Assets.Scripts.Effects
 		Curse,
 		Freeze,
 		Hide,
+		Petrified,
+		Petrifying,
+		Silence,
 		Sleep,
 		Stun,
 		AgiUp,
@@ -33,7 +36,9 @@ namespace Assets.Scripts.Effects
 		FrostDiverTrail,
 		LordOfVermilion,
 		Provoke,
+		Ruwach,
 		SafetyWall,
+		Sight,
 		SoulStrike,
 		StealEffect,
 		WarpPortal,
@@ -61,6 +66,7 @@ namespace Assets.Scripts.Effects
 		ForestLight,
 		Heal,
 		Particle3DSpline,
+		ParticleAnimatedSprite,
 		ProjectorPrimitive,
 		Spike3D,
 		Teleport,
@@ -88,6 +94,9 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Curse, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.CurseEffect());
 			effectHandlers.Add(EffectType.Freeze, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.FreezeEffect());
 			effectHandlers.Add(EffectType.Hide, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.HideEffect());
+			effectHandlers.Add(EffectType.Petrified, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.PetrifiedEffect());
+			effectHandlers.Add(EffectType.Petrifying, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.PetrifyingEffect());
+			effectHandlers.Add(EffectType.Silence, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.SilenceEffect());
 			effectHandlers.Add(EffectType.Sleep, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.SleepEffect());
 			effectHandlers.Add(EffectType.Stun, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.StunEffect());
 			effectHandlers.Add(EffectType.AgiUp, new Assets.Scripts.Effects.EffectHandlers.Skills.AgiUpEffect());
@@ -98,7 +107,9 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.FrostDiverTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverTrailEffect());
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
 			effectHandlers.Add(EffectType.Provoke, new Assets.Scripts.Effects.EffectHandlers.Skills.ProvokeEffect());
+			effectHandlers.Add(EffectType.Ruwach, new Assets.Scripts.Effects.EffectHandlers.Skills.RuwachEffect());
 			effectHandlers.Add(EffectType.SafetyWall, new Assets.Scripts.Effects.EffectHandlers.Skills.SafetyWallEffect());
+			effectHandlers.Add(EffectType.Sight, new Assets.Scripts.Effects.EffectHandlers.Skills.SightEffect());
 			effectHandlers.Add(EffectType.SoulStrike, new Assets.Scripts.Effects.EffectHandlers.Skills.SoulStrikeEffect());
 			effectHandlers.Add(EffectType.StealEffect, new Assets.Scripts.Effects.EffectHandlers.Skills.StealEffect());
 			effectHandlers.Add(EffectType.WarpPortal, new Assets.Scripts.Effects.EffectHandlers.Skills.WarpPortalEffect());
@@ -129,6 +140,8 @@ namespace Assets.Scripts.Effects
 			primitiveHandlers.Add(PrimitiveType.Heal, new Assets.Scripts.Effects.PrimitiveHandlers.HealPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Particle3DSpline, new Assets.Scripts.Effects.PrimitiveHandlers.Particle3DSplinePrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Particle3DSpline, () => new Assets.Scripts.Effects.PrimitiveData.Particle3DSplineData());
+			primitiveHandlers.Add(PrimitiveType.ParticleAnimatedSprite, new Assets.Scripts.Effects.PrimitiveHandlers.ParticleAnimatedSpritePrimitive());
+			primitiveDataFactory.Add(PrimitiveType.ParticleAnimatedSprite, () => new Assets.Scripts.Effects.PrimitiveData.SpriteParticleData());
 			primitiveHandlers.Add(PrimitiveType.ProjectorPrimitive, new Assets.Scripts.Effects.PrimitiveHandlers.ProjectorPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Spike3D, new Assets.Scripts.Effects.PrimitiveHandlers.Spike3DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Spike3D, () => new Assets.Scripts.Effects.PrimitiveData.Spike3DData());

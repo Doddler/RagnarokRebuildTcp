@@ -1291,7 +1291,7 @@ namespace Assets.Scripts
                 return;
             }
 
-            //Debug.Log($"Loading effect asset {asset.PrefabName}");
+            Debug.Log($"Loading effect asset {asset.PrefabName}");
             var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
             loader.Completed += ah =>
             {

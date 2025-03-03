@@ -99,7 +99,7 @@ public class PneumaObjectEvent : NpcBehaviorBase
         if (target.HasStatusEffectOfType(CharacterStatusEffect.Pneuma))
             return;
 
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Pneuma, aoe.Expiration - Time.ElapsedTimeFloat);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Pneuma, (float)(aoe.Expiration - Time.ElapsedTime));
         target.AddStatusEffect(status);
     }
 }

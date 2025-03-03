@@ -75,7 +75,7 @@
     {
       "StatusEffect": 9,
       "Name": null,
-      "Description": "\u003Ccolor=#FF3300\u003EPetrifying\u003C/color\u003E\nYour skin is rapidly being encased in stone, leaving you are unable to attack or use skills.",
+      "Description": "\u003Ccolor=#FF3300\u003EPetrifying\u003C/color\u003E\nYour skin is rapidly being encased in stone, lowering your agi, dex, move speed and attack speed.",
       "Type": "Debuff",
       "Icon": "bd_stonecurse",
       "CanDispel": false,
@@ -84,7 +84,7 @@
     {
       "StatusEffect": 10,
       "Name": null,
-      "Description": "\u003Ccolor=#FF3300\u003EStone\u003C/color\u003E\nEncased in stone, you are unable to perform actions and vulnerable to fire. Lowers DEF and increases MDEF. The next hit you take will deal extra damage but end this effect.",
+      "Description": "\u003Ccolor=#FF3300\u003EStone\u003C/color\u003E\nEncased in stone, you are unable to perform actions and are vulnerable to fire. Lowers DEF and increases MDEF. The next hit you take will deal extra damage but end this effect.",
       "Type": "Debuff",
       "Icon": "bd_stonecurse",
       "CanDispel": false,
@@ -389,6 +389,15 @@
     },
     {
       "StatusEffect": 44,
+      "Name": "Admin Invisibility",
+      "Description": "\u003Ccolor=#FFA300\u003EAdmin Invisibility\u003C/color\u003E\nYou cannot be seen and you cannot be targeted.",
+      "Type": "Buff",
+      "Icon": "\uD558\uC774\uB529",
+      "CanDispel": false,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 45,
       "Name": "Stolen From",
       "Description": "\u003Ccolor=#FF3300\u003EStolen From\u003C/color\u003E\nYou\u0027ve had something recently taken and cannot be stolen from again.",
       "Type": "Debuff",

@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs;
@@ -9,7 +10,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs;
 [StatusEffectHandler(CharacterStatusEffect.Stone, StatusClientVisibility.Everyone, StatusEffectFlags.None, "Petrify")]
 public class StatusPetrified : StatusEffectBase
 {
-    public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnTakeDamage;
+    public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnTakeDamage | StatusUpdateMode.OnCalculateDamageTaken;
 
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)
     {
@@ -32,12 +33,29 @@ public class StatusPetrified : StatusEffectBase
 
         ch.RemoveBodyState(BodyStateFlags.Petrified);
         ch.SubDisabledState();
+
+        state.Value4 = 0;
+    }
+
+    //we only want to proc the +50% damage once, but we don't want them to be free from stone until a hit actually lands,
+    //so we store a flag to make sure we don't add bonus damage to more than one hit before the damage is applied
+    public override StatusUpdateResult OnCalculateDamageTaken(CombatEntity ch, ref StatusEffectState state, ref AttackRequest req,
+        ref DamageInfo info)
+    {
+        if (state.Value4 == 0 && info.IsDamageResult && info.Damage > 0)
+        {
+            info.Damage = info.Damage * 150 / 100;
+            state.Value4 = 1;
+        }
+
+        return StatusUpdateResult.Continue;
     }
 
     public override StatusUpdateResult OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
     {
-        if (info.IsDamageResult && info.Damage > 0)
+        if ((info.IsDamageResult && info.Damage > 0) || state.Value4 == 1)
             return StatusUpdateResult.EndStatus;
+
         return StatusUpdateResult.Continue;
     }
 }

@@ -11,6 +11,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using static System.Collections.Specialized.BitVector32;
 using static System.Globalization.CultureInfo;
@@ -564,10 +565,11 @@ public class ScriptBuilder
             LoadFunctionSource(typeof(CombatEntity), "combatEntity");
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
             
-
-
             foreach (var i in Enum.GetValues<CharacterSkill>())
                 additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
+
+            foreach (var i in Enum.GetValues<StatusCleanseTarget>())
+                additionalVariables.Add("Status" + i.ToString(), $"StatusCleanseTarget.{i}");
 
         }
 

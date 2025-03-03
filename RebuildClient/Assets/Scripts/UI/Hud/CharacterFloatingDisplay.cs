@@ -158,6 +158,25 @@ namespace Assets.Scripts.UI.Hud
             //controllable.StopCastingAnimation();
         }
 
+        public void ExtendCasting(float addTime)
+        {
+            if (castBar == null)
+                return;
+
+            var len = castEnd - castStart;
+            var pos = Time.timeSinceLevelLoad - castStart;
+            var remain = len - pos;
+            var passed = len - remain;
+
+            var addPercent = (remain + addTime) / remain;
+            var subStart = (passed * addPercent) - passed;
+
+            castStart -= subStart;
+            castEnd += addTime;
+
+            //castBar.SetProgress(pos / end);
+        }
+
         public void ShowChatBubbleMessage(string message, float visibleTime = 5f)
         {
             if (chatBubble == null)

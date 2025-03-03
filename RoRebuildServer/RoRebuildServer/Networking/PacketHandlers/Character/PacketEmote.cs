@@ -3,6 +3,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Util;
 
@@ -34,7 +35,8 @@ public class PacketEmote : IClientPacketHandler
         }
 
         var player = connection.Player;
-        if (player.InActionCooldown() || player.LastEmoteTime + 1.8f > Time.ElapsedTimeFloat)
+        if (player.InActionCooldown() || player.LastEmoteTime + 1.8f > Time.ElapsedTimeFloat 
+                                      || (player.CombatEntity.BodyState & (BodyStateFlags.Silence)) > 0)
             return;
 
         if (emote >= 58 && emote <= 63)

@@ -293,6 +293,11 @@ namespace Assets.Scripts.Network
             }
         }
 
+        public void ExtendCasting(float addTime)
+        {
+            FloatingDisplay?.ExtendCasting(addTime);
+        }
+
         public void StopCastingAnimation()
         {
             if (SpriteAnimator == null)
@@ -821,6 +826,37 @@ namespace Assets.Scripts.Network
             }
 
             return null;
+        }
+        
+        //detach an existing effect of a specific type. For safety, we delete any others as they'll probably be here forever otherwise.
+        public Ragnarok3dEffect DetachExistingEffectOfType(EffectType type)
+        {
+            if (EffectList == null || EffectList.Count == 0)
+                return null; //job well done
+
+            Ragnarok3dEffect effectOut = null;
+            Span<int> endEffect = stackalloc int[EffectList.Count];
+            var pos = 0;
+            for (var i = 0; i < EffectList.Count; i++)
+            {
+                if (EffectList[i].EffectType == type)
+                {
+                    if (effectOut == null)
+                        effectOut = EffectList[i];
+                    else
+                        EffectList[i].EndEffect();
+                    endEffect[pos] = i;
+                    pos++;
+                }
+            }
+
+            //remove all the effects that are flagged as ended. Iterating from back to front allows the indexes to be correct even after removing some.
+            for (var i = pos; i > 0; i--)
+            {
+                EffectList.RemoveAt(endEffect[i - 1]);
+            }
+            
+            return effectOut;
         }
 
         public void EndEffectOfType(EffectType type)
@@ -1434,7 +1470,7 @@ namespace Assets.Scripts.Network
 
             if (hitDelay >= 0f)
             {
-                Debug.Log($"{name} hitDelay {hitDelay}");
+                // Debug.Log($"{name} hitDelay {hitDelay}");
                 return;
             }
             
