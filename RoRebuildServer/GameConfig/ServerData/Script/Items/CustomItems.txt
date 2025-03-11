@@ -1,0 +1,19 @@
+
+event LightOrb {
+	RevealAsEffect(EffectLightOrb, "LightOrb");
+	StartTimer();
+OnTimer 30s:
+	EndEvent();
+}
+
+Item("Glittering_Orb") {
+OnValidate: 
+	if(IsEventNearby("LightOrb", 9)) {
+		SendItemUseFailMessage("You must be at least 9 tiles away from another effect of this type.");
+		return false;
+	}
+	return true;
+OnUse: 
+	CreateEvent("LightOrb", 500); 
+}
+

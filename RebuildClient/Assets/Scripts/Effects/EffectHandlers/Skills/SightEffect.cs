@@ -38,7 +38,6 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
             return effect;
         }
 
-
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
             if (IsLoadingSprite)
@@ -108,6 +107,12 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
             }
 
             return step < effect.DurationFrames;
+        }
+
+        public void SceneChangeResourceCleanup()
+        {
+            SightEffectSprite = null;
+            IsLoadingSprite = false;
         }
     }
 }

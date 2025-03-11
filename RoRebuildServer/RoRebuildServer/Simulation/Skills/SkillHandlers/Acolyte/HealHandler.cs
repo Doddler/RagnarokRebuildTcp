@@ -82,6 +82,8 @@ public class HealHandler : SkillHandlerBase
             res.Damage = -healValue;
             res.Result = AttackResult.Heal;
             res.HitCount = 0;
+            res.AttackMotionTime = 0;
+            res.Time = Time.ElapsedTimeFloat;
 
             target.HealHp(healValue);
             if (source.Character.Type == CharacterType.Player)

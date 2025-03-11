@@ -11,7 +11,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
         public static Ragnarok3dEffect LaunchSilenceEffect(ServerControllable controllable, float length)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.Silence);
-            effect.Duration = length; //we'll manually end this early probably
+            effect.SetDurationByTime(length); //we'll manually end this early probably
             effect.FollowTarget = controllable.gameObject;
             effect.SourceEntity = controllable;
             effect.DataValue = Time.timeSinceLevelLoad;

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using JetBrains.Annotations;
 
 namespace RoRebuildServer.Simulation.Util;
 
@@ -9,21 +10,23 @@ public static class Time
     public static float ElapsedTimeFloat;
     public static float DeltaTimeFloat;
     public static ulong UpdateCount;
-
+    
     public static byte RollingTimerGen;
     public static float RollingTimerTime;
     public static float RolloverTime;
 
-    public static float RollingTimerMax = 86400;
-
-    private static readonly Stopwatch StopWatch = new Stopwatch();
+    private static readonly Stopwatch StopWatch = new();
+    private static readonly Stopwatch DiagnosticsTimer = new();
     private static readonly double[] PreviousFrameTimes = new double[SampleCount];
     
     private static int frameIndex;
     private static int frameCount;
 
     private const int SampleCount = 100;
-    
+
+    private static double lastMinorDiagnosticsTime;
+    private static double lastMajorDiagnosticsTime;
+
     public static void Start()
     {
         StopWatch.Start();
@@ -53,17 +56,7 @@ public static class Time
         UpdateCount++;
         
     }
-
-    public static void AdvanceRollingTimerGeneration()
-    {
-        var gen = RollingTimerGen + 1;
-        if (gen > 250)
-            gen = 0;
-        RolloverTime = RollingTimerTime;
-        RollingTimerTime = 0f;
-        RollingTimerGen = (byte)gen;
-    }
-
+    
     public static double GetExactTime()
     {
         return StopWatch.Elapsed.TotalSeconds;
@@ -96,4 +89,34 @@ public static class Time
         DeltaTime = deltaTime;
         DeltaTimeFloat = (float)DeltaTime;
     }
+
+    public static void ResetDiagnosticsTimer()
+    {
+        DiagnosticsTimer.Restart();
+        lastMinorDiagnosticsTime = 0;
+        lastMajorDiagnosticsTime = 0;
+    }
+
+    public static double SampleDiagnosticsSubTime()
+    {
+        var t = DiagnosticsTimer.Elapsed.TotalSeconds;
+        var elapsed = t - lastMinorDiagnosticsTime;
+        lastMinorDiagnosticsTime = t;
+
+        return elapsed;
+    }
+
+    public static double SampleDiagnosticsTime()
+    {
+        var t = DiagnosticsTimer.Elapsed.TotalSeconds;
+        var elapsed = t - lastMajorDiagnosticsTime;
+        lastMajorDiagnosticsTime = t;
+        lastMinorDiagnosticsTime = t;
+
+        return elapsed;
+    }
+
+    public static double CurrentDiagnosticsTime() => DiagnosticsTimer.Elapsed.TotalSeconds;
+
+
 }

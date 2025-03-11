@@ -68,6 +68,14 @@ namespace Assets.Scripts.Sprites
 	    public bool HoldLastFrame;
 	    public int StartAt;
     }
+    
+    [Serializable]
+    public class MetamorphTransitionResult
+    {
+	    public string Sprite;
+	    public string RemoveType;
+	    public int Action;
+    }
 
 	class DatabasePlayerHeadData
 	{

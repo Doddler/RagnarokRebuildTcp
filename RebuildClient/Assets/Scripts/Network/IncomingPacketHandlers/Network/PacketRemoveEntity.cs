@@ -34,9 +34,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             }
 
             Network.EntityList.Remove(id);
-            
+
             if (Camera.SelectedTarget == controllable)
                 Camera.ClearSelected();
+
+            Network.EntityLastSeenTime[controllable.Id] = Time.timeSinceLevelLoad;
 
             switch (reason)
             {
@@ -53,14 +55,32 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     break;
                 case CharacterRemovalReason.Teleport:
                     controllable.AbortActiveWalk();
-                    if(controllable.IsMainCharacter)
+                    if (controllable.IsMainCharacter)
                         controllable.FadeOutAndVanish(0.1f);
                     else
                     {
                         TeleportEffect.LaunchTeleportAtLocation(controllable.transform.localPosition);
                         controllable.FadeOutAndVanish(0.3f);
                     }
-
+                    break;
+                case CharacterRemovalReason.Metamorphosis:
+                    if (controllable.SpriteAnimator != null
+                        && ClientDataLoader.Instance.TryGetMetamorphResult(controllable.SpriteAnimator.SpriteData.Name, out var result))
+                    {
+                        if (result.RemoveType == "FadeOut")
+                            controllable.FadeOutAndVanish(2f);
+                        else if (result.RemoveType == "Immediate")
+                            controllable.FadeOutAndVanish(0.2f);
+                        else
+                            controllable.MonsterDie();
+                    }
+                    else
+                    {
+                        if (controllable.CharacterType == CharacterType.Monster)
+                            controllable.MonsterDie();
+                        else
+                            controllable.FadeOutAndVanish(0.1f);
+                    }
                     break;
                 default:
                     controllable.FadeOutAndVanish(0.1f);

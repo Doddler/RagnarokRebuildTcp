@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -355,7 +356,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void StartCastMulti(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, float castTime, bool hideSkillName)
+    public static void StartCastMulti(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, float castTime, SkillCastFlags flags)
     {
         if (!HasRecipients())
             return;
@@ -369,7 +370,7 @@ public static class CommandBuilder
         packet.Write((byte)caster.FacingDirection);
         packet.Write(caster.Position);
         packet.Write(castTime);
-        packet.Write(hideSkillName);
+        packet.Write((byte)flags);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -390,7 +391,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void StartCastGroundTargetedMulti(WorldObject caster, Position target, CharacterSkill skill, int lvl, int size, float castTime, bool hideSkillName)
+    public static void StartCastGroundTargetedMulti(WorldObject caster, Position target, CharacterSkill skill, int lvl, int size, float castTime, SkillCastFlags flags)
     {
         if (!HasRecipients())
             return;
@@ -405,7 +406,7 @@ public static class CommandBuilder
         packet.Write((byte)caster.FacingDirection);
         packet.Write(caster.Position);
         packet.Write(castTime);
-        packet.Write(hideSkillName);
+        packet.Write((byte)flags);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -543,6 +544,7 @@ public static class CommandBuilder
         packet.Write(pos);
         packet.Write(di.DisplayDamage);
         packet.Write(di.AttackMotionTime);
+        packet.Write(di.Time - Time.ElapsedTimeFloat);
         packet.Write(showAttackMotion);
 
 
@@ -1010,6 +1012,17 @@ public static class CommandBuilder
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
+
+    public static void SendImprovedRecoveryValue(Player p, int hpGain, int spGain)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.ImprovedRecoveryTick, 32);
+        packet.Write(p.Character.Id);
+        packet.Write((short)hpGain);
+        packet.Write((short)spGain);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
 
     public static void SendExpGain(Player p, int exp, int job = 0)
     {

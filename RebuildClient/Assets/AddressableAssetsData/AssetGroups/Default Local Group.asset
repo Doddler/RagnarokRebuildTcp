@@ -13085,6 +13085,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Cutins
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40294616a6b0ac24993f880b12b886af
+    m_Address: Assets/Prefabs/WhiteSphere.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 402cd71c7988bbd469b7e764dbc2a8b7
     m_Address: Assets/Maps/minimap/moc_fild03_walkmask.png
     m_ReadOnly: 0
@@ -14206,6 +14211,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Minimap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4595052812c3e1f4fa488829969db312
+    m_Address: Assets/Sprites/Imported/Collections/Glittering_Orb.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Collections
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4599ffe8714d20b42a78fd52eeb0e37e
     m_Address: Assets/Sprites/Cutins/job_wizard_maria01.png
@@ -39611,6 +39622,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bdcfa2a4b8f06154c91551b98d050fad
     m_Address: "Assets/Sprites/Characters/HeadFemale/40_\uC5EC_3.spr"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdda36f9d2e557747acb12ecbb8845b3
+    m_Address: Assets/Sprites/Monsters/giant_honet.spr
     m_ReadOnly: 0
     m_SerializedLabels:
     - Sprite

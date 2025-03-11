@@ -7,6 +7,7 @@ using System.Text;
 using Antlr4.Runtime.Tree.Xpath;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
@@ -29,6 +30,7 @@ using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation;
 using Tomlyn;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.Data;
 
@@ -352,67 +354,128 @@ internal class DataLoader
 
         var drops = new Dictionary<string, MonsterDropData>();
         using var inPath = new TemporaryFile(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/DropData.csv"));
-        using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-        var entries = csv.GetRecords<dynamic>();
-        foreach (var entry in entries)
+        //using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
+        //using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+
+        var lineNum = 0;
+        foreach (var line in File.ReadLines(inPath.FilePath))
         {
-            if (entry is IDictionary<string, object> obj)
+            lineNum++;
+            if (lineNum <= 1)
+                continue;
+            var s = line.Split(",");
+
+            var monster = s[0].Replace(" ", "_").ToUpper();
+            var data = new MonsterDropData();
+
+            if (!DataManager.MonsterCodeLookup.ContainsKey(monster))
+                ServerLogger.LogWarning($"Item drops defined for monster {monster} but that monster could not be found.");
+
+            for (var pos = 1; pos < s.Length; pos += 2)
             {
-                var monster = ((string)obj["Monster"]).Replace(" ", "_").ToUpper();
-                var data = new MonsterDropData();
+                var itemName = s[pos];
+                if (string.IsNullOrWhiteSpace(itemName))
+                    continue;
 
-                if (!DataManager.MonsterCodeLookup.ContainsKey(monster))
-                    ServerLogger.LogWarning($"Item drops defined for monster {monster} but that monster could not be found.");
-
-                for (var i = 1; i <= 12; i++)
+                var rangeMin = 1;
+                var rangeMax = 1;
+                if (itemName.Contains("#"))
                 {
-                    var key = $"Item{i}";
-                    if (obj.ContainsKey(key))
+                    var countSection = itemName.AsSpan(itemName.IndexOf('#') + 1);
+                    if (countSection.Contains('-'))
                     {
-                        var itemName = (string)obj[key];
-                        if (string.IsNullOrWhiteSpace(itemName))
-                            continue;
-
-                        var rangeMin = 1;
-                        var rangeMax = 1;
-                        if (itemName.Contains("#"))
-                        {
-                            var countSection = itemName.AsSpan(itemName.IndexOf('#') + 1);
-                            if (countSection.Contains('-'))
-                            {
-                                rangeMin = int.Parse(countSection[..countSection.IndexOf('-')]);
-                                rangeMax = int.Parse(countSection[(countSection.IndexOf('-') + 1)..]);
-                            }
-
-                            itemName = itemName.Substring(0, itemName.IndexOf('#'));
-                        }
-
-                        if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
-                        {
-                            ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
-                            //continue;
-                        }
-
-                        var chance = (int)int.Parse((string)obj[$"Chance{i}"]);
-                        if (chance <= 0)
-                            continue;
-
-                        if (remapDrops)
-                        {
-                            var itemInfo = DataManager.GetItemInfoById(item);
-                            if (itemInfo != null)
-                                chance = config.UpdateDropData(itemInfo.ItemClass, itemInfo.Code, itemInfo.SubCategory, chance);
-                        }
-
-                        if (item > 0) //for debug reasons mostly
-                            data.DropChances.Add(new MonsterDropData.MonsterDropEntry(item, chance, rangeMin, rangeMax));
+                        rangeMin = int.Parse(countSection[..countSection.IndexOf('-')]);
+                        rangeMax = int.Parse(countSection[(countSection.IndexOf('-') + 1)..]);
                     }
+
+                    itemName = itemName.Substring(0, itemName.IndexOf('#'));
                 }
 
-                drops.Add(monster, data);
+
+                if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
+                {
+                    ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
+                    //continue;
+                }
+
+                var chance = int.Parse(s[pos + 1]);
+                if (chance <= 0)
+                    continue;
+
+
+                if (remapDrops)
+                {
+                    var itemInfo = DataManager.GetItemInfoById(item);
+                    if (itemInfo != null)
+                        chance = config.UpdateDropData(itemInfo.ItemClass, itemInfo.Code, itemInfo.SubCategory, chance);
+                }
+
+                if (item > 0) //for debug reasons mostly
+                    data.DropChances.Add(new MonsterDropData.MonsterDropEntry(item, chance, rangeMin, rangeMax));
             }
+
+            drops.Add(monster, data);
         }
+
+        //var entries = csv.GetRecords<dynamic>();
+        //foreach (var entry in entries)
+        //{
+        //    if (entry is IDictionary<string, object> obj)
+        //    {
+        //        var monster = ((string)obj["Monster"]).Replace(" ", "_").ToUpper();
+        //        var data = new MonsterDropData();
+
+        //        if (!DataManager.MonsterCodeLookup.ContainsKey(monster))
+        //            ServerLogger.LogWarning($"Item drops defined for monster {monster} but that monster could not be found.");
+
+        //        for (var i = 1; i <= 12; i++)
+        //        {
+        //            var key = $"Item{i}";
+        //            if (obj.ContainsKey(key))
+        //            {
+        //                var itemName = (string)obj[key];
+        //                if (string.IsNullOrWhiteSpace(itemName))
+        //                    continue;
+
+        //                var rangeMin = 1;
+        //                var rangeMax = 1;
+        //                if (itemName.Contains("#"))
+        //                {
+        //                    var countSection = itemName.AsSpan(itemName.IndexOf('#') + 1);
+        //                    if (countSection.Contains('-'))
+        //                    {
+        //                        rangeMin = int.Parse(countSection[..countSection.IndexOf('-')]);
+        //                        rangeMax = int.Parse(countSection[(countSection.IndexOf('-') + 1)..]);
+        //                    }
+
+        //                    itemName = itemName.Substring(0, itemName.IndexOf('#'));
+        //                }
+
+        //                if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
+        //                {
+        //                    ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
+        //                    //continue;
+        //                }
+
+        //                var chance = (int)int.Parse((string)obj[$"Chance{i}"]);
+        //                if (chance <= 0)
+        //                    continue;
+
+        //                if (remapDrops)
+        //                {
+        //                    var itemInfo = DataManager.GetItemInfoById(item);
+        //                    if (itemInfo != null)
+        //                        chance = config.UpdateDropData(itemInfo.ItemClass, itemInfo.Code, itemInfo.SubCategory, chance);
+        //                }
+
+        //                if (item > 0) //for debug reasons mostly
+        //                    data.DropChances.Add(new MonsterDropData.MonsterDropEntry(item, chance, rangeMin, rangeMax));
+        //            }
+        //        }
+
+        //        drops.Add(monster, data);
+        //    }
+        //}
 
         return drops.AsReadOnly();
     }

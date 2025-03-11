@@ -34,6 +34,7 @@ StateIdle:
 StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
 StateAttacking:
+    TryCast(ComboAttack, 1, 5%, 0.7s, 5s);
 	TryCast(CriticalAttack, 5, 5%, 0.5s, 5s) -> SendEmote(29); //heh
     TryCast(Bash, 5, 5%, 0, 5s);
 }

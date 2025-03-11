@@ -344,6 +344,15 @@
     },
     {
       "StatusEffect": 39,
+      "Name": "Guided Attack",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 40,
       "Name": "Dark Blessing",
       "Description": "\u003Ccolor=#FF3300\u003EDark Blessing\u003C/color\u003E\nWhen this effect expires you will be reduced to 1 HP.",
       "Type": "Debuff",
@@ -352,7 +361,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 40,
+      "StatusEffect": 41,
       "Name": "Power Up",
       "Description": "\u003Ccolor=#FFA300\u003EPower Up\u003C/color\u003E\nAttack power greatly increased.",
       "Type": "Buff",
@@ -361,7 +370,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 41,
+      "StatusEffect": 42,
       "Name": "Speed Up",
       "Description": "\u003Ccolor=#FFA300\u003ESpeed Up\u003C/color\u003E\nMove speed and evasion greatly increased.",
       "Type": "Buff",
@@ -370,7 +379,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 42,
+      "StatusEffect": 43,
       "Name": null,
       "Description": "\u003Ccolor=#FFA300\u003EVampyrism\u003C/color\u003E\nAll your attacks heal you.",
       "Type": "Buff",
@@ -379,7 +388,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 43,
+      "StatusEffect": 44,
       "Name": "Doom",
       "Description": "\u003Ccolor=#FF3300\u003EDoom\u003C/color\u003E\nYou are doomed to die in the near future.",
       "Type": "Debuff",
@@ -388,7 +397,25 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 44,
+      "StatusEffect": 45,
+      "Name": "Bulwark",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": null,
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 46,
+      "Name": "Smoking",
+      "Description": null,
+      "Type": "Debuff",
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 47,
       "Name": "Admin Invisibility",
       "Description": "\u003Ccolor=#FFA300\u003EAdmin Invisibility\u003C/color\u003E\nYou cannot be seen and you cannot be targeted.",
       "Type": "Buff",
@@ -397,7 +424,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 45,
+      "StatusEffect": 48,
       "Name": "Stolen From",
       "Description": "\u003Ccolor=#FF3300\u003EStolen From\u003C/color\u003E\nYou\u0027ve had something recently taken and cannot be stolen from again.",
       "Type": "Debuff",

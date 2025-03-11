@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Character;
@@ -60,7 +61,7 @@ public class StatusCloaking : StatusEffectBase
         if (ch.Character.Type == CharacterType.Monster)
             return;
 
-        if (state.Value4 == 0 && ch.Character.Map!.WalkData.IsCellAdjacentToWall(ch.Character.Position))
+        if (state.Value4 == 0 && (ch.Character.Map?.WalkData.IsCellAdjacentToWall(ch.Character.Position) ?? false))
         {
             state.Value4 = 1;
             state.Value3 += 30;
@@ -68,7 +69,7 @@ public class StatusCloaking : StatusEffectBase
             return;
         }
 
-        if (state.Value4 == 1 && !ch.Character.Map!.WalkData.IsCellAdjacentToWall(ch.Character.Position))
+        if (state.Value4 == 1 && (ch.Character.Map?.WalkData.IsCellAdjacentToWall(ch.Character.Position) ?? false))
         {
             state.Value4 = 0;
             state.Value3 -= 30;

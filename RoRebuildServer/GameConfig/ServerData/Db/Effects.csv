@@ -85,7 +85,7 @@
 83,SignumCrusis,TRUE,TRUE,FALSE,cross,,,0,,
 84,Cure,TRUE,TRUE,FALSE,cure,,,0,,
 85,LoudVoice,TRUE,TRUE,FALSE,loud,,고성방가,0,,
-86,StoneSkin,TRUE,TRUE,FALSE,keeping,,,-0.4,,
+86,StoneSkin,TRUE,TRUE,FALSE,keeping,,,-0.6,,
 87,SpeedBadge,TRUE,TRUE,FALSE,mapae,,mapae,0,,
 88,RefineSuccess,TRUE,TRUE,FALSE,bs_refinesuccess,,bs_refinesuccess,0,,
 89,RefineFailure,TRUE,TRUE,FALSE,bs_refinefailed,,bs_refinefailed,0,,

@@ -1,0 +1,5 @@
+
+SkillHandler("ANTIQUE_FIRELOCK") {
+StateChase:
+	TryCast(FireAttack, 3, 5%, 0.5s, 5s) -> SendEmote(7); //angry
+}

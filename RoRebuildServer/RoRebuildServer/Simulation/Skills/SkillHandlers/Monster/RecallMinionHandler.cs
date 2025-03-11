@@ -49,7 +49,7 @@ public class RecallMinionHandler : SkillHandlerBase
             if (!minion.TryGet<WorldObject>(out var ch))
                 continue;
 
-            map.TeleportEntity(ref minion, ch, map.GetRandomWalkablePositionInArea(area), CharacterRemovalReason.Teleport);
+            map.TeleportEntity(ref minion, ch, map.GetRandomWalkablePositionInArea(area), CharacterRemovalReason.Teleport, false);
         }
     }
 }

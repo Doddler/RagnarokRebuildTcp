@@ -23,7 +23,7 @@ namespace Assets.Scripts.UI.Hud
         {
             var timeRemaining = Expiration - Time.timeSinceLevelLoad;
             var seconds = (int)(timeRemaining + 1f);
-            if (seconds <= 0)
+            if (seconds <= 0 || seconds > 86400) //stop showing if the timer is greater than 24h
             {
                 RemainingTime.text = "";
                 RemainingTime.gameObject.SetActive(false);

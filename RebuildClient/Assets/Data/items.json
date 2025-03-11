@@ -4593,6 +4593,22 @@
       "Sprite": "\uC624\uB798\uB41C\uB178\uB780\uC0C1\uC790"
     },
     {
+      "Id": 16000,
+      "Code": "Glittering_Orb",
+      "Name": "Glittering Orb",
+      "Weight": 100,
+      "Price": 0,
+      "SellPrice": 0,
+      "Slots": 0,
+      "ItemRank": 0,
+      "IsUnique": false,
+      "IsRefinable": false,
+      "ItemClass": 1,
+      "UseType": 1,
+      "Position": 0,
+      "Sprite": "DiscoLights"
+    },
+    {
       "Id": 701,
       "Code": "Ora_Ora",
       "Name": "Ora Ora",

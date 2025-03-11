@@ -128,8 +128,12 @@ namespace Assets.Scripts.UI.Hud
             if (controllable.SpriteAnimator?.SpriteData != null && StandingHeight == 0)
             {
                 StandingHeight = controllable.SpriteAnimator.SpriteData.StandingHeight;
+                if (StandingHeight < 30)
+                    StandingHeight = 30;
                 if (controllable.CharacterType == CharacterType.Player)
                     StandingHeight += 20;
+                else
+                    StandingHeight += 5;
             }
             
             castBar.transform.localPosition = new Vector3(0, StandingHeight * 2f, 0);
@@ -175,6 +179,15 @@ namespace Assets.Scripts.UI.Hud
             castEnd += addTime;
 
             //castBar.SetProgress(pos / end);
+        }
+
+        public void HideChatBubbleMessage()
+        {
+            if (chatBubble == null)
+                return;
+
+            Manager.ReturnChatBubble(chatBubble.gameObject);
+            chatBubble = null;
         }
 
         public void ShowChatBubbleMessage(string message, float visibleTime = 5f)

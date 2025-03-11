@@ -14,9 +14,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
         {
             if (!HealMaterials.TryGetValue(texture, out var mat))
             {
-                
                 mat = new Material(ShaderCache.Instance.AdditiveShader);
-                
+
                 mat.mainTexture = Resources.Load<Texture2D>(texture);
                 mat.renderQueue = 3001;
                 HealMaterials.Add(texture, mat);
@@ -43,7 +42,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                     return HealEffect.Create(followTarget, 2);
             }
         }
-        
+
         public static Ragnarok3dEffect Create(GameObject followTarget, int healStrength = 1)
         {
             //default heal strength 1
@@ -81,18 +80,18 @@ namespace Assets.Scripts.Effects.EffectHandlers
             }
 
             var (mat, prefab) = GetResources(texture, particlePrefab);
-            
+
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.CastEffect);
-            effect.Duration = healLength;
+            effect.SetDurationByTime(healLength + 0.4f);
             effect.FollowTarget = followTarget;
             effect.transform.localScale = new Vector3(2f, 2f, 2f);
-            
+
             AudioManager.Instance.OneShotSoundEffect(effect.SourceEntityId, $"_heal_effect.ogg", followTarget.transform.position);
-            
+
             var prim = effect.LaunchPrimitive(PrimitiveType.Heal, mat, 1.6f);
             prim.CreateParts(partCount);
             prim.Flags[0] = healStrength;
-            
+
             prim.Parts[0] = new EffectPart()
             {
                 Active = true,
@@ -106,7 +105,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 RiseAngle = 90,
                 Color = color
             };
-            
+
             prim.Parts[1] = new EffectPart()
             {
                 Active = true,
@@ -166,10 +165,11 @@ namespace Assets.Scripts.Effects.EffectHandlers
             }
 
             var particles = GameObject.Instantiate(prefab);
-            particles.transform.parent = prim.gameObject.transform;
+            particles.transform.parent = effect.gameObject.transform;
             particles.transform.localPosition = Vector3.zero;
+            effect.AimTarget = particles;
             // particles.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            
+
             return effect;
         }
 
@@ -180,6 +180,9 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
+            if(effect.CurrentPos >= effect.Duration && effect.AimTarget != null)
+                GameObject.Destroy(effect.AimTarget); //particles are stored here for lack of a better spot
+            
             //nothing to do but wait for it to end
             return effect.CurrentPos < effect.Duration;
         }

@@ -1,74 +1,74 @@
-Warp("prt_maze01", "hiddentemplewarp003", 22, 194, 6, 1, "prt_maze01", 16, 31);
-Warp("prt_maze01", "hiddentemplewarp004", 5, 186, 1, 6, "prt_maze01", 182, 88);
-Warp("prt_maze01", "hiddentemplewarp005", 53, 194, 7, 1, "prt_maze01", 23, 128);
-Warp("prt_maze01", "hiddentemplewarp006", 63, 194, 7, 1, "prt_maze01", 23, 128);
-Warp("prt_maze01", "hiddentemplewarp007", 102, 165, 4, 1, "prt_maze01", 99, 31);
-Warp("prt_maze01", "hiddentemplewarp008", 85, 174, 1, 4, "prt_maze02", 93, 20);
-Warp("prt_maze01", "hiddentemplewarp009", 154, 181, 1, 3, "prt_maze01", 191, 175);
-Warp("prt_maze01", "hiddentemplewarp010", 125, 171, 1, 4, "prt_maze01", 8, 186);
-Warp("prt_maze01", "hiddentemplewarp011", 175, 165, 6, 1, "prt_maze01", 48, 104);
-Warp("prt_maze01", "hiddentemplewarp012", 194, 175, 1, 4, "prt_maze01", 23, 128);
-Warp("prt_maze01", "hiddentemplewarp013", 18, 154, 4, 1, "prt_maze01", 177, 71);
-Warp("prt_maze01", "hiddentemplewarp014", 23, 125, 7, 1, "prt_maze01", 151, 22);
-Warp("prt_maze01", "hiddentemplewarp015", 5, 140, 1, 4, "prt_maze01", 52, 48);
-Warp("prt_maze01", "hiddentemplewarp016", 54, 154, 5, 1, "prt_maze01", 191, 175);
-Warp("prt_maze01", "hiddentemplewarp017", 63, 125, 7, 1, "prt_maze01", 182, 88);
-Warp("prt_maze01", "hiddentemplewarp018", 98, 154, 4, 1, "prt_maze01", 102, 168);
-Warp("prt_maze01", "hiddentemplewarp019", 114, 145, 1, 4, "prt_maze01", 23, 128);
-Warp("prt_maze01", "hiddentemplewarp020", 85, 146, 1, 3, "prt_maze01", 142, 111);
-Warp("prt_maze01", "hiddentemplewarp021", 137, 125, 6, 1, "prt_maze01", 191, 139);
-Warp("prt_maze01", "hiddentemplewarp022", 154, 134, 1, 5, "prt_maze01", 58, 191);
-Warp("prt_maze01", "hiddentemplewarp023", 194, 139, 1, 7, "prt_maze01", 22, 88);
-Warp("prt_maze01", "hiddentemplewarp024", 166, 139, 1, 7, "prt_maze01", 128, 173);
-Warp("prt_maze01", "hiddentemplewarp025", 17, 114, 7, 1, "prt_maze01", 8, 186);
-Warp("prt_maze01", "hiddentemplewarp026", 22, 85, 4, 1, "prt_maze01", 137, 128);
-Warp("prt_maze01", "hiddentemplewarp027", 63, 114, 6, 1, "prt_maze01", 111, 56);
-Warp("prt_maze01", "hiddentemplewarp028", 63, 85, 4, 1, "prt_maze01", 151, 22);
-Warp("prt_maze01", "hiddentemplewarp029", 74, 97, 1, 5, "prt_maze01", 71, 11);
-Warp("prt_maze01", "hiddentemplewarp030", 45, 104, 1, 5, "prt_maze01", 63, 128);
-Warp("prt_maze01", "hiddentemplewarp031", 105, 114, 4, 1, "prt_maze01", 111, 145);
-Warp("prt_maze01", "hiddentemplewarp032", 114, 95, 1, 6, "prt_maze01", 14, 48);
-Warp("prt_maze01", "hiddentemplewarp033", 85, 97, 1, 4, "prt_maze01", 63, 128);
-Warp("prt_maze01", "hiddentemplewarp034", 142, 114, 5, 1, "prt_maze01", 23, 128);
-Warp("prt_maze01", "hiddentemplewarp035", 125, 105, 1, 5, "prt_maze01", 14, 48);
-Warp("prt_maze01", "hiddentemplewarp036", 182, 85, 4, 1, "prt_maze01", 52, 48);
-Warp("prt_maze01", "hiddentemplewarp037", 194, 94, 1, 4, "prt_maze01", 58, 191);
-Warp("prt_maze01", "hiddentemplewarp038", 168, 94, 1, 3, "prt_maze01", 191, 139);
-Warp("prt_maze01", "hiddentemplewarp039", 14, 74, 3, 1, "prt_maze01", 151, 22);
-Warp("prt_maze01", "hiddentemplewarp040", "Return to Mt. Mjolnir", 14, 45, 4, 1, "mjolnir_12", 44, 20);
-Warp("prt_maze01", "hiddentemplewarp041", 5, 58, 1, 4, "prt_maze01", 48, 104);
-Warp("prt_maze01", "hiddentemplewarp042", 74, 74, 3, 3, "prt_maze01", 58, 191);
-Warp("prt_maze01", "hiddentemplewarp043", 52, 45, 5, 1, "prt_maze01", 139, 48);
-Warp("prt_maze01", "hiddentemplewarp044", 104, 74, 5, 1, "prt_maze01", 14, 48);
-Warp("prt_maze01", "hiddentemplewarp045", 96, 45, 4, 1, "prt_maze01", 63, 128);
-Warp("prt_maze01", "hiddentemplewarp046", 114, 56, 1, 6, "prt_maze01", 176, 8);
-Warp("prt_maze01", "hiddentemplewarp047", 85, 56, 1, 5, "prt_maze01", 105, 111);
-Warp("prt_maze01", "hiddentemplewarp048", 139, 74, 7, 1, "prt_maze01", 182, 88);
-Warp("prt_maze01", "hiddentemplewarp049", 139, 45, 7, 1, "prt_maze01", 71, 11);
+Warp("prt_maze01", "#hiddentemplewarp003", 22, 194, 6, 1, "prt_maze01", 16, 31);
+Warp("prt_maze01", "#hiddentemplewarp004", 5, 186, 1, 6, "prt_maze01", 182, 88);
+Warp("prt_maze01", "#hiddentemplewarp005", 53, 194, 7, 1, "prt_maze01", 23, 128);
+Warp("prt_maze01", "#hiddentemplewarp006", 63, 194, 7, 1, "prt_maze01", 23, 128);
+Warp("prt_maze01", "#hiddentemplewarp007", 102, 165, 4, 1, "prt_maze01", 99, 31);
+Warp("prt_maze01", "#hiddentemplewarp008", 85, 174, 1, 4, "prt_maze02", 93, 20);
+Warp("prt_maze01", "#hiddentemplewarp009", 154, 181, 1, 3, "prt_maze01", 191, 175);
+Warp("prt_maze01", "#hiddentemplewarp010", 125, 171, 1, 4, "prt_maze01", 8, 186);
+Warp("prt_maze01", "#hiddentemplewarp011", 175, 165, 6, 1, "prt_maze01", 48, 104);
+Warp("prt_maze01", "#hiddentemplewarp012", 194, 175, 1, 4, "prt_maze01", 23, 128);
+Warp("prt_maze01", "#hiddentemplewarp013", 18, 154, 4, 1, "prt_maze01", 177, 71);
+Warp("prt_maze01", "#hiddentemplewarp014", 23, 125, 7, 1, "prt_maze01", 151, 22);
+Warp("prt_maze01", "#hiddentemplewarp015", 5, 140, 1, 4, "prt_maze01", 52, 48);
+Warp("prt_maze01", "#hiddentemplewarp016", 54, 154, 5, 1, "prt_maze01", 191, 175);
+Warp("prt_maze01", "#hiddentemplewarp017", 63, 125, 7, 1, "prt_maze01", 182, 88);
+Warp("prt_maze01", "#hiddentemplewarp018", 98, 154, 4, 1, "prt_maze01", 102, 168);
+Warp("prt_maze01", "#hiddentemplewarp019", 114, 145, 1, 4, "prt_maze01", 23, 128);
+Warp("prt_maze01", "#hiddentemplewarp020", 85, 146, 1, 3, "prt_maze01", 142, 111);
+Warp("prt_maze01", "#hiddentemplewarp021", 137, 125, 6, 1, "prt_maze01", 191, 139);
+Warp("prt_maze01", "#hiddentemplewarp022", 154, 134, 1, 5, "prt_maze01", 58, 191);
+Warp("prt_maze01", "#hiddentemplewarp023", 194, 139, 1, 7, "prt_maze01", 22, 88);
+Warp("prt_maze01", "#hiddentemplewarp024", 166, 139, 1, 7, "prt_maze01", 128, 173);
+Warp("prt_maze01", "#hiddentemplewarp025", 17, 114, 7, 1, "prt_maze01", 8, 186);
+Warp("prt_maze01", "#hiddentemplewarp026", 22, 85, 4, 1, "prt_maze01", 137, 128);
+Warp("prt_maze01", "#hiddentemplewarp027", 63, 114, 6, 1, "prt_maze01", 111, 56);
+Warp("prt_maze01", "#hiddentemplewarp028", 63, 85, 4, 1, "prt_maze01", 151, 22);
+Warp("prt_maze01", "#hiddentemplewarp029", 74, 97, 1, 5, "prt_maze01", 71, 11);
+Warp("prt_maze01", "#hiddentemplewarp030", 45, 104, 1, 5, "prt_maze01", 63, 128);
+Warp("prt_maze01", "#hiddentemplewarp031", 105, 114, 4, 1, "prt_maze01", 111, 145);
+Warp("prt_maze01", "#hiddentemplewarp032", 114, 95, 1, 6, "prt_maze01", 14, 48);
+Warp("prt_maze01", "#hiddentemplewarp033", 85, 97, 1, 4, "prt_maze01", 63, 128);
+Warp("prt_maze01", "#hiddentemplewarp034", 142, 114, 5, 1, "prt_maze01", 23, 128);
+Warp("prt_maze01", "#hiddentemplewarp035", 125, 105, 1, 5, "prt_maze01", 14, 48);
+Warp("prt_maze01", "#hiddentemplewarp036", 182, 85, 4, 1, "prt_maze01", 52, 48);
+Warp("prt_maze01", "#hiddentemplewarp037", 194, 94, 1, 4, "prt_maze01", 58, 191);
+Warp("prt_maze01", "#hiddentemplewarp038", 168, 94, 1, 3, "prt_maze01", 191, 139);
+Warp("prt_maze01", "#hiddentemplewarp039", 14, 74, 3, 1, "prt_maze01", 151, 22);
+Warp("prt_maze01", "#hiddentemplewarp040", "Return to Mt. Mjolnir", 14, 45, 4, 1, "mjolnir_12", 44, 20);
+Warp("prt_maze01", "#hiddentemplewarp041", 5, 58, 1, 4, "prt_maze01", 48, 104);
+Warp("prt_maze01", "#hiddentemplewarp042", 74, 74, 3, 3, "prt_maze01", 58, 191);
+Warp("prt_maze01", "#hiddentemplewarp043", 52, 45, 5, 1, "prt_maze01", 139, 48);
+Warp("prt_maze01", "#hiddentemplewarp044", 104, 74, 5, 1, "prt_maze01", 14, 48);
+Warp("prt_maze01", "#hiddentemplewarp045", 96, 45, 4, 1, "prt_maze01", 63, 128);
+Warp("prt_maze01", "#hiddentemplewarp046", 114, 56, 1, 6, "prt_maze01", 176, 8);
+Warp("prt_maze01", "#hiddentemplewarp047", 85, 56, 1, 5, "prt_maze01", 105, 111);
+Warp("prt_maze01", "#hiddentemplewarp048", 139, 74, 7, 1, "prt_maze01", 182, 88);
+Warp("prt_maze01", "#hiddentemplewarp049", 139, 45, 7, 1, "prt_maze01", 71, 11);
 Warp("prt_maze01", "hiddntemplewarp050", "Return to Prontera Field", 177, 74, 3, 1, "prt_fild01", 136, 368);
-Warp("prt_maze01", "hiddentemplewarp051", 175, 45, 6, 1, "prt_maze01", 52, 48);
-Warp("prt_maze01", "hiddentemplewarp052", 194, 54, 1, 5, "prt_maze01", 99, 31);
-Warp("prt_maze01", "hiddentemplewarp053", 16, 34, 7, 1, "prt_maze01", 128, 173);
-Warp("prt_maze01", "hiddentemplewarp054", 23, 5, 3, 1, "prt_maze01", 176, 8);
-Warp("prt_maze01", "hiddentemplewarp055", 54, 5, 5, 1, "prt_maze01", 128, 173);
-Warp("prt_maze01", "hiddentemplewarp056", 74, 12, 1, 4, "prt_maze01", 52, 48);
-Warp("prt_maze01", "hiddentemplewarp057", 45, 21, 1, 6, "prt_maze01", 142, 111);
-Warp("prt_maze01", "hiddentemplewarp058", 99, 34, 3, 1, "prt_maze01", 137, 128);
-Warp("prt_maze01", "hiddentemplewarp059", 114, 22, 1, 3, "prt_maze01", 177, 71);
-Warp("prt_maze01", "hiddentemplewarp060", 85, 11, 1, 5, "prt_maze01", 22, 88);
-Warp("prt_maze01", "hiddentemplewarp061", 154, 22, 1, 12, "prt_maze01", 139, 48);
-Warp("prt_maze01", "hiddentemplewarp062", 176, 34, 4, 1, "prt_maze01", 8, 186);
-Warp("prt_maze01", "hiddentemplewarp063", 176, 5, 6, 1, "prt_maze01", 137, 128);
-Warp("prt_maze01", "hiddentemplewarp064", 194, 15, 1, 3, "prt_maze01", 52, 48);
-Warp("prt_maze01", "hiddentemplewarp065", 165, 22, 1, 4, "prt_maze01", 63, 128);
-Warp("prt_maze02", "hiddentemplewarp066", 84, 16, 10, 1, "prt_maze01", 102, 168);
-Warp("prt_maze02", "hiddentemplewarp067", 103, 16, 10, 1, "prt_maze01", 102, 168);
-Warp("prt_maze02", "hiddentemplewarp068", 80, 182, 12, 1, "prt_maze03", 182, 88);
-Warp("prt_maze02", "hiddentemplewarp069", 108, 182, 12, 1, "prt_maze03", 182, 88);
-Warp("prt_maze03", "hiddentemplewarp070", 22, 194, 6, 1, "prt_maze03", 175, 48);
-Warp("prt_maze03", "hiddentemplewarp071", 5, 186, 1, 6, "prt_maze03", 151, 134);
+Warp("prt_maze01", "#hiddentemplewarp051", 175, 45, 6, 1, "prt_maze01", 52, 48);
+Warp("prt_maze01", "#hiddentemplewarp052", 194, 54, 1, 5, "prt_maze01", 99, 31);
+Warp("prt_maze01", "#hiddentemplewarp053", 16, 34, 7, 1, "prt_maze01", 128, 173);
+Warp("prt_maze01", "#hiddentemplewarp054", 23, 5, 3, 1, "prt_maze01", 176, 8);
+Warp("prt_maze01", "#hiddentemplewarp055", 54, 5, 5, 1, "prt_maze01", 128, 173);
+Warp("prt_maze01", "#hiddentemplewarp056", 74, 12, 1, 4, "prt_maze01", 52, 48);
+Warp("prt_maze01", "#hiddentemplewarp057", 45, 21, 1, 6, "prt_maze01", 142, 111);
+Warp("prt_maze01", "#hiddentemplewarp058", 99, 34, 3, 1, "prt_maze01", 137, 128);
+Warp("prt_maze01", "#hiddentemplewarp059", 114, 22, 1, 3, "prt_maze01", 177, 71);
+Warp("prt_maze01", "#hiddentemplewarp060", 85, 11, 1, 5, "prt_maze01", 22, 88);
+Warp("prt_maze01", "#hiddentemplewarp061", 154, 22, 1, 12, "prt_maze01", 139, 48);
+Warp("prt_maze01", "#hiddentemplewarp062", 176, 34, 4, 1, "prt_maze01", 8, 186);
+Warp("prt_maze01", "#hiddentemplewarp063", 176, 5, 6, 1, "prt_maze01", 137, 128);
+Warp("prt_maze01", "#hiddentemplewarp064", 194, 15, 1, 3, "prt_maze01", 52, 48);
+Warp("prt_maze01", "#hiddentemplewarp065", 165, 22, 1, 4, "prt_maze01", 63, 128);
+Warp("prt_maze02", "#hiddentemplewarp066", 84, 16, 10, 1, "prt_maze01", 102, 168);
+Warp("prt_maze02", "#hiddentemplewarp067", 103, 16, 10, 1, "prt_maze01", 102, 168);
+Warp("prt_maze02", "#hiddentemplewarp068", 80, 182, 12, 1, "prt_maze03", 182, 88);
+Warp("prt_maze02", "#hiddentemplewarp069", 108, 182, 12, 1, "prt_maze03", 182, 88);
+Warp("prt_maze03", "#hiddentemplewarp070", 22, 194, 6, 1, "prt_maze03", 175, 48);
+Warp("prt_maze03", "#hiddentemplewarp071", 5, 186, 1, 6, "prt_maze03", 151, 134);
 
-Npc("prt_maze03", "hiddentemplewarp072", "WARP", 53, 194, N, 7, 1)
+Npc("prt_maze03", "#hiddentemplewarp072", "WARP", 53, 194, N, 7, 1)
 {
 OnTouch:
 	var ht1 = Random(4);
@@ -85,7 +85,7 @@ OnTouch:
 	}
 }
 	
-Npc("prt_maze03", "hiddentemplewarp073", "WARP", 63, 194, N, 7, 1)
+Npc("prt_maze03", "#hiddentemplewarp073", "WARP", 63, 194, N, 7, 1)
 {
 OnTouch:
 	var ht1 = Random(4);
@@ -102,44 +102,44 @@ OnTouch:
 	}
 }
 
-Warp("prt_maze03", "hiddentemplewarp074", 102, 165, 4, 1, "prt_maze03", 137, 71);
-Warp("prt_maze03", "hiddentemplewarp075", 85, 174, 1, 4, "prt_maze03", 14, 47);
-Warp("prt_maze03", "hiddentemplewarp076", 154, 181, 1, 3, "prt_maze03", 139, 48);
-Warp("prt_maze03", "hiddentemplewarp077", 125, 171, 1, 4, "prt_maze03", 105, 111);
-Warp("prt_maze03", "hiddentemplewarp078", 175, 165, 6, 1, "prt_maze03", 71, 12);
-Warp("prt_maze03", "hiddentemplewarp079", 194, 175, 1, 4, "prt_maze03", 191, 139);
-Warp("prt_maze03", "hiddentemplewarp080", 18, 154, 4, 1, "prt_maze03", 48, 21);
-Warp("prt_maze03", "hiddentemplewarp081", 23, 125, 7, 1, "prt_maze03", 177, 71);
-Warp("prt_maze03", "hiddentemplewarp082", 5, 140, 1, 4, "prt_maze03", 111, 56);
-Warp("prt_maze03", "hiddentemplewarp083", 54, 154, 5, 1, "prt_maze03", 142, 111);
-Warp("prt_maze03", "hiddentemplewarp084", 63, 125, 7, 1, "prt_maze03", 88, 97);
-Warp("prt_maze03", "hiddentemplewarp085", 98, 154, 4, 1, "prt_maze03", 99, 31);
-Warp("prt_maze03", "hiddentemplewarp086", 114, 145, 1, 4, "prt_maze03", 168, 22);
-Warp("prt_maze03", "hiddentemplewarp087", 85, 146, 1, 3, "prt_maze03", 22, 88);
-Warp("prt_maze03", "hiddentemplewarp088", 137, 125, 6, 1, "prt_maze03", 70, 70);
-Warp("prt_maze03", "hiddentemplewarp089", 154, 134, 1, 5, "prt_maze03", 8, 186);
-Warp("prt_maze03", "hiddentemplewarp090", 194, 139, 1, 7, "prt_maze03", 191, 175);
-Warp("prt_maze03", "hiddentemplewarp091", 166, 139, 1, 7, "prt_maze03", 63, 88);
-Warp("prt_maze03", "hiddentemplewarp092", 17, 114, 7, 1, "prt_maze03", 128, 105);
-Warp("prt_maze03", "hiddentemplewarp093", 22, 85, 4, 1, "prt_maze03", 88, 146);
-Warp("prt_maze03", "hiddentemplewarp094", 63, 114, 6, 1, "prt_maze03", 14, 71);
-Warp("prt_maze03", "hiddentemplewarp095", 63, 85, 4, 1, "prt_maze03", 169, 139);
-Warp("prt_maze03", "hiddentemplewarp096", 74, 97, 1, 5, "prt_maze03", 54, 8);
-Warp("prt_maze03", "hiddentemplewarp097", 45, 104, 1, 5, "prt_maze03", 96, 48);
-Warp("prt_maze03", "hiddentemplewarp098", 105, 114, 4, 1, "prt_maze03", 128, 171);
-Warp("prt_maze03", "hiddentemplewarp099", 114, 95, 1, 6, "prt_maze03", 176, 8);
-Warp("prt_maze03", "hiddentemplewarp100", 85, 97, 1, 4, "prt_maze03", 63, 128);
-Warp("prt_maze03", "hiddentemplewarp101", 142, 114, 5, 1, "prt_maze03", 54, 151);
-Warp("prt_maze03", "hiddentemplewarp102", 125, 105, 1, 5, "prt_maze03", 58, 191);
-Warp("prt_maze03", "hiddentemplewarp103", 182, 85, 4, 1, "prt_maze02", 100, 179);
-Warp("prt_maze03", "hiddentemplewarp104", 194, 94, 1, 4, "prt_maze03", 151, 22);
-Warp("prt_maze03", "hiddentemplewarp105", 168, 94, 1, 3, "prt_maze03", 191, 54);
-Warp("prt_maze03", "hiddentemplewarp106", 14, 74, 3, 1, "prt_maze03", 63, 111);
-Warp("prt_maze03", "hiddentemplewarp107", 14, 45, 4, 1, "prt_maze03", 88, 174);
-Warp("prt_maze03", "hiddentemplewarp108", 5, 58, 1, 4, "prt_maze03", 191, 15);
+Warp("prt_maze03", "#hiddentemplewarp074", 102, 165, 4, 1, "prt_maze03", 137, 71);
+Warp("prt_maze03", "#hiddentemplewarp075", 85, 174, 1, 4, "prt_maze03", 14, 47);
+Warp("prt_maze03", "#hiddentemplewarp076", 154, 181, 1, 3, "prt_maze03", 139, 48);
+Warp("prt_maze03", "#hiddentemplewarp077", 125, 171, 1, 4, "prt_maze03", 105, 111);
+Warp("prt_maze03", "#hiddentemplewarp078", 175, 165, 6, 1, "prt_maze03", 71, 12);
+Warp("prt_maze03", "#hiddentemplewarp079", 194, 175, 1, 4, "prt_maze03", 191, 139);
+Warp("prt_maze03", "#hiddentemplewarp080", 18, 154, 4, 1, "prt_maze03", 48, 21);
+Warp("prt_maze03", "#hiddentemplewarp081", 23, 125, 7, 1, "prt_maze03", 177, 71);
+Warp("prt_maze03", "#hiddentemplewarp082", 5, 140, 1, 4, "prt_maze03", 111, 56);
+Warp("prt_maze03", "#hiddentemplewarp083", 54, 154, 5, 1, "prt_maze03", 142, 111);
+Warp("prt_maze03", "#hiddentemplewarp084", 63, 125, 7, 1, "prt_maze03", 88, 97);
+Warp("prt_maze03", "#hiddentemplewarp085", 98, 154, 4, 1, "prt_maze03", 99, 31);
+Warp("prt_maze03", "#hiddentemplewarp086", 114, 145, 1, 4, "prt_maze03", 168, 22);
+Warp("prt_maze03", "#hiddentemplewarp087", 85, 146, 1, 3, "prt_maze03", 22, 88);
+Warp("prt_maze03", "#hiddentemplewarp088", 137, 125, 6, 1, "prt_maze03", 70, 70);
+Warp("prt_maze03", "#hiddentemplewarp089", 154, 134, 1, 5, "prt_maze03", 8, 186);
+Warp("prt_maze03", "#hiddentemplewarp090", 194, 139, 1, 7, "prt_maze03", 191, 175);
+Warp("prt_maze03", "#hiddentemplewarp091", 166, 139, 1, 7, "prt_maze03", 63, 88);
+Warp("prt_maze03", "#hiddentemplewarp092", 17, 114, 7, 1, "prt_maze03", 128, 105);
+Warp("prt_maze03", "#hiddentemplewarp093", 22, 85, 4, 1, "prt_maze03", 88, 146);
+Warp("prt_maze03", "#hiddentemplewarp094", 63, 114, 6, 1, "prt_maze03", 14, 71);
+Warp("prt_maze03", "#hiddentemplewarp095", 63, 85, 4, 1, "prt_maze03", 169, 139);
+Warp("prt_maze03", "#hiddentemplewarp096", 74, 97, 1, 5, "prt_maze03", 54, 8);
+Warp("prt_maze03", "#hiddentemplewarp097", 45, 104, 1, 5, "prt_maze03", 96, 48);
+Warp("prt_maze03", "#hiddentemplewarp098", 105, 114, 4, 1, "prt_maze03", 128, 171);
+Warp("prt_maze03", "#hiddentemplewarp099", 114, 95, 1, 6, "prt_maze03", 176, 8);
+Warp("prt_maze03", "#hiddentemplewarp100", 85, 97, 1, 4, "prt_maze03", 63, 128);
+Warp("prt_maze03", "#hiddentemplewarp101", 142, 114, 5, 1, "prt_maze03", 54, 151);
+Warp("prt_maze03", "#hiddentemplewarp102", 125, 105, 1, 5, "prt_maze03", 58, 191);
+Warp("prt_maze03", "#hiddentemplewarp103", 182, 85, 4, 1, "prt_maze02", 100, 179);
+Warp("prt_maze03", "#hiddentemplewarp104", 194, 94, 1, 4, "prt_maze03", 151, 22);
+Warp("prt_maze03", "#hiddentemplewarp105", 168, 94, 1, 3, "prt_maze03", 191, 54);
+Warp("prt_maze03", "#hiddentemplewarp106", 14, 74, 3, 1, "prt_maze03", 63, 111);
+Warp("prt_maze03", "#hiddentemplewarp107", 14, 45, 4, 1, "prt_maze03", 88, 174);
+Warp("prt_maze03", "#hiddentemplewarp108", 5, 58, 1, 4, "prt_maze03", 191, 15);
 
 
-Npc("prt_maze03", "hiddentemplewarp109", "WARP", 74, 74, N, 3, 3)
+Npc("prt_maze03", "#hiddentemplewarp109", "WARP", 74, 74, N, 3, 3)
 {
 OnTouch:
 	var ht1 = Random(4);
@@ -157,14 +157,14 @@ OnTouch:
 }
 
 
-Warp("prt_maze03", "hiddentemplewarp110", 52, 45, 5, 1, "prt_maze03", 16, 31);
-Warp("prt_maze03", "hiddentemplewarp111", 104, 74, 5, 1, "prt_maze03", 111, 22);
-Warp("prt_maze03", "hiddentemplewarp112", 96, 45, 4, 1, "prt_maze03", 48, 104);
-Warp("prt_maze03", "hiddentemplewarp113", 114, 56, 1, 6, "prt_maze03", 8, 140);
-Warp("prt_maze03", "hiddentemplewarp114", 85, 56, 1, 5, "prt_maze03", 176, 31);
-Warp("prt_maze03", "hiddentemplewarp115", 139, 74, 7, 1, "prt_maze03", 102, 168);
+Warp("prt_maze03", "#hiddentemplewarp110", 52, 45, 5, 1, "prt_maze03", 16, 31);
+Warp("prt_maze03", "#hiddentemplewarp111", 104, 74, 5, 1, "prt_maze03", 111, 22);
+Warp("prt_maze03", "#hiddentemplewarp112", 96, 45, 4, 1, "prt_maze03", 48, 104);
+Warp("prt_maze03", "#hiddentemplewarp113", 114, 56, 1, 6, "prt_maze03", 8, 140);
+Warp("prt_maze03", "#hiddentemplewarp114", 85, 56, 1, 5, "prt_maze03", 176, 31);
+Warp("prt_maze03", "#hiddentemplewarp115", 139, 74, 7, 1, "prt_maze03", 102, 168);
 
-Npc("prt_maze03", "hiddentemplewarp116", "WARP", 139, 45, N, 7, 1)
+Npc("prt_maze03", "#hiddentemplewarp116", "WARP", 139, 45, N, 7, 1)
 {
 OnTouch:
 	var ht1 = Random(4);
@@ -181,19 +181,19 @@ OnTouch:
 	}
 }
 
-Warp("prt_maze03", "hiddentemplewarp117", 177, 74, 3, 1, "prt_maze03", 23, 128);
-Warp("prt_maze03", "hiddentemplewarp118", 175, 45, 6, 1, "prt_maze03", 22, 191);
-Warp("prt_maze03", "hiddentemplewarp119", 194, 54, 1, 5, "prt_maze03", 171, 94);
-Warp("prt_maze03", "hiddentemplewarp120", 16, 34, 7, 1, "prt_maze03", 52, 48);
-Warp("prt_maze03", "hiddentemplewarp121", 23, 5, 3, 1, "prt_maze03", 88, 13);
-Warp("prt_maze03", "hiddentemplewarp122", 54, 5, 5, 1, "prt_maze03", 71, 97);
-Warp("prt_maze03", "hiddentemplewarp123", 74, 12, 1, 4, "prt_maze03", 175, 168);
-Warp("prt_maze03", "hiddentemplewarp124", 45, 21, 1, 6, "prt_maze03", 18, 151);
-Warp("prt_maze03", "hiddentemplewarp125", 99, 34, 3, 1, "prt_maze03", 98, 151);
-Warp("prt_maze03", "hiddentemplewarp126", 114, 22, 1, 3, "prt_maze03", 104, 71);
-Warp("prt_maze03", "hiddentemplewarp127", 85, 11, 1, 5, "prt_maze03", 23, 8);
+Warp("prt_maze03", "#hiddentemplewarp117", 177, 74, 3, 1, "prt_maze03", 23, 128);
+Warp("prt_maze03", "#hiddentemplewarp118", 175, 45, 6, 1, "prt_maze03", 22, 191);
+Warp("prt_maze03", "#hiddentemplewarp119", 194, 54, 1, 5, "prt_maze03", 171, 94);
+Warp("prt_maze03", "#hiddentemplewarp120", 16, 34, 7, 1, "prt_maze03", 52, 48);
+Warp("prt_maze03", "#hiddentemplewarp121", 23, 5, 3, 1, "prt_maze03", 88, 13);
+Warp("prt_maze03", "#hiddentemplewarp122", 54, 5, 5, 1, "prt_maze03", 71, 97);
+Warp("prt_maze03", "#hiddentemplewarp123", 74, 12, 1, 4, "prt_maze03", 175, 168);
+Warp("prt_maze03", "#hiddentemplewarp124", 45, 21, 1, 6, "prt_maze03", 18, 151);
+Warp("prt_maze03", "#hiddentemplewarp125", 99, 34, 3, 1, "prt_maze03", 98, 151);
+Warp("prt_maze03", "#hiddentemplewarp126", 114, 22, 1, 3, "prt_maze03", 104, 71);
+Warp("prt_maze03", "#hiddentemplewarp127", 85, 11, 1, 5, "prt_maze03", 23, 8);
 
-Npc("prt_maze03", "hiddentemplewarp128", "WARP", 154, 22, N, 1, 12)
+Npc("prt_maze03", "#hiddentemplewarp128", "WARP", 154, 22, N, 1, 12)
 {
 OnTouch:
 	var ht1 = Random(4);
@@ -210,7 +210,7 @@ OnTouch:
 	}
 }
 
-Warp("prt_maze03", "hiddentemplewarp129", 176, 34, 4, 1, "prt_maze03", 88, 56);
-Warp("prt_maze03", "hiddentemplewarp130", 176, 5, 6, 1, "prt_maze03", 111, 95);
-Warp("prt_maze03", "hiddentemplewarp131", 194, 15, 1, 3, "prt_maze03", 8, 58);
-Warp("prt_maze03", "hiddentemplewarp132", 165, 22, 1, 4, "prt_maze03", 111, 145);
+Warp("prt_maze03", "#hiddentemplewarp129", 176, 34, 4, 1, "prt_maze03", 88, 56);
+Warp("prt_maze03", "#hiddentemplewarp130", 176, 5, 6, 1, "prt_maze03", 111, 95);
+Warp("prt_maze03", "#hiddentemplewarp131", 194, 15, 1, 3, "prt_maze03", 8, 58);
+Warp("prt_maze03", "#hiddentemplewarp132", 165, 22, 1, 4, "prt_maze03", 111, 145);

@@ -19,8 +19,9 @@ public enum MonsterSkillAiFlags
     EventOnStartCast = 8,
     RandomTarget = 16,
     HideSkillName = 32,
-    UnlimitedRange = 64,
-    NoTarget = 128
+    HideCastBar = 64,
+    UnlimitedRange = 128,
+    NoTarget = 256
 }
 
 public abstract class MonsterSkillAiBase

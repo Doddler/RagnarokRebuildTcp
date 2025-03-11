@@ -40,7 +40,7 @@ HP +100, VIT +1
 HP +400
 
 ::Ant_Egg_Card //id 4013 - slotted on Shield
-HP +5%
+HP +10%
 
 ::Roda_Frog_Card //id 4014 - slotted on Armor
 HP +400, SP +50
@@ -127,8 +127,7 @@ HP Regeneration +20%
 
 ::Stainer_Card //id 4039 - slotted on Headgear
 DEF +1
-+20% <color=#800000>Silence</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++50% <color=#800000>Silence</color> resist
 
 ::Creamy_Card //id 4040 - slotted on Accessory
 Enable <color=#0000FF>Teleport 1</color>
@@ -136,8 +135,7 @@ Enable <color=#0000FF>Teleport 1</color>
 
 ::Coco_Card //id 4041 - slotted on Headgear
 DEF +1
-+20% <color=#800000>Sleep</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++50% <color=#800000>Sleep</color> resist
 
 ::Steel_Chonchon_Card //id 4042 - slotted on Armor
 DEF +2
@@ -155,8 +153,8 @@ Enable <color=#0000FF>Hide 1</color>
 
 ::Martin_Card //id 4046 - slotted on Headgear
 DEF +1
-+20% <color=#800000>Blind</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++50% <color=#800000>Blind</color> resist
+-20% damage from Dark Property attacks
 
 ::Ghostring_Card //id 4047 - slotted on Armor
 HP Regeneration -25%
@@ -232,8 +230,8 @@ DEX +3
 
 ::Megalodon_Card //id 4067 - slotted on Shield
 DEF +1
-+20% <color=#800000>Freeze</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++50% <color=#800000>Freeze</color> resist
+-20% damage from Water Property attacks
 
 ::Scorpion_Card //id 4068 - slotted on Weapon
 +20% physical damage vs. Plant
@@ -262,8 +260,8 @@ Enable <color=#0000FF>Discount 5</color>
 
 ::Argos_Card //id 4075 - slotted on Shield
 DEF +1
-+5% <color=#800000>Petrify</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++30% <color=#800000>Petrify</color> resist
+-30% damage from Poison Property attacks
 
 ::Magnolia_Card //id 4076 - slotted on Weapon
 ATK +5
@@ -320,9 +318,8 @@ Water Property Armor
 
 ::Munak_Card //id 4090 - slotted on Shield
 DEF +1
-+15% <color=#800000>Petrify</color> resist
--5% damage from Earth attacks
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++50% <color=#800000>Petrify</color> resist
+-20% damage from Earth attacks
 
 ::Kobold_Card //id 4091 - slotted on Accessory
 STR +1, CRIT +4
@@ -442,17 +439,14 @@ HIT +100
 ::Deviruchi_Card //id 4122 - slotted on Headgear
 STR +1
 +100% <color=#800000>Blind</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Eddga_Card //id 4123 - slotted on Boots
-HP -25%
+HP -20%
 Permanent Endure Effect
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Medusa_Card //id 4124 - slotted on Shield
 -15% damage from Demon
 +100% <color=#800000>Petrify</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Deviace_Card //id 4125 - slotted on Weapon
 +7% physical damage vs. Demi-Human, Brute, Plant, and Insect
@@ -894,7 +888,6 @@ DEF +2, MDEF +2
 ::Stalactic_Golem_Card //id 4223 - slotted on Headgear
 DEF +1
 +30% <color=#800000>Stun</color> resist
--30% <color=#800000>Stun</color> duration
 
 ::Stem_Worm_Card //id 4224 - slotted on Accessory
 +1% chance to find <color=#008080>Box of Storms</color> on Brute kill

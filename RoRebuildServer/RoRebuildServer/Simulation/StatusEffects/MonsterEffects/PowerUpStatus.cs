@@ -42,11 +42,11 @@ public class PowerUpStatus : StatusEffectBase
 
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)
     {
-        ch.AddStat(CharacterStat.AddHit, state.Value1 * 10);
+        ch.AddStat(CharacterStat.AddHit, 50 + state.Value1 * 10);
     }
 
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
-        ch.SubStat(CharacterStat.AddHit, state.Value1 * 10);
+        ch.SubStat(CharacterStat.AddHit, 50 + state.Value1 * 10);
     }
 }

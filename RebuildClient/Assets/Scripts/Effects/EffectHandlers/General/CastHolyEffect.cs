@@ -44,7 +44,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             if (duration < 0.9333f)
                 duration = 0.9333f;
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.CastHolyEffect);
-            effect.Duration = duration;
+            effect.SetDurationByTime(duration);
             effect.FollowTarget = followTarget;
             effect.transform.localScale = new Vector3(2, 2, 2);
 

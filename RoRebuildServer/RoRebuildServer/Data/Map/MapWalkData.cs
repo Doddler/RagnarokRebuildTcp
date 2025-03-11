@@ -27,6 +27,8 @@ public class MapWalkData
     public bool IsCellWalkable(Position p) => (cellData[p.X + p.Y * Width] & 1) == 1;
     public bool IsCellSnipable(int x, int y) => (cellData[x + y * Width] & 4) == 4;
     public bool IsCellSnipable(Position p) => (cellData[p.X + p.Y * Width] & 4) == 4;
+    public bool IsCellInWater(int x, int y) => IsPositionInBounds(x, y) && (cellData[x + y * Width] & 2) == 2;
+    public bool IsCellInWater(Position p) => IsPositionInBounds(p) && (cellData[p.X + p.Y * Width] & 2) == 2;
     public bool DoesCellBlockLos(int x, int y) => (cellData[x + y * Width] & (byte)CellType.SeeThrough) == 0;
     public bool DoesCellBlockLos(Position p) => (cellData[p.X + p.Y * Width] & (byte)CellType.SeeThrough) == 0;
 

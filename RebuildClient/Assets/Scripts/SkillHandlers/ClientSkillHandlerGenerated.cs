@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[131];
+			handlers = new SkillHandlerBase[133];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new FirstAidHandler();
@@ -36,7 +36,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[22] = new SightHandler();
 			handlers[23] = new DefaultSkillHandler();
 			handlers[24] = new DoubleStrafeHandler();
-			handlers[25] = new DefaultSkillHandler();
+			handlers[25] = new ChargeArrowHandler();
 			handlers[26] = new ArrowShowerHandler();
 			handlers[27] = new ImproveConcentrationHandler();
 			handlers[28] = new DefaultSkillHandler();
@@ -127,7 +127,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[107] = new DefaultSkillHandler();
 			handlers[108] = new BloodDrainHandler();
 			handlers[109] = new EnergyDrainHandler();
-			handlers[110] = new DefaultSkillHandler();
+			handlers[110] = new GuidedAttackHandler();
 			handlers[111] = new DefaultSkillHandler();
 			handlers[112] = new ComboAttackHandler();
 			handlers[113] = new DefaultSkillHandler();
@@ -136,18 +136,20 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[116] = new DefaultSkillHandler();
 			handlers[117] = new DefaultSkillHandler();
 			handlers[118] = new DefaultSkillHandler();
-			handlers[119] = new DefaultSkillHandler();
+			handlers[119] = new SmokingHandler();
 			handlers[120] = new DefaultSkillHandler();
 			handlers[121] = new DefaultSkillHandler();
 			handlers[122] = new DefaultSkillHandler();
 			handlers[123] = new DefaultSkillHandler();
 			handlers[124] = new DefaultSkillHandler();
-			handlers[125] = new GrandThunderstormHandler();
+			handlers[125] = new BulwarkHandler();
 			handlers[126] = new DefaultSkillHandler();
-			handlers[127] = new DefaultSkillHandler();
+			handlers[127] = new GrandThunderstormHandler();
 			handlers[128] = new DefaultSkillHandler();
 			handlers[129] = new DefaultSkillHandler();
 			handlers[130] = new DefaultSkillHandler();
+			handlers[131] = new DefaultSkillHandler();
+			handlers[132] = new DefaultSkillHandler();
 		}
 	}
 }

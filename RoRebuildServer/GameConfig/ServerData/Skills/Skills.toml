@@ -601,7 +601,7 @@ Name = "Blood Drain"
 [EnergyDrain]
 Name = "Energy Drain"
 [GuidedAttack]
-Name = "Guided Attack"
+Name = "Guided Attacks"
 [SplashAttack]
 Name = "Splash Attack"
 [ComboAttack]
@@ -623,9 +623,13 @@ Name = "Dark Blessing"
 [Suicide]
 [Stop]
 [Hallucination]
+[Emotion]
 
 [DarkThunder]
 Name = "Dark Thunder"
+
+[Bulwark] #originally Keeping
+Name = "Bulwark"
 
 #custom
 [PharaohCurse]

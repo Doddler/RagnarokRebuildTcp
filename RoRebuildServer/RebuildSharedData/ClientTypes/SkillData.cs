@@ -18,6 +18,14 @@ public enum CastInterruptionMode : byte
     NoInterrupt = InterruptOnKnockback,
 }
 
+[Flags]
+public enum SkillCastFlags : byte
+{
+    None,
+    HideSkillName = 1,
+    HideCastBar = 2
+}
+
 
 [Serializable]
 public class SkillData

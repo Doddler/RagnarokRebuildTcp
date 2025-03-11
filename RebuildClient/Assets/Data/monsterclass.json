@@ -3301,6 +3301,17 @@
       "Color": "#FFFFFFFF"
     },
     {
+      "Id": 4299,
+      "Code": "GIANT_HONET",
+      "Name": "Giant Hornet",
+      "SpriteName": "giant_honet.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.825,
+      "Color": "#FFFFFFFF"
+    },
+    {
       "Id": 5000,
       "Code": "PORING50",
       "Name": "Poring",

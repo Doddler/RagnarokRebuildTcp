@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Assets.Scripts.Effects;
-using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Misc;
@@ -16,6 +15,7 @@ using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
 using Assets.Scripts.Utility;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -24,6 +24,7 @@ using UnityEditor;
 using UnityEngine.Assertions;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
+using HitEffect = Assets.Scripts.Effects.EffectHandlers.HitEffect;
 
 namespace Assets.Scripts.Network
 {
@@ -61,15 +62,17 @@ namespace Assets.Scripts.Network
 
         public Dictionary<EquipPosition, GameObject> AttachedComponents = new();
 
-        public string DisplayName => CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay || Name.StartsWith("[NPC]") ? Name : $"Lv.{Level} {Name}";
+        public string DisplayName => CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay || Name.StartsWith("[NPC]")
+            ? Name
+            : $"Lv.{Level} {Name}";
 
         [NonSerialized] public Vector3 CounterHitDir;
 
         [NonSerialized] public ClientSpriteType SpriteMode;
         [NonSerialized] public GameObject EntityObject;
-        [NonSerialized]public GameObject ComboIndicator;
-        [NonSerialized]public GameObject FollowerObject;
-        [NonSerialized]public GameObject BodyStateEffect;
+        [NonSerialized] public GameObject ComboIndicator;
+        [NonSerialized] public GameObject FollowerObject;
+        [NonSerialized] public GameObject BodyStateEffect;
         [NonSerialized] public StatusEffectState StatusEffectState;
 
         [NonSerialized] public CharacterFloatingDisplay FloatingDisplay;
@@ -162,13 +165,13 @@ namespace Assets.Scripts.Network
             else
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(fallbackDir));
         }
-        
+
         public void LookAtOrDefault(ServerControllable target)
         {
             if (target != null && target != this)
                 LookAt(target.transform.position);
         }
-        
+
         public void SetSp(int sp, int maxSp)
         {
             EnsureFloatingDisplayCreated();
@@ -182,7 +185,7 @@ namespace Assets.Scripts.Network
         {
             if (SpriteAnimator != null && SpriteAnimator.IsHidden && !IsMainCharacter)
                 return;
-            
+
             MaxHp = maxHp;
             Hp = hp;
             FloatingDisplay.UpdateMaxHp(maxHp);
@@ -193,7 +196,7 @@ namespace Assets.Scripts.Network
         {
             if (SpriteAnimator != null && SpriteAnimator.IsHidden && !IsMainCharacter)
                 return;
-            
+
             var oldHp = Hp;
             Hp = hp;
 
@@ -228,34 +231,34 @@ namespace Assets.Scripts.Network
             FloatingDisplay.ShowChatBubbleMessage(sName + "!!", duration);
         }
 
-        public void StartCastBar(CharacterSkill skill, float duration)
+        public void StartCastBar(CharacterSkill skill, float duration, SkillCastFlags flags)
         {
-            EnsureFloatingDisplayCreated();
-            FloatingDisplay.StartCasting(duration);
-            var sName = ClientDataLoader.Instance.GetSkillName(skill);
-            //
-            // if (skill == CharacterSkill.FireBolt)
-            //     sName = "Fire Bolt";
-            // if (skill == CharacterSkill.ColdBolt)
-            //     sName = "Cold Bolt";
-            // if (skill == CharacterSkill.Bash)
-            //     sName = "Bash";
-            // if (skill == CharacterSkill.Mammonite)
-            //     sName = "Mammonite";
-
             IsCasting = true;
-
-            if (!HideCastName && skill != CharacterSkill.NoCast && (skill != CharacterSkill.Hiding || !SpriteAnimator.IsHidden)) //don't show skill name when unhiding
+            
+            if (!flags.HasFlag(SkillCastFlags.HideCastBar))
             {
-                if (CharacterType == CharacterType.Player)
-                    FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
-                else
-                {
-                    FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
-                }
-            }
+                EnsureFloatingDisplayCreated();
+                FloatingDisplay.StartCasting(duration);
+                var sName = ClientDataLoader.Instance.GetSkillName(skill);
 
-            if (SpriteAnimator != null && SpriteAnimator.SpriteData != null && ClientDataLoader.Instance.GetUniqueAction(SpriteAnimator.SpriteData.Name, skill, out var action))
+                if (!HideCastName && skill != CharacterSkill.NoCast &&
+                    (skill != CharacterSkill.Hiding || !SpriteAnimator.IsHidden)) //don't show skill name when unhiding
+                {
+                    if (CharacterType == CharacterType.Player)
+                        FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
+                    else
+                    {
+                        FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
+                    }
+                }
+                else
+                    FloatingDisplay.HideChatBubbleMessage();
+            }
+            else
+                FloatingDisplay.HideChatBubbleMessage();
+
+            if (SpriteAnimator != null && SpriteAnimator.SpriteData != null &&
+                ClientDataLoader.Instance.GetUniqueAction(SpriteAnimator.SpriteData.Name, skill, out var action))
             {
                 skipNextAttackMotion = true;
                 var start = action.StartAt / 1000f;
@@ -282,14 +285,13 @@ namespace Assets.Scripts.Network
                 if (CharacterType == CharacterType.Player || CharacterType == CharacterType.PlayerLikeNpc)
                 {
                     SpriteAnimator.State = SpriteState.Standby;
-                    SpriteAnimator.ChangeMotion(SpriteMotion.Standby, true);   
+                    SpriteAnimator.ChangeMotion(SpriteMotion.Standby, true);
                 }
                 else
                 {
                     SpriteAnimator.State = SpriteState.Idle;
                     SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
                 }
-                
             }
         }
 
@@ -304,7 +306,6 @@ namespace Assets.Scripts.Network
                 return;
             if (SpriteAnimator.CurrentMotion == SpriteMotion.Casting)
                 SpriteAnimator.Unpause();
-
         }
 
         // public void RefreshHiddenState()
@@ -401,7 +402,7 @@ namespace Assets.Scripts.Network
             // Debug.Log($"Configure entity on {name} setting position to {position}");
             RealPosition = position;
             transform.localPosition = RealPosition + PositionOffset;
-            
+
 
             if (SpriteMode == ClientSpriteType.Sprite)
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(direction));
@@ -500,7 +501,6 @@ namespace Assets.Scripts.Network
 
         public void SetHiding(bool isHidden)
         {
-            
         }
 
         public void StartMove(float speed, float progress, int stepCount, int curStep, List<Vector2Int> steps)
@@ -689,7 +689,7 @@ namespace Assets.Scripts.Network
         {
             if (!isMoving)
                 return;
-            
+
             if (movePath.Count > 2)
                 movePath.RemoveRange(2, movePath.Count - 2);
 
@@ -771,7 +771,7 @@ namespace Assets.Scripts.Network
 
             if ((RealPosition - targetPos).magnitude > leeway)
                 LeanTween.move(gameObject, RealPosition + PositionOffset, snapSpeed);
-            
+
             RealPosition = targetPos;
             CellPosition = RealPosition.ToTilePosition();
         }
@@ -799,7 +799,7 @@ namespace Assets.Scripts.Network
         {
             if (effect == null)
                 return;
-            
+
             EffectList ??= new List<Ragnarok3dEffect>();
 
 #if UNITY_EDITOR
@@ -813,7 +813,7 @@ namespace Assets.Scripts.Network
             EffectList.Add(effect);
             effect.EffectOwner = this;
         }
-        
+
         public Ragnarok3dEffect GetExistingEffectOfType(EffectType type)
         {
             if (EffectList == null || EffectList.Count == 0)
@@ -827,7 +827,7 @@ namespace Assets.Scripts.Network
 
             return null;
         }
-        
+
         //detach an existing effect of a specific type. For safety, we delete any others as they'll probably be here forever otherwise.
         public Ragnarok3dEffect DetachExistingEffectOfType(EffectType type)
         {
@@ -855,7 +855,7 @@ namespace Assets.Scripts.Network
             {
                 EffectList.RemoveAt(endEffect[i - 1]);
             }
-            
+
             return effectOut;
         }
 
@@ -976,8 +976,8 @@ namespace Assets.Scripts.Network
             }
             else
                 SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
-            
-            
+
+
             SpriteAnimator.State = SpriteState.Idle;
 
             // Debug.Log($"PerformBasicAttackMotion {name} speed {AttackAnimationSpeed}");
@@ -993,7 +993,7 @@ namespace Assets.Scripts.Network
                 return;
             }
             // Debug.Log($"{name}:Performing attack motion.");
-            
+
             if (!IsCharacterAlive || SpriteAnimator.State == SpriteState.Dead)
                 return;
 
@@ -1097,8 +1097,6 @@ namespace Assets.Scripts.Network
                 yield break;
             }
 
-            //yield return new WaitForSeconds(SpriteAnimator.GetHitTiming());
-
             var deathTiming = SpriteAnimator.GetDeathTiming();
             SpriteAnimator.State = SpriteState.Dead;
             SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
@@ -1109,11 +1107,9 @@ namespace Assets.Scripts.Network
             if (CameraFollower.Instance.SelectedTarget == gameObject)
                 CameraFollower.Instance.ClearSelected();
 
-            //yield return new WaitForSeconds(2f);
-
             FadeOutAndVanish(2f);
         }
-
+        
         public void MonsterDie()
         {
             isMoving = false;
@@ -1135,7 +1131,7 @@ namespace Assets.Scripts.Network
             if (CameraFollower.Instance.SelectedTarget == this)
                 CameraFollower.Instance.ClearSelected();
 
-            if(position.x > 0 && position.y > 0)
+            if (position.x > 0 && position.y > 0)
                 StopImmediate(position, true);
             IsCharacterAlive = false;
             SpriteAnimator.State = SpriteState.Dead;
@@ -1198,7 +1194,7 @@ namespace Assets.Scripts.Network
             di.AttachDamageIndicator(this);
         }
 
-        
+
         private void AttachMissIndicator()
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
@@ -1257,18 +1253,17 @@ namespace Assets.Scripts.Network
         {
             SpriteAnimator.Angle = RoAnimationHelper.FacingDirectionToRotation((Direction)msg.Value1);
             // Debug.Log($"{Time.timeSinceLevelLoad} - {Name}: OnMessageFacingDirection({(Direction)msg.Value1})");
-            
         }
-        
+
         private void OnMessageAttackMotion(EntityMessage msg)
         {
-            if(msg.Entity != null)
+            if (msg.Entity != null)
                 LookAt(msg.Entity.transform.position);
-            
+
             // Debug.Log($"{Time.timeSinceLevelLoad} - {Name}: OnMessageAttackMotion({msg.Float1})");
 
             SetAttackAnimationSpeed(msg.Float1);
-            
+
             PerformBasicAttackMotion((CharacterSkill)msg.Value1);
         }
 
@@ -1304,7 +1299,7 @@ namespace Assets.Scripts.Network
         private void OnMessageElementalHit(EntityMessage msg)
         {
             Vector3 hitPosition;
-            
+
             var weaponClass = 0;
             if (msg.Entity != null)
                 weaponClass = msg.Entity.WeaponClass;
@@ -1362,16 +1357,17 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            var hasEndure = StatusEffectState != null && StatusEffectState.HasStatusEffect(CharacterStatusEffect.Endure);
+            var hasEndure = StatusEffectState != null && (StatusEffectState.HasStatusEffect(CharacterStatusEffect.Endure)
+                                                          || StatusEffectState.HasStatusEffect(CharacterStatusEffect.Smoking));
 
-            if(!hasEndure)
+            if (!hasEndure)
                 movePauseTime = DebugValueHolder.GetOrDefault("movePauseTime", 0.2f);
             UpdateMovePosition();
 
             var weaponClass = 0;
             if (msg.Entity != null)
                 weaponClass = msg.Entity.WeaponClass;
-            
+
             if (SpriteAnimator.CurrentMotion != SpriteMotion.Dead && !hasEndure)
             {
                 if (SpriteAnimator.Type == SpriteType.Player)
@@ -1390,8 +1386,8 @@ namespace Assets.Scripts.Network
                 AudioManager.Instance.OneShotSoundEffect(Id, hitSound, transform.position, 1f);
             }
 
-            if(msg.Value3 > 0)
-                AttachCriticalDamageIndicator(dmg, msg.Value2);//DamageIndicator(dmg, msg.Value2);
+            if (msg.Value3 > 0)
+                AttachCriticalDamageIndicator(dmg, msg.Value2); //DamageIndicator(dmg, msg.Value2);
             else
                 AttachDamageIndicator(dmg, msg.Value2);
         }
@@ -1422,7 +1418,7 @@ namespace Assets.Scripts.Network
                     Debug.LogError($"Unhandled entity message type {msg.Type} on entity {Name}!");
                     break;
             }
-            
+
             EntityMessagePool.Return(msg);
         }
 
@@ -1447,7 +1443,7 @@ namespace Assets.Scripts.Network
                     return;
 
                 MinimapController.Instance.SetPlayerPosition(CellPosition, Directions.GetAngleForDirection(SpriteAnimator.Direction) + 180f);
-                
+
                 Shader.SetGlobalVector(RoBlindFocus, transform.position);
             }
 
@@ -1473,13 +1469,18 @@ namespace Assets.Scripts.Network
                 // Debug.Log($"{name} hitDelay {hitDelay}");
                 return;
             }
-            
-            if(!IsCharacterAlive && SpriteAnimator.CurrentMotion != SpriteMotion.Dead)
+
+            if (!IsCharacterAlive && SpriteAnimator.CurrentMotion != SpriteMotion.Dead)
                 SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
 
             if (IsCasting && uniqueAttackAction != null && Time.timeSinceLevelLoad > uniqueAttackStart)
             {
                 SpriteAnimator.ChangeMotion((SpriteMotion)uniqueAttackAction.Animation);
+                if (uniqueAttackAction.HoldLastFrame)
+                {
+                    SpriteAnimator.CurrentMotion = SpriteMotion.Standby;
+                    SpriteAnimator.DisableLoop = true;
+                }
                 skipNextAttackMotion = true;
                 uniqueAttackAction = null;
             }
@@ -1528,13 +1529,13 @@ namespace Assets.Scripts.Network
                     SpriteAnimator.State = SpriteState.Idle;
                     SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
                 }
-                
+
                 //RealPosition may not have the correct height so we force it to update
                 RealPosition = new Vector3(RealPosition.x, walkProvider.GetHeightForPosition(RealPosition), RealPosition.z);
                 transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
             }
-            
-            if(StatusEffectState != null && StatusEffectState.HasStatusEffect(CharacterStatusEffect.Frozen))
+
+            if (StatusEffectState != null && StatusEffectState.HasStatusEffect(CharacterStatusEffect.Frozen))
                 SpriteAnimator.PauseAnimation();
         }
 

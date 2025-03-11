@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Reflection;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
@@ -15,6 +16,7 @@ using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
+using RoRebuildServer.Simulation.Util;
 using RoServerScript;
 
 namespace RoRebuildServer.Data;
@@ -134,7 +136,9 @@ public static class DataManager
     public static void ReloadScripts(bool loadExistingAssembly = false)
     {
         var loader = new DataLoader();
-
+        
+        Time.ResetDiagnosticsTimer();
+        
         ServerVersionNumber = loader.LoadVersionInfo();
         monsterStats = loader.LoadMonsterStats();
         monsterAiList = loader.LoadAiStateMachines();
@@ -163,13 +167,17 @@ public static class DataManager
         SavePoints = loader.LoadSavePoints().AsReadOnly();
         ElementChart = loader.LoadElementChart();
         MvpMonsterCodes = loader.LoadMvpList();
+
+        var dataLoadTime = Time.SampleDiagnosticsTime();
         
         //load our compiled script assemblies
         if(!loadExistingAssembly)
             ScriptAssembly = ScriptLoader.LoadAssembly();
         else
             ScriptAssembly = ScriptLoader.LoadExisting();
-        
+
+        var assemblyBuildTime = Time.SampleDiagnosticsTime();
+
         NpcManager = new NpcBehaviorManager();
         var scriptConfig = new ServerConfigScriptManager(ScriptAssembly);
         
@@ -187,24 +195,41 @@ public static class DataManager
         MonsterIdLookup = monsterIdLookup.AsReadOnly();
         MonsterCodeLookup = monsterCodeLookup.AsReadOnly();
         MonsterNameLookup = monsterNameLookup.AsReadOnly();
-
+        
         //things that require our compiled scripts
-        loader.LoadMonsterSpawnMinions();
+
         loader.LoadNpcScripts(Assembly.GetAssembly(typeof(FirewallObjectEvent))!); //load from local assembly
         loader.LoadNpcScripts(ScriptAssembly);
         loader.LoadItemInteractions(ScriptAssembly);
         loader.LoadMonsterSkillAi(ScriptAssembly);
-        
-        //things that require other things loaded first
         MapConfigs = loader.LoadMapConfigs(ScriptAssembly);
+
+        var assemblyLoadTime = Time.SampleDiagnosticsTime();
+
+        //things that require other things loaded first
+        loader.LoadMonsterSpawnMinions();
+        var t1 = Time.SampleDiagnosticsSubTime();
         SkillTree = loader.LoadSkillTree();
+        var t2 = Time.SampleDiagnosticsSubTime();
         MonsterDropData = loader.LoadMonsterDropChanceData(scriptConfig);
+        var t3 = Time.SampleDiagnosticsSubTime();
         ItemMonsterSummonList = loader.LoadMonsterSummonItemList();
+        var t4 = Time.SampleDiagnosticsSubTime();
         JobBonusTable = loader.LoadJobBonusTable();
 
+        var t5 = Time.SampleDiagnosticsSubTime();
         ValidEmotes = loader.LoadEmotes();
 
+        var t6 = Time.SampleDiagnosticsSubTime();
         scriptConfig.UpdateItemValue(ItemList);
+
+        var postTime = Time.SampleDiagnosticsTime();
+
+        ServerLogger.Log($"DataManager loaded data in {Time.CurrentDiagnosticsTime():F2}s " +
+                         $"(Data {dataLoadTime:F2}s, " +
+                         $"Compile {assemblyBuildTime:F2}s, " +
+                         $"Assembly Load {assemblyLoadTime:F2}s, " +
+                         $"Post {postTime:F2}s)");
     }
 
     public static void Initialize(bool loadExisting = false)

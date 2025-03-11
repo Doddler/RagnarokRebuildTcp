@@ -904,6 +904,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6926242252704960489}
+  - component: {fileID: 4910764711498467718}
   m_Layer: 0
   m_Name: LightSpinner
   m_TagString: Untagged
@@ -927,3 +928,22 @@ Transform:
   - {fileID: 7987277897490183786}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4910764711498467718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9011100401819450626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13af4f5ca36347aabeb5e683e63e3878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Lights:
+  - {fileID: 9068371451572253128}
+  - {fileID: 4610891346652929243}
+  - {fileID: 6167435067659342413}
+  - {fileID: 715976549773848785}
+  - {fileID: 4973874856141293932}
+  - {fileID: 1908565295500833625}

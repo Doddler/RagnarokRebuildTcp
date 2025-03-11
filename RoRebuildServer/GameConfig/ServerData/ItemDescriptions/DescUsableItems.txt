@@ -957,3 +957,6 @@ Recover 5% HP
 ::Pierre's_Treasurebox //14596
 <color=#808080>A box full of something heavy.</color>
 
+::Glittering_Orb //16000
+<color=#777777>A glittering orb that can light the suroundings with fanciful lights for 30 seconds.
+Cannot be used near an existing glittering orb.</color>

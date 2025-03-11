@@ -31,9 +31,31 @@ StateAttacking:
 	TryCast(SafetyWall, 5, 10%, 1s, 5s) -> SendEmote(20); //hmm
 }
 
+SkillHandler("CARAT") {
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
+StateChase:
+	TryCast(Hallucination, 1, 5%, 0.5s, 5s) -> SendEmote(18); //lol
+	TryCast(Provoke, 10, 20%, 0.6s, 5s) -> SendEmote(18); //lol
+StateAttacking:
+    TryCast(WindAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(18); //lol
+    TryCast(Hallucination, 1, 5%, 0.5s, 5s) -> SendEmote(29);
+}
+
 SkillHandler("MIMIC") {
 StateAttacking:
 	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(29); //heh
+}
+
+SkillHandler("ANOLIAN") {
+StateIdle:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(22); //??
+    @ResumeAiState(5%, AiAggressive, 2); //whistle
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+	TryCast(WaterAttack, 1, 20%, 0, 5s);
+    TryCast(Bash, 5, 5%, 0.8s, 5s) -> SendEmote(2); //whistle
 }
 
 macro JokerStateSwap() {

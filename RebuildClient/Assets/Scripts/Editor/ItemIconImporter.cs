@@ -67,7 +67,7 @@ namespace Assets.Scripts.Editor
                         equipIcons.Add(item.Sprite);
                 }
             }
-            
+
             //do the things
 
             File.WriteAllText("Assets/Data/SharedItemIcons.txt", sharedItemSprites.ToString());
@@ -86,6 +86,7 @@ namespace Assets.Scripts.Editor
             var srcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "sprite/아이템");
             var statusPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/effect");
             var collectionSrcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/유저인터페이스/collection");
+            var collectionAltSrcPath = "Assets/Textures/CustomIcons/Collection";
             var cardIllustSrcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/유저인터페이스/cardbmp");
             Debug.Log(srcPath);
 
@@ -124,6 +125,24 @@ namespace Assets.Scripts.Editor
                             ti.crunchedCompression = true;
                         });
                     }
+                    else
+                    {
+                        collectionSrc = Path.Combine(collectionAltSrcPath, $"{fName}.bmp");
+                        Debug.Log(collectionSrc);
+                        if (File.Exists(collectionSrc))
+                        {
+                            var tex = TextureImportHelper.LoadTexture(collectionSrc);
+                            TextureImportHelper.SaveAndUpdateTexture(tex, collectionDestPath, ti =>
+                            {
+                                ti.textureType = TextureImporterType.Sprite;
+                                ti.spriteImportMode = SpriteImportMode.Single;
+                                ti.textureCompression = TextureImporterCompression.CompressedHQ;
+                                ti.crunchedCompression = true;
+                            });
+                        }
+                        else
+                            Debug.Log("Not found :( " + collectionSrc);
+                    }
                 }
 
                 if (!File.Exists(destPath))
@@ -131,8 +150,12 @@ namespace Assets.Scripts.Editor
                     var iconPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture/유저인터페이스/item", fName + ".bmp");
                     if (!File.Exists(iconPath))
                     {
-                        Debug.LogWarning($"Could not find spr file with name {iconPath}");
-                        continue;
+                        iconPath = Path.Combine("Assets/Textures/CustomIcons/Item", fName + ".bmp");
+                        if (!File.Exists(iconPath))
+                        {
+                            Debug.LogWarning($"Could not find spr file with name {iconPath}");
+                            continue;
+                        }
                     }
 
                     var tex = TextureImportHelper.LoadTexture(iconPath);
@@ -276,7 +299,7 @@ namespace Assets.Scripts.Editor
                             ti.textureCompression = TextureImporterCompression.Uncompressed;
                         }, false);
                     }
-                    
+
                     var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(destPath);
                     if (sprite == null)
                     {
@@ -317,9 +340,8 @@ namespace Assets.Scripts.Editor
             {
                 atlasObj
             }, BuildTarget.StandaloneWindows64);
-            
-            
-            
+
+
             //card illustrations
             var cardIllustData = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/cardillustrations.txt");
             var cardIllustLines = cardIllustData.text.Split('\n');
@@ -334,9 +356,9 @@ namespace Assets.Scripts.Editor
 
                 if (!itemIdToCode.TryGetValue(id, out var itemCode))
                     continue;
-                
+
                 var collectionDestPath = $"Assets/Sprites/Imported/Collections/cardart_{itemCode}.png";
-                
+
                 if (!File.Exists(collectionDestPath))
                 {
                     var collectionSrc = Path.Combine(cardIllustSrcPath, $"{s[1]}.bmp");

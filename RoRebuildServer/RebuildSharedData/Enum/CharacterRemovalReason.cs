@@ -6,5 +6,7 @@ public enum CharacterRemovalReason : byte
     Teleport,
     Disconnect,
     Dead,
+    Metamorphosis,
+    Recall,
     Refresh
 }

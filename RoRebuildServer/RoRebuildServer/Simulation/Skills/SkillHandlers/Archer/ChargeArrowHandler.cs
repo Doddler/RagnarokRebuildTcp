@@ -1,7 +1,9 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer;
@@ -29,6 +31,7 @@ public class ChargeArrowHandler : SkillHandlerBase
 
         var res = source.CalculateCombatResult(target, 1.5f, 1, AttackFlags.Physical | AttackFlags.Ranged, CharacterSkill.ChargeArrow);
         res.KnockBack = 6;
+        res.Time += source.Character.Position.DistanceTo(target.Character.Position) / ServerConfig.ArrowTravelTime;
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 

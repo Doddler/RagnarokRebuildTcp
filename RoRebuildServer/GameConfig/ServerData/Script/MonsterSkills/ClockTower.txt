@@ -1,4 +1,22 @@
 //Clock Tower!
+#include "_macro.txt"
+
+SkillHandler("ARCLOUSE") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 7); //angry
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(EarthAttack, 1, 20%, 0s, 5s);
+}
+
+SkillHandler("BRILIGHT") {
+StateAttacking:
+    TryCast(Silence, 3, 5%, 0.7s, 5s, NoInterrupt);
+    TryCast(FireAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
+    TryCast(Bulwark, 1, 20%, 0s, 5s)[HpPercent < 20];
+    TryCast(PiercingAttack, 2, 5%, 0, 5s);
+}
 
 SkillHandler("ELDER") {
 StateAttacking:
@@ -18,10 +36,34 @@ StateChase:
 	TryCast(LightningBolt, 3, 20%, 0, 5s);
 }
 
+SkillHandler("C_TOWER_MANAGER") {
+StateIdle:
+	TryCast(Teleport, 1, 5%, 0, 30s);
+    @ResumeAiState(2%, AiPassiveSense, 7); //...
+StateChase:
+	TryCast(Silence, 5, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(9); //...
+	TryCast(Sleep, 5, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(9); //...
+StateAttacking:
+	TryCast(Silence, 5, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(9); //...
+	TryCast(Sleep, 5, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(9); //...
+	TryCast(None, 3, 20%, 0, 5s) -> {
+		ChangeAiClass(AiStandardBoss, false);
+		SendEmote(6); //angry
+	};
+}
 
 SkillHandler("OWL_BARON") {
 StateAttacking:
 	TryCast(LightningBolt, 5, 20%, 0, 5s);
 StateChase:
 	TryCast(LightningBolt, 5, 20%, 0, 5s);
+}
+
+SkillHandler("BATHORY") {
+StateChase:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(30); //kiss
+	TryCast(EnergyDrain, 1, 5%, 0, 5s) -> SendEmote(30); //kiss
+StateAttacking:
+	TryCast(EnergyDrain, 1, 5%, 0, 5s) -> SendEmote(30); //kiss
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt);
 }

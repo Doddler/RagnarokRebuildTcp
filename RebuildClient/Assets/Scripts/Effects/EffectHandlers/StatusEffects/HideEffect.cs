@@ -18,7 +18,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
         public static void AttachHideEffect(GameObject hideTarget)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.Hide);
-            effect.Duration = 2f; //we'll manually end this early probably
+            effect.SetDurationByTime(2f); //we'll manually end this early probably
             effect.FollowTarget = hideTarget;
 
             if (HideEffectSprite == null && !IsLoadingSprite)

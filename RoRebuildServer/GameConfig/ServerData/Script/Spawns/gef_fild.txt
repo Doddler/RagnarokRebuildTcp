@@ -158,8 +158,8 @@ MapConfig("gef_fild09")
 MapConfig("gef_fild10")
 {
 	CreateSpawn("ORC_LORD", 1, 7200000, 3600000, MVP);
-	CreateSpawn("ORK_WARRIOR", 15);
-	CreateSpawn("ORC_LADY", 75);
+	CreateSpawn("ORK_WARRIOR", 25);
+	CreateSpawn("ORC_LADY", 65);
 	CreateSpawn("POPORING", 15);
 	CreateSpawn("ORC_BABY", 15);
 	CreateSpawn("BLUE_PLANT", 3, %(46, 350, 5, 5), 900000, 450000);

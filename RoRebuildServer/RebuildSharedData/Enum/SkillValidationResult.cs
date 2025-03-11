@@ -23,5 +23,7 @@ namespace RebuildSharedData.Enum
         MemoLocationInvalid,
         MemoLocationUnwalkable,
         TooFarAway,
+        MustBeStandingInWater,
+        MissingRequiredItem
     }
 }

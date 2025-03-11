@@ -7,6 +7,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Monsters;
@@ -16,6 +17,7 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
+using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntityComponents;
@@ -108,6 +110,7 @@ public partial class Monster : IEntityAutoReset
     
     public bool LockMovementToSpawn;
     public bool GivesExperience;
+    public bool IsAiActive;
 
     public MonsterAiState CurrentAiState;
     public MonsterAiState PreviousAiState;
@@ -210,6 +213,7 @@ public partial class Monster : IEntityAutoReset
         Entity = Entity.Null;
         Master = Entity.Null;
         Character = null!;
+        IsAiActive = false;
         aiEntries = null!;
         //SpawnEntry = null;
         CombatEntity = null!;
@@ -288,7 +292,33 @@ public partial class Monster : IEntityAutoReset
             skillAiHandler = handler;
             handler.OnInit(skillState);
         }
+    }
 
+    public void ChangeMonsterClass(string name, MonsterDatabaseInfo info, MonsterAiType type, bool isMetamorphosis)
+    {
+        if (!Character.IsActive || Character.Map == null)
+            return;
+
+        Character.ClassId = info.Id;
+        MonsterBase = info;
+        aiType = info.AiType;
+        aiEntries = DataManager.GetAiStateMachine(aiType);
+        
+        Character.Name = info.Name;
+        CurrentAiState = MonsterAiState.StateIdle;
+
+        if (DataManager.MonsterSkillAiHandlers.TryGetValue(info.Code, out var handler))
+        {
+            skillAiHandler = handler;
+            handler.OnInit(skillState);
+        }
+        else
+            skillAiHandler = null;
+
+        InitializeStats();
+        nextAiUpdate = Time.ElapsedTime + 1;
+
+        Character.Map.RefreshEntity(Character, isMetamorphosis ? CharacterRemovalReason.Metamorphosis : CharacterRemovalReason.Refresh);
     }
 
     public void AddChild(ref Entity child, MonsterAiType newAiType = MonsterAiType.AiEmpty)
@@ -354,10 +384,10 @@ public partial class Monster : IEntityAutoReset
         var magicMin = MonsterBase.Int + MonsterBase.Int / 7 * MonsterBase.Int / 7;
         var magicMax = MonsterBase.Int + MonsterBase.Int / 5 * MonsterBase.Int / 5;
 
-        if (magicMin < MonsterBase.AtkMin / 2)
-            magicMin = MonsterBase.AtkMin / 2;
-        if (magicMax < MonsterBase.AtkMax / 2)
-            magicMax = MonsterBase.AtkMax / 2;
+        if (magicMin < MonsterBase.AtkMin / 6)
+            magicMin = MonsterBase.AtkMin / 6;
+        if (magicMax < MonsterBase.AtkMax / 6)
+            magicMax = MonsterBase.AtkMax / 6;
 
         SetStat(CharacterStat.Level, MonsterBase.Level);
         SetStat(CharacterStat.Hp, MonsterBase.HP);
@@ -692,7 +722,7 @@ public partial class Monster : IEntityAutoReset
 
     public void RunCastSuccessEvent()
     {
-        if (CastSuccessEvent != null)
+        if (CastSuccessEvent != null && CurrentAiState != MonsterAiState.StateDead)
             CastSuccessEvent(skillState);
         //else
         //    ServerLogger.Debug("Cast success");
@@ -862,6 +892,14 @@ public partial class Monster : IEntityAutoReset
     {
         if (Character.Map?.PlayerCount == 0)
             return;
+
+        if (!IsAiActive)
+        {
+            if (Character.HasVisiblePlayers())
+                IsAiActive = true;
+            else
+                return;
+        }
 
         if (nextAiUpdate > Time.ElapsedTime)
             return;

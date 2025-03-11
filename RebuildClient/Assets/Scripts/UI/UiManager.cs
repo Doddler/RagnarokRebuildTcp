@@ -222,7 +222,7 @@ public class UiManager : MonoBehaviour
     {
         var positions = GameConfig.Data.WindowPositions;
         for (var i = 0; i < positions.Length; i++)
-            positions[i] = FloatingDialogBoxes[i].Target.position;
+            positions[i] = FloatingDialogBoxes[i].Target.anchoredPosition;
         GameConfig.Data.WindowPositions = positions;
     }
 
@@ -241,7 +241,7 @@ public class UiManager : MonoBehaviour
             
             positions = new Vector2[FloatingDialogBoxes.Capacity];
             for (var i = 0; i < positions.Length; i++)
-                positions[i] = FloatingDialogBoxes[i].Target.position;
+                positions[i] = FloatingDialogBoxes[i].Target.anchoredPosition;
         }
 
         if (positions.Length < FloatingDialogBoxes.Count)
@@ -250,14 +250,14 @@ public class UiManager : MonoBehaviour
             var oldSize = positions.Length;
             Array.Resize(ref positions, FloatingDialogBoxes.Count);
             for(var i = oldSize; i < positions.Length; i++)
-                positions[i] = FloatingDialogBoxes[i].Target.position;
+                positions[i] = FloatingDialogBoxes[i].Target.anchoredPosition;
         }
 
         // Debug.Log($"{positions.Length} {FloatingDialogBoxes.Count}");
         
         for (var i = 0; i < FloatingDialogBoxes.Count; i++)
         {
-            FloatingDialogBoxes[i].Target.position = positions[i];
+            FloatingDialogBoxes[i].Target.anchoredPosition = positions[i];
         }
 
         GameConfig.Data.WindowPositions = positions;

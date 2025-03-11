@@ -19,7 +19,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
         public static Ragnarok3dEffect AttachFreezeEffect(ServerControllable target)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.Freeze);
-            effect.Duration = 120f; //we'll manually end this early probably
+            effect.SetDurationByTime(120f); //we'll manually end this early probably
             effect.FollowTarget = target.gameObject;
             effect.SourceEntity = target;
 

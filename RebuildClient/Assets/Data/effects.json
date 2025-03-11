@@ -1041,7 +1041,7 @@
       "StrFile": "keeping",
       "Sprite": "",
       "SoundFile": "",
-      "Offset": -0.4,
+      "Offset": -0.6,
       "PrefabName": ""
     },
     {
@@ -1147,18 +1147,6 @@
       "Billboard": true,
       "IsLooping": false,
       "StrFile": "stonecurse",
-      "Sprite": "",
-      "SoundFile": "",
-      "Offset": 0,
-      "PrefabName": ""
-    },
-    {
-      "Id": 96,
-      "Name": "Silence",
-      "ImportEffect": true,
-      "Billboard": true,
-      "IsLooping": false,
-      "StrFile": "silence",
       "Sprite": "",
       "SoundFile": "",
       "Offset": 0,

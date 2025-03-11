@@ -95,7 +95,7 @@ namespace RoRebuildServer.EntityComponents.Npcs
             Debug.Assert(Npc.Character.Map != null);
             Npc.Character.MoveSpeed = speed / 1000f;
             if(!Npc.Character.TryMove(new Position(x, y), 0))
-                Npc.Character.Map.TeleportEntity(ref Npc.Entity, Npc.Character, new Position(x, y), CharacterRemovalReason.OutOfSight);
+                Npc.Character.Map.TeleportEntity(ref Npc.Entity, Npc.Character, new Position(x, y), CharacterRemovalReason.OutOfSight, false);
         }
 
 

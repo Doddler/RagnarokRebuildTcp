@@ -39,7 +39,7 @@ internal class ZoneWorker : BackgroundService
         if (spawnTime > 0)
         {
             //Monster.MaxSpawnTimeInSeconds = spawnTime / 1000f;
-            ServerLogger.Log($"Max monster spawn time set to {spawnTime} seconds.");
+            ServerLogger.Log($"Max monster spawn time set to {spawnTime/1000f} seconds.");
         }
         
         world = new World();

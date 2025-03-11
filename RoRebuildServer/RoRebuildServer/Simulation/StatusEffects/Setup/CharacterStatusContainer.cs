@@ -472,7 +472,7 @@ public class CharacterStatusContainer
 
         StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
         statusEffects!.Remove(ref status);
-
+        
         var updateMode = StatusEffectHandler.GetUpdateMode(status.Type);
         if (updateMode.HasFlag(StatusUpdateMode.OnTakeDamage))
             onHitEffects--;
@@ -652,6 +652,8 @@ public class CharacterStatusContainer
         for (var i = 0; i < count; i++)
         {
             var status = StatusEffectState.Deserialize(br);
+            if (StatusEffectHandler.HasFlag(status.Type, StatusEffectFlags.NoSave))
+                continue;
             if(status.Type != CharacterStatusEffect.None && status.Expiration > Time.ElapsedTime)
                 AddNewStatusEffect(status, true, true);
         }

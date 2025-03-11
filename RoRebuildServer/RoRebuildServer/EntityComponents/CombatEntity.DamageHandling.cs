@@ -368,6 +368,10 @@ public partial class CombatEntity
         di.Damage = damage;
         di.HitCount = (byte)req.HitCount;
 
+        //arrow travel time
+        if (Character.Type == CharacterType.Player && Player.WeaponClass == 12 && req.SkillSource == CharacterSkill.None)
+            di.Time += Character.Position.DistanceTo(target.Character.Position) / ServerConfig.ArrowTravelTime;
+
         if (damage > 0 && flags.HasFlag(AttackFlags.Physical))
             di.Flags |= DamageApplicationFlags.PhysicalDamage;
         if (damage > 0 && flags.HasFlag(AttackFlags.Magical))

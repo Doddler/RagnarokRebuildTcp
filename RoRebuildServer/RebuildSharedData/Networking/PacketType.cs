@@ -44,6 +44,7 @@ public enum PacketType : byte
     [ServerOnlyPacket] LevelUp,
     [ServerOnlyPacket] Death,
     [ServerOnlyPacket] HpRecovery,
+    [ServerOnlyPacket] ImprovedRecoveryTick,
     [ServerOnlyPacket] ChangeSpValue,
     [ServerOnlyPacket] UpdateZeny,
     Respawn,

@@ -47,7 +47,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 duration = 1.16f;
             
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.CastEffect);
-            effect.Duration = duration;
+            effect.SetDurationByTime(duration);
             effect.FollowTarget = followTarget;
             
             if (!CastMaterials.TryGetValue(tex, out var mat))

@@ -33,9 +33,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
             if (eventType == CreateEntityEventType.EnterServer || eventType == CreateEntityEventType.Warp)
             {
-                if (control.IsMainCharacter || control.CharacterType != CharacterType.Player || control.IsHidden)
+                if (control.IsMainCharacter || control.IsHidden)
                     return;
-                EntryEffect.LaunchEntryAtLocation(control.transform.position);
+                
+                EntryEffect.LaunchEntryAtLocation(control.transform.position, control.CharacterType == CharacterType.Monster ? 0.3f : 0.7f);
             }
         }
         

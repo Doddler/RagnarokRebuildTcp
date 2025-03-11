@@ -38,7 +38,7 @@ public class StatusPetrified : StatusEffectBase
     }
 
     //we only want to proc the +50% damage once, but we don't want them to be free from stone until a hit actually lands,
-    //so we store a flag to make sure we don't add bonus damage to more than one hit before the damage is applied
+    //so we store a flag to make sure we don't add bonus damage to more than one hit before the damage is applied.
     public override StatusUpdateResult OnCalculateDamageTaken(CombatEntity ch, ref StatusEffectState state, ref AttackRequest req,
         ref DamageInfo info)
     {
@@ -53,7 +53,7 @@ public class StatusPetrified : StatusEffectBase
 
     public override StatusUpdateResult OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
     {
-        if ((info.IsDamageResult && info.Damage > 0) || state.Value4 == 1)
+        if (state.Value4 == 1) //(info.IsDamageResult && info.Damage > 0) || 
             return StatusUpdateResult.EndStatus;
 
         return StatusUpdateResult.Continue;

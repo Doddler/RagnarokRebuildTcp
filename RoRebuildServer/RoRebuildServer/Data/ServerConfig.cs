@@ -8,6 +8,7 @@ public static class ServerConfig
     public const int MaxAoESize = 9;
     public const int InitialConnectionCapacity = 40;
     public const int MaxAttackRangeWhileBlind = 5;
+    public const float ArrowTravelTime = 44f;
 
     private static ServerDebugConfig? serverDebugConfig;
     private static ServerDataConfig? serverDataConfig;

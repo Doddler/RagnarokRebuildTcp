@@ -19,7 +19,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
         public static Ragnarok3dEffect AttachSleepEffect(ServerControllable target)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.Sleep);
-            effect.Duration = 40f; //we'll manually end this early probably
+            effect.SetDurationByTime(40f); //we'll manually end this early probably
             effect.FollowTarget = target.gameObject;
             effect.SourceEntity = target;
 

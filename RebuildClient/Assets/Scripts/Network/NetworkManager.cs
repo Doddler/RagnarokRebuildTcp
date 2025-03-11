@@ -19,6 +19,7 @@ using Assets.Scripts.Utility;
 using HybridWebSocket;
 using JetBrains.Annotations;
 using Lidgren.Network;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -51,6 +52,7 @@ namespace Assets.Scripts.Network
         public int PlayerId;
         public NetQueue<ClientInboundMessage> InboundMessages = new NetQueue<ClientInboundMessage>(30);
         public NetQueue<ClientOutgoingMessage> OutboundMessages = new NetQueue<ClientOutgoingMessage>(30);
+        public Dictionary<int, float> EntityLastSeenTime = new();
 
         public PlayerState PlayerState = new PlayerState();
 
@@ -1019,45 +1021,45 @@ namespace Assets.Scripts.Network
                     break;
             }
         }
-
-        public void OnMessageStartCasting(ClientInboundMessage msg)
-        {
-            var srcId = msg.ReadInt32();
-            var targetId = msg.ReadInt32();
-            var skill = (CharacterSkill)msg.ReadByte();
-            var lvl = (int)msg.ReadByte();
-            var dir = (Direction)msg.ReadByte();
-            var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
-            var castTime = msg.ReadFloat();
-
-            EntityList.TryGetValue(targetId, out var target);
-
-            if (EntityList.TryGetValue(srcId, out var controllable))
-            {
-                if (controllable.SpriteAnimator.State == SpriteState.Walking)
-                    controllable.StopImmediate(casterPos, false);
-
-                if (target != null)
-                    controllable.LookAt(target.transform.position);
-                else
-                    controllable.SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(dir));
-
-                if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
-                {
-                    controllable.SpriteAnimator.State = SpriteState.Standby;
-                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Casting);
-                    controllable.SpriteAnimator.PauseAnimation();
-                }
-
-                ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
-                controllable.StartCastBar(skill, castTime);
-                //
-                // if (skill == CharacterSkill.FireBolt)
-                //     CastEffect.Create(castTime, "ring_red", controllable.gameObject);
-                // if (skill == CharacterSkill.ColdBolt)
-                //     CastEffect.Create(castTime, "ring_blue", controllable.gameObject);
-            }
-        }
+        //
+        // public void OnMessageStartCasting(ClientInboundMessage msg)
+        // {
+        //     var srcId = msg.ReadInt32();
+        //     var targetId = msg.ReadInt32();
+        //     var skill = (CharacterSkill)msg.ReadByte();
+        //     var lvl = (int)msg.ReadByte();
+        //     var dir = (Direction)msg.ReadByte();
+        //     var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
+        //     var castTime = msg.ReadFloat();
+        //
+        //     EntityList.TryGetValue(targetId, out var target);
+        //
+        //     if (EntityList.TryGetValue(srcId, out var controllable))
+        //     {
+        //         if (controllable.SpriteAnimator.State == SpriteState.Walking)
+        //             controllable.StopImmediate(casterPos, false);
+        //
+        //         if (target != null)
+        //             controllable.LookAt(target.transform.position);
+        //         else
+        //             controllable.SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(dir));
+        //
+        //         if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
+        //         {
+        //             controllable.SpriteAnimator.State = SpriteState.Standby;
+        //             controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Casting);
+        //             controllable.SpriteAnimator.PauseAnimation();
+        //         }
+        //
+        //         ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
+        //         controllable.StartCastBar(skill, castTime);
+        //         //
+        //         // if (skill == CharacterSkill.FireBolt)
+        //         //     CastEffect.Create(castTime, "ring_red", controllable.gameObject);
+        //         // if (skill == CharacterSkill.ColdBolt)
+        //         //     CastEffect.Create(castTime, "ring_blue", controllable.gameObject);
+        //     }
+        // }
 
         public void OnMessageStartAreaCasting(ClientInboundMessage msg)
         {
@@ -1069,7 +1071,7 @@ namespace Assets.Scripts.Network
             var dir = (Direction)msg.ReadByte();
             var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
             var castTime = msg.ReadFloat();
-            var hideName = msg.ReadBoolean();
+            var flags = (SkillCastFlags)msg.ReadByte();
 
             if (EntityList.TryGetValue(srcId, out var controllable))
             {
@@ -1086,9 +1088,9 @@ namespace Assets.Scripts.Network
                     controllable.SpriteAnimator.PauseAnimation();
                 }
 
-                controllable.HideCastName = hideName;
+                controllable.HideCastName = flags.HasFlag(SkillCastFlags.HideSkillName);
                 ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
-                controllable.StartCastBar(skill, castTime);
+                controllable.StartCastBar(skill, castTime, flags);
             }
         }
 
@@ -1170,9 +1172,9 @@ namespace Assets.Scripts.Network
                 case PacketType.NpcInteraction:
                     OnMessageNpcInteraction(msg);
                     break;
-                case PacketType.StartCast:
-                    OnMessageStartCasting(msg);
-                    break;
+                // case PacketType.StartCast:
+                //     OnMessageStartCasting(msg);
+                //     break;
                 case PacketType.StartAreaCast:
                     OnMessageStartAreaCasting(msg);
                     break;

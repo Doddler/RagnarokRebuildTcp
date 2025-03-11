@@ -1,0 +1,16 @@
+﻿{
+  "Items": [
+    {
+      "Sprite": "pupa",
+      "RemoveType": "FadeOut"
+    },
+    {
+      "Sprite": "fabre",
+      "RemoveType": "Immediate"
+    },
+    {
+      "Sprite": "ant_egg",
+      "RemoveType": "FadeOut"
+    }
+  ]
+}

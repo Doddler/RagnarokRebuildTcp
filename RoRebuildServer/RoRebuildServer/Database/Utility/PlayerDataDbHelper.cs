@@ -304,7 +304,7 @@ public static class PlayerDataDbHelper
 
         player.LearnedSkills = DbHelper.ReadDictionary<CharacterSkill>(br) ?? new Dictionary<CharacterSkill, int>();
         player.NpcFlags = DbHelper.ReadDictionary(br);
-        if(CurrentPlayerSaveVersion == 3) //if we're upgrading to a new save version, we won't restore status effects (as their IDs might have changed)
+        if(saveVersion == CurrentPlayerSaveVersion) //if we're upgrading to a new save version, we won't restore status effects (as their IDs might have changed)
             player.CombatEntity.TryDeserializeStatusContainer(br);
 
         for (var i = 0; i < 4; i++)

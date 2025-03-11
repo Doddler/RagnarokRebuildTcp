@@ -495,13 +495,15 @@ public partial class Monster
     {
         Target = Entity.Null;
 
-        var extraTime = 0f;
+        //var extraTime = 0f;
 
         if (Character.Map!.IsEntityStacked(Character))
-            if (AdjustToAdjacentTile())
-                extraTime = 2f;
-        
-        nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f) + extraTime;
+        {
+            Character.Map.FindUnoccupiedAdjacentTile(Character.Position, out var tile);
+            Character.TryMove(tile, 0); //we actually don't really care if this is really unoccupied
+        }
+
+        nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f); // + extraTime;
         inAdjustMove = false;
 
         return true;

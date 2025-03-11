@@ -16,7 +16,7 @@ public class CurseAttackHandler : SkillHandlerBase
         if (target == null)
             return;
 
-        var res = source.CalculateCombatResult(target, 1f, 1, AttackFlags.Magical, CharacterSkill.Curse, AttackElement.Dark);
+        var res = source.CalculateCombatResult(target, 1.2f, 1, AttackFlags.Physical, CharacterSkill.Curse, AttackElement.Dark);
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 

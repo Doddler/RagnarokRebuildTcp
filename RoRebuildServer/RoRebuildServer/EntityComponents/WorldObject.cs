@@ -714,12 +714,7 @@ public class WorldObject : IEntityAutoReset
             if (!Map.IsEntityStacked(this))
                 return;
 
-            if (Type == CharacterType.Player && Player.AutoAttackLock)
-                return;
-            if (Type == CharacterType.Monster && Monster.Target.IsAlive())
-                return;
-
-            if (QueuedAction == QueuedAction.None && Map.FindUnoccupiedAdjacentTile(Position, out var newMove))
+            if (Map.FindUnoccupiedAdjacentTile(Position, out var newMove))
                 TryMove(newMove, 0);
         }
     }

@@ -232,6 +232,12 @@ CanDisable = true
 # Monster Status Effects
 #----------------------------------
 
+[GuidedAttack]
+Name = "Guided Attack"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
+
 [DarkBlessing]
 Name = "Dark Blessing"
 Type = "Debuff"
@@ -265,6 +271,17 @@ Name = "Doom"
 Type = "Debuff"
 CanDispel = false
 CanDisable = true
+
+[Bulwark]
+Name = "Bulwark"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
+
+[Smoking]
+Name = "Smoking"
+Type = "Debuff"
+
 
 #----------------------------------
 # Utility Effects

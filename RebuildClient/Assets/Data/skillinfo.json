@@ -430,7 +430,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Conjure a magic flame that reveals hidden monsters and players in a 7x7 area around you. Lasts for 10 seconds.",
       "InterruptMode": 0
     },
     {
@@ -1707,7 +1707,7 @@
     {
       "SkillId": 110,
       "Icon": "nv_basic",
-      "Name": "Guided Attack",
+      "Name": "Guided Attacks",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1863,7 +1863,7 @@
     {
       "SkillId": 123,
       "Icon": "nv_basic",
-      "Name": "Dark Thunder",
+      "Name": "Emotion",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1875,7 +1875,7 @@
     {
       "SkillId": 124,
       "Icon": "nv_basic",
-      "Name": "Pharaoh\u0027s Curse",
+      "Name": "Dark Thunder",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1887,19 +1887,19 @@
     {
       "SkillId": 125,
       "Icon": "nv_basic",
-      "Name": "Grand Thunderstorm",
+      "Name": "Bulwark",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
       "Description": null,
-      "InterruptMode": 3
+      "InterruptMode": 0
     },
     {
       "SkillId": 126,
       "Icon": "nv_basic",
-      "Name": "Reward for Quest",
+      "Name": "Pharaoh\u0027s Curse",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1911,19 +1911,19 @@
     {
       "SkillId": 127,
       "Icon": "nv_basic",
-      "Name": "Vampyrism",
+      "Name": "Grand Thunderstorm",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
       "Description": null,
-      "InterruptMode": 0
+      "InterruptMode": 3
     },
     {
       "SkillId": 128,
       "Icon": "nv_basic",
-      "Name": "HP Breaker",
+      "Name": "Reward for Quest",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1935,7 +1935,7 @@
     {
       "SkillId": 129,
       "Icon": "nv_basic",
-      "Name": "Mental Breaker",
+      "Name": "Vampyrism",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1946,6 +1946,30 @@
     },
     {
       "SkillId": 130,
+      "Icon": "nv_basic",
+      "Name": "HP Breaker",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 131,
+      "Icon": "nv_basic",
+      "Name": "Mental Breaker",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 132,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,

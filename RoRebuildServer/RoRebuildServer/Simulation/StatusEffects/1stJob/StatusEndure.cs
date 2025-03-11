@@ -16,6 +16,8 @@ public class StatusEndure : StatusEffectBase
         if (info.Result != AttackResult.NormalDamage && info.Result != AttackResult.CriticalDamage)
             return StatusUpdateResult.Continue;
         info.Flags |= DamageApplicationFlags.NoHitLock;
+        if (state.Value1 >= 9999)
+            return StatusUpdateResult.Continue;
         state.Value1--;
         if (state.Value1 <= 0 && ch.Character.Type != CharacterType.Monster)
             return StatusUpdateResult.EndStatus;

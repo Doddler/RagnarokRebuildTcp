@@ -12,7 +12,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     {
         public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
         {
-            attack.Target.Messages.SendHitEffect(attack.Src, attack.MotionTime, 1, 2);
+            attack.Target.Messages.SendHitEffect(attack.Src, attack.DamageTiming, 1, 2);
         }
 
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)

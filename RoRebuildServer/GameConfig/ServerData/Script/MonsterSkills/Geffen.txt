@@ -39,6 +39,14 @@ StateAttacking:
     TryCast(PoisonAttack, 2, 5%, 0s, 5s);
 }
 
+SkillHandler("AMBERNITE") {
+StateRandomMove:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(19); //sweating
+StateAttacking:
+    TryCast(Bulwark, 1, 8%, 0.7s, 5s)[HpPercent < 50];
+    TryCast(WaterAttack, 1, 20%, 0, 5s);
+}
+
 SkillHandler("KOBOLD_1") {
 StateIdle:
     TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(22); //??

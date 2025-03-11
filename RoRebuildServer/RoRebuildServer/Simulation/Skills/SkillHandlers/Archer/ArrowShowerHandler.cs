@@ -7,6 +7,8 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 using System.Diagnostics;
+using RoRebuildServer.Data;
+using RoRebuildServer.Simulation.Pathfinding;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer;
 
@@ -57,7 +59,7 @@ public class ArrowShowerHandler : SkillHandlerBase
 
                 var res = source.CalculateCombatResult(blastTarget.CombatEntity, attack);
                 res.KnockBack = 2;
-                res.AttackMotionTime += 0.5f; //for animation
+                res.Time += source.Character.Position.DistanceTo(blastTarget.Position) / ServerConfig.ArrowTravelTime; //for animation
                 res.AttackPosition = position;
 
                 source.ExecuteCombatResult(res, false);

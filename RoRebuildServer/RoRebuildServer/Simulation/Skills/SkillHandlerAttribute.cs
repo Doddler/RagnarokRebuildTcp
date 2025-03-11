@@ -1,9 +1,11 @@
 ﻿using JetBrains.Annotations;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
 
@@ -186,8 +188,8 @@ public struct SkillCastInfo()
     public short ItemSource = -1;
     public CharacterSkill Skill;
     public sbyte Range { get; set; } = -1;
+    public SkillCastFlags Flags;
     public bool IsIndirect { get; set; }
-    public bool HideName { get; set; }
 
     public bool IsValid => Level > 0 && Level <= 30;
     public void Clear() => this = default; //{ Level = 0; Range = -1; ItemSource = -1; IsIndirect = false; HideName = false; }

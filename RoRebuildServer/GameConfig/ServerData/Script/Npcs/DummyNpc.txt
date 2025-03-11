@@ -1045,11 +1045,11 @@ Npc("prt_in", "TenSue", "4W_M_01", 177, 20, W) { }
 //Npc("prt_in", "Weapon Dealer", "1_M_01", 171, 140, N) { }
 //Npc("prt_in", "Weapon Dealer", "1_M_JOBGUIDER", 172, 130, N) { }
 //Npc("prt_in", "Wedding Shop Dealer", "1_F_LIBRARYGIRL", 211, 169, N) { }
-Npc("prt_maze02", "Gordon", "1_M_BARD", 14, 183, S) { }
+//Npc("prt_maze02", "Gordon", "1_M_BARD", 14, 183, S) { }
 Npc("prt_maze02", "Guard", "8W_SOLDIER", 100, 69, N) { }
 Npc("prt_maze02", "Guard", "8W_SOLDIER", 110, 69, N) { }
-Npc("prt_maze02", "Pleur", "4_F_02", 16, 183, SW) { }
-Npc("prt_maze02", "Pleur", "4_F_02", 57, 151, NW) { }
+//Npc("prt_maze02", "Pleur", "4_F_02", 16, 183, SW) { }
+//Npc("prt_maze02", "Pleur", "4_F_02", 57, 151, NW) { }
 Npc("prt_monk", "Assistant", "4_M_ORIENT02", 225, 180, NW) { }
 Npc("prt_monk", "Asthe", "1_F_PRIEST", 230, 106, SW) { }
 Npc("prt_monk", "Chief Guard", "4_F_MONK", 199, 169, SW) { }

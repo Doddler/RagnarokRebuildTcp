@@ -227,7 +227,6 @@ internal class ScriptTreeWalker
         var statements = functionContext.block1;
         VisitStatementBlock(statements);
 
-
         builder.EndMethod();
         builder.EndClass();
 

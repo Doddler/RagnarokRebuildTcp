@@ -49,6 +49,7 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     public CharacterSkill LastDamageSourceType => monster.LastDamageSourceType;
     public bool CanSeePlayers => monster.Character.HasVisiblePlayers();
+    public bool MapHasPlayers => monster.Character.Map?.PlayerCount > 0;
 
     public int DistanceToSelectedTarget => targetForSkill == null ? -1 : monster.Character.Position.Distance(TargetPosition);
     public Position TargetPosition => targetForSkill?.Position ?? Position.Invalid;
@@ -123,6 +124,24 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     public int Random(int low, int high) => GameRandom.NextInclusive(low, high);
     public int Random(int high) => GameRandom.NextInclusive(high);
+    
+    public void PerformMetamorphosis(string monsterName, int count = 1)
+    {
+        var ch = monster.Character;
+        if (ch.Map == null)
+            return; //why?
+
+        if (!DataManager.MonsterCodeLookup.TryGetValue(monsterName, out var info))
+        {
+            ServerLogger.LogWarning($"Monster {ch.Name} attempting to metamorph into {monsterName}, but that monster type could not be found.");
+            return;
+        }
+
+        monster.ChangeMonsterClass(info.Name, info, info.AiType, true);
+
+        if (count > 1)
+            SummonMonstersUnderMyMaster(count - 1, monsterName);
+    }
 
     public void Die(bool giveExperience = true)
     {
@@ -424,7 +443,12 @@ public class MonsterSkillAiState(Monster monsterIn)
         if (flags.HasFlag(MonsterSkillAiFlags.UnlimitedRange))
             range = 21;
 
-        var hideSkillName = flags.HasFlag(MonsterSkillAiFlags.HideSkillName);
+        var castFlags = SkillCastFlags.None;
+
+        if (flags.HasFlag(MonsterSkillAiFlags.HideSkillName))
+            castFlags |= SkillCastFlags.HideSkillName;
+        if (flags.HasFlag(MonsterSkillAiFlags.HideCastBar))
+            castFlags |= SkillCastFlags.HideCastBar;
         var ignoreTargetRequirement = flags.HasFlag(MonsterSkillAiFlags.NoTarget);
         ExecuteEventAtStartOfCast = flags.HasFlag(MonsterSkillAiFlags.EventOnStartCast);
         
@@ -465,7 +489,7 @@ public class MonsterSkillAiState(Monster monsterIn)
                 pos = target.Position;
             }
 
-            if (!ce.AttemptStartGroundTargetedSkill(pos, skill, level, castTime / 1000f, hideSkillName))
+            if (!ce.AttemptStartGroundTargetedSkill(pos, skill, level, castTime / 1000f, castFlags))
                 return SkillFail();
             ce.SetSkillCooldown(skill, delay + castTime);
             return SkillSuccess();
@@ -476,7 +500,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             if (targetForSkill != null)
             {
                 if (!ce.CanAttackTarget(targetForSkill, range)) return SkillFail();
-                if (!ce.AttemptStartSingleTargetSkillAttack(targetForSkill.CombatEntity, skill, level, castTime / 1000f, hideSkillName))
+                if (!ce.AttemptStartSingleTargetSkillAttack(targetForSkill.CombatEntity, skill, level, castTime / 1000f, castFlags))
                     return SkillFail();
 
                 ce.SetSkillCooldown(skill, delay + castTime);
@@ -488,7 +512,7 @@ public class MonsterSkillAiState(Monster monsterIn)
 
         if (skillTarget == SkillTarget.Self || (skillTarget == SkillTarget.Any && targetForSkill == null))
         {
-            if (!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f, hideSkillName))
+            if (!ce.AttemptStartSelfTargetSkill(skill, level, castTime / 1000f, castFlags))
                 return SkillFail();
             ce.SetSkillCooldown(skill, delay + castTime);
             return SkillSuccess();
@@ -507,7 +531,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             {
                 if (!ce.CanAttackTarget(target, range)) 
                     return SkillFail();
-                if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f, hideSkillName))
+                if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f, castFlags))
                     return SkillFail();
 
                 ce.SetSkillCooldown(skill, delay + castTime);

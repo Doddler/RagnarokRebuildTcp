@@ -37,8 +37,13 @@ StateAttacking:
 StateChase:
 	TryCast(Heal, 4999, 10%, 0s, 15s)[HpPercent < 30];
 StateIdle:
+	var count = 0; //have to define variables at the start or there'll be scope issues
 	TryCast(Heal, 9999, 100%, 0s, 5s)[IsHiding];
 	TryCast(Heal, 9999, 10%, 0s, 15s)[HpPercent < 70];
+	if(IsHiding)
+	{
+		@GoldenBugEggToss(100%, 5, 8, 15s, GtbPutLowHpTossOnCooldown);
+	}
 }
 
 event GtbSummonArray {
@@ -60,7 +65,7 @@ SkillHandler("GTB_EGG") {
 StateAny:
 	if(TimeAlive > 5s) {
 		TryCast(NoCast, 1, 100%, 0, 0s)[IsMasterAlive == false] -> Die();
-		TryCast(None, 1, 15%, 6s, 0s, NeverInterrupt) -> {
+		TryCast(Metamorphosis, 1, 15%, 6s, 0s, NeverInterrupt | HideSkillName) -> {
 			if(IsMasterAlive)
 				SummonMonstersUnderMyMaster(Random(1,3), "GTB_SUMMON");
 			Die();
@@ -509,9 +514,8 @@ AltSkillHandler("MOONLIGHT_C2") {
 AltSkillHandler("MOONLIGHT_C3") {
 	OnInit:
 		FlagAsMvp();
-		ResummonMinionCount = 2;
 	StateAny:
-		TryCast(CallMinion, 1, 100%, 2s, 30s, NoInterrupt)[MinionsDeadFor(15s)] -> SummonMinions(5, "NINE_TAIL");
+		TryCast(CallMinion, 1, 100%, 2s, 30s, NoInterrupt)[MinionCount < 3] -> SummonMinions(5, "NINE_TAIL");
 		TryCast(Heal, 4999, 100%, 0.7s, 5s)[FindAllyBelowHpPercent(60)];
 	OnDie:
 		CallHiddenParentToNearbyPosition();

@@ -18,6 +18,7 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RoRebuildServer.Simulation;
 
@@ -88,7 +89,7 @@ public class Map
     /// Simplified variation of MoveEntity for any move where the entity is removed from it's old location and
     /// appears in a new one. Takes a move reason so the client can play the appropriate effect.
     /// </summary>
-    public void TeleportEntity(ref Entity entity, WorldObject ch, Position newPosition, CharacterRemovalReason reason = CharacterRemovalReason.Teleport)
+    public void TeleportEntity(ref Entity entity, WorldObject ch, Position newPosition, CharacterRemovalReason reason = CharacterRemovalReason.Teleport, bool showEntryEffect = true)
     {
         var oldPosition = ch.Position;
 
@@ -124,26 +125,22 @@ public class Map
         }
         else
         {
+            //monster only, we don't want to make the teleport entry effect unless they're moving a long distance.
+            var showType = showEntryEffect ? CreateEntityEventType.Warp : CreateEntityEventType.Normal;
             //monsters and npcs
-            SendAddEntityAroundCharacter(ref entity, ch); //if we are a monster, tell all nearby players about us
+            SendAddEntityAroundCharacter(ref entity, ch, showType); //if we are a monster, tell all nearby players about us
         }
     }
 
-
-    public void RefreshEntity(WorldObject ch)
+    public void RefreshEntity(WorldObject ch, CharacterRemovalReason reason = CharacterRemovalReason.Refresh)
     {
         if (ch.TryGetVisiblePlayerList(out var list))
         {
             CommandBuilder.AddRecipients(list);
-            CommandBuilder.SendRemoveEntityMulti(ch, CharacterRemovalReason.Refresh);
+            CommandBuilder.SendRemoveEntityMulti(ch, reason);
             CommandBuilder.SendCreateEntityMulti(ch);
             CommandBuilder.ClearRecipients();
         }
-
-        //SendRemoveEntityAroundCharacter(ref entity, ch, reason);
-        //SendAddEntityAroundCharacter(ref entity, ch);
-        //if(entity.Type == EntityType.Player)
-        //    CommandBuilder.SendCreateEntity(ch, entity.Get<Player>());
     }
 
     /// <summary>
@@ -417,13 +414,13 @@ public class Map
         }
     }
 
-    public void SendAddEntityAroundCharacter(ref Entity entity, WorldObject ch)
+    public void SendAddEntityAroundCharacter(ref Entity entity, WorldObject ch, CreateEntityEventType type = CreateEntityEventType.Normal)
     {
         PrepareAddEntityAroundCharacter(ref entity, ch);
 
         if (CommandBuilder.HasRecipients())
         {
-            CommandBuilder.SendCreateEntityMulti(ch);
+            CommandBuilder.SendCreateEntityMulti(ch, type);
             CommandBuilder.ClearRecipients();
         }
     }
@@ -518,7 +515,7 @@ public class Map
             CommandBuilder.ClearRecipients();
         }
 
-        if (ch.Type != CharacterType.Player || ch.AdminHidden)
+        if (ch.Type != CharacterType.Player)
             return;
 
         //players must have themselves removed from visibility from nearby entities
@@ -761,65 +758,34 @@ public class Map
         return false;
     }
 
-    public bool IsEntityStacked(WorldObject character)
+    public bool IsEntityStacked(WorldObject character) => IsTileOccupied(character.Position, false, character);
+
+    public bool IsTileOccupied(Position pos, bool playersOnly = false, WorldObject? ignoreCharacter = null)
     {
-        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, 0))
+        var c = GetChunkForPosition(pos);
+
+        var list = c.AllEntities;
+        if (playersOnly)
+            list = c.Players;
+        foreach (var m in list)
         {
-            foreach (var m in c.AllEntities)
-            {
-                var ch = m.Get<WorldObject>();
-                if (!ch.IsActive)
-                    continue;
+            var ch = m.Get<WorldObject>();
+            if (!ch.IsActive || ch == ignoreCharacter)
+                continue;
 
-                if (m == character.Entity)
-                    continue;
+            if (ch.Position != pos)
+                continue;
 
-                if (ch.Position != character.Position)
-                    continue;
+            if (ch.AdminHidden || ch.State == CharacterState.Moving)
+                continue;
 
-                if (ch.AdminHidden || ch.State == CharacterState.Moving)
-                    continue;
+            if (ch.IsTargetImmune)
+                continue;
 
-                if (ch.Type == CharacterType.NPC && ch.Npc.IsEvent)
-                    continue;
+            if (ch.Type == CharacterType.NPC && ch.Npc.IsEvent)
+                continue;
 
-                if (ch.IsTargetImmune)
-                    continue;
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public bool IsTileOccupied(Position pos, bool playersOnly = false)
-    {
-        foreach (Chunk c in GetChunkEnumeratorAroundPosition(pos, 0))
-        {
-            var list = c.AllEntities;
-            if (playersOnly)
-                list = c.Players;
-            foreach (var m in list)
-            {
-                var ch = m.Get<WorldObject>();
-                if (!ch.IsActive)
-                    continue;
-
-                if (ch.Position != pos)
-                    continue;
-
-                if (ch.AdminHidden)
-                    continue;
-
-                if (ch.IsTargetImmune)
-                    continue;
-
-                if (ch.Type == CharacterType.NPC && ch.Npc.IsEvent)
-                    continue;
-
-                return true;
-            }
+            return true;
         }
 
         return false;
@@ -839,14 +805,11 @@ public class Map
 
             if (x == 0 && y == 0)
                 continue;
-            var test = new Position(pos.X + x * xSign, pos.Y + y * ySign);
-            if (WalkData.IsCellWalkable(test) && !IsTileOccupied(test, playersOnly))
-            {
-                freeTile = test;
+            freeTile = new Position(pos.X + x * xSign, pos.Y + y * ySign);
+            if (WalkData.IsCellWalkable(freeTile) && !IsTileOccupied(freeTile, playersOnly))
                 return true;
-            }
         }
-
+        
         return false;
     }
 
@@ -1277,6 +1240,28 @@ public class Map
         }
 
         EntityListPool.Return(chunkEntities);
+    }
+
+    public bool HasEventInArea(Area area, string eventName)
+    {
+        area = area.ClipArea(MapBounds);
+        if (area.IsZero)
+            return false;
+
+        foreach (var chunk in GetChunkEnumerator(GetChunksForArea(area)))
+        {
+            foreach (var n in chunk.AllEntities)
+            {
+                if (n.Type != EntityType.Npc)
+                    continue;
+                if (!n.TryGet<Npc>(out var npc))
+                    continue;
+                if (npc.IsEvent && npc.EventType == eventName && area.Contains(npc.SelfPosition))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     public bool HasAreaOfEffectTypeInArea(Area area, params CharacterSkill[] skills)

@@ -12,8 +12,17 @@ namespace Assets.Scripts.Effects
 {
     public class Ragnarok3dEffect : MonoBehaviour
     {
-        public float Duration;
-        public int DurationFrames;
+        public float Duration
+        {
+            get;
+            private set;
+        }
+
+        public int DurationFrames
+        {
+            get;
+            private set;
+        }
         public float CurrentPos;
         public int Step = -1;
         public int LastStep = 0;

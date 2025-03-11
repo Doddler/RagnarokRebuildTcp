@@ -18,21 +18,37 @@ public partial class CombatEntity
 
         if (Character.Type == CharacterType.Player && !req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
         {
-            var stunChance = GetStat(CharacterStat.OnAttackStun);
-            if (stunChance > 0)
-                TryStunTarget(target, stunChance);
-            var poisonChance = GetStat(CharacterStat.OnAttackPoison);
-            if (poisonChance > 0)
-                TryPoisonOnTarget(target, poisonChance);
-            var blindChance = GetStat(CharacterStat.OnAttackBlind);
-            if (blindChance > 0)
-                TryBlindTarget(target, blindChance + 2000, res.AttackMotionTime + 0.5f); //delayed a little so you can actually hear the blind sound
-            var freezeChance = GetStat(CharacterStat.OnAttackFreeze);
-            if (freezeChance > 0)
-                TryFreezeTarget(target, freezeChance, res.AttackMotionTime + 0.1f); //don't want our damage application to cancel the status
-            var sleepChance = GetStat(CharacterStat.OnAttackSleep);
-            if (sleepChance > 0)
-                TrySleepTarget(target, sleepChance, res.AttackMotionTime + 0.1f); //don't want our damage application to cancel the status
+            var chance = GetStat(CharacterStat.OnAttackStun);
+            if (chance > 0)
+                TryStunTarget(target, chance);
+
+            chance = GetStat(CharacterStat.OnAttackPoison);
+            if (chance > 0)
+                TryPoisonOnTarget(target, chance);
+
+            chance = GetStat(CharacterStat.OnAttackBlind);
+            if (chance > 0)
+                TryBlindTarget(target, chance, res.AttackMotionTime + 0.5f); //delayed a little so you can actually hear the blind sound
+
+            chance = GetStat(CharacterStat.OnAttackFreeze);
+            if (chance > 0)
+                TryFreezeTarget(target, chance, res.AttackMotionTime + 0.1f); //don't want our damage application to cancel the status
+
+            chance = GetStat(CharacterStat.OnAttackSleep);
+            if (chance > 0)
+                TrySleepTarget(target, chance, res.AttackMotionTime + 0.1f); //don't want our damage application to cancel the status
+
+            chance = GetStat(CharacterStat.OnAttackSilence);
+            if (chance > 0)
+                TrySilenceTarget(target, chance);
+
+            chance = GetStat(CharacterStat.OnAttackStone);
+            if (chance > 0)
+                TryPetrifyTarget(target, chance, 1f);
+
+            chance = GetStat(CharacterStat.OnAttackCurse);
+            if (chance > 0)
+                TryCurseTarget(target, chance);
         }
     }
 
@@ -43,21 +59,38 @@ public partial class CombatEntity
 
         if (Character.Type == CharacterType.Player && !req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
         {
-            var stunChance = GetStat(CharacterStat.WhenAttackedStun);
-            if (stunChance > 0)
-                TryStunTarget(attacker, stunChance);
-            var poisonChance = GetStat(CharacterStat.WhenAttackedPoison);
-            if (poisonChance > 0)
-                TryPoisonOnTarget(attacker, poisonChance);
-            var blindChance = GetStat(CharacterStat.WhenAttackedBlind);
-            if (blindChance > 0)
-                TryBlindTarget(attacker, blindChance);
-            var freezeChance = GetStat(CharacterStat.WhenAttackedFreeze);
-            if (freezeChance > 0)
-                TryFreezeTarget(attacker, freezeChance);
-            var sleepChance = GetStat(CharacterStat.WhenAttackedSleep);
-            if (sleepChance > 0)
-                TrySleepTarget(attacker, sleepChance);
+            var chance = GetStat(CharacterStat.WhenAttackedStun);
+            if (chance > 0)
+                TryStunTarget(attacker, chance);
+
+            chance = GetStat(CharacterStat.WhenAttackedPoison);
+            if (chance > 0)
+                TryPoisonOnTarget(attacker, chance);
+
+            chance = GetStat(CharacterStat.WhenAttackedBlind);
+            if (chance > 0)
+                TryBlindTarget(attacker, chance);
+
+            chance = GetStat(CharacterStat.WhenAttackedFreeze);
+            if (chance > 0)
+                TryFreezeTarget(attacker, chance);
+
+            chance = GetStat(CharacterStat.WhenAttackedSleep);
+            if (chance > 0)
+                TrySleepTarget(attacker, chance);
+
+            chance = GetStat(CharacterStat.WhenAttackedSilence);
+            if (chance > 0)
+                TrySilenceTarget(attacker, chance);
+
+            chance = GetStat(CharacterStat.WhenAttackedStone);
+            if (chance > 0)
+                TryPetrifyTarget(attacker, chance, 1f);
+
+            
+            chance = GetStat(CharacterStat.WhenAttackedCurse);
+            if (chance > 0)
+                TryCurseTarget(attacker, chance);
         }
     }
 
@@ -315,22 +348,27 @@ public partial class CombatEntity
         if (statusContainer == null)
             return; //we have no status effects
 
+        var hasUpdate = false;
+
         if ((target & StatusCleanseTarget.Poison) > 0)
-            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Poison);
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Poison);
 
         if ((target & StatusCleanseTarget.Silence) > 0 && HasBodyState(BodyStateFlags.Silence))
-            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Silence);
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Silence);
         
         if ((target & StatusCleanseTarget.Blind) > 0 && HasBodyState(BodyStateFlags.Blind))
-            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Blind);
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Blind);
 
         if ((target & StatusCleanseTarget.Confusion) > 0 && HasBodyState(BodyStateFlags.Confusion))
-            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Confusion);
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Confusion);
 
         if ((target & StatusCleanseTarget.Hallucination) > 0 && HasBodyState(BodyStateFlags.Hallucination))
-            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Hallucination);
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Hallucination);
 
         if ((target & StatusCleanseTarget.Curse) > 0 && HasBodyState(BodyStateFlags.Curse))
-            statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Curse);
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Curse);
+
+        if(hasUpdate)
+            UpdateStats();
     }
 }

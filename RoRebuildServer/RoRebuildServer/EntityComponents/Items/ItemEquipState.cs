@@ -631,6 +631,11 @@ public class ItemEquipState
         Player.CombatEntity.AddStatusEffect(status);
     }
 
+    public void RemoveStatusEffect(CharacterStatusEffect statusEffect)
+    {
+        Player.CombatEntity.RemoveStatusOfTypeIfExists(statusEffect);
+    }
+
     public void SetArmorElement(CharacterElement element)
     {
         if (activeSlot != EquipSlot.Body)

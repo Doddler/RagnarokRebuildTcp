@@ -7,7 +7,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
     [RoEffect("Entry")]
     public class EntryEffect : IEffectHandler
     {
-        public static Ragnarok3dEffect LaunchEntryAtLocation(Vector3 position)
+        public static Ragnarok3dEffect LaunchEntryAtLocation(Vector3 position, float entryEffectVolume = 0.7f)
         {
             var mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.TeleportPillar);
 
@@ -19,7 +19,8 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             effect.transform.localScale = new Vector3(2, 2, 2);
             effect.Flags[0] = 0;
 
-            AudioManager.Instance.OneShotSoundEffect(-1, "ef_portal.ogg", effect.transform.position, 0.7f);
+            if(entryEffectVolume > 0)
+                AudioManager.Instance.OneShotSoundEffect(-1, "ef_portal.ogg", effect.transform.position, entryEffectVolume);
 
             var prim = effect.LaunchPrimitive(PrimitiveType.Heal, mat, 1.667f);
             prim.CreateParts(4);

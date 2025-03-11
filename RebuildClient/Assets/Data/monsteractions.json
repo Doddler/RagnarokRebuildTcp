@@ -13,6 +13,57 @@
       "Animation": 5,
       "HoldLastFrame": false,
       "StartAt": 1200
+    },
+    {
+      "Sprite": "yoyo",
+      "Action": "Provoke",
+      "Animation": 16,
+      "HoldLastFrame": false,
+      "StartAt": 1000
+    },
+    {
+      "Sprite": "yoyo",
+      "Action": "Heal",
+      "Animation": 15,
+      "HoldLastFrame": false,
+      "StartAt": 3300
+    },
+    {
+      "Sprite": "yoyo",
+      "Action": "ThrowStone",
+      "Animation": 13,
+      "HoldLastFrame": false,
+      "StartAt": 0
+    },
+    {
+      "Sprite": "yoyo",
+      "Action": "Emotion",
+      "Animation": 14,
+      "HoldLastFrame": false,
+      "StartAt": 0
+    },
+    {
+      "Sprite": "pupa",
+      "Action": "Metamorphosis",
+      "Animation": 1,
+      "HoldLastFrame": true,
+      "StartAt": 200
+    },
+
+    {
+      "Sprite": "fabre",
+      "Action": "Metamorphosis",
+      "Animation": 5,
+      "HoldLastFrame": true,
+      "StartAt": 1300
+    },
+    {
+      "Sprite": "ant_egg",
+      "Action": "Metamorphosis",
+      "Animation": 5,
+      "HoldLastFrame": true,
+      "StartAt": 600
     }
+    
   ]
 }

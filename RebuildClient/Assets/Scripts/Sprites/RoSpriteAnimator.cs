@@ -88,6 +88,7 @@ namespace Assets.Scripts.Sprites
 
         public bool LockAngle;
         public bool DisableLoop;
+        public bool ForceLoop;
         public bool RaycastForShadow = true;
 
         public SpriteMotion CurrentMotion;
@@ -468,7 +469,7 @@ namespace Assets.Scripts.Sprites
         public void ChangeMotion(SpriteMotion nextMotion, bool forceUpdate = false)
         {
             // if(SpriteData?.Name == "초보자_남")
-            // Debug.Log($"{name} state {State} change motion from {CurrentMotion} to {nextMotion} (isPaused: {isPaused}) (current frame frame {currentFrame})");
+            //Debug.Log($"{SpriteData?.Name} state {State} change motion from {CurrentMotion} to {nextMotion} (isPaused: {isPaused}) (current frame frame {currentFrame})");
 
             if (CurrentMotion == SpriteMotion.Dead && !forceUpdate)
                 Debug.LogWarning("Changing from dead to something else!");
@@ -492,6 +493,7 @@ namespace Assets.Scripts.Sprites
             ChangeAction(action);
             isPaused = false;
             isDirty = true;
+            ForceLoop = false;
 
             if (Type == SpriteType.Player)
             {
@@ -532,7 +534,7 @@ namespace Assets.Scripts.Sprites
             {
                 var nextMotion = RoAnimationHelper.GetMotionForState(State);
                 // Debug.Log($"CurrentState: {State} CurrentMotion: {CurrentMotion} NextMotion: {nextMotion}");
-                if (nextMotion != CurrentMotion)
+                if (nextMotion != CurrentMotion && !ForceLoop)
                 {
                     if (queuedMotionTransition.isActive && queuedMotionTransition.CurrentMotion == CurrentMotion &&
                         queuedMotionTransition.TargetMotion == nextMotion)

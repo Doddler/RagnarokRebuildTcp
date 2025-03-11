@@ -760,6 +760,10 @@ public class ScriptBuilder
         foreach (var i in Enum.GetValues<CharacterSkill>())
             additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
 
+
+        foreach (var i in Enum.GetValues<NpcEffectType>())
+            additionalVariables.Add("Effect" + i.ToString(), $"NpcEffectType.{i}");
+
         IsEvent = true;
 
         return name;

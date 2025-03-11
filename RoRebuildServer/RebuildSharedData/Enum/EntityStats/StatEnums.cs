@@ -86,6 +86,7 @@ public enum CharacterStat
     AddDefPercent,
     AddMDefPercent,
     Disabled,
+    EndureEffect,
     OverrideElement,
     MonsterStatsMax, //any stats after this are stats only players will be able to hold.
 

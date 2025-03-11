@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers.Environment;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
@@ -48,6 +49,7 @@ namespace Assets.Scripts.Sprites
         [SerializeField] private TextAsset SkillTreeData;
         [SerializeField] private TextAsset MapViewpointData;
         [SerializeField] private TextAsset UniqueAttackActionData;
+        [SerializeField] private TextAsset MetamorphResultData;
         [SerializeField] private TextAsset ItemData;
         [SerializeField] private TextAsset MapData;
         [SerializeField] private TextAsset EquipmentSpriteData;
@@ -71,6 +73,7 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<CharacterSkill, SkillData> skillData = new();
         private readonly Dictionary<string, MapViewpoint> mapViewpoints = new();
         private readonly Dictionary<string, Dictionary<CharacterSkill, UniqueAttackAction>> uniqueSpriteActions = new();
+        private readonly Dictionary<string, MetamorphTransitionResult> metamorphTransitionResult = new();
         private readonly Dictionary<int, ClientSkillTree> jobSkillTrees = new();
         private readonly Dictionary<string, int> jobNameToIdTable = new();
         private readonly Dictionary<int, ItemData> itemIdLookup = new();
@@ -114,6 +117,7 @@ namespace Assets.Scripts.Sprites
         public CardPrefixData GetCardPrefixData(int id) => cardPrefixPostfixTable.GetValueOrDefault(id, null);
         public StatusEffectData GetStatusEffect(int id) => statusEffectData.GetValueOrDefault(id, null);
         public int GetJobExpRequired(int job, int level) => level < 0 || level >= 70 ? -1 : jobExpData[(job == 0 ? 0 : 1) * 70 + level];
+        public bool TryGetMetamorphResult(string spriteName, out MetamorphTransitionResult result) => metamorphTransitionResult.TryGetValue(spriteName, out result);
 
         public static int UniqueItemStartId = 20000;
         public string LatestPatchNotes = "";
@@ -284,7 +288,12 @@ namespace Assets.Scripts.Sprites
                 else
                     Debug.LogWarning($"Could not convert {action.Action} to a skill type when parsing unique skill actions");
             }
-
+            
+            var metamorphResults = JsonUtility.FromJson<Wrapper<MetamorphTransitionResult>>(MetamorphResultData.text);
+            foreach (var result in metamorphResults.Items)
+            {
+                metamorphTransitionResult.Add(result.Sprite, result);
+            }
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
             foreach (var skill in skills.Items)
             {
@@ -813,6 +822,9 @@ namespace Assets.Scripts.Sprites
                     break;
                 case NpcEffectType.MapWarp:
                     MapWarpEffect.StartWarp(obj);
+                    break;
+                case NpcEffectType.LightOrb:
+                    DiscoLightsEffect.LaunchDiscoLights(control);
                     break;
             }
 

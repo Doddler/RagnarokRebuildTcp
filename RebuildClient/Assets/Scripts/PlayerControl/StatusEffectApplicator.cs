@@ -30,30 +30,36 @@ namespace Assets.Scripts.PlayerControl
             {
                 switch (s)
                 {
-                    case CharacterStatusEffect.TwoHandQuicken:
+                    case CharacterStatusEffect.Bulwark:
+                    case CharacterStatusEffect.EnergyCoat:
                         if(priority < 0)
-                            color = new Color(1, 1, 0.7f);
+                            color = new Color(0.7f, 0.7f, 0.98f);
                         priority = 0;
                         break;
-                    case CharacterStatusEffect.Poison:
+                    case CharacterStatusEffect.TwoHandQuicken:
                         if(priority < 1)
-                            color = new Color(1f, 0.7f, 1f);
+                            color = new Color(1, 1, 0.7f);
                         priority = 1;
                         break;
-                    case CharacterStatusEffect.Curse:
+                    case CharacterStatusEffect.Poison:
                         if(priority < 2)
-                            color = new Color(0.5f, 0f, 0f);
+                            color = new Color(1f, 0.7f, 1f);
                         priority = 2;
                         break;
-                    case CharacterStatusEffect.Frozen:
+                    case CharacterStatusEffect.Curse:
                         if(priority < 3)
-                            color = new Color(0f, 0.5f, 1f);
+                            color = new Color(0.5f, 0f, 0f);
                         priority = 3;
                         break;
-                    case CharacterStatusEffect.Stone:
-                        if (priority < 4)
-                            color = StoneColor;
+                    case CharacterStatusEffect.Frozen:
+                        if(priority < 4)
+                            color = new Color(0f, 0.5f, 1f);
                         priority = 4;
+                        break;
+                    case CharacterStatusEffect.Stone:
+                        if (priority < 5)
+                            color = StoneColor;
+                        priority = 5;
                         break;
                 }
             }
@@ -172,7 +178,14 @@ namespace Assets.Scripts.PlayerControl
                     controllable.AbortActiveWalk();
                     controllable.SpriteAnimator?.PauseAnimation();
                     controllable.AttachEffect(PetrifyingEffect.LaunchPetrifyingEffect(controllable, 0));
-                    
+                    break;
+                case CharacterStatusEffect.Smoking:
+                    if (controllable.ClassId == 4116 && controllable.SpriteAnimator != null) //hardcoded to orc warrior...
+                    {
+                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Performance3);
+                        controllable.SpriteAnimator.ForceLoop = true;
+                    }
+
                     break;
             }
         }
@@ -244,6 +257,16 @@ namespace Assets.Scripts.PlayerControl
                     var rEffect = controllable.DetachExistingEffectOfType(EffectType.Ruwach);
                     rEffect.SetRemainingDurationByFrames(20);
                     rEffect.Flags[0] = 1;
+                    break;
+                case CharacterStatusEffect.Smoking:
+                    if (controllable.SpriteAnimator != null)
+                    {
+                        controllable.SpriteAnimator.ForceLoop = false;
+                        var cm = controllable.SpriteAnimator.CurrentMotion;
+                        if(cm != SpriteMotion.Walk && cm != SpriteMotion.Dead)
+                            controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Idle, true);
+                    }
+
                     break;
                 case CharacterStatusEffect.Petrifying:
                     controllable.EndEffectOfType(EffectType.Petrifying);

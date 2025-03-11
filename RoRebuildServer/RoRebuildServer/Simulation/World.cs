@@ -66,6 +66,7 @@ public class World
     {
         Instance = this;
 
+        Time.ResetDiagnosticsTimer();
         EntityManager.Initialize(initialEntityCount);
         AoEPool = new DefaultObjectPool<AreaOfEffect>(new AreaOfEffectPoolPolicy(), 128);
 
@@ -89,7 +90,7 @@ public class World
         
         moveRequests = Channel.CreateUnbounded<MapMoveRequest>(new UnboundedChannelOptions() {AllowSynchronousContinuations = false, SingleReader = true, SingleWriter = false});
 
-        ServerLogger.Log($"World created using {mapCount} maps across {Instances.Count} instances placing a total of {nextEntityId} entities.");
+        ServerLogger.Log($"World created using {mapCount} maps across {Instances.Count} instances placing a total of {nextEntityId} entities in {Time.CurrentDiagnosticsTime():F2}s.");
     }
     
     public void FullyRemoveEntity(ref Entity entity, CharacterRemovalReason reason = CharacterRemovalReason.OutOfSight)

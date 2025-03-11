@@ -43,6 +43,8 @@ public class ProvokeHandler : SkillHandlerBase
         di.AttackSkill = CharacterSkill.Provoke;
         //var applyStatus = true;
 
+        var monsterSource = (short)(source.Character.Type == CharacterType.Monster ? 1 : 0);
+
         if (target.Character.Type == CharacterType.Monster)
         {
             var mon = target.Character.Monster;
@@ -50,14 +52,14 @@ public class ProvokeHandler : SkillHandlerBase
             if (mon.CombatEntity.CanAttackTarget(ch))
                 mon.Target = ch.Entity;
         }
-
+        
         if (target.Character.Type == CharacterType.Player)
         {
             if(target.IsCasting && target.CastInterruptionMode <= CastInterruptionMode.InterruptOnSkill)
                 target.CancelCast();
         }
 
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Provoke, 30f, lvl, source.Character.Id);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Provoke, 30f, lvl, source.Character.Id, monsterSource);
         target.AddStatusEffect(status);
 
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Provoke, lvl, di);

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.SkillHandlers;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var dir = (Direction)msg.ReadByte();
             var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
             var castTime = msg.ReadFloat();
-            var hideName = msg.ReadBoolean();
+            var flags = (SkillCastFlags)msg.ReadByte();
             
             Network.EntityList.TryGetValue(targetId, out var target);
 
@@ -38,14 +39,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 }
                 
                 #if UNITY_EDITOR
-                Debug.Log($"Character {controllable.Name} starts casting {skill} lv{lvl}, cast time {castTime}, hideName:{hideName}");
+                Debug.Log($"Character {controllable.Name} starts casting {skill} lv{lvl}, cast time {castTime}, castFlags:{flags}");
                 #endif
 
-                controllable.HideCastName = hideName;
-                if (hideName)
-                    skill = CharacterSkill.NoCast;
+                controllable.HideCastName = flags.HasFlag(SkillCastFlags.HideSkillName);
+                // if (controllable.HideCastName)
+                //     skill = CharacterSkill.NoCast;
                 ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
-                controllable.StartCastBar(skill, castTime);
+                controllable.StartCastBar(skill, castTime, flags);
             }
         }
     }

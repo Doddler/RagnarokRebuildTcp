@@ -29,6 +29,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var pos = msg.ReadPosition();
             var dmg = msg.ReadInt32();
             var motionTime = msg.ReadFloat();
+            var damageTime = msg.ReadFloat();
             var showAttackAction = msg.ReadBoolean();
 
             //this is a hack, but we want to make sure the client attack motion is slightly longer than the server so attacks can be seamlessly chained.
@@ -45,7 +46,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 Damage = dmg,
                 HitCount = hits,
                 MotionTime = motionTime,
-                DamageTiming = motionTime,
+                DamageTiming = damageTime,
                 Result = resultType,
             };
 
@@ -58,7 +59,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     controllable2.CounterHitDir = cd.normalized;
                     //Debug.Log("Counter hit: " + cd);
 
-                    if (controllable.WeaponClass == 12) //don't hardcode id for bow!! Change this!
+                    if (controllable.WeaponClass == 12 && skill == CharacterSkill.None) //don't hardcode id for bow!! Change this!
                     {
                         var arrow = ArcherArrow.CreateArrow(controllable, controllable2.gameObject, motionTime);
                         //controllable2.Messages.SendHitEffect(controllable, motionTime + arrow.Duration);
@@ -88,7 +89,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 weaponClass = controllable.WeaponClass;
                 
                 if(resultType == AttackResult.Miss)
-                    controllable.Messages.SendMissEffect(motionTime);
+                    controllable.Messages.SendMissEffect(damageTime);
             }
             
 
@@ -104,12 +105,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                         if (resultType == AttackResult.CriticalDamage)
                             hitType = 2;
                         if (dmg > 0)
-                            controllable2.Messages.SendHitEffect(controllable, motionTime, hitType);
+                            controllable2.Messages.SendHitEffect(controllable, damageTime, hitType);
                     }
                 }
 
                 if(dmg > 0)
-                    controllable2.Messages.SendDamageEvent(controllable, motionTime, dmg, hits, resultType == AttackResult.CriticalDamage);
+                    controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage);
                 
                 //StartCoroutine(DamageEvent(dmg, damageTiming, hits, weaponClass, controllable2));
             }

@@ -27,6 +27,8 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using RebuildSharedData.Util;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using RoRebuildServer.Data.Monster;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -111,26 +113,7 @@ public partial class CombatEntity : IEntityAutoReset
             statData[i] = 0;
     }
 
-    //if the server timer resets, we need to make sure our timers match the reset time
-    //this is a bad way to do it but...
-    public void RollBackTimers(float time)
-    {
-        CastingTime -= time;
-        foreach (var (s, t) in skillCooldowns)
-            skillCooldowns[s] = t - time;
-        foreach (var (s, t) in damageCooldowns)
-            damageCooldowns[s] = t - time;
-        for (var i = 0; i < DamageQueue.Count; i++)
-        {
-            var d = DamageQueue[i];
-            d.Time -= time;
-            DamageQueue[i] = d;
-        }
-        if(statusContainer != null)
-            statusContainer.RollBackTimers(time);
-
-    }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int GetStat(CharacterStat type)
     {
         if (type < CharacterStat.MonsterStatsMax)
@@ -140,6 +123,7 @@ public partial class CombatEntity : IEntityAutoReset
         return Player.PlayerStatData[type - CharacterStat.MonsterStatsMax];
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetStat(CharacterStat type, int val)
     {
         if (type < CharacterStat.MonsterStatsMax)
@@ -153,6 +137,7 @@ public partial class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] = val;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void AddStat(CharacterStat type, int val)
     {
         if (type < CharacterStat.MonsterStatsMax)
@@ -166,6 +151,7 @@ public partial class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] += val;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SubStat(CharacterStat type, int val)
     {
         if (type < CharacterStat.MonsterStatsMax)
@@ -179,6 +165,18 @@ public partial class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] -= val;
     }
 
+    public void CreateEvent(string eventName, int param1 = 0, int param2 = 0, int param3 = 0, int param4 = 0)
+    {
+        if (Character.Map == null)
+            return;
+        World.Instance.CreateEvent(Entity, Character.Map, eventName, Character.Position, param1, param2, param3, param4, null);
+    }
+
+    public bool IsEventNearby(string eventName, int range)
+    {
+        return Character.Map?.HasEventInArea(Area.CreateAroundPoint(Character.Position, range), eventName) ?? false;
+    }
+    
     public void AddStatusEffect(CharacterStatusEffect effect, int duration, int val1 = 0, int val2 = 0)
     {
         var status = StatusEffectState.NewStatusEffect(effect, duration / 1000f, val1, val2);
@@ -726,7 +724,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (QueuedCastingSkill.TargetedPosition != Position.Invalid)
         {
-            AttemptStartGroundTargetedSkill(QueuedCastingSkill.TargetedPosition, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime, QueuedCastingSkill.HideName);
+            AttemptStartGroundTargetedSkill(QueuedCastingSkill.TargetedPosition, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime, QueuedCastingSkill.Flags);
             return;
         }
 
@@ -735,11 +733,11 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (target == this)
         {
-            AttemptStartSelfTargetSkill(QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime, QueuedCastingSkill.HideName);
+            AttemptStartSelfTargetSkill(QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime, QueuedCastingSkill.Flags);
             return;
         }
 
-        AttemptStartSingleTargetSkillAttack(target, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime, QueuedCastingSkill.HideName, QueuedCastingSkill.ItemSource);
+        AttemptStartSingleTargetSkillAttack(target, QueuedCastingSkill.Skill, QueuedCastingSkill.Level, QueuedCastingSkill.CastTime, QueuedCastingSkill.Flags, QueuedCastingSkill.ItemSource);
     }
 
     public void QueueCast(SkillCastInfo skillInfo)
@@ -777,7 +775,7 @@ public partial class CombatEntity : IEntityAutoReset
         CommandBuilder.UpdateExistingCastMultiAutoVis(Character, adjustedTime);
     }
 
-    public bool AttemptStartGroundTargetedSkill(Position target, CharacterSkill skill, int level, float castTime = -1, bool hideSkillName = false)
+    public bool AttemptStartGroundTargetedSkill(Position target, CharacterSkill skill, int level, float castTime = -1, SkillCastFlags flags = SkillCastFlags.None)
     {
         Character.QueuedAction = QueuedAction.None;
         QueuedCastingSkill.Clear();
@@ -796,7 +794,7 @@ public partial class CombatEntity : IEntityAutoReset
             TargetedPosition = target,
             Range = (sbyte)SkillHandler.GetSkillRange(this, skill, level),
             IsIndirect = false,
-            HideName = hideSkillName
+            Flags = flags
         };
 
         if (IsCasting) //if we're already casting, queue up the next cast
@@ -876,13 +874,13 @@ public partial class CombatEntity : IEntityAutoReset
             }
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-            CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime, hideSkillName);
+            CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime, flags);
             CommandBuilder.ClearRecipients();
         }
         return true;
     }
 
-    public bool AttemptStartSelfTargetSkill(CharacterSkill skill, int level, float castTime = -1f, bool hideSkillName = false)
+    public bool AttemptStartSelfTargetSkill(CharacterSkill skill, int level, float castTime = -1f, SkillCastFlags flags = SkillCastFlags.None)
     {
         Character.QueuedAction = QueuedAction.None;
         QueuedCastingSkill.Clear();
@@ -907,7 +905,7 @@ public partial class CombatEntity : IEntityAutoReset
             CastTime = castTime,
             TargetedPosition = Position.Invalid,
             IsIndirect = false,
-            HideName = hideSkillName
+            Flags = flags
         };
 
         if (IsCasting) //if we're already casting, queue up the next cast
@@ -970,13 +968,13 @@ public partial class CombatEntity : IEntityAutoReset
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             var clientSkill = skillInfo.Skill;
-            CommandBuilder.StartCastMulti(Character, null, clientSkill, skillInfo.Level, castTime, hideSkillName);
+            CommandBuilder.StartCastMulti(Character, null, clientSkill, skillInfo.Level, castTime, flags);
             CommandBuilder.ClearRecipients();
         }
         return true;
     }
 
-    public bool AttemptStartSingleTargetSkillAttack(CombatEntity target, CharacterSkill skill, int level, float castTime = -1f, bool hideSkillName = false, int itemSrc = -1)
+    public bool AttemptStartSingleTargetSkillAttack(CombatEntity target, CharacterSkill skill, int level, float castTime = -1f, SkillCastFlags flags = SkillCastFlags.None, int itemSrc = -1)
     {
         Character.QueuedAction = QueuedAction.None;
         QueuedCastingSkill.Clear();
@@ -1004,7 +1002,7 @@ public partial class CombatEntity : IEntityAutoReset
             TargetedPosition = Position.Invalid,
             IsIndirect = false,
             ItemSource = (short)itemSrc,
-            HideName = hideSkillName
+            Flags = flags
         };
 
         if (IsCasting) //if we're already casting, queue up the next cast
@@ -1093,7 +1091,7 @@ public partial class CombatEntity : IEntityAutoReset
                 }
 
                 Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-                CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime, hideSkillName);
+                CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime, flags);
                 CommandBuilder.ClearRecipients();
 
                 if (target.Character.Type == CharacterType.Monster)
@@ -1283,7 +1281,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (spriteTiming > delayTiming)
             spriteTiming = delayTiming;
-
+        
         var di = new DamageInfo()
         {
             KnockBack = 0,

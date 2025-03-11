@@ -18,7 +18,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         public static Ragnarok3dEffect Create(ForestLightType type, Vector3 position)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.CastEffect);
-            effect.Duration = float.MaxValue;
+            effect.SetDurationByTime(float.MaxValue);
             effect.transform.position = position; // + new Vector3(0f, 10f, 0f);
 
             if (forestLightMaterial == null)
