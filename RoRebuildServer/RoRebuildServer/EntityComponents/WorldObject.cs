@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -30,7 +31,8 @@ public enum QueuedAction
     PickUpItem
 }
 
-[EntityComponent(new[] { EntityType.Player, EntityType.Monster, EntityType.Npc, EntityType.Effect })]
+[UsedImplicitly]
+[EntityComponent([EntityType.Player, EntityType.Monster, EntityType.Npc, EntityType.Effect])]
 public class WorldObject : IEntityAutoReset
 {
     public int Id { get; set; }
@@ -445,7 +447,7 @@ public class WorldObject : IEntityAutoReset
             State = CharacterState.Idle;
 
         var player = Entity.Get<Player>();
-        player.UpdateSit(isSitting);
+        //player.UpdateSit(isSitting);
 
         Map.AddVisiblePlayersAsPacketRecipients(this);
         CommandBuilder.ChangeSittingMulti(this);
@@ -719,72 +721,6 @@ public class WorldObject : IEntityAutoReset
         }
     }
 
-    //private void PerformMoveUpdate()
-    //{
-    //    if (MoveLockTime > Time.ElapsedTimeFloat)
-    //        return;
-
-    //    MoveModifierTime -= Time.DeltaTimeFloat;
-    //    if (MoveModifierTime < 0)
-    //        MoveModifier = 1f;
-
-    //    if (FacingDirection.IsDiagonal())
-    //        MoveProgress -= Time.DeltaTimeFloat * DiagonalSpeedPenalty * MoveModifier;
-    //    else
-    //        MoveProgress -= Time.DeltaTimeFloat * MoveModifier;
-
-    //    if (MoveProgress < MoveSpeed / 2f)
-    //    {
-    //        var startPos = Position;
-    //        var nextPos = WalkPath[MoveStep + 1];
-    //        Map.ChangeEntityPosition(ref Entity, this, startPos, nextPos);
-
-    //        Map.TriggerAreaOfEffectForCharacter(this, startPos, nextPos);
-    //    }
-
-    //    if (MoveProgress <= 0f)
-    //    {
-    //        Debug.Assert(WalkPath != null);
-
-    //        FacingDirection = (WalkPath[MoveStep + 1] - WalkPath[MoveStep]).GetDirectionForOffset();
-
-    //        MoveStep++;
-    //        var startPos = WalkPath[MoveStep];
-    //        var nextPos = WalkPath[MoveStep + 1];
-
-    //        if (Map == null)
-    //            return;
-
-    //        if (MoveStep + 1 >= TotalMoveSteps)
-    //        {
-    //            Debug.Assert(CombatEntity != null);
-    //            State = CharacterState.Idle;
-    //            TotalMoveSteps = 0;
-    //            if (QueuedAction == QueuedAction.Cast && AttackCooldown < Time.ElapsedTimeFloat && CombatEntity.QueuedCastingSkill.IsValid)
-    //                CombatEntity?.ResumeQueuedSkillAction();
-    //        }
-    //        else
-    //        {
-    //            FacingDirection = (WalkPath[MoveStep + 1] - WalkPath[MoveStep]).GetDirectionForOffset();
-    //            MoveProgress += MoveSpeed;
-    //        }
-
-    //        if (Type == CharacterType.Player)
-    //        {
-    //            var player = Entity.Get<Player>();
-    //            player.UpdatePosition();
-    //            if (State == CharacterState.Idle && player.IsInNpcInteraction)
-    //                LookAtEntity(ref player.NpcInteractionState.NpcEntity); //the player is already interacting with an npc, so we should turn to look at it
-    //        }
-
-    //        if (Type == CharacterType.Monster)
-    //        {
-    //            var monster = Entity.Get<Monster>();
-    //            monster.ResetDelay();
-    //        }
-    //    }
-    //}
-
     public void Update()
     {
 #if DEBUG
@@ -810,6 +746,11 @@ public class WorldObject : IEntityAutoReset
         
         if (Entity.Type == EntityType.Player)
         {
+#if DEBUG
+            if (Map == null)
+                throw new Exception($"Update called on player entity {Name} ({Type}) while not attached to any map!");
+#endif
+
             player.Update();
             combatEntity.Update();
         }

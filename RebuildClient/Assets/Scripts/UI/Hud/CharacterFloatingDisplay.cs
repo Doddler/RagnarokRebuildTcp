@@ -262,7 +262,7 @@ namespace Assets.Scripts.UI.Hud
 
         public void UpdateMaxHp(int maxHp) => this.maxHp = maxHp;
 
-        public void UpdateHp(int oldHp, int hp)
+        public void UpdateHp(int oldHp, int hp, bool animate = true)
         {
             if (hpBar == null)
             {
@@ -275,7 +275,7 @@ namespace Assets.Scripts.UI.Hud
 
             if (oldHp >= 0)
             {
-                hpBar.SetProgress((float)hp / maxHp, false);
+                hpBar.SetProgress((float)hp / maxHp, !animate);
             }
             else
                 hpBar.SetProgress((float)hp / maxHp);

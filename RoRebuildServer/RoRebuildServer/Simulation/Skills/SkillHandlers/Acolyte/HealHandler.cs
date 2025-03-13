@@ -67,6 +67,7 @@ public class HealHandler : SkillHandlerBase
                 res.AttackMotionTime = 0.5f;
                 res.Result = AttackResult.NormalDamage;
 
+                source.ApplyAfterCastDelay(1f, ref res);
                 source.ApplyCooldownForAttackAction(target);
                 target.ExecuteCombatResult(res, false, false);
 
@@ -85,6 +86,7 @@ public class HealHandler : SkillHandlerBase
             res.AttackMotionTime = 0;
             res.Time = Time.ElapsedTimeFloat;
 
+            source.ApplyAfterCastDelay(1f);
             target.HealHp(healValue);
             if (source.Character.Type == CharacterType.Player)
                 source.ApplyCooldownForSupportSkillAction();

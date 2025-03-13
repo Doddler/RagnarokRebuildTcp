@@ -56,6 +56,8 @@ namespace Assets.Scripts.Effects
         public int[] Flags = new int[4];
         public float DataValue;
 
+        public bool IsTimerActive => CurrentPos < Duration;
+
         public int SourceEntityId => SourceEntity != null ? SourceEntity.Id : -1; 
 
         public List<RagnarokPrimitive> GetPrimitives => Primitives;

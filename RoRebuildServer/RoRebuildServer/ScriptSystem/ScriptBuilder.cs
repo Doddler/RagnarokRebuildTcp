@@ -49,7 +49,8 @@ public class ScriptBuilder
     private Dictionary<string, NpcInteractionResult> waitingFunctions = new();
     private Dictionary<string, NpcPathUpdateResult> pathingFunctions = new();
     private Dictionary<string, string> additionalVariables { get; set; } = new();
-    
+    private Dictionary<Type, List<string>> functionValidMethods = new();
+
     private List<TimerFunction> timerFunctions = new();
     private List<MonsterAiState> monsterStatesWithHandlers = new();
 
@@ -104,6 +105,7 @@ public class ScriptBuilder
     public ScriptBuilder(string className, params string[] namespaceList)
     {
         this.className = className;
+        ActiveScript = string.Empty;
 
         foreach (var n in namespaceList)
             scriptBuilder.AppendLine($"using {n};");
@@ -126,7 +128,7 @@ public class ScriptBuilder
     {
         lineNumber = num;
     }
-    
+
     public StringBuilder StartIndentedScriptLine()
     {
         for (var i = 0; i < indentation; i++)
@@ -216,41 +218,81 @@ public class ScriptBuilder
         }
     }
 
-    public void LoadFunctionSource(Type source, string varName)
+    public void LoadFunctionSource(Type source, string varName, bool requireScriptUseableAttribute = false)
     {
         var name = source.Name;
         if (functionSources.Contains(name))
             return;
 
+        if (functionValidMethods.TryGetValue(source, out var existingList))
+        {
+            foreach (var m in existingList)
+            {
+                if (!functionBaseClasses.ContainsKey(m))
+                    functionBaseClasses.Add(m, varName);
+            }
+
+            return;
+        }
+
+        var cachedValues = new List<string>();
+
         var methods = source.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).ToList();
         foreach (var method in methods)
         {
             var m = method.Name;
-            if (m == "GetType" || m == "ToString" || m == "Equals" || m == "GetHashCode")
+            if (m == "GetType" || m == "ToString" || m == "Equals" || m == "GetHashCode" || m.StartsWith("set_"))
                 continue;
+
+            if (requireScriptUseableAttribute)
+            {
+                if (m.StartsWith("get_"))
+                {
+                    var prop = source.GetProperty(m.Substring(4));
+                    if (prop == null)
+                        continue;
+                    var attr = prop.GetCustomAttribute<ScriptUseableAttribute>();
+                    if (attr == null)
+                        continue;
+                }
+                else
+                {
+                    var attr = method.GetCustomAttribute<ScriptUseableAttribute>();
+                    if (attr == null)
+                        continue;
+                }
+            }
 
             if (m.StartsWith("get_"))
             {
                 var m2 = m.Substring(4);
                 if (!functionBaseClasses.ContainsKey(m2))
                     functionBaseClasses.Add(m2, varName);
+                if (!cachedValues.Contains(m2))
+                    cachedValues.Add(m2);
+
+                continue;
             }
 
             if (method.IsStatic)
             {
                 if (!functionBaseClasses.ContainsKey(m))
                     functionBaseClasses.Add(m, varName);
+                if (!cachedValues.Contains(m))
+                    cachedValues.Add(m);
             }
             else
             {
                 if (!functionBaseClasses.ContainsKey(m))
                     functionBaseClasses.Add(m, varName);
+                if (!cachedValues.Contains(m))
+                    cachedValues.Add(m);
             }
-
-            
         }
+
+        functionValidMethods.Add(source, cachedValues);
     }
-    
+
     public void StartMap(string name)
     {
         methodName = name.Replace(" ", "").Replace("-", "_");
@@ -277,7 +319,7 @@ public class ScriptBuilder
         StartIndentedBlockLine().AppendLine("{");
 
         LoadFunctionSource(typeof(ServerMapConfig), "map");
-        
+
         foreach (var i in Enum.GetValues<SpawnCreateFlags>())
             additionalVariables.Add(i.ToString(), $"SpawnCreateFlags.{i}");
 
@@ -326,8 +368,8 @@ public class ScriptBuilder
 
         methodName = "Init";
 
-        LoadFunctionSource(typeof(Player), "player");
-        LoadFunctionSource(typeof(CombatEntity), "combatEntity");
+        LoadFunctionSource(typeof(Player), "player", true);
+        LoadFunctionSource(typeof(CombatEntity), "combatEntity", true);
     }
 
     public void StartMonsterSkillHandler(string name)
@@ -356,7 +398,7 @@ public class ScriptBuilder
     public void EndMonsterSkillHandler(string name, bool isAltType)
     {
         var behaviorName = $"RoRebuildSkillAI_{name}";
-        monsterSkillDefinitions.Add($"DataManager.RegisterMonsterSkillHandler(\"{name}\", new {behaviorName}(), {(isAltType?"true":"false")});");
+        monsterSkillDefinitions.Add($"DataManager.RegisterMonsterSkillHandler(\"{name}\", new {behaviorName}(), {(isAltType ? "true" : "false")});");
     }
 
     public void EndItem(string name, string className)
@@ -411,7 +453,7 @@ public class ScriptBuilder
         CloseScope();
         StartIndentedBlockLine().AppendLine($"public override void {section}(MonsterSkillAiState state)");
         OpenScope();
-        
+
         SetupMonsterHandlerVariables();
     }
 
@@ -420,9 +462,9 @@ public class ScriptBuilder
         if (methodName == section)
             return;
 
-        if(!Enum.TryParse<MonsterAiState>(section, out var state))
+        if (!Enum.TryParse<MonsterAiState>(section, out var state))
             throw new Exception($"Error in {className} line {lineNumber} : the section '{section}' does not match a valid MonsterAiState.");
-        if(monsterStatesWithHandlers.Contains(state))
+        if (monsterStatesWithHandlers.Contains(state))
             throw new Exception($"Error in {className} line {lineNumber} : the section '{section}' is defined twice.");
 
         ClearVariables();
@@ -463,7 +505,7 @@ public class ScriptBuilder
         if (monsterStatesWithHandlers.Contains(MonsterAiState.StateAny))
         {
             //don't call stateAny if we're disabled. We might want skill handler to run while disabled for some boss mechanics down the line.
-            StartIndentedScriptLine().AppendLine($"if(!skillState.IsDisabled())"); 
+            StartIndentedScriptLine().AppendLine($"if(!skillState.IsDisabled())");
             StartIndentedScriptLine().AppendLine($"\tStateAny(skillState);");
             StartIndentedScriptLine().AppendLine($"if(skillState.FinishedProcessing) return;");
 
@@ -474,7 +516,7 @@ public class ScriptBuilder
         StartIndentedScriptLine().AppendLine($"switch(aiState)");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
-        
+
         foreach (var state in monsterStatesWithHandlers)
         {
             if (state == MonsterAiState.StateAny)
@@ -521,7 +563,7 @@ public class ScriptBuilder
             StateStorageLimit = 4;
 
             LoadFunctionSource(typeof(ItemEquipState), "state");
-            LoadFunctionSource(typeof(Player), "player");
+            LoadFunctionSource(typeof(Player), "player", true);
             //LoadFunctionSource(typeof(CombatEntity), "combatEntity"); //we don't want them using the addstat/substat directly, ti should come from ItemEquipState
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
 
@@ -560,11 +602,11 @@ public class ScriptBuilder
             UseStateMachine = false;
             UseStateStorage = false;
             UseLocalStorage = false;
-            
-            LoadFunctionSource(typeof(Player), "player");
-            LoadFunctionSource(typeof(CombatEntity), "combatEntity");
+
+            LoadFunctionSource(typeof(Player), "player", true);
+            LoadFunctionSource(typeof(CombatEntity), "combatEntity", true);
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
-            
+
             foreach (var i in Enum.GetValues<CharacterSkill>())
                 additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
 
@@ -608,7 +650,7 @@ public class ScriptBuilder
         if (section == "OnLoadDropData" || section == "OnSetItemPurchasePrice" || section == "OnSetItemSaleValue")
         {
 
-            if(section == "OnLoadDropData")
+            if (section == "OnLoadDropData")
                 StartIndentedBlockLine().AppendLine($"public override int {section}(ItemClass type, string code, string subType, int rate)");
             else
                 StartIndentedBlockLine().AppendLine($"public override int {section}(ItemClass type, string code, string subType, int price)");
@@ -619,7 +661,7 @@ public class ScriptBuilder
             UseStateStorage = false;
             UseLocalStorage = false;
             StateStorageLimit = 0;
-            
+
             additionalVariables.Add("type", "type");
             additionalVariables.Add("code", "code");
             additionalVariables.Add("subType", "subType");
@@ -662,7 +704,7 @@ public class ScriptBuilder
         hasTouch = false;
         hasInteract = false;
         defaultReturn = null;
-        
+
 
         name += "_" + Guid.NewGuid().ToString().Replace("-", "_");
 
@@ -682,7 +724,7 @@ public class ScriptBuilder
         //        name += "_" + GameRandom.Next(0, 999_999_999);
         //}
 
-            //UniqueNames.Add(name);
+        //UniqueNames.Add(name);
 
         StartIndentedScriptLine().AppendLine($"public class RoRebuildNpcGen_{name} : {baseClass}");
         StartIndentedScriptLine().AppendLine("{");
@@ -726,7 +768,7 @@ public class ScriptBuilder
         defaultReturn = null;
 
         name += "_" + Guid.NewGuid().ToString().Replace("-", "_").Replace("'", "").Replace("[", "").Replace("]", "");
-        
+
         StartIndentedScriptLine().AppendLine($"public class RoRebuildNpcGen_{name} : NpcBehaviorBase");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
@@ -865,7 +907,7 @@ public class ScriptBuilder
             StateStorageLimit = NpcInteractionState.StorageCount;
 
             LoadFunctionSource(typeof(Npc), "npc");
-            LoadFunctionSource(typeof(Player), "player");
+            LoadFunctionSource(typeof(Player), "player", true);
             LoadFunctionSource(typeof(NpcInteractionState), "state");
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
 
@@ -882,7 +924,7 @@ public class ScriptBuilder
 
             StartIndentedBlockLine().AppendLine($"public override void {section}(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4)");
             OpenScope();
-            
+
             UseStateMachine = false;
             UseLocalStorage = true;
 
@@ -900,7 +942,7 @@ public class ScriptBuilder
         var strOverride = "";
         if (section == "OnMobKill")
             strOverride = " override";
-        
+
         StartIndentedBlockLine().AppendLine($"public{strOverride} void {section}(Npc npc)");
         OpenScope();
 
@@ -986,7 +1028,7 @@ public class ScriptBuilder
 
         if (UseStateMachine)
         {
-            if(stateMachineType == StateMachineType.NpcInteraction)
+            if (stateMachineType == StateMachineType.NpcInteraction)
                 lineBuilder.Append("return NpcInteractionResult.EndInteraction;");
             else
                 lineBuilder.Append("return NpcPathUpdateResult.EndPath;");
@@ -1169,7 +1211,7 @@ public class ScriptBuilder
     {
         lineBuilder.Append(varname);
     }
-    
+
     public void OpenSwitch()
     {
         switchOption = lineBuilder.ToString();
@@ -1325,12 +1367,12 @@ public class ScriptBuilder
         localStringVariables.Clear();
         additionalVariables.Clear();
     }
-    
+
     public bool HasUserVariable(string varName) => additionalVariables.ContainsKey(varName);
 
     public void AddUserVariable(string varName)
     {
-        if(!additionalVariables.ContainsKey(varName))
+        if (!additionalVariables.ContainsKey(varName))
             additionalVariables.Add(varName, varName);
     }
 

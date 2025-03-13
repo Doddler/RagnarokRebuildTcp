@@ -28,7 +28,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
             var distTime = dist * 0.04f;
             res.Time = Time.ElapsedTimeFloat + 0.38f + distTime;
             res.AttackMotionTime = 0.38f;
-            
+
+            source.ApplyAfterCastDelay(1f);
             source.ApplyCooldownForSupportSkillAction();
             source.ExecuteCombatResult(res, false);
 

@@ -79,14 +79,18 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             var jobMax = ClientDataLoader.Instance.GetJobExpRequired(State.JobId, State.GetData(PlayerStat.JobLevel));
             
-
-            
             CameraFollower.Instance.UpdatePlayerHP(hp, maxHp);
             CameraFollower.Instance.UpdatePlayerSP(sp, maxSp);
             CameraFollower.Instance.CharacterDetailBox.JobLvlDisplay.text = $"Job Lv. {State.GetData(PlayerStat.JobLevel)}";
             CameraFollower.Instance.UpdatePlayerJobExp(State.GetData(PlayerStat.JobExp), jobMax);
             CameraFollower.Instance.CharacterDetailBox.UpdateWeightAndZeny();
-            
+
+            if (CameraFollower.Instance.TargetControllable != null)
+            {
+                CameraFollower.Instance.TargetControllable.SetHp(hp, maxHp, false);
+                CameraFollower.Instance.TargetControllable.SetSp(sp, maxSp);
+            }
+
             UiManager.Instance.SkillHotbar.UpdateItemCounts();
             UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
             if(hasStatChange)

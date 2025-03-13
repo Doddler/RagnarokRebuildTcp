@@ -51,6 +51,7 @@ public class FireBallHandler : SkillHandlerBase
             CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
         }
 
+        source.ApplyAfterCastDelay(1f, ref res);
         source.ApplyCooldownForAttackAction(position);
         CommandBuilder.ClearRecipients();
     }

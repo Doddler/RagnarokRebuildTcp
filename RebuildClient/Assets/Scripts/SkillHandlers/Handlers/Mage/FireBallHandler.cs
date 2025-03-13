@@ -23,7 +23,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         
         public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ref AttackResultData attack)
         {
-            src?.PerformSkillMotion();
+            src?.PerformSkillMotion(true);
         }
     }
 }

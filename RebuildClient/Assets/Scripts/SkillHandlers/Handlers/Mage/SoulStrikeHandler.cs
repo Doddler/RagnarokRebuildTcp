@@ -26,7 +26,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
 
         public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ref AttackResultData attack)
         {
-            src?.PerformSkillMotion();
+            src?.PerformSkillMotion(true);
             src?.LookAtOrDefault(attack.Target);
             if (src != null && attack.Target != null)
                 SoulStrikeEffect.LaunchEffect(src, attack.Target.gameObject, attack.HitCount, false);

@@ -186,7 +186,7 @@
         30
       ],
       "AdjustableLevel": true,
-      "Description": "Deals [SkillLevel] hits at 100% fire element magic damage to a single target.\r\nCasting is only interrupted by high damage and skill attacks.\r\nCast Time: [0.6 \u002B SkillLevel * 0.4]s",
+      "Description": "Deals [SkillLevel] hits at 100% fire element magic damage to a single target.\r\nCasting is only interrupted by high damage and skill attacks.\r\nCast Time: [0.6 \u002B SkillLevel * 0.4]s\r\nAfter Cast Delay: 1s",
       "InterruptMode": 0
     },
     {
@@ -209,7 +209,7 @@
         30
       ],
       "AdjustableLevel": true,
-      "Description": "Deals [SkillLevel] hits at 100% water element magic damage to a single target.\r\nCasting is only interrupted by high damage and skill attacks.\r\nCast Time: [0.6 \u002B SkillLevel * 0.4]s",
+      "Description": "Deals [SkillLevel] hits at 100% water element magic damage to a single target.\r\nCasting is only interrupted by high damage and skill attacks.\r\nCast Time: [0.6 \u002B SkillLevel * 0.4]s\r\nAfter Cast Delay: 1s",
       "InterruptMode": 0
     },
     {
@@ -232,7 +232,7 @@
         25
       ],
       "AdjustableLevel": true,
-      "Description": "Deals [140 \u002B SkillLevel * 20]% magical fire damage to all enemies in a 5x5 area.\r\nEnemies at the edge of the area of effect will take reduced damage.\r\nCast time: 1.5s for all skill levels",
+      "Description": "Deals [140 \u002B SkillLevel * 20]% magical fire damage to all enemies in a 5x5 area.\r\nEnemies at the edge of the area of effect will take reduced damage.\r\nCast time: 1.5s\r\nAfter Cast Delay: 1s",
       "InterruptMode": 0
     },
     {
@@ -278,7 +278,7 @@
         16
       ],
       "AdjustableLevel": true,
-      "Description": "Deals [100 \u002B SkillLevel * 10]% water element damage with a [35 \u002B SkillLevel * 3]% chance to freeze.\r\nFreeze Effect: Target becomes immobilized and water element, and receive DEF-50% and MDEF\u002B25%. The effect ends upon taking damage.",
+      "Description": "Deals [100 \u002B SkillLevel * 10]% water element damage with a [35 \u002B SkillLevel * 3]% chance to freeze.\r\nFreeze Effect: Target becomes immobilized and water element, and receive DEF-50% and MDEF\u002B25%. The effect ends upon taking damage.\r\nCast Time: 0.8s\r\nAfter Cast Delay: 1s",
       "InterruptMode": 0
     },
     {
@@ -301,7 +301,7 @@
         30
       ],
       "AdjustableLevel": true,
-      "Description": "Deals [SkillLevel] hits at 100% wind element magic damage to a single target.\r\nCasting is only interrupted by high damage and skill attacks.\r\nCast Time: [0.6 \u002B SkillLevel * 0.4]s",
+      "Description": "Deals [SkillLevel] hits at 100% wind element magic damage to a single target.\r\nCasting is only interrupted by high damage and skill attacks.\r\nCast Time: [0.6 \u002B SkillLevel * 0.4]s\r\nAfter Cast Delay: 1s",
       "InterruptMode": 0
     },
     {
@@ -324,7 +324,7 @@
         18
       ],
       "AdjustableLevel": false,
-      "Description": "A ghost property psychokinetic attack dealing physical damage at [100 \u002B SkillLevel * 15]% MATK. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes. Striking a petrified or frozen target will deal double damage and increase the blast radius to 7x7.\r\nCast Time: [1.2 - SkillLevel *0.1]s",
+      "Description": "A ghost property psychokinetic attack dealing physical damage at [100 \u002B SkillLevel * 15]% MATK. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes. Striking a petrified or frozen target will deal double damage and increase the blast radius to 7x7.\r\nCast Time: [1.2 - SkillLevel *0.1]s\r\nAfter Cast Delay: [1 - SkillLevel * 0.05]s",
       "InterruptMode": 0
     },
     {
@@ -347,7 +347,7 @@
         38
       ],
       "AdjustableLevel": true,
-      "Description": "A ghost property psychokinetic attack that hits [SkillLevel / 2] times at 120% MATK. Deals [5 * SkillLevel]% additional damage against the undead.\r\nCast Time: 0.5s",
+      "Description": "A ghost property psychokinetic attack that hits [(1 \u002B SkillLevel) / 2] times at 120% MATK. Deals [5 * SkillLevel]% additional damage against the undead.\r\nCast Time: 0.5s\r\nAfter Cast Delay: 1.2s (odd levels), 1s (even levels)",
       "InterruptMode": 0
     },
     {
@@ -370,7 +370,7 @@
         74
       ],
       "AdjustableLevel": true,
-      "Description": "Deals [SkillLevel] hits at 100% wind element magic damage to all enemies in a 5x5 area.\r\nCast Time: [1.5 \u002B SkillLevel * 0.5]s",
+      "Description": "Deals [SkillLevel] hits at 100% wind element magic damage to all enemies in a 5x5 area.\r\nCast Time: [1.5 \u002B SkillLevel * 0.5]s\r\nAfter Cast Delay: 1.5s",
       "InterruptMode": 0
     },
     {
@@ -574,7 +574,7 @@
         40
       ],
       "AdjustableLevel": true,
-      "Description": "Heals an ally. Deals damage when cast on an undead (use shift to target an enemy).\r\nHeal Formula: [4 \u002B 8 * SkillLevel], scaling \u002B100% for every 10 base level \u002B int, plus 1/2 magic attack power.",
+      "Description": "Heals an ally. Deals damage when cast on an undead (use shift to target an enemy).\r\nHeal Formula: [4 \u002B 8 * SkillLevel], scaling \u002B100% for every 10 base level \u002B int, plus 1/2 magic attack power.\r\nAfter Cast Delay: 1s",
       "InterruptMode": 0
     },
     {

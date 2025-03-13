@@ -11,6 +11,29 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
         public RagnarokEffectData.PrimitiveUpdateDelegate GetDefaultUpdateHandler() => UpdatePrimitive;
         public RagnarokEffectData.PrimitiveRenderDelegate GetDefaultRenderHandler() => RenderPrimitive;
         
+        
+        private static void UpdateSegments(RagnarokPrimitive primitive, Particle3DSplineData data, bool isFinished)
+        {
+            var shrink = data.Size / primitive.SegmentCount / 2f;
+            var alphaDown = 255f / primitive.SegmentCount;
+            
+            for (var i = primitive.SegmentCount - 1; i > 0; i--)
+            {
+                primitive.Segments[i].Position = primitive.Segments[i - 1].Position;
+                primitive.Segments[i].Alpha = primitive.Segments[i - 1].Alpha - alphaDown;
+                primitive.Segments[i].Size = primitive.Segments[i - 1].Size - shrink;
+            }
+
+            if (isFinished)
+                primitive.Segments[0].Alpha = -1;
+            else
+            {
+                primitive.Segments[0].Position = data.Position;
+                primitive.Segments[0].Alpha = 255;
+                primitive.Segments[0].Size = data.Size;
+            }
+        }
+        
         public void UpdatePrimitive(RagnarokPrimitive primitive)
         {
             if (!primitive.IsStepFrame || !primitive.IsActive)

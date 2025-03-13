@@ -3,6 +3,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
@@ -10,7 +11,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
 [StatusEffectHandler(CharacterStatusEffect.Hiding, StatusClientVisibility.Everyone, StatusEffectFlags.NoSave, "Hiding")]
 public class StatusHiding : StatusEffectBase
 {
-    public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnTakeDamage | StatusUpdateMode.OnUpdate;
+    public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnTakeDamage | StatusUpdateMode.OnCalculateDamageTaken | StatusUpdateMode.OnUpdate;
 
     public override StatusUpdateResult OnUpdateTick(CombatEntity ch, ref StatusEffectState state)
     {
@@ -31,11 +32,25 @@ public class StatusHiding : StatusEffectBase
 
     public override StatusUpdateResult OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
     {
-        //if (ch.GetSpecialType() == CharacterSpecialType.Boss && info.AttackSkill != CharacterSkill.Ruwach)
+        if (state.Value4 == 1)
+            return StatusUpdateResult.EndStatus;
+
+        return StatusUpdateResult.Continue;
+    }
+
+    public override StatusUpdateResult OnCalculateDamageTaken(CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info)
+    {
+        if ((req.Flags & AttackFlags.CanAttackHidden) != 0 && info.IsDamageResult && info.Damage > 0)
+            state.Value4 = 1;
+
+        //if (ch.GetSpecialType() == CharacterSpecialType.Boss)
         //    return StatusUpdateResult.Continue;
 
-        if (info.Damage > 0)
-            return StatusUpdateResult.EndStatus;
+        //if (info.IsDamageResult && info.Damage > 0)
+        //    state.Value4 = 1;
+
+        if (info.Result == AttackResult.Miss)
+            info.Result = AttackResult.InvisibleMiss;
 
         return StatusUpdateResult.Continue;
     }

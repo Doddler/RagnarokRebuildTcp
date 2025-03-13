@@ -52,7 +52,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[34] = new InvalidPacket(); //LevelUp
 			handlers[35] = new InvalidPacket(); //Death
 			handlers[36] = new InvalidPacket(); //HpRecovery
-			handlers[37] = new InvalidPacket(); //ImprovedRecoveryTick
+			handlers[37] = new PacketImprovedRecoveryTick(); //ImprovedRecoveryTick
 			handlers[38] = new PacketChangeSpValue(); //ChangeSpValue
 			handlers[39] = new PacketUpdateZeny(); //UpdateZeny
 			handlers[40] = new InvalidPacket(); //Respawn

@@ -21,5 +21,6 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public virtual StatusUpdateResult OnCalculateDamageTaken(CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info) => StatusUpdateResult.Continue;
         public virtual StatusUpdateResult OnChangeEquipment(CombatEntity ch, ref StatusEffectState state) => StatusUpdateResult.Continue;
         public virtual StatusUpdateResult OnMove(CombatEntity ch, ref StatusEffectState state, Position src, Position dest) => StatusUpdateResult.Continue;
+        public virtual StatusUpdateResult OnChangeMaps(CombatEntity ch, ref StatusEffectState state) => StatusUpdateResult.Continue;
     }
 }

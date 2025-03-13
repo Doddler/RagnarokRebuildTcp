@@ -40,9 +40,9 @@ public struct EquipStatChange : IEquatable<EquipStatChange>
 
 public class ItemEquipState
 {
-    public Player Player;
-    public int[] ItemSlots = new int[10];
-    public int[] ItemIds = new int[10];
+    public Player Player = null!; //this is set in player init
+    public readonly int[] ItemSlots = new int[10];
+    public readonly int[] ItemIds = new int[10];
     public int AmmoId;
     public AmmoType AmmoType;
     public int AmmoAttackPower;

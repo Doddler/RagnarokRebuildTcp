@@ -12,6 +12,7 @@ namespace RebuildSharedData.Enum
         Miss,
         Block,
         Success,
-        Invisible
+        Invisible, //no damage shown and client skill handler
+        InvisibleMiss //no damage shown, but attack motion performed
     }
 }

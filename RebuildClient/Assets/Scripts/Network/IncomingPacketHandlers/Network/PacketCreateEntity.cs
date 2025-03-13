@@ -202,7 +202,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             if (controllable.IsMainCharacter)
             {
                 Camera.UpdatePlayerHP(hp, maxHp);
+                controllable.SetHp(hp, maxHp);
                 //CameraFollower.UpdatePlayerSP(100, 100);
+                
+                if(State.Sp > 0 && State.MaxSp > 0)
+                    controllable.SetSp(State.Sp, State.MaxSp);
             }
 
             if (maxSp > 0)

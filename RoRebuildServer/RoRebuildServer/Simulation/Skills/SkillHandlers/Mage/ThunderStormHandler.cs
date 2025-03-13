@@ -56,7 +56,10 @@ public class ThunderStormHandler : SkillHandlerBase
 
             //only add a cooldown if cast directly and not cast by an event on this entity's behalf
             if (!isIndirect)
+            {
+                source.ApplyAfterCastDelay(1.5f);
                 source.ApplyCooldownForAttackAction(position);
+            }
 
             //send the thunder aoe
             var id = DataManager.EffectIdForName["ThunderStorm"];

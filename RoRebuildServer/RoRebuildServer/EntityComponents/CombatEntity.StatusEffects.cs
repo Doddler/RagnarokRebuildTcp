@@ -6,6 +6,7 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 using RoRebuildServer.EntityComponents.Items;
+using RoRebuildServer.ScriptSystem;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -343,6 +344,7 @@ public partial class CombatEntity
         return true;
     }
 
+    [ScriptUseable]
     public void CleanseStatusEffect(StatusCleanseTarget target)
     {
         if (statusContainer == null)

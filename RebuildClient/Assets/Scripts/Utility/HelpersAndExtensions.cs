@@ -5,6 +5,7 @@ using Assets.Scripts.MapEditor;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
@@ -140,6 +141,18 @@ namespace Assets.Scripts
             if (walkProvider != null)
                 pos.y = walkProvider.GetHeightForPosition(pos);
             return pos;
+        }
+
+        public static Vector3 PositionInCylinder(float angle, float distance, float height = 0)
+        {
+            return new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad) * distance, height, Mathf.Cos(angle * Mathf.Deg2Rad) * distance);
+        }
+        
+        public static Vector3 RandomPositionInCylinder(float minDistance, float maxDistance, float height = 0)
+        {
+            var angle = Random.Range(0, 360f);
+            var distance = Random.Range(minDistance, maxDistance);
+            return new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad) * distance, height, Mathf.Cos(angle * Mathf.Deg2Rad) * distance);
         }
 
         public static Vector3 ToWorldPosition(this Position p) => ToWorldPosition(p.ToMapPosition());

@@ -29,6 +29,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.ScriptSystem;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -76,7 +77,7 @@ public partial class CombatEntity : IEntityAutoReset
 
     public void SetSkillDamageCooldown(CharacterSkill skill, float cooldown) => damageCooldowns[skill] = Time.ElapsedTimeFloat + cooldown;
     public void ResetSkillDamageCooldowns() => damageCooldowns.Clear();
-    public int HpPercent => GetStat(CharacterStat.Hp) * 100 / GetStat(CharacterStat.MaxHp);
+    [ScriptUseable] public int HpPercent => GetStat(CharacterStat.Hp) * 100 / GetStat(CharacterStat.MaxHp);
 
     public float CastTimeRemaining => !IsCasting ? 0 : CastingTime - Time.ElapsedTimeFloat;
 
@@ -113,6 +114,7 @@ public partial class CombatEntity : IEntityAutoReset
             statData[i] = 0;
     }
 
+    [ScriptUseable]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int GetStat(CharacterStat type)
     {
@@ -123,6 +125,7 @@ public partial class CombatEntity : IEntityAutoReset
         return Player.PlayerStatData[type - CharacterStat.MonsterStatsMax];
     }
 
+    [ScriptUseable]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetStat(CharacterStat type, int val)
     {
@@ -137,6 +140,7 @@ public partial class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] = val;
     }
 
+    [ScriptUseable]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void AddStat(CharacterStat type, int val)
     {
@@ -151,6 +155,7 @@ public partial class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] += val;
     }
 
+    [ScriptUseable]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SubStat(CharacterStat type, int val)
     {
@@ -165,6 +170,7 @@ public partial class CombatEntity : IEntityAutoReset
         Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] -= val;
     }
 
+    [ScriptUseable]
     public void CreateEvent(string eventName, int param1 = 0, int param2 = 0, int param3 = 0, int param4 = 0)
     {
         if (Character.Map == null)
@@ -172,11 +178,13 @@ public partial class CombatEntity : IEntityAutoReset
         World.Instance.CreateEvent(Entity, Character.Map, eventName, Character.Position, param1, param2, param3, param4, null);
     }
 
+    [ScriptUseable]
     public bool IsEventNearby(string eventName, int range)
     {
         return Character.Map?.HasEventInArea(Area.CreateAroundPoint(Character.Position, range), eventName) ?? false;
     }
-    
+
+    [ScriptUseable]
     public void AddStatusEffect(CharacterStatusEffect effect, int duration, int val1 = 0, int val2 = 0)
     {
         var status = StatusEffectState.NewStatusEffect(effect, duration / 1000f, val1, val2);
@@ -202,6 +210,7 @@ public partial class CombatEntity : IEntityAutoReset
             statusContainer.AddPendingStatusEffect(state, replaceExisting, delay);
     }
 
+    [ScriptUseable]
     public void RemoveStatusOfTypeIfExists(CharacterStatusEffect type)
     {
         if (statusContainer == null || statusContainer.TotalStatusEffectCount == 0) //that last one fixes an unfortunate issue where attempting to remove an existing status while adding a status breaks things
@@ -242,8 +251,10 @@ public partial class CombatEntity : IEntityAutoReset
         statusContainer.Deserialize(br, count);
     }
 
+    [ScriptUseable]
     public bool CanTeleport() => Character.Map?.CanTeleport ?? false;
 
+    [ScriptUseable]
     public void RandomTeleport()
     {
         if (Character.Map == null)
@@ -314,6 +325,7 @@ public partial class CombatEntity : IEntityAutoReset
         }
     }
 
+    [ScriptUseable]
     public int GetEffectiveStat(CharacterStat type)
     {
         var stat = GetStat(type);
@@ -363,6 +375,7 @@ public partial class CombatEntity : IEntityAutoReset
         return stat;
     }
 
+    [ScriptUseable]
     public void UpdateStats()
     {
         if (Character.Type == CharacterType.Monster)
@@ -371,6 +384,7 @@ public partial class CombatEntity : IEntityAutoReset
             Character.Player.UpdateStats();
     }
 
+    [ScriptUseable]
     public void HealHpPercent(int percent)
     {
         var curHp = GetStat(CharacterStat.Hp);
@@ -382,11 +396,12 @@ public partial class CombatEntity : IEntityAutoReset
 
         SetStat(CharacterStat.Hp, curHp + hp);
 
-        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.SendHealMulti(Character, hp, HealType.Item);
         CommandBuilder.ClearRecipients();
     }
 
+    [ScriptUseable]
     public void HealSpPercent(int percent)
     {
         var curSp = GetStat(CharacterStat.Sp);
@@ -398,7 +413,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         SetStat(CharacterStat.Sp, curSp + sp);
 
-        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.ChangeSpValue(Player, curSp + sp, maxSp);
         CommandBuilder.ClearRecipients();
     }
@@ -422,6 +437,7 @@ public partial class CombatEntity : IEntityAutoReset
         }
     }
 
+    [ScriptUseable]
     public void HealRange(int hp, int hp2, bool showValue = false)
     {
         if (hp2 != -1 && hp2 > hp)
@@ -448,7 +464,7 @@ public partial class CombatEntity : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
-
+    [ScriptUseable]
     public void RecoverSpRange(int sp, int sp2, bool showValue = false)
     {
         if (sp2 != -1 && sp2 > sp)
@@ -475,6 +491,7 @@ public partial class CombatEntity : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
+    [ScriptUseable]
     public void FullRecovery(bool hp = true, bool sp = false)
     {
         if (hp)
@@ -1266,6 +1283,8 @@ public partial class CombatEntity : IEntityAutoReset
         return attackerPenalty;
     }
 
+
+
     public DamageInfo PrepareTargetedSkillResult(CombatEntity target, CharacterSkill skillSource = CharacterSkill.None)
     {
         //technically the motion time is how long it's locked in place, we use sprite timing if it's faster.
@@ -1403,18 +1422,7 @@ public partial class CombatEntity : IEntityAutoReset
         }
 
         if (damageInfo.Damage != 0)
-        {
-            //if(damageInfo.Time < Time.ElapsedTimeFloat)
-            //    target.ApplyQueuedCombatResult(ref damageInfo);
-            //else
             target.QueueDamage(damageInfo);
-        }
-
-        //if (target.Character.Type == CharacterType.Monster && damageInfo.Damage > target.GetStat(CharacterStat.Hp))
-        //{
-        //    var mon = target.Entity.Get<Monster>();
-        //    mon.AddDelay(GetTiming(TimingStat.SpriteAttackTiming) * 2); //make sure it stops acting until it dies
-        //}
     }
 
     public void PerformMeleeAttack(CombatEntity target)
@@ -1436,6 +1444,23 @@ public partial class CombatEntity : IEntityAutoReset
         UpdateHidingStateAfterAttack();
 
         ExecuteCombatResult(di);
+    }
+
+    public void ApplyAfterCastDelay(float time)
+    {
+        if(Character.Type == CharacterType.Player)
+            Player.ApplyAfterCastDelay(time);
+    }
+
+    public void ApplyAfterCastDelay(float time, ref DamageInfo res)
+    {
+        if (Character.Type != CharacterType.Player)
+            return;
+
+        if (res.AttackMotionTime < time)
+            res.AttackMotionTime = float.Min(time, 0.6f);
+
+        ApplyAfterCastDelay(time);
     }
 
     public void CancelCast()

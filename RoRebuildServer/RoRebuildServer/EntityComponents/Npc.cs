@@ -53,8 +53,8 @@ public class Npc : IEntityAutoReset
 
     public NpcBehaviorBase Behavior = null!;
 
-    public float TimerUpdateRate;
-    public float LastTimerUpdate;
+    public double TimerUpdateRate;
+    public double LastTimerUpdate;
     public double TimerStart;
 
     public bool HasTouch;
@@ -62,8 +62,9 @@ public class Npc : IEntityAutoReset
     public bool TimerActive;
     public bool IsEvent;
     public bool IsPathActive;
+    public bool ExpireEventWithoutOwner;
     public NpcPathHandler? NpcPathHandler;
-
+    
     private string? currentSignalTarget;
 
     //private SkillCastInfo? skillInfo;
@@ -81,6 +82,14 @@ public class Npc : IEntityAutoReset
         if (TimerActive && TimerStart + LastTimerUpdate + TimerUpdateRate < Time.ElapsedTime)
         {
             UpdateTimer();
+            if (!Character.IsActive)
+                return;
+        }
+
+        if (IsEvent && ExpireEventWithoutOwner && !Owner.IsAlive())
+        {
+            EndEvent();
+            return;
         }
 
         if (IsPathActive && NpcPathHandler != null)
@@ -136,17 +145,7 @@ public class Npc : IEntityAutoReset
 
         DisplayType = NpcDisplayType.Sprite;
         EffectType = NpcEffectType.None;
-    }
-
-    public void RollBackTimers(float time)
-    {
-        LastTimerUpdate -= time;
-        TimerStart -= time;
-        if (AreaOfEffect != null)
-        {
-            AreaOfEffect.Expiration -= time;
-            AreaOfEffect.NextTick -= time;
-        }
+        ExpireEventWithoutOwner = false;
     }
 
     public bool TryGetAreaOfEffect([NotNullWhen(returnValue: true)] out AreaOfEffect aoe)
@@ -192,7 +191,7 @@ public class Npc : IEntityAutoReset
         //update this before OnTimer since OnTimer may call ResetTimer or otherwise change the timer
         LastTimerUpdate = newTime;
 
-        Behavior.OnTimer(this, lastTime, newTime);
+        Behavior.OnTimer(this, (float)lastTime, newTime); //fix this cast at some point...
     }
 
     public void ResetTimer()

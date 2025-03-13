@@ -31,6 +31,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
                 return;
 
             var res = source.CalculateCombatResult(target, 1, lvl, AttackFlags.Magical, GetSkill(), GetElement());
+            source.ApplyAfterCastDelay(1f, ref res);
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);
 

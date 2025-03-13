@@ -300,6 +300,8 @@ public class World
         npc.Character = ch;
         npc.IsEvent = true;
         npc.Owner = owner;
+        if (owner.IsAlive())
+            npc.ExpireEventWithoutOwner = true;
 
         entityList.Add(ch.Id, e);
 

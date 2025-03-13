@@ -22,6 +22,7 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
@@ -46,7 +47,7 @@ public class Player : IEntityAutoReset
     public string Name { get; set; } = "Uninitialized Player";
     public HeadFacing HeadFacing;
     //public PlayerData Data { get; set; }
-    public bool IsAdmin { get; set; }
+    [ScriptUseable] public bool IsAdmin { get; set; }
     public bool IsInNpcInteraction { get; set; }
     public bool IsMale => GetData(PlayerStat.Gender) == 0;
     public override string ToString() => $"Player:{Name}";
@@ -56,13 +57,12 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
     [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
-    public Dictionary<string, int>? NpcFlags = null!;
+    public Dictionary<string, int>? NpcFlags;
     public ItemEquipState Equipment = null!;
     public CharacterBag? Inventory;
     public CharacterBag? CartInventory;
     public CharacterBag? StorageInventory;
-    public bool isStorageLoaded = false;
-    public EntityValueList<float> RecentAttackersList;
+    public EntityValueList<float> RecentAttackersList = null!;
     private float lastAttackerListCheckUpdate;
     public float ShoutCooldown;
     private Memory<int>? jobStatBonuses;
@@ -75,8 +75,9 @@ public class Player : IEntityAutoReset
     public bool DoesCharacterKnowSkill(CharacterSkill skill, int level) => LearnedSkills.TryGetValue(skill, out var learned) && learned >= level;
     public int MaxLearnedLevelOfSkill(CharacterSkill skill) => LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0;
 
-    public int GetNpcFlag(string flag) => NpcFlags != null && NpcFlags.TryGetValue(flag, out var val) ? val : 0;
+    [ScriptUseable] public int GetNpcFlag(string flag) => NpcFlags != null && NpcFlags.TryGetValue(flag, out var val) ? val : 0;
 
+    [ScriptUseable]
     public void SetNpcFlag(string flag, int val)
     {
         NpcFlags ??= new Dictionary<string, int>();
@@ -90,50 +91,59 @@ public class Player : IEntityAutoReset
         get;
         set;
     }
-    private float regenTickTime { get; set; }
-    public void ResetRegenTickTime() => regenTickTime = 3f;
+    private float regenHpTickTime { get; set; }
+    private float regenSpTickTime { get; set; }
+
+    private const float HpRegenTickTime = 6f;
+    private const float SpRegenTickTime = 6f;
+    public void ResetRegenTickTime()
+    {
+        regenHpTickTime = HpRegenTickTime / 2f;
+        regenSpTickTime = HpRegenTickTime / 2f;
+    }
+
     public int WeaponClass;
 
 #if DEBUG
-    private float currentCooldown;
-    public float CurrentCooldown
+    private float actionCooldown;
+    public float ActionCooldown
     {
-        get => currentCooldown;
+        get => actionCooldown;
         set
         {
-            currentCooldown = value;
-            if (currentCooldown > 5f)
+            actionCooldown = value;
+            if (actionCooldown > 5f)
                 ServerLogger.LogWarning($"Warning! Attempting to set player cooldown to time exceeding 5s! Stack Trace:\n" + Environment.StackTrace);
         }
     }
 #else
-    public float CurrentCooldown;
+    public float ActionCooldown;
 #endif
 
     public float LastEmoteTime; //we'll probably need to have like, a bunch of timers at some point...
-    public float SkillCooldownTime;
+    public double SkillCooldownTime;
 
     //helper functions for item effect handlers
-    public int CharacterLevel => GetData(PlayerStat.Level);
-    public int JobLevel => GetData(PlayerStat.JobLevel);
-    public int JobId => GetData(PlayerStat.Job);
+    [ScriptUseable] public int CharacterLevel => GetData(PlayerStat.Level);
+    [ScriptUseable] public int JobLevel => GetData(PlayerStat.JobLevel);
+    [ScriptUseable] public int JobId => GetData(PlayerStat.Job);
 
     //stats that can't apply to monsters
     [EntityIgnoreNullCheck] public readonly int[] PlayerStatData = new int[(int)(CharacterStat.CharacterStatsMax - CharacterStat.MonsterStatsMax)];
 
+    [ScriptUseable] public int GetData(PlayerStat type) => CharData[(int)type];
+    [ScriptUseable] public void SetData(PlayerStat type, int val) => CharData[(int)type] = val;
+    [ScriptUseable] public int GetStat(CharacterStat type) => CombatEntity.GetStat(type);
+    [ScriptUseable] public int GetEffectiveStat(CharacterStat type) => CombatEntity.GetEffectiveStat(type);
+    [ScriptUseable] public float GetTiming(TimingStat type) => CombatEntity.GetTiming(type);
+    [ScriptUseable] public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
+    [ScriptUseable] public void SetStat(CharacterStat type, float val) => CombatEntity.SetStat(type, (int)val);
+    [ScriptUseable] public void AddStat(CharacterStat type, int val) => CombatEntity.AddStat(type, val);
+    [ScriptUseable] public void SubStat(CharacterStat type, int val) => CombatEntity.SubStat(type, val);
+    [ScriptUseable] public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
+    [ScriptUseable] public int GetZeny() => CharData[(int)PlayerStat.Zeny];
 
-    public int GetData(PlayerStat type) => CharData[(int)type];
-    public void SetData(PlayerStat type, int val) => CharData[(int)type] = val;
-    public int GetStat(CharacterStat type) => CombatEntity.GetStat(type);
-    public int GetEffectiveStat(CharacterStat type) => CombatEntity.GetEffectiveStat(type);
-    public float GetTiming(TimingStat type) => CombatEntity.GetTiming(type);
-    public void SetStat(CharacterStat type, int val) => CombatEntity.SetStat(type, val);
-    public void SetStat(CharacterStat type, float val) => CombatEntity.SetStat(type, (int)val);
-    public void AddStat(CharacterStat type, int val) => CombatEntity.AddStat(type, val);
-    public void SubStat(CharacterStat type, int val) => CombatEntity.SubStat(type, val);
-    public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
-    public int GetZeny() => CharData[(int)PlayerStat.Zeny];
-
+    [ScriptUseable]
     public void AddZeny(int val)
     {
         var v = CharData[(int)PlayerStat.Zeny];
@@ -143,6 +153,7 @@ public class Player : IEntityAutoReset
             CharData[(int)PlayerStat.Zeny] += val;
     }
 
+    [ScriptUseable]
     public void DropZeny(int val)
     {
         var v = CharData[(int)PlayerStat.Zeny] - val;
@@ -169,6 +180,8 @@ public class Player : IEntityAutoReset
         922, 941, 960, 979, 998, 1018, 1038, 1058, 1078, 1098, 1119, 1140, 1161, 1182, 1203, 1225, 1247, 1269, 1291,
     };
 
+
+
     public void Reset()
     {
         Entity = Entity.Null;
@@ -176,13 +189,14 @@ public class Player : IEntityAutoReset
         Character = null!;
         CombatEntity = null!;
         Connection = null!;
-        CurrentCooldown = 0f;
+        ActionCooldown = 0f;
         HeadFacing = HeadFacing.Center;
         AutoAttackLock = false;
         Id = Guid.Empty;
         Name = "Uninitialized Player";
         //Data = new PlayerData(); //fix this...
-        regenTickTime = 0;
+        regenHpTickTime = 0;
+        regenSpTickTime = 0;
         NpcInteractionState.Reset();
         IsAdmin = false;
         Array.Clear(CharData);
@@ -192,7 +206,6 @@ public class Player : IEntityAutoReset
         StorageId = -1;
         LearnedSkills = null!;
         NpcFlags = null!;
-        isStorageLoaded = false;
         jobStatBonuses = null;
         SpecialState = SpecialPlayerActionState.None;
         SpecialStateTarget = Position.Invalid;
@@ -219,17 +232,6 @@ public class Player : IEntityAutoReset
         SavePosition.Reset();
     }
 
-    //public void RollBackTimers(float time)
-    //{
-    //    regenTickTime -= time;
-    //    lastAttackerListCheckUpdate -= time;
-    //    ShoutCooldown -= time;
-    //    SkillCooldownTime -= time;
-    //    CurrentCooldown -= time;
-    //    LastEmoteTime -= time;
-    //    RecentAttackersList.Clear(); //this is cheap but no one will probably notice
-    //}
-
     public void Init()
     {
         LearnedSkills ??= new Dictionary<CharacterSkill, int>();
@@ -249,6 +251,7 @@ public class Player : IEntityAutoReset
 
         IsAdmin = ServerConfig.DebugConfig.UseDebugMode;
         RecentAttackersList = EntityValueListPool<float>.Get();
+        ResetRegenTickTime();
 
         if(CharacterLevel == 0)
             SetData(PlayerStat.Level, 1); //why
@@ -340,29 +343,7 @@ public class Player : IEntityAutoReset
 
         return true;
     }
-
-    public void PackPlayerSummaryData(int[] buffer)
-    {
-        buffer[(int)PlayerSummaryData.Level] = GetData(PlayerStat.Level);
-        buffer[(int)PlayerSummaryData.JobId] = GetData(PlayerStat.Job);
-        buffer[(int)PlayerSummaryData.HeadId] = GetData(PlayerStat.Head);
-        buffer[(int)PlayerSummaryData.HairColor] = GetData(PlayerStat.HairId);
-        buffer[(int)PlayerSummaryData.Hp] = GetStat(CharacterStat.Hp);
-        buffer[(int)PlayerSummaryData.MaxHp] = GetStat(CharacterStat.MaxHp);
-        buffer[(int)PlayerSummaryData.Sp] = GetStat(CharacterStat.Sp);
-        buffer[(int)PlayerSummaryData.MaxSp] = GetStat(CharacterStat.MaxSp);
-        buffer[(int)PlayerSummaryData.Headgear1] = Equipment.ItemIds[(int)EquipSlot.HeadTop];
-        buffer[(int)PlayerSummaryData.Headgear2] = Equipment.ItemIds[(int)EquipSlot.HeadMid];
-        buffer[(int)PlayerSummaryData.Headgear3] = Equipment.ItemIds[(int)EquipSlot.HeadBottom];
-        buffer[(int)PlayerSummaryData.Str] = GetData(PlayerStat.Str);
-        buffer[(int)PlayerSummaryData.Agi] = GetData(PlayerStat.Agi);
-        buffer[(int)PlayerSummaryData.Int] = GetData(PlayerStat.Int);
-        buffer[(int)PlayerSummaryData.Vit] = GetData(PlayerStat.Vit);
-        buffer[(int)PlayerSummaryData.Dex] = GetData(PlayerStat.Dex);
-        buffer[(int)PlayerSummaryData.Luk] = GetData(PlayerStat.Luk);
-        buffer[(int)PlayerSummaryData.Gender] = GetData(PlayerStat.Gender);
-    }
-
+    
     public void SendPlayerUpdateData(OutboundMessage packet, bool sendInventory, bool refreshSkills)
     {
         foreach (var dataType in PlayerClientStatusDef.PlayerUpdateData)
@@ -833,6 +814,7 @@ public class Player : IEntityAutoReset
         NpcInteractionState.CancelInteraction();
     }
 
+    [ScriptUseable]
     public void ReturnToSavePoint()
     {
         Debug.Assert(Character.Map != null);
@@ -855,23 +837,6 @@ public class Player : IEntityAutoReset
             ServerLogger.LogWarning($"Failed to move player via ReturnToSavePoint to {savePoint}!");
 
         AddActionDelay(CooldownActionType.Teleport);
-    }
-
-    // Adjust the remaining regen tick time when changing sitting state.
-    // Standing up doubles your remaining regen tick time, sitting down halves it.
-    public void UpdateSit(bool isSitting)
-    {
-        if (regenTickTime < 0)
-            return;
-
-        if (!isSitting)
-        {
-            if (regenTickTime > 4)
-                regenTickTime = 4;
-            regenTickTime *= 2f;
-        }
-        else
-            regenTickTime /= 2f;
     }
 
     public bool HasSpForSkill(CharacterSkill skill, int level)
@@ -928,7 +893,40 @@ public class Player : IEntityAutoReset
             UpdateStats();
     }
 
-    public void RegenTick()
+    public void UpdateRegenTick()
+    {
+        switch (Character.State)
+        {
+            case CharacterState.Dead:
+                return;
+            case CharacterState.Sitting:
+                regenHpTickTime -= Time.DeltaTimeFloat * 2;
+                regenSpTickTime -= Time.DeltaTimeFloat * 2;
+                break;
+            case CharacterState.Moving:
+                regenHpTickTime -= Time.DeltaTimeFloat / 2f;
+                regenSpTickTime -= Time.DeltaTimeFloat;
+                break;
+            default:
+                regenHpTickTime -= Time.DeltaTimeFloat;
+                regenSpTickTime -= Time.DeltaTimeFloat;
+                break;
+        }
+
+        if (regenHpTickTime < 0)
+        {
+            HpRegenTick();
+            regenHpTickTime += HpRegenTickTime;
+        }
+
+        if (regenSpTickTime < 0)
+        {
+            SpRegenTick();
+            regenSpTickTime += SpRegenTickTime;
+        }
+    }
+
+    private void HpRegenTick()
     {
         if (!Character.IsActive || Character.State == CharacterState.Dead)
             return;
@@ -936,84 +934,74 @@ public class Player : IEntityAutoReset
         var hp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
         var hpAddPercent = 100 + GetStat(CharacterStat.AddHpRecoveryPercent);
-        var plusHpRegen = 0;
+
+        if (hp >= maxHp || hpAddPercent <= 0) return;
+
+        var vit = GetEffectiveStat(CharacterStat.Vit);
+        var regen = (maxHp / 50 + vit / 5) * (200 + vit) / 200;
+        regen = regen * hpAddPercent / 100;
 
         var hpRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery);
         if (hpRegenSkill > 0 && hp < maxHp)
-            plusHpRegen = 5 * hpRegenSkill + maxHp * hpRegenSkill / 500; //5hp + 0.2% maxHP per level
-
-        if (hp < maxHp && hpAddPercent >= 0)
         {
-            var vit = GetEffectiveStat(CharacterStat.Vit);
-            var regen = (maxHp / 50 + vit / 5) * (200 + vit) / 200;
+            var plusHpRegen = 5 * hpRegenSkill + maxHp * hpRegenSkill / 500;
             regen += plusHpRegen;
-            regen = regen * hpAddPercent / 100;
-            //var regen = 1 + (maxHp / 50) * vit / 100; //original formula
-            if (Character.State == CharacterState.Moving)
-                regen /= 2;
-            if (Character.State == CharacterState.Sitting)
-                regen *= 2;
-            if (regen < 1) regen = 1;
-            if (regen + hp > maxHp)
-                regen = maxHp - hp;
-
-            SetStat(CharacterStat.Hp, hp + regen);
-
-            if (regen > 0)
-            {
-                Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-                CommandBuilder.SendHealSingle(this, regen, HealType.None);
-                CommandBuilder.ClearRecipients();
-            }
+            CommandBuilder.SendImprovedRecoveryValue(this, plusHpRegen, 0);
         }
+        
+        if (Character.State == CharacterState.Sitting)
+            regen *= 2;
 
+        if (regen < 1) regen = 1;
+
+        if (regen + hp > maxHp)
+            regen = maxHp - hp;
+
+        SetStat(CharacterStat.Hp, hp + regen);
+
+        if (regen > 0)
+        {
+            Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+            CommandBuilder.SendHealSingle(this, regen, HealType.None);
+            CommandBuilder.ClearRecipients();
+        }
+    }
+
+    private void SpRegenTick()
+    {
         var sp = GetStat(CharacterStat.Sp);
         var maxSp = GetStat(CharacterStat.MaxSp);
         var spAddPercent = 100 + GetStat(CharacterStat.AddSpRecoveryPercent);
-        var plusSpRegen = 0;
+
+        if (sp >= maxSp || spAddPercent <= 0) return;
+
+        var chInt = GetEffectiveStat(CharacterStat.Int);
+        var regen = 1 + (maxSp / 100 + chInt / 6) * (200 + chInt) / 200;
+        //var regen = maxSp / 100 + chInt / 5; //original formula
+
+        if (chInt > 120) regen += chInt - 120;
+        regen = regen * spAddPercent / 100;
 
         var spRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery);
         if (spRegenSkill > 0 && sp < maxSp)
-            plusSpRegen = 3 * spRegenSkill + maxSp * spRegenSkill / 500; //3sp + 0.2% maxSP per level
-
-        if (sp < maxSp && spAddPercent >= 0)
         {
-            var chInt = GetEffectiveStat(CharacterStat.Int);
-            var regen = 1 + (maxSp / 100 + chInt / 6) * (200 + chInt) / 200;
-            //var regen = maxSp / 100 + chInt / 5; //original formula
+            var plusSpRegen = 3 * spRegenSkill + maxSp * spRegenSkill / 500; //3sp + 0.2% maxSP per level
             regen += plusSpRegen;
-            if (chInt > 120) regen += chInt - 120;
-            regen = regen * spAddPercent / 100;
-
-            if (Character.State == CharacterState.Sitting)
-                regen *= 2;
-
-            if (regen < 1)
-                regen = 1;
-
-            if (regen + sp > maxSp)
-                regen = maxSp - sp;
-
-            SetStat(CharacterStat.Sp, sp + regen);
-            if(regen > 0)
-                CommandBuilder.ChangeSpValue(this, sp + regen, maxSp);
+            CommandBuilder.SendImprovedRecoveryValue(this, 0, plusSpRegen);
         }
 
-        if(plusHpRegen > 0 || plusSpRegen > 0)
-            CommandBuilder.SendImprovedRecoveryValue(this, plusHpRegen * hpAddPercent / 100, plusSpRegen * spAddPercent / 100);
-
-        //update times
         if (Character.State == CharacterState.Sitting)
-            regenTickTime += 3f;
-        else
-            regenTickTime += 6f;
-        if (regenTickTime < 0)
-        {
-            if (Character.State == CharacterState.Sitting)
-                regenTickTime = 3f;
-            else
-                regenTickTime = 6f;
-        }
+            regen *= 2;
+
+        if (regen < 1)
+            regen = 1;
+
+        if (regen + sp > maxSp)
+            regen = maxSp - sp;
+
+        SetStat(CharacterStat.Sp, sp + regen);
+        if (regen > 0)
+            CommandBuilder.ChangeSpValue(this, sp + regen, maxSp);
     }
 
     public void Die()
@@ -1077,6 +1065,7 @@ public class Player : IEntityAutoReset
     }
 
     //returns true if the cast was successful, false if it failed OR if the cast was queued
+    [ScriptUseable]
     public bool TryCastItemSkill(int itemId, CombatEntity target, CharacterSkill skill, int lvl = 1)
     {
         if (Inventory == null || !Inventory.HasItem(itemId))
@@ -1143,6 +1132,7 @@ public class Player : IEntityAutoReset
             Character.Map.RefreshEntity(Character);
     }
 
+    [ScriptUseable]
     public void SaveSpawnPoint(string spawnName)
     {
         if (DataManager.SavePoints.TryGetValue(spawnName, out var spawnPosition))
@@ -1151,11 +1141,13 @@ public class Player : IEntityAutoReset
             ServerLogger.LogError($"Npc script attempted to set spawn position to \"{spawnName}\", but that spawn point was not defined.");
     }
 
+    [ScriptUseable]
     public bool CanUseSummonItem(int count = 1)
     {
         return Inventory == null || Inventory.UsedSlots + count < CharacterBag.MaxBagSlots;
     }
 
+    [ScriptUseable]
     public bool CanUseItemSkill()
     {
         if (!Character.StateCanAttack)
@@ -1165,6 +1157,7 @@ public class Player : IEntityAutoReset
         return true;
     }
 
+    [ScriptUseable]
     public void ItemActivatedSkillSelfTarget(CharacterSkill skill, int level)
     {
         var cast = new SkillCastInfo()
@@ -1182,6 +1175,7 @@ public class Player : IEntityAutoReset
         SkillHandler.ExecuteSkill(cast, CombatEntity);
     }
 
+    [ScriptUseable]
     public void UseItemCreationItem(int type)
     {
         //0 is obb, 1 is ovb, 2 is oca
@@ -1225,6 +1219,7 @@ public class Player : IEntityAutoReset
         }
     }
 
+    [ScriptUseable]
     public void UseSummonItem(string itemName, int lifetime = int.MaxValue)
     {
         Debug.Assert(Character.Map != null);
@@ -1268,7 +1263,7 @@ public class Player : IEntityAutoReset
         return true;
     }
 
-    public void PerformQueuedAttack()
+    private void PerformQueuedAttack()
     {
         if (Character.State == CharacterState.Sitting
             || Character.State == CharacterState.Dead
@@ -1325,7 +1320,8 @@ public class Player : IEntityAutoReset
 
         }
     }
-    public bool PerformAttack(WorldObject targetCharacter)
+
+    private bool PerformAttack(WorldObject targetCharacter)
     {
         if (targetCharacter.Type == CharacterType.NPC || Character.Map == null)
         {
@@ -1433,11 +1429,13 @@ public class Player : IEntityAutoReset
         return true;
     }
 
+    [ScriptUseable]
     public void SendItemUseFailMessage(string message)
     {
         CommandBuilder.ErrorMessage(this, message);
     }
 
+    [ScriptUseable]
     public bool CanOpenItemPackage(string packagedItem, int count)
     {
         if (!DataManager.ItemIdByName.TryGetValue(packagedItem, out var itemId))
@@ -1446,6 +1444,7 @@ public class Player : IEntityAutoReset
         return CanPickUpItem(item);
     }
 
+    [ScriptUseable]
     public void OpenItemPackage(string packagedItem, int count)
     {
         if (!DataManager.ItemIdByName.TryGetValue(packagedItem, out var itemId))
@@ -1471,7 +1470,7 @@ public class Player : IEntityAutoReset
         return true;
     }
 
-    public void AttemptQueuedPickupAction()
+    private void AttemptQueuedPickupAction()
     {
         if (Character.Map!.TryGetGroundItemByDropId(Character.ItemTarget, out var groundItem))
         {
@@ -1526,15 +1525,20 @@ public class Player : IEntityAutoReset
         }
 
         if (Character.Map?.Name == mapName)
+        {
             Character.Map.TeleportEntity(ref Entity, Character, p, CharacterRemovalReason.OutOfSight);
+
+            if (CombatEntity.StatusContainer != null)
+                CombatEntity.StatusContainer.OnMove(oldPos, p);
+        }
         else
         {
             oldPos = Position.Invalid;
             World.Instance?.MovePlayerMap(ref Entity, Character, map, p);
-        }
 
-        if (CombatEntity.StatusContainer != null)
-            CombatEntity.StatusContainer.OnMove(oldPos, p);
+            if (CombatEntity.StatusContainer != null)
+                CombatEntity.StatusContainer.OnChangeMaps();
+        }
 
         return true;
     }
@@ -1558,9 +1562,9 @@ public class Player : IEntityAutoReset
         }
     }
 
-    public bool InActionCooldown() => CurrentCooldown > 1f;
-    public void AddActionDelay(CooldownActionType type) => CurrentCooldown += ActionDelay.CooldownTime(type);
-    public void AddActionDelay(float time) => CurrentCooldown += time;
+    public bool InActionCooldown() => ActionCooldown > 1f;
+    public void AddActionDelay(CooldownActionType type) => ActionCooldown += ActionDelay.CooldownTime(type);
+    public void AddActionDelay(float time) => ActionCooldown += time;
 
     private bool InCombatReadyState => (Character.State == CharacterState.Idle || Character.State == CharacterState.Moving)
         && !CombatEntity.IsCasting && Character.AttackCooldown < Time.ElapsedTimeFloat;
@@ -1581,8 +1585,21 @@ public class Player : IEntityAutoReset
         return true;
     }
 
-    public void UpdateWithQueuedCast()
+    public void ApplyAfterCastDelay(float time)
     {
+        var openTime = Time.ElapsedTime + time;
+        if (openTime < SkillCooldownTime)
+            return;
+        SkillCooldownTime = openTime;
+    }
+
+    private void UpdateWithQueuedCast()
+    {
+        Debug.Assert(Character.Map != null);
+
+        if (SkillCooldownTime > Time.ElapsedTime)
+            return;
+
         var cast = CombatEntity.QueuedCastingSkill;
         if (cast.TargetedPosition != Position.Invalid)
         {
@@ -1649,13 +1666,13 @@ public class Player : IEntityAutoReset
 
     public void Update()
     {
-        CurrentCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
-        if (CurrentCooldown < 0)
-            CurrentCooldown = 0;
+        ActionCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
+        if (ActionCooldown < 0)
+            ActionCooldown = 0;
 
         Debug.Assert(Character.Map != null);
         Debug.Assert(CombatEntity != null);
-
+        
         if (!Character.StateCanAttack)
         {
             Character.QueuedAction = QueuedAction.None;
@@ -1664,10 +1681,7 @@ public class Player : IEntityAutoReset
                 return;
         }
 
-        if(Character.State != CharacterState.Moving)
-            regenTickTime -= Time.DeltaTimeFloat;
-        if (regenTickTime < 0)
-            RegenTick();
+        UpdateRegenTick();
 
         if (IsInNpcInteraction)
         {
@@ -1693,12 +1707,10 @@ public class Player : IEntityAutoReset
                 }
             }
         }
-
-
-
+        
         if (Character.QueuedAction == QueuedAction.Cast)
         {
-            if (CombatEntity.HasBodyState(BodyStateFlags.Silence))
+            if (CombatEntity.HasBodyState(BodyStateFlags.Silence) || SkillCooldownTime > Time.ElapsedTime + 1.5f)
                 Character.QueuedAction = QueuedAction.None;
             else
                 UpdateWithQueuedCast();

@@ -75,16 +75,16 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0.009446392
-      outSlope: 0.009446392
+      inSlope: 0.013578071
+      outSlope: 0.013578071
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.4999364
-      value: 1.0047226
-      inSlope: 0.009446392
+      time: 0.24807483
+      value: 1.0033684
+      inSlope: 0.013578071
       outSlope: -0.42355192
       tangentMode: 5
       weightedMode: 0
@@ -93,15 +93,16 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1.0024122
       value: -0.0012597442
-      inSlope: -4.6746316
-      outSlope: -4.6746316
+      inSlope: -1.8387098
+      outSlope: -1.8387098
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.049998783
+      inWeight: 0.0874254
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   FliesAwayFromTarget: 0
-  HeightMultiplier: 3.5
+  HeightMultiplier: 3
+  DistanceMultiplier: 4
   TweenTime: 1.5

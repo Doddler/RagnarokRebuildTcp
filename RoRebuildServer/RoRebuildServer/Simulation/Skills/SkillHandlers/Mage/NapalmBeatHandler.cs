@@ -46,6 +46,7 @@ public class NapalmBeatHandler : SkillHandlerBase
         var req = new AttackRequest(CharacterSkill.NapalmBeat, mult, 1, flags, AttackElement.Ghost);
         (req.MinAtk, req.MaxAtk) = source.CalculateAttackPowerRange(true);
         var res = source.CalculateCombatResultUsingSetAttackPower(target, req);
+        source.ApplyAfterCastDelay(1f - lvl * 0.05f, ref res);
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false); //apply damage to target
 

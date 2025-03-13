@@ -32,6 +32,7 @@ namespace Assets.Scripts.Effects
 		Blessing,
 		BloodDrain,
 		CartRevolution,
+		Endure,
 		FrostDiverHit,
 		FrostDiverTrail,
 		LordOfVermilion,
@@ -49,6 +50,7 @@ namespace Assets.Scripts.Effects
 		Entry,
 		Exit,
 		ExplosiveAura,
+		RecoveryParticles,
 		Teleport,
 		BlueWaterfallEffect,
 		DiscoLights,
@@ -68,6 +70,7 @@ namespace Assets.Scripts.Effects
 		Heal,
 		Particle3DSpline,
 		ParticleAnimatedSprite,
+		ParticleUp,
 		ProjectorPrimitive,
 		Spike3D,
 		Teleport,
@@ -104,6 +107,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.Skills.BlessingEffect());
 			effectHandlers.Add(EffectType.BloodDrain, new Assets.Scripts.Effects.EffectHandlers.Skills.BloodDrainEffect());
 			effectHandlers.Add(EffectType.CartRevolution, new Assets.Scripts.Effects.EffectHandlers.Skills.CartRevolutionEffect());
+			effectHandlers.Add(EffectType.Endure, new Assets.Scripts.Effects.EffectHandlers.Skills.EndureEffect());
 			effectHandlers.Add(EffectType.FrostDiverHit, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverHitEffect());
 			effectHandlers.Add(EffectType.FrostDiverTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverTrailEffect());
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
@@ -121,6 +125,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Entry, new Assets.Scripts.Effects.EffectHandlers.General.EntryEffect());
 			effectHandlers.Add(EffectType.Exit, new Assets.Scripts.Effects.EffectHandlers.General.ExitEffect());
 			effectHandlers.Add(EffectType.ExplosiveAura, new Assets.Scripts.Effects.EffectHandlers.General.ExplosiveAuraEffect());
+			effectHandlers.Add(EffectType.RecoveryParticles, new Assets.Scripts.Effects.EffectHandlers.General.RecoveryParticlesEffect());
 			effectHandlers.Add(EffectType.Teleport, new Assets.Scripts.Effects.EffectHandlers.General.TeleportEffect());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());
 			effectHandlers.Add(EffectType.DiscoLights, new Assets.Scripts.Effects.EffectHandlers.Environment.DiscoLightsEffect());
@@ -144,6 +149,8 @@ namespace Assets.Scripts.Effects
 			primitiveDataFactory.Add(PrimitiveType.Particle3DSpline, () => new Assets.Scripts.Effects.PrimitiveData.Particle3DSplineData());
 			primitiveHandlers.Add(PrimitiveType.ParticleAnimatedSprite, new Assets.Scripts.Effects.PrimitiveHandlers.ParticleAnimatedSpritePrimitive());
 			primitiveDataFactory.Add(PrimitiveType.ParticleAnimatedSprite, () => new Assets.Scripts.Effects.PrimitiveData.SpriteParticleData());
+			primitiveHandlers.Add(PrimitiveType.ParticleUp, new Assets.Scripts.Effects.PrimitiveHandlers.ParticleUpPrimitive());
+			primitiveDataFactory.Add(PrimitiveType.ParticleUp, () => new Assets.Scripts.Effects.PrimitiveData.ParticleUpData());
 			primitiveHandlers.Add(PrimitiveType.ProjectorPrimitive, new Assets.Scripts.Effects.PrimitiveHandlers.ProjectorPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Spike3D, new Assets.Scripts.Effects.PrimitiveHandlers.Spike3DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Spike3D, () => new Assets.Scripts.Effects.PrimitiveData.Spike3DData());

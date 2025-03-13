@@ -93,21 +93,25 @@ Increases SP recovery by 3 SP plus 0.2% of your MaxSP per level.
 Deals [SkillLevel] hits at 100% fire element magic damage to a single target.
 Casting is only interrupted by high damage and skill attacks.
 Cast Time: [0.6 + SkillLevel * 0.4]s
+After Cast Delay: 1s
 
 ::ColdBolt
 Deals [SkillLevel] hits at 100% water element magic damage to a single target.
 Casting is only interrupted by high damage and skill attacks.
 Cast Time: [0.6 + SkillLevel * 0.4]s
+After Cast Delay: 1s
 
 ::LightningBolt
 Deals [SkillLevel] hits at 100% wind element magic damage to a single target.
 Casting is only interrupted by high damage and skill attacks.
 Cast Time: [0.6 + SkillLevel * 0.4]s
+After Cast Delay: 1s
 
 ::FireBall
 Deals [140 + SkillLevel * 20]% magical fire damage to all enemies in a 5x5 area.
 Enemies at the edge of the area of effect will take reduced damage.
-Cast time: 1.5s for all skill levels
+Cast time: 1.5s
+After Cast Delay: 1s
 
 ::FireWall
 Creates a wall of flame at a targeted location dealing 50% fire magic damage and knocking enemies back upon contact.
@@ -120,18 +124,23 @@ Cast Time: [2.15 - SkillLevel * 0.15]s
 ::FrostDiver
 Deals [100 + SkillLevel * 10]% water element damage with a [35 + SkillLevel * 3]% chance to freeze.
 Freeze Effect: Target becomes immobilized and water element, and receive DEF-50% and MDEF+25%. The effect ends upon taking damage.
+Cast Time: 0.8s
+After Cast Delay: 1s
 
 ::NapalmBeat
 A ghost property psychokinetic attack dealing physical damage at [100 + SkillLevel * 15]% MATK. Enemies directly adjascent to your target will take 2/3 of the damage your primary target takes. Striking a petrified or frozen target will deal double damage and increase the blast radius to 7x7.
 Cast Time: [1.2 - SkillLevel *0.1]s
+After Cast Delay: [1 - SkillLevel * 0.05]s
 
 ::SoulStrike
-A ghost property psychokinetic attack that hits [SkillLevel / 2] times at 120% MATK. Deals [5 * SkillLevel]% additional damage against the undead.
+A ghost property psychokinetic attack that hits [(1 + SkillLevel) / 2] times at 120% MATK. Deals [5 * SkillLevel]% additional damage against the undead.
 Cast Time: 0.5s
+After Cast Delay: 1.2s (odd levels), 1s (even levels)
 
 ::ThunderStorm
 Deals [SkillLevel] hits at 100% wind element magic damage to all enemies in a 5x5 area.
 Cast Time: [1.5 + SkillLevel * 0.5]s
+After Cast Delay: 1.5s
 
 ::SafetyWall
 A barrier which nullifies short range physical attacks, blocking up to [1 + SkillLevel] hits.
@@ -151,6 +160,7 @@ Conjure a magic flame that reveals hidden monsters and players in a 7x7 area aro
 ::Heal
 Heals an ally. Deals damage when cast on an undead (use shift to target an enemy).
 Heal Formula: [4 + 8 * SkillLevel], scaling +100% for every 10 base level + int, plus 1/2 magic attack power.
+After Cast Delay: 1s
 
 ::IncreaseAgility
 Increases movement speed by 25% and increases agi by +3 at level one and increasing to +12 at level 10.

@@ -4,6 +4,7 @@ using Assets.Scripts.Utility;
 // using UnityEditor.Sprites;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Effects
 {
@@ -291,39 +292,69 @@ namespace Assets.Scripts.Effects
             
             mb.AddQuad(verts, normals, uvs, colors);
         }
-        
-        
+
+
         public void AddTexturedBillboardSprite(Sprite sprite, Vector3 offset, float width, float height, Color32 c)
         {
-            var worldPos = transform.position + offset;
-            
             var rotation = CameraFollower.Instance.transform.rotation * Quaternion.Inverse(transform.rotation);
-            
+
             colors[0] = c;
             colors[1] = c;
             colors[2] = c;
             colors[3] = c;
-            
+
             verts[0] = rotation * new Vector3(-width, height) + offset;
             verts[1] = rotation * new Vector3(width, height) + offset;
-            verts[2] = rotation * new Vector3(-width,-height) + offset;
+            verts[2] = rotation * new Vector3(-width, -height) + offset;
             verts[3] = rotation * new Vector3(width, -height) + offset;
-            
+
             var spriteUVs = sprite.uv;
-            
+
             uvs[0] = spriteUVs[0];
             uvs[1] = spriteUVs[1];
             uvs[2] = spriteUVs[2];
             uvs[3] = spriteUVs[3];
-            
+
             //completely unused really
             normals[0] = Vector3.up;
             normals[1] = Vector3.up;
             normals[2] = Vector3.up;
             normals[3] = Vector3.up;
-            
+
             mb.AddQuad(verts, normals, uvs, colors);
         }
+
+        public void AddTexturedBillboardSpriteWithAngle(Sprite sprite, Vector3 offset, float width, float height, float angle, Color32 c)
+            {
+                var rotation = CameraFollower.Instance.transform.rotation * Quaternion.Inverse(transform.rotation);
+            
+                colors[0] = c;
+                colors[1] = c;
+                colors[2] = c;
+                colors[3] = c;
+
+                angle *= Mathf.Deg2Rad;
+                    
+                verts[0] = rotation * (Vector3)VectorHelper.Rotate(new Vector2(-width, height), angle) + offset;
+                verts[1] = rotation * (Vector3)VectorHelper.Rotate(new Vector2(width, height), angle) + offset;
+                verts[2] = rotation * (Vector3)VectorHelper.Rotate(new Vector2(-width,-height), angle) + offset;
+                verts[3] = rotation * (Vector3)VectorHelper.Rotate(new Vector2(width, -height), angle) + offset;
+            
+                var spriteUVs = sprite.uv;
+            
+                uvs[0] = spriteUVs[0];
+                uvs[1] = spriteUVs[1];
+                uvs[2] = spriteUVs[2];
+                uvs[3] = spriteUVs[3];
+            
+                //completely unused really
+                normals[0] = Vector3.up;
+                normals[1] = Vector3.up;
+                normals[2] = Vector3.up;
+                normals[3] = Vector3.up;
+            
+                mb.AddQuad(verts, normals, uvs, colors);
+            }
         
         
         public void AddTextured2DQuad(Vector3 offset, float width, float height, Color32 c)

@@ -36,7 +36,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
 
         public override void ExecuteSkillTargeted([CanBeNull] ServerControllable src, ref AttackResultData attack)
         {
-            src?.PerformSkillMotion();
+            src?.PerformSkillMotion(true);
             if(attack.Target != null)
                 FireArrow.Create(src, attack.Target, attack.SkillLevel); //don't attach to the entity so the effect stays if they get removed
         }

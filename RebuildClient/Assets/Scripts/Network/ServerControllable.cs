@@ -88,6 +88,7 @@ namespace Assets.Scripts.Network
         private bool isDirectMove;
         public float PosLockTime;
         public float AttackAnimationSpeed = 1f;
+        public float AttackMotionTime = 1f;
         public bool IsCharacterAlive = true;
 
         private UniqueAttackAction uniqueAttackAction;
@@ -181,7 +182,7 @@ namespace Assets.Scripts.Network
             FloatingDisplay.UpdateMp(sp);
         }
 
-        public void SetHp(int hp, int maxHp)
+        public void SetHp(int hp, int maxHp, bool animate = true)
         {
             if (SpriteAnimator != null && SpriteAnimator.IsHidden && !IsMainCharacter)
                 return;
@@ -189,10 +190,10 @@ namespace Assets.Scripts.Network
             MaxHp = maxHp;
             Hp = hp;
             FloatingDisplay.UpdateMaxHp(maxHp);
-            SetHp(hp);
+            SetHp(hp, animate);
         }
 
-        public void SetHp(int hp)
+        public void SetHp(int hp, bool animate = true)
         {
             if (SpriteAnimator != null && SpriteAnimator.IsHidden && !IsMainCharacter)
                 return;
@@ -216,7 +217,7 @@ namespace Assets.Scripts.Network
             }
 
             if (CharacterType != CharacterType.NPC)
-                FloatingDisplay.UpdateHp(oldHp, hp);
+                FloatingDisplay.UpdateHp(oldHp, hp, animate);
         }
 
         public void ShowSkillCastMessage(CharacterSkill skill, float duration = 5f)
@@ -234,7 +235,7 @@ namespace Assets.Scripts.Network
         public void StartCastBar(CharacterSkill skill, float duration, SkillCastFlags flags)
         {
             IsCasting = true;
-            
+
             if (!flags.HasFlag(SkillCastFlags.HideCastBar))
             {
                 EnsureFloatingDisplayCreated();
@@ -919,6 +920,7 @@ namespace Assets.Scripts.Network
             // }
 
             AttackAnimationSpeed = motionTime / baseMotionTime;
+            AttackMotionTime = motionTime;
 
             // Debug.Log($"Attack! speed {AttackAnimationSpeed} = motionTime {motionTime} / baseMotionTime {baseMotionTime}");
         }
@@ -956,7 +958,7 @@ namespace Assets.Scripts.Network
                 go.SetActive(false);
         }
 
-        public void PerformSkillMotion()
+        public void PerformSkillMotion(bool speedUpForFastMotionTime = false)
         {
             if (skipNextAttackMotion) //if the character casts a skill indirectly they shouldn't play their attack motion
             {
@@ -971,7 +973,11 @@ namespace Assets.Scripts.Network
 
             if (SpriteAnimator.Type == SpriteType.Player)
             {
-                SpriteAnimator.AnimSpeed = 1f;
+                
+                if (speedUpForFastMotionTime && AttackMotionTime < 0.5f && AttackMotionTime > 0f)
+                    SpriteAnimator.AnimSpeed = AttackMotionTime / 0.5f;
+                else
+                    SpriteAnimator.AnimSpeed = 1f;
                 SpriteAnimator.ChangeMotion(SpriteMotion.Casting, true);
             }
             else
@@ -1109,7 +1115,7 @@ namespace Assets.Scripts.Network
 
             FadeOutAndVanish(2f);
         }
-        
+
         public void MonsterDie()
         {
             isMoving = false;
@@ -1205,12 +1211,21 @@ namespace Assets.Scripts.Network
             di.AttachDamageIndicator(this);
         }
 
-        private void AttachHealIndicator(int damage)
+        public void AttachHealIndicator(int damage)
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 1f;
             di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height,
                 SpriteAnimator.Direction, "green", false);
+            di.AttachDamageIndicator(this);
+        }
+
+        public void AttachHealSpIndicator(int damage)
+        {
+            var di = RagnarokEffectPool.GetDamageIndicator();
+            var height = 1f;
+            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height,
+                SpriteAnimator.Direction, "blue", false);
             di.AttachDamageIndicator(this);
         }
 
@@ -1481,6 +1496,7 @@ namespace Assets.Scripts.Network
                     SpriteAnimator.CurrentMotion = SpriteMotion.Standby;
                     SpriteAnimator.DisableLoop = true;
                 }
+
                 skipNextAttackMotion = true;
                 uniqueAttackAction = null;
             }

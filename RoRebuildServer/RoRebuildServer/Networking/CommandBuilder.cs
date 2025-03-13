@@ -493,20 +493,22 @@ public static class CommandBuilder
     }
 
 
-    public static void SkillExecuteAreaTargetedSkillAutoVis(WorldObject caster, Position target, CharacterSkill skill,
-        int lvl)
+    public static void SkillExecuteAreaTargetedSkillAutoVis(WorldObject caster, Position target, CharacterSkill skill, int lvl, float motionTime = -1)
     {
         caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
-        SkillExecuteAreaTargetedSkill(caster, target, skill, lvl);
+        SkillExecuteAreaTargetedSkill(caster, target, skill, lvl, motionTime);
         ClearRecipients();
     }
 
-    public static void SkillExecuteAreaTargetedSkill(WorldObject caster, Position target, CharacterSkill skill, int lvl)
+    public static void SkillExecuteAreaTargetedSkill(WorldObject caster, Position target, CharacterSkill skill, int lvl, float motionTime = -1)
     {
         if (!HasRecipients())
             return;
 
         var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
+
+        if(motionTime < 0)
+            motionTime = caster.CombatEntity?.GetTiming(TimingStat.AttackMotionTime) ?? 0;
 
         packet.Write((byte)SkillTarget.Ground);
         packet.Write(caster.Id);
@@ -515,7 +517,7 @@ public static class CommandBuilder
         packet.Write((byte)lvl);
         packet.Write((byte)caster.FacingDirection);
         packet.Write(caster.Position);
-        packet.Write(caster.CombatEntity?.GetTiming(TimingStat.AttackMotionTime) ?? 0);
+        packet.Write(motionTime);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

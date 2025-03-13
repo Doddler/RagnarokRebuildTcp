@@ -20,12 +20,13 @@ public class SoulStrikeHandler : SkillHandlerBase
             return;
 
         var hits = 1 + (lvl - 1) / 2;
-        
+
         var res = source.CalculateCombatResult(target, 1.2f, hits, AttackFlags.Magical, CharacterSkill.SoulStrike, AttackElement.Ghost);
         if (target.IsElementBaseType(CharacterElement.Undead1) && res.Damage > 0)
             res.Damage = res.Damage * (100 + 5 * lvl) / 100; //5% bonus against undead per level
-        res.AttackMotionTime = 0.75f;
+        res.Time = 0.75f;
 
+        source.ApplyAfterCastDelay(1.2f - ((lvl + 1) % 2) * 0.2f, ref res);
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 

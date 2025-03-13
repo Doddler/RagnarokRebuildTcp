@@ -464,7 +464,8 @@ public class Map
                     if (p.Entity == nearbyEntity) // || !nearbyCharacter.AdminHidden)
                     {
                         AddPlayerVisibility(nearbyCharacter, ch); //We see nearbyCharacter
-                        CommandBuilder.AddRecipient(nearbyEntity);
+                        if(!ch.AdminHidden)
+                            CommandBuilder.AddRecipient(nearbyEntity);
                     }
                 }
 
@@ -472,7 +473,7 @@ public class Map
                 if (ch != nearbyCharacter)
                 {
                     AddPlayerVisibility(ch, nearbyCharacter); //nearbyCharacter sees us
-                    if (!ch.AdminHidden)
+                    if (!nearbyCharacter.AdminHidden)
                         entities.Add(nearbyEntity); //we only want to notify of this character's existence if it is not hidden
                 }
             }

@@ -309,6 +309,36 @@ public class CharacterStatusContainer
             RemoveIdList(ref remove, removeCount);
     }
 
+    public void OnChangeMaps()
+    {
+        Debug.Assert(Owner != null);
+        if (statusEffects == null || onMoveEffects <= 0)
+            return;
+
+        Span<int> remove = stackalloc int[statusEffects.Count];
+        var removeCount = 0;
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var s = statusEffects[i];
+            if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnMove))
+            {
+                var res = StatusEffectHandler.OnChangeMaps(s.Type, Owner, ref s);
+                if (res == StatusUpdateResult.EndStatus)
+                {
+                    remove[removeCount] = i;
+                    removeCount++;
+                }
+                else
+                    statusEffects[i] = s; //update any changed data
+            }
+        }
+
+        if (removeCount > 0)
+            RemoveIdList(ref remove, removeCount);
+    }
+
+
     private bool CheckExpiredStatusEffects()
     {
         var hasUpdate = false;

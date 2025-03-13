@@ -110,6 +110,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
             var damageTiming = msg.ReadFloat();
+            
+            if (result == AttackResult.InvisibleMiss)
+            {
+                hasTarget = false;
+                controllable2 = null;
+            }
 
             var attack = new AttackResultData()
             {
