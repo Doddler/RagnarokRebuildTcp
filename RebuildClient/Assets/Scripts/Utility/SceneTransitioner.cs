@@ -244,7 +244,9 @@ namespace Assets.Scripts.Utility
 
 		private IEnumerator WaitAndStartFade()
 		{
+			EffectPool.ClearPrimitiveDataPools();
 			Resources.UnloadUnusedAssets();
+			System.GC.Collect();
 
 			yield return null;
 			yield return null;

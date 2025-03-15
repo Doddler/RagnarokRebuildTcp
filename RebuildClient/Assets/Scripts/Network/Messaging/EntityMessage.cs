@@ -13,6 +13,7 @@ namespace Assets.Scripts.Network.Messaging
         public int Value1;
         public int Value2;
         public int Value3;
+        public int Value4;
         public float Float1;
         public float Float2;
 
@@ -22,7 +23,7 @@ namespace Assets.Scripts.Network.Messaging
             Entity = null;
             String = null;
             Type = EntityMessageType.None;
-            Value1 = Value2 = 0;
+            Value1 = Value2 = Value3 = Value4 = 0;
             Float1 = Float2 = 0;
         }
     }

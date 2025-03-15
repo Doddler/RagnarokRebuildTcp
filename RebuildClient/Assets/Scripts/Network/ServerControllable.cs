@@ -25,6 +25,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using HitEffect = Assets.Scripts.Effects.EffectHandlers.HitEffect;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Network
 {
@@ -1318,7 +1319,7 @@ namespace Assets.Scripts.Network
             var weaponClass = 0;
             if (msg.Entity != null)
                 weaponClass = msg.Entity.WeaponClass;
-            if (weaponClass >= 0)
+            if (weaponClass >= 0 && msg.Value2 == 1)
             {
                 var hitSound = ClientDataLoader.Instance.GetHitSoundForWeapon(weaponClass);
                 AudioManager.Instance.OneShotSoundEffect(Id, hitSound, transform.position, 1f);
@@ -1380,8 +1381,10 @@ namespace Assets.Scripts.Network
             UpdateMovePosition();
 
             var weaponClass = 0;
-            if (msg.Entity != null)
+            if (msg.Entity != null && msg.Value4 == 1)
                 weaponClass = msg.Entity.WeaponClass;
+            else
+                weaponClass = -1;
 
             if (SpriteAnimator.CurrentMotion != SpriteMotion.Dead && !hasEndure)
             {
@@ -1399,6 +1402,17 @@ namespace Assets.Scripts.Network
             {
                 var hitSound = ClientDataLoader.Instance.GetHitSoundForWeapon(weaponClass);
                 AudioManager.Instance.OneShotSoundEffect(Id, hitSound, transform.position, 1f);
+            }
+            else
+            {
+                var sound = Random.Range(0, 4) switch
+                {
+                    0 => "_enemy_hit_normal1.ogg",
+                    1 => "_enemy_hit_normal2.ogg",
+                    2 => "_enemy_hit_normal3.ogg",
+                    3 => "_enemy_hit_normal4.ogg"
+                };
+                AudioManager.Instance.OneShotSoundEffect(Id, sound, transform.position, 0.8f);
             }
 
             if (msg.Value3 > 0)

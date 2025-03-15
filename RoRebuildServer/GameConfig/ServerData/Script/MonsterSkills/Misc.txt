@@ -24,9 +24,9 @@
 
 SkillHandler("PORING50") {
 StateIdle:
-	
+	TryCast(Heal, 9999, 100%, 0.8s, 5s);
 StateAttacking:
-	TryCast(TwoHandQuicken, 1, 1000, 0, 99h)[HpPercent < 99];
+	TryCast(TwoHandQuicken, 10, 1000, 0, 99h)[HpPercent < 99];
 }
 
 SkillHandler("ASSULTER") {
@@ -108,6 +108,12 @@ StateAttacking:
 SkillHandler("PERMETER") {
 StateAny:
     TryCast(Heal, 9, 100%, 0.5s, 5s, HideSkillName)[FindAllyBelowHpPercent(60)] -> SendEmote(5); //lightbulb
+}
+
+SkillHandler("STITCH") {
+StateAttacking:
+    TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
+    TryCast(PoisonAttack, 1, 5%, 0s, 5s);
 }
 
 SkillHandler("CRAMP") {

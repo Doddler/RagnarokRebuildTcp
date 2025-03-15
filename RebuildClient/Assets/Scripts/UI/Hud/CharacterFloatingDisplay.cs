@@ -125,18 +125,17 @@ namespace Assets.Scripts.UI.Hud
             if (castBar == null)
                 castBar = Manager.AttachCastBar(gameObject);
 
-            if (controllable.SpriteAnimator?.SpriteData != null && StandingHeight == 0)
+            if (controllable.SpriteAnimator?.SpriteData != null)
             {
                 StandingHeight = controllable.SpriteAnimator.SpriteData.StandingHeight;
-                if (StandingHeight < 30)
-                    StandingHeight = 30;
+                StandingHeight = StandingHeight * 1.5f * (1 / GameConfig.Data.MasterUIScale) + 15;
+                if (StandingHeight < 40)
+                    StandingHeight = 40;
                 if (controllable.CharacterType == CharacterType.Player)
-                    StandingHeight += 20;
-                else
-                    StandingHeight += 5;
+                    StandingHeight += 28;
             }
             
-            castBar.transform.localPosition = new Vector3(0, StandingHeight * 2f, 0);
+            castBar.transform.localPosition = new Vector3(0, StandingHeight, 0);
             castBar.SetProgress(0);
             castStart = Time.timeSinceLevelLoad;
             castEnd = castStart + castTime;
@@ -195,14 +194,17 @@ namespace Assets.Scripts.UI.Hud
             if (chatBubble == null)
                 chatBubble = Manager.AttachChatBubble(gameObject);
 
-            if (controllable.SpriteAnimator?.SpriteData != null && StandingHeight == 0)
+            if (controllable.SpriteAnimator?.SpriteData != null)
             {
                 StandingHeight = controllable.SpriteAnimator.SpriteData.StandingHeight;
+                StandingHeight = StandingHeight * 1.5f * (1 / GameConfig.Data.MasterUIScale) + 15;
+                if (StandingHeight < 40)
+                    StandingHeight = 40;
                 if (controllable.CharacterType == CharacterType.Player)
-                    StandingHeight += 20;
+                    StandingHeight += 28;
             }
 
-            chatBubble.transform.localPosition = new Vector3(0, StandingHeight * 2f + 13, 0);
+            chatBubble.transform.localPosition = new Vector3(0, StandingHeight + 13, 0);
 
             chatBubble.SetText(message);
             chatEnd = Time.timeSinceLevelLoad + visibleTime;

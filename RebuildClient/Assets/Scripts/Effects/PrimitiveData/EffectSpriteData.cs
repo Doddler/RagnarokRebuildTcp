@@ -9,10 +9,12 @@ namespace Assets.Scripts.Effects.PrimitiveData
     {
         public Texture2D Texture;
         public SpriteAtlas Atlas;
+        public RoSpriteData SpriteData;
         public BillboardStyle Style;
         public string[] SpriteList;
         public int TextureCount;
-        public int FrameRate;
+        public int FrameTime; //ms per frame
+        public int Frame;
         public bool AnimateTexture;
         public Vector3 BaseRotation;
         // public Vector3 Target;
@@ -32,8 +34,9 @@ namespace Assets.Scripts.Effects.PrimitiveData
             Atlas = null;
             Style = BillboardStyle.None;
             SpriteList = null;
+            SpriteData = null;
             TextureCount = 0;
-            FrameRate = 0;
+            FrameTime = 0;
             AnimateTexture = false;
             BaseRotation = Vector3.zero;
             // Target = Vector3.zero;

@@ -55,6 +55,7 @@ namespace Assets.Scripts.Effects
         public bool IsInitialized = false;
         public int[] Flags = new int[4];
         public float DataValue;
+        public string StringValue;
 
         public bool IsTimerActive => CurrentPos < Duration;
 
@@ -142,6 +143,7 @@ namespace Assets.Scripts.Effects
             PositionOffset = Vector3.zero;
             EffectType = 0;
             DataValue = 0;
+            StringValue = null;
 
             for (var i = 0; i < 4; i++)
                 Flags[i] = 0;

@@ -32,6 +32,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
             var res = DamageInfo.EmptyResult(source.Entity, target.Entity);
             res.AttackSkill = CharacterSkill.IncreaseAgility;
             res.Result = AttackResult.Invisible;
+            source.ApplyAfterCastDelay(0.5f);
 
             source.Character.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);
             CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.IncreaseAgility, lvl, res);

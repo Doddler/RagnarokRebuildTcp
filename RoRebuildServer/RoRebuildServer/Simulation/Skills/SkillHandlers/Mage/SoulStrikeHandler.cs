@@ -3,6 +3,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 
@@ -24,7 +25,7 @@ public class SoulStrikeHandler : SkillHandlerBase
         var res = source.CalculateCombatResult(target, 1.2f, hits, AttackFlags.Magical, CharacterSkill.SoulStrike, AttackElement.Ghost);
         if (target.IsElementBaseType(CharacterElement.Undead1) && res.Damage > 0)
             res.Damage = res.Damage * (100 + 5 * lvl) / 100; //5% bonus against undead per level
-        res.Time = 0.75f;
+        res.Time = Time.ElapsedTimeFloat + 0.7f;
 
         source.ApplyAfterCastDelay(1.2f - ((lvl + 1) % 2) * 0.2f, ref res);
         source.ApplyCooldownForAttackAction(target);

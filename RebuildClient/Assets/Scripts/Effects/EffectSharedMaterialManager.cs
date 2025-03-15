@@ -1,5 +1,8 @@
-﻿using Assets.Scripts.Sprites;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Sprites;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.U2D;
 
 namespace Assets.Scripts.Effects
@@ -25,6 +28,7 @@ namespace Assets.Scripts.Effects
     public enum EffectMaterialType
     {
         SkillSpriteAlphaBlended,
+        SkillSpriteAlphaBlendedNoZCheck,
         TeleportPillar,
         SafetyWall,
         ParticleAlphaBlend,
@@ -52,7 +56,53 @@ namespace Assets.Scripts.Effects
 
         private static SpriteAtlas skillAtlas;
         private static SpriteAtlas particleAtlas;
+        private static Dictionary<string, Material> projectileMaterials;
+        private static Dictionary<string, RoSpriteData> projectileSprites = new();
+        private static Dictionary<string, AsyncOperationHandle<RoSpriteData>> loadingSprites = new();
 
+        public static void PrepareEffectSprite(string spriteName)
+        {
+            if (projectileSprites.ContainsKey(spriteName) || loadingSprites.ContainsKey(spriteName))
+                return;
+            
+            var task = Addressables.LoadAssetAsync<RoSpriteData>(spriteName);
+            loadingSprites.Add(spriteName, task);
+        }
+
+        public static bool TryGetEffectSprite(string spriteName, out RoSpriteData data)
+        {
+            data = null;
+            if (projectileSprites.TryGetValue(spriteName, out data))
+                return true;
+            
+            if (loadingSprites.TryGetValue(spriteName, out var load))
+            {
+                if (!load.IsDone)
+                    return false;
+                projectileSprites.Add(spriteName, load.Result);
+                data = load.Result;
+                return true;
+            }
+
+            return true;
+        }
+        
+        public static Material GetProjectileMaterial(string sprite)
+        {
+            projectileMaterials ??= new Dictionary<string, Material>();
+            
+            if (projectileMaterials.TryGetValue(sprite, out var mat))
+                return mat;
+            
+            mat = new Material(ShaderCache.Instance.AlphaBlendParticleShader)
+            {
+                color = Color.white,
+                renderQueue = 3001
+            };
+            projectileMaterials.Add(sprite, mat);
+            return mat;
+        }
+        
         public static SpriteAtlas GetSkillSpriteAtlas()
         {
             if (skillAtlas == null)
@@ -120,6 +170,19 @@ namespace Assets.Scripts.Effects
                                 color = Color.white,
                                 mainTexture = atlas.GetSprite("FireBolt1").texture, //this will work unless the atlas gets split across multiple textures
                                 renderQueue = 3001
+                            };
+                            persistMaterials[(int)mat] = true;
+                        }
+                        break;
+                    case EffectMaterialType.SkillSpriteAlphaBlendedNoZCheck:
+                        if (materialList[(int)mat] == null)
+                        {
+                            var atlas = GetSkillSpriteAtlas();
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AlphaBlendNoZTestShader)
+                            {
+                                color = Color.white,
+                                mainTexture = atlas.GetSprite("FireBolt1").texture, //this will work unless the atlas gets split across multiple textures
+                                renderQueue = 3003
                             };
                             persistMaterials[(int)mat] = true;
                         }
@@ -204,6 +267,14 @@ namespace Assets.Scripts.Effects
 
         public static void CleanUpMaterialsOnSceneChange()
         {
+            if (projectileMaterials != null)
+            {
+                foreach(var m in projectileMaterials)
+                    GameObject.Destroy(m.Value);
+                projectileMaterials.Clear();
+            }
+            projectileSprites.Clear();
+            
             if (materialList == null || textureList == null)
                 return;
             

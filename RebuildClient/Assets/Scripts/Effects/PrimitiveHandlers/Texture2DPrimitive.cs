@@ -23,7 +23,10 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             }
 
             if (data.ScalingChangeStep > 0 && primitive.IsStepFrame && data.ScalingChangeStep == primitive.Step)
+            {
                 data.ScalingSpeed = data.ChangedScalingSpeed;
+                data.ScalingAccel = Vector2.zero;
+            }
 
             primitive.transform.localPosition += (Vector3)data.Speed * Time.deltaTime;
             data.Speed += data.Acceleration * Time.deltaTime;

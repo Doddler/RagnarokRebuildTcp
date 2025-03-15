@@ -74,7 +74,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
                 data.Atlas = fireboltAtlas;
                 data.AnimateTexture = true;
-                data.FrameRate = 12;
+                data.FrameTime = 12;
                 data.Style = BillboardStyle.AxisAligned;
                 data.TextureCount = fireboltAtlas.spriteCount;
                 data.Alpha = 255;

@@ -31,7 +31,7 @@ namespace Assets.Scripts.Network.Messaging
                 return true;
             }
 
-            return false;   
+            return false;
         }
 
         public void EnqueueMessage(EntityMessage msg)
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Network.Messaging
                 Owner.ExecuteMessage(msg);
                 return;
             }
-            
+
             messages.Add(msg);
             isDirty = true;
         }
@@ -49,13 +49,13 @@ namespace Assets.Scripts.Network.Messaging
         public float TimeUntilMessageLogClears(EntityMessageType type)
         {
             var min = 0f;
-            for(var i = 0; i < messages.Count; i++)
+            for (var i = 0; i < messages.Count; i++)
                 if (messages[i].Type == type && messages[i].ActivationTime > Time.timeSinceLevelLoad)
                     min = messages[i].ActivationTime;
 
             if (min > 0)
                 return min - Time.timeSinceLevelLoad;
-            
+
             return 0f;
         }
 
@@ -69,7 +69,7 @@ namespace Assets.Scripts.Network.Messaging
             msg.ActivationTime = Time.timeSinceLevelLoad + time;
             msg.Value1 = (int)skill;
             msg.Float1 = motionTime;
-            
+
             EnqueueMessage(msg);
         }
 
@@ -79,10 +79,10 @@ namespace Assets.Scripts.Network.Messaging
             msg.Type = EntityMessageType.FaceDirection;
             msg.ActivationTime = Time.timeSinceLevelLoad + time;
             msg.Value1 = (int)direction;
-            
+
             EnqueueMessage(msg);
         }
-        
+
         public void SendHitEffect(ServerControllable src, float time, int hitType, int hitCount = 1)
         {
             for (var i = 0; i < hitCount; i++)
@@ -97,7 +97,7 @@ namespace Assets.Scripts.Network.Messaging
             }
         }
 
-        public void SendElementalHitEffect(ServerControllable src, float time, AttackElement hitType, int hitCount = 1)
+        public void SendElementalHitEffect(ServerControllable src, float time, AttackElement hitType, int hitCount = 1, bool hasSound = false)
         {
             for (var i = 0; i < hitCount; i++)
             {
@@ -106,11 +106,12 @@ namespace Assets.Scripts.Network.Messaging
                 msg.Type = EntityMessageType.ElementalEffect;
                 msg.Entity = src; //the hit will come from this entity's position
                 msg.Value1 = (int)hitType;
+                msg.Value2 = hasSound ? 1 : 0;
 
                 EnqueueMessage(msg);
             }
         }
-        
+
         public void SendMissEffect(float time)
         {
             var msg = EntityMessagePool.Borrow();
@@ -120,8 +121,11 @@ namespace Assets.Scripts.Network.Messaging
             EnqueueMessage(msg);
         }
 
-        public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false)
+        public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false, bool takeWeaponSound = true)
         {
+#if DEBUG
+            Debug.Log($"Enqueued damage event {damage}x{hitCount} damage, execute after {time}s");
+#endif
             for (var i = 0; i < hitCount; i++)
             {
                 var msg = EntityMessagePool.Borrow();
@@ -129,9 +133,10 @@ namespace Assets.Scripts.Network.Messaging
                 msg.Type = EntityMessageType.ShowDamage;
                 msg.Entity = src;
                 msg.Value1 = damage;
-                if(hitCount > 1)
+                if (hitCount > 1)
                     msg.Value2 = (i + 1) * damage;
                 msg.Value3 = isCrit ? 1 : 0;
+                msg.Value4 = takeWeaponSound ? 1 : 0;
 
                 EnqueueMessage(msg);
             }

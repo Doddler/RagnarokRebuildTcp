@@ -36,8 +36,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             if (hasSrc)
                 motionTime = Mathf.Min(motionTime * 1.1f, motionTime + 0.1f);
 
-            var weaponClass = 0;
-
             var result = new AttackResultData()
             {
                 Src = controllable,
@@ -85,8 +83,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     //controllable.SetAttackAnimationSpeed(motionTime);
                     controllable.PerformBasicAttackMotion();
                 }
-
-                weaponClass = controllable.WeaponClass;
                 
                 if(resultType == AttackResult.Miss)
                     controllable.Messages.SendMissEffect(damageTime);
@@ -109,9 +105,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     }
                 }
 
-                if(dmg > 0)
-                    controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage);
-                
+                if (dmg > 0)
+                {
+                    var dmgSound = ClientSkillHandler.SkillTakesWeaponSound(skill);
+                    controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage, dmgSound);
+                }
+
                 //StartCoroutine(DamageEvent(dmg, damageTiming, hits, weaponClass, controllable2));
             }
         }

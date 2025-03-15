@@ -307,11 +307,12 @@ StateAny:
     TryCast(CallMinion, 1, 25%, 0.7s, 40s)[MinionsDeadFor(20s)] -> SummonMinions(4, "LEIB_OLMAI");
 	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateChase:
-	TryCast(FireBall, 10, 40%, 0, 0);
+	TryCast(FireBall, 30, 40%, 0, 0);
 	TryCast(Endure, 10, 50%, 0, 10s)[WasRangedOrMagicAttacked];
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
 StateAttacking:
+	TryCast(MagnumBreak, 30, 30%, 0, 5s);
 	TryCast(PowerUp, 3, 100%, 0.7s, 30s)[HpPercent < 30];
 }
 

@@ -9,6 +9,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     [SkillHandler(CharacterSkill.ThunderStorm)]
     public class ThunderStormHandler : SkillHandlerBase
     {
+        public override bool DoesAttackTakeWeaponSound => false;
+
         public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
         {
             target.Messages.SendElementalHitEffect(attack.Src, attack.MotionTime, AttackElement.Wind, attack.HitCount);

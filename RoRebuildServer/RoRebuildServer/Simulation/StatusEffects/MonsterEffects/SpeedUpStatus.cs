@@ -12,7 +12,7 @@ public class SpeedUpStatus : StatusEffectBase
 
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)
     {
-        state.Value2 = 25 + state.Value1 * 5;
+        state.Value2 = 25 + state.Value1 * 10;
         ch.AddStat(CharacterStat.AddFlee, state.Value2);
         ch.AddStat(CharacterStat.MoveSpeedBonus, MoveSpeedBonus);
     }

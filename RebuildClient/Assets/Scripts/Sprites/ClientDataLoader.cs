@@ -622,7 +622,13 @@ namespace Assets.Scripts.Sprites
 
             if (ctrl.WeaponClass == 0)
             {
-                if (!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue);
+                if (!isEffect)
+                {
+                    if(playerWeaponLookup.TryGetValue(ctrl.ClassId, out var weaponsByJob2))
+                        if(weaponsByJob2.TryGetValue(0, out var unarmed))
+                            ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? unarmed.AttackMale : unarmed.AttackFemale;
+                    LoadAndAttachWeapon(ctrl, int.MaxValue);
+                }
                 return;
             }
 

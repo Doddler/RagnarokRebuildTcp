@@ -22,6 +22,7 @@ public class AngelusHandler : SkillHandlerBase
         var ch = source.Character;
         var angelusEffect = DataManager.EffectIdForName["Angelus"];
         source.ApplyCooldownForSupportSkillAction();
+        source.ApplyAfterCastDelay(1f);
 
         var dp = 0;
         if (ch.Type == CharacterType.Player)

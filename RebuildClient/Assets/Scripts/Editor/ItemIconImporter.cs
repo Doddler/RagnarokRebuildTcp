@@ -42,6 +42,8 @@ namespace Assets.Scripts.Editor
                 {
                     iconNames.Add(skill.Icon);
                     convertName.Add(skill.Icon, "skill_" + skill.Icon);
+                    
+                    
                 }
 
             var itemDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/items.json");
@@ -128,7 +130,7 @@ namespace Assets.Scripts.Editor
                     else
                     {
                         collectionSrc = Path.Combine(collectionAltSrcPath, $"{fName}.bmp");
-                        Debug.Log(collectionSrc);
+                        // Debug.Log(collectionSrc);
                         if (File.Exists(collectionSrc))
                         {
                             var tex = TextureImportHelper.LoadTexture(collectionSrc);
@@ -140,8 +142,8 @@ namespace Assets.Scripts.Editor
                                 ti.crunchedCompression = true;
                             });
                         }
-                        else
-                            Debug.Log("Not found :( " + collectionSrc);
+                        // else
+                        //     Debug.Log("Not found :( " + collectionSrc);
                     }
                 }
 
@@ -153,8 +155,12 @@ namespace Assets.Scripts.Editor
                         iconPath = Path.Combine("Assets/Textures/CustomIcons/Item", fName + ".bmp");
                         if (!File.Exists(iconPath))
                         {
-                            Debug.LogWarning($"Could not find spr file with name {iconPath}");
-                            continue;
+                            iconPath = Path.Combine("Assets/Textures/CustomIcons/Skills", fName + ".bmp");
+                            if (!File.Exists(iconPath))
+                            {
+                                Debug.LogWarning($"Could not find spr file with name {iconPath}");
+                                continue;
+                            }
                         }
                     }
 

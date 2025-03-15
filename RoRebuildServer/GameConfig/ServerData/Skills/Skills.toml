@@ -92,7 +92,7 @@ SpCost = [12,14,16,18,20,22,24,26,28,30]
 AdjustableLevel = true
 
 [FireBall]
-Name = "Fire Ball"
+Name = "Fireball"
 Icon = "mg_fireball"
 Target = "Enemy"
 MaxLevel = 10
@@ -308,9 +308,14 @@ SpCost = [10]
 [Teleport]
 Icon = "al_teleport"
 Target = "Self"
-MaxLevel = 2
-SpCost = [11, 10]
-AdjustableLevel = true
+MaxLevel = 1
+SpCost = [30]
+
+[Return]
+Icon = "al_teleport2"
+Target = "Self"
+MaxLevel = 1
+SpCost = [10]
 
 [WarpPortal]
 Name = "Warp Portal"

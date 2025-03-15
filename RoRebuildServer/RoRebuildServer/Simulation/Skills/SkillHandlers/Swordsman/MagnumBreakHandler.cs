@@ -17,31 +17,45 @@ public class MagnumBreakHandler : SkillHandlerBase
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
-
-        lvl = int.Clamp(lvl, 1, 10);
-
+        
         map.AddVisiblePlayersAsPacketRecipients(source.Character);
 
+        var blastDistance = 2;
+        var hitBonus = 100 + lvl * 10;
+        if (source.Character.Type == CharacterType.Monster && lvl > 10)
+        {
+            blastDistance = 3;
+            hitBonus += 50;
+        }
+
         using var targetList = EntityListPool.Get();
-        map.GatherEnemiesInArea(source.Character, source.Character.Position, 2, targetList, true, true);
+        map.GatherEnemiesInArea(source.Character, source.Character.Position, blastDistance, targetList, true, true);
 
         var attack = new AttackRequest(CharacterSkill.MagnumBreak, 1 + 0.2f * lvl, 1, AttackFlags.Physical, AttackElement.Fire);
-        attack.AccuracyRatio = 100 + lvl * 10;
+        attack.AccuracyRatio = hitBonus;
 
         foreach (var e in targetList)
         {
+            if (!e.TryGet<WorldObject>(out var blastTarget))
+                continue;
+
+            var distanceFromBlast = source.Character.WorldPosition.DistanceTo(blastTarget.WorldPosition);
             var res = source.CalculateCombatResult(e.Get<CombatEntity>(), attack);
             res.KnockBack = 2;
             res.AttackPosition = source.Character.Position;
+            res.Time += distanceFromBlast * 0.03f;
 
             source.ExecuteCombatResult(res, false);
-            
-            if (e.TryGet<WorldObject>(out var blastTarget))
-                CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
+
+
+            CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
         }
 
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.MagnumBreak, 20, lvl);
-        source.AddStatusEffect(status);
+        if (source.Character.Type == CharacterType.Player)
+        {
+            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.MagnumBreak, 20, lvl);
+            source.AddStatusEffect(status);
+        }
 
         source.ApplyCooldownForAttackAction(position);
         CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.MagnumBreak, lvl);

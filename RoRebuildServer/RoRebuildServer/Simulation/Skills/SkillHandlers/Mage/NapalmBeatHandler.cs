@@ -47,6 +47,7 @@ public class NapalmBeatHandler : SkillHandlerBase
         (req.MinAtk, req.MaxAtk) = source.CalculateAttackPowerRange(true);
         var res = source.CalculateCombatResultUsingSetAttackPower(target, req);
         source.ApplyAfterCastDelay(1f - lvl * 0.05f, ref res);
+        res.Time = Time.ElapsedTimeFloat + res.AttackMotionTime;
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false); //apply damage to target
 
@@ -79,4 +80,3 @@ public class NapalmBeatHandler : SkillHandlerBase
         CommandBuilder.ClearRecipients();
     }
 }
-

@@ -129,6 +129,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 Target = controllable2,
                 Src = controllable
             };
+            var dmgSound = ClientSkillHandler.SkillTakesWeaponSound(skill);
 
             if (!hasSource)
             {
@@ -138,7 +139,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
                 if (hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible && controllable2 != null)
                 {
-                    controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits, result == AttackResult.CriticalDamage);
+                    controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits, result == AttackResult.CriticalDamage, dmgSound);
                     if(dmg > 0)
                         ClientSkillHandler.OnHitEffect(controllable2, ref attack);
                 }
@@ -172,7 +173,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
                 if (hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
                 {
-                    controllable2.Messages.SendDamageEvent(controllable, damageTiming, dmg, hits, result == AttackResult.CriticalDamage);
+                    controllable2.Messages.SendDamageEvent(controllable, damageTiming, dmg, hits, result == AttackResult.CriticalDamage, dmgSound);
                     if(dmg > 0)
                         ClientSkillHandler.OnHitEffect(controllable2, ref attack);
                 }

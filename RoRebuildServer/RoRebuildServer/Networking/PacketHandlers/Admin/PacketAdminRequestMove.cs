@@ -80,11 +80,12 @@ public class PacketAdminRequestMove : IClientPacketHandler
         }
 
         //CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
-    
+
         if (ch.Map.Name == mapName)
             ch.Map.TeleportEntity(ref connection.Entity, ch, pos, CharacterRemovalReason.OutOfSight);
         else
-            ch.Map.World.MovePlayerMap(ref connection.Entity, ch, map, pos);
+            player.WarpPlayer(mapName, pos.X, pos.Y, 1, 1, false);
+            //ch.Map.World.MovePlayerMap(ref connection.Entity, ch, map, pos);
     
     }
 }

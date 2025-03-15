@@ -4,6 +4,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
 {
@@ -34,6 +35,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
             source.ApplyAfterCastDelay(1f, ref res);
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);
+            res.Time = Time.ElapsedTimeFloat + 0.6f;
 
             var ch = source.Character;
 

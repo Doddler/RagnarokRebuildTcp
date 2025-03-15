@@ -33,6 +33,7 @@ namespace Assets.Scripts.Effects
 		BloodDrain,
 		CartRevolution,
 		Endure,
+		Fireball,
 		FrostDiverHit,
 		FrostDiverTrail,
 		LordOfVermilion,
@@ -51,6 +52,7 @@ namespace Assets.Scripts.Effects
 		Exit,
 		ExplosiveAura,
 		RecoveryParticles,
+		RoProjectileSprite,
 		Teleport,
 		BlueWaterfallEffect,
 		DiscoLights,
@@ -108,6 +110,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.BloodDrain, new Assets.Scripts.Effects.EffectHandlers.Skills.BloodDrainEffect());
 			effectHandlers.Add(EffectType.CartRevolution, new Assets.Scripts.Effects.EffectHandlers.Skills.CartRevolutionEffect());
 			effectHandlers.Add(EffectType.Endure, new Assets.Scripts.Effects.EffectHandlers.Skills.EndureEffect());
+			effectHandlers.Add(EffectType.Fireball, new Assets.Scripts.Effects.EffectHandlers.Skills.FireballEffect());
 			effectHandlers.Add(EffectType.FrostDiverHit, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverHitEffect());
 			effectHandlers.Add(EffectType.FrostDiverTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverTrailEffect());
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
@@ -126,6 +129,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Exit, new Assets.Scripts.Effects.EffectHandlers.General.ExitEffect());
 			effectHandlers.Add(EffectType.ExplosiveAura, new Assets.Scripts.Effects.EffectHandlers.General.ExplosiveAuraEffect());
 			effectHandlers.Add(EffectType.RecoveryParticles, new Assets.Scripts.Effects.EffectHandlers.General.RecoveryParticlesEffect());
+			effectHandlers.Add(EffectType.RoProjectileSprite, new Assets.Scripts.Effects.EffectHandlers.General.RoSpriteProjectileEffect());
 			effectHandlers.Add(EffectType.Teleport, new Assets.Scripts.Effects.EffectHandlers.General.TeleportEffect());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());
 			effectHandlers.Add(EffectType.DiscoLights, new Assets.Scripts.Effects.EffectHandlers.Environment.DiscoLightsEffect());

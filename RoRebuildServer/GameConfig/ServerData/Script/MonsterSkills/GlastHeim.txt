@@ -82,6 +82,30 @@ StateRandomMove:
 	@JokerStateSwap();
 }
 
+SkillHandler("WRAITH") {
+StateChase:
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(9); //...
+StateAttacking:
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(9); //...
+	TryCast(Blind, 3, 5%, 0.8s, 5s, NoInterrupt);
+	TryCast(EnergyDrain, 1, 5%, 0.8s, 5s, NoInterrupt);
+}
+
+SkillHandler("EVIL_DRUID") {
+StateChase:
+	TryCast(Blind, 3, 20%, 0s, 5s) -> SendEmote(9); //...
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(9); //...
+	TryCast(EnergyDrain, 1, 5%, 0, 5s) -> SendEmote(9); //...
+	TryCast(UndeadAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(9); //...
+	//TryCast(HeavensDrive, 5, 5%, 1.2s, 5s, EasyInterrupt);
+StateAttacking:
+	TryCast(Blind, 3, 20%, 0s, 5s) -> SendEmote(9); //...
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(9); //...
+	TryCast(EnergyDrain, 1, 5%, 0, 5s) -> SendEmote(9); //...
+	TryCast(UndeadAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(9); //...
+	//TryCast(HeavensDrive, 5, 5%, 1.2s, 5s, EasyInterrupt);
+}
+
 SkillHandler("INJUSTICE") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(2); //whistle
@@ -96,9 +120,17 @@ StateAttacking:
 	TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(4); //sweat drop
 }
 
+SkillHandler("PHENDARK") {
+StateAttacking:
+	TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(29); //gg
+	TryCast(Stun, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(29); //gg
+	TryCast(WindAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(29); //gg
+
+}
+
 SkillHandler("ZHERLTHSH") {
 StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(3); //heart
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(3); //heart
 }
 
 SkillHandler("RAYDRIC_ARCHER") {

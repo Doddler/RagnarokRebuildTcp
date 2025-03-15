@@ -10,6 +10,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.Provoke);
             effect.SetDurationByFrames(35);
+            effect.UpdateOnlyOnFrameChange = true;
             effect.FollowTarget = target.gameObject;
 
             var cam = CameraFollower.Instance;

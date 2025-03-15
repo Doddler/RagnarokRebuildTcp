@@ -1446,6 +1446,11 @@ public partial class CombatEntity : IEntityAutoReset
         ExecuteCombatResult(di);
     }
 
+    public void PerformMagicSkillMotion(float cooldown, ref DamageInfo res)
+    {
+
+    }
+
     public void ApplyAfterCastDelay(float time)
     {
         if(Character.Type == CharacterType.Player)

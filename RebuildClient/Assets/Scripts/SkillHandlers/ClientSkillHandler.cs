@@ -9,6 +9,8 @@ namespace Assets.Scripts.SkillHandlers
     {
         private static SkillHandlerBase[] handlers;
 
+        public static bool SkillTakesWeaponSound(CharacterSkill skill) => handlers[(int)skill].DoesAttackTakeWeaponSound; 
+
         public static void StartCastingSkill(ServerControllable src, ServerControllable target, CharacterSkill skillId, int lvl, float castTime) =>
             handlers[(int)skillId].StartSkillCasting(src, target, lvl, castTime);
         

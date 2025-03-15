@@ -30,6 +30,12 @@ StateChase:
 	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(29);
 }
 
+SkillHandler("EGGYRA") {
+StateAttacking:
+	TryCast(Blind, 5, 20%, 0, 5s);
+	TryCast(GhostAttack, 5, 5%, 0, 5s) -> SendEmote(6); //angry
+}
+
 SkillHandler("GHOSTRING") {
 StateAny:
 	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> CallDefaultMinions();

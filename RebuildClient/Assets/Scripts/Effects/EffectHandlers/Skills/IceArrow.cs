@@ -83,7 +83,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 var data = prim.GetPrimitiveData<EffectSpriteData>();
 
                 data.Atlas = IceArrowAtlas;
-                data.FrameRate = 12;
+                data.FrameTime = 12;
                 data.Style = BillboardStyle.AxisAligned;
                 data.Width = 11.5f / 5f;
                 data.Height = 3.8f / 5f;

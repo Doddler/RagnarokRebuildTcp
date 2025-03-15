@@ -14,6 +14,9 @@ public class StatusMagnumBreak : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnDealDamage;
 
+    //Adds damage equal to [10 + 1 * SkillLevel]% of a full attack in fire damage.
+    //Ignores sub def as it's already applied to the base attack.
+    //If the base attack crits, the bonus damage also crits.
     public override StatusUpdateResult OnAttack(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
     {
         if (info.IsDamageResult && info.Flags.HasFlag(DamageApplicationFlags.PhysicalDamage))

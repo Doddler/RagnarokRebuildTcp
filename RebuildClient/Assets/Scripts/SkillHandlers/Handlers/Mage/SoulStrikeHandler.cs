@@ -13,8 +13,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     {
         public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
         {
-            attack.Target?.Messages.SendHitEffect(attack.Src, attack.MotionTime, 2, 1); //only once
-            attack.Target?.Messages.SendHitEffect(attack.Src, attack.MotionTime, 1, attack.HitCount);
+            attack.Target?.Messages.SendHitEffect(attack.Src, attack.DamageTiming, 2, 1); //only once
+            attack.Target?.Messages.SendHitEffect(attack.Src, attack.DamageTiming, 1, attack.HitCount);
         }
         
         public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)

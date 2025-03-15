@@ -39,7 +39,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             var data = prim.GetPrimitiveData<EffectSpriteData>();
 
             data.Texture = arrowTexture;
-            data.FrameRate = 12;
+            data.FrameTime = 12;
             data.Alpha = 255;
             data.Style = BillboardStyle.AxisAligned;
             data.Width = arrowTexture.width / 65f;
@@ -80,7 +80,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             var data = prim.GetPrimitiveData<EffectSpriteData>();
 
             data.Texture = arrowTexture;
-            data.FrameRate = 12;
+            data.FrameTime = 12;
             data.Alpha = 255;
             data.Style = BillboardStyle.AxisAligned;
             data.Width = arrowTexture.width / 65f;

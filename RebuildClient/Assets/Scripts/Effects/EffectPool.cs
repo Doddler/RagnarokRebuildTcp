@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Assets.Scripts.Utility;
 using UnityEngine;
 
@@ -12,8 +13,31 @@ namespace Assets.Scripts.Effects
         private static Stack<EffectSegment> segmentPool = new(140);
         private static Stack<MeshBuilder> builderPool = new(20);
         private static Dictionary<PrimitiveType, Stack<object>> dataPool = new();
+        
+        #if UNITY_EDITOR
+        public static int DebugGetMeshCount() => meshes.Count;
+        public static int DebugGetPartsCount() => partPool.Count;
+        public static int EffectSegmentCount() => segmentPool.Count;
+        public static int DebugGetBuilderCount() => builderPool.Count;
+        public static string DebugGetPrimitiveDataCounts()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"DataPoolCounts:");
+            foreach (var data in dataPool)
+                sb.AppendLine($"   {data.Key}: {data.Value.Count}");
+            return sb.ToString();
+        }
+
+        #endif
 
         private static int meshCount = 0;
+
+        public static void ClearPrimitiveDataPools()
+        {
+            foreach(var p in dataPool)
+                p.Value.Clear();
+            dataPool.Clear();
+        }
         
         public static Mesh BorrowMesh()
         {

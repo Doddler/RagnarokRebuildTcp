@@ -20,11 +20,9 @@ public class PowerUpStatus : StatusEffectBase
                 return StatusUpdateResult.Continue;
 
             var ratio = 1 + state.Value1 * 0.2f;
-            //if (info.AttackSkill != CharacterSkill.None)
-            //    ratio *= 2; //since power up is additive we want to add just a little more oomph to skills
 
             var attack = new AttackRequest(CharacterSkill.PowerUp, ratio, 1,
-                AttackFlags.Physical | AttackFlags.IgnoreEvasion | AttackFlags.NoTriggers | AttackFlags.IgnoreNullifyingGroundMagic , AttackElement.None);
+                AttackFlags.Physical | AttackFlags.IgnoreEvasion | AttackFlags.NoTriggers | AttackFlags.IgnoreNullifyingGroundMagic, AttackElement.None);
 
             if (info.Result == AttackResult.CriticalDamage)
                 attack.Flags |= AttackFlags.GuaranteeCrit;

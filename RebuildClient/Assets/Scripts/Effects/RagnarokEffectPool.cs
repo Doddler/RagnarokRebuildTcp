@@ -14,6 +14,12 @@ namespace Assets.Scripts.Effects
         private static GameObject effectContainer;
         private static GameObject damageContainer;
         
+        #if UNITY_EDITOR
+        public static int DebugGet3DEffectPoolCount() => effectList.Count;
+        public static int DebugGetPrimitivePoolCount() => primitiveList.Count;
+        public static int DebugGetDamageIndicatorCount() => indicatorList.Count;
+        #endif
+        
         public static Ragnarok3dEffect Get3dEffect(EffectType type)
         {
             if (effectContainer == null)

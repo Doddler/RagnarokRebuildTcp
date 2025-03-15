@@ -20,6 +20,8 @@ public class EndureHandler : SkillHandlerBase
             source.AddStatusEffect(status);
         }
 
+        source.ApplyCooldownForSupportSkillAction();
+
         CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Endure, lvl);
     }
 }

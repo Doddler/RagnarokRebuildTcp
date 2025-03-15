@@ -16,11 +16,11 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
 
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
-            if (source.Character.Type == CharacterType.Player && lvl == 2)
-            {
-                source.Player.ReturnToSavePoint();
-                return;
-            }
+            //if (source.Character.Type == CharacterType.Player && lvl == 2)
+            //{
+            //    source.Player.ReturnToSavePoint();
+            //    return;
+            //}
 
             source.RandomTeleport();
         }

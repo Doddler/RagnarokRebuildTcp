@@ -44,6 +44,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
                 target.AddStatusEffect(status);
             }
 
+            source.ApplyAfterCastDelay(0.5f);
             var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.Blessing);
             GenericCastAndInformSupportSkill(source, target, CharacterSkill.Blessing, lvl, ref res);
         }

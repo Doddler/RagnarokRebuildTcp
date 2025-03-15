@@ -106,7 +106,8 @@ public partial class Monster : IEntityAutoReset
     private int inventoryCount;
     private int inventoryIndex;
     public bool IsInventoryFull => inventoryCount >= InventorySize;
-    private const int InventorySize = 15;
+    public int InventoryCount => inventoryCount;
+    private const int InventorySize = 20;
     
     public bool LockMovementToSpawn;
     public bool GivesExperience;
