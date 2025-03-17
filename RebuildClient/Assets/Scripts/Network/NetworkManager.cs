@@ -463,9 +463,10 @@ namespace Assets.Scripts.Network
             using var ms = new MemoryStream();
             using var bw = new BinaryWriter(ms);
 
+            bw.Write((short)ClientDataLoader.Instance.ServerVersion);
             bw.Write(true); //isNewAccount
-            bw.Write(false); //isTokenLogin
-            bw.Write(false); //requestLoginToken
+            bw.Write(isTokenLogin);
+            bw.Write(requestLoginToken);
             bw.Write(username);
             bw.Write(password);
 
