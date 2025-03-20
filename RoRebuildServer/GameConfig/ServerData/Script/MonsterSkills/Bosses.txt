@@ -25,7 +25,10 @@ StateAny:
 StateAttacking:
 	var count = 0; //have to define variables at the start or there'll be scope issues
 	if(HpPercent < 40 && IsNamedEventOffCooldown("LowHpToss")) {
-		TryCast(Hiding, 3, 100%, 0, 15s)[!IsHiding] -> ResetSkillCooldown(SummonMonster);
+		TryCast(Hiding, 3, 100%, 0, 15s)[!IsHiding] -> {
+			ResetSkillCooldown(SummonMonster);
+			PutSkillOnCooldown(Heal, 6s);
+		}
 		@GoldenBugEggToss(100%, 5, 8, 15s, GtbPutLowHpTossOnCooldown);
 	}
 	if(HpPercent < 90) {
@@ -33,6 +36,7 @@ StateAttacking:
 	}
 
 	TryCast(Mammonite, 5, 20%, 0, 5s) -> SendEmote(8); //dollar sign
+	TryCast(MagnumBreak, 15, 20%, 0, 5s) -> SendEmote(8);
     TryCast(CallMinion, 1, 10%, 0.7s, 15s)[MinionsDeadFor(8s)] -> CallDefaultMinions();
 StateChase:
 	TryCast(Heal, 4999, 10%, 0s, 15s)[HpPercent < 30];
@@ -209,22 +213,34 @@ StateChase:
 SkillHandler("MISTRESS") {
 OnInit:
 	ResummonMinionCount = 2; //resummon if we have 2 or less
-StateAny: 
-    TryCast(CallMinion, 1, 20%, 1.4s, 45s)[MinionsDeadFor(25s)] -> CallDefaultMinions();
-	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
+	TryCast(Teleport, 1, 10%, 0, 15s);
+	TryCast(Teleport, 1, 100%, 0, 5s, IgnoreCooldown)[RudeAttacked];
+	TryCast(CallMinion, 1, 100%, 1.4s, 30s)[MinionCount < 3] -> CallDefaultMinions();
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
+StateRandomMove:
+	TryCast(Teleport, 1, 10%, 0, 15s);
 StateChase:
 	TryCast(SpeedUp, 5, 100%, 0s, 40s, HideSkillName)[HpPercent < 30] -> SendEmote(6);
+	TryCast(Heal, 9999, 100%, 0s, 10s)[FindAllyBelowHpPercent(60)];
 	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
+	TryCast(GuidedAttack, 5, 5%, 0, 20s) -> SendEmote(18); //laugh
+	TryCast(Silence, 5, 20%, 0, 5s);
+	TryCast(Silence, 5, 100%, 0, 5s)[LastDamageSourceType == FireWall];
 	TryCast(JupitelThunder, 28, 20%, 0, 5s);
 StateAttacking:
 	TryCast(SpeedUp, 5, 100%, 0s, 40s, HideSkillName)[HpPercent < 30] -> SendEmote(6);
-	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 30];
+	TryCast(Heal, 9999, 100%, 0s, 15s)[FindAllyBelowHpPercent(60)];
+	TryCast(Heal, 9999, 100%, 0s, 15s)[HpPercent < 30];
+	TryCast(Stop, 1, 20%, 0, 15s) -> SendEmote(6); //angry
+	TryCast(Silence, 5, 20%, 0, 5s);
 	TryCast(JupitelThunder, 28, 20%, 0, 5s);
-	TryCast(Pneuma, 1, 20%, 0, 5s)[WasRangedAttacked];
+	TryCast(GuidedAttack, 5, 5%, 0, 20s) -> SendEmote(18); //laugh
+	TryCast(Pneuma, 1, 20%, 0, 5s)[WasRangedAttacked] -> SendEmote(18); //laugh
+	TryCast(CallMinion, 1, 20%, 1.4s, 30s)[MinionsDeadFor(15s)] -> CallDefaultMinions();
+	TryCast(RecallMinion, 1, 100%, 0, 30s);
 }
-
 
 //------------------------------------
 // Pharaoh

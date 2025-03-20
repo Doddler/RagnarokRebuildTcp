@@ -3,6 +3,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
@@ -27,17 +28,11 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
         {
             if (target == null)
             {
-                ServerLogger.LogWarning($"Entity {source.Character.Name} is attempting to cast Increase Agi without a target.");
+                ServerLogger.LogWarning($"Entity {source.Character.Name} is attempting to cast Blessing without a target.");
                 return;
             }
 
-            var hasRemoval = false;
-            if (target.StatusContainer != null)
-            {
-                hasRemoval = target.StatusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Curse);
-                hasRemoval |= target.StatusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Stone);
-            }
-
+            var hasRemoval = target.CleanseStatusEffect(StatusCleanseTarget.Curse | StatusCleanseTarget.Petrify);
             if (!hasRemoval)
             {
                 var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Blessing, 40f + 20 * lvl, lvl);
@@ -45,6 +40,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
             }
 
             source.ApplyAfterCastDelay(0.5f);
+            source.ApplyCooldownForSupportSkillAction();
             var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.Blessing);
             GenericCastAndInformSupportSkill(source, target, CharacterSkill.Blessing, lvl, ref res);
         }

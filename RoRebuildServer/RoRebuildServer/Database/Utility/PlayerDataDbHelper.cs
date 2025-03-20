@@ -106,7 +106,8 @@ public static class PlayerDataDbHelper
         {
             bw.Write((byte)0); //version
             p.Inventory.TryWrite(bw, false);
-            p.CartInventory.TryWrite(bw, false);
+            if(CurrentPlayerSaveVersion <= 3)
+                p.CartInventory.TryWrite(bw, false); //starting v4 cart will be loaded separately
             p.Equipment.Serialize(bw);
 
             //we can come in under, the equipment array might not all be used. We should never, however, go above, or we risk crashing the server
@@ -134,7 +135,7 @@ public static class PlayerDataDbHelper
         return bytesOut;
     }
 
-    public static void DecompressPlayerInventoryData(LoadCharacterRequest req, byte[] inventoryData, int uncompressedSize)
+    public static void DecompressPlayerInventoryData(LoadCharacterRequest req, byte[] inventoryData, int uncompressedSize, int saveVersion)
     {
         var buffer = ArrayPool<byte>.Shared.Rent(uncompressedSize);
         LZ4Codec.Decode(inventoryData, buffer);
@@ -143,7 +144,8 @@ public static class PlayerDataDbHelper
         using var br = new BinaryMessageReader(ms);
         var version = br.ReadByte();
         req.Inventory = CharacterBag.TryRead(br);
-        req.Cart = CharacterBag.TryRead(br);
+        if(saveVersion <= 3)
+            req.Cart = CharacterBag.TryRead(br);
         //req.Storage = CharacterBag.TryRead(br);
 
         if (req.Inventory != null)

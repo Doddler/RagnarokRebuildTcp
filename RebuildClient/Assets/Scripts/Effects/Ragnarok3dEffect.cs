@@ -56,8 +56,9 @@ namespace Assets.Scripts.Effects
         public int[] Flags = new int[4];
         public float DataValue;
         public string StringValue;
+        public bool IsStepFrame => LastStep != Step;
 
-        public bool IsTimerActive => CurrentPos < Duration;
+        public bool IsTimerActive => Step < DurationFrames;
 
         public int SourceEntityId => SourceEntity != null ? SourceEntity.Id : -1; 
 
@@ -263,7 +264,7 @@ namespace Assets.Scripts.Effects
             RagnarokEffectPool.Return3dEffect(this);
         }
 
-        private void EndEffectWithNotifyOwner()
+        public void EndEffectWithNotifyOwner()
         {
             EffectHandler.OnCleanup(this);
             if(EffectOwner != null)

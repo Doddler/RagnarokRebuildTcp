@@ -59,8 +59,6 @@ public class World
     private bool reloadScriptsFlag = false;
 
     private readonly object aoeLock = new();
-    private bool needTimerRollback;
-    public void RequestTimerRollback() => needTimerRollback = true;
 
     public World()
     {

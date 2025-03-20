@@ -44,7 +44,7 @@ namespace RoRebuildServer.EntitySystem
         public void CopyEntities(EntityValueList<T> other)
         {
             var otherList = other.InternalList;
-            var otherValueList = other.InternalValueList;
+            var otherValueList = other.InternalValueList!; //implicitly having a list means value list also exists
             var otherCount = other.Count;
             if (otherList == null || otherCount == 0)
             {
@@ -195,7 +195,7 @@ namespace RoRebuildServer.EntitySystem
             if (entities != null && count > 0)
             {
                 Array.Clear(entities, 0, capacity);
-                Array.Clear(values, 0, capacity);
+                Array.Clear(values!, 0, capacity);
             }
 
             count = 0;
@@ -222,7 +222,7 @@ namespace RoRebuildServer.EntitySystem
                     if (i == count - 1)
                     {
                         entities[i] = default;
-                        values[i] = default;
+                        values[i] = default!;
                         count--;
                         return true;
                     }

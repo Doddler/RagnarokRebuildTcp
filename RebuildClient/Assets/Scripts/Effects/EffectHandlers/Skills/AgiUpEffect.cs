@@ -30,7 +30,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                 var prim = effect.LaunchPrimitive(PrimitiveType.DirectionalBillboard, mat, 0.833f);
                 var data = prim.GetPrimitiveData<EffectSpriteData>();
 
-                data.Atlas = EffectSharedMaterialManager.GetSkillSpriteAtlas();
+                data.Atlas = EffectSharedMaterialManager.SpriteAtlas;
                 data.Style = BillboardStyle.AxisAligned;
                 data.Width = Random.Range(3f, 9f) / 5f;
                 data.Height = 0.16f / 5f;

@@ -20,9 +20,7 @@ public class GuidedAttackHandler : SkillHandlerBase
         var res = source.CalculateCombatResult(target, 1f + lvl * 0.1f, 1, AttackFlags.Physical, CharacterSkill.GuidedAttack, AttackElement.None);
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
-
-        var ch = source.Character;
-
+        
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.GuidedAttack, lvl, res);
 
         if (!res.IsDamageResult)

@@ -67,7 +67,7 @@ public static class RoDatabase
             .AddDefaultTokenProviders();
 
         services.AddDataProtection()
-            .PersistKeysToFileSystem(new DirectoryInfo(ServerConfig.OperationConfig.KeyPersistancePath))
+            .PersistKeysToFileSystem(new DirectoryInfo(ServerConfig.OperationConfig.KeyPersistencePath ?? "Keys/"))
             .SetApplicationName("RagnarokRebuild");
 
         //services.AddScoped<UserManager<RoUserAccount>>();
@@ -163,6 +163,11 @@ public static class RoDatabase
         var tokenBytes = token.ToByteArray();
 
         var protector = scope.ServiceProvider.GetService<IDataProtectionProvider>();
+        if (protector == null)
+        {
+            ServerLogger.LogError($"Cannot get IDataProtectionProvider in order to perform LogIn task!");
+            return (ServerConnectResult.ServerError, default);
+        }
         var code = protector.CreateProtector("RoLogin");
         var data = code.Protect(tokenBytes);
 

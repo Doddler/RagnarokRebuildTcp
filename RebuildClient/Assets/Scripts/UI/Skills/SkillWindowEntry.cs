@@ -33,7 +33,7 @@ namespace Assets.Scripts.UI
         private SkillWindow parent;
         private SkillDragSource dragSource;
         private Image background;
-        private bool availableToLevelUp;
+        public bool AvailableToLevelUp;
 
         public void Awake()
         {
@@ -102,7 +102,7 @@ namespace Assets.Scripts.UI
 
         public void UpdateLevelUpButton(bool hasPointsToSpend, bool isAllowedToSpendPoints)
         {
-            if (!hasPointsToSpend || MaxLevel >= data.MaxLevel || !availableToLevelUp)
+            if (!hasPointsToSpend || MaxLevel >= data.MaxLevel || !AvailableToLevelUp)
             {
                 LevelUpButton.gameObject.SetActive(false);
                 return;
@@ -132,7 +132,7 @@ namespace Assets.Scripts.UI
             if(Icon.sprite != null)
                 ((RectTransform)Icon.transform).sizeDelta = Icon.sprite.rect.size * 2;
             
-            availableToLevelUp = hasRequiredSkills;
+            AvailableToLevelUp = hasRequiredSkills;
             if (!hasRequiredSkills || learnedLevel == 0)
             {
                 var textPos = (RectTransform)SkillName.transform;

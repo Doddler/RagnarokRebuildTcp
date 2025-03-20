@@ -34,7 +34,9 @@ public class MonsterSkillAiState(Monster monsterIn)
     public int HpValue => monster.CombatEntity.GetStat(CharacterStat.Hp);
     public int MinionCount => monster.ChildCount;
     public bool InventoryFull => monster.IsInventoryFull;
+    public int InventoryCount => monster.InventoryCount;
     public bool IsMinion => monster.HasMaster;
+    public bool RudeAttacked => monster.WasRudeAttacked;
     private WorldObject? targetForSkill = null;
     //private bool failNextSkill = false;
 
@@ -404,6 +406,8 @@ public class MonsterSkillAiState(Monster monsterIn)
             return;
         if (!master.AdminHidden)
             return;
+        if (monster.Character.Map == null)
+            return;
 
         var pos = monster.Character.Map.GetRandomVisiblePositionInArea(monster.Character.Position, distance / 2, distance);
         master.Position = pos;
@@ -415,9 +419,9 @@ public class MonsterSkillAiState(Monster monsterIn)
     //    return monster.CombatEntity.AttemptStartSelfTargetSkill(skill, level);
     //}
 
-    public bool CheckCast(CharacterSkill skill, int chance)
+    public bool CheckCast(CharacterSkill skill, int chance, bool ignoreCooldown = false)
     {
-        if (monster.CombatEntity.IsSkillOnCooldown(skill))
+        if (monster.CombatEntity.IsSkillOnCooldown(skill) && !ignoreCooldown)
             return false;
 
         if (GameRandom.Next(0, 1000) > chance)
@@ -585,7 +589,7 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     public bool TryCast(CharacterSkill skill, int level, int chance, int castTime, int delay, MonsterSkillAiFlags flags = MonsterSkillAiFlags.None)
     {
-        if (!CheckCast(skill, chance))
+        if (!CheckCast(skill, chance, (flags & MonsterSkillAiFlags.IgnoreCooldown) > 0))
             return SkillFail();
         
         if (skill == CharacterSkill.NoCast)
@@ -613,6 +617,8 @@ public class MonsterSkillAiState(Monster monsterIn)
         }
 
         var map = monster.Character.Map;
+        if (map == null)
+            return;
 
         if (monsterDef.Minions != null && monsterDef.Minions.Count > 0)
         {
@@ -765,7 +771,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     public void SendEmote(int emoteId)
     {
         var map = monster.Character.Map;
-        map.AddVisiblePlayersAsPacketRecipients(monster.Character);
+        map?.AddVisiblePlayersAsPacketRecipients(monster.Character);
         CommandBuilder.SendEmoteMulti(monster.Character, emoteId);
         CommandBuilder.ClearRecipients();
     }
@@ -775,7 +781,7 @@ public class MonsterSkillAiState(Monster monsterIn)
         if (targetForSkill == null)
             return;
         var map = targetForSkill.Map;
-        map.AddVisiblePlayersAsPacketRecipients(targetForSkill);
+        map?.AddVisiblePlayersAsPacketRecipients(targetForSkill);
         CommandBuilder.SendEmoteMulti(targetForSkill, emoteId);
         CommandBuilder.ClearRecipients();
     }

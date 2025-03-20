@@ -11,16 +11,15 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents.Npcs
 {
-    public class NpcPathHandler
+    public class NpcPathHandler(Npc npc)
     {
-        public Npc Npc;
+        public Npc Npc = npc;
         public int Step;
         public NpcPathUpdateResult LastResult;
         private int speed;
         private float waitEndTime;
         private Entity currentTarget;
-
-
+        
         public const int StorageCount = 10;
 
         public int[] ValuesInt = new int[StorageCount];

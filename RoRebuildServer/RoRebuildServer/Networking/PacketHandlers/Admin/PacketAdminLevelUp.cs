@@ -35,7 +35,7 @@ public class PacketAdminLevelUp : IClientPacketHandler
                 character.Player.LevelUp();
             }
 
-            character.Map.AddVisiblePlayersAsPacketRecipients(character);
+            character.Map!.AddVisiblePlayersAsPacketRecipients(character);
             CommandBuilder.LevelUp(character, newLevel);
             CommandBuilder.SendHealMulti(character, 0, HealType.None);
             CommandBuilder.ClearRecipients();

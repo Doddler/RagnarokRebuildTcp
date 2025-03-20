@@ -35,6 +35,7 @@ public abstract class SkillHandlerBase
     public void Process(CombatEntity source, CombatEntity target, int lvl, bool isIndirect = false) => Process(source, target, Position.Invalid, lvl, isIndirect);
     public virtual void ApplyPassiveEffects(CombatEntity owner, int lvl) { }
     public virtual void RemovePassiveEffects(CombatEntity owner, int lvl) { }
+    public virtual void RefreshPassiveEffects(CombatEntity owner, int lvl) { }
 
     public virtual int GetSkillRange(CombatEntity source, int lvl)
     {

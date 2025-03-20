@@ -148,7 +148,7 @@ public class Npc : IEntityAutoReset
         ExpireEventWithoutOwner = false;
     }
 
-    public bool TryGetAreaOfEffect([NotNullWhen(returnValue: true)] out AreaOfEffect aoe)
+    public bool TryGetAreaOfEffect([NotNullWhen(returnValue: true)] out AreaOfEffect? aoe)
     {
         if (AreaOfEffect == null)
         {
@@ -273,8 +273,7 @@ public class Npc : IEntityAutoReset
 
     public void StartPath()
     {
-        NpcPathHandler ??= new NpcPathHandler();
-        NpcPathHandler.Npc = this;
+        NpcPathHandler ??= new NpcPathHandler(this);
         NpcPathHandler.Step = 0;
         IsPathActive = true;
     }
@@ -526,7 +525,7 @@ public class Npc : IEntityAutoReset
         else
         {
             EnsureMobListCreated();
-            Mobs.Add(m);
+            Mobs!.Add(m);
         }
 
         return m;

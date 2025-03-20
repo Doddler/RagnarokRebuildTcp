@@ -41,9 +41,9 @@ public class NetworkManager
     public static List<NetworkConnection> DisconnectList = new(5);
     public static Action<NetworkConnection, InboundMessage>[] PacketHandlers;
     public static bool[] PacketCheckClientState;
+    public static bool[] AdminPacketTypes;
     public static PacketType LastPacketType;
-    public static Dictionary<int, bool> AdminPacketLookup = new();
-
+    
     private static NetQueue<InboundMessage> inboundChannel;
     private static NetQueue<OutboundMessage> outboundChannel;
     private static Channel<NetworkConnection> disconnectList;
@@ -126,7 +126,8 @@ public class NetworkManager
         var handlerCount = System.Enum.GetNames(typeof(PacketType)).Length;
         PacketHandlers = new Action<NetworkConnection, InboundMessage>[handlerCount];
         PacketCheckClientState = new bool[handlerCount];
-        
+        AdminPacketTypes = new bool[handlerCount];
+
         foreach (var type in Assembly.GetAssembly(typeof(NetworkManager))!.GetTypes()
                      .Where(t => t.IsClass && t.GetCustomAttribute<ClientPacketHandlerAttribute>() != null))
         {
@@ -140,7 +141,7 @@ public class NetworkManager
             PacketCheckClientState[(int)packetType] = attr.VerifyClientConnection;
 
             if (attr.IsAdminPacket)
-                AdminPacketLookup[(int)packetType] = true;
+                AdminPacketTypes[(int)packetType] = true;
 
             //if (packetType == PacketType.UnhandledPacket || packetType == PacketType.Disconnect)
             //    PacketHandlers[(int)packetType] = handler.HandlePacketNoCheck; //skip client connected check for these two packets
@@ -493,6 +494,9 @@ public class NetworkManager
         else
             ServerLogger.LogVerbose($"Received message of type: {System.Enum.GetName(typeof(PacketType), type)} from entity-less connection.");
 
+        if (connection == null)
+            return;
+
         LastPacketType = type;
 
         if (PacketCheckClientState[(int)type])
@@ -505,7 +509,7 @@ public class NetworkManager
         }
 
         //if it's an admin packet and not an admin
-        if (AdminPacketLookup.TryGetValue((int)type, out var isAdmin) && isAdmin && !connection.IsAdmin)
+        if (AdminPacketTypes[(int)type] && !connection.IsAdmin)
         {
             //DisconnectPlayer(connection);
             //ServerLogger.Log($"Player {connection.Character?.Name} is using an admin command without admin privileges. Disconnecting.");
@@ -516,25 +520,33 @@ public class NetworkManager
         PacketHandlers[(int)type](msg.Client, msg);
 #endif
 #if !DEBUG
-            try
+        try
+        {
+            LastPacketType = type;
+            if (AdminPacketTypes[(int)type])
             {
-                LastPacketType = type;
-                if (PacketCheckClientState[(int)type])
-                {
-                    if (msg.Client.Socket.State != WebSocketState.Open)
-                    {
-                        ServerLogger.Log("Ignoring message from non open web socket.");
-                        return;
-                    }
-                }
+                if (!ConnectionLookup.TryGetValue(msg.Client.Socket, out var connection) 
+                    || connection.Entity.IsAlive()
+                    || !connection.IsAdmin)
+                    return;
+            }
 
-                PacketHandlers[(int)type](msg.Client, msg);
-            }
-            catch (Exception)
+            if (PacketCheckClientState[(int)type])
             {
-                ServerLogger.LogError($"Error executing packet handler for packet type {type}");
-                throw;
+                if (msg.Client.Socket.State != WebSocketState.Open)
+                {
+                    ServerLogger.Log("Ignoring message from non open web socket.");
+                    return;
+                }
             }
+
+            PacketHandlers[(int)type](msg.Client, msg);
+        }
+        catch (Exception)
+        {
+            ServerLogger.LogError($"Error executing packet handler for packet type {type}");
+            throw;
+        }
 #endif
     }
 
@@ -775,6 +787,7 @@ public class NetworkManager
                 {
                     ServerConnectResult.Banned => "Could not connect: account is locked.",
                     ServerConnectResult.FailedLogin => "Could not log in, your username or password were incorrect.",
+                    ServerConnectResult.ServerError => "The server encountered an error and was unable to process your request.",
                     _ => "Failed to login."
                 };
                 ServerLogger.Log($"User failed to login, disconnecting.");

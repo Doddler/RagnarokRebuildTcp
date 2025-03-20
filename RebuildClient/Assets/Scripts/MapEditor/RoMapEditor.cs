@@ -837,6 +837,9 @@ namespace Assets.Scripts.MapEditor
 
         private void HighlightTopFaces(RectInt region)
         {
+            if (this == null)
+                return;
+            
             var cells = MapData.GetCellData();
 
             PrepareDrawMaterial();

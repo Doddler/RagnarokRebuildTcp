@@ -575,6 +575,9 @@ public class ScriptBuilder
 
             foreach (var i in Enum.GetNames<EquipPosition>())
                 additionalVariables.Add(i.ToString(), $"EquipPosition.{i}");
+
+            foreach (var i in Enum.GetValues<CharacterSkill>())
+                additionalVariables.TryAdd(i.ToString(), $"CharacterSkill.{i}");
         }
         else
         {

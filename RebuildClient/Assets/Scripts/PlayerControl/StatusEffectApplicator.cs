@@ -185,7 +185,9 @@ namespace Assets.Scripts.PlayerControl
                         controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Performance3);
                         controllable.SpriteAnimator.ForceLoop = true;
                     }
-
+                    break;
+                case CharacterStatusEffect.Stop:
+                    controllable.AttachEffect(RoSpriteEffect.AttachSprite(controllable, "Assets/Sprites/Effects/스톱.spr", 0.65f));
                     break;
             }
         }
@@ -270,6 +272,9 @@ namespace Assets.Scripts.PlayerControl
                     break;
                 case CharacterStatusEffect.Petrifying:
                     controllable.EndEffectOfType(EffectType.Petrifying);
+                    break;
+                case CharacterStatusEffect.Stop:
+                    controllable.EndEffectOfType(EffectType.RoSprite, "Assets/Sprites/Effects/스톱.spr");
                     break;
             }
         }

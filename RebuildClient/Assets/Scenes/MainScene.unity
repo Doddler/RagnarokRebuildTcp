@@ -62546,6 +62546,7 @@ MonoBehaviour:
   ProjectorAdditiveShader: {fileID: 4800000, guid: af716291ecb328748bf8303763de7415,
     type: 3}
   AdditivePulseShader: {fileID: 4800000, guid: fdcb07255a8a4a4e836828c58d01f1da, type: 3}
+  EffectShader: {fileID: 4800000, guid: 592f9814102375d4cabf4ba2b796f002, type: 3}
   BillboardSprites: 1
 --- !u!4 &1671613989
 Transform:
@@ -64530,6 +64531,7 @@ MonoBehaviour:
   TextMaxLevel: {fileID: 1759725545}
   SPCost: {fileID: 1605532707}
   Icon: {fileID: 1049154236}
+  AvailableToLevelUp: 0
 --- !u!114 &1731897475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67413,6 +67415,7 @@ MonoBehaviour:
   MissPath: {fileID: 11400000, guid: 1f45bf06a8c394945ab75506b7228c5d, type: 2}
   CriticalPath: {fileID: 11400000, guid: 7db6349ac946bc3408e5027710574d97, type: 2}
   EffectPath: {fileID: 11400000, guid: 390a11596ba3adf43a7e2f054e935385, type: 2}
+  DebuffPath: {fileID: 11400000, guid: 30a03ff45d579074ba2a9dcc820b3963, type: 2}
 --- !u!4 &1814519204
 Transform:
   m_ObjectHideFlags: 0

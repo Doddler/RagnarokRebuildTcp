@@ -86,7 +86,6 @@ public enum CharacterStat
     AddDefPercent,
     AddMDefPercent,
     Disabled,
-    EndureEffect,
     OverrideElement,
     MonsterStatsMax, //any stats after this are stats only players will be able to hold.
 
@@ -199,6 +198,7 @@ public enum CharacterStat
     SpDrainChance,
     SpDrainAmount,
     
+    SkillValue, //used to store skill unlocks in ItemEquipState
     NoEffect,
     CharacterStatsMax,
 }

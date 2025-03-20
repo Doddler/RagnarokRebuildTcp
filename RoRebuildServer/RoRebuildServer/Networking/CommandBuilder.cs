@@ -34,8 +34,11 @@ public static class CommandBuilder
         recipients.Add(player.Connection);
     }
 
-    public static void AddRecipients(EntityList list)
+    public static void AddRecipients(EntityList? list)
     {
+        if (list == null)
+            return;
+
         foreach (var e in list)
         {
             AddRecipient(e);
@@ -265,6 +268,24 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.UpdatePlayerData, 512);
 
         p.SendPlayerUpdateData(packet, sendInventory, sendSkills);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void RefreshGrantedSkills(Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.RefreshGrantedSkills, 256);
+        if(p.GrantedSkills == null)
+            packet.Write((short)0);
+        else
+        {
+            packet.Write((short)p.GrantedSkills.Count);
+            foreach (var skill in p.GrantedSkills)
+            {
+                packet.Write((short)skill.Key);
+                packet.Write((byte)skill.Value);
+            }
+        }
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

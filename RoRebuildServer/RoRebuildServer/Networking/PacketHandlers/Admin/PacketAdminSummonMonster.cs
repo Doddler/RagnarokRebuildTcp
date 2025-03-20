@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
@@ -18,6 +19,8 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
         {
             if (!connection.IsOnlineAdmin)
                 return;
+
+            Debug.Assert(connection.Player != null);
 
             var chara = connection.Entity.Get<WorldObject>();
 

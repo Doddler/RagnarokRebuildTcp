@@ -16,7 +16,7 @@ public class ProvokeHandler : SkillHandlerBase
 {
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
     {
-        if (target.IsElementBaseType(CharacterElement.Undead1))
+        if (target == null || target.IsElementBaseType(CharacterElement.Undead1))
             return SkillValidationResult.Failure;
 
         return StandardValidation(source, target, position);

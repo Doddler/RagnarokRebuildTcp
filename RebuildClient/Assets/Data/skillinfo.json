@@ -46,7 +46,7 @@
         15
       ],
       "AdjustableLevel": true,
-      "Description": "Strikes a target for [100 \u002B SkillLevel * 30]% ATK with an accuracy boost of [SkillLevel * 5]%.\r\nSP cost increases from 8 to 15 at level 6 and above.",
+      "Description": "Strikes a target for [100 \u002B SkillLevel * 30]% ATK with a \u002B[SkillLevel * 5]% chance to hit.\r\nSP cost increases from 8 to 15 at level 6 and above.",
       "InterruptMode": 0
     },
     {
@@ -69,7 +69,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": "Resists flinching from enemy attacks, allowing you to escape without being slowed down by damage.\r\nLasts [Skill Level \u002B 2] hits. Provides a bonus to magic defense while active.",
+      "Description": "Resists flinching from enemy attacks, allowing you to escape without being slowed down by damage. Provides \u002B[SkillLevel] MDEF while active.\r\nLasts [SkillLevel \u002B 2] hits or [7 \u002B SkillLevel * 3] seconds, whichever ends first.",
       "InterruptMode": 0
     },
     {
@@ -127,7 +127,7 @@
         5
       ],
       "AdjustableLevel": false,
-      "Description": "Enrages an enemy by taunting them, causing them drop their guard. \r\nReduces enemy defense by [5 \u002B SkillLevel * 5]%.\r\nIncreases enemy attack power by [2 \u002B SkillLevel *3]%.\r\nThe effectivness of this skill is halved on boss type monsters.\r\nWhile provoked the enemy has a low chance of dealing extra damage against you specifically.",
+      "Description": "Enrages an enemy by taunting them, causing them drop their guard for 30 seconds.\r\nReduces enemy defense by [5 \u002B SkillLevel * 5]%.\r\nIncreases enemy attack power by [2 \u002B SkillLevel *3]%.\r\nThe effectivness of this skill is halved on boss type monsters.\r\nWhile provoked the enemy has a low chance of dealing extra damage against you specifically.",
       "InterruptMode": 0
     },
     {
@@ -139,7 +139,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases damage when using a one-handed sword by 1% per level to a max of \u002B10%.",
+      "Description": "Adds \u002B[SkillLevel * 4] weapon attack power when using a dagger or one-handed sword.",
       "InterruptMode": 0
     },
     {
@@ -151,7 +151,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases damage when using two-handed swords by 1% per level to a max of \u002B10%.",
+      "Description": "Adds \u002B[SkillLevel * 4] weapon attack power when using two-handed swords.",
       "InterruptMode": 0
     },
     {
@@ -215,7 +215,7 @@
     {
       "SkillId": 13,
       "Icon": "mg_fireball",
-      "Name": "Fire Ball",
+      "Name": "Fireball",
       "Target": 1,
       "Type": 0,
       "MaxLevel": 10,
@@ -481,7 +481,7 @@
         15
       ],
       "AdjustableLevel": false,
-      "Description": "Fires a powerful shot dealing 150% ATK and knocking the target away 6 tiles.",
+      "Description": "Fires a powerful shot dealing 150% ATK and knocking the target away 6 tiles.\r\nCast Time: 0.8 seconds.",
       "InterruptMode": 0
     },
     {
@@ -527,7 +527,7 @@
         70
       ],
       "AdjustableLevel": true,
-      "Description": "Focuses your thoughts providing bonus to AGI and DEX.\r\n\u003Cpos=2%\u003ELevel \u003Cpos=22%\u003EStat Boost\u003Cpos=52%\u003EDuration\u003Cbr\u003E\r\n\u003Cpos=5%\u003E1\u003Cpos=25%\u003E\u002B3%\u003Cpos=55%\u003E60s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E2\u003Cpos=25%\u003E\u002B4%\u003Cpos=55%\u003E80s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E3\u003Cpos=25%\u003E\u002B5%\u003Cpos=55%\u003E100s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E4\u003Cpos=25%\u003E\u002B6%\u003Cpos=55%\u003E120s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E5\u003Cpos=25%\u003E\u002B7%\u003Cpos=55%\u003E140s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E6\u003Cpos=25%\u003E\u002B8%\u003Cpos=55%\u003E160s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E7\u003Cpos=25%\u003E\u002B9%\u003Cpos=55%\u003E180s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E8\u003Cpos=25%\u003E\u002B10%\u003Cpos=55%\u003E200s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E9\u003Cpos=25%\u003E\u002B11%\u003Cpos=55%\u003E220s\u003Cbr\u003E\r\n\u003Cpos=5%\u003E10\u003Cpos=25%\u003E\u002B12%\u003Cpos=55%\u003E240s",
+      "Description": "Focuses your thoughts granting \u002B[2 \u002B SkillLevel]% AGI and DEX. Any nearby hidden enemies will be revealed when cast.\r\nDuration: [40 \u002B SkillLevel * 20] seconds.",
       "InterruptMode": 0
     },
     {
@@ -597,7 +597,7 @@
         45
       ],
       "AdjustableLevel": true,
-      "Description": "Increases movement speed by 25% and increases agi by \u002B3 at level one and increasing to \u002B12 at level 10.",
+      "Description": "Increases movement speed by 25% and grants \u002B[2 \u002B SkillLevel] AGI. \r\nDuration: [40 \u002B SkillLevel * 20] seconds.",
       "InterruptMode": 0
     },
     {
@@ -606,16 +606,21 @@
       "Name": "Decrease Agility",
       "Target": 1,
       "Type": 0,
-      "MaxLevel": 5,
+      "MaxLevel": 10,
       "SpCost": [
+        15,
         17,
+        19,
         21,
+        23,
         25,
+        27,
         29,
+        31,
         33
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Lowers target\u0027s movement speed by 25% and grants -[2 \u002B SkillLevel] AGI, as well as canceling existing movement and attack speed increasing skills.\r\nIneffective against some powerful monsters.\r\nSuccess Rate: [50 \u002B SkillLevel * 3]%. \u002B1% for every 5 caster base level/int, -1% for each point of MDEF on the target.",
       "InterruptMode": 0
     },
     {
@@ -638,7 +643,7 @@
         64
       ],
       "AdjustableLevel": true,
-      "Description": "Increases STR, DEX, and INT by \u002B1 per skill level.",
+      "Description": "Grants \u002B[SkillLevel] STR, DEX, and INT to a target.\r\nWhen cast on a demon or undead monster, lowers target\u0027s DEX \u0026 INT by 50% (use shift to target an enemy).\r\nDuration: [40 \u002B SkillLevel * 20] seconds.",
       "InterruptMode": 0
     },
     {
@@ -650,7 +655,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases damage against demon and undead races by \u002B1% per level to a max of \u002B10%.",
+      "Description": "Adds \u002B[SkillLevel * 3] weapon attack power when attacking demons and undead property monsters.",
       "InterruptMode": 0
     },
     {
@@ -685,7 +690,7 @@
         50
       ],
       "AdjustableLevel": false,
-      "Description": "Buffs all nearby party members increasing soft defense by [SkillLevel * 5]% and reducing damage taken from demon and undead monsters by[SkillLevel]% (to a maximum equal to your learned level of Divine Protection). Allies that already know Divine Protection are unaffected.",
+      "Description": "Buffs all nearby party members increasing soft defense by [SkillLevel * 5]% and reducing damage taken from demon and undead monsters by[SkillLevel]% (to a maximum equal to your learned level of Divine Protection). Allies that already know Divine Protection are unaffected.\r\nDuration: [SkillLevel * 30] seconds.",
       "InterruptMode": 0
     },
     {
@@ -708,7 +713,7 @@
         35
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Permanently lowers the defense of all nearby demons and undead property monsters by -[10 \u002B SkillLevel * 4]%.\r\nSuccess Rate: [25 \u002B 4 * SkillLevel]%",
       "InterruptMode": 0
     },
     {
@@ -722,7 +727,7 @@
         15
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Cures blind, silence, and confusion status effects from 1 target.",
       "InterruptMode": 0
     },
     {
@@ -750,7 +755,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": "Creates cloud that causes all physical attacks performed from 5 or more tiles away to miss. Affects both friend and foe alike.",
+      "Description": "Creates cloud that causes all physical attacks performed from 5 or more tiles away to miss. Affects both friend and foe alike.\r\nLasts 10 seconds. Cannot overlap another Pneuma or Safety Wall.",
       "InterruptMode": 0
     },
     {
@@ -775,7 +780,7 @@
       "Type": 0,
       "MaxLevel": 1,
       "SpCost": [
-        12
+        30
       ],
       "AdjustableLevel": false,
       "Description": "Level 1: Teleports you to a random location on the map.\r\nLevel 2: Returns you to your save point.\r\nBe sure to use the correct level as there is no prompt. You may assign different levels of the skill to your hotbar.",
@@ -1051,13 +1056,13 @@
     {
       "SkillId": 60,
       "Icon": "mc_identify",
-      "Name": "Item Appraisal",
-      "Target": 2,
+      "Name": "Weapon Appraisal",
+      "Target": 0,
       "Type": 0,
       "MaxLevel": 1,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by \u002B[SkillLevel * WeaponLevel].",
       "InterruptMode": 0
     },
     {
@@ -1115,21 +1120,12 @@
       "Name": "Cart Revolution",
       "Target": 1,
       "Type": 0,
-      "MaxLevel": 10,
+      "MaxLevel": 1,
       "SpCost": [
-        12,
-        12,
-        12,
-        12,
-        12,
-        12,
-        12,
-        12,
-        12,
         12
       ],
       "AdjustableLevel": false,
-      "Description": "Strikes a target and a 3x3 area around them with your cart dealing [50 \u002B SkillLevel * 10]% attack plus an additional 10% for every 600 weight currently in your inventory.\r\nKnocks the enemy away from you 2 tiles.\r\n\u003Ci\u003EIt only goes to level 10 because merchant needs something to spend points on.\u003C/i\u003E",
+      "Description": "Strikes a target with your cart, dealing [150 \u002B Weight / 60]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.",
       "InterruptMode": 0
     },
     {
@@ -1152,7 +1148,7 @@
         50
       ],
       "AdjustableLevel": false,
-      "Description": "Increases attack speed when using two-handed swords by [SkillLevel * 10]%.",
+      "Description": "Increases attack speed when using two-handed swords by [SkillLevel * 10]%.\r\nDuration: [SkillLevel * 30] seconds.",
       "InterruptMode": 0
     },
     {

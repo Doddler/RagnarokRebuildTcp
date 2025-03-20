@@ -98,7 +98,7 @@ public class LoadCharacterRequest : IDbRequest
                 else
                 {
                     if (ch.ItemDataLength > 0)
-                        PlayerDataDbHelper.DecompressPlayerInventoryData(this, ch.ItemData, ch.ItemDataLength);
+                        PlayerDataDbHelper.DecompressPlayerInventoryData(this, ch.ItemData, ch.ItemDataLength, SaveVersion);
                 }
             }
 

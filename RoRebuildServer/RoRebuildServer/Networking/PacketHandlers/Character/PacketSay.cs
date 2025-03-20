@@ -12,7 +12,7 @@ public class PacketSay : IClientPacketHandler
     {
         var map = connection.Character?.Map;
          
-        if (!connection.IsConnectedAndInGame)
+        if (!connection.IsConnectedAndInGame || map == null)
             return;
 
         var text = msg.ReadString();
@@ -50,7 +50,7 @@ public class PacketSay : IClientPacketHandler
         else
             CommandBuilder.AddRecipients(map.Players); //send to everyone on the map
         //map.AddVisiblePlayersAsPacketRecipients(connection.Character);
-        CommandBuilder.SendSayMulti(connection.Character, connection.Character.Name, text, isShout);
+        CommandBuilder.SendSayMulti(connection.Character, connection.Character!.Name, text, isShout);
         CommandBuilder.ClearRecipients();
     }
 

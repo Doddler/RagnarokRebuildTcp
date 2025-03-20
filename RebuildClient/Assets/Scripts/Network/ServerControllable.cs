@@ -861,7 +861,7 @@ namespace Assets.Scripts.Network
             return effectOut;
         }
 
-        public void EndEffectOfType(EffectType type)
+        public void EndEffectOfType(EffectType type, string val = null)
         {
             if (EffectList == null || EffectList.Count == 0)
                 return; //job well done
@@ -872,6 +872,9 @@ namespace Assets.Scripts.Network
             {
                 if (EffectList[i].EffectType == type)
                 {
+                    if (!string.IsNullOrWhiteSpace(val) && EffectList[i].StringValue != val)
+                        continue;
+                    
                     EffectList[i].EndEffect();
                     endEffect[pos] = i;
                     pos++;
@@ -884,6 +887,7 @@ namespace Assets.Scripts.Network
                 EffectList.RemoveAt(endEffect[i - 1]);
             }
         }
+        
 
         public void SetAttackAnimationSpeed(float motionTime)
         {

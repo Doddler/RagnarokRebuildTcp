@@ -8,11 +8,6 @@ using RoRebuildServer.Data;
 
 namespace DataToClientUtility;
 
-public class DataToClientUtilityConfig
-{
-    public string ConfigPath { get; set; }
-}
-
 internal static class AppSettings
 {
     public static void LoadConfigFromServerPath()

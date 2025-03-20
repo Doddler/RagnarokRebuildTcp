@@ -276,10 +276,21 @@ namespace Assets.Scripts.UI
                 if (!activeSkills.Contains(skill.Key))
                 {
                     var entry = GrabEntryToReuse();
-                    AddSkillToSkillWindow(skill.Key, skill.Value, -1, true, entry);
+                    entry = AddSkillToSkillWindow(skill.Key, skill.Value, -1, true, entry);
+                    entry.AvailableToLevelUp = false;
+                    entry.LevelUpButton.gameObject.SetActive(false);
                     hasUnranked = true;
                 }
             }
+            foreach (var skill in state.GrantedSkills)
+            {
+                var entry = GrabEntryToReuse();
+                entry = AddSkillToSkillWindow(skill.Key, skill.Value, -1, true, entry);
+                entry.AvailableToLevelUp = false;
+                entry.LevelUpButton.gameObject.SetActive(false);
+                hasUnranked = true;
+            }
+            
             if(hasUnranked)
                 Tabs[^1].gameObject.SetActive(true);
         }

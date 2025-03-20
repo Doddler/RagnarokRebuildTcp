@@ -13,5 +13,6 @@ namespace Assets.Scripts.Utility
         public DamageIndicatorPathData MissPath;
         public DamageIndicatorPathData CriticalPath;
         public DamageIndicatorPathData EffectPath;
+        public DamageIndicatorPathData DebuffPath;
     }
 }

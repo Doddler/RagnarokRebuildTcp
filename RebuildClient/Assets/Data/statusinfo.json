@@ -416,6 +416,24 @@
     },
     {
       "StatusEffect": 47,
+      "Name": "Stop",
+      "Description": "\u003Ccolor=#FF3300\u003EStop\u003C/color\u003E\nA nearby enemy has entangled the two of you, preventing either of you from moving.",
+      "Type": "Debuff",
+      "Icon": "bd_imprison",
+      "CanDispel": true,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 48,
+      "Name": null,
+      "Description": null,
+      "Type": null,
+      "Icon": null,
+      "CanDispel": false,
+      "CanDisable": false
+    },
+    {
+      "StatusEffect": 49,
       "Name": "Admin Invisibility",
       "Description": "\u003Ccolor=#FFA300\u003EAdmin Invisibility\u003C/color\u003E\nYou cannot be seen and you cannot be targeted.",
       "Type": "Buff",
@@ -424,7 +442,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 48,
+      "StatusEffect": 50,
       "Name": "Stolen From",
       "Description": "\u003Ccolor=#FF3300\u003EStolen From\u003C/color\u003E\nYou\u0027ve had something recently taken and cannot be stolen from again.",
       "Type": "Debuff",

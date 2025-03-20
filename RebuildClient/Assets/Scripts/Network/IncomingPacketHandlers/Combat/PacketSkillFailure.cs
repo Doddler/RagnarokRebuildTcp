@@ -44,6 +44,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 case SkillValidationResult.MemoLocationUnwalkable:
                     Camera.AppendChatText("<color=#FF7777>Cannot memo current location while standing on un-walkable ground.</color>");
                     break;
+                case SkillValidationResult.MustBeStandingInWater:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed: You need to be standing in water to use this skill.</color>");
+                    break;
+                case SkillValidationResult.MissingRequiredItem:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed: You are missing a required item or catalyst.</color>");
+                    break;
+                case SkillValidationResult.SkillNotKnown:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed: Skill not learned or available.</color>");
+                    break;
                 default:
                     Debug.Log($"Skill failure (not shown to user): {result}");
                     break;

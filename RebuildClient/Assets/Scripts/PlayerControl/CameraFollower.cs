@@ -350,7 +350,9 @@ namespace Assets.Scripts
                     isCursorSkillItem = false;
                     canChangeCursorLevel = ClientDataLoader.Instance.GetSkillData(skill).AdjustableLevel;
                     cursorSkill = skill;
-                    cursorMaxSkillLvl = NetworkManager.Instance.PlayerState.KnownSkills.GetValueOrDefault(skill, 1);
+                    cursorMaxSkillLvl = PlayerState.KnownSkills.GetValueOrDefault(skill, 1);
+                    if (PlayerState.GrantedSkills.TryGetValue(skill, out var granted) && granted > cursorMaxSkillLvl)
+                        cursorMaxSkillLvl = granted;
                     skillScroll = Mathf.Clamp(id, 1, cursorMaxSkillLvl);
                     if (!canChangeCursorLevel)
                         skillScroll = cursorMaxSkillLvl;
@@ -361,7 +363,15 @@ namespace Assets.Scripts
                     Debug.LogWarning($"Can't cast passive skill!");
                     break;
                 case SkillTarget.Self:
-                    NetworkManager.Instance.SendSelfTargetSkillAction(skill, id);
+                    var adjustable = ClientDataLoader.Instance.GetSkillData(skill).AdjustableLevel;
+                    var level = id;
+                    var maxLvl = PlayerState.KnownSkills.GetValueOrDefault(skill, 1);
+                    if (PlayerState.GrantedSkills.TryGetValue(skill, out var granted2) && granted2 > cursorMaxSkillLvl)
+                        maxLvl = granted2;
+                    level = Mathf.Clamp(level, 1, maxLvl);
+                    if (!canChangeCursorLevel)
+                        skillScroll = maxLvl;
+                    NetworkManager.Instance.SendSelfTargetSkillAction(skill, level);
                     break;
             }
 
@@ -1214,7 +1224,14 @@ namespace Assets.Scripts
             //         EventSystem.current.SetSelectedGameObject(null);
             //         TextBoxInputField.text = "";
 
-            ClientCommandHandler.HandleClientCommand(this, controllable, text);
+            try
+            {
+                ClientCommandHandler.HandleClientCommand(this, controllable, text);
+            }
+            catch (Exception)
+            {
+                AppendChatText($"<color=yellow>Error</color>: Command could not be parse.");
+            }
 
             lastMessage = text;
         }

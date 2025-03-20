@@ -89,6 +89,8 @@ namespace Assets.Scripts.Sprites
         public bool LockAngle;
         public bool DisableLoop;
         public bool ForceLoop;
+        public bool NoLightProbeAnchor;
+        public bool IgnoreShadows;
         public bool RaycastForShadow = true;
 
         public SpriteMotion CurrentMotion;
@@ -273,9 +275,12 @@ namespace Assets.Scripts.Sprites
 
             if (Parent == null)
             {
-                LightProbeAnchor = new GameObject("LightProbeAnchor");
-                LightProbeAnchor.transform.SetParent(gameObject.transform.parent);
-                LightProbeAnchor.transform.localPosition = new Vector3(0f, 1f, 0f);
+                if (!NoLightProbeAnchor)
+                {
+                    LightProbeAnchor = new GameObject("LightProbeAnchor");
+                    LightProbeAnchor.transform.SetParent(gameObject.transform.parent);
+                    LightProbeAnchor.transform.localPosition = new Vector3(0f, 1f, 0f);
+                }
             }
             else
                 LightProbeAnchor = Parent.LightProbeAnchor;
@@ -327,7 +332,8 @@ namespace Assets.Scripts.Sprites
                 SpriteRenderer.SetOffset(Parent.SpriteData.Size / 125f);
 
             SpriteRenderer.Initialize(makeCollider);
-            SpriteRenderer.SetLightProbeAnchor(LightProbeAnchor);
+            if(LightProbeAnchor != null)
+                SpriteRenderer.SetLightProbeAnchor(LightProbeAnchor);
 
             isDirty = true;
         }
@@ -654,6 +660,12 @@ namespace Assets.Scripts.Sprites
 
         private void UpdateShade()
         {
+            if (IgnoreShadows)
+            {
+                TargetShade = 1;
+                return;
+            }
+
             if (directionalLight == null)
             {
                 directionalLight = GameObject.Find("DirectionalLight").GetComponent<Light>();

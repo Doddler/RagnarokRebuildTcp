@@ -38,8 +38,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             }
 
             //is the skill available for the player to learn?
-            var tree = DataManager.SkillTree.GetValueOrDefault(player.GetData(PlayerStat.Job));
-            if (tree == null)
+            if (!DataManager.SkillTree.TryGetValue(player.GetData(PlayerStat.Job), out var tree))
             {
                 CommandBuilder.ErrorMessage(player, "Cannot apply skill points to this skill.");
                 return;
@@ -49,7 +48,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             var meetsPrereq = CheckPrereqFromTree(tree, skillId, player);
             if (!meetsPrereq)
             {
-                while (tree.Extends != null)
+                while (tree!.Extends != null)
                 {
                     var job = DataManager.JobIdLookup[tree.Extends];
                     tree = DataManager.SkillTree.GetValueOrDefault(job);
@@ -70,6 +69,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             player.SetData(PlayerStat.SkillPoints, points - 1);
 
             //CommandBuilder.ApplySkillPoint(player, skillId);
+            player.RefreshWeaponMastery();
             player.UpdateStats(true, true);
         }
 

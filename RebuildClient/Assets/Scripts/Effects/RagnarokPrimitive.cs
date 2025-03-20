@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 // using UnityEditor.Sprites;
@@ -42,6 +43,8 @@ namespace Assets.Scripts.Effects
         public float PrevPos;
         public int Step;
         public bool IsStepFrame;
+        public bool SkipClearingMeshBuilder = false;
+        public bool SkipApplyingMeshFromBuilder = false;
 
         public float CurrentFrameTime => IsStepFrame ? 1 / 60f : 0f;
 
@@ -63,6 +66,14 @@ namespace Assets.Scripts.Effects
         private Vector2[] uvs = new Vector2[4];
         private Vector3[] uv3s = new Vector3[4];
         private int[] tris;
+
+        public Mesh GetMesh() => mesh;
+
+        public void SetMesh(Mesh updatedMesh)
+        {
+            mesh = updatedMesh;
+            mf.sharedMesh = updatedMesh;
+        }
 
         public static RagnarokPrimitive Create()
         {
@@ -124,6 +135,8 @@ namespace Assets.Scripts.Effects
                 billboard.Style = BillboardStyle.None;
             Velocity = Vector3.zero;
             EventTrigger = null;
+            SkipApplyingMeshFromBuilder = false;
+            SkipClearingMeshBuilder = false;
             for (var i = 0; i < 4; i++)
                 Flags[i] = 0;
             #if DEBUG
@@ -547,10 +560,15 @@ namespace Assets.Scripts.Effects
             if (!IsActive)
                 return;
             
-            mb.Clear();
+            if(!SkipClearingMeshBuilder)
+                mb.Clear();
+            
             if (RenderHandler != null)
             {
                 RenderHandler(this, mb);
+                if (SkipApplyingMeshFromBuilder)
+                    return;
+                
                 if (mb.HasMesh())
                 {
                     var m = mb.ApplyToMesh(mesh);

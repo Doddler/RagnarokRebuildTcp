@@ -21,7 +21,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
             
             if(map == null) return;
 
-            WorldObject closest = null;
+            WorldObject? closest = null;
             var distance = 999999;
 
             for (var i = 0; i < map.Chunks.Length; i++)
@@ -43,7 +43,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
                     if (!valid)
                         continue;
 
-                    var newDistance = connection.Character.Position.BlockDistance(chara.Position);
+                    var newDistance = connection.Character!.Position.BlockDistance(chara.Position);
 
                     if (newDistance < distance)
                     {
@@ -54,7 +54,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
             }
 
             if(closest == null)
-                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.Failure);
+                CommandBuilder.SkillFailed(connection.Player!, SkillValidationResult.Failure);
             else
             {
                 ch.ResetState();

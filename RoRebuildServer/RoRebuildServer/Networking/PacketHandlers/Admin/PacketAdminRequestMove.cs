@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using System.Diagnostics;
@@ -82,7 +83,10 @@ public class PacketAdminRequestMove : IClientPacketHandler
         //CommandBuilder.SendHealSingle(player, 0, HealType.None); //heal amount is 0, but we set hp to max so it will update without the effect
 
         if (ch.Map.Name == mapName)
+        {
+            ch.CombatEntity.RemoveStatusOfGroupIfExists("StopGroup");
             ch.Map.TeleportEntity(ref connection.Entity, ch, pos, CharacterRemovalReason.OutOfSight);
+        }
         else
             player.WarpPlayer(mapName, pos.X, pos.Y, 1, 1, false);
             //ch.Map.World.MovePlayerMap(ref connection.Entity, ch, map, pos);

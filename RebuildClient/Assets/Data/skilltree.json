@@ -232,6 +232,23 @@
         {
           "Skill": 21,
           "Prerequisites": []
+        },
+        {
+          "Skill": 23,
+          "Prerequisites": [
+            {
+              "Skill": 11,
+              "Level": 3
+            },
+            {
+              "Skill": 12,
+              "Level": 3
+            },
+            {
+              "Skill": 16,
+              "Level": 3
+            }
+          ]
         }
       ]
     },
@@ -289,6 +306,24 @@
           ]
         },
         {
+          "Skill": 32,
+          "Prerequisites": [
+            {
+              "Skill": 31,
+              "Level": 1
+            }
+          ]
+        },
+        {
+          "Skill": 38,
+          "Prerequisites": [
+            {
+              "Skill": 30,
+              "Level": 2
+            }
+          ]
+        },
+        {
           "Skill": 41,
           "Prerequisites": []
         },
@@ -338,6 +373,15 @@
           ]
         },
         {
+          "Skill": 37,
+          "Prerequisites": [
+            {
+              "Skill": 34,
+              "Level": 3
+            }
+          ]
+        },
+        {
           "Skill": 39,
           "Prerequisites": []
         }
@@ -383,6 +427,15 @@
           ]
         },
         {
+          "Skill": 51,
+          "Prerequisites": [
+            {
+              "Skill": 47,
+              "Level": 5
+            }
+          ]
+        },
+        {
           "Skill": 49,
           "Prerequisites": [
             {
@@ -390,6 +443,10 @@
               "Level": 5
             }
           ]
+        },
+        {
+          "Skill": 52,
+          "Prerequisites": []
         },
         {
           "Skill": 68,
@@ -443,6 +500,24 @@
           ]
         },
         {
+          "Skill": 59,
+          "Prerequisites": [
+            {
+              "Skill": 62,
+              "Level": 1
+            }
+          ]
+        },
+        {
+          "Skill": 60,
+          "Prerequisites": [
+            {
+              "Skill": 57,
+              "Level": 5
+            }
+          ]
+        },
+        {
           "Skill": 61,
           "Prerequisites": []
         },
@@ -452,6 +527,10 @@
             {
               "Skill": 61,
               "Level": 3
+            },
+            {
+              "Skill": 60,
+              "Level": 5
             }
           ]
         },

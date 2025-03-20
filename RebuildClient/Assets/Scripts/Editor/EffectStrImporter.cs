@@ -38,7 +38,6 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/불화살6.tga", "FireBolt6"));
             sprites.Add(ImportEffectTexture("texture/effect/불화살7.tga", "FireBolt7"));
             sprites.Add(ImportEffectTexture("texture/effect/불화살8.tga", "FireBolt8"));
-            sprites.Add(ImportEffectTexture("texture/effect/대폭발.tga", "BigBang"));
             sprites.Add(ImportEffectTexture("texture/effect/coin_a.bmp", "coin_a"));
             sprites.Add(ImportEffectTexture("texture/effect/coin_b.bmp", "coin_b"));
             sprites.Add(ImportEffectTexture("texture/effect/coin_c.bmp", "coin_c"));
@@ -57,6 +56,7 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/pok1.tga", "pok1"));
             sprites.Add(ImportEffectTexture("texture/effect/pok3.tga", "pok3"));
 
+            ImportEffectTexture("texture/effect/대폭발.tga", "BigBang", false, "Resources");
 
             // ImportEffectTexture("texture/유저인터페이스/disable_card_slot.bmp", "disable_card_slot");
             // ImportEffectTexture("texture/유저인터페이스/empty_card_slot.bmp", "empty_card_slot");
@@ -83,13 +83,13 @@ namespace Assets.Scripts.Editor
             SpriteAtlasUtility.PackAtlases(new[] {atlasObj}, BuildTarget.StandaloneWindows64);
         }
 
-        private static Sprite ImportEffectTexture(string texName, string outName = "", bool keepExisting = false)
+        private static Sprite ImportEffectTexture(string texName, string outName = "", bool keepExisting = false, string dir = "Import")
         {
             if (string.IsNullOrWhiteSpace(outName))
                 outName = texName;
             var srcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, texName);
             var fName = Path.GetFileNameWithoutExtension(outName);
-            var destPath = Path.Combine($"Assets/Textures/Import/{fName}.png");
+            var destPath = Path.Combine($"Assets/Textures/{dir}/{fName}.png");
 
             if (keepExisting && File.Exists(destPath))
                 return AssetDatabase.LoadAssetAtPath<Sprite>(destPath);

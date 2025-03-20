@@ -41,7 +41,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                 data.ScalingAccel = -data.ScalingSpeed / 35f * 60f;
                 data.Speed = Vector2.zero;
                 data.Acceleration = Vector2.zero;
-                data.Sprite = EffectSharedMaterialManager.GetSkillSpriteAtlas().GetSprite("endure");
+                data.Sprite = EffectSharedMaterialManager.SpriteAtlas.GetSprite("endure");
                 
                 prim.transform.localPosition = new Vector3(0f, 1f, 0f);
                 prim.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
@@ -70,7 +70,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                 data.ScalingAccel = Vector2.zero;
                 data.Speed = rotation * new Vector2(0f, -(distance / 30f) * 60);
                 data.Acceleration = -data.Speed / duration;
-                data.Sprite = EffectSharedMaterialManager.GetSkillSpriteAtlas().GetSprite("alpha_down");
+                data.Sprite = EffectSharedMaterialManager.SpriteAtlas.GetSprite("alpha_down");
                 
                 prim.transform.localPosition = rotation * new Vector3(0f, distance - data.Size.y, 0f) + new Vector3(0f, 1f, 0f);
                 prim.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);

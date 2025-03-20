@@ -18,7 +18,8 @@ public enum TextIndicatorType
 	Experience,
 	Critical,
 	Miss,
-	Effect
+	Effect,
+	Debuff
 }
 
 public class DamageIndicator : MonoBehaviour
@@ -75,6 +76,7 @@ public class DamageIndicator : MonoBehaviour
 			TextIndicatorType.Miss => ClientConstants.Instance.MissPath,
 			TextIndicatorType.Critical => ClientConstants.Instance.CriticalPath,
 			TextIndicatorType.Effect => ClientConstants.Instance.EffectPath,
+			TextIndicatorType.Debuff => ClientConstants.Instance.DebuffPath,
 			_ => ClientConstants.Instance.DamagePath
 		};
 	    

@@ -96,6 +96,8 @@ public partial class CombatEntity
         var attackMultiplier = req.AttackMultiplier;
         var attackerType = Character.Type;
         var defenderType = target.Character.Type;
+        var defenderElement = target.GetElement();
+        var baseElementType = GetAttackTypeForDefenderElement(defenderElement);
 
 #if DEBUG
         if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies), true))
@@ -107,8 +109,6 @@ public partial class CombatEntity
         var eleMod = 100;
         if (!flags.HasFlag(AttackFlags.NoElement))
         {
-            var defenderElement = target.GetElement();
-
             if (attackElement == AttackElement.None)
             {
                 //ghost armor has no effect on monster attacks if they are launched with AttackElement None
@@ -135,11 +135,13 @@ public partial class CombatEntity
             if (defenderType == CharacterType.Player && attackElement != AttackElement.Special)
                 eleMod -= target.GetStat(CharacterStat.AddResistElementNeutral + (int)attackElement);
             if (attackerType == CharacterType.Player)
-                eleMod += GetStat(CharacterStat.AddAttackElementNeutral + (int)defenderElement);
+            {
+                
+                eleMod += GetStat(CharacterStat.AddAttackElementNeutral + (int)baseElementType);
+            }
 
             if (defenderElement != CharacterElement.None)
                 eleMod = eleMod * DataManager.ElementChart.GetAttackModifier(attackElement, defenderElement) / 100;
-
         }
 
         var racialMod = 100;
@@ -175,9 +177,11 @@ public partial class CombatEntity
                 var targetRace = target.GetRace();
                 racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
 
-                var mastery = GetStat(CharacterStat.WeaponMastery);
-                attackMultiplier *= (1 + (mastery / 100f));
-
+                //masteries, demonbane, etc
+                if (flags.HasFlag(AttackFlags.Physical) && (target.GetRace() == CharacterRace.Demon || baseElementType == AttackElement.Undead))
+                    baseDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.DemonBane) * 3;
+                baseDamage += GetStat(CharacterStat.WeaponMastery);
+                
                 if (isRanged)
                     rangeMod += GetStat(CharacterStat.AddAttackRangedAttack);
 
@@ -460,7 +464,10 @@ public partial class CombatEntity
 
         if (knockback > 0)
         {
-            var pos = Character.Map.WalkData.CalcKnockbackFromPosition(Character.Position, di.AttackPosition, di.KnockBack);
+            var atkSrc = di.AttackPosition;
+            if (Character.Position == atkSrc)
+                atkSrc = atkSrc.AddDirectionToPosition((Direction)GameRandom.Next(0, 8));
+            var pos = Character.Map.WalkData.CalcKnockbackFromPosition(Character.Position, atkSrc, di.KnockBack);
             if (Character.Position != pos)
                 Character.Map.ChangeEntityPosition3(Character, Character.WorldPosition, pos, false);
 

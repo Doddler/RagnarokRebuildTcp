@@ -30,6 +30,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.ScriptSystem;
+using System.Runtime.InteropServices;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -97,6 +98,7 @@ public partial class CombatEntity : IEntityAutoReset
         Player = null!;
         Faction = -1;
         Party = -1;
+        BodyState = BodyStateFlags.None;
         IsTargetable = true;
         IsCasting = false;
         skillCooldowns.Clear();
@@ -122,7 +124,7 @@ public partial class CombatEntity : IEntityAutoReset
             return statData[(int)type];
         if (Entity.Type != EntityType.Player)
             return 0;
-        return Player.PlayerStatData[type - CharacterStat.MonsterStatsMax];
+        return Player.PlayerStatData.TryGetValue(type, out var stat) ? stat : 0;
     }
 
     [ScriptUseable]
@@ -137,7 +139,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (Entity.Type != EntityType.Player)
             return;
-        Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] = val;
+        Player.PlayerStatData[type] = val;
     }
 
     [ScriptUseable]
@@ -152,23 +154,20 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (Entity.Type != EntityType.Player)
             return;
-        Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] += val;
+
+        ref var obj = ref CollectionsMarshal.GetValueRefOrNullRef(Player.PlayerStatData, type);
+        if (Unsafe.IsNullRef(ref obj))
+        {
+            Player.PlayerStatData[type] = val;
+            return;
+        }
+
+        obj += val;
     }
 
     [ScriptUseable]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void SubStat(CharacterStat type, int val)
-    {
-        if (type < CharacterStat.MonsterStatsMax)
-        {
-            statData[(int)type] -= val;
-            return;
-        }
-
-        if (Entity.Type != EntityType.Player)
-            return;
-        Player.PlayerStatData[type - CharacterStat.MonsterStatsMax] -= val;
-    }
+    public void SubStat(CharacterStat type, int val) => AddStat(type, -val);
 
     [ScriptUseable]
     public void CreateEvent(string eventName, int param1 = 0, int param2 = 0, int param3 = 0, int param4 = 0)
@@ -223,6 +222,26 @@ public partial class CombatEntity : IEntityAutoReset
         }
     }
 
+    public void RemoveStatusOfGroupIfExists(string groupName)
+    {
+        if (statusContainer == null || statusContainer.TotalStatusEffectCount == 0) //that last one fixes an unfortunate issue where attempting to remove an existing status while adding a status breaks things
+            return;
+        statusContainer.RemoveStatusEffectOfGroup(groupName);
+        if (!statusContainer.HasStatusEffects())
+        {
+            StatusEffectPoolManager.ReturnStatusContainer(statusContainer);
+            statusContainer = null;
+        }
+    }
+
+    [ScriptUseable]
+    public void ExpireStatusOfTypeIfExists(CharacterStatusEffect type)
+    {
+        if (statusContainer == null)
+            return;
+        statusContainer.ExpireStatusEffectOfType(type);
+    }
+
     public void OnDeathClearStatusEffects(bool doRemoveUpdate = true)
     {
         if (statusContainer == null)
@@ -266,11 +285,33 @@ public partial class CombatEntity : IEntityAutoReset
             Player.AddActionDelay(CooldownActionType.Teleport);
         if (Character.Type == CharacterType.Monster)
             Character.Monster.AddDelay(1f);
+
+        RemoveStatusOfGroupIfExists("StopGroup");
+
         Character.ResetState();
         Character.SetSpawnImmunity();
-        Character.Map?.TeleportEntity(ref Entity, Character, pos);
+        Character.Map.TeleportEntity(ref Entity, Character, pos);
         if (Character.Type == CharacterType.Player)
             CommandBuilder.SendExpGain(Player, 0); //update their exp
+
+        if (Character.Type == CharacterType.Monster) //are they a monster? If so, we should check if they have minions that should come along.
+        {
+            var m = Character.Monster;
+            if (m.Children == null)
+                return;
+
+            var area = Area.CreateAroundPoint(Character.Position, 2);
+
+            for (var i = 0; i < m.ChildCount; i++)
+            {
+                var minion = m.Children[i];
+                if (!minion.TryGet<WorldObject>(out var minionCharacter) || Character.Map != minionCharacter.Map)
+                    continue;
+
+                minionCharacter.StopMovingImmediately();
+                Character.Map.TeleportEntity(ref minion, minionCharacter, Character.Map.GetRandomWalkablePositionInArea(area));
+            }
+        }
     }
 
     public CharacterStatusContainer? StatusContainer => statusContainer;
@@ -285,6 +326,14 @@ public partial class CombatEntity : IEntityAutoReset
         return true;
     }
 
+    public bool TryGetStatusEffect(CharacterStatusEffect effect, [NotNullWhen(returnValue: true)] out StatusEffectState status)
+    {
+        if (TryGetStatusContainer(out var container) && container.TryGetExistingStatus(effect, out status))
+            return true;
+
+        status = default;
+        return false;
+    }
 
     public void AddDisabledState()
     {
@@ -772,9 +821,9 @@ public partial class CombatEntity : IEntityAutoReset
                     RemoveStatusOfTypeIfExists(CharacterStatusEffect.Cloaking);
                 return;
             case CharacterType.Player:
-                if ((BodyState & BodyStateFlags.AnyHiddenState) > 0)
+                if ((BodyState & BodyStateFlags.Cloaking) > 0)
                 {
-                    RemoveStatusOfTypeIfExists(CharacterStatusEffect.Hiding);
+                    //RemoveStatusOfTypeIfExists(CharacterStatusEffect.Hiding);
                     RemoveStatusOfTypeIfExists(CharacterStatusEffect.Cloaking);
                 }
 
@@ -875,7 +924,7 @@ public partial class CombatEntity : IEntityAutoReset
         CastingSkill = skillInfo;
         if (target.IsValid() && target != Character.Position)
             Character.FacingDirection = DistanceCache.Direction(Character.Position, target);
-        
+
         if (castTime < 0f)
             castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, null, skillInfo.Level);
         if (castTime <= 0)
@@ -968,7 +1017,7 @@ public partial class CombatEntity : IEntityAutoReset
         }
 
         CastingSkill = skillInfo;
-        
+
         if (castTime < 0f)
             castTime = SkillHandler.GetSkillCastTime(skillInfo.Skill, this, null, skillInfo.Level);
         if (castTime <= 0)
@@ -1190,6 +1239,13 @@ public partial class CombatEntity : IEntityAutoReset
         return element;
     }
 
+    public AttackElement GetAttackTypeForDefenderElement(CharacterElement element)
+    {
+        if (element >= CharacterElement.None)
+            return AttackElement.Neutral;
+        return (AttackElement)((int)element / 4);
+    }
+
     public bool IsElementBaseType(CharacterElement targetType)
     {
         var element = GetElement();
@@ -1254,12 +1310,12 @@ public partial class CombatEntity : IEntityAutoReset
         var defenderAgi = target.GetEffectiveStat(CharacterStat.Agi);
         var defenderFlee = target.GetStat(CharacterStat.Level) + defenderAgi + target.GetStat(CharacterStat.AddFlee);
 
-        attackerHit = attackerHit * attackerHitBonus / 100;
-
         var hitSuccessRate = attackerHit + 75 - defenderFlee;
 
         if (hitSuccessRate < 5) hitSuccessRate = 5;
         if (hitSuccessRate > 95 && target.Character.Type == CharacterType.Player) hitSuccessRate = 95;
+
+        hitSuccessRate = hitSuccessRate * attackerHitBonus / 100;
 
         if (flatEvasionPenalty > 0)
             hitSuccessRate = int.Clamp(hitSuccessRate + flatEvasionPenalty, 5, 100);
@@ -1300,7 +1356,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (spriteTiming > delayTiming)
             spriteTiming = delayTiming;
-        
+
         var di = new DamageInfo()
         {
             KnockBack = 0,
@@ -1453,7 +1509,7 @@ public partial class CombatEntity : IEntityAutoReset
 
     public void ApplyAfterCastDelay(float time)
     {
-        if(Character.Type == CharacterType.Player)
+        if (Character.Type == CharacterType.Player)
             Player.ApplyAfterCastDelay(time);
     }
 

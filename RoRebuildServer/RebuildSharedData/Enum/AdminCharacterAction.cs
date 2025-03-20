@@ -6,5 +6,7 @@ namespace RebuildSharedData.Enum;
 
 public enum AdminCharacterAction
 {
-    RefineItem
+    RefineItem,
+    CreateEvent,
+    ApplyStatus
 }

@@ -714,6 +714,7 @@ STR +2
 
 ::Golden_Mace //id 1524 - Mace
 <color=#808080>A mace forged out of pure gold.</color>
++20% physical damage vs. Undead
 
 ::Long_Mace //id 1525 - Mace
 <color=#808080>A long, thin mace built like a spear.</color>
@@ -746,6 +747,7 @@ Str +15, DEX +40
 
 ::Golden_Mace_ //id 1539 - Mace
 <color=#808080>A mace forged out of pure gold.</color>
++20% physical damage vs. Undead
 
 ::Grand_Cross_ //id 1540 - Mace
 <color=#808080>A cruciform mace that was blessed by the pope of the Rune Midgard kingdom.</color>

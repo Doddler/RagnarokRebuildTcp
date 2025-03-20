@@ -1004,7 +1004,7 @@
       "IsLooping": false,
       "StrFile": "cross",
       "Sprite": "",
-      "SoundFile": "",
+      "SoundFile": "ef_signum",
       "Offset": 0,
       "PrefabName": ""
     },
@@ -1016,7 +1016,7 @@
       "IsLooping": false,
       "StrFile": "cure",
       "Sprite": "",
-      "SoundFile": "",
+      "SoundFile": "acolyte_cure",
       "Offset": 0,
       "PrefabName": ""
     },
@@ -1147,6 +1147,18 @@
       "Billboard": true,
       "IsLooping": false,
       "StrFile": "stonecurse",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 96,
+      "Name": "EnergyCoat",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "energycoat",
       "Sprite": "",
       "SoundFile": "",
       "Offset": 0,

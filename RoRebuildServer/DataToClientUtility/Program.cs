@@ -30,7 +30,7 @@ class Program
     private const string outPathStreaming = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\";
     private const string configPath = @"..\..\..\..\..\RebuildServer\";
 
-    private static List<PlayerWeaponClass> weaponClasses;
+    private static List<PlayerWeaponClass>? weaponClasses;
     private static Dictionary<string, string> equipGroupDescriptions = new();
 
     static void Main(string[] args)
@@ -200,6 +200,9 @@ class Program
         var itemDescriptions = new List<ItemDescription>();
         var missingItemDescriptions = new List<string>();
 
+        if (weaponClasses == null)
+            throw new Exception($"Weapon class information must be loaded before this function call.");
+
         BuildJobMatrix();
 
         foreach (var descFile in Directory.GetFiles(Path.Combine(path, "../ItemDescriptions/")))
@@ -347,7 +350,7 @@ class Program
 
             var breakable = entry.Breakable.ToLower() == "yes";
             var refinable = entry.Refinable.ToLower() == "yes";
-            
+
             var classDef = weaponClasses.FirstOrDefault(w => w.WeaponClass == entry.Type, new PlayerWeaponClass() { Name = entry.Type });
             var equipGroup = equipGroupDescriptions.TryGetValue(entry.EquipGroup, out var groupName) ? groupName : "<i>Currently unequippable by any job</i>";
             desc += $"<line-height=120%>\n</line-height=100%>";

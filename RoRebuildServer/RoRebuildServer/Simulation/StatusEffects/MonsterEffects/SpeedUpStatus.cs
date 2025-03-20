@@ -19,7 +19,7 @@ public class SpeedUpStatus : StatusEffectBase
 
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
-        ch.SubStat(CharacterStat.AddAgi, state.Value2);
+        ch.SubStat(CharacterStat.AddFlee, state.Value2);
         ch.SubStat(CharacterStat.MoveSpeedBonus, MoveSpeedBonus);
     }
 }

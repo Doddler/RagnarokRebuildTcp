@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Diagnostics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
@@ -17,6 +18,7 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
         var p = connection.Player;
 
         if (p == null) return;
+        Debug.Assert(connection.Player != null && connection.Character?.Map != null);
 
         var id = msg.ReadInt32();
         var val = msg.ReadInt32();

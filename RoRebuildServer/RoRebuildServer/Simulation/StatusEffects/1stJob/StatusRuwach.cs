@@ -50,7 +50,7 @@ public class StatusRuwach : StatusEffectBase
 
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)
     {
-        var e = World.Instance.CreateEvent(ch.Entity, ch.Character.Map, "RuwachObjectEvent", ch.Character.Position, 0, 0, 0, 0, null);
+        var e = World.Instance.CreateEvent(ch.Entity, ch.Character.Map!, "RuwachObjectEvent", ch.Character.Position, 0, 0, 0, 0, null);
         ch.Character.AttachEvent(e);
         var npc = e.Get<Npc>();
         state.Value1 = npc.Character.Id;

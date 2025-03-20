@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Character;
+using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin
 {
@@ -11,6 +12,8 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
         {
             if (!connection.IsOnlineAdmin)
                 return;
+
+            Debug.Assert(connection.Character != null);
 
             var speed = msg.ReadInt16();
             if (speed < 30)

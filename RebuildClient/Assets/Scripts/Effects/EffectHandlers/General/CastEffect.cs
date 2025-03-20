@@ -10,31 +10,60 @@ namespace Assets.Scripts.Effects.EffectHandlers
     public class CastEffect : IEffectHandler
     {
         private static readonly Dictionary<string, Material> CastMaterials = new();
+
+        //
+        // public static Material GetCastMaterial(AttackElement element)
+        // {
+        //     var useInvAlpha = false;
+        //     var color = Color.white;
+        //     var tex = "";
+        //
+        //     switch (element)
+        //     {
+        //         default:
+        //         case AttackElement.Fire:
+        //             tex = "ring_red";
+        //             break;
+        //         case AttackElement.Water:
+        //             tex = "ring_blue";
+        //             color = new Color(170 / 255f, 170 / 255f, 255 / 255f);
+        //             useInvAlpha = true;
+        //             break;
+        //         case AttackElement.Wind:
+        //             tex = "ring_yellow";
+        //             //useInvAlpha = true;
+        //             break;
+        //         case AttackElement.Earth:
+        //             tex = "magic_green";
+        //             useInvAlpha = true;
+        //             break;
+        //     }
+        //
+        //     if (!CastMaterials.TryGetValue(tex, out var mat))
+        //     {
+        //         if(!useInvAlpha)
+        //             mat = new Material(ShaderCache.Instance.AdditiveShader);
+        //         else
+        //             mat = new Material(ShaderCache.Instance.InvAlphaShader);
+        //         mat.mainTexture = Resources.Load<Texture2D>(tex);
+        //         mat.renderQueue = 3001;
+        //         mat.color = color;
+        //         CastMaterials.Add(tex, mat);
+        //     }
+        //
+        //     return mat;
+        // }
         
         public static Ragnarok3dEffect Create(float duration, GameObject followTarget, AttackElement element)
         {
-            var useInvAlpha = false;
-            var color = Color.white;
-            var tex = "";
+            Material mat;
 
             switch (element)
             {
-                case AttackElement.Fire:
-                    tex = "ring_red";
-                    break;
-                case AttackElement.Water:
-                    tex = "ring_blue";
-                    color = new Color(170 / 255f, 170 / 255f, 255 / 255f);
-                    useInvAlpha = true;
-                    break;
-                case AttackElement.Wind:
-                    tex = "ring_yellow";
-                    //useInvAlpha = true;
-                    break;
-                case AttackElement.Earth:
-                    tex = "magic_green";
-                    useInvAlpha = true;
-                    break;
+                case AttackElement.Fire: mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CastFire); break;
+                case AttackElement.Water: mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CastWater); break;
+                case AttackElement.Wind: mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CastWind); break;
+                case AttackElement.Earth: mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CastEarth); break;
                 case AttackElement.Dark:
                 case AttackElement.Holy:
                 case AttackElement.Ghost:
@@ -49,18 +78,6 @@ namespace Assets.Scripts.Effects.EffectHandlers
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.CastEffect);
             effect.SetDurationByTime(duration);
             effect.FollowTarget = followTarget;
-            
-            if (!CastMaterials.TryGetValue(tex, out var mat))
-            {
-                if(!useInvAlpha)
-                    mat = new Material(ShaderCache.Instance.AdditiveShader);
-                else
-                    mat = new Material(ShaderCache.Instance.InvAlphaShader);
-                mat.mainTexture = Resources.Load<Texture2D>(tex);
-                mat.renderQueue = 3001;
-                mat.color = color;
-                CastMaterials.Add(tex, mat);
-            }
 
             effect.transform.localScale = new Vector3(2f, 2f, 2f);
             

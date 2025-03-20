@@ -64,6 +64,8 @@ StateChase:
 	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(30); //kiss
 	TryCast(EnergyDrain, 1, 5%, 0, 5s) -> SendEmote(30); //kiss
 StateAttacking:
-	TryCast(EnergyDrain, 1, 5%, 0, 5s) -> SendEmote(30); //kiss
 	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt);
+	TryCast(EnergyDrain, 1, 5%, 0, 5s) -> SendEmote(30); //kiss
+	TryCast(Stop, 1, 5%, 0.5s, 5s, NoInterrupt);
+	TryCast(Silence, 3, 5%, 0.7s, 5s, NoInterrupt);
 }

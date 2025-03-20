@@ -46,11 +46,16 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             if (hasSkills)
             {
-                var skills = msg.ReadInt32();
+                var skills = msg.ReadInt16();
 
                 State.KnownSkills.Clear();
                 for (var i = 0; i < skills; i++)
-                    State.KnownSkills.Add((CharacterSkill)msg.ReadByte(), msg.ReadByte());
+                    State.KnownSkills.Add((CharacterSkill)msg.ReadInt16(), msg.ReadByte());
+
+                State.GrantedSkills.Clear();
+                var grantedSkills = msg.ReadInt16();
+                for (var i = 0; i < grantedSkills; i++)
+                    State.GrantedSkills.Add((CharacterSkill)msg.ReadInt16(), msg.ReadByte());
 
                 UiManager.SkillManager.UpdateAvailableSkills();
             }

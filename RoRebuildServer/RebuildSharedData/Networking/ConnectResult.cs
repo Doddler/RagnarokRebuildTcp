@@ -12,5 +12,6 @@ public enum ServerConnectResult
     InvalidOrExpiredToken,
     UsernameInUse,
     PasswordInsufficient,
-    Banned
+    Banned,
+    ServerError
 }

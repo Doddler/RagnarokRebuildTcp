@@ -18,6 +18,7 @@ namespace RoRebuildServer.EntityComponents.Items;
 
 public struct EquipStatChange : IEquatable<EquipStatChange>
 {
+    public int Value;
     public int Change;
     public CharacterStat Stat;
     public EquipSlot Slot;
@@ -537,17 +538,26 @@ public class ItemEquipState
             }
         }
 
+        var removedGrantedSkill = false;
         //remove saved item effects from the player
         for (var i = 0; i < equipmentEffects.Count; i++)
         {
             var effect = equipmentEffects[i];
             if (effect.Slot == slot)
             {
-                Player.CombatEntity.SubStat(effect.Stat, effect.Change);
+                if (effect.Stat == CharacterStat.SkillValue)
+                {
+                    Player.RemoveGrantedSkill((CharacterSkill)effect.Value, effect.Change);
+                    removedGrantedSkill = true;
+                }
+                else
+                    Player.CombatEntity.SubStat(effect.Stat, effect.Change);
                 equipmentEffects.Remove(i);
                 i--; //we've moved the last element into our current position, so we step the enumerator back by 1
             }
         }
+        if(removedGrantedSkill)
+            CommandBuilder.RefreshGrantedSkills(Player);
     }
 
     public void RunAllOnEquip()
@@ -601,10 +611,23 @@ public class ItemEquipState
             case EquipSlot.Accessory1:
             case EquipSlot.Accessory2:
                 return (pos & EquipPosition.Accessory) > 0;
-
         }
 
         return false;
+    }
+
+    public void GrantSkill(CharacterSkill skill, int level)
+    {
+        var equipState = new EquipStatChange()
+        {
+            Slot = activeSlot,
+            Stat = CharacterStat.SkillValue,
+            Value = (int)skill,
+            Change = level,
+        };
+        equipmentEffects.Add(ref equipState);
+        Player.GrantSkillToCharacter(skill, level);
+        CommandBuilder.RefreshGrantedSkills(Player);
     }
 
     public void AddStat(CharacterStat stat, int change)

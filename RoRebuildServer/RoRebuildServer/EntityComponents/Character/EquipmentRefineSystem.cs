@@ -75,6 +75,7 @@ public static class EquipmentRefineSystem
             return false;
 
         var data = DataManager.GetItemInfoById(targetItem.Id);
+        if (data == null) return false;
         if (data.ItemClass == ItemClass.Weapon)
         {
             var weapon = DataManager.WeaponInfo[targetItem.Id];

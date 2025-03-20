@@ -24299,6 +24299,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 746612893674423499efa76caeb7b20a
+    m_Address: Assets/Effects/Prefabs/EnergyCoat.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7476d32ea8b02fe4fb9ed28f99b8136c
     m_Address: Assets/Sprites/Imported/Collections/Powder_of_Butterfly.png
     m_ReadOnly: 0

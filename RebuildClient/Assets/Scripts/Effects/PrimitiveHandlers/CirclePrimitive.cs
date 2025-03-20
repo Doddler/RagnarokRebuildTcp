@@ -27,10 +27,14 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             data.Radius += data.RadiusSpeed * Time.deltaTime;
 
             primitive.IsDirty = true;
+            primitive.IsActive = primitive.Step < primitive.FrameDuration;
         }
 
         public static void RenderCircle(RagnarokPrimitive primitive, MeshBuilder mb)
         {
+            if (!primitive.IsActive)
+                return;
+            
             var data = primitive.GetPrimitiveData<CircleData>();
 
             var span = 360;

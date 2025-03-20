@@ -345,10 +345,10 @@ public partial class CombatEntity
     }
 
     [ScriptUseable]
-    public void CleanseStatusEffect(StatusCleanseTarget target)
+    public bool CleanseStatusEffect(StatusCleanseTarget target)
     {
         if (statusContainer == null)
-            return; //we have no status effects
+            return false; //we have no status effects
 
         var hasUpdate = false;
 
@@ -370,7 +370,12 @@ public partial class CombatEntity
         if ((target & StatusCleanseTarget.Curse) > 0 && HasBodyState(BodyStateFlags.Curse))
             hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Curse);
 
-        if(hasUpdate)
+        if ((target & StatusCleanseTarget.Petrify) > 0 && HasBodyState(BodyStateFlags.Petrified))
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Stone);
+
+        if (hasUpdate)
             UpdateStats();
+
+        return hasUpdate;
     }
 }

@@ -40,7 +40,7 @@ public class PacketClientTextCommand : IClientPacketHandler
         if (type == ClientTextCommand.Where)
         {
             CommandBuilder.AddRecipient(connection.Entity);
-            CommandBuilder.SendServerMessage($"You are at {connection.Character.Position} on map {connection.Character.Map.Name}.");
+            CommandBuilder.SendServerMessage($"You are at {connection.Character.Position} on map {connection.Character.Map!.Name}.");
             CommandBuilder.ClearRecipients();
         }
 

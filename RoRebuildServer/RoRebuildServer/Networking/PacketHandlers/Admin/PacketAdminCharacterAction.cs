@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 
@@ -24,6 +25,21 @@ public class PacketAdminCharacterAction : IClientPacketHandler
                 if (change < 0 || change > 20)
                     return;
                 EquipmentRefineSystem.AdminItemUpgrade(connection.Player, bagId, change);
+                break;
+            }
+            case AdminCharacterAction.ApplyStatus:
+            {
+                if (!connection.Player.CanPerformCharacterActions())
+                    return;
+                var status = (CharacterStatusEffect)msg.ReadByte();
+                var duration = msg.ReadFloat();
+                var v1 = msg.ReadInt32();
+                var v2 = msg.ReadInt32();
+                var v3 = msg.ReadInt16();
+                var v4 = msg.ReadByte();
+
+                var effect = StatusEffectState.NewStatusEffect(status, duration, v1, v2, v3, v4);
+                connection.Player.CombatEntity.AddStatusEffect(effect);
                 break;
             }
         }

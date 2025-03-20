@@ -129,7 +129,7 @@ public partial class Monster : IEntityAutoReset
 
     private float deadTimeout;
     //private float allyScanTimeout;
-    private bool inAdjustMove;
+    //private bool inAdjustMove;
 #if DEBUG
     public bool DebugLogging;
 

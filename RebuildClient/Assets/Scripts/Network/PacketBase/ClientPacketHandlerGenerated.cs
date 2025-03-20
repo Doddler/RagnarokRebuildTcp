@@ -14,7 +14,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[93];
+			handlers = new ClientPacketHandlerBase[94];
 			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -108,6 +108,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[90] = new InvalidPacket(); //DeleteCharacter
 			handlers[91] = new InvalidPacket(); //AdminCharacterAction
 			handlers[92] = new PacketChangePlayerSpecialActionState(); //ChangePlayerSpecialActionState
+			handlers[93] = new PacketRefreshGrantedSkills(); //RefreshGrantedSkills
 		}
 	}
 }

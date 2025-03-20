@@ -10,7 +10,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         {
             if (attack.Damage > 0 && attack.Target != null)
             {
-                attack.Target?.Messages.SendHitEffect(attack.Src, attack.MotionTime, 1, attack.HitCount);
+                attack.Target.Messages.SendHitEffect(attack.Src, attack.MotionTime, 1, attack.HitCount);
                 CameraFollower.Instance.AttachEffectToEntity("GuidedAttack", attack.Target.gameObject, attack.Target.Id);
             }
         }

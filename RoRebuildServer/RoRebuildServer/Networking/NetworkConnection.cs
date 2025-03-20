@@ -1,4 +1,5 @@
 ﻿using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents;
@@ -37,6 +38,7 @@ public class NetworkConnection
     public NetworkConnection(WebSocket socket)
     {
         Socket = socket;
+        AccountName = "[Account Not Loaded]";
         CancellationSource = new CancellationTokenSource();
         Cancellation = CancellationSource.Token;
         IsAlive = true;

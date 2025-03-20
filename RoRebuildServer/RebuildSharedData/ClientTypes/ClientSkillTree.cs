@@ -25,5 +25,5 @@ public class ClientSkillTree
     public int ClassId;
     public int ExtendsClass;
     public int JobRank;
-    public List<ClientSkillTreeEntry> Skills;
+    public List<ClientSkillTreeEntry> Skills = new();
 }

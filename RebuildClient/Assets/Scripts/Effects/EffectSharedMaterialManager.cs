@@ -34,8 +34,14 @@ namespace Assets.Scripts.Effects
         ParticleAlphaBlend,
         ParticleAdditive,
         IceMaterial,
+        FireRing,
         SightEffect,
         ShadowMaterial,
+        CastFire,
+        CastWater,
+        CastWind,
+        CastEarth,
+        MagnumBreak,
         EffectMaterialMax
     }
     
@@ -43,6 +49,10 @@ namespace Assets.Scripts.Effects
     {
         AlphaDown,
         MagicViolet,
+        MagicGreen,
+        RingRed,
+        RingBlue,
+        RingYellow,
         EffectTextureMax
     }
     
@@ -59,6 +69,7 @@ namespace Assets.Scripts.Effects
         private static Dictionary<string, Material> projectileMaterials;
         private static Dictionary<string, RoSpriteData> projectileSprites = new();
         private static Dictionary<string, AsyncOperationHandle<RoSpriteData>> loadingSprites = new();
+        private static readonly int Offset = Shader.PropertyToID("_Offset");
 
         public static void PrepareEffectSprite(string spriteName)
         {
@@ -102,15 +113,17 @@ namespace Assets.Scripts.Effects
             projectileMaterials.Add(sprite, mat);
             return mat;
         }
-        
-        public static SpriteAtlas GetSkillSpriteAtlas()
-        {
-            if (skillAtlas == null)
-                skillAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
 
-            return skillAtlas;
+        private static SpriteAtlas spriteAtlas;
+        public static SpriteAtlas SpriteAtlas
+        {
+            get
+            {
+                if (spriteAtlas == null)
+                    spriteAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
+                return spriteAtlas;
+            }
         }
-        
         
         public static SpriteAtlas GetParticleSpriteAtlas()
         {
@@ -118,6 +131,58 @@ namespace Assets.Scripts.Effects
                 particleAtlas = Resources.Load<SpriteAtlas>("Particles");
 
             return particleAtlas;
+        }
+
+        private static Texture2D GetOrLoadEffectTexture(EffectTextureType type, bool persistTexture = true)
+        {
+            if (textureList[(int)type] != null)
+                return textureList[(int)type];
+            
+            var texName = type switch
+            {
+                EffectTextureType.RingBlue => "ring_blue",
+                EffectTextureType.RingRed => "ring_red",
+                EffectTextureType.MagicGreen => "magic_green",
+                EffectTextureType.RingYellow => "ring_yellow",
+                EffectTextureType.AlphaDown => "alpha_down",
+                EffectTextureType.MagicViolet => "magic_violet",
+                _ => null
+            };
+            if (texName == null)
+            {
+                Debug.LogWarning($"Could not GetOrLoadEffectTexture type {type}");
+                return null;
+            }
+            
+            if (textureList[(int)type] == null)
+            {
+                textureList[(int)type] = Resources.Load<Texture2D>(texName);
+                persistTextures[(int)type] = persistTexture;
+            }
+            
+            return textureList[(int)type];
+        }
+
+        private static void SetUpTextureMaterial(EffectMaterialType type, Shader shader, Texture2D tex, int renderQueue = 3001, bool persist = false) =>
+            SetUpTextureMaterial(type, shader, tex, Color.white, renderQueue, persist);
+        
+        private static void SetUpTextureMaterial(EffectMaterialType type, Shader shader, Texture2D tex, Color color, int renderQueue = 3001, bool persist = false)
+        {
+            if (materialList[(int)type] == null)
+            {
+                var mat = new Material(shader)
+                {
+                    color = color,
+                    renderQueue = renderQueue
+                };
+
+                // if (!string.IsNullOrWhiteSpace(tex))
+                //     mat.mainTexture = Resources.Load<Texture2D>(tex);
+                mat.mainTexture = tex;
+                        
+                materialList[(int)type] = mat;
+                persistMaterials[(int)type] = persist;
+            }
         }
 
         public static Material GetMaterial(EffectMaterialType mat)
@@ -164,11 +229,10 @@ namespace Assets.Scripts.Effects
                     case EffectMaterialType.SkillSpriteAlphaBlended:
                         if (materialList[(int)mat] == null)
                         {
-                            var atlas = GetSkillSpriteAtlas();
                             materialList[(int)mat] = new Material(ShaderCache.Instance.AlphaBlendParticleShader)
                             {
                                 color = Color.white,
-                                mainTexture = atlas.GetSprite("FireBolt1").texture, //this will work unless the atlas gets split across multiple textures
+                                mainTexture = SpriteAtlas.GetSprite("FireBolt1").texture, //this will work unless the atlas gets split across multiple textures
                                 renderQueue = 3001
                             };
                             persistMaterials[(int)mat] = true;
@@ -177,90 +241,54 @@ namespace Assets.Scripts.Effects
                     case EffectMaterialType.SkillSpriteAlphaBlendedNoZCheck:
                         if (materialList[(int)mat] == null)
                         {
-                            var atlas = GetSkillSpriteAtlas();
                             materialList[(int)mat] = new Material(ShaderCache.Instance.AlphaBlendNoZTestShader)
                             {
                                 color = Color.white,
-                                mainTexture = atlas.GetSprite("FireBolt1").texture, //this will work unless the atlas gets split across multiple textures
+                                mainTexture = SpriteAtlas.GetSprite("FireBolt1").texture, //this will work unless the atlas gets split across multiple textures
                                 renderQueue = 3003
                             };
                             persistMaterials[(int)mat] = true;
                         }
                         break;
                     case EffectMaterialType.IceMaterial:
-                        if (materialList[(int)mat] == null)
-                        {
-                            var atlas = GetParticleSpriteAtlas();
-                            materialList[(int)mat] = new Material(ShaderCache.Instance.AlphaBlendParticleShader)
-                            {
-                                color = Color.white,
-                                mainTexture = Resources.Load<Texture2D>("ice"),
-                                renderQueue = 3001
-                            };
-                            persistMaterials[(int)mat] = false;
-                        }
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, Resources.Load<Texture2D>("ice"));
+                        break;
+                    case EffectMaterialType.FireRing:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.RingYellow));
                         break;
                     case EffectMaterialType.TeleportPillar:
-                        if (textureList[(int)EffectTextureType.MagicViolet] == null)
-                        {
-                            textureList[(int)EffectTextureType.MagicViolet] = Resources.Load<Texture2D>("magic_violet");
-                            persistTextures[(int)EffectTextureType.MagicViolet] = true;
-                        }
-                        if (materialList[(int)mat] == null)
-                        {
-                            materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
-                            {
-                                mainTexture = textureList[(int)EffectTextureType.MagicViolet],
-                                color = new Color(100 / 255f, 100 / 255f, 255 / 255f),
-                                renderQueue = 3001
-                            };
-                            persistMaterials[(int)mat] = true;
-                        }
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.MagicViolet), 
+                            new Color(100 / 255f, 100 / 255f, 255 / 255f), 3001, true);
                         break;
-                    
                     case EffectMaterialType.SafetyWall:
-                        if (textureList[(int)EffectTextureType.AlphaDown] == null)
-                        {
-                            textureList[(int)EffectTextureType.AlphaDown] = Resources.Load<Texture2D>("alpha_down");
-                            persistTextures[(int)EffectTextureType.AlphaDown] = true;
-                        }
-                        if (materialList[(int)mat] == null)
-                        {
-                            materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
-                            {
-                                mainTexture = textureList[(int)EffectTextureType.AlphaDown],
-                                color = new Color(255 / 255f, 89 / 255f, 182 / 255f),
-                                renderQueue = 3001
-                            };
-                        }
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.AlphaDown), 
+                            new Color(255 / 255f, 89 / 255f, 182 / 255f));
                         break;
                     case EffectMaterialType.SightEffect:
-                        if (materialList[(int)mat] == null)
-                        {
-                            materialList[(int)mat] = new Material(ShaderCache.Instance.AlphaBlendParticleShader)
-                            {
-                                color = Color.white,
-                                renderQueue = 3001
-                            };
-                            persistMaterials[(int)mat] = false;
-                        }
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, null);
                         break;
                     case EffectMaterialType.ShadowMaterial:
-                        if (materialList[(int)mat] == null)
-                        {
-                            materialList[(int)mat] = new Material(ShaderCache.Instance.SpriteShaderNoZWriteAlt)
-                            {
-                                color = Color.white,
-                                renderQueue = 2999,
-                                mainTexture = ClientDataLoader.Instance.ShadowSprite.texture
-                            };
-                            materialList[(int)mat].SetFloat("_Offset", 0.4f);
-                            persistMaterials[(int)mat] = false;
-                        }
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.SpriteShaderNoZWriteAlt, ClientDataLoader.Instance.ShadowSprite.texture, 2999);
+                        materialList[(int)mat].SetFloat(Offset, 0.4f);
+                        break;
+                    case EffectMaterialType.CastFire:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.RingRed), 3001, true);
+                        break;
+                    case EffectMaterialType.CastWater:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.InvAlphaShader, GetOrLoadEffectTexture(EffectTextureType.RingBlue), 
+                            new Color(170 / 255f, 170 / 255f, 255 / 255f), 3001, true);
+                        break;
+                    case EffectMaterialType.CastWind:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.RingYellow), 3001, true);
+                        break;
+                    case EffectMaterialType.CastEarth:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.InvAlphaShader, GetOrLoadEffectTexture(EffectTextureType.MagicGreen), 3001, true);
+                        break;
+                    case EffectMaterialType.MagnumBreak:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, Resources.Load<Texture2D>("BigBang"));
                         break;
                 }
             }
-
 
             return materialList[(int)mat];
         }

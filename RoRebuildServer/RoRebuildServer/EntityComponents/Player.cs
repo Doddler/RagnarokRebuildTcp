@@ -57,6 +57,7 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
     [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
+    public Dictionary<CharacterSkill, int>? GrantedSkills;
     public Dictionary<string, int>? NpcFlags;
     public ItemEquipState Equipment = null!;
     public CharacterBag? Inventory;
@@ -72,7 +73,14 @@ public class Player : IEntityAutoReset
     
     public int GetItemIdForEquipSlot(EquipSlot slot) => Equipment.ItemIds[(int)slot];
 
-    public bool DoesCharacterKnowSkill(CharacterSkill skill, int level) => LearnedSkills.TryGetValue(skill, out var learned) && learned >= level;
+    public bool DoesCharacterKnowSkill(CharacterSkill skill, int level)
+    {
+        if (LearnedSkills.TryGetValue(skill, out var learned) && learned >= level)
+            return true;
+        if (GrantedSkills != null && GrantedSkills.TryGetValue(skill, out var granted) && granted >= level)
+            return true;
+        return false;
+    }
     public int MaxLearnedLevelOfSkill(CharacterSkill skill) => LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0;
 
     [ScriptUseable] public int GetNpcFlag(string flag) => NpcFlags != null && NpcFlags.TryGetValue(flag, out var val) ? val : 0;
@@ -129,7 +137,8 @@ public class Player : IEntityAutoReset
     [ScriptUseable] public int JobId => GetData(PlayerStat.Job);
 
     //stats that can't apply to monsters
-    [EntityIgnoreNullCheck] public readonly int[] PlayerStatData = new int[(int)(CharacterStat.CharacterStatsMax - CharacterStat.MonsterStatsMax)];
+    //[EntityIgnoreNullCheck] public readonly int[] PlayerStatData = new int[(int)(CharacterStat.CharacterStatsMax - CharacterStat.MonsterStatsMax)];
+    [EntityIgnoreNullCheck] public Dictionary<CharacterStat, int> PlayerStatData = new();
 
     [ScriptUseable] public int GetData(PlayerStat type) => CharData[(int)type];
     [ScriptUseable] public void SetData(PlayerStat type, int val) => CharData[(int)type] = val;
@@ -200,11 +209,12 @@ public class Player : IEntityAutoReset
         NpcInteractionState.Reset();
         IsAdmin = false;
         Array.Clear(CharData);
-        Array.Clear(PlayerStatData);
+        PlayerStatData.Clear();
         WeaponClass = 0;
         LastEmoteTime = 0;
         StorageId = -1;
         LearnedSkills = null!;
+        GrantedSkills = null;
         NpcFlags = null!;
         jobStatBonuses = null;
         SpecialState = SpecialPlayerActionState.None;
@@ -395,11 +405,23 @@ public class Player : IEntityAutoReset
 
         if (refreshSkills)
         {
-            packet.Write(LearnedSkills.Count);
+            packet.Write((short)LearnedSkills.Count);
             foreach (var skill in LearnedSkills)
             {
-                packet.Write((byte)skill.Key);
+                packet.Write((short)skill.Key);
                 packet.Write((byte)skill.Value);
+            }
+
+            if (GrantedSkills == null)
+                packet.Write((short)0);
+            else
+            {
+                packet.Write((short)GrantedSkills.Count);
+                foreach (var skill in GrantedSkills)
+                {
+                    packet.Write((short)skill.Key);
+                    packet.Write((byte)skill.Value);
+                }
             }
         }
         packet.Write(sendInventory);
@@ -732,20 +754,25 @@ public class Player : IEntityAutoReset
 
     public void RefreshWeaponMastery()
     {
+        var mastery = 0;
         switch (WeaponClass)
         {
+            case 1: //dagger
             case 2: //sword
-                SetStat(CharacterStat.WeaponMastery, MaxLearnedLevelOfSkill(CharacterSkill.SwordMastery));
-                return;
+                mastery = MaxLearnedLevelOfSkill(CharacterSkill.SwordMastery) * 4;
+                break;
             case 3: //2hand sword
-                SetStat(CharacterStat.WeaponMastery, MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery));
-                return;
-            case 0:
-                SetStat(CharacterStat.WeaponMastery, 0);
-                return;
+                mastery = MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery) * 4;
+                break;
         }
-    }
 
+        var appraisal = MaxLearnedLevelOfSkill(CharacterSkill.ItemAppraisal);
+        if (appraisal > 0)
+            mastery += appraisal * Equipment.WeaponLevel;
+
+        SetStat(CharacterStat.WeaponMastery, mastery);
+    }
+    
     public void LevelUp()
     {
         var level = GetData(PlayerStat.Level);
@@ -758,6 +785,7 @@ public class Player : IEntityAutoReset
         SetData(PlayerStat.Level, level);
         SetStat(CharacterStat.Level, level);
 
+        RefreshPassiveSkills();
         UpdateStats();
 
         CombatEntity.FullRecovery(true, true);
@@ -776,7 +804,7 @@ public class Player : IEntityAutoReset
         SetData(PlayerStat.Experience, 0); //reset exp to 0
         SetStat(CharacterStat.Level, level);
 
-
+        RefreshPassiveSkills();
         UpdateStats();
 
         CombatEntity.FullRecovery(true, true);
@@ -893,7 +921,41 @@ public class Player : IEntityAutoReset
             UpdateStats();
     }
 
-    public void UpdateRegenTick()
+
+    public void GrantSkillToCharacter(CharacterSkill skill, int level)
+    {
+        GrantedSkills ??= new();
+
+        if (GrantedSkills.TryGetValue(skill, out var cur) && cur <= level)
+            return;
+
+        GrantedSkills.Add(skill, level);
+    }
+
+    public void RemoveGrantedSkill(CharacterSkill skill, int level)
+    {
+        if (GrantedSkills == null)
+            return;
+
+        if (GrantedSkills.TryGetValue(skill, out var cur) && cur != level)
+            return;
+
+        GrantedSkills.Remove(skill);
+    }
+
+    private void RefreshPassiveSkills()
+    {
+        foreach (var skill in LearnedSkills)
+            SkillHandler.RefreshPassiveEffects(skill.Key, CombatEntity, skill.Value);
+
+        if (GrantedSkills == null)
+            return;
+
+        foreach (var skill in GrantedSkills)
+            SkillHandler.RefreshPassiveEffects(skill.Key, CombatEntity, skill.Value);
+    }
+
+    private void UpdateRegenTick()
     {
         switch (Character.State)
         {
@@ -1297,7 +1359,11 @@ public class Player : IEntityAutoReset
         if (DistanceCache.IntDistance(Character.Position, targetCharacter.Position) > GetStat(CharacterStat.Range))
         {
             if (InMoveReadyState)
-                Character.TryMove(targetCharacter.Position, 1);
+            {
+                if (!Character.TryMove(targetCharacter.Position, 1))
+                    AutoAttackLock = false;
+            }
+
             return;
         }
 
@@ -1508,8 +1574,9 @@ public class Player : IEntityAutoReset
         Character.SetSpawnImmunity();
 
         CombatEntity.ClearDamageQueue();
+        CombatEntity.RemoveStatusOfGroupIfExists("StopGroup");
         SpecialState = SpecialPlayerActionState.None;
-
+        
         var oldPos = Character.Position;
         var p = new Position(x, y);
 

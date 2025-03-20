@@ -29,6 +29,7 @@ namespace Assets.Scripts.Effects
         public Shader PerspectiveAlphaShader;
         public Shader ProjectorAdditiveShader;
         public Shader AdditivePulseShader;
+        public Shader EffectShader;
 
         public bool BillboardSprites = true;
     }

@@ -12,7 +12,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var guids = AssetDatabase.FindAssets("t:RoMapData", new[] { "Assets/Maps/" });
             foreach (var path in Directory.GetFiles("Assets/Maps/", "*.asset"))
             {
-                // if (!path.Contains("moc_fild01"))
+                // if (!path.Contains("iz_dun00"))
                 //     continue;
                 // Debug.Log(path);
                 var data = AssetDatabase.LoadAssetAtPath<RoMapData>(path);

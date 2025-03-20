@@ -17,6 +17,9 @@ public class StoneCurseHandler : SkillHandlerBase
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
     {
+        if (target == null)
+            return SkillValidationResult.Failure;
+
         if (target.GetSpecialType() == CharacterSpecialType.Boss)
             return SkillValidationResult.CannotTargetBossMonster;
 

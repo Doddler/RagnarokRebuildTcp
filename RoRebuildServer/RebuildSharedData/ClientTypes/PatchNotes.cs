@@ -8,8 +8,8 @@ namespace RebuildSharedData.ClientTypes;
 [Serializable]
 public class PatchNotes
 {
-    public string Date;
-    public string Desc;
+    public string? Date;
+    public string? Desc;
 }
 
 [Serializable]

@@ -412,11 +412,27 @@ namespace PlayerControl
                         cameraFollower.AttachEffectToEntity(s[1], controllable.gameObject);
                 }
 
+                if (s[0] == "/status" && s.Length > 2)
+                {
+                    if (!Enum.TryParse<CharacterStatusEffect>(s[1], out var status))
+                    {
+                        cameraFollower.AppendChatText($"<color=yellow>Error</color>: Could not find status effect {s[1]}.");
+                        return;
+                    }
+
+                    var len = s.Length >= 3 && float.TryParse(s[2], out var f) ? f : 15f;
+                    var v1 = s.Length >= 4 && int.TryParse(s[3], out var v) ? v : 0;
+                    var v2 = s.Length >= 5 && int.TryParse(s[4], out v) ? v : 0;
+                    var v3 = s.Length >= 6 && int.TryParse(s[5], out v) ? v : 0;
+                    var v4 = s.Length >= 7 && int.TryParse(s[6], out v) ? v : 0;
+
+                    NetworkManager.Instance.SendAdminStatusAdd(status, len, v1, v2, v3, v4);
+                }
+
                 if (s[0] == "/reloadscript" || s[0] == "/scriptreload")
                 {
                     NetworkManager.Instance.SendAdminAction(AdminAction.ReloadScripts);
                 }
-
 
                 if (s[0] == "/servergc")
                 {

@@ -226,17 +226,17 @@ public static class NetBitWriter
     /// </summary>
     //[CLSCompliant(false)]
 #if UNSAFE
-		public static unsafe ushort ReadUInt16(byte[] fromBuffer, int numberOfBits, int readBitOffset)
-		{
-			Debug.Assert(((numberOfBits > 0) && (numberOfBits <= 16)), "ReadUInt16() can only read between 1 and 16 bits");
+	public static unsafe ushort ReadUInt16(byte[] fromBuffer, int numberOfBits, int readBitOffset)
+	{
+		Debug.Assert(((numberOfBits > 0) && (numberOfBits <= 16)), "ReadUInt16() can only read between 1 and 16 bits");
 
-			if (numberOfBits == 16 && ((readBitOffset % 8) == 0))
+		if (numberOfBits == 16 && ((readBitOffset % 8) == 0))
+		{
+			fixed (byte* ptr = &(fromBuffer[readBitOffset / 8]))
 			{
-				fixed (byte* ptr = &(fromBuffer[readBitOffset / 8]))
-				{
-					return *(((ushort*)ptr));
-				}
+				return *(((ushort*)ptr));
 			}
+		}
 #else
     public static ushort ReadUInt16(byte[] fromBuffer, int numberOfBits, int readBitOffset)
     {
@@ -272,17 +272,17 @@ public static class NetBitWriter
     /// </summary>
     //[CLSCompliant(false)]
 #if UNSAFE
-		public static unsafe uint ReadUInt32(byte[] fromBuffer, int numberOfBits, int readBitOffset)
-		{
-			NetException.Assert(((numberOfBits > 0) && (numberOfBits <= 32)), "ReadUInt32() can only read between 1 and 32 bits");
+	public static unsafe uint ReadUInt32(byte[] fromBuffer, int numberOfBits, int readBitOffset)
+	{
+		NetException.Assert(((numberOfBits > 0) && (numberOfBits <= 32)), "ReadUInt32() can only read between 1 and 32 bits");
 
-			if (numberOfBits == 32 && ((readBitOffset % 8) == 0))
+		if (numberOfBits == 32 && ((readBitOffset % 8) == 0))
+		{
+			fixed (byte* ptr = &(fromBuffer[readBitOffset / 8]))
 			{
-				fixed (byte* ptr = &(fromBuffer[readBitOffset / 8]))
-				{
-					return *(((uint*)ptr));
-				}
+				return *(((uint*)ptr));
 			}
+		}
 #else
 
     public static uint ReadUInt32(byte[] fromBuffer, int numberOfBits, int readBitOffset)

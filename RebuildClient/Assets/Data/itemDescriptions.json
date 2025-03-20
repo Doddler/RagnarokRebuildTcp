@@ -5014,7 +5014,7 @@
     },
     {
       "Code": "Golden_Mace",
-      "Description": "\u003Ccolor=#808080\u003EA mace forged out of pure gold.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EMace\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E110\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAcolyte\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA mace forged out of pure gold.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B20% physical damage vs. Undead\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EMace\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E110\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAcolyte\u003C/color\u003E"
     },
     {
       "Code": "Long_Mace",
@@ -5054,7 +5054,7 @@
     },
     {
       "Code": "Golden_Mace_",
-      "Description": "\u003Ccolor=#808080\u003EA mace forged out of pure gold.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EMace\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E110\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAcolyte\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA mace forged out of pure gold.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B20% physical damage vs. Undead\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EMace\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E110\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAcolyte\u003C/color\u003E"
     },
     {
       "Code": "Grand_Cross_",

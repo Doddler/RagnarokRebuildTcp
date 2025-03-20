@@ -10,4 +10,5 @@ public enum StatusCleanseTarget
     Confusion = 8,
     Hallucination = 16,
     Curse = 32,
+    Petrify = 64,
 }

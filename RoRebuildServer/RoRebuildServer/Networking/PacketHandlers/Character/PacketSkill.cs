@@ -56,7 +56,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
             {
-                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.Failure);
+                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.SkillNotKnown);
                 return;
             }
 
@@ -80,6 +80,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
         private void ProcessGroundTargetedSkill(NetworkConnection connection, InboundMessage msg)
         {
             Debug.Assert(connection.Player != null, "connection.Player != null");
+            Debug.Assert(connection.Character != null);
 
             var caster = connection.Character;
             var groundTarget= msg.ReadPosition();
@@ -99,7 +100,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
             {
-                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.Failure);
+                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.SkillNotKnown);
                 return;
             }
 
@@ -124,6 +125,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
         private void ProcessSingleTargetSkill(NetworkConnection connection, InboundMessage msg)
         {
             Debug.Assert(connection.Player != null, "connection.Player != null");
+            Debug.Assert(connection.Character != null);
 
             var caster = connection.Character;
             var targetEntity = World.Instance.GetEntityById(msg.ReadInt32());
@@ -136,7 +138,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
             {
-                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.Failure);
+                CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.SkillNotKnown);
                 return;
             }
 

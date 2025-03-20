@@ -210,6 +210,9 @@ public class NpcInteractionState
         }
 
         var item = DataManager.GetItemInfoById(itemId);
+        if(item == null) 
+            return false;
+
         if (item.IsUnique)
         {
             ServerLogger.LogWarning($"NPC {NpcEntity.Get<WorldObject>()} attempted to take {count} {itemName} from player {Player}, but TakeItem doesn't work with unique items yet.");

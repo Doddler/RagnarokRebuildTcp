@@ -42,7 +42,7 @@ Item("Creamy_Card") {  OnEquip: } //enable teleport 1
 Item("Coco_Card") {  OnEquip: AddStat(AddDef, 1); AddStat(ResistSleepStatus, 50); }
 Item("Steel_Chonchon_Card") {  OnEquip: AddStat(AddDef, 2); AddStat(AddResistElementWind, 5); }
 Item("Andre_Card") {  OnEquip: AddStat(AddAttackPower, 20); }
-Item("Smokie_Card") {  OnEquip: } //enable skill hiding
+Item("Smokie_Card") {  OnEquip: GrantSkill(Hiding, 1); } //enable skill hiding
 Item("Horn_Card") {  OnEquip: AddStat(AddResistRangedAttack, 35); }
 Item("Martin_Card") {  OnEquip: AddStat(AddDef, 1); AddStat(ResistBlindStatus, 50); AddStat(AddResistElementDark, 20); } //add 20% resist to blind
 Item("Ghostring_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, -25); SetArmorElement(Ghost1); }
@@ -100,7 +100,7 @@ Item("Dokebi_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Wind1); }
 Item("Pasana_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Fire1); }
 Item("Sohee_Card") { OnEquip: AddStat(AddMaxSpPercent, 15); AddStat(AddSpRecoveryPercent, 3); }
 Item("Sandman_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Earth1); }
-Item("Whisper_Card") { OnEquip: AddStat(AddFlee, 20); AddStat(AddResistElementGhost, -20); }
+Item("Whisper_Card") { OnEquip: AddStat(AddFlee, 20); AddStat(AddResistElementGhost, -50); }
 Item("Horong_Card") { OnEquip: } //enable skill sight
 Item("Requiem_Card") { OnEquip: } //should add a 5% chance to confuse on attack
 Item("Marc_Card") { OnEquip: AddStat(AddResistElementWater, 5); } //should add 100% resist to freezing

@@ -1484,6 +1484,20 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendAdminStatusAdd(CharacterStatusEffect status, float time, int v1, int v2, int v3, int v4)
+        {
+            var msg = StartMessage(PacketType.AdminCharacterAction);
+
+            msg.Write((int)AdminCharacterAction.ApplyStatus);
+            msg.Write((byte)status);
+            msg.Write(time);
+            msg.Write(v1);
+            msg.Write(v2);
+            msg.Write((short)v3);
+            msg.Write((byte)v4);
+
+            SendMessage(msg);
+        }
 
         public void SendAdminKillMobAction(bool clearMap)
         {
@@ -1618,7 +1632,7 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage();
 
-            msg.Write((byte)PacketType.Skill);
+                msg.Write((byte)PacketType.Skill);
             msg.Write((byte)SkillTarget.Self);
             msg.Write((short)skill);
             msg.Write((byte)lvl);

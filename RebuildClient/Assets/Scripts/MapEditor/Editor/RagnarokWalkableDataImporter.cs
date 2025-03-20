@@ -221,7 +221,7 @@ namespace Assets.Scripts.MapEditor.Editor
                         c.Type |= CellType.Water;
                         if ((c.Type & CellType.Walkable) > 0)
                             color = "blue";
-                        Debug.Log($"Water cell {x},{y} type {c.Type}");
+                        // Debug.Log($"Water cell {x},{y} type {c.Type}");
                     }
 
                     c.Top = new Tile() { Enabled = true, Texture = color, UVs = VectorHelper.DefaultQuadUVs(), Color = Color.white, IsUnlit = false };
@@ -256,7 +256,10 @@ namespace Assets.Scripts.MapEditor.Editor
             Debug.Log($"Done loading data, read {fs.Position}/{fs.Length}");
 
             fs.Close();
-
+            
+            var exportPath = "Assets/Maps/exportdata/" + basename + ".walk";
+            walkData.ExportToFile(exportPath, map.InitialSize);
+            
             return map;
         }
     }

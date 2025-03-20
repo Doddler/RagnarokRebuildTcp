@@ -17,13 +17,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
 
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
-            if (target == null || !target.IsTargetable)
+            if (target == null || !target.IsTargetable || source.Character.Map == null)
                 return;
 
             var map = source.Character.Map;
             Debug.Assert(map != null);
 
-            lvl = int.Clamp(lvl, 1, 10);
+            lvl = 1; // int.Clamp(lvl, 1, 10);
 
             source.Character.Map.AddVisiblePlayersAsPacketRecipients(source.Character, target.Character);
 
@@ -39,7 +39,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
             else
                 weight = (source.GetStat(CharacterStat.Level) + source.GetEffectiveStat(CharacterStat.Str)) * 50;
 
-            var skillMod = 0.5f + 0.1f * lvl + weight / 6000f; //this will need to change when carts are implemented
+            var skillMod = 1.5f + weight / 6000f;
 
             var attack = new AttackRequest(CharacterSkill.CartRevolution, skillMod, 1, AttackFlags.Physical, AttackElement.None);
 

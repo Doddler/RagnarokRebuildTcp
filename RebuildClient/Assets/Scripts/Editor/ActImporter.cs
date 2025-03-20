@@ -222,7 +222,7 @@ public class ActImporter : ScriptedImporter
             if (maxHeight > asset.StandingHeight)
                 asset.StandingHeight = maxHeight;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             Debug.Log($"Couldn't process standing height for sprite {asset.Name}");
         }

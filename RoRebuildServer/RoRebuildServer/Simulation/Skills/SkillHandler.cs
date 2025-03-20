@@ -21,6 +21,7 @@ namespace RoRebuildServer.Simulation.Skills
 
         public static void ApplyPassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.ApplyPassiveEffects(owner, level);
         public static void RemovePassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.RemovePassiveEffects(owner, level);
+        public static void RefreshPassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.RefreshPassiveEffects(owner, level);
 
         static SkillHandler()
         {
@@ -33,6 +34,8 @@ namespace RoRebuildServer.Simulation.Skills
             {
                 var handler = (SkillHandlerBase)Activator.CreateInstance(type)!;
                 var attr = type.GetCustomAttribute<SkillHandlerAttribute>();
+                if (attr == null)
+                    continue;
                 var skill = attr.SkillType;
                 if (skill == CharacterSkill.None)
                     continue; //you can disable a handler by setting it's skill to None
@@ -47,6 +50,7 @@ namespace RoRebuildServer.Simulation.Skills
             {
                 var handler = (SkillHandlerBase)Activator.CreateInstance(type)!;
                 var attr = type.GetCustomAttribute<MonsterSkillHandlerAttribute>();
+                if(attr == null) continue;
                 var skill = attr.SkillType;
                 if (skill == CharacterSkill.None)
                     continue; //you can disable a handler by setting it's skill to None
@@ -155,8 +159,9 @@ namespace RoRebuildServer.Simulation.Skills
                 {
                     if (!handler.PreProcessValidation(src, target, info.TargetedPosition, info.Level, info.IsIndirect))
                         return false;
-                    handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
+
                     src.UpdateHidingStateAfterAttack();
+                    handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
                     return true;
                 }
             }

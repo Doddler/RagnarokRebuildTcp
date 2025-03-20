@@ -2,7 +2,7 @@
 
 public class ServerOperationConfig
 {
-    public string KeyPersistancePath { get; set; }
+    public string? KeyPersistencePath { get; set; }
     public bool UseMultipleThreads { get; set; }
     public int MapChunkSize { get; set; }
     public int ClientTimeoutSeconds { get; set; }

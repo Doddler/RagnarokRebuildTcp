@@ -129,8 +129,16 @@ StateAttacking:
 }
 
 SkillHandler("ZHERLTHSH") {
+OnInit:
+	ResummonMinionCount = 0; //resummon if we have 0 or less
+StateIdle:
+	TryCast(CallMinion, 1, 20%, 2s, 120s)[MinionsDeadFor(60s)] -> SummonMinions(2, "INJUSTICE");
+StateChase:
+	TryCast(NoCast, 1, 5%, 0, 5s) -> SendEmote(30); //kiss
 StateAttacking:
+	TryCast(GuidedAttack, 3, 5%, 1s, 5s) -> SendEmote(30); //kiss
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(3); //heart
+	TryCast(Stop, 1, 5%, 0, 30s) -> SendEmote(3); //heart
 }
 
 SkillHandler("RAYDRIC_ARCHER") {

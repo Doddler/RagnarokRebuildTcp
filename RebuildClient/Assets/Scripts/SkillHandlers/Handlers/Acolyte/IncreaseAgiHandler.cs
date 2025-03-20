@@ -25,7 +25,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             {
                 attack.Target.AttachFloatingTextIndicator("<font-weight=300><cspace=-0.5>AGI UP!", TextIndicatorType.Effect, -0.6f);
                 AudioManager.Instance.AttachSoundToEntity(src.Id, "ef_incagility.ogg", attack.Target.gameObject);
-                AgiUpEffect.LaunchAgiUp(src);
+                AgiUpEffect.LaunchAgiUp(attack.Target);
             }
         }
     }

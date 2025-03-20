@@ -16,12 +16,12 @@ Heal's yourself by either 5 HP or 1% of your max HP, whichever is higher.
 //----------------Swordsman-------------------
 
 ::Bash
-Strikes a target for [100 + SkillLevel * 30]% ATK with an accuracy boost of [SkillLevel * 5]%.
+Strikes a target for [100 + SkillLevel * 30]% ATK with a +[SkillLevel * 5]% chance to hit.
 SP cost increases from 8 to 15 at level 6 and above.
 
 ::Endure
-Resists flinching from enemy attacks, allowing you to escape without being slowed down by damage.
-Lasts [Skill Level + 2] hits. Provides a bonus to magic defense while active.
+Resists flinching from enemy attacks, allowing you to escape without being slowed down by damage. Provides +[SkillLevel] MDEF while active.
+Lasts [SkillLevel + 2] hits or [7 + SkillLevel * 3] seconds, whichever ends first.
 
 ::IncreasedHPRecovery
 Increases HP recovery by 5 HP plus 0.2% of your MaxHP per level.
@@ -32,20 +32,21 @@ Inflicts [100 + SkillLevel * 20]% fire damage to nearby enemies and knocking the
 For 20 seconds after using the skill all physical attacks will all deal an additional [10 + SkillLevel]% fire damage.
 
 ::Provoke
-Enrages an enemy by taunting them, causing them drop their guard. 
+Enrages an enemy by taunting them, causing them drop their guard for 30 seconds.
 Reduces enemy defense by [5 + SkillLevel * 5]%.
 Increases enemy attack power by [2 + SkillLevel *3]%.
 The effectivness of this skill is halved on boss type monsters.
 While provoked the enemy has a low chance of dealing extra damage against you specifically.
 
 ::SwordMastery
-Increases damage when using a one-handed sword by 1% per level to a max of +10%.
+Adds +[SkillLevel * 4] weapon attack power when using a dagger or one-handed sword.
 
 ::TwoHandSwordMastery
-Increases damage when using two-handed swords by 1% per level to a max of +10%.
+Adds +[SkillLevel * 4] weapon attack power when using two-handed swords.
 
 ::TwoHandQuicken
 Increases attack speed when using two-handed swords by [SkillLevel * 10]%.
+Duration: [SkillLevel * 30] seconds.
 
 //----------------Archer-------------------
 
@@ -55,6 +56,7 @@ Deals 2 hits at [90 + SkillLevel * 10]% ATK
 
 ::ChargeArrow
 Fires a powerful shot dealing 150% ATK and knocking the target away 6 tiles.
+Cast Time: 0.8 seconds.
 
 ::ArrowShower
 Fires a bundle of arrows, striking targets in a 5x5 area and knocking them back.
@@ -64,18 +66,8 @@ Damage (1 tile away): [100 + SkillLevel * 10]%
 Damage (2 tiles away): [80 + SkillLevel * 10]%
 
 ::ImproveConcentration
-Focuses your thoughts providing bonus to AGI and DEX.
-<pos=2%>Level <pos=22%>Stat Boost<pos=52%>Duration<br>
-<pos=5%>1<pos=25%>+3%<pos=55%>60s<br>
-<pos=5%>2<pos=25%>+4%<pos=55%>80s<br>
-<pos=5%>3<pos=25%>+5%<pos=55%>100s<br>
-<pos=5%>4<pos=25%>+6%<pos=55%>120s<br>
-<pos=5%>5<pos=25%>+7%<pos=55%>140s<br>
-<pos=5%>6<pos=25%>+8%<pos=55%>160s<br>
-<pos=5%>7<pos=25%>+9%<pos=55%>180s<br>
-<pos=5%>8<pos=25%>+10%<pos=55%>200s<br>
-<pos=5%>9<pos=25%>+11%<pos=55%>220s<br>
-<pos=5%>10<pos=25%>+12%<pos=55%>240s
+Focuses your thoughts granting +[2 + SkillLevel]% AGI and DEX. Any nearby hidden enemies will be revealed when cast.
+Duration: [40 + SkillLevel * 20] seconds.
 
 ::VultureEye
 Adds +1 range and hit per level when attacking with a bow.
@@ -163,16 +155,24 @@ Heal Formula: [4 + 8 * SkillLevel], scaling +100% for every 10 base level + int,
 After Cast Delay: 1s
 
 ::IncreaseAgility
-Increases movement speed by 25% and increases agi by +3 at level one and increasing to +12 at level 10.
+Increases movement speed by 25% and grants +[2 + SkillLevel] AGI. 
+Duration: [40 + SkillLevel * 20] seconds.
+
+::DecreaseAgility
+Lowers target's movement speed by 25% and grants -[2 + SkillLevel] AGI, as well as canceling existing movement and attack speed increasing skills.
+Ineffective against some powerful monsters.
+Success Rate: [50 + SkillLevel * 3]%. +1% for every 5 caster base level/int, -1% for each point of MDEF on the target.
 
 ::Blessing
-Increases STR, DEX, and INT by +1 per skill level.
+Grants +[SkillLevel] STR, DEX, and INT to a target.
+When cast on a demon or undead monster, lowers target's DEX & INT by 50% (use shift to target an enemy).
+Duration: [40 + SkillLevel * 20] seconds.
 
 ::DivineProtection
 Reduces damage received from demon and undead races by +1% per level to a max of +10%.
 
 ::DemonBane
-Increases damage against demon and undead races by +1% per level to a max of +10%.
+Adds +[SkillLevel * 3] weapon attack power when attacking demons and undead property monsters.
 
 ::Teleport
 Level 1: Teleports you to a random location on the map.
@@ -181,9 +181,18 @@ Be sure to use the correct level as there is no prompt. You may assign different
 
 ::Pneuma
 Creates cloud that causes all physical attacks performed from 5 or more tiles away to miss. Affects both friend and foe alike.
+Lasts 10 seconds. Cannot overlap another Pneuma or Safety Wall.
 
 ::Angelus
 Buffs all nearby party members increasing soft defense by [SkillLevel * 5]% and reducing damage taken from demon and undead monsters by[SkillLevel]% (to a maximum equal to your learned level of Divine Protection). Allies that already know Divine Protection are unaffected.
+Duration: [SkillLevel * 30] seconds.
+
+::Cure
+Cures blind, silence, and confusion status effects from 1 target.
+
+::SignumCrusis
+Permanently lowers the defense of all nearby demons and undead property monsters by -[10 + SkillLevel * 4]%.
+Success Rate: [25 + 4 * SkillLevel]%
 
 ::WarpPortal
 Summon a Warp Portal that teleports players to a predetermined location.
@@ -237,6 +246,7 @@ Obtain a better deal when buying items from the NPC, reducing the cost of goods 
 Some shops cannot be discounted. Decreases the zeny cost of Mammonite.
 
 ::CartRevolution
-Strikes a target and a 3x3 area around them with your cart dealing [50 + SkillLevel * 10]% attack plus an additional 10% for every 600 weight currently in your inventory.
-Knocks the enemy away from you 2 tiles.
-<i>It only goes to level 10 because merchant needs something to spend points on.</i>
+Strikes a target with your cart, dealing [150 + Weight / 60]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.
+
+::ItemAppraisal
+A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by +[SkillLevel * WeaponLevel].

@@ -276,3 +276,5 @@ Item("Soldier_Rifle") { OnEquip:  AddStat(AddDex, 2); }
 Item("Soldier_Gatling_Gun") { OnEquip:  AddStat(AddDex, 2); }
 Item("Soldier_Shotgun") { OnEquip:  AddStat(AddDex, 2); }
 Item("Soldier_Grenade_Launcher") { OnEquip:  AddStat(AddDex, 2); }
+Item("Golden_Mace") { OnEquip:  AddStat(AddAttackRaceUndead, 20); }
+Item("Golden_Mace_") { OnEquip:  AddStat(AddAttackRaceUndead, 20); }

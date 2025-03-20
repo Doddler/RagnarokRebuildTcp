@@ -24,6 +24,7 @@ namespace RebuildSharedData.Enum
         MemoLocationUnwalkable,
         TooFarAway,
         MustBeStandingInWater,
-        MissingRequiredItem
+        MissingRequiredItem,
+        SkillNotKnown,
     }
 }

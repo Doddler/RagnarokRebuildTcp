@@ -23,7 +23,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             var prim = effect.LaunchPrimitive(PrimitiveType.ExplosiveAura, mat, 300f);
             
             var data = prim.GetPrimitiveData<SimpleSpriteData>();
-            data.Atlas = EffectSharedMaterialManager.GetSkillSpriteAtlas();
+            data.Atlas = EffectSharedMaterialManager.SpriteAtlas;
             data.Color = color;
             //density = 1;
             

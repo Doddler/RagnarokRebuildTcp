@@ -282,6 +282,16 @@ CanDisable = true
 Name = "Smoking"
 Type = "Debuff"
 
+[Stop]
+Name = "Stop"
+Icon = "bd_imprison"
+Type = "Debuff"
+CanDispel = true
+CanDisable = false
+
+[StopOwner]
+CanDispel = false
+CanDisable = false
 
 #----------------------------------
 # Utility Effects

@@ -25,8 +25,11 @@
 SkillHandler("PORING50") {
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0.8s, 5s);
+StateChase:
+	TryCast(Stop, 1, 20%, 0, 20s);
 StateAttacking:
-	TryCast(TwoHandQuicken, 10, 1000, 0, 99h)[HpPercent < 99];
+	TryCast(Stop, 1, 20%, 0, 20s);
+	TryCast(TwoHandQuicken, 10, 1000, 0, 3m)[HpPercent < 99];
 }
 
 SkillHandler("ASSULTER") {

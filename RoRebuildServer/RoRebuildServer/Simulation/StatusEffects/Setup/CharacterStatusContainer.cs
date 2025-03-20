@@ -412,6 +412,24 @@ public class CharacterStatusContainer
             OnUpdate();
     }
 
+    public void ExpireStatusEffectOfType(CharacterStatusEffect type)
+    {
+        Debug.Assert(Owner != null);
+        if (statusEffects == null)
+            return;
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var status = statusEffects[i];
+            if (status.Type == type)
+            {
+                status.Expiration = 0;
+                statusEffects[i] = status;
+                nextExpirationCheck = 0;
+            }
+        }
+    }
+
     public bool RemoveStatusEffectOfType(CharacterStatusEffect type)
     {
         Debug.Assert(Owner != null);
@@ -432,6 +450,28 @@ public class CharacterStatusContainer
 
         return hasRemoved;
     }
+
+
+    public bool RemoveStatusEffectOfGroup(string removeGroup)
+    {
+        Debug.Assert(Owner != null);
+        if (statusEffects == null)
+            return false;
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var status = statusEffects[i];
+            var group = StatusEffectHandler.GetShareGroup(status.Type);
+            if (group == removeGroup)
+            {
+                RemoveExistingStatusEffect(ref status);
+                return true; //we know only one status of a group can exist, so we can leave now
+            }
+        }
+
+        return false;
+    }
+
 
     public bool RemovePendingStatusEffectOfType(CharacterStatusEffect type)
     {

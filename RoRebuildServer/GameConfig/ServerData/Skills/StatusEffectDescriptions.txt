@@ -126,6 +126,9 @@ All your attacks heal you.
 ::Doom
 You are doomed to die in the near future.
 
+::Stop
+A nearby enemy has entangled the two of you, preventing either of you from moving.
+
 ::StolenFrom
 You've had something recently taken and cannot be stolen from again.
 

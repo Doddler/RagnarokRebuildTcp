@@ -33,6 +33,7 @@ namespace Assets.Scripts.PlayerControl
         public int MaxWeight = 3000;
         public int Zeny = 0;
         public Dictionary<CharacterSkill, int> KnownSkills = new();
+        public Dictionary<CharacterSkill, int> GrantedSkills = new();
         public bool IsAdminHidden = false;
         public ClientInventory Inventory = new();
         public ClientInventory Cart = new();

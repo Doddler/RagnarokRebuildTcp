@@ -38,6 +38,11 @@ public class InboundMessage : IBinaryMessageReader
         position = 0;
     }
 
+    public void Rewind()
+    {
+        position = 0;
+    }
+
     private void EnsureBufferSize(int length)
     {
         while (position + length > Message.Length * 8)
@@ -133,7 +138,12 @@ public class InboundMessage : IBinaryMessageReader
 
     public float ReadFloat()
     {
-        throw new NotImplementedException();
+        VerifyBufferSize(32);
+        SingleUIntUnion su;
+        su.SingleValue = 0;
+        su.UIntValue = NetBitWriter.ReadUInt32(Message, 32, position);
+        position += 32;
+        return su.SingleValue;
     }
 
     public Position ReadPosition()

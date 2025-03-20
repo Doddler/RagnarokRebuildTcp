@@ -4,12 +4,12 @@
 public class CardPrefixData
 {
     public int Id;
-    public string Prefix;
-    public string Postfix;
+    public string? Prefix;
+    public string? Postfix;
 }
 
 [Serializable]
 public class CardPrefixDataList
 {
-    public List<CardPrefixData> Items = null!;
+    public List<CardPrefixData>? Items;
 }

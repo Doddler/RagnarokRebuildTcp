@@ -28,6 +28,7 @@ namespace Assets.Scripts.Effects
 		Silence,
 		Sleep,
 		Stun,
+		AgiDown,
 		AgiUp,
 		Blessing,
 		BloodDrain,
@@ -37,6 +38,7 @@ namespace Assets.Scripts.Effects
 		FrostDiverHit,
 		FrostDiverTrail,
 		LordOfVermilion,
+		MagnumBreak,
 		Provoke,
 		Ruwach,
 		SafetyWall,
@@ -52,6 +54,7 @@ namespace Assets.Scripts.Effects
 		Exit,
 		ExplosiveAura,
 		RecoveryParticles,
+		RoSprite,
 		RoProjectileSprite,
 		Teleport,
 		BlueWaterfallEffect,
@@ -74,6 +77,8 @@ namespace Assets.Scripts.Effects
 		ParticleAnimatedSprite,
 		ParticleUp,
 		ProjectorPrimitive,
+		RoSprite,
+		Sphere3D,
 		Spike3D,
 		Teleport,
 		Texture2D,
@@ -105,6 +110,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Silence, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.SilenceEffect());
 			effectHandlers.Add(EffectType.Sleep, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.SleepEffect());
 			effectHandlers.Add(EffectType.Stun, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.StunEffect());
+			effectHandlers.Add(EffectType.AgiDown, new Assets.Scripts.Effects.EffectHandlers.Skills.AgiDownEffect());
 			effectHandlers.Add(EffectType.AgiUp, new Assets.Scripts.Effects.EffectHandlers.Skills.AgiUpEffect());
 			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.Skills.BlessingEffect());
 			effectHandlers.Add(EffectType.BloodDrain, new Assets.Scripts.Effects.EffectHandlers.Skills.BloodDrainEffect());
@@ -114,6 +120,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.FrostDiverHit, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverHitEffect());
 			effectHandlers.Add(EffectType.FrostDiverTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverTrailEffect());
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
+			effectHandlers.Add(EffectType.MagnumBreak, new Assets.Scripts.Effects.EffectHandlers.Skills.MagnumBreakEffect());
 			effectHandlers.Add(EffectType.Provoke, new Assets.Scripts.Effects.EffectHandlers.Skills.ProvokeEffect());
 			effectHandlers.Add(EffectType.Ruwach, new Assets.Scripts.Effects.EffectHandlers.Skills.RuwachEffect());
 			effectHandlers.Add(EffectType.SafetyWall, new Assets.Scripts.Effects.EffectHandlers.Skills.SafetyWallEffect());
@@ -129,6 +136,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Exit, new Assets.Scripts.Effects.EffectHandlers.General.ExitEffect());
 			effectHandlers.Add(EffectType.ExplosiveAura, new Assets.Scripts.Effects.EffectHandlers.General.ExplosiveAuraEffect());
 			effectHandlers.Add(EffectType.RecoveryParticles, new Assets.Scripts.Effects.EffectHandlers.General.RecoveryParticlesEffect());
+			effectHandlers.Add(EffectType.RoSprite, new Assets.Scripts.Effects.EffectHandlers.General.RoSpriteEffect());
 			effectHandlers.Add(EffectType.RoProjectileSprite, new Assets.Scripts.Effects.EffectHandlers.General.RoSpriteProjectileEffect());
 			effectHandlers.Add(EffectType.Teleport, new Assets.Scripts.Effects.EffectHandlers.General.TeleportEffect());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());
@@ -156,6 +164,9 @@ namespace Assets.Scripts.Effects
 			primitiveHandlers.Add(PrimitiveType.ParticleUp, new Assets.Scripts.Effects.PrimitiveHandlers.ParticleUpPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.ParticleUp, () => new Assets.Scripts.Effects.PrimitiveData.ParticleUpData());
 			primitiveHandlers.Add(PrimitiveType.ProjectorPrimitive, new Assets.Scripts.Effects.PrimitiveHandlers.ProjectorPrimitive());
+			primitiveHandlers.Add(PrimitiveType.RoSprite, new Assets.Scripts.Effects.PrimitiveHandlers.RoSpritePrimitive());
+			primitiveHandlers.Add(PrimitiveType.Sphere3D, new Assets.Scripts.Effects.PrimitiveHandlers.Sphere3DPrimitive());
+			primitiveDataFactory.Add(PrimitiveType.Sphere3D, () => new Assets.Scripts.Effects.PrimitiveData.CircleData());
 			primitiveHandlers.Add(PrimitiveType.Spike3D, new Assets.Scripts.Effects.PrimitiveHandlers.Spike3DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Spike3D, () => new Assets.Scripts.Effects.PrimitiveData.Spike3DData());
 			primitiveHandlers.Add(PrimitiveType.Teleport, new Assets.Scripts.Effects.PrimitiveHandlers.TeleportPrimitive());

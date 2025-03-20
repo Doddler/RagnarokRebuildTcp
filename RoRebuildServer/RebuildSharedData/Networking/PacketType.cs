@@ -104,7 +104,8 @@ public enum PacketType : byte
     DeleteCharacter,
 
     AdminCharacterAction,
-    ChangePlayerSpecialActionState
+    ChangePlayerSpecialActionState,
+    [ServerOnlyPacket] RefreshGrantedSkills,
 }
 
 public enum MessageType : byte

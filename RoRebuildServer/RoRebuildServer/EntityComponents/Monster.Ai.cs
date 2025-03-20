@@ -379,7 +379,7 @@ public partial class Monster
         var m = Master.Get<Monster>();
         if (!Character.Position.InRange(m.Character.Position, 2))
         {
-            inAdjustMove = false;
+            //inAdjustMove = false;
             return true;
         }
 
@@ -504,7 +504,7 @@ public partial class Monster
         }
 
         nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f); // + extraTime;
-        inAdjustMove = false;
+        //inAdjustMove = false;
 
         return true;
     }
@@ -649,7 +649,13 @@ public partial class Monster
             return true;
         }
 
-        if(WasAttacked)
+        if (CurrentAiState == MonsterAiState.StateAttacking || CurrentAiState == MonsterAiState.StateAngry)
+        {
+            CurrentAiState = MonsterAiState.StateIdle;
+            return false;
+        }
+
+        if (WasAttacked)
             WasRudeAttacked = true;
 
         return false;

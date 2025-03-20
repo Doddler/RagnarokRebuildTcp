@@ -117,7 +117,10 @@ StateAttacking:
 }
 
 SkillHandler("SOHEE") {
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 10s) -> SendEmote(28); //sob
 StateAttacking:
+	TryCast(Stop, 1, 5%, 0, 5s) -> SendEmote(9); //...
 	TryCast(Suicide, 1, 5%, 0, 5s)[HpPercent < 80];
 	TryCast(WaterAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //angry
 }

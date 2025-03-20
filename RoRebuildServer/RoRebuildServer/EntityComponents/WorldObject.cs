@@ -282,6 +282,8 @@ public class WorldObject : IEntityAutoReset
         
         if (State != CharacterState.Dead || resetIfDead)
             State = CharacterState.Idle;
+        if(Type == CharacterType.Player)
+            Player.ClearTarget();
     }
 
     public bool IsAbleToBeSeenBy(WorldObject target)
@@ -536,6 +538,8 @@ public class WorldObject : IEntityAutoReset
 
         if (Type != CharacterType.NPC)
         {
+            if (CombatEntity.HasBodyState(BodyStateFlags.Stopped))
+                return false;
             if(CombatEntity.GetStat(CharacterStat.MoveSpeedBonus) < -100)
                 return false;
             if (CombatEntity.HasBodyState(BodyStateFlags.Hidden))
