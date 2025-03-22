@@ -50,7 +50,9 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                         data.Alpha -= data.Alpha * Time.deltaTime / remaining;
                 }
 
-                data.Color = new Color32(data.Color.r, data.Color.g, data.Color.b, (byte)Mathf.Clamp(data.Alpha, 0, 255));
+                data.Alpha = Mathf.Clamp(data.Alpha, 0, data.AlphaMax);
+                data.Color = new Color32(data.Color.r, data.Color.g, data.Color.b, (byte)data.Alpha);
+                data.Angle += data.AngleSpeed * Time.deltaTime;
             }
 
             primitive.IsDirty = true; // primitive.Step == 0 || data.ScalingSpeed != Vector2.zero || data.Flags != RoPrimitiveHandlerFlags.None;
@@ -74,11 +76,13 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 if(data.Sprite == null)
                     primitive.AddTextured2DQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
                 else
-                    primitive.AddTexturedSpriteQuad(data.Sprite, Vector3.zero, data.Size.x, data.Size.y, data.Color);
+                    primitive.AddTexturedSpriteQuad(data.Sprite, Vector3.zero, data.Size.x, data.Size.y, data.Color, data.Angle);
                 
             }
             else
+            {
                 primitive.AddTexturedRectangleQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
+            }
         }
     }
 }

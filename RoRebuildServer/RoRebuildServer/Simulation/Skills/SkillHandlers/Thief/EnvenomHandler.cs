@@ -23,6 +23,9 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
                 flags |= AttackFlags.CanCrit;
 
             var res = source.CalculateCombatResult(target, 1f + lvl * 0.05f, 1, flags, CharacterSkill.Envenom, AttackElement.Poison);
+            var poisonBarrier = res.IsDamageResult && target.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Detoxify);
+            if (poisonBarrier)
+                res.Damage /= 2;
             source.ApplyCooldownForAttackAction(target);
             source.ExecuteCombatResult(res, false);
 
@@ -30,13 +33,9 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
 
             CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Envenom, lvl, res);
 
-            if (!res.IsDamageResult)
+            if (!res.IsDamageResult || poisonBarrier)
                 return;
-
-            var race = target.GetRace();
-            if (race == CharacterRace.Undead)
-                return;
-
+            
             var chance = 500 + lvl * 50; //50%-100%
 
             var duration = 4 + lvl * 2;

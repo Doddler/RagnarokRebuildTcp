@@ -89,7 +89,15 @@ public abstract class ElementalAttackHandler : SkillHandlerBase
 
         var ratio = 0.8f + lvl * 0.6f;
 
-        var res = source.CalculateCombatResult(target, ratio, 1, AttackFlags.Physical, GetSkill(), GetElement());
+        var element = GetElement();
+        
+        var res = source.CalculateCombatResult(target, ratio, 1, AttackFlags.Physical, GetSkill(), element);
+        if (element == AttackElement.Poison)
+        {
+            var poisonBarrier = res.IsDamageResult && target.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Detoxify);
+            if (poisonBarrier)
+                res.Damage /= 2;
+        }
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 

@@ -60,13 +60,15 @@ public class StatusHiding : StatusEffectBase
         if (ch.Character.State != CharacterState.Dead)
             ch.Character.State = CharacterState.Idle;
         ch.SetBodyState(BodyStateFlags.Hidden);
-        ch.AddStat(CharacterStat.AddSpRecoveryPercent, -50);
+        ch.AddStat(CharacterStat.AddSpRecoveryPercent, -100);
+        ch.AddStat(CharacterStat.AddHpRecoveryPercent, 50);
         state.Value2 = state.Value1;
     }
 
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
         ch.RemoveBodyState(BodyStateFlags.Hidden);
-        ch.SubStat(CharacterStat.AddSpRecoveryPercent, -50);
+        ch.SubStat(CharacterStat.AddSpRecoveryPercent, -100);
+        ch.SubStat(CharacterStat.AddHpRecoveryPercent, 50);
     }
 }

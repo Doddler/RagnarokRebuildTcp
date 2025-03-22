@@ -175,9 +175,13 @@ Reduces damage received from demon and undead races by +1% per level to a max of
 Adds +[SkillLevel * 3] weapon attack power when attacking demons and undead property monsters.
 
 ::Teleport
-Level 1: Teleports you to a random location on the map.
-Level 2: Returns you to your save point.
-Be sure to use the correct level as there is no prompt. You may assign different levels of the skill to your hotbar.
+Teleports you to a random location on the map.
+
+::Return
+Returns you to your current save point.
+
+::Ruwach
+Strikes hidden and invisible enemies, revealing them and dealing 145% holy magic damage.
 
 ::Pneuma
 Creates cloud that causes all physical attacks performed from 5 or more tiles away to miss. Affects both friend and foe alike.
@@ -207,6 +211,11 @@ Adds a [SkillLevel * 5]% chance to double attack when performing regular melee a
 
 ::ImproveDodge
 Increases flee by [SkillLevel * 3].
+When used by an Assassin, adds +1 flee per level and +10% move speed.
+
+::Detoxify
+Removes poison status from the target. If the target is not currently poisoned, grants Poison Resistance for 1 minute.
+POison Resistance Effect: The next with a chance to poison will fail and deal half damage.
 
 ::Envenom
 Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target's VIT.
@@ -215,11 +224,11 @@ Success rate: [50 + SkillLevel * 5]% chance.
 Duration: [4 + SkillLevel * 2] seconds (with a minimum of 10s).
 
 ::SonicBlow
-Deals 8 hits at [50 + SkillLevel * 5]% to a single target with a 50% boost to hit.
+Deals 8 hits at [50 + SkillLevel * 5]% to a single target, with a +50% increase to accuracy.
 
 ::Hiding
 Hide below ground to avoid detection. Insect, demon, and boss monsters can see through the skill.
-SP recovery rate halved while hiding.
+SP recovery rate is reduced by 100% while hiding, but HP recovery increases by 50%.
 Lasts [30+SkillLevel*15] seconds.
 Consumes 1 sp every [1+SkillLevel] seconds.
 

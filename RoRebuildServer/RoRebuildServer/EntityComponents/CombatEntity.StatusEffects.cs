@@ -133,7 +133,10 @@ public partial class CombatEntity
 
     public bool TryPoisonOnTarget(CombatEntity target, int chanceIn1000, bool scaleDuration = true, int baseDamage = 0, float baseDuration = 24f, float delayApply = 0.3f)
     {
-        if (target.HasStatusEffectOfType(CharacterStatusEffect.Poison))
+        if (target.HasStatusEffectOfType(CharacterStatusEffect.Poison) || target.IsElementBaseType(CharacterElement.Undead1))
+            return false;
+
+        if (target.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Detoxify))
             return false;
 
         var vit = target.GetEffectiveStat(CharacterStat.Vit);

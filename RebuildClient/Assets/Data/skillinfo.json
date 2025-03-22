@@ -877,7 +877,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Removes poison status from the target. If the target is not currently poisoned, grants Immunization for 1 minute.\r\nImmunization Effect: The next attack that has a chance to poison will fail and deal half damage.",
       "InterruptMode": 0
     },
     {
@@ -991,7 +991,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases flee by [SkillLevel * 3].",
+      "Description": "Increases flee by [SkillLevel * 3].\r\nWhen used by an Assassin, adds \u002B1 flee per level and \u002B10% move speed.",
       "InterruptMode": 0
     },
     {

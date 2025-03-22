@@ -103,6 +103,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   FliesAwayFromTarget: 0
-  HeightMultiplier: 2.4
+  HeightMultiplier: 3
   DistanceMultiplier: 4
   TweenTime: 1.5

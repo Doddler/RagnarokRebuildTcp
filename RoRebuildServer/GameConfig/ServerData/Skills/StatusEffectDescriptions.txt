@@ -91,6 +91,9 @@ Hidden enemies nearby will be revealed.
 ::Ruwach
 Hidden enemies nearby will take damage and be revealed.
 
+::Detoxify
+The next poisoning attack will fail and deal half damage.
+
 ::IncreasedMoveSpeed
 Your move speed is increased.
 

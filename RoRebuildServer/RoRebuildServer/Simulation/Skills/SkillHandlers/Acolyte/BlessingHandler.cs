@@ -5,7 +5,6 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
-using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
@@ -17,7 +16,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
         {
             if (target == null)
                 return SkillValidationResult.InvalidTarget;
-
+            
             if (target.Character.Type == CharacterType.Player && target.IsElementBaseType(CharacterElement.Undead1))
                 return SkillValidationResult.Failure;
 
@@ -35,8 +34,16 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
             var hasRemoval = target.CleanseStatusEffect(StatusCleanseTarget.Curse | StatusCleanseTarget.Petrify);
             if (!hasRemoval)
             {
-                var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Blessing, 40f + 20 * lvl, lvl);
-                target.AddStatusEffect(status);
+                if (target.IsElementBaseType(CharacterElement.Undead1) || target.GetRace() == CharacterRace.Demon)
+                {
+                    var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Blessing, 40f + 20 * lvl, 0, 0, 0, 1);
+                    target.AddStatusEffect(status);
+                }
+                else
+                {
+                    var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Blessing, 40f + 20 * lvl, lvl);
+                    target.AddStatusEffect(status);
+                }
             }
 
             source.ApplyAfterCastDelay(0.5f);

@@ -49,6 +49,7 @@ namespace Assets.Scripts.Effects
         public float CurrentFrameTime => IsStepFrame ? 1 / 60f : 0f;
 
         public Vector3 Velocity;
+        public Vector3 Acceleration;
         
         public bool IsActive = false;
         public bool IsDirty = false;
@@ -134,6 +135,7 @@ namespace Assets.Scripts.Effects
             if (billboard != null)
                 billboard.Style = BillboardStyle.None;
             Velocity = Vector3.zero;
+            Acceleration = Vector3.zero;
             EventTrigger = null;
             SkipApplyingMeshFromBuilder = false;
             SkipClearingMeshBuilder = false;
@@ -396,20 +398,29 @@ namespace Assets.Scripts.Effects
             mb.AddQuad(verts, normals, uvs, colors);
         }
         
-        public void AddTexturedSpriteQuad(Sprite sprite, Vector3 offset, float width, float height, Color32 c)
+        public void AddTexturedSpriteQuad(Sprite sprite, Vector3 offset, float width, float height, Color32 c, float angle = 0)
         {
             colors[0] = c;
             colors[1] = c;
             colors[2] = c;
             colors[3] = c;
-            
-            verts[0] = new Vector3(-width, height) + offset;
-            verts[1] = new Vector3(width, height) + offset;
-            verts[2] = new Vector3(-width, -height) + offset;
-            verts[3] = new Vector3(width, -height) + offset;
+
+            if (Mathf.Approximately(angle, 0))
+            {
+                verts[0] = new Vector3(-width, height) + offset;
+                verts[1] = new Vector3(width, height) + offset;
+                verts[2] = new Vector3(-width, -height) + offset;
+                verts[3] = new Vector3(width, -height) + offset;    
+            }
+            else
+            {
+                verts[0] = (Vector3)VectorHelper.Rotate(new Vector2(-width, height), angle) + offset;
+                verts[1] = (Vector3)VectorHelper.Rotate(new Vector2(width, height), angle) + offset;
+                verts[2] = (Vector3)VectorHelper.Rotate(new Vector2(-width, -height), angle) + offset;
+                verts[3] = (Vector3)VectorHelper.Rotate(new Vector2(width, -height), angle) + offset;
+            }
 
             var spriteUVs = sprite.uv;
-            var rect = sprite.textureRect;
             
             uvs[0] = spriteUVs[0];
             uvs[1] = spriteUVs[1];
@@ -537,8 +548,9 @@ namespace Assets.Scripts.Effects
             if (!IsActive)
                 mr.enabled = false;
             
+            Velocity += Acceleration * Time.deltaTime;
             transform.position += Velocity * Time.deltaTime;
-
+            
             if (EventTrigger != null && !HasFiredEvent)
             {
                 if (EventTrigger(this))

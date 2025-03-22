@@ -18,18 +18,15 @@ public class SkillPoison : SkillHandlerBase
             return;
 
         var res = source.CalculateCombatResult(target, 1.5f, 1, AttackFlags.Physical, CharacterSkill.Poison, AttackElement.Poison);
+        var poisonBarrier = res.IsDamageResult && target.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Detoxify);
+        if (poisonBarrier)
+            res.Damage /= 2;
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 
-        var ch = source.Character;
-
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Poison, lvl, res);
 
-        if (!res.IsDamageResult)
-            return;
-
-        var race = target.GetRace();
-        if (race == CharacterRace.Undead)
+        if (!res.IsDamageResult || poisonBarrier)
             return;
 
         var chance = lvl * 100; //10% at lvl 1, 100% at lvl 10

@@ -11,7 +11,6 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
         public RagnarokEffectData.PrimitiveUpdateDelegate GetDefaultUpdateHandler() => UpdatePrimitive;
         public RagnarokEffectData.PrimitiveRenderDelegate GetDefaultRenderHandler() => RenderPrimitive;
         
-        
         private static void UpdateSegments(RagnarokPrimitive primitive, Particle3DSplineData data, bool isFinished)
         {
             var shrink = data.Size / primitive.SegmentCount / 2f;

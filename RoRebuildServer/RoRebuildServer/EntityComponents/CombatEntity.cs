@@ -210,16 +210,18 @@ public partial class CombatEntity : IEntityAutoReset
     }
 
     [ScriptUseable]
-    public void RemoveStatusOfTypeIfExists(CharacterStatusEffect type)
+    public bool RemoveStatusOfTypeIfExists(CharacterStatusEffect type)
     {
         if (statusContainer == null || statusContainer.TotalStatusEffectCount == 0) //that last one fixes an unfortunate issue where attempting to remove an existing status while adding a status breaks things
-            return;
-        statusContainer.RemoveStatusEffectOfType(type);
+            return false;
+        var success = statusContainer.RemoveStatusEffectOfType(type);
         if (!statusContainer.HasStatusEffects())
         {
             StatusEffectPoolManager.ReturnStatusContainer(statusContainer);
             statusContainer = null;
         }
+
+        return success;
     }
 
     public void RemoveStatusOfGroupIfExists(string groupName)
@@ -397,7 +399,7 @@ public partial class CombatEntity : IEntityAutoReset
                 stat += GetStat(CharacterStat.AddInt);
                 break;
             case CharacterStat.Luk:
-                if (BodyState.HasFlag(BodyStateFlags.Curse))
+                if (HasBodyState(BodyStateFlags.Curse))
                     return 0;
                 stat += GetStat(CharacterStat.AddLuk);
                 break;

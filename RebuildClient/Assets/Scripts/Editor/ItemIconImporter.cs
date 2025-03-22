@@ -285,9 +285,9 @@ namespace Assets.Scripts.Editor
                     var statusSrc = Path.Combine(statusPath, $"{status.Icon}.tga");
                     var psdPath = $@"Assets/Textures/CustomIcons/{status.Icon}.psd";
 
-                    if (!File.Exists(destPath) && File.Exists(statusSrc))
+                    if (File.Exists(psdPath)) //always copy if there's an override status icon
                     {
-                        var tex = TextureImportHelper.LoadTexture(statusSrc);
+                        var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(psdPath);
                         TextureImportHelper.SaveAndUpdateTexture(tex, destPath, ti =>
                         {
                             ti.textureType = TextureImporterType.Sprite;
@@ -295,9 +295,9 @@ namespace Assets.Scripts.Editor
                             ti.textureCompression = TextureImporterCompression.Uncompressed;
                         }, false);
                     }
-                    else if (!File.Exists(destPath) && File.Exists(psdPath))
+                    else if (!File.Exists(destPath) && File.Exists(statusSrc))
                     {
-                        var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(psdPath);
+                        var tex = TextureImportHelper.LoadTexture(statusSrc);
                         TextureImportHelper.SaveAndUpdateTexture(tex, destPath, ti =>
                         {
                             ti.textureType = TextureImporterType.Sprite;

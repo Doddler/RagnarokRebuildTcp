@@ -176,6 +176,13 @@ Type = "Buff"
 CanDispel = false
 CanDisable = false
 
+[Detoxify]
+Name = "Poison Resistance"
+Type = "Buff"
+Icon = "Detoxify"
+CanDispel = true
+CanDisable = true
+
 #----------------------------------
 # Item Buffs
 #----------------------------------
