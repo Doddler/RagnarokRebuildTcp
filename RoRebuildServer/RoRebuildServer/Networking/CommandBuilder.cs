@@ -5,12 +5,15 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using RebuildZoneServer.Networking;
+using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Items;
+using RoRebuildServer.Simulation.Parties;
+using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
@@ -33,6 +36,18 @@ public static class CommandBuilder
         var player = e.Get<Player>();
         recipients.Add(player.Connection);
     }
+
+    public static void AddRecipient(NetworkConnection n)
+    {
+        if (recipients == null)
+            recipients = new List<NetworkConnection>(10);
+
+        if (recipients.Contains(n))
+            return;
+
+        recipients.Add(n);
+    }
+
 
     public static void AddRecipients(EntityList? list)
     {
@@ -208,6 +223,18 @@ public static class CommandBuilder
                     packet.Write(0); //they don't need the sp value for other players
                     packet.Write(0);
                 }
+
+                //party
+                if (player.Party != null)
+                {
+                    packet.Write((byte)1);
+                    packet.Write(player.Party.PartyId);
+                    packet.Write(player.Party.PartyName);
+                    //if(isSelf)
+                    //    player.Party.SerializePartyInfo(packet);
+                }
+                else
+                    packet.Write((byte)0);
 
                 //packet.Write(isSelf);
             }
@@ -1334,5 +1361,189 @@ public static class CommandBuilder
         packet.Write((byte)state);
 
         NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void NotifyNearbyPlayersOfPartyChangeAutoVis(Player p)
+    {
+        if(p.Character.Map == null)
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.NotifyPlayerPartyChange, 96);
+
+        p.Character.Map.AddVisiblePlayersAsPacketRecipients(p.Character);
+
+        packet.Write(p.Character.Id);
+
+        if (p.Party == null)
+            packet.Write((byte)0);
+        else
+        {
+            packet.Write((byte)1);  
+            packet.Write(p.Party.PartyId);
+            packet.Write(p.Party.PartyName);
+            packet.Write(p.Party.PartyOwner == p.Entity);
+
+
+            //foreach (var m in p.Party.OnlineMembers)
+            //{
+            //    if(m.TryGet<Player>(out var partyMember))
+            //        AddRecipient(partyMember.Connection);
+            //}
+        }
+        
+        NetworkManager.SendMessageMulti(packet, recipients);
+        ClearRecipients();
+    }
+
+    public static void InviteJoinParty(Player p, Player sender, Party party)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.InvitePartyMember, 256);
+
+        packet.Write(party.PartyId);
+        packet.Write(party.PartyName);
+        packet.Write(sender.Name);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void AcceptPartyInvite(Player p, bool isLoginMessage = false)
+    {
+        var party = p.Party;
+        if (party == null)
+        {
+            ServerLogger.LogWarning($"Attempting to SendFullPartyInfo to {p} but they are not currently in a party!");
+            return;
+        }
+
+        var packet = NetworkManager.StartPacket(PacketType.AcceptPartyInvite, 256);
+        
+        packet.Write((byte)(isLoginMessage ? 1 : 0));
+        packet.Write(party.PartyId);
+        packet.Write(party.PartyName);
+        party.SerializePartyInfo(packet);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    private static void AddPartyMembersOutOfViewRange(Player p, Party party)
+    {
+        foreach (var m in party.OnlineMembers)
+        {
+            if (m == p.Entity)
+                continue;
+
+            if (m.TryGet<Player>(out var partyMember))
+            {
+                if(partyMember.Character.Map != p.Character.Map || partyMember.Character.Position.DistanceTo(p.Character.Position) > ServerConfig.MaxViewDistance)
+                    AddRecipient(partyMember.Connection);
+            }
+        }
+    }
+
+    private static void AddPartyMembers(Player p, Party party, bool addSelf = false, bool addOnlyOnMap = false)
+    {
+        foreach (var m in party.OnlineMembers)
+        {
+            if (m == p.Entity && !addSelf)
+                continue;
+
+            if (m.TryGet<Player>(out var partyMember))
+            {
+                if (addOnlyOnMap && p.Character.Map != partyMember.Character.Map)
+                    continue;
+                AddRecipient(partyMember.Connection);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Send hp/sp status to all party members on the current map.
+    /// </summary>
+    /// <param name="p">Player</param>
+    /// <param name="notifyAllMembers">If set to false, only party members out of view distance will be notified.
+    /// You'd set this to false if nearby players are notified by another method (damage, regen tick, etc.)</param>
+    public static void UpdatePartyMembersOnMapOfHpSpChange(Player p, bool notifyAllMembers = true)
+    {
+        if (p.Party == null || p.Party.OnlineMembers.Count <= 1)
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.UpdateParty, 32);
+        packet.Write((byte)PartyUpdateType.UpdateHpSp);
+        packet.Write(p.PartyMemberId);
+        packet.Write(p.GetStat(CharacterStat.Hp));
+        packet.Write(p.GetStat(CharacterStat.MaxHp));
+        packet.Write(p.GetStat(CharacterStat.Sp));
+        packet.Write(p.GetStat(CharacterStat.MaxSp));
+
+        if(notifyAllMembers)
+            AddPartyMembers(p, p.Party, false, true);
+        else
+            AddPartyMembersOutOfViewRange(p, p.Party);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+        ClearRecipients();
+    }
+
+    public static void UpdatePartyMembersOfMapChange(Player p, string mapName)
+    {
+        if (p.Party == null || p.Party.OnlineMembers.Count <= 1)
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.UpdateParty, 32);
+        packet.Write((byte)PartyUpdateType.UpdateMap);
+        packet.Write(p.PartyMemberId);
+        packet.Write(mapName);
+
+        AddPartyMembers(p, p.Party);
+        NetworkManager.SendMessageMulti(packet, recipients);
+        ClearRecipients();
+    }
+
+    //notify party members of a party composition change
+    public static void NotifyPartyOfChange(Party party, int memberId, PartyUpdateType type)
+    {
+        if (type == PartyUpdateType.UpdateHpSp || type == PartyUpdateType.UpdateMap)
+            throw new Exception($"You shouldn't use NotifyPartyOfChange for party updates of type {type}, use specific handlers for them.");
+
+        var packet = NetworkManager.StartPacket(PacketType.UpdateParty, 96);
+
+        packet.Write((byte)type);
+        var includeSelf = false;
+
+        switch (type)
+        {
+            case PartyUpdateType.LogOut:
+            case PartyUpdateType.LogIn:
+            case PartyUpdateType.UpdatePlayer:
+            case PartyUpdateType.AddPlayer:
+                if (!party.PartyMemberInfo.TryGetValue(memberId, out var info))
+                {
+                    ServerLogger.LogWarning($"Calling NotifyPartyOfChange, but the member id {memberId} doesn't reference anyone currently in party.");
+                    return;
+                }
+                party.SerializePartyMemberInfo(packet, info, memberId);
+                break;
+            case PartyUpdateType.ChangeLeader:
+            case PartyUpdateType.RemovePlayer:
+                includeSelf = true;
+                packet.Write(memberId);
+                break;
+            case PartyUpdateType.LeaveParty:
+            case PartyUpdateType.DisbandParty:
+            default:
+                includeSelf = true;
+                break;
+        }
+
+        foreach (var m in party.OnlineMembers)
+        {
+            if (m.TryGet<Player>(out var partyMember))
+            {
+                if(includeSelf || partyMember.PartyMemberId != memberId) //don't notify the added player, they'll get an AcceptParty packet
+                    AddRecipient(partyMember.Connection);
+            }
+        }
+        NetworkManager.SendMessageMulti(packet, recipients);
+        ClearRecipients();
     }
 }

@@ -544,6 +544,8 @@ namespace Assets.Scripts.Sprites
             control.IsMale = param.IsMale;
             control.Level = param.Level;
             control.WeaponClass = param.WeaponClass;
+            control.PartyName = param.PartyName;
+            control.IsPartyMember = param.PartyId > 0 && param.PartyId == PlayerState.Instance.PartyId;
 
             bodySprite.Controllable = control;
             if (param.State == CharacterState.Moving)
@@ -594,15 +596,19 @@ namespace Assets.Scripts.Sprites
             if (control.IsMainCharacter)
             {
                 CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = pData.Name;
-                CameraFollower.Instance.CharacterDetailBox.CharacterName.text = $"{control.Name}";
+                PlayerState.Instance.PlayerName = control.Name;
+                PlayerState.Instance.UpdatePlayerName();
                 CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
             }
 
             control.Init();
 
+            if (param.PartyId == PlayerState.Instance.PartyId)
+                PlayerState.Instance.AssignPartyMemberControllable(control.Id, control);
+
             if (param.CharacterStatusEffects != null)
-                foreach (var s in param.CharacterStatusEffects)
-                    StatusEffectState.AddStatusToTarget(control, s, true);
+                foreach (var (s, duration) in param.CharacterStatusEffects)
+                    StatusEffectState.AddStatusToTarget(control, s, true, duration);
 
             return control;
         }
@@ -942,8 +948,8 @@ namespace Assets.Scripts.Sprites
             control.Init();
 
             if (param.CharacterStatusEffects != null)
-                foreach (var s in param.CharacterStatusEffects)
-                    StatusEffectState.AddStatusToTarget(control, s, true);
+                foreach (var (s, duration) in param.CharacterStatusEffects)
+                    StatusEffectState.AddStatusToTarget(control, s, true, duration);
 
             return control;
         }

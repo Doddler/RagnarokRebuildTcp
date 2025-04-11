@@ -29,12 +29,8 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
 
                 if (data.CurCycleDelay <= 0)
                 {
-                    var c = (Color)data.Color;
-                    if (EffectHelpers.TryChangeAndCycleColor(data.Color, data.ColorChange, out c))
-                    {
+                    if (EffectHelpers.TryChangeAndCycleColor(data.Color, data.ColorChange, out data.Color))
                         data.CurCycleDelay = data.RGBCycleDelay;
-                        data.Color = c;
-                    }
                 }
             }
             else
@@ -51,7 +47,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 }
 
                 data.Alpha = Mathf.Clamp(data.Alpha, 0, data.AlphaMax);
-                data.Color = new Color32(data.Color.r, data.Color.g, data.Color.b, (byte)data.Alpha);
+                data.Color = new Color(data.Color.r, data.Color.g, data.Color.b, data.Alpha / 255f);
                 data.Angle += data.AngleSpeed * Time.deltaTime;
             }
 

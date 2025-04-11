@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts;
+using Assets.Scripts.Data;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
@@ -29,7 +30,9 @@ public class UiManager : MonoBehaviour
     public SkillHotbar SkillHotbar;
     public PlayerInventoryWindow InventoryWindow;
     public HelpWindow HelpWindow;
+    public PartyPanel PartyPanel;
     public DragTrashBucket TrashBucket;
+    
     
     public ItemOverlay ItemOverlay;
     public CharacterChat TooltipOverlay;
@@ -119,6 +122,8 @@ public class UiManager : MonoBehaviour
         //InventoryWindow.HideWindow();
         ItemDescriptionWindow.HideWindow();
         SubDescriptionWindow.HideWindow();
+        
+        PartyPanel.gameObject.SetActive(false);
         
         ActionTextDisplay.EndActionTextDisplay();
         

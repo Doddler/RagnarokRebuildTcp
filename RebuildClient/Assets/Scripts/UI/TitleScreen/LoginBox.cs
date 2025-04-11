@@ -224,6 +224,9 @@ namespace Assets.Scripts.UI.TitleScreen
         {
             if (Input.GetKeyDown(KeyCode.Tab))
                 HandleTabKey();
+            
+            if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F1))
+                ServerInputBox.text = "ws://127.0.0.1:5000/ws";
 
             if (currentTab == 0)
             {

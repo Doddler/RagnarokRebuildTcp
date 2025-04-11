@@ -854,6 +854,9 @@ public partial class CombatEntity : IEntityAutoReset
             return false;
         }
 
+        if (Character.State == CharacterState.Sitting)
+            return false;
+
         var skillInfo = new SkillCastInfo()
         {
             Skill = skill,
@@ -961,6 +964,9 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (Character.Type == CharacterType.Player)
         {
+            if (Character.State == CharacterState.Sitting)
+                return false;
+
             if (level <= 0)
                 level = Player.MaxLearnedLevelOfSkill(skill);
         }
@@ -1046,6 +1052,9 @@ public partial class CombatEntity : IEntityAutoReset
     {
         Character.QueuedAction = QueuedAction.None;
         QueuedCastingSkill.Clear();
+
+        if (Character.State == CharacterState.Sitting)
+            return false;
 
         if (Character.State == CharacterState.Dead)
         {
@@ -1343,7 +1352,7 @@ public partial class CombatEntity : IEntityAutoReset
 
 
 
-    public DamageInfo PrepareTargetedSkillResult(CombatEntity target, CharacterSkill skillSource = CharacterSkill.None)
+    public DamageInfo PrepareTargetedSkillResult(CombatEntity? target, CharacterSkill skillSource = CharacterSkill.None)
     {
         //technically the motion time is how long it's locked in place, we use sprite timing if it's faster.
         var spriteTiming = GetTiming(TimingStat.SpriteAttackTiming);
@@ -1363,7 +1372,7 @@ public partial class CombatEntity : IEntityAutoReset
         {
             KnockBack = 0,
             Source = Entity,
-            Target = target.Entity,
+            Target = target?.Entity ?? Entity.Null,
             AttackSkill = skillSource,
             Time = Time.ElapsedTimeFloat + spriteTiming,
             AttackMotionTime = spriteTiming,
@@ -1551,13 +1560,19 @@ public partial class CombatEntity : IEntityAutoReset
 
     private void AttackUpdate()
     {
+        var hasResult = false;
         while (DamageQueue.Count > 0 && DamageQueue[0].Time < Time.ElapsedTimeFloat)
         {
             var di = DamageQueue[0];
             DamageQueue.RemoveAt(0);
 
             ApplyQueuedCombatResult(ref di);
+            if(di.Damage > 0)
+                hasResult = true;
         }
+        if(hasResult && Character.Type == CharacterType.Player && Player.Party != null)
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player, false); //notify party members out of sight
+
     }
 
     public void Init(ref Entity e, WorldObject ch)

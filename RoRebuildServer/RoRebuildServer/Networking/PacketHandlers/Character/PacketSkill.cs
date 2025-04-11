@@ -3,6 +3,7 @@ using System.Numerics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
+using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
@@ -52,13 +53,17 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             Debug.Assert(connection.Character != null);
 
             var skill = (CharacterSkill)msg.ReadInt16();
-            var lvl = msg.ReadByte();
+            var lvl = (int)msg.ReadByte();
 
             if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
             {
                 CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.SkillNotKnown);
                 return;
             }
+
+            var data = DataManager.SkillData[skill];
+            if (!data.AdjustableLevel)
+                lvl = connection.Player.MaxLearnedLevelOfSkill(skill);
 
             var target = SkillHandler.GetSkillAttributes(skill).SkillTarget;
             if (target == SkillTarget.Passive)

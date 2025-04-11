@@ -28,8 +28,12 @@ public class DbCharacter
     public int NpcFlagsLength { get; set; }
     public byte[]? ItemData { get; set; }
     public int ItemDataLength { get; set; }
-    public RoUserAccount Account { get; set; } = null!;
+    public int? PartyId { get; set; }
     public int AccountId { get; set; }
     public int VersionFormat { get; set; }
+    public DbParty? Party { get; set; }
+    public DbParty? OwnedParty { get; set; }
+    public RoUserAccount Account { get; set; } = null!;
+
     public static int CurrentVersion = 1;
 }

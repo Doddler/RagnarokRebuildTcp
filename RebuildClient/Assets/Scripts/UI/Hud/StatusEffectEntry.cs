@@ -19,6 +19,8 @@ namespace Assets.Scripts.UI.Hud
 
         private int secondsRemaining;
 
+        public bool IsExpired => Expiration - Time.timeSinceLevelLoad < 0f;
+
         public void UpdateTime()
         {
             var timeRemaining = Expiration - Time.timeSinceLevelLoad;

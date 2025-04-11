@@ -9,6 +9,6 @@ copy /b/v/y "RoRebuildServer\GameConfig\bin\Release\netstandard2.0\GameConfig.dl
 copy /b/v/y "RoRebuildServer\RebuildSharedData\bin\Release\netstandard2.1\RebuildSharedData.dll" "RebuildClient\Assets\Data\RebuildSharedData.dll"
 cd RoRebuildServer\DataToClientUtility
 dotnet build -c Release --property WarningLevel=0
-cd "bin\Release\net8.0\"
+cd "bin\Release\net9.0\"
 DataToClientUtility.exe
 pause

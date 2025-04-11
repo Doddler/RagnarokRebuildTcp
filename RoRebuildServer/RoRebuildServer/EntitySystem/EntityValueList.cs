@@ -16,7 +16,7 @@ namespace RoRebuildServer.EntitySystem
         public int Count => count;
 
         private Entity[]? InternalList => entities;
-        private T[]? InternalValueList => values;
+        public T[]? InternalValueList => values;
 
         public EntityValueList() : this(32) { }
 
@@ -168,6 +168,20 @@ namespace RoRebuildServer.EntitySystem
             count++;
         }
 
+        public T GetValueOrDefault(Entity entity, T defaultValue)
+        {
+            if (count == 0 || values == null || entities == null)
+                return defaultValue;
+
+            for (var i = 0; i < count; i++)
+            {
+                if (entities[i] == entity)
+                    return values[i];
+            }
+
+            return defaultValue;
+        }
+
         public int CountEntitiesAboveValueAndRemoveBelow(T value)
         {
             if (count == 0 || values == null || entities == null)
@@ -188,6 +202,21 @@ namespace RoRebuildServer.EntitySystem
             }
 
             return match;
+        }
+
+        public void ClearIfBelowValue(T value)
+        {
+            if (count == 0 || values == null || entities == null)
+                return;
+
+            for (var i = 0; i < count; i++)
+            {
+                if (entities[i].IsAlive() && values[i] >= value)
+                    continue;
+
+                SwapFromBack(i);
+                i--;
+            }
         }
 
         public void Clear()

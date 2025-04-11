@@ -19,6 +19,10 @@ internal class ZoneWorker : BackgroundService
     private readonly IHostApplicationLifetime appLifetime;
     private World? world;
 
+#if DEBUG
+    public static bool IsMainThread;
+#endif
+
     public ZoneWorker(ILogger<ZoneWorker> logger, IServiceProvider services, IHostApplicationLifetime appLifetime)
     {
         this.logger = logger;
@@ -91,7 +95,7 @@ internal class ZoneWorker : BackgroundService
 
                 if (NetworkManager.IsSingleThreadMode)
                     await NetworkManager.ProcessOutgoingMessages();
-                
+
                 world.Update();
 
                 await NetworkManager.ScanAndDisconnect();

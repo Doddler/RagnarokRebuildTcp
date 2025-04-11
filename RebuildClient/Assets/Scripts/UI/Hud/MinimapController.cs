@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -17,6 +19,7 @@ namespace Assets.Scripts.UI.Hud
         public Material DungeonMaterial;
         public Sprite PlayerIcon;
         public Sprite OtherPlayerIcon;
+        public Sprite PartyMemberIcon;
         public Sprite BossIcon;
         public Sprite MvpIcon;
         public Sprite PortalIcon;
@@ -85,6 +88,25 @@ namespace Assets.Scripts.UI.Hud
             Destroy(mapIcon.MapIcon);
         }
 
+        public void RefreshPartyMembers()
+        {
+            var state = PlayerState.Instance;
+            var isInParty = state.IsInParty;
+            
+            foreach (var (entityId, mapEntry) in mapIcons)
+            {
+                if (mapEntry.MapIcon == null || entityId == state.EntityId || mapEntry.Type != CharacterDisplayType.Player)
+                    continue;
+
+                var icon = OtherPlayerIcon;
+                if (isInParty && state.PartyMemberIdLookup.ContainsKey(entityId))
+                    icon = PartyMemberIcon;
+
+                var img = mapEntry.MapIcon.GetComponent<Image>();
+                img.sprite = icon;
+            }
+        }
+
         public void SetEntityPosition(int entityId, CharacterDisplayType type, Vector2Int pos)
         {
             if (!mapIcons.TryGetValue(entityId, out var iconData))
@@ -113,7 +135,12 @@ namespace Assets.Scripts.UI.Hud
                 var img = mapIcon.AddComponent<Image>();
                 switch (type)
                 {
-                    case CharacterDisplayType.Player: img.sprite = OtherPlayerIcon; break;
+                    case CharacterDisplayType.Player:
+                        if (PlayerState.Instance.PartyMemberIdLookup.ContainsKey(entityId))
+                            img.sprite = PartyMemberIcon;
+                        else
+                            img.sprite = OtherPlayerIcon; 
+                        break;
                     case CharacterDisplayType.Boss: img.sprite = BossIcon; break;
                     case CharacterDisplayType.Mvp: img.sprite = MvpIcon; break;
                     case CharacterDisplayType.Portal: img.sprite = PortalIcon; break;

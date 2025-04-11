@@ -25,6 +25,15 @@ public class PacketPlayerReady : IClientPacketHandler
 
         connection.Character.SetSpawnImmunity();
         connection.Player.ResetRegenTickTime();
+        if (connection.Player.Party != null)
+        {
+            if(!connection.Player.HasEnteredServer)
+                CommandBuilder.AcceptPartyInvite(connection.Player, true);
+            CommandBuilder.UpdatePartyMembersOfMapChange(connection.Player, connection.Character.Map.Name);
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player, false);
+        }
+
+        connection.Player.HasEnteredServer = true;
 
         ServerLogger.Debug($"Player {connection.Entity} finished loading, spawning him on {connection.Character.Map.Name} at position {connection.Character.Position}.");
     }

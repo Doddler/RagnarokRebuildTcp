@@ -535,6 +535,16 @@ public partial class Monster : IEntityAutoReset
         }
     }
 
+    public void BoostDamageContributionOfFirstAttacker()
+    {
+        if (TotalDamageReceived == null || TotalDamageReceived.Count < 1)
+            return;
+
+        var dmgValues = TotalDamageReceived.InternalValueList;
+        if(dmgValues != null)
+            dmgValues[0] = dmgValues[0] * 130 / 100; //give first attacker a bonus contribution
+    }
+
     public void RewardMVP()
     {
         var maxDamage = 0;
@@ -563,6 +573,39 @@ public partial class Monster : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
+    public void RewardExperience()
+    {
+        if (TotalDamageReceived == null)
+            return;
+
+        var exp = MonsterBase.Exp;
+        var job = MonsterBase.JobExp;
+
+        if (exp == 0 && job == 0)
+            return;
+
+        TotalDamageReceived.ClearInactive();
+        var dmgValues = TotalDamageReceived.InternalValueList;
+
+        if (TotalDamageReceived.Count == 0 || dmgValues == null || Character.Map == null)
+            return;
+
+        var acc = Character.Map.Instance.ExpCalculator;
+        var totalDamage = 0;
+
+        for (var i = 0; i < TotalDamageReceived.Count; i++)
+            totalDamage += dmgValues[i];
+
+        foreach (var (attacker, damage) in TotalDamageReceived)
+        {
+            var percent = damage / (float)totalDamage;
+            if (attacker.TryGet<Player>(out var player))
+                acc.AddExp(player, (int)float.Ceiling(exp * percent), (int)float.Ceiling(job * percent));
+        }
+
+        acc.DistributeExp();
+    }
+
     /// <summary>
     /// This kills the monster.
     /// </summary>
@@ -576,7 +619,8 @@ public partial class Monster : IEntityAutoReset
         if (giveExperience && GivesExperience)
         {
             DoMonsterDrops();
-            CombatEntity.DistributeExperience();
+            //CombatEntity.DistributeExperience();
+            RewardExperience();
         }
 
         CombatEntity.OnDeathClearStatusEffects();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RoRebuildServer.Database.Domain;
+using RoRebuildServer.Simulation.Parties;
 
 namespace RoRebuildServer.Database;
 
@@ -32,9 +33,11 @@ public class RoContext : IdentityDbContext<RoUserAccount, UserRole, int>
         builder.Entity<RoUserAccount>().HasOne(u => u.CharacterStorage)
                                        .WithOne(u => u.Account)
                                        .HasForeignKey<StorageInventory>(s => s.AccountId);
+        builder.Entity<DbCharacter>().HasOne(u => u.Party).WithMany(p => p.Characters).HasForeignKey(u => u.PartyId);
     }
 
 
     public DbSet<DbCharacter> Character { get; set; }
     public DbSet<StorageInventory> StorageInventory { get; set; }
+    public DbSet<DbParty> Parties { get; set; }
 }

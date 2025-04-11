@@ -281,8 +281,8 @@
     },
     {
       "StatusEffect": 32,
-      "Name": "Immunization",
-      "Description": "\u003Ccolor=#FFA300\u003EImmunization\u003C/color\u003E\nThe next poisoning attack will fail and deal half damage.",
+      "Name": "Poison Resistance",
+      "Description": "\u003Ccolor=#FFA300\u003EPoison Resistance\u003C/color\u003E\nThe next poisoning attack will fail and deal half damage.",
       "Type": "Buff",
       "Icon": "Detoxify",
       "CanDispel": true,

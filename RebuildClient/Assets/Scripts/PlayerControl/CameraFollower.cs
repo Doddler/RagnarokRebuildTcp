@@ -14,6 +14,7 @@ using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
 using Assets.Scripts.UI.RefineItem;
+using Assets.Scripts.UI.Utility;
 using Assets.Scripts.Utility;
 using PlayerControl;
 using RebuildSharedData.ClientTypes;
@@ -110,7 +111,9 @@ namespace Assets.Scripts
         private int lastHeight;
 
         private Vector2Int lastTile;
+
         private bool lastPathValid;
+
         //private bool noHold = false;
         private bool hasSelection;
         public ServerControllable SelectedTarget;
@@ -152,6 +155,7 @@ namespace Assets.Scripts
 
         //private bool cursorShowSkillLevel = true;
         public bool HasSkillOnCursor => hasSkillOnCursor;
+        public SkillTarget CursorSkillTarget => cursorSkillTarget;
 
         public bool CinemachineMode;
         public VideoRecorder Recorder;
@@ -169,6 +173,8 @@ namespace Assets.Scripts
         public float BlindStrength = 60;
         private const float BlindTargetDistance = 10f;
 
+        private List<RaycastResult> raycastResults;
+
 #if DEBUG
         private const float MaxClickDistance = 500;
 
@@ -177,6 +183,8 @@ namespace Assets.Scripts
 #endif
 
         public int ExpForLevel(int lvl) => lvl < 1 || lvl >= 99 ? -1 : levelReqs[lvl - 1];
+
+        public Vector2Int PlayerPosition => TargetControllable != null ? TargetControllable.CellPosition : Vector2Int.zero;
 
         [NonSerialized] public PlayerState PlayerState;
 
@@ -358,6 +366,8 @@ namespace Assets.Scripts
                         skillScroll = cursorMaxSkillLvl;
                     cursorSkillLvl = Mathf.RoundToInt(skillScroll);
                     cursorSkillTarget = target;
+                    if (target == SkillTarget.Any || target == SkillTarget.Ally)
+                        UiManager.Instance.PartyPanel.StartSkillOnCursor();
                     return true;
                 case SkillTarget.Passive:
                     Debug.LogWarning($"Can't cast passive skill!");
@@ -389,6 +399,8 @@ namespace Assets.Scripts
             cursorSkillLvl = 1;
             cursorSkillTarget = target;
             cursorItemId = cursorItem;
+            if (target == SkillTarget.Any || target == SkillTarget.Ally)
+                UiManager.Instance.PartyPanel.StartSkillOnCursor();
         }
 
         public void SetCameraViewpoint(MapViewpoint viewpoint)
@@ -485,28 +497,28 @@ namespace Assets.Scripts
             var percent = exp / (float)maxExp;
 
             CharacterDetailBox.ExpSlider.gameObject.SetActive(true);
-            
+
             var showValue = GameConfig.Data.ShowBaseExpValue;
             var showPercent = GameConfig.Data.ShowBaseExpPercent;
-            
+
             if (showValue)
             {
-                if(showPercent)
+                if (showPercent)
                     CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
                 else
                     CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp}";
-            } 
+            }
             else if (showPercent)
                 CharacterDetailBox.ExpDisplay.text = $"{percent * 100f:F1}%";
             else
                 CharacterDetailBox.ExpDisplay.text = $"";
-            
+
             CharacterDetailBox.ExpSlider.value = percent;
             //
             // CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
             // CharacterDetailBox.ExpSlider.value = percent;
         }
-        
+
         public void UpdatePlayerJobExp(int exp, int maxExp)
         {
             if (maxExp <= 0)
@@ -519,22 +531,22 @@ namespace Assets.Scripts
             var percent = exp / (float)maxExp;
 
             CharacterDetailBox.JobExpSlider.gameObject.SetActive(true);
-            
+
             var showValue = GameConfig.Data.ShowJobExpValue;
             var showPercent = GameConfig.Data.ShowJobExpPercent;
 
             if (showValue)
             {
-                if(showPercent)
+                if (showPercent)
                     CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
                 else
                     CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp}";
-            } 
+            }
             else if (showPercent)
                 CharacterDetailBox.JobExpDisplay.text = $"{percent * 100f:F1}%";
             else
                 CharacterDetailBox.JobExpDisplay.text = $"";
-            
+
             CharacterDetailBox.JobExpSlider.value = percent;
         }
 
@@ -806,7 +818,7 @@ namespace Assets.Scripts
             {
                 var hit = hits[i];
                 var anim = GetHitAnimator(hit);
-                
+
                 if (anim.IsHidden)
                     continue;
 
@@ -965,38 +977,50 @@ namespace Assets.Scripts
             var leftClick = Input.GetMouseButtonDown(0);
             var rightClick = Input.GetMouseButtonDown(1);
 
-            var tempSkillTarget = cursorSkillTarget;
-
-            var preferEnemyTarget = !(hasSkillOnCursor && tempSkillTarget == SkillTarget.Ally);
+            var preferEnemyTarget = !(hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally);
             var isAlive = controllable.SpriteAnimator.State != SpriteState.Dead;
             var isSitting = controllable.SpriteAnimator.State == SpriteState.Sit;
 
             var isSkillEnemyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Enemy;
             var isSkillAllyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally;
+            var canTargetPartyList = hasSkillOnCursor && isSkillAllyTargeted && UiManager.Instance.PartyPanel.HoverEntry != null;
 
             //cancel skill on cursor if we can't use a skill
             if (hasSkillOnCursor && (!isAlive || isSitting))
+            {
                 hasSkillOnCursor = false;
-            if (hasSkillOnCursor && cursorSkill == CharacterSkill.Heal)
+                UiManager.Instance.PartyPanel.EndSkillOnCursor();
+            }
+
+            if (hasSkillOnCursor && cursorSkillTarget == SkillTarget.Any)
             {
                 if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+                {
                     preferEnemyTarget = true;
-                isSkillEnemyTargeted = true;
+                    isSkillEnemyTargeted = true;
+                    isSkillAllyTargeted = false;
+                }
+                else
+                {
+                    preferEnemyTarget = false;
+                    isSkillEnemyTargeted = false;
+                    isSkillAllyTargeted = true;
+                }
             }
 
             var walkMask = 1 << LayerMask.NameToLayer("WalkMap");
             var groundMask = 1 << LayerMask.NameToLayer("Ground");
 
-            var ignoreEntity = (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt));
+            var ignoreEntity = false; //(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt));
 
             var hasEntity = FindEntityUnderCursor(ray, preferEnemyTarget, out var mouseTarget);
             var hasGround = FindMapPositionUnderCursor(ray, out var groundPosition, out var intersectLocation, walkMask);
             if (!hasGround) hasGround = FindMapPositionUnderCursor(ray, out groundPosition, out intersectLocation, groundMask, true);
             var hasSrcPos = WalkProvider.GetMapPositionForWorldPosition(Target.transform.position, out var srcPosition);
             var hasTargetedSkill = hasSkillOnCursor && (isSkillEnemyTargeted || isSkillAllyTargeted);
-            var hasGroundSkill = hasSkillOnCursor && tempSkillTarget == SkillTarget.Ground;
+            var hasGroundSkill = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ground;
             var hasItem = FindItemUnderCursor(ray, out var item);
-            
+
             var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill && !ignoreEntity;
             var canCurrentlyTarget = canInteract &&
                                      ((hasSkillOnCursor && ((mouseTarget.IsAlly && isSkillAllyTargeted) || (!mouseTarget.IsAlly && isSkillEnemyTargeted))) ||
@@ -1008,8 +1032,13 @@ namespace Assets.Scripts
             var canMove = ClickDelay <= 0 && isAlive && !isSitting && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl);
             var showEntityName = hasEntity && !isOverUi;
 
-            var cancelSkill = (hasSkillOnCursor && rightClick) || (hasSkillOnCursor && leftClick && hasTargetedSkill && !hasEntity);
-            if (cancelSkill) hasSkillOnCursor = hasGroundSkill = hasTargetedSkill = leftClick = rightClick = false; //lol
+            var cancelSkill = (hasSkillOnCursor && rightClick) || (hasSkillOnCursor && leftClick && hasTargetedSkill && !hasEntity && !canTargetPartyList);
+            if (cancelSkill)
+            {
+                hasSkillOnCursor = hasGroundSkill = hasTargetedSkill = leftClick = rightClick = false; //lol
+                UiManager.Instance.PartyPanel.EndSkillOnCursor();
+            }
+
 
             var displayCursor = canClickEnemy ? GameCursorMode.Attack : GameCursorMode.Normal;
             if (canClickNpc) displayCursor = GameCursorMode.Dialog;
@@ -1050,18 +1079,26 @@ namespace Assets.Scripts
                 return displayCursor;
             }
 
-            if (canClickEnemy && leftClick)
+            if ((canClickEnemy || canTargetPartyList) && leftClick)
             {
                 if (!hasTargetedSkill)
                     NetworkManager.Instance.SendAttack(mouseTarget.Id);
                 else
                 {
-                    if(!isCursorSkillItem)
+                    if (canTargetPartyList)
+                    {
+                        var partyMember = UiManager.Instance.PartyPanel.HoverEntry.PartyMemberInfo;
+                        if (partyMember != null && partyMember.Controllable != null)
+                            mouseTarget = partyMember.Controllable;
+                    }
+
+                    if (!isCursorSkillItem)
                         NetworkManager.Instance.SendSingleTargetSkillAction(mouseTarget.Id, cursorSkill, cursorSkillLvl);
                     else
                         NetworkManager.Instance.SendUseItem(cursorItemId, mouseTarget.Id);
                     hasSkillOnCursor = false;
                     isCursorSkillItem = false;
+                    UiManager.Instance.PartyPanel.EndSkillOnCursor();
                 }
 
                 return displayCursor;
@@ -1071,7 +1108,7 @@ namespace Assets.Scripts
             {
                 WalkProvider.DisableRenderer();
                 UiManager.Instance.ItemOverlay.ShowItem(item);
-                
+
                 if (leftClick)
                 {
                     NetworkManager.Instance.SendPickUpItem(item.EntityId);
@@ -1086,9 +1123,10 @@ namespace Assets.Scripts
             {
                 //they clicked, they have a targeted skill, but they have no target
                 hasSkillOnCursor = false;
+                UiManager.Instance.PartyPanel.EndSkillOnCursor();
                 return displayCursor;
             }
-            
+
             //if our cursor isn't over ground there's no real point in continuing.
             if (!hasGround)
                 return displayCursor;
@@ -1149,6 +1187,7 @@ namespace Assets.Scripts
                 //TODO: we should inform the user it isn't valid here
 
                 hasSkillOnCursor = false;
+                UiManager.Instance.PartyPanel.EndSkillOnCursor();
                 return GameCursorMode.Normal; //the skill is no longer on our cursor so no point in keeping skill cursor
             }
 
@@ -1250,13 +1289,13 @@ namespace Assets.Scripts
                     EntryEffect.LaunchEntryAtLocation(target.transform.position + new Vector3(0f, 0f, 4f));
                     return;
             }
-            
+
             if (!EffectIdLookup.TryGetValue(effect, out var id))
             {
                 AppendError($"Could not find effect with name {effect}.");
                 return;
             }
-            
+
             AttachEffectToEntity(id, target);
         }
 
@@ -1493,13 +1532,13 @@ namespace Assets.Scripts
             if (!hasFocus)
                 isHolding = false;
         }
-        
+
         private IEnumerator DelayedExecution(Action action, float time)
         {
             yield return new WaitForSeconds(time);
             action();
         }
-        
+
         public void DelayedExecuteAction(Action action, float time)
         {
             StartCoroutine(DelayedExecution(action, time));
@@ -1515,7 +1554,7 @@ namespace Assets.Scripts
 
             if (shakeStepProgress <= 0)
                 shakeStepProgress += 1f;
-            
+
             shakePos = shakeTarget;
             shakeTarget = Random.insideUnitSphere * Mathf.Clamp(ShakeTime, 0, 0.3f);
         }
@@ -1551,6 +1590,7 @@ namespace Assets.Scripts
 
             var pointerOverUi = EventSystem.current.IsPointerOverGameObject();
             var selected = EventSystem.current.currentSelectedGameObject;
+            var blockScrollZoom = false;
 
             if (!UiManager.Instance.IsCanvasVisible)
             {
@@ -1558,10 +1598,28 @@ namespace Assets.Scripts
                 selected = null;
             }
 
+            //special case, we want to be able to click under the text window, but it needs to be a raycast target so we can scroll wheel chat
+            if (pointerOverUi && selected == null)
+            {
+                var pointerEvent = ExtendedStandaloneInputModule.GetPointerEventData();
+                if (pointerEvent.pointerEnter.name == "Viewport")
+                {
+                    blockScrollZoom = true;
+                    pointerOverUi = false;
+                    selected = null;
+                }
+
+                if (pointerEvent.pointerEnter.name == "Partymember")
+                {
+                    pointerOverUi = false;
+                    selected = null;
+                }
+            }
+            
             InTextBox = false;
             if (selected != null && !InItemInputBox)
                 InTextBox = selected.GetComponent<TMP_InputField>() != null;
-            
+
             var inInputUI = InTextBox || InItemInputBox;
 
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -1570,7 +1628,10 @@ namespace Assets.Scripts
                 //Debug.Log(EventSystem.current.currentSelectedGameObject);
 
                 if (hasSkillOnCursor)
+                {
                     hasSkillOnCursor = false;
+                    UiManager.Instance.PartyPanel.EndSkillOnCursor();
+                }
 
                 if (InItemInputBox)
                 {
@@ -1686,7 +1747,7 @@ namespace Assets.Scripts
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.A))
                 UiManager.Instance.StatusWindow.ToggleVisibility();
-                
+
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
             if ((Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.F6)) && Application.isEditor && Recorder != null)
@@ -1775,13 +1836,14 @@ namespace Assets.Scripts
             }
             else
             {
-                if(!isCursorSkillItem)
+                if (!isCursorSkillItem)
                     UiManager.Instance.ActionTextDisplay.SetSkillTargeting(cursorSkill, cursorSkillLvl);
                 else
                 {
                     var item = PlayerState.Inventory.GetInventoryItem(cursorItemId);
                     UiManager.Instance.ActionTextDisplay.SetItemTargeting(item.ProperName(), cursorSkillLvl);
                 }
+
                 CursorManager.UpdateCursor(cursor, cursorSkillLvl);
             }
 
@@ -1806,7 +1868,7 @@ namespace Assets.Scripts
 
             var screenRect = new Rect(0, 0, Screen.width, Screen.height);
 
-            if (!pointerOverUi && screenRect.Contains(Input.mousePosition))
+            if (!pointerOverUi && screenRect.Contains(Input.mousePosition) && !blockScrollZoom)
             {
                 if (!hasSkillOnCursor)
                     Distance += Input.GetAxis("Mouse ScrollWheel") * 20 * ctrlKey;
@@ -1819,6 +1881,16 @@ namespace Assets.Scripts
                         cursorSkillLvl = Mathf.RoundToInt(skillScroll);
                     }
                     // Debug.Log(skillScroll);
+                }
+            }
+
+            if (pointerOverUi && UiManager.Instance.PartyPanel.HoverEntry != null && !blockScrollZoom)
+            {
+                if (canChangeCursorLevel) //probably should put this in a function or something instead of duplicating the code...
+                {
+                    skillScroll += Input.GetAxis("Mouse ScrollWheel") * 10f;
+                    skillScroll = Mathf.Clamp(skillScroll, 1, cursorMaxSkillLvl);
+                    cursorSkillLvl = Mathf.RoundToInt(skillScroll);
                 }
             }
 
@@ -1901,7 +1973,7 @@ namespace Assets.Scripts
                 }
             }
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             if (!inInputUI && Input.GetKeyDown(KeyCode.Z))
             {
                 if (Mathf.Approximately(Time.timeScale, 1f))
@@ -1909,7 +1981,7 @@ namespace Assets.Scripts
                 else
                     Time.timeScale = 1f;
             }
-            #endif
+#endif
 
             if (CinemachineMode)
                 CinemachineFollow();

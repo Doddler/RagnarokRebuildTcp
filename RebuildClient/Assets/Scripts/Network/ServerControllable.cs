@@ -46,6 +46,8 @@ namespace Assets.Scripts.Network
         public Vector3 RealPosition;
         public float ShadowSize;
         public bool IsAlly;
+        public bool IsPartyMember;
+        public bool IsPartyLeader;
         public bool IsMale;
         public bool IsMainCharacter;
         public bool IsInteractable { get; set; }
@@ -57,15 +59,25 @@ namespace Assets.Scripts.Network
         public int Sp;
         public int MaxSp;
         public int WeaponClass;
+        public string PartyName;
 
         public GameObject PopupDialog;
         public List<Ragnarok3dEffect> EffectList;
 
         public Dictionary<EquipPosition, GameObject> AttachedComponents = new();
 
-        public string DisplayName => CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay || Name.StartsWith("[NPC]")
-            ? Name
-            : $"Lv.{Level} {Name}";
+        public string DisplayName
+        {
+            get
+            {
+                if(CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay || Name.StartsWith("[NPC]"))
+                    return name;
+                if(string.IsNullOrWhiteSpace(PartyName))
+                    return $"Lv.{Level} {Name}";
+                
+                return $"Lv.{Level} {Name}\n<size=-2>[{PartyName}]";
+            }
+        }
 
         [NonSerialized] public Vector3 CounterHitDir;
 
@@ -1414,7 +1426,7 @@ namespace Assets.Scripts.Network
                     0 => "_enemy_hit_normal1.ogg",
                     1 => "_enemy_hit_normal2.ogg",
                     2 => "_enemy_hit_normal3.ogg",
-                    3 => "_enemy_hit_normal4.ogg"
+                    _ => "_enemy_hit_normal4.ogg"
                 };
                 AudioManager.Instance.OneShotSoundEffect(Id, sound, transform.position, 0.8f);
             }

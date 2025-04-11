@@ -29,7 +29,9 @@ namespace Assets.Scripts.Sprites
         public int Headgear3;
         public int Weapon;
         public int Shield;
-        public List<CharacterStatusEffect> CharacterStatusEffects;
+        public int PartyId;
+        public string PartyName;
+        public Dictionary<CharacterStatusEffect, float> CharacterStatusEffects;
     }
 
 	public struct MonsterSpawnParameters
@@ -44,6 +46,6 @@ namespace Assets.Scripts.Sprites
         public int Hp;
         public int MaxHp;
         public bool Interactable;
-        public List<CharacterStatusEffect> CharacterStatusEffects;
+        public Dictionary<CharacterStatusEffect, float> CharacterStatusEffects;
     }
 }

@@ -14,6 +14,12 @@ public enum ConnectionStatus
     Disconnected,
 }
 
+public enum ActiveDbAction
+{
+    None,
+    CreateParty
+}
+
 public class NetworkConnection
 {
     public WebSocket Socket { get; set; }
@@ -30,6 +36,8 @@ public class NetworkConnection
     public CancellationTokenSource CancellationSource { get; set; }
     public LoadCharacterRequest? LoadCharacterRequest { get; set; }
     public StorageLoadRequest? LoadStorageRequest { get; set; }
+    public CreatePartyRequest? CreatePartyRequest { get; set; }
+    public ActiveDbAction ActiveDbAction { get; set; }
 
     //when this connection has its entity removed from the world it is no longer alive. Used to prevent queueing removal while the entity is awaiting recycling.
     //this happens because the server may remove the player AND the connection might also queue the removal of the player at the same time.
@@ -41,6 +49,7 @@ public class NetworkConnection
         AccountName = "[Account Not Loaded]";
         CancellationSource = new CancellationTokenSource();
         Cancellation = CancellationSource.Token;
+        ActiveDbAction = ActiveDbAction.None;
         IsAlive = true;
     }
 

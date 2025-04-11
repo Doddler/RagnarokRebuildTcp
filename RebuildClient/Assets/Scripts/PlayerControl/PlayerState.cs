@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Data;
+using Assets.Scripts.Network;
+using Assets.Scripts.UI.Hud;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -41,9 +44,79 @@ namespace Assets.Scripts.PlayerControl
         public int[] EquippedItems = new int[10];
         public HashSet<int> EquippedBagIdHashes = new();
         public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
+        public bool IsInParty;
+        public int PartyId;
+        public int PartyLeader = -1;
+        public int PartyMemberId;
+        public int InvitedPartyId = -1;
+        public string PartyName;
+        public string MapName;
+        public Dictionary<int, PartyMemberInfo> PartyMembers = new();
+        public Dictionary<int, int> PartyMemberEntityLookup = new(); //member id to entity id
+        public Dictionary<int, int> PartyMemberIdLookup = new(); //entity id to member id
 
         public int GetData(PlayerStat stat) => CharacterData[(int)stat];
         public int GetStat(CharacterStat stat) => CharacterStats[(int)stat];
+
+        public void SortPartyMembers()
+        {
+            
+        }
+        
+        public void UpdatePlayerName()
+        {
+            if(IsInParty && PartyLeader == PartyMemberId)
+                CameraFollower.Instance.CharacterDetailBox.CharacterName.text = $"★{PlayerName}";
+            else
+                CameraFollower.Instance.CharacterDetailBox.CharacterName.text = PlayerName;
+        }
+
+        public void AssignPartyMemberControllable(int entityId, ServerControllable controllable)
+        {
+            if(PartyMemberIdLookup.TryGetValue(entityId, out var partyMemberId) && PartyMembers.TryGetValue(partyMemberId, out var member))
+                member.Controllable = controllable;
+        }
+
+        public void RegisterOrUpdatePartyMember(PartyMemberInfo info, int entityId = -1)
+        {
+            var memberId = info.PartyMemberId;
+            PartyMembers[memberId] = info;
+            if(info.PlayerName == PlayerName || entityId == EntityId)
+                PartyMemberId = memberId;
+            
+            if (entityId > 0)
+            {
+                PartyMemberEntityLookup.TryAdd(memberId, entityId);
+                PartyMemberIdLookup.TryAdd(entityId, memberId);
+            }
+            else
+            {
+                PartyMemberEntityLookup.Remove(memberId);
+                PartyMemberIdLookup.Remove(entityId);
+            }
+
+            if (info.IsLeader)
+                PartyLeader = memberId;
+            
+            MinimapController.Instance.RefreshPartyMembers();
+        }
+
+        public PartyMemberInfo RemovePartyMember(int memberId)
+        {
+            PartyMembers.Remove(memberId, out var info);
+            if (PartyLeader == memberId)
+                PartyLeader = -1;
+            
+            if (PartyMemberEntityLookup.TryGetValue(memberId, out var entityId))
+            {
+                PartyMemberIdLookup.Remove(entityId);
+                PartyMemberEntityLookup.Remove(memberId);
+            }
+            
+            MinimapController.Instance.RefreshPartyMembers();
+
+            return info;
+        }
 
         public PlayerState()
         {

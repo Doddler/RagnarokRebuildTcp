@@ -33,7 +33,8 @@ public class SaveCharacterRequest : IDbRequest
     private int slot;
     private int itemDataSize;
     private int dataLength;
-
+    private int? partyId;
+    
     public SaveCharacterRequest(string newCharacterName, int accountId)
     {
         AccountId = accountId;
@@ -62,6 +63,8 @@ public class SaveCharacterRequest : IDbRequest
         pos = character.Position;
         savePoint = player.SavePosition;
         slot = player.CharacterSlot;
+
+        partyId = player.Party?.PartyId;
 
         //store player data (data, npc flags, learned skills, status effects)
         data = PlayerDataDbHelper.StorePlayerDataForDatabaseUse(player, out dataLength);
@@ -106,6 +109,7 @@ public class SaveCharacterRequest : IDbRequest
             NpcFlags = null,
             SkillDataLength = 0,
             NpcFlagsLength = 0,
+            PartyId = partyId,
             VersionFormat = PlayerDataDbHelper.CurrentPlayerSaveVersion
         };
         

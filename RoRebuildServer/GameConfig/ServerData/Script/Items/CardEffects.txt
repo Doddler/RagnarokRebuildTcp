@@ -347,7 +347,7 @@ Item("Panzer_Goblin_Card") { OnEquip: AddStat(AddCritDamage, 10); } //should add
 Item("Permeter_Card") { OnEquip: AddStat(AddResistElementUndead, 15); AddStat(AddResistElementDark, 15); }
 Item("Fur_Seal_Card") { OnEquip: AddStat(AddHit, 10); AddStat(AddFlee, 3); } //should add bonus crit vs undead/demon fro acolyte
 Item("Punk_Card") { OnEquip: } //autospell quagmire
-Item("Penomena_Card") { OnEquip: AddStat(AddResistElementNeutral, 30); }
+Item("Penomena_Card") { OnEquip: AddStat(AddResistRaceFormless, 30); }
 Item("Pest_Card") { OnEquip: } //petrify when attacked
 Item("False_Angel_Card") { OnValidate: return false; OnEquip: } //sp from angel
 Item("Mobster_Card") { OnEquip: AddStat(AddCritDamage, 15); } //should add 4 crit to thief
@@ -408,7 +408,7 @@ Item("Archdam_Card") { OnValidate: return false; OnEquip: }
 Item("White_Lady_Card") { OnValidate: return false; OnEquip: }
 Item("Green_Maiden_Card") { OnValidate: return false; OnEquip: }
 Item("Vesper_Card") { OnValidate: return false; OnEquip: }
-Item("Orc_Baby_Card") { OnEquip: AddStat(AddFlee, 10); if(Refine > 8) {AddStat(AddFlee, 5); AddStat(AddResistElementNeutral, 5);} }
+Item("Orc_Baby_Card") { OnEquip: AddStat(AddResistElementNeutral, 10); AddStat(AddFlee, 10); if(Refine > 8) {AddStat(AddFlee, 5); AddStat(AddResistElementNeutral, 5);} }
 Item("Lady_Tanee_Card") { OnValidate: return false; OnEquip: }
 Item("Grove_Card") { OnValidate: return false; OnEquip: }
 Item("Gold_Acidus_Card") { OnValidate: return false; OnEquip: }

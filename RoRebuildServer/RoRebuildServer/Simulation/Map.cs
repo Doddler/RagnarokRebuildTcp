@@ -461,10 +461,10 @@ public class Map
                 //if a nearby character is a player, we should track their visibility ourselves
                 if (nearbyEntity.Type == EntityType.Player)
                 {
-                    if (p.Entity == nearbyEntity) // || !nearbyCharacter.AdminHidden)
+                    //if (p.Entity != nearbyEntity) // || !nearbyCharacter.AdminHidden)
                     {
                         AddPlayerVisibility(nearbyCharacter, ch); //We see nearbyCharacter
-                        if(!ch.AdminHidden)
+                        if(!ch.AdminHidden || p.Entity == nearbyEntity)
                             CommandBuilder.AddRecipient(nearbyEntity);
                     }
                 }

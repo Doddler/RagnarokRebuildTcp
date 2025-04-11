@@ -19,7 +19,7 @@ namespace Assets.Scripts.Effects.PrimitiveData
         public float AlphaMax = 0;
         public float Angle;
         public float AngleSpeed;
-        public Color32 Color = new Color32(255, 255, 255, 255);
+        public Color Color = UnityEngine.Color.white;
         public Vector4 ColorChange = Vector4.zero;
         public bool IsStandingQuad; //a standing quad is one where y is up instead of z. Used in billboards.
 
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Effects.PrimitiveData
             AlphaMax = 0;
             Angle = 0;
             AngleSpeed = 0;
-            Color = new Color32(255, 255, 255, 255);
+            Color = Color.white;
             IsStandingQuad = false;
             FadeOutTime = 0;
             Flags = RoPrimitiveHandlerFlags.None;

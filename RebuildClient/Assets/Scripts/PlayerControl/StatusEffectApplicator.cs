@@ -15,18 +15,20 @@ namespace Assets.Scripts.PlayerControl
 {
     public class StatusEffectState
     {
-        private readonly List<CharacterStatusEffect> activeStatusEffects = new();
+        //private readonly List<CharacterStatusEffect> activeStatusEffects = new();
+        private readonly Dictionary<CharacterStatusEffect, float> activeStatusEffects = new();
 
         public static Color StoneColor = new Color(0.8f, 0.8f, 0.8f);
 
-        public bool HasStatusEffect(CharacterStatusEffect status) => activeStatusEffects.Contains(status);
+        public bool HasStatusEffect(CharacterStatusEffect status) => activeStatusEffects.ContainsKey(status);
+        public Dictionary<CharacterStatusEffect, float> GetStatusEffects() => activeStatusEffects;
 
         private static void UpdateColorForStatus(ServerControllable src)
         {
             var color = Color.white;
             var priority = -1;
             
-            foreach (var s in src.StatusEffectState.activeStatusEffects)
+            foreach (var (s, _) in src.StatusEffectState.activeStatusEffects)
             {
                 switch (s)
                 {
@@ -67,7 +69,6 @@ namespace Assets.Scripts.PlayerControl
             src.SpriteAnimator.Color = color;
         }
         
-
         public static void AddStatusToTarget(ServerControllable controllable, CharacterStatusEffect status, bool isNewEntity, float duration = 0)
         {
             if (controllable.StatusEffectState == null)
@@ -75,12 +76,18 @@ namespace Assets.Scripts.PlayerControl
 
             var state = controllable.StatusEffectState;
 
-            if (!state.activeStatusEffects.Contains(status))
-                state.activeStatusEffects.Add(status);
+            state.activeStatusEffects[status] = duration + Time.timeSinceLevelLoad;
 
             UpdateColorForStatus(controllable);
             
             Debug.Log($"Character {controllable.DisplayName} gained status {status}");
+
+            if (controllable.CharacterType == CharacterType.Player && PlayerState.Instance.IsInParty &&
+                PlayerState.Instance.PartyMemberIdLookup.TryGetValue(controllable.Id, out var partyMemberId))
+            {
+                if(UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
+                    panel.AddStatusEffect(status, duration);
+            }
             
             switch (status)
             {
@@ -199,6 +206,13 @@ namespace Assets.Scripts.PlayerControl
             UpdateColorForStatus(controllable);
 
             Debug.Log($"Character {controllable.DisplayName} loses status {status}");
+            
+            if (controllable.CharacterType == CharacterType.Player && PlayerState.Instance.IsInParty &&
+                PlayerState.Instance.PartyMemberIdLookup.TryGetValue(controllable.Id, out var partyMemberId))
+            {
+                if(UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
+                    panel.RemoveStatusEffect(status);
+            }
 
             switch (status)
             {

@@ -158,6 +158,12 @@ namespace RoRebuildServer.Migrations
                     b.Property<int>("NpcFlagsLength")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("OwnedPartyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("PartyId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<byte[]>("SkillData")
                         .HasColumnType("BLOB");
 
@@ -180,7 +186,26 @@ namespace RoRebuildServer.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
+                    b.HasIndex("OwnedPartyId");
+
+                    b.HasIndex("PartyId");
+
                     b.ToTable("Character");
+                });
+
+            modelBuilder.Entity("RoRebuildServer.Database.Domain.DbParty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Party");
                 });
 
             modelBuilder.Entity("RoRebuildServer.Database.Domain.RoUserAccount", b =>
@@ -364,6 +389,14 @@ namespace RoRebuildServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RoRebuildServer.Database.Domain.DbParty", "OwnedParty")
+                        .WithMany()
+                        .HasForeignKey("OwnedPartyId");
+
+                    b.HasOne("RoRebuildServer.Database.Domain.DbParty", "Party")
+                        .WithMany("Characters")
+                        .HasForeignKey("PartyId");
+
                     b.OwnsOne("RoRebuildServer.Database.Domain.DbSavePoint", "SavePoint", b1 =>
                         {
                             b1.Property<Guid>("DbCharacterId")
@@ -391,6 +424,10 @@ namespace RoRebuildServer.Migrations
 
                     b.Navigation("Account");
 
+                    b.Navigation("OwnedParty");
+
+                    b.Navigation("Party");
+
                     b.Navigation("SavePoint");
                 });
 
@@ -405,10 +442,14 @@ namespace RoRebuildServer.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("RoRebuildServer.Database.Domain.DbParty", b =>
+                {
+                    b.Navigation("Characters");
+                });
+
             modelBuilder.Entity("RoRebuildServer.Database.Domain.RoUserAccount", b =>
                 {
-                    b.Navigation("CharacterStorage")
-                        .IsRequired();
+                    b.Navigation("CharacterStorage");
 
                     b.Navigation("Characters");
                 });

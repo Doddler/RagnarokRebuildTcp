@@ -2,6 +2,7 @@ using Assets.Scripts.Network;
 using Assets.Scripts.Network.PacketBase;
 using Assets.Scripts.Network.IncomingPacketHandlers;
 using Assets.Scripts.Network.IncomingPacketHandlers.Character;
+using Assets.Scripts.Network.IncomingPacketHandlers.Party;
 using Assets.Scripts.Network.IncomingPacketHandlers.Combat;
 using Assets.Scripts.Network.IncomingPacketHandlers.Environment;
 using Assets.Scripts.Network.IncomingPacketHandlers.Network;
@@ -14,7 +15,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[94];
+			handlers = new ClientPacketHandlerBase[99];
 			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -109,6 +110,11 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[91] = new InvalidPacket(); //AdminCharacterAction
 			handlers[92] = new PacketChangePlayerSpecialActionState(); //ChangePlayerSpecialActionState
 			handlers[93] = new PacketRefreshGrantedSkills(); //RefreshGrantedSkills
+			handlers[94] = new InvalidPacket(); //CreateParty
+			handlers[95] = new PacketInvitePartyMember(); //InvitePartyMember
+			handlers[96] = new PacketAcceptPartyInvite(); //AcceptPartyInvite
+			handlers[97] = new PacketUpdateParty(); //UpdateParty
+			handlers[98] = new PacketNotifyPlayerPartyChange(); //NotifyPlayerPartyChange
 		}
 	}
 }

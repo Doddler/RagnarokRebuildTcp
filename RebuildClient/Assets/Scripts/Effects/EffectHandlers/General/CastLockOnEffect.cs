@@ -38,6 +38,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 data.MaxSize = data.Size;
                 data.MinSize = new Vector2(20 / 10f, 20 / 10f);
                 data.Flags = RoPrimitiveHandlerFlags.CycleColors;
+                data.Alpha = 255;
+                data.AlphaMax = 255;
                 data.Color = new Color(250 / 255f, 150 / 255f, 150 / 255f, 1f);
                 data.ColorChange = new Vector4(0f, 1.5f, 1.5f, 0f);
                 data.RGBCycleDelay = 20f / 60f;

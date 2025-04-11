@@ -1163,6 +1163,18 @@
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 97,
+      "Name": "Demonstration",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

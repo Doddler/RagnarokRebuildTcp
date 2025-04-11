@@ -197,6 +197,8 @@ namespace Assets.Scripts.Utility
             UiManager.Instance.ConfigManager.RefreshAudioLevels(); //why unity does doing this in onAwake do literally nothing?
             UiManager.Instance.StatusWindow.ResetStatChanges(); //clear existing changes
 
+            PlayerState.Instance.MapName = newMap.Code;
+
 			if (needAudioChange)
 			{
 				AudioManager.Instance.PlayBgm(newMap.Music);

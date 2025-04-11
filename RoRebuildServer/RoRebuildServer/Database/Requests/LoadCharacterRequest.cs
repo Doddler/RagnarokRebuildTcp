@@ -6,14 +6,30 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RebuildSharedData.Util;
+using RoRebuildServer.Database.Domain;
 using RoRebuildServer.Database.Utility;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Parties;
 
 namespace RoRebuildServer.Database.Requests;
+
+public class PartyLoadResult
+{
+    public int PartyId;
+    public string PartyName;
+    public Guid? OwnerId;
+    public List<PartyLoadCharacter> Characters;
+}
+
+public class PartyLoadCharacter
+{
+    public Guid Id;
+    public string Name;
+}
 
 public class LoadCharacterRequest : IDbRequest
 {
@@ -29,6 +45,7 @@ public class LoadCharacterRequest : IDbRequest
     public CharacterBag? Inventory;
     public CharacterBag? Cart;
     public ItemEquipState? EquipState;
+    public Party Party;
 
     public byte[]? Data;
     public bool HasCharacter;
@@ -69,6 +86,32 @@ public class LoadCharacterRequest : IDbRequest
             DataLength = ch.DataLength;
             CharacterSlot = ch.CharacterSlot;
             SaveVersion = ch.VersionFormat;
+
+            //party stuff
+            if (ch.PartyId != null)
+            {
+                if (World.Instance.TryFindPartyById(ch.PartyId.Value, out var party))
+                    Party = party;
+                else
+                {
+                    var dbParty = await dbContext.Parties.AsNoTracking().Where(p => p.Id == ch.PartyId).Include(p => p.Characters)
+                        .Select(p => new PartyLoadResult()
+                        {
+                            PartyId = p.Id,
+                            PartyName = p.PartyName,
+                            Characters = p.Characters.Where(m=>m.PartyId == p.Id).Select(m => new PartyLoadCharacter() {Id = m.Id, Name = m.Name}).ToList()
+                        }).FirstOrDefaultAsync();
+                    if (dbParty != null)
+                    {
+                        Party = new Party(dbParty);
+                        if(!World.Instance.TryAddParty(Party)) //if another query somehow beat us to the punch
+                            if(World.Instance.TryFindPartyById(ch.PartyId.Value, out party))
+                                Party = party;
+                    }
+                }
+            }
+
+            //save point
             if (ch.SavePoint != null)
             {
                 Debug.Assert(!string.IsNullOrWhiteSpace(ch.SavePoint.MapName), "Map name should never be empty");
@@ -83,6 +126,7 @@ public class LoadCharacterRequest : IDbRequest
             else
                 SavePosition = new SavePosition();
 
+            //load skills and flags
             if (SaveVersion < 3)
             {
                 var skills = DbHelper.ReadDictionary<CharacterSkill>(ch.SkillData);
@@ -91,6 +135,7 @@ public class LoadCharacterRequest : IDbRequest
                 NpcFlags = DbHelper.ReadDictionary(ch.NpcFlags);
             }
 
+            //load items
             if (ch.ItemData != null)
             {
                 if (ch.VersionFormat == 0)

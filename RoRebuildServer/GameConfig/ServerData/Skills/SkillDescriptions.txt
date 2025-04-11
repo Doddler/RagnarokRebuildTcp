@@ -4,9 +4,9 @@ Basic adventuring techniques that unlock various features based on your skill le
 Level 1: Use emotes
 Level 2: Use sit (/sit or insert)
 Level 3: Enables trading (not implemented)
-Level 4: Join a party (not implemented)
+Level 4: Join a party
 Level 5: Use Kafra item storage
-Level 6: Create a party (not implemented)
+Level 6: Create a party
 Level 7: Use shout chat
 Level 8: Use Kafra zeny storage (not implemented)
 
@@ -203,6 +203,9 @@ Summon a Warp Portal that teleports players to a predetermined location.
 You may remember up to [SkillLevel] destinations by using /memo to register your current location.
 Only town and outdoor locations can be registered. Some locations far away from town may be too unstable to be valid destinations.
 The portal will automatically close after [5 + SkillLevel * 5] seconds or when 8 players have entered.
+
+::AquaBenedicta
+Create holy water. Requires you to be standing in water and consumes an empty bottle.
 
 //----------------Thief-------------------
 

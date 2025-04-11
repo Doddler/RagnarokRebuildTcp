@@ -102,10 +102,16 @@ public enum PacketType : byte
     
     MemoMapLocation,
     DeleteCharacter,
-
+    
     AdminCharacterAction,
     ChangePlayerSpecialActionState,
     [ServerOnlyPacket] RefreshGrantedSkills,
+
+    CreateParty,
+    InvitePartyMember,
+    AcceptPartyInvite,
+    UpdateParty,
+    NotifyPlayerPartyChange
 }
 
 public enum MessageType : byte

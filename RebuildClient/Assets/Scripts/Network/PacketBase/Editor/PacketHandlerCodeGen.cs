@@ -24,6 +24,7 @@ namespace Assets.Scripts.Network
 
             code.Append("using Assets.Scripts.Network;\nusing Assets.Scripts.Network.PacketBase;\nusing Assets.Scripts.Network.IncomingPacketHandlers;\n");
             code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.Character;\n");
+            code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.Party;\n");
             code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.Combat;\n");
             code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.Environment;\n");
             code.Append("using Assets.Scripts.Network.IncomingPacketHandlers.Network;\n");

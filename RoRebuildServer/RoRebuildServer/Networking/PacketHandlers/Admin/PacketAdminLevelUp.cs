@@ -35,6 +35,9 @@ public class PacketAdminLevelUp : IClientPacketHandler
                 character.Player.LevelUp();
             }
 
+            if (player.Party != null)
+                CommandBuilder.NotifyPartyOfChange(player.Party, player.PartyMemberId, PartyUpdateType.UpdatePlayer);
+
             character.Map!.AddVisiblePlayersAsPacketRecipients(character);
             CommandBuilder.LevelUp(character, newLevel);
             CommandBuilder.SendHealMulti(character, 0, HealType.None);

@@ -25,6 +25,7 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Items;
+using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
@@ -70,6 +71,10 @@ public class Player : IEntityAutoReset
 
     public SpecialPlayerActionState SpecialState;
     public Position SpecialStateTarget;
+
+    public Party? Party;
+    public int PartyMemberId;
+    public bool HasEnteredServer;
     
     public int GetItemIdForEquipSlot(EquipSlot slot) => Equipment.ItemIds[(int)slot];
 
@@ -213,6 +218,7 @@ public class Player : IEntityAutoReset
         WeaponClass = 0;
         LastEmoteTime = 0;
         StorageId = -1;
+        HasEnteredServer = false;
         LearnedSkills = null!;
         GrantedSkills = null;
         NpcFlags = null!;
@@ -238,6 +244,14 @@ public class Player : IEntityAutoReset
         Equipment = null!;
         EntityValueListPool<float>.Return(RecentAttackersList);
         RecentAttackersList = null!;
+
+        if (Party != null)
+        {
+            Party.UpdateOfflineMembers(); //our entity should be expired so it should get removed
+            Party = null;
+        }
+
+        PartyMemberId = 0;
 
         SavePosition.Reset();
     }
@@ -484,6 +498,9 @@ public class Player : IEntityAutoReset
 
         SetData(PlayerStat.Experience, curExp);
 
+        if(Party != null)
+            CommandBuilder.NotifyPartyOfChange(Party, PartyMemberId, PartyUpdateType.UpdatePlayer);
+
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.LevelUp(Character, level, curExp);
         CommandBuilder.SendHealMulti(Character, 0, HealType.None);
@@ -543,7 +560,6 @@ public class Player : IEntityAutoReset
 
         return exp;
     }
-
 
     public void AddStatPoints(Span<int> statChanges)
     {
@@ -891,6 +907,8 @@ public class Player : IEntityAutoReset
         currentSp -= spCost;
         SetStat(CharacterStat.Sp, currentSp);
         CommandBuilder.ChangeSpValue(this, currentSp, GetStat(CharacterStat.MaxSp));
+        if (Party != null)
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
 
         return true;
     }
@@ -905,6 +923,8 @@ public class Player : IEntityAutoReset
         currentSp -= spCost;
         SetStat(CharacterStat.Sp, currentSp);
         CommandBuilder.ChangeSpValue(this, currentSp, GetStat(CharacterStat.MaxSp));
+        if (Party != null)
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
 
         return true;
     }
@@ -1013,7 +1033,7 @@ public class Player : IEntityAutoReset
         
         if (Character.State == CharacterState.Sitting)
             regen *= 2;
-
+        
         if (regen < 1) regen = 1;
 
         if (regen + hp > maxHp)
@@ -1026,6 +1046,9 @@ public class Player : IEntityAutoReset
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             CommandBuilder.SendHealSingle(this, regen, HealType.None);
             CommandBuilder.ClearRecipients();
+
+            if (Party != null)
+                CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, false); //only update those out of range
         }
     }
 
@@ -1063,7 +1086,11 @@ public class Player : IEntityAutoReset
 
         SetStat(CharacterStat.Sp, sp + regen);
         if (regen > 0)
+        {
             CommandBuilder.ChangeSpValue(this, sp + regen, maxSp);
+            if(Party != null)
+                CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
+        }
     }
 
     public void Die()
@@ -1605,6 +1632,13 @@ public class Player : IEntityAutoReset
 
             if (CombatEntity.StatusContainer != null)
                 CombatEntity.StatusContainer.OnChangeMaps();
+
+            if (Party != null)
+            {
+                CommandBuilder.UpdatePartyMembersOfMapChange(this, mapName);
+                CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
+
+            }
         }
 
         return true;
@@ -1643,6 +1677,8 @@ public class Player : IEntityAutoReset
         if (InActionCooldown())
             return false;
         if (Character.State == CharacterState.Dead)
+            return false;
+        if (CombatEntity.IsCasting)
             return false;
         if (IsInNpcInteraction)
             return false;
@@ -1773,6 +1809,22 @@ public class Player : IEntityAutoReset
                     }
                 }
             }
+        }
+
+        if (Connection.ActiveDbAction != ActiveDbAction.None)
+        {
+            if (Connection.ActiveDbAction == ActiveDbAction.CreateParty)
+            {
+                if (Connection.CreatePartyRequest == null || Connection.CreatePartyRequest.HasFailed)
+                    Connection.ActiveDbAction = ActiveDbAction.None; //the CreatePartyRequest will probably already have notified failure
+                else if (Connection.CreatePartyRequest.IsComplete)
+                {
+                    //notify player that their party has been created
+                }
+                
+            }
+                    
+            
         }
         
         if (Character.QueuedAction == QueuedAction.Cast)

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Scripts.Data;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.Network.IncomingPacketHandlers.Party;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.Hud;
@@ -54,7 +56,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             var hp = 0;
             var sp = 0;
             var maxSp = 0;
-            List<CharacterStatusEffect> statuses = null; 
+            Dictionary<CharacterStatusEffect, float> statuses = null; 
 
             if (type == CharacterType.Player || type == CharacterType.Monster || type == CharacterType.PlayerLikeNpc)
             {
@@ -64,12 +66,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
                 while(msg.ReadBoolean()) //has status effects
                 {
-                    statuses ??= new List<CharacterStatusEffect>();
+                    statuses ??= new();
                     var status = (CharacterStatusEffect)msg.ReadByte();
                     var duration = msg.ReadFloat();
-                    statuses.Add(status);
+                    statuses.Add(status, duration);
                     
-                    Debug.Log($"{classId} has a status effect! {statuses[0]}");
+                    Debug.Log($"{classId} has a status effect! {status}");
 
                     if (id == Network.PlayerId)
                         StatusEffectPanel.Instance.AddStatusEffect(status, duration);
@@ -99,6 +101,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var shieldId = msg.ReadInt32();
                 sp = msg.ReadInt32();
                 maxSp = msg.ReadInt32();
+                var inParty = msg.ReadByte() == 1;
+                var partyId = 0;
+                var partyName = "";
+                if (inParty)
+                {
+                    partyId = msg.ReadInt32();
+                    partyName = msg.ReadString();
+                }
                 var isMain = Network.PlayerId == id;
                 if (isMain)
                 {
@@ -106,6 +116,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     State.PlayerName = name;
                     State.IsValid = true;
                     UiManager.Instance.SkillHotbar.LoadHotBarData(name);
+
+                    // State.PartyId = partyId;
+                    // State.PartyName = partyName;
+                    // State.IsInParty = partyId > 0;
+                    //PacketAcceptPartyInvite.LoadPartyMemberDetails(msg);
+                    // Debug.Log($"You are in party: {partyName}");
                 }
                 
                 Debug.Log("Name: " + name );
@@ -135,7 +151,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     Headgear2 = head2,
                     Headgear3 = head3,
                     Weapon = weaponId,
-                    Shield = shieldId
+                    Shield = shieldId,
+                    PartyId = partyId,
+                    PartyName = partyName
                 };
 
                 controllable = ClientDataLoader.Instance.InstantiatePlayer(ref playerData);

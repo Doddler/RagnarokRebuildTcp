@@ -67,6 +67,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                     data.Size = new Vector2(3f, 3f);
                     data.ScalingSpeed = -new Vector2(6, 6);
                     data.Alpha = 250;
+                    data.AlphaMax = 250;
                     data.AlphaSpeed = -3f * 60;
                     data.MinSize = Vector2.zero;
                     data.MaxSize = data.Size;
@@ -88,6 +89,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                     data.Size = new Vector2(1.0f, 0.5f);
                     data.ScalingSpeed = -data.Size / (25 / 60f);
                     data.Alpha = 150;
+                    data.AlphaMax = 150;
                     data.AlphaSpeed = -2.5f * 60;
                     data.MinSize = Vector2.zero;
                     data.MaxSize = data.Size;

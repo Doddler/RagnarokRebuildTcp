@@ -25,6 +25,8 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Server;
+using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Util;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -37,15 +39,18 @@ public class World
 
     public List<Instance> Instances = new();
     private ObjectPool<AreaOfEffect> AoEPool { get; set; }
-    
+
     private Channel<MapMoveRequest> moveRequests;
 
     private Dictionary<int, Entity> entityList = new();
-    //private Dictionary<string, int> mapIdLookup = new();
+    private Dictionary<string, Entity> playerNameLookup = new();
 
     private Dictionary<string, int> worldMapInstanceLookup = new();
     private ConcurrentBag<Entity> removeList = new();
-    
+
+    private ConcurrentDictionary<Guid, Entity> playerList = new();
+    private ConcurrentDictionary<int, Party> partyLookup = new();
+
     private int nextEntityId = 0;
     private int maxEntityId = 10_000_000;
 
@@ -59,6 +64,13 @@ public class World
     private bool reloadScriptsFlag = false;
 
     private readonly object aoeLock = new();
+    private readonly Lock entityLock = new();
+
+    public bool TryFindPartyById(int id, [NotNullWhen(true)] out Party? party) => partyLookup.TryGetValue(id, out party);
+    public bool TryAddParty(Party party) => partyLookup.TryAdd(party.PartyId, party);
+    public bool RemoveParty(Party party) => partyLookup.TryRemove(party.PartyId, out _);
+    public bool TryFindPlayerByGuid(Guid id, out Entity entity) => playerList.TryGetValue(id, out entity) && entity.IsAlive();
+    public bool TryFindPlayerByName(string name, out Entity entity) => playerNameLookup.TryGetValue(name, out entity) && entity.IsAlive();
 
     public World()
     {
@@ -70,7 +82,7 @@ public class World
 
         foreach (var instanceEntry in DataManager.InstanceList)
         {
-            if(!instanceEntry.IsWorldInstance)
+            if (!instanceEntry.IsWorldInstance)
                 continue;
 
             var instance = new Instance(this, instanceEntry);
@@ -78,19 +90,19 @@ public class World
             Instances.Add(instance);
             foreach (var map in instanceEntry.Maps)
             {
-                if(worldMapInstanceLookup.ContainsKey(map))
+                if (worldMapInstanceLookup.ContainsKey(map))
                     ServerLogger.LogWarning($"Could not add map '{map}' to instance {instanceEntry.Name} because that map is already assigned to the instance {Instances[worldMapInstanceLookup[map]].Name}");
                 worldMapInstanceLookup.Add(map, id);
                 mapCount++;
             }
         }
 
-        
-        moveRequests = Channel.CreateUnbounded<MapMoveRequest>(new UnboundedChannelOptions() {AllowSynchronousContinuations = false, SingleReader = true, SingleWriter = false});
+
+        moveRequests = Channel.CreateUnbounded<MapMoveRequest>(new UnboundedChannelOptions() { AllowSynchronousContinuations = false, SingleReader = true, SingleWriter = false });
 
         ServerLogger.Log($"World created using {mapCount} maps across {Instances.Count} instances placing a total of {nextEntityId} entities in {Time.CurrentDiagnosticsTime():F2}s.");
     }
-    
+
     public void FullyRemoveEntity(ref Entity entity, CharacterRemovalReason reason = CharacterRemovalReason.OutOfSight)
     {
         //important that this only happens on the player's map thread or between server updates on the main thread
@@ -115,7 +127,7 @@ public class World
             npc.RemoveAreaOfEffect();
             npc.RemoveSignal();
             npc.EndAllEvents();
-            
+
         }
 
         entityList.Remove(ch.Id);
@@ -130,6 +142,10 @@ public class World
 
     public void Update()
     {
+#if DEBUG
+        ZoneWorker.IsMainThread = false;
+#endif
+
         if (NetworkManager.IsSingleThreadMode)
         {
             for (var i = 0; i < Instances.Count; i++)
@@ -137,7 +153,11 @@ public class World
         }
         else
             Parallel.ForEach(Instances, instance => instance.Update());
-            
+
+#if DEBUG
+        ZoneWorker.IsMainThread = true;
+#endif
+
         PerformMoves();
         PerformRemovals();
 
@@ -198,13 +218,13 @@ public class World
 
             if (e.Type == EntityType.Npc || e.Type == EntityType.Monster)
             {
-                if(e.IsAlive())
+                if (e.IsAlive())
                     FullyRemoveEntity(ref e);
                 ids.Add(entity.Key);
             }
         }
 
-        foreach(var i in ids)
+        foreach (var i in ids)
             entityList.Remove(i);
     }
 
@@ -215,14 +235,13 @@ public class World
             instance.ReloadScripts();
         }
     }
-    
+
     public void CreateNpc(Map map, NpcSpawnDefinition spawn)
     {
         var e = EntityManager.New(EntityType.Npc);
         var ch = e.Get<WorldObject>();
         var npc = e.Get<Npc>();
-        
-        ch.Id = GetNextEntityId();
+
         ch.IsActive = true;
         ch.ClassId = spawn.SpriteId;
         ch.Entity = e;
@@ -241,30 +260,35 @@ public class World
         npc.Behavior = spawn.Behavior;
         npc.Character = ch;
 
+        using (entityLock.EnterScope())
+        {
+            ch.Id = GetNextEntityId();
+            entityList.Add(ch.Id, e);
+        }
+
         map.AddEntity(ref e);
-        if(spawn.DisplayType == CharacterDisplayType.Portal)
+
+        if (spawn.DisplayType == CharacterDisplayType.Portal)
             map.RegisterImportantEntity(ch);
-        
+
         if (npc.HasTouch)
         {
             var aoe = AoEPool.Get();
-            
+
             aoe.Area = Area.CreateAroundPoint(spawn.Position, spawn.Width, spawn.Height);
             aoe.Expiration = float.MaxValue;
             aoe.IsActive = true;
             aoe.NextTick = float.MaxValue;
             aoe.SourceEntity = e;
             aoe.Type = AoeType.NpcTouch;
-            
+
             map.CreateAreaOfEffect(aoe);
             npc.AreaOfEffect = aoe;
         }
 
-        entityList.Add(ch.Id, e);
-
-        if(!string.IsNullOrWhiteSpace(spawn.SignalName))
+        if (!string.IsNullOrWhiteSpace(spawn.SignalName))
             npc.RegisterSignal(spawn.SignalName);
-        
+
         npc.Behavior.Init(npc); //save this for last, the npc might do something silly like hide itself and needs to be on the map
     }
 
@@ -278,7 +302,7 @@ public class World
         if (!DataManager.NpcManager.EventBehaviorLookup.TryGetValue(eventName, out var behavior))
             throw new Exception($"Unable to create event \"{eventName}\" as the matching script could not be found.");
 
-        ch.Id = GetNextEntityId();
+        
         ch.IsActive = true;
         ch.AdminHidden = true;
         ch.ClassId = 0;
@@ -301,12 +325,16 @@ public class World
         if (owner.IsAlive())
             npc.ExpireEventWithoutOwner = true;
 
-        entityList.Add(ch.Id, e);
+        using (entityLock.EnterScope())
+        {
+            ch.Id = GetNextEntityId();
+            entityList.Add(ch.Id, e);
+        }
 
         map.AddEntity(ref e);
 
         npc.Behavior.InitEvent(npc, param1, param2, param3, param4, paramString);
-        
+
         return e;
     }
 
@@ -317,7 +345,7 @@ public class World
 
         var map = config.Map;
         var area = Area.CreateAroundPoint(config.Position, config.Area);
-        
+
         connection.LoadCharacterRequest = request;
         var isRespawn = true;
 
@@ -327,7 +355,7 @@ public class World
             area = Area.CreateAroundPoint(request.Position, 0);
             isRespawn = false;
         }
-        
+
         if (debug.DebugMapOnly && !string.IsNullOrWhiteSpace(debug.DebugMapName))
         {
             map = debug.DebugMapName;
@@ -349,7 +377,7 @@ public class World
         }
 
         var playerEntity = NetworkManager.World.CreatePlayer(connection, map, area, isRespawn);
-        
+
         connection.Entity = playerEntity;
         connection.LastKeepAlive = Time.ElapsedTime;
         connection.Character = playerEntity.Get<WorldObject>();
@@ -359,18 +387,24 @@ public class World
         connection.Player = networkPlayer;
         CommandBuilder.SendUpdatePlayerData(connection.Player);
 
+        playerList[connection.Player.Id] = connection.Entity;
+
         ServerLogger.Debug($"Player assigned entity {playerEntity}, creating entity at location {connection.Character.Position}.");
     }
-    
+
     public Entity CreatePlayer(NetworkConnection connection, string mapName, Area spawnArea, bool isRespawn)
     {
         var e = EntityManager.New(EntityType.Player);
         var ch = e.Get<WorldObject>();
         var player = e.Get<Player>();
         var ce = e.Get<CombatEntity>();
-        
+
         if (!TryGetWorldMapByName(mapName, out var map) || map == null)
             throw new Exception($"Could not create player on world map '{mapName}' as it could not be found.");
+
+        var req = connection.LoadCharacterRequest;
+        if (req == null || !req.HasCharacter)
+            throw new Exception($"Cannot perform create character without a valid LoadCharacterRequest.");
 
         //force the spawn area to be in bounds
         spawnArea.ClipArea(map.MapBounds);
@@ -403,8 +437,14 @@ public class World
                 p = spawnArea.RandomInArea();
             } while (!map.WalkData.IsCellWalkable(p));
         }
-        
-        ch.Id = GetNextEntityId();
+
+        using (entityLock.EnterScope())
+        {
+            ch.Id = GetNextEntityId();
+            entityList.Add(ch.Id, e);
+            playerNameLookup[req.Name] = e;
+        }
+
         ch.IsActive = false; //start off inactive
 
         ch.Entity = e;
@@ -424,94 +464,84 @@ public class World
         player.CombatEntity = ce;
         player.Character = ch;
 
-        var req = connection.LoadCharacterRequest;
-        if (req != null && req.HasCharacter)
+        player.Name = req.Name;
+        player.Id = req.Id;
+        player.SavePosition = req.SavePosition;
+        player.Inventory = req.Inventory;
+        player.CartInventory = req.Cart;
+        if (req.EquipState != null)
+            player.Equipment = req.EquipState;
+        player.CharacterSlot = req.CharacterSlot;
+        player.Party = req.Party;
+
+        if (req.SaveVersion < 3)
         {
-            player.Name = req.Name;
-            player.Id = req.Id;
-            player.SavePosition = req.SavePosition;
-            player.Inventory = req.Inventory;
-            player.CartInventory = req.Cart;
-            if(req.EquipState != null)
-                player.Equipment = req.EquipState;
-            player.CharacterSlot = req.CharacterSlot;
+            var data = req.Data;
+            player.NpcFlags = req.NpcFlags;
+            player.LearnedSkills = req.SkillsLearned ?? new Dictionary<CharacterSkill, int>();
 
-            if (req.SaveVersion < 3)
+            if (data != null)
             {
-                var data = req.Data;
-                player.NpcFlags = req.NpcFlags;
-                player.LearnedSkills = req.SkillsLearned ?? new Dictionary<CharacterSkill, int>();
-
-                if (data != null)
-                {
-                    if (data.Length <=
-                        player.CharData.Length * 4) //we can add fields, but if we take them away it's all bad
-                        Buffer.BlockCopy(data, 0, player.CharData, 0, data.Length);
-                    else
-                        ServerLogger.LogWarning(
-                            $"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
-                }
-            }
-            else
-            {
-                if (req.Data != null)
-                    PlayerDataDbHelper.RestorePlayerDataFromDatabaseV3(req.Data, req.DataLength, player, req.SaveVersion);
-            }
-
-            req.Data = null; //no need to hold onto this memory
-
-            //respawn flag forces the player to be alive after logging in if they've been moved from their logout position.
-            if (isRespawn && player.GetData(PlayerStat.Hp) == 0)
-            {
-                player.SetData(PlayerStat.Hp, 1);
-                player.Character.State = CharacterState.Idle;
-            }
-
-            //convert character that has no job level to one that does, using a questionable formula.
-            if (req.SaveVersion < 2)
-            {
-                var job = player.GetData(PlayerStat.Job);
-                var playerLevel = player.GetData(PlayerStat.Level);
-                var jobLvl = 1;
-                if (job == 0)
-                    jobLvl = int.Clamp(player.GetData(PlayerStat.Level), 1, 10);
+                if (data.Length <=
+                    player.CharData.Length * 4) //we can add fields, but if we take them away it's all bad
+                    Buffer.BlockCopy(data, 0, player.CharData, 0, data.Length);
                 else
-                    jobLvl = player.GetData(PlayerStat.Level) switch
-                    {
-                        < 11 => 1,
-                        < 50 => playerLevel - 10,
-                        < 70 => 40 + (playerLevel - 50) / 2,
-                        _ => 50
-                    };
-                player.SetData(PlayerStat.JobLevel, jobLvl);
-                player.SetData(PlayerStat.JobExp, 0);
+                    ServerLogger.LogWarning(
+                        $"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
             }
-            
-            player.ApplyDataToCharacter();
         }
+        else
+        {
+            if (req.Data != null)
+                PlayerDataDbHelper.RestorePlayerDataFromDatabaseV3(req.Data, req.DataLength, player, req.SaveVersion);
+        }
+
+        req.Data = null; //no need to hold onto this memory
+
+        //respawn flag forces the player to be alive after logging in if they've been moved from their logout position.
+        if (isRespawn && player.GetData(PlayerStat.Hp) == 0)
+        {
+            player.SetData(PlayerStat.Hp, 1);
+            player.Character.State = CharacterState.Idle;
+        }
+
+        //convert character that has no job level to one that does, using a questionable formula.
+        if (req.SaveVersion < 2)
+        {
+            var job = player.GetData(PlayerStat.Job);
+            var playerLevel = player.GetData(PlayerStat.Level);
+            var jobLvl = 1;
+            if (job == 0)
+                jobLvl = int.Clamp(player.GetData(PlayerStat.Level), 1, 10);
+            else
+                jobLvl = player.GetData(PlayerStat.Level) switch
+                {
+                    < 11 => 1,
+                    < 50 => playerLevel - 10,
+                    < 70 => 40 + (playerLevel - 50) / 2,
+                    _ => 50
+                };
+            player.SetData(PlayerStat.JobLevel, jobLvl);
+            player.SetData(PlayerStat.JobExp, 0);
+        }
+
+        player.ApplyDataToCharacter();
 
         if (ce.GetStat(CharacterStat.Hp) <= 0)
             player.Character.State = CharacterState.Dead;
-            //ce.FullRecovery(true, true);
-
+        //ce.FullRecovery(true, true);
+        
         player.Init();
 
         ch.Name = player.Name;
         connection.LoadCharacterRequest = null;
         connection.Player = player;
         
-        entityList.Add(ch.Id, e);
-        //player.IsMale = false;
-
-        //player.IsMale = true;
-        //ch.ClassId = 1;
-        //player.HeadId = 15;
-
-        //map.SendAllEntitiesToPlayer(ref e);
-        //map.AddEntity(ref e);
+        if (player.Party != null)
+            player.Party.LogMemberIn(player);
 
         moveRequests.Writer.TryWrite(new MapMoveRequest(e, MoveRequestType.InitialSpawn, null, map, p));
-        
+
         return e;
     }
 
@@ -529,7 +559,7 @@ public class World
             if (spawnRule.GuaranteeInZone)
                 useOfficialSpawnMode = false;
         }
-        
+
         Position p;
         if (!spawnArea.IsZero && spawnArea.Size <= 1)
         {
@@ -549,7 +579,7 @@ public class World
         {
             if (useOfficialSpawnMode && !spawnArea.IsZero)
             {
-                if(!map.FindPositionUsing9Slice(spawnArea, out p) && !map.FindPositionInRange(monsterSpawnBounds, out p))
+                if (!map.FindPositionUsing9Slice(spawnArea, out p) && !map.FindPositionInRange(monsterSpawnBounds, out p))
                     ServerLogger.LogWarning($"Failed to spawn {monsterDef.Name} on map {map.Name}, could not find spawn location around {spawnArea}. Spawning randomly on map.");
             }
             else
@@ -568,7 +598,11 @@ public class World
             }
         }
 
-        ch.Id = GetNextEntityId();
+        using (entityLock.EnterScope())
+        {
+            ch.Id = GetNextEntityId();
+            entityList.Add(ch.Id, e);
+        }
 
         ch.IsActive = true;
         ch.ClassId = monsterDef.Id;
@@ -580,9 +614,7 @@ public class World
         ch.Init(ref e);
 
         ce.Entity = e;
-
-        entityList.Add(ch.Id, e);
-
+        
         ce.Init(ref e, ch);
         m.Initialize(ref e, ch, ce, monsterDef, monsterDef.AiType, spawnRule, map.Name);
 
@@ -650,7 +682,7 @@ public class World
         var spawnArea = monsterSpawnBounds;
         if (spawnEntry.HasSpawnZone)
             spawnArea = spawnEntry.SpawnArea;
-        
+
         Position p;
         if (spawnArea.Width == 1 && spawnArea.Height == 1 && spawnArea.MinX != 0 && spawnArea.MinY != 0)
         {
@@ -699,9 +731,9 @@ public class World
         ce.Init(ref e, ch);
         monster.Initialize(ref e, ch, ce, monster.MonsterBase, monster.MonsterBase.AiType, spawnEntry, map.Name);
 
-        if(ch.IsImportant)
+        if (ch.IsImportant)
             map.RegisterImportantEntity(ch);
-        
+
         map.AddEntity(ref e, false);
 
         var monsterDef = monster.MonsterBase;
@@ -728,7 +760,7 @@ public class World
 
     public void PerformRemovals()
     {
-        while(removeList.Count > 0)
+        while (removeList.Count > 0)
         {
             if (!removeList.TryTake(out var entity))
             {
@@ -738,6 +770,12 @@ public class World
 
             if (entity.IsNull() || !entity.IsAlive())
                 continue;
+
+            if (entity.TryGet<Player>(out var p))
+            {
+                p.Party?.LogMemberOut(p);
+                playerNameLookup.Remove(p.Name);
+            }
 
             ServerLogger.Debug($"Removing entity {entity} from world.");
 
@@ -760,14 +798,14 @@ public class World
         map = null;
         return false;
     }
-    
+
     public void PerformMoves()
     {
         while (moveRequests.Reader.TryRead(out var move))
         {
             if (!move.Player.IsAlive())
                 continue;
-            
+
             var character = move.Player.Get<WorldObject>();
 
             if (character.Map != move.SrcMap)
@@ -779,10 +817,10 @@ public class World
             {
                 character.Map.RemoveEntity(ref move.Player, CharacterRemovalReason.OutOfSight, character.Map.Instance != move.DestMap.Instance);
             }
-            
+
             character.ResetState();
             character.Position = move.Position;
-            
+
             move.DestMap.AddEntity(ref move.Player, character.Map?.Instance != move.DestMap.Instance);
 
             var player = character.Player;
@@ -813,7 +851,7 @@ public class World
             ServerLogger.LogWarning($"Map {mapName} does not exist! Could not move player.");
             return;
         }
-        
+
         MovePlayerMap(ref entity, character, map, newPosition);
     }
 
@@ -822,7 +860,7 @@ public class World
         character.IsActive = false;
         moveRequests.Writer.TryWrite(new MapMoveRequest(entity, MoveRequestType.MapMove, character.Map, map, newPosition));
     }
-    
+
     public Entity GetEntityById(int id)
     {
         if (entityList.TryGetValue(id, out var entity))

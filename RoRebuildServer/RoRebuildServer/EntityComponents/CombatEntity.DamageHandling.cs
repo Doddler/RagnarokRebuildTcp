@@ -526,6 +526,8 @@ public partial class CombatEntity
                     return;
                 }
 
+                monster.BoostDamageContributionOfFirstAttacker();
+
                 if (DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
                     monster.RewardMVP();
 

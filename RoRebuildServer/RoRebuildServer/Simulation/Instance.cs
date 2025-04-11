@@ -4,6 +4,7 @@ using RoRebuildServer.Data.Map;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
 
@@ -15,6 +16,7 @@ public class Instance
     public List<Map> Maps { get; set; }
     public Dictionary<string, Map> MapNameLookup = new();
     public Dictionary<string, Entity> NpcNameLookup = new();
+    public PartyExpAccumulator ExpCalculator;
 
     public string Name;
     public EntityList Entities { get; set; }
@@ -30,6 +32,7 @@ public class Instance
         Maps = new List<Map>(instanceDetails.Maps.Count);
         Entities = new EntityList(128);
         Pathfinder = new PathFinder();
+        ExpCalculator = new PartyExpAccumulator();
 #if DEBUG
         Entities.IsActive = true; //bypass EntityListPool borrow tracking
 #endif

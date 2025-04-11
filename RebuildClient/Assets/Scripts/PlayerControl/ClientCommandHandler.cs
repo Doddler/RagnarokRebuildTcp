@@ -5,6 +5,7 @@ using System.Text;
 using Assets.Scripts;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
@@ -454,6 +455,75 @@ namespace PlayerControl
                         DebugValueHolder.Set(s[1], f);
                     else
                         cameraFollower.AppendChatText("<color=yellow>Incorrect parameters. Usage:</color>/debug valueName float");
+                }
+
+                if ((s[0] == "/organize" || s[0] == "/party")  && s.Length > 1)
+                {
+                    if (PlayerState.Instance.IsInParty)
+                    {
+                        cameraFollower.AppendChatText($"<color=yellow>You are already in a party. You'll need to /leave to form a new party.</color>");
+                        return;
+                    }
+                    
+                    var msg = text.Substring(s[0].Length + 1);
+                    NetworkManager.Instance.OrganizeParty(msg);
+                }
+
+                if (s[0] == "/invite" && s.Length > 1)
+                {
+                    var name = text.Substring(s[0].Length + 1);
+                    if(!PlayerState.Instance.IsInParty)
+                        cameraFollower.AppendChatText($"<color=yellow>You must first create a party with /organize before you can invite a player.</color>");
+                    else
+                        NetworkManager.Instance.PartyInviteByName(name);
+                }
+
+                if (s[0] == "/accept")
+                {
+                    if (s.Length > 1 && int.TryParse(s[1], out var id))
+                    {
+                        NetworkManager.Instance.PartyAcceptInvite(id);
+                    }
+                    else
+                    {
+                        if (PlayerState.Instance.InvitedPartyId < 0)
+                            cameraFollower.AppendChatText($"<color=yellow>You do not have a pending party invite.</color>");
+                        else
+                            NetworkManager.Instance.PartyAcceptInvite(PlayerState.Instance.InvitedPartyId);
+                    }
+                }
+
+                if (s[0] == "/leave" || s[0] == "/leaveparty")
+                {
+                    if(!PlayerState.Instance.IsInParty)
+                        cameraFollower.AppendChatText($"<color=yellow>You are not currently in a party.</color>");
+                    else
+                        NetworkManager.Instance.LeaveParty();
+                }
+
+                if (s[0] == "/partyinfo")
+                {
+                    var state = PlayerState.Instance;
+                    if (!state.IsInParty || state.PartyMembers == null || state.PartyMembers.Count == 0)
+                    {
+                        cameraFollower.AppendChatText("You are not currently in a party.");
+                        return;
+                    }
+
+                    var sb = new StringBuilder();
+                    sb.Append("Party members: ");
+
+                    var count = 0;
+                    foreach (var (_, member) in state.PartyMembers)
+                    {
+                        if (count > 0)
+                            sb.Append(", ");
+                        count++;
+                        sb.Append($"{member.PlayerName}");
+                        if (member.EntityId == 0)
+                            sb.Append(" (offline)");
+                    }
+                    cameraFollower.AppendChatText(sb.ToString());
                 }
                 
                 if(emoteList.TryGetValue(s[0], out var emote))

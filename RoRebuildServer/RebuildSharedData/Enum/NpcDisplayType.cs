@@ -19,6 +19,7 @@ public enum NpcEffectType : byte
     WarpPortalOpening,
     WarpPortal,
     MapWarp,
+    Demonstration,
     
     //custom
     LightOrb,

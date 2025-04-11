@@ -34,20 +34,41 @@ public class AngelusHandler : SkillHandlerBase
         CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.Angelus, lvl);
         CommandBuilder.SendEffectOnCharacterMulti(ch, angelusEffect);
         CommandBuilder.ClearRecipients();
-        
-        //this should only target party members, but, well...
-        using var entities = EntityListPool.Get();
-        source.Character.Map.GatherAlliesInRange(source.Character, 9, entities, false, false);
-        foreach (var e in entities)
+
+        if (ch.Type != CharacterType.Player || ch.Player.Party == null)
+            return;
+
+        var party = ch.Player.Party;
+
+        foreach (var e in party.OnlineMembers)
         {
             if (!e.TryGet<CombatEntity>(out var ally))
                 continue;
             if (!ally.IsValidAlly(source))
+                continue;
+            if (ally.Character.Map != ch.Map)
+                continue;
+            if (!ally.Character.Position.InRange(ch.Position, 14))
                 continue;
             ally.AddStatusEffect(status);
             ally.Character.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);
             CommandBuilder.SendEffectOnCharacterMulti(ally.Character, angelusEffect);
             CommandBuilder.ClearRecipients();
         }
+
+        ////this should only target party members, but, well...
+        //using var entities = EntityListPool.Get();
+        //source.Character.Map.GatherAlliesInRange(source.Character, 9, entities, false, false);
+        //foreach (var e in entities)
+        //{
+        //    if (!e.TryGet<CombatEntity>(out var ally))
+        //        continue;
+        //    if (!ally.IsValidAlly(source))
+        //        continue;
+        //    ally.AddStatusEffect(status);
+        //    ally.Character.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);
+        //    CommandBuilder.SendEffectOnCharacterMulti(ally.Character, angelusEffect);
+        //    CommandBuilder.ClearRecipients();
+        //}
     }
 }

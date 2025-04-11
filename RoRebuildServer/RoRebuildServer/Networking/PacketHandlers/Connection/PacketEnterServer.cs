@@ -50,6 +50,7 @@ public class PacketEnterServer : IClientPacketHandler
         if (t != chName)
         {
             CommandBuilder.ErrorMessage(connection, $"The character name is invalid. Names cannot contain leading or trailing whitespace.");
+            return;
         }
         
         var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);

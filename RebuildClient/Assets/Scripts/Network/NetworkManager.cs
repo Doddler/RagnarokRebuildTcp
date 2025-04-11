@@ -1738,6 +1738,48 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void OrganizeParty(string partyName)
+        {
+            var msg = StartMessage(PacketType.CreateParty);
+            msg.Write(partyName);
+            
+            SendMessage(msg);
+        }
+
+        public void PartyInviteById(int id)
+        {
+            var msg = StartMessage(PacketType.InvitePartyMember);
+            msg.Write((byte)0);
+            msg.Write(id);
+
+            SendMessage(msg);
+        }
+
+        public void PartyInviteByName(string name)
+        {
+            var msg = StartMessage(PacketType.InvitePartyMember);
+            msg.Write((byte)1);
+            msg.Write(name);
+
+            SendMessage(msg);
+        }
+        
+        public void PartyAcceptInvite(int partyId)
+        {
+            var msg = StartMessage(PacketType.AcceptPartyInvite);
+            msg.Write(partyId);
+
+            SendMessage(msg);
+        }
+
+        public void LeaveParty()
+        {
+            var msg = StartMessage(PacketType.UpdateParty);
+            msg.Write((byte)PartyClientAction.LeaveParty);
+            
+            SendMessage(msg);
+        }
+
         public void SendEnterServerMessage(string loginName)
         {
             var msg = StartMessage();
