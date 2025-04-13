@@ -34,7 +34,7 @@ namespace Assets.Scripts.UI.Hud
         [NonSerialized] public PartyPanel Parent;
         [NonSerialized] public PartyMemberInfo PartyMemberInfo;
 
-        public void UpdatePlayerProximity(Vector2Int playerPosition)
+        public void UpdatePlayerProximity()
         {
             if (PartyMemberInfo.Controllable == null)
             {
@@ -42,10 +42,12 @@ namespace Assets.Scripts.UI.Hud
                 return;
             }
 
-            var partyMemberPosition = PartyMemberInfo.Controllable.CellPosition;
+            var player = CameraFollower.Instance.TargetControllable;
+            if (player == null)
+                return;
 
-            if ((partyMemberPosition - playerPosition).SquareDistance() <= 10
-                && Pathfinder.HasLineOfSight(PartyMemberInfo.Controllable.CellPosition, playerPosition))
+            if (Vector2.Distance(player.RealPosition2D, PartyMemberInfo.Controllable.RealPosition2D) <= 9.85f
+                && Pathfinder.HasLineOfSight(PartyMemberInfo.Controllable.CellPosition, player.CellPosition))
                 NameArea.color = Color.white;
             else
                 NameArea.color = new Color(0.7f, 0.85f, 1f);
@@ -68,7 +70,9 @@ namespace Assets.Scripts.UI.Hud
                     SpSlider.gameObject.SetActive(true);
                     LocationText.gameObject.SetActive(false);
                     HpValueText.text = $"HP: {m.Hp} / {m.MaxHp}";
-                    SpValueText.text = $"SP: {m.Sp} / {m.MaxSp}";                    
+                    SpValueText.text = $"SP: {m.Sp} / {m.MaxSp}";       
+                    HpSlider.value = m.Hp / (float)m.MaxHp;
+                    SpSlider.value = m.Sp / (float)m.MaxSp;
                 }
                 else
                 {
@@ -103,11 +107,18 @@ namespace Assets.Scripts.UI.Hud
             var m = PartyMemberInfo;
             if (!string.IsNullOrWhiteSpace(m.Map) && m.Map == PlayerState.Instance.MapName)
             {
+                if (m.Controllable != null)
+                {
+                    m.Hp = m.Controllable.Hp;
+                    m.MaxHp = m.Controllable.MaxHp;
+                }
                 HpSlider.gameObject.SetActive(true);
                 SpSlider.gameObject.SetActive(true);
                 LocationText.gameObject.SetActive(false);
                 HpValueText.text = $"HP: {m.Hp} / {m.MaxHp}";
-                SpValueText.text = $"SP: {m.Sp} / {m.MaxSp}";   
+                SpValueText.text = $"SP: {m.Sp} / {m.MaxSp}";
+                HpSlider.value = m.Hp / (float)m.MaxHp;
+                SpSlider.value = m.Sp / (float)m.MaxSp;
             }
         }
 

@@ -526,7 +526,7 @@ public class NetworkManager
             if (AdminPacketTypes[(int)type])
             {
                 if (!ConnectionLookup.TryGetValue(msg.Client.Socket, out var connection) 
-                    || connection.Entity.IsAlive()
+                    || !connection.Entity.IsAlive()
                     || !connection.IsAdmin)
                     return;
             }

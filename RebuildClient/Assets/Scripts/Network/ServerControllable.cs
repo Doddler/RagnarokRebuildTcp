@@ -44,6 +44,7 @@ namespace Assets.Scripts.Network
         public Vector3 StartPos;
         public Vector3 PositionOffset;
         public Vector3 RealPosition;
+        public Vector2 RealPosition2D => new Vector2(RealPosition.x, RealPosition.z);
         public float ShadowSize;
         public bool IsAlly;
         public bool IsPartyMember;
@@ -186,6 +187,13 @@ namespace Assets.Scripts.Network
                 LookAt(target.transform.position);
         }
 
+        private void RefreshPartyValues()
+        {
+            if (CharacterType == CharacterType.Player && !IsMainCharacter && PartyName == PlayerState.Instance.PartyName 
+                                                      && PlayerState.Instance.PartyMemberIdLookup.TryGetValue(Id, out var partyMemberId))
+                UiManager.Instance.PartyPanel.UpdateHpSpOfPartyMember(partyMemberId);
+        }
+
         public void SetSp(int sp, int maxSp)
         {
             EnsureFloatingDisplayCreated();
@@ -193,26 +201,51 @@ namespace Assets.Scripts.Network
             Sp = sp;
             FloatingDisplay.UpdateMaxMp(maxSp);
             FloatingDisplay.UpdateMp(sp);
+            
+            if (!string.IsNullOrWhiteSpace(PartyName))
+                RefreshPartyValues();
         }
 
+        private bool ShouldUpdateHpBar()
+        {
+            if (SpriteAnimator == null)
+                return false;
+            if (IsMainCharacter)
+                return true;
+            if (SpriteAnimator.IsHidden)
+            {
+                if (CharacterType == CharacterType.Player && PartyName == PlayerState.Instance.PartyName)
+                    return true;
+                
+                return false;
+            }
+
+            return true;
+        }
+        
         public void SetHp(int hp, int maxHp, bool animate = true)
         {
-            if (SpriteAnimator != null && SpriteAnimator.IsHidden && !IsMainCharacter)
+            if (!ShouldUpdateHpBar())
                 return;
-
+            
             MaxHp = maxHp;
             Hp = hp;
             FloatingDisplay.UpdateMaxHp(maxHp);
             SetHp(hp, animate);
+            if (!string.IsNullOrWhiteSpace(PartyName))
+                RefreshPartyValues();
         }
 
         public void SetHp(int hp, bool animate = true)
         {
-            if (SpriteAnimator != null && SpriteAnimator.IsHidden && !IsMainCharacter)
+            if (!ShouldUpdateHpBar())
                 return;
 
             var oldHp = Hp;
             Hp = hp;
+            
+            if (!string.IsNullOrWhiteSpace(PartyName))
+                RefreshPartyValues();
 
             if ((GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp) || !IsInteractable)
             {

@@ -53,7 +53,7 @@
 51,PotionHealA,FALSE,FALSE,TRUE,,,,0,,
 52,PotionHealB,FALSE,FALSE,TRUE,,,,0,,
 53,PotionConcentration,TRUE,TRUE,TRUE,집중,,ac_concentration,0,,
-54,PotionAwakening,TRUE,TRUE,TRUE,각성,,ac_concentration,0,,
+54,PotionAwakening,TRUE,TRUE,TRUE,각성,,ac_concentration,-0.55,,
 55,PotionBerserk,TRUE,TRUE,TRUE,버서크,,ac_concentration,0,,
 56,GuidedAttack,TRUE,TRUE,FALSE,homing,,,-0.55,,
 57,PoisonAttack,TRUE,TRUE,FALSE,poison,,,-0.55,,

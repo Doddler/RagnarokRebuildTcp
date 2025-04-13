@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Networking;
 using System.Diagnostics;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
@@ -26,6 +27,9 @@ public class PacketEquipUnequipGear : IClientPacketHandler
         if (!isEquip)
         {
             connection.Player.Equipment.UnEquipItem(bagId);
+            CommandBuilder.SendHealMultiAutoVis(connection.Player, 0, HealType.None);
+            if (connection.Player.Party != null)
+                CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player);
             //connection.Player.UpdateStats();
             return;
         }
@@ -46,6 +50,9 @@ public class PacketEquipUnequipGear : IClientPacketHandler
                 return;
             default:
                 connection.Player.UpdateStats();
+                CommandBuilder.SendHealMultiAutoVis(connection.Player, 0, HealType.None);
+                if (connection.Player.Party != null)
+                    CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player);
                 return; //if it succeeds we'll have already sent a response
         }
 

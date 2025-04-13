@@ -657,7 +657,7 @@
       "StrFile": "\uAC01\uC131",
       "Sprite": "",
       "SoundFile": "ac_concentration",
-      "Offset": 0,
+      "Offset": -0.55,
       "PrefabName": ""
     },
     {

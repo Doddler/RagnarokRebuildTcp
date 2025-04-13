@@ -268,7 +268,7 @@ namespace Assets.Scripts.UI.Hud
         {
             if (hpBar == null)
             {
-                if (hp == maxHp || (!isPlayer && !GameConfig.Data.ShowMonsterHpBars))
+                if ((hp == maxHp && oldHp == hp) || (!isPlayer && !GameConfig.Data.ShowMonsterHpBars))
                     return;
                 hpBar = Manager.AttachHpBar(gameObject);
                 gameObject.SetActive(true);

@@ -915,33 +915,33 @@ namespace Assets.Scripts.Network
 
             controllable.PlayerDie(pos);
         }
-
-        public void OnMessageHpRecovery(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var amnt = msg.ReadInt32();
-            var hp = msg.ReadInt32();
-            var maxHp = msg.ReadInt32();
-            var type = (HealType)msg.ReadByte();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
-                return;
-            }
-
-            controllable.Hp = hp;
-            controllable.MaxHp = maxHp;
-
-            if (controllable.IsMainCharacter)
-                CameraFollower.UpdatePlayerHP(hp, maxHp);
-            controllable.SetHp(controllable.Hp, controllable.MaxHp);
-            if (type == HealType.HealSkill)
-            {
-                HealEffect.CreateAutoLevel(controllable.gameObject, amnt);
-                AttachHealIndicator(amnt, controllable);
-            }
-        }
+        //
+        // public void OnMessageHpRecovery(ClientInboundMessage msg)
+        // {
+        //     var id = msg.ReadInt32();
+        //     var amnt = msg.ReadInt32();
+        //     var hp = msg.ReadInt32();
+        //     var maxHp = msg.ReadInt32();
+        //     var type = (HealType)msg.ReadByte();
+        //
+        //     if (!EntityList.TryGetValue(id, out var controllable))
+        //     {
+        //         //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
+        //         return;
+        //     }
+        //
+        //     controllable.Hp = hp;
+        //     controllable.MaxHp = maxHp;
+        //
+        //     if (controllable.IsMainCharacter)
+        //         CameraFollower.UpdatePlayerHP(hp, maxHp);
+        //     controllable.SetHp(controllable.Hp, controllable.MaxHp);
+        //     if (type == HealType.HealSkill)
+        //     {
+        //         HealEffect.CreateAutoLevel(controllable.gameObject, amnt);
+        //         AttachHealIndicator(amnt, controllable);
+        //     }
+        // }
 
         public void OnMessageChangeName(ClientInboundMessage msg)
         {
@@ -1164,9 +1164,9 @@ namespace Assets.Scripts.Network
                 case PacketType.Death:
                     OnMessageDeath(msg);
                     break;
-                case PacketType.HpRecovery:
-                    OnMessageHpRecovery(msg);
-                    break;
+                // case PacketType.HpRecovery:
+                //     OnMessageHpRecovery(msg);
+                //     break;
                 case PacketType.ChangeName:
                     OnMessageChangeName(msg);
                     break;

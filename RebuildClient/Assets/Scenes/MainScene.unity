@@ -22885,7 +22885,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2088088635}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9401847
+  m_Size: 0.9401848
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -80338,7 +80338,7 @@ RectTransform:
   m_GameObject: {fileID: 2920945032832732228}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.33, y: 1.33, z: 1.33}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 962573384051555767}
@@ -81044,20 +81044,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2851139600623544292, guid: b483f2e713df8f94bbb27435cd8d7375,
-        type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3247865578650914067, guid: b483f2e713df8f94bbb27435cd8d7375,
         type: 3}
       propertyPath: m_Name
       value: PartyMember
-      objectReference: {fileID: 0}
-    - target: {fileID: 4218112164135989267, guid: b483f2e713df8f94bbb27435cd8d7375,
-        type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5206543356898568287, guid: b483f2e713df8f94bbb27435cd8d7375,
         type: 3}

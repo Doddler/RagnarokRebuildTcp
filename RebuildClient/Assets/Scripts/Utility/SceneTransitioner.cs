@@ -198,6 +198,7 @@ namespace Assets.Scripts.Utility
             UiManager.Instance.StatusWindow.ResetStatChanges(); //clear existing changes
 
             PlayerState.Instance.MapName = newMap.Code;
+            UiManager.Instance.PartyPanel.OnChangeMaps();
 
 			if (needAudioChange)
 			{

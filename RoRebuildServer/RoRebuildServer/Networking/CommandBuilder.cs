@@ -1054,6 +1054,22 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+
+    public static void SendHealMultiAutoVis(Player p, int healAmount, HealType type)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.HpRecovery, 32);
+        packet.Write(p.Character.Id);
+        packet.Write(healAmount);
+        packet.Write(p.CombatEntity.GetStat(CharacterStat.Hp));
+        packet.Write(p.CombatEntity.GetStat(CharacterStat.MaxHp));
+        packet.Write((byte)type);
+
+        p.Character.Map?.AddVisiblePlayersAsPacketRecipients(p.Character);
+        NetworkManager.SendMessageMulti(packet, recipients);
+        ClearRecipients();
+    }
+
+
     public static void ChangeSpValue(Player p, int sp, int maxSp)
     {
         var packet = NetworkManager.StartPacket(PacketType.ChangeSpValue, 8);

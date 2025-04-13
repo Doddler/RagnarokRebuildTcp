@@ -30,6 +30,16 @@ namespace Assets.Scripts.UI.Hud
                 HoverEntry.SkillTargetHover.gameObject.SetActive(false);
             CanvasGroup.blocksRaycasts = false;
         }
+
+        public void OnChangeMaps()
+        {
+            var map = PlayerState.Instance.MapName;
+            foreach (var (_, entry) in PartyEntryLookup)
+            {
+                if (entry.PartyMemberInfo.Map != map)
+                    entry.FullRefreshPartyMemberInfo();
+            }
+        }
         
         public void RefreshPartyMember(int memberId)
         {
@@ -39,7 +49,7 @@ namespace Assets.Scripts.UI.Hud
                 {
                     entry.PartyMemberInfo = updatedEntry;
                     entry.FullRefreshPartyMemberInfo();
-                    entry.UpdatePlayerProximity(CameraFollower.Instance.PlayerPosition);
+                    entry.UpdatePlayerProximity();
                 }
                 else
                 {
@@ -78,8 +88,10 @@ namespace Assets.Scripts.UI.Hud
             entry.Parent = this;
             entry.PartyMemberInfo = info;
             entry.FullRefreshPartyMemberInfo();
-            entry.UpdatePlayerProximity(CameraFollower.Instance.PlayerPosition);
+            entry.UpdatePlayerProximity();
             PartyEntryLookup.Add(info.PartyMemberId, entry);
+            
+            gameObject.SetActive(true);
         }
         
         public void FullRefreshPartyMemberPanel()
@@ -94,7 +106,7 @@ namespace Assets.Scripts.UI.Hud
             PartyEntryLookup.Clear();
 
             
-            if (!s.IsInParty || s.PartyMembers == null || s.PartyMembers.Count == 0)
+            if (!s.IsInParty || s.PartyMembers == null || s.PartyMembers.Count <= 1)
             {
                 gameObject.SetActive(false);
                 return;
@@ -113,7 +125,7 @@ namespace Assets.Scripts.UI.Hud
                 if (PartyEntryLookup.TryGetValue(id, out var entry))
                 {
                     entry.FullRefreshPartyMemberInfo();
-                    entry.UpdatePlayerProximity(CameraFollower.Instance.PlayerPosition);
+                    entry.UpdatePlayerProximity();
                 }
                 else
                 {
@@ -138,7 +150,7 @@ namespace Assets.Scripts.UI.Hud
                 return;
             
             foreach (var (_, entry) in PartyEntryLookup)
-                entry.UpdatePlayerProximity(playerPosition);
+                entry.UpdatePlayerProximity();
 
         }
     }
