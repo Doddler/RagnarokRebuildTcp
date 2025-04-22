@@ -28,7 +28,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
                         Camera.AppendChatText($"<color=#77FF77>{memberInfo.PlayerName} has logged in.</color>");
                     if(updateType == PartyUpdateType.LogOut)
                         Camera.AppendChatText($"<color=#77FF77>{memberInfo.PlayerName} has logged out.</color>");
-                    State.RegisterOrUpdatePartyMember(memberInfo, memberInfo.EntityId);
+                    State.RegisterOrUpdatePartyMember(memberInfo);
                     UiManager.Instance.PartyPanel.RefreshPartyMember(memberInfo.PartyMemberId);
                     break;
                 case PartyUpdateType.RemovePlayer:

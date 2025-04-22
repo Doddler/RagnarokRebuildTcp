@@ -77,9 +77,10 @@ namespace Assets.Scripts.PlayerControl
                 member.Controllable = controllable;
         }
 
-        public void RegisterOrUpdatePartyMember(PartyMemberInfo info, int entityId = -1)
+        public void RegisterOrUpdatePartyMember(PartyMemberInfo info)
         {
             var memberId = info.PartyMemberId;
+            var entityId = info.EntityId;
             PartyMembers[memberId] = info;
             if(info.PlayerName == PlayerName || entityId == EntityId)
                 PartyMemberId = memberId;

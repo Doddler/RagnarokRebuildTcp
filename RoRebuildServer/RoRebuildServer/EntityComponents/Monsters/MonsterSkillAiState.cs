@@ -24,13 +24,19 @@ namespace RoRebuildServer.EntityComponents.Monsters;
 
 public class MonsterSkillAiState(Monster monsterIn)
 {
-    private readonly Monster monster = monsterIn; //never need to clear this as MonsterSkillAiState will always be 1:1 with a Monster class
+    private readonly Monster
+        monster = monsterIn; //never need to clear this as MonsterSkillAiState will always be 1:1 with a Monster class
+
     public Action<MonsterSkillAiState>? CastSuccessEvent = null;
     public bool SkillCastSuccess;
     public bool ExecuteEventAtStartOfCast;
+
     public bool FinishedProcessing;
+
     //public CharacterSkillB Test;
-    public int HpPercent => monster.CombatEntity.GetStat(CharacterStat.Hp) * 100 / monster.CombatEntity.GetStat(CharacterStat.MaxHp);
+    public int HpPercent => monster.CombatEntity.GetStat(CharacterStat.Hp) * 100 /
+                            monster.CombatEntity.GetStat(CharacterStat.MaxHp);
+
     public int HpValue => monster.CombatEntity.GetStat(CharacterStat.Hp);
     public int MinionCount => monster.ChildCount;
     public bool InventoryFull => monster.IsInventoryFull;
@@ -53,11 +59,33 @@ public class MonsterSkillAiState(Monster monsterIn)
     public bool CanSeePlayers => monster.Character.HasVisiblePlayers();
     public bool MapHasPlayers => monster.Character.Map?.PlayerCount > 0;
 
-    public int DistanceToSelectedTarget => targetForSkill == null ? -1 : monster.Character.Position.Distance(TargetPosition);
+    public int DistanceToSelectedTarget =>
+        targetForSkill == null ? -1 : monster.Character.Position.Distance(TargetPosition);
+
     public Position TargetPosition => targetForSkill?.Position ?? Position.Invalid;
     public int TimeAlive => (int)(monster.TimeAlive * 1000);
     public int ResummonMinionCount { get; set; } = -1;
     public float MinionDeathTime = -1;
+
+    public int TimeInAiState => (int)(monster.TimeInCurrentAiState * 1000);
+    public int TimeOutOfCombat => (int)(monster.DurationOutOfCombat * 1000);
+    public int TimeSinceLastDamage => (int)(monster.TimeSinceLastDamage * 1000);
+    public bool WasRangedAttacked => monster.WasAttacked && monster.LastAttackPhysical && monster.LastAttackRange > 4;
+    public bool WasRangedOrMagicAttacked => monster.WasAttacked && monster.LastAttackRange > 4;
+    public bool IsHiding => monster.CombatEntity.HasBodyState(BodyStateFlags.Hidden);
+
+    public bool WasMagicLocked => monster.WasMagicLocked && monster.Character.LastAttacked.TryGet<WorldObject>(out targetForSkill);
+    
+    public MonsterAiState PreviousAiState => monster.PreviousAiState;
+    public int TimeSinceStartChase
+    {
+        get
+        {
+            var time = monster.TimeSinceStartChase;
+            return (int)(time < 0 ? 0 : time * 1000);
+        }
+    }
+
 
     public bool IsMasterAlive => monster.HasMaster && monster.GetMaster().TryGet<WorldObject>(out var chara) && chara.IsActive &&  chara.State != CharacterState.Dead;
 
@@ -317,24 +345,6 @@ public class MonsterSkillAiState(Monster monsterIn)
     {
         monster.GivesExperience = gives;
     }
-
-    public int TimeInAiState => (int)(monster.TimeInCurrentAiState * 1000);
-    public int TimeOutOfCombat => (int)(monster.DurationOutOfCombat * 1000);
-    public int TimeSinceLastDamage => (int)(monster.TimeSinceLastDamage * 1000);
-    public bool WasRangedAttacked => monster.WasAttacked && monster.LastAttackPhysical && monster.LastAttackRange > 4;
-    public bool WasRangedOrMagicAttacked => monster.WasAttacked && monster.LastAttackRange > 4;
-    public bool IsHiding => monster.CombatEntity.HasBodyState(BodyStateFlags.Hidden);
-
-    public MonsterAiState PreviousAiState => monster.PreviousAiState;
-    public int TimeSinceStartChase
-    {
-        get
-        {
-            var time = monster.TimeSinceStartChase;
-            return (int)(time < 0 ? 0 : time * 1000);
-        }
-    }
-
     public void AdminHide()
     {
         var ch = monster.Character;

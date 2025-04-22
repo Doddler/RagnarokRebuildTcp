@@ -1,5 +1,8 @@
 ﻿using System.Numerics;
+using RebuildSharedData.Enum;
+using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntitySystem
@@ -291,6 +294,32 @@ namespace RoRebuildServer.EntitySystem
             }
 
             return false;
+        }
+
+        public void ClearDeadAndNotOnMap(Map map)
+        {
+            if (entities == null)
+                return;
+
+            for (var i = 0; i < count; i++)
+            {
+                if (!entities[i].TryGet<WorldObject>(out var character) 
+                    || character.State == CharacterState.Dead 
+                    || !character.IsActive 
+                    || character.Map != map)
+                {
+                    if (i == count - 1)
+                    {
+                        //entities[i] = default;
+                        count--;
+                    }
+                    else
+                    {
+                        SwapFromBack(i);
+                        i--;
+                    }
+                }
+            }
         }
 
         public int ClearInactive()

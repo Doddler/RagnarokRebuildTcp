@@ -94,7 +94,22 @@ public class Party
     public bool SendInvite(Player sender, Player invitee)
     {
         if (invitee.Party != null)
+        {
+            CommandBuilder.SendServerEvent(sender, ServerEvent.InviteFailedAlreadyInParty);
             return false;
+        }
+
+        if (sender.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 6)
+        {
+            CommandBuilder.SendServerEvent(sender, ServerEvent.InviteFailedSenderNoBasicSkill);
+            return false;
+        }
+
+        if (invitee.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 4)
+        {
+            CommandBuilder.SendServerEvent(sender, ServerEvent.InviteFailedRecipientNoBasicSkill);
+            return false;
+        }
 
         using (writeLock.EnterScope())
         {
@@ -104,6 +119,8 @@ public class Party
             InviteRequests.AddOrSetValue(ref invitee.Entity, Time.ElapsedTimeFloat);
             CommandBuilder.InviteJoinParty(invitee, sender, this);
         }
+
+        CommandBuilder.SendServerEvent(sender, ServerEvent.PartyInviteSent);
 
         return true;
     }
@@ -151,8 +168,9 @@ public class Party
 
     public void RemoveMember(Player player)
     {
-        CommandBuilder.NotifyNearbyPlayersOfPartyChangeAutoVis(player);
         CommandBuilder.NotifyPartyOfChange(this, player.PartyMemberId, PartyUpdateType.RemovePlayer);
+
+        var memberId = player.PartyMemberId;
 
         using (writeLock.EnterScope())
         {
@@ -163,6 +181,11 @@ public class Party
             player.Party = null;
             player.PartyMemberId = 0;
         }
+
+        if (PartyOwnerId == memberId || PartyOwnerId < 0)
+            PromoteRandomToLeader();
+
+        CommandBuilder.NotifyNearbyPlayersOfPartyChangeAutoVis(player);
 
         if (PartyMemberInfo.Count == 0)
             EndParty();

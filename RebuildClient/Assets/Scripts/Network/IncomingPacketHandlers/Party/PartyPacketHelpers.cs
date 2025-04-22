@@ -30,6 +30,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
                 partyMember.MaxHp = msg.ReadInt32();
                 partyMember.Sp = msg.ReadInt32();
                 partyMember.MaxSp = msg.ReadInt32();
+
+                if (NetworkManager.Instance.EntityList.TryGetValue(entityId, out var controllable))
+                    partyMember.Controllable = controllable;
             }
 
             return partyMember;

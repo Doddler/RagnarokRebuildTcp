@@ -6,8 +6,10 @@ using System.Text.RegularExpressions;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Environment;
+using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Network;
+using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Utility;
 using JetBrains.Annotations;
@@ -822,6 +824,13 @@ namespace Assets.Scripts.Sprites
                     // var go = new GameObject("PneumaArea");
                     var highlighter = GroundHighlighter.Create(control, "pneumazone", new Color(1, 1, 1, 0.2f), 2);
                     highlighter.MaxTime = 10f;
+                    break;
+                case NpcEffectType.Demonstration:
+                    var demonstration = RoSpriteEffect.AttachSprite(control, "Assets/Sprites/Effects/데몬스트레이션.spr", -0.15f, 1f, RoSpriteEffectFlags.None);
+                    control.gameObject.transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
+                    demonstration.SetDurationByFrames(9999);
+                    AudioManager.Instance.OneShotSoundEffect(control.Id, $"ef_firewall.ogg", control.transform.position);
+                    control.AttachEffect(demonstration);
                     break;
                 case NpcEffectType.WarpPortalOpening:
                     WarpPortalOpeningEffect.StartWarpPortalOpen(obj);

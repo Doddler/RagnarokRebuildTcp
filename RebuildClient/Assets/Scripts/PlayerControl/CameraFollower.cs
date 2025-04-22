@@ -47,6 +47,15 @@ namespace Assets.Scripts
         Fixed
     }
 
+    public enum PromptType
+    {
+        None,
+        PromptForDropCount,
+        PromptForText,
+        PromptForYesNo,
+        RightClickMenu
+    }
+
     public class CameraFollower : MonoBehaviour
     {
         public GameObject ListenerProbe;
@@ -173,6 +182,8 @@ namespace Assets.Scripts
         public float BlindStrength = 60;
         private const float BlindTargetDistance = 10f;
 
+        public PromptType ActivePromptType;
+
         private List<RaycastResult> raycastResults;
 
 #if DEBUG
@@ -263,6 +274,8 @@ namespace Assets.Scripts
         private Vector2 zoomRange = new Vector2(30, 70);
         public bool InTextBox;
         public bool InItemInputBox;
+        public bool InTextInputBox;
+        public bool InYesNoPrompt;
 
         public void ResetCursor() => isHolding = false;
 
@@ -1046,6 +1059,12 @@ namespace Assets.Scripts
             if (hasItem && showEntityName && mouseTarget.IsAlly)
                 showEntityName = false; //don't show friendly names if you could instead pick up an item
 
+            if (canInteract && mouseTarget.IsAlly && rightClick)
+            {
+                UiManager.Instance.RightClickMenuWindow.RightClickPlayer(mouseTarget);
+                return displayCursor;
+            }
+
             if (showEntityName)
             {
                 //if our new mouseover target is different from last time, we need to swap over
@@ -1067,10 +1086,36 @@ namespace Assets.Scripts
                 mouseHoverTarget = null;
             }
 
+            if (!isOverUi && (leftClick || rightClick) && ActivePromptType != PromptType.None)
+            {
+                switch (ActivePromptType)
+                {
+                    case PromptType.RightClickMenu:
+                        UiManager.Instance.RightClickMenuWindow.HideWindow();
+                        break;
+                    //should probably add other prompts here
+                }
+
+                ActivePromptType = PromptType.None;
+                canMove = false;
+            }
+
             if (!isOverUi && InItemInputBox && leftClick)
             {
                 UiManager.Instance.DropCountConfirmationWindow.gameObject.SetActive(false);
                 InItemInputBox = false;
+            }
+            
+            if (!isOverUi && InTextInputBox && leftClick)
+            {
+                UiManager.Instance.TextInputWindow.HideInputWindow();
+                InTextInputBox = false;
+            }
+
+            if (!isOverUi && InYesNoPrompt && leftClick)
+            {
+                UiManager.Instance.YesNoOptionsWindow.HideInputWindow();
+                InYesNoPrompt = false;
             }
 
             if (canClickNpc && leftClick)
@@ -1614,13 +1659,24 @@ namespace Assets.Scripts
                     pointerOverUi = false;
                     selected = null;
                 }
+
+                if (pointerEvent.pointerEnter.name == "TopLeftCharacterUI")
+                {
+                    pointerOverUi = false;
+                    selected = null;
+
+                    if (Input.GetMouseButtonDown(1) && UiManager.Instance.RightClickMenuWindow.RightClickSelf())
+                    {
+                        pointerOverUi = true;
+                    }
+                }
             }
             
             InTextBox = false;
             if (selected != null && !InItemInputBox)
                 InTextBox = selected.GetComponent<TMP_InputField>() != null;
 
-            var inInputUI = InTextBox || InItemInputBox;
+            var inInputUI = InTextBox || InItemInputBox || InTextInputBox;
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -1637,6 +1693,11 @@ namespace Assets.Scripts
                 {
                     UiManager.Instance.DropCountConfirmationWindow.gameObject.SetActive(false);
                     InItemInputBox = false;
+                }
+                else if (InTextInputBox)
+                {
+                    UiManager.Instance.TextInputWindow.HideInputWindow();
+                    InTextInputBox = false;
                 }
                 else if (InTextBox)
                 {
@@ -1667,6 +1728,10 @@ namespace Assets.Scripts
                 {
                     UiManager.Instance.DropCountConfirmationWindow.SubmitDrop();
                     EventSystem.current.SetSelectedGameObject(null);
+                }
+                else if (InTextInputBox)
+                {
+                    UiManager.Instance.TextInputWindow.Submit();
                 }
                 else if (!InTextBox)
                 {

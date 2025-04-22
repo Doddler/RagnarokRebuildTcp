@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using RoRebuildServer.Database.Requests;
 using RoRebuildServer.Database;
+using RebuildSharedData.Enum;
+using System.Reflection;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Party;
 
@@ -36,9 +38,23 @@ public class PacketCreateParty : IClientPacketHandler
             CommandBuilder.ErrorMessage(connection, "Party name cannot be longer than 32 characters long.");
             return;
         }
-        
+
+        if (connection.ActiveDbAction != ActiveDbAction.None)
+        {
+            CommandBuilder.ErrorMessage(connection, "Unable to perform the requested action, please try again.");
+            return;
+        }
+
+        if (connection.Player.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 6)
+        {
+            CommandBuilder.SendServerEvent(connection.Player, ServerEvent.InviteFailedSenderNoBasicSkill);
+            return;
+        }
+
         var partyRequest = new CreatePartyRequest(connection, partyName);
+        partyRequest.InvitePlayerOnSuccess = msg.ReadInt32();
         connection.CreatePartyRequest = partyRequest;
+        connection.ActiveDbAction = ActiveDbAction.CreateParty;
         RoDatabase.EnqueueDbRequest(partyRequest);
     }
 }

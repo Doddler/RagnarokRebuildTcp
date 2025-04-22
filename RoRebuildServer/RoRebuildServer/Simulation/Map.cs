@@ -93,7 +93,7 @@ public class Map
     {
         var oldPosition = ch.Position;
 
-        //ch.StopMovingImmediately();
+        ch.StopMovingImmediately();
 
         SendRemoveEntityAroundCharacter(ref entity, ch, reason);
         ch.Position = newPosition;

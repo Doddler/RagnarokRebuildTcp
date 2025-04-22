@@ -46,6 +46,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
                     else
                         Camera.AppendChatText($"<color=#00fbfb>Current location has been recorded as your warp portal destination.</color>");
                     break;
+                case ServerEvent.PartyInviteSent:
+                    Camera.AppendChatText($"<color=#77FF77>A party invite has been sent.</color>");
+                    break;
             }
         }
     }

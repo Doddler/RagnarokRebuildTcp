@@ -30,8 +30,12 @@ public class HidingHandler : SkillHandlerBase
             source.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Hiding);
             return;
         }
+
+        var time = 30f + 15f * lvl;
+        if (source.Character.Type == CharacterType.Monster)
+            time -= 15f;
         
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Hiding, 30f + 15f * lvl, lvl);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Hiding, time, lvl);
         source.AddStatusEffect(status);
     }
 }

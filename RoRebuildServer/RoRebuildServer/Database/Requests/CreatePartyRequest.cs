@@ -15,6 +15,7 @@ public class CreatePartyRequest : IDbRequest
     public Party? CreatedParty;
     public bool IsComplete;
     public bool HasFailed;
+    public int InvitePlayerOnSuccess;
 
     public CreatePartyRequest(NetworkConnection connection, string partyName)
     {

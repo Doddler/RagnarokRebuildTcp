@@ -134,6 +134,17 @@ StateAttacking:
 	TryCast(FireAttack, 1, 5%, 0, 5s);
 }
 
+SkillHandler("GREATEST_GENERAL") {
+StateIdle:
+	TryCast(Blind, 3, 100%, 1.5s, 5s)[WasRangedAttacked] -> SendEmote(6); //angry
+	TryCast(Blind, 3, 100%, 1.5s, 5s)[WasMagicLocked] -> SendEmote(6); //angry
+	TryCast(FireBolt, 3, 100%, 1.5s, 5s)[WasRangedAttacked] -> SendEmote(6); //angry
+	TryCast(FireBolt, 3, 100%, 1.5s, 5s)[WasMagicLocked] -> SendEmote(6); //angry
+	
+StateAttacking:
+	TryCast(FireAttack, 2, 5%, 0, 5s);
+}
+
 
 SkillHandler("AM_MUT") {
 StateAttacking:

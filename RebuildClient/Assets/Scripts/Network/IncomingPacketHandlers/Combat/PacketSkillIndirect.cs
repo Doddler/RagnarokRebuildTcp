@@ -34,8 +34,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 Target = target
             };
             
-            if(hasTarget)
-                target.LookAt(pos.ToWorldPosition());
+            // if(hasTarget)
+            //     target.LookAt(pos.ToWorldPosition());
             
             if (result == AttackResult.Miss && hasSource)
             {

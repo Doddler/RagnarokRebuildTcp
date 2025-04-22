@@ -1483,9 +1483,18 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (sendPacket)
         {
-            Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-            CommandBuilder.AttackMulti(Character, target.Character, damageInfo, showAttackMotion);
-            CommandBuilder.ClearRecipients();
+            if (damageInfo.AttackSkill == CharacterSkill.None)
+            {
+                Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+                CommandBuilder.AttackMulti(Character, target.Character, damageInfo, showAttackMotion);
+                CommandBuilder.ClearRecipients();
+            }
+            else
+            {
+                Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+                CommandBuilder.SkillExecuteTargetedSkill(Character, target.Character, damageInfo.AttackSkill, 1, damageInfo);
+                CommandBuilder.ClearRecipients();
+            }
         }
 
         if (damageInfo.Damage != 0)

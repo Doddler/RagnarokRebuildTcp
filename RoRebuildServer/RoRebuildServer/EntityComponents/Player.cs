@@ -1819,12 +1819,16 @@ public class Player : IEntityAutoReset
                     Connection.ActiveDbAction = ActiveDbAction.None; //the CreatePartyRequest will probably already have notified failure
                 else if (Connection.CreatePartyRequest.IsComplete)
                 {
-                    //notify player that their party has been created
+                    if (Connection.CreatePartyRequest.InvitePlayerOnSuccess > 0 && Party != null)
+                    {
+                        var targetEntity = World.Instance.GetEntityById(Connection.CreatePartyRequest.InvitePlayerOnSuccess);
+                        if (targetEntity.TryGet<Player>(out var target))
+                            Party.SendInvite(this, target);
+                    }
+
+                    Connection.ActiveDbAction = ActiveDbAction.None;
                 }
-                
             }
-                    
-            
         }
         
         if (Character.QueuedAction == QueuedAction.Cast)

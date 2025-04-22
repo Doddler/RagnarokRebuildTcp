@@ -14,7 +14,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
 
             State.InvitedPartyId = partyId;
             
-            Camera.AppendChatText($"<color=#77FF77>{senderName} has invited you to join their party '{partyName}'.\nType /accept to accept the last request ('/accept {partyId}' for this party.)</color>");
+            UiManager.Instance.ToastNotificationArea.AddPartyInvite(partyId, senderName, partyName);
         }
     }
 }

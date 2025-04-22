@@ -80,8 +80,9 @@ SkillHandler("ANGRY_TARGET_DUMMY") {
 	//TryCast(StoneCurse, 300, 100%, 2s, 20s);
 	
 	//TryCast(LordOfVermilion, 10, 100%, 0.7s, 15s)[IsHiding];
-	TryCast(Hiding, 3, 100%, 0, 10s)[!IsHiding];
-	TryCast(Hiding, 3, 100%, 0, 10s)[IsHiding];
+//	TryCast(Hiding, 3, 100%, 0, 10s)[!IsHiding];
+//	TryCast(Hiding, 3, 100%, 0, 10s)[IsHiding];
+	TryCast(Demonstration, 1, 100%, 1000, 5s);
 	TryCast(Pneuma, 1, 100%, 0, 5s)[WasRangedAttacked];
 	TryCast(PowerUp, 5, 100%, 0.7s, 30s)[HpPercent < 50];
 	//TryCast(PoisonAttack, 1, 100%, 0.5s, 2s);

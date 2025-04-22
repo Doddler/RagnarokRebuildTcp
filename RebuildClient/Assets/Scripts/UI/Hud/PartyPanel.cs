@@ -75,6 +75,8 @@ namespace Assets.Scripts.UI.Hud
                 UnusedPanels.Push(entry);
                 entry.gameObject.SetActive(false);
             }
+            if(PartyEntryLookup.Count == 0)
+                gameObject.SetActive(false);
         }
 
         public void AddPartyMember(PartyMemberInfo info)

@@ -60,7 +60,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4057,BIGFOOT,Bigfoot,25,1852,30,13,45,23,12,6,150,177,1,10,1,760,353,10,12,Large,Beast,Earth1,1260,192,192,300,Normal,AiPassiveSense,840,bigfoot.spr,0,0.5,1,#FFFFFFFF,
 4058,SOHEE,Sohee,44,5223,38,31,34,50,28,10,219,268,1,0,11,2112,1298,10,12,Medium,Demon,Water1,2112,576,912,250,Normal,AiPassiveSense,324,sohee.spr,0,0.5,1,#FFFFFFFF,
 4059,WANDER_MAN,Wanderer,74,14692,39,43,24,115,105,36,640,961,2,5,8,20465,13880,10,12,Medium,Demon,Wind1,672,192,500,100,Normal,AiStandardBoss,336,wander_man.spr,0,0.5,1,#FFFFFFFF,
-4060,GREATEST_GENERAL,Greatest General,47,4381,38,38,34,66,14,114,270,331,3,15,14,2226,1389,10,12,Medium,Formless,Fire2,1152,384,1152,-1,Normal,AiAggressiveImmobile,816,greatest_general.spr,0,-1,1,#FFFFFFFF,
+4060,GREATEST_GENERAL,Greatest General,47,4381,38,62,34,66,14,114,270,331,3,15,14,2251,1406,10,12,Medium,Formless,Fire2,1152,384,1152,-1,Normal,AiAggressiveImmobile,816,greatest_general.spr,0,-1,1,#FFFFFFFF,
 4061,HORONG,Horong,45,1886,37,1,2,47,27,1,266,325,1,100,50,2107,1481,10,12,Small,Formless,Fire4,1888,828,1152,400,Normal,AiAggressiveAssist,552,horong.spr,0,0.5,1,#FFFFFFFF,
 4062,NINE_TAIL,Nine Tail,51,7873,58,3,45,53,31,21,439,536,1,12,16,4849,3602,10,12,Medium,Beast,Fire3,840,480,540,150,Normal,AiStandardBoss,360,nine_tail.spr,0,0.5,1,#FFFFFFFF,
 4063,EDDGA,Eddga,65,126890,79,64,78,87,45,62,855,1156,1,27,27,97534,67223,10,12,Large,Beast,Fire1,872,432,1344,300,Boss,AiStandardBoss,408,eddga.spr,0,0.5,1,#FFFFFFFF,
@@ -120,7 +120,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4117,ORC_LORD,Orc Lord,74,184008,113,81,102,88,46,60,1306,1959,1,40,13,183652,128420,10,12,Large,Demihuman,Earth4,1248,360,500,100,Boss,AiStandardBoss,624,orc_lord.spr,0,0.5,1,#FFFFFFFF,Orc
 4118,ORC_LADY,Orc Lady,35,2777,45,19,39,39,20,13,150,183,1,10,8,1223,759,10,12,Medium,Demihuman,Earth2,1050,288,900,200,Normal,AiStandardBoss,540,orc_lady.spr,0,0.5,1,#FFFFFFFF,Orc
 4119,ORC_BABY,Orc Baby,26,1447,27,22,23,32,15,4,149,182,1,10,9,703,562,10,12,Small,Demihuman,Earth1,672,288,864,200,Normal,AiAggressive,504,orc_baby.spr,0,0.5,1,#FFFFFFFF,Orc
-4120,ORK_HERO,Orc Hero,77,188198,113,89,100,96,50,53,968,1309,1,37,30,195455,134141,10,12,Large,Demihuman,Earth2,1678,648,780,150,Boss,AiStandardBoss,480,ork_hero.spr,0,0.5,1,#FFFFFFFF,Orc
+4120,ORK_HERO,Orc Hero,77,188198,113,107,100,96,50,53,968,1309,1,37,30,196959,135172,10,12,Large,Demihuman,Earth2,1678,648,780,150,Boss,AiStandardBoss,480,ork_hero.spr,0,0.5,1,#FFFFFFFF,Orc
 4121,ORC_ARCHER,Orc Archer,49,5199,41,37,49,87,23,23,257,314,9,16,13,2365,1669,10,12,Medium,Demihuman,Earth1,1960,480,620,300,Normal,AiAggressiveSense,864,orc_archer.spr,0,0.5,1,#FFFFFFFF,Orc
 4122,HIGH_ORC,High Orc,52,8012,60,32,54,71,32,19,531,650,1,18,14,5657,3718,10,12,Large,Demihuman,Fire2,1500,1000,500,150,Normal,AiStandardBoss,192,high_orc.spr,0,0.5,1,#FFFFFFFF,Orc
 4123,ORC_SKELETON,Orc Skeleton,32,2726,21,1,12,28,13,6,147,180,1,2,3,784,488,10,12,Medium,Undead,Undead1,2420,648,720,200,Normal,AiAggressive,288,orc_skeleton.spr,0,0.5,1,#FFFFFFFF,Orc
@@ -129,7 +129,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4126,DRAINLIAR,Drainliar,24,1277,20,1,14,69,25,1,73,90,1,0,0,581,227,10,12,Small,Beast,Dark2,1276,384,576,250,Normal,AiAggressiveSense,288,drainliar.spr,0,0.5,1,#FFFFFFFF,
 4127,MUMMY,Mummy,37,4897,23,1,23,50,16,8,205,250,1,0,10,1161,929,10,12,Medium,Undead,Undead2,1772,384,72,300,Normal,AiAggressive,288,mummy.spr,0,0.5,1,#FFFFFFFF,
 4128,ISIS,Isis,47,6978,46,50,33,53,34,14,399,488,1,16,20,4193,2429,10,12,Large,Demon,Dark1,1384,336,768,200,Normal,AiAggressiveSense,480,isis.spr,0.4,0.5,1,#FFFFFFFF,
-4129,SOLDIER_SKELETON,Soldier Skeleton,29,2257,16,21,14,32,16,6,115,140,1,6,11,691,482,10,12,Medium,Undead,Undead1,2276,432,576,200,Normal,AiAggressive,216,skel_soldier.spr,0,0.5,1,#FFFFFFFF,
+4129,SOLDIER_SKELETON,Soldier Skeleton,30,2409,17,22,15,33,16,6,122,149,1,7,12,783,545,10,12,Medium,Undead,Undead1,2276,432,576,200,Normal,AiAggressive,216,skel_soldier.spr,0,0.5,1,#FFFFFFFF,
 4130,ARCHER_SKELETON,Archer Skeleton,31,2239,16,22,15,60,13,6,101,124,9,6,11,658,479,10,12,Medium,Undead,Undead1,2864,576,864,300,Normal,AiAggressive,672,skel_archer.spr,0,0.5,1,#FFFFFFFF,
 4131,MIMIC,Mimic,51,5463,20,36,1,80,107,49,168,793,1,5,28,2268,3442,10,12,Medium,Formless,Neutral3,972,288,500,100,Normal,AiAggressiveSense,480,mimic.spr,0,0.5,1,#FFFFFFFF,
 4132,MATYR,Matyr,31,2329,13,3,30,40,21,3,120,147,1,0,0,1016,555,10,12,Medium,Beast,Dark1,432,360,432,150,Normal,AiAggressiveSense,144,matyr.spr,0,0.5,1,#FFFFFFFF,
@@ -181,7 +181,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4178,JAKK,Jakk,38,3184,31,44,27,51,23,18,223,272,1,6,11,1400,951,10,12,Medium,Formless,Fire2,1180,648,480,200,Normal,AiStandardBoss,192,jakk.spr,0,0.5,1,#FFFFFFFF,
 4179,DRACULA,Dracula,55,142627,76,84,54,89,48,39,520,967,3,36,49,61222,39942,10,12,Large,Demon,Dark4,1290,576,1140,145,Boss,AiAggressive,780,dracula.spr,0,0.5,1,#FFFFFFFF,
 4180,MARIONETTE,Marionette,41,2807,20,75,18,69,35,16,269,328,1,0,25,1899,1712,10,12,Small,Demon,Ghost3,1480,1056,480,300,Normal,AiAggressiveSense,240,marionette.spr,0,0.5,1,#FFFFFFFF,
-4181,DEVIRUCHI,Deviruchi,46,6666,41,44,33,61,32,25,369,452,1,7,18,3230,1763,10,12,Small,Demon,Dark1,980,384,600,150,Normal,AiStandardBoss,288,deviruchi.spr,0,0.5,1,#FFFFFFFF,
+4181,DEVIRUCHI,Deviruchi,51,6666,45,49,36,67,35,28,450,551,1,8,20,4852,2742,10,12,Small,Demon,Dark1,980,384,600,150,Normal,AiStandardBoss,288,deviruchi.spr,0,0.5,1,#FFFFFFFF,
 4182,DOPPELGANGER,Doppelganger,72,150114,98,107,69,98,54,50,776,1051,1,40,32,179470,117434,10,12,Medium,Demon,Dark3,480,288,480,100,Boss,AiStandardBoss,192,doppelganger.spr,0,0.5,1,#FFFFFFFF,
 4183,ANUBIS,Anubis,70,25279,47,80,11,83,39,9,747,914,1,24,28,18587,12968,10,12,Large,Demihuman,Undead2,1250,360,768,150,Normal,AiStandardBoss,480,anubis.spr,0,0.5,1,#FFFFFFFF,
 4184,REQUIEM,Requiem,41,4579,36,9,36,46,24,3,241,294,1,0,13,1868,1306,10,12,Medium,Demihuman,Dark1,1516,432,816,400,Normal,AiAggressive,432,requiem.spr,0,0.5,1,#FFFFFFFF,

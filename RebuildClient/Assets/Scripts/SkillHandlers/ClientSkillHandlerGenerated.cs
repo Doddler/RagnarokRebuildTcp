@@ -89,7 +89,8 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[72] = new LordOfVermilionHandler();
 			handlers[73] = new DefaultSkillHandler();
 			handlers[74] = new DefaultSkillHandler();
-			handlers[75] = new DefaultSkillHandler();
+			handlers[75] = new DemonstrationHandler();
+			handlers[75].ExecuteWithoutSource = true;
 			handlers[76] = new FireAttackHandler();
 			handlers[77] = new IceAttackHandler();
 			handlers[78] = new WaterAttackHandler();

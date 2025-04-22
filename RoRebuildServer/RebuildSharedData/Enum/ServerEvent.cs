@@ -14,6 +14,10 @@ namespace RebuildSharedData.Enum
         GetZeny,
         GetMVP,
         EligibleForJobChange,
-        MemoLocationSaved
+        MemoLocationSaved,
+        PartyInviteSent,
+        InviteFailedSenderNoBasicSkill,
+        InviteFailedRecipientNoBasicSkill,
+        InviteFailedAlreadyInParty,
     }
 }

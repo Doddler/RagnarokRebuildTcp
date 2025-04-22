@@ -27,6 +27,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             effect.StringValue = sprite;
             effect.PositionOffset = new Vector3(0f, offset, 0f);
             effect.Flags[0] = (int)flags;
+            effect.gameObject.transform.localScale = Vector3.one;
             
             EffectSharedMaterialManager.PrepareEffectSprite(sprite);
             

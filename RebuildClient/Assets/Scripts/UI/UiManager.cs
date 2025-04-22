@@ -32,12 +32,15 @@ public class UiManager : MonoBehaviour
     public HelpWindow HelpWindow;
     public PartyPanel PartyPanel;
     public DragTrashBucket TrashBucket;
-    
+    public ToastNotificationArea ToastNotificationArea;
+    public RightClickMenuWindow RightClickMenuWindow;
     
     public ItemOverlay ItemOverlay;
     public CharacterChat TooltipOverlay;
     public EquipmentWindow EquipmentWindow;
     public StatsWindow StatusWindow;
+    public TextInputWindow TextInputWindow;
+    public YesNoOptionWindow YesNoOptionsWindow;
     public DropCountConfirmationWindow DropCountConfirmationWindow;
     public ItemDescriptionWindow ItemDescriptionWindow;
     public ItemDescriptionWindow SubDescriptionWindow;
@@ -122,6 +125,7 @@ public class UiManager : MonoBehaviour
         //InventoryWindow.HideWindow();
         ItemDescriptionWindow.HideWindow();
         SubDescriptionWindow.HideWindow();
+        RightClickMenuWindow.HideWindow();
         
         PartyPanel.gameObject.SetActive(false);
         
@@ -129,6 +133,7 @@ public class UiManager : MonoBehaviour
         
         TooltipOverlay.gameObject.SetActive(false);
         DropCountConfirmationWindow.gameObject.SetActive(false);
+        TextInputWindow.gameObject.SetActive(false);
 
         inventoryDropTarget = InventoryDropArea.GetComponent<InventoryDropZone>();
         equipmentWindowDropTarget = EquipmentDropArea.GetComponent<InventoryDropZone>();
@@ -185,6 +190,14 @@ public class UiManager : MonoBehaviour
         }
         
         drag.OnPointerEnter(null);
+    }
+
+    public Vector3 GetScreenPositionOfCursor()
+    {
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,
+            Input.mousePosition, canvas.worldCamera, out var screenPos);
+
+        return canvas.transform.TransformPoint(screenPos);
     }
 
     private void UpdateOverlayPosition()

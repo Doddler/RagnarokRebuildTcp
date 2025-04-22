@@ -1738,10 +1738,11 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void OrganizeParty(string partyName)
+        public void OrganizeParty(string partyName, int entityId = -1)
         {
             var msg = StartMessage(PacketType.CreateParty);
             msg.Write(partyName);
+            msg.Write(entityId);
             
             SendMessage(msg);
         }

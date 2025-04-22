@@ -66,7 +66,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
                 if (NetworkManager.Instance.EntityList.TryGetValue(m.EntityId, out var controllable))
                     m.Controllable = controllable;
 
-                PlayerState.Instance.RegisterOrUpdatePartyMember(m, m.EntityId);
+                PlayerState.Instance.RegisterOrUpdatePartyMember(m);
             }
         }
     }

@@ -8,37 +8,56 @@ using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Skills.SkillHandlers.Wizard;
 using RoRebuildServer.Simulation.Util;
 using System.Diagnostics;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Alchemist;
 
+[MonsterSkillHandler(CharacterSkill.Demonstration, SkillClass.Physical, SkillTarget.Enemy)] //demonstration from monsters is targeted
 [SkillHandler(CharacterSkill.Demonstration)]
 public class DemonstrationHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1f;
     public override int GetSkillRange(CombatEntity source, int lvl) => 9;
 
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    {
+        if (source.Character.Type == CharacterType.Player && source.Character.Position.SquareDistance(position) < 3)
+            return SkillValidationResult.TooClose;
+
+        return base.ValidateTarget(source, target, position, lvl);
+    }
+
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
 
-        if (!position.IsValid()) //monsters will either target pneuma directly on themselves or an ally
-            position = target != null ? target.Character.Position : source.Character.Position;
+        if (target != null)
+        {
+            position = target.Character.Position;
+            if (target.Character.IsMoving)
+            {
+                //monsters will lead the player 1 tile with firewall if they're moving in order to block them
+                var forwardPosition = position.AddDirectionToPosition(target.Character.FacingDirection);
+                if (map.WalkData.IsCellWalkable(forwardPosition))
+                    position = forwardPosition;
+            }
+        }
 
         var ch = source.Character;
 
         var di = source.PrepareTargetedSkillResult(null, CharacterSkill.Demonstration);
 
-        var throwDistance =  (int)((di.AttackMotionTime + target.Character.WorldPosition.DistanceTo(position) * 0.25f) * 1000);
-
-        var e = World.Instance.CreateEvent(source.Entity, map, "DemonstrationObjectEvent", position, lvl, throwDistance, 0, 0, null);
+        //var throwDistance =  (int)((di.AttackMotionTime + target.Character.WorldPosition.DistanceTo(position) * 0.25f) * 1000);
+        
+        var e = World.Instance.CreateEvent(source.Entity, map, "DemonstrationObjectEvent", position, lvl, (int)(di.AttackMotionTime * 1000), 0, 0, null);
         ch.AttachEvent(e);
         source.ApplyCooldownForSupportSkillAction();
 
         if (!isIndirect)
-            CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(ch, position, CharacterSkill.Demonstration, lvl);
+            CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(ch, position, CharacterSkill.Demonstration, lvl, di.AttackMotionTime);
     }
 }
 
@@ -88,6 +107,8 @@ public class DemonstrationObjectEvent : NpcBehaviorBase
 
         npc.AreaOfEffect = aoe;
         npc.Character.Map!.CreateAreaOfEffect(aoe);
+        
+        npc.RevealAsEffect(NpcEffectType.Demonstration);
     }
 
     public override void OnTimer(Npc npc, float lastTime, float newTime)
@@ -116,7 +137,8 @@ public class DemonstrationObjectEvent : NpcBehaviorBase
 
         var ratio = 1f + 0.2f * npc.ValuesInt[0];
 
-        var res = src.CalculateCombatResult(target, ratio, 1, AttackFlags.Physical | AttackFlags.IgnoreEvasion, CharacterSkill.Demonstration, AttackElement.Fire);
+        var flags = AttackFlags.Physical | AttackFlags.IgnoreEvasion | AttackFlags.IgnoreNullifyingGroundMagic;
+        var res = src.CalculateCombatResult(target, ratio, 1, flags, CharacterSkill.Demonstration, AttackElement.Fire);
         res.AttackMotionTime = 0;
         res.Time = Time.ElapsedTimeFloat;
         res.IsIndirect = true;
@@ -125,5 +147,13 @@ public class DemonstrationObjectEvent : NpcBehaviorBase
 
         target.SetSkillDamageCooldown(CharacterSkill.Demonstration, 1f);
         src.ExecuteCombatResult(res, false);
+    }
+}
+
+public class NpcLoaderDemonstrationEvent : INpcLoader
+{
+    public void Load()
+    {
+        DataManager.RegisterEvent("DemonstrationObjectEvent", new DemonstrationObjectEvent());
     }
 }

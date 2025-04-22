@@ -13,7 +13,7 @@ public class VampyrismHandler :SkillHandlerBase
     {
         source.ApplyCooldownForSupportSkillAction();
 
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Vampyrism, 180f);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Vampyrism, 30f * lvl);
         source.AddStatusEffect(status);
 
         CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Vampyrism, lvl);

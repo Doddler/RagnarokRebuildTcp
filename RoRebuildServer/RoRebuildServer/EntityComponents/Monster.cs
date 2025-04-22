@@ -575,7 +575,7 @@ public partial class Monster : IEntityAutoReset
 
     public void RewardExperience()
     {
-        if (TotalDamageReceived == null)
+        if (TotalDamageReceived == null || Character.Map == null)
             return;
 
         var exp = MonsterBase.Exp;
@@ -584,7 +584,7 @@ public partial class Monster : IEntityAutoReset
         if (exp == 0 && job == 0)
             return;
 
-        TotalDamageReceived.ClearInactive();
+        TotalDamageReceived.ClearDeadAndNotOnMap(Character.Map);
         var dmgValues = TotalDamageReceived.InternalValueList;
 
         if (TotalDamageReceived.Count == 0 || dmgValues == null || Character.Map == null)

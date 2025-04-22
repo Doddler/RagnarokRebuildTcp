@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Networking;
 using System.Numerics;
+using RebuildSharedData.Enum;
 
 namespace RoRebuildServer.Simulation.Parties;
 
@@ -49,7 +50,7 @@ public class PartyExpAccumulator
             {
                 if (!m.TryGet<Player>(out var p))
                     continue;
-                if (p.Character.Map != player.Character.Map)
+                if (p.Character.Map != player.Character.Map || p.Character.State == CharacterState.Dead || !p.Character.IsActive)
                     continue;
                 //if (p.Character.Position.DistanceTo(player.Character.Position) > 60)
                 //    continue;
