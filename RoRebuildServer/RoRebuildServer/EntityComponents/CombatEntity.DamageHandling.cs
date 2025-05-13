@@ -225,7 +225,6 @@ public partial class CombatEntity
 
         if (isCrit)
         {
-            baseDamage = atk2;
             evade = false;
             isCrit = true;
             attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamage) / 100f;
