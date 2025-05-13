@@ -819,7 +819,7 @@ public partial class CombatEntity : IEntityAutoReset
         switch (Character.Type)
         {
             case CharacterType.Monster:
-                if ((BodyState & BodyStateFlags.Cloaking) > 0 && GetSpecialType() == CharacterSpecialType.Boss)
+                if ((BodyState & BodyStateFlags.Cloaking) > 0 && GetSpecialType() != CharacterSpecialType.Boss)
                     RemoveStatusOfTypeIfExists(CharacterStatusEffect.Cloaking);
                 return;
             case CharacterType.Player:
@@ -1383,7 +1383,6 @@ public partial class CombatEntity : IEntityAutoReset
         return di;
     }
 
-
     public DamageInfo CalculateCombatResult(CombatEntity target, float attackMultiplier, int hitCount,
         AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement element = AttackElement.None)
     {
@@ -1397,10 +1396,12 @@ public partial class CombatEntity : IEntityAutoReset
         if (!target.IsValidTarget(this, req.Flags.HasFlag(AttackFlags.CanHarmAllies), true))
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResult.");
 #endif
-
         var isMagic = req.Flags.HasFlag(AttackFlags.Magical);
-        (req.MinAtk, req.MaxAtk) = CalculateAttackPowerRange(isMagic);
+        if (req.MinAtk == 0 && req.MaxAtk == 0)
+            (req.MinAtk, req.MaxAtk) = CalculateAttackPowerRange(isMagic);
 
+        statusContainer?.OnPreCalculateCombatResult(target, ref req);
+        
         return CalculateCombatResultUsingSetAttackPower(target, req);
     }
 
@@ -1450,10 +1451,13 @@ public partial class CombatEntity : IEntityAutoReset
         Character.AddMoveLockTime(attackMotionTime * 0.5f); //the actual animation is 6 frames instead of 9 for skill casting
     }
 
-    public void ApplyCooldownForAttackAction()
+    public void ApplyCooldownForAttackAction(float maxMotionTime = 4f)
     {
         var attackMotionTime = GetTiming(TimingStat.AttackMotionTime); //time for actual weapon strike to occur
         var delayTime = GetTiming(TimingStat.AttackDelayTime); //time before you can attack again
+
+        if (attackMotionTime > maxMotionTime)
+            attackMotionTime = maxMotionTime;
 
         if (attackMotionTime > delayTime)
             delayTime = attackMotionTime;

@@ -121,7 +121,20 @@ StateChase:
 
 SkillHandler("NIGHTMARE") {
 StateAttacking:
+	TryCast(Blind, 3, 5%, 0, 5s);
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt);
 	TryCast(GhostAttack, 5, 5%, 0, 5s);
+}
+
+SkillHandler("DEVIRUCHI") {
+StateChase:
+    TryCast(EnergyDrain, 1, 5%, 0, 5s)[HpPercent < 30] -> SendEmote(19); //swt
+    TryCast(DarkThunder, 3, 5%, 1.5s, 5s) -> SendEmote(29); //heh
+StateAttacking:
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(29); //heh
+	TryCast(DarkAttack, 1, 5%, 0, 5s);
+    TryCast(EnergyDrain, 1, 5%, 0, 5s)[HpPercent < 30] -> SendEmote(19); //swt
+    TryCast(DarkThunder, 3, 5%, 1.5s, 5s) -> SendEmote(29); //heh
 }
 
 SkillHandler("PETIT") {

@@ -145,7 +145,7 @@ public class WarpPortalBaseEvent : NpcBehaviorBase
 
     public override void OnTimer(Npc npc, float lastTime, float newTime)
     {
-        if (newTime > npc.ValuesInt![0])
+        if (newTime > npc.ValuesInt[0])
         {
             npc.EndEvent();
             return;

@@ -638,7 +638,6 @@ public class Player : IEntityAutoReset
 
         Character.ClassId = job;
 
-        SetTiming(TimingStat.HitDelayTime, 0.288f);
         if (WeaponClass == 12) //bow
             SetStat(CharacterStat.Range, int.Max(1, Equipment.WeaponRange + MaxLearnedLevelOfSkill(CharacterSkill.VultureEye)));
         else
@@ -684,9 +683,12 @@ public class Player : IEntityAutoReset
             spriteTime *= ratio;
         }
 
+        var hitDelayTime = float.Clamp(0.5f - agi * 0.004f, 0.2f, 0.6f); //originally was 0.288f
+
         SetTiming(TimingStat.AttackDelayTime, recharge);
         SetTiming(TimingStat.AttackMotionTime, motionTime);
         SetTiming(TimingStat.SpriteAttackTiming, spriteTime);
+        SetTiming(TimingStat.HitDelayTime, hitDelayTime);
 
         var hpPercent = 100 + GetStat(CharacterStat.AddMaxHpPercent);
 
@@ -913,19 +915,26 @@ public class Player : IEntityAutoReset
         return true;
     }
 
-    public bool TryTakeSpValue(int value)
+    public void TakeSpValue(int spCost)
     {
-        var spCost = value;
-
         var currentSp = GetStat(CharacterStat.Sp);
         if (currentSp < spCost)
-            return false;
+            spCost = currentSp;
+
         currentSp -= spCost;
         SetStat(CharacterStat.Sp, currentSp);
         CommandBuilder.ChangeSpValue(this, currentSp, GetStat(CharacterStat.MaxSp));
         if (Party != null)
             CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
+    }
 
+    public bool TryTakeSpValue(int spCost)
+    {
+        var currentSp = GetStat(CharacterStat.Sp);
+        if (currentSp < spCost)
+            return false;
+
+        TakeSpValue(spCost);
         return true;
     }
 

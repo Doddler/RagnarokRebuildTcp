@@ -440,7 +440,7 @@ public class WorldObject : IEntityAutoReset
         if (State == CharacterState.Moving || State == CharacterState.Dead)
             return;
 
-        if (CombatEntity.HasBodyState(BodyStateFlags.Hidden) || Player.GetStat(CharacterStat.Disabled) > 0)
+        if (CombatEntity.HasBodyState(BodyStateFlags.AnyHiddenState) || Player.GetStat(CharacterStat.Disabled) > 0)
             return;
 
         if (isSitting)

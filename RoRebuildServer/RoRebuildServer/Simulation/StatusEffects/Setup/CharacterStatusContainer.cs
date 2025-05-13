@@ -23,13 +23,14 @@ public class CharacterStatusContainer
 
     private SwapList<StatusEffectState>? statusEffects;
     private SwapList<PendingStatusEffect>? pendingStatusEffects;
-
-    private int onAttackEffects;
-    private int onHitEffects;
-    private int onUpdateEffects;
-    private int onEquipmentChangeEffects;
-    private int onMoveEffects;
-    private int onCalculateDamageTakenEffects;
+    
+    private byte onAttackEffects;
+    private byte onHitEffects;
+    private byte onUpdateEffects;
+    private byte onEquipmentChangeEffects;
+    private byte onMoveEffects;
+    private byte onCalculateDamageTakenEffects;
+    private byte onPreCalculateCombatResultEffects;
 
     private double nextStatusUpdate;
     private double nextExpirationCheck;
@@ -47,6 +48,7 @@ public class CharacterStatusContainer
         onEquipmentChangeEffects = 0;
         onMoveEffects = 0;
         onCalculateDamageTakenEffects = 0;
+        onPreCalculateCombatResultEffects = 0;
         nextStatusUpdate = 0f;
         nextExpirationCheck = 0f;
         if (pendingStatusEffects != null)
@@ -164,6 +166,34 @@ public class CharacterStatusContainer
             RemoveIdList(ref remove, removeCount);
     }
 
+    public void OnPreCalculateCombatResult(CombatEntity? target, ref AttackRequest req)
+    {
+        if (statusEffects == null || onPreCalculateCombatResultEffects <= 0)
+            return;
+
+        Span<int> remove = stackalloc int[statusEffects.Count];
+        var removeCount = 0;
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var s = statusEffects[i];
+            if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnPreCalculateDamageDealt))
+            {
+                var res = StatusEffectHandler.OnPreCalculateDamage(s.Type, Owner, target, ref s, ref req);
+                if (res == StatusUpdateResult.EndStatus)
+                {
+                    remove[removeCount] = i;
+                    removeCount++;
+                }
+                else
+                    statusEffects[i] = s; //update any changed data
+            }
+        }
+
+        if (removeCount > 0)
+            RemoveIdList(ref remove, removeCount);
+    }
+
     public void OnAttack(ref DamageInfo di)
     {
         Debug.Assert(Owner != null);
@@ -236,7 +266,7 @@ public class CharacterStatusContainer
             var s = statusEffects[i];
             if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnCalculateDamageTaken))
             {
-                var res = StatusEffectHandler.OnCalculateDamageTaken(s.Type, Owner, ref s, ref req, ref di);
+                var res = StatusEffectHandler.OnCalculateDamage(s.Type, Owner, ref s, ref req, ref di);
                 if (res == StatusUpdateResult.EndStatus)
                 {
                     remove[removeCount] = i;
@@ -494,6 +524,46 @@ public class CharacterStatusContainer
         return hasRemoved;
     }
 
+    private void RemoveUpdateModeForStatus(CharacterStatusEffect type)
+    {
+        var updateMode = StatusEffectHandler.GetUpdateMode(type);
+
+        if ((updateMode & StatusUpdateMode.OnTakeDamage) > 0)
+            onHitEffects--;
+        if ((updateMode & StatusUpdateMode.OnDealDamage) > 0)
+            onAttackEffects--;
+        if ((updateMode & StatusUpdateMode.OnUpdate) > 0)
+            onUpdateEffects--;
+        if ((updateMode & StatusUpdateMode.OnChangeEquipment) > 0)
+            onEquipmentChangeEffects--;
+        if ((updateMode & StatusUpdateMode.OnMove) > 0)
+            onMoveEffects--;
+        if ((updateMode & StatusUpdateMode.OnCalculateDamageTaken) > 0)
+            onCalculateDamageTakenEffects--;
+        if ((updateMode & StatusUpdateMode.OnPreCalculateDamageDealt) > 0)
+            onPreCalculateCombatResultEffects--;
+    }
+
+    private void AddUpdateModeForStatus(CharacterStatusEffect type)
+    {
+        var updateMode = StatusEffectHandler.GetUpdateMode(type);
+
+        if ((updateMode & StatusUpdateMode.OnTakeDamage) > 0)
+            onHitEffects++;
+        if ((updateMode & StatusUpdateMode.OnDealDamage) > 0)
+            onAttackEffects++;
+        if ((updateMode & StatusUpdateMode.OnUpdate) > 0)
+            onUpdateEffects++;
+        if ((updateMode & StatusUpdateMode.OnChangeEquipment) > 0)
+            onEquipmentChangeEffects++;
+        if ((updateMode & StatusUpdateMode.OnMove) > 0)
+            onMoveEffects++;
+        if ((updateMode & StatusUpdateMode.OnCalculateDamageTaken) > 0)
+            onCalculateDamageTakenEffects++;
+        if ((updateMode & StatusUpdateMode.OnPreCalculateDamageDealt) > 0)
+            onPreCalculateCombatResultEffects++;
+    }
+
     private void RemoveExistingStatusEffect(int id)
     {
         Debug.Assert(Owner != null && statusEffects != null);
@@ -510,19 +580,7 @@ public class CharacterStatusContainer
         StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
         statusEffects!.Remove(id);
 
-        var updateMode = StatusEffectHandler.GetUpdateMode(status.Type);
-        if (updateMode.HasFlag(StatusUpdateMode.OnTakeDamage))
-            onHitEffects--;
-        if (updateMode.HasFlag(StatusUpdateMode.OnDealDamage))
-            onAttackEffects--;
-        if (updateMode.HasFlag(StatusUpdateMode.OnUpdate))
-            onUpdateEffects--;
-        if (updateMode.HasFlag(StatusUpdateMode.OnChangeEquipment))
-            onEquipmentChangeEffects--;
-        if (updateMode.HasFlag(StatusUpdateMode.OnMove))
-            onMoveEffects--;
-        if(updateMode.HasFlag(StatusUpdateMode.OnCalculateDamageTaken))
-            onCalculateDamageTakenEffects--;
+        RemoveUpdateModeForStatus(status.Type);
     }
     
     private void RemoveExistingStatusEffect(ref StatusEffectState status, bool isRefresh = false)
@@ -542,20 +600,8 @@ public class CharacterStatusContainer
 
         StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
         statusEffects!.Remove(ref status);
-        
-        var updateMode = StatusEffectHandler.GetUpdateMode(status.Type);
-        if (updateMode.HasFlag(StatusUpdateMode.OnTakeDamage))
-            onHitEffects--;
-        if (updateMode.HasFlag(StatusUpdateMode.OnDealDamage))
-            onAttackEffects--;
-        if (updateMode.HasFlag(StatusUpdateMode.OnUpdate))
-            onUpdateEffects--;
-        if (updateMode.HasFlag(StatusUpdateMode.OnChangeEquipment))
-            onEquipmentChangeEffects--;
-        if (updateMode.HasFlag(StatusUpdateMode.OnMove))
-            onMoveEffects--;
-        if (updateMode.HasFlag(StatusUpdateMode.OnCalculateDamageTaken))
-            onCalculateDamageTakenEffects--;
+
+        RemoveUpdateModeForStatus(status.Type);
     }
 
     public void AddNewStatusEffect(StatusEffectState state, bool replaceExisting = true, bool isRestore = false)
@@ -594,19 +640,7 @@ public class CharacterStatusContainer
 
         Owner.UpdateStats();
 
-        var updateMode = StatusEffectHandler.GetUpdateMode(state.Type);
-        if (updateMode.HasFlag(StatusUpdateMode.OnTakeDamage))
-            onHitEffects++;
-        if (updateMode.HasFlag(StatusUpdateMode.OnDealDamage))
-            onAttackEffects++;
-        if (updateMode.HasFlag(StatusUpdateMode.OnUpdate))
-            onUpdateEffects++;
-        if (updateMode.HasFlag(StatusUpdateMode.OnChangeEquipment))
-            onEquipmentChangeEffects++;
-        if (updateMode.HasFlag(StatusUpdateMode.OnMove))
-            onMoveEffects++;
-        if (updateMode.HasFlag(StatusUpdateMode.OnCalculateDamageTaken))
-            onCalculateDamageTakenEffects++;
+        AddUpdateModeForStatus(state.Type);
     }
 
     public void AddPendingStatusEffect(StatusEffectState state, bool replaceExisting, float time)

@@ -632,11 +632,13 @@ public partial class Monster
         if (timeOfStartChase > Time.ElapsedTimeFloat)
             timeOfStartChase = Time.ElapsedTimeFloat;
 
-        //var distance = Character.Position.DistanceTo(targetChar.Position);
         if (CombatEntity.CanAttackTarget(targetChar))
         {
-            //hasTarget = true;
-            nextAiUpdate = -1;
+            //short circuit to attacking if they can attack here
+            if (InAttackDelayEnd() && OutPerformAttack(false))
+                OverrideTargetState = MonsterAiState.StateAttacking;
+            else
+                nextAiUpdate = -1;
             return true;
         }
 
@@ -698,7 +700,7 @@ public partial class Monster
     /// <summary>
     /// Performs an attack on the monster's currently chosen target. The validity of the attack is assumed to have been checked prior.
     /// </summary>
-    private bool OutPerformAttack()
+    private bool OutPerformAttack(bool performSkillCheck = true)
     {
         Debug.Assert(targetCharacter != null, $"Monster {Character.Name} must have a target to use this action.");
 
@@ -712,7 +714,7 @@ public partial class Monster
         if (!targetEntity.IsValidTarget(CombatEntity) || targetEntity.IsHiddenTo(CombatEntity))
             return false;
 
-        if (AiSkillScanUpdate())
+        if (performSkillCheck && AiSkillScanUpdate())
             return true;
 
         CombatEntity.PerformMeleeAttack(targetEntity);

@@ -1,0 +1,60 @@
+#include "_macro.txt"
+
+SkillHandler("SPRING_RABBIT") {
+StateIdle:
+	TryCast(NoCast, 1, 20%, 0, 5%) -> SendEmote(2); //whistle
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+	TryCast(EarthAttack, 1, 50, 0, 5s);
+	TryCast(Bash, 10, 50, 0, 5s) -> SendEmote(6); //angry
+}
+
+SkillHandler("DRAGON_TAIL") {
+StateAttacking:
+	TryCast(BloodDrain, 1, 50, 0, 5s);
+	TryCast(Sleep, 3, 50, 0, 5s);
+	TryCast(WindAttack, 2, 50, 0.5s, 5s, NoInterrupt);
+}
+
+SkillHandler("FREEZER") {
+StateIdle:
+    @ResumeAiState(20%, AiStandardBoss, 6); //angry
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 5%) -> SendEmote(20); //doubt
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(ColdBolt, 3, 50, 1.5s, 5%);
+StateAttacking:
+	TryCast(ColdBolt, 3, 50, 1.5s, 5%);
+	TryCast(FrostDiver, 9, 50, 1000, 5000);
+	TryCast(WaterAttack, 3, 50, 500, 5000) -> SendEmote(6); //angry
+}
+
+SkillHandler("HEATER") {
+StateIdle:
+    @ResumeAiState(20%, AiStandardBoss, 6); //angry
+	TryCast(NoCast, 1, 20%, 0, 5%) -> SendEmote(6); //angry
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(FireBall, 9, 5%, 0.5s, 5s);
+StateAttacking:
+	TryCast(FireAttack, 3, 50, 0.5s, 5s) -> SendEmote(6); //angry
+}
+
+SkillHandler("PERMETER") {
+StateAny:
+    TryCast(Heal, 9, 100%, 0.5s, 5s, HideSkillName)[FindAllyBelowHpPercent(60)] -> SendEmote(5); //lightbulb
+    TryCast(Heal, 9, 100%, 0.5s, 5s, HideSkillName)[HpPercent < 30] -> SendEmote(5); //lightbulb
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 5%) -> SendEmote(2); //whistle
+StateAttacking:
+	TryCast(EarthAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
+	TryCast(Hallucination, 1, 5%, 0.5s, 5s, EasyInterrupt);
+}
+
+SkillHandler("ASSULTER") {
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt);
+	TryCast(WindAttack, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(6);
+}

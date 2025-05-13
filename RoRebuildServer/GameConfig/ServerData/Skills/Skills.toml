@@ -602,6 +602,9 @@ InterruptMode = "NoInterrupt"
 InterruptMode = "NoInterrupt"
 
 
+[MagicalAttack] #the skill that makes their regular attacks magical
+Name = "Magic Weapon"
+
 [BloodDrain]
 Name = "Blood Drain"
 [EnergyDrain]
@@ -609,11 +612,13 @@ Name = "Energy Drain"
 [GuidedAttack]
 Name = "Guided Attacks"
 [SplashAttack]
-Name = "Splash Attack"
+Name = "Area Attack"
 [ComboAttack]
 Name = "Combo Attack"
 [PiercingAttack]
 Name = "Piercing Attack"
+[RangedAttack]
+Name = "Ranged Strike"
 [DarkStrike]
 Name = "Dark Strike"
 [BreakArmor]
@@ -629,6 +634,7 @@ Name = "Dark Blessing"
 [Suicide]
 [Stop]
 [Hallucination]
+[Lick]
 [Emotion]
 
 [DarkThunder]

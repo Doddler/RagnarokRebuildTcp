@@ -1,3 +1,5 @@
+#include "_macro.txt"
+
 SkillHandler("ARGOS") {
 StateAttacking:
     TryCast(Poison, 5, 20%, 0.8s, 5s);
@@ -5,6 +7,10 @@ StateAttacking:
 }
 
 SkillHandler("ARGIOPE") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 7); //grumpy
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
 StateAttacking:
     TryCast(Poison, 3, 15%, 0.8s, 5s);
     TryCast(PoisonAttack, 2, 5%, 0.5s, 5s);
@@ -14,4 +20,29 @@ SkillHandler("CARAMEL") {
 StateAttacking:
     TryCast(EarthAttack, 3, 20%, 0, 5s);
     TryCast(PiercingAttack, 2, 5%, 0s, 5s) -> SendEmote(6); //angry
+}
+
+SkillHandler("FLORA") {
+StateIdle:
+    TryCast(NoCast, 1, 200, 0, 5s) -> SendEmote(2); //whistle
+StateAttacking:
+    TryCast(EarthAttack, 1, 20%, 0, 5s);
+    TryCast(BloodDrain, 2, 5%, 0s, 5s);
+}
+
+SkillHandler("SKEL_WORKER") {
+StateIdle:
+    TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(1); //?
+StateAngry:
+	TryCast(CriticalAttack, 1, 5%, 0.5s, 5s, NoInterrupt);
+StateAttacking:
+    TryCast(CriticalAttack, 1, 5%, 0.5s, 5s, NoInterrupt);
+}
+
+SkillHandler("MYST") {
+StateIdle:
+    TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(7); //grumpy
+StateAttacking:
+    TryCast(Blind, 1, 5%, 0.5s, 5s, NoInterrupt);
+    TryCast(PoisonAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(9); //...
 }

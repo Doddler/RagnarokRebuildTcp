@@ -70,6 +70,47 @@ AiAssist,StateAdjust,InAttacked,OutChangeTargets,StateSearch
 AiAssist,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
 
 //missing monster type 04 => aggressive angry type
+//angry monsters start combat in an aggressive 'angry' state (StateAngry)
+//after taking damage they swap to their 'berserk' state (StateAttacking)
+AiAngry,StateIdle,InTargetSearch,OutStartChase,StateFollow
+AiAngry,StateIdle,InWaitEnd,OutRandomMoveStart,StateRandomMove
+AiAngry,StateIdle,InAttacked,OutStartChase,StateFollow
+AiAngry,StateRandomMove,InTargetSearch,OutStartChase,StateFollow
+AiAngry,StateRandomMove,InAttacked,OutStartChase,StateFollow
+AiAngry,StateRandomMove,InReachedRandomMoveTarget,OutWaitStart,StateIdle
+AiAngry,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
+AiAngry,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
+//angry mode
+AiAngry,StateFollow,InAttackRange,OutStartAttacking,StateAngry
+AiAngry,StateFollow,InAttackRangeAny,OutStartAttacking,StateAngry
+AiAngry,StateFollow,InNearTargetTile,OutSearch,StateFollowSearch
+AiAngry,StateFollow,InAttacked,OutChangeTargets,StateSearch
+AiAngry,StateFollowSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
+AiAngry,StateFollowSearch,InEnemyOutOfAttackRange,OutStartChase,StateFollow
+AiAngry,StateFollowSearch,InAttackRange,OutStartAttacking,StateAngry
+AiAngry,StateFollowSearch,InAttackRangeAny,OutStartAttacking,StateAngry
+AiAngry,StateAngry,InAttacked,OutChangeTargets,StateSearch
+AiAngry,StateAngry,InEnemyOutOfSight,OutWaitStart,StateIdle
+AiAngry,StateAngry,InEnemyOutOfAttackRange,OutStartChase,StateFollow
+AiAngry,StateAngry,InNeedAttackingAdjust,OutAttackingAdjust,StateAngryAdjust
+AiAngry,StateAngry,InMeleeAttacked,OutChangeTargets,StateAttacking
+AiAngry,StateAngry,InAttackDelayEnd,OutPerformAttack,StateAngry
+AiAngry,StateAngryAdjust,InReachedTarget,OutSearch,StateFollow
+AiAngry,StateAngryAdjust,InAttacked,OutSearch,StateSearch
+//berserk mode
+AiAngry,StateChase,InAttackRange,OutStartAttacking,StateAttacking
+AiAngry,StateChase,InNearTargetTile,OutSearch,StateSearch
+AiAngry,StateChase,InAttacked,OutChangeTargets,StateSearch
+AiAngry,StateSearch,InEnemyOutOfSight,OutWaitStart,StateIdle
+AiAngry,StateSearch,InEnemyOutOfAttackRange,OutStartChase,StateChase
+AiAngry,StateSearch,InAttackRange,OutStartAttacking,StateAttacking
+AiAngry,StateAttacking,InEnemyOutOfSight,OutWaitStart,StateIdle
+AiAngry,StateAttacking,InEnemyOutOfAttackRange,OutStartChase,StateChase
+AiAngry,StateAttacking,InNeedAttackingAdjust,OutAttackingAdjust,StateAdjust
+AiAngry,StateAttacking,InAttackDelayEnd,OutPerformAttack,StateAttacking
+AiAngry,StateAttacking,InMeleeAttacked,OutChangeTargets,StateAttacking
+AiAngry,StateAdjust,InReachedTarget,OutSearch,StateSearch
+AiAngry,StateAdjust,InAttacked,OutSearch,StateSearch
 
 //originally monster type 05 : Aggressive with no cast sensing
 AiAggressive,StateIdle,InTargetSearch,OutStartChase,StateChase

@@ -8,6 +8,8 @@ StateAny:
 }
 
 SkillHandler("GHOUL") {
+StateAngry:
+	TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
 StateAttacking:
 	TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
 }
@@ -43,8 +45,28 @@ StateAttacking:
 }
 
 SkillHandler("MIMIC") {
-StateAttacking:
+StateIdle:
 	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(29); //heh
+StateAttacking:
+	TryCast(BloodDrain, 1, 5%, 0, 5s) -> SendEmote(2); //whistle
+}
+
+SkillHandler("HUNTER_FLY") {
+StateIdle:
+	TryCast(Teleport, 1, 5%, 0, 5s);
+    @ResumeAiState(20%, AiAngry, 9); //...
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateFollow:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+StateAngry:
+	TryCast(BloodDrain, 1, 5%, 0, 5s) -> SendEmote(2); //whistle
+	TryCast(ComboAttack, 1, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(WindAttack, 1, 20%, 0, 5s);
+StateAttacking:
+	TryCast(BloodDrain, 1, 5%, 0, 5s) -> SendEmote(2); //whistle
+	TryCast(ComboAttack, 1, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(WindAttack, 1, 20%, 0, 5s);
 }
 
 SkillHandler("ANOLIAN") {
@@ -56,6 +78,15 @@ StateChase:
 StateAttacking:
 	TryCast(WaterAttack, 1, 20%, 0, 5s);
     TryCast(Bash, 5, 5%, 0.8s, 5s) -> SendEmote(2); //whistle
+}
+
+SkillHandler("GARGOYLE") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateAttacking:
+	TryCast(Blind, 1, 5%, 0, 5s);
+	TryCast(WindAttack, 1, 20%, 0, 5s);
+	TryCast(Bulwark, 1, 20%, 0, 5s)[HpPercent < 30] -> SendEmote(9); //...
 }
 
 macro JokerStateSwap() {
@@ -80,6 +111,16 @@ StateIdle:
 	@JokerStateSwap();
 StateRandomMove:
 	@JokerStateSwap();
+StateChase:
+	TryCast(FireBall, 1, 5%, 0.8s, 5s) -> SendEmote(10); //scissors
+	TryCast(FrostDiver, 1, 5%, 1s, 5s) -> SendEmote(10); //scissors
+	TryCast(SoulStrike, 1, 5%, 0.5s, 5s) -> SendEmote(12); //paper
+	TryCast(EnergyDrain, 1, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(12); //paper
+	TryCast(WindAttack, 1, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(11); //rock
+	TryCast(DarkThunder, 1, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(11); //rock
+	//TODO: Quagmire and Heavens Drive
+StateAttacking:
+	TryCast(NoCast, 1, 100%, 0, 60s) -> SendEmote(6); //angry
 }
 
 SkillHandler("WRAITH") {
@@ -141,21 +182,41 @@ StateAttacking:
 	TryCast(Stop, 1, 5%, 0, 30s) -> SendEmote(3); //heart
 }
 
+SkillHandler("RAYDRIC") {
+StateChase:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(0); //!
+StateAttacking:
+	TryCast(DarkAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(MagnumBreak, 9, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
 SkillHandler("RAYDRIC_ARCHER") {
 StateAttacking:
 	TryCast(ChargeArrow, 1, 5%, 0, 5s);
-	TryCast(DoubleStrafe, 5, 5%, 1, 5s, NoInterrupt);
+	TryCast(DarkAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(9); //...
 }
 
 SkillHandler("WANDER_MAN") {
 StateIdle:
     TryCast(NoCast, 1, 5%, 0, 5s) -> SendEmote(9); //...
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAttacking:
+	TryCast(SplashAttack, 1, 20%, 0.3s, 5s, NoInterrupt)[CountEnemiesNearTarget(2) >= 2] -> SendEmote(9); //...
     TryCast(CriticalAttack, 2, 2%, 0.2s, 5s, NoInterrupt | HideSkillName);
     TryCast(UndeadAttack, 3, 5%, 0, 5s, NoInterrupt | HideSkillName);
 }
 
+SkillHandler("KHALITZBURG") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateAttacking:
+	TryCast(SplashAttack, 1, 20%, 0.3s, 5s, NoInterrupt)[CountEnemiesNearTarget(2) >= 2] -> SendEmote(9); //...
+	TryCast(Stun, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
+}
+
 SkillHandler("KNIGHT_OF_ABYSS") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
 	TryCast(ChargeArrow, 1, 8%, 0.8s, 5s, NoInterrupt | HideSkillName);
 StateAttacking:

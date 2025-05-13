@@ -17,7 +17,7 @@ public class StatusCloaking : StatusEffectBase
     //Value2: Seconds between consuming SP
     //Value3: The amount move speed is modified by
     //Value4: If the player is against a wall
-    
+
     public override StatusUpdateResult OnUpdateTick(CombatEntity ch, ref StatusEffectState state)
     {
         if (ch.Character.Type != CharacterType.Player)
@@ -88,18 +88,23 @@ public class StatusCloaking : StatusEffectBase
         state.Value3 = (short)(30 - state.Value1 * 3); //move speed change
         state.Value4 = 0;
 
-        ch.AddStat(CharacterStat.MoveSpeedBonus, -state.Value3);
-        ch.AddStat(CharacterStat.AddSpRecoveryPercent, -50);
+        if (ch.Character.Type != CharacterType.Monster)
+        {
+            ch.AddStat(CharacterStat.MoveSpeedBonus, -state.Value3);
+            ch.AddStat(CharacterStat.AddSpRecoveryPercent, -100);
 
-        UpdateWallBonus(ch, ref state);
+            UpdateWallBonus(ch, ref state);
+        }
     }
 
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
         ch.RemoveBodyState(BodyStateFlags.Hidden);
 
-        ch.SubStat(CharacterStat.MoveSpeedBonus, -state.Value3); //wall bonus should be lumped into this
-        ch.SubStat(CharacterStat.AddSpRecoveryPercent, -50);
-
+        if (ch.Character.Type != CharacterType.Monster)
+        {
+            ch.SubStat(CharacterStat.MoveSpeedBonus, -state.Value3); //wall bonus should be lumped into this
+            ch.SubStat(CharacterStat.AddSpRecoveryPercent, -100);
+        }
     }
 }

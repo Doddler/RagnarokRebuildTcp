@@ -98,6 +98,7 @@ public enum PacketType : byte
     ShopBuySell,
     [ServerOnlyPacket] ItemUpdate,
     [ServerOnlyPacket] ServerEvent,
+    [ServerOnlyPacket] ServerResult,
     DebugEntry,
     
     MemoMapLocation,

@@ -20,6 +20,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public static StatusClientVisibility GetStatusVisibility(CharacterStatusEffect status) => attributes[(int)status].VisibilityMode;
         public static string GetShareGroup(CharacterStatusEffect status) => attributes[(int)status].ShareGroup;
         public static bool HasFlag(CharacterStatusEffect status, StatusEffectFlags flag) => attributes[(int)status].Flags.HasFlag(flag);
+        public static float GetDefaultDuration(CharacterStatusEffect type) => handlers[(int)type].Duration;
 
         static StatusEffectHandler()
         {
@@ -61,7 +62,8 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public static StatusUpdateResult OnUpdateTick(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnUpdateTick(ch, ref state);
         public static StatusUpdateResult OnAttack(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnAttack(ch, ref state, ref info);
         public static StatusUpdateResult OnTakeDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnTakeDamage(ch, ref state, ref info);
-        public static StatusUpdateResult OnCalculateDamageTaken(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info) => handlers[(int)type].OnCalculateDamageTaken(ch, ref state, ref req, ref info);
+        public static StatusUpdateResult OnPreCalculateDamage(CharacterStatusEffect type, CombatEntity ch, CombatEntity? target, ref StatusEffectState state, ref AttackRequest req) => handlers[(int)type].OnPreCalculateDamage(ch, target, ref state, ref req);
+        public static StatusUpdateResult OnCalculateDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info) => handlers[(int)type].OnCalculateDamage(ch, ref state, ref req, ref info);
         public static StatusUpdateResult OnChangeEquipment(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnChangeEquipment(ch, ref state);
         public static StatusUpdateResult OnMove(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, Position src, Position dest) => handlers[(int)type].OnMove(ch, ref state, src, dest);
         public static StatusUpdateResult OnChangeMaps(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnChangeMaps(ch, ref state);

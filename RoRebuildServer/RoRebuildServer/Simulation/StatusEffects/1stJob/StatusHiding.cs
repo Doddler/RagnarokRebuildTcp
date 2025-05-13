@@ -38,7 +38,7 @@ public class StatusHiding : StatusEffectBase
         return StatusUpdateResult.Continue;
     }
 
-    public override StatusUpdateResult OnCalculateDamageTaken(CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info)
+    public override StatusUpdateResult OnCalculateDamage(CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info)
     {
         if ((req.Flags & AttackFlags.CanAttackHidden) != 0 && info.IsDamageResult && info.Damage > 0)
             state.Value4 = 1;

@@ -10172,6 +10172,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Sprite
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31f7eb3272309de4eb5040156f232970
+    m_Address: Assets/Effects/Prefabs/MagicalAttack.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 320ef523168d602429e6eff0ccd35fcd
     m_Address: "Assets/Sprites/Characters/BodyFemale/\uC138\uC774\uC9C0_\uC5EC.spr"
     m_ReadOnly: 0

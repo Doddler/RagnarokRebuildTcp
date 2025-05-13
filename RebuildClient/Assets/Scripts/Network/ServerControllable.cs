@@ -10,6 +10,7 @@ using Assets.Scripts.Misc;
 using Assets.Scripts.Network.Messaging;
 using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
+using Assets.Scripts.SkillHandlers;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
@@ -269,6 +270,9 @@ namespace Assets.Scripts.Network
         public void ShowSkillCastMessage(CharacterSkill skill, float duration = 5f)
         {
             if (CharacterType != CharacterType.Player)
+                return;
+
+            if (!ClientSkillHandler.DisplaySkillCastName(skill))
                 return;
 
             if (SpriteAnimator.IsHidden && skill == CharacterSkill.Hiding)

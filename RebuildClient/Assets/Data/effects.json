@@ -1175,6 +1175,18 @@
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 98,
+      "Name": "MagicalAttack",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "magical",
+      "Sprite": "",
+      "SoundFile": "venatu_attack",
+      "Offset": -0.65,
+      "PrefabName": ""
     }
   ]
 }

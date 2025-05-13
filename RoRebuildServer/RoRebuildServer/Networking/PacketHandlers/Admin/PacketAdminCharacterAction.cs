@@ -38,6 +38,9 @@ public class PacketAdminCharacterAction : IClientPacketHandler
                 var v3 = msg.ReadInt16();
                 var v4 = msg.ReadByte();
 
+                if (duration <= 0)
+                    duration = StatusEffectHandler.GetDefaultDuration(status);
+
                 var effect = StatusEffectState.NewStatusEffect(status, duration, v1, v2, v3, v4);
                 connection.Player.CombatEntity.AddStatusEffect(effect);
                 break;

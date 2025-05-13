@@ -16,6 +16,7 @@ public struct AttackRequest
 
     public AttackRequest()
     {
+        MinAtk = MaxAtk = 0;
         AttackMultiplier = 1;
         HitCount = 1;
         AccuracyRatio = 100;

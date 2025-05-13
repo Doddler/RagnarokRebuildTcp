@@ -4,10 +4,43 @@
 SkillHandler("ARCLOUSE") {
 StateIdle:
     @ResumeAiState(5%, AiAggressive, 7); //angry
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
 StateAttacking:
     TryCast(EarthAttack, 1, 20%, 0s, 5s);
+}
+
+
+SkillHandler("ALARM") {
+StateIdle:
+    @ResumeAiState(20%, AiAggressive, 6); //angry
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(Blind, 3, 5%, 0s, 5s);
+    TryCast(SplashAttack, 1, 20%, 0s, 5s)[CountEnemiesNearTarget(2) >= 2];
+}
+
+SkillHandler("CLOCK") {
+StateIdle:
+    @ResumeAiState(20%, AiPassiveSense, 9); //...
+StateAttacking:
+	TryCast("SwitchToAggressive", 1, 100%, 0, 30s, HiddenCast) -> {
+        ChangeAiClass(AiAggressive, false);
+		SendEmote(9); //...
+	}
+    TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(6); //angry
+    TryCast(EarthAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+    TryCast(Stun, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
+SkillHandler("RIDEWORD") {
+StateAttacking:
+    TryCast(Blind, 3, 5%, 0, 5s);
+    TryCast(BloodDrain, 1, 5%, 0, 5s) -> SendEmote(2); //whistle
+    TryCast(PiercingAttack, 3, 5%, 0, 5s) -> SendEmote(2); //whistle
 }
 
 SkillHandler("BRILIGHT") {
@@ -19,6 +52,8 @@ StateAttacking:
 }
 
 SkillHandler("ELDER") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAttacking:
 	TryCast(FireBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(11); //rock
 	TryCast(FrostDiver, 9, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(12); //paper
@@ -30,6 +65,8 @@ StateChase:
 }
 
 SkillHandler("OWL_DUKE") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAttacking:
 	TryCast(LightningBolt, 3, 20%, 0, 5s);
 StateChase:
@@ -39,6 +76,7 @@ StateChase:
 SkillHandler("C_TOWER_MANAGER") {
 StateIdle:
 	TryCast(Teleport, 1, 5%, 0, 30s);
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
     @ResumeAiState(2%, AiPassiveSense, 7); //...
 StateChase:
 	TryCast(Silence, 5, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(9); //...
@@ -53,6 +91,8 @@ StateAttacking:
 }
 
 SkillHandler("OWL_BARON") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAttacking:
 	TryCast(LightningBolt, 5, 20%, 0, 5s);
 StateChase:

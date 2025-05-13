@@ -245,6 +245,12 @@ Type = "Buff"
 CanDispel = true
 CanDisable = true
 
+[MagicalAttack]
+Name = "Magic Weapon"
+Type = "Buff"
+CanDispel = true
+CanDisable = true
+
 [DarkBlessing]
 Name = "Dark Blessing"
 Type = "Debuff"

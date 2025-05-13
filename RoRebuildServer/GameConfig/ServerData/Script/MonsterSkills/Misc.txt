@@ -32,13 +32,6 @@ StateAttacking:
 	TryCast(TwoHandQuicken, 10, 1000, 0, 3m)[HpPercent < 99];
 }
 
-SkillHandler("ASSULTER") {
-StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt);
-	TryCast(WindAttack, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(6);
-}
-
-
 SkillHandler("TIRFING") {
 StateAttacking:
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(18); //lol
@@ -82,11 +75,14 @@ SkillHandler("ANGRY_TARGET_DUMMY") {
 	//TryCast(LordOfVermilion, 10, 100%, 0.7s, 15s)[IsHiding];
 //	TryCast(Hiding, 3, 100%, 0, 10s)[!IsHiding];
 //	TryCast(Hiding, 3, 100%, 0, 10s)[IsHiding];
-	TryCast(Demonstration, 1, 100%, 1000, 5s);
+	//TryCast(Demonstration, 1, 100%, 1000, 5s);
 	TryCast(Pneuma, 1, 100%, 0, 5s)[WasRangedAttacked];
 	TryCast(PowerUp, 5, 100%, 0.7s, 30s)[HpPercent < 50];
-	//TryCast(PoisonAttack, 1, 100%, 0.5s, 2s);
+	TryCast(PhysBreaker, 1, 100%, 0.5s, 2s);
 	//TryCast(DarkAttack, 1, 100%, 0.5s, 2s);
+
+	TryCast(Vampyrism, 1, 100%, 1.3s, 30s);
+	TryCast(DarkAttack, 5, 100%, 0.5s, 2s);
 }
 
 SkillHandler("TARGET_DUMMY") {
@@ -107,11 +103,6 @@ StateAny:
     TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
 StateAttacking:
 	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(17); //sorry
-}
-
-SkillHandler("PERMETER") {
-StateAny:
-    TryCast(Heal, 9, 100%, 0.5s, 5s, HideSkillName)[FindAllyBelowHpPercent(60)] -> SendEmote(5); //lightbulb
 }
 
 SkillHandler("STITCH") {

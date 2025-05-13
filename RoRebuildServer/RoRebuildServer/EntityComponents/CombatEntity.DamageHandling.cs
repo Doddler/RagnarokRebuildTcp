@@ -322,7 +322,7 @@ public partial class CombatEntity
                 subDef = 999999;
         }
 
-        if (flags.HasFlag(AttackFlags.Magical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
+        if ((flags & AttackFlags.Magical) > 0 && (flags & AttackFlags.IgnoreDefense) <= 0) 
         {
             var mDef = target.GetEffectiveStat(CharacterStat.MDef);
             defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
@@ -331,7 +331,6 @@ public partial class CombatEntity
 
             if (mDef >= 200)
                 subDef = 999999;
-
         }
 
         var damage = (int)((baseDamage * attackMultiplier * defCut - subDef) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f));

@@ -47,7 +47,7 @@ public class PacketCreateParty : IClientPacketHandler
 
         if (connection.Player.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 6)
         {
-            CommandBuilder.SendServerEvent(connection.Player, ServerEvent.InviteFailedSenderNoBasicSkill);
+            CommandBuilder.SendActionResult(connection.Player, ServerResult.InviteFailedSenderNoBasicSkill);
             return;
         }
 

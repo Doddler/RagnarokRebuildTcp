@@ -15,7 +15,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[99];
+			handlers = new ClientPacketHandlerBase[100];
 			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -104,17 +104,18 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[85] = new InvalidPacket(); //ShopBuySell
 			handlers[86] = new InvalidPacket(); //ItemUpdate
 			handlers[87] = new PacketServerEvent(); //ServerEvent
-			handlers[88] = new InvalidPacket(); //DebugEntry
-			handlers[89] = new PacketMemoMapLocation(); //MemoMapLocation
-			handlers[90] = new InvalidPacket(); //DeleteCharacter
-			handlers[91] = new InvalidPacket(); //AdminCharacterAction
-			handlers[92] = new PacketChangePlayerSpecialActionState(); //ChangePlayerSpecialActionState
-			handlers[93] = new PacketRefreshGrantedSkills(); //RefreshGrantedSkills
-			handlers[94] = new InvalidPacket(); //CreateParty
-			handlers[95] = new PacketInvitePartyMember(); //InvitePartyMember
-			handlers[96] = new PacketAcceptPartyInvite(); //AcceptPartyInvite
-			handlers[97] = new PacketUpdateParty(); //UpdateParty
-			handlers[98] = new PacketNotifyPlayerPartyChange(); //NotifyPlayerPartyChange
+			handlers[88] = new PacketServerResult(); //ServerResult
+			handlers[89] = new InvalidPacket(); //DebugEntry
+			handlers[90] = new PacketMemoMapLocation(); //MemoMapLocation
+			handlers[91] = new InvalidPacket(); //DeleteCharacter
+			handlers[92] = new InvalidPacket(); //AdminCharacterAction
+			handlers[93] = new PacketChangePlayerSpecialActionState(); //ChangePlayerSpecialActionState
+			handlers[94] = new PacketRefreshGrantedSkills(); //RefreshGrantedSkills
+			handlers[95] = new InvalidPacket(); //CreateParty
+			handlers[96] = new PacketInvitePartyMember(); //InvitePartyMember
+			handlers[97] = new PacketAcceptPartyInvite(); //AcceptPartyInvite
+			handlers[98] = new PacketUpdateParty(); //UpdateParty
+			handlers[99] = new PacketNotifyPlayerPartyChange(); //NotifyPlayerPartyChange
 		}
 	}
 }

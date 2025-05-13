@@ -9,11 +9,12 @@ public enum StatusUpdateMode : byte
 {
     Default = 0,
     OnCalculateDamageTaken = 1,
-    OnTakeDamage = 2,
-    OnDealDamage = 4,
-    OnUpdate = 8,
-    OnChangeEquipment = 16,
-    OnMove = 32,
+    OnPreCalculateDamageDealt = 2,
+    OnTakeDamage = 4,
+    OnDealDamage = 8,
+    OnUpdate = 16,
+    OnChangeEquipment = 32,
+    OnMove = 64,
 }
 
 public enum StatusUpdateResult : byte

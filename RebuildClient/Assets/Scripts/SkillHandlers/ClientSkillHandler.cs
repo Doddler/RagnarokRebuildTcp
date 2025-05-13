@@ -9,7 +9,8 @@ namespace Assets.Scripts.SkillHandlers
     {
         private static SkillHandlerBase[] handlers;
 
-        public static bool SkillTakesWeaponSound(CharacterSkill skill) => handlers[(int)skill].DoesAttackTakeWeaponSound; 
+        public static bool SkillTakesWeaponSound(CharacterSkill skill) => handlers[(int)skill].DoesAttackTakeWeaponSound;
+        public static bool DisplaySkillCastName(CharacterSkill skill) => handlers[(int)skill].ShowSkillAttackName;
 
         public static void StartCastingSkill(ServerControllable src, ServerControllable target, CharacterSkill skillId, int lvl, float castTime) =>
             handlers[(int)skillId].StartSkillCasting(src, target, lvl, castTime);
@@ -19,7 +20,7 @@ namespace Assets.Scripts.SkillHandlers
         
         public static void OnHitEffect(ServerControllable target, ref AttackResultData attack) =>
             handlers[(int)attack.Skill].OnHitEffect(target, ref attack);
-
+        
         public static void ExecuteSkill(ServerControllable src, ref AttackResultData attack)
         {
             var skillId = attack.Skill;

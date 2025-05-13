@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[135];
+			handlers = new SkillHandlerBase[138];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new FirstAidHandler();
@@ -88,7 +88,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[71] = new DefaultSkillHandler();
 			handlers[72] = new LordOfVermilionHandler();
 			handlers[73] = new DefaultSkillHandler();
-			handlers[74] = new DefaultSkillHandler();
+			handlers[74] = new CloakingHandler();
 			handlers[75] = new DemonstrationHandler();
 			handlers[75].ExecuteWithoutSource = true;
 			handlers[76] = new FireAttackHandler();
@@ -128,31 +128,34 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[107] = new DefaultSkillHandler();
 			handlers[108] = new DefaultSkillHandler();
 			handlers[109] = new DefaultSkillHandler();
-			handlers[110] = new BloodDrainHandler();
-			handlers[111] = new EnergyDrainHandler();
-			handlers[112] = new GuidedAttackHandler();
-			handlers[113] = new DefaultSkillHandler();
-			handlers[114] = new ComboAttackHandler();
-			handlers[115] = new DefaultSkillHandler();
-			handlers[116] = new DarkStrikeHandler();
+			handlers[110] = new MagicalAttackHandler();
+			handlers[111] = new BloodDrainHandler();
+			handlers[112] = new EnergyDrainHandler();
+			handlers[113] = new GuidedAttackHandler();
+			handlers[114] = new SplashAttackHandler();
+			handlers[115] = new ComboAttackHandler();
+			handlers[116] = new DefaultSkillHandler();
 			handlers[117] = new DefaultSkillHandler();
-			handlers[118] = new DefaultSkillHandler();
+			handlers[118] = new DarkStrikeHandler();
 			handlers[119] = new DefaultSkillHandler();
 			handlers[120] = new DefaultSkillHandler();
-			handlers[121] = new SmokingHandler();
+			handlers[121] = new DefaultSkillHandler();
 			handlers[122] = new DefaultSkillHandler();
-			handlers[123] = new DefaultSkillHandler();
+			handlers[123] = new SmokingHandler();
 			handlers[124] = new DefaultSkillHandler();
 			handlers[125] = new DefaultSkillHandler();
 			handlers[126] = new DefaultSkillHandler();
-			handlers[127] = new BulwarkHandler();
+			handlers[127] = new DefaultSkillHandler();
 			handlers[128] = new DefaultSkillHandler();
-			handlers[129] = new GrandThunderstormHandler();
-			handlers[130] = new DefaultSkillHandler();
+			handlers[129] = new DefaultSkillHandler();
+			handlers[130] = new BulwarkHandler();
 			handlers[131] = new DefaultSkillHandler();
-			handlers[132] = new DefaultSkillHandler();
+			handlers[132] = new GrandThunderstormHandler();
 			handlers[133] = new DefaultSkillHandler();
 			handlers[134] = new DefaultSkillHandler();
+			handlers[135] = new DefaultSkillHandler();
+			handlers[136] = new DefaultSkillHandler();
+			handlers[137] = new DefaultSkillHandler();
 		}
 	}
 }

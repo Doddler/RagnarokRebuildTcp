@@ -587,7 +587,14 @@ public class MonsterSkillAiState(Monster monsterIn)
         if (GameRandom.Next(0, 1000) > chance)
             return SkillFail();
 
-        var result = Cast(CharacterSkill.None, level, castTime, 0, flags);
+        var skill = CharacterSkill.None;
+        if ((flags & MonsterSkillAiFlags.HiddenCast) > 0)
+        {
+            skill = CharacterSkill.NoCast;
+            flags |= MonsterSkillAiFlags.HideSkillName;
+        }
+
+        var result = Cast(skill, level, castTime, 0, flags);
         if (result)
         {
             monster.LastDamageSourceType = CharacterSkill.None;
@@ -802,6 +809,25 @@ public class MonsterSkillAiState(Monster monsterIn)
             return false;
 
         return targetForSkill.Monster.MonsterBase.Code == className;
+    }
+
+    public int CountEnemiesNearTarget(int range = 3)
+    {
+        if (!monster.Target.TryGet<WorldObject>(out var attackTarget))
+            return 0;
+
+        using var list = EntityListPool.Get();
+        monster.Character.Map?.GatherEnemiesInRange(attackTarget, range, list, true, true);
+
+        return list.Count;
+    }
+
+    public int CountEnemiesNearSelf(int range = 3)
+    {
+        using var list = EntityListPool.Get();
+        monster.Character.Map?.GatherEnemiesInRange(monster.Character, range, list, true, true);
+
+        return list.Count;
     }
 
     public bool FindAllyBelowHpPercent(int percent)

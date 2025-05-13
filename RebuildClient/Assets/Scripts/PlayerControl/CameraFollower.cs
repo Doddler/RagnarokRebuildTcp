@@ -1280,6 +1280,28 @@ namespace Assets.Scripts
             LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
             TextBoxScrollRect.verticalNormalizedPosition = 0;
         }
+        
+        public void AppendChatText(string txt, TextColor color)
+        {
+            if (string.IsNullOrWhiteSpace(txt))
+                return;
+            
+            var c = color switch
+            {
+                TextColor.Party => "<color=#77FF77>",
+                TextColor.Job => "color=#99CCFF>",
+                TextColor.Skill => "color=#00fbfb>",
+                TextColor.Equipment => "color=#00fbfb>",
+                TextColor.Item => "color=#00fbfb>",
+                TextColor.Error => "color=#ed0000>",
+                _ => ""
+            };
+
+            TextBoxText.text += Environment.NewLine + txt;
+            TextBoxText.ForceMeshUpdate();
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
+            TextBoxScrollRect.verticalNormalizedPosition = 0;
+        }
 
         public void AppendNotice(string text)
         {

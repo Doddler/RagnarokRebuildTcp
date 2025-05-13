@@ -10,6 +10,7 @@ namespace Assets.Scripts.SkillHandlers
     public abstract class SkillHandlerBase
     {
         public virtual bool DoesAttackTakeWeaponSound => true;
+        public virtual bool ShowSkillAttackName => true;
         public virtual int GetSkillAoESize(ServerControllable src, int lvl) => 5;
         public virtual void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime) {}
 

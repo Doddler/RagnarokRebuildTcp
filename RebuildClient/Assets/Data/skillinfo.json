@@ -1704,7 +1704,7 @@
     {
       "SkillId": 110,
       "Icon": "nv_basic",
-      "Name": "Blood Drain",
+      "Name": "Magic Weapon",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1716,7 +1716,7 @@
     {
       "SkillId": 111,
       "Icon": "nv_basic",
-      "Name": "Energy Drain",
+      "Name": "Blood Drain",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1728,7 +1728,7 @@
     {
       "SkillId": 112,
       "Icon": "nv_basic",
-      "Name": "Guided Attacks",
+      "Name": "Energy Drain",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1740,7 +1740,7 @@
     {
       "SkillId": 113,
       "Icon": "nv_basic",
-      "Name": "Splash Attack",
+      "Name": "Guided Attacks",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1752,7 +1752,7 @@
     {
       "SkillId": 114,
       "Icon": "nv_basic",
-      "Name": "Combo Attack",
+      "Name": "Area Attack",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1764,7 +1764,7 @@
     {
       "SkillId": 115,
       "Icon": "nv_basic",
-      "Name": "Piercing Attack",
+      "Name": "Combo Attack",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1776,7 +1776,7 @@
     {
       "SkillId": 116,
       "Icon": "nv_basic",
-      "Name": "Dark Strike",
+      "Name": "Piercing Attack",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1788,7 +1788,7 @@
     {
       "SkillId": 117,
       "Icon": "nv_basic",
-      "Name": "Break Armor",
+      "Name": "Ranged Strike",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1800,7 +1800,7 @@
     {
       "SkillId": 118,
       "Icon": "nv_basic",
-      "Name": "Break Weapon",
+      "Name": "Dark Strike",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1812,7 +1812,7 @@
     {
       "SkillId": 119,
       "Icon": "nv_basic",
-      "Name": "Break Helm",
+      "Name": "Break Armor",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1824,7 +1824,7 @@
     {
       "SkillId": 120,
       "Icon": "nv_basic",
-      "Name": "Dark Blessing",
+      "Name": "Break Weapon",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1836,7 +1836,7 @@
     {
       "SkillId": 121,
       "Icon": "nv_basic",
-      "Name": "Smoking",
+      "Name": "Break Helm",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1848,7 +1848,7 @@
     {
       "SkillId": 122,
       "Icon": "nv_basic",
-      "Name": "Suicide",
+      "Name": "Dark Blessing",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1860,7 +1860,7 @@
     {
       "SkillId": 123,
       "Icon": "nv_basic",
-      "Name": "Stop",
+      "Name": "Smoking",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1872,7 +1872,7 @@
     {
       "SkillId": 124,
       "Icon": "nv_basic",
-      "Name": "Hallucination",
+      "Name": "Suicide",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1884,7 +1884,7 @@
     {
       "SkillId": 125,
       "Icon": "nv_basic",
-      "Name": "Emotion",
+      "Name": "Stop",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1896,7 +1896,7 @@
     {
       "SkillId": 126,
       "Icon": "nv_basic",
-      "Name": "Dark Thunder",
+      "Name": "Hallucination",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1908,7 +1908,7 @@
     {
       "SkillId": 127,
       "Icon": "nv_basic",
-      "Name": "Bulwark",
+      "Name": "Lick",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1920,7 +1920,7 @@
     {
       "SkillId": 128,
       "Icon": "nv_basic",
-      "Name": "Pharaoh\u0027s Curse",
+      "Name": "Emotion",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1932,19 +1932,19 @@
     {
       "SkillId": 129,
       "Icon": "nv_basic",
-      "Name": "Grand Thunderstorm",
+      "Name": "Dark Thunder",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
       "AdjustableLevel": false,
       "Description": null,
-      "InterruptMode": 3
+      "InterruptMode": 0
     },
     {
       "SkillId": 130,
       "Icon": "nv_basic",
-      "Name": "Reward for Quest",
+      "Name": "Bulwark",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1956,7 +1956,7 @@
     {
       "SkillId": 131,
       "Icon": "nv_basic",
-      "Name": "Vampyrism",
+      "Name": "Pharaoh\u0027s Curse",
       "Target": 0,
       "Type": 0,
       "MaxLevel": 0,
@@ -1968,6 +1968,42 @@
     {
       "SkillId": 132,
       "Icon": "nv_basic",
+      "Name": "Grand Thunderstorm",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 3
+    },
+    {
+      "SkillId": 133,
+      "Icon": "nv_basic",
+      "Name": "Reward for Quest",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 134,
+      "Icon": "nv_basic",
+      "Name": "Vampyrism",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 135,
+      "Icon": "nv_basic",
       "Name": "HP Breaker",
       "Target": 0,
       "Type": 0,
@@ -1978,7 +2014,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 133,
+      "SkillId": 136,
       "Icon": "nv_basic",
       "Name": "Mental Breaker",
       "Target": 0,
@@ -1990,7 +2026,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 134,
+      "SkillId": 137,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,

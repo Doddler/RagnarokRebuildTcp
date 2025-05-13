@@ -95,19 +95,19 @@ public class Party
     {
         if (invitee.Party != null)
         {
-            CommandBuilder.SendServerEvent(sender, ServerEvent.InviteFailedAlreadyInParty);
+            CommandBuilder.SendActionResult(sender, ServerResult.InviteFailedAlreadyInParty);
             return false;
         }
 
         if (sender.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 6)
         {
-            CommandBuilder.SendServerEvent(sender, ServerEvent.InviteFailedSenderNoBasicSkill);
+            CommandBuilder.SendActionResult(sender, ServerResult.InviteFailedSenderNoBasicSkill);
             return false;
         }
 
         if (invitee.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 4)
         {
-            CommandBuilder.SendServerEvent(sender, ServerEvent.InviteFailedRecipientNoBasicSkill);
+            CommandBuilder.SendActionResult(sender, ServerResult.InviteFailedRecipientNoBasicSkill);
             return false;
         }
 
@@ -120,7 +120,7 @@ public class Party
             CommandBuilder.InviteJoinParty(invitee, sender, this);
         }
 
-        CommandBuilder.SendServerEvent(sender, ServerEvent.PartyInviteSent);
+        CommandBuilder.SendActionResult(sender, ServerResult.PartyInviteSent);
 
         return true;
     }

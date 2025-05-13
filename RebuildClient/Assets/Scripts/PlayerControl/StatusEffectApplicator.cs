@@ -100,12 +100,18 @@ namespace Assets.Scripts.PlayerControl
                     break;
                 }
                 case CharacterStatusEffect.Hiding:
+                case CharacterStatusEffect.Cloaking:
                     controllable.SpriteAnimator.IsHidden = true;
-                    controllable.SpriteAnimator.HideShadow = controllable.IsMainCharacter;
+                    controllable.SpriteAnimator.HideShadow = !controllable.IsMainCharacter;
                     if(controllable.FollowerObject != null)
                         controllable.FollowerObject.SetActive(false); //hide cart, bird, whatever is following the player
                     if (controllable.CharacterType != CharacterType.Player)
                         controllable.HideHpBar();
+                    if (controllable.CharacterType == CharacterType.Player && !controllable.IsMainCharacter)
+                    {
+                        if(!PlayerState.Instance.IsInParty || PlayerState.Instance.PartyName != controllable.PartyName)
+                            controllable.HideHpBar();
+                    }
                     if (CameraFollower.Instance.SelectedTarget == controllable)
                         CameraFollower.Instance.ClearSelected();
                     break;
@@ -223,6 +229,7 @@ namespace Assets.Scripts.PlayerControl
                     break;
                 }
                 case CharacterStatusEffect.Hiding:
+                case CharacterStatusEffect.Cloaking:
                     controllable.SpriteAnimator.IsHidden = false;
                     controllable.SpriteAnimator.HideShadow = false;
                     if(controllable.FollowerObject != null)

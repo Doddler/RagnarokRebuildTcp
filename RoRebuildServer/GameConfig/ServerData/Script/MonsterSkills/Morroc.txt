@@ -1,10 +1,41 @@
 
 #include "_macro.txt"
 
+SkillHandler("FRILLDORA") {
+StateAny:
+	TryCast(Cloaking, 1, 20%, 0.2s, 5s);
+StateIdle:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(1); //?
+StateAngry:
+	TryCast(ComboAttack, 1, 5%, 0.7s, 5s, NoInterrupt | HideSkillName) -> SendEmote(6); //angry
+	TryCast(FireAttack, 1, 20%, 0, 5s);
+StateAttacking:
+	TryCast(ComboAttack, 1, 5%, 0.7s, 5s, NoInterrupt | HideSkillName) -> SendEmote(6); //angry
+	TryCast(FireAttack, 1, 20%, 0, 5s);
+}
+
+SkillHandler("HODE") {
+StateChase:
+	TryCast(Cloaking, 1, 20%, 0.2s, 5s);
+StateAttacking:
+	TryCast(Cloaking, 1, 20%, 0.2s, 5s);
+	TryCast(EarthAttack, 3, 20%, 0, 5s);
+}
+
+SkillHandler("SAND_MAN") {
+StateAny:
+	TryCast(Cloaking, 1, 20%, 0.2s, 5s);
+StateAngry:
+	TryCast(EarthAttack, 1, 20%, 0, 5s);
+	TryCast(SandAttack, 1, 5%, 0, 5s);
+StateAttacking:
+	TryCast(EarthAttack, 1, 20%, 0, 5s);
+	TryCast(SandAttack, 1, 5%, 0, 5s);
+}
+
 SkillHandler("ZEROM") {
 StateIdle:
-	//this should be AiAngry, but AiAngry isn't implemented yet, so...
-    @ResumeAiState(5%, AiAggressive, 6); //question mark
+    @ResumeAiState(5%, AiAngry, 6); //question mark
 StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
 StateFollow:
@@ -15,17 +46,33 @@ StateAttacking:
     TryCast(FireAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //Angry
 }
 
+SkillHandler("REQUIEM") {
+StateRandomMove:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(19); //sweating
+StateAttacking:
+    TryCast(DarkAttack, 1, 20%, 0s, 5s);
+    TryCast(Stun, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(6); //Angry
+}
+
 SkillHandler("MATYR") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 9); //...
+StateChase:
+    @GiveUpChase(2%, AiPassive, 7); //grumpy
 StateAttacking:
 	TryCast(SonicBlow, 5, 5%, 0.8s, 5s) -> SendEmote(6); //angry
+	TryCast(DarkAttack, 1, 20%, 0, 5s);
 }
 
 SkillHandler("MARDUK") {
-StateAttacking:
-	TryCast(FireBolt, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
-StateChase:
+StateFollow:
 	TryCast(FireBolt, 3, 10%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
 	TryCast(FireWall, 5, 10%, 0.5s, 5s, NoInterrupt);
+	TryCast(Blind, 3, 20%, 0, 5s);
+StateAngry:
+	TryCast(FireBolt, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(9); //...
+	TryCast(FireAttack, 1, 20%, 0, 5s);
+	TryCast(MagicalAttack, 1, 5%, 1s, 5s, NoInterrupt);
 }
 
 SkillHandler("PASANA") {
@@ -43,16 +90,44 @@ SkillHandler("SCORPION") {
 StateChase:
 	TryCast(NoCast, 1, 100%, 0, 15s)[(PreviousAiState == StateIdle || PreviousAiState == StateRandomMove) && TimeInAiState < 1s && TimeSinceLastDamage > 5s] -> SendEmote(0); //!
 StateAttacking:
-	TryCast(Envenom, 1, 100%, 0, 12s);
+	TryCast(Envenom, 3, 100%, 0, 12s);
+	TryCast(FireAttack, 1, 20%, 0, 5s);
 }
 
 SkillHandler("IRON_FIST") {
 StateAttacking:
-	TryCast(Envenom, 5, 100%, 0, 8s);
+	TryCast(Poison, 5, 100%, 0, 12s);
+	TryCast(FireAttack, 3, 20%, 0, 5s);
+}
+
+SkillHandler("VERIT") {
+StateAttacking:
+	TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt);
+}
+
+SkillHandler("SIDE_WINDER") {
+StateAttacking:
+	//TryCast(Pierce, 5, 5%, 0.7s, 5s, NoInterrupt);
+	TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
+	TryCast(PoisonAttack, 3, 5%, 0.5s, 5s, NoInterrupt);
 }
 
 SkillHandler("ANUBIS") {
+StateIdle:
+    @ResumeAiState(20%, AiStandardBoss, 6); //question mark
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(Curse, 1, 10%, 0.8s, 5s);
+	TryCast(DarkStrike, 9, 20%, 0, 5s);
+	TryCast(FireWall, 5, 5%, 0.5s, 5s);
+	TryCast(Blind, 3, 20%, 0, 5s);
+	TryCast(ThunderStorm, 3, 100%, 1.5s, 5s, NoInterrupt)[LastDamageSourceType == FireWall];
+	TryCast(JupitelThunder, 3, 5%, 1.5s, 5s);
 StateAttacking:
+	TryCast(MagicalAttack, 1, 5%, 1.5s, 5s);
+	TryCast(UndeadAttack, 3, 5%, 0.5s, 5s);
+	TryCast(JupitelThunder, 3, 5%, 1.5s, 5s);
+	TryCast(ThunderStorm, 3, 10%, 1.5s, 5s, NoInterrupt);
 	TryCast(SonicBlow, 10, 5%, 0.8s, 5s);
 }
 
@@ -64,6 +139,20 @@ StateChase:
 StateAttacking:
 	TryCast(HammerFall, 3, 5%, 1.5s, 5s, NoInterrupt);
 	TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
+SkillHandler("MUMMY") {
+StateIdle:
+    @ResumeAiState(20%, AiAngry, 9); //...
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateFollow:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+StateAngry:
+	TryCast(ComboAttack, 1, 20%, 0.7s, 5s, NoInterrupt | HideSkillName) -> SendEmote(9); //...
+StateAttacking:
+	TryCast(ComboAttack, 1, 20%, 0.7s, 5s, NoInterrupt | HideSkillName) -> SendEmote(9); //...
+	TryCast(UndeadAttack, 1, 20%, 0, 5s);
 }
 
 SkillHandler("ISIS") {

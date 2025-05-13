@@ -781,6 +781,18 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void SendActionResult(Player p, ServerResult eventType, int id = 0, string text = "")
+    {
+        var packet = NetworkManager.StartPacket(PacketType.ServerResult, 128);
+
+        packet.Write((byte)eventType);
+        packet.Write(id);
+        packet.Write(text);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+
     public static void SendSayMulti(WorldObject? c, string name, string text, bool isShout)
     {
         if (!HasRecipients())
