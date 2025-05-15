@@ -106,6 +106,38 @@ public partial class CombatEntity
 
         var baseDamage = GameRandom.NextInclusive(atk1, atk2);
 
+        var isCrit = false;
+        var evade = false;
+        var srcLevel = GetStat(CharacterStat.Level);
+        var targetLevel = target.GetStat(CharacterStat.Level);
+
+        if (flags.HasFlag(AttackFlags.CanCrit))
+        {
+            //crit rate: 1%, + 0.3% per luk, + 0.1% per level
+            var critRate = 10 + GetEffectiveStat(CharacterStat.Luck) * 3 + srcLevel + GetStat(CharacterStat.AddCrit);
+            //counter crit: 0.2% per luck, 0.67% per level
+            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) * 2 + targetLevel * 2 / 3;
+            //should double crit for katar here
+            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 1000))
+                isCrit = true;
+        }
+        else
+        {
+            if (Character.Type == CharacterType.Monster && target.HasBodyState(BodyStateFlags.Sleep) && req.SkillSource == CharacterSkill.None)
+                isCrit = true; //even if crit isn't allowed, monster auto attacks will still guarantee crit if the target is sleeping
+        }
+
+        if (flags.HasFlag(AttackFlags.GuaranteeCrit))
+            isCrit = true;
+
+        if (isCrit)
+        {
+            baseDamage = atk2;
+            evade = false;
+            attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamage) / 100f;
+            flags |= AttackFlags.IgnoreDefense;
+        }
+
         var eleMod = 100;
         if (!flags.HasFlag(AttackFlags.NoElement))
         {
@@ -136,7 +168,7 @@ public partial class CombatEntity
                 eleMod -= target.GetStat(CharacterStat.AddResistElementNeutral + (int)attackElement);
             if (attackerType == CharacterType.Player)
             {
-                
+
                 eleMod += GetStat(CharacterStat.AddAttackElementNeutral + (int)baseElementType);
             }
 
@@ -181,18 +213,13 @@ public partial class CombatEntity
                 if (flags.HasFlag(AttackFlags.Physical) && (target.GetRace() == CharacterRace.Demon || baseElementType == AttackElement.Undead))
                     baseDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.DemonBane) * 3;
                 baseDamage += GetStat(CharacterStat.WeaponMastery);
-                
+
                 if (isRanged)
                     rangeMod += GetStat(CharacterStat.AddAttackRangedAttack);
 
                 sizeMod += GetStat(CharacterStat.AddAttackSmallSize + (int)defSize);
             }
         }
-
-        var evade = false;
-        var isCrit = false;
-        var srcLevel = GetStat(CharacterStat.Level);
-        var targetLevel = target.GetStat(CharacterStat.Level);
 
         var attackerPenalty = target.GetAttackerPenalty(Entity);
 
@@ -203,34 +230,6 @@ public partial class CombatEntity
                                                             && !flags.HasFlag(AttackFlags.CanAttackHidden)
                                                             && !(attackElement == AttackElement.Earth && flags.HasFlag(AttackFlags.Magical))) //earth magic breaks hide
             evade = true;
-
-        if (flags.HasFlag(AttackFlags.CanCrit))
-        {
-            //crit rate: 1%, + 0.3% per luk, + 0.1% per level
-            var critRate = 10 + GetEffectiveStat(CharacterStat.Luck) * 3 + srcLevel + GetStat(CharacterStat.AddCrit);
-            //counter crit: 0.2% per luck, 0.67% per level
-            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) * 2 + targetLevel * 2 / 3;
-            //should double crit for katar here
-            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 1000))
-                isCrit = true;
-        }
-        else
-        {
-            if (Character.Type == CharacterType.Monster && target.HasBodyState(BodyStateFlags.Sleep) && req.SkillSource == CharacterSkill.None)
-                isCrit = true; //even if crit isn't allowed, monster auto attacks will still guarantee crit if the target is sleeping
-        }
-
-        if (flags.HasFlag(AttackFlags.GuaranteeCrit))
-            isCrit = true;
-
-        if (isCrit)
-        {
-            baseDamage = atk2;
-            evade = false;
-            isCrit = true;
-            attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamage) / 100f;
-            flags |= AttackFlags.IgnoreDefense;
-        }
 
         if (target.Character.Type == CharacterType.Player && flags.HasFlag(AttackFlags.Physical) &&
             req.SkillSource == CharacterSkill.None)
@@ -385,7 +384,7 @@ public partial class CombatEntity
             if (statusContainer != null)
                 statusContainer.OnAttack(ref di);
 
-            if(target.statusContainer != null)
+            if (target.statusContainer != null)
                 target.statusContainer.OnCalculateDamageTaken(ref req, ref di);
 
             if (di.Damage > 0 && (di.Result == AttackResult.NormalDamage || di.Result == AttackResult.CriticalDamage))
@@ -397,7 +396,7 @@ public partial class CombatEntity
 
         return di;
     }
-    
+
     private void ApplyQueuedCombatResult(ref DamageInfo di)
     {
 
