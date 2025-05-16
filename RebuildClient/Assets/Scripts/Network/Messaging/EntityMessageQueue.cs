@@ -111,6 +111,17 @@ namespace Assets.Scripts.Network.Messaging
                 EnqueueMessage(msg);
             }
         }
+        
+        public void SendMessage(EntityMessageType type, float time, int val1 = 0, int val2 = 0)
+        {
+            var msg = EntityMessagePool.Borrow();
+            msg.ActivationTime = Time.timeSinceLevelLoad + time;
+            msg.Type = type;
+            msg.Value1 = val1;
+            msg.Value2 = val2;
+
+            EnqueueMessage(msg);
+        }
 
         public void SendMissEffect(float time)
         {

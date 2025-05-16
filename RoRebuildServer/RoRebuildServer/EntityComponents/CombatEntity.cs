@@ -404,6 +404,8 @@ public partial class CombatEntity : IEntityAutoReset
                 stat += GetStat(CharacterStat.AddLuk);
                 break;
             case CharacterStat.Def:
+                if (Character.Type == CharacterType.Monster)
+                    return stat;
                 var addDef = GetStat(CharacterStat.AddDef) + GetStat(CharacterStat.EquipmentRefineDef);
                 stat = (int)((stat + addDef) * (1 + GetStat(CharacterStat.AddDefPercent) / 100f));
                 break;

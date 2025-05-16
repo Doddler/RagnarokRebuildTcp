@@ -10,6 +10,7 @@
         HitEffect,
         ElementalEffect,
         Miss,
+        LuckyDodge,
         FaceDirection
     }
 }

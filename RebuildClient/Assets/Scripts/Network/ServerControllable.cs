@@ -1244,6 +1244,19 @@ namespace Assets.Scripts.Network
         //	    GameObject.Destroy(gameObject);
         //}
 
+        public float GetStandingHeight()
+        {
+            var height = 50f;
+            if (SpriteAnimator?.SpriteData != null)
+                height = SpriteAnimator.SpriteData.StandingHeight;
+            if (CharacterType == CharacterType.Player)
+                height += 12;
+            if (height > 100)
+                height = 120;
+
+            return height / 30f;
+        }
+
         public void AttachFloatingTextIndicator(string text, TextIndicatorType type = TextIndicatorType.Miss, float height = 1f)
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
@@ -1316,6 +1329,12 @@ namespace Assets.Scripts.Network
                     SpriteAnimator.Direction, "#FFFF00", false);
                 di2.AttachComboIndicatorToControllable(this);
             }
+        }
+
+        private void OnMessageLuckyDodge(EntityMessage msg)
+        {
+            var height = GetStandingHeight() * 0.667f; //compensate for the effect gaining the 1.5x scale from being attached to a serverControllable
+            RoSpriteEffect.AttachSprite(this, "Assets/Sprites/Effects/msg.spr", height, 1, RoSpriteEffectFlags.EndWithAnimation, 3);
         }
 
         private void OnMessageFaceDirection(EntityMessage msg)
@@ -1495,6 +1514,9 @@ namespace Assets.Scripts.Network
                     break;
                 case EntityMessageType.FaceDirection:
                     OnMessageFaceDirection(msg);
+                    break;
+                case EntityMessageType.LuckyDodge:
+                    OnMessageLuckyDodge(msg);
                     break;
                 default:
                     Debug.LogError($"Unhandled entity message type {msg.Type} on entity {Name}!");

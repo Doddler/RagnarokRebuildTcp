@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.Network.Messaging;
 using Assets.Scripts.SkillHandlers;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
@@ -103,6 +104,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                         if (dmg > 0)
                             controllable2.Messages.SendHitEffect(controllable, damageTime, hitType);
                     }
+                }
+                
+                if (result.Result == AttackResult.LuckyDodge)
+                {
+                    controllable2.Messages.SendMessage(EntityMessageType.LuckyDodge, motionTime);
+                    return;
                 }
 
                 if (dmg > 0)

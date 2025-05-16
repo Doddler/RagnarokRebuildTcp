@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.Network.Messaging;
 using Assets.Scripts.SkillHandlers;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
@@ -167,6 +168,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             if (hasTarget)
             {
                 ClientSkillHandler.ExecuteSkill(controllable, ref attack);
+                
+                if (result == AttackResult.LuckyDodge)
+                {
+                    controllable2.Messages.SendMessage(EntityMessageType.LuckyDodge, motionTime);
+                    return;
+                }
 
                 if (result == AttackResult.Heal && dmg != 0)
                     hits = 1;

@@ -97,133 +97,31 @@ public partial class CombatEntity
         var attackerType = Character.Type;
         var defenderType = target.Character.Type;
         var defenderElement = target.GetElement();
+        var isPhysical = req.Flags.HasFlag(AttackFlags.Physical);
+        var isMagical = req.Flags.HasFlag(AttackFlags.Magical);
         var baseElementType = GetAttackTypeForDefenderElement(defenderElement);
+        var attackerPenalty = isPhysical ? target.GetAttackerPenalty(Entity) : 0; //players have defense and evasion penalized when attacked by 2 or more enemies
 
 #if DEBUG
         if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies), true))
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResultUsingSetAttackPower.");
 #endif
 
+        //determine base damage from a min and max attack value
         var baseDamage = GameRandom.NextInclusive(atk1, atk2);
 
-        var isCrit = false;
+        //---------------------------
+        // Evasion and Critical Hits
+        //---------------------------
+
         var evade = false;
+        var isLucky = false;
+        var isCrit = flags.HasFlag(AttackFlags.GuaranteeCrit);
         var srcLevel = GetStat(CharacterStat.Level);
         var targetLevel = target.GetStat(CharacterStat.Level);
 
-        if (flags.HasFlag(AttackFlags.CanCrit))
-        {
-            //crit rate: 1%, + 0.3% per luk, + 0.1% per level
-            var critRate = 10 + GetEffectiveStat(CharacterStat.Luck) * 3 + srcLevel + GetStat(CharacterStat.AddCrit);
-            //counter crit: 0.2% per luck, 0.67% per level
-            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) * 2 + targetLevel * 2 / 3;
-            //should double crit for katar here
-            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 1000))
-                isCrit = true;
-        }
-        else
-        {
-            if (Character.Type == CharacterType.Monster && target.HasBodyState(BodyStateFlags.Sleep) && req.SkillSource == CharacterSkill.None)
-                isCrit = true; //even if crit isn't allowed, monster auto attacks will still guarantee crit if the target is sleeping
-        }
-
-        if (flags.HasFlag(AttackFlags.GuaranteeCrit))
-            isCrit = true;
-
-        if (isCrit)
-        {
-            baseDamage = atk2;
-            evade = false;
-            attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamage) / 100f;
-            flags |= AttackFlags.IgnoreDefense;
-        }
-
-        var eleMod = 100;
-        if (!flags.HasFlag(AttackFlags.NoElement))
-        {
-            if (attackElement == AttackElement.None)
-            {
-                //ghost armor has no effect on monster attacks if they are launched with AttackElement None
-                if (defenderElement == CharacterElement.Ghost1 && attackerType == CharacterType.Monster && target.Character.Type == CharacterType.Player)
-                    defenderElement = CharacterElement.Neutral1;
-
-                attackElement = AttackElement.Neutral;
-                if (Character.Type == CharacterType.Player)
-                {
-                    attackElement = Player.Equipment.WeaponElement;
-                    if (Player.WeaponClass == 12) //bows
-                    {
-                        var arrowElement = Player.Equipment.AmmoElement;
-                        if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
-                            attackElement = arrowElement;
-                    }
-
-                    var overrideElement = (AttackElement)GetStat(CharacterStat.EndowAttackElement);
-                    if (overrideElement > 0)
-                        attackElement = overrideElement;
-                }
-            }
-
-            if (defenderType == CharacterType.Player && attackElement != AttackElement.Special)
-                eleMod -= target.GetStat(CharacterStat.AddResistElementNeutral + (int)attackElement);
-            if (attackerType == CharacterType.Player)
-            {
-
-                eleMod += GetStat(CharacterStat.AddAttackElementNeutral + (int)baseElementType);
-            }
-
-            if (defenderElement != CharacterElement.None)
-                eleMod = eleMod * DataManager.ElementChart.GetAttackModifier(attackElement, defenderElement) / 100;
-        }
-
-        var racialMod = 100;
-        var rangeMod = 100;
-        var sizeMod = 100;
-        if (!flags.HasFlag(AttackFlags.NoDamageModifiers))
-        {
-            var isRanged = req.Flags.HasFlag(AttackFlags.Ranged);
-            var atkSize = attackerType == CharacterType.Monster ? Character.Monster.MonsterBase.Size : CharacterSize.Medium;
-            var defSize = defenderType == CharacterType.Monster ? target.Character.Monster.MonsterBase.Size : CharacterSize.Medium;
-
-            if (!isRanged)
-            {
-                if (req.SkillSource == CharacterSkill.None)
-                    isRanged = GetStat(CharacterStat.Range) >= 4;
-                else
-                    isRanged = Character.Position.SquareDistance(target.Character.Position) >= 4;
-            }
-
-            if (defenderType == CharacterType.Player) //monsters can't get race reductions
-            {
-                var sourceRace = GetRace();
-                racialMod -= target.GetStat(CharacterStat.AddResistRaceFormless + (int)sourceRace);
-
-                if (isRanged)
-                    rangeMod -= target.GetStat(CharacterStat.AddResistRangedAttack);
-
-                sizeMod -= target.GetStat(CharacterStat.AddResistSmallSize + (int)atkSize);
-            }
-
-            if (attackerType == CharacterType.Player && flags.HasFlag(AttackFlags.Physical)) //only players and physical attacks get these bonuses
-            {
-                var targetRace = target.GetRace();
-                racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
-
-                //masteries, demonbane, etc
-                if (flags.HasFlag(AttackFlags.Physical) && (target.GetRace() == CharacterRace.Demon || baseElementType == AttackElement.Undead))
-                    baseDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.DemonBane) * 3;
-                baseDamage += GetStat(CharacterStat.WeaponMastery);
-
-                if (isRanged)
-                    rangeMod += GetStat(CharacterStat.AddAttackRangedAttack);
-
-                sizeMod += GetStat(CharacterStat.AddAttackSmallSize + (int)defSize);
-            }
-        }
-
-        var attackerPenalty = target.GetAttackerPenalty(Entity);
-
-        if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreEvasion))
+        //evasion
+        if (isPhysical && !flags.HasFlag(AttackFlags.IgnoreEvasion))
             evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * 10);
 
         if (target.HasBodyState(BodyStateFlags.Hidden) && !flags.HasFlag(AttackFlags.IgnoreEvasion)
@@ -231,15 +129,47 @@ public partial class CombatEntity
                                                             && !(attackElement == AttackElement.Earth && flags.HasFlag(AttackFlags.Magical))) //earth magic breaks hide
             evade = true;
 
-        if (target.Character.Type == CharacterType.Player && flags.HasFlag(AttackFlags.Physical) &&
-            req.SkillSource == CharacterSkill.None)
+        //critical hit
+        if (!isCrit && flags.HasFlag(AttackFlags.CanCrit))
+        {
+            //crit rate: 1%, + 0.3% per luk, + 0.1% per level
+            var critRate = 10 + GetEffectiveStat(CharacterStat.Luck) * 3 + srcLevel + GetStat(CharacterStat.AddCrit);
+
+            //should double crit for katar here
+
+            //counter crit: 0.2% per luck, 0.67% per level
+            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) * 2 + targetLevel * 2 / 3;
+
+            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 1000))
+                isCrit = true;
+        }
+
+        //crit result
+        if (isCrit)
+        {
+            baseDamage = atk2; //crits always max out the possible damage range
+            evade = false;
+            isCrit = true;
+            attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamage) / 100f;
+            flags |= AttackFlags.IgnoreDefense;
+        }
+
+        //lucky dodge
+        if (target.Character.Type == CharacterType.Player && isPhysical && req.SkillSource == CharacterSkill.None)
         {
             var lucky = target.Player.GetEffectiveStat(CharacterStat.PerfectDodge);
             if (CheckLuckModifiedRandomChanceVsTarget(target, lucky, 1000))
-                evade = true; //should have a special result for lucky dodge
+            {
+                evade = true;
+                isLucky = true;
+            }
         }
 
-        if (!evade && flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
+        //----------------------------------------
+        // Nullifying magic (pneuma/safety wall)
+        //----------------------------------------
+
+        if (!evade && isPhysical && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
         {
             var distance = target.Character.Position.DistanceTo(Character.Position);
             if (distance >= 5)
@@ -264,73 +194,179 @@ public partial class CombatEntity
             }
         }
 
+        //---------------------------
+        // Elemental Modifiers
+        //---------------------------
+
+        var eleMod = 100;
+        if (!evade && !flags.HasFlag(AttackFlags.NoElement) && attackElement != AttackElement.Special)
+        {
+            //attacks made with AttackElement.None will take the attacker's weapon element or arrow element for bows. Monsters just default neutral.
+            if (attackElement == AttackElement.None)
+            {
+                //ghost armor has no effect on monster attacks if they are launched with AttackElement None (explicitly neutral attacks are still reduced)
+                if (defenderElement == CharacterElement.Ghost1 && attackerType == CharacterType.Monster && target.Character.Type == CharacterType.Player)
+                    defenderElement = CharacterElement.Neutral1;
+
+                attackElement = AttackElement.Neutral;
+                if (Character.Type == CharacterType.Player)
+                {
+                    attackElement = Player.Equipment.WeaponElement;
+                    if (Player.WeaponClass == 12) //bows
+                    {
+                        var arrowElement = Player.Equipment.AmmoElement;
+                        if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
+                            attackElement = arrowElement;
+                    }
+
+                    var overrideElement = (AttackElement)GetStat(CharacterStat.EndowAttackElement);
+                    if (overrideElement > 0)
+                        attackElement = overrideElement;
+                }
+            }
+
+            //defender reduction
+            if (defenderType == CharacterType.Player)
+                eleMod -= target.GetStat(CharacterStat.AddResistElementNeutral + (int)attackElement);
+
+            //attacker bonus
+            if (attackerType == CharacterType.Player)
+                eleMod += GetStat(CharacterStat.AddAttackElementNeutral + (int)baseElementType);
+
+            //combine bonus with actual elemental chart lookup
+            if (defenderElement != CharacterElement.None)
+                eleMod = eleMod * DataManager.ElementChart.GetAttackModifier(attackElement, defenderElement) / 100;
+        }
+
+        //---------------------------------------------------
+        // Range, Race and Size Modifiers and Mastery Bonus
+        //---------------------------------------------------
+
+        var racialMod = 100;
+        var rangeMod = 100;
+        var sizeMod = 100;
+        if (!evade && !flags.HasFlag(AttackFlags.NoDamageModifiers))
+        {
+            var isRanged = req.Flags.HasFlag(AttackFlags.Ranged);
+            var atkSize = attackerType == CharacterType.Monster ? Character.Monster.MonsterBase.Size : CharacterSize.Medium;
+            var defSize = defenderType == CharacterType.Monster ? target.Character.Monster.MonsterBase.Size : CharacterSize.Medium;
+
+            if (!isRanged)
+            {
+                if (req.SkillSource == CharacterSkill.None)
+                    isRanged = GetStat(CharacterStat.Range) >= 4;
+                else
+                    isRanged = Character.Position.SquareDistance(target.Character.Position) >= 4;
+            }
+
+            if (defenderType == CharacterType.Player) //monsters can't get race reductions
+            {
+                var sourceRace = GetRace();
+                racialMod -= target.GetStat(CharacterStat.AddResistRaceFormless + (int)sourceRace);
+
+                if (isRanged)
+                    rangeMod -= target.GetStat(CharacterStat.AddResistRangedAttack);
+
+                sizeMod -= target.GetStat(CharacterStat.AddResistSmallSize + (int)atkSize);
+            }
+
+            if (attackerType == CharacterType.Player && isPhysical) //only players and physical attacks get these bonuses
+            {
+                var targetRace = target.GetRace();
+                racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
+
+                //masteries, demonbane, etc
+                if (isPhysical && (target.GetRace() == CharacterRace.Demon || baseElementType == AttackElement.Undead))
+                    baseDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.DemonBane) * 3;
+                baseDamage += GetStat(CharacterStat.WeaponMastery);
+
+                if (isRanged)
+                    rangeMod += GetStat(CharacterStat.AddAttackRangedAttack);
+
+                sizeMod += GetStat(CharacterStat.AddAttackSmallSize + (int)defSize);
+            }
+        }
+
+        //-------------------------------
+        // Defense and/or Magic Defense
+        //-------------------------------
+
         var defCut = 1f;
         var subDef = 0;
         var vit = target.GetEffectiveStat(CharacterStat.Vit);
-        if (flags.HasFlag(AttackFlags.Physical) && !flags.HasFlag(AttackFlags.IgnoreDefense))
+        //physical defense
+        if (!flags.HasFlag(AttackFlags.IgnoreDefense))
         {
-            //armor def
-            var def = target.GetEffectiveStat(CharacterStat.Def);
-            if (target.Character.Type == CharacterType.Player)
+            if (isPhysical)
             {
-                //+20% bonus (for non-upgrade def), in place of penalty for upgrade def
-                def += target.GetStat(CharacterStat.Def) * 20 / 100;
-            }
-
-            //soft def
-            if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
-            {
+                //armor def
+                var def = target.GetEffectiveStat(CharacterStat.Def);
                 if (target.Character.Type == CharacterType.Player)
                 {
-                    //this formula is weird, but it is official
-                    //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
-                    //you also gain a random bonus that kicks in at 46 def and increases at higher values
-                    var vit30Percent = 3 * vit / 10;
-                    var vitRng = vit * vit / 150 - vit30Percent;
-                    if (vitRng < 1) vitRng = 1;
-                    subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
+                    //+20% bonus (for non-upgrade def), in place of penalty for upgrade def
+                    def += target.GetStat(CharacterStat.Def) * 20 / 100; //GetStat instead of GetEffectiveStat to get base def value
+                }
 
-                    //attacker penalty (players only)
-                    if (attackerPenalty > 0)
+                //soft def
+                if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
+                {
+                    if (target.Character.Type == CharacterType.Player)
                     {
-                        def -= 5 * def * attackerPenalty / 100;
-                        subDef -= 5 * subDef * attackerPenalty / 100;
+                        //this formula is weird, but it is official
+                        //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
+                        //you also gain a random bonus that kicks in at 46 def and increases at higher values
+                        var vit30Percent = 3 * vit / 10;
+                        var vitRng = vit * vit / 150 - vit30Percent;
+                        if (vitRng < 1) vitRng = 1;
+                        subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
+
+                        //attacker penalty (players only)
+                        if (attackerPenalty > 0)
+                        {
+                            def -= 5 * def * attackerPenalty / 100;
+                            subDef -= 5 * subDef * attackerPenalty / 100;
+                        }
+
+                        if (def < 0) def = 0;
+                        if (subDef < 0) subDef = 0;
+                    }
+                    else
+                    {
+                        //monsters vit defense is also weird
+                        var vitRng = (vit / 20) * (vit / 20);
+                        if (vitRng <= 0)
+                            subDef = vit;
+                        else
+                            subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
                     }
 
-                    if (def < 0) def = 0;
-                    if (subDef < 0) subDef = 0;
-                }
-                else
-                {
-                    //monsters vit defense is also weird
-                    var vitRng = (vit / 20) * (vit / 20);
-                    if (vitRng <= 0)
-                        subDef = vit;
-                    else
-                        subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
+
+                    subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
                 }
 
+                //convert def to damage reduction %
+                defCut = MathHelper.DefValueLookup(def);
 
-                subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
+                if (def >= 200)
+                    subDef = 999999;
             }
 
-            //convert def to damage reduction %
-            defCut = MathHelper.DefValueLookup(def);
+            //magic defense
+            if (isMagical)
+            {
+                var mDef = target.GetEffectiveStat(CharacterStat.MDef);
+                defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
+                if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
+                    subDef = target.GetEffectiveStat(CharacterStat.Int) + vit / 2;
 
-            if (def >= 200)
-                subDef = 999999;
+                if (mDef >= 200)
+                    subDef = 999999;
+            }
         }
 
-        if ((flags & AttackFlags.Magical) > 0 && (flags & AttackFlags.IgnoreDefense) <= 0) 
-        {
-            var mDef = target.GetEffectiveStat(CharacterStat.MDef);
-            defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
-            if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
-                subDef = target.GetEffectiveStat(CharacterStat.Int) + vit / 2;
-
-            if (mDef >= 200)
-                subDef = 999999;
-        }
+        //------------------------------
+        // Combined damage calculation
+        //------------------------------
 
         var damage = (int)((baseDamage * attackMultiplier * defCut - subDef) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f));
         if (damage < 1)
@@ -360,10 +396,14 @@ public partial class CombatEntity
 
         var res = AttackResult.NormalDamage;
         if (damage == 0)
-            res = AttackResult.Miss;
+            res = isLucky ? AttackResult.LuckyDodge : AttackResult.Miss;
 
         if (res == AttackResult.NormalDamage && isCrit)
             res = AttackResult.CriticalDamage;
+
+        //---------------------------
+        // Finalize damage result
+        //---------------------------
 
         var di = PrepareTargetedSkillResult(target, req.SkillSource);
         di.Result = res;
@@ -374,10 +414,14 @@ public partial class CombatEntity
         if (Character.Type == CharacterType.Player && Player.WeaponClass == 12 && req.SkillSource == CharacterSkill.None)
             di.Time += Character.Position.DistanceTo(target.Character.Position) / ServerConfig.ArrowTravelTime;
 
-        if (damage > 0 && flags.HasFlag(AttackFlags.Physical))
+        if (damage > 0 && isPhysical)
             di.Flags |= DamageApplicationFlags.PhysicalDamage;
         if (damage > 0 && flags.HasFlag(AttackFlags.Magical))
             di.Flags |= DamageApplicationFlags.MagicalDamage;
+
+        //---------------------------------------
+        // On Attack and When Attacked Triggers
+        //---------------------------------------
 
         if (!flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
         {

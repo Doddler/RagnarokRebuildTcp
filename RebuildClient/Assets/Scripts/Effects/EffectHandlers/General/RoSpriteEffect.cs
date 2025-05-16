@@ -16,7 +16,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
     [RoEffect("RoSprite")]
     public class RoSpriteEffect : IEffectHandler
     {
-        public static Ragnarok3dEffect AttachSprite(ServerControllable target, string sprite, float offset, float animSpeed = 1, RoSpriteEffectFlags flags = RoSpriteEffectFlags.None)
+        public static Ragnarok3dEffect AttachSprite(ServerControllable target, string sprite, float offset, float animSpeed = 1, RoSpriteEffectFlags flags = RoSpriteEffectFlags.None, int action = 0)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.RoSprite);
             effect.SourceEntity = target;
@@ -27,6 +27,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             effect.StringValue = sprite;
             effect.PositionOffset = new Vector3(0f, offset, 0f);
             effect.Flags[0] = (int)flags;
+            effect.Flags[1] = action;
             effect.gameObject.transform.localScale = Vector3.one;
             
             EffectSharedMaterialManager.PrepareEffectSprite(sprite);
@@ -72,7 +73,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
                 else
                     layer.ForceLoop = true;
                 
-                layer.ChangeActionExact(0);
+                layer.ChangeActionExact(effect.Flags[1]);
                 
                 effect.AttachedObjects.Add(spriteContainer);
             }
