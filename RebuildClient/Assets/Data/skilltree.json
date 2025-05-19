@@ -69,7 +69,7 @@
           ]
         },
         {
-          "Skill": 65,
+          "Skill": 81,
           "Prerequisites": [
             {
               "Skill": 3,
@@ -449,7 +449,7 @@
           "Prerequisites": []
         },
         {
-          "Skill": 68,
+          "Skill": 83,
           "Prerequisites": [
             {
               "Skill": 46,
@@ -548,7 +548,7 @@
           ]
         },
         {
-          "Skill": 67,
+          "Skill": 82,
           "Prerequisites": []
         }
       ]

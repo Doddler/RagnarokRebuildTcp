@@ -547,7 +547,15 @@ public partial class CombatEntity
 
         var ec = di.Target.Get<CombatEntity>();
         var hp = GetStat(CharacterStat.Hp);
+
+#if DEBUG
+        if (GodMode)
+            damage = hp - 1;
+        
+#endif
+        
         hp -= damage;
+        
 
         SetStat(CharacterStat.Hp, hp);
 

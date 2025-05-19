@@ -43,6 +43,17 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 CommandBuilder.ErrorMessage(player, "Cannot apply skill points to this skill.");
                 return;
             }
+
+            //this needs to be way more robust as it only works with novice -> first jobs
+            if (player.JobId != 0 && skillId != CharacterSkill.BasicMastery && skillId != CharacterSkill.FirstAid)
+            {
+                if (player.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 8 ||
+                    player.MaxLearnedLevelOfSkill(CharacterSkill.FirstAid) < 1)
+                {
+                    CommandBuilder.ErrorMessage(player, "You must apply your 9 novice skill points before assigning points to your first job.");
+                    return;
+                }
+            }
             
             //does the player meet the requirements for this skill?
             var meetsPrereq = CheckPrereqFromTree(tree, skillId, player);
@@ -72,7 +83,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             player.RefreshWeaponMastery();
             player.UpdateStats(true, true);
         }
-
+        
         private bool CheckPrereqFromTree(PlayerSkillTree tree, CharacterSkill skill, Player player)
         {
             if (tree.SkillTree == null || !tree.SkillTree.TryGetValue(skill, out var prereqs))

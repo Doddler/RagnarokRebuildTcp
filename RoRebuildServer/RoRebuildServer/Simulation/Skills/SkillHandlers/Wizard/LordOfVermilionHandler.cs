@@ -18,6 +18,10 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Wizard;
 [SkillHandler(CharacterSkill.LordOfVermilion, SkillClass.Magic, SkillTarget.Ground)]
 public class LordOfVermilionHandler : SkillHandlerBase
 {
+    public override int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 4;
+
+    public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 15.5f - 0.5f * lvl;
+
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
         var map = source.Character.Map;

@@ -1254,7 +1254,7 @@ namespace Assets.Scripts.Network
             if (height > 100)
                 height = 120;
 
-            return height / 30f;
+            return height / 30f; //30 pixels per unit at standard sprite 1.5x scale
         }
 
         public void AttachFloatingTextIndicator(string text, TextIndicatorType type = TextIndicatorType.Miss, float height = 1f)

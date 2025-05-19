@@ -50,7 +50,8 @@ namespace Assets.Scripts.UI
 
         public void ReleaseHighlightSkillBox()
         {
-            background.color = new Color(0, 0.32f, 1f, 0f);
+            if(background != null)
+                background.color = new Color(0, 0.32f, 1f, 0f);
         }
 
         public void HighlightSkillBox()

@@ -65,6 +65,14 @@ namespace Assets.Scripts.UI.TitleScreen
             EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
         }
 
+        public void ReturnFocus()
+        {
+            if(currentTab == 0 || currentTab == 1)
+                EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
+            if(currentTab == 2)
+                EventSystem.current.SetSelectedGameObject(ServerInputBox.gameObject);
+        }
+        
         public void ChangeTabs(int id)
         {
             if (id == currentTab)

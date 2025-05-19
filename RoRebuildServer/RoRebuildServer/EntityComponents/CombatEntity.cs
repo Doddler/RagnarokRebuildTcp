@@ -64,6 +64,10 @@ public partial class CombatEntity : IEntityAutoReset
     [EntityIgnoreNullCheck] public List<DamageInfo> DamageQueue { get; set; } = null!;
     private CharacterStatusContainer? statusContainer;
 
+#if DEBUG
+    public bool GodMode; //for safety's sake, god mode isn't available outside of debug builds
+#endif
+
     public float GetTiming(TimingStat type) => timingData[(int)type];
     public void SetTiming(TimingStat type, float val) => timingData[(int)type] = val;
 
@@ -109,6 +113,10 @@ public partial class CombatEntity : IEntityAutoReset
             StatusEffectPoolManager.ReturnStatusContainer(statusContainer);
             statusContainer = null;
         }
+
+#if DEBUG
+        GodMode = false;
+#endif
 
         //Array.Copy(statResetData, statData, statData.Length);
 

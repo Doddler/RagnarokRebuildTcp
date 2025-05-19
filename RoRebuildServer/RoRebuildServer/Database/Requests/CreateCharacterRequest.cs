@@ -75,7 +75,7 @@ namespace RoRebuildServer.Database.Requests
                     Y = savePoint.Position.Y,
                     Area = savePoint.Area,
                 },
-                VersionFormat = 3
+                VersionFormat = PlayerDataDbHelper.CurrentPlayerSaveVersion
             };
 
             try

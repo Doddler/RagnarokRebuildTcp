@@ -155,14 +155,14 @@ namespace Assets.Scripts.UI
         public SkillWindowEntry AddSkillToSkillWindow(CharacterSkill skill, int currentLevel, int rank, bool meetsPrereqs, SkillWindowEntry existing = null)
         {
             var data = ClientDataLoader.Instance.GetSkillData(skill);
-
-            if (data.MaxLevel == 0)
-            {
-                Debug.LogWarning($"Could not add skill {data.Name}, it has no max level set.");
-                if (existing != null)
-                    existing.SkillName.text = "!!ERROR!!";
-                return existing;
-            }
+            //
+            // if (data.MaxLevel == 0)
+            // {
+            //     Debug.LogWarning($"Could not add skill {data.Name}, it has no max level set.");
+            //     if (existing != null)
+            //         existing.SkillName.text = "!!ERROR!!";
+            //     return existing;
+            // }
 
             var newSkill = existing;
             if(newSkill == null)

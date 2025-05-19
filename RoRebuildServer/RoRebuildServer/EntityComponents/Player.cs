@@ -88,6 +88,15 @@ public class Player : IEntityAutoReset
     }
     public int MaxLearnedLevelOfSkill(CharacterSkill skill) => LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0;
 
+    public int MaxAvailableLevelOfSkill(CharacterSkill skill)
+    {
+        return int.Max(
+            LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0,
+            GrantedSkills != null && GrantedSkills.TryGetValue(skill, out var granted) ? granted : 0
+        );
+
+    }
+
     [ScriptUseable] public int GetNpcFlag(string flag) => NpcFlags != null && NpcFlags.TryGetValue(flag, out var val) ? val : 0;
 
     [ScriptUseable]
@@ -323,8 +332,11 @@ public class Player : IEntityAutoReset
             CommandBuilder.SendUpdatePlayerData(this, true, false);
         }
         else
+        {
+            EnsureNoviceSkillPointsCorrectlyAssigned(); //if they're not a novice we can give them all the novice skills since they should have them
             UpdateStats();
-        
+        }
+
         //IsAdmin = true; //for now
     }
     
@@ -621,6 +633,19 @@ public class Player : IEntityAutoReset
         if (firstAid > 0) LearnedSkills.Add(CharacterSkill.FirstAid, firstAid);
 
         UpdateStats();
+    }
+
+    //if they're not a novice we can give them all the novice skills since they should have them
+    private void EnsureNoviceSkillPointsCorrectlyAssigned()
+    {
+        if (JobId == 0)
+            return;
+
+        if (MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 8)
+            AddSkillToCharacter(CharacterSkill.BasicMastery, 8);
+
+        if (MaxLearnedLevelOfSkill(CharacterSkill.FirstAid) < 1)
+            AddSkillToCharacter(CharacterSkill.FirstAid, 1);
     }
 
     public void UpdateStats(bool updateSkillData = true, bool sendUpdate = true)
@@ -949,8 +974,7 @@ public class Player : IEntityAutoReset
         if (SkillHandler.GetSkillAttributes(skill).SkillTarget == SkillTarget.Passive)
             UpdateStats();
     }
-
-
+    
     public void GrantSkillToCharacter(CharacterSkill skill, int level)
     {
         GrantedSkills ??= new();
@@ -961,12 +985,15 @@ public class Player : IEntityAutoReset
         GrantedSkills.Add(skill, level);
     }
 
-    public void RemoveGrantedSkill(CharacterSkill skill, int level)
+    public void RemoveGrantedSkill(CharacterSkill skill, int level = -1)
     {
         if (GrantedSkills == null)
             return;
 
-        if (GrantedSkills.TryGetValue(skill, out var cur) && cur != level)
+        if (!GrantedSkills.TryGetValue(skill, out var cur))
+            return;
+
+        if (level > 0 && cur != level)
             return;
 
         GrantedSkills.Remove(skill);

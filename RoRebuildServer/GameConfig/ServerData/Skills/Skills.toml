@@ -463,6 +463,127 @@ Target = "Enemy"
 MaxLevel = 1
 SpCost = [12]
 
+#----------------------------------
+# Priest Skills
+#----------------------------------
+
+[Aspersio]
+Name = "Aspersio"
+Icon = "pr_aspersio"
+Target = "Ally"
+MaxLevel = 5
+SpCost = [12,14,16,18,20]
+
+[Benedicto]
+Name = "Benedictio Sanctissimi Sacramenti"
+Icon = "pr_benedictio"
+Target = "Ally"
+MaxLevel = 5
+SpCost = [20,20,20,20,20]
+
+[Resurrection]
+Name = "Resurrection"
+Icon = "all_resurrection"
+Target = "Ally"
+MaxLevel = 4
+SpCost = [60, 60, 60, 60]
+InterruptMode = "InterruptOnDamage"
+
+#----------------------------------
+# Wizard Skills
+#----------------------------------
+
+[EarthSpike]
+Name = "Earth Spike"
+Icon = "wz_earthspike"
+Target = "Enemy"
+MaxLevel = 5
+SpCost = [12,14,16,18,20]
+
+[HeavensDrive]
+Name = "Heavens Drive"
+Icon = "wz_heavendrive"
+Target = "Enemy"
+MaxLevel = 5
+SpCost = [28,32,36,40,44]
+
+[FirePillar]
+Name = "Fire Pillar"
+Icon = "wz_firepillar"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [75,75,75,75,75,75,75,75,75,75]
+
+[FrostNova]
+Name = "Frost Nova"
+Icon = "wz_frostnova"
+Target = "Self"
+MaxLevel = 10
+SpCost = [45,43,41,39,37,35,33,31,29,27]
+AdjustableLevel = false
+
+[IceWall]
+Name = "Ice Wall"
+Icon = "wz_icewall"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [20,20,20,20,20,20,20,20,20,20]
+
+[JupitelThunder]
+Name = "Jupitel Thunder"
+Icon = "wz_jupitel"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [20,23,26,29,36,35,38,41,44,47]
+
+[LordOfVermilion]
+Name = "Lord of Vermilion"
+Icon = "wz_vermilion"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [60,64,68,72,76,80,84,88,92,96]
+
+[MeteorStorm]
+Name = "Meteor Storm"
+Icon = "wz_meteor"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [20,24,30,34,40,44,50,54,60,64]
+
+[Quagmire]
+Name = "Quagmire"
+Icon = "wz_quagmire"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [5,10,15,20,25]
+
+[Sense]
+Name = "Sense"
+Icon = "wz_estimation"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [10]
+
+[Sightrasher]
+Name = "Sightrasher"
+Icon = "wz_sightrasher"
+Target = "Self"
+MaxLevel = 10
+SpCost = [35,37,39,41,43,45,47,49,51,53]
+
+[StormGust]
+Name = "Storm Gust"
+Icon = "wz_stormgust"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [78,78,78,78,78,78,78,78,78,78]
+
+[WaterBall]
+Name = "Water Ball"
+Icon = "wz_waterball"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [15,20,20,25,25,25,25,25,25,25]
 
 #----------------------------------
 # Other skills
@@ -474,14 +595,6 @@ Icon = "kn_twohandquicken"
 Target = "Self"
 MaxLevel = 10
 SpCost = [14,18,22,26,30,34,38,42,46,50]
-
-[Resurrection]
-Name = "Resurrection"
-Icon = "all_resurrection"
-Target = "Ally"
-MaxLevel = 4
-SpCost = [60, 60, 60, 60]
-InterruptMode = "InterruptOnDamage"
 
 [HammerFall]
 Name = "Hammer Fall"
@@ -497,22 +610,11 @@ Target = "Enemy"
 MaxLevel = 10
 SpCost = [16,18,20,22,24,26,28,30,32,34]
 
-#----------------------------------
-# 2nd job skills
-#----------------------------------
-
-[EarthSpike]
-Name = "Earth Spike"
-[HeavensDrive]
-Name = "Heavens Drive"
-[JupitelThunder]
-Name = "Jupitel Thunder"
-[LordOfVermilion]
-Name = "Lord of Vermilion"
-[WaterBall]
-Name = "Water Ball"
 [Cloaking]
+Target = "Self"
+
 [Demonstration]
+Target = "Ground"
 
 #----------------------------------
 # Monster skills
@@ -520,70 +622,126 @@ Name = "Water Ball"
 
 [FireAttack]
 Name = "Fire Attack"
+Target = "Enemy"
+
 [IceAttack]
 Name = "Ice Attack"
+Target = "Enemy"
+
 [WaterAttack] 
 Name = "Water Attack" #same as ice attack technically, used when the theme calls for it
+Target = "Enemy"
+
 [WindAttack]
 Name = "Wind Attack"
+Target = "Enemy"
+
 [EarthAttack]
 Name = "Earth Attack"
+Target = "Enemy"
+
 [DarkAttack]
 Name = "Dark Attack"
+Target = "Enemy"
+
 [HolyAttack]
 Name = "Holy Attack"
+Target = "Enemy"
+
 [PoisonAttack]
 Name = "Poison Attack"
+Target = "Enemy"
+
 [UndeadAttack]
 Name = "Undead Attack"
+Target = "Enemy"
+
 [GhostAttack]
 Name = "Immaterial Attack"
+Target = "Enemy"
+
 [CriticalAttack]
 Name = "Critical Slash"
+Target = "Enemy"
+
 [Curse]
 Name = "Curse"
+Target = "Enemy"
+
 [Poison]
 Name = "Poison"
+Target = "Enemy"
+
 [Sleep]
 Name = "Sleep"
+Target = "Enemy"
+
 [Stun]
 Name = "Stun"
+Target = "Enemy"
+
 [Blind]
 Name = "Blind"
+Target = "Enemy"
+
 [Silence]
 Name = "Silence"
+Target = "Enemy"
+
 [Petrify]
 Name = "Petrify"
+Target = "Enemy"
 
 [FireBreath]
 Name = "Fire Breath"
+Target = "Enemy"
+
 [IceBreath]
 Name = "Ice Breath"
+Target = "Enemy"
+
 [WindBreath]
 Name = "Wind Breath"
+Target = "Enemy"
+
 [EarthBreath]
 Name = "Earth Breath"
+Target = "Enemy"
+
 [DarkBreath]
 Name = "Dark Breath"
+Target = "Enemy"
+
 [HolyBreath]
 Name = "Holy Breath"
+Target = "Enemy"
+
 [PoisonBreath]
 Name = "Poison Breath"
+Target = "Enemy"
+
 [UndeadBreath]
 Name = "Undead Breath"
+Target = "Enemy"
+
 [GhostBreath]
 Name = "Immaterial Breath"
+Target = "Enemy"
+
 
 [SelfDestruct]
 Name = "Self Destruct"
+Target = "Self"
 InterruptMode = "NoInterrupt"
 
 [PowerUp]
 Name = "Power Up"
+Target = "Self"
 InterruptMode = "NoInterrupt"
 
 [SpeedUp]
 Name = "Speed Up"
+Target = "Self"
 InterruptMode = "NoInterrupt"
 
 [CallMinion]
@@ -604,38 +762,74 @@ InterruptMode = "NoInterrupt"
 
 [MagicalAttack] #the skill that makes their regular attacks magical
 Name = "Magic Weapon"
+Target = "Self"
 
 [BloodDrain]
 Name = "Blood Drain"
+Target = "Enemy"
+
 [EnergyDrain]
 Name = "Energy Drain"
+Target = "Enemy"
+
 [GuidedAttack]
 Name = "Guided Attacks"
+Target = "Enemy"
+
 [SplashAttack]
 Name = "Area Attack"
+Target = "Enemy"
+
 [ComboAttack]
 Name = "Combo Attack"
+Target = "Enemy"
+
 [PiercingAttack]
 Name = "Piercing Attack"
+Target = "Enemy"
+
 [RangedAttack]
 Name = "Ranged Strike"
+Target = "Enemy"
+
 [DarkStrike]
 Name = "Dark Strike"
+Target = "Enemy"
+
 [BreakArmor]
 Name = "Break Armor"
+Target = "Enemy"
+
 [BreakWeapon]
 Name = "Break Weapon"
+Target = "Enemy"
+
 [BreakHelm]
 Name = "Break Helm"
+Target = "Enemy"
+
 [DarkBlessing]
 Name = "Dark Blessing"
+Target = "Enemy"
+
 
 [Smoking]
+Target = "Self"
+
 [Suicide]
+Target = "Self"
+
 [Stop]
+Target = "Enemy"
+
 [Hallucination]
+Target = "Enemy"
+
 [Lick]
+Target = "Enemy"
+
 [Emotion]
+Target = "Self"
 
 [DarkThunder]
 Name = "Dark Thunder"
@@ -646,21 +840,27 @@ Name = "Bulwark"
 #custom
 [PharaohCurse]
 Name = "Pharaoh's Curse"
+Target = "Enemy"
 
 [GrandThunderstorm]
 Name = "Grand Thunderstorm"
 InterruptMode = "NoInterrupt"
+Target = "Self"
 
 #used to show in skill prereqs
 [QuestSkill]
 Name = "Reward for Quest"
 
 [Vampyrism]
+Target = "Self"
 
 [PhysBreaker] #originally Dark Breath (not to be confused with Darkness Breath, the aoe)
 Name = "HP Breaker" #need to try to communicate it drops your maxHP...
+Target = "Enemy"
+
 [MentalBreaker]
 Name = "Mental Breaker"
+Target = "Enemy"
 
 [NoCast]
 #use when you want the enemy to trigger something without the player knowing

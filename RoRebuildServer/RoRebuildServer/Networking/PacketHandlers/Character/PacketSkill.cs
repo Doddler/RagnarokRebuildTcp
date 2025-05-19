@@ -62,8 +62,13 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             }
 
             var data = DataManager.SkillData[skill];
-            if (!data.AdjustableLevel)
-                lvl = connection.Player.MaxLearnedLevelOfSkill(skill);
+            if (!data.AdjustableLevel || lvl == 0)
+            {
+                lvl = connection.Player.MaxAvailableLevelOfSkill(skill);
+                if (lvl == 0)
+                    return;
+            }
+
 
             var target = SkillHandler.GetSkillAttributes(skill).SkillTarget;
             if (target == SkillTarget.Passive)

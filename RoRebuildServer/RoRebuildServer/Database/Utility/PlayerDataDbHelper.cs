@@ -27,7 +27,7 @@ namespace RoRebuildServer.Database.Utility;
 
 public static class PlayerDataDbHelper
 {
-    public const int CurrentPlayerSaveVersion = 3;
+    public const int CurrentPlayerSaveVersion = 4;
     
     public static void PackPlayerSummaryData(int[] buffer, Player p)
     {
@@ -231,7 +231,8 @@ public static class PlayerDataDbHelper
         Buffer.BlockCopy(charData, 0, chData, (int)ms.Position, dataSize);
         bw.Seek(dataSize, SeekOrigin.Current); //skip ahead
 
-        DbHelper.WriteDictionary(bw, player.LearnedSkills);
+        DbHelper.WriteDictionaryWithEnumStringKeys(bw, player.LearnedSkills);
+        //DbHelper.WriteDictionary(bw, player.LearnedSkills);
         DbHelper.WriteDictionary(bw, player.NpcFlags);
 
         //status effects
@@ -275,7 +276,7 @@ public static class PlayerDataDbHelper
         Buffer.BlockCopy(charData, 0, chData, (int)ms.Position, dataSize);
         bw.Seek(dataSize, SeekOrigin.Current); //skip ahead
 
-        DbHelper.WriteDictionary<CharacterSkill>(bw, null);
+        DbHelper.WriteDictionaryWithEnumStringKeys<CharacterSkill>(bw, null);
         DbHelper.WriteDictionary(bw, null);
         bw.Write((byte)0); //status effects
         bw.Write(0); //4 bytes for 4 empty warp destinations
@@ -304,7 +305,13 @@ public static class PlayerDataDbHelper
         
         ms.Seek(dataLen, SeekOrigin.Current);
 
-        player.LearnedSkills = DbHelper.ReadDictionary<CharacterSkill>(br) ?? new Dictionary<CharacterSkill, int>();
+        if (saveVersion <= 3)
+        {
+            player.LearnedSkills = DbHelper.ReadDictionary<CharacterSkill>(br) ?? new Dictionary<CharacterSkill, int>();
+            player.LearnedSkills.Clear(); //skill ids have changed, reset (we will save them as strings next time they save
+        }
+        else
+            player.LearnedSkills = DbHelper.ReadDictionaryWithEnumStringKeys<CharacterSkill>(br) ?? new Dictionary<CharacterSkill, int>();
         player.NpcFlags = DbHelper.ReadDictionary(br);
         if(saveVersion == CurrentPlayerSaveVersion) //if we're upgrading to a new save version, we won't restore status effects (as their IDs might have changed)
             player.CombatEntity.TryDeserializeStatusContainer(br);

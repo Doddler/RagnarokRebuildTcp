@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +9,9 @@ namespace Assets.Scripts.UI
     public class WindowBase : MonoBehaviour, IClosableWindow, IPointerDownHandler
     {
         public bool CanCloseWithEscape = true;
+        public bool AutomaticallyFitIntoPlayArea = true;
+        
+        protected bool IsPointerOverUIObject() => RectTransformUtility.RectangleContainsScreenPoint(transform.RectTransform(), Input.mousePosition);
         
         public virtual void MoveToTop()
         {
@@ -18,6 +22,8 @@ namespace Assets.Scripts.UI
         
         public void FitWindowIntoPlayArea()
         {
+            if (!AutomaticallyFitIntoPlayArea)
+                return;
 
             var rect = GetComponent<RectTransform>();
 

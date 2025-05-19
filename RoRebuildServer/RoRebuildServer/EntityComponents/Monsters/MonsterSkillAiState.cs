@@ -817,7 +817,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             return 0;
 
         using var list = EntityListPool.Get();
-        monster.Character.Map?.GatherEnemiesInRange(attackTarget, range, list, true, true);
+        monster.Character.Map?.GatherEnemiesInArea(monster.Character, attackTarget.Position, range, list, true, true);
 
         return list.Count;
     }

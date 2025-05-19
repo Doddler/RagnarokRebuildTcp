@@ -8,5 +8,9 @@ public enum AdminCharacterAction
 {
     RefineItem,
     CreateEvent,
-    ApplyStatus
+    ApplyStatus,
+    UnlockSkill,
+    Die,
+    GodModeSelf,
+    GodModeOther,
 }

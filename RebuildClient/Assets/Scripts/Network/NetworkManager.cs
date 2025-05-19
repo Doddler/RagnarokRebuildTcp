@@ -1509,6 +1509,43 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
+
+        public void SendAdminDieAction()
+        {
+            var msg = StartMessage(PacketType.AdminCharacterAction);
+            msg.Write((int)AdminCharacterAction.Die);
+            
+            SendMessage(msg);
+        }
+
+        public void AdminGrantSkill(CharacterSkill skill, int level)
+        {
+            var msg = StartMessage(PacketType.AdminCharacterAction);
+            msg.Write((int)AdminCharacterAction.UnlockSkill);
+            msg.Write((int)skill);
+            msg.Write(level);
+            
+            SendMessage(msg);
+        }
+        
+        public void SendAdminGodModeSelf(bool enable)
+        {
+            var msg = StartMessage(PacketType.AdminCharacterAction);
+            msg.Write((int)AdminCharacterAction.GodModeSelf);
+            msg.Write(enable);
+            
+            SendMessage(msg);
+        }
+        
+        public void SendAdminGodModeOther(string other, bool enable)
+        {
+            var msg = StartMessage(PacketType.AdminCharacterAction);
+            msg.Write((int)AdminCharacterAction.GodModeOther);
+            msg.Write(other);
+            msg.Write(enable);
+            
+            SendMessage(msg);
+        }
         
         public void SendAiLogging()
         {

@@ -9,6 +9,7 @@ using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Utility;
 using Assets.Scripts.Utility;
 using JetBrains.Annotations;
 using RebuildSharedData.Enum;
@@ -386,6 +387,11 @@ namespace PlayerControl
                     NetworkManager.Instance.SendAdminKillMobAction(true);
                 }
 
+                if (s[0] == "/die" || s[0] == "/suicide")
+                {
+                    NetworkManager.Instance.SendAdminDieAction();
+                }
+
                 if (s[0] == "/sit")
                 {
                     if (controllable.SpriteAnimator.State == SpriteState.Idle || controllable.SpriteAnimator.State == SpriteState.Standby)
@@ -433,6 +439,47 @@ namespace PlayerControl
                 if (s[0] == "/reloadscript" || s[0] == "/scriptreload")
                 {
                     NetworkManager.Instance.SendAdminAction(AdminAction.ReloadScripts);
+                }
+
+                if (s[0] == "/grantskill" && s.Length >= 2)
+                {
+                    if (Enum.TryParse<CharacterSkill>(s[1], out var skill))
+                    {
+                        if(s.Length > 2 && int.TryParse(s[2], out var lvl))
+                            NetworkManager.Instance.AdminGrantSkill(skill, lvl);
+                        else
+                            NetworkManager.Instance.AdminGrantSkill(skill, 1);
+                    }
+                    else
+                        cameraFollower.AppendChatText($"Could not parse skill name {s[1]}", TextColor.Error);
+                }
+
+                if (s[0] == "/god" || s[0] == "/godmode")
+                {
+                    if (s.Length == 1)
+                    {
+                        NetworkManager.Instance.SendAdminGodModeSelf(true);
+                        return;
+                    }
+
+                    if (s[1].ToLower() == "off")
+                    {
+                        NetworkManager.Instance.SendAdminGodModeSelf(false);
+                        return;
+                    }
+
+                    var chopStart = s[0].Length + 1;
+
+                    if (s[^1].ToLower() == "off")
+                    {
+                        var name = text.Substring(chopStart, text.Length - (chopStart + 4));
+                        NetworkManager.Instance.SendAdminGodModeOther(name, false);
+                    }
+                    else
+                    {
+                        var name = text.Substring(chopStart);
+                        NetworkManager.Instance.SendAdminGodModeOther(name, true);
+                    }
                 }
 
                 if (s[0] == "/servergc")

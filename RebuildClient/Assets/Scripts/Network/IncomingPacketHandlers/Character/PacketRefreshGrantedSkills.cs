@@ -9,6 +9,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
     {
         public override void ReceivePacket(ClientInboundMessage msg)
         {
+            State.GrantedSkills.Clear();
+            
             var grantedSkills = msg.ReadInt16();
             for (var i = 0; i < grantedSkills; i++)
                 State.GrantedSkills.Add((CharacterSkill)msg.ReadInt16(), msg.ReadByte());
