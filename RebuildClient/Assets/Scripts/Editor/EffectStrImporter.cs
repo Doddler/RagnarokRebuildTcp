@@ -55,7 +55,15 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/endure.tga", "endure"));
             sprites.Add(ImportEffectTexture("texture/effect/pok1.tga", "pok1"));
             sprites.Add(ImportEffectTexture("texture/effect/pok3.tga", "pok3"));
-
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_ball_a.bmp", "thunder_ball_a"));
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_ball_b.bmp", "thunder_ball_b"));
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_ball_c.bmp", "thunder_ball_c"));
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_ball_d.bmp", "thunder_ball_d"));
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_ball_e.bmp", "thunder_ball_e"));
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_ball_f.bmp", "thunder_ball_f"));
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_center.bmp", "thunder_center"));
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_pang.bmp", "thunder_pang"));
+            
             ImportEffectTexture("texture/effect/대폭발.tga", "BigBang", false, "Resources");
 
             // ImportEffectTexture("texture/유저인터페이스/disable_card_slot.bmp", "disable_card_slot");
