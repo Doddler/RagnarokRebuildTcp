@@ -1010,7 +1010,7 @@ public class Map
         CommandBuilder.ClearRecipients();
     }
 
-    public int GatherAllPlayersInViewDistance(Position position, EntityList list) => GatherPlayersInRange(position, ServerConfig.MaxViewDistance+2, list, false,false);
+    public int GatherAllPlayersInViewDistance(Position position, EntityList list) => GatherPlayersInRange(position, ServerConfig.MaxViewDistance, list, false,false);
 
     public int GatherPlayersInRange(Position position, int distance, EntityList? list, bool checkLineOfSight, bool checkImmunity = false)
     {

@@ -87,7 +87,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[70] = new DefaultSkillHandler();
 			handlers[71] = new DefaultSkillHandler();
 			handlers[72] = new DefaultSkillHandler();
-			handlers[73] = new DefaultSkillHandler();
+			handlers[73] = new JupitelThunderHandler();
 			handlers[74] = new LordOfVermilionHandler();
 			handlers[75] = new DefaultSkillHandler();
 			handlers[76] = new DefaultSkillHandler();
@@ -157,7 +157,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[136] = new DefaultSkillHandler();
 			handlers[137] = new DefaultSkillHandler();
 			handlers[138] = new DefaultSkillHandler();
-			handlers[139] = new DefaultSkillHandler();
+			handlers[139] = new DarkThunderHandler();
 			handlers[140] = new BulwarkHandler();
 			handlers[141] = new DefaultSkillHandler();
 			handlers[142] = new GrandThunderstormHandler();

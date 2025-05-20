@@ -38,6 +38,8 @@ namespace Assets.Scripts.Effects
 		Fireball,
 		FrostDiverHit,
 		FrostDiverTrail,
+		JupitelBall,
+		JupitelHit,
 		LordOfVermilion,
 		MagnumBreak,
 		Provoke,
@@ -64,6 +66,7 @@ namespace Assets.Scripts.Effects
 
 	public enum PrimitiveType
 	{
+		AnimatedTexture2D,
 		Aura,
 		Casting3D,
 		Circle2D,
@@ -121,6 +124,8 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Fireball, new Assets.Scripts.Effects.EffectHandlers.Skills.FireballEffect());
 			effectHandlers.Add(EffectType.FrostDiverHit, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverHitEffect());
 			effectHandlers.Add(EffectType.FrostDiverTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverTrailEffect());
+			effectHandlers.Add(EffectType.JupitelBall, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelBallEffect());
+			effectHandlers.Add(EffectType.JupitelHit, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelHitEffect());
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
 			effectHandlers.Add(EffectType.MagnumBreak, new Assets.Scripts.Effects.EffectHandlers.Skills.MagnumBreakEffect());
 			effectHandlers.Add(EffectType.Provoke, new Assets.Scripts.Effects.EffectHandlers.Skills.ProvokeEffect());
@@ -143,6 +148,8 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Teleport, new Assets.Scripts.Effects.EffectHandlers.General.TeleportEffect());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());
 			effectHandlers.Add(EffectType.DiscoLights, new Assets.Scripts.Effects.EffectHandlers.Environment.DiscoLightsEffect());
+			primitiveHandlers.Add(PrimitiveType.AnimatedTexture2D, new Assets.Scripts.Effects.PrimitiveHandlers.AnimatedTexture2DPrimitive());
+			primitiveDataFactory.Add(PrimitiveType.AnimatedTexture2D, () => new Assets.Scripts.Effects.PrimitiveData.EffectSpriteData());
 			primitiveHandlers.Add(PrimitiveType.Aura, new Assets.Scripts.Effects.PrimitiveHandlers.AuraPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Casting3D, new Assets.Scripts.Effects.PrimitiveHandlers.CastingCylinderPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Circle2D, new Assets.Scripts.Effects.PrimitiveHandlers.Circle2DPrimitive());

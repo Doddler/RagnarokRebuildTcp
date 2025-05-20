@@ -4,6 +4,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Wizard;
 
@@ -30,6 +31,10 @@ public class JupitelThunderHandler : SkillHandlerBase
 
         var res = source.CalculateCombatResult(target, 1, hitCount, AttackFlags.Magical, CharacterSkill.JupitelThunder, AttackElement.Wind);
         res.KnockBack = (byte)knockBack;
+        
+        var dist = source.Character.WorldPosition.DistanceTo(target.Character.WorldPosition);
+        var distTime = dist * 0.025f;
+        res.Time = Time.ElapsedTimeFloat + res.AttackMotionTime * 0.7f + distTime;
         source.ApplyCooldownForAttackAction(target);
 
         var ch = source.Character;

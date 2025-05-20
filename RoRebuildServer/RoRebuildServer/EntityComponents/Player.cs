@@ -979,8 +979,14 @@ public class Player : IEntityAutoReset
     {
         GrantedSkills ??= new();
 
-        if (GrantedSkills.TryGetValue(skill, out var cur) && cur <= level)
+        if (GrantedSkills.TryGetValue(skill, out var cur))
+        {
+            if(cur >= level)
+                return;
+
+            GrantedSkills[skill] = level;
             return;
+        }
 
         GrantedSkills.Add(skill, level);
     }

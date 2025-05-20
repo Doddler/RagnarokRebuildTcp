@@ -25,6 +25,7 @@ namespace Assets.Scripts.Effects
         public Shader AlphaBlendNoZTestShader;
         public Shader InvAlphaShader;
         public Shader AdditiveShader;
+        public Shader AdditiveShaderNoZTest;
         public Shader WaterShader;
         public Shader PerspectiveAlphaShader;
         public Shader ProjectorAdditiveShader;

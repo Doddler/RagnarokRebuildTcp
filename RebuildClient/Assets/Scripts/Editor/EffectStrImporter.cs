@@ -63,6 +63,9 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/thunder_ball_f.bmp", "thunder_ball_f"));
             sprites.Add(ImportEffectTexture("texture/effect/thunder_center.bmp", "thunder_center"));
             sprites.Add(ImportEffectTexture("texture/effect/thunder_pang.bmp", "thunder_pang"));
+            sprites.Add(ImportEffectTexture("texture/effect/black_sword.bmp", "black_sword"));
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_plazma_blast_a.bmp", "thunder_plazma_blast_a"));
+            sprites.Add(ImportEffectTexture("texture/effect/thunder_plazma_blast_b.bmp", "thunder_plazma_blast_b"));
             
             ImportEffectTexture("texture/effect/대폭발.tga", "BigBang", false, "Resources");
 

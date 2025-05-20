@@ -22,6 +22,8 @@ namespace Assets.Scripts.Effects.PrimitiveData
         public float Width;
         public float Height;
 
+        public float Angle;
+        public float RotationSpeed;
         public float Alpha = 255;
         public float MaxAlpha = 255;
         public float AlphaSpeed = 0;
@@ -42,6 +44,8 @@ namespace Assets.Scripts.Effects.PrimitiveData
             // Target = Vector3.zero;
             Width = 0;
             Height = 0;
+            Angle = 0;
+            RotationSpeed = 0;
             Alpha = 255;
             MaxAlpha = 255;
             AlphaSpeed = 0;

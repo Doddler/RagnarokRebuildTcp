@@ -66753,6 +66753,8 @@ MonoBehaviour:
     type: 3}
   InvAlphaShader: {fileID: 4800000, guid: 2047a671d485c7f438be8cf32a9ab1a0, type: 3}
   AdditiveShader: {fileID: 4800000, guid: b6e48a94539aa3e4c8cfa247031eca44, type: 3}
+  AdditiveShaderNoZTest: {fileID: 4800000, guid: 648144712ec1b704890dff0d784835b1,
+    type: 3}
   WaterShader: {fileID: 4800000, guid: f91689a8f3349d84dbfef0a2d7005ccb, type: 3}
   PerspectiveAlphaShader: {fileID: 4800000, guid: e39b7cfc0fbfd1347b2fb6508f066a7b,
     type: 3}

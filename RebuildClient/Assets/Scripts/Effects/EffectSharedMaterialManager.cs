@@ -29,6 +29,8 @@ namespace Assets.Scripts.Effects
 
     public enum EffectMaterialType
     {
+        SkillSpriteAlphaAdditive,
+        SkillSpriteAlphaAdditiveNoZCheck,
         SkillSpriteAlphaBlended,
         SkillSpriteAlphaBlendedNoZCheck,
         TeleportPillar,
@@ -238,6 +240,31 @@ namespace Assets.Scripts.Effects
                             persistMaterials[(int)mat] = true;
                         }
 
+                        break;
+                    
+                    case EffectMaterialType.SkillSpriteAlphaAdditive:
+                        if (materialList[(int)mat] == null)
+                        {
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShader)
+                            {
+                                color = Color.white,
+                                mainTexture = SpriteAtlas.GetSprite("FireBolt1").texture, //this will work unless the atlas gets split across multiple textures
+                                renderQueue = 3001
+                            };
+                            persistMaterials[(int)mat] = true;
+                        }
+                        break;
+                    case EffectMaterialType.SkillSpriteAlphaAdditiveNoZCheck:
+                        if (materialList[(int)mat] == null)
+                        {
+                            materialList[(int)mat] = new Material(ShaderCache.Instance.AdditiveShaderNoZTest)
+                            {
+                                color = Color.white,
+                                mainTexture = SpriteAtlas.GetSprite("FireBolt1").texture, //this will work unless the atlas gets split across multiple textures
+                                renderQueue = 3003
+                            };
+                            persistMaterials[(int)mat] = true;
+                        }
                         break;
                     case EffectMaterialType.SkillSpriteAlphaBlended:
                         if (materialList[(int)mat] == null)
