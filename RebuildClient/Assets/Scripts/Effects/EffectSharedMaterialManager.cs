@@ -40,6 +40,7 @@ namespace Assets.Scripts.Effects
         IceMaterial,
         FireRing,
         SightEffect,
+        WaterBallEffect,
         ShadowMaterial,
         CastFire,
         CastWater,
@@ -307,6 +308,9 @@ namespace Assets.Scripts.Effects
                             new Color(255 / 255f, 89 / 255f, 182 / 255f));
                         break;
                     case EffectMaterialType.SightEffect:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, null);
+                        break;
+                    case EffectMaterialType.WaterBallEffect:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, null);
                         break;
                     case EffectMaterialType.ShadowMaterial:

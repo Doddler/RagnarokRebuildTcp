@@ -38,9 +38,6 @@ namespace Assets.Scripts.Effects
 		Fireball,
 		FrostDiverHit,
 		FrostDiverTrail,
-		JupitelBall,
-		JupitelHit,
-		LordOfVermilion,
 		MagnumBreak,
 		Provoke,
 		Ruwach,
@@ -50,9 +47,15 @@ namespace Assets.Scripts.Effects
 		StealEffect,
 		WarpPortal,
 		WarpPortalOpening,
+		JupitelBall,
+		JupitelHit,
+		LordOfVermilion,
+		WaterBallAttack,
+		WaterBallRise,
 		ArcherArrow,
 		CastHolyEffect,
 		ColdHit,
+		DummyGroundEffect,
 		Entry,
 		Exit,
 		ExplosiveAura,
@@ -124,9 +127,6 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Fireball, new Assets.Scripts.Effects.EffectHandlers.Skills.FireballEffect());
 			effectHandlers.Add(EffectType.FrostDiverHit, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverHitEffect());
 			effectHandlers.Add(EffectType.FrostDiverTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverTrailEffect());
-			effectHandlers.Add(EffectType.JupitelBall, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelBallEffect());
-			effectHandlers.Add(EffectType.JupitelHit, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelHitEffect());
-			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
 			effectHandlers.Add(EffectType.MagnumBreak, new Assets.Scripts.Effects.EffectHandlers.Skills.MagnumBreakEffect());
 			effectHandlers.Add(EffectType.Provoke, new Assets.Scripts.Effects.EffectHandlers.Skills.ProvokeEffect());
 			effectHandlers.Add(EffectType.Ruwach, new Assets.Scripts.Effects.EffectHandlers.Skills.RuwachEffect());
@@ -136,9 +136,15 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.StealEffect, new Assets.Scripts.Effects.EffectHandlers.Skills.StealEffect());
 			effectHandlers.Add(EffectType.WarpPortal, new Assets.Scripts.Effects.EffectHandlers.Skills.WarpPortalEffect());
 			effectHandlers.Add(EffectType.WarpPortalOpening, new Assets.Scripts.Effects.EffectHandlers.Skills.WarpPortalOpeningEffect());
+			effectHandlers.Add(EffectType.JupitelBall, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelBallEffect());
+			effectHandlers.Add(EffectType.JupitelHit, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelHitEffect());
+			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
+			effectHandlers.Add(EffectType.WaterBallAttack, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallAttackEffect());
+			effectHandlers.Add(EffectType.WaterBallRise, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallRiseEffect());
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.General.ArcherArrow());
 			effectHandlers.Add(EffectType.CastHolyEffect, new Assets.Scripts.Effects.EffectHandlers.General.CastHolyEffect());
 			effectHandlers.Add(EffectType.ColdHit, new Assets.Scripts.Effects.EffectHandlers.General.ColdHitEffect());
+			effectHandlers.Add(EffectType.DummyGroundEffect, new Assets.Scripts.Effects.EffectHandlers.General.DummyGroundEffect());
 			effectHandlers.Add(EffectType.Entry, new Assets.Scripts.Effects.EffectHandlers.General.EntryEffect());
 			effectHandlers.Add(EffectType.Exit, new Assets.Scripts.Effects.EffectHandlers.General.ExitEffect());
 			effectHandlers.Add(EffectType.ExplosiveAura, new Assets.Scripts.Effects.EffectHandlers.General.ExplosiveAuraEffect());
