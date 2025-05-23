@@ -1,0 +1,127 @@
+#include "_macro.txt"
+
+//-------------------------------
+// BYALAN DUNGEON
+//-------------------------------
+
+SkillHandler("VADON") {
+StateAttacking:
+	TryCast(Stun, 2, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+    TryCast(WaterAttack, 1, 5%, 0, 5s);
+}
+
+SkillHandler("CORNUTUS") {
+StateAttacking:
+	TryCast(Bulwark, 1, 20%, 0.7s, 5s, NoInterrupt)[HpPercent < 30] -> SendEmote(9); //...
+    TryCast(WaterAttack, 2, 5%, 0, 5s);
+}
+
+SkillHandler("MARINA") {
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 10s) -> SendEmote(19); //sweat
+StateAttacking:
+    TryCast(CriticalAttack, 1, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
+    TryCast(WaterAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
+}
+
+SkillHandler("MARSE") {
+StateIdle:
+	TryCast(NoCast, 3, 20%, 0, 10s) -> SendEmote(1); //?
+StateChase:
+	@GiveUpChase(2%, AiPassiveSense, 19); //sweating
+StateAttacking:
+	TryCast(Blind, 5, 20%, 0s, 5s) -> SendEmote(6);
+	TryCast(WaterAttack, 3, 20%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
+}
+
+SkillHandler("PHEN") {
+StateAttacking:
+    TryCast(WaterAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(19); //sweat
+}
+
+SkillHandler("SWORD_FISH") {
+StateFollow:
+	TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt);
+StateChase:
+	TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt);
+StateAngry:
+	TryCast(WaterAttack, 1, 20%, 0, 5s);
+	TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt);
+StateAttacking:
+	TryCast(WaterAttack, 1, 20%, 0, 5s);
+	TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt);
+}
+
+SkillHandler("MARC") {
+StateIdle:
+    @ResumeAiState(5%, AiAngry, 9); //...
+StateFollow:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+StateChase:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+StateAngry:
+    TryCast(Stun, 2, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(6); // angry
+    TryCast(WaterAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); // angry
+StateAttacking:
+    TryCast(Stun, 2, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(6); // angry
+    TryCast(WaterAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); // angry
+}
+
+SkillHandler("MERMAN") {
+StateIdle:
+    @ResumeAiState(5%, AiStandardBoss, 6); //angry
+StateChase:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(RangedAttack, 1, 5%, 0.5s, 5s);
+StateAttacking:
+    TryCast(WaterAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); // angry
+}
+
+SkillHandler("STROUF") {
+StateIdle:
+	TryCast(NoCast, 3, 200, 0, 5000) -> SendEmote(32);
+StateChase:
+	TryCast(FrostDiver, 9, 10%, 1s, 5s, EasyInterrupt);
+	TryCast(LightningBolt, 3, 5%, 1.5s, 5s, EasyInterrupt);
+StateFollow:
+	TryCast(FrostDiver, 9, 10%, 1s, 5s, EasyInterrupt);
+	TryCast(LightningBolt, 3, 5%, 1.5s, 5s, EasyInterrupt);
+StateAngry:
+	TryCast(FrostDiver, 9, 10%, 1s, 5s, EasyInterrupt);
+	TryCast(LightningBolt, 3, 5%, 1.5s, 5s, EasyInterrupt);
+	TryCast(WaterAttack, 1, 20%, 0, 5s);
+	TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(FrostDiver, 9, 10%, 1s, 5s, EasyInterrupt);
+	TryCast(LightningBolt, 3, 5%, 1.5s, 5s, EasyInterrupt);
+	TryCast(WaterAttack, 1, 20%, 0, 5s);
+	TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+}
+
+SkillHandler("MARINE_SPHERE") {
+StateIdle:
+	//automatically self destruct if hit by another self destruct, but fast
+	TryCast(SelfDestruct, 1, 100%, 0.8s, 5s, HideSkillName)[LastDamageSourceType == SelfDestruct];
+
+	//self destruct chance is 5% per second increasing by 0.1% for every 1% HP it loses.
+	TryCast(SelfDestruct, 1, 50 + (100-HpPercent) * 2, 2s, 5s, HideSkillName)[HpPercent < 99 && TimeSinceLastDamage < 15s];
+OnDie:
+	EnterPostDeathPhase();
+	SetHpNoNotify(1200); //will self destruct for 600 damage roughly
+StateSpecial:
+    TryCast(SelfDestruct, 1, 100%, 4s, 0, EventOnStartCast | HideSkillName);
+}
+
+SkillHandler("DEVIACE") {
+StateIdle:
+    @ResumeAiState(5%, AiPassiveSense, 9); //...
+StateChase:
+	TryCast(WaterBall, 4, 5%, 1.5s, 5s, EasyInterrupt);
+StateAttacking:
+	TryCast("SwitchToAggressive", 1, 100%, 0, 30s, HiddenCast) -> {
+        ChangeAiClass(AiAngry, false);
+		SendEmote(6); //angry
+	}
+    TryCast(WaterBall, 4, 5%, 1.5s, 5s, EasyInterrupt);
+    TryCast(WaterAttack, 5, 5%, 0.5s, 5s, NoInterrupt);
+}

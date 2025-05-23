@@ -6,7 +6,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
 {
     public class EffectHandlerTemplate : IEffectHandler
     {
-        public static Ragnarok3dEffect Attach(ServerControllable target)
+        public static Ragnarok3dEffect Create(ServerControllable target)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.RoSprite);
             effect.FollowTarget = target.gameObject;

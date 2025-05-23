@@ -34,6 +34,9 @@ StateAttacking:
 }
 
 SkillHandler("CARAT") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+	TryCast(Teleport, 1, 5%, 0, 5s);
 StateRandomMove:
 	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
 StateChase:
@@ -67,6 +70,12 @@ StateAttacking:
 	TryCast(BloodDrain, 1, 5%, 0, 5s) -> SendEmote(2); //whistle
 	TryCast(ComboAttack, 1, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(6); //angry
 	TryCast(WindAttack, 1, 20%, 0, 5s);
+}
+
+SkillHandler("CRAMP") {
+StateAttacking:
+    TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
+    TryCast(PoisonAttack, 1, 5%, 0s, 5s);
 }
 
 SkillHandler("ANOLIAN") {
@@ -123,6 +132,18 @@ StateAttacking:
 	TryCast(NoCast, 1, 100%, 0, 60s) -> SendEmote(6); //angry
 }
 
+SkillHandler("DARK_FRAME") {
+StateChase:
+	TryCast(Blind, 3, 5%, 0s, 5s) -> SendEmote(1); //?
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(0); //!
+	TryCast(Petrify, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(2); //whistle
+StateAttacking:
+	TryCast(Blind, 3, 5%, 0s, 5s) -> SendEmote(1); //?
+	TryCast(BloodDrain, 1, 5%, 0s, 5s) -> SendEmote(26); //help
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(0); //!
+	TryCast(Petrify, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(2); //whistle
+}
+
 SkillHandler("WRAITH") {
 StateChase:
 	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(9); //...
@@ -166,7 +187,6 @@ StateAttacking:
 	TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(29); //gg
 	TryCast(Stun, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(29); //gg
 	TryCast(WindAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(29); //gg
-
 }
 
 SkillHandler("ZHERLTHSH") {
@@ -222,3 +242,21 @@ StateChase:
 StateAttacking:
 	TryCast(DarkAttack, 5, 5%, 0.5s, 5s, NoInterrupt | HideSkillName) -> SendEmote(9); //...
 }
+
+SkillHandler("BLOODY_KNIGHT") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateAttacking:
+	TryCast(DarkAttack, 2, 5%, 0.5s, 5s, NoInterrupt | HideSkillName) -> SendEmote(9); //...
+}
+
+
+SkillHandler("CHIMERA") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateAttacking:
+	TryCast(SplashAttack, 1, 20%, 0.3s, 5s, NoInterrupt)[CountEnemiesNearTarget(2) >= 2] -> SendEmote(9); //...
+	TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
+

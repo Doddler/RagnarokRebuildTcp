@@ -841,6 +841,10 @@ namespace Assets.Scripts.Sprites
                 case NpcEffectType.SafetyWall:
                     SafetyWallEffect.LaunchSafetyWall(obj);
                     break;
+                case NpcEffectType.WaterBall:
+                    //DummyGroundEffect.Create(obj, $"<color=#AAAAFF>Water Ball!!");
+                    WaterBallRiseEffect.LaunchWaterBallRise(obj);
+                    break;
                 case NpcEffectType.MapWarp:
                     MapWarpEffect.StartWarp(obj);
                     break;

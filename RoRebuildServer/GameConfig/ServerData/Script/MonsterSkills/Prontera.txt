@@ -1,4 +1,4 @@
-// Prontera fields, culverts, ant hell and byalan dungeon
+// Prontera fields, culverts
 #include "_macro.txt"
 
 SkillHandler("PORING") {
@@ -98,6 +98,7 @@ StateAny:
     TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionsDeadFor(60s)] -> CallDefaultMinions();
 StateIdle:
     TryCast(NoCast, 1, 5%, 0, 5s) -> SendEmote(2); //whistle
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
 	TryCast(Silence, 3, 5%, 0.7s, 5s) -> SendEmote(2); //whistle
 StateAttacking:
@@ -127,6 +128,21 @@ StateAttacking:
     TryCast(EarthAttack, 1, 5%, 0s, 5s);
 }
 
+SkillHandler("CHOCO") {
+StateIdle:
+	@ResumeAiState(5%, AiAggressive, 6); //angry
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+	TryCast(Heal, 500, 50%, 3.3s, 5s, EasyInterrupt | HideCastBar | HideSkillName)[FindAllyBelowHpPercent(99)];
+	TryCast(Heal, 500, 50%, 3.3s, 5s, EasyInterrupt | HideCastBar | HideSkillName)[HpPercent < 99];
+StateMovingToItem:
+    TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
+StateChase:
+	@GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(Provoke, 10, 5%, 1s, 5s, HideSkillName | HideCastBar);
+StateAttacking:
+    TryCast(FireAttack, 1, 5%, 0s, 5s);
+}
+
 SkillHandler("SMOKIE") {
 StateIdle:
 	TryCast(Heal, 5, 100%, 0s, 5s)[IsHiding];
@@ -144,6 +160,10 @@ StateAttacking:
     TryCast(EarthAttack, 1, 5%, 0.5s, 5s);
 }
 
+//-------------------------------
+// PRONTERA CULVERTS
+//-------------------------------
+
 SkillHandler("THIEF_BUG_EGG") {
 StateChase:
     TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(19); //question mark
@@ -159,50 +179,13 @@ StateMovingToItem:
 	TryCast(SpeedUp, 1, 10%, 0, 10s);
 }
 
-//-------------------------------
-// BYALAN DUNGEON
-//-------------------------------
-
-SkillHandler("VADON") {
+//custom, weaker version of cramp
+SkillHandler("STITCH") {
 StateAttacking:
-	TryCast(Stun, 2, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
-    TryCast(WaterAttack, 1, 5%, 0, 5s);
+    TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
+    TryCast(PoisonAttack, 1, 5%, 0s, 5s);
 }
 
-SkillHandler("MERMAN") {
-StateIdle:
-    @ResumeAiState(5%, AiStandardBoss, 6); //angry
-StateChase:
-	@GiveUpChase(2%, AiPassive, 19); //sweating
-	TryCast(RangedAttack, 1, 5%, 0.5s, 5s);
-StateAttacking:
-    TryCast(WaterAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); // angry
-}
-
-SkillHandler("STROUF") {
-StateIdle:
-	TryCast(NoCast, 3, 200, 0, 5000) -> SendEmote(32);
-StateChase:
-	TryCast(LightningBolt, 3, 5%, 0, 5s);
-StateAttacking:
-	TryCast(LightningBolt, 3, 5%, 0, 5s);
-	TryCast(WaterAttack, 1, 20%, 0, 5s);
-}
-
-SkillHandler("MARINE_SPHERE") {
-StateIdle:
-	//automatically self destruct if hit by another self destruct, but fast
-	TryCast(SelfDestruct, 1, 100%, 0.8s, 5s, HideSkillName)[LastDamageSourceType == SelfDestruct];
-	
-	//self destruct chance is 5% per second increasing by 0.1% for every 1% HP it loses.
-	TryCast(SelfDestruct, 1, 50 + (100-HpPercent) * 2, 2s, 5s, HideSkillName)[HpPercent < 99 && TimeSinceLastDamage < 15s];
-	
-OnDie:
-	EnterPostDeathPhase();
-	SetHpNoNotify(1200); //will self destruct for 600 damage roughly
-StateSpecial:
-    TryCast(SelfDestruct, 1, 1000, 4000, 0, EventOnStartCast | HideSkillName);
-}
 
 //-------------------------------
 // PRONTERA FIELDS
@@ -335,6 +318,7 @@ StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(Hallucination, 1, 5%, 0.5s, 5s) -> SendEmote(29);
 StateRandomMove:
 	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
 StateAttacking:

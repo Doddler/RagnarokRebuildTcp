@@ -15,6 +15,9 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
         {
             var shrink = data.Size / primitive.SegmentCount / 2f;
             var alphaDown = 255f / primitive.SegmentCount;
+
+            if (!data.DoShrink)
+                shrink = 0;
             
             for (var i = primitive.SegmentCount - 1; i > 0; i--)
             {
@@ -44,9 +47,37 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             data.Position += vel;
             data.Velocity += data.Acceleration;
             
+            if(data.CapVelocity)
+                data.Velocity = new Vector2(Mathf.Clamp(data.Velocity.x, data.MinVelocity.x, data.MaxVelocity.x),
+                    Mathf.Clamp(data.Velocity.y, data.MinVelocity.y, data.MaxVelocity.y));
+            
             UpdateSegments(primitive, data, primitive.Step > primitive.FrameDuration);
 
             primitive.IsActive = true; //primitive.Step < primitive.FrameDuration + primitive.SegmentCount;
+        }
+        
+        public static void RenderParticle3DSplineSpritePrimitive(RagnarokPrimitive primitive, MeshBuilder mb)
+        {
+            mb.Clear();
+            
+            var data = primitive.GetPrimitiveData<Particle3DSplineData>();
+            var c = data.Color;
+            var spr = data.SpriteData;
+            
+            for (var i = 0; i < primitive.SegmentCount; i++)
+            {
+                var seg = primitive.Segments[i];
+                if (seg.Alpha <= 0)
+                    continue;
+
+                var a = (int)Mathf.Clamp((seg.Alpha + c.a) / 2, 0, 255);
+                var pos = data.Rotation * seg.Position;
+
+                var spriteCount = spr.Sprites.Length;
+                var idx = ((primitive.Step + data.AnimOffset) / data.AnimTime) % spriteCount;
+                
+                primitive.AddTexturedBillboardSprite(spr.Sprites[idx], pos, seg.Size, seg.Size, new Color32(c.r, c.g, c.b, (byte)a));
+            }
         }
 
         private static void RenderParticle3DSplinePrimitive(RagnarokPrimitive primitive, MeshBuilder mb)

@@ -171,6 +171,7 @@ namespace Assets.Scripts.Effects
                 var obj = AttachedObjects[i];
                 GameObject.Destroy(obj);
             }
+            AttachedObjects.Clear();
 
             Primitives.Clear();
         }

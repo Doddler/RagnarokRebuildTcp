@@ -20,6 +20,7 @@ StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
 StateAttacking:
     TryCast(Blind, 3, 5%, 0s, 5s);
+    TryCast(PhysBreaker, 2, 5%, 0.8s, 5s) -> SendEmote(7); //grumpy
     TryCast(SplashAttack, 1, 20%, 0s, 5s)[CountEnemiesNearTarget(2) >= 2];
 }
 
@@ -29,11 +30,11 @@ StateIdle:
 StateAttacking:
 	TryCast("SwitchToAggressive", 1, 100%, 0, 30s, HiddenCast) -> {
         ChangeAiClass(AiAggressive, false);
-		SendEmote(9); //...
+		SendEmote(6); //angry
 	}
     TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(6); //angry
     TryCast(EarthAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
-    TryCast(Stun, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(6); //angry
+    TryCast(Stun, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
 }
 
 SkillHandler("RIDEWORD") {
@@ -47,7 +48,7 @@ SkillHandler("BRILIGHT") {
 StateAttacking:
     TryCast(Silence, 3, 5%, 0.7s, 5s, NoInterrupt);
     TryCast(FireAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
-    TryCast(Bulwark, 1, 20%, 0s, 5s)[HpPercent < 20];
+    TryCast(Bulwark, 1, 20%, 0.3s, 5s, NoInterrupt)[HpPercent < 20] -> SendEmote(9); //...
     TryCast(PiercingAttack, 2, 5%, 0, 5s);
 }
 

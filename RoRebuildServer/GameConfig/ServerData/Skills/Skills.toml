@@ -589,6 +589,9 @@ SpCost = [15,20,20,25,25,25,25,25,25,25]
 # Other skills
 #----------------------------------
 
+[AdrenalineRush]
+Name = "Adrenaline Rush"
+
 [TwoHandQuicken]
 Name = "Two-Hand Quicken"
 Icon = "kn_twohandquicken"

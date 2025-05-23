@@ -659,6 +659,15 @@ public class ItemEquipState
         Player.CombatEntity.RemoveStatusOfTypeIfExists(statusEffect);
     }
 
+    public void SetPreserveStatusOnDeath(CharacterStatusEffect statusEffect, bool enabled)
+    {
+        if(enabled)
+            Player.CombatEntity.StatusContainer?.SetStatusToKeepOnDeath(statusEffect);
+        else
+            Player.CombatEntity.StatusContainer?.RemoveStatusFromKeepOnDeath(statusEffect);
+
+    }
+
     public void SetArmorElement(CharacterElement element)
     {
         if (activeSlot != EquipSlot.Body)

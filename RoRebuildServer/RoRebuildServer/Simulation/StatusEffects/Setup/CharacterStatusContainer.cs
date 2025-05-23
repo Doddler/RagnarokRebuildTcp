@@ -35,6 +35,8 @@ public class CharacterStatusContainer
     private double nextStatusUpdate;
     private double nextExpirationCheck;
 
+    private HashSet<CharacterStatusEffect>? preserveOnDeathStatuses;
+
     public int TotalStatusEffectCount => statusEffects?.Count ?? 0;
     
     public void Reset()
@@ -51,6 +53,7 @@ public class CharacterStatusContainer
         onPreCalculateCombatResultEffects = 0;
         nextStatusUpdate = 0f;
         nextExpirationCheck = 0f;
+        preserveOnDeathStatuses?.Clear();
         if (pendingStatusEffects != null)
         {
             StatusEffectPoolManager.ReturnPendingContainer(pendingStatusEffects);
@@ -81,6 +84,22 @@ public class CharacterStatusContainer
                 pendingStatusEffects[i] = p;
             }
         }
+    }
+
+    public void SetStatusToKeepOnDeath(CharacterStatusEffect type)
+    {
+        if (preserveOnDeathStatuses == null)
+            preserveOnDeathStatuses = new();
+
+        preserveOnDeathStatuses.Add(type);
+    }
+
+    public void RemoveStatusFromKeepOnDeath(CharacterStatusEffect type)
+    {
+        if (preserveOnDeathStatuses == null)
+            return;
+
+        preserveOnDeathStatuses.Remove(type);
     }
 
     public bool HasStatusEffects() => (statusEffects?.Count > 0) || (pendingStatusEffects?.Count > 0);
@@ -676,7 +695,7 @@ public class CharacterStatusContainer
         for (var i = 0; i < statusEffects.Count; i++)
         {
             var status = statusEffects[i];
-            if (StatusEffectHandler.HasFlag(status.Type, StatusEffectFlags.StayOnClear))
+            if (StatusEffectHandler.HasFlag(status.Type, StatusEffectFlags.StayOnClear) || (preserveOnDeathStatuses != null && preserveOnDeathStatuses.Contains(status.Type)))
             {
                 if (retainCount >= retainLimit - 1)
                 {

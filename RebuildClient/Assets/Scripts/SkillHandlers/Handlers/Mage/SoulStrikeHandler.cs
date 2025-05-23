@@ -28,7 +28,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         {
             src?.PerformSkillMotion(true);
             src?.LookAtOrDefault(attack.Target);
-            if (src != null && attack.Target != null)
+            if (src != null && attack.Target != null && attack.Result != AttackResult.Invisible)
                 SoulStrikeEffect.LaunchEffect(src, attack.Target.gameObject, attack.HitCount, false);
         }
     }

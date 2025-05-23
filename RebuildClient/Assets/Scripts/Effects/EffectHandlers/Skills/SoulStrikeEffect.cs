@@ -42,7 +42,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
         public static readonly int[] StepSizes = {0, 140, 80, 60, 45};
         public static readonly int[] StepStart = {0, -70, -80, -90, -90};
 
-        public static Ragnarok3dEffect LaunchEffect(ServerControllable caster, GameObject target, int projectileCount, bool isDark)
+        public static Ragnarok3dEffect LaunchEffect(ServerControllable caster, GameObject target, int projectileCount, bool isDark, float delay = 0)
         {
             var mat = PickMaterialForElement(isDark);
             var sprite = EffectParticleManager.Instance.Sprites[isDark ? 4 : 0];
@@ -51,6 +51,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
 
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.SoulStrike);
             effect.SetDurationByFrames(150);
+            effect.ActiveDelay = delay;
             effect.SourceEntity = caster;
             effect.FollowTarget = null;
             effect.DestroyOnTargetLost = false;
@@ -92,6 +93,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
             data.Acceleration = new Vector2(-(-backSpeed / frames) * 2, -(data.Velocity.y / frames) * 2f);
             data.Sprite = sprite;
             data.Rotation = Quaternion.Euler(0, forwardAngle, upAngle);
+            data.DoShrink = true;
         }
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)

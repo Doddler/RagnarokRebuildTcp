@@ -1,6 +1,22 @@
 
 #include "_macro.txt"
 
+SkillHandler("DESERT_WOLF_B") {
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
+StateAttacking:
+	TryCast(FireAttack, 1, 20%, 0, 5s);
+}
+
+SkillHandler("CONDOR") {
+StateIdle:
+    TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(5); //idea
+StateAttacking:
+	//should be adrenaline rush
+	TryCast(AdrenalineRush, 1, 5%, 1.5s, 5m, HideSkillName);
+	TryCast(WindAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
 SkillHandler("FRILLDORA") {
 StateAny:
 	TryCast(Cloaking, 1, 20%, 0.2s, 5s);
@@ -33,9 +49,20 @@ StateAttacking:
 	TryCast(SandAttack, 1, 5%, 0, 5s);
 }
 
+SkillHandler("DESERT_WOLF") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressiveAssist, 6); //angry
+StateChase:
+    @GiveUpChase(2%, AiPassive, 7); //grumpy
+StateAttacking:
+	TryCast(FireAttack, 1, 20%, 0, 5s);
+}
+
 SkillHandler("ZEROM") {
 StateIdle:
-    @ResumeAiState(5%, AiAngry, 6); //question mark
+    @ResumeAiState(20%, AiAngry, 6); //question mark
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(19); //seating
 StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
 StateFollow:
@@ -105,6 +132,13 @@ StateAttacking:
 	TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt);
 }
 
+
+SkillHandler("ANACONDAQ") {
+StateAttacking:
+	TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
+	TryCast(PoisonAttack, 3, 20%, 0s, 5s);
+}
+
 SkillHandler("SIDE_WINDER") {
 StateAttacking:
 	//TryCast(Pierce, 5, 5%, 0.7s, 5s, NoInterrupt);
@@ -153,6 +187,14 @@ StateAngry:
 StateAttacking:
 	TryCast(ComboAttack, 1, 20%, 0.7s, 5s, NoInterrupt | HideSkillName) -> SendEmote(9); //...
 	TryCast(UndeadAttack, 1, 20%, 0, 5s);
+}
+
+SkillHandler("ANCIENT_MUMMY") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateAttacking:
+    TryCast(PhysBreaker, 3, 5%, 0.8s, 5s) -> SendEmote(7); //grumpy
+    TryCast(UndeadAttack, 3, 5%, 0.5s, 5s, NoInterrupt);
 }
 
 SkillHandler("ISIS") {

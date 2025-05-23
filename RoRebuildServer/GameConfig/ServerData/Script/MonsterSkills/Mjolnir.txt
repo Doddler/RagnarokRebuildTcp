@@ -1,5 +1,15 @@
 #include "_macro.txt"
 
+SkillHandler("MANTIS") {
+StateIdle:
+    @ResumeAiState(5%, AiAggressive, 9); //...
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(ComboAttack, 1, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(6);
+    TryCast(EarthAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
+}
+
 SkillHandler("ARGOS") {
 StateAttacking:
     TryCast(Poison, 5, 20%, 0.8s, 5s);
@@ -18,8 +28,8 @@ StateAttacking:
 
 SkillHandler("CARAMEL") {
 StateAttacking:
-    TryCast(EarthAttack, 3, 20%, 0, 5s);
-    TryCast(PiercingAttack, 2, 5%, 0s, 5s) -> SendEmote(6); //angry
+    TryCast(EarthAttack, 1, 20%, 0, 5s);
+    TryCast(PiercingAttack, 5, 5%, 0s, 5s) -> SendEmote(6); //angry
 }
 
 SkillHandler("FLORA") {

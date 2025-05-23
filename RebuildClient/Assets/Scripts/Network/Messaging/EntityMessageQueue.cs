@@ -92,6 +92,10 @@ namespace Assets.Scripts.Network.Messaging
                 msg.Type = EntityMessageType.HitEffect;
                 msg.Entity = src; //the hit will come from this entity's position
                 msg.Value1 = hitType;
+                if (src != null)
+                    msg.Position = src.transform.position;
+                else
+                    msg.Position = Vector3.zero;
 
                 EnqueueMessage(msg);
             }

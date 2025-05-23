@@ -179,7 +179,7 @@ namespace Assets.Scripts.Network
             if (target != null)
                 LookAt(target.transform.position);
             else
-                SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(fallbackDir));
+                SpriteAnimator?.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(fallbackDir));
         }
 
         public void LookAtOrDefault(ServerControllable target)
@@ -832,7 +832,7 @@ namespace Assets.Scripts.Network
             isMoving = false;
             isDirectMove = false;
             movePath?.Clear();
-            if (SpriteAnimator.State == SpriteState.Walking)
+            if (SpriteAnimator != null && SpriteAnimator.State == SpriteState.Walking)
             {
                 SpriteAnimator.State = SpriteState.Idle;
                 SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
@@ -1022,7 +1022,7 @@ namespace Assets.Scripts.Network
             }
             // Debug.Log($"{name}:Performing attack motion.");
 
-            if (!IsCharacterAlive || SpriteAnimator.State == SpriteState.Dead)
+            if (!IsCharacterAlive || SpriteAnimator == null || SpriteAnimator.State == SpriteState.Dead)
                 return;
 
             if (SpriteAnimator.Type == SpriteType.Player)
@@ -1367,6 +1367,8 @@ namespace Assets.Scripts.Network
             var hitPosition = transform.position + new Vector3(0, 2, 0);
             if (msg.Entity != null)
                 HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition);
+            else if (msg.Position != Vector3.zero)
+                HitEffect.Hit1(msg.Position + new Vector3(0, 2, 0), hitPosition);
             else
             {
                 if (SpriteMode == ClientSpriteType.Sprite)

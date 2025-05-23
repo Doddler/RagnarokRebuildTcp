@@ -306,6 +306,9 @@ CanDisable = false
 CanDispel = false
 CanDisable = false
 
+[AdrenalineRush]
+Name = "Adrenaline Rush"
+
 #----------------------------------
 # Utility Effects
 #----------------------------------

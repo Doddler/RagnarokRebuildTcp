@@ -1,6 +1,11 @@
 ﻿
 #include "_macro.txt"
 
+SkillHandler("CHONCHON") {
+StateAttacking:
+    TryCast(WindAttack, 1, 20%, 0, 5s);
+}
+
 SkillHandler("SPORE") {
 StateIdle:
 	TryCast(NoCast, 3, 10%, 0, 5s) -> SendEmote(1); //question mark
@@ -43,7 +48,7 @@ SkillHandler("AMBERNITE") {
 StateRandomMove:
 	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(19); //sweating
 StateAttacking:
-    TryCast(Bulwark, 1, 8%, 0.7s, 5s)[HpPercent < 50];
+    TryCast(Bulwark, 1, 8%, 0.7s, 5s, NoInterrupt)[HpPercent < 50];
     TryCast(WaterAttack, 1, 20%, 0, 5s);
 }
 
@@ -103,6 +108,15 @@ StateAttacking:
     TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt);
 }
 
+SkillHandler("WHISPER") {
+StateAny:
+    TryCast(Cloaking, 1, 20%, 0.2s, 5s);
+StateIdle:
+    @ResumeAiState(20%, AiAggressiveSense, 28); //sob
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+}
+
 SkillHandler("JAKK") {
 StateIdle:
     @ResumeAiState(5%, AiStandardBoss, 2);
@@ -127,12 +141,14 @@ StateAttacking:
 }
 
 SkillHandler("DEVIRUCHI") {
+StateIdle:
+    TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
     TryCast(EnergyDrain, 1, 5%, 0, 5s)[HpPercent < 30] -> SendEmote(19); //swt
     TryCast(DarkThunder, 3, 5%, 1.5s, 5s) -> SendEmote(29); //heh
 StateAttacking:
 	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(29); //heh
-	TryCast(DarkAttack, 1, 5%, 0, 5s);
+	TryCast(DarkAttack, 1, 20%, 0, 5s);
     TryCast(EnergyDrain, 1, 5%, 0, 5s)[HpPercent < 30] -> SendEmote(19); //swt
     TryCast(DarkThunder, 3, 5%, 1.5s, 5s) -> SendEmote(29); //heh
 }

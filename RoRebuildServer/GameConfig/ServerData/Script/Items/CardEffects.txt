@@ -123,9 +123,11 @@ Item("Phreeoni_Card") { OnEquip: AddStat(AddHit, 100); }
 Item("Deviruchi_Card") { OnEquip: AddStat(AddStr, 1); AddStat(ResistBlindStatus, 100); }
 Item("Eddga_Card") { 
 OnEquip: 
-	AddStatusEffect(StatusEndure, 9999m, 9999); 
+	AddStatusEffect(StatusEndure, 9999m, 9999);
+	SetPreserveStatusOnDeath(StatusEndure, true);
 	AddStat(AddMaxHpPercent, -20);
 OnUnequip:
+	SetPreserveStatusOnDeath(StatusEndure, false);
 	RemoveStatusEffect(StatusEndure);
 }
 Item("Medusa_Card") { OnEquip: AddStat(AddResistRaceDemon, 15); AddStat(ResistStoneStatus, 100); }

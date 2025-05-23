@@ -78,42 +78,23 @@ SkillHandler("ANGRY_TARGET_DUMMY") {
 	//TryCast(Demonstration, 1, 100%, 1000, 5s);
 	TryCast(Pneuma, 1, 100%, 0, 5s)[WasRangedAttacked];
 	TryCast(PowerUp, 5, 100%, 0.7s, 30s)[HpPercent < 50];
-	TryCast(PhysBreaker, 1, 100%, 0.5s, 2s);
+	TryCast(Sleep, 20, 100%, 0.5s, 15s);
+	TryCast(PhysBreaker, 1, 100%, 0.5s, 10s);
 	//TryCast(DarkAttack, 1, 100%, 0.5s, 2s);
 
-	TryCast(Vampyrism, 1, 100%, 1.3s, 30s);
-	TryCast(DarkAttack, 5, 100%, 0.5s, 2s);
+	TryCast(Vampyrism, 1, 100%, 1.3s, 120s);
+	TryCast(DarkAttack, 3, 100%, 0.5s, 5s);
 }
 
 SkillHandler("TARGET_DUMMY") {
     StateAny:
 	//TryCast(Hiding, 1, 100%, 0.5s, 5s);
-    TryCast(Heal, 9999, 1000, 1500, 5000, EasyInterrupt)[HpPercent <= 99];
+    //TryCast(Heal, 9999, 1000, 1500, 5000, EasyInterrupt)[HpPercent <= 99];
     //TryCast(GrandThunderstorm, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> CreateEvent("TestCastEvent", RandomFreeTileInRange(12), 2000);
 	//TryCast(ChargeArrow, 1, 100%, 0.8s, 5s);
 	//TryCast(NoCast, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> {
 	//	TossSummonMonster(5,"GTB_EGG",9,9);
 	//};
     //TryCast(Heal, 9999, 1000, 1500, 5000)[HpPercent <= 99];	
-}
-
-
-SkillHandler("CHEPET") {
-StateAny:
-    TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
-StateAttacking:
-	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(17); //sorry
-}
-
-SkillHandler("STITCH") {
-StateAttacking:
-    TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
-    TryCast(PoisonAttack, 1, 5%, 0s, 5s);
-}
-
-SkillHandler("CRAMP") {
-StateAttacking:
-    TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
-    TryCast(PoisonAttack, 1, 5%, 0s, 5s);
 }
 

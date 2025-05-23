@@ -15,6 +15,7 @@ namespace Assets.Scripts.Effects.PrimitiveData
         public Vector2 ScalingAccel;
         public Vector2 ChangedScalingSpeed;
         public Sprite Sprite;
+        public string[] TextureList;
         public int ScalingChangeStep;
 
         public bool PivotFromBottom;

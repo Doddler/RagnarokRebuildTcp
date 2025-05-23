@@ -9,7 +9,7 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 
-namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
+namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Blacksmith
 {
     [SkillHandler(CharacterSkill.HammerFall, SkillClass.Physical, SkillTarget.Ground)]
     public class HammerFallHandler : SkillHandlerBase
@@ -41,7 +41,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
                     continue;
 
                 if (enemy.IsCasting && enemy.CastInterruptionMode == CastInterruptionMode.NeverInterrupt)
-                        continue;
+                    continue;
 
                 source.TryStunTarget(enemy, rate * 10);
 

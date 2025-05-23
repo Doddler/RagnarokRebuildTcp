@@ -4,8 +4,8 @@ using RebuildSharedData.Enum;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
 {
-    [SkillHandler(CharacterSkill.Stun, true)]
-    public class StunAttackHandler : SkillHandlerBase
+    [SkillHandler(CharacterSkill.Petrify, true)]
+    public class PetrifyAttackHandler : SkillHandlerBase
     {
         public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
         {
@@ -16,8 +16,11 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         {
             //DefaultSkillCastEffect.Create(src);
             src?.PerformBasicAttackMotion();
-            if(attack.Target != null)
-                CameraFollower.Instance.AttachEffectToEntity("StunAttack", attack.Target.gameObject, attack.Target.Id);
+            if (attack.Target != null && attack.Damage > 0)
+            {
+                CameraFollower.Instance.AttachEffectToEntity("StoneCurse", attack.Target.gameObject, src.Id);
+                AudioManager.Instance.AttachSoundToEntity(src.Id, "_stonecurse.ogg", attack.Target.gameObject);
+            }
         }
     }
 }

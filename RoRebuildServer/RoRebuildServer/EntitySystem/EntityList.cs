@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.Logging;
+﻿using RebuildSharedData.Data;
+using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntitySystem;
@@ -234,6 +235,19 @@ public class EntityList : IDisposable
         }
 
         return clearCount;
+    }
+
+    public void Shuffle(int startIndex = 0)
+    {
+        if (entities == null || count <= startIndex + 1)
+            return;
+        
+        for (var i = startIndex; i < count; i++)
+        {
+            var j = GameRandom.Next(startIndex, count);
+            if(i != j)
+                (entities[j], entities[i]) = (entities[i], entities[j]);
+        }
     }
 
     public Enumerator GetEnumerator()

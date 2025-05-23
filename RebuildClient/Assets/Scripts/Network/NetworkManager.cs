@@ -710,7 +710,8 @@ namespace Assets.Scripts.Network
             {
                 src.StopImmediate(pos, false);
                 //src.SpriteAnimator.Direction = dir;
-                src.SpriteAnimator.State = SpriteState.Standby;
+                if(src.SpriteAnimator != null)
+                    src.SpriteAnimator.State = SpriteState.Standby;
             }
         }
 

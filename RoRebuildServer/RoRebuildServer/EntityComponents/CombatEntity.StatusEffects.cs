@@ -313,7 +313,7 @@ public partial class CombatEntity
         return true;
     }
 
-    public bool TryPetrifyTarget(CombatEntity target, int chanceIn1000, float petrifyTime)
+    public bool TryPetrifyTarget(CombatEntity target, int chanceIn1000, float petrifyTime, float delayApply = 0f)
     {
         if (target.HasBodyState(BodyStateFlags.DisablingState) || target.HasStatusEffectOfType(CharacterStatusEffect.Petrifying) || target.GetSpecialType() == CharacterSpecialType.Boss)
             return false;
@@ -339,11 +339,11 @@ public partial class CombatEntity
         if (len <= 0)
             return false;
 
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Petrifying, petrifyTime + 0.1f);
-        target.AddStatusEffect(status, false, 0);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Petrifying, delayApply + petrifyTime + 0.1f);
+        target.AddStatusEffect(status, false, delayApply);
 
-        var status2 = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Stone, len + petrifyTime);
-        target.AddStatusEffect(status2, true, petrifyTime);
+        var status2 = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Stone, delayApply + len + petrifyTime);
+        target.AddStatusEffect(status2, true, petrifyTime + delayApply);
         return true;
     }
 

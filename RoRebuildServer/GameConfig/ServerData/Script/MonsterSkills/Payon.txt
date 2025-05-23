@@ -2,11 +2,11 @@
 
 SkillHandler("FARMILIAR") {
 StateAngry:
-	TryCast(Blind, 1, 5%, 0, 5s, HideSkillName);
-	TryCast(DarkAttack, 1, 5%, 0, 5s, HideSkillName);
+	TryCast(Blind, 1, 5%, 0, 5s);
+	TryCast(DarkAttack, 1, 20%, 0, 5s);
 StateAttacking:
-	TryCast(Blind, 1, 5%, 0, 5s, HideSkillName);
-	TryCast(DarkAttack, 1, 5%, 0, 5s, HideSkillName);
+	TryCast(Blind, 1, 5%, 0, 5s);
+	TryCast(DarkAttack, 1, 20%, 0, 5s);
 }
 
 SkillHandler("DRAINLIAR") {
@@ -17,17 +17,41 @@ StateAttacking:
 }
 
 SkillHandler("WOLF") {
-StateChase:
-	TryCast(Provoke, 1, 2%, 0, 5s) -> SendEmote(19);
 StateAttacking:
 	TryCast(EarthAttack, 1, 5%, 0.5s, 5s);
 }
 
-SkillHandler("ELDER_WILLOW") {
-StateAttacking:
-	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(29);
+SkillHandler("VAGABOND_WOLF") {
+OnInit:
+	ResummonMinionCount = 3; //resummon if we have 3 or less
+StateAny: 
+    TryCast(CallMinion, 1, 100%, 2s, 60s, NoInterrupt)[MinionsDeadFor(60s)] -> { SendEmote(27); CallDefaultMinions(); } //go
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
-	TryCast(FireBolt, 3, 50, 1500, 5000) -> SendEmote(29);
+	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(27); //go
+StateAttacking:
+	TryCast(ComboAttack, 1, 5%, 0.7s, 5s) -> SendEmote(6);
+	TryCast(EarthAttack, 3, 20%, 0, 5s);
+}
+
+SkillHandler("WILOW") {
+StateChase:
+	TryCast(GhostAttack, 5, 5%, 0, 5s) -> SendEmote(9);
+StateAttacking:
+	TryCast(EarthAttack, 1, 5%, 0, 5s);
+	TryCast(GhostAttack, 5, 5%, 0, 5s) -> SendEmote(9);
+}
+
+SkillHandler("ELDER_WILLOW") {
+StateIdle:
+    @ResumeAiState(10%, AiAggressiveSense, 7); //grumpy
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(FireBolt, 3, 5%, 1.5s, 5s);
+StateAttacking:
+	TryCast(FireBolt, 3, 5%, 1.5s, 5s);
+	TryCast(FireAttack, 2, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
 }
 
 SkillHandler("EGGYRA") {
@@ -47,59 +71,67 @@ StateAttacking:
 }
 
 SkillHandler("DEVILING") {
+OnInit:
+	ResummonMinionCount = 3; //resummon if we have 3 or less
 StateAny:
-	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> { CallDefaultMinions();  SendEmote(6) }
+	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionsDeadFor(30s)] -> { CallDefaultMinions();  SendEmote(6) }
 	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateChase:
-	TryCast(DarkStrike, 5, 30%, 0, 0) -> SendEmote(32);
+	TryCast(DarkStrike, 5, 30%, 0, 0) -> SendEmote(32); //pif
 	TryCast(DarkAttack, 2, 20%, 0, 5s) -> SendEmote(6);
+	TryCast(DecreaseAgility, 1, 20%, 1s, 5s, NoInterrupt) -> SendEmote(29); //heh
 StateAttacking:
-	TryCast(DarkStrike, 5, 30%, 0, 0) -> SendEmote(32);
+	TryCast(DarkStrike, 5, 30%, 0, 0) -> SendEmote(32); //pif
 	TryCast(DarkAttack, 2, 20%, 0, 5s) -> SendEmote(6);
 }
 
 SkillHandler("ANGELING") {
+OnInit:
+	ResummonMinionCount = 3; //resummon if we have 3 or less
 StateAny:
-	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionCount < 3] -> { CallDefaultMinions();  SendEmote(18) }
+	TryCast(CallMinion, 1, 100%, 2s, 30s)[MinionsDeadFor(15s)] -> { CallDefaultMinions(); SendEmote(18) }
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(18);
 	TryCast(Heal, 9, 100%, 0.5s, 5s)[HpPercent < 30] -> SendEmote(18);
-	TryCast(RecallMinion, 1, 100%, 0, 30s);
+	TryCast(RecallMinion, 1, 100%, 0, 60s);
 StateIdle:
 	TryCast(NoCast, 3, 200, 0, 5000) -> SendEmote(22);
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
-	TryCast(Heal, 9, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(18);
-	TryCast(Heal, 9, 100%, 0.5s, 5s)[HpPercent < 30] -> SendEmote(18);
+	TryCast(HolyAttack, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(18);
 StateAttacking:
 	TryCast(HolyAttack, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(18);
 	TryCast(SafetyWall, 5, 10%, 1s, 8s, NoInterrupt) -> SendEmote(18);
 }
 
 SkillHandler("CAT_O_NINE_TAIL") {
-	StateIdle:
-		TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(22);
-	StateAttacking:
-		TryCast(Mammonite, 9, 100%, 0.8s, 5s) -> SendEmote(8);
+StateIdle:
+	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(22);
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateAttacking:
+	TryCast(Mammonite, 9, 100%, 0.8s, 5s, NoInterrupt) -> SendEmote(8);
+	TryCast(GuidedAttack, 2, 5%, 1s, 20s, NoInterrupt);
 }
 
 SkillHandler("BIGFOOT") {
 StateChase:
 	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(6); //Angry
+	TryCast(Endure, 1, 50%, 0, 10s)[WasRangedOrMagicAttacked] -> SendEmote(6);
     @GiveUpChase(2%, AiPassive, 19); //sweating -> don't need resume handler because it's normally idle anyways
 StateAttacking:
-    TryCast(Stun, 5, 5%, 1.5s, 5s, NoInterrupt);
+    TryCast(Stun, 2, 5%, 1.5s, 5s, NoInterrupt);
     TryCast(EarthAttack, 1, 20%, 0s, 5s);
 }
 
 ///TODO: Dokebi should use andrenaline rush instead of 2hq, but that's not implemented yet
 SkillHandler("DOKEBI") {
-	StateRandomMove:
-		TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
-	StateChase:
-		TryCast(TwoHandQuicken, 5, 5%, 1.5s, 5s, HideSkillName) -> SendEmote(6); //angry
-	StateAttacking:
-		TryCast(DarkAttack, 1, 20%, 0, 5s);
-		TryCast(Mammonite, 5, 5%, 0.8s, 5s) -> SendEmote(8); //$
-		TryCast(TwoHandQuicken, 5, 5%, 1.5s, 5s, HideSkillName);
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
+StateChase:
+	TryCast(TwoHandQuicken, 5, 5%, 1.5s, 1m, HideSkillName) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(DarkAttack, 1, 20%, 0, 5s);
+	TryCast(Mammonite, 5, 5%, 0.8s, 5s) -> SendEmote(8); //$
+	TryCast(TwoHandQuicken, 5, 5%, 1.5s, 5s, HideSkillName);
 }
 
 SkillHandler("ZOMBIE") {
@@ -153,6 +185,8 @@ StateAttacking:
 
 
 SkillHandler("AM_MUT") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateRandomMove:
 	TryCast(NoCast, 1, 20%, 0, 10s) -> SendEmote(2); //whistle
 StateAttacking:
@@ -161,8 +195,9 @@ StateAttacking:
 }
 
 SkillHandler("ARCHER_SKELETON") {
-StateChase:
-    TryCast(DoubleStrafe, 1, 5%, 1s, 5s);
+StateAttacking:
+    TryCast(DoubleStrafe, 1, 5%, 1s, 5s, NoInterrupt);
+    TryCast(UndeadAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
 }
 
 SkillHandler("SKELETON_GENERAL") {

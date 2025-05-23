@@ -10,6 +10,17 @@ StateAttacking:
 	TryCast(WindAttack, 1, 20%, 0s, 5s);
 }
 
+SkillHandler("ALLIGATOR") {
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+	TryCast(WaterAttack, 1, 5%, 0s, 5s) -> SendEmote(6); //angry
+}
+
+SkillHandler("CRAB") {
+StateAttacking:
+	TryCast(WaterAttack, 1, 20%, 0s, 5s);
+}
 
 SkillHandler("SHELLFISH") {
 StateAttacking:
@@ -20,4 +31,39 @@ SkillHandler("GRYPHON") {
 StateAttacking:
 	TryCast(CriticalAttack, 1, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
 	TryCast(WindAttack, 1, 20%, 0s, 5s);
+}
+
+SkillHandler("GALAPAGO") {
+StateIdle:
+    @ResumeAiState(10%, AiLooterAssist, 1); //?
+	TryCast(Heal, 9, 5%, 0.5s, 5s, HideSkillName)[HpPercent < 99] -> SendEmote(2); //whistle
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(2); //whistle
+StateAttacking:
+    TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(2); //whistle
+	TryCast(WaterAttack, 2, 20%, 0.5s, 5s) -> SendEmote(6); //angry
+}
+
+
+SkillHandler("FUR_SEAL") {
+StateIdle:
+    @ResumeAiState(10%, AiAggressiveSense, 1); //?
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+    TryCast(ComboAttack, 1, 5%, 0.7s, 5s) -> SendEmote(6); //angry
+	TryCast(WaterAttack, 5, 20%, 0.5s, 5s) -> SendEmote(6); //angry
+}
+
+SkillHandler("SEE_OTTER") {
+StateIdle:
+	TryCast(NoCast, 3, 20%, 0, 5%) -> SendEmote(22); //??
+    @ResumeAiState(5%, AiAggressiveSense, 22); //??
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+StateAttacking:
+    TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+	TryCast(WaterAttack, 1, 20%, 0s, 5s);
 }
