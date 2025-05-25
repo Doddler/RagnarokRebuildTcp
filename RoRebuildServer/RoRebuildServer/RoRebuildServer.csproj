@@ -75,9 +75,9 @@
     <Folder Include="Simulation\Items\ItemHandlers\" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="@echo Clearing server script files -^&gt; &quot;$(TargetDir)ServerData&quot;&#xD;&#xA;rmdir /s /q &quot;$(TargetDir)ServerData&quot;" />
+  <Target Name="CleanServerData" BeforeTargets="PreBuildEvent">
+    <Message Text="Clearing server script files -> $(OutputPath)ServerData" Importance="high" />
+    <RemoveDir Directories="$(OutputPath)ServerData" />
+    <MakeDir Directories="$(OutputPath)ServerData" />
   </Target>
-
-
 </Project>
