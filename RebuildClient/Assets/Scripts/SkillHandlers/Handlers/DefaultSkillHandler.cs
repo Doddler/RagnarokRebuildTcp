@@ -26,7 +26,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             DefaultSkillCastEffect.Create(src);
-            src.SpriteAnimator.State = SpriteState.Idle;
+            if(src.SpriteAnimator != null)
+                src.SpriteAnimator.State = SpriteState.Idle;
             src.PerformBasicAttackMotion();
         }
     }

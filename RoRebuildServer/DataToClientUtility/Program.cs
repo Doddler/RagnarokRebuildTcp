@@ -686,7 +686,7 @@ class Program
                     Code = e.Code,
                     Name = e.Name,
                     MapMode = (int)Enum.Parse<MapType>(e.MapMode),
-                    CanMemo = e.CanMemo,
+                    CanMemo = (e.GetFlags() & MapFlags.CanMemo) > 0,
                     Music = e.Music
                 }).ToList();
             }

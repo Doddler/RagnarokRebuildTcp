@@ -1,3 +1,10 @@
+::2025-5-24 (Version 7)
+- Party system revamped. You can now right click to add or invite a player to a party. To leave right click your character info box in the top left and select leave party.
+- Changed the way your skill tree is saved in the database to make it more resilient to skill ID's changing. All characters will have their skills reset due to this.
+- Added a huge number of skills and skill effects. Almost all 1st job skills are now avaialble.
+- Monster AI and skills have been adjusted, most monsters now have most of their skills.
+- A whole bunch of other changes and fixes.
+
 ::2025-4-11 (Version 6)
 <b>Parties</b>
 - Party system is added.

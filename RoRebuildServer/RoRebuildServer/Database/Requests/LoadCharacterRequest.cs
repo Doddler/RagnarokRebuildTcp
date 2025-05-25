@@ -20,15 +20,15 @@ namespace RoRebuildServer.Database.Requests;
 public class PartyLoadResult
 {
     public int PartyId;
-    public string PartyName;
+    public required string PartyName;
     public Guid? OwnerId;
-    public List<PartyLoadCharacter> Characters;
+    public List<PartyLoadCharacter> Characters = null!; //ef core won't give us back a null object so we can suppress the nullability warning
 }
 
 public class PartyLoadCharacter
 {
     public Guid Id;
-    public string Name;
+    public string Name = null!;
 }
 
 public class LoadCharacterRequest : IDbRequest
@@ -45,7 +45,7 @@ public class LoadCharacterRequest : IDbRequest
     public CharacterBag? Inventory;
     public CharacterBag? Cart;
     public ItemEquipState? EquipState;
-    public Party Party;
+    public Party? Party;
 
     public byte[]? Data;
     public bool HasCharacter;

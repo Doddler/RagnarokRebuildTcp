@@ -106,8 +106,8 @@ public static class PlayerDataDbHelper
         {
             bw.Write((byte)0); //version
             p.Inventory.TryWrite(bw, false);
-            if(CurrentPlayerSaveVersion <= 3)
-                p.CartInventory.TryWrite(bw, false); //starting v4 cart will be loaded separately
+            //if(CurrentPlayerSaveVersion <= 3)
+            //    p.CartInventory.TryWrite(bw, false); //starting v4 cart will be loaded separately
             p.Equipment.Serialize(bw);
 
             //we can come in under, the equipment array might not all be used. We should never, however, go above, or we risk crashing the server

@@ -73,7 +73,7 @@ namespace Assets.Scripts.Network
             get
             {
                 if(CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay || Name.StartsWith("[NPC]"))
-                    return name;
+                    return Name;
                 if(string.IsNullOrWhiteSpace(PartyName))
                     return $"Lv.{Level} {Name}";
                 

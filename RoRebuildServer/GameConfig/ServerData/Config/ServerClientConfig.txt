@@ -2,4 +2,4 @@
 //Incrementing this will require users to update their client, so only change this if you make
 //changes that would cause errors to occur on older clients or if packet definitions has changed.
 ::ServerVersion
-6
+7

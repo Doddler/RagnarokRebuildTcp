@@ -42,6 +42,7 @@ public class Party
     public Party(string partyName)
     {
         PartyName = partyName;
+        OnlineMembers ??= EntityListPool.Get();
     }
 
     private PartyMemberInfo AddMemberInfo(Player p)

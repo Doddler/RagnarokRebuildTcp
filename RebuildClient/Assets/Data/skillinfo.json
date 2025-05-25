@@ -741,7 +741,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": "Create holy water. Requires you to be standing in water and consumes an empty bottle.",
+      "Description": "Create holy water. Consumes an empty bottle. You must have water within 2 tiles of you to cast this skill.",
       "InterruptMode": 0
     },
     {

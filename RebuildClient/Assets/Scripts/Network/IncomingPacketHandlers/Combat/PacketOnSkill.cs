@@ -96,13 +96,18 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
         private void OnMessageTargetedSkillAttack(ClientInboundMessage msg)
         {
-            var id1 = msg.ReadInt32();
-            var id2 = msg.ReadInt32();
+            var castSource = msg.ReadInt32();
+            var attacker = msg.ReadInt32();
+            var attackTarget = msg.ReadInt32();
             var skill = (CharacterSkill)msg.ReadByte();
             var skillLvl = (int)msg.ReadByte();
 
-            var hasSource = Network.EntityList.TryGetValue(id1, out var controllable);
-            var hasTarget = Network.EntityList.TryGetValue(id2, out var controllable2);
+            var hasSource = Network.EntityList.TryGetValue(castSource, out var controllable);
+            var hasTarget = Network.EntityList.TryGetValue(attackTarget, out var controllable2);
+
+            var attackerCtrl = controllable;
+            if(attacker >= 0)
+                Network.EntityList.TryGetValue(attacker, out attackerCtrl);
 
             var dir = (Direction)msg.ReadByte();
             var pos = msg.ReadPosition();
@@ -158,11 +163,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
             controllable.ShowSkillCastMessage(skill, 3);
             // controllable.SnapToTile(pos, 0.03f, 1f);
-
-            if (result == AttackResult.Miss)
+            
+            if (result == AttackResult.Miss && attackerCtrl != null)
             {
                 for(var i = 0; i < attack.HitCount; i++)
-                    controllable.Messages.SendMissEffect(motionTime + 0.2f * i);
+                    attackerCtrl.Messages.SendMissEffect(damageTiming + 0.2f * i);
             }
 
             if (hasTarget)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace RoRebuildServer.Database.Domain
 {
@@ -6,6 +7,7 @@ namespace RoRebuildServer.Database.Domain
     [Owned]
     public class DbSavePoint
     {
+        [MaxLength(64)]
         public string? MapName { get; set; }
         public int X { get; set; }
         public int Y { get; set; }

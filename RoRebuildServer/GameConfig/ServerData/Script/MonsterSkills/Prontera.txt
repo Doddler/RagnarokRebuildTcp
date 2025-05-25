@@ -47,7 +47,7 @@ StateAttacking:
 
 SkillHandler("FABRE") {
 StateIdle:
-    TryCast(Metamorphosis, 1, 0.1%, 2000, 0s, NoInterrupt | HideSkillName)[MapHasPlayers] -> {
+    TryCast(Metamorphosis, 1, 0.1%, 2000, 0s, NoInterrupt | HideSkillName)[CanSeePlayers] -> {
 		PerformMetamorphosis("PUPA");
 	}
 StateAttacking:
@@ -56,7 +56,7 @@ StateAttacking:
 
 SkillHandler("PUPA") {
 StateIdle:
-    TryCast(Metamorphosis, 1, 0.1%, 2000, 0s, NoInterrupt | HideSkillName)[MapHasPlayers] -> {
+    TryCast(Metamorphosis, 1, 0.1%, 2000, 0s, NoInterrupt | HideSkillName)[CanSeePlayers] -> {
 		PerformMetamorphosis("CREAMY");
 	}
 }

@@ -1,4 +1,9 @@
-﻿
+﻿Npc("prontera", "Fountain", "CLEAR_NPC", 156, 200, N)
+{
+	MakeGroundTileWater(156, 200); //allows aqua benedicta to cast next to the fountain
+	HideNpc();
+}
+
 //prontera blacksmiths
 Npc("prt_in", "Hollgrehenn", "4_M_03", 63, 60, N)
 {

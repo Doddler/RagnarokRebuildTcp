@@ -94,7 +94,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[77] = new DefaultSkillHandler();
 			handlers[78] = new DefaultSkillHandler();
 			handlers[79] = new DefaultSkillHandler();
-			handlers[80] = new DefaultSkillHandler();
+			handlers[80] = new WaterBallHandler();
 			handlers[81] = new DefaultSkillHandler();
 			handlers[82] = new TwoHandQuickenHandler();
 			handlers[83] = new HammerFallHandler();
@@ -121,7 +121,8 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[101].ExecuteWithoutSource = true;
 			handlers[102] = new DefaultSkillHandler();
 			handlers[103] = new SilenceAttackHandler();
-			handlers[104] = new DefaultSkillHandler();
+			handlers[104] = new PetrifyAttackHandler();
+			handlers[104].ExecuteWithoutSource = true;
 			handlers[105] = new DefaultSkillHandler();
 			handlers[106] = new DefaultSkillHandler();
 			handlers[107] = new DefaultSkillHandler();

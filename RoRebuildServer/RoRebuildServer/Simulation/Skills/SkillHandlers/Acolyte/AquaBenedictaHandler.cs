@@ -19,7 +19,7 @@ public class AquaBenedictaHandler : SkillHandlerBase
         if (source.Character.Type != CharacterType.Player)
             return SkillValidationResult.Failure; //player only skill
 
-        if (source.Character.Map == null || !source.Character.Map.WalkData.IsCellInWater(source.Character.Position))
+        if (source.Character.Map == null || !source.Character.Map.WalkData.HasWaterNearby(source.Character.Position, 2))
             return SkillValidationResult.MustBeStandingInWater;
 
         if (source.Player.Inventory == null || !source.Player.Inventory.HasItem(BottleId))

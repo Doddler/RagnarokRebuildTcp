@@ -1020,7 +1020,7 @@ namespace Assets.Scripts
                     isSkillAllyTargeted = true;
                 }
             }
-
+            
             var walkMask = 1 << LayerMask.NameToLayer("WalkMap");
             var groundMask = 1 << LayerMask.NameToLayer("Ground");
 
@@ -1059,7 +1059,7 @@ namespace Assets.Scripts
             if (hasItem && showEntityName && mouseTarget.IsAlly)
                 showEntityName = false; //don't show friendly names if you could instead pick up an item
 
-            if (canInteract && mouseTarget.IsAlly && rightClick)
+            if (canInteract && mouseTarget.IsAlly && mouseTarget.CharacterType == CharacterType.Player && rightClick)
             {
                 UiManager.Instance.RightClickMenuWindow.RightClickPlayer(mouseTarget);
                 return displayCursor;

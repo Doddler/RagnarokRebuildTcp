@@ -57,20 +57,24 @@ internal class DataLoader
         return 0;
     }
 
-    public ReadOnlyDictionary<string, MapEntry> LoadMaps()
+    public (ReadOnlyDictionary<string, MapEntry>, ReadOnlyDictionary<string, MapFlags>) LoadMaps()
     {
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/Maps.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
         var maps = csv.GetRecords<MapEntry>().ToList();
         var mapsLookup = new Dictionary<string, MapEntry>();
+        var mapFlags = new Dictionary<string, MapFlags>();
 
         ServerLogger.Log($"Loading maps: {maps.Count}");
 
         foreach (var map in maps)
+        {
             mapsLookup.Add(map.Code, map);
+            mapFlags.Add(map.Code, map.GetFlags());
+        }
 
-        return mapsLookup.AsReadOnly();
+        return (mapsLookup.AsReadOnly(), mapFlags.AsReadOnly());
     }
 
     public List<InstanceEntry> LoadInstances()

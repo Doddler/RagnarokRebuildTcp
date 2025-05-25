@@ -19,7 +19,10 @@ public class MapWalkData
     public int Width;
     public int Height;
     public Area Bounds;
+    public MapFlags MapFlags;
     private byte[] cellData;
+    private bool guaranteedWater;
+    private bool noWater;
 
     public bool IsPositionInBounds(Position p) => p.X >= 0 && p.X < Width && p.Y >= 0 && p.Y < Height;
     public bool IsPositionInBounds(int x, int y) => x >= 0 && x < Width && y >= 0 && y < Height;
@@ -27,10 +30,54 @@ public class MapWalkData
     public bool IsCellWalkable(Position p) => (cellData[p.X + p.Y * Width] & 1) == 1;
     public bool IsCellSnipable(int x, int y) => (cellData[x + y * Width] & 4) == 4;
     public bool IsCellSnipable(Position p) => (cellData[p.X + p.Y * Width] & 4) == 4;
-    public bool IsCellInWater(int x, int y) => IsPositionInBounds(x, y) && (cellData[x + y * Width] & 2) == 2;
-    public bool IsCellInWater(Position p) => IsPositionInBounds(p) && (cellData[p.X + p.Y * Width] & 2) == 2;
+    public bool IsCellInWater(int x, int y) => guaranteedWater || (!noWater && IsPositionInBounds(x, y) && (cellData[x + y * Width] & 2) == 2);
+    public bool IsCellInWater(Position p) => guaranteedWater || (!noWater && IsPositionInBounds(p) && (cellData[p.X + p.Y * Width] & 2) == 2);
     public bool DoesCellBlockLos(int x, int y) => (cellData[x + y * Width] & (byte)CellType.SeeThrough) == 0;
     public bool DoesCellBlockLos(Position p) => (cellData[p.X + p.Y * Width] & (byte)CellType.SeeThrough) == 0;
+
+    public int CountNearbyWaterTiles(Position p, int distance)
+    {
+        var count = 0;
+        if (noWater)
+            return 0;
+        if (guaranteedWater)
+            return (distance * 2 + 1) * (distance * 2 + 1);
+
+        for (var x = p.X - distance; x <= p.X + distance; x++)
+        {
+            for (var y = p.Y - distance; y <= p.Y + distance; y++)
+            {
+                if (IsPositionInBounds(x, y) && (cellData[x + y * Width] & 2) == 2)
+                        count++;
+            }
+        }
+
+        return count;
+    }
+
+    public void MakeTileWater(Position p)
+    {
+        cellData[p.X + p.Y * Width] = (byte)((CellType)cellData[p.X + p.Y * Width] | CellType.Water);
+    }
+
+    public bool HasWaterNearby(Position p, int distance)
+    {
+        if (noWater)
+            return false;
+        if (guaranteedWater)
+            return true;
+
+        for (var x = p.X - distance; x <= p.X + distance; x++)
+        {
+            for (var y = p.Y - distance; y <= p.Y + distance; y++)
+            {
+                if (IsPositionInBounds(x, y) && (cellData[x + y * Width] & 2) == 2)
+                    return true;
+            }
+        }
+
+        return false;
+    }
 
     public bool IsCellAdjacentToWall(Position p)
     {
@@ -90,7 +137,7 @@ public class MapWalkData
 
         do
         {
-            if(area.MaxX < area.MinX || area.MaxY < area.MinY)
+            if (area.MaxX < area.MinX || area.MaxY < area.MinY)
                 ServerLogger.LogError("WAAAA");
 
             p = new Position(GameRandom.NextInclusive(area.MinX, area.MaxX), GameRandom.NextInclusive(area.MinY, area.MaxY));
@@ -159,7 +206,7 @@ public class MapWalkData
             var e2 = err;
             if (e2 > -dx) { err -= dy; x0 += sx; }
             if (e2 < dy) { err += dx; y0 += sy; }
-            if(chPos.DistanceTo(target) >= maxDist) return target;
+            if (chPos.DistanceTo(target) >= maxDist) return target;
         }
 
         return target;
@@ -189,14 +236,17 @@ public class MapWalkData
         return true;
     }
 
-    public MapWalkData(string name)
+    public MapWalkData(string walkFileName, MapFlags flags)
     {
         var walkPath = ServerConfig.DataConfig.WalkPathData;
         if (string.IsNullOrEmpty(walkPath))
             throw new Exception("Configuration did not include a valid WalkPathData value!");
 
-        var path = Path.Combine(walkPath, name);
-
+        var path = Path.Combine(walkPath, walkFileName);
+        MapFlags = flags;
+        
+        guaranteedWater = MapFlags.HasFlag(MapFlags.AllWater);
+        noWater = MapFlags.HasFlag(MapFlags.NoWater);
 
         //ServerLogger.Log("Loading path data from " + name);
 

@@ -582,7 +582,7 @@ SpCost = [78,78,78,78,78,78,78,78,78,78]
 Name = "Water Ball"
 Icon = "wz_waterball"
 Target = "Enemy"
-MaxLevel = 10
+MaxLevel = 5 #a player could copy level 10, but max learnable is 5
 SpCost = [15,20,20,25,25,25,25,25,25,25]
 
 #----------------------------------

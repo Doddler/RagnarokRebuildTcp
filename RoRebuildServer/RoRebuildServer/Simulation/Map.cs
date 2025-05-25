@@ -38,6 +38,7 @@ public class Map
     public string Name;
 
     public MapWalkData WalkData;
+    public MapFlags Flags;
 
     private readonly int chunkWidth;
     private readonly int chunkHeight;
@@ -1608,8 +1609,9 @@ public class Map
         Name = name;
         MapConfig = new ServerMapConfig(this);
         Instance = instance;
+        Flags = DataManager.GetFlagsForMap(name);
 
-        WalkData = new MapWalkData(walkData);
+        WalkData = new MapWalkData(walkData, Flags);
 
         Width = WalkData.Width;
         Height = WalkData.Height;

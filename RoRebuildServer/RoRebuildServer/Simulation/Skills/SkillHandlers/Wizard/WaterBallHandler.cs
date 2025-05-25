@@ -5,20 +5,41 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Npcs;
-using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Pathfinding;
-using RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Wizard;
 
-[SkillHandler(CharacterSkill.WaterBall, SkillClass.Magic, SkillTarget.Enemy)]
+[SkillHandler(CharacterSkill.WaterBall, SkillClass.Magic)]
 public class WaterBallHandler : SkillHandlerBase
 {
+    public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => lvl;
+
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    {
+        if (source.Character.Type == CharacterType.Player)
+        {
+            if (source.Character.Map == null)
+                return SkillValidationResult.Failure;
+
+            var radius = lvl switch
+            {
+                <= 1 => 0,
+                <= 3 => 1,
+                _ => 2
+            };
+
+            if (!source.Character.Map.WalkData.HasWaterNearby(source.Character.Position, radius))
+                return SkillValidationResult.MustBeStandingInWater;
+        }
+
+        return base.ValidateTarget(source, target, position, lvl);
+    }
+
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
-        if (target == null || !target.IsValidTarget(source))
+        if (target == null || !target.IsValidTarget(source) || source.Character.Map == null)
             return;
 
         var radius = lvl switch
@@ -31,14 +52,16 @@ public class WaterBallHandler : SkillHandlerBase
         if (source.Character.Type == CharacterType.Monster && lvl == 10)
             radius = 3;
 
-        using var list = EntityListPool.Get();
-        var map = source.Character.Map!;
+        var map = source.Character.Map;
         var ch = source.Character;
         var targetId = target.Character.Id;
         var srcPos = source.Character.Position;
-
+        var waterTiles = 999;
+        var maxTiles = (radius * 2 + 1) * (radius * 2 + 1);
         var ratio = 100 + lvl * 30;
-        var requireWater = false; //set this to true to make players sad
+
+        if (source.Character.Type == CharacterType.Player)
+            waterTiles = map.WalkData.CountNearbyWaterTiles(srcPos, radius);
 
         //the actual cast of water ball that we send to the client just shows the attack motion and doesn't deal damage.
         var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.WaterBall);
@@ -47,14 +70,13 @@ public class WaterBallHandler : SkillHandlerBase
         source.ExecuteCombatResult(res, false);
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.WaterBall, lvl, res);
 
-        //Initial ball is always under the player, we ensure the center tile is the first to fire. Presently, the center ball always succeeds even without water.
-        var e0 = World.Instance.CreateEvent(source.Entity, map, "WaterBallEvent", source.Character.Position, targetId, ratio, 0, 0, null);
-        ch.AttachEvent(e0);
-        list.Add(ref e0);
+        Span<Position> posList = stackalloc Position[maxTiles];
+        var posCount = 1;
+        posList[0] = srcPos;
 
-        //create the rest of the balls
         if (radius > 0)
         {
+            //identify all walkable cells within the cast radius
             for (var x = -radius; x <= radius; x++)
             {
                 for (var y = -radius; y <= radius; y++)
@@ -67,44 +89,45 @@ public class WaterBallHandler : SkillHandlerBase
                     if (!map.WalkData.IsCellWalkable(pos))
                         continue;
 
-                    if (requireWater && !map.WalkData.IsCellInWater(pos))
-                        continue;
-
-                    var e = World.Instance.CreateEvent(source.Entity, map, "WaterBallEvent", pos, targetId, ratio, 0, 0, null);
-                    ch.AttachEvent(e);
-
-                    list.Add(ref e);
+                    posList[posCount++] = pos;
                 }
+            }
+
+            //shuffle the list
+            for (var i = 1; i < posCount; i++)
+            {
+                var j = GameRandom.Next(1, posCount);
+                if (i != j)
+                    (posList[j], posList[i]) = (posList[i], posList[j]);
             }
         }
 
-        //now that we have all the balls that will be firing, we can fill in their reveal and fire times to activate in a random order
-        if (list.Count > 0)
+        var mt = 0.667f; //first ball fires 2/3 of a second after the skill is cast
+
+        posCount = int.Min(posCount, waterTiles); //we only spawn as many balls as there are water tiles in a 7x7 area around you
+
+        for (var i = 0; i < posCount; i++)
         {
-            list.Shuffle(1); //we don't shuffle the first entry, the player tile always fires first
+            var e = World.Instance.CreateEvent(source.Entity, map, "WaterBallEvent", posList[i], targetId, ratio, 0, 0, null);
+            ch.AttachEvent(e);
 
-            var mt = 0.667f; //res.AttackMotionTime;
+            var obj = e.Get<Npc>();
+            obj.ValuesInt[0] = targetId;
+            obj.ValuesInt[1] = ratio;
+            obj.ValuesInt[3] = (int)(mt * 1000); //fire time
+            obj.ValuesInt[4] = 0;
 
-            foreach (var e in list)
+            if (mt < 0.6f)
+                obj.ValuesInt[2] = 0; //reveal time
+            else
             {
-                var obj = e.Get<Npc>();
-                obj.ValuesInt[0] = targetId;
-                obj.ValuesInt[1] = ratio;
-                obj.ValuesInt[3] = (int)(mt * 1000); //fire time
-                obj.ValuesInt[4] = 0;
-
-                if (mt < 0.6f)
-                    obj.ValuesInt[2] = 0; //reveal time
-                else
-                {
-                    var revealTime = GameRandom.NextFloat(0, float.Min(mt - 0.667f, 1.4f));
-                    obj.ValuesInt[2] = (int)(revealTime * 1000); //reveal time
-                }
-
-                obj.ResetTimer();
-                obj.StartTimer(50);
-                mt += 0.15f;
+                var revealTime = GameRandom.NextFloat(0, float.Min(mt - 0.667f, 1.4f));
+                obj.ValuesInt[2] = (int)(revealTime * 1000); //reveal time
             }
+
+            obj.ResetTimer();
+            obj.StartTimer(50);
+            mt += 0.15f;
         }
     }
 }
@@ -173,8 +196,7 @@ public class WaterBallEvent : NpcBehaviorBase
                 res.Time = Time.ElapsedTimeFloat + 0.7f;
                 res.IsIndirect = true;
 
-                CommandBuilder.SkillExecuteTargetedSkillAutoVis(npc.Character, target.Character,
-                    CharacterSkill.WaterBall, 1, res);
+                CommandBuilder.SkillExecuteTargetedSkillAutoVis(npc.Character, target.Character, CharacterSkill.WaterBall, 1, res);
 
                 src.ExecuteCombatResult(res, false);
             }

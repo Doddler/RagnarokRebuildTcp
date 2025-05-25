@@ -11,6 +11,7 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Pathfinding;
@@ -475,7 +476,13 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
 
         packet.Write((byte)SkillTarget.Enemy);
-        packet.Write(caster.Id);
+        packet.Write(caster.Id); //the source of the attack
+
+        //the owner of the damage can be different from where the attack is launched from, so inform the client if that's the case
+        if (caster.Entity != di.Source)
+            packet.Write(di.Source.TryGet<WorldObject>(out var attacker) ? attacker.Id : -1 ); 
+        else
+            packet.Write(-1);
         packet.Write(target?.Id ?? -1);
         packet.Write((byte)skill);
         packet.Write((byte)lvl);

@@ -1101,6 +1101,11 @@ public class Npc : IEntityAutoReset
         //DebugMessage($"Setting npc {Name} timer from {prevStart} to {TimerStart} (current server time is {Time.ElapsedTime})");
     }
 
+    public void MakeGroundTileWater(int x, int y)
+    {
+        Character.Map?.WalkData.MakeTileWater(new Position(x, y));
+    }
+
     public void DebugMessage(string message)
     {
 #if DEBUG
