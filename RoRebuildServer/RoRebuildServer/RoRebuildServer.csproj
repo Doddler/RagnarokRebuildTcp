@@ -78,6 +78,5 @@
   <Target Name="CleanServerData" BeforeTargets="PreBuildEvent">
     <Message Text="Clearing server script files -> $(OutputPath)ServerData" Importance="high" />
     <RemoveDir Directories="$(OutputPath)ServerData" />
-    <MakeDir Directories="$(OutputPath)ServerData" />
   </Target>
 </Project>
