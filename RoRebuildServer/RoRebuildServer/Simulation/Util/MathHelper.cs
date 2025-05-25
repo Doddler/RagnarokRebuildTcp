@@ -25,21 +25,21 @@ namespace RoRebuildServer.Simulation.Util
 
         public static float PowScaleDown(int value)
         {
-            if(value < ResistTable.Length)
+            if(value >= 0 && value < ResistTable.Length)
                 return ResistTable[value];
             return MathF.Pow(0.99f, value);
         }
 
         public static float PowScaleUp(int value)
         {
-            if (value < BoostTable.Length)
+            if (value >= 0 && value < BoostTable.Length)
                 return BoostTable[value];
             return MathF.Pow(1.01f, value);
         }
 
         public static float DefValueLookup(int value)
         {
-            if (value < DefTable.Length)
+            if (value >= 0 && value < DefTable.Length)
                 return DefTable[value];
             return MathF.Pow(0.99f, value * MathF.Pow(1.01f, value));
         }
