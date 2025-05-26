@@ -16,7 +16,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
 
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
-            src.PerformSkillMotion();
+            src?.PerformSkillMotion();
         }
     }
 }

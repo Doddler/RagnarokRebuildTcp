@@ -4,6 +4,7 @@ using Assets.Scripts.Network;
 using JetBrains.Annotations;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
+using UnityEngine;
 
 namespace Assets.Scripts.SkillHandlers.Handlers
 {
@@ -14,14 +15,10 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         {
             target.Messages.SendElementalHitEffect(attack.Src, attack.MotionTime, AttackElement.Water, attack.HitCount);
         }
-
+        
         public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
         {
-            if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
-            {
-                src.SpriteAnimator.State = SpriteState.Standby;
-                src.SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
-            }
+            HoldStandbyMotionForCast(src, castTime);
             src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Water));
             
             if(target != null)

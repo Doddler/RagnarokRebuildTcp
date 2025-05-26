@@ -188,6 +188,18 @@ class Program
         //Console.WriteLine($"Finished building job matrix");
     }
 
+    private static string FixDescriptionTags(string line)
+    {
+
+        return line.Replace("<skill>", "<color=#0000FF>")
+                   .Replace("<status>", "<color=#800000>")
+                   .Replace("</skill>", "</color>")
+                   .Replace("</status>", "</color>")
+                   .Replace("<desc>", "<color=#808080>")
+                   .Replace("</desc>", "</color>")
+            ;
+    }
+
     private static void WriteItemsList()
     {
         var itemList = new ItemDataList();
@@ -232,17 +244,19 @@ class Program
                     continue;
                 }
 
-                if (line.StartsWith("<color=#808080>"))
+                var l2 = FixDescriptionTags(line);
+
+                if (l2.StartsWith("<color=#808080>"))
                     hasDescription = true;
                 if (lineNum > 0)
                 {
-                    if (hasDescription && lineNum == 1 && !string.IsNullOrWhiteSpace(line.Trim()))
+                    if (hasDescription && lineNum == 1 && !string.IsNullOrWhiteSpace(l2.Trim()))
                         sb.Append("<line-height=120%>\n<line-height=100%>");
                     else
                         sb.Append("\n");
                 }
 
-                sb.Append(line);
+                sb.Append(l2);
 
                 lineNum++;
             }

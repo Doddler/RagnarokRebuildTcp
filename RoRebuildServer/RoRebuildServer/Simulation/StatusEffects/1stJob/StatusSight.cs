@@ -17,7 +17,7 @@ public class StatusSight : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnMove;
 
-    public override StatusUpdateResult OnMove(CombatEntity ch, ref StatusEffectState state, Position src, Position dest)
+    public override StatusUpdateResult OnMove(CombatEntity ch, ref StatusEffectState state, Position src, Position dest, bool isTeleport)
     {
         var e = World.Instance.GetEntityById(state.Value1);
         if (!e.IsAlive())

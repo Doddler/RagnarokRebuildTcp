@@ -330,9 +330,11 @@ Summons 1 random monster
 
 ::Anodyne //605
 <color=#808080>A medicine made from ground mint that is used to ease pain and relax muscle tension.</color>
+Casts Endure Lv 1
 
 ::Aloevera //606
 <color=#808080>An herbal emollient made from aloe extract, despite its sour taste, it's addictive if regularly eaten.</color>
+Casts Provoke Lv 1 on yourself, reducing DEF by 10% and increasing ATK by 5% for 30s.
 
 ::Yggdrasil_Berry //607
 <color=#808080>A fruit from the Yggdrasil tree, its fantastic taste is full of life.</color>
@@ -851,10 +853,12 @@ Enchant weapon with Wind for 10 minutes
 <color=#808080>A clean convex mirror that can be used to detect the presence of MVP monsters.</color>
 
 ::Blessing_Scroll //12215
-<color=#808080>A scroll in which a single use of Lv 10 Blessing has been recorded.</color>
+<color=#808080>A scroll in which a single use of Blessing has been recorded.</color>
+Casts Blessing Lv 10 on yourself when used.
 
 ::Increase_Agi_Scroll //12216
-<color=#808080>A scroll in which a single use of Lv 10 Increase AGI has been recorded.</color>
+<color=#808080>A scroll in which a single use of Increase AGI has been recorded.</color>
+Casts Increase AGI Lv 10 on yourself when used.
 
 ::Aspersio_Scroll //12217
 <color=#808080>A scroll in which a single use of Lv 5 Aspersio has been recorded.</color>

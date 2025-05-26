@@ -46,9 +46,14 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
                 }
             }
 
-            source.ApplyAfterCastDelay(0.5f);
-            source.ApplyCooldownForSupportSkillAction();
+            if (!isIndirect)
+            {
+                source.ApplyAfterCastDelay(0.5f);
+                source.ApplyCooldownForSupportSkillAction();
+            }
+
             var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.Blessing);
+            res.IsIndirect = isIndirect;
             GenericCastAndInformSupportSkill(source, target, CharacterSkill.Blessing, lvl, ref res);
         }
     }

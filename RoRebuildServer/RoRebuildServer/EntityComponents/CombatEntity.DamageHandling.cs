@@ -245,6 +245,7 @@ public partial class CombatEntity
         var racialMod = 100;
         var rangeMod = 100;
         var sizeMod = 100;
+        var defMod = 100;
         if (!evade && !flags.HasFlag(AttackFlags.NoDamageModifiers))
         {
             var isRanged = req.Flags.HasFlag(AttackFlags.Ranged);
@@ -284,6 +285,8 @@ public partial class CombatEntity
                     rangeMod += GetStat(CharacterStat.AddAttackRangedAttack);
 
                 sizeMod += GetStat(CharacterStat.AddAttackSmallSize + (int)defSize);
+
+                defMod = int.Clamp(100 - target.GetStat(CharacterStat.IgnoreDefRaceFormless + (int)targetRace), 0, 100);
             }
         }
 
@@ -306,7 +309,7 @@ public partial class CombatEntity
                     //+20% bonus (for non-upgrade def), in place of penalty for upgrade def
                     def += target.GetStat(CharacterStat.Def) * 20 / 100; //GetStat instead of GetEffectiveStat to get base def value
                 }
-
+                
                 //soft def
                 if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
                 {
@@ -349,6 +352,11 @@ public partial class CombatEntity
 
                 if (def >= 200)
                     subDef = 999999;
+                else if (defMod != 100)
+                {
+                    defCut = defCut * defMod / 100;
+                    subDef = subDef * defMod / 100;
+                }
             }
 
             //magic defense
@@ -435,6 +443,8 @@ public partial class CombatEntity
             {
                 TriggerOnAttackEffects(target, req, ref di);
                 target.TriggerWhenAttackedEffects(this, req, ref di);
+                if(Character.Type == CharacterType.Player)
+                    TriggerAutoSpell(target, req, ref di);
             }
         }
 
@@ -599,7 +609,7 @@ public partial class CombatEntity
 
         if (oldPosition != Character.Position)
         {
-            statusContainer?.OnMove(oldPosition, Character.Position);
+            statusContainer?.OnMove(oldPosition, Character.Position, false);
             Character.Map?.TriggerAreaOfEffectForCharacter(Character, oldPosition, Character.Position);
         }
     }

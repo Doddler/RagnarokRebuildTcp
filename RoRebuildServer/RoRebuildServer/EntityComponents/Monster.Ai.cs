@@ -146,7 +146,7 @@ public partial class Monster
         if (!ValidateTarget() || targetCharacter == null)
             return true;
 
-        if (!targetCharacter.CombatEntity.IsValidTarget(CombatEntity))
+        if (!targetCharacter.CombatEntity.IsValidTarget(CombatEntity) || targetCharacter.CombatEntity.IsHiddenTo(CombatEntity))
             return true;
 
         if (Character.AttackCooldown > Time.ElapsedTimeFloat)

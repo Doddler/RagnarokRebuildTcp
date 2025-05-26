@@ -38,20 +38,20 @@ Item("Muka_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, 10); }
 Item("Boa_Card") {  OnEquip: AddStat(AddAttackPower, 5); AddStat(OnAttackPoison, 50); } //add 5% chance to poison on melee/range
 Item("Zombie_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, 20); }
 Item("Stainer_Card") {  OnEquip: AddStat(AddDef, 1); AddStat(ResistSilenceStatus, 50); }
-Item("Creamy_Card") {  OnEquip: } //enable teleport 1
+Item("Creamy_Card") {  OnEquip: GrantSkill(Teleport, 1); }
 Item("Coco_Card") {  OnEquip: AddStat(AddDef, 1); AddStat(ResistSleepStatus, 50); }
 Item("Steel_Chonchon_Card") {  OnEquip: AddStat(AddDef, 2); AddStat(AddResistElementWind, 5); }
 Item("Andre_Card") {  OnEquip: AddStat(AddAttackPower, 20); }
-Item("Smokie_Card") {  OnEquip: GrantSkill(Hiding, 1); } //enable skill hiding
+Item("Smokie_Card") {  OnEquip: GrantSkill(Hiding, 1); }
 Item("Horn_Card") {  OnEquip: AddStat(AddResistRangedAttack, 35); }
 Item("Martin_Card") {  OnEquip: AddStat(AddDef, 1); AddStat(ResistBlindStatus, 50); AddStat(AddResistElementDark, 20); } //add 20% resist to blind
 Item("Ghostring_Card") {  OnEquip: AddStat(AddHpRecoveryPercent, -25); SetArmorElement(Ghost1); }
-Item("Poison_Spore_Card") {  OnEquip: } //add skill Envenom
+Item("Poison_Spore_Card") {  OnEquip: GrantSkill(Envenom, 3); }
 Item("Vadon_Card") { OnEquip: AddStat(AddAttackElementFire, 20); }
 Item("Male_Thief_Bug_Card") { OnEquip: AddStat(AddAgi, 2); }
 Item("Yoyo_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(PerfectDodge, 50); }
 Item("Elder_Willow_Card") { OnEquip: AddStat(AddInt, 2); }
-Item("Vitata_Card") { OnEquip: } //enable heal 1 skill, add 25% sp consumption
+Item("Vitata_Card") { OnEquip: AddStat(SpConsumption, 15);  GrantSkill(Heal, 1); }
 Item("Angeling_Card") { OnEquip: SetArmorElement(Holy1); }
 Item("Marina_Card") { OnEquip: AddStat(AddAttackPower, 5); } //add 5% chance to freeze on melee/range
 Item("Dustiness_Card") { OnEquip: AddStat(AddResistElementWind, 30); AddStat(AddFlee, 5); }
@@ -82,16 +82,16 @@ Item("Flora_Card") { OnEquip: AddStat(AddAttackRaceAquatic, 20); }
 Item("Hode_Card") { OnEquip: AddStat(AddResistElementEarth, 30); AddStat(AddFlee, 5); }
 Item("Desert_Wolf_Card") { OnEquip: AddStat(AddAttackSmallSize, 15); AddStat(AddAttackPower, 5); }
 Item("Rafflesia_Card") { OnEquip: AddStat(AddResistRaceAquatic, 30); }
-Item("Marine_Sphere_Card") { OnEquip: } //enable skill magnum break
+Item("Marine_Sphere_Card") { OnEquip: GrantSkill(MagnumBreak, 3); }
 Item("Orc_Skeleton_Card") { OnEquip: AddStat(AddAttackElementHoly, 20); }
 Item("Soldier_Skeleton_Card") { OnEquip: AddStat(AddCrit, 90); }
 Item("Giearth_Card") { OnEquip: AddStat(AddResistElementEarth, 15); } //add 100% resist to confusion
-Item("Frilldora_Card") { OnEquip: } //enable skill cloaking
+Item("Frilldora_Card") { OnEquip: GrantSkill(Cloaking, 1); }
 Item("Swordfish_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Water1); }
 Item("Munak_Card") { OnEquip: AddStat(AddDef, 1); AddStat(AddResistElementEarth, 20); AddStat(ResistStoneStatus, 50); }
 Item("Kobold_Card") { OnEquip: AddStat(AddCrit, 40); AddStat(AddStr, 1); }
 Item("Skel_Worker_Card") { OnEquip: AddStat(AddAttackPower, 5); AddStat(AddAttackMidSize, 15); }
-Item("Obeaune_Card") { OnEquip: } //enable skill cure
+Item("Obeaune_Card") { OnEquip: GrantSkill(Cure, 1); }
 Item("Archer_Skeleton_Card") { OnEquip: AddStat(AddAttackRangedAttack, 10); }
 Item("Marse_Card") { OnEquip: AddStat(AddResistElementWater, 30); AddStat(AddFlee, 5); }
 Item("Zenorc_Card") { OnEquip: AddStat(AddAttackPower, 10); } //should add a 4% chance to poison on melee/range
@@ -113,7 +113,7 @@ Item("Strouf_Card") { OnEquip: AddStat(AddAttackRaceDemon, 20); }
 Item("Marduk_Card") { OnEquip: } //should add 100% resist to silence
 Item("Marionette_Card") { OnEquip: AddStat(AddResistElementGhost, 30); AddStat(AddFlee, 5); }
 Item("Argiope_Card") { OnEquip: AddStat(AddDef, 1); SetArmorElement(Poison1); }
-Item("Hunter_Fly_Card") { OnEquip: } //should add 3% chance to drain 15% of damage as HP
+Item("Hunter_Fly_Card") { OnEquip: AddStat(HpDrainChance, 3); AddStat(HpDrainAmount, 15); }
 Item("Isis_Card") { OnEquip: AddStat(AddResistElementDark, 30); AddStat(AddFlee, 5); }
 Item("Sidewinder_Card") { OnEquip: AddStat(DoubleAttackChance, 5); }
 Item("Earth_Petite_Card") { OnEquip: AddStat(AddAttackRaceDragon, 20); }
@@ -139,7 +139,7 @@ Item("Baphomet_Jr._Card") { OnEquip: AddStat(AddAgi, 3); AddStat(AddCrit, 10); }
 Item("Moonlight_Flower_Card") { OnEquip: AddStat(MoveSpeedBonus, 25); }
 Item("Mistress_Card") { OnEquip: } //should remove gemstone cost at the expense of +25% sp cost
 Item("Raydric_Card") { OnEquip: AddStat(AddResistElementNeutral, 20); }
-Item("Dracula_Card") { OnEquip: } //should add 10% chance to drain 5% of damage as SP
+Item("Dracula_Card") { OnEquip: AddStat(SpDrainChance, 10); AddStat(SpDrainAmount, 5); }
 Item("Orc_Lord_Card") { OnEquip: } //should add reflect 30% of incoming physical damage
 Item("Khalitzburg_Card") { OnEquip: AddStat(AddResistRaceDemon, 30); } //
 
@@ -163,7 +163,7 @@ OnEquip:
 }
 
 Item("Anubis_Card") { OnEquip: AddStat(AddResistRaceAngel, 30); }
-Item("Joker_Card") { OnEquip: } //enable skill steal
+Item("Joker_Card") { OnEquip: GrantSkill(Steal, 1); }
 Item("Abyssal_Knight_Card") { OnEquip: AddStat(AddAttackSpecialBoss, 25); }
 Item("Evil_Druid_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddDef, 1); SetArmorElement(Undead1); }
 Item("Doppelganger_Card") { OnEquip: AddStat(AspdBonus, 15); }
@@ -172,7 +172,7 @@ Item("Osiris_Card") { OnEquip: } //should make it so you revive with 100% hp/sp
 Item("Beelzebub_Card") { OnValidate: return false; OnEquip: } //should reduce spell cast time by 30%
 Item("Maya_Card") {  OnEquip: } //should add 50% magic reflect
 Item("Baphomet_Card") {  OnEquip: } //should add splash damage at the cost of 10 hit
-Item("Pharaoh_Card") {  OnEquip: } //should reduce sp cost by 30%
+Item("Pharaoh_Card") {  OnEquip: AddStat(SpConsumption, -30); }
 Item("Gargoyle_Card") {  OnEquip: } //add item drop box of thunder 1% when killing insect monsters
 Item("Goat_Card") {  OnEquip: if(Refine < 6) {AddStat(AddDef, 2); AddStat(AddMDef, 5);} }
 Item("Gajomart_Card") { OnValidate: return false; OnEquip: }

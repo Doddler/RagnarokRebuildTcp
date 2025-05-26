@@ -705,7 +705,7 @@ public class WorldObject : IEntityAutoReset
             StepCount++;
             Map.ChangeEntityPosition3(this, lastPosition, newPosition, true);
             if(Type == CharacterType.Player || Type == CharacterType.Monster)
-                CombatEntity.StatusContainer?.OnMove(lastCell, newCell);
+                CombatEntity.StatusContainer?.OnMove(lastCell, newCell, false);
             Map.TriggerAreaOfEffectForCharacter(this, lastCell, newCell);
             TimeOfLastMove = Time.ElapsedTimeFloat;
 

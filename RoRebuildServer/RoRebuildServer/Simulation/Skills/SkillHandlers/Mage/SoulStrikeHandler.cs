@@ -33,6 +33,6 @@ public class SoulStrikeHandler : SkillHandlerBase
 
         var ch = source.Character;
 
-        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.SoulStrike, lvl, res);
+        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.SoulStrike, lvl, res, isIndirect);
     }
 }

@@ -154,7 +154,7 @@ Item("Orc_Hero_Helm") { OnEquip:  AddStat(AddStr, 2); AddStat(AddVit, 1); }
 Item("Hat_of_the_Sun_God_") { OnEquip:  AddStat(AddStr, 3); AddStat(AddInt, 2); }
 Item("Haedonggum") { OnEquip:  AddStat(AddInt, 3); }
 Item("Haedonggum_") { OnEquip:  AddStat(AddInt, 3); }
-Item("Cutlus") { OnEquip:  AddStat(AddStr, 2); }
+Item("Cutlus") { OnEquip: GrantSkill(Bash, 5); AddStat(AddStr, 2); AddStat(AddDef, 1); }
 Item("Excalibur") { OnEquip:  AddStat(AddInt, 5); AddStat(AddLuk, 10); }
 Item("Mistilteinn") { OnEquip:  AddStat(AddDex, 3); }
 Item("Muramasa") { OnEquip:  AddStat(AddCrit, 300); AddStat(AspdBonus, 12); }
@@ -162,7 +162,7 @@ Item("Masamune") { OnEquip:  AddStat(AddFlee, 30); AddStat(AspdBonus, 20); AddSt
 Item("Byeol-ungeom") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); }
 Item("Holy_Avenger") { OnEquip:  AddStat(AddVit, 2); }
 Item("Fortune_Sword") { OnEquip:  AddStat(AddLuk, 5); AddStat(PerfectDodge, 200); }
-Item("Bazerald") { OnEquip:  AddStat(AddInt, 5); }
+Item("Bazerald") { OnEquip:  AddStat(AddInt, 5); AddStat(AddMagicAttackPower, 80); AddStat(AddMagicAttackPercent, 10); }
 Item("War_Axe") { OnEquip:  AddStat(AddDex, 2); AddStat(AddLuk, 2); }
 Item("Pole_Axe") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 2); AddStat(AddDex, 1); }
 Item("Assaulter_Spear") { OnEquip:  AddStat(AddStr, 2); }
@@ -241,13 +241,13 @@ Item("Hakujin_") { OnEquip:  AddStat(AddInt, 2); }
 Item("Brave_Damascus") { OnEquip:  AddStat(AddStr, 1); AddStat(AddAgi, 1); }
 Item("Valorous_Damascus") { OnEquip:  AddStat(AddStr, 1); AddStat(AddAgi, 1); }
 Item("Ivory_Knife") { OnEquip:  AddStat(AddAgi, 2); }
-Item("Cutlus_") { OnEquip:  AddStat(AddStr, 2); }
+Item("Cutlus_") { OnEquip: GrantSkill(Bash, 5); AddStat(AddStr, 2); AddStat(AddDef, 1); }
 Item("Brave_Blade") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); }
 Item("Valorous_Blade") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); }
 Item("Elemental_Sword") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 4); AddStat(AddDex, 1); }
 Item("Glorious_Rapier") { OnEquip:  AddStat(AddInt, 6); }
 Item("Glorious_Holy_Avenger") { OnEquip:  AddStat(AddInt, 6); }
-Item("Katzbalger") { OnEquip:  AddStat(AddVit, 5); }
+Item("Katzbalger") { OnEquip:  AddStat(AddVit, 5);AddStat(AddDef, 10); }
 Item("Brave_Katzbalger") { OnEquip:  AddStat(AddStr, 2); }
 Item("Death_Guidance") { OnEquip:  AddStat(AddStr, 5); AddStat(AddAgi, 2); }
 Item("Katar") { OnEquip:  AddStat(AddDex, 1); }
@@ -278,3 +278,11 @@ Item("Soldier_Shotgun") { OnEquip:  AddStat(AddDex, 2); }
 Item("Soldier_Grenade_Launcher") { OnEquip:  AddStat(AddDex, 2); }
 Item("Golden_Mace") { OnEquip:  AddStat(AddAttackRaceUndead, 20); }
 Item("Golden_Mace_") { OnEquip:  AddStat(AddAttackRaceUndead, 20); }
+
+Item("Nagan") { OnEquip: AddStat(AddAttackRaceDemihuman, 20); AddStat(DoubleAttackChance, 25); }
+Item("Ice_Falchion") { OnEquip: AddStat(AddMagicAttackPower, 120); GrantSkill(ColdBolt, 3); AddStat(OnAttackFreeze, 50); AutoSpellOnAttack(ColdBolt, 3, 100); }
+Item("Fire_Brand") { OnEquip: AddStat(AddMagicAttackPower, 120); GrantSkill(FireBolt, 3); AutoSpellOnAttack(FireBolt, 3, 100); }
+Item("Caesar's_Sword") { OnEquip: AddStat(IgnoreDefRacePlant, 100); AddStat(AddAttackRacePlant, 25); }
+Item("Broad_Sword") { OnEquip: AddStat(AddDef, 5); }
+Item("Broad_Sword_") { OnEquip: AddStat(AddDef, 5); }
+Item("Moonlight_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 10); AddStat(SpOnAttack, 3); }

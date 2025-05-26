@@ -36,7 +36,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
                     nearbyEnemy.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Hiding);
             }
 
-            CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.ImproveConcentration, lvl);
+            CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.ImproveConcentration, lvl, isIndirect);
         }
     }
 }

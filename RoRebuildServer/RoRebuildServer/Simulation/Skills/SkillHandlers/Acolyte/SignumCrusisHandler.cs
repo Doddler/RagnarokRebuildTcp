@@ -48,6 +48,6 @@ public class SignumCrusisHandler : SkillHandlerBase
             CommandBuilder.ClearRecipients();
         }
 
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.SignumCrusis, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.SignumCrusis, lvl, isIndirect);
     }
 }

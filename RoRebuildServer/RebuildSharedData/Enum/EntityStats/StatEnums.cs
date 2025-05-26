@@ -162,6 +162,28 @@ public enum CharacterStat
     AddResistMidSize,
     AddResistLargeSize,
 
+    IgnoreDefRaceFormless,
+    IgnoreDefRaceDemihuman,
+    IgnoreDefRaceBeast,
+    IgnoreDefRaceInsect,
+    IgnoreDefRaceAngel,
+    IgnoreDefRaceDragon,
+    IgnoreDefRaceAquatic,
+    IgnoreDefRacePlant,
+    IgnoreDefRaceDemon,
+    IgnoreDefRaceUndead,
+
+    IgnoreMDefRaceFormless,
+    IgnoreMDefRaceDemihuman,
+    IgnoreMDefRaceBeast,
+    IgnoreMDefRaceInsect,
+    IgnoreMDefRaceAngel,
+    IgnoreMDefRaceDragon,
+    IgnoreMDefRaceAquatic,
+    IgnoreMDefRacePlant,
+    IgnoreMDefRaceDemon,
+    IgnoreMDefRaceUndead,
+
     OnAttackStun,
     OnAttackPoison,
     OnAttackBlind,
@@ -197,8 +219,15 @@ public enum CharacterStat
     HpDrainAmount,
     SpDrainChance,
     SpDrainAmount,
+
+    HpOnAttack,
+    SpOnAttack,
+
+    SpConsumption,
     
     SkillValue, //used to store skill unlocks in ItemEquipState
+    AutoSpellOnAttacking,
+    AutoSpellWhenAttacked,
     NoEffect,
     CharacterStatsMax,
 }

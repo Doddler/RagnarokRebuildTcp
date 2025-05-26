@@ -912,8 +912,8 @@ public class Player : IEntityAutoReset
 
     public bool HasSpForSkill(CharacterSkill skill, int level)
     {
-        var spCost = DataManager.GetSpForSkill(skill, level);
-
+        var spCost = DataManager.GetSpForSkill(skill, level) * (100 + GetStat(CharacterStat.SpConsumption)) / 100;
+        
         var currentSp = GetStat(CharacterStat.Sp);
         if (currentSp < spCost)
             return false;
@@ -926,7 +926,7 @@ public class Player : IEntityAutoReset
         if (!SkillHandler.ShouldSkillCostSp(skill, CombatEntity))
             return true;
 
-        var spCost = DataManager.GetSpForSkill(skill, level);
+        var spCost = DataManager.GetSpForSkill(skill, level) * (100 + GetStat(CharacterStat.SpConsumption)) / 100;
 
         var currentSp = GetStat(CharacterStat.Sp);
         if (currentSp < spCost)
@@ -1665,7 +1665,7 @@ public class Player : IEntityAutoReset
             Character.Map.TeleportEntity(ref Entity, Character, p, CharacterRemovalReason.OutOfSight);
 
             if (CombatEntity.StatusContainer != null)
-                CombatEntity.StatusContainer.OnMove(oldPos, p);
+                CombatEntity.StatusContainer.OnMove(oldPos, p, true);
         }
         else
         {

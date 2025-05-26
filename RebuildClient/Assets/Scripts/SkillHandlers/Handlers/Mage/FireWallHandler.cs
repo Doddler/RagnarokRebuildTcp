@@ -12,18 +12,21 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     {
         public override void StartSkillCasting(ServerControllable src, Vector2Int target, int lvl, float castTime)
         {
-            if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
-            {
-                src.SpriteAnimator.State = SpriteState.Standby;
-                src.SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
-                src.SpriteAnimator.PauseAnimation(castTime);
-            }
-
+            HoldStandbyMotionForCast(src, castTime);
             src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Fire));
             
             var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
             if(target != Vector2Int.zero)
                 CastTargetCircle.Create(src.IsAlly, targetCell, 1, castTime);
+        }
+        
+        public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
+        {
+            HoldStandbyMotionForCast(src, castTime);
+            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Fire));
+            
+            if(target != null)
+                target.AttachEffect(CastLockOnEffect.Create(castTime, target.gameObject));
         }
 
         public override void ExecuteSkillGroundTargeted(ServerControllable src, ref AttackResultData attack)

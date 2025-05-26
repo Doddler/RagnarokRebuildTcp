@@ -879,6 +879,9 @@ public class Map
                 if (!ch.CombatEntity.IsValidTarget(character.CombatEntity))
                     continue;
 
+                if (ch.CombatEntity.IsHiddenTo(character.CombatEntity))
+                    continue;
+
                 if (!character.Position.InRange(ch.Position, distance))
                     continue;
 

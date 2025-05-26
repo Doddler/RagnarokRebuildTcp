@@ -15,6 +15,6 @@ public class BulwarkSkillHandler : SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Bulwark, 30f);
         source.AddStatusEffect(status);
 
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Bulwark, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Bulwark, lvl, isIndirect);
     }
 }

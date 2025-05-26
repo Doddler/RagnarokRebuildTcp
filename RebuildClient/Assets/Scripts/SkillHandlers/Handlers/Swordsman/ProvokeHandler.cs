@@ -9,13 +9,14 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     {
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
+            var skillMotion = src.PerformSkillMotion();
+            
             if (attack.Target != null)
             {
                 ProvokeEffect.Provoke(attack.Target);
-                src.LookAt(attack.Target.transform.position);
+                if(skillMotion)
+                    src.LookAt(attack.Target.transform.position);
             }
-            
-            src.PerformSkillMotion();
         }
     }
 }

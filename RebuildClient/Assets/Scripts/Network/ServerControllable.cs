@@ -110,7 +110,7 @@ namespace Assets.Scripts.Network
         private float uniqueAttackStart;
         private bool skipNextAttackMotion;
         private Vector2 lastFramePosition;
-
+        
         private bool isMoving;
         //  {
         //      get => _isMoving;
@@ -141,6 +141,8 @@ namespace Assets.Scripts.Network
         public bool IsWalking => movePath != null && movePath.Count > 1;
 
         public bool IsHidden { get; set; }
+
+        public void SkipNextSkillOrAttackMotion(bool val) => skipNextAttackMotion = val;
 
         public void Init()
         {
@@ -1012,18 +1014,18 @@ namespace Assets.Scripts.Network
                 go.SetActive(false);
         }
 
-        public void PerformSkillMotion(bool speedUpForFastMotionTime = false)
+        public bool PerformSkillMotion(bool speedUpForFastMotionTime = false)
         {
             if (skipNextAttackMotion) //if the character casts a skill indirectly they shouldn't play their attack motion
             {
                 // Debug.Log($"{name}: Skipping attack motion");
                 skipNextAttackMotion = false;
-                return;
+                return false;
             }
             // Debug.Log($"{name}:Performing attack motion.");
 
             if (!IsCharacterAlive || SpriteAnimator == null || SpriteAnimator.State == SpriteState.Dead)
-                return;
+                return false;
 
             if (SpriteAnimator.Type == SpriteType.Player)
             {
@@ -1042,6 +1044,7 @@ namespace Assets.Scripts.Network
 
             // Debug.Log($"PerformBasicAttackMotion {name} speed {AttackAnimationSpeed}");
             //SpriteAnimator.AnimSpeed = AttackAnimationSpeed;
+            return true;
         }
 
         public void PerformBasicAttackMotion(CharacterSkill skill = CharacterSkill.None)

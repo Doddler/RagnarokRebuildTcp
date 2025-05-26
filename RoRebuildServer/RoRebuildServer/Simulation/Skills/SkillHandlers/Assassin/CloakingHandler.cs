@@ -22,7 +22,7 @@ public class CloakingHandler : SkillHandlerBase
 
         source.ApplyCooldownForSupportSkillAction();
 
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.Cloaking, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.Cloaking, lvl, isIndirect);
 
         if (source.HasStatusEffectOfType(CharacterStatusEffect.Cloaking))
         {

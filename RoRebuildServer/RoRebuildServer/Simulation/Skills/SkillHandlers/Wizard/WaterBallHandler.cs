@@ -66,7 +66,9 @@ public class WaterBallHandler : SkillHandlerBase
         //the actual cast of water ball that we send to the client just shows the attack motion and doesn't deal damage.
         var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.WaterBall);
         res.Result = AttackResult.Invisible;
-        source.ApplyCooldownForAttackAction(target);
+        if (!isIndirect)
+            source.ApplyCooldownForAttackAction(target);
+
         source.ExecuteCombatResult(res, false);
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.WaterBall, lvl, res);
 

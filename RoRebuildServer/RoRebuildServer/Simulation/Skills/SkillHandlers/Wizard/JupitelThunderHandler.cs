@@ -35,7 +35,9 @@ public class JupitelThunderHandler : SkillHandlerBase
         var dist = source.Character.WorldPosition.DistanceTo(target.Character.WorldPosition);
         var distTime = dist * 0.025f;
         res.Time = Time.ElapsedTimeFloat + res.AttackMotionTime * 0.7f + distTime;
-        source.ApplyCooldownForAttackAction(target);
+        
+        if(!isIndirect)
+            source.ApplyCooldownForAttackAction(target);
 
         var ch = source.Character;
 

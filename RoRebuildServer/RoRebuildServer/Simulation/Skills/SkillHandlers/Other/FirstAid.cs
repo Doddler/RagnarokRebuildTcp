@@ -22,7 +22,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Other
 
             var ch = source.Character;
             ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
-            CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.FirstAid, lvl);
+            CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.FirstAid, lvl, isIndirect);
             CommandBuilder.SendHealMulti(source.Character, healValue, HealType.None);
             CommandBuilder.ClearRecipients();
         }

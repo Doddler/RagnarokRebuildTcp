@@ -42,6 +42,6 @@ public class StoneCurseHandler : SkillHandlerBase
             source.ApplyCooldownForSupportSkillAction();
         }
 
-        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.StoneCurse, lvl, res);
+        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.StoneCurse, lvl, res, isIndirect);
     }
 }

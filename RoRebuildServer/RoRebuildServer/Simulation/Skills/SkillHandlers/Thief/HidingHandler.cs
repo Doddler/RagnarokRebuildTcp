@@ -23,7 +23,7 @@ public class HidingHandler : SkillHandlerBase
 
         source.ApplyCooldownForSupportSkillAction();
 
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.Hiding, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.Hiding, lvl, isIndirect);
 
         if (source.HasStatusEffectOfType(CharacterStatusEffect.Hiding))
         {

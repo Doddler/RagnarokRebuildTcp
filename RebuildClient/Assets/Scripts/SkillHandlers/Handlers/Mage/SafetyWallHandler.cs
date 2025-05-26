@@ -13,6 +13,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         
         public override void StartSkillCasting(ServerControllable src, Vector2Int target, int lvl, float castTime)
         {
+            HoldStandbyMotionForCast(src, castTime);
             src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Ghost));
             base.StartSkillCasting(src, target, lvl, castTime);
         }

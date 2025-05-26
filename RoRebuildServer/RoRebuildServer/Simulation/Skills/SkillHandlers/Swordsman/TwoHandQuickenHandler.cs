@@ -29,7 +29,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
             var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.TwoHandQuicken, 180f, timing);
             source.AddStatusEffect(status);
             
-            CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.TwoHandQuicken, lvl);
+            CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.TwoHandQuicken, lvl, isIndirect);
         }
     }
 }

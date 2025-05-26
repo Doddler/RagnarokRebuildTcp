@@ -36,8 +36,11 @@ public class StatusCloaking : StatusEffectBase
         return StatusUpdateResult.Continue;
     }
 
-    public override StatusUpdateResult OnMove(CombatEntity ch, ref StatusEffectState state, Position src, Position dest)
+    public override StatusUpdateResult OnMove(CombatEntity ch, ref StatusEffectState state, Position src, Position dest, bool isTeleport)
     {
+        if (isTeleport)
+            return StatusUpdateResult.EndStatus;
+
         if (ch.Character.Type == CharacterType.Monster)
             return StatusUpdateResult.Continue;
 
@@ -46,6 +49,11 @@ public class StatusCloaking : StatusEffectBase
             return StatusUpdateResult.EndStatus;
 
         return StatusUpdateResult.Continue;
+    }
+
+    public override StatusUpdateResult OnChangeMaps(CombatEntity ch, ref StatusEffectState state)
+    {
+        return StatusUpdateResult.EndStatus;
     }
 
     public override StatusUpdateResult OnTakeDamage(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
@@ -69,7 +77,7 @@ public class StatusCloaking : StatusEffectBase
             return;
         }
 
-        if (state.Value4 == 1 && (ch.Character.Map?.WalkData.IsCellAdjacentToWall(ch.Character.Position) ?? false))
+        if (state.Value4 == 1 && !(ch.Character.Map?.WalkData.IsCellAdjacentToWall(ch.Character.Position) ?? false))
         {
             state.Value4 = 0;
             state.Value3 -= 30;
@@ -85,12 +93,12 @@ public class StatusCloaking : StatusEffectBase
         ch.SetBodyState(BodyStateFlags.Cloaking);
 
         state.Value2 = state.Value1 - 1; //seconds between sp consumption ticks. Levels 1 and 2 update every tick.
-        state.Value3 = (short)(30 - state.Value1 * 3); //move speed change
+        state.Value3 = (short)(-30 + state.Value1 * 3); //move speed change
         state.Value4 = 0;
 
         if (ch.Character.Type != CharacterType.Monster)
         {
-            ch.AddStat(CharacterStat.MoveSpeedBonus, -state.Value3);
+            ch.AddStat(CharacterStat.MoveSpeedBonus, state.Value3);
             ch.AddStat(CharacterStat.AddSpRecoveryPercent, -100);
 
             UpdateWallBonus(ch, ref state);
@@ -99,11 +107,11 @@ public class StatusCloaking : StatusEffectBase
 
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
-        ch.RemoveBodyState(BodyStateFlags.Hidden);
+        ch.RemoveBodyState(BodyStateFlags.Cloaking);
 
         if (ch.Character.Type != CharacterType.Monster)
         {
-            ch.SubStat(CharacterStat.MoveSpeedBonus, -state.Value3); //wall bonus should be lumped into this
+            ch.SubStat(CharacterStat.MoveSpeedBonus, state.Value3); //wall bonus should be lumped into this
             ch.SubStat(CharacterStat.AddSpRecoveryPercent, -100);
         }
     }

@@ -51,7 +51,7 @@ public class NapalmBeatHandler : SkillHandlerBase
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false); //apply damage to target
 
-        CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.NapalmBeat, lvl, res); //send cast packet
+        CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.NapalmBeat, lvl, res, isIndirect); //send cast packet
 
         //now gather all players getting hit
         map.GatherEnemiesInArea(source.Character, target.Character.Position, range, targetList, !isIndirect, true);

@@ -16,6 +16,6 @@ public class SightHandler : SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Sight, 10);
         source.AddStatusEffect(status);
 
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Sight, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Sight, lvl, isIndirect);
     }
 }

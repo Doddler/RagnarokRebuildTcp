@@ -14,7 +14,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             //DefaultSkillCastEffect.Create(src);
-            src.PerformBasicAttackMotion();
+            src?.PerformBasicAttackMotion();
             if(attack.Target != null)
                 CameraFollower.Instance.AttachEffectToEntity("SleepAttack", attack.Target.gameObject, attack.Target.Id);
         }

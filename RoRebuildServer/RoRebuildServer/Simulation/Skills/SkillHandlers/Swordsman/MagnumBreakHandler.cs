@@ -58,6 +58,6 @@ public class MagnumBreakHandler : SkillHandlerBase
         }
 
         source.ApplyCooldownForAttackAction(position);
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.MagnumBreak, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.MagnumBreak, lvl, isIndirect);
     }
 }

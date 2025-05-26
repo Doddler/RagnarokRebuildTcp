@@ -39,6 +39,13 @@ public struct EquipStatChange : IEquatable<EquipStatChange>
     }
 }
 
+public struct AutoSpellEffect
+{
+    public CharacterSkill Skill;
+    public int Level;
+    public int Chance;
+}
+
 public class ItemEquipState
 {
     public Player Player = null!; //this is set in player init
@@ -56,6 +63,8 @@ public class ItemEquipState
     public int WeaponAttackPower;
     public int MinRefineAtkBonus;
     public int MaxRefineAtkBonus;
+    public Dictionary<int, AutoSpellEffect> AutoSpellSkillsOnAttack = new();
+    public Dictionary<int, AutoSpellEffect> AutoSpellSkillsWhenAttacked = new();
     private readonly SwapList<EquipStatChange> equipmentEffects = new();
     private EquipSlot activeSlot;
     private readonly HeadgearPosition[] headgearMultiSlotInfo = new HeadgearPosition[3];
@@ -63,6 +72,7 @@ public class ItemEquipState
     private static int[] attackPerRefine = [2, 3, 5, 7];
     private static int[] overRefineLevel = [8, 7, 6, 5];
     private static int[] overRefineAttackBonus = [3, 5, 8, 14];
+    private int nextId = 0;
     
     public void Reset()
     {
@@ -79,6 +89,10 @@ public class ItemEquipState
         WeaponElement = AttackElement.Neutral;
         ArmorElement = CharacterElement.Neutral1;
         AmmoElement = AttackElement.None;
+        AutoSpellSkillsOnAttack.Clear();
+        AutoSpellSkillsWhenAttacked.Clear();
+        equipmentEffects.Clear();
+        nextId = 0;
     }
 
     public int GetEquipmentIdBySlot(EquipSlot slot) => ItemIds[(int)slot];
@@ -545,19 +559,32 @@ public class ItemEquipState
             var effect = equipmentEffects[i];
             if (effect.Slot == slot)
             {
-                if (effect.Stat == CharacterStat.SkillValue)
-                {
-                    Player.RemoveGrantedSkill((CharacterSkill)effect.Value, effect.Change);
-                    removedGrantedSkill = true;
-                }
-                else
-                    Player.CombatEntity.SubStat(effect.Stat, effect.Change);
+                removedGrantedSkill = ReverseEquipmentEffect(effect);
                 equipmentEffects.Remove(i);
                 i--; //we've moved the last element into our current position, so we step the enumerator back by 1
             }
         }
         if(removedGrantedSkill)
             CommandBuilder.RefreshGrantedSkills(Player);
+    }
+
+    private bool ReverseEquipmentEffect(EquipStatChange effect)
+    {
+        switch (effect.Stat)
+        {
+            case CharacterStat.SkillValue:
+                Player.RemoveGrantedSkill((CharacterSkill)effect.Value, effect.Change);
+                return true;
+            case CharacterStat.AutoSpellOnAttacking:
+                AutoSpellSkillsOnAttack.Remove(effect.Change);
+                return false;
+            case CharacterStat.AutoSpellWhenAttacked:
+                AutoSpellSkillsWhenAttacked.Remove(effect.Change);
+                return false;
+            default:
+                Player.CombatEntity.SubStat(effect.Stat, effect.Change);
+                return false;
+        }
     }
 
     public void RunAllOnEquip()
@@ -614,6 +641,53 @@ public class ItemEquipState
         }
 
         return false;
+    }
+
+    public void AutoSpellOnAttack(CharacterSkill skill, int level, int chance)
+    {
+        var cast = new AutoSpellEffect()
+        {
+            Skill = skill,
+            Level = level,
+            Chance = chance
+        };
+
+        var id = nextId++;
+        AutoSpellSkillsOnAttack.Add(id, cast);
+
+        var equipState = new EquipStatChange()
+        {
+            Slot = activeSlot,
+            Stat = CharacterStat.AutoSpellOnAttacking,
+            Value = (int)skill,
+            Change = id,
+        };
+
+        equipmentEffects.Add(ref equipState);
+    }
+
+
+    public void AutoSpellWhenAttacked(CharacterSkill skill, int level, int chance)
+    {
+        var cast = new AutoSpellEffect()
+        {
+            Skill = skill,
+            Level = level,
+            Chance = chance
+        };
+
+        var id = nextId++;
+        AutoSpellSkillsWhenAttacked.Add(id, cast);
+
+        var equipState = new EquipStatChange()
+        {
+            Slot = activeSlot,
+            Stat = CharacterStat.AutoSpellWhenAttacked,
+            Value = (int)skill,
+            Change = id,
+        };
+
+        equipmentEffects.Add(ref equipState);
     }
 
     public void GrantSkill(CharacterSkill skill, int level)

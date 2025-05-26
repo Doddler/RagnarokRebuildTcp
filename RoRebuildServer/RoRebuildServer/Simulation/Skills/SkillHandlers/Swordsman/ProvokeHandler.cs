@@ -62,6 +62,6 @@ public class ProvokeHandler : SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Provoke, 30f, lvl, source.Character.Id, monsterSource);
         target.AddStatusEffect(status);
 
-        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Provoke, lvl, di);
+        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Provoke, lvl, di, isIndirect);
     }
 }

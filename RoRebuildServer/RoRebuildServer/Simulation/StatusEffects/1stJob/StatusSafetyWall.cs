@@ -10,7 +10,7 @@ public class StatusSafetyWall : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnMove;
 
-    public override StatusUpdateResult OnMove(CombatEntity ch, ref StatusEffectState state, Position src, Position dest)
+    public override StatusUpdateResult OnMove(CombatEntity ch, ref StatusEffectState state, Position src, Position dest, bool isTeleport)
     {
         var map = ch.Character.Map;
         if (map != null && map.TryGetAreaOfEffectAtPosition(dest, CharacterSkill.SafetyWall, out var effect))

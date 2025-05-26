@@ -65,6 +65,6 @@ public static class StatusEffectHandler
     public static StatusUpdateResult OnPreCalculateDamage(CharacterStatusEffect type, CombatEntity ch, CombatEntity? target, ref StatusEffectState state, ref AttackRequest req) => handlers[(int)type].OnPreCalculateDamage(ch, target, ref state, ref req);
     public static StatusUpdateResult OnCalculateDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info) => handlers[(int)type].OnCalculateDamage(ch, ref state, ref req, ref info);
     public static StatusUpdateResult OnChangeEquipment(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnChangeEquipment(ch, ref state);
-    public static StatusUpdateResult OnMove(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, Position src, Position dest) => handlers[(int)type].OnMove(ch, ref state, src, dest);
+    public static StatusUpdateResult OnMove(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, Position src, Position dest, bool isTeleport) => handlers[(int)type].OnMove(ch, ref state, src, dest, isTeleport);
     public static StatusUpdateResult OnChangeMaps(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnChangeMaps(ch, ref state);
 }

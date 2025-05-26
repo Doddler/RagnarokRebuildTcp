@@ -487,6 +487,10 @@ public class MonsterSkillAiState(Monster monsterIn)
                 if (target == null || !target.CombatEntity.IsValidTarget(ce))
                     if (monster.Target.TryGet<WorldObject>(out var newTarget))
                         target = newTarget;
+
+                if (target != null && target.CombatEntity.IsHiddenTo(ce))
+                    target = null;
+
                 if (target == null)
                 {
                     using var list = EntityListPool.Get();
@@ -539,6 +543,9 @@ public class MonsterSkillAiState(Monster monsterIn)
             if (target == null || !target.CombatEntity.IsValidTarget(ce))
                 if (monster.Target.TryGet<WorldObject>(out var newTarget))
                     target = newTarget;
+
+            if (target != null && target.CombatEntity.IsHiddenTo(ce))
+                target = null;
 
             //if we're in a state where we have a target, we only need to check if we can use this skill on that enemy
             if (target != null && !flags.HasFlag(MonsterSkillAiFlags.RandomTarget))

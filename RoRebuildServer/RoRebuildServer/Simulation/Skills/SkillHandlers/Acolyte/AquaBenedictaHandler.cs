@@ -43,6 +43,6 @@ public class AquaBenedictaHandler : SkillHandlerBase
 
         p.CreateItemInInventory(new ItemReference(HolyWaterId, 1));
         
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.AquaBenedicta, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.AquaBenedicta, lvl, isIndirect);
     }
 }

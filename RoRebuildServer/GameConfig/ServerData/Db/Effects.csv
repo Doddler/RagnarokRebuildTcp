@@ -98,3 +98,4 @@
 96,EnergyCoat,TRUE,TRUE,FALSE,energycoat,,,0,,
 97,Demonstration,FALSE,FALSE,TRUE,,,,0,,
 98,MagicalAttack,TRUE,TRUE,FALSE,magical,,venatu_attack,-0.65,,
+99,StormGust,TRUE,TRUE,TRUE,stormgust,,wizard_stormgust,0,,

@@ -29,14 +29,18 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
             res.Time = Time.ElapsedTimeFloat + 0.38f + distTime;
             res.AttackMotionTime = 0.38f;
 
-            source.ApplyAfterCastDelay(1f);
-            source.ApplyCooldownForSupportSkillAction();
+            if (!isIndirect)
+            {
+                source.ApplyAfterCastDelay(1f);
+                source.ApplyCooldownForSupportSkillAction();
+            }
+
             source.ExecuteCombatResult(res, false);
 
             if(res.Damage > 0)
                 source.TryFreezeTarget(target, 350 + lvl * 30, res.AttackMotionTime + distTime + 0.08f);
 
-            CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.FrostDiver, lvl, res);
+            CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.FrostDiver, lvl, res, isIndirect);
         }
     }
 }

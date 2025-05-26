@@ -7,6 +7,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.ScriptSystem;
+using RoRebuildServer.Simulation.Skills;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -50,6 +51,19 @@ public partial class CombatEntity
             chance = GetStat(CharacterStat.OnAttackCurse);
             if (chance > 0)
                 TryCurseTarget(target, chance);
+
+            chance = GetStat(CharacterStat.SpDrainChance);
+            if(chance > 0 && GameRandom.Next(0, 100) < chance)
+                RecoverSp(res.Damage * res.HitCount * GetStat(CharacterStat.SpDrainAmount) / 100);
+
+            chance = GetStat(CharacterStat.HpDrainChance);
+            if (chance > 0 && GameRandom.Next(0, 100) < chance)
+                HealHp(res.Damage * res.HitCount * GetStat(CharacterStat.HpDrainAmount) / 100);
+
+            var val = GetStat(CharacterStat.SpOnAttack);
+            if(val > 0)
+                RecoverSp(val);
+
         }
     }
 
@@ -88,10 +102,35 @@ public partial class CombatEntity
             if (chance > 0)
                 TryPetrifyTarget(attacker, chance, 1f);
 
-            
             chance = GetStat(CharacterStat.WhenAttackedCurse);
             if (chance > 0)
                 TryCurseTarget(attacker, chance);
+        }
+    }
+
+    private void TriggerAutoSpell(CombatEntity target, AttackRequest req, ref DamageInfo res)
+    {
+        if (Character.Type != CharacterType.Player || req.SkillSource != CharacterSkill.None ||
+            !req.Flags.HasFlag(AttackFlags.Physical) || !res.IsDamageResult)
+            return;
+
+        foreach (var (_, effect) in Player.Equipment.AutoSpellSkillsOnAttack)
+        {
+            if (GameRandom.Next(0, 1000) < effect.Chance)
+            {
+                var skillCast = new SkillCastInfo()
+                {
+                    Skill = effect.Skill,
+                    Level = effect.Level,
+                    TargetEntity = target.Entity,
+                    IsIndirect = true
+                };
+
+                if (SkillHandler.ValidateTarget(skillCast, this) == SkillValidationResult.Success)
+                {
+                    SkillHandler.ExecuteSkill(skillCast, this);
+                }
+            }
         }
     }
 

@@ -1187,6 +1187,18 @@
       "SoundFile": "venatu_attack",
       "Offset": -0.65,
       "PrefabName": ""
+    },
+    {
+      "Id": 99,
+      "Name": "StormGust",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "stormgust",
+      "Sprite": "",
+      "SoundFile": "wizard_stormgust",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

@@ -615,6 +615,9 @@ SpCost = [16,18,20,22,24,26,28,30,32,34]
 
 [Cloaking]
 Target = "Self"
+Icon = "as_cloaking"
+MaxLevel = 10
+SpCost = [15,15,15,15,15,15,15,15,15,15]
 
 [Demonstration]
 Target = "Ground"

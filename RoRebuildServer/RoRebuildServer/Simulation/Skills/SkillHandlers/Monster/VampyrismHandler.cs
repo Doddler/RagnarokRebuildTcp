@@ -16,6 +16,6 @@ public class VampyrismHandler :SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Vampyrism, 30f * lvl);
         source.AddStatusEffect(status);
 
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Vampyrism, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Vampyrism, lvl, isIndirect);
     }
 }

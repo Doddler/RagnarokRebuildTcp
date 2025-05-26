@@ -27,6 +27,6 @@ public class SpeedUpHandler : SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.SpeedUp, duration, lvl);
         source.AddStatusEffect(status);
 
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.SpeedUp, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.SpeedUp, lvl, isIndirect);
     }
 }

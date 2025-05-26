@@ -36,6 +36,7 @@ public class FireBallHandler : SkillHandlerBase
         var res = source.CalculateCombatResult(target, attack);
         source.ApplyAfterCastDelay(1f);
         res.AttackMotionTime = 0.38f;
+        res.IsIndirect = isIndirect;
         var baseTime = Time.ElapsedTimeFloat + res.AttackMotionTime +
                        source.Character.Position.DistanceTo(target.Character.Position) / ServerConfig.ArrowTravelTime;
         res.Time = baseTime;

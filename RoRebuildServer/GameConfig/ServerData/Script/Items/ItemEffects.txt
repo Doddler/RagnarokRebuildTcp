@@ -83,8 +83,8 @@ Item("Old_Purple_Box") { OnUse: UseItemCreationItem(1); }
 Item("Old_Card_Album") { OnUse: UseItemCreationItem(2); }
 Item("Dead_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("DeadBranch", 1h); }
 Item("Bloody_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("BloodyBranch", 12h); }
-Item("Anodyne") { OnValidate: return false; OnUse: }
-Item("Aloevera") { OnValidate: return false; OnUse: }
+Item("Anodyne") { OnUse: ItemActivatedSkillSelfTarget(Endure, 1); }
+Item("Aloevera") { OnUse: ItemActivatedSkillSelfTarget(Provoke, 1); }
 Item("Yggdrasil_Berry") { OnUse: HealHpPercent(100); HealSpPercent(100); }
 Item("Yggdrasil_Seed") { OnUse: HealHpPercent(50); HealSpPercent(100); }
 Item("Amulet") { OnValidate: return false; OnUse: }

@@ -1439,7 +1439,7 @@
       "Name": "Water Ball",
       "Target": 1,
       "Type": 0,
-      "MaxLevel": 10,
+      "MaxLevel": 5,
       "SpCost": [
         15,
         20,
@@ -1534,12 +1534,23 @@
     },
     {
       "SkillId": 85,
-      "Icon": "nv_basic",
+      "Icon": "as_cloaking",
       "Name": "Cloaking",
       "Target": 5,
       "Type": 0,
-      "MaxLevel": 0,
-      "SpCost": null,
+      "MaxLevel": 10,
+      "SpCost": [
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15
+      ],
       "AdjustableLevel": false,
       "Description": null,
       "InterruptMode": 0

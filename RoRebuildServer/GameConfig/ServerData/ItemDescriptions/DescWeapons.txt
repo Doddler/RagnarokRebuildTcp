@@ -69,22 +69,35 @@ INT +3
 
 ::Nagan //id 1130 - Sword
 <color=#808080>A sword topped with several extra edges for making wounds deeper and more unsightly.</color>
++25% double attack chance
++5% damage vs. Demi-Human
 
 ::Ice_Falchion //id 1131 - Sword
 <color=#808080>A formal decorative sword imbued with water.</color>
+MATK +120
+Enables use of <skill>Cold Bolt 3</skill>.
++5% chance to autocast <skill>Cold Bolt 3</skill> on melee attack.
++5% chance of <status>Freeze</status> on physical attack.
 
 ::Edge //id 1132 - Sword
 <color=#808080>A sword with an extremely sharp blade.</color>
 
 ::Fire_Brand //id 1133 - Sword
 <color=#808080>A formal decorative sword imbued with fire.</color>
+MATK +120
+Enables use of <skill>Fire Bolt 3</skill>.
++5% chance to autocast <skill>Fire Bolt 3</skill> on melee attack.
 
 ::Caesar's_Sword //id 1134 - Sword
 <color=#808080>A sword that looks like a pair of giant scissors.</color>
+100% defense bypass vs <race>Plants</race>.
++25% physical damage vs. <race>Plants</race>.
 
 ::Cutlus //id 1135 - Sword
 <color=#808080>A sword popularized by sea adventurers.</color>
 STR +2
+DEF +1
+Enables use of <skill>Bash 5</skill>.
 
 ::Solar_Sword //id 1136 - Sword
 <color=#808080>A sword adorned with an engraving of the sun, symbolizing battle spirit and vigor.</color>
@@ -149,12 +162,14 @@ STR +2
 
 ::Broad_Sword //id 1160 - 2HSword
 <color=#808080>A sword with a wide, double sided blade.</color>
+DEF +5
 
 ::Balmung //id 1161 - 2HSword
 <color=#808080>Sword wielded by mighty GOD-POING, the lawless heroine.</color>
 
 ::Broad_Sword_ //id 1162 - 2HSword
 <color=#808080>A sword with a wide, double sided blade.</color>
+DEF +5
 
 ::Claymore //id 1163 - 2HSword
 <color=#808080>A large, double-edged broad sword that was used by the highlanders.</color>
@@ -182,6 +197,8 @@ STR -5, DEF -66%
 
 ::Katzbalger //id 1170 - 2HSword
 <color=#808080>A sword with a unique "S" shaped hilt.</color>
+VIT +5
+DEF +10
 
 ::Zweihander_ //id 1171 - 2HSword
 <color=#808080>An enormous sword designed for two hands.</color>
@@ -298,6 +315,8 @@ LUK +5, Perfect Dodge +20
 
 ::Bazerald //id 1231 - Dagger
 <color=#808080>A decorative dagger engraved with luxurious emblems.</color>
+INT +5
+MATK +80, MATK +10%
 
 ::Assassin_Dagger //id 1232 - Dagger
 <color=#808080>A dagger commonly used by assassins.</color>
@@ -307,6 +326,8 @@ LUK +5, Perfect Dodge +20
 
 ::Moonlight_Dagger //id 1234 - Dagger
 <color=#808080>A dagger imbued with the lunar spirit that drains the enemy's soul.</color>
+MaxSP +10%
+Recover 3 SP per attack
 
 ::Azoth //id 1235 - Dagger
 <color=#808080>A dagger that symbolizes the potential of Alchemy.</color>
@@ -1519,6 +1540,9 @@ MATK +15%
 
 ::Cutlus_ //id 13400 - Sword
 <color=#808080>A sword popularized by sea adventurers.</color>
+STR +2
+DEF +1
+Enables use of <skill>Bash 5</skill>.
 
 ::Platinum_Shotel //id 13404 - Sword
 <color=#808080>A fearsome weapon with a unique curved blade.</color>

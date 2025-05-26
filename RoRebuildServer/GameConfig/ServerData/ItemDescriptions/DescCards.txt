@@ -130,8 +130,7 @@ DEF +1
 +50% <color=#800000>Silence</color> resist
 
 ::Creamy_Card //id 4040 - slotted on Accessory
-Enable <color=#0000FF>Teleport 1</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Enables use of <skill>Teleport</skill>.
 
 ::Coco_Card //id 4041 - slotted on Headgear
 DEF +1
@@ -145,8 +144,7 @@ DEF +2
 ATK +20
 
 ::Smokie_Card //id 4044 - slotted on Accessory
-Enable <color=#0000FF>Hide 1</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Enables use of <skill>Hide 1</skill>.
 
 ::Horn_Card //id 4045 - slotted on Shield
 -35% damage from range
@@ -161,8 +159,7 @@ HP Regeneration -25%
 Ghost Property Armor
 
 ::Poison_Spore_Card //id 4048 - slotted on Accessory
-Enable <color=#0000FF>Envenom 3</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Enables use of <skill>Envenom 3</skill>.
 
 ::Vadon_Card //id 4049 - slotted on Weapon
 +20% physical damage vs. Fire
@@ -178,9 +175,8 @@ Perfect Dodge +5
 INT +2
 
 ::Vitata_Card //id 4053 - slotted on Accessory
-SP Consumption +25%
-Enable <color=#0000FF>Heal 1</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+SP Consumption +15%
+Enables use of <skill>Heal 1</skill>.
 
 ::Angeling_Card //id 4054 - slotted on Armor
 Holy Property Armor
@@ -294,8 +290,7 @@ ATK +5
 -30% damage from Fish
 
 ::Marine_Sphere_Card //id 4084 - slotted on Accessory
-Enable <color=#0000FF>Magnum Break 3</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Enables use of <skill>Magnum Break 3</skill>.
 
 ::Orc_Skeleton_Card //id 4085 - slotted on Weapon
 +20% physical damage vs. Holy
@@ -309,8 +304,7 @@ CRIT +9
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Frilldora_Card //id 4088 - slotted on Garment
-Enable <color=#0000FF>Cloak 1</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Enables use of <skill>Cloak 1</skill>.
 
 ::Swordfish_Card //id 4089 - slotted on Armor
 DEF +1
@@ -329,8 +323,7 @@ ATK +5
 +15% physical damage vs. Medium
 
 ::Obeaune_Card //id 4093 - slotted on Accessory
-Enable <color=#0000FF>Cure</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Enables use of <skill>Cure</skill>.
 
 ::Archer_Skeleton_Card //id 4094 - slotted on Weapon
 +10% range physical damage
@@ -415,7 +408,6 @@ Poison Property Armor
 
 ::Hunter_Fly_Card //id 4115 - slotted on Weapon
 +3% chance to recover 15% physical damage as HP
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Isis_Card //id 4116 - slotted on Garment
 FLEE +5
@@ -480,7 +472,6 @@ Reduce Skill Gemstone Requirement by 1 of Each Gemstone
 
 ::Dracula_Card //id 4134 - slotted on Weapon
 +10% chance to recover 5% physical damage as SP
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Orc_Lord_Card //id 4135 - slotted on Armor
 +30% melee damage reflect
@@ -503,8 +494,7 @@ Accessory: Luk
 -30% damage from Angel
 
 ::Joker_Card //id 4139 - slotted on Accessory
-Enable <color=#0000FF>Steal 1</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Enables use of <skill>Steal 5</skill>.
 
 ::Abyssal_Knight_Card //id 4140 - slotted on Weapon
 +25% physical damage vs. Boss
@@ -540,7 +530,6 @@ splash 3x3 AoE on non-skill attack
 
 ::Pharaoh_Card //id 4148 - slotted on Headgear
 SP Consumption -30%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Gargoyle_Card //id 4149 - slotted on Accessory
 +1% chance to find <color=#008080>Box of Thunder</color> on Insect kill

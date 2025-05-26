@@ -23,7 +23,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
 
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
-            src.PerformSkillMotion();
+            src?.PerformSkillMotion();
             if(src != null && attack.Target != null)
                 FrostDiverTrailEffect.LaunchFrostDiverTrail(src, attack.Target, attack.MotionTime);
         }

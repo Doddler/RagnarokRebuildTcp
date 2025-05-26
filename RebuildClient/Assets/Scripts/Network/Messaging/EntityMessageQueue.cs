@@ -138,9 +138,9 @@ namespace Assets.Scripts.Network.Messaging
 
         public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false, bool takeWeaponSound = true)
         {
-#if DEBUG
-            Debug.Log($"Enqueued damage event {damage}x{hitCount} damage, execute after {time}s");
-#endif
+// #if DEBUG
+//             Debug.Log($"Enqueued damage event {damage}x{hitCount} damage, execute after {time}s");
+// #endif
             for (var i = 0; i < hitCount; i++)
             {
                 var msg = EntityMessagePool.Borrow();

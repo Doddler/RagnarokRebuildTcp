@@ -31,7 +31,7 @@ public class AngelusHandler : SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Angelus, 30f + 30 * lvl, lvl, dp);
         source.AddStatusEffect(status);
         ch.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);
-        CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.Angelus, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.Angelus, lvl, isIndirect);
         CommandBuilder.SendEffectOnCharacterMulti(ch, angelusEffect);
         CommandBuilder.ClearRecipients();
 

@@ -84,14 +84,19 @@ public class HealHandler : SkillHandlerBase
             res.Result = AttackResult.Heal;
             res.HitCount = 0;
             res.AttackMotionTime = 0;
+            res.IsIndirect = isIndirect;
             res.Time = Time.ElapsedTimeFloat;
 
-            source.ApplyAfterCastDelay(1f);
             target.HealHp(healValue);
-            if (source.Character.Type == CharacterType.Player)
-                source.ApplyCooldownForSupportSkillAction();
-            else
-                source.ApplyCooldownForAttackAction();
+            if (!isIndirect)
+            {
+                source.ApplyAfterCastDelay(1f);
+
+                if (source.Character.Type == CharacterType.Player)
+                    source.ApplyCooldownForSupportSkillAction();
+                else
+                    source.ApplyCooldownForAttackAction();
+            }
 
             ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.Heal, lvl, res);

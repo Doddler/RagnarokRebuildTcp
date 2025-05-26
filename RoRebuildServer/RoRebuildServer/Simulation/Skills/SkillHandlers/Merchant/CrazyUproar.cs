@@ -19,6 +19,6 @@ public class CrazyUproar : SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.CrazyUproar, 300f);
         source.AddStatusEffect(status);
 
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.CrazyUproar, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.CrazyUproar, lvl, isIndirect);
     }
 }

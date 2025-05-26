@@ -526,10 +526,16 @@ public partial class CombatEntity : IEntityAutoReset
     }
 
     [ScriptUseable]
+    public void RecoverSp(int sp, bool showValue = false) => RecoverSpRange(sp, -1, showValue);
+
+    [ScriptUseable]
     public void RecoverSpRange(int sp, int sp2, bool showValue = false)
     {
         if (sp2 != -1 && sp2 > sp)
             sp = GameRandom.NextInclusive(sp, sp2);
+
+        if (sp <= 0)
+            return;
 
         if (Character.Type == CharacterType.Player)
             sp += sp * 10 * Character.Player.MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery) / 100;
@@ -588,8 +594,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (source != null)
         {
             var race = source.GetRace();
-            if (source.GetSpecialType() != CharacterSpecialType.Boss && race != CharacterRace.Demon &&
-                race != CharacterRace.Insect)
+            if (source.GetSpecialType() == CharacterSpecialType.Boss || race == CharacterRace.Demon || race == CharacterRace.Insect)
                 return false;
         }
 

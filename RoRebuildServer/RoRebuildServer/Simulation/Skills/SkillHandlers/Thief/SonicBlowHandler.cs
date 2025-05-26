@@ -22,7 +22,7 @@ public class SonicBlowHandler : SkillHandlerBase
         var ch = source.Character;
         lvl = lvl.Clamp(1, 10);
 
-        var attack = new AttackRequest(CharacterSkill.CartRevolution, 0.5f + 0.05f * lvl, 1, AttackFlags.Physical, AttackElement.None);
+        var attack = new AttackRequest(CharacterSkill.SonicBlow, 0.5f + 0.05f * lvl, 1, AttackFlags.Physical, AttackElement.None);
         attack.AccuracyRatio = 150;
         
         //var res = source.CalculateCombatResult(target, 0.5f + 0.05f * lvl, 1, AttackFlags.Physical, CharacterSkill.SonicBlow);

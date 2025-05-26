@@ -199,13 +199,12 @@ public class CharacterStatusContainer
             if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnPreCalculateDamageDealt))
             {
                 var res = StatusEffectHandler.OnPreCalculateDamage(s.Type, Owner, target, ref s, ref req);
+                statusEffects[i] = s; //update any changed data
                 if (res == StatusUpdateResult.EndStatus)
                 {
                     remove[removeCount] = i;
                     removeCount++;
                 }
-                else
-                    statusEffects[i] = s; //update any changed data
             }
         }
 
@@ -228,13 +227,12 @@ public class CharacterStatusContainer
             if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnDealDamage))
             {
                 var res = StatusEffectHandler.OnAttack(s.Type, Owner, ref s, ref di);
+                statusEffects[i] = s; //update any changed data
                 if (res == StatusUpdateResult.EndStatus)
                 {
                     remove[removeCount] = i;
                     removeCount++;
                 }
-                else
-                    statusEffects[i] = s; //update any changed data
             }
         }
 
@@ -257,13 +255,12 @@ public class CharacterStatusContainer
             if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnTakeDamage))
             {
                 var res = StatusEffectHandler.OnTakeDamage(s.Type, Owner, ref s, ref di);
+                statusEffects[i] = s;
                 if (res == StatusUpdateResult.EndStatus)
                 {
                     remove[removeCount] = i;
                     removeCount++;
                 }
-                else
-                    statusEffects[i] = s;
             }
         }
 
@@ -286,13 +283,12 @@ public class CharacterStatusContainer
             if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnCalculateDamageTaken))
             {
                 var res = StatusEffectHandler.OnCalculateDamage(s.Type, Owner, ref s, ref req, ref di);
+                statusEffects[i] = s;
                 if (res == StatusUpdateResult.EndStatus)
                 {
                     remove[removeCount] = i;
                     removeCount++;
                 }
-                else
-                    statusEffects[i] = s;
             }
         }
 
@@ -315,13 +311,12 @@ public class CharacterStatusContainer
             if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnChangeEquipment))
             {
                 var res = StatusEffectHandler.OnChangeEquipment(s.Type, Owner, ref s);
+                statusEffects[i] = s;
                 if (res == StatusUpdateResult.EndStatus)
                 {
                     remove[removeCount] = i;
                     removeCount++;
                 }
-                else
-                    statusEffects[i] = s;
             }
         }
 
@@ -329,7 +324,7 @@ public class CharacterStatusContainer
             RemoveIdList(ref remove, removeCount);
     }
 
-    public void OnMove(Position src, Position dest)
+    public void OnMove(Position src, Position dest, bool isTeleport)
     {
         Debug.Assert(Owner != null);
         if (statusEffects == null || onMoveEffects <= 0)
@@ -343,14 +338,13 @@ public class CharacterStatusContainer
             var s = statusEffects[i];
             if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnMove))
             {
-                var res = StatusEffectHandler.OnMove(s.Type, Owner, ref s, src, dest);
+                var res = StatusEffectHandler.OnMove(s.Type, Owner, ref s, src, dest, isTeleport);
+                statusEffects[i] = s; //update any changed data
                 if (res == StatusUpdateResult.EndStatus)
                 {
                     remove[removeCount] = i;
                     removeCount++;
                 }
-                else
-                    statusEffects[i] = s; //update any changed data
             }
         }
 
@@ -373,13 +367,12 @@ public class CharacterStatusContainer
             if (StatusEffectHandler.GetUpdateMode(s.Type).HasFlag(StatusUpdateMode.OnMove))
             {
                 var res = StatusEffectHandler.OnChangeMaps(s.Type, Owner, ref s);
+                statusEffects[i] = s;
                 if (res == StatusUpdateResult.EndStatus)
                 {
                     remove[removeCount] = i;
                     removeCount++;
                 }
-                else
-                    statusEffects[i] = s; //update any changed data
             }
         }
 

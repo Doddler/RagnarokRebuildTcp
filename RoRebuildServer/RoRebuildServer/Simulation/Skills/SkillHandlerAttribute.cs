@@ -126,7 +126,7 @@ public abstract class SkillHandlerBase
     protected void GenericCastAndInformSelfSkill(WorldObject ch, CharacterSkill skill, int level)
     {
         ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
-        CommandBuilder.SkillExecuteSelfTargetedSkill(ch, skill, level);
+        CommandBuilder.SkillExecuteSelfTargetedSkill(ch, skill, level, false);
         //CommandBuilder.SendEffectOnCharacterMulti(ch, DataManager.EffectIdForName["TwoHandQuicken"]); //Two Hand Quicken
         CommandBuilder.ClearRecipients();
     }

@@ -18,11 +18,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
        
         public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
         {
-            if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
-            {
-                src.SpriteAnimator.State = SpriteState.Standby;
-                src.SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
-            }
+            HoldStandbyMotionForCast(src, castTime);
             src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Fire));
             
             if(target != null)

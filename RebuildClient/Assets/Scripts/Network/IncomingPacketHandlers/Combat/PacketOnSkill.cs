@@ -75,6 +75,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var dir = (Direction)msg.ReadByte();
             var pos = msg.ReadPosition();
             var motionTime = msg.ReadFloat();
+            var isIndirect = msg.ReadBoolean();
 
             if (!Network.EntityList.TryGetValue(id, out var controllable))
                 return;
@@ -88,10 +89,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 DamageTiming = motionTime,
             };
             
-            controllable.ShowSkillCastMessage(skill, 3);
+            if(!isIndirect)
+                controllable.ShowSkillCastMessage(skill, 3);
 
+            if(isIndirect)
+                controllable.SkipNextSkillOrAttackMotion(true);
             Network.PrepareAttackMotionSettings(controllable, pos, dir, motionTime, null);
             ClientSkillHandler.ExecuteSkill(controllable, ref attack);
+            if(isIndirect)
+                controllable.SkipNextSkillOrAttackMotion(false);
         }
 
         private void OnMessageTargetedSkillAttack(ClientInboundMessage msg)
@@ -116,6 +122,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var hits = msg.ReadByte();
             var motionTime = msg.ReadFloat();
             var damageTiming = msg.ReadFloat();
+            var isIndirect = msg.ReadBoolean();
             
             if (result == AttackResult.InvisibleMiss)
             {
@@ -161,7 +168,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             else
                 Network.PrepareAttackMotionSettings(controllable, pos, dir, motionTime, controllable2);
 
-            controllable.ShowSkillCastMessage(skill, 3);
+            if(!isIndirect)
+                controllable.ShowSkillCastMessage(skill, 3);
             // controllable.SnapToTile(pos, 0.03f, 1f);
             
             if (result == AttackResult.Miss && attackerCtrl != null)
@@ -172,7 +180,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
             if (hasTarget)
             {
+                if(isIndirect)
+                    controllable.SkipNextSkillOrAttackMotion(true);
                 ClientSkillHandler.ExecuteSkill(controllable, ref attack);
+                if(isIndirect)
+                    controllable.SkipNextSkillOrAttackMotion(false);
                 
                 if (result == AttackResult.LuckyDodge)
                 {

@@ -14,7 +14,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers
             source.ApplyCooldownForAttackAction();
 
             ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
-            CommandBuilder.SkillExecuteSelfTargetedSkill(source.Character, CharacterSkill.None, lvl);
+            CommandBuilder.SkillExecuteSelfTargetedSkill(source.Character, CharacterSkill.None, lvl, isIndirect);
             CommandBuilder.ClearRecipients();
         }
     }

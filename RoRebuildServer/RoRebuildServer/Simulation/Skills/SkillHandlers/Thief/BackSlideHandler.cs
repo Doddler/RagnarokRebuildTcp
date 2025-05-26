@@ -28,7 +28,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
             ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);
 
             CommandBuilder.SendMoveEntityMulti(ch);
-            CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.BackSlide, 1);
+            CommandBuilder.SkillExecuteSelfTargetedSkill(ch, CharacterSkill.BackSlide, 1, isIndirect);
             CommandBuilder.ClearRecipients();
         }
     }

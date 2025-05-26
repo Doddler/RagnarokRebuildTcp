@@ -460,15 +460,15 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SkillExecuteTargetedSkillAutoVis(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, DamageInfo di)
+    public static void SkillExecuteTargetedSkillAutoVis(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, DamageInfo di, bool isIndirect = false)
     {
         caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
         if(target != null) EnsureRecipient(target.Entity);
-        SkillExecuteTargetedSkill(caster, target, skill, lvl, di);
+        SkillExecuteTargetedSkill(caster, target, skill, lvl, di, isIndirect);
         ClearRecipients();
     }
 
-    public static void SkillExecuteTargetedSkill(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, DamageInfo di)
+    public static void SkillExecuteTargetedSkill(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, DamageInfo di, bool isIndirect = false)
     {
         if (!HasRecipients())
             return;
@@ -493,6 +493,7 @@ public static class CommandBuilder
         packet.Write((byte)di.HitCount);
         packet.Write(di.AttackMotionTime);
         packet.Write(di.Time - Time.ElapsedTimeFloat);
+        packet.Write(di.IsIndirect || isIndirect);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -522,14 +523,14 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SkillExecuteSelfTargetedSkillAutoVis(WorldObject caster, CharacterSkill skill, int lvl)
+    public static void SkillExecuteSelfTargetedSkillAutoVis(WorldObject caster, CharacterSkill skill, int lvl, bool isIndirect)
     {
         caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
-        SkillExecuteSelfTargetedSkill(caster, skill, lvl);
+        SkillExecuteSelfTargetedSkill(caster, skill, lvl, isIndirect);
         ClearRecipients();
     }
 
-    public static void SkillExecuteSelfTargetedSkill(WorldObject caster, CharacterSkill skill, int lvl)
+    public static void SkillExecuteSelfTargetedSkill(WorldObject caster, CharacterSkill skill, int lvl, bool isIndirect)
     {
         if (!HasRecipients())
             return;
@@ -543,10 +544,10 @@ public static class CommandBuilder
         packet.Write((byte)caster.FacingDirection);
         packet.Write(caster.Position);
         packet.Write(caster.CombatEntity?.GetTiming(TimingStat.AttackMotionTime) ?? 0);
+        packet.Write(isIndirect);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
-
 
     public static void SkillExecuteAreaTargetedSkillAutoVis(WorldObject caster, Position target, CharacterSkill skill, int lvl, float motionTime = -1)
     {

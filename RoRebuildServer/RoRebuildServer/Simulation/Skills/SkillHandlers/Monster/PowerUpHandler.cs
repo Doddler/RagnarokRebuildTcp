@@ -19,6 +19,6 @@ public class PowerUpHandler : SkillHandlerBase
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.PowerUp, int.Clamp(5 * lvl, 5, 25), lvl);
         source.AddStatusEffect(status);
 
-        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.PowerUp, lvl);
+        CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.PowerUp, lvl, isIndirect);
     }
 }

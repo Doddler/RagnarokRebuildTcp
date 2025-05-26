@@ -330,11 +330,11 @@
     },
     {
       "Code": "Anodyne",
-      "Description": "\u003Ccolor=#808080\u003EA medicine made from ground mint that is used to ease pain and relax muscle tension.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA medicine made from ground mint that is used to ease pain and relax muscle tension.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ECasts Endure Lv 1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Aloevera",
-      "Description": "\u003Ccolor=#808080\u003EAn herbal emollient made from aloe extract, despite its sour taste, it\u0027s addictive if regularly eaten.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn herbal emollient made from aloe extract, despite its sour taste, it\u0027s addictive if regularly eaten.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ECasts Provoke Lv 1 on yourself, reducing DEF by 10% and increasing ATK by 5% for 30s.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Yggdrasil_Berry",
@@ -1010,11 +1010,11 @@
     },
     {
       "Code": "Blessing_Scroll",
-      "Description": "\u003Ccolor=#808080\u003EA scroll in which a single use of Lv 10 Blessing has been recorded.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA scroll in which a single use of Blessing has been recorded.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ECasts Blessing Lv 10 on yourself when used.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Increase_Agi_Scroll",
-      "Description": "\u003Ccolor=#808080\u003EA scroll in which a single use of Lv 10 Increase AGI has been recorded.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA scroll in which a single use of Increase AGI has been recorded.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ECasts Increase AGI Lv 10 on yourself when used.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Aspersio_Scroll",
@@ -4166,11 +4166,11 @@
     },
     {
       "Code": "Nagan",
-      "Description": "\u003Ccolor=#808080\u003EA sword topped with several extra edges for making wounds deeper and more unsightly.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E120\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA sword topped with several extra edges for making wounds deeper and more unsightly.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B25% double attack chance\n\u002B5% damage vs. Demi-Human\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E120\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Ice_Falchion",
-      "Description": "\u003Ccolor=#808080\u003EA formal decorative sword imbued with water.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EWater\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E60\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA formal decorative sword imbued with water.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMATK \u002B120\nEnables use of \u003Ccolor=#0000FF\u003ECold Bolt 3\u003C/color\u003E.\n\u002B5% chance to autocast \u003Ccolor=#0000FF\u003ECold Bolt 3\u003C/color\u003E on melee attack.\n\u002B5% chance of \u003Ccolor=#800000\u003EFreeze\u003C/color\u003E on physical attack.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EWater\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E60\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Edge",
@@ -4178,15 +4178,15 @@
     },
     {
       "Code": "Fire_Brand",
-      "Description": "\u003Ccolor=#808080\u003EA formal decorative sword imbued with fire.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EFire\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA formal decorative sword imbued with fire.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMATK \u002B120\nEnables use of \u003Ccolor=#0000FF\u003EFire Bolt 3\u003C/color\u003E.\n\u002B5% chance to autocast \u003Ccolor=#0000FF\u003EFire Bolt 3\u003C/color\u003E on melee attack.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EFire\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Caesar\u0027s_Sword",
-      "Description": "\u003Ccolor=#808080\u003EA sword that looks like a pair of giant scissors.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E140\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E70\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA sword that looks like a pair of giant scissors.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E100% defense bypass vs \u003Crace\u003EPlants\u003C/race\u003E.\n\u002B25% physical damage vs. \u003Crace\u003EPlants\u003C/race\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E140\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E70\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Cutlus",
-      "Description": "\u003Ccolor=#808080\u003EA sword popularized by sea adventurers.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E150\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA sword popularized by sea adventurers.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B2\nDEF \u002B1\nEnables use of \u003Ccolor=#0000FF\u003EBash 5\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E150\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Solar_Sword",
@@ -4270,7 +4270,7 @@
     },
     {
       "Code": "Broad_Sword",
-      "Description": "\u003Ccolor=#808080\u003EA sword with a wide, double sided blade.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword (2-Handed)\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E140\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E33\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA sword with a wide, double sided blade.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EDEF \u002B5\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword (2-Handed)\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E140\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E33\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
     },
     {
       "Code": "Balmung",
@@ -4278,7 +4278,7 @@
     },
     {
       "Code": "Broad_Sword_",
-      "Description": "\u003Ccolor=#808080\u003EA sword with a wide, double sided blade.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword (2-Handed)\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E140\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E33\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA sword with a wide, double sided blade.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EDEF \u002B5\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword (2-Handed)\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E140\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E33\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
     },
     {
       "Code": "Claymore",
@@ -4310,7 +4310,7 @@
     },
     {
       "Code": "Katzbalger",
-      "Description": "\u003Ccolor=#808080\u003EA sword with a unique \u0022S\u0022 shaped hilt.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword (2-Handed)\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E175\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E48\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA sword with a unique \u0022S\u0022 shaped hilt.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EVIT \u002B5\nDEF \u002B10\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword (2-Handed)\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E175\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E48\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
     },
     {
       "Code": "Zweihander_",
@@ -4462,7 +4462,7 @@
     },
     {
       "Code": "Bazerald",
-      "Description": "\u003Ccolor=#808080\u003EA decorative dagger engraved with luxurious emblems.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EDagger\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E70\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EFire\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E36\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Mage, Archer, Merchant, Thief, Soul Linker, Ninja\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA decorative dagger engraved with luxurious emblems.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B5\nMATK \u002B80, MATK \u002B10%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EDagger\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E70\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EFire\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E36\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Mage, Archer, Merchant, Thief, Soul Linker, Ninja\u003C/color\u003E"
     },
     {
       "Code": "Assassin_Dagger",
@@ -4474,7 +4474,7 @@
     },
     {
       "Code": "Moonlight_Dagger",
-      "Description": "\u003Ccolor=#808080\u003EA dagger imbued with the lunar spirit that drains the enemy\u0027s soul.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EDagger\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E70\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E36\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Mage, Archer, Merchant, Thief, Soul Linker, Ninja\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA dagger imbued with the lunar spirit that drains the enemy\u0027s soul.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMaxSP \u002B10%\nRecover 3 SP per attack\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EDagger\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E70\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E36\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Mage, Archer, Merchant, Thief, Soul Linker, Ninja\u003C/color\u003E"
     },
     {
       "Code": "Azoth",
@@ -6042,7 +6042,7 @@
     },
     {
       "Code": "Cutlus_",
-      "Description": "\u003Ccolor=#808080\u003EA sword popularized by sea adventurers.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E150\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA sword popularized by sea adventurers.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B2\nDEF \u002B1\nEnables use of \u003Ccolor=#0000FF\u003EBash 5\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E150\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Platinum_Shotel",
@@ -8462,7 +8462,7 @@
     },
     {
       "Code": "Creamy_Card",
-      "Description": "Enable \u003Ccolor=#0000FF\u003ETeleport 1\u003C/color\u003E\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Enables use of \u003Ccolor=#0000FF\u003ETeleport\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Coco_Card",
@@ -8478,7 +8478,7 @@
     },
     {
       "Code": "Smokie_Card",
-      "Description": "Enable \u003Ccolor=#0000FF\u003EHide 1\u003C/color\u003E\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Enables use of \u003Ccolor=#0000FF\u003EHide 1\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Horn_Card",
@@ -8494,7 +8494,7 @@
     },
     {
       "Code": "Poison_Spore_Card",
-      "Description": "Enable \u003Ccolor=#0000FF\u003EEnvenom 3\u003C/color\u003E\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Enables use of \u003Ccolor=#0000FF\u003EEnvenom 3\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Vadon_Card",
@@ -8514,7 +8514,7 @@
     },
     {
       "Code": "Vitata_Card",
-      "Description": "SP Consumption \u002B25%\nEnable \u003Ccolor=#0000FF\u003EHeal 1\u003C/color\u003E\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "SP Consumption \u002B15%\nEnables use of \u003Ccolor=#0000FF\u003EHeal 1\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Angeling_Card",
@@ -8638,7 +8638,7 @@
     },
     {
       "Code": "Marine_Sphere_Card",
-      "Description": "Enable \u003Ccolor=#0000FF\u003EMagnum Break 3\u003C/color\u003E\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Enables use of \u003Ccolor=#0000FF\u003EMagnum Break 3\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Orc_Skeleton_Card",
@@ -8654,7 +8654,7 @@
     },
     {
       "Code": "Frilldora_Card",
-      "Description": "Enable \u003Ccolor=#0000FF\u003ECloak 1\u003C/color\u003E\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Enables use of \u003Ccolor=#0000FF\u003ECloak 1\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Swordfish_Card",
@@ -8674,7 +8674,7 @@
     },
     {
       "Code": "Obeaune_Card",
-      "Description": "Enable \u003Ccolor=#0000FF\u003ECure\u003C/color\u003E\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Enables use of \u003Ccolor=#0000FF\u003ECure\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Archer_Skeleton_Card",
@@ -8762,7 +8762,7 @@
     },
     {
       "Code": "Hunter_Fly_Card",
-      "Description": "\u002B3% chance to recover 15% physical damage as HP\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B3% chance to recover 15% physical damage as HP\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Isis_Card",
@@ -8834,7 +8834,7 @@
     },
     {
       "Code": "Dracula_Card",
-      "Description": "\u002B10% chance to recover 5% physical damage as SP\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B10% chance to recover 5% physical damage as SP\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Orc_Lord_Card",
@@ -8854,7 +8854,7 @@
     },
     {
       "Code": "Joker_Card",
-      "Description": "Enable \u003Ccolor=#0000FF\u003ESteal 1\u003C/color\u003E\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Enables use of \u003Ccolor=#0000FF\u003ESteal 5\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Abyssal_Knight_Card",
@@ -8890,7 +8890,7 @@
     },
     {
       "Code": "Pharaoh_Card",
-      "Description": "SP Consumption -30%\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "SP Consumption -30%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Gargoyle_Card",
