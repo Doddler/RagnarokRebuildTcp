@@ -454,7 +454,7 @@ public partial class Monster : IEntityAutoReset
         if (Target.IsNull() || !Target.IsAlive())
             return false;
         var ce = Target.Get<CombatEntity>();
-        if (!ce.IsValidTarget(CombatEntity))
+        if (!ce.CanBeTargeted(CombatEntity))
             return false;
         return true;
     }

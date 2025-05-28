@@ -443,8 +443,10 @@ public partial class CombatEntity
             {
                 TriggerOnAttackEffects(target, req, ref di);
                 target.TriggerWhenAttackedEffects(this, req, ref di);
-                if(Character.Type == CharacterType.Player)
+                if(Character.Type == CharacterType.Player && isPhysical)
                     TriggerAutoSpell(target, req, ref di);
+                if(target.Character.Type == CharacterType.Player && isPhysical)
+                    target.TriggerWhenAttackedAutoSpell(this, req, ref di);
             }
         }
 

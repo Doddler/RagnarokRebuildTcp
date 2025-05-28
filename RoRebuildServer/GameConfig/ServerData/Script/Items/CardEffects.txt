@@ -226,7 +226,7 @@ Item("Raydric_Archer_Card") { OnEquip: } //should add chance to get box of grudg
 Item("Leib_Olmai_Card") { OnEquip: AddStat(AddResistElementFire, 10); } //should add a chance to get red blood when killing animals
 Item("Wraith_Dead_Card") { OnEquip: } //curse on attacked
 Item("Wraith_Card") { OnEquip: } //chance to drop giggling box when killing undead
-Item("Loli_Ruri_Card") { OnValidate: return false; OnEquip: } //autospell heal when attacked
+Item("Loli_Ruri_Card") { OnEquip: AutoSpellWhenAttacked(Heal, 3, 50, TargetSelf); } //autospell heal when attacked
 Item("Rotar_Zairo_Card") { OnEquip: AddStat(AddCritDamage, 10); } //Add 7% crit vs fish
 Item("Lude_Card") { OnValidate: return false; OnEquip: } //endure for novices
 Item("Rybio_Card") { OnEquip: } //stun resist
@@ -265,7 +265,7 @@ Item("Sting_Card") { OnEquip: AddStat(AddDef, 2); if(Refine > 8) {AddStat(AddMDe
 Item("Spring_Rabbit_Card") { OnEquip: } //meat drop and bonus meat healing
 Item("Sleeper_Card") { OnEquip: } //sleepy box on fish kill
 Item("Cloud_Tower_Manager_Card") { OnEquip: AddStat(AddInt, 1); } //should speed up casting by 5%
-Item("Shinobi_Card") { OnEquip: AddStat(AddAgi, 1); } //autospell cloaking when attacked
+Item("Shinobi_Card") { OnEquip: AddStat(AddAgi, 1); AutoSpellWhenAttacked(Cloaking, 5, 100); } //autospell cloaking when attacked
 Item("Mi_Gao_Card") { OnValidate: return false; OnEquip: } //-50% damage from woe guardians...
 Item("Hermit_Plant_Card") { OnValidate: return false; OnEquip: } //herb drops from plant and herb healing
 Item("Baby_Leopard_Card") { OnEquip: AddStat(AddLuk, 3); } //should make armor indestructable (for merchant only)

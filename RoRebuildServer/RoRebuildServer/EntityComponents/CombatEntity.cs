@@ -600,6 +600,12 @@ public partial class CombatEntity : IEntityAutoReset
 
         return (BodyState & BodyStateFlags.AnyHiddenState) > 0;
     }
+    
+    //Same as IsValidTarget, but can't see cloaked targets
+    public bool CanBeTargeted(CombatEntity? source, bool canHarmAllies = false, bool canTargetHidden = false)
+    {
+        return IsValidTarget(source, canHarmAllies, canTargetHidden) && (canTargetHidden || !IsHiddenTo(source));
+    }
 
     public bool IsValidTarget(CombatEntity? source, bool canHarmAllies = false, bool canTargetHidden = false)
     {
@@ -768,6 +774,8 @@ public partial class CombatEntity : IEntityAutoReset
             return;
         }
 
+        var spCost = hasSpCost ? Player.GetSpCostForSkill(CastingSkill.Skill, CastingSkill.Level) : 0;
+
         var validationResult = SkillHandler.ValidateTarget(CastingSkill, this);
         if (validationResult != SkillValidationResult.Success)
         {
@@ -790,7 +798,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (SkillHandler.ExecuteSkill(CastingSkill, this))
         {
             if (hasSpCost)
-                Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level);
+                Player.TakeSpValue(spCost);
             if (Character.Type == CharacterType.Monster)
                 Character.Monster.RunCastSuccessEvent();
         }
@@ -1217,13 +1225,14 @@ public partial class CombatEntity : IEntityAutoReset
         }
 
         var hasSpCost = Character.Type == CharacterType.Player && CastingSkill.ItemSource <= 0;
-
+        
         if (hasSpCost && !Player.HasSpForSkill(CastingSkill.Skill, CastingSkill.Level))
         {
             CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
             return;
         }
 
+        var spCost = hasSpCost ? Player.GetSpCostForSkill(CastingSkill.Skill, CastingSkill.Level) : 0; 
         var hasExecuted = false;
         if (CastingSkill.ItemSource > 0 && Character.Type == CharacterType.Player)
         {
@@ -1237,7 +1246,7 @@ public partial class CombatEntity : IEntityAutoReset
             hasExecuted = SkillHandler.ExecuteSkill(CastingSkill, this);
 
         if (hasSpCost && hasExecuted)
-            Player.TakeSpForSkill(CastingSkill.Skill, CastingSkill.Level);
+            Player.TakeSpValue(spCost);
         else
             CommandBuilder.StopCastMultiAutoVis(Character);
 
@@ -1631,6 +1640,9 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (DamageQueue.Count > 0)
             AttackUpdate();
+
+        if (Character.Type == CharacterType.Player && Player.IndirectCastQueue.Count > 0)
+            Player.IndirectCastQueueUpdate(); //we handle this in combat entity to guarantee it happens after damage queue update
 
         if (statusContainer != null && Character.IsActive) //we could have gone inactive after attack update
             statusContainer.UpdateStatusEffects();

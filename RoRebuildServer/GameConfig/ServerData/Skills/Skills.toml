@@ -861,12 +861,16 @@ Name = "Reward for Quest"
 Target = "Self"
 
 [PhysBreaker] #originally Dark Breath (not to be confused with Darkness Breath, the aoe)
-Name = "HP Breaker" #need to try to communicate it drops your maxHP...
+Name = "HP Cut" #need to try to communicate it drops your maxHP...
 Target = "Enemy"
 
 [MentalBreaker]
 Name = "Mental Breaker"
 Target = "Enemy"
+
+[NoEffectAttack]
+Name = ""
+Target = "Any"
 
 [NoCast]
 #use when you want the enemy to trigger something without the player knowing

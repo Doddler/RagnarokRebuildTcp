@@ -86,7 +86,7 @@ Enables use of <skill>Cold Bolt 3</skill>.
 <color=#808080>A formal decorative sword imbued with fire.</color>
 MATK +120
 Enables use of <skill>Fire Bolt 3</skill>.
-+5% chance to autocast <skill>Fire Bolt 3</skill> on melee attack.
++5% chance to autocast <skill>Fire Bolt 3</skill> on physical attack.
 
 ::Caesar's_Sword //id 1134 - Sword
 <color=#808080>A sword that looks like a pair of giant scissors.</color>

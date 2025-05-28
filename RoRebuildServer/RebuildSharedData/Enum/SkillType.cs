@@ -14,6 +14,13 @@ namespace RebuildSharedData.Enum
         Self
     }
 
+    public enum SkillPreferredTarget : byte
+    {
+        Any,
+        Enemy,
+        Self
+    }
+
     public enum SkillClass : byte
     {
         None,

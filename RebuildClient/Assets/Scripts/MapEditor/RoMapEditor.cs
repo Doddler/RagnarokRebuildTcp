@@ -82,6 +82,7 @@ namespace Assets.Scripts.MapEditor
 
         public RoMapData MapData => mapData;
 
+
         public void Awake()
         {
             if (Application.isPlaying && Camera.main == null && !mapData.IsWalkTable)
@@ -96,6 +97,7 @@ namespace Assets.Scripts.MapEditor
             mapData = data;
             if (mapData.IsWalkTable)
                 TileSize = 1f;
+            
             RebuildMesh();
             MakeStatic();
 
@@ -563,6 +565,8 @@ namespace Assets.Scripts.MapEditor
                             new RectInt(x * ChunkSizeInTiles, y * ChunkSizeInTiles, ChunkSizeInTiles, ChunkSizeInTiles),
                             TileSize, PaintEmptyTileColorsBlack);
                     }
+                    else
+                        Chunks[x + y * ChunkWidth].MapData = MapData;
 
                     chunk.transform.parent = gameObject.transform;
                     chunk.transform.localPosition = new Vector3(x * TileSize * ChunkSizeInTiles, 0, y * TileSize * ChunkSizeInTiles);

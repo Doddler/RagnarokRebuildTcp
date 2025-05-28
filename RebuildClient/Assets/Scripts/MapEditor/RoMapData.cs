@@ -193,7 +193,7 @@ namespace Assets.Scripts.MapEditor
 
         [NonSerialized]
         private RoMapSharedMeshData sharedMeshData;
-        public RoMapSharedMeshData SharedMeshData => sharedMeshData ?? (sharedMeshData = new RoMapSharedMeshData(this));
+        public RoMapSharedMeshData SharedMeshData => sharedMeshData ??= new RoMapSharedMeshData(this);
 
         private MapSubsetData copyData;
         

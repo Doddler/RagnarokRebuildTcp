@@ -578,6 +578,10 @@ public class ScriptBuilder
 
             foreach (var i in Enum.GetValues<CharacterSkill>())
                 additionalVariables.TryAdd(i.ToString(), $"CharacterSkill.{i}");
+
+
+            foreach (var i in Enum.GetValues<SkillPreferredTarget>())
+                additionalVariables.TryAdd($"Target{i}", $"SkillPreferredTarget.{i}");
         }
         else
         {

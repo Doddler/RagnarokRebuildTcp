@@ -146,7 +146,7 @@ public partial class Monster
         if (!ValidateTarget() || targetCharacter == null)
             return true;
 
-        if (!targetCharacter.CombatEntity.IsValidTarget(CombatEntity) || targetCharacter.CombatEntity.IsHiddenTo(CombatEntity))
+        if (!targetCharacter.CombatEntity.CanBeTargeted(CombatEntity))
             return true;
 
         if (Character.AttackCooldown > Time.ElapsedTimeFloat)
@@ -277,7 +277,7 @@ public partial class Monster
         if (!WasAttacked)
             return false;
 
-        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.IsValidTarget(CombatEntity))
+        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.CanBeTargeted(CombatEntity))
             return false;
 
         if (swapToNewAttacker && Target != Character.LastAttacked)
@@ -292,7 +292,7 @@ public partial class Monster
         if (!WasAttacked)
             return false;
 
-        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.IsValidTarget(CombatEntity))
+        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.CanBeTargeted(CombatEntity))
             return false;
 
         if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Provoke))
@@ -312,7 +312,7 @@ public partial class Monster
         if (!WasMagicLocked)
             return false;
 
-        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.IsValidTarget(CombatEntity))
+        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.CanBeTargeted(CombatEntity))
             return false;
 
         if (Target != Character.LastAttacked)
@@ -400,7 +400,7 @@ public partial class Monster
         {
             var target = m.Target.Get<CombatEntity>();
 
-            if (target.IsValidTarget(CombatEntity))
+            if (target.CanBeTargeted(CombatEntity))
             {
                 SwapTarget(m.Target);
                 return true;
@@ -711,7 +711,7 @@ public partial class Monster
             return false;
 
         var targetEntity = targetCharacter.Entity.Get<CombatEntity>();
-        if (!targetEntity.IsValidTarget(CombatEntity) || targetEntity.IsHiddenTo(CombatEntity))
+        if (!targetEntity.CanBeTargeted(CombatEntity))
             return false;
 
         if (performSkillCheck && AiSkillScanUpdate())

@@ -2278,7 +2278,7 @@
     {
       "SkillId": 146,
       "Icon": "nv_basic",
-      "Name": "HP Breaker",
+      "Name": "HP Cut",
       "Target": 1,
       "Type": 0,
       "MaxLevel": 0,
@@ -2301,6 +2301,18 @@
     },
     {
       "SkillId": 148,
+      "Icon": "nv_basic",
+      "Name": "",
+      "Target": 3,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 149,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,

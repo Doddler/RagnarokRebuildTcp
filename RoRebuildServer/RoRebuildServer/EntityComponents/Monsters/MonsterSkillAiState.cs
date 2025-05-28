@@ -457,12 +457,17 @@ public class MonsterSkillAiState(Monster monsterIn)
         if (flags.HasFlag(MonsterSkillAiFlags.UnlimitedRange))
             range = 21;
 
+        if (flags.HasFlag(MonsterSkillAiFlags.SelfTarget))
+            skillTarget = SkillTarget.Self;
+
         var castFlags = SkillCastFlags.None;
 
         if (flags.HasFlag(MonsterSkillAiFlags.HideSkillName))
             castFlags |= SkillCastFlags.HideSkillName;
         if (flags.HasFlag(MonsterSkillAiFlags.HideCastBar))
             castFlags |= SkillCastFlags.HideCastBar;
+        if (flags.HasFlag(MonsterSkillAiFlags.NoEffect))
+            castFlags |= SkillCastFlags.NoEffect;
         var ignoreTargetRequirement = flags.HasFlag(MonsterSkillAiFlags.NoTarget);
         ExecuteEventAtStartOfCast = flags.HasFlag(MonsterSkillAiFlags.EventOnStartCast);
         

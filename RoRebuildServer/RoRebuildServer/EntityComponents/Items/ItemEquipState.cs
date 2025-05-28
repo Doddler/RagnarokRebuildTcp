@@ -42,6 +42,7 @@ public struct EquipStatChange : IEquatable<EquipStatChange>
 public struct AutoSpellEffect
 {
     public CharacterSkill Skill;
+    public SkillPreferredTarget Target;
     public int Level;
     public int Chance;
 }
@@ -643,13 +644,14 @@ public class ItemEquipState
         return false;
     }
 
-    public void AutoSpellOnAttack(CharacterSkill skill, int level, int chance)
+    public void AutoSpellOnAttack(CharacterSkill skill, int level, int chance, SkillPreferredTarget target = SkillPreferredTarget.Any)
     {
         var cast = new AutoSpellEffect()
         {
             Skill = skill,
             Level = level,
-            Chance = chance
+            Chance = chance,
+            Target = target
         };
 
         var id = nextId++;
@@ -666,14 +668,14 @@ public class ItemEquipState
         equipmentEffects.Add(ref equipState);
     }
 
-
-    public void AutoSpellWhenAttacked(CharacterSkill skill, int level, int chance)
+    public void AutoSpellWhenAttacked(CharacterSkill skill, int level, int chance, SkillPreferredTarget target = SkillPreferredTarget.Any)
     {
         var cast = new AutoSpellEffect()
         {
             Skill = skill,
             Level = level,
-            Chance = chance
+            Chance = chance,
+            Target = target
         };
 
         var id = nextId++;

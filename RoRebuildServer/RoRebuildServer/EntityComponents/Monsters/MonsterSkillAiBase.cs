@@ -23,7 +23,9 @@ public enum MonsterSkillAiFlags
     UnlimitedRange = 128,
     NoTarget = 256,
     IgnoreCooldown = 512,
-    HiddenCast = 1024
+    HiddenCast = 1024,
+    NoEffect = 2048,
+    SelfTarget = 4096
 }
 
 public abstract class MonsterSkillAiBase

@@ -13,7 +13,7 @@ using System.Diagnostics;
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 
 [MonsterSkillHandler(CharacterSkill.SafetyWall, SkillClass.Magic, SkillTarget.Ally)]
-[SkillHandler(CharacterSkill.SafetyWall, SkillClass.Magic, SkillTarget.Ground)]
+[SkillHandler(CharacterSkill.SafetyWall, SkillClass.Magic, SkillTarget.Ground, SkillPreferredTarget.Self)]
 public class SafetyWallHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => float.Clamp(4.5f - lvl * 0.5f, 1f, 5f);

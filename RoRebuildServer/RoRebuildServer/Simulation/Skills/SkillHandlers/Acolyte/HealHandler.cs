@@ -36,9 +36,6 @@ public class HealHandler : SkillHandlerBase
         if (target == null || target.Character.State == CharacterState.Dead)
             return;
 
-        if (isIndirect)
-            throw new Exception($"Heal cannot (currently) be called without caster!");
-
         var ch = source.Character;
         var healValue = lvl; //default to the level of the skill for monster skill shenanigans
 

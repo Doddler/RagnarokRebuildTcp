@@ -57,6 +57,7 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
     [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
+    [EntityIgnoreNullCheck] public List<SkillCastInfo> IndirectCastQueue { get; set; } = null!;
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
     public Dictionary<CharacterSkill, int>? GrantedSkills;
     public Dictionary<string, int>? NpcFlags;
@@ -244,6 +245,8 @@ public class Player : IEntityAutoReset
         if (StorageInventory != null)
             CharacterBag.Return(StorageInventory);
 
+        IndirectCastQueue.Clear();
+
         for (var i = 0; i < MemoLocations.Length; i++)
             MemoLocations[i].MapName = null;
 
@@ -278,6 +281,9 @@ public class Player : IEntityAutoReset
         Equipment.Player = this;
         StorageId = -1;
         Equipment.RunAllOnEquip();
+
+        if (IndirectCastQueue == null!)
+            IndirectCastQueue = new List<SkillCastInfo>(4);
 
         SetStat(CharacterStat.Level, GetData(PlayerStat.Level));
         Character.DisplayType = CharacterDisplayType.Player;
@@ -862,7 +868,8 @@ public class Player : IEntityAutoReset
             CommandBuilder.ChangePlayerSpecialActionState(this, SpecialPlayerActionState.None);
         }
 
-        CombatEntity.UpdateHidingStateAfterAttack();
+        if(skill != CharacterSkill.Cloaking && skill != CharacterSkill.Hiding)
+            CombatEntity.UpdateHidingStateAfterAttack();
     }
 
     public void SaveCharacterToData()
@@ -912,7 +919,9 @@ public class Player : IEntityAutoReset
 
     public bool HasSpForSkill(CharacterSkill skill, int level)
     {
-        var spCost = DataManager.GetSpForSkill(skill, level) * (100 + GetStat(CharacterStat.SpConsumption)) / 100;
+        var spCost = GetSpCostForSkill(skill, level);
+        if (spCost == 0)
+            return true;
         
         var currentSp = GetStat(CharacterStat.Sp);
         if (currentSp < spCost)
@@ -921,23 +930,12 @@ public class Player : IEntityAutoReset
         return true;
     }
 
-    public bool TakeSpForSkill(CharacterSkill skill, int level)
+    public int GetSpCostForSkill(CharacterSkill skill, int level)
     {
         if (!SkillHandler.ShouldSkillCostSp(skill, CombatEntity))
-            return true;
+            return 0;
 
-        var spCost = DataManager.GetSpForSkill(skill, level) * (100 + GetStat(CharacterStat.SpConsumption)) / 100;
-
-        var currentSp = GetStat(CharacterStat.Sp);
-        if (currentSp < spCost)
-            return false;
-        currentSp -= spCost;
-        SetStat(CharacterStat.Sp, currentSp);
-        CommandBuilder.ChangeSpValue(this, currentSp, GetStat(CharacterStat.MaxSp));
-        if (Party != null)
-            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
-
-        return true;
+        return DataManager.GetSpForSkill(skill, level) * (100 + GetStat(CharacterStat.SpConsumption)) / 100;
     }
 
     public void TakeSpValue(int spCost)
@@ -1809,6 +1807,22 @@ public class Player : IEntityAutoReset
         }
     }
 
+    public void IndirectCastQueueUpdate()
+    {
+        var hasResult = false;
+        while (IndirectCastQueue.Count > 0 && IndirectCastQueue[0].CastTime < Time.ElapsedTimeFloat)
+        {
+            var cast = IndirectCastQueue[0];
+            IndirectCastQueue.RemoveAt(0);
+
+            if (GetStat(CharacterStat.Disabled) > 0 || IsInNpcInteraction)
+                continue; //lose the skill activation
+
+            if (SkillHandler.ValidateTarget(cast, CombatEntity) == SkillValidationResult.Success)
+                SkillHandler.ExecuteSkill(cast, CombatEntity);
+        }
+    }
+
     public void Update()
     {
         ActionCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
@@ -1817,15 +1831,17 @@ public class Player : IEntityAutoReset
 
         Debug.Assert(Character.Map != null);
         Debug.Assert(CombatEntity != null);
-        
+
         if (!Character.StateCanAttack)
         {
             Character.QueuedAction = QueuedAction.None;
             AutoAttackLock = false;
+            if(IndirectCastQueue.Count > 0)
+                IndirectCastQueue.Clear();
             if (Character.State == CharacterState.Dead)
                 return;
         }
-
+        
         UpdateRegenTick();
 
         if (IsInNpcInteraction)

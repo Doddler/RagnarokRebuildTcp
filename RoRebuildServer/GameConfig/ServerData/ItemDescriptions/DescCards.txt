@@ -722,8 +722,7 @@ STR +1, VIT +1
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Loli_Ruri_Card //id 4191 - slotted on Armor
-+5% Autospell <color=#0000FF>Heal 3</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++5% autocast <skill>Heal 3</skill> when taking physical damage.
 
 ::Rotar_Zairo_Card //id 4192 - slotted on Weapon
 CRIT damage +10%
@@ -800,7 +799,7 @@ DEF +1
 
 ::Miyabi_Doll_Card //id 4208 - slotted on Boots
 SP +10%
-+5% <color=#0000FF>Frost Diver</color> damage
++5% <skill>Frost Diver</skill> damage
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Violy_Card //id 4209 - slotted on Accessory
@@ -905,8 +904,7 @@ Cast Time -5%
 
 ::Shinobi_Card //id 4230 - slotted on Accessory
 AGI +1
-+10% Autospell <color=#0000FF>Cloak 5</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++10% autocast <skill>Cloak 5</skill> when taking physical damage.
 
 ::Mi_Gao_Card //id 4231 - slotted on Shield
 -50% damage from WoE Guardians

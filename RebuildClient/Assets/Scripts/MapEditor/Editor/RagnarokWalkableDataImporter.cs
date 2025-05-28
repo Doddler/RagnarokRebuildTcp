@@ -216,11 +216,13 @@ namespace Assets.Scripts.MapEditor.Editor
                             throw new Exception("Unknown cell type " + type);
                     }
 
-                    if (isInWater && ((c.Type & CellType.Walkable) > 0 || (c.Type & CellType.Snipable) > 0))
+                    if (isInWater)
                     {
                         c.Type |= CellType.Water;
                         if ((c.Type & CellType.Walkable) > 0)
                             color = "blue";
+                        else
+                            color = "orange";
                         // Debug.Log($"Water cell {x},{y} type {c.Type}");
                     }
 

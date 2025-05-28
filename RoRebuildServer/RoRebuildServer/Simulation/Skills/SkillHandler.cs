@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -17,6 +18,7 @@ namespace RoRebuildServer.Simulation.Skills
         private static MonsterSkillHandlerAttribute[] monsterSkillAttributes;
 
         public static SkillHandlerAttribute GetSkillAttributes(CharacterSkill skill) => skillAttributes[(int)skill];
+        public static SkillPreferredTarget GetPreferredSkillTarget(CharacterSkill skill) => skillAttributes[(int)skill].SkillPreferredTarget;
         public static MonsterSkillHandlerAttribute GetMonsterSkillAttributes(CharacterSkill skill) => monsterSkillAttributes[(int)skill];
 
         public static void ApplyPassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.ApplyPassiveEffects(owner, level);
@@ -153,6 +155,9 @@ namespace RoRebuildServer.Simulation.Skills
 
             CombatEntity? target = info.TargetEntity.GetIfAlive<CombatEntity>();
             var handler = handlers[(int)info.Skill];
+            if ((info.Flags & SkillCastFlags.NoEffect) > 0)
+                handler = handlers[(int)CharacterSkill.NoEffectAttack];
+
             if (handler != null)
             {
                 if (skillAttributes[(int)info.Skill].SkillTarget != SkillTarget.Passive)
@@ -160,7 +165,8 @@ namespace RoRebuildServer.Simulation.Skills
                     if (!handler.PreProcessValidation(src, target, info.TargetedPosition, info.Level, info.IsIndirect))
                         return false;
 
-                    src.UpdateHidingStateAfterAttack();
+                    if(info.Skill != CharacterSkill.Cloaking && info.Skill != CharacterSkill.Hiding)
+                        src.UpdateHidingStateAfterAttack();
                     handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
                     return true;
                 }

@@ -154,12 +154,24 @@ public class SkillHandlerAttribute : Attribute
     public CharacterSkill SkillType;
     public SkillClass SkillClassification;
     public SkillTarget SkillTarget;
+    public SkillPreferredTarget SkillPreferredTarget;
 
-    public SkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None, SkillTarget skillTarget = SkillTarget.Enemy)
+    public SkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None, SkillTarget skillTarget = SkillTarget.Enemy, SkillPreferredTarget preferredTarget = SkillPreferredTarget.Any)
     {
         SkillType = skillType;
         SkillClassification = skillClassification;
         SkillTarget = skillTarget;
+        SkillPreferredTarget = preferredTarget;
+        if (preferredTarget == SkillPreferredTarget.Any)
+        {
+            SkillPreferredTarget = skillTarget switch
+            {
+                SkillTarget.Enemy => SkillPreferredTarget.Enemy,
+                SkillTarget.Ally => SkillPreferredTarget.Self,
+                SkillTarget.Self => SkillPreferredTarget.Self,
+                _ => SkillPreferredTarget.Enemy
+            };
+        }
     }
 }
 

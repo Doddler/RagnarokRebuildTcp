@@ -6,6 +6,7 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using System.Diagnostics;
+using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -29,10 +30,13 @@ public class PacketUseInventoryItem : IClientPacketHandler
 
         var itemId = msg.ReadInt32();
 
+        if (player.CombatEntity.HasBodyState(BodyStateFlags.Hidden))
+            return;
+
         //obviously you should check if the item is in your inventory, but we have no inventory!
 
         player.AddActionDelay(CooldownActionType.UseItem);
-
+        
         if (!DataManager.ItemList.TryGetValue(itemId, out var item) || !DataManager.UseItemInfo.TryGetValue(itemId, out var useInfo))
         {
             ServerLogger.LogError($"User is attempting to use invalid item id {itemId}. Due to the error, the player will be disconnected.");

@@ -7,6 +7,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.ScriptSystem;
+using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 
 namespace RoRebuildServer.EntityComponents;
@@ -108,6 +109,30 @@ public partial class CombatEntity
         }
     }
 
+    private SkillCastInfo PrepareAutoSpellActivation(AutoSpellEffect effect, CombatEntity src, CombatEntity target)
+    {
+        var spellTarget = target.Entity;
+        var pos = target.Character.Position;
+        var targetType = effect.Target == SkillPreferredTarget.Any
+            ? SkillHandler.GetPreferredSkillTarget(effect.Skill)
+            : effect.Target;
+
+        if (targetType == SkillPreferredTarget.Self)
+        {
+            spellTarget = Entity;
+            pos = Character.Position;
+        }
+
+        return new SkillCastInfo()
+        {
+            Skill = effect.Skill,
+            Level = effect.Level,
+            TargetEntity = spellTarget,
+            TargetedPosition = pos,
+            IsIndirect = true
+        };
+    }
+
     private void TriggerAutoSpell(CombatEntity target, AttackRequest req, ref DamageInfo res)
     {
         if (Character.Type != CharacterType.Player || req.SkillSource != CharacterSkill.None ||
@@ -118,17 +143,33 @@ public partial class CombatEntity
         {
             if (GameRandom.Next(0, 1000) < effect.Chance)
             {
-                var skillCast = new SkillCastInfo()
-                {
-                    Skill = effect.Skill,
-                    Level = effect.Level,
-                    TargetEntity = target.Entity,
-                    IsIndirect = true
-                };
+                var skillCast = PrepareAutoSpellActivation(effect, this, target);
+
+                if (SkillHandler.ValidateTarget(skillCast, this) == SkillValidationResult.Success)
+                    SkillHandler.ExecuteSkill(skillCast, this);
+            }
+        }
+    }
+
+    private void TriggerWhenAttackedAutoSpell(CombatEntity attacker, AttackRequest req, ref DamageInfo res)
+    {
+        if (Character.Type != CharacterType.Player 
+            || !req.Flags.HasFlag(AttackFlags.Physical) 
+            || !res.IsDamageResult 
+            || Character.Position.DistanceTo(attacker.Character.Position) > 14)
+            return;
+
+        foreach (var (_, effect) in Player.Equipment.AutoSpellSkillsWhenAttacked)
+        {
+            if (GameRandom.Next(0, 1000) < effect.Chance)
+            {
+                var skillCast = PrepareAutoSpellActivation(effect, this, attacker);
+                skillCast.CastTime = res.Time;
 
                 if (SkillHandler.ValidateTarget(skillCast, this) == SkillValidationResult.Success)
                 {
-                    SkillHandler.ExecuteSkill(skillCast, this);
+                    Player.IndirectCastQueue.Add(skillCast);
+                    Player.IndirectCastQueue.Sort((a, b) => a.CastTime.CompareTo(b.CastTime));
                 }
             }
         }
