@@ -261,6 +261,9 @@ namespace Assets.Scripts.MapEditor.Editor
 						return null;
 				}
 			}
+			
+			Debug.Log($"Loaded {world.Models.Count} models, {world.Lights.Count} lights, " +
+			          $"{world.Sounds.Count} sounds, {world.Effects.Count} effects for {basename}");
 
 			Debug.Log($"Loaded rsw world data {fs.Position} out of {fs.Length}");
 

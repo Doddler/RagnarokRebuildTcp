@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Objects;
@@ -25,6 +26,22 @@ namespace Assets.Scripts.MapEditor.Editor
 
         private Color maxLightColor = Color.black;
         private float maxLight = 0f;
+        
+        private GameObject SafeLoadPrefab(string path)
+        {
+            try
+            {
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if (prefab == null)
+                    Debug.LogError($"[LoadPrefab] Prefab not found at path: {path}");
+                return prefab;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[LoadPrefab] Failed to load prefab at '{path}': {ex.Message}");
+                return null;
+            }
+        }
 
         private void SetWorldLighting()
         {
@@ -335,6 +352,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
             foreach (var effect in world.Effects)
             {
+                Debug.Log($"[LoadEffects] effect.Id={effect.Id}, Name='{effect.Name}', Delay={effect.Delay}");
                 var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 //var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Smoke/SmokeEmitter.prefab");
                 //var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
@@ -354,7 +372,7 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 if (effect.Id == 44) //chimney smoke
                 {
-                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Smoke/SmokeEmitter.prefab");
+                    var obj2 = SafeLoadPrefab("Assets/Effects/Smoke/SmokeEmitter.prefab");
                     var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
                     obj.name = effect.Id + " - " + effect.Name;
                     obj.transform.SetParent(effectContainer.transform, false);
@@ -364,7 +382,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 if (effect.Id == 45) //fireflies
                 {
-                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Resources/Fireflies.prefab");
+                    var obj2 = SafeLoadPrefab("Assets/Prefabs/Resources/Fireflies.prefab");
                     var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
                     obj.name = effect.Id + " - " + effect.Name;
                     obj.transform.SetParent(effectContainer.transform, false);
@@ -397,7 +415,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 if (effect.Id == 47)
                 {
-                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/Torch.prefab");
+                    var obj2 = SafeLoadPrefab("Assets/Effects/Prefabs/Torch.prefab");
                     var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
                     obj.name = effect.Id + " - " + effect.Name;
 
@@ -432,7 +450,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
                     for (var i = 1; i <= 4; i++)
                     {
-                        renderer.PrefabList.Add(AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/Effects/Prefabs/bubble{i}.prefab"));
+                        renderer.PrefabList.Add(SafeLoadPrefab($"Assets/Effects/Prefabs/bubble{i}.prefab"));
                     }
 
                     continue;
@@ -441,7 +459,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 if (effect.Id == 110) //gas push
                 {
-                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Effects/Prefabs/GasPush.prefab");
+                    var obj2 = SafeLoadPrefab("Assets/Effects/Prefabs/GasPush.prefab");
                     var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
                     obj.AddComponent<BillboardObject>();
                     obj.name = effect.Id + " - " + effect.Name;
@@ -460,7 +478,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 if (effect.Id == 165) //christmas light, or the effect called 'banjjakii'
                 {
-                    var obj2 = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/ChristmasLight.prefab");
+                    var obj2 = SafeLoadPrefab("Assets/Prefabs/ChristmasLight.prefab");
                     var obj = PrefabUtility.InstantiatePrefab(obj2) as GameObject;
                     obj.AddComponent<BillboardObject>();
                     obj.name = effect.Id + " - " + effect.Name;
@@ -594,8 +612,10 @@ namespace Assets.Scripts.MapEditor.Editor
                 {
                     if (File.Exists(prefabPath))
                     {
-                        var prefabRef = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+                        var prefabRef = SafeLoadPrefab(prefabPath);
                         obj = PrefabUtility.InstantiatePrefab(prefabRef, SceneManager.GetActiveScene()) as GameObject;
+                        if (obj == null)
+                            Debug.LogError($"❌ Couldn’t find prefab at path {prefabPath}!");
                         modelCache.Add(model.FileName, prefabRef);
                     }
                     else
@@ -609,7 +629,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
                             PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
 
-                            var prefabRef = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+                            var prefabRef = SafeLoadPrefab(prefabPath);
                             modelCache.Add(model.FileName, prefabRef);
                         }
                         catch (FileNotFoundException)

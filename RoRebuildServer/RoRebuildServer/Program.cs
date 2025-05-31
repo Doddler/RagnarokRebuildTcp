@@ -16,7 +16,17 @@ if (args.Length > 0 && args[0] == "compile")
     return;
 }
 
-Console.Clear();
+try
+{
+    if (!Console.IsOutputRedirected)
+    {
+        Console.Clear();
+    }
+}
+catch (IOException)
+{
+    Console.WriteLine("[WARN] Console.Clear() failed — skipping.");
+}
 
 CreateHostBuilder(args).Build().Run();
 
