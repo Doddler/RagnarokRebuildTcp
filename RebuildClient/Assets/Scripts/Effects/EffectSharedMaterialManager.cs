@@ -4,6 +4,7 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Rendering;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.U2D;
 
@@ -38,6 +39,7 @@ namespace Assets.Scripts.Effects
         ParticleAlphaBlend,
         ParticleAdditive,
         IceMaterial,
+        StoneMaterial,
         FireRing,
         SightEffect,
         WaterBallEffect,
@@ -177,10 +179,10 @@ namespace Assets.Scripts.Effects
             return textureList[(int)type];
         }
 
-        private static void SetUpTextureMaterial(EffectMaterialType type, Shader shader, Texture2D tex, int renderQueue = 3001, bool persist = false) =>
+        private static Material SetUpTextureMaterial(EffectMaterialType type, Shader shader, Texture2D tex, int renderQueue = 3001, bool persist = false) =>
             SetUpTextureMaterial(type, shader, tex, Color.white, renderQueue, persist);
 
-        private static void SetUpTextureMaterial(EffectMaterialType type, Shader shader, Texture2D tex, Color color, int renderQueue = 3001,
+        private static Material SetUpTextureMaterial(EffectMaterialType type, Shader shader, Texture2D tex, Color color, int renderQueue = 3001,
             bool persist = false)
         {
             if (materialList[(int)type] == null)
@@ -198,6 +200,8 @@ namespace Assets.Scripts.Effects
                 materialList[(int)type] = mat;
                 persistMaterials[(int)type] = persist;
             }
+
+            return materialList[(int)type];
         }
 
         public static Material GetMaterial(EffectMaterialType mat)
@@ -295,6 +299,14 @@ namespace Assets.Scripts.Effects
                         break;
                     case EffectMaterialType.IceMaterial:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, Resources.Load<Texture2D>("ice"));
+                        break;
+                    case EffectMaterialType.StoneMaterial:
+                        var stoneMat = SetUpTextureMaterial(mat, ShaderCache.Instance.EffectShader, Resources.Load<Texture2D>("stone"));
+                        stoneMat.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
+                        stoneMat.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
+                        stoneMat.SetInt("_Cull", (int)CullMode.Back);
+                        stoneMat.SetInt("_ZWrite", 1);
+                        stoneMat.SetInt("_myCustomCompare", (int)CompareFunction.LessEqual);
                         break;
                     case EffectMaterialType.FireRing:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.RingYellow));

@@ -1416,8 +1416,9 @@ namespace Assets.Scripts.Network
                     //HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(255, 255, 255, 128), 1);
                     break;
                 case AttackElement.Earth:
-                    hitPosition = transform.position + new Vector3(0, 2, 0);
-                    HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(255, 255, 50, 128), 3);
+                    CameraFollower.Instance.AttachEffectToEntity("EarthHit", gameObject, Id);
+                    // hitPosition = transform.position + new Vector3(0, 2, 0);
+                    // HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition, new Color32(255, 255, 50, 128), 3);
                     break;
                 case AttackElement.Holy:
                     CameraFollower.Instance.AttachEffectToEntity("HolyHit", gameObject, Id);

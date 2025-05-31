@@ -47,6 +47,8 @@ namespace Assets.Scripts.Effects
 		StealEffect,
 		WarpPortal,
 		WarpPortalOpening,
+		EarthSpike,
+		HeavensDrive,
 		JupitelBall,
 		JupitelHit,
 		LordOfVermilion,
@@ -136,6 +138,8 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.StealEffect, new Assets.Scripts.Effects.EffectHandlers.Skills.StealEffect());
 			effectHandlers.Add(EffectType.WarpPortal, new Assets.Scripts.Effects.EffectHandlers.Skills.WarpPortalEffect());
 			effectHandlers.Add(EffectType.WarpPortalOpening, new Assets.Scripts.Effects.EffectHandlers.Skills.WarpPortalOpeningEffect());
+			effectHandlers.Add(EffectType.EarthSpike, new Assets.Scripts.Effects.EffectHandlers.Skills.EarthSpikeEffect());
+			effectHandlers.Add(EffectType.HeavensDrive, new Assets.Scripts.Effects.EffectHandlers.Skills.HeavensDriveEffect());
 			effectHandlers.Add(EffectType.JupitelBall, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelBallEffect());
 			effectHandlers.Add(EffectType.JupitelHit, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelHitEffect());
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());

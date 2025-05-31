@@ -34537,6 +34537,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Collections
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5fe37722d794e440bd9396fa0a21543
+    m_Address: Assets/Effects/Prefabs/StormGust.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Effect
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a5fff185ae755b644b4a9cc9e52b0f08
     m_Address: Assets/Sprites/Imported/Collections/Token_of_Apostle.png
     m_ReadOnly: 0

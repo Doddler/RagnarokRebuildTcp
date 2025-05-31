@@ -171,7 +171,7 @@ public partial class Monster
     }
 
     /// <summary> Checks if the monster is within range to attack it's current target or not. </summary>
-    private bool InAttackRange()
+    public bool InAttackRange()
     {
         if (Character.Map != null && Character.Map.PlayerCount == 0)
             return false;

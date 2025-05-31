@@ -82,8 +82,8 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[65] = new DefaultSkillHandler();
 			handlers[66] = new DefaultSkillHandler();
 			handlers[67] = new ResurrectionHandler();
-			handlers[68] = new DefaultSkillHandler();
-			handlers[69] = new DefaultSkillHandler();
+			handlers[68] = new EarthSpikeHandler();
+			handlers[69] = new HeavensDriveHandler();
 			handlers[70] = new DefaultSkillHandler();
 			handlers[71] = new DefaultSkillHandler();
 			handlers[72] = new DefaultSkillHandler();
@@ -157,7 +157,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[135] = new DefaultSkillHandler();
 			handlers[136] = new DefaultSkillHandler();
 			handlers[137] = new DefaultSkillHandler();
-			handlers[138] = new DefaultSkillHandler();
+			handlers[138] = new LickHandler();
 			handlers[139] = new DefaultSkillHandler();
 			handlers[140] = new DarkThunderHandler();
 			handlers[141] = new BulwarkHandler();

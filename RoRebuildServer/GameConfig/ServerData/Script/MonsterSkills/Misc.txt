@@ -76,13 +76,14 @@ SkillHandler("ANGRY_TARGET_DUMMY") {
 //	TryCast(Hiding, 3, 100%, 0, 10s)[!IsHiding];
 //	TryCast(Hiding, 3, 100%, 0, 10s)[IsHiding];
 	//TryCast(Demonstration, 1, 100%, 1000, 5s);
+	TryCast(MonsterSnap, 1, 100%, 0.5s, 10s);
 	TryCast(Pneuma, 1, 100%, 0, 5s)[WasRangedAttacked];
 	TryCast(PowerUp, 5, 100%, 0.7s, 30s)[HpPercent < 50];
 	TryCast(Sleep, 20, 100%, 0.5s, 15s);
 	TryCast(PhysBreaker, 1, 100%, 0.5s, 10s);
 	//TryCast(DarkAttack, 1, 100%, 0.5s, 2s);
 
-	TryCast(Vampyrism, 1, 100%, 1.3s, 120s);
+	//TryCast(Vampyrism, 1, 100%, 1.3s, 120s);
 	TryCast(DarkAttack, 3, 100%, 0.5s, 5s);
 }
 

@@ -57,6 +57,7 @@ public static class DataManager
     public static ReadOnlyDictionary<int, AmmoInfo> AmmoInfo;
     public static ReadOnlyDictionary<int, UseItemInfo> UseItemInfo;
     public static ReadOnlyDictionary<string, List<string>> ItemMonsterSummonList;
+    public static ReadOnlyDictionary<string, List<int>> ItemBoxSummonList;
     public static HashSet<int> ValidEmotes;
 
     private static List<MonsterDatabaseInfo> monsterStats;
@@ -216,6 +217,7 @@ public static class DataManager
         MonsterDropData = loader.LoadMonsterDropChanceData(scriptConfig);
         var t3 = Time.SampleDiagnosticsSubTime();
         ItemMonsterSummonList = loader.LoadMonsterSummonItemList();
+        ItemBoxSummonList = loader.LoadItemBoxSummonList();
         var t4 = Time.SampleDiagnosticsSubTime();
         JobBonusTable = loader.LoadJobBonusTable();
 

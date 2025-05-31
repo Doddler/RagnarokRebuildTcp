@@ -173,6 +173,7 @@ StateChase:
 StateAttacking:
 	TryCast(HammerFall, 3, 5%, 1.5s, 5s, NoInterrupt);
 	TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(HeavensDrive, 3, 5%, 1.2s, 5s) -> SendEmote(2); //whistle
 }
 
 SkillHandler("MUMMY") {

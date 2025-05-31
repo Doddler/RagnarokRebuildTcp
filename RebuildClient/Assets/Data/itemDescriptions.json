@@ -322,7 +322,7 @@
     },
     {
       "Code": "Old_Blue_Box",
-      "Description": "\u003Ccolor=#808080\u003EAn old blue box with unknown contents.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EContains a random item out of all the items in the game. Even the broken ones. Most of them aren\u0027t very useful though.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn old blue box with unknown contents.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
     },
     {
       "Code": "Dead_Branch",
@@ -374,11 +374,11 @@
     },
     {
       "Code": "Old_Card_Album",
-      "Description": "\u003Ccolor=#808080\u003EAn antique album which contains an unknown card.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EContains one of any card in the game. Even the broken ones. A lot of them don\u0027t work though.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E5\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn antique album which contains an unknown card.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E5\u003C/color\u003E"
     },
     {
       "Code": "Old_Purple_Box",
-      "Description": "\u003Ccolor=#808080\u003EAn old purple box with unknown contents.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EContains one of any equipment or weapon in the game. Even the broken ones. Most of them aren\u0027t very useful though.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn old purple box with unknown contents. More likely to contain equipment than an old blue box.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
     },
     {
       "Code": "Worn_Out_Scroll",
@@ -4178,7 +4178,7 @@
     },
     {
       "Code": "Fire_Brand",
-      "Description": "\u003Ccolor=#808080\u003EA formal decorative sword imbued with fire.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMATK \u002B120\nEnables use of \u003Ccolor=#0000FF\u003EFire Bolt 3\u003C/color\u003E.\n\u002B5% chance to autocast \u003Ccolor=#0000FF\u003EFire Bolt 3\u003C/color\u003E on melee attack.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EFire\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA formal decorative sword imbued with fire.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMATK \u002B120\nEnables use of \u003Ccolor=#0000FF\u003EFire Bolt 3\u003C/color\u003E.\n\u002B5% chance to autocast \u003Ccolor=#0000FF\u003EFire Bolt 3\u003C/color\u003E on physical attack.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nProperty: \u003Ccolor=#777777\u003EFire\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Caesar\u0027s_Sword",
@@ -9062,7 +9062,7 @@
     },
     {
       "Code": "Loli_Ruri_Card",
-      "Description": "\u002B5% Autospell \u003Ccolor=#0000FF\u003EHeal 3\u003C/color\u003E on receive physical damage\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B5% autocast \u003Ccolor=#0000FF\u003EHeal 3\u003C/color\u003E when taking physical damage.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Rotar_Zairo_Card",
@@ -9218,7 +9218,7 @@
     },
     {
       "Code": "Shinobi_Card",
-      "Description": "AGI \u002B1\n\u002B10% Autospell \u003Ccolor=#0000FF\u003ECloak 5\u003C/color\u003E on receive physical damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "AGI \u002B1\n\u002B10% autocast \u003Ccolor=#0000FF\u003ECloak 5\u003C/color\u003E when taking physical damage.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Mi_Gao_Card",

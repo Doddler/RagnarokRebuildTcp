@@ -108,4 +108,8 @@ StateIdle:
     @ResumeAiState(5%, AiStandardBoss, 7); //grumpy
 StateChase:
 	@GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(HeavensDrive, 5, 5%, 1.2s, 5s) -> SendEmote(2);
+StateAttacking:
+	TryCast(HeavensDrive, 5, 5%, 1.8s, 5s) -> SendEmote(2);
+	TryCast(CriticalAttack, 1, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
 }

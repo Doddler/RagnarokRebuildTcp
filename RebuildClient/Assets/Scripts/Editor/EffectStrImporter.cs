@@ -68,6 +68,7 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/thunder_plazma_blast_b.bmp", "thunder_plazma_blast_b"));
             
             ImportEffectTexture("texture/effect/대폭발.tga", "BigBang", false, "Resources");
+            ImportEffectTexture("texture/effect/stone.bmp", "stone", false, "Resources");
 
             // ImportEffectTexture("texture/유저인터페이스/disable_card_slot.bmp", "disable_card_slot");
             // ImportEffectTexture("texture/유저인터페이스/empty_card_slot.bmp", "empty_card_slot");

@@ -578,6 +578,31 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
+    public static void SkillExecuteMaskedAreaTargetedSkill(WorldObject caster, Position target, int range, CharacterSkill skill, int lvl, ref Span<bool> mask, bool isIndirect, float motionTime = -1)
+    {
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.SkillWithMaskedArea, 128);
+
+        if (motionTime < 0)
+            motionTime = caster.CombatEntity?.GetTiming(TimingStat.AttackMotionTime) ?? 0;
+
+        packet.Write(caster.Id);
+        packet.Write(target);
+        packet.Write((byte)skill);
+        packet.Write((byte)lvl);
+        packet.Write((byte)caster.FacingDirection);
+        packet.Write(caster.Position);
+        packet.Write((byte)range);
+        packet.Write(motionTime);
+        packet.Write(isIndirect);
+        for(var i = 0; i < mask.Length; i++)
+            packet.Write(mask[i]);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
     public static void AttackMulti(WorldObject? attacker, WorldObject target, DamageInfo di, bool showAttackMotion = true)
     {
         if (!HasRecipients())

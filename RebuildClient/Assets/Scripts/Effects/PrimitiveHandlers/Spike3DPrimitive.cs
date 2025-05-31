@@ -17,6 +17,10 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 return;
             
             var data = primitive.GetPrimitiveData<Spike3DData>();
+
+            var delta = Time.deltaTime;
+            if (delta > 1f / 60f)
+                delta = 1f / 60f;
             
             data.Speed += data.Acceleration * Time.deltaTime;
             if (primitive.IsStepFrame && data.Flags.HasFlag(Spike3DFlags.SpeedLimit) && data.StopStep == primitive.Step)
@@ -25,13 +29,25 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 data.Acceleration = 0;
             }
 
-            primitive.transform.localPosition += primitive.transform.localRotation * Vector3.up * (data.Speed * 60 * Time.deltaTime);
+            if (primitive.IsStepFrame && data.ChangeStep > 0 && primitive.Step == data.ChangeStep)
+            {
+                data.Speed = data.ChangeSpeed;
+                data.Acceleration = data.ChangeAccel;
+            }
+            
+            if (primitive.IsStepFrame && data.ReturnStep > 0 && primitive.Step == data.ReturnStep)
+            {
+                data.Speed = data.ReturnSpeed;
+                data.Acceleration = data.ReturnAccel;
+            }
+
+            primitive.transform.localPosition += primitive.transform.localRotation * Vector3.up * (data.Speed * 60 * delta);
             
             var fadeStartTime = primitive.Duration - data.FadeOutLength;
             if (primitive.CurrentPos > fadeStartTime)
-                data.Alpha = Mathf.Clamp(data.Alpha - data.AlphaMax / data.FadeOutLength * Time.deltaTime, 0, 255);
+                data.Alpha = Mathf.Clamp(data.Alpha - data.AlphaMax / data.FadeOutLength * delta, 0, 255);
             else
-                data.Alpha = Mathf.Clamp(data.Alpha + data.AlphaSpeed * Time.deltaTime, 0, data.AlphaMax);
+                data.Alpha = Mathf.Clamp(data.Alpha + data.AlphaSpeed * delta, 0, data.AlphaMax);
 
             primitive.IsActive = primitive.Step < primitive.FrameDuration;
             if (!primitive.IsActive)
@@ -41,7 +57,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
         public static void RenderPrimitive(RagnarokPrimitive primitive, MeshBuilder mb)
         {
             mb.Clear();
-            if (!primitive.IsActive)
+            if (!primitive.IsActive || primitive.DelayTime > 0)
                 return;
             
             var data = primitive.GetPrimitiveData<Spike3DData>();
@@ -72,8 +88,8 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
 
             for (var i = 0; i < 4; i++)
             {
-                mb.AddUV(new Vector2(i * 0.2f, 1));
                 mb.AddUV(new Vector2(i * 0.2f, 0));
+                mb.AddUV(new Vector2(i * 0.2f, 1));
                 mb.AddUV(new Vector2((i + 1) * 0.2f, 1));
                 
                 mb.AddColor(color);

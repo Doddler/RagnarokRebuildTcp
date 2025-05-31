@@ -7,6 +7,8 @@
         [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend ("BlendSource", Float) = 1
         [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend ("BlendDestination", Float) = 0
         [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Float) = 0
+        _ZWrite ("ZWrite", Int) = 0
+        [Enum(UnityEngine.Rendering.CompareFunction)] _myCustomCompare ("CompareMode", Int) = 0
     }
     SubShader
     {

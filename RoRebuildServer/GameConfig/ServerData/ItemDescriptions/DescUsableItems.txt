@@ -322,7 +322,6 @@ Returns you to your save location
 
 ::Old_Blue_Box //603
 <color=#808080>An old blue box with unknown contents.</color>
-Contains a random item out of all the items in the game. Even the broken ones. Most of them aren't very useful though.
 
 ::Dead_Branch //604
 <color=#808080>A twig which contains the mysterious power of eternity, capable of summoning a living creature.</color>
@@ -370,11 +369,9 @@ Channelled: <color=#777777>Being hit while casting will interrupt the skill, but
 
 ::Old_Card_Album //616
 <color=#808080>An antique album which contains an unknown card.</color>
-Contains one of any card in the game. Even the broken ones. A lot of them don't work though.
 
 ::Old_Purple_Box //617
-<color=#808080>An old purple box with unknown contents.</color>
-Contains one of any equipment or weapon in the game. Even the broken ones. Most of them aren't very useful though.
+<color=#808080>An old purple box with unknown contents. More likely to contain equipment than an old blue box.</color>
 
 ::Worn_Out_Scroll //618
 <color=#808080>A rolled up piece of parchment, now brittle with age, on which faded text can scarcely be read.</color>

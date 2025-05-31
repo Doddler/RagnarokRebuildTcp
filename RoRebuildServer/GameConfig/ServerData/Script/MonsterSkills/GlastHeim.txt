@@ -19,9 +19,11 @@ StateIdle:
     @ResumeAiState(5%, AiAggressive, 6); //angry
 StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(HeavensDrive, 5, 5%, 1.2s, 5s) -> SendEmote(2); //whistle
 StateAttacking:
 	TryCast(HammerFall, 5, 5%, 1.5s, 5s);
 	TryCast(FireAttack, 3, 5%, 0.5s, 5s);
+	TryCast(HeavensDrive, 5, 5%, 1.2s, 5s) -> SendEmote(2); //whistle
 }
 
 SkillHandler("SAGEWORM") {
@@ -127,6 +129,7 @@ StateChase:
 	TryCast(EnergyDrain, 1, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(12); //paper
 	TryCast(WindAttack, 1, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(11); //rock
 	TryCast(DarkThunder, 1, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(11); //rock
+	TryCast(HeavensDrive, 5, 5%, 1.2s, 5s, NoInterrupt) -> SendEmote(11); //rock
 	//TODO: Quagmire and Heavens Drive
 StateAttacking:
 	TryCast(NoCast, 1, 100%, 0, 60s) -> SendEmote(6); //angry
@@ -159,13 +162,13 @@ StateChase:
 	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(9); //...
 	TryCast(EnergyDrain, 1, 5%, 0, 5s) -> SendEmote(9); //...
 	TryCast(UndeadAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(9); //...
-	//TryCast(HeavensDrive, 5, 5%, 1.2s, 5s, EasyInterrupt);
+	TryCast(HeavensDrive, 5, 5%, 1.2s, 5s, EasyInterrupt);
 StateAttacking:
 	TryCast(Blind, 3, 20%, 0s, 5s) -> SendEmote(9); //...
 	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(9); //...
 	TryCast(EnergyDrain, 1, 5%, 0, 5s) -> SendEmote(9); //...
 	TryCast(UndeadAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(9); //...
-	//TryCast(HeavensDrive, 5, 5%, 1.2s, 5s, EasyInterrupt);
+	TryCast(HeavensDrive, 5, 5%, 1.2s, 5s, EasyInterrupt);
 }
 
 SkillHandler("INJUSTICE") {
@@ -257,6 +260,7 @@ StateIdle:
 StateAttacking:
 	TryCast(SplashAttack, 1, 20%, 0.3s, 5s, NoInterrupt)[CountEnemiesNearTarget(2) >= 2] -> SendEmote(9); //...
 	TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(HeavensDrive, 5, 5%, 1.2s, 5s) -> SendEmote(6); //angry
 }
 
 

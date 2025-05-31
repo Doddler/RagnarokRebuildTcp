@@ -1195,15 +1195,15 @@
         18,
         20
       ],
-      "AdjustableLevel": false,
+      "AdjustableLevel": true,
       "Description": null,
       "InterruptMode": 0
     },
     {
       "SkillId": 69,
       "Icon": "wz_heavendrive",
-      "Name": "Heavens Drive",
-      "Target": 1,
+      "Name": "Heaven\u0027s Drive",
+      "Target": 4,
       "Type": 0,
       "MaxLevel": 5,
       "SpCost": [
@@ -1213,7 +1213,7 @@
         40,
         44
       ],
-      "AdjustableLevel": false,
+      "AdjustableLevel": true,
       "Description": null,
       "InterruptMode": 0
     },
@@ -2278,7 +2278,7 @@
     {
       "SkillId": 146,
       "Icon": "nv_basic",
-      "Name": "HP Cut",
+      "Name": "Snap",
       "Target": 1,
       "Type": 0,
       "MaxLevel": 0,
@@ -2290,7 +2290,7 @@
     {
       "SkillId": 147,
       "Icon": "nv_basic",
-      "Name": "Mental Breaker",
+      "Name": "HP Cut",
       "Target": 1,
       "Type": 0,
       "MaxLevel": 0,
@@ -2302,6 +2302,18 @@
     {
       "SkillId": 148,
       "Icon": "nv_basic",
+      "Name": "Mental Breaker",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 149,
+      "Icon": "nv_basic",
       "Name": "",
       "Target": 3,
       "Type": 0,
@@ -2312,7 +2324,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 149,
+      "SkillId": 150,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,

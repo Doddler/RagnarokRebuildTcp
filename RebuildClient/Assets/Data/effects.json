@@ -1199,6 +1199,30 @@
       "SoundFile": "wizard_stormgust",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 100,
+      "Name": "HeavensDrive",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 101,
+      "Name": "EarthHit",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "earthhit",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": ""
     }
   ]
 }

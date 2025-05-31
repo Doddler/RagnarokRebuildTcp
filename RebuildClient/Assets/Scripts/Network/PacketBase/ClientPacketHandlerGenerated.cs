@@ -15,7 +15,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[100];
+			handlers = new ClientPacketHandlerBase[101];
 			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -116,6 +116,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[97] = new PacketAcceptPartyInvite(); //AcceptPartyInvite
 			handlers[98] = new PacketUpdateParty(); //UpdateParty
 			handlers[99] = new PacketNotifyPlayerPartyChange(); //NotifyPlayerPartyChange
+			handlers[100] = new PacketSkillWithMaskedArea(); //SkillWithMaskedArea
 		}
 	}
 }

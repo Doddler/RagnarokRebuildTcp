@@ -609,6 +609,14 @@ public partial class CombatEntity
             return;
         }
 
+        //monster short circuit to attacking if the attacker is in melee range
+        if (Character.Type == CharacterType.Monster && Character.State == CharacterState.Idle)
+        {
+            Character.Monster.Target = di.Source;
+            if(Character.Monster.InAttackRange())
+                Character.Monster.CurrentAiState = MonsterAiState.StateAttacking;
+        }
+
         if (oldPosition != Character.Position)
         {
             statusContainer?.OnMove(oldPosition, Character.Position, false);

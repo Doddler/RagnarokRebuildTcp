@@ -19,6 +19,12 @@ namespace Assets.Scripts.Effects.PrimitiveData
         public float Acceleration;
         public Vector3 Up;
         public int StopStep;
+        public int ChangeStep;
+        public float ChangeSpeed;
+        public float ChangeAccel;
+        public int ReturnStep;
+        public float ReturnSpeed;
+        public float ReturnAccel;
         
         public float Alpha;
         public float AlphaMax;
@@ -34,6 +40,12 @@ namespace Assets.Scripts.Effects.PrimitiveData
             Acceleration = 0;
             Up = Vector3.zero;
             StopStep = 0;
+            ChangeStep = 0;
+            ChangeSpeed = 0;
+            ChangeAccel = 0;
+            ReturnStep = 0;
+            ReturnSpeed = 0;
+            ReturnAccel = 0;
             AlphaSpeed = 0;
             FadeOutLength = 0;
         }

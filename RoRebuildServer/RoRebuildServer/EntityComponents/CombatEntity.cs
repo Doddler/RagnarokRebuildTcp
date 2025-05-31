@@ -1407,6 +1407,20 @@ public partial class CombatEntity : IEntityAutoReset
         return di;
     }
 
+    public float GetAttackMotionTime()
+    {
+        var spriteTiming = GetTiming(TimingStat.SpriteAttackTiming);
+        var delayTiming = GetTiming(TimingStat.AttackDelayTime);
+        var motionTiming = GetTiming(TimingStat.AttackMotionTime);
+        if (motionTiming > delayTiming)
+            delayTiming = motionTiming;
+
+        if (spriteTiming > delayTiming)
+            spriteTiming = delayTiming;
+
+        return spriteTiming;
+    }
+
     public DamageInfo CalculateCombatResult(CombatEntity target, float attackMultiplier, int hitCount,
         AttackFlags flags, CharacterSkill skillSource = CharacterSkill.None, AttackElement element = AttackElement.None)
     {

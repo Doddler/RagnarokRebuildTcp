@@ -33,7 +33,7 @@ public class HidingHandler : SkillHandlerBase
 
         var time = 30f + 15f * lvl;
         if (source.Character.Type == CharacterType.Monster)
-            time -= 15f;
+            time = 16f + 5f * lvl;
         
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Hiding, time, lvl);
         source.AddStatusEffect(status);

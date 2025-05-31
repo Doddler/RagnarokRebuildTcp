@@ -7,7 +7,7 @@ using RebuildSharedData.Enum.EntityStats;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob
 {
-    [StatusEffectHandler(CharacterStatusEffect.Provoke, StatusClientVisibility.None, StatusEffectFlags.NoSave)]
+    [StatusEffectHandler(CharacterStatusEffect.Provoke, StatusClientVisibility.Owner, StatusEffectFlags.NoSave)]
     public class StatusProvoke : StatusEffectBase
     {
         public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnDealDamage;

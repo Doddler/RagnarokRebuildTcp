@@ -112,7 +112,9 @@ public enum PacketType : byte
     InvitePartyMember,
     AcceptPartyInvite,
     UpdateParty,
-    NotifyPlayerPartyChange
+    NotifyPlayerPartyChange,
+
+    SkillWithMaskedArea,
 }
 
 public enum MessageType : byte

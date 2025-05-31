@@ -809,6 +809,28 @@ internal class DataLoader
         return returnList.AsReadOnly();
     }
 
+    public ReadOnlyDictionary<string, List<int>> LoadItemBoxSummonList()
+    {
+        var returnList = new Dictionary<string, List<int>>();
+
+        foreach (var entry in GetCsvRows<CsvItemBoxSummonEntry>("Db/ItemBoxSummonList.csv"))
+        {
+            if (!DataManager.ItemIdByName.TryGetValue(entry.Code, out var id))
+            {
+                ServerLogger.LogWarning($"ItemBoxSummonList.csv references the item {entry.Code}, but that item could not be found.");
+                continue;
+            }
+
+            if (!returnList.ContainsKey(entry.Type))
+                returnList.Add(entry.Type, new List<int>());
+
+            for (var i = 0; i < entry.Chance; i++)
+                returnList[entry.Type].Add(id);
+        }
+
+        return returnList.AsReadOnly();
+    }
+
     public int[] LoadJobBonusTable()
     {
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobStatBonuses.csv")) as TextReader;

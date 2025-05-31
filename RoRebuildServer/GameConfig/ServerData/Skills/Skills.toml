@@ -499,13 +499,15 @@ Icon = "wz_earthspike"
 Target = "Enemy"
 MaxLevel = 5
 SpCost = [12,14,16,18,20]
+AdjustableLevel = true
 
 [HeavensDrive]
-Name = "Heavens Drive"
+Name = "Heaven's Drive"
 Icon = "wz_heavendrive"
-Target = "Enemy"
+Target = "Ground"
 MaxLevel = 5
 SpCost = [28,32,36,40,44]
+AdjustableLevel = true
 
 [FirePillar]
 Name = "Fire Pillar"
@@ -859,6 +861,10 @@ Name = "Reward for Quest"
 
 [Vampyrism]
 Target = "Self"
+
+[MonsterSnap]
+Name = "Snap"
+Target = "Enemy"
 
 [PhysBreaker] #originally Dark Breath (not to be confused with Darkness Breath, the aoe)
 Name = "HP Cut" #need to try to communicate it drops your maxHP...

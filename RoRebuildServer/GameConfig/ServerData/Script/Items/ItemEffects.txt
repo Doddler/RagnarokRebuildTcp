@@ -78,9 +78,9 @@ RecoveryItem("Sour_Cream_Pancake", 325, 405, 40, 60);
 RecoveryItem("Mushroom_Pancake", 325, 405, 40, 60);
 Item("Fly_Wing") { OnValidate: return CanTeleport(); OnUse: RandomTeleport(); }
 Item("Butterfly_Wing") { OnValidate: return true; OnUse: ReturnToSavePoint(); }
-Item("Old_Blue_Box") { OnUse: UseItemCreationItem(0); }
-Item("Old_Purple_Box") { OnUse: UseItemCreationItem(1); }
-Item("Old_Card_Album") { OnUse: UseItemCreationItem(2); }
+Item("Old_Blue_Box") { OnUse: UseItemCreationItem("Old_Blue_Box"); }
+Item("Old_Purple_Box") { OnUse: UseItemCreationItem("Old_Violet_Box"); }
+Item("Old_Card_Album") { OnUse: UseItemCreationItem("Old_Card_Album"); }
 Item("Dead_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("DeadBranch", 1h); }
 Item("Bloody_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonItem("BloodyBranch", 12h); }
 Item("Anodyne") { OnUse: ItemActivatedSkillSelfTarget(Endure, 1); }

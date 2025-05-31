@@ -1305,47 +1305,57 @@ public class Player : IEntityAutoReset
     }
 
     [ScriptUseable]
-    public void UseItemCreationItem(int type)
+    public void UseItemCreationItem(string type)
     {
-        //0 is obb, 1 is ovb, 2 is oca
-        //this is obviously broken but mostly just for fun until it gets a proper implementation
-        switch (type)
+        if (!DataManager.ItemBoxSummonList.TryGetValue(type, out var list))
         {
-            case 0:
-                {
-                    //create 1 of any item in the game
-                    var item = DataManager.ItemList.ElementAt(GameRandom.Next(0, DataManager.ItemList.Count));
-                    CreateItemInInventory(new ItemReference(item.Key, 1));
-                    return;
-                }
-            case 1:
-                {
-                    //create 1 of any weapon or armor
-                    var totalCount = DataManager.WeaponInfo.Count + DataManager.ArmorInfo.Count;
-                    var sel = GameRandom.Next(0, totalCount);
-                    if (sel < DataManager.WeaponInfo.Count)
-                    {
-                        sel = GameRandom.Next(0, DataManager.WeaponInfo.Count);
-                        var item = DataManager.WeaponInfo.ElementAt(sel);
-                        CreateItemInInventory(new ItemReference(item.Key, 1));
-                    }
-                    else
-                    {
-                        sel = GameRandom.Next(0, DataManager.ArmorInfo.Count);
-                        var item = DataManager.ArmorInfo.ElementAt(sel);
-                        CreateItemInInventory(new ItemReference(item.Key, 1));
-                    }
-
-                    return;
-                }
-            case 2:
-                {
-                    //create 1 of any card
-                    var item = DataManager.CardInfo.ElementAt(GameRandom.Next(0, DataManager.CardInfo.Count));
-                    CreateItemInInventory(new ItemReference(item.Key, 1));
-                    return;
-                }
+            ServerLogger.LogWarning($"Failed to perform UseItemCreationItem for item type {type}, type not found in ItemBoxSummonList table!");
+            return;
         }
+
+        var selType = list[GameRandom.Next(0, list.Count)];
+        CreateItemInInventory(new ItemReference(selType, 1));
+
+
+        ////0 is obb, 1 is ovb, 2 is oca
+        ////this is obviously broken but mostly just for fun until it gets a proper implementation
+        //switch (type)
+        //{
+        //    case 0:
+        //        {
+        //            //create 1 of any item in the game
+        //            var item = DataManager.ItemList.ElementAt(GameRandom.Next(0, DataManager.ItemList.Count));
+        //            CreateItemInInventory(new ItemReference(item.Key, 1));
+        //            return;
+        //        }
+        //    case 1:
+        //        {
+        //            //create 1 of any weapon or armor
+        //            var totalCount = DataManager.WeaponInfo.Count + DataManager.ArmorInfo.Count;
+        //            var sel = GameRandom.Next(0, totalCount);
+        //            if (sel < DataManager.WeaponInfo.Count)
+        //            {
+        //                sel = GameRandom.Next(0, DataManager.WeaponInfo.Count);
+        //                var item = DataManager.WeaponInfo.ElementAt(sel);
+        //                CreateItemInInventory(new ItemReference(item.Key, 1));
+        //            }
+        //            else
+        //            {
+        //                sel = GameRandom.Next(0, DataManager.ArmorInfo.Count);
+        //                var item = DataManager.ArmorInfo.ElementAt(sel);
+        //                CreateItemInInventory(new ItemReference(item.Key, 1));
+        //            }
+
+        //            return;
+        //        }
+        //    case 2:
+        //        {
+        //            //create 1 of any card
+        //            var item = DataManager.CardInfo.ElementAt(GameRandom.Next(0, DataManager.CardInfo.Count));
+        //            CreateItemInInventory(new ItemReference(item.Key, 1));
+        //            return;
+        //        }
+        //}
     }
 
     [ScriptUseable]

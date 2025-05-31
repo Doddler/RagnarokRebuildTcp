@@ -49,7 +49,7 @@ public class Map
     public EntityList Players { get; set; } = new EntityList(8);
     public EntityList MapImportantEntities { get; set; } = new EntityList(8);
     public Dictionary<int, int> ItemChunkLookup = new();
-    
+
     //private int playerCount;
     //public int PlayerCount
     //{
@@ -85,7 +85,7 @@ public class Map
         //    ServerLogger.LogWarning($"Attempted to remove player {player.Name} from visibility list of entity {other.Name}:{other.Id}, but it can't actually see this player.");
         //}
     }
-    
+
     /// <summary>
     /// Simplified variation of MoveEntity for any move where the entity is removed from it's old location and
     /// appears in a new one. Takes a move reason so the client can play the appropriate effect.
@@ -167,7 +167,7 @@ public class Map
             if (canBeSeen && !shouldBeSeen)
             {
                 otherCharacter.RemoveVisiblePlayer(movingCharacter.Entity);
-                if(otherCharacter.IsAbleToBeSeenBy(movingCharacter) && !otherCharacter.AdminHidden) //if we've walked off screen of an admin, don't send remove
+                if (otherCharacter.IsAbleToBeSeenBy(movingCharacter) && !otherCharacter.AdminHidden) //if we've walked off screen of an admin, don't send remove
                     CommandBuilder.SendRemoveEntity(otherCharacter, movingCharacter.Player, CharacterRemovalReason.OutOfSight);
                 hasChange = true;
             }
@@ -227,7 +227,7 @@ public class Map
         if (cOld != cNew)
         {
             if (!cOld.RemoveEntity(ref movingEntity, movingCharacter.Type))
-                throw new Exception($"For some reason the entity doesn't exist in the old chunk when moving chunks.\n" 
+                throw new Exception($"For some reason the entity doesn't exist in the old chunk when moving chunks.\n"
                                     + $"Function call: ChangeEntityPosition3({movingCharacter}, {oldWorldPosition}, {newWorldPosition}, {isWalkUpdate})\n"
                                     + $"Entity: {movingCharacter.Entity} isActive: {movingCharacter.IsActive} OldChunk: {cOld} NewChunk: {cNew}\n"
                                     + $"FloatPosition: {movingCharacter.WorldPosition} Position:{movingCharacter.Position} Move:{oldPosition}->{newPosition}");
@@ -261,7 +261,7 @@ public class Map
         using var removeList = EntityListPool.Get();
         CommandBuilder.ClearRecipients();
 
-        if(removeList.Count > 0)
+        if (removeList.Count > 0)
             ServerLogger.LogWarning("AAAA");
 
         var midPoint = (oldPosition + newPosition) / 2;
@@ -275,15 +275,15 @@ public class Map
             {
                 if (!entity.TryGet<WorldObject>(out var otherCharacter))
                     continue;
-                
+
                 var addedOrRemoved = ResolveVisibilityForMovingCharacter(movingCharacter, otherCharacter, removeList, addList);
 
                 if (!isWalkUpdate && !addedOrRemoved && movingCharacter.Position.InRange(otherCharacter.Position, ServerConfig.MaxViewDistance))
                 {
                     //the player is in range and was in range before we moved, so if it's not a walk update we need to send a move event
-                    if(movingCharacter.Type == CharacterType.Player)
+                    if (movingCharacter.Type == CharacterType.Player)
                         CommandBuilder.AddRecipient(movingCharacter.Entity);
-                    if(otherCharacter.Type == CharacterType.Player && movingCharacter.IsAbleToBeSeenBy(otherCharacter) && !movingCharacter.AdminHidden)
+                    if (otherCharacter.Type == CharacterType.Player && movingCharacter.IsAbleToBeSeenBy(otherCharacter) && !movingCharacter.AdminHidden)
                         CommandBuilder.AddRecipient(otherCharacter.Entity);
                 }
             }
@@ -297,7 +297,7 @@ public class Map
                     var couldSeeItem = pos.InRange(oldPosition, ServerConfig.MaxViewDistance);
                     var canSeeItem = pos.InRange(newPosition, ServerConfig.MaxViewDistance);
 
-                    if(canSeeItem && !couldSeeItem)
+                    if (canSeeItem && !couldSeeItem)
                         CommandBuilder.RevealDropItemForPlayer(item, false, movingCharacter.Player);
                     if (couldSeeItem && !canSeeItem)
                         CommandBuilder.RemoveDropItemForSinglePlayer(item, movingCharacter.Player);
@@ -327,7 +327,7 @@ public class Map
 
         if (movingCharacter.IsImportant)
         {
-            if(!isWalkUpdate || movingCharacter.StepCount % 4 == 0)
+            if (!isWalkUpdate || movingCharacter.StepCount % 4 == 0)
                 UpdateImportantEntity(movingCharacter);
         }
     }
@@ -465,7 +465,7 @@ public class Map
                     //if (p.Entity != nearbyEntity) // || !nearbyCharacter.AdminHidden)
                     {
                         AddPlayerVisibility(nearbyCharacter, ch); //We see nearbyCharacter
-                        if(!ch.AdminHidden || p.Entity == nearbyEntity)
+                        if (!ch.AdminHidden || p.Entity == nearbyEntity)
                             CommandBuilder.AddRecipient(nearbyEntity);
                     }
                 }
@@ -613,7 +613,7 @@ public class Map
         using var recipientList = EntityListPool.Get();
         if (attacker.TryGetVisiblePlayerList(out var list))
         {
-            foreach(var e in list)
+            foreach (var e in list)
                 recipientList.Add(e);
         }
         if (target.TryGetVisiblePlayerList(out list))
@@ -621,7 +621,7 @@ public class Map
             foreach (var e in list)
                 recipientList.AddIfNotExists(e);
         }
-        
+
         CommandBuilder.AddRecipients(recipientList);
     }
 
@@ -811,7 +811,7 @@ public class Map
             if (WalkData.IsCellWalkable(freeTile) && !IsTileOccupied(freeTile, playersOnly))
                 return true;
         }
-        
+
         return false;
     }
 
@@ -1014,7 +1014,7 @@ public class Map
         CommandBuilder.ClearRecipients();
     }
 
-    public int GatherAllPlayersInViewDistance(Position position, EntityList list) => GatherPlayersInRange(position, ServerConfig.MaxViewDistance, list, false,false);
+    public int GatherAllPlayersInViewDistance(Position position, EntityList list) => GatherPlayersInRange(position, ServerConfig.MaxViewDistance, list, false, false);
 
     public int GatherPlayersInRange(Position position, int distance, EntityList? list, bool checkLineOfSight, bool checkImmunity = false)
     {
@@ -1049,6 +1049,47 @@ public class Map
         return count;
     }
 
+
+    public int GatherEnemiesInMaskedArea(CombatEntity attacker, Position target, int range, ref Span<bool> mask, EntityList? list, bool checkImmunity = false, bool canAttackHidden = false)
+    {
+        var hasList = list != null;
+        var count = 0;
+        var width = 1 + range * 2;
+
+        Debug.Assert(mask.Length == width * width);
+
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(target, range))
+        {
+            foreach (var p in c.AllEntities)
+            {
+                if(!p.TryGet<CombatEntity>(out var ch) || !ch.Character.IsActive)
+                    continue;
+
+                if (checkImmunity && ch.Character.IsTargetImmune)
+                    continue;
+            
+                if (!ch.IsValidTarget(attacker, false, canAttackHidden))
+                    continue;
+
+                var maskX = ch.Character.Position.X - target.X + range;
+                var maskY = ch.Character.Position.Y - target.Y + range;
+
+                if (maskX < 0 || maskX >= width || maskY < 0 || maskY >= width)
+                    continue;
+
+                if (!mask[maskX + maskY * width])
+                    continue;
+                
+                if (hasList)
+                    list!.Add(p);
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+
     public void TriggerAreaOfEffectForCharacter(WorldObject character, Position initialPos, Position targetPosition)
     {
         //Since aoes are added to each chunk they affect, we only need to check aoes in our current chunk
@@ -1064,17 +1105,17 @@ public class Map
             if (aoe.HasTouchedAoE(initialPos, targetPosition))
                 aoe.OnAoETouch(character);
 
-            if(aoe.TriggerOnLeaveArea && aoe.HasLeftAoE(initialPos, targetPosition))
+            if (aoe.TriggerOnLeaveArea && aoe.HasLeftAoE(initialPos, targetPosition))
                 aoe.OnLeaveAoE(character);
         }
     }
-    
+
     public bool TryGetAreaOfEffectAtPosition(Position pos, CharacterSkill skill, [NotNullWhen(true)] out AreaOfEffect? effect)
     {
         //Since aoes are added to each chunk they affect, we only need to check aoes in our current chunk
 
         var c = GetChunkForPosition(pos);
-        
+
         for (var i = 0; i < c.AreaOfEffects.Count; i++)
         {
             var aoe = c.AreaOfEffects[i];
@@ -1178,7 +1219,7 @@ public class Map
             }
         }
     }
-    
+
     private void LoadNpcs()
     {
         if (!DataManager.NpcManager.NpcSpawnsForMaps.TryGetValue(Name, out var spawns))
@@ -1202,7 +1243,7 @@ public class Map
     public void RegisterImportantEntity(WorldObject character)
     {
         var e = character.Entity;
-        if(!MapImportantEntities.Contains(ref e))
+        if (!MapImportantEntities.Contains(ref e))
             MapImportantEntities.Add(ref e);
 
         if (Players.Count <= 0)
@@ -1235,11 +1276,11 @@ public class Map
             chunk.AreaOfEffects.Add(aoe);
             //since our interactions can cause entities to get added or removed from this chunk
             //we want an enumerator that will not change
-            chunkEntities.CopyEntities(chunk.AllEntities); 
+            chunkEntities.CopyEntities(chunk.AllEntities);
 
             foreach (var e in chunkEntities)
             {
-                if(e.TryGet<CombatEntity>(out var ce) && aoe.Area.Contains(ce.Character.Position))
+                if (e.TryGet<CombatEntity>(out var ce) && aoe.Area.Contains(ce.Character.Position))
                     aoe.OnAoETouch(ce.Character);
             }
         }
@@ -1274,7 +1315,7 @@ public class Map
         area = area.ClipArea(MapBounds);
         if (area.IsZero)
             return false;
-        
+
         //var chunkEntities = EntityListPool.Get();
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(area)))
         {
@@ -1324,7 +1365,7 @@ public class Map
         if (!ItemChunkLookup.TryGetValue(groundId, out var chunkId))
             return false;
 
-        if(!Chunks[chunkId].TryGetGroundItem(groundId, out var item))
+        if (!Chunks[chunkId].TryGetGroundItem(groundId, out var item))
             return false;
 
         using var entityList = EntityListPool.Get();
@@ -1351,6 +1392,33 @@ public class Map
             return false;
 
         return true;
+    }
+
+    public bool FillGroundAreaOfEffectMaskWithLoS(Position src, Position pos, int range, ref Span<bool> mask)
+    {
+        var width = (1 + range * 2);
+        var hasMatch = false;
+
+        Debug.Assert(mask.Length == width * width); //verify mask is large enough
+        
+        for (var x = 0; x < width; x++)
+        {
+            for (var y = 0; y < width; y++)
+            {
+                var posX = pos.X + x - range;
+                var posY = pos.Y + y - range;
+                if (!WalkData.IsCellWalkable(posX, posY))
+                    continue;
+
+                if (!WalkData.HasLineOfSight(src, new Position(posX, posY)))
+                    continue;
+
+                mask[x + y * width] = true;
+                hasMatch = true;
+            }
+        }
+
+        return hasMatch;
     }
 
 
@@ -1408,7 +1476,7 @@ public class Map
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
         }
 
-        if(ch.IsImportant)
+        if (ch.IsImportant)
             RemoveImportantEntity(ch);
     }
 
@@ -1450,10 +1518,10 @@ public class Map
             Players.ClearInactive(); //should never happen
             MapImportantEntities.ClearInactive(); //but why risk it?
         }
-        
+
         foreach (var c in Chunks)
         {
-            for(var i = 0; i < c.AreaOfEffects.Count; i++)
+            for (var i = 0; i < c.AreaOfEffects.Count; i++)
             {
                 var a = c.AreaOfEffects[i];
                 if (a.CheckStayTouching)
@@ -1467,8 +1535,8 @@ public class Map
         }
 
 #if DEBUG
-            //sanity checks
-            if (chunkCheckId == 0 && PlayerCount == 0)
+        //sanity checks
+        if (chunkCheckId == 0 && PlayerCount == 0)
         {
             foreach (var c in Chunks)
             {
@@ -1495,7 +1563,7 @@ public class Map
         }
 #endif
     }
-    
+
     public ChunkAreaEnumerator GetChunkEnumeratorAroundPosition(Position p, int distance)
     {
         var area = Area.CreateAroundPoint(p, distance).ClipArea(MapBounds);

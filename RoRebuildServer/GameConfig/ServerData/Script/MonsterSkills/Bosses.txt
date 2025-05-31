@@ -134,8 +134,13 @@ StateIdle:
 StateAny: 
     TryCast(CallMinion, 1, 10%, 0.7s, 45s)[MinionsDeadFor(20s)] -> CallDefaultMinions();
 	TryCast(RecallMinion, 1, 100%, 0, 30s);
+StateChase:
+	TryCast(Endure, 1, 50%, 0, 10s)[WasRangedOrMagicAttacked] -> SendEmote(6); //angry
 StateAttacking:
+	TryCast(SpeedUp, 5, 100%, 0.7s, 2m)[HpPercent < 30] -> SendEmote(6); //angry
 	TryCast(SonicBlow, 10, 20%, 0, 5s) -> SendEmote(18); //laugh
+	TryCast(Stun, 5, 20%, 0, 5s) -> SendEmote(6); //angry
+	TryCast(WaterBall, 5, 20%, 0.5s, 5s, NoInterrupt) -> SendEmote(18); //laugh
 }
 
 
@@ -153,7 +158,8 @@ StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
-    TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
+    TryCast(MonsterSnap, 1, 20%, 0.2s, 1s);
+	TryCast(Heal, 9999, 100%, 0s, 10s)[HpPercent < 50];
 	TryCast(DarkStrike, 10, 20%, 0, 5s);
 	TryCast(LordOfVermilion, 10, 50%, 0.5s, 5s);
 StateAttacking:
@@ -201,12 +207,14 @@ StateAny:
 	TryCast(Heal, 9, 100%, 0s, 5s)[FindAllyBelowHpPercent(60)];
 StateChase:
 	TryCast(Heal, 5000, 20%, 0s, 15s)[HpPercent < 30];
-	TryCast(Silence, 5, 5%, 0.7s, 20s)[HpPercent < 80] -> SendEmote(32); //laugh
+	TryCast(Silence, 5, 20%, 0.7s, 20s)[HpPercent < 80] -> SendEmote(32); //laugh
+	TryCast(HeavensDrive, 5, 20%, 0.3s, 5s, NoInterrupt);
 StateAttacking:
 	TryCast(PowerUp, 3, 100%, 0.7s, 25s)[HpPercent < 30];
 	TryCast(Heal, 5000, 20%, 0s, 15s)[HpPercent < 30];
 	TryCast(GuidedAttack, 5, 5%, 0, 20s) -> SendEmote(18); //laugh
 	TryCast(Silence, 5, 5%, 1s, 20s)[HpPercent < 80] -> SendEmote(32); //laugh
+	TryCast(HeavensDrive, 5, 5%, 0.3s, 5s, NoInterrupt);
 }
 
 //------------------------------------
@@ -224,9 +232,13 @@ StateChase:
 	TryCast(PowerUp, 3, 100%, 0.7s, 30s)[HpPercent < 30];
     TryCast(Heal, 9999, 100%, 0s, 15s)[HpPercent < 50];
 	TryCast(StoneCurse, 10, 20%, 0.5s, 5s);
-StateAttacking:
+	TryCast(HeavensDrive, 5, 5%, 0.8s, 5s);
 	TryCast(GuidedAttack, 5, 5%, 0, 20s);
-	TryCast(Hiding, 1, 20%, 0, 30s)[HpPercent < 20];
+StateAttacking:
+	TryCast(PowerUp, 3, 100%, 0.7s, 30s)[HpPercent < 30];
+	TryCast(Petrify, 5, 5%, 0, 20s);
+	TryCast(Lick, 5, 10%, 0.5s, 5s, NoInterrupt) -> SendEmote(3); //heart
+	TryCast(Hiding, 1, 20%, 0, 1m)[HpPercent < 20];
 }
 
 //------------------------------------

@@ -1,8 +1,10 @@
 MapConfig("gef_dun00")
 {
 	CreateSpawn("MANDRAGORA", 10);
-	CreateSpawn("POPORING", 20);
-	CreateSpawn("POISON_SPORE", 100, 5000, 15000); //40
+	CreateSpawn("POPORING", 10);
+	CreateSpawn("DUSTINESS", 10, 2m);
+	CreateSpawn("FARMILIAR", 10, 2m);
+	CreateSpawn("POISON_SPORE", 90, 5s, 15s); //40
 	CreateSpawn("RED_PLANT", 1, %(91, 106, 0, 0), 300000, 150000);
 	CreateSpawn("YELLOW_PLANT", 1, %(92, 108, 0, 0), 300000, 150000);
 	CreateSpawn("GREEN_PLANT", 1, %(114, 106, 0, 0), 300000, 150000);
