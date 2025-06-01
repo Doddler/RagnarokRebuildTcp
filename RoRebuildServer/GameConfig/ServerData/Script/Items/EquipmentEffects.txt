@@ -1,183 +1,265 @@
-Item("Memory_Book") { OnEquip:  AddStat(AddInt, 1); }
-Item("Holy_Guard") { OnEquip:  AddStat(AddVit, 2); }
-Item("Sacred_Mission") { OnEquip:  AddStat(AddInt, 2); AddStat(AddVit, 3); }
-Item("Memory_Book_") { OnEquip:  AddStat(AddInt, 1); }
-Item("Sacred_Mission_") { OnEquip:  AddStat(AddInt, 2); AddStat(AddVit, 3); }
-Item("Exorcism_Bible") { OnEquip:  AddStat(AddInt, 1); }
-Item("Cross_Shield") { OnEquip:  AddStat(AddStr, 1); }
-Item("Magic_Bible_Vol1") { OnEquip:  AddStat(AddInt, 2); }
-Item("Ahura_Mazdah") { OnEquip:  AddStat(AddStr, 50); AddStat(AddInt, 50); AddStat(AddVit, 50); AddStat(AddDex, 50); AddStat(AddAgi, 50); AddStat(AddLuk, 50); }
-Item("Bunny_Band") { OnEquip:  AddStat(AddLuk, 2); }
-Item("Tiara") { OnEquip:  AddStat(AddInt, 2); }
-Item("Crown") { OnEquip:  AddStat(AddInt, 2); }
-Item("Santa_Hat") { OnEquip:  AddStat(AddLuk, 1); }
-Item("Coronet") { OnEquip:  AddStat(AddInt, 1); }
-Item("Angel_Wing") { OnEquip:  AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
-Item("Evil_Wing") { OnEquip:  AddStat(AddStr, 1); }
-Item("Majestic_Goat") { OnEquip:  AddStat(AddStr, 1); }
-Item("Doctor_Band") { OnEquip:  AddStat(AddInt, 1); }
-Item("Ghost_Bandana") { OnEquip:  AddStat(AddAgi, 2); }
-Item("Nurse_Cap") { OnEquip:  AddStat(AddInt, 1); }
-Item("Sakkat") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Apple_of_Archer") { OnEquip:  AddStat(AddDex, 3); }
-Item("Pirate_Bandana") { OnEquip:  AddStat(AddStr, 1); }
-Item("Binoculars") { OnEquip:  AddStat(AddDex, 1); }
-Item("Lord's_Clothes") { OnEquip:  AddStat(AddInt, 1); }
-Item("Tights") { OnEquip:  AddStat(AddDex, 1); }
-Item("Tights_") { OnEquip:  AddStat(AddDex, 1); }
-Item("Mage_Coat") { OnEquip:  AddStat(AddInt, 1); }
-Item("Thief_Clothes") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Thief_Clothes_") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Ninja_Suit") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Goibne's_Armor") { OnEquip:  AddStat(AddVit, 2); }
-Item("Valkyrian_Armor") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
-Item("Ninja_Suit_") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Mage_Coat_") { OnEquip:  AddStat(AddInt, 1); }
-Item("Diabolus_Armor") { OnEquip:  AddStat(AddStr, 2); AddStat(AddDex, 1); }
-Item("Sprint_Mail") { OnEquip:  AddStat(AddVit, 1); }
-Item("Life_Link") { OnEquip:  AddStat(AddVit, 2); }
-Item("Crystal_Pumps") { OnEquip:  AddStat(AddLuk, 5); }
-Item("Fricco's_Shoes") { OnEquip:  AddStat(AddAgi, 2); }
-Item("Black_Leather_Boots") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Black_Leather_Boots_") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Sprint_Shoes") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Ancient_Cape") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Survivor's_Manteau") { OnEquip:  AddStat(AddVit, 10); }
-Item("Morrigane's_Manteau") { OnEquip:  AddStat(AddLuk, 2); }
-Item("Goibne's_Spaulders") { OnEquip:  AddStat(AddVit, 1); }
-Item("Ancient_Cape_") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Rider_Insignia") { OnEquip:  AddStat(AddAgi, 2); }
-Item("Rider_Insignia_") { OnEquip:  AddStat(AddAgi, 2); }
-Item("Ring") { OnEquip:  AddStat(AddStr, 2); }
-Item("Earring") { OnEquip:  AddStat(AddInt, 2); }
-Item("Necklace") { OnEquip:  AddStat(AddVit, 2); }
-Item("Glove") { OnEquip:  AddStat(AddDex, 2); }
-Item("Brooch") { OnEquip:  AddStat(AddAgi, 2); }
-Item("Rosary") { OnEquip:  AddStat(AddLuk, 2); }
-Item("Celebrant's_Mitten") { OnEquip:  AddStat(AddInt, 1); }
-Item("Matyr's_Leash") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Bow_Thimble") { OnEquip:  AddStat(AddAttackRangedAttack, 3); }
-Item("Ring_") { OnEquip:  AddStat(AddStr, 1); }
-Item("Earring_") { OnEquip:  AddStat(AddInt, 1); }
-Item("Necklace_") { OnEquip:  AddStat(AddVit, 1); }
-Item("Glove_") { OnEquip:  AddStat(AddDex, 1); }
-Item("Brooch_") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Rosary_") { OnEquip:  AddStat(AddLuk, 1); }
-Item("Megingjard") { OnEquip:  AddStat(AddStr, 40); }
-Item("Brisingamen") { OnEquip:  AddStat(AddStr, 6); AddStat(AddInt, 6); AddStat(AddVit, 6); AddStat(AddAgi, 6); AddStat(AddLuk, 10); }
-Item("Morpheus's_Ring") { OnEquip:  AddStat(AddInt, 1); }
-Item("Morpheus's_Bracelet") { OnEquip:  AddStat(AddInt, 1); }
-Item("Morrigane's_Pendant") { OnEquip:  AddStat(AddStr, 2); }
-Item("Shinobi_Sash") { OnEquip:  AddStat(AddStr, 1); AddStat(AddAgi, 1); }
-Item("Vesper_Core_01") { OnEquip:  AddStat(AddInt, 2); }
-Item("Vesper_Core_02") { OnEquip:  AddStat(AddStr, 3); }
-Item("Vesper_Core_03") { OnEquip:  AddStat(AddAgi, 3); }
-Item("Vesper_Core_04") { OnEquip:  AddStat(AddDex, 3); }
-Item("Spiritual_Ring") { OnEquip:  AddStat(AddInt, 2); AddStat(AddDex, 1); }
-Item("Ring_of_Flame_Lord") { OnEquip:  AddStat(AddStr, 2); AddStat(AddVit, 1); }
-Item("Ring_of_Resonance") { OnEquip:  AddStat(AddVit, 1); AddStat(AddAgi, 2); }
-Item("Lesser_Elemental_Ring") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
-Item("Orleans's_Glove") { OnEquip:  AddStat(AddDex, 2); }
-Item("Bison_Horn") { OnEquip:  AddStat(AddAgi, 2); }
-Item("Angelic_Ring") { OnEquip:  AddStat(AddInt, 2); AddStat(AddDex, 1); }
-Item("Cursed_Star") { OnEquip:  AddStat(AddDex, 2); }
-Item("Linen_Glove") { OnEquip:  AddStat(AddDex, 1); AddStat(AddAgi, 2); }
-Item("Swordman_Figure") { OnEquip:  AddStat(AddVit, 1); }
-Item("Acolyte_Figure") { OnEquip:  AddStat(AddInt, 1); }
-Item("Mage_Figure") { OnEquip:  AddStat(AddInt, 1); }
-Item("Archer_Figure") { OnEquip:  AddStat(AddDex, 1); }
-Item("Thief_Figure") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Merchant_Figure") { OnEquip:  AddStat(AddStr, 1); }
-Item("Glorious_Popularized_Ring") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); }
-Item("Glorious_Mass-Produced_Ring") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
-Item("Jewel_Crown") { OnEquip:  AddStat(AddInt, 2); AddStat(AddLuk, 1); }
-Item("Joker_Jester") { OnEquip:  AddStat(AddLuk, 2); }
-Item("Grand_Circlet") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddLuk, 1); }
-Item("Lord_Kaho's_Horns") { OnEquip:  AddStat(AddStr, 5); AddStat(AddInt, 5); AddStat(AddVit, 10); AddStat(AddAgi, 10); AddStat(AddLuk, 20); }
-Item("Feather_Bonnet") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Corsair") { OnEquip:  AddStat(AddVit, 1); }
-Item("Grief_for_Greed") { OnEquip:  AddStat(AddInt, 1); AddStat(AddDex, 1); }
-Item("Helm_of_Angel") { OnEquip:  AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
-Item("Chef_Hat") { OnEquip:  AddStat(AddDex, 1); }
-Item("Mage_Hat") { OnEquip:  AddStat(AddInt, 2); AddStat(AddMaxSp, 150); }
-Item("Mine_Hat") { OnEquip:  AddStat(AddDex, 2); }
-Item("Deviruchi_Hat") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); }
-Item("Magician_Hat") { OnEquip:  AddStat(AddDex, 1); AddStat(AddAgi, 1); }
-Item("Party_Hat") { OnEquip:  AddStat(AddLuk, 1); }
-Item("Straw_Hat") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Succubus_Horn") { OnEquip:  AddStat(AddInt, 1); }
-Item("Sombrero") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Evil_Wing_Ears") { OnEquip:  AddStat(AddStr, 1); }
-Item("Kitsune_Mask") { OnEquip:  AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
-Item("Hot-Blooded_Headband") { OnEquip:  AddStat(AddStr, 2); }
-Item("Indian_Headband") { OnEquip:  AddStat(AddDex, 1); }
-Item("Incubus_Horn") { OnEquip:  AddStat(AddAgi, 1); }
-Item("Model_Training_Hat") { OnEquip:  AddStat(AddDex, 2); }
-Item("Angel_Wing_Ears") { OnEquip:  AddStat(AddStr, 1); }
-Item("Beanie") { OnEquip:  AddStat(AddLuk, 1); }
-Item("Sea_Otter_Hat") { OnEquip:  AddStat(AddVit, 1); }
-Item("Crown_of_Mistress") { OnEquip:  AddStat(AddInt, 2); }
-Item("Super_Novice_Hat") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
-Item("Super_Novice_Hat_") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
-Item("Magni's_Cap") { OnEquip:  AddStat(AddStr, 2); }
-Item("Ulle's_Cap") { OnEquip:  AddStat(AddDex, 2); AddStat(AddAgi, 1); }
-Item("Fricca's_Circlet") { OnEquip:  AddStat(AddInt, 2); }
-Item("Morpheus's_Hood") { OnEquip:  AddStat(AddInt, 2); }
-Item("Morrigane's_Helm") { OnEquip:  AddStat(AddLuk, 2); }
-Item("Goibne's_Helm") { OnEquip:  AddStat(AddVit, 3); }
-Item("Antonio's_Santa_Hat") { OnEquip:  AddStat(AddLuk, 1); }
-Item("Marionette_Doll") { OnEquip:  AddStat(AddStr, 1); }
-Item("Majestic_Goat_") { OnEquip:  AddStat(AddStr, 1); }
-Item("Corsair_") { OnEquip:  AddStat(AddVit, 1); }
-Item("Tiara_") { OnEquip:  AddStat(AddInt, 1); }
-Item("Crown_") { OnEquip:  AddStat(AddInt, 1); }
-Item("Deviruchi_Hat_") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); }
-Item("Deviruchi_Hat__") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); }
-Item("Deviruchi_Hat___") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 1); }
-Item("Beanie_") { OnEquip:  AddStat(AddLuk, 1); }
-Item("Beanie__") { OnEquip:  AddStat(AddLuk, 1); }
-Item("Beanie___") { OnEquip:  AddStat(AddLuk, 1); }
-Item("Mage_Hat_") { OnEquip:  AddStat(AddInt, 2); }
-Item("Mage_Hat__") { OnEquip:  AddStat(AddInt, 2); }
-Item("Mage_Hat___") { OnEquip:  AddStat(AddInt, 2); }
-Item("Mage_Hat____") { OnEquip:  AddStat(AddInt, 2); }
-Item("Mage_Hat_____") { OnEquip:  AddStat(AddInt, 2); }
-Item("Pirate_Bandana_") { OnEquip:  AddStat(AddStr, 1); }
-Item("Bone_Head") { OnEquip:  AddStat(AddStr, 2); }
-Item("Mandragora_Cap") { OnEquip:  AddStat(AddVit, 3); }
-Item("Bride's_Corolla") { OnEquip:  AddStat(AddLuk, 3); }
-Item("Necktie") { OnEquip:  AddStat(AddVit, 1); }
-Item("Sphinx_Hat") { OnEquip:  AddStat(AddStr, 2); }
-Item("Sphinx_Hat_") { OnEquip:  AddStat(AddStr, 2); }
-Item("Hat_of_the_Sun_God") { OnEquip:  AddStat(AddStr, 3); AddStat(AddInt, 2); }
-Item("Orc_Hero_Helm") { OnEquip:  AddStat(AddStr, 2); AddStat(AddVit, 1); }
-Item("Hat_of_the_Sun_God_") { OnEquip:  AddStat(AddStr, 3); AddStat(AddInt, 2); }
-Item("Haedonggum") { OnEquip:  AddStat(AddInt, 3); }
-Item("Haedonggum_") { OnEquip:  AddStat(AddInt, 3); }
-Item("Cutlus") { OnEquip: GrantSkill(Bash, 5); AddStat(AddStr, 2); AddStat(AddDef, 1); }
-Item("Excalibur") { OnEquip:  AddStat(AddInt, 5); AddStat(AddLuk, 10); }
-Item("Mistilteinn") { OnEquip:  AddStat(AddDex, 3); }
-Item("Muramasa") { OnEquip:  AddStat(AddCrit, 300); AddStat(AspdBonus, 12); }
-Item("Masamune") { OnEquip:  AddStat(AddFlee, 30); AddStat(AspdBonus, 20); AddStat(AddStr, -5); AddStat(AddDefPercent, -66); }
-Item("Byeol-ungeom") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); }
-Item("Holy_Avenger") { OnEquip:  AddStat(AddVit, 2); }
-Item("Fortune_Sword") { OnEquip:  AddStat(AddLuk, 5); AddStat(PerfectDodge, 200); }
-Item("Bazerald") { OnEquip:  AddStat(AddInt, 5); AddStat(AddMagicAttackPower, 40); AddStat(AddMagicAttackPercent, 10); }
-Item("War_Axe") { OnEquip:  AddStat(AddDex, 2); AddStat(AddLuk, 2); }
-Item("Pole_Axe") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 2); AddStat(AddDex, 1); }
-Item("Assaulter_Spear") { OnEquip:  AddStat(AddStr, 2); }
-Item("Mjolnir") { OnEquip:  AddStat(AddStr, 15); AddStat(AddDex, 40); }
-Item("Brave_Morning_Star") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); }
-Item("Valorous_Morning_Star") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); }
-Item("Bible") { OnEquip:  AddStat(AddInt, 2); }
-Item("Legacy_of_Dragon") { OnEquip:  AddStat(AddInt, 3); }
-Item("Hardcover_Book") { OnEquip:  AddStat(AddStr, 3); AddStat(AddDex, 2); }
-Item("Encyclopedia") { OnEquip:  AddStat(AddInt, 3); AddStat(AddDex, 2); }
-Item("Ledger_of_Death") { OnEquip:  AddStat(AddStr, 3); AddStat(AddInt, 3); }
-Item("Principles_of_Magic") { OnEquip:  AddStat(AddInt, 3); }
-Item("Ancient_Magic") { OnEquip:  AddStat(AddInt, 4); }
-Item("Brave_Book") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 1); }
-Item("Valorous_Book") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 2); }
+Item("Memory_Book") { OnEquip: AddStat(AddInt, 1); }
+Item("Holy_Guard") { OnEquip: AddStat(AddVit, 2); }
+Item("Sacred_Mission") { OnEquip: AddStat(AddInt, 2); AddStat(AddVit, 3); }
+Item("Novice_Shield") { OnEquip: AddStat(AddResistElementWater, 20); AddStat(AddResistElementEarth, 20); AddStat(AddResistElementFire, 20); AddStat(AddResistElementWind, 20); AddStat(AddResistElementPoison, 20); AddStat(AddResistElementHoly, 20); AddStat(AddResistElementDark, 20); AddStat(AddResistElementGhost, 20); AddStat(AddResistElementUndead, 20); }
+Item("Stone_Buckler") { OnEquip: AddStat(AddResistElementNeutral, 5); AddStat(AddResistLargeSize, 5); }
+Item("Valkyrja's_Shield") { OnEquip: AddStat(AddResistElementWater, 20); AddStat(AddResistElementFire, 20); AddStat(AddResistElementDark, 20); AddStat(AddResistElementUndead, 20); }
+Item("Angel's_Guard") { OnEquip: AddStat(AddResistRaceDemon, 5); }
+Item("Memory_Book_") { OnEquip: AddStat(AddInt, 1); }
+Item("Sacred_Mission_") { OnEquip: AddStat(AddInt, 2); AddStat(AddVit, 3); }
+Item("Exorcism_Bible") { OnEquip: AddStat(AddInt, 1); }
+Item("Cross_Shield") { OnEquip: AddStat(AddStr, 1); }
+Item("Magic_Bible_Vol1") { OnEquip: AddStat(AddInt, 2); }
+Item("Ahura_Mazdah") { OnEquip: AddStat(AddStr, 50); AddStat(AddInt, 50); AddStat(AddVit, 50); AddStat(AddDex, 50); AddStat(AddAgi, 50); AddStat(AddLuk, 50); }
+Item("Sunglasses") { OnEquip: AddStat(ResistBlindStatus, 5); }
+Item("Sunglasses_") { OnEquip: AddStat(ResistBlindStatus, 5); }
+Item("Fancy_Flower") { OnEquip: AddStat(AddResistRacePlant, 10); }
+Item("Bunny_Band") { OnEquip: AddStat(AddLuk, 2); }
+Item("Flu_Mask") { OnEquip: AddStat(ResistSilenceStatus, 10); }
+Item("Tiara") { OnEquip: AddStat(AddInt, 2); }
+Item("Crown") { OnEquip: AddStat(AddInt, 2); }
+Item("Santa_Hat") { OnEquip: AddStat(AddLuk, 1); }
+Item("Purple_Glasses") { OnEquip: AddStat(ResistBlindStatus, 10); }
+Item("Geek_Glasses") { OnEquip: AddStat(ResistBlindStatus, 15); }
+Item("Coronet") { OnEquip: AddStat(AddInt, 1); }
+Item("Cute_Ribbon") { OnEquip: AddStat(AddMaxSp, 20); }
+Item("Wizard_Hat") { OnEquip: AddStat(AddMaxSp, 100); }
+Item("Sunflower") { OnEquip: AddStat(AddResistRaceInsect, 10); }
+Item("Angel_Wing") { OnEquip: AddStat(AddAgi, 1); AddStat(AddLuk, 1); AddStat(AddResistRaceDemon, 3); }
+Item("Evil_Wing") { OnEquip: AddStat(AddStr, 1); AddStat(AddResistRaceAngel, 3); }
+Item("Majestic_Goat") { OnEquip: AddStat(AddStr, 1); }
+Item("Gangster_Mask") { OnEquip: AddStat(ResistSilenceStatus, 15); }
+Item("Cigarette") { OnEquip: AddStat(AddResistRaceInsect, 3); }
+Item("Pipe") { OnEquip: AddStat(AddResistRaceInsect, 3); }
+Item("Romantic_Flower") { OnEquip: AddStat(AddResistRacePlant, 3); }
+Item("Romantic_Leaf") { OnEquip: AddStat(AddResistRacePlant, 3); }
+Item("Doctor_Band") { OnEquip: AddStat(AddInt, 1); }
+Item("Ghost_Bandana") { OnEquip: AddStat(AddAgi, 2); AddStat(AddResistElementGhost, 10); }
+Item("Nurse_Cap") { OnEquip: AddStat(AddInt, 1); }
+Item("Sakkat") { OnEquip: AddStat(AddAgi, 1); }
+Item("Halo") { OnEquip: AddStat(AddResistElementHoly, 15); }
+Item("Ear_Muffs") { OnEquip: AddStat(ResistCurseStatus, 10); }
+Item("Apple_of_Archer") { OnEquip: AddStat(AddDex, 3); }
+Item("Pirate_Bandana") { OnEquip: AddStat(AddStr, 1); }
+Item("Poo_Poo_Hat") { OnEquip: AddStat(AddResistRaceDemihuman, 10); }
+Item("Masquerade") { OnEquip: AddStat(AddAttackRaceDemihuman, 3); }
+Item("Blinder") { OnEquip: AddStat(ResistBlindStatus, 100); }
+Item("Binoculars") { OnEquip: AddStat(AddDex, 1); }
+Item("Lord's_Clothes") { OnEquip: AddStat(AddInt, 1); }
+Item("Holy_Robe") { OnEquip: AddStat(AddResistRaceDemon, 15); AddStat(AddResistElementDark, 10); }
+Item("Tights") { OnEquip: AddStat(AddDex, 1); }
+Item("Tights_") { OnEquip: AddStat(AddDex, 1); }
+Item("Mage_Coat") { OnEquip: AddStat(AddInt, 1); }
+Item("Thief_Clothes") { OnEquip: AddStat(AddAgi, 1); }
+Item("Thief_Clothes_") { OnEquip: AddStat(AddAgi, 1); }
+Item("Ninja_Suit") { OnEquip: AddStat(AddAgi, 1); }
+Item("Robe_of_Cast") { OnEquip: AddStat(AddCastTime, -3); }
+Item("Lucius's_Volcano_Armor") { OnEquip: SetArmorElement(Fire1); }
+Item("Lucius's_Volcano_Armor_") { OnEquip: SetArmorElement(Fire1); }
+Item("Saphien's_Ocean_Armor") { OnEquip: SetArmorElement(Water1); }
+Item("Saphien's_Ocean_Armor_") { OnEquip: SetArmorElement(Water1); }
+Item("Aebecee's_Typhoon_Armor") { OnEquip: SetArmorElement(Wind1); }
+Item("Aebecee's_Typhoon_Armor_") { OnEquip: SetArmorElement(Wind1); }
+Item("Claytos_Earth_Armor") { OnEquip: SetArmorElement(Earth1); }
+Item("Claytos_Earth_Armor_") { OnEquip: SetArmorElement(Earth1); }
+Item("Goibne's_Armor") { OnEquip: AddStat(AddVit, 2); AddStat(AddMaxHpPercent, 10); }
+Item("Valkyrian_Armor") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
+Item("Ninja_Suit_") { OnEquip: AddStat(AddAgi, 1); }
+Item("Robe_of_Cast_") { OnEquip: AddStat(AddCastTime, -3); }
+Item("Mage_Coat_") { OnEquip: AddStat(AddInt, 1); }
+Item("Diabolus_Armor") { OnEquip: AddStat(AddStr, 2); AddStat(AddDex, 1); }
+Item("Sprint_Mail") { OnEquip: AddStat(AddVit, 1); }
+Item("Life_Link") { OnEquip: AddStat(AddVit, 2); }
+Item("Crystal_Pumps") { OnEquip: AddStat(AddLuk, 5); }
+Item("Sleipnir") { OnEquip: AddStat(AddMaxHpPercent, 20); AddStat(AddMaxSpPercent, 20); AddStat(AddSpRecoveryPercent, 15); /* Condition EFFECTHaste 9999 100 */ }
+Item("Novice_Shoes") { OnEquip: AddStat(AddMaxHpPercent, 5); }
+Item("Fricco's_Shoes") { OnEquip: AddStat(AddAgi, 2); }
+Item("Vidar's_Boots") { OnEquip: AddStat(AddMaxHpPercent, 9); AddStat(AddMaxSpPercent, 9); }
+Item("Goibne's_Greaves") { OnEquip: AddStat(AddMaxHpPercent, 5); AddStat(AddMaxSpPercent, 5); }
+Item("Angel's_Reincarnation") { OnEquip: AddStat(AddMaxHp, 100); }
+Item("Black_Leather_Boots") { OnEquip: AddStat(AddAgi, 1); }
+Item("Black_Leather_Boots_") { OnEquip: AddStat(AddAgi, 1); }
+Item("Sprint_Shoes") { OnEquip: AddStat(AddAgi, 1); }
+Item("Ancient_Cape") { OnEquip: AddStat(AddAgi, 1); }
+Item("Survivor's_Manteau") { OnEquip: AddStat(AddVit, 10); }
+Item("Novice_Manteau") { OnEquip: AddStat(AddResistElementNeutral, 10); }
+Item("Falcon_Muffler") { OnEquip: AddStat(AddFlee, 15); AddStat(PerfectDodge, 5); }
+Item("Vali's_Manteau") { OnEquip: AddStat(AddResistElementNeutral, 15); }
+Item("Morpheus's_Shawl") { OnEquip: AddStat(AddMaxSpPercent, 10); }
+Item("Morrigane's_Manteau") { OnEquip: AddStat(AddLuk, 2); AddStat(PerfectDodge, 8); }
+Item("Goibne's_Spaulders") { OnEquip: AddStat(AddVit, 1); AddStat(AddResistRangedAttack, 10); }
+Item("Angel's_Cardigan") { OnEquip: AddStat(AddHpRecoveryPercent, 5); }
+Item("Ancient_Cape_") { OnEquip: AddStat(AddAgi, 1); }
+Item("Rider_Insignia") { OnEquip: AddStat(AddAgi, 2); }
+Item("Rider_Insignia_") { OnEquip: AddStat(AddAgi, 2); }
+Item("Ring") { OnEquip: AddStat(AddStr, 2); }
+Item("Earring") { OnEquip: AddStat(AddInt, 2); }
+Item("Necklace") { OnEquip: AddStat(AddVit, 2); }
+Item("Glove") { OnEquip: AddStat(AddDex, 2); }
+Item("Brooch") { OnEquip: AddStat(AddAgi, 2); }
+Item("Clip") { OnEquip: AddStat(AddMaxSp, 10); }
+Item("Rosary") { OnEquip: AddStat(AddLuk, 2); }
+Item("Critical_Ring") { OnEquip: AddStat(AddCrit, 5); }
+Item("Celebrant's_Mitten") { OnEquip: AddStat(AddInt, 1); }
+Item("Matyr's_Leash") { OnEquip: AddStat(AddAgi, 1); }
+Item("Bow_Thimble") { OnEquip: AddStat(AddAttackRangedAttack, 3); }
+Item("Ring_") { OnEquip: AddStat(AddStr, 1); }
+Item("Earring_") { OnEquip: AddStat(AddInt, 1); }
+Item("Necklace_") { OnEquip: AddStat(AddVit, 1); }
+Item("Glove_") { OnEquip: AddStat(AddDex, 1); }
+Item("Brooch_") { OnEquip: AddStat(AddAgi, 1); }
+Item("Rosary_") { OnEquip: AddStat(AddLuk, 1); }
+Item("Megingjard") { OnEquip: AddStat(AddStr, 40); }
+Item("Brisingamen") { OnEquip: AddStat(AddStr, 6); AddStat(AddInt, 6); AddStat(AddVit, 6); AddStat(AddAgi, 6); AddStat(AddLuk, 10); }
+Item("The_Sign") { OnEquip: AddStat(AddAttackSpecialNormal, 5); AddStat(AddAttackSpecialBoss, 5); AddStat(AddAttackSpecialBoss, 5); AddStat(AddMagicAttackPercent, 5); }
+Item("Nile_Rose") { OnEquip: AddStat(AddMaxHp, 10); }
+Item("Morpheus's_Ring") { OnEquip: AddStat(AddInt, 1); AddStat(AddMaxSpPercent, 5); }
+Item("Morpheus's_Bracelet") { OnEquip: AddStat(AddInt, 1); AddStat(AddMaxSpPercent, 5); }
+Item("Morrigane's_Belt") { OnEquip: AddStat(AddAttackPower, 5); AddStat(AddCrit, 3); }
+Item("Morrigane's_Pendant") { OnEquip: AddStat(AddStr, 2); AddStat(AddCrit, 3); }
+Item("Shinobi_Sash") { OnEquip: AddStat(AddStr, 1); AddStat(AddAgi, 1); }
+Item("Armor_Charm") { OnEquip: AddStat(AddMaxHp, 150); }
+Item("Nile_Rose_") { OnEquip: AddStat(AddMaxHp, 10); }
+Item("Vesper_Core_01") { OnEquip: AddStat(AddInt, 2); AddStat(AddMaxSpPercent, 5); }
+Item("Vesper_Core_02") { OnEquip: AddStat(AddStr, 3); AddStat(AddAttackPower, 10); }
+Item("Vesper_Core_03") { OnEquip: AddStat(AddAgi, 3); AddStat(AddFlee, 5); }
+Item("Vesper_Core_04") { OnEquip: AddStat(AddDex, 3); AddStat(AddHit, 10); }
+Item("Bow_Thimble_") { OnEquip: AddStat(AddAttackRangedAttack, 3); }
+Item("Spiritual_Ring") { OnEquip: AddStat(AddInt, 2); AddStat(AddDex, 1); }
+Item("Ring_of_Flame_Lord") { OnEquip: AddStat(AddStr, 2); AddStat(AddVit, 1); }
+Item("Ring_of_Resonance") { OnEquip: AddStat(AddVit, 1); AddStat(AddAgi, 2); }
+Item("Lesser_Elemental_Ring") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
+Item("Orleans's_Glove") { OnEquip: AddStat(AddDex, 2); }
+Item("Bison_Horn") { OnEquip: AddStat(AddAgi, 2); }
+Item("Angelic_Ring") { OnEquip: AddStat(AddInt, 2); AddStat(AddDex, 1); }
+Item("Cursed_Star") { OnEquip: AddStat(AddDex, 2); }
+Item("Linen_Glove") { OnEquip: AddStat(AddDex, 1); AddStat(AddAgi, 2); }
+Item("Swordman_Figure") { OnEquip: AddStat(AddVit, 1); }
+Item("Acolyte_Figure") { OnEquip: AddStat(AddInt, 1); }
+Item("Mage_Figure") { OnEquip: AddStat(AddInt, 1); }
+Item("Archer_Figure") { OnEquip: AddStat(AddDex, 1); }
+Item("Thief_Figure") { OnEquip: AddStat(AddAgi, 1); }
+Item("Merchant_Figure") { OnEquip: AddStat(AddStr, 1); }
+Item("Glorious_Popularized_Ring") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); }
+Item("Glorious_Mass-Produced_Ring") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
+Item("Headset") { OnEquip: AddStat(ResistCurseStatus, 10); }
+Item("Jewel_Crown") { OnEquip: AddStat(AddInt, 2); AddStat(AddLuk, 1); }
+Item("Joker_Jester") { OnEquip: AddStat(AddLuk, 2); }
+Item("Oxygen_Mask") { OnEquip: AddStat(ResistPoisonStatus, 20); }
+Item("Grand_Circlet") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddLuk, 1); }
+Item("Lord_Kaho's_Horns") { OnEquip: AddStat(AddStr, 5); AddStat(AddInt, 5); AddStat(AddVit, 10); AddStat(AddAgi, 10); AddStat(AddLuk, 20); }
+Item("Bone_Helm") { OnEquip: AddStat(AddResistElementDark, -15); }
+Item("Feather_Bonnet") { OnEquip: AddStat(AddAgi, 1); }
+Item("Corsair") { OnEquip: AddStat(AddVit, 1); }
+Item("Grief_for_Greed") { OnEquip: AddStat(AddInt, 1); AddStat(AddDex, 1); }
+Item("Helm_of_Angel") { OnEquip: AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
+Item("Chef_Hat") { OnEquip: AddStat(AddDex, 1); }
+Item("Mage_Hat") { OnEquip: AddStat(AddInt, 2); AddStat(AddMaxSp, 150); }
+Item("Mine_Hat") { OnEquip: AddStat(AddDex, 2); }
+Item("Deviruchi_Hat") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); }
+Item("Magician_Hat") { OnEquip: AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddMaxSp, 50); }
+Item("Drooping_Cat") { OnEquip: AddStat(ResistCurseStatus, 30); }
+Item("Party_Hat") { OnEquip: AddStat(AddLuk, 1); }
+Item("Straw_Hat") { OnEquip: AddStat(AddAgi, 1); }
+Item("Blue_Fish") { OnEquip: AddStat(AddAttackRaceAquatic, 10); }
+Item("Succubus_Horn") { OnEquip: AddStat(AddInt, 1); }
+Item("Sombrero") { OnEquip: AddStat(AddAgi, 1); }
+Item("Evil_Wing_Ears") { OnEquip: AddStat(AddStr, 1); }
+Item("Kitsune_Mask") { OnEquip: AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
+Item("Hot-Blooded_Headband") { OnEquip: AddStat(AddStr, 2); }
+Item("Indian_Headband") { OnEquip: AddStat(AddDex, 1); }
+Item("Incubus_Horn") { OnEquip: AddStat(AddAgi, 1); }
+Item("Model_Training_Hat") { OnEquip: AddStat(AddDex, 2); }
+Item("Angel_Wing_Ears") { OnEquip: AddStat(AddStr, 1); }
+Item("Beanie") { OnEquip: AddStat(AddLuk, 1); }
+Item("Sea_Otter_Hat") { OnEquip: AddStat(AddVit, 1); }
+Item("Crown_of_Mistress") { OnEquip: AddStat(AddInt, 2); AddStat(AddMaxSp, 100); }
+Item("Lazy_Smokie") { OnEquip: AddStat(ResistSleepStatus, 20); }
+Item("Dark_Blinder") { OnEquip: AddStat(ResistBlindStatus, 100); AddStat(ResistStunStatus, 20); }
+Item("Super_Novice_Hat") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
+Item("Winter_Hat") { OnEquip: AddStat(ResistFreezeStatus, 10); }
+Item("Mystic_Rose") { OnEquip: AddStat(AddResistRacePlant, 2); }
+Item("Super_Novice_Hat_") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
+Item("Magni's_Cap") { OnEquip: AddStat(AddStr, 2); }
+Item("Ulle's_Cap") { OnEquip: AddStat(AddDex, 2); AddStat(AddAgi, 1); }
+Item("Fricca's_Circlet") { OnEquip: AddStat(AddInt, 2); AddStat(AddMaxSp, 50); }
+Item("Angel's_Kiss") { OnEquip: AddStat(AddSpRecoveryPercent, 3); }
+Item("Morpheus's_Hood") { OnEquip: AddStat(AddInt, 2); }
+Item("Morrigane's_Helm") { OnEquip: AddStat(AddLuk, 2); AddStat(AddAttackPower, 3); }
+Item("Goibne's_Helm") { OnEquip: AddStat(AddVit, 3); }
+Item("Antonio's_Santa_Hat") { OnEquip: AddStat(AddLuk, 1); }
+Item("Marionette_Doll") { OnEquip: AddStat(AddStr, 1); }
+Item("Majestic_Goat_") { OnEquip: AddStat(AddStr, 1); }
+Item("Bone_Helm_") { OnEquip: AddStat(AddResistElementDark, -15); }
+Item("Corsair_") { OnEquip: AddStat(AddVit, 1); }
+Item("Tiara_") { OnEquip: AddStat(AddInt, 1); }
+Item("Crown_") { OnEquip: AddStat(AddInt, 1); }
+Item("Feather_Beret") { OnEquip: AddStat(AddResistRaceDemihuman, 10); }
+Item("Beret") { OnEquip: AddStat(AddResistRaceDemihuman, 10); }
+Item("Deviruchi_Hat_") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); }
+Item("Deviruchi_Hat__") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); }
+Item("Deviruchi_Hat___") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); }
+Item("Beanie_") { OnEquip: AddStat(AddLuk, 1); }
+Item("Beanie__") { OnEquip: AddStat(AddLuk, 1); }
+Item("Beanie___") { OnEquip: AddStat(AddLuk, 1); }
+Item("Mage_Hat_") { OnEquip: AddStat(AddInt, 2); }
+Item("Mage_Hat__") { OnEquip: AddStat(AddInt, 2); }
+Item("Mage_Hat___") { OnEquip: AddStat(AddInt, 2); }
+Item("Mage_Hat____") { OnEquip: AddStat(AddInt, 2); }
+Item("Mage_Hat_____") { OnEquip: AddStat(AddInt, 2); }
+Item("Pirate_Bandana_") { OnEquip: AddStat(AddStr, 1); }
+Item("Bone_Head") { OnEquip: AddStat(AddStr, 2); }
+Item("Mandragora_Cap") { OnEquip: AddStat(AddVit, 3); }
+Item("Bride's_Corolla") { OnEquip: AddStat(AddLuk, 3); }
+Item("Necktie") { OnEquip: AddStat(AddVit, 1); }
+Item("Welding_Mask") { OnEquip: AddStat(AddResistElementFire, 10); }
+Item("Gas_Mask") { OnEquip: AddStat(ResistPoisonStatus, 30); }
+Item("Alarm_Mask") { OnEquip: AddStat(ResistBlindStatus, 50); }
+Item("Sphinx_Hat") { OnEquip: AddStat(AddStr, 2); }
+Item("Sphinx_Hat_") { OnEquip: AddStat(AddStr, 2); }
+Item("Munak_Hat") { OnEquip: AddStat(AddResistRaceUndead, 10); }
+Item("Munak_Hat_") { OnEquip: AddStat(AddResistRaceUndead, 10); }
+Item("Hat_of_the_Sun_God") { OnEquip: AddStat(AddStr, 3); AddStat(AddInt, 2); }
+Item("Coif_") { OnEquip: AddStat(AddMaxSp, 100); }
+Item("Orc_Hero_Helm") { OnEquip: AddStat(AddStr, 2); AddStat(AddVit, 1); }
+Item("Zealotus_Mask") { OnEquip: AddStat(AddResistRaceDemihuman, 5); AddStat(AddAttackRaceDemihuman, 5); }
+Item("Hat_of_the_Sun_God_") { OnEquip: AddStat(AddStr, 3); AddStat(AddInt, 2); }
+Item("Haedonggum") { OnEquip: AddStat(AddInt, 3); }
+Item("Haedonggum_") { OnEquip: AddStat(AddInt, 3); }
+Item("Nagan") { OnEquip: AddStat(DoubleAttackChance, 25); AddStat(AddAttackRaceDemihuman, 20); }
+Item("Ice_Falchion") { OnEquip: AddStat(AddMagicAttackPower, 120); GrantSkill(ColdBolt, 3); AddStat(OnAttackFreeze, 50); AutoSpellOnAttack(ColdBolt, 3, 100); }
+Item("Fire_Brand") { OnEquip: AddStat(AddMagicAttackPower, 120); GrantSkill(FireBolt, 3); AutoSpellOnAttack(FireBolt, 3, 100); }
+Item("Caesar's_Sword") { OnEquip: AddStat(IgnoreDefRacePlant, 100); AddStat(AddAttackRacePlant, 25); }
+Item("Excalibur") { OnEquip: AddStat(AddInt, 5); AddStat(AddLuk, 10); }
+Item("Mistilteinn") { OnEquip: AddStat(AddDex, 3); }
+
+Item("Byeol-ungeom") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); AddStat(AddAttackSpecialBoss, 50); AddStat(AddResistSpecialNormal, -10); }
+Item("Holy_Avenger") { OnEquip: AddStat(AddVit, 2); }
+Item("Fortune_Sword") { OnEquip: AddStat(AddLuk, 5); AddStat(PerfectDodge, 20); }
+Item("Bazerald") { OnEquip: AddStat(AddInt, 5); AddStat(AddMagicAttackPower, 40); AddStat(AddMagicAttackPercent, 10); }
+Item("Assassin_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 15); AddStat(AddMaxHpPercent, 20); AddStat(AspdBonus, 2); }
+Item("Moonlight_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 10); AddStat(SpOnAttack, 3); }
+Item("Sucsamad") { OnEquip: AddStat(AddAttackElementEarth, 25); AddStat(AddAttackElementWind, 25); }
+Item("Grimtooth") { OnEquip: AddStat(AddDefPercent, -33); AddStat(AddFlee, 15); AddStat(PerfectDodge, 100); }
+Item("Dagger_of_Counter") { OnEquip: AddStat(AddCrit, 90); }
+Item("War_Axe") { OnEquip: AddStat(AddDex, 2); AddStat(AddLuk, 2); }
+Item("Windhawk") { OnEquip: AddStat(AspdBonus, 5); }
+Item("Pole_Axe") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 2); AddStat(AddDex, 1); }
+Item("Assaulter_Spear") { OnEquip: AddStat(AddStr, 2); }
+Item("Long_Mace") { OnEquip: AddStat(AddResistRangedAttack, 10); }
+Item("Mjolnir") { OnEquip: AddStat(AddStr, 15); AddStat(AddDex, 40); AddStat(AspdBonus, 10); }
+Item("Brave_Morning_Star") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); }
+Item("Valorous_Morning_Star") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); }
+Item("Bible") { OnEquip: AddStat(AddInt, 2); }
+Item("Book_of_the_Apocalypse") { OnEquip: AddStat(AddAttackElementWater, 7); AddStat(AddAttackElementEarth, 7); AddStat(AddAttackElementFire, 7); AddStat(AddAttackElementWind, 7); AddStat(AddResistElementHoly, -5); }
+Item("Legacy_of_Dragon") { OnEquip: AddStat(AddInt, 3); }
+Item("Hardcover_Book") { OnEquip: AddStat(AddStr, 3); AddStat(AddDex, 2); }
+Item("Encyclopedia") { OnEquip: AddStat(AddInt, 3); AddStat(AddDex, 2); }
+Item("Ledger_of_Death") { OnEquip: AddStat(AddStr, 3); AddStat(AddInt, 3); }
+Item("Principles_of_Magic") { OnEquip: AddStat(AddInt, 3); }
+Item("Ancient_Magic") { OnEquip: AddStat(AddInt, 4); }
+Item("Brave_Book") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 1); }
+Item("Valorous_Book") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 2); }
 Item("Angra_Manyu") { 
 OnEquip: 
 	AddStat(AddAttackPower, 3000);
@@ -189,102 +271,111 @@ OnEquip:
 	AddStat(AddAgi, 50); 
 	AddStat(AddLuk, 50); 
 }
-Item("Rod") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
-Item("Rod_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
-Item("Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
-Item("Wand_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
-Item("Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 2); }
-Item("Staff_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 2); }
-Item("Arc_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
-Item("Arc_Wand_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
-Item("Mighty_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddStr, 10); }
-Item("Wand_of_Occult") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
-Item("Evil_Bone_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); }
-Item("Wing_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
-Item("Survivor's_Rod") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 2); }
-Item("Survivor's_Rod_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 3); }
-Item("Survivor's_Rod__") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 2); }
-Item("Survivor's_Rod___") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
-Item("Hypnotist's_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
-Item("Hypnotist's_Staff_") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
-Item("Lich's_Bone_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); AddStat(AddDex, 1); }
-Item("Healing_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
-Item("Piercing_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); }
-Item("Gentleman_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 1); }
-Item("Release_of_Wish") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
-Item("Holy_Stick") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
-Item("Brave_Arc_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); AddStat(AddDex, 3); }
-Item("Valorous_Arc_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 3); }
-Item("Brave_Recovery_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
-Item("Valorous_Recovery_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 2); }
-Item("Thorn_Staff_of_Darkness") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 3); }
-Item("Eraser") { OnEquip:  AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 2); }
-Item("Novice_Rod") { OnEquip:  AddStat(AddMagicAttackPower, 8); }
-Item("Glorious_Arc_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
-Item("Glorious_Recovery_Wand") { OnEquip:  AddStat(AddMagicAttackPercent, 15); }
-Item("Claw") { OnEquip:  AddStat(AddStr, 2); }
-Item("Claw_") { OnEquip:  AddStat(AddStr, 2); }
-Item("Brave_Fist") { OnEquip:  AddStat(AddStr, 2); AddStat(AddAgi, 1); }
-Item("Valorous_Fist") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 1); }
-Item("Harp") { OnEquip:  AddStat(AddInt, 2); }
-Item("Harp_") { OnEquip:  AddStat(AddInt, 2); }
-Item("Electric_Guitar") { OnEquip:  AddStat(AddInt, 2); AddStat(AddAgi, 1); }
-Item("Brave_Guitar") { OnEquip:  AddStat(AddDex, 2); }
-Item("Valorous_Guitar") { OnEquip:  AddStat(AddDex, 2); }
-Item("Tail_Whip") { OnEquip:  AddStat(AddLuk, 3); }
-Item("Tail_Whip_") { OnEquip:  AddStat(AddLuk, 3); }
-Item("Lariat_Whip") { OnEquip:  AddStat(AddDex, 5); AddStat(AddAgi, 1); }
-Item("Brave_Lariat") { OnEquip:  AddStat(AddDex, 2); }
-Item("Valorous_Lariat") { OnEquip:  AddStat(AddDex, 2); }
-Item("Hakujin") { OnEquip:  AddStat(AddInt, 2); }
-Item("Hakujin_") { OnEquip:  AddStat(AddInt, 2); }
-Item("Brave_Damascus") { OnEquip:  AddStat(AddStr, 1); AddStat(AddAgi, 1); }
-Item("Valorous_Damascus") { OnEquip:  AddStat(AddStr, 1); AddStat(AddAgi, 1); }
-Item("Ivory_Knife") { OnEquip:  AddStat(AddAgi, 2); }
+Item("Rod") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
+Item("Rod_") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
+Item("Wand") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 15); }
+Item("Wand_") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 15); }
+Item("Staff") { OnEquip: AddStat(AddInt, 2); AddStat(AddMagicAttackPercent, 15); }
+Item("Staff_") { OnEquip: AddStat(AddInt, 2); AddStat(AddMagicAttackPercent, 15); }
+Item("Arc_Wand") { OnEquip: AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 15); }
+Item("Arc_Wand_") { OnEquip: AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 15); }
+Item("Mighty_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddStr, 10); }
+Item("Wand_of_Occult") { OnEquip: AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 15); }
+Item("Evil_Bone_Wand") { OnEquip: AddStat(AddInt, 4); AddStat(AddMagicAttackPercent, 15); }
+Item("Wing_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddCastTime, -5); }
+Item("Survivor's_Rod") { OnEquip: AddStat(AddDex, 2); AddStat(AddMagicAttackPercent, 15); AddStat(AddMaxHp, 300); }
+Item("Survivor's_Rod_") { OnEquip: AddStat(AddDex, 3); AddStat(AddMagicAttackPercent, 15); AddStat(AddMaxHp, 400); }
+Item("Survivor's_Rod__") { OnEquip: AddStat(AddInt, 2); AddStat(AddMagicAttackPercent, 15); AddStat(AddMaxHp, 300); }
+Item("Survivor's_Rod___") { OnEquip: AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 15); AddStat(AddMaxHp, 400); }
+Item("Hypnotist's_Staff") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 25); }
+Item("Hypnotist's_Staff_") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 25); }
+Item("Lich's_Bone_Wand") { OnEquip: AddStat(AddInt, 1); AddStat(AddDex, 1); }
+Item("Healing_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
+Item("Piercing_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); }
+Item("Gentleman_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 1); }
+Item("Release_of_Wish") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
+Item("Holy_Stick") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
+Item("Brave_Arc_Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); AddStat(AddDex, 3); }
+Item("Valorous_Arc_Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 3); }
+Item("Brave_Recovery_Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
+Item("Valorous_Recovery_Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 2); }
+Item("Thorn_Staff_of_Darkness") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 3); }
+Item("Eraser") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddDex, 2); }
+Item("Novice_Rod") { OnEquip: AddStat(AddMagicAttackPower, 8); }
+Item("Glorious_Arc_Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
+Item("Glorious_Recovery_Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
+Item("Claw") { OnEquip: AddStat(AddStr, 2); }
+Item("Claw_") { OnEquip: AddStat(AddStr, 2); }
+Item("Kaiser_Knuckle") { OnEquip: AddStat(AddAttackRaceUndead, 5); AddStat(AddAttackElementWater, 10); AddStat(AddAttackElementEarth, 10); AddStat(AddAttackElementFire, 10); AddStat(AddAttackElementWind, 10); }
+Item("Berserk") { OnEquip: AddStat(AspdBonus, 12); }
+Item("Berserk_") { OnEquip: AddStat(AspdBonus, 12); }
+Item("Brave_Fist") { OnEquip: AddStat(AddStr, 2); AddStat(AddAgi, 1); }
+Item("Valorous_Fist") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 1); }
+Item("Harp") { OnEquip: AddStat(AddInt, 2); }
+Item("Harp_") { OnEquip: AddStat(AddInt, 2); }
+Item("Electric_Guitar") { OnEquip: AddStat(AddInt, 2); AddStat(AddAgi, 1); }
+Item("Brave_Guitar") { OnEquip: AddStat(AddDex, 2); }
+Item("Valorous_Guitar") { OnEquip: AddStat(AddDex, 2); }
+Item("Tail_Whip") { OnEquip: AddStat(AddLuk, 3); }
+Item("Tail_Whip_") { OnEquip: AddStat(AddLuk, 3); }
+Item("Lariat_Whip") { OnEquip: AddStat(AddDex, 5); AddStat(AddAgi, 1); }
+Item("Skipping_Rope") { OnEquip: AddStat(AddCrit, 20); }
+Item("Brave_Lariat") { OnEquip: AddStat(AddDex, 2); }
+Item("Valorous_Lariat") { OnEquip: AddStat(AddDex, 2); }
+Item("Cowardice_Blade") { OnEquip: AddStat(AddDef, 5); }
+Item("Cowardice_Blade_") { OnEquip: AddStat(AddDef, 5); }
+Item("Kamaitachi") { OnEquip: AddStat(AddCrit, 3); AddStat(AspdBonus, 3); }
+Item("Asura") { OnEquip: AddStat(AddMagicAttackPercent, 10); }
+Item("Asura_") { OnEquip: AddStat(AddMagicAttackPercent, 10); }
+Item("Hakujin") { OnEquip: AddStat(AddInt, 2); }
+Item("Hakujin_") { OnEquip: AddStat(AddInt, 2); }
+Item("Sucsamad_") { OnEquip: AddStat(AddAttackElementEarth, 25); AddStat(AddAttackElementWind, 25); }
+Item("Brave_Damascus") { OnEquip: AddStat(AddStr, 1); AddStat(AddAgi, 1); }
+Item("Valorous_Damascus") { OnEquip: AddStat(AddStr, 1); AddStat(AddAgi, 1); }
+Item("Ivory_Knife") { OnEquip: AddStat(AddAgi, 2); }
 Item("Cutlus_") { OnEquip: GrantSkill(Bash, 5); AddStat(AddStr, 2); AddStat(AddDef, 1); }
-Item("Brave_Blade") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); }
-Item("Valorous_Blade") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); }
-Item("Elemental_Sword") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 4); AddStat(AddDex, 1); }
-Item("Glorious_Rapier") { OnEquip:  AddStat(AddInt, 6); }
-Item("Glorious_Holy_Avenger") { OnEquip:  AddStat(AddInt, 6); }
-Item("Katzbalger") { OnEquip:  AddStat(AddVit, 5);AddStat(AddDef, 10); }
-Item("Brave_Katzbalger") { OnEquip:  AddStat(AddStr, 2); }
-Item("Death_Guidance") { OnEquip:  AddStat(AddStr, 5); AddStat(AddAgi, 2); }
-Item("Katar") { OnEquip:  AddStat(AddDex, 1); }
-Item("Katar_") { OnEquip:  AddStat(AddDex, 1); }
-Item("Brave_Katar") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); }
-Item("Valorous_Katar") { OnEquip:  AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); }
-Item("Bloody_Axe") { OnEquip: AddStat(MoveSpeedBonus, 34); AddStat(AddStr, 10); }
-Item("Brave_Battle_Axe") { OnEquip:  AddStat(AddStr, 3); }
-Item("Valorous_Battle_Axe") { OnEquip:  AddStat(AddStr, 3); }
-Item("Soul_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 20); AddStat(AddInt, 5); AddStat(AddAgi, 2); }
-Item("Wizardry_Staff") { OnEquip:  AddStat(AddMagicAttackPercent, 20); AddStat(AddInt, 6); AddStat(AddDex, 2); }
-Item("Assaulter_Lance") { OnEquip:  AddStat(AddStr, 2); }
-Item("Ivory_Lance") { OnEquip:  AddStat(AddAgi, 2); }
-Item("Staff_of_Destruction") { OnEquip:  AddStat(AddInt, 3); AddStat(AddAgi, 10); }
-Item("Divine_Cross") { OnEquip:  AddStat(AddDex, 4); }
-Item("Brave_Huuma") { OnEquip:  AddStat(AddStr, 2); AddStat(AddDex, 1); }
-Item("Valorous_Huuma") { OnEquip:  AddStat(AddStr, 2); AddStat(AddDex, 1); }
-Item("Arbalest_Bow") { OnEquip:  AddStat(AddDex, 2); }
-Item("Arbalest_Bow_") { OnEquip:  AddStat(AddDex, 2); }
-Item("Rudra_Bow") { OnEquip:  AddStat(AddInt, 5); }
-Item("Brave_Cross_Bow") { OnEquip:  AddStat(AddDex, 2); }
-Item("Valorous_Cross_Bow") { OnEquip:  AddStat(AddInt, 10); AddStat(AddDex, 2); }
-Item("Soldier_Pistol") { OnEquip:  AddStat(AddDex, 2); }
-Item("Gate_Keeper-DD") { OnEquip:  AddStat(AddDex, 1); }
-Item("Soldier_Rifle") { OnEquip:  AddStat(AddDex, 2); }
-Item("Soldier_Gatling_Gun") { OnEquip:  AddStat(AddDex, 2); }
-Item("Soldier_Shotgun") { OnEquip:  AddStat(AddDex, 2); }
-Item("Soldier_Grenade_Launcher") { OnEquip:  AddStat(AddDex, 2); }
-Item("Golden_Mace") { OnEquip:  AddStat(AddAttackRaceUndead, 20); }
-Item("Golden_Mace_") { OnEquip:  AddStat(AddAttackRaceUndead, 20); }
-
-Item("Nagan") { OnEquip: AddStat(AddAttackRaceDemihuman, 20); AddStat(DoubleAttackChance, 25); }
-Item("Ice_Falchion") { OnEquip: AddStat(AddMagicAttackPower, 120); GrantSkill(ColdBolt, 3); AddStat(OnAttackFreeze, 50); AutoSpellOnAttack(ColdBolt, 3, 100); }
-Item("Fire_Brand") { OnEquip: AddStat(AddMagicAttackPower, 120); GrantSkill(FireBolt, 3); AutoSpellOnAttack(FireBolt, 3, 100); }
-Item("Caesar's_Sword") { OnEquip: AddStat(IgnoreDefRacePlant, 100); AddStat(AddAttackRacePlant, 25); }
+Item("Brave_Blade") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); }
+Item("Valorous_Blade") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); }
+Item("Elemental_Sword") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 4); AddStat(AddDex, 1); }
+Item("Glorious_Rapier") { OnEquip: AddStat(AddInt, 6); }
+Item("Glorious_Holy_Avenger") { OnEquip: AddStat(AddInt, 6); }
 Item("Broad_Sword") { OnEquip: AddStat(AddDef, 5); }
 Item("Broad_Sword_") { OnEquip: AddStat(AddDef, 5); }
-Item("Moonlight_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 10); AddStat(SpOnAttack, 3); }
-Item("Sucsamad") { OnEquip: AddStat(AddAttackElementEarth, 25); AddStat(AddAttackElementWind, 25); }
-Item("Grimtooth") { OnEquip: AddStat(AddDefPercent, -33); AddStat(AddFlee, 15); AddStat(PerfectDodge, 100); }
+Item("Muramasa") { OnEquip: AddStat(AddCrit, 300); AddStat(AspdBonus, 12); }
+Item("Masamune") { OnEquip: AddStat(AddFlee, 30); AddStat(AspdBonus, 20); AddStat(AddStr, -5); AddStat(AddDefPercent, -66); }
+Item("Katzbalger") { OnEquip: AddStat(AddVit, 5);AddStat(AddDef, 10); }
+Item("Brave_Katzbalger") { OnEquip: AddStat(AddStr, 2); }
+Item("Death_Guidance") { OnEquip: AddStat(AddStr, 5); AddStat(AddAgi, 2); }
+Item("Katar") { OnEquip: AddStat(AddDex, 1); }
+Item("Katar_") { OnEquip: AddStat(AddDex, 1); }
+Item("Brave_Katar") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); }
+Item("Valorous_Katar") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); }
+Item("Bloody_Axe") { OnEquip: AddStat(MoveSpeedBonus, 34); AddStat(AddStr, 10); }
+Item("Brave_Battle_Axe") { OnEquip: AddStat(AddStr, 3); }
+Item("Valorous_Battle_Axe") { OnEquip: AddStat(AddStr, 3); }
+Item("Soul_Staff") { OnEquip: AddStat(AddInt, 5); AddStat(AddAgi, 2); AddStat(AddMagicAttackPercent, 20); }
+Item("Wizardry_Staff") { OnEquip: AddStat(AddInt, 6); AddStat(AddDex, 2); AddStat(AddMagicAttackPercent, 20); }
+Item("Crescent_Scythe_") { OnEquip: AddStat(AddCrit, 30); AddStat(AddHit, 10); }
+Item("Assaulter_Lance") { OnEquip: AddStat(AddStr, 2); }
+Item("Ivory_Lance") { OnEquip: AddStat(AddAgi, 2); }
+Item("Staff_of_Destruction") { OnEquip: AddStat(AddInt, 3); AddStat(AddAgi, 10); }
+Item("Divine_Cross") { OnEquip: AddStat(AddDex, 4); }
+Item("Brave_Huuma") { OnEquip: AddStat(AddStr, 2); AddStat(AddDex, 1); }
+Item("Valorous_Huuma") { OnEquip: AddStat(AddStr, 2); AddStat(AddDex, 1); }
+Item("Arbalest_Bow") { OnEquip: AddStat(AddDex, 2); }
+Item("Arbalest_Bow_") { OnEquip: AddStat(AddDex, 2); }
+Item("Rudra_Bow") { OnEquip: AddStat(AddInt, 5); }
+Item("Brave_Cross_Bow") { OnEquip: AddStat(AddDex, 2); }
+Item("Valorous_Cross_Bow") { OnEquip: AddStat(AddInt, 10); AddStat(AddDex, 2); }
+Item("Soldier_Pistol") { OnEquip: AddStat(AddDex, 2); }
+Item("Gate_Keeper-DD") { OnEquip: AddStat(AddDex, 1); }
+Item("Soldier_Rifle") { OnEquip: AddStat(AddDex, 2); }
+Item("Soldier_Gatling_Gun") { OnEquip: AddStat(AddDex, 2); }
+Item("Soldier_Shotgun") { OnEquip: AddStat(AddDex, 2); }
+Item("Soldier_Grenade_Launcher") { OnEquip: AddStat(AddDex, 2); }
+Item("Golden_Mace") { OnEquip: AddStat(AddAttackRaceUndead, 20); }
+Item("Golden_Mace_") { OnEquip: AddStat(AddAttackRaceUndead, 20); }
+
+
+
+

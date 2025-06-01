@@ -133,14 +133,14 @@ public partial class CombatEntity
         if (!isCrit && flags.HasFlag(AttackFlags.CanCrit))
         {
             //crit rate: 1%, + 0.3% per luk, + 0.1% per level
-            var critRate = 10 + GetEffectiveStat(CharacterStat.Luck) * 3 + srcLevel + GetStat(CharacterStat.AddCrit);
+            var critRate = (10 + GetEffectiveStat(CharacterStat.Luck) * 3 + srcLevel + GetStat(CharacterStat.AddCrit)) / 10;
 
             //should double crit for katar here
 
             //counter crit: 0.2% per luck, 0.67% per level
-            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) * 2 + targetLevel * 2 / 3;
+            var counterCrit = (target.GetEffectiveStat(CharacterStat.Luck) * 2 + targetLevel * 2 / 3) / 10;
 
-            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 1000))
+            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 100))
                 isCrit = true;
         }
 
@@ -158,7 +158,7 @@ public partial class CombatEntity
         if (target.Character.Type == CharacterType.Player && isPhysical && req.SkillSource == CharacterSkill.None)
         {
             var lucky = target.Player.GetEffectiveStat(CharacterStat.PerfectDodge);
-            if (CheckLuckModifiedRandomChanceVsTarget(target, lucky, 1000))
+            if (CheckLuckModifiedRandomChanceVsTarget(target, lucky, 100))
             {
                 evade = true;
                 isLucky = true;

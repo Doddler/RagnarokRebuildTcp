@@ -211,6 +211,9 @@ public enum CharacterStat
     ResistCurseStatus,
     ResistStoneStatus,
     ResistSilenceStatus,
+    ResistConfusionStatus,
+    ResistHeavyPoisonStatus,
+    ResistBleedingStatus,
 
     DecreasePoisonStatusDamage,
     DecreaseStunDuration,

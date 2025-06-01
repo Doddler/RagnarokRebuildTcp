@@ -421,7 +421,7 @@ public partial class CombatEntity : IEntityAutoReset
                 stat = (int)((stat + GetStat(CharacterStat.AddMDef)) * (1 + GetStat(CharacterStat.AddMDef) / 100f));
                 break;
             case CharacterStat.PerfectDodge:
-                stat += 10 + GetStat(CharacterStat.Luck) * 5;
+                stat += 1 + (GetStat(CharacterStat.Luck) * 5) / 10;
                 break;
             case CharacterStat.Range:
                 if (HasBodyState(BodyStateFlags.Blind) && stat > ServerConfig.MaxAttackRangeWhileBlind)

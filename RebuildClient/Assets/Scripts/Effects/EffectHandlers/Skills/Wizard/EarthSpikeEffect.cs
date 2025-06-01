@@ -22,7 +22,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
             effect.ActiveDelay = delayTime;
             effect.Material = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.StoneMaterial);
 
-            var len = 4f;
+            // var len = 4f;
             
             // AudioManager.Instance.OneShotSoundEffect(-1, "wizard_earthspike.ogg", effect.transform.position, 0.7f);
             // CameraFollower.Instance.ShakeTime = 0.3f;
