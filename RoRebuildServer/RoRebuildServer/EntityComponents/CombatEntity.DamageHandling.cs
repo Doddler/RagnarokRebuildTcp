@@ -543,8 +543,16 @@ public partial class CombatEntity
                 || (CastInterruptionMode != CastInterruptionMode.NeverInterrupt && knockback > 0)
                 || (CastInterruptionMode == CastInterruptionMode.InterruptOnSkill && di.AttackSkill != CharacterSkill.None))
             {
-                //character casts aren't interrupted by attacks if they are close to executing
-                if (Character.Type != CharacterType.Player || CastTimeRemaining > 0.2f)
+                var doInterrupt = true;
+                if (Character.Type == CharacterType.Player)
+                {
+                    if (GetStat(CharacterStat.UninterruptibleCast) > 0)
+                        doInterrupt = false;
+                    if (CastTimeRemaining < 0.2f) 
+                        doInterrupt = false; //character casts aren't interrupted by attacks if they are close to executing
+                }
+
+                if (doInterrupt)
                 {
                     IsCasting = false;
                     CommandBuilder.StopCastMulti(Character);

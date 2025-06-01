@@ -265,9 +265,8 @@ ATK +5
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Phen_Card //id 4077 - slotted on Accessory
-Cast Time +25%
-Uninterruptible Cast
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Cast Time +15%
+Skill/spell casts becomes uninterruptible
 
 ::Savage_Card //id 4078 - slotted on Armor
 VIT +3
@@ -517,7 +516,6 @@ Recover 100% HP and SP on Resurrection
 
 ::Beelzebub_Card //id 4145 - slotted on Accessory
 Cast Time -30%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Maya_Card //id 4146 - slotted on Shield
 +50% chance of single target magic reflect
@@ -623,9 +621,8 @@ Lose 5 SP/unequip
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Dark_Illusion_Card //id 4169 - slotted on Headgear
-HP -10%, SP -10%
-Cast Time -10%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+HP -8%, SP -8%
+Cast Time -12%
 
 ::Dark_Frame_Card //id 4170 - slotted on Armor
 +6% chance of <color=#800000>Petrify</color> on receive physical damage
@@ -899,8 +896,7 @@ if Refine > 8: MDEF +5
 
 ::Cloud_Tower_Manager_Card //id 4229 - slotted on Headgear
 INT +1
-Cast Time -5%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Cast Time -8%
 
 ::Shinobi_Card //id 4230 - slotted on Accessory
 AGI +1

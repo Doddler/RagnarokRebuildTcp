@@ -959,13 +959,17 @@ public partial class CombatEntity : IEntityAutoReset
             ExecuteQueuedSkillAttack();
         else
         {
-            IsCasting = true;
-            CastingTime = Time.ElapsedTimeFloat + castTime;
+
             if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
             {
                 var skillData = DataManager.SkillData[skill];
                 CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+
+                castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
             }
+
+            IsCasting = true;
+            CastingTime = Time.ElapsedTimeFloat + castTime;
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime, flags);
@@ -1055,13 +1059,15 @@ public partial class CombatEntity : IEntityAutoReset
             ExecuteQueuedSkillAttack();
         else
         {
-            IsCasting = true;
-            CastingTime = Time.ElapsedTimeFloat + castTime;
             if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
             {
                 var skillData = DataManager.SkillData[skill];
                 CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
             }
+
+            IsCasting = true;
+            CastingTime = Time.ElapsedTimeFloat + castTime;
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             var clientSkill = skillInfo.Skill;
@@ -1182,13 +1188,16 @@ public partial class CombatEntity : IEntityAutoReset
                 ExecuteQueuedSkillAttack();
             else
             {
-                IsCasting = true;
-                CastingTime = Time.ElapsedTimeFloat + castTime;
                 if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
                 {
                     var skillData = DataManager.SkillData[skill];
                     CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+
+                    castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
                 }
+
+                IsCasting = true;
+                CastingTime = Time.ElapsedTimeFloat + castTime;
 
                 Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
                 CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime, flags);

@@ -10,7 +10,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
     [RoEffect("EarthSpike")]
     public class EarthSpikeEffect: IEffectHandler
     {
-        public static Ragnarok3dEffect Create(Vector3 position)
+        public static Ragnarok3dEffect Create(Vector3 position, float delayTime = 0)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.EarthSpike);
             effect.FollowTarget = null;
@@ -19,13 +19,14 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
             effect.UpdateOnlyOnFrameChange = true;
             effect.transform.position = position.SnapToWorldHeight();
             effect.transform.localScale = new Vector3(1f, 1f, 1f);
+            effect.ActiveDelay = delayTime;
             effect.Material = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.StoneMaterial);
 
             var len = 4f;
             
-            AudioManager.Instance.OneShotSoundEffect(-1, "wizard_earthspike.ogg", effect.transform.position, 0.7f);
-            CameraFollower.Instance.ShakeTime = 0.3f;
-            
+            // AudioManager.Instance.OneShotSoundEffect(-1, "wizard_earthspike.ogg", effect.transform.position, 0.7f);
+            // CameraFollower.Instance.ShakeTime = 0.3f;
+            //
             //primary spike
             {
                 //spawn a new spike
@@ -86,6 +87,12 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
+            if (step == 0 && effect.IsStepFrame)
+            {
+                AudioManager.Instance.OneShotSoundEffect(-1, "wizard_earthspike.ogg", effect.transform.position, 0.7f);
+                CameraFollower.Instance.ShakeTime = 0.3f;
+            }
+            
             return effect.IsTimerActive;
         }
     }

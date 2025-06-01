@@ -316,7 +316,7 @@ LUK +5, Perfect Dodge +20
 ::Bazerald //id 1231 - Dagger
 <color=#808080>A decorative dagger engraved with luxurious emblems.</color>
 INT +5
-MATK +80, MATK +10%
+MATK +40, MATK +10%
 
 ::Assassin_Dagger //id 1232 - Dagger
 <color=#808080>A dagger commonly used by assassins.</color>
@@ -334,9 +334,14 @@ Recover 3 SP per attack
 
 ::Sucsamad //id 1236 - Dagger
 <color=#808080>A dagger crafted in the ancient, traditional ways of a small desert tribe.</color>
++25% physical damage vs. Earth
++25% physical damage vs. Wind
 
 ::Grimtooth //id 1237 - Dagger
 <color=#808080>A cursed dagger forged out of a monster's tooth that causes insanity to whoever wields it.</color>
+DEF -33%
+FLEE +15
+Perfect Dodge +10
 
 ::Zeny_Knife //id 1238 - Dagger
 <color=#808080>A dagger crafted by pickpockets to assist them in their daily life.</color>

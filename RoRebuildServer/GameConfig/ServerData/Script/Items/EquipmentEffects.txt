@@ -162,7 +162,7 @@ Item("Masamune") { OnEquip:  AddStat(AddFlee, 30); AddStat(AspdBonus, 20); AddSt
 Item("Byeol-ungeom") { OnEquip:  AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); }
 Item("Holy_Avenger") { OnEquip:  AddStat(AddVit, 2); }
 Item("Fortune_Sword") { OnEquip:  AddStat(AddLuk, 5); AddStat(PerfectDodge, 200); }
-Item("Bazerald") { OnEquip:  AddStat(AddInt, 5); AddStat(AddMagicAttackPower, 80); AddStat(AddMagicAttackPercent, 10); }
+Item("Bazerald") { OnEquip:  AddStat(AddInt, 5); AddStat(AddMagicAttackPower, 40); AddStat(AddMagicAttackPercent, 10); }
 Item("War_Axe") { OnEquip:  AddStat(AddDex, 2); AddStat(AddLuk, 2); }
 Item("Pole_Axe") { OnEquip:  AddStat(AddStr, 1); AddStat(AddInt, 2); AddStat(AddDex, 1); }
 Item("Assaulter_Spear") { OnEquip:  AddStat(AddStr, 2); }
@@ -286,3 +286,5 @@ Item("Caesar's_Sword") { OnEquip: AddStat(IgnoreDefRacePlant, 100); AddStat(AddA
 Item("Broad_Sword") { OnEquip: AddStat(AddDef, 5); }
 Item("Broad_Sword_") { OnEquip: AddStat(AddDef, 5); }
 Item("Moonlight_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 10); AddStat(SpOnAttack, 3); }
+Item("Sucsamad") { OnEquip: AddStat(AddAttackElementEarth, 25); AddStat(AddAttackElementWind, 25); }
+Item("Grimtooth") { OnEquip: AddStat(AddDefPercent, -33); AddStat(AddFlee, 15); AddStat(PerfectDodge, 100); }

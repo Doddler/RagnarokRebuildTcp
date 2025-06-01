@@ -75,7 +75,7 @@ Item("Pirate_Skel_Card") { OnEquip: } //enable skill discount 5
 Item("Bigfoot_Card") { OnEquip: AddStat(AddResistRaceBeast, 30); }
 Item("Argos_Card") { OnEquip: AddStat(AddDef, 1); AddStat(ResistStoneStatus, 30); AddStat(AddResistElementPoison, 30); }
 Item("Magnolia_Card") { OnEquip: AddStat(AddAttackPower, 5); } //add 5% chance to curse on melee/range
-Item("Phen_Card") { OnEquip: } //make cast uninteruptable, add 25% cast time
+Item("Phen_Card") { OnEquip: AddStat(UninterruptibleCast, 1); AddStat(AddCastTime, 15); } //make cast uninteruptable, add 25% cast time
 Item("Savage_Card") { OnEquip: AddStat(AddVit, 3); }
 Item("Mantis_Card") { OnEquip: AddStat(AddStr, 3); }
 Item("Flora_Card") { OnEquip: AddStat(AddAttackRaceAquatic, 20); }
@@ -169,7 +169,7 @@ Item("Evil_Druid_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddDef, 1); SetAr
 Item("Doppelganger_Card") { OnEquip: AddStat(AspdBonus, 15); }
 Item("Orc_Hero_Card") { OnEquip: AddStat(AddVit, 3); } //should add 100% resist to stun
 Item("Osiris_Card") { OnEquip: } //should make it so you revive with 100% hp/sp
-Item("Beelzebub_Card") { OnValidate: return false; OnEquip: } //should reduce spell cast time by 30%
+Item("Beelzebub_Card") { OnValidate: return false; OnEquip: AddStat(AddCastTime, -30); }
 Item("Maya_Card") {  OnEquip: } //should add 50% magic reflect
 Item("Baphomet_Card") {  OnEquip: } //should add splash damage at the cost of 10 hit
 Item("Pharaoh_Card") {  OnEquip: AddStat(SpConsumption, -30); }
@@ -193,7 +193,7 @@ Item("Gig_Card") { OnValidate: return false; OnEquip: }
 Item("Nightmare_Terror_Card") { OnValidate: return false; OnEquip: }
 Item("Nereid_Card") { OnEquip: } //should add recover 5 sp when killing animal race
 Item("Dark_Lord_Card") { OnEquip: } //should add 10% chance to autospell meteor storm 5 when taking damage
-Item("Dark_Illusion_Card") { OnEquip: } //should lower cast time by 10% at the cost of 10% max hp/sp
+Item("Dark_Illusion_Card") { OnEquip: AddStat(AddMaxHpPercent, -8); AddStat(AddMaxSpPercent, -8); AddStat(AddCastTime, -12); }
 Item("Dark_Frame_Card") { OnEquip: } //should add a 20% chance to stone curse monsters that hit you with physical adamage
 Item("Dark_Priest_Card") { OnEquip: } //SOmething weird
 Item("The_Paper_Card") { OnEquip: AddStat(AddCritDamage, 20); } //should cost the user 1 sp per attack
@@ -264,7 +264,7 @@ Item("Stone_Shooter_Card") { OnEquip: AddStat(AddHit, 10); AddStat(AddAttackPowe
 Item("Sting_Card") { OnEquip: AddStat(AddDef, 2); if(Refine > 8) {AddStat(AddMDef, 5);} }
 Item("Spring_Rabbit_Card") { OnEquip: } //meat drop and bonus meat healing
 Item("Sleeper_Card") { OnEquip: } //sleepy box on fish kill
-Item("Cloud_Tower_Manager_Card") { OnEquip: AddStat(AddInt, 1); } //should speed up casting by 5%
+Item("Cloud_Tower_Manager_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddCastTime, -8); }
 Item("Shinobi_Card") { OnEquip: AddStat(AddAgi, 1); AutoSpellWhenAttacked(Cloaking, 5, 100); } //autospell cloaking when attacked
 Item("Mi_Gao_Card") { OnValidate: return false; OnEquip: } //-50% damage from woe guardians...
 Item("Hermit_Plant_Card") { OnValidate: return false; OnEquip: } //herb drops from plant and herb healing

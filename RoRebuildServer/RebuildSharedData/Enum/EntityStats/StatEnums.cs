@@ -103,6 +103,7 @@ public enum CharacterStat
     PerfectDodge,
     AddCrit,
     AddCritDamage,
+    AddCastTime,
 
     AddAttackElementNeutral,
     AddAttackElementEarth,
@@ -224,7 +225,8 @@ public enum CharacterStat
     SpOnAttack,
 
     SpConsumption,
-    
+    UninterruptibleCast,
+
     SkillValue, //used to store skill unlocks in ItemEquipState
     AutoSpellOnAttacking,
     AutoSpellWhenAttacked,

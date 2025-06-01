@@ -31,7 +31,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         {
             src?.PerformSkillMotion();
             if(src != null && attack.Target != null)
-                EarthSpikeEffect.Create(attack.Target.transform.position);
+                EarthSpikeEffect.Create(attack.Target.transform.position, attack.DamageTiming - 0.2f);
         }
     }
 }
