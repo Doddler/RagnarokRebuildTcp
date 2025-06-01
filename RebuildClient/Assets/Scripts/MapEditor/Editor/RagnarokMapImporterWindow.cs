@@ -13,11 +13,11 @@ using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 using Utility.Editor;
 using Debug = UnityEngine.Debug;
+
 // ReSharper disable StringIndexOfIsCultureSpecific.1
 
 namespace Assets.Scripts.MapEditor.Editor
 {
-
     class RagnarokMapImporterWindow : EditorWindow
     {
         //[MenuItem("Ragnarok/Test Import Effect")]
@@ -26,12 +26,47 @@ namespace Assets.Scripts.MapEditor.Editor
 
         //}
 
+        public static void ImportAllMissingMaps()
+        {
+            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
+            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(asset.text);
+            var maps = wrapper.Items;
+
+            if (!Directory.Exists("Assets/Scenes/Maps/"))
+                Directory.CreateDirectory("Assets/Scenes/Maps/");
+
+            int imported = 0;
+            foreach (var map in maps)
+            {
+                var scenePath = $"Assets/Scenes/Maps/{map.Code}.unity";
+                if (File.Exists(scenePath))
+                    continue;
+
+                var gndPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd");
+                if (File.Exists(gndPath))
+                {
+                    ImportMap(gndPath);
+                    imported++;
+                }
+                else
+                {
+                    Debug.LogWarning($"Map file not found: {gndPath}");
+                }
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            Debug.Log($"[Map Import] Imported {imported} new map(s).");
+        }
+
+
         [MenuItem("Ragnarok/Build Sprite Attack Timing")]
         public static void BuildSpriteAttackTiming()
         {
             var guids = AssetDatabase.FindAssets("t:RoSpriteData", new[]
             {
-                "Assets/Sprites/Monsters", 
+                "Assets/Sprites/Monsters",
                 //"Assets/Sprites/Characters",
                 //"Assets/Sprites/Npcs"
             });
@@ -44,7 +79,8 @@ namespace Assets.Scripts.MapEditor.Editor
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 var asset = AssetDatabase.LoadAssetAtPath<RoSpriteData>(path);
                 var name = asset.Name;
-                if (asset.Type != SpriteType.Monster && asset.Type != SpriteType.Monster2 && asset.Type != SpriteType.Pet)
+                if (asset.Type != SpriteType.Monster && asset.Type != SpriteType.Monster2 &&
+                    asset.Type != SpriteType.Pet)
                 {
                     Debug.LogWarning($"Sprite {name} is not the right type (is {asset.Type})");
                     continue;
@@ -64,9 +100,9 @@ namespace Assets.Scripts.MapEditor.Editor
                 //note: the first direction of an action is authoritative in terms of frame delay for all other directions
                 var frames = asset.Actions[actionId].Frames;
                 var found = false;
-                
+
                 totalOut.Add($"{name}:{frames.Length * asset.Actions[actionId].Delay}");
-                    
+
                 for (var j = 0; j < frames.Length; j++)
                 {
                     if (frames[j].IsAttackFrame)
@@ -77,7 +113,7 @@ namespace Assets.Scripts.MapEditor.Editor
                         break;
                     }
                 }
-                
+
                 if (!found)
                 {
                     var pos = frames.Length - 2;
@@ -95,14 +131,14 @@ namespace Assets.Scripts.MapEditor.Editor
         private static string GetGroupName(string path)
         {
             //because it's easier in the long run if bundle names are alphanumeric, we'll translate korean paths to english names
-            
-                        
+
+
             var folder = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
 
-            var idx = path.IndexOfOccurence("/",  4);
+            var idx = path.IndexOfOccurence("/", 4);
             if (idx > 0)
             {
-                var basePath = path.Substring(0, idx+1);
+                var basePath = path.Substring(0, idx + 1);
                 folder = new DirectoryInfo(Path.GetDirectoryName(basePath)).Name;
             }
 
@@ -172,7 +208,7 @@ namespace Assets.Scripts.MapEditor.Editor
         {
             UpdateAddressables(true);
         }
-        
+
         public static void UpdateAddressables(bool processModels = true)
         {
             var settings = AddressableAssetSettingsDefaultObject.Settings;
@@ -184,7 +220,8 @@ namespace Assets.Scripts.MapEditor.Editor
             var entriesAdded = new List<AddressableAssetEntry>();
             var entriesRemoved = new List<AddressableAssetEntry>();
 
-            var monText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/monsterclass.json", typeof(TextAsset)) as TextAsset;
+            var monText =
+                AssetDatabase.LoadAssetAtPath(@"Assets/Data/monsterclass.json", typeof(TextAsset)) as TextAsset;
             var monsters = JsonUtility.FromJson<Wrapper<MonsterClassData>>(monText.text);
 
             //---------------------------------------------------------
@@ -192,19 +229,28 @@ namespace Assets.Scripts.MapEditor.Editor
             //---------------------------------------------------------
 
             var guids = AssetDatabase.FindAssets("t:RoSpriteData", new[] { "Assets/Sprites" });
+            Debug.Log($"[Addressables] Sprites found: {guids.Length}");
 
             for (int i = 0; i < guids.Length; i++)
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 var altPath = path.Replace("Imported/", "").Replace(".asset", ".spr");
                 var fName = Path.GetFileNameWithoutExtension(altPath);
-                if ((path.Contains("Monsters") && monsters.Items.All(m => m.SpriteName.Replace(".spr","") != fName.ToLowerInvariant())) 
+                Debug.Log($"[Sprite] Processing ({i + 1}/{guids.Length}) name='{fName}', sourcePath='{path}'");
+                if (fName.Equals("초보자_남", StringComparison.InvariantCulture))
+                {
+                    Debug.LogWarning($"[Debug] ▶ 초보자_남 sprite detected at altPath: {altPath}");
+                }
+
+                if ((path.Contains("Monsters") &&
+                     monsters.Items.All(m => m.SpriteName.Replace(".spr", "") != fName.ToLowerInvariant()))
                     || !path.Contains("Imported"))
                 {
                     //Debug.Log("Not found: " + fName);
                     var existing = defGroup.GetAssetEntry(guids[i]);
                     if (existing == null)
                         continue;
+                    Debug.Log($"[Addressables] Removing sprite entry for '{fName}'");
                     settings.RemoveAssetEntry(guids[i], true);
                     entriesRemoved.Add(existing);
                     continue;
@@ -212,12 +258,15 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 var entry = settings.CreateOrMoveEntry(guids[i], defGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                Debug.Log($"[Addressables] Creating/moving entry for '{fName}'");
                 entry.address = altPath;
+                Debug.Log($"[Addressables] Set address '{entry.address}' for '{fName}'");
                 entry.labels.Add("Sprite");
+                Debug.Log($"[Addressables] Labelled '{fName}' with [Sprite]");
 
                 entriesAdded.Add(entry);
             }
-            
+
             //---------------------------------------------------------
             // Effects
             //---------------------------------------------------------
@@ -300,7 +349,6 @@ namespace Assets.Scripts.MapEditor.Editor
                     {
                         if (!usedPrefabs.Contains(d))
                             usedPrefabs.Add(d);
-
                     }
                 }
             }
@@ -330,8 +378,8 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 entriesAdded.Add(entry);
             }
-            
-            
+
+
             //update effect sounds
             guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/Effects" });
 
@@ -339,15 +387,16 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 var fName = Path.GetFileName(path);
-                
+
                 var entry = settings.CreateOrMoveEntry(guids[i], soundsGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
-                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]).Replace("Assets/Sounds/effect", "Assets/Sounds/Effects").Replace(".wav", ".ogg");
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i])
+                    .Replace("Assets/Sounds/effect", "Assets/Sounds/Effects").Replace(".wav", ".ogg");
                 entry.labels.Add("Sounds");
 
                 entriesAdded.Add(entry);
             }
-            
+
             //special sound cases for sounds we want to include outside of the effects folder
             guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds" });
 
@@ -355,12 +404,14 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 var fName = Path.GetFileName(path);
-                if (!Path.GetFileName(fName).StartsWith("_") && !fName.Contains("버튼소리")) //exception for title screen button lol
+                if (!Path.GetFileName(fName).StartsWith("_") &&
+                    !fName.Contains("버튼소리")) //exception for title screen button lol
                     continue;
-                
+
                 var entry = settings.CreateOrMoveEntry(guids[i], soundsGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
-                entry.address = AssetDatabase.GUIDToAssetPath(guids[i]).Replace("Assets/Sounds", "Assets/Sounds/Effects").Replace(".wav", ".ogg");
+                entry.address = AssetDatabase.GUIDToAssetPath(guids[i])
+                    .Replace("Assets/Sounds", "Assets/Sounds/Effects").Replace(".wav", ".ogg");
                 entry.labels.Add("Sounds");
 
                 entriesAdded.Add(entry);
@@ -459,7 +510,6 @@ namespace Assets.Scripts.MapEditor.Editor
             }
 
 
-
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, true);
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryRemoved, entriesRemoved, true);
         }
@@ -473,7 +523,6 @@ namespace Assets.Scripts.MapEditor.Editor
         //[MenuItem("Ragnarok/Import Test Walk Data")]
         public static RoMapData LoadWalkData(string importPath, float waterLevel)
         {
-
             var altitude = new RagnarokWalkableDataImporter();
 
             //var importPath = @"G:\Projects2\Ragnarok\Resources\data\6@tower.gat";
@@ -502,44 +551,202 @@ namespace Assets.Scripts.MapEditor.Editor
             return walkData;
         }
 
-        [MenuItem("Ragnarok/Import All Maps", false, 122)]
-        public static void ImportAllFiles()
+        [MenuItem("Ragnarok/Select maps to import", false, 122)]
+        public static void ShowImportMapsWindow()
         {
-            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
-            var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(asset.text);
+            var window = GetWindow<RagnarokMapImporterWindow>("Import All Maps");
+            window.minSize = new Vector2(300, 400);
+            window.Focus();
+        }
 
+        //── Window State ─────────────────────────────────────────────────────────
+        private List<ClientMapEntry> maps;
+        private bool[] mapSelected;
+        private Vector2 scrollPos;
+
+        private void OnEnable()
+        {
+            // 1) Load maps.json
+            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
+            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(asset.text);
+            maps = wrapper.Items.ToList();
+
+            // 2) Initialize checkboxes (true = not imported yet)
+            mapSelected = new bool[maps.Count];
+            for (int i = 0; i < maps.Count; i++)
+            {
+                var scenePath = $"Assets/Scenes/Maps/{maps[i].Code}.unity";
+                mapSelected[i] = !File.Exists(scenePath);
+            }
+        }
+
+        private void OnGUI()
+        {
+            EditorGUILayout.LabelField("Select maps to import:", EditorStyles.boldLabel);
+            EditorGUILayout.Space();
+
+            // Buttons to select or unselect all maps
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Select All", GUILayout.Height(20)))
+            {
+                for (int i = 0; i < mapSelected.Length; i++)
+                    mapSelected[i] = true;
+            }
+
+            if (GUILayout.Button("Unselect All", GUILayout.Height(20)))
+            {
+                for (int i = 0; i < mapSelected.Length; i++)
+                    mapSelected[i] = false;
+            }
+
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Space();
+
+            // Scrollable list of maps
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+            for (int i = 0; i < maps.Count; i++)
+            {
+                mapSelected[i] = EditorGUILayout.ToggleLeft(
+                    $"{maps[i].Name}  ({maps[i].Code})",
+                    mapSelected[i]
+                );
+            }
+
+            EditorGUILayout.EndScrollView();
+
+            EditorGUILayout.Space();
+            if (GUILayout.Button("Import Selected Maps", GUILayout.Height(30)))
+            {
+                ImportSelectedMaps();
+            }
+
+            EditorGUILayout.Space();
+            if (GUILayout.Button("Remove Selected Maps", GUILayout.Height(30)))
+            {
+                CleanSelectedMaps();
+            }
+        }
+
+        private void ImportSelectedMaps()
+        {
+            // Ensure maps folder exists
             if (!Directory.Exists("Assets/Scenes/Maps/"))
                 Directory.CreateDirectory("Assets/Scenes/Maps/");
 
-            var curMap = 0;
-            var maxMaps = maps.Items.Length;
-
-            foreach (var map in maps.Items)
+            int total = mapSelected.Count(x => x);
+            if (total == 0)
             {
-                //Debug.Log($"Assets/Scenes/Maps/{map.Code}.unity");
-                
-                EditorUtility.DisplayProgressBar("Import All Maps", $"Importing map {map.Name} ({curMap+1} out of {maxMaps})...", (float)curMap / (float)maxMaps);
-                curMap++;
-
-                //var scene = SceneManager.GetSceneByPath($"Assets/Scenes/Maps/{map.Code}.unity");
-                if (File.Exists($"Assets/Scenes/Maps/{map.Code}.unity"))
-                    continue;
-
-                Debug.Log("No scene found for: " + $"Assets/Scenes/Maps/{map.Code}.unity");
-
-                //Debug.Log(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
-
-                var mapPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd");
-
-                if(File.Exists(mapPath))
-                    ImportMap(Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd"));
-                else
-                    Debug.LogWarning($"Could not find map to import: {mapPath}");
+                Debug.Log("No maps selected for import.");
+                return;
             }
-            
-            
+
+            int done = 0;
+            for (int i = 0; i < maps.Count; i++)
+            {
+                if (!mapSelected[i]) continue;
+
+                var map = maps[i];
+                var code = map.Code;
+                var gnd = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, code + ".gnd");
+
+                EditorUtility.DisplayProgressBar(
+                    "Importing Maps",
+                    $"Importing {map.Name} ({done + 1}/{total})…",
+                    (float)done / total
+                );
+
+                try
+                {
+                    // Pre-clean any leftover assets from a previous crash
+                    DeleteExistingMapAssets(code);
+
+                    // Ensure file exists
+                    if (!File.Exists(gnd))
+                        throw new FileNotFoundException($"Map file not found: {gnd}");
+
+                    // Do the actual import
+                    ImportMap(gnd);
+                }
+                catch (Exception ex)
+                {
+                    // Abort on first error
+                    Debug.LogError($"[Map Import] Aborting import of {map.Name} ({code}): {ex}\n{ex.StackTrace}");
+                    EditorUtility.ClearProgressBar();
+
+                    // Cleanup any partial assets
+                    DeleteExistingMapAssets(code);
+                    return;
+                }
+
+                done++;
+            }
+
             EditorUtility.ClearProgressBar();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log($"Imported {done} map(s).");
         }
+
+        // ─── Delete all generated assets for each selected map ────────────────────
+        private void CleanSelectedMaps()
+        {
+            int cleaned = 0;
+            for (int i = 0; i < maps.Count; i++)
+            {
+                if (!mapSelected[i]) continue;
+                DeleteExistingMapAssets(maps[i].Code);
+                cleaned++;
+            }
+
+            // Make sure Unity’s database fully picks up the deletions
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            Debug.Log($"[Map Cleanup] Removed assets for {cleaned} selected map(s).");
+        }
+
+// ─── DeleteExistingMapAssets ──────────────────────────────────────────────
+        private static void DeleteExistingMapAssets(string code)
+        {
+            // 1) Delete any scene assets in Assets/Scenes/Maps
+            foreach (var guid in AssetDatabase.FindAssets(code, new[] { "Assets/Scenes/Maps" }))
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                if (AssetDatabase.DeleteAsset(path))
+                    Debug.Log($"[Map Cleanup] Deleted scene {path}");
+            }
+
+            // 2) Delete *all* files under Assets/Maps that start with "{code}"
+            var mapsRoot = "Assets/Maps";
+            if (Directory.Exists(mapsRoot))
+            {
+                var absPaths = Directory.GetFiles(mapsRoot, $"{code}*", SearchOption.AllDirectories);
+                foreach (var abs in absPaths)
+                {
+                    // Convert absolute to “Assets/…” relative
+                    var rel = abs.Replace("\\", "/");
+                    var idx = rel.IndexOf("Assets/");
+                    if (idx >= 0) rel = rel.Substring(idx);
+
+                    if (AssetDatabase.DeleteAsset(rel))
+                        Debug.Log($"[Map Cleanup] Deleted map asset {rel}");
+                }
+            }
+
+            // 3) Delete any generated prefabs under Assets/Models/Prefabs that start with "{code}"
+            var prefabRoot = "Assets/Models/Prefabs";
+            if (Directory.Exists(prefabRoot))
+            {
+                // use AssetDatabase.FindAssets so we catch .prefab + .prefab.meta
+                foreach (var guid in AssetDatabase.FindAssets($"{code} t:Prefab", new[] { prefabRoot }))
+                {
+                    var path = AssetDatabase.GUIDToAssetPath(guid);
+                    if (AssetDatabase.DeleteAsset(path))
+                        Debug.Log($"[Map Cleanup] Deleted prefab {path}");
+                }
+            }
+        }
+
 
         //[MenuItem("Ragnarok/Import Water", false, 123)]
         public static void ImportWater()
@@ -588,9 +795,12 @@ namespace Assets.Scripts.MapEditor.Editor
 
             AssetDatabase.CreateAsset(data, dataPath);
 
+            Debug.Log($"[ImportMap] Created RoMapData asset at {dataPath}");
             data = AssetDatabase.LoadAssetAtPath<RoMapData>(dataPath);
 
+            Debug.Log("[ImportMap] RefreshTextureLookup()");
             data.RefreshTextureLookup();
+            Debug.Log("[ImportMap] RebuildAtlas()");
             data.RebuildAtlas();
 
             var gatPath = Path.Combine(lastDirectory, baseName + ".gat");
@@ -599,6 +809,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var resourcePath = Path.Combine(lastDirectory, baseName + ".rsw");
             if (File.Exists(resourcePath))
             {
+                Debug.Log("[ImportMap] Loading world RSW");
                 var world = RagnarokResourceLoader.LoadResourceFile(resourcePath, data);
                 world.name = baseName + " world data";
                 water = world.Water;
@@ -609,6 +820,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 var worldAssetPath = Path.Combine(worldFolder, baseName + "_world.asset").Replace("\\", "/");
 
+                Debug.Log("[ImportMap] World loaded; saving world.asset");
                 AssetDatabase.CreateAsset(world, worldAssetPath);
 
                 foreach (var model in world.Models)
@@ -644,25 +856,26 @@ namespace Assets.Scripts.MapEditor.Editor
                         {
                             Debug.LogError($"Failed to load model {Path.GetFileName(modelPath)}! Exception:\r\n{e}");
                         }
-
                     }
-
                 }
 
                 //var builder = new RagnarokWorldSceneBuilder();
                 //builder.Load(data, world);
-
             }
 
             var waterLevel = -water.Level + (water.WaveHeight / 5f) - 0.01f;
+            Debug.Log("[ImportMap] LoadWalkData()");
             data.WalkData = LoadWalkData(gatPath, waterLevel);
+            Debug.Log("[ImportMap] WalkData loaded at " + data.WalkData.name);
 
             AssetDatabase.SaveAssets();
 
             EditorUtility.UnloadUnusedAssetsImmediate();
 
+            Debug.Log("[ImportMap] About to call importer.Import()");
             var importer = new RagnarokMapDataImporter(dataPath, baseName);
             importer.Import(true, true, true, true, true);
+            Debug.Log("[ImportMap] importer.Import() FINISHED");
 
             AssetDatabase.SaveAssets();
         }
@@ -678,7 +891,8 @@ namespace Assets.Scripts.MapEditor.Editor
         [MenuItem("Ragnarok/Import Maps", false, 121)]
         static void ImportFiles()
         {
-            var files = StandaloneFileBrowser.OpenFilePanel("Open File", RagnarokDirectory.GetRagnarokDataDirectory, "gnd", true);
+            var files = StandaloneFileBrowser.OpenFilePanel("Open File", RagnarokDirectory.GetRagnarokDataDirectory,
+                "gnd", true);
 
             if (files.Length <= 0)
                 return;
@@ -697,7 +911,6 @@ namespace Assets.Scripts.MapEditor.Editor
                 {
                     Debug.LogError($"Exception generated while importing map {f}!");
                     Debug.LogException(e);
-                    
                 }
             }
         }
