@@ -184,7 +184,6 @@ Holy Property Armor
 ::Marina_Card //id 4055 - slotted on Weapon
 ATK +5
 +5% chance of <color=#800000>Freeze</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Dustiness_Card //id 4056 - slotted on Garment
 FLEE +5
@@ -193,7 +192,6 @@ FLEE +5
 ::Metaller_Card //id 4057 - slotted on Weapon
 ATK +5
 +5% chance of <color=#800000>Silence</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Thara_Frog_Card //id 4058 - slotted on Shield
 -30% damage from Demi-Human
@@ -262,7 +260,6 @@ DEF +1
 ::Magnolia_Card //id 4076 - slotted on Weapon
 ATK +5
 +5% chance of <color=#800000>Curse</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Phen_Card //id 4077 - slotted on Accessory
 Cast Time +15%
@@ -300,7 +297,6 @@ CRIT +9
 ::Giearth_Card //id 4087 - slotted on Headgear
 +100% <color=#800000>Chaos</color> resist
 -15% damage from Earth attacks
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Frilldora_Card //id 4088 - slotted on Garment
 Enables use of <skill>Cloak 1</skill>.
@@ -334,7 +330,6 @@ FLEE +5
 ::Zenorc_Card //id 4096 - slotted on Weapon
 ATK +10
 +4% chance of <color=#800000>Poison</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Matyr_Card //id 4097 - slotted on Boots
 HP +10%, Agi +1
@@ -359,17 +354,14 @@ FLEE +20
 +50% damage from Ghost attacks
 
 ::Horong_Card //id 4103 - slotted on Accessory
-Enable <color=#0000FF>Sight 1</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+Enable <skill>Sight 1</skill>
 
 ::Requiem_Card //id 4104 - slotted on Weapon
 +5% chance of <color=#800000>Chaos</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Marc_Card //id 4105 - slotted on Armor
 +100% <color=#800000>Freeze</color> resist
 -5% damage from Water attacks
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Mummy_Card //id 4106 - slotted on Weapon
 HIT +20
@@ -395,7 +387,6 @@ DEF +1
 
 ::Marduk_Card //id 4112 - slotted on Headgear
 +100% <color=#800000>Silence</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Marionette_Card //id 4113 - slotted on Garment
 FLEE +5
@@ -508,7 +499,6 @@ ASPD +15%
 ::Orc_Hero_Card //id 4143 - slotted on Headgear
 VIT +3
 +100% <color=#800000>Stun</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Osiris_Card //id 4144 - slotted on Accessory
 Recover 100% HP and SP on Resurrection
@@ -524,7 +514,6 @@ Cast Time -30%
 ::Baphomet_Card //id 4147 - slotted on Weapon
 HIT -10
 splash 3x3 AoE on non-skill attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Pharaoh_Card //id 4148 - slotted on Headgear
 SP Consumption -30%
@@ -539,7 +528,6 @@ if Refine < 6: DEF +2, MDEF +5
 ::Gajomart_Card //id 4151 - slotted on Boots
 +10% EXP from Plant
 +20% damage from Plant
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Galapago_Card //id 4152 - slotted on Accessory
 +3% chance to find <color=#008080>Apple Juice</color>, <color=#008080>Banana Juice</color>, <color=#008080>Carrot Juice</color> on Insect kill
@@ -564,12 +552,10 @@ ATK +5
 ::Goblin_Steamrider_Card //id 4156 - slotted on Weapon
 CRIT damage +10%
 CRIT +7 vs. Formless
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Goblin_Archer_Card //id 4157 - slotted on Weapon
 CRIT damage +10%
 CRIT +7 vs. Undead
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Sky_Deleter_Card //id 4158 - slotted on Armor
 HP Regeneration -100%
@@ -626,7 +612,6 @@ Cast Time -12%
 
 ::Dark_Frame_Card //id 4170 - slotted on Armor
 +6% chance of <color=#800000>Petrify</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Dark_Priest_Card //id 4171 - slotted on Weapon
 +5% chance 10% SP drain on physical attack
@@ -654,7 +639,6 @@ Lose 1 SP/physical attack
 ::Dullahan_Card //id 4176 - slotted on Weapon
 CRIT damage +10%
 CRIT +7 vs. Dragon
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Dryad_Card //id 4177 - slotted on Headgear
 -10% damage from Earth attacks
@@ -723,8 +707,7 @@ STR +1, VIT +1
 
 ::Rotar_Zairo_Card //id 4192 - slotted on Weapon
 CRIT damage +10%
-CRIT +7 vs. Fish
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+CRIT +7 vs. Aquatic
 
 ::Lude_Card //id 4193 - slotted on Accessory
 if Novice:
@@ -765,7 +748,6 @@ if Refine < 6: MDEF +7
 
 ::Majorous_Card //id 4201 - slotted on Armor
 +6% chance of <color=#800000>Stun</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Mao_Guai_Card //id 4202 - slotted on Weapon
 +20% physical damage vs. Ghost
@@ -780,7 +762,6 @@ if <color=#0000FF>Fireball 10</color>:
 ::Mini_Demon_Card //id 4204 - slotted on Boots
 +10% EXP from Brute
 +20% damage from Brute
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Mimic_Card //id 4205 - slotted on Accessory
 +0.1% chance to find <color=#008080>Old Blue Box</color> on monster kill
@@ -822,12 +803,10 @@ MDEF +3
 
 ::Brilight_Card //id 4213 - slotted on Armor
 +6% chance of <color=#800000>Silence</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Bloody_Murderer_Card //id 4214 - slotted on Weapon
 CRIT damage +10%
 CRIT +7 vs. Insect
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Blazer_Card //id 4215 - slotted on Accessory
 +6% chance to find <color=#008080>Apple</color>,
@@ -864,7 +843,6 @@ DEF +2, MDEF +2
 ::Skeleton_General_Card //id 4221 - slotted on Boots
 +10% EXP from Insect
 +20% damage from Insect
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Skel_Prisoner_Card //id 4222 - slotted on Armor
 +3% chance of <color=#800000>Sleep</color> on receive physical damage
@@ -915,7 +893,6 @@ AGI +1
 
 ::Baby_Leopard_Card //id 4233 - slotted on Armor
 LUK +3
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Anolian_Card //id 4234 - slotted on Armor
 +3% Autospell <color=#0000FF>Improve Concentration 1</color> on receive physical damage
@@ -926,7 +903,6 @@ if <color=#0000FF>Improve Concentration 10</color>:
 ::Christmas_Cookie_Card //id 4235 - slotted on Boots
 +10% EXP from Angel
 +20% damage from Angel
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Amon_Ra_Card //id 4236 - slotted on Boots
 STR, VIT, INT, DEX, AGI, LUK +1
@@ -946,7 +922,6 @@ if bINT = 99:
 ::Iron_Fist_Card //id 4239 - slotted on Boots
 +10% EXP from Formless
 +20% damage from Formless
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Arclouse_Card //id 4240 - slotted on Shield
 if Refine < 6: DEF +2, MDEF +3
@@ -963,8 +938,7 @@ VIT +2
 if Refine > 8: HP +800
 
 ::Antonio_Card //id 4243 - slotted on Armor
-+50% Autospell <color=#0000FF>Teleport 1</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++50% autocast <skill>Teleport 1</skill> on receive physical damage
 
 ::Alarm_Card //id 4244 - slotted on Boots
 HP +300, VIT +1
@@ -974,7 +948,6 @@ HP +300, VIT +1
 ::Am_Mut_Card //id 4245 - slotted on Boots
 +10% EXP from Demi-Human
 +20% damage from Demi-Human
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Assaulter_Card //id 4246 - slotted on Weapon
 CRIT damage +10%
@@ -993,7 +966,6 @@ ATK +5
 ::Ancient_Worm_Card //id 4249 - slotted on Boots
 +10% EXP from Demon
 +20% damage from Demon
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Executioner_Card //id 4250 - slotted on Shield
 DEF +1
@@ -1038,12 +1010,10 @@ HP Regeneration +30%
 ::Wootan_Shooter_Card //id 4260 - slotted on Headgear
 DEF +1
 +20% <color=#800000>Chaos</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Wootan_Fighter_Card //id 4261 - slotted on Headgear
 DEF +1
 +20% <color=#800000>Bleed</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Cloud_Hermit_Card //id 4262 - slotted on Accessory
 +1% chance to find <color=#008080>Box of Gloom</color> on Plant kill
@@ -1072,7 +1042,6 @@ VIT +1
 ::Explosion_Card //id 4267 - slotted on Boots
 +10% EXP from Dragon
 +20% damage from Dragon
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Injustice_Card //id 4268 - slotted on Weapon
 +5% Autospell <color=#0000FF>Sonic Blow 1</color> on non-skill attack
@@ -1084,8 +1053,7 @@ SP Regeneration -20%
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Giant_Spider_Card //id 4270 - slotted on Armor
-+6% chance of <color=#800000>Poison</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++6% chance of <color=#800000>Poison</desc> on receive physical damage
 
 ::Giant_Hornet_Card //id 4271 - slotted on Headgear
 -10% damage from Wind attacks
@@ -1108,7 +1076,6 @@ Lose 5 SP/unequip
 ::Zombie_Prisoner_Card //id 4275 - slotted on Boots
 +10% EXP from Undead
 +20% damage from Undead
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Lord_of_The_Dead_Card //id 4276 - slotted on Weapon
 +5% chance of <color=#800000>Stun</color>, <color=#800000>Curse</color>, <color=#800000>Silence</color>, <color=#800000>Poison</color>, <color=#800000>Bleed</color> on melee attack
@@ -1197,7 +1164,6 @@ MDEF +3
 ::Kobold_Archer_Card //id 4292 - slotted on Weapon
 CRIT damage +10%
 CRIT +7 vs. Plant
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Cookie_Card //id 4293 - slotted on Accessory
 LUK +2
@@ -1211,7 +1177,6 @@ if Novice:
 
 ::Kraben_Card //id 4295 - slotted on Armor
 +6% chance of <color=#800000>Blind</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Cramp_Card //id 4296 - slotted on Headgear
 +1% chance to find <color=#008080>1~500 zeny</color> on monster kill
@@ -1224,7 +1189,6 @@ CRIT +7 vs. Brute
 
 ::Creamy_Fear_Card //id 4298 - slotted on Armor
 +6% chance of <color=#800000>Chaos</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Clock_Card //id 4299 - slotted on Armor
 +3% Autospell <color=#0000FF>Guard 3</color> on receive physical damage
@@ -1240,7 +1204,6 @@ if Assassin:
 
 ::Killer_Mantis_Card //id 4301 - slotted on Armor
 +6% chance of <color=#800000>Bleed</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Tao_Gunka_Card //id 4302 - slotted on Armor
 HP +100%, DEF -50, MDEF -50
@@ -1260,7 +1223,6 @@ DEF +2
 ::Turtle_General_Card //id 4305 - slotted on Weapon
 +20% physical damage
 +3% Autospell <color=#0000FF>Magnum Break 10</color> on non-skill attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Toad_Card //id 4306 - slotted on Garment
 Perfect Dodge +1
@@ -1284,7 +1246,6 @@ DEF +1
 ::Panzer_Goblin_Card //id 4310 - slotted on Weapon
 CRIT damage +10%
 CRIT +7 vs. Demon
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Permeter_Card //id 4311 - slotted on Headgear
 -15% damage from Shadow, Decay attacks
@@ -1379,7 +1340,6 @@ Lose 5 SP/unequip
 ::Evil_Snake_Lord_Card //id 4330 - slotted on Headgear
 INT +3
 +100% <color=#800000>Blind</color>, <color=#800000>Curse</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Heater_Card //id 4331 - slotted on Accessory
 CRIT +3
@@ -1399,7 +1359,6 @@ INT +1, ATK +5
 ::Noxious_Card //id 4334 - slotted on Garment
 -10% damage from Neutral attacks
 -10% damage from range
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Pitman_Card //id 4335 - slotted on Weapon
 +5% <color=#0000FF>Earth Spike</color>, <color=#0000FF>Heaven's Drive</color> damage
@@ -1409,11 +1368,9 @@ Lose 50 SP/unequip
 ::Ungoliant_Card //id 4336 - slotted on Headgear
 HP Regeneration +10%
 +100% <color=#800000>Bleed</color> resist
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Porcellio_Card //id 4337 - slotted on Armor
 ATK +25, DEF -5
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Obsidian_Card //id 4338 - slotted on Armor
 VIT +(floor bDEX/18)
@@ -1422,11 +1379,9 @@ VIT +(floor bDEX/18)
 
 ::Mineral_Card //id 4339 - slotted on Armor
 ATK -25, DEF +3
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Teddy_Bear_Card //id 4340 - slotted on Shield
 -30% damage from Undead
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Metaling_Card //id 4341 - slotted on Weapon
 +5% Autospell <color=#0000FF>Divest Weapon 1</color> on non-skill attack
@@ -1539,11 +1494,9 @@ STR +(Refine - 6)
 
 ::Assassin_Cross_Card //id 4359 - slotted on Garment
 Enable <color=#0000FF>Cloak 3</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Eremes_Guile_Card //id 4360 - slotted on Weapon
 CRIT +10 vs. Demi-Human
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Mastersmith_Card //id 4361 - slotted on Weapon
 +10% chance WpnBreak on physical attack
@@ -1552,7 +1505,6 @@ CRIT +10 vs. Demi-Human
 
 ::Howard_Alt-Eisen_Card //id 4362 - slotted on Weapon
 HIT +30, ASPD -5%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::High_Priest_Card //id 4363 - slotted on Armor
 +5% Autospell <color=#0000FF>Assumptio 1</color> on receive damage
@@ -1581,8 +1533,7 @@ HP Regeneration -10%
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Cecil_Damon_Card //id 4368 - slotted on Weapon
-HIT -30, ASPD +5%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+HIT -30, ASPD +10%
 
 ::Venatu_Card //id 4369 - slotted on Armor
 LUK +(floor bAGI/18)
@@ -1773,7 +1724,6 @@ if Dancer:
 
 ::Alicel_Card //id 4401 - slotted on Armor
 DEF -5, FLEE +10
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Aliot_Card //id 4402 - slotted on Garment
 if Swordman, Merchant, Thief:
@@ -1876,13 +1826,11 @@ CRIT +15 (range attack)
 ::Roween_Card //id 4422 - slotted on Garment
 FLEE +5, Perfect Dodge +3
 +10% physical damage vs. Water
-CRIT +15 vs. Fish
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+CRIT +15 vs. Aquatic
 
 ::Galion_Card //id 4423 - slotted on Accessory
 HIT +5
 +5% physical damage vs. Water
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Stapo_Card //id 4424 - slotted on Accessory
 Enable <color=#0000FF>Find Stone</color>, <color=#0000FF>Stone Fling</color>
@@ -1929,7 +1877,6 @@ ATK +floor(jLv/10), HIT +floor(jLv/10)
 ATK +5
 +10% physical damage vs. Earth
 CRIT +15 vs. Plant, Brute
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Imp_Card //id 4433 - slotted on Accessory
 +25% <color=#0000FF>Fire Bolt</color> damage
@@ -1982,4 +1929,4 @@ if One or Two-Handed Staff:
 ::Fallen_Bishop_Card //id 4441 - slotted on Boots
 SP -50%, MATK +10% 
 +50% magical damage vs. Demi-Human, Angel
-
+<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>

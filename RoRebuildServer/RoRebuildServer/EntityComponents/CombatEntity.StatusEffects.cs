@@ -14,47 +14,81 @@ namespace RoRebuildServer.EntityComponents;
 
 public partial class CombatEntity
 {
-    private void TriggerOnAttackEffects(CombatEntity target, AttackRequest req, ref DamageInfo res)
+    private void TryTriggerStatus(StatusTriggerFlags status, CombatEntity target, int chance, ref DamageInfo res, bool useDamage = true)
     {
-        if (!req.Flags.HasFlag(AttackFlags.Physical))
+        switch (status)
+        {
+            case StatusTriggerFlags.Blind:
+                TryBlindTarget(target, chance, res.AttackMotionTime + 0.5f); //delayed a little so you can actually hear the blind sound
+                break;
+            case StatusTriggerFlags.Silence:
+                TrySilenceTarget(target, chance);
+                break;
+            case StatusTriggerFlags.Curse:
+                TryCurseTarget(target, chance);
+                break;
+            case StatusTriggerFlags.Poison:
+                TryPoisonOnTarget(target, chance, true, useDamage ? (res.Damage * res.HitCount / 2) : 0);
+                break;
+            case StatusTriggerFlags.Confusion: 
+                break;
+            case StatusTriggerFlags.HeavyPoison: 
+                break;
+            case StatusTriggerFlags.Bleeding: 
+                break;
+            case StatusTriggerFlags.Stun:
+                TryStunTarget(target, chance);
+                break;
+            case StatusTriggerFlags.Stone:
+                TryPetrifyTarget(target, chance, 1f);
+                break;
+            case StatusTriggerFlags.Freeze:
+                TryFreezeTarget(target, chance, res.AttackMotionTime + 0.1f); //don't want our damage application to cancel the status
+                break;
+            case StatusTriggerFlags.Sleep:
+                TrySleepTarget(target, chance, res.AttackMotionTime + 0.1f); //don't want our damage application to cancel the status
+                break;
+        }
+    }
+
+    private void TriggerOnAttackEffects(CombatEntity target, AttackRequest req, ref DamageInfo res, bool isRanged)
+    {
+        if (!req.Flags.HasFlag(AttackFlags.Physical) || req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects) || Character.Type != CharacterType.Player)
             return;
 
-        if (Character.Type == CharacterType.Player && !req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
+        if (!isRanged && Player.OnMeleeAttackStatusFlags > 0)
         {
-            var chance = GetStat(CharacterStat.OnAttackStun);
-            if (chance > 0)
-                TryStunTarget(target, chance);
+            var flags = Player.OnMeleeAttackStatusFlags;
+            var count = (int)(CharacterStat.OnMeleeAttackLast - CharacterStat.OnMeleeAttackFirst);
+            for (var i = 0; i < count; i++)
+            {
+                var idx = 1 << i;
+                if ((idx & (int)flags) <= 0)
+                    continue;
 
-            chance = GetStat(CharacterStat.OnAttackPoison);
-            if (chance > 0)
-                TryPoisonOnTarget(target, chance);
+                var chance = GetStat(CharacterStat.OnMeleeAttackFirst + i);
+                TryTriggerStatus((StatusTriggerFlags)idx, target, chance, ref res);
+            }
+        }
+        
+        if(isRanged && Player.OnRangedAttackStatusFlags > 0)
+        {
+            var flags = Player.OnRangedAttackStatusFlags;
+            var count = (int)(CharacterStat.OnRangedAttackLast - CharacterStat.OnRangedAttackFirst);
+            for (var i = 0; i < count; i++)
+            {
+                var idx = 1 << i;
+                if ((idx & (int)flags) <= 0)
+                    continue;
 
-            chance = GetStat(CharacterStat.OnAttackBlind);
-            if (chance > 0)
-                TryBlindTarget(target, chance, res.AttackMotionTime + 0.5f); //delayed a little so you can actually hear the blind sound
+                var chance = GetStat(CharacterStat.OnRangedAttackFirst + i);
+                TryTriggerStatus((StatusTriggerFlags)idx, target, chance, ref res);
+            }
+        }
 
-            chance = GetStat(CharacterStat.OnAttackFreeze);
-            if (chance > 0)
-                TryFreezeTarget(target, chance, res.AttackMotionTime + 0.1f); //don't want our damage application to cancel the status
-
-            chance = GetStat(CharacterStat.OnAttackSleep);
-            if (chance > 0)
-                TrySleepTarget(target, chance, res.AttackMotionTime + 0.1f); //don't want our damage application to cancel the status
-
-            chance = GetStat(CharacterStat.OnAttackSilence);
-            if (chance > 0)
-                TrySilenceTarget(target, chance);
-
-            chance = GetStat(CharacterStat.OnAttackStone);
-            if (chance > 0)
-                TryPetrifyTarget(target, chance, 1f);
-
-            chance = GetStat(CharacterStat.OnAttackCurse);
-            if (chance > 0)
-                TryCurseTarget(target, chance);
-
-            chance = GetStat(CharacterStat.SpDrainChance);
-            if(chance > 0 && GameRandom.Next(0, 100) < chance)
+        {
+            var chance = GetStat(CharacterStat.SpDrainChance);
+            if (chance > 0 && GameRandom.Next(0, 100) < chance)
                 RecoverSp(res.Damage * res.HitCount * GetStat(CharacterStat.SpDrainAmount) / 100);
 
             chance = GetStat(CharacterStat.HpDrainChance);
@@ -62,50 +96,26 @@ public partial class CombatEntity
                 HealHp(res.Damage * res.HitCount * GetStat(CharacterStat.HpDrainAmount) / 100);
 
             var val = GetStat(CharacterStat.SpOnAttack);
-            if(val > 0)
+            if (val > 0)
                 RecoverSp(val);
-
         }
     }
 
     private void TriggerWhenAttackedEffects(CombatEntity attacker, AttackRequest req, ref DamageInfo res)
     {
-        if (!req.Flags.HasFlag(AttackFlags.Physical))
+        if (!req.Flags.HasFlag(AttackFlags.Physical) || req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects) || Character.Type != CharacterType.Player)
             return;
 
-        if (Character.Type == CharacterType.Player && !req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
+        var flags = Player.WhenAttackedStatusFlags;
+        var count = (int)(CharacterStat.WhenAttackedLast - CharacterStat.WhenAttackedFirst);
+        for (var i = 0; i < count; i++)
         {
-            var chance = GetStat(CharacterStat.WhenAttackedStun);
-            if (chance > 0)
-                TryStunTarget(attacker, chance);
+            var idx = 1 << i;
+            if ((idx & (int)flags) <= 0)
+                continue;
 
-            chance = GetStat(CharacterStat.WhenAttackedPoison);
-            if (chance > 0)
-                TryPoisonOnTarget(attacker, chance);
-
-            chance = GetStat(CharacterStat.WhenAttackedBlind);
-            if (chance > 0)
-                TryBlindTarget(attacker, chance);
-
-            chance = GetStat(CharacterStat.WhenAttackedFreeze);
-            if (chance > 0)
-                TryFreezeTarget(attacker, chance);
-
-            chance = GetStat(CharacterStat.WhenAttackedSleep);
-            if (chance > 0)
-                TrySleepTarget(attacker, chance);
-
-            chance = GetStat(CharacterStat.WhenAttackedSilence);
-            if (chance > 0)
-                TrySilenceTarget(attacker, chance);
-
-            chance = GetStat(CharacterStat.WhenAttackedStone);
-            if (chance > 0)
-                TryPetrifyTarget(attacker, chance, 1f);
-
-            chance = GetStat(CharacterStat.WhenAttackedCurse);
-            if (chance > 0)
-                TryCurseTarget(attacker, chance);
+            var chance = GetStat(CharacterStat.WhenAttackedFirst + i);
+            TryTriggerStatus((StatusTriggerFlags)idx, attacker, chance, ref res, false);
         }
     }
 
@@ -153,9 +163,9 @@ public partial class CombatEntity
 
     private void TriggerWhenAttackedAutoSpell(CombatEntity attacker, AttackRequest req, ref DamageInfo res)
     {
-        if (Character.Type != CharacterType.Player 
-            || !req.Flags.HasFlag(AttackFlags.Physical) 
-            || !res.IsDamageResult 
+        if (Character.Type != CharacterType.Player
+            || !req.Flags.HasFlag(AttackFlags.Physical)
+            || !res.IsDamageResult
             || Character.Position.DistanceTo(attacker.Character.Position) > 14)
             return;
 
@@ -440,7 +450,7 @@ public partial class CombatEntity
 
         if ((target & StatusCleanseTarget.Silence) > 0 && HasBodyState(BodyStateFlags.Silence))
             hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Silence);
-        
+
         if ((target & StatusCleanseTarget.Blind) > 0 && HasBodyState(BodyStateFlags.Blind))
             hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Blind);
 

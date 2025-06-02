@@ -8,6 +8,7 @@ using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Networking;
 using System.Numerics;
 using RebuildSharedData.Enum;
+using RoRebuildServer.Data.Monster;
 
 namespace RoRebuildServer.Simulation.Parties;
 
@@ -30,15 +31,15 @@ public class PartyExpAccumulator
         PartySplitCounts.Clear();
     }
 
-    public void AddExp(Player player, int baseExp, int jobExp)
+    public void AddExp(Player player, MonsterDatabaseInfo src, int baseExp, int jobExp)
     {
         var party = player.Party;
         if (party != null)
             party.OnlineMembers.ClearInactive();
         if (party == null || party.OnlineMembers.Count == 1)
         {
-            player.GainBaseExp(baseExp);
-            player.GainJobExp(jobExp);
+            player.GainBaseExpFromMonster(baseExp, src);
+            player.GainJobExpFromMonster(jobExp, src);
             CommandBuilder.SendExpGain(player, baseExp, jobExp);
             return;
         }
@@ -94,7 +95,7 @@ public class PartyExpAccumulator
         }
     }
 
-    public void DistributeExp()
+    public void DistributeExp(MonsterDatabaseInfo src)
     {
         CountPlayersInEachParty();
 
@@ -110,8 +111,8 @@ public class PartyExpAccumulator
             var baseExp = (int)float.Ceiling(result.BaseExp * rate);
             var jobExp = (int)float.Ceiling(result.JobExp * rate);
 
-            result.Player.GainBaseExp(baseExp);
-            result.Player.GainJobExp(jobExp);
+            result.Player.GainBaseExpFromMonster(baseExp, src);
+            result.Player.GainJobExpFromMonster(jobExp, src);
             CommandBuilder.SendExpGain(result.Player, baseExp, jobExp);
         }
 

@@ -603,10 +603,10 @@ public partial class Monster : IEntityAutoReset
         {
             var percent = damage / (float)totalDamage;
             if (attacker.TryGet<Player>(out var player))
-                acc.AddExp(player, (int)float.Ceiling(exp * percent), (int)float.Ceiling(job * percent));
+                acc.AddExp(player, MonsterBase, (int)float.Ceiling(exp * percent), (int)float.Ceiling(job * percent));
         }
 
-        acc.DistributeExp();
+        acc.DistributeExp(MonsterBase);
     }
 
     /// <summary>

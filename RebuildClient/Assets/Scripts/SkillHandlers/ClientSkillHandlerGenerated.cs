@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[150];
+			handlers = new SkillHandlerBase[151];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new FirstAidHandler();
@@ -169,6 +169,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[147] = new DefaultSkillHandler();
 			handlers[148] = new DefaultSkillHandler();
 			handlers[149] = new DefaultSkillHandler();
+			handlers[150] = new DefaultSkillHandler();
 		}
 	}
 }

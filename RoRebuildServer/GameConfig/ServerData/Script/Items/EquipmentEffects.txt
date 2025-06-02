@@ -1,8 +1,8 @@
 Item("Memory_Book") { OnEquip: AddStat(AddInt, 1); }
 Item("Holy_Guard") { OnEquip: AddStat(AddVit, 2); }
 Item("Sacred_Mission") { OnEquip: AddStat(AddInt, 2); AddStat(AddVit, 3); }
-Item("Novice_Shield") { OnEquip: AddStat(AddResistElementWater, 20); AddStat(AddResistElementEarth, 20); AddStat(AddResistElementFire, 20); AddStat(AddResistElementWind, 20); AddStat(AddResistElementPoison, 20); AddStat(AddResistElementHoly, 20); AddStat(AddResistElementDark, 20); AddStat(AddResistElementGhost, 20); AddStat(AddResistElementUndead, 20); }
-Item("Stone_Buckler") { OnEquip: AddStat(AddResistElementNeutral, 5); AddStat(AddResistLargeSize, 5); }
+Item("Novice_Shield") { OnEquip: AddStat(AddResistElementPoison, 20); AddStat(AddResistElementHoly, 20); AddStat(AddResistElementDark, 20); AddStat(AddResistElementGhost, 20); AddStat(AddResistElementUndead, 20); AddStat(AddResistElementWater, 20); AddStat(AddResistElementEarth, 20); AddStat(AddResistElementFire, 20); AddStat(AddResistElementWind, 20); }
+Item("Stone_Buckler") { OnEquip: AddStat(AddResistLargeSize, 5); }
 Item("Valkyrja's_Shield") { OnEquip: AddStat(AddResistElementWater, 20); AddStat(AddResistElementFire, 20); AddStat(AddResistElementDark, 20); AddStat(AddResistElementUndead, 20); }
 Item("Angel's_Guard") { OnEquip: AddStat(AddResistRaceDemon, 5); }
 Item("Memory_Book_") { OnEquip: AddStat(AddInt, 1); }
@@ -11,15 +11,15 @@ Item("Exorcism_Bible") { OnEquip: AddStat(AddInt, 1); }
 Item("Cross_Shield") { OnEquip: AddStat(AddStr, 1); }
 Item("Magic_Bible_Vol1") { OnEquip: AddStat(AddInt, 2); }
 Item("Ahura_Mazdah") { OnEquip: AddStat(AddStr, 50); AddStat(AddInt, 50); AddStat(AddVit, 50); AddStat(AddDex, 50); AddStat(AddAgi, 50); AddStat(AddLuk, 50); }
-Item("Sunglasses") { OnEquip: AddStat(ResistBlindStatus, 5); }
-Item("Sunglasses_") { OnEquip: AddStat(ResistBlindStatus, 5); }
+Item("Sunglasses") { OnEquip: AddStat(ResistBlindStatus, 30); }
+Item("Sunglasses_") { OnEquip: AddStat(ResistBlindStatus, 30); }
 Item("Fancy_Flower") { OnEquip: AddStat(AddResistRacePlant, 10); }
 Item("Bunny_Band") { OnEquip: AddStat(AddLuk, 2); }
 Item("Flu_Mask") { OnEquip: AddStat(ResistSilenceStatus, 10); }
 Item("Tiara") { OnEquip: AddStat(AddInt, 2); }
 Item("Crown") { OnEquip: AddStat(AddInt, 2); }
 Item("Santa_Hat") { OnEquip: AddStat(AddLuk, 1); }
-Item("Purple_Glasses") { OnEquip: AddStat(ResistBlindStatus, 10); }
+Item("Purple_Glasses") { OnEquip: AddStat(ResistBlindStatus, 40); }
 Item("Geek_Glasses") { OnEquip: AddStat(ResistBlindStatus, 15); }
 Item("Coronet") { OnEquip: AddStat(AddInt, 1); }
 Item("Cute_Ribbon") { OnEquip: AddStat(AddMaxSp, 20); }
@@ -46,6 +46,7 @@ Item("Masquerade") { OnEquip: AddStat(AddAttackRaceDemihuman, 3); }
 Item("Blinder") { OnEquip: AddStat(ResistBlindStatus, 100); }
 Item("Binoculars") { OnEquip: AddStat(AddDex, 1); }
 Item("Lord's_Clothes") { OnEquip: AddStat(AddInt, 1); }
+Item("Glittering_Jacket") { OnEquip: AddStat(OnMeleeAttackBlind, 30); AddStat(OnRangedAttackBlind, 30); }
 Item("Holy_Robe") { OnEquip: AddStat(AddResistRaceDemon, 15); AddStat(AddResistElementDark, 10); }
 Item("Tights") { OnEquip: AddStat(AddDex, 1); }
 Item("Tights_") { OnEquip: AddStat(AddDex, 1); }
@@ -66,8 +67,18 @@ Item("Goibne's_Armor") { OnEquip: AddStat(AddVit, 2); AddStat(AddMaxHpPercent, 1
 Item("Valkyrian_Armor") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
 Item("Ninja_Suit_") { OnEquip: AddStat(AddAgi, 1); }
 Item("Robe_of_Cast_") { OnEquip: AddStat(AddCastTime, -3); }
+Item("Meteo_Plate_Armor") { OnEquip: AddStat(ResistStunStatus, 30); AddStat(ResistFreezeStatus, 30); }
+Item("Divine_Cloth") { OnEquip: AddStat(ResistCurseStatus, 5); AddStat(ResistSilenceStatus, 5); AddStat(ResistSleepStatus, 5); AddStat(ResistStunStatus, 5); AddStat(ResistStoneStatus, 5); }
 Item("Mage_Coat_") { OnEquip: AddStat(AddInt, 1); }
-Item("Diabolus_Armor") { OnEquip: AddStat(AddStr, 2); AddStat(AddDex, 1); }
+Item("Holy_Robe_") { OnEquip: AddStat(AddResistRaceDemon, 15); AddStat(AddResistElementDark, 10); }
+Item("Diabolus_Armor") { OnEquip: AddStat(AddStr, 2); AddStat(AddDex, 1); AddStat(AddMaxHp, 150); AddStat(ResistStunStatus, 5); AddStat(ResistStoneStatus, 5); }
+Item("Assaulter_Plate") { OnEquip: AddStat(AddMaxHp, 150); AddStat(AddResistRaceDemihuman, 2); }
+Item("Elite_Engineer_Armor") { OnEquip: AddStat(AddMaxHp, 150); AddStat(AddResistRaceDemihuman, 2); }
+Item("Assassin_Robe") { OnEquip: AddStat(AddMaxHp, 150); AddStat(AddResistRaceDemihuman, 2); }
+Item("Warlock's_Battle_Robe") { OnEquip: AddStat(AddMaxHp, 150); AddStat(AddResistRaceDemihuman, 2); }
+Item("Medic's_Robe") { OnEquip: AddStat(AddMaxHp, 150); AddStat(AddResistRaceDemihuman, 2); }
+Item("Elite_Archer_Suit") { OnEquip: AddStat(AddMaxHp, 150); AddStat(AddResistRaceDemihuman, 2); }
+Item("Elite_Shooter_Suit") { OnEquip: AddStat(AddMaxHp, 150); AddStat(AddResistRaceDemihuman, 2); }
 Item("Sprint_Mail") { OnEquip: AddStat(AddVit, 1); }
 Item("Life_Link") { OnEquip: AddStat(AddVit, 2); }
 Item("Crystal_Pumps") { OnEquip: AddStat(AddLuk, 5); }
@@ -77,8 +88,9 @@ Item("Fricco's_Shoes") { OnEquip: AddStat(AddAgi, 2); }
 Item("Vidar's_Boots") { OnEquip: AddStat(AddMaxHpPercent, 9); AddStat(AddMaxSpPercent, 9); }
 Item("Goibne's_Greaves") { OnEquip: AddStat(AddMaxHpPercent, 5); AddStat(AddMaxSpPercent, 5); }
 Item("Angel's_Reincarnation") { OnEquip: AddStat(AddMaxHp, 100); }
+Item("Tidal_Shoes") { OnEquip: AddStat(AddResistElementWater, 5); }
 Item("Black_Leather_Boots") { OnEquip: AddStat(AddAgi, 1); }
-Item("Black_Leather_Boots_") { OnEquip: AddStat(AddAgi, 1); }
+Item("Battle_Boots") { OnEquip: AddStat(AddMaxHp, 100); AddStat(AddResistRaceDemihuman, 1); }
 Item("Sprint_Shoes") { OnEquip: AddStat(AddAgi, 1); }
 Item("Ancient_Cape") { OnEquip: AddStat(AddAgi, 1); }
 Item("Survivor's_Manteau") { OnEquip: AddStat(AddVit, 10); }
@@ -90,8 +102,12 @@ Item("Morrigane's_Manteau") { OnEquip: AddStat(AddLuk, 2); AddStat(PerfectDodge,
 Item("Goibne's_Spaulders") { OnEquip: AddStat(AddVit, 1); AddStat(AddResistRangedAttack, 10); }
 Item("Angel's_Cardigan") { OnEquip: AddStat(AddHpRecoveryPercent, 5); }
 Item("Ancient_Cape_") { OnEquip: AddStat(AddAgi, 1); }
+Item("Dragon_Breath") { OnEquip: AddStat(AddResistRaceDragon, 15); }
 Item("Rider_Insignia") { OnEquip: AddStat(AddAgi, 2); }
 Item("Rider_Insignia_") { OnEquip: AddStat(AddAgi, 2); }
+Item("Skin_of_Ventus") { OnEquip: AddStat(AddFlee, 10); AddStat(AddMaxHp, 200); }
+Item("Sheriff's_Manteau") { OnEquip: AddStat(AddMaxHp, 50); AddStat(AddResistRaceDemihuman, 1); }
+Item("Flame_Manteau_of_Naght_Sieger") { OnEquip: AddStat(AddMagicAttackPercent, 1); AddStat(AddAttackElementFire, 2); }
 Item("Ring") { OnEquip: AddStat(AddStr, 2); }
 Item("Earring") { OnEquip: AddStat(AddInt, 2); }
 Item("Necklace") { OnEquip: AddStat(AddVit, 2); }
@@ -111,14 +127,15 @@ Item("Brooch_") { OnEquip: AddStat(AddAgi, 1); }
 Item("Rosary_") { OnEquip: AddStat(AddLuk, 1); }
 Item("Megingjard") { OnEquip: AddStat(AddStr, 40); }
 Item("Brisingamen") { OnEquip: AddStat(AddStr, 6); AddStat(AddInt, 6); AddStat(AddVit, 6); AddStat(AddAgi, 6); AddStat(AddLuk, 10); }
-Item("The_Sign") { OnEquip: AddStat(AddAttackSpecialNormal, 5); AddStat(AddAttackSpecialBoss, 5); AddStat(AddAttackSpecialBoss, 5); AddStat(AddMagicAttackPercent, 5); }
+Item("The_Sign") { OnEquip: AddStat(AddAttackSpecialNormal, 5); AddStat(AddAttackSpecialBoss, 5); AddStat(AddMagicAttackPercent, 5); }
 Item("Nile_Rose") { OnEquip: AddStat(AddMaxHp, 10); }
 Item("Morpheus's_Ring") { OnEquip: AddStat(AddInt, 1); AddStat(AddMaxSpPercent, 5); }
 Item("Morpheus's_Bracelet") { OnEquip: AddStat(AddInt, 1); AddStat(AddMaxSpPercent, 5); }
 Item("Morrigane's_Belt") { OnEquip: AddStat(AddAttackPower, 5); AddStat(AddCrit, 3); }
 Item("Morrigane's_Pendant") { OnEquip: AddStat(AddStr, 2); AddStat(AddCrit, 3); }
+Item("Cursed_Brooch") { OnEquip: AddStat(AddCrit, 6); AddStat(OnAttackCurseSelf, 5); }
 Item("Shinobi_Sash") { OnEquip: AddStat(AddStr, 1); AddStat(AddAgi, 1); }
-Item("Armor_Charm") { OnEquip: AddStat(AddMaxHp, 150); }
+Item("Armor_Charm") { OnEquip: AddStat(AddMaxHp, 50); AddStat(AddDef, 1); }
 Item("Nile_Rose_") { OnEquip: AddStat(AddMaxHp, 10); }
 Item("Vesper_Core_01") { OnEquip: AddStat(AddInt, 2); AddStat(AddMaxSpPercent, 5); }
 Item("Vesper_Core_02") { OnEquip: AddStat(AddStr, 3); AddStat(AddAttackPower, 10); }
@@ -126,11 +143,16 @@ Item("Vesper_Core_03") { OnEquip: AddStat(AddAgi, 3); AddStat(AddFlee, 5); }
 Item("Vesper_Core_04") { OnEquip: AddStat(AddDex, 3); AddStat(AddHit, 10); }
 Item("Bow_Thimble_") { OnEquip: AddStat(AddAttackRangedAttack, 3); }
 Item("Spiritual_Ring") { OnEquip: AddStat(AddInt, 2); AddStat(AddDex, 1); }
-Item("Ring_of_Flame_Lord") { OnEquip: AddStat(AddStr, 2); AddStat(AddVit, 1); }
+Item("Ring_of_Flame_Lord") { OnEquip: AddStat(AddStr, 2); AddStat(AddVit, 1); AddStat(AddResistElementFire, 10); }
 Item("Ring_of_Resonance") { OnEquip: AddStat(AddVit, 1); AddStat(AddAgi, 2); }
 Item("Lesser_Elemental_Ring") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
-Item("Orleans's_Glove") { OnEquip: AddStat(AddDex, 2); }
+Item("Orleans's_Glove") { OnEquip: AddStat(AddDex, 2); AddStat(AddMagicAttackPercent, 3); }
 Item("Bison_Horn") { OnEquip: AddStat(AddAgi, 2); }
+Item("Skull_Ring_") { OnEquip: AddStat(AddResistRaceUndead, 1); }
+Item("Librarian_Glove") { OnEquip: AddStat(AddMaxSp, 20); }
+Item("Seal_of_Continental_Guard") { OnEquip: AddStat(AspdBonus, 3); AddStat(AddMaxHp, 50); }
+Item("Rune_Spellstone") { OnEquip: AddStat(AddCastTime, -1); AddStat(AddMaxSp, 50); }
+Item("Death_Loop") { OnEquip: AddStat(AddCrit, 5); }
 Item("Angelic_Ring") { OnEquip: AddStat(AddInt, 2); AddStat(AddDex, 1); }
 Item("Cursed_Star") { OnEquip: AddStat(AddDex, 2); }
 Item("Linen_Glove") { OnEquip: AddStat(AddDex, 1); AddStat(AddAgi, 2); }
@@ -175,7 +197,7 @@ Item("Beanie") { OnEquip: AddStat(AddLuk, 1); }
 Item("Sea_Otter_Hat") { OnEquip: AddStat(AddVit, 1); }
 Item("Crown_of_Mistress") { OnEquip: AddStat(AddInt, 2); AddStat(AddMaxSp, 100); }
 Item("Lazy_Smokie") { OnEquip: AddStat(ResistSleepStatus, 20); }
-Item("Dark_Blinder") { OnEquip: AddStat(ResistBlindStatus, 100); AddStat(ResistStunStatus, 20); }
+Item("Dark_Blinder") { OnEquip: AddStat(ResistBlindStatus, 100); AddStat(ResistStunStatus, 2); }
 Item("Super_Novice_Hat") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
 Item("Winter_Hat") { OnEquip: AddStat(ResistFreezeStatus, 10); }
 Item("Mystic_Rose") { OnEquip: AddStat(AddResistRacePlant, 2); }
@@ -183,7 +205,7 @@ Item("Super_Novice_Hat_") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); Add
 Item("Magni's_Cap") { OnEquip: AddStat(AddStr, 2); }
 Item("Ulle's_Cap") { OnEquip: AddStat(AddDex, 2); AddStat(AddAgi, 1); }
 Item("Fricca's_Circlet") { OnEquip: AddStat(AddInt, 2); AddStat(AddMaxSp, 50); }
-Item("Angel's_Kiss") { OnEquip: AddStat(AddSpRecoveryPercent, 3); }
+Item("Angel's_Kiss") { OnEquip: AddStat(AddSpRecoveryPercent, 5); }
 Item("Morpheus's_Hood") { OnEquip: AddStat(AddInt, 2); }
 Item("Morrigane's_Helm") { OnEquip: AddStat(AddLuk, 2); AddStat(AddAttackPower, 3); }
 Item("Goibne's_Helm") { OnEquip: AddStat(AddVit, 3); }
@@ -196,6 +218,8 @@ Item("Tiara_") { OnEquip: AddStat(AddInt, 1); }
 Item("Crown_") { OnEquip: AddStat(AddInt, 1); }
 Item("Feather_Beret") { OnEquip: AddStat(AddResistRaceDemihuman, 10); }
 Item("Beret") { OnEquip: AddStat(AddResistRaceDemihuman, 10); }
+Item("Censor_Bar") { OnEquip: AddStat(ResistCurseStatus, 5); AddStat(AddHit, -5); }
+Item("Romantic_White_Flower") { OnEquip: AddStat(AddResistRacePlant, 3); }
 Item("Deviruchi_Hat_") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); }
 Item("Deviruchi_Hat__") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); }
 Item("Deviruchi_Hat___") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); }
@@ -208,6 +232,7 @@ Item("Mage_Hat___") { OnEquip: AddStat(AddInt, 2); }
 Item("Mage_Hat____") { OnEquip: AddStat(AddInt, 2); }
 Item("Mage_Hat_____") { OnEquip: AddStat(AddInt, 2); }
 Item("Pirate_Bandana_") { OnEquip: AddStat(AddStr, 1); }
+Item("Sunflower_") { OnEquip: AddStat(AddResistRaceInsect, 10); }
 Item("Bone_Head") { OnEquip: AddStat(AddStr, 2); }
 Item("Mandragora_Cap") { OnEquip: AddStat(AddVit, 3); }
 Item("Bride's_Corolla") { OnEquip: AddStat(AddLuk, 3); }
@@ -223,31 +248,46 @@ Item("Hat_of_the_Sun_God") { OnEquip: AddStat(AddStr, 3); AddStat(AddInt, 2); }
 Item("Coif_") { OnEquip: AddStat(AddMaxSp, 100); }
 Item("Orc_Hero_Helm") { OnEquip: AddStat(AddStr, 2); AddStat(AddVit, 1); }
 Item("Zealotus_Mask") { OnEquip: AddStat(AddResistRaceDemihuman, 5); AddStat(AddAttackRaceDemihuman, 5); }
+Item("Shafka") { OnEquip: AddStat(ResistFreezeStatus, 10); }
 Item("Hat_of_the_Sun_God_") { OnEquip: AddStat(AddStr, 3); AddStat(AddInt, 2); }
 Item("Haedonggum") { OnEquip: AddStat(AddInt, 3); }
 Item("Haedonggum_") { OnEquip: AddStat(AddInt, 3); }
 Item("Nagan") { OnEquip: AddStat(DoubleAttackChance, 25); AddStat(AddAttackRaceDemihuman, 20); }
-Item("Ice_Falchion") { OnEquip: AddStat(AddMagicAttackPower, 120); GrantSkill(ColdBolt, 3); AddStat(OnAttackFreeze, 50); AutoSpellOnAttack(ColdBolt, 3, 100); }
+Item("Ice_Falchion") { OnEquip: AddStat(AddMagicAttackPower, 120); GrantSkill(ColdBolt, 3); AutoSpellOnAttack(ColdBolt, 3, 100); AddStat(OnMeleeAttackFreeze, 50); AddStat(OnRangedAttackFreeze, 50); AddStat(OnAttackFreezeSelf, 1); }
 Item("Fire_Brand") { OnEquip: AddStat(AddMagicAttackPower, 120); GrantSkill(FireBolt, 3); AutoSpellOnAttack(FireBolt, 3, 100); }
 Item("Caesar's_Sword") { OnEquip: AddStat(IgnoreDefRacePlant, 100); AddStat(AddAttackRacePlant, 25); }
+Item("Cutlus") { OnEquip: AddStat(AddStr, 2); GrantSkill(Bash, 5); AddStat(AddDef, 1); }
 Item("Excalibur") { OnEquip: AddStat(AddInt, 5); AddStat(AddLuk, 10); }
-Item("Mistilteinn") { OnEquip: AddStat(AddDex, 3); }
-
+Item("Mistilteinn") { OnEquip: AddStat(AddDex, 3); AddStat(AddAttackElementGhost, 15); }
 Item("Byeol-ungeom") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); AddStat(AddAttackSpecialBoss, 50); AddStat(AddResistSpecialNormal, -10); }
 Item("Holy_Avenger") { OnEquip: AddStat(AddVit, 2); }
 Item("Fortune_Sword") { OnEquip: AddStat(AddLuk, 5); AddStat(PerfectDodge, 20); }
+Item("Kitchen_Knife") { OnEquip: AddStat(AddCrit, 30); }
 Item("Bazerald") { OnEquip: AddStat(AddInt, 5); AddStat(AddMagicAttackPower, 40); AddStat(AddMagicAttackPercent, 10); }
 Item("Assassin_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 15); AddStat(AddMaxHpPercent, 20); AddStat(AspdBonus, 2); }
 Item("Moonlight_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 10); AddStat(SpOnAttack, 3); }
 Item("Sucsamad") { OnEquip: AddStat(AddAttackElementEarth, 25); AddStat(AddAttackElementWind, 25); }
-Item("Grimtooth") { OnEquip: AddStat(AddDefPercent, -33); AddStat(AddFlee, 15); AddStat(PerfectDodge, 100); }
+Item("Grimtooth") { OnEquip: AddStat(AddDefPercent, -33); AddStat(AddFlee, 15); AddStat(PerfectDodge, 10); }
+Item("Poison_Knife") { OnEquip: AddStat(OnMeleeAttackPoison, 300); AddStat(OnRangedAttackPoison, 300); }
+Item("Cursed_Dagger") { OnEquip: AddStat(OnMeleeAttackCurse, 500); AddStat(OnRangedAttackCurse, 500); }
 Item("Dagger_of_Counter") { OnEquip: AddStat(AddCrit, 90); }
+Item("Cleaver") { OnEquip: AddStat(AddResistRaceDemihuman, 5); }
 Item("War_Axe") { OnEquip: AddStat(AddDex, 2); AddStat(AddLuk, 2); }
 Item("Windhawk") { OnEquip: AddStat(AspdBonus, 5); }
+Item("Gungnir") { OnEquip: AddStat(AddHit, 30); }
+Item("Gelerdria") { OnEquip: AddStat(AddMaxHp, 800); AddStat(AddMaxSp, -50); }
 Item("Pole_Axe") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 2); AddStat(AddDex, 1); }
 Item("Assaulter_Spear") { OnEquip: AddStat(AddStr, 2); }
+Item("Stunner") { OnEquip: AddStat(OnMeleeAttackStun, 100); }
+Item("Spike") { OnEquip: AddStat(AddCrit, 40); AddStat(AddDefPercent, -66); }
+Item("Golden_Mace") { OnEquip: /* IndestructibleWeapon 1 */ AddStat(AddAttackRaceUndead, 20); }
 Item("Long_Mace") { OnEquip: AddStat(AddResistRangedAttack, 10); }
+Item("Quadrille") { OnEquip: AddStat(AddAttackRaceDemihuman, 10); AddStat(AddAttackElementUndead, 10); AddStat(AddAttackElementEarth, 10); }
 Item("Mjolnir") { OnEquip: AddStat(AddStr, 15); AddStat(AddDex, 40); AddStat(AspdBonus, 10); }
+Item("Wrench") { OnEquip: AddStat(OnMeleeAttackStun, 10); AddStat(OnMeleeAttackBlind, 10); AddStat(OnMeleeAttackFreeze, 10); AddStat(OnMeleeAttackPoison, 10); AddStat(OnRangedAttackStun, 10); AddStat(OnRangedAttackBlind, 10); AddStat(OnRangedAttackFreeze, 10); AddStat(OnRangedAttackPoison, 10); }
+Item("Stunner_") { OnEquip: AddStat(OnMeleeAttackStun, 100); }
+Item("Spike_") { OnEquip: AddStat(AddCrit, 40); AddStat(AddDefPercent, -66); }
+Item("Golden_Mace_") { OnEquip: /* IndestructibleWeapon 1 */ AddStat(AddAttackRaceUndead, 20); }
 Item("Brave_Morning_Star") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); }
 Item("Valorous_Morning_Star") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); }
 Item("Bible") { OnEquip: AddStat(AddInt, 2); }
@@ -255,9 +295,9 @@ Item("Book_of_the_Apocalypse") { OnEquip: AddStat(AddAttackElementWater, 7); Add
 Item("Legacy_of_Dragon") { OnEquip: AddStat(AddInt, 3); }
 Item("Hardcover_Book") { OnEquip: AddStat(AddStr, 3); AddStat(AddDex, 2); }
 Item("Encyclopedia") { OnEquip: AddStat(AddInt, 3); AddStat(AddDex, 2); }
-Item("Ledger_of_Death") { OnEquip: AddStat(AddStr, 3); AddStat(AddInt, 3); }
-Item("Principles_of_Magic") { OnEquip: AddStat(AddInt, 3); }
-Item("Ancient_Magic") { OnEquip: AddStat(AddInt, 4); }
+Item("Ledger_of_Death") { OnEquip: AddStat(AddStr, 3); AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 15); }
+Item("Principles_of_Magic") { OnEquip: AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 20); AddStat(AddSpRecoveryPercent, 5); }
+Item("Ancient_Magic") { OnEquip: AddStat(AddInt, 4); AddStat(AddMagicAttackPercent, 15); }
 Item("Brave_Book") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 1); }
 Item("Valorous_Book") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 2); }
 Item("Angra_Manyu") { 
@@ -273,23 +313,23 @@ OnEquip:
 }
 Item("Rod") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
 Item("Rod_") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
-Item("Wand") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 15); }
-Item("Wand_") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 15); }
-Item("Staff") { OnEquip: AddStat(AddInt, 2); AddStat(AddMagicAttackPercent, 15); }
-Item("Staff_") { OnEquip: AddStat(AddInt, 2); AddStat(AddMagicAttackPercent, 15); }
-Item("Arc_Wand") { OnEquip: AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 15); }
-Item("Arc_Wand_") { OnEquip: AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 15); }
+Item("Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
+Item("Wand_") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); }
+Item("Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 2); }
+Item("Staff_") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 2); }
+Item("Arc_Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
+Item("Arc_Wand_") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
 Item("Mighty_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddStr, 10); }
-Item("Wand_of_Occult") { OnEquip: AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 15); }
-Item("Evil_Bone_Wand") { OnEquip: AddStat(AddInt, 4); AddStat(AddMagicAttackPercent, 15); }
+Item("Wand_of_Occult") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); }
+Item("Evil_Bone_Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); }
 Item("Wing_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddCastTime, -5); }
-Item("Survivor's_Rod") { OnEquip: AddStat(AddDex, 2); AddStat(AddMagicAttackPercent, 15); AddStat(AddMaxHp, 300); }
-Item("Survivor's_Rod_") { OnEquip: AddStat(AddDex, 3); AddStat(AddMagicAttackPercent, 15); AddStat(AddMaxHp, 400); }
-Item("Survivor's_Rod__") { OnEquip: AddStat(AddInt, 2); AddStat(AddMagicAttackPercent, 15); AddStat(AddMaxHp, 300); }
-Item("Survivor's_Rod___") { OnEquip: AddStat(AddInt, 3); AddStat(AddMagicAttackPercent, 15); AddStat(AddMaxHp, 400); }
-Item("Hypnotist's_Staff") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 25); }
-Item("Hypnotist's_Staff_") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 25); }
-Item("Lich's_Bone_Wand") { OnEquip: AddStat(AddInt, 1); AddStat(AddDex, 1); }
+Item("Survivor's_Rod") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 2); AddStat(AddMaxHp, 300); }
+Item("Survivor's_Rod_") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 3); AddStat(AddMaxHp, 400); }
+Item("Survivor's_Rod__") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 2); AddStat(AddMaxHp, 300); }
+Item("Survivor's_Rod___") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddMaxHp, 400); }
+Item("Hypnotist's_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 10); }
+Item("Hypnotist's_Staff_") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); AddStat(AddMagicAttackPercent, 10); }
+Item("Lich's_Bone_Wand") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 1); AddStat(AddDex, 1); AddStat(AddMagicAttackPercent, 5); }
 Item("Healing_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
 Item("Piercing_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 4); }
 Item("Gentleman_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 1); }
@@ -308,6 +348,7 @@ Item("Claw") { OnEquip: AddStat(AddStr, 2); }
 Item("Claw_") { OnEquip: AddStat(AddStr, 2); }
 Item("Kaiser_Knuckle") { OnEquip: AddStat(AddAttackRaceUndead, 5); AddStat(AddAttackElementWater, 10); AddStat(AddAttackElementEarth, 10); AddStat(AddAttackElementFire, 10); AddStat(AddAttackElementWind, 10); }
 Item("Berserk") { OnEquip: AddStat(AspdBonus, 12); }
+Item("Hati_Claw") { OnEquip: AddStat(OnMeleeAttackBleeding, 20); AddStat(AddMaxHpPercent, -2); }
 Item("Berserk_") { OnEquip: AddStat(AspdBonus, 12); }
 Item("Brave_Fist") { OnEquip: AddStat(AddStr, 2); AddStat(AddAgi, 1); }
 Item("Valorous_Fist") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 1); }
@@ -319,21 +360,27 @@ Item("Valorous_Guitar") { OnEquip: AddStat(AddDex, 2); }
 Item("Tail_Whip") { OnEquip: AddStat(AddLuk, 3); }
 Item("Tail_Whip_") { OnEquip: AddStat(AddLuk, 3); }
 Item("Lariat_Whip") { OnEquip: AddStat(AddDex, 5); AddStat(AddAgi, 1); }
+Item("Rapture_Rose") { OnEquip: AddStat(OnMeleeAttackPoison, 500); AddStat(OnRangedAttackPoison, 500); }
+Item("Chemeti_Whip") { OnEquip: AddStat(AddCrit, 5); AddStat(AddFlee, 10); AddStat(PerfectDodge, 2); }
 Item("Skipping_Rope") { OnEquip: AddStat(AddCrit, 20); }
+Item("Blade_Whip") { OnEquip: AddStat(OnMeleeAttackBleeding, 30); }
 Item("Brave_Lariat") { OnEquip: AddStat(AddDex, 2); }
 Item("Valorous_Lariat") { OnEquip: AddStat(AddDex, 2); }
 Item("Cowardice_Blade") { OnEquip: AddStat(AddDef, 5); }
 Item("Cowardice_Blade_") { OnEquip: AddStat(AddDef, 5); }
+Item("Khukri") { OnEquip: AddStat(OnMeleeAttackCurse, 100); }
 Item("Kamaitachi") { OnEquip: AddStat(AddCrit, 3); AddStat(AspdBonus, 3); }
 Item("Asura") { OnEquip: AddStat(AddMagicAttackPercent, 10); }
 Item("Asura_") { OnEquip: AddStat(AddMagicAttackPercent, 10); }
 Item("Hakujin") { OnEquip: AddStat(AddInt, 2); }
 Item("Hakujin_") { OnEquip: AddStat(AddInt, 2); }
 Item("Sucsamad_") { OnEquip: AddStat(AddAttackElementEarth, 25); AddStat(AddAttackElementWind, 25); }
-Item("Brave_Damascus") { OnEquip: AddStat(AddStr, 1); AddStat(AddAgi, 1); }
+Item("Assassin_Dagger_") { OnEquip: AddStat(AddMaxSpPercent, 15); AddStat(AddMaxHpPercent, 20); AddStat(AspdBonus, 2); }
 Item("Valorous_Damascus") { OnEquip: AddStat(AddStr, 1); AddStat(AddAgi, 1); }
 Item("Ivory_Knife") { OnEquip: AddStat(AddAgi, 2); }
-Item("Cutlus_") { OnEquip: GrantSkill(Bash, 5); AddStat(AddStr, 2); AddStat(AddDef, 1); }
+Item("Cutlus_") { OnEquip: AddStat(AddStr, 2); GrantSkill(Bash, 5); AddStat(AddDef, 1); }
+Item("Platinum_Shotel") { OnEquip: AddStat(AddCrit, 50); }
+Item("Curved_Sword") { OnEquip: AddStat(AspdBonus, 10); AddStat(OnMeleeAttackCurse, 30); }
 Item("Brave_Blade") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); }
 Item("Valorous_Blade") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); }
 Item("Elemental_Sword") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 4); AddStat(AddDex, 1); }
@@ -341,41 +388,84 @@ Item("Glorious_Rapier") { OnEquip: AddStat(AddInt, 6); }
 Item("Glorious_Holy_Avenger") { OnEquip: AddStat(AddInt, 6); }
 Item("Broad_Sword") { OnEquip: AddStat(AddDef, 5); }
 Item("Broad_Sword_") { OnEquip: AddStat(AddDef, 5); }
-Item("Muramasa") { OnEquip: AddStat(AddCrit, 300); AddStat(AspdBonus, 12); }
+Item("Muramasa") { OnEquip: AddStat(AddCrit, 30); AddStat(AspdBonus, 12); }
 Item("Masamune") { OnEquip: AddStat(AddFlee, 30); AddStat(AspdBonus, 20); AddStat(AddStr, -5); AddStat(AddDefPercent, -66); }
-Item("Katzbalger") { OnEquip: AddStat(AddVit, 5);AddStat(AddDef, 10); }
+Item("Dragon_Slayer") { OnEquip: AddStat(AddAttackRaceDragon, 15); }
+Item("Schweizersabel") { OnEquip: AutoSpellWhenAttacked(LightningBolt, 3, 100, TargetEnemy); AddStat(AddDef, 1); }
+Item("Executioner") { OnEquip: AddStat(AddResistRaceDemihuman, -10); AddStat(AddAttackRaceDemihuman, 20); }
+Item("Katzbalger") { OnEquip: AddStat(AddVit, 5); AddStat(AddDef, 10); }
+Item("Atlas_Weapon") { OnEquip: AddStat(AddCrit, 10); }
+Item("Muscle_Cutter") { OnEquip: AddStat(OnMeleeAttackBleeding, 80); AutoSpellWhenAttacked(DecreaseAgility, 1, 30, TargetEnemy); }
+Item("Schweizersabel_") { OnEquip: AutoSpellWhenAttacked(LightningBolt, 3, 100, TargetEnemy); AddStat(AddDef, 1); }
+Item("Executioner_") { OnEquip: AddStat(AddResistRaceDemihuman, -10); AddStat(AddAttackRaceDemihuman, 20); }
+Item("Dragon_Slayer_") { OnEquip: AddStat(AddAttackRaceDragon, 15); }
+Item("Tae_Goo_Lyeon") { OnEquip: AddStat(PerfectDodge, 10); }
 Item("Brave_Katzbalger") { OnEquip: AddStat(AddStr, 2); }
+Item("Valorous_Katzbalger") { OnEquip: AddStat(AddAttackRaceDemihuman, 55); AddStat(AddCrit, 20); AddStat(AddCritDamage, 20); }
 Item("Death_Guidance") { OnEquip: AddStat(AddStr, 5); AddStat(AddAgi, 2); }
 Item("Katar") { OnEquip: AddStat(AddDex, 1); }
 Item("Katar_") { OnEquip: AddStat(AddDex, 1); }
-Item("Brave_Katar") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); }
-Item("Valorous_Katar") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); }
-Item("Bloody_Axe") { OnEquip: AddStat(MoveSpeedBonus, 34); AddStat(AddStr, 10); }
+Item("Katar_of_Frozen_Icicle") { OnEquip: AddStat(OnMeleeAttackFreeze, 50); AddStat(OnRangedAttackFreeze, 50); }
+Item("Katar_of_Quaking") { OnEquip: AddStat(OnMeleeAttackBlind, 50); AddStat(OnRangedAttackBlind, 50); }
+Item("Katar_of_Raging_Blaze") { OnEquip: AddStat(OnMeleeAttackSilence, 50); AddStat(OnRangedAttackSilence, 50); }
+Item("Katar_of_Piercing_Wind") { OnEquip: AddStat(OnMeleeAttackSleep, 50); AddStat(OnRangedAttackSleep, 50); }
+Item("Infiltrator") { OnEquip: AddStat(AddAttackRaceDemihuman, 50); AddStat(AddDef, 3); AddStat(AddFlee, 5); AddStat(PerfectDodge, 2); }
+Item("Loki's_Nail") { OnEquip: AddStat(OnMeleeAttackBleeding, 30); }
+Item("Unholy_Touch") { OnEquip: AddStat(OnMeleeAttackCurse, 20); AddStat(AddCrit, -1); }
+Item("Specialty_Jur") { OnEquip: AddStat(OnAttackBleedingSelf, 1); }
+Item("Infiltrator_") { OnEquip: AddStat(AddAttackRaceDemihuman, 50); AddStat(AddDef, 3); AddStat(AddFlee, 5); AddStat(PerfectDodge, 2); }
+Item("Katar_of_Frozen_Icicle_") { OnEquip: AddStat(OnMeleeAttackFreeze, 50); AddStat(OnRangedAttackFreeze, 50); }
+Item("Katar_of_Quaking_") { OnEquip: AddStat(OnMeleeAttackBlind, 50); AddStat(OnRangedAttackBlind, 50); }
+Item("Katar_of_Raging_Blaze_") { OnEquip: AddStat(OnMeleeAttackSilence, 50); AddStat(OnRangedAttackSilence, 50); }
+Item("Katar_of_Piercing_Wind_") { OnEquip: AddStat(OnMeleeAttackSleep, 50); AddStat(OnRangedAttackSleep, 50); }
+Item("Brave_Katar") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); AddStat(AddAttackRaceDemihuman, 70); }
+Item("Valorous_Katar") { OnEquip: AddStat(AddStr, 1); AddStat(AddDex, 1); AddStat(AddLuk, 1); AddStat(AddAttackRaceDemihuman, 70); AddStat(AddCritDamage, 20); AddStat(AspdBonus, 5); }
+Item("Bloody_Axe") { OnEquip: AddStat(AddStr, 10); AddStat(MoveSpeedBonus, 34); }
+Item("Great_Axe") { OnEquip: AddStat(OnMeleeAttackStun, 150); AddStat(OnRangedAttackStun, 150); }
+Item("Sabbath") { OnEquip: AddStat(AddCritChanceRaceUndead, 50); }
+Item("Light_Epsilon") { OnEquip: GrantSkill(Heal, 3); AddStat(AddAttackRaceDemon, 3); }
+Item("Bardiche") { OnEquip: AddStat(AddResistMidSize, 13); AddStat(AddResistLargeSize, 15); }
 Item("Brave_Battle_Axe") { OnEquip: AddStat(AddStr, 3); }
 Item("Valorous_Battle_Axe") { OnEquip: AddStat(AddStr, 3); }
+Item("Crescent_Scythe") { OnEquip: AddStat(AddCrit, 30); AddStat(AddHit, 10); }
+Item("Bill_Guisarme") { OnEquip: AddStat(AddAttackRaceBeast, 10); AddStat(AddAttackRaceDemihuman, 5); }
+Item("Zephyrus") { OnEquip: AutoSpellWhenAttacked(ThunderStorm, 3, 100, TargetEnemy); AddStat(OnMeleeAttackSilence, 20); AddStat(OnRangedAttackSilence, 20); }
+Item("Longinus'_Spear") { OnEquip: AddStat(AddAttackRaceDemihuman, 10); AddStat(AddAttackRaceAngel, 10); }
+Item("Brionac") { OnEquip: GrantSkill(Heal, 5); AutoSpellWhenAttacked(SoulStrike, 3, 100, TargetEnemy); }
+Item("Hellfire") { OnEquip: AutoSpellWhenAttacked(FireBall, 5, 100, TargetEnemy); AddStat(AddStr, 3); }
 Item("Soul_Staff") { OnEquip: AddStat(AddInt, 5); AddStat(AddAgi, 2); AddStat(AddMagicAttackPercent, 20); }
 Item("Wizardry_Staff") { OnEquip: AddStat(AddInt, 6); AddStat(AddDex, 2); AddStat(AddMagicAttackPercent, 20); }
+Item("Gae_Bolg") { OnEquip: /* SetIgnoreDEFRace RACE_Dragon */ AddStat(AddAttackSpecialBoss, 10); }
 Item("Crescent_Scythe_") { OnEquip: AddStat(AddCrit, 30); AddStat(AddHit, 10); }
-Item("Assaulter_Lance") { OnEquip: AddStat(AddStr, 2); }
+Item("Spectral_Spear") { OnEquip: AddStat(AddResistRaceUndead, 10); AddStat(AddResistRaceDemon, 10); AddStat(AddResistElementDark, 10); AddStat(AddAttackElementDark, 20); AddStat(AddAttackElementUndead, 20); AddStat(AddAttackRaceDemon, 20); AddStat(OnAttackConfusionSelf, 100); }
+Item("Assaulter_Lance") { OnEquip: AddStat(AddStr, 2); AddStat(AddAttackRaceDemihuman, 25); }
 Item("Ivory_Lance") { OnEquip: AddStat(AddAgi, 2); }
-Item("Staff_of_Destruction") { OnEquip: AddStat(AddInt, 3); AddStat(AddAgi, 10); }
-Item("Divine_Cross") { OnEquip: AddStat(AddDex, 4); }
-Item("Brave_Huuma") { OnEquip: AddStat(AddStr, 2); AddStat(AddDex, 1); }
+Item("Staff_of_Destruction") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddAgi, 10); AddStat(AddMagicAttackPercent, 10); }
+Item("Divine_Cross") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 4); AddStat(AddResistRaceUndead, 15); AddStat(AddResistRaceDemon, 15); }
+Item("Glorious_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
+Item("Huuma_Giant_Wheel_Shuriken") { OnEquip: AddStat(OnMeleeAttackBleeding, 10); }
+Item("Huuma_Giant_Wheel_Shuriken_") { OnEquip: AddStat(OnMeleeAttackBleeding, 10); }
+Item("Huuma_Blaze_Shuriken") { OnEquip: AutoSpellWhenAttacked(FireBall, 5, 30, TargetEnemy); }
 Item("Valorous_Huuma") { OnEquip: AddStat(AddStr, 2); AddStat(AddDex, 1); }
 Item("Arbalest_Bow") { OnEquip: AddStat(AddDex, 2); }
 Item("Arbalest_Bow_") { OnEquip: AddStat(AddDex, 2); }
-Item("Rudra_Bow") { OnEquip: AddStat(AddInt, 5); }
+Item("Rudra_Bow") { OnEquip: AddStat(AddInt, 5); AddStat(ResistPoisonStatus, 50); AddStat(ResistCurseStatus, 50); AddStat(ResistSilenceStatus, 50); AddStat(ResistConfusionStatus, 50); AddStat(ResistBlindStatus, 50); GrantSkill(Heal, 1); GrantSkill(Cure, 1); }
+Item("Burning_Bow") { OnEquip: AddStat(AddResistElementFire, 10); }
+Item("Frozen_Bow") { OnEquip: AddStat(OnRangedAttackFreeze, 100); }
 Item("Brave_Cross_Bow") { OnEquip: AddStat(AddDex, 2); }
-Item("Valorous_Cross_Bow") { OnEquip: AddStat(AddInt, 10); AddStat(AddDex, 2); }
+Item("Valorous_Cross_Bow") { OnEquip: AddStat(AddInt, 10); AddStat(AddDex, 2); AddStat(AddAttackRaceDemihuman, 55); }
+Item("Six_Shooter") { OnEquip: AddStat(AddHit, -10); }
+Item("Six_Shooter_") { OnEquip: AddStat(AddHit, -10); }
+Item("Crimson_Bolt") { OnEquip: AddStat(AddHit, -10); }
+Item("Crimson_Bolt_") { OnEquip: AddStat(AddHit, -10); }
+Item("Garrison") { OnEquip: AddStat(AddHit, -10); }
+Item("Garrison_") { OnEquip: AddStat(AddHit, -10); }
 Item("Soldier_Pistol") { OnEquip: AddStat(AddDex, 2); }
+Item("Cyclone") { OnEquip: AddStat(AddHit, 10); AddStat(AddCrit, 10); }
+Item("Cyclone_") { OnEquip: AddStat(AddHit, 10); AddStat(AddCrit, 10); }
+Item("Dusk") { OnEquip: AddStat(AddHit, 10); AddStat(AddCrit, 10); }
 Item("Gate_Keeper-DD") { OnEquip: AddStat(AddDex, 1); }
 Item("Soldier_Rifle") { OnEquip: AddStat(AddDex, 2); }
 Item("Soldier_Gatling_Gun") { OnEquip: AddStat(AddDex, 2); }
 Item("Soldier_Shotgun") { OnEquip: AddStat(AddDex, 2); }
 Item("Soldier_Grenade_Launcher") { OnEquip: AddStat(AddDex, 2); }
-Item("Golden_Mace") { OnEquip: AddStat(AddAttackRaceUndead, 20); }
-Item("Golden_Mace_") { OnEquip: AddStat(AddAttackRaceUndead, 20); }
-
-
-
-

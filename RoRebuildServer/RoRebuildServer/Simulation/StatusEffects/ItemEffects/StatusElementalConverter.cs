@@ -11,6 +11,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.ItemEffects;
 [StatusEffectHandler(CharacterStatusEffect.ElementalConverterWater, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
 [StatusEffectHandler(CharacterStatusEffect.ElementalConverterWind, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
 [StatusEffectHandler(CharacterStatusEffect.ElementalConverterEarth, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
+[StatusEffectHandler(CharacterStatusEffect.CursedWater, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
 public class StatusElementalConverter : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnChangeEquipment;
@@ -34,6 +35,7 @@ public class StatusElementalConverter : StatusEffectBase
             CharacterStatusEffect.ElementalConverterWater => 2,
             CharacterStatusEffect.ElementalConverterWind => 4,
             CharacterStatusEffect.ElementalConverterEarth => 1,
+            CharacterStatusEffect.CursedWater => 7,
             _ => state.Value1
         };
 

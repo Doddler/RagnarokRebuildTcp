@@ -234,6 +234,12 @@ Icon = "weapon_property_ground"
 CanDispel = true
 CanDisable = true
 
+[CursedWater]
+Name = "Cursed Water"
+Type = "Buff"
+Icon = "i_p_dark"
+CanDispel = true
+CanDisable = true
 
 #----------------------------------
 # Monster Status Effects

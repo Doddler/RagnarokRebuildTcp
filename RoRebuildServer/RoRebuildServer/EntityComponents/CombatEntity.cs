@@ -1333,7 +1333,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         var attackerLuck = GetEffectiveStat(CharacterStat.Luck);
         var targetLuck = target.GetEffectiveStat(CharacterStat.Luck);
-        if (targetLuck < 0) targetLuck = 0;
+        if (targetLuck < 0 || target == this) targetLuck = 0; //note: self targeted chances count as though the target has 0 luck
 
         var realChance = chance * 10 * (attackerLuck + luckMod) / (targetLuck + luckMod);
         if (realChance <= 0)
@@ -1341,8 +1341,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         return GameRandom.NextInclusive(0, outOf * 10) < realChance;
     }
-
-
+    
     /// <summary>
     /// Test to see if this character is able to hit the enemy.
     /// </summary>

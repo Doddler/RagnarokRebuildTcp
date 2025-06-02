@@ -15,7 +15,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
 
         public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
         {
-            attack.Target.Messages.SendHitEffect(attack.Src, attack.DamageTiming, 2, 1);
+            if(attack.Src.CharacterType != CharacterType.Player)
+                attack.Target.Messages.SendHitEffect(attack.Src, attack.DamageTiming, 2, 1);
         }
 
         public override void ExecuteSkillGroundTargeted(ServerControllable src, ref AttackResultData attack)

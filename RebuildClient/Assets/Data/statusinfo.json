@@ -353,6 +353,15 @@
     },
     {
       "StatusEffect": 40,
+      "Name": "Cursed Water",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "i_p_dark",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 41,
       "Name": "Guided Attack",
       "Description": null,
       "Type": "Buff",
@@ -361,7 +370,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 41,
+      "StatusEffect": 42,
       "Name": "Magic Weapon",
       "Description": null,
       "Type": "Buff",
@@ -370,7 +379,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 42,
+      "StatusEffect": 43,
       "Name": "Dark Blessing",
       "Description": "\u003Ccolor=#FF3300\u003EDark Blessing\u003C/color\u003E\nWhen this effect expires you will be reduced to 1 HP.",
       "Type": "Debuff",
@@ -379,7 +388,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 43,
+      "StatusEffect": 44,
       "Name": "Power Up",
       "Description": "\u003Ccolor=#FFA300\u003EPower Up\u003C/color\u003E\nAttack power greatly increased.",
       "Type": "Buff",
@@ -388,7 +397,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 44,
+      "StatusEffect": 45,
       "Name": "Speed Up",
       "Description": "\u003Ccolor=#FFA300\u003ESpeed Up\u003C/color\u003E\nMove speed and evasion greatly increased.",
       "Type": "Buff",
@@ -397,7 +406,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 45,
+      "StatusEffect": 46,
       "Name": null,
       "Description": "\u003Ccolor=#FFA300\u003EVampyrism\u003C/color\u003E\nAll your attacks heal you.",
       "Type": "Buff",
@@ -406,7 +415,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 46,
+      "StatusEffect": 47,
       "Name": "Doom",
       "Description": "\u003Ccolor=#FF3300\u003EDoom\u003C/color\u003E\nYou are doomed to die in the near future.",
       "Type": "Debuff",
@@ -415,7 +424,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 47,
+      "StatusEffect": 48,
       "Name": "Bulwark",
       "Description": null,
       "Type": "Buff",
@@ -424,7 +433,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 48,
+      "StatusEffect": 49,
       "Name": "Smoking",
       "Description": null,
       "Type": "Debuff",
@@ -433,7 +442,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 49,
+      "StatusEffect": 50,
       "Name": "Stop",
       "Description": "\u003Ccolor=#FF3300\u003EStop\u003C/color\u003E\nA nearby enemy has entangled the two of you, preventing either of you from moving.",
       "Type": "Debuff",
@@ -442,7 +451,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 50,
+      "StatusEffect": 51,
       "Name": null,
       "Description": null,
       "Type": null,
@@ -451,7 +460,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 51,
+      "StatusEffect": 52,
       "Name": "Adrenaline Rush",
       "Description": null,
       "Type": null,
@@ -460,7 +469,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 52,
+      "StatusEffect": 53,
       "Name": "Admin Invisibility",
       "Description": "\u003Ccolor=#FFA300\u003EAdmin Invisibility\u003C/color\u003E\nYou cannot be seen and you cannot be targeted.",
       "Type": "Buff",
@@ -469,7 +478,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 53,
+      "StatusEffect": 54,
       "Name": "Stolen From",
       "Description": "\u003Ccolor=#FF3300\u003EStolen From\u003C/color\u003E\nYou\u0027ve had something recently taken and cannot be stolen from again.",
       "Type": "Debuff",

@@ -76,7 +76,13 @@ public class Player : IEntityAutoReset
     public Party? Party;
     public int PartyMemberId;
     public bool HasEnteredServer;
-    
+
+    public StatusTriggerFlags OnMeleeAttackStatusFlags;
+    public StatusTriggerFlags OnRangedAttackStatusFlags;
+    public StatusTriggerFlags OnMeleeAttackStatusSelfFlags;
+    public StatusTriggerFlags WhenAttackedStatusFlags;
+
+
     public int GetItemIdForEquipSlot(EquipSlot slot) => Equipment.ItemIds[(int)slot];
 
     public bool DoesCharacterKnowSkill(CharacterSkill skill, int level)
@@ -483,10 +489,19 @@ public class Player : IEntityAutoReset
         return false;
     }
 
+    public int GainBaseExpFromMonster(int exp, MonsterDatabaseInfo monsterBase)
+    {
+        var scale = GetStat(CharacterStat.AddExpRaceFormless + (int)monsterBase.Race);
+        if (scale != 0)
+            exp = exp * (100 + scale) / 100;
+
+        return GainBaseExp(exp);
+    }
+
     public int GainBaseExp(int exp)
     {
         var level = GetData(PlayerStat.Level);
-        if (CharacterLevel >= 99)
+        if (CharacterLevel >= 99 || exp != 0)
             return 0;
         
         var curExp = GetData(PlayerStat.Experience);
@@ -526,6 +541,15 @@ public class Player : IEntityAutoReset
         CommandBuilder.ClearRecipients();
 
         return exp;
+    }
+
+    public int GainJobExpFromMonster(int exp, MonsterDatabaseInfo monsterBase)
+    {
+        var scale = GetStat(CharacterStat.AddExpRaceFormless + (int)monsterBase.Race);
+        if (scale != 0)
+            exp = exp * (100 + scale) / 100;
+
+        return GainJobExp(exp);
     }
 
     public int GainJobExp(int exp)
@@ -761,6 +785,31 @@ public class Player : IEntityAutoReset
         var moveSpeed = 0.15f * moveBonus;
         SetTiming(TimingStat.MoveSpeed, moveSpeed);
         Character.MoveSpeed = moveSpeed;
+
+        //status effect stuff
+
+        OnMeleeAttackStatusFlags = 0;
+        OnRangedAttackStatusFlags = 0;
+        OnMeleeAttackStatusSelfFlags = 0;
+        WhenAttackedStatusFlags = 0;
+
+        var statusFlagCount = (int)(CharacterStat.OnMeleeAttackLast - CharacterStat.OnMeleeAttackFirst);
+
+        for (var i = 0; i < statusFlagCount; i++)
+        {
+            if (GetStat(CharacterStat.OnMeleeAttackFirst + i) > 0)
+                OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << i);
+
+            if (GetStat(CharacterStat.OnRangedAttackFirst + i) > 0)
+                OnRangedAttackStatusFlags |= (StatusTriggerFlags)(1 << i);
+
+            if (GetStat(CharacterStat.OnMeleeStatusSelfFirst + i) > 0)
+                OnMeleeAttackStatusSelfFlags |= (StatusTriggerFlags)(1 << i);
+
+            if (GetStat(CharacterStat.WhenAttackedFirst + i) > 0)
+                WhenAttackedStatusFlags |= (StatusTriggerFlags)(1 << i);
+        }
+
 
         //update skill points! Ideally, this only should happen when you change your skills, but, well...
         var jobLevel = GetData(PlayerStat.JobLevel);

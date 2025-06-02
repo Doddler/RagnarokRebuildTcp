@@ -102,6 +102,8 @@ public partial class CombatEntity
         var baseElementType = GetAttackTypeForDefenderElement(defenderElement);
         var attackerPenalty = isPhysical ? target.GetAttackerPenalty(Entity) : 0; //players have defense and evasion penalized when attacked by 2 or more enemies
 
+        var targetRace = target.GetRace();
+
 #if DEBUG
         if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies), true))
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling CalculateCombatResultUsingSetAttackPower.");
@@ -134,6 +136,9 @@ public partial class CombatEntity
         {
             //crit rate: 1%, + 0.3% per luk, + 0.1% per level
             var critRate = (10 + GetEffectiveStat(CharacterStat.Luck) * 3 + srcLevel + GetStat(CharacterStat.AddCrit)) / 10;
+
+            if (Character.Type == CharacterType.Player)
+                critRate = critRate * (100 + GetStat(CharacterStat.AddCritChanceRaceFormless + (int)targetRace)) / 100;
 
             //should double crit for katar here
 
@@ -246,9 +251,9 @@ public partial class CombatEntity
         var rangeMod = 100;
         var sizeMod = 100;
         var defMod = 100;
+        var isRanged = req.Flags.HasFlag(AttackFlags.Ranged);
         if (!evade && !flags.HasFlag(AttackFlags.NoDamageModifiers))
         {
-            var isRanged = req.Flags.HasFlag(AttackFlags.Ranged);
             var atkSize = attackerType == CharacterType.Monster ? Character.Monster.MonsterBase.Size : CharacterSize.Medium;
             var defSize = defenderType == CharacterType.Monster ? target.Character.Monster.MonsterBase.Size : CharacterSize.Medium;
 
@@ -273,7 +278,6 @@ public partial class CombatEntity
 
             if (attackerType == CharacterType.Player && isPhysical) //only players and physical attacks get these bonuses
             {
-                var targetRace = target.GetRace();
                 racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
 
                 //masteries, demonbane, etc
@@ -283,6 +287,9 @@ public partial class CombatEntity
 
                 if (isRanged)
                     rangeMod += GetStat(CharacterStat.AddAttackRangedAttack);
+
+                if(isCrit)
+                    attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamageRaceFormless + (int)targetRace) / 100f;
 
                 sizeMod += GetStat(CharacterStat.AddAttackSmallSize + (int)defSize);
 
@@ -441,7 +448,7 @@ public partial class CombatEntity
 
             if (di.Damage > 0 && (di.Result == AttackResult.NormalDamage || di.Result == AttackResult.CriticalDamage))
             {
-                TriggerOnAttackEffects(target, req, ref di);
+                TriggerOnAttackEffects(target, req, ref di, isRanged);
                 target.TriggerWhenAttackedEffects(this, req, ref di);
                 if(Character.Type == CharacterType.Player && isPhysical)
                     TriggerAutoSpell(target, req, ref di);
