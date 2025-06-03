@@ -26,6 +26,7 @@ namespace Assets.Scripts.UI
 
             if (Image != null)
             {
+                Image.gameObject.SetActive(true);
                 Image.sprite = sprite;
                 Image.rectTransform.sizeDelta = Sprite.rect.size * 2;
             }
@@ -67,6 +68,16 @@ namespace Assets.Scripts.UI
                     CountText.text = count.ToString();
                 }
             }
+        }
+
+        public void Empty()
+        {
+            Image.sprite = null;
+            Image.gameObject.SetActive(false);
+            HideCount();
+            Type = DragItemType.None;
+            ItemCount = 0;
+            ItemId = 0;
         }
 
         public void Clear()

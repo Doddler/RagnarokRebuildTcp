@@ -31,7 +31,7 @@ Item("Wolf_Card") { OnEquip: AddStat(AddAttackPower, 15); AddStat(AddCrit, 1); }
 Item("Mandragora_Card") { OnEquip: AddStat(AddAttackElementWind, 20); }
 Item("Peco_Peco_Card") { OnEquip: AddStat(AddMaxHpPercent, 10); }
 Item("Ambernite_Card") { OnEquip: AddStat(AddDef, 2); }
-Item("Poporing_Card") { OnEquip: } //enable skill detoxify
+Item("Poporing_Card") { OnEquip: GrantSkill(Detoxify, 1); }
 Item("Wormtail_Card") { OnEquip: AddStat(AddDex, 2); }
 Item("Hydra_Card") { OnEquip: AddStat(AddAttackRaceDemihuman, 20); }
 Item("Muka_Card") { OnEquip: AddStat(AddHpRecoveryPercent, 10); }
@@ -101,7 +101,7 @@ Item("Pasana_Card") { OnEquip: SetArmorElement(Fire1); AddStat(AddDef, 1); }
 Item("Sohee_Card") { OnEquip: AddStat(AddMaxSpPercent, 15); AddStat(AddSpRecoveryPercent, 3); }
 Item("Sandman_Card") { OnEquip: SetArmorElement(Earth1); AddStat(AddDef, 1); }
 Item("Whisper_Card") { OnEquip: AddStat(AddFlee, 20); AddStat(AddResistElementGhost, -50); }
-Item("Horong_Card") { OnEquip: } //enable skill sight
+Item("Horong_Card") { OnEquip: GrantSkill(Sight, 1); } //enable skill sight
 Item("Requiem_Card") { OnEquip: AddStat(OnMeleeAttackConfusion, 50); AddStat(OnRangedAttackConfusion, 50); }
 Item("Marc_Card") { OnEquip: AddStat(ResistFreezeStatus, 100); AddStat(AddResistElementWater, 5); }
 Item("Mummy_Card") { OnEquip: AddStat(AddHit, 20); }
@@ -175,7 +175,7 @@ Item("Baphomet_Card") { OnEquip: AddStat(AddHit, -10); AutoSpellOnAttack(SplashA
 Item("Pharaoh_Card") { OnEquip: AddStat(SpConsumption, -30); }
 Item("Gargoyle_Card") { OnEquip: } //add item drop box of thunder 1% when killing insect monsters
 Item("Goat_Card") { OnEquip: if(Refine < 6) {AddStat(AddDef, 2); AddStat(AddMDef, 5);} }
-Item("Gajomart_Card") { OnValidate: return false; OnEquip: }
+Item("Gajomart_Card") { OnEquip: AddStat(AddExpRacePlant, 10); AddStat(AddResistRacePlant, -20); }
 Item("Galapago_Card") { OnEquip: } //add 3% chance to get apple, banana, or carrot juice when killing insects, and boosts healing fo those items by 50%
 Item("Crab_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add 30% bonus damage against aster, adn 30% chance to get sashimi when killing fish
 Item("Dumpling_Kid_Card") { OnValidate: return false; OnEquip: }
@@ -215,7 +215,7 @@ Item("Dryad_Card") { OnEquip: AddStat(AddResistElementEarth, 10); } //should add
 Item("Dragon_Tail_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(AddFlee, 10); } //should increase double strafe and arrow shower damage by 5%
 Item("Dragon_Fly_Card") { OnEquip: AddStat(AddAgi, 1); } //should combo with wolf card
 Item("Driller_Card") { OnEquip: } //should add sp 5 sp recovery when killing dragons
-Item("Disguise_Card") { OnEquip: } //some silence shenanigans
+Item("Disguise_Card") { OnEquip: AddStat(WhenAttackedSilence, 30); } //some silence shenanigans
 Item("Diabolic_Card") { OnEquip: } //should add sp 5 sp recovery when killing demon
 Item("Vagabond_Wolf_Card") { OnEquip: AddStat(AddStr, 1); } //should combo with wolf card
 Item("Lava_Golem_Card") { OnEquip: } //should add 30% damage vs golem
@@ -251,7 +251,7 @@ Item("Brilight_Card") { OnEquip: AddStat(WhenAttackedSilence, 60); }
 Item("Bloody_Murderer_Card") { OnEquip: AddStat(AddCritDamage, 10); AddStat(AddCritChanceRaceInsect, 7); }
 Item("Blazer_Card") { OnValidate: return false; OnEquip: } //chance to get food item
 Item("Sasquatch_Card") { OnEquip: AddStat(WhenAttackedFreeze, 60); }
-Item("Enchanted_Peach_Tree_Card") { OnValidate: return false; OnEquip: } //autospell heal
+Item("Enchanted_Peach_Tree_Card") { OnEquip: AutoSpellOnAttack(Heal, 1, 20, TargetSelf); } //autospell heal
 Item("Succubus_Card") { OnEquip: AddStat(AddVit, -3); AddStat(AddHpRecoveryPercent, -20); AddStat(AddMaxHp, 1000); }
 Item("Sage_Worm_Card") { OnEquip: } //chance to get gemstone
 Item("Solider_Card") { OnEquip: AddStat(AddDef, 2); AddStat(AddMDef, 2); }
@@ -310,7 +310,7 @@ Item("Zhu_Po_Long_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(AddCrit, 3); }
 Item("Shellfish_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add +30% damage to crab
 Item("Zombie_Master_Card") { OnValidate: return false; OnEquip: } //sp recovery from undead
 Item("Zombie_Prisoner_Card") { OnEquip: AddStat(AddExpRaceUndead, 10); AddStat(AddResistRaceUndead, -20); }
-Item("Lord_of_The_Dead_Card") { OnValidate: return false; OnEquip: } // kinds of status when attacking
+Item("Lord_of_The_Dead_Card") { OnEquip: AddStat(OnMeleeAttackCurse, 50); AddStat(OnMeleeAttackPoison, 50); AddStat(OnMeleeAttackSilence, 50); AddStat(OnMeleeAttackBleeding, 50); AddStat(OnMeleeAttackStun, 50); }
 Item("Zealotus_Card") { OnEquip: AddStat(AddLuk, 2); } //autospell throw arrow and musical strike
 Item("Gibbet_Card") { OnEquip: if(Refine < 6) {AddStat(AddMDef, 5);} }
 Item("Earth_Deleter_Card") { OnValidate: return false; OnEquip: }
@@ -364,7 +364,7 @@ Item("Sea_Otter_Card") { OnEquip: } //sushi/sashimi
 Item("Bloody_Butterfly_Card") { OnValidate: return false; OnEquip: } //discount phen
 Item("Yao_Jun_Card") { OnEquip: AddStat(AddFlee, 15); AddStat(AddCrit, 1); }
 Item("Phendark_Card") { OnEquip: } //sp from human kills
-Item("Evil_Snake_Lord_Card") { OnValidate: return false; OnEquip: }
+Item("Evil_Snake_Lord_Card") { OnEquip: AddStat(ResistBlindStatus, 100); AddStat(ResistCurseStatus, 100); AddStat(AddInt, 3); }
 Item("Heater_Card") { OnEquip: AddStat(AddCrit, 3); } //should add 3 perfect dodge for swordsman
 Item("Waste_Stove_Card") { OnEquip: AddStat(AddAttackPower, 5); AddStat(AddInt, 1); }
 Item("Venomous_Card") { OnEquip: AddStat(WhenAttackedPoison, 30); }

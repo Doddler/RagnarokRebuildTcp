@@ -31,6 +31,11 @@ public class PacketNpcRefineSubmit : IClientPacketHandler
         var result = EquipmentRefineSystem.AttemptRefineItem(player, ref targetItem, oreId, catalystId);
         if (result == RefineSuccessResult.FailedIncorrectRequirements)
             goto OnError;
+        if (result == RefineSuccessResult.FailedCatalystMismatch)
+        {
+            CommandBuilder.ErrorMessage(player, $"Failed to refine, the selected catalyst is incompatible.");
+            return;
+        }
         
         var isEquipped = player.Equipment.IsItemEquipped(bagId);
         if(isEquipped)
@@ -45,13 +50,18 @@ public class PacketNpcRefineSubmit : IClientPacketHandler
 
         CommandBuilder.ClearRecipients();
 
-        player.Inventory.UpdateUniqueItemReference(bagId, targetItem.UniqueItem);
-        CommandBuilder.PlayerUpdateInventoryItemState(player, bagId, targetItem.UniqueItem);
         CommandBuilder.SendUpdateZeny(player);
-        if (isEquipped)
+
+        if (result == RefineSuccessResult.Success || result == RefineSuccessResult.FailedWithLevelDown)
         {
-            player.Equipment.EquipItem(bagId);
-            player.UpdateStats(false);
+            player.Inventory.UpdateUniqueItemReference(bagId, targetItem.UniqueItem);
+            CommandBuilder.PlayerUpdateInventoryItemState(player, bagId, targetItem.UniqueItem);
+
+            if (isEquipped)
+            {
+                player.Equipment.EquipItem(bagId);
+                player.UpdateStats(false);
+            }
         }
 
         return;

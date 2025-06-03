@@ -3,6 +3,7 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.Networking;
+using Wintellect.PowerCollections;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.EntityComponents.Character;
@@ -12,13 +13,15 @@ public enum RefineSuccessResult
     Success,
     FailedWithLevelDown,
     FailedNoChange,
-    FailedIncorrectRequirements
+    FailedIncorrectRequirements,
+    FailedCatalystMismatch
 }
 
 public static class EquipmentRefineSystem
 {
     private static int[] refineCosts = [200, 1000, 5000, 20000, 2000];
     private static int[] itemForUpgrade = [1010, 1011, 984, 984, 985];
+    private static int catalystBonus = 10;
 
     public static RefineSuccessResult AttemptRefineItem(Player player, ref ItemReference item, int ore, int catalyst)
     {
@@ -51,14 +54,36 @@ public static class EquipmentRefineSystem
         if (ore != requiredOre || player.GetZeny() < requiredZeny || !player.TryRemoveItemFromInventory(requiredOre, 1, true))
             return RefineSuccessResult.FailedIncorrectRequirements;
 
-        player.DropZeny(requiredZeny);
-
         var successRate = DataManager.GetRefineSuccessForItem(rank, item.UniqueItem.Refine);
+        var forceSafe = false;
+
+        if (catalyst > 0)
+        {
+            inventory.GetItem(catalyst, out var catalystItem);
+            if (catalystItem.Id != item.Id || catalystItem.Type != ItemType.UniqueItem || catalystItem.UniqueItem.Refine > 0)
+                return RefineSuccessResult.FailedCatalystMismatch;
+            for(var i = 0; i < 4; i++)
+                if (catalystItem.UniqueItem.SlotData(i) > 0)
+                    return RefineSuccessResult.FailedCatalystMismatch;
+
+            if (!inventory.RemoveUniqueItem(catalyst))
+                return RefineSuccessResult.FailedCatalystMismatch;
+
+            CommandBuilder.RemoveItemFromInventory(player, catalyst, 1, true);
+
+            successRate += catalystBonus;
+            forceSafe = true;
+        }
+
+        player.DropZeny(requiredZeny);
         
         if (successRate < 100)
         {
             if (GameRandom.Next(0, 100) > successRate)
             {
+                if (forceSafe)
+                    return RefineSuccessResult.FailedNoChange;
+
                 item.UniqueItem.Refine -= 1;
                 return RefineSuccessResult.FailedWithLevelDown;
             }

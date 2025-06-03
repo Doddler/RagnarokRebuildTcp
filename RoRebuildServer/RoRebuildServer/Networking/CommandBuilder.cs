@@ -1359,13 +1359,15 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
-    public static void RemoveItemFromInventory(Player p, int bagId, int change)
+    public static void RemoveItemFromInventory(Player p, int bagId, int change, bool notifyUser = false)
     {
         var packet = NetworkManager.StartPacket(PacketType.AddOrRemoveInventoryItem, 24);
         packet.Write(false); //isAdd
         packet.Write(bagId);
         packet.Write((short)change);
         packet.Write(p.Inventory?.BagWeight ?? 0);
+        packet.Write(notifyUser);
+
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

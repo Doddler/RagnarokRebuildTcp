@@ -27,7 +27,8 @@ MDEF +5
 MDEF +5
 
 ::Memory_Book //id 2109 - Shield 
-<color=#808080>A magic spellbook that is so large it can be used as a shield.</color>
+<desc>A magic spellbook that is so large it can be used as a shield.</desc>
+INT +1, MDEF +2
 
 ::Holy_Guard //id 2110 - Shield 
 <desc>A blessed guard engraved with God's symbol.</desc>
@@ -111,6 +112,7 @@ SP Consumption +10%
 ::Magic_Bible_Vol1 //id 2131 - Shield 
 <desc>A massive book known as "the spellcasting bible".</desc>
 INT +2, MDEF +3
++10% chance of <color=#800000>Stun</color> on receive physical damage
 
 ::Tournament_Shield //id 2133 - Shield 
 <desc>A shield used in jousting tournaments, best used with a spear.</desc>

@@ -31,7 +31,21 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 var bagId = msg.ReadInt32();
                 var change = (int)msg.ReadInt16();
                 State.CurrentWeight = msg.ReadInt32();
+                
+                if(msg.ReadBoolean())
+                {
+                    var item = State.Inventory.GetInventoryItem(bagId);
+                    if(item.Type == ItemType.UniqueItem)
+                        Camera.AppendChatText($"<color=#ed0000>You lost {item.ProperName()}.</color>");
+                    else
+                        Camera.AppendChatText($"<color=#ed0000>You lost {change}x {item.ProperName()}.</color>");
+                        
+                }
+                
                 State.Inventory.RemoveItem(bagId, change);
+                
+                
+                //if(msg.ReadBoolean())
                 // Debug.Log($"Removed {change} of item with a bag Id {bagId} (weight changed {State.CurrentWeight - oldWeight} to {State.CurrentWeight})");
             }
 

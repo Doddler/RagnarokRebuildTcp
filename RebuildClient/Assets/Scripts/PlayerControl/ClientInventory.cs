@@ -271,6 +271,32 @@ namespace Assets.Scripts.PlayerControl
             inventoryLookup[item.BagSlotId] = item;
         }
 
+        public bool TryFindCatalystCapableItem(int baseId, int ignoreBagId, out InventoryItem catalyst)
+        {
+            foreach (var (_, item) in inventoryLookup)
+            {
+                if (!item.ItemData.IsUnique || item.Id != baseId || item.BagSlotId == ignoreBagId)
+                    continue;
+
+                if (item.UniqueItem.Refine > 0)
+                    continue;
+
+                var isSocketed = false;
+                for(var i = 0; i < 4; i++)
+                    if (item.UniqueItem.SlotData(i) > 0)
+                        isSocketed = true;
+                
+                if (isSocketed)
+                    continue;
+
+                catalyst = item;
+                return true;
+            }
+            
+            catalyst = default;
+            return false;
+        }
+
         public void ReplaceUniqueItem(int bagId, UniqueItem item)
         {
             if (!inventoryLookup.TryGetValue(bagId, out var curItem))
