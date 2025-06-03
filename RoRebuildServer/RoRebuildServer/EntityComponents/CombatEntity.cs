@@ -1560,7 +1560,7 @@ public partial class CombatEntity : IEntityAutoReset
             flags |= AttackFlags.CanCrit;
 
         var di = CalculateCombatResult(target, 1f, 1, flags);
-        if (di.Result != AttackResult.CriticalDamage && Character.Type == CharacterType.Player)
+        if (Character.Type == CharacterType.Player)
         {
             var doubleChance = GetStat(CharacterStat.DoubleAttackChance);
             if (doubleChance > 0 && GameRandom.Next(0, 100) <= doubleChance)
