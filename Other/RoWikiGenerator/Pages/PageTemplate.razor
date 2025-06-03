@@ -1,0 +1,116 @@
+﻿@inherits LayoutComponentBase
+
+@code
+{
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Content { get; set; }
+}
+
+<html>
+<head>
+
+    <title>Ragnarok Rebuild - @Title</title>
+
+    <!--SCRIPT-->
+
+</head>
+
+<link rel="stylesheet" type="text/css" href="rebuildinfo.css" />
+
+<body>
+    <table class="maintb" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
+        <tr>
+            @* <td width=130 style="min-width=130;" class="top">
+
+                <div id="topic-main">
+
+                    <b>RO Renewal</b>:<br> Ragnarok Online<br>Renewal Project
+                </div>
+
+                <div id="topic">
+                    <h2 class="topicheader">Client</h2>
+                    <div class="content">
+                        <ul>
+                            <li class="sidebar"><a href="./">Play in browser</a></li>
+                            <li class="sidebar">PC Client</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="topic">
+                    <h2 class="topicheader">Jobs</h2>
+                    <div class="content">
+                        <ul>
+                            <li class="sidebar"><a href="./">Novice</a></li>
+                            <li class="sidebar"><a href="./">Swordsman</a></li>
+                            <li class="sidebar"><a href="./">Mage</a></li>
+                            <li class="sidebar"><a href="./">Archer</a></li>
+                            <li class="sidebar"><a href="./">Thief</a></li>
+                            <li class="sidebar"><a href="./">Acolyte</a></li>
+                            <li class="sidebar"><a href="./">Merchant</a></li>
+                            <li class="sidebar">Items</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="topic">
+                    <h2 class="topicheader">World</h2>
+                    <div class="content">
+                        <ul>
+
+                            <li class="sidebar"><a href="./">Maps</a></li>
+                            <li class="sidebar"><a href="./">Monsters</a></li>
+                            <!--<li class="sidebar"><a href="./">Merchants</a></li>-->
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="topic">
+                    <h2 class="topicheader">Items</h2>
+                    <div class="content">
+                        <ul>
+                            <li class="sidebar"><a href="./">Weapons</a></li>
+                            <li class="sidebar"><a href="./">Equipment</a></li>
+                            <li class="sidebar"><a href="./">Cards</a></li>
+                            <li class="sidebar"><a href="./">Consumables</a></li>
+                            <li class="sidebar"><a href="./">Etc Items</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="topic">
+                    <h2 class="topicheader">Other Info</h2>
+                    <div class="content">
+                        <ul>
+                            <li class="sidebar"><a href="./">Player Stats</a></li>
+                            <li class="sidebar"><a href="./">Status Effects</a></li>
+                            <li class="sidebar"><a href="./">Monster Skills</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div id="topic">
+                    <h2 class="topicheader">Links</h2>
+                    <div class="content">
+                        <ul>
+                            <li class="sidebar"><a href=https://github.com/Doddler/RagnarokRebuildTcp>Project GitHub</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <img src=http://ro.doddlercon.com/db/images/block.png height=1 width=130 />
+            </td> *@
+            <td width=100% class="top">
+                <div id="container" />
+                <div id="topic">
+                    <H3>@Title</H3>
+
+                    @((MarkupString)Content)
+                </div>
+            </td>
+
+
+        </tr>
+    </table>
+</body>
+</html>
