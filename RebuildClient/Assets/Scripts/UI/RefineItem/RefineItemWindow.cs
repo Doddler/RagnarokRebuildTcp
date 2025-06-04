@@ -20,8 +20,9 @@ namespace Assets.Scripts.UI.RefineItem
         public TextMeshProUGUI SuccessRateText;
         public Toggle AutoCatalyst;
 
-        private static int[] costForType = {200, 1000, 5000, 20000, 2000};
-        private static int[] overUpgradeRate = {80,60,30,20,20,20,10};
+        private static int[] costForType = {200, 1000, 5000, 10000, 2000};
+        private static int[] costForTypeWithCatalyst = {300, 1500, 7500, 15000, 3000};
+        private static int[] overUpgradeRate = {80,60,40,30,20,10,10};
         private static int[] unsafePoint = { 7, 6, 5, 4, 4 };
         private static int[] itemForUpgrade = { 1010, 1011, 984, 984, 985 };
         private static int catalystBonus = 10;
@@ -241,7 +242,7 @@ namespace Assets.Scripts.UI.RefineItem
             //     return;
             // }
 
-            var cost = costForType[itemRank];
+            var cost = AutoCatalyst.isOn ? costForTypeWithCatalyst[itemRank] : costForType[itemRank];
             var curUpgrade = (int)targetItem.UniqueItem.Refine;
 
             if (curUpgrade >= 10)

@@ -19,7 +19,8 @@ public enum RefineSuccessResult
 
 public static class EquipmentRefineSystem
 {
-    private static int[] refineCosts = [200, 1000, 5000, 20000, 2000];
+    private static int[] refineCosts = [200, 1000, 5000, 10000, 2000];
+    private static int[] refineCostsWithCatalyst = [300, 1500, 7500, 15000, 3000];
     private static int[] itemForUpgrade = [1010, 1011, 984, 984, 985];
     private static int catalystBonus = 10;
 
@@ -49,7 +50,7 @@ public static class EquipmentRefineSystem
             return RefineSuccessResult.FailedIncorrectRequirements;
 
         var requiredOre = itemForUpgrade[rank];
-        var requiredZeny = refineCosts[rank];
+        var requiredZeny = catalyst == 0 ? refineCosts[rank] : refineCostsWithCatalyst[rank];
 
         if (ore != requiredOre || player.GetZeny() < requiredZeny || !player.TryRemoveItemFromInventory(requiredOre, 1, true))
             return RefineSuccessResult.FailedIncorrectRequirements;
