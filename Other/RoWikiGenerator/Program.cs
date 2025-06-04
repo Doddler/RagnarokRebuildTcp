@@ -16,6 +16,7 @@ using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
+using RoWikiGenerator.Generators;
 using RoWikiGenerator.Pages;
 
 namespace RoWikiGenerator;
@@ -44,7 +45,7 @@ public class Program
     //    }
     //}
 
-    public static async Task<string> RenderMonsters(MonsterModel model)
+    public static async Task<string> RenderPage<TModel, TPage>(TModel model) where TPage : IComponent
     {
         var htmlRenderer = GetRenderer();
 
@@ -56,7 +57,7 @@ public class Program
             };
 
             var parameters = ParameterView.FromDictionary(dictionary);
-            var output = await htmlRenderer.RenderComponentAsync<RebuildMonsters>(parameters);
+            var output = await htmlRenderer.RenderComponentAsync<TPage>(parameters);
             return output.ToHtmlString();
         });
 
@@ -101,89 +102,62 @@ public class Program
         loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
     }
 
-    public class MonsterModel
-    {
-        public Dictionary<int, List<(string map, MapSpawnRule spawn)>> monsterMapSpawns;
-        public Dictionary<string, string> sharedIcons;
-        public List<MonsterDatabaseInfo> monsters;
-    }
-
     static async Task Main(string[] args)
     {
-        ServerLogger.Log("Ragnarok Rebuild Zone Server, starting up!");
+        //ServerLogger.Log("Ragnarok Rebuild Zone Server, starting up!");
+        AppSettings.LoadConfigFromServerPath();
+        DataManager.Initialize(true);
+        WikiData.LoadData();
 
         //FixName();
         //DistanceCache.Init();
         //RoDatabase.Initialize();
 
-        var sharedIcons = new Dictionary<string, string>();
-
-        foreach (var l in File.ReadAllLines(
-                     @"../../../../../RebuildClient/Assets/Data/SharedItemIcons.txt"))
-        {
-            var s = l.Split('\t');
-            sharedIcons.Add(s[0], s[1]);
-        }
-
         //var cfg = ServerConfig.GetConfig();
 
-        Console.WriteLine($"Min spawn time: {ServerConfig.DebugConfig.MinSpawnTime}");
-        Console.WriteLine($"Max spawn time: {ServerConfig.DebugConfig.MaxSpawnTime}");
+        var iconPath = Path.Combine(AppSettings.ClientProjectPath, "Assets\\Sprites\\Imported\\Icons\\Sprites");
+        var iconDest = Path.Combine(AppSettings.TargetPath, "images\\rebuilditems");
+        if (!Directory.Exists(iconDest))
+            Directory.CreateDirectory(iconDest);
 
-        DataManager.Initialize(true);
-
-        SetUpServiceProvider();
-
-
-        var monsterMapSpawns = new Dictionary<int, List<(string map, MapSpawnRule spawn)>>();
-
-        foreach (var map in DataManager.Maps)
+        foreach (var icon in Directory.GetFiles(iconPath, "*.png"))
         {
-            var spawns = new WikiSpawnConfig();
-            if (!DataManager.MapConfigs.TryGetValue(map.Code, out var loader))
+            var fName = Path.GetFileName(icon);
+            var destName = Path.Combine(iconDest, fName);
+            if (File.Exists(destName))
                 continue;
-            if (!DataManager.InstanceList.Any(i => i.Maps.Contains(map.Code)))
-                continue;
 
-            loader(spawns);
-            foreach (var spawn in spawns.SpawnRules)
-            {
-                if (!monsterMapSpawns.TryGetValue(spawn.MonsterDatabaseInfo.Id, out var monList))
-                {
-                    monList = new List<(string map, MapSpawnRule spawn)>();
-                    monsterMapSpawns.Add(spawn.MonsterDatabaseInfo.Id, monList);
-                }
-
-                var existing = monList.FirstOrDefault(m =>
-                    m.spawn.MonsterDatabaseInfo.Id == spawn.MonsterDatabaseInfo.Id && m.map == map.Code
-                    && m.spawn.MinSpawnTime == spawn.MinSpawnTime && m.spawn.MaxSpawnTime == spawn.MaxSpawnTime);
-
-                if (existing.spawn != null)
-                    existing.spawn.Count += spawn.Count;
-                else
-                    monList.Add((map.Code, spawn));
-            }
+            File.Copy(icon, destName);
         }
 
-        var monsters = DataManager.MonsterIdLookup.Select(m => m.Value)
-            //.OrderBy(m => m.Level).ThenBy(m => m.Name).ToList();
-            .OrderBy(m => m.Id).ToList();
+        ServerLogger.Log($"Min spawn time: {ServerConfig.DebugConfig.MinSpawnTime}");
+        ServerLogger.Log($"Max spawn time: {ServerConfig.DebugConfig.MaxSpawnTime}");
+        
+        SetUpServiceProvider();
 
-        var model = new MonsterModel()
-        {
-            monsterMapSpawns = monsterMapSpawns,
-            sharedIcons = sharedIcons,
-            monsters = monsters
-        };
+        //monsters
+        var content = await InsertContentIntoTemplate(await Monsters.RenderMonsterPage(), "Ragnarok Renewal Monsters");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildmonsters.html"), content);
 
-        var monstersText = await RenderMonsters(model);
-        var content = await InsertContentIntoTemplate(monstersText, "Ragnarok Renewal Monsters");
-
-        await File.WriteAllTextAsync(@"../../../rebuildmonsters.html", content);
+        //jobs
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(0), "Ragnarok Renewal - Novice");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobNovice.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(1), "Ragnarok Renewal - Swordsman");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobSwordsman.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(3), "Ragnarok Renewal - Mage");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobMage.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(2), "Ragnarok Renewal - Archer");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobArcher.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(5), "Ragnarok Renewal - Thief");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobThief.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(4), "Ragnarok Renewal - Acolyte");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobAcolyte.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(6), "Ragnarok Renewal - Merchant");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobMerchant.html"), content);
 
         //var world = new World();
         //NetworkManager.Init(world);
 
-        Console.WriteLine("Hello, World!");
+        ServerLogger.Log("File generation complete!");
     }
 }

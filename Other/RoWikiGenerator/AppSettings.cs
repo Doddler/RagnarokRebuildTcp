@@ -1,52 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using RoRebuildServer.Data;
 
-namespace RoWikiGenerator
+namespace RoWikiGenerator;
+
+internal static class AppSettings
 {
-    public class AppSettings
+    public static string BasePath;
+    public static string ServerPath;
+    public static string ClientProjectPath;
+    public static string TargetPath;
+
+    public static void LoadConfigFromServerPath()
     {
-        private static AppSettings _appSettings;
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("RoWikiGeneratorSettings.json", optional: false, reloadOnChange: true);
 
-        public string AppConnection { get; set; }
+        IConfigurationRoot configuration = builder.Build();
 
-        public AppSettings(IConfiguration config)
-        {
-            this.AppConnection = config.GetValue<string>("AppConnection");
+        ServerPath = configuration.GetValue<string>("ServerPath");
+        ClientProjectPath = configuration.GetValue<string>("ClientProjectPath");
+        TargetPath = configuration.GetValue<string>("TargetPath");
 
-            // Now set Current
-            _appSettings = this;
-        }
+        if (ServerPath == null)
+            throw new Exception($"You must specify a ConfigPath value in RoWikiGeneratorSettings.json!");
 
-        public static AppSettings Current
-        {
-            get
-            {
-                if (_appSettings == null)
-                {
-                    _appSettings = GetCurrentSettings();
-                }
+        BasePath = AppContext.BaseDirectory;
+        if (BasePath.Contains("bin") && !File.Exists(Path.Combine(ServerPath, "appsettings.json")))
+            BasePath = BasePath.Substring(0, AppContext.BaseDirectory.LastIndexOf("bin", StringComparison.Ordinal));
 
-                return _appSettings;
-            }
-        }
+        ServerPath = Path.Combine(BasePath, ServerPath);
+        ServerPath = Path.GetFullPath(ServerPath);
+        ServerConfig.LoadConfigFromPath(ServerPath);
 
-        public static AppSettings GetCurrentSettings()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
+        ClientProjectPath = Path.Combine(BasePath, ClientProjectPath);
+        ClientProjectPath = Path.GetFullPath(ClientProjectPath);
 
-            IConfigurationRoot configuration = builder.Build();
 
-            var settings = new AppSettings(configuration.GetSection("AppSettings"));
+        TargetPath = Path.Combine(BasePath, TargetPath);
+        TargetPath = Path.GetFullPath(TargetPath);
 
-            return settings;
-        }
+        var dataConfig = ServerConfig.DataConfig;
+        dataConfig.CachePath = Path.GetFullPath(Path.Combine(ServerPath, dataConfig.CachePath));
+        dataConfig.DataPath = Path.GetFullPath(Path.Combine(ServerPath, dataConfig.DataPath));
+        dataConfig.WalkPathData = Path.GetFullPath(Path.Combine(ServerPath, dataConfig.WalkPathData));
     }
-
 }

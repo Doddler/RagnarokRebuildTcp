@@ -434,7 +434,7 @@ SpCost = [10,10,10,10,10,10,10,10,10,10]
 Name = "Weapon Appraisal"
 Icon = "mc_identify"
 Target = "Passive"
-MaxLevel = 1
+MaxLevel = 10
 
 [Mammonite]
 Icon = "mc_mammonite"

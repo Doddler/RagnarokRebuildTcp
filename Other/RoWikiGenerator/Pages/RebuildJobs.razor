@@ -1,0 +1,41 @@
+﻿@using RebuildSharedData.Enum
+@using RoRebuildServer.Data
+@code
+{
+    [Parameter] public Generators.JobModel Model { get; set; }
+}
+
+<div class="contentzone">
+    <H2 class="subheader">Skills</H2>
+    @foreach (var (skill, prereqs) in Model.SkillTree.SkillTree)
+    {
+        var data = DataManager.SkillData[skill];
+
+        if (!WikiData.SkillDesc.TryGetValue(skill, out var skillDesc))
+            skillDesc = "<i>No description</i>";
+
+        var spCost = Model.GetSpCostStringForSkill(data);
+        var prereq = Model.GetPrereqStringForSkill(skill, prereqs);
+        
+        <div class="skillBox">
+
+            <h2 class="skillTitle">
+                <img src="images/rebuilditems/skill_@(data.Icon).png" class="skillTitle" /> @data.Name
+            </h2>
+
+            <div class="skillDesc">
+                <span><b>Max Level: </b> @data.MaxLevel</span><br />
+                <span><b>Prereqs: </b> @prereq</span><br />
+                <span><b>Target: </b> @data.Target</span><br />
+                @if (data.Target != SkillTarget.Passive)
+                {
+                    <span><b>SP Cost: </b> @spCost</span> <br />
+                }
+                @((MarkupString)skillDesc)
+            </div>
+        </div>
+    }
+
+
+    <div style="clear: both;"></div>
+</div>

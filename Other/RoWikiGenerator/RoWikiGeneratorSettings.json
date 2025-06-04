@@ -1,0 +1,5 @@
+{
+  "ServerPath": "../../RoRebuildServer/RoRebuildServer/",
+  "ClientProjectPath": "../../RebuildClient/",
+  "TargetPath": "wwwroot/"
+}

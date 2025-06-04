@@ -25,7 +25,6 @@ Lasts [SkillLevel + 2] hits or [7 + SkillLevel * 3] seconds, whichever ends firs
 
 ::IncreasedHPRecovery
 Increases HP recovery by 5 HP plus 0.2% of your MaxHP per level.
-<i>Currently is combined with your regular HP recovery tick rather than a separate value.</i>
 
 ::MagnumBreak
 Inflicts [100 + SkillLevel * 20]% fire damage to nearby enemies and knocking them back 2 tiles.
@@ -79,7 +78,6 @@ Adds +1 DEX per level.
 
 ::IncreaseSPRecovery
 Increases SP recovery by 3 SP plus 0.2% of your MaxSP per level.
-<i>Currently is combined with your regular SP recovery tick rather than a separate value.</i>
 
 ::FireBolt
 Deals [SkillLevel] hits at 100% fire element magic damage to a single target.
@@ -184,7 +182,7 @@ Returns you to your current save point.
 Strikes hidden and invisible enemies, revealing them and dealing 145% holy magic damage.
 
 ::Pneuma
-Creates cloud that causes all physical attacks performed from 5 or more tiles away to miss. Affects both friend and foe alike.
+Creates cloud that causes all ranged physical attacks to miss. Affects both friend and foe alike.
 Lasts 10 seconds. Cannot overlap another Pneuma or Safety Wall.
 
 ::Angelus
@@ -192,7 +190,7 @@ Buffs all nearby party members increasing soft defense by [SkillLevel * 5]% and 
 Duration: [SkillLevel * 30] seconds.
 
 ::Cure
-Cures blind, silence, and confusion status effects from 1 target.
+Cures blind, silence, and confusion status effects from one target.
 
 ::SignumCrusis
 Permanently lowers the defense of all nearby demons and undead property monsters by -[10 + SkillLevel * 4]%.
@@ -241,7 +239,7 @@ Consumes 1 sp every [1+SkillLevel] seconds.
 Increases your weight capacity by +200 per skill level.
 
 ::Mammonite
-Use the power of greed to spend [SkillLevel * 50] zeny to deal [100 + SkillLevel * 50] damage to a single target.
+Spend money to deal damage. Consumes [SkillLevel * 50] zeny to deal [100 + SkillLevel * 50] damage to a single target.
 Zeny used is affected by your level of Discount.
 
 ::PushCart
@@ -262,3 +260,9 @@ Strikes a target with your cart, dealing [150 + Weight / 60]% damage to all enem
 
 ::ItemAppraisal
 A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by +[SkillLevel * WeaponLevel].
+
+::CrazyUproar
+Psyche yourself up, increasing your STR by 4.
+
+::HammerFall
+Strike the earth with a powerful hammer swing that has a [20 + SkillLvl * 10]% chance to stun enemies in a 5x5 area.

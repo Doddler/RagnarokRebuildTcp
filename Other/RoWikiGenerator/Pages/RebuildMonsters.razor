@@ -4,7 +4,7 @@
 @using RoRebuildServer.Data
 @code
 {
-    [Parameter] public Program.MonsterModel Model { get; set; }
+    [Parameter] public Generators.MonsterModel Model { get; set; }
 
     string TimeSpanToTimeString(TimeSpan time)
     {
@@ -21,7 +21,7 @@
     }
 }
 
-@foreach (var m in Model.monsters)
+@foreach (var m in Model.Monsters)
 {
     if (m.Id < 4000 || m.Id == 5000)
         continue;
@@ -41,8 +41,8 @@
     var special = "";
 
     var sprite = m.Code.ToLower();
-    var magicMin = m.Int + m.Int / 7 * m.Int / 7;
-    var magicMax = m.Int + m.Int / 5 * m.Int / 5;
+    var magicMin = m.Int + (m.Int / 7) * (m.Int / 7);
+    var magicMax = m.Int + (m.Int / 5) * (m.Int / 5);
     if (magicMin < m.AtkMin / 6)
         magicMin = m.AtkMin / 6;
     if (magicMax < m.AtkMax / 6)
@@ -94,7 +94,7 @@
                             var item = DataManager.ItemList[drop.Id];
                             var countStr = "";
                             var itemSprite = item.Name.Replace(" ", "_");
-                            if (@Model.sharedIcons.TryGetValue(itemSprite, out var copy))
+                            if (@Model.SharedIcons.TryGetValue(itemSprite, out var copy))
                                 itemSprite = copy;
                             if (item.ItemClass == ItemClass.Card)
                                 itemSprite = "card";
@@ -123,7 +123,7 @@
                 <H2 class="subheader">Spawns</H2>
                 <table>
 
-                    @if (Model.monsterMapSpawns.TryGetValue(m.Id, out var spawn))
+                    @if (Model.MonsterMapSpawns.TryGetValue(m.Id, out var spawn))
                     {
                         var s = spawn.OrderByDescending(e => e.spawn.Count);
                         foreach (var (mapCode, mapSpawn) in spawn)

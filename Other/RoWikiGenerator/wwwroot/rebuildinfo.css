@@ -49,6 +49,10 @@ h3 {
   font-variant: small-caps;
 }
 
+h2{
+	padding: 0.25em;
+}
+
 ol { 
   list-style-type: decimal; 
 }
@@ -150,6 +154,7 @@ td.top {
   background: url("images/th.png");
   background-repeat: repeat-x;
   color: #fff;
+  padding: 0.2em;
 }
 
 #topic h2.topicheader {
@@ -265,4 +270,29 @@ table.rochart {
 
 table.rochart td { 
 	border: 1px #333 solid;
+}
+
+.contentzone {
+	padding: 5px;
+}
+
+.flex-grid {
+	display: flex;
+}
+
+.skillBox {
+	float: left;
+	border: 1px solid #999;
+	width: 330px;
+	margin: 5px;
+}
+
+.skillTitle {
+	background: url("images/th.png");
+	color: white;
+	vertical-align: middle;
+}
+
+.skillDesc {
+	padding: 0px 5px 5px 5px;
 }

@@ -1,0 +1,77 @@
+﻿using RoRebuildServer.Data;
+using RoRebuildServer.Data.Map;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RoWikiGenerator.Pages;
+using static RoWikiGenerator.Program;
+using RoRebuildServer.Data.Monster;
+
+namespace RoWikiGenerator.Generators;
+
+public class MonsterModel
+{
+    public required Dictionary<int, List<(string map, MapSpawnRule spawn)>> MonsterMapSpawns;
+    public required Dictionary<string, string> SharedIcons;
+    public required List<MonsterDatabaseInfo> Monsters;
+}
+
+internal static class Monsters
+{
+    public static async Task<string> RenderMonsterPage()
+    {
+
+        var sharedIcons = new Dictionary<string, string>();
+
+        foreach (var l in File.ReadAllLines(Path.Combine(AppSettings.ClientProjectPath, "Assets/Data/SharedItemIcons.txt")))
+        {
+            var s = l.Split('\t');
+            sharedIcons.Add(s[0], s[1]);
+        }
+
+        var monsterMapSpawns = new Dictionary<int, List<(string map, MapSpawnRule spawn)>>();
+
+        foreach (var map in DataManager.Maps)
+        {
+            var spawns = new WikiSpawnConfig();
+            if (!DataManager.MapConfigs.TryGetValue(map.Code, out var loader))
+                continue;
+            if (!DataManager.InstanceList.Any(i => i.Maps.Contains(map.Code)))
+                continue;
+
+            loader(spawns);
+            foreach (var spawn in spawns.SpawnRules)
+            {
+                if (!monsterMapSpawns.TryGetValue(spawn.MonsterDatabaseInfo.Id, out var monList))
+                {
+                    monList = new List<(string map, MapSpawnRule spawn)>();
+                    monsterMapSpawns.Add(spawn.MonsterDatabaseInfo.Id, monList);
+                }
+
+                var existing = monList.FirstOrDefault(m =>
+                    m.spawn.MonsterDatabaseInfo.Id == spawn.MonsterDatabaseInfo.Id && m.map == map.Code
+                    && m.spawn.MinSpawnTime == spawn.MinSpawnTime && m.spawn.MaxSpawnTime == spawn.MaxSpawnTime);
+
+                if (existing.spawn != null)
+                    existing.spawn.Count += spawn.Count;
+                else
+                    monList.Add((map.Code, spawn));
+            }
+        }
+
+        var monsters = DataManager.MonsterIdLookup.Select(m => m.Value)
+            //.OrderBy(m => m.Level).ThenBy(m => m.Name).ToList();
+            .OrderBy(m => m.Id).ToList();
+
+        var model = new MonsterModel()
+        {
+            MonsterMapSpawns = monsterMapSpawns,
+            SharedIcons = sharedIcons,
+            Monsters = monsters
+        };
+
+        return await RenderPage<MonsterModel, RebuildMonsters>(model);
+    }
+}

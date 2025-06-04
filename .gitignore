@@ -70,7 +70,10 @@ Other/Old2024-12-03/
 Other/Backup/
 Other/RoWikiGenerator/bin/
 Other/RoWikiGenerator/obj/
-Other/RoWikiGenerator/images/
+Other/RoWikiGenerator/wwwroot/images/rebuildmonsters/
+Other/RoWikiGenerator/wwwroot/images/rebuilditems/
+Other/RoWikiGenerator/wwwroot/images/monsters/
+Other/RoWikiGenerator/wwwroot/images/maps/
 Other/RoDatabasePokingTool/
 RebuildClient/Packages/
 *.db
