@@ -6,12 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RoRebuildServer.Simulation;
 
 namespace RoWikiGenerator
 {
     internal class WikiData
     {
         public static Dictionary<CharacterSkill, string> SkillDesc;
+        public static World World;
 
         private static void LoadSkillDescriptions()
         {

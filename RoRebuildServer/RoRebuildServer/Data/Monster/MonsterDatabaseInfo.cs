@@ -35,4 +35,5 @@ public class MonsterDatabaseInfo
     public CharacterSpecialType Special { get; set; }
     public List<MonsterSpawnMinions>? Minions { get; set; }
     public float MoveSpeed { get; set; }
+    public HashSet<int>? Tags { get; set; }
 }

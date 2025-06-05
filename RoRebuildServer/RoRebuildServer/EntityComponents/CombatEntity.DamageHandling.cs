@@ -278,6 +278,20 @@ public partial class CombatEntity
 
             if (attackerType == CharacterType.Player && isPhysical) //only players and physical attacks get these bonuses
             {
+                //damage vs tag
+                if (defenderType == CharacterType.Monster)
+                {
+                    var m = target.Character.Monster;
+                    if (m.MonsterBase.Tags != null && Player.AttackVersusTag != null && Player.AttackVersusTag.Count > 0)
+                    {
+                        foreach (var (tag, val) in Player.AttackVersusTag)
+                        {
+                            if (m.MonsterBase.Tags.Contains(tag))
+                                attackMultiplier *= 1 + (val / 100f);
+                        }
+                    }
+                }
+
                 racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
 
                 //masteries, demonbane, etc

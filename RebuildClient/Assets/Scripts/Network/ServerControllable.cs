@@ -1476,21 +1476,24 @@ namespace Assets.Scripts.Network
                 }
             }
 
-            if (weaponClass >= 0)
+            if (msg.Value4 >= 0)
             {
-                var hitSound = ClientDataLoader.Instance.GetHitSoundForWeapon(weaponClass);
-                AudioManager.Instance.OneShotSoundEffect(Id, hitSound, transform.position, 1f);
-            }
-            else
-            {
-                var sound = Random.Range(0, 4) switch
+                if (weaponClass >= 0)
                 {
-                    0 => "_enemy_hit_normal1.ogg",
-                    1 => "_enemy_hit_normal2.ogg",
-                    2 => "_enemy_hit_normal3.ogg",
-                    _ => "_enemy_hit_normal4.ogg"
-                };
-                AudioManager.Instance.OneShotSoundEffect(Id, sound, transform.position, 0.8f);
+                    var hitSound = ClientDataLoader.Instance.GetHitSoundForWeapon(weaponClass);
+                    AudioManager.Instance.OneShotSoundEffect(Id, hitSound, transform.position, 1f);
+                }
+                else
+                {
+                    var sound = Random.Range(0, 4) switch
+                    {
+                        0 => "_enemy_hit_normal1.ogg",
+                        1 => "_enemy_hit_normal2.ogg",
+                        2 => "_enemy_hit_normal3.ogg",
+                        _ => "_enemy_hit_normal4.ogg"
+                    };
+                    AudioManager.Instance.OneShotSoundEffect(Id, sound, transform.position, 0.8f);
+                }
             }
 
             if (msg.Value3 > 0)

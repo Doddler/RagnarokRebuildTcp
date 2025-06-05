@@ -42,4 +42,5 @@ public class CsvMonsterData
     public float ClientShadow { get; set; }
     public float ClientSize { get; set; }
     public string Color { get; set; }
+    public string Tags { get; set; }
 }

@@ -115,7 +115,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 if (dmg > 0)
                 {
                     var dmgSound = ClientSkillHandler.SkillTakesWeaponSound(skill);
-                    controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage, dmgSound);
+                    controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage, dmgSound, result.Skill != CharacterSkill.Smoking);
                 }
 
                 //StartCoroutine(DamageEvent(dmg, damageTiming, hits, weaponClass, controllable2));

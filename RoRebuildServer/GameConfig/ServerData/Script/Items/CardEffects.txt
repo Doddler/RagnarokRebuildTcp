@@ -58,6 +58,7 @@ Item("Dustiness_Card") { OnEquip: AddStat(AddResistElementWind, 30); AddStat(Add
 Item("Metaller_Card") { OnEquip: AddStat(OnMeleeAttackSilence, 50); AddStat(OnRangedAttackSilence, 50); AddStat(AddAttackPower, 5); }
 Item("Thara_Frog_Card") { OnEquip: AddStat(AddResistRaceDemihuman, 30); }
 Item("Soldier_Andre_Card") { OnEquip: AddStat(AddResistRacePlant, 30); }
+Item("Mature_Ant_Egg_Card") { OnEquip: AddDamageVsTag("Ant", 30); }
 Item("Goblin_Card") { OnEquip: AddStat(AddAttackRaceBeast, 20); }
 Item("Cornutus_Card") { OnEquip: AddStat(AddDef, 1); } //make armor unbreakable
 Item("Anaconda_Card") { OnEquip: AddStat(AddAttackElementPoison, 20); }
@@ -179,7 +180,7 @@ Item("Gajomart_Card") { OnEquip: AddStat(AddExpRacePlant, 10); AddStat(AddResist
 Item("Galapago_Card") { OnEquip: } //add 3% chance to get apple, banana, or carrot juice when killing insects, and boosts healing fo those items by 50%
 Item("Crab_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add 30% bonus damage against aster, adn 30% chance to get sashimi when killing fish
 Item("Dumpling_Kid_Card") { OnValidate: return false; OnEquip: }
-Item("Goblin_Leader_Card") { OnEquip: } //should add 30% damage to all goblins
+Item("Goblin_Leader_Card") { OnEquip: AddDamageVsTag("Goblin", 30); } //should add 30% damage to all goblins
 Item("Goblin_Steamrider_Card") { OnEquip: AddStat(AddCritDamage, 10); AddStat(AddCritChanceRaceFormless, 7); }
 Item("Goblin_Archer_Card") { OnEquip: AddStat(AddCritDamage, 10); AddStat(AddCritChanceRaceUndead, 7); }
 Item("Sky_Deleter_Card") { OnValidate: return false; OnEquip: }
@@ -218,7 +219,7 @@ Item("Driller_Card") { OnEquip: } //should add sp 5 sp recovery when killing dra
 Item("Disguise_Card") { OnEquip: AddStat(WhenAttackedSilence, 30); } //some silence shenanigans
 Item("Diabolic_Card") { OnEquip: } //should add sp 5 sp recovery when killing demon
 Item("Vagabond_Wolf_Card") { OnEquip: AddStat(AddStr, 1); } //should combo with wolf card
-Item("Lava_Golem_Card") { OnEquip: } //should add 30% damage vs golem
+Item("Lava_Golem_Card") { OnEquip: AddDamageVsTag("Golem", 30); } //should add 30% damage vs golem
 Item("Rideword_Card") { OnEquip: AddStat(AddInt, 1); } //should add 1 int 1 mdef for acolytes
 Item("Raggler_Card") { OnEquip: AddStat(AddStr, 1); AddStat(AddVit, 1);}
 Item("Raydric_Archer_Card") { OnEquip: } //should add chance to get box of grudge when killin demon
@@ -289,7 +290,7 @@ Item("Elder_Card") { OnEquip: } //+40% damage to woe monsters
 Item("Alligator_Card") { OnEquip: AddStat(AddResistRangedAttack, 5); }
 Item("Alice_Card") { OnEquip: AddStat(AddResistSpecialNormal, -40); AddStat(AddResistSpecialBoss, 40); }
 Item("Tyrfing_Card") { OnEquip: AddStat(AddResistMidSize, 25); AddStat(AddDef, 1); }
-Item("Orc_Lady_Card") { OnEquip: } //+30% damage against orcs
+Item("Orc_Lady_Card") { OnEquip: AddDamageVsTag("Orc", 30); } //+30% damage against orcs
 Item("Orc_Archer_Card") { OnEquip: } //add panting box when killing human mobs
 Item("Wild_Rose_Card") { OnEquip: AddStat(AddAgi, 1); } //should add 5 perfect dodge for thieves
 Item("Evil_Nymph_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddMaxSp, 50); }
@@ -325,7 +326,7 @@ Item("Kappa_Card") { OnEquip: if(Refine < 6) {AddStat(AddMDef, 8);} }
 Item("Carat_Card") { OnEquip: AddStat(AddInt, 2); if(Refine > 8) {AddStat(AddMaxSp, 150);}  }
 Item("Caterpillar_Card") { OnValidate: return false; OnEquip: }
 Item("Cat_O'_Nine_Tails_Card") { OnEquip: AddStat(AddMDef, 3); } //add 5% magic reflect
-Item("Kobold_Leader_Card") { OnEquip: } //+30% damage vs kobolds
+Item("Kobold_Leader_Card") { OnEquip: AddDamageVsTag("Kobold", 30); } //+30% damage vs kobolds
 Item("Kobold_Archer_Card") { OnEquip: AddStat(AddCritDamage, 10); } //+7% crit vs plant
 Item("Cookie_Card") { OnEquip: AddStat(AddLuk, 2); } //+10% damage with holy light
 Item("Quve_Card") { OnValidate: return false; OnEquip: } //autospell inc agi for novices

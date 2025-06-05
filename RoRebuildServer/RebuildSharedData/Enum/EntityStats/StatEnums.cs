@@ -313,6 +313,7 @@ public enum CharacterStat
     SkillValue, //used to store skill unlocks in ItemEquipState
     AutoSpellOnAttacking,
     AutoSpellWhenAttacked,
+    DamageVsTag,
     NoEffect,
     CharacterStatsMax,
 }

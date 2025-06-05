@@ -76,8 +76,8 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4073,PIERE,Piere,21,837,13,16,20,27,16,7,80,97,1,11,2,281,223,10,12,Small,Insect,Earth1,1288,576,288,200,Normal,AiLooterAssist,144,piere.spr,0,0.5,1,#FFFFFFFF,Ant
 4074,VITATA,Vitata,26,1188,11,49,21,32,12,26,49,60,1,10,10,599,449,10,12,Small,Insect,Earth1,1768,384,768,300,Normal,AiPassiveSense,576,vitata.spr,0,0.5,1,#FFFFFFFF,Ant
 4075,GIEARTH,Giearth,36,2770,29,42,29,47,23,50,149,182,1,12,37,1311,866,10,12,Small,Demon,Earth1,1848,432,1296,200,Normal,AiPassiveSense,480,giearth.spr,0,0.5,1,#FFFFFFFF,
-4076,MAYA,Maya,52,99706,52,86,43,75,55,33,492,709,1,46,19,44072,33094,10,12,Large,Insect,Earth4,364,480,1000,100,Boss,AiStandardBoss,624,maya.spr,0,0.5,1,#FFFFFFFF,Ant
-4077,MAYA_PUPLE,Maya Puple,38,17987,35,59,30,54,39,16,283,384,2,32,13,5350,3907,10,12,Large,Insect,Earth4,1024,480,1000,100,Boss,AiStandardBoss,624,maya_puple.spr,0,1,0.8,#FFFFFFFF,Ant
+4076,MAYA,Maya,56,107095,56,89,46,80,56,35,554,797,1,47,19,53719,40338,10,12,Large,Insect,Earth4,364,480,1000,100,Boss,AiStandardBoss,624,maya.spr,0,0.5,1,#FFFFFFFF,Ant
+4077,MAYA_PUPLE,Maya Puple,42,20291,39,63,33,59,41,25,310,419,2,36,15,7957,5807,10,12,Large,Insect,Earth4,1024,480,1000,100,Boss,AiStandardBoss,624,maya_puple.spr,0,1,0.8,#FFFFFFFF,Ant
 4078,GOLEM,Golem,35,4243,34,1,30,34,13,1,152,185,1,28,0,1232,660,10,12,Large,Formless,Neutral3,1608,396,816,300,Normal,AiPassiveSense,576,golem.spr,0,1,1,#FFFFFFFF,Golem
 4079,MUKA,Muka,17,763,9,13,15,17,8,8,39,48,1,7,6,150,92,10,12,Large,Plant,Earth1,1960,384,960,300,Normal,AiPassive,480,muka.spr,0,0.5,1,#FFFFFFFF,
 4080,ANT_EGG,Ant Egg,12,742,5,15,18,6,3,1,2,3,0,20,19,62,53,10,12,Small,Formless,Neutral3,1001,1,1,1000,Normal,AiPlant,672,ant_egg.spr,0,-1,1,#FFFFFFFF,Ant

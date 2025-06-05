@@ -11,15 +11,17 @@ public interface INpcLoader
     public void Load();
 }
 
+
+
 public class NpcBehaviorManager
 {
-    public Dictionary<string, List<NpcSpawnDefinition>> NpcSpawnsForMaps = new();
-    public Dictionary<string, NpcBehaviorBase> EventBehaviorLookup = new();
+    public Dictionary<string, List<NpcSpawnDefinition>> NpcSpawnsForMaps { get; } = new();
+    public Dictionary<string, NpcBehaviorBase> EventBehaviorLookup { get; } = new();
 
     public void RegisterNpc(string name, string map, string? signalName, int spriteId, int x, int y, Direction facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase behavior)
     {
         var shortName = name;
-        if(name.Contains("#"))
+        if (name.Contains("#"))
             shortName = name.Substring(0, name.IndexOf("#", StringComparison.Ordinal));
 
         var npc = new NpcSpawnDefinition()
@@ -38,7 +40,7 @@ public class NpcBehaviorManager
             DisplayType = spriteId == 1000 ? CharacterDisplayType.Portal : CharacterDisplayType.None,
         };
 
-        if(!NpcSpawnsForMaps.ContainsKey(map))
+        if (!NpcSpawnsForMaps.ContainsKey(map))
             NpcSpawnsForMaps.Add(map, new List<NpcSpawnDefinition>());
 
         NpcSpawnsForMaps[map].Add(npc);

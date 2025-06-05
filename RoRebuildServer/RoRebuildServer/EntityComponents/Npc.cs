@@ -713,7 +713,7 @@ public class Npc : IEntityAutoReset
         CommandBuilder.SendUpdatePlayerData(player, true, false);
     }
 
-    public void SellItem(string itemName)
+    public virtual void SellItem(string itemName)
     {
         ItemsForSale ??= new List<(int, int)>();
         SaleItemIndexes ??= new Dictionary<int, int>();
@@ -731,7 +731,7 @@ public class Npc : IEntityAutoReset
             ServerLogger.LogWarning($"Npc {FullName} unable to sell item {itemName} as it could not be found.");
     }
 
-    public void SellItem(string itemName, int price)
+    public virtual void SellItem(string itemName, int price)
     {
         ItemsForSale ??= new List<(int, int)>();
         SaleItemIndexes ??= new Dictionary<int, int>();

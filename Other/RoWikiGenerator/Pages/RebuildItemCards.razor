@@ -1,0 +1,58 @@
+﻿@using RoWikiGenerator.Generators
+@code {
+    [Parameter] public Generators.Items.ItemModel Model { get; set; }
+}
+<div class="contentzone">
+
+    <h2 class="subheader tocheader">Table of Contents</h2>
+    <div class="tocdiv">
+        <ul>
+            <li><a href="#Headgear">Headgear Cards</a></li>
+            <li><a href="#Armor">Armor Cards</a></li>
+            <li><a href="#Weapon">Weapon Cards</a></li>
+            <li><a href="#Shield">Shield Cards</a></li>
+            <li><a href="#Garment">Garment Cards</a></li>
+            <li><a href="#Footgear">Footgear Cards</a></li>
+            <li><a href="#Accessory">Accessory Cards</a></li>
+            <li><a href="#Any">Free Socket Cards</a></li>
+        </ul>
+    </div>
+    <br/>
+
+
+    @foreach (var (category, entries) in Model.ItemByCategory)
+    {
+        var c = category;
+        if (category == "Any")
+            c = "Free Socket";
+
+        <H2 class="subheader" id="@category">@c</H2>
+
+        <table class="itemtable" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Item Name</th>
+                    <th>Description</th>
+                    <th>Prefix/Postfix</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Items.CardEntry entry in entries)
+                {
+                    var art = $"images/collections/cardart_{entry.Item.Code}.png";
+                    if(!File.Exists(Path.Combine(AppSettings.BasePath, "wwwroot/", art)))
+                        art = "images/collections/cardart_default.png";
+
+                    <tr>
+                        <td width="100px"><img class="cardart" src="@(art)" /></td>
+                        <td width="150px">@entry.Item.Name</td>
+                        <td>@((MarkupString)entry.Description)</td>
+                        <td width="150px">@entry.Prefix</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+    }
+</div>

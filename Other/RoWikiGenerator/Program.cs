@@ -102,6 +102,22 @@ public class Program
         loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
     }
 
+    public static void CopyFilesIfNotExists(string srcPath, string destPath, string searchPattern)
+    {
+        if (!Directory.Exists(destPath))
+            Directory.CreateDirectory(destPath);
+
+        foreach (var icon in Directory.GetFiles(srcPath, "*.png"))
+        {
+            var fName = Path.GetFileName(icon);
+            var destName = Path.Combine(destPath, fName);
+            if (File.Exists(destName))
+                continue;
+
+            File.Copy(icon, destName);
+        }
+    }
+
     static async Task Main(string[] args)
     {
         //ServerLogger.Log("Ragnarok Rebuild Zone Server, starting up!");
@@ -109,26 +125,21 @@ public class Program
         DataManager.Initialize(true);
         WikiData.LoadData();
 
+
+        WikiData.World = new World();
+        
+
         //FixName();
         //DistanceCache.Init();
         //RoDatabase.Initialize();
 
         //var cfg = ServerConfig.GetConfig();
 
-        var iconPath = Path.Combine(AppSettings.ClientProjectPath, "Assets\\Sprites\\Imported\\Icons\\Sprites");
-        var iconDest = Path.Combine(AppSettings.TargetPath, "images\\rebuilditems");
-        if (!Directory.Exists(iconDest))
-            Directory.CreateDirectory(iconDest);
-
-        foreach (var icon in Directory.GetFiles(iconPath, "*.png"))
-        {
-            var fName = Path.GetFileName(icon);
-            var destName = Path.Combine(iconDest, fName);
-            if (File.Exists(destName))
-                continue;
-
-            File.Copy(icon, destName);
-        }
+        CopyFilesIfNotExists(Path.Combine(AppSettings.ClientProjectPath, "Assets\\Sprites\\Imported\\Icons\\Sprites"),
+            Path.Combine(AppSettings.TargetPath, "images\\rebuilditems"), "*.png");
+        
+        CopyFilesIfNotExists(Path.Combine(AppSettings.ClientProjectPath, "Assets\\Sprites\\Imported\\Collections"),
+            Path.Combine(AppSettings.TargetPath, "images\\collections"), "*.png");
 
         ServerLogger.Log($"Min spawn time: {ServerConfig.DebugConfig.MinSpawnTime}");
         ServerLogger.Log($"Max spawn time: {ServerConfig.DebugConfig.MaxSpawnTime}");
@@ -137,23 +148,30 @@ public class Program
 
         //monsters
         var content = await InsertContentIntoTemplate(await Monsters.RenderMonsterPage(), "Ragnarok Renewal Monsters");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildmonsters.html"), content);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildmonsters.html"), content);
 
         //jobs
         content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(0), "Ragnarok Renewal - Novice");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobNovice.html"), content);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobNovice.html"), content);
         content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(1), "Ragnarok Renewal - Swordsman");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobSwordsman.html"), content);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobSwordsman.html"), content);
         content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(3), "Ragnarok Renewal - Mage");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobMage.html"), content);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobMage.html"), content);
         content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(2), "Ragnarok Renewal - Archer");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobArcher.html"), content);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobArcher.html"), content);
         content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(5), "Ragnarok Renewal - Thief");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobThief.html"), content);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobThief.html"), content);
         content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(4), "Ragnarok Renewal - Acolyte");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobAcolyte.html"), content);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobAcolyte.html"), content);
         content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(6), "Ragnarok Renewal - Merchant");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "/rebuildJobMerchant.html"), content);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobMerchant.html"), content);
+
+        //items
+        Items.LoadItemSourceFromNpcs();
+        Items.LoadItemDescriptions();
+
+        content = await InsertContentIntoTemplate(await Items.GetCardPage(), "Ragnarok Renewal : Items - Cards");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildCards.html"), content);
 
         //var world = new World();
         //NetworkManager.Init(world);

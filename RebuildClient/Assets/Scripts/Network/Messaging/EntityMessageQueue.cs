@@ -136,7 +136,7 @@ namespace Assets.Scripts.Network.Messaging
             EnqueueMessage(msg);
         }
 
-        public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false, bool takeWeaponSound = true)
+        public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false, bool takeWeaponSound = true, bool playSound = true)
         {
 // #if DEBUG
 //             Debug.Log($"Enqueued damage event {damage}x{hitCount} damage, execute after {time}s");
@@ -151,7 +151,10 @@ namespace Assets.Scripts.Network.Messaging
                 if (hitCount > 1)
                     msg.Value2 = (i + 1) * damage;
                 msg.Value3 = isCrit ? 1 : 0;
-                msg.Value4 = takeWeaponSound ? 1 : 0;
+                if (playSound)
+                    msg.Value4 = takeWeaponSound ? 1 : 0;
+                else
+                    msg.Value4 = -1;
 
                 EnqueueMessage(msg);
             }

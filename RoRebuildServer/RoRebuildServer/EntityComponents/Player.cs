@@ -58,8 +58,10 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
     [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
     [EntityIgnoreNullCheck] public List<SkillCastInfo> IndirectCastQueue { get; set; } = null!;
+    [EntityIgnoreNullCheck] public Dictionary<int, int>? AttackVersusTag { get; set; }
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
     public Dictionary<CharacterSkill, int>? GrantedSkills;
+    
     public Dictionary<string, int>? NpcFlags;
     public ItemEquipState Equipment = null!;
     public CharacterBag? Inventory;
@@ -210,8 +212,6 @@ public class Player : IEntityAutoReset
         922, 941, 960, 979, 998, 1018, 1038, 1058, 1078, 1098, 1119, 1140, 1161, 1182, 1203, 1225, 1247, 1269, 1291,
     };
 
-
-
     public void Reset()
     {
         Entity = Entity.Null;
@@ -241,6 +241,9 @@ public class Player : IEntityAutoReset
         jobStatBonuses = null;
         SpecialState = SpecialPlayerActionState.None;
         SpecialStateTarget = Position.Invalid;
+
+        if(AttackVersusTag != null)
+            AttackVersusTag.Clear();
 
         if (Inventory != null)
             CharacterBag.Return(Inventory);
@@ -501,7 +504,7 @@ public class Player : IEntityAutoReset
     public int GainBaseExp(int exp)
     {
         var level = GetData(PlayerStat.Level);
-        if (CharacterLevel >= 99 || exp != 0)
+        if (CharacterLevel >= 99 || exp == 0)
             return 0;
         
         var curExp = GetData(PlayerStat.Experience);
@@ -1868,7 +1871,7 @@ public class Player : IEntityAutoReset
 
     public void IndirectCastQueueUpdate()
     {
-        var hasResult = false;
+        //var hasResult = false;
         while (IndirectCastQueue.Count > 0 && IndirectCastQueue[0].CastTime < Time.ElapsedTimeFloat)
         {
             var cast = IndirectCastQueue[0];

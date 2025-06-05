@@ -952,6 +952,8 @@ internal class DataLoader
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
         var monsters = csv.GetRecords<CsvMonsterData>().ToList();
+        var tagLookup = new Dictionary<string, int>();
+        var lastTag = 0;
 
         var obj = new List<MonsterDatabaseInfo>(monsters.Count);
 
@@ -959,6 +961,25 @@ internal class DataLoader
         {
             if (monster.Id <= 0)
                 continue;
+
+            HashSet<int>? tags = null;
+            if (!string.IsNullOrWhiteSpace(monster.Tags))
+            {
+                tags = new HashSet<int>();
+                var s = monster.Tags.Split(',');
+                foreach (var tag in s)
+                {
+                    if (tagLookup.TryGetValue(tag, out var tagId))
+                        tags.Add(tagId);
+                    else
+                    {
+                        tagLookup.Add(tag, lastTag);
+                        tags.Add(lastTag);
+                        lastTag++;
+                    }
+                }
+                
+            }
 
             obj.Add(new MonsterDatabaseInfo()
             {
@@ -991,9 +1012,12 @@ internal class DataLoader
                 Race = monster.Race,
                 AiType = (MonsterAiType)Enum.Parse(typeof(MonsterAiType), monster.MonsterAi),
                 Special = monster.Special,
-                Name = monster.Name
+                Name = monster.Name,
+                Tags = tags
             });
         }
+
+        DataManager.TagToIdLookup = tagLookup.AsReadOnly();
 
         ServerLogger.Log($"Loading monsters: {obj.Count}");
 

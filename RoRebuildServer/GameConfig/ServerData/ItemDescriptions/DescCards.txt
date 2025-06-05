@@ -63,7 +63,6 @@ STR +1, ATK +3
 ::Familiar_Card //id 4020 - slotted on Weapon
 ATK +5
 +5% chance of <color=#800000>Blind</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Rocker_Card //id 4021 - slotted on Armor
 DEX +1, ATK +5
@@ -77,7 +76,6 @@ INT +1
 ::Plankton_Card //id 4024 - slotted on Weapon
 ATK +5
 5% chance of <color=#800000>Sleep</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Skeleton_Card //id 4025 - slotted on Weapon
 ATK +10
@@ -107,7 +105,6 @@ DEF +2
 
 ::Poporing_Card //id 4033 - slotted on Accessory
 Enable <color=#0000FF>Detoxify</color>
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Wormtail_Card //id 4034 - slotted on Accessory
 DEX +2
@@ -199,13 +196,15 @@ ATK +5
 ::Soldier_Andre_Card //id 4059 - slotted on Shield
 -30% damage from Plant type monsters
 
+::Mature_Ant_Egg_Card //id 4013 - slotted on Weapon
++30% physical damage vs. Ants
+
 ::Goblin_Card //id 4060 - slotted on Weapon
 +20% physical damage vs. Brute
 
 ::Cornutus_Card //id 4061 - slotted on Armor
 DEF +1
 Indestructible Armor
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Anaconda_Card //id 4062 - slotted on Weapon
 +20% physical damage vs. Poison
@@ -243,7 +242,6 @@ FLEE +5
 ::Golem_Card //id 4072 - slotted on Weapon
 ATK +5
 Indestructible Weapon
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Pirate_Skel_Card //id 4073 - slotted on Accessory
 Enable <color=#0000FF>Discount 5</color>
@@ -576,7 +574,7 @@ if Refine > 8: HP +10%, SP +10%
 
 ::Grizzly_Card //id 4162 - slotted on Armor
 +3% chance of <color=#800000>Blind</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+
 
 ::Gryphon_Card //id 4163 - slotted on Weapon
 FLEE +2, CRIT +7
@@ -587,7 +585,6 @@ if Swordman:
 ::Gullinbursti_Card //id 4164 - slotted on Boots
 +10% EXP from Fish
 +20% damage from Fish
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Gig_Card //id 4165 - slotted on Weapon
 Recover 5 SP/melee kill vs. Insect
@@ -674,7 +671,6 @@ STR +1
 
 ::Lava_Golem_Card //id 4184 - slotted on Weapon
 +30% physical damage vs. Golem
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Rideword_Card //id 4185 - slotted on Headgear
 INT +1
@@ -696,7 +692,6 @@ STR +1, VIT +1
 
 ::Wraith_Dead_Card //id 4189 - slotted on Armor
 +6% chance of <color=#800000>Curse</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Wraith_Card //id 4190 - slotted on Accessory
 +1% chance to find <color=#008080>Giggling Box</color> on Undead kill
@@ -741,7 +736,7 @@ See Hidden Targets
 ::Merman_Card //id 4199 - slotted on Boots
 HP Regeneration +10%
 SP Regeneration +10%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+
 
 ::Megalith_Card //id 4200 - slotted on Boots
 if Refine < 6: MDEF +7
@@ -819,7 +814,6 @@ CRIT +7 vs. Insect
 
 ::Sasquatch_Card //id 4216 - slotted on Armor
 +6% chance of <color=#800000>Freeze</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Enchanted_Peach_Tree_Card //id 4217 - slotted on Shield
 +2% Autospell <color=#0000FF>Heal 1</color> (self) on non-skill attack
@@ -830,7 +824,6 @@ if <color=#0000FF>Heal 10</color>:
 ::Succubus_Card //id 4218 - slotted on Armor
 HP +1000, VIT -3
 HP Regeneration -20%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Sage_Worm_Card //id 4219 - slotted on Accessory
 +0.3% chance to find <color=#008080>Blue Gemstone</color>, <color=#008080>Red Gemstone</color>, <color=#008080>Yellow Gemstone</color> on monster kill
@@ -838,7 +831,6 @@ HP Regeneration -20%
 
 ::Solider_Card //id 4220 - slotted on Armor
 DEF +2, MDEF +2
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Skeleton_General_Card //id 4221 - slotted on Boots
 +10% EXP from Insect
@@ -846,7 +838,6 @@ DEF +2, MDEF +2
 
 ::Skel_Prisoner_Card //id 4222 - slotted on Armor
 +3% chance of <color=#800000>Sleep</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Stalactic_Golem_Card //id 4223 - slotted on Headgear
 DEF +1
@@ -943,7 +934,6 @@ if Refine > 8: HP +800
 ::Alarm_Card //id 4244 - slotted on Boots
 HP +300, VIT +1
 +20% Autospell <color=#0000FF>Sight</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Am_Mut_Card //id 4245 - slotted on Boots
 +10% EXP from Demi-Human
@@ -952,7 +942,6 @@ HP +300, VIT +1
 ::Assaulter_Card //id 4246 - slotted on Weapon
 CRIT damage +10%
 CRIT +7 vs. Demi-Human
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Aster_Card //id 4247 - slotted on Weapon
 ATK +5
@@ -961,7 +950,6 @@ ATK +5
 
 ::Ancient_Mummy_Card //id 4248 - slotted on Shield
 +3% Autospell <color=#0000FF>Signum Crucis 5</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Ancient_Worm_Card //id 4249 - slotted on Boots
 +10% EXP from Demon
@@ -987,8 +975,7 @@ DEF +1
 -25% damage from Medium
 
 ::Orc_Lady_Card //id 4255 - slotted on Weapon
-+30% physical damage vs. non-Boss Orc
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++30% physical damage vs. Orcs
 
 ::Orc_Archer_Card //id 4256 - slotted on Accessory
 +1% chance to find <color=#008080>Box of Panting</color> on Demi-Human kill
@@ -1050,7 +1037,6 @@ VIT +1
 ::Incubus_Card //id 4269 - slotted on Headgear
 SP +150, INT -3
 SP Regeneration -20%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Giant_Spider_Card //id 4270 - slotted on Armor
 +6% chance of <color=#800000>Poison</desc> on receive physical damage
@@ -1128,7 +1114,6 @@ if Acolyte:
 
 ::Chepet_Card //id 4284 - slotted on Weapon
 +5% Autospell <color=#0000FF>Heal 5</color> (enemy) on non-skill attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Choco_Card //id 4285 - slotted on Garment
 FLEE +10
@@ -1158,8 +1143,7 @@ MDEF +3
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Kobold_Leader_Card //id 4291 - slotted on Weapon
-+30% physical damage vs. Kobold
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
++30% physical damage vs. Kobolds
 
 ::Kobold_Archer_Card //id 4292 - slotted on Weapon
 CRIT damage +10%
@@ -1226,7 +1210,6 @@ DEF +2
 
 ::Toad_Card //id 4306 - slotted on Garment
 Perfect Dodge +1
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Beetle_King_Card //id 4307 - slotted on Weapon
 Recover 5 SP/melee kill vs. Fish
@@ -1349,7 +1332,6 @@ if Swordman:
 
 ::Waste_Stove_Card //id 4332 - slotted on Armor
 INT +1, ATK +5
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Venomous_Card //id 4333 - slotted on Armor
 +30% chance of <color=#800000>Poison</color> on receive physical damage

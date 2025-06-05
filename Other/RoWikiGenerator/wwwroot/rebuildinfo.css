@@ -269,7 +269,7 @@ table.rochart {
 }
 
 table.rochart td { 
-	border: 1px #333 solid;
+	border: 1px #333 solid;	
 }
 
 .contentzone {
@@ -295,4 +295,25 @@ table.rochart td {
 
 .skillDesc {
 	padding: 0px 5px 5px 5px;
+}
+
+.itemtable {
+	border-collapse: collapse;
+}
+
+.itemtable td, .itemtable th {
+	border: 1px #333 solid;
+	padding: 4px;
+}
+
+.tocheader {
+	width: 250px;
+}
+
+.tocdiv {
+	padding: 5px;
+}
+
+.cardart {
+	width: 100px;
 }

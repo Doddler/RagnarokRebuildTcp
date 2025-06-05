@@ -58,6 +58,7 @@ public static class DataManager
     public static ReadOnlyDictionary<int, UseItemInfo> UseItemInfo;
     public static ReadOnlyDictionary<string, List<string>> ItemMonsterSummonList;
     public static ReadOnlyDictionary<string, List<int>> ItemBoxSummonList;
+    public static ReadOnlyDictionary<string, int> TagToIdLookup;
     public static HashSet<int> ValidEmotes;
 
     private static List<MonsterDatabaseInfo> monsterStats;

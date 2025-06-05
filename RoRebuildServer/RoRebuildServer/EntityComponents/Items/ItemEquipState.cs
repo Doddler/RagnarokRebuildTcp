@@ -582,6 +582,17 @@ public class ItemEquipState
             case CharacterStat.AutoSpellWhenAttacked:
                 AutoSpellSkillsWhenAttacked.Remove(effect.Change);
                 return false;
+            case CharacterStat.DamageVsTag:
+                if (Player.AttackVersusTag != null &&
+                    Player.AttackVersusTag.TryGetValue(effect.Value, out var existing))
+                {
+                    var newVal = existing - effect.Change;
+                    if (newVal == 0)
+                        Player.AttackVersusTag.Remove(effect.Value);
+                    else
+                        Player.AttackVersusTag[effect.Value] = newVal;
+                }
+                return false;
             default:
                 Player.CombatEntity.SubStat(effect.Stat, effect.Change);
                 return false;
@@ -704,6 +715,33 @@ public class ItemEquipState
         equipmentEffects.Add(ref equipState);
         Player.GrantSkillToCharacter(skill, level);
         CommandBuilder.RefreshGrantedSkills(Player);
+    }
+
+    public void AddDamageVsTag(string tag, int change)
+    {
+        if (!DataManager.TagToIdLookup.TryGetValue(tag, out var tagId))
+        {
+            ServerLogger.LogWarning($"Item attempted to add bonus damage vs tag {tag}, but no monsters with that tag exists.");
+            return;
+        }
+
+        var equipState = new EquipStatChange()
+        {
+            Slot = activeSlot,
+            Change = change,
+            Value = tagId,
+            Stat = CharacterStat.DamageVsTag
+        };
+
+        equipmentEffects.Add(ref equipState);
+
+        if (Player.AttackVersusTag == null)
+            Player.AttackVersusTag = new Dictionary<int, int>();
+
+        if(Player.AttackVersusTag.TryGetValue(tagId, out var existing))
+            Player.AttackVersusTag[tagId] = existing + change;
+        else
+            Player.AttackVersusTag.Add(tagId, change);
     }
 
     public void AddStat(CharacterStat stat, int change)
